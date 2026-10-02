@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "3e",
     "serie": null,
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Technologie - transmission de mouvement",
+    "duree_estimee_min": 30,
+    "tags": [
+      "poulies-courroie",
+      "vitesse de rotation",
+      "rapport de transmission",
+      "calcul de vitesse",
+      "diamètre"
+    ],
     "savoir_officiel": {
       "classe": "3e",
       "serie_label": "",
@@ -25,5 +31,123 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un atelier de menuiserie, le moteur tourne à une vitesse fixe, mais la scie, elle, doit tourner plus vite ou plus lentement selon le bois. Le réglage se fait en changeant la courroie de poulie. Comment connaître la vitesse obtenue sans mesurer ? Il suffit de calculer. Ce cours se concentre sur ce calcul : trouver la vitesse de rotation de la poulie de sortie à partir du rapport de transmission ou des diamètres."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que la vitesse de rotation s'exprime en tours par minute (tr/min)",
+        "Savoir multiplier et diviser des nombres décimaux",
+        "Connaître les termes poulie menante (entrée $E$) et poulie menée (sortie $S$)",
+        "Savoir comparer un nombre à 1"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer la vitesse de la poulie de sortie",
+      "contenu_markdown": "Le **rapport de transmission** $k$ relie les vitesses de rotation de la poulie d'entrée $N_E$ et de la poulie de sortie $N_S$ :\n\n$$k = \\frac{N_S}{N_E}$$\n\nLa vitesse de sortie s'obtient donc en **multipliant** :\n\n$$N_S = k \\times N_E$$\n\nSi on cherche la vitesse d'entrée, on **divise** :\n\n$$N_E = \\frac{N_S}{k}$$\n\n**Quand on ne connaît que les diamètres.** Le rapport se calcule alors par $k = \\dfrac{D_E}{D_S}$ : la poulie la plus grande tourne le plus lentement.\n\n**Contrôle de cohérence.** Si $k < 1$ (réducteur), la vitesse de sortie doit être plus faible que celle d'entrée ; si $k > 1$ (multiplicateur), elle doit être plus grande.\n\n**Plusieurs étages.** Quand deux systèmes se suivent, les rapports se **multiplient** : $k_{total} = k_1 \\times k_2$.",
+      "formule_principale": "N_S = k \\times N_E \\qquad \\text{avec} \\qquad k = \\dfrac{N_S}{N_E} = \\dfrac{D_E}{D_S}",
+      "variantes": [
+        {
+          "nom": "Calcul en deux étages",
+          "quand_utiliser": "Quand la poulie de sortie du premier système entraîne un deuxième système",
+          "contenu_markdown": "On calcule la vitesse intermédiaire avec $k_1$, puis la vitesse finale avec $k_2$. On peut aussi multiplier directement : $k_{total} = k_1 \\times k_2$ et $N_S = k_{total} \\times N_E$. Les deux méthodes doivent donner le même résultat, ce qui sert de vérification."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un système poulies-courroie $E \\rightarrow S$ a pour rapport de transmission $k = 0{,}75$. La vitesse de rotation de la poulie $E$ est $N_E = 120$ tr/min. Déterminer la vitesse de rotation $N_S$ de la poulie $S$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Noter les données",
+          "justification": "Toujours commencer par lister ce que l'énoncé donne.",
+          "resultat_markdown": "$k = 0{,}75$ ; $N_E = 120\\ \\text{tr/min}$."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la relation du rapport de transmission",
+          "justification": "Elle définit $k$ et permet d'isoler l'inconnue.",
+          "resultat_markdown": "$$k = \\frac{N_S}{N_E}$$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler $N_S$",
+          "justification": "On multiplie les deux membres de l'égalité par $N_E$.",
+          "resultat_markdown": "$$N_S = k \\times N_E$$"
+        },
+        {
+          "numero": 4,
+          "action": "Faire l'application numérique",
+          "justification": "Les deux vitesses s'expriment en tr/min, donc le résultat aussi. $0{,}75 \\times 120 = \\dfrac{3}{4} \\times 120 = 3 \\times 30 = 90$.",
+          "resultat_markdown": "$$N_S = 0{,}75 \\times 120 = 90\\ \\text{tr/min}$$"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler la cohérence",
+          "justification": "$k = 0{,}75 < 1$ : le système est un réducteur, donc la sortie doit tourner moins vite que l'entrée.",
+          "resultat_markdown": "$90 < 120$ : le résultat est cohérent."
+        }
+      ],
+      "conclusion_markdown": "La poulie de sortie tourne à $90$ tr/min, vitesse inférieure à celle de l'entrée, ce qui confirme que le système est un réducteur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser par le rapport : $N_S = \\dfrac{120}{0{,}75}$",
+          "pourquoi_faux": "On obtient $160$ tr/min, vitesse supérieure à celle d'entrée, ce qui contredit $k < 1$. La relation $k = \\frac{N_S}{N_E}$ place $N_S$ au numérateur : pour l'isoler, on multiplie.",
+          "correction_markdown": "Multiplie pour trouver la sortie, divise seulement pour retrouver l'entrée."
+        },
+        {
+          "erreur_markdown": "Oublier l'unité ou en donner une au rapport",
+          "pourquoi_faux": "Le rapport $k$ est un nombre pur, quotient de deux vitesses de même unité. En revanche la vitesse $N_S$ est en tr/min et doit s'écrire avec son unité.",
+          "correction_markdown": "Écris $k = 0{,}75$ sans unité et $N_S = 90$ tr/min avec unité."
+        },
+        {
+          "erreur_markdown": "Inverser les diamètres dans $k = \\dfrac{D_E}{D_S}$",
+          "pourquoi_faux": "Avec $D_E = 120$ mm et $D_S = 300$ mm, la bonne valeur est $\\frac{120}{300} = 0{,}4$ ; l'inversion donne $2{,}5$, qui ferait croire à un multiplicateur alors que la grande poulie de sortie tourne lentement.",
+          "correction_markdown": "Raisonne physiquement : une grande poulie de sortie tourne lentement, donc $k < 1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un système poulies-courroie a un rapport de transmission $k = 0{,}5$. La poulie d'entrée tourne à 200 tr/min. Calculer la vitesse de la poulie de sortie.",
+          "solution_markdown": "**Relation.** $N_S = k \\times N_E$.\n\n**Application numérique.**\n\n$$N_S = 0{,}5 \\times 200 = 100\\ \\text{tr/min}$$\n\n**Contrôle.** $k = 0{,}5 < 1$ : réducteur, donc $N_S < N_E$ : $100 < 200$. Cohérent."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une poulie menante de 80 mm de diamètre entraîne par courroie une poulie menée de 200 mm. La poulie menante tourne à 1500 tr/min. Calculer le rapport de transmission, puis la vitesse de la poulie menée.",
+          "solution_markdown": "**Rapport de transmission.** Le diamètre de la menante est au numérateur :\n\n$$k = \\frac{D_E}{D_S} = \\frac{80}{200} = 0{,}4$$\n\n**Vitesse de sortie.**\n\n$$N_S = k \\times N_E = 0{,}4 \\times 1500 = 600\\ \\text{tr/min}$$\n\n**Contrôle.** $k < 1$, la sortie tourne moins vite : $600 < 1500$. Vérification par les diamètres : $\\dfrac{1500}{600} = 2{,}5$ et $\\dfrac{200}{80} = 2{,}5$, les deux rapports sont égaux."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux systèmes poulies-courroie se suivent. Dans le premier, une poulie de 60 mm entraîne une poulie de 180 mm. Dans le second, une poulie de 40 mm entraîne une poulie de 100 mm. La première poulie tourne à 2400 tr/min. Calculer la vitesse de la dernière poulie, d'abord étage par étage, puis avec le rapport total.",
+          "solution_markdown": "**Étage 1.**\n\n$$k_1 = \\frac{60}{180} = \\frac{1}{3} \\qquad N_1 = \\frac{1}{3} \\times 2400 = 800\\ \\text{tr/min}$$\n\n**Étage 2.** La poulie de 40 mm tourne à la vitesse $N_1$ de la poulie de sortie du premier étage (hypothèse : les deux sont sur le même arbre).\n\n$$k_2 = \\frac{40}{100} = 0{,}4 \\qquad N_S = 0{,}4 \\times 800 = 320\\ \\text{tr/min}$$\n\n**Avec le rapport total.**\n\n$$k_{total} = k_1 \\times k_2 = \\frac{1}{3} \\times \\frac{2}{5} = \\frac{2}{15}$$\n\n$$N_S = \\frac{2}{15} \\times 2400 = 2 \\times 160 = 320\\ \\text{tr/min}$$\n\nLes deux méthodes concordent. Le système est un réducteur très marqué : $k_{total} \\approx 0{,}13$, la vitesse est divisée par $7{,}5$ ($2400 / 320 = 7{,}5$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La vitesse de sortie s'obtient par $N_S = k \\times N_E$ : on multiplie, on ne divise pas.",
+        "Pour retrouver l'entrée à partir de la sortie, on divise : $N_E = \\dfrac{N_S}{k}$.",
+        "Quand on ne dispose que des diamètres, $k = \\dfrac{D_E}{D_S}$ : la grande poulie tourne lentement.",
+        "Contrôle toujours le résultat avec la nature du système : $k < 1$ donne une sortie plus lente, $k > 1$ une sortie plus rapide.",
+        "Au BEPC, ce calcul vaut un demi-point après la question sur la nature du système : fais les deux dans l'ordre, la première contrôle la seconde."
+      ]
+    }
+  ]
 }

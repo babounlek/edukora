@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Rotations et nature de quadrilatères",
+    "duree_estimee_min": 30,
+    "tags": [
+      "rotation",
+      "carré",
+      "quadrilatère",
+      "image d'un segment",
+      "conservation des distances"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,135 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une figure, quatre points ont l'air de former un carré, mais l'œil ne prouve rien. Mesurer chaque côté et chaque angle serait long et peu convaincant. Une rotation offre un raccourci : si elle envoie chaque sommet sur le suivant, les quatre côtés se correspondent un à un, donc ils sont égaux, et un angle droit apparaît du même coup. Ce cours t'apprend à repérer cette situation et à en déduire la nature exacte du quadrilatère."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'une rotation : centre, angle orienté, image d'un point",
+        "Une rotation conserve les distances et transforme un vecteur en un vecteur de même norme, tourné de l'angle de la rotation",
+        "Image d'un segment par une rotation",
+        "Propriétés du carré : côtés égaux, angles droits, diagonales de même milieu, perpendiculaires et de même longueur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Quadrilatère invariant par une rotation",
+      "contenu_markdown": "Soit $r$ la rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$. Si $r$ permute circulairement les quatre sommets d'un quadrilatère $EFGH$, c'est-à-dire si\n$$r(E)=F,\\quad r(F)=G,\\quad r(G)=H,\\quad r(H)=E,$$\nalors $EFGH$ est un **carré**.\n\nPourquoi ? Une rotation conserve les distances, donc $EF=r(E)r(F)=FG$, puis $FG=GH$ et $GH=HE$ : les quatre côtés sont égaux. De plus $r$ transforme le vecteur $\\overrightarrow{EF}$ en $\\overrightarrow{FG}$, donc l'angle $\\left(\\overrightarrow{EF},\\overrightarrow{FG}\\right)$ vaut l'angle de $r$, soit $\\dfrac{\\pi}{2}$ : l'angle en $F$ est droit. Un quadrilatère aux quatre côtés égaux et muni d'un angle droit est un carré.\n\nReste à établir que $r(E)=F$. Si $r(A)=B$ et si $E\\in[AB]$, alors $r(E)$ est sur $r([AB])=[BC]$ et $B\\,r(E)=AE$. Le seul point de $[BC]$ à la distance $AE$ de $B$ est le point $F$ tel que $BF=AE$.",
+      "formule_principale": "r(E)=F,\\; r(F)=G \\;\\Longrightarrow\\; EF=FG \\text{ et } \\left(\\overrightarrow{EF},\\overrightarrow{FG}\\right)=\\dfrac{\\pi}{2}",
+      "variantes": [
+        {
+          "nom": "Rotation d'angle $\\dfrac{2\\pi}{3}$ et trois points",
+          "quand_utiliser": "Quand la rotation permute circulairement trois points seulement",
+          "contenu_markdown": "Si $r$ est la rotation d'angle $\\dfrac{2\\pi}{3}$ qui envoie $M$ sur $N$, $N$ sur $P$ et $P$ sur $M$, les trois côtés $MN$, $NP$, $PM$ sont égaux : $MNP$ est équilatéral. L'angle de la rotation fixe le nombre de sommets du polygone régulier obtenu."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le plan orienté, $ABCD$ est un carré de centre $O$ tel que $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right)=\\dfrac{\\pi}{2}$. Les points $E$, $F$, $G$, $H$ sont placés sur $[AB]$, $[BC]$, $[CD]$, $[DA]$ avec $AE=BF=CG=DH$. On note $r$ la rotation de centre $O$ qui transforme $A$ en $B$. Quelle est la nature exacte de $EFGH$ ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer l'angle de $r$",
+          "justification": "Les diagonales d'un carré sont égales, perpendiculaires et se coupent en leur milieu $O$ : $OA=OB$ et $(OA)\\perp(OB)$. Le carré est direct, donc l'angle orienté est $+\\dfrac{\\pi}{2}$.",
+          "resultat_markdown": "$r$ est la rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Donner les images des sommets du carré",
+          "justification": "En tournant de $\\dfrac{\\pi}{2}$ autour de $O$, chaque sommet va sur le suivant dans le sens direct.",
+          "resultat_markdown": "$r(A)=B,\\; r(B)=C,\\; r(C)=D,\\; r(D)=A$"
+        },
+        {
+          "numero": 3,
+          "action": "Trouver l'image du segment $[AB]$",
+          "justification": "Une rotation transforme un segment en un segment dont les extrémités sont les images de ses extrémités.",
+          "resultat_markdown": "$r([AB])=[BC]$"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier $r(E)$",
+          "justification": "$E\\in[AB]$, donc $r(E)\\in[BC]$. La rotation conserve les distances : $B\\,r(E)=r(A)r(E)=AE$. Or $BF=AE$ et $F\\in[BC]$.",
+          "resultat_markdown": "$r(E)=F$"
+        },
+        {
+          "numero": 5,
+          "action": "Identifier les autres images",
+          "justification": "Même raisonnement : $r([BC])=[CD]$ avec $r(B)=C$ et $BF=CG$ ; puis $r([CD])=[DA]$ avec $CG=DH$ ; puis $r([DA])=[AB]$ avec $DH=AE$.",
+          "resultat_markdown": "$r(F)=G,\\; r(G)=H,\\; r(H)=E$"
+        },
+        {
+          "numero": 6,
+          "action": "Comparer les côtés",
+          "justification": "$r$ conserve les distances et envoie $(E,F)$ sur $(F,G)$, $(F,G)$ sur $(G,H)$, $(G,H)$ sur $(H,E)$.",
+          "resultat_markdown": "$EF=FG=GH=HE$"
+        },
+        {
+          "numero": 7,
+          "action": "Obtenir un angle droit",
+          "justification": "$r$ envoie le vecteur $\\overrightarrow{EF}$ sur $\\overrightarrow{FG}$, donc l'angle de ces deux vecteurs est l'angle de $r$.",
+          "resultat_markdown": "$\\left(\\overrightarrow{EF},\\overrightarrow{FG}\\right)=\\dfrac{\\pi}{2}$ donc $(EF)\\perp(FG)$"
+        }
+      ],
+      "conclusion_markdown": "$EFGH$ a quatre côtés égaux et un angle droit : c'est un **carré**. Avec $AB=5$ cm et $AE=2$ cm, son côté vaut $EF=\\sqrt{EB^2+BF^2}=\\sqrt{3^2+2^2}=\\sqrt{13}$ cm."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire « $EF=FG=GH=HE$ donc $EFGH$ est un carré ».",
+          "pourquoi_faux": "Quatre côtés égaux caractérisent un losange. Un losange n'a pas forcément d'angle droit : il lui manque la moitié des conditions du carré.",
+          "correction_markdown": "Ajouter l'angle droit : la rotation d'angle $\\dfrac{\\pi}{2}$ envoie $\\overrightarrow{EF}$ sur $\\overrightarrow{FG}$, donc $(EF)\\perp(FG)$. Losange avec un angle droit = carré."
+        },
+        {
+          "erreur_markdown": "Affirmer « $r(E)=F$ par symétrie de la figure » sans le démontrer.",
+          "pourquoi_faux": "La figure ne prouve rien : c'est la condition $AE=BF$ qui rend l'égalité vraie. Sans elle, $E$ et $F$ ne se correspondraient pas.",
+          "correction_markdown": "Passer par l'image du segment : $r(E)\\in[BC]$ et $B\\,r(E)=AE=BF$, donc $r(E)=F$."
+        },
+        {
+          "erreur_markdown": "Prendre l'angle $-\\dfrac{\\pi}{2}$ alors que la rotation envoie $A$ sur $B$.",
+          "pourquoi_faux": "La rotation d'angle $-\\dfrac{\\pi}{2}$ envoie $A$ sur $D$ dans un carré direct $ABCD$. Un mauvais sens donne de mauvaises images, donc un mauvais raisonnement sur les segments.",
+          "correction_markdown": "Vérifier le sens avec l'énoncé : $A\\mapsto B$ dans un carré direct signifie angle $+\\dfrac{\\pi}{2}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le carré $ABCD$ a pour côté $5$ et pour centre $O$. La rotation $r$ de centre $O$ envoie $A$ sur $B$. On place $E,F,G,H$ sur $[AB],[BC],[CD],[DA]$ avec $AE=BF=CG=DH=2$. Calculer $EF$ et l'aire de $EFGH$.",
+          "solution_markdown": "**Étape 1.** Comme dans le cours, $r(E)=F$, $r(F)=G$, $r(G)=H$, $r(H)=E$, donc $EFGH$ est un carré.\n\n**Étape 2.** $EB=AB-AE=5-2=3$ et $BF=2$. Le triangle $EBF$ est rectangle en $B$ car $(AB)\\perp(BC)$.\n\n**Étape 3.** Pythagore : $EF^2=EB^2+BF^2=9+4=13$, donc $EF=\\sqrt{13}$.\n\n**Étape 4.** L'aire du carré est $EF^2=13$.\n\nVérification : $25-4\\times\\dfrac{1}{2}\\times3\\times2=25-12=13$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le carré $ABCD$ a pour côté $8$. Les points $M,N,P,Q$ sont sur $[AB],[BC],[CD],[DA]$ avec $AM=BN=CP=DQ=x$ où $0<x<8$. Montrer que $MNPQ$ est un carré, exprimer son aire en fonction de $x$, puis trouver $x$ pour que cette aire soit minimale.",
+          "solution_markdown": "**Étape 1.** Soit $r$ la rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$ qui envoie $A$ sur $B$. Comme dans le cours, $r(M)=N$, $r(N)=P$, $r(P)=Q$, $r(Q)=M$, donc $MNPQ$ est un carré.\n\n**Étape 2.** $MB=8-x$ et $BN=x$, avec un angle droit en $B$ : $MN^2=(8-x)^2+x^2=64-16x+x^2+x^2=2x^2-16x+64$.\n\n**Étape 3.** L'aire est $MN^2=2x^2-16x+64$. On factorise : $2(x^2-8x+32)=2\\left[(x-4)^2+16\\right]=2(x-4)^2+32$.\n\n**Étape 4.** $2(x-4)^2\\ge0$, donc l'aire vaut au moins $32$, valeur atteinte pour $x=4$ : $M,N,P,Q$ sont les milieux des côtés.\n\nVérification avec $x=3$ : $2\\times9-48+64=34$ et $(8-3)^2+3^2=25+9=34$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le triangle $ABC$ est équilatéral de côté $6$ et de centre $O$. La rotation $r$ de centre $O$ et d'angle $\\dfrac{2\\pi}{3}$ envoie $A$ sur $B$ et $B$ sur $C$. Les points $M,N,P$ sont sur $[AB],[BC],[CA]$ avec $AM=BN=CP=2$. Montrer que $MNP$ est équilatéral et calculer son côté.",
+          "solution_markdown": "**Étape 1.** $r(A)=B$, $r(B)=C$, $r(C)=A$ car $O$ est équidistant des sommets et l'angle $\\dfrac{2\\pi}{3}$ correspond au tiers de tour. Donc $r([AB])=[BC]$.\n\n**Étape 2.** $r(M)\\in[BC]$ et $B\\,r(M)=AM=2=BN$, donc $r(M)=N$. De même $r([BC])=[CA]$ et $C\\,r(N)=BN=2=CP$, donc $r(N)=P$. Enfin $r([CA])=[AB]$ et $A\\,r(P)=CP=2=AM$, donc $r(P)=M$.\n\n**Étape 3.** $r$ conserve les distances : $MN=r(M)r(N)=NP$, et $NP=r(N)r(P)=PM$. Les trois côtés sont égaux : $MNP$ est équilatéral.\n\n**Étape 4.** Dans le triangle $MBN$, $MB=6-2=4$, $BN=2$ et l'angle en $B$ mesure $60^\\circ$. Loi des cosinus : $MN^2=4^2+2^2-2\\times4\\times2\\times\\cos60^\\circ=16+4-8=12$.\n\n**Étape 5.** $MN=\\sqrt{12}=2\\sqrt3$. Le côté de $MNP$ vaut $2\\sqrt{3}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prouver qu'un quadrilatère est un carré, cherche d'abord une rotation de $\\dfrac{\\pi}{2}$ qui envoie chaque sommet sur le suivant : elle donne les quatre côtés égaux ET l'angle droit.",
+        "Pour montrer $r(E)=F$, passe par le segment : $r([AB])=[BC]$ puis compare les distances au point $B$.",
+        "Quatre côtés égaux seuls donnent un losange, jamais un carré.",
+        "Contrôle toujours le sens de la rotation avec l'énoncé : $A\\mapsto B$ ou $A\\mapsto D$ change tout.",
+        "Au Probatoire, cette question suit souvent un tableau de correspondance des images par $r$ : remplis-le soigneusement, il sert à toutes les questions suivantes."
+      ]
+    }
+  ]
 }

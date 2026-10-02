@@ -6,9 +6,14 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "somme géométrique",
+      "nombre de termes",
+      "rang du dernier terme",
+      "suite géométrique"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +30,121 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand on te demande $\\dfrac13+\\dfrac19+\\dfrac1{27}+\\dots+\\dfrac1{59049}$, la formule de la somme est connue. Ce qui bloque, c'est tout ce qu'elle suppose : reconnaître que c'est une suite géométrique, trouver le premier terme et la raison, et surtout savoir **combien** de termes on additionne quand le dernier est donné sous forme de nombre. Ce cours t'apprend à compter sans te tromper d'une unité."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "La somme géométrique $S=\\text{premier terme}\\times\\dfrac{1-q^N}{1-q}$",
+        "Les puissances de $2$, $3$, $5$ et leur écriture décimale",
+        "La décomposition d'un nombre en facteurs premiers pour reconnaître $59049=3^{10}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître, compter, appliquer",
+      "contenu_markdown": "Pour calculer une somme du type $a_1+a_2+\\dots+a_N$ dont les termes se suivent avec un rapport constant :\n\n1. **Reconnaître** la suite : calculer le rapport de deux termes consécutifs ($\\dfrac{1/9}{1/3}=\\dfrac13$, etc.) et vérifier qu'il est constant.\n2. **Compter** les termes : écrire le dernier terme sous la forme $a_1\\times q^{\\,N-1}$ ou $q^{\\,m}$ pour lire son rang. Entre le rang $p$ et le rang $n$ inclus, il y a $n-p+1$ termes.\n3. **Appliquer** : $S=(\\text{premier terme})\\times\\dfrac{1-q^N}{1-q}$.\n\nLe plus sûr pour compter est de **réécrire chaque terme avec le même schéma** (ici des puissances de $\\dfrac13$) et de lire les exposants de départ et d'arrivée.",
+      "formule_principale": "N=n-p+1 \\qquad S=a_p\\,\\dfrac{1-q^{N}}{1-q}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer $S=\\dfrac13+\\dfrac19+\\dfrac1{27}+\\dots+\\dfrac1{59049}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réécrire les termes avec des puissances",
+          "justification": "On remarque $3=3^1$, $9=3^2$, $27=3^3$. On cherche donc la forme $\\dfrac1{3^k}=\\left(\\dfrac13\\right)^k$.",
+          "resultat_markdown": "$S=\\left(\\dfrac13\\right)^1+\\left(\\dfrac13\\right)^2+\\left(\\dfrac13\\right)^3+\\dots$"
+        },
+        {
+          "numero": 2,
+          "action": "Reconnaître la raison",
+          "justification": "Le rapport de deux termes consécutifs est constant : $\\dfrac{1/9}{1/3}=\\dfrac13$ et $\\dfrac{1/27}{1/9}=\\dfrac13$.",
+          "resultat_markdown": "Suite géométrique de raison $q=\\dfrac13$, de premier terme $\\dfrac13$"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le dernier exposant",
+          "justification": "On décompose $59049$ par divisions successives par $3$ ou par calcul de puissances : $3^5=243$, $3^{10}=243^2=59049$.",
+          "resultat_markdown": "$59049=3^{10}$, donc le dernier terme est $\\left(\\dfrac13\\right)^{10}$"
+        },
+        {
+          "numero": 4,
+          "action": "Compter les termes",
+          "justification": "Les exposants vont de $1$ à $10$ inclus.",
+          "resultat_markdown": "$N=10-1+1=10$ termes"
+        },
+        {
+          "numero": 5,
+          "action": "Appliquer la formule",
+          "justification": "Premier terme $\\dfrac13$, raison $\\dfrac13$, $N=10$.",
+          "resultat_markdown": "$S=\\dfrac13\\times\\dfrac{1-\\left(\\frac13\\right)^{10}}{1-\\frac13}=\\dfrac13\\times\\dfrac32\\left(1-\\dfrac1{59049}\\right)$"
+        },
+        {
+          "numero": 6,
+          "action": "Simplifier",
+          "justification": "$\\dfrac13\\times\\dfrac32=\\dfrac12$ et $1-\\dfrac1{59049}=\\dfrac{59048}{59049}$.",
+          "resultat_markdown": "$S=\\dfrac12\\times\\dfrac{59048}{59049}=\\dfrac{29524}{59049}$"
+        }
+      ],
+      "conclusion_markdown": "$S=\\dfrac{29524}{59049}\\approx0{,}5$. Ce résultat est cohérent : la somme infinie $\\dfrac13+\\dfrac19+\\dots$ vaut $\\dfrac12$ et la somme finie est juste en dessous."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter $59049\\div3$ ou en déduire « 59049 termes ».",
+          "pourquoi_faux": "Le nombre de termes se lit sur **l'exposant** du dernier terme, pas sur sa valeur.",
+          "correction_markdown": "Écris le dernier terme sous la forme $q^m$ et lis $m$."
+        },
+        {
+          "erreur_markdown": "Calculer $N=10-1=9$ au lieu de $10$.",
+          "pourquoi_faux": "Les deux bornes sont comprises. De $1$ à $10$, il y a $10$ entiers : $10-1+1$.",
+          "correction_markdown": "Utilise toujours $n-p+1$ et teste sur un petit exemple : de $1$ à $3$, trois termes."
+        },
+        {
+          "erreur_markdown": "Prendre le premier terme égal à $1$ par réflexe.",
+          "pourquoi_faux": "Ici la somme commence à $\\dfrac13$ et pas à $\\left(\\dfrac13\\right)^0=1$. Le facteur devant la fraction est le **premier terme de la somme**.",
+          "correction_markdown": "Écris explicitement le premier terme avant d'appliquer la formule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $S=3+6+12+\\dots+768$.",
+          "solution_markdown": "**1.** Rapport constant : $\\dfrac63=2$, $\\dfrac{12}6=2$. Premier terme $3$, raison $2$.\n\n**2.** $768=3\\times256=3\\times2^8$ : le dernier terme est $3\\times2^8$, de rang $8$ si le premier est de rang $0$. Il y a donc $9$ termes.\n\n**3.** $S=3\\times\\dfrac{1-2^9}{1-2}=3\\times\\dfrac{1-512}{-1}=3\\times511=1533$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $S=\\left(\\dfrac12\\right)^4+\\left(\\dfrac12\\right)^5+\\dots+\\left(\\dfrac12\\right)^{12}$.",
+          "solution_markdown": "**1.** Premier terme $\\left(\\dfrac12\\right)^4=\\dfrac1{16}$, raison $\\dfrac12$.\n\n**2.** Exposants de $4$ à $12$ : $12-4+1=9$ termes.\n\n**3.** $S=\\dfrac1{16}\\times\\dfrac{1-\\left(\\frac12\\right)^9}{1-\\frac12}=\\dfrac1{16}\\times2\\times\\left(1-\\dfrac1{512}\\right)=\\dfrac18\\times\\dfrac{511}{512}=\\dfrac{511}{4096}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$(W_n)$ est géométrique avec $W_0=3$ et $q=-2$. Calculer $S=W_5+W_6+\\dots+W_{12}$ de deux façons.",
+          "solution_markdown": "**Première façon (directe).** $W_5=3\\times(-2)^5=-96$. Nombre de termes : $12-5+1=8$.\n\n$S=-96\\times\\dfrac{1-(-2)^8}{1-(-2)}=-96\\times\\dfrac{1-256}{3}=-96\\times\\dfrac{-255}3=-96\\times(-85)=8160$.\n\n**Seconde façon (par différence).** $\\sum_{k=0}^{12}W_k=3\\times\\dfrac{1-(-2)^{13}}{3}=1+8192=8193$ et $\\sum_{k=0}^{4}W_k=3\\times\\dfrac{1-(-2)^5}{3}=1+32=33$.\n\n$S=8193-33=8160$. Les deux méthodes concordent."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'appliquer la formule, tu reconnais le rapport constant, tu écris le premier terme et tu comptes les termes.",
+        "Le nombre de termes se lit sur l'exposant du dernier terme : de $p$ à $n$ inclus, il y en a $n-p+1$.",
+        "Réécris tous les termes avec le même schéma de puissances : les exposants te donnent le décompte.",
+        "Contrôle avec la limite : pour $|q|<1$, la somme finie reste proche de $\\dfrac{\\text{premier terme}}{1-q}$.",
+        "Au Probatoire C, la somme demandée en fin d'exercice est donnée sous la forme « $\\dfrac13+\\dfrac19+\\dots+\\dfrac1{59049}$ » : on attend que tu identifies toi-même le rang du dernier terme."
+      ]
+    }
+  ]
 }

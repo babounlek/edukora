@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Produit scalaire dans l'espace",
+    "duree_estimee_min": 25,
+    "tags": [
+      "produit scalaire",
+      "repère orthonormé",
+      "coordonnées",
+      "orthogonalité",
+      "espace"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,122 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Démontrer une orthogonalité avec la relation de Chasles demande de décomposer chaque vecteur et de suivre les signes : c'est long et les erreurs de signe guettent. Dès qu'on dispose d'un repère orthonormé, il existe une voie plus mécanique : on lit les coordonnées, on multiplie, on additionne. Ce cours montre comment cette méthode remplace un long raisonnement par un calcul de quelques lignes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Coordonnées d'un vecteur dans l'espace : $\\overrightarrow{AB}(x_B-x_A\\;;\\,y_B-y_A\\;;\\,z_B-z_A)$",
+        "Notion de repère orthonormé de l'espace",
+        "Orthogonalité de deux vecteurs et de deux droites",
+        "Droite perpendiculaire à un plan : orthogonale à deux droites sécantes de ce plan"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Produit scalaire en coordonnées",
+      "contenu_markdown": "Dans un repère **orthonormé** de l'espace, si $\\vec u(x\\,;\\,y\\,;\\,z)$ et $\\vec v(x'\\,;\\,y'\\,;\\,z')$, alors\n$$\\vec u\\cdot\\vec v=xx'+yy'+zz'.$$\nLes deux vecteurs sont orthogonaux si et seulement si ce nombre est nul.\n\n**Condition de validité.** La formule n'est vraie que si le repère est orthonormé : les trois vecteurs de base sont deux à deux orthogonaux et de norme $1$. Si l'énoncé ne l'affirme pas, il faut le démontrer d'abord.\n\n**Droite perpendiculaire à un plan.** Pour prouver qu'une droite de vecteur directeur $\\vec w$ est perpendiculaire à un plan, on calcule $\\vec w\\cdot\\vec p$ et $\\vec w\\cdot\\vec q$ pour deux vecteurs non colinéaires $\\vec p$ et $\\vec q$ du plan. Si les deux produits sont nuls, la droite est perpendiculaire au plan.",
+      "formule_principale": "\\vec u\\cdot\\vec v=xx'+yy'+zz'"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$ et on pose $\\vec i=\\overrightarrow{AB}$, $\\vec j=\\overrightarrow{AD}$, $\\vec k=\\overrightarrow{AE}$. Retrouver par le calcul que la droite $(AG)$ est perpendiculaire au plan $(CFH)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que le repère est orthonormé",
+          "justification": "Les arêtes $AB$, $AD$, $AE$ d'un cube sont deux à deux perpendiculaires et de longueur $1$.",
+          "resultat_markdown": "$(A\\,;\\,\\vec i,\\vec j,\\vec k)$ est un repère orthonormé"
+        },
+        {
+          "numero": 2,
+          "action": "Placer les sommets utiles",
+          "justification": "$B$ est atteint par $\\vec i$, $D$ par $\\vec j$, $E$ par $\\vec k$. On compose pour $C$, $F$, $G$, $H$.",
+          "resultat_markdown": "$C(1\\,;1\\,;0)$, $F(1\\,;0\\,;1)$, $G(1\\,;1\\,;1)$, $H(0\\,;1\\,;1)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les coordonnées des vecteurs",
+          "justification": "Chaque coordonnée est la différence extrémité moins origine.",
+          "resultat_markdown": "$\\overrightarrow{AG}(1\\,;1\\,;1)$, $\\overrightarrow{CF}(0\\,;-1\\,;1)$, $\\overrightarrow{FH}(-1\\,;1\\,;0)$"
+        },
+        {
+          "numero": 4,
+          "action": "Premier produit scalaire",
+          "justification": "On applique $xx'+yy'+zz'$.",
+          "resultat_markdown": "$\\overrightarrow{AG}\\cdot\\overrightarrow{CF}=1\\times0+1\\times(-1)+1\\times1=0$"
+        },
+        {
+          "numero": 5,
+          "action": "Second produit scalaire",
+          "justification": "Même calcul.",
+          "resultat_markdown": "$\\overrightarrow{AG}\\cdot\\overrightarrow{FH}=1\\times(-1)+1\\times1+1\\times0=0$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier que les deux vecteurs du plan sont sécants",
+          "justification": "$\\overrightarrow{CF}$ et $\\overrightarrow{FH}$ ne sont pas colinéaires (leurs coordonnées ne sont pas proportionnelles) et les droites $(CF)$, $(FH)$ se coupent en $F$.",
+          "resultat_markdown": "$(CF)$ et $(FH)$ sont sécantes dans le plan $(CFH)$"
+        }
+      ],
+      "conclusion_markdown": "$(AG)$ est orthogonale à deux droites sécantes de $(CFH)$ : elle est donc **perpendiculaire** au plan $(CFH)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer $xx'+yy'+zz'$ dans un repère qui n'est pas orthonormé.",
+          "pourquoi_faux": "La formule suppose $\\vec i\\cdot\\vec j=0$ et $\\|\\vec i\\|=\\|\\vec j\\|=1$. Dans un repère quelconque, il apparaît des termes croisés ou des facteurs de norme et le résultat est faux.",
+          "correction_markdown": "Commence par justifier que le repère est orthonormé, ou rappelle que l'énoncé l'affirme."
+        },
+        {
+          "erreur_markdown": "Oublier une coordonnée ou un signe moins dans la différence : $\\overrightarrow{CF}(0\\,;\\,1\\,;\\,1)$ au lieu de $(0\\,;-1\\,;1)$.",
+          "pourquoi_faux": "$F(1\\,;0\\,;1)$ moins $C(1\\,;1\\,;0)$ donne $y=0-1=-1$. Une erreur de signe change le produit scalaire et fait croire à tort que les droites ne sont pas perpendiculaires.",
+          "correction_markdown": "Écris chaque soustraction coordonnée par coordonnée avant de passer au produit."
+        },
+        {
+          "erreur_markdown": "Conclure à la perpendiculaire au plan avec un seul produit scalaire nul.",
+          "pourquoi_faux": "Un seul vecteur orthogonal ne suffit pas : il existe une infinité de droites orthogonales à une droite donnée dans un plan. Il faut deux droites sécantes.",
+          "correction_markdown": "Calcule toujours deux produits scalaires avec deux vecteurs non colinéaires du plan."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un repère orthonormé de l'espace, $\\vec u(2\\,;-1\\,;3)$ et $\\vec v(1\\,;5\\,;1)$. Ces vecteurs sont-ils orthogonaux ?",
+          "solution_markdown": "**Étape 1.** $\\vec u\\cdot\\vec v=2\\times1+(-1)\\times5+3\\times1$.\n\n**Étape 2.** $=2-5+3=0$.\n\n**Étape 3.** Le produit scalaire est nul : $\\vec u$ et $\\vec v$ sont orthogonaux."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un repère orthonormé, $A(1\\,;0\\,;2)$, $B(3\\,;1\\,;1)$ et $C(2\\,;-1\\,;3)$. Montrer que le triangle $ABC$ est rectangle en $A$ et calculer son aire.",
+          "solution_markdown": "**Étape 1.** $\\overrightarrow{AB}(2\\,;1\\,;-1)$ et $\\overrightarrow{AC}(1\\,;-1\\,;1)$.\n\n**Étape 2.** $\\overrightarrow{AB}\\cdot\\overrightarrow{AC}=2\\times1+1\\times(-1)+(-1)\\times1=2-1-1=0$ : le triangle est rectangle en $A$.\n\n**Étape 3.** $AB=\\sqrt{4+1+1}=\\sqrt6$ et $AC=\\sqrt{1+1+1}=\\sqrt3$.\n\n**Étape 4.** Aire $=\\dfrac{1}{2}\\times AB\\times AC=\\dfrac{1}{2}\\sqrt6\\times\\sqrt3=\\dfrac{\\sqrt{18}}{2}=\\dfrac{3\\sqrt2}{2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec les points $A$, $B$, $C$ de l'exercice précédent, déterminer un vecteur non nul $\\vec n(x\\,;y\\,;z)$ orthogonal à la fois à $\\overrightarrow{AB}$ et à $\\overrightarrow{AC}$. En déduire une relation entre $x$, $y$, $z$ vérifiée par tout point $M(x\\,;y\\,;z)$ du plan $(ABC)$.",
+          "solution_markdown": "**Étape 1.** Conditions : $\\vec n\\cdot\\overrightarrow{AB}=2x+y-z=0$ et $\\vec n\\cdot\\overrightarrow{AC}=x-y+z=0$.\n\n**Étape 2.** On additionne les deux équations : $3x=0$, donc $x=0$.\n\n**Étape 3.** Dans la seconde : $-y+z=0$, donc $y=z$. On prend $y=z=1$ : $\\vec n(0\\,;1\\,;1)$.\n\n**Étape 4.** Un point $M(x\\,;y\\,;z)$ est dans le plan $(ABC)$ si et seulement si $\\overrightarrow{AM}\\cdot\\vec n=0$. Or $\\overrightarrow{AM}(x-1\\,;\\,y\\,;\\,z-2)$, donc $0\\times(x-1)+y+(z-2)=0$, soit $y+z-2=0$.\n\n**Étape 5.** Vérification : $B$ : $1+1-2=0$ ; $C$ : $-1+3-2=0$ ; $A$ : $0+2-2=0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un repère orthonormé, $\\vec u\\cdot\\vec v=xx'+yy'+zz'$ : un produit de coordonnées, pas de décomposition.",
+        "Vérifie toujours que le repère est orthonormé avant d'appliquer la formule.",
+        "Pour une perpendiculaire à un plan, il faut deux produits scalaires nuls avec deux vecteurs non colinéaires du plan.",
+        "Calcule les coordonnées des vecteurs avec soin : une erreur de signe ruine tout le reste.",
+        "Au Probatoire, la méthode analytique sert à retrouver un résultat déjà démontré par Chasles, ou à calculer ensuite une distance ou un point d'intersection."
+      ]
+    }
+  ]
 }

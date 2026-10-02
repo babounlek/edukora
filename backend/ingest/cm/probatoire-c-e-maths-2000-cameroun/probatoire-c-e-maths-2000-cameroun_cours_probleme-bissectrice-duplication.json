@@ -6,9 +6,14 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Trigonométrie",
+    "duree_estimee_min": 30,
+    "tags": [
+      "duplication de la tangente",
+      "bissectrice",
+      "triangle rectangle",
+      "tangente"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +30,127 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un triangle rectangle, on connaît parfois la longueur de deux côtés mais pas ceux qui se cachent derrière une bissectrice. Comment calculer la longueur d'un segment sans jamais mesurer d'angle ? La bissectrice coupe l'angle $a$ en deux angles égaux à $\\dfrac{a}{2}$ : on calcule la tangente de la moitié de l'angle avec un petit triangle, puis la formule de duplication donne la tangente de l'angle entier. Ce chemin est un classique du Probatoire C."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tangente d'un angle aigu dans un triangle rectangle : $\\tan=\\dfrac{\\text{opposé}}{\\text{adjacent}}$",
+        "Les formules $\\sin 2\\theta = 2\\sin\\theta\\cos\\theta$ et $\\cos 2\\theta = \\cos^2\\theta - \\sin^2\\theta$",
+        "Résoudre une équation du premier degré avec des fractions"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formule de duplication de la tangente",
+      "contenu_markdown": "**Propriété.** Pour tout réel $\\theta$ tel que $\\tan\\theta$ et $\\tan 2\\theta$ soient définis,\n$$\\tan 2\\theta = \\frac{2\\tan\\theta}{1-\\tan^2\\theta}$$\n**Démonstration.** On part de $\\tan 2\\theta = \\dfrac{\\sin 2\\theta}{\\cos 2\\theta} = \\dfrac{2\\sin\\theta\\cos\\theta}{\\cos^2\\theta-\\sin^2\\theta}$. On divise le numérateur et le dénominateur par $\\cos^2\\theta$ (non nul puisque $\\tan\\theta$ existe) :\n$$\\tan 2\\theta = \\frac{\\dfrac{2\\sin\\theta\\cos\\theta}{\\cos^2\\theta}}{\\dfrac{\\cos^2\\theta}{\\cos^2\\theta}-\\dfrac{\\sin^2\\theta}{\\cos^2\\theta}} = \\frac{2\\tan\\theta}{1-\\tan^2\\theta}$$\n\n**Méthode pour un problème de bissectrice.** (1) Repérer l'angle $a$ et sa bissectrice, qui crée deux angles de mesure $\\dfrac{a}{2}$. (2) Calculer $\\tan\\dfrac{a}{2}$ dans le petit triangle rectangle. (3) Appliquer la duplication avec $\\theta=\\dfrac{a}{2}$ pour obtenir $\\tan a$. (4) Exprimer aussi $\\tan a$ dans le grand triangle rectangle avec l'inconnue, puis égaler les deux expressions.",
+      "formule_principale": "\\tan 2\\theta = \\dfrac{2\\tan\\theta}{1-\\tan^2\\theta}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABC$ est un triangle rectangle en $A$ et $(CD)$ est la bissectrice de l'angle $\\widehat{BCA}$, avec $D$ sur le segment $[AB]$. On donne, en centimètres, $AD=33$ et $AC=99$. On pose $BD=x$ et $a=\\text{mes}\\,\\widehat{BCA}$. Calculer $\\tan a$ en fonction de $x$, puis en déduire la valeur de $x$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer $\\tan a$ dans le grand triangle",
+          "justification": "Dans le triangle $ABC$ rectangle en $A$, l'angle $a$ est en $C$ : le côté opposé est $[AB]$, le côté adjacent est $[AC]$. Comme $D$ est sur $[AB]$, $AB = AD + DB = 33 + x$.",
+          "resultat_markdown": "$\\tan a = \\dfrac{AB}{AC} = \\dfrac{33+x}{99}$"
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser la bissectrice",
+          "justification": "$(CD)$ partage l'angle $\\widehat{BCA}$ en deux angles égaux : $\\widehat{ACD}=\\dfrac{a}{2}$.",
+          "resultat_markdown": "$\\widehat{ACD} = \\dfrac{a}{2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $\\tan\\dfrac{a}{2}$ dans le petit triangle",
+          "justification": "Le triangle $ADC$ est rectangle en $A$ ; pour l'angle en $C$, le côté opposé est $[AD]$ et le côté adjacent $[AC]$.",
+          "resultat_markdown": "$\\tan\\dfrac{a}{2} = \\dfrac{AD}{AC} = \\dfrac{33}{99} = \\dfrac{1}{3}$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la duplication",
+          "justification": "On pose $\\theta=\\dfrac{a}{2}$ dans $\\tan 2\\theta=\\dfrac{2\\tan\\theta}{1-\\tan^2\\theta}$.",
+          "resultat_markdown": "$\\tan a = \\dfrac{2\\times\\frac13}{1-\\left(\\frac13\\right)^2} = \\dfrac{\\frac23}{1-\\frac19} = \\dfrac{\\frac23}{\\frac89} = \\dfrac23\\times\\dfrac98 = \\dfrac{18}{24} = \\dfrac34$"
+        },
+        {
+          "numero": 5,
+          "action": "Égaler les deux expressions de $\\tan a$",
+          "justification": "La même grandeur $\\tan a$ a été exprimée de deux façons, on les égale.",
+          "resultat_markdown": "$\\dfrac{33+x}{99} = \\dfrac34$"
+        },
+        {
+          "numero": 6,
+          "action": "Résoudre en $x$",
+          "justification": "On multiplie par $99$ : $33+x=\\dfrac{3\\times 99}{4}=\\dfrac{297}{4}=74{,}25$. On soustrait $33$.",
+          "resultat_markdown": "$x = 74{,}25 - 33 = 41{,}25$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier",
+          "justification": "Avec $x=41{,}25$, $AB=74{,}25$ et $\\tan a=\\dfrac{74{,}25}{99}=0{,}75$. Or $\\tan\\dfrac a2=\\dfrac13$ donne $\\dfrac a2\\approx 18{,}43^\\circ$, donc $a\\approx 36{,}87^\\circ$ et $\\tan a\\approx 0{,}75$ : cohérent.",
+          "resultat_markdown": "$\\tan a = \\dfrac34$ confirmé"
+        }
+      ],
+      "conclusion_markdown": "On a $\\tan a = \\dfrac{33+x}{99}$ et $x = 41{,}25$ cm, soit $x=\\dfrac{165}{4}$ cm."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\tan a = 2\\tan\\dfrac a2$ : « le double de l'angle, le double de la tangente ».",
+          "pourquoi_faux": "La tangente n'est pas proportionnelle à l'angle. Avec $\\tan\\dfrac a2=\\dfrac13$, cette règle donnerait $\\dfrac23$, alors que le vrai résultat est $\\dfrac34$.",
+          "correction_markdown": "Utilise toujours la formule complète $\\dfrac{2\\tan\\theta}{1-\\tan^2\\theta}$."
+        },
+        {
+          "erreur_markdown": "Oublier que $AB=AD+DB$ et écrire $\\tan a=\\dfrac{x}{99}$.",
+          "pourquoi_faux": "L'angle $a$ est celui du **grand** triangle $ABC$, dont le côté opposé est $[AB]$ tout entier, pas seulement le morceau $[DB]$.",
+          "correction_markdown": "Décompose $AB = 33+x$ avant de former le rapport."
+        },
+        {
+          "erreur_markdown": "Calculer $\\tan\\dfrac a2$ avec le mauvais rapport : $\\dfrac{AC}{AD}=3$.",
+          "pourquoi_faux": "La tangente est « opposé sur adjacent ». Dans le triangle $ADC$, l'opposé de l'angle en $C$ est $[AD]$. Inverser donne la cotangente.",
+          "correction_markdown": "Fais un petit schéma, marque l'angle, repère le côté qui lui fait face."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sachant que $\\tan\\theta=\\dfrac12$, calculer $\\tan 2\\theta$.",
+          "solution_markdown": "On applique la formule : $\\tan 2\\theta=\\dfrac{2\\times\\frac12}{1-\\left(\\frac12\\right)^2}=\\dfrac{1}{1-\\frac14}=\\dfrac{1}{\\frac34}=\\dfrac43$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABC$ est rectangle en $A$ avec $AC=12$ cm. La bissectrice de l'angle $\\widehat{ACB}$ coupe $[AB]$ en $D$ avec $AD=5$ cm. Calculer $\\tan\\widehat{ACB}$, puis les longueurs $AB$ et $BD$ (valeurs exactes puis arrondis au centième).",
+          "solution_markdown": "**1.** Dans $ADC$ rectangle en $A$ : $\\tan\\dfrac a2=\\dfrac{AD}{AC}=\\dfrac5{12}$.\n\n**2.** Duplication : $\\tan a=\\dfrac{2\\times\\frac5{12}}{1-\\frac{25}{144}}=\\dfrac{\\frac56}{\\frac{119}{144}}=\\dfrac56\\times\\dfrac{144}{119}=\\dfrac{720}{714}=\\dfrac{120}{119}$.\n\n**3.** Dans $ABC$ : $\\tan a=\\dfrac{AB}{AC}$, donc $AB=12\\times\\dfrac{120}{119}=\\dfrac{1440}{119}\\approx 12{,}10$ cm.\n\n**4.** $BD=AB-AD=\\dfrac{1440}{119}-5=\\dfrac{1440-595}{119}=\\dfrac{845}{119}\\approx 7{,}10$ cm."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En utilisant $\\tan\\dfrac\\pi4=1$ et la formule de duplication, calculer la valeur exacte de $\\tan\\dfrac\\pi8$.",
+          "solution_markdown": "**1.** Posons $t=\\tan\\dfrac\\pi8$. Comme $\\dfrac\\pi4=2\\times\\dfrac\\pi8$, la duplication donne $\\dfrac{2t}{1-t^2}=1$.\n\n**2.** On multiplie par $1-t^2$ (non nul) : $2t=1-t^2$, soit $t^2+2t-1=0$.\n\n**3.** Discriminant : $\\Delta=2^2-4\\times1\\times(-1)=8$, donc $t=\\dfrac{-2\\pm2\\sqrt2}{2}=-1\\pm\\sqrt2$.\n\n**4.** L'angle $\\dfrac\\pi8$ est aigu : sa tangente est positive. On retient $t=\\sqrt2-1$.\n\n**5.** Contrôle : $\\sqrt2-1\\approx0{,}414$ et $\\tan 22{,}5^\\circ\\approx0{,}414$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule de duplication $\\tan2\\theta=\\dfrac{2\\tan\\theta}{1-\\tan^2\\theta}$ se redémontre en divisant $\\sin2\\theta/\\cos2\\theta$ par $\\cos^2\\theta$.",
+        "Une bissectrice coupe un angle $a$ en deux angles de mesure $\\dfrac a2$ : c'est ce qui te donne la tangente de la moitié.",
+        "La même grandeur $\\tan a$ s'écrit de deux façons (grand triangle avec l'inconnue, duplication) : tu les égales.",
+        "Fais un schéma et marque l'angle avant de choisir « opposé » et « adjacent ».",
+        "Au Probatoire C, ce schéma (petit triangle, duplication, équation) est classique et vaut souvent 2 à 3 points sur une question de géométrie."
+      ]
+    }
+  ]
 }

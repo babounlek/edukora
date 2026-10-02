@@ -1,29 +1,153 @@
 {
-  "cours_id": "cours-justifier-repere-orthonorme-p1c-2001",
-  "meta": {
-    "titre": "Justifier qu'un repère de l'espace est orthonormé",
-    "matiere": "Mathématiques",
-    "pays": "cm",
-    "niveau": "1ere",
-    "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
-    "savoir_officiel": {
-      "classe": "1ere",
-      "serie_label": "C-E",
-      "module_numero": "24",
-      "savoir_numero": "II"
+    "cours_id": "cours-justifier-repere-orthonorme-p1c-2001",
+    "meta": {
+        "titre": "Justifier qu'un repère de l'espace est orthonormé",
+        "matiere": "Mathématiques",
+        "pays": "cm",
+        "niveau": "1ere",
+        "serie": "C, E",
+        "sous_theme": "Géométrie dans l'espace",
+        "duree_estimee_min": 25,
+        "tags": [
+            "repère orthonormé",
+            "vecteurs unitaires",
+            "orthogonalité",
+            "produit scalaire",
+            "cube"
+        ],
+        "savoir_officiel": {
+            "classe": "1ere",
+            "serie_label": "C-E",
+            "module_numero": "24",
+            "savoir_numero": "II"
+        },
+        "statut": "brouillon"
     },
-    "statut": "brouillon"
-  },
-  "source": {
-    "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
-    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
-    "exercice_numero": "3",
-    "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex3-qa2-2",
-    "rappels_lies": [],
-    "correction_id": null
-  },
-  "sections": []
+    "source": {
+        "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
+        "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
+        "exercice_numero": "3",
+        "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex3-qa2-2",
+        "rappels_lies": [],
+        "correction_id": null
+    },
+    "sections": [
+        {
+            "type": "accroche",
+            "contenu_markdown": "Avant de calculer des distances ou des produits scalaires avec de simples formules en coordonnées, il faut s'assurer que le repère s'y prête. Un repère qui mesure les longueurs de façon uniforme sur les trois axes et dont les axes sont perpendiculaires est dit orthonormé, et c'est le seul dans lequel $\\sqrt{x^2+y^2+z^2}$ donne la distance à l'origine. Ce cours t'apprend à démontrer qu'un repère de l'espace est orthonormé, par exemple à partir des arêtes d'un cube."
+        },
+        {
+            "type": "prerequis",
+            "items": [
+                "La norme d'un vecteur et le produit scalaire dans l'espace",
+                "Les propriétés d'un cube : arêtes de même longueur, faces carrées",
+                "Un vecteur unitaire est un vecteur de norme $1$",
+                "Deux vecteurs sont orthogonaux si et seulement si leur produit scalaire est nul"
+            ]
+        },
+        {
+            "type": "regle",
+            "titre": "Démontrer qu'un repère de l'espace est orthonormé",
+            "contenu_markdown": "Un repère $(O\\,;\\,\\vec{i},\\vec{j},\\vec{k})$ de l'espace est **orthonormé** lorsque deux conditions sont réunies :\n\n1. les trois vecteurs sont **unitaires** : $\\left\\|\\vec{i}\\right\\|=\\left\\|\\vec{j}\\right\\|=\\left\\|\\vec{k}\\right\\|=1$ ;\n2. les trois vecteurs sont **deux à deux orthogonaux** : $\\vec{i}\\cdot\\vec{j}=\\vec{i}\\cdot\\vec{k}=\\vec{j}\\cdot\\vec{k}=0$.\n\nIl faut vérifier **les trois normes et les trois produits scalaires**, soit six vérifications.\n\nIl reste à s'assurer que $(\\vec{i},\\vec{j},\\vec{k})$ est bien une base, c'est-à-dire que les trois vecteurs ne sont pas coplanaires. C'est automatique : si $\\alpha\\vec{i}+\\beta\\vec{j}+\\gamma\\vec{k}=\\vec{0}$, le produit scalaire par $\\vec{i}$ donne $\\alpha\\left\\|\\vec{i}\\right\\|^2=0$, donc $\\alpha=0$, et de même $\\beta=\\gamma=0$.\n\nDeux outils selon les données de l'énoncé :\n\n- **par la géométrie** (cube, pavé) : les longueurs des arêtes donnent les normes, les faces carrées ou rectangulaires donnent les angles droits ;\n- **par les coordonnées** dans un repère orthonormé connu : $\\left\\|\\vec{u}\\right\\|^2=x^2+y^2+z^2$ et $\\vec{u}\\cdot\\vec{v}=xx'+yy'+zz'$.",
+            "formule_principale": "\\left\\|\\vec{i}\\right\\|=\\left\\|\\vec{j}\\right\\|=\\left\\|\\vec{k}\\right\\|=1\\quad\\text{et}\\quad \\vec{i}\\cdot\\vec{j}=\\vec{i}\\cdot\\vec{k}=\\vec{j}\\cdot\\vec{k}=0",
+            "variantes": []
+        },
+        {
+            "type": "exemple_resolu",
+            "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$. On pose $\\overrightarrow{AB}=\\vec{i}$, $\\overrightarrow{AD}=\\vec{j}$ et $\\overrightarrow{AE}=\\vec{k}$. Démontrer que $(A\\,;\\,\\vec{i},\\vec{j},\\vec{k})$ est un repère orthonormé de l'espace.",
+            "epreuve_source": true,
+            "etapes": [
+                {
+                    "numero": 1,
+                    "action": "Annoncer ce qu'il faut démontrer",
+                    "justification": "Un repère est orthonormé si ses vecteurs sont unitaires et deux à deux orthogonaux.",
+                    "resultat_markdown": "Il y a trois normes et trois produits scalaires à vérifier."
+                },
+                {
+                    "numero": 2,
+                    "action": "Vérifier que les vecteurs sont unitaires",
+                    "justification": "$[AB]$, $[AD]$ et $[AE]$ sont trois arêtes du cube, donc de même longueur $1$.",
+                    "resultat_markdown": "$\\left\\|\\vec{i}\\right\\|=AB=1$, $\\left\\|\\vec{j}\\right\\|=AD=1$, $\\left\\|\\vec{k}\\right\\|=AE=1$."
+                },
+                {
+                    "numero": 3,
+                    "action": "Orthogonalité de $\\vec{i}$ et $\\vec{j}$",
+                    "justification": "$ABCD$ est un carré, donc l'angle en $A$ est droit.",
+                    "resultat_markdown": "$(AB)\\perp(AD)$, donc $\\vec{i}\\cdot\\vec{j}=0$."
+                },
+                {
+                    "numero": 4,
+                    "action": "Orthogonalité de $\\vec{i}$ et $\\vec{k}$",
+                    "justification": "$ABFE$ est un carré, donc l'angle en $A$ est droit.",
+                    "resultat_markdown": "$(AB)\\perp(AE)$, donc $\\vec{i}\\cdot\\vec{k}=0$."
+                },
+                {
+                    "numero": 5,
+                    "action": "Orthogonalité de $\\vec{j}$ et $\\vec{k}$",
+                    "justification": "$ADHE$ est un carré, donc l'angle en $A$ est droit.",
+                    "resultat_markdown": "$(AD)\\perp(AE)$, donc $\\vec{j}\\cdot\\vec{k}=0$."
+                },
+                {
+                    "numero": 6,
+                    "action": "S'assurer que c'est une base",
+                    "justification": "Trois vecteurs non nuls deux à deux orthogonaux ne sont pas coplanaires (si $\\alpha\\vec{i}+\\beta\\vec{j}+\\gamma\\vec{k}=\\vec{0}$, le produit scalaire par chacun force $\\alpha=\\beta=\\gamma=0$).",
+                    "resultat_markdown": "$(\\vec{i},\\vec{j},\\vec{k})$ est une base de l'espace."
+                }
+            ],
+            "conclusion_markdown": "$(A\\,;\\,\\vec{i},\\vec{j},\\vec{k})$ est un repère orthonormé de l'espace : les huit sommets du cube ont des coordonnées formées de $0$ et de $1$."
+        },
+        {
+            "type": "erreurs_classiques",
+            "items": [
+                {
+                    "erreur_markdown": "Ne vérifier que l'orthogonalité : « les arêtes sont perpendiculaires, donc le repère est orthonormé ».",
+                    "pourquoi_faux": "Dans un cube d'arête $2$, les vecteurs $\\overrightarrow{AB}$, $\\overrightarrow{AD}$, $\\overrightarrow{AE}$ sont bien orthogonaux, mais leur norme vaut $2$. Le repère est alors orthogonal, **pas** orthonormé : les distances calculées avec $\\sqrt{x^2+y^2+z^2}$ seraient fausses. C'est précisément pourquoi l'énoncé impose $AB=1$.",
+                    "correction_markdown": "Écris explicitement les deux propriétés : « unitaires » ET « deux à deux orthogonaux »."
+                },
+                {
+                    "erreur_markdown": "Vérifier seulement deux couples sur trois, en pensant que le troisième « se déduit ».",
+                    "pourquoi_faux": "L'orthogonalité de $\\vec{i}\\perp\\vec{j}$ et de $\\vec{i}\\perp\\vec{k}$ ne dit rien sur $\\vec{j}$ et $\\vec{k}$. Deux vecteurs peuvent être perpendiculaires à un même troisième sans être perpendiculaires entre eux (ils sont alors dans un même plan).",
+                    "correction_markdown": "Dresse la liste des trois couples $(\\vec{i},\\vec{j})$, $(\\vec{i},\\vec{k})$, $(\\vec{j},\\vec{k})$ et coche-les un à un."
+                },
+                {
+                    "erreur_markdown": "Pour $\\vec{u}\\left(\\dfrac23\\,;\\,\\dfrac23\\,;\\,\\dfrac13\\right)$, écrire $\\left\\|\\vec{u}\\right\\|=\\dfrac23+\\dfrac23+\\dfrac13=\\dfrac53$.",
+                    "pourquoi_faux": "La norme au carré est la somme des **carrés** des coordonnées : $\\dfrac49+\\dfrac49+\\dfrac19=1$. Oublier de mettre au carré donne $\\dfrac53\\neq1$ et fait conclure à tort que $\\vec{u}$ n'est pas unitaire.",
+                    "correction_markdown": "Calcule d'abord $\\left\\|\\vec{u}\\right\\|^2=x^2+y^2+z^2$. Comparer ce nombre à $1$ évite la racine carrée."
+                }
+            ]
+        },
+        {
+            "type": "exercices_application",
+            "items": [
+                {
+                    "numero": 1,
+                    "difficulte": "facile",
+                    "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $3\\ \\text{cm}$. On pose $\\vec{i}=\\dfrac13\\overrightarrow{AB}$, $\\vec{j}=\\dfrac13\\overrightarrow{AD}$ et $\\vec{k}=\\dfrac13\\overrightarrow{AE}$. Montrer que $(A\\,;\\,\\vec{i},\\vec{j},\\vec{k})$ est un repère orthonormé.",
+                    "solution_markdown": "Normes : $\\left\\|\\vec{i}\\right\\|=\\dfrac13AB=\\dfrac33=1$ et de même $\\left\\|\\vec{j}\\right\\|=\\dfrac13AD=1$, $\\left\\|\\vec{k}\\right\\|=\\dfrac13AE=1$.\n\nOrthogonalité : $\\vec{i}$, $\\vec{j}$, $\\vec{k}$ sont colinéaires à $\\overrightarrow{AB}$, $\\overrightarrow{AD}$, $\\overrightarrow{AE}$, et ces arêtes sont deux à deux perpendiculaires (les faces $ABCD$, $ABFE$, $ADHE$ sont des carrés). Donc $\\vec{i}\\cdot\\vec{j}=\\dfrac19\\overrightarrow{AB}\\cdot\\overrightarrow{AD}=0$, et de même pour les deux autres couples.\n\nLes trois vecteurs sont unitaires et deux à deux orthogonaux : le repère est orthonormé."
+                },
+                {
+                    "numero": 2,
+                    "difficulte": "moyen",
+                    "enonce_markdown": "Dans un repère orthonormé $(O\\,;\\,\\vec{\\imath},\\vec{\\jmath},\\vec{k})$, on considère $\\vec{u}\\left(\\dfrac23\\,;\\,\\dfrac23\\,;\\,\\dfrac13\\right)$, $\\vec{v}\\left(-\\dfrac23\\,;\\,\\dfrac13\\,;\\,\\dfrac23\\right)$ et $\\vec{w}\\left(\\dfrac13\\,;\\,-\\dfrac23\\,;\\,\\dfrac23\\right)$. Montrer que $(O\\,;\\,\\vec{u},\\vec{v},\\vec{w})$ est un repère orthonormé.",
+                    "solution_markdown": "Normes au carré :\n\n$\\left\\|\\vec{u}\\right\\|^2=\\dfrac49+\\dfrac49+\\dfrac19=\\dfrac99=1$ ; $\\left\\|\\vec{v}\\right\\|^2=\\dfrac49+\\dfrac19+\\dfrac49=1$ ; $\\left\\|\\vec{w}\\right\\|^2=\\dfrac19+\\dfrac49+\\dfrac49=1$.\n\nProduits scalaires :\n\n$\\vec{u}\\cdot\\vec{v}=-\\dfrac49+\\dfrac29+\\dfrac29=0$ ; $\\vec{u}\\cdot\\vec{w}=\\dfrac29-\\dfrac49+\\dfrac29=0$ ; $\\vec{v}\\cdot\\vec{w}=-\\dfrac29-\\dfrac29+\\dfrac49=0$.\n\nLes trois vecteurs sont unitaires et deux à deux orthogonaux : $(O\\,;\\,\\vec{u},\\vec{v},\\vec{w})$ est un repère orthonormé."
+                },
+                {
+                    "numero": 3,
+                    "difficulte": "approfondissement",
+                    "enonce_markdown": "Dans un repère orthonormé, on considère $\\vec{u}\\left(x\\,;\\,\\dfrac12\\,;\\,\\dfrac12\\right)$ avec $x>0$ et $\\vec{v}\\left(-x\\,;\\,\\dfrac12\\,;\\,\\dfrac12\\right)$. Déterminer $x$ pour que $\\vec{u}$ soit unitaire, vérifier que $\\vec{u}\\perp\\vec{v}$, puis trouver $\\vec{w}\\left(0\\,;\\,y\\,;\\,z\\right)$ avec $y>0$ tel que $(\\vec{u},\\vec{v},\\vec{w})$ soit une base orthonormée.",
+                    "solution_markdown": "$\\vec{u}$ unitaire : $x^2+\\dfrac14+\\dfrac14=1$, donc $x^2=\\dfrac12$ et, comme $x>0$, $x=\\dfrac{\\sqrt2}{2}$.\n\nAlors $\\vec{v}\\left(-\\dfrac{\\sqrt2}{2}\\,;\\,\\dfrac12\\,;\\,\\dfrac12\\right)$ vérifie $\\left\\|\\vec{v}\\right\\|^2=\\dfrac12+\\dfrac14+\\dfrac14=1$, et :\n\n$\\vec{u}\\cdot\\vec{v}=-\\dfrac12+\\dfrac14+\\dfrac14=0$.\n\nPour $\\vec{w}\\left(0\\,;\\,y\\,;\\,z\\right)$ : l'orthogonalité avec $\\vec{u}$ donne $0+\\dfrac y2+\\dfrac z2=0$, donc $z=-y$. La norme donne $y^2+z^2=2y^2=1$, donc $y=\\dfrac{\\sqrt2}{2}$ (car $y>0$) et $z=-\\dfrac{\\sqrt2}{2}$.\n\nContrôle avec $\\vec{v}$ : $\\vec{v}\\cdot\\vec{w}=\\dfrac y2+\\dfrac z2=0$ ✔. Ainsi $\\vec{w}\\left(0\\,;\\,\\dfrac{\\sqrt2}{2}\\,;\\,-\\dfrac{\\sqrt2}{2}\\right)$."
+                }
+            ]
+        },
+        {
+            "type": "synthese",
+            "items_markdown": [
+                "Orthonormé veut dire deux choses : normes égales à $1$ ET orthogonalité deux à deux.",
+                "Compte les vérifications : trois normes, trois produits scalaires. Aucune ne se déduit des autres.",
+                "Dans un cube, la longueur de l'arête fixe les normes, et les faces carrées fournissent les angles droits.",
+                "En coordonnées, calcule $\\left\\|\\vec{u}\\right\\|^2=x^2+y^2+z^2$ (somme des carrés) et compare à $1$.",
+                "Au Probatoire, cette question ouvre presque toujours un exercice de géométrie dans l'espace en coordonnées. Sans repère orthonormé justifié, les formules de distance et de produit scalaire ne sont pas valables : le correcteur attend la justification."
+            ]
+        }
+    ]
 }

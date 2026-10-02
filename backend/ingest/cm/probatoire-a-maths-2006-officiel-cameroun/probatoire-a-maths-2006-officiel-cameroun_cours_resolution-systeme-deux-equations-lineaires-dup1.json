@@ -5,9 +5,14 @@
     "matiere": "Mathématiques",
     "pays": "cm",
     "serie": "A",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Équations et systèmes",
+    "duree_estimee_min": 25,
+    "tags": [
+      "système linéaire",
+      "substitution",
+      "équation du premier degré",
+      "mise en équation"
+    ],
     "savoir_officiel": null,
     "statut": "brouillon"
   },
@@ -19,5 +24,134 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une voiture transporte 20 caisses de deux sortes, les unes de 28 kg, les autres de 16 kg, pour une charge totale de 416 kg. Combien y a-t-il de caisses de chaque sorte ? Deux inconnues et deux renseignements : c'est un système. La substitution ramène ce problème à une équation du premier degré à une seule inconnue, que tu sais déjà résoudre. Tu la retrouveras dans tous les problèmes à deux inconnues : prix, effectifs, âges, mélanges."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation du premier degré $ax+b=c$",
+        "Développer et réduire une expression avec des parenthèses",
+        "Traduire un énoncé simple par une ou deux équations"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de substitution",
+      "contenu_markdown": "Un système de deux équations à deux inconnues $x$ et $y$ est un ensemble de deux conditions que $x$ et $y$ doivent vérifier **en même temps**. La méthode de substitution se déroule en quatre temps :\n\n1. **Isoler** une inconnue dans l'équation la plus simple (de préférence celle où un coefficient vaut $1$ ou $-1$).\n2. **Substituer** : remplacer cette inconnue, dans l'**autre** équation, par l'expression obtenue. Il ne reste qu'une inconnue.\n3. **Résoudre** l'équation du premier degré obtenue.\n4. **Reporter** la valeur trouvée dans l'expression de l'étape 1 pour obtenir l'autre inconnue, puis **vérifier** dans les deux équations de départ.\n\nLe couple solution s'écrit $(x\\,;\\,y)$ ou sous la forme $S=\\{(x\\,;\\,y)\\}$.",
+      "formule_principale": "y = k - x \\;\\Longrightarrow\\; \\text{on remplace } y \\text{ dans l'autre équation}",
+      "variantes": [
+        {
+          "nom": "Méthode par combinaison (addition)",
+          "quand_utiliser": "Quand deux coefficients sont égaux ou opposés, ou se ramènent à l'être par une multiplication simple",
+          "contenu_markdown": "On multiplie les équations pour rendre les coefficients d'une même inconnue opposés, puis on additionne membre à membre : cette inconnue disparaît. Pour $x+y=20$ et $28x+16y=416$, multiplier la première par $-16$ donne $-16x-16y=-320$ ; en additionnant avec la seconde, $12x=96$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $(S)$ : $\\begin{cases} 28x+16y=416 \\\\ x+y=20 \\end{cases}$, puis utiliser le résultat pour trouver le nombre $n$ de caisses de $28$ kg et le nombre $p$ de caisses de $16$ kg, sachant qu'il y a $20$ caisses pesant $416$ kg au total.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir l'équation à simplifier",
+          "justification": "L'équation $x+y=20$ a des coefficients égaux à $1$ : c'est la plus simple à manier.",
+          "resultat_markdown": "On isole $y$ : $y = 20 - x$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer dans l'autre équation",
+          "justification": "On remplace $y$ par $20-x$ dans $28x+16y=416$. Les parenthèses sont indispensables, car $16$ multiplie toute l'expression.",
+          "resultat_markdown": "$28x + 16(20-x) = 416$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer et réduire",
+          "justification": "On distribue le $16$ : $16\\times 20 = 320$ et $16\\times(-x) = -16x$. Puis on regroupe les termes en $x$.",
+          "resultat_markdown": "$28x + 320 - 16x = 416 \\;\\Longrightarrow\\; 12x + 320 = 416$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre l'équation en $x$",
+          "justification": "On soustrait $320$ aux deux membres, puis on divise par $12$.",
+          "resultat_markdown": "$12x = 416 - 320 = 96 \\;\\Longrightarrow\\; x = \\dfrac{96}{12} = 8$"
+        },
+        {
+          "numero": 5,
+          "action": "Reporter pour trouver $y$",
+          "justification": "On revient à l'expression de l'étape 1.",
+          "resultat_markdown": "$y = 20 - 8 = 12$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier dans les deux équations",
+          "justification": "Un couple n'est solution que s'il vérifie les deux équations.",
+          "resultat_markdown": "$28\\times 8 + 16\\times 12 = 224 + 192 = 416$ et $8 + 12 = 20$ : les deux sont exactes."
+        },
+        {
+          "numero": 7,
+          "action": "Revenir au problème des caisses",
+          "justification": "Le nombre total de caisses donne $n+p=20$ et la masse totale donne $28n+16p=416$ : $n$ et $p$ vérifient donc le même système $(S)$, avec $n$ à la place de $x$ et $p$ à la place de $y$. Il suffit de repérer cette correspondance, sans tout recalculer.",
+          "resultat_markdown": "$n = 8$ et $p = 12$"
+        }
+      ],
+      "conclusion_markdown": "Le système a pour solution $(x\\,;\\,y)=(8\\,;\\,12)$. Le chargement comprend $8$ caisses de $28$ kg et $12$ caisses de $16$ kg."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Remplacer $y$ dans la **même** équation que celle qui a servi à l'isoler : $x + (20-x) = 20$, d'où $20=20$.",
+          "pourquoi_faux": "On obtient une égalité toujours vraie qui ne contient plus aucune information. L'équation d'où vient l'expression de $y$ a déjà été « utilisée » : on ne peut pas lui redemander quoi que ce soit.",
+          "correction_markdown": "Isole dans une équation, substitue **toujours dans l'autre**."
+        },
+        {
+          "erreur_markdown": "Écrire $28x + 16\\times 20 - x = 416$ en oubliant les parenthèses.",
+          "pourquoi_faux": "Le $16$ multiplie $20-x$ en entier, donc aussi le $-x$. Sans parenthèses, le terme devient $-x$ au lieu de $-16x$ et le résultat final est faux.",
+          "correction_markdown": "Écris d'abord $16(20-x)$, puis développe : $16\\times 20 - 16x = 320 - 16x$."
+        },
+        {
+          "erreur_markdown": "S'arrêter après avoir trouvé $x=8$ et donner $S=\\{8\\}$.",
+          "pourquoi_faux": "Un système à deux inconnues demande **deux** valeurs. La solution est un couple, pas un nombre.",
+          "correction_markdown": "Reporte $x=8$ dans $y=20-x$ pour obtenir $y=12$, puis écris le couple $(8\\,;\\,12)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre par substitution : $\\begin{cases} x+2y=7 \\\\ 3x-y=7 \\end{cases}$",
+          "solution_markdown": "**1.** On isole $x$ dans la première équation : $x = 7-2y$.\n\n**2.** On substitue dans la seconde : $3(7-2y)-y=7$.\n\n**3.** On développe : $21-6y-y=7$, soit $21-7y=7$.\n\n**4.** Donc $-7y = 7-21=-14$ et $y=2$.\n\n**5.** On reporte : $x = 7-2\\times 2 = 3$.\n\n**6.** Vérification : $3+2\\times 2=7$ et $3\\times 3-2=7$. Donc $S=\\{(3\\,;\\,2)\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Au marché, un cahier et deux stylos coûtent $1\\,100$ F ; trois cahiers et un stylo coûtent $1\\,300$ F. Quel est le prix d'un cahier et celui d'un stylo ?",
+          "solution_markdown": "**Mise en équation.** Soit $c$ le prix d'un cahier et $s$ celui d'un stylo, en francs. On a $c+2s=1100$ et $3c+s=1300$.\n\n**1.** On isole $c$ dans la première : $c = 1100-2s$.\n\n**2.** On substitue dans la seconde : $3(1100-2s)+s=1300$.\n\n**3.** On développe : $3300-6s+s=1300$, soit $3300-5s=1300$.\n\n**4.** Donc $5s = 2000$ et $s=400$.\n\n**5.** On reporte : $c = 1100-2\\times 400 = 300$.\n\n**6.** Vérification : $300+2\\times 400=1100$ et $3\\times 300+400=1300$. Un cahier coûte $300$ F, un stylo $400$ F."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre par substitution chacun des systèmes suivants et interpréter le résultat :\n\n**a)** $\\begin{cases} x+2y=3 \\\\ 2x+4y=7 \\end{cases}$ $\\qquad$ **b)** $\\begin{cases} x+2y=3 \\\\ 2x+4y=6 \\end{cases}$",
+          "solution_markdown": "**a)** On isole $x=3-2y$ puis on substitue dans la seconde équation : $2(3-2y)+4y=7$, soit $6-4y+4y=7$, donc $6=7$. Cette égalité est fausse quelle que soit la valeur de $y$ : le système n'a **aucune solution**, $S=\\varnothing$. Géométriquement, les deux droites $x+2y=3$ et $2x+4y=7$ sont parallèles et distinctes.\n\n**b)** Même début : $2(3-2y)+4y=6$ donne $6=6$, égalité toujours vraie. Toute valeur de $y$ convient, avec $x=3-2y$ : le système a une **infinité de solutions**, $S=\\{(3-2y\\,;\\,y),\\ y\\in\\mathbb{R}\\}$. Les deux équations décrivent la même droite.\n\nConclusion : quand les inconnues disparaissent, on lit le verdict sur ce qui reste (fausse : pas de solution ; vraie : infinité)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour résoudre un système par substitution, tu isoles une inconnue dans une équation et tu la remplaces **dans l'autre**.",
+        "Mets des parenthèses autour de l'expression que tu substitues : elles te protègent des erreurs de signe.",
+        "La solution est un couple : tu dois trouver les deux inconnues, puis vérifier dans les deux équations.",
+        "Si un système a déjà été résolu sous d'autres lettres, repère la correspondance entre les inconnues avant de recommencer.",
+        "Au Probatoire A, ce type de système ouvre souvent un problème de mise en équation (caisses, prix, effectifs) : on te demande d'abord de résoudre, puis d'interpréter dans le contexte."
+      ]
+    }
+  ]
 }

@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Solides de l'espace et volumes",
+    "duree_estimee_min": 30,
+    "tags": [
+      "section plane",
+      "tétraèdre",
+      "volume",
+      "pyramide",
+      "hauteur"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,122 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un plan qui traverse une pyramide la partage en deux morceaux. Pour un fabricant de toitures ou un architecte, la question est concrète : quelle forme ont ces morceaux et quel volume de matériau représentent-ils ? Ce cours t'apprend à nommer un solide à partir de ses sommets et à calculer son volume, en choisissant la face de base qui rend le calcul le plus simple."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Pyramide régulière : base, sommet, hauteur",
+        "Théorème de Pythagore et aire d'un triangle",
+        "Droite perpendiculaire à un plan",
+        "Volume d'une pyramide : un tiers de l'aire de la base fois la hauteur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Nommer le solide, puis calculer son volume",
+      "contenu_markdown": "**Nature du solide.** On énumère ses sommets. Quatre sommets non coplanaires définissent un **tétraèdre** : le solide a quatre faces triangulaires. Pour montrer que quatre points ne sont pas coplanaires, il suffit qu'un des quatre soit hors du plan des trois autres.\n\n**Volume.** Le volume d'un tétraèdre (comme de toute pyramide) vaut\n$$V=\\dfrac{1}{3}\\times\\mathcal{B}\\times h$$\noù $\\mathcal{B}$ est l'aire d'une face prise pour base et $h$ la hauteur issue du sommet opposé. On choisit la base dont la hauteur associée est connue ou facile à calculer, par exemple une face contenue dans un plan perpendiculaire à une arête donnée.",
+      "formule_principale": "V=\\dfrac{1}{3}\\times\\mathcal{B}\\times h"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La pyramide régulière $ABCDE$ a pour base le carré $ABCD$ de côté $4$ cm et pour hauteur $(EO)$, où $O$ est le centre du carré ; ses faces latérales sont des triangles équilatéraux. Déterminer la nature et le volume du solide $DBCE$ obtenu en sectionnant la pyramide par le plan $(DEB)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Nommer le solide",
+          "justification": "$D$, $B$, $C$ sont dans le plan de base et $E$ n'y est pas ($(EO)$ est perpendiculaire à ce plan et $EO>0$). Les quatre points ne sont donc pas coplanaires.",
+          "resultat_markdown": "$DBCE$ est un **tétraèdre**"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la base",
+          "justification": "On prend la face $BCD$, contenue dans le plan de base, car la hauteur du tétraèdre issue de $E$ est alors $EO$, perpendiculaire à ce plan.",
+          "resultat_markdown": "Base : triangle $BCD$ ; hauteur : $EO$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'aire de la base",
+          "justification": "Le triangle $BCD$ est rectangle isocèle en $C$ avec $CB=CD=4$.",
+          "resultat_markdown": "$\\mathcal{B}=\\dfrac{1}{2}\\times4\\times4=8\\text{ cm}^2$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $EO$",
+          "justification": "La diagonale du carré vaut $AC=4\\sqrt2$, donc $OA=2\\sqrt2$. Dans le triangle $EOA$, rectangle en $O$, $EA=4$ (face équilatérale).",
+          "resultat_markdown": "$EO^2=EA^2-OA^2=16-8=8$, donc $EO=2\\sqrt2$ cm"
+        },
+        {
+          "numero": 5,
+          "action": "Appliquer la formule",
+          "justification": "On remplace $\\mathcal{B}$ et $h$.",
+          "resultat_markdown": "$V=\\dfrac{1}{3}\\times8\\times2\\sqrt2=\\dfrac{16\\sqrt2}{3}\\text{ cm}^3$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier",
+          "justification": "Le volume de la pyramide entière est $\\dfrac{1}{3}\\times16\\times2\\sqrt2=\\dfrac{32\\sqrt2}{3}$. Le plan $(DEB)$ la coupe en deux tétraèdres $ABDE$ et $CBDE$ de même volume.",
+          "resultat_markdown": "$\\dfrac{1}{2}\\times\\dfrac{32\\sqrt2}{3}=\\dfrac{16\\sqrt2}{3}$ : cohérent"
+        }
+      ],
+      "conclusion_markdown": "Le solide $DBCE$ est un tétraèdre de volume $V=\\dfrac{16\\sqrt2}{3}\\text{ cm}^3\\approx7{,}54\\text{ cm}^3$, soit la moitié de la pyramide."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $V=\\mathcal{B}\\times h$ sans le facteur $\\dfrac{1}{3}$.",
+          "pourquoi_faux": "Cette formule est celle du prisme. Une pyramide ou un tétraèdre occupe le tiers du prisme de même base et de même hauteur.",
+          "correction_markdown": "Écrire la formule complète $V=\\dfrac{1}{3}\\mathcal{B}h$ avant tout calcul numérique."
+        },
+        {
+          "erreur_markdown": "Prendre $EA=4$ comme hauteur du tétraèdre.",
+          "pourquoi_faux": "La hauteur est la distance du sommet au plan de la base, mesurée perpendiculairement. $EA$ est une arête oblique, plus longue que la hauteur.",
+          "correction_markdown": "Utiliser $EO$, perpendiculaire au plan de base, après l'avoir calculée avec Pythagore."
+        },
+        {
+          "erreur_markdown": "Conclure « c'est une pyramide » sans justifier, ou oublier de dire que les quatre sommets ne sont pas coplanaires.",
+          "pourquoi_faux": "La question demande la nature : il faut montrer que $E$ est hors du plan $(BCD)$ pour légitimer le mot tétraèdre.",
+          "correction_markdown": "Préciser que $EO\\perp$ plan de base et $EO>0$, donc $E\\notin(BCD)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un cube $ABCDEFGH$ a pour arête $3$ cm. Le plan $(ACF)$ détache du cube le solide $ABCF$. Donner sa nature et son volume, puis le volume du reste du cube.",
+          "solution_markdown": "**Étape 1.** $F$ n'est pas dans le plan $(ABC)$ (face du bas) : $A,B,C,F$ ne sont pas coplanaires, donc $ABCF$ est un tétraèdre.\n\n**Étape 2.** Base $ABC$, rectangle isocèle en $B$ : $\\mathcal{B}=\\dfrac{1}{2}\\times3\\times3=\\dfrac{9}{2}$. La hauteur issue de $F$ est $BF=3$ car $(BF)\\perp$ plan $(ABC)$.\n\n**Étape 3.** $V=\\dfrac{1}{3}\\times\\dfrac{9}{2}\\times3=\\dfrac{9}{2}=4{,}5\\text{ cm}^3$.\n\n**Étape 4.** Volume du cube : $3^3=27$. Reste : $27-4{,}5=22{,}5\\text{ cm}^3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une pyramide régulière $SABCD$ a pour base le carré $ABCD$ de côté $6$ cm, de centre $O$, et pour hauteur $SO=4$ cm. Calculer l'arête $SA$, puis la nature et le volume du solide $SABC$ obtenu par la section du plan $(SAC)$.",
+          "solution_markdown": "**Étape 1.** Diagonale : $AC=6\\sqrt2$, donc $OA=3\\sqrt2$.\n\n**Étape 2.** $SOA$ est rectangle en $O$ : $SA^2=SO^2+OA^2=16+18=34$, donc $SA=\\sqrt{34}$ cm.\n\n**Étape 3.** $S\\notin$ plan $(ABC)$, donc $SABC$ est un tétraèdre. Base $ABC$ : $\\mathcal{B}=\\dfrac{1}{2}\\times6\\times6=18$ ; hauteur $SO=4$.\n\n**Étape 4.** $V=\\dfrac{1}{3}\\times18\\times4=24\\text{ cm}^3$.\n\nVérification : la pyramide entière vaut $\\dfrac{1}{3}\\times36\\times4=48$, et $(SAC)$ la partage en deux moitiés de $24$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un cube $ABCDEFGH$ a pour arête $6$ cm. Le plan $(BDE)$ détache le tétraèdre $ABDE$. Calculer son volume, l'aire du triangle $BDE$, puis la distance du point $A$ au plan $(BDE)$.",
+          "solution_markdown": "**Étape 1.** Base $ABD$, rectangle isocèle en $A$ : $\\mathcal{B}=\\dfrac{1}{2}\\times6\\times6=18$. Hauteur issue de $E$ : $AE=6$ car $(AE)\\perp(ABD)$. $V=\\dfrac{1}{3}\\times18\\times6=36\\text{ cm}^3$.\n\n**Étape 2.** $BD=BE=DE=6\\sqrt2$ (diagonales de faces carrées), donc $BDE$ est équilatéral. Son aire est $\\dfrac{\\sqrt3}{4}\\times(6\\sqrt2)^2=\\dfrac{\\sqrt3}{4}\\times72=18\\sqrt3\\text{ cm}^2$.\n\n**Étape 3.** Le même tétraèdre se lit avec $BDE$ pour base : $V=\\dfrac{1}{3}\\times18\\sqrt3\\times d$, où $d$ est la distance de $A$ au plan $(BDE)$.\n\n**Étape 4.** On égale : $\\dfrac{1}{3}\\times18\\sqrt3\\times d=36$, donc $6\\sqrt3\\,d=36$ et $d=\\dfrac{6}{\\sqrt3}=2\\sqrt3\\text{ cm}$.\n\nVérification : $AG=6\\sqrt3$ et $d=\\dfrac{AG}{3}=2\\sqrt3$, résultat classique pour la grande diagonale du cube."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour nommer un solide, liste ses sommets : quatre sommets non coplanaires, c'est un tétraèdre.",
+        "Le volume d'une pyramide ou d'un tétraèdre est toujours $\\dfrac{1}{3}\\times\\text{aire de la base}\\times\\text{hauteur}$.",
+        "La hauteur se mesure perpendiculairement au plan de la base, jamais le long d'une arête oblique.",
+        "Choisis la base qui contient un triangle rectangle et dont la hauteur est une arête connue.",
+        "Au Probatoire, la question « nature et volume du solide » conclut souvent un problème de géométrie dans l'espace : une pyramide régulière et un plan de section reviennent presque chaque année."
+      ]
+    }
+  ]
 }

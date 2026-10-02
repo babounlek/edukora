@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-convertir-une-boucle-for-en-boucle-while (bac-ti-informatique-etude-de-cas-2017-officiel-cameroun), qui explique la meme methode de decomposition initialisation/condition/pas pour passer d'une boucle for a une boucle while.",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "boucle for",
+      "boucle while",
+      "compteur",
+      "condition d'arrêt",
+      "PHP"
+    ],
+    "sous_theme": "Structures itératives en PHP",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
@@ -17,5 +26,122 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as écrit un `for` qui additionne les nombres de 1 à 5. Le professeur te demande maintenant de faire la même chose avec un `while`. Rien ne change dans ce que le programme calcule : seule la façon de ranger les instructions change. Cette question tombe très souvent en examen blanc et au BAC, parce qu'elle vérifie que tu comprends le rôle de chaque partie d'une boucle, pas seulement que tu sais la recopier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Boucle for en PHP",
+        "Boucle while en PHP",
+        "Variables, opérateurs d'affectation (`+=`, `*=`, `++`) et opérateur modulo `%`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Décomposer une boucle for : initialisation, condition, pas",
+      "contenu_markdown": "Une boucle `for` regroupe trois parties : **initialisation** du compteur, **condition** d'arrêt (la boucle continue tant qu'elle est vraie), **pas** (la modification du compteur après chaque tour). En `while`, ces parties sont dispersées :\n- l'initialisation passe **avant** la boucle ;\n- la condition d'arrêt se met dans les parenthèses du `while` ;\n- le pas se déplace **à la fin du corps** de la boucle.\n\n```php\n$s = 0;\nfor ($i = 1; $i <= 5; $i++) {\n    $s += $i;\n}\n```\n\n```php\n$s = 0;\n$i = 1;\nwhile ($i <= 5) {\n    $s += $i;\n    $i++;\n}\n```\n\nLe pas ne s'oublie jamais : sans lui, la condition reste vraie et la boucle ne se termine jamais.",
+      "formule_principale": "for (init ; condition ; pas) { corps }   =   init ; while (condition) { corps ; pas }",
+      "variantes": [
+        {
+          "nom": "Cas du continue",
+          "quand_utiliser": "Quand le corps du for contient une instruction continue.",
+          "contenu_markdown": "Dans un `for`, `continue` saute à l'exécution du pas. Dans un `while`, le pas est à la fin du corps et `continue` le contournerait : il faut donc écrire le pas **avant** le `continue`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Convertir en `while` le script suivant et calculer la valeur finale de `$s`.\n\n```php\n$s = 0;\nfor ($i = 1; $i <= 5; $i++) {\n    $s += $i;\n}\necho $s;\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'initialisation",
+          "justification": "C'est la première partie des parenthèses du `for` : `$i = 1`.",
+          "resultat_markdown": "À placer avant le `while`."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la condition",
+          "justification": "C'est la deuxième partie : `$i <= 5`. Elle indique que la boucle tourne pour `$i` de 1 à 5 inclus.",
+          "resultat_markdown": "Elle devient la condition du `while`."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le pas",
+          "justification": "C'est la troisième partie : `$i++`. Il s'exécute après chaque tour.",
+          "resultat_markdown": "À placer en dernière instruction du corps."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire le `while`",
+          "justification": "On garde le corps `$s += $i;` inchangé et on assemble.",
+          "resultat_markdown": "```php\n$s = 0;\n$i = 1;\nwhile ($i <= 5) {\n    $s += $i;\n    $i++;\n}\necho $s;\n```"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer `$s`",
+          "justification": "On suit les valeurs tour par tour : `$s` vaut 0 au départ, puis 1, 3, 6, 10, 15.",
+          "resultat_markdown": "$0 + 1 = 1$ ; $1 + 2 = 3$ ; $3 + 3 = 6$ ; $6 + 4 = 10$ ; $10 + 5 = 15$."
+        }
+      ],
+      "conclusion_markdown": "Le `while` est équivalent au `for` et le script affiche 15, la somme des entiers de 1 à 5."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le pas dans le while",
+          "pourquoi_faux": "Le compteur ne change plus, la condition `$i <= 5` reste vraie à jamais et la boucle devient infinie.",
+          "correction_markdown": "Écrire `$i++;` à la fin du corps, juste après la dernière instruction utile."
+        },
+        {
+          "erreur_markdown": "Changer la condition en passant au while : `$i < 5` au lieu de `$i <= 5`",
+          "pourquoi_faux": "Avec `<`, le dernier tour (`$i = 5`) n'est plus exécuté : `$s` vaut 10 au lieu de 15. Une conversion ne doit changer ni le nombre de tours ni le résultat.",
+          "correction_markdown": "Recopier la condition à l'identique, symbole compris."
+        },
+        {
+          "erreur_markdown": "Oublier d'initialiser `$s` (l'accumulateur) avant la boucle",
+          "pourquoi_faux": "Dans la boucle, `$s += $i` lit la valeur de `$s` avant de l'augmenter. Sans valeur de départ, PHP signale une variable non définie et le résultat n'est pas fiable.",
+          "correction_markdown": "Initialiser `$s = 0` avant la boucle, que ce soit avec un `for` ou un `while`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir en `while` et donner l'affichage :\n\n```php\nfor ($k = 2; $k <= 10; $k += 2) {\n    echo $k . \" \";\n}\n```",
+          "solution_markdown": "```php\n$k = 2;\nwhile ($k <= 10) {\n    echo $k . \" \";\n    $k += 2;\n}\n```\n\nLe compteur prend les valeurs 2, 4, 6, 8, 10, puis 12 (12 <= 10 est faux, arrêt). Affichage : `2 4 6 8 10`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir en `while` et calculer `$p` :\n\n```php\n$p = 1;\nfor ($i = 5; $i >= 1; $i--) {\n    $p *= $i;\n}\n```",
+          "solution_markdown": "```php\n$p = 1;\n$i = 5;\nwhile ($i >= 1) {\n    $p *= $i;\n    $i--;\n}\n```\n\nLe compteur décroît de 5 à 1 : $p = 1 \\times 5 = 5$, puis $5 \\times 4 = 20$, puis $20 \\times 3 = 60$, puis $60 \\times 2 = 120$, puis $120 \\times 1 = 120$. Valeur finale : `$p = 120` (c'est $5!$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Convertir en `while` et donner l'affichage. Attention à l'instruction `continue`.\n\n```php\nfor ($i = 1; $i <= 6; $i++) {\n    if ($i % 2 == 0) {\n        continue;\n    }\n    echo $i . \" \";\n}\n```",
+          "solution_markdown": "Dans le `for`, `continue` passe directement au pas `$i++`. Dans le `while`, il faut donc incrémenter avant de faire `continue`, sinon `$i` reste à 2 et la boucle tourne sans fin.\n\n```php\n$i = 1;\nwhile ($i <= 6) {\n    if ($i % 2 == 0) {\n        $i++;\n        continue;\n    }\n    echo $i . \" \";\n    $i++;\n}\n```\n\nSuivi : `$i` = 1 (impair, affiché), 2 (pair, ignoré), 3 (affiché), 4 (ignoré), 5 (affiché), 6 (ignoré), puis 7 (7 <= 6 est faux, arrêt). Affichage : `1 3 5`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un `for` se lit en trois parties : initialisation, condition, pas. Le `while` les range en trois endroits différents.",
+        "Initialisation avant la boucle, condition dans le `while`, pas à la fin du corps.",
+        "La conversion ne change jamais le résultat : recopie la condition à l'identique.",
+        "Si le corps contient `continue`, place le pas avant lui.",
+        "Au BAC TI et en examen blanc, la conversion est notée sur la place de chaque morceau : une phrase de vérification (« le compteur est bien incrémenté ») te protège de la boucle infinie."
+      ]
+    }
+  ]
 }

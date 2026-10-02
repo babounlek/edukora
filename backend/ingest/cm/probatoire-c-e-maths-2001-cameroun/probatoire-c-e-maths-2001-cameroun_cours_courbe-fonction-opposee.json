@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Fonctions et courbes représentatives",
+    "duree_estimee_min": 30,
+    "tags": [
+      "fonction opposée",
+      "symétrie orthogonale",
+      "courbe représentative",
+      "axe des abscisses",
+      "transformation de courbe"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,129 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as sous les yeux la courbe d'une fonction $f$ et l'énoncé te demande de tracer celle de $-f$. Inutile de refaire une étude de fonction : la nouvelle courbe se déduit de l'ancienne en quelques secondes, à condition de reconnaître la transformation. Ce cours t'apprend à repérer ce lien et à l'utiliser pour construire une courbe proprement, sans calcul superflu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire des coordonnées dans un repère orthonormé",
+        "Connaître la symétrie orthogonale par rapport à une droite",
+        "Savoir ce qu'est une asymptote horizontale",
+        "Savoir lire un tableau de variations (fonction croissante, décroissante, extremum)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La courbe de $-f$ est la symétrique de celle de $f$ par rapport à l'axe $(Ox)$",
+      "contenu_markdown": "Soit $(\\mathcal{C})$ la courbe de $f$ et $(\\mathcal{C}')$ celle de $-f$ dans le même repère. Un point $M(x\\,;\\,y)$ est sur $(\\mathcal{C})$ si et seulement si $y = f(x)$, donc si et seulement si $-y = -f(x)$, c'est-à-dire si le point $M'(x\\,;\\,-y)$ est sur $(\\mathcal{C}')$.\n\n$$M(x\\,;\\,y) \\in (\\mathcal{C}) \\iff M'(x\\,;\\,-y) \\in (\\mathcal{C}')$$\n\n$M'$ a la même abscisse que $M$ et l'ordonnée opposée : c'est le **symétrique de $M$ par rapport à $(Ox)$**.\n\n**Ce qui change et ce qui ne change pas :**\n\n| Élément | Pour $f$ | Pour $-f$ |\n|---|---|---|\n| Ensemble de définition | $D$ | $D$, inchangé |\n| Zéros (points sur $(Ox)$) | $x_0$ | $x_0$, inchangés |\n| Maximum $M$ | maximum | devient un minimum $-M$ |\n| Minimum $m$ | minimum | devient un maximum $-m$ |\n| Asymptote $y = a$ | $y = a$ | $y = -a$ |\n| Asymptote verticale $x = a$ | $x = a$ | $x = a$, inchangée |\n| Sens de variation | croissante | décroissante, et réciproquement |",
+      "formule_principale": "\\mathcal{C}_{-f} = s_{(Ox)}\\left(\\mathcal{C}_f\\right)",
+      "variantes": [
+        {
+          "nom": "Autres transformations voisines",
+          "quand_utiliser": "Pour ne pas les confondre avec la symétrie d'axe (Ox)",
+          "contenu_markdown": "La courbe de $x \\mapsto f(-x)$ est la symétrique de $(\\mathcal{C})$ par rapport à l'axe $(Oy)$ (on change le signe de l'abscisse). La courbe de $x \\mapsto -f(-x)$ est la symétrique par rapport à l'origine $O$. Seul le signe placé **devant** $f$ agit sur les ordonnées."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La courbe $(\\mathcal{C})$ de $f$ (fonction rationnelle définie sur $\\mathbb{R}$) montre : une asymptote horizontale $y = 1$ en $-\\infty$ et en $+\\infty$, la courbe restant au-dessous ; deux zéros $-1$ et $2$ ; un minimum $-3$ atteint en $x = \\dfrac{1}{2}$ ; les points $(0\\,;\\,-2)$ et $(1\\,;\\,-2)$. Construire la courbe de $-f$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître la transformation",
+          "justification": "On passe de $f$ à $-f$ : les ordonnées sont changées de signe, les abscisses sont conservées.",
+          "resultat_markdown": "$(\\mathcal{C}')$ est la symétrique de $(\\mathcal{C})$ par rapport à $(Ox)$."
+        },
+        {
+          "numero": 2,
+          "action": "Transformer l'asymptote",
+          "justification": "Une droite $y = a$ devient $y = -a$.",
+          "resultat_markdown": "$y = 1$ devient $y = -1$ ; la courbe, qui était au-dessous de $y=1$, est maintenant **au-dessus** de $y=-1$."
+        },
+        {
+          "numero": 3,
+          "action": "Conserver les zéros",
+          "justification": "Un point de $(Ox)$ a pour ordonnée $0$, et $-0 = 0$ : il est à lui-même son symétrique.",
+          "resultat_markdown": "Les points $(-1\\,;\\,0)$ et $(2\\,;\\,0)$ appartiennent aux deux courbes."
+        },
+        {
+          "numero": 4,
+          "action": "Transformer l'extremum",
+          "justification": "Le point bas $\\left(\\frac{1}{2}\\,;\\,-3\\right)$ a pour symétrique le point haut de même abscisse.",
+          "resultat_markdown": "$\\left(\\dfrac{1}{2}\\,;\\,3\\right)$ : le minimum $-3$ devient un **maximum** $3$."
+        },
+        {
+          "numero": 5,
+          "action": "Transformer les points relevés",
+          "justification": "On change le signe de chaque ordonnée.",
+          "resultat_markdown": "$(0\\,;\\,-2) \\longrightarrow (0\\,;\\,2)$ et $(1\\,;\\,-2) \\longrightarrow (1\\,;\\,2)$."
+        },
+        {
+          "numero": 6,
+          "action": "Tracer",
+          "justification": "On place l'asymptote $y=-1$ en pointillés, puis les points, et on relie en suivant les variations inversées : croissante puis décroissante.",
+          "resultat_markdown": "La courbe monte depuis $-1$ à gauche (en restant au-dessus), passe par $(-1\\,;\\,0)$, $(0\\,;\\,2)$, culmine en $\\left(\\frac{1}{2}\\,;\\,3\\right)$, redescend par $(1\\,;\\,2)$ et $(2\\,;\\,0)$, puis se rapproche de $y = -1$ par au-dessus."
+        }
+      ],
+      "conclusion_markdown": "La courbe de $-f$ est la symétrique de $(\\mathcal{C})$ par rapport à l'axe des abscisses : asymptote $y=-1$, maximum $3$ en $x=\\dfrac{1}{2}$, mêmes zéros $-1$ et $2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Faire la symétrie par rapport à l'axe $(Oy)$ au lieu de $(Ox)$",
+          "pourquoi_faux": "Une symétrie d'axe $(Oy)$ change les abscisses ($x \\to -x$) et correspond à la fonction $x \\mapsto f(-x)$. Ici le signe moins est devant $f$ : il porte sur l'ordonnée, donc c'est l'axe $(Ox)$ qui est l'axe de symétrie.",
+          "correction_markdown": "Retiens : signe moins sur la valeur $f(x)$, symétrie d'axe $(Ox)$ ; signe moins sur la variable, symétrie d'axe $(Oy)$."
+        },
+        {
+          "erreur_markdown": "Oublier de changer l'asymptote horizontale, ou déplacer les zéros",
+          "pourquoi_faux": "L'asymptote $y = 1$ devient $y = -1$, puisque l'ordonnée change de signe. À l'inverse, les zéros ne bougent pas : ils sont sur l'axe de symétrie.",
+          "correction_markdown": "Transforme systématiquement un par un les éléments de la courbe en suivant le tableau de la règle."
+        },
+        {
+          "erreur_markdown": "Garder les mêmes variations pour $-f$",
+          "pourquoi_faux": "Si $f$ décroît, ses valeurs diminuent, donc celles de $-f$ augmentent. Une courbe qui descend se transforme en courbe qui monte.",
+          "correction_markdown": "Inverse toujours le sens de variation : décroissante devient croissante, minimum devient maximum."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x) = x^2 - 4$. Donner les coordonnées du sommet et les zéros de la courbe de $f$, puis ceux de la courbe de $-f$.",
+          "solution_markdown": "**Courbe de $f$.** C'est une parabole de sommet $S(0\\,;\\,-4)$, car $f(0) = -4$ et $x^2 \\geqslant 0$. Zéros : $x^2 - 4 = 0 \\iff x^2 = 4 \\iff x = -2$ ou $x = 2$.\n\n**Courbe de $-f$.** Elle est la symétrique par rapport à $(Ox)$ :\n\n- le sommet $S(0\\,;\\,-4)$ a pour image $S'(0\\,;\\,4)$ ;\n- les zéros $-2$ et $2$ sont inchangés.\n\nOn vérifie avec l'expression : $-f(x) = -x^2 + 4$, dont la valeur en $0$ est bien $4$, et qui s'annule en $\\pm 2$ puisque $-x^2 + 4 = 0 \\iff x^2 = 4$. La parabole est maintenant tournée vers le bas : c'est un maximum."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $f(x) = \\dfrac{1}{x-1}$ définie sur $\\mathbb{R}\\setminus\\{1\\}$. Établir les variations de $f$, calculer $f(0)$, $f(2)$, $f(3)$, puis donner les asymptotes, les points correspondants et les variations de la courbe de $-f$.",
+          "solution_markdown": "**Variations de $f$.** $f'(x) = -\\dfrac{1}{(x-1)^2} < 0$ pour tout $x \\neq 1$ : $f$ est strictement décroissante sur $]-\\infty\\,;\\,1[$ et sur $]1\\,;\\,+\\infty[$.\n\n**Valeurs.** $f(0) = \\dfrac{1}{-1} = -1$ ; $f(2) = \\dfrac{1}{1} = 1$ ; $f(3) = \\dfrac{1}{2}$.\n\n**Asymptotes de $f$.** $x = 1$ (verticale) et $y = 0$ (horizontale, car $\\lim_{x\\to\\pm\\infty} \\dfrac{1}{x-1} = 0$).\n\n**Courbe de $-f$, par symétrie d'axe $(Ox)$.**\n\n- Asymptote verticale : $x = 1$ **inchangée**.\n- Asymptote horizontale : $y = -0 = 0$, **inchangée** (l'axe $(Ox)$ lui-même).\n- Points : $(0\\,;\\,-1) \\to (0\\,;\\,1)$ ; $(2\\,;\\,1) \\to (2\\,;\\,-1)$ ; $\\left(3\\,;\\,\\frac{1}{2}\\right) \\to \\left(3\\,;\\,-\\frac{1}{2}\\right)$.\n- Variations : $(-f)'(x) = \\dfrac{1}{(x-1)^2} > 0$ : $-f$ est strictement **croissante** sur chaque intervalle.\n\nLa branche de droite, qui était au-dessus de $(Ox)$, passe au-dessous ; celle de gauche passe au-dessus."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f(x) = x^2 - 2x - 3$ et $(\\mathcal{C})$ sa courbe. 1) Factoriser $f(x)$ et donner le sommet de $(\\mathcal{C})$. 2) Déterminer l'équation de la tangente à $(\\mathcal{C})$ au point d'abscisse $0$. 3) En déduire, sans nouveau calcul de dérivée, l'équation de la tangente à la courbe de $-f$ au point d'abscisse $0$. 4) Déterminer les points communs de $(\\mathcal{C})$ et de la courbe de $-f$.",
+          "solution_markdown": "**1) Factorisation.** $x^2 - 2x - 3$ a pour discriminant $\\Delta = (-2)^2 - 4 \\times 1 \\times (-3) = 4 + 12 = 16$, donc deux racines $x = \\dfrac{2 - 4}{2} = -1$ et $x = \\dfrac{2 + 4}{2} = 3$. D'où $f(x) = (x+1)(x-3)$. L'abscisse du sommet est $\\dfrac{-1 + 3}{2} = 1$ et $f(1) = 1 - 2 - 3 = -4$ : sommet $S(1\\,;\\,-4)$.\n\n**2) Tangente à $(\\mathcal{C})$ en $0$.** $f'(x) = 2x - 2$, donc $f'(0) = -2$ et $f(0) = -3$ :\n\n$$y = f'(0)(x - 0) + f(0) = -2x - 3$$\n\n**3) Tangente à la courbe de $-f$ en $0$.** La symétrie d'axe $(Ox)$ transforme la tangente en tangente. Le point de contact $(0\\,;\\,-3)$ devient $(0\\,;\\,3)$ et le coefficient directeur $-2$ devient $2$ : la droite $y = -2x - 3$ a pour symétrique $y = 2x + 3$. Contrôle avec la dérivée de $-f$ : $(-f)'(0) = -f'(0) = 2$ et $-f(0) = 3$.\n\n**4) Points communs.** Un point appartient aux deux courbes si $f(x) = -f(x)$, c'est-à-dire $2f(x) = 0$, donc $f(x) = 0$ :\n\n$$x = -1 \\quad \\text{ou} \\quad x = 3$$\n\nLes points communs sont $(-1\\,;\\,0)$ et $(3\\,;\\,0)$ : ce sont exactement les points de $(\\mathcal{C})$ situés sur l'axe de symétrie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le signe moins devant $f$ change les ordonnées, pas les abscisses : la courbe de $-f$ est la symétrique de celle de $f$ par rapport à $(Ox)$.",
+        "Les zéros et l'ensemble de définition restent identiques ; les extremums échangent leur nature et leur signe.",
+        "L'asymptote horizontale $y = a$ devient $y = -a$, l'asymptote verticale ne bouge pas.",
+        "Pour tracer vite : place les points remarquables de $f$, change le signe de leurs ordonnées, puis relie en inversant les variations.",
+        "Au Probatoire, cette question de tracé de $-f$ est notée sur peu de points mais s'obtient presque sans calcul : c'est une question à ne jamais laisser blanche."
+      ]
+    }
+  ]
 }

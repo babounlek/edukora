@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Barycentres et lignes de niveau",
+    "duree_estimee_min": 25,
+    "tags": [
+      "barycentre",
+      "ligne de niveau",
+      "cercle",
+      "norme",
+      "distance constante"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un phare éclaire un cercle de mer : tous les points à la même distance du phare reçoivent la même lumière. Cette idée se retrouve en géométrie. Quand une condition fixe la distance d'un point mobile $M$ à un point fixe, le lieu de $M$ est un cercle. Les énoncés du Probatoire cachent cette distance dans une somme de vecteurs, qu'il faut d'abord simplifier avec un barycentre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Barycentre de points pondérés et réduction de $\\sum\\alpha_i\\overrightarrow{MA_i}$",
+        "Norme d'un vecteur et distance de deux points",
+        "Définition d'un cercle : ensemble des points à distance constante du centre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Distance constante : cercle",
+      "contenu_markdown": "**Définition.** L'ensemble des points $M$ tels que $\\Omega M=r$ avec $r>0$ est le cercle de centre $\\Omega$ et de rayon $r$. Si $r=0$ c'est le point $\\Omega$ seul. Une norme étant positive, $\\Omega M=r$ avec $r<0$ est impossible : l'ensemble est vide.\n\n**Réduction.** Si $\\alpha_1+\\dots+\\alpha_n=s\\neq0$ et si $G$ est le barycentre de $(A_i\\,;\\alpha_i)$, alors pour tout point $M$ :\n$$\\sum\\alpha_i\\overrightarrow{MA_i}=s\\,\\overrightarrow{MG}.$$\nUne égalité $\\left\\|\\sum\\alpha_i\\overrightarrow{MA_i}\\right\\|=k$ devient donc $|s|\\,MG=k$, soit $MG=\\dfrac{k}{|s|}$ : un cercle de centre $G$ et de rayon $\\dfrac{k}{|s|}$.",
+      "formule_principale": "\\left\\|\\sum\\alpha_i\\overrightarrow{MA_i}\\right\\|=k\\ \\Longleftrightarrow\\ MG=\\dfrac{k}{|s|}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un carré de côté $4$. $G$ est le barycentre de $\\{(A\\,;2),(B\\,;-1),(C\\,;1)\\}$. Déterminer l'ensemble $(\\mathcal C)$ des points $M$ tels que $\\left\\|2\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC}\\right\\|=\\dfrac{AD}{2}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que $G$ existe",
+          "justification": "La somme des coefficients ne doit pas être nulle.",
+          "resultat_markdown": "$2-1+1=2\\neq0$"
+        },
+        {
+          "numero": 2,
+          "action": "Réduire la somme",
+          "justification": "On introduit $G$ par Chasles dans chaque vecteur : $\\overrightarrow{MA}=\\overrightarrow{MG}+\\overrightarrow{GA}$, etc.",
+          "resultat_markdown": "$2\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC}=(2-1+1)\\overrightarrow{MG}+(2\\overrightarrow{GA}-\\overrightarrow{GB}+\\overrightarrow{GC})$"
+        },
+        {
+          "numero": 3,
+          "action": "Utiliser la définition de $G$",
+          "justification": "Par définition du barycentre, $2\\overrightarrow{GA}-\\overrightarrow{GB}+\\overrightarrow{GC}=\\vec0$.",
+          "resultat_markdown": "$2\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC}=2\\overrightarrow{MG}$"
+        },
+        {
+          "numero": 4,
+          "action": "Traduire la condition",
+          "justification": "On prend la norme et on remplace $AD$ par $4$.",
+          "resultat_markdown": "$\\|2\\overrightarrow{MG}\\|=2MG=\\dfrac{AD}{2}=2$"
+        },
+        {
+          "numero": 5,
+          "action": "Isoler $MG$",
+          "justification": "On divise par $2$.",
+          "resultat_markdown": "$MG=1=\\dfrac{AD}{4}$"
+        }
+      ],
+      "conclusion_markdown": "$(\\mathcal C)$ est le cercle de centre $G$ et de rayon $1=\\dfrac{AD}{4}$. Pour situer $G$ : $\\overrightarrow{AG}=\\dfrac{1}{2}\\left(-\\overrightarrow{AB}+\\overrightarrow{AC}\\right)=\\dfrac{1}{2}\\overrightarrow{BC}=\\dfrac{1}{2}\\overrightarrow{AD}$, donc $G$ est le milieu de $[AD]$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la valeur absolue : écrire $MG=\\dfrac{k}{s}$ avec $s<0$.",
+          "pourquoi_faux": "Une distance est positive. Avec $s=-2$ on obtiendrait un rayon négatif. La norme de $s\\overrightarrow{MG}$ vaut $|s|\\,MG$.",
+          "correction_markdown": "Écris $|s|\\,MG=k$ avant de diviser."
+        },
+        {
+          "erreur_markdown": "Appliquer la réduction avec une somme de coefficients nulle.",
+          "pourquoi_faux": "Si $s=0$, le barycentre n'existe pas. La somme $\\sum\\alpha_i\\overrightarrow{MA_i}$ est alors un vecteur constant, indépendant de $M$ : l'ensemble est vide ou tout le plan.",
+          "correction_markdown": "Calcule $s$ en premier. Si $s=0$, calcule le vecteur constant et compare sa norme à $k$."
+        },
+        {
+          "erreur_markdown": "Conclure « le lieu est un cercle » sans en donner le centre et le rayon.",
+          "pourquoi_faux": "La question demande de préciser : un cercle n'est défini que par son centre et son rayon.",
+          "correction_markdown": "Termine par : « cercle de centre $G$ et de rayon $\\dots$ »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$A$ et $B$ sont deux points distincts et $I$ est le milieu de $[AB]$. Déterminer l'ensemble des points $M$ tels que $\\left\\|\\overrightarrow{MA}+\\overrightarrow{MB}\\right\\|=6$.",
+          "solution_markdown": "**Étape 1.** $\\overrightarrow{MA}+\\overrightarrow{MB}=2\\overrightarrow{MI}$ car $I$ est le barycentre de $(A\\,;1),(B\\,;1)$.\n\n**Étape 2.** La condition donne $2MI=6$, donc $MI=3$.\n\n**Étape 3.** L'ensemble est le cercle de centre $I$ et de rayon $3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec $AB=6$, déterminer l'ensemble des points $M$ tels que $\\left\\|2\\overrightarrow{MA}+\\overrightarrow{MB}\\right\\|=6$.",
+          "solution_markdown": "**Étape 1.** Coefficients : $2+1=3\\neq0$. Soit $G$ le barycentre de $(A\\,;2),(B\\,;1)$ : $\\overrightarrow{AG}=\\dfrac{1}{3}\\overrightarrow{AB}$, donc $AG=2$.\n\n**Étape 2.** $2\\overrightarrow{MA}+\\overrightarrow{MB}=3\\overrightarrow{MG}$.\n\n**Étape 3.** $3MG=6$, donc $MG=2$.\n\n**Étape 4.** Cercle de centre $G$ (sur $[AB]$ avec $AG=2$) et de rayon $2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABC$ est un triangle rectangle isocèle en $B$ avec $BA=BC=3$. (1) Déterminer l'ensemble des points $M$ tels que $\\left\\|\\overrightarrow{MA}-2\\overrightarrow{MB}+3\\overrightarrow{MC}\\right\\|=4$. (2) Déterminer l'ensemble des points $M$ tels que $\\left\\|\\overrightarrow{MA}-2\\overrightarrow{MB}+\\overrightarrow{MC}\\right\\|=5$.",
+          "solution_markdown": "**(1)** Somme des coefficients : $1-2+3=2\\neq0$. Soit $G$ barycentre de $(A\\,;1),(B\\,;-2),(C\\,;3)$. Alors $\\overrightarrow{MA}-2\\overrightarrow{MB}+3\\overrightarrow{MC}=2\\overrightarrow{MG}$, donc $2MG=4$, soit $MG=2$ : cercle de centre $G$ et de rayon $2$.\n\n**(2)** Somme des coefficients : $1-2+1=0$. Le vecteur est constant : $\\overrightarrow{MA}-2\\overrightarrow{MB}+\\overrightarrow{MC}=(\\overrightarrow{MA}-\\overrightarrow{MB})+(\\overrightarrow{MC}-\\overrightarrow{MB})=\\overrightarrow{BA}+\\overrightarrow{BC}$.\n\n**Étape 3.** Sa norme : $BA$ et $BC$ sont orthogonaux, donc $\\|\\overrightarrow{BA}+\\overrightarrow{BC}\\|=\\sqrt{BA^2+BC^2}=\\sqrt{9+9}=3\\sqrt2\\approx4{,}24$.\n\n**Étape 4.** La condition $3\\sqrt2=5$ est fausse ($18\\neq25$) : l'ensemble est **vide**. (Il aurait été le plan entier avec la valeur $3\\sqrt2$.)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une condition « distance constante » à un point fixe donne un cercle de centre ce point.",
+        "Pour une somme de vecteurs, calcule d'abord la somme des coefficients $s$.",
+        "Si $s\\neq0$ : réduis en $s\\,\\overrightarrow{MG}$ puis $MG=\\dfrac{k}{|s|}$. Si $s=0$ : le vecteur est constant.",
+        "Termine toujours par centre et rayon.",
+        "Au Probatoire, cette question suit la construction d'un barycentre et précède l'étude d'une transformation du plan."
+      ]
+    }
+  ]
 }

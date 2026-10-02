@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 35,
+    "tags": [
+      "suite géométrique",
+      "suite auxiliaire",
+      "terme général",
+      "suite homographique",
+      "inversion de relation"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,147 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par $U_{n+1} = \\dfrac{5U_n+3}{U_n+3}$ semble impossible à exprimer en fonction de $n$ : chaque terme dépend du précédent par une fraction. L'énoncé te donne pourtant une clé, une suite auxiliaire $(V_n)$ qui, elle, est géométrique. Ce cours te montre comment exploiter cette clé en deux temps : calculer $V_n$, puis remonter à $U_n$ en inversant la relation qui lie les deux suites."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le terme général d'une suite géométrique : $V_n = V_0 \\times q^n$",
+        "Démontrer qu'une suite est géométrique en calculant $V_{n+1}$ en fonction de $V_n$",
+        "Réduire des fractions au même dénominateur",
+        "Résoudre une équation du premier degré dont l'inconnue est $U_n$ et qui contient un paramètre $V_n$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux temps : le terme général de $(V_n)$, puis l'inversion",
+      "contenu_markdown": "**Temps 1.** Si $(V_n)$ est géométrique de premier terme $V_0$ et de raison $q$ :\n\n$$V_n = V_0 \\times q^n$$\n\n**Temps 2.** On revient à la suite $(U_n)$ en **isolant $U_n$** dans la relation de définition de $V_n$. Quand cette relation est du type $V_n = \\dfrac{U_n - \\alpha}{U_n + \\beta}$, la méthode est toujours la même :\n\n1. multiplier en croix : $V_n\\,(U_n + \\beta) = U_n - \\alpha$ ;\n2. développer ;\n3. regrouper à gauche tous les termes en $U_n$, à droite les autres ;\n4. factoriser $U_n$ ;\n5. diviser par le facteur obtenu, après avoir vérifié qu'il n'est pas nul.\n\nAvec la suite de l'épreuve ($\\alpha = 3$ et $\\beta = 1$), on obtient :\n\n$$U_n = \\frac{3 + V_n}{1 - V_n}$$",
+      "formule_principale": "V_n = \\dfrac{U_n-3}{U_n+1} \\;\\Longleftrightarrow\\; U_n = \\dfrac{3+V_n}{1-V_n}",
+      "variantes": [
+        {
+          "nom": "Inverser avec une relation du type $V_n = \\dfrac{U_n+a}{U_n+b}$",
+          "quand_utiliser": "Pour toute suite auxiliaire homographique, quelles que soient les constantes",
+          "contenu_markdown": "On multiplie en croix, on regroupe, on factorise : $V_n(U_n+b) = U_n + a$ donne $U_n(V_n - 1) = a - b\\,V_n$, d'où $U_n = \\dfrac{a - b\\,V_n}{V_n - 1}$. La formule change avec les constantes, la méthode jamais : ne retiens pas le résultat, retiens les cinq étapes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On définit $U_0 = 1$ et $U_{n+1} = \\dfrac{5U_n+3}{U_n+3}$, puis $V_n = \\dfrac{U_n-3}{U_n+1}$. On admet que $(V_n)$ est géométrique de premier terme $V_0 = -1$ et de raison $\\dfrac{1}{3}$. Calculer $V_n$ puis $U_n$ en fonction de $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le terme général de $(V_n)$",
+          "justification": "Suite géométrique de premier terme $V_0$ d'indice $0$ : on applique $V_n = V_0 \\times q^n$.",
+          "resultat_markdown": "$$V_n = -1 \\times \\left(\\frac{1}{3}\\right)^n = -\\left(\\frac{1}{3}\\right)^n$$"
+        },
+        {
+          "numero": 2,
+          "action": "Multiplier en croix la relation de définition",
+          "justification": "On cherche à isoler $U_n$, qui se trouve au numérateur et au dénominateur.",
+          "resultat_markdown": "$$V_n\\,(U_n + 1) = U_n - 3$$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer le membre de gauche",
+          "justification": "Pour faire apparaître $U_n$ comme un terme de la somme.",
+          "resultat_markdown": "$$V_n\\,U_n + V_n = U_n - 3$$"
+        },
+        {
+          "numero": 4,
+          "action": "Regrouper les termes en $U_n$ à gauche",
+          "justification": "On soustrait $U_n$ et $V_n$ aux deux membres.",
+          "resultat_markdown": "$$V_n\\,U_n - U_n = -3 - V_n$$"
+        },
+        {
+          "numero": 5,
+          "action": "Factoriser $U_n$",
+          "justification": "$U_n$ est facteur commun des deux termes de gauche.",
+          "resultat_markdown": "$$U_n\\,(V_n - 1) = -(3 + V_n)$$"
+        },
+        {
+          "numero": 6,
+          "action": "Diviser par $V_n - 1$",
+          "justification": "$V_n = -\\left(\\frac{1}{3}\\right)^n < 0$ donc $V_n \\neq 1$ : la division est possible.",
+          "resultat_markdown": "$$U_n = \\frac{-(3+V_n)}{V_n - 1} = \\frac{3+V_n}{1-V_n}$$"
+        },
+        {
+          "numero": 7,
+          "action": "Remplacer $V_n$ par son expression",
+          "justification": "On exprime $U_n$ uniquement en fonction de $n$.",
+          "resultat_markdown": "$$U_n = \\frac{3 - \\left(\\frac{1}{3}\\right)^n}{1 + \\left(\\frac{1}{3}\\right)^n}$$"
+        },
+        {
+          "numero": 8,
+          "action": "Simplifier en multipliant haut et bas par $3^n$",
+          "justification": "Cela supprime les fractions imbriquées. On utilise $3^n \\times \\left(\\frac{1}{3}\\right)^n = 1$.",
+          "resultat_markdown": "$$U_n = \\frac{3 \\times 3^n - 1}{3^n + 1} = \\frac{3^{n+1} - 1}{3^n + 1}$$"
+        },
+        {
+          "numero": 9,
+          "action": "Contrôler avec les premiers termes",
+          "justification": "$U_0 = 1$ est donné, et la récurrence donne $U_1 = \\dfrac{5 \\times 1 + 3}{1 + 3} = 2$ puis $U_2 = \\dfrac{5 \\times 2 + 3}{2 + 3} = \\dfrac{13}{5}$.",
+          "resultat_markdown": "La formule donne $U_0 = \\dfrac{3-1}{1+1} = 1$, $U_1 = \\dfrac{9-1}{3+1} = 2$ et $U_2 = \\dfrac{27-1}{9+1} = \\dfrac{26}{10} = \\dfrac{13}{5}$ : tout concorde."
+        }
+      ],
+      "conclusion_markdown": "On a $V_n = -\\left(\\dfrac{1}{3}\\right)^n$ et $U_n = \\dfrac{3^{n+1}-1}{3^n+1}$ pour tout entier naturel $n$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « $V_n = -\\left(\\frac{1}{3}\\right)^n$ » et s'arrêter",
+          "pourquoi_faux": "La question demande $U_n$. La suite $(V_n)$ n'a été introduite que pour y parvenir : sans l'inversion, le travail est à moitié fait et la moitié des points est perdue.",
+          "correction_markdown": "Termine toujours par la suite de l'énoncé, ici $U_n$, et vérifie-la avec $U_0$, $U_1$."
+        },
+        {
+          "erreur_markdown": "Écrire $U_n = \\dfrac{V_n + 3}{1 + V_n}$ en inversant « au jugé »",
+          "pourquoi_faux": "On ne peut pas lire le résultat sur la définition de $V_n$. Le signe devant $V_n$ au dénominateur change tout : avec $V_0 = -1$ cette fausse formule fait diviser par $0$ pour $n=0$.",
+          "correction_markdown": "Passe par les cinq étapes de la méthode et teste le résultat sur $n = 0$ : ici $U_0$ doit valoir $1$."
+        },
+        {
+          "erreur_markdown": "Perdre un signe en factorisant : $U_n(V_n - 1) = 3 + V_n$",
+          "pourquoi_faux": "Le second membre est $-3 - V_n = -(3 + V_n)$. Oublier le signe moins donne $U_n = \\frac{3+V_n}{V_n - 1}$, qui est l'opposé du bon résultat. Pour $n=0$ elle donnerait $U_0 = \\frac{2}{-2} = -1$ au lieu de $1$.",
+          "correction_markdown": "Écris le second membre entre parenthèses dès qu'un signe moins est devant : $-(3 + V_n)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une suite géométrique $(V_n)$ a pour premier terme $V_0 = 4$ et pour raison $q = \\dfrac{1}{2}$. Donner $V_n$ en fonction de $n$, puis calculer $V_3$.",
+          "solution_markdown": "**Terme général.** Le premier terme est d'indice $0$ :\n\n$$V_n = V_0 \\times q^n = 4 \\times \\left(\\frac{1}{2}\\right)^n = \\frac{4}{2^n}$$\n\n**Calcul de $V_3$.**\n\n$$V_3 = 4 \\times \\left(\\frac{1}{2}\\right)^3 = 4 \\times \\frac{1}{8} = \\frac{1}{2}$$\n\n**Contrôle pas à pas.** $V_1 = 2$, $V_2 = 1$, $V_3 = \\dfrac{1}{2}$ : on divise bien par $2$ à chaque rang."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une suite $(U_n)$ est liée à la suite $(V_n)$ par $V_n = \\dfrac{U_n + 2}{U_n - 1}$ (avec $U_n \\neq 1$). On sait que $V_n = 2 \\times 3^n$. Exprimer $U_n$ en fonction de $n$.",
+          "solution_markdown": "**Étape 1 - multiplier en croix.**\n\n$$V_n\\,(U_n - 1) = U_n + 2$$\n\n**Étape 2 - développer.**\n\n$$V_n\\,U_n - V_n = U_n + 2$$\n\n**Étape 3 - regrouper les termes en $U_n$ à gauche.**\n\n$$V_n\\,U_n - U_n = 2 + V_n$$\n\n**Étape 4 - factoriser.**\n\n$$U_n\\,(V_n - 1) = V_n + 2$$\n\n**Étape 5 - diviser.** $V_n = 2 \\times 3^n \\geqslant 2$, donc $V_n - 1 \\geqslant 1 > 0$ : la division est possible.\n\n$$U_n = \\frac{V_n + 2}{V_n - 1}$$\n\n**Étape 6 - remplacer $V_n$.**\n\n$$U_n = \\frac{2 \\times 3^n + 2}{2 \\times 3^n - 1}$$\n\n**Contrôle avec $n = 0$.** $U_0 = \\dfrac{2+2}{2-1} = 4$. Dans la relation de départ : $\\dfrac{4+2}{4-1} = \\dfrac{6}{3} = 2 = 2 \\times 3^0$. Correct. Avec $n=1$ : $U_1 = \\dfrac{6+2}{6-1} = \\dfrac{8}{5}$ et $\\dfrac{8/5 + 2}{8/5 - 1} = \\dfrac{18/5}{3/5} = 6 = 2 \\times 3$. Correct."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On définit $U_0 = 2$ et $U_{n+1} = \\dfrac{3U_n+1}{U_n+3}$, puis $V_n = \\dfrac{U_n - 1}{U_n + 1}$. Démontrer que $(V_n)$ est géométrique, donner son premier terme et sa raison, puis exprimer $V_n$ et $U_n$ en fonction de $n$.",
+          "solution_markdown": "**Étape 1 - numérateur de $V_{n+1}$.**\n\n$$U_{n+1} - 1 = \\frac{3U_n+1}{U_n+3} - 1 = \\frac{3U_n + 1 - U_n - 3}{U_n+3} = \\frac{2U_n - 2}{U_n+3} = \\frac{2(U_n - 1)}{U_n+3}$$\n\n**Étape 2 - dénominateur de $V_{n+1}$.**\n\n$$U_{n+1} + 1 = \\frac{3U_n+1}{U_n+3} + 1 = \\frac{3U_n + 1 + U_n + 3}{U_n+3} = \\frac{4U_n + 4}{U_n+3} = \\frac{4(U_n + 1)}{U_n+3}$$\n\n**Étape 3 - quotient.**\n\n$$V_{n+1} = \\frac{2(U_n - 1)}{4(U_n+1)} = \\frac{1}{2} \\times \\frac{U_n - 1}{U_n + 1} = \\frac{1}{2}\\,V_n$$\n\nLa suite $(V_n)$ est géométrique de raison $q = \\dfrac{1}{2}$.\n\n**Étape 4 - premier terme.**\n\n$$V_0 = \\frac{2 - 1}{2 + 1} = \\frac{1}{3}$$\n\n**Étape 5 - terme général.**\n\n$$V_n = \\frac{1}{3} \\times \\left(\\frac{1}{2}\\right)^n = \\frac{1}{3 \\times 2^n}$$\n\n**Étape 6 - inversion.** De $V_n = \\dfrac{U_n - 1}{U_n+1}$ :\n\n$$V_n\\,U_n + V_n = U_n - 1 \\quad \\Longrightarrow \\quad U_n\\,(V_n - 1) = -(1 + V_n) \\quad \\Longrightarrow \\quad U_n = \\frac{1 + V_n}{1 - V_n}$$\n\n$V_n \\leqslant \\dfrac{1}{3}$ donc $1 - V_n \\neq 0$.\n\n**Étape 7 - remplacer et simplifier** en multipliant haut et bas par $3 \\times 2^n$ :\n\n$$U_n = \\frac{1 + \\frac{1}{3 \\times 2^n}}{1 - \\frac{1}{3 \\times 2^n}} = \\frac{3 \\times 2^n + 1}{3 \\times 2^n - 1}$$\n\n**Contrôle.** $U_0 = \\dfrac{3+1}{3-1} = 2$. $U_1 = \\dfrac{3 \\times 2 + 1}{2 + 3} = \\dfrac{7}{5}$ par la récurrence, et $\\dfrac{6+1}{6-1} = \\dfrac{7}{5}$ par la formule."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un exercice « suite auxiliaire » se joue en deux temps : le terme général de $(V_n)$, puis l'inversion qui ramène à $(U_n)$.",
+        "Pour inverser une relation homographique : multiplie en croix, développe, regroupe les $U_n$, factorise, divise. Ne devine jamais le résultat.",
+        "Vérifie que le facteur par lequel tu divises n'est pas nul. Ici $V_n \\neq 1$ parce que $V_n < 0$.",
+        "Teste ton $U_n$ sur $n=0$ et $n=1$ : si la formule ne redonne pas les valeurs calculées, un signe a sauté.",
+        "Au Probatoire C et E, cette suite avec fraction et suite auxiliaire tombe régulièrement : démonstration que $(V_n)$ est géométrique, puis expression de $U_n$, souvent notées sur plus de la moitié de l'exercice."
+      ]
+    }
+  ]
 }

@@ -7,7 +7,17 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-bibliotheques-standard-c-dres-jan2024 (terminale-ti-programmation-dres-en-janvier-2024-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "bibliothèques",
+      "#include",
+      "stdio.h",
+      "stdlib.h",
+      "math.h",
+      "string.h"
+    ],
+    "sous_theme": "Bibliothèques standard du langage C",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +27,119 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès ton premier programme C, tu écris `#include <stdio.h>` sans savoir pourquoi. Si tu l'oublies, `printf` provoque un avertissement ou une erreur. Le langage C est volontairement très petit : presque tout ce qu'on utilise au quotidien (afficher, lire, calculer une racine, mesurer une chaîne) vit dans des bibliothèques standard. Savoir laquelle contient quoi te fait gagner des points aux questions « citer » et « décrire le rôle de... »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure minimale d'un programme C",
+        "Notion de fonction (nom, paramètres, valeur de retour)",
+        "Rôle du compilateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les bibliothèques standard et la directive #include",
+      "contenu_markdown": "Une **bibliothèque** est un ensemble de fonctions déjà écrites et testées, que l'on réutilise au lieu de les réécrire. On la déclare au début du programme avec la directive `#include`, qui fournit au compilateur les **prototypes** des fonctions qu'elle contient. La directive n'est **pas suivie d'un point-virgule**.\n\n**Principales bibliothèques standard :**\n\n| Bibliothèque | Signification | Fonctions typiques |\n|---|---|---|\n| `stdio.h` | *standard input/output* : entrées-sorties | `printf()`, `scanf()`, `fopen()`, `fclose()` |\n| `stdlib.h` | *standard library* : utilitaires généraux | `malloc()`, `free()`, `atoi()`, `exit()` |\n| `math.h` | fonctions mathématiques | `sqrt()`, `pow()`, `sin()`, `fabs()` |\n| `string.h` | manipulation de chaînes | `strlen()`, `strcpy()`, `strcmp()`, `strcat()` |\n\n**Deux syntaxes :** `#include <stdio.h>` (chevrons) pour une bibliothèque standard ; `#include \"monfichier.h\"` (guillemets) pour un fichier d'en-tête que l'on a écrit soi-même.\n\n**Compilation avec `math.h` :** avec GCC sous Linux, les fonctions mathématiques demandent souvent l'option `-lm` : `gcc prog.c -o prog -lm`.\n\n**Citer ou décrire :** donner le nombre exact d'éléments demandé, le nom exact de chaque bibliothèque, puis sa signification et quelques fonctions typiques.\n\nSyntaxe : `#include <nom_bibliotheque.h>`"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire le rôle des bibliothèques `stdio.h` et `stdlib.h`, puis dire ce qu'affiche le programme suivant et quelles bibliothèques il utilise.\n\n```c\n#include <stdio.h>\n#include <math.h>\n#include <string.h>\n\nint main(void) {\n    double r = sqrt(49.0);\n    char mot[] = \"Douala\";\n    printf(\"%.1f %zu\\n\", r, strlen(mot));\n    return 0;\n}\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décrire `stdio.h`",
+          "justification": "On donne le nom, la signification et des fonctions typiques.",
+          "resultat_markdown": "`stdio.h` (*Standard Input Output*) fournit les entrées-sorties : `printf()` pour afficher, `scanf()` pour lire au clavier."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire `stdlib.h`",
+          "justification": "Même démarche : nom, signification, fonctions.",
+          "resultat_markdown": "`stdlib.h` (*Standard Library*) fournit des utilitaires : allocation mémoire (`malloc`, `free`), conversion (`atoi`), `exit()`."
+        },
+        {
+          "numero": 3,
+          "action": "Associer chaque fonction du programme à sa bibliothèque",
+          "justification": "Chaque fonction vient d'un fichier d'en-tête précis.",
+          "resultat_markdown": "`printf` : `stdio.h`. `sqrt` : `math.h`. `strlen` : `string.h`."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les valeurs",
+          "justification": "`sqrt(49.0)` est la racine carrée de 49, et `strlen` compte les caractères de la chaîne sans le caractère nul final.",
+          "resultat_markdown": "Comme 7 × 7 = 49, `r = 7.0`. « Douala » : D, o, u, a, l, a, soit 6 caractères."
+        },
+        {
+          "numero": 5,
+          "action": "Déterminer l'affichage",
+          "justification": "Le format `%.1f` affiche un réel avec une décimale ; `%zu` affiche une taille.",
+          "resultat_markdown": "`7.0 6`"
+        }
+      ],
+      "conclusion_markdown": "`stdio.h` gère les entrées-sorties et `stdlib.h` les utilitaires généraux ; le programme utilise trois bibliothèques (`stdio.h`, `math.h`, `string.h`) et affiche `7.0 6`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mettre un point-virgule après #include",
+          "pourquoi_faux": "La directive est traitée par le préprocesseur, ce n'est pas une instruction C. Un point-virgule en trop provoque une erreur ou un avertissement.",
+          "correction_markdown": "Écrire `#include <stdio.h>` seul sur sa ligne, sans point-virgule."
+        },
+        {
+          "erreur_markdown": "Confondre stdio.h et stdlib.h",
+          "pourquoi_faux": "`stdio.h` concerne l'affichage et la lecture ; `stdlib.h` l'allocation mémoire et les conversions. Utiliser `malloc` avec seulement `stdio.h` est une erreur.",
+          "correction_markdown": "Retenir : io = input/output (`printf`, `scanf`), lib = utilitaires (`malloc`, `exit`)."
+        },
+        {
+          "erreur_markdown": "Utiliser une fonction sans inclure sa bibliothèque",
+          "pourquoi_faux": "Sans prototype, le compilateur ne connaît pas la fonction : avertissement ou erreur de compilation selon la version.",
+          "correction_markdown": "Vérifier chaque fonction utilisée et inclure l'en-tête correspondant."
+        },
+        {
+          "erreur_markdown": "Écrire `#include <stdio>` sans `.h`",
+          "pourquoi_faux": "Le fichier d'en-tête s'appelle `stdio.h`. Sans l'extension, le compilateur ne le trouve pas.",
+          "correction_markdown": "Toujours écrire le nom complet avec `.h`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite trois bibliothèques standard du langage C avec leur rôle.",
+          "solution_markdown": "`stdio.h` : entrées-sorties (`printf`, `scanf`). `stdlib.h` : utilitaires généraux (`malloc`, `free`, `atoi`, `exit`). `math.h` : fonctions mathématiques (`sqrt`, `pow`). On pourrait aussi citer `string.h` pour les chaînes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Indique la bibliothèque à inclure pour chacune des fonctions : `printf`, `malloc`, `strcpy`, `pow`, `atoi`.",
+          "solution_markdown": "`printf` : `stdio.h`. `malloc` : `stdlib.h`. `strcpy` : `string.h`. `pow` : `math.h`. `atoi` : `stdlib.h`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris un programme C complet qui lit deux entiers `a` et `b` puis affiche la racine carrée de leur somme avec une décimale. Précise les bibliothèques et la ligne de compilation, puis donne l'affichage pour `a = 7` et `b = 9`.",
+          "solution_markdown": "```c\n#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    int a, b;\n    scanf(\"%d %d\", &a, &b);\n    printf(\"%.1f\\n\", sqrt(a + b));\n    return 0;\n}\n```\n\nBibliothèques : `stdio.h` pour `scanf` et `printf`, `math.h` pour `sqrt`. Compilation avec GCC sous Linux : `gcc prog.c -o prog -lm`.\n\nPour `a = 7` et `b = 9` : la somme vaut 16 et `sqrt(16)` vaut 4 (car 4 × 4 = 16). L'affichage est `4.0`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une bibliothèque est un ensemble de fonctions prêtes à l'emploi ; on l'inclut avec `#include`, sans point-virgule.",
+        "`stdio.h` : entrées-sorties (`printf`, `scanf`) ; `stdlib.h` : utilitaires (`malloc`, `free`, `atoi`, `exit`).",
+        "`math.h` : calculs mathématiques ; `string.h` : chaînes de caractères.",
+        "Chevrons pour une bibliothèque standard, guillemets pour ses propres fichiers.",
+        "Au BAC TI, pour « citer » ou « décrire » des bibliothèques : le nombre exact demandé, le nom exact de chacune, sa signification et quelques fonctions typiques."
+      ]
+    }
+  ]
 }

@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Droites perpendiculaires dans l'espace",
+    "duree_estimee_min": 25,
+    "tags": [
+      "droite des milieux",
+      "perpendiculaire",
+      "pyramide",
+      "parallélisme",
+      "espace"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,110 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans l'espace, montrer que deux droites sont perpendiculaires semble difficile : elles ne se rencontrent pas toujours sur un dessin plat. Pourtant, un résultat simple de la géométrie du plan vient souvent à la rescousse : la droite des milieux. Elle remplace la droite gênante par une droite parallèle plus facile à étudier. Ce cours t'apprend ce détour."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Théorème de la droite des milieux dans un triangle",
+        "Une droite perpendiculaire à un plan est orthogonale à toute droite de ce plan",
+        "Propriété : si deux droites sont parallèles, toute droite orthogonale à l'une est orthogonale à l'autre",
+        "Pyramide régulière : hauteur, base carrée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ramener la perpendiculaire à une direction connue",
+      "contenu_markdown": "**Théorème de la droite des milieux.** Dans un triangle $EBD$, si $I$ est le milieu de $[EB]$ et $J$ celui de $[ED]$, alors $(IJ)\\parallel(BD)$ et $IJ=\\dfrac{1}{2}BD$.\n\n**Stratégie.** Pour montrer que $(IJ)$ est perpendiculaire à une droite $(EO)$ :\n\n1. Remplacer $(IJ)$ par la droite parallèle $(BD)$ grâce au théorème de la droite des milieux.\n2. Montrer que $(EO)$ est orthogonale à $(BD)$ : si $(EO)$ est perpendiculaire au plan qui contient $(BD)$, c'est immédiat.\n3. Conclure : l'orthogonalité se conserve par parallélisme.",
+      "formule_principale": "(IJ)\\parallel(BD)\\ \\text{et}\\ (EO)\\perp(BD)\\ \\Longrightarrow\\ (IJ)\\perp(EO)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la pyramide régulière $ABCDE$ de base le carré $ABCD$ et de hauteur $(EO)$, $(EO)$ étant perpendiculaire en $O$ au plan $(ABC)$, $I$ et $J$ sont les milieux de $[BE]$ et $[DE]$. Démontrer que $(IJ)\\perp(EO)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le triangle utile",
+          "justification": "$I$ et $J$ sont des milieux de deux côtés du triangle $EBD$.",
+          "resultat_markdown": "Triangle $EBD$ : $I$ milieu de $[EB]$, $J$ milieu de $[ED]$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la droite des milieux",
+          "justification": "Le théorème donne le parallélisme d'une droite qui joint deux milieux avec le troisième côté.",
+          "resultat_markdown": "$(IJ)\\parallel(BD)$"
+        },
+        {
+          "numero": 3,
+          "action": "Exploiter la hauteur",
+          "justification": "$(EO)$ est perpendiculaire au plan $(ABC)$. La droite $(BD)$ est contenue dans ce plan. Une droite perpendiculaire à un plan est orthogonale à toute droite de ce plan.",
+          "resultat_markdown": "$(EO)\\perp(BD)$"
+        },
+        {
+          "numero": 4,
+          "action": "Transférer par parallélisme",
+          "justification": "$(IJ)$ et $(BD)$ ont la même direction : une droite orthogonale à $(BD)$ l'est aussi à $(IJ)$.",
+          "resultat_markdown": "$(EO)\\perp(IJ)$"
+        }
+      ],
+      "conclusion_markdown": "Les droites $(IJ)$ et $(EO)$ sont perpendiculaires. Elles sont même sécantes : $I$, $J$, $E$, $O$ sont dans le plan $(EBD)$, et $(IJ)$ coupe $(EO)$ au milieu de $[EO]$. Avec $AB=4$ cm, $BD=4\\sqrt2$ et $IJ=2\\sqrt2$ cm."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire « $(IJ)\\perp(EO)$ car sur le dessin on voit un angle droit ».",
+          "pourquoi_faux": "Une perspective déforme les angles. Seule une démonstration compte.",
+          "correction_markdown": "Passe par le parallélisme $(IJ)\\parallel(BD)$ puis par $(EO)\\perp(BD)$."
+        },
+        {
+          "erreur_markdown": "Confondre « $(EO)$ perpendiculaire au plan » avec « $(EO)$ perpendiculaire à $(IJ)$ » sans passer par le plan qui contient $(BD)$.",
+          "pourquoi_faux": "$(IJ)$ n'est pas dans le plan $(ABC)$ : $I$ et $J$ sont au-dessus de la base. On ne peut donc pas appliquer directement le théorème de la perpendiculaire au plan.",
+          "correction_markdown": "D'abord $(EO)\\perp(BD)$ car $(BD)\\subset(ABC)$, ensuite on transfère à $(IJ)$ par parallélisme."
+        },
+        {
+          "erreur_markdown": "Appliquer le théorème de la droite des milieux sans préciser les deux milieux et le triangle.",
+          "pourquoi_faux": "Le théorème est faux si l'un des points n'est pas un milieu. Le correcteur attend les hypothèses.",
+          "correction_markdown": "Écris : « dans le triangle $EBD$, $I$ est le milieu de $[EB]$ et $J$ le milieu de $[ED]$ »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le tétraèdre $ABCD$, $I$ et $J$ sont les milieux de $[AB]$ et $[AC]$. On donne $BC=10$. Que peut-on dire de $(IJ)$ et de $IJ$ ?",
+          "solution_markdown": "**Étape 1.** Dans le triangle $ABC$, $I$ milieu de $[AB]$ et $J$ milieu de $[AC]$.\n\n**Étape 2.** Théorème de la droite des milieux : $(IJ)\\parallel(BC)$.\n\n**Étape 3.** $IJ=\\dfrac{1}{2}BC=\\dfrac{1}{2}\\times10=5$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $4$ ($A,B,C,D$ en bas, $E$ au-dessus de $A$, $F$ au-dessus de $B$, $G$ au-dessus de $C$, $H$ au-dessus de $D$). $I$ est le milieu de $[EF]$ et $J$ celui de $[EH]$. Démontrer que $(IJ)\\perp(AE)$ et calculer $IJ$.",
+          "solution_markdown": "**Étape 1.** Dans le triangle $EFH$, $I$ milieu de $[EF]$, $J$ milieu de $[EH]$ : $(IJ)\\parallel(FH)$ et $IJ=\\dfrac{1}{2}FH$.\n\n**Étape 2.** $(FH)\\parallel(BD)$ car $BDHF$ est un rectangle (arêtes verticales $BF$ et $DH$ égales et parallèles). Donc $(IJ)\\parallel(BD)$.\n\n**Étape 3.** $(AE)$ est perpendiculaire au plan $(ABC)$ qui contient $(BD)$ : $(AE)\\perp(BD)$.\n\n**Étape 4.** Par parallélisme, $(AE)\\perp(IJ)$.\n\n**Étape 5.** $FH$ est la diagonale d'une face carrée de côté $4$ : $FH=4\\sqrt2$, donc $IJ=2\\sqrt2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$SABCD$ est une pyramide régulière de base le carré $ABCD$ de côté $6$. $I,K,J,L$ sont les milieux de $[SA],[SB],[SC],[SD]$. Démontrer que $(IJ)\\perp(KL)$, déterminer la nature de $IKJL$ et calculer $IJ$.",
+          "solution_markdown": "**Étape 1.** Triangle $SAC$ : $(IJ)\\parallel(AC)$ et $IJ=\\dfrac{1}{2}AC$. Triangle $SBD$ : $(KL)\\parallel(BD)$.\n\n**Étape 2.** Les diagonales du carré sont perpendiculaires : $(AC)\\perp(BD)$. Par parallélisme, $(IJ)\\perp(KL)$.\n\n**Étape 3.** Triangle $SAB$ : $IK=\\dfrac{1}{2}AB=3$ et $(IK)\\parallel(AB)$. Triangle $SBC$ : $KJ=\\dfrac{1}{2}BC=3$ et $(KJ)\\parallel(BC)$. Triangle $SCD$ : $JL=3$, $(JL)\\parallel(CD)$. Triangle $SDA$ : $LI=3$, $(LI)\\parallel(DA)$.\n\n**Étape 4.** Les quatre côtés sont égaux à $3$ et $(IK)\\perp(KJ)$ car $(AB)\\perp(BC)$. $IKJL$ est un carré de côté $3$.\n\n**Étape 5.** $IJ=\\dfrac{1}{2}AC=\\dfrac{6\\sqrt2}{2}=3\\sqrt2$. Vérification : diagonale d'un carré de côté $3$, $3\\sqrt2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand une droite joint deux milieux de côtés d'un triangle, elle est parallèle au troisième côté et mesure sa moitié.",
+        "Pour une perpendiculaire dans l'espace, remplace la droite gênante par une parallèle mieux placée.",
+        "Une droite perpendiculaire à un plan est orthogonale à toutes les droites de ce plan : utilise-le sur la hauteur d'une pyramide.",
+        "Nomme toujours le triangle dans lequel tu appliques le théorème.",
+        "Au Probatoire, cette démonstration revient dans les problèmes sur la pyramide régulière : elle précède souvent un calcul de longueur ou de volume."
+      ]
+    }
+  ]
 }

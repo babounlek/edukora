@@ -5,9 +5,15 @@
     "matiere": "Mathématiques",
     "pays": "cm",
     "serie": "A",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "série statistique groupée",
+      "caractère quantitatif",
+      "amplitude d'une classe",
+      "classe modale",
+      "effectif"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "A",
@@ -24,5 +30,134 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une enquête sur 100 fonctionnaires donne leur ancienneté en années de service, regroupée par tranches de 4 ans. Avant tout calcul de moyenne ou tout graphique, l'énoncé teste le vocabulaire : le caractère est-il quantitatif ? quelle est l'amplitude des classes ? quelle est la classe modale ? Ces trois questions rapportent des points faciles à ceux qui connaissent les définitions, et en font perdre à ceux qui les confondent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un tableau d'effectifs",
+        "Savoir soustraire deux nombres pour obtenir la largeur d'un intervalle",
+        "Connaître la notation d'un intervalle $[a\\,;\\,b[$ : $a$ inclus, $b$ exclu"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois termes à maîtriser",
+      "contenu_markdown": "**Le caractère statistique.** C'est ce qu'on observe sur chaque individu. Il est **quantitatif** quand ses valeurs sont des nombres mesurables avec lesquels une moyenne a un sens (taille, ancienneté, note). Il est **qualitatif** quand ses valeurs sont des catégories (couleur, profession, série du baccalauréat).\n\n**L'amplitude d'une classe.** Pour une classe $[a\\,;\\,b[$, c'est la différence :\n\n$$\\text{amplitude} = b - a$$\n\nLe **centre de classe** est la moyenne des deux bornes : $\\dfrac{a+b}{2}$.\n\n**La classe modale.** C'est la classe dont l'**effectif est le plus élevé**. Elle se lit en balayant la ligne des effectifs.\n\n**Cas particulier.** Si les classes n'ont pas toutes la même amplitude, on compare les **densités** $\\dfrac{\\text{effectif}}{\\text{amplitude}}$ et non les effectifs bruts : la classe modale est alors celle de densité maximale.",
+      "formule_principale": "\\text{amplitude de } [a\\,;\\,b[ = b - a \\qquad \\text{centre} = \\dfrac{a+b}{2}",
+      "variantes": [
+        {
+          "nom": "Classes d'amplitudes inégales",
+          "quand_utiliser": "Quand les tranches n'ont pas toutes la même largeur",
+          "contenu_markdown": "Une classe plus large contient mécaniquement plus d'individus. Pour comparer équitablement, on calcule la densité de chaque classe et on prend la plus grande. Si les amplitudes sont égales, comparer les effectifs et comparer les densités donnent la même classe."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une enquête sur l'ancienneté (en années de service) de 100 fonctionnaires donne : $[0,4[$ : 5 ; $[4,8[$ : 15 ; $[8,12[$ : 20 ; $[12,16[$ : 10 ; $[16,20[$ : 30 ; $[20,24[$ : 5 ; $[24,28[$ : 15. Dire si les affirmations suivantes sont vraies ou fausses : (a) le caractère est quantitatif ; (b) les classes ont une amplitude égale à 2 ; (c) la classe modale est $[16,20[$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature du caractère",
+          "justification": "L'ancienneté est un nombre d'années : on peut en faire la moyenne ou la différence, et ces opérations ont un sens concret.",
+          "resultat_markdown": "Le caractère est **quantitatif** : l'affirmation (a) est **vraie**."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'amplitude de la première classe",
+          "justification": "L'amplitude de $[a\\,;\\,b[$ est $b - a$.",
+          "resultat_markdown": "Pour $[0,4[$ : $4 - 0 = 4$."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier sur les autres classes",
+          "justification": "Il faut s'assurer que toutes les classes ont la même amplitude avant de conclure.",
+          "resultat_markdown": "$8 - 4 = 4$ ; $12 - 8 = 4$ ; $16-12 = 4$ ; $20-16 = 4$ ; $24 - 20 = 4$ ; $28 - 24 = 4$."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur l'affirmation (b)",
+          "justification": "L'amplitude commune est $4$ et non $2$.",
+          "resultat_markdown": "L'affirmation (b) est **fausse**."
+        },
+        {
+          "numero": 5,
+          "action": "Relever les effectifs dans l'ordre",
+          "justification": "On balaie la ligne une seule fois en gardant le plus grand.",
+          "resultat_markdown": "$5\\,;\\,15\\,;\\,20\\,;\\,10\\,;\\,30\\,;\\,5\\,;\\,15$. Le plus grand effectif est $30$."
+        },
+        {
+          "numero": 6,
+          "action": "Identifier la classe correspondante",
+          "justification": "L'effectif $30$ est celui de la cinquième classe.",
+          "resultat_markdown": "La classe modale est $[16,20[$ : l'affirmation (c) est **vraie**."
+        },
+        {
+          "numero": 7,
+          "action": "Contrôler l'effectif total",
+          "justification": "Cette somme doit donner le nombre de fonctionnaires interrogés.",
+          "resultat_markdown": "$5 + 15 + 20 + 10 + 30 + 5 + 15 = 100$ : le tableau est cohérent."
+        }
+      ],
+      "conclusion_markdown": "(a) vraie, (b) fausse car l'amplitude est $4$, (c) vraie car $[16,20[$ a le plus grand effectif, $30$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre l'amplitude d'une classe avec son centre ou avec le nombre de classes",
+          "pourquoi_faux": "L'amplitude est la largeur $b - a$ de l'intervalle. Le centre est la moyenne des bornes (ici $2$ pour $[0,4[$) ; le nombre de classes est $7$. Dans l'exemple, la valeur $2$ de l'affirmation (b) est précisément le centre de la première classe, d'où la fausse piste.",
+          "correction_markdown": "Calcule toujours $b - a$ sur une classe et vérifie sur une deuxième."
+        },
+        {
+          "erreur_markdown": "Prendre pour classe modale la classe du milieu ou celle qui a la plus grande borne",
+          "pourquoi_faux": "La classe modale ne dépend ni de sa position ni de ses bornes, seulement de son effectif.",
+          "correction_markdown": "Relève la ligne des effectifs, repère le maximum, puis donne la classe correspondante."
+        },
+        {
+          "erreur_markdown": "Dire qu'un caractère est qualitatif parce que ses valeurs sont regroupées en classes",
+          "pourquoi_faux": "Le regroupement en classes est une manière de présenter un caractère quantitatif continu. Ce qui compte est la nature des valeurs : des nombres mesurables ici.",
+          "correction_markdown": "Demande-toi si calculer une moyenne a un sens : si oui, quantitatif."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour chaque caractère, dire s'il est quantitatif ou qualitatif : (a) la taille des élèves d'une classe en centimètres ; (b) la couleur des yeux ; (c) le nombre de frères et sœurs ; (d) la profession des parents.",
+          "solution_markdown": "On se demande si les valeurs sont des nombres avec lesquels une moyenne a un sens.\n\n- (a) la taille en centimètres : nombres mesurables, **quantitatif** (continu, car toute valeur est possible dans un intervalle) ;\n- (b) la couleur des yeux : catégories, **qualitatif** ;\n- (c) le nombre de frères et sœurs : nombres entiers, **quantitatif** (discret) ;\n- (d) la profession : catégories, **qualitatif**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les notes de 30 élèves sont regroupées ainsi : $[0,5[$ : 4 ; $[5,10[$ : 9 ; $[10,15[$ : 12 ; $[15,20[$ : 5. Donner l'amplitude des classes, les centres de classes, la classe modale, et la fréquence en pourcentage de la classe modale.",
+          "solution_markdown": "**Amplitude.** $5 - 0 = 5$ ; $10 - 5 = 5$ ; $15 - 10 = 5$ ; $20 - 15 = 5$. Les classes ont une amplitude commune de $5$.\n\n**Centres.** $\\dfrac{0+5}{2} = 2{,}5$ ; $\\dfrac{5+10}{2} = 7{,}5$ ; $\\dfrac{10+15}{2} = 12{,}5$ ; $\\dfrac{15+20}{2} = 17{,}5$.\n\n**Contrôle de l'effectif total.** $4 + 9 + 12 + 5 = 30$.\n\n**Classe modale.** Le plus grand effectif est $12$ : la classe modale est $[10,15[$.\n\n**Fréquence.** $\\dfrac{12}{30} = \\dfrac{2}{5} = 0{,}4$, soit $40\\,\\%$ des élèves."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Les durées de trajet (en minutes) de 74 salariés sont regroupées ainsi : $[0,10[$ : 10 ; $[10,20[$ : 15 ; $[20,40[$ : 24 ; $[40,60[$ : 25. 1) Calculer les amplitudes et vérifier l'effectif total. 2) Quelle est la classe d'effectif maximal ? 3) Calculer la densité de chaque classe (effectif divisé par l'amplitude) et déterminer la classe modale. 4) Expliquer pourquoi les deux réponses diffèrent.",
+          "solution_markdown": "**1) Amplitudes.** $10 - 0 = 10$ ; $20 - 10 = 10$ ; $40 - 20 = 20$ ; $60 - 40 = 20$. Les amplitudes ne sont pas égales. Effectif total : $10 + 15 + 24 + 25 = 74$.\n\n**2) Effectif maximal.** Le plus grand effectif est $25$, pour $[40,60[$.\n\n**3) Densités.**\n\n$$\\frac{10}{10} = 1 \\qquad \\frac{15}{10} = 1{,}5 \\qquad \\frac{24}{20} = 1{,}2 \\qquad \\frac{25}{20} = 1{,}25$$\n\nLa densité maximale est $1{,}5$ : la classe modale est $[10,20[$.\n\n**4) Explication.** Les classes $[20,40[$ et $[40,60[$ sont deux fois plus larges que $[10,20[$ : elles contiennent mécaniquement plus d'individus. En divisant par l'amplitude, on compare le nombre de salariés **par minute de trajet**, ce qui est équitable. Avec des amplitudes inégales, la classe d'effectif maximal n'est donc pas forcément la classe modale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un caractère est quantitatif si une moyenne a un sens concret, qualitatif s'il décrit une catégorie.",
+        "L'amplitude d'une classe $[a\\,;\\,b[$ vaut $b - a$ ; ne la confonds pas avec le centre $\\dfrac{a+b}{2}$.",
+        "La classe modale est la classe d'effectif le plus élevé (de densité maximale si les amplitudes sont inégales).",
+        "Vérifie toujours que la somme des effectifs redonne l'effectif total annoncé.",
+        "Au Probatoire A, ces questions de vocabulaire ouvrent l'exercice de statistiques et sont des points sûrs si tu sais calculer $b - a$ et lire la ligne des effectifs."
+      ]
+    }
+  ]
 }

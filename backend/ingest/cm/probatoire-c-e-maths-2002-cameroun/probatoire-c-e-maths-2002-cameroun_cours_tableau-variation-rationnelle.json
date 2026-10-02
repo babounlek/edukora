@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "fonction rationnelle",
+      "tableau de variation",
+      "dérivée",
+      "valeur interdite",
+      "asymptote"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,127 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour tracer la courbe de $f(x)=\\dfrac{x^2-5x+10}{x-3}$, il faut savoir où elle monte, où elle descend et comment elle se comporte près de la valeur interdite $3$. Le tableau de variation résume tout cela en trois lignes. Sur une fonction rationnelle, il y a une difficulté en plus : la valeur interdite coupe le tableau en deux morceaux indépendants."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dériver un quotient et une somme : $\\left(\\dfrac{u}{v}\\right)'=\\dfrac{u'v-uv'}{v^2}$",
+        "Limites en $\\pm\\infty$ et en une valeur interdite avec le signe du dénominateur",
+        "Signe d'un produit ou d'un quotient à l'aide d'un tableau de signes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dresser le tableau de variation d'une fonction rationnelle",
+      "contenu_markdown": "Pour une fonction rationnelle $f$ de domaine $\\mathbb{R}\\setminus\\{x_0\\}$ :\n\n1. **Décomposer** si possible : $f(x)=ax+b+\\dfrac{c}{x-x_0}$. La dérivée est alors beaucoup plus simple que celle du quotient initial.\n2. **Dériver** et **factoriser** $f'$ pour lire son signe. Le dénominateur $(x-x_0)^2$ est toujours positif : le signe de $f'$ est celui du numérateur.\n3. **Étudier le signe** de $f'$ avec les racines du numérateur et la valeur interdite.\n4. **Calculer les limites** en $-\\infty$, en $+\\infty$, à gauche et à droite de $x_0$ (en regardant le signe du dénominateur).\n5. **Calculer les valeurs** de $f$ aux points où $f'$ s'annule.\n6. **Construire le tableau** : la valeur interdite devient une **double barre** qui sépare deux parties indépendantes.",
+      "formule_principale": "f(x)=ax+b+\\dfrac{c}{x-x_0}\\;\\Rightarrow\\;f'(x)=a-\\dfrac{c}{(x-x_0)^2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x)=\\dfrac{x^2-5x+10}{x-3}$ définie sur $\\mathbb{R}\\setminus\\{3\\}$. Dresser son tableau de variation.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décomposer $f$",
+          "justification": "On cherche une division euclidienne : $(x-3)(x-2)=x^2-5x+6$, donc $x^2-5x+10=(x-3)(x-2)+4$. On divise par $x-3$.",
+          "resultat_markdown": "$f(x)=x-2+\\dfrac{4}{x-3}$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver",
+          "justification": "$(x-2)'=1$ et $\\left(\\dfrac4{x-3}\\right)'=-\\dfrac{4}{(x-3)^2}$.",
+          "resultat_markdown": "$f'(x)=1-\\dfrac{4}{(x-3)^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Factoriser $f'$",
+          "justification": "On réduit au même dénominateur puis on factorise le numérateur par $a^2-b^2=(a-b)(a+b)$ : $(x-3)^2-4=(x-3-2)(x-3+2)$.",
+          "resultat_markdown": "$f'(x)=\\dfrac{(x-3)^2-4}{(x-3)^2}=\\dfrac{(x-5)(x-1)}{(x-3)^2}$"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier le signe de $f'$",
+          "justification": "Le dénominateur est positif. Le numérateur $(x-5)(x-1)$ est positif à l'extérieur des racines $1$ et $5$ et négatif entre elles.",
+          "resultat_markdown": "$f'>0$ sur $]-\\infty\\,;1[$ et sur $]5\\,;+\\infty[$ ; $f'<0$ sur $]1\\,;3[$ et sur $]3\\,;5[$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer les limites",
+          "justification": "En $\\pm\\infty$, $\\dfrac{4}{x-3}\\to0$ donc $f(x)\\sim x$. Près de $3$ : numérateur de $\\dfrac4{x-3}$ positif ; si $x\\to3^-$, $x-3<0$ donc $\\to-\\infty$ ; si $x\\to3^+$, $\\to+\\infty$.",
+          "resultat_markdown": "$\\lim_{-\\infty}f=-\\infty$, $\\lim_{+\\infty}f=+\\infty$, $\\lim_{3^-}f=-\\infty$, $\\lim_{3^+}f=+\\infty$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer les valeurs extrémales",
+          "justification": "$f(1)=\\dfrac{1-5+10}{1-3}=\\dfrac{6}{-2}=-3$ et $f(5)=\\dfrac{25-25+10}{5-3}=\\dfrac{10}{2}=5$.",
+          "resultat_markdown": "$f(1)=-3$ et $f(5)=5$"
+        },
+        {
+          "numero": 7,
+          "action": "Construire le tableau",
+          "justification": "La valeur interdite $3$ apparaît deux fois (valeur à gauche, valeur à droite) séparées par une double barre.",
+          "resultat_markdown": "Voir la conclusion"
+        }
+      ],
+      "conclusion_markdown": "$$\\begin{array}{c|ccccc||ccccc} x & -\\infty & & 1 & & 3 & 3 & & 5 & & +\\infty \\\\ \\hline f'(x) & & + & 0 & - & & & - & 0 & + & \\\\ \\hline f(x) & -\\infty & \\nearrow & -3 & \\searrow & -\\infty & +\\infty & \\searrow & 5 & \\nearrow & +\\infty \\end{array}$$\n\n$f$ est croissante sur $]-\\infty\\,;1]$ et sur $[5\\,;+\\infty[$, décroissante sur $[1\\,;3[$ et sur $]3\\,;5]$. Maximum local $-3$ en $x=1$, minimum local $5$ en $x=5$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dériver directement le quotient sans décomposer, puis se perdre dans $\\dfrac{(2x-5)(x-3)-(x^2-5x+10)}{(x-3)^2}$.",
+          "pourquoi_faux": "Ce calcul est correct mais long ; il mène à $\\dfrac{x^2-6x+5}{(x-3)^2}$ qu'il faut encore factoriser. La forme décomposée donne le résultat en deux lignes.",
+          "correction_markdown": "Si l'énoncé t'a fait décomposer $f$ à la question précédente, utilise cette forme."
+        },
+        {
+          "erreur_markdown": "Fusionner les deux morceaux du tableau : écrire « $f$ décroît sur $]1\\,;5[$ ».",
+          "pourquoi_faux": "La fonction n'est pas définie en $3$, elle saute de $-\\infty$ à $+\\infty$. Un intervalle contenant $3$ n'a aucun sens pour les variations.",
+          "correction_markdown": "Sépare toujours les deux morceaux par la double barre : $]1\\,;3[$ et $]3\\,;5[$."
+        },
+        {
+          "erreur_markdown": "Oublier le signe en $3^-$ et $3^+$ et écrire « $\\lim_{x\\to3}f=\\infty$ ».",
+          "pourquoi_faux": "À gauche de $3$, $x-3<0$ ; à droite, $x-3>0$. Les limites ont des signes opposés, ce qui change le sens de la flèche et la position de la courbe.",
+          "correction_markdown": "Pour chaque côté, regarde le signe du dénominateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dresser le tableau de variation de $g(x)=\\dfrac{2x+1}{x-1}$ sur $\\mathbb{R}\\setminus\\{1\\}$.",
+          "solution_markdown": "**1.** $g'(x)=\\dfrac{2(x-1)-(2x+1)}{(x-1)^2}=\\dfrac{2x-2-2x-1}{(x-1)^2}=\\dfrac{-3}{(x-1)^2}$.\n\n**2.** $g'<0$ partout : $g$ décroît sur $]-\\infty\\,;1[$ et sur $]1\\,;+\\infty[$.\n\n**3.** Limites : en $\\pm\\infty$, $g\\to2$. En $1^-$ : numérateur $\\to3$, dénominateur $\\to0^-$, donc $-\\infty$. En $1^+$ : $+\\infty$.\n\n$$\\begin{array}{c|ccc||ccc} x & -\\infty & & 1 & 1 & & +\\infty \\\\ \\hline g'(x) & & - & & & - & \\\\ \\hline g(x) & 2 & \\searrow & -\\infty & +\\infty & \\searrow & 2 \\end{array}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dresser le tableau de variation de $h(x)=\\dfrac{x^2+1}{x}$ sur $\\mathbb{R}^*$.",
+          "solution_markdown": "**1.** $h(x)=x+\\dfrac1x$ et $h'(x)=1-\\dfrac1{x^2}=\\dfrac{x^2-1}{x^2}=\\dfrac{(x-1)(x+1)}{x^2}$.\n\n**2.** $h'>0$ sur $]-\\infty\\,;-1[$ et $]1\\,;+\\infty[$, $h'<0$ sur $]-1\\,;0[$ et $]0\\,;1[$.\n\n**3.** $h(1)=2$, $h(-1)=-2$. Limites : $\\pm\\infty$ en $\\pm\\infty$ ; en $0^-$ : $\\dfrac1x\\to-\\infty$ ; en $0^+$ : $+\\infty$.\n\n$$\\begin{array}{c|ccccc||ccccc} x & -\\infty & & -1 & & 0 & 0 & & 1 & & +\\infty \\\\ \\hline h'(x) & & + & 0 & - & & & - & 0 & + & \\\\ \\hline h(x) & -\\infty & \\nearrow & -2 & \\searrow & -\\infty & +\\infty & \\searrow & 2 & \\nearrow & +\\infty \\end{array}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k(x)=\\dfrac{x^2-2x+2}{x-1}$. Dresser le tableau de variation, donner l'asymptote oblique et leur position relative, puis discuter selon $m$ le nombre de solutions de $k(x)=m$.",
+          "solution_markdown": "**1.** Décomposition : $x^2-2x+2=(x-1)^2+1$, donc $k(x)=x-1+\\dfrac1{x-1}$.\n\n**2.** $k'(x)=1-\\dfrac1{(x-1)^2}=\\dfrac{(x-1)^2-1}{(x-1)^2}=\\dfrac{x(x-2)}{(x-1)^2}$. Zéros $0$ et $2$ ; $k'>0$ si $x<0$ ou $x>2$, $k'<0$ sinon.\n\n**3.** $k(0)=\\dfrac{2}{-1}=-2$ et $k(2)=\\dfrac22=2$. Limites : $\\pm\\infty$ en $\\pm\\infty$, $-\\infty$ en $1^-$, $+\\infty$ en $1^+$.\n\n$$\\begin{array}{c|ccccc||ccccc} x & -\\infty & & 0 & & 1 & 1 & & 2 & & +\\infty \\\\ \\hline k'(x) & & + & 0 & - & & & - & 0 & + & \\\\ \\hline k(x) & -\\infty & \\nearrow & -2 & \\searrow & -\\infty & +\\infty & \\searrow & 2 & \\nearrow & +\\infty \\end{array}$$\n\n**4.** Asymptote oblique : $y=x-1$ car $k(x)-(x-1)=\\dfrac1{x-1}\\to0$. Position : la courbe est au-dessus si $x>1$ et en dessous si $x<1$.\n\n**5.** Discussion : $k(x)=m\\iff x^2-(2+m)x+2+m=0$ (avec $x\\neq1$), de discriminant $\\Delta=(2+m)^2-4(2+m)=(2+m)(m-2)=m^2-4$. Donc $|m|>2$ : deux solutions ; $m=\\pm2$ : une solution ; $|m|<2$ : aucune. Cela correspond aux extremums $-2$ et $2$ du tableau."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Décompose la fraction : $f(x)=ax+b+\\dfrac{c}{x-x_0}$ simplifie énormément la dérivée.",
+        "Le signe de $f'$ est celui du numérateur : le dénominateur $(x-x_0)^2$ est toujours positif.",
+        "La valeur interdite est une double barre : tu n'écris jamais une variation « à travers » elle.",
+        "Pour les limites en $x_0$, regarde séparément le signe du dénominateur à gauche et à droite.",
+        "Au Probatoire C, le tableau de variation d'une fonction rationnelle est la base du tracé de la courbe et des questions sur l'asymptote oblique : c'est un exercice de 1 à 1,5 point presque garanti."
+      ]
+    }
+  ]
 }

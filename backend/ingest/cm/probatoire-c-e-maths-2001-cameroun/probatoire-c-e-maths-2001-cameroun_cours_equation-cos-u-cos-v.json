@@ -6,9 +6,14 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Trigonométrie",
+    "duree_estimee_min": 30,
+    "tags": [
+      "équation trigonométrique",
+      "cosinus",
+      "cercle trigonométrique",
+      "intervalle"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +30,121 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un angle et son opposé ont le même cosinus : sur le cercle trigonométrique, deux points symétriques par rapport à l'axe des abscisses ont la même abscisse. C'est ce fait très simple qui permet de résoudre toute équation de la forme $\\cos u=\\cos v$. Dans un problème du Probatoire, c'est la clé qui transforme un cosinus connu en une valeur exacte d'angle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Le cercle trigonométrique et la lecture du cosinus comme abscisse",
+        "La $2\\pi$-périodicité du cosinus et sa parité : $\\cos(-v)=\\cos v$",
+        "Résoudre une équation du premier degré à coefficients fractionnaires"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Équation $\\cos u=\\cos v$",
+      "contenu_markdown": "Deux angles ont le même cosinus si et seulement s'ils sont égaux ou opposés, à un multiple de $2\\pi$ près :\n$$\\cos u=\\cos v \\iff u=v+2k\\pi \\quad\\text{ou}\\quad u=-v+2k\\pi,\\quad k\\in\\mathbb{Z}$$\nPour résoudre une équation sur un intervalle donné :\n\n1. écrire les deux familles de solutions ;\n2. dans chacune, donner à $k$ des valeurs entières successives (négatives, nulle, positives) ;\n3. **ne garder que** les valeurs appartenant à l'intervalle imposé, bornes comprises ou non selon l'énoncé.\n\nPour une équation $\\sin u=\\cos v$, on ramène à deux cosinus avec $\\sin u=\\cos\\left(\\dfrac\\pi2-u\\right)$.",
+      "formule_principale": "\\cos u=\\cos v \\iff u=v+2k\\pi \\;\\text{ ou }\\; u=-v+2k\\pi"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans l'intervalle $\\left]0\\,;\\,\\dfrac\\pi2\\right[$ l'équation $\\cos 2x=\\cos 3x$. En déduire la valeur exacte de $\\alpha$, sachant que $\\alpha$ est dans cet intervalle et que $\\cos 2\\alpha=\\cos 3\\alpha$ (cas du problème de pentagone régulier où $\\cos\\alpha=\\dfrac{\\sqrt5-1}{4}$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la première famille",
+          "justification": "On applique « $u=v+2k\\pi$ » avec $u=2x$ et $v=3x$.",
+          "resultat_markdown": "$2x=3x+2k\\pi \\iff x=-2k\\pi$"
+        },
+        {
+          "numero": 2,
+          "action": "Filtrer la première famille",
+          "justification": "Les valeurs sont des multiples de $2\\pi$ : $\\dots,-2\\pi,\\ 0,\\ 2\\pi,\\dots$ Aucune n'est dans $\\left]0\\,;\\,\\dfrac\\pi2\\right[$ (le $0$ est exclu).",
+          "resultat_markdown": "Aucune solution dans l'intervalle"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la seconde famille",
+          "justification": "On applique « $u=-v+2k\\pi$ ».",
+          "resultat_markdown": "$2x=-3x+2k\\pi \\iff 5x=2k\\pi \\iff x=\\dfrac{2k\\pi}{5}$"
+        },
+        {
+          "numero": 4,
+          "action": "Tester les valeurs de $k$",
+          "justification": "On cherche $0<\\dfrac{2k\\pi}{5}<\\dfrac\\pi2$, soit $0<\\dfrac{2k}{5}<\\dfrac12$, soit $0<k<\\dfrac54$. Le seul entier est $k=1$.",
+          "resultat_markdown": "$k=1$ donne $x=\\dfrac{2\\pi}{5}$ ; $k=0$ donne $0$ (exclu) ; $k=2$ donne $\\dfrac{4\\pi}{5}>\\dfrac\\pi2$ (trop grand)"
+        },
+        {
+          "numero": 5,
+          "action": "Conclure sur l'équation",
+          "justification": "La seule solution dans l'intervalle est $\\dfrac{2\\pi}{5}$.",
+          "resultat_markdown": "$S=\\left\\{\\dfrac{2\\pi}{5}\\right\\}$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier",
+          "justification": "Pour $x=\\dfrac{2\\pi}5$ : $2x=\\dfrac{4\\pi}5$ et $3x=\\dfrac{6\\pi}5$. Or $\\cos\\dfrac{4\\pi}5=-\\cos\\dfrac\\pi5$ et $\\cos\\dfrac{6\\pi}5=\\cos\\left(\\pi+\\dfrac\\pi5\\right)=-\\cos\\dfrac\\pi5$.",
+          "resultat_markdown": "Les deux cosinus sont égaux : la solution est valide"
+        }
+      ],
+      "conclusion_markdown": "Dans $\\left]0\\,;\\,\\dfrac\\pi2\\right[$, l'équation $\\cos2x=\\cos3x$ n'a qu'une solution, $\\dfrac{2\\pi}5$. Comme $\\alpha$ est dans cet intervalle et vérifie l'égalité, $\\alpha=\\dfrac{2\\pi}5$, soit $72^\\circ$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne garder que la famille $u=v+2k\\pi$ et conclure « pas de solution ».",
+          "pourquoi_faux": "Le cosinus est pair : $\\cos v=\\cos(-v)$. La seconde famille $u=-v+2k\\pi$ est tout aussi légitime et c'est souvent elle qui fournit les solutions.",
+          "correction_markdown": "Écris toujours les **deux** familles avant de filtrer."
+        },
+        {
+          "erreur_markdown": "Donner $x=\\dfrac{2k\\pi}5$ sans filtrer par l'intervalle.",
+          "pourquoi_faux": "L'énoncé demande les solutions dans $\\left]0\\,;\\,\\dfrac\\pi2\\right[$. Une infinité de valeurs conviennent sur $\\mathbb{R}$, une seule dans l'intervalle.",
+          "correction_markdown": "Écris l'encadrement de $x$ puis déduis celui de $k$, et énumère les entiers possibles."
+        },
+        {
+          "erreur_markdown": "Écrire $\\cos2x=\\cos3x\\iff 2x=3x$, donc $x=0$.",
+          "pourquoi_faux": "Le cosinus n'est pas injectif sur $\\mathbb{R}$ : deux angles différents peuvent avoir le même cosinus. Il ne suffit pas de « simplifier les cos ».",
+          "correction_markdown": "Applique l'équivalence avec les entiers $k$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $[0\\,;\\,2\\pi]$ : $\\cos x=\\cos\\dfrac\\pi3$.",
+          "solution_markdown": "**1.** $x=\\dfrac\\pi3+2k\\pi$ ou $x=-\\dfrac\\pi3+2k\\pi$.\n\n**2.** Première famille : $k=0$ donne $\\dfrac\\pi3\\in[0\\,;\\,2\\pi]$ ; $k=1$ donne $\\dfrac{7\\pi}3>2\\pi$ ; $k=-1$ donne un nombre négatif.\n\n**3.** Seconde famille : $k=0$ donne $-\\dfrac\\pi3<0$ ; $k=1$ donne $\\dfrac{5\\pi}3\\in[0\\,;\\,2\\pi]$ ; $k=2$ donne $\\dfrac{11\\pi}3>2\\pi$.\n\n**4.** $S=\\left\\{\\dfrac\\pi3\\,;\\,\\dfrac{5\\pi}3\\right\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $[0\\,;\\,2\\pi[$ : $\\cos2x=\\cos\\left(x+\\dfrac\\pi3\\right)$.",
+          "solution_markdown": "**Première famille.** $2x=x+\\dfrac\\pi3+2k\\pi\\iff x=\\dfrac\\pi3+2k\\pi$. Dans $[0\\,;\\,2\\pi[$, seul $k=0$ convient : $x=\\dfrac\\pi3$.\n\n**Seconde famille.** $2x=-x-\\dfrac\\pi3+2k\\pi\\iff3x=-\\dfrac\\pi3+2k\\pi\\iff x=-\\dfrac\\pi9+\\dfrac{2k\\pi}3$.\n\nOn teste : $k=0$ donne $-\\dfrac\\pi9<0$ (exclu) ; $k=1$ donne $-\\dfrac\\pi9+\\dfrac{6\\pi}9=\\dfrac{5\\pi}9$ ; $k=2$ donne $\\dfrac{11\\pi}9$ ; $k=3$ donne $\\dfrac{17\\pi}9<\\dfrac{18\\pi}9=2\\pi$ ; $k=4$ donne $\\dfrac{23\\pi}9>2\\pi$.\n\n$S=\\left\\{\\dfrac\\pi3\\,;\\,\\dfrac{5\\pi}9\\,;\\,\\dfrac{11\\pi}9\\,;\\,\\dfrac{17\\pi}9\\right\\}$.\n\nContrôle sur $\\dfrac{5\\pi}9$ : $\\cos\\dfrac{10\\pi}9=\\cos\\dfrac{8\\pi}9$ (car $\\dfrac{10\\pi}9=2\\pi-\\dfrac{8\\pi}9$) et $\\dfrac{5\\pi}9+\\dfrac{3\\pi}9=\\dfrac{8\\pi}9$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $[0\\,;\\,2\\pi[$ : $\\sin x=\\cos2x$.",
+          "solution_markdown": "**1.** On écrit $\\sin x=\\cos\\left(\\dfrac\\pi2-x\\right)$. L'équation devient $\\cos\\left(\\dfrac\\pi2-x\\right)=\\cos2x$.\n\n**2.** Première famille : $\\dfrac\\pi2-x=2x+2k\\pi\\iff3x=\\dfrac\\pi2-2k\\pi\\iff x=\\dfrac\\pi6-\\dfrac{2k\\pi}3$. Dans $[0\\,;\\,2\\pi[$ : $k=0$ donne $\\dfrac\\pi6$ ; $k=-1$ donne $\\dfrac\\pi6+\\dfrac{4\\pi}6=\\dfrac{5\\pi}6$ ; $k=-2$ donne $\\dfrac\\pi6+\\dfrac{8\\pi}6=\\dfrac{3\\pi}2$ ; $k=-3$ donne $\\dfrac{13\\pi}6>2\\pi$ ; $k=1$ donne un nombre négatif.\n\n**3.** Seconde famille : $\\dfrac\\pi2-x=-2x+2k\\pi\\iff x=-\\dfrac\\pi2+2k\\pi$. Seul $k=1$ convient : $x=\\dfrac{3\\pi}2$ (déjà trouvé).\n\n**4.** $S=\\left\\{\\dfrac\\pi6\\,;\\,\\dfrac{5\\pi}6\\,;\\,\\dfrac{3\\pi}2\\right\\}$.\n\n**5.** Contrôle : $\\sin\\dfrac\\pi6=\\dfrac12=\\cos\\dfrac\\pi3$ ; $\\sin\\dfrac{5\\pi}6=\\dfrac12=\\cos\\dfrac{5\\pi}3$ ; $\\sin\\dfrac{3\\pi}2=-1=\\cos3\\pi$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\cos u=\\cos v$ a **deux** familles de solutions : $u=v+2k\\pi$ et $u=-v+2k\\pi$.",
+        "Le cosinus n'est pas injectif : tu ne peux jamais « barrer » les cosinus des deux côtés.",
+        "Le filtrage par l'intervalle est une étape à part entière : encadre $k$, énumère les entiers, rejette les bornes exclues.",
+        "Pour mélanger sinus et cosinus, passe par $\\sin u=\\cos\\left(\\dfrac\\pi2-u\\right)$.",
+        "Au Probatoire C, cette équation sert souvent à identifier un angle dont on connaît le cosinus par un calcul géométrique (pentagone, angles remarquables)."
+      ]
+    }
+  ]
 }

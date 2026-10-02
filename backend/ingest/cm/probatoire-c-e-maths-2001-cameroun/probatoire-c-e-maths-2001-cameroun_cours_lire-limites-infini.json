@@ -1,29 +1,153 @@
 {
-  "cours_id": "cours-lire-limites-infini-p1c-2001",
-  "meta": {
-    "titre": "Lire les limites d'une fonction à l'infini sur un graphique",
-    "matiere": "Mathématiques",
-    "pays": "cm",
-    "niveau": "1ere",
-    "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
-    "savoir_officiel": {
-      "classe": "1ere",
-      "serie_label": "C-E",
-      "module_numero": "21",
-      "savoir_numero": "V"
+    "cours_id": "cours-lire-limites-infini-p1c-2001",
+    "meta": {
+        "titre": "Lire les limites d'une fonction à l'infini sur un graphique",
+        "matiere": "Mathématiques",
+        "pays": "cm",
+        "niveau": "1ere",
+        "serie": "C, E",
+        "sous_theme": "Limites et asymptotes",
+        "duree_estimee_min": 20,
+        "tags": [
+            "limite à l'infini",
+            "lecture graphique",
+            "asymptote",
+            "conjecture",
+            "branche infinie"
+        ],
+        "savoir_officiel": {
+            "classe": "1ere",
+            "serie_label": "C-E",
+            "module_numero": "21",
+            "savoir_numero": "V"
+        },
+        "statut": "brouillon"
     },
-    "statut": "brouillon"
-  },
-  "source": {
-    "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
-    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
-    "exercice_numero": "2",
-    "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex2-q1b-2",
-    "rappels_lies": [],
-    "correction_id": null
-  },
-  "sections": []
+    "source": {
+        "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
+        "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
+        "exercice_numero": "2",
+        "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex2-q1b-2",
+        "rappels_lies": [],
+        "correction_id": null
+    },
+    "sections": [
+        {
+            "type": "accroche",
+            "contenu_markdown": "Un graphique est une information précieuse : avant même d'avoir calculé quoi que ce soit, il montre vers où la courbe se dirige quand on s'éloigne très loin à gauche ou à droite. Cette lecture donne une conjecture sur les limites, que l'on confirme ensuite par le calcul. Ce cours t'apprend à lire proprement les extrémités d'une courbe, à rédiger tes conjectures sans te tromper de vocabulaire et à les contrôler."
+        },
+        {
+            "type": "prerequis",
+            "items": [
+                "La notion de limite d'une fonction à l'infini",
+                "La définition d'une asymptote horizontale",
+                "Lire des coordonnées sur un repère",
+                "Calculer des valeurs d'une fonction pour de grandes valeurs de $x$"
+            ]
+        },
+        {
+            "type": "regle",
+            "titre": "Conjecturer une limite à l'infini à partir d'un graphique",
+            "contenu_markdown": "Pour trouver $\\lim_{x\\to+\\infty}f(x)$, on regarde l'**extrémité droite** de la courbe. Pour $\\lim_{x\\to-\\infty}f(x)$, on regarde l'**extrémité gauche**. Ce sont deux lectures séparées. Dans chaque cas on lit une **ordonnée** (la valeur de $f(x)$), jamais une abscisse. Trois situations se rencontrent :\n\n1. **La courbe se stabilise** : elle se rapproche d'une droite horizontale $y=\\ell$. Alors la limite vaut $\\ell$ et la droite $y=\\ell$ est asymptote horizontale.\n2. **La courbe monte ou descend sans s'arrêter** : la limite vaut $+\\infty$ ou $-\\infty$. On regarde si elle se rapproche d'une droite oblique (asymptote oblique) ou non.\n3. **La courbe oscille sans se stabiliser** : il n'y a pas de limite.\n\nUne lecture graphique est une **conjecture**, pas une démonstration. On rédige « par lecture graphique, il semble que... » puis on la confirme avec un calcul de limite ou un tableau de valeurs pour de grands $|x|$.",
+            "formule_principale": "\\lim_{x\\to\\pm\\infty}f(x)=\\ell \\;\\Longleftrightarrow\\; y=\\ell \\text{ est asymptote horizontale}",
+            "variantes": [
+                {
+                    "nom": "Tableau de valeurs",
+                    "quand_utiliser": "Quand le graphique est incomplet ou peu précis, ou pour renforcer une conjecture.",
+                    "contenu_markdown": "Calcule $f(10)$, $f(100)$, $f(1000)$ puis $f(-10)$, $f(-100)$, $f(-1000)$. Si les valeurs se rapprochent d'un nombre $\\ell$, la conjecture $\\lim f=\\ell$ est solide. Si elles grandissent en valeur absolue, la limite est infinie."
+                }
+            ]
+        },
+        {
+            "type": "exemple_resolu",
+            "enonce_markdown": "La courbe d'une fonction rationnelle $f$ se rapproche, à ses deux extrémités, de la droite horizontale d'équation $y=1$ en restant au-dessous, sans jamais la toucher, et l'écart diminue quand $|x|$ augmente. Conjecturer les limites de $f$ en $-\\infty$ et en $+\\infty$, puis les confirmer sachant que $f(x)=\\dfrac{x^2-x-2}{x^2-x+1}$.",
+            "epreuve_source": true,
+            "etapes": [
+                {
+                    "numero": 1,
+                    "action": "Lire l'extrémité gauche",
+                    "justification": "On regarde où se dirige la courbe quand $x$ devient très négatif. Elle se rapproche de la droite $y=1$.",
+                    "resultat_markdown": "Par lecture graphique, $\\lim_{x\\to-\\infty}f(x)=1$ (conjecture)."
+                },
+                {
+                    "numero": 2,
+                    "action": "Lire l'extrémité droite",
+                    "justification": "Même démarche pour $x$ très grand positif.",
+                    "resultat_markdown": "Par lecture graphique, $\\lim_{x\\to+\\infty}f(x)=1$ (conjecture)."
+                },
+                {
+                    "numero": 3,
+                    "action": "Confirmer par le calcul",
+                    "justification": "Numérateur et dénominateur ont le même degré, donc la limite est le quotient des coefficients dominants.",
+                    "resultat_markdown": "$\\lim_{x\\to\\pm\\infty}f(x)=\\dfrac11=1$ ✔."
+                },
+                {
+                    "numero": 4,
+                    "action": "Contrôler la position de la courbe",
+                    "justification": "On calcule $f(x)-1$ pour savoir si la courbe est au-dessus ou au-dessous de l'asymptote.",
+                    "resultat_markdown": "$f(x)-1=\\dfrac{x^2-x-2-(x^2-x+1)}{x^2-x+1}=\\dfrac{-3}{x^2-x+1}$."
+                },
+                {
+                    "numero": 5,
+                    "action": "Conclure sur le signe",
+                    "justification": "Le dénominateur $x^2-x+1$ est strictement positif (discriminant $1-4=-3<0$).",
+                    "resultat_markdown": "$f(x)-1<0$ pour tout $x$ : la courbe reste strictement au-dessous de $y=1$, comme le montre le dessin."
+                }
+            ],
+            "conclusion_markdown": "$\\lim_{x\\to-\\infty}f(x)=\\lim_{x\\to+\\infty}f(x)=1$ : la droite $y=1$ est asymptote horizontale à la courbe, qui reste au-dessous d'elle."
+        },
+        {
+            "type": "erreurs_classiques",
+            "items": [
+                {
+                    "erreur_markdown": "Dire que la courbe « atteint » la valeur $1$ à l'infini, ou qu'elle « coupe » son asymptote parce qu'elle semble la toucher sur le dessin.",
+                    "pourquoi_faux": "Une limite est une valeur dont $f(x)$ se rapproche de plus en plus, pas nécessairement une valeur atteinte. Ici $f(x)-1=\\dfrac{-3}{x^2-x+1}$ ne s'annule jamais : la courbe ne touche jamais l'asymptote, même si l'épaisseur du trait la fait paraître collée.",
+                    "correction_markdown": "Parle d'approche (« se rapproche de », « tend vers »), jamais de contact."
+                },
+                {
+                    "erreur_markdown": "Lire une abscisse au lieu d'une ordonnée : « la courbe coupe l'axe en $x=2$, donc la limite est $2$ ».",
+                    "pourquoi_faux": "La limite d'une fonction est une valeur prise par $f(x)$, donc une **ordonnée**. Les abscisses où la courbe coupe l'axe ($x=-1$, $x=2$) sont les zéros de $f$, une tout autre information.",
+                    "correction_markdown": "Pose la question : « vers quelle hauteur la courbe se dirige-t-elle ? »"
+                },
+                {
+                    "erreur_markdown": "Conclure à la limite $+\\infty$ parce que la courbe dessinée « monte » au bord du cadre, ou supposer que les deux extrémités se ressemblent.",
+                    "pourquoi_faux": "Le dessin s'arrête au bord de la fenêtre. Ce que la courbe fait au-delà est une extrapolation. Par ailleurs les deux extrémités sont indépendantes : une fonction peut tendre vers $1$ en $+\\infty$ et vers $+\\infty$ en $-\\infty$.",
+                    "correction_markdown": "Examine les deux extrémités séparément, puis valide chaque conjecture par un calcul ou un tableau de valeurs."
+                }
+            ]
+        },
+        {
+            "type": "exercices_application",
+            "items": [
+                {
+                    "numero": 1,
+                    "difficulte": "facile",
+                    "enonce_markdown": "La courbe d'une fonction $g$ se rapproche, quand $x$ devient très négatif, de la droite $y=-2$ en restant au-dessus, et monte sans s'arrêter quand $x$ devient très grand positif. Donner par lecture graphique $\\lim_{x\\to-\\infty}g(x)$ et $\\lim_{x\\to+\\infty}g(x)$ et préciser ce que représente la droite $y=-2$.",
+                    "solution_markdown": "Extrémité gauche : la courbe se stabilise autour de l'ordonnée $-2$, donc par lecture graphique $\\lim_{x\\to-\\infty}g(x)=-2$.\n\nExtrémité droite : la courbe monte sans limite, donc $\\lim_{x\\to+\\infty}g(x)=+\\infty$.\n\nLa droite d'équation $y=-2$ est asymptote horizontale à la courbe en $-\\infty$ (et seulement en $-\\infty$)."
+                },
+                {
+                    "numero": 2,
+                    "difficulte": "moyen",
+                    "enonce_markdown": "Pour $g(x)=\\dfrac{2x+1}{x-1}$, calculer $g(10)$, $g(100)$, $g(1000)$, $g(-10)$, $g(-100)$, $g(-1000)$ (arrondis à $10^{-3}$), conjecturer les limites en $\\pm\\infty$, puis les démontrer.",
+                    "solution_markdown": "$g(10)=\\dfrac{21}{9}\\approx2{,}333$ ; $g(100)=\\dfrac{201}{99}\\approx2{,}030$ ; $g(1000)=\\dfrac{2001}{999}\\approx2{,}003$.\n\n$g(-10)=\\dfrac{-19}{-11}\\approx1{,}727$ ; $g(-100)=\\dfrac{-199}{-101}\\approx1{,}970$ ; $g(-1000)=\\dfrac{-1999}{-1001}\\approx1{,}997$.\n\nLes valeurs se rapprochent de $2$ aux deux extrémités : conjecture $\\lim_{x\\to\\pm\\infty}g(x)=2$.\n\nDémonstration : $g(x)=\\dfrac{x\\left(2+\\frac1x\\right)}{x\\left(1-\\frac1x\\right)}=\\dfrac{2+\\frac1x}{1-\\frac1x}$ et $\\dfrac1x\\to0$, donc la limite vaut $\\dfrac21=2$."
+                },
+                {
+                    "numero": 3,
+                    "difficulte": "approfondissement",
+                    "enonce_markdown": "Soit $h(x)=\\dfrac{x^2+1}{x}$. Calculer $h(10)$, $h(100)$, $h(-10)$, $h(-100)$. Conjecturer les limites de $h$ en $\\pm\\infty$, puis montrer que la courbe se rapproche de la droite $y=x$.",
+                    "solution_markdown": "$h(10)=\\dfrac{101}{10}=10{,}1$ ; $h(100)=\\dfrac{10001}{100}=100{,}01$ ; $h(-10)=-10{,}1$ ; $h(-100)=-100{,}01$.\n\nLes valeurs grandissent en valeur absolue, avec le signe de $x$ : conjecture $\\lim_{x\\to+\\infty}h(x)=+\\infty$ et $\\lim_{x\\to-\\infty}h(x)=-\\infty$.\n\nOn remarque que $h(x)$ est très proche de $x$ : $10{,}1$ pour $10$, $100{,}01$ pour $100$. Or $h(x)=x+\\dfrac1x$, donc $h(x)-x=\\dfrac1x\\to0$ quand $x\\to\\pm\\infty$. La droite $y=x$ est **asymptote oblique** à la courbe, qui est au-dessus pour $x>0$ et au-dessous pour $x<0$."
+                }
+            ]
+        },
+        {
+            "type": "synthese",
+            "items_markdown": [
+                "Lis les deux extrémités séparément et lis des ordonnées : c'est la hauteur vers laquelle la courbe se dirige qui donne la limite.",
+                "Une courbe qui se stabilise donne une limite finie $\\ell$ et une asymptote horizontale $y=\\ell$.",
+                "Une courbe qui monte ou descend sans s'arrêter donne une limite infinie, éventuellement avec une asymptote oblique.",
+                "Une lecture graphique reste une conjecture : rédige « par lecture graphique, il semble que... » puis confirme par le calcul.",
+                "Au Probatoire, la lecture graphique des limites est une question d'échauffement à $0{,}5$ point qui prépare l'étude de fonction : réponds vite et proprement, puis réutilise ces limites pour les asymptotes."
+            ]
+        }
+    ]
 }

@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Trigonométrie",
+    "duree_estimee_min": 22,
+    "tags": [
+      "tangente",
+      "triangle rectangle",
+      "angle aigu",
+      "côté opposé",
+      "côté adjacent"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour mesurer la hauteur d'un arbre, un géomètre ne grimpe pas : il mesure la distance au pied et l'angle sous lequel il voit le sommet. La tangente relie directement ces grandeurs. Ce cours te donne le bon réflexe : dans un triangle rectangle, la tangente d'un angle est un rapport de deux longueurs, qui permet de calculer l'une d'elles quand l'autre est connue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître l'hypoténuse, le côté opposé et le côté adjacent à un angle aigu",
+        "Le théorème de Pythagore",
+        "Résoudre une équation du type $\\dfrac{a}{b}=k$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tangente d'un angle aigu",
+      "contenu_markdown": "Dans un triangle **rectangle**, pour un angle aigu $\\widehat{C}$ :\n$$\\tan\\widehat{C}=\\frac{\\text{côté opposé à }\\widehat{C}}{\\text{côté adjacent à }\\widehat{C}}$$\n- Le **côté opposé** est celui qui fait face à l'angle (il ne touche pas son sommet).\n- Le **côté adjacent** est celui qui touche l'angle et qui n'est pas l'hypoténuse.\n\nComme $\\dfrac{\\text{opposé}}{\\text{adjacent}}$ s'écrit $\\dfrac{\\sin}{\\cos}$, on retrouve $\\tan\\widehat C=\\dfrac{\\sin\\widehat C}{\\cos\\widehat C}$.\n\n**Méthode.** (1) Repérer l'angle et le triangle rectangle. (2) Désigner opposé et adjacent. (3) Exprimer chaque longueur avec les données ou l'inconnue : quand un point partage un côté, utiliser $AB=AD+DB$. (4) Écrire le rapport.",
+      "formule_principale": "\\tan\\widehat{C}=\\dfrac{\\text{opposé}}{\\text{adjacent}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABC$ est rectangle en $A$ et $a=\\text{mes}\\,\\widehat{BCA}$. Le point $D$ est sur le segment $[AB]$, avec $AD=33$ cm, $AC=99$ cm et $BD=x$. Exprimer $\\tan a$ en fonction de $x$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le triangle rectangle et l'angle",
+          "justification": "L'angle $a$ est en $C$ dans le triangle $ABC$ rectangle en $A$.",
+          "resultat_markdown": "Triangle $ABC$, angle droit en $A$, angle étudié en $C$"
+        },
+        {
+          "numero": 2,
+          "action": "Désigner le côté opposé",
+          "justification": "Le côté qui fait face à $C$ est celui qui ne touche pas $C$ : $[AB]$.",
+          "resultat_markdown": "Opposé : $[AB]$"
+        },
+        {
+          "numero": 3,
+          "action": "Désigner le côté adjacent",
+          "justification": "Le côté qui touche $C$ sans être l'hypoténuse $[BC]$ est $[AC]$.",
+          "resultat_markdown": "Adjacent : $[AC]=99$"
+        },
+        {
+          "numero": 4,
+          "action": "Exprimer $AB$ avec l'inconnue",
+          "justification": "$D$ appartient à $[AB]$, donc $AB=AD+DB$.",
+          "resultat_markdown": "$AB=33+x$"
+        },
+        {
+          "numero": 5,
+          "action": "Écrire le rapport",
+          "justification": "On forme opposé sur adjacent.",
+          "resultat_markdown": "$\\tan a=\\dfrac{AB}{AC}=\\dfrac{33+x}{99}$"
+        }
+      ],
+      "conclusion_markdown": "$\\tan a=\\dfrac{33+x}{99}$. Le point clé est d'avoir décomposé $AB$ en deux segments grâce à $D\\in[AB]$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\tan a=\\dfrac{x}{99}$ en prenant $BD$ pour le côté opposé.",
+          "pourquoi_faux": "Le côté opposé à l'angle $a$ est $[AB]$ en entier. $[BD]$ n'en est qu'un morceau.",
+          "correction_markdown": "Chaque fois qu'un point intermédiaire apparaît sur un côté, décompose ce côté."
+        },
+        {
+          "erreur_markdown": "Inverser le rapport : $\\dfrac{\\text{adjacent}}{\\text{opposé}}$.",
+          "pourquoi_faux": "Cela donne $\\dfrac{1}{\\tan}$ (cotangente). Une tangente d'angle aigu faible doit être petite : si l'opposé est plus court que l'adjacent, le rapport est inférieur à $1$.",
+          "correction_markdown": "Vérifie le sens avec une valeur connue : $\\tan45^\\circ=1$, $\\tan60^\\circ=\\sqrt3>1$."
+        },
+        {
+          "erreur_markdown": "Utiliser l'hypoténuse dans le rapport.",
+          "pourquoi_faux": "Avec l'hypoténuse, on obtiendrait le sinus ou le cosinus, pas la tangente.",
+          "correction_markdown": "Pour la tangente, l'hypoténuse ne sert pas : opposé et adjacent seulement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le triangle $ABC$ est rectangle en $A$ avec $AB=6$ et $AC=8$. Calculer $\\tan\\widehat C$, $\\tan\\widehat B$ et $BC$.",
+          "solution_markdown": "**1.** Pour l'angle en $C$ : opposé $[AB]=6$, adjacent $[AC]=8$, donc $\\tan\\widehat C=\\dfrac68=\\dfrac34$.\n\n**2.** Pour l'angle en $B$ : opposé $[AC]=8$, adjacent $[AB]=6$, donc $\\tan\\widehat B=\\dfrac86=\\dfrac43$.\n\n**3.** Pythagore : $BC^2=36+64=100$, donc $BC=10$.\n\n**4.** On observe $\\tan\\widehat B\\times\\tan\\widehat C=1$ : les deux angles aigus sont complémentaires."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le triangle $ABC$ est rectangle en $A$, $AC=24$ et $\\tan\\widehat C=\\dfrac5{12}$. Calculer $AB$ et $BC$.",
+          "solution_markdown": "**1.** $\\tan\\widehat C=\\dfrac{AB}{AC}$, donc $\\dfrac{AB}{24}=\\dfrac5{12}$ et $AB=24\\times\\dfrac5{12}=10$.\n\n**2.** Pythagore : $BC^2=10^2+24^2=100+576=676$, donc $BC=26$.\n\n**3.** Contrôle : $(5\\,;12\\,;13)$ est un triplet pythagoricien, et $(10\\,;24\\,;26)$ en est le double."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABC$ est rectangle en $A$, $AC=6$, $D\\in[AB]$ avec $AD=3$ et $DB=y$. On sait que l'angle $\\widehat{BCA}$ est le double de l'angle $\\widehat{DCA}$. Calculer $y$ en utilisant la formule $\\tan2\\theta=\\dfrac{2\\tan\\theta}{1-\\tan^2\\theta}$.",
+          "solution_markdown": "**1.** Dans $ADC$ rectangle en $A$ : $\\tan\\widehat{DCA}=\\dfrac{AD}{AC}=\\dfrac36=\\dfrac12$.\n\n**2.** Duplication : $\\tan\\widehat{BCA}=\\dfrac{2\\times\\frac12}{1-\\frac14}=\\dfrac{1}{\\frac34}=\\dfrac43$.\n\n**3.** Dans $ABC$ : $\\tan\\widehat{BCA}=\\dfrac{AB}{AC}=\\dfrac{3+y}{6}$. On pose $\\dfrac{3+y}6=\\dfrac43$, soit $3+y=8$ et $y=5$.\n\n**4.** Contrôle : $AB=8$, $AC=6$, $BC=10$ ; $\\tan\\widehat{BCA}=\\dfrac86=\\dfrac43$ ✓."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un triangle rectangle, $\\tan=\\dfrac{\\text{opposé}}{\\text{adjacent}}$ : l'hypoténuse n'intervient jamais.",
+        "Pour chaque angle, tu désignes d'abord l'opposé et l'adjacent, avec un schéma.",
+        "Quand un point partage un côté, décompose-le : $AB=AD+DB$.",
+        "Les deux angles aigus d'un triangle rectangle ont des tangentes inverses l'une de l'autre.",
+        "Au Probatoire C, cette question de géométrie est le point de départ d'un enchaînement : $\\tan a$ en fonction de $x$, puis duplication, puis équation en $x$."
+      ]
+    }
+  ]
 }

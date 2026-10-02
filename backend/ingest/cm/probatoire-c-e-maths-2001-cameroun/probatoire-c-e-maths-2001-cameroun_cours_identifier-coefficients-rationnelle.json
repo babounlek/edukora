@@ -1,29 +1,165 @@
 {
-  "cours_id": "cours-identifier-coefficients-rationnelle-p1c-2001",
-  "meta": {
-    "titre": "Identifier les coefficients d'une fonction rationnelle",
-    "matiere": "Mathématiques",
-    "pays": "cm",
-    "niveau": "1ere",
-    "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
-    "savoir_officiel": {
-      "classe": "1ere",
-      "serie_label": "C-E",
-      "module_numero": "21",
-      "savoir_numero": "IV"
+    "cours_id": "cours-identifier-coefficients-rationnelle-p1c-2001",
+    "meta": {
+        "titre": "Identifier les coefficients d'une fonction rationnelle",
+        "matiere": "Mathématiques",
+        "pays": "cm",
+        "niveau": "1ere",
+        "serie": "C, E",
+        "sous_theme": "Fonctions rationnelles",
+        "duree_estimee_min": 30,
+        "tags": [
+            "fonction rationnelle",
+            "coefficients",
+            "lecture graphique",
+            "zéros",
+            "identification"
+        ],
+        "savoir_officiel": {
+            "classe": "1ere",
+            "serie_label": "C-E",
+            "module_numero": "21",
+            "savoir_numero": "IV"
+        },
+        "statut": "brouillon"
     },
-    "statut": "brouillon"
-  },
-  "source": {
-    "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
-    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
-    "exercice_numero": "2",
-    "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex2-q4-8",
-    "rappels_lies": [],
-    "correction_id": null
-  },
-  "sections": []
+    "source": {
+        "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
+        "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
+        "exercice_numero": "2",
+        "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex2-q4-8",
+        "rappels_lies": [],
+        "correction_id": null
+    },
+    "sections": [
+        {
+            "type": "accroche",
+            "contenu_markdown": "Devant une courbe, tu sais lire un zéro ou une ordonnée, mais l'examinateur te demande parfois plus : retrouver la formule de la fonction elle-même. Un graphique fournit des renseignements précis (où la courbe coupe l'axe, quels points elle contient) et chacun se traduit en une équation sur les coefficients inconnus. Ce cours te montre comment transformer une courbe en système d'équations, puis comment contrôler que la formule trouvée correspond bien au dessin."
+        },
+        {
+            "type": "prerequis",
+            "items": [
+                "Lire sur un graphique les zéros, les ordonnées de points et les asymptotes",
+                "Factoriser un trinôme dont on connaît les racines : $x^2+ax+b=(x-x_1)(x-x_2)$",
+                "Calculer l'image d'un nombre par une fonction rationnelle",
+                "Le signe du discriminant d'un trinôme du second degré"
+            ]
+        },
+        {
+            "type": "regle",
+            "titre": "Retrouver les coefficients d'une fonction rationnelle à partir de sa courbe",
+            "contenu_markdown": "On dispose d'une fonction de la forme $f(x)=\\dfrac{x^2+ax+b}{x^2+cx+d}$ avec quatre inconnues $a$, $b$, $c$, $d$. Il faut donc **quatre conditions indépendantes**, tirées de la courbe. On les choisit par ordre de commodité.\n\n**1. Les zéros de $f$.** Une fraction s'annule quand son numérateur s'annule (sans que le dénominateur s'annule). Si $f(x_1)=f(x_2)=0$, le polynôme $x^2+ax+b$ a pour racines $x_1$ et $x_2$ et, comme son coefficient dominant vaut $1$ :\n\n$$x^2+ax+b=(x-x_1)(x-x_2)$$\n\nLe développement donne $a$ et $b$ par identification : deux conditions d'un coup.\n\n**2. Les images de points.** Un point $(x_0\\,;\\,y_0)$ de la courbe donne l'équation $f(x_0)=y_0$. Avec $x_0=0$ elle est particulièrement simple, puisque $f(0)=\\dfrac{b}{d}$.\n\n**3. Les vérifications.** Une fois la formule obtenue, on contrôle que le domaine $D_f=\\mathbb{R}$ (discriminant du dénominateur strictement négatif), la limite à l'infini (quotient des coefficients dominants) et les autres points lus sur la courbe sont cohérents.",
+            "formule_principale": "x^2+ax+b=(x-x_1)(x-x_2)\\quad\\text{si } f(x_1)=f(x_2)=0",
+            "variantes": [
+                {
+                    "nom": "Dénominateur du premier degré",
+                    "quand_utiliser": "Quand la courbe admet une asymptote verticale.",
+                    "contenu_markdown": "Pour $f(x)=\\dfrac{x^2+ax+b}{x+c}$, l'asymptote verticale $x=x_0$ donne directement $c=-x_0$ (le dénominateur s'annule en $x_0$ alors que le numérateur ne s'annule pas). Les zéros et un point de la courbe donnent ensuite $a$ et $b$."
+                }
+            ]
+        },
+        {
+            "type": "exemple_resolu",
+            "enonce_markdown": "La courbe d'une fonction $f(x)=\\dfrac{x^2+ax+b}{x^2+cx+d}$ coupe l'axe des abscisses en $-1$ et en $2$ et passe par les points $(0\\,;\\,-2)$ et $(1\\,;\\,-2)$. Déterminer $a$, $b$, $c$ et $d$.",
+            "epreuve_source": true,
+            "etapes": [
+                {
+                    "numero": 1,
+                    "action": "Traduire les zéros",
+                    "justification": "$f(-1)=0$ et $f(2)=0$ : le numérateur s'annule en $-1$ et en $2$. Son coefficient dominant vaut $1$.",
+                    "resultat_markdown": "$x^2+ax+b=(x+1)(x-2)=x^2-2x+x-2=x^2-x-2$."
+                },
+                {
+                    "numero": 2,
+                    "action": "Identifier $a$ et $b$",
+                    "justification": "Deux polynômes égaux ont les mêmes coefficients.",
+                    "resultat_markdown": "$a=-1$ et $b=-2$."
+                },
+                {
+                    "numero": 3,
+                    "action": "Exploiter $f(0)=-2$",
+                    "justification": "On remplace $x$ par $0$ dans la formule.",
+                    "resultat_markdown": "$f(0)=\\dfrac{b}{d}=\\dfrac{-2}{d}=-2$, donc $-2=-2d$ et $d=1$."
+                },
+                {
+                    "numero": 4,
+                    "action": "Exploiter $f(1)=-2$",
+                    "justification": "On remplace $x$ par $1$ et on reporte $a$, $b$, $d$ déjà connus.",
+                    "resultat_markdown": "$f(1)=\\dfrac{1-1-2}{1+c+1}=\\dfrac{-2}{2+c}=-2$, donc $-2=-2(2+c)$, soit $1=2+c$ et $c=-1$."
+                },
+                {
+                    "numero": 5,
+                    "action": "Écrire la fonction",
+                    "justification": "On rassemble les quatre coefficients.",
+                    "resultat_markdown": "$f(x)=\\dfrac{x^2-x-2}{x^2-x+1}$."
+                },
+                {
+                    "numero": 6,
+                    "action": "Vérifier le domaine",
+                    "justification": "Le dénominateur ne doit jamais s'annuler.",
+                    "resultat_markdown": "$\\Delta=(-1)^2-4\\times1\\times1=-3<0$ : $x^2-x+1>0$ pour tout $x$, donc $D_f=\\mathbb{R}$."
+                },
+                {
+                    "numero": 7,
+                    "action": "Vérifier la limite à l'infini",
+                    "justification": "Numérateur et dénominateur ont le même degré et les mêmes coefficients dominants $1$.",
+                    "resultat_markdown": "$\\lim_{x\\to\\pm\\infty}f(x)=\\dfrac{1}{1}=1$, ce que montre aussi la courbe."
+                }
+            ],
+            "conclusion_markdown": "On obtient $a=-1$, $b=-2$, $c=-1$, $d=1$, soit $f(x)=\\dfrac{x^2-x-2}{x^2-x+1}$."
+        },
+        {
+            "type": "erreurs_classiques",
+            "items": [
+                {
+                    "erreur_markdown": "Prendre un zéro de $f$ pour une racine du dénominateur, ou l'inverse : écrire $x^2+cx+d=(x+1)(x-2)$.",
+                    "pourquoi_faux": "Là où la courbe coupe l'axe des abscisses, la fonction **vaut zéro** : c'est le numérateur qui s'annule. Les racines du dénominateur correspondent à des asymptotes verticales ou à des trous, jamais à des points de l'axe.",
+                    "correction_markdown": "Un point d'ordonnée $0$ donne un zéro du numérateur. Une droite verticale dont la courbe s'approche donne un zéro du dénominateur."
+                },
+                {
+                    "erreur_markdown": "Écrire $f(0)=b-d$ ou $f(0)=b+d$ pour traduire $f(0)=-2$.",
+                    "pourquoi_faux": "On remplace $x$ par $0$ dans le numérateur et dans le dénominateur : $f(0)=\\dfrac{0+0+b}{0+0+d}=\\dfrac{b}{d}$. C'est un **quotient**, pas une différence ni une somme.",
+                    "correction_markdown": "Substitue toujours dans la formule complète avant de simplifier, et garde la barre de fraction."
+                },
+                {
+                    "erreur_markdown": "S'arrêter dès que le système est résolu, sans contrôler la formule.",
+                    "pourquoi_faux": "Les valeurs lues sur un graphique sont parfois approximatives, et une erreur de lecture donne une fonction qui ne ressemble pas à la courbe. Un dénominateur qui s'annule quelque part, par exemple, contredirait un domaine $\\mathbb{R}$.",
+                    "correction_markdown": "Termine par au moins deux vérifications : le discriminant du dénominateur et la limite à l'infini. Elles prennent trois lignes et rapportent des points."
+                }
+            ]
+        },
+        {
+            "type": "exercices_application",
+            "items": [
+                {
+                    "numero": 1,
+                    "difficulte": "facile",
+                    "enonce_markdown": "La courbe d'une fonction $f(x)=\\dfrac{x^2+ax+b}{x^2+cx+d}$ coupe l'axe des abscisses en $1$ et en $3$, passe par $(0\\,;\\,3)$ et par $\\left(2\\,;\\,-\\dfrac{1}{3}\\right)$. Déterminer $a$, $b$, $c$, $d$ et vérifier que $D_f=\\mathbb{R}$.",
+                    "solution_markdown": "Zéros : $x^2+ax+b=(x-1)(x-3)=x^2-4x+3$, donc $a=-4$ et $b=3$.\n\nPoint $(0\\,;\\,3)$ : $f(0)=\\dfrac{b}{d}=\\dfrac{3}{d}=3$, donc $d=1$.\n\nPoint $\\left(2\\,;\\,-\\dfrac13\\right)$ : $f(2)=\\dfrac{4-8+3}{4+2c+1}=\\dfrac{-1}{5+2c}=-\\dfrac13$, donc $5+2c=3$ et $c=-1$.\n\nAinsi $f(x)=\\dfrac{x^2-4x+3}{x^2-x+1}$. Le discriminant du dénominateur est $1-4=-3<0$, donc il ne s'annule jamais et $D_f=\\mathbb{R}$."
+                },
+                {
+                    "numero": 2,
+                    "difficulte": "moyen",
+                    "enonce_markdown": "Soit $f(x)=\\dfrac{x^2+ax+b}{x^2+1}$. Sa courbe passe par $A(0\\,;\\,-3)$ et par $B(1\\,;\\,0)$. Déterminer $a$ et $b$, puis trouver le second point où la courbe coupe l'axe des abscisses.",
+                    "solution_markdown": "Point $A$ : $f(0)=\\dfrac{b}{1}=-3$, donc $b=-3$.\n\nPoint $B$ : $f(1)=\\dfrac{1+a+b}{1+1}=\\dfrac{a-2}{2}=0$, donc $a=2$.\n\nAinsi $f(x)=\\dfrac{x^2+2x-3}{x^2+1}$. Les zéros sont les racines de $x^2+2x-3$. Comme $1$ est racine, le produit des racines vaut $-3$, donc l'autre racine est $-3$. Vérification : $(-3)^2+2\\times(-3)-3=9-6-3=0$.\n\nLa courbe coupe aussi l'axe des abscisses au point $(-3\\,;\\,0)$."
+                },
+                {
+                    "numero": 3,
+                    "difficulte": "approfondissement",
+                    "enonce_markdown": "Soit $f(x)=\\dfrac{x^2+ax+b}{x+c}$. La courbe admet la droite d'équation $x=2$ comme asymptote verticale, coupe l'axe des abscisses en $1$ et passe par $\\left(0\\,;\\,\\dfrac32\\right)$. Déterminer $a$, $b$, $c$, puis écrire $f(x)=x+4+\\dfrac{k}{x-2}$ en précisant $k$.",
+                    "solution_markdown": "Asymptote verticale $x=2$ : le dénominateur s'annule en $2$, donc $c=-2$.\n\nZéro en $1$ : $1+a+b=0$.\n\nPoint $\\left(0\\,;\\,\\dfrac32\\right)$ : $f(0)=\\dfrac{b}{-2}=\\dfrac32$, donc $b=-3$. Alors $1+a-3=0$ et $a=2$.\n\nAinsi $f(x)=\\dfrac{x^2+2x-3}{x-2}$. Le numérateur vaut $4+4-3=5\\neq0$ en $2$ : l'asymptote verticale est bien réelle.\n\nDivision : $(x-2)(x+4)=x^2+2x-8$, donc $x^2+2x-3=(x-2)(x+4)+5$ et :\n\n$$f(x)=x+4+\\frac{5}{x-2}\\qquad\\text{soit } k=5.$$\n\nContrôle : $f(0)=4+\\dfrac{5}{-2}=\\dfrac32$ et $f(1)=5+\\dfrac{5}{-1}=0$. La droite $y=x+4$ est asymptote oblique."
+                }
+            ]
+        },
+        {
+            "type": "synthese",
+            "items_markdown": [
+                "Quatre inconnues, quatre conditions : compte-les avant de te lancer.",
+                "Un zéro de $f$ est un zéro du **numérateur**. Avec deux zéros et un coefficient dominant égal à $1$, le numérateur s'écrit tout de suite sous forme factorisée.",
+                "Un point de la courbe donne une équation : remplace $x$ dans la formule complète et garde la structure de fraction.",
+                "Une lecture graphique n'est pas une preuve : le discriminant du dénominateur et la limite à l'infini valident ta formule.",
+                "Au Probatoire, cette question suit souvent trois ou quatre lectures graphiques (domaine, limites, zéros). Elle est généreuse en points si tu poses clairement les équations avant de calculer."
+            ]
+        }
+    ]
 }

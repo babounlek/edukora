@@ -1,29 +1,165 @@
 {
-  "cours_id": "cours-intersection-cercle-axe-p1c-2001",
-  "meta": {
-    "titre": "Intersection d'un cercle avec un axe",
-    "matiere": "Mathématiques",
-    "pays": "cm",
-    "niveau": "1ere",
-    "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
-    "savoir_officiel": {
-      "classe": "1ere",
-      "serie_label": "C-E",
-      "module_numero": "23",
-      "savoir_numero": "I"
+    "cours_id": "cours-intersection-cercle-axe-p1c-2001",
+    "meta": {
+        "titre": "Intersection d'un cercle avec un axe",
+        "matiere": "Mathématiques",
+        "pays": "cm",
+        "niveau": "1ere",
+        "serie": "C, E",
+        "sous_theme": "Géométrie analytique",
+        "duree_estimee_min": 22,
+        "tags": [
+            "cercle",
+            "équation de cercle",
+            "intersection",
+            "axe des abscisses",
+            "équation du second degré"
+        ],
+        "savoir_officiel": {
+            "classe": "1ere",
+            "serie_label": "C-E",
+            "module_numero": "23",
+            "savoir_numero": "I"
+        },
+        "statut": "brouillon"
     },
-    "statut": "brouillon"
-  },
-  "source": {
-    "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
-    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
-    "exercice_numero": "4",
-    "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex4-qb1b-2",
-    "rappels_lies": [],
-    "correction_id": null
-  },
-  "sections": []
+    "source": {
+        "epreuve_id": "probatoire-c-e-maths-2001-cameroun",
+        "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2001 (Cameroun)",
+        "exercice_numero": "4",
+        "rappel_id": "rdm-probatoire-c-e-maths-2001-cameroun-ex4-qb1b-2",
+        "rappels_lies": [],
+        "correction_id": null
+    },
+    "sections": [
+        {
+            "type": "accroche",
+            "contenu_markdown": "Un cercle tracé dans un repère coupe-t-il l'axe des abscisses ? En combien de points ? Le dessin donne une idée, mais seul le calcul permet d'affirmer avec certitude et de donner les coordonnées exactes. L'idée tient en une phrase : un point de l'axe des abscisses a pour ordonnée $0$, donc il suffit de reporter $y=0$ dans l'équation du cercle et de résoudre. Ce cours en fait une méthode complète, avec la discussion du nombre de points."
+        },
+        {
+            "type": "prerequis",
+            "items": [
+                "L'équation d'un cercle : $(x-x_0)^2+(y-y_0)^2=R^2$",
+                "Résoudre une équation du type $X^2=k$",
+                "Distance entre deux points dans un repère orthonormé",
+                "Les valeurs approchées de $\\sqrt{2}$, $\\sqrt{5}$"
+            ]
+        },
+        {
+            "type": "regle",
+            "titre": "Intersection d'un cercle avec un axe de coordonnées",
+            "contenu_markdown": "Le cercle de centre $\\Omega(x_0\\,;\\,y_0)$ et de rayon $R$ a pour équation :\n\n$$(x-x_0)^2+(y-y_0)^2=R^2$$\n\n**Avec l'axe des abscisses** (équation $y=0$) : on remplace $y$ par $0$, ce qui donne $(x-x_0)^2=R^2-y_0^2$.\n\n**Avec l'axe des ordonnées** (équation $x=0$) : on remplace $x$ par $0$, ce qui donne $(y-y_0)^2=R^2-x_0^2$.\n\nLe nombre de points d'intersection dépend du signe du second membre $k$ de l'équation $X^2=k$ :\n\n- $k>0$ : deux solutions $X=\\pm\\sqrt{k}$, donc deux points ;\n- $k=0$ : une seule solution, le cercle est **tangent** à l'axe ;\n- $k<0$ : aucune solution, le cercle ne rencontre pas l'axe.\n\nQuand l'énoncé impose une condition sur le point cherché (abscisse positive, ordonnée négative), on garde parmi les solutions celle qui la vérifie.\n\nSi le centre est donné et que le cercle passe par un point $P$, le rayon se calcule par $R^2=\\Omega P^2$.",
+            "formule_principale": "(x-x_0)^2 = R^2 - y_0^2 \\quad (\\text{axe des abscisses})",
+            "variantes": []
+        },
+        {
+            "type": "exemple_resolu",
+            "enonce_markdown": "Le plan est rapporté au repère orthonormé $(O\\,;\\,\\vec{i},\\vec{j})$. On note $J(0\\,;\\,1)$ et $K(-1\\,;\\,0)$. Le point $A$ est le milieu de $[OK]$ et $\\mathcal{C}'$ est le cercle de centre $A$ passant par $J$. Ce cercle rencontre l'axe des abscisses en deux points, dont l'un, $B$, a une abscisse positive $x_B$. Déterminer $x_B$.",
+            "epreuve_source": true,
+            "etapes": [
+                {
+                    "numero": 1,
+                    "action": "Coordonnées de $A$",
+                    "justification": "$A$ est le milieu de $[OK]$ avec $O(0\\,;\\,0)$ et $K(-1\\,;\\,0)$.",
+                    "resultat_markdown": "$A\\left(-\\dfrac12\\,;\\,0\\right)$."
+                },
+                {
+                    "numero": 2,
+                    "action": "Rayon de $\\mathcal{C}'$",
+                    "justification": "Le cercle passe par $J$, donc $R^2=AJ^2$.",
+                    "resultat_markdown": "$R^2=\\left(0+\\dfrac12\\right)^2+(1-0)^2=\\dfrac14+1=\\dfrac54$."
+                },
+                {
+                    "numero": 3,
+                    "action": "Équation du cercle",
+                    "justification": "On applique la forme $(x-x_0)^2+(y-y_0)^2=R^2$ avec $x_0=-\\dfrac12$ et $y_0=0$.",
+                    "resultat_markdown": "$\\left(x+\\dfrac12\\right)^2+y^2=\\dfrac54$."
+                },
+                {
+                    "numero": 4,
+                    "action": "Poser $y=0$",
+                    "justification": "Un point de l'axe des abscisses a une ordonnée nulle.",
+                    "resultat_markdown": "$\\left(x+\\dfrac12\\right)^2=\\dfrac54$."
+                },
+                {
+                    "numero": 5,
+                    "action": "Résoudre",
+                    "justification": "$X^2=k$ avec $k=\\dfrac54>0$ a deux solutions $X=\\pm\\sqrt{k}$.",
+                    "resultat_markdown": "$x+\\dfrac12=\\pm\\dfrac{\\sqrt5}{2}$, donc $x=\\dfrac{-1\\pm\\sqrt5}{2}$."
+                },
+                {
+                    "numero": 6,
+                    "action": "Calculer les deux abscisses",
+                    "justification": "On évalue chaque racine avec $\\sqrt5\\approx2{,}236$.",
+                    "resultat_markdown": "$x_1=\\dfrac{-1-\\sqrt5}{2}\\approx-1{,}618$ et $x_2=\\dfrac{-1+\\sqrt5}{2}\\approx0{,}618$."
+                },
+                {
+                    "numero": 7,
+                    "action": "Choisir la racine positive",
+                    "justification": "L'énoncé impose $x_B>0$.",
+                    "resultat_markdown": "$x_B=x_2=\\dfrac{\\sqrt5-1}{2}\\approx0{,}618$."
+                },
+                {
+                    "numero": 8,
+                    "action": "Vérifier",
+                    "justification": "On remplace $x_B$ dans l'équation de départ.",
+                    "resultat_markdown": "$\\left(\\dfrac{\\sqrt5-1}{2}+\\dfrac12\\right)^2=\\left(\\dfrac{\\sqrt5}{2}\\right)^2=\\dfrac54$ ✔."
+                }
+            ],
+            "conclusion_markdown": "Le cercle $\\mathcal{C}'$ coupe l'axe des abscisses en deux points, et celui d'abscisse positive est $B\\left(\\dfrac{\\sqrt5-1}{2}\\,;\\,0\\right)$."
+        },
+        {
+            "type": "erreurs_classiques",
+            "items": [
+                {
+                    "erreur_markdown": "Oublier la racine négative et écrire directement $x+\\dfrac12=\\dfrac{\\sqrt5}{2}$.",
+                    "pourquoi_faux": "L'équation $X^2=k$ a deux solutions. Écrire la seule solution positive suppose qu'on a déjà fait le tri, mais le tri doit être **visible** : le correcteur ne peut pas deviner que tu as pensé à l'autre racine. Dans certains exercices, c'est la racine négative qui est demandée.",
+                    "correction_markdown": "Écris toujours $X=\\pm\\sqrt{k}$, calcule les deux valeurs, puis explique laquelle tu gardes et pourquoi."
+                },
+                {
+                    "erreur_markdown": "Confondre les axes : poser $x=0$ pour chercher l'intersection avec l'axe des abscisses.",
+                    "pourquoi_faux": "L'axe des abscisses est la droite d'équation $y=0$ : tous ses points ont une **ordonnée** nulle. Poser $x=0$ revient à chercher les points de l'axe des ordonnées, d'où des solutions en $y$ qui n'ont rien à voir avec la question.",
+                    "correction_markdown": "Associe chaque axe à son équation : axe des abscisses $\\Leftrightarrow y=0$ ; axe des ordonnées $\\Leftrightarrow x=0$."
+                },
+                {
+                    "erreur_markdown": "Développer $\\left(x+\\dfrac12\\right)^2$ en $x^2+\\dfrac14$.",
+                    "pourquoi_faux": "L'identité remarquable est $(a+b)^2=a^2+2ab+b^2$. Ici le double produit vaut $2\\times x\\times\\dfrac12=x$, d'où $\\left(x+\\dfrac12\\right)^2=x^2+x+\\dfrac14$. L'oubli du terme $x$ change entièrement les solutions.",
+                    "correction_markdown": "Quand l'équation se présente déjà sous la forme $(x-x_0)^2=k$, ne développe pas : prends directement la racine carrée des deux membres."
+                }
+            ]
+        },
+        {
+            "type": "exercices_application",
+            "items": [
+                {
+                    "numero": 1,
+                    "difficulte": "facile",
+                    "enonce_markdown": "Le cercle $\\mathcal{C}$ a pour centre $\\Omega(1\\,;\\,2)$ et pour rayon $3$. Déterminer ses points d'intersection avec chacun des axes de coordonnées.",
+                    "solution_markdown": "Équation : $(x-1)^2+(y-2)^2=9$.\n\nAxe des abscisses ($y=0$) : $(x-1)^2+4=9$, donc $(x-1)^2=5$ et $x=1\\pm\\sqrt5$. Les points sont $(1-\\sqrt5\\,;\\,0)\\approx(-1{,}24\\,;\\,0)$ et $(1+\\sqrt5\\,;\\,0)\\approx(3{,}24\\,;\\,0)$.\n\nAxe des ordonnées ($x=0$) : $1+(y-2)^2=9$, donc $(y-2)^2=8$ et $y=2\\pm\\sqrt8=2\\pm2\\sqrt2$. Les points sont $(0\\,;\\,2-2\\sqrt2)\\approx(0\\,;\\,-0{,}83)$ et $(0\\,;\\,2+2\\sqrt2)\\approx(0\\,;\\,4{,}83)$."
+                },
+                {
+                    "numero": 2,
+                    "difficulte": "moyen",
+                    "enonce_markdown": "Soit $\\mathcal{C}$ l'ensemble des points $M(x\\,;\\,y)$ tels que $x^2+y^2-4x-6y+9=0$. Montrer que $\\mathcal{C}$ est un cercle dont on précisera le centre et le rayon, puis étudier son intersection avec chaque axe.",
+                    "solution_markdown": "On met sous forme canonique : $x^2-4x=(x-2)^2-4$ et $y^2-6y=(y-3)^2-9$. L'équation devient $(x-2)^2-4+(y-3)^2-9+9=0$, soit :\n\n$$(x-2)^2+(y-3)^2=4$$\n\nC'est le cercle de centre $\\Omega(2\\,;\\,3)$ et de rayon $2$.\n\nAxe des abscisses ($y=0$) : $(x-2)^2+9=4$, donc $(x-2)^2=-5<0$ : aucune solution, le cercle ne rencontre pas l'axe (la distance de $\\Omega$ à l'axe est $3>2$).\n\nAxe des ordonnées ($x=0$) : $4+(y-3)^2=4$, donc $(y-3)^2=0$ et $y=3$ : le cercle est **tangent** à l'axe des ordonnées au point $(0\\,;\\,3)$ (la distance de $\\Omega$ à l'axe est $2$, égale au rayon)."
+                },
+                {
+                    "numero": 3,
+                    "difficulte": "approfondissement",
+                    "enonce_markdown": "Le cercle $\\mathcal{C}_r$ a pour centre $\\Omega(3\\,;\\,4)$ et pour rayon $r>0$. Discuter, suivant les valeurs de $r$, le nombre de points communs avec l'axe des abscisses, puis avec l'axe des ordonnées. Que se passe-t-il pour $r=5$ ?",
+                    "solution_markdown": "Équation : $(x-3)^2+(y-4)^2=r^2$.\n\nAxe des abscisses ($y=0$) : $(x-3)^2=r^2-16$. Deux points si $r>4$, un point (tangence) si $r=4$, aucun si $r<4$.\n\nAxe des ordonnées ($x=0$) : $(y-4)^2=r^2-9$. Deux points si $r>3$, un point si $r=3$, aucun si $r<3$.\n\nPour $r=5$ : $(x-3)^2=9$ donne $x=0$ ou $x=6$ sur l'axe des abscisses, soit $(0\\,;\\,0)$ et $(6\\,;\\,0)$. Et $(y-4)^2=16$ donne $y=0$ ou $y=8$ sur l'axe des ordonnées, soit $(0\\,;\\,0)$ et $(0\\,;\\,8)$.\n\nLe cercle passe par l'origine, ce que confirme $\\Omega O=\\sqrt{9+16}=5$."
+                }
+            ]
+        },
+        {
+            "type": "synthese",
+            "items_markdown": [
+                "Axe des abscisses : $y=0$. Axe des ordonnées : $x=0$. Reporte-le dans l'équation du cercle et résous.",
+                "Une équation $X^2=k$ a deux, une ou zéro solution selon que $k$ est positif, nul ou négatif : c'est la discussion qui donne le nombre de points d'intersection.",
+                "Écris les deux racines avant de choisir celle que l'énoncé demande.",
+                "Si le cercle est donné par une équation développée, commence par la mettre sous forme canonique pour lire centre et rayon.",
+                "Au Probatoire, ce calcul sert de passerelle : l'abscisse obtenue (ici un nombre lié au nombre d'or) est ensuite réutilisée pour une valeur de cosinus ou une construction. Soigne la valeur exacte et vérifie-la."
+            ]
+        }
+    ]
 }

@@ -1,29 +1,152 @@
 {
-  "cours_id": "cours-images-par-rotation-p1c-2002",
-  "meta": {
-    "titre": "Images de points et de segments par une rotation",
-    "matiere": "Mathématiques",
-    "pays": "cm",
-    "niveau": "1ere",
-    "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
-    "savoir_officiel": {
-      "classe": "1ere",
-      "serie_label": "C-E",
-      "module_numero": "23",
-      "savoir_numero": "IV"
+    "cours_id": "cours-images-par-rotation-p1c-2002",
+    "meta": {
+        "titre": "Images de points et de segments par une rotation",
+        "matiere": "Mathématiques",
+        "pays": "cm",
+        "niveau": "1ere",
+        "serie": "C, E",
+        "sous_theme": "Transformations du plan",
+        "duree_estimee_min": 25,
+        "tags": [
+            "rotation",
+            "image d'un point",
+            "image d'un segment",
+            "carré",
+            "conservation des longueurs"
+        ],
+        "savoir_officiel": {
+            "classe": "1ere",
+            "serie_label": "C-E",
+            "module_numero": "23",
+            "savoir_numero": "IV"
+        },
+        "statut": "brouillon"
     },
-    "statut": "brouillon"
-  },
-  "source": {
-    "epreuve_id": "probatoire-c-e-maths-2002-cameroun",
-    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2002 (Cameroun)",
-    "exercice_numero": "3",
-    "rappel_id": "rdm-probatoire-c-e-maths-2002-cameroun-ex3-qa1c-3",
-    "rappels_lies": [],
-    "correction_id": null
-  },
-  "sections": []
+    "source": {
+        "epreuve_id": "probatoire-c-e-maths-2002-cameroun",
+        "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2002 (Cameroun)",
+        "exercice_numero": "3",
+        "rappel_id": "rdm-probatoire-c-e-maths-2002-cameroun-ex3-qa1c-3",
+        "rappels_lies": [],
+        "correction_id": null
+    },
+    "sections": [
+        {
+            "type": "accroche",
+            "contenu_markdown": "Fais tourner une feuille carrée d'un quart de tour autour de son centre : elle se superpose exactement à sa position de départ, mais chaque coin a pris la place du coin voisin. Cette idée très simple est la clé de nombreux problèmes de géométrie : au lieu de calculer des longueurs et des angles un par un, on dit simplement où la rotation envoie chaque point. Ce cours t'apprend à construire ce tableau de correspondance et à justifier chaque case."
+        },
+        {
+            "type": "prerequis",
+            "items": [
+                "La définition d'une rotation de centre $O$ et d'angle $\\theta$",
+                "Les angles orientés et le sens direct (sens inverse des aiguilles d'une montre)",
+                "Les propriétés du carré : diagonales de même longueur, perpendiculaires, se coupant en leur milieu"
+            ]
+        },
+        {
+            "type": "regle",
+            "titre": "Déterminer l'image d'un point ou d'un segment par une rotation",
+            "contenu_markdown": "Une rotation $r$ de centre $O$ et d'angle $\\theta$ laisse $O$ invariant et envoie tout autre point $M$ sur le point $M'$ tel que $OM'=OM$ et $\\left(\\overrightarrow{OM},\\overrightarrow{OM'}\\right)=\\theta$.\n\nTrois propriétés suffisent pour la plupart des exercices :\n\n- une rotation **conserve les distances** : $r(A)r(B)=AB$ ;\n- l'image d'un segment $[AB]$ est le segment $[r(A)\\,r(B)]$ ;\n- si $M\\in[AB]$, alors $r(M)\\in[r(A)\\,r(B)]$ et $r(A)\\,r(M)=AM$ : le point garde sa distance **à l'extrémité correspondante**.\n\nDans un carré direct $ABCD$ de centre $O$, la rotation de centre $O$ qui envoie $A$ sur $B$ est d'angle $\\dfrac{\\pi}{2}$ et décale chaque sommet d'un cran dans le sens direct :\n\n$$A\\longrightarrow B\\longrightarrow C\\longrightarrow D\\longrightarrow A$$",
+            "formule_principale": "r(A)\\,r(M)=AM\\quad\\text{et}\\quad r([AB])=[r(A)\\,r(B)]",
+            "variantes": []
+        },
+        {
+            "type": "exemple_resolu",
+            "enonce_markdown": "Dans le plan orienté, $ABCD$ est un carré de centre $O$ tel que $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right)=\\dfrac{\\pi}{2}$. Les points $E$, $F$, $G$, $H$ sont sur $[AB]$, $[BC]$, $[CD]$, $[DA]$ avec $AE=BF=CG=DH=2\\ \\text{cm}$. Soit $r$ la rotation de centre $O$ qui transforme $A$ en $B$. Compléter le tableau des images par $r$ de $B$, $C$, $D$, $[AB]$ et $E$.",
+            "epreuve_source": true,
+            "etapes": [
+                {
+                    "numero": 1,
+                    "action": "Déterminer l'angle de $r$",
+                    "justification": "Les diagonales d'un carré ont même longueur et se coupent en leur milieu $O$, donc $OA=OB$. Elles sont perpendiculaires et $ABCD$ est direct, donc $\\left(\\overrightarrow{OA},\\overrightarrow{OB}\\right)=\\dfrac{\\pi}{2}$.",
+                    "resultat_markdown": "$r$ est la rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$."
+                },
+                {
+                    "numero": 2,
+                    "action": "Images des sommets",
+                    "justification": "Le même raisonnement vaut pour chaque couple de sommets consécutifs : $OB=OC$, $\\left(\\overrightarrow{OB},\\overrightarrow{OC}\\right)=\\dfrac{\\pi}{2}$, etc.",
+                    "resultat_markdown": "$r(B)=C$, $r(C)=D$, $r(D)=A$."
+                },
+                {
+                    "numero": 3,
+                    "action": "Image du segment $[AB]$",
+                    "justification": "L'image d'un segment est le segment joignant les images des extrémités.",
+                    "resultat_markdown": "$r([AB])=[r(A)\\,r(B)]=[BC]$."
+                },
+                {
+                    "numero": 4,
+                    "action": "Localiser $r(E)$",
+                    "justification": "$E\\in[AB]$, donc $r(E)\\in[BC]$. La rotation conserve les distances et $r(A)=B$ : $r(A)\\,r(E)=AE$.",
+                    "resultat_markdown": "$B\\,r(E)=AE=2$ cm, donc $r(E)$ est le point de $[BC]$ à $2$ cm de $B$."
+                },
+                {
+                    "numero": 5,
+                    "action": "Identifier $r(E)$",
+                    "justification": "Par définition, $F$ est le point de $[BC]$ tel que $BF=AE=2$ cm.",
+                    "resultat_markdown": "Le point de $[BC]$ situé à $2$ cm de $B$ est $F$, donc $r(E)=F$."
+                },
+                {
+                    "numero": 6,
+                    "action": "Remplir le tableau",
+                    "justification": "On reporte les résultats.",
+                    "resultat_markdown": "| Objet | $B$ | $C$ | $D$ | $[AB]$ | $E$ |\n|---|---|---|---|---|---|\n| Image par $r$ | $C$ | $D$ | $A$ | $[BC]$ | $F$ |"
+                }
+            ],
+            "conclusion_markdown": "En appliquant le même raisonnement à $F$, $G$ et $H$ : $r(E)=F$, $r(F)=G$, $r(G)=H$, $r(H)=E$. Le quadrilatère $EFGH$ est globalement invariant par $r$."
+        },
+        {
+            "type": "erreurs_classiques",
+            "items": [
+                {
+                    "erreur_markdown": "Inverser le sens : écrire $r(B)=A$ et $r(C)=B$.",
+                    "pourquoi_faux": "L'énoncé impose $r(A)=B$ avec $ABCD$ direct, donc $r$ tourne **dans le sens direct** : $A\\to B\\to C\\to D\\to A$. Écrire $r(B)=A$ revient à utiliser la rotation réciproque, d'angle $-\\dfrac{\\pi}{2}$.",
+                    "correction_markdown": "Pars toujours de l'information donnée ($r(A)=B$), repère le sens, puis fais avancer le cycle d'un cran."
+                },
+                {
+                    "erreur_markdown": "Placer $r(E)$ à $2$ cm de $C$ au lieu de $B$.",
+                    "pourquoi_faux": "La distance se conserve entre points correspondants. Comme $r(A)=B$, la distance $AE$ se retrouve entre $B$ et $r(E)$, pas entre $C$ et $r(E)$. Partir de la mauvaise extrémité donne un autre point de $[BC]$, qui n'est en général pas $F$.",
+                    "correction_markdown": "Écris l'égalité $r(A)\\,r(E)=AE$ avec les noms des points : elle te dit quelle extrémité de $[BC]$ sert de départ."
+                },
+                {
+                    "erreur_markdown": "Dire que le centre $O$ est déplacé, ou écrire $r(O)=A$.",
+                    "pourquoi_faux": "Le centre d'une rotation est son **seul point invariant** : $r(O)=O$. Il n'a aucune raison de changer de place, alors que tous les autres points tournent autour de lui.",
+                    "correction_markdown": "Quand un point se trouve sur l'axe de rotation, sa distance au centre est nulle et il ne bouge pas."
+                }
+            ]
+        },
+        {
+            "type": "exercices_application",
+            "items": [
+                {
+                    "numero": 1,
+                    "difficulte": "facile",
+                    "enonce_markdown": "Soit $ABCD$ un carré direct de centre $O$ et $r$ la rotation de centre $O$ qui envoie $A$ sur $B$. Donner les images par $r$ de $C$, $D$, $[BC]$ et $[CD]$.",
+                    "solution_markdown": "$r$ est la rotation d'angle $\\dfrac{\\pi}{2}$ de centre $O$ : $A\\to B\\to C\\to D\\to A$.\n\nDonc $r(C)=D$ et $r(D)=A$.\n\nPour les segments, on prend les images des extrémités : $r([BC])=[r(B)\\,r(C)]=[CD]$ et $r([CD])=[r(C)\\,r(D)]=[DA]$."
+                },
+                {
+                    "numero": 2,
+                    "difficulte": "moyen",
+                    "enonce_markdown": "Avec les mêmes données, $I$ est le milieu de $[AB]$. Déterminer $r(I)$, puis l'image de $I$ par $r$ appliquée deux fois ($r\\circ r$). Que remarque-t-on ?",
+                    "solution_markdown": "$I\\in[AB]$ donc $r(I)\\in[BC]$ et $B\\,r(I)=r(A)\\,r(I)=AI=\\dfrac{AB}{2}$ : $r(I)$ est le milieu de $[BC]$.\n\nAppliquons $r$ une seconde fois : $r(B)=C$ et $r(r(I))\\in r([BC])=[CD]$, avec $C\\,r(r(I))=B\\,r(I)=\\dfrac{AB}{2}$. Le point $r(r(I))$ est donc le milieu de $[CD]$.\n\nRemarque : $I$ et le milieu de $[CD]$ sont symétriques par rapport à $O$. Appliquer $r$ deux fois revient à tourner de $\\dfrac{\\pi}{2}+\\dfrac{\\pi}{2}=\\pi$, c'est-à-dire à faire la symétrie centrale de centre $O$."
+                },
+                {
+                    "numero": 3,
+                    "difficulte": "approfondissement",
+                    "enonce_markdown": "Avec $AB=6\\ \\text{cm}$ et $AE=BF=CG=DH=2\\ \\text{cm}$, montrer que $EFGH$ est un carré, puis calculer son côté et son aire.",
+                    "solution_markdown": "D'après l'exemple, $r(E)=F$, $r(F)=G$, $r(G)=H$, $r(H)=E$. Comme $r(O)=O$ et que $r$ conserve les distances, $OE=OF=OG=OH$.\n\nAppliquée deux fois, $r$ est la symétrie centrale de centre $O$ : $r(r(E))=G$, donc $O$ est le milieu de $[EG]$. De même $O$ est le milieu de $[FH]$.\n\nLes diagonales $[EG]$ et $[FH]$ ont donc le même milieu $O$ et la même longueur ($EG=2\\,OE=2\\,OF=FH$). Elles sont perpendiculaires, car $\\left(\\overrightarrow{OE},\\overrightarrow{OF}\\right)=\\dfrac{\\pi}{2}$. Un quadrilatère dont les diagonales ont même milieu, même longueur et sont perpendiculaires est un carré : $EFGH$ est un carré.\n\nCôté : $EB=AB-AE=6-2=4$ cm et $BF=2$ cm. Le triangle $EBF$ est rectangle en $B$, donc $EF^2=4^2+2^2=20$ et $EF=2\\sqrt{5}\\ \\text{cm}\\approx4{,}47\\ \\text{cm}$.\n\nAire : $EF^2=20\\ \\text{cm}^2$. Contrôle : $36-4\\times\\left(\\dfrac12\\times4\\times2\\right)=36-16=20\\ \\text{cm}^2$."
+                }
+            ]
+        },
+        {
+            "type": "synthese",
+            "items_markdown": [
+                "Une rotation conserve les distances : c'est l'outil qui justifie chaque case du tableau.",
+                "Le centre est invariant : $r(O)=O$. Tous les autres points tournent.",
+                "Pour un point $M$ d'un segment $[AB]$, mesure la distance depuis l'extrémité **correspondante** : $r(A)\\,r(M)=AM$.",
+                "Dans un carré direct, la rotation de centre $O$ qui envoie $A$ sur $B$ est d'angle $\\dfrac{\\pi}{2}$ et fait avancer le cycle $A\\to B\\to C\\to D\\to A$.",
+                "Au Probatoire, ce tableau sert de point de départ pour démontrer qu'une figure (ici $EFGH$) est un carré ou pour trouver un lieu de points. Rédige chaque image avec sa justification : le barème la valorise."
+            ]
+        }
+    ]
 }

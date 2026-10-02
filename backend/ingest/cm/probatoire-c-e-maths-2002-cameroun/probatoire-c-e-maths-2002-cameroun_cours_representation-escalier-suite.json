@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Suites numériques récurrentes",
+    "duree_estimee_min": 30,
+    "tags": [
+      "suite récurrente",
+      "représentation graphique",
+      "escalier",
+      "point fixe",
+      "convergence"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,121 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par $U_{n+1}=f(U_n)$ ne donne pas ses termes d'un seul coup : chacun dépend du précédent. Calculer les premiers termes est utile, mais voir la suite évoluer l'est davantage. Une construction en escalier sur la courbe de $f$ place les termes sur un axe sans en calculer aucun, et montre d'un coup d'œil si la suite monte, descend ou se rapproche d'une valeur. Ce cours t'apprend à la tracer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Suite définie par récurrence $U_{n+1}=f(U_n)$",
+        "Représentation graphique d'une fonction affine",
+        "Lecture d'abscisses et d'ordonnées dans un repère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La construction en escalier",
+      "contenu_markdown": "On trace dans un même repère :\n\n- la droite $(D)$ d'équation $y=f(x)$ ;\n- la droite $(\\Delta)$ d'équation $y=x$ (première bissectrice).\n\n**Construction.**\n\n1. Placer $U_0$ sur l'axe des abscisses.\n2. Monter verticalement jusqu'à $(D)$ : on atteint le point $(U_0\\,;U_1)$, car $f(U_0)=U_1$.\n3. Aller horizontalement jusqu'à $(\\Delta)$ : on atteint $(U_1\\,;U_1)$. La valeur $U_1$ est maintenant reportée en abscisse.\n4. Remonter verticalement jusqu'à $(D)$ pour obtenir $U_2$, et recommencer.\n\nLe **point fixe** $\\ell$, solution de $f(\\ell)=\\ell$, est l'intersection de $(D)$ et de $(\\Delta)$ : c'est la valeur vers laquelle la suite peut se rapprocher.",
+      "formule_principale": "U_{n+1}=f(U_n) \\ :\\ \\text{(monter jusqu'à } y=f(x)\\text{, aller jusqu'à } y=x\\text{)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La suite $(U_n)$ est définie par $U_0=4$ et $U_{n+1}=\\dfrac{1}{3}U_n+\\dfrac{2}{3}$. Représenter graphiquement les quatre premiers termes $U_0$, $U_1$, $U_2$, $U_3$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la fonction",
+          "justification": "La relation est $U_{n+1}=f(U_n)$ avec $f$ affine.",
+          "resultat_markdown": "$f(x)=\\dfrac{1}{3}x+\\dfrac{2}{3}$"
+        },
+        {
+          "numero": 2,
+          "action": "Tracer $(D)$ : $y=f(x)$",
+          "justification": "Deux points suffisent : $f(0)=\\dfrac{2}{3}$ et $f(1)=\\dfrac{1}{3}+\\dfrac{2}{3}=1$.",
+          "resultat_markdown": "$(D)$ passe par $\\left(0\\,;\\dfrac{2}{3}\\right)$ et $(1\\,;1)$"
+        },
+        {
+          "numero": 3,
+          "action": "Tracer $(\\Delta)$ : $y=x$",
+          "justification": "Droite passant par l'origine, qui coupe $(D)$ au point fixe.",
+          "resultat_markdown": "$f(x)=x \\iff \\dfrac{2}{3}x=\\dfrac{2}{3} \\iff x=1$ : intersection en $(1\\,;1)$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les termes pour contrôler le dessin",
+          "justification": "On applique la récurrence trois fois.",
+          "resultat_markdown": "$U_1=\\dfrac{4}{3}+\\dfrac{2}{3}=2$, $U_2=\\dfrac{2}{3}+\\dfrac{2}{3}=\\dfrac{4}{3}$, $U_3=\\dfrac{4}{9}+\\dfrac{6}{9}=\\dfrac{10}{9}$"
+        },
+        {
+          "numero": 5,
+          "action": "Construire en escalier",
+          "justification": "On part de $(4\\,;0)$, on monte jusqu'à $(D)$, on va jusqu'à $(\\Delta)$, et on répète.",
+          "resultat_markdown": "$(4\\,;0)\\to(4\\,;2)\\to(2\\,;2)\\to\\left(2\\,;\\dfrac{4}{3}\\right)\\to\\left(\\dfrac{4}{3}\\,;\\dfrac{4}{3}\\right)\\to\\left(\\dfrac{4}{3}\\,;\\dfrac{10}{9}\\right)\\to\\left(\\dfrac{10}{9}\\,;\\dfrac{10}{9}\\right)$"
+        },
+        {
+          "numero": 6,
+          "action": "Lire les termes sur l'axe des abscisses",
+          "justification": "Les abscisses des points de la forme $(U_n\\,;U_n)$ sur $(\\Delta)$ sont les termes.",
+          "resultat_markdown": "$U_0=4$, $U_1=2$, $U_2\\approx1{,}33$, $U_3\\approx1{,}11$"
+        }
+      ],
+      "conclusion_markdown": "Les quatre premiers termes valent $4$, $2$, $\\dfrac{4}{3}$, $\\dfrac{10}{9}$. L'escalier descend et se resserre vers le point fixe $\\ell=1$ : la suite semble décroissante et se rapprocher de $1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Aller horizontalement jusqu'à $(D)$ et verticalement jusqu'à $(\\Delta)$ (sens inversé).",
+          "pourquoi_faux": "Un terme est une ordonnée sur $(D)$ puisque $U_{n+1}=f(U_n)$. Il faut monter d'abord à $(D)$ pour lire $U_{n+1}$, puis aller à $(\\Delta)$ pour le reporter en abscisse. Dans l'ordre inverse la construction ne représente pas la récurrence.",
+          "correction_markdown": "Retiens : vertical jusqu'à la courbe, horizontal jusqu'à $y=x$."
+        },
+        {
+          "erreur_markdown": "Confondre les termes avec les points de $(D)$ au lieu de lire les abscisses sur l'axe.",
+          "pourquoi_faux": "Sur $(D)$, on lit $U_{n+1}$ en ordonnée au-dessus de l'abscisse $U_n$. Les termes se placent proprement sur l'axe des abscisses après report par $(\\Delta)$.",
+          "correction_markdown": "Marque chaque $U_n$ sur l'axe horizontal à la verticale du point $(U_n\\,;U_n)$."
+        },
+        {
+          "erreur_markdown": "Oublier de tracer $(\\Delta)$ ou de la nommer.",
+          "pourquoi_faux": "Sans cette droite, aucun report n'est possible : l'escalier devient une succession de segments sans sens.",
+          "correction_markdown": "Trace $y=x$ en premier, avec une couleur différente."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La suite $(u_n)$ est définie par $u_0=0$ et $u_{n+1}=\\dfrac{1}{2}u_n+1$. Calculer $u_1$, $u_2$, $u_3$ et déterminer le point fixe de $f(x)=\\dfrac{1}{2}x+1$.",
+          "solution_markdown": "**Étape 1.** $u_1=\\dfrac{1}{2}\\times0+1=1$.\n\n**Étape 2.** $u_2=\\dfrac{1}{2}\\times1+1=\\dfrac{3}{2}$.\n\n**Étape 3.** $u_3=\\dfrac{1}{2}\\times\\dfrac{3}{2}+1=\\dfrac{3}{4}+1=\\dfrac{7}{4}$.\n\n**Étape 4.** Point fixe : $\\dfrac{1}{2}x+1=x$ donne $\\dfrac{1}{2}x=1$, donc $x=2$. Les termes croissent vers $2$ : $0$, $1$, $1{,}5$, $1{,}75$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La suite $(v_n)$ est définie par $v_0=0$ et $v_{n+1}=-\\dfrac{1}{2}v_n+3$. Calculer $v_1$ à $v_4$, déterminer le point fixe et décrire l'allure de la construction.",
+          "solution_markdown": "**Étape 1.** $v_1=3$. $v_2=-\\dfrac{3}{2}+3=\\dfrac{3}{2}$. $v_3=-\\dfrac{3}{4}+3=\\dfrac{9}{4}$. $v_4=-\\dfrac{9}{8}+3=\\dfrac{15}{8}$.\n\n**Étape 2.** Point fixe : $-\\dfrac{1}{2}x+3=x$ donne $\\dfrac{3}{2}x=3$, donc $x=2$.\n\n**Étape 3.** Termes : $0$, $3$, $1{,}5$, $2{,}25$, $1{,}875$. Ils se placent alternativement de part et d'autre de $2$ en se resserrant.\n\n**Étape 4.** Comme la pente de $(D)$ est négative, la construction forme un « colimaçon » (spirale carrée) autour du point $(2\\,;2)$, au lieu d'un escalier."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La suite $(w_n)$ est définie par $w_0=5$ et $w_{n+1}=\\dfrac{1}{2}w_n+1$. (1) Calculer $w_1,w_2,w_3$ et conjecturer le comportement. (2) Montrer que $z_n=w_n-2$ est géométrique, en déduire $w_n$ et sa limite. (3) À partir de quel rang $w_n-2<0{,}01$ ?",
+          "solution_markdown": "**(1)** $w_1=\\dfrac{5}{2}+1=3{,}5$, $w_2=1{,}75+1=2{,}75$, $w_3=1{,}375+1=2{,}375$. La suite semble décroître vers le point fixe $2$.\n\n**(2)** $z_{n+1}=w_{n+1}-2=\\dfrac{1}{2}w_n+1-2=\\dfrac{1}{2}w_n-1=\\dfrac{1}{2}(w_n-2)=\\dfrac{1}{2}z_n$. La suite $(z_n)$ est géométrique de raison $\\dfrac{1}{2}$ et de premier terme $z_0=3$. Donc $z_n=3\\left(\\dfrac{1}{2}\\right)^n$ et $w_n=2+\\dfrac{3}{2^n}$. Contrôle : $w_3=2+\\dfrac{3}{8}=2{,}375$. Comme $\\dfrac{1}{2^n}\\to0$, $w_n\\to2$.\n\n**(3)** $w_n-2=\\dfrac{3}{2^n}<0{,}01$ équivaut à $2^n>300$. Or $2^8=256<300$ et $2^9=512>300$ : à partir de $n=9$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une suite $U_{n+1}=f(U_n)$, trace $y=f(x)$ et $y=x$ : la deuxième droite sert à reporter chaque terme en abscisse.",
+        "Construction : vertical jusqu'à la courbe, horizontal jusqu'à la bissectrice, et on recommence.",
+        "Le point fixe est l'abscisse de l'intersection des deux droites : $f(\\ell)=\\ell$.",
+        "Calcule deux ou trois termes en parallèle pour contrôler ton dessin.",
+        "Au Probatoire, la représentation graphique précède l'étude de la suite auxiliaire $V_n=U_n-\\ell$, qui est géométrique."
+      ]
+    }
+  ]
 }

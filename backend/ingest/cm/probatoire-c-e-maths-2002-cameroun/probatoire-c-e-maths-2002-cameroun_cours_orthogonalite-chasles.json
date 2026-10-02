@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Produit scalaire dans le plan",
+    "duree_estimee_min": 30,
+    "tags": [
+      "produit scalaire",
+      "relation de Chasles",
+      "orthogonalité",
+      "carré",
+      "vecteurs"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux droites paraissent perpendiculaires sur un dessin, mais un dessin n'est pas une preuve. Le produit scalaire en donne une : deux vecteurs sont orthogonaux exactement quand leur produit scalaire est nul. Le travail consiste à exprimer chaque vecteur à l'aide de côtés dont on connaît les directions, et c'est la relation de Chasles qui le permet. Ce cours te montre comment mener ce calcul sans te perdre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation de Chasles : $\\overrightarrow{AC}=\\overrightarrow{AB}+\\overrightarrow{BC}$",
+        "Produit scalaire et caractérisation de l'orthogonalité : $\\vec u\\cdot\\vec v=0$",
+        "Développer un produit scalaire : $\\vec u\\cdot(\\vec v+\\vec w)=\\vec u\\cdot\\vec v+\\vec u\\cdot\\vec w$",
+        "Propriétés du carré : côtés consécutifs orthogonaux, côtés opposés parallèles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Démontrer une orthogonalité par Chasles",
+      "contenu_markdown": "**Procédure en quatre temps.**\n\n1. Décomposer chaque vecteur par la relation de Chasles en passant par un sommet du carré situé entre ses extrémités.\n2. Développer le produit scalaire : on obtient une somme de produits de vecteurs portés par des côtés du carré.\n3. Évaluer chaque produit : il vaut $0$ si les côtés sont orthogonaux, et $\\pm$ le produit des longueurs si les vecteurs sont colinéaires (signe $+$ même sens, signe $-$ sens contraires).\n4. Additionner et conclure : un total nul prouve que les vecteurs sont orthogonaux.",
+      "formule_principale": "\\vec u\\cdot\\vec v=0 \\iff \\vec u\\perp\\vec v"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un carré de côté $c$. Les points $E,F,G,H$ sont sur $[AB],[BC],[CD],[DA]$ avec $AE=BF=CG=DH=a$. En utilisant la relation de Chasles, démontrer que $\\overrightarrow{EF}\\cdot\\overrightarrow{FG}=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décomposer $\\overrightarrow{EF}$",
+          "justification": "On passe par $B$, sommet entre $E$ et $F$.",
+          "resultat_markdown": "$\\overrightarrow{EF}=\\overrightarrow{EB}+\\overrightarrow{BF}$"
+        },
+        {
+          "numero": 2,
+          "action": "Décomposer $\\overrightarrow{FG}$",
+          "justification": "On passe par $C$.",
+          "resultat_markdown": "$\\overrightarrow{FG}=\\overrightarrow{FC}+\\overrightarrow{CG}$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer le produit",
+          "justification": "On distribue les deux sommes.",
+          "resultat_markdown": "$\\overrightarrow{EF}\\cdot\\overrightarrow{FG}=\\overrightarrow{EB}\\cdot\\overrightarrow{FC}+\\overrightarrow{EB}\\cdot\\overrightarrow{CG}+\\overrightarrow{BF}\\cdot\\overrightarrow{FC}+\\overrightarrow{BF}\\cdot\\overrightarrow{CG}$"
+        },
+        {
+          "numero": 4,
+          "action": "Termes orthogonaux",
+          "justification": "$\\overrightarrow{EB}$ est porté par $(AB)$ et $\\overrightarrow{FC}$ par $(BC)$ ; $\\overrightarrow{BF}$ est porté par $(BC)$ et $\\overrightarrow{CG}$ par $(CD)$. Or $(AB)\\perp(BC)$ et $(BC)\\perp(CD)$.",
+          "resultat_markdown": "$\\overrightarrow{EB}\\cdot\\overrightarrow{FC}=0$ et $\\overrightarrow{BF}\\cdot\\overrightarrow{CG}=0$"
+        },
+        {
+          "numero": 5,
+          "action": "Termes colinéaires, sens contraires",
+          "justification": "$EB=c-a$ et $CG=a$. $\\overrightarrow{EB}$ va de $A$ vers $B$ et $\\overrightarrow{CG}$ va de $C$ vers $D$, donc en sens contraires.",
+          "resultat_markdown": "$\\overrightarrow{EB}\\cdot\\overrightarrow{CG}=-(c-a)a$"
+        },
+        {
+          "numero": 6,
+          "action": "Termes colinéaires, même sens",
+          "justification": "$BF=a$ et $FC=c-a$, tous deux dirigés de $B$ vers $C$.",
+          "resultat_markdown": "$\\overrightarrow{BF}\\cdot\\overrightarrow{FC}=a(c-a)$"
+        },
+        {
+          "numero": 7,
+          "action": "Additionner",
+          "justification": "On regroupe les quatre produits.",
+          "resultat_markdown": "$\\overrightarrow{EF}\\cdot\\overrightarrow{FG}=0-(c-a)a+a(c-a)+0=0$"
+        }
+      ],
+      "conclusion_markdown": "Le produit scalaire est nul : $\\overrightarrow{EF}\\perp\\overrightarrow{FG}$, donc l'angle $\\widehat{EFG}$ est droit. Test numérique avec $c=5$ et $a=2$ : $-3\\times2+2\\times3=0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier un signe : écrire $\\overrightarrow{EB}\\cdot\\overrightarrow{CG}=(c-a)a$.",
+          "pourquoi_faux": "Les vecteurs $\\overrightarrow{EB}$ et $\\overrightarrow{CG}$ sont de sens contraires. Leur produit scalaire est négatif. Avec le mauvais signe, la somme vaut $2a(c-a)$ au lieu de $0$ et la démonstration s'effondre.",
+          "correction_markdown": "Repère le sens de chaque vecteur sur la figure avant d'attribuer le signe."
+        },
+        {
+          "erreur_markdown": "Considérer que $\\overrightarrow{EB}\\cdot\\overrightarrow{FC}=(c-a)^2$ parce que « ce sont des côtés ».",
+          "pourquoi_faux": "Ils sont portés par deux côtés consécutifs du carré, donc perpendiculaires. Le produit scalaire de deux vecteurs orthogonaux est nul.",
+          "correction_markdown": "Identifie à chaque fois la droite porteuse de chaque vecteur et compare les directions."
+        },
+        {
+          "erreur_markdown": "Remplacer la décomposition par des longueurs : « $EF\\times FG=0$ ».",
+          "pourquoi_faux": "Le produit scalaire n'est pas le produit des longueurs. Il tient compte de l'angle : $\\vec u\\cdot\\vec v=\\|\\vec u\\|\\|\\vec v\\|\\cos\\theta$.",
+          "correction_markdown": "Garde des vecteurs avec leur flèche tout au long du calcul, jusqu'à l'évaluation des produits."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABCD$ est un carré de côté $4$. En utilisant la relation de Chasles, démontrer que $(AC)\\perp(BD)$.",
+          "solution_markdown": "**Étape 1.** $\\overrightarrow{AC}=\\overrightarrow{AB}+\\overrightarrow{BC}$ et $\\overrightarrow{BD}=\\overrightarrow{BA}+\\overrightarrow{AD}$.\n\n**Étape 2.** Développement : $\\overrightarrow{AC}\\cdot\\overrightarrow{BD}=\\overrightarrow{AB}\\cdot\\overrightarrow{BA}+\\overrightarrow{AB}\\cdot\\overrightarrow{AD}+\\overrightarrow{BC}\\cdot\\overrightarrow{BA}+\\overrightarrow{BC}\\cdot\\overrightarrow{AD}$.\n\n**Étape 3.** $\\overrightarrow{AB}\\cdot\\overrightarrow{BA}=-AB^2=-16$. $\\overrightarrow{AB}\\cdot\\overrightarrow{AD}=0$ et $\\overrightarrow{BC}\\cdot\\overrightarrow{BA}=0$ (côtés consécutifs). $\\overrightarrow{BC}=\\overrightarrow{AD}$, donc $\\overrightarrow{BC}\\cdot\\overrightarrow{AD}=AD^2=16$.\n\n**Étape 4.** Somme : $-16+0+0+16=0$. Les diagonales sont perpendiculaires."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABCD$ est un carré de côté $c$. $I$ est le milieu de $[BC]$ et $J$ le milieu de $[CD]$. Démontrer que $(AI)\\perp(BJ)$.",
+          "solution_markdown": "**Étape 1.** $\\overrightarrow{AI}=\\overrightarrow{AB}+\\overrightarrow{BI}=\\overrightarrow{AB}+\\dfrac{1}{2}\\overrightarrow{BC}$.\n\n**Étape 2.** $\\overrightarrow{BJ}=\\overrightarrow{BC}+\\overrightarrow{CJ}$. Comme $J$ est le milieu de $[CD]$ et $\\overrightarrow{CD}=-\\overrightarrow{AB}$, $\\overrightarrow{CJ}=-\\dfrac{1}{2}\\overrightarrow{AB}$. Donc $\\overrightarrow{BJ}=\\overrightarrow{BC}-\\dfrac{1}{2}\\overrightarrow{AB}$.\n\n**Étape 3.** Produit : $\\overrightarrow{AI}\\cdot\\overrightarrow{BJ}=\\overrightarrow{AB}\\cdot\\overrightarrow{BC}-\\dfrac{1}{2}AB^2+\\dfrac{1}{2}BC^2-\\dfrac{1}{4}\\overrightarrow{BC}\\cdot\\overrightarrow{AB}$.\n\n**Étape 4.** $\\overrightarrow{AB}\\cdot\\overrightarrow{BC}=0$, $AB^2=BC^2=c^2$. Donc $0-\\dfrac{c^2}{2}+\\dfrac{c^2}{2}-0=0$ : $(AI)\\perp(BJ)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABCD$ est un carré de côté $c$. $E,F,G,H$ sont sur $[AB],[BC],[CD],[DA]$ avec $AE=BF=CG=DH=a$. Démontrer que les diagonales $[EG]$ et $[FH]$ de $EFGH$ sont perpendiculaires et de même longueur. Calculer cette longueur pour $c=5$ et $a=2$.",
+          "solution_markdown": "**Étape 1.** On note $\\vec u=\\dfrac{1}{c}\\overrightarrow{AB}$ et $\\vec v=\\dfrac{1}{c}\\overrightarrow{AD}$ : base orthonormée, $\\vec u\\cdot\\vec v=0$.\n\n**Étape 2.** Chasles : $\\overrightarrow{EG}=\\overrightarrow{EB}+\\overrightarrow{BC}+\\overrightarrow{CG}=(c-a)\\vec u+c\\vec v-a\\vec u=(c-2a)\\vec u+c\\vec v$.\n\n**Étape 3.** $\\overrightarrow{FH}=\\overrightarrow{FC}+\\overrightarrow{CD}+\\overrightarrow{DH}=(c-a)\\vec v-c\\vec u-a\\vec v=-c\\vec u+(c-2a)\\vec v$.\n\n**Étape 4.** Produit : $\\overrightarrow{EG}\\cdot\\overrightarrow{FH}=-c(c-2a)+c(c-2a)=0$ : perpendiculaires.\n\n**Étape 5.** Normes : $EG^2=(c-2a)^2+c^2=FH^2$ : même longueur.\n\n**Étape 6.** Pour $c=5$, $a=2$ : $EG^2=1+25=26$, donc $EG=FH=\\sqrt{26}$.\n\nVérification : $EFGH$ est un carré de côté $\\sqrt{13}$ et sa diagonale vaut $\\sqrt{13}\\times\\sqrt2=\\sqrt{26}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prouver une orthogonalité, calcule un produit scalaire et montre qu'il est nul : c'est l'équivalence $\\vec u\\cdot\\vec v=0\\iff\\vec u\\perp\\vec v$.",
+        "La relation de Chasles sert à découper chaque vecteur en morceaux portés par les côtés du carré.",
+        "Deux côtés consécutifs donnent un produit nul ; deux vecteurs colinéaires donnent $\\pm$ le produit des longueurs, le signe dépend du sens.",
+        "Vérifie ton résultat sur des valeurs numériques simples avant de conclure.",
+        "Au Probatoire, cette méthode ouvre souvent le problème de géométrie : la question suivante en tire la nature d'un quadrilatère."
+      ]
+    }
+  ]
 }

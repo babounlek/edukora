@@ -1,29 +1,153 @@
 {
-  "cours_id": "cours-limites-fonction-homographique-p1c-2000",
-  "meta": {
-    "titre": "Limites d'une fonction homographique : à l'infini et en la valeur interdite",
-    "matiere": "Mathématiques",
-    "pays": "cm",
-    "niveau": "1ere",
-    "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
-    "savoir_officiel": {
-      "classe": "1ere",
-      "serie_label": "C-E",
-      "module_numero": "21",
-      "savoir_numero": "V"
+    "cours_id": "cours-limites-fonction-homographique-p1c-2000",
+    "meta": {
+        "titre": "Limites d'une fonction homographique : à l'infini et en la valeur interdite",
+        "matiere": "Mathématiques",
+        "pays": "cm",
+        "niveau": "1ere",
+        "serie": "C, E",
+        "sous_theme": "Limites et asymptotes",
+        "duree_estimee_min": 28,
+        "tags": [
+            "fonction homographique",
+            "limite à l'infini",
+            "asymptote horizontale",
+            "asymptote verticale",
+            "signe du dénominateur"
+        ],
+        "savoir_officiel": {
+            "classe": "1ere",
+            "serie_label": "C-E",
+            "module_numero": "21",
+            "savoir_numero": "V"
+        },
+        "statut": "brouillon"
     },
-    "statut": "brouillon"
-  },
-  "source": {
-    "epreuve_id": "probatoire-c-e-maths-2000-cameroun",
-    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2000 (Cameroun)",
-    "exercice_numero": "1",
-    "rappel_id": "rdm-probatoire-c-e-maths-2000-cameroun-ex1-q1a-1",
-    "rappels_lies": [],
-    "correction_id": null
-  },
-  "sections": []
+    "source": {
+        "epreuve_id": "probatoire-c-e-maths-2000-cameroun",
+        "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2000 (Cameroun)",
+        "exercice_numero": "1",
+        "rappel_id": "rdm-probatoire-c-e-maths-2000-cameroun-ex1-q1a-1",
+        "rappels_lies": [],
+        "correction_id": null
+    },
+    "sections": [
+        {
+            "type": "accroche",
+            "contenu_markdown": "Une fonction homographique comme $f(x)=\\dfrac{5x+3}{x+3}$ se comporte de deux façons très différentes selon l'endroit où tu l'examines. Loin de l'origine, elle se stabilise vers une valeur. Près de la valeur interdite $-3$, elle explose vers $+\\infty$ ou $-\\infty$. Savoir distinguer ces deux situations et décider du signe de l'infini te permet de décrire entièrement la courbe, avec ses deux asymptotes. C'est exactement ce que demande la première question de nombreux exercices du Probatoire."
+        },
+        {
+            "type": "prerequis",
+            "items": [
+                "La notion de limite finie ou infinie d'une fonction en un point et à l'infini",
+                "Mettre en facteur le terme de plus haut degré",
+                "Le tableau de signe d'une expression du premier degré",
+                "La notion d'asymptote horizontale et verticale"
+            ]
+        },
+        {
+            "type": "regle",
+            "titre": "Limites d'une fonction homographique",
+            "contenu_markdown": "Une fonction homographique s'écrit $f(x)=\\dfrac{ax+b}{cx+d}$ avec $c\\neq0$ et $ad-bc\\neq0$ (sinon elle se simplifie en une constante). Elle est définie pour $x\\neq-\\dfrac dc$, la **valeur interdite**.\n\n**À l'infini.** On compare les degrés : numérateur et dénominateur sont de degré $1$, donc la limite est le quotient des coefficients dominants. En mettant $x$ en facteur :\n\n$$f(x)=\\frac{x\\left(a+\\frac bx\\right)}{x\\left(c+\\frac dx\\right)}=\\frac{a+\\frac bx}{c+\\frac dx}\\xrightarrow[x\\to\\pm\\infty]{}\\frac ac$$\n\nLa droite $y=\\dfrac ac$ est **asymptote horizontale**.\n\n**En la valeur interdite $x_0=-\\dfrac dc$.** Le dénominateur tend vers $0$. On calcule le numérateur en $x_0$ :\n\n- s'il est **non nul**, la limite est infinie ; son signe est donné par le signe du numérateur divisé par le signe du dénominateur de chaque côté de $x_0$ ;\n- la droite $x=x_0$ est **asymptote verticale**.\n\nComme $ad-bc\\neq0$, le numérateur ne s'annule jamais en $x_0$ : il n'y a pas d'indétermination $\\dfrac00$.",
+            "formule_principale": "\\lim_{x\\to\\pm\\infty}\\dfrac{ax+b}{cx+d}=\\dfrac ac",
+            "variantes": []
+        },
+        {
+            "type": "exemple_resolu",
+            "enonce_markdown": "La fonction $f$ est définie pour $x\\neq-3$ par $f(x)=\\dfrac{5x+3}{x+3}$. Déterminer ses limites en $-\\infty$, en $+\\infty$, à gauche et à droite de $-3$.",
+            "epreuve_source": true,
+            "etapes": [
+                {
+                    "numero": 1,
+                    "action": "Vérifier la nature de la fonction",
+                    "justification": "$a=5$, $b=3$, $c=1$, $d=3$ : $ad-bc=15-3=12\\neq0$. La fonction ne se simplifie pas.",
+                    "resultat_markdown": "Valeur interdite : $-\\dfrac dc=-3$."
+                },
+                {
+                    "numero": 2,
+                    "action": "Limites à l'infini : factoriser",
+                    "justification": "On met $x$ en facteur au numérateur et au dénominateur, puis on simplifie par $x\\neq0$.",
+                    "resultat_markdown": "$f(x)=\\dfrac{x\\left(5+\\frac3x\\right)}{x\\left(1+\\frac3x\\right)}=\\dfrac{5+\\frac3x}{1+\\frac3x}$."
+                },
+                {
+                    "numero": 3,
+                    "action": "Passer à la limite",
+                    "justification": "Quand $x\\to\\pm\\infty$, $\\dfrac3x\\to0$.",
+                    "resultat_markdown": "$\\lim_{x\\to-\\infty}f(x)=\\lim_{x\\to+\\infty}f(x)=\\dfrac51=5$."
+                },
+                {
+                    "numero": 4,
+                    "action": "Numérateur en $-3$",
+                    "justification": "On évalue avant de conclure.",
+                    "resultat_markdown": "$5\\times(-3)+3=-12\\neq0$."
+                },
+                {
+                    "numero": 5,
+                    "action": "Signe du dénominateur",
+                    "justification": "On étudie $x+3$ de part et d'autre de $-3$.",
+                    "resultat_markdown": "Pour $x<-3$, $x+3\\to0^-$ ; pour $x>-3$, $x+3\\to0^+$."
+                },
+                {
+                    "numero": 6,
+                    "action": "Limites à gauche et à droite",
+                    "justification": "Un numérateur proche de $-12$ divisé par un nombre positif ou négatif très petit.",
+                    "resultat_markdown": "$\\lim_{x\\to-3^-}f(x)=\\dfrac{-12}{0^-}=+\\infty$ et $\\lim_{x\\to-3^+}f(x)=\\dfrac{-12}{0^+}=-\\infty$."
+                }
+            ],
+            "conclusion_markdown": "La droite $y=5$ est asymptote horizontale en $\\pm\\infty$ et la droite $x=-3$ est asymptote verticale, avec $+\\infty$ à gauche de $-3$ et $-\\infty$ à droite."
+        },
+        {
+            "type": "erreurs_classiques",
+            "items": [
+                {
+                    "erreur_markdown": "Conclure « $\\dfrac{\\infty}{\\infty}=1$ » ou « pas de limite » à l'infini.",
+                    "pourquoi_faux": "$\\dfrac\\infty\\infty$ est une forme indéterminée : elle peut valoir n'importe quoi. Il faut lever l'indétermination en factorisant les termes de plus haut degré. Ici le résultat est $5$, pas $1$.",
+                    "correction_markdown": "Écris la forme indéterminée, puis factorise, puis conclus. C'est exactement ce que demande la méthode au Probatoire."
+                },
+                {
+                    "erreur_markdown": "Donner $\\lim_{x\\to-3}f(x)=\\infty$ sans signe, ou le même signe des deux côtés.",
+                    "pourquoi_faux": "Le dénominateur change de signe en $-3$, donc la limite à gauche et la limite à droite sont **opposées** : $+\\infty$ d'un côté, $-\\infty$ de l'autre. Il n'y a pas de limite en $-3$ au sens strict, seulement deux limites unilatérales.",
+                    "correction_markdown": "Dresse le tableau de signe du dénominateur et du numérateur autour de la valeur interdite avant de conclure."
+                },
+                {
+                    "erreur_markdown": "Appliquer la règle sur une fonction simplifiable : pour $g(x)=\\dfrac{2x+4}{x+2}$, conclure à une asymptote verticale $x=-2$.",
+                    "pourquoi_faux": "Ici $ad-bc=2\\times2-4\\times1=0$ : le numérateur s'annule aussi en $-2$ et $g(x)=\\dfrac{2(x+2)}{x+2}=2$ pour $x\\neq-2$. La courbe est une droite horizontale privée d'un point, sans asymptote verticale, et $\\lim_{x\\to-2}g(x)=2$.",
+                    "correction_markdown": "Calcule toujours le numérateur en la valeur interdite : s'il est nul, simplifie d'abord."
+                }
+            ]
+        },
+        {
+            "type": "exercices_application",
+            "items": [
+                {
+                    "numero": 1,
+                    "difficulte": "facile",
+                    "enonce_markdown": "Déterminer les limites de $f(x)=\\dfrac{2x-1}{x+4}$ à l'infini et en $-4$ (à gauche et à droite).",
+                    "solution_markdown": "$ad-bc=2\\times4-(-1)\\times1=9\\neq0$.\n\nÀ l'infini : $f(x)=\\dfrac{2-\\frac1x}{1+\\frac4x}$, donc $\\lim_{x\\to\\pm\\infty}f(x)=2$.\n\nEn $-4$ : le numérateur vaut $2\\times(-4)-1=-9<0$. Pour $x<-4$, $x+4\\to0^-$ et $f(x)\\to\\dfrac{-9}{0^-}=+\\infty$. Pour $x>-4$, $x+4\\to0^+$ et $f(x)\\to\\dfrac{-9}{0^+}=-\\infty$."
+                },
+                {
+                    "numero": 2,
+                    "difficulte": "moyen",
+                    "enonce_markdown": "Même question pour $g(x)=\\dfrac{3x+2}{2x-6}$, définie sur $\\mathbb{R}\\setminus\\{3\\}$.",
+                    "solution_markdown": "À l'infini : $g(x)=\\dfrac{3+\\frac2x}{2-\\frac6x}$, donc $\\lim_{x\\to\\pm\\infty}g(x)=\\dfrac32$.\n\nValeur interdite $3$ (car $2x-6=0$). Numérateur en $3$ : $3\\times3+2=11>0$. Pour $x<3$, $2x-6\\to0^-$ donc $g(x)\\to\\dfrac{11}{0^-}=-\\infty$. Pour $x>3$, $2x-6\\to0^+$ donc $g(x)\\to+\\infty$."
+                },
+                {
+                    "numero": 3,
+                    "difficulte": "approfondissement",
+                    "enonce_markdown": "Soit $f(x)=\\dfrac{ax+b}{x+c}$. La courbe admet pour asymptote horizontale $y=2$ et pour asymptote verticale $x=-1$, et passe par $(0\\,;\\,3)$. Déterminer $f$, étudier ses limites en $-1$, puis la position de la courbe par rapport à son asymptote horizontale.",
+                    "solution_markdown": "Asymptote verticale $x=-1$ : le dénominateur s'annule en $-1$, donc $c=1$. Asymptote horizontale $y=\\dfrac a1=2$, donc $a=2$. Point $(0\\,;\\,3)$ : $f(0)=\\dfrac b1=3$, donc $b=3$.\n\nAinsi $f(x)=\\dfrac{2x+3}{x+1}$. On a $ad-bc=2\\times1-3\\times1=-1\\neq0$.\n\nLimites en $-1$ : numérateur $2\\times(-1)+3=1>0$. À gauche, $x+1\\to0^-$ et $f\\to-\\infty$ ; à droite, $x+1\\to0^+$ et $f\\to+\\infty$.\n\nPosition : $f(x)-2=\\dfrac{2x+3-2(x+1)}{x+1}=\\dfrac{1}{x+1}$. La courbe est au-dessus de $y=2$ pour $x>-1$ et au-dessous pour $x<-1$."
+                }
+            ]
+        },
+        {
+            "type": "synthese",
+            "items_markdown": [
+                "Une fonction homographique a deux types de comportement : à l'infini (quotient des coefficients dominants) et en la valeur interdite (limite infinie).",
+                "Ne conclus jamais sur $\\dfrac\\infty\\infty$ sans factoriser : le résultat est $\\dfrac ac$, le rapport des coefficients de $x$.",
+                "Au voisinage de la valeur interdite, calcule le numérateur, puis le signe du dénominateur de chaque côté. Les deux limites sont opposées.",
+                "Si le numérateur s'annule aussi, la fonction se simplifie : pas d'asymptote verticale.",
+                "Au Probatoire, cette question ouvre souvent l'étude d'une fonction rationnelle. Les limites donnent les asymptotes, qui structurent le tableau de variations et le tracé de la courbe."
+            ]
+        }
+    ]
 }

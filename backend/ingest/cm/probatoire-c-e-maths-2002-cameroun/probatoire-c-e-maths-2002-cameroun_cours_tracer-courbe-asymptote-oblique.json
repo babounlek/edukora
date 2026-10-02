@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Fonctions rationnelles",
+    "duree_estimee_min": 40,
+    "tags": [
+      "asymptote oblique",
+      "fonction rationnelle",
+      "tracé de courbe",
+      "position relative",
+      "tableau de variation"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,147 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certaines courbes ne se rapprochent ni d'une droite horizontale ni d'une droite verticale, mais d'une droite penchée : l'asymptote oblique. C'est le cas de $f(x) = \\dfrac{x^2-5x+10}{x-3}$, qui ressemble à une droite dès que $x$ est grand. Pour la tracer sans la déformer, il faut savoir où se trouve la courbe par rapport à cette droite, et c'est ce que ce cours t'apprend à établir."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire $f(x) = ax + b + \\dfrac{c}{x - x_0}$ (division euclidienne ou identification)",
+        "Calculer des limites de fonctions rationnelles en $\\pm\\infty$ et en la valeur interdite",
+        "Dériver un quotient et dresser un tableau de variation",
+        "Étudier le signe d'un quotient"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'asymptote oblique et la position de la courbe",
+      "contenu_markdown": "Si $f(x) = ax + b + g(x)$ avec $\\displaystyle\\lim_{x \\to \\pm\\infty} g(x) = 0$, alors la droite $(\\Delta) : y = ax + b$ est **asymptote oblique** à la courbe en $\\pm\\infty$ :\n\n$$\\lim_{x\\to\\pm\\infty}\\left[f(x) - (ax+b)\\right] = 0$$\n\nPour une fonction $f(x) = ax + b + \\dfrac{c}{x - x_0}$, le terme $\\dfrac{c}{x-x_0}$ tend vers $0$ à l'infini. La **position** de la courbe par rapport à $(\\Delta)$ se lit sur le **signe de $f(x) - (ax+b) = \\dfrac{c}{x - x_0}$** :\n\n- si ce signe est $+$, la courbe est au-dessus de $(\\Delta)$ ;\n- si ce signe est $-$, la courbe est au-dessous.\n\n**Ordre de construction :**\n\n1. tracer en pointillés les asymptotes (verticale $x = x_0$ et oblique $y = ax+b$) ;\n2. placer les points correspondant aux extremums du tableau de variation ;\n3. ajouter des points supplémentaires de chaque côté de la valeur interdite ;\n4. tracer chaque branche séparément en se rapprochant des asymptotes du bon côté.",
+      "formule_principale": "\\lim_{x\\to\\pm\\infty}\\left[f(x)-(ax+b)\\right]=0 \\;\\Longrightarrow\\; (\\Delta):y=ax+b \\text{ asymptote oblique}",
+      "variantes": [
+        {
+          "nom": "Trouver $a$ et $b$ par les limites",
+          "quand_utiliser": "Quand l'expression sous forme de quotient ne se décompose pas facilement",
+          "contenu_markdown": "On calcule $a = \\displaystyle\\lim_{x\\to\\infty}\\dfrac{f(x)}{x}$ puis $b = \\displaystyle\\lim_{x\\to\\infty}\\left[f(x) - ax\\right]$. Pour une fonction rationnelle, la division euclidienne du numérateur par le dénominateur est plus rapide."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x) = \\dfrac{x^2-5x+10}{x-3}$ définie sur $\\mathbb{R}\\setminus\\{3\\}$. On admet que $f(x) = x - 2 + \\dfrac{4}{x-3}$. Étudier $f$ et tracer sa courbe $(\\mathcal{C})$ avec ses asymptotes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Limites en $\\pm\\infty$ et asymptote oblique",
+          "justification": "Dans $f(x) = x - 2 + \\dfrac{4}{x-3}$, le terme $\\dfrac{4}{x-3}$ tend vers $0$ à l'infini.",
+          "resultat_markdown": "$\\lim_{x\\to\\pm\\infty}[f(x) - (x-2)] = 0$ : la droite $(\\Delta) : y = x - 2$ est asymptote oblique."
+        },
+        {
+          "numero": 2,
+          "action": "Limites en $3$",
+          "justification": "Le numérateur de $f$ en $3$ vaut $9 - 15 + 10 = 4 > 0$ ; le dénominateur $x - 3$ est négatif à gauche de $3$ et positif à droite.",
+          "resultat_markdown": "$\\lim_{x\\to 3^-} f(x) = -\\infty$ et $\\lim_{x\\to 3^+} f(x) = +\\infty$ : la droite $x = 3$ est asymptote verticale."
+        },
+        {
+          "numero": 3,
+          "action": "Position de $(\\mathcal{C})$ par rapport à $(\\Delta)$",
+          "justification": "On étudie le signe de $f(x) - (x-2) = \\dfrac{4}{x-3}$.",
+          "resultat_markdown": "Pour $x > 3$ la différence est positive : $(\\mathcal{C})$ est **au-dessus** de $(\\Delta)$. Pour $x < 3$ elle est négative : $(\\mathcal{C})$ est **au-dessous**."
+        },
+        {
+          "numero": 4,
+          "action": "Dériver",
+          "justification": "$f'(x) = 1 - \\dfrac{4}{(x-3)^2}$, que l'on met au même dénominateur.",
+          "resultat_markdown": "$$f'(x) = \\frac{(x-3)^2 - 4}{(x-3)^2} = \\frac{(x-3-2)(x-3+2)}{(x-3)^2} = \\frac{(x-5)(x-1)}{(x-3)^2}$$"
+        },
+        {
+          "numero": 5,
+          "action": "Étudier le signe de $f'$",
+          "justification": "Le dénominateur est positif ; le signe est celui du trinôme $(x-1)(x-5)$, positif à l'extérieur des racines $1$ et $5$.",
+          "resultat_markdown": "$f' > 0$ sur $]-\\infty\\,;\\,1[$ et sur $]5\\,;\\,+\\infty[$ ; $f' < 0$ sur $]1\\,;\\,3[$ et sur $]3\\,;\\,5[$."
+        },
+        {
+          "numero": 6,
+          "action": "Calculer les extremums",
+          "justification": "On remplace $x$ par $1$ puis par $5$ dans l'expression de $f$.",
+          "resultat_markdown": "$f(1) = \\dfrac{1-5+10}{1-3} = \\dfrac{6}{-2} = -3$ (maximum local) et $f(5) = \\dfrac{25-25+10}{2} = 5$ (minimum local)."
+        },
+        {
+          "numero": 7,
+          "action": "Dresser le tableau de variation",
+          "justification": "On rassemble limites, signes de $f'$ et extremums.",
+          "resultat_markdown": "Sur $]-\\infty\\,;\\,1]$ : de $-\\infty$ à $-3$ (croissante). Sur $[1\\,;\\,3[$ : de $-3$ à $-\\infty$ (décroissante). Sur $]3\\,;\\,5]$ : de $+\\infty$ à $5$ (décroissante). Sur $[5\\,;\\,+\\infty[$ : de $5$ à $+\\infty$ (croissante)."
+        },
+        {
+          "numero": 8,
+          "action": "Calculer des points complémentaires",
+          "justification": "On utilise la forme $x - 2 + \\dfrac{4}{x-3}$, plus rapide.",
+          "resultat_markdown": "$f(0) = -2 - \\dfrac{4}{3} = -\\dfrac{10}{3}$ ; $f(2) = 0 - 4 = -4$ ; $f(4) = 2 + 4 = 6$ ; $f(6) = 4 + \\dfrac{4}{3} = \\dfrac{16}{3}$ ; $f(7) = 5 + 1 = 6$."
+        },
+        {
+          "numero": 9,
+          "action": "Tracer",
+          "justification": "Asymptotes $x=3$ et $y = x-2$ en pointillés, extremums $(1\\,;\\,-3)$ et $(5\\,;\\,5)$, points complémentaires, puis les deux branches.",
+          "resultat_markdown": "Branche de gauche sous l'oblique, avec un maximum local en $(1\\,;\\,-3)$ ; branche de droite au-dessus de l'oblique, avec un minimum local en $(5\\,;\\,5)$."
+        }
+      ],
+      "conclusion_markdown": "La courbe a deux branches séparées par l'asymptote verticale $x=3$, se rapproche de $y = x-2$ en $\\pm\\infty$ (en dessous à gauche, au-dessus à droite) et présente un maximum local $-3$ en $x=1$ et un minimum local $5$ en $x=5$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer la courbe qui coupe son asymptote verticale, ou relier les deux branches",
+          "pourquoi_faux": "La fonction n'est pas définie en $3$, la courbe est faite de deux morceaux indépendants.",
+          "correction_markdown": "Trace d'abord les deux branches séparément, chacune restant d'un seul côté de $x=3$."
+        },
+        {
+          "erreur_markdown": "Placer la branche de gauche au-dessus de l'asymptote oblique",
+          "pourquoi_faux": "Pour $x < 3$, $f(x) - (x-2) = \\dfrac{4}{x-3}$ est négatif : la courbe est au-dessous. Le placer au-dessus donne une courbe qui s'éloigne de la droite au lieu de s'en rapprocher du bon côté.",
+          "correction_markdown": "Calcule toujours le signe de $f(x) - (ax+b)$ avant de tracer."
+        },
+        {
+          "erreur_markdown": "Confondre extremum et asymptote : dire que $f$ « tend vers $5$ » en $x = 5$",
+          "pourquoi_faux": "En $x = 5$ la fonction atteint la valeur $5$, c'est un minimum local, pas une limite. Une asymptote n'est jamais atteinte à distance finie pour une branche infinie.",
+          "correction_markdown": "Distingue la valeur atteinte $f(5)=5$ et les limites aux bornes du domaine."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x) = \\dfrac{x^2}{x-1}$. Vérifier que $f(x) = x + 1 + \\dfrac{1}{x-1}$, puis donner les asymptotes de $f$ et la position de la courbe par rapport à l'asymptote oblique.",
+          "solution_markdown": "**Vérification.**\n\n$$x + 1 + \\frac{1}{x-1} = \\frac{(x+1)(x-1) + 1}{x-1} = \\frac{x^2 - 1 + 1}{x-1} = \\frac{x^2}{x-1} = f(x) \\quad \\checkmark$$\n\n**Asymptote oblique.** $\\dfrac{1}{x-1} \\to 0$ en $\\pm\\infty$ : la droite $y = x + 1$ est asymptote oblique.\n\n**Asymptote verticale.** Au voisinage de $1$ le numérateur vaut $1 \\neq 0$ : $x = 1$ est asymptote verticale.\n\n**Position.** $f(x) - (x+1) = \\dfrac{1}{x-1}$. Pour $x > 1$ il est positif : la courbe est au-dessus ; pour $x < 1$ il est négatif : la courbe est au-dessous."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $f(x) = \\dfrac{x^2-3x+3}{x-1}$. 1) Écrire $f(x) = ax + b + \\dfrac{c}{x-1}$. 2) Étudier les variations de $f$ et calculer ses extremums. 3) Calculer $f(0)$, $f(3)$ et tracer la courbe avec ses asymptotes.",
+          "solution_markdown": "**1) Décomposition.** $(x-1)(x-2) = x^2 - 3x + 2$ donc $x^2 - 3x + 3 = (x-1)(x-2) + 1$ et :\n\n$$f(x) = x - 2 + \\frac{1}{x-1}$$\n\n**2) Dérivée.** $f'(x) = 1 - \\dfrac{1}{(x-1)^2} = \\dfrac{(x-1)^2 - 1}{(x-1)^2} = \\dfrac{x(x-2)}{(x-1)^2}$. Positive pour $x < 0$ et $x > 2$, négative sur $]0\\,;\\,1[$ et $]1\\,;\\,2[$.\n\n**Extremums.** $f(0) = \\dfrac{3}{-1} = -3$ (maximum local) et $f(2) = \\dfrac{4 - 6 + 3}{1} = 1$ (minimum local).\n\n**3) Valeurs et asymptotes.** $f(3) = \\dfrac{9-9+3}{2} = \\dfrac{3}{2}$. Asymptotes : $x = 1$ et $y = x - 2$ ; position : au-dessus pour $x > 1$, au-dessous pour $x < 1$. On trace les branches en passant par $(0\\,;\\,-3)$, $(2\\,;\\,1)$ et $\\left(3\\,;\\,\\frac{3}{2}\\right)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On cherche $f(x) = 2x - 1 + \\dfrac{c}{x-1}$ dont la courbe passe par $A(2\\,;\\,4)$. Déterminer $c$, puis étudier $f$ : asymptotes, extremums (valeurs exactes) et position par rapport à l'asymptote oblique.",
+          "solution_markdown": "**Détermination de $c$.** $f(2) = 4 - 1 + \\dfrac{c}{1} = 3 + c = 4$ donc $c = 1$ et :\n\n$$f(x) = 2x - 1 + \\frac{1}{x-1}$$\n\n**Asymptotes.** Oblique $y = 2x - 1$ (car $\\frac{1}{x-1} \\to 0$) ; verticale $x = 1$. Position : $f(x) - (2x-1) = \\dfrac{1}{x-1}$, positif si $x > 1$ (courbe au-dessus), négatif si $x < 1$.\n\n**Dérivée.** $f'(x) = 2 - \\dfrac{1}{(x-1)^2}$. Elle s'annule si $(x-1)^2 = \\dfrac{1}{2}$, c'est-à-dire $x - 1 = \\pm\\dfrac{\\sqrt{2}}{2}$, soit $x_1 = 1 - \\dfrac{\\sqrt{2}}{2} \\approx 0{,}29$ et $x_2 = 1 + \\dfrac{\\sqrt{2}}{2} \\approx 1{,}71$.\n\n**Valeurs.** En $x_2$ : $2x_2 - 1 = 1 + \\sqrt{2}$ et $\\dfrac{1}{x_2 - 1} = \\dfrac{2}{\\sqrt{2}} = \\sqrt{2}$, d'où $f(x_2) = 1 + 2\\sqrt{2} \\approx 3{,}83$. En $x_1$ : $2x_1 - 1 = 1 - \\sqrt{2}$ et $\\dfrac{1}{x_1 - 1} = -\\sqrt{2}$, d'où $f(x_1) = 1 - 2\\sqrt{2} \\approx -1{,}83$.\n\n**Signe de $f'$.** Positif pour $|x-1| > \\dfrac{\\sqrt{2}}{2}$, négatif sinon. Donc maximum local $1 - 2\\sqrt{2}$ en $x_1$ et minimum local $1 + 2\\sqrt{2}$ en $x_2$.\n\n**Contrôle.** Le minimum local est à droite de $1$, là où la courbe est au-dessus de l'asymptote : cohérent avec une valeur $3{,}83$ supérieure à $2 \\times 1{,}71 - 1 = 2{,}42$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une asymptote oblique $y=ax+b$ se lit sur l'écriture $f(x) = ax+b+\\dfrac{c}{x-x_0}$ : le dernier terme tend vers $0$.",
+        "La position de la courbe se lit sur le signe de $f(x) - (ax+b)$, jamais « au jugé ».",
+        "Trace toujours les asymptotes en pointillés en premier, puis les extremums, puis les branches.",
+        "Une fonction rationnelle définie sur $\\mathbb{R}\\setminus\\{x_0\\}$ a deux branches distinctes.",
+        "Au Probatoire C et E, le tracé de la courbe avec asymptote oblique, appuyé sur le tableau de variation, conclut presque toujours le problème et rapporte les points de la présentation."
+      ]
+    }
+  ]
 }

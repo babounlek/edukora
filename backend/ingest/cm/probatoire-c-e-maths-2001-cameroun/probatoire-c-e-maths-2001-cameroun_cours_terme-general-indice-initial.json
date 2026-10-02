@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "suite géométrique",
+      "terme général",
+      "indice initial",
+      "raison",
+      "suite auxiliaire"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,141 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu connais la formule $V_n = V_0 \\times q^n$ par cœur. Mais que fais-tu quand l'énoncé définit une suite qui démarre à l'indice $1$, ou à l'indice $3$ ? Appliquer la formule telle quelle donne un résultat faux, et le piège est classique au Probatoire. Ce cours t'apprend à adapter la formule à n'importe quel point de départ, puis à revenir à la suite d'origine."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir reconnaître une suite géométrique : $V_{n+1} = q\\,V_n$ pour tout $n$",
+        "Connaître la formule $V_n = V_0 \\times q^n$ quand la suite démarre à l'indice $0$",
+        "Manipuler les puissances : $a^m \\times a^p = a^{m+p}$ et $\\left(\\dfrac{1}{3}\\right)^n = \\dfrac{1}{3^n}$",
+        "Savoir simplifier une fraction contenant des expressions en $n$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le terme général quand le premier terme n'est pas d'indice 0",
+      "contenu_markdown": "Une suite géométrique $(V_n)$ de raison $q$ dont le **premier terme connu est $V_p$** (la suite démarre à l'indice $p$) a pour terme général :\n\n$$V_n = V_p \\times q^{\\,n-p} \\qquad \\text{pour tout } n \\geqslant p$$\n\nL'exposant $n - p$ compte le **nombre de multiplications par $q$** qu'il faut faire pour passer du rang $p$ au rang $n$. Entre $V_1$ et $V_4$, on multiplie trois fois par $q$ : $V_4 = V_1 \\times q^3$, et $4 - 1 = 3$.\n\nLe cas $p = 0$ redonne la formule habituelle $V_n = V_0 \\times q^n$.\n\n**Revenir à la suite d'origine.** Quand $V_n$ a été défini à partir d'une suite $(U_n)$, par exemple $V_n = \\dfrac{U_n}{n}$, on isole $U_n$ à la fin : $U_n = n\\,V_n$. Le terme général de $(V_n)$ n'est qu'une étape.",
+      "formule_principale": "V_n = V_p \\times q^{\\,n-p}",
+      "variantes": [
+        {
+          "nom": "Partir de deux termes quelconques",
+          "quand_utiliser": "Quand l'énoncé donne deux termes de rangs différents, sans donner la raison",
+          "contenu_markdown": "On a $V_m = V_p \\times q^{\\,m-p}$. La raison s'obtient donc par $q^{\\,m-p} = \\dfrac{V_m}{V_p}$, puis en extrayant la racine qui convient. Une fois $q$ connue, on revient à la formule principale."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère la suite $(U_n)$ définie pour $n \\geqslant 1$ par $U_1 = \\dfrac{1}{3}$ et $U_{n+1} = \\dfrac{n+1}{3n}\\,U_n$, puis la suite $V_n = \\dfrac{U_n}{n}$. Démontrer que $(V_n)$ est géométrique, puis exprimer $V_n$ et $U_n$ en fonction de $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer $V_{n+1}$ à partir de sa définition",
+          "justification": "Pour prouver qu'une suite est géométrique, on cherche $V_{n+1}$ en fonction de $V_n$.",
+          "resultat_markdown": "$$V_{n+1} = \\frac{U_{n+1}}{n+1}$$"
+        },
+        {
+          "numero": 2,
+          "action": "Remplacer $U_{n+1}$ par la relation de récurrence",
+          "justification": "C'est la seule information dont on dispose sur $U_{n+1}$.",
+          "resultat_markdown": "$$V_{n+1} = \\frac{1}{n+1} \\times \\frac{n+1}{3n}\\,U_n$$"
+        },
+        {
+          "numero": 3,
+          "action": "Simplifier par $n+1$",
+          "justification": "$n \\geqslant 1$ donc $n+1 \\neq 0$, la simplification est licite.",
+          "resultat_markdown": "$$V_{n+1} = \\frac{U_n}{3n} = \\frac{1}{3} \\times \\frac{U_n}{n} = \\frac{1}{3}\\,V_n$$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur la nature de $(V_n)$",
+          "justification": "On a $V_{n+1} = \\frac{1}{3}V_n$ pour tout $n \\geqslant 1$ : le rapport entre deux termes consécutifs est constant.",
+          "resultat_markdown": "$(V_n)$ est géométrique de raison $q = \\dfrac{1}{3}$."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le premier terme",
+          "justification": "La suite démarre à l'indice $1$ : le premier terme est $V_1$, et non $V_0$ qui n'existe pas.",
+          "resultat_markdown": "$$V_1 = \\frac{U_1}{1} = \\frac{1}{3}$$"
+        },
+        {
+          "numero": 6,
+          "action": "Appliquer la formule avec $p = 1$",
+          "justification": "L'exposant est $n - p = n - 1$.",
+          "resultat_markdown": "$$V_n = V_1 \\times q^{\\,n-1} = \\frac{1}{3} \\times \\left(\\frac{1}{3}\\right)^{n-1} = \\left(\\frac{1}{3}\\right)^{n}$$"
+        },
+        {
+          "numero": 7,
+          "action": "Revenir à $U_n$",
+          "justification": "Par définition $V_n = \\dfrac{U_n}{n}$, donc $U_n = n\\,V_n$.",
+          "resultat_markdown": "$$U_n = \\frac{n}{3^n}$$"
+        },
+        {
+          "numero": 8,
+          "action": "Contrôler sur un rang",
+          "justification": "On compare avec la récurrence : $U_2 = \\dfrac{1+1}{3 \\times 1}\\,U_1 = \\dfrac{2}{3} \\times \\dfrac{1}{3}$.",
+          "resultat_markdown": "$U_2 = \\dfrac{2}{9}$ par la récurrence, et $\\dfrac{2}{3^2} = \\dfrac{2}{9}$ par la formule : les deux valeurs concordent."
+        }
+      ],
+      "conclusion_markdown": "La suite $(V_n)$ est géométrique de premier terme $V_1 = \\dfrac{1}{3}$ et de raison $\\dfrac{1}{3}$ ; on a $V_n = \\dfrac{1}{3^n}$ et $U_n = \\dfrac{n}{3^n}$ pour tout $n \\geqslant 1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $V_n = V_1 \\times q^n$ alors que la suite démarre à l'indice $1$",
+          "pourquoi_faux": "Cette formule suppose que $V_n$ s'obtient de $V_1$ en multipliant $n$ fois par $q$. Or de $V_1$ à $V_n$ il n'y a que $n-1$ multiplications. Avec $V_1 = \\frac{1}{3}$ et $q = \\frac{1}{3}$, la formule fausse donne $V_1 = \\frac{1}{9}$, ce qui contredit la valeur de départ.",
+          "correction_markdown": "Vérifie toujours ta formule en remplaçant $n$ par l'indice de départ : tu dois retrouver le premier terme."
+        },
+        {
+          "erreur_markdown": "S'arrêter à $V_n$ et oublier de revenir à $U_n$",
+          "pourquoi_faux": "La question porte sur $U_n$. $V_n$ n'est qu'une suite auxiliaire, introduite pour rendre le calcul possible.",
+          "correction_markdown": "Relis l'énoncé en fin d'exercice. Ici $U_n = n\\,V_n$, ce qui donne $U_n = \\dfrac{n}{3^n}$."
+        },
+        {
+          "erreur_markdown": "Dire que $(U_n)$ est géométrique parce que $(V_n)$ l'est",
+          "pourquoi_faux": "Le facteur $\\dfrac{n+1}{3n}$ dépend de $n$ : il change à chaque rang. $U_2 = \\dfrac{2}{9}$ et $U_3 = \\dfrac{1}{9}$ donnent des rapports $\\dfrac{2}{3}$ puis $\\dfrac{1}{2}$, différents.",
+          "correction_markdown": "Seule la suite auxiliaire $(V_n)$ est géométrique. Ne transpose jamais la nature d'une suite à l'autre sans calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une suite géométrique $(W_n)$ définie pour $n \\geqslant 2$ a pour raison $q = 2$ et pour premier terme $W_2 = 12$. Exprimer $W_n$ en fonction de $n$ et calculer $W_5$.",
+          "solution_markdown": "**Formule.** Le premier terme est d'indice $p = 2$, donc :\n\n$$W_n = W_2 \\times q^{\\,n-2} = 12 \\times 2^{\\,n-2}$$\n\n**Simplification.** $12 = 3 \\times 4 = 3 \\times 2^2$, donc $W_n = 3 \\times 2^2 \\times 2^{n-2} = 3 \\times 2^n$.\n\n**Calcul de $W_5$.**\n\n$$W_5 = 12 \\times 2^{3} = 12 \\times 8 = 96$$\n\n**Contrôle.** $3 \\times 2^5 = 3 \\times 32 = 96$. Et en multipliant pas à pas : $W_3 = 24$, $W_4 = 48$, $W_5 = 96$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On définit pour $n \\geqslant 1$ la suite $(U_n)$ par $U_1 = 2$ et $U_{n+1} = \\dfrac{n+1}{2n}\\,U_n$. On pose $V_n = \\dfrac{U_n}{n}$. Démontrer que $(V_n)$ est géométrique, puis exprimer $V_n$ et $U_n$ en fonction de $n$.",
+          "solution_markdown": "**Étape 1 - rapport de deux termes consécutifs.**\n\n$$V_{n+1} = \\frac{U_{n+1}}{n+1} = \\frac{1}{n+1} \\times \\frac{n+1}{2n}\\,U_n = \\frac{U_n}{2n} = \\frac{1}{2} \\times \\frac{U_n}{n} = \\frac{1}{2}\\,V_n$$\n\nLa simplification par $n+1$ est licite car $n \\geqslant 1$. Donc $(V_n)$ est géométrique de raison $q = \\dfrac{1}{2}$.\n\n**Étape 2 - premier terme.** La suite démarre à l'indice $1$ :\n\n$$V_1 = \\frac{U_1}{1} = 2$$\n\n**Étape 3 - terme général** avec $p = 1$ :\n\n$$V_n = 2 \\times \\left(\\frac{1}{2}\\right)^{n-1} = 2 \\times 2^{-(n-1)} = 2^{\\,1-(n-1)} = 2^{\\,2-n}$$\n\n**Étape 4 - retour à $U_n$.**\n\n$$U_n = n\\,V_n = n \\times 2^{\\,2-n}$$\n\n**Contrôle.** $U_2 = \\dfrac{2}{2 \\times 1} \\times 2 = 2$ par la récurrence, et $2 \\times 2^{0} = 2$ par la formule. $U_3 = \\dfrac{3}{4} \\times 2 = \\dfrac{3}{2}$ par la récurrence, et $3 \\times 2^{-1} = \\dfrac{3}{2}$ par la formule."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une suite géométrique $(W_n)$ de raison positive, définie pour $n \\geqslant 2$, vérifie $W_2 = 6$ et $W_5 = 48$. Déterminer sa raison, exprimer $W_n$ en fonction de $n$, puis calculer la somme $S = W_2 + W_3 + W_4 + W_5 + W_6$.",
+          "solution_markdown": "**Étape 1 - la raison.** De $W_2$ à $W_5$ il y a $5 - 2 = 3$ multiplications par $q$ :\n\n$$W_5 = W_2 \\times q^3 \\quad \\Longrightarrow \\quad q^3 = \\frac{48}{6} = 8$$\n\nComme $2^3 = 8$ et que la raison est positive, $q = 2$.\n\n**Étape 2 - terme général** avec $p = 2$ :\n\n$$W_n = W_2 \\times q^{\\,n-2} = 6 \\times 2^{\\,n-2} = 3 \\times 2^{\\,n-1}$$\n\n**Étape 3 - la somme.** Les cinq termes sont $W_2 = 6$, $W_3 = 12$, $W_4 = 24$, $W_5 = 48$, $W_6 = 96$. La somme de termes consécutifs d'une suite géométrique est le premier terme multiplié par $\\dfrac{q^{N}-1}{q-1}$, où $N$ est le nombre de termes :\n\n$$S = 6 \\times \\frac{2^5 - 1}{2 - 1} = 6 \\times 31 = 186$$\n\n**Contrôle par addition directe.** $6 + 12 + 24 + 48 + 96 = 186$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand une suite géométrique démarre à l'indice $p$, la formule devient $V_n = V_p \\times q^{\\,n-p}$ : l'exposant compte les multiplications réellement effectuées.",
+        "Teste ta formule avec $n = p$ : tu dois retrouver le premier terme. Si ce n'est pas le cas, l'exposant est faux.",
+        "Une suite auxiliaire $V_n = \\dfrac{U_n}{n}$ sert d'intermédiaire : une fois $V_n$ trouvé, tu dois revenir à $U_n = n\\,V_n$.",
+        "Seule la suite auxiliaire est géométrique ici : $(U_n)$ ne l'est pas, son rapport $\\dfrac{n+1}{3n}$ varie avec $n$.",
+        "Au Probatoire C et E, ce schéma (suite auxiliaire, preuve du caractère géométrique, terme général, retour à la suite initiale) revient presque chaque année dans l'exercice de suites."
+      ]
+    }
+  ]
 }

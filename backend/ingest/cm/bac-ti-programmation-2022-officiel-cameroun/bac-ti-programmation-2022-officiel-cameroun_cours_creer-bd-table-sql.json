@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-creer-une-base-de-donnees-et-une-table-en-sql-bacprog2023 (bac-ti-programmation-2023-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "SQL",
+      "CREATE DATABASE",
+      "CREATE TABLE",
+      "mysqli",
+      "types de données"
+    ],
+    "sous_theme": "Bases de données : langage SQL",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +26,116 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web qui enregistre des élèves, des produits ou des commandes a besoin d'un endroit où garder ces informations : une base de données. Avant d'y écrire quoi que ce soit, il faut la créer, puis y construire des tables. En SQL, deux commandes suffisent pour cela. Au BAC TI, on te montre le script PHP qui se connecte à la base et on te demande la requête qui la crée : la réponse se lit dans le code."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de base de données, de table, de champ et de clé primaire",
+        "Types usuels : entier, texte, nombre décimal, date",
+        "Connexion à MySQL depuis PHP avec mysqli"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Créer une base, puis une table",
+      "contenu_markdown": "**Créer la base :**\n\n```sql\nCREATE DATABASE nom_base;\n```\n\n**Choisir la base de travail :** `USE nom_base;`\n\n**Créer une table**, avec un champ par ligne : son nom, son type et d'éventuelles contraintes.\n\n```sql\nCREATE TABLE eleve (\n    matricule INT PRIMARY KEY AUTO_INCREMENT,\n    nom VARCHAR(50) NOT NULL,\n    age INT,\n    moyenne FLOAT\n);\n```\n\nLe nom de la base à créer se lit dans le script de connexion. Avec mysqli, la connexion est `new mysqli(hôte, utilisateur, mot_de_passe, base)` : la base est le **quatrième** argument.\n\n```php\n$conn = new mysqli(\"localhost\", \"root\", \"\", \"gestion_ecole\");\n```\n\nIci la requête attendue est `CREATE DATABASE gestion_ecole;`.\n\nLes types courants : `INT` (entier), `VARCHAR(n)` (texte de n caractères au plus), `FLOAT` ou `DECIMAL(p,s)` (nombre à virgule), `DATE` (date). Les champs sont séparés par des virgules, sans virgule après le dernier.",
+      "formule_principale": "CREATE DATABASE nom_base;   CREATE TABLE nom_table (champ type contraintes, ...);",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le script PHP d'une école contient la ligne `$conn = new mysqli(\"localhost\", \"root\", \"\", \"gestion_ecole\");`. Écrire les requêtes SQL qui créent la base, puis une table `eleve` (matricule entier clé primaire à numérotation automatique, nom texte de 50 caractères obligatoire, moyenne décimale).",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le nom de la base dans le script",
+          "justification": "Dans `new mysqli(hôte, utilisateur, mot_de_passe, base)`, la base est le quatrième argument.",
+          "resultat_markdown": "Quatrième argument : `\"gestion_ecole\"`."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la création de la base",
+          "justification": "On utilise `CREATE DATABASE` suivi du nom lu, identique au script, puis un point-virgule.",
+          "resultat_markdown": "`CREATE DATABASE gestion_ecole;`"
+        },
+        {
+          "numero": 3,
+          "action": "Sélectionner la base",
+          "justification": "Les tables se créent dans la base courante, il faut donc la choisir.",
+          "resultat_markdown": "`USE gestion_ecole;`"
+        },
+        {
+          "numero": 4,
+          "action": "Choisir le type de chaque champ",
+          "justification": "Matricule : `INT`, clé primaire, `AUTO_INCREMENT`. Nom : `VARCHAR(50)` avec `NOT NULL`. Moyenne : `FLOAT`.",
+          "resultat_markdown": "Trois champs : matricule, nom, moyenne."
+        },
+        {
+          "numero": 5,
+          "action": "Écrire la création de la table",
+          "justification": "Les champs sont séparés par des virgules, sans virgule après le dernier, et la requête se termine par un point-virgule.",
+          "resultat_markdown": "```sql\nCREATE TABLE eleve (\n    matricule INT PRIMARY KEY AUTO_INCREMENT,\n    nom VARCHAR(50) NOT NULL,\n    moyenne FLOAT\n);\n```"
+        }
+      ],
+      "conclusion_markdown": "La base se crée avec `CREATE DATABASE gestion_ecole;` (nom lu dans le script) et la table `eleve` avec la requête `CREATE TABLE` ci-dessus."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `CREATE TABLE gestion_ecole;` pour créer la base",
+          "pourquoi_faux": "`CREATE TABLE` crée une table à l'intérieur d'une base, pas la base elle-même, et elle exige la liste des champs. Une base se crée avec `CREATE DATABASE`.",
+          "correction_markdown": "Base : `CREATE DATABASE`. Table : `CREATE TABLE`."
+        },
+        {
+          "erreur_markdown": "Inventer un nom de base différent de celui du script (`CREATE DATABASE ecole;` alors que le script utilise `gestion_ecole`)",
+          "pourquoi_faux": "Le script PHP se connecte à `gestion_ecole`. Si la base créée porte un autre nom, MySQL répond « Unknown database » à la connexion.",
+          "correction_markdown": "Relire le quatrième argument de `new mysqli(...)` et le recopier à l'identique."
+        },
+        {
+          "erreur_markdown": "Laisser une virgule après le dernier champ, ou oublier la taille du `VARCHAR`",
+          "pourquoi_faux": "MySQL rejette la requête : une virgule finale annonce un champ qui ne vient pas, et `VARCHAR` sans longueur est incomplet.",
+          "correction_markdown": "Pas de virgule après le dernier champ, et toujours `VARCHAR(n)`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le script contient `$conn = new mysqli(\"localhost\", \"root\", \"\", \"magasin\");`. Écrire la requête qui crée la base.",
+          "solution_markdown": "Le nom de la base est le quatrième argument : `magasin`.\n\n```sql\nCREATE DATABASE magasin;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans la base `magasin`, écrire la requête qui crée la table `produit` : `code` (entier, clé primaire), `libelle` (texte de 40 caractères au plus), `prix` (décimal avec deux chiffres après la virgule, 10 chiffres au total), `quantite` (entier).",
+          "solution_markdown": "```sql\nUSE magasin;\nCREATE TABLE produit (\n    code INT PRIMARY KEY,\n    libelle VARCHAR(40),\n    prix DECIMAL(10,2),\n    quantite INT\n);\n```\n\n`DECIMAL(10,2)` réserve 10 chiffres dont 2 après la virgule."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "1. Corriger la requête ci-dessous (deux erreurs).\n2. Créer ensuite une table `commande` (`num` entier clé primaire, `date_cmd` date, `id_client` entier) reliée à `client` par une clé étrangère.\n\n```sql\nCREATE TABLE client (\n    id INT PRIMARY KEY,\n    nom VARCHAR,\n    tel VARCHAR(15),\n);\n```",
+          "solution_markdown": "1. Deux erreurs : `VARCHAR` n'a pas de longueur et une virgule suit le dernier champ.\n\n```sql\nCREATE TABLE client (\n    id INT PRIMARY KEY,\n    nom VARCHAR(50),\n    tel VARCHAR(15)\n);\n```\n\n2. La table `client` doit exister avant que `commande` y fasse référence.\n\n```sql\nCREATE TABLE commande (\n    num INT PRIMARY KEY,\n    date_cmd DATE,\n    id_client INT,\n    FOREIGN KEY (id_client) REFERENCES client(id)\n);\n```\n\nLa clé étrangère `id_client` de `commande` renvoie à la clé primaire `id` de `client` : chaque commande appartient à un client existant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La base se crée avec `CREATE DATABASE nom;`, les tables avec `CREATE TABLE nom (...);` : ne mélange jamais les deux.",
+        "Le nom de la base se lit dans le script de connexion : c'est le quatrième argument de `new mysqli(...)`.",
+        "Chaque champ a un nom et un type ; `VARCHAR` s'écrit toujours avec une longueur.",
+        "Virgule entre les champs, jamais après le dernier ; point-virgule à la fin de la requête.",
+        "Au BAC TI, la création de base et de tables accompagne souvent un script PHP : lis le code avant d'écrire la requête."
+      ]
+    }
+  ]
 }

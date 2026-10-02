@@ -4,7 +4,17 @@
     "titre": "Environnements Intégrés de Développement (EDI) Web : définition et composants",
     "matiere": "Programmation",
     "pays": "cm",
-    "serie": "TI"
+    "serie": "TI",
+    "tags": [
+      "EDI Web",
+      "XAMPP",
+      "Apache",
+      "PHP",
+      "MySQL",
+      "serveur local"
+    ],
+    "sous_theme": "Développement web côté serveur",
+    "duree_estimee_min": 25
   },
   "source": {
     "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
@@ -14,5 +24,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour tester une page PHP, tu ne peux pas simplement ouvrir le fichier dans le navigateur : le navigateur affiche le code au lieu de l'exécuter. Il faut un serveur Web, un interpréteur PHP et une base de données. Installer chacun séparément et les configurer prend du temps. Les EDI Web (XAMPP, WAMP...) livrent le tout d'un coup, prêt à l'emploi sur ton ordinateur. Voyons ce qu'ils contiennent et comment répondre quand le sujet demande d'en citer les éléments."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Différence entre page statique (HTML) et page dynamique (PHP)",
+        "Notion de client (navigateur) et de serveur",
+        "Savoir ce qu'est une base de données et un SGBD"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définition et composants d'un EDI Web",
+      "contenu_markdown": "Un **environnement intégré de développement (EDI) Web** est un ensemble logiciel qui s'installe en une fois et permet de développer et tester un site dynamique **en local**, sur sa propre machine, sans configurer chaque composant séparément.\n\n**Les trois composants de base :**\n\n| Composant | Exemple | Rôle |\n|---|---|---|\n| Serveur Web | Apache | reçoit les requêtes HTTP du navigateur et renvoie les pages |\n| Interpréteur de langage serveur | PHP | exécute les scripts et produit du HTML |\n| SGBD | MySQL ou MariaDB | stocke et fournit les données |\n\nOn ajoute souvent **phpMyAdmin**, une interface web pour gérer la base de données sans écrire toutes les requêtes à la main.\n\n**Noms usuels :** XAMPP (Windows, Linux, macOS), WAMP (Windows), LAMP (Linux), MAMP (macOS). Les lettres indiquent les composants : **A**pache, **M**ySQL, **P**HP, plus le système (**W**indows ou **L**inux).\n\n**Utilisation en pratique :**\n\n1. On démarre Apache et MySQL depuis le panneau de contrôle.\n2. On range les fichiers du site dans le dossier racine du serveur (`htdocs` pour XAMPP, `www` pour WAMP).\n3. On les ouvre par l'adresse `http://localhost/nom_du_fichier.php`.\n\n**Citer les éléments d'un ensemble :** on nomme chaque élément distinct avec son rôle, sans citer deux fois la même fonction.",
+      "formule_principale": "EDI Web = serveur Web + interpréteur de langage serveur + SGBD"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer les trois éléments constitutifs d'un EDI Web en précisant le rôle de chacun, puis expliquer comment tester une page `test.php` contenant `<?php echo \"Serveur OK\"; ?>`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Nommer le premier élément",
+          "justification": "Tout site dynamique a besoin de quelqu'un qui reçoit les requêtes du navigateur.",
+          "resultat_markdown": "Serveur Web (Apache) : reçoit les requêtes HTTP et renvoie les réponses."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer le deuxième élément",
+          "justification": "Le code PHP doit être exécuté avant l'envoi de la page.",
+          "resultat_markdown": "Interpréteur PHP : exécute les scripts et produit du HTML."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le troisième élément",
+          "justification": "Les données (élèves, notes) doivent être stockées.",
+          "resultat_markdown": "SGBD (MySQL ou MariaDB) : gère la base de données."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier qu'aucune fonction n'est citée deux fois",
+          "justification": "Un élément qui répéterait un rôle déjà donné ne rapporterait pas de point supplémentaire.",
+          "resultat_markdown": "Trois rôles distincts : recevoir, exécuter, stocker."
+        },
+        {
+          "numero": 5,
+          "action": "Tester la page `test.php`",
+          "justification": "Le fichier doit se trouver dans le dossier racine du serveur et passer par le serveur, pas par un double-clic.",
+          "resultat_markdown": "Copier `test.php` dans `htdocs`, démarrer Apache, ouvrir `http://localhost/test.php` : le navigateur affiche `Serveur OK`."
+        }
+      ],
+      "conclusion_markdown": "Les trois éléments sont le serveur Web, l'interpréteur PHP et le SGBD. La page de test s'affiche correctement uniquement si elle est demandée à Apache par l'adresse localhost."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer « HTML, CSS, JavaScript » comme éléments d'un EDI Web",
+          "pourquoi_faux": "Ce sont des langages côté client. Un EDI Web est un ensemble de logiciels serveur : serveur, interpréteur, base de données.",
+          "correction_markdown": "Répondre avec Apache, PHP et MySQL (ou MariaDB), chacun avec son rôle."
+        },
+        {
+          "erreur_markdown": "Ouvrir le fichier `.php` par double-clic et conclure que « PHP ne marche pas »",
+          "pourquoi_faux": "Le navigateur lit le fichier directement : aucun serveur ni interpréteur n'intervient, le code PHP s'affiche ou est ignoré.",
+          "correction_markdown": "Toujours passer par `http://localhost/...` avec Apache démarré."
+        },
+        {
+          "erreur_markdown": "Donner deux fois le même rôle sous des noms différents",
+          "pourquoi_faux": "Citer « Apache » et « serveur HTTP » compte pour un seul élément : c'est le même composant.",
+          "correction_markdown": "Vérifier que chaque élément cité a une fonction distincte des autres."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifient les lettres de WAMP ?",
+          "solution_markdown": "**W** pour Windows (le système d'exploitation), **A** pour Apache (serveur Web), **M** pour MySQL (SGBD), **P** pour PHP (langage serveur). Dans LAMP, le L désigne Linux."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève a écrit un fichier `bienvenue.php` et l'a ouvert par double-clic. Le navigateur affiche le code source au lieu du résultat. Explique la cause et la procédure correcte.",
+          "solution_markdown": "**Cause.** Un double-clic ouvre le fichier avec le navigateur, qui ne sait pas interpréter PHP. L'adresse commence par `file://`, donc le serveur Web n'est jamais sollicité.\n\n**Procédure.**\n1. Démarrer Apache dans le panneau de contrôle (XAMPP ou WAMP).\n2. Placer `bienvenue.php` dans le dossier racine (`htdocs` ou `www`).\n3. Ouvrir `http://localhost/bienvenue.php`.\n\nApache reçoit la requête, transmet le fichier à PHP, qui l'exécute et renvoie du HTML au navigateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Tu dois afficher la liste des élèves d'une base `ecole` (table `eleve`, colonne `nom`) avec XAMPP. Indique les composants utilisés et écris le script `liste.php` (connexion par défaut de XAMPP en local : utilisateur `root`, sans mot de passe).",
+          "solution_markdown": "**Composants :** Apache reçoit la requête, PHP exécute le script, MySQL fournit les noms. phpMyAdmin sert à créer la base et la table au préalable.\n\n```php\n<?php\n$connexion = new mysqli(\"localhost\", \"root\", \"\", \"ecole\");\nif ($connexion->connect_error) {\n    die(\"Echec de connexion : \" . $connexion->connect_error);\n}\n$resultat = $connexion->query(\"SELECT nom FROM eleve\");\nwhile ($ligne = $resultat->fetch_assoc()) {\n    echo $ligne[\"nom\"] . \"<br>\";\n}\n$connexion->close();\n?>\n```\n\nLe fichier est placé dans `htdocs` et appelé par `http://localhost/liste.php`. Le compte `root` sans mot de passe n'est acceptable qu'en local : sur un serveur réel, on crée un utilisateur avec un mot de passe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un EDI Web regroupe un serveur Web, un interpréteur de langage serveur et un SGBD : trois rôles distincts.",
+        "XAMPP, WAMP, LAMP et MAMP en sont les noms courants ; les lettres indiquent les composants.",
+        "Il permet de développer et tester un site dynamique en local, sans configuration séparée de chaque composant.",
+        "Une page PHP se teste toujours par `http://localhost/`, jamais par double-clic.",
+        "Au BAC TI, on te demande de définir un EDI Web ou d'en citer les éléments : donne chaque élément avec un rôle différent."
+      ]
+    }
+  ]
 }

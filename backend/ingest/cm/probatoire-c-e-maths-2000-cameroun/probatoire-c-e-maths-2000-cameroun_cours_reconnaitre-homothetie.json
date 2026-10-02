@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Homothéties",
+    "duree_estimee_min": 30,
+    "tags": [
+      "homothétie",
+      "centre",
+      "rapport",
+      "transformation du plan",
+      "image d'un cercle"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un projecteur de cinéma agrandit une image : chaque point de la pellicule est envoyé sur l'écran le long d'une droite passant par la lampe. Mathématiquement, c'est une homothétie. Les énoncés présentent une transformation par une formule vectorielle, et il faut la reconnaître : donner sa nature, son centre, son rapport. Une fois identifiée, l'image d'un cercle devient immédiate."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Vecteurs et colinéarité",
+        "Barycentres et relation $\\overrightarrow{GM'}=\\dots$",
+        "Distance entre deux points, cercle de centre et de rayon donnés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître l'homothétie",
+      "contenu_markdown": "Une application $f$ du plan qui, à tout point $M$, associe le point $M'$ tel que\n$$\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M},$$\noù $\\Omega$ est un point **fixe** et $k$ un réel non nul, est l'**homothétie de centre $\\Omega$ et de rapport $k$**.\n\n**Éléments caractéristiques.** Le centre $\\Omega$ (il est invariant : $f(\\Omega)=\\Omega$) et le rapport $k$.\n\n**Propriétés utiles.** $M'N'=|k|\\,MN$ ; le rapport $k$ multiplie les distances par $|k|$ ; l'image d'un cercle de centre $C$ et de rayon $r$ est le cercle de centre $f(C)$ et de rayon $|k|\\,r$ ; si $k<0$, $M'$ est de l'autre côté de $\\Omega$ que $M$.",
+      "formule_principale": "\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M}\\ \\Longrightarrow\\ f=h(\\Omega\\,;k)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un carré de côté $4$ ; $G$ est le milieu de $[AD]$. $f$ associe à tout point $M$ le point $M'$ tel que $\\overrightarrow{GM'}=2\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC}$. Montrer que $f$ est une homothétie, puis donner l'image du cercle $(\\mathcal C)$ de centre $G$ et de rayon $1$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Simplifier le second membre",
+          "justification": "Avec $G$ barycentre de $(A\\,;2),(B\\,;-1),(C\\,;1)$ (somme $2$), on a $2\\overrightarrow{MA}-\\overrightarrow{MB}+\\overrightarrow{MC}=2\\overrightarrow{MG}$.",
+          "resultat_markdown": "$\\overrightarrow{GM'}=2\\overrightarrow{MG}$"
+        },
+        {
+          "numero": 2,
+          "action": "Faire apparaître $\\overrightarrow{GM}$",
+          "justification": "$\\overrightarrow{MG}=-\\overrightarrow{GM}$.",
+          "resultat_markdown": "$\\overrightarrow{GM'}=-2\\overrightarrow{GM}$"
+        },
+        {
+          "numero": 3,
+          "action": "Reconnaître la forme",
+          "justification": "Le point $G$ est fixe, le facteur $-2$ est un réel non nul : c'est la définition de l'homothétie.",
+          "resultat_markdown": "$f=h(G\\,;-2)$"
+        },
+        {
+          "numero": 4,
+          "action": "Image du centre du cercle",
+          "justification": "Le centre du cercle est $G$, le centre de l'homothétie : il est invariant.",
+          "resultat_markdown": "$f(G)=G$"
+        },
+        {
+          "numero": 5,
+          "action": "Rayon de l'image",
+          "justification": "Le rayon est multiplié par $|k|=2$.",
+          "resultat_markdown": "$r'=2\\times1=2$"
+        }
+      ],
+      "conclusion_markdown": "$f$ est l'homothétie de centre $G$ et de rapport $-2$. L'image de $(\\mathcal C)$ est le cercle $(\\mathcal C')$ de centre $G$ et de rayon $2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\overrightarrow{GM'}=-2\\overrightarrow{MG}$ ou oublier de passer de $\\overrightarrow{MG}$ à $\\overrightarrow{GM}$.",
+          "pourquoi_faux": "$\\overrightarrow{MG}$ et $\\overrightarrow{GM}$ sont opposés. Dans $\\overrightarrow{GM'}=2\\overrightarrow{MG}$, le rapport par rapport à $\\overrightarrow{GM}$ est $-2$, pas $+2$.",
+          "correction_markdown": "Remets toujours le vecteur sous la forme $\\overrightarrow{\\Omega M'}=k\\overrightarrow{\\Omega M}$ avec les mêmes lettres des deux côtés."
+        },
+        {
+          "erreur_markdown": "Dire que le rayon de l'image est $k\\times r$ avec $k=-2$.",
+          "pourquoi_faux": "Un rayon est positif. Le rapport $k$ multiplie les longueurs par $|k|$.",
+          "correction_markdown": "Rayon image : $|k|\\,r=2r$."
+        },
+        {
+          "erreur_markdown": "Donner le rapport sans le centre, ou le centre sans le rapport.",
+          "pourquoi_faux": "Une homothétie est déterminée par ces deux éléments. L'énoncé demande les éléments caractéristiques au pluriel.",
+          "correction_markdown": "Conclus par : « homothétie de centre $\\Omega$ et de rapport $k$ »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $O$ l'origine et $f$ l'application qui à $M$ associe $M'$ tel que $\\overrightarrow{OM'}=3\\overrightarrow{OM}$. Donner la nature de $f$ et l'image de $A(2\\,;-1)$.",
+          "solution_markdown": "**Étape 1.** $\\overrightarrow{OM'}=3\\overrightarrow{OM}$ avec $O$ fixe : homothétie de centre $O$ et de rapport $3$.\n\n**Étape 2.** Coordonnées : $\\overrightarrow{OA'}=3(2\\,;-1)=(6\\,;-3)$, donc $A'(6\\,;-3)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $h$ l'homothétie de centre $\\Omega(1\\,;2)$ et de rapport $-3$. Calculer l'image $M'$ de $M(3\\,;1)$ et l'antécédent $N$ du point $N'(4\\,;-1)$.",
+          "solution_markdown": "**Étape 1.** $\\overrightarrow{\\Omega M}=(2\\,;-1)$, donc $\\overrightarrow{\\Omega M'}=-3(2\\,;-1)=(-6\\,;3)$ et $M'(1-6\\,;2+3)=(-5\\,;5)$.\n\n**Étape 2.** $\\overrightarrow{\\Omega N'}=(3\\,;-3)$. Comme $\\overrightarrow{\\Omega N'}=-3\\overrightarrow{\\Omega N}$, on a $\\overrightarrow{\\Omega N}=-\\dfrac{1}{3}(3\\,;-3)=(-1\\,;1)$.\n\n**Étape 3.** $N=(1-1\\,;2+1)=(0\\,;3)$.\n\nVérification : $\\overrightarrow{\\Omega N}=(0-1\\,;3-2)=(-1\\,;1)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un repère orthonormé, $f$ associe à $M(x\\,;y)$ le point $M'(x'\\,;y')$ avec $x'=-2x+6$ et $y'=-2y+3$. (1) Montrer que $f$ est une homothétie et donner ses éléments. (2) Donner l'image du cercle de centre $C(0\\,;1)$ et de rayon $2$.",
+          "solution_markdown": "**Étape 1.** Point invariant : $x=-2x+6$ donne $x=2$ ; $y=-2y+3$ donne $y=1$. Le point $\\Omega(2\\,;1)$ est invariant.\n\n**Étape 2.** $\\overrightarrow{\\Omega M'}=(x'-2\\,;y'-1)=(-2x+4\\,;-2y+2)=-2(x-2\\,;y-1)=-2\\overrightarrow{\\Omega M}$. $f$ est donc l'homothétie de centre $\\Omega(2\\,;1)$ et de rapport $-2$.\n\n**Étape 3.** Image du centre : $x'=-2\\times0+6=6$, $y'=-2\\times1+3=1$, donc $C'(6\\,;1)$.\n\n**Étape 4.** Rayon : $|-2|\\times2=4$.\n\n**Étape 5.** L'image est le cercle de centre $C'(6\\,;1)$ et de rayon $4$, d'équation $(x-6)^2+(y-1)^2=16$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une transformation $\\overrightarrow{\\Omega M'}=k\\overrightarrow{\\Omega M}$ avec $\\Omega$ fixe est une homothétie de centre $\\Omega$ et de rapport $k$.",
+        "Vérifie le sens des vecteurs : $\\overrightarrow{MG}=-\\overrightarrow{GM}$ change le signe du rapport.",
+        "Les distances sont multipliées par $|k|$ : un rayon image vaut $|k|\\,r$.",
+        "Le centre de l'homothétie est invariant.",
+        "Au Probatoire, la reconnaissance de l'homothétie précède la construction de l'image d'un cercle, souvent sur une figure à réaliser."
+      ]
+    }
+  ]
 }

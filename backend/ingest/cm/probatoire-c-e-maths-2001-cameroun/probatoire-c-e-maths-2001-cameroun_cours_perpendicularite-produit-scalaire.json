@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Produit scalaire dans l'espace",
+    "duree_estimee_min": 30,
+    "tags": [
+      "produit scalaire",
+      "droite perpendiculaire à un plan",
+      "cube",
+      "Chasles",
+      "espace"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur le dessin d'un cube, la grande diagonale $(AG)$ semble « planter » droit dans le triangle $CFH$. Peut-on le prouver sans se fier à la perspective ? Le produit scalaire le permet : il suffit de montrer que la diagonale est orthogonale à deux directions du plan. Ce cours t'apprend à mener ce calcul proprement, en décomposant tous les vecteurs sur les trois arêtes issues d'un même sommet."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation de Chasles et décomposition de vecteurs",
+        "Produit scalaire : bilinéarité, $\\vec u\\cdot\\vec v=0$ si $\\vec u\\perp\\vec v$, $\\vec u\\cdot\\vec u=\\|\\vec u\\|^2$",
+        "Les arêtes d'un cube issues d'un même sommet sont deux à deux orthogonales et de même longueur",
+        "Une droite orthogonale à deux droites sécantes d'un plan est perpendiculaire à ce plan"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Droite perpendiculaire à un plan par le produit scalaire",
+      "contenu_markdown": "Pour démontrer qu'une droite $(d)$ est perpendiculaire à un plan $(\\mathcal P)$ :\n\n1. Choisir deux droites sécantes $(\\Delta_1)$ et $(\\Delta_2)$ de $(\\mathcal P)$ et un vecteur directeur $\\vec w$ de $(d)$.\n2. Décomposer $\\vec w$, $\\vec p_1$ et $\\vec p_2$ (vecteurs directeurs de $(\\Delta_1)$ et $(\\Delta_2)$) sur les trois arêtes d'un même sommet.\n3. Calculer $\\vec w\\cdot\\vec p_1$ et $\\vec w\\cdot\\vec p_2$ en utilisant l'orthogonalité des arêtes.\n4. Si les deux produits sont nuls, $(d)\\perp(\\mathcal P)$.\n\nDans un cube d'arête $a$ avec $\\vec i=\\overrightarrow{AB}$, $\\vec j=\\overrightarrow{AD}$, $\\vec k=\\overrightarrow{AE}$ : $\\vec i^2=\\vec j^2=\\vec k^2=a^2$ et $\\vec i\\cdot\\vec j=\\vec j\\cdot\\vec k=\\vec i\\cdot\\vec k=0$.",
+      "formule_principale": "\\vec w\\cdot\\vec p_1=0\\ \\text{et}\\ \\vec w\\cdot\\vec p_2=0\\ \\Longrightarrow\\ (d)\\perp(\\mathcal P)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $a$. Démontrer que $(AG)$ est perpendiculaire au plan $(CFH)$ en utilisant le produit scalaire et l'égalité $\\overrightarrow{AG}=\\overrightarrow{AD}+\\overrightarrow{DG}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la base",
+          "justification": "On note $\\vec i=\\overrightarrow{AB}$, $\\vec j=\\overrightarrow{AD}$, $\\vec k=\\overrightarrow{AE}$ : normes $a$, produits scalaires deux à deux nuls.",
+          "resultat_markdown": "$\\vec i^2=\\vec j^2=\\vec k^2=a^2$, $\\vec i\\cdot\\vec j=\\vec i\\cdot\\vec k=\\vec j\\cdot\\vec k=0$"
+        },
+        {
+          "numero": 2,
+          "action": "Décomposer $\\overrightarrow{AG}$",
+          "justification": "$\\overrightarrow{AG}=\\overrightarrow{AD}+\\overrightarrow{DG}$ et $\\overrightarrow{DG}=\\overrightarrow{DC}+\\overrightarrow{CG}=\\overrightarrow{AB}+\\overrightarrow{AE}$.",
+          "resultat_markdown": "$\\overrightarrow{AG}=\\vec i+\\vec j+\\vec k$"
+        },
+        {
+          "numero": 3,
+          "action": "Décomposer $\\overrightarrow{CF}$",
+          "justification": "$\\overrightarrow{CF}=\\overrightarrow{CB}+\\overrightarrow{BF}$ avec $\\overrightarrow{CB}=-\\overrightarrow{AD}$ et $\\overrightarrow{BF}=\\overrightarrow{AE}$.",
+          "resultat_markdown": "$\\overrightarrow{CF}=-\\vec j+\\vec k$"
+        },
+        {
+          "numero": 4,
+          "action": "Décomposer $\\overrightarrow{FH}$",
+          "justification": "$\\overrightarrow{FH}=\\overrightarrow{FE}+\\overrightarrow{EH}$ avec $\\overrightarrow{FE}=-\\overrightarrow{AB}$ et $\\overrightarrow{EH}=\\overrightarrow{AD}$.",
+          "resultat_markdown": "$\\overrightarrow{FH}=-\\vec i+\\vec j$"
+        },
+        {
+          "numero": 5,
+          "action": "Premier produit",
+          "justification": "On développe et on utilise les produits nuls.",
+          "resultat_markdown": "$\\overrightarrow{AG}\\cdot\\overrightarrow{CF}=(\\vec i+\\vec j+\\vec k)\\cdot(-\\vec j+\\vec k)=-\\vec j^2+\\vec k^2=-a^2+a^2=0$"
+        },
+        {
+          "numero": 6,
+          "action": "Second produit",
+          "justification": "Même méthode.",
+          "resultat_markdown": "$\\overrightarrow{AG}\\cdot\\overrightarrow{FH}=(\\vec i+\\vec j+\\vec k)\\cdot(-\\vec i+\\vec j)=-\\vec i^2+\\vec j^2=-a^2+a^2=0$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier la condition de sécance",
+          "justification": "$(CF)$ et $(FH)$ se coupent en $F$ et ne sont pas confondues : ce sont deux droites sécantes du plan $(CFH)$.",
+          "resultat_markdown": "Les directions $\\overrightarrow{CF}$ et $\\overrightarrow{FH}$ ne sont pas colinéaires"
+        }
+      ],
+      "conclusion_markdown": "$(AG)$ est orthogonale à $(CF)$ et à $(FH)$, deux droites sécantes du plan $(CFH)$ : elle est **perpendiculaire** à ce plan."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\vec j^2=0$ ou $\\vec i\\cdot\\vec i=0$.",
+          "pourquoi_faux": "Un vecteur non nul n'est pas orthogonal à lui-même : $\\vec i\\cdot\\vec i=\\|\\vec i\\|^2=a^2$. Ce sont les produits de vecteurs différents ($\\vec i\\cdot\\vec j$) qui sont nuls.",
+          "correction_markdown": "Rappelle en tête de calcul : carrés égaux à $a^2$, produits mixtes nuls."
+        },
+        {
+          "erreur_markdown": "Oublier le signe en décomposant : $\\overrightarrow{CB}=\\overrightarrow{AD}$.",
+          "pourquoi_faux": "$\\overrightarrow{CB}$ va de $C$ vers $B$, soit dans le sens opposé de $\\overrightarrow{AD}$ qui va de $A$ vers $D$. Il vaut $-\\vec j$.",
+          "correction_markdown": "Dessine la flèche de chaque vecteur et compare-la à celle de la base $\\vec i$, $\\vec j$, $\\vec k$."
+        },
+        {
+          "erreur_markdown": "Ne tester qu'une seule droite du plan.",
+          "pourquoi_faux": "Une droite peut être orthogonale à une droite d'un plan sans être perpendiculaire au plan. Il faut deux droites sécantes.",
+          "correction_markdown": "Calcule deux produits scalaires : par exemple $\\overrightarrow{AG}\\cdot\\overrightarrow{CF}$ et $\\overrightarrow{AG}\\cdot\\overrightarrow{FH}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $a$. Démontrer que $(AC)$ est perpendiculaire au plan $(BDH)$.",
+          "solution_markdown": "**Étape 1.** Base $\\vec i=\\overrightarrow{AB}$, $\\vec j=\\overrightarrow{AD}$, $\\vec k=\\overrightarrow{AE}$.\n\n**Étape 2.** $\\overrightarrow{AC}=\\vec i+\\vec j$, $\\overrightarrow{BD}=\\overrightarrow{BA}+\\overrightarrow{AD}=-\\vec i+\\vec j$, $\\overrightarrow{DH}=\\vec k$.\n\n**Étape 3.** $\\overrightarrow{AC}\\cdot\\overrightarrow{BD}=(\\vec i+\\vec j)\\cdot(-\\vec i+\\vec j)=-a^2+a^2=0$.\n\n**Étape 4.** $\\overrightarrow{AC}\\cdot\\overrightarrow{DH}=(\\vec i+\\vec j)\\cdot\\vec k=0$.\n\n**Étape 5.** $(BD)$ et $(DH)$ sont sécantes en $D$ dans le plan $(BDH)$, donc $(AC)\\perp(BDH)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$SABCD$ est une pyramide régulière de base le carré $ABCD$ de côté $6$, de centre $O$, avec $SO=4$. Démontrer que $(BD)$ est perpendiculaire au plan $(SAC)$, puis calculer l'aire du triangle $SAC$.",
+          "solution_markdown": "**Étape 1.** Les diagonales du carré sont perpendiculaires : $\\overrightarrow{BD}\\cdot\\overrightarrow{AC}=0$.\n\n**Étape 2.** $(SO)$ est perpendiculaire au plan de base qui contient $(BD)$ : $\\overrightarrow{BD}\\cdot\\overrightarrow{SO}=0$.\n\n**Étape 3.** $(AC)$ et $(SO)$ sont sécantes en $O$ dans le plan $(SAC)$, donc $(BD)\\perp(SAC)$.\n\n**Étape 4.** $AC=6\\sqrt2$. Dans le triangle $SAC$, $(SO)$ est la hauteur issue de $S$ (car $(SO)\\perp(AC)$) : aire $=\\dfrac{1}{2}\\times6\\sqrt2\\times4=12\\sqrt2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABCD$ est un tétraèdre régulier d'arête $6$ (toutes les arêtes mesurent $6$). Démontrer que $(AB)\\perp(CD)$. Soit $I$ le milieu de $[CD]$ : démontrer que $(CD)$ est perpendiculaire au plan $(ABI)$ et calculer $AI$.",
+          "solution_markdown": "**Étape 1.** Les faces sont équilatérales. $\\overrightarrow{AB}\\cdot\\overrightarrow{CD}=\\overrightarrow{AB}\\cdot(\\overrightarrow{AD}-\\overrightarrow{AC})=\\overrightarrow{AB}\\cdot\\overrightarrow{AD}-\\overrightarrow{AB}\\cdot\\overrightarrow{AC}$.\n\n**Étape 2.** $\\overrightarrow{AB}\\cdot\\overrightarrow{AD}=6\\times6\\times\\cos60^\\circ=18$ et $\\overrightarrow{AB}\\cdot\\overrightarrow{AC}=18$ de même. Différence : $0$, donc $(AB)\\perp(CD)$.\n\n**Étape 3.** $I$ milieu de $[CD]$ : $\\overrightarrow{AI}=\\dfrac{1}{2}(\\overrightarrow{AC}+\\overrightarrow{AD})$. Alors $\\overrightarrow{AI}\\cdot\\overrightarrow{CD}=\\dfrac{1}{2}(\\overrightarrow{AC}+\\overrightarrow{AD})\\cdot(\\overrightarrow{AD}-\\overrightarrow{AC})=\\dfrac{1}{2}(AD^2-AC^2)=0$.\n\n**Étape 4.** Même calcul pour $B$ : $\\overrightarrow{BI}\\cdot\\overrightarrow{CD}=0$.\n\n**Étape 5.** $(AI)$ et $(BI)$ sont sécantes en $I$ et non confondues : $(CD)\\perp(ABI)$.\n\n**Étape 6.** $AI$ est la hauteur du triangle équilatéral $ACD$ de côté $6$ : $AI=6\\times\\dfrac{\\sqrt3}{2}=3\\sqrt3$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une perpendiculaire à un plan : deux droites sécantes du plan, deux produits scalaires nuls.",
+        "Décompose tout sur les trois arêtes d'un même sommet : les produits croisés disparaissent.",
+        "Garde $\\vec i^2=a^2$ en mémoire : seul le produit de deux arêtes différentes est nul.",
+        "Soigne les signes : $\\overrightarrow{CB}=-\\overrightarrow{AD}$.",
+        "Au Probatoire, le cube et sa grande diagonale $(AG)$ sont un classique, souvent suivis du calcul de la distance de $A$ au plan."
+      ]
+    }
+  ]
 }
