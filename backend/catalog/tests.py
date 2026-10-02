@@ -267,7 +267,7 @@ class SavoirOfficielLinkingTests(TestCase):
                 "tags": ["sibling-tag"], "savoir_officiel": autre_ref,
             },
             "source": {"rappel_id": "rdm-savoir-17-a"},
-            "sections": [],
+            "sections": [{"type": "accroche", "contenu_markdown": "Accroche."}],
         })
 
         # Cours 2 : porte "partage-cours" ET "sibling-tag" ensemble, mais sans
@@ -281,7 +281,7 @@ class SavoirOfficielLinkingTests(TestCase):
                 "tags": ["partage-cours", "sibling-tag"],
             },
             "source": {"rappel_id": "rdm-savoir-17-b"},
-            "sections": [],
+            "sections": [{"type": "accroche", "contenu_markdown": "Accroche."}],
         })
 
         # Cours 3 : vise self.savoir avec le même "partage-cours" - doit rester non
@@ -293,7 +293,7 @@ class SavoirOfficielLinkingTests(TestCase):
                 "tags": ["partage-cours"], "savoir_officiel": self.savoir_ref,
             },
             "source": {"rappel_id": "rdm-savoir-17-c"},
-            "sections": [],
+            "sections": [{"type": "accroche", "contenu_markdown": "Accroche."}],
         })
 
         self.assertIsNone(Tag.objects.get(name="partage-cours").savoir_officiel_id)
@@ -1973,7 +1973,7 @@ class IngestCoursRappelsLiesTests(TestCase):
             "cours_id": cours_id,
             "meta": {"titre": "Cours de test", "matiere": "Mathematiques"},
             "source": {"rappel_id": rappel_id, "rappels_lies": rappels_lies or []},
-            "sections": [],
+            "sections": [{"type": "accroche", "contenu_markdown": "Accroche."}],
         }
 
     def test_links_the_primary_rappel(self):
@@ -2121,7 +2121,7 @@ class IngestCoursSameExternalIdAcrossEpreuvesTests(TestCase):
             "cours_id": "cours-meme-id-partout",
             "meta": {"titre": "Cours de test", "matiere": "Mathematiques"},
             "source": {"rappel_id": rappel_id},
-            "sections": [],
+            "sections": [{"type": "accroche", "contenu_markdown": "Accroche."}],
         }
 
     def test_second_epreuve_reusing_the_same_cours_id_still_links_its_rappel(self):
@@ -2171,7 +2171,7 @@ class CoursPaysFieldToleranceTests(TestCase):
             "cours_id": "cours-test",
             "meta": meta,
             "source": {"rappel_id": "rdm-a", "rappels_lies": []},
-            "sections": [],
+            "sections": [{"type": "accroche", "contenu_markdown": "Accroche."}],
         }
 
     def test_accepts_a_pays_matching_the_source_exercises_country(self):
@@ -2983,7 +2983,7 @@ class LessonExercisesBreakdownTests(TestCase):
         # cours complet" pointe vers une URL non-slug côté lecture.
         cours = Cours.objects.create(
             external_id="cours-test", titre="Résolution d'équations du second degré",
-            subject=self.lesson.subject,
+            subject=self.lesson.subject, statut=StatutContenu.VALIDE,
         )
         exercise = self._exercise("1", corrige="Corrigé.\n\n### Rappel de méthode\n\nContenu du rappel.")
         RappelDeMethode.objects.create(
@@ -3006,7 +3006,7 @@ class LessonExercisesBreakdownTests(TestCase):
         # existait bien dans le Markdown mais n'apparaissait jamais sous son propre
         # encadré (signalé en prod sur /cm/epreuves/mathematiques-bepc-2026/lire).
         cours = Cours.objects.create(
-            external_id="cours-test", titre="Calcul fractionnaire", subject=self.lesson.subject,
+            external_id="cours-test", titre="Calcul fractionnaire", subject=self.lesson.subject, statut=StatutContenu.VALIDE,
         )
         corrige = (
             "**1.** Première question.\n\n"
@@ -3035,7 +3035,7 @@ class LessonExercisesBreakdownTests(TestCase):
         # bloc n'était alors jamais le début du rappel, et tous les liens finissaient en
         # fin d'exercice au lieu de suivre leur propre encadré.
         cours = Cours.objects.create(
-            external_id="cours-test", titre="Le système d'exploitation", subject=self.lesson.subject,
+            external_id="cours-test", titre="Le système d'exploitation", subject=self.lesson.subject, statut=StatutContenu.VALIDE,
         )
         paragraphe = (
             "Un système d'exploitation est le logiciel de base qui pilote l'ordinateur et sans "
@@ -3067,7 +3067,7 @@ class LessonExercisesBreakdownTests(TestCase):
         # d'exercice au lieu d'apparaître sous son propre encadré (scan corpus du
         # 2026-08-31 : bac-blanc-c-d-e-chimie-2026-cameroun exercice 2).
         cours = Cours.objects.create(
-            external_id="cours-test", titre="Nomenclature des acides carboxyliques", subject=self.lesson.subject,
+            external_id="cours-test", titre="Nomenclature des acides carboxyliques", subject=self.lesson.subject, statut=StatutContenu.VALIDE,
         )
         corrige = (
             "### Rappel de méthode\n"
@@ -3101,7 +3101,7 @@ class LessonExercisesBreakdownTests(TestCase):
         # rappels au contenu identique, empilant jusqu'à cinq fois le même lien "Voir le
         # cours complet" sous un seul encadré au lieu d'un seul.
         cours = Cours.objects.create(
-            external_id="cours-test", titre="Stratégie du texte à trous", subject=self.lesson.subject,
+            external_id="cours-test", titre="Stratégie du texte à trous", subject=self.lesson.subject, statut=StatutContenu.VALIDE,
         )
         contenu = "Pour compléter un texte à trous, il faut identifier la nature grammaticale attendue."
         exercise = self._exercise(
@@ -3128,7 +3128,7 @@ class LessonExercisesBreakdownTests(TestCase):
         # les N liens sous chaque encadré (36 liens pour 6 cours). Un lien par occurrence.
         contenu = "Une question de cours au barème fractionné se traite en autant d'éléments que de points."
         cours = [
-            Cours.objects.create(external_id=f"cours-occ-{i}", titre=f"Cours {i}", subject=self.lesson.subject)
+            Cours.objects.create(external_id=f"cours-occ-{i}", titre=f"Cours {i}", subject=self.lesson.subject, statut=StatutContenu.VALIDE)
             for i in range(3)
         ]
         exercise = self._exercise(
@@ -3161,7 +3161,7 @@ class LessonExercisesBreakdownTests(TestCase):
         # happés dans son dernier "### Conseil"). Un "---" doit désormais séparer les
         # deux, frontière reconnue par extractCallouts au même titre qu'un titre "###".
         cours = Cours.objects.create(
-            external_id="cours-test", titre="Cours jamais cité verbatim", subject=self.lesson.subject,
+            external_id="cours-test", titre="Cours jamais cité verbatim", subject=self.lesson.subject, statut=StatutContenu.VALIDE,
         )
         exercise = self._exercise(
             "1",

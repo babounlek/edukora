@@ -1558,7 +1558,7 @@ class CorrigeMarkdownCoursLinksAPITests(TestCase):
         self.epreuve = _make_epreuve()
         self.exercice = ExerciceInedite.objects.create(epreuve=self.epreuve, numero_exercice="1")
         self.cours = Cours.objects.create(
-            external_id="cours-rdi-test", titre="Similitudes planes", subject=self.epreuve.subject,
+            external_id="cours-rdi-test", titre="Similitudes planes", subject=self.epreuve.subject, statut=StatutContenu.VALIDE,
         )
         self.question = QuestionInedite.objects.create(
             exercice=self.exercice, numero="1", ordre=1, enonce_markdown="Énoncé.",
@@ -1591,7 +1591,7 @@ class CorrigeMarkdownCoursLinksAPITests(TestCase):
         # False, voir annotate_cours_links) : sinon "Voir le cours complet" pointerait
         # vers un cours sans rapport avec ce que l'élève vient de lire.
         autre_cours = Cours.objects.create(
-            external_id="cours-rdi-autre", titre="Un tout autre cours", subject=self.epreuve.subject,
+            external_id="cours-rdi-autre", titre="Un tout autre cours", subject=self.epreuve.subject, statut=StatutContenu.VALIDE,
         )
         QuestionInedite.objects.create(
             exercice=self.exercice, numero="2", ordre=2, enonce_markdown="Énoncé Q2.",
