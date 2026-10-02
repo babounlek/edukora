@@ -11,6 +11,8 @@ import { useModeExamen } from "@/lib/modeExamen"
 import { BandeauReprisePaiement } from "@/components/BandeauReprisePaiement"
 import { Footer } from "@/components/Footer"
 import { OnboardingModal } from "@/components/OnboardingModal"
+import { PinDialogs } from "@/components/PinDialogs"
+import { VerrouInactivite } from "@/components/VerrouInactivite"
 import { BandeauCursus } from "@/components/BandeauCursus"
 import { BarreSeance } from "@/components/BarreSeance"
 import { BottomTabBar } from "@/components/BottomTabBar"
@@ -161,6 +163,8 @@ function App() {
             </div>
             {!enExamen && <BottomTabBar />}
             <OnboardingModal />
+            <PinDialogs />
+            <VerrouInactivite />
           </CountryProvider>
         </BrowserRouter>
       </AuthProvider>

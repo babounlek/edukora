@@ -38,7 +38,15 @@ from .email_service import (
     request_email_code,
     verify_email_code,
 )
-from .otp_service import OTPCapReached, OTPInvalid, OTPSendFailed, OTPThrottled, request_otp, verify_otp
+from . import pin as pin_module
+from .email_service import consume_email_code
+from .otp_service import (
+    OTPCapReached, OTPInvalid, OTPSendFailed, OTPThrottled, consume_otp, request_otp, verify_otp,
+)
+from .models import AuthIdentity, AuthProvider, Profil, User
+from .parent import creer_jeton, exiger_mode_parent, jeton_parent_valide, session_restreinte
+from .phone import to_e164
+from .profils import profil_actif
 from .serializers import (
     EmailCodeRequestSerializer,
     EmailCodeVerifySerializer,
@@ -127,6 +135,22 @@ def _client_ip(request):
     return candidate
 
 
+def _reponse_session_enfant(request, profil):
+    """Tokens d'une session enfant : claim `profil_id` + `restreint` (voir users.parent)."""
+    user = profil.compte
+    _realigner_cursus_prepare(user, profil)
+    refresh = RefreshToken.for_user(user)
+    refresh["profil_id"] = profil.id
+    refresh["restreint"] = True
+    data = UserSerializer(user, context={"request": request}).data
+    data["profil_actif"] = ProfilSerializer(profil).data
+    data["session_restreinte"] = True
+    response = Response({"access": str(refresh.access_token), "user": data})
+    _set_refresh_cookie(response, refresh)
+    return response
+
+
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def otp_request_view(request):
@@ -151,6 +175,22 @@ def otp_request_view(request):
 def otp_verify_view(request):
     serializer = OTPVerifySerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
+    # Un enfant qui se connecte avec SON numéro (voir Profil.connexion_phone) ouvre une
+    # session limitée à son profil - jamais un compte créé sur ce numéro.
+    try:
+        numero = to_e164(serializer.validated_data["phone_number"])
+    except ValidationError:
+        numero = None
+    profil_enfant = (
+        Profil.objects.filter(connexion_phone=numero).select_related("compte").first() if numero else None
+    )
+    if profil_enfant is not None:
+        try:
+            consume_otp(numero, serializer.validated_data["code"])
+        except OTPInvalid as exc:
+            return Response({"error": str(exc)}, status=400)
+        return _reponse_session_enfant(request, profil_enfant)
+
 
     try:
         user = verify_otp(
@@ -332,6 +372,8 @@ def email_link_confirm_view(request):
 @permission_classes([IsAuthenticated])
 def phone_change_request_view(request):
     """Envoie un code au nouveau numéro. La session prouve déjà la possession du compte."""
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
     serializer = PhoneChangeRequestSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
@@ -354,6 +396,8 @@ def phone_change_request_view(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def phone_change_confirm_view(request):
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
     serializer = PhoneChangeConfirmSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
@@ -375,6 +419,8 @@ def phone_change_confirm_view(request):
 @permission_classes([IsAuthenticated])
 def unlink_identity_view(request, provider):
     """Détache une méthode de connexion, jamais la dernière (voir users.account)."""
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
     try:
         user = unlink_identity(request.user, provider)
     except IdentityNotFound as exc:
@@ -411,6 +457,8 @@ def profils_view(request):
     "Ajouter un enfant") - ordre placé après les profils existants du compte.
     """
     if request.method == "POST":
+        if (refus := exiger_mode_parent(request)) is not None:
+            return refus
         serializer = ProfilWriteSerializer(data=request.data)
         if not serializer.is_valid():
             first_field_errors = next(iter(serializer.errors.values()))
@@ -428,7 +476,9 @@ def profils_view(request):
 def profil_detail_view(request, profil_id):
     """Renomme un profil - jamais celui d'un autre compte (voir le filtre ci-dessous,
     même garde que unlink_identity/les autres vues "propriété du compte connecté")."""
-    profil = request.user.profils.filter(pk=profil_id).first()
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
+    profil =request.user.profils.filter(pk=profil_id).first()
     if profil is None:
         return Response({"error": "Profil introuvable."}, status=404)
 
@@ -492,9 +542,40 @@ def activer_profil_view(request, profil_id):
     "Changer d'enfant", qui ne connaît qu'un profil), le réalignement générique reste
     le repli.
     """
+    if session_restreinte(request):
+        return Response(
+            {"error": "Depuis ta session, tu ne peux pas changer de profil.", "code": "session_restreinte"},
+            status=403,
+        )
     profil = request.user.profils.filter(pk=profil_id).first()
     if profil is None:
         return Response({"error": "Profil introuvable."}, status=404)
+
+    # PIN du profil, vérifié ici (côté serveur) : jamais seulement dans l'interface. Pas
+    # redemandé pour le profil déjà actif (rechargement), ni en mode parent ; le PIN parent
+    # ouvre aussi n'importe quel profil (code enfant oublié).
+    # `reverifier` : l'écran de verrouillage après inactivité redemande le code du profil
+    # DÉJÀ actif (voir VerrouInactivite côté frontend).
+    demande_reverif = bool(request.data.get("reverifier"))
+    if (
+        profil.pin_hash
+        and (profil_actif(request).pk != profil.pk or demande_reverif)
+        and not jeton_parent_valide(request)
+    ):
+        saisi = request.data.get("pin")
+        if not saisi:
+            return Response({"error": "Saisis le code de ce profil.", "code": "pin_requis"}, status=403)
+        try:
+            try:
+                pin_module.verifier(profil, pin_module.PROFIL, str(saisi))
+            except pin_module.PinInvalide:
+                if not request.user.pin_parent_hash:
+                    raise
+                pin_module.verifier(request.user, pin_module.PARENT, str(saisi))
+        except pin_module.PinBloque as exc:
+            return Response({"error": str(exc), "code": "pin_bloque"}, status=429)
+        except pin_module.PinInvalide as exc:
+            return Response({"error": str(exc), "code": "pin_incorrect"}, status=403)
 
     if cursus_id := request.data.get("cursus_id"):
         from subscriptions.models import Subscription
@@ -564,3 +645,206 @@ def logout_view(request):
     response = Response({"message": "Déconnecté."})
     response.delete_cookie(REFRESH_COOKIE_NAME, path=REFRESH_COOKIE_PATH)
     return response
+
+
+# --- PIN parent, PIN des profils et connexion propre d'un enfant -----------------------
+# Voir users.pin (codes), users.parent (mode parent, session enfant) et la docstring de
+# Profil. Toutes ces vues sont refusées à une session enfant.
+
+
+def _refus_session_enfant(request):
+    if session_restreinte(request):
+        return Response({"error": "Cette action est réservée au parent.", "code": "session_restreinte"}, status=403)
+    return None
+
+
+def _reponse_pin(exc):
+    if isinstance(exc, pin_module.PinBloque):
+        return Response({"error": str(exc), "code": "pin_bloque"}, status=429)
+    return Response({"error": str(exc), "code": "pin_incorrect"}, status=403)
+
+
+def _pin_depuis(request, cle="pin"):
+    valeur = request.data.get(cle)
+    return str(valeur) if valeur is not None else ""
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def parent_verifier_view(request):
+    """Saisie du PIN parent : renvoie le jeton court du « mode parent » (en-tête X-Parent-Token)."""
+    if (refus := _refus_session_enfant(request)) is not None:
+        return refus
+    if not request.user.pin_parent_hash:
+        return Response({"error": "Aucun code parent n'est défini."}, status=400)
+    try:
+        pin_module.verifier(request.user, pin_module.PARENT, _pin_depuis(request))
+    except (pin_module.PinBloque, pin_module.PinInvalide) as exc:
+        return _reponse_pin(exc)
+    from .parent import DUREE_SECONDES
+
+    return Response({"jeton": creer_jeton(request.user), "expire_dans": DUREE_SECONDES})
+
+
+@api_view(["POST", "DELETE"])
+@permission_classes([IsAuthenticated])
+def parent_pin_view(request):
+    """
+    POST : définit (ou change) le PIN parent - le changement exige `pin_actuel`.
+    DELETE : le retire - exige `pin_actuel`. Un oubli passe par la réinitialisation par code.
+    """
+    if (refus := _refus_session_enfant(request)) is not None:
+        return refus
+    user = request.user
+    if user.pin_parent_hash:
+        try:
+            pin_module.verifier(user, pin_module.PARENT, _pin_depuis(request, "pin_actuel"))
+        except (pin_module.PinBloque, pin_module.PinInvalide) as exc:
+            return _reponse_pin(exc)
+
+    if request.method == "DELETE":
+        pin_module.effacer(user, pin_module.PARENT)
+    else:
+        try:
+            pin_module.definir(user, pin_module.PARENT, _pin_depuis(request))
+        except ValueError as exc:
+            return Response({"error": str(exc)}, status=400)
+    return Response(UserSerializer(user, context={"request": request}).data)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def parent_reinitialiser_demander_view(request):
+    """PIN parent oublié : envoie un code de vérification au numéro (ou à l'e-mail confirmé) du compte."""
+    if (refus := _refus_session_enfant(request)) is not None:
+        return refus
+    user = request.user
+    try:
+        if user.phone_number:
+            request_otp(user.phone_number, ip_address=_client_ip(request))
+        elif user.email and user.email_verified:
+            request_email_code(user.email, ip_address=_client_ip(request))
+        else:
+            return Response({"error": "Aucun moyen de te joindre n'est enregistré sur ce compte."}, status=400)
+    except (OTPThrottled, EmailThrottled) as exc:
+        return Response({"error": str(exc)}, status=429)
+    except (OTPCapReached, OTPSendFailed, EmailCapReached, EmailSendFailed) as exc:
+        return Response({"error": str(exc)}, status=503)
+    return Response({"message": "Code envoyé."})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def parent_reinitialiser_confirmer_view(request):
+    """Vérifie le code reçu puis retire le PIN parent (on peut alors en définir un nouveau)."""
+    if (refus := _refus_session_enfant(request)) is not None:
+        return refus
+    user = request.user
+    code = str(request.data.get("code", ""))
+    try:
+        if user.phone_number:
+            consume_otp(user.phone_number, code)
+        elif user.email and user.email_verified:
+            consume_email_code(user.email, code)
+        else:
+            return Response({"error": "Aucun moyen de te joindre n'est enregistré sur ce compte."}, status=400)
+    except (OTPInvalid, EmailInvalid) as exc:
+        return Response({"error": str(exc)}, status=400)
+    pin_module.effacer(user, pin_module.PARENT)
+    return Response(UserSerializer(user, context={"request": request}).data)
+
+
+def _profil_du_compte(request, profil_id):
+    return request.user.profils.filter(pk=profil_id).first()
+
+
+@api_view(["POST", "DELETE"])
+@permission_classes([IsAuthenticated])
+def profil_pin_view(request, profil_id):
+    """Définit (POST {pin}) ou retire (DELETE) le PIN d'un profil - mode parent requis."""
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
+    profil = _profil_du_compte(request, profil_id)
+    if profil is None:
+        return Response({"error": "Profil introuvable."}, status=404)
+    if request.method == "DELETE":
+        pin_module.effacer(profil, pin_module.PROFIL)
+    else:
+        try:
+            pin_module.definir(profil, pin_module.PROFIL, _pin_depuis(request))
+        except ValueError as exc:
+            return Response({"error": str(exc)}, status=400)
+    return Response(ProfilSerializer(profil).data)
+
+
+def _numero_connexion_libre(profil, saisie):
+    """(numéro E.164, None) si le numéro de l'enfant est utilisable, sinon (None, Response d'erreur)."""
+    try:
+        numero = to_e164(saisie)
+    except ValidationError:
+        numero = None
+    if not numero:
+        return None, Response({"error": "Numéro de téléphone invalide."}, status=400)
+    pris = (
+        User.objects.filter(phone_number=numero).exists()
+        or AuthIdentity.objects.filter(provider=AuthProvider.PHONE, provider_uid=numero).exists()
+        or Profil.objects.filter(connexion_phone=numero).exclude(pk=profil.pk).exists()
+    )
+    if pris:
+        return None, Response({"error": "Ce numéro est déjà utilisé par un autre compte."}, status=409)
+    return numero, None
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def profil_connexion_demander_view(request, profil_id):
+    """Envoie un code au numéro de l'enfant pour qu'il puisse se connecter lui-même."""
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
+    profil = _profil_du_compte(request, profil_id)
+    if profil is None:
+        return Response({"error": "Profil introuvable."}, status=404)
+    numero, erreur = _numero_connexion_libre(profil, request.data.get("phone_number"))
+    if erreur is not None:
+        return erreur
+    try:
+        request_otp(numero, ip_address=_client_ip(request))
+    except OTPThrottled as exc:
+        return Response({"error": str(exc)}, status=429)
+    except (OTPCapReached, OTPSendFailed) as exc:
+        return Response({"error": str(exc)}, status=503)
+    return Response({"message": "Code envoyé au numéro de l'enfant."})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def profil_connexion_confirmer_view(request, profil_id):
+    """Confirme le code reçu par l'enfant : le numéro devient sa connexion personnelle."""
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
+    profil = _profil_du_compte(request, profil_id)
+    if profil is None:
+        return Response({"error": "Profil introuvable."}, status=404)
+    numero, erreur = _numero_connexion_libre(profil, request.data.get("phone_number"))
+    if erreur is not None:
+        return erreur
+    try:
+        consume_otp(numero, str(request.data.get("code", "")))
+    except OTPInvalid as exc:
+        return Response({"error": str(exc)}, status=400)
+    profil.connexion_phone = numero
+    profil.save(update_fields=["connexion_phone"])
+    return Response(ProfilSerializer(profil).data)
+
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def profil_connexion_supprimer_view(request, profil_id):
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
+    profil = _profil_du_compte(request, profil_id)
+    if profil is None:
+        return Response({"error": "Profil introuvable."}, status=404)
+    profil.connexion_phone = None
+    profil.save(update_fields=["connexion_phone"])
+    return Response(ProfilSerializer(profil).data)

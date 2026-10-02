@@ -157,6 +157,10 @@ CORS_ALLOWED_ORIGINS = config(
 # ci-dessus liste des origines explicites, jamais "*" (interdit par les navigateurs
 # de toute façon dès que credentials=true est demandé).
 CORS_ALLOW_CREDENTIALS = True
+# En-tête du « mode parent » (voir users.parent), à autoriser en plus des défauts pour les
+# appels inter-origines (dev : localhost:5173 -> API).
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = (*default_headers, "x-parent-token")
 
 # Nom et domaine de la plateforme - provisoires tant que le produit est en conception,
 # donc jamais codés en dur ailleurs que via ces deux réglages (voir aussi les

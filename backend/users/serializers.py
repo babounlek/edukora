@@ -85,6 +85,8 @@ class UserSerializer(serializers.ModelSerializer):
     a_un_abonnement_actif = serializers.SerializerMethodField()
     rappels_invite_refusee = serializers.SerializerMethodField()
     profil_actif = serializers.SerializerMethodField()
+    pin_parent_actif = serializers.SerializerMethodField()
+    session_restreinte = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -93,7 +95,7 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
             "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours",
             "a_un_abonnement_actif", "rappels_actifs", "rappels_invite_refusee",
-            "profil_actif",
+            "profil_actif", "pin_parent_actif", "session_restreinte",
         ]
 
     def get_rappels_invite_refusee(self, obj):
@@ -152,6 +154,17 @@ class UserSerializer(serializers.ModelSerializer):
         from subscriptions.models import Subscription
 
         return Subscription.objects.filter(user=obj, expires_at__gt=timezone.now()).exists()
+
+    def get_pin_parent_actif(self, obj):
+        return bool(obj.pin_parent_hash)
+
+    def get_session_restreinte(self, obj):
+        from .parent import session_restreinte
+
+        request = self.context.get("request")
+        if request is None or getattr(request.user, "pk", None) != obj.pk:
+            return False
+        return session_restreinte(request)
 
     def get_profil_actif(self, obj):
         """
@@ -231,9 +244,18 @@ class ProfilSerializer(serializers.ModelSerializer):
     abonnement, à qui il appartient (voir AccesPage.tsx, qui regroupe par profil).
     """
 
+    pin_actif = serializers.SerializerMethodField()
+    connexion_active = serializers.SerializerMethodField()
+
     class Meta:
         model = Profil
-        fields = ["id", "prenom", "ordre"]
+        fields = ["id", "prenom", "ordre", "pin_actif", "connexion_active"]
+
+    def get_pin_actif(self, obj):
+        return bool(obj.pin_hash)
+
+    def get_connexion_active(self, obj):
+        return bool(obj.connexion_phone)
 
 
 class ProfilWriteSerializer(serializers.ModelSerializer):

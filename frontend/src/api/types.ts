@@ -37,6 +37,8 @@ export interface User {
   // L'enfant actif pour cette requête (voir users.profils.profil_actif) - jamais null
   // pour un compte normalement créé, voir sa docstring côté backend.
   profil_actif: Profil
+  pin_parent_actif: boolean
+  session_restreinte: boolean
 }
 
 /** Une étape de la séance du jour - voir quiz.services._construire_etapes. */
@@ -569,6 +571,8 @@ export interface Profil {
   id: number
   prenom: string
   ordre: number
+  pin_actif: boolean
+  connexion_active: boolean
 }
 
 export interface Subscription {

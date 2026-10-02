@@ -180,7 +180,7 @@ function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
   const cursusAbonnes = useCursusAbonnes()
   const changerProfil = useChangerProfilActif()
 
-  if (cursusAbonnes.length < 2) {
+  if (cursusAbonnes.length < 2 || user?.session_restreinte) {
     return <> · {formatCursus(cursus)}</>
   }
 
@@ -203,7 +203,7 @@ function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
               key={sub.id}
               disabled={changerProfil.isPending}
               onSelect={() => {
-                if (!actif) changerProfil.mutate({ profilId: sub.profil.id, cursusId: sub.cursus.id })
+                if (!actif) changerProfil.mutate({ profilId: sub.profil.id, cursusId: sub.cursus.id, prenom: sub.profil.prenom })
               }}
             >
               {actif ? <Check className="text-primary" /> : <GraduationCap />}

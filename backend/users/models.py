@@ -200,6 +200,11 @@ class User(AbstractBaseUser, PermissionsMixin):
             "quelqu'un à qui on n'a encore rien demandé."
         ),
     )
+    # PIN parent (4 chiffres), facultatif : une fois défini, les actions du compte (paiement,
+    # gestion des enfants et des codes) demandent le « mode parent » - voir users.parent.
+    pin_parent_hash = models.CharField(max_length=128, blank=True, default="")
+    pin_parent_echecs = models.PositiveSmallIntegerField(default=0)
+    pin_parent_bloque_jusqua = models.DateTimeField(null=True, blank=True)
 
     objects = UserManager()
 
@@ -274,6 +279,18 @@ class Profil(models.Model):
                   "chaque profil active ou non son propre rappel.",
     )
     rappels_invite_refusee_at = models.DateTimeField(null=True, blank=True)
+    # Code PIN facultatif (4 chiffres) : sans lui, tout le monde sur l'appareil peut ouvrir
+    # ce profil. Défini par le parent (voir users.pin) ; vérifié côté serveur à l'activation
+    # du profil (activer_profil_view), jamais seulement dans l'interface.
+    pin_hash = models.CharField(max_length=128, blank=True, default="")
+    pin_echecs = models.PositiveSmallIntegerField(default=0)
+    pin_bloque_jusqua = models.DateTimeField(null=True, blank=True)
+    connexion_phone = models.CharField(
+        max_length=16, unique=True, null=True, blank=True, validators=[e164_validator],
+        help_text="Numéro E.164 (vérifié par code) avec lequel l'enfant se connecte lui-même : "
+                  "il ouvre alors une session limitée à ce profil, sans changement d'enfant "
+                  "ni action du compte (paiement, gestion des profils).",
+    )
     ordre = models.PositiveSmallIntegerField(
         default=0, help_text="Position stable dans le sélecteur de profils, à l'ajout.",
     )

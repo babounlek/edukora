@@ -102,7 +102,12 @@ export function LoginPage() {
   // déjà déclaré 2+ enfants, auquel cas "Qui étudie ?" s'intercale une fois (voir
   // QuiEtudiePage.tsx) - comportement inchangé pour l'immense majorité des comptes
   // (un seul profil).
-  async function naviguerApresConnexion() {
+  async function naviguerApresConnexion(sessionEnfant = false) {
+    // Session ouverte par l'enfant avec son propre numéro : un seul profil possible, jamais « Qui étudie ? ».
+    if (sessionEnfant) {
+      navigate(redirectTo, { replace: true })
+      return
+    }
     try {
       const profils = await listProfils()
       if (profils.length > 1) {
@@ -177,7 +182,7 @@ export function LoginPage() {
         : await verifyEmailCode(email, code, referral)
       clearReferralCode()
       login(response.access, response.user)
-      await naviguerApresConnexion()
+      await naviguerApresConnexion(response.user.session_restreinte)
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
     } finally {

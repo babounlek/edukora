@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Loader2, UserCircle } from "lucide-react"
 
-import { activerProfil, listProfils } from "@/api/endpoints"
+import { listProfils } from "@/api/endpoints"
+import { activerProfilProtege } from "@/lib/changerProfilActif"
 import type { Profil } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Card, CardContent } from "@/components/ui/card"
@@ -53,7 +54,7 @@ export function QuiEtudiePage() {
   async function choisir(profil: Profil) {
     setActivatingId(profil.id)
     try {
-      const response = await activerProfil(profil.id)
+      const response = await activerProfilProtege(profil.id, profil.prenom)
       login(response.access, response.user)
       navigate(redirectTo, { replace: true })
     } catch {

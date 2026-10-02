@@ -25,4 +25,12 @@ urlpatterns = [
     path("profils/", views.profils_view, name="profils"),
     path("profils/<int:profil_id>/", views.profil_detail_view, name="profil-detail"),
     path("profils/<int:profil_id>/activer/", views.activer_profil_view, name="profil-activer"),
+    path("parent/verifier/", views.parent_verifier_view, name="parent-verifier"),
+    path("parent/pin/", views.parent_pin_view, name="parent-pin"),
+    path("parent/reinitialiser/demander/", views.parent_reinitialiser_demander_view, name="parent-reinit-demander"),
+    path("parent/reinitialiser/confirmer/", views.parent_reinitialiser_confirmer_view, name="parent-reinit-confirmer"),
+    path("profils/<int:profil_id>/pin/", views.profil_pin_view, name="profil-pin"),
+    path("profils/<int:profil_id>/connexion/demander/", views.profil_connexion_demander_view, name="profil-connexion-demander"),
+    path("profils/<int:profil_id>/connexion/confirmer/", views.profil_connexion_confirmer_view, name="profil-connexion-confirmer"),
+    path("profils/<int:profil_id>/connexion/", views.profil_connexion_supprimer_view, name="profil-connexion-supprimer"),
 ]

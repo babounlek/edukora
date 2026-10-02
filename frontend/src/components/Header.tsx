@@ -75,7 +75,7 @@ function AccountMenu() {
       <DropdownMenuContent>
         {/* Seulement si le compte a déjà déclaré 2+ enfants : sinon il n'y a rien à
             basculer, profil_actif retombe silencieusement sur l'unique profil. */}
-        {profils.length > 1 && (
+        {profils.length > 1 && !user?.session_restreinte && (
           <>
             <DropdownMenuLabel>Changer d'enfant</DropdownMenuLabel>
             {profils.map((profil) => {
@@ -85,7 +85,7 @@ function AccountMenu() {
                   key={profil.id}
                   disabled={changerProfil.isPending}
                   onSelect={() => {
-                    if (!actif) changerProfil.mutate({ profilId: profil.id })
+                    if (!actif) changerProfil.mutate({ profilId: profil.id, prenom: profil.prenom })
                   }}
                 >
                   {actif ? <Check className="text-primary" /> : <User />}
@@ -104,7 +104,7 @@ function AccountMenu() {
             cursusId), jamais sur le profil seul suivi d'un réalignement générique qui
             pourrait retomber sur un AUTRE cursus de ce même profil (régression
             signalée : "un enfant avec un cursus qui n'est pas le sien"). */}
-        {cursusAbonnes.length > 1 && (
+        {cursusAbonnes.length > 1 && !user?.session_restreinte && (
           <>
             <DropdownMenuLabel>Examen préparé</DropdownMenuLabel>
             {cursusAbonnes.map((sub) => {

@@ -23,6 +23,38 @@ export function setAccessToken(token: string) {
 
 export function clearAccessToken() {
   accessToken = null
+  parentToken = null
+}
+
+// « Mode parent » (voir users.parent côté backend) : si le compte a un PIN parent, les
+// actions du compte exigent un jeton court, obtenu en saisissant ce PIN. Gardé en mémoire
+// seulement (jamais en stockage persistant) et envoyé en en-tête X-Parent-Token.
+let parentToken: { value: string; expiresAt: number } | null = null
+
+export function setParentToken(value: string, secondes: number) {
+  // Marge de 30 s : ne jamais envoyer un jeton à la limite de l'expiration.
+  parentToken = { value, expiresAt: Date.now() + Math.max(0, secondes - 30) * 1000 }
+}
+
+export function clearParentToken() {
+  parentToken = null
+}
+
+function currentParentToken(): string | null {
+  if (parentToken && parentToken.expiresAt > Date.now()) return parentToken.value
+  parentToken = null
+  return null
+}
+
+// Enregistré par le composant qui affiche la saisie du PIN parent (voir PinDialogs) :
+// résout true une fois le mode parent obtenu, false si l'utilisateur annule. Permet de
+// rejouer automatiquement la requête refusée (403 `parent_requis`), sans que chaque
+// écran ait à gérer ce cas.
+type ParentModeHandler = () => Promise<boolean>
+let parentModeHandler: ParentModeHandler | null = null
+
+export function setParentModeHandler(handler: ParentModeHandler | null) {
+  parentModeHandler = handler
 }
 
 // Événement DOM plutôt qu'un import direct de sonner/AuthContext ici : ce module n'a
@@ -54,12 +86,18 @@ function extraireMessage(body: unknown): string | null {
 class ApiError extends Error {
   status: number
   body: unknown
+  /** Code machine optionnel renvoyé par l'API (ex. `pin_requis`, `parent_requis`). */
+  code: string | null
 
   constructor(status: number, body: unknown) {
     const message = extraireMessage(body) ?? `Erreur API (${status})`
     super(message)
     this.status = status
     this.body = body
+    this.code =
+      typeof body === "object" && body !== null && typeof (body as { code?: unknown }).code === "string"
+        ? (body as { code: string }).code
+        : null
   }
 }
 
@@ -135,6 +173,8 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     // le boundary multipart lui-même, un header explicite ici le corromprait.
     if (!isFormData) headers["Content-Type"] = "application/json"
     if (sendToken && token) headers["Authorization"] = `Bearer ${token}`
+    const parent = sendToken && token ? currentParentToken() : null
+    if (parent) headers["X-Parent-Token"] = parent
 
     return fetch(`${API_BASE_URL}${path}`, {
       method,
@@ -177,6 +217,17 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
       // l'ApiError 401 ne remonte, potentiellement affichée comme une erreur
       // générique par l'appelant plutôt que comme "reconnecte-toi".
       window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT))
+    }
+  }
+
+  // 403 `parent_requis` : le compte a un PIN parent et ce geste en demande le mode. On
+  // affiche la saisie du code (voir PinDialogs) puis on rejoue la requête une fois.
+  if (response.status === 403 && sendToken && parentModeHandler) {
+    const clone = response.clone()
+    const corps = await clone.json().catch(() => null)
+    if (corps && typeof corps === "object" && (corps as { code?: unknown }).code === "parent_requis") {
+      parentToken = null
+      if (await parentModeHandler()) response = await doFetch(getAccessToken())
     }
   }
 

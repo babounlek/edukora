@@ -178,11 +178,69 @@ export function createProfil(prenom: string) {
  * users.views._realigner_cursus_prepare) ; avec lui, c'est ce cursus précis qui est
  * retenu, jamais un autre du même profil.
  */
-export function activerProfil(profilId: number, cursusId?: number) {
+export function activerProfil(profilId: number, cursusId?: number, pin?: string, reverifier?: boolean) {
   return apiRequest<{ access: string; user: User }>(`/auth/profils/${profilId}/activer/`, {
     method: "POST",
-    body: cursusId ? { cursus_id: cursusId } : undefined,
+    body:
+      cursusId || pin || reverifier
+        ? { ...(cursusId ? { cursus_id: cursusId } : {}), ...(pin ? { pin } : {}), ...(reverifier ? { reverifier: true } : {}) }
+        : undefined,
   })
+}
+
+/** PIN parent : renvoie le jeton court du « mode parent » (voir api/client.ts). */
+export function verifierPinParent(pin: string) {
+  return apiRequest<{ jeton: string; expire_dans: number }>("/auth/parent/verifier/", {
+    method: "POST",
+    body: { pin },
+  })
+}
+
+export function definirPinParent(pin: string, pinActuel?: string) {
+  return apiRequest<User>("/auth/parent/pin/", {
+    method: "POST",
+    body: pinActuel ? { pin, pin_actuel: pinActuel } : { pin },
+  })
+}
+
+export function retirerPinParent(pinActuel: string) {
+  return apiRequest<User>("/auth/parent/pin/", { method: "DELETE", body: { pin_actuel: pinActuel } })
+}
+
+/** PIN parent oublié : un code part vers le numéro (ou l'e-mail confirmé) du compte. */
+export function demanderReinitialisationPinParent() {
+  return apiRequest<{ message: string }>("/auth/parent/reinitialiser/demander/", { method: "POST" })
+}
+
+export function confirmerReinitialisationPinParent(code: string) {
+  return apiRequest<User>("/auth/parent/reinitialiser/confirmer/", { method: "POST", body: { code } })
+}
+
+export function definirPinProfil(profilId: number, pin: string) {
+  return apiRequest<Profil>(`/auth/profils/${profilId}/pin/`, { method: "POST", body: { pin } })
+}
+
+export function retirerPinProfil(profilId: number) {
+  return apiRequest<Profil>(`/auth/profils/${profilId}/pin/`, { method: "DELETE" })
+}
+
+/** Connexion personnelle d'un enfant : un code part vers SON numéro, puis on le confirme. */
+export function demanderConnexionProfil(profilId: number, phoneNumber: string) {
+  return apiRequest<{ message: string }>(`/auth/profils/${profilId}/connexion/demander/`, {
+    method: "POST",
+    body: { phone_number: phoneNumber },
+  })
+}
+
+export function confirmerConnexionProfil(profilId: number, phoneNumber: string, code: string) {
+  return apiRequest<Profil>(`/auth/profils/${profilId}/connexion/confirmer/`, {
+    method: "POST",
+    body: { phone_number: phoneNumber, code },
+  })
+}
+
+export function supprimerConnexionProfil(profilId: number) {
+  return apiRequest<Profil>(`/auth/profils/${profilId}/connexion/`, { method: "DELETE" })
 }
 
 /** Renomme un profil existant - toujours celui du compte connecté (voir le filtre côté vue). */

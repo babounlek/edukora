@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 
 from subscriptions.models import Plan, solde_credit_parrainage
+from users.parent import exiger_mode_parent
 
 from .providers import PaiementFournisseurError
 from .models import ManualPayment, MobileMoneyAccount, StatutTransaction, Transaction
@@ -51,6 +52,8 @@ def _report_provider_error(exc, transaction):
 
 @api_view(["POST"])
 def initiate_payment(request):
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
     plan_id = request.data.get("plan_id")
     phone_number = request.data.get("phone_number")
 
@@ -129,6 +132,8 @@ def list_manual_payment_methods(request):
 @api_view(["POST"])
 @parser_classes([MultiPartParser, FormParser])
 def declare_manual_payment(request):
+    if (refus := exiger_mode_parent(request)) is not None:
+        return refus
     serializer = ManualPaymentDeclareSerializer(data=request.data, context={"request": request})
     serializer.is_valid(raise_exception=True)
     payment = serializer.save()

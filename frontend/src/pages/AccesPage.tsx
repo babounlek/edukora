@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { ArrowRight, CalendarClock, Check, Loader2, Pencil, Plus, Sparkles, UserPlus } from "lucide-react"
+import { ArrowRight, CalendarClock, Check, Loader2, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
 
 import {
   createProfil,
@@ -14,6 +14,7 @@ import { ApiError } from "@/api/client"
 import type { InscriptionInedite, InscriptionRepetiteur, Profil, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
+import { SecuriteProfils } from "@/components/SecuriteProfils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -238,7 +239,7 @@ function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
 export function AccesPage() {
   useSeo({ title: "Mes accès" })
 
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading, user } = useAuth()
   const navigate = useNavigate()
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [inscriptionsInedites, setInscriptionsInedites] = useState<InscriptionInedite[] | null>(null)
@@ -356,12 +357,21 @@ export function AccesPage() {
           </div>
         )}
 
-        {charge && (
+        {charge && !user?.session_restreinte && (
           <div className="mt-5">
             <AjouterEnfant onCreated={ajouterProfil} />
           </div>
         )}
       </Section>
+
+      {charge && profils && !user?.session_restreinte && (
+        <Section icone={ShieldCheck} titre="Sécurité des profils">
+          <SecuriteProfils
+            profils={profils}
+            onProfilChange={(maj) => setProfils((prev) => (prev ?? []).map((p) => (p.id === maj.id ? maj : p)))}
+          />
+        </Section>
+      )}
     </div>
   )
 }
