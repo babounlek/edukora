@@ -9,7 +9,7 @@ from django.urls import path
 from catalog.models import Country, StatutContenu
 
 from .ingestion import SELECTION_FLOOR, SELECTION_LIMIT, run_ingestion, select_quiz_batch
-from .models import CompetenceItem, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
+from .models import CompetenceItem, CompetenceItemFigure, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
 
 # Sous-dossier de catalog.admin.INGEST_DIR réservé aux lots CompetenceItem du skill
 # concepteur-quiz-competence - voir quiz.ingestion (docstring de module) pour la
@@ -62,8 +62,15 @@ class RevisionScheduleAdmin(admin.ModelAdmin):
         return False
 
 
+class CompetenceItemFigureInline(admin.TabularInline):
+    model = CompetenceItemFigure
+    extra = 0
+    fields = ["external_id", "image", "type_figure", "legende", "origine"]
+
+
 @admin.register(CompetenceItem)
 class CompetenceItemAdmin(admin.ModelAdmin):
+    inlines = [CompetenceItemFigureInline]
     list_display = [
         "theme", "subject", "difficulte_estimee", "type_reponse", "statut", "est_vitrine", "external_id",
         "updated_at",

@@ -19,14 +19,17 @@ pays de correction-experte ; catalog.ingestion.run_ingestion l'ignore explicitem
 """
 
 import json
+import re
 from pathlib import Path
 
+from django.core.files.base import ContentFile
 from django.db import transaction
 from django.db.models import Count
 
 from catalog.ingestion import (
     DIFFICULTE_MAP,
     IngestionError,
+    _compress_figure_image,
     _est_tag_structurel,
     _link_tags_to_savoir,
     _normalize,
@@ -42,7 +45,7 @@ from catalog.ingestion import (
 from catalog.models import Exercise, Question, StatutContenu, Subject, Tag, TypeReponse
 from programme.models import Savoir
 
-from .models import CompetenceItem
+from .models import CompetenceItem, CompetenceItemFigure
 
 SELECTION_FLOOR = 6
 SELECTION_LIMIT = 5
@@ -421,7 +424,68 @@ def select_quiz_batch(
     return requests
 
 
-def ingest_competence_item(data, country):
+def _attach_figures(item, figures_data, source_dir):
+    """
+    Crée une CompetenceItemFigure par entrée de `figures_data` (courbes, constructions,
+    schémas PRODUITS par le skill concepteur-quiz-competence - jamais extraits d'une
+    épreuve), en lisant le PNG depuis `source_dir` (livré à côté du JSON, jamais encodé
+    dedans - même convention que catalog.ingestion._attach_figures), puis réécrit
+    `![fig-N](fichier.png)` vers l'URL du fichier stocké dans enonce/corrige_markdown.
+
+    Plus strict que catalog.ingestion._attach_figures, qui tolère les entrées sans
+    fichier : ici l'item est inventé et la figure produite exprès, donc une entrée
+    sans fichier, un PNG absent ou un placeholder qui ne correspond à aucune entrée est
+    un défaut du lot à corriger, jamais une figure « perdue » à ignorer.
+    """
+    if not figures_data:
+        # Un placeholder sans entrée figures serait un lien mort affiché à l'élève.
+        for champ in ("enonce_markdown", "corrige_markdown"):
+            if "![fig-" in getattr(item, champ):
+                raise IngestionError(f"{champ} référence une figure (![fig-...]) mais le champ figures est vide.")
+        return
+
+    if source_dir is None:
+        raise IngestionError("figures présentes dans le JSON mais aucun dossier source fourni pour résoudre les PNG.")
+
+    enonce, corrige = item.enonce_markdown, item.corrige_markdown
+    for index, fig_data in enumerate(figures_data, start=1):
+        if not isinstance(fig_data, dict) or not (fig_data.get("fichier") or fig_data.get("nom_fichier")):
+            raise IngestionError(f"figures[{index - 1}] : objet avec le champ « fichier » attendu.")
+        filename = fig_data.get("fichier") or fig_data.get("nom_fichier")
+        fig_id = fig_data.get("id") or f"fig-{index}"
+
+        image_path = source_dir / filename
+        if not image_path.is_file():
+            raise IngestionError(f"Fichier de figure introuvable : {image_path}")
+
+        placeholder_re = re.compile(r"!\[" + re.escape(fig_id) + r"\]\(" + re.escape(filename) + r"\)")
+        if not placeholder_re.search(enonce) and not placeholder_re.search(corrige):
+            raise IngestionError(f"Figure {fig_id} ({filename}) jamais référencée par un placeholder ![{fig_id}]({filename}).")
+
+        compressed_bytes, stored_filename = _compress_figure_image(image_path.read_bytes(), filename)
+        figure = CompetenceItemFigure.objects.create(
+            item=item,
+            external_id=fig_id,
+            image=ContentFile(compressed_bytes, name=stored_filename),
+            type_figure=_strip_em_dash(str(fig_data.get("type") or ""))[:30],
+            legende=_strip_em_dash(str(fig_data.get("legende") or "")),
+            origine="ENONCE" if _normalize(fig_data.get("origine_figure")) == "enonce" else "CORRIGE",
+        )
+        alt_text = figure.legende or figure.type_figure or "Figure du corrigé"
+        replacement = f"![{alt_text}]({figure.image.url})"
+        enonce = placeholder_re.sub(replacement, enonce)
+        corrige = placeholder_re.sub(replacement, corrige)
+
+    item.enonce_markdown, item.corrige_markdown = enonce, corrige
+    item.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
+
+    # Filet : un placeholder resté nu après réécriture n'a pas d'entrée figures.
+    for champ in ("enonce_markdown", "corrige_markdown"):
+        if re.search(r"!\[fig-\d+\]\(", getattr(item, champ)):
+            raise IngestionError(f"{champ} contient un placeholder ![fig-N](...) sans entrée correspondante dans figures.")
+
+
+def ingest_competence_item(data, country, source_dir=None):
     """
     Ingère un objet JSON (un CompetenceItem). Retourne (item, created).
 
@@ -429,6 +493,10 @@ def ingest_competence_item(data, country):
     unique_competenceitem_external_id_when_set) : un item déjà ingéré n'est jamais
     modifié - un ré-import ne recouvre pas une correction manuelle faite depuis
     l'admin. Sans `external_id` (item ad hoc, hors mode automatisation), toujours créé.
+
+    `source_dir` : dossier du fichier JSON source, où chercher les PNG listés dans
+    `data["figures"]` (voir _attach_figures) - toujours le dossier du JSON, transmis par
+    run_ingestion. Un item qui n'a aucune figure n'en a pas besoin.
 
     Créé directement avec statut=VALIDE (comme catalog.ingestion.ingest_exercise) :
     publié et servable en Quiz dès l'ingestion, sans étape de relecture humaine
@@ -476,6 +544,9 @@ def ingest_competence_item(data, country):
             statut=StatutContenu.VALIDE,
         )
         item.cursus.set(cursus_list)
+        # Dans la transaction : un PNG introuvable annule l'item entier plutôt que de le
+        # publier avec un placeholder mort dans son corrigé.
+        _attach_figures(item, data.get("figures") or [], source_dir)
 
         # Best-effort, jamais bloquant : source_exercises n'est que de la traçabilité
         # d'audit (voir CompetenceItem.source_exercises), un id qui ne résout plus rien
@@ -539,7 +610,7 @@ def run_ingestion(path):
             try:
                 data, _ = _repair_double_json_escaping(data)
                 data, _ = _repair_missing_matrix_row_separators(data)
-                _, was_created = ingest_competence_item(data, country)
+                _, was_created = ingest_competence_item(data, country, source_dir=file_path.parent)
                 created += 1 if was_created else 0
                 skipped += 0 if was_created else 1
             except Exception as exc:

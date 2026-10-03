@@ -136,6 +136,49 @@ class CompetenceItem(models.Model):
         return f"{self.theme} ({self.get_difficulte_estimee_display() or 'difficulté non estimée'})"
 
 
+def _competence_item_figure_upload_to(instance, filename):
+    # Sous-dossier `quiz/` : le nom de fichier est dérivé de l'external_id de l'item
+    # (déjà unique dans le lot), mais une figure d'exercice (catalog.Figure) du même pays
+    # peut porter n'importe quel nom - le préfixe évite toute collision dans figures/.
+    return f"figures/{instance.item.subject.country.code.lower()}/quiz/{filename}"
+
+
+class CompetenceItemFigure(models.Model):
+    """
+    Image (courbe, construction géométrique, schéma, graphique...) produite par le skill
+    concepteur-quiz-competence pour un CompetenceItem - jamais extraite d'une épreuve,
+    puisque l'item est inventé. Même rôle que catalog.Figure pour un Exercise : le
+    placeholder `![fig-N](fichier.png)` d'enonce_markdown/corrige_markdown est réécrit à
+    l'ingestion vers l'URL du fichier stocké ici (voir quiz.ingestion._attach_figures).
+    Stockage public sur MEDIA : une figure de correction n'a rien de privé.
+    """
+
+    item = models.ForeignKey(CompetenceItem, on_delete=models.CASCADE, related_name="figures")
+    external_id = models.CharField(
+        max_length=255,
+        help_text="Identifiant du placeholder dans le Markdown (ex: fig-1) - unique seulement au sein d'un item.",
+    )
+    image = models.FileField(upload_to=_competence_item_figure_upload_to)
+    type_figure = models.CharField(
+        max_length=30, blank=True,
+        help_text="Ex : courbe, figure geometrique, schema, graphique, circuit (valeur libre, non contrainte).",
+    )
+    legende = models.TextField(blank=True)
+    origine = models.CharField(
+        max_length=10, choices=[("ENONCE", "Énoncé"), ("CORRIGE", "Corrigé")], default="CORRIGE",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["item", "external_id"]
+        constraints = [
+            models.UniqueConstraint(fields=["item", "external_id"], name="unique_competenceitemfigure_par_item"),
+        ]
+
+    def __str__(self):
+        return f"{self.item_id} - {self.external_id}"
+
+
 class QuizSession(models.Model):
     """Une série de Question générée pour un profil - voir quiz.services.generer_session."""
 

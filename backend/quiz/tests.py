@@ -42,7 +42,7 @@ from users.models import User
 
 from .ingestion import ingest_competence_item, run_ingestion, select_quiz_batch
 from .models import (
-    CompetenceItem, ModeQuiz, ObjectifMatiere, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule,
+    CompetenceItem, CompetenceItemFigure, ModeQuiz, ObjectifMatiere, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule,
     SeanceJournaliere, StatutFichePdf, StatutSeance,
 )
 from .services import (
@@ -409,6 +409,77 @@ class RunQuizIngestionTests(TestCase):
         self.assertEqual(report["files_found"], 1)
         self.assertEqual(report["created"], 1)
         self.assertEqual(report["errors"], [])
+
+
+class IngestCompetenceItemFiguresTests(TestCase):
+    """Figures produites par le skill (courbe, construction, schéma) : PNG livré à côté
+    du JSON, placeholder réécrit vers l'URL stockée (voir quiz.ingestion._attach_figures)."""
+
+    def setUp(self):
+        self.country = Country.objects.get(code="CM")
+        Tag.objects.create(name="dérivation")
+
+    @staticmethod
+    def _png(path):
+        from PIL import Image
+
+        Image.new("RGB", (40, 30), "white").save(path, format="PNG")
+
+    def _payload(self, **overrides):
+        fields = {
+            "corrige_markdown": "### Rappel de méthode\n\nx\n\n### Corrigé\n\n![fig-1](item_fig_1.png)\n\nVoir la courbe.",
+            "figures": [{
+                "id": "fig-1", "fichier": "item_fig_1.png", "type": "courbe",
+                "legende": "Courbe de f", "origine_figure": "corrige",
+            }],
+        }
+        fields.update(overrides)
+        return _item_payload(**fields)
+
+    def test_attaches_figure_and_rewrites_placeholder(self):
+        with tempfile.TemporaryDirectory() as src, tempfile.TemporaryDirectory() as media:
+            self._png(Path(src) / "item_fig_1.png")
+            with self.settings(MEDIA_ROOT=media):
+                item, created = ingest_competence_item(self._payload(), self.country, source_dir=Path(src))
+
+        self.assertTrue(created)
+        figure = item.figures.get()
+        self.assertEqual(figure.external_id, "fig-1")
+        self.assertEqual(figure.origine, "CORRIGE")
+        self.assertIn(f"![Courbe de f]({figure.image.url})", item.corrige_markdown)
+        self.assertNotIn("![fig-1]", item.corrige_markdown)
+
+    def test_missing_png_rolls_back_the_whole_item(self):
+        with tempfile.TemporaryDirectory() as src:
+            with self.assertRaises(IngestionError):
+                ingest_competence_item(self._payload(), self.country, source_dir=Path(src))
+        self.assertEqual(CompetenceItem.objects.count(), 0)
+
+    def test_placeholder_without_figures_entry_is_rejected(self):
+        payload = _item_payload(corrige_markdown="### Corrigé\n\n![fig-1](x.png)")
+        with self.assertRaises(IngestionError):
+            ingest_competence_item(payload, self.country, source_dir=Path("."))
+        self.assertEqual(CompetenceItem.objects.count(), 0)
+
+    def test_figure_never_referenced_is_rejected(self):
+        with tempfile.TemporaryDirectory() as src:
+            self._png(Path(src) / "item_fig_1.png")
+            payload = self._payload(corrige_markdown="### Corrigé\n\nSans figure.")
+            with self.assertRaises(IngestionError):
+                ingest_competence_item(payload, self.country, source_dir=Path(src))
+
+    def test_run_ingestion_resolves_png_next_to_the_json(self):
+        with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as media:
+            folder = Path(tmp) / "ingest" / "_quiz" / "cm" / "derivation"
+            folder.mkdir(parents=True)
+            self._png(folder / "item_fig_1.png")
+            (folder / "batch.json").write_text(json.dumps([self._payload()]), encoding="utf-8")
+            with self.settings(MEDIA_ROOT=media):
+                report = run_ingestion(Path(tmp))
+
+        self.assertEqual(report["errors"], [])
+        self.assertEqual(report["created"], 1)
+        self.assertEqual(CompetenceItemFigure.objects.count(), 1)
 
 
 class SelectQuizBatchTests(TestCase):
