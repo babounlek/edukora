@@ -9,9 +9,8 @@ import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { BoutonSimulation } from "@/components/BoutonSimulation"
 import { formatCursus } from "@/components/CompteAReboursBadge"
-import { ObjectifXp } from "@/components/ObjectifXp"
+import { LigneJour } from "@/components/LigneJour"
 import { SeanceCorps } from "@/components/SeanceDuJour"
-import { SemaineDeSerie } from "@/components/SemaineDeSerie"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +24,9 @@ import { trackEvent } from "@/lib/analytics"
 import { themesFrequentsPath } from "@/lib/countryPath"
 import { pourcent } from "@/lib/maitrise"
 import { cn } from "@/lib/utils"
+
+// Part de préparation (0-1) sous laquelle l'anneau n'est pas montré dans le bandeau.
+const SEUIL_ANNEAU_VISIBLE = 0.1
 
 /**
  * La tête de l'accueil d'un abonné : UNE carte, UNE action.
@@ -57,7 +59,6 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
   const cursus = user?.cursus_prepare
   const compte = user?.compte_a_rebours ?? plan?.compte_a_rebours ?? null
   const prenom = (user?.profil_actif?.prenom || user?.pseudo || user?.full_name || "").trim().split(/\s+/)[0]
-  const seancesSemaine = plan?.seances_cette_semaine
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6" aria-label="Aujourd'hui">
@@ -83,13 +84,8 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
               <p className="mt-3 max-w-2xl font-display text-base font-medium leading-snug text-balance sm:text-xl">
                 {accueil.phrase_coach}
               </p>
-              {/* La série et sa semaine vivent dans le corps de la carte (voir plus bas,
-                  SemaineDeSerie), à côté de l'objectif d'XP : le bandeau garde les repères. */}
-              {typeof seancesSemaine === "number" && seancesSemaine > 0 ? (
-                <p className="mt-2 text-sm text-primary-foreground/80">
-                  {seancesSemaine} séance{seancesSemaine > 1 ? "s" : ""} cette semaine
-                </p>
-              ) : null}
+              {/* Le compteur « N séances cette semaine » a disparu du bandeau : la semaine de
+                  série (LigneJour, dans le corps de la carte) dit déjà quels jours ont compté. */}
             </div>
             {/* Pas d'anneau tant que rien n'est mesuré : un "0 %" le premier jour dit
                 "tu n'as rien fait" à quelqu'un qui vient d'arriver. Il apparaît après la
@@ -103,7 +99,9 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
                 déclaré), une illustration comble l'espace plutôt que de le laisser
                 vide - voir IllustrationAujourdhui, volontairement en dernier recours :
                 un vrai repère prime toujours sur la décoration quand il y en a un. */}
-            {accueil.preparation && !accueil.premiers_pas ? (
+            {/* Sous SEUIL_ANNEAU_VISIBLE, un « 1 % » décourage plus qu'il n'informe : l'anneau
+                attend d'avoir de quoi dire (« Où j'en suis », plus bas, montre le compte brut). */}
+            {accueil.preparation && !accueil.premiers_pas && accueil.preparation.ponderee >= SEUIL_ANNEAU_VISIBLE ? (
               <AnneauPreparation part={accueil.preparation.ponderee} />
             ) : accueil.premiers_pas && compte && !compte.estimee && compte.jours_restants > 0 ? (
               <RepereJoursRestants compte={compte} />
@@ -116,11 +114,8 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
         <div className="relative p-5 sm:p-8">
           {/* L'objectif du jour et la semaine : ce qui fait revenir. Ni le jour de l'examen
               ni le lendemain n'ont de séance à tenir, donc rien à compter ces jours-là. */}
-          {plan?.xp && plan.serie?.semaine && accueil.phase !== "apres" && accueil.phase !== "jour_j" && (
-            <div className="mb-6 grid gap-5 sm:grid-cols-2 sm:gap-8">
-              <ObjectifXp etat={plan.xp} />
-              <SemaineDeSerie serie={plan.serie} />
-            </div>
+          {plan?.xp && plan.serie && accueil.phase !== "apres" && accueil.phase !== "jour_j" && (
+            <LigneJour etat={plan.xp} serie={plan.serie} />
           )}
           <Corps accueil={accueil} plan={plan} country={country} />
         </div>

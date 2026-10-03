@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   ArrowRight, BookOpen, Check, Clock, ListChecks, Lock, PenLine, RotateCcw,
-  Shuffle, Sparkles, Target, type LucideIcon,
+  Shuffle, Sparkles, Target, Zap, type LucideIcon,
 } from "lucide-react"
 
 import {
@@ -210,6 +210,17 @@ export function SeanceCorps({
   )
 }
 
+/** Ce que fait l'étape, au verbe : le bouton principal dit où il mène plutôt que « la séance ». */
+function actionDeLEtape(etape: EtapeSeance): string {
+  if (etape.type === "cours") return "relire la méthode"
+  if (etape.type === "exercice") return "faire un exercice"
+  return "faire le quiz"
+}
+
+/** XP maximale d'un quiz : chaque question rapporte au mieux XP_QCM_JUSTE (voir quiz.xp). Un
+ * plafond, jamais une promesse - les questions ouvertes rapportent moins. */
+const XP_MAX_PAR_QUESTION = 10
+
 function SeanceAFaire({
   plan, country, onOuvrirEtape, onTerminer, terminaisonEnCours, onChoisirDuree, ajustementEnCours, secondaire,
 }: {
@@ -235,6 +246,11 @@ function SeanceAFaire({
   // partie de ce que le paywall doit démontrer, pas cacher.
   const avecParcours = seance.etapes.length > 0
   const avecQuiz = seance.etapes.some((e) => e.type === "quiz")
+  // Le quiz est aussi une porte d'ENTRÉE, pas seulement la dernière marche : c'est lui qui
+  // rapporte l'XP, fait avancer la série et valide la séance. Tant qu'il n'est pas ouvert et que
+  // le bouton principal mène ailleurs (cours, exercice), on le propose en direct.
+  const etapeQuiz = etapes.find((e) => e.type === "quiz")
+  const quizExpress = etapeQuiz && !etapeQuiz.ouverte && prochaine && prochaine.type !== "quiz" ? etapeQuiz : null
 
   const frequence = seance.frequence
   const aDesAnnees = (frequence?.annees.length ?? 0) > 0
@@ -247,16 +263,9 @@ function SeanceAFaire({
     // largeur plutôt qu'en hauteur (voir EtapesParPhase) - la seule vraie sortie du
     // problème étant de ne plus avoir deux voisins de hauteur imprévisible.
     <div>
-      {/* Le titre, les pastilles, les raisons, le bouton et la durée d'un côté ; sur
-          grand écran, une illustration de l'autre. La disparition de la grille à deux
-          colonnes a réglé le déséquilibre de hauteur (voir plus haut), mais a laissé
-          ce bloc - naturellement étroit, du texte et un bouton - flotter seul dans une
-          carte large. L'illustration ne porte AUCUNE information (voir
-          IllustrationSeance : `aria-hidden`) et ne force donc jamais sa hauteur
-          contre celle du texte, qui varie d'une séance à l'autre (0 à 4 raisons) -
-          seule une décoration peut voisiner un bloc de hauteur imprévisible sans
-          recréer le problème qu'on vient de résoudre. Masquée sur téléphone/tablette,
-          où l'espace manque déjà pour garder "Commencer" au-dessus du pli. */}
+      {/* Le titre, les pastilles, les raisons, les boutons et la durée. L'illustration
+          décorative qui occupait la colonne de droite a été retirée : elle ne portait aucune
+          information, et la place sert mieux le bouton principal et le quiz express. */}
       <div className="lg:flex lg:items-start lg:gap-8">
       <div className="min-w-0 lg:flex-1">
         {/* "Aujourd'hui" en surtitre et le thème en grand : le thème est ce que l'élève
@@ -322,10 +331,12 @@ function SeanceAFaire({
                 Débloquer ma séance
               </Link>
             </Button>
-            <Button variant="ghost" size="sm" disabled className="rounded-full text-muted-foreground opacity-50">
-              <Check className="size-4" />
-              J'ai fini
-            </Button>
+            {!avecQuiz && (
+              <Button variant="ghost" size="sm" disabled className="rounded-full text-muted-foreground opacity-50">
+                <Check className="size-4" />
+                J'ai fini
+              </Button>
+            )}
             {avecQuiz && (
               <p className="basis-full text-xs text-muted-foreground">
                 La séance est validée quand tu termines le quiz.
@@ -354,25 +365,55 @@ function SeanceAFaire({
                     onOuvrirEtape(prochaine)
                   }}
                 >
-                  {dejaCommencee ? "Reprendre la séance" : "Commencer la séance"}
+                  {dejaCommencee ? "Reprendre" : "Commencer"} : {actionDeLEtape(prochaine)}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
             )}
+            {quizExpress && (
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-12 rounded-full border-gold/50 bg-gold/10 px-5 text-base text-gold-foreground hover:bg-gold/20 dark:text-gold-text"
+              >
+                <Link
+                  to={lienEtape(quizExpress, country, plan)}
+                  onClick={() => {
+                    if (!dejaCommencee) {
+                      trackEvent("plan_seance_demarree", {
+                        origine: seance.origine, delai_s: delaiDepuisAffichageAccueil(), entree: "quiz_express",
+                      })
+                    }
+                    onOuvrirEtape(quizExpress)
+                  }}
+                >
+                  <Zap className="size-4" aria-hidden="true" />
+                  Quiz express
+                  <span className="text-xs font-normal">
+                    {quizExpress.n} questions · jusqu'à {quizExpress.n * XP_MAX_PAR_QUESTION} XP
+                  </span>
+                </Link>
+              </Button>
+            )}
             {secondaire}
-            {/* Marquer la séance faite reste une action de l'élève : on ne sait pas
-                détecter qu'il a vraiment lu et compris, et un "terminé" décidé à sa
-                place fausserait le seul chiffre qui dira si ce plan marche. */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="rounded-full text-muted-foreground"
-              onClick={onTerminer}
-              disabled={terminaisonEnCours}
-            >
-              <Check className="size-4" />
-              J'ai fini
-            </Button>
+            {/* Marquer la séance faite : seulement pour une séance SANS quiz (un cours, un
+                exercice : rien ne dit quand on a fini de lire). Avec un quiz, c'est lui qui
+                valide - le bouton laissait déclarer « fini » sans avoir rien répondu, ce que
+                la phrase juste dessous contredisait, et faussait le seul chiffre qui dira si
+                ce plan marche. */}
+            {!avecQuiz && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-muted-foreground"
+                onClick={onTerminer}
+                disabled={terminaisonEnCours}
+              >
+                <Check className="size-4" />
+                J'ai fini
+              </Button>
+            )}
             {/* Ce qui valide la séance, dit une fois près de l'action : sans ça, un
                 élève qui lit le cours se croit quitte et la séance reste "à faire". */}
             {avecQuiz && (
@@ -393,7 +434,6 @@ function SeanceAFaire({
           desactive={seance.verrouillee}
         />
         </div>
-        <IllustrationSeance />
       </div>
 
       {/* Le parcours en pleine largeur, sous tout le reste : plus une colonne étroite
@@ -665,79 +705,6 @@ function SeanceFaite({
   )
 }
 
-/**
- * Meuble l'espace à droite du titre et du bouton, sur grand écran, laissé vide par la
- * disparition de la grille à deux colonnes (voir SeanceAFaire) : contrairement au
- * bandeau du coach (voir TeteAccueil.IllustrationAujourdhui, qui ne comble qu'un
- * manque de donnée au tout premier passage), rien ici ne dépend de l'historique de
- * l'élève - ce bloc reste étroit tous les jours, pour tout le monde, dès que l'écran
- * est large.
- *
- * Un livre qui ouvre sur une courbe montante, plutôt qu'une icône de bibliothèque
- * agrandie : la première version (un BookOpen générique) se lisait comme un
- * bouche-trou, pas comme quelque chose de dessiné pour cette page. La deuxième
- * version (deux arcs sans détail) allait trop loin dans l'autre sens : sans reliure
- * ni lignes de texte, la forme ne se lisait plus comme un livre du tout. Celle-ci a
- * les deux repères qui font reconnaître un livre d'un coup d'œil - la reliure
- * centrale et quelques lignes de texte sur chaque page - avant de laisser partir la
- * courbe, nettement séparée, vers l'étincelle dorée. La courbe fait le lien avec ce
- * que la séance montre déjà (une fréquence, un tableau de variation en maths) - deux
- * points marquent sa progression, l'étincelle reprend le même or que la pastille de
- * fréquence et les jalons de la semaine.
- *
- * Purement décorative (`aria-hidden`), donc jamais tenue d'égaler la hauteur du texte
- * voisin, qui varie d'une séance à l'autre (0 à 4 raisons) - la recréer avec un
- * second bloc de CONTENU aurait juste redonné deux colonnes à comparer. Masquée en
- * dessous de `lg` : sur téléphone et tablette, l'espace manque déjà pour garder
- * "Commencer" au-dessus du pli, la décoration cède toujours la place à l'action.
- */
-function IllustrationSeance() {
-  return (
-    <div
-      aria-hidden="true"
-      className="relative mt-8 hidden shrink-0 items-center justify-center overflow-hidden lg:mt-0 lg:flex lg:size-48 xl:size-56"
-    >
-      <div className="absolute -right-4 -top-4 size-24 rounded-full bg-gold/20 blur-2xl xl:size-28" />
-      <div className="absolute -bottom-6 -left-2 size-24 rounded-full bg-primary/10 blur-2xl xl:size-28" />
-      <svg viewBox="0 0 200 200" fill="none" className="relative size-32 xl:size-40">
-        {/* Le livre : page gauche et page droite, réunies par une reliure centrale -
-            sans elle, deux arcs isolés ne se lisent plus comme un livre du tout. */}
-        <path
-          d="M20 138C20 106 46 94 82 100L82 152C46 146 20 170 20 138Z
-             M160 138C160 106 134 94 98 100L98 152C134 146 160 170 160 138Z
-             M90 97L90 151"
-          className="stroke-primary/45"
-          strokeWidth="4"
-          strokeLinejoin="round"
-        />
-        {/* Les lignes de texte sur chaque page - le détail qui achève de dire "livre"
-            plutôt que "forme arrondie". Plus fines que le contour, en retrait. */}
-        <path
-          d="M32 118L58 114M32 128L62 124M32 138L60 135
-             M148 118L122 114M148 128L118 124M148 138L120 135"
-          className="stroke-primary/30"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-        {/* La courbe : ce que la séance promet - une progression qui se lit de gauche
-            à droite, comme un tableau de variation ou une fréquence qui monte.
-            Nettement séparée du livre (part au-dessus de la reliure, jamais collée à
-            elle) pour ne jamais se confondre avec son contour. */}
-        <path
-          d="M100 82C112 68 122 78 130 55C138 32 152 36 162 14"
-          className="stroke-primary/35"
-          strokeWidth="4"
-          strokeLinecap="round"
-        />
-        <circle cx="130" cy="55" r="4" className="fill-primary/45" />
-        <circle cx="162" cy="14" r="4" className="fill-primary/45" />
-        {/* L'étincelle dorée, au bout du trait - le même or que la pastille de
-            fréquence et les jalons de la semaine (voir PastilleFrequence, jalons.ts). */}
-        <path d="M180 4V20M171 12H189" className="stroke-gold" strokeWidth="3.5" strokeLinecap="round" />
-      </svg>
-    </div>
-  )
-}
 
 /**
  * La fréquence à l'examen, en pastille : "35 sur 41 épreuves", au même rang que les
@@ -941,7 +908,17 @@ function EtapesParPhase({
         )}
       >
         {groupes.map((phase, index) => (
-          <li key={phase.cle} className="rounded-xl border border-border/60 bg-background/60 p-3">
+          <li
+            key={phase.cle}
+            className={cn(
+              "rounded-xl border p-3",
+              // Le quiz est l'étape qui valide la séance ET rapporte l'XP : seule carte du
+              // parcours qui sort du rang (voir XP_MAX_PAR_QUESTION pour le chiffre annoncé).
+              phase.cle === "quiz" && avecTitres
+                ? "border-gold/60 bg-gold/10 shadow-sm"
+                : "border-border/60 bg-background/60",
+            )}
+          >
             {avecTitres && (
               <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-foreground/80">
                 <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[0.65rem] font-semibold text-primary-foreground shadow-sm shadow-primary/30">
@@ -949,7 +926,7 @@ function EtapesParPhase({
                 </span>
                 {phase.titre}
                 {phase.cle === "quiz" && (
-                  <span className="font-medium normal-case tracking-normal text-primary">· valide</span>
+                  <span className="font-medium normal-case tracking-normal text-primary">· valide la séance</span>
                 )}
               </p>
             )}
@@ -973,7 +950,15 @@ function EtapesParPhase({
                       className="group flex items-center gap-2.5 rounded-lg border border-transparent px-1.5 py-1 text-sm transition-all hover:border-primary/20 hover:bg-primary/[0.04]"
                     >
                       <IconeEtape type={etape.type} ouverte={etape.ouverte} />
-                      <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
+                      <span className="min-w-0 flex-1">
+                        <span className="line-clamp-2 block font-medium leading-snug">{etape.libelle}</span>
+                        {etape.type === "quiz" && (
+                          <span className="mt-0.5 flex items-center gap-1 text-xs font-medium text-gold-foreground dark:text-gold-text">
+                            <Zap className="size-3" aria-hidden="true" />
+                            jusqu'à {etape.n * XP_MAX_PAR_QUESTION} XP
+                          </span>
+                        )}
+                      </span>
                       <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
                     </Link>
                   ))}

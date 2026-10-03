@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-import type { Accueil } from "@/api/types"
+import type { Accueil, EtapeSeance } from "@/api/types"
 
 const getAccueil = vi.hoisted(() => vi.fn())
 const trackEvent = vi.hoisted(() => vi.fn())
@@ -146,7 +146,7 @@ describe("AccueilEleve", () => {
     afficher()
 
     expect(await screen.findByText(/Dérivées est tombé dans 28 des 44/)).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: /Commencer la séance/ })).toHaveAttribute("href", "/cours/cours-derivees/lire")
+    expect(screen.getByRole("link", { name: /Commencer :/ })).toHaveAttribute("href", "/cours/cours-derivees/lire")
     expect(screen.getByText(/Bonjour Awa/)).toBeInTheDocument()
     expect(screen.getByText("142")).toBeInTheDocument()
     // Depuis la dernière fois.
@@ -177,14 +177,104 @@ describe("AccueilEleve", () => {
     afficher()
 
     expect(await screen.findByText("10 / 20 XP")).toBeInTheDocument()
-    expect(screen.getByText("Série de 3 jours")).toBeInTheDocument()
+    expect(screen.getByText("3 jours de suite")).toBeInTheDocument()
     expect(screen.getAllByRole("img", { name: "Travaillé" })).toHaveLength(2)
+  })
+
+  it("dit « Objectif atteint » plutôt que 35 / 20 XP", async () => {
+    const base = accueil()
+    getAccueil.mockResolvedValue(accueil({
+      plan: { ...base.plan, xp: { xp: 35, objectif: 20, atteint: true, objectifs_possibles: [10, 20, 30] } },
+    }))
+    afficher()
+    expect(await screen.findByText("Objectif atteint")).toBeInTheDocument()
+    expect(screen.queryByText(/35 \/ 20/)).not.toBeInTheDocument()
+  })
+
+  describe("le bouton principal et le quiz", () => {
+    it("nomme l'étape où il mène, et propose le quiz en direct tant qu'il n'est pas ouvert", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+      expect(await screen.findByRole("link", { name: /Commencer : relire la méthode/ })).toBeInTheDocument()
+      const express = screen.getByRole("link", { name: /Quiz express/ })
+      expect(express).toHaveAttribute("href", expect.stringContaining("/quiz?"))
+      expect(express).toHaveAttribute("href", expect.stringContaining("seance=11"))
+      expect(express).toHaveTextContent("5 questions · jusqu'à 50 XP")
+    })
+
+    it("mène au quiz et n'en double pas l'accès quand c'est la prochaine étape", async () => {
+      const base = accueil()
+      const etapes = (base.plan.seance!.etapes as EtapeSeance[]).map((e) => ({ ...e, ouverte: e.type !== "quiz" }))
+      getAccueil.mockResolvedValue(accueil({
+        plan: { ...base.plan, seance: { ...base.plan.seance!, etapes } },
+      }))
+      afficher()
+      expect(await screen.findByRole("link", { name: /Reprendre : faire le quiz/ })).toBeInTheDocument()
+      expect(screen.queryByRole("link", { name: /Quiz express/ })).not.toBeInTheDocument()
+    })
+
+    it("ne propose plus le quiz express une fois le quiz ouvert", async () => {
+      const base = accueil()
+      const etapes = (base.plan.seance!.etapes as EtapeSeance[]).map((e) => ({ ...e, ouverte: true }))
+      getAccueil.mockResolvedValue(accueil({
+        plan: { ...base.plan, seance: { ...base.plan.seance!, etapes } },
+      }))
+      afficher()
+      await screen.findByRole("link", { name: /Reprendre :/ })
+      expect(screen.queryByRole("link", { name: /Quiz express/ })).not.toBeInTheDocument()
+    })
+
+    it("compte le démarrage une fois, avec l'entrée par le quiz express", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+      await userEvent.click(await screen.findByRole("link", { name: /Quiz express/ }))
+      const appel = trackEvent.mock.calls.find(([nom]) => nom === "plan_seance_demarree")
+      expect(appel![1]).toMatchObject({ entree: "quiz_express" })
+    })
+
+    it("le quiz valide la séance : pas de « J'ai fini » quand il y en a un", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+      await screen.findByRole("link", { name: /Commencer :/ })
+      expect(screen.queryByRole("button", { name: /J'ai fini/ })).not.toBeInTheDocument()
+    })
+
+    it("garde « J'ai fini » pour une séance sans quiz", async () => {
+      const base = accueil()
+      const etapes = (base.plan.seance!.etapes as EtapeSeance[]).filter((e) => e.type !== "quiz")
+      getAccueil.mockResolvedValue(accueil({
+        plan: { ...base.plan, seance: { ...base.plan.seance!, etapes, nb_etapes: etapes.length } },
+      }))
+      afficher()
+      expect(await screen.findByRole("button", { name: /J'ai fini/ })).toBeInTheDocument()
+      expect(screen.queryByRole("link", { name: /Quiz express/ })).not.toBeInTheDocument()
+    })
+
+    it("le quiz sort du rang dans « Ton parcours » avec l'XP qu'il peut rapporter", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+      expect(await screen.findByText("· valide la séance")).toBeInTheDocument()
+      expect(screen.getAllByText("jusqu'à 50 XP").length).toBeGreaterThan(0)
+    })
+  })
+
+  it("n'affiche pas un anneau de préparation à 1 % : il décourage plus qu'il n'informe", async () => {
+    getAccueil.mockResolvedValue(accueil({ preparation: { ponderee: 0.01, brute: 0.01, maitrises: 0, exploitables: 18 } }))
+    afficher()
+    await screen.findByRole("link", { name: /Commencer :/ })
+    expect(screen.queryByRole("img", { name: /de ce qui tombe à l'examen est maîtrisé/ })).not.toBeInTheDocument()
+  })
+
+  it("affiche l'anneau de préparation dès qu'il a de quoi dire", async () => {
+    getAccueil.mockResolvedValue(accueil())
+    afficher()
+    expect(await screen.findByRole("img", { name: "31 % de ce qui tombe à l'examen est maîtrisé" })).toBeInTheDocument()
   })
 
   it("ne fait qu'un seul appel : le plan du jour n'est jamais refetché à part", async () => {
     getAccueil.mockResolvedValue(accueil())
     afficher()
-    await screen.findByText(/Commencer la séance/)
+    await screen.findByText(/Commencer :/)
     const { getPlanDuJour } = await import("@/api/endpoints")
     expect(getPlanDuJour).not.toHaveBeenCalled()
   })
@@ -192,7 +282,7 @@ describe("AccueilEleve", () => {
   it("mesure le délai jusqu'au lancement de la séance", async () => {
     getAccueil.mockResolvedValue(accueil())
     afficher()
-    await userEvent.click(await screen.findByRole("link", { name: /Commencer la séance/ }))
+    await userEvent.click(await screen.findByRole("link", { name: /Commencer :/ }))
     const appel = trackEvent.mock.calls.find(([nom]) => nom === "plan_seance_demarree")
     expect(appel).toBeDefined()
     expect(typeof appel![1].delai_s).toBe("number")
@@ -201,7 +291,7 @@ describe("AccueilEleve", () => {
   it("garde la dernière version connue et l'affiche avant la réponse", async () => {
     getAccueil.mockResolvedValue(accueil())
     const premiere = afficher()
-    await screen.findByText(/Commencer la séance/)
+    await screen.findByText(/Commencer :/)
     premiere.unmount()
 
     // Deuxième ouverture : la réponse tarde, la page est déjà là.
@@ -214,16 +304,16 @@ describe("AccueilEleve", () => {
     getAccueil.mockResolvedValue(accueil({ phase: "veille", phrase_coach: "C'est demain. Ce soir, on ne découvre rien : on relit, et on dort tôt." }))
     afficher()
     expect(await screen.findByText(/on prépare le sac/)).toBeInTheDocument()
-    expect(screen.queryByRole("link", { name: /Commencer la séance/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole("link", { name: /Commencer :/ })).not.toBeInTheDocument()
     await userEvent.click(screen.getByRole("button", { name: /Relire dix minutes/ }))
-    expect(screen.getByRole("link", { name: /Commencer la séance/ })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Commencer :/ })).toBeInTheDocument()
   })
 
   it("le jour J : bonne chance et rien d'autre", async () => {
     getAccueil.mockResolvedValue(accueil({ phase: "jour_j", phrase_coach: "C'est aujourd'hui." }))
     afficher()
     expect(await screen.findByText("Bonne chance")).toBeInTheDocument()
-    expect(screen.queryByRole("link", { name: /Commencer la séance/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole("link", { name: /Commencer :/ })).not.toBeInTheDocument()
   })
 
   it("après l'examen : on demande comment ça s'est passé, une seule fois", async () => {
@@ -252,7 +342,7 @@ describe("AccueilEleve", () => {
   it("premiers pas : ni delta ni révisions inventées, la séance seulement", async () => {
     getAccueil.mockResolvedValue(accueil({ premiers_pas: true, depuis: null, trajectoire: null, revisions: [], lecture: null }))
     afficher()
-    expect(await screen.findByRole("link", { name: /Commencer la séance/ })).toBeInTheDocument()
+    expect(await screen.findByRole("link", { name: /Commencer :/ })).toBeInTheDocument()
     expect(screen.queryByText(/Depuis/)).not.toBeInTheDocument()
     expect(screen.queryByText(/D'ici le jour J/)).not.toBeInTheDocument()
   })
