@@ -27,6 +27,21 @@ export function useCursusAbonnes(): Subscription[] {
 }
 
 /**
+ * Les abonnements actifs de l'enfant connecté, et d'eux seuls. `/mes-abonnements/` renvoie
+ * ceux de tout le compte (AccesPage en a besoin pour gérer les enfants) : une page
+ * personnelle (progression, parcours, quiz) qui les prendrait tels quels afficherait le
+ * programme d'un frère ou d'une sœur, voire déverrouillerait un cursus qu'il n'a pas payé.
+ * Sans profil connu, on rend la liste inchangée plutôt que rien.
+ */
+export function abonnementsActifsDuProfil(
+  abonnements: Subscription[] | undefined,
+  profilId: number | undefined,
+): Subscription[] {
+  const actifs = (abonnements ?? []).filter((sub) => sub.is_active)
+  return profilId === undefined ? actifs : actifs.filter((sub) => sub.profil.id === profilId)
+}
+
+/**
  * Change l'examen préparé du compte - même mutation que BandeauCursus (qui déclare un
  * premier cursus), réutilisée ici pour en changer : un compte avec deux abonnements
  * payés doit pouvoir revenir sur son choix sans se reconnecter.

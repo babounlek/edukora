@@ -7,6 +7,7 @@ import { getResumeParcours, listMySubscriptions } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cursus, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { abonnementsActifsDuProfil } from "@/lib/changerCursusPrepare"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -154,7 +155,9 @@ export function ParcoursPage() {
     queryFn: listMySubscriptions,
     enabled: isAuthenticated,
   })
-  const actifs = subscriptions?.filter((sub) => sub.is_active) ?? []
+  // Les abonnements de l'enfant connecté seulement : la page est la sienne, pas celle
+  // de la fratrie (un cursus payé pour un frère ne doit ni s'afficher ni déverrouiller).
+  const actifs = abonnementsActifsDuProfil(subscriptions, user?.profil_actif?.id)
 
   // Le cursus affiché par défaut : celui que l'élève a déclaré préparer, s'il y est
   // abonné, sinon son premier abonnement actif, sinon le cursus déclaré tout court -
@@ -269,9 +272,7 @@ export function ParcoursPage() {
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  {/* Deux profils du même compte peuvent préparer le même cursus (voir
-                      "Ajouter un enfant", AccesPage.tsx) - le prénom lève l'ambiguïté. */}
-                  {libelleCursus(sub.cursus)} ({sub.profil.prenom})
+                  {libelleCursus(sub.cursus)}
                 </button>
               ))}
             </div>

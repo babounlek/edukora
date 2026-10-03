@@ -18,6 +18,7 @@ import { getThemesFrequents, listMySubscriptions, listQuizSubjects, startQuizSes
 import { ApiError } from "@/api/client"
 import type { ModeQuiz, Subject, Subscription, ThemeFrequent } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { abonnementsActifsDuProfil } from "@/lib/changerCursusPrepare"
 import { useCountry } from "@/context/CountryContext"
 import { EtapesPresentation, StatChip } from "@/components/Configurateur"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
@@ -282,7 +283,8 @@ export function QuizStartPage() {
       return
     }
     listMySubscriptions().then((subs) => {
-      const active = subs.filter((sub) => sub.is_active)
+      // L'enfant connecté seulement : pas les cursus de la fratrie.
+      const active = abonnementsActifsDuProfil(subs, user?.profil_actif?.id)
       setSubscriptions(active)
       setSubscriptionsLoaded(true)
       const viaParam = cursusParam && active.some((sub) => String(sub.cursus.id) === cursusParam)
@@ -547,10 +549,8 @@ export function QuizStartPage() {
                   actif={selectedCursus === String(sub.cursus.id)}
                   onClick={() => setSelectedCursus(String(sub.cursus.id))}
                 >
-                  {/* Deux profils du même compte peuvent préparer le même cursus (voir
-                      "Ajouter un enfant", AccesPage.tsx) - le prénom lève l'ambiguïté. */}
                   {sub.cursus.examen_display}
-                  {sub.cursus.series ? ` ${sub.cursus.series.code}` : ""} ({sub.profil.prenom})
+                  {sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}
                 </PastilleFiltre>
               ))}
             </FiltreLigne>

@@ -10,6 +10,7 @@ import { getParcours, listMySubscriptions, listSubjects, startQuizSession } from
 import { ApiError } from "@/api/client"
 import type { Cursus, ParcoursModule, ParcoursSavoir, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { abonnementsActifsDuProfil } from "@/lib/changerCursusPrepare"
 import { CheminParcours } from "@/components/CheminParcours"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
@@ -412,7 +413,9 @@ export function ParcoursSubjectPage() {
     queryFn: listMySubscriptions,
     enabled: isAuthenticated,
   })
-  const actifs = useMemo(() => subscriptions?.filter((sub) => sub.is_active) ?? [], [subscriptions])
+  // Les abonnements de l'enfant connecté seulement (voir abonnementsActifsDuProfil).
+  const profilId = user?.profil_actif?.id
+  const actifs = useMemo(() => abonnementsActifsDuProfil(subscriptions, profilId), [subscriptions, profilId])
   // Cursus déclaré (gratuit, voir user.cursus_prepare) : dernier repli quand aucun
   // abonnement actif ne matche l'URL - la structure du programme se montre à qui sait
   // ce qu'il prépare, abonné ou non (voir project_gating_non_abonne_quiz_parcours).
@@ -643,9 +646,7 @@ export function ParcoursSubjectPage() {
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  {/* Deux profils du même compte peuvent préparer le même cursus (voir
-                      "Ajouter un enfant", AccesPage.tsx) - le prénom lève l'ambiguïté. */}
-                  {libelleCursus(sub.cursus)} ({sub.profil.prenom})
+                  {libelleCursus(sub.cursus)}
                 </button>
               ))}
             </div>
