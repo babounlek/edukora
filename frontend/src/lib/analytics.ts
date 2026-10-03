@@ -32,6 +32,10 @@ export type AnalyticsEventName =
   | "abonnement_ouvert"
   | "onboarding_termine"
   | "simulation_demarree"
+  // Habitudes de retour. "app_ouverte" et "objectif_xp_atteint" sont enregistrés côté
+  // serveur (voir quiz.views) : ni l'un ni l'autre ne passe par un clic observable ici.
+  | "quiz_abandonne"
+  | "objectif_xp_choisi"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

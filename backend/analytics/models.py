@@ -46,6 +46,16 @@ class EventName(models.TextChoices):
     ABONNEMENT_OUVERT = "abonnement_ouvert", "Page d'abonnement ouverte"
     ONBOARDING_TERMINE = "onboarding_termine", "Questions de bienvenue terminées"
     SIMULATION_DEMARREE = "simulation_demarree", "Simulation d'une annale démarrée"
+    # Habitudes de retour. APP_OUVERTE est écrit côté serveur à chaque NOUVELLE visite de
+    # l'accueil (voir quiz.accueil.enregistrer_visite) : VisiteAccueil ne garde que les
+    # deux dernières visites, jamais l'historique, donc seule une trace posée au fil de
+    # l'eau permet de lire des rythmes de retour. QUIZ_ABANDONNE : l'élève quitte un quiz
+    # en cours, le contre-indicateur de la boucle de séance. OBJECTIF_XP_CHOISI et
+    # OBJECTIF_XP_ATTEINT : le rythme que l'élève se fixe et la fréquence à laquelle il le tient.
+    APP_OUVERTE = "app_ouverte", "Accueil ouvert (nouvelle visite)"
+    QUIZ_ABANDONNE = "quiz_abandonne", "Quiz quitté avant la fin"
+    OBJECTIF_XP_CHOISI = "objectif_xp_choisi", "Objectif quotidien choisi"
+    OBJECTIF_XP_ATTEINT = "objectif_xp_atteint", "Objectif quotidien atteint"
 
 
 class AnalyticsEvent(models.Model):
