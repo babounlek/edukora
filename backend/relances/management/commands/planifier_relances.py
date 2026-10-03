@@ -4,6 +4,8 @@ import time
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
+from relances.bilan_parent import HEURE_DEBUT_BILAN, HEURE_FIN_BILAN, JOUR_ENVOI, envoyer_bilans_parent
+from relances.push import envoyer_rappels_push
 from relances.services import envoyer_relances_paiement, envoyer_rappels_seance
 
 logger = logging.getLogger("relances")
@@ -17,9 +19,19 @@ HEURE_FIN_RAPPEL = 20
 
 
 def passer_une_fois(maintenant=None):
-    """Un tour : relance des paiements, et rappel de séance dans sa fenêtre horaire."""
+    """Un tour : relance des paiements, rappel e-mail dans sa fenêtre horaire, et rappel push à
+    l'heure habituelle de chaque élève (qui peut tomber hors de cette fenêtre : il choisit lui-même
+    son heure en travaillant, voir relances.push.heure_habituelle)."""
     maintenant = maintenant or timezone.now()
-    resultat = {"paiement": envoyer_relances_paiement(maintenant), "rappel": 0}
+    resultat = {"paiement": envoyer_relances_paiement(maintenant), "rappel": 0, "push": 0, "bilan": 0}
+    # Le bilan du parent : le dimanche en fin d'après-midi, une fois par semaine (la trace par
+    # semaine ISO empêche tout doublon si plusieurs tours tombent dans la fenêtre).
+    local = timezone.localtime(maintenant)
+    if local.weekday() == JOUR_ENVOI and HEURE_DEBUT_BILAN <= local.hour < HEURE_FIN_BILAN:
+        resultat["bilan"] = envoyer_bilans_parent(maintenant)
+    # Le push d'abord : un élève prévenu par notification ne reçoit pas en plus l'e-mail du même
+    # jour (voir relances.push, une seule relance par jour tous canaux confondus).
+    resultat["push"] = envoyer_rappels_push(maintenant)
     if HEURE_DEBUT_RAPPEL <= timezone.localtime(maintenant).hour < HEURE_FIN_RAPPEL:
         resultat["rappel"] = envoyer_rappels_seance(maintenant)
     return resultat
@@ -39,7 +51,7 @@ class Command(BaseCommand):
         while True:
             try:
                 resultat = passer_une_fois()
-                if resultat["paiement"] or resultat["rappel"]:
+                if resultat["paiement"] or resultat["rappel"] or resultat["push"] or resultat["bilan"]:
                     self.stdout.write(f"Relances envoyées : {resultat}")
             except Exception:
                 # Un tour raté ne doit jamais arrêter l'ordonnanceur : le suivant réessaiera.

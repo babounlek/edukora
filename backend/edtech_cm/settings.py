@@ -100,6 +100,15 @@ SMS_BACKEND = config("SMS_BACKEND", default="users.sms_backends.ConsoleSMSBacken
 # réellement configurés - voir whatsapp.backends pour le détail des deux backends.
 WHATSAPP_BACKEND = config("WHATSAPP_BACKEND", default="whatsapp.backends.ConsoleWhatsAppBackend")
 
+# Notifications push du navigateur (voir relances.push). Les deux clés VAPID se génèrent UNE
+# fois avec `python manage.py generer_cles_vapid` et ne changent plus : les modifier
+# invalide tous les abonnements existants. Sans elles, le push est simplement désactivé
+# (l'application n'affiche alors pas l'interrupteur) - défaut sûr, comme WHATSAPP_BACKEND.
+VAPID_PUBLIC_KEY = config("VAPID_PUBLIC_KEY", default="")
+VAPID_PRIVATE_KEY = config("VAPID_PRIVATE_KEY", default="")
+# Contact signé dans chaque message (« sub ») : un service push peut y écrire en cas d'abus.
+VAPID_CLAIM_EMAIL = config("VAPID_CLAIM_EMAIL", default="")
+
 # Plafonds d'envoi d'OTP (voir users.otp_service.request_otp pour la mécanique). Réglages
 # d'exploitation, donc lus dans l'environnement : le bon niveau dépend du trafic réel et
 # du tarif SMS du fournisseur, et doit pouvoir être ajusté sans redéploiement.
