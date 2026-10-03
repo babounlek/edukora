@@ -34,6 +34,7 @@ from catalog.ingestion import (
     _link_tags_to_savoir,
     _normalize,
     _normalize_qcm_choix,
+    _repair_control_chars_in_math,
     _repair_double_json_escaping,
     _repair_missing_matrix_row_separators,
     _resolve_country,
@@ -609,6 +610,7 @@ def run_ingestion(path):
         for index, data in enumerate(items_data):
             try:
                 data, _ = _repair_double_json_escaping(data)
+                data, _ = _repair_control_chars_in_math(data)
                 data, _ = _repair_missing_matrix_row_separators(data)
                 _, was_created = ingest_competence_item(data, country, source_dir=file_path.parent)
                 created += 1 if was_created else 0

@@ -55,6 +55,7 @@ from .ingestion_repairs import (
     _dedupe_trailing_exercise_reference,
     _drop_processing_notes,
     _merge_series_from_folder_name,
+    _repair_control_chars_in_math,
     _repair_dict_shaped_cours_sections,
     _repair_double_json_escaping,
     _repair_glued_hline,
@@ -1400,6 +1401,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
     Exercise.compile_from_questions), appelée en toute fin de cette fonction.
     """
     data, was_repaired = _repair_double_json_escaping(data)
+    data, _ = _repair_control_chars_in_math(data)
     data, had_missing_separators = _repair_missing_matrix_row_separators(data)
     data, had_glued_hline = _repair_glued_hline(data)
     data, had_narrow_columns = _repair_narrow_array_columns(data)
@@ -1834,6 +1836,7 @@ def ingest_cours(data, source_dir=None):
     frontend dès l'ingestion, sans étape de validation manuelle.
     """
     data, _ = _repair_double_json_escaping(data)
+    data, _ = _repair_control_chars_in_math(data)
     data, _ = _repair_missing_matrix_row_separators(data)
     data, _ = _repair_dict_shaped_cours_sections(data)
     data, _ = _repair_literal_dollars(data, f"cours {data.get('cours_id', '?')}")

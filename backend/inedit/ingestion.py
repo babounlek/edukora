@@ -46,6 +46,7 @@ from catalog.ingestion import (
     _link_tags_to_savoir,
     _normalize,
     _normalize_qcm_choix,
+    _repair_control_chars_in_math,
     _repair_double_json_escaping,
     _repair_missing_matrix_row_separators,
     _resolve_country,
@@ -607,6 +608,7 @@ def run_ingestion(path):
 
         try:
             data, _ = _repair_double_json_escaping(data)
+            data, _ = _repair_control_chars_in_math(data)
             data, _ = _repair_missing_matrix_row_separators(data)
 
             type_ = _normalize(data.get("type"))

@@ -258,7 +258,7 @@ _LITERAL_BACKSLASH_N_RE = re.compile(r"\\n")
 # "tilise", puisque KaTeX lit lui-même tout le mot "nutilise" comme un unique nom de
 # commande indéfini (jamais "nu" + "tilise" séparément) - le lookahead sur le mot ENTIER
 # reproduit cette même règle de tokenisation.
-_REAL_LOWERCASE_N_LATEX_WORDS = frozenset({"eq", "abla", "earrow", "warrow", "otin", "u"})
+_REAL_LOWERCASE_N_LATEX_WORDS = frozenset({"e", "eq", "abla", "earrow", "warrow", "otin", "u"})
 _LOWERCASE_LETTER_RUN_RE = re.compile(r"[a-z]*")
 
 # "$$" (maths "display", le cas quasi systématique pour un tableau de variations)
@@ -469,6 +469,87 @@ def _repair_double_json_escaping(data):
     """
     fixed, changed = _unescape_one_json_layer(data)
     return (fixed, True) if changed else (data, False)
+
+
+# Un SEUL backslash dans le JSON source ("a \ne b", "2 \times 3", "\frac{1}{2}", "h\nu") est
+# lu par json.loads comme un échappement JSON valide : "\n" devient un saut de ligne,
+# "\t" une tabulation, "\r" un retour chariot, "\f"/"\b" des caractères de contrôle.
+# La commande LaTeX est alors coupée en deux ("a <LF>e b", "2 <TAB>imes 3") et le
+# rendu KaTeX est cassé, sans la moindre erreur à l'ingestion. Contrairement à
+# _repair_double_json_escaping (backslash en TROP), c'est un backslash qui MANQUE.
+#
+# Constaté le 2026-10-03 sur 130 lignes de contenu (67 Cours, 39 items de quiz, 9
+# Exercise, 9 Question, 8 Lesson) : \ne (120 cas), \neq, \times, \text, \nu, \notin...
+# Restauré seulement DANS une zone de maths (voir _is_inside_math_zone) : en prose, un
+# saut de ligne suivi d'un mot est le cas normal. Dans les maths, un saut de ligne
+# directement suivi de "e", "eq", "abla", "otin"... ou une tabulation directement
+# suivie de "imes", "ext{", "heta"... n'a aucun sens légitime ; les caractères
+# \x07 \x08 \x0b \x0c n'ont jamais leur place dans un texte Markdown.
+#
+# Deux cas volontairement exclus car AMBIGUS, jamais devinés ici :
+# - "\nu" : une ligne de tableau de variations commençant par une fonction "u'(x)"
+#   ("\\hline" puis saut de ligne puis "u'(x)") ou un bloc "$$" dont la première ligne
+#   est la suite "u_{n+1}" sont légitimes. "\nu" n'est restauré que collé à autre
+#   chose qu'un début de ligne ou de bloc (ex. "h\nu", "\frac{n}{\nu_i}").
+# - "\ne" juste après "$" ou en début de ligne : "e^{x}" peut être légitime.
+_CTRL_LATEX_RE = re.compile(
+    r"\n(?:eq|e|abla|otin|mid|less|leq|geq|parallel|geqslant|leqslant|u)(?![A-Za-z\u00c0-\u00ff])"
+    r"|\t(?:imes|heta|ilde|riangle|au|an|o|op)(?![A-Za-z])"
+    r"|\text(?=\{)"
+    r"|\r(?:ho|ightarrow|ight|angle|ceil|m)(?![A-Za-z])"
+    r"|[\x07\x08\x0b\x0c]"
+)
+_CTRL_TO_COMMAND_PREFIX = {
+    "\n": "\\n", "\t": "\\t", "\r": "\\r",
+    "\x07": "\\a", "\x08": "\\b", "\x0b": "\\v", "\x0c": "\\f",
+}
+
+
+def _restore_control_chars_in_text(text):
+    if not any(ch in text for ch in "\n\t\r\x07\x08\x0b\x0c"):
+        return text
+
+    def repl(match):
+        token = match.group(0)
+        start = match.start()
+        if not _is_inside_math_zone(text, start):
+            return token
+        prev = text[start - 1] if start > 0 else "\n"
+        body = token[1:]
+        if token[0] == "\n" and body in ("e", "u"):
+            if prev in "\n$":
+                return token
+            if body == "u" and text[:start].endswith("\\hline"):
+                return token
+        return _CTRL_TO_COMMAND_PREFIX[token[0]] + body
+
+    return _CTRL_LATEX_RE.sub(repl, text)
+
+
+def _repair_control_chars_in_math(data):
+    """
+    Restaure le backslash perdu d'une commande LaTeX lue comme échappement JSON (voir
+    _CTRL_LATEX_RE). Retourne (valeur, a_changé), même contrat que les autres
+    réparations de ce module ; parcourt récursivement str / list / dict.
+    """
+    if isinstance(data, str):
+        fixed = _restore_control_chars_in_text(data)
+        return fixed, fixed != data
+    if isinstance(data, list):
+        out, changed = [], False
+        for item in data:
+            new_item, did = _repair_control_chars_in_math(item)
+            out.append(new_item)
+            changed = changed or did
+        return (out, True) if changed else (data, False)
+    if isinstance(data, dict):
+        out, changed = {}, False
+        for k, v in data.items():
+            new_v, did = _repair_control_chars_in_math(v)
+            out[k] = new_v
+            changed = changed or did
+        return (out, True) if changed else (data, False)
+    return data, False
 
 
 # Séparateur de ligne LaTeX manquant à l'intérieur d'un environnement matriciel - une

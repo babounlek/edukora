@@ -31,7 +31,7 @@ from .ingestion import (
     IngestionError, _compress_figure_image, _country_code_from_path, ingest_cours, ingest_exercise,
     queue_ingestion, read_ingestion_report, run_ingestion, write_ingestion_report,
 )
-from .ingestion_repairs import _dedupe_question_enonce
+from .ingestion_repairs import _dedupe_question_enonce, _repair_control_chars_in_math, _repair_double_json_escaping
 from .management.commands.seed_country import FILIERES as SEED_FILIERES, SERIES as SEED_SERIES, SPECIALITES as SEED_SPECIALITES, SUBJECTS as SEED_SUBJECTS
 from .models import Cours, Country, Cursus, Difficulte, Examen, ExamenLabel, Exercise, Figure, Filiere, FiliereSerieA, Groupe, Lesson, LessonType, NatureEpreuve, Origine, PartieEpreuveFrancais, Question, RappelDeMethode, Series, StatutContenu, Subject, Tag, Temoignage, TypeReponse, VarianteSujet, figure_upload_to, resolve_examen_label
 from programme.models import Module, Savoir
@@ -5215,6 +5215,71 @@ class ThemeExerciceLectureApiTests(TestCase):
 
         self.assertIsNone(data["questions"])
         self.assertIn("Ajout", data["corrige_markdown"])
+
+
+class ControlCharsInMathRepairTests(TestCase):
+    """Un backslash de commande LaTeX lu par json.loads comme échappement JSON
+    ("\\ne" -> saut de ligne + "e") est restauré, dans les maths seulement (voir
+    catalog.ingestion_repairs._repair_control_chars_in_math)."""
+
+    LF, TAB, FF = chr(10), chr(9), chr(12)
+    BS = chr(92)
+
+    def test_restores_ne_neq_times_text_in_inline_math(self):
+        cases = {
+            f"si $x{self.LF}e1$ alors": f"si $x{self.BS}ne1$ alors",
+            f"$a {self.LF}eq b$": f"$a {self.BS}neq b$",
+            f"$2 {self.TAB}imes 3 = 6$": f"$2 {self.BS}times 3 = 6$",
+            f"$a=3{self.BS} {self.TAB}ext{{mm}}$": f"$a=3{self.BS} {self.BS}text{{mm}}$",
+            f"$h{self.LF}u = E$": f"$h{self.BS}nu = E$",
+            f"$x{self.LF}otin A$": f"$x{self.BS}notin A$",
+            f"${self.FF}rac{{1}}{{2}}$": f"${self.BS}frac{{1}}{{2}}$",
+        }
+        for broken, expected in cases.items():
+            fixed, changed = _repair_control_chars_in_math(broken)
+            self.assertEqual(fixed, expected)
+            self.assertTrue(changed)
+
+    def test_restores_inside_display_math(self):
+        broken = f"$$i_1 {self.LF}eq i_2$$"
+        fixed, _ = _repair_control_chars_in_math(broken)
+        self.assertEqual(fixed, f"$${'i_1 '}{self.BS}neq i_2$$")
+
+    def test_never_touches_prose_outside_math(self):
+        text = f"Une ligne{self.LF}e) suite{self.LF}eq{self.LF}u{self.TAB}imes."
+        self.assertEqual(_repair_control_chars_in_math(text), (text, False))
+
+    def test_never_touches_ambiguous_block_starts(self):
+        # "$$" puis saut de ligne puis "u_{n+1}" (suite) ou "e^{x}" : légitimes.
+        # Ligne de tableau de variations commençant par u'(x) : légitime.
+        for text in (
+            f"$${self.LF}u_{{n+1}} = q u_n{self.LF}$$",
+            f"$${self.LF}e^{{x}} > 0{self.LF}$$",
+            f"$${self.BS}begin{{array}}{self.BS}hline{self.LF}u'(x) & + {self.BS}end{{array}}$$",
+        ):
+            self.assertEqual(_repair_control_chars_in_math(text), (text, False))
+
+    def test_leaves_correct_latex_untouched_and_is_idempotent(self):
+        good = f"$x {self.BS}ne 1$ et $a {self.BS}neq b$ et $2 {self.BS}times 3$"
+        self.assertEqual(_repair_control_chars_in_math(good), (good, False))
+        fixed, _ = _repair_control_chars_in_math(f"$x{self.LF}e1$")
+        self.assertEqual(_repair_control_chars_in_math(fixed), (fixed, False))
+
+    def test_walks_nested_structures(self):
+        data = {"a": [f"$x{self.LF}e1$", {"b": f"$y{self.LF}e2$"}], "n": 3}
+        fixed, changed = _repair_control_chars_in_math(data)
+        self.assertTrue(changed)
+        self.assertEqual(fixed["a"][0], f"$x{self.BS}ne1$")
+        self.assertEqual(fixed["a"][1]["b"], f"$y{self.BS}ne2$")
+        self.assertEqual(fixed["n"], 3)
+
+    def test_double_escape_repair_keeps_latex_ne(self):
+        # "\\ne" (backslash, n, e) à l'intérieur des maths est la commande LaTeX \ne,
+        # jamais un saut de ligne suivi de "e" (avant l'ajout de "e" à la liste des
+        # mots \n-LaTeX, _repair_double_json_escaping la mutilait).
+        data = f"$x {self.BS}ne 1$"
+        fixed, _ = _repair_double_json_escaping(data)
+        self.assertEqual(fixed, data)
 
 
 class DoubleJsonEscapingRepairTests(TestCase):
