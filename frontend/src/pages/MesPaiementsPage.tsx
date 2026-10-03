@@ -74,7 +74,7 @@ export function MesPaiementsPage() {
   if (isLoading) return null
 
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-8 sm:px-6 sm:py-12">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <header className="mb-8">
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Mes paiements</h1>
         <p className="mt-2 max-w-xl text-muted-foreground">
