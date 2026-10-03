@@ -1,29 +1,26 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import {
-  ArrowRight, Check, CheckCircle2, Clock, Copy, Loader2, Receipt, RefreshCw, ShieldCheck, Sparkles, XCircle,
-  type LucideIcon,
-} from "lucide-react"
+import { ArrowRight, Check, CheckCircle2, Clock, Copy, RefreshCw, XCircle, type LucideIcon } from "lucide-react"
 
 import { listMyManualPayments } from "@/api/endpoints"
 import type { ManualPayment, ManualPaymentStatus, MobileMoneyOperator } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { useSeo } from "@/lib/seo"
 import { cn, formatAmount } from "@/lib/utils"
 
 /**
- * Un statut de paiement = une couleur ET une icône, jamais la couleur seule. En attente n'est ni une
- * bonne ni une mauvaise nouvelle : il reste neutre-orangé, pour ne pas inquiéter quelqu'un qui a
- * simplement payé il y a une heure. Le rouge est réservé au refus, seul statut qui demande d'agir.
+ * Un statut = une icône ET un libellé, jamais la couleur seule. « En vérification » reste neutre :
+ * ce n'est ni une bonne ni une mauvaise nouvelle, il ne doit pas inquiéter quelqu'un qui a payé il y
+ * a une heure. Le rouge est réservé au refus, seul statut qui demande d'agir.
  */
-const STATUTS: Record<ManualPaymentStatus, { libelle: string; Icone: LucideIcon; puce: string; filet: string }> = {
-  PENDING: { libelle: "En vérification", Icone: Clock, puce: "bg-warning/15 text-warning-foreground dark:text-warning", filet: "bg-warning" },
-  APPROVED: { libelle: "Validé", Icone: CheckCircle2, puce: "bg-success/15 text-success", filet: "bg-success" },
-  REJECTED: { libelle: "Refusé", Icone: XCircle, puce: "bg-destructive/10 text-destructive", filet: "bg-destructive" },
+const STATUTS: Record<ManualPaymentStatus, { libelle: string; Icone: LucideIcon; puce: string; segment: string }> = {
+  PENDING: { libelle: "En vérification", Icone: Clock, puce: "text-warning-foreground dark:text-warning", segment: "bg-warning" },
+  APPROVED: { libelle: "Validé", Icone: CheckCircle2, puce: "text-success", segment: "bg-success" },
+  REJECTED: { libelle: "Refusé", Icone: XCircle, puce: "text-destructive", segment: "bg-destructive" },
 }
 
 // Couleurs des opérateurs (identité de marque, comme sur la page d'abonnement).
@@ -32,16 +29,22 @@ const OPERATEURS: Record<MobileMoneyOperator, { tuile: string; sigle: string }> 
   MTN: { tuile: "bg-[#FFCC08] text-black", sigle: "MTN" },
 }
 
-/** Les trois étapes d'une déclaration manuelle : ce qui est fait, ce qui se passe, ce qui vient. */
-const ETAPES = ["Déclaré", "Vérification", "Accès activé"] as const
-
-function etapeCourante(statut: ManualPaymentStatus): number {
-  // Index de l'étape en cours : 1 = vérification (les deux premières sont acquises), 3 = tout est fait.
-  return statut === "PENDING" ? 1 : statut === "APPROVED" ? 3 : 1
-}
-
 function dateFr(iso: string): string {
   return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+}
+
+/** « 1 validé · 1 en vérification » : le coup d'œil avant la liste. */
+function resume(payments: ManualPayment[]): string {
+  const comptes = (statut: ManualPaymentStatus) => payments.filter((p) => p.status === statut).length
+  const parties = [
+    [comptes("APPROVED"), "validé", "validés"],
+    [comptes("PENDING"), "en vérification", "en vérification"],
+    [comptes("REJECTED"), "refusé", "refusés"],
+  ] as const
+  return parties
+    .filter(([n]) => n > 0)
+    .map(([n, singulier, pluriel]) => `${n} ${n > 1 ? pluriel : singulier}`)
+    .join(" · ")
 }
 
 export function MesPaiementsPage() {
@@ -70,63 +73,64 @@ export function MesPaiementsPage() {
 
   if (isLoading) return null
 
-  const refuses = payments?.filter((p) => p.status === "REJECTED").length ?? 0
-
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:py-10 sm:px-6">
-      <EnteteCompte
-        icone={Receipt}
-        titre="Mes paiements"
-        sousTitre="L'état de tes déclarations Mobile Money (Orange Money, MTN MoMo), de la déclaration à l'activation de ton accès."
-      />
-
-      <Section icone={Receipt} titre="Déclarations Mobile Money">
-        {payments === null && !erreur ? (
-          <p className="text-sm text-muted-foreground">Chargement…</p>
-        ) : erreur ? (
-          // Une panne n'est pas "aucun paiement" : sans ce cas, l'écran restait sur son indicateur de
-          // chargement, sans rien dire à quelqu'un qui vient vérifier qu'on a bien reçu son argent.
-          <div role="alert" className="flex items-center justify-between gap-3 rounded-xl border border-dashed border-destructive/40 bg-destructive/[0.04] px-4 py-4">
-            <p className="text-sm text-muted-foreground">
-              Ta connexion ou notre service a eu un raté, et la liste n'a pas pu s'afficher.
-            </p>
-            <Button onClick={charger} variant="outline" size="sm" className="shrink-0 rounded-full">
-              <RefreshCw className="size-3.5" />
-              Réessayer
-            </Button>
-          </div>
-        ) : payments!.length === 0 ? (
-          <EtatVide
-            texte="Aucune déclaration pour l'instant. Quand tu paies par Orange Money ou MTN MoMo en déclarant toi-même ton transfert, le suivi apparaît ici."
-            lien="/tarifs"
-            libelleLien="Voir les formules"
-          />
-        ) : (
-          <ul className="flex flex-col gap-4">
-            {payments!.map((payment, index) => (
-              <CartePaiement
-                key={payment.id}
-                payment={payment}
-                accueil={catalogueHomePath(country)}
-                style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }}
-              />
-            ))}
-          </ul>
+    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-8 sm:px-6 sm:py-12">
+      <header className="mb-8">
+        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Mes paiements</h1>
+        <p className="mt-2 max-w-xl text-muted-foreground">
+          Le suivi de tes transferts Orange Money et MTN MoMo, de la déclaration à l'activation de ton accès.
+        </p>
+        {payments !== null && payments.length > 0 && (
+          <p className="mt-3 text-sm font-medium text-foreground/80">{resume(payments)}</p>
         )}
+      </header>
 
-        {refuses > 0 && (
-          <p className="mt-4 text-sm text-muted-foreground">
-            Un paiement refusé peut être redéclaré : le motif t'indique ce qu'il faut corriger.
+      {erreur ? (
+        // Une panne n'est pas « aucun paiement » : sans ce cas, l'écran restait sur son chargement,
+        // sans rien dire à quelqu'un qui vient vérifier qu'on a bien reçu son argent.
+        <div role="alert" className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-card px-5 py-4">
+          <p className="text-sm text-muted-foreground">
+            Ta connexion ou notre service a eu un raté, et la liste n'a pas pu s'afficher.
           </p>
-        )}
-      </Section>
+          <Button onClick={charger} variant="outline" size="sm" className="shrink-0 rounded-full">
+            <RefreshCw className="size-3.5" />
+            Réessayer
+          </Button>
+        </div>
+      ) : payments === null ? (
+        <div className="flex flex-col gap-3" aria-busy="true" aria-label="Chargement des paiements">
+          <Skeleton className="h-28 rounded-2xl" />
+          <Skeleton className="h-28 rounded-2xl" />
+        </div>
+      ) : payments.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border px-6 py-12 text-center">
+          <p className="font-display text-lg font-semibold">Rien à suivre pour l'instant</p>
+          <p className="mx-auto mt-1.5 max-w-sm text-sm text-muted-foreground">
+            Quand tu paies par Orange Money ou MTN MoMo en déclarant toi-même ton transfert, le suivi apparaît ici.
+          </p>
+          <Button asChild className="mt-5 rounded-full">
+            <Link to="/tarifs">
+              Voir les formules
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-3">
+          {payments.map((payment, index) => (
+            <CartePaiement
+              key={payment.id}
+              payment={payment}
+              accueil={catalogueHomePath(country)}
+              style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }}
+            />
+          ))}
+        </ul>
+      )}
 
-      <p className="mt-4 flex items-start gap-2 rounded-2xl bg-muted/50 px-4 py-3 text-sm text-muted-foreground">
-        <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
-        <span>
-          Les paiements Mobile Money automatiques (Campay) activent ton accès en quelques secondes et n'ont pas besoin de
-          suivi : seuls les transferts que tu déclares toi-même apparaissent ici.
-        </span>
+      <p className="mt-8 text-center text-xs leading-relaxed text-muted-foreground">
+        Les paiements automatiques (Campay) activent ton accès en quelques secondes et n'apparaissent pas ici : seuls les
+        transferts que tu déclares toi-même sont suivis.
       </p>
     </div>
   )
@@ -147,131 +151,103 @@ function CartePaiement({
   }
 
   return (
-    <li
-      style={style}
-      className="animate-fade-up relative overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
-    >
-      <div aria-hidden className={cn("h-1.5 w-full", statut.filet)} />
-      <div className="p-4 sm:p-6">
-        <div className="flex items-start gap-3">
-          <span className={cn("flex size-11 shrink-0 items-center justify-center rounded-xl text-xs font-bold", operateur.tuile)}>
-            {operateur.sigle}
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="font-display text-lg font-semibold leading-tight">
-              {cursus.examen_display}
-              {cursus.series ? ` - Série ${cursus.series.code}` : ""}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {payment.plan.name} · {payment.operator_display}
-            </p>
-          </div>
-          <div className="shrink-0 text-right">
-            <p className="font-display text-xl font-semibold tabular-nums leading-tight">
-              {formatAmount(payment.amount_declared)}
-              <span className="ml-1 text-sm font-medium text-muted-foreground">FCFA</span>
-            </p>
-            <span className={cn("mt-1 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold", statut.puce)}>
-              <statut.Icone className="size-3" aria-hidden="true" />
-              {statut.libelle}
-            </span>
-          </div>
-        </div>
-
-        {payment.status !== "REJECTED" && <Parcours statut={payment.status} />}
-
-        {payment.status === "PENDING" && (
-          <p className="mt-4 rounded-xl bg-muted/50 px-3.5 py-2.5 text-sm text-muted-foreground">
-            Notre équipe vérifie ton transfert à la main, généralement en quelques heures. Tu n'as rien à faire : ton
-            accès s'active dès la validation.
+    <li style={style} className="animate-fade-up rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <div className="flex items-start gap-3.5">
+        <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold", operateur.tuile)}>
+          {operateur.sigle}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="font-display text-base font-semibold leading-tight">
+            {cursus.examen_display}
+            {cursus.series ? ` - Série ${cursus.series.code}` : ""}
           </p>
-        )}
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            {payment.operator_display} · {dateFr(payment.created_at)}
+          </p>
+        </div>
+        <div className="shrink-0 text-right">
+          <p className="font-display text-lg font-semibold tabular-nums leading-tight">
+            {formatAmount(payment.amount_declared)}
+            <span className="ml-1 text-xs font-medium text-muted-foreground">FCFA</span>
+          </p>
+          <p className={cn("mt-1 inline-flex items-center gap-1 text-xs font-semibold", statut.puce)}>
+            <statut.Icone className="size-3.5" aria-hidden="true" />
+            {statut.libelle}
+          </p>
+        </div>
+      </div>
 
-        {payment.status === "REJECTED" && (
-          <div role="alert" className="mt-4 rounded-2xl border border-destructive/25 bg-destructive/[0.06] px-4 py-3">
-            <p className="text-sm font-semibold text-destructive">Ce paiement n'a pas pu être validé</p>
-            {payment.rejection_reason_display && (
-              <p className="mt-0.5 text-sm text-foreground">Motif : {payment.rejection_reason_display}</p>
-            )}
-            <Button asChild size="sm" className="mt-3 rounded-full">
-              <Link to={`/abonnement?cursus=${cursus.id}`}>
-                Refaire ma déclaration
-                <ArrowRight className="size-3.5" />
-              </Link>
-            </Button>
-          </div>
-        )}
+      {payment.status !== "REJECTED" && <Avancement statut={payment.status} />}
 
-        {payment.status === "APPROVED" && (
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-success/25 bg-success/[0.07] px-4 py-3">
-            <p className="flex items-center gap-2 text-sm font-medium">
-              <Sparkles className="size-4 shrink-0 text-success" aria-hidden="true" />
-              Ton accès est activé.
-            </p>
-            <Button asChild size="sm" className="rounded-full">
-              <Link to={accueil}>
-                Commencer à réviser
-                <ArrowRight className="size-3.5" />
-              </Link>
-            </Button>
-          </div>
-        )}
+      {payment.status === "PENDING" && (
+        <p className="mt-3 text-sm text-muted-foreground">
+          Notre équipe vérifie ton transfert, généralement en quelques heures. Ton accès s'active dès la validation.
+        </p>
+      )}
 
-        <dl className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border/70 pt-3 text-sm text-muted-foreground">
-          <div className="inline-flex items-center gap-1.5">
-            <dt className="sr-only">Date de déclaration</dt>
-            <dd>Déclaré le {dateFr(payment.created_at)}</dd>
-          </div>
-          <div className="inline-flex items-center gap-1.5">
-            <dt>Réf.</dt>
-            <dd className="font-mono text-foreground">{payment.transaction_reference}</dd>
-            <button
-              type="button"
-              onClick={copierReference}
-              aria-label="Copier la référence de transaction"
-              className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              {copie ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
-            </button>
-          </div>
-        </dl>
+      {payment.status === "REJECTED" && (
+        <div role="alert" className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-foreground">
+            Ce paiement n'a pas pu être validé
+            {payment.rejection_reason_display ? ` - ${payment.rejection_reason_display.toLowerCase()}.` : "."}
+          </p>
+          <Button asChild size="sm" variant="outline" className="rounded-full">
+            <Link to={`/abonnement?cursus=${cursus.id}`}>
+              Refaire ma déclaration
+              <ArrowRight className="size-3.5" />
+            </Link>
+          </Button>
+        </div>
+      )}
+
+      {payment.status === "APPROVED" && (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-muted-foreground">Ton accès est activé.</p>
+          <Link to={accueil} className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            Commencer à réviser
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
+      )}
+
+      <div className="mt-4 flex items-center gap-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
+        <span>Réf.</span>
+        <span className="font-mono text-foreground/80">{payment.transaction_reference}</span>
+        <button
+          type="button"
+          onClick={copierReference}
+          aria-label="Copier la référence de transaction"
+          className="flex size-6 items-center justify-center rounded-full transition-colors hover:bg-muted hover:text-foreground"
+        >
+          {copie ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
+        </button>
+        <span className="ml-auto">{payment.plan.name}</span>
       </div>
     </li>
   )
 }
 
-/** Le chemin d'une déclaration : trois étapes, ce qui est fait en plein, ce qui se passe en cours. */
-function Parcours({ statut }: { statut: ManualPaymentStatus }) {
-  const courante = etapeCourante(statut)
+/** Trois segments fins : déclaré, en vérification, accès activé - sans étiquettes ni pastilles. */
+function Avancement({ statut }: { statut: ManualPaymentStatus }) {
+  const faits = statut === "APPROVED" ? 3 : 2
+  const actif = STATUTS[statut].segment
   return (
-    <ol className="mt-5 flex items-center" aria-label="Avancement de la déclaration">
-      {ETAPES.map((etape, index) => {
-        const faite = index < courante
-        const enCours = index === courante && statut === "PENDING"
-        return (
-          <li key={etape} className={cn("flex items-center", index < ETAPES.length - 1 && "flex-1")}>
-            <span className="flex items-center gap-2">
-              <span
-                className={cn(
-                  "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
-                  faite && "bg-success text-success-foreground",
-                  enCours && "bg-warning/20 text-warning-foreground ring-4 ring-warning/10 dark:text-warning",
-                  !faite && !enCours && "bg-muted text-muted-foreground",
-                )}
-                aria-current={enCours ? "step" : undefined}
-              >
-                {faite ? <Check className="size-3.5" strokeWidth={3} /> : enCours ? <Loader2 className="size-3.5 animate-spin" /> : index + 1}
-              </span>
-              <span className={cn("text-sm", faite || enCours ? "font-medium text-foreground" : "text-muted-foreground")}>
-                {etape}
-              </span>
-            </span>
-            {index < ETAPES.length - 1 && (
-              <span aria-hidden className={cn("mx-2 h-px flex-1 sm:mx-3", index < courante ? "bg-success/50" : "bg-border")} />
-            )}
-          </li>
-        )
-      })}
-    </ol>
+    <div
+      role="img"
+      aria-label={statut === "APPROVED" ? "Déclaré, vérifié, accès activé" : "Déclaré, vérification en cours"}
+      className="mt-4 flex gap-1.5"
+    >
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          aria-hidden
+          className={cn(
+            "h-1 flex-1 rounded-full",
+            i < faits ? actif : "bg-muted",
+            statut === "PENDING" && i === 1 && "animate-pulse",
+          )}
+        />
+      ))}
+    </div>
   )
 }
