@@ -148,7 +148,7 @@ def composer_bilan_parent(user, maintenant=None):
         f"Ouvrir {settings.SITE_NAME} : {settings.FRONTEND_URL}",
         "",
         "Tu reçois ce message parce que tu as activé le bilan de la semaine.",
-        f"Le arrêter en un clic : {lien_desabonnement_bilan(user)}",
+        f"L'arrêter en un clic : {lien_desabonnement_bilan(user)}",
     ]
     sujet = f"Bilan de la semaine de {prenoms[0]}" if len(prenoms) == 1 else "Bilan de la semaine de tes enfants"
     return sujet, "\n".join(lignes)
