@@ -1,207 +1,170 @@
-import { Link } from "react-router-dom"
-import { ArrowLeft, Check, Mail, MessageCircle, ScrollText, ShieldCheck, Wallet } from "lucide-react"
+import { Check, ScrollText, ShieldCheck, Smartphone } from "lucide-react"
 
+import { ChipLegale, ListeLegale, PageLegale, PuceLegale, type SectionLegale } from "@/components/PageLegale"
 import { useSeo } from "@/lib/seo"
-import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
-import { useCountry } from "@/context/CountryContext"
-import { epreuvesListPath } from "@/lib/countryPath"
+import { SITE_NAME } from "@/lib/site"
 
-const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
+// Date de la dernière révision de fond de ces conditions - jamais « aujourd'hui » : une date
+// qui change toute seule laisserait croire à une mise à jour qui n'a pas eu lieu.
+const MISE_A_JOUR = "3 octobre 2026"
 
-const SECTIONS = [
+const SECTIONS: SectionLegale[] = [
   {
-    title: "Objet",
-    body: (
+    id: "objet",
+    titre: "Objet",
+    contenu: (
       <p>
-        {SITE_NAME} donne accès à des corrigés d'annales, sujets et cours de révision pour le BEPC, le Probatoire et
-        le BAC au Cameroun. L'accès à la lecture en ligne est réservé aux comptes titulaires d'un abonnement actif
-        sur le cursus concerné.
+        {SITE_NAME} aide les élèves à préparer le BEPC, le Probatoire et le BAC au Cameroun : corrigés d'annales et
+        de sujets, cours de révision, quiz d'auto-évaluation, parcours par matière, épreuves inédites et séance de
+        révision quotidienne. L'accès à ces contenus est réservé aux comptes titulaires d'un abonnement actif pour
+        l'examen concerné, à l'exception de ceux proposés en libre accès (voir « Contenu gratuit et contenu payant »).
       </p>
     ),
   },
   {
-    title: "Compte utilisateur",
-    body: (
+    id: "compte",
+    titre: "Compte et profils",
+    contenu: (
+      <>
+        <p>
+          Le compte s'ouvre par numéro de téléphone (code à usage unique reçu par SMS), par « Continuer avec Google »
+          ou par adresse e-mail (code à usage unique reçu par e-mail). Plusieurs méthodes peuvent être rattachées au
+          même compte - c'est recommandé, pour ne pas perdre l'accès en cas de perte du numéro. Le titulaire est
+          responsable de la confidentialité de chacune d'elles.
+        </p>
+        <p className="mt-3">
+          Un compte peut regrouper plusieurs <strong>profils</strong>, un par enfant : chacun a sa propre progression,
+          son propre abonnement et sa propre séance du jour. Le titulaire du compte gère les profils de ses enfants
+          et reste responsable de leur usage de la plateforme.
+        </p>
+        <ListeLegale>
+          <PuceLegale>
+            Un <strong>code PIN à 4 chiffres</strong> peut protéger chaque profil, et un <strong>code parent</strong>{" "}
+            peut réserver au titulaire les paiements et la gestion des profils. Ces codes sont facultatifs ; il
+            appartient au titulaire de les définir et de les garder confidentiels.
+          </PuceLegale>
+          <PuceLegale>
+            Un enfant qui a son propre téléphone peut se connecter lui-même, avec son numéro vérifié par le titulaire :
+            sa session est alors limitée à son profil, sans changement d'enfant ni paiement.
+          </PuceLegale>
+        </ListeLegale>
+      </>
+    ),
+  },
+  {
+    id: "contenu",
+    titre: "Contenu gratuit et contenu payant",
+    contenu: (
       <p>
-        Le compte se crée et s'ouvre par numéro de téléphone camerounais (code à usage unique reçu par SMS), via
-        « Continuer avec Google », ou par adresse e-mail (code à usage unique reçu par e-mail). Un même compte peut
-        rattacher plusieurs de ces méthodes à la fois - c'est même recommandé, pour ne pas perdre l'accès à ton
-        compte en cas de perte du numéro de téléphone. Tu es responsable de la confidentialité de chaque méthode
-        rattachée à ton compte (accès à ton téléphone, à ta boîte e-mail, à ton compte Google).
+        Une sélection de contenus est en libre accès, sans abonnement : certains sujets et corrigés présentés en
+        vitrine, ainsi que le PDF de l'énoncé d'un sujet, que tu peux partager librement. Le reste - corrigés
+        détaillés, cours, quiz, parcours, épreuves inédites et séance du jour - est réservé aux abonnés actifs sur
+        l'examen concerné.
       </p>
     ),
   },
   {
-    title: "Contenu gratuit et contenu payant",
-    body: (
+    id: "abonnement",
+    titre: "Abonnement et tarifs",
+    contenu: (
+      <>
+        <p>
+          Il n'existe qu'une seule formule, <strong>Jusqu'à l'examen</strong> : l'accès est valable pour un enfant et
+          un examen donnés, de la date du paiement jusqu'à la fin de la session d'examen visée. Les épreuves inédites
+          y sont incluses.
+        </p>
+        <ListeLegale>
+          <PuceLegale>
+            <strong>15 000 FCFA</strong> par enfant, quelle que soit la date d'achat dans l'année scolaire.
+          </PuceLegale>
+          <PuceLegale>
+            <strong>12 000 FCFA</strong> pour chaque enfant supplémentaire de la même famille (réduction fixe de
+            20 % sur le tarif de référence, identique pour le 2<sup>e</sup>, le 3<sup>e</sup>, le 4<sup>e</sup> enfant,
+            et ainsi de suite). Exemple : 2 enfants, 27 000 FCFA ; 3 enfants, 39 000 FCFA.
+          </PuceLegale>
+        </ListeLegale>
+        <p className="mt-3">
+          L'abonnement n'est <strong>pas reconduit automatiquement</strong> : à son terme, l'accès réservé aux abonnés
+          est retiré jusqu'à un nouveau paiement. Aucun prélèvement n'est effectué sans ta demande.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "paiement",
+    titre: "Paiement et remboursement",
+    contenu: (
+      <>
+        <p>
+          Le paiement se fait par Mobile Money (MTN MoMo, Orange Money). Deux modes sont proposés : le paiement
+          automatique via notre prestataire CamPay, qui active l'accès en quelques secondes, ou le paiement manuel -
+          tu transfères toi-même le montant au numéro indiqué puis tu déclares ta transaction, que notre équipe
+          vérifie, généralement en quelques heures, avant d'activer l'accès. Tu suis l'état de tes déclarations dans
+          « Mes paiements ».
+        </p>
+        <p className="mt-3">
+          Les paiements sont fermes et non remboursables une fois la transaction confirmée, sauf en cas de
+          dysfonctionnement technique avéré de la plateforme empêchant l'accès au contenu souscrit - à signaler au
+          support.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "propriete",
+    titre: "Propriété intellectuelle",
+    contenu: (
       <p>
-        Les énoncés des sujets sont toujours en libre accès, sans compte ni abonnement. Le corrigé détaillé
-        (méthode, résolution, pièges, conseils) et les cours sont réservés aux abonnés actifs sur le cursus
-        concerné.
+        Les corrigés, cours, quiz et épreuves inédites sont réservés à ton usage personnel. Toute reproduction,
+        redistribution ou revente est interdite. Le PDF d'un sujet (énoncé seul) peut en revanche être librement
+        partagé.
       </p>
     ),
   },
   {
-    title: "Abonnement",
-    body: (
+    id: "suspension",
+    titre: "Suspension et résiliation",
+    contenu: (
       <p>
-        L'abonnement donne accès à l'ensemble des corrigés et cours d'un cursus (examen et série) donné, pour une
-        durée de 1 mois, 3 mois ou 1 an au choix - ou, à l'approche d'une session d'examen, jusqu'au jour de
-        l'examen (Pack Examen). Le paiement se fait par Mobile Money via CamPay. L'abonnement
-        n'est <strong className="text-foreground">pas reconduit automatiquement</strong> : à son expiration, l'accès
-        au corrigé est retiré jusqu'à un nouveau paiement (l'énoncé reste toujours consultable gratuitement).
+        Tu peux demander la suppression de ton compte à tout moment. Nous nous réservons le droit de suspendre un compte
+        en cas d'usage abusif : partage de l'accès d'un enfant avec des tiers, tentative de contournement du paiement,
+        déclaration de paiement frauduleuse.
       </p>
     ),
   },
   {
-    title: "Paiement et remboursement",
-    body: (
-      <p>
-        Les paiements sont fermes et non remboursables une fois la transaction confirmée, sauf en cas de
-        dysfonctionnement technique avéré de la plateforme empêchant l'accès au contenu souscrit - à signaler
-        via le support.
-      </p>
-    ),
+    id: "evolution",
+    titre: "Évolution des présentes conditions",
+    contenu: <p>Ces conditions peuvent évoluer ; la version en vigueur est toujours celle publiée sur cette page.</p>,
   },
   {
-    title: "Propriété intellectuelle",
-    body: (
-      <p>
-        Les corrigés et cours sont réservés à ton usage personnel. Toute reproduction, redistribution ou revente
-        est interdite. Le PDF du sujet (énoncé seul) peut en revanche être librement partagé.
-      </p>
-    ),
-  },
-  {
-    title: "Suspension et résiliation",
-    body: (
-      <p>
-        Tu peux demander la suppression de ton compte à tout moment. Nous nous réservons le droit de suspendre
-        un compte en cas d'usage abusif (partage de compte, tentative de contournement du paiement).
-      </p>
-    ),
-  },
-  {
-    title: "Évolution des présentes conditions",
-    body: <p>Ces conditions peuvent évoluer ; la version en vigueur est toujours celle publiée sur cette page.</p>,
-  },
-  {
-    title: "Droit applicable",
-    body: <p>Les présentes conditions sont soumises au droit camerounais.</p>,
+    id: "droit",
+    titre: "Droit applicable",
+    contenu: <p>Les présentes conditions sont soumises au droit camerounais.</p>,
   },
 ]
-
-function ChipReassurance({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-      {icon}
-      <span className="text-muted-foreground">{children}</span>
-    </span>
-  )
-}
 
 export function TermsPage() {
   useSeo({
     title: "Conditions générales d'utilisation et de vente",
-    description: `Fonctionnement des abonnements ${SITE_NAME}, paiement, remboursement et propriété intellectuelle.`,
+    description: `Fonctionnement de l'abonnement ${SITE_NAME}, tarifs, paiement, remboursement et propriété intellectuelle.`,
   })
-  const { country } = useCountry()
 
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-8 sm:px-6">
-      <Link
-        to={epreuvesListPath(country)}
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
-      >
-        <ArrowLeft className="size-4" />
-        Retour au catalogue
-      </Link>
-
-      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <div className="relative">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <ScrollText className="size-5" />
-          </div>
-          <p className="mb-1 font-display text-sm italic text-primary">Informations légales</p>
-          <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
-            Conditions générales d'utilisation et de vente
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Comment fonctionne {SITE_NAME} : accès aux sujets et corrigés, abonnement, paiement et résiliation.
-          </p>
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            <ChipReassurance icon={<Check className="size-3.5 text-success" />}>
-              Sujets toujours gratuits
-            </ChipReassurance>
-            <ChipReassurance icon={<ShieldCheck className="size-3.5 text-success" />}>
-              Pas de reconduction automatique
-            </ChipReassurance>
-            <ChipReassurance icon={<Wallet className="size-3.5 text-gold-text" />}>
-              Résiliable à tout moment
-            </ChipReassurance>
-          </div>
-
-          <p className="mt-5 text-xs text-muted-foreground">
-            Dernière mise à jour : {new Date().toLocaleDateString("fr-FR", { year: "numeric", month: "long" })}
-          </p>
-        </div>
-      </div>
-
-      <div className="border-l border-border">
-        {SECTIONS.map((section, index) => (
-          <div key={section.title} className="relative py-2 pb-9 pl-9 last:pb-0">
-            <span className="absolute -left-4 top-0 flex size-8 items-center justify-center rounded-full border border-border bg-background font-display text-sm font-semibold tabular-nums text-primary">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <h2 className="font-display text-base font-semibold">{section.title}</h2>
-            <div className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{section.body}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-4 flex flex-col gap-6 rounded-xl border border-border bg-card p-7 shadow-sm sm:flex-row sm:items-start">
-        <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-primary font-display text-xl font-semibold text-primary-foreground ring-2 ring-gold/50 ring-offset-2 ring-offset-card">
-          BSG
-        </span>
-        <div>
-          <h2 className="font-display text-lg font-semibold">BABOUNLEK Serge Guyguy</h2>
-          <p className="mt-0.5 text-sm text-muted-foreground">
-            Éditeur de la plateforme - Yaoundé, Cameroun - +237 698 19 29 91
-          </p>
-          <div className="mt-4 flex flex-wrap gap-5">
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-            >
-              <Mail className="size-4" />
-              {CONTACT_EMAIL}
-            </a>
-            <a
-              href="https://wa.me/237670401393"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-            >
-              <MessageCircle className="size-4" />
-              WhatsApp +237 670 40 13 93
-            </a>
-          </div>
-          <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
-            Voir aussi :{" "}
-            <Link to="/confidentialite" className="underline underline-offset-2 hover:text-foreground">
-              Politique de confidentialité
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
+    <PageLegale
+      icone={ScrollText}
+      titre="Conditions générales d'utilisation et de vente"
+      introduction={`Comment fonctionne ${SITE_NAME} : comptes et profils, abonnement, tarifs, paiement et résiliation.`}
+      puces={
+        <>
+          <ChipLegale icone={Check}>Un seul tarif, jusqu'à l'examen</ChipLegale>
+          <ChipLegale icone={ShieldCheck}>Pas de reconduction automatique</ChipLegale>
+          <ChipLegale icone={Smartphone} className="text-gold-text">Paiement Mobile Money</ChipLegale>
+        </>
+      }
+      miseAJour={MISE_A_JOUR}
+      sections={SECTIONS}
+      voirAussi={{ to: "/confidentialite", libelle: "Politique de confidentialité" }}
+    />
   )
 }
