@@ -200,6 +200,15 @@ class User(AbstractBaseUser, PermissionsMixin):
             "quelqu'un à qui on n'a encore rien demandé."
         ),
     )
+    bilan_parent_actif = models.BooleanField(
+        default=False,
+        help_text=(
+            "Reçoit chaque dimanche soir, par e-mail, le bilan de la semaine de chaque profil du "
+            "compte (voir relances.bilan_parent). Un réglage du TITULAIRE du compte, donc réservé "
+            "au mode parent, jamais activé d'office, et seulement sur une adresse confirmée - voir "
+            "UserProfileUpdateSerializer.validate_bilan_parent_actif."
+        ),
+    )
     # PIN parent (4 chiffres), facultatif : une fois défini, les actions du compte (paiement,
     # gestion des enfants et des codes) demandent le « mode parent » - voir users.parent.
     pin_parent_hash = models.CharField(max_length=128, blank=True, default="")
@@ -279,6 +288,11 @@ class Profil(models.Model):
                   "chaque profil active ou non son propre rappel.",
     )
     rappels_invite_refusee_at = models.DateTimeField(null=True, blank=True)
+    objectif_xp_quotidien = models.PositiveSmallIntegerField(
+        default=20,
+        help_text="Rythme que ce profil se fixe, en points d'XP par jour (voir quiz.xp : 10, 20 ou 30). "
+                  "Un jour où il est atteint compte pour la série, comme une séance du jour terminée.",
+    )
     # Code PIN facultatif (4 chiffres) : sans lui, tout le monde sur l'appareil peut ouvrir
     # ce profil. Défini par le parent (voir users.pin) ; vérifié côté serveur à l'activation
     # du profil (activer_profil_view), jamais seulement dans l'interface.

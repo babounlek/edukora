@@ -107,6 +107,7 @@ PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
 # déjà courts (BAC A, TI : plancher 2).
 PARCOURS_FREQUENCE_THEMES_MAX = 130
 
+from . import xp
 from .models import (
     CompetenceItem, ModeQuiz, ObjectifMatiere, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare,
     RevisionSchedule,
@@ -1540,6 +1541,8 @@ def terminer_seance(seance):
     for etape in seance.etapes:
         if etape.get("type") == "exercice" and etape.get("exercise_id"):
             ExerciceFait.objects.get_or_create(profil=seance.profil, exercise_id=etape["exercise_id"])
+    # Sous le garde d'idempotence du début : une séance reconfirmée ne rapporte pas deux fois.
+    xp.crediter_seance(seance)
     return seance
 
 

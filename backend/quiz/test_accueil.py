@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework.test import APIClient
 
+from analytics.models import AnalyticsEvent, EventName
 from catalog.models import Cursus, ExamSession, Examen, Lesson, LessonType, Origine, StatutContenu, Subject, Tag
 from programme.models import Module, Savoir
 from simulations.models import SimulationEpreuve
@@ -339,6 +340,20 @@ class AccueilApiTests(AccueilFixture):
         self.assertTrue(data["premiers_pas"])
         self.assertIn(data["plan"]["etat"], ("plan_pret", "rien_a_proposer"))
         self.assertTrue(VisiteAccueil.objects.filter(profil=self.profil).exists())
+
+    def test_une_nouvelle_visite_trace_app_ouverte_une_seule_fois(self):
+        self._examen_dans(90)
+        for _ in range(3):
+            self.client.get(reverse("quiz:accueil"))
+        # Trois rechargements dans la même visite : un seul évènement, pas trois.
+        evenements = AnalyticsEvent.objects.filter(name=EventName.APP_OUVERTE, user=self.user)
+        self.assertEqual(evenements.count(), 1)
+        self.assertEqual(evenements.first().properties["profil_id"], self.profil.id)
+
+        # Reprise après plus de 4 h d'inactivité : nouvelle visite, nouvel évènement.
+        VisiteAccueil.objects.filter(profil=self.profil).update(derniere_at=timezone.now() - timedelta(hours=5))
+        self.client.get(reverse("quiz:accueil"))
+        self.assertEqual(evenements.count(), 2)
 
     def test_examen_passe_ne_construit_pas_de_seance(self):
         ExamSession.objects.update_or_create(

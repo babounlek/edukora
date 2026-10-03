@@ -494,3 +494,67 @@ class VisiteAccueil(models.Model):
 
     def __str__(self):
         return f"{self.profil_id} - visite depuis {self.debut_at:%d/%m %H:%M}"
+
+
+class SourceXP(models.TextChoices):
+    REPONSE = "REPONSE", "Réponse à une question"
+    SEANCE = "SEANCE", "Séance du jour terminée"
+
+
+class GainXP(models.Model):
+    """
+    Un gain de points d'XP - le registre, ligne à ligne, de ce que l'élève a gagné. Les règles
+    (barème, plafond, bonus) sont dans quiz.xp : l'XP récompense la maîtrise (bonne réponse du
+    premier coup, révision due, séance terminée), jamais le volume brut.
+
+    Une réponse ne rapporte qu'une fois : `quiz_answer` est unique, donc répondre de nouveau à
+    la même question (la requête est rejouable) ne crédite rien de plus. SET_NULL plutôt que
+    CASCADE : purger une session de quiz ne doit pas retirer des points déjà gagnés.
+    """
+
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="gains_xp")
+    jour = models.DateField(db_index=True, help_text="Jour civil LOCAL du gain, voir JourXP.")
+    source = models.CharField(max_length=10, choices=SourceXP.choices)
+    points = models.PositiveSmallIntegerField()
+    bonus_revision = models.BooleanField(
+        default=False, help_text="Le thème était dû en révision : +BONUS_REVISION compris dans `points`.",
+    )
+    quiz_answer = models.OneToOneField(
+        QuizAnswer, null=True, blank=True, on_delete=models.SET_NULL, related_name="gain_xp",
+    )
+    competence_item = models.ForeignKey(
+        CompetenceItem, null=True, blank=True, on_delete=models.SET_NULL, related_name="+",
+        help_text="Plafond d'un gain par item et par jour (voir quiz.xp.crediter_reponse).",
+    )
+    seance = models.OneToOneField(
+        "quiz.SeanceJournaliere", null=True, blank=True, on_delete=models.SET_NULL, related_name="gain_xp",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.profil_id} +{self.points} XP ({self.get_source_display()}, {self.jour})"
+
+
+class JourXP(models.Model):
+    """
+    Le total d'XP d'un profil sur un jour civil, avec l'objectif EN VIGUEUR ce jour-là.
+
+    L'objectif est figé sur la ligne plutôt que relu sur le profil : sinon passer de 10 à 30
+    points par jour ferait retomber après coup les jours déjà atteints, et casserait une série
+    que l'élève avait gagnée au rythme qu'il s'était fixé alors (voir quiz.serie).
+    """
+
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="jours_xp")
+    jour = models.DateField()
+    xp = models.PositiveIntegerField(default=0)
+    objectif = models.PositiveSmallIntegerField()
+    atteint = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["profil", "jour"], name="uniq_jour_xp_par_profil")]
+
+    def __str__(self):
+        return f"{self.profil_id} {self.jour}: {self.xp}/{self.objectif} XP"

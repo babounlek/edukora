@@ -11,23 +11,37 @@ zéro au premier jour manqué fait abandonner ceux qui en ont le plus besoin :
   reste vivante à son niveau d'hier.
 
 Un jour compte dès qu'une séance du jour est terminée ce jour-là (date LOCALE, voir
-SeanceJournaliere.date) - jamais une simple connexion, qui ne prouve aucun travail.
+SeanceJournaliere.date), OU que l'objectif d'XP du jour est atteint (voir quiz.xp) : un
+élève très actif en quiz libre ne perd pas sa série parce qu'il n'a pas suivi le plan.
+Jamais une simple connexion, qui ne prouve aucun travail.
 """
 
 from datetime import date, timedelta
 
 from django.utils import timezone
 
+from . import xp
 from .models import SeanceJournaliere, StatutSeance
 
 JOURS_ENTRE_DEUX_REPOS = 7
 
 
 def jours_travailles(profil):
-    return set(
+    seances = set(
         SeanceJournaliere.objects.filter(profil=profil, statut=StatutSeance.TERMINEE)
         .values_list("date", flat=True),
     )
+    return seances | xp.jours_atteints(profil)
+
+
+def semaine_courante(jours, aujourdhui):
+    """Les sept jours de la semaine civile en cours (lundi à dimanche), chacun avec `fait` -
+    de quoi dessiner la rangée de cases. Fonction pure, comme calculer_serie."""
+    lundi = aujourdhui - timedelta(days=aujourdhui.weekday())
+    return [
+        {"date": (jour := lundi + timedelta(days=i)).isoformat(), "fait": jour in jours, "aujourdhui": jour == aujourdhui}
+        for i in range(7)
+    ]
 
 
 def _serie_se_terminant_le(jours, fin):
@@ -71,4 +85,6 @@ def calculer_serie(jours, aujourdhui):
 
 
 def serie_de_jours(profil, aujourdhui: date | None = None):
-    return calculer_serie(jours_travailles(profil), aujourdhui or timezone.localdate())
+    aujourdhui = aujourdhui or timezone.localdate()
+    jours = jours_travailles(profil)
+    return {**calculer_serie(jours, aujourdhui), "semaine": semaine_courante(jours, aujourdhui)}

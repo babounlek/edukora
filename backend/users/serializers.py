@@ -94,7 +94,7 @@ class UserSerializer(serializers.ModelSerializer):
             "id", "phone_number", "email", "email_verified", "full_name", "pseudo",
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
             "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours",
-            "a_un_abonnement_actif", "rappels_actifs", "rappels_invite_refusee",
+            "a_un_abonnement_actif", "rappels_actifs", "rappels_invite_refusee", "bilan_parent_actif",
             "profil_actif", "pin_parent_actif", "session_restreinte",
         ]
 
@@ -204,12 +204,21 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["full_name", "pseudo", "cursus_prepare", "rappels_actifs", "rappels_invite_refusee"]
+        fields = [
+            "full_name", "pseudo", "cursus_prepare", "rappels_actifs", "rappels_invite_refusee", "bilan_parent_actif",
+        ]
 
     def validate_rappels_actifs(self, value):
         # Des rappels envoyés à une adresse non confirmée arriveraient chez quelqu'un qui n'a
         # rien demandé - la confirmation par code (voir users.account) est la seule preuve
         # que l'adresse est bien celle de l'élève.
+        if value and not (self.instance and self.instance.email_verified):
+            raise serializers.ValidationError("Ajoute et confirme d'abord une adresse e-mail.")
+        return value
+
+    def validate_bilan_parent_actif(self, value):
+        # Même règle, même raison que pour les rappels : jamais d'envoi vers une adresse
+        # que personne n'a prouvé être la bonne.
         if value and not (self.instance and self.instance.email_verified):
             raise serializers.ValidationError("Ajoute et confirme d'abord une adresse e-mail.")
         return value

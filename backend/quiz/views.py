@@ -23,7 +23,8 @@ from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
     StatutFichePdf, StatutSeance,
 )
-from . import accueil
+from . import accueil, xp
+from .classement import classement_hebdo
 from .pdf import queue_quiz_fiche_pdf_generation
 from .serie import serie_de_jours
 from .services import (
@@ -64,12 +65,18 @@ def _tracer_seance_terminee(seance):
     """
     if seance is None:
         return
+    _tracer(
+        EventName.PLAN_SEANCE_TERMINEE, seance.profil.compte,
+        origine=seance.origine, cursus_id=seance.cursus_id,
+    )
+
+
+def _tracer(nom, compte, **properties):
+    """Évènement posé côté serveur, jamais au prix de la requête en cours. Le compte
+    (User) porte l'évènement, le profil va dans `properties` : AnalyticsEvent n'a pas de
+    clé vers Profil."""
     try:
-        AnalyticsEvent.objects.create(
-            name=EventName.PLAN_SEANCE_TERMINEE,
-            user=seance.profil.compte,
-            properties={"origine": seance.origine, "cursus_id": seance.cursus_id},
-        )
+        AnalyticsEvent.objects.create(name=nom, user=compte, properties=properties)
     except Exception:  # noqa: BLE001 - jamais au prix de la requête en cours
         pass
 
@@ -249,6 +256,7 @@ def _question_payload(quiz_question):
     uniquement - generer_session n'en pioche plus) garde le payload d'origine.
     """
     answer = _get_answer(quiz_question)
+    gain = getattr(answer, "gain_xp", None)
 
     if quiz_question.competence_item_id:
         item = quiz_question.competence_item
@@ -295,6 +303,10 @@ def _question_payload(quiz_question):
             "reponse_choisie": answer.reponse_choisie,
             "resultat_declare": answer.resultat_declare,
             "est_correcte": answer.est_correcte,
+            # Points gagnés par CETTE réponse (0 si fausse, déjà créditée un autre jour, ou
+            # plafonnée) - voir quiz.xp. RelatedObjectDoesNotExist hérite d'AttributeError :
+            # getattr avec défaut suffit pour une réponse sans gain.
+            "xp_gagne": gain.points if gain else 0,
         }
 
     return payload
@@ -309,6 +321,7 @@ def _session_payload(session):
         session.quiz_questions
         .select_related(
             "question__exercise__lesson__subject", "competence_item__theme", "competence_item__subject", "answer",
+            "answer__gain_xp",
         )
         .order_by("ordre")
     )
@@ -326,6 +339,7 @@ def _session_payload(session):
         "started_at": session.started_at,
         "completed_at": session.completed_at,
         "total_questions": quiz_questions.count(),
+        "xp_jour": xp.etat_du_jour(session.profil),
         "questions": [_question_payload(qq) for qq in quiz_questions],
     }
 
@@ -424,6 +438,10 @@ def _resultat_payload(session, request):
         # Ce quiz était l'étape finale d'une séance du jour, et l'a clôturée : la page
         # de résultat le dit et ramène à « Aujourd'hui ». Faux pour un quiz lancé seul.
         "seance_validee": session.seances.filter(statut=StatutSeance.TERMINEE).exists(),
+        # Ce que ce quiz a rapporté, et où en est la journée (voir quiz.xp).
+        "xp": {"session": xp.bilan_session(session), "jour": xp.etat_du_jour(session.profil)},
+        "serie": serie_de_jours(session.profil),
+        "classement": classement_hebdo(session.profil, session.cursus),
     }
 
 
@@ -531,15 +549,27 @@ def answer_question(request, session_id, quiz_question_id):
             )
         defaults["resultat_declare"] = resultat
 
-    answer, _created = QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
+    answer, creee = QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
 
     if quiz_question.competence_item_id:
         item = quiz_question.competence_item
-        enregistrer_resultat_pour_revision(
-            profil, quiz_question.session.cursus, item.subject, item.theme, answer.est_correcte,
-        )
+        cursus = quiz_question.session.cursus
+        # AVANT la mise à jour de l'échéance : elle fait cesser le thème d'être « dû ».
+        du_en_revision = xp.theme_du_en_revision(profil, cursus, item.theme)
+        enregistrer_resultat_pour_revision(profil, cursus, item.subject, item.theme, answer.est_correcte)
+        gain = xp.crediter_reponse(profil, quiz_question, answer, premiere_reponse=creee, bonus_revision=du_en_revision)
+    else:
+        gain = None
 
-    return Response(_question_payload(quiz_question))
+    payload = _question_payload(quiz_question)
+    jour = xp.etat_du_jour(profil)
+    payload["xp_jour"] = jour
+    # Cette réponse est celle qui a fait franchir l'objectif : le client en fait une fête,
+    # une seule fois (le total du jour avant elle était encore sous l'objectif).
+    payload["objectif_atteint_maintenant"] = bool(
+        gain and jour["atteint"] and jour["xp"] - gain.points < jour["objectif"],
+    )
+    return Response(payload)
 
 
 @api_view(["POST"])
@@ -885,6 +915,7 @@ def _charge_utile_plan(profil, cursus, seance, compte):
         "compte_a_rebours": compte,
         "seances_cette_semaine": seances_terminees_cette_semaine(profil, cursus),
         "serie": serie_de_jours(profil),
+        "xp": xp.etat_du_jour(profil),
         "objectif_matiere": _serialiser_objectif(objectif_matiere_actif(profil, cursus)),
         "matieres_objectif": [{"id": m.id, "label": m.label} for m in matieres_pour_objectif(cursus)],
     }
@@ -921,6 +952,8 @@ def accueil_view(request):
     compte = ExamSession.compte_a_rebours_pour(cursus)
     visite, nouvelle = accueil.enregistrer_visite(profil)
     absence = accueil.absence_jours(visite)
+    if nouvelle:
+        _tracer(EventName.APP_OUVERTE, user, profil_id=profil.id, cursus_id=cursus.id)
     phase = accueil.phase_examen(compte)
 
     if phase == "apres":
@@ -1001,6 +1034,7 @@ def terminer_seance_view(request):
         "statut": seance.statut,
         "seances_cette_semaine": seances_terminees_cette_semaine(profil, cursus),
         "serie": serie_de_jours(profil),
+        "xp": xp.etat_du_jour(profil),
     })
 
 
@@ -1026,6 +1060,25 @@ def continuer_view(request):
     seance = seance_supplementaire(profil, cursus)
     compte = ExamSession.compte_a_rebours_pour(cursus)
     return Response(_charge_utile_plan(profil, cursus, seance, compte))
+
+
+@api_view(["GET", "POST"])
+def objectif_xp_view(request):
+    """
+    GET : où en est le profil aujourd'hui (XP, objectif, atteint). POST {objectif} : change son
+    rythme quotidien (10, 20 ou 30 points, voir quiz.xp). Pas réservé au mode parent : c'est
+    l'élève qui se fixe son propre rythme, y compris sur une session enfant.
+    """
+    profil = profil_actif(request)
+    if request.method == "GET":
+        return Response(xp.etat_du_jour(profil))
+    try:
+        valeur = int(request.data.get("objectif"))
+        etat = xp.definir_objectif(profil, valeur)
+    except (TypeError, ValueError):
+        return Response({"error": f"objectif invalide. Attendu {list(xp.OBJECTIFS_POSSIBLES)}."}, status=400)
+    _tracer(EventName.OBJECTIF_XP_CHOISI, request.user, profil_id=profil.id, objectif=valeur)
+    return Response(etat)
 
 
 @api_view(["POST", "DELETE"])

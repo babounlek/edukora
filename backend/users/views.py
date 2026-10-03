@@ -435,6 +435,10 @@ def unlink_identity_view(request, provider):
 @permission_classes([IsAuthenticated])
 def me_view(request):
     if request.method == "PATCH":
+        # Le bilan parent est un réglage du titulaire du compte : un enfant sur sa session
+        # limitée, ou sur un appareil dont le code parent n'a pas été saisi, ne le change pas.
+        if "bilan_parent_actif" in request.data and (refus := exiger_mode_parent(request)) is not None:
+            return refus
         serializer = UserProfileUpdateSerializer(request.user, data=request.data, partial=True)
         if not serializer.is_valid():
             # {"error": "..."} plutôt que le format DRF par défaut (dict par champ) :
