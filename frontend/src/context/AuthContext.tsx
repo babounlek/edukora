@@ -6,6 +6,7 @@ import { clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPIRED_EVENT 
 import type { User } from "@/api/types"
 import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { viderCacheHorsLigne } from "@/lib/pwa"
+import { oublierPushLocal } from "@/lib/push"
 
 interface AuthContextValue {
   user: User | null
@@ -83,6 +84,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     // Un corrigé lu hors connexion ne doit pas rester lisible pour le compte suivant.
     void viderCacheHorsLigne()
+    // Même raison pour les rappels : le compte suivant sur cet appareil ne les reçoit pas.
+    void oublierPushLocal()
     // Résultat jamais attendu (voir logoutRequest, best-effort) : l'utilisateur doit
     // se sentir déconnecté immédiatement, pas après un aller-retour réseau pour
     // effacer un cookie qu'il ne voit de toute façon jamais.

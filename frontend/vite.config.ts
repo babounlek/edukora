@@ -41,6 +41,10 @@ export default defineConfig(() => {
               },
               workbox: {
                 cleanupOutdatedCaches: true,
+                // Notifications push : le gestionnaire vit dans public/push-sw.js, importé par le
+                // worker généré - on garde ainsi toutes les règles de cache ci-dessous sans
+                // passer en worker écrit à la main.
+                importScripts: ['/push-sw.js'],
                 // Précache : le code de l'app et les polices nécessaires au rendu d'un
                 // corrigé (KaTeX, latin). Pas les ~270 drapeaux ni les sous-ensembles de
                 // langues étrangères des polices : ils se chargent (et se mettent en cache)

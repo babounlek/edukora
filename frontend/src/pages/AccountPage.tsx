@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {
   Check, Copy, Crown, FileText, GraduationCap,
-  MessageCircle, NotebookPen, Pencil, Settings2, Share2, Sparkles, TrendingUp, type LucideIcon,
+  MessageCircle, NotebookPen, Pencil, Settings2, Share2, Sparkles, TrendingUp, Zap, type LucideIcon,
 } from "lucide-react"
 
 import { getWhatsAppStatus, optInWhatsApp, optOutWhatsApp, updateMe } from "@/api/endpoints"
@@ -12,7 +12,8 @@ import { useCountry } from "@/context/CountryContext"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { formatCompteARebours, formatCursus } from "@/components/CompteAReboursBadge"
 import { ConnexionMethodsCard } from "@/components/ConnexionMethodsCard"
-import { InterrupteurRappelsEmail } from "@/components/RappelsEmail"
+import { InterrupteurBilanParent, InterrupteurRappelsEmail } from "@/components/RappelsEmail"
+import { ChoixRythme, InterrupteurPush, InterrupteurRetours } from "@/components/ReglagesSeance"
 import { Section } from "@/components/CompteSection"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -226,6 +227,15 @@ export function AccountPage() {
           </div>
         </section>
 
+        <Section icone={Zap} titre="Ma séance">
+          <ChoixRythme />
+          <div className="mt-4 border-t border-border pt-4">
+            <InterrupteurRetours />
+          </div>
+          {/* Se masque tout seul quand les notifications ne peuvent pas exister (voir lib/push). */}
+          <InterrupteurPush />
+        </Section>
+
         <Section icone={Settings2} titre="Réglages">
           {whatsappOptedIn === null ? (
             <p className="text-sm text-muted-foreground">Chargement…</p>
@@ -264,6 +274,9 @@ export function AccountPage() {
           )}
           <div className="mt-4 border-t border-border pt-4">
             <InterrupteurRappelsEmail />
+          </div>
+          <div className="mt-4 border-t border-border pt-4">
+            <InterrupteurBilanParent />
           </div>
         </Section>
 

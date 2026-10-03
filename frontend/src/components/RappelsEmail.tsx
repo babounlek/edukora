@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
-import { BellRing, Mail } from "lucide-react"
+import { BellRing, CalendarCheck, Mail } from "lucide-react"
 
 import { updateMe } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -70,6 +70,63 @@ export function InterrupteurRappelsEmail() {
         aria-label="Ta séance du jour par e-mail"
         disabled={enCours || (!peutActiver && !actif)}
         onClick={() => modifier({ rappels_actifs: !actif })}
+        className={cn(
+          "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors disabled:opacity-60",
+          actif ? "border-primary bg-primary" : "border-border bg-muted",
+        )}
+      >
+        <span
+          aria-hidden
+          className={cn(
+            "inline-block size-5 rounded-full bg-background shadow transition-transform",
+            actif ? "translate-x-6" : "translate-x-1",
+          )}
+        />
+      </button>
+    </div>
+  )
+}
+
+/**
+ * Le bilan du dimanche soir pour le parent : ce que chaque enfant du compte a fait dans la semaine.
+ * Même mécanique que les rappels (adresse confirmée, un clic pour l'arrêter dans l'e-mail) ; réservé
+ * au mode parent côté serveur, qui redemande le code parent si besoin.
+ */
+export function InterrupteurBilanParent() {
+  const { user, enCours, modifier } = useRappelsEmail()
+  if (!user) return null
+
+  const peutActiver = user.email_verified
+  const actif = user.bilan_parent_actif
+
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="min-w-0">
+        <p className="flex items-center gap-2 font-medium">
+          <CalendarCheck className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+          Le bilan de la semaine, par e-mail
+        </p>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          Chaque dimanche soir : les jours de révision, les séances et les thèmes consolidés de chaque enfant du
+          compte. Rien que des faits, un clic dans le message suffit pour l'arrêter.
+        </p>
+        {!peutActiver && (
+          <p className="mt-1 text-sm">
+            Ajoute et confirme d'abord ton e-mail dans{" "}
+            <Link to="/compte" className="text-primary underline underline-offset-2">
+              Connexion
+            </Link>
+            .
+          </p>
+        )}
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={actif}
+        aria-label="Le bilan de la semaine, par e-mail"
+        disabled={enCours || (!peutActiver && !actif)}
+        onClick={() => modifier({ bilan_parent_actif: !actif })}
         className={cn(
           "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors disabled:opacity-60",
           actif ? "border-primary bg-primary" : "border-border bg-muted",

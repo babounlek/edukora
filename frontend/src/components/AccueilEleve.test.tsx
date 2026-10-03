@@ -36,6 +36,7 @@ vi.mock("@/api/endpoints", () => ({
   listEpreuvesInedites: vi.fn(() => Promise.resolve({ count: 0, results: [] })),
   listEpreuves: vi.fn(() => Promise.resolve({ count: 0, results: [] })),
   listCursus: vi.fn(() => Promise.resolve([])),
+  listMySubscriptions: vi.fn(() => Promise.resolve([])),
 }))
 vi.mock("@/lib/analytics", () => ({ trackEvent }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
@@ -159,6 +160,25 @@ describe("AccueilEleve", () => {
     // Anneau pondéré : 31 %, pas le comptage brut (22 %).
     expect(screen.getAllByText("31").length).toBeGreaterThan(0)
     expect(getAccueil).toHaveBeenCalledTimes(1)
+  })
+
+  it("montre l'objectif d'XP du jour et la semaine de série", async () => {
+    const base = accueil()
+    getAccueil.mockResolvedValue(accueil({
+      plan: {
+        ...base.plan,
+        xp: { xp: 10, objectif: 20, atteint: false, objectifs_possibles: [10, 20, 30] },
+        serie: {
+          jours: 3, record: 5, actif_aujourdhui: false, repos_pris: false,
+          semaine: Array.from({ length: 7 }, (_, i) => ({ date: `2026-09-${28 + i}`, fait: i < 2, aujourdhui: i === 2 })),
+        },
+      },
+    }))
+    afficher()
+
+    expect(await screen.findByText("10 / 20 XP")).toBeInTheDocument()
+    expect(screen.getByText("Série de 3 jours")).toBeInTheDocument()
+    expect(screen.getAllByRole("img", { name: "Travaillé" })).toHaveLength(2)
   })
 
   it("ne fait qu'un seul appel : le plan du jour n'est jamais refetché à part", async () => {

@@ -10,6 +10,7 @@ import type {
   MarqueEtude,
   Country,
   Cursus,
+  EtatXp,
   Difficulte,
   Epreuve,
   EpreuveContent,
@@ -149,6 +150,8 @@ export interface UpdateProfileParams {
   rappels_actifs?: boolean
   // true = l'élève écarte l'invitation à activer les rappels, false = il la rouvre.
   rappels_invite_refusee?: boolean
+  // Bilan hebdomadaire au parent : exige un e-mail confirmé pour true, et le mode parent.
+  bilan_parent_actif?: boolean
 }
 
 export function updateMe(params: UpdateProfileParams) {
@@ -562,6 +565,11 @@ export function getAccueil(signal?: AbortSignal) {
   return apiRequest<Accueil>("/quiz/accueil/", { signal })
 }
 
+/** Change le rythme quotidien (10, 20 ou 30 points d'XP) - voir quiz.xp côté backend. */
+export function definirObjectifXp(objectif: number) {
+  return apiRequest<EtatXp>("/quiz/xp/objectif/", { method: "POST", body: { objectif } })
+}
+
 export function terminerSeanceDuJour() {
   return apiRequest<{ statut: string; seances_cette_semaine: number }>(
     "/quiz/plan-du-jour/terminer/", { method: "POST" },
@@ -904,4 +912,23 @@ export function getCarnet(signal?: AbortSignal) {
 /** Nouvelle session limitée aux questions ratées d'une session terminée. */
 export function refaireLesRatees(sessionId: number) {
   return apiRequest<QuizSession>(`/quiz/sessions/${sessionId}/refaire-ratees/`, { method: "POST" })
+}
+
+/** Où en est le profil actif aujourd'hui : XP gagnée, objectif en vigueur (voir quiz.xp). */
+export function getObjectifXp(signal?: AbortSignal) {
+  return apiRequest<EtatXp>("/quiz/xp/objectif/", { signal })
+}
+
+/** Clé publique VAPID du serveur, ou `actif: false` quand le push n'y est pas configuré. */
+export function getPushCle(signal?: AbortSignal) {
+  return apiRequest<{ actif: boolean; cle: string }>("/relances/push/cle/", { signal })
+}
+
+/** Enregistre l'appareil qui vient d'accepter les notifications (voir relances.views). */
+export function abonnerPush(abonnement: { endpoint: string; keys: { p256dh: string; auth: string } }) {
+  return apiRequest<{ abonne: boolean }>("/relances/push/abonner/", { method: "POST", body: abonnement })
+}
+
+export function desabonnerPush(endpoint: string) {
+  return apiRequest<{ abonne: boolean }>("/relances/push/desabonner/", { method: "POST", body: { endpoint } })
 }

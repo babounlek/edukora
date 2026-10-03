@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Check, ChevronDown, Flame, GraduationCap, Moon, Sparkles, Sun } from "lucide-react"
+import { Check, ChevronDown, GraduationCap, Moon, Sparkles, Sun } from "lucide-react"
 
 import { getPlanDuJour } from "@/api/endpoints"
 import type { Accueil, CompteARebours, Cursus, PhaseExamen } from "@/api/types"
@@ -9,7 +9,9 @@ import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { BoutonSimulation } from "@/components/BoutonSimulation"
 import { formatCursus } from "@/components/CompteAReboursBadge"
+import { ObjectifXp } from "@/components/ObjectifXp"
 import { SeanceCorps } from "@/components/SeanceDuJour"
+import { SemaineDeSerie } from "@/components/SemaineDeSerie"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,7 +57,6 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
   const cursus = user?.cursus_prepare
   const compte = user?.compte_a_rebours ?? plan?.compte_a_rebours ?? null
   const prenom = (user?.profil_actif?.prenom || user?.pseudo || user?.full_name || "").trim().split(/\s+/)[0]
-  const serie = plan?.serie
   const seancesSemaine = plan?.seances_cette_semaine
 
   return (
@@ -82,23 +83,11 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
               <p className="mt-3 max-w-2xl font-display text-base font-medium leading-snug text-balance sm:text-xl">
                 {accueil.phrase_coach}
               </p>
-              {(serie && serie.jours >= 2) || (typeof seancesSemaine === "number" && seancesSemaine > 0) ? (
-                <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-primary-foreground/80">
-                  {typeof seancesSemaine === "number" && seancesSemaine > 0 && (
-                    <span>{seancesSemaine} séance{seancesSemaine > 1 ? "s" : ""} cette semaine</span>
-                  )}
-                  {/* La série ne s'affiche qu'à partir de deux jours (un seul n'est pas
-                      encore une habitude) et ne culpabilise jamais. */}
-                  {serie && serie.jours >= 2 && (
-                    <span
-                      className="flex items-center gap-1.5"
-                      title={serie.repos_pris ? "Un jour de repos a été pardonné cette semaine" : undefined}
-                    >
-                      <Flame className="size-3.5 shrink-0" aria-hidden="true" />
-                      {serie.jours} jours de suite
-                      {!serie.actif_aujourdhui && " · ta séance du jour la prolonge"}
-                    </span>
-                  )}
+              {/* La série et sa semaine vivent dans le corps de la carte (voir plus bas,
+                  SemaineDeSerie), à côté de l'objectif d'XP : le bandeau garde les repères. */}
+              {typeof seancesSemaine === "number" && seancesSemaine > 0 ? (
+                <p className="mt-2 text-sm text-primary-foreground/80">
+                  {seancesSemaine} séance{seancesSemaine > 1 ? "s" : ""} cette semaine
                 </p>
               ) : null}
             </div>
@@ -125,6 +114,14 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
         </div>
 
         <div className="relative p-5 sm:p-8">
+          {/* L'objectif du jour et la semaine : ce qui fait revenir. Ni le jour de l'examen
+              ni le lendemain n'ont de séance à tenir, donc rien à compter ces jours-là. */}
+          {plan?.xp && plan.serie?.semaine && accueil.phase !== "apres" && accueil.phase !== "jour_j" && (
+            <div className="mb-6 grid gap-5 sm:grid-cols-2 sm:gap-8">
+              <ObjectifXp etat={plan.xp} />
+              <SemaineDeSerie serie={plan.serie} />
+            </div>
+          )}
           <Corps accueil={accueil} plan={plan} country={country} />
         </div>
       </div>

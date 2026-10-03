@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Sparkles, Target, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Sparkles, Target, X, Zap } from "lucide-react"
 
 import { answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -13,10 +13,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ObjectifXp } from "@/components/ObjectifXp"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
+import { jouerRetour } from "@/lib/retours"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
@@ -129,8 +131,18 @@ export function QuizSessionPage() {
     setSession((prev) => {
       if (!prev) return prev
       const questions = prev.questions.map((q) => (q.id === updated.id ? updated : q))
-      return { ...prev, questions }
+      return { ...prev, questions, xp_jour: updated.xp_jour ?? prev.xp_jour }
     })
+    // Le retour sensoriel part avec la réponse : un son et une vibration courts, une fête à
+    // part quand c'est cette réponse qui a fait franchir l'objectif du jour. Une réponse
+    // partielle qui a rapporté des points sonne "juste" : ce n'est pas une erreur.
+    jouerRetour(
+      updated.objectif_atteint_maintenant
+        ? "objectif"
+        : updated.reponse?.est_correcte || (updated.reponse?.xp_gagne ?? 0) > 0
+          ? "juste"
+          : "faux",
+    )
   }
 
   async function handleAnswerQcm(lettre: string) {
@@ -235,6 +247,10 @@ export function QuizSessionPage() {
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <Link
           to={session.subject ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
+          onClick={() => {
+            // Quitter avant la dernière réponse : le contre-indicateur de la boucle de séance.
+            if (answeredCount < total) trackEvent("quiz_abandonne", { cursus_id: session.cursus, mode: session.mode, repondues: answeredCount, total })
+          }}
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
         >
           <ArrowLeft className="size-4" />
@@ -268,6 +284,7 @@ export function QuizSessionPage() {
           Question {currentIndex + 1} sur {total}
         </p>
         <div className="flex items-center gap-3">
+          {session.xp_jour && <ObjectifXp etat={session.xp_jour} compact />}
           {streak >= 2 && (
             <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2.5 py-0.5 font-semibold">
               <Flame className="animate-quiz-flame size-4 text-warning" />
@@ -435,12 +452,24 @@ export function QuizSessionPage() {
               {correct && streak >= 3 && (
                 <p className="text-muted-foreground">{streak} bonnes réponses d'affilée, tu es en feu.</p>
               )}
+              {question.objectif_atteint_maintenant && (
+                <p className="font-semibold text-success">Objectif du jour atteint.</p>
+              )}
               {isQcm && !correct && question.reponse_correcte && (
                 <p className="text-muted-foreground">
                   La bonne réponse était <strong>{question.reponse_correcte.toUpperCase()}</strong>.
                 </p>
               )}
             </div>
+            {(question.reponse?.xp_gagne ?? 0) > 0 && (
+              <span
+                key={question.id}
+                className="animate-xp-pop ml-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-1 text-sm font-bold tabular-nums text-gold-text"
+              >
+                <Zap className="size-4" aria-hidden="true" />
+                +{question.reponse?.xp_gagne} XP
+              </span>
+            )}
           </div>
         )}
 

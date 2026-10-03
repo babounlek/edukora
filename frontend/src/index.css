@@ -278,6 +278,14 @@
   50% { transform: scale(1.18) rotate(3deg); }
 }
 
+/* XP : le gain "+N XP" apparaît en rebondissant, et la barre d'objectif se remplit en douceur. */
+@keyframes xp-pop {
+  0% { transform: translateY(6px) scale(0.8); opacity: 0; }
+  60% { transform: translateY(-2px) scale(1.08); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.animate-xp-pop { animation: xp-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .animate-quiz-pop { animation: quiz-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .animate-quiz-shake { animation: quiz-shake 0.35s ease-in-out both; }
 .animate-quiz-flame { animation: quiz-flame 1s ease-in-out infinite; }
@@ -293,6 +301,7 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-quiz-pop,
   .animate-quiz-shake,
+  .animate-xp-pop,
   .animate-quiz-flame { animation: none; }
   .quiz-confetti-piece { display: none; }
 }

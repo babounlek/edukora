@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Trophy, Zap } from "lucide-react"
 
 import { completeQuizSession, refaireLesRatees, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { QuizResult, QuizThemeScore } from "@/api/types"
+import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
+import { ObjectifXp } from "@/components/ObjectifXp"
 import { PrioritesExamen } from "@/components/PrioritesExamen"
+import { InvitePush } from "@/components/ReglagesSeance"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
+import { SemaineDeSerie } from "@/components/SemaineDeSerie"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useCountry } from "@/context/CountryContext"
+import { useAuth } from "@/context/AuthContext"
+import { partagerScore } from "@/lib/partageScore"
+import { jouerRetour } from "@/lib/retours"
+import { SITE_NAME } from "@/lib/site"
+import { useCompteur } from "@/lib/useCompteur"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
@@ -36,6 +44,81 @@ function Confettis() {
         />
       ))}
     </div>
+  )
+}
+
+/**
+ * Ce que le quiz a rapporté et où en est la journée : l'XP qui monte, la barre d'objectif, la
+ * semaine de série. C'est l'écran qui donne envie de revenir demain, donc il dit les trois
+ * choses d'un coup. Le petit jingle de fin part ici, une seule fois, au montage.
+ */
+function BilanXp({
+  xp, serie, classement, score, total,
+}: {
+  xp: NonNullable<QuizResult["xp"]>
+  serie?: SerieDeJours
+  classement?: QuizResult["classement"]
+  score: number
+  total: number
+}) {
+  const gagne = useCompteur(xp.session.total)
+  const { user } = useAuth()
+  const [partage, setPartage] = useState(false)
+  useEffect(() => {
+    jouerRetour("fin")
+  }, [])
+
+  async function partager() {
+    if (!user || partage) return
+    setPartage(true)
+    try {
+      await partagerScore({
+        score, total, xp: xp.session.total, serie: serie?.jours ?? 0, nomSite: SITE_NAME,
+        lien: `${window.location.origin}/?ref=${user.referral_code}`,
+      })
+    } finally {
+      setPartage(false)
+    }
+  }
+
+  return (
+    <section
+      aria-label="Points gagnés et objectif du jour"
+      className="mb-6 grid gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm sm:grid-cols-[auto_1fr_1fr] sm:items-center sm:gap-8"
+    >
+      <div className="text-center sm:text-left">
+        <p className="text-sm text-muted-foreground">Gagné dans ce quiz</p>
+        <p className="flex items-center justify-center gap-1.5 font-display text-4xl font-semibold tabular-nums text-gold-text sm:justify-start">
+          <Zap className="size-7" aria-hidden="true" />
+          +{gagne} XP
+        </p>
+        {xp.session.seance > 0 && (
+          <p className="text-xs text-muted-foreground">dont {xp.session.seance} pour la séance du jour</p>
+        )}
+        {xp.session.total === 0 && (
+          <p className="text-xs text-muted-foreground">Les points se gagnent sur les bonnes réponses.</p>
+        )}
+      </div>
+      <ObjectifXp etat={xp.jour} />
+      {serie && <SemaineDeSerie serie={serie} />}
+      {/* Une phrase seulement quand la cohorte est assez grande ET que l'élève est dans la moitié
+          haute (voir quiz.classement) : un effort comparé à celui des autres, jamais un niveau, et
+          jamais un mot pour qui est en dessous. */}
+      {classement?.bande && (
+        <p className="flex items-center gap-2 rounded-xl bg-gold/10 px-3 py-2 text-sm font-medium sm:col-span-3">
+          <Trophy className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
+          {classement.bande === "quart"
+            ? "Cette semaine, tu fais partie du quart des candidats de ton examen qui ont le plus travaillé."
+            : "Cette semaine, tu as plus travaillé que la moitié des candidats de ton examen."}
+        </p>
+      )}
+      <div className="sm:col-span-3">
+        <Button variant="outline" size="sm" onClick={partager} disabled={partage || !user} className="rounded-full">
+          <Share2 />
+          Partager mon score
+        </Button>
+      </div>
+    </section>
   )
 }
 
@@ -283,6 +366,14 @@ export function QuizResultPage() {
           </div>
         </div>
       </div>
+
+      {result.xp && (
+        <BilanXp
+          xp={result.xp} serie={result.serie} classement={result.classement}
+          score={result.score} total={result.questions_repondues}
+        />
+      )}
+      {result.xp && <InvitePush className="mb-6" />}
 
       {/* Le diagnostic ouvre sur ses priorités : c'est ce que l'élève venait chercher. */}
       {diagnostic && <PrioritesExamen cursusId={result.cursus} className="mb-6" />}

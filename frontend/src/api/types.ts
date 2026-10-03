@@ -34,6 +34,9 @@ export interface User {
   rappels_actifs: boolean
   // L'élève a écarté l'invitation à les activer : on ne la lui représente plus.
   rappels_invite_refusee: boolean
+  // Bilan de la semaine envoyé chaque dimanche au titulaire du compte (voir
+  // relances.bilan_parent) : même règle d'e-mail confirmé, et réservé au mode parent.
+  bilan_parent_actif: boolean
   // L'enfant actif pour cette requête (voir users.profils.profil_actif) - jamais null
   // pour un compte normalement créé, voir sa docstring côté backend.
   profil_actif: Profil
@@ -118,6 +121,7 @@ export interface PlanDuJour {
   seance: Seance | null
   // Absent quand aucun cursus n'est déclaré : il n'y a alors pas de semaine à compter.
   seances_cette_semaine?: number
+  xp?: EtatXp
   // Voir quiz.models.ObjectifMatiere : la matière que l'élève a choisie pour la semaine.
   objectif_matiere?: ObjectifMatiereChoisi | null
   // Matières qu'on peut choisir (celles qui ont un quiz sur ce cursus).
@@ -133,6 +137,23 @@ export interface SerieDeJours {
   actif_aujourdhui: boolean
   // Un jour de repos a été pardonné dans les 7 derniers jours.
   repos_pris: boolean
+  // La semaine civile en cours, lundi à dimanche (voir quiz.serie.semaine_courante).
+  semaine?: JourDeSemaine[]
+}
+
+export interface JourDeSemaine {
+  // AAAA-MM-JJ, jour local.
+  date: string
+  fait: boolean
+  aujourdhui: boolean
+}
+
+/** Voir quiz.xp : où en est le profil aujourd'hui. L'XP récompense la maîtrise, pas le volume. */
+export interface EtatXp {
+  xp: number
+  objectif: number
+  atteint: boolean
+  objectifs_possibles: number[]
 }
 
 /** Voir relances.views.paiement_a_reprendre_view. */
@@ -744,6 +765,8 @@ export interface QuizAnswerInfo {
   reponse_choisie: string
   resultat_declare: string
   est_correcte: boolean
+  // Points d'XP gagnés par cette réponse : 0 si fausse, déjà créditée ou plafonnée.
+  xp_gagne?: number
 }
 
 export interface QuizQuestion {
@@ -773,6 +796,10 @@ export interface QuizQuestion {
   corrige_markdown?: string
   reponse_correcte?: string
   reponse?: QuizAnswerInfo
+  // Seulement dans la réponse à l'envoi d'une réponse (voir quiz.views.answer_question).
+  xp_jour?: EtatXp
+  // Cette réponse est celle qui a fait franchir l'objectif du jour.
+  objectif_atteint_maintenant?: boolean
 }
 
 export interface QuizSession {
@@ -784,6 +811,7 @@ export interface QuizSession {
   started_at: string
   completed_at: string | null
   total_questions: number
+  xp_jour?: EtatXp
   questions: QuizQuestion[]
 }
 
@@ -826,6 +854,13 @@ export interface QuizResult {
   mode: ModeQuiz
   // Questions ratées qu'on peut re-proposer telles quelles (voir refaireLesRatees).
   nb_ratees: number
+  // Ce que ce quiz a rapporté (réponses + bonus de séance) et où en est la journée.
+  xp?: { session: { reponses: number; seance: number; total: number }; jour: EtatXp }
+  // La série de jours et sa semaine, pour l'écran de fin (voir quiz.serie).
+  serie?: SerieDeJours
+  // Où se situe l'élève parmi les candidats de son cursus cette semaine (voir quiz.classement) :
+  // une bande, jamais un rang. `bande` est null presque tout le temps, c'est voulu.
+  classement?: { disponible: boolean; bande: "quart" | "moitie" | null }
 }
 
 export interface QuizFichePdfStatus {

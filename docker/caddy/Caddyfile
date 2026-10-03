@@ -15,7 +15,7 @@
     # Point d'entrée de l'app et service worker : jamais servis depuis un cache sans
     # revalidation, sinon une nouvelle version ne parviendrait plus aux visiteurs qui ont
     # déjà l'ancienne (incident qui avait fait désactiver la PWA, voir frontend/src/main.tsx).
-    @points_d_entree path / /index.html /sw.js /registerSW.js /manifest.webmanifest
+    @points_d_entree path / /index.html /sw.js /push-sw.js /registerSW.js /manifest.webmanifest
     header @points_d_entree Cache-Control "no-cache"
 
     handle_path /static/* {
@@ -46,11 +46,12 @@
     # /whatsapp* sans cette subtilité : contrairement à /quiz, /inedit, /fiches, le
     # frontend n'a AUCUNE page sous ce mot (l'opt-in vit dans /compte) - rien à
     # distinguer, tout /whatsapp* va à Django.
+    # /quiz/xp* (objectif d'XP du jour) est une API aussi, ajoutée avec les trois suivantes.
     # /quiz/accueil*, /quiz/priorites*, /quiz/bilan-periode* : trois routes d'API de
     # quiz/urls.py qui manquaient à cette liste - Caddy répondait 405 (fichier
     # statique, GET/HEAD seulement) à leur preflight CORS depuis le serveur de dev, et
     # servait index.html en prod. Toute nouvelle route sous /quiz/ doit être ajoutée ici.
-    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /simulations* /sitemap.xml /sitemap-*.xml
+    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /quiz/xp* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /simulations* /sitemap.xml /sitemap-*.xml
     handle @backend {
         reverse_proxy backend:8000
     }
