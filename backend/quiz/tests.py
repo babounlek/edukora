@@ -2319,6 +2319,44 @@ class ConstruireParcoursBranchesToFrequenceForStemSubjectsTests(TestCase):
         self.assertEqual(matiere["total"], 1)
 
 
+class ParcoursInformatiqueParThemeTests(TestCase):
+    """INFORMATIQUE (tronc commun, tous cursus) suit le classement des thèmes quand le
+    corpus d'épreuves officielles est assez fourni, et retombe sur le Module→Savoir
+    sinon (les Probatoire n'ont que 1 à 4 épreuves)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200031", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="INFORMATIQUE")
+        self.bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        module = Module.objects.create(subject=self.subject, classe="3e", serie_label="", numero="301", titre="M")
+        module.cursus.add(self.bepc)
+        Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
+
+    def test_informatique_is_in_the_theme_mode_set(self):
+        self.assertIn("INFORMATIQUE", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+
+    def test_bepc_switches_to_theme_mode_with_enough_official_exams(self):
+        tag = Tag.objects.create(name="algorithmique-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Informatique BEPC {i}", [[tag]])
+
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+
+        self.assertEqual(len(parcours), 1)
+        self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "algorithmique-test")
+        self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
+
+    def test_a_cursus_with_few_exams_falls_back_to_module_savoir(self):
+        tag = Tag.objects.create(name="algorithmique-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Informatique BEPC {i}", [[tag]])
+
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+
+        self.assertEqual(parcours[0]["titre"], "M")
+
+
 class ParcoursApiTests(TestCase):
     """GET /quiz/parcours/ (quiz.views.parcours)."""
 

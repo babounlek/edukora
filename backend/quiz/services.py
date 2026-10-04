@@ -39,6 +39,11 @@ SUBJECTS_PARCOURS_PAR_FREQUENCE = {
     "MATHS", "PHYSIQUE", "CHIMIE", "SVT", "PHYSIQUE_CHIMIE", "PHYSIQUE_CHIMIE_TECH",
     # Filière technique (TI) : signal de fréquence traité comme pour les sciences.
     "PROGRAMMATION", "SYSTEMES_INFORMATION", "RESEAUX_SECURITE",
+    # Informatique (tronc commun) : le programme officiel (15 savoirs au BEPC) ignore les
+    # thèmes les plus tombés (algorithmique : 9 épreuves officielles BEPC sur 9). Régime
+    # normal (épreuves officielles, seuil SEUIL_MINIMUM_THEMES_PARCOURS) : BEPC, BAC A/C/D/E
+    # passent en mode thème ; les Probatoire (1 à 4 épreuves) restent en Module→Savoir.
+    "INFORMATIQUE",
 }
 
 # En dessous, le signal de fréquence n'est pas fiable - même seuil et même
