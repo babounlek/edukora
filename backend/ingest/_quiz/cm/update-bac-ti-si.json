@@ -1,0 +1,100 @@
+[
+  {
+    "external_id": "cqc-update-bac-ti-si-faible-0",
+    "theme": "UPDATE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Les ordinateurs d'un laboratoire du lycée technique de Garoua figurent dans la table `Machine` (la colonne `code` est la clé primaire) :\n\n| code | salle | etat |\n|---|---|---|\n| PC03 | Salle A | disponible |\n| PC05 | Salle A | en panne |\n| PC07 | Salle B | en panne |\n| PC09 | Salle B | disponible |\n\nLe poste PC07 vient d'être réparé : son état doit devenir « disponible », sans qu'aucune autre ligne soit modifiée. Quelle requête réalise cette mise à jour ?",
+    "corrige_markdown": "### Rappel de méthode\nPour changer des valeurs déjà enregistrées, on écrit le nom de la table après `UPDATE`, la ou les affectations après `SET`, puis la clause `WHERE` qui désigne les lignes à toucher ; si cette clause est absente, la modification s'étend à la table entière, et ces trois mots-clés doivent apparaître dans cet ordre.\n\n### Corrigé\nLa mise à jour vise une seule machine, PC07, que son code identifie : il faut donc `SET etat = 'disponible'` suivi de `WHERE code = 'PC07'`.\n\n- `UPDATE Machine SET etat = 'disponible';` n'a pas de `WHERE` : les quatre lignes recevraient l'état « disponible », y compris PC05 qui est toujours en panne.\n- `UPDATE Machine WHERE ... SET ...` place `WHERE` avant `SET` : l'ordre des clauses n'est pas respecté et le SGBD signale une erreur de syntaxe.\n- `INSERT INTO Machine ...` ne modifie rien : elle tente de créer une nouvelle ligne et, comme le code PC07 existe déjà, la clé primaire en double fait refuser la requête.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`UPDATE Machine SET etat = 'disponible';`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`UPDATE Machine WHERE code = 'PC07' SET etat = 'disponible';`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`UPDATE Machine SET etat = 'disponible' WHERE code = 'PC07';`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`INSERT INTO Machine (code, etat) VALUES ('PC07', 'disponible');`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      11241
+    ]
+  },
+  {
+    "external_id": "cqc-update-bac-ti-si-moyenne-1",
+    "theme": "UPDATE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une quincaillerie de Bafoussam range ses tarifs dans la table `Article` (la colonne `prix` est numérique, en F CFA) :\n\n| ref | libelle | prix |\n|---|---|---|\n| A1 | Marteau | 2000 |\n| A2 | Pince | 1500 |\n| A3 | Perceuse | 8000 |\n| A4 | Tournevis | 1000 |\n| A5 | Scie | 3000 |\n\nLe gérant exécute la requête suivante :\n\n```sql\nUPDATE Article\nSET prix = prix * 1.1\nWHERE prix > 2000;\n```\n\nQuelle est la somme des cinq prix après l'exécution de cette requête ?",
+    "corrige_markdown": "### Rappel de méthode\nDans un `UPDATE`, l'expression écrite après `SET` est calculée ligne par ligne à partir de la valeur actuelle de la colonne, mais seulement pour les lignes que retient la clause `WHERE` ; les autres lignes gardent leur valeur. Une comparaison stricte (`>`) écarte la ligne dont la valeur est égale au seuil.\n\n### Corrigé\nLa condition `prix > 2000` retient les articles dont le prix dépasse strictement 2000 F CFA : la perceuse (8000) et la scie (3000). Le marteau, à 2000 exactement, n'est pas retenu.\n\n| ref | libelle | prix avant | prix après |\n|---|---|---|---|\n| A1 | Marteau | 2000 | 2000 |\n| A2 | Pince | 1500 | 1500 |\n| A3 | Perceuse | 8000 | 8800 |\n| A4 | Tournevis | 1000 | 1000 |\n| A5 | Scie | 3000 | 3300 |\n\nSomme : $2000 + 1500 + 8800 + 1000 + 3300 = 16600$ F CFA.\n\nLes autres sommes proviennent d'une mauvaise lecture de la requête :\n\n- 16 800 F CFA : le seuil serait lu comme `>=` et le marteau passerait à 2200, alors que `>` exclut la valeur 2000.\n- 17 050 F CFA : la clause `WHERE` serait ignorée et les cinq prix augmenteraient de 10 %.\n- 15 750 F CFA : la condition serait inversée (prix inférieurs à 2000), ce qui augmenterait la pince et le tournevis au lieu de la perceuse et de la scie.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "16 600 F CFA"
+      },
+      {
+        "lettre": "B",
+        "texte": "16 800 F CFA"
+      },
+      {
+        "lettre": "C",
+        "texte": "17 050 F CFA"
+      },
+      {
+        "lettre": "D",
+        "texte": "15 750 F CFA"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10720
+    ]
+  },
+  {
+    "external_id": "cqc-update-bac-ti-si-elevee-2",
+    "theme": "UPDATE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un cybercafé de Bafoussam enregistre ses abonnés dans la table `Abonne` (la colonne `credit` donne les minutes de connexion restantes) :\n\n| id | nom | forfait | credit |\n|---|---|---|---|\n| 1 | Aïcha | standard | 120 |\n| 2 | Boris | premium | 300 |\n| 3 | Chantal | standard | 0 |\n| 4 | Dieudonné | premium | 45 |\n| 5 | Estelle | standard | 80 |\n\nLe gérant offre un bonus aux abonnés premium, fait passer au forfait premium les abonnés qui ont au moins 100 minutes, puis retire les comptes vides. Il exécute, dans cet ordre, les trois requêtes suivantes, chacune s'appliquant à la table telle que la précédente l'a laissée :\n\n```sql\n-- R1\nUPDATE Abonne SET credit = credit + 60 WHERE forfait = 'premium';\n-- R2\nUPDATE Abonne SET forfait = 'premium' WHERE credit >= 100;\n-- R3\nDELETE FROM Abonne WHERE credit = 0;\n```\n\n1. Donner, pour chacune des trois requêtes, le nombre de lignes qui vérifient la condition du `WHERE`, puis le contenu final de la table.\n2. Si le gérant avait oublié le `WHERE` dans R1 (`UPDATE Abonne SET credit = credit + 60;`), indiquer le nombre de lignes modifiées et la somme des crédits de la table juste après cette requête.\n3. Si le `WHERE` avait été oublié dans R3 (`DELETE FROM Abonne;`), décrire l'état de la table, puis expliquer en quoi `DROP TABLE Abonne;` donnerait un résultat différent.\n4. Vérification : calculer la somme des crédits de la table finale de deux façons, d'abord en additionnant ses lignes, ensuite à partir de la somme initiale des crédits et des seules modifications de crédit, puis comparer les deux résultats.",
+    "corrige_markdown": "### Rappel de méthode\nChaque requête de modification s'exécute sur l'état laissé par la précédente et ne touche que les lignes retenues par son `WHERE` ; `DELETE` agit sur le contenu d'une table (ses lignes), alors que `DROP` agit sur la table entière (sa structure comprise).\n\n### Corrigé\n**Question 1.**\n\n- R1 : `forfait = 'premium'` retient Boris et Dieudonné, soit **2 lignes** ; leurs crédits deviennent 300 + 60 = 360 et 45 + 60 = 105.\n- R2 : elle s'applique à la table modifiée par R1 ; `credit >= 100` retient Aïcha (120), Boris (360) et Dieudonné (105), soit **3 lignes**. Boris et Dieudonné sont déjà premium : seul le forfait d'Aïcha change réellement.\n- R3 : `credit = 0` retient Chantal seule, soit **1 ligne** supprimée.\n\nTable finale :\n\n| id | nom | forfait | credit |\n|---|---|---|---|\n| 1 | Aïcha | premium | 120 |\n| 2 | Boris | premium | 360 |\n| 4 | Dieudonné | premium | 105 |\n| 5 | Estelle | standard | 80 |\n\n**Question 2.** Sans `WHERE`, **les 5 lignes** sont modifiées au lieu de 2 : Aïcha, Chantal et Estelle, qui ne sont pas premium, recevraient aussi 60 minutes. La somme initiale des crédits vaut 120 + 300 + 0 + 45 + 80 = 545, d'où une somme de $545 + 5 \\times 60 = 845$ minutes, alors que la requête voulue donne 545 + 2 × 60 = 665.\n\n**Question 3.** `DELETE FROM Abonne;` supprime **toutes** les lignes : la table existe toujours avec ses quatre colonnes (`id`, `nom`, `forfait`, `credit`), mais elle ne contient plus aucun abonné et on peut y réinsérer des lignes. `DROP TABLE Abonne;` supprime la table elle-même, structure comprise : toute requête ultérieure sur `Abonne` provoquerait une erreur de table inconnue, alors qu'avec `DELETE` elle renverrait simplement un résultat vide.\n\n**Question 4.** Première façon : somme de la table finale = 120 + 360 + 105 + 80 = **665**. Seconde façon : la somme initiale vaut 545 ; R1 ajoute 60 à deux lignes, soit + 120 ; R2 ne modifie aucun crédit ; R3 retire Chantal dont le crédit est nul, soit + 0 ; on obtient 545 + 120 + 0 = **665**. Les deux résultats concordent, ce qui confirme le contenu de la table finale.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11232,
+      11241
+    ]
+  }
+]

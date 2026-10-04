@@ -1,0 +1,84 @@
+[
+  {
+    "external_id": "cqc-order-by-bac-ti-si-faible-0",
+    "theme": "ORDER BY",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le centre de documentation d'un lycée de Douala enregistre ses ouvrages dans la table `Livre` :\n\n| titre | auteur | annee |\n|---|---|---|\n| Algorithmique pratique | Mvondo | 2015 |\n| Réseaux pour tous | Kamga | 2021 |\n| Initiation à PHP | Tala | 2018 |\n| Bases de données | Essomba | 2009 |\n\nLa documentaliste veut afficher les titres, du livre le plus récent au livre le plus ancien. Quelle requête convient ?",
+    "corrige_markdown": "### Rappel de méthode\n`ORDER BY` classe les lignes du résultat selon la colonne qui le suit : le tri est croissant lorsqu'on n'écrit rien (ou `ASC`) et décroissant avec `DESC`, mot-clé placé après le nom de la colonne. La colonne de tri est celle dont les valeurs servent à classer, pas forcément celle que la requête affiche.\n\n### Corrigé\nLe classement se fait sur l'année, du plus grand nombre au plus petit : `ORDER BY annee DESC`. Le résultat est alors : Réseaux pour tous (2021), Initiation à PHP (2018), Algorithmique pratique (2015), Bases de données (2009).\n\n- `ORDER BY annee` sans `DESC` trie dans l'ordre croissant : les livres sortiraient du plus ancien au plus récent, c'est-à-dire à l'envers.\n- `ORDER BY titre DESC` trie sur le titre et non sur l'année : on obtiendrait l'ordre alphabétique inversé (Réseaux pour tous, Initiation à PHP, Bases de données, Algorithmique pratique), dont seuls les deux premiers titres coïncident par hasard avec le bon résultat.\n- `ORDER BY DESC annee` écrit `DESC` avant la colonne : la syntaxe est invalide et le SGBD refuse la requête.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`SELECT titre FROM Livre ORDER BY annee;`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`SELECT titre FROM Livre ORDER BY titre DESC;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`SELECT titre FROM Livre ORDER BY DESC annee;`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`SELECT titre FROM Livre ORDER BY annee DESC;`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      11241
+    ]
+  },
+  {
+    "external_id": "cqc-order-by-bac-ti-si-moyenne-1",
+    "theme": "ORDER BY",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "À la fin d'une journée d'un championnat de football amateur, le comité classe les équipes grâce à la table `Classement` (`pts` : points, `diff` : différence de buts) :\n\n| equipe | pts | diff |\n|---|---|---|\n| Etoile de Kribi | 18 | 7 |\n| Union de Foumban | 21 | 5 |\n| Racing de Limbé | 18 | 9 |\n| Sporting de Bertoua | 15 | 2 |\n| Panthère de Ngaoundéré | 21 | 11 |\n\nOn exécute la requête suivante :\n\n```sql\nSELECT equipe, pts, diff\nFROM Classement\nORDER BY pts DESC, diff DESC;\n```\n\n1. Donner le résultat de cette requête, ligne par ligne.\n2. Expliquer le rôle de `diff DESC` dans cette requête.\n3. La dernière ligne de la requête devient `ORDER BY diff DESC, pts DESC;`. Donner l'ordre dans lequel les cinq équipes s'affichent, puis expliquer pourquoi il diffère de celui de la question 1.",
+    "corrige_markdown": "### Rappel de méthode\n`ORDER BY` accepte plusieurs colonnes séparées par des virgules : les lignes sont d'abord classées d'après la première colonne, et la suivante ne sert qu'à départager les lignes dont la valeur précédente est identique ; chaque colonne a son propre sens de tri (`ASC` par défaut, `DESC` à préciser).\n\n### Corrigé\n**Question 1.** Le tri porte d'abord sur `pts` décroissant, puis sur `diff` décroissant pour les égalités :\n\n| equipe | pts | diff |\n|---|---|---|\n| Panthère de Ngaoundéré | 21 | 11 |\n| Union de Foumban | 21 | 5 |\n| Racing de Limbé | 18 | 9 |\n| Etoile de Kribi | 18 | 7 |\n| Sporting de Bertoua | 15 | 2 |\n\nDeux paires d'équipes ont le même nombre de points : 21 pour Panthère et Union, 18 pour Racing et Etoile.\n\n**Question 2.** `diff DESC` n'intervient que lorsque deux équipes ont les mêmes points : il départage Panthère (11) et Union (5), puis Racing (9) et Etoile (7), en plaçant d'abord la meilleure différence de buts. Sans lui, la requête ne garantirait pas l'ordre de ces équipes à égalité de points.\n\n**Question 3.** Avec `ORDER BY diff DESC, pts DESC`, le critère principal devient la différence de buts : Panthère (11), Racing (9), Etoile (7), Union (5), Sporting (2). Les cinq différences étant toutes distinctes, la seconde colonne ne départage rien. L'ordre diffère de celui de la question 1 parce que la première colonne citée domine : Union, avec 21 points mais une différence de 5, passe de la 2e à la 4e place.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10570,
+      11241
+    ]
+  },
+  {
+    "external_id": "cqc-order-by-bac-ti-si-elevee-2",
+    "theme": "ORDER BY",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un institut de formation de Douala classe les candidats à un concours d'entrée grâce à la table `Candidat` (la colonne `code` est de type texte, la colonne `note` est un entier sur 20) :\n\n| code | nom | ville | note |\n|---|---|---|---|\n| C10 | Mballa | Douala | 14 |\n| C2 | Tchoua | Garoua | 16 |\n| C30 | Abega | Douala | 14 |\n| C4 | Nkoulou | Bafoussam | 12 |\n| C5 | Fotso | Douala | 16 |\n| C6 | Ngono | Garoua | 14 |\n\n1. Donner le résultat de la requête suivante :\n\n```sql\nSELECT nom, note\nFROM Candidat\nWHERE ville = 'Douala'\nORDER BY note DESC, nom ASC;\n```\n\n2. Un stagiaire écrit `SELECT nom FROM Candidat ORDER BY note DESC WHERE ville = 'Douala';`. Indiquer si cette requête est acceptée et justifier.\n3. Donner le résultat de `SELECT code FROM Candidat ORDER BY code;`, puis expliquer pourquoi `C2` s'affiche après `C10` alors que 2 est plus petit que 10.\n4. Écrire la requête qui affiche le nom et la note des trois meilleurs candidats, puis donner son résultat et préciser le rôle de la colonne `nom` dans le tri.\n5. Vérification : contrôler que le résultat de la question 1 compte autant de lignes que de candidats de Douala dans la table et que ses notes se suivent dans l'ordre décroissant ; contrôler ensuite que le résultat de la question 4 contient bien trois lignes et déterminer, parmi les candidats ayant 14, celui qui occupe la troisième place.",
+    "corrige_markdown": "### Rappel de méthode\nUne requête `SELECT` suit l'ordre `FROM`, `WHERE`, `ORDER BY`, `LIMIT` : on filtre d'abord, on trie ensuite, puis on garde les premières lignes. Un texte se trie caractère par caractère, de gauche à droite, même s'il contient des chiffres, alors qu'un nombre se trie selon sa valeur ; sur plusieurs colonnes, la suivante ne départage que les égalités de la précédente.\n\n### Corrigé\n**Question 1.** `WHERE` retient les candidats de Douala (Mballa 14, Abega 14, Fotso 16), puis `ORDER BY` les trie par note décroissante et, à note égale, par nom dans l'ordre alphabétique :\n\n| nom | note |\n|---|---|\n| Fotso | 16 |\n| Abega | 14 |\n| Mballa | 14 |\n\n**Question 2.** La requête est refusée avec une erreur de syntaxe : `ORDER BY` doit se placer après `WHERE`, en fin de requête (seul `LIMIT` peut le suivre).\n\n**Question 3.** Le résultat est : C10, C2, C30, C4, C5, C6. La colonne `code` est un texte : la comparaison se fait caractère par caractère. `C10` et `C2` commencent tous deux par `C`, puis `1` est inférieur à `2` : `C10` précède `C2`, sans que les valeurs 10 et 2 soient comparées. Pour la même raison, `C2` précède `C30` (car `2` est inférieur à `3`).\n\n**Question 4.**\n\n```sql\nSELECT nom, note\nFROM Candidat\nORDER BY note DESC, nom ASC\nLIMIT 3;\n```\n\nRésultat : Fotso (16), Tchoua (16), Abega (14). Les deux notes de 16 occupent les deux premières places, Fotso avant Tchoua par ordre alphabétique. Trois candidats ont 14 (Abega, Mballa, Ngono) pour une seule place restante : sans la colonne `nom`, la requête ne dit pas lequel est retenu ; avec `nom ASC`, le choix est fixé en faveur du premier dans l'ordre alphabétique.\n\n**Question 5.** Question 1 : le résultat compte 3 lignes, autant que de candidats de Douala dans la table (C10, C30 et C5), et les notes 16, 14, 14 se suivent dans l'ordre décroissant au sens large. Question 4 : le résultat compte bien 3 lignes ; parmi les candidats ayant 14, l'ordre alphabétique Abega, Mballa, Ngono place Abega en premier, c'est donc lui qui occupe la troisième place, ce qui est conforme au résultat donné.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10570,
+      11241
+    ]
+  }
+]

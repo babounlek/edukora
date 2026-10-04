@@ -1,0 +1,69 @@
+[
+  {
+    "external_id": "cqc-commutateur-bac-ti-si-faible-0",
+    "theme": "commutateur",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un cybercafé de Bafoussam est relié au réseau de son fournisseur d'accès par une ligne dont les signaux n'ont pas la même forme que ceux produits par les ordinateurs. À l'envoi, les données numériques doivent être transformées en signaux adaptés à la ligne ; à la réception, la transformation inverse doit être faite.\n\nQuel équipement réalise cette double transformation ?",
+    "corrige_markdown": "### Rappel de méthode\nPour identifier un équipement réseau, on se demande ce qu'il fait subir aux données : adapter la nature du signal à la ligne qui le transporte, régénérer ce signal pour l'envoyer plus loin, ou le distribuer entre des machines d'un même réseau local. On retient celui dont la fonction correspond exactement à l'opération décrite.\n\n### Corrigé\nL'énoncé décrit une transformation du signal dans les deux sens (du numérique vers le signal de ligne à l'émission, du signal de ligne vers le numérique à la réception) : c'est la fonction du **modem**, dont le nom associe les deux opérations, la modulation à l'envoi et la démodulation à la réception.\n\n- **Le concentrateur (hub)** : faux. Il recopie chaque trame sur tous ses ports à l'intérieur d'un réseau local ; il ne change pas la nature du signal et ne se raccorde pas à une ligne d'opérateur.\n- **Le commutateur (switch)** : faux. Il oriente chaque trame vers le seul port du destinataire d'après les adresses MAC ; il relie des machines d'un même réseau local mais ne transforme pas le signal.\n- **Le répéteur de signal** : faux. Il amplifie ou régénère un signal pour allonger la distance parcourue, mais le signal a la même nature en sortie qu'en entrée.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "Le concentrateur (hub)" },
+      { "lettre": "B", "texte": "Le modem" },
+      { "lettre": "C", "texte": "Le commutateur (switch)" },
+      { "lettre": "D", "texte": "Le répéteur de signal" }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10583]
+  },
+  {
+    "external_id": "cqc-commutateur-bac-ti-si-moyenne-1",
+    "theme": "commutateur",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le technicien d'un atelier de dépannage de Douala exécute `ipconfig /all` sur un ordinateur de bureau et obtient l'extrait suivant :\n\n```text\nCarte Ethernet Ethernet :\n\n   État du média. . . . . . . . . . . . : Média déconnecté\n   Description. . . . . . . . . . . . . : Contrôleur Ethernet intégré\n   Adresse physique . . . . . . . . . . : 3C-97-0E-5A-12-F4\n\nCarte Ethernet Ethernet 2 :\n\n   Description. . . . . . . . . . . . . : Carte réseau PCI Gigabit\n   Adresse physique . . . . . . . . . . : 00-E0-4C-68-9B-21\n   Adresse IPv4 . . . . . . . . . . . . : 192.168.12.40\n\nCarte réseau sans fil Wi-Fi :\n\n   Description. . . . . . . . . . . . . : Adaptateur Wi-Fi 802.11n\n   Adresse physique . . . . . . . . . . : A4-C3-F0-7D-55-2E\n   Adresse IPv4 . . . . . . . . . . . . : 192.168.12.77\n```\n\nOn admet que chaque bloc « Carte ... » correspond à une interface réseau distincte de l'ordinateur et qu'une interface est raccordée à un réseau lorsqu'elle a reçu une adresse IPv4.\n\nCombien d'interfaces réseau l'ordinateur possède-t-il, et combien sont raccordées à un réseau ?",
+    "corrige_markdown": "### Rappel de méthode\nLa commande `ipconfig /all` consacre un bloc distinct à chaque carte installée, qu'elle soit câblée ou radio, avec une adresse physique qui lui est propre. Pour compter les cartes, on dénombre les blocs ; pour savoir lesquelles sont raccordées, on repère celles qui portent une adresse IP.\n\n### Corrigé\nL'extrait contient trois blocs : « Carte Ethernet Ethernet », « Carte Ethernet Ethernet 2 » et « Carte réseau sans fil Wi-Fi ». Les trois adresses physiques sont différentes (`3C-97-0E-5A-12-F4`, `00-E0-4C-68-9B-21`, `A4-C3-F0-7D-55-2E`), ce qui confirme trois cartes distinctes : l'ordinateur possède **3 interfaces réseau**.\n\nSeuls les deux derniers blocs portent une adresse IPv4 (`192.168.12.40` et `192.168.12.77`). Le premier indique « Média déconnecté » et n'a aucune adresse : la carte existe, mais elle n'est branchée à aucun réseau. **2 interfaces** sont donc raccordées.\n\n- **2 interfaces, dont 2 raccordées** : faux. Cette réponse ne compte que les blocs munis d'une adresse et oublie que la carte déconnectée est bel et bien présente dans la machine.\n- **3 interfaces, dont 3 raccordées** : faux. Le décompte des blocs est juste, mais « Média déconnecté » et l'absence d'adresse IPv4 montrent que la première carte n'est raccordée à rien.\n- **2 interfaces, dont 1 raccordée** : faux. Cette réponse ne compte que les deux blocs « Ethernet » et oublie la carte sans fil, pourtant raccordée avec l'adresse `192.168.12.77`.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "2 interfaces, dont 2 raccordées" },
+      { "lettre": "B", "texte": "3 interfaces, dont 3 raccordées" },
+      { "lettre": "C", "texte": "3 interfaces, dont 2 raccordées" },
+      { "lettre": "D", "texte": "2 interfaces, dont 1 raccordée" }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11233]
+  },
+  {
+    "external_id": "cqc-commutateur-bac-ti-si-elevee-2",
+    "theme": "commutateur",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans la salle de travaux pratiques d'un lycée technique de Garoua, quatre équipements sont branchés sur un commutateur à quatre ports. Le commutateur vient d'être mis sous tension : sa table d'adresses MAC est vide. L'équipement du port 4 est une passerelle qui relie le réseau de la salle à Internet.\n\n| Port | Équipement | Adresse MAC |\n|---|---|---|\n| 1 | Poste A | `00-1C-23-5A-10-A1` |\n| 2 | Poste B | `00-1C-23-5A-10-B2` |\n| 3 | Poste C | `00-1C-23-5A-10-C3` |\n| 4 | Passerelle G | `00-1C-23-5A-10-D4` |\n\nOn admet que le commutateur apprend l'adresse MAC source de chaque trame reçue en l'associant au port d'arrivée, qu'il envoie une trame dont la destination est connue uniquement vers le port correspondant, et qu'il l'envoie vers tous les ports sauf celui d'arrivée lorsque la destination est inconnue. Quatre trames arrivent successivement :\n\n| Trame | Source | Destination |\n|---|---|---|\n| T1 | A | B |\n| T2 | B | A |\n| T3 | C | B |\n| T4 | A | C |\n\n1. Définir le rôle de la table d'adresses MAC d'un commutateur, puis dire quel est le rôle de la passerelle G dans ce réseau.\n2. Donner le contenu de la table après chacune des quatre trames, puis, pour chaque trame, les ports par lesquels le commutateur la réémet.\n3. Calculer le nombre total de copies de trames émises par le commutateur pour T1 à T4, puis le nombre qu'émettrait un concentrateur à quatre ports (qui réémet chaque trame sur tous les ports sauf celui d'arrivée). Calculer enfin, dans chaque cas, le nombre de copies reçues par un équipement qui n'est pas le destinataire de la trame.\n4. Vérification : une trame T5, de source A et de destination G, arrive alors que G n'a encore rien émis. Indiquer les ports de sortie du commutateur et justifier que ce résultat confirme la règle utilisée à la question 2.",
+    "corrige_markdown": "### Rappel de méthode\nUn commutateur remplit sa table en associant l'adresse MAC source de chaque trame au port d'arrivée. Pour réémettre une trame, il cherche l'adresse MAC de destination : connue, elle impose un seul port de sortie ; inconnue, la trame part sur tous les ports sauf celui d'arrivée. Un concentrateur, sans table, réémet toujours sur tous les autres ports.\n\n### Corrigé\n**1.** La table d'adresses MAC associe chaque adresse apprise au port par lequel on atteint l'équipement ; elle permet d'envoyer une trame au seul port du destinataire au lieu de l'envoyer partout. La passerelle G relie le réseau local de la salle à un autre réseau, ici Internet : les trames destinées à l'extérieur du réseau local passent par elle.\n\n**2.** Contenu de la table et ports de sortie :\n\n| Trame | Adresse apprise | Table après la trame | Destination connue ? | Ports de sortie |\n|---|---|---|---|---|\n| T1 (A → B) | A sur le port 1 | A → 1 | Non (B inconnue) | 2, 3, 4 |\n| T2 (B → A) | B sur le port 2 | A → 1 ; B → 2 | Oui (A, port 1) | 1 |\n| T3 (C → B) | C sur le port 3 | A → 1 ; B → 2 ; C → 3 | Oui (B, port 2) | 2 |\n| T4 (A → C) | A déjà connue | A → 1 ; B → 2 ; C → 3 | Oui (C, port 3) | 3 |\n\n**3.** Copies émises par le commutateur : $3 + 1 + 1 + 1 = 6$ copies (seule T1 est envoyée sur plusieurs ports).\n\nCopies émises par un concentrateur à quatre ports : $4 \\times 3 = 12$ copies, car chaque trame est réémise sur les trois autres ports.\n\nCopies reçues par un non-destinataire : avec le commutateur, uniquement pour T1, que reçoivent C et G sans en avoir besoin, soit **2 copies** ; avec le concentrateur, deux équipements non concernés reçoivent chaque trame, soit $4 \\times 2 = 8$ copies.\n\n**4.** A est connue (port 1), mais G n'a jamais émis de trame : son adresse n'est pas dans la table. La trame T5 est donc envoyée sur tous les ports sauf le port 1, c'est-à-dire sur les **ports 2, 3 et 4** (3 copies). C'est exactement le comportement observé pour T1, dont la destination B était inconnue : le commutateur n'économise des copies que lorsqu'il a déjà appris l'adresse du destinataire. Dès que G répondra, le commutateur apprendra son adresse sur le port 4 et enverra les trames suivantes vers G sur ce seul port.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10583]
+  }
+]

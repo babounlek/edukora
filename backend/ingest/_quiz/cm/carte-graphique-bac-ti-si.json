@@ -1,0 +1,76 @@
+[
+  {
+    "external_id": "cqc-carte-graphique-bac-ti-si-faible-0",
+    "theme": "carte graphique",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans un cybercafé de Douala, un technicien explique à un apprenti qu'une carte graphique est équipée d'un GPU (processeur graphique).\n\nQuel est le rôle de ce composant ?",
+    "corrige_markdown": "### Rappel de méthode\nUne carte graphique réunit plusieurs éléments aux rôles distincts : un processeur spécialisé dans les calculs d'image (le GPU), une mémoire dédiée (la mémoire vidéo) qui contient l'image en cours d'affichage, et un convertisseur (le RAMDAC) qui fournit le signal analogique attendu par un écran relié en VGA. Chaque tâche appartient à un élément précis, qu'il ne faut pas attribuer à un autre.\n\n### Corrigé\nLe GPU est le processeur de la carte graphique : il calcule les images à afficher, ce qui soulage le microprocesseur de la carte mère de ces traitements.\n\n- **A** est faux : le microprocesseur de la carte mère reste seul chargé d'exécuter le système d'exploitation et les programmes. Le GPU ne traite que des calculs graphiques.\n- **C** est faux : mémoriser l'image en cours d'affichage est le rôle de la mémoire vidéo, pas celui du GPU.\n- **D** est faux : transformer le signal numérique en signal analogique pour le câble VGA est le rôle du RAMDAC.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Il exécute à la place du microprocesseur toutes les instructions du système d'exploitation"
+      },
+      {
+        "lettre": "B",
+        "texte": "Il calcule les images à afficher, en soulageant le microprocesseur de ces traitements"
+      },
+      {
+        "lettre": "C",
+        "texte": "Il mémorise l'image en cours d'affichage pour que l'écran puisse la relire"
+      },
+      {
+        "lettre": "D",
+        "texte": "Il transforme le signal numérique en signal analogique envoyé au câble VGA"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10584]
+  },
+  {
+    "external_id": "cqc-carte-graphique-bac-ti-si-moyenne-1",
+    "theme": "carte graphique",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le technicien d'un lycée de Bafoussam remet en service un vieux poste dont l'écran à tube cathodique (CRT) est relié à la carte graphique par un câble VGA. La documentation décrit ainsi le trajet de l'image, dans le désordre : le RAMDAC lit l'image dans la mémoire vidéo ; le connecteur VGA reçoit les signaux envoyés à l'écran ; le GPU calcule l'image à partir des données numériques transmises par la carte mère ; la mémoire vidéo conserve l'image calculée.\n\n1. Remettre ces quatre éléments dans l'ordre que suivent les données, du GPU jusqu'au connecteur VGA.\n2. Parmi IDE, SATA, USB et PCI Express, nommer l'interface qui relie la carte graphique à la carte mère.\n3. Indiquer la nature du signal (numérique ou analogique) à l'entrée et à la sortie du RAMDAC, puis expliquer pourquoi cette conversion est nécessaire pour un écran CRT relié en VGA.",
+    "corrige_markdown": "### Rappel de méthode\nDans une carte graphique, l'image suit toujours le même chemin : elle est calculée sous forme numérique, mémorisée, puis convertie en signal analogique juste avant la sortie, car un écran à tube cathodique relié en VGA attend un signal analogique. Le composant qui réalise cette conversion est un convertisseur numérique-analogique, ici le RAMDAC.\n\n### Corrigé\n**1.** Ordre suivi par les données : **GPU → mémoire vidéo → RAMDAC → connecteur VGA** (puis écran). Le GPU calcule l'image, la mémoire vidéo la conserve, le RAMDAC la relit et la convertit, le connecteur VGA envoie le signal à l'écran.\n\n**2.** L'interface qui relie la carte graphique à la carte mère est **PCI Express**. IDE et SATA servent à raccorder les disques et les lecteurs ; USB sert aux périphériques externes.\n\n**3.** À l'entrée du RAMDAC, le signal est **numérique** (les valeurs des pixels stockées dans la mémoire vidéo) ; à sa sortie, il est **analogique** (des tensions qui varient de façon continue). Cette conversion est nécessaire parce qu'un écran CRT relié en VGA attend un signal analogique, alors que l'image est mémorisée sous forme numérique. Sans RAMDAC, l'envoi direct des données numériques à l'écran ne produirait aucune image exploitable.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10584]
+  },
+  {
+    "external_id": "cqc-carte-graphique-bac-ti-si-elevee-2",
+    "theme": "carte graphique",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un lycée technique de Garoua réutilise des postes équipés d'écrans CRT reliés en VGA. La carte graphique d'un poste est réglée sur une définition de **1 280 × 960 pixels** (colonnes × lignes), avec **3 octets par pixel** (couleurs sur 24 bits) et une fréquence de rafraîchissement de **75 Hz** : l'image est relue dans la mémoire vidéo et envoyée à l'écran 75 fois par seconde. On néglige les temps de retour du faisceau d'électrons et on prend 1 Mo = 1 000 000 octets.\n\n1. Nommer le composant de la carte graphique qui relit en permanence la mémoire vidéo pour fournir le signal analogique à l'écran, et expliquer pourquoi cette relecture se répète 75 fois par seconde.\n2. Calculer le nombre de pixels d'une image, puis la taille d'une image en octets.\n3. Calculer le nombre de pixels convertis chaque seconde, puis la quantité de données lues chaque seconde dans la mémoire vidéo, en octets puis en Mo.\n4. Un technicien propose de réduire la fréquence à 60 Hz pour alléger le travail de la carte. Calculer la nouvelle quantité de données lues par seconde et le pourcentage de diminution par rapport à 75 Hz.\n5. Vérifier le résultat de la question 3 par une seconde méthode (à partir de la taille d'une image) et contrôler que le résultat de la question 4 vaut bien 80 % de celui de la question 3.",
+    "corrige_markdown": "### Rappel de méthode\nUn écran CRT reconstitue l'image ligne par ligne avec un faisceau d'électrons et doit la redessiner en permanence : la carte graphique relit donc la mémoire vidéo à chaque rafraîchissement. Le débit de lecture se calcule par : débit = nombre de pixels × octets par pixel × fréquence de rafraîchissement.\n\n### Corrigé\n**1.** Le composant est le **RAMDAC**, qui lit la mémoire vidéo et convertit les pixels en signal analogique. La relecture se répète 75 fois par seconde, même si l'image ne change pas, parce que la lumière émise par la surface d'un écran CRT s'éteint très vite : le faisceau doit balayer de nouveau tout l'écran, sans quoi l'image disparaîtrait.\n\n**2.** Pixels par image : 1 280 × 960 = **1 228 800 pixels**.\nTaille d'une image : 1 228 800 × 3 = **3 686 400 octets**.\n\n**3.** Pixels convertis par seconde : 1 228 800 × 75 = **92 160 000 pixels par seconde**.\nDonnées lues par seconde : 92 160 000 × 3 = 276 480 000 octets par seconde, soit **276,48 Mo par seconde**.\n\n**4.** À 60 Hz : 3 686 400 × 60 = 221 184 000 octets par seconde, soit **221,184 Mo par seconde**.\nDiminution : (276 480 000 − 221 184 000) ÷ 276 480 000 = 55 296 000 ÷ 276 480 000 = 0,2, soit **20 %**.\n\n**5.** Vérification.\n\n- Seconde méthode : taille d'une image × fréquence = 3 686 400 × 75 = 276 480 000 octets par seconde. Ce résultat est identique à celui de la question 3.\n- Cas test : le débit est proportionnel à la fréquence, et 60 ÷ 75 = 0,8. On doit donc trouver 0,8 × 276 480 000 = 221 184 000 octets par seconde, ce qui est bien le résultat de la question 4 : la diminution de 20 % est cohérente.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10584]
+  }
+]

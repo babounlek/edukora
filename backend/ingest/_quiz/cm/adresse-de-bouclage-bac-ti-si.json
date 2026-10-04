@@ -1,0 +1,93 @@
+[
+  {
+    "external_id": "cqc-adresse-de-bouclage-bac-ti-si-faible-0",
+    "theme": "adresse de bouclage",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans la salle informatique d'un lycée technique de Garoua, un serveur web local est installé sur le poste d'un élève. Cet élève ouvre son navigateur et saisit l'adresse `http://127.0.0.1/`. Quelle machine répond à cette requête ?",
+    "corrige_markdown": "### Rappel de méthode\nUne adresse de bouclage (loopback) est une adresse réservée dont le trafic est renvoyé vers la machine qui l'a émise : les données ne passent ni par la carte réseau ni par le câble. Elle se distingue de l'adresse IP de la carte réseau, que les autres machines utilisent pour joindre le poste. Le nom habituel associé à `127.0.0.1` est `localhost`.\n\n### Corrigé\nLe navigateur envoie la requête à `127.0.0.1`, une adresse de bouclage : la machine qui émet la requête est aussi celle qui la reçoit. C'est donc le serveur web installé sur le poste de l'élève qui répond, sans que rien ne sorte de l'ordinateur.\n\n- **A** est faux : un hébergeur se joint par une adresse publique, à travers le réseau et Internet. Aucune adresse commençant par 127 ne peut désigner une machine distante.\n- **B** est faux : cette proposition retient le « .1 » final. Dans `127.0.0.1`, le dernier nombre n'indique pas un premier poste du réseau ; c'est le premier nombre, 127, qui rend l'adresse réservée au bouclage.\n- **D** est faux : la passerelle possède une adresse du réseau local (souvent terminée par 1 elle aussi), jamais une adresse de bouclage.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Le serveur de l'hébergeur du lycée, situé quelque part sur Internet"
+      },
+      {
+        "lettre": "B",
+        "texte": "Le premier ordinateur du réseau local, celui dont l'adresse se termine par 1"
+      },
+      {
+        "lettre": "C",
+        "texte": "Le poste de l'élève lui-même, sans que la requête quitte l'ordinateur"
+      },
+      {
+        "lettre": "D",
+        "texte": "La passerelle par défaut qui relie le réseau local à Internet"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [10583]
+  },
+  {
+    "external_id": "cqc-adresse-de-bouclage-bac-ti-si-moyenne-1",
+    "theme": "adresse de bouclage",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Pendant un cours dans un centre de formation de Douala, la formatrice affirme que la plage réservée au bouclage ne se limite pas à `127.0.0.1`. Parmi les adresses IPv4 suivantes, laquelle fait partie de cette plage ?",
+    "corrige_markdown": "### Rappel de méthode\nUne adresse appartient à la plage de bouclage lorsque son premier nombre (le premier octet) vaut 127 : toutes les adresses de `127.0.0.0` à `127.255.255.255` sont réservées à la machine elle-même. Les autres nombres de l'adresse ne servent pas à reconnaître cette plage.\n\n### Corrigé\nIl suffit d'examiner le premier nombre de chaque adresse.\n\n- **A** est faux : `10.127.0.1` contient 127, mais en deuxième position. Son premier nombre est 10, ce qui en fait une adresse de réseau privé et non une adresse de bouclage.\n- **C** est faux : `128.0.0.1` commence par 128, le nombre qui suit 127 ; elle est hors de la plage réservée.\n- **D** est faux : dans `192.168.0.127`, le nombre 127 est le numéro de machine dans le réseau privé `192.168.0`. Le premier nombre est 192.\n- `127.200.35.8` commence par 127 et ses quatre nombres sont compris entre 0 et 255 : l'adresse est valide et appartient à la plage de bouclage.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`10.127.0.1`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`127.200.35.8`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`128.0.0.1`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`192.168.0.127`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10583]
+  },
+  {
+    "external_id": "cqc-adresse-de-bouclage-bac-ti-si-elevee-2",
+    "theme": "adresse de bouclage",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Karelle, élève de Terminale TI au lycée technique de Garoua, installe un serveur web local sur son poste P1 et y dépose la page `accueil.html`. Sur P1, elle affiche cette page avec l'adresse `http://localhost/accueil.html`. La carte réseau de P1 a pour adresse IP `192.168.4.21`. Son voisin Aimé travaille sur le poste P2 du même réseau local. On admet que le serveur de P1 accepte les connexions venant du réseau local, que le pare-feu les autorise et qu'aucun serveur web n'est installé sur P2.\n\n1. Définir l'adresse de bouclage, donner le nom usuel associé à `127.0.0.1` et dire quelle est son utilité pour Karelle.\n2. Aimé saisit `http://localhost/accueil.html` dans le navigateur de P2. Prévoir le résultat et justifier. Puis donner l'adresse (URL) qu'Aimé doit saisir pour afficher la page de P1.\n3. La plage de bouclage s'étend de `127.0.0.0` à `127.255.255.255`. Calculer le nombre d'adresses de cette plage, bornes comprises, sachant que chacun des trois derniers nombres de l'adresse peut prendre 256 valeurs (de 0 à 255).\n4. Karelle exécute `ping 127.0.0.1` sur P1 : chacune des quatre réponses affiche un temps inférieur à 1 ms. Expliquer ce délai quasi nul et dire ce que ce résultat permet de conclure sur P1.\n5. Vérifier la cohérence des réponses précédentes : Karelle débranche le câble réseau de P1. La page reste-t-elle affichable sur P1 avec `http://localhost/accueil.html` ? Aimé peut-il encore l'afficher avec l'adresse trouvée à la question 2 ? Justifier.",
+    "corrige_markdown": "### Rappel de méthode\nPour savoir quelle machine répond à une adresse, se demander où la requête est envoyée : une adresse de bouclage est interprétée par la machine qui émet la requête, quelle qu'elle soit, alors que l'adresse IP d'une carte réseau est un repère que les autres machines du réseau peuvent utiliser. Un test fait en bouclage ne vérifie donc que la machine elle-même, jamais le câble ni les équipements du réseau.\n\n### Corrigé\n**1.** Une adresse de bouclage (loopback) est une adresse réservée qui désigne la machine elle-même : les données qui lui sont envoyées ne quittent pas l'ordinateur. Son nom usuel est `localhost`. Pour Karelle, elle permet de tester son serveur web (et la pile TCP/IP de son poste) sans passer par le réseau physique, avant de rendre le site accessible à d'autres utilisateurs.\n\n**2.** `localhost` désigne la machine qui émet la requête. Sur P2, le navigateur interroge donc P2 lui-même ; comme aucun serveur web n'y est installé, aucune page ne s'affiche et le navigateur signale une erreur de connexion. Pour atteindre P1, Aimé doit utiliser l'adresse IP de la carte réseau de P1 : `http://192.168.4.21/accueil.html`.\n\n**3.** Le premier nombre est fixé à 127 ; chacun des trois autres a 256 valeurs possibles : $256\\times 256\\times 256=256^3=16\\ 777\\ 216$ adresses.\n\n**4.** La requête du `ping` est adressée à la machine elle-même : elle est traitée par la pile TCP/IP de P1 et ne parcourt ni la carte réseau, ni le câble, ni un équipement du réseau. Le temps aller-retour est donc inférieur à 1 ms. Cette réponse prouve que la pile TCP/IP de P1 est installée et fonctionne ; elle ne dit rien de l'état du câble, de la carte réseau ou des autres machines.\n\n**5.** Sur P1, la page reste affichable : `localhost` ne passe pas par le réseau physique, donc la coupure du câble ne l'affecte pas (cohérent avec les questions 1 et 4). Aimé, lui, ne peut plus afficher la page avec `http://192.168.4.21/accueil.html`, car cette adresse est celle de la carte réseau de P1 et la requête doit emprunter le câble désormais débranché (cohérent avec la question 2).",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10583, 10582]
+  }
+]

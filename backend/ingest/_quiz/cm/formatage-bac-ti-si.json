@@ -1,0 +1,69 @@
+[
+  {
+    "external_id": "cqc-formatage-bac-ti-si-faible-0",
+    "theme": "Formatage",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien de Douala doit formater le disque dur secondaire (lecteur `D:`) de l'ordinateur d'un client, car il veut y créer un autre système de fichiers. Ce disque contient le seul exemplaire des dossiers de comptabilité du client.\n\nQuelle précaution doit-il prendre avant de lancer le formatage ?",
+    "corrige_markdown": "### Rappel de méthode\nFormater un disque, c'est recréer son organisation interne (secteurs, pistes, système de fichiers) : l'espace est remis à zéro pour accueillir de nouveaux fichiers, de sorte que les données qui s'y trouvaient ne sont plus accessibles. Toute donnée à conserver doit donc être placée sur un autre support avant l'opération.\n\n### Corrigé\nLe formatage de `D:` rendra les dossiers de comptabilité inaccessibles. La seule précaution efficace est de **les copier sur un autre support de stockage** (clé USB, disque externe), puis de vérifier la copie avant de formater.\n\n- **Les placer dans la corbeille de `D:`** : faux. La corbeille d'un lecteur se trouve sur ce même lecteur : son contenu est perdu avec le reste lors du formatage.\n- **Leur donner l'attribut « caché »** : faux. Cet attribut ne fait que masquer l'affichage ; le formatage l'ignore et traite les fichiers cachés comme les autres.\n- **Défragmenter `D:`** : faux. La défragmentation réorganise les fragments sur le même disque ; elle ne crée aucune copie, donc ne protège rien.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "Placer les dossiers de comptabilité dans la corbeille du lecteur `D:`" },
+      { "lettre": "B", "texte": "Donner aux dossiers de comptabilité l'attribut « caché » au préalable" },
+      { "lettre": "C", "texte": "Copier les dossiers de comptabilité sur un autre support de stockage" },
+      { "lettre": "D", "texte": "Défragmenter le lecteur `D:` pour regrouper les dossiers de comptabilité" }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [10584]
+  },
+  {
+    "external_id": "cqc-formatage-bac-ti-si-moyenne-1",
+    "theme": "Formatage",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans la salle des professeurs d'un lycée de Bertoua, le fichier `ARCHIVE.TXT` porte l'attribut « caché » : il n'apparaît pas dans la liste des fichiers de son dossier.\n\nQuelle affirmation sur ce fichier est exacte ?",
+    "corrige_markdown": "### Rappel de méthode\nUn fichier possède des attributs (lecture seule, caché, archive) enregistrés avec lui. L'attribut « caché » ne touche ni au contenu ni à l'emplacement du fichier : il demande seulement à l'explorateur de ne pas l'afficher par défaut. Pour le disque, un fichier caché reste donc un fichier ordinaire.\n\n### Corrigé\n`ARCHIVE.TXT` est toujours enregistré sur le disque, avec son contenu intact ; il réapparaît dès que l'on active l'affichage des éléments cachés dans les options de l'explorateur de fichiers.\n\n- **« Il n'occupe plus de place »** : faux. L'espace occupé par un fichier ne dépend pas de son affichage ; sa taille reste la même.\n- **« Il a été déplacé dans la corbeille »** : faux. Un fichier placé dans la corbeille a été supprimé de son dossier, alors que l'attribut « caché » ne déplace rien.\n- **« Un formatage ne peut pas l'effacer »** : faux. Le formatage recrée toute l'organisation du disque et ignore les attributs : caché ou non, un fichier est perdu avec les autres.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "Il n'occupe plus de place sur le disque, puisqu'il n'est plus affiché dans la liste" },
+      { "lettre": "B", "texte": "Il est toujours sur le disque et réapparaît si l'on affiche les éléments cachés" },
+      { "lettre": "C", "texte": "Il a été déplacé dans la corbeille, d'où il peut être restauré à tout moment" },
+      { "lettre": "D", "texte": "Il est protégé, car un formatage du disque ne peut pas effacer un fichier caché" }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [11234]
+  },
+  {
+    "external_id": "cqc-formatage-bac-ti-si-elevee-2",
+    "theme": "Formatage",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le disque dur à plateaux d'un ordinateur de la salle informatique d'un lycée de Garoua est découpé, pour simplifier, en seize blocs numérotés de 1 à 16, de 4 Ko chacun. Les quatre fichiers A, B, C et D y sont enregistrés comme suit (le point représente un bloc libre) :\n\n```text\nBloc    : 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16\nContenu :  A  A  B  C  A  B  B  C  A  D  C  D  .  .  .  .\n```\n\nOn admet qu'un fichier fragmenté est composé de plusieurs groupes de blocs consécutifs (les fragments), que chaque passage d'un fragment au suivant oblige la tête de lecture à se déplacer, et qu'un fichier supprimé avec l'Explorateur de fichiers est placé dans la corbeille du même disque, où il continue d'occuper ses blocs jusqu'au vidage de la corbeille.\n\n1. Définir la fragmentation d'un fichier, puis expliquer pourquoi elle ralentit un disque dur à plateaux et pourquoi la défragmentation est inutile sur un disque SSD.\n2. Pour chaque fichier, donner le nombre de blocs, le nombre de fragments et le nombre de déplacements de la tête nécessaires pour le lire en entier. Calculer le total des déplacements.\n3. L'utilisatrice supprime le fichier C avec l'Explorateur de fichiers, sans vider la corbeille. Donner le nombre de blocs libres à cet instant, puis le nombre de blocs libres après le vidage de la corbeille et la taille en Ko de l'espace libre obtenu.\n4. Un nouveau fichier E de 6 blocs doit être enregistré après le vidage de la corbeille. Peut-il être écrit en un seul morceau ? Justifier. Indiquer ensuite l'effet d'une défragmentation sur cette situation, et pourquoi cette opération est préférable à un formatage pour obtenir un espace libre d'un seul tenant.\n5. Vérification : contrôler la cohérence des résultats en comparant le total (blocs occupés + blocs libres) avant la suppression, après le vidage de la corbeille et après la défragmentation.",
+    "corrige_markdown": "### Rappel de méthode\nLe nombre de déplacements de la tête nécessaires pour lire un fichier vaut le nombre de ses fragments moins un. La défragmentation regroupe les blocs de chaque fichier sans rien effacer, alors qu'un formatage remet le disque à zéro ; un fichier supprimé avec l'Explorateur reste, lui, sur le disque tant que la corbeille n'est pas vidée.\n\n### Corrigé\n**1.** Un fichier est fragmenté lorsque ses blocs sont dispersés en plusieurs endroits du disque au lieu d'être consécutifs, ce qui arrive au fil des créations, agrandissements et suppressions de fichiers. Sur un disque à plateaux, lire le fichier oblige la tête à se déplacer mécaniquement d'un fragment à l'autre, ce qui est bien plus lent qu'une lecture continue. Un SSD n'a aucune pièce mécanique : aucune tête ne se déplace et toute zone est atteinte aussi vite, donc regrouper les fragments n'accélère rien.\n\n**2.** Lecture de la carte du disque :\n\n| Fichier | Blocs occupés | Blocs | Fragments | Déplacements de la tête (fragments − 1) |\n|---|---|---|---|---|\n| A | 1-2, 5, 9 | 4 | 3 | 2 |\n| B | 3, 6-7 | 3 | 2 | 1 |\n| C | 4, 8, 11 | 3 | 3 | 2 |\n| D | 10, 12 | 2 | 2 | 1 |\n\nTotal des déplacements : $2 + 1 + 2 + 1 = 6$ (pour $3 + 2 + 3 + 2 = 10$ fragments).\n\n**3.** Avant la suppression, 12 blocs sont occupés ($4 + 3 + 3 + 2$) et 4 sont libres (les blocs 13 à 16). Après la suppression avec l'Explorateur, C est dans la corbeille : ses blocs restent occupés, donc il y a toujours **4 blocs libres**. Après le vidage de la corbeille, les 3 blocs de C sont libérés : $4 + 3 = 7$ blocs libres, soit $7 \\times 4 = 28$ Ko d'espace libre.\n\n**4.** Après le vidage, les blocs libres forment quatre zones : le bloc 4, le bloc 8, le bloc 11 et les blocs 13 à 16. La plus grande zone d'un seul tenant compte 4 blocs, ce qui est inférieur à 6 : le fichier E **ne peut pas être écrit en un seul morceau**, bien que 7 blocs soient libres au total ; il serait fragmenté. Une défragmentation regroupe A, B et D au début du disque (A en 1 à 4, B en 5 à 7, D en 8 et 9) et rassemble les 7 blocs libres en une seule zone, les blocs 10 à 16 : E y tient alors en un seul morceau. Un formatage obtiendrait aussi un espace libre d'un seul tenant, mais il effacerait A, B et D, alors que la défragmentation conserve toutes les données.\n\n**5.** Avant la suppression : $12 + 4 = 16$ blocs. Après le vidage de la corbeille : 9 blocs occupés ($4 + 3 + 2$) et 7 libres, soit $9 + 7 = 16$. Après la défragmentation : encore 9 blocs occupés et 7 libres, soit $9 + 7 = 16$. Le disque compte donc 16 blocs, soit 64 Ko, dans les trois cas. La défragmentation déplace des blocs mais ne change ni le nombre de blocs occupés ni le nombre de blocs libres ; elle fait seulement passer les fichiers A, B et D de $3 + 2 + 2 = 7$ fragments à $3$ fragments (un par fichier), donc à 0 déplacement de la tête.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10584]
+  }
+]

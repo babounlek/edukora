@@ -1,0 +1,105 @@
+[
+  {
+    "external_id": "cqc-composition-bac-ti-si-faible-0",
+    "theme": "composition",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "enonce_markdown": "Dans un projet d'édition numérique mené à Douala, une modélisation de classes est décrite ainsi : un trait relie la classe `Livre` à la classe `Chapitre`, et l'extrémité de ce trait située côté `Livre` porte un losange **plein** (noirci).\n\nQuelle relation entre classes ce lien exprime-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\nUn losange posé à l'extrémité d'un lien entre classes désigne la classe englobante comme le tout et exprime une relation tout-partie : noirci, il indique que la partie est liée au cycle de vie de son tout (composition) ; laissé blanc, il indique que la partie survit au tout (agrégation). Un triangle creux note l'héritage, et un trait nu une simple association.\n\n### Corrigé\nLe losange est noir et situé côté `Livre`, qui joue donc le rôle du tout, avec `Chapitre` comme partie : c'est une composition. Un chapitre n'a aucun sens hors du livre qui le contient et disparaît avec lui.\n\n- A est faux : l'agrégation se reconnaît à un losange blanc et correspond à une partie qui survit au tout.\n- B est faux : la généralisation se note par un triangle creux et traduit « est une sorte de », ce qui n'est pas le cas d'un chapitre par rapport à un livre.\n- D est faux : une association simple ne porte aucun losange ; le losange signale justement un lien tout-partie.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10569,
+      11254,
+      11240
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Une agrégation, où le chapitre garde une existence indépendante"
+      },
+      {
+        "lettre": "B",
+        "texte": "Une généralisation, où `Chapitre` est une sorte de `Livre`"
+      },
+      {
+        "lettre": "C",
+        "texte": "Une composition, où le chapitre n'existe pas sans son livre"
+      },
+      {
+        "lettre": "D",
+        "texte": "Une association simple, sans notion de tout ni de partie"
+      }
+    ],
+    "reponse_correcte": "C"
+  },
+  {
+    "external_id": "cqc-composition-bac-ti-si-moyenne-1",
+    "theme": "composition",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "enonce_markdown": "Dans un logiciel de gestion immobilière utilisé par une agence de Bafoussam, une modélisation de classes est décrite ainsi : la classe `Maison` est reliée à la classe `Piece` par une composition, avec la multiplicité `1` côté `Maison` et la multiplicité `1..*` côté `Piece`.\n\nQuelle affirmation découle correctement de cette description ?",
+    "corrige_markdown": "### Rappel de méthode\nUne relation décrite en texte se lit en deux temps : on identifie d'abord le type de lien, qui précise si la partie survit à la disparition de son tout, puis on lit chaque multiplicité près de la classe qu'elle qualifie, en la comprenant comme le nombre d'objets de cette classe liés à un seul objet de la classe située à l'autre bout du lien.\n\n### Corrigé\nLe lien est une composition : la pièce est une partie qui n'existe pas sans la maison, donc supprimer la maison supprime ses pièces. La multiplicité `1` près de `Maison` signifie qu'une pièce est liée à exactement une maison ; la multiplicité `1..*` près de `Piece` signifie qu'une maison est liée à au moins une pièce.\n\n- B est faux : partager une partie entre plusieurs touts est possible dans une agrégation, mais la multiplicité `1` côté `Maison` l'interdit ici.\n- C est faux : `1..*` signifie « au moins une » ; autoriser zéro pièce demanderait `0..*`.\n- D est faux : la dépendance est inversée, car la partie dépend du tout et non l'inverse. Retirer une pièce laisse la maison en place, à condition qu'il lui reste au moins une autre pièce.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10569,
+      11254,
+      11240
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Une pièce dépend d'une seule maison et disparaît lorsque cette maison est supprimée"
+      },
+      {
+        "lettre": "B",
+        "texte": "Une même pièce peut être partagée entre plusieurs maisons différentes à la fois"
+      },
+      {
+        "lettre": "C",
+        "texte": "Une maison peut être enregistrée sans qu'aucune pièce ne lui soit rattachée"
+      },
+      {
+        "lettre": "D",
+        "texte": "La suppression d'une pièce entraîne automatiquement celle de la maison entière"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-composition-bac-ti-si-elevee-2",
+    "theme": "composition",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "enonce_markdown": "Un centre de formation informatique de Bafoussam dispose d'une modélisation de classes décrite ainsi :\n\n- `Centre` et `Formateur` sont reliés par un trait dont l'extrémité côté `Centre` porte un losange blanc, avec la multiplicité `0..*` de chaque côté ;\n- `Formation` et `Module` sont reliés par un trait dont l'extrémité côté `Formation` porte un losange noir, avec la multiplicité `1` côté `Formation` et `1..*` côté `Module` ;\n- `Formateur` et `Module` sont reliés par un trait sans losange ni flèche, nommé « anime », avec la multiplicité `1` côté `Formateur` et `0..*` côté `Module`.\n\nLe centre propose trois formations comportant respectivement 4, 5 et 3 modules.\n\n1. Nommer chacune des trois relations en justifiant le nom par le symbole décrit.\n2. Dire ce qui arrive à la partie lorsque le tout est supprimé, pour chacune des deux relations tout-partie.\n3. Calculer le nombre total d'objets `Module`, sachant que la multiplicité `1` côté `Formation` interdit à un module d'appartenir à deux formations, puis le nombre d'objets `Module` qui subsistent quand la formation de 5 modules est supprimée.\n4. Un développeur propose de remplacer le lien `Formation` – `Module` par une agrégation. Vérifier, en reprenant la suppression de la formation de 5 modules, que ce choix contredit la règle de gestion « un module n'est jamais proposé en dehors de sa formation ».",
+    "corrige_markdown": "### Rappel de méthode\nPour un lien tout-partie, la question décisive est le sort de la partie quand le tout disparaît : elle disparaît aussi dans une composition (losange noir côté tout), elle subsiste dans une agrégation (losange blanc côté tout), et une association simple n'a pas de losange. Une multiplicité, lue près d'une classe, donne le nombre de ses objets liés à un seul objet de l'autre classe.\n\n### Corrigé\n**1. Nature des relations.**\n\n- `Centre` – `Formateur` : losange blanc côté `Centre`, donc **agrégation**.\n- `Formation` – `Module` : losange noir côté `Formation`, donc **composition**.\n- `Formateur` – `Module` : aucun losange, donc **association simple** (« anime »).\n\n**2. Sort de la partie.** Dans l'agrégation, la suppression d'un centre laisse subsister ses formateurs : ils ont une existence propre et peuvent intervenir dans un autre centre. Dans la composition, la suppression d'une formation entraîne celle de ses modules.\n\n**3. Calcul.** Chaque module appartient à une seule formation (multiplicité `1` côté `Formation`), donc aucun module n'est compté deux fois : $4 + 5 + 3 = 12$ modules au total.\n\nLa suppression de la formation de 5 modules retire ces 5 modules (composition) : $12 - 5 = 7$ modules subsistent.\n\n**4. Vérification.** Autre méthode de calcul : les modules restants sont ceux des deux autres formations, soit $4 + 3 = 7$, ce qui confirme le résultat. Avec une agrégation, les 5 modules survivraient à la suppression de leur formation : il resterait 12 modules, dont 5 modules orphelins, ce qui contredit la règle de gestion « un module n'est jamais proposé en dehors de sa formation ». La composition est donc le bon choix.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10569,
+      11254,
+      11240
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

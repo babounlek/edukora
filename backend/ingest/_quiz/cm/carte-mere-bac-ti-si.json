@@ -1,0 +1,112 @@
+[
+  {
+    "external_id": "cqc-carte-mere-bac-ti-si-faible-0",
+    "theme": "carte mère",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien d'un lycée technique de Bafoussam doit installer une carte réseau supplémentaire dans une unité centrale. Sur la carte mère, il repère un connecteur PCI Express (PCIe) libre.\n\nÀ quoi sert ce type de connecteur ?",
+    "corrige_markdown": "### Rappel de méthode\nLa carte mère relie tous les composants de l'ordinateur, et chaque famille de connecteurs y a sa fonction : les emplacements de mémoire vive, les interfaces de stockage (IDE, SATA) reliées aux disques et aux lecteurs, les ports externes (USB) pour les périphériques, et les emplacements d'extension (PCI Express) où l'on enfiche des cartes qui ajoutent une fonction à l'ordinateur.\n\n### Corrigé\nLa carte réseau à installer est une carte d'extension : elle s'enfiche dans un emplacement PCI Express de la carte mère, comme le feraient une carte son ou une carte graphique.\n\n- **B** est faux : un disque dur ou un lecteur optique se relie à la carte mère par une interface de stockage, SATA ou IDE, et non par un emplacement PCIe.\n- **C** est faux : les barrettes de mémoire vive se placent dans des emplacements mémoire spécifiques, de forme différente.\n- **D** est faux : une clé ou une souris se branche sur un port USB, pas dans un emplacement d'extension à l'intérieur du boîtier.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "À recevoir une carte d'extension : carte réseau, carte son ou carte graphique"
+      },
+      {
+        "lettre": "B",
+        "texte": "À relier un disque dur ou un lecteur optique à la carte mère par un câble de données"
+      },
+      {
+        "lettre": "C",
+        "texte": "À accueillir les barrettes de mémoire vive qui conservent les données en cours de traitement"
+      },
+      {
+        "lettre": "D",
+        "texte": "À brancher une clé ou une souris sur le boîtier de l'unité centrale"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [11234, 10584]
+  },
+  {
+    "external_id": "cqc-carte-mere-bac-ti-si-moyenne-1",
+    "theme": "carte mère",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une carte mère récupérée dans un atelier de Garoua possède **1 port IDE** et **6 ports SATA**. On admet qu'un port IDE accepte au plus **2 périphériques** (un maître et un esclave) et qu'un port SATA accepte **1 seul périphérique**.\n\nUn technicien veut y raccorder 3 anciens périphériques IDE (deux disques durs et un graveur de CD) et 4 périphériques SATA (trois disques durs et un lecteur de DVD).\n\n1. Calculer le nombre maximal de périphériques que cette carte mère permet de raccorder.\n2. Un élève affirme : « Il y a 7 périphériques à brancher et la carte mère en accepte 8, donc tout peut être raccordé. » Cette affirmation est-elle exacte ? Justifier en comparant, famille de ports par famille de ports, ce qui est demandé et ce qui est possible.\n3. Donner le nombre de périphériques que le technicien peut effectivement brancher, ainsi que le nombre de ports SATA qui restent libres.",
+    "corrige_markdown": "### Rappel de méthode\nLes périphériques de stockage se raccordent à la carte mère par deux familles de ports qui ne se remplacent pas : sur un port IDE, une nappe relie deux périphériques au plus (l'un maître, l'autre esclave), alors qu'un port SATA est une liaison série qui ne dessert qu'un seul périphérique. La capacité se calcule donc famille par famille, puis on additionne.\n\n### Corrigé\n**1.** Capacité de la carte mère : IDE : 1 × 2 = 2 périphériques ; SATA : 6 × 1 = 6 périphériques. Total : 2 + 6 = **8 périphériques**.\n\n**2.** L'affirmation est **fausse**. Comparer le total (7 demandés pour 8 possibles) ne suffit pas, car un port SATA libre ne peut pas accueillir un périphérique IDE : les deux interfaces sont différentes.\n\n| Famille | Demandés | Possibles | Verdict |\n|---|---|---|---|\n| IDE | 3 | 1 × 2 = 2 | impossible : 3 > 2 |\n| SATA | 4 | 6 × 1 = 6 | possible : 4 ≤ 6 |\n\nIl manque une place IDE : le troisième périphérique IDE ne peut pas être raccordé.\n\n**3.** Périphériques réellement branchés : 2 en IDE + 4 en SATA = **6 périphériques**. Ports SATA libres : 6 − 4 = **2 ports**. Un des trois périphériques IDE reste sans port.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11234]
+  },
+  {
+    "external_id": "cqc-carte-mere-bac-ti-si-moyenne-2",
+    "theme": "carte mère",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "En classe de Terminale TI, une élève demande pourquoi le programme de démarrage de l'ordinateur, le BIOS, est enregistré dans une puce de la carte mère plutôt que dans la mémoire vive (RAM).\n\nQuelle est la bonne explication ?",
+    "corrige_markdown": "### Rappel de méthode\nLa mémoire vive (RAM) est une mémoire volatile : elle ne garde ses données que tant que l'ordinateur est alimenté, et c'est là que le microprocesseur place les programmes et les données en cours de traitement. Les mémoires non volatiles, elles, conservent leur contenu sans courant électrique.\n\n### Corrigé\nÀ la mise sous tension, la RAM est vide, car elle a perdu son contenu à l'extinction. Or le microprocesseur a besoin d'un tout premier programme à exécuter pour amorcer la machine : ce programme, le BIOS, doit donc être conservé dans une mémoire non volatile de la carte mère, qui le garde même ordinateur éteint.\n\n- **A** est faux : la RAM est en général bien plus rapide que la puce qui contient le BIOS. La vitesse n'est pas la raison du choix.\n- **B** est faux : le BIOS est bien un programme (Basic Input/Output System). On le confond avec la puce de la carte mère qui le contient.\n- **D** est faux : le BIOS est un programme très petit comparé à la mémoire vive. Sa taille n'est pas en cause.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "La mémoire vive est trop lente pour exécuter un programme de démarrage aussi important que le BIOS"
+      },
+      {
+        "lettre": "B",
+        "texte": "Le BIOS n'est pas un programme mais un composant électronique, donc aucune mémoire ne peut le contenir"
+      },
+      {
+        "lettre": "C",
+        "texte": "La mémoire vive perd son contenu à l'extinction, alors que la puce de la carte mère conserve le BIOS"
+      },
+      {
+        "lettre": "D",
+        "texte": "Le BIOS occupe plus de place que la mémoire vive de l'ordinateur, il ne pourrait donc pas y tenir"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [10584]
+  },
+  {
+    "external_id": "cqc-carte-mere-bac-ti-si-elevee-3",
+    "theme": "carte mère",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le technicien d'un lycée technique de Garoua étudie la fiche d'un ancien ordinateur : son microprocesseur communique avec la mémoire par un bus d'adresses de **24 bits** (24 fils) et un bus de données de **16 bits**. Pour les calculs, on admet qu'une adresse désigne un octet de mémoire et que 1 Mio = 1 048 576 octets.\n\n1. Nommer les trois bus qui relient le microprocesseur à la mémoire et aux périphériques, et indiquer ce que transporte chacun.\n2. Calculer le nombre d'adresses distinctes que permet de former le bus d'adresses, puis en déduire la capacité mémoire maximale adressable, en octets puis en Mio.\n3. Calculer le nombre de transferts nécessaires pour lire un bloc de 4 096 octets, sachant que chaque transfert achemine 16 bits sur le bus de données.\n4. La carte mère accueille 8 Mio de RAM. Déterminer le nombre minimal de fils d'adresse nécessaires pour adresser toute cette mémoire.\n5. Vérifier la cohérence des résultats : contrôler la valeur de la question 2 par une seconde méthode (en écrivant $2^{24}$ comme produit de deux puissances de 2), puis vérifier que les 8 Mio de RAM tiennent dans l'espace adressable et donner la capacité adressable obtenue si l'on ajoutait un 25e fil d'adresse.",
+    "corrige_markdown": "### Rappel de méthode\nUn bus est un ensemble de fils parallèles, chaque fil transportant un bit. Avec $n$ fils d'adresse, le microprocesseur forme $2^n$ adresses différentes et peut donc désigner $2^n$ cases mémoire d'un octet ; la largeur du bus de données fixe, elle, le nombre de bits transmis en un seul transfert.\n\n### Corrigé\n**1.** Le **bus d'adresses** transporte l'adresse de la case mémoire (ou du périphérique) que le microprocesseur veut atteindre. Le **bus de données** transporte les valeurs lues ou écrites. Le **bus de commande** transporte les signaux de contrôle qui précisent l'opération à effectuer (par exemple lecture ou écriture).\n\n**2.** Nombre d'adresses : $2^{24}$ = **16 777 216 adresses**. Une adresse désigne un octet, donc la capacité maximale est de 16 777 216 octets. En Mio : 16 777 216 ÷ 1 048 576 = **16 Mio**.\n\n**3.** Un bloc de 4 096 octets représente 4 096 × 8 = 32 768 bits. Chaque transfert porte 16 bits : 32 768 ÷ 16 = **2 048 transferts**.\n\n**4.** 8 Mio = 8 × 1 048 576 = 8 388 608 octets. On cherche le plus petit $n$ tel que $2^n \\geq 8388608$ : $2^{22}$ = 4 194 304 est trop petit, et $2^{23}$ = 8 388 608 convient exactement. Il faut au minimum **23 fils d'adresse**.\n\n**5.** Vérification.\n\n- Seconde méthode : $2^{24} = 2^{4} \\times 2^{20}$ = 16 × 1 048 576 = 16 777 216. Le résultat de la question 2 est confirmé (16 Mio).\n- Cas limite : 23 ≤ 24, donc les 8 Mio de RAM tiennent dans l'espace adressable ; ils en occupent la moitié (8 Mio sur 16 Mio).\n- Avec un 25e fil : $2^{25}$ = 33 554 432 octets = **32 Mio**, soit le double de 16 Mio. Chaque fil d'adresse supplémentaire double la capacité adressable.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10584, 11234]
+  }
+]

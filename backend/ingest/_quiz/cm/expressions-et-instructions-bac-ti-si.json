@@ -1,0 +1,83 @@
+[
+  {
+    "external_id": "cqc-expressions-et-instructions-bac-ti-si-faible-0",
+    "theme": "Expressions et instructions",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le script PHP suivant initialise cinq variables pour une fiche d'inscription :\n\n```php\n<?php\n$age = 17;\n$taille = 1.72;\n$ville = \"Garoua\";\n$inscrit = true;\n$code = \"237\";\n?>\n```\n\nQuel est le type de la variable `$code` ?",
+    "corrige_markdown": "### Rappel de méthode\nEn PHP, le type d'une variable découle de la valeur écrite lors de l'affectation : des chiffres seuls donnent un entier, des chiffres avec un point un réel, `true` ou `false` un booléen, et tout texte placé entre guillemets ou entre apostrophes une chaîne de caractères, même s'il ne contient que des chiffres.\n\n### Corrigé\nLa valeur de la variable `$code` est écrite entre guillemets doubles : `\"237\"` est donc un texte, de type chaîne de caractères (`string`), bien que ses trois caractères soient des chiffres.\n\n- Entier (`int`) : ce type exigerait l'écriture sans guillemets, comme `$age = 17;`. Ici les guillemets transforment la valeur en texte.\n- Réel (`float`) : ce type demande un nombre à virgule écrit avec un point, comme `$taille = 1.72;`, ce qui n'est pas le cas de `\"237\"`.\n- Booléen (`bool`) : ce type correspond aux seules valeurs `true` et `false`, comme `$inscrit = true;`. Un texte non vide est certes jugé vrai dans une condition, mais cela ne change pas son type.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Entier (`int`), car 237 est un nombre entier"
+      },
+      {
+        "lettre": "B",
+        "texte": "Chaîne (`string`), car la valeur est entre guillemets"
+      },
+      {
+        "lettre": "C",
+        "texte": "Réel (`float`), car tout nombre est un réel"
+      },
+      {
+        "lettre": "D",
+        "texte": "Booléen (`bool`), car la valeur n'est pas vide"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10579
+    ]
+  },
+  {
+    "external_id": "cqc-expressions-et-instructions-bac-ti-si-moyenne-1",
+    "theme": "Expressions et instructions",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une papeterie de Garoua suit son stock avec le script PHP suivant :\n\n```php\n<?php\n$cahiers = 7;\n$crayons = 3;\n$cahiers += $crayons * 2;\n$crayons++;\n$reste = $cahiers % $crayons;\n$ligne = \"Bilan\";\n$ligne .= \" : \" . $cahiers;\necho $ligne;\n?>\n```\n\n1. Établir, sous forme de tableau, la valeur de chacune des variables `$cahiers`, `$crayons`, `$reste` et `$ligne` après chaque instruction.\n2. Donner l'affichage produit par ce script.\n3. Donner la valeur affichée par chacune des deux instructions `echo $cahiers . $crayons;` et `echo $cahiers + $crayons;`, évaluées avec les valeurs que les variables ont à la fin du script, puis nommer l'opérateur `.`.",
+    "corrige_markdown": "### Rappel de méthode\nUn script PHP s'exécute instruction après instruction et chaque variable garde sa dernière valeur : `+=` ajoute le résultat de l'expression de droite à la variable, `++` ajoute 1, `%` donne le reste de la division entière et `.=` colle un texte à la suite d'une chaîne existante. L'opérateur `.` assemble du texte alors que `+` additionne des nombres, et la multiplication est effectuée avant l'addition.\n\n### Corrigé\n**Question 1.** Le tableau donne les valeurs après chaque instruction (le signe – désigne une variable pas encore créée) :\n\n| Instruction | cahiers | crayons | reste | ligne |\n|---|---|---|---|---|\n| `$cahiers = 7;` | 7 | – | – | – |\n| `$crayons = 3;` | 7 | 3 | – | – |\n| `$cahiers += $crayons * 2;` | 13 | 3 | – | – |\n| `$crayons++;` | 13 | 4 | – | – |\n| `$reste = $cahiers % $crayons;` | 13 | 4 | 1 | – |\n| `$ligne = \"Bilan\";` | 13 | 4 | 1 | Bilan |\n| `$ligne .= \" : \" . $cahiers;` | 13 | 4 | 1 | Bilan : 13 |\n\nPour la troisième ligne, la multiplication passe d'abord : 3 × 2 = 6, puis 7 + 6 = 13. Pour la cinquième, 13 = 3 × 4 + 1, d'où un reste de 1.\n\n**Question 2.** L'instruction `echo $ligne;` affiche le contenu de la chaîne : `Bilan : 13`.\n\n**Question 3.** Avec `$cahiers` valant 13 et `$crayons` valant 4 :\n\n- `echo $cahiers . $crayons;` concatène les deux valeurs comme du texte, sans aucun calcul : elle affiche `134`.\n- `echo $cahiers + $crayons;` additionne les deux nombres : elle affiche `17`.\n\nL'opérateur `.` est l'opérateur de concaténation : il met bout à bout deux valeurs pour former une seule chaîne de caractères.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10579
+    ]
+  },
+  {
+    "external_id": "cqc-expressions-et-instructions-bac-ti-si-elevee-2",
+    "theme": "Expressions et instructions",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le logiciel de caisse d'un cybercafé de Bafoussam calcule le prix d'une connexion. Le tarif est de 400 F CFA par heure complète, et chaque minute au-delà des heures complètes coûte 5 F CFA. Le calcul est réalisé par le script PHP suivant :\n\n```php\n<?php\n$tarif = 400;\n$minutes = 135;\n$reste = $minutes % 60;\n$heures = ($minutes - $reste) / 60;\n$total = $heures * $tarif;\n$total += $reste * 5;\n$ticket = \"Durée : \";\n$ticket .= $heures . \" h \";\n$ticket .= \"$reste min\";\necho $ticket;\necho \" - Total : $total F\";\necho ' - Total : $total F';\n$heures++;\necho $heures;\n?>\n```\n\n1. Donner le type de la variable `$tarif` et celui de la variable `$ticket`, puis nommer l'opérateur utilisé dans l'instruction `$total += $reste * 5;`.\n2. Établir, sous forme de tableau, les valeurs de `$reste`, `$heures` et `$total` après chacune des quatre instructions qui vont de `$reste = $minutes % 60;` à `$total += $reste * 5;`.\n3. Donner, espaces compris, tout ce que le script affiche, sachant que `echo` n'ajoute aucun retour à la ligne.\n4. Expliquer pourquoi `$total` est remplacé par sa valeur dans le deuxième `echo` mais s'affiche tel quel dans le troisième.\n5. Vérification : retrouver la valeur de `$minutes` à partir des valeurs de `$heures` et de `$reste` avant l'instruction `$heures++;`, puis contrôler le total affiché par un calcul direct.",
+    "corrige_markdown": "### Rappel de méthode\nPHP exécute les instructions l'une après l'autre : `%` donne le reste de la division entière, `+=` et `.=` combinent une opération avec l'affectation et `++` ajoute 1. Dans une chaîne entre guillemets doubles, le nom d'une variable est remplacé par sa valeur, alors que dans une chaîne entre apostrophes le texte reste tel quel ; `echo` écrit ce qu'on lui donne sans ajouter de retour à la ligne.\n\n### Corrigé\n**Question 1.** La variable `$tarif` reçoit `400` : c'est un entier (`int`). La variable `$ticket` reçoit un texte entre guillemets : c'est une chaîne de caractères (`string`). L'opérateur `+=` est un opérateur d'affectation composé : `$total += $reste * 5;` équivaut à `$total = $total + ($reste * 5);`, la multiplication étant effectuée avant l'addition.\n\n**Question 2.**\n\n| Instruction | reste | heures | total |\n|---|---|---|---|\n| `$reste = $minutes % 60;` | 15 | – | – |\n| `$heures = ($minutes - $reste) / 60;` | 15 | 2 | – |\n| `$total = $heures * $tarif;` | 15 | 2 | 800 |\n| `$total += $reste * 5;` | 15 | 2 | 875 |\n\nDétail : 135 = 2 × 60 + 15, donc le reste vaut 15 ; (135 − 15) / 60 = 2 ; 2 × 400 = 800 ; 800 + 15 × 5 = 875.\n\n**Question 3.** Les instructions de la chaîne `$ticket` produisent « Durée : 2 h 15 min ». Les `echo` écrivent ensuite, à la suite les uns des autres, le ticket, le deuxième texte avec la valeur 875, le troisième texte littéral, puis la valeur de `$heures` devenue 3 après `$heures++;`. L'affichage, sur une seule ligne, est :\n\n```text\nDurée : 2 h 15 min - Total : 875 F - Total : $total F3\n```\n\n**Question 4.** Le deuxième `echo` utilise des guillemets doubles : PHP y remplace `$total` par sa valeur, 875. Le troisième utilise des apostrophes : aucune substitution n'a lieu et le texte `$total` est écrit tel quel.\n\n**Question 5.** Avant `$heures++;`, on a `$heures` = 2 et `$reste` = 15 : 2 × 60 + 15 = 135, ce qui est bien la valeur de `$minutes`. Le calcul direct du total donne 2 × 400 + 15 × 5 = 800 + 75 = 875, valeur identique à celle affichée après « Total : ». Le dernier chiffre affiché, 3, ne sert pas à ce contrôle puisqu'il vient de `$heures` après l'incrémentation.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10579,
+      10582
+    ]
+  }
+]

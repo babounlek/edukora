@@ -1,0 +1,64 @@
+[
+  {
+    "external_id": "cqc-ligne-de-commande-bac-ti-si-faible-0",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans l'invite de commandes d'un ordinateur du lycée technique de Garoua, le dossier courant contient le fichier texte `NOTES.TXT`.\n\nQuelle commande affiche le contenu de ce fichier à l'écran ?",
+    "corrige_markdown": "### Rappel de méthode\nChaque commande DOS accomplit une tâche précise : certaines parcourent l'arborescence (lister des noms, changer de dossier, créer un dossier), d'autres agissent sur le fichier lui-même. Pour lire le texte d'un fichier sans l'ouvrir dans un éditeur, il faut choisir la commande prévue pour afficher un contenu, et non celle qui se contente de lister des noms.\n\n### Corrigé\nLa commande `TYPE` envoie à l'écran le texte contenu dans le fichier dont on lui donne le nom : `TYPE NOTES.TXT` affiche les lignes de `NOTES.TXT`.\n\n- **`DIR NOTES.TXT`** : faux. `DIR` n'affiche que la ligne de description du fichier (nom, taille, date) ; son texte n'apparaît jamais.\n- **`CD NOTES.TXT`** : faux. `CD` change le dossier courant ; or `NOTES.TXT` est un fichier et non un dossier, donc la commande ne peut pas aboutir.\n- **`MD NOTES.TXT`** : faux. `MD` sert à créer un dossier : la commande chercherait à créer un dossier portant ce nom et n'afficherait aucun contenu.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`TYPE NOTES.TXT`" },
+      { "lettre": "B", "texte": "`DIR NOTES.TXT`" },
+      { "lettre": "C", "texte": "`CD NOTES.TXT`" },
+      { "lettre": "D", "texte": "`MD NOTES.TXT`" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [10584, 11234]
+  },
+  {
+    "external_id": "cqc-ligne-de-commande-bac-ti-si-moyenne-1",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le dossier `C:\\CAFE\\FACTURES` du cybercafé de Bafoussam contient exactement les dix fichiers suivants :\n\n```text\nFACT01.PDF   FACT02.PDF   FACT02.BAK   FACT10.PDF   FACTURE.DOC\nDEVIS1.DOC   DEVIS2.DOC   CAISSE.TXT   CAISSE2.TXT  STOCK.XLS\n```\n\nOn admet que, dans un motif, `*` remplace n'importe quelle suite de caractères (éventuellement vide) et `?` remplace exactement un caractère, le nom et l'extension (séparés par le point) étant comparés séparément au motif.\n\n1. Donner la liste des fichiers affichés par chacune des commandes suivantes, tapées dans ce dossier : `DIR FACT*.PDF`, `DIR FACT0?.*` et `DIR *2.*`.\n2. Écrire une commande qui affiche uniquement `DEVIS1.DOC` et `DEVIS2.DOC`, sans afficher `FACTURE.DOC`, et justifier le motif choisi.",
+    "corrige_markdown": "### Rappel de méthode\nDans un motif de commande DOS, le caractère `*` remplace toute suite de caractères, même vide, et `?` remplace un seul caractère. Le motif se découpe au point : la partie avant le point est comparée au nom du fichier, la partie après le point à son extension, et un fichier n'est affiché que si les deux parties correspondent.\n\n### Corrigé\n**1.** Fichiers affichés par chaque commande :\n\n- `DIR FACT*.PDF` : le nom doit commencer par `FACT` (la suite est libre) et l'extension être exactement `PDF`. Fichiers affichés : `FACT01.PDF`, `FACT02.PDF`, `FACT10.PDF`. `FACT02.BAK` est écarté (extension `BAK`) et `FACTURE.DOC` aussi (extension `DOC`).\n- `DIR FACT0?.*` : le nom est `FACT0` suivi d'un seul caractère, l'extension est libre. Fichiers affichés : `FACT01.PDF`, `FACT02.PDF`, `FACT02.BAK`. `FACT10.PDF` est écarté (son cinquième caractère est `1`, pas `0`) et `FACTURE.DOC` aussi (son cinquième caractère est `U`).\n- `DIR *2.*` : le nom doit se terminer par `2`, l'extension est libre. Fichiers affichés : `FACT02.PDF`, `FACT02.BAK`, `DEVIS2.DOC`, `CAISSE2.TXT`, soit quatre fichiers. Les autres noms se terminent par `1`, `0` ou une lettre.\n\n**2.** La commande `DIR DEVIS?.DOC` convient : le nom doit être `DEVIS` suivi d'un seul caractère et l'extension exactement `DOC`. Elle affiche `DEVIS1.DOC` et `DEVIS2.DOC` ; `FACTURE.DOC` a bien l'extension `DOC`, mais son nom ne commence pas par `DEVIS`, donc il n'est pas retenu. La commande `DIR DEVIS*.DOC` donne ici le même résultat, mais le motif avec `?` est plus précis, car il impose exactement un caractère après `DEVIS`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11234]
+  },
+  {
+    "external_id": "cqc-ligne-de-commande-bac-ti-si-elevee-2",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans un lycée technique de Garoua, un élève range ses fichiers de cours à l'aide de l'invite de commandes. Le dossier `C:\\LYCEE\\COURS` contient exactement les onze fichiers suivants :\n\n```text\nALGO1.DOC   ALGO2.DOC   ALGO2.BAK   BASE.PDF\nBASES.PDF   NOTES1.TXT  NOTES2.TXT  NOTES2.BAK\nPLAN.DOC    RESEAU.PDF  RESEAU2.PDF\n```\n\nLe dossier `C:\\LYCEE\\TP` n'existe pas encore. L'élève tape la séquence suivante, depuis le dossier `C:\\LYCEE` :\n\n```text\nC:\\LYCEE>MD TP\nC:\\LYCEE>CD TP\nC:\\LYCEE\\TP>COPY C:\\LYCEE\\COURS\\*.PDF C:\\LYCEE\\TP\nC:\\LYCEE\\TP>COPY C:\\LYCEE\\COURS\\NOTES?.* C:\\LYCEE\\TP\nC:\\LYCEE\\TP>DEL *.BAK\nC:\\LYCEE\\TP>DIR\n```\n\nOn admet que `*` remplace toute suite de caractères (éventuellement vide), que `?` remplace exactement un caractère, que `COPY` copie les fichiers sans déplacer les originaux et que `DEL` supprime sans demander de confirmation.\n\n1. Définir une interface en ligne de commande, puis citer un avantage et un inconvénient de cette interface par rapport à une interface graphique.\n2. Expliquer l'effet des deux premières commandes, `MD TP` et `CD TP`.\n3. Donner la liste des fichiers copiés par chacune des deux commandes `COPY`, avec leur nombre.\n4. Donner la liste des fichiers affichés par le dernier `DIR` (ordre indifférent).\n5. Vérification : contrôler le résultat de la question 3 en dénombrant les fichiers du dossier source qui n'ont pas été copiés, puis dire ce que montrerait la commande `DIR C:\\LYCEE\\COURS` à la fin de la séquence.",
+    "corrige_markdown": "### Rappel de méthode\nUne interface en ligne de commande pilote l'ordinateur par des instructions saisies au clavier, chacune formée d'un nom de commande suivi de paramètres. Les caractères jokers `*` et `?` désignent plusieurs fichiers à la fois ; pour prédire l'effet d'une séquence, on suit le dossier courant à chaque ligne et l'on teste chaque nom de fichier contre le motif.\n\n### Corrigé\n**1.** Une interface en ligne de commande est un mode de dialogue où l'utilisateur tape des instructions textuelles que le système exécute, comme dans l'invite de commandes de Windows. Avantage : une seule instruction peut traiter plusieurs fichiers grâce aux jokers, ce qui est rapide et précis pour les tâches répétitives. Inconvénient : il faut connaître la syntaxe exacte des commandes, et une faute de frappe donne une erreur ou un mauvais résultat, sans l'aide visuelle des icônes et des menus.\n\n**2.** `MD TP` crée le dossier `TP` dans le dossier courant, donc `C:\\LYCEE\\TP`. `CD TP` fait de ce nouveau dossier le dossier courant, ce que confirme l'invite `C:\\LYCEE\\TP>` des lignes suivantes.\n\n**3.** Fichiers copiés :\n\n- première commande `COPY` (motif `*.PDF`, extension exactement `PDF`) : `BASE.PDF`, `BASES.PDF`, `RESEAU.PDF`, `RESEAU2.PDF`, soit **4 fichiers** ;\n- deuxième commande `COPY` (motif `NOTES?.*`, nom formé de `NOTES` et d'un seul caractère, extension libre) : `NOTES1.TXT`, `NOTES2.TXT`, `NOTES2.BAK`, soit **3 fichiers**.\n\nLe dossier `TP` contient donc $4 + 3 = 7$ fichiers avant la suppression.\n\n**4.** `DEL *.BAK` agit sur le dossier courant `C:\\LYCEE\\TP` et y supprime le seul fichier d'extension `BAK`, `NOTES2.BAK`. Le dernier `DIR` affiche donc : `BASE.PDF`, `BASES.PDF`, `NOTES1.TXT`, `NOTES2.TXT`, `RESEAU.PDF`, `RESEAU2.PDF`, soit $7 - 1 = 6$ fichiers.\n\n**5.** Fichiers du dossier source non copiés : `ALGO1.DOC`, `ALGO2.DOC`, `ALGO2.BAK` et `PLAN.DOC`. Aucun n'a l'extension `PDF` et aucun n'a un nom formé de `NOTES` suivi d'un seul caractère, soit 4 fichiers. Le contrôle est cohérent : $7 + 4 = 11$, le nombre de fichiers du dossier source. À la fin de la séquence, `DIR C:\\LYCEE\\COURS` affiche encore les **onze fichiers** : `COPY` ne déplace pas les originaux et `DEL *.BAK` n'a touché que le dossier courant `TP`, si bien que `ALGO2.BAK` et `NOTES2.BAK` sont toujours dans `COURS`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10584, 11234]
+  }
+]

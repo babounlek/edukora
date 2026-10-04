@@ -1,0 +1,88 @@
+[
+  {
+    "external_id": "cqc-include-bac-ti-si-faible-0",
+    "theme": "include",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "enonce_markdown": "Dans le système d'information d'un lycée technique de Garoua, le cas d'utilisation « Valider une inscription » est relié au cas « Vérifier le dossier de l'élève » par une flèche en pointillés étiquetée `<<include>>`, dirigée de « Valider une inscription » vers « Vérifier le dossier de l'élève ».\n\nQue traduit cette relation ?",
+    "corrige_markdown": "### Rappel de méthode\nEntre deux cas d'utilisation, `<<include>>` exprime une inclusion obligatoire : le cas de base emprunte, à chacune de ses exécutions, le comportement du cas inclus, et la flèche pointillée va du cas de base vers le cas inclus. `<<extend>>` branche au contraire un comportement facultatif, soumis à une condition, et sa flèche va du cas qui complète vers le cas de base.\n\n### Corrigé\nLa flèche `<<include>>` part de « Valider une inscription » (cas de base) vers « Vérifier le dossier de l'élève » (cas inclus) : à chaque validation, la vérification du dossier est exécutée, sans condition.\n\n- A est faux : un comportement qui ne s'ajoute que sous condition relève de `<<extend>>`, pas de `<<include>>`.\n- C est faux : c'est la confusion avec la généralisation, qui exprime « est une sorte de » entre deux éléments et se note par un triangle creux.\n- D est faux : un acteur est une entité extérieure au système ; « Vérifier le dossier de l'élève » est un cas d'utilisation, donc une fonctionnalité du système.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10577,
+      10739,
+      11239
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "« Vérifier le dossier de l'élève » s'ajoute seulement quand une condition est remplie"
+      },
+      {
+        "lettre": "B",
+        "texte": "« Valider une inscription » exécute toujours « Vérifier le dossier de l'élève »"
+      },
+      {
+        "lettre": "C",
+        "texte": "« Valider une inscription » est un cas général dont l'autre est une variante"
+      },
+      {
+        "lettre": "D",
+        "texte": "« Vérifier le dossier de l'élève » est un acteur secondaire du premier cas"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-include-bac-ti-si-moyenne-1",
+    "theme": "include",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "enonce_markdown": "Dans une agence de messagerie de Douala, un stagiaire décrit ainsi une partie du système : le cas d'utilisation « Expédier un colis » est relié au cas « Appliquer le supplément de poids » par une relation `<<include>>`. La règle de l'agence est que le supplément ne s'applique que si le colis pèse plus de 20 kg.\n\n1. Expliquer pourquoi `<<include>>` ne convient pas à cette règle.\n2. Indiquer la relation correcte et le sens de sa flèche.\n3. Dire, pour un colis de 12 kg puis pour un colis de 27 kg, si « Appliquer le supplément de poids » est exécuté.",
+    "corrige_markdown": "### Rappel de méthode\nChoisir entre `<<include>>` et `<<extend>>` revient à poser une seule question : le comportement s'exécute-t-il à chaque déroulement du cas de base, ou seulement lorsqu'une condition est vérifiée ? Dans le premier cas, la flèche pointillée part du cas de base ; dans le second, elle part du cas qui ajoute le comportement et pointe vers le cas de base.\n\n### Corrigé\n**1.** Avec `<<include>>`, « Appliquer le supplément de poids » serait exécuté à chaque expédition, y compris pour un colis léger, alors que la règle de l'agence le réserve aux colis de plus de 20 kg : le comportement est conditionnel et non systématique.\n\n**2.** La relation correcte est `<<extend>>`. La flèche pointillée part de « Appliquer le supplément de poids » (cas qui complète) vers « Expédier un colis » (cas de base), avec la condition `poids > 20 kg` notée sur la relation.\n\n**3.** Colis de 12 kg : il ne dépasse pas 20 kg, la condition n'est pas remplie et seul « Expédier un colis » se déroule. Colis de 27 kg : il dépasse 20 kg, la condition est remplie et « Appliquer le supplément de poids » est exécuté en plus de « Expédier un colis ».",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10577,
+      10739,
+      11239
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-include-bac-ti-si-elevee-2",
+    "theme": "include",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "enonce_markdown": "La billetterie d'une gare routière de Bafoussam fonctionne ainsi. Le guichetier vend un billet à un voyageur ; pour chaque vente, il doit vérifier qu'il reste une place sur le départ choisi. Si le voyageur est un élève muni de sa carte scolaire, le guichetier applique en plus un tarif réduit de 20 %. Le chef de gare peut faire tout ce que fait un guichetier et il est seul à pouvoir annuler un départ.\n\nUne modélisation prévoit les cas d'utilisation « Vendre un billet », « Vérifier la disponibilité d'une place », « Appliquer le tarif réduit » et « Annuler un départ », ainsi que les acteurs Guichetier et Chef de gare. Le billet plein tarif coûte 5 000 F CFA.\n\n1. Choisir, pour « Vérifier la disponibilité d'une place » puis pour « Appliquer le tarif réduit », la relation (`<<include>>` ou `<<extend>>`) qui les relie à « Vendre un billet », en justifiant chaque choix.\n2. Préciser, pour chacune de ces deux relations, le cas d'où part la flèche et le cas qu'elle atteint.\n3. Nommer la relation qui relie l'acteur Chef de gare à l'acteur Guichetier, et expliquer en une phrase en quoi elle diffère d'un `<<include>>` entre cas d'utilisation.\n4. Vérifier la cohérence des relations choisies avec deux ventes tests, l'une à un adulte et l'autre à un élève muni de sa carte : lister dans chaque vente les cas d'utilisation exécutés et calculer le prix payé.",
+    "corrige_markdown": "### Rappel de méthode\nUn comportement commun à tous les déroulements d'un cas se factorise par `<<include>>`, un comportement soumis à une condition s'ajoute par `<<extend>>` ; la flèche pointillée de l'inclusion quitte le cas de base, celle de l'extension y arrive. La généralisation, à triangle creux, exprime « est une sorte de » et peut lier deux acteurs.\n\n### Corrigé\n**1. Choix des relations.**\n\n- « Vérifier la disponibilité d'une place » : `<<include>>`, car cette vérification est obligatoire à chaque vente, sans condition.\n- « Appliquer le tarif réduit » : `<<extend>>`, car ce comportement est facultatif et ne se déclenche que si le voyageur est un élève muni de sa carte scolaire.\n\n**2. Sens des flèches.** Pour `<<include>>`, la flèche part de « Vendre un billet » (cas de base) vers « Vérifier la disponibilité d'une place » (cas inclus). Pour `<<extend>>`, elle part de « Appliquer le tarif réduit » (cas qui complète) vers « Vendre un billet » (cas de base), avec la condition « voyageur élève muni de sa carte scolaire ».\n\n**3. Relation entre acteurs.** C'est une **généralisation** : une flèche à triangle creux va de Chef de gare vers Guichetier. Le chef de gare est un guichetier particulier qui hérite de ses cas d'utilisation (il peut vendre un billet) et possède en plus « Annuler un départ ». Elle diffère d'un `<<include>>` car elle relie deux acteurs et exprime « est une sorte de », alors que `<<include>>` relie deux cas et exprime qu'un comportement est inclus dans un autre.\n\n**4. Vérification avec deux ventes tests.**\n\n- Vente à un adulte : « Vendre un billet » et « Vérifier la disponibilité d'une place » sont exécutés, sans tarif réduit. Prix payé : 5 000 F CFA.\n- Vente à un élève : les deux mêmes cas, plus « Appliquer le tarif réduit ». Réduction : $5\\,000 \\times 0{,}20 = 1\\,000$ F CFA, donc prix payé : $5\\,000 - 1\\,000 = 4\\,000$ F CFA.\n\nContrôle par une autre méthode : $5\\,000 \\times 0{,}80 = 4\\,000$ F CFA, ce qui confirme le prix. Les deux ventes exécutent la vérification de place (comportement inclus, toujours présent) et seule la vente à l'élève exécute le tarif réduit (comportement d'extension, conditionnel) : les relations choisies sont cohérentes.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10577,
+      10739,
+      11239
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]
