@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import {
@@ -18,7 +18,7 @@ import { getThemesFrequents, listMySubscriptions, listQuizSubjects, startQuizSes
 import { ApiError } from "@/api/client"
 import type { ModeQuiz, Subject, Subscription, ThemeFrequent } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { abonnementsActifsDuProfil } from "@/lib/changerCursusPrepare"
+import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { useCountry } from "@/context/CountryContext"
 import { EtapesPresentation, StatChip } from "@/components/Configurateur"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
@@ -124,7 +124,7 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
         {error && <p className="text-sm text-destructive">{error}</p>}
         <Button asChild size="lg" className="w-full sm:w-auto">
           <a href="/tarifs">
-            Voir les tarifs
+            Voir les prix
             <ArrowRight className="size-4" />
           </a>
         </Button>
@@ -256,7 +256,9 @@ export function QuizStartPage() {
   const nParam = Number(searchParams.get("n"))
   const themeAutoLanceRef = useRef(false)
 
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  // Tous les abonnements actifs du profil ; `subscriptions` (plus bas) n'en garde que ceux
+  // que le quiz propose, voir abonnementsDeLExamenPrepare.
+  const [abonnementsProfil, setAbonnementsProfil] = useState<Subscription[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [subjectsLoaded, setSubjectsLoaded] = useState(false)
   // Structure réelle du cursus déclaré (gratuit, voir user.cursus_prepare) quand
@@ -273,6 +275,15 @@ export function QuizStartPage() {
   const [startingThemeId, setStartingThemeId] = useState<number | null>(null)
   const [error, setError] = useState("")
 
+  // Examen préparé du compte (sélecteur du bandeau) : le quiz s'y limite, un profil qui a
+  // payé BEPC et BAC C ne retrouve pas l'autre examen en pastille. Suit le sélecteur : si
+  // l'élève change d'examen depuis le bandeau, la liste et la sélection suivent.
+  const cursusPrepareId = user?.cursus_prepare?.id ?? null
+  const subscriptions = useMemo(
+    () => abonnementsDeLExamenPrepare(abonnementsProfil, cursusPrepareId, cursusParam),
+    [abonnementsProfil, cursusPrepareId, cursusParam],
+  )
+
   useEffect(() => {
     if (authLoading) return
     if (!isAuthenticated) {
@@ -286,11 +297,12 @@ export function QuizStartPage() {
     listMySubscriptions().then((subs) => {
       // L'enfant connecté seulement : pas les cursus de la fratrie.
       const active = abonnementsActifsDuProfil(subs, user?.profil_actif?.id)
-      setSubscriptions(active)
+      setAbonnementsProfil(active)
       setSubscriptionsLoaded(true)
+      // Sans lien direct, la sélection par défaut vient de l'effet de synchronisation ci-dessous
+      // (l'examen préparé), pas du premier abonnement de la liste.
       const viaParam = cursusParam && active.some((sub) => String(sub.cursus.id) === cursusParam)
       if (viaParam) setSelectedCursus(cursusParam)
-      else if (active.length > 0) setSelectedCursus(String(active[0].cursus.id))
     })
     // cursusParam volontairement absent des deps : un changement d'URL après coup ne
     // doit pas redéclencher un nouvel appel listMySubscriptions(), seule la valeur au
@@ -298,10 +310,18 @@ export function QuizStartPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, isAuthenticated])
 
+  // La sélection reste toujours dans la liste proposée : à l'arrivée elle prend l'examen
+  // préparé, et elle y revient si l'élève en change depuis le bandeau pendant que la page est ouverte.
+  useEffect(() => {
+    if (!subscriptionsLoaded || subscriptions.length === 0) return
+    setSelectedCursus((courant) =>
+      subscriptions.some((sub) => String(sub.cursus.id) === courant) ? courant : String(subscriptions[0].cursus.id),
+    )
+  }, [subscriptionsLoaded, subscriptions])
+
   // Sans abonnement actif mais un cursus déclaré (gratuit) : list_quiz_subjects
   // n'exige pas d'abonnement (voir sa docstring côté backend) - on peut donc montrer la
   // vraie structure de la banque avant le mur payant plutôt qu'une question de démo.
-  const cursusPrepareId = user?.cursus_prepare?.id ?? null
   useEffect(() => {
     if (!subscriptionsLoaded || subscriptions.length > 0 || cursusPrepareId === null) {
       setPreviewSubjects(null)
@@ -498,7 +518,7 @@ export function QuizStartPage() {
                 {isAuthenticated ? (
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <a href="/tarifs">
-                      Voir les tarifs
+                      Voir les prix
                       <ArrowRight className="size-4" />
                     </a>
                   </Button>
@@ -511,7 +531,7 @@ export function QuizStartPage() {
                       </Link>
                     </Button>
                     <Link to="/tarifs" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-                      Pas encore d'abonnement ? Voir les tarifs
+                      Pas encore d'abonnement ? Voir les prix
                     </Link>
                   </div>
                 )}

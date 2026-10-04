@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
@@ -10,7 +10,7 @@ import { getParcours, listMySubscriptions, listSubjects, startQuizSession } from
 import { ApiError } from "@/api/client"
 import type { Cursus, ParcoursModule, ParcoursSavoir, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { abonnementsActifsDuProfil } from "@/lib/changerCursusPrepare"
+import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { CheminParcours } from "@/components/CheminParcours"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
@@ -413,13 +413,30 @@ export function ParcoursSubjectPage() {
     queryFn: listMySubscriptions,
     enabled: isAuthenticated,
   })
-  // Les abonnements de l'enfant connecté seulement (voir abonnementsActifsDuProfil).
-  const profilId = user?.profil_actif?.id
-  const actifs = useMemo(() => abonnementsActifsDuProfil(subscriptions, profilId), [subscriptions, profilId])
   // Cursus déclaré (gratuit, voir user.cursus_prepare) : dernier repli quand aucun
   // abonnement actif ne matche l'URL - la structure du programme se montre à qui sait
   // ce qu'il prépare, abonné ou non (voir project_gating_non_abonne_quiz_parcours).
   const prepare = user?.cursus_prepare?.id ?? null
+  // Les abonnements de l'enfant connecté seulement (voir abonnementsActifsDuProfil), et
+  // parmi eux l'examen préparé seul (sélecteur du bandeau) plus le cursus du lien direct :
+  // un profil qui a payé BEPC et BAC C ne retrouve pas l'autre examen en pastille.
+  const profilId = user?.profil_actif?.id
+  const actifs = useMemo(
+    () => abonnementsDeLExamenPrepare(abonnementsActifsDuProfil(subscriptions, profilId), prepare, cursusFromUrl),
+    [subscriptions, profilId, prepare, cursusFromUrl],
+  )
+
+  // Un changement d'examen depuis le bandeau (d'un examen à un autre, pas l'arrivée du
+  // profil) reprend la main sur un cursus choisi plus tôt et sur celui du lien direct, sans
+  // quoi la page resterait sur l'ancien examen.
+  const prepareAvant = useRef(prepare)
+  useEffect(() => {
+    if (prepareAvant.current === prepare) return
+    const avaitUnExamen = prepareAvant.current !== null
+    prepareAvant.current = prepare
+    setCursusChoisi("")
+    if (avaitUnExamen) setSearchParams({}, { replace: true })
+  }, [prepare, setSearchParams])
 
   // Le cursus de l'URL est pris au mot tant que la liste des abonnements n'est pas
   // arrivée : le parcours part ainsi en même temps qu'elle au lieu d'attendre derrière
@@ -744,7 +761,7 @@ export function ParcoursSubjectPage() {
                     <Button asChild size="lg" variant="outline" className="h-12 shrink-0 rounded-full px-7 text-base">
                       <Link to="/tarifs">
                         <Lock className="size-4" />
-                        Voir les tarifs
+                        Voir les prix
                       </Link>
                     </Button>
                   )}

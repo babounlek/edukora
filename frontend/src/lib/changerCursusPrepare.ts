@@ -42,6 +42,29 @@ export function abonnementsActifsDuProfil(
 }
 
 /**
+ * Les abonnements que les pages personnelles (quiz, progression, parcours d'une matière)
+ * proposent : celui de l'examen préparé du compte (le sélecteur « Examen préparé » du
+ * bandeau, `user.cursus_prepare`), et lui seul. Un profil qui a payé deux examens (BEPC et
+ * BAC C, par ex.) ne doit pas retrouver l'autre en pastille : le bandeau annonce déjà
+ * l'examen visé, et changer d'examen se fait à un seul endroit.
+ *
+ * `cursusDemande` (lien direct `?cursus=`, posé par les boutons des autres pages) reste
+ * admis, sinon un lancement depuis un autre examen que l'examen préparé tomberait dans le
+ * vide. Repli : tous les abonnements quand aucun ne correspond (examen préparé non
+ * déclaré, ou sans abonnement actif sur ce profil).
+ */
+export function abonnementsDeLExamenPrepare(
+  abonnements: Subscription[],
+  cursusPrepareId: number | null | undefined,
+  cursusDemande: string | null = null,
+): Subscription[] {
+  const retenus = abonnements.filter(
+    (sub) => sub.cursus.id === cursusPrepareId || String(sub.cursus.id) === cursusDemande,
+  )
+  return retenus.length > 0 ? retenus : abonnements
+}
+
+/**
  * Change l'examen préparé du compte - même mutation que BandeauCursus (qui déclare un
  * premier cursus), réutilisée ici pour en changer : un compte avec deux abonnements
  * payés doit pouvoir revenir sur son choix sans se reconnecter.

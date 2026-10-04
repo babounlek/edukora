@@ -7,7 +7,7 @@ import { getResumeParcours, listMySubscriptions } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cursus, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { abonnementsActifsDuProfil } from "@/lib/changerCursusPrepare"
+import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -157,7 +157,16 @@ export function ParcoursPage() {
   })
   // Les abonnements de l'enfant connecté seulement : la page est la sienne, pas celle
   // de la fratrie (un cursus payé pour un frère ne doit ni s'afficher ni déverrouiller).
-  const actifs = abonnementsActifsDuProfil(subscriptions, user?.profil_actif?.id)
+  // Et parmi eux, l'examen préparé seul (sélecteur du bandeau) : un profil qui a payé BEPC et
+  // BAC C ne retrouve pas l'autre examen en pastille, voir abonnementsDeLExamenPrepare.
+  const prepare = user?.cursus_prepare?.id ?? null
+  const actifs = abonnementsDeLExamenPrepare(abonnementsActifsDuProfil(subscriptions, user?.profil_actif?.id), prepare)
+
+  // Un changement d'examen depuis le bandeau reprend la main : sans cela, un cursus choisi
+  // plus tôt à la pastille (cas de repli, sans examen préparé abonné) resterait affiché.
+  useEffect(() => {
+    setCursusChoisi(null)
+  }, [prepare])
 
   // Le cursus affiché par défaut : celui que l'élève a déclaré préparer, s'il y est
   // abonné, sinon son premier abonnement actif, sinon le cursus déclaré tout court -
@@ -173,7 +182,6 @@ export function ParcoursPage() {
   // (voir AccueilEleve), si bien qu'en venant de "Voir toute ma progression" il est
   // déjà là. Dans le cas rare où le cursus déclaré n'est pas celui de l'abonnement,
   // la correction arrive avec la liste.
-  const prepare = user?.cursus_prepare?.id ?? null
   const parDefaut = subscriptions
     ? actifs.find((sub) => sub.cursus.id === prepare)?.cursus.id ?? actifs[0]?.cursus.id ?? prepare
     : prepare
@@ -292,7 +300,7 @@ export function ParcoursPage() {
               Voici le programme complet de ce cursus - abonne-toi pour suivre ta vraie progression, matière par matière.
             </p>
             <Button asChild size="sm" className="shrink-0 rounded-full px-4">
-              <Link to="/tarifs">Voir les tarifs</Link>
+              <Link to="/tarifs">Voir les prix</Link>
             </Button>
           </div>
         )}
