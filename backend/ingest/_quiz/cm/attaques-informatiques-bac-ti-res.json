@@ -1,0 +1,68 @@
+[
+  {
+    "external_id": "cqc-attaques-informatiques-bac-ti-res-faible-0",
+    "theme": "attaques informatiques",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans un cybercafé de Yaoundé, un client se connecte au Wi-Fi ouvert de l'établissement et consulte un site qui n'utilise pas le chiffrement (adresse commençant par `http`). Un autre utilisateur, connecté au même réseau, lance un logiciel qui capture les données échangées et lit ainsi le mot de passe saisi par le client. De quel type d'attaque s'agit-il ?",
+    "corrige_markdown": "### Rappel de méthode\nPour nommer une attaque, on identifie le geste de l'attaquant (saturer un service, deviner des identifiants, détourner une requête, tromper une personne, observer des données en transit) plutôt que son résultat final, puis on retient le nom qui correspond à ce geste.\n\n### Corrigé\nL'attaquant ne perturbe pas le service et ne devine rien : il se contente de capturer les données qui circulent sur le réseau partagé. Comme le site n'est pas chiffré, le mot de passe voyage en clair et devient lisible. Il s'agit d'une **interception du trafic** (écoute du réseau) ; lorsque l'attaquant s'intercale activement entre le client et le site, on parle d'attaque de l'homme du milieu. Avec un site en `https`, les données capturées seraient restées illisibles. Réponse **B**.\n\n- Réponse A fausse : le déni de service vise à rendre un service indisponible en le saturant ; ici le site fonctionne normalement.\n- Réponse C fausse : l'injection SQL détourne la requête envoyée à la base de données d'un site à travers un champ de saisie ; ici aucune requête n'est modifiée.\n- Réponse D fausse : la force brute consiste à essayer méthodiquement des combinaisons de caractères ; ici le mot de passe est lu, non deviné.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Un déni de service, qui rend le site indisponible pour tous les clients du cybercafé."},
+      {"lettre": "B", "texte": "Une interception du trafic, qui capte les données pendant leur transit sur le réseau."},
+      {"lettre": "C", "texte": "Une injection SQL, qui détourne la requête envoyée à la base de données du site."},
+      {"lettre": "D", "texte": "Une attaque par force brute, qui teste toutes les combinaisons de mots de passe."}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [11238]
+  },
+  {
+    "external_id": "cqc-attaques-informatiques-bac-ti-res-moyenne-1",
+    "theme": "attaques informatiques",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Trois incidents sont signalés dans trois organisations différentes.\n\n- **Incident 1** (boutique en ligne de Douala) : dans le champ « identifiant » de la page de connexion, un visiteur saisit un texte contenant des instructions du langage SQL. La requête envoyée à la base de données est modifiée, et le visiteur accède au compte d'un client sans connaître son mot de passe.\n- **Incident 2** (PME) : une employée du service comptabilité reçoit un appel d'une personne qui se dit membre de l'assistance informatique du fournisseur et qui la persuade de lui dicter son mot de passe pour « résoudre une panne urgente ».\n- **Incident 3** (lycée) : un programme tente automatiquement, sur le compte d'une enseignante, toutes les combinaisons de caractères possibles, dans l'ordre : `aaaa`, `aaab`, `aaac`, et ainsi de suite.\n\n1. Nommer l'attaque subie dans chaque incident.\n2. Proposer, pour chaque incident, une mesure de protection adaptée.",
+    "corrige_markdown": "### Rappel de méthode\nUne attaque se nomme d'après son procédé, et la parade se choisit d'après la faiblesse exploitée : un défaut de programmation appelle une correction du code, un défaut humain appelle une sensibilisation, un secret trop facile à trouver appelle des mots de passe plus solides et une limite d'essais.\n\n### Corrigé\n**1.**\n\n- **Incident 1 : injection SQL.** Le visiteur insère des instructions SQL dans un champ de saisie, ce qui modifie la requête exécutée par la base de données.\n- **Incident 2 : ingénierie sociale** (ici par téléphone). L'attaquant manipule la confiance de la victime au lieu d'attaquer la machine ; l'hameçonnage en est la variante par message.\n- **Incident 3 : attaque par force brute.** Le programme essaie méthodiquement toutes les combinaisons possibles, dans l'ordre, jusqu'à trouver la bonne.\n\n**2.**\n\n- **Incident 1** : ne jamais insérer le texte saisi tel quel dans la requête ; utiliser des requêtes paramétrées et contrôler les saisies ; limiter les droits du compte qui interroge la base de données.\n- **Incident 2** : sensibiliser le personnel à ne jamais communiquer son mot de passe, même à une personne qui se dit du service informatique, et à vérifier l'identité de l'appelant en le rappelant sur un numéro officiel.\n- **Incident 3** : imposer des mots de passe longs et variés, et bloquer temporairement le compte après quelques échecs consécutifs, ce qui rend l'essai systématique beaucoup trop lent.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11238]
+  },
+  {
+    "external_id": "cqc-attaques-informatiques-bac-ti-res-moyenne-2",
+    "theme": "attaques informatiques",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le site web d'une mairie est piraté. L'enquête montre que l'intrus a exploité une vulnérabilité du logiciel de gestion de contenu. L'éditeur avait publié un correctif huit mois plus tôt, mais personne ne l'avait installé. Quelle mesure aurait le plus directement empêché cette intrusion ?",
+    "corrige_markdown": "### Rappel de méthode\nUne faille connue et corrigée par l'éditeur reste exploitable tant que le correctif n'est pas installé. La mesure efficace agit donc sur la cause réelle de l'intrusion, c'est-à-dire sur le logiciel resté vulnérable, et non sur un autre maillon de la chaîne de sécurité.\n\n### Corrigé\nL'attaque est technique : elle passe par un défaut du logiciel, pour lequel la parade existait déjà. Installer régulièrement les mises à jour de sécurité publiées par l'éditeur aurait supprimé la faille avant l'attaque. Réponse **C**.\n\n- Réponse A fausse : des mots de passe plus longs gênent les attaques par devinette ; une faille logicielle permet de contourner la connexion, quel que soit le mot de passe.\n- Réponse B fausse : la sensibilisation protège contre l'ingénierie sociale et les faux messages ; ici, aucune personne n'a été trompée.\n- Réponse D fausse : un second serveur identique répond à un besoin de continuité de service en cas de panne ; il porterait la même faille non corrigée et serait piraté de la même façon.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Imposer à tous les agents des mots de passe plus longs et plus variés pour chaque compte."},
+      {"lettre": "B", "texte": "Former tous les agents à reconnaître les faux courriels et les appels frauduleux."},
+      {"lettre": "C", "texte": "Installer régulièrement les mises à jour de sécurité publiées par l'éditeur du logiciel."},
+      {"lettre": "D", "texte": "Ajouter un second serveur identique pour prendre le relais en cas de panne du premier."}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11238]
+  },
+  {
+    "external_id": "cqc-attaques-informatiques-bac-ti-res-elevee-3",
+    "theme": "attaques informatiques",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le lundi, entre 10 h 00 et 10 h 10, l'administrateur d'une PME de Douala examine les journaux de ses serveurs et note trois événements :\n\n| Événement | Observation sur 10 minutes |\n|---|---|\n| E1 | Le site de réservation reçoit 90 000 requêtes en provenance de 1 500 adresses IP différentes, qui envoient chacune à peu près autant de requêtes ; les pages ne s'affichent plus |\n| E2 | Le site de l'annuaire interne reçoit 36 000 requêtes, toutes issues d'une seule adresse IP ; le serveur est saturé et inutilisable |\n| E3 | Le compte « admin » du serveur de fichiers subit 600 tentatives de connexion échouées, toutes depuis une même adresse, avec des mots de passe tirés d'une liste de mots de passe courants |\n\n1. Nommer l'attaque correspondant à chaque événement, en citant l'indice de l'observation qui la distingue des deux autres.\n2. Calculer le nombre de requêtes envoyées par chaque adresse pour E1 et pour E2, puis le nombre de tentatives par seconde pour E3.\n3. L'administrateur bloque au pare-feu l'adresse la plus active de chaque événement. Calculer la part du trafic supprimée pour E1 et pour E2, puis en déduire pourquoi cette mesure est efficace pour l'un et pas pour l'autre.\n4. Proposer une mesure de protection adaptée à E3.\n5. Vérifier les résultats : recalculer le total de requêtes de E1 à partir de la valeur obtenue à la question 2, et dire si la cadence de E3 peut venir d'une personne qui tape ses essais à la main.",
+    "corrige_markdown": "### Rappel de méthode\nUne attaque se reconnaît à des indices mesurables : le nombre d'adresses sources (une seule ou un très grand nombre), le volume de requêtes par adresse et la cadence des échecs de connexion. La parade se choisit selon l'origine du trafic : bloquer une adresse supprime une source unique, mais reste sans effet notable quand le trafic vient de milliers de sources.\n\n### Corrigé\n**1.**\n\n- **E1 : déni de service distribué (DDoS).** Indice : le trafic vient de 1 500 adresses différentes qui saturent le site en même temps.\n- **E2 : déni de service (DoS) simple.** Indice : toutes les requêtes viennent d'une seule adresse, et le serveur est saturé.\n- **E3 : attaque par dictionnaire**, variante de la force brute. Indice : les mots de passe essayés sont tirés d'une liste de mots de passe courants, et les échecs s'accumulent sur un seul compte.\n\n**2.** E1 : $\\dfrac{90\\,000}{1\\,500} = 60$ requêtes par adresse. E2 : une seule adresse, donc $36\\,000$ requêtes pour cette adresse. E3 : $10\\ \\text{min} = 600\\ \\text{s}$, donc $\\dfrac{600}{600} = 1$ tentative par seconde.\n\n**3.** Pour E2, l'adresse bloquée est la seule source : $\\dfrac{36\\,000}{36\\,000} = 100\\ \\%$ du trafic est supprimé. Pour E1, chaque adresse envoie environ 60 requêtes : $\\dfrac{60}{90\\,000} = \\dfrac{1}{1\\,500} \\approx 0{,}07\\ \\%$ du trafic est supprimé. Bloquer une adresse arrête donc l'attaque E2, mais ne change presque rien à E1, dont le trafic est réparti sur 1 500 sources ; contre E1, il faut un filtrage plus global (règles du pare-feu sur le type de trafic, service de protection proposé par l'hébergeur ou l'opérateur).\n\n**4.** Pour E3 : bloquer temporairement le compte après quelques échecs consécutifs, ce qui ralentit fortement les essais, et imposer un mot de passe long et varié qui ne figure dans aucune liste de mots de passe courants.\n\n**5.** Pour E1 : $1\\,500 \\times 60 = 90\\,000$ requêtes, ce qui retrouve le total de l'énoncé. Pour E3 : $1 \\times 600 = 600$ tentatives, qui retrouvent aussi le total de l'énoncé. Une cadence d'une tentative par seconde pendant dix minutes, sans interruption, ne peut pas venir d'une personne qui tape ses essais à la main : elle trahit un programme automatique.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11238]
+  }
+]

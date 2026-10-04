@@ -1,0 +1,120 @@
+[
+  {
+    "external_id": "cqc-equipements-d-interconnexion-bac-ti-res-faible-0",
+    "theme": "équipements d'interconnexion",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une salle informatique de lycée, un technicien constate qu'un équipement réseau renvoie chaque signal reçu sur tous ses autres ports, sans lire aucune adresse. De quel équipement s'agit-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLes équipements d'interconnexion se distinguent par ce qu'ils examinent avant de retransmettre : certains ne regardent rien et recopient simplement le signal, d'autres lisent l'adresse MAC de destination, d'autres encore l'adresse IP de destination.\n\n### Corrigé\n\nUn équipement qui recopie tout ce qu'il reçoit sur l'ensemble de ses autres ports, sans consulter aucune adresse, est un **concentrateur** (hub).\n\n- Le commutateur lit l'adresse MAC de destination et n'envoie la trame que sur le port où se trouve le destinataire.\n- Le routeur lit l'adresse IP de destination et relie des réseaux différents.\n- Le pont relie deux segments de réseau et ne laisse passer que les trames dont le destinataire se trouve de l'autre côté.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Un commutateur (en anglais switch)"
+      },
+      {
+        "lettre": "B",
+        "texte": "Un concentrateur (en anglais hub)"
+      },
+      {
+        "lettre": "C",
+        "texte": "Un routeur (en anglais router)"
+      },
+      {
+        "lettre": "D",
+        "texte": "Un pont (en anglais bridge)"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-equipements-d-interconnexion-bac-ti-res-moyenne-1",
+    "theme": "équipements d'interconnexion",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un commutateur de 8 ports a déjà appris que l'adresse MAC `00-1A-2B-3C-4D-05` est celle du poste branché sur son port 5. Une trame arrive par le port 2, avec cette adresse MAC comme destination. Que fait le commutateur de cette trame ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn commutateur construit une table qui associe chaque adresse MAC à un port : il l'apprend en lisant l'adresse MAC source de chaque trame reçue (le port d'arrivée est celui de l'émetteur). Pour transmettre, il consulte cette table avec l'adresse MAC de destination et n'envoie la trame que sur le port concerné ; ce n'est que pour une destination inconnue ou une diffusion qu'il l'envoie sur tous les autres ports.\n\n### Corrigé\n\nL'adresse MAC de destination figure déjà dans la table, associée au port 5 : le commutateur envoie donc la trame **uniquement sur le port 5**.\n\n- Le choix A décrit le comportement d'un concentrateur, ou celui d'un commutateur devant une adresse inconnue : ici l'adresse est connue.\n- Le choix B attribue au commutateur le rôle du routeur : il ne lit pas l'adresse IP et ne possède pas de table de routage.\n- Le choix C confond les deux apprentissages : le port d'arrivée sert à apprendre l'adresse de l'émetteur (la source), jamais celle du destinataire.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Il la diffuse sur tous les ports sauf le port 2, comme le ferait un concentrateur."
+      },
+      {
+        "lettre": "B",
+        "texte": "Il lit l'adresse IP de destination et cherche la meilleure route dans une table de routage."
+      },
+      {
+        "lettre": "C",
+        "texte": "Il l'envoie uniquement sur le port 2, car il apprend l'adresse du destinataire grâce au port d'arrivée."
+      },
+      {
+        "lettre": "D",
+        "texte": "Il l'envoie uniquement sur le port 5, car sa table associe cette adresse MAC à ce port."
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-equipements-d-interconnexion-bac-ti-res-moyenne-2",
+    "theme": "équipements d'interconnexion",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le technicien informatique d'un hôpital de Garoua doit choisir un équipement pour chacun des quatre besoins suivants. Pour chaque besoin, nommer l'équipement le plus adapté parmi : répéteur, concentrateur, commutateur, routeur, point d'accès sans fil. Justifier chaque choix en une phrase.\n\n1. Un câble à paires torsadées de 140 m doit relier deux bâtiments, mais le signal arrive trop affaibli à l'autre extrémité.\n2. Les 24 postes de la salle de soins doivent être reliés dans un même réseau local, sans que chaque poste reçoive le trafic destiné aux autres.\n3. Le réseau local de l'hôpital (`192.168.0.0/24`) doit être relié au réseau de son fournisseur d'accès pour atteindre Internet.\n4. Les médecins veulent connecter leurs tablettes, sans câble, au réseau filaire existant.",
+    "corrige_markdown": "### Rappel de méthode\n\nOn choisit un équipement d'après ce qu'il relie et ce qu'il examine : le répéteur et le concentrateur ne lisent aucune adresse, le commutateur lit l'adresse MAC et reste dans un même réseau local, le routeur lit l'adresse IP et relie des réseaux distincts, le point d'accès raccorde des appareils sans fil à un réseau filaire.\n\n### Corrigé\n\n| Besoin | Équipement | Justification |\n|---|---|---|\n| 1 | Répéteur | il régénère le signal affaibli par la distance (une paire torsadée Ethernet ne dépasse pas 100 m) |\n| 2 | Commutateur | il n'envoie chaque trame qu'au port du destinataire, alors qu'un concentrateur la recopierait sur tous les ports |\n| 3 | Routeur | il relie deux réseaux distincts (le réseau local et celui du fournisseur d'accès) et achemine les paquets selon leur adresse IP |\n| 4 | Point d'accès sans fil | il relie les appareils sans fil au réseau filaire existant |",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-equipements-d-interconnexion-bac-ti-res-elevee-3",
+    "theme": "équipements d'interconnexion",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une PME de Douala équipe ses bureaux. Il faut raccorder par câble 30 postes de travail, 4 imprimantes réseau et 1 serveur de fichiers. Le réseau doit aussi offrir le Wi-Fi à une douzaine de téléphones et être relié à Internet. Le matériel disponible comprend des commutateurs de 24 ports, un routeur fourni par le fournisseur d'accès et un point d'accès Wi-Fi. Le routeur et le point d'accès se branchent chacun sur un port d'un commutateur ; si deux commutateurs sont nécessaires, ils sont reliés entre eux par un câble qui occupe un port sur chacun.\n\n1. Nommer l'équipement qui relie les appareils filaires entre eux, celui qui relie le réseau à Internet et celui qui apporte le Wi-Fi, puis justifier le choix d'un commutateur plutôt que d'un concentrateur.\n2. Déterminer le nombre minimal de commutateurs de 24 ports nécessaires pour raccorder les seuls appareils filaires.\n3. Calculer le nombre total de ports occupés (appareils, liaison entre commutateurs, routeur, point d'accès), puis le nombre de ports libres.\n4. Contrôler le total obtenu à la question 3 en proposant une répartition des câbles sur les deux commutateurs, puis en additionnant port par port.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn commutateur relie les appareils d'un même réseau local en isolant le trafic port par port, un routeur relie ce réseau à un autre réseau, un point d'accès ajoute des appareils sans fil. Chaque câble branché sur un commutateur occupe un port, y compris ceux qui le relient à un autre équipement (autre commutateur, routeur, point d'accès).\n\n### Corrigé\n\n1. Les appareils filaires sont reliés par un **commutateur**, le réseau est relié à Internet par le **routeur**, et le Wi-Fi est apporté par le **point d'accès**. Le commutateur mémorise l'adresse MAC de chaque appareil et n'envoie chaque trame qu'au port du destinataire ; un concentrateur la recopierait sur tous les ports, ce qui ferait partager à tous le même trafic et provoquerait des collisions.\n\n2. Il y a $30 + 4 + 1 = 35$ appareils filaires. Un seul commutateur offre 24 ports, ce qui ne suffit pas ($35 > 24$) ; deux commutateurs offrent $2 \\times 24 = 48$ ports, ce qui suffit ($48 \\geq 35$). Il en faut donc **2** au minimum.\n\n3. Ports occupés : $35$ (appareils) $+ 2$ (liaison entre les deux commutateurs, un port sur chacun) $+ 1$ (routeur) $+ 1$ (point d'accès) $= 39$. Ports libres : $48 - 39 = 9$.\n\n4. Répartition possible. Commutateur 1 : 21 appareils + 1 port de liaison + 1 routeur + 1 point d'accès $= 24$ ports, donc plein. Commutateur 2 : 14 appareils + 1 port de liaison $= 15$ ports, donc 9 libres. Contrôle : $21 + 14 = 35$ appareils, et $24 + 15 = 39$ ports occupés, soit $48 - 39 = 9$ ports libres, comme à la question 3.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11248
+    ]
+  }
+]

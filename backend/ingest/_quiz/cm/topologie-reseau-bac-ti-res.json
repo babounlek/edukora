@@ -1,0 +1,120 @@
+[
+  {
+    "external_id": "cqc-topologie-reseau-bac-ti-res-faible-0",
+    "theme": "topologie réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans l'atelier d'une imprimerie de Douala, un seul câble principal parcourt toute la pièce le long du mur. Chaque ordinateur s'y raccorde par une dérivation, et les deux extrémités du câble sont fermées par un bouchon de terminaison. Quelle est la topologie physique de ce réseau ?",
+    "corrige_markdown": "### Rappel de méthode\nUne topologie physique se reconnaît à la forme du câblage : un support unique partagé et fermé à ses deux bouts caractérise le bus, un équipement central relié à chaque machine l'étoile, une boucle fermée de liaisons de voisin à voisin l'anneau, plusieurs liaisons directes par machine le maillage.\n\n### Corrigé\nLe texte décrit un câble principal unique, partagé par tous les ordinateurs, dont les deux bouts portent un bouchon de terminaison : c'est le câblage d'un **bus**.\n\n- **A** est fausse : une étoile suppose un équipement central (commutateur ou concentrateur) et un câble par ordinateur ; aucun équipement central n'apparaît ici.\n- **C** est fausse : une boucle fermée n'a pas d'extrémités, donc pas de bouchon de terminaison ; chaque machine y a deux voisins directs.\n- **D** est fausse : dans un réseau maillé, une machine possède plusieurs liaisons directes vers d'autres machines, alors qu'ici chacune ne se raccorde qu'au câble commun.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "En étoile : chaque ordinateur a son propre câble vers un équipement central"
+      },
+      {
+        "lettre": "B",
+        "texte": "En bus : tous les ordinateurs partagent un seul câble principal commun"
+      },
+      {
+        "lettre": "C",
+        "texte": "En anneau : les ordinateurs forment une boucle, chacun relié à deux voisins"
+      },
+      {
+        "lettre": "D",
+        "texte": "Maillée : chaque ordinateur est relié directement à plusieurs autres"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-topologie-reseau-bac-ti-res-moyenne-1",
+    "theme": "topologie réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le responsable d'un cybercafé de Yaoundé prépare le câblage de ses vingt postes. Il pose deux conditions : un câble défectueux ne doit isoler qu'un seul poste, et chaque poste ne doit nécessiter qu'un seul câble, afin de limiter la quantité de câble à tirer. Quelle topologie physique répond aux deux conditions ?",
+    "corrige_markdown": "### Rappel de méthode\nPour choisir une topologie, on confronte chaque candidate aux conditions posées : on se demande qui est isolé quand un câble casse, et combien de câbles aboutissent à chaque poste. Le bus partage un seul câble principal, l'anneau impose deux liaisons par poste, le maillage complet une liaison vers chacun des autres postes, l'étoile une seule liaison par poste vers le centre.\n\n### Corrigé\nLes deux conditions doivent être vérifiées ensemble pour chaque proposition.\n\n- **A** est fausse : en bus, chaque poste n'a qu'une connexion, mais la rupture du câble principal sépare le réseau en deux tronçons, donc plusieurs postes sont touchés ; la première condition n'est pas remplie.\n- **B** est fausse : dans un anneau simple, chaque poste a deux liaisons (vers ses deux voisins) et une boucle rompue perturbe la circulation des données pour tout le réseau ; aucune des deux conditions n'est remplie.\n- **C** est fausse : un maillage complet n'isole aucun poste quand un câble casse, ce qui respecte la première condition, mais chaque poste aurait $19$ liaisons (une vers chacun des $19$ autres postes) ; la seconde condition n'est pas remplie.\n- **D** est correcte : en étoile, le câble d'un poste ne dessert que ce poste, et chaque poste n'a qu'un câble vers le commutateur central ; les deux conditions sont remplies.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "En bus, avec un câble principal commun à tous les postes"
+      },
+      {
+        "lettre": "B",
+        "texte": "En anneau, avec une boucle reliant chaque poste à ses deux voisins"
+      },
+      {
+        "lettre": "C",
+        "texte": "Maillée complète, avec une liaison directe entre chaque paire de postes"
+      },
+      {
+        "lettre": "D",
+        "texte": "En étoile, avec un équipement central et un câble par poste"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-topologie-reseau-bac-ti-res-moyenne-2",
+    "theme": "topologie réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un lycée technique de Garoua compte trois bâtiments. Dans chacun d'eux, les ordinateurs sont reliés chacun par un câble RJ45 à un commutateur local. Les trois commutateurs locaux sont eux-mêmes reliés, chacun par un câble, à un commutateur principal installé dans un local technique commun.\n\n1. Nommer la topologie d'ensemble de ce réseau et expliquer en une phrase pourquoi elle porte ce nom.\n2. Le commutateur local du bâtiment B tombe en panne. Indiquer quels ordinateurs perdent toute communication et lesquels continuent à échanger entre eux.\n3. Le commutateur principal tombe en panne. Indiquer l'effet sur les échanges entre deux ordinateurs d'un même bâtiment, puis entre deux ordinateurs de bâtiments différents.\n4. Citer un avantage de cette topologie quand le lycée construit un quatrième bâtiment.",
+    "corrige_markdown": "### Rappel de méthode\nLa topologie en arbre assemble plusieurs étoiles sur plusieurs niveaux : un équipement de niveau supérieur relie des équipements de niveau inférieur, qui desservent à leur tour des postes. Pour mesurer l'effet d'une panne, on repère les machines qui dépendent de l'équipement défaillant : elles sont isolées, les autres gardent leurs chemins.\n\n### Corrigé\n1. C'est une topologie **en arbre** (ou étoile hiérarchique) : le commutateur principal joue le rôle du tronc, les commutateurs locaux celui des branches et les ordinateurs celui des feuilles.\n2. Tous les ordinateurs du bâtiment B dépendent de leur commutateur local : ils ne communiquent plus ni entre eux ni avec les autres bâtiments. Les bâtiments A et C ne dépendent pas de B : leurs ordinateurs continuent à échanger entre eux, y compris d'un bâtiment à l'autre grâce au commutateur principal.\n3. Dans un même bâtiment, les échanges continuent, car le commutateur local relie les ordinateurs sans passer par le commutateur principal. Entre deux bâtiments différents, les échanges deviennent impossibles : le commutateur principal est le passage obligé de tout le trafic entre bâtiments, c'est ici un point de défaillance unique.\n4. Il suffit de relier le commutateur local du nouveau bâtiment au commutateur principal par un câble, sans toucher au câblage des trois bâtiments existants : l'extension se fait en ajoutant une branche.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-topologie-reseau-bac-ti-res-elevee-3",
+    "theme": "topologie réseau",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une coopérative d'épargne de l'Ouest relie ses six agences par des liaisons louées. Deux solutions sont comparées. Dans la première, le réseau est **maillé complet** : chaque agence a une liaison directe avec chacune des cinq autres. Dans la seconde, le réseau est **en étoile** : chaque agence a une seule liaison vers un équipement central installé dans un local neutre, qui n'est pas une agence.\n\n1. Calculer le nombre de liaisons du réseau maillé complet avec la formule $\\frac{n(n-1)}{2}$, où $n$ est le nombre d'agences.\n2. Indiquer le nombre de liaisons de la solution en étoile, puis le nombre d'interfaces réseau (une par liaison) que doit posséder chaque agence dans chacune des deux solutions.\n3. La coopérative ouvre une septième agence. Calculer le nombre de liaisons à ajouter dans chacune des deux solutions.\n4. Donner un avantage du réseau maillé complet et un inconvénient par rapport à l'étoile.\n5. Vérifier le résultat de la question 1 par un second raisonnement, fondé sur le nombre d'extrémités de liaisons.",
+    "corrige_markdown": "### Rappel de méthode\nDans un réseau maillé complet de $n$ machines, chacune est reliée directement aux $n-1$ autres ; une liaison relie deux machines, elle est donc comptée deux fois quand on additionne les liaisons de toutes les machines, d'où $\\frac{n(n-1)}{2}$ liaisons au total. Dans une étoile, chaque machine a une seule liaison vers le centre : il y en a $n$.\n\n### Corrigé\n1. Avec $n = 6$ : $\\frac{6 \\times 5}{2} = \\frac{30}{2} = 15$ liaisons.\n2. Étoile : une liaison par agence, soit $6$ liaisons. Interfaces par agence : $5$ dans le maillé complet (une vers chacune des cinq autres agences) et $1$ dans l'étoile.\n3. Maillé complet : $\\frac{7 \\times 6}{2} = 21$ liaisons au total, soit $21 - 15 = 6$ liaisons à ajouter (une vers chacune des six agences existantes). Étoile : une seule liaison à ajouter, vers l'équipement central.\n4. Avantage du maillé complet : chaque paire d'agences a une liaison directe et d'autres chemins existent en cas de panne, donc la panne d'une liaison n'isole aucune agence (alors que, dans l'étoile, la panne de l'équipement central coupe tout le réseau). Inconvénient : le nombre de liaisons et d'interfaces croît très vite avec $n$ (de l'ordre de $n^2$), ce qui rend le réseau coûteux à câbler et à étendre.\n5. Chaque agence a $5$ interfaces, donc il y a $6 \\times 5 = 30$ extrémités de liaisons. Chaque liaison a deux extrémités, donc le nombre de liaisons est $\\frac{30}{2} = 15$ : le résultat de la question 1 est confirmé. Contrôle complémentaire : l'ajout de la septième agence donne $21 - 15 = 6$, soit exactement le nombre d'agences déjà reliées, ce qui confirme aussi la question 3.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11248
+    ]
+  }
+]

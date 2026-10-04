@@ -1,0 +1,76 @@
+[
+  {
+    "external_id": "cqc-ver-informatique-bac-ti-res-faible-0",
+    "theme": "ver informatique",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un matin, dans le réseau d'un hôpital, le personnel signale que tous les ordinateurs sont devenus extrêmement lents. L'administrateur constate que le trafic du réseau est anormalement élevé : chaque poste envoie en continu des milliers de petits messages vers les autres adresses du réseau. Aucun employé n'a ouvert de pièce jointe ni branché de clé USB ce jour-là, et aucun message de rançon ni aucune publicité n'est apparu. Quelle est la cause la plus probable de cette situation ?",
+    "corrige_markdown": "### Rappel de méthode\nChaque famille de logiciels malveillants laisse une signature : le virus et le cheval de Troie ont besoin d'une action humaine (ouvrir ou copier un fichier infecté, installer un programme d'apparence utile), l'enregistreur de frappe agit en silence sans produire de trafic important, tandis qu'un programme qui se réplique par le réseau encombre les liaisons de ses propres copies.\n\n### Corrigé\nFaits de l'énoncé : tous les ordinateurs ralentissent ; le trafic du réseau est anormalement élevé, chaque poste envoyant en continu des milliers de petits messages vers les autres adresses ; aucun employé n'a ouvert de pièce jointe ni branché de clé USB ; aucun message de rançon ni aucune publicité.\n\n- **Virus classique** : faux. Un virus ne passe d'un poste à l'autre que si un utilisateur copie ou ouvre un fichier infecté ; or aucune action de ce genre n'a eu lieu ce jour-là.\n- **Cheval de Troie** : faux. Il suppose qu'un utilisateur installe un programme d'apparence utile, et il ne se réplique pas ; ici, rien n'a été installé par un employé et la contamination est générale.\n- **Enregistreur de frappe** : faux. Il agit en silence et envoie de petits fichiers de temps en temps ; il ne crée pas un trafic massif entre les postes.\n- **Ver** : exact. Il se copie lui-même d'un poste à l'autre par le réseau, sans fichier hôte ni action d'un utilisateur, et ses copies incessantes saturent les liaisons et les machines : lenteur générale et trafic anormal sont ses symptômes typiques.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Un virus classique : il passe d'un poste à l'autre à travers les fichiers que les employés s'échangent"
+      },
+      {
+        "lettre": "B",
+        "texte": "Un cheval de Troie : un employé a installé sans le savoir un programme d'apparence utile"
+      },
+      {
+        "lettre": "C",
+        "texte": "Un enregistreur de frappe : il consigne les touches tapées et envoie discrètement un fichier au pirate"
+      },
+      {
+        "lettre": "D",
+        "texte": "Un ver : il se copie lui-même d'un poste à l'autre par le réseau et l'encombre de ses copies"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [11238]
+  },
+  {
+    "external_id": "cqc-ver-informatique-bac-ti-res-moyenne-1",
+    "theme": "ver informatique",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Sur le réseau d'un campus, 600 ordinateurs n'ont pas installé un correctif de sécurité et sont donc vulnérables à un ver. Le lundi à 08 h 00, un seul de ces ordinateurs est infecté. Ensuite, à chaque heure pile (09 h 00, 10 h 00, 11 h 00...), chaque ordinateur déjà infecté contamine exactement 3 ordinateurs vulnérables encore sains, tant qu'il en reste ; les ordinateurs infectés le restent.\n\n1. Déterminer le nombre d'ordinateurs infectés à 09 h 00, à 10 h 00 et à 11 h 00.\n2. Exprimer le nombre d'ordinateurs infectés au bout de $t$ heures (tant que la limite de 600 n'est pas atteinte), puis calculer ce nombre à 12 h 00.\n3. Déterminer à quelle heure l'ensemble des 600 ordinateurs vulnérables est contaminé, puis conclure sur l'intérêt de réagir dès la première heure.",
+    "corrige_markdown": "### Rappel de méthode\nUn ver se réplique seul : si chaque machine infectée en contamine $k$ autres à chaque période, le nombre de machines infectées est multiplié par $1 + k$ à chaque période (les machines infectées le restent), tant qu'il reste des machines vulnérables saines ; le total ne peut jamais dépasser le nombre de machines vulnérables.\n\n### Corrigé\nIci $k = 3$ : le nombre d'ordinateurs infectés est multiplié par $1 + 3 = 4$ chaque heure.\n\n**1.** À 08 h 00 : 1 ordinateur infecté. À 09 h 00 : $1 \\times 4 = 4$. À 10 h 00 : $4 \\times 4 = 16$. À 11 h 00 : $16 \\times 4 = 64$.\n\n**2.** Au bout de $t$ heures, le nombre d'ordinateurs infectés est $N(t) = 4^t$, tant que $4^t \\leq 600$. À 12 h 00, $t = 4$ et $N(4) = 4^4 = 256$ ordinateurs infectés, soit moins de 600 : la formule s'applique encore.\n\n**3.** À 13 h 00, la formule donnerait $4^5 = 1\\,024$, qui dépasse 600 : le plafond joue. Il reste $600 - 256 = 344$ ordinateurs sains, et les 256 ordinateurs infectés peuvent en contaminer $256 \\times 3 = 768$, ce qui suffit largement ($768 \\geq 344$). Les 600 ordinateurs vulnérables sont donc tous infectés à 13 h 00, soit cinq heures après le premier.\n\nConclusion : la progression paraît lente au début (4 puis 16 ordinateurs) puis explose (64 puis 256). Isoler l'ordinateur d'origine avant 09 h 00 aurait limité l'infection à 1 ordinateur, alors qu'à 12 h 00 il faudrait déjà en isoler 256 : plus la réaction est rapide, moins il y a d'ordinateurs à traiter.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11238]
+  },
+  {
+    "external_id": "cqc-ver-informatique-bac-ti-res-elevee-2",
+    "theme": "ver informatique",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une société de transport de Douala, le réseau local compte 120 ordinateurs. Une mise à jour de sécurité corrigeant une faille du service de partage de fichiers a été publiée il y a trois mois, mais elle n'a été installée que sur 72 ordinateurs. Un ver qui exploite cette faille ne peut contaminer que les ordinateurs non corrigés. À 09 h 00, l'un de ces ordinateurs est infecté. Ensuite, toutes les 10 minutes (09 h 10, 09 h 20...), chaque ordinateur infecté contamine exactement 2 ordinateurs non corrigés encore sains, tant qu'il en reste.\n\n1. Expliquer pourquoi ce ver peut contaminer des ordinateurs sans qu'aucun employé n'ouvre de fichier, puis indiquer la mesure qui aurait empêché sa propagation.\n2. Calculer le nombre d'ordinateurs infectés à 09 h 10, 09 h 20, 09 h 30 et 09 h 40.\n3. À 09 h 20 précises, le technicien déconnecte du réseau tous les ordinateurs alors infectés. Déterminer combien d'ordinateurs non corrigés sont ainsi épargnés.\n4. Citer deux symptômes que les employés observent pendant la propagation et deux mesures durables de protection contre ce type de logiciel.\n5. Vérifier la cohérence des résultats : relier le nombre trouvé à 09 h 30 à une puissance de 3, justifier le plafonnement à 09 h 40 et contrôler que tous les ordinateurs du réseau sont comptés.",
+    "corrige_markdown": "### Rappel de méthode\nUn ver se propage seul en exploitant une faille d'un service réseau, sans fichier hôte ni action de l'utilisateur. S'il contamine $k$ machines saines par période, le nombre de machines infectées est multiplié par $1 + k$ à chaque période, sans jamais dépasser le nombre de machines vulnérables ; la protection consiste à supprimer la faille (correctifs), à filtrer le trafic (pare-feu) et à isoler vite les machines atteintes.\n\n### Corrigé\n**Données utiles.** Ordinateurs non corrigés : $120 - 72 = 48$. Ici $k = 2$ : le nombre d'ordinateurs infectés est multiplié par $1 + 2 = 3$ toutes les 10 minutes.\n\n**1.** Le ver exploite la faille du service de partage de fichiers : il se copie de lui-même sur tout ordinateur du réseau qui possède cette faille, sans être attaché à un fichier hôte et sans que personne n'ait à l'ouvrir. Installer dès sa publication la mise à jour de sécurité qui corrige la faille sur les 48 ordinateurs restants aurait empêché cette propagation.\n\n**2.** À 09 h 00 : 1 ordinateur infecté.\n- 09 h 10 : $1 \\times 3 = 3$ ;\n- 09 h 20 : $3 \\times 3 = 9$ ;\n- 09 h 30 : $9 \\times 3 = 27$ ;\n- 09 h 40 : $27 \\times 3 = 81$, mais il n'y a que 48 ordinateurs non corrigés : le nombre est plafonné à **48**.\n\n**3.** À 09 h 20, 9 ordinateurs sont infectés ; une fois isolés du réseau, ils ne peuvent plus contaminer aucun autre poste. Ordinateurs non corrigés épargnés : $48 - 9 = 39$.\n\n**4.** Symptômes (deux au choix) : ralentissement général des ordinateurs et du réseau ; trafic réseau anormalement élevé ; postes qui se bloquent ou redémarrent. Mesures durables (deux au choix) : installer rapidement les correctifs de sécurité sur tous les postes ; activer un pare-feu qui filtre le trafic inutile entre les postes ; isoler sans attendre toute machine soupçonnée d'être infectée.\n\n**5. Vérification.**\n- À 09 h 30, $27 = 3^3$, ce qui correspond bien à trois périodes de 10 minutes avec un facteur 3 par période ; à 09 h 40, $3^4 = 81 > 48$, donc le plafond de 48 s'impose.\n- À 09 h 30, il reste $48 - 27 = 21$ ordinateurs non corrigés sains, et les 27 ordinateurs infectés peuvent en contaminer $27 \\times 2 = 54 \\geq 21$ : tous seront bien atteints à 09 h 40.\n- Total du réseau : $48 + 72 = 120$ ; les 72 ordinateurs corrigés restent sains, ce qui est cohérent avec les 120 ordinateurs de l'énoncé.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11238]
+  }
+]

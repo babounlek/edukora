@@ -1,0 +1,54 @@
+[
+  {
+    "external_id": "cqc-integrite-bac-ti-res-faible-0",
+    "theme": "Intégrité",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un technicien copie le fichier d'inventaire d'un laboratoire sur une clé USB défectueuse. Une fois recopié sur un autre ordinateur, le fichier s'ouvre normalement, mais plusieurs quantités ont changé et certains mots contiennent des symboles illisibles. Personne n'a touché au fichier volontairement.\n\nQuel principe de sécurité est atteint en premier lieu ?",
+    "corrige_markdown": "### Rappel de méthode\nUn principe se reconnaît à ce qui est compromis : le contenu a-t-il été lu par des personnes non autorisées, est-il devenu inaccessible, ou n'est-il plus exact ? L'intégrité concerne l'exactitude et l'absence d'altération du contenu, que celle-ci soit voulue ou accidentelle, par exemple lors d'une copie sur un support défaillant.\n\n### Corrigé\nLe fichier s'ouvre, personne ne l'a lu à tort, et le technicien n'a rien modifié volontairement. Le contenu recopié ne correspond pourtant plus à l'original : quantités changées, caractères illisibles. C'est une corruption du fichier, donc une atteinte à l'**intégrité**, même sans intention de nuire.\n\n- **B** : rien n'indique qu'une personne non autorisée ait lu le contenu ; la confidentialité n'est pas en cause.\n- **C** : le fichier n'a pas disparu, puisqu'il s'ouvre normalement ; l'accès reste possible, c'est l'exactitude qui est perdue.\n- **D** : la question n'est pas de savoir qui a effectué la copie ni s'il peut le nier ; la non-répudiation ne concerne pas l'état du contenu.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "L'intégrité : le contenu du fichier a été altéré, même sans intention de nuire."},
+      {"lettre": "B", "texte": "La confidentialité : le contenu de l'inventaire a été lu par une personne non autorisée."},
+      {"lettre": "C", "texte": "La disponibilité : le fichier a disparu et ne peut plus être ouvert par personne."},
+      {"lettre": "D", "texte": "La non-répudiation : le technicien peut nier avoir effectué la copie du fichier."}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [11183]
+  },
+  {
+    "external_id": "cqc-integrite-bac-ti-res-moyenne-1",
+    "theme": "Intégrité",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le secrétariat d'un lycée protège chaque numéro de matricule par un chiffre de contrôle, calculé ainsi : additionner les chiffres du matricule, puis garder uniquement le chiffre des unités de la somme. Par exemple, pour le matricule `2574`, la somme est $2 + 5 + 7 + 4 = 18$ et le chiffre de contrôle est `8`.\n\nÀ la réception d'un fichier, le matricule `63815` arrive accompagné du chiffre de contrôle `4`.\n\nQuelle conclusion est correcte ?",
+    "corrige_markdown": "### Rappel de méthode\nUn chiffre de contrôle est une valeur calculée à partir des données par une règle connue des deux parties : le récepteur refait le calcul et compare. Un résultat différent prouve que les données ou le chiffre de contrôle ont été altérés, sans indiquer où ; un résultat identique rend une altération improbable, sans la rendre impossible.\n\n### Corrigé\nOn applique la règle au matricule reçu : $6 + 3 + 8 + 1 + 5 = 23$, dont le chiffre des unités est `3`. Le chiffre de contrôle attendu est donc `3`, alors que le chiffre reçu est `4`. Les deux valeurs diffèrent : une altération est détectée, soit dans le matricule, soit dans le chiffre de contrôle. La règle ne permet pas de savoir lequel.\n\n- **A** : l'addition est fausse, car $6 + 3 + 8 + 1 + 5$ vaut 23 et non 24 ; le chiffre attendu n'est donc pas 4.\n- **B** : la règle détecte une incohérence mais ne localise pas l'erreur. De plus, remplacer le dernier chiffre 5 par 4 donne `63814`, dont la somme vaut $6 + 3 + 8 + 1 + 4 = 22$ et le chiffre de contrôle `2`, toujours différent de `4`.\n- **D** : la règle demande de garder le chiffre des unités de la somme, pas celui des dizaines ; l'exemple `2574` donne bien `8` et non `1`.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Le matricule est intact : la somme des chiffres est 24, ce qui donne bien le chiffre de contrôle 4 attendu."},
+      {"lettre": "B", "texte": "Le matricule est altéré, et il suffit de remplacer son dernier chiffre 5 par 4 pour retrouver le matricule d'origine."},
+      {"lettre": "C", "texte": "Une altération est détectée, sans savoir où : la somme des chiffres est 23, donc le chiffre attendu est 3 et non 4."},
+      {"lettre": "D", "texte": "Une altération est détectée : la somme des chiffres est 23, donc le chiffre de contrôle attendu est 2, celui des dizaines."}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11183]
+  },
+  {
+    "external_id": "cqc-integrite-bac-ti-res-elevee-2",
+    "theme": "Intégrité",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un capteur installé dans l'atelier d'un lycée technique envoie ses mesures à un ordinateur par une liaison série. Chaque caractère est transmis sur un octet : 7 bits de données suivis d'un bit de parité paire, choisi pour que le nombre total de bits à `1` dans l'octet soit pair. À la réception, un octet est déclaré « cohérent » si ce nombre est pair et « suspect » s'il est impair.\n\n1. Calculer le bit de parité à ajouter au bloc de données `1101000` et écrire l'octet transmis.\n2. Trois octets sont reçus : `10110010`, `01101011` et `10111000`. Indiquer, pour chacun, s'il est déclaré cohérent ou suspect, en justifiant par un comptage.\n3. Le troisième octet envoyé était en réalité `11101000`. Comparer cet octet à l'octet reçu `10111000`, indiquer combien de bits ont changé et expliquer pourquoi le contrôle de parité n'a rien signalé.\n4. En déduire une limite du contrôle de parité, puis citer un mécanisme plus fiable pour vérifier l'intégrité d'un fichier entier.\n5. Vérification : recompter les bits à `1` de l'octet envoyé `11101000` et de l'octet reçu `10111000`, puis vérifier que la conclusion de la question 3 est cohérente avec ces comptages.",
+    "corrige_markdown": "### Rappel de méthode\nUn bit de parité paire est ajouté à un bloc de données pour que le nombre total de bits à `1` soit pair ; le récepteur recompte et déclare suspect tout octet dont ce nombre est impair. Ce contrôle détecte une altération qui touche un nombre impair de bits, mais pas une altération qui en touche un nombre pair.\n\n### Corrigé\n**1.** Le bloc `1101000` contient trois bits à `1`, nombre impair. Pour obtenir un total pair, le bit de parité vaut `1`. L'octet transmis est `11010001`, qui contient quatre bits à `1`.\n\n**2.**\n\n| Octet reçu | Bits à `1` | Parité | Verdict |\n|---|---|---|---|\n| `10110010` | 4 | paire | cohérent |\n| `01101011` | 5 | impaire | suspect |\n| `10111000` | 4 | paire | cohérent |\n\n**3.** Bit par bit, `11101000` (envoyé) et `10111000` (reçu) diffèrent aux positions 2 (le `1` est devenu `0`) et 4 (le `0` est devenu `1`) : **deux bits** ont changé. Un bit à `1` a été perdu et un autre gagné, donc le nombre total de bits à `1` n'a pas varié et sa parité non plus. Le contrôle déclare l'octet cohérent alors qu'il est altéré.\n\n**4.** Limite : le contrôle de parité ne détecte pas un nombre pair de bits erronés et ne dit pas où se trouve l'erreur. Un mécanisme plus fiable est l'empreinte numérique (obtenue par une fonction de hachage) calculée sur tout le fichier : le destinataire recalcule l'empreinte et la compare à celle d'origine, car la moindre modification, même d'un seul bit, change l'empreinte.\n\n**5.** L'octet envoyé `11101000` contient quatre bits à `1` (positions 1, 2, 3 et 5), et l'octet reçu `10111000` en contient aussi quatre (positions 1, 3, 4 et 5). Les deux nombres sont pairs et égaux, donc le contrôle de parité ne peut rien voir. Pourtant les deux octets sont différents, puisque les positions 2 et 4 ne portent pas les mêmes valeurs : l'altération est réelle et n'est pas détectée, ce qui confirme la conclusion de la question 3.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11183]
+  }
+]

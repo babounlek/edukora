@@ -1,0 +1,49 @@
+[
+  {
+    "external_id": "cqc-cryptographie-symetrique-bac-ti-res-faible-0",
+    "theme": "cryptographie symétrique",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Mariam et Paul échangent des fichiers avec AES, un algorithme de chiffrement symétrique. Mariam chiffre un fichier avec la clé secrète $K$ qu'elle partage avec Paul. Quelle clé Paul doit-il employer pour déchiffrer ce fichier ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn chiffrement est symétrique quand l'opération de chiffrement et celle de déchiffrement emploient la même clé secrète ; c'est ce qui le distingue du chiffrement asymétrique, qui met en jeu deux clés différentes. Cette clé unique doit donc être connue des deux correspondants, et d'eux seuls.\n\n### Corrigé\n\nAES étant symétrique, Paul déchiffre avec la clé $K$ que Mariam a utilisée pour chiffrer, sans aucune transformation. Réponse **B**.\n\n- **A** est fausse : une clé privée distincte de celle du chiffrement décrit un système asymétrique, et non AES (confusion entre symétrique et asymétrique).\n- **C** est fausse : une clé publique est propre aux systèmes asymétriques ; et même dans ce cas, Paul déchiffrerait avec sa propre clé privée, jamais avec la clé publique de Mariam (confusion sur le rôle des clés publique et privée).\n- **D** est fausse : la clé n'est ni retournée ni modifiée ; c'est l'algorithme qui sait parcourir ses étapes en sens inverse, avec la même clé $K$ (confusion entre inversion de l'algorithme et inversion de la clé).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Une clé privée différente de $K$, que Mariam ne connaît pas et qu'il garde pour lui."},
+      {"lettre": "B", "texte": "La même clé $K$, qui doit donc rester secrète et n'être connue que d'eux deux."},
+      {"lettre": "C", "texte": "La clé publique de Mariam, que n'importe qui peut obtenir librement."},
+      {"lettre": "D", "texte": "La clé $K$ lue à l'envers, puisque déchiffrer revient à inverser le chiffrement."}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [11238]
+  },
+  {
+    "external_id": "cqc-cryptographie-symetrique-bac-ti-res-moyenne-1",
+    "theme": "cryptographie symétrique",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Les $9$ agents d'une mairie doivent pouvoir échanger deux à deux des documents confidentiels avec un algorithme symétrique. Pour qu'aucun agent ne puisse lire les échanges des autres, chaque paire d'agents utilise sa propre clé secrète, différente de celle de toutes les autres paires.\n\n1. Expliquer pourquoi une seule clé partagée par les $9$ agents ne convient pas.\n2. Calculer le nombre de clés nécessaires pour les $9$ agents.\n3. Deux nouveaux agents arrivent. Calculer le nombre total de clés nécessaires pour $11$ agents, puis le nombre de clés à créer.\n4. Vérifier le résultat de la question 3 en comptant autrement les clés créées, nouvel arrivant par nouvel arrivant.",
+    "corrige_markdown": "### Rappel de méthode\n\nAvec un chiffrement symétrique, une clé ne sert qu'à une seule paire de correspondants. Pour $n$ personnes qui communiquent deux à deux, il faut donc une clé par paire, soit $\\dfrac{n(n-1)}{2}$ clés : chaque personne a $n-1$ correspondants, et chaque paire est comptée deux fois dans le produit $n(n-1)$.\n\n### Corrigé\n\n**1.** Avec une clé unique, chaque agent pourrait déchiffrer les documents échangés entre deux autres agents, puisqu'il connaît la clé. Il faut donc une clé distincte pour chaque paire, afin que seuls les deux correspondants la détiennent.\n\n**2.** Pour $n = 9$ : $\\dfrac{9 \\times 8}{2} = \\dfrac{72}{2} = 36$ clés.\n\n**3.** Pour $n = 11$ : $\\dfrac{11 \\times 10}{2} = \\dfrac{110}{2} = 55$ clés. Il faut donc créer $55 - 36 = 19$ clés.\n\n**4.** Le premier nouvel agent doit partager une clé avec chacun des $9$ agents déjà présents : $9$ clés. Le second doit en partager une avec les $9$ anciens agents et avec le premier nouvel arrivant : $10$ clés. Au total, $9 + 10 = 19$ clés, ce qui confirme le résultat de la question 3.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11238]
+  },
+  {
+    "external_id": "cqc-cryptographie-symetrique-bac-ti-res-elevee-2",
+    "theme": "cryptographie symétrique",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une entreprise de transfert d'argent de Douala relie $12$ sites : le siège et $11$ agences. Chaque paire de sites doit pouvoir échanger des fichiers de façon confidentielle. Deux solutions sont étudiées.\n\n- **S1** : chiffrement symétrique avec AES, une clé secrète distincte pour chaque paire de sites.\n- **S2** : chiffrement asymétrique avec RSA, chaque site possédant une paire de clés : une clé publique, diffusée à tous, et une clé privée, qui n'est jamais transmise.\n\n1. Calculer le nombre de clés secrètes à produire avec S1, puis le nombre de paires de clés avec S2.\n2. Un $13^{\\text{e}}$ site ouvre. Calculer le nombre de clés à ajouter pour chacune des deux solutions.\n3. Citer un avantage d'AES par rapport à RSA, puis le principal problème posé par la solution S1 au moment de la mise en service.\n4. Expliquer comment la clé publique RSA du destinataire permet de résoudre le problème de la question 3.\n5. Vérifier le résultat de la question 2 pour S1 par une seconde méthode.",
+    "corrige_markdown": "### Rappel de méthode\n\nEn cryptographie symétrique, la même clé chiffre et déchiffre : le traitement est rapide, mais la clé doit être partagée en secret et il en faut une par paire de correspondants, soit $\\dfrac{n(n-1)}{2}$ pour $n$ sites. En cryptographie asymétrique, chaque site possède une paire de clés : ce que la clé publique chiffre, seule la clé privée correspondante le déchiffre, si bien qu'il suffit de $n$ paires de clés.\n\n### Corrigé\n\n**1.** Pour S1 : $\\dfrac{12 \\times 11}{2} = \\dfrac{132}{2} = 66$ clés secrètes. Pour S2 : une paire par site, soit $12$ paires (donc $24$ clés : $12$ publiques et $12$ privées).\n\n**2.** Pour S1, avec $13$ sites : $\\dfrac{13 \\times 12}{2} = 78$ clés, donc $78 - 66 = 12$ clés à ajouter. Pour S2 : une seule paire de clés (une publique, une privée) pour le nouveau site.\n\n**3.** Avantage d'AES : il chiffre beaucoup plus vite que RSA, ce qui convient aux fichiers volumineux. Problème de S1 : avant de pouvoir échanger quoi que ce soit, deux sites doivent s'entendre sur leur clé secrète ; la faire circuler en clair sur le réseau la livrerait à un espion, et cet échange sûr est à refaire pour chacune des $66$ clés.\n\n**4.** La clé publique du destinataire peut être diffusée sans risque. Le site expéditeur choisit une clé AES, la chiffre avec la clé publique RSA du destinataire et l'envoie ; seul le destinataire, avec sa clé privée, peut la déchiffrer. Les deux sites possèdent alors la même clé AES sans qu'elle ait circulé en clair, et ils chiffrent ensuite les fichiers avec AES, rapide. On combine ainsi la sécurité de l'échange des clés (asymétrique) et la rapidité du chiffrement des données (symétrique).\n\n**5.** Le $13^{\\text{e}}$ site doit partager une clé avec chacun des $12$ sites déjà présents : $12$ clés, soit la valeur trouvée. Contrôle de cohérence : $66 + 12 = 78 = \\dfrac{13 \\times 12}{2}$.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11238]
+  }
+]

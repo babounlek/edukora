@@ -1,0 +1,99 @@
+[
+  {
+    "external_id": "cqc-passerelle-par-defaut-bac-ti-res-faible-0",
+    "theme": "passerelle par défaut",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un poste d'un cybercafé veut ouvrir une page hébergée sur un serveur situé hors de son réseau local. Quel est le rôle de la passerelle par défaut de ce poste dans cette opération ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn poste ne sait joindre directement que les machines de son propre réseau local. Pour toute autre destination, il s'adresse à un équipement relié à son réseau et chargé de relayer vers l'extérieur : l'adresse de cet équipement, enregistrée dans la configuration du poste, est la passerelle par défaut. Les autres paramètres de la configuration (serveur DHCP, serveur DNS) remplissent des fonctions différentes.\n\n### Corrigé\n\nLe serveur visé est hors du réseau local : le poste remet ses paquets à sa passerelle par défaut, qui les reçoit et les **achemine vers leur destination**.\n\n- Le choix A décrit le serveur DHCP, qui attribue l'adresse IP au poste.\n- Le choix B décrit le serveur DNS, qui convertit un nom en adresse IP.\n- Le choix C décrit un pare-feu, qui filtre le trafic ; ce n'est pas la fonction d'une passerelle.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Elle fournit au poste son adresse IP au moment où il se connecte au réseau."
+      },
+      {
+        "lettre": "B",
+        "texte": "Elle convertit le nom du serveur en adresse IP avant l'envoi de la requête."
+      },
+      {
+        "lettre": "C",
+        "texte": "Elle examine les paquets venus d'Internet et bloque ceux qui sont jugés dangereux."
+      },
+      {
+        "lettre": "D",
+        "texte": "Elle reçoit les paquets destinés à un autre réseau et se charge de les acheminer vers leur destination."
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      11237
+    ]
+  },
+  {
+    "external_id": "cqc-passerelle-par-defaut-bac-ti-res-moyenne-1",
+    "theme": "passerelle par défaut",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le poste d'un technicien a pour adresse IPv4 `192.168.40.77` et pour masque `255.255.255.192`. Quelle adresse peut être configurée comme passerelle par défaut de ce poste ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne passerelle n'est utilisable que si le poste peut l'atteindre directement : son adresse, combinée au masque du poste, doit donner la même adresse de réseau que celle du poste, et elle ne doit être ni l'adresse du réseau ni l'adresse de diffusion. Pour un masque dont le dernier octet vaut 192, les blocs d'adresses ont une taille de $256 - 192 = 64$.\n\n### Corrigé\n\nLes blocs sont `0-63`, `64-127`, `128-191` et `192-255`. L'adresse `192.168.40.77` se trouve dans le bloc `64-127` : son réseau est `192.168.40.64` et son adresse de diffusion est `192.168.40.127`. Les adresses utilisables vont de `192.168.40.65` à `192.168.40.126`, donc `192.168.40.65` convient.\n\n- Le choix A, `192.168.40.1`, suit l'habitude de terminer par `.1`, mais cette adresse est dans le bloc `0-63` (réseau `192.168.40.0`) : elle n'est pas dans le réseau du poste.\n- Le choix C, `192.168.40.127`, est l'adresse de diffusion du réseau du poste : elle ne peut pas être attribuée à un équipement.\n- Le choix D, `192.168.40.129`, est dans le bloc `128-191` (réseau `192.168.40.128`) : c'est un autre sous-réseau.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "192.168.40.1"
+      },
+      {
+        "lettre": "B",
+        "texte": "192.168.40.65"
+      },
+      {
+        "lettre": "C",
+        "texte": "192.168.40.127"
+      },
+      {
+        "lettre": "D",
+        "texte": "192.168.40.129"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      11237
+    ]
+  },
+  {
+    "external_id": "cqc-passerelle-par-defaut-bac-ti-res-elevee-2",
+    "theme": "passerelle par défaut",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une agence de transfert d'argent de Douala, un poste est configuré à la main avec les paramètres suivants :\n\n| Paramètre | Valeur |\n|---|---|\n| Adresse IPv4 | `10.20.5.100` |\n| Masque de sous-réseau | `255.255.255.224` |\n| Passerelle par défaut | `10.20.5.1` |\n\nLe routeur de l'agence porte, sur son interface côté agence, l'adresse `10.20.5.97`. Le poste doit joindre trois destinations : `10.20.5.120`, `10.20.5.140` et `10.20.9.15`.\n\n1. Calculer l'adresse du réseau du poste (ET logique entre son adresse et son masque).\n2. Pour chacune des trois destinations, déterminer si le poste l'envoie directement ou la remet à sa passerelle, en justifiant par un ET logique.\n3. La passerelle configurée appartient-elle au réseau du poste ? Indiquer les conséquences sur l'accès au réseau local et à l'extérieur.\n4. Proposer la correction à apporter à la passerelle.\n5. Vérifier la correction proposée par un ET logique avec le masque.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn poste décide de l'envoi en appliquant le masque (ET logique, bit à bit) à sa propre adresse puis à celle de la destination : deux résultats identiques signifient que la destination est dans son réseau, donc envoi direct ; sinon le paquet est remis à la passerelle par défaut. Cette passerelle doit elle-même être joignable directement : son adresse, combinée au masque du poste, doit donner le réseau du poste.\n\n### Corrigé\n\n1. Seul le dernier octet change avec le masque `255.255.255.224` (en binaire `11100000`). On a $100 = 01100100$, et $01100100$ ET $11100000$ $= 01100000 = 96$. Le réseau du poste est `10.20.5.96` (adresses de `10.20.5.96` à `10.20.5.127`).\n\n2. Résultats pour les trois destinations :\n\n| Destination | ET logique avec le masque | Réseau obtenu | Comparaison avec `10.20.5.96` | Envoi |\n|---|---|---|---|---|\n| `10.20.5.120` | $120 = 01111000$, ET $11100000$ $= 01100000 = 96$ | `10.20.5.96` | identique | direct |\n| `10.20.5.140` | $140 = 10001100$, ET $11100000$ $= 10000000 = 128$ | `10.20.5.128` | différent | par la passerelle |\n| `10.20.9.15` | troisième octet $9 \\neq 5$ | `10.20.9.0` | différent | par la passerelle |\n\n3. Pour la passerelle `10.20.5.1`, on a $1 = 00000001$ et $00000001$ ET $11100000$ $= 0$, donc le réseau obtenu est `10.20.5.0`, différent de `10.20.5.96`. La passerelle n'est **pas** dans le réseau du poste. Conséquences : le poste peut toujours joindre les machines de son propre réseau (par exemple `10.20.5.120`), mais il ne peut pas atteindre la passerelle, donc ni `10.20.5.140`, ni `10.20.9.15`, ni Internet : l'accès local fonctionne, l'accès extérieur est impossible.\n\n4. Il faut remplacer la passerelle par l'adresse de l'interface du routeur côté agence : `10.20.5.97`.\n\n5. Vérification : $97 = 01100001$, et $01100001$ ET $11100000$ $= 01100000 = 96$, ce qui donne `10.20.5.96`, le réseau du poste. De plus `10.20.5.97` est différente de l'adresse du réseau (`10.20.5.96`) et de l'adresse de diffusion (`10.20.5.127`) : la passerelle corrigée est valide.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11237
+    ]
+  }
+]

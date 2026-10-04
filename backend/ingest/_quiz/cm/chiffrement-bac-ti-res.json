@@ -1,0 +1,49 @@
+[
+  {
+    "external_id": "cqc-chiffrement-bac-ti-res-faible-0",
+    "theme": "chiffrement",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Pour s'inscrire à un concours, un élève ouvre sur son téléphone le site officiel de dépôt des dossiers. L'adresse commence par `https://` et le navigateur affiche un cadenas fermé. Que garantit le chiffrement utilisé pour cette connexion ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn chiffrement rend une information illisible pour un tiers, mais seulement là où il est appliqué : pour juger une affirmation, il faut se demander quelles données il couvre (celles qui circulent ou celles qui sont stockées) et quelle menace il écarte (la lecture par un tiers, et non la fraude ou les virus).\n\n### Corrigé\n\nAvec HTTPS, la communication est chiffrée : un pirate qui capte les échanges sur le Wi-Fi ou sur une ligne ne voit qu'une suite de caractères incompréhensibles, alors que le navigateur et le serveur, qui disposent des clés nécessaires, les lisent normalement. Cela correspond à la proposition **C**, et il reste à écarter les trois autres.\n\n- **A** est fausse : le cadenas atteste que la connexion est chiffrée, pas que le site est honnête ; un site frauduleux peut lui aussi utiliser HTTPS (confusion entre connexion chiffrée et site fiable).\n- **B** est fausse : HTTPS protège les données *pendant leur transport* ; leur conservation sur le serveur relève d'un autre chiffrement (celui des disques ou de la base), que le cadenas ne prouve pas (confusion entre données en transit et données stockées).\n- **D** est fausse : le chiffrement de la connexion n'inspecte pas ce que le téléphone télécharge et ne remplace pas un antivirus (confusion entre confidentialité des échanges et protection contre les logiciels malveillants).\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Le site visité est forcément honnête, puisqu'un cadenas n'apparaît que sur des sites de confiance."},
+      {"lettre": "B", "texte": "Les informations enregistrées dans la base du site sont chiffrées sur les disques du serveur."},
+      {"lettre": "C", "texte": "Les données échangées entre le navigateur et le serveur ne sont pas lisibles par qui écoute le réseau."},
+      {"lettre": "D", "texte": "Le téléphone de l'élève est protégé contre les virus pendant toute la navigation sur ce site."}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11250]
+  },
+  {
+    "external_id": "cqc-chiffrement-bac-ti-res-moyenne-1",
+    "theme": "chiffrement",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le service informatique d'une mairie de Bertoua emploie trois procédés différents.\n\n- **P1** : le texte d'un courrier est converti en une suite de nombres grâce à la table ASCII (la lettre A devient 65, la lettre B devient 66, etc.). Cette table est publique et n'utilise aucun secret.\n- **P2** : le mot de passe d'un agent est transformé par une fonction de hachage en une empreinte de longueur fixe ; seule l'empreinte est conservée, et il est impossible de retrouver le mot de passe à partir d'elle.\n- **P3** : un fichier de paie est transformé par un algorithme paramétré par une clé secrète ; avec cette clé, le fichier d'origine est retrouvé.\n\n1. Indiquer, pour chaque procédé, s'il s'agit d'un codage, d'un hachage ou d'un chiffrement.\n2. Pour chaque procédé, préciser s'il utilise une clé secrète et s'il permet de retrouver l'information d'origine.\n3. Lequel de ces procédés protège la confidentialité du fichier de paie lors de son envoi par courriel ? Justifier.",
+    "corrige_markdown": "### Rappel de méthode\n\nTrois transformations se distinguent par deux critères : la présence d'un secret (la clé) et la possibilité de revenir à l'information de départ. Le codage change seulement la représentation selon une règle publique ; le hachage produit une empreinte de taille fixe sans retour possible ; le chiffrement rend l'information illisible, et seule la clé permet de la retrouver.\n\n### Corrigé\n\n**1 et 2.** On applique les deux critères à chaque procédé :\n\n| Procédé | Nature | Clé secrète ? | Retour à l'information d'origine ? |\n|---|---|---|---|\n| P1 | Codage | Non : la table ASCII est publique | Oui, par n'importe qui connaissant la table |\n| P2 | Hachage | Non : la fonction est publique | Non : l'empreinte est à sens unique |\n| P3 | Chiffrement | Oui | Oui, mais uniquement avec la clé |\n\n**3.** Seul **P3** protège la confidentialité du fichier de paie. P1 ne protège rien : la table étant publique, une personne qui intercepte le courriel retrouve le texte en quelques instants. P2 est inutilisable ici : l'empreinte ne permet pas de retrouver le fichier, donc le destinataire ne pourrait pas le lire non plus. Avec P3, une personne qui intercepte le courriel n'obtient qu'un contenu illisible sans la clé.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11250]
+  },
+  {
+    "external_id": "cqc-chiffrement-bac-ti-res-elevee-2",
+    "theme": "chiffrement",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un hôpital de Garoua veut chiffrer le disque des ordinateurs qui contiennent les dossiers des patients, afin de garder ces dossiers confidentiels en cas de vol. Deux logiciels sont comparés : **L1** utilise une clé de $40$ bits et **L2** une clé de $56$ bits. Un voleur dispose d'une machine capable de tester $10^{9}$ clés par seconde (attaque par force brute : toutes les clés possibles sont essayées). On prend $1\\ \\text{jour} = 86\\,400\\ \\text{s}$.\n\n1. Calculer le nombre de clés possibles pour L1, puis pour L2.\n2. Calculer la durée maximale de l'attaque pour L1 (en minutes, arrondie au dixième) et pour L2 (en jours, arrondie à l'unité).\n3. Par quel facteur le nombre de clés est-il multiplié quand on passe de 40 à 56 bits ? En déduire quel logiciel choisir et pourquoi.\n4. Vérifier la cohérence des résultats : à partir des durées exprimées en secondes, retrouver le rapport entre la durée pour L2 et la durée pour L1, puis le comparer au facteur de la question 3.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne clé de $n$ bits peut prendre $2^{n}$ valeurs, et chaque bit ajouté double ce nombre. En force brute, la durée maximale d'une attaque est le nombre de clés divisé par le nombre d'essais par seconde : plus l'ensemble des clés est vaste, plus l'attaque est longue.\n\n### Corrigé\n\n**1.** Pour L1 : $2^{40} = 1\\,099\\,511\\,627\\,776 \\approx 1{,}1 \\times 10^{12}$ clés. Pour L2 : $2^{56} = 72\\,057\\,594\\,037\\,927\\,936 \\approx 7{,}2 \\times 10^{16}$ clés.\n\n**2.** Pour L1 : $\\dfrac{2^{40}}{10^{9}} \\approx 1\\,099{,}5\\ \\text{s}$, soit $\\dfrac{1\\,099{,}5}{60} \\approx 18{,}3\\ \\text{min}$. Pour L2 : $\\dfrac{2^{56}}{10^{9}} \\approx 72\\,057\\,594\\ \\text{s}$, soit $\\dfrac{72\\,057\\,594}{86\\,400} \\approx 834\\ \\text{jours}$ (environ $2{,}3$ ans).\n\n**3.** Le facteur est $2^{56-40} = 2^{16} = 65\\,536$ : seize bits de plus rendent la recherche $65\\,536$ fois plus longue. Il faut choisir **L2** : avec L1, le voleur casse la protection en à peine plus de $18$ minutes, alors qu'avec L2 il lui faut plus de deux ans avec la même machine. Une clé de 56 bits n'est toutefois plus jugée suffisante aujourd'hui, car les machines progressent : les algorithmes actuels emploient des clés d'au moins 128 bits.\n\n**4.** En secondes : $\\dfrac{72\\,057\\,594}{1\\,099{,}5} \\approx 65\\,536$. On retrouve le facteur de la question 3, ce qui est logique : le nombre d'essais par seconde ($10^{9}$) se simplifie dans le rapport des durées, qui vaut exactement $\\dfrac{2^{56}}{2^{40}} = 2^{16}$. Les résultats sont cohérents.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11250, 11238]
+  }
+]

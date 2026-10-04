@@ -1,0 +1,54 @@
+[
+  {
+    "external_id": "cqc-cryptographie-bac-ti-res-faible-0",
+    "theme": "cryptographie",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Karim reçoit un message chiffré et possède la clé que l'expéditrice lui a remise en main propre. Comment nomme-t-on l'opération qui lui permet de retrouver le texte clair ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe vocabulaire de la cryptographie distingue quatre opérations : chiffrer (passer du texte clair au texte chiffré), déchiffrer (revenir au texte clair en possédant la clé), décrypter (retrouver le texte clair sans connaître la clé, ce qui relève de la cryptanalyse) et hacher (calculer une empreinte). Pour nommer l'opération, il faut donc regarder dans quel sens elle va et si son auteur détient la clé.\n\n### Corrigé\n\nKarim part du texte chiffré pour revenir au texte clair, et il dispose de la clé légitime : il **déchiffre** le message. Réponse **A**.\n\n- **B** est fausse : décrypter désigne l'action d'une personne qui lit le message sans connaître la clé, par exemple un espion ; Karim, lui, possède la clé (confusion entre déchiffrer et décrypter).\n- **C** est fausse : chiffrer va dans le sens inverse, du texte clair vers le texte illisible (confusion de sens de l'opération).\n- **D** est fausse : hacher produit une empreinte de taille fixe dont on ne peut pas revenir au message ; ce n'est pas une façon de lire un message chiffré (confusion entre chiffrement et hachage).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Le déchiffrement : retrouver le texte clair en utilisant la clé qui convient."},
+      {"lettre": "B", "texte": "Le décryptage : retrouver le texte clair sans connaître la clé de chiffrement."},
+      {"lettre": "C", "texte": "Le chiffrement : transformer le texte clair en un texte devenu illisible."},
+      {"lettre": "D", "texte": "Le hachage : calculer une empreinte de taille fixe à partir du message."}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [11183]
+  },
+  {
+    "external_id": "cqc-cryptographie-bac-ti-res-moyenne-1",
+    "theme": "cryptographie",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Pour casser un message chiffré, un cryptanalyste compte combien de fois chaque lettre apparaît dans le texte chiffré. Cette analyse des fréquences est très efficace contre le chiffrement de César, mais beaucoup moins contre celui de Vigenère. Quelle en est la raison ?",
+    "corrige_markdown": "### Rappel de méthode\n\nL'analyse des fréquences repose sur une régularité des langues : certaines lettres reviennent bien plus souvent que d'autres. Elle ne marche que si chaque lettre du clair donne systématiquement la même lettre dans le chiffré ; un procédé dont le remplacement varie selon la position dans le message efface cette régularité.\n\n### Corrigé\n\nAvec César, toutes les lettres subissent un décalage identique : la lettre la plus fréquente du texte chiffré correspond en général au E du texte clair (en français, pour un texte assez long), ce qui donne la clé. Avec Vigenère, le décalage dépend de la lettre du mot-clé qui tombe sur chaque position du message : un même E clair peut donner des lettres chiffrées différentes, et les fréquences du texte chiffré deviennent beaucoup plus uniformes. Réponse **D**.\n\n- **A** est fausse : Vigenère ne mélange pas l'ordre des lettres, il les remplace (c'est un procédé de substitution) ; et un simple changement d'ordre, comme celui de la scytale, laisse justement les fréquences inchangées (confusion entre substitution et transposition).\n- **B** est fausse : la clé de César est un simple nombre de 1 à 25, donc très courte, alors qu'un mot-clé de Vigenère est en général plus long (confusion sur la longueur des clés, qui n'explique d'ailleurs pas la résistance aux fréquences).\n- **C** est fausse : le procédé de Vigenère est connu de tous ; et même un algorithme tenu secret n'empêcherait pas de compter les lettres du texte chiffré (confusion entre secret de l'algorithme et rôle de la clé).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Vigenère mélange l'ordre des lettres du message, ce qui change la fréquence de chaque lettre."},
+      {"lettre": "B", "texte": "César emploie une clé trop longue pour être devinée, alors que celle de Vigenère reste très courte."},
+      {"lettre": "C", "texte": "Le procédé de Vigenère est tenu secret, ce qui empêche d'identifier les lettres du texte chiffré."},
+      {"lettre": "D", "texte": "Avec Vigenère, le décalage varie selon la lettre du mot-clé : une même lettre claire change de chiffré."}
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [11183]
+  },
+  {
+    "external_id": "cqc-cryptographie-bac-ti-res-elevee-2",
+    "theme": "cryptographie",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un club informatique d'un lycée de Bafoussam prépare un exposé qui compare la cryptographie d'autrefois et celle d'aujourd'hui, à partir de deux situations.\n\n**Situation 1.** Un général spartiate enroule une bande de cuir autour d'un bâton (une scytale), écrit son message dans le sens de la longueur du bâton, puis déroule la bande. Sur la bande, les lettres sont toutes présentes mais dans un autre ordre : le message est illisible. Seul le destinataire, qui possède un bâton de même diamètre, peut remettre les lettres en place. Un espion intercepte la bande ; n'ayant pas de bâton, il essaie plusieurs diamètres jusqu'à obtenir un texte lisible.\n\n**Situation 2.** Dans une application de messagerie, le message est chiffré sur le téléphone de l'expéditeur, puis déchiffré sur celui du destinataire. Un pirate qui écoute le Wi-Fi d'un cybercafé ne capte que des suites de caractères incompréhensibles.\n\n1. Dans la situation 1, identifier le texte clair, le texte chiffré et la clé.\n2. La scytale est-elle un procédé de substitution ou de transposition ? Justifier avec une donnée de l'énoncé.\n3. Comment appelle-t-on la discipline qui étudie les moyens de lire un message sans connaître la clé, comme le fait l'espion de la situation 1 ? Quelle caractéristique de la clé de la scytale rend son attaque possible ?\n4. Dans la situation 2, quel objectif de la cryptographie est atteint ? Nommer les trois autres objectifs de la cryptographie.\n5. Vérifier la cohérence des réponses : indiquer ce que possède et ce qui manque au pirate de la situation 2, puis le rapprocher de la position de l'espion de la situation 1.",
+    "corrige_markdown": "### Rappel de méthode\n\nLa cryptographie étudie les procédés qui rendent un message illisible pour qui n'est pas autorisé à le lire. Son vocabulaire distingue le texte clair, le texte chiffré, la clé (le secret qui paramètre le procédé) et l'algorithme (la méthode employée). Un procédé de transposition déplace les lettres, un procédé de substitution les remplace ; la cryptanalyse cherche à lire un message sans disposer de la clé.\n\n### Corrigé\n\n**1.** Le **texte clair** est le message écrit par le général dans le sens du bâton, avant le déroulement. Le **texte chiffré** est la suite de lettres lue sur la bande déroulée, illisible. La **clé** est le diamètre du bâton, que seuls l'expéditeur et le destinataire connaissent.\n\n**2.** La scytale est un procédé de **transposition** : l'énoncé précise que les lettres sont toutes présentes mais dans un autre ordre, donc aucune lettre n'est remplacée par une autre, elles sont seulement déplacées.\n\n**3.** La discipline s'appelle la **cryptanalyse**. L'attaque est possible parce que la clé ne peut prendre qu'un petit nombre de valeurs (les diamètres raisonnables d'un bâton) : l'espion peut les essayer toutes, c'est une attaque par force brute sur un ensemble de clés très réduit.\n\n**4.** Dans la situation 2, le pirate ne capte que des caractères incompréhensibles : l'objectif atteint est la **confidentialité**. Les trois autres objectifs sont l'**intégrité** (le message n'a pas été modifié), l'**authentification** (l'identité de l'expéditeur est prouvée) et la **non-répudiation** (l'expéditeur ne peut pas nier avoir envoyé le message).\n\n**5.** Le pirate de la situation 2 possède le texte chiffré, qu'il capte sur le réseau, mais il lui manque la clé. Sa position est la même que celle de l'espion de la situation 1 : la bande de cuir joue le rôle du texte chiffré et le bâton celui de la clé. La différence tient à l'ensemble des clés : minuscule pour la scytale, donc essais possibles à la main ; immense pour une application actuelle, ce qui rend l'essai de toutes les clés irréaliste. Les réponses des questions 1, 3 et 4 sont donc cohérentes entre elles.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11183]
+  }
+]

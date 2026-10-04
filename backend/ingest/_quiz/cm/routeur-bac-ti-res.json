@@ -1,0 +1,83 @@
+[
+  {
+    "external_id": "cqc-routeur-bac-ti-res-faible-0",
+    "theme": "routeur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La « box » installée chez un abonné de Yaoundé permet de brancher deux ordinateurs par câble, de connecter des téléphones en Wi-Fi et d'accéder à Internet. Quelle combinaison de fonctions ce boîtier réunit-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn routeur domestique est un boîtier multifonction. Ce qui lui permet d'atteindre Internet est sa fonction de routage entre le réseau local de la maison et celui du fournisseur d'accès ; les ports filaires et le Wi-Fi sont deux manières d'ajouter des appareils à ce réseau local.\n\n### Corrigé\n\nLe boîtier réunit un **routeur** (liaison vers Internet), un petit **commutateur** (ports filaires) et un **point d'accès Wi-Fi**.\n\n- Le choix A est faux : un concentrateur et un répéteur ne relient aucun réseau distinct, ils recopient seulement des signaux.\n- Le choix B est faux : la box offre aussi des ports filaires et assure la liaison vers Internet, ce qu'un point d'accès seul ne fait pas.\n- Le choix D est faux : ni un commutateur ni un pont ne routent entre réseaux, donc aucun des deux ne peut atteindre Internet.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Un concentrateur et un répéteur, qui recopient les signaux sans relier de réseau distinct."
+      },
+      {
+        "lettre": "B",
+        "texte": "Un point d'accès Wi-Fi seul, sans ports filaires et sans liaison vers un autre réseau."
+      },
+      {
+        "lettre": "C",
+        "texte": "Un routeur vers Internet, un petit commutateur pour les ports filaires et un point d'accès Wi-Fi."
+      },
+      {
+        "lettre": "D",
+        "texte": "Un commutateur et un pont, qui relient les postes entre eux mais ne peuvent pas atteindre Internet."
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-routeur-bac-ti-res-moyenne-1",
+    "theme": "routeur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le routeur R du lycée technique de Bafia relie trois réseaux. Ses interfaces sont configurées ainsi :\n\n| Interface | Adresse IP | Masque | Réseau desservi |\n|---|---|---|---|\n| eth0 | `192.168.100.1` | `255.255.255.0` | administration |\n| eth1 | `192.168.101.1` | `255.255.255.0` | salles informatiques |\n| eth2 | `10.200.0.2` | `255.255.255.252` | liaison avec le fournisseur d'accès |\n\nSa table de routage est la suivante :\n\n| Réseau de destination | Masque | Prochain saut | Interface de sortie |\n|---|---|---|---|\n| `192.168.100.0` | `255.255.255.0` | directement relié | eth0 |\n| `192.168.101.0` | `255.255.255.0` | directement relié | eth1 |\n| `10.200.0.0` | `255.255.255.252` | directement relié | eth2 |\n| `0.0.0.0` | `0.0.0.0` | `10.200.0.1` | eth2 |\n\n1. Pour chacun des paquets suivants qui arrivent sur R, indiquer la ligne de la table utilisée, le prochain saut et l'interface de sortie : destination `192.168.101.57` ; destination `192.168.100.200` ; destination `10.77.3.4` ; destination `192.168.102.9`.\n2. Expliquer pourquoi l'adresse `192.168.102.9`, pourtant proche de celles du lycée, suit la même ligne que `10.77.3.4`.\n3. Vérifier que l'adresse de chacune des trois interfaces appartient bien au réseau qu'elle dessert.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn routeur possède une interface par réseau relié, et l'adresse de chaque interface appartient au réseau desservi (en appliquant le masque, on retrouve l'adresse de ce réseau). Pour acheminer un paquet, il applique à l'adresse de destination le masque de chaque ligne de sa table et compare le résultat au réseau de destination de la ligne ; si aucune ligne précise ne correspond, il emploie la route par défaut (`0.0.0.0` avec le masque `0.0.0.0`), qui convient à toute adresse mais n'est retenue qu'en dernier recours.\n\n### Corrigé\n\n1. Analyse des quatre destinations :\n\n| Destination | Calcul avec les lignes de la table | Ligne retenue | Prochain saut | Sortie |\n|---|---|---|---|---|\n| `192.168.101.57` | masque `/24` : `192.168.101.0` | 2e ligne (`192.168.101.0`) | directement relié : remise au poste | eth1 |\n| `192.168.100.200` | masque `/24` : `192.168.100.0` | 1re ligne (`192.168.100.0`) | directement relié : remise au poste | eth0 |\n| `10.77.3.4` | `/24` : `10.77.3.0` ; `/30` : `10.77.3.4` : aucun réseau de la table | route par défaut (4e ligne) | `10.200.0.1` | eth2 |\n| `192.168.102.9` | `/24` : `192.168.102.0` : différent de `192.168.100.0` et de `192.168.101.0` | route par défaut (4e ligne) | `10.200.0.1` | eth2 |\n\n2. L'adresse `192.168.102.9` commence comme les adresses du lycée, mais avec le masque `255.255.255.0` son réseau est `192.168.102.0`, qui n'est ni `192.168.100.0` ni `192.168.101.0`. Aucune ligne précise ne correspond : comme `10.77.3.4`, elle est envoyée par la route par défaut vers le routeur du fournisseur d'accès.\n\n3. Vérification des interfaces :\n- eth0 : `192.168.100.1` avec `255.255.255.0` donne `192.168.100.0`, réseau de l'administration ;\n- eth1 : `192.168.101.1` avec `255.255.255.0` donne `192.168.101.0`, réseau des salles informatiques ;\n- eth2 : `10.200.0.2` avec `255.255.255.252` donne `10.200.0.0`, réseau de la liaison. Ce réseau n'a que deux adresses d'hôte, `10.200.0.1` et `10.200.0.2` : le prochain saut de la route par défaut, `10.200.0.1`, s'y trouve bien.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11237,
+      11248
+    ]
+  },
+  {
+    "external_id": "cqc-routeur-bac-ti-res-elevee-2",
+    "theme": "routeur",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un poste P du réseau `172.20.1.0/24` envoie un paquet à un serveur S d'adresse `172.20.9.50`. Le paquet traverse trois routeurs R1, R2 et R3, configurés comme suit :\n\n| Routeur | Interfaces et adresses | Route vers `172.20.9.0/24` |\n|---|---|---|\n| R1 | eth0 : `172.20.1.1/24` ; eth1 : `10.0.0.1/30` | prochain saut `10.0.0.2` (sortie eth1) |\n| R2 | eth0 : `10.0.0.2/30` ; eth1 : `10.0.1.1/30` | prochain saut `10.0.1.2` (sortie eth1) |\n| R3 | eth0 : `10.0.1.2/30` ; eth1 : `172.20.9.1/24` | directement relié (sortie eth1) |\n\nChaque routeur diminue de 1 le champ TTL du paquet et détruit le paquet lorsque ce TTL devient nul. Le poste P émet le paquet avec un TTL initial de 64.\n\n1. Indiquer, pour R1, R2 et R3, le prochain saut ou l'interface de sortie utilisés pour atteindre `172.20.9.50`.\n2. Calculer la valeur du TTL à l'arrivée du paquet chez S.\n3. Un autre paquet est émis avec un TTL initial de 2. Indiquer quel routeur le détruit et justifier.\n4. Vérifier le résultat de la question 2 en donnant la valeur du TTL à la sortie de chaque routeur.",
+    "corrige_markdown": "### Rappel de méthode\n\nÀ chaque réseau traversé, le routeur cherche dans sa table la ligne qui correspond à l'adresse de destination et envoie le paquet vers le prochain saut indiqué, ou directement à la destination si le réseau lui est relié. Le champ TTL, fixé par l'émetteur, est diminué de 1 par chaque routeur traversé ; un routeur qui le voit devenir nul détruit le paquet, ce qui évite qu'il circule indéfiniment.\n\n### Corrigé\n\n1. L'adresse `172.20.9.50` appartient au réseau `172.20.9.0/24`, ce qui donne :\n- R1 : prochain saut `10.0.0.2`, sortie eth1 ;\n- R2 : prochain saut `10.0.1.2`, sortie eth1 ;\n- R3 : réseau directement relié, remise du paquet à S par eth1.\n\n2. Le paquet traverse 3 routeurs, donc le TTL diminue de 3 : $64 - 3 = 61$. Le serveur S reçoit le paquet avec un TTL de **61**.\n\n3. Avec un TTL initial de 2 : R1 le ramène à $2 - 1 = 1$ et le transmet ; R2 le ramène à $1 - 1 = 0$ et, le TTL étant nul, le **détruit** (en général en signalant l'incident à l'émetteur par un message d'erreur ICMP). Le paquet n'atteint donc jamais R3 ni S.\n\n4. Valeurs du TTL à la sortie de chaque routeur : R1 : $64 - 1 = 63$ ; R2 : $63 - 1 = 62$ ; R3 : $62 - 1 = 61$. On retrouve bien **61** à l'arrivée chez S, ce qui confirme le résultat de la question 2.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11248
+    ]
+  }
+]

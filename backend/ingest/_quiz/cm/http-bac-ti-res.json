@@ -1,0 +1,99 @@
+[
+  {
+    "external_id": "cqc-http-bac-ti-res-faible-0",
+    "theme": "HTTP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "L'administrateur du réseau d'un lycée gère le pare-feu du serveur web de l'établissement. Ce serveur propose le site en HTTP et en HTTPS, et les élèves doivent pouvoir s'y connecter dans les deux cas. Quels sont les deux numéros de port à laisser ouverts sur le serveur, un pour chacun de ces deux protocoles ?",
+    "corrige_markdown": "### Rappel de méthode\n\nChaque protocole d'application est joint sur un numéro de port normalisé : le serveur écoute sur ce numéro, et un pare-feu ne laisse passer un service que si son numéro est autorisé. Un protocole qui existe en version chiffrée utilise en général un numéro différent de celui de sa version non chiffrée.\n\n### Corrigé\n\nLe site est proposé en HTTP, c'est-à-dire en web non chiffré, dont le port par défaut est le **80**, et en HTTPS, c'est-à-dire en web chiffré, dont le port par défaut est le **443**. L'administrateur doit donc laisser ouverts les ports **80** et **443**.\n\nLes autres choix reposent chacun sur une confusion :\n\n- **Ports 21 et 25** : ce sont ceux du transfert de fichiers (FTP) et de l'envoi de courriels (SMTP), deux services qui n'ont aucun rapport avec les pages web.\n- **Ports 53 et 80** : le 53 est le port du service DNS, qui traduit les noms en adresses IP et ne sert pas les pages ; de plus, ce choix laisse le port 443 fermé, si bien que les élèves qui tapent `https://` n'accéderaient pas au site.\n- **Ports 110 et 443** : le 110 est le port de la réception des courriels (POP3) ; ce choix laisse le port 80 fermé, donc le site resterait inaccessible en HTTP.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      10588
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Les ports 21 et 25"
+      },
+      {
+        "lettre": "B",
+        "texte": "Les ports 80 et 443"
+      },
+      {
+        "lettre": "C",
+        "texte": "Les ports 53 et 80"
+      },
+      {
+        "lettre": "D",
+        "texte": "Les ports 110 et 443"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-http-bac-ti-res-moyenne-1",
+    "theme": "HTTP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le journal d'accès du serveur web d'un lycée enregistre, pour chaque requête reçue, la ressource demandée et le code de réponse HTTP renvoyé :\n\n| Requête | Code de réponse |\n|---|---|\n| `GET /accueil.html` | 200 |\n| `GET /bulletins/2027.html` | 404 |\n| `GET /inscription.php` | 500 |\n\nQuelle interprétation de ces trois lignes est correcte ?",
+    "corrige_markdown": "### Rappel de méthode\n\nToute réponse HTTP commence par un code à trois chiffres, dont le premier chiffre indique la famille : 2 pour un succès, 4 pour une requête que le serveur ne peut pas satisfaire (une ressource introuvable, par exemple), 5 pour une erreur survenue dans le serveur pendant le traitement. Le serveur répond dans tous les cas : le code décrit le résultat de la requête et ne signale pas une panne du réseau.\n\n### Corrigé\n\nOn lit le code de chaque ligne du journal :\n\n- ligne 1, code **200** : succès, la page `/accueil.html` a été envoyée normalement ;\n- ligne 2, code **404** : ressource introuvable, le serveur fonctionne mais aucun fichier `/bulletins/2027.html` n'existe à cet emplacement ;\n- ligne 3, code **500** : erreur interne du serveur, la requête était recevable mais le traitement de la page (ici un script `.php`) a échoué.\n\nLes autres interprétations sont fausses :\n\n- **A** : le code 200 est un succès, non un échec ; et le code 404 n'indique pas que la page a été envoyée.\n- **B** : les codes 404 et 500 sont échangés ; or 500 désigne une erreur de traitement et 404 une page introuvable.\n- **C** : la ligne figure dans le journal du serveur, donc la requête est bien arrivée : le navigateur n'est pas en panne et le nom de domaine a été résolu. Le code 404 ne désigne pas un problème de DNS.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10588
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "La première page a échoué ; la deuxième a été envoyée normalement ; la troisième vise un fichier qui n'existe pas sur le serveur."
+      },
+      {
+        "lettre": "B",
+        "texte": "La première page a été envoyée normalement ; la deuxième a provoqué une erreur interne du serveur ; la troisième n'existe pas."
+      },
+      {
+        "lettre": "C",
+        "texte": "La première page a été envoyée normalement ; la deuxième indique une panne du navigateur ; la troisième, un nom de domaine inconnu."
+      },
+      {
+        "lettre": "D",
+        "texte": "La première page a été envoyée ; la deuxième n'existe pas sur le serveur ; la troisième a provoqué une erreur interne du serveur."
+      }
+    ],
+    "reponse_correcte": "D"
+  },
+  {
+    "external_id": "cqc-http-bac-ti-res-elevee-2",
+    "theme": "HTTP",
+    "savoir_officiel": null,
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une mairie fictive publie les actes d'état civil à l'adresse suivante :\n\n`https://www.mairie-demo.cm/etat-civil/actes.html`\n\n1. Décomposer cette adresse en trois éléments : le protocole, l'hôte (nom du serveur) et le chemin de la ressource.\n2. Indiquer le numéro de port utilisé par défaut avec ce protocole, puis dire ce que la lettre « s » de `https` apporte à l'échange.\n3. Décrire en deux temps (requête, puis réponse) l'échange entre le navigateur et le serveur, en précisant le code renvoyé si le fichier existe, puis le code renvoyé si le fichier a été supprimé du serveur.\n4. Dans le cas où le serveur renvoie le code 200, distinguer ce qui relève de HTTP et ce qui relève de HTML dans ce que reçoit le navigateur.\n5. Vérifier la cohérence : si l'adresse commençait par `http://` au lieu de `https://`, indiquer lesquels des quatre éléments (protocole, hôte, chemin, port) changeraient et lesquels resteraient identiques.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne adresse web se lit de gauche à droite : protocole, `://`, hôte jusqu'au premier `/`, puis chemin de la ressource. HTTP règle le dialogue entre le navigateur et le serveur (une requête, puis une réponse qui débute par un code de résultat) ; HTML est le langage qui décrit le contenu des pages. HTTPS est le même dialogue mené dans une communication chiffrée, avec son propre port par défaut.\n\n### Corrigé\n\n**1. Décomposition.** Le protocole est `https` ; l'hôte est `www.mairie-demo.cm` (le serveur à joindre) ; le chemin est `/etat-civil/actes.html` (la ressource demandée sur ce serveur).\n\n**2. Port et rôle du « s ».** Le protocole `https` utilise par défaut le port **443**. Le « s » (secure) signifie que les échanges entre le navigateur et le serveur sont chiffrés : une personne qui intercepterait le trafic ne pourrait pas lire le contenu échangé. Le navigateur l'indique par un cadenas.\n\n**3. Échange requête / réponse.** Une fois l'adresse IP du serveur connue, le navigateur ouvre la connexion sur le port 443 et envoie une **requête** qui demande la ressource `/etat-civil/actes.html`. Le serveur renvoie alors une **réponse** : si le fichier existe, elle porte le code **200** (succès) et contient la page ; si le fichier a été supprimé, elle porte le code **404** (ressource introuvable) : le serveur répond quand même, mais sans page à fournir.\n\n**4. HTTP et HTML.** HTTP est la règle de l'échange : il structure la demande, le code de réponse et le transport du contenu. HTML est le contenu transporté : le texte et la structure de la page (titres, paragraphes, liens), que le navigateur interprète pour l'afficher. HTTP achemine, HTML décrit.\n\n**5. Vérification avec `http://`.** Le protocole change (`http` au lieu de `https`) et le port change (**80** au lieu de 443). L'hôte `www.mairie-demo.cm` et le chemin `/etat-civil/actes.html` restent identiques : seul le mode de dialogue avec le serveur (non chiffré) est modifié, pas l'emplacement de la ressource. Contrôle : deux éléments changent, deux restent identiques, soit bien quatre éléments au total.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10588
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]
