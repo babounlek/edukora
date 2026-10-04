@@ -1,0 +1,120 @@
+[
+  {
+    "external_id": "cqc-appel-de-fonction-bac-ti-prog-faible-0",
+    "theme": "appel de fonction",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une boutique de Douala, un programme ajoute des frais de livraison au prix d'un article :\n\n```c\n#include <stdio.h>\n\nint avec_livraison(int prix) {\n    return prix + 500;\n}\n\nint main() {\n    int article = 2000;\n    printf(\"%d\", avec_livraison(article) * 2);\n    return 0;\n}\n```\n\nQue ce programme affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn appel de fonction est une expression : sa valeur est celle de l'instruction `return` exécutée, et elle se combine avec le reste de l'expression comme n'importe quelle autre valeur.\n\n### Corrigé\n\nL'appel `avec_livraison(article)` retourne 2000 + 500 = 2500. Cette valeur prend la place de l'appel dans l'expression, qui devient `2500 * 2`, soit 5000. Le programme affiche donc 5000.\n\nRéponse **C**.\n\n- A (`2500`) : oublie de multiplier par 2 le résultat de l'appel.\n- B (`4500`) : applique la fonction après le doublement, c'est-à-dire `avec_livraison(article * 2)`, alors que le `* 2` est écrit hors des parenthèses de l'appel.\n- D (`2000`) : croit que la fonction modifie `article` ; elle ne fait que retourner une valeur et `article` garde 2000.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`2500`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`4500`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`5000`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`2000`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10575
+    ]
+  },
+  {
+    "external_id": "cqc-appel-de-fonction-bac-ti-prog-moyenne-1",
+    "theme": "appel de fonction",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant, formé de deux petites fonctions et de `main` :\n\n```c\n#include <stdio.h>\n\nvoid afficher(int x) {\n    printf(\"[%d]\", x);\n}\n\nint suivant(int x) {\n    return x + 1;\n}\n\nint main() {\n    afficher(suivant(suivant(4)));\n    afficher(suivant(3) * 2);\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDes appels imbriqués s'évaluent de l'intérieur vers l'extérieur : la valeur retournée par l'appel le plus interne devient l'argument de celui qui l'entoure. Une procédure (type `void`) ne retourne rien et agit seulement par ses instructions, ici un affichage ; `printf` n'ajoute aucun retour à la ligne de lui-même.\n\n### Corrigé\n\nPremière instruction de `main` : `suivant(4)` retourne 5, `suivant(5)` retourne 6, puis `afficher(6)` écrit `[6]`. Seconde instruction : `suivant(3)` retourne 4, le produit `4 * 2` vaut 8, puis `afficher(8)` écrit `[8]`. Aucun retour à la ligne n'est affiché : la sortie est `[6][8]`.\n\nRéponse **A**.\n\n- B (`[5][8]`) : n'applique qu'un seul `suivant` dans l'appel imbriqué.\n- C (`[6][7]`) : calcule `suivant(3 * 2)`, alors que le `* 2` porte sur la valeur déjà retournée par `suivant(3)`.\n- D (`[6][4]`) : oublie la multiplication par 2 de la seconde instruction.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`[6][8]`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`[5][8]`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`[6][7]`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`[6][4]`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10575
+    ]
+  },
+  {
+    "external_id": "cqc-appel-de-fonction-bac-ti-prog-moyenne-2",
+    "theme": "appel de fonction",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Les températures relevées par six capteurs d'un lycée technique de Garoua sont rangées dans le tableau suivant :\n\n```c\nint T[6] = {24, 27, 31, 26, 35, 30};\n```\n\n1. Écrire en C la fonction `int premier_depassement(int T[], int n, int seuil)` qui retourne l'indice du premier élément de `T` strictement supérieur à `seuil`, ou -1 si aucun élément ne dépasse `seuil`.\n2. Donner les valeurs retournées par `premier_depassement(T, 6, 30)`, par `premier_depassement(T, 6, 33)` et par `premier_depassement(T, 6, 35)`.\n3. Écrire l'instruction de `main` qui appelle cette fonction avec le seuil 30 et affiche l'indice obtenu.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne fonction de recherche parcourt le tableau à partir de l'indice 0 et retourne dès qu'un élément vérifie la condition. La valeur de secours, impossible comme indice (par exemple -1), n'est retournée qu'après la boucle, quand aucun élément n'a convenu.\n\n### Corrigé\n\n1. Fonction complète :\n\n```c\nint premier_depassement(int T[], int n, int seuil) {\n    int pos;\n    for (pos = 0; pos < n; pos++) {\n        if (T[pos] > seuil)\n            return pos;\n    }\n    return -1;\n}\n```\n\nLe `return pos;` placé dans la boucle termine la fonction dès la première occurrence ; `return -1;` n'est atteint que si la boucle va jusqu'au bout.\n\n2. Pour le seuil 30 : 24 et 27 ne dépassent pas 30, `T[2]` vaut 31 et 31 > 30, donc la fonction retourne **2**. Pour le seuil 33 : 24, 27, 31 et 26 ne dépassent pas 33, `T[4]` vaut 35 > 33, donc **4**. Pour le seuil 35 : aucun élément n'est strictement supérieur à 35 (35 n'est pas supérieur à 35), la boucle se termine et la fonction retourne **-1**.\n\n3. `printf(\"%d\", premier_depassement(T, 6, 30));` affiche 2.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-appel-de-fonction-bac-ti-prog-elevee-3",
+    "theme": "appel de fonction",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant, composé de trois fonctions et de `main` :\n\n```c\n#include <stdio.h>\n\nint carre(int x) {\n    return x * x;\n}\n\nint somme_carres(int a, int b) {\n    return carre(a) + carre(b);\n}\n\nvoid signaler(int s) {\n    if (s > 50)\n        printf(\"grand:%d\\n\", s);\n    else\n        printf(\"petit:%d\\n\", s);\n}\n\nint main() {\n    int r = somme_carres(3, 4);\n    signaler(r);\n    signaler(somme_carres(5, 6));\n    return 0;\n}\n```\n\n1. Donner, pour chacune des trois fonctions `carre`, `somme_carres` et `signaler`, le type de retour et préciser s'il s'agit d'une fonction ou d'une procédure.\n2. Donner la valeur retournée par `somme_carres(3, 4)` puis par `somme_carres(5, 6)`.\n3. Donner exactement ce que le programme affiche.\n4. Contrôler `somme_carres` sur deux cas limites : donner les valeurs retournées pour `somme_carres(0, 0)` et pour `somme_carres(-3, 3)`, puis expliquer pourquoi un argument négatif ne pose pas de problème.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne fonction retourne une valeur par `return` et son type de retour s'écrit avant son nom ; une procédure est une fonction de type `void` qui ne retourne rien. Pour prédire une sortie, on évalue les appels imbriqués de l'intérieur vers l'extérieur, en suivant l'ordre des instructions de `main`.\n\n### Corrigé\n\n1. Classement des fonctions :\n\n| Fonction | Type de retour | Nature |\n|---|---|---|\n| `carre` | `int` | fonction |\n| `somme_carres` | `int` | fonction |\n| `signaler` | `void` | procédure |\n\n2. `somme_carres(3, 4)` vaut 9 + 16 = **25** ; `somme_carres(5, 6)` vaut 25 + 36 = **61**.\n\n3. Dans `main`, `r` reçoit 25. L'appel `signaler(25)` : 25 n'est pas supérieur à 50, la branche `else` affiche `petit:25` suivi d'un retour à la ligne. L'appel `signaler(61)` : 61 est supérieur à 50, il affiche `grand:61` suivi d'un retour à la ligne. Sortie exacte :\n\n```\npetit:25\ngrand:61\n```\n\n4. `somme_carres(0, 0)` vaut 0 + 0 = **0** et `somme_carres(-3, 3)` vaut 9 + 9 = **18**. Un argument négatif est sans conséquence, car `carre` multiplie le nombre par lui-même : le carré d'un entier négatif est positif (-3 × -3 = 9), donc `carre` retourne toujours une valeur positive ou nulle.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11246
+    ]
+  }
+]

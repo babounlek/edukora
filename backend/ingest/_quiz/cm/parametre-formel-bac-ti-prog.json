@@ -1,0 +1,99 @@
+[
+  {
+    "external_id": "cqc-parametre-formel-bac-ti-prog-faible-0",
+    "theme": "paramètre formel",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme calcule l'aire d'un panneau rectangulaire :\n\n```c\n#include <stdio.h>\n\nint aire(int largeur, int hauteur) {\n    return largeur * hauteur;\n}\n\nint main() {\n    int a = 6, b = 5;\n    printf(\"%d\", aire(a, b));\n    return 0;\n}\n```\n\nQuels éléments sont les paramètres **effectifs** de l'appel `aire(a, b)` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn paramètre formel est un nom déclaré dans l'en-tête de la définition d'une fonction, où il joue le rôle d'une variable locale. Un paramètre effectif est l'expression écrite entre parenthèses au moment de l'appel ; sa valeur est copiée dans le paramètre formel qui occupe la même place dans la liste.\n\n### Corrigé\n\nDans l'appel `aire(a, b)`, les expressions fournies à la fonction sont les variables `a` et `b` de `main`, de valeurs 6 et 5 : ce sont les paramètres effectifs. Lors de l'appel, 6 est copié dans `largeur` et 5 dans `hauteur` ; la fonction retourne 30, qui est affiché.\n\nRéponse **A**.\n\n- B (`largeur` et `hauteur`) : ce sont les paramètres formels, déclarés dans l'en-tête de la définition.\n- C (`aire(a, b)`) : c'est l'appel lui-même ; ses paramètres effectifs sont seulement les éléments placés entre les parenthèses.\n- D (`int a` et `int b`) : ce sont les déclarations des variables de `main` ; un appel ne précise jamais le type des paramètres effectifs.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`a` et `b`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`largeur` et `hauteur`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`aire(a, b)`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`int a` et `int b`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-parametre-formel-bac-ti-prog-moyenne-1",
+    "theme": "paramètre formel",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève exécute le programme C suivant :\n\n```c\n#include <stdio.h>\n\nint reste(int dividende, int diviseur) {\n    return dividende % diviseur;\n}\n\nint main() {\n    int dividende = 5, diviseur = 23;\n    printf(\"%d\", reste(diviseur, dividende));\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa correspondance entre paramètres effectifs et paramètres formels se fait par la position dans la liste (le premier avec le premier, le deuxième avec le deuxième), jamais par le nom : les noms des variables de l'appelant et ceux des paramètres formels sont indépendants.\n\n### Corrigé\n\nL'appel `reste(diviseur, dividende)` transmet en premier la valeur 23 (variable `diviseur` de `main`) puis la valeur 5. Les valeurs sont copiées par position : le paramètre formel `dividende` reçoit 23 et le paramètre formel `diviseur` reçoit 5. La fonction retourne donc 23 % 5 = 3, car 23 = 4 × 5 + 3.\n\nRéponse **C**.\n\n- A (`5`) : associe les valeurs par le nom (5 pour `dividende`, 23 pour `diviseur`) et calcule 5 % 23 ; seul l'ordre compte pour le compilateur.\n- B (`4`) : calcule le quotient 23 / 5 au lieu du reste.\n- D (`Erreur de compilation`) : des noms identiques dans `main` et dans la fonction ne posent aucun problème ; ce sont deux variables distinctes, chacune locale à sa fonction.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`5`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`4`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`3`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`Erreur de compilation`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-parametre-formel-bac-ti-prog-elevee-2",
+    "theme": "paramètre formel",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une papeterie de Yaoundé utilise le programme C suivant pour afficher le montant d'une commande :\n\n```c\n#include <stdio.h>\n\nfloat total(int quantite, float prix) {\n    return quantite * prix;\n}\n\nvoid afficher_total(float t) {\n    printf(\"Total : %.2f\\n\", t);\n}\n\nint main() {\n    int n = 3;\n    float p = 1250.5;\n    afficher_total(total(n, p));\n    afficher_total(total(2, 500));\n    return 0;\n}\n```\n\n1. Relever les paramètres formels de `total` et de `afficher_total`, puis les paramètres effectifs de l'appel `total(n, p)`.\n2. Donner exactement ce que le programme affiche, en précisant ce qui arrive à l'entier 500 lors du second appel de `total`.\n3. Indiquer le rôle de `return 0;` dans `main` et expliquer pourquoi `afficher_total` ne contient aucun `return` avec une valeur.\n4. Contrôler la correspondance des types : donner l'affichage produit par `afficher_total(total(2.9, 100));`.",
+    "corrige_markdown": "### Rappel de méthode\n\nChaque paramètre effectif est converti dans le type du paramètre formel qui occupe la même position, puis copié ; la conversion d'un réel vers un entier supprime la partie décimale. Une fonction de type `void` ne retourne aucune valeur, tandis que `return 0;` dans `main` transmet au système un code de fin.\n\n### Corrigé\n\n1. Paramètres formels : `quantite` (de type `int`) et `prix` (de type `float`) pour `total` ; `t` (de type `float`) pour `afficher_total`. Paramètres effectifs de l'appel `total(n, p)` : les variables `n` et `p`.\n\n2. Premier appel : 3 × 1250.5 = 3751.5. Second appel : l'entier 500 est converti en réel 500.0 pour correspondre au paramètre formel `prix`, de type `float`, donc 2 × 500.0 = 1000.0. Chaque affichage garde deux décimales et se termine par un retour à la ligne :\n\n```\nTotal : 3751.50\nTotal : 1000.00\n```\n\n3. `afficher_total` est une procédure de type `void` : elle affiche sans rien retourner, un `return` avec valeur n'aurait aucun sens. Le `return 0;` de `main` transmet au système le code de fin 0, qui signifie par convention que l'exécution s'est bien déroulée.\n\n4. Le premier argument 2.9 est converti en `int` pour le paramètre `quantite` : la partie décimale est supprimée, `quantite` vaut 2. Le produit est alors 2 × 100.0 = 200.0 et l'affichage est `Total : 200.00`, et non `Total : 290.00`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11246
+    ]
+  }
+]

@@ -1,0 +1,99 @@
+[
+  {
+    "external_id": "cqc-cle-primaire-bac-ti-prog-faible-0",
+    "theme": "clé primaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le club de robotique d'un lycée technique enregistre ses adhérents dans la table `adherent`. Le secrétariat attribue un `matricule` à chaque nouvel adhérent.\n\n| matricule | nom | ville | date_naissance |\n|---|---|---|---|\n| M001 | Mbarga | Douala | 2006-03-14 |\n| M002 | Nkoulou | Yaoundé | 2005-11-02 |\n| M003 | Mbarga | Bafoussam | 2006-03-14 |\n| M004 | Ngo | Douala | 2007-07-21 |\n\nQuelle colonne peut jouer le rôle de clé primaire de cette table ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa clé primaire d'une table repose sur l'information qui identifie chaque enregistrement sans ambiguïté : sa valeur est toujours renseignée et deux lignes ne peuvent jamais la partager. Pour la choisir, on cherche donc ce qui distingue à coup sûr un enregistrement de tous les autres.\n\n### Corrigé\n\nOn cherche une colonne dont toutes les valeurs sont différentes :\n\n- `nom` ne convient pas : Mbarga apparaît deux fois (M001 et M003), et deux adhérents peuvent porter le même nom.\n- `ville` ne convient pas : Douala apparaît deux fois (M001 et M004).\n- `date_naissance` ne convient pas : la date 2006-03-14 apparaît deux fois (M001 et M003).\n- `matricule` convient : les quatre valeurs sont différentes, et le secrétariat en attribue un nouveau à chaque adhérent, sans jamais en laisser un vide.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`matricule`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`nom`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`ville`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`date_naissance`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      11235
+    ]
+  },
+  {
+    "external_id": "cqc-cle-primaire-bac-ti-prog-moyenne-1",
+    "theme": "clé primaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `matiere` d'un lycée technique a pour clé primaire la colonne `code`, de type `VARCHAR(5)`, qui n'est pas auto-incrémentée. Elle contient les lignes suivantes :\n\n| code | libelle | coefficient |\n|---|---|---|\n| INF | Informatique | 4 |\n| MAT | Mathématiques | 3 |\n| PHY | Physique | 2 |\n\nQuelle instruction MySQL est acceptée sans erreur ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une colonne est clé primaire, MySQL contrôle à chaque insertion la valeur destinée à cette colonne : elle doit être renseignée et ne figurer dans aucune autre ligne. Sans liste de colonnes, `INSERT INTO table VALUES (...)` attend une valeur pour chaque colonne, dans l'ordre de la table.\n\n### Corrigé\n\nSeul le contenu de la colonne `code` est comparé avec les codes déjà présents (INF, MAT et PHY).\n\n- `'MAT'` existe déjà : l'instruction est refusée, même si le libellé et le coefficient sont différents (« Duplicate entry 'MAT' for key 'PRIMARY' »).\n- `'INF'` est répété avec les mêmes autres valeurs : c'est un doublon exact, donc refusé.\n- `NULL` est refusé : une clé primaire ne peut pas être vide et, comme `code` n'est pas auto-incrémentée, MySQL ne fabrique pas de valeur à sa place (« Column 'code' cannot be null »).\n- `'ANG'` n'existe pas encore : la clé est renseignée et unique, la ligne est ajoutée.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`INSERT INTO matiere VALUES ('MAT', 'Algèbre', 3);`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`INSERT INTO matiere VALUES ('ANG', 'Anglais', 2);`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`INSERT INTO matiere VALUES ('INF', 'Informatique', 4);`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`INSERT INTO matiere VALUES (NULL, 'Philosophie', 2);`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      11235
+    ]
+  },
+  {
+    "external_id": "cqc-cle-primaire-bac-ti-prog-elevee-2",
+    "theme": "clé primaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une société de location de voitures de Douala veut stocker ses véhicules dans une table `vehicule` de trois colonnes : la plaque d'immatriculation `immat` (7 caractères, par exemple `LT421AB`), la `marque` (20 caractères au plus) et la date d'achat `date_achat`. Une fois créée, la table contient les trois lignes suivantes :\n\n| immat | marque | date_achat |\n|---|---|---|\n| LT421AB | Toyota | 2021-09-03 |\n| CE587KD | Peugeot | 2022-02-18 |\n| LT992BC | Toyota | 2023-06-27 |\n\n1. Choisir la colonne la plus adaptée comme clé primaire et justifier ce choix par deux propriétés d'une clé primaire.\n2. Écrire la requête SQL qui crée la table `vehicule` avec ce choix (types `VARCHAR` et `DATE`).\n3. Pour chacune des trois instructions suivantes, exécutées dans cet ordre, indiquer si MySQL l'accepte ou la refuse, et expliquer pourquoi :\n\n```sql\nINSERT INTO vehicule VALUES ('CE308KD', 'Kia', '2023-05-10');\nINSERT INTO vehicule VALUES ('LT421AB', 'Hyundai', '2024-01-15');\nINSERT INTO vehicule VALUES (NULL, 'Renault', '2024-03-02');\n```\n\n4. Vérification : donner le contenu final de la table après ces trois instructions, puis le résultat de `SELECT COUNT(*) FROM vehicule WHERE immat = 'LT421AB';` et dire ce que ce résultat confirme.",
+    "corrige_markdown": "### Rappel de méthode\n\nLa clé primaire d'une table se déclare avec `PRIMARY KEY` sur une colonne : MySQL la rend non nulle et refuse toute valeur déjà présente dans la table. Le bon candidat est l'information qui différencie à coup sûr deux enregistrements, et non un attribut que plusieurs lignes peuvent partager.\n\n### Corrigé\n\n1. La clé primaire est `immat`. Elle est **unique** : deux véhicules n'ont jamais la même plaque. Elle est **non nulle** : chaque véhicule en possède une. `marque` ne convient pas, car plusieurs véhicules ont la même marque (deux Toyota dans la table), et `date_achat` non plus, car deux véhicules peuvent être achetés le même jour.\n\n2. Requête de création :\n\n```sql\nCREATE TABLE vehicule (\n    immat VARCHAR(7) PRIMARY KEY,\n    marque VARCHAR(20),\n    date_achat DATE\n);\n```\n\n3. Verdict pour chaque instruction :\n\n   - Première instruction : **acceptée**. La plaque `'CE308KD'` n'existe pas encore et n'est pas `NULL`.\n   - Deuxième instruction : **refusée**. La plaque `'LT421AB'` est déjà utilisée par la première ligne ; le fait que la marque et la date diffèrent n'y change rien, car seule la clé est comparée (« Duplicate entry 'LT421AB' »).\n   - Troisième instruction : **refusée**. La clé primaire ne peut pas être `NULL`, et `immat` n'est pas auto-incrémentée : MySQL ne génère aucune valeur (« Column 'immat' cannot be null »).\n\n4. Seule la première instruction a modifié la table, qui contient maintenant quatre lignes :\n\n| immat | marque | date_achat |\n|---|---|---|\n| LT421AB | Toyota | 2021-09-03 |\n| CE587KD | Peugeot | 2022-02-18 |\n| LT992BC | Toyota | 2023-06-27 |\n| CE308KD | Kia | 2023-05-10 |\n\n`SELECT COUNT(*) FROM vehicule WHERE immat = 'LT421AB';` retourne **1**. Ce résultat confirme que le refus de la deuxième instruction a bien protégé l'unicité de la clé : la plaque `LT421AB` désigne toujours un seul véhicule, le Toyota de 2021.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11235
+    ]
+  }
+]

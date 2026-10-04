@@ -1,0 +1,102 @@
+[
+  {
+    "external_id": "cqc-prototype-de-fonction-bac-ti-prog-faible-0",
+    "theme": "prototype de fonction",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme C contient la définition suivante, placée après la fonction `main` :\n\n```c\nfloat moyenne(int note1, int note2) {\n    return (note1 + note2) / 2.0;\n}\n```\n\nQuelle ligne constitue un prototype correct de cette fonction, à placer avant `main` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn prototype recopie l'en-tête de la fonction : type de retour, nom et types des paramètres, ceux-ci pouvant rester sans nom. Il se termine par un point-virgule, car il n'a pas de corps ; il annonce simplement la fonction au compilateur avant que sa définition apparaisse.\n\n### Corrigé\n\nLe prototype doit reprendre le type de retour `float`, le nom `moyenne` et la liste de types `int, int`, avec un `;` final.\n\nRéponse **D**.\n\n- A (`float moyenne(int, int)`) : sans point-virgule final, le compilateur attend un corps entre accolades ; ce n'est pas un prototype valide.\n- B (`int moyenne(int, int);`) : le type de retour est `int` au lieu de `float` ; le compilateur signalerait un conflit de types avec la définition.\n- C (`float moyenne(int);`) : un seul paramètre, alors que la fonction en reçoit deux ; la déclaration ne correspond pas à la définition.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`float moyenne(int, int)`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`int moyenne(int, int);`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`float moyenne(int);`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`float moyenne(int, int);`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      11243,
+      11236
+    ]
+  },
+  {
+    "external_id": "cqc-prototype-de-fonction-bac-ti-prog-moyenne-1",
+    "theme": "prototype de fonction",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève écrit le programme suivant. Le compilateur signale un problème sur l'appel de `carre`, car la fonction est utilisée dans `main` avant d'être définie :\n\n```c\n#include <stdio.h>\n\nint main() {\n    printf(\"%d\", carre(5));\n    return 0;\n}\n\nint carre(int x) {\n    return x * x;\n}\n```\n\nQuelle correction suffit à rendre ce programme valide, sans déplacer le code de la fonction `carre` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe compilateur lit le fichier de haut en bas : un nom de fonction doit être connu avant son premier appel. Quand la définition se trouve plus bas, une déclaration anticipée, qui donne seulement le type de retour, le nom et les types des paramètres, suffit pour que l'appel soit vérifié.\n\n### Corrigé\n\nL'appel `carre(5)` est écrit dans `main`, qui précède la définition de `carre` : au moment de lire l'appel, le compilateur ne connaît pas encore la fonction et signale une déclaration implicite (avertissement ou erreur selon la version du compilateur). Ajouter `int carre(int);` avant `main` annonce le type de retour et le type du paramètre : l'appel est vérifié et la définition peut rester plus bas.\n\nRéponse **B**.\n\n- A : `math.h` déclare des fonctions de bibliothèque (`sqrt`, `pow`) ; elle ne contient pas la fonction `carre` écrite par le programmeur.\n- C : une variable globale `x` n'annonce aucune fonction ; le compilateur ne connaît toujours pas `carre`.\n- D : changer le type de retour en `void` ne règle pas la déclaration manquante et rendrait l'appel `carre(5)` incompatible avec l'affichage d'un entier par `printf`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Ajouter `#include <math.h>` en tête du fichier"
+      },
+      {
+        "lettre": "B",
+        "texte": "Ajouter `int carre(int);` avant `main`"
+      },
+      {
+        "lettre": "C",
+        "texte": "Déclarer `int x;` en variable globale"
+      },
+      {
+        "lettre": "D",
+        "texte": "Remplacer `int carre` par `void carre`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      11243,
+      11236
+    ]
+  },
+  {
+    "external_id": "cqc-prototype-de-fonction-bac-ti-prog-elevee-2",
+    "theme": "prototype de fonction",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme C suivant, dans lequel les définitions des fonctions suivent `main` :\n\n```c\n#include <stdio.h>\n\nint maximum(int, int);\nvoid annoncer(int);\n\nint main() {\n    int a = 14, b = 9;\n    annoncer(maximum(a, b));\n    annoncer(maximum(b - 12, 0));\n    return 0;\n}\n\nint maximum(int x, int y) {\n    if (x > y)\n        return x;\n    return y;\n}\n\nvoid annoncer(int m) {\n    printf(\"Max : %d\\n\", m);\n}\n```\n\n1. Relever les deux prototypes et expliquer pourquoi les noms des paramètres peuvent y être omis alors qu'ils sont indispensables dans les définitions.\n2. Donner exactement ce que le programme affiche.\n3. Distinguer déclaration et définition d'une fonction, puis indiquer ce qui se passerait si les deux prototypes étaient supprimés, les définitions restant après `main`.\n4. Vérifier la cohérence : le prototype `int maximum(int, int);` serait-il compatible avec une définition commençant par `float maximum(int x, int y)` ? Les prototypes resteraient-ils nécessaires si les deux définitions étaient placées avant `main` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn prototype est une déclaration : il communique au compilateur le type de retour, le nom et les types des paramètres, sans corps, alors que la définition fournit le corps et doit rester cohérente avec lui. Pour prédire une sortie, on évalue les appels imbriqués de l'intérieur vers l'extérieur.\n\n### Corrigé\n\n1. Les prototypes sont `int maximum(int, int);` et `void annoncer(int);`. Pour vérifier un appel (nombre et types des arguments, type du résultat), le compilateur n'a besoin que des types : les noms ne servent qu'à écrire le corps de la fonction, donc ils sont facultatifs dans une déclaration et nécessaires dans la définition, où ils désignent les variables utilisées.\n\n2. L'appel `maximum(a, b)` correspond à `maximum(14, 9)` et retourne 14, d'où `annoncer(14)`. Pour la seconde instruction, `b - 12` vaut 9 - 12 = -3, `maximum(-3, 0)` retourne 0, d'où `annoncer(0)`. Sortie exacte :\n\n```\nMax : 14\nMax : 0\n```\n\n3. La définition contient le corps entre accolades ; le prototype se limite à l'en-tête suivi de `;`. Sans les prototypes, `main` appellerait `maximum` et `annoncer` avant que le compilateur les connaisse : déclaration implicite (avertissement ou erreur selon la version du compilateur). Dans un projet plus important, les prototypes sont regroupés dans un fichier `.h` que chaque fichier `.c` inclut par `#include \"outils.h\"`.\n\n4. Compatibilité : non. Le prototype annonce un retour `int` et cette définition un retour `float` ; le compilateur signale des types en conflit, car prototype et définition doivent avoir le même type de retour, le même nombre de paramètres et les mêmes types. Définitions avant `main` : les prototypes ne seraient plus nécessaires, une définition déclare déjà la fonction pour tout ce qui la suit dans le fichier.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11243,
+      11236
+    ]
+  }
+]

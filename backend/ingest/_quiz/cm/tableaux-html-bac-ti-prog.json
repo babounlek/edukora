@@ -1,0 +1,82 @@
+[
+  {
+    "external_id": "cqc-tableaux-html-bac-ti-prog-faible-0",
+    "theme": "Tableaux HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le code HTML suivant décrit le tableau des tarifs de la cantine d'un lycée :\n\n```html\n<table border=\"1\">\n  <tr><th>Repas</th><th>Prix (F)</th></tr>\n  <tr><td>Riz sauce</td><td>300</td></tr>\n  <tr><td>Haricots</td><td>250</td></tr>\n  <tr><td>Beignets</td><td>100</td></tr>\n</table>\n```\n\nCombien de lignes et de colonnes le navigateur affiche-t-il, ligne d'en-tête comprise ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDans un tableau HTML, chaque balise `<tr>` ouvre une ligne, et chaque cellule de cette ligne s'écrit avec `<td>` (donnée) ou `<th>` (en-tête de colonne). Le nombre de lignes est le nombre de balises `<tr>` ; le nombre de colonnes est le nombre de cellules d'une même ligne.\n\n### Corrigé\n\nLe code contient quatre balises `<tr>` : la ligne d'en-tête (avec deux `<th>`) et trois lignes de données (avec chacune deux `<td>`). Le tableau affiche donc **4 lignes** ; chaque ligne compte deux cellules, soit **2 colonnes**. Les cellules `<th>` comptent comme des cellules ordinaires : elles sont seulement affichées en gras et centrées par défaut.\n\nLes autres choix reposent sur une erreur de lecture :\n\n- **A** : ce choix oublie la ligne d'en-tête `<tr><th>...</th></tr>`, qui est bien une ligne du tableau.\n- **C** : ce choix échange les deux notions ; `<tr>` donne les lignes, non les colonnes.\n- **D** : 8 est le nombre total de cellules (4 lignes × 2 cellules), et non le nombre de colonnes.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      11230
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "3 lignes et 2 colonnes"
+      },
+      {
+        "lettre": "B",
+        "texte": "4 lignes et 2 colonnes"
+      },
+      {
+        "lettre": "C",
+        "texte": "2 lignes et 4 colonnes"
+      },
+      {
+        "lettre": "D",
+        "texte": "4 lignes et 8 colonnes"
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-tableaux-html-bac-ti-prog-moyenne-1",
+    "theme": "Tableaux HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le secrétariat d'un lycée technique affiche l'occupation d'une salle dans un tableau HTML de 3 lignes et 3 colonnes (bordure de 1 pixel) :\n\n- la première ligne contient les en-têtes « Salle », « Jour » et « Cours » ;\n- la deuxième ligne contient « Labo 2 », « Lundi » et « Programmation » ;\n- la troisième ligne contient « Mardi » et « Réseaux » ; la cellule « Labo 2 » s'étend sur les deux lignes de données et n'est pas répétée.\n\n1. Écrire le code HTML complet de ce tableau.\n2. Donner le nombre de balises `<td>` de la troisième ligne et justifier ce nombre.\n3. Indiquer l'effet visible sur le tableau si la troisième ligne contenait par erreur trois balises `<td>`.",
+    "corrige_markdown": "### Rappel de méthode\n\nL'attribut `rowspan=\"n\"` placé dans une cellule la fait s'étendre sur n lignes vers le bas ; dans chacune des lignes suivantes concernées, la place de cette colonne est déjà occupée, et la ligne s'écrit donc avec une cellule de moins. Le total des cellules d'une ligne, en comptant celles qui viennent du dessus, doit toujours égaler le nombre de colonnes.\n\n### Corrigé\n\n1. Code du tableau :\n\n```html\n<table border=\"1\">\n  <tr>\n    <th>Salle</th>\n    <th>Jour</th>\n    <th>Cours</th>\n  </tr>\n  <tr>\n    <td rowspan=\"2\">Labo 2</td>\n    <td>Lundi</td>\n    <td>Programmation</td>\n  </tr>\n  <tr>\n    <td>Mardi</td>\n    <td>Réseaux</td>\n  </tr>\n</table>\n```\n\n2. La troisième ligne contient **2** balises `<td>` : « Mardi » et « Réseaux ». La première colonne de cette ligne est déjà occupée par la cellule « Labo 2 », qui s'étend vers le bas grâce à `rowspan=\"2\"` : on ne la réécrit pas. Contrôle : 1 cellule venue du dessus + 2 balises `<td>` = 3 colonnes.\n\n3. Avec trois balises `<td>`, la troisième ligne compterait 1 + 3 = 4 cellules : le navigateur créerait une quatrième colonne, visible comme une cellule en trop à droite de cette seule ligne, et le tableau serait déséquilibré.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10845
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-tableaux-html-bac-ti-prog-elevee-2",
+    "theme": "Tableaux HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une boutique de Douala vend des cahiers à 250 F l'unité. Le script PHP suivant affiche une grille de prix :\n\n```php\n<?php\n$prix = 250;\necho '<table border=\"1\">';\necho '<tr><th>Quantité</th><th>Total (F)</th></tr>';\nfor ($q = 1; $q <= 3; $q++) {\n    echo '<tr><td>' . $q . '</td><td>' . ($q * $prix) . '</td></tr>';\n}\necho '</table>';\n?>\n```\n\n1. Écrire le code HTML que le navigateur reçoit, sur une seule ligne puisque chaque `echo` envoie son texte sans insérer de saut de ligne.\n2. Donner le nombre de lignes et de colonnes du tableau affiché, puis le contenu de sa dernière ligne.\n3. Expliquer pourquoi la ligne d'en-tête est écrite par un `echo` placé avant la boucle et non dans la boucle.\n4. Vérification : la condition de la boucle devient `$q <= 5`. Donner le nombre de balises `<tr>`, `<th>` et `<td>` produites par le script modifié, puis le contenu de la dernière ligne, et contrôler le résultat avec le produit lignes × colonnes.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn script PHP qui génère un tableau écrit les balises avec `echo`, dans l'ordre où elles doivent figurer dans la page : ouverture de `<table>`, ligne d'en-tête, puis une ligne `<tr>` par tour de boucle, enfin fermeture. Chaque `echo` envoie son texte tel quel, sans retour à la ligne, et l'opérateur de concaténation `.` assemble les morceaux fixes et les valeurs des variables.\n\n### Corrigé\n\n1. On déroule la boucle pour `$q` valant 1, 2 puis 3 (valeurs de `$q * $prix` : 250, 500, 750). Le navigateur reçoit :\n\n```html\n<table border=\"1\"><tr><th>Quantité</th><th>Total (F)</th></tr><tr><td>1</td><td>250</td></tr><tr><td>2</td><td>500</td></tr><tr><td>3</td><td>750</td></tr></table>\n```\n\n2. Le tableau compte **4 lignes** (l'en-tête et 3 lignes de données) et **2 colonnes**. Sa dernière ligne contient « 3 » et « 750 ».\n\n3. La boucle répète son corps à chaque tour : placé dedans, l'en-tête serait écrit avant chaque ligne de données, et le tableau afficherait trois lignes d'en-tête, une par tour. L'en-tête ne doit être écrit qu'une seule fois, avant la boucle.\n\n4. Avec `$q <= 5`, la boucle fait 5 tours :\n\n| Balise | Calcul | Nombre |\n|---|---|---|\n| `<tr>` | 1 en-tête + 5 lignes de données | 6 |\n| `<th>` | 2 cellules d'en-tête, écrites une seule fois | 2 |\n| `<td>` | 5 lignes de données × 2 colonnes | 10 |\n\nLa dernière ligne contient « 5 » et « 1250 » (5 × 250). Le contrôle est cohérent : 5 lignes de données × 2 colonnes = 10 balises `<td>`.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      11247
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

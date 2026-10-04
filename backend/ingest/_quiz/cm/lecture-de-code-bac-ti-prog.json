@@ -1,0 +1,120 @@
+[
+  {
+    "external_id": "cqc-lecture-de-code-bac-ti-prog-faible-0",
+    "theme": "lecture de code",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un magasinier de Douala contrôle si le code article 978 figure dans la liste de ses références. Il écrit le programme C suivant.\n\n```c\n#include <stdio.h>\nint main() {\n    int code[6] = {412, 305, 978, 120, 645, 733};\n    int i, trouve = 0;\n    for (i = 0; i < 6; i++) {\n        if (code[i] == 978)\n            trouve = 1;\n    }\n    if (trouve == 1)\n        printf(\"present\");\n    else\n        printf(\"absent\");\n    return 0;\n}\n```\n\nQuel est le rôle de la variable `trouve` dans ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\nPour dégager le rôle d'une variable, regarder sa valeur de départ, puis les seules affectations qu'elle subit dans la boucle : une variable qui ne prend jamais que deux valeurs, 0 puis 1, joue le rôle de drapeau, c'est-à-dire de mémoire d'un événement survenu ou non.\n\n### Corrigé\n`trouve` est initialisée à 0 (« pas encore vu »). Dans la boucle, elle reçoit la valeur 1 dès qu'une case contient 978 ; elle n'est jamais incrémentée ni remise à 0. À la fin du parcours, `trouve == 1` signifie donc « 978 figure au moins une fois dans `code` », et `trouve == 0` signifie le contraire. Ici, 978 occupe la case d'indice 2 : `trouve` vaut 1 et le programme affiche `present`.\n\nAnalyse des autres choix :\n\n- Compter les occurrences : il faudrait écrire `trouve++` ; avec `trouve = 1`, la valeur reste égale à 1 même si 978 figurait trois fois.\n- Mémoriser la position : l'affectation donne la constante 1, pas l'indice `i` ; pour retenir la position, il faudrait écrire `trouve = i`.\n- Garder la plus grande valeur : aucune comparaison avec `>` n'est faite et `trouve` ne reçoit jamais un élément du tableau.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Elle compte combien de fois le code 978 apparaît dans le tableau."
+      },
+      {
+        "lettre": "B",
+        "texte": "Elle indique si le code 978 a été trouvé dans le tableau."
+      },
+      {
+        "lettre": "C",
+        "texte": "Elle mémorise l'indice de la case contenant le code 978."
+      },
+      {
+        "lettre": "D",
+        "texte": "Elle garde la plus grande valeur rencontrée dans le tableau."
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10563
+    ]
+  },
+  {
+    "external_id": "cqc-lecture-de-code-bac-ti-prog-moyenne-1",
+    "theme": "lecture de code",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une élève de Terminale TI range six mesures d'un capteur dans un tableau, puis exécute le fragment de programme C suivant.\n\n```c\n#include <stdio.h>\nint main() {\n    int T[6] = {5, 2, 8, 1, 9, 4};\n    int i, t;\n    for (i = 0; i < 3; i++) {\n        t = T[i];\n        T[i] = T[5 - i];\n        T[5 - i] = t;\n    }\n    for (i = 0; i < 6; i++)\n        printf(\"%d \", T[i]);\n    return 0;\n}\n```\n\nQuel est le rôle de la première boucle `for` ?",
+    "corrige_markdown": "### Rappel de méthode\nPour résumer le rôle d'une boucle, repérer quels indices sont manipulés ensemble à chaque tour et combien de tours sont effectués par rapport à la taille du tableau, puis vérifier l'hypothèse sur les premiers tours plutôt que de la déduire de la seule forme des instructions.\n\n### Corrigé\nÀ chaque tour, les cases `i` et `5 - i` échangent leur contenu grâce à la variable temporaire `t`. La boucle fait 3 tours, soit la moitié des 6 cases : chaque paire de cases est donc échangée une seule fois.\n\n| Tour | Paire échangée | Tableau obtenu |\n|---|---|---|\n| 0 | T[0] et T[5] | 4 2 8 1 9 5 |\n| 1 | T[1] et T[4] | 4 9 8 1 2 5 |\n| 2 | T[2] et T[3] | 4 9 1 8 2 5 |\n\nLe programme affiche `4 9 1 8 2 5 ` : le tableau de départ lu à l'envers.\n\nAnalyse des autres choix :\n\n- Ordre croissant : le résultat 4 9 1 8 2 5 n'est pas trié ; échanger des cases symétriques ne compare jamais les valeurs entre elles.\n- Premier et dernier seulement : seul le tour 0 concerne T[0] et T[5] ; les tours 1 et 2 échangent aussi les cases intérieures.\n- Tableau inchangé : ce serait le cas si la boucle faisait 6 tours, car chaque paire serait alors échangée deux fois ; avec 3 tours, chaque paire n'est échangée qu'une fois.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Elle inverse l'ordre des éléments : le dernier passe en tête."
+      },
+      {
+        "lettre": "B",
+        "texte": "Elle range les éléments du tableau du plus petit au plus grand."
+      },
+      {
+        "lettre": "C",
+        "texte": "Elle échange seulement le premier et le dernier élément."
+      },
+      {
+        "lettre": "D",
+        "texte": "Elle laisse le tableau inchangé, car chaque échange est annulé."
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      11180
+    ]
+  },
+  {
+    "external_id": "cqc-lecture-de-code-bac-ti-prog-moyenne-2",
+    "theme": "lecture de code",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien contrôle des numéros de série rangés dans un tableau d'entiers. Pour cela, il utilise la fonction C suivante, dont le nom n'indique rien de son rôle.\n\n```c\nint mystere(int T[], int n) {\n    int i, j;\n    for (i = 0; i < n - 1; i++) {\n        for (j = i + 1; j < n; j++) {\n            if (T[i] == T[j])\n                return 1;\n        }\n    }\n    return 0;\n}\n```\n\n1. Dire, en une phrase, ce que permet de savoir la valeur retournée par `mystere`.\n2. Donner la valeur retournée pour `T = {4, 7, 2, 9, 7}` avec `n = 5`, puis pour `T = {3, 5, 8, 1}` avec `n = 4`.\n3. Expliquer pourquoi la variable `j` démarre à `i + 1` et non à 0.",
+    "corrige_markdown": "### Rappel de méthode\nPour comprendre une fonction dont le nom ne dit rien, examiner ce que comparent ses boucles imbriquées, ce que signifient ses valeurs de retour (ici 1 et 0) et à quel moment un `return` interrompt la fonction, puis résumer en une phrase l'information fournie à l'appelant.\n\n### Corrigé\n**1.** La fonction compare chaque élément aux éléments qui le suivent. Elle retourne 1 dès qu'elle trouve deux cases différentes contenant la même valeur, et 0 si aucune paire d'éléments égaux n'existe : elle indique si le tableau contient au moins un doublon.\n\n**2.** Premier tableau : pour `i = 0`, la valeur 4 est comparée à 7, 2, 9 puis 7 sans égalité. Pour `i = 1`, la valeur 7 est comparée à 2, puis à 9, puis à `T[4]` qui vaut aussi 7 : il y a égalité, la fonction retourne **1** (le `return` arrête aussitôt les deux boucles). Second tableau : aucune paire de valeurs parmi 3, 5, 8 et 1 n'est égale ; les boucles se terminent et la fonction retourne **0**.\n\n**3.** Si `j` démarrait à 0, la case `T[i]` serait comparée à elle-même quand `j` vaut `i`, et l'égalité serait toujours vraie : la fonction retournerait 1 pour tout tableau d'au moins deux éléments, même sans doublon (par exemple pour `{3, 5, 8, 1}`). Démarrer à `i + 1` supprime cette comparaison d'une case avec elle-même et évite aussi de comparer deux fois la même paire, une fois dans chaque sens.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11231
+    ]
+  },
+  {
+    "external_id": "cqc-lecture-de-code-bac-ti-prog-elevee-3",
+    "theme": "lecture de code",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un algorithme est écrit en pseudo-code. Les valeurs lues `a` et `b` sont des entiers avec `a >= 0` et `b > 0`.\n\n```\nAlgorithme mystere\nVariables a, b, q, r : entiers\nDébut\n    Lire(a, b)\n    q ← 0\n    r ← a\n    Tant que r ≥ b faire\n        r ← r − b\n        q ← q + 1\n    FinTantQue\n    Écrire(q, r)\nFin\n```\n\n1. Indiquer le rôle de la variable `q`, puis celui de la variable `r`, à l'intérieur de la boucle.\n2. Établir la trace de l'algorithme pour `a = 23` et `b = 6` en donnant, après chaque tour de boucle, les valeurs de `r` et de `q`.\n3. En déduire, en une phrase, ce que calcule cet algorithme.\n4. Vérifier le résultat de la question 2 à l'aide d'une égalité qui relie `a`, `b`, `q` et `r`.\n5. Donner le résultat pour `a = 4` et `b = 7`, puis expliquer pourquoi l'algorithme ne s'arrête jamais si `b = 0`.",
+    "corrige_markdown": "### Rappel de méthode\nPour lire un algorithme à boucle, distinguer la variable qui compte les tours de celle qui évolue à chaque tour, puis établir la trace sur des valeurs choisies : le tableau des valeurs révèle ce que l'algorithme calcule, et une relation de contrôle permet de confirmer le résultat.\n\n### Corrigé\n**1.** `q` est un compteur : elle part de 0 et augmente de 1 à chaque tour, donc elle compte combien de fois `b` a pu être retranché. `r` est le reste courant : elle part de `a` et diminue de `b` à chaque tour, tant que `b` peut encore en être retranché.\n\n**2.** Trace pour `a = 23` et `b = 6` :\n\n| Étape | `r` | `q` | `r ≥ 6` ? |\n|---|---|---|---|\n| Initialisation | 23 | 0 | oui |\n| Tour 1 | 17 | 1 | oui |\n| Tour 2 | 11 | 2 | oui |\n| Tour 3 | 5 | 3 | non |\n\nLa boucle s'arrête, et l'algorithme écrit 3 puis 5.\n\n**3.** `q` est le quotient et `r` le reste de la division entière de `a` par `b`, calculés par soustractions successives.\n\n**4.** Vérification : `b * q + r = 6 * 3 + 5 = 23 = a`, avec `r = 5 < b = 6`. Ces deux conditions caractérisent bien le quotient et le reste de la division euclidienne de 23 par 6.\n\n**5.** Pour `a = 4` et `b = 7`, la condition `r ≥ b` est fausse dès le départ (4 < 7) : la boucle ne s'exécute pas et l'algorithme écrit 0 puis 4, ce qui est cohérent puisque `7 * 0 + 4 = 4`. Pour `b = 0`, la condition `r ≥ 0` reste toujours vraie, car `r ← r − 0` ne modifie pas `r` : `q` augmente sans fin et l'algorithme ne se termine jamais, d'où l'hypothèse `b > 0`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572
+    ]
+  }
+]

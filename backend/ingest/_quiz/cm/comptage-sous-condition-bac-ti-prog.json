@@ -1,0 +1,101 @@
+[
+  {
+    "external_id": "cqc-comptage-sous-condition-bac-ti-prog-faible-0",
+    "theme": "comptage sous condition",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme C parcourt les notes d'une élève de Terminale TI :\n\n```c\n#include <stdio.h>\nint main() {\n    int notes[6] = {7, 12, 10, 9, 15, 4};\n    int i, cpt = 0;\n    for (i = 0; i < 6; i++) {\n        if (notes[i] >= 10)\n            cpt++;\n    }\n    printf(\"%d\", cpt);\n    return 0;\n}\n```\n\nQuelle valeur ce programme affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn compteur, initialisé à 0, augmente de 1 chaque fois que la condition du `if` est vraie : sa valeur finale est le nombre d'éléments qui satisfont la condition, ni leur somme ni le nombre total d'éléments. Il faut aussi lire avec soin l'opérateur de comparaison : `>=` inclut la borne, `>` l'exclut.\n\n### Corrigé\n\nExamen des notes une à une :\n\n| `i` | `notes[i]` | `notes[i] >= 10` | `cpt` |\n|---|---|---|---|\n| 0 | 7 | faux | 0 |\n| 1 | 12 | vrai | 1 |\n| 2 | 10 | vrai (borne incluse) | 2 |\n| 3 | 9 | faux | 2 |\n| 4 | 15 | vrai | 3 |\n| 5 | 4 | faux | 3 |\n\nLe programme affiche `3`.\n\n- Choix A : 2 revient à lire `>=` comme `>` et à exclure la note 10.\n- Choix C : 6 suppose que `cpt++` s'exécute pour chaque note, comme s'il était placé hors du `if`.\n- Choix D : 37 = 12 + 10 + 15 est la somme des notes retenues : c'est le résultat d'un accumulateur, alors que `cpt` ajoute 1 et non la valeur de la note.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`2`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`3`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`6`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`37`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-comptage-sous-condition-bac-ti-prog-moyenne-1",
+    "theme": "comptage sous condition",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un enseignant veut afficher le pourcentage de notes supérieures ou égales à 10 dans une série de huit notes.\n\n```c\n#include <stdio.h>\nint main() {\n    int notes[8] = {11, 8, 14, 9, 10, 6, 13, 12};\n    int i, admis = 0;\n    float taux;\n    for (i = 0; i < 8; i++) {\n        if (notes[i] >= 10)\n            admis++;\n    }\n    taux = admis / 8 * 100;\n    printf(\"%.1f\", taux);\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe compteur fournit un entier, et le pourcentage s'obtient en divisant par l'effectif puis en multipliant par 100. En C, la division de deux entiers est une division entière, dont le quotient est tronqué avant toute multiplication ou affectation à un `float`. Il faut donc évaluer l'expression de gauche à droite, opération par opération.\n\n### Corrigé\n\nComptage : les notes supérieures ou égales à 10 sont 11, 14, 10, 13 et 12, donc `admis` vaut 5.\n\nCalcul de `taux = admis / 8 * 100;` : `admis / 8` vaut 5 / 8, soit 0 en division entière ; puis 0 × 100 = 0 ; `taux` reçoit 0.0 et le programme affiche `0.0`.\n\n- Choix A : 62.5 est le pourcentage attendu mathématiquement, mais il suppose une division réelle ; ici la division est entière.\n- Choix B : 62.0 correspond à `admis * 100 / 8` (500 / 8 = 62 en division entière) ; l'ordre des opérations de l'énoncé est différent.\n- Choix C : 50.0 combine deux erreurs : exclure la note 10 (4 notes retenues) et faire la division en réel.\n\nPour obtenir le bon pourcentage, il faudrait écrire `taux = 100.0 * admis / 8;`, qui affiche `62.5`.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`62.5`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`62.0`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`50.0`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`0.0`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      10743,
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-comptage-sous-condition-bac-ti-prog-elevee-2",
+    "theme": "comptage sous condition",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un parc de huit capteurs de température relève, en degrés Celsius, les valeurs rangées dans le tableau `t` du programme suivant. Un programme compte les relevés supérieurs à 30 et cumule leurs valeurs.\n\n```c\n#include <stdio.h>\nint main() {\n    int t[8] = {31, 27, 35, 29, 38, 24, 33, 36};\n    int i, nb = 0, somme = 0;\n    for (i = 0; i < 8; i++) {\n        if (t[i] > 30) {\n            nb++;\n            somme += t[i];\n        }\n    }\n    printf(\"%d %d\", nb, somme);\n    return 0;\n}\n```\n\n1. Faire la trace de la boucle : pour chaque valeur de `i`, donner `nb` et `somme` à la fin du tour, puis l'affichage final.\n2. Préciser le rôle de `nb` et celui de `somme` (compteur ou accumulateur) et ce qui les distingue.\n3. Écrire les instructions à placer après la boucle pour afficher la moyenne des relevés supérieurs à 30, avec une décimale, sans que le résultat soit tronqué.\n4. Vérification : donner la valeur de cette moyenne et la contrôler en vérifiant qu'elle est comprise entre le plus petit et le plus grand des relevés retenus, puis indiquer ce qui se passe, et comment l'éviter, si aucun relevé n'est supérieur à 30.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn compteur augmente de 1 chaque fois qu'un élément vérifie la condition, alors qu'un accumulateur ajoute à chaque fois la valeur de l'élément retenu ; le quotient de l'accumulateur par le compteur donne la moyenne des éléments retenus. Pour que ce quotient ne soit pas tronqué, un des deux entiers doit être converti en réel avant la division, et un diviseur nul doit être écarté par un test.\n\n### Corrigé\n\n**1.** Suivi des variables :\n\n| `i` | `t[i]` | retenu (> 30) | `nb` | `somme` |\n|---|---|---|---|---|\n| 0 | 31 | oui | 1 | 31 |\n| 1 | 27 | non | 1 | 31 |\n| 2 | 35 | oui | 2 | 66 |\n| 3 | 29 | non | 2 | 66 |\n| 4 | 38 | oui | 3 | 104 |\n| 5 | 24 | non | 3 | 104 |\n| 6 | 33 | oui | 4 | 137 |\n| 7 | 36 | oui | 5 | 173 |\n\nAffichage : `5 173`.\n\n**2.** `nb` est un compteur : il augmente de 1 à chaque relevé retenu et indique combien il y en a. `somme` est un accumulateur : il ajoute la valeur du relevé retenu et indique leur total. Le compteur répond à la question « combien ? », l'accumulateur à la question « quelle somme ? ».\n\n**3.** Instructions à placer après la boucle :\n\n```c\nif (nb > 0)\n    printf(\"%.1f\", (float) somme / nb);\n```\n\nLa conversion `(float)` rend la division réelle ; sans elle, `173 / 5` donnerait 34 (division entière).\n\n**4.** Moyenne : 173 / 5 = 34,6, affichée `34.6`. Contrôle : les relevés retenus sont 31, 35, 38, 33 et 36 ; le plus petit est 31, le plus grand 38, et 31 ≤ 34,6 ≤ 38, ce qui est cohérent. Si aucun relevé ne dépasse 30, `nb` reste à 0 et la division par `nb` n'a pas de sens (résultat invalide ou arrêt du programme) ; le test `if (nb > 0)` évite ce cas, et un message peut être affiché à la place.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10743,
+      11180
+    ]
+  }
+]

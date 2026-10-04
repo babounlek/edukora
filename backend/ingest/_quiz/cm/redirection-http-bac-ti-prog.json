@@ -1,0 +1,99 @@
+[
+  {
+    "external_id": "cqc-redirection-http-bac-ti-prog-faible-0",
+    "theme": "redirection HTTP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une application de gestion des notes, un script PHP doit renvoyer le navigateur vers la page `connexion.php`. Quelle instruction réalise cette redirection ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne redirection HTTP demande au navigateur de charger une autre adresse : le serveur envoie pour cela un en-tête de réponse qui porte le nom `Location` et l'adresse de destination. En PHP, la fonction `header()` envoie un en-tête HTTP donné sous forme de texte, composé du nom de l'en-tête, de deux-points et de sa valeur.\n\n### Corrigé\n\nL'instruction `header(\"Location: connexion.php\");` envoie l'en-tête `Location` suivi de l'adresse de destination : le navigateur abandonne la page en cours et charge `connexion.php`.\n\nLes autres choix sont faux :\n\n- **B** : sans le nom `Location:` devant l'adresse, le texte envoyé n'est pas un en-tête de redirection valide ; le navigateur ne change pas de page.\n- **C** : `include` insère le contenu de `connexion.php` dans la page en cours, mais l'adresse affichée ne change pas et le reste du script continue de s'exécuter ; ce n'est pas une redirection.\n- **D** : `echo` écrit un simple texte dans la page ; la chaîne « Location: connexion.php » s'affiche à l'écran au lieu d'être interprétée comme un en-tête.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      11235
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`header(\"Location: connexion.php\");`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`header(\"connexion.php\");`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`include \"connexion.php\";`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`echo \"Location: connexion.php\";`"
+      }
+    ],
+    "reponse_correcte": "A"
+  },
+  {
+    "external_id": "cqc-redirection-http-bac-ti-prog-moyenne-1",
+    "theme": "redirection HTTP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un enseignant protège la page `bulletins.php`. Voici le début de ce fichier :\n\n```php\n<html>\n<head><title>Bulletins</title></head>\n<body>\n<?php\nif (empty($_POST['login'])) {\n    header(\"Location: connexion.php\");\n}\n?>\n```\n\nLorsqu'un visiteur ouvre la page sans avoir rempli le formulaire de connexion, PHP affiche l'avertissement « Cannot modify header information - headers already sent » et la redirection n'a pas lieu. Quelle est la cause de cet avertissement ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLes en-têtes HTTP forment le début de la réponse du serveur : ils doivent partir avant le premier caractère du contenu de la page. Dès qu'un texte, une balise HTML ou même une ligne vide a été produit, les en-têtes sont déjà envoyés et un appel ultérieur à `header()` n'a plus aucun effet.\n\n### Corrigé\n\nDans ce fichier, les trois premières lignes (`<html>`, `<head>...</head>` et `<body>`) se trouvent avant la balise `<?php` : ce texte est envoyé tel quel au navigateur. Quand `header(\"Location: connexion.php\")` est appelée, les en-têtes de la réponse sont donc déjà partis : PHP signale « headers already sent » et ne peut plus rediriger. Le bloc PHP doit être placé tout en haut du fichier, avant la moindre balise HTML.\n\nLes autres choix désignent une mauvaise cause :\n\n- **A** : `empty()` s'applique à n'importe quelle variable, y compris `$_POST['login']` ; pour une clé absente, elle retourne simplement `true` sans erreur.\n- **B** : au contraire, le mot `Location` est obligatoire, car c'est lui qui désigne l'en-tête de redirection.\n- **D** : `exit` empêche seulement la suite du script de s'exécuter ; son absence n'annule pas une redirection envoyée à temps et ne provoque pas cet avertissement.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      11235
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`empty()` ne s'applique pas à une variable de `$_POST`."
+      },
+      {
+        "lettre": "B",
+        "texte": "Le mot `Location` ne doit pas figurer dans l'appel de `header()`."
+      },
+      {
+        "lettre": "C",
+        "texte": "Du texte HTML a déjà été envoyé au navigateur avant l'appel de `header()`."
+      },
+      {
+        "lettre": "D",
+        "texte": "Il manque `exit` après `header()`, ce qui annule la redirection."
+      }
+    ],
+    "reponse_correcte": "C"
+  },
+  {
+    "external_id": "cqc-redirection-http-bac-ti-prog-elevee-2",
+    "theme": "redirection HTTP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La page `notes.php` d'un lycée ne doit être consultable qu'après l'envoi du formulaire de connexion, qui transmet le champ `matricule` par la méthode POST. Son contenu est le suivant :\n\n```php\n<?php\nif (empty($_POST['matricule'])) {\n    header(\"Location: accueil.php\");\n}\necho \"Liste des notes confidentielles\";\n?>\n```\n\n1. Expliquer le rôle du bloc `if` : dans quel cas la redirection est-elle demandée, et vers quelle page ?\n2. Un visiteur saisit directement l'adresse de `notes.php`, sans passer par le formulaire. Le texte « Liste des notes confidentielles » est-il quand même produit par le serveur ? Justifier.\n3. Écrire le code corrigé du script pour que ce texte ne soit plus jamais produit lorsque la redirection est demandée.\n4. Vérification : avec le script corrigé, indiquer ce que reçoit le navigateur dans chacun des trois cas suivants : (a) accès direct à `notes.php` ; (b) formulaire envoyé avec `matricule` valant `TI204` ; (c) formulaire envoyé avec `matricule` valant `0`.",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une page protégée, on teste la présence de la donnée attendue et, si elle manque, on demande la redirection avec `header(\"Location: ...\")`. Cette fonction n'interrompt pas le script : sans instruction d'arrêt (`exit`), PHP continue d'exécuter les lignes suivantes et envoie leur résultat dans la même réponse. Pour comparer plusieurs requêtes, on déroule le script ligne par ligne avec les valeurs de `$_POST` de chaque cas.\n\n### Corrigé\n\n1. `empty($_POST['matricule'])` est vrai lorsque le champ `matricule` est absent de la requête ou vide. Dans ce cas, `header(\"Location: accueil.php\")` demande au navigateur de charger la page `accueil.php` : un visiteur non identifié est renvoyé vers l'accueil.\n\n2. Oui. `header()` ne s'arrête pas : le script continue, atteint l'`echo` et produit le texte. La réponse contient donc l'en-tête `Location` **et** le texte confidentiel. Un navigateur suit la redirection et n'affiche pas ce texte, mais un programme qui ne suit pas la redirection peut le lire : la page n'est pas réellement protégée.\n\n3. Il faut arrêter le script juste après la redirection, avec `exit` :\n\n```php\n<?php\nif (empty($_POST['matricule'])) {\n    header(\"Location: accueil.php\");\n    exit;\n}\necho \"Liste des notes confidentielles\";\n?>\n```\n\n4. Vérification, cas par cas :\n\n| Cas | Test `empty(...)` | Résultat |\n|---|---|---|\n| (a) accès direct, aucun champ envoyé | vrai | redirection vers `accueil.php`, aucun texte produit |\n| (b) `matricule` valant `TI204` | faux | page affichée : « Liste des notes confidentielles » |\n| (c) `matricule` valant `0` | vrai | redirection vers `accueil.php` |\n\nLe cas (c) est un cas limite : en PHP, la chaîne `\"0\"` est considérée comme vide par `empty()`, si bien qu'un champ rempli avec 0 est traité comme absent.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      11235
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

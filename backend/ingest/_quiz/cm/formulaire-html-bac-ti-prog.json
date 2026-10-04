@@ -1,0 +1,144 @@
+[
+  {
+    "external_id": "cqc-formulaire-html-bac-ti-prog-faible-0",
+    "theme": "Formulaire HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un formulaire d'inscription à un club de robotique contient le code suivant :\n\n```html\n<form action=\"inscrire.php\" method=\"post\">\n  <input type=\"text\" id=\"champ_nom\" name=\"candidat\">\n  <input type=\"submit\" value=\"Valider\">\n</form>\n```\n\nL'élève tape « Kamga » dans la zone de texte, puis clique sur le bouton. Sous quel nom la valeur « Kamga » est-elle transmise au serveur ?",
+    "corrige_markdown": "### Rappel de méthode\nLe serveur reçoit chaque donnée sous la forme d'un couple nom=valeur, et ce nom est celui de l'attribut `name` du champ ; les attributs `id`, `type` ou `value` jouent d'autres rôles (repérage par un script, nature du champ, contenu ou texte affiché). Il suffit donc de lire l'attribut `name` dans la balise du champ saisi.\n\n### Corrigé\nLe champ de texte porte `name=\"candidat\"` : la donnée part sous la forme `candidat=Kamga`.\n\n- `champ_nom` est la valeur de `id` : elle sert à repérer l'élément (étiquette `label`, script JavaScript), mais pas à nommer la donnée transmise.\n- `Valider` est le texte affiché sur le bouton d'envoi ; ce bouton ne porte pas d'attribut `name`, il n'est donc même pas transmis.\n- `text` est le type du champ, c'est-à-dire sa nature (zone de saisie de texte), et non le nom d'une donnée.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`champ_nom`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`Valider`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`candidat`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`text`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      11242
+    ]
+  },
+  {
+    "external_id": "cqc-formulaire-html-bac-ti-prog-faible-1",
+    "theme": "Formulaire HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien écrit le formulaire d'un module de saisie des absences. Chaque trou du code est repéré par un numéro entre crochets. Le champ `matricule` est une zone de texte libre et la dernière balise est le bouton qui envoie le formulaire.\n\n```html\n<form [1]=\"absences.php\" [2]=\"post\">\n  Matricule : <input type=\"[3]\" name=\"matricule\">\n  <input type=\"[4]\" value=\"Enregistrer\">\n</form>\n```\n\n1. Donner le mot qui remplace chacun des repères `[1]`, `[2]`, `[3]` et `[4]`.\n2. Préciser le rôle des attributs placés aux repères `[1]` et `[2]`.",
+    "corrige_markdown": "### Rappel de méthode\nLa balise `<form>` se règle par deux attributs : l'un désigne le fichier qui recevra les données, l'autre le mode de transmission ; quant à la balise `<input>`, son attribut `type` choisit l'aspect et le comportement du champ (zone de saisie, bouton d'envoi...).\n\n### Corrigé\n```html\n<form action=\"absences.php\" method=\"post\">\n  Matricule : <input type=\"text\" name=\"matricule\">\n  <input type=\"submit\" value=\"Enregistrer\">\n</form>\n```\n\n1. `[1]` = `action`, `[2]` = `method`, `[3]` = `text`, `[4]` = `submit`.\n2. `action=\"absences.php\"` indique la page qui traitera les données du formulaire ; `method=\"post\"` indique que les données sont envoyées dans le corps de la requête (l'autre valeur possible est `get`).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11231,
+      10571
+    ]
+  },
+  {
+    "external_id": "cqc-formulaire-html-bac-ti-prog-moyenne-2",
+    "theme": "Formulaire HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le formulaire d'inscription d'un lycée technique doit proposer trois séries (A, C et D), parmi lesquelles le candidat n'en choisit qu'une seule. Quelle écriture des trois boutons de choix convient ?",
+    "corrige_markdown": "### Rappel de méthode\nLe comportement d'un groupe de champs de choix dépend de leur attribut `type` et de leur attribut `name` : le navigateur regroupe les boutons radio de même nom et n'en laisse qu'un seul sélectionné, alors qu'une case à cocher se coche toujours indépendamment des autres.\n\n### Corrigé\n```html\n<input type=\"radio\" name=\"serie\" value=\"A\"> A\n<input type=\"radio\" name=\"serie\" value=\"C\"> C\n<input type=\"radio\" name=\"serie\" value=\"D\"> D\n```\n\nLorsqu'un autre bouton est choisi, le navigateur désélectionne l'ancien, et la donnée transmise est par exemple `serie=C` : chaque bouton garde sa propre `value`.\n\n- B : des cases à cocher permettent de cocher plusieurs séries à la fois, même avec un nom commun.\n- C : avec un nom différent sur chaque bouton radio, chaque bouton forme son propre groupe et les trois peuvent être sélectionnés en même temps.\n- D : des cases à cocher indépendantes n'imposent aucun choix unique.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`type=\"radio\"` avec le même `name` sur les trois boutons"
+      },
+      {
+        "lettre": "B",
+        "texte": "`type=\"checkbox\"` avec le même `name` sur les trois cases"
+      },
+      {
+        "lettre": "C",
+        "texte": "`type=\"radio\"` avec un `name` différent sur chaque bouton"
+      },
+      {
+        "lettre": "D",
+        "texte": "`type=\"checkbox\"` avec un `name` différent sur chaque case"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      11242
+    ]
+  },
+  {
+    "external_id": "cqc-formulaire-html-bac-ti-prog-moyenne-3",
+    "theme": "Formulaire HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La bibliothèque d'un lycée de Douala veut un formulaire de prêt de livres, envoyé en méthode POST à la page `pret.php`. Ce formulaire comporte :\n\n- une zone de texte nommée `titre` ;\n- une liste déroulante nommée `duree`, proposant les options « 7 jours », « 14 jours » et « 21 jours », dont les valeurs transmises sont respectivement 7, 14 et 21 ;\n- une zone de texte multiligne nommée `remarque`, haute de 3 lignes ;\n- une case à cocher nommée `renouvelable` ;\n- un bouton qui envoie le formulaire, portant le texte « Emprunter ».\n\nÉcrire le code HTML complet de ce formulaire.",
+    "corrige_markdown": "### Rappel de méthode\nUn formulaire se construit de l'extérieur vers l'intérieur : d'abord la balise `<form>` avec ses attributs `action` et `method`, puis un contrôle par champ, auquel on donne l'attribut `name` demandé ; la liste déroulante s'écrit avec `<select>` et `<option value=...>`, la zone multiligne avec `<textarea>` (dimension réglée par `rows`) et le bouton d'envoi avec `<input type=\"submit\">`.\n\n### Corrigé\n```html\n<form action=\"pret.php\" method=\"post\">\n  Titre : <input type=\"text\" name=\"titre\"><br>\n  Durée :\n  <select name=\"duree\">\n    <option value=\"7\">7 jours</option>\n    <option value=\"14\">14 jours</option>\n    <option value=\"21\">21 jours</option>\n  </select><br>\n  Remarque : <textarea name=\"remarque\" rows=\"3\"></textarea><br>\n  <input type=\"checkbox\" name=\"renouvelable\"> Renouvelable<br>\n  <input type=\"submit\" value=\"Emprunter\">\n</form>\n```\n\nPoints de contrôle :\n\n- `action` et `method` figurent dans la balise `<form>` ;\n- le `name` de la liste est placé sur `<select>` (et non sur chaque `<option>`), alors que les valeurs 7, 14 et 21 sont placées sur les `<option>` ;\n- `<textarea>` possède une balise fermante et n'a pas d'attribut `type` ;\n- le texte « Emprunter » est la valeur (`value`) du bouton d'envoi.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10571,
+      10565
+    ]
+  },
+  {
+    "external_id": "cqc-formulaire-html-bac-ti-prog-elevee-4",
+    "theme": "Formulaire HTML",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le formulaire suivant, écrit pour un dossier d'inscription, est envoyé à la page `bilan.php`.\n\n```html\n<form action=\"bilan.php\" method=\"post\">\n  Prénom : <input type=\"text\" name=\"prenom\"><br>\n  Âge : <input type=\"text\" id=\"age\"><br>\n  <select name=\"serie\">\n    <option value=\"TI\">Technologies de l'information</option>\n    <option value=\"C\">Mathématiques et sciences physiques</option>\n  </select><br>\n  <input type=\"radio\" name=\"langue\" value=\"fr\" checked> Français\n  <input type=\"radio\" name=\"langue\" value=\"en\"> Anglais<br>\n  <input type=\"checkbox\" name=\"internat\"> Internat\n  <input type=\"checkbox\" name=\"bourse\" value=\"oui\"> Bourse<br>\n  <input type=\"submit\" name=\"envoyer\" value=\"Valider\">\n</form>\n```\n\nUne élève tape « Ngono » dans le champ Prénom et « 17 » dans le champ Âge, choisit la série C, laisse la langue par défaut, coche la case Internat, laisse la case Bourse décochée, puis clique sur le bouton Valider.\n\n1. Donner, dans l'ordre d'apparition dans le code, la liste des couples `nom=valeur` transmis à `bilan.php`.\n2. Expliquer pourquoi la valeur 17 ne figure pas dans cette liste, puis corriger la ligne concernée.\n3. Expliquer pourquoi la case Bourse est absente de la liste et donner la valeur transmise lorsqu'elle est cochée.\n4. Vérification : la ligne du champ Âge étant corrigée, une seconde élève saisit « Mballa » et « 16 », garde la série proposée par défaut, choisit Anglais, coche les deux cases et clique sur Valider. Donner la liste des couples transmis, puis leur nombre.",
+    "corrige_markdown": "### Rappel de méthode\nChaque champ n'est transmis que s'il possède un attribut `name`, sous la forme `nom=valeur` ; la valeur est la `value` de l'option ou du bouton radio choisi, et une case à cocher n'est envoyée que lorsqu'elle est cochée (avec `on` si aucune `value` n'est donnée).\n\n### Corrigé\n1. Dans l'ordre du code :\n\n| Champ | Couple transmis | Explication |\n|---|---|---|\n| texte Prénom | `prenom=Ngono` | le champ porte `name=\"prenom\"` |\n| liste | `serie=C` | `value` de l'option choisie |\n| boutons radio | `langue=fr` | bouton coché par défaut |\n| case Internat | `internat=on` | cochée et sans `value` : valeur `on` |\n| bouton | `envoyer=Valider` | bouton cliqué, il porte un `name` |\n\n2. Le champ Âge ne possède pas d'attribut `name` (il n'a qu'un `id`, utile pour un script ou une étiquette) : le navigateur ne le transmet donc pas. La ligne corrigée est `Âge : <input type=\"text\" id=\"age\" name=\"age\"><br>`.\n3. Une case décochée n'est jamais envoyée : la case Bourse n'apparaît que si elle est cochée, et la valeur transmise est alors celle de son attribut `value`, soit `bourse=oui`.\n4. Dans l'ordre du code : `prenom=Mballa`, `age=16`, `serie=TI` (première option, sélectionnée par défaut), `langue=en`, `internat=on`, `bourse=oui`, `envoyer=Valider`, soit **7** couples. Contrôle : sept contrôles portent un `name` et sont actifs (prénom, âge, liste, groupe radio avec un seul bouton envoyé, deux cases cochées, bouton cliqué), ce qui donne bien 7.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11247,
+      11242
+    ]
+  }
+]

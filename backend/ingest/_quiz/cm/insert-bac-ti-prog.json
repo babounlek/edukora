@@ -1,0 +1,82 @@
+[
+  {
+    "external_id": "cqc-insert-bac-ti-prog-faible-0",
+    "theme": "INSERT",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `stagiaire` d'un centre de formation de Yaoundé comporte trois colonnes, dans cet ordre : `nom` (texte), `filiere` (texte) et `age` (entier). Le stagiaire Paul, inscrit en filière Web, a 19 ans. Quelle requête enregistre correctement ce stagiaire ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`INSERT INTO table (colonne1, colonne2, ...) VALUES (valeur1, valeur2, ...)` crée une ligne : chaque valeur est rangée dans la colonne de même rang dans la liste. Les textes s'écrivent entre apostrophes, les nombres sans apostrophes, et le nombre de valeurs doit égaler le nombre de colonnes visées.\n\n### Corrigé\n\nLa bonne requête associe `'Paul'` à `nom`, `'Web'` à `filiere` et `19` à `age`, dans le même ordre que la liste des colonnes.\n\n- `INSERT INTO stagiaire VALUES ('Paul', 'Web');` ne donne que deux valeurs alors que la table a trois colonnes : MySQL refuse la requête (« Column count doesn't match value count »).\n- `UPDATE stagiaire SET ...` modifie des lignes qui existent déjà (ici, toutes les lignes de la table recevraient ces trois valeurs) et n'ajoute aucune ligne.\n- `VALUES (19, 'Paul', 'Web')` ne suit pas l'ordre des colonnes : 19 irait dans `nom` et `'Web'` dans la colonne entière `age`, ce que MySQL rejette ou range de travers.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`INSERT INTO stagiaire VALUES ('Paul', 'Web');`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`UPDATE stagiaire SET nom = 'Paul', filiere = 'Web', age = 19;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`INSERT INTO stagiaire (nom, filiere, age) VALUES (19, 'Paul', 'Web');`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`INSERT INTO stagiaire (nom, filiere, age) VALUES ('Paul', 'Web', 19);`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      11244
+    ]
+  },
+  {
+    "external_id": "cqc-insert-bac-ti-prog-moyenne-1",
+    "theme": "INSERT",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `ticket` du service d'assistance d'un lycée technique contient trois lignes. Sa colonne `id` est la clé primaire, de type `INT` avec l'attribut `AUTO_INCREMENT` (aucune ligne n'a jamais été supprimée).\n\n| id | client | motif | priorite |\n|---|---|---|---|\n| 1 | Carole | Mot de passe oublié | 1 |\n| 2 | Daniel | Écran noir | 2 |\n| 3 | Elise | Imprimante bloquée | 3 |\n\nLe technicien enregistre un nouveau ticket : client Fabrice, motif « Clavier défectueux », priorité 2.\n\n1. Écrire la requête `INSERT` qui ajoute ce ticket.\n2. Donner la valeur de `id` attribuée à la nouvelle ligne.\n3. Expliquer pourquoi la colonne `id` n'a pas besoin de figurer dans cette requête.",
+    "corrige_markdown": "### Rappel de méthode\n\n`INSERT INTO table (colonne1, colonne2) VALUES (valeur1, valeur2)` range chaque valeur dans la colonne de même rang ; les textes sont entourés d'apostrophes, les nombres ne le sont pas. Une colonne qui ne figure pas dans la liste est remplie par MySQL selon sa définition.\n\n### Corrigé\n\n1. Requête, sans la colonne `id` :\n\n```sql\nINSERT INTO ticket (client, motif, priorite)\nVALUES ('Fabrice', 'Clavier défectueux', 2);\n```\n\n2. Les identifiants déjà utilisés vont de 1 à 3 et aucune ligne n'a été supprimée : la nouvelle ligne reçoit **id = 4**.\n\n3. Une colonne `AUTO_INCREMENT` est numérotée par MySQL, qui prend à chaque insertion la valeur suivante du compteur. Il suffit donc de la laisser de côté : on évite ainsi d'écrire à la main un identifiant déjà pris, ce qui ferait refuser la requête puisque la clé primaire ne peut pas se répéter. Après l'insertion, la table compte quatre lignes, la dernière étant `4 | Fabrice | Clavier défectueux | 2`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11244
+    ]
+  },
+  {
+    "external_id": "cqc-insert-bac-ti-prog-elevee-2",
+    "theme": "INSERT",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `inscrit` d'un club informatique contient quatre lignes ; sa colonne `id` est la clé primaire auto-incrémentée (aucune ligne n'a jamais été supprimée).\n\n| id | nom | classe |\n|---|---|---|\n| 1 | Dieudonné | TI1 |\n| 2 | Estelle | TI2 |\n| 3 | Fabrice | TI1 |\n| 4 | Gisèle | TI2 |\n\nLe script PHP suivant s'exécute, la connexion `$cnx` à la base étant déjà ouverte :\n\n```php\n<?php\n$noms = array(\"Awa\", \"Brice\", \"Carine\");\n$classe = \"TI2\";\nforeach ($noms as $n) {\n    $sql = \"INSERT INTO inscrit (nom, classe) VALUES ('$n', '$classe')\";\n    mysqli_query($cnx, $sql);\n}\necho mysqli_insert_id($cnx);\n?>\n```\n\n1. Donner le texte exact de la requête contenue dans `$sql` lors du deuxième tour de la boucle.\n2. Donner les lignes ajoutées à la table, avec leurs colonnes `id`, `nom` et `classe`.\n3. Indiquer ce qu'affiche le script et à quelle insertion correspond le nombre affiché.\n4. Vérification : donner le résultat de `SELECT COUNT(*) FROM inscrit WHERE classe = 'TI2';` après l'exécution du script, puis contrôler que le nombre total de lignes de la table est cohérent avec la valeur affichée à la question 3.",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une chaîne PHP entourée de guillemets doubles, chaque variable est remplacée par sa valeur au moment de l'exécution : la requête envoyée à MySQL est le texte obtenu après cette substitution, apostrophes comprises. Une clé auto-incrémentée avance d'une unité à chaque insertion, et `mysqli_insert_id($cnx)` retourne l'identifiant produit par la dernière requête `INSERT` de la connexion.\n\n### Corrigé\n\n1. Au deuxième tour, `$n` vaut `\"Brice\"` et `$classe` vaut `\"TI2\"`. Les apostrophes écrites dans la chaîne restent telles quelles autour des valeurs substituées :\n\n```sql\nINSERT INTO inscrit (nom, classe) VALUES ('Brice', 'TI2')\n```\n\n2. Trois requêtes s'exécutent, une par prénom. Le compteur auto-incrémenté part de 5, puisque l'identifiant 4 est déjà utilisé :\n\n| id | nom | classe |\n|---|---|---|\n| 5 | Awa | TI2 |\n| 6 | Brice | TI2 |\n| 7 | Carine | TI2 |\n\n3. Le script affiche **7**. `mysqli_insert_id` donne l'identifiant de la dernière insertion réalisée, celle de Carine, et non celui de la première ligne ajoutée. Le `echo` est placé après la boucle : il n'affiche qu'un seul nombre, sans retour à la ligne.\n\n4. Avant le script, deux lignes de la table avaient la classe TI2 (Estelle et Gisèle) ; les trois nouvelles lignes l'ont aussi, donc `SELECT COUNT(*) FROM inscrit WHERE classe = 'TI2';` retourne 2 + 3 = **5**. La table compte maintenant 4 + 3 = 7 lignes, ce qui correspond à la valeur affichée (7) : cette coïncidence est normale ici, parce qu'aucune ligne n'a jamais été supprimée et que les identifiants vont de 1 à 7 sans trou.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11244
+    ]
+  }
+]

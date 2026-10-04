@@ -1,0 +1,88 @@
+[
+  {
+    "external_id": "cqc-tableaux-associatifs-php-bac-ti-prog-faible-0",
+    "theme": "Tableaux associatifs PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un tableau associatif PHP range les quantités en stock d'une papeterie :\n\n```php\n<?php\n$stock = array('stylo' => 40, 'cahier' => 25, 'regle' => 12);\n?>\n```\n\nQuelle instruction affiche la quantité de cahiers en stock ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDans un tableau associatif, chaque valeur est repérée par sa clé et non par sa position : pour la lire, il faut écrire le nom du tableau suivi de la clé entre crochets, une clé de type texte étant placée entre apostrophes ou entre guillemets. Les autres notations (flèche, parenthèses) appartiennent à d'autres constructions du langage.\n\n### Corrigé\n\nLa clé `'cahier'` est associée à la valeur 25 ; l'instruction `echo $stock['cahier'];` affiche donc `25`.\n\n- **A** est faux : la flèche `->` sert à lire la propriété d'un objet ; appliquée à un tableau, elle ne retrouve pas la valeur, PHP signale un avertissement et n'affiche pas 25.\n- **B** est faux : les parenthèses appellent une fonction ; `$stock` est un tableau, qui ne peut pas être appelé comme une fonction, ce qui provoque une erreur.\n- **C** est faux : `$stock[1]` cherche la clé entière 1, alors que les clés de ce tableau sont `'stylo'`, `'cahier'` et `'regle'` ; la clé 1 n'existe pas, PHP émet un avertissement et n'affiche rien. La position d'un élément n'est pas sa clé.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`echo $stock->cahier;`" },
+      { "lettre": "B", "texte": "`echo $stock('cahier');`" },
+      { "lettre": "C", "texte": "`echo $stock[1];`" },
+      { "lettre": "D", "texte": "`echo $stock['cahier'];`" }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [11247]
+  },
+  {
+    "external_id": "cqc-tableaux-associatifs-php-bac-ti-prog-moyenne-1",
+    "theme": "Tableaux associatifs PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche le script PHP suivant ?\n\n```php\n<?php\n$prix = array('riz' => 600, 'huile' => 1500);\n$prix['riz'] = 650;\n$prix['sel'] = 200;\nforeach ($prix as $produit => $p) {\n    echo $produit . \":\" . $p . \";\";\n}\n?>\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUn tableau PHP conserve l'ordre dans lequel ses clés ont été créées, et `foreach` le parcourt dans cet ordre. Affecter une valeur à une clé déjà présente remplace cette valeur sans changer la place de l'élément ; affecter une valeur à une clé nouvelle ajoute l'élément à la fin. Pour prévoir l'affichage, écrire l'état du tableau après chaque instruction.\n\n### Corrigé\n\nÉtat du tableau `$prix` après chaque instruction :\n\n| Instruction | Contenu de `$prix` (dans l'ordre) |\n|---|---|\n| `array('riz' => 600, 'huile' => 1500)` | riz 600 ; huile 1500 |\n| `$prix['riz'] = 650;` | riz 650 ; huile 1500 (clé existante : valeur remplacée, place conservée) |\n| `$prix['sel'] = 200;` | riz 650 ; huile 1500 ; sel 200 (clé nouvelle : ajoutée à la fin) |\n\nLe `foreach` écrit chaque couple `clé:valeur` suivi d'un point-virgule : `riz:650;huile:1500;sel:200;`.\n\n- **B** est faux : `riz:600;huile:1500;sel:200;` ignore la modification de la valeur associée à `'riz'`, alors que l'affectation remplace bien 600 par 650.\n- **C** est faux : `huile:1500;riz:650;sel:200;` suppose qu'une clé modifiée passe à la fin du tableau ; en réalité, elle garde sa place.\n- **D** est faux : `sel:200;riz:650;huile:1500;` suppose que les clés nouvelles s'ajoutent au début, ou que le parcours se fait à l'envers ; PHP ajoute à la fin et parcourt dans l'ordre d'insertion.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`riz:650;huile:1500;sel:200;`" },
+      { "lettre": "B", "texte": "`riz:600;huile:1500;sel:200;`" },
+      { "lettre": "C", "texte": "`huile:1500;riz:650;sel:200;`" },
+      { "lettre": "D", "texte": "`sel:200;riz:650;huile:1500;`" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [11181]
+  },
+  {
+    "external_id": "cqc-tableaux-associatifs-php-bac-ti-prog-moyenne-2",
+    "theme": "Tableaux associatifs PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le code suivant crée un tableau associatif qui range les notes d'une élève de Terminale TI :\n\n```php\n<?php\n$notes = array('Maths' => 14, 'Info' => 17, 'Anglais' => 11);\n?>\n```\n\n1. Écrire la boucle `foreach` qui affiche chaque matière suivie de sa note sous la forme `Maths : 14`, un élément par ligne HTML (balise `<br>` à la fin de chaque ligne).\n2. Donner le code HTML produit par cette boucle.\n3. On exécute ensuite l'instruction `$notes['Physique'] = 9;`. Donner la valeur de `count($notes)` avant, puis après cette instruction.",
+    "corrige_markdown": "### Rappel de méthode\n\nDans `foreach ($t as $cle => $valeur)`, la première variable reçoit à chaque tour la clé de l'élément courant et la seconde sa valeur, dans l'ordre d'insertion. La fonction `count` donne le nombre d'éléments présents ; une clé nouvelle ajoute un élément, alors qu'une clé déjà présente est simplement remplacée.\n\n### Corrigé\n\n1. La boucle demandée est :\n\n   ```php\n   foreach ($notes as $matiere => $note) {\n       echo $matiere . \" : \" . $note . \"<br>\";\n   }\n   ```\n\n   La variable `$matiere` reçoit la clé (le nom de la matière) et `$note` la valeur ; `echo` n'ajoute pas de retour à la ligne, d'où la balise `<br>`.\n2. Les éléments sont parcourus dans l'ordre d'insertion : `Maths : 14<br>Info : 17<br>Anglais : 11<br>`. Le navigateur affiche trois lignes.\n3. Avant l'instruction, `count($notes)` vaut 3. La clé `'Physique'` n'existe pas encore : l'affectation ajoute un élément, et `count($notes)` vaut 4 ensuite.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11247]
+  },
+  {
+    "external_id": "cqc-tableaux-associatifs-php-bac-ti-prog-elevee-3",
+    "theme": "Tableaux associatifs PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un commerçant range les articles d'un panier dans un tableau à deux niveaux :\n\n```php\n<?php\n$panier = array(\n    array('nom' => 'Riz', 'prix' => 600, 'qte' => 3),\n    array('nom' => 'Huile', 'prix' => 1500, 'qte' => 2),\n    array('nom' => 'Sel', 'prix' => 200, 'qte' => 5)\n);\n?>\n```\n\n1. Donner la valeur de `$panier[1]['nom']` et celle de `count($panier)`.\n2. Écrire la boucle `foreach` qui affiche, pour chaque article, une ligne `nom : montant` suivie de `<br>` (le montant est le prix multiplié par la quantité), puis une dernière ligne indiquant le total du panier sous la forme « Total : valeur ».\n3. Donner le code HTML produit par cette boucle, avec la valeur du total.\n4. Un quatrième article, `Savon` (prix 250, quantité 4), est ajouté sans indiquer de clé. Écrire l'instruction d'ajout et donner la clé que PHP attribue à cet article.\n5. Vérification : donner la valeur de `count($panier)` après l'ajout, indiquer ce qu'affiche `echo $panier[3]['nom'];` avant puis après l'ajout, et calculer le nouveau total.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn tableau multidimensionnel est un tableau dont les éléments sont eux-mêmes des tableaux : on y accède en enchaînant les clés, comme dans `$t[0]['champ']`, et `foreach` fournit à chaque tour un sous-tableau complet. L'ajout `$t[] = valeur` attribue la clé entière qui suit la plus grande clé entière existante, et lire une clé absente produit un avertissement sans interrompre le script.\n\n### Corrigé\n\n1. Les indices commencent à 0 : `$panier[1]` est le deuxième sous-tableau, donc `$panier[1]['nom']` vaut `Huile`. La fonction `count($panier)` compte les sous-tableaux de premier niveau : elle vaut 3.\n2. Boucle demandée :\n\n   ```php\n   $total = 0;\n   foreach ($panier as $article) {\n       $montant = $article['prix'] * $article['qte'];\n       echo $article['nom'] . \" : \" . $montant . \"<br>\";\n       $total = $total + $montant;\n   }\n   echo \"Total : \" . $total;\n   ```\n\n3. Montants : 600 × 3 = 1800, 1500 × 2 = 3000 et 200 × 5 = 1000, soit un total de 5800. Code HTML produit : `Riz : 1800<br>Huile : 3000<br>Sel : 1000<br>Total : 5800`.\n4. L'instruction est :\n\n   ```php\n   $panier[] = array('nom' => 'Savon', 'prix' => 250, 'qte' => 4);\n   ```\n\n   La plus grande clé entière utilisée est 2 : PHP attribue la clé 3 au nouvel article.\n5. Après l'ajout, `count($panier)` vaut 4. Avant l'ajout, `echo $panier[3]['nom'];` lit une clé absente : PHP émet des avertissements et n'affiche rien, sans arrêter le script. Après l'ajout, il affiche `Savon`. Le nouveau total vaut 5800 + 250 × 4 = 5800 + 1000 = 6800, ce qui se contrôle en ajoutant simplement le montant du nouvel article à l'ancien total.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11247, 11181]
+  }
+]

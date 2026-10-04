@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-wamp-bac-ti-prog-faible-0",
+    "theme": "WAMP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un élève installe XAMPP sur son ordinateur Windows, dans le dossier `C:\\xampp`. Il veut afficher sa page `bilan.php` à l'adresse `http://localhost/bilan.php`. Dans quel dossier doit-il copier ce fichier ?",
+    "corrige_markdown": "### Rappel de méthode\nUn serveur web ne livre que les fichiers rangés dans un dossier précis, appelé dossier racine du serveur (DocumentRoot), et le nom de ce dossier dépend de l'outil installé : celui de WAMP n'est pas celui de XAMPP. Les autres dossiers d'une installation contiennent les programmes eux-mêmes (interpréteur, base de données, serveur), pas les pages du site.\n\n### Corrigé\n- Choix A : faux. `www` est le dossier racine de WAMP, pas celui de XAMPP.\n- Choix C : faux. Le dossier `php` contient l'interpréteur PHP et son fichier de configuration ; une page déposée là n'est pas servie à l'adresse `http://localhost/`.\n- Choix D : faux. Le dossier `mysql` contient le serveur de bases de données et ses fichiers de données.\n\nRéponse **B** : avec XAMPP, le dossier racine est `htdocs`. L'adresse `http://localhost/bilan.php` correspond donc au fichier `C:\\xampp\\htdocs\\bilan.php`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`C:\\xampp\\www`"},
+      {"lettre": "B", "texte": "`C:\\xampp\\htdocs`"},
+      {"lettre": "C", "texte": "`C:\\xampp\\php`"},
+      {"lettre": "D", "texte": "`C:\\xampp\\mysql`"}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [11181]
+  },
+  {
+    "external_id": "cqc-wamp-bac-ti-prog-faible-1",
+    "theme": "WAMP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans le panneau de contrôle de XAMPP, un enseignant veut tester une page PHP qui lit des données dans une base MySQL. Quels services doit-il démarrer avant d'ouvrir la page dans le navigateur ?",
+    "corrige_markdown": "### Rappel de méthode\nUne page PHP qui exploite une base de données met deux logiciels en jeu : l'un reçoit la demande du navigateur et exécute le script, l'autre gère les données que le script interroge. Il faut donc démarrer, dans le panneau de contrôle, un service pour chacun de ces deux rôles ; l'interpréteur PHP n'a pas de service propre, car le serveur web le sollicite lui-même.\n\n### Corrigé\n- Choix A : faux. Sans le service MySQL, la page s'exécute, mais sa connexion à la base échoue.\n- Choix B : faux. Sans Apache, personne n'écoute les requêtes HTTP : le navigateur n'obtient aucune page à l'adresse `localhost`, même si la base fonctionne.\n- Choix C : faux. Le service FTP sert à transférer des fichiers vers un serveur ; il n'intervient pas dans l'exécution d'une page et ne remplace pas MySQL.\n\nRéponse **D** : `Apache` (serveur web qui exécute PHP) et `MySQL` (serveur de la base de données).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`Apache` seul"},
+      {"lettre": "B", "texte": "`MySQL` seul"},
+      {"lettre": "C", "texte": "`Apache` et le service FTP"},
+      {"lettre": "D", "texte": "`Apache` et `MySQL`"}
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [11247]
+  },
+  {
+    "external_id": "cqc-wamp-bac-ti-prog-moyenne-2",
+    "theme": "WAMP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un enseignant utilise WampServer, installé dans `C:\\wamp64`, et organise son projet de la façon suivante.\n\n```text\nC:\\wamp64\\www\n  lycee\n    accueil.php\n    notes\n      bulletin.php\n      css\n        style.css\n```\n\nLes services Apache et MySQL sont démarrés.\n\n1. Donner l'adresse à saisir dans le navigateur pour exécuter `bulletin.php`.\n2. La page `bulletin.php` contient la ligne `<link rel=\"stylesheet\" href=\"css/style.css\">`. Expliquer comment le navigateur retrouve la feuille de style et donner l'adresse complète qu'il demande.\n3. Un élève saisit `http://localhost/notes/bulletin.php` et obtient une erreur « page introuvable » (404). Expliquer la cause et donner l'adresse correcte.",
+    "corrige_markdown": "### Rappel de méthode\nL'adresse d'une page servie en local reprend le chemin du fichier à partir du dossier racine du serveur : tout ce qui précède ce dossier n'apparaît jamais dans l'adresse, et tous les sous-dossiers traversés sont conservés. Un chemin relatif écrit dans une page se calcule à partir du dossier qui contient cette page.\n\n### Corrigé\n**1.** Le dossier racine est `www`. Le fichier se trouve ensuite dans `lycee`, puis dans `notes` : l'adresse est `http://localhost/lycee/notes/bulletin.php`.\n\n**2.** Le chemin `css/style.css` est relatif : le navigateur le place à la suite du dossier de la page, c'est-à-dire `http://localhost/lycee/notes/`. Il demande donc `http://localhost/lycee/notes/css/style.css`, qui correspond bien au fichier `style.css` rangé dans le sous-dossier `css` de `notes`.\n\n**3.** L'adresse saisie ne contient pas le dossier `lycee`, alors que `notes` est rangé à l'intérieur de `lycee` : le serveur cherche `www\\notes\\bulletin.php`, qui n'existe pas, d'où l'erreur 404. L'adresse correcte est `http://localhost/lycee/notes/bulletin.php`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10571, 11181]
+  },
+  {
+    "external_id": "cqc-wamp-bac-ti-prog-moyenne-3",
+    "theme": "WAMP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Sur le serveur local d'un lycée, un formulaire d'envoi de photos accepte les images de 1 Mo mais refuse celle de 6 Mo qu'un élève tente d'envoyer ; le fichier `php.ini` limite à 2 Mo la taille d'un fichier envoyé. Quelle directive de `php.ini` faut-il augmenter pour que ce fichier soit accepté ?",
+    "corrige_markdown": "### Rappel de méthode\nLe fichier `php.ini` regroupe des directives, chacune réglant un aspect du moteur PHP : tailles, durées, mémoire ou affichage des messages. Pour choisir la bonne directive, il faut associer le symptôme observé à la grandeur qui est limitée : un volume de données reçu, un temps de calcul, une mémoire consommée ou la visibilité des erreurs.\n\n### Corrigé\n- Choix B : faux. `max_execution_time` limite la durée d'exécution d'un script, en secondes, et non le poids d'un fichier reçu.\n- Choix C : faux. `memory_limit` plafonne la mémoire qu'un script peut consommer pendant son exécution.\n- Choix D : faux. `display_errors` décide seulement si les messages d'erreur s'affichent à l'écran ; elle ne fixe aucune limite.\n\nRéponse **A** : `upload_max_filesize` donne la taille maximale d'un fichier envoyé par un formulaire. Avec une limite de 2 Mo, l'image de 1 Mo passe et celle de 6 Mo est refusée ; il faut augmenter cette valeur, puis redémarrer Apache pour que la modification de `php.ini` soit prise en compte.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`upload_max_filesize`"},
+      {"lettre": "B", "texte": "`max_execution_time`"},
+      {"lettre": "C", "texte": "`memory_limit`"},
+      {"lettre": "D", "texte": "`display_errors`"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [11181]
+  },
+  {
+    "external_id": "cqc-wamp-bac-ti-prog-elevee-4",
+    "theme": "WAMP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un technicien de Douala installe WampServer sur un poste Windows et dépose son projet dans `C:\\wamp64\\www\\boutique`, qui contient la page `index.php`. Après le lancement de WampServer, l'icône reste orange. En la survolant, il lit que le service MySQL est démarré mais que le service Apache est arrêté. Le journal d'erreurs d'Apache indique que le port 80 est déjà utilisé par un autre programme de la machine. L'adresse `http://localhost/boutique/index.php` ne donne aucune page.\n\n1. Expliquer pourquoi la page ne s'affiche pas alors que MySQL est démarré, et ce que signale l'icône orange.\n2. Proposer deux solutions pour permettre à Apache de démarrer.\n3. Le technicien choisit de modifier le port d'écoute d'Apache et retient le port 8080. Indiquer la directive à modifier dans le fichier `httpd.conf` et donner la nouvelle adresse de `index.php`.\n4. Vérification : après le redémarrage des services, indiquer le signe visible dans WampServer qui montre que le problème est réglé, puis expliquer pourquoi l'ancienne adresse ne mène plus à la page de la boutique.",
+    "corrige_markdown": "### Rappel de méthode\nChaque service d'une pile locale joue un rôle distinct, et une page n'est livrée que si le service qui écoute les requêtes HTTP fonctionne. Le diagnostic d'un démarrage impossible commence par la cause indiquée dans le journal ; la solution agit alors soit sur le programme concurrent, soit sur la configuration du serveur, et la vérification porte sur l'état affiché et sur l'adresse réellement employée.\n\n### Corrigé\n**1.** Apache est le serveur web : c'est lui qui reçoit la requête du navigateur et fait exécuter `index.php`. MySQL gère seulement les données et ne livre aucune page. Sans Apache, personne ne répond à l'adresse demandée. L'icône orange signale qu'une partie seulement des services est démarrée (rouge : aucun service, vert : tous les services).\n\n**2.** Deux solutions possibles :\n- identifier le programme qui occupe le port 80, l'arrêter ou le fermer, puis redémarrer les services de WampServer ;\n- configurer Apache pour qu'il écoute sur un autre port, par exemple 8080, afin qu'il ne rentre plus en conflit avec ce programme.\n\n**3.** Dans `httpd.conf`, la directive `Listen 80` devient `Listen 8080`. Le port étant différent du port par défaut, il doit apparaître dans l'adresse : `http://localhost:8080/boutique/index.php`.\n\n**4.** Après le redémarrage, l'icône de WampServer devient verte, car tous les services sont démarrés ; la page d'accueil répond aussi à `http://localhost:8080/`. L'ancienne adresse `http://localhost/boutique/index.php` s'adresse au port 80, toujours occupé par l'autre programme : Apache écoute désormais sur le port 8080 et n'y livre plus la page de la boutique.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11247]
+  }
+]

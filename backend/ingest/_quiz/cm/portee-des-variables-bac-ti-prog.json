@@ -1,0 +1,102 @@
+[
+  {
+    "external_id": "cqc-portee-des-variables-bac-ti-prog-faible-0",
+    "theme": "Portée des variables",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève tente de compiler le programme C suivant.\n\n```c\n#include <stdio.h>\n\nvoid calculer() {\n    int resultat = 42;\n}\n\nint main() {\n    calculer();\n    printf(\"%d\", resultat);\n    return 0;\n}\n```\n\nQue se passe-t-il lorsqu'on compile ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\nUne variable déclarée à l'intérieur d'une fonction est locale : elle n'est visible que dans cette fonction et disparaît quand celle-ci se termine. Une autre fonction qui cite son nom sans la déclarer ne la trouve pas, et le compilateur signale un identifiant non déclaré.\n\n### Corrigé\n`resultat` est déclarée dans `calculer` ; `main` ignore son existence. Le compilateur s'arrête sur l'instruction `printf(\"%d\", resultat);` avec un message du type « `resultat` undeclared » : aucun exécutable n'est produit.\n\n- A : faux, la variable est détruite à la fin de `calculer`, et `main` ne peut de toute façon pas la nommer.\n- B : faux, une variable locale n'est jamais initialisée automatiquement à 0 ; de plus, aucune variable de ce nom n'existe dans `main`.\n- D : faux, une valeur imprévisible serait obtenue avec une variable locale de `main` non initialisée ; ici, l'erreur est détectée dès la compilation.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Il compile et affiche 42, valeur laissée par la fonction"
+      },
+      {
+        "lettre": "B",
+        "texte": "Il compile et affiche 0, valeur initiale par défaut"
+      },
+      {
+        "lettre": "C",
+        "texte": "La compilation échoue : `resultat` n'existe pas dans `main`"
+      },
+      {
+        "lettre": "D",
+        "texte": "Il compile et affiche une valeur aléatoire en mémoire"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10625,
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-portee-des-variables-bac-ti-prog-moyenne-1",
+    "theme": "Portée des variables",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme C suivant, qui totalise les ventes d'une journée.\n\n```c\n#include <stdio.h>\n\nint ventes = 0;\n\nvoid enregistrer(int montant) {\n    ventes = ventes + montant;\n    montant = 0;\n}\n\nint main() {\n    int montant = 100;\n    enregistrer(250);\n    enregistrer(montant);\n    printf(\"%d\", ventes + montant);\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\nUne variable globale, déclarée hors de toute fonction, est partagée par toutes les fonctions : une modification faite dans l'une reste visible dans les autres. Un paramètre est au contraire une variable locale initialisée avec une copie de l'argument ; changer sa valeur n'a aucun effet sur la variable de l'appelant, même si elle porte le même nom.\n\n### Corrigé\nTrois variables sont en jeu : `ventes` (globale), le paramètre `montant` de `enregistrer` (locale à cette fonction) et `montant` de `main` (locale à `main`, valeur 100).\n\n| Étape | `ventes` | `montant` de `main` |\n|---|---|---|\n| départ | 0 | 100 |\n| `enregistrer(250)` | 250 | 100 |\n| `enregistrer(montant)` | 350 | 100 |\n\nL'affectation `montant = 0;` ne concerne que le paramètre local. À la fin, `ventes + montant` vaut 350 + 100 = 450.\n\n- A (350) : croit que `montant = 0;` modifie aussi la variable de `main` lors du second appel, d'où 350 + 0. Or le paramètre n'est qu'une copie.\n- C (250) : croit qu'il n'existe qu'une seule variable `montant`, mise à 250 par le premier appel puis remise à 0 : le second appel ajouterait 0 et l'affichage serait 250 + 0.\n- D (100) : croit que la modification de `ventes` dans la fonction est perdue au retour, ce qui n'est vrai que pour une variable locale ; `ventes` est globale.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`350`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`450`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`250`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`100`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10625,
+      11246
+    ]
+  },
+  {
+    "external_id": "cqc-portee-des-variables-bac-ti-prog-elevee-2",
+    "theme": "Portée des variables",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève a écrit le programme C suivant pour étudier la visibilité des variables.\n\n```c\n#include <stdio.h>\n\nint x = 10;\n\nint f(int x) {\n    x = x * 2;\n    return x;\n}\n\nvoid g() {\n    x = x + 1;\n}\n\nint main() {\n    int y = f(x);\n    g();\n    {\n        int x = 3;\n        x = x + y;\n        printf(\"%d \", x);\n    }\n    printf(\"%d %d\\n\", x, y);\n    return 0;\n}\n```\n\n1. Pour chacune des quatre occurrences de `x` suivantes, indiquer s'il s'agit de la variable globale ou d'une variable locale : le `x` de `x = x * 2;` dans `f`, le `x` de `x = x + 1;` dans `g`, le `x` de `x = x + y;` dans le bloc de `main`, le `x` du dernier `printf`.\n2. Donner la valeur de la variable globale `x` après l'appel `f(x)`, puis après l'appel `g()`.\n3. Donner l'affichage exact du programme.\n4. Vérification : la ligne `int x = 3;` est supprimée du bloc. Donner le nouvel affichage et justifier la différence.",
+    "corrige_markdown": "### Rappel de méthode\nUn nom désigne toujours la déclaration la plus proche en remontant les blocs qui l'entourent : un paramètre ou une variable de bloc portant le même nom masque la variable globale, qui reste intacte et redevient visible à la sortie du bloc ou de la fonction. Une fonction qui ne redéclare pas le nom agit directement sur la globale.\n\n### Corrigé\n**1.**\n\n- Le `x` de `x = x * 2;` dans `f` est le paramètre `x`, variable locale à `f`, qui masque la globale.\n- Le `x` de `x = x + 1;` dans `g` est la variable globale, car `g` ne déclare aucun `x`.\n- Le `x` de `x = x + y;` dans le bloc est la variable locale au bloc, déclarée par `int x = 3;`.\n- Le `x` du dernier `printf` est la variable globale, car l'exécution est sortie du bloc.\n\n**2.** Pour `f(x)`, le paramètre reçoit une copie de 10, devient 20 et est retourné : `y` vaut 20, tandis que la globale `x` vaut toujours 10. Après `g()`, la globale `x` vaut 11.\n\n**3.** Dans le bloc, le `x` local vaut 3 + 20 = 23, affiché suivi d'une espace. Le bloc terminé, ce `x` n'existe plus ; le dernier `printf` affiche la globale (11), puis `y` (20) :\n\n```\n23 11 20\n```\n\n**4.** Sans `int x = 3;`, le `x` du bloc est la globale : `x = x + y` donne 11 + 20 = 31, affiché une première fois ; le dernier `printf` affiche ensuite la globale, devenue 31, puis `y` (20) :\n\n```\n31 31 20\n```\n\nLa différence vient de ce que l'affectation modifie maintenant la variable globale au lieu d'une variable locale qui la masquait.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10625,
+      10572
+    ]
+  }
+]

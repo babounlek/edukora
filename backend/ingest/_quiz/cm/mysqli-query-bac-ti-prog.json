@@ -1,0 +1,68 @@
+[
+  {
+    "external_id": "cqc-mysqli-query-bac-ti-prog-faible-0",
+    "theme": "mysqli_query",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "La connexion `$cnx` d'un script PHP est ouverte. Le script exécute la requête suivante, qui s'effectue sans erreur et trouve plusieurs lignes dans la table.\n\n```php\n$res = mysqli_query($cnx, \"SELECT nom, ville FROM client\");\n```\n\nQue contient la variable `$res` après cette instruction ?",
+    "corrige_markdown": "### Rappel de méthode\nPour prévoir la valeur rendue par `mysqli_query`, il faut distinguer trois situations : la requête échoue, une requête de lecture (`SELECT`) réussit, ou une requête de modification réussit. Chacune a sa valeur de retour propre, et la lecture des données se fait toujours dans une étape séparée.\n\n### Corrigé\n- Choix A : faux. `mysqli_query` ne copie aucune ligne dans un tableau PHP ; les lignes restent dans le résultat et sont extraites une par une.\n- Choix C : faux. Le nombre de lignes s'obtient ensuite avec `mysqli_num_rows($res)`, qui reçoit le résultat.\n- Choix D : faux. Une ligne n'est lue que lorsqu'on appelle une fonction comme `mysqli_fetch_assoc($res)` ; `mysqli_query` elle-même ne lit rien.\n\nRéponse **B** : pour un `SELECT` réussi, `$res` désigne un jeu de résultats que l'on parcourt avec `mysqli_fetch_assoc` ou `mysqli_fetch_array`. Dans les deux autres situations, la valeur est `false` si la requête échoue (erreur de syntaxe, table inconnue) et `true` si une requête de modification (`INSERT`, `UPDATE`, `DELETE`) réussit.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Un tableau PHP contenant toutes les lignes trouvées"},
+      {"lettre": "B", "texte": "Un jeu de résultats, à lire ensuite ligne par ligne"},
+      {"lettre": "C", "texte": "Le nombre de lignes trouvées par la requête"},
+      {"lettre": "D", "texte": "La première ligne trouvée, sous forme de tableau"}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [11242]
+  },
+  {
+    "external_id": "cqc-mysqli-query-bac-ti-prog-moyenne-1",
+    "theme": "mysqli_query",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans la table `capteur`, chaque ligne décrit une relève de température dans une ville.\n\n| id | lieu | temp |\n|---|---|---|\n| 1 | Douala | 31 |\n| 2 | Yaoundé | 27 |\n| 3 | Bafoussam | 22 |\n| 4 | Garoua | 36 |\n\nLe script suivant s'exécute avec une connexion `$cnx` valide.\n\n```php\n$res = mysqli_query($cnx, \"SELECT lieu, temp FROM capteur WHERE temp > 25\");\n$n = 0;\nwhile ($l = mysqli_fetch_assoc($res)) {\n    echo $l['lieu'] . \" \";\n    $n++;\n}\necho $n;\n```\n\nQuel est l'affichage produit par ce script ?",
+    "corrige_markdown": "### Rappel de méthode\nLa boucle `while ($l = mysqli_fetch_assoc($res))` s'exécute une fois par ligne du résultat, et ce résultat ne contient que les lignes retenues par la clause `WHERE` ; elle s'arrête quand la fonction ne rend plus de ligne. Pour prédire l'affichage, il faut filtrer la table avec la condition, puis dérouler les passages en suivant le compteur.\n\n### Corrigé\nLa condition `temp > 25` retient Douala (31), Yaoundé (27) et Garoua (36) ; Bafoussam (22) est exclue.\n\n| Passage | Ligne lue | Affichage cumulé (chaque nom est suivi d'une espace) | `$n` après le passage |\n|---|---|---|---|\n| 1 | Douala | Douala | 1 |\n| 2 | Yaoundé | Douala Yaoundé | 2 |\n| 3 | Garoua | Douala Yaoundé Garoua | 3 |\n\nAu quatrième appel, `mysqli_fetch_assoc` ne trouve plus de ligne et la boucle se termine ; `echo $n;` affiche alors `3`.\n\n- Choix A : faux. Il ignore la clause `WHERE` et compte les quatre lignes de la table.\n- Choix B : faux. La boucle `while` rappelle `mysqli_fetch_assoc` tant qu'il reste des lignes : une lecture unique n'a lieu que sans boucle.\n- Choix D : faux. Le compteur est incrémenté à chaque passage, donc trois fois : il termine à 3 et non à 2.\n\nRéponse **C** : l'affichage est `Douala Yaoundé Garoua 3`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`Douala Yaoundé Bafoussam Garoua 4`"},
+      {"lettre": "B", "texte": "`Douala 1`"},
+      {"lettre": "C", "texte": "`Douala Yaoundé Garoua 3`"},
+      {"lettre": "D", "texte": "`Douala Yaoundé Garoua 2`"}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11247]
+  },
+  {
+    "external_id": "cqc-mysqli-query-bac-ti-prog-moyenne-2",
+    "theme": "mysqli_query",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "La table `eleve` d'un lycée technique contient les lignes suivantes.\n\n| matricule | nom | note |\n|---|---|---|\n| 101 | Mbarga | 12 |\n| 102 | Tchinda | 8 |\n| 103 | Ngono | 14 |\n\nLa connexion `$cnx` est déjà ouverte.\n\n1. Écrire le code PHP qui affiche un tableau HTML, composé d'une ligne d'en-tête (Nom, Note) puis d'une ligne par élève, pour les élèves dont la note est supérieure ou égale à 10. Utiliser `mysqli_query` et `mysqli_fetch_assoc`.\n2. Donner le code HTML exact produit par la boucle pour l'élève Ngono.\n3. Justifier l'emplacement des balises `<table>` et `</table>` par rapport à la boucle `while`.",
+    "corrige_markdown": "### Rappel de méthode\nAfficher un résultat de requête sous forme de tableau suit trois temps : écrire une seule fois ce qui ouvre le tableau et son en-tête, répéter pour chaque ligne lue ce qui dépend des données, puis écrire une seule fois ce qui referme le tableau. Dans la boucle, chaque champ se lit par le nom de sa colonne.\n\n### Corrigé\n**1.**\n\n```php\n$res = mysqli_query($cnx, \"SELECT nom, note FROM eleve WHERE note >= 10\");\necho \"<table border='1'>\";\necho \"<tr><th>Nom</th><th>Note</th></tr>\";\nwhile ($ligne = mysqli_fetch_assoc($res)) {\n    echo \"<tr><td>\" . $ligne['nom'] . \"</td><td>\" . $ligne['note'] . \"</td></tr>\";\n}\necho \"</table>\";\n```\n\nLa clause `WHERE note >= 10` retient Mbarga et Ngono ; Tchinda (8) est exclu. La boucle s'arrête quand `mysqli_fetch_assoc` ne rend plus de ligne.\n\n**2.** Pour Ngono, la boucle produit : `<tr><td>Ngono</td><td>14</td></tr>`.\n\n**3.** La balise `<table>` s'écrit avant la boucle et `</table>` après, car le tableau est unique. Écrites dans la boucle, elles créeraient un tableau par élève au lieu d'un seul tableau à plusieurs lignes.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10565, 11247]
+  },
+  {
+    "external_id": "cqc-mysqli-query-bac-ti-prog-elevee-3",
+    "theme": "mysqli_query",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une boutique de Limbé enregistre ses ventes dans la table `vente`.\n\n| id | article | qte | prix |\n|---|---|---|---|\n| 1 | cahier | 5 | 300 |\n| 2 | stylo | 2 | 150 |\n| 3 | règle | 3 | 200 |\n| 4 | gomme | 10 | 100 |\n\nLe script suivant s'exécute avec une connexion `$cnx` valide.\n\n```php\n$res = mysqli_query($cnx, \"SELECT article, qte, prix FROM vente WHERE qte > 2 ORDER BY id\");\n$total = 0;\nwhile ($l = mysqli_fetch_array($res)) {\n    $total = $total + $l[1] * $l[2];\n    echo $l['article'] . \";\";\n}\necho $total;\n```\n\n1. Indiquer ce que désignent `$l[1]` et `$l[2]`, et expliquer pourquoi `$l['article']` fonctionne aussi avec `mysqli_fetch_array`.\n2. Donner l'affichage produit, en présentant la trace des passages dans la boucle.\n3. Réécrire le calcul de `$total` avec des clés nommées et justifier ce choix.\n4. Vérification : la condition de la requête devient `qte > 20`. Donner l'affichage obtenu dans ce cas et indiquer si `$res` vaut `false`.",
+    "corrige_markdown": "### Rappel de méthode\n`mysqli_fetch_array` rend chaque ligne dans un tableau accessible à la fois par la position des colonnes du `SELECT` (0, 1, 2...) et par leur nom. Pour tracer une boucle de lecture, il faut d'abord retenir les lignes que la clause `WHERE` conserve, puis suivre l'accumulateur passage après passage ; la boucle prend fin quand la fonction ne rend plus de ligne.\n\n### Corrigé\n**1.** La requête sélectionne `article`, `qte`, `prix` dans cet ordre : `$l[0]` est l'article, `$l[1]` la quantité et `$l[2]` le prix. L'écriture `$l['article']` fonctionne aussi parce que `mysqli_fetch_array` rend, par défaut, à la fois des clés numériques et des clés portant le nom des colonnes.\n\n**2.** La condition `qte > 2` retient cahier (5), règle (3) et gomme (10) ; stylo (2) est exclu.\n\n| Passage | Ligne lue | Calcul | `$total` après le passage |\n|---|---|---|---|\n| 1 | cahier | 0 + 5 × 300 | 1500 |\n| 2 | règle | 1500 + 3 × 200 | 2100 |\n| 3 | gomme | 2100 + 10 × 100 | 3100 |\n\nL'affichage est `cahier;règle;gomme;3100`.\n\n**3.** `$total = $total + $l['qte'] * $l['prix'];` Cette écriture se lit sans consulter le `SELECT` et ne casse pas si l'ordre des colonnes demandées change, alors que les positions `[1]` et `[2]` en dépendent.\n\n**4.** Avec `qte > 20`, aucune ligne n'est retenue : la boucle ne s'exécute pas, `$total` garde sa valeur initiale et l'affichage est `0`. La variable `$res` ne vaut pas `false` : elle désigne un jeu de résultats vide, `false` étant réservé à l'échec de la requête.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11242, 10571]
+  }
+]

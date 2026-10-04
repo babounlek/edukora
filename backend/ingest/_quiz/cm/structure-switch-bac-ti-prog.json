@@ -1,0 +1,82 @@
+[
+  {
+    "external_id": "cqc-structure-switch-bac-ti-prog-faible-0",
+    "theme": "structure switch",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant, qui réagit à la lettre choisie dans un menu.\n\n```c\n#include <stdio.h>\n\nint main() {\n    char menu = 'c';\n    switch (menu) {\n        case 'a':\n            printf(\"Ajouter\");\n            break;\n        case 'c':\n            printf(\"Consulter\");\n            break;\n        default:\n            printf(\"Quitter\");\n    }\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\nUn `switch` compare la valeur de son expression, de type entier ou caractère, aux constantes des `case`, dans l'ordre. L'exécution démarre à la première étiquette égale à cette valeur et continue jusqu'à un `break` ou jusqu'à l'accolade finale. L'étiquette `default` n'est choisie que si aucune constante ne correspond.\n\n### Corrigé\nLa variable `menu` contient `'c'` : l'exécution entre au `case 'c':`, affiche `Consulter`, puis le `break` fait sortir du `switch`. Le `default` n'est pas exécuté.\n\n- A (`Ajouter`) : suppose que le premier `case` est toujours pris ; or `'a'` est différent de `'c'`, ce `case` est ignoré.\n- B (`ConsulterQuitter`) : traite `default` comme une instruction finale toujours exécutée ; il n'est atteint ici ni par correspondance ni par chute, puisque le `break` l'en empêche.\n- D (`Aucun affichage`) : croit qu'un `switch` ne fonctionne pas avec un caractère ; un `char` est un entier (son code), il est donc admis.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`Ajouter`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`ConsulterQuitter`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`Consulter`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`Aucun affichage`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-structure-switch-bac-ti-prog-moyenne-1",
+    "theme": "structure switch",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant, qui cumule des points sur quatre tours de boucle.\n\n```c\n#include <stdio.h>\n\nint main() {\n    int i, s = 0;\n    for (i = 1; i <= 4; i++) {\n        switch (i) {\n            case 2:\n                s += 10;\n                break;\n            case 3:\n                s += 100;\n            default:\n                s += 1;\n        }\n    }\n    printf(\"%d\", s);\n    return 0;\n}\n```\n\n1. Faire la trace de l'exécution : pour chaque valeur de `i`, indiquer les instructions du `switch` exécutées et la valeur de `s` à la fin du tour.\n2. Donner l'affichage du programme.\n3. Préciser ce qu'interrompt le `break` du `case 2` : le `switch` ou la boucle `for`. Justifier avec la trace.",
+    "corrige_markdown": "### Rappel de méthode\nDans un `switch`, l'exécution démarre à l'étiquette dont la constante égale l'expression et se poursuit jusqu'au premier `break` ou jusqu'à la fin du bloc, en traversant les étiquettes suivantes, `default` compris. Pour suivre un `switch` placé dans une boucle, on déroule la boucle tour par tour en notant les instructions réellement exécutées.\n\n### Corrigé\n**1.**\n\n| `i` | Étiquette atteinte | Instructions exécutées | `s` en fin de tour |\n|---|---|---|---|\n| 1 | `default`, car aucun `case` ne vaut 1 | `s += 1;` | 1 |\n| 2 | `case 2` | `s += 10;` puis `break` | 11 |\n| 3 | `case 3` | `s += 100;` puis chute dans `default` : `s += 1;` | 112 |\n| 4 | `default` | `s += 1;` | 113 |\n\n**2.** Le programme affiche `113`.\n\n**3.** Le `break` du `case 2` n'interrompt que le `switch` : au tour suivant, la boucle continue normalement avec `i = 3`, puis `i = 4`, comme la trace le montre. Seul un `break` placé directement dans la boucle, hors du `switch`, la ferait cesser.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-structure-switch-bac-ti-prog-elevee-2",
+    "theme": "structure switch",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans un magasin de Yaoundé, le taux de réduction `taux` (en pourcentage) dépend d'un code de catégorie `cat` de type `char` : 10 pour `'E'`, 15 pour `'F'`, 20 pour `'S'` ou `'P'`, et 0 pour tout autre code. Un élève a écrit la cascade suivante.\n\n```c\nif (cat == 'E')\n    taux = 10;\nelse if (cat == 'F')\n    taux = 15;\nelse if (cat == 'S' || cat == 'P')\n    taux = 20;\nelse\n    taux = 0;\n```\n\n1. Réécrire cette cascade avec une structure `switch`, en conservant l'ordre des cas (`'E'`, `'F'`, puis `'S'` et `'P'`, puis le cas par défaut) et en regroupant `'S'` et `'P'` sans recopier l'instruction du taux.\n2. Expliquer pourquoi une cascade qui teste des intervalles, comme `if (note >= 16)` puis `else if (note >= 14)`, ne se traduit pas directement en `switch`.\n3. Donner la valeur de `taux` pour `cat = 'S'`, `cat = 'F'` et `cat = 'x'` avec le `switch` écrit à la question 1.\n4. Vérification : si le `break` situé juste après `taux = 15;` était oublié, donner la valeur de `taux` pour `cat = 'F'` et indiquer quelle étiquette explique ce résultat.",
+    "corrige_markdown": "### Rappel de méthode\nPour traduire une cascade d'égalités sur une même variable en `switch`, chaque condition `variable == constante` devient une étiquette `case constante :` suivie de ses instructions et d'un `break` ; deux conditions reliées par `||` qui déclenchent la même action donnent deux étiquettes consécutives, et le dernier `else` devient `default`.\n\n### Corrigé\n**1.**\n\n```c\nswitch (cat) {\n    case 'E':\n        taux = 10;\n        break;\n    case 'F':\n        taux = 15;\n        break;\n    case 'S':\n    case 'P':\n        taux = 20;\n        break;\n    default:\n        taux = 0;\n}\n```\n\nLes étiquettes `'S'` et `'P'` se suivent sans instruction entre elles : l'une comme l'autre mène à `taux = 20;`.\n\n**2.** Un `case` n'accepte qu'une constante entière ou caractère et teste seulement l'égalité. Un intervalle comme `note >= 16` n'est pas une valeur isolée : il faudrait énumérer chaque valeur possible (`case 16:`, `case 17:`, ...), ce qui devient lourd, voire impossible pour des notes réelles. La cascade `if ... else if` reste la structure adaptée.\n\n**3.** Pour `'S'`, `taux` vaut 20 ; pour `'F'`, il vaut 15 ; pour `'x'`, aucune étiquette ne correspond et `default` donne 0.\n\n**4.** Sans le `break` après `taux = 15;`, l'exécution pour `'F'` continue dans l'étiquette suivante : `taux` reçoit d'abord 15, puis 20 par l'instruction du groupe `'S'` et `'P'`, dont le `break` fait enfin sortir du `switch`. La valeur finale est donc 20 au lieu de 15.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10743
+    ]
+  }
+]

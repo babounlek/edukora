@@ -1,0 +1,120 @@
+[
+  {
+    "external_id": "cqc-recursivite-bac-ti-prog-faible-0",
+    "theme": "récursivité",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un commerçant de Douala calcule un montant en additionnant plusieurs fois le même prix grâce à la fonction récursive suivante :\n\n```c\nint mult(int a, int b) {\n    if (b == 0)\n        return 0;\n    return a + mult(a, b - 1);\n}\n```\n\nQuelle valeur retourne l'appel `mult(4, 3)` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour évaluer un appel récursif, on déroule d'abord la descente en notant chaque appel jusqu'à celui qui vérifie la condition d'arrêt, puis on remonte en remplaçant chaque appel en attente par la valeur qu'il retourne.\n\n### Corrigé\n\nDescente : `mult(4, 3)` vaut `4 + mult(4, 2)`, qui vaut `4 + mult(4, 1)`, qui vaut `4 + mult(4, 0)`. L'appel `mult(4, 0)` vérifie `b == 0` : c'est le cas de base, il retourne 0.\n\nRemontée : `mult(4, 1)` = 4 + 0 = 4, puis `mult(4, 2)` = 4 + 4 = 8, puis `mult(4, 3)` = 4 + 8 = 12. La fonction calcule un produit par additions répétées.\n\nRéponse **B**.\n\n- A (`7`) : confond le produit avec la somme `a + b`, alors que `a` est ajouté `b` fois.\n- C (`64`) : calcule 4 × 4 × 4, une puissance ; rien dans le code ne multiplie un résultat par `a`.\n- D (`0`) : s'arrête à la valeur du cas de base, sans remonter les additions restées en attente.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`7`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`12`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`64`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`0`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-recursivite-bac-ti-prog-moyenne-1",
+    "theme": "récursivité",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève teste la suite de Fibonacci avec la fonction récursive suivante :\n\n```c\nint fib(int n) {\n    if (n <= 1)\n        return n;\n    return fib(n - 1) + fib(n - 2);\n}\n```\n\nCombien d'appels de la fonction `fib` (l'appel initial compris) sont exécutés pour évaluer `fib(5)` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une fonction se rappelle deux fois, le décompte se fait par récurrence : si `C(n)` désigne le nombre d'appels déclenchés par l'argument `n`, un argument qui tombe dans le cas de base coûte 1 appel, sinon l'appel lui-même compte pour 1 et s'y ajoutent les appels de chacun des deux sous-appels.\n\n### Corrigé\n\nPour `n = 0` et `n = 1`, la condition `n <= 1` est vraie : `C(0) = 1` et `C(1) = 1`. Pour `n >= 2`, on a `C(n) = 1 + C(n - 1) + C(n - 2)`.\n\n| n | 0 | 1 | 2 | 3 | 4 | 5 |\n|---|---|---|---|---|---|---|\n| C(n) | 1 | 1 | 3 | 5 | 9 | 15 |\n\nL'évaluation de `fib(5)` provoque donc 15 appels (elle retourne la valeur 5).\n\nRéponse **D**.\n\n- A (`5`) : c'est la valeur retournée par `fib(5)`, pas le nombre d'appels.\n- B (`6`) : suppose un seul appel par niveau, comme dans une fonction qui ne se rappelle qu'une fois (n + 1 appels) ; or `fib` se rappelle deux fois.\n- C (`9`) : c'est le nombre d'appels de `fib(4)`, décalé d'un rang.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`5`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`6`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`9`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`15`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-recursivite-bac-ti-prog-moyenne-2",
+    "theme": "récursivité",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève de Terminale TI veut simplifier la fraction 91/35 à l'aide du PGCD. L'algorithme d'Euclide s'énonce ainsi : le PGCD de `a` et `b` est `a` lorsque `b` vaut 0 ; sinon, c'est le PGCD de `b` et du reste de la division de `a` par `b`.\n\n1. Écrire en C la fonction récursive `int pgcd(int a, int b)` qui applique cette règle.\n2. Donner la suite des appels effectués par `pgcd(91, 35)`, la valeur retournée et le nombre d'appels.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne fonction récursive se construit en deux parties : un cas de base, qui retourne un résultat sans nouvel appel, et un cas général, qui rappelle la fonction avec des arguments plus proches de ce cas de base. Une trace liste les appels dans l'ordre de la descente, puis les retours en sens inverse.\n\n### Corrigé\n\n1. Le cas de base est `b == 0` ; le cas général rappelle la fonction avec `b` et `a % b`.\n\n```c\nint pgcd(int a, int b) {\n    if (b == 0)\n        return a;\n    return pgcd(b, a % b);\n}\n```\n\nL'arrêt est garanti : le second argument est remplacé par `a % b`, strictement plus petit que `b` et jamais négatif, il finit donc par valoir 0.\n\n2. Suite des appels :\n\n| Appel | Calcul de `a % b` |\n|---|---|\n| `pgcd(91, 35)` | 91 % 35 = 21 |\n| `pgcd(35, 21)` | 35 % 21 = 14 |\n| `pgcd(21, 14)` | 21 % 14 = 7 |\n| `pgcd(14, 7)` | 14 % 7 = 0 |\n| `pgcd(7, 0)` | cas de base : retourne 7 |\n\nChaque appel retourne directement la valeur de l'appel suivant, sans calcul en attente : la valeur remonte inchangée. Le résultat est **7**, obtenu en **5 appels**, et la fraction 91/35 se simplifie en 13/5.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-recursivite-bac-ti-prog-elevee-3",
+    "theme": "récursivité",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Pour calculer une puissance entière avec peu de multiplications, un technicien en électronique utilise l'exponentiation rapide :\n\n```c\nint expo(int x, int n) {\n    if (n == 0)\n        return 1;\n    if (n % 2 == 0) {\n        int y = expo(x, n / 2);\n        return y * y;\n    }\n    return x * expo(x, n - 1);\n}\n```\n\n1. Indiquer le cas de base et expliquer pourquoi l'appel `expo(2, 13)` finit par l'atteindre.\n2. Donner, dans l'ordre, les valeurs de `n` des appels déclenchés par `expo(2, 13)` et leur nombre, puis la valeur retournée par chacun d'eux en remontant.\n3. Comparer avec une version qui se limiterait à `return x * expo(x, n - 1);` pour `n > 0` : donner son nombre d'appels pour `n = 13`.\n4. Contrôler le résultat de la question 2 avec une seconde méthode, puis tester le cas limite `expo(5, 1)`.",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une récursion bien construite, chaque appel remplace l'argument par une valeur strictement plus proche du cas de base ; le nombre d'appels se lit sur la liste des arguments successifs, et les valeurs retournées se calculent ensuite en remontant, du cas de base vers l'appel initial.\n\n### Corrigé\n\n1. Le cas de base est `n == 0`, qui retourne 1. À chaque appel, `n` est divisé par 2 s'il est pair, ou diminué de 1 s'il est impair : il décroît strictement et ne devient jamais négatif, donc il atteint 0.\n\n2. Les valeurs de `n` sont 13, 12, 6, 3, 2, 1, 0 : 13 est impair (appel avec 12), 12 est pair (appel avec 6), 6 pair (3), 3 impair (2), 2 pair (1), 1 impair (0). Cela fait **7 appels**. En remontant :\n\n| Appel | Calcul | Valeur retournée |\n|---|---|---|\n| `expo(2, 0)` | cas de base | 1 |\n| `expo(2, 1)` | 2 × 1 | 2 |\n| `expo(2, 2)` | y = 2, donc 2 × 2 | 4 |\n| `expo(2, 3)` | 2 × 4 | 8 |\n| `expo(2, 6)` | y = 8, donc 8 × 8 | 64 |\n| `expo(2, 12)` | y = 64, donc 64 × 64 | 4096 |\n| `expo(2, 13)` | 2 × 4096 | 8192 |\n\n3. Dans la version simple, les valeurs de `n` sont 13, 12, 11, ..., 1, 0 : **14 appels** (n + 1), soit le double de la version rapide.\n\n4. Seconde méthode : $2^{13} = 2^{10} \\times 2^{3} = 1024 \\times 8 = 8192$, valeur identique. Cas limite `expo(5, 1)` : `n` vaut 1 (impair), puis 0 ; l'appel `expo(5, 0)` retourne 1 et `expo(5, 1)` retourne 5 × 1 = 5, soit $5^1$, en 2 appels. La fonction est cohérente.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572
+    ]
+  }
+]

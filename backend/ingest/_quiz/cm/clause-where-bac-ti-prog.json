@@ -1,0 +1,82 @@
+[
+  {
+    "external_id": "cqc-clause-where-bac-ti-prog-faible-0",
+    "theme": "clause WHERE",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une agence de transport de Douala enregistre ses colis dans la table `colis` (poids en kg) :\n\n| num | destination | poids | statut |\n|---|---|---|---|\n| 101 | Yaoundé | 12 | livré |\n| 102 | Bafoussam | 5 | en transit |\n| 103 | Yaoundé | 30 | en transit |\n| 104 | Garoua | 20 | livré |\n| 105 | Bafoussam | 22 | en transit |\n| 106 | Yaoundé | 7 | en attente |\n| 107 | Kribi | 15 | en transit |\n| 108 | Garoua | 10 | en attente |\n\nQuels numéros de colis cette requête retourne-t-elle ?\n\n```sql\nSELECT num FROM colis WHERE destination = 'Yaoundé' AND statut <> 'livré';\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nLa clause `WHERE` teste chaque ligne de la table et ne conserve que celles pour lesquelles la condition est vraie ; avec `AND`, les deux comparaisons doivent être vraies en même temps. Le symbole `=` signifie « égal à » et `<>` signifie « différent de ».\n\n### Corrigé\n\nOn examine les huit lignes l'une après l'autre :\n\n| num | `destination = 'Yaoundé'` | `statut <> 'livré'` | Ligne retenue |\n|---|---|---|---|\n| 101 | oui | non (livré) | non |\n| 102 | non | oui | non |\n| 103 | oui | oui | **oui** |\n| 104 | non | non (livré) | non |\n| 105 | non | oui | non |\n| 106 | oui | oui | **oui** |\n| 107 | non | oui | non |\n| 108 | non | oui | non |\n\nLa requête retourne donc les numéros 103 et 106.\n\n- Le choix « 101, 103 et 106 » oublie la condition sur le statut : le colis 101 va bien à Yaoundé, mais il est déjà livré.\n- Le choix « 101 » lit `<>` comme `=` et ne garde que le colis livré.\n- Le choix « Toutes les lignes sauf la 104 » remplace `AND` par `OR` : une ligne passe dès qu'une seule condition est vraie, et seul le colis 104 (Garoua, livré) échoue aux deux.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "101, 103 et 106"
+      },
+      {
+        "lettre": "B",
+        "texte": "101"
+      },
+      {
+        "lettre": "C",
+        "texte": "103 et 106"
+      },
+      {
+        "lettre": "D",
+        "texte": "Toutes les lignes sauf la 104"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10571
+    ]
+  },
+  {
+    "external_id": "cqc-clause-where-bac-ti-prog-moyenne-1",
+    "theme": "clause WHERE",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une agence de transport de Douala enregistre ses colis dans la table `colis` (poids en kg) :\n\n| num | destination | poids | statut |\n|---|---|---|---|\n| 101 | Yaoundé | 12 | livré |\n| 102 | Bafoussam | 5 | en transit |\n| 103 | Yaoundé | 30 | en transit |\n| 104 | Garoua | 20 | livré |\n| 105 | Bafoussam | 22 | en transit |\n| 106 | Yaoundé | 7 | en attente |\n| 107 | Kribi | 15 | en transit |\n| 108 | Garoua | 10 | en attente |\n\nUn employé veut afficher les colis à destination de Yaoundé ou de Kribi qui pèsent plus de 10 kg. Il écrit la requête suivante :\n\n```sql\nSELECT num, destination, poids\nFROM colis\nWHERE destination = 'Yaoundé' OR destination = 'Kribi' AND poids > 10;\n```\n\n1. Donner le résultat réellement obtenu avec cette requête (lignes dans l'ordre des `num`).\n2. Expliquer pourquoi un colis de 7 kg figure dans ce résultat alors qu'il ne devrait pas y être.\n3. Écrire la requête corrigée et donner son résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nEn SQL, l'opérateur `AND` est prioritaire sur `OR` : dans `A OR B AND C`, la partie `B AND C` est évaluée en premier, puis son résultat est combiné avec `A`. Pour imposer une autre association, il faut entourer de parenthèses la partie à évaluer d'abord.\n\n### Corrigé\n\n1. Le résultat contient quatre lignes :\n\n| num | destination | poids |\n|---|---|---|\n| 101 | Yaoundé | 12 |\n| 103 | Yaoundé | 30 |\n| 106 | Yaoundé | 7 |\n| 107 | Kribi | 15 |\n\n2. Comme `AND` passe avant `OR`, la condition est lue `destination = 'Yaoundé' OR (destination = 'Kribi' AND poids > 10)`. La limite de 10 kg ne concerne donc que les colis de Kribi : tous les colis de Yaoundé sont retenus, y compris le colis 106 de 7 kg.\n\n3. Il faut regrouper les deux destinations entre parenthèses, pour que le critère de poids s'applique aux deux :\n\n```sql\nSELECT num, destination, poids\nFROM colis\nWHERE (destination = 'Yaoundé' OR destination = 'Kribi') AND poids > 10;\n```\n\nRésultat : les colis 101 (12 kg), 103 (30 kg) et 107 (15 kg). Le colis 106 (7 kg) est écarté.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10571
+    ]
+  },
+  {
+    "external_id": "cqc-clause-where-bac-ti-prog-elevee-2",
+    "theme": "clause WHERE",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une agence de transport de Douala facture un supplément aux colis qui pèsent de 10 à 20 kg inclus et qui ne sont pas encore livrés. Les colis sont enregistrés dans la table `colis` (poids en kg) :\n\n| num | destination | poids | statut |\n|---|---|---|---|\n| 101 | Yaoundé | 12 | livré |\n| 102 | Bafoussam | 5 | en transit |\n| 103 | Yaoundé | 30 | en transit |\n| 104 | Garoua | 20 | livré |\n| 105 | Bafoussam | 22 | en transit |\n| 106 | Yaoundé | 7 | en attente |\n| 107 | Kribi | 15 | en transit |\n| 108 | Garoua | 10 | en attente |\n\n1. Écrire la requête qui affiche le numéro et le poids de ces colis, en utilisant l'opérateur `BETWEEN`.\n2. Donner le résultat de cette requête sur la table ci-dessus (lignes dans l'ordre des `num`).\n3. Réécrire la condition sur le poids sans `BETWEEN`, avec deux comparaisons.\n4. Vérification : si la condition sur le poids devient `poids > 10 AND poids < 20`, quel colis disparaît du résultat ? Que montre ce constat à propos des bornes de `BETWEEN` ?\n5. Vérification : que retourne une requête dont la condition sur le poids est `poids BETWEEN 20 AND 10` ? Justifier.",
+    "corrige_markdown": "### Rappel de méthode\n\nL'opérateur `BETWEEN` teste l'appartenance d'une valeur à un intervalle et s'écrit `colonne BETWEEN borne_basse AND borne_haute` ; il se combine avec d'autres critères au moyen de `AND`. Une ligne n'est retenue que si toutes les conditions reliées par `AND` sont vraies.\n\n### Corrigé\n\n1. Requête :\n\n```sql\nSELECT num, poids\nFROM colis\nWHERE poids BETWEEN 10 AND 20\n  AND statut <> 'livré';\n```\n\n2. Quatre colis ont un poids compris entre 10 et 20 : le 101 (12 kg), le 104 (20 kg), le 107 (15 kg) et le 108 (10 kg). Les colis 101 et 104 sont déjà livrés, la condition sur le statut les écarte. Résultat :\n\n| num | poids |\n|---|---|\n| 107 | 15 |\n| 108 | 10 |\n\n3. `WHERE poids >= 10 AND poids <= 20 AND statut <> 'livré'` donne le même résultat.\n\n4. Avec `poids > 10 AND poids < 20`, seul le colis 107 reste : le colis 108 disparaît, car son poids de 10 kg n'est pas strictement supérieur à 10. Ce constat montre que `BETWEEN` inclut ses deux bornes : il équivaut à `>=` pour la borne basse et à `<=` pour la borne haute. (Le colis 104, de 20 kg, est aussi sur une borne, mais son statut `livré` l'écarte dans tous les cas.)\n\n5. `poids BETWEEN 20 AND 10` équivaut à `poids >= 20 AND poids <= 10`. Aucun poids n'est à la fois supérieur ou égal à 20 et inférieur ou égal à 10 : la requête ne retourne aucune ligne, sans message d'erreur. La borne basse doit donc toujours être écrite en premier.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11247
+    ]
+  }
+]

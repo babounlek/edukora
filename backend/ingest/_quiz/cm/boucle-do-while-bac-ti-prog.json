@@ -1,0 +1,100 @@
+[
+  {
+    "external_id": "cqc-boucle-do-while-bac-ti-prog-faible-0",
+    "theme": "boucle do while",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève doit écrire une boucle `do ... while` qui décrémente la variable entière `n` et qui recommence tant que `n` reste strictement positif. Quelle écriture est correcte en langage C ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle avec test final place d'abord le bloc d'instructions précédé du mot `do`, puis le mot `while` suivi de la condition de poursuite entre parenthèses, et l'ensemble se termine obligatoirement par un point-virgule. La condition écrite exprime ce qui fait recommencer la boucle, non ce qui l'arrête.\n\n### Corrigé\n\n- Choix A : la condition est bonne, mais le point-virgule qui ferme l'instruction manque ; le compilateur signale une erreur de syntaxe.\n- Choix B : `until` n'existe pas en langage C ; ce mot vient du pseudo-code (`Répéter ... Jusqu'à`), où la condition écrite est celle de l'arrêt.\n- Choix D : le `while` est placé avant le bloc, comme dans une boucle ordinaire ; le `do` se retrouve sans `while` final, ce qui est une erreur de syntaxe.\n- Choix C : bloc entre accolades, puis `while (n > 0)` qui garde la boucle active tant que `n` est strictement positif, puis `;`.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`do { n--; } while (n > 0)`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`do { n--; } until (n == 0);`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`do { n--; } while (n > 0);`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`do while (n > 0) { n--; }`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10667
+    ]
+  },
+  {
+    "external_id": "cqc-boucle-do-while-bac-ti-prog-moyenne-1",
+    "theme": "boucle do while",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une boutique de Douala, un programme additionne les prix saisis jusqu'à la saisie du prix 0, qui sert de signal d'arrêt.\n\n```c\n#include <stdio.h>\nint main() {\n    int prix, total = 0, nb = 0;\n    do {\n        scanf(\"%d\", &prix);\n        total += prix;\n        nb++;\n    } while (prix != 0);\n    printf(\"%d %d\", total, nb);\n    return 0;\n}\n```\n\nL'utilisateur saisit successivement 1500, 800, 250 puis 0. Qu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une boucle `do ... while`, le corps s'exécute avant tout test, puis la condition écrite après `while` décide si un nouveau tour a lieu : elle est donc évaluée avec la valeur que la variable vient de recevoir pendant ce tour. Pour prévoir l'affichage, il faut suivre chaque variable tour après tour et s'arrêter au premier test faux.\n\n### Corrigé\n\nSuivi des variables tour après tour :\n\n| Tour | `prix` lu | `total` | `nb` | `prix != 0` |\n|---|---|---|---|---|\n| 1 | 1500 | 1500 | 1 | vrai |\n| 2 | 800 | 2300 | 2 | vrai |\n| 3 | 250 | 2550 | 3 | vrai |\n| 4 | 0 | 2550 | 4 | faux, arrêt |\n\nLe dernier `printf` affiche donc `2550 4`.\n\n- Choix B : oublie que la saisie 0 est elle aussi traitée par le corps (`nb++` s'exécute avant le test), donc `nb` vaut 4 et non 3.\n- Choix C : ajoute un tour après la saisie de 0, alors que la boucle s'arrête dès que le test échoue.\n- Choix D : lit `prix != 0` comme une condition d'arrêt ; la boucle s'arrêterait alors dès la première valeur non nulle, alors que cette condition fait continuer la boucle.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`2550 4`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`2550 3`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`2550 5`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`1500 1`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-boucle-do-while-bac-ti-prog-elevee-2",
+    "theme": "boucle do while",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un caissier utilise le programme suivant pour enregistrer les opérations de la journée. Le code 1 correspond à une vente (la caisse augmente de 2500 FCFA), le code 2 à un remboursement (la caisse diminue de 1000 FCFA) et le code 0 termine la journée ; tout autre code ne modifie pas la caisse. La variable `tours` compte les saisies.\n\n```c\n#include <stdio.h>\nint main() {\n    int code, caisse = 10000, tours = 0;\n    do {\n        printf(\"Code : \");\n        scanf(\"%d\", &code);\n        if (code == 1)\n            caisse += 2500;\n        else if (code == 2)\n            caisse -= 1000;\n        tours++;\n    } while (code != 0);\n    printf(\"%d %d\", caisse, tours);\n    return 0;\n}\n```\n\n1. Pour la suite de saisies 1, 2, 2, 5, 1, 0, donner la valeur de `caisse` à la fin de chaque tour, puis les deux nombres affichés par le dernier `printf`.\n2. Expliquer pourquoi ce programme, tel qu'il est écrit, exige une boucle de type `do ... while`.\n3. Réécrire la boucle avec un `while` équivalent, en précisant l'initialisation à ajouter avant la boucle.\n4. Vérification : pour une première saisie égale à 0, donner l'affichage obtenu avec chacune des deux versions, puis conclure sur leur équivalence.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `do ... while` teste sa condition en fin de tour, ce qui permet d'utiliser dans ce test une valeur lue pendant le tour. Pour obtenir le même comportement avec un `while`, dont le test précède le corps, il faut donner à la variable testée, avant la boucle, une valeur qui rend la condition vraie. La trace s'établit en notant, tour après tour, les variables modifiées.\n\n### Corrigé\n\n**1.** Suivi des variables pour les saisies 1, 2, 2, 5, 1, 0 :\n\n| Tour | `code` | `caisse` à la fin du tour | `tours` | `code != 0` |\n|---|---|---|---|---|\n| 1 | 1 | 12500 | 1 | vrai |\n| 2 | 2 | 11500 | 2 | vrai |\n| 3 | 2 | 10500 | 3 | vrai |\n| 4 | 5 | 10500 | 4 | vrai |\n| 5 | 1 | 13000 | 5 | vrai |\n| 6 | 0 | 13000 | 6 | faux, arrêt |\n\nLe code 5 ne correspond à aucune opération : `caisse` ne change pas, mais `tours` augmente. Le dernier `printf` affiche `13000 6`.\n\n**2.** Au premier test, `code` doit déjà contenir une valeur lue, or c'est le corps de la boucle qui l'obtient avec `scanf`. Le corps doit donc s'exécuter avant le test, ce que garantit `do ... while`.\n\n**3.** Version équivalente :\n\n```c\ncode = 1;\nwhile (code != 0) {\n    printf(\"Code : \");\n    scanf(\"%d\", &code);\n    if (code == 1)\n        caisse += 2500;\n    else if (code == 2)\n        caisse -= 1000;\n    tours++;\n}\n```\n\nL'initialisation `code = 1` (toute valeur non nulle convient) rend le premier test vrai ; avec `code = 0`, le corps ne s'exécuterait jamais.\n\n**4.** Vérification avec 0 comme première saisie : la version `do ... while` exécute le corps une fois (la caisse reste à 10000 et `tours` passe à 1), puis le test échoue ; la version `while` avec `code = 1` entre dans la boucle, lit 0, exécute le même corps une fois, puis s'arrête. Les deux affichent `10000 1`. Avec la suite 1, 2, 2, 5, 1, 0, la version `while` affiche aussi `13000 6`. Les deux versions sont équivalentes à condition que l'initialisation soit non nulle : avec `code = 0`, la version `while` afficherait `10000 0`, ce qui trahirait une différence.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10743,
+      10625
+    ]
+  }
+]

@@ -1,0 +1,123 @@
+[
+  {
+    "external_id": "cqc-tableau-bac-ti-prog-faible-0",
+    "theme": "tableau",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "En langage C, un tableau de six entiers est déclaré par `int releve[6];`. Quelle instruction range la valeur 14 dans la quatrième case de ce tableau ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLes cases d'un tableau C sont repérées par des indices écrits entre crochets, qui commencent à 0 : la case de rang `r` (en comptant à partir de 1) a pour indice `r - 1`, et le dernier indice valide est la taille moins 1.\n\n### Corrigé\n\nLe tableau `releve` possède les indices 0 à 5. La quatrième case est celle d'indice 3.\n\n- Choix B : `releve[4]` désigne la cinquième case ; le rang 4 a été utilisé comme indice, d'où un décalage d'une case.\n- Choix C : l'indice 6 est hors du tableau (indices valides de 0 à 5) ; l'écriture dans cette case est un comportement indéterminé.\n- Choix D : en C, les parenthèses ne servent pas à indexer un tableau (`releve(4)` serait un appel de fonction) ; la compilation échoue.\n- Choix A : `releve[3] = 14;` écrit 14 dans la case d'indice 3, c'est-à-dire la quatrième.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`releve[3] = 14;`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`releve[4] = 14;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`releve[6] = 14;`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`releve(4) = 14;`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10575
+    ]
+  },
+  {
+    "external_id": "cqc-tableau-bac-ti-prog-moyenne-1",
+    "theme": "tableau",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève lance le programme suivant, écrit en langage C :\n\n```c\n#include <stdio.h>\nint main() {\n    int t[4] = {5, 8, 2, 6};\n    printf(\"%d\", t[4]);\n    return 0;\n}\n```\n\nQue peut-on affirmer à propos de l'instruction `printf` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn tableau de taille `n` possède les indices 0 à `n - 1`. Le langage C ne vérifie pas les bornes : lire ou écrire une case d'indice `n` ou plus atteint une zone mémoire qui n'appartient pas au tableau, ce qui est un comportement indéterminé (valeur quelconque, résultat variable d'une exécution à l'autre, ou arrêt brutal du programme).\n\n### Corrigé\n\nLe tableau `t` contient 4 éléments, d'indices 0 à 3. L'écriture `t[4]` désigne donc une cinquième case, hors du tableau : le programme est compilé, mais la valeur lue n'est pas définie.\n\n- Choix A : confond `t[4]` avec la dernière case ; la dernière valeur est rangée en `t[3]`, d'où un décalage d'un cran.\n- Choix B : suppose que les cases inexistantes valent 0 ; seules les cases du tableau non initialisées explicitement dans `{...}` sont mises à 0, et `t[4]` n'en fait pas partie.\n- Choix D : le compilateur ne contrôle pas les bornes d'un tableau, le programme est donc compilé (au mieux avec un avertissement) ; le problème ne se manifeste qu'à l'exécution.\n- Choix C : l'accès hors du tableau a un résultat indéterminé.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Elle affiche 6, la dernière valeur rangée dans `t`"
+      },
+      {
+        "lettre": "B",
+        "texte": "Elle affiche 0, car la case 4 est vide par défaut"
+      },
+      {
+        "lettre": "C",
+        "texte": "Comportement indéterminé : l'indice 4 sort du tableau"
+      },
+      {
+        "lettre": "D",
+        "texte": "Le compilateur refuse de compiler cette instruction"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      11180
+    ]
+  },
+  {
+    "external_id": "cqc-tableau-bac-ti-prog-moyenne-2",
+    "theme": "tableau",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien range les relevés de tension d'un onduleur dans un tableau :\n\n```c\nint r[6] = {8, 3, 14, 6, 10, 1};\n```\n\n1. Écrire les instructions C qui inversent l'ordre des éléments de `r` sur place (sans second tableau), en échangeant les éléments deux à deux.\n2. Donner le contenu de `r` après l'exécution.\n3. Expliquer ce qui se passerait si la boucle d'échange parcourait toutes les cases, de 0 à 5, au lieu de s'arrêter à mi-parcours.",
+    "corrige_markdown": "### Rappel de méthode\n\nInverser un tableau de `n` éléments revient à échanger la case d'indice `i` avec celle d'indice `n - 1 - i`, en passant par une variable temporaire pour ne perdre aucune valeur. Chaque échange traite deux cases à la fois, donc la moitié du tableau suffit à être parcourue.\n\n### Corrigé\n\n**1.** Instructions :\n\n```c\nint i, tmp;\nfor (i = 0; i < 3; i++) {\n    tmp = r[i];\n    r[i] = r[5 - i];\n    r[5 - i] = tmp;\n}\n```\n\nLes trois échanges réalisés sont : `r[0]` avec `r[5]`, `r[1]` avec `r[4]`, `r[2]` avec `r[3]`.\n\n**2.** Évolution du tableau :\n\n| Tour | `i` | échange | contenu de `r` |\n|---|---|---|---|\n| 1 | 0 | `r[0]` et `r[5]` | 1 3 14 6 10 8 |\n| 2 | 1 | `r[1]` et `r[4]` | 1 10 14 6 3 8 |\n| 3 | 2 | `r[2]` et `r[3]` | 1 10 6 14 3 8 |\n\nContenu final de `r` : 1, 10, 6, 14, 3, 8.\n\n**3.** Avec `i` de 0 à 5, chaque paire serait échangée deux fois : une première fois pour `i` et une seconde fois pour `5 - i`. Le second échange annule le premier et le tableau retrouverait son contenu initial, 8, 3, 14, 6, 10, 1.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10575,
+      10562
+    ]
+  },
+  {
+    "external_id": "cqc-tableau-bac-ti-prog-elevee-3",
+    "theme": "tableau",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme C effectue une rotation circulaire sur les débits (en Mbit/s) mesurés par un routeur :\n\n```c\n#include <stdio.h>\n#define N 5\nint main() {\n    int d[N] = {6, 2, 9, 4, 7};\n    int i, dernier;\n    dernier = d[N - 1];\n    for (i = N - 1; i > 0; i--)\n        d[i] = d[i - 1];\n    d[0] = dernier;\n    for (i = 0; i < N; i++)\n        printf(\"%d \", d[i]);\n    return 0;\n}\n```\n\n1. Donner le contenu du tableau `d` après chaque tour de la première boucle `for`, puis l'affichage final.\n2. Expliquer le rôle de la variable `dernier` et ce qui serait perdu si elle était supprimée.\n3. Écrire les instructions réalisant la rotation inverse (le premier élément passe en dernière position, les autres reculent d'une case) sur un tableau `d` de `N` éléments, avec une variable entière `premier`.\n4. Vérification : appliquer ces instructions au tableau obtenu à la question 1 et contrôler qu'on retrouve le tableau initial ; indiquer aussi combien de rotations successives, dans le sens du programme, ramènent un tableau de `N` éléments à son état initial.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne rotation circulaire d'une case vers la droite commence par mettre de côté le dernier élément, décale les autres d'un cran en parcourant le tableau de la fin vers le début (afin de n'écraser aucune valeur encore utile), puis replace la valeur mise de côté en première position. Le sens du parcours de la boucle dépend du sens du décalage.\n\n### Corrigé\n\n**1.** Avant la boucle, `dernier` vaut 7. État du tableau `d` après chaque tour :\n\n| Tour | `i` | instruction | contenu de `d` |\n|---|---|---|---|\n| 1 | 4 | `d[4] = d[3]` | 6 2 9 4 4 |\n| 2 | 3 | `d[3] = d[2]` | 6 2 9 9 4 |\n| 3 | 2 | `d[2] = d[1]` | 6 2 2 9 4 |\n| 4 | 1 | `d[1] = d[0]` | 6 6 2 9 4 |\n\nPuis `d[0] = dernier` donne 7 6 2 9 4. Le programme affiche `7 6 2 9 4`.\n\n**2.** `dernier` conserve la valeur de `d[N - 1]` avant que l'instruction `d[4] = d[3]` ne l'écrase. Sans cette variable, la valeur 7 serait perdue et il n'y aurait plus rien à replacer dans `d[0]`.\n\n**3.** Rotation inverse :\n\n```c\npremier = d[0];\nfor (i = 0; i < N - 1; i++)\n    d[i] = d[i + 1];\nd[N - 1] = premier;\n```\n\nLe parcours est ici croissant : la case `d[i + 1]` est lue avant d'être modifiée au tour suivant.\n\n**4.** Sur 7 6 2 9 4, `premier` vaut 7 ; les décalages donnent 6 2 9 4 4, puis `d[4] = premier` donne 6 2 9 4 7, soit le tableau initial : les deux rotations se compensent. Par ailleurs, `N` rotations successives dans le sens du programme ramènent le tableau à son état initial : ici 5 rotations, chaque élément ayant fait un tour complet.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10575,
+      10562,
+      11180
+    ]
+  }
+]

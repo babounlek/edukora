@@ -1,0 +1,85 @@
+[
+  {
+    "external_id": "cqc-passage-par-adresse-bac-ti-prog-faible-0",
+    "theme": "passage par adresse",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans un programme C, la fonction suivante doit remettre à zéro la variable entière `compteur` déclarée dans `main`.\n\n```c\nvoid raz(int *p) {\n    *p = 0;\n}\n```\n\nQuel appel, écrit dans `main`, modifie réellement `compteur` ?",
+    "corrige_markdown": "### Rappel de méthode\nQuand une fonction attend un paramètre de type `int *`, l'appelant doit lui fournir l'adresse de la variable à modifier, obtenue avec l'opérateur `&` ; c'est ensuite le déréférencement `*p` qui, dans la fonction, agit sur la variable de l'appelant. Un argument écrit sans `&` ne transmet qu'une copie de la valeur.\n\n### Corrigé\nLe paramètre `p` est un pointeur sur entier : il doit recevoir l'adresse de `compteur`, c'est-à-dire `&compteur`. L'instruction `*p = 0;` écrit alors 0 à cette adresse, donc dans `compteur` lui-même.\n\n- `raz(compteur);` : l'argument est la valeur de `compteur`, pas son adresse. Le type ne correspond pas (`int` au lieu de `int *`) et, si le programme s'exécute malgré tout, la fonction écrit à l'adresse égale à cette valeur, ce qui provoque un plantage probable.\n- `raz(*compteur);` : l'opérateur `*` ne s'applique qu'à un pointeur ; sur un `int`, le compilateur refuse l'expression.\n- `raz(&compteur, 0);` : la fonction n'a qu'un seul paramètre ; un appel à deux arguments est une erreur de compilation.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`raz(&compteur);`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`raz(compteur);`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`raz(*compteur);`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`raz(&compteur, 0);`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10665,
+      11180
+    ]
+  },
+  {
+    "external_id": "cqc-passage-par-adresse-bac-ti-prog-moyenne-1",
+    "theme": "passage par adresse",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans la boutique d'un commerçant de Douala, le programme C suivant enregistre une vente de bouteilles.\n\n```c\n#include <stdio.h>\n\nvoid vendre(int s, int *recette, int qte) {\n    s = s - qte;\n    *recette = *recette + qte * 500;\n    printf(\"%d %d\\n\", s, *recette);\n}\n\nint main() {\n    int stock = 20, caisse = 1000;\n    vendre(stock, &caisse, 3);\n    printf(\"%d %d\\n\", stock, caisse);\n    return 0;\n}\n```\n\n1. Indiquer, ligne par ligne, tout ce que ce programme affiche.\n2. Expliquer la raison pour laquelle `caisse` a changé dans `main` alors que `stock` a gardé sa valeur.\n3. Écrire l'en-tête de `vendre`, la ligne qui met à jour le stock et le nouvel appel permettant de diminuer aussi `stock` dans `main`.",
+    "corrige_markdown": "### Rappel de méthode\nUn paramètre ordinaire reçoit une copie de la valeur de l'argument : ce qu'on lui affecte disparaît quand la fonction se termine. Un paramètre de type pointeur reçoit l'adresse d'une variable de l'appelant, et l'écriture par `*` modifie cette variable de façon durable.\n\n### Corrigé\n**1.** Au moment de l'appel, `s` reçoit une copie de 20, `recette` reçoit l'adresse de `caisse` et `qte` vaut 3.\n\n| Instruction | `s` | `caisse` |\n|---|---|---|\n| à l'entrée | 20 | 1000 |\n| `s = s - qte;` | 17 | 1000 |\n| `*recette = *recette + qte * 500;` | 17 | 2500 |\n\nLe `printf` de la fonction affiche donc `17 2500`. De retour dans `main`, `stock` vaut toujours 20 et `caisse` vaut 2500 :\n\n```\n17 2500\n20 2500\n```\n\n**2.** `s` est une copie de `stock` : la soustraction ne modifie que cette copie, détruite à la fin de la fonction. `recette` contient l'adresse de `caisse` : `*recette` désigne `caisse` elle-même, et la modification reste visible dans `main`.\n\n**3.** Pour que le stock de `main` diminue aussi, il faut transmettre son adresse :\n\n```c\nvoid vendre(int *s, int *recette, int qte) {\n    *s = *s - qte;\n    *recette = *recette + qte * 500;\n    printf(\"%d %d\\n\", *s, *recette);\n}\n/* appel dans main : vendre(&stock, &caisse, 3); */\n```\n\nAprès cet appel, `stock` vaut 17 et `caisse` vaut 2500 dans `main`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10575,
+      11180
+    ]
+  },
+  {
+    "external_id": "cqc-passage-par-adresse-bac-ti-prog-elevee-2",
+    "theme": "passage par adresse",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une fonction doit fournir à la fois le quotient et le reste de la division entière d'un entier `a` par un entier `b` strictement positif. Une fonction C ne peut retourner qu'une seule valeur avec `return`.\n\n1. Expliquer pourquoi la fonction `void division(int a, int b, int q, int r)` ne communiquerait aucun résultat à l'appelant, puis donner l'en-tête d'une version correcte où `q` et `r` servent à transmettre les résultats.\n2. Écrire le corps complet de cette fonction.\n3. Écrire la fonction `main` qui déclare les entiers `quotient` et `reste`, appelle la fonction avec 47 et 6, puis affiche les deux résultats séparés par une espace. Donner l'affichage obtenu.\n4. Vérification : appliquer la fonction au cas limite `a = 5` et `b = 9`, puis contrôler que les valeurs obtenues respectent $a = b \\times q + r$ avec $0 \\le r < b$.",
+    "corrige_markdown": "### Rappel de méthode\nPour qu'une fonction C livre plusieurs résultats, on lui donne en paramètres les adresses des variables à remplir (type `int *`) : elle y écrit avec `*`, et l'appelant fournit ces adresses avec `&`. Sur deux entiers, `/` donne le quotient et `%` le reste de la division entière.\n\n### Corrigé\n**1.** Avec les paramètres `int q, int r`, la fonction n'écrirait que dans des copies, supprimées à la sortie : `main` ne recevrait rien. L'en-tête correcte est `void division(int a, int b, int *q, int *r)`.\n\n**2.**\n\n```c\nvoid division(int a, int b, int *q, int *r) {\n    *q = a / b;\n    *r = a % b;\n}\n```\n\n**3.** La fonction `division` est définie avant `main` :\n\n```c\n#include <stdio.h>\n\nint main() {\n    int quotient, reste;\n    division(47, 6, &quotient, &reste);\n    printf(\"%d %d\", quotient, reste);\n    return 0;\n}\n```\n\nComme 47 = 6 × 7 + 5, l'affichage est `7 5`.\n\n**4.** Pour `a = 5` et `b = 9` : `5 / 9` vaut 0 et `5 % 9` vaut 5, donc `quotient` vaut 0 et `reste` vaut 5. Contrôle : 9 × 0 + 5 = 5, qui est bien la valeur de `a`, et 0 ≤ 5 < 9. Les deux conditions sont vérifiées.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11246,
+      10575
+    ]
+  }
+]

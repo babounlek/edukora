@@ -1,0 +1,87 @@
+[
+  {
+    "external_id": "cqc-mysqli-bac-ti-prog-faible-0",
+    "theme": "mysqli",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un script PHP ouvre une connexion à MySQL, interroge une table, puis se termine par l'instruction suivante.\n\n```php\nmysqli_close($cnx);\n```\n\nQuel est le rôle de cette instruction ?",
+    "corrige_markdown": "### Rappel de méthode\nPour donner le rôle d'une fonction `mysqli_*`, il faut regarder ce qu'elle reçoit en paramètre : une connexion, un résultat de requête ou rien d'autre. Chaque famille de fonctions agit sur sa propre ressource (ouvrir, utiliser, libérer ou refermer), jamais sur les données stockées dans les tables.\n\n### Corrigé\n- Choix A : faux. Supprimer une base relève de l'instruction SQL `DROP DATABASE` ; `mysqli_close` ne touche à aucune donnée.\n- Choix B : faux. Libérer la mémoire occupée par un résultat est le rôle de `mysqli_free_result`, qui reçoit le résultat et non la connexion.\n- Choix D : faux. Le service MySQL reste actif sur la machine ; seule la liaison entre ce script et le serveur est coupée, et les autres clients restent connectés.\n\nRéponse **C** : `mysqli_close($cnx);` met fin à la connexion `$cnx` ouverte plus haut par `mysqli_connect`, ce qui rend au serveur la ressource utilisée par le script.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Elle supprime la base de données sélectionnée par le script"},
+      {"lettre": "B", "texte": "Elle libère seulement la mémoire du résultat de la dernière requête"},
+      {"lettre": "C", "texte": "Elle met fin à la connexion établie avec le serveur MySQL"},
+      {"lettre": "D", "texte": "Elle arrête le service MySQL installé sur la machine"}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11247]
+  },
+  {
+    "external_id": "cqc-mysqli-bac-ti-prog-faible-1",
+    "theme": "mysqli",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le technicien d'un lycée de Bertoua veut ouvrir, depuis un script PHP, une connexion à la base `lycee` d'un serveur MySQL installé sur la même machine. Le compte à utiliser est `admin` et son mot de passe est `Tle2026`. Quel appel de `mysqli_connect` respecte l'ordre des paramètres ?",
+    "corrige_markdown": "### Rappel de méthode\nLes valeurs transmises à `mysqli_connect` ne sont pas reconnues par leur contenu mais par leur position : d'abord la machine qui héberge le serveur, puis le compte, puis le mot de passe, enfin la base. La méthode consiste à nommer le rôle de chaque donnée de l'énoncé, puis à les écrire dans cet ordre.\n\n### Corrigé\nRôles des données : machine `localhost`, compte `admin`, mot de passe `Tle2026`, base `lycee`.\n\n- Choix B : faux. Le compte reçu serait `lycee`, le mot de passe `admin` et la base `Tle2026` : toutes les valeurs sont décalées d'un cran.\n- Choix C : faux. L'hôte est omis, donc `admin` serait lu comme nom de machine, `Tle2026` comme compte et `lycee` comme mot de passe.\n- Choix D : faux. Le compte et le mot de passe sont inversés : le serveur chercherait un compte nommé `Tle2026` protégé par le mot de passe `admin`.\n\nRéponse **A** : `mysqli_connect(\"localhost\", \"admin\", \"Tle2026\", \"lycee\")` place les quatre valeurs dans l'ordre hôte, compte, mot de passe, base.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`mysqli_connect(\"localhost\", \"admin\", \"Tle2026\", \"lycee\")`"},
+      {"lettre": "B", "texte": "`mysqli_connect(\"localhost\", \"lycee\", \"admin\", \"Tle2026\")`"},
+      {"lettre": "C", "texte": "`mysqli_connect(\"admin\", \"Tle2026\", \"lycee\")`"},
+      {"lettre": "D", "texte": "`mysqli_connect(\"localhost\", \"Tle2026\", \"admin\", \"lycee\")`"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [11247]
+  },
+  {
+    "external_id": "cqc-mysqli-bac-ti-prog-moyenne-2",
+    "theme": "mysqli",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un étudiant écrit le script suivant pour se connecter au serveur local avec le compte `root` (sans mot de passe), choisir la base `ecole`, puis refermer la connexion. Ce script contient deux erreurs dans l'emploi des fonctions MySQL.\n\n```php\n<?php\n$cnx = mysqli_connect(\"localhost\", \"root\", \"\");\nmysqli_select_db(\"ecole\", $cnx);\necho \"Base prête\";\nmysql_close($cnx);\n?>\n```\n\n1. Relever les deux erreurs et expliquer chacune.\n2. Écrire le script corrigé.\n3. Justifier pourquoi les fonctions dont le nom commence par `mysql_` ne doivent plus être employées dans un nouveau projet.",
+    "corrige_markdown": "### Rappel de méthode\nDans la famille `mysqli_*` utilisée de façon procédurale, la connexion est le premier paramètre de presque toutes les fonctions, et le préfixe du nom s'écrit exactement `mysqli_`. Pour relever les erreurs d'un script, il faut lire chaque appel en contrôlant d'abord le nom de la fonction, puis l'ordre de ses paramètres.\n\n### Corrigé\n**1.** Les deux erreurs sont les suivantes.\n- `mysqli_select_db(\"ecole\", $cnx);` : les paramètres sont inversés. La connexion doit venir en premier, puis le nom de la base.\n- `mysql_close($cnx);` : cette fonction appartient à l'ancienne extension `mysql_*` ; la fonction attendue est `mysqli_close`, comme pour toutes les autres fonctions du script.\n\n**2.** Script corrigé :\n\n```php\n<?php\n$cnx = mysqli_connect(\"localhost\", \"root\", \"\");\nmysqli_select_db($cnx, \"ecole\");\necho \"Base prête\";\nmysqli_close($cnx);\n?>\n```\n\n**3.** L'extension `mysql_*` est signalée obsolète depuis PHP 5.5 et elle est supprimée à partir de PHP 7.0 : un script qui l'emploie provoque une erreur sur un serveur récent. Elle ne reçoit plus de correctifs de sécurité, alors que `mysqli` (ou PDO) reste maintenue et offre en plus les requêtes préparées.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11231, 11247]
+  },
+  {
+    "external_id": "cqc-mysqli-bac-ti-prog-moyenne-3",
+    "theme": "mysqli",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans un script PHP, la connexion à MySQL a échoué parce que le mot de passe fourni est faux : la variable `$cnx` contient donc `false`. Quelle instruction permet d'afficher le texte du message d'erreur produit par cet échec de connexion ?",
+    "corrige_markdown": "### Rappel de méthode\nQuand une connexion échoue, aucune connexion utilisable n'existe : les fonctions qui exigent une connexion en paramètre ne peuvent donc pas décrire cet échec. Seules les fonctions de la famille `mysqli_connect_*`, qui n'ont aucun paramètre et portent sur la dernière tentative de connexion, le peuvent ; elles diffèrent par la nature de ce qu'elles rendent, un texte ou un nombre.\n\n### Corrigé\n- Choix A : faux. `mysqli_error` demande une connexion valide et décrit la dernière erreur de requête ; avec `false` en paramètre, elle ne peut pas fonctionner (erreur de type dans PHP 8).\n- Choix B : faux. La valeur `false` est convertie en chaîne vide par `echo` : rien ne s'affiche.\n- Choix C : faux. `mysqli_connect_errno` rend le code numérique de l'erreur, non le texte du message.\n\nRéponse **D** : `mysqli_connect_error()` rend le message sous forme de texte. On l'emploie le plus souvent dans un test du type `if (!$cnx) { die(\"Echec : \" . mysqli_connect_error()); }`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`echo mysqli_error($cnx);`"},
+      {"lettre": "B", "texte": "`echo $cnx;`"},
+      {"lettre": "C", "texte": "`echo mysqli_connect_errno();`"},
+      {"lettre": "D", "texte": "`echo mysqli_connect_error();`"}
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [11231]
+  },
+  {
+    "external_id": "cqc-mysqli-bac-ti-prog-elevee-4",
+    "theme": "mysqli",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une technicienne de Maroua prépare la connexion d'une page PHP à la base `cafe` du serveur local, avec le compte `gestion` et le mot de passe `cyber2026`. Elle a écrit les quatre instructions suivantes, mais dans le désordre.\n\n```php\nmysqli_close($cnx);                                          // (a)\nmysqli_select_db($cnx, \"cafe\");                              // (b)\n$cnx = mysqli_connect(\"localhost\", \"gestion\", \"cyber2026\");  // (c)\nif (!$cnx) { die(\"Echec : \" . mysqli_connect_error()); }     // (d)\n```\n\n1. Donner l'ordre logique d'exécution de ces quatre instructions, en citant leurs lettres.\n2. Expliquer pourquoi l'instruction (d) doit se placer avant l'instruction (b).\n3. Réécrire l'instruction (c) pour que le choix de la base se fasse dès la connexion, ce qui rend l'instruction (b) inutile.\n4. Vérification : la base `cafe` n'a pas encore été créée sur le serveur. Pour chacune des deux versions (trois paramètres suivis de (b), puis quatre paramètres), indiquer si l'instruction `die` de (d) est exécutée. On suppose le comportement classique de `mysqli`, où un échec se signale par la valeur `false`, sans exception.",
+    "corrige_markdown": "### Rappel de méthode\nUne session MySQL suit le cycle de vie d'une ressource : création, contrôle de sa validité, utilisation, puis libération. Pour ordonner des instructions, il faut repérer celle qui crée la connexion et celle qui la referme, puis placer entre elles celles qui reçoivent la connexion en paramètre, en mettant le contrôle d'échec juste après la création. Un test d'échec ne protège que les instructions qui s'exécutent après lui.\n\n### Corrigé\n**1.** Ordre logique : (c), (d), (b), (a).\n\n```php\n$cnx = mysqli_connect(\"localhost\", \"gestion\", \"cyber2026\");   // (c)\nif (!$cnx) { die(\"Echec : \" . mysqli_connect_error()); }      // (d)\nmysqli_select_db($cnx, \"cafe\");                               // (b)\nmysqli_close($cnx);                                           // (a)\n```\n\n**2.** `mysqli_select_db` reçoit `$cnx` en paramètre : si la connexion a échoué, `$cnx` vaut `false` et l'appel n'a plus de sens. Le test (d) doit donc arrêter le script avant que (b) ne s'exécute.\n\n**3.** Avec le nom de la base en quatrième paramètre :\n\n```php\n$cnx = mysqli_connect(\"localhost\", \"gestion\", \"cyber2026\", \"cafe\");\n```\n\n**4.** Vérification, base `cafe` inexistante :\n- Version à trois paramètres : la connexion au serveur réussit, `$cnx` est valide et le test (d) ne déclenche pas `die`. C'est ensuite `mysqli_select_db` qui échoue (elle renvoie `false`), mais personne ne contrôle cette valeur : l'erreur passe inaperçue.\n- Version à quatre paramètres : le serveur refuse la connexion parce que la base est inconnue, `mysqli_connect` renvoie `false`, donc `die` est exécuté et affiche « Echec : » suivi du message du serveur.\n\nLe contrôle (d) ne détecte donc l'absence de la base que dans la version à quatre paramètres.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11235, 11247]
+  }
+]

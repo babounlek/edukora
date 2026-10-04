@@ -1,0 +1,49 @@
+[
+  {
+    "external_id": "cqc-stdlib-h-bac-ti-prog-faible-0",
+    "theme": "stdlib.h",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Une application simule le lancer d'un dé. Après `#include <stdlib.h>`, l'instruction `de = rand() % 6;` est exécutée, la variable `de` étant de type entier.\n\nQuel est l'ensemble des valeurs que `de` peut prendre ?",
+    "corrige_markdown": "### Rappel de méthode\nLa fonction `rand`, déclarée dans `stdlib.h`, renvoie un entier pseudo-aléatoire positif ou nul, souvent très grand. Le reste d'une division entière par `n` est toujours strictement inférieur à `n` : l'expression `rand() % n` fournit donc un entier compris entre 0 et `n - 1`.\n\n### Corrigé\nLes restes possibles d'une division par 6 sont 0, 1, 2, 3, 4 et 5, et chacun peut apparaître. Les autres choix reposent chacun sur une erreur de raisonnement :\n\n- De 1 à 6 : ce sont les faces d'un vrai dé, obtenues seulement en ajoutant 1 au résultat, avec `rand() % 6 + 1`.\n- De 0 à 6 : un reste ne peut jamais être égal au diviseur ; `6 % 6` vaut 0.\n- De 1 à 5 : cette plage exclut 0, alors que `rand()` peut renvoyer un multiple de 6, dont le reste est nul.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "De 1 à 6"},
+      {"lettre": "B", "texte": "De 0 à 6"},
+      {"lettre": "C", "texte": "De 0 à 5"},
+      {"lettre": "D", "texte": "De 1 à 5"}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [10572]
+  },
+  {
+    "external_id": "cqc-stdlib-h-bac-ti-prog-moyenne-1",
+    "theme": "stdlib.h",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Pour la tombola d'un lycée, un programme doit tirer au hasard le numéro d'un ticket compris entre 1 et 50 inclus, puis l'afficher. Le squelette est le suivant.\n\n```c\nint main() {\n    int ticket;\n    /* initialisation du generateur */\n    /* tirage du numero */\n    printf(\"Ticket gagnant : %d\\n\", ticket);\n    return 0;\n}\n```\n\n1. Citer les trois directives `#include` à placer en tête du fichier, en indiquant pour chacune la fonction du programme qui l'exige.\n2. Écrire l'instruction qui initialise le générateur pour que la suite de tirages change d'une exécution à l'autre, et préciser où et combien de fois elle est exécutée.\n3. Écrire l'instruction qui range dans `ticket` un entier compris entre 1 et 50.",
+    "corrige_markdown": "### Rappel de méthode\nLe générateur de `stdlib.h` produit toujours la même suite tant que sa graine ne change pas ; pour obtenir une suite différente à chaque exécution, on choisit la graine d'après l'horloge de la machine, et chaque fonction doit être déclarée par la bibliothèque qui la fournit. Pour ramener `rand()` dans un intervalle d'entiers, on prend le reste de la division par le nombre de valeurs de cet intervalle, puis on décale le résultat du plus petit entier de l'intervalle.\n\n### Corrigé\n```c\n#include <stdio.h>\n#include <stdlib.h>\n#include <time.h>\n\nint main() {\n    int ticket;\n    srand(time(NULL));\n    ticket = rand() % 50 + 1;\n    printf(\"Ticket gagnant : %d\\n\", ticket);\n    return 0;\n}\n```\n\n**1.** `stdio.h` est exigé par `printf`, `stdlib.h` par `srand` et `rand`, `time.h` par `time`.\n\n**2.** L'instruction est `srand(time(NULL));`. Elle est exécutée une seule fois, au début de `main`, avant le premier appel à `rand`. La répéter avant chaque tirage serait une erreur : deux appels dans la même seconde recevraient la même graine et donneraient le même numéro.\n\n**3.** L'instruction est `ticket = rand() % 50 + 1;`. Le reste `rand() % 50` est compris entre 0 et 49, et l'ajout de 1 ramène le numéro entre 1 et 50. Sans cet ajout, le ticket 50 ne pourrait jamais sortir, alors que le ticket 0, qui n'existe pas, pourrait sortir.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10572]
+  },
+  {
+    "external_id": "cqc-stdlib-h-bac-ti-prog-elevee-2",
+    "theme": "stdlib.h",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un technicien de Douala a écrit le programme suivant, qui remplit un tableau alloué dynamiquement.\n\n```c\n#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int n = 4, i, somme = 0;\n    int *t = (int *) malloc(n * sizeof(int));\n    if (t == NULL) {\n        printf(\"Memoire insuffisante\\n\");\n        exit(1);\n    }\n    for (i = 0; i < n; i++) {\n        t[i] = abs(i * 3 - 5);\n        somme = somme + t[i];\n    }\n    printf(\"%d\\n\", somme);\n    free(t);\n    return 0;\n}\n```\n\n1. Relever les quatre fonctions de ce programme déclarées dans `stdlib.h` et donner le rôle de chacune.\n2. Expliquer l'utilité du test `t == NULL` et l'effet de `exit(1)`.\n3. Donner les valeurs des quatre éléments de `t`, puis l'affichage du programme.\n4. Vérification : donner l'affichage obtenu si la ligne `t[i] = abs(i * 3 - 5);` était remplacée par `t[i] = i * 3 - 5;`, et en déduire le rôle de `abs`.",
+    "corrige_markdown": "### Rappel de méthode\nLes fonctions de `stdio.h` servent aux entrées et aux sorties (affichage, lecture), tandis que `stdlib.h` rassemble les utilitaires généraux : mémoire dynamique, conversions, nombres pseudo-aléatoires, fin du programme, valeur absolue d'un entier. Pour prévoir une sortie, il faut dérouler la boucle en notant la valeur de chaque élément, puis celle de l'accumulateur.\n\n### Corrigé\n**1.** Les quatre fonctions sont :\n\n- `malloc` : réserve en mémoire un bloc de la taille demandée (ici `n * sizeof(int)` octets) et renvoie son adresse ;\n- `free` : libère ce bloc quand il n'est plus utile ;\n- `abs` : renvoie la valeur absolue d'un entier ;\n- `exit` : arrête immédiatement le programme, avec un code de retour transmis au système.\n\n`printf` appartient à `stdio.h`, et `sizeof` est un opérateur du langage, pas une fonction.\n\n**2.** Si la mémoire demandée ne peut pas être accordée, `malloc` renvoie `NULL`. Le test évite alors d'écrire dans `t[i]` à une adresse invalide. Dans ce cas, `exit(1)` termine le programme tout de suite, avec un code non nul qui signale une erreur.\n\n**3.** Valeurs de `abs(i * 3 - 5)` :\n\n| i | i * 3 - 5 | t[i] | somme |\n|---|---|---|---|\n| 0 | -5 | 5 | 5 |\n| 1 | -2 | 2 | 7 |\n| 2 | 1 | 1 | 8 |\n| 3 | 4 | 4 | 12 |\n\nLe tableau vaut donc `{5, 2, 1, 4}` et le programme affiche :\n\n```\n12\n```\n\n**4.** Sans `abs`, les éléments valent -5, -2, 1 et 4, et la somme vaut `-5 - 2 + 1 + 4 = -2` : le programme afficherait `-2`. L'écart avec 12 confirme que `abs` remplace chaque valeur négative par sa valeur positive.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10572]
+  }
+]

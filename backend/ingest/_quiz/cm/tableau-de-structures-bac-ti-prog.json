@@ -1,0 +1,88 @@
+[
+  {
+    "external_id": "cqc-tableau-de-structures-bac-ti-prog-faible-0",
+    "theme": "tableau de structures",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un enseignant déclare le type et le tableau suivants pour gérer les notes d'un groupe de travaux pratiques.\n\n```c\ntypedef struct {\n    char nom[20];\n    float note;\n} Eleve;\n\nEleve classe[30];\n```\n\nLes 30 cases de `classe` sont remplies. Quelle expression désigne la note du troisième élève ?",
+    "corrige_markdown": "### Rappel de méthode\nDans un tableau de structures, l'indice désigne d'abord l'élément (la première case porte l'indice 0), puis le point suivi du nom du champ désigne la donnée voulue : `tableau[indice].champ`. La flèche `->` est réservée aux pointeurs vers une structure.\n\n### Corrigé\nLe troisième élève occupe la case d'indice 2, et sa note est le champ `note` de cette case : `classe[2].note`.\n\n- `classe[3].note` est la note du quatrième élève : les indices commencent à 0.\n- `classe.note[2]` inverse l'ordre des éléments : `classe` est un tableau et n'a pas de champ `note` ; l'indice doit venir avant le point.\n- `classe[2]->note` emploie la flèche, qui exige un pointeur ; `classe[2]` est une structure et non un pointeur, le compilateur refuse donc cette écriture.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`classe[3].note`" },
+      { "lettre": "B", "texte": "`classe[2].note`" },
+      { "lettre": "C", "texte": "`classe.note[2]`" },
+      { "lettre": "D", "texte": "`classe[2]->note`" }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10572]
+  },
+  {
+    "external_id": "cqc-tableau-de-structures-bac-ti-prog-moyenne-1",
+    "theme": "tableau de structures",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une boutique de Douala range ses articles dans un tableau de structures.\n\n```c\n#include <stdio.h>\n\ntypedef struct {\n    char nom[15];\n    int prix;\n    int qte;\n} Article;\n\nint main() {\n    Article t[4] = {{\"Cahier\", 500, 10}, {\"Stylo\", 150, 20},\n                    {\"Regle\", 200, 8}, {\"Sac\", 5000, 3}};\n    int i, valeur = 0;\n    for (i = 0; i < 4; i++) {\n        if (t[i].prix >= 300) {\n            valeur = valeur + t[i].prix * t[i].qte;\n        }\n    }\n    printf(\"%d\", valeur);\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\nDans une boucle sur un tableau de structures, `t[i].champ` désigne un champ de l'élément courant : le test `if` filtre les éléments d'après un champ, et l'accumulateur ne reçoit que les éléments retenus.\n\n### Corrigé\nTrace de la boucle :\n\n| `i` | Article | `prix >= 300` ? | `valeur` après le tour |\n|---|---|---|---|\n| 0 | Cahier | oui | 500 × 10 = 5000 |\n| 1 | Stylo | non | 5000 |\n| 2 | Regle | non | 5000 |\n| 3 | Sac | oui | 5000 + 5000 × 3 = 20000 |\n\nLe programme affiche `20000`.\n\n- `24600` additionne tous les articles : le test sur le prix est ignoré (5000 + 3000 + 1600 + 15000).\n- `5500` additionne les seuls prix des articles retenus (500 + 5000) en oubliant de les multiplier par les quantités.\n- `13` additionne les seules quantités des articles retenus (10 + 3) en oubliant les prix.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`24600`" },
+      { "lettre": "B", "texte": "`5500`" },
+      { "lettre": "C", "texte": "`13`" },
+      { "lettre": "D", "texte": "`20000`" }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [10572]
+  },
+  {
+    "external_id": "cqc-tableau-de-structures-bac-ti-prog-moyenne-2",
+    "theme": "tableau de structures",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien gère un parc de trois capteurs de température avec le programme suivant, que le compilateur refuse à cause de la ligne `parc[0].zone = \"Nord\";`.\n\n```c\n#include <stdio.h>\n#include <string.h>\n\ntypedef struct {\n    char zone[12];\n    float temp;\n} Capteur;\n\nint main() {\n    Capteur parc[3];\n    parc[0].zone = \"Nord\";\n    parc[0].temp = 27.5;\n    return 0;\n}\n```\n\n**1.** Expliquer pourquoi cette ligne est refusée alors que la ligne suivante ne l'est pas.\n**2.** Écrire les instructions qui renseignent le deuxième capteur (zone `\"Sud\"`, température 31.0) puis affichent ses deux champs, séparés par un espace et suivis d'un retour à la ligne, et donner l'affichage obtenu.",
+    "corrige_markdown": "### Rappel de méthode\nUn champ numérique (`int`, `float`) reçoit une valeur avec `=`, mais un champ qui est un tableau de `char` ne peut pas être affecté en bloc : son contenu doit être recopié avec `strcpy(destination, source)`, déclarée dans `string.h`, la destination devant compter au moins la longueur du texte plus une case pour le `'\\0'`.\n\n### Corrigé\n**1.** `parc[0].temp` est un `float` : l'affectation avec `=` est permise. `parc[0].zone` est un tableau de 12 `char` : un tableau n'est pas une valeur que `=` peut remplacer d'un seul coup, et la chaîne `\"Nord\"` n'est pas recopiée case par case par cet opérateur, d'où le refus du compilateur.\n\n**2.** Instructions :\n\n```c\nstrcpy(parc[1].zone, \"Sud\");\nparc[1].temp = 31.0;\nprintf(\"%s %.1f\\n\", parc[1].zone, parc[1].temp);\n```\n\nLe texte `\"Sud\"` et son `'\\0'` occupent 4 cases sur les 12 disponibles : la copie est sûre. `%s` affiche la zone et `%.1f` la température avec une décimale. L'affichage est `Sud 31.0`, suivi d'un retour à la ligne.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11246]
+  },
+  {
+    "external_id": "cqc-tableau-de-structures-bac-ti-prog-elevee-3",
+    "theme": "tableau de structures",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un enseignant stocke la moyenne de cinq élèves dans un tableau de structures et cherche le meilleur d'entre eux.\n\n```c\n#include <stdio.h>\n\ntypedef struct {\n    char nom[12];\n    float moy;\n} Eleve;\n\nint rang_max(Eleve t[], int n) {\n    int i, r = 0;\n    for (i = 1; i < n; i++) {\n        if (t[i].moy > t[r].moy) {\n            r = i;\n        }\n    }\n    return r;\n}\n\nint main() {\n    Eleve cl[5] = {{\"Awa\", 12.5}, {\"Brice\", 9.0}, {\"Carine\", 15.5},\n                   {\"Dieudonne\", 15.5}, {\"Esther\", 7.5}};\n    int k = rang_max(cl, 5);\n    printf(\"%s %.1f\", cl[k].nom, cl[k].moy);\n    return 0;\n}\n```\n\n**1.** Indiquer ce que retourne la fonction `rang_max` et le rôle de la variable `r`.\n**2.** Faire la trace de `rang_max(cl, 5)` (valeurs de `i` et de `r` à la fin de chaque tour), puis donner l'affichage du programme.\n**3.** Écrire la fonction `int nb_admis(Eleve t[], int n)` qui retourne le nombre d'élèves dont la moyenne est supérieure ou égale à 10, puis donner la valeur de `nb_admis(cl, 5)`.\n**4.** Vérification : si le test devenait `t[i].moy >= t[r].moy`, donner le nouvel affichage et indiquer quel élève serait retenu, puis expliquer ce que ce cas limite confirme sur la réponse de la question 2.",
+    "corrige_markdown": "### Rappel de méthode\nChercher le meilleur élément selon un champ consiste à garder l'indice du meilleur rencontré (au départ la première case) et à le remplacer chaque fois qu'un élément fait strictement mieux ; c'est l'indice, et non la valeur seule, qui donne ensuite accès à tous les champs de la structure.\n\n### Corrigé\n**1.** `rang_max` retourne l'indice de l'élève qui a la plus grande moyenne. La variable `r` mémorise l'indice du meilleur élève rencontré jusque-là (le maximum provisoire) ; elle commence à 0, le premier élève.\n\n**2.** Trace :\n\n| `i` | `t[i].moy` | `t[i].moy > t[r].moy` ? | `r` après le tour |\n|---|---|---|---|\n| 1 | 9.0 | 9.0 > 12.5 : non | 0 |\n| 2 | 15.5 | 15.5 > 12.5 : oui | 2 |\n| 3 | 15.5 | 15.5 > 15.5 : non | 2 |\n| 4 | 7.5 | 7.5 > 15.5 : non | 2 |\n\nLa fonction retourne 2 : `k` vaut 2 et le programme affiche `Carine 15.5`.\n\n**3.**\n\n```c\nint nb_admis(Eleve t[], int n) {\n    int i, c = 0;\n    for (i = 0; i < n; i++) {\n        if (t[i].moy >= 10) {\n            c++;\n        }\n    }\n    return c;\n}\n```\n\nLes moyennes supérieures ou égales à 10 sont 12.5, 15.5 et 15.5 (Awa, Carine, Dieudonne) : `nb_admis(cl, 5)` vaut 3.\n\n**4.** Avec `>=`, le tour `i = 3` devient vrai (15.5 >= 15.5) et `r` passe à 3 ; le tour `i = 4` ne change rien. Le programme afficherait `Dieudonne 15.5`. Ce cas limite confirme que, avec le test strict `>` de l'énoncé, le premier des deux ex aequo (Carine) est conservé : à `i = 3`, `r` reste bien égal à 2 dans la trace de la question 2.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10572, 11246]
+  }
+]

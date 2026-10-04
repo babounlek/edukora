@@ -1,0 +1,124 @@
+[
+  {
+    "external_id": "cqc-operateurs-logiques-bac-ti-prog-faible-0",
+    "theme": "operateurs logiques",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un capteur de température est dans sa plage normale lorsque la valeur entière `t` est comprise entre 15 et 30, bornes incluses.\n\nQuelle condition C traduit correctement cette règle ?",
+    "corrige_markdown": "### Rappel de méthode\nUne appartenance à un intervalle s'écrit avec deux comparaisons simples reliées par un ET logique, `&&`, car le langage C n'évalue pas une double inégalité comme en mathématiques. Des bornes incluses exigent `>=` et `<=`, des bornes exclues exigent `>` et `<`.\n\n### Corrigé\nLa règle demande à la fois `t >= 15` et `t <= 30`.\n\n- A : `||` est vrai dès qu'une seule comparaison l'est ; or tout entier est soit au moins égal à 15, soit au plus égal à 30. La condition est donc toujours vraie, même pour 5 ou pour 100.\n- C : C évalue d'abord `15 <= t`, qui vaut 0 ou 1, puis compare ce résultat à 30 ; comme 0 et 1 sont inférieurs à 30, la condition est toujours vraie.\n- D : les opérateurs stricts rejettent les bornes 15 et 30, qui devraient être acceptées.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`t >= 15 || t <= 30`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`t >= 15 && t <= 30`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`15 <= t <= 30`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`t > 15 && t < 30`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10563,
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-operateurs-logiques-bac-ti-prog-moyenne-1",
+    "theme": "operateurs logiques",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme C suivant (l'expression `++b` augmente `b` de 1 avant d'utiliser sa valeur).\n\n```c\n#include <stdio.h>\n\nint main() {\n    int a = 0, b = 6, c = 0;\n    if (a == 0 && ++b > 5) {\n        c = c + 1;\n    }\n    if (a != 0 && ++b > 5) {\n        c = c + 10;\n    }\n    if (a == 0 || ++b > 5) {\n        c = c + 100;\n    }\n    printf(\"%d %d\", b, c);\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\nAvec `&&`, si le premier opérande est faux, le second n'est pas évalué ; avec `||`, si le premier est vrai, le second n'est pas évalué. Un effet de bord placé dans l'opérande ignoré, comme `++b`, ne se produit donc pas. Pour prédire le résultat, on décide condition par condition si l'opérande de droite est atteint.\n\n### Corrigé\n- Première condition : `a == 0` est vrai, donc `++b` est évalué : `b` passe à 7, `7 > 5` est vrai et `c` devient 1.\n- Deuxième condition : `a != 0` est faux, donc `++b` n'est pas évalué : `b` reste à 7 et `c` ne change pas.\n- Troisième condition : `a == 0` est vrai ; avec `||`, la condition est déjà vraie, donc `++b` n'est pas évalué. Le bloc s'exécute et `c` devient 101.\n\nL'affichage est `7 101`.\n\n- A (`6 101`) : suppose que `++b` n'est jamais exécuté ; or, dans la première condition, le `&&` doit évaluer son second opérande.\n- B (`8 101`) : évalue `++b` dans la deuxième condition, alors que le premier opérande faux interrompt l'évaluation.\n- C (`9 101`) : ignore le court-circuit et évalue les trois `++b`.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`6 101`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`8 101`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`9 101`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`7 101`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      10563
+    ]
+  },
+  {
+    "external_id": "cqc-operateurs-logiques-bac-ti-prog-moyenne-2",
+    "theme": "operateurs logiques",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un lycée technique attribue à ses candidats des numéros de table entiers positifs. Une salle est réservée aux numéros qui sont impairs et strictement supérieurs à 100, ainsi qu'à tous les multiples de 10.\n\n1. Écrire en C la condition, vraie pour un numéro `n` admis dans cette salle.\n2. Donner, pour `n = 105`, `n = 98`, `n = 70` et `n = 77`, la valeur de la condition (vrai ou faux) en justifiant chaque réponse.\n3. Un élève écrit `if (n % 2 = 1 && n > 100)`. Expliquer pourquoi le compilateur refuse cette ligne, puis la corriger.",
+    "corrige_markdown": "### Rappel de méthode\nUne condition composée associe des comparaisons par `&&` (ET) et `||` (OU) ; le `&&` est prioritaire sur le `||`, et des parenthèses rendent l'intention lisible. Un entier est impair lorsque le reste de sa division par 2 vaut 1, et multiple de 10 lorsque le reste de sa division par 10 est nul ; ce reste s'obtient avec `%`, et la comparaison s'écrit `==`.\n\n### Corrigé\n**1.** La condition est :\n\n```c\n(n % 2 == 1 && n > 100) || n % 10 == 0\n```\n\n**2.**\n\n| `n` | `n % 2` | `n > 100` | `n % 10` | Condition |\n|---|---|---|---|---|\n| 105 | 1 | vrai | 5 | vrai : impair et supérieur à 100 |\n| 98 | 0 | faux | 8 | faux : ni l'un ni l'autre |\n| 70 | 0 | faux | 0 | vrai : multiple de 10 |\n| 77 | 1 | faux | 7 | faux : impair, mais pas supérieur à 100 |\n\n**3.** Dans `n % 2 = 1`, le signe `=` est l'opérateur d'affectation : le compilateur lit une tentative d'affecter 1 à l'expression `n % 2`, qui n'est pas une variable et ne peut recevoir aucune valeur. Il signale une erreur du type « lvalue required ». La ligne corrigée est `if (n % 2 == 1 && n > 100)`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572,
+      10743
+    ]
+  },
+  {
+    "external_id": "cqc-operateurs-logiques-bac-ti-prog-elevee-3",
+    "theme": "operateurs logiques",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme C suivant, dans lequel une condition vraie vaut 1 et une condition fausse vaut 0.\n\n```c\n#include <stdio.h>\n\nint main() {\n    int a = 4, b = 0, c = 7;\n    int r1 = a > 3 || b > 0 && c < 5;\n    int r2 = (a > 3 || b > 0) && c < 5;\n    int r3 = !(a > 3 && c < 5);\n    int r4 = !(a > 3) || !(c < 5);\n    printf(\"%d %d %d %d\\n\", r1, r2, r3, r4);\n    return 0;\n}\n```\n\n1. Rappeler l'ordre de priorité de `!`, `&&` et `||`, puis réécrire l'expression de `r1` entièrement parenthésée.\n2. Donner la valeur de `r1`, de `r2`, de `r3` et de `r4`, puis l'affichage du programme.\n3. Expliquer pourquoi `r1` et `r2` diffèrent alors que leurs opérandes sont les mêmes.\n4. Vérification : dresser la table de vérité de `!(p && q)` et de `!p || !q` pour les quatre couples de valeurs de `p` et `q`, puis conclure sur `r3` et `r4`.",
+    "corrige_markdown": "### Rappel de méthode\nLes opérateurs logiques ont des priorités décroissantes : `!` d'abord, puis `&&`, puis `||`, après les comparaisons ; des parenthèses imposent un autre ordre. Toute condition vaut 1 si elle est vraie et 0 sinon. Pour comparer deux expressions logiques, on dresse leur table de vérité sur toutes les combinaisons de leurs opérandes.\n\n### Corrigé\n**1.** La priorité va du plus fort au plus faible : `!`, puis `&&`, puis `||`. L'expression de `r1` s'écrit entièrement parenthésée :\n\n```c\n(a > 3) || ((b > 0) && (c < 5))\n```\n\n**2.**\n\n- `r1` : `a > 3` est vrai (4 > 3), donc le `||` est vrai : 1.\n- `r2` : `(a > 3 || b > 0)` vaut 1 et `c < 5` est faux (7 < 5), donc `1 && 0` vaut 0.\n- `r3` : `a > 3 && c < 5` vaut `1 && 0`, soit 0, et sa négation vaut 1.\n- `r4` : `!(a > 3)` vaut 0 et `!(c < 5)` vaut 1 ; le `||` donne 1.\n\nAffichage :\n\n```\n1 0 1 1\n```\n\n**3.** Dans `r1`, le `&&` est calculé avant le `||` : `b > 0 && c < 5` est faux, mais il est combiné par `||` avec `a > 3`, vrai, ce qui rend l'ensemble vrai. Dans `r2`, les parenthèses forcent le `||` en premier, puis un `&&` avec `c < 5`, faux : le résultat est faux. Les opérandes sont identiques, seule la structure change.\n\n**4.** Dans la table, `p` et `q` désignent deux conditions quelconques.\n\n| p | q | `!(p && q)` | `(!p)` OU `(!q)` |\n|---|---|---|---|\n| 0 | 0 | 1 | 1 |\n| 0 | 1 | 1 | 1 |\n| 1 | 0 | 1 | 1 |\n| 1 | 1 | 0 | 0 |\n\nLes deux colonnes sont identiques : `!(p && q)` équivaut à `!p || !q` (lois de De Morgan). Dans le programme, `p` correspond à `a > 3`, qui vaut 1, et `q` à `c < 5`, qui vaut 0 : c'est la ligne (1, 0), où `r3` et `r4` valent tous deux 1, comme l'affichage le montre.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10563,
+      10664,
+      11235
+    ]
+  }
+]

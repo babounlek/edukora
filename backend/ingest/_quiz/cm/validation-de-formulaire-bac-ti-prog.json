@@ -1,0 +1,160 @@
+[
+  {
+    "external_id": "cqc-validation-de-formulaire-bac-ti-prog-faible-0",
+    "theme": "Validation de formulaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans le formulaire suivant, le champ `nom` doit être obligatoire : le navigateur doit refuser l'envoi tant qu'il est vide, sans qu'aucun script JavaScript ne soit écrit.\n\n```html\n<form action=\"concours.php\" method=\"post\">\n  <input type=\"text\" name=\"nom\">\n  <input type=\"submit\" value=\"S'inscrire\">\n</form>\n```\n\nQuel attribut HTML5 faut-il ajouter à la balise `<input>` de ce champ ?",
+    "corrige_markdown": "### Rappel de méthode\nHTML5 permet un contrôle sans script : certains attributs ajoutés à une balise `<input>` déclenchent, au moment de l'envoi, une vérification effectuée par le navigateur lui-même, qui bloque la soumission et affiche un message ; les autres attributs agissent seulement sur l'aspect ou sur la modification du champ.\n\n### Corrigé\nL'attribut `required` rend le champ obligatoire : le navigateur refuse d'envoyer le formulaire tant que ce champ est vide. La balise devient `<input type=\"text\" name=\"nom\" required>`.\n\n- `placeholder` affiche un texte d'aide grisé dans le champ vide, mais n'interdit pas l'envoi.\n- `readonly` interdit la modification du contenu par l'utilisateur ; ce n'est pas un contrôle de saisie.\n- `disabled` désactive le champ, qui n'est alors pas transmis du tout : cela ne rend pas la saisie obligatoire.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`placeholder`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`readonly`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`disabled`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`required`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      10623
+    ]
+  },
+  {
+    "external_id": "cqc-validation-de-formulaire-bac-ti-prog-faible-1",
+    "theme": "Validation de formulaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le formulaire d'enregistrement d'un matériel d'atelier appelle la fonction `verifier()` au moment de l'envoi :\n\n```html\n<form action=\"stock.php\" method=\"post\" onsubmit=\"return verifier()\">\n  Référence : <input type=\"text\" name=\"reference\">\n  <input type=\"submit\" value=\"Enregistrer\">\n</form>\n<script>\nfunction verifier() {\n  var ref = document.forms[0].reference.value;\n  if (ref == \"\") {\n    alert(\"La référence est obligatoire\");\n    ..........\n  }\n  return true;\n}\n</script>\n```\n\n1. Écrire l'instruction qui remplace la ligne de points pour que le formulaire ne soit pas envoyé lorsque la référence est vide.\n2. Indiquer ce qui se passe si la ligne de points est laissée vide : le message s'affiche-t-il, et le formulaire est-il envoyé ?",
+    "corrige_markdown": "### Rappel de méthode\nLe gestionnaire `onsubmit=\"return verifier()\"` transmet au navigateur la valeur retournée par la fonction : `true` laisse l'envoi se poursuivre, `false` l'annule. Une fonction de contrôle retourne donc `false` dès qu'une donnée est refusée, et `true` seulement une fois tous les tests passés.\n\n### Corrigé\n1. L'instruction à écrire est `return false;`. La fonction complète devient :\n\n```javascript\nfunction verifier() {\n  var ref = document.forms[0].reference.value;\n  if (ref == \"\") {\n    alert(\"La référence est obligatoire\");\n    return false;\n  }\n  return true;\n}\n```\n\n2. Sans cette instruction, `alert` affiche bien le message, mais l'exécution continue après le bloc `if` jusqu'à `return true;` : la fonction retourne `true` et le formulaire est envoyé malgré la référence vide. Le message est affiché, mais il ne bloque rien.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11247,
+      10571
+    ]
+  },
+  {
+    "external_id": "cqc-validation-de-formulaire-bac-ti-prog-moyenne-2",
+    "theme": "Validation de formulaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le contrôle du champ « montant » d'un formulaire est écrit en JavaScript :\n\n```javascript\nfunction tester(s) {\n  if (isNaN(s)) {\n    return \"refusé\";\n  }\n  return \"accepté\";\n}\n```\n\nLa fonction reçoit la saisie sous la forme d'une chaîne de caractères. Laquelle de ces saisies la fonction `tester` accepte-t-elle (valeur retournée « accepté ») ?",
+    "corrige_markdown": "### Rappel de méthode\n`isNaN(s)` convertit d'abord `s` en nombre, comme le ferait `Number(s)`, puis teste si le résultat est NaN (« not a number ») : la réponse dépend donc de ce que donne cette conversion pour chaque saisie, un nombre ou NaN.\n\n### Corrigé\nLa conversion de la chaîne vide donne 0, qui est un nombre : `isNaN(\"\")` vaut `false` et la fonction retourne « accepté », alors que le champ est vide. Un champ obligatoire doit donc aussi être testé avec `s == \"\"`.\n\n- `12a` : la conversion échoue (NaN), `isNaN` vaut `true` et la saisie est refusée ; c'est `parseInt(\"12a\")`, et non `isNaN`, qui retournerait 12.\n- `4,5` : JavaScript n'accepte que le point décimal (`4.5`), la conversion donne NaN et la saisie est refusée.\n- `abc` : la conversion donne NaN également, la saisie est refusée.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "le texte `12a`"
+      },
+      {
+        "lettre": "B",
+        "texte": "le texte `4,5`"
+      },
+      {
+        "lettre": "C",
+        "texte": "la chaîne vide"
+      },
+      {
+        "lettre": "D",
+        "texte": "le texte `abc`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10623
+    ]
+  },
+  {
+    "external_id": "cqc-validation-de-formulaire-bac-ti-prog-moyenne-3",
+    "theme": "Validation de formulaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève teste le script PHP suivant en simulant la saisie de la quantité 0 dans un formulaire :\n\n```php\n<?php\n$qte = \"0\";\nif (empty($qte)) {\n    echo \"Champ vide\";\n} else {\n    echo \"Quantité : \" . $qte;\n}\n?>\n```\n\nQu'affiche ce script ?",
+    "corrige_markdown": "### Rappel de méthode\n`empty($v)` vaut `true` lorsque la variable n'existe pas ou lorsque sa valeur, convertie en booléen, donne `false` : pour prévoir son résultat, il faut connaître cette conversion pour la valeur testée (chaîne vide, `null`, `false`, nombre 0, texte...) et non se demander si le champ « semble » vide.\n\n### Corrigé\nLa variable contient la chaîne `\"0\"`, et PHP considère cette chaîne comme fausse, comme la chaîne vide : `empty(\"0\")` retourne `true`, la condition est vraie et le script exécute la branche du `if`. Il affiche `Champ vide`.\n\n- `Quantité : 0` est le résultat intuitif (« 0 est une quantité renseignée »), mais `empty` raisonne sur la conversion booléenne et non sur le sens du mot vide.\n- `Quantité :` suppose que la branche `else` s'exécute avec une variable vidée ; or `$qte` n'a pas été modifiée et la branche exécutée est l'autre.\n- `Quantité : null` confond la chaîne `\"0\"` avec la valeur `null` : `$qte` ne devient jamais `null`.\n\nPour accepter une quantité égale à 0 saisie dans un formulaire, mieux vaut tester `isset($_POST['qte']) && $_POST['qte'] !== \"\"` plutôt que `empty`.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`Quantité : 0`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`Champ vide`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`Quantité :`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`Quantité : null`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10571
+    ]
+  },
+  {
+    "external_id": "cqc-validation-de-formulaire-bac-ti-prog-elevee-4",
+    "theme": "Validation de formulaire",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le formulaire d'inscription à un tournoi de robotique doit recevoir un âge compris entre 12 et 20 ans inclus.\n\n```html\n<form action=\"inscription.php\" method=\"post\" onsubmit=\"return verifier()\">\n  Âge : <input type=\"text\" name=\"age\">\n  <input type=\"submit\" value=\"S'inscrire\">\n</form>\n```\n\n1. Écrire la fonction JavaScript `verifier()` qui lit le champ `age`, affiche une alerte et retourne `false` si la saisie est vide, n'est pas un nombre ou n'est pas comprise entre 12 et 20, et qui retourne `true` dans les autres cas.\n2. Écrire le contrôle équivalent côté serveur, dans `inscription.php` : afficher « Inscription enregistrée » si la donnée `age` a été transmise, est numérique et est comprise entre 12 et 20, sinon afficher « Saisie invalide ».\n3. Une élève désactive JavaScript dans son navigateur, puis envoie la saisie `abc`. Indiquer quel contrôle intercepte l'erreur et donner l'affichage obtenu.\n4. Vérification : dresser un tableau donnant, pour les saisies `20`, `21` et la saisie vide, la valeur retournée par `verifier()` et l'affichage du script PHP si la requête atteint le serveur.",
+    "corrige_markdown": "### Rappel de méthode\nUn contrôle de saisie fiable se fait en deux endroits : côté client, une fonction JavaScript retourne `false` pour bloquer l'envoi (`isNaN` pour le type numérique, des comparaisons pour l'intervalle) ; côté serveur, le script PHP refait la vérification avec `isset`, `is_numeric` et les mêmes bornes, car ce contrôle est le seul que l'utilisateur ne peut pas contourner.\n\n### Corrigé\n1. Fonction JavaScript :\n\n```javascript\nfunction verifier() {\n  var a = document.forms[0].age.value;\n  if (a == \"\" || isNaN(a) || a < 12 || a > 20) {\n    alert(\"Âge invalide : saisir un nombre entre 12 et 20\");\n    return false;\n  }\n  return true;\n}\n```\n\nLe test `a == \"\"` est nécessaire, car `isNaN(\"\")` vaut `false` (la chaîne vide est convertie en 0).\n\n2. Contrôle côté serveur :\n\n```php\n<?php\nif (isset($_POST['age']) && is_numeric($_POST['age']) && $_POST['age'] >= 12 && $_POST['age'] <= 20) {\n    echo \"Inscription enregistrée\";\n} else {\n    echo \"Saisie invalide\";\n}\n?>\n```\n\n3. Le contrôle JavaScript n'est plus exécuté et le formulaire part avec `age=abc`. C'est le contrôle PHP qui intercepte l'erreur : `is_numeric(\"abc\")` est faux, la condition est fausse et le script affiche `Saisie invalide`. Cela montre pourquoi le contrôle serveur reste indispensable.\n4. Tableau de vérification :\n\n| Saisie | `verifier()` retourne | Affichage PHP |\n|---|---|---|\n| `20` | `true` : envoi autorisé | `Inscription enregistrée` |\n| `21` | `false` : envoi bloqué | `Saisie invalide` |\n| vide | `false` : envoi bloqué | `Saisie invalide` |\n\nPour `20`, aucun des quatre tests de `verifier()` n'est vrai (`\"20\" > 20` est faux) ; pour `21`, `\"21\" > 20` est vrai ; pour la saisie vide, le premier test est vrai. Côté PHP, la saisie vide est bien transmise (`isset` est vrai), mais `is_numeric(\"\")` est faux.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10623,
+      11247
+    ]
+  }
+]

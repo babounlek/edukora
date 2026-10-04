@@ -1,0 +1,54 @@
+[
+  {
+    "external_id": "cqc-define-bac-ti-prog-faible-0",
+    "theme": "#define",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Dans un programme C destiné à un parc de capteurs, le nombre de capteurs doit être fixé une seule fois, sous le nom `NB_CAPTEURS` et avec la valeur 12, grâce au préprocesseur.\n\nQuelle ligne, écrite en tête du fichier, réalise correctement cette définition ?",
+    "corrige_markdown": "### Rappel de méthode\nUne constante symbolique se crée avec la directive `#define NOM texte`. Cette ligne ne ressemble pas à une instruction C : elle n'utilise pas le signe `=`, ne se termine pas par un point-virgule, et le nom est écrit avant le texte qui le remplacera.\n\n### Corrigé\nLe préprocesseur remplace chaque occurrence de `NB_CAPTEURS` par le texte qui suit le nom, avant la compilation. Chaque mauvais choix produit donc un texte de remplacement faux ou une directive illisible :\n\n- `#define NB_CAPTEURS = 12` : le signe `=` est recopié dans le texte de remplacement. Une déclaration `int mesures[NB_CAPTEURS];` deviendrait `int mesures[= 12];`, ce qui ne compile pas.\n- `#define NB_CAPTEURS 12;` : le point-virgule fait partie du remplacement. La même déclaration deviendrait `int mesures[12;];`, ce qui ne compile pas non plus.\n- `#define 12 NB_CAPTEURS` : l'ordre est inversé, et `12` n'est pas un nom valide.\n- `#define NB_CAPTEURS 12` : le nom, puis la valeur, sans `=` ni `;`. C'est la bonne écriture.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`#define NB_CAPTEURS = 12`"},
+      {"lettre": "B", "texte": "`#define NB_CAPTEURS 12;`"},
+      {"lettre": "C", "texte": "`#define 12 NB_CAPTEURS`"},
+      {"lettre": "D", "texte": "`#define NB_CAPTEURS 12`"}
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [10572]
+  },
+  {
+    "external_id": "cqc-define-bac-ti-prog-moyenne-1",
+    "theme": "#define",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un élève de Terminale TI définit une macro pour calculer la surface d'un carré, puis l'emploie dans un programme.\n\n```c\n#include <stdio.h>\n#define SURFACE(c) c * c\n\nint main() {\n    int larg = 4;\n    printf(\"%d\\n\", SURFACE(larg + 1));\n    return 0;\n}\n```\n\nQuelle valeur ce programme affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\nUne macro avec paramètre ne calcule rien : le préprocesseur recopie le texte de l'argument tel quel à la place du paramètre, sans ajouter de parenthèses, et c'est ensuite le compilateur qui applique les priorités des opérateurs (la multiplication avant l'addition).\n\n### Corrigé\nAprès le passage du préprocesseur, l'appel devient `larg + 1 * larg + 1`. Avec `larg` valant 4, cela donne `4 + 1 * 4 + 1`, soit `4 + 4 + 1`, donc 9.\n\n- `25` : c'est la valeur de `(larg + 1) * (larg + 1)`, qui supposerait des parenthèses autour de l'argument ; la macro n'en contient aucune.\n- `17` : c'est la valeur de `larg * larg + 1`, obtenue en regroupant les deux termes `larg` pour les multiplier, ce qui ne correspond pas au texte réellement produit.\n- `20` : c'est la valeur de `larg * (larg + 1)`, des parenthèses n'existant que sur le second facteur.\n\nPour obtenir 25, la macro devrait s'écrire `#define SURFACE(c) ((c) * (c))`.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`25`"},
+      {"lettre": "B", "texte": "`9`"},
+      {"lettre": "C", "texte": "`17`"},
+      {"lettre": "D", "texte": "`20`"}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10572]
+  },
+  {
+    "external_id": "cqc-define-bac-ti-prog-elevee-2",
+    "theme": "#define",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un enseignant d'un lycée technique de Douala calcule quelques statistiques sur quatre notes avec le programme suivant.\n\n```c\n#include <stdio.h>\n#define NB_ELEVES 4\n#define SEUIL 10\n#define MAX(a, b) ((a) > (b) ? (a) : (b))\n#define CARRE(x) x * x\n\nint main() {\n    int notes[NB_ELEVES] = {8, 14, 10, 6};\n    int i, admis = 0, meilleure = 0;\n    for (i = 0; i < NB_ELEVES; i++) {\n        if (notes[i] >= SEUIL) admis++;\n        meilleure = MAX(meilleure, notes[i]);\n    }\n    printf(\"%d %d\\n\", admis, meilleure);\n    printf(\"%d\\n\", CARRE(admis + 1));\n    return 0;\n}\n```\n\n1. Écrire les trois lignes `int notes[NB_ELEVES] = ...`, `for (...)` et `if (...)` telles que le compilateur les reçoit après le passage du préprocesseur.\n2. Donner l'affichage exact produit par le programme.\n3. Expliquer pourquoi la dernière valeur affichée n'est pas le carré de `admis + 1`, puis corriger la macro `CARRE`.\n4. Vérification : avec la macro corrigée, recalculer la dernière valeur affichée et la comparer à celle de la question 2.",
+    "corrige_markdown": "### Rappel de méthode\nLe préprocesseur travaille avant le compilateur, par simple remplacement de texte : un nom défini par `#define` est remplacé partout, et un paramètre de macro est remplacé par le texte exact de l'argument. Pour prévoir un résultat, il faut donc écrire d'abord le texte obtenu après remplacement, puis seulement l'évaluer avec les priorités du langage C.\n\n### Corrigé\n**1.** `NB_ELEVES` est remplacé par `4` et `SEUIL` par `10` :\n\n```c\nint notes[4] = {8, 14, 10, 6};\nfor (i = 0; i < 4; i++) {\n    if (notes[i] >= 10) admis++;\n```\n\n**2.** Trace de la boucle :\n\n| i | notes[i] | admis | meilleure |\n|---|---|---|---|\n| 0 | 8 | 0 | 8 |\n| 1 | 14 | 1 | 14 |\n| 2 | 10 | 2 | 14 |\n| 3 | 6 | 2 | 14 |\n\nLa première ligne affichée est `2 14`. Pour la seconde, `CARRE(admis + 1)` devient `admis + 1 * admis + 1`, soit `2 + 1 * 2 + 1 = 2 + 2 + 1 = 5`. L'affichage complet est :\n\n```\n2 14\n5\n```\n\n**3.** Le préprocesseur n'ajoute aucune parenthèse autour de l'argument : la multiplication de `1 * admis` est effectuée avant les additions, d'où 5 au lieu de 9. Il faut parenthéser chaque occurrence du paramètre, ainsi que l'ensemble de l'expression :\n\n```c\n#define CARRE(x) ((x) * (x))\n```\n\n**4.** Avec la macro corrigée, l'appel devient `((admis + 1) * (admis + 1))`, soit `(2 + 1) * (2 + 1) = 9`. Cette valeur est bien le carré de 3, c'est-à-dire de `admis + 1`, alors que 5 ne l'était pas. La première ligne `2 14` reste inchangée : la macro `MAX` était déjà parenthésée correctement.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11180, 10572]
+  }
+]

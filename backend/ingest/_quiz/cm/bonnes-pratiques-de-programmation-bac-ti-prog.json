@@ -1,0 +1,99 @@
+[
+  {
+    "external_id": "cqc-bonnes-pratiques-de-programmation-bac-ti-prog-faible-0",
+    "theme": "bonnes pratiques de programmation",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le programme C suivant calcule le prix net et le gain d'un client de boutique après une remise de 15 %. Ce taux est écrit à deux endroits et pourrait changer dans les mois à venir.\n\n```c\n#include <stdio.h>\nint main() {\n    float prix = 20000;\n    float net = prix - prix * 0.15;\n    float gain = prix * 0.15;\n    printf(\"%.0f %.0f\", net, gain);\n    return 0;\n}\n```\n\nQuelle modification applique le mieux la bonne pratique consistant à donner un nom explicite à une valeur qui a un sens, afin de pouvoir la changer en un seul endroit ?",
+    "corrige_markdown": "### Rappel de méthode\nUn nombre qui apparaît dans le code sans que son sens soit visible (une valeur dite « magique ») se remplace par une constante portant un nom explicite, définie une seule fois en tête de programme : le code se lit mieux, et une modification de la valeur ne demande qu'une seule correction.\n\n### Corrigé\nLe taux 0.15 est recopié à deux endroits et rien n'indique sa signification. La solution consiste à le définir une seule fois sous un nom parlant, par exemple `#define REMISE 0.15`, puis à écrire `prix - prix * REMISE` et `prix * REMISE`. Un changement de taux se fait alors en un seul endroit, et la lecture du calcul devient immédiate.\n\nAnalyse des autres choix :\n\n- Commentaire après chaque `0.15` : la signification devient visible, mais le nombre reste recopié ; un changement de taux oblige à corriger chaque ligne, avec le risque d'en oublier une.\n- Variable nommée `x` : la valeur est centralisée, mais le nom `x` ne dit rien du rôle du nombre, et une variable peut être modifiée par erreur, contrairement à une constante.\n- Raccourcir `prix` en `p` : un nom plus court est moins explicite ; cela nuit à la lisibilité et ne règle pas le problème du taux recopié.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Ajouter un commentaire après chaque `0.15` indiquant que c'est la remise."
+      },
+      {
+        "lettre": "B",
+        "texte": "Définir une variable nommée `x` et l'utiliser aux deux endroits."
+      },
+      {
+        "lettre": "C",
+        "texte": "Raccourcir le nom `prix` en `p` pour que chaque ligne soit plus courte."
+      },
+      {
+        "lettre": "D",
+        "texte": "Définir une constante nommée `REMISE` et l'utiliser aux deux endroits."
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-bonnes-pratiques-de-programmation-bac-ti-prog-moyenne-1",
+    "theme": "bonnes pratiques de programmation",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans le programme C suivant, l'utilisateur saisit toujours un entier lorsque `scanf` est appelée.\n\n```c\n#include <stdio.h>\nint main() {\n    int age;\n    do {\n        scanf(\"%d\", &age);\n    } while (age < 0);\n    if (age < 0) {\n        printf(\"Age invalide\\n\");\n    }\n    printf(\"Age : %d\\n\", age);\n    return 0;\n    printf(\"Fin\\n\");\n}\n```\n\nCombien d'instructions `printf` ne peuvent jamais s'exécuter, quelles que soient les valeurs saisies ?",
+    "corrige_markdown": "### Rappel de méthode\nUne instruction est du code mort lorsqu'aucune exécution possible n'y mène : pour la repérer, chercher ce que les instructions précédentes garantissent (une boucle de saisie ne se termine que lorsque sa condition devient fausse) et regarder tout ce qui suit un `return`, qui termine immédiatement la fonction.\n\n### Corrigé\nLa boucle `do ... while (age < 0)` ne se termine que lorsque `age < 0` est fausse, donc avec `age >= 0`. Le test `if (age < 0)` qui suit ne peut jamais être vrai : le `printf` « Age invalide » est du code mort. Le `printf` « Age : ... » est exécuté à chaque passage. Enfin, `return 0;` termine `main` immédiatement : le `printf` « Fin », placé après, n'est jamais exécuté. Il y a donc 2 instructions mortes.\n\nAnalyse des autres choix :\n\n- 0 instruction : suppose que tout ce qui compile finit par s'exécuter ; or un contrôle redondant placé après une boucle de saisie, et une instruction placée après `return`, ne sont jamais atteints.\n- 1 instruction : ne repère qu'un seul des deux cas, en général l'instruction placée après `return`, et oublie que la boucle garantit déjà `age >= 0`.\n- 3 instructions : compte aussi le `printf` « Age : ... », qui s'exécute à chaque passage puisque le test précédent n'a aucun effet sur lui.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "0 instruction"
+      },
+      {
+        "lettre": "B",
+        "texte": "1 instruction"
+      },
+      {
+        "lettre": "C",
+        "texte": "2 instructions"
+      },
+      {
+        "lettre": "D",
+        "texte": "3 instructions"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10666
+    ]
+  },
+  {
+    "external_id": "cqc-bonnes-pratiques-de-programmation-bac-ti-prog-elevee-2",
+    "theme": "bonnes pratiques de programmation",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève de Terminale TI a écrit le programme C suivant pour calculer la somme à payer pour `a` articles vendus au prix unitaire `b` (en FCFA). Une remise de 10 % est accordée lorsque le montant atteint 50 000 FCFA. Le programme est correct, mais il est difficile à lire et à faire évoluer.\n\n```c\n#include <stdio.h>\nint t;\nint main() {\nint a,b,c;\nscanf(\"%d %d\",&a,&b);\nc=a*b;\nif(c>=50000)\nt=c-c/10;\nelse\nt=c;\nprintf(\"%d\",t);\nreturn 0;}\n```\n\n1. Relever trois défauts de ce programme qui nuisent à sa lisibilité ou à sa maintenance.\n2. Écrire une version améliorée qui applique les bonnes pratiques correspondantes, avec le calcul du montant à payer isolé dans une fonction `montant_a_payer`.\n3. Établir la trace de la version améliorée pour 12 articles à 5000 FCFA, puis pour 4 articles à 5000 FCFA.\n4. Vérifier que les deux versions donnent le même résultat pour 10 articles à 5000 FCFA, cas où le montant est exactement égal au seuil.",
+    "corrige_markdown": "### Rappel de méthode\nAméliorer un programme sans changer son comportement revient à appliquer des règles précises : indentation qui révèle les blocs, noms qui disent le rôle, constantes nommées à la place des valeurs écrites en dur, variables locales plutôt que globales, calcul isolé dans une fonction. Une comparaison des deux versions sur des valeurs test, dont une valeur limite, confirme ensuite que le résultat est resté identique.\n\n### Corrigé\n**1.** Défauts possibles (trois suffisent) :\n\n- aucune indentation : les instructions du `if` ne se distinguent pas de celles du `else` ;\n- noms `a`, `b`, `c`, `t` qui ne disent rien du rôle des variables ;\n- valeurs 50000 et 10 écrites en dur (valeurs « magiques »), sans nom qui explique leur sens ;\n- variable globale `t` inutile, alors qu'une variable locale suffit ;\n- aucune invite de saisie ni commentaire, et tout le calcul placé dans `main`.\n\n**2.** Version améliorée :\n\n```c\n#include <stdio.h>\n\n#define SEUIL_REMISE 50000   /* montant à partir duquel la remise s'applique */\n#define TAUX_REMISE 10       /* remise en pourcentage */\n\nint montant_a_payer(int quantite, int prix_unitaire) {\n    int montant = quantite * prix_unitaire;\n    if (montant >= SEUIL_REMISE)\n        return montant - montant * TAUX_REMISE / 100;\n    return montant;\n}\n\nint main() {\n    int quantite, prix_unitaire;\n    printf(\"Quantite et prix unitaire : \");\n    scanf(\"%d %d\", &quantite, &prix_unitaire);\n    printf(\"%d\", montant_a_payer(quantite, prix_unitaire));\n    return 0;\n}\n```\n\nLes noms décrivent les rôles, les constantes portent un sens et se modifient en un seul endroit, il n'y a plus de variable globale, et le calcul peut être testé séparément de la saisie et de l'affichage.\n\n**3.** Trace. Pour 12 articles à 5000 : `montant = 12 * 5000 = 60000`, la condition `60000 >= 50000` est vraie, la fonction retourne `60000 - 60000 * 10 / 100 = 60000 - 6000 = 54000`. Pour 4 articles à 5000 : `montant = 20000`, la condition `20000 >= 50000` est fausse, la fonction retourne 20000.\n\n**4.** Vérification. Pour 10 articles à 5000, le montant vaut 50000. Version initiale : `c >= 50000` est vraie et `t = 50000 - 50000 / 10 = 45000`. Version améliorée : `50000 >= SEUIL_REMISE` est vraie et la fonction retourne `50000 - 50000 * 10 / 100 = 45000`. Les deux versions affichent 45000, ce qui confirme que la comparaison `>=` et le taux de remise ont été conservés (une comparaison `>` aurait donné 50000).",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572
+    ]
+  }
+]

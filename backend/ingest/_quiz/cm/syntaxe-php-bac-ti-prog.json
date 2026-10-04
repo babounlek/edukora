@@ -1,0 +1,88 @@
+[
+  {
+    "external_id": "cqc-syntaxe-php-bac-ti-prog-faible-0",
+    "theme": "syntaxe PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche le script PHP suivant ?\n\n```php\n<?php\n$ville = \"Douala 237\";\necho strlen($ville);\n?>\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nLa fonction `strlen` retourne le nombre de caractères d'une chaîne, espaces compris ; PHP n'ajoute aucun caractère de fin de chaîne à ce décompte, et `echo` envoie simplement le nombre obtenu au navigateur.\n\n### Corrigé\n\nLa chaîne `\"Douala 237\"` contient six lettres (D, o, u, a, l, a), un espace et trois chiffres (2, 3, 7) : 6 + 1 + 3 = 10. Le script affiche `10`.\n\n- **A** est faux : `6` ne compte que les lettres de « Douala ».\n- **B** est faux : `9` oublie l'espace, qui est un caractère comme un autre.\n- **D** est faux : `11` ajoute un caractère de fin de chaîne, comme on le fait en langage C pour la taille d'un tableau ; `strlen` ne le compte pas.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`6`" },
+      { "lettre": "B", "texte": "`9`" },
+      { "lettre": "C", "texte": "`10`" },
+      { "lettre": "D", "texte": "`11`" }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [10562]
+  },
+  {
+    "external_id": "cqc-syntaxe-php-bac-ti-prog-moyenne-1",
+    "theme": "syntaxe PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche le script PHP suivant ?\n\n```php\n<?php\n$visites = 10;\n$total = &$visites;\n$total++;\n$sauvegarde = $visites;\n$visites = 40;\necho $visites . \"-\" . $total . \"-\" . $sauvegarde;\n?>\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nL'écriture `$b = &$a;` fait de `$b` un second nom de la même variable : toute modification de l'un est vue par l'autre. Une affectation simple `$c = $a;` recopie au contraire la valeur du moment, sans lien durable. Pour prévoir l'affichage, suivre la valeur partagée, puis noter ce que chaque copie a retenu.\n\n### Corrigé\n\nTrace d'exécution :\n\n| Instruction | `$visites` | `$total` | `$sauvegarde` |\n|---|---|---|---|\n| `$visites = 10;` | 10 | non défini | non défini |\n| `$total = &$visites;` | 10 | 10 (même variable) | non défini |\n| `$total++;` | 11 | 11 | non défini |\n| `$sauvegarde = $visites;` | 11 | 11 | 11 (copie) |\n| `$visites = 40;` | 40 | 40 | 11 |\n\nLe script affiche `40-40-11`.\n\n- **A** est faux : `40-11-10` traite `$total` comme une copie, alors que `&` en fait la même variable que `$visites`.\n- **C** est faux : `40-40-40` suppose que `$sauvegarde` reste liée à `$visites` ; or une affectation sans `&` copie la valeur et rompt tout lien.\n- **D** est faux : `40-40-10` oublie que `$total++` modifie aussi `$visites` ; la copie recopie donc 11 et non 10.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`40-11-10`" },
+      { "lettre": "B", "texte": "`40-40-11`" },
+      { "lettre": "C", "texte": "`40-40-40`" },
+      { "lettre": "D", "texte": "`40-40-10`" }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [11181]
+  },
+  {
+    "external_id": "cqc-syntaxe-php-bac-ti-prog-moyenne-2",
+    "theme": "syntaxe PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le script PHP suivant :\n\n```php\n<?php\n$champ = 'note';\n$note = 14;\n$option = 'bonus';\n$bonus = 0;\necho $$champ + 2;\necho \" \";\necho empty($$option) ? \"vide\" : \"rempli\";\n?>\n```\n\n1. Donner l'affichage produit par ce script.\n2. Expliquer ce que désigne l'expression `$$champ`.\n3. La première ligne du script devient `$champ = 'notes';`, le reste étant inchangé. Indiquer ce que PHP fait en évaluant `$$champ`, puis ce qu'affiche la première instruction `echo`.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne variable variable `$$x` utilise le contenu de `$x` comme nom d'une autre variable, qui est ensuite lue. La fonction `empty` est vraie pour les valeurs jugées vides (`0`, `\"0\"`, chaîne vide, `NULL`, `false`, tableau vide). Lire une variable jamais définie ne stoppe pas le script : PHP émet un avertissement et utilise `NULL`.\n\n### Corrigé\n\n1. `$champ` contient `'note'` : `$$champ` équivaut à `$note`, soit 14, et l'addition donne 16. Le script affiche ensuite un caractère espace, puis évalue `empty($$option)` : `$option` contient `'bonus'`, donc `$$option` équivaut à `$bonus`, qui vaut 0, valeur considérée comme vide. Le test est vrai et le script affiche `vide`. Affichage complet : `16 vide`.\n2. `$$champ` est une variable variable : PHP lit d'abord la valeur de `$champ` (la chaîne `note`), puis l'utilise comme nom de variable et lit la variable `$note`.\n3. Avec `'notes'`, PHP cherche la variable `$notes`, qui n'existe pas : il émet un avertissement « Undefined variable » sans interrompre le script, et la valeur lue est `NULL`, comptée comme 0 dans l'addition. La première instruction `echo` affiche donc `2`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11181]
+  },
+  {
+    "external_id": "cqc-syntaxe-php-bac-ti-prog-elevee-3",
+    "theme": "syntaxe PHP",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien écrit la page `capteurs.php` suivante pour afficher la liste d'un parc de capteurs :\n\n```php\n<html>\n<body>\n<?php\n$prefixe = \"Capteur\";\n$total = 3;\nfor ($i = 1; $i <= $total; $i++) {\n    echo \"<p>\" . $prefixe . \" \" . $i . \"</p>\";\n}\necho \"Nombre : $total\";\n?>\n</body>\n</html>\n```\n\n1. Donner le code HTML produit par le bloc PHP (sans tenir compte des retours à la ligne).\n2. Décrire ce que l'utilisateur voit dans son navigateur.\n3. Écrire l'instruction PHP, à placer avant `?>`, qui affiche la date du jour sous la forme `07/03/2026` (jour, mois sur deux chiffres, année sur quatre chiffres).\n4. Le technicien oublie le point-virgule à la fin de la ligne `$total = 3;`. Indiquer ce qui se produit lorsqu'un visiteur demande la page.\n5. Vérification : donner l'affichage obtenu pour `$total = 0;` (cas limite), en justifiant.",
+    "corrige_markdown": "### Rappel de méthode\n\nSeul le texte placé entre `<?php` et `?>` est exécuté par le serveur ; le reste du fichier est envoyé tel quel au navigateur. L'instruction `echo` n'ajoute aucun retour à la ligne, les guillemets doubles remplacent une variable par sa valeur, et `date` compose la date du jour d'après une chaîne de format dont chaque lettre a un sens précis (la casse compte). Une erreur de syntaxe est détectée avant que la moindre instruction s'exécute.\n\n### Corrigé\n\n1. La boucle `for` s'exécute pour `$i` égal à 1, 2 puis 3, puis `echo` écrit la dernière ligne avec la valeur de `$total` : le bloc produit `<p>Capteur 1</p><p>Capteur 2</p><p>Capteur 3</p>Nombre : 3`, d'un seul tenant.\n2. Le navigateur ne voit jamais le code PHP : il affiche trois paragraphes l'un sous l'autre, « Capteur 1 », « Capteur 2 » et « Capteur 3 », puis le texte « Nombre : 3 » en dessous.\n3. L'instruction est :\n\n   ```php\n   echo date(\"d/m/Y\");\n   ```\n\n   La lettre `d` donne le jour sur deux chiffres, `m` le mois sur deux chiffres et `Y` l'année sur quatre chiffres (`y` minuscule ne donnerait que 26).\n4. Sans point-virgule, PHP détecte une erreur de syntaxe (*Parse error*) avant d'exécuter quoi que ce soit : aucune instruction du fichier n'est exécutée et aucun paragraphe n'est produit. Selon la configuration du serveur, un message d'erreur s'affiche ou la page reste blanche.\n5. Avec `$total = 0;`, la condition `$i <= $total` s'écrit `1 <= 0`, fausse dès le départ : le corps de la boucle ne s'exécute jamais, aucun paragraphe n'est produit. Seul le dernier `echo` s'exécute et le bloc produit `Nombre : 0`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11242, 11231]
+  }
+]

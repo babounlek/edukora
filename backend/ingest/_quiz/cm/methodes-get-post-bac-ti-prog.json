@@ -1,0 +1,143 @@
+[
+  {
+    "external_id": "cqc-methodes-get-post-bac-ti-prog-faible-0",
+    "theme": "Méthodes GET/POST",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le formulaire de recherche de la médiathèque d'un lycée est écrit ainsi :\n\n```html\n<form action=\"cherche.php\" method=\"get\">\n  <input type=\"text\" id=\"zone_titre\" name=\"ouvrage\">\n  <input type=\"submit\" value=\"Chercher\">\n</form>\n```\n\nQuelle instruction PHP récupère, dans la page `cherche.php`, le texte saisi par l'utilisateur ?",
+    "corrige_markdown": "### Rappel de méthode\nLa superglobale à interroger dépend de la méthode déclarée dans la balise `<form>` (`$_GET` pour `get`, `$_POST` pour `post`), et la clé écrite entre crochets est la valeur de l'attribut `name` du champ.\n\n### Corrigé\nLe formulaire est déclaré avec `method=\"get\"` et le champ de texte porte `name=\"ouvrage\"` : l'expression à utiliser est `$_GET['ouvrage']`, par exemple dans `echo $_GET['ouvrage'];`.\n\n- A : `$_POST` ne contient rien ici, car les données arrivent par la méthode GET.\n- C : `zone_titre` est l'`id` du champ, ce n'est pas la clé utilisée par PHP.\n- D : `Chercher` est le texte du bouton d'envoi, qui ne porte pas de `name` et n'est pas une donnée saisie.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`$_POST['ouvrage']`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`$_GET['ouvrage']`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`$_GET['zone_titre']`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`$_GET['Chercher']`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      11242
+    ]
+  },
+  {
+    "external_id": "cqc-methodes-get-post-bac-ti-prog-faible-1",
+    "theme": "Méthodes GET/POST",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Après l'envoi d'un formulaire de recherche, la barre d'adresse du navigateur affiche :\n\n```text\nhttp://localhost/catalogue.php?mot=clavier&tri=prix\n```\n\n1. Donner la méthode utilisée pour envoyer le formulaire, en justifiant par la forme de l'adresse.\n2. Relever les deux couples `nom=valeur` transmis.\n3. Écrire l'instruction PHP, placée dans `catalogue.php`, qui affiche la valeur du paramètre `mot`.",
+    "corrige_markdown": "### Rappel de méthode\nAvec la méthode GET, les données du formulaire sont ajoutées à la fin de l'adresse, après un `?`, sous la forme `nom=valeur`, et plusieurs paramètres sont séparés par `&` ; côté PHP, ils sont lus dans le tableau `$_GET`, le nom du paramètre servant de clé.\n\n### Corrigé\n1. L'adresse contient des paramètres après le `?` : les données voyagent dans l'URL, il s'agit donc de la méthode **GET**.\n2. Les deux couples sont `mot=clavier` et `tri=prix`.\n3. L'instruction `echo $_GET['mot'];` affiche `clavier`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11247
+    ]
+  },
+  {
+    "external_id": "cqc-methodes-get-post-bac-ti-prog-moyenne-2",
+    "theme": "Méthodes GET/POST",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un lycée met en ligne une page de connexion où l'élève saisit son matricule et son mot de passe. Quelle méthode d'envoi du formulaire est la plus appropriée, et pour quelle raison ?",
+    "corrige_markdown": "### Rappel de méthode\nLe choix entre GET et POST se fait selon la nature des données : avec GET, elles apparaissent dans l'URL (historique, favoris, journaux du serveur) ; avec POST, elles sont placées dans le corps de la requête, hors de l'adresse. Aucune des deux méthodes ne chiffre les données : ce rôle revient au protocole HTTPS.\n\n### Corrigé\nUn mot de passe ne doit pas figurer dans une adresse visible : on choisit POST, qui ne l'affiche pas dans l'URL.\n\n- A : la mise en favori est un avantage de GET pour une recherche ou une consultation ; pour une connexion, garder le mot de passe dans une adresse enregistrée est précisément le danger.\n- B : POST ne chiffre rien, les données restent lisibles pour qui intercepte la requête si la liaison n'est pas protégée par HTTPS.\n- C : la rapidité d'envoi n'est pas un critère de choix ici, et GET exposerait le matricule et le mot de passe dans l'URL.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "GET, car l'adresse obtenue peut être mise en favori"
+      },
+      {
+        "lettre": "B",
+        "texte": "POST, car les données envoyées sont chiffrées"
+      },
+      {
+        "lettre": "C",
+        "texte": "GET, car cette méthode est toujours plus rapide"
+      },
+      {
+        "lettre": "D",
+        "texte": "POST, car les données ne s'affichent pas dans l'URL"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      10571
+    ]
+  },
+  {
+    "external_id": "cqc-methodes-get-post-bac-ti-prog-moyenne-3",
+    "theme": "Méthodes GET/POST",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La page `liste.php` contient le script suivant :\n\n```php\n<?php\nif (isset($_GET['page'])) {\n    echo \"Page \" . $_GET['page'];\n} else {\n    echo \"Page 1\";\n}\n?>\n```\n\n1. Donner l'affichage obtenu pour chacune des trois adresses suivantes : `liste.php?page=4`, `liste.php` et `liste.php?page=`.\n2. Expliquer le rôle de `isset` dans ce script.\n3. Expliquer pourquoi la troisième adresse n'affiche pas « Page 1 ».",
+    "corrige_markdown": "### Rappel de méthode\nUn paramètre placé après le `?` d'une adresse crée la clé correspondante dans `$_GET` dès qu'il apparaît, même sans valeur ; `isset($_GET['cle'])` teste l'existence de cette clé (avec une valeur différente de `null`), et non le contenu de la valeur.\n\n### Corrigé\n1. Affichages :\n\n| Adresse | Affichage | Raison |\n|---|---|---|\n| `liste.php?page=4` | `Page 4` | la clé `page` existe et vaut `\"4\"` |\n| `liste.php` | `Page 1` | aucun paramètre, `isset` est faux, branche `else` |\n| `liste.php?page=` | `Page ` | la clé existe avec une chaîne vide : le mot Page suivi d'une espace, sans numéro |\n\n2. `isset` vérifie que le paramètre `page` a bien été transmis avant de lire `$_GET['page']` ; sans ce test, la lecture d'une clé absente produit un avertissement (warning).\n3. Dans la troisième adresse, le paramètre `page` est présent avec une valeur vide : `isset` retourne `true`, la branche `if` est exécutée et `\"Page \" . \"\"` est affiché. Pour refuser aussi la valeur vide, il faudrait tester `!empty($_GET['page'])`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10565,
+      10571
+    ]
+  },
+  {
+    "external_id": "cqc-methodes-get-post-bac-ti-prog-elevee-4",
+    "theme": "Méthodes GET/POST",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une application web de lycée permet à un élève de consulter ses notes. Le formulaire de consultation et le début de la page de traitement sont les suivants :\n\n```html\n<form action=\"notes.php\" method=\"get\">\n  Matricule : <input type=\"text\" name=\"matricule\">\n  Code secret : <input type=\"password\" name=\"code\">\n  <input type=\"submit\" value=\"Consulter\">\n</form>\n```\n\n```php\n<?php\necho \"Notes de \" . $_GET['matricule'];\n?>\n```\n\n1. Un élève saisit le matricule `TI24-17` et le code secret `8431`. Donner l'adresse affichée dans la barre d'adresse après l'envoi (la page se trouve en `http://localhost/notes.php`).\n2. Citer deux conséquences de cette méthode sur la confidentialité du code secret.\n3. Écrire la balise `<form>` corrigée, puis la ligne PHP de `notes.php` qui affiche « Notes de » suivi du matricule.\n4. Vérification : après correction de la balise seule, sans modifier la ligne PHP d'origine, donner l'adresse affichée pour la même saisie, puis ce que contient `$_GET['matricule']` et ce qui s'affiche.",
+    "corrige_markdown": "### Rappel de méthode\nAvec GET, chaque champ nommé est ajouté à l'adresse sous la forme `?nom1=valeur1&nom2=valeur2` : il est donc visible, gardé dans l'historique et dans les journaux du serveur. Pour y échapper, on passe l'attribut `method` à `post`, et le script lit alors `$_POST` au lieu de `$_GET`.\n\n### Corrigé\n1. L'adresse affichée est `http://localhost/notes.php?matricule=TI24-17&code=8431` : les deux champs sont ajoutés après le `?`, séparés par `&`. Le type `password` masque seulement les caractères à l'écran, il ne protège pas l'URL.\n2. Deux conséquences au choix : le code secret reste dans l'historique du navigateur ; il apparaît dans les journaux (logs) du serveur ; il est lisible par une personne qui regarde l'écran ou la barre d'adresse ; il est copié avec le lien si l'adresse est enregistrée en favori ou partagée.\n3. Balise corrigée, puis ligne PHP :\n\n```html\n<form action=\"notes.php\" method=\"post\">\n```\n\n```php\necho \"Notes de \" . $_POST['matricule'];\n```\n\n4. Après le seul changement de méthode, l'adresse affichée est `http://localhost/notes.php`, sans paramètre, car les données sont dans le corps de la requête. Le script lit encore `$_GET['matricule']` : cette clé n'existe pas, PHP signale un avertissement (warning) et la valeur est `null`. Le texte affiché est « Notes de » sans matricule. Cette vérification montre que la méthode du formulaire et la superglobale lue doivent correspondre.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11247,
+      10565
+    ]
+  }
+]

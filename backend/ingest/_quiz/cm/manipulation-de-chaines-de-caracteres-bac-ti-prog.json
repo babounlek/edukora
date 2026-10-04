@@ -1,0 +1,69 @@
+[
+  {
+    "external_id": "cqc-manipulation-de-chaines-de-caracteres-bac-ti-prog-faible-0",
+    "theme": "Manipulation de chaînes de caractères",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme doit mémoriser le nom d'une ville de 9 lettres au plus (par exemple « Bafoussam »), lu au clavier avec l'instruction `scanf(\"%s\", ville);`.\n\nQuelle déclaration réserve la place nécessaire, sans gaspiller de case, pour la plus longue ville possible ?",
+    "corrige_markdown": "### Rappel de méthode\nUne chaîne de caractères en C occupe autant de cases que de lettres, plus une case finale réservée au caractère nul `'\\0'` qui marque la fin du texte ; la taille du tableau est donc le nombre maximal de lettres augmenté de 1.\n\n### Corrigé\nLe nom le plus long compte 9 lettres (indices 0 à 8) et `scanf` écrit ensuite le `'\\0'` à l'indice 9 : il faut donc 9 + 1 = 10 cases.\n\n- `char ville[9];` ne laisse aucune place au `'\\0'` : pour « Bafoussam », celui-ci serait écrit hors du tableau.\n- `char ville[8];` confond la taille avec le dernier indice des lettres (8) : deux cases manquent.\n- `char ville;` ne déclare qu'un seul caractère et non un tableau : `scanf(\"%s\", ville);` recevrait la valeur d'un caractère à la place de l'adresse d'une zone de stockage.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`char ville[9];`" },
+      { "lettre": "B", "texte": "`char ville[8];`" },
+      { "lettre": "C", "texte": "`char ville[10];`" },
+      { "lettre": "D", "texte": "`char ville;`" }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [10562]
+  },
+  {
+    "external_id": "cqc-manipulation-de-chaines-de-caracteres-bac-ti-prog-moyenne-1",
+    "theme": "Manipulation de chaînes de caractères",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le programme suivant est exécuté ; l'utilisateur tape la ligne `Awa Nkou` puis valide avec la touche Entrée.\n\n```c\n#include <stdio.h>\n#include <string.h>\n\nint main() {\n    char nom[20];\n    scanf(\"%s\", nom);\n    printf(\"%d\", (int) strlen(nom));\n    return 0;\n}\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\nL'appel `scanf(\"%s\", t)` lit des caractères jusqu'au premier espace, tabulation ou retour à la ligne, les range dans `t` (dont le nom suffit, sans `&`) et complète par `'\\0'` ; `strlen(t)` renvoie ensuite le nombre de caractères placés avant ce `'\\0'`.\n\n### Corrigé\nLa lecture s'arrête à l'espace : `nom` contient `Awa` suivi du `'\\0'`, tandis que `Nkou` reste en attente dans le tampon du clavier. `strlen(nom)` vaut donc 3 et le programme affiche `3`.\n\n- `8` serait la longueur de la ligne entière « Awa Nkou » ; seule une fonction de lecture de ligne, comme `fgets`, placerait les deux mots dans `nom`.\n- `4` compte le `'\\0'`, alors que `strlen` ne le compte jamais.\n- `7` suppose que l'espace est supprimé et que les deux mots sont collés, ce que `scanf` ne fait pas.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`3`" },
+      { "lettre": "B", "texte": "`8`" },
+      { "lettre": "C", "texte": "`4`" },
+      { "lettre": "D", "texte": "`7`" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [10562]
+  },
+  {
+    "external_id": "cqc-manipulation-de-chaines-de-caracteres-bac-ti-prog-elevee-2",
+    "theme": "Manipulation de chaînes de caractères",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien de laboratoire à Douala veut lire à l'envers le code d'un échantillon. Il écrit le programme suivant.\n\n```c\n#include <stdio.h>\n#include <string.h>\n\nint main() {\n    char code[8] = \"DLA2024\";\n    char inv[8];\n    int i, n = strlen(code);\n    for (i = 0; i < n; i++) {\n        inv[i] = code[n - 1 - i];\n    }\n    inv[n] = '\\0';\n    printf(\"%s %d\", inv, n);\n    return 0;\n}\n```\n\n**1.** Justifier que la taille 8 du tableau `code` est exactement suffisante pour `\"DLA2024\"`.\n**2.** Donner l'affichage du programme, en précisant le contenu des cases de `inv`.\n**3.** Expliquer le rôle de l'instruction `inv[n] = '\\0';` et ce qui se passerait si elle était supprimée.\n**4.** Écrire la condition d'un `if` qui teste, avec `strcmp`, si `inv` et `code` ont le même contenu, puis expliquer pourquoi `inv == code` ne convient pas.\n**5.** Vérification : donner `strlen(inv)`, `inv[0]` et `inv[6]`, puis contrôler leur cohérence avec le contenu de `code`.",
+    "corrige_markdown": "### Rappel de méthode\nUne chaîne se termine par le caractère nul `'\\0'`, que `strlen` ne compte pas : un tableau de `char` rempli case par case doit recevoir ce caractère à la main, et deux chaînes se comparent avec `strcmp(a, b)`, qui retourne 0 lorsque leur contenu est identique, car l'opérateur `==` ne compare que des adresses.\n\n### Corrigé\n**1.** `\"DLA2024\"` compte 7 caractères ; avec le `'\\0'` final, il faut 7 + 1 = 8 cases, ce qui correspond exactement à `char code[8]`.\n\n**2.** Avec `n = 7`, la boucle recopie les caractères de `code` en commençant par la fin :\n\n| `i` | `code[n - 1 - i]` | `inv[i]` |\n|---|---|---|\n| 0 | `code[6]` | `'4'` |\n| 1 | `code[5]` | `'2'` |\n| 2 | `code[4]` | `'0'` |\n| 3 | `code[3]` | `'2'` |\n| 4 | `code[2]` | `'A'` |\n| 5 | `code[1]` | `'L'` |\n| 6 | `code[0]` | `'D'` |\n\nPuis `inv[7]` reçoit `'\\0'`. Le programme affiche `4202ALD 7`.\n\n**3.** Les sept caractères de `inv` ne forment une chaîne que si un `'\\0'` les suit : l'instruction `inv[n] = '\\0';` marque la fin que `printf(\"%s\", ...)` recherche. Sans elle, `inv` (tableau local non initialisé) n'a pas de fin garantie : `printf` continuerait à lire la mémoire après `inv[6]` jusqu'à rencontrer par hasard un octet nul, ce qui affiche des caractères parasites ; le comportement est indéterminé.\n\n**4.** La condition est :\n\n```c\nif (strcmp(inv, code) == 0) {\n    printf(\"identiques\");\n}\n```\n\nL'expression `inv == code` compare les adresses de début des deux tableaux, toujours différentes pour deux tableaux distincts, et non leurs contenus. Ici `strcmp(inv, code)` est non nul, car `'D'` et `'4'` diffèrent dès la première case : la condition est fausse.\n\n**5.** `strlen(inv)` vaut 7, comme `strlen(code)` : inverser une chaîne ne change pas sa longueur. `inv[0]` vaut `'4'`, qui est `code[6]` (le dernier caractère de `code`), et `inv[6]` vaut `'D'`, qui est `code[0]` (le premier) : les extrémités sont bien échangées, ce qui confirme l'affichage de la question 2.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10562]
+  }
+]

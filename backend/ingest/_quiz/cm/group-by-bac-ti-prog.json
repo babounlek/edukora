@@ -1,0 +1,99 @@
+[
+  {
+    "external_id": "cqc-group-by-bac-ti-prog-faible-0",
+    "theme": "GROUP BY",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `vente` d'une boutique de Douala enregistre les quantités d'articles vendues par chaque vendeur :\n\n| id | vendeur | quantite |\n|---|---|---|\n| 1 | Awa | 5 |\n| 2 | Boris | 3 |\n| 3 | Awa | 4 |\n| 4 | Chantal | 6 |\n| 5 | Boris | 2 |\n| 6 | Awa | 1 |\n\nOn exécute la requête suivante :\n\n```sql\nSELECT vendeur, SUM(quantite) FROM vente GROUP BY vendeur;\n```\n\nQuelle ligne le résultat contient-il pour le vendeur Awa ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`GROUP BY colonne` rassemble les lignes qui ont la même valeur dans cette colonne ; chaque fonction d'agrégation du `SELECT` est ensuite calculée séparément pour chaque groupe. `SUM(x)` additionne les valeurs de `x` d'un groupe, `COUNT(*)` compte ses lignes et `MAX(x)` en retient la plus grande valeur.\n\n### Corrigé\n\nLe groupe d'Awa rassemble les lignes 1, 3 et 6, dont les quantités valent 5, 4 et 1. Leur somme est 5 + 4 + 1 = 10 : la ligne retournée est **Awa | 10**. Les deux autres groupes donnent Boris | 5 et Chantal | 6.\n\n- « Awa | 3 » est le nombre de lignes du groupe : c'est le résultat de `COUNT(*)`, pas celui de `SUM`.\n- « Awa | 5 » est la plus grande quantité du groupe : c'est le résultat de `MAX(quantite)`.\n- « Awa | 21 » est la somme de toute la table : cette valeur ignore le regroupement par vendeur.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Awa | 3"
+      },
+      {
+        "lettre": "B",
+        "texte": "Awa | 10"
+      },
+      {
+        "lettre": "C",
+        "texte": "Awa | 5"
+      },
+      {
+        "lettre": "D",
+        "texte": "Awa | 21"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      11244
+    ]
+  },
+  {
+    "external_id": "cqc-group-by-bac-ti-prog-moyenne-1",
+    "theme": "GROUP BY",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `mesure` conserve les relevés de température (en °C) d'un parc de capteurs. Quand un capteur n'a pas transmis sa mesure, la colonne `valeur` contient `NULL` :\n\n| id | capteur | valeur |\n|---|---|---|\n| 1 | C1 | 21.5 |\n| 2 | C2 | 19.0 |\n| 3 | C1 | NULL |\n| 4 | C2 | NULL |\n| 5 | C2 | 20.5 |\n| 6 | C1 | 22.0 |\n| 7 | C2 | NULL |\n| 8 | C2 | 18.0 |\n\nOn exécute la requête suivante :\n\n```sql\nSELECT capteur, COUNT(valeur) FROM mesure GROUP BY capteur;\n```\n\nQuelle ligne le résultat contient-il pour le capteur C2 ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`COUNT(*)` compte toutes les lignes d'un groupe, alors que `COUNT(colonne)` ne compte que celles où la colonne contient une valeur : les `NULL` sont ignorés. Le calcul est refait pour chacun des groupes que `GROUP BY` a formés.\n\n### Corrigé\n\nLe groupe C2 rassemble les lignes 2, 4, 5, 7 et 8, dont les valeurs sont 19.0, NULL, 20.5, NULL et 18.0. `COUNT(valeur)` ignore les `NULL` et compte donc les trois valeurs renseignées (19.0, 20.5 et 18.0) : la ligne retournée est **C2 | 3**. Le groupe C1 donne, de la même façon, C1 | 2.\n\n- « C2 | 5 » est le résultat de `COUNT(*)`, qui compte aussi les lignes où `valeur` vaut `NULL`.\n- « C2 | 2 » est le nombre de `NULL` du groupe, c'est-à-dire exactement ce que `COUNT(valeur)` ne compte pas.\n- « C2 | 57.5 » est la somme des valeurs renseignées (19.0 + 20.5 + 18.0), résultat de `SUM(valeur)`.\n\nRéponse **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "C2 | 3"
+      },
+      {
+        "lettre": "B",
+        "texte": "C2 | 5"
+      },
+      {
+        "lettre": "C",
+        "texte": "C2 | 2"
+      },
+      {
+        "lettre": "D",
+        "texte": "C2 | 57.5"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      11244
+    ]
+  },
+  {
+    "external_id": "cqc-group-by-bac-ti-prog-elevee-2",
+    "theme": "GROUP BY",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un centre de formation de Douala enregistre dans la table `inscription` le montant payé (en FCFA) par chaque stagiaire :\n\n| id | filiere | montant |\n|---|---|---|\n| 1 | Réseaux | 45000 |\n| 2 | Web | 30000 |\n| 3 | Réseaux | 45000 |\n| 4 | Maintenance | 25000 |\n| 5 | Web | 30000 |\n| 6 | Web | 35000 |\n| 7 | Réseaux | 40000 |\n| 8 | Maintenance | 25000 |\n| 9 | Réseaux | 45000 |\n\n1. Écrire la requête qui donne, pour chaque filière, le nombre d'inscrits et le montant total encaissé.\n2. Donner le résultat de cette requête sur la table ci-dessus, les lignes étant présentées dans l'ordre alphabétique des filières.\n3. Modifier la requête pour ne garder que les filières comptant au moins 3 inscrits, puis donner le résultat.\n4. Expliquer pourquoi la condition `COUNT(*) >= 3` ne peut pas être placée dans une clause `WHERE`.\n5. Vérification : comparer la somme des effectifs et la somme des montants obtenus à la question 2 avec `COUNT(*)` et `SUM(montant)` calculés sur toute la table.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour obtenir un indicateur par catégorie, on regroupe les lignes avec `GROUP BY`, puis on applique `COUNT`, `SUM`, `AVG` ou `MAX` à chaque groupe. Une condition portant sur le résultat de ces fonctions s'écrit dans une clause `HAVING`, placée après `GROUP BY`.\n\n### Corrigé\n\n1. Requête :\n\n```sql\nSELECT filiere, COUNT(*) AS nombre, SUM(montant) AS total\nFROM inscription\nGROUP BY filiere;\n```\n\n2. Trois groupes se forment. Maintenance rassemble les lignes 4 et 8, Réseaux les lignes 1, 3, 7 et 9, Web les lignes 2, 5 et 6. Résultat :\n\n| filiere | nombre | total |\n|---|---|---|\n| Maintenance | 2 | 50000 |\n| Réseaux | 4 | 175000 |\n| Web | 3 | 95000 |\n\n3. La condition sur l'effectif d'un groupe se place dans `HAVING` :\n\n```sql\nSELECT filiere, COUNT(*) AS nombre, SUM(montant) AS total\nFROM inscription\nGROUP BY filiere\nHAVING COUNT(*) >= 3;\n```\n\nLa filière Maintenance (2 inscrits) est écartée. Résultat :\n\n| filiere | nombre | total |\n|---|---|---|\n| Réseaux | 4 | 175000 |\n| Web | 3 | 95000 |\n\n4. `WHERE` filtre les lignes une à une, avant la formation des groupes. À ce stade, aucun groupe n'existe encore et `COUNT(*)` n'a pas de sens pour une ligne isolée : MySQL refuse la requête (« Invalid use of group function »). `HAVING` s'exécute après `GROUP BY`, quand les effectifs sont connus.\n\n5. Somme des effectifs : 2 + 4 + 3 = 9, ce qui est bien `COUNT(*)` sur la table entière (9 lignes). Somme des totaux : 50000 + 175000 + 95000 = 320000, ce qui est bien `SUM(montant)` sur la table entière. Chaque ligne appartient donc à un seul groupe : aucune n'a été perdue ni comptée deux fois.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11244
+    ]
+  }
+]

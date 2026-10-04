@@ -1,0 +1,54 @@
+[
+  {
+    "external_id": "cqc-organisation-du-code-c-bac-ti-prog-faible-0",
+    "theme": "organisation du code C",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un projet C est découpé en trois fichiers : `outils.c`, qui contient des définitions de fonctions, `outils.h` et `main.c`.\n\nQuel est le rôle du fichier `outils.h` ?",
+    "corrige_markdown": "### Rappel de méthode\nPour appeler une fonction écrite dans un autre fichier, le compilateur doit en connaître le nom, les paramètres et le type de retour avant l'appel. Ces informations sont regroupées à part, dans un fichier d'interface que chaque fichier utilisateur recopie par `#include \"nom.h\"` avant la compilation, tandis que le code des fonctions reste dans le fichier `.c` du module.\n\n### Corrigé\nLe fichier `outils.h` déclare les fonctions de `outils.c` : `main.c` l'inclut, et le compilateur connaît alors le nom, les paramètres et le type de retour de chaque fonction qu'il appelle. Les autres choix attribuent au `.h` un rôle qui n'est pas le sien :\n\n- Contenir le corps complet des fonctions : c'est le rôle de `outils.c`, qui contient les définitions ; le `.h` ne porte que les déclarations.\n- Contenir la fonction `main` : `main` est écrite dans `main.c`, et c'est de là que l'exécution démarre.\n- Conserver le résultat de la compilation : la compilation de `outils.c` produit un fichier objet distinct, jamais le `.h` ; un fichier d'en-tête n'est pas compilé seul.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Déclarer les fonctions de `outils.c` pour que `main.c` puisse les appeler"},
+      {"lettre": "B", "texte": "Contenir le corps complet de chacune des fonctions de `outils.c`"},
+      {"lettre": "C", "texte": "Contenir la fonction `main` qui lance l'exécution du programme"},
+      {"lettre": "D", "texte": "Conserver le résultat de la compilation de `outils.c` en langage machine"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [10575]
+  },
+  {
+    "external_id": "cqc-organisation-du-code-c-bac-ti-prog-moyenne-1",
+    "theme": "organisation du code C",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un élève écrit le programme suivant, qui ne compile pas.\n\n```c\n#include <stdio.h>\n\nint main() {\n    printf(\"Limite : %d\\n\", LIMITE);\n    return 0;\n}\n\n#define LIMITE 50\n```\n\nQuelle est la cause de l'échec ?",
+    "corrige_markdown": "### Rappel de méthode\nLe préprocesseur lit le fichier de haut en bas et ne remplace un nom que dans les lignes situées après sa directive `#define`. L'ordre usuel d'un fichier source en découle : les `#include`, puis les `#define`, puis les prototypes, la fonction `main` et enfin les définitions des autres fonctions.\n\n### Corrigé\nQuand le préprocesseur traite la ligne du `printf`, la directive `#define LIMITE 50` n'a pas encore été rencontrée : `LIMITE` n'est remplacé par rien et reste un simple identifiant, que le compilateur signale comme non déclaré. Les autres choix sont faux :\n\n- Un point-virgule en fin de directive serait une faute, pas une obligation : il ferait partie du texte de remplacement.\n- Le spécificateur `%d` affiche n'importe quel entier, y compris la valeur d'une constante symbolique une fois le remplacement effectué.\n- Le préprocesseur ne tient pas compte des fonctions : une directive peut figurer à n'importe quelle ligne, à condition de précéder son utilisation. L'usage est de la placer en tête du fichier, pas dans `main`.\n\nIl suffit de déplacer `#define LIMITE 50` juste après `#include <stdio.h>`.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Une directive `#define` doit obligatoirement se terminer par un point-virgule"},
+      {"lettre": "B", "texte": "La directive `#define` est écrite après l'endroit où `LIMITE` est employée"},
+      {"lettre": "C", "texte": "Le spécificateur `%d` est incapable d'afficher une constante symbolique"},
+      {"lettre": "D", "texte": "La directive `#define` doit obligatoirement figurer à l'intérieur de `main`"}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10575]
+  },
+  {
+    "external_id": "cqc-organisation-du-code-c-bac-ti-prog-elevee-2",
+    "theme": "organisation du code C",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un atelier de menuiserie de Douala organise son programme de devis en deux fichiers sources et un fichier d'en-tête. Le fichier `geometrie.h` n'est pas encore écrit.\n\nFichier `geometrie.c` :\n\n```c\n#include \"geometrie.h\"\n\nfloat aire_rectangle(float larg, float haut) {\n    return larg * haut;\n}\n\nfloat perimetre_rectangle(float larg, float haut) {\n    return 2 * (larg + haut);\n}\n```\n\nFichier `main.c` :\n\n```c\n#include <stdio.h>\n#include \"geometrie.h\"\n\nint main() {\n    float a = aire_rectangle(6, 4);\n    float p = perimetre_rectangle(6, 4);\n    printf(\"Surface : %.1f\\n\", a);\n    printf(\"Perimetre : %.1f\\n\", p);\n    printf(\"Cout : %.1f\\n\", a * PRIX_M2);\n    return 0;\n}\n```\n\nLe fichier `geometrie.h` doit rassembler tout ce que `main.c` doit connaître de `geometrie.c`, ainsi que la constante `PRIX_M2`, prix du mètre carré, qui vaut 2500 FCFA.\n\n1. Écrire le contenu complet de `geometrie.h`.\n2. Expliquer le rôle de la ligne `#include \"geometrie.h\"` dans `main.c`, puis la raison des guillemets à la place des chevrons.\n3. Une correction ne porte que sur le corps de `perimetre_rectangle`, dans `geometrie.c`. Indiquer quel fichier source il faut recompiler et quelle étape doit être refaite pour obtenir un nouvel exécutable.\n4. Donner l'affichage produit par le programme.\n5. Vérification : recalculer la troisième ligne de l'affichage par une seconde méthode, sans passer par la variable `a`.",
+    "corrige_markdown": "### Rappel de méthode\nUn projet découpé en plusieurs fichiers associe à chaque module un fichier `.c`, qui contient les définitions des fonctions, et un fichier `.h`, qui contient leurs prototypes ainsi que les constantes et les types partagés. Chaque fichier `.c` est compilé séparément en fichier objet, puis l'édition de liens assemble les fichiers objets en un exécutable.\n\n### Corrigé\n**1.** L'en-tête contient la constante partagée et les prototypes, mais aucun corps de fonction :\n\n```c\n#define PRIX_M2 2500\n\nfloat aire_rectangle(float larg, float haut);\nfloat perimetre_rectangle(float larg, float haut);\n```\n\n**2.** Avant la compilation, la directive recopie le contenu de `geometrie.h` dans `main.c`. Sans elle, `main.c` ne connaîtrait ni les prototypes des deux fonctions ni la constante `PRIX_M2`, identifiant inconnu qui provoquerait une erreur. Les guillemets indiquent un fichier du projet, cherché d'abord dans le dossier courant ; les chevrons `<` et `>` désignent les en-têtes de la bibliothèque standard, cherchés dans les dossiers du système. La même ligne dans `geometrie.c` permet au compilateur de vérifier que les définitions concordent avec les prototypes.\n\n**3.** Seul `geometrie.c` est recompilé, ce qui donne un nouveau fichier objet. `main.c` et `geometrie.h` n'ont pas changé : le fichier objet de `main.c` reste valable. Il faut ensuite refaire l'édition de liens, qui assemble le fichier objet de `main.c` et le nouveau fichier objet de `geometrie.c` en un exécutable.\n\n**4.** La surface vaut `6 * 4 = 24`, le périmètre `2 * (6 + 4) = 20`, et le coût `24 * 2500 = 60000`. Chaque valeur est affichée avec une décimale :\n\n```\nSurface : 24.0\nPerimetre : 20.0\nCout : 60000.0\n```\n\n**5.** Seconde méthode, directement à partir des dimensions : `6 * 4 * 2500 = 60000`, soit `60000.0` avec le format `%.1f`. Ce résultat est identique à celui de la troisième ligne, ce qui confirme l'affichage.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10575]
+  }
+]

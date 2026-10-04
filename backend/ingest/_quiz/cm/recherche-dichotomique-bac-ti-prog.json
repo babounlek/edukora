@@ -1,0 +1,64 @@
+[
+  {
+    "external_id": "cqc-recherche-dichotomique-bac-ti-prog-faible-0",
+    "theme": "recherche dichotomique",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une recherche dichotomique est en cours dans le tableau trié `T` ; les bornes courantes de la zone de recherche sont `g = 2` et `d = 7`.\n\n```c\nint T[8] = {5, 12, 18, 27, 33, 40, 56, 71};\nint g = 2, d = 7;\nint m = (g + d) / 2;\n```\n\nQuelle valeur du tableau est alors comparée à l'élément cherché ?",
+    "corrige_markdown": "### Rappel de méthode\nL'indice du milieu se calcule avec `m = (g + d) / 2` en division entière, donc en arrondissant vers le bas, à partir des deux bornes et non de la seule borne `d` ; l'élément `T[m]` est le seul comparé à ce tour.\n\n### Corrigé\nAvec `g = 2` et `d = 7`, `g + d` vaut 9 et `9 / 2` donne 4 en division entière : `m` vaut 4 et `T[4]` vaut 33.\n\n- `40` correspond à `T[5]`, obtenu en arrondissant 4,5 vers le haut, alors que la division entière du C tronque.\n- `27` correspond à `T[3]`, obtenu avec `d / 2` : la borne `g` est oubliée.\n- `18` correspond à `T[2]`, obtenu avec `(d - g) / 2` : le décalage dû à la borne `g` est oublié.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`40`" },
+      { "lettre": "B", "texte": "`33`" },
+      { "lettre": "C", "texte": "`27`" },
+      { "lettre": "D", "texte": "`18`" }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10625]
+  },
+  {
+    "external_id": "cqc-recherche-dichotomique-bac-ti-prog-moyenne-1",
+    "theme": "recherche dichotomique",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le tableau trié `T` contient 9 entiers, et `x` désigne la valeur cherchée dans le fragment de code ci-dessous.\n\n```c\nint T[9] = {4, 9, 13, 21, 26, 34, 47, 52, 68};\nint g = 0, d = 8, m, pos = -1;\nwhile (g <= d && pos == -1) {\n    m = (g + d) / 2;\n    if (T[m] == x) {\n        pos = m;\n    } else if (T[m] < x) {\n        g = m + 1;\n    } else {\n        d = m - 1;\n    }\n}\n```\n\n**1.** Faire la trace de la boucle pour `x = 47` (valeurs de `g`, `d`, `m` et `T[m]` à chaque tour) et donner la valeur finale de `pos`.\n**2.** Faire la même trace pour `x = 30`, puis expliquer pourquoi la boucle s'arrête alors que `pos` vaut toujours -1.",
+    "corrige_markdown": "### Rappel de méthode\nÀ chaque tour, la valeur cherchée est comparée à l'élément du milieu `T[m]` : en cas d'égalité la position est trouvée ; sinon la borne `g` passe à `m + 1` (la valeur cherchée est plus grande) ou la borne `d` passe à `m - 1` (elle est plus petite). La boucle cesse lorsque `pos` est renseignée ou lorsque `g` dépasse `d`.\n\n### Corrigé\n**1.** Pour `x = 47` :\n\n| Tour | `g` | `d` | `m` | `T[m]` | Décision |\n|---|---|---|---|---|---|\n| 1 | 0 | 8 | 4 | 26 | 26 < 47 : `g = 5` |\n| 2 | 5 | 8 | 6 | 47 | égalité : `pos = 6` |\n\nLa condition `pos == -1` devient fausse : la boucle s'arrête après 2 tours et `pos` vaut 6.\n\n**2.** Pour `x = 30` :\n\n| Tour | `g` | `d` | `m` | `T[m]` | Décision |\n|---|---|---|---|---|---|\n| 1 | 0 | 8 | 4 | 26 | 26 < 30 : `g = 5` |\n| 2 | 5 | 8 | 6 | 47 | 47 > 30 : `d = 5` |\n| 3 | 5 | 5 | 5 | 34 | 34 > 30 : `d = 4` |\n\nAprès le tour 3, `g` vaut 5 et `d` vaut 4 : la condition `g <= d` est fausse, car la zone de recherche est vide. La valeur 30 n'est pas dans le tableau, donc `pos` n'a jamais été modifiée et reste égale à -1.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10625]
+  },
+  {
+    "external_id": "cqc-recherche-dichotomique-bac-ti-prog-elevee-2",
+    "theme": "recherche dichotomique",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un tableau trié par ordre croissant contient les numéros de table des candidats d'un centre d'examen ; une fonction doit y retrouver un numéro sans parcourir tout le tableau.\n\n**1.** Écrire la fonction C `int chercher(int T[], int n, int x)` qui applique la recherche dichotomique et retourne l'indice de `x` dans `T`, ou -1 si `x` est absent.\n**2.** Faire la trace de `chercher(T, 8, 63)` avec `T = {3, 8, 15, 22, 31, 40, 57, 63}` (valeurs de `g`, `d`, `m` et `T[m]` à chaque tour).\n**3.** Donner le nombre maximal de tours pour `n = 8`, puis pour `n = 1000`, avec la formule $\\lfloor\\log_2 n\\rfloor+1$.\n**4.** Vérification : comparer le nombre de tours de la question 2 à la borne de la question 3, puis dérouler `chercher(T, 8, 1)` et indiquer la valeur retournée et le nombre de tours.",
+    "corrige_markdown": "### Rappel de méthode\nLa fonction maintient deux bornes `g` et `d` qui encadrent la zone encore possible ; à chaque tour, elle compare `x` à `T[m]` avec `m = (g + d) / 2` et abandonne la moitié qui ne peut pas contenir `x`. La zone étant divisée par deux à chaque tour, il y a au plus $\\lfloor\\log_2 n\\rfloor+1$ tours.\n\n### Corrigé\n**1.** Fonction :\n\n```c\nint chercher(int T[], int n, int x) {\n    int g = 0, d = n - 1, m;\n    while (g <= d) {\n        m = (g + d) / 2;\n        if (T[m] == x) {\n            return m;\n        } else if (T[m] < x) {\n            g = m + 1;\n        } else {\n            d = m - 1;\n        }\n    }\n    return -1;\n}\n```\n\nLa fonction suppose le tableau trié. L'instruction `return m` interrompt la recherche dès que `x` est trouvé ; `return -1` n'est atteint que si la zone de recherche est devenue vide.\n\n**2.** Trace pour `x = 63` :\n\n| Tour | `g` | `d` | `m` | `T[m]` | Décision |\n|---|---|---|---|---|---|\n| 1 | 0 | 7 | 3 | 22 | 22 < 63 : `g = 4` |\n| 2 | 4 | 7 | 5 | 40 | 40 < 63 : `g = 6` |\n| 3 | 6 | 7 | 6 | 57 | 57 < 63 : `g = 7` |\n| 4 | 7 | 7 | 7 | 63 | égalité : retourne 7 |\n\n**3.** Pour `n = 8` : $\\lfloor\\log_2 8\\rfloor+1 = 3+1 = 4$ tours au plus. Pour `n = 1000` : $2^9 = 512 \\le 1000 < 1024 = 2^{10}$, donc $\\lfloor\\log_2 1000\\rfloor = 9$ et il y a au plus 10 tours.\n\n**4.** La question 2 a demandé 4 tours, soit exactement la borne de la question 3 pour `n = 8` : le numéro 63, situé dans la dernière case, fait partie des cas les plus défavorables, et la borne est atteinte sans être dépassée. Pour `x = 1` :\n\n| Tour | `g` | `d` | `m` | `T[m]` | Décision |\n|---|---|---|---|---|---|\n| 1 | 0 | 7 | 3 | 22 | 22 > 1 : `d = 2` |\n| 2 | 0 | 2 | 1 | 8 | 8 > 1 : `d = 0` |\n| 3 | 0 | 0 | 0 | 3 | 3 > 1 : `d = -1` |\n\nEnsuite `g` vaut 0 et `d` vaut -1 : la zone est vide, la fonction retourne -1 après 3 tours, ce qui respecte la borne de 4 tours.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10625, 10563]
+  }
+]

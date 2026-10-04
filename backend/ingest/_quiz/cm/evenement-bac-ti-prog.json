@@ -1,0 +1,120 @@
+[
+  {
+    "external_id": "cqc-evenement-bac-ti-prog-faible-0",
+    "theme": "événement",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans la page d'une boutique en ligne de Douala, le bouton suivant est affiché :\n\n```html\n<button onclick=\"alert('Article ajouté au panier')\">Ajouter</button>\n```\n\nÀ quel moment la boîte de message « Article ajouté au panier » apparaît-elle ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn gestionnaire d'événement s'écrit dans une balise HTML sous la forme d'un attribut dont le nom commence par `on` : ce nom désigne l'événement qui déclenche le code placé entre guillemets. Il suffit donc de lire le nom de l'attribut (`onclick`, `onload`, `onmouseover`, `onsubmit`...) pour savoir quand le code s'exécute ; la fonction `alert` se contente d'afficher la boîte.\n\n### Corrigé\n\nL'attribut est `onclick` : l'événement `click` se produit quand l'utilisateur appuie sur le bouton, et c'est alors que l'instruction `alert('Article ajouté au panier')` s'exécute. Avant ce clic, rien n'apparaît.\n\nLes autres choix correspondent à d'autres événements :\n\n- **A** : la fin du chargement de la page correspond à `onload` (posé sur la balise `<body>`) ; ici, aucun attribut `onload` n'existe.\n- **C** : le passage du curseur sur un élément correspond à `onmouseover` ; le bouton n'a pas cet attribut.\n- **D** : l'envoi d'un formulaire correspond à `onsubmit`, posé sur la balise `<form>` ; il n'y a aucun formulaire dans ce code.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      11245
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Dès que la page a fini de se charger."
+      },
+      {
+        "lettre": "B",
+        "texte": "Au moment où l'utilisateur clique sur le bouton."
+      },
+      {
+        "lettre": "C",
+        "texte": "Lorsque le curseur de la souris passe sur le bouton."
+      },
+      {
+        "lettre": "D",
+        "texte": "Seulement après l'envoi d'un formulaire au serveur."
+      }
+    ],
+    "reponse_correcte": "B"
+  },
+  {
+    "external_id": "cqc-evenement-bac-ti-prog-moyenne-1",
+    "theme": "événement",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une page web, le script suivant s'exécute et la boîte de confirmation s'ouvre :\n\n```javascript\nvar ok = confirm(\"Supprimer la note ?\");\nif (ok) {\n    alert(\"Note supprimée\");\n} else {\n    alert(\"Opération annulée\");\n}\n```\n\nL'utilisateur clique sur le bouton « Annuler ». Quelle boîte de message s'affiche ensuite ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa fonction `confirm(message)` ouvre une boîte à deux boutons et retourne une valeur booléenne : `true` si l'utilisateur clique sur « OK », `false` s'il clique sur « Annuler ». Cette valeur, rangée dans une variable, sert de condition à un `if`, dont une seule des deux branches s'exécute.\n\n### Corrigé\n\nLe clic sur « Annuler » fait retourner `false` à `confirm`, donc `ok` vaut `false`. La condition `if (ok)` n'est pas vérifiée : le programme exécute la branche `else` et ouvre la boîte `alert(\"Opération annulée\")`. Une seule des deux branches s'exécute.\n\nLes autres choix sont faux :\n\n- **A** : la boîte « Note supprimée » ne s'affiche que si l'utilisateur clique sur « OK » ; ce choix confond les deux boutons.\n- **B** : contrairement à `alert`, la fonction `confirm` retourne bien une valeur, et c'est elle qui permet de distinguer « OK » de « Annuler ».\n- **C** : `if` et `else` sont exclusifs ; deux messages ne peuvent pas apparaître à la suite.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      11247
+    ],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "La boîte « Note supprimée »."
+      },
+      {
+        "lettre": "B",
+        "texte": "Aucune boîte, car `confirm` ne renvoie rien."
+      },
+      {
+        "lettre": "C",
+        "texte": "Les deux boîtes, l'une après l'autre."
+      },
+      {
+        "lettre": "D",
+        "texte": "La boîte « Opération annulée »."
+      }
+    ],
+    "reponse_correcte": "D"
+  },
+  {
+    "external_id": "cqc-evenement-bac-ti-prog-moyenne-2",
+    "theme": "événement",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le formulaire d'enregistrement des ventes d'une boutique de Douala commence par la balise suivante :\n\n```html\n<form action=\"vendre.php\" method=\"post\">\n```\n\nAvant l'envoi des données au serveur, le navigateur doit ouvrir une boîte de dialogue qui demande « Confirmer la vente ? » avec les boutons « OK » et « Annuler ». Le formulaire ne doit être envoyé que si l'utilisateur clique sur « OK ».\n\n1. Donner le nom de l'événement déclenché quand l'utilisateur envoie le formulaire.\n2. Écrire la balise `<form>` complète, avec le gestionnaire d'événement qui produit ce comportement.\n3. Expliquer pourquoi le formulaire serait envoyé même après un clic sur « Annuler » si le gestionnaire était écrit `onsubmit=\"confirm('Confirmer la vente ?');\"`.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn gestionnaire `onsubmit` s'exécute juste avant l'envoi d'un formulaire, et cet envoi n'est annulé que si le gestionnaire retourne `false`. Pour que la réponse de l'utilisateur décide de l'envoi, la valeur retournée par la fonction appelée doit donc être transmise au navigateur avec le mot-clé `return` placé dans l'attribut.\n\n### Corrigé\n\n1. L'événement est **`submit`**, géré par l'attribut `onsubmit` de la balise `<form>`.\n\n2. Le gestionnaire appelle `confirm` et transmet son résultat au navigateur grâce à `return` :\n\n```html\n<form action=\"vendre.php\" method=\"post\" onsubmit=\"return confirm('Confirmer la vente ?');\">\n```\n\nSi l'utilisateur clique sur « OK », `confirm` retourne `true` et l'envoi se poursuit ; s'il clique sur « Annuler », elle retourne `false` et le navigateur annule l'envoi.\n\n3. Sans `return`, la boîte s'ouvre bien, mais la valeur retournée par `confirm` est perdue : le gestionnaire ne retourne rien (`undefined`). Seul un retour explicite de `false` annule l'envoi ; le navigateur poursuit donc normalement, que l'utilisateur ait cliqué sur « OK » ou sur « Annuler ».",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      10565
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-evenement-bac-ti-prog-elevee-3",
+    "theme": "événement",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une page web de saisie des notes contient le code suivant :\n\n```html\n<button onclick=\"saisir()\">Ajouter une note</button>\n<script>\nvar total = 0;\nfunction saisir() {\n    var n = Number(prompt(\"Note sur 20 ?\"));\n    if (confirm(\"Enregistrer \" + n + \" ?\")) {\n        total = total + n;\n        alert(\"Total : \" + total);\n    } else {\n        alert(\"Note ignorée\");\n    }\n}\n</script>\n```\n\n1. Donner le nom de l'événement qui déclenche `saisir()` et l'action de l'utilisateur qui le produit.\n2. L'utilisateur clique trois fois sur le bouton. Au premier clic, il saisit 12 dans la boîte `prompt` puis clique sur « OK » dans la boîte `confirm` ; au deuxième, il saisit 15 puis clique sur « Annuler » ; au troisième, il saisit 9 puis clique sur « OK ». Donner, pour chaque clic, le texte de la boîte `confirm` et celui de la boîte `alert`, puis la valeur finale de `total`.\n3. Écrire la balise `<body>` qui appellerait `saisir()` automatiquement dès la fin du chargement de la page, sans aucun clic.\n4. Vérification : lors d'un quatrième appel, l'utilisateur clique sur « Annuler » dans la boîte `prompt`, qui retourne alors `null`, puis sur « OK » dans la boîte `confirm`. Sachant que `Number(null)` vaut 0, donner le texte de la boîte `confirm`, celui de la boîte `alert` et la valeur de `total`, puis conclure sur l'effet d'une saisie annulée.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn événement est une action repérée par le navigateur (clic, fin de chargement, envoi d'un formulaire) ; l'attribut `on...` correspondant associe à cette action le code à exécuter. Les boîtes `prompt`, `confirm` et `alert` s'ouvrent dans l'ordre des instructions et le programme attend la réponse de l'utilisateur à chacune : on suit donc la valeur de `total` clic après clic, en déroulant la fonction à chaque appel.\n\n### Corrigé\n\n1. L'événement est **`click`** (attribut `onclick`) : il se produit lorsque l'utilisateur clique sur le bouton « Ajouter une note ».\n\n2. Trace des trois clics :\n\n| Clic | Saisie `prompt` | `n` | Boîte `confirm` | Réponse | `total` | Boîte `alert` |\n|---|---|---|---|---|---|---|\n| 1 | 12 | 12 | Enregistrer 12 ? | OK | 12 | Total : 12 |\n| 2 | 15 | 15 | Enregistrer 15 ? | Annuler | 12 (inchangé) | Note ignorée |\n| 3 | 9 | 9 | Enregistrer 9 ? | OK | 21 | Total : 21 |\n\nLa valeur finale de `total` est donc **21** (12 + 9, la note 15 ayant été refusée).\n\n3. La fin du chargement correspond à l'événement `load`, qui se place sur la balise `<body>` :\n\n```html\n<body onload=\"saisir()\">\n```\n\n4. Si l'utilisateur annule la boîte `prompt`, `Number(null)` vaut 0, donc `n` vaut 0. La boîte `confirm` affiche « Enregistrer 0 ? » ; après « OK », `total` devient 21 + 0 = 21 et la boîte `alert` affiche « Total : 21 ». Une saisie annulée est donc comptée comme une note nulle : elle ne modifie pas le total, mais elle déclenche quand même une demande de confirmation inutile.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      10571
+    ],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]

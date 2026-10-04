@@ -1,0 +1,49 @@
+[
+  {
+    "external_id": "cqc-traduction-algorithme-c-bac-ti-prog-faible-0",
+    "theme": "Traduction algorithme/C",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "La partie déclarative d'un algorithme est la suivante.\n\n```\nVariables\n   prix : réel\n   qte  : entier\n```\n\nQuelle déclaration en langage C traduit correctement ces deux variables ?",
+    "corrige_markdown": "### Rappel de méthode\nEn langage C, une déclaration s'écrit `type nom;` : le type précède le nom de la variable, et les mots du pseudo-code ne sont pas des mots-clés du langage. Il faut choisir le type C qui convient à la nature de la valeur stockée : nombre entier d'un côté, nombre à partie décimale de l'autre.\n\n### Corrigé\nLe prix est un réel, donc de type `float`, et la quantité est un entier, donc de type `int` : la déclaration est `float prix; int qte;`. Chacun des autres choix contient une faute précise :\n\n- `int prix; float qte;` inverse les deux types : le prix deviendrait un entier et perdrait sa partie décimale, un prix de 750.5 étant stocké comme 750.\n- `reel prix; entier qte;` recopie les mots du pseudo-code : `reel` et `entier` ne sont pas des types du langage C, et le compilateur les rejette.\n- `prix float; qte int;` écrit le type après le nom, alors que le langage C l'exige avant.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "`float prix; int qte;`"},
+      {"lettre": "B", "texte": "`int prix; float qte;`"},
+      {"lettre": "C", "texte": "`reel prix; entier qte;`"},
+      {"lettre": "D", "texte": "`prix float; qte int;`"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [10563]
+  },
+  {
+    "external_id": "cqc-traduction-algorithme-c-bac-ti-prog-moyenne-1",
+    "theme": "Traduction algorithme/C",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Le programme C suivant contrôle l'accès à un coffre : la saisie du code est répétée tant que le code est faux et que moins de trois essais ont été effectués.\n\n```c\n#include <stdio.h>\n\nint main() {\n    int code, essais = 0;\n    do {\n        printf(\"Code : \");\n        scanf(\"%d\", &code);\n        essais = essais + 1;\n    } while (code != 4521 && essais < 3);\n    return 0;\n}\n```\n\n1. Traduire en pseudo-code l'initialisation de `essais` et la boucle `do ... while`, avec la structure `Répéter ... Jusqu'à`.\n2. Donner le nombre de saisies effectuées lorsque les valeurs saisies sont successivement 1111, 2222 puis 3333, puis lorsqu'elles sont 1111 puis 4521.",
+    "corrige_markdown": "### Rappel de méthode\nLe `do ... while (C)` du langage C continue aussi longtemps que C est vraie, alors que `Répéter ... Jusqu'à (D)` s'interrompt dès que D est vraie : D est donc la négation de C. Pour nier un `&&`, on nie chacun des deux termes et on remplace `&&` par `OU` (lois de De Morgan).\n\n### Corrigé\n**1.** La condition du C est `code != 4521 && essais < 3`. Sa négation est `code = 4521` OU `essais >= 3` : la saisie s'arrête dès que le code est bon ou que trois essais ont été faits.\n\n```\nessais ← 0\nRépéter\n    Écrire(\"Code : \")\n    Lire(code)\n    essais ← essais + 1\nJusqu'à (code = 4521) OU (essais >= 3)\n```\n\n**2.** Trace avec 1111, 2222, 3333 :\n\n| saisie | code | essais | code != 4521 && essais < 3 |\n|---|---|---|---|\n| 1 | 1111 | 1 | vrai, la boucle continue |\n| 2 | 2222 | 2 | vrai, la boucle continue |\n| 3 | 3333 | 3 | faux car essais < 3 est faux, la boucle s'arrête |\n\nIl y a donc 3 saisies. Trace avec 1111 puis 4521 :\n\n| saisie | code | essais | code != 4521 && essais < 3 |\n|---|---|---|---|\n| 1 | 1111 | 1 | vrai, la boucle continue |\n| 2 | 4521 | 2 | faux car code != 4521 est faux, la boucle s'arrête |\n\nIl y a donc 2 saisies.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10563]
+  },
+  {
+    "external_id": "cqc-traduction-algorithme-c-bac-ti-prog-elevee-2",
+    "theme": "Traduction algorithme/C",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [{"examen": "bac", "serie": "TI"}],
+    "enonce_markdown": "Un algorithme traite un entier positif `n`. Dans cet algorithme, `div` désigne le quotient de la division entière et `mod` son reste.\n\n```\nAlgorithme bits_a_un\nVariables\n   n, nb : entier\nDébut\n   Lire(n)\n   nb ← 0\n   Tant que n > 0 Faire\n      Si n mod 2 = 1 Alors\n         nb ← nb + 1\n      FinSi\n      n ← n div 2\n   FinTantQue\n   Écrire(nb)\nFin\n```\n\n1. Traduire en C la déclaration des variables, puis les instructions `Lire(n)` et `Écrire(nb)`.\n2. Traduire en C l'initialisation de `nb` et la boucle `Tant que`, test compris.\n3. Faire la trace de l'exécution pour la valeur saisie 13 : donner `n` et `nb` à la fin de chaque tour, puis la valeur affichée.\n4. Vérification : écrire 13 en binaire, en déduire ce que compte l'algorithme et contrôler le résultat de la question 3, puis donner l'affichage pour la valeur saisie 0.",
+    "corrige_markdown": "### Rappel de méthode\nChaque élément du pseudo-code possède un équivalent fixe en langage C : `←` devient `=`, le test d'égalité `=` devient `==`, `mod` devient `%`, `div` devient `/` entre deux entiers, `Lire` devient `scanf` avec `&` devant la variable, et `Écrire` devient `printf`. On traduit ligne à ligne, puis on contrôle la traduction sur une valeur test.\n\n### Corrigé\n**1.** Les variables sont des entiers, donc de type `int` :\n\n```c\nint n, nb;\nscanf(\"%d\", &n);\nprintf(\"%d\\n\", nb);\n```\n\n**2.** `Tant que ... Faire` devient `while`, et `Si ... Alors ... FinSi` devient `if`. Le test `n mod 2 = 1` s'écrit `n % 2 == 1` : un seul signe `=` serait une affectation. Comme `n` est de type `int`, `n / 2` est bien une division entière.\n\n```c\nnb = 0;\nwhile (n > 0) {\n    if (n % 2 == 1) {\n        nb = nb + 1;\n    }\n    n = n / 2;\n}\n```\n\nLe programme complet est donc :\n\n```c\n#include <stdio.h>\n\nint main() {\n    int n, nb;\n    scanf(\"%d\", &n);\n    nb = 0;\n    while (n > 0) {\n        if (n % 2 == 1) {\n            nb = nb + 1;\n        }\n        n = n / 2;\n    }\n    printf(\"%d\\n\", nb);\n    return 0;\n}\n```\n\n**3.** Trace pour 13 :\n\n| tour | n au début | n mod 2 | nb | n à la fin |\n|---|---|---|---|---|\n| 1 | 13 | 1 | 1 | 6 |\n| 2 | 6 | 0 | 1 | 3 |\n| 3 | 3 | 1 | 2 | 1 |\n| 4 | 1 | 1 | 3 | 0 |\n\nAprès le tour 4, `n` vaut 0 et la condition `n > 0` est fausse : la boucle s'arrête et le programme affiche 3.\n\n**4.** Le nombre 13 vaut 8 + 4 + 1, donc son écriture binaire est 1101, qui contient trois chiffres 1. L'algorithme compte les chiffres 1 de l'écriture binaire de `n`, et le résultat 3 de la question 3 est confirmé. Pour la valeur 0, la condition `n > 0` est fausse dès le départ : la boucle n'est jamais exécutée, `nb` reste à 0 et le programme affiche 0, ce qui est correct puisque l'écriture binaire de 0 ne contient aucun chiffre 1.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10563, 10572]
+  }
+]

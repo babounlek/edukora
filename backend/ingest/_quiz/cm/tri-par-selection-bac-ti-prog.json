@@ -1,0 +1,64 @@
+[
+  {
+    "external_id": "cqc-tri-par-selection-bac-ti-prog-faible-0",
+    "theme": "tri par sélection",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le tri par sélection, en ordre croissant, est appliqué au tableau `T` suivant.\n\n```c\nint T[5] = {9, 4, 7, 2, 6};\n```\n\nQuel est le contenu de `T` à la fin de la première passe de la boucle extérieure ?",
+    "corrige_markdown": "### Rappel de méthode\nÀ chaque passe, le tri par sélection repère où se trouve le minimum de la partie non triée, puis permute ce minimum avec la première case de cette partie : une passe ne provoque donc qu'une seule permutation, et seules les premières cases sont définitivement placées.\n\n### Corrigé\nAu début de la première passe, la partie non triée est tout le tableau. Le plus petit élément est 2, à l'indice 3 ; il est permuté avec `T[0]` (valeur 9), ce qui donne `{2, 4, 7, 9, 6}`.\n\n- `{2, 9, 4, 7, 6}` décale les éléments vers la droite pour placer le minimum au début, au lieu de le permuter avec `T[0]`.\n- `{2, 9, 7, 4, 6}` provient d'échanges faits dès qu'un élément plus petit que `T[0]` apparaît (9 avec 4, puis 4 avec 2) : la recherche du minimum et l'échange sont mélangés.\n- `{2, 4, 6, 7, 9}` est le tableau entièrement trié, obtenu seulement à la fin des quatre passes.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "`{2, 9, 4, 7, 6}`" },
+      { "lettre": "B", "texte": "`{2, 9, 7, 4, 6}`" },
+      { "lettre": "C", "texte": "`{2, 4, 6, 7, 9}`" },
+      { "lettre": "D", "texte": "`{2, 4, 7, 9, 6}`" }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [10575]
+  },
+  {
+    "external_id": "cqc-tri-par-selection-bac-ti-prog-moyenne-1",
+    "theme": "tri par sélection",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le tableau `T = {6, 15, 3, 12, 9}` est trié en ordre croissant par la fonction suivante.\n\n```c\nvoid trier(int T[], int n) {\n    int k, j, pos_min, tmp;\n    for (k = 0; k < n - 1; k++) {\n        pos_min = k;\n        for (j = k + 1; j < n; j++) {\n            if (T[j] < T[pos_min]) {\n                pos_min = j;\n            }\n        }\n        if (pos_min != k) {\n            tmp = T[k];\n            T[k] = T[pos_min];\n            T[pos_min] = tmp;\n        }\n    }\n}\n```\n\n**1.** Donner le contenu de `T` à la fin de chacune des 4 passes de la boucle extérieure, pour `n = 5`.\n**2.** Déterminer le nombre de comparaisons `T[j] < T[pos_min]` effectuées et le nombre de permutations réalisées, puis retrouver le nombre de comparaisons avec la formule $\\frac{n(n-1)}{2}$ et l'appliquer à un tableau de 12 valeurs.",
+    "corrige_markdown": "### Rappel de méthode\nÀ la passe `k`, la boucle intérieure examine les cases `k + 1` à `n - 1` pour repérer l'indice du minimum, puis une seule permutation éventuelle place ce minimum en case `k` ; la boucle intérieure effectue `n - 1 - k` comparaisons, quelle que soit la disposition des valeurs.\n\n### Corrigé\n**1.** Contenu de `T` après chaque passe :\n\n| Passe (`k`) | Minimum de la partie non triée | `pos_min` | `T` après la passe |\n|---|---|---|---|\n| 0 | 3 | 2 | `{3, 15, 6, 12, 9}` |\n| 1 | 6 | 2 | `{3, 6, 15, 12, 9}` |\n| 2 | 9 | 4 | `{3, 6, 9, 12, 15}` |\n| 3 | 12 | 3 | `{3, 6, 9, 12, 15}` |\n\nÀ la passe 3, `pos_min` vaut `k` : aucune permutation n'a lieu.\n\n**2.** La passe `k` fait `n - 1 - k` comparaisons : 4 + 3 + 2 + 1 = 10 comparaisons. Les passes 0, 1 et 2 permutent, la passe 3 ne permute pas : 3 permutations. La formule donne bien $\\frac{5 \\times 4}{2} = 10$. Pour 12 valeurs : $\\frac{12 \\times 11}{2} = 66$ comparaisons.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10575]
+  },
+  {
+    "external_id": "cqc-tri-par-selection-bac-ti-prog-elevee-2",
+    "theme": "tri par sélection",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une boutique de Douala veut classer les prix de ses articles du plus cher au moins cher avec un tri par sélection. Une permutation n'est effectuée que si l'indice de l'élément choisi diffère de celui de la case à remplir.\n\n**1.** Écrire la fonction C `void trier_decroissant(int p[], int n)` qui réalise ce tri.\n**2.** Donner le contenu du tableau `p = {2500, 900, 4000, 1500, 3200}` à la fin de chaque passe, ainsi que le nombre de permutations réalisées.\n**3.** Donner le nombre de comparaisons effectuées pour `n = 5`, puis pour `n = 50`, en justifiant par la formule $\\frac{n(n-1)}{2}$.\n**4.** Vérification : pour le tableau déjà rangé `{80, 60, 40, 20}`, donner le nombre de comparaisons et le nombre de permutations, puis expliquer ce que ce résultat montre sur le coût du tri.",
+    "corrige_markdown": "### Rappel de méthode\nUn tri par sélection décroissant s'obtient en inversant le sens du test de comparaison du tri croissant : la boucle intérieure retient l'indice du plus grand élément de la partie non triée, et une seule permutation par passe place cet élément en tête de cette partie. Le nombre de comparaisons ne dépend que de `n` et vaut $\\frac{n(n-1)}{2}$.\n\n### Corrigé\n**1.** Fonction :\n\n```c\nvoid trier_decroissant(int p[], int n) {\n    int i, j, imax, tmp;\n    for (i = 0; i < n - 1; i++) {\n        imax = i;\n        for (j = i + 1; j < n; j++) {\n            if (p[j] > p[imax]) {\n                imax = j;\n            }\n        }\n        if (imax != i) {\n            tmp = p[i];\n            p[i] = p[imax];\n            p[imax] = tmp;\n        }\n    }\n}\n```\n\nLa boucle intérieure ne fait que repérer `imax` ; la permutation a lieu une seule fois, après elle, et seulement si `imax` diffère de `i`.\n\n**2.** Trace :\n\n| Passe (`i`) | Maximum de la partie non triée | `p` après la passe | Permutation ? |\n|---|---|---|---|\n| 0 | 4000 (indice 2) | `{4000, 900, 2500, 1500, 3200}` | oui |\n| 1 | 3200 (indice 4) | `{4000, 3200, 2500, 1500, 900}` | oui |\n| 2 | 2500 (indice 2) | `{4000, 3200, 2500, 1500, 900}` | non |\n| 3 | 1500 (indice 3) | `{4000, 3200, 2500, 1500, 900}` | non |\n\nLe tri réalise 2 permutations.\n\n**3.** Pour `n = 5` : 4 + 3 + 2 + 1 = 10 comparaisons, soit $\\frac{5 \\times 4}{2} = 10$. Pour `n = 50` : $\\frac{50 \\times 49}{2} = 1225$ comparaisons.\n\n**4.** Pour `{80, 60, 40, 20}`, il y a 3 + 2 + 1 = 6 comparaisons, soit $\\frac{4 \\times 3}{2}$, et aucune permutation, car chaque maximum se trouve déjà en tête de sa partie. Le nombre de comparaisons est le même que pour n'importe quel tableau de 4 valeurs : le tri par sélection ne profite pas d'un tableau déjà trié, seules les permutations disparaissent.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10575]
+  }
+]

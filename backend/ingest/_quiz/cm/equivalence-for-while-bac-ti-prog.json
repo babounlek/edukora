@@ -1,0 +1,84 @@
+[
+  {
+    "external_id": "cqc-equivalence-for-while-bac-ti-prog-faible-0",
+    "theme": "Équivalence for/while",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une boucle `for` d'un programme C affiche des valeurs décroissantes :\n\n```c\nfor (k = 10; k > 0; k -= 3)\n    printf(\"%d \", k);\n```\n\nQuelle suite d'instructions équivaut exactement à cette boucle ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour traduire `for (initialisation; condition; pas)` en `while`, l'initialisation passe avant la boucle, la condition est recopiée telle quelle entre les parenthèses du `while`, et le pas devient la dernière instruction du corps, après les instructions utiles.\n\n### Corrigé\n\nLa boucle `for` affiche `10 7 4 1` (la valeur suivante, -2, ne vérifie plus `k > 0`).\n\n- Choix A : le pas `k -= 3` est placé avant l'affichage ; la valeur 10 n'est jamais affichée et la boucle affiche `7 4 1 -2`.\n- Choix B : l'initialisation `k = 10` est répétée dans le corps ; `k` repasse à 10 à chaque tour, la condition reste vraie et la boucle affiche 10 indéfiniment.\n- Choix C : la condition est inversée (`k < 0` au lieu de `k > 0`) ; elle est fausse dès le départ et rien n'est affiché.\n- Choix D : initialisation avant la boucle, condition identique, pas en dernière position.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`k = 10; while (k > 0) { k -= 3; printf(\"%d \", k); }`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`k = 10; while (k > 0) { k = 10; printf(\"%d \", k); k -= 3; }`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`k = 10; while (k < 0) { printf(\"%d \", k); k -= 3; }`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`k = 10; while (k > 0) { printf(\"%d \", k); k -= 3; }`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      10563
+    ]
+  },
+  {
+    "external_id": "cqc-equivalence-for-while-bac-ti-prog-moyenne-1",
+    "theme": "Équivalence for/while",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un élève de Terminale TI doit remplacer la boucle `for` suivante par une boucle `while` équivalente.\n\n```c\nint i;\nfor (i = 5; i >= 1; i--)\n    printf(\"%d \", i * i);\n```\n\nIl propose la version suivante :\n\n```c\nint j = 5;\nwhile (j > 1) {\n    j--;\n    printf(\"%d \", j * j);\n}\n```\n\n1. Donner l'affichage produit par chacun des deux programmes.\n2. Relever les deux erreurs commises dans la version `while`.\n3. Donner l'affichage obtenu lorsqu'une seule des deux erreurs est corrigée (deux cas à étudier), puis écrire la version correcte.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `while` reproduit fidèlement une boucle `for` quand trois éléments sont repris sans modification : l'initialisation écrite avant la boucle, la condition copiée dans les parenthèses et le pas placé en toute fin de corps. Pour repérer des erreurs de conversion, il suffit de comparer ces trois éléments un par un, puis de dérouler les deux boucles sur leurs premières valeurs.\n\n### Corrigé\n\n**1.** La boucle `for` prend les valeurs `i = 5, 4, 3, 2, 1` et affiche `25 16 9 4 1`. La version de l'élève décrémente `j` avant l'affichage et s'arrête dès que `j` atteint 1, avant d'avoir traité ce tour : elle affiche `16 9 4 1`.\n\n**2.** Deux erreurs :\n\n- le pas `j--` est placé au début du corps, avant l'affichage, au lieu d'être la dernière instruction ; la valeur 5 n'est donc jamais affichée ;\n- la condition `j > 1` ne reprend pas celle du `for` (`i >= 1`) ; le tour où la variable vaut 1 est perdu.\n\n**3.** Corrections partielles :\n\n- condition corrigée seule (`while (j >= 1)`, pas toujours en tête) : `j` passe de 1 à 0 avant l'affichage, et l'affichage devient `16 9 4 1 0` ;\n- pas déplacé en fin de corps seul (condition `j > 1` conservée) : le tour `j = 1` n'a pas lieu, et l'affichage devient `25 16 9 4`.\n\nAucune des deux corrections ne suffit seule. Version correcte :\n\n```c\nint j = 5;\nwhile (j >= 1) {\n    printf(\"%d \", j * j);\n    j--;\n}\n```\n\nElle affiche `25 16 9 4 1`, comme la boucle `for`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      11242,
+      10572
+    ]
+  },
+  {
+    "external_id": "cqc-equivalence-for-while-bac-ti-prog-elevee-2",
+    "theme": "Équivalence for/while",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un technicien parcourt des relevés de pression de 15 en 15 en descendant, et compte les relevés pairs ; il s'arrête dès qu'il en a trouvé trois ou lorsque la valeur atteint 0 ou moins.\n\n```c\n#include <stdio.h>\nint main() {\n    int i, nb = 0;\n    for (i = 100; i > 0 && nb < 3; i -= 15) {\n        if (i % 2 == 0)\n            nb++;\n    }\n    printf(\"%d %d\", i, nb);\n    return 0;\n}\n```\n\n1. Faire la trace de la boucle : valeur de `i` au début de chaque tour, valeur de `nb` à la fin du tour, puis donner l'affichage final.\n2. Écrire une boucle `while` équivalente à cette boucle `for`.\n3. Donner le nombre de tours effectués et préciser laquelle des deux conditions arrête la boucle.\n4. Vérification : avec la valeur initiale 20 au lieu de 100 (et `nb` remis à 0), donner l'affichage de la version `for`, puis celui de la version `while`, et conclure.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `for` dont la condition associe plusieurs tests se traduit en `while` en gardant la condition complète, avec l'initialisation avant la boucle et le pas en dernière instruction du corps. Après la boucle, la variable de contrôle garde la valeur qui a fait échouer le test, non celle du dernier tour exécuté. Pour contrôler la conversion, comparer les deux versions sur un second jeu de valeurs.\n\n### Corrigé\n\n**1.** Suivi des variables :\n\n| Tour | `i` au début | `i % 2 == 0` | `nb` à la fin du tour |\n|---|---|---|---|\n| 1 | 100 | oui | 1 |\n| 2 | 85 | non | 1 |\n| 3 | 70 | oui | 2 |\n| 4 | 55 | non | 2 |\n| 5 | 40 | oui | 3 |\n\nAprès le tour 5, le pas donne `i = 25` ; le test `nb < 3` est alors faux. Le programme affiche `25 3`.\n\n**2.** Version `while` équivalente :\n\n```c\ni = 100;\nwhile (i > 0 && nb < 3) {\n    if (i % 2 == 0)\n        nb++;\n    i -= 15;\n}\n```\n\n**3.** La boucle effectue 5 tours. C'est la condition `nb < 3` qui l'arrête : `i` vaut encore 25, donc `i > 0` reste vraie.\n\n**4.** Avec `i = 20` au départ : tour 1 (`i = 20`, pair, `nb = 1`), tour 2 (`i = 5`, impair, `nb = 1`), puis `i = -10`. Cette fois, c'est `i > 0` qui est fausse. La boucle `for` et la version `while` affichent toutes deux `-10 1`. Les deux versions donnent les mêmes valeurs sur ces deux jeux de test, avec deux conditions d'arrêt différentes : la conversion est correcte.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10563,
+      10743
+    ]
+  }
+]
