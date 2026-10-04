@@ -1,0 +1,103 @@
+[
+  {
+    "external_id": "cqc-majoration-geometrique-bac-ti-mat-faible-0",
+    "theme": "majoration géométrique",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit $(u_n)$ une suite de réels et $\\alpha$ un réel tels que $|u_0-\\alpha|=5$ et, pour tout entier naturel $n$, $|u_{n+1}-\\alpha|\\le0{,}4\\,|u_n-\\alpha|$. Quelle majoration de $|u_n-\\alpha|$ est valable pour tout entier naturel $n$ ?",
+    "corrige_markdown": "### Rappel de méthode\nSi l'écart à $\\alpha$ est multiplié au plus par un facteur $k$ à chaque étape, appliquer cette contrainte $n$ fois de suite à l'écart initial donne un écart au plus égal à $k^n$ fois l'écart initial : le facteur $k$ figure à la puissance $n$, et l'écart initial reste en facteur.\n\n### Corrigé\nOn démontre par récurrence que $|u_n-\\alpha|\\le5\\times0{,}4^{\\,n}$. Au rang $0$, $|u_0-\\alpha|=5=5\\times0{,}4^{\\,0}$. Si $|u_n-\\alpha|\\le5\\times0{,}4^{\\,n}$, alors\n\n$$|u_{n+1}-\\alpha|\\le0{,}4\\,|u_n-\\alpha|\\le0{,}4\\times5\\times0{,}4^{\\,n}=5\\times0{,}4^{\\,n+1}.$$\n\nLa majoration $|u_n-\\alpha|\\le5\\times0{,}4^{\\,n}$ est donc vraie pour tout entier naturel $n$.\n\n- Choix B : $0{,}4\\times5^{\\,n}$ inverse les rôles de $0{,}4$ et de $5$. La majoration est fausse dès le rang $0$ ($0{,}4<5=|u_0-\\alpha|$) et elle croît avec $n$ au lieu de décroître.\n- Choix C : $(5\\times0{,}4)^{n}=2^{n}$ place le produit sous la puissance. La majoration est fausse au rang $0$ ($1<5$) et elle croît elle aussi.\n- Choix D : $5\\times0{,}4^{\\,n+1}$ décale l'exposant d'un rang. Au rang $0$, elle donne $2$, alors que $|u_0-\\alpha|=5$ : elle est fausse.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "$|u_n-\\alpha|\\le5\\times0{,}4^{\\,n}$"
+      },
+      {
+        "lettre": "B",
+        "texte": "$|u_n-\\alpha|\\le0{,}4\\times5^{\\,n}$"
+      },
+      {
+        "lettre": "C",
+        "texte": "$|u_n-\\alpha|\\le(5\\times0{,}4)^{n}$"
+      },
+      {
+        "lettre": "D",
+        "texte": "$|u_n-\\alpha|\\le5\\times0{,}4^{\\,n+1}$"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      8834,
+      8823
+    ]
+  },
+  {
+    "external_id": "cqc-majoration-geometrique-bac-ti-mat-moyenne-1",
+    "theme": "majoration géométrique",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit $(u_n)$ une suite de réels et $\\alpha$ un réel tels que $|u_0-\\alpha|=6$ et, pour tout entier naturel $n$, $|u_{n+1}-\\alpha|\\le\\dfrac14\\,|u_n-\\alpha|$. On en déduit que $|u_n-\\alpha|\\le6\\left(\\dfrac14\\right)^{n}$ pour tout entier naturel $n$. On rappelle que $4^4=256$, $4^5=1024$, $4^6=4096$ et $4^7=16384$. Quel est le plus petit entier $n$ pour lequel cette majoration garantit $|u_n-\\alpha|<10^{-3}$ ?",
+    "corrige_markdown": "### Rappel de méthode\nPour trouver le rang à partir duquel un majorant géométrique $C\\,k^{n}$ passe sous un seuil $\\varepsilon$, on divise l'inégalité $C\\,k^{n}<\\varepsilon$ par $C>0$ afin d'isoler $k^{n}$, puis on cherche le premier entier qui vérifie la condition obtenue, ici en comparant des puissances de $4$ à une valeur de référence.\n\n### Corrigé\nLa condition s'écrit\n\n$$6\\left(\\dfrac14\\right)^{n}<10^{-3}\\iff\\dfrac{6}{4^{n}}<\\dfrac1{1000}\\iff4^{n}>6000.$$\n\nOr $4^6=4096<6000$ et $4^7=16384>6000$, et la suite $\\left(4^{n}\\right)$ est croissante : le plus petit entier convenable est $n=7$. Contrôle : $\\dfrac{6}{4^7}=\\dfrac{6}{16384}\\approx3{,}7\\times10^{-4}<10^{-3}$, alors que $\\dfrac{6}{4^6}=\\dfrac{6}{4096}\\approx1{,}5\\times10^{-3}>10^{-3}$.\n\n- Choix A : $n=6$ provient de la solution réelle de l'inéquation, environ $6{,}3$, arrondie à l'entier inférieur au lieu du supérieur. Or $\\dfrac{6}{4^6}\\approx1{,}5\\times10^{-3}$ n'est pas inférieur à $10^{-3}$.\n- Choix C : $n=5$ vient de l'oubli du facteur $6$ : on résout $4^{n}>1000$. Or $\\dfrac{6}{4^5}\\approx5{,}9\\times10^{-3}$ dépasse $10^{-3}$.\n- Choix D : $n=4$ vient d'une inéquation écrite $\\left(\\dfrac14\\right)^{n}<6\\times10^{-3}$, c'est-à-dire d'une multiplication par $6$ au lieu d'une division, ce qui donne $4^{n}>167$. Or $\\dfrac{6}{4^4}\\approx2{,}3\\times10^{-2}$ dépasse $10^{-3}$.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "$n=6$"
+      },
+      {
+        "lettre": "B",
+        "texte": "$n=7$"
+      },
+      {
+        "lettre": "C",
+        "texte": "$n=5$"
+      },
+      {
+        "lettre": "D",
+        "texte": "$n=4$"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      8823,
+      8834
+    ]
+  },
+  {
+    "external_id": "cqc-majoration-geometrique-bac-ti-mat-elevee-2",
+    "theme": "majoration géométrique",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un logiciel de calibrage d'un capteur fournit des valeurs successives $u_0,u_1,u_2,\\dots$ pour approcher une tension d'équilibre $\\alpha$, exprimée en volts et comprise entre $1$ et $3$. On sait que $u_0=2$ et que l'inégalité $$|u_{n+1}-\\alpha|\\le0{,}3\\,|u_n-\\alpha|$$ est vraie quel que soit l'entier naturel $n$.\n\n1. Justifier que $|u_0-\\alpha|\\le1$.\n2. Établir, par une récurrence portant sur l'entier $n$, la majoration $|u_n-\\alpha|\\le(0{,}3)^{n}\\,|u_0-\\alpha|$, puis en déduire que $|u_n-\\alpha|\\le(0{,}3)^{n}$.\n3. En déduire que la suite $(u_n)$ converge et préciser sa limite.\n4. Déterminer le plus petit entier $n_0$ tel que $(0{,}3)^{n_0}<10^{-3}$ (on donne $\\ln10\\approx2{,}303$ et $\\ln0{,}3\\approx-1{,}204$), puis interpréter ce résultat pour l'approximation de $\\alpha$ par $u_{n_0}$.\n5. Vérifier la valeur de $n_0$ par une seconde méthode : calculer $(0{,}3)^{5}$ et $(0{,}3)^{6}$, puis les comparer à $10^{-3}$.",
+    "corrige_markdown": "### Rappel de méthode\nSi l'écart à $\\alpha$ est multiplié au plus par un réel $k\\in]0\\,;1[$ à chaque étape, une récurrence donne $|u_n-\\alpha|\\le k^{n}|u_0-\\alpha|$ ; comme $k^{n}$ tend vers $0$, le théorème des gendarmes fournit la convergence vers $\\alpha$. Le rang d'une précision $10^{-p}$ se déduit de l'inéquation $k^{n}<10^{-p}$, résolue avec le logarithme en renversant l'inégalité puisque $\\ln k<0$.\n\n### Corrigé\n**1.** De $1\\le\\alpha\\le3$, on tire $-1\\le2-\\alpha\\le1$, donc $|u_0-\\alpha|=|2-\\alpha|\\le1$.\n\n**2.** Soit $P(n)$ la propriété : « $|u_n-\\alpha|\\le(0{,}3)^{n}|u_0-\\alpha|$ ».\n\n- Initialisation : pour $n=0$, $(0{,}3)^{0}|u_0-\\alpha|=|u_0-\\alpha|$, donc $P(0)$ est vraie.\n- Hérédité : on suppose $P(n)$ vraie. En multipliant par $0{,}3>0$, ce qui conserve le sens de l'inégalité,\n\n$$|u_{n+1}-\\alpha|\\le0{,}3\\,|u_n-\\alpha|\\le0{,}3\\times(0{,}3)^{n}|u_0-\\alpha|=(0{,}3)^{n+1}|u_0-\\alpha|,$$\n\ndonc $P(n+1)$ est vraie.\n\nLa propriété $P(n)$ est donc établie pour chaque entier naturel $n$. Avec la question 1, on obtient $|u_n-\\alpha|\\le(0{,}3)^{n}\\times1=(0{,}3)^{n}$.\n\n**3.** Comme $0<0{,}3<1$, $\\lim\\limits_{n\\to+\\infty}(0{,}3)^{n}=0$. Pour tout $n$, $0\\le|u_n-\\alpha|\\le(0{,}3)^{n}$ ; d'après le théorème des gendarmes, $\\lim\\limits_{n\\to+\\infty}|u_n-\\alpha|=0$, c'est-à-dire que $(u_n)$ converge vers $\\alpha$.\n\n**4.** On résout :\n\n$$(0{,}3)^{n}<10^{-3}\\iff n\\ln0{,}3<-3\\ln10\\iff n>\\dfrac{3\\ln10}{-\\ln0{,}3}\\approx\\dfrac{6{,}909}{1{,}204}\\approx5{,}74,$$\n\nl'inégalité changeant de sens à la division par $\\ln0{,}3<0$. Le plus petit entier convenable est $n_0=6$. Interprétation : $|u_6-\\alpha|\\le(0{,}3)^{6}<10^{-3}$, donc $u_6$ est une valeur approchée de la tension $\\alpha$ à $10^{-3}$ volt près. Ce rang est garanti par la majoration ; il ne prouve pas que le terme $u_5$ soit insuffisant en réalité.\n\n**5.** On calcule $(0{,}3)^{5}=0{,}00243>10^{-3}$ et $(0{,}3)^{6}=0{,}000729<10^{-3}$. La majoration ne passe donc sous $10^{-3}$ qu'à partir du rang $6$, ce qui confirme $n_0=6$.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      8834,
+      7941,
+      8823
+    ]
+  }
+]

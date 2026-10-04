@@ -1,0 +1,85 @@
+[
+  {
+    "external_id": "cqc-integrale-impropre-bac-ti-mat-faible-0",
+    "theme": "intégrale impropre",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle est la valeur de l'intégrale impropre $I=\\displaystyle\\int_0^{+\\infty}6e^{-2x}\\,dx$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nL'intégrale impropre $\\displaystyle\\int_a^{+\\infty}f(x)\\,dx$ est la limite, quand $X$ tend vers $+\\infty$, de l'intégrale ordinaire $\\displaystyle\\int_a^{X}f(x)\\,dx=F(X)-F(a)$, où $F$ est une primitive de $f$. Une primitive de $x\\mapsto ke^{ax}$ avec $a\\neq0$ est $x\\mapsto\\dfrac{k}{a}e^{ax}$.\n\n### Corrigé\n\nUne primitive de $x\\mapsto6e^{-2x}$ est $F(x)=\\dfrac{6}{-2}e^{-2x}=-3e^{-2x}$ ; en effet $F'(x)=-3\\times(-2)e^{-2x}=6e^{-2x}$.\n\nPour tout $X\\geq0$ :\n\n$$\\int_0^{X}6e^{-2x}\\,dx=F(X)-F(0)=-3e^{-2X}+3=3\\left(1-e^{-2X}\\right).$$\n\nQuand $X\\to+\\infty$, $-2X\\to-\\infty$, donc $e^{-2X}\\to0$ et l'intégrale ordinaire tend vers $3$. Ainsi $I=3$ : l'intégrale impropre converge, et le domaine non borné situé entre l'axe des abscisses et la courbe de $x\\mapsto6e^{-2x}$, pour $x\\geq0$, a une aire finie de $3$ unités d'aire.\n\nAnalyse des autres choix :\n\n- $-3$ : l'ordre des bornes est inversé, avec $F(0)-F(X)$ au lieu de $F(X)-F(0)$.\n- $6$ : la primitive est prise égale à $-6e^{-2x}$, avec le facteur $\\dfrac12$ oublié ; la limite de $6-6e^{-2X}$ est alors $6$.\n- $12$ : la fonction est dérivée au lieu d'être primitivée, ce qui donne $-12e^{-2x}$ et une limite égale à $12$.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "$-3$"
+      },
+      {
+        "lettre": "B",
+        "texte": "$6$"
+      },
+      {
+        "lettre": "C",
+        "texte": "$3$"
+      },
+      {
+        "lettre": "D",
+        "texte": "$12$"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      8114,
+      8827
+    ]
+  },
+  {
+    "external_id": "cqc-integrale-impropre-bac-ti-mat-moyenne-1",
+    "theme": "intégrale impropre",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère les fonctions $f$ et $F$ données, pour tout réel $x$, par $f(x)=xe^{2x}$ et $F(x)=\\left(\\dfrac{x}{2}-\\dfrac14\\right)e^{2x}$.\n\n1. Montrer que $F$ est une primitive de $f$ sur $\\mathbb{R}$.\n2. Pour tout réel $m<0$, exprimer $I(m)=\\displaystyle\\int_m^0 f(x)\\,dx$ en fonction de $m$.\n3. On rappelle que $\\displaystyle\\lim_{t\\to-\\infty}te^{t}=0$. Calculer la limite de $I(m)$ quand $m$ tend vers $-\\infty$, puis en déduire la valeur de l'intégrale impropre $\\displaystyle\\int_{-\\infty}^{0}f(x)\\,dx$.\n4. Justifier que $f(x)\\leq0$ pour tout $x\\leq0$, puis interpréter le résultat de la question 3 comme l'aire d'un domaine plan, que l'on décrira par une phrase (aire en unités d'aire).",
+    "corrige_markdown": "### Rappel de méthode\n\nUne intégrale impropre sur $]-\\infty\\,;b]$ est la limite, quand $m$ tend vers $-\\infty$, de l'intégrale ordinaire $\\displaystyle\\int_m^b f(x)\\,dx$. Pour contrôler une primitive proposée, on la dérive et on doit retrouver la fonction ; le signe de $f$ sur l'intervalle indique ensuite si l'intégrale vaut une aire ou son opposé.\n\n### Corrigé\n\n**1.** La fonction $F$ est dérivable sur $\\mathbb{R}$ comme produit de fonctions dérivables, et pour tout réel $x$ :\n\n$$F'(x)=\\dfrac12e^{2x}+\\left(\\dfrac{x}{2}-\\dfrac14\\right)\\times2e^{2x}=\\dfrac12e^{2x}+\\left(x-\\dfrac12\\right)e^{2x}=xe^{2x}=f(x).$$\n\nDonc $F$ est bien une primitive de $f$ sur $\\mathbb{R}$.\n\n**2.** Pour tout $m<0$ :\n\n$$I(m)=F(0)-F(m)=-\\dfrac14-\\left(\\dfrac{m}{2}-\\dfrac14\\right)e^{2m}=-\\dfrac14-\\dfrac{m}{2}e^{2m}+\\dfrac14e^{2m}.$$\n\n**3.** En posant $t=2m$, on a $me^{2m}=\\dfrac12\\,te^{t}$, et $t\\to-\\infty$ quand $m\\to-\\infty$ ; donc $me^{2m}\\to0$. De plus $e^{2m}\\to0$. Par somme :\n\n$$\\lim_{m\\to-\\infty}I(m)=-\\dfrac14.$$\n\nL'intégrale impropre converge et $\\displaystyle\\int_{-\\infty}^{0}xe^{2x}\\,dx=-\\dfrac14$.\n\n**4.** Pour $x\\leq0$, on a $x\\leq0$ et $e^{2x}>0$, donc $f(x)=xe^{2x}\\leq0$ : la courbe de $f$ est au-dessous de l'axe des abscisses. L'aire du domaine compris entre cette courbe, l'axe $(Ox)$ et les verticales $x=m$ et $x=0$ vaut donc $-I(m)$, et elle tend vers $\\dfrac14$ quand $m\\to-\\infty$.\n\nLe domaine non borné situé à gauche de l'axe des ordonnées, entre la courbe de $f$ et l'axe des abscisses, a une aire finie égale à $\\dfrac14$ unité d'aire. L'intégrale vaut $-\\dfrac14$ (et non $\\dfrac14$) parce que $f$ est négative : l'aire est l'opposé de l'intégrale.\n\nContrôle de cohérence : pour $m=-3$, $I(-3)=-\\dfrac14+\\dfrac74e^{-6}\\approx-0{,}2457$, valeur déjà très proche de $-0{,}25$ et de même signe que $f$.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      8114,
+      8827
+    ]
+  },
+  {
+    "external_id": "cqc-integrale-impropre-bac-ti-mat-elevee-2",
+    "theme": "intégrale impropre",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans un repère orthonormé, on considère, pour $x\\geq1$, les fonctions $f(x)=\\dfrac{4}{x^2}$ et $g(x)=\\dfrac4x$. Pour tout réel $X\\geq1$, on note $A(X)$ (respectivement $B(X)$) la mesure, en unités d'aire, de la région située entre la courbe de $f$ (respectivement de $g$), l'axe des abscisses, la verticale $x=1$ et la verticale $x=X$.\n\n1. Exprimer $A(X)$ en fonction de $X$, puis calculer $\\displaystyle\\lim_{X\\to+\\infty}A(X)$. En déduire la nature de l'intégrale impropre $\\displaystyle\\int_1^{+\\infty}f(x)\\,dx$ et sa valeur éventuelle.\n2. Exprimer $B(X)$ en fonction de $X$, puis étudier $\\displaystyle\\lim_{X\\to+\\infty}B(X)$. Que peut-on dire de l'intégrale impropre $\\displaystyle\\int_1^{+\\infty}g(x)\\,dx$ ?\n3. Interpréter les deux résultats précédents en termes d'aire du domaine non borné situé à droite de la droite $x=1$, entre l'axe des abscisses et chacune des deux courbes. Pourquoi le fait que $f(x)$ et $g(x)$ tendent toutes deux vers $0$ ne suffit-il pas à conclure de la même façon pour les deux domaines ?\n4. Vérification : calculer $A(100)$ et la comparer à la limite de la question 1, puis déterminer la valeur de $X$ pour laquelle $B(X)=100$, sachant que $e^{25}\\approx7{,}2\\times10^{10}$. Contrôler enfin que ces valeurs sont cohérentes avec l'inégalité $f(x)\\leq g(x)$ pour $x\\geq1$.",
+    "corrige_markdown": "### Rappel de méthode\n\nL'intégrale impropre $\\displaystyle\\int_1^{+\\infty}h(x)\\,dx$ est la limite de $\\displaystyle\\int_1^{X}h(x)\\,dx$ quand $X$ tend vers $+\\infty$ : elle converge si cette limite est un réel, elle diverge sinon. Sur $[1\\,;+\\infty[$, une primitive de $x\\mapsto\\dfrac1{x^2}$ est $x\\mapsto-\\dfrac1x$ et une primitive de $x\\mapsto\\dfrac1x$ est $x\\mapsto\\ln x$.\n\n### Corrigé\n\n**1.** Les fonctions $f$ et $g$ sont continues et positives sur $[1\\,;+\\infty[$, donc les aires s'obtiennent directement par les intégrales. Pour tout $X\\geq1$ :\n\n$$A(X)=\\int_1^{X}\\dfrac{4}{x^2}\\,dx=\\left[-\\dfrac4x\\right]_1^{X}=-\\dfrac4X+4=4\\left(1-\\dfrac1X\\right).$$\n\nComme $\\dfrac1X\\to0$, on obtient $\\displaystyle\\lim_{X\\to+\\infty}A(X)=4$. L'intégrale impropre $\\displaystyle\\int_1^{+\\infty}\\dfrac4{x^2}\\,dx$ converge et vaut $4$.\n\n**2.** Pour tout $X\\geq1$ :\n\n$$B(X)=\\int_1^{X}\\dfrac4x\\,dx=\\Big[4\\ln x\\Big]_1^{X}=4\\ln X-4\\ln1=4\\ln X.$$\n\nComme $\\ln X\\to+\\infty$, on obtient $\\displaystyle\\lim_{X\\to+\\infty}B(X)=+\\infty$. L'intégrale impropre $\\displaystyle\\int_1^{+\\infty}\\dfrac4x\\,dx$ diverge.\n\n**3.** Le domaine non borné situé sous la courbe de $f$ a une aire finie, égale à $4$ unités d'aire. Le domaine non borné situé sous la courbe de $g$ a une aire infinie : aucune valeur réelle ne la majore.\n\nLes deux fonctions tendent vers $0$ en $+\\infty$, mais pas à la même vitesse : $\\dfrac4{x^2}$ décroît assez vite pour que l'aire cumulée reste bornée, tandis que $\\dfrac4x$ décroît trop lentement et son aire cumulée croît comme $4\\ln X$. Tendre vers $0$ est donc une condition nécessaire, mais pas suffisante, pour que l'aire d'un domaine non borné soit finie.\n\n**4.** *Contrôle de $A$.* $A(100)=4\\left(1-\\dfrac1{100}\\right)=3{,}96$, soit $\\dfrac{3{,}96}{4}=0{,}99$ de la limite $4$ : l'aire cumulée atteint déjà $99\\,\\%$ de sa valeur limite pour $X=100$, et $A(X)=4-\\dfrac4X<4$ pour tout $X$, ce qui est cohérent avec une convergence vers $4$ par valeurs inférieures.\n\n*Contrôle de $B$.* $B(X)=100\\iff4\\ln X=100\\iff\\ln X=25\\iff X=e^{25}\\approx7{,}2\\times10^{10}$. La fonction $B$ dépasse donc n'importe quelle valeur fixée, ici $100$, mais pour un $X$ gigantesque : c'est cohérent avec une divergence très lente vers $+\\infty$.\n\n*Cohérence avec $f\\leq g$.* Pour $x\\geq1$, $\\dfrac1{x^2}\\leq\\dfrac1x$, donc $f(x)\\leq g(x)$ et le domaine sous $f$ est inclus dans le domaine sous $g$ : on doit avoir $A(X)\\leq B(X)$. Vérification : $A(100)=3{,}96$ et $B(100)=4\\ln100\\approx18{,}42$, donc $A(100)<B(100)$.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      8114,
+      8827
+    ]
+  }
+]
