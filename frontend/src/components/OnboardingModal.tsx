@@ -303,14 +303,6 @@ export function OnboardingModal() {
               Oui, c'est mon examen
             </button>
           )}
-
-          <button
-            type="button"
-            onClick={close}
-            className="mt-2 text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
-          >
-            Je préfère parcourir librement
-          </button>
         </CardContent>
       </Card>
     </div>

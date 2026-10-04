@@ -33,7 +33,7 @@ function lireFerme(): boolean {
  * séance du jour) : une seule question, un seul endroit.
  *
  * Fermable pour la visite seulement (sessionStorage), jamais pour toujours : la
- * fermeture définitive appartient au "Je préfère parcourir librement" de l'onboarding,
+ * fermeture définitive appartient à la touche Échap de l'onboarding,
  * et un élève sans examen déclaré n'a pas de séance - autant lui redemander la
  * prochaine fois. Un visiteur non connecté écrit sa déclaration en attente, reprise
  * à sa première connexion (voir cursusPrepare.ts).
