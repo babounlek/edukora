@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { ChevronLeft } from "lucide-react"
 
 import { listCursus, updateMe } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
@@ -27,7 +28,7 @@ const ONBOARDING_DONE_KEY = "edukamer_onboarding_done"
 // atterrir tel quel sans être interrompu par un écran de configuration.
 const CATALOGUE_HOME_RE = /^\/[a-z]{2}\/?$/i
 
-type Step = "pays" | "examen" | "serie"
+type Step = "pays" | "examen" | "serie" | "confirmer"
 
 function hasCompletedOnboarding(): boolean {
   try {
@@ -167,12 +168,22 @@ export function OnboardingModal() {
     const matches = cursusList.filter((c) => c.examen === code)
     const withSerie = matches.filter((c) => c.series)
     if (withSerie.length === 0) {
-      // Pas de série pour ce diplôme (ex. BEPC/BFEM) - un seul cursus possible, on
-      // termine directement plutôt que d'imposer une 3e étape sans réel choix.
-      if (matches[0]) finish(matches[0])
+      // Pas de série pour ce diplôme (ex. BEPC/BFEM) - un seul cursus possible, donc
+      // pas de choix à faire, mais on ne termine pas sur un simple clic : ici finish()
+      // règle la question pour de bon (écran marqué "fait", cursus déclaré) et un
+      // élève sans abonnement n'a ensuite aucun endroit pour corriger. Une
+      // confirmation, avec retour possible, coûte un clic de plus au bon choix.
+      if (matches[0]) setStep("confirmer")
       return
     }
     setStep("serie")
+  }
+
+  function handleBack(precedent: Step) {
+    // `selectedExamen` est conservé : revenir à "examen" doit montrer le choix qu'on
+    // vient de faire, pas un écran vierge. Seul le choix de pays le réinitialise
+    // (voir handlePickCountry), puisqu'un autre pays n'a pas les mêmes examens.
+    setStep(precedent)
   }
 
   if (!shouldShow) return null
@@ -191,9 +202,14 @@ export function OnboardingModal() {
    * revient d'elle-même, sans que personne n'ait à s'en souvenir. Calculée au rendu et
    * non dans l'état initial : `countries` arrive de l'API après le montage.
    */
-  const etapes: Step[] = browsableCountries.length > 1 ? ["pays", "examen", "serie"] : ["examen", "serie"]
   const stepEffectif: Step = step === "pays" && browsableCountries.length <= 1 ? "examen" : step
+  // La dernière étape est la série, ou la confirmation pour un diplôme qui n'en a pas.
+  const derniereEtape: Step = stepEffectif === "confirmer" ? "confirmer" : "serie"
+  const etapes: Step[] =
+    browsableCountries.length > 1 ? ["pays", "examen", derniereEtape] : ["examen", derniereEtape]
   const stepIndex = etapes.indexOf(stepEffectif)
+  const etapePrecedente = stepIndex > 0 ? etapes[stepIndex - 1] : null
+  const cursusConfirme = selectedExamen ? cursusList.find((c) => c.examen === selectedExamen) : undefined
 
   return (
     <div
@@ -204,6 +220,16 @@ export function OnboardingModal() {
     >
       <Card className="w-full max-w-sm animate-fade-up shadow-lg shadow-primary/10">
         <CardHeader>
+          {etapePrecedente && (
+            <button
+              type="button"
+              onClick={() => handleBack(etapePrecedente)}
+              className="-ml-1 mb-1 flex items-center gap-1 self-start text-sm text-muted-foreground transition-colors hover:text-primary"
+            >
+              <ChevronLeft aria-hidden="true" className="size-4" />
+              Retour
+            </button>
+          )}
           <div className="mb-2 flex gap-1.5">
             {etapes.map((etape, i) => (
               <span
@@ -216,6 +242,7 @@ export function OnboardingModal() {
             {stepEffectif === "pays" && "Dans quel pays prépares-tu ton examen ?"}
             {stepEffectif === "examen" && "Quel examen prépares-tu ?"}
             {stepEffectif === "serie" && "Quelle est ta série ?"}
+            {stepEffectif === "confirmer" && `Tu prépares le ${cursusConfirme?.examen_display ?? "diplôme choisi"} ?`}
           </CardTitle>
           <CardDescription>
             La méthode la plus efficace et motivante pour réussir tes examens. Une séance par jour, faite pour le tien.
@@ -244,7 +271,7 @@ export function OnboardingModal() {
                 <button
                   key={e.code}
                   type="button"
-                  autoFocus={i === 0}
+                  autoFocus={selectedExamen ? e.code === selectedExamen : i === 0}
                   onClick={() => handlePickExamen(e.code)}
                   className="rounded-md border border-border px-3.5 py-2.5 text-left text-sm font-medium transition-colors hover:border-primary/50 hover:bg-accent/40"
                 >
@@ -265,6 +292,17 @@ export function OnboardingModal() {
                 Série {c.series!.code}
               </button>
             ))}
+
+          {stepEffectif === "confirmer" && cursusConfirme && (
+            <button
+              type="button"
+              autoFocus
+              onClick={() => finish(cursusConfirme)}
+              className="rounded-md border border-primary bg-primary px-3.5 py-2.5 text-left text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              Oui, c'est mon examen
+            </button>
+          )}
 
           <button
             type="button"
