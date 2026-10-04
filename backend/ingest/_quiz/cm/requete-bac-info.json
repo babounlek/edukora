@@ -1,0 +1,64 @@
+[
+  {
+    "external_id": "cqc-requete-bac-info-faible-0",
+    "theme": "requête",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Un élève de Terminale étudie les objets d'un SGBD : les tables, les formulaires et les requêtes.\n\nQuelle phrase définit correctement une requête ?",
+    "corrige_markdown": "### Rappel de méthode\nChaque objet d'un SGBD joue un rôle distinct : l'un conserve les données, un autre facilite leur saisie ou leur lecture à l'écran, un troisième leur pose une question selon des critères précis. Pour définir un objet, on retient ce rôle et on évite de le confondre avec celui des deux autres.\n\n### Corrigé\nUne requête sert à interroger la base : elle extrait, dans une ou plusieurs tables, les données qui répondent à des critères, et elle peut les trier avant de les afficher. Elle est le plus souvent écrite en langage SQL.\n\n- Le choix A est faux : cette phrase décrit un formulaire, qui sert à saisir ou à consulter les données de façon conviviale, pas à les interroger selon des critères.\n- Le choix B est faux : cette phrase décrit une table, c'est-à-dire le lieu où les données sont stockées ; la requête n'est pas un lieu de stockage.\n- Le choix C est faux : cette phrase décrit le SGBD lui-même, le logiciel dans lequel on crée les tables, les formulaires et les requêtes.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "Une fenêtre conviviale qui sert à saisir ou à consulter les données, fiche par fiche."},
+      {"lettre": "B", "texte": "Un tableau de lignes et de colonnes dans lequel sont enregistrées les données de la base."},
+      {"lettre": "C", "texte": "Un logiciel chargé de créer les bases d'un établissement et d'en régler les accès."},
+      {"lettre": "D", "texte": "Une interrogation de la base pour sélectionner, filtrer ou trier des données précises."}
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [9783, 9798]
+  },
+  {
+    "external_id": "cqc-requete-bac-info-moyenne-1",
+    "theme": "requête",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Un cybercafé d'Ebolowa utilise un SGBD pour gérer ses abonnés. Le gérant énumère trois besoins :\n\n| Besoin | Description |\n|---|---|\n| 1 | Permettre à l'employée d'enregistrer un nouvel abonné grâce à un écran de saisie simple, sans manipuler directement le tableau des données. |\n| 2 | Obtenir la liste des abonnés dont l'abonnement se termine ce mois-ci, rangée par ordre alphabétique des noms. |\n| 3 | Conserver, sous forme de lignes et de colonnes, les renseignements de tous les abonnés (nom, téléphone, date de fin d'abonnement). |\n\n1. Nommer, pour chacun des trois besoins, l'objet du SGBD qui convient (table, formulaire ou requête).\n2. Justifier le choix fait pour le besoin 2.\n3. Donner une différence entre un formulaire et une requête.",
+    "corrige_markdown": "### Rappel de méthode\nDans un SGBD, trois objets se répartissent les tâches : la table conserve les données, le formulaire sert d'interface pour les saisir ou les consulter, la requête interroge la base pour en extraire, selon des critères, les données utiles. Pour choisir l'objet adapté, on repère le verbe du besoin : conserver, saisir ou consulter, interroger.\n\n### Corrigé\n**1.** Le besoin 1 relève d'un formulaire (écran de saisie convivial). Le besoin 2 relève d'une requête. Le besoin 3 relève d'une table (stockage des données en lignes et en colonnes).\n\n**2.** Le besoin 2 demande de sélectionner, parmi tous les abonnés, ceux qui remplissent un critère (fin d'abonnement ce mois-ci), puis de les trier par nom : sélectionner, filtrer et trier reviennent à interroger la base, ce que fait une requête. La table contient tous les abonnés sans en retenir certains, et le formulaire ne sert pas à poser une question avec critères.\n\n**3.** Un formulaire sert à saisir, consulter ou modifier les données de façon conviviale, fiche par fiche. Une requête sert à interroger les données selon des critères (sélection, filtre, tri) et à en afficher le résultat.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9783, 9798]
+  },
+  {
+    "external_id": "cqc-requete-bac-info-elevee-2",
+    "theme": "requête",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Une pharmacie de Douala conserve ses produits dans la table `medicament` d'un SGBD (prix en F CFA) :\n\n| nom | categorie | prix | stock |\n|---|---|---|---|\n| Paracétamol | antalgique | 500 | 120 |\n| Amoxicilline | antibiotique | 1500 | 8 |\n| Ibuprofène | antalgique | 1200 | 5 |\n| Quinine | antipaludique | 2500 | 40 |\n| Artéméther | antipaludique | 3000 | 6 |\n\nLa pharmacienne veut repérer les produits presque épuisés. Elle exécute l'instruction suivante :\n\n```sql\nSELECT nom, prix FROM medicament WHERE stock < 10;\n```\n\n1. Dire de quel objet du SGBD relève cette instruction et le définir.\n2. Donner le résultat affiché par cette instruction : les colonnes et les lignes.\n3. Préciser si la table `medicament` est modifiée par l'exécution de cette instruction. Justifier.\n4. Vérification : un préparateur saisit, à l'aide d'un formulaire, la fiche suivante : Vitamine C, vitamine, 800, stock 10. La pharmacienne relance la même instruction. Dire si la Vitamine C apparaît dans le résultat et justifier.",
+    "corrige_markdown": "### Rappel de méthode\nUne instruction de sélection en SQL se lit par blocs : SELECT indique les colonnes à afficher, FROM la table interrogée, WHERE la condition que chaque ligne doit remplir pour être retenue. Le résultat se construit en testant la condition sur chaque ligne de la table, du haut vers le bas.\n\n### Corrigé\n**1.** Cette instruction est une requête : une interrogation adressée à la base pour en extraire, ici, des données d'une table selon une condition.\n\n**2.** La condition est `stock < 10`. Paracétamol (120) : non. Amoxicilline (8) : oui. Ibuprofène (5) : oui. Quinine (40) : non. Artéméther (6) : oui. Seules les colonnes `nom` et `prix` sont affichées (ni `categorie`, ni `stock`). Résultat :\n\n| nom | prix |\n|---|---|\n| Amoxicilline | 1500 |\n| Ibuprofène | 1200 |\n| Artéméther | 3000 |\n\n**3.** Non. Cette requête ne fait que lire la table : elle sélectionne et affiche des données, et la table `medicament` continue de stocker les mêmes cinq lignes. Seule une requête destinée à modifier des données, ce qui n'est pas le cas ici, pourrait en changer le contenu.\n\n**4.** La fiche saisie par le formulaire est enregistrée dans la table, qui compte alors six lignes. En relançant la requête, la condition est testée sur toutes les lignes, y compris la nouvelle : pour la Vitamine C, `10 < 10` est faux, car 10 n'est pas strictement inférieur à 10. La Vitamine C n'apparaît donc pas, et le résultat reste formé des trois mêmes lignes.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9783, 9798]
+  }
+]
