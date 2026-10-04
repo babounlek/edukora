@@ -5,8 +5,7 @@ import { coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/coun
 import { cn } from "@/lib/utils"
 
 /**
- * Les trois surfaces de la bibliothèque sous un seul chapeau : Épreuves, Cours,
- * Thèmes.
+ * Les surfaces de révision sous un seul chapeau : Épreuves, Cours, Thèmes, Quiz.
  *
  * Elles étaient trois entrées de menu séparées, c'est-à-dire trois portes d'entrée à
  * choisir AVANT de savoir ce qu'on cherche. Regroupées ici, l'unité de navigation
@@ -26,6 +25,7 @@ export function ReviserTabs() {
     { to: epreuvesListPath(country), label: "Épreuves", actif: pathname.startsWith(epreuvesListPath(country)) },
     { to: coursListPath(country), label: "Cours", actif: pathname.startsWith(coursListPath(country)) },
     { to: themesFrequentsPath(country), label: "Thèmes", actif: pathname.startsWith(themesFrequentsPath(country)) },
+    { to: "/quiz", label: "Quiz", actif: pathname.startsWith("/quiz") },
   ]
 
   // Sans conteneur ni marge propres : rendu comme premier enfant du conteneur que

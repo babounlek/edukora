@@ -251,9 +251,13 @@ export function Header() {
     !isParcoursSection &&
     (pathname === epreuvesListPath(country) || pathname.startsWith("/epreuves"))
   const isAccueil = pathname === catalogueHomePath(country) || pathname === `${catalogueHomePath(country)}/`
-  // "Réviser" couvre les trois surfaces de la bibliothèque (épreuves, cours, thèmes),
-  // qui gardent chacune leur URL - seul le regroupement change, voir ReviserTabs.
-  const isReviserSection = isEpreuvesSection || isCoursSection || pathname.startsWith(themesFrequentsPath(country))
+  // "Réviser" couvre les surfaces de révision (épreuves, cours, thèmes, quiz), qui
+  // gardent chacune leur URL - seul le regroupement change, voir ReviserTabs.
+  const isReviserSection =
+    isEpreuvesSection ||
+    isCoursSection ||
+    pathname.startsWith(themesFrequentsPath(country)) ||
+    pathname.startsWith("/quiz")
 
   // Même clé de cache que CataloguePage ("epreuves-inedites-recente") : un visiteur
   // qui atterrit sur le catalogue puis navigue ailleurs ne repaie pas cette requête

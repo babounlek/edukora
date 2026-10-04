@@ -34,7 +34,8 @@ export function BottomTabBar() {
     pathname.startsWith(coursListPath(country)) ||
     pathname.startsWith(themesFrequentsPath(country)) ||
     pathname.startsWith("/epreuves") ||
-    pathname.startsWith("/cours")
+    pathname.startsWith("/cours") ||
+    pathname.startsWith("/quiz")
 
   const onglets = [
     { to: accueil, label: "Aujourd'hui", icon: CalendarCheck, actif: estAccueil },

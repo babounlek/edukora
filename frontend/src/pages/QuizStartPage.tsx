@@ -24,6 +24,7 @@ import { EtapesPresentation, StatChip } from "@/components/Configurateur"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
+import { ReviserTabs } from "@/components/ReviserTabs"
 import { lienExercicesTheme } from "@/components/ThemesFrequents"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -423,6 +424,7 @@ export function QuizStartPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+      <ReviserTabs />
       {/* Hero : même gabarit que /epreuves et /themes-frequents. */}
       <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         <div
