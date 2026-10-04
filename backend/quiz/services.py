@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from access.models import ExerciceFait, LectureProgress
 from catalog.models import (
-    Cours, Difficulte, ExamSession, Lesson, Origine, Question, StatutContenu, Subject, Tag, q_cours_du_cursus,
+    Cours, Difficulte, Examen, ExamSession, Lesson, Origine, Question, StatutContenu, Subject, Tag, q_cours_du_cursus,
 )
 from programme.models import Module, Savoir
 
@@ -66,6 +66,21 @@ SEUIL_MINIMUM_THEMES_PARCOURS = 8
 # général les renverrait tous au Module→Savoir. On classe quand même les thèmes, sans
 # plancher d'occurrences (un thème vu une fois reste utile à réviser sur si peu d'épreuves).
 SUBJECTS_CORPUS_MINCE_PARCOURS = {"PROGRAMMATION", "SYSTEMES_INFORMATION", "RESEAUX_SECURITE"}
+
+# Matières classées par thème POUR CERTAINS EXAMENS SEULEMENT, en régime « corpus mince »
+# (mêmes règles que SUBJECTS_CORPUS_MINCE_PARCOURS : les sujets zéro et blancs comptent, aucun
+# plancher d'occurrences). Géographie au BEPC : 4 épreuves officielles et 1 sujet zéro, les
+# anciennes épreuves combinées étant rangées sous HISTOIRE_GEO ; le seuil de 8 épreuves ne
+# serait jamais atteint, et le Probatoire (11 épreuves) comme le BAC gardent leur parcours.
+SUBJECTS_PARCOURS_PAR_THEME_EXAMENS = {"GEOGRAPHIE": {Examen.BEPC}}
+
+
+def _classee_par_theme_pour_cet_examen(subject, cursus):
+    return cursus.examen in SUBJECTS_PARCOURS_PAR_THEME_EXAMENS.get(subject.code, ())
+
+
+def _corpus_mince(subject, cursus):
+    return subject.code in SUBJECTS_CORPUS_MINCE_PARCOURS or _classee_par_theme_pour_cet_examen(subject, cursus)
 
 # Fusion mécanique haute confiance (variantes grammaticales/de casse d'une même
 # notion, jamais des familles parent-enfant - voir la règle de granularité
@@ -548,7 +563,7 @@ def construire_parcours_par_frequence(profil, cursus, subject):
     thèmes candidats d'un coup, puis les résultats sont recombinés en Python par
     groupe d'alias.
     """
-    mince = subject.code in SUBJECTS_CORPUS_MINCE_PARCOURS
+    mince = _corpus_mince(subject, cursus)
     lessons = Lesson.objects.filter(statut=StatutContenu.VALIDE, subject=subject, cursus=cursus)
     if not mince:
         # Corpus mince (TI) : les blancs/établissements comptent, sinon le Probatoire n'a aucune épreuve officielle.
@@ -755,7 +770,7 @@ def construire_parcours(profil, cursus, subject):
     sans changement. Retombe sur le Module→Savoir habituel si le corpus est encore
     trop mince pour un classement fiable.
     """
-    if subject.code in SUBJECTS_PARCOURS_PAR_FREQUENCE:
+    if subject.code in SUBJECTS_PARCOURS_PAR_FREQUENCE or _classee_par_theme_pour_cet_examen(subject, cursus):
         themes = construire_parcours_par_frequence(profil, cursus, subject)
         if themes is not None:
             return [{

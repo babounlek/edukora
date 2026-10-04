@@ -48,7 +48,7 @@ from .models import (
 from .services import (
     BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX,
     PARCOURS_FREQUENCE_OCCURRENCES_MIN, SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE,
-    TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
+    SUBJECTS_PARCOURS_PAR_THEME_EXAMENS, TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
     REFUS_MAX_PAR_JOUR, _contient_quiz, ajuster_duree_seance, remplacer_seance, revisions_dues, seance_du_jour,
@@ -2388,6 +2388,66 @@ class ParcoursEducationCiviqueParThemeTests(TestCase):
             _make_lesson_avec_themes(self.subject, self.bepc, f"Éducation civique BEPC {i}", [[tag]])
 
         self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject), [])
+
+
+class ParcoursGeographieBepcParThemeTests(TestCase):
+    """GEOGRAPHIE est classée par thème au BEPC seulement, en régime « corpus mince » : 4
+    épreuves officielles et 1 sujet zéro ne passent pas le seuil de 8 épreuves, mais les
+    autres examens gardent leur parcours Module→Savoir."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200033", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="GEOGRAPHIE")
+        self.bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        self.bac_c = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        for cursus, classe in ((self.bepc, "3e"), (self.bac_c, "Tle")):
+            module = Module.objects.create(subject=self.subject, classe=classe, serie_label="", numero="1", titre="M")
+            module.cursus.add(cursus)
+            Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
+
+    def test_the_exam_is_declared_in_the_theme_mode_table(self):
+        self.assertIn(Examen.BEPC, SUBJECTS_PARCOURS_PAR_THEME_EXAMENS["GEOGRAPHIE"])
+        self.assertNotIn("GEOGRAPHIE", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+
+    def test_bepc_switches_to_theme_mode_with_a_thin_corpus(self):
+        tag = Tag.objects.create(name="hydrographie-test")
+        for i in range(3):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Géographie BEPC {i}", [[tag]])
+
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+
+        self.assertEqual(len(parcours), 1)
+        self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "hydrographie-test")
+        self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
+
+    def test_a_sujet_zero_counts_and_no_occurrence_floor_applies(self):
+        tag = Tag.objects.create(name="hydrographie-test")
+        rare = Tag.objects.create(name="theme-vu-une-fois-test")
+        officielle = _make_lesson_avec_themes(self.subject, self.bepc, "Géographie BEPC officielle", [[tag, rare]])
+        zero = _make_lesson_avec_themes(self.subject, self.bepc, "Géographie BEPC sujet zéro", [[tag]])
+        Lesson.objects.filter(pk=zero.pk).update(origine=Origine.SUJET_ZERO)
+
+        savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
+        par_nom = {s["intitule"]: s for s in savoirs}
+
+        self.assertEqual(par_nom["hydrographie-test"]["nb_epreuves"], 2)
+        self.assertEqual(par_nom["theme-vu-une-fois-test"]["nb_epreuves"], 1)
+        self.assertIsNotNone(officielle.pk)
+
+    def test_other_exams_keep_the_programme_parcours(self):
+        tag = Tag.objects.create(name="hydrographie-test")
+        for i in range(3):
+            _make_lesson_avec_themes(self.subject, self.bac_c, f"Géographie BAC {i}", [[tag]])
+
+        parcours = construire_parcours(self.profil, self.bac_c, self.subject)
+
+        self.assertEqual(parcours[0]["titre"], "M")
+
+    def test_bepc_without_any_lesson_falls_back_to_the_programme(self):
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+
+        self.assertEqual(parcours[0]["titre"], "M")
 
 
 class ParcoursApiTests(TestCase):
