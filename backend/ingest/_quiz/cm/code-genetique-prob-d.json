@@ -1,0 +1,68 @@
+[
+  {
+    "external_id": "cqc-code-genetique-prob-d-faible-0",
+    "theme": "code génétique",
+    "savoir_officiel": null,
+    "matiere": "Sciences de la Vie et de la Terre",
+    "cursus": [{"examen": "probatoire", "serie": "D"}],
+    "enonce_markdown": "Le tableau du code génétique compte $64$ codons, c'est-à-dire $64$ triplets différents de nucléotides de l'ARN messager. Tous ne désignent pas un acide aminé : certains marquent seulement l'endroit où la lecture du message s'arrête.\n\nCombien de codons du tableau sont dans ce cas ?",
+    "corrige_markdown": "### Rappel de méthode\nChaque codon du tableau est soit associé à un acide aminé, soit un signal d'arrêt de la lecture. Comme plusieurs codons peuvent désigner un même acide aminé, les codons associés à un acide aminé sont plus nombreux que les 20 acides aminés : on ne peut donc pas obtenir le nombre de signaux d'arrêt en retranchant 20 de 64.\n\n### Corrigé\nLes $64$ codons se répartissent en $61$ codons qui désignent l'un des 20 acides aminés (plusieurs codons pour un même acide aminé : le code est redondant) et en codons stop. Il y a donc $64 - 61 = 3$ codons stop : UAA, UAG et UGA. Réponse **B**.\n\n- **A** est faux : AUG est le codon d'initiation, il désigne la méthionine ; il ne marque pas la fin de la lecture.\n- **C** est faux : 20 est le nombre d'acides aminés, pas un nombre de codons stop ; l'utiliser revient à supposer qu'un seul codon correspond à chaque acide aminé.\n- **D** est faux : le calcul $64 - 20 = 44$ repose sur la même erreur, alors que $61$ codons (et non $20$) désignent les $20$ acides aminés.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "1 seul codon, AUG, qui marque la fin de la lecture"},
+      {"lettre": "B", "texte": "3 codons : UAA, UAG et UGA, signaux d'arrêt"},
+      {"lettre": "C", "texte": "20 codons, autant que d'acides aminés différents"},
+      {"lettre": "D", "texte": "44 codons, soit 64 moins les 20 acides aminés"}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10977, 11347]
+  },
+  {
+    "external_id": "cqc-code-genetique-prob-d-moyenne-1",
+    "theme": "code génétique",
+    "savoir_officiel": null,
+    "matiere": "Sciences de la Vie et de la Terre",
+    "cursus": [{"examen": "probatoire", "serie": "D"}],
+    "enonce_markdown": "Voici un extrait du tableau du code génétique (codons de l'ARN messager) :\n\n| Codon | Signification |\n|---|---|\n| GAU | acide aspartique |\n| GAC | acide aspartique |\n| GAA | acide glutamique |\n| GAG | acide glutamique |\n| UGG | tryptophane |\n| AUG | méthionine |\n| UAA | codon stop |\n\n**1.** À l'aide de ce tableau, donner la signification des codons GAG et UGG.\n\n**2.** D'après ce tableau, un même codon peut-il désigner deux acides aminés différents ? Un même acide aminé peut-il être désigné par plusieurs codons ? Nommer la propriété du code génétique qui correspond à chacune de ces deux constatations.\n\n**3.** Un codon formé de deux nucléotides suffirait-il à désigner les 20 acides aminés ? Justifier par un calcul, puis indiquer combien de codons différents on obtient avec trois nucléotides.",
+    "corrige_markdown": "### Rappel de méthode\nOn lit le code en cherchant le codon dans la colonne de gauche, puis sa signification en face. Pour nommer une propriété, on regarde le sens de la relation : d'un codon vers l'acide aminé, ou d'un acide aminé vers ses codons. Avec 4 sortes de nucléotides, un codon de $n$ nucléotides offre $4^n$ possibilités.\n\n### Corrigé\n**1.** D'après le tableau, le codon GAG désigne l'acide glutamique et le codon UGG désigne le tryptophane.\n\n**2.** Chaque codon du tableau figure une seule fois, en face d'un seul acide aminé (par exemple GAU désigne uniquement l'acide aspartique) : le code est **non ambigu**. En revanche, l'acide aspartique est désigné par GAU et par GAC, et l'acide glutamique par GAA et par GAG : plusieurs codons peuvent désigner le même acide aminé, le code est **redondant** (on dit aussi dégénéré).\n\n**3.** Avec deux nucléotides, on obtient $4^2 = 16$ codons possibles, ce qui est inférieur à $20$ : ils ne suffiraient pas à désigner les $20$ acides aminés. Avec trois nucléotides, on obtient $4^3 = 64$ codons différents, ce qui suffit largement. Comme $64 > 20$, plusieurs codons désignent forcément le même acide aminé : on retrouve la redondance constatée à la question 2.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10977, 11057, 11047]
+  },
+  {
+    "external_id": "cqc-code-genetique-prob-d-moyenne-2",
+    "theme": "code génétique",
+    "savoir_officiel": null,
+    "matiere": "Sciences de la Vie et de la Terre",
+    "cursus": [{"examen": "probatoire", "serie": "D"}],
+    "enonce_markdown": "Des chercheurs préparent trois extraits cellulaires capables de fabriquer des protéines : un extrait de bactérie (*Escherichia coli*), un extrait de levure de bière et un extrait de cellules de lapin. Dans chacun d'eux, ils introduisent le même ARN messager artificiel, qui commence par les codons AUG UGG GAA. Ils constatent que les trois extraits fabriquent des chaînes qui débutent toutes par méthionine, tryptophane, puis acide glutamique.\n\nQuelle propriété du code génétique cette expérience met-elle en évidence ?",
+    "corrige_markdown": "### Rappel de méthode\nChaque propriété du code se reconnaît à ce que l'on compare : des espèces différentes (universalité), des codons différents pour un même acide aminé (redondance), un même codon dans une même cellule (non-ambiguïté) ou la fin de la lecture (codons stop).\n\n### Corrigé\nDans cette expérience, le message (AUG UGG GAA) reste identique, et ce qui change, c'est l'organisme dont viennent les extraits : bactérie, levure, lapin. Les trois lisent chaque codon de la même façon (AUG : méthionine, UGG : tryptophane, GAA : acide glutamique). La correspondance codon - acide aminé est donc la même chez des espèces très éloignées : c'est l'**universalité** du code. Réponse **D**.\n\n- **A** est faux : la redondance se constaterait en comparant deux codons différents (par exemple GAA et GAG) qui désignent le même acide aminé ; ici chaque codon n'est utilisé qu'une fois.\n- **B** est faux : la non-ambiguïté porte sur un codon dans une seule cellule ; l'expérience ne teste pas ce point, elle compare trois organismes.\n- **C** est faux : le début de message décrit ne contient aucun codon stop, et l'expérience ne porte pas sur la fin de la lecture.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "La redondance : plusieurs codons peuvent désigner un même acide aminé"},
+      {"lettre": "B", "texte": "La non-ambiguïté : dans une cellule, un codon désigne un seul acide aminé"},
+      {"lettre": "C", "texte": "Les codons stop : la lecture du message s'arrête sur certains triplets"},
+      {"lettre": "D", "texte": "L'universalité : un codon a le même sens chez des espèces très différentes"}
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [11073, 10977, 11091]
+  },
+  {
+    "external_id": "cqc-code-genetique-prob-d-elevee-3",
+    "theme": "code génétique",
+    "savoir_officiel": null,
+    "matiere": "Sciences de la Vie et de la Terre",
+    "cursus": [{"examen": "probatoire", "serie": "D"}],
+    "enonce_markdown": "Une bactérie fabrique une enzyme de $180$ acides aminés. Chez la souche normale, le 25ᵉ codon de l'ARN messager de cette enzyme est GAA. Quatre souches mutantes (M1 à M4) portent chacune un seul nucléotide modifié dans le gène : cela change le 25ᵉ codon de l'ARN messager, le reste du message étant identique à celui de la souche normale. On donne un extrait du code génétique, puis les codons observés et l'activité de l'enzyme mesurée dans chaque souche.\n\nExtrait du code génétique :\n\n| Codon | Signification |\n|---|---|\n| GAA | acide glutamique |\n| GAG | acide glutamique |\n| GAU | acide aspartique |\n| GUA | valine |\n| UAA | codon stop |\n\nRésultats :\n\n| Souche | 25ᵉ codon de l'ARN messager | Activité de l'enzyme ($\\%$ de celle de la souche normale) |\n|---|---|---|\n| Normale | GAA | 100 |\n| M1 | GAG | 100 |\n| M2 | GAU | 35 |\n| M3 | GUA | 8 |\n| M4 | UAA | 0 |\n\n**1.** Pour chaque souche, donner la signification du 25ᵉ codon (acide aminé ou arrêt de la lecture).\n\n**2.** Pour chaque mutant, indiquer si la mutation laisse l'acide aminé identique, le remplace par un autre ou interrompt la lecture, et préciser quelle base du codon a changé (1ʳᵉ, 2ᵉ ou 3ᵉ).\n\n**3.** Donner le nombre d'acides aminés de la chaîne fabriquée par chacune des cinq souches.\n\n**4.** Les activités mesurées sont-elles cohérentes avec les réponses précédentes ? Expliquer en particulier pourquoi M1 se comporte comme la souche normale alors que son gène est modifié.",
+    "corrige_markdown": "### Rappel de méthode\nPour mesurer l'effet d'une mutation, on compare la signification du codon avant et après dans le tableau du code : si elle est la même, la chaîne est inchangée ; si elle diffère, un acide aminé est remplacé ; si le nouveau codon est un codon stop, la chaîne s'arrête avant lui. Le nombre d'acides aminés d'une chaîne est égal au nombre de codons qui précèdent un éventuel codon stop.\n\n### Corrigé\n**1.** D'après l'extrait du code : souche normale GAA, acide glutamique ; M1 GAG, acide glutamique ; M2 GAU, acide aspartique ; M3 GUA, valine ; M4 UAA, codon stop (aucun acide aminé).\n\n**2.** On compare chaque codon à GAA :\n\n| Mutant | Codon | Base changée | Effet sur la chaîne |\n|---|---|---|---|\n| M1 | GAG | 3ᵉ (A devient G) | acide aminé identique (acide glutamique) : mutation silencieuse |\n| M2 | GAU | 3ᵉ (A devient U) | acide glutamique remplacé par l'acide aspartique : mutation faux-sens |\n| M3 | GUA | 2ᵉ (A devient U) | acide glutamique remplacé par la valine : mutation faux-sens |\n| M4 | UAA | 1ʳᵉ (G devient U) | codon stop : la lecture s'arrête, mutation non-sens |\n\n**3.** Pour la souche normale, M1, M2 et M3, la lecture se poursuit jusqu'au bout : la chaîne compte $180$ acides aminés. Pour M4, la lecture s'arrête au 25ᵉ codon : seuls les $25 - 1 = 24$ premiers codons désignent un acide aminé, la chaîne n'en compte que $24$ au lieu de $180$.\n\n**4.** Oui, les activités sont cohérentes. M1 garde $100\\ \\%$ d'activité : son 25ᵉ codon désigne toujours l'acide glutamique, la chaîne est la même que celle de la souche normale (le code est redondant : GAA et GAG désignent le même acide aminé), donc l'enzyme est identique malgré le gène modifié. M2 et M3 ont un acide aminé remplacé : l'activité baisse ($35\\ \\%$ et $8\\ \\%$), la perte dépendant de l'acide aminé introduit. M4 fabrique une chaîne de seulement $24$ acides aminés au lieu de $180$ : l'activité est nulle.\n\nVérification : chaque mutant diffère de la souche normale par une seule base du codon (la 3ᵉ pour M1 et M2, la 2ᵉ pour M3, la 1ʳᵉ pour M4), ce qui respecte l'énoncé ; trois mutations sur quatre conservent la longueur de $180$ acides aminés, seule M4 la réduit, et c'est aussi la seule à supprimer toute activité.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11091, 11057, 10977]
+  }
+]
