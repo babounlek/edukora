@@ -44,7 +44,16 @@ SUBJECTS_PARCOURS_PAR_FREQUENCE = {
     # normal (épreuves officielles, seuil SEUIL_MINIMUM_THEMES_PARCOURS) : BEPC, BAC A/C/D/E
     # passent en mode thème ; les Probatoire (1 à 4 épreuves) restent en Module→Savoir.
     "INFORMATIQUE",
+    # Éducation civique : aucun programme officiel n'existe pour cette matière (Module→Savoir
+    # vide, 0 module), le classement des thèmes les plus tombés (31 épreuves officielles au
+    # BEPC) est donc le seul parcours possible. Même régime normal que l'Informatique.
+    "EDUCATION_CIVIQUE",
 }
+
+# Matières classées par thème qui n'ont AUCUN programme officiel : leur classement est leur seul
+# parcours, elles figurent donc aussi dans resume_parcours (« Ma progression »), qui ne retient
+# sinon que les matières ayant un Module officiel pour le cursus.
+SUBJECTS_PARCOURS_SANS_PROGRAMME = {"EDUCATION_CIVIQUE"}
 
 # En dessous, le signal de fréquence n'est pas fiable - même seuil et même
 # justification que catalog.views.SEUIL_MINIMUM_THEMES_FREQUENTS (mesuré sur SVT BAC
@@ -850,15 +859,27 @@ def resume_parcours(profil, cursus):
     N'exclut aucune matière, même sans aucun contenu encore rattaché (`sans_contenu`
     == `total`) - même principe que construire_parcours pour un savoir isolé : la
     structure du programme reste visible, c'est au frontend de l'afficher en retrait.
+
+    Exception : une matière classée par thème qui n'a aucun programme officiel
+    (SUBJECTS_PARCOURS_SANS_PROGRAMME : Éducation civique, aucun référentiel) figure aussi
+    dans le résumé, mais seulement quand son classement existe - sans programme, ce
+    classement est son seul parcours, et une matière sans lui n'aurait aucune ligne à montrer.
     """
+    avec_programme = set(Subject.objects.filter(modules_officiels__cursus=cursus).values_list("pk", flat=True))
     subjects = (
-        Subject.objects.filter(modules_officiels__cursus=cursus).distinct().order_by("label")
+        Subject.objects.filter(
+            Q(pk__in=avec_programme) | Q(country=cursus.country, code__in=SUBJECTS_PARCOURS_SANS_PROGRAMME)
+        )
+        .distinct()
+        .order_by("label")
     )
 
     coefficients = _coefficient_par_subject(cursus)
     resume = []
     for subject in subjects:
         savoirs = [s for module in construire_parcours(profil, cursus, subject) for s in module["savoirs"]]
+        if not savoirs and subject.pk not in avec_programme:
+            continue
         # Un seul bucket par savoir, jamais un chevauchement à retrancher après coup -
         # chaque condition est testée dans cet ordre de priorité précis (ex. un savoir
         # sans contenu ne compte jamais pour "à réviser" même si une donnée historique

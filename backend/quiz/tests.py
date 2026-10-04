@@ -2357,6 +2357,39 @@ class ParcoursInformatiqueParThemeTests(TestCase):
         self.assertEqual(parcours[0]["titre"], "M")
 
 
+class ParcoursEducationCiviqueParThemeTests(TestCase):
+    """EDUCATION_CIVIQUE n'a aucun programme officiel (donc aucun Module→Savoir) : le
+    classement des thèmes les plus tombés est son seul parcours, dès que le corpus
+    d'épreuves officielles est assez fourni."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200032", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="EDUCATION_CIVIQUE")
+        self.bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+
+    def test_education_civique_is_in_the_theme_mode_set(self):
+        self.assertIn("EDUCATION_CIVIQUE", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+
+    def test_bepc_without_programme_shows_themes_with_enough_official_exams(self):
+        tag = Tag.objects.create(name="symboles nationaux-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Éducation civique BEPC {i}", [[tag]])
+
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+
+        self.assertEqual(len(parcours), 1)
+        self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "symboles nationaux-test")
+        self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
+
+    def test_a_thin_corpus_without_programme_stays_empty(self):
+        tag = Tag.objects.create(name="symboles nationaux-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Éducation civique BEPC {i}", [[tag]])
+
+        self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject), [])
+
+
 class ParcoursApiTests(TestCase):
     """GET /quiz/parcours/ (quiz.views.parcours)."""
 
@@ -2409,6 +2442,32 @@ class ResumeParcoursTests(TestCase):
         resume = resume_parcours(self.profil, self.cursus)
 
         self.assertEqual([r["subject_label"] for r in resume], [self.maths.label])
+
+    def test_theme_ranked_subject_without_programme_is_listed_when_its_ranking_exists(self):
+        # Éducation civique : aucun programme officiel, son classement par thème est son
+        # seul parcours - elle doit figurer dans « Ma progression » dès qu'il existe.
+        bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        civique = Subject.objects.get(country__code="CM", code="EDUCATION_CIVIQUE")
+        tag = Tag.objects.create(name="symboles nationaux-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(civique, bepc, f"Éducation civique BEPC {i}", [[tag]])
+
+        resume = resume_parcours(self.profil, bepc)
+
+        entree = next(r for r in resume if r["subject_code"] == "EDUCATION_CIVIQUE")
+        self.assertEqual(entree["total"], 1)
+        self.assertEqual(entree["a_decouvrir"] + entree["sans_contenu"], 1)
+
+    def test_theme_ranked_subject_without_programme_and_without_ranking_stays_hidden(self):
+        bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        civique = Subject.objects.get(country__code="CM", code="EDUCATION_CIVIQUE")
+        tag = Tag.objects.create(name="symboles nationaux-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
+            _make_lesson_avec_themes(civique, bepc, f"Éducation civique BEPC {i}", [[tag]])
+
+        resume = resume_parcours(self.profil, bepc)
+
+        self.assertNotIn("EDUCATION_CIVIQUE", [r["subject_code"] for r in resume])
 
     def test_subject_without_any_content_is_entirely_sans_contenu(self):
         self._module_savoir(self.maths)
