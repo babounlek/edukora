@@ -1,0 +1,76 @@
+[
+  {
+    "external_id": "cqc-conversion-binaire-decimal-bepc-info-faible-0",
+    "theme": "conversion binaire-décimal",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un technicien d'un cybercafé de Douala lit le nombre binaire $(10011)_2$ sur l'écran de contrôle d'un appareil. Quelle est la valeur de ce nombre en écriture décimale ?",
+    "corrige_markdown": "### Rappel de méthode\nPour passer de l'écriture binaire à l'écriture décimale, on attribue à chaque chiffre le poids de sa position : 1 pour le chiffre de droite, puis 2, 4, 8, 16... en allant vers la gauche. On additionne ensuite les poids des positions occupées par un 1.\n\n### Corrigé\n| Chiffre | 1 | 0 | 0 | 1 | 1 |\n|---|---|---|---|---|---|\n| Poids | 16 | 8 | 4 | 2 | 1 |\n\nSeuls les poids 16, 2 et 1 sont retenus : $16 + 2 + 1 = 19$, donc $(10011)_2 = (19)_{10}$.\n\nRéponse **D**.\n\n- Choix A : 25 vient d'une lecture à l'envers, avec les poids 1, 2, 4, 8, 16 attribués de gauche à droite ; cela revient à lire $(11001)_2$ et à calculer $16 + 8 + 1 = 25$.\n- Choix B : 3 est le nombre de chiffres 1 du nombre, alors que chaque 1 doit apporter le poids de sa position.\n- Choix C : 38 vient d'un décalage des poids d'un rang (le chiffre de droite compté pour 2 au lieu de 1) : $32 + 4 + 2 = 38$.\n\nContrôle : le nombre binaire se termine par 1, donc il est impair, et 19 l'est aussi. Un nombre de cinq chiffres binaires qui commence par 1 est compris entre 16 et 31, et 19 se trouve dans cet intervalle.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "25"
+      },
+      {
+        "lettre": "B",
+        "texte": "3"
+      },
+      {
+        "lettre": "C",
+        "texte": "38"
+      },
+      {
+        "lettre": "D",
+        "texte": "19"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [8188]
+  },
+  {
+    "external_id": "cqc-conversion-binaire-decimal-bepc-info-moyenne-1",
+    "theme": "conversion binaire-décimal",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Une boutique de Garoua attribue à chacun de ses articles un code écrit en binaire. L'article numéro 52 doit recevoir son code.\n\n1. Convertir $(52)_{10}$ en binaire par divisions successives par 2, en présentant les divisions dans un tableau.\n2. Vérifier le résultat en reconvertissant le code obtenu en décimal.",
+    "corrige_markdown": "### Rappel de méthode\nLa conversion d'un nombre décimal vers la base 2 repose sur la division par 2 répétée : à chaque division, le reste, toujours 0 ou 1, fournit un chiffre binaire, en commençant par le chiffre de droite. On s'arrête quand le quotient devient nul, et le dernier reste obtenu est le chiffre de gauche.\n\n### Corrigé\n**1. Divisions successives par 2.**\n\n| Division | Quotient | Reste |\n|---|---|---|\n| 52 ÷ 2 | 26 | **0** |\n| 26 ÷ 2 | 13 | **0** |\n| 13 ÷ 2 | 6 | **1** |\n| 6 ÷ 2 | 3 | **0** |\n| 3 ÷ 2 | 1 | **1** |\n| 1 ÷ 2 | 0 | **1** |\n\nLe quotient est nul : on s'arrête. Les restes, lus de bas en haut, sont 1, 1, 0, 1, 0, 0. Donc $(52)_{10} = (110100)_2$.\n\n**2. Vérification.** Les poids des six positions sont 32, 16, 8, 4, 2 et 1. Le code $110100$ a des 1 aux positions de poids 32, 16 et 4 :\n\n$32 + 16 + 4 = 52$\n\nOn retrouve bien 52. Contrôle supplémentaire : le code se termine par 0, donc le nombre est pair, et 52 est pair.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [10849, 11262]
+  },
+  {
+    "external_id": "cqc-conversion-binaire-decimal-bepc-info-elevee-2",
+    "theme": "conversion binaire-décimal",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un compteur de l'atelier de couture d'un marché de Bafoussam mémorise chaque nombre dans un octet, c'est-à-dire dans 8 bits. Le compteur affiche le contenu de l'octet en binaire.\n\n1. Donner le poids de chacun des huit bits de l'octet, du bit de gauche au bit de droite.\n2. Convertir en décimal le contenu $(10110101)_2$, affiché un matin.\n3. Convertir en binaire, sur un octet, le nombre décimal 200 affiché le soir, en utilisant des divisions successives par 2.\n4. Vérifier les deux résultats : reconvertir en décimal le code trouvé à la question 3, puis, pour le nombre trouvé à la question 2, contrôler sa parité et son encadrement entre deux puissances de 2.",
+    "corrige_markdown": "### Rappel de méthode\nSur un octet, les poids des huit bits sont 128, 64, 32, 16, 8, 4, 2 et 1, de gauche à droite. Pour lire un octet en décimal, on additionne les poids des bits égaux à 1 ; pour écrire un nombre décimal en binaire, on le divise par 2 de façon répétée et on lit les restes de bas en haut. Chaque conversion se contrôle ensuite par un chemin différent de celui qui l'a produite.\n\n### Corrigé\n**1. Poids des bits.** De gauche à droite : 128, 64, 32, 16, 8, 4, 2, 1, soit $2^{7}$, $2^{6}$, $2^{5}$, $2^{4}$, $2^{3}$, $2^{2}$, $2^{1}$ et $2^{0}$.\n\n**2. Lecture de $(10110101)_2$.**\n\n| Bit | 1 | 0 | 1 | 1 | 0 | 1 | 0 | 1 |\n|---|---|---|---|---|---|---|---|---|\n| Poids | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |\n\nOn retient les poids des bits égaux à 1 : $128 + 32 + 16 + 4 + 1 = 181$. Donc $(10110101)_2 = (181)_{10}$.\n\n**3. Écriture de 200 en binaire.**\n\n| Division | Quotient | Reste |\n|---|---|---|\n| 200 ÷ 2 | 100 | **0** |\n| 100 ÷ 2 | 50 | **0** |\n| 50 ÷ 2 | 25 | **0** |\n| 25 ÷ 2 | 12 | **1** |\n| 12 ÷ 2 | 6 | **0** |\n| 6 ÷ 2 | 3 | **0** |\n| 3 ÷ 2 | 1 | **1** |\n| 1 ÷ 2 | 0 | **1** |\n\nLes restes, lus de bas en haut, donnent 1, 1, 0, 0, 1, 0, 0, 0 : $(200)_{10} = (11001000)_2$. Le code compte bien huit chiffres : il tient sur un octet.\n\n**4. Vérifications.**\n\n- Reconversion du code de la question 3 : seuls les bits de poids 128, 64 et 8 valent 1, donc $128 + 64 + 8 = 200$. Le résultat est confirmé.\n- Pour 181 : le dernier bit de $(10110101)_2$ vaut 1, donc le nombre est impair, et 181 est impair. Le bit de gauche vaut 1, donc le nombre est compris entre $2^{7} = 128$ et $2^{8} - 1 = 255$, et 181 appartient à cet intervalle. Le résultat est cohérent.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8188, 8966]
+  }
+]

@@ -1,0 +1,104 @@
+[
+  {
+    "external_id": "cqc-instruction-d-entree-bepc-info-faible-0",
+    "theme": "instruction d'entrée",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un élève de 3e veut écrire, dans un algorithme, une instruction qui attend qu'une valeur soit tapée au clavier, puis qui la range dans la variable `age`.\n\nQuelle instruction convient ?",
+    "corrige_markdown": "### Rappel de méthode\nUne instruction d'entrée sert à recevoir une donnée venue de l'extérieur et à la ranger dans une variable ; elle se note `Lire (variable) ;`, avec entre parenthèses la variable qui recevra la valeur. Pour la reconnaître, suivre le trajet de la donnée : de l'utilisateur vers la mémoire pour une entrée, de la mémoire vers l'écran pour une sortie.\n\n### Corrigé\nIl faut une instruction qui attend une saisie, puis range la valeur tapée dans `age`.\n\n- **A** : correcte. `Lire (age) ;` suspend l'exécution jusqu'à ce que l'utilisateur ait saisi une valeur au clavier, puis la range dans `age` : la donnée va du clavier vers la mémoire.\n- **B** : fausse. `Ecrire (age) ;` fait le trajet inverse : elle affiche à l'écran le contenu actuel de `age`. Elle n'attend rien et ne reçoit aucune valeur.\n- **C** : fausse. Cette ligne affiche seulement un message pour guider l'utilisateur. La question posée dans le message ne lit rien : aucune valeur n'est saisie ni rangée.\n- **D** : fausse. C'est une affectation : elle range la valeur 15, écrite dans le programme lui-même. L'utilisateur n'est jamais sollicité et l'âge serait le même à chaque exécution.\n\nRéponse **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`Lire (age) ;`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`Ecrire (age) ;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`Ecrire (\"Quel âge ?\") ;`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`age ← 15 ;`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      8189,
+      8193,
+      11266
+    ]
+  },
+  {
+    "external_id": "cqc-instruction-d-entree-bepc-info-moyenne-1",
+    "theme": "instruction d'entrée",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un élève du collège de Bertoua écrit un algorithme qui calcule l'aire d'un carré dont le côté est saisi au clavier. Quand il l'exécute, le résultat affiché est faux.\n\n```text\nAlgorithme Carre\nVariable cote, aire : entier ;\nDébut\n    aire ← cote * cote ;\n    Lire (cote) ;\n    Ecrire (aire) ;\nFin\n```\n\nQuelle correction permet à l'algorithme d'afficher l'aire du carré dont le côté est saisi ?",
+    "corrige_markdown": "### Rappel de méthode\nUn algorithme s'exécute ligne par ligne, de haut en bas. Une variable utilisée dans un calcul doit donc déjà contenir sa valeur : l'instruction d'entrée qui lui donne cette valeur se place avant la première ligne qui s'en sert.\n\n### Corrigé\nDans cet algorithme, la ligne de calcul vient avant l'instruction d'entrée. Au moment de calculer `cote * cote`, la variable `cote` n'a encore reçu aucune valeur de l'utilisateur : le résultat est faux, quel que soit le nombre tapé ensuite. Il faut que la lecture précède le calcul.\n\n- **A** : fausse. Afficher `aire` avant de la calculer ne règle rien : le côté n'est toujours pas lu avant le calcul.\n- **B** : fausse. L'utilisateur taperait alors l'aire elle-même et l'algorithme se contenterait de la réafficher. Le côté n'est jamais lu et le calcul `cote * cote` utilise un côté sans valeur.\n- **C** : fausse. La lecture placée à la fin vient trop tard : l'aire est déjà calculée et affichée.\n- **D** : correcte. Avec `Lire (cote) ;` en premier, `cote` contient la valeur saisie quand l'expression `cote * cote` est calculée. Pour un côté de 5, l'aire affichée est 5 × 5 = 25.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Placer `Ecrire (aire) ;` avant la ligne `aire ← cote * cote ;`"
+      },
+      {
+        "lettre": "B",
+        "texte": "Remplacer `Lire (cote) ;` par `Lire (aire) ;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "Placer `Lire (cote) ;` après la ligne `Ecrire (aire) ;`"
+      },
+      {
+        "lettre": "D",
+        "texte": "Placer `Lire (cote) ;` avant la ligne `aire ← cote * cote ;`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      8189,
+      8193
+    ]
+  },
+  {
+    "external_id": "cqc-instruction-d-entree-bepc-info-elevee-2",
+    "theme": "instruction d'entrée",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Dans une boutique de Bamenda, un algorithme aide la caissière à calculer la monnaie à rendre.\n\n```text\nAlgorithme Monnaie\nVariable somme, prix, reste : entier ;\nDébut\n    Ecrire (\"Somme remise par le client :\") ;\n    Lire (somme) ;\n    Ecrire (\"Prix de l'article :\") ;\n    Lire (prix) ;\n    reste ← somme - prix ;\n    Ecrire (\"Monnaie à rendre :\", reste) ;\nFin\n```\n\n1. Relever les instructions d'entrée de l'algorithme et indiquer, pour chacune, la variable qui reçoit la valeur.\n2. Expliquer pourquoi la ligne `Ecrire (\"Prix de l'article :\") ;` n'est pas une instruction d'entrée.\n3. Un client remet 5 000 F CFA pour un article de 3 250 F CFA. La caissière tape 5000, puis 3250. Donner la valeur de `reste`.\n4. Un élève échange les deux lignes `Lire (somme) ;` et `Lire (prix) ;` sans toucher aux autres lignes, et la caissière tape encore 5000 puis 3250. Donner la nouvelle valeur de `reste` et expliquer ce résultat.\n5. Vérifier le résultat de la question 3 par un second calcul, en reconstituant la somme remise à partir du prix et de la monnaie.",
+    "corrige_markdown": "### Rappel de méthode\nUne instruction d'entrée `Lire (variable) ;` met l'algorithme en attente d'une saisie, puis range la valeur tapée dans la variable indiquée ; une instruction de sortie `Ecrire (...) ;` ne fait qu'afficher. Les valeurs tapées sont distribuées dans l'ordre où les instructions `Lire` sont exécutées : la première valeur va à la première variable lue, la seconde à la suivante.\n\n### Corrigé\n1. Les deux instructions d'entrée sont `Lire (somme) ;`, qui range la première valeur tapée dans `somme`, et `Lire (prix) ;`, qui range la seconde valeur tapée dans `prix`.\n2. `Ecrire (\"Prix de l'article :\") ;` est une instruction de sortie : elle affiche un message pour guider la caissière, mais elle ne reçoit aucune valeur et ne modifie aucune variable. Le mot « prix » dans le message ne relie pas la ligne à la variable `prix`.\n3. `somme` reçoit 5000 et `prix` reçoit 3250, donc `reste` = 5000 - 3250 = **1750**.\n4. Après l'échange, la première instruction `Lire` est `Lire (prix) ;` : elle reçoit 5000, tapé en premier, et `Lire (somme) ;` reçoit 3250. L'ordre des `Lire` décide de la variable qui reçoit chaque valeur. Alors `reste` = 3250 - 5000 = **-1750**. Ce résultat négatif est absurde pour une monnaie à rendre, alors que les nombres tapés sont les mêmes : les messages affichés ne correspondent plus aux variables lues.\n5. Contrôle de la question 3 : le prix de l'article ajouté à la monnaie rendue doit redonner la somme remise. Or 3 250 + 1 750 = 5 000, ce qui est bien la somme tapée.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      8218,
+      11266,
+      8189
+    ]
+  }
+]

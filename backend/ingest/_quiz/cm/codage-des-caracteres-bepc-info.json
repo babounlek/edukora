@@ -1,0 +1,93 @@
+[
+  {
+    "external_id": "cqc-codage-des-caracteres-bepc-info-faible-0",
+    "theme": "codage des caractères",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un élève de Bafoussam tape la lettre M dans un fichier texte codé en ASCII. Quel espace cette seule lettre occupe-t-elle dans le fichier ?",
+    "corrige_markdown": "### Rappel de méthode\nLe code ASCII fait correspondre à chaque caractère (lettre, chiffre, signe de ponctuation, espace) un nombre écrit en binaire. Dans un fichier texte, chaque caractère ASCII est rangé dans un octet, et un octet est un groupe de 8 bits.\n\n### Corrigé\nLa lettre M est un caractère ASCII : elle occupe donc 1 octet, soit 8 bits.\n\n- Choix A : faux. Un bit est un seul chiffre, 0 ou 1. C'est trop petit pour contenir le code d'un caractère : il s'agit d'une confusion entre le bit et l'octet.\n- Choix C : faux. Deux octets par caractère ne correspondent pas au code ASCII. Un code qui comprend beaucoup plus de caractères, comme Unicode, peut en demander davantage.\n- Choix D : faux. Cette réponse mélange deux nombres : un octet contient 8 bits, mais il ne contient pas 8 octets. Huit octets feraient 64 bits.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "1 bit"
+      },
+      {
+        "lettre": "B",
+        "texte": "1 octet"
+      },
+      {
+        "lettre": "C",
+        "texte": "2 octets"
+      },
+      {
+        "lettre": "D",
+        "texte": "8 octets"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10814, 8185]
+  },
+  {
+    "external_id": "cqc-codage-des-caracteres-bepc-info-moyenne-1",
+    "theme": "codage des caractères",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un élève de Garoua enregistre dans un fichier texte la phrase suivante : « Cours de maths mardi. »\n\nChaque caractère est codé en ASCII sur 1 octet, avec 1 octet = 8 bits. Les espaces comptent comme des caractères ; les guillemets ne comptent pas.\n\nQuelle est la taille de cette phrase en bits ?",
+    "corrige_markdown": "### Rappel de méthode\nPour trouver le poids d'un texte en ASCII, on dénombre chaque caractère, lettre, espace ou point : comme un caractère tient dans un octet, ce nombre est déjà la taille en octets. On le multiplie ensuite par 8 pour passer aux bits.\n\n### Corrigé\nComptage mot par mot :\n\n| Élément | Caractères | Total cumulé |\n|---|---|---|\n| `Cours` | 5 | 5 |\n| espace | 1 | 6 |\n| `de` | 2 | 8 |\n| espace | 1 | 9 |\n| `maths` | 5 | 14 |\n| espace | 1 | 15 |\n| `mardi` | 5 | 20 |\n| `.` | 1 | 21 |\n\nLa phrase compte 21 caractères (17 lettres, 3 espaces et 1 point), donc 21 octets. Taille en bits : 21 × 8 = 168 bits.\n\n- Choix A : faux. 160 bits correspondent à 20 caractères : le point final a été oublié.\n- Choix B : faux. 21 est la taille en octets. Cette réponse oublie de convertir en bits.\n- Choix D : faux. 144 bits correspondent à 18 caractères : les trois espaces ont été oubliés alors qu'ils sont comptés.\n\nRéponse **C**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "160 bits"
+      },
+      {
+        "lettre": "B",
+        "texte": "21 bits"
+      },
+      {
+        "lettre": "C",
+        "texte": "168 bits"
+      },
+      {
+        "lettre": "D",
+        "texte": "144 bits"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [8185]
+  },
+  {
+    "external_id": "cqc-codage-des-caracteres-bepc-info-elevee-2",
+    "theme": "codage des caractères",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Une boutique de Douala enregistre dans un fichier texte le message d'avis suivant, destiné à une cliente :\n\n« Bonjour Mme Fotso, le colis est arrive. »\n\nChaque caractère est codé en ASCII sur 1 octet, avec 1 octet = 8 bits. Les espaces comptent comme des caractères ; les guillemets ne comptent pas.\n\n1. Donner la signification du sigle ASCII.\n2. Calculer la taille du message en octets, puis en bits, en détaillant le comptage des caractères.\n3. La boutique réécrit le dernier mot avec son accent : « arrivé ». Expliquer pourquoi le code ASCII de base, sur 7 bits, ne permet pas de coder cette lettre, et citer un code capable de la représenter.\n4. Vérification : contrôler le nombre de caractères par une seconde méthode (lettres, espaces, ponctuation), puis calculer la taille en bits du message auquel on retire « Mme » et l'espace qui le suit, et la comparer à la taille initiale diminuée de la part correspondante.",
+    "corrige_markdown": "### Rappel de méthode\nUn texte codé à raison d'un octet par caractère pèse autant d'octets qu'il contient de caractères, espaces et ponctuation compris ; multiplier ce nombre par 8 donne le poids en bits. Un code de caractères est une table de correspondance : le nombre de caractères qu'elle contient limite ce qu'on peut écrire avec lui.\n\n### Corrigé\n1. Le sigle ASCII se développe en *American Standard Code for Information Interchange*, dont la traduction française est « code américain normalisé d'échange d'informations ». C'est une table qui associe un nombre binaire à chaque caractère de base.\n\n2. Comptage du message :\n\n| Élément | Caractères | Total cumulé |\n|---|---|---|\n| `Bonjour` | 7 | 7 |\n| espace | 1 | 8 |\n| `Mme` | 3 | 11 |\n| espace | 1 | 12 |\n| `Fotso,` | 6 | 18 |\n| espace | 1 | 19 |\n| `le` | 2 | 21 |\n| espace | 1 | 22 |\n| `colis` | 5 | 27 |\n| espace | 1 | 28 |\n| `est` | 3 | 31 |\n| espace | 1 | 32 |\n| `arrive.` | 7 | 39 |\n\nLe message compte 39 caractères, donc 39 octets. Taille en bits : 39 × 8 = 312 bits.\n\n3. Sur 7 bits, le code ASCII de base ne peut représenter que 128 caractères : lettres non accentuées, chiffres, ponctuation et espace. La lettre « é » n'en fait pas partie. Le code Unicode, qui contient beaucoup plus de caractères (lettres accentuées, alphabets variés), permet de la représenter.\n\n4. Seconde méthode : le message compte 7 mots, donc 6 espaces. Les lettres se comptent mot par mot : 7 + 3 + 5 + 2 + 5 + 3 + 6 = 31. La ponctuation compte 2 signes (la virgule et le point). Total : 31 + 6 + 2 = 39 caractères, ce qui confirme le premier comptage.\n\nSans « Mme » et l'espace qui le suit, on retire 4 caractères : il en reste 35, soit 35 × 8 = 280 bits. Par l'autre voie : 312 − 4 × 8 = 312 − 32 = 280 bits. Les deux résultats sont identiques, ce qui valide le calcul.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8185, 10814, 8211]
+  }
+]

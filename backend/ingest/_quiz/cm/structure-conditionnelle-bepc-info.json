@@ -1,0 +1,112 @@
+[
+  {
+    "external_id": "cqc-structure-conditionnelle-bepc-info-faible-0",
+    "theme": "structure conditionnelle",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un logiciel de gestion d'un cybercafé de Douala contient la structure suivante :\n\n```text\nSi solde >= 500 Alors\n    Ecrire (\"Connexion autorisée\") ;\nSinon\n    Ecrire (\"Recharger le compte\") ;\nFinSi\n```\n\nDans quel cas le message « Recharger le compte » est-il affiché ?",
+    "corrige_markdown": "### Rappel de méthode\nDans une structure `Si ... Alors ... Sinon ... FinSi`, la machine évalue la condition une seule fois. Si elle vaut vrai, seules les instructions de la branche `Alors` sont exécutées ; si elle vaut faux, seules celles de la branche `Sinon` le sont. Les deux branches ne s'exécutent jamais ensemble.\n\n### Corrigé\nLe message « Recharger le compte » se trouve dans la branche `Sinon` : il s'affiche donc exactement quand la condition `solde >= 500` est fausse, c'est-à-dire quand `solde` est strictement inférieur à 500. Par exemple, pour `solde` égal à 350, la comparaison 350 >= 500 est fausse et le message de recharge apparaît.\n\nRéponse **C**.\n\n- **A** est faux : quand `solde >= 500` est vrai, seule la branche `Alors` s'exécute. Les deux messages ne s'affichent jamais à la suite l'un de l'autre.\n- **B** est faux : cette réponse inverse les branches. Avec un solde supérieur ou égal à 500, c'est « Connexion autorisée » qui est affiché.\n- **D** est faux : pour un solde égal à 500, la comparaison 500 >= 500 est vraie, donc c'est « Connexion autorisée » qui s'affiche. De plus, tous les soldes inférieurs à 500 déclenchent aussi le message de recharge, pas seulement 500.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Quand `solde` est supérieur ou égal à 500, juste après le message « Connexion autorisée »."
+      },
+      {
+        "lettre": "B",
+        "texte": "Quand `solde` est supérieur ou égal à 500, à la place du premier message."
+      },
+      {
+        "lettre": "C",
+        "texte": "Quand `solde` est strictement inférieur à 500, car la condition est alors fausse."
+      },
+      {
+        "lettre": "D",
+        "texte": "Quand `solde` est exactement égal à 500, et seulement dans ce cas."
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11266, 8218]
+  },
+  {
+    "external_id": "cqc-structure-conditionnelle-bepc-info-moyenne-1",
+    "theme": "structure conditionnelle",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Dans un musée de Foumban, l'entrée est gratuite pour les enfants âgés de 10 ans au plus. Un algorithme lit la variable entière `age` (en années) et doit afficher « Entrée gratuite » ou « Entrée payante ».\n\nQuelle condition faut-il écrire après `Si` pour que le message « Entrée gratuite » soit affiché dans tous les bons cas ?",
+    "corrige_markdown": "### Rappel de méthode\nPour choisir une condition, il faut traduire l'expression de l'énoncé en opérateur de comparaison : « au plus » et « au maximum » donnent `<=`, « au moins » donne `>=`, « strictement moins de » donne `<` et « strictement plus de » donne `>`. On contrôle ensuite le choix avec la valeur frontière citée dans l'énoncé.\n\n### Corrigé\nLa limite est 10 ans, et elle fait partie des cas gratuits : un enfant de 10 ans doit déclencher « Entrée gratuite ». La condition `age <= 10` convient : elle est vraie pour 7 et pour 10, fausse pour 11.\n\nRéponse **A**.\n\n- **B** est faux : `age < 10` exclut la valeur frontière, puisque `10 < 10` est faux. Un enfant de 10 ans paierait à tort.\n- **C** est faux : `age > 10` décrit les enfants de plus de 10 ans, donc les cas payants. Pour un enfant de 7 ans, la condition est fausse alors que l'entrée devrait être gratuite : les deux messages seraient échangés.\n- **D** est faux : `age >= 10` est vraie pour 10, mais aussi pour 15 ou 40, alors que ces âges ne donnent pas droit à la gratuité. Elle est en plus fausse pour un enfant de 7 ans, qui devrait entrer gratuitement.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`age <= 10`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`age < 10`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`age > 10`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`age >= 10`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [11262, 11266]
+  },
+  {
+    "external_id": "cqc-structure-conditionnelle-bepc-info-moyenne-2",
+    "theme": "structure conditionnelle",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Dans une boutique de Maroua, la caisse utilise l'algorithme suivant.\n\n```text\nAlgorithme RemiseBoutique\nVariable montant : entier ;\nDébut\n    Lire (montant) ;\n    Si montant >= 20000 Alors\n        Ecrire (\"Remise de 2000 F CFA accordée\") ;\n    FinSi\n    Ecrire (\"Merci et à bientôt\") ;\nFin\n```\n\n1. Indiquer si la structure conditionnelle utilisée est complète ou réduite, en justifiant la réponse.\n2. Donner tout ce que l'algorithme affiche pour un montant de 25 000 F CFA, puis pour un montant de 15 000 F CFA.\n3. Modifier la structure pour que le message « Pas de remise » soit affiché quand le montant est inférieur à 20 000 F CFA, le message final restant affiché dans tous les cas. Écrire les lignes de la structure modifiée, suivies du message final.",
+    "corrige_markdown": "### Rappel de méthode\nUne structure conditionnelle est complète quand elle comporte une branche `Sinon`, et réduite quand elle s'arrête à `Si ... Alors ... FinSi`. Dans la forme réduite, les instructions placées avant `FinSi` ne s'exécutent que si la condition est vraie ; l'exécution reprend ensuite après `FinSi`, où toute instruction s'exécute dans les deux cas.\n\n### Corrigé\n1. La structure est **réduite** : elle va de `Si` à `FinSi` sans mot-clé `Sinon`. Quand la condition est fausse, aucune instruction n'est exécutée à l'intérieur de la structure.\n2. Pour 25 000 : la condition `25000 >= 20000` est vraie. L'algorithme affiche « Remise de 2000 F CFA accordée », puis « Merci et à bientôt ».\n   Pour 15 000 : la condition `15000 >= 20000` est fausse, donc la ligne de la remise est ignorée. L'algorithme affiche seulement « Merci et à bientôt », car cette ligne est placée après `FinSi`.\n3. Il faut ajouter une branche `Sinon` :\n\n```text\nSi montant >= 20000 Alors\n    Ecrire (\"Remise de 2000 F CFA accordée\") ;\nSinon\n    Ecrire (\"Pas de remise\") ;\nFinSi\nEcrire (\"Merci et à bientôt\") ;\n```\n\nLe dernier `Ecrire` reste après `FinSi` : il continue de s'exécuter dans tous les cas. Pour 15 000, l'algorithme affiche maintenant « Pas de remise », puis « Merci et à bientôt ».",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8218, 11262]
+  },
+  {
+    "external_id": "cqc-structure-conditionnelle-bepc-info-elevee-3",
+    "theme": "structure conditionnelle",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Le collège de Garoua accorde une bourse d'encouragement à un élève si sa moyenne annuelle est supérieure ou égale à 15 et s'il n'a eu aucune absence dans l'année. L'algorithme suivant doit afficher « Bourse accordée » ou « Pas de bourse ». Il est incomplet : les trous sont repérés par `[1]`, `[2]` et `[3]`.\n\n```text\nAlgorithme Bourse\nVariable moyenne : réel ;\nVariable absences : entier ;\nDébut\n    Lire (moyenne) ;\n    Lire (absences) ;\n    Si [1] Alors\n        Ecrire (\"Bourse accordée\") ;\n    [2]\n        Ecrire (\"Pas de bourse\") ;\n    [3]\nFin\n```\n\nQuatre élèves se présentent :\n\n| Élève | moyenne | absences |\n|---|---|---|\n| 1 | 15 | 0 |\n| 2 | 17 | 3 |\n| 3 | 12 | 0 |\n| 4 | 11 | 5 |\n\n1. Traduire chacune des deux exigences par une condition simple, puis choisir l'opérateur logique (ET ou OU) qui les relie, en justifiant le choix.\n2. Donner les éléments qui complètent les trous `[1]`, `[2]` et `[3]`.\n3. Donner le message affiché pour chacun des quatre élèves.\n4. Vérifier le choix de l'opérateur : refaire la question 3 en remplaçant l'opérateur choisi par l'autre, comparer les deux séries de résultats et conclure.",
+    "corrige_markdown": "### Rappel de méthode\nUne condition combinée relie des comparaisons par des opérateurs logiques : ET vaut vrai seulement si les deux comparaisons valent vrai, OU vaut vrai dès qu'au moins l'une des deux vaut vrai. Pour traduire un énoncé, on écrit une comparaison par exigence, puis on choisit l'opérateur selon que les exigences doivent être remplies ensemble (ET) ou séparément (OU). La structure `Si ... Alors ... Sinon` se termine toujours par `FinSi`.\n\n### Corrigé\n1. Première exigence, « moyenne supérieure ou égale à 15 » : `moyenne >= 15`. Seconde exigence, « aucune absence » : `absences = 0`. L'élève doit remplir les deux exigences en même temps : l'opérateur est **ET**. Avec OU, il suffirait d'en remplir une seule pour obtenir la bourse.\n2. Trou `[1]` : `moyenne >= 15 ET absences = 0`. Trou `[2]` : `Sinon`. Trou `[3]` : `FinSi`.\n3. Évaluation de la condition `moyenne >= 15 ET absences = 0` :\n\n| Élève | `moyenne >= 15` | `absences = 0` | Condition complète (ET) | Message affiché |\n|---|---|---|---|---|\n| 1 | vrai (15 >= 15) | vrai | vrai | Bourse accordée |\n| 2 | vrai (17 >= 15) | faux (3 absences) | faux | Pas de bourse |\n| 3 | faux (12 < 15) | vrai | faux | Pas de bourse |\n| 4 | faux (11 < 15) | faux | faux | Pas de bourse |\n\n4. Avec OU à la place de ET : élève 1, vrai OU vrai = vrai, bourse ; élève 2, vrai OU faux = vrai, bourse ; élève 3, faux OU vrai = vrai, bourse ; élève 4, faux OU faux = faux, pas de bourse. Les élèves 2 et 3 obtiendraient la bourse alors qu'ils ne remplissent qu'une seule des deux exigences, ce qui contredit l'énoncé. Seul l'élève 1 remplit les deux exigences : le choix de ET est confirmé.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8185, 11266]
+  }
+]

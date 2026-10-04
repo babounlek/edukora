@@ -1,0 +1,93 @@
+[
+  {
+    "external_id": "cqc-trace-d-execution-bepc-info-faible-0",
+    "theme": "trace d'exécution",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Une cliente d'un marché de Yaoundé utilise un petit algorithme de calcul. Elle saisit successivement le prix 1200 puis la quantité 3.\n\n```text\nAlgorithme Achat\nVariable prix, quantite, total : entier ;\nDébut\n    Lire (prix) ;\n    Lire (quantite) ;\n    total ← prix * quantite ;\n    total ← total - 500 ;\n    Ecrire (total) ;\nFin\n```\n\nQuelle valeur l'algorithme affiche-t-il à la fin de son exécution ?",
+    "corrige_markdown": "### Rappel de méthode\nExécuter un algorithme à la main consiste à lire les instructions une par une, dans l'ordre, en tenant à jour la valeur de chaque variable. Une affectation remplace l'ancienne valeur de la variable placée à gauche de la flèche, et seule la variable citée dans `Ecrire` est affichée à la fin.\n\n### Corrigé\nTableau de trace (`?` signifie que la variable n'a pas encore de valeur) :\n\n| Instruction exécutée | prix | quantite | total |\n|---|---|---|---|\n| `Lire (prix)` | 1200 | ? | ? |\n| `Lire (quantite)` | 1200 | 3 | ? |\n| `total ← prix * quantite` | 1200 | 3 | 3600 |\n| `total ← total - 500` | 1200 | 3 | 3100 |\n| `Ecrire (total)` | 1200 | 3 | 3100 |\n\nL'algorithme affiche **3100**.\n\nRéponse **C**.\n\n- **A** est faux : 3600 est la valeur de `total` après la première affectation seulement. Cette réponse oublie l'instruction `total ← total - 500`.\n- **B** est faux : 2100 s'obtient en retirant 500 au prix avant de multiplier, soit (1200 - 500) × 3. Or l'algorithme multiplie d'abord, puis retire 500 une seule fois au total.\n- **D** est faux : 4100 s'obtient en ajoutant 500 à 3600. L'instruction contient le signe moins, donc 500 est retiré.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "3600"
+      },
+      {
+        "lettre": "B",
+        "texte": "2100"
+      },
+      {
+        "lettre": "C",
+        "texte": "3100"
+      },
+      {
+        "lettre": "D",
+        "texte": "4100"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [10840, 11262]
+  },
+  {
+    "external_id": "cqc-trace-d-execution-bepc-info-moyenne-1",
+    "theme": "trace d'exécution",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un chauffeur de taxi de Douala facture une course 300 F CFA jusqu'à 5 km, puis 100 F CFA par kilomètre au-delà des 5 premiers. Pour une course de 9 km, il saisit 9 dans l'algorithme suivant.\n\n```text\nAlgorithme Course\nVariable km, prix : entier ;\nDébut\n    Lire (km) ;\n    prix ← 300 ;\n    Si km > 5 Alors\n        prix ← prix + (km - 5) * 100 ;\n    FinSi\n    Ecrire (prix) ;\nFin\n```\n\nQuelle valeur l'algorithme affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\nPour dérouler un algorithme qui contient un test, il faut évaluer la condition avec la valeur saisie : si elle est vraie, les instructions de la structure sont exécutées, sinon elles sont ignorées. Dans un calcul, les parenthèses sont effectuées en premier, puis la multiplication, puis l'addition.\n\n### Corrigé\nTableau de trace pour `km` = 9 (`?` signifie que la variable n'a pas encore de valeur) :\n\n| Instruction exécutée | km | prix | Remarque |\n|---|---|---|---|\n| `Lire (km)` | 9 | ? | valeur saisie |\n| `prix ← 300` | 9 | 300 | prix de base |\n| `Si km > 5` | 9 | 300 | 9 > 5 est vrai |\n| `prix ← prix + (km - 5) * 100` | 9 | 700 | 300 + (9 - 5) × 100 = 300 + 400 |\n| `Ecrire (prix)` | 9 | 700 | affiche 700 |\n\nL'algorithme affiche **700**.\n\nRéponse **B**.\n\n- **A** est faux : 1200 vaut 300 + 9 × 100. Cette réponse oublie de retirer les 5 premiers kilomètres, alors que la formule contient `(km - 5)`.\n- **C** est faux : 400 est la valeur de `(km - 5) * 100`. Cette réponse perd les 300 de départ, comme si l'affectation était `prix ← (km - 5) * 100` sans le `prix +`.\n- **D** est faux : 300 correspond à une condition jugée fausse, qui ferait sauter la structure. Or 9 > 5 est vrai, donc l'affectation du supplément est bien exécutée.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "1200"
+      },
+      {
+        "lettre": "B",
+        "texte": "700"
+      },
+      {
+        "lettre": "C",
+        "texte": "400"
+      },
+      {
+        "lettre": "D",
+        "texte": "300"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10816, 11262]
+  },
+  {
+    "external_id": "cqc-trace-d-execution-bepc-info-elevee-2",
+    "theme": "trace d'exécution",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Une papeterie de Bafoussam utilise l'algorithme suivant pour tenir sa caisse.\n\n```text\nAlgorithme Caisse\nVariable prix, quantite, total, recu, rendu : entier ;\nDébut\n    Lire (prix) ;\n    Lire (quantite) ;\n    total ← prix * quantite ;\n    Ecrire (\"Total : \", total) ;\n    Lire (recu) ;\n    Si recu >= total Alors\n        rendu ← recu - total ;\n        Ecrire (\"Monnaie : \", rendu) ;\n    Sinon\n        rendu ← total - recu ;\n        Ecrire (\"Il manque : \", rendu) ;\n    FinSi\n    Ecrire (\"Merci\") ;\nFin\n```\n\nPour un premier client, les valeurs saisies, dans l'ordre des instructions `Lire`, sont 350, 6 puis 2500. Pour un second client, elles sont 350, 6 puis 1500.\n\n1. Pour le premier client, construire le tableau de trace : une ligne par instruction exécutée, avec la valeur de chaque variable après l'instruction et ce qui est affiché.\n2. Donner l'affichage complet obtenu pour le premier client.\n3. Pour le second client, donner la valeur de la condition, les valeurs finales des cinq variables et l'affichage complet.\n4. Vérifier les résultats des questions 2 et 3 par un contrôle de cohérence, sans repasser par l'algorithme : montrer que, pour le premier client, le total augmenté de la monnaie rendue redonne la somme reçue, et que, pour le second, la somme reçue augmentée du montant manquant redonne le total.",
+    "corrige_markdown": "### Rappel de méthode\nUne trace d'exécution suit l'algorithme instruction par instruction : après chacune, on note la valeur de toutes les variables et ce qui apparaît à l'écran. Un `Lire` range la valeur saisie, une affectation remplace l'ancienne valeur, et dans une structure `Si ... Sinon` on évalue la condition puis on n'exécute que la branche correspondante. Une instruction placée après `FinSi` s'exécute dans tous les cas.\n\n### Corrigé\n1. Tableau de trace du premier client (`?` signifie que la variable n'a pas encore de valeur, `-` que rien n'est affiché) :\n\n| Instruction exécutée | prix | quantite | total | recu | rendu | Affichage |\n|---|---|---|---|---|---|---|\n| `Lire (prix)` | 350 | ? | ? | ? | ? | - |\n| `Lire (quantite)` | 350 | 6 | ? | ? | ? | - |\n| `total ← prix * quantite` | 350 | 6 | 2100 | ? | ? | - |\n| `Ecrire (\"Total : \", total)` | 350 | 6 | 2100 | ? | ? | Total : 2100 |\n| `Lire (recu)` | 350 | 6 | 2100 | 2500 | ? | - |\n| `Si recu >= total` (2500 >= 2100 est vrai) | 350 | 6 | 2100 | 2500 | ? | - |\n| `rendu ← recu - total` | 350 | 6 | 2100 | 2500 | 400 | - |\n| `Ecrire (\"Monnaie : \", rendu)` | 350 | 6 | 2100 | 2500 | 400 | Monnaie : 400 |\n| `Ecrire (\"Merci\")` | 350 | 6 | 2100 | 2500 | 400 | Merci |\n\nLa branche `Sinon` n'est pas exécutée.\n\n2. Affichage complet du premier client :\n\n```text\nTotal : 2100\nMonnaie : 400\nMerci\n```\n\n3. Second client : `total` vaut 350 × 6 = 2100. La condition `recu >= total` s'écrit 1500 >= 2100 : elle est **fausse**. C'est donc la branche `Sinon` qui s'exécute : `rendu ← total - recu` donne 2100 - 1500 = 600. Valeurs finales : `prix` = 350, `quantite` = 6, `total` = 2100, `recu` = 1500, `rendu` = 600. Affichage complet :\n\n```text\nTotal : 2100\nIl manque : 600\nMerci\n```\n\n4. Contrôles sans l'algorithme :\n   - total, par un calcul direct : 350 × 6 = 300 × 6 + 50 × 6 = 1800 + 300 = 2100, valeur affichée pour les deux clients ;\n   - premier client : total + monnaie = 2100 + 400 = 2500, soit la somme reçue ;\n   - second client : somme reçue + montant manquant = 1500 + 600 = 2100, soit le total.\n\nLes trois contrôles concordent avec les affichages : la trace est correcte.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11262, 10816, 10840]
+  }
+]

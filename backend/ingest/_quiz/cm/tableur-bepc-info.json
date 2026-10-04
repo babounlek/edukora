@@ -1,0 +1,112 @@
+[
+  {
+    "external_id": "cqc-tableur-bepc-info-faible-0",
+    "theme": "tableur",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Une quincaillerie de Douala range ses articles dans la feuille de calcul suivante :\n\n| | A | B | C |\n|---|---|---|---|\n| **1** | Article | Prix unitaire (F CFA) | Stock |\n| **2** | Clou | 25 | 400 |\n| **3** | Ciment | 5 500 | 60 |\n| **4** | Peinture | 12 000 | 15 |\n\nQuelle est la référence de la cellule qui contient le prix unitaire du ciment ?",
+    "corrige_markdown": "### Rappel de méthode\nDans un tableur, chaque cellule se repère par sa référence : la lettre de sa colonne, puis le numéro de sa ligne, dans cet ordre (par exemple F9 pour la colonne F et la ligne 9). Pour trouver une référence, on lit d'abord la lettre de la colonne dans l'en-tête, puis le numéro de la ligne sur le côté.\n\n### Corrigé\nLe prix unitaire se trouve dans la colonne **B**, dont l'en-tête est « Prix unitaire (F CFA) ». Le ciment se trouve à la ligne **3**. La cellule cherchée a donc pour référence B3, et elle contient 5 500.\n\n- Choix A : `A3` est la cellule de la colonne des articles ; elle contient le mot « Ciment », pas son prix.\n- Choix B : `B3` est bien l'intersection de la colonne du prix unitaire et de la ligne du ciment.\n- Choix C : `C3` est la cellule de la colonne du stock ; elle contient 60, la quantité en stock.\n- Choix D : `3B` écrit le numéro de ligne avant la lettre de colonne ; l'ordre est inversé, ce n'est pas une référence valable.\n\nRéponse **B**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`A3`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`B3`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`C3`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`3B`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [8967]
+  },
+  {
+    "external_id": "cqc-tableur-bepc-info-moyenne-1",
+    "theme": "tableur",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Fatou saisit ses notes du trimestre dans un tableur :\n\n| | A | B |\n|---|---|---|\n| **1** | Matière | Note sur 20 |\n| **2** | Mathématiques | 14 |\n| **3** | Français | 11 |\n| **4** | SVT | 17 |\n| **5** | Anglais | 10 |\n| **6** | Moyenne | |\n\nElle saisit en `B6` la formule `=MOYENNE(B2:B4)`. Quelle valeur la cellule `B6` affiche-t-elle ?",
+    "corrige_markdown": "### Rappel de méthode\nLa notation `B2:B4` désigne une plage de cellules : toutes les cellules de la colonne B comprises entre B2 et B4, bornes incluses. La fonction MOYENNE additionne les valeurs de la plage, puis divise cette somme par le nombre de cellules de la plage.\n\n### Corrigé\nLa plage `B2:B4` contient trois cellules : `B2` (14), `B3` (11) et `B4` (17). La cellule `B5` (10) n'en fait pas partie.\n\nSomme : 14 + 11 + 17 = 42. Nombre de cellules : 3. Moyenne : 42 ÷ 3 = 14.\n\n- Choix A : 13 est la moyenne des quatre notes (52 ÷ 4) ; elle suppose que la plage va jusqu'à `B5`, ce qui n'est pas le cas.\n- Choix B : 42 est la somme des trois notes de la plage ; la fonction MOYENNE divise ensuite cette somme par 3.\n- Choix C : 52 est la somme des quatre notes, `B5` comprise ; elle n'est ni la somme de la plage, ni une moyenne.\n- Choix D : 14 est bien la moyenne des trois cellules de la plage.\n\nRéponse **D**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "13"
+      },
+      {
+        "lettre": "B",
+        "texte": "42"
+      },
+      {
+        "lettre": "C",
+        "texte": "52"
+      },
+      {
+        "lettre": "D",
+        "texte": "14"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [8188]
+  },
+  {
+    "external_id": "cqc-tableur-bepc-info-moyenne-2",
+    "theme": "tableur",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Le vendeur d'une quincaillerie de Douala établit la facture d'un client avec un tableur :\n\n| | A | B | C | D | E |\n|---|---|---|---|---|---|\n| **1** | N° | Article | Quantité | Prix unitaire (F CFA) | Montant (F CFA) |\n| **2** | 1 | Sac de ciment | 4 | 6 500 | |\n| **3** | 2 | Pot de peinture | 3 | 4 200 | |\n| **4** | 3 | Boîte de clous | 6 | 750 | |\n| **5** | | Total à payer | | | |\n\n1. Écrire la formule à saisir en `E2` pour calculer le montant du sac de ciment, puis donner la valeur affichée.\n2. Cette formule est recopiée vers le bas jusqu'en `E4`. Donner la formule obtenue en `E4` et la valeur affichée.\n3. Écrire la formule à saisir en `E5` pour obtenir le total à payer, puis donner la valeur affichée.\n4. Le client ne prend finalement que 2 pots de peinture : la valeur 3 de la cellule `C3` est remplacée par 2. Donner la nouvelle valeur affichée en `E5`, sans retaper aucune formule.",
+    "corrige_markdown": "### Rappel de méthode\nUne formule de tableur s'écrit à partir du signe égal et s'appuie sur des références de cellules plutôt que sur des nombres : son résultat suit alors toute modification des données. Quand une formule est recopiée vers le bas, le numéro de ligne de chaque référence augmente d'autant. La fonction SOMME additionne toutes les cellules d'une plage.\n\n### Corrigé\n**1. Montant du sac de ciment.** Le montant est le produit de la quantité par le prix unitaire. La quantité est en `C2` et le prix unitaire en `D2`. Formule en `E2` : `=C2*D2`. Valeur affichée : 4 × 6 500 = **26 000**.\n\n**2. Recopie vers le bas.** En `E3`, la formule devient `=C3*D3`, et en `E4`, elle devient `=C4*D4`. Valeur affichée en `E4` : 6 × 750 = **4 500**. (En `E3`, le montant est 3 × 4 200 = 12 600.)\n\n**3. Total à payer.** Formule en `E5` : `=SOMME(E2:E4)`. La formule `=E2+E3+E4` est aussi acceptée. Valeur affichée : 26 000 + 12 600 + 4 500 = **43 100** F CFA.\n\n**4. Modification d'une quantité.** Le tableur recalcule automatiquement les formules qui dépendent de `C3`. Le montant de `E3` devient 2 × 4 200 = 8 400, et le total en `E5` devient 26 000 + 8 400 + 4 500 = **38 900** F CFA.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8188]
+  },
+  {
+    "external_id": "cqc-tableur-bepc-info-elevee-3",
+    "theme": "tableur",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "Un élève de 3e du collège de Garoua calcule sa moyenne du trimestre avec un tableur. Chaque note est multipliée par le coefficient de la matière.\n\n| | A | B | C | D |\n|---|---|---|---|---|\n| **1** | Matière | Note sur 20 | Coefficient | Points |\n| **2** | Informatique | 16 | 2 | |\n| **3** | Mathématiques | 11 | 4 | |\n| **4** | Français | 9 | 3 | |\n| **5** | Anglais | 14 | 1 | |\n| **6** | Total | | | |\n| **7** | Moyenne | | | |\n\nLes points de chaque matière se placent dans la colonne D ; les totaux se placent en `C6` et en `D6` ; la moyenne avec coefficients se place en `D7`.\n\n1. Écrire la formule à saisir en `D2` pour calculer les points d'Informatique.\n2. Donner la formule obtenue en `D4` après recopie de `D2` vers le bas, puis la valeur affichée.\n3. Écrire les formules à saisir en `C6` et en `D6`, puis donner leurs valeurs.\n4. Écrire la formule à saisir en `D7` pour calculer la moyenne avec coefficients, puis donner la valeur affichée.\n5. **Vérification.** Contrôler le résultat de la question 4 de deux façons : vérifier que la moyenne est comprise entre la plus petite et la plus grande des notes, puis multiplier la moyenne obtenue par le total des coefficients pour retrouver le total des points.",
+    "corrige_markdown": "### Rappel de méthode\nLa moyenne avec coefficients se calcule en additionnant les points de toutes les matières (note multipliée par coefficient), puis en divisant ce total par la somme des coefficients. Dans un tableur, chaque étape devient une formule bâtie sur des références de cellules, donc recalculée automatiquement si une note change.\n\n### Corrigé\n**1. Points d'Informatique.** Les points sont le produit de la note par le coefficient. Formule en `D2` : `=B2*C2`. Valeur : 16 × 2 = 32.\n\n**2. Recopie vers le bas.** En `D4`, la formule devient `=B4*C4`. Valeur affichée : 9 × 3 = **27**. (Les autres lignes donnent 11 × 4 = 44 en `D3` et 14 × 1 = 14 en `D5`.)\n\n**3. Totaux.** En `C6` : `=SOMME(C2:C5)`, soit 2 + 4 + 3 + 1 = **10**. En `D6` : `=SOMME(D2:D5)`, soit 32 + 44 + 27 + 14 = **117**.\n\n**4. Moyenne avec coefficients.** Formule en `D7` : `=D6/C6`. Valeur affichée : 117 ÷ 10 = **11,7**.\n\n**5. Vérification**\n\n- Contrôle de vraisemblance : la plus petite note est 9 et la plus grande est 16. Or 9 ≤ 11,7 ≤ 16, donc la moyenne est cohérente.\n- Contrôle par la multiplication : 11,7 × 10 = 117, ce qui est bien le total des points trouvé en `D6`.\n\nLes deux contrôles confirment le résultat : la moyenne du trimestre est 11,7 sur 20.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8188, 8967]
+  }
+]
