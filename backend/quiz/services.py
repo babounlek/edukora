@@ -48,6 +48,13 @@ SUBJECTS_PARCOURS_PAR_FREQUENCE = {
     # vide, 0 module), le classement des thèmes les plus tombés (31 épreuves officielles au
     # BEPC) est donc le seul parcours possible. Même régime normal que l'Informatique.
     "EDUCATION_CIVIQUE",
+    # Géographie : depuis les ingestions du 2026-10-05, le BEPC (10 épreuves officielles), le
+    # Probatoire C/D/E (11) et le BAC A/ABI (13) passent le seuil de SEUIL_MINIMUM_THEMES_PARCOURS
+    # et sont classés par thème en régime normal (officielles seules, plancher d'occurrences).
+    # Les cursus plus minces (BAC C/D/E/TI, Probatoire A et TI : 2 à 7 épreuves) renvoient None
+    # et gardent le parcours Module→Savoir. Le régime « corpus mince » (aucun plancher) donnait
+    # 208 thèmes au BEPC et 273 au Probatoire C/D/E : inexploitable.
+    "GEOGRAPHIE",
 }
 
 # Matières classées par thème qui n'ont AUCUN programme officiel : leur classement est leur seul
@@ -69,10 +76,10 @@ SUBJECTS_CORPUS_MINCE_PARCOURS = {"PROGRAMMATION", "SYSTEMES_INFORMATION", "RESE
 
 # Matières classées par thème POUR CERTAINS EXAMENS SEULEMENT, en régime « corpus mince »
 # (mêmes règles que SUBJECTS_CORPUS_MINCE_PARCOURS : les sujets zéro et blancs comptent, aucun
-# plancher d'occurrences). Géographie au BEPC : 4 épreuves officielles et 1 sujet zéro, les
-# anciennes épreuves combinées étant rangées sous HISTOIRE_GEO ; le seuil de 8 épreuves ne
-# serait jamais atteint, et le Probatoire (11 épreuves) comme le BAC gardent leur parcours.
-SUBJECTS_PARCOURS_PAR_THEME_EXAMENS = {"GEOGRAPHIE": {Examen.BEPC}}
+# plancher d'occurrences). Vide depuis le 2026-10-05 : la Géographie, seule concernée (BEPC avec
+# 4 épreuves officielles), a rejoint SUBJECTS_PARCOURS_PAR_FREQUENCE une fois le corpus étoffé.
+# Le mécanisme est conservé pour un futur examen au corpus trop mince pour le seuil de 8.
+SUBJECTS_PARCOURS_PAR_THEME_EXAMENS = {}
 
 
 def _classee_par_theme_pour_cet_examen(subject, cursus):
@@ -119,7 +126,16 @@ TAGS_ALIAS_PARCOURS_FREQUENCE = {
 # Tags-poubelle à exclure du classement (jamais à fusionner : un nom de discipline
 # utilisé comme tag ne désigne aucune notion précise à réviser) - mesuré sur PCT où
 # "technologie" ressortait #3 du classement sans rien dire d'utile.
-TAGS_BLOCKLIST_PARCOURS_FREQUENCE = {"technologie", "physique", "chimie", "mécanique", "électricité", "svt", "Cameroun"}
+TAGS_BLOCKLIST_PARCOURS_FREQUENCE = {
+    "technologie", "physique", "chimie", "mécanique", "électricité", "svt", "Cameroun",
+    # Géographie : thèmes de MÉTHODE (comment présenter, exploiter ou rédiger), qui reviennent dans
+    # presque toutes les épreuves sans nommer une notion à réviser - jamais quizzables en compétence
+    # (voir catalog.ingestion._TAGS_STRUCTURELS_EXACTS pour leur exclusion de la sélection de quiz).
+    "Vocabulaire géographique", "méthodologie de la copie d'examen", "présentation d'un problème",
+    "exploitation de document", "commentaire de document", "Analyse documentaire",
+    "présentation de documents", "fond de carte", "dissertation de géographie",
+    "Production écrite argumentée", "cartographie thématique",
+}
 
 # Un thème qui n'est jamais retombé qu'une seule fois n'est justement pas un thème
 # qui "revient" - mesuré sur BEPC Maths : sur 476 thèmes candidats après filtrage,

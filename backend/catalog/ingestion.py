@@ -1054,6 +1054,14 @@ _TAGS_STRUCTURELS_EXACTS = frozenset({
     "calcul numerique", "application numerique",
     # Supports que le quiz ne peut pas afficher
     "tableau", "schema", "figure", "lecture graphique",
+    # Géographie (2026-10-05) : thèmes de MÉTHODE (présenter, exploiter, rédiger) présents dans presque
+    # toutes les épreuves sans nommer une notion, et le nom d'un pays seul. Le nom normalisé garde
+    # l'apostrophe (voir _normalize) : l'entrée « presentation d un probleme » ci-dessus ne
+    # correspondait pas au tag « présentation d'un problème ».
+    "presentation d'un probleme", "methodologie de la copie d'examen", "vocabulaire geographique",
+    "exploitation de document", "commentaire de document", "analyse documentaire",
+    "presentation de documents", "fond de carte", "dissertation de geographie",
+    "production ecrite argumentee", "cartographie thematique", "cameroun",
 })
 
 # Familles où le préfixe suffit, aucun tag de notion ne commençant ainsi : « QCM… »

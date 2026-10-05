@@ -2390,10 +2390,10 @@ class ParcoursEducationCiviqueParThemeTests(TestCase):
         self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject), [])
 
 
-class ParcoursGeographieBepcParThemeTests(TestCase):
-    """GEOGRAPHIE est classée par thème au BEPC seulement, en régime « corpus mince » : 4
-    épreuves officielles et 1 sujet zéro ne passent pas le seuil de 8 épreuves, mais les
-    autres examens gardent leur parcours Module→Savoir."""
+class ParcoursGeographieParThemeTests(TestCase):
+    """GEOGRAPHIE est classée par thème en régime normal (SUBJECTS_PARCOURS_PAR_FREQUENCE) dès
+    que le cursus compte assez d'épreuves officielles ; en dessous du seuil, le parcours
+    Module→Savoir est conservé. Les thèmes de méthode sont exclus du classement."""
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200033", password="x")
@@ -2406,13 +2406,13 @@ class ParcoursGeographieBepcParThemeTests(TestCase):
             module.cursus.add(cursus)
             Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
 
-    def test_the_exam_is_declared_in_the_theme_mode_table(self):
-        self.assertIn(Examen.BEPC, SUBJECTS_PARCOURS_PAR_THEME_EXAMENS["GEOGRAPHIE"])
-        self.assertNotIn("GEOGRAPHIE", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+    def test_geography_is_declared_in_the_frequency_table(self):
+        self.assertIn("GEOGRAPHIE", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+        self.assertNotIn("GEOGRAPHIE", SUBJECTS_PARCOURS_PAR_THEME_EXAMENS)
 
-    def test_bepc_switches_to_theme_mode_with_a_thin_corpus(self):
+    def test_bepc_switches_to_theme_mode_once_the_corpus_is_large_enough(self):
         tag = Tag.objects.create(name="hydrographie-test")
-        for i in range(3):
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.bepc, f"Géographie BEPC {i}", [[tag]])
 
         parcours = construire_parcours(self.profil, self.bepc, self.subject)
@@ -2421,28 +2421,36 @@ class ParcoursGeographieBepcParThemeTests(TestCase):
         self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "hydrographie-test")
         self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
 
-    def test_a_sujet_zero_counts_and_no_occurrence_floor_applies(self):
+    def test_a_theme_seen_in_a_single_exam_is_below_the_floor(self):
         tag = Tag.objects.create(name="hydrographie-test")
         rare = Tag.objects.create(name="theme-vu-une-fois-test")
-        officielle = _make_lesson_avec_themes(self.subject, self.bepc, "Géographie BEPC officielle", [[tag, rare]])
-        zero = _make_lesson_avec_themes(self.subject, self.bepc, "Géographie BEPC sujet zéro", [[tag]])
-        Lesson.objects.filter(pk=zero.pk).update(origine=Origine.SUJET_ZERO)
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Géographie BEPC {i}", [[tag, rare] if i == 0 else [tag]])
 
         savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
-        par_nom = {s["intitule"]: s for s in savoirs}
 
-        self.assertEqual(par_nom["hydrographie-test"]["nb_epreuves"], 2)
-        self.assertEqual(par_nom["theme-vu-une-fois-test"]["nb_epreuves"], 1)
-        self.assertIsNotNone(officielle.pk)
+        self.assertEqual([s["intitule"] for s in savoirs], ["hydrographie-test"])
 
-    def test_other_exams_keep_the_programme_parcours(self):
+    def test_method_themes_are_left_out_of_the_ranking(self):
         tag = Tag.objects.create(name="hydrographie-test")
+        self.assertIn("Vocabulaire géographique", TAGS_BLOCKLIST_PARCOURS_FREQUENCE)
+        methode = Tag.objects.create(name="Vocabulaire géographique")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Géographie BEPC {i}", [[tag, methode]])
+
+        savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
+
+        self.assertEqual([s["intitule"] for s in savoirs], ["hydrographie-test"])
+
+    def test_a_thin_corpus_keeps_the_programme_parcours(self):
+        tag = Tag.objects.create(name="hydrographie-test")
+        for i in range(3):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Géographie BEPC {i}", [[tag]])
         for i in range(3):
             _make_lesson_avec_themes(self.subject, self.bac_c, f"Géographie BAC {i}", [[tag]])
 
-        parcours = construire_parcours(self.profil, self.bac_c, self.subject)
-
-        self.assertEqual(parcours[0]["titre"], "M")
+        self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject)[0]["titre"], "M")
+        self.assertEqual(construire_parcours(self.profil, self.bac_c, self.subject)[0]["titre"], "M")
 
     def test_bepc_without_any_lesson_falls_back_to_the_programme(self):
         parcours = construire_parcours(self.profil, self.bepc, self.subject)
