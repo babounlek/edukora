@@ -220,7 +220,7 @@ function CalloutExclusifsJusquaExamen() {
 
 export function PricingPage() {
   useSeo({
-    title: "Tarifs",
+    title: "Prix",
     description: `Abonnement ${SITE_NAME} par Mobile Money, jusqu'à ton examen, pour accéder à tous les corrigés et cours de ton cursus.`,
   })
 
@@ -323,17 +323,14 @@ export function PricingPage() {
           aria-hidden
         />
         <div className="relative max-w-2xl">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Sparkles className="size-5" />
-          </div>
-          <p className="mb-1 font-display text-sm italic text-primary">Tarifs</p>
+          <p className="mb-1 font-display text-sm italic text-primary">Prix</p>
           {/* Tutoiement de bout en bout (décision du 2026-09-05) : un brouillon non
               commité vouvoyait cette page ("acheteur adulte" payeur), rompant avec le
               reste du site (accueil, quiz, corrigés) qui tutoie l'élève partout - jamais
               mergé, donc sans effet sur la version publiée, mais présent dans l'arbre de
               travail. Écarté au profit de la cohérence de ton déjà en place ailleurs. */}
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
-            Un seul tarif, <span className="text-primary">jusqu'à ton examen</span>.
+            Un seul prix, <span className="text-primary">jusqu'à ton examen</span>.
           </h1>
           <p className="mt-2 text-muted-foreground">
             15 000 FCFA par enfant, puis 12 000 FCFA pour chaque enfant supplémentaire de la même famille.
@@ -589,9 +586,9 @@ export function PricingPage() {
               <Lock className="size-4" />
             </span>
             <div>
-              <p className="font-medium">Le tarif change-t-il selon la date d'achat ?</p>
+              <p className="font-medium">Le prix change-t-il selon la date d'achat ?</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Non. Le tarif est de 15 000 FCFA par enfant, quel que soit le moment où tu t'abonnes, et couvre
+                Non. Le prix est de 15 000 FCFA par enfant, quel que soit le moment où tu t'abonnes, et couvre
                 l'accès jusqu'à ton examen. Pour chaque enfant supplémentaire de la même famille, c'est 12 000 FCFA.
               </p>
             </div>

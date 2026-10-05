@@ -96,7 +96,7 @@ export function SubscribePage() {
   // grille à un seul palier) - il n'existe donc plus d'add-on Inédites séparé à
   // proposer ici.
   const requireRepetiteur = searchParams.get("require") === "repetiteur"
-  // Formule déjà choisie sur la page Tarifs (nombre de jours, ou "examen" pour le
+  // Formule déjà choisie sur la page Prix (nombre de jours, ou "examen" pour le
   // Pack Examen dont la durée n'est pas fixe) : la sélection arrive ici présélectionnée
   // sur CETTE formule. Sans ce relais, cliquer "Choisir Essentiel" atterrissait sur un
   // formulaire présélectionné sur une autre formule - le choix venait d'être fait, la
@@ -314,7 +314,7 @@ export function SubscribePage() {
           )}
           {plan.duration_mode === "JUSQUA_EXAMEN" && plan.effective_price < plan.price && (
             <span className="text-xs font-medium text-success">
-              Tarif enfant supplémentaire (−20 %) : {formatAmount(plan.price)} → {formatAmount(plan.effective_price)} FCFA
+              Prix enfant supplémentaire (−20 %) : {formatAmount(plan.price)} → {formatAmount(plan.effective_price)} FCFA
             </span>
           )}
         </span>

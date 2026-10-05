@@ -65,7 +65,7 @@ const SECTIONS: SectionLegale[] = [
   },
   {
     id: "abonnement",
-    titre: "Abonnement et tarifs",
+    titre: "Abonnement et prix",
     contenu: (
       <>
         <p>
@@ -79,7 +79,7 @@ const SECTIONS: SectionLegale[] = [
           </PuceLegale>
           <PuceLegale>
             <strong>12 000 FCFA</strong> pour chaque enfant supplémentaire de la même famille (réduction fixe de
-            20 % sur le tarif de référence, identique pour le 2<sup>e</sup>, le 3<sup>e</sup>, le 4<sup>e</sup> enfant,
+            20 % sur le prix de référence, identique pour le 2<sup>e</sup>, le 3<sup>e</sup>, le 4<sup>e</sup> enfant,
             et ainsi de suite). Exemple : 2 enfants, 27 000 FCFA ; 3 enfants, 39 000 FCFA.
           </PuceLegale>
         </ListeLegale>
@@ -147,17 +147,17 @@ const SECTIONS: SectionLegale[] = [
 export function TermsPage() {
   useSeo({
     title: "Conditions générales d'utilisation et de vente",
-    description: `Fonctionnement de l'abonnement ${SITE_NAME}, tarifs, paiement, remboursement et propriété intellectuelle.`,
+    description: `Fonctionnement de l'abonnement ${SITE_NAME}, prix, paiement, remboursement et propriété intellectuelle.`,
   })
 
   return (
     <PageLegale
       icone={ScrollText}
       titre="Conditions générales d'utilisation et de vente"
-      introduction={`Comment fonctionne ${SITE_NAME} : comptes et profils, abonnement, tarifs, paiement et résiliation.`}
+      introduction={`Comment fonctionne ${SITE_NAME} : comptes et profils, abonnement, prix, paiement et résiliation.`}
       puces={
         <>
-          <ChipLegale icone={Check}>Un seul tarif, jusqu'à l'examen</ChipLegale>
+          <ChipLegale icone={Check}>Un seul prix, jusqu'à l'examen</ChipLegale>
           <ChipLegale icone={ShieldCheck}>Pas de reconduction automatique</ChipLegale>
           <ChipLegale icone={Smartphone} className="text-gold-text">Paiement Mobile Money</ChipLegale>
         </>

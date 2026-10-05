@@ -274,7 +274,7 @@ export function Header() {
    * Deux navigations, pas une.
    *
    * Un VISITEUR arrive par une recherche et vient voir ce qu'il y a : Épreuves,
-   * Cours, Tarifs - c'est aussi la version que les robots indexent, elle ne bouge pas.
+   * Cours, Prix - c'est aussi la version que les robots indexent, elle ne bouge pas.
    *
    * Un ÉLÈVE qui a déclaré son examen n'est plus là pour explorer un catalogue mais
    * pour avancer : Aujourd'hui (sa séance), Réviser (toute la bibliothèque), Ma
@@ -288,7 +288,7 @@ export function Header() {
    * "Ma progression" - on y va pour se rassurer, plus pour démarrer, le plan s'en
    * charge. Leurs deux routes restent servies telles quelles.
    *
-   * "Tarifs" ne s'affiche que pour qui n'a pas encore payé : reproposer en permanence
+   * "Prix" ne s'affiche que pour qui n'a pas encore payé : reproposer en permanence
    * d'acheter ce qu'on possède déjà n'est plus de la navigation.
    */
   const suitUnPlan = isAuthenticated && Boolean(user?.cursus_prepare)
@@ -299,12 +299,12 @@ export function Header() {
         { to: "/parcours", label: "Ma progression", active: isParcoursSection, badge: false },
         ...(user?.a_un_abonnement_actif
           ? []
-          : [{ to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false }]),
+          : [{ to: "/tarifs", label: "Prix", active: isTarifsSection, badge: false }]),
       ]
     : [
         { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: hasInedites },
         { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
-        { to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false },
+        { to: "/tarifs", label: "Prix", active: isTarifsSection, badge: false },
       ]
 
   return (

@@ -655,7 +655,7 @@ function CatalogueVitrine() {
             <div className="mt-5 flex justify-center">
               <Button size="lg" asChild>
                 <Link to="/tarifs">
-                  Voir les tarifs
+                  Voir les prix
                   <ArrowRight />
                 </Link>
               </Button>

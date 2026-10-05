@@ -252,7 +252,7 @@ export function AboutPage() {
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <Link to="/tarifs">Voir les tarifs</Link>
+                  <Link to="/tarifs">Voir les prix</Link>
                 </Button>
               </div>
             </div>

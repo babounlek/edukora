@@ -57,7 +57,7 @@ function invitationPour(user: User | null, country: string): Invitation {
       ),
       bouton: "Créer mon compte",
       lien: "/connexion",
-      secondaire: { label: "Voir les tarifs", lien: "/tarifs" },
+      secondaire: { label: "Voir les prix", lien: "/tarifs" },
     }
   }
   const compteARebours = phraseCompteARebours(user)
@@ -71,7 +71,7 @@ function invitationPour(user: User | null, country: string): Invitation {
           <span className="text-primary">et révise ce qui tombe vraiment.</span>
         </>
       ),
-      bouton: "Voir les tarifs",
+      bouton: "Voir les prix",
       lien: "/tarifs",
     }
   }
@@ -275,7 +275,7 @@ export function Footer() {
         </Colonne>
 
         <Colonne titre="Aide">
-          <Lien to="/tarifs">Tarifs</Lien>
+          <Lien to="/tarifs">Prix</Lien>
           <Lien to="/a-propos">À propos</Lien>
           <a
             href={CONTACT_WHATSAPP_URL}

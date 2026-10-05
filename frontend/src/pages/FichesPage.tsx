@@ -597,7 +597,7 @@ export function FichesPage() {
                 {isAuthenticated ? (
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <a href="/tarifs">
-                      Voir les tarifs
+                      Voir les prix
                       <ArrowRight className="size-4" />
                     </a>
                   </Button>
@@ -613,7 +613,7 @@ export function FichesPage() {
                       </Link>
                     </Button>
                     <Link to="/tarifs" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-                      Pas encore l'add-on ? Voir les tarifs
+                      Pas encore l'add-on ? Voir les prix
                     </Link>
                   </div>
                 )}
