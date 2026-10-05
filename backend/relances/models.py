@@ -11,6 +11,7 @@ class TypeRelance(models.TextChoices):
 class CanalRelance(models.TextChoices):
     EMAIL = "email", "E-mail"
     PUSH = "push", "Notification du navigateur"
+    WHATSAPP = "whatsapp", "WhatsApp"
 
 
 class RelanceEnvoyee(models.Model):

@@ -28,6 +28,19 @@ class PlanificateurTests(RelancesTestCase):
         # Le tour suivant, dans la même fenêtre, ne renvoie rien.
         self.assertEqual(passer_une_fois(datetime(2026, 9, 28, 18, 30, tzinfo=DOUALA))["rappel"], 0)
 
+    def test_le_rappel_whatsapp_suit_la_meme_fenetre_et_part_une_fois_par_jour(self):
+        from unittest import mock
+
+        with mock.patch(
+            "relances.management.commands.planifier_relances.envoyer_rappels_whatsapp", return_value=2,
+        ) as whatsapp:
+            self.assertEqual(passer_une_fois(datetime(2026, 9, 28, 9, 0, tzinfo=DOUALA))["whatsapp"], 0)
+            whatsapp.assert_not_called()
+            self.assertEqual(passer_une_fois(datetime(2026, 9, 28, 17, 30, tzinfo=DOUALA))["whatsapp"], 2)
+            whatsapp.assert_called_once()
+            self.assertEqual(passer_une_fois(datetime(2026, 9, 28, 21, 0, tzinfo=DOUALA))["whatsapp"], 0)
+            whatsapp.assert_called_once()
+
     def test_pas_de_rappel_apres_la_fenetre(self):
         self.eleve()
         self.assertEqual(passer_une_fois(datetime(2026, 9, 28, 21, 0, tzinfo=DOUALA))["rappel"], 0)

@@ -18,6 +18,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from quiz.services import revisions_dues
+from relances.models import CanalRelance, RelanceEnvoyee, TypeRelance
 from users.models import User
 from users.phone import to_e164, to_local
 
@@ -85,22 +86,42 @@ def utilisateurs_a_relancer():
             yield optin.user, schedules
 
 
-def envoyer_rappels_du_jour():
+def envoyer_rappels_du_jour(maintenant=None):
     """
-    Point d'entrée de la commande de gestion send_whatsapp_reminders - un rappel par
-    utilisateur opt-in ayant au moins une révision due. Retourne le nombre de rappels
-    envoyés. Censée tourner une fois par jour via une tâche planifiée externe (voir la
-    docstring de la commande) - aucune déduplication supplémentaire nécessaire ici,
-    l'appelant est responsable de la cadence.
+    Point d'entrée de la commande send_whatsapp_reminders ET de l'ordonnanceur horaire
+    (relances.management.commands.planifier_relances) - un rappel par utilisateur opt-in
+    ayant au moins une révision due. Retourne le nombre de rappels envoyés.
+
+    Idempotent à la journée : chaque envoi est tracé dans RelanceEnvoyee (canal WhatsApp,
+    référence = la date locale), donc un second tour le même jour ne renvoie rien. C'est
+    ce qui permet de l'appeler toutes les heures. Un envoi en échec (Meta injoignable,
+    numéro hors liste de test...) retire sa trace et laisse les autres utilisateurs
+    partir : le tour suivant le retentera.
     """
+    aujourdhui = (timezone.localtime(maintenant).date() if maintenant else timezone.localdate()).isoformat()
+    deja_envoyes = set(
+        RelanceEnvoyee.objects.filter(
+            type=TypeRelance.RAPPEL_SEANCE, canal=CanalRelance.WHATSAPP, reference=aujourdhui,
+        ).values_list("user_id", flat=True)
+    )
     backend = get_whatsapp_backend()
     envoyes = 0
     for user, schedules in utilisateurs_a_relancer():
-        backend.send_template(
-            user.phone_number,
-            REMINDER_TEMPLATE_NAME,
-            [len(schedules), _format_themes(schedules)],
+        if user.pk in deja_envoyes:
+            continue
+        trace = RelanceEnvoyee.objects.create(
+            user=user, type=TypeRelance.RAPPEL_SEANCE, canal=CanalRelance.WHATSAPP, reference=aujourdhui,
         )
+        try:
+            backend.send_template(
+                user.phone_number,
+                REMINDER_TEMPLATE_NAME,
+                [len(schedules), _format_themes(schedules)],
+            )
+        except Exception:
+            trace.delete()
+            logger.exception("Rappel WhatsApp non envoyé à l'utilisateur %s", user.pk)
+            continue
         envoyes += 1
     return envoyes
 

@@ -133,6 +133,34 @@ class EnvoyerRappelsDuJourTests(TestCase):
         self.assertIn("dérivation", params[1])
 
     @patch("whatsapp.services.get_whatsapp_backend")
+    def test_un_second_tour_le_meme_jour_ne_renvoie_rien(self, mock_get_backend):
+        # L'ordonnanceur tourne toutes les heures : sans trace, le rappel partirait à chaque tour.
+        self.assertEqual(envoyer_rappels_du_jour(), 1)
+        self.assertEqual(envoyer_rappels_du_jour(), 0)
+        mock_get_backend.return_value.send_template.assert_called_once()
+
+    @patch("whatsapp.services.get_whatsapp_backend")
+    def test_un_envoi_en_echec_est_retente_et_n_arrete_pas_les_autres(self, mock_get_backend):
+        autre = User.objects.create_user(phone_number="677400021", password="x")
+        opt_in(autre)
+        RevisionSchedule.objects.create(
+            profil=autre.profils.first(), cursus=self.cursus, subject=self.subject,
+            theme=Tag.objects.create(name="limites"), due_at=timezone.localdate(),
+        )
+        backend = mock_get_backend.return_value
+        # Le premier destinataire (quel qu'il soit) échoue, le second part.
+        backend.send_template.side_effect = [RuntimeError("Meta injoignable"), None]
+
+        self.assertEqual(envoyer_rappels_du_jour(), 1)
+
+        # Le tour suivant retente seulement celui qui a échoué.
+        backend.send_template.side_effect = None
+        backend.send_template.reset_mock()
+        self.assertEqual(envoyer_rappels_du_jour(), 1)
+        backend.send_template.assert_called_once()
+        self.assertEqual(envoyer_rappels_du_jour(), 0)
+
+    @patch("whatsapp.services.get_whatsapp_backend")
     def test_returns_zero_when_nobody_is_eligible(self, mock_get_backend):
         opt_out(self.user)
 

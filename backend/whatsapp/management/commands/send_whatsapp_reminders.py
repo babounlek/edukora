@@ -7,10 +7,9 @@ class Command(BaseCommand):
     help = (
         "Envoie le rappel de révision WhatsApp du jour à tous les utilisateurs opt-in "
         "ayant au moins une notion due (voir whatsapp.services.utilisateurs_a_relancer). "
-        "Ne tourne jamais automatiquement - à planifier une fois par jour via une tâche "
-        "externe (cron/scheduler), même principe que les commandes de génération PDF "
-        "(catalog.generate_sujet_pdfs, fiches.generate_fiche_pdfs) : aucune de ces "
-        "commandes ne se déclenche elle-même."
+        "Déjà exécutée automatiquement chaque jour en fin d'après-midi par le service "
+        "`relances` (commande planifier_relances) - cette commande ne sert qu'à un envoi "
+        "manuel. Idempotente : un utilisateur déjà relancé aujourd'hui n'est pas relancé."
     )
 
     def handle(self, *args, **options):

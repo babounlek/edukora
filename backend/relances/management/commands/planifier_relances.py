@@ -7,6 +7,7 @@ from django.utils import timezone
 from relances.bilan_parent import HEURE_DEBUT_BILAN, HEURE_FIN_BILAN, JOUR_ENVOI, envoyer_bilans_parent
 from relances.push import envoyer_rappels_push
 from relances.services import envoyer_relances_paiement, envoyer_rappels_seance
+from whatsapp.services import envoyer_rappels_du_jour as envoyer_rappels_whatsapp
 
 logger = logging.getLogger("relances")
 
@@ -23,7 +24,7 @@ def passer_une_fois(maintenant=None):
     l'heure habituelle de chaque élève (qui peut tomber hors de cette fenêtre : il choisit lui-même
     son heure en travaillant, voir relances.push.heure_habituelle)."""
     maintenant = maintenant or timezone.now()
-    resultat = {"paiement": envoyer_relances_paiement(maintenant), "rappel": 0, "push": 0, "bilan": 0}
+    resultat = {"paiement": envoyer_relances_paiement(maintenant), "rappel": 0, "push": 0, "bilan": 0, "whatsapp": 0}
     # Le bilan du parent : le dimanche en fin d'après-midi, une fois par semaine (la trace par
     # semaine ISO empêche tout doublon si plusieurs tours tombent dans la fenêtre).
     local = timezone.localtime(maintenant)
@@ -34,6 +35,9 @@ def passer_une_fois(maintenant=None):
     resultat["push"] = envoyer_rappels_push(maintenant)
     if HEURE_DEBUT_RAPPEL <= timezone.localtime(maintenant).hour < HEURE_FIN_RAPPEL:
         resultat["rappel"] = envoyer_rappels_seance(maintenant)
+        # WhatsApp : canal à part (l'élève l'a demandé explicitement dans /compte), même
+        # fenêtre que l'e-mail, une fois par jour (trace par canal dans RelanceEnvoyee).
+        resultat["whatsapp"] = envoyer_rappels_whatsapp(maintenant)
     return resultat
 
 
@@ -51,7 +55,7 @@ class Command(BaseCommand):
         while True:
             try:
                 resultat = passer_une_fois()
-                if resultat["paiement"] or resultat["rappel"] or resultat["push"] or resultat["bilan"]:
+                if any(resultat.values()):
                     self.stdout.write(f"Relances envoyées : {resultat}")
             except Exception:
                 # Un tour raté ne doit jamais arrêter l'ordonnanceur : le suivant réessaiera.
