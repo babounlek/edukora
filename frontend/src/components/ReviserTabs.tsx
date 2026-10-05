@@ -1,7 +1,9 @@
 import { Link, useLocation } from "react-router-dom"
+import { Search } from "lucide-react"
 
 import { useCountry } from "@/context/CountryContext"
 import { coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
+import { demanderOuvertureRecherche } from "@/lib/useRaccourciRecherche"
 import { cn } from "@/lib/utils"
 
 /**
@@ -33,22 +35,40 @@ export function ReviserTabs() {
   // même largeur et la même gouttière.
   return (
     <nav aria-label="Réviser" className="mb-6">
-      <div className="flex gap-1 border-b border-border">
-        {onglets.map((onglet) => (
-          <Link
-            key={onglet.to}
-            to={onglet.to}
-            aria-current={onglet.actif ? "page" : undefined}
-            className={cn(
-              "-mb-px border-b-2 px-3 py-2 text-sm font-medium transition-colors",
-              onglet.actif
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:border-border hover:text-foreground",
-            )}
-          >
-            {onglet.label}
-          </Link>
-        ))}
+      <div className="flex items-end justify-between gap-3 border-b border-border">
+        <div className="flex gap-1">
+          {onglets.map((onglet) => (
+            <Link
+              key={onglet.to}
+              to={onglet.to}
+              aria-current={onglet.actif ? "page" : undefined}
+              className={cn(
+                "-mb-px border-b-2 px-3 py-2 text-sm font-medium transition-colors",
+                onglet.actif
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:border-border hover:text-foreground",
+              )}
+            >
+              {onglet.label}
+            </Link>
+          ))}
+        </div>
+        {/* La recherche de TOUT le site (thèmes, cours, épreuves, exercices, quiz), pas un cinquième type de
+            contenu : un bouton en forme de champ qui ouvre la palette de l'en-tête. Volontairement pas un
+            vrai champ - les pages Épreuves et Cours ont déjà le leur, qui ne filtre que leur propre liste,
+            et deux champs côte à côte se feraient concurrence. Sous `sm`, la loupe seule : quatre onglets
+            tiennent à peine dans 375 px. */}
+        <button
+          type="button"
+          onClick={demanderOuvertureRecherche}
+          aria-label="Rechercher sur tout le site"
+          aria-keyshortcuts="/ Control+K Meta+K"
+          className="mb-1 inline-flex h-8 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:w-56 sm:justify-start"
+        >
+          <Search className="size-4 shrink-0" aria-hidden="true" />
+          <span className="hidden sm:inline">Rechercher partout…</span>
+          <kbd className="ml-auto hidden rounded border border-border px-1.5 text-[11px] leading-5 sm:inline" aria-hidden="true">/</kbd>
+        </button>
       </div>
     </nav>
   )

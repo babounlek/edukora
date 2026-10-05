@@ -12,6 +12,13 @@ class EventName(models.TextChoices):
     """
 
     SEARCH_NO_RESULTS = "search_no_results", "Recherche sans résultat"
+    # Recherche globale (voir recherche/). Jamais le texte tapé (règle ci-dessous) : seulement d'où
+    # elle part (`source` : palette, page) et, pour un clic, le type et le rang du résultat -
+    # de quoi répondre à « la recherche est-elle utilisée, et mène-t-elle quelque part ? » avant
+    # d'en faire l'entrée principale du site. Les requêtes sans résultat, elles, vivent à part,
+    # agrégées (voir recherche.models.RechercheSansResultat).
+    RECHERCHE_LANCEE = "recherche_lancee", "Recherche validée"
+    RECHERCHE_RESULTAT_CLIQUE = "recherche_resultat_clique", "Résultat de recherche ouvert"
     PAYMENT_INITIATED = "payment_initiated", "Paiement initié"
     PAYMENT_SUCCEEDED = "payment_succeeded", "Paiement réussi"
     PAYMENT_FAILED = "payment_failed", "Paiement échoué"

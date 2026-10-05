@@ -17,6 +17,8 @@ import {
   lireRecentes,
   memoriserRecente,
   oublierRecentes,
+  tracerRechercheLancee,
+  tracerResultatClique,
 } from "@/lib/recherche"
 import { recherchePath } from "@/lib/countryPath"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
@@ -84,6 +86,7 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
 
   function allerAuxResultats() {
     memoriserRecente(saisie)
+    tracerRechercheLancee("palette")
     fermer()
     navigate(`${recherchePath(country)}?q=${encodeURIComponent(saisie.trim())}`)
   }
@@ -101,6 +104,7 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
       const choisi = actif >= 0 && actif < resultats.length ? resultats[actif] : null
       if (choisi) {
         memoriserRecente(saisie)
+        tracerResultatClique("palette", choisi, (groupes.find((g) => g.resultats.includes(choisi))?.resultats.indexOf(choisi) ?? 0) + 1)
         fermer()
         navigate(cibleResultat(country, choisi))
       } else {
@@ -175,7 +179,7 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
                   <div className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                     {groupe.libelle}
                   </div>
-                  {groupe.resultats.map((resultat) => {
+                  {groupe.resultats.map((resultat, rang) => {
                     indexOption += 1
                     return (
                       <ResultatCompact
@@ -187,6 +191,7 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
                         country={country}
                         onChoisir={() => {
                           memoriserRecente(saisie)
+                          tracerResultatClique("palette", resultat, rang + 1)
                           fermer()
                         }}
                       />
@@ -201,6 +206,7 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
                 to={`${recherchePath(country)}?q=${encodeURIComponent(saisie.trim())}`}
                 onClick={() => {
                   memoriserRecente(saisie)
+                  tracerRechercheLancee("palette")
                   fermer()
                 }}
                 className={`mt-1 flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-primary outline-none ${

@@ -1,4 +1,5 @@
 import type { ResultatRecherche, TypeResultatRecherche } from "@/api/types"
+import { trackEvent } from "@/lib/analytics"
 import {
   coursDetailPath,
   coursListPath,
@@ -198,4 +199,20 @@ export function oublierRecentes() {
   } catch {
     // rien à nettoyer si le stockage est indisponible
   }
+}
+
+// --- Mesure --------------------------------------------------------------------------
+
+/** D'où part une recherche : la palette de l'en-tête ou la page de résultats. */
+export type SourceRecherche = "palette" | "page"
+
+/** Une recherche validée (Entrée ou bouton). Jamais le texte : seulement d'où elle part. */
+export function tracerRechercheLancee(source: SourceRecherche) {
+  trackEvent("recherche_lancee", { source })
+}
+
+/** Un résultat ouvert : son type et son rang (1 = premier de son groupe) disent si le classement
+ * tient ses promesses, et `acces` si l'élève tombe sur un contenu qu'il peut lire. */
+export function tracerResultatClique(source: SourceRecherche, resultat: ResultatRecherche, rang: number) {
+  trackEvent("recherche_resultat_clique", { source, type: resultat.type, rang, acces: resultat.acces })
 }

@@ -4,6 +4,9 @@ import { apiRequest } from "@/api/client"
 // docstring pour la raison (jamais un nom d'évènement libre).
 export type AnalyticsEventName =
   | "search_no_results"
+  // Recherche globale : la source (palette, page), jamais le texte tapé - voir analytics.models.
+  | "recherche_lancee"
+  | "recherche_resultat_clique"
   | "payment_initiated"
   | "payment_succeeded"
   | "payment_failed"

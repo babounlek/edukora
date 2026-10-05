@@ -1453,3 +1453,6 @@ export interface ReponseRecherche {
   /** Thèmes proposés quand rien ne correspond. */
   suggestions: ResultatRecherche[]
 }
+  /** Matières présentes dans les résultats, la plus fournie d'abord - reste complète quand une matière
+   * est choisie, pour pouvoir en changer d'un clic (« tangente » : maths, physique, chimie). */
+  matieres: { code: string; label: string; total: number }[]

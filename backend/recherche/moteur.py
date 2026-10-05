@@ -13,14 +13,14 @@ Une recherche qui ne donne rien est retentée avec le vocabulaire du catalogue (
 
 import math
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from django.db.models import Exists, F, OuterRef, Q
 from django.db.models.functions import Length
 from django.utils import timezone
 
 from access.services import bulk_active_inedite_cursus_ids, bulk_active_subscription_cursus_ids
-from catalog.models import Cours, Exercise, Lesson, StatutContenu, resolve_examen_label
+from catalog.models import Cours, Exercise, Lesson, StatutContenu, Subject, resolve_examen_label
 
 from . import texte
 from .indexation import texte_public_cours
@@ -79,7 +79,7 @@ def _queryset(pays, requis, *, cursus_id=None, matiere=None, type_=None):
 def _lignes(pays, requis, **filtres):
     return list(
         _queryset(pays, requis, **filtres).values_list(
-            "id", "type", "titre_norm", "cles_norm", "annee", "groupe", "poids",
+            "id", "type", "titre_norm", "cles_norm", "annee", "groupe", "poids", "matiere_id",
         )[:PLAFOND_CANDIDATS],
     )
 
@@ -97,7 +97,7 @@ def _suite_de_mots(mots, jetons):
 
 
 def _score(ligne, jetons, requis):
-    _id, _type, titre_norm, cles_norm, annee, _groupe, poids = ligne
+    _id, _type, titre_norm, cles_norm, annee, _groupe, poids, _matiere = ligne
     mots = titre_norm.split()
     score = 0.0
     hors_titre = 0
@@ -358,16 +358,41 @@ def _habiller(classement, par_groupe, decalage, type_, acces, cursus_prefere, je
     return groupes
 
 
+def _theme_generique(titre_norm):
+    """Vrai pour un « thème » qui n'en est pas un : « Terminale C », « BEPC », « bac d »... Ces étiquettes
+    de niveau sont rattachées à des centaines de contenus (donc en tête du classement par volume) mais
+    ne désignent aucune notion à travailler."""
+    mots = titre_norm.split()
+    return not mots or all(mot in texte.MOTS_DE_NIVEAU for mot in mots)
+
+
 def _suggestions(pays, cursus_id, acces):
-    """Thèmes les plus riches du pays (et du cursus), proposés quand rien ne correspond."""
+    """Thèmes les plus riches du pays (et du cursus), proposés quand rien ne correspond. Les étiquettes de
+    niveau (« Terminale C », « BEPC ») sont écartées : elles dominent le classement par volume sans rien
+    proposer à étudier."""
     queryset = EntreeRecherche.objects.filter(pays=pays, type=TypeResultat.THEME)
     if cursus_id:
         lien = EntreeRecherche.cursus.through.objects.filter(entreerecherche_id=OuterRef("pk"), cursus_id=cursus_id)
         queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
-    ids = list(queryset.order_by("-poids", "id").values_list("id", flat=True)[:NB_SUGGESTIONS])
+    # Une marge : quelques-uns des premiers seront écartés.
+    candidats = queryset.order_by("-poids", "id").values_list("id", "titre_norm")[:NB_SUGGESTIONS * 6]
+    ids = [i for i, titre_norm in candidats if not _theme_generique(titre_norm)][:NB_SUGGESTIONS]
     entrees = _entrees(ids)
     etiquettes = _Etiquettes()
     return [serialiser(entrees[i], acces, etiquettes, cursus_prefere=cursus_id) for i in ids if i in entrees]
+
+
+def _repartition_matieres(classement, matiere_de):
+    """[{code, label, total}] des matières présentes dans les résultats, la plus fournie d'abord - le
+    même décompte que `total` (un thème, un cours, une question groupée comptent chacun pour un)."""
+    compteur = Counter(matiere_de[i] for liste in classement.values() for _s, i, _nb in liste)
+    if not compteur:
+        return []
+    matieres = {s.id: s for s in Subject.objects.filter(id__in=compteur)}
+    return [
+        {"code": matieres[mid].code, "label": matieres[mid].label, "total": total}
+        for mid, total in compteur.most_common() if mid in matieres
+    ]
 
 
 def _requete_corrigee(requete, corrections):
@@ -408,6 +433,7 @@ def chercher(
         "total": 0,
         "groupes": [],
         "autres_cursus": 0,
+        "matieres": [],
         "suggestions": [],
     }
     jetons = _analyser(requete)
@@ -416,7 +442,9 @@ def chercher(
         reponse["trop_court"] = bool(jetons or reponse["q"])
         return reponse
 
-    filtres = {"cursus_id": filtre_cursus, "matiere": matiere, "type_": type_}
+    # La matière ne filtre PAS en SQL : la répartition par matière doit rester visible une fois l'une
+    # d'elles choisie (« tangente » : maths, physique, chimie), pour pouvoir en changer d'un clic.
+    filtres = {"cursus_id": filtre_cursus, "type_": type_}
     lignes = _lignes(pays, requis, **filtres)
     if not lignes and corriger_auto:
         corrections = corriger(requis)
@@ -429,11 +457,23 @@ def chercher(
                 reponse["corrige"] = _requete_corrigee(requete, corrections)
 
     classement = _classer(lignes, jetons, requis)
+    matiere_de = {ligne[0]: ligne[7] for ligne in lignes}
+    reponse["matieres"] = _repartition_matieres(classement, matiere_de)
+    matiere_id = None
+    if matiere:
+        matiere_id = Subject.objects.filter(country=pays, code=matiere).values_list("id", flat=True).first()
+        classement = {
+            type_groupe: gardes for type_groupe, liste in classement.items()
+            if (gardes := [e for e in liste if matiere_de[e[1]] == matiere_id])
+        }
+        lignes = [ligne for ligne in lignes if ligne[7] == matiere_id]
     reponse["groupes"] = _habiller(classement, limite, decalage, type_, acces, cursus, jetons)
     reponse["total"] = sum(len(liste) for liste in classement.values())
 
     if filtre_cursus and reponse["total"] < SEUIL_AUTRES_CURSUS:
-        ailleurs = _queryset(pays, requis, matiere=matiere, type_=type_).count()
+        ailleurs = _queryset(pays, requis, type_=type_).count()
+        if matiere:
+            ailleurs = _queryset(pays, requis, type_=type_, matiere=matiere).count()
         reponse["autres_cursus"] = max(0, ailleurs - len(lignes))
     if reponse["total"] == 0:
         reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces)

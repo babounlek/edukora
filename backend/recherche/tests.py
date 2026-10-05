@@ -341,6 +341,35 @@ class MoteurTests(_CorpusMixin, TestCase):
         reponse = self.chercher("thales", type_="COURS")
         self.assertEqual([g["type"] for g in reponse["groupes"]], ["COURS"])
 
+    def test_repartition_par_matiere_et_filtre_sans_la_perdre(self):
+        """« tangente » existe en maths et en physique : la répartition reste visible quand on choisit
+        l'une des deux, pour pouvoir changer d'un clic."""
+        physique = Subject.objects.get(country=self.pays, code="PHYSIQUE")
+        Cours.objects.create(
+            external_id="c-phys", titre="La tangente de la boussole", subject=physique, statut=VALIDE,
+            sections_raw=[{"type": "accroche", "contenu_markdown": "Un courant et une aiguille."}],
+        )
+        Cours.objects.create(
+            external_id="c-math", titre="Tangente à une courbe", subject=self.maths, statut=VALIDE,
+            sections_raw=[{"type": "accroche", "contenu_markdown": "Une dérivée."}],
+        )
+        reconstruire([TypeResultat.COURS])
+
+        tout = self.chercher("tangente")
+        self.assertEqual({m["code"]: m["total"] for m in tout["matieres"]}, {"MATHS": 1, "PHYSIQUE": 1})
+        self.assertEqual(sum(m["total"] for m in tout["matieres"]), tout["total"])
+
+        maths = self.chercher("tangente", matiere="MATHS")
+        self.assertEqual(self.titres(maths, "COURS"), ["Tangente à une courbe"])
+        self.assertEqual(maths["total"], 1)
+        # La répartition n'a pas bougé : on peut encore passer à la physique.
+        self.assertEqual({m["code"]: m["total"] for m in maths["matieres"]}, {"MATHS": 1, "PHYSIQUE": 1})
+
+    def test_une_matiere_inconnue_ne_donne_rien(self):
+        reponse = self.chercher("thales", matiere="NIMPORTEQUOI")
+        self.assertEqual(reponse["total"], 0)
+        self.assertEqual(reponse["groupes"], [])
+
     def test_pagination_d_un_groupe(self):
         premiere = self.chercher("suite", type_="QUIZ", limite=1)
         self.assertEqual(premiere["groupes"][0]["total"], 1)  # deux questions, UN thème
@@ -407,6 +436,20 @@ class MoteurTests(_CorpusMixin, TestCase):
         self.assertEqual(reponse["total"], 0)
         self.assertTrue(reponse["suggestions"])
         self.assertTrue(all(s["type"] == "THEME" for s in reponse["suggestions"]))
+
+    def test_les_suggestions_ecartent_les_etiquettes_de_niveau(self):
+        # « Terminale C » est rattaché à beaucoup de contenus (donc riche) mais n'est pas une notion.
+        niveau = Tag.objects.create(name="Terminale C")
+        for _ in range(3):
+            item = CompetenceItem.objects.create(
+                theme=niveau, subject=self.maths, statut=VALIDE, enonce_markdown="Question.", corrige_markdown="ok",
+            )
+            item.cursus.add(self.bac_c)
+        reconstruire([TypeResultat.THEME])
+        self.assertTrue(EntreeRecherche.objects.filter(type=TypeResultat.THEME, objet_id=niveau.pk).exists())
+        titres = [s["titre"] for s in self.chercher("xyzzyq")["suggestions"]]
+        self.assertTrue(titres)
+        self.assertNotIn("Terminale C", titres)
 
     def test_les_details_n_exposent_jamais_les_cursus_d_acces(self):
         reponse = self.chercher("thales")
@@ -510,6 +553,14 @@ class VueRechercheTests(_CorpusMixin, TestCase):
     def test_une_requete_trop_courte_n_est_pas_journalisee(self):
         self.get(q="d")
         self.assertFalse(RechercheSansResultat.objects.exists())
+
+    def test_les_evenements_de_mesure_sont_acceptes_sans_texte_saisi(self):
+        for nom in ("recherche_lancee", "recherche_resultat_clique"):
+            reponse = self.client.post(
+                "/analytics/events/", {"name": nom, "properties": {"source": "palette", "type": "COURS", "rang": 1}},
+                format="json",
+            )
+            self.assertEqual(reponse.status_code, 201, nom)
 
     def test_exact_desactive_la_correction(self):
         self.assertEqual(self.get(q="thalez").json()["corrige"], "thales")

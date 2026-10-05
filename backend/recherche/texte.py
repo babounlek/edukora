@@ -42,6 +42,14 @@ MOTS_VIDES = frozenset({
     "on", "ne", "pas", "comment", "quel", "quelle", "quels", "quelles",
 })
 
+# Mots qui, à eux seuls, désignent un niveau ou une série et non une notion (voir
+# moteur._theme_generique) : un thème intitulé « Terminale C » n'est pas un thème de révision.
+MOTS_DE_NIVEAU = frozenset({
+    "bac", "bepc", "cap", "gce", "probatoire", "terminale", "tle", "premiere", "1ere", "seconde", "2nde",
+    "troisieme", "3eme", "quatrieme", "4eme", "cinquieme", "5eme", "sixieme", "6eme", "serie", "series",
+    "classe", "examen", "a", "c", "d", "e", "ti", "abi", "a4", "b", "f", "g",
+})
+
 # Synonymes d'examen ajoutés aux clés des contenus : un élève écrit « baccalauréat » ou
 # « brevet », le catalogue dit « BAC » et « BEPC ».
 SYNONYMES_EXAMEN = {

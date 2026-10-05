@@ -1,26 +1,30 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { Loader2, Search, SearchX, X } from "lucide-react"
+import { ArrowRight, Loader2, Search, SearchX, X } from "lucide-react"
 
-import { listCursus, listSubjects, rechercher } from "@/api/endpoints"
-import type { GroupeRecherche, ReponseRecherche, TypeResultatRecherche } from "@/api/types"
+import { listCursus, rechercher } from "@/api/endpoints"
+import type { GroupeRecherche, ReponseRecherche, ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { formatCursus } from "@/components/CompteAReboursBadge"
-import { ResultatCarte } from "@/components/recherche/ResultatRecherche"
+import { IconeType, ResultatCarte } from "@/components/recherche/ResultatRecherche"
+import { ResultatVedette } from "@/components/recherche/ResultatVedette"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
+import { couleurMatiere } from "@/lib/matiereCouleur"
 import { useCursusAccueil } from "@/lib/cursusAccueil"
 import { coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import {
+  actionsTheme,
   cibleResultat,
   jetonsDeSurbrillance,
   LIBELLES_TYPE,
   LONGUEUR_MIN_RECHERCHE,
   memoriserRecente,
   TYPES_RECHERCHE,
+  tracerRechercheLancee,
+  tracerResultatClique,
 } from "@/lib/recherche"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
@@ -29,7 +33,6 @@ import { cn } from "@/lib/utils"
 // Par groupe dans la vue d'ensemble ; une fois un type choisi, on pagine par PAGE_TYPE.
 const PAR_GROUPE = 6
 const PAGE_TYPE = 20
-const TOUTES_MATIERES = "tous"
 
 export function RecherchePage() {
   const { country = "" } = useParams<{ country: string }>()
@@ -97,11 +100,6 @@ export function RecherchePage() {
     queryFn: ({ signal }) => listCursus(country, signal),
     enabled: Boolean(country),
   })
-  const { data: subjects = [] } = useQuery({
-    queryKey: ["subjects", country],
-    queryFn: ({ signal }) => listSubjects(country, signal),
-    enabled: Boolean(country),
-  })
   const cursusLabel = useMemo(() => {
     const trouve = cursusList.find((c) => c.id === cursusDeclare)
     return trouve ? formatCursus(trouve) : ""
@@ -148,7 +146,23 @@ export function RecherchePage() {
   const groupes: GroupeRecherche[] = data?.groupes ?? []
   const resultatsDuType = detail.data?.pages.flatMap((p) => p.groupes[0]?.resultats ?? []) ?? []
   const attente = interroger && ensemble.isLoading
+
+  // Le meilleur thème de la vue d'ensemble : mis en avant avec de quoi agir (cours, exercices, quiz).
+  // Seulement s'il a de quoi proposer, et jamais dans une vue filtrée par type - la carte est une porte
+  // d'entrée, pas un résultat de plus.
+  const themes = groupes.find((g) => g.type === "THEME")?.resultats ?? []
+  const vedette = type === undefined ? themes.find((t) => actionsTheme(country, t).length > 0) : undefined
+  // Les autres thèmes, en pastilles : de quoi rebondir sans retaper (un thème par intitulé distinct).
+  const associees = themes
+    .filter((t) => t.id !== vedette?.id && t.titre.toLowerCase() !== vedette?.titre.toLowerCase())
+    .filter((t, i, tous) => tous.findIndex((u) => u.titre.toLowerCase() === t.titre.toLowerCase()) === i)
+    .slice(0, 5)
   const retenir = () => memoriserRecente(termes)
+  // Ouvrir un résultat : on retient la recherche et on note son type et son rang (1 = premier de son groupe).
+  const ouvrir = (resultat: ResultatRecherche, rang: number) => () => {
+    retenir()
+    tracerResultatClique("page", resultat, rang + 1)
+  }
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
@@ -161,6 +175,7 @@ export function RecherchePage() {
           e.preventDefault()
           majParams({ q: saisie.trim() || null, exact: null })
           memoriserRecente(saisie)
+          if (saisie.trim().length >= LONGUEUR_MIN_RECHERCHE) tracerRechercheLancee("page")
         }}
       >
         <div className="relative">
@@ -194,36 +209,27 @@ export function RecherchePage() {
 
       {/* Périmètre : l'examen de l'élève par défaut, jamais caché - c'est ce qui explique pourquoi un
           résultat attendu manque, et un clic suffit pour l'élargir. */}
-      <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-        <Select value={matiere || TOUTES_MATIERES} onValueChange={(v) => majParams({ matiere: v === TOUTES_MATIERES ? null : v })}>
-          <SelectTrigger aria-label="Matière" className="h-9 w-auto min-w-[10rem] text-sm">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={TOUTES_MATIERES}>Toutes les matières</SelectItem>
-            {[...subjects]
-              .sort((a, b) => a.label.localeCompare(b.label, "fr"))
-              .map((s) => (
-                <SelectItem key={s.id} value={s.code}>
-                  {s.label}
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
-        {cursusLabel && (
-          <p className="text-sm text-muted-foreground">
-            {elargir ? "Dans tous les examens" : <>Dans ton examen : <strong className="font-medium text-foreground">{cursusLabel}</strong></>}
-            {" · "}
+      {cursusLabel && (
+        <div className="mt-4 inline-flex rounded-full border border-border bg-muted/50 p-0.5 text-sm" role="group" aria-label="Périmètre de la recherche">
+          {[
+            { actif: !elargir, libelle: `Mon examen · ${cursusLabel}`, valeur: null },
+            { actif: elargir, libelle: "Tous les examens", valeur: "1" },
+          ].map((option) => (
             <button
+              key={option.libelle}
               type="button"
-              onClick={() => majParams({ elargir: elargir ? null : "1" })}
-              className="font-medium text-primary hover:underline"
+              aria-pressed={option.actif}
+              onClick={() => majParams({ elargir: option.valeur })}
+              className={cn(
+                "rounded-full px-3 py-1 transition-colors",
+                option.actif ? "bg-background font-medium shadow-sm" : "text-muted-foreground hover:text-foreground",
+              )}
             >
-              {elargir ? `Seulement ${cursusLabel}` : "Tous les examens"}
+              {option.libelle}
             </button>
-          </p>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
       {termes.length < LONGUEUR_MIN_RECHERCHE ? (
         <Invitation country={country} />
@@ -242,6 +248,12 @@ export function RecherchePage() {
         </p>
       ) : data ? (
         <div aria-busy={ensemble.isFetching}>
+          {data.total > 0 && (
+            <p className="mt-5 text-sm text-muted-foreground" aria-live="polite">
+              <strong className="font-display text-base font-semibold text-foreground">{data.total}</strong>{" "}
+              résultat{data.total > 1 ? "s" : ""} pour « {termes} »
+            </p>
+          )}
           {data.corrige && (
             <p className="mt-5 text-sm text-muted-foreground">
               Résultats pour « <strong className="font-medium text-foreground">{data.corrige}</strong> ».{" "}
@@ -270,33 +282,97 @@ export function RecherchePage() {
                 </p>
               )}
 
+              {/* Plusieurs matières : « tangente » existe en maths, en physique et en chimie. Les pastilles
+                  disent combien de résultats chacune apporte et filtrent d'un clic - la liste reste
+                  complète quand l'une est choisie, pour en changer sans repartir de zéro. */}
+              {data.matieres.length > 1 && (
+                <div className="mt-4" role="group" aria-label="Matière">
+                  <div className="flex flex-wrap gap-2">
+                    {[{ code: "", label: "Toutes les matières", total: data.matieres.reduce((s, m) => s + m.total, 0) }, ...data.matieres].map((m) => {
+                      const actif = (matiere || "") === m.code
+                      return (
+                        <button
+                          key={m.code || "toutes"}
+                          type="button"
+                          aria-pressed={actif}
+                          onClick={() => majParams({ matiere: m.code || null })}
+                          className={cn(
+                            "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 text-sm transition-colors",
+                            actif ? "border-foreground/70 bg-foreground text-background" : "border-border bg-background hover:border-foreground/40",
+                          )}
+                        >
+                          {m.code && <span className={cn("size-2 rounded-full", couleurMatiere(m.code).barre)} aria-hidden="true" />}
+                          {m.label} <span className={actif ? "opacity-80" : "text-muted-foreground"}>{m.total}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
               <Onglets groupes={groupes} total={data.total} type={type} onChoisir={(t) => majParams({ type: t ?? null })} />
 
               {type === undefined ? (
-                <div className="mt-2 space-y-8">
-                  {groupes.map((groupe) => (
-                    <section key={groupe.type} aria-labelledby={`groupe-${groupe.type}`}>
-                      <div className="mb-3 flex items-baseline justify-between gap-3">
-                        <h2 id={`groupe-${groupe.type}`} className="font-display text-lg font-semibold">
-                          {groupe.libelle} <span className="text-sm font-normal text-muted-foreground">({groupe.total})</span>
-                        </h2>
-                        {groupe.total > groupe.resultats.length && (
-                          <button
-                            type="button"
-                            onClick={() => majParams({ type: groupe.type })}
-                            className="text-sm font-medium text-primary hover:underline"
-                          >
-                            Voir les {groupe.total}
-                          </button>
-                        )}
-                      </div>
-                      <div className="space-y-3">
-                        {groupe.resultats.map((resultat) => (
-                          <ResultatCarte key={`${resultat.type}-${resultat.id}`} resultat={resultat} jetons={jetons} country={country} onChoisir={retenir} />
-                        ))}
-                      </div>
-                    </section>
-                  ))}
+                <div>
+                  {vedette && <ResultatVedette resultat={vedette} jetons={jetons} country={country} onChoisir={ouvrir(vedette, 0)} />}
+
+                  {associees.length > 0 && (
+                    <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
+                      <span className="text-muted-foreground">À explorer aussi :</span>
+                      {associees.map((theme) => (
+                        <button
+                          key={theme.id}
+                          type="button"
+                          onClick={() => {
+                            setSaisie(theme.titre)
+                            majParams({ q: theme.titre, exact: null })
+                          }}
+                          className="rounded-full border border-border bg-background px-3 py-1 transition-colors hover:border-primary hover:text-primary"
+                        >
+                          {theme.titre}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="mt-8 space-y-9">
+                    {groupes.map((groupe, index) => {
+                      const resultats = groupe.type === "THEME" && vedette ? groupe.resultats.filter((r) => r.id !== vedette.id) : groupe.resultats
+                      if (resultats.length === 0) return null
+                      return (
+                        <section
+                          key={groupe.type}
+                          aria-labelledby={`groupe-${groupe.type}`}
+                          className="animate-fade-up"
+                          style={{ animationDelay: `${Math.min(index, 5) * 70}ms` }}
+                        >
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <h2 id={`groupe-${groupe.type}`} className="flex items-center gap-2 font-display text-lg font-semibold">
+                              <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                <IconeType type={groupe.type} className="size-4" />
+                              </span>
+                              {groupe.libelle} <span className="text-sm font-normal text-muted-foreground">({groupe.total})</span>
+                            </h2>
+                            {groupe.total > groupe.resultats.length && (
+                              <button
+                                type="button"
+                                onClick={() => majParams({ type: groupe.type })}
+                                className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-sm font-medium text-primary transition-colors hover:border-primary"
+                              >
+                                Voir les {groupe.total}
+                                <ArrowRight className="size-3.5" aria-hidden="true" />
+                              </button>
+                            )}
+                          </div>
+                          <div className="grid gap-3 md:grid-cols-2">
+                            {resultats.map((resultat, rang) => (
+                              <ResultatCarte key={`${resultat.type}-${resultat.id}`} resultat={resultat} jetons={jetons} country={country} onChoisir={ouvrir(resultat, rang)} />
+                            ))}
+                          </div>
+                        </section>
+                      )
+                    })}
+                  </div>
                 </div>
               ) : (
                 <div className="mt-4">
@@ -304,9 +380,9 @@ export function RecherchePage() {
                     <Chargement />
                   ) : (
                     <>
-                      <div className="space-y-3">
-                        {resultatsDuType.map((resultat) => (
-                          <ResultatCarte key={`${resultat.type}-${resultat.id}`} resultat={resultat} jetons={jetons} country={country} onChoisir={retenir} />
+                      <div className="grid gap-3 md:grid-cols-2">
+                        {resultatsDuType.map((resultat, rang) => (
+                          <ResultatCarte key={`${resultat.type}-${resultat.id}`} resultat={resultat} jetons={jetons} country={country} onChoisir={ouvrir(resultat, rang)} />
                         ))}
                       </div>
                       {detail.hasNextPage && (
@@ -344,7 +420,7 @@ function Onglets({
       actif ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/60",
     )
   return (
-    <div className="-mx-4 mt-5 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="group" aria-label="Type de résultat">
+    <div className="-mx-4 mt-5 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden" role="group" aria-label="Type de résultat">
       <div className="flex gap-2">
         <button type="button" onClick={() => onChoisir(undefined)} aria-pressed={type === undefined} className={bouton(type === undefined)}>
           Tout ({total})

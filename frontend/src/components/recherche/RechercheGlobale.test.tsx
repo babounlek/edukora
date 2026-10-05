@@ -7,8 +7,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import type { ReponseRecherche, ResultatRecherche } from "@/api/types"
 
 const rechercher = vi.hoisted(() => vi.fn())
+const trackEvent = vi.hoisted(() => vi.fn())
 
 vi.mock("@/api/endpoints", () => ({ rechercher }))
+vi.mock("@/lib/analytics", () => ({ trackEvent }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: null }) }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/cursusAccueil", () => ({ useCursusAccueil: () => 5 }))
@@ -48,7 +50,7 @@ function reponse(surcharge: Partial<ReponseRecherche> = {}): ReponseRecherche {
     { type: "COURS" as const, libelle: "Cours", total: 1, resultats: [resultat({})] },
   ]
   return {
-    q: "thales", corrige: null, indexe: true, trop_court: false, total: 2, groupes, autres_cursus: 0, suggestions: [],
+    q: "thales", corrige: null, indexe: true, trop_court: false, total: 2, groupes, autres_cursus: 0, matieres: [], suggestions: [],
     ...surcharge,
   }
 }
@@ -74,6 +76,7 @@ function monter(ouvert = true) {
 
 beforeEach(() => {
   rechercher.mockReset()
+  trackEvent.mockReset()
   localStorage.clear()
 })
 
@@ -127,6 +130,30 @@ describe("RechercheGlobale", () => {
 
     await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("/cours/thales-triangle"))
     expect(surChangement).toHaveBeenCalledWith(false)
+  })
+
+  it("note l'usage de la recherche sans jamais envoyer le texte tapé", async () => {
+    rechercher.mockResolvedValue(reponse())
+    const { champ } = monter()
+    await userEvent.type(champ(), "thales")
+    await screen.findByRole("group", { name: "Cours" })
+
+    // Deuxième option = le premier (et seul) cours : son rang dans son groupe est 1.
+    await userEvent.keyboard("{ArrowDown}{ArrowDown}{Enter}")
+    await waitFor(() => expect(trackEvent).toHaveBeenCalledTimes(1))
+    expect(trackEvent).toHaveBeenCalledWith("recherche_resultat_clique", {
+      source: "palette", type: "COURS", rang: 1, acces: "verrouille",
+    })
+    expect(JSON.stringify(trackEvent.mock.calls)).not.toContain("thales")
+  })
+
+  it("note une recherche validée depuis la palette", async () => {
+    rechercher.mockResolvedValue(reponse())
+    const { champ } = monter()
+    await userEvent.type(champ(), "thales")
+    await screen.findByRole("group", { name: "Thèmes" })
+    await userEvent.keyboard("{Enter}")
+    await waitFor(() => expect(trackEvent).toHaveBeenCalledWith("recherche_lancee", { source: "palette" }))
   })
 
   it("Entrée sans sélection mène à la page de résultats avec la requête", async () => {
