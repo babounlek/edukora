@@ -138,6 +138,9 @@ GEOGRAPHIE_SEULE = {
     "bac-a-georgraphie-2019-officiel-cameroun.pdf",
     "bac-a-abi-geographie-2022-officiel-cameroun",
     "bac-a-abi-geographie-2023-officiel-cameroun",
+    # Repérée le 2026-10-05 : dissertation de géographie (Plateau sud camerounais) + commentaire de
+    # documents sur l'urbanisation, aucun contenu d'histoire ; matiere corrigée dans le JSON source.
+    "bac-a-abi-geographie-2021-officiel-cameroun.pdf",
 }
 
 
