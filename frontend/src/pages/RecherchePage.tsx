@@ -151,12 +151,12 @@ export function RecherchePage() {
   const retenir = () => memoriserRecente(termes)
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-8">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Recherche</h1>
 
       <form
         role="search"
-        className="mt-4"
+        className="mt-4 max-w-2xl"
         onSubmit={(e) => {
           e.preventDefault()
           majParams({ q: saisie.trim() || null, exact: null })
