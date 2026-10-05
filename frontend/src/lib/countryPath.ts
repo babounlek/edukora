@@ -77,3 +77,8 @@ export function coursDetailPath(slug: string): string {
 export function coursReaderPath(slug: string): string {
   return `/cours/${slug}/lire`
 }
+
+// Page de résultats de la recherche globale (voir RecherchePage) - `?q=` porte la requête.
+export function recherchePath(country: string): string {
+  return `/${country}/recherche`
+}

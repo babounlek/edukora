@@ -1388,3 +1388,68 @@ export interface CarnetEntree extends MarqueEtude {
 
 /** Le document sur lequel portent les marques : un cours ou une épreuve, par slug. */
 export type CibleEtude = { type: "cours" | "lesson"; slug: string }
+
+// --- Recherche globale (voir recherche.moteur côté backend) ---
+
+export type TypeResultatRecherche = "THEME" | "COURS" | "EPREUVE" | "INEDITE" | "EXERCICE" | "QUIZ"
+
+/** "libre" : sans abonnement · "ouvert" : ce visiteur y a droit · "verrouille" : abonnement requis ·
+ * null : sans objet (un thème n'est pas un contenu payant). Un simple indice : c'est la page du
+ * contenu qui applique la vraie règle d'accès. */
+export type AccesResultat = "libre" | "ouvert" | "verrouille"
+
+export interface ResultatRecherche {
+  id: number
+  type: TypeResultatRecherche
+  titre: string
+  /** Extrait du texte public où le mot cherché apparaît, ou ouverture du contenu. Vide pour une
+   * question de quiz que le visiteur ne peut pas jouer. */
+  apercu: string
+  annee: number | null
+  matiere: { code: string; label: string }
+  cursus: { id: number; label: string }[]
+  cursus_total: number
+  tous_cursus: boolean
+  /** Cursus vers lequel mènent les liens d'un thème ou d'un quiz : celui de l'élève s'il en fait partie. */
+  cursus_cible: number | null
+  acces: AccesResultat | null
+  /** Questions de quiz qui correspondent (un seul résultat par thème). */
+  nb: number | null
+  details: {
+    slug?: string
+    id?: number
+    ancre?: string
+    numero?: string
+    libelle?: string
+    epreuve?: string
+    sous_theme?: string
+    type_libelle?: string
+    tag_id?: number
+    subject_code?: string
+    nb_cours?: number
+    nb_quiz?: number
+    nb_exercices?: number
+  }
+}
+
+export interface GroupeRecherche {
+  type: TypeResultatRecherche
+  libelle: string
+  total: number
+  resultats: ResultatRecherche[]
+}
+
+export interface ReponseRecherche {
+  q: string
+  /** Requête corrigée automatiquement (faute de frappe), quand la saisie ne donnait rien. */
+  corrige: string | null
+  /** false tant que l'index n'a pas été construit. */
+  indexe: boolean
+  trop_court: boolean
+  total: number
+  groupes: GroupeRecherche[]
+  /** Résultats cachés par le filtre d'examen (renseigné quand il y en a peu dans l'examen choisi). */
+  autres_cursus: number
+  /** Thèmes proposés quand rien ne correspond. */
+  suggestions: ResultatRecherche[]
+}

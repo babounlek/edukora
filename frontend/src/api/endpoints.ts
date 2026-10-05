@@ -28,6 +28,8 @@ import type {
   PaymentInitiateResponse,
   PaymentStatusResponse,
   Plan,
+  ReponseRecherche,
+  TypeResultatRecherche,
   PlanDuJour,
   Priorites,
   Profil,
@@ -931,4 +933,38 @@ export function abonnerPush(abonnement: { endpoint: string; keys: { p256dh: stri
 
 export function desabonnerPush(endpoint: string) {
   return apiRequest<{ abonne: boolean }>("/relances/push/desabonner/", { method: "POST", body: { endpoint } })
+}
+
+export interface FiltresRecherche {
+  q: string
+  pays: string
+  cursus?: number | null
+  matiere?: string
+  type?: TypeResultatRecherche
+  limite?: number
+  decalage?: number
+  /** Chercher dans tous les examens, pas seulement celui de `cursus`. */
+  elargir?: boolean
+  /** Ne pas corriger la saisie (l'élève a refusé la correction proposée). */
+  exact?: boolean
+  /** Saisie en direct : jamais comptée dans le journal des recherches sans résultat. */
+  rapide?: boolean
+}
+
+/** Recherche globale (thèmes, cours, épreuves, exercices, quiz). Ouverte aux visiteurs : ne renvoie
+ * que de l'identité de contenu et des extraits publics, jamais un corrigé. */
+export function rechercher(filtres: FiltresRecherche, signal?: AbortSignal) {
+  const params = new URLSearchParams()
+  params.set("q", filtres.q)
+  params.set("pays", filtres.pays)
+  if (filtres.cursus) params.set("cursus", String(filtres.cursus))
+  if (filtres.matiere) params.set("matiere", filtres.matiere)
+  if (filtres.type) params.set("type", filtres.type)
+  if (filtres.limite) params.set("limite", String(filtres.limite))
+  if (filtres.decalage) params.set("decalage", String(filtres.decalage))
+  // Jamais `false` : le backend ne teste que la valeur "true".
+  if (filtres.elargir) params.set("elargir", "true")
+  if (filtres.exact) params.set("exact", "true")
+  if (filtres.rapide) params.set("rapide", "true")
+  return apiRequest<ReponseRecherche>(`/recherche/?${params.toString()}`, { auth: "optional", signal })
 }

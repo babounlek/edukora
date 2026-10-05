@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { Check, ChevronDown, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
@@ -9,6 +9,8 @@ import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
+import { RechercheGlobale } from "@/components/recherche/RechercheGlobale"
+import { useRaccourciRecherche } from "@/lib/useRaccourciRecherche"
 import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
 import { useCursusAbonnes } from "@/lib/changerCursusPrepare"
 import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
@@ -241,6 +243,9 @@ export function Header() {
   const { pathname } = useLocation()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
+  const [rechercheOuverte, setRechercheOuverte] = useState(false)
+  const ouvrirRecherche = useCallback(() => setRechercheOuverte(true), [])
+  useRaccourciRecherche(ouvrirRecherche)
   const isTarifsSection = pathname.startsWith("/tarifs")
   const isParcoursSection = !isTarifsSection && pathname.startsWith("/parcours")
   const isCoursSection =
@@ -332,12 +337,18 @@ export function Header() {
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
               desktop plus bas - ce bouton rend la recherche accessible depuis
               n'importe quelle page, y compris sur mobile où la place au clavier
-              manque le plus. Pointe directement sur /epreuves (voir
-              EpreuvesListPage.tsx), où le champ de recherche est en haut de page. */}
-          <Button asChild variant="ghost" size="icon" aria-label="Rechercher une épreuve">
-            <Link to={epreuvesListPath(country)}>
-              <Search className="size-4.5" />
-            </Link>
+              manque le plus. Ouvre la recherche globale (thèmes, cours, épreuves,
+              exercices, quiz - voir RechercheGlobale), aussi atteignable au clavier
+              par « / » et Ctrl/⌘+K. */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Rechercher"
+            aria-keyshortcuts="/ Control+K Meta+K"
+            onClick={ouvrirRecherche}
+          >
+            <Search className="size-4.5" />
           </Button>
           <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
             <SheetTrigger asChild>
@@ -349,6 +360,7 @@ export function Header() {
               <SheetTitle>Menu</SheetTitle>
               <SheetDescription>Navigation principale d'{SITE_NAME}</SheetDescription>
               {/* Même raison que le pays et le thème plus bas : retiré de la barre
+          <RechercheGlobale open={rechercheOuverte} onOpenChange={setRechercheOuverte} />
                   sous `sm` faute de place, jamais retiré du mobile. */}
               <CompteAReboursBadge className="mt-3 block sm:hidden" />
               <nav aria-label="Menu" className="mt-3 flex flex-col gap-1">

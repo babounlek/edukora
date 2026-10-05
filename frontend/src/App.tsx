@@ -56,6 +56,7 @@ const ParcoursSubjectPage = lazy(() => import("@/pages/ParcoursSubjectPage").the
 const InediteTentativePage = lazy(() => import("@/pages/InediteTentativePage").then((m) => ({ default: m.InediteTentativePage })))
 const InediteResultPage = lazy(() => import("@/pages/InediteResultPage").then((m) => ({ default: m.InediteResultPage })))
 const FichesPage = lazy(() => import("@/pages/FichesPage").then((m) => ({ default: m.FichesPage })))
+const RecherchePage = lazy(() => import("@/pages/RecherchePage").then((m) => ({ default: m.RecherchePage })))
 
 /**
  * `/` seul n'est jamais l'URL canonique d'une page (voir countryPath.ts) : on
@@ -108,6 +109,7 @@ function App() {
                       <Route path="/" element={<RootRedirect />} />
                       <Route path="/:country" element={<CataloguePage />} />
                       <Route path="/:country/epreuves" element={<EpreuvesListPage />} />
+                      <Route path="/:country/recherche" element={<RecherchePage />} />
                       <Route path="/:country/themes-frequents" element={<ThemesFrequentsPage />} />
                       <Route path="/:country/themes-frequents/:tagId/exercices" element={<ThemeExercicesPage />} />
                       <Route path="/:country/themes-frequents/:tagId/exercices/:exerciseId" element={<ThemeExerciceLecturePage />} />

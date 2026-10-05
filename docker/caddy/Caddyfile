@@ -51,7 +51,10 @@
     # quiz/urls.py qui manquaient à cette liste - Caddy répondait 405 (fichier
     # statique, GET/HEAD seulement) à leur preflight CORS depuis le serveur de dev, et
     # servait index.html en prod. Toute nouvelle route sous /quiz/ doit être ajoutée ici.
-    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /quiz/xp* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /simulations* /sitemap.xml /sitemap-*.xml
+    # /recherche/* (recherche globale, voir recherche/urls.py) : avec le slash final, par la même
+    # logique que /fiches/* - la page de résultats du frontend est "/:pays/recherche", jamais
+    # un chemin qui COMMENCE par /recherche, mais autant ne rien laisser d'ambigu.
+    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /quiz/xp* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /recherche/* /simulations* /sitemap.xml /sitemap-*.xml
     handle @backend {
         reverse_proxy backend:8000
     }

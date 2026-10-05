@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     "whatsapp",
     "relances",
     "simulations",
+    "recherche",
 ]
 
 AUTH_USER_MODEL = "users.User"

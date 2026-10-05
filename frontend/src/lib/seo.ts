@@ -22,6 +22,8 @@ function upsertMeta(attr: "name" | "property", key: string, content: string) {
 interface SeoOptions {
   title: string
   description?: string
+  /** Page à ne pas indexer (résultats de recherche : une infinité de requêtes possibles). */
+  noindex?: boolean
 }
 
 /**
@@ -30,7 +32,7 @@ interface SeoOptions {
  * les balises statiques par défaut d'index.html, pas ce hook - limite acceptée
  * plutôt qu'une migration SSR pour ce besoin.
  */
-export function useSeo({ title, description = DEFAULT_DESCRIPTION }: SeoOptions) {
+export function useSeo({ title, description = DEFAULT_DESCRIPTION, noindex = false }: SeoOptions) {
   useEffect(() => {
     const fullTitle = `${title} | ${SITE_NAME}`
     document.title = fullTitle
@@ -38,4 +40,12 @@ export function useSeo({ title, description = DEFAULT_DESCRIPTION }: SeoOptions)
     upsertMeta("property", "og:title", fullTitle)
     upsertMeta("property", "og:description", description)
   }, [title, description])
+
+  // Posée à l'arrivée sur la page et retirée au départ : sans ce nettoyage, la balise resterait sur
+  // toutes les pages visitées ensuite dans la même session (navigation sans rechargement).
+  useEffect(() => {
+    if (!noindex) return
+    upsertMeta("name", "robots", "noindex, follow")
+    return () => document.querySelector('meta[name="robots"]')?.remove()
+  }, [noindex])
 }

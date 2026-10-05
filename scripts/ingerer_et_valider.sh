@@ -41,3 +41,15 @@ fi
 
 echo
 "$ROOT/scripts/tunnel_validation.sh" "$DEPART" "$@"
+TUNNEL=$?
+
+# La recherche globale n'est pas mise à jour au fil des enregistrements (voir
+# recherche.indexation) : on la rafraîchit une fois le lot validé, pour que ce qu'on vient
+# d'ingérer soit trouvable. ~30 s ; SANS_INDEX_RECHERCHE=1 pour l'ignorer pendant une série de
+# dossiers et ne la lancer qu'à la fin (docker exec edukora-backend-1 python manage.py indexer_recherche).
+if [ $TUNNEL -eq 0 ] && [ "${SANS_INDEX_RECHERCHE:-0}" != "1" ]; then
+  echo
+  echo "=== Index de la recherche globale ==="
+  docker exec edukora-backend-1 python manage.py indexer_recherche 2>&1 | grep -Ev '^\([0-9.]+\) '
+fi
+exit $TUNNEL

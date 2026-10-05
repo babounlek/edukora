@@ -11,6 +11,12 @@ python manage.py migrate --noinput
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
+# Index de la recherche globale : construit une seule fois, au tout premier démarrage (--si-vide ne
+# fait rien dès qu'il existe), et EN ARRIÈRE-PLAN - une trentaine de secondes qui ne doivent pas
+# retarder gunicorn. Ensuite il se rafraîchit à la demande (manage.py indexer_recherche, lancé
+# par scripts/ingerer_et_valider.sh après un lot). Un échec n'arrête jamais le démarrage.
+(python manage.py indexer_recherche --si-vide || echo "Indexation de la recherche en échec (voir ci-dessus).") &
+
 echo "Starting gunicorn..."
 # GUNICORN_RELOAD=1 (voir docker-compose.dev.yml) : worker redémarré sur toute
 # modification d'un fichier .py source - seule façon de voir un changement de code
