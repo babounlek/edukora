@@ -73,6 +73,10 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isResending, setIsResending] = useState(false)
+  // Vrai quand l'élève est passé à l'étape "code" sans en demander un nouveau ici
+  // (bouton "J'ai déjà un code") : l'en-tête ne doit alors pas affirmer qu'un code
+  // vient d'être envoyé.
+  const [codeDejaRecu, setCodeDejaRecu] = useState(false)
   const [resendCooldownEndsAt, setResendCooldownEndsAt] = useState<number | null>(null)
   const [resendSecondsLeft, setResendSecondsLeft] = useState(0)
 
@@ -136,18 +140,46 @@ export function LoginPage() {
     setResendCooldownEndsAt(Date.now() + OTP_RESEND_COOLDOWN_SECONDS * 1000)
   }
 
+  /** Contrôle local de l'identifiant saisi ; renvoie le message d'erreur, ou null. */
+  function erreurIdentifiant(): string | null {
+    if (methode === "phone" && !/^6\d{8}$/.test(phoneNumber)) {
+      return "Entre un numéro camerounais valide (9 chiffres, commence par 6)."
+    }
+    if (methode === "email" && !/^\S+@\S+\.\S+$/.test(email)) {
+      return "Entre une adresse e-mail valide."
+    }
+    return null
+  }
+
+  // Saute l'envoi : pour qui a déjà reçu un code (encore valable 5 minutes) et a
+  // perdu la page en allant le chercher dans sa messagerie - fréquent dans le
+  // navigateur intégré de WhatsApp, qui recharge la page au retour. Redemander un code
+  // l'obligerait à attendre le cooldown serveur et invaliderait celui qu'il tient.
+  function passerAvecCodeExistant() {
+    const message = erreurIdentifiant()
+    if (message) {
+      setError(message)
+      return
+    }
+    setError(null)
+    setCodeDejaRecu(true)
+    setStep("code")
+  }
+
   async function handleRequestCode(event: FormEvent) {
     event.preventDefault()
     setError(null)
 
-    if (methode === "phone" && !/^6\d{8}$/.test(phoneNumber)) {
-      setError("Entre un numéro camerounais valide (9 chiffres, commence par 6).")
+    const message = erreurIdentifiant()
+    if (message) {
+      setError(message)
       return
     }
 
     setIsSubmitting(true)
     try {
       await envoyerCode()
+      setCodeDejaRecu(false)
       setStep("code")
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
@@ -225,7 +257,9 @@ export function LoginPage() {
               ? intent
                 ? `${intent} Connecte-toi en quelques secondes.`
                 : "Connecte-toi en quelques secondes."
-              : `Code envoyé ${methode === "phone" ? "au" : "à"} ${destination}.`}
+              : codeDejaRecu
+                ? `Entre le code reçu pour ${destination}.`
+                : `Code envoyé ${methode === "phone" ? "au" : "à"} ${destination}.`}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -325,6 +359,16 @@ export function LoginPage() {
                 size="lg"
               >
                 {isSubmitting ? "Envoi..." : "Recevoir le code"}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="-mt-2 w-full"
+                disabled={isSubmitting || (methode === "phone" && !isSupported)}
+                onClick={passerAvecCodeExistant}
+              >
+                J'ai déjà un code
               </Button>
             </form>
           ) : null}
