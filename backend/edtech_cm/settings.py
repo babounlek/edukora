@@ -457,5 +457,11 @@ LOGGING = {
             "handlers": ["console"],
             "level": "DEBUG",
         },
+        # Sans ce logger, les INFO de l'app (accusés « delivered », désabonnements) sont
+        # perdus : seul le niveau WARNING sort par défaut.
+        "whatsapp": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
     },
 }

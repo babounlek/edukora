@@ -296,6 +296,27 @@ class TraiterPayloadEntrantTests(TestCase):
         payload = {"entry": [{"changes": [{"value": {"statuses": [{"status": "delivered"}]}}]}]}
         self.assertEqual(traiter_payload_entrant(payload), 0)
 
+    def test_accuse_failed_est_journalise_avec_son_code_d_erreur(self):
+        payload = {"entry": [{"changes": [{"value": {"statuses": [{
+            "id": "wamid.X", "status": "failed", "recipient_id": "23770401393",
+            "errors": [{"code": 131042, "title": "Business eligibility payment issue"}],
+        }]}}]}]}
+        with self.assertLogs("whatsapp", level="WARNING") as cm:
+            self.assertEqual(traiter_payload_entrant(payload), 0)
+        sortie = cm.output[0]
+        self.assertIn("failed", sortie)
+        self.assertIn("131042 Business eligibility payment issue", sortie)
+        self.assertIn("…1393", sortie)
+        self.assertNotIn("23770401393", sortie)
+
+    def test_accuse_delivered_est_journalise_en_info(self):
+        payload = {"entry": [{"changes": [{"value": {"statuses": [{
+            "id": "wamid.Y", "status": "delivered", "recipient_id": "23770401393",
+        }]}}]}]}
+        with self.assertLogs("whatsapp", level="INFO") as cm:
+            traiter_payload_entrant(payload)
+        self.assertIn("delivered", cm.output[0])
+
     def test_payload_de_forme_inattendue_ne_leve_pas(self):
         """Lever ferait retenter Meta en boucle (voir la docstring de la fonction)."""
         for payload in [{}, {"entry": None}, {"entry": [{}]}, {"entry": [{"changes": [{}]}]}]:

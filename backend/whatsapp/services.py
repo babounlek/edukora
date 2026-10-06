@@ -165,18 +165,48 @@ def utilisateur_par_numero(numero):
     return User.objects.filter(phone_number__in=[e164, to_local(e164)]).first()
 
 
+def journaliser_accuses(payload):
+    """
+    Journalise les accusés d'envoi (`statuses`) d'une notification webhook déjà
+    authentifiée : « accepted » à l'envoi ne dit pas que le message est arrivé, seul
+    cet accusé donne `delivered`/`read` ou `failed` avec le code d'erreur Meta (ex.
+    131042 paiement, 131049 filtre marketing). Rien n'est stocké : le journal suffit
+    pour diagnostiquer. Le numéro est tronqué (4 derniers chiffres), même règle que
+    plus bas pour les numéros inconnus. Retourne le nombre d'accusés journalisés.
+    """
+    journalises = 0
+    for entry in payload.get("entry") or []:
+        for change in entry.get("changes") or []:
+            for statut in (change.get("value") or {}).get("statuses") or []:
+                etat = statut.get("status") or "?"
+                destinataire = statut.get("recipient_id") or ""
+                erreurs = statut.get("errors") or []
+                detail = " ; ".join(
+                    f"{e.get('code')} {e.get('title') or e.get('message') or ''}".strip()
+                    for e in erreurs if isinstance(e, dict)
+                )
+                niveau = logging.WARNING if etat == "failed" else logging.INFO
+                logger.log(
+                    niveau, "Accusé WhatsApp %s pour %s (…%s)%s",
+                    etat, statut.get("id"), destinataire[-4:], f" : {detail}" if detail else "",
+                )
+                journalises += 1
+    return journalises
+
+
 def traiter_payload_entrant(payload):
     """
     Applique les demandes d'arrêt contenues dans une notification webhook Meta DÉJÀ
     authentifiée (whatsapp.webhook.verifier_signature l'a fait ; on ne revérifie rien
     ici). Retourne le nombre de désabonnements effectués.
 
-    Tout le reste du payload est ignoré volontairement : les accusés de réception
-    (`statuses`) et les messages non textuels n'ont aucune action associée aujourd'hui.
-    Même raisonnement pour la traversée défensive en .get() partout - une forme
-    inattendue ne doit jamais lever, sinon Meta retente la même notification en boucle
-    pendant des heures.
+    Les accusés de réception (`statuses`) sont seulement journalisés (voir
+    journaliser_accuses) ; les messages non textuels n'ont aucune action associée
+    aujourd'hui. Même raisonnement pour la traversée défensive en .get() partout - une
+    forme inattendue ne doit jamais lever, sinon Meta retente la même notification en
+    boucle pendant des heures.
     """
+    journaliser_accuses(payload)
     arrets = 0
     for entry in payload.get("entry") or []:
         for change in entry.get("changes") or []:
