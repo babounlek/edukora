@@ -216,3 +216,30 @@ export function tracerRechercheLancee(source: SourceRecherche) {
 export function tracerResultatClique(source: SourceRecherche, resultat: ResultatRecherche, rang: number) {
   trackEvent("recherche_resultat_clique", { source, type: resultat.type, rang, acces: resultat.acces })
 }
+
+// --- Onglets de résultats ------------------------------------------------------------
+
+/**
+ * Les onglets de la page de résultats, dans le MÊME ordre et avec les MÊMES mots que les onglets
+ * « Réviser » (voir components/ReviserTabs) : Épreuves, Cours, Thèmes, Quiz. Deux rangées d'onglets
+ * superposées qui ne parlent pas la même langue (« Exercices », « Questions de quiz »...) obligeaient à
+ * se demander si c'était la même chose. Les exercices et les épreuves inédites rejoignent
+ * « Épreuves » : un exercice est un morceau d'épreuve, une inédite en est une.
+ */
+export interface FamilleRecherche {
+  cle: TypeResultatRecherche
+  libelle: string
+  types: TypeResultatRecherche[]
+}
+
+export const FAMILLES_RECHERCHE: FamilleRecherche[] = [
+  { cle: "EPREUVE", libelle: "Épreuves", types: ["EPREUVE", "INEDITE", "EXERCICE"] },
+  { cle: "COURS", libelle: "Cours", types: ["COURS"] },
+  { cle: "THEME", libelle: "Thèmes", types: ["THEME"] },
+  { cle: "QUIZ", libelle: "Quiz", types: ["QUIZ"] },
+]
+
+/** L'onglet d'un type de résultat (un lien ancien `?type=EXERCICE` mène à l'onglet Épreuves). */
+export function familleDe(type: TypeResultatRecherche): FamilleRecherche {
+  return FAMILLES_RECHERCHE.find((f) => f.types.includes(type)) ?? FAMILLES_RECHERCHE[0]
+}

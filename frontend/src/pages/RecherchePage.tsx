@@ -6,12 +6,15 @@ import { ArrowRight, Loader2, Search, SearchX, X } from "lucide-react"
 import { listCursus, rechercher } from "@/api/endpoints"
 import type { GroupeRecherche, ReponseRecherche, ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { formatCursus } from "@/components/CompteAReboursBadge"
+import { ReviserTabs } from "@/components/ReviserTabs"
 import { IconeType, ResultatCarte } from "@/components/recherche/ResultatRecherche"
 import { ResultatVedette } from "@/components/recherche/ResultatVedette"
+import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { useCursusAccueil } from "@/lib/cursusAccueil"
 import { coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
@@ -19,7 +22,9 @@ import {
   actionsTheme,
   cibleResultat,
   jetonsDeSurbrillance,
-  LIBELLES_TYPE,
+  familleDe,
+  FAMILLES_RECHERCHE,
+  type FamilleRecherche,
   LONGUEUR_MIN_RECHERCHE,
   memoriserRecente,
   TYPES_RECHERCHE,
@@ -37,12 +42,15 @@ const PAGE_TYPE = 20
 export function RecherchePage() {
   const { country = "" } = useParams<{ country: string }>()
   const { user } = useAuth()
+  const { countries } = useCountry()
+  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
   const [searchParams, setSearchParams] = useSearchParams()
 
   const q = searchParams.get("q") ?? ""
   const matiere = searchParams.get("matiere") ?? ""
   const typeBrut = searchParams.get("type") ?? ""
-  const type = (TYPES_RECHERCHE as string[]).includes(typeBrut) ? (typeBrut as TypeResultatRecherche) : undefined
+  // `type` de l URL : un type de résultat, ramené à son onglet (voir FAMILLES_RECHERCHE).
+  const famille = (TYPES_RECHERCHE as string[]).includes(typeBrut) ? familleDe(typeBrut as TypeResultatRecherche) : undefined
   const elargir = searchParams.get("elargir") === "1"
   const exact = searchParams.get("exact") === "1"
 
@@ -121,37 +129,18 @@ export function RecherchePage() {
     placeholderData: keepPreviousData,
   })
 
-  // Un type choisi : ce seul groupe, paginé.
-  const detail = useInfiniteQuery({
-    queryKey: ["recherche", "type", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, type],
-    queryFn: ({ pageParam, signal }) =>
-      rechercher(
-        {
-          q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact,
-          type, limite: PAGE_TYPE, decalage: pageParam,
-        },
-        signal,
-      ),
-    initialPageParam: 0,
-    getNextPageParam: (derniere, pages) => {
-      const total = derniere.groupes[0]?.total ?? 0
-      const charges = pages.reduce((somme, page) => somme + (page.groupes[0]?.resultats.length ?? 0), 0)
-      return charges < total ? charges : undefined
-    },
-    enabled: interroger && type !== undefined,
-  })
-
   const data = ensemble.data
   const jetons = useMemo(() => jetonsDeSurbrillance(data?.corrige ?? termes), [data?.corrige, termes])
   const groupes: GroupeRecherche[] = data?.groupes ?? []
-  const resultatsDuType = detail.data?.pages.flatMap((p) => p.groupes[0]?.resultats ?? []) ?? []
   const attente = interroger && ensemble.isLoading
+  // Les filtres (matière, type) n'existent qu'une fois des résultats connus : ils s'en déduisent.
+  const filtrable = data !== undefined && data.indexe && data.total > 0
 
   // Le meilleur thème de la vue d'ensemble : mis en avant avec de quoi agir (cours, exercices, quiz).
   // Seulement s'il a de quoi proposer, et jamais dans une vue filtrée par type - la carte est une porte
   // d'entrée, pas un résultat de plus.
   const themes = groupes.find((g) => g.type === "THEME")?.resultats ?? []
-  const vedette = type === undefined ? themes.find((t) => actionsTheme(country, t).length > 0) : undefined
+  const vedette = famille === undefined ? themes.find((t) => actionsTheme(country, t).length > 0) : undefined
   // Les autres thèmes, en pastilles : de quoi rebondir sans retaper (un thème par intitulé distinct).
   const associees = themes
     .filter((t) => t.id !== vedette?.id && t.titre.toLowerCase() !== vedette?.titre.toLowerCase())
@@ -166,70 +155,109 @@ export function RecherchePage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
-      <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Recherche</h1>
-
-      <form
-        role="search"
-        className="mt-4 max-w-2xl"
-        onSubmit={(e) => {
-          e.preventDefault()
-          majParams({ q: saisie.trim() || null, exact: null })
-          memoriserRecente(saisie)
-          if (saisie.trim().length >= LONGUEUR_MIN_RECHERCHE) tracerRechercheLancee("page")
-        }}
-      >
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-          <Input
-            type="search"
-            value={saisie}
-            onChange={(e) => setSaisie(e.target.value)}
-            placeholder="Un thème, une notion, une épreuve, une année…"
-            aria-label="Rechercher"
-            autoFocus={!q}
-            autoComplete="off"
-            enterKeyHint="search"
-            className="h-12 pl-10 pr-10 text-base [&::-webkit-search-cancel-button]:hidden"
-          />
-          {saisie && (
-            <button
-              type="button"
-              onClick={() => {
-                setSaisie("")
-                majParams({ q: null, exact: null })
-              }}
-              aria-label="Effacer la recherche"
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-            >
-              <X className="size-4" />
-            </button>
-          )}
+      {/* La recherche appartient à « Réviser » : mêmes onglets que les autres surfaces de révision
+          (voir ReviserTabs), aucun d'eux n'est actif - la recherche les traverse tous. */}
+      <ReviserTabs />
+      {/* Même hero que /epreuves, /cours et /themes-frequents : filigrane, pastille d'intitulé en italique,
+          titre en Fraunces avec la fin en couleur, puis la carte de recherche surélevée qui porte les filtres. */}
+      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <Search aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
+        <div className="relative max-w-2xl">
+          <p className="mb-2 font-display text-sm italic text-primary">
+            Recherche{countryLabel ? ` - ${countryLabel}` : ""}
+          </p>
+          <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
+            Un mot, et on te dit <span className="text-primary">par où commencer</span>.
+          </h1>
+          <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
+            Thèmes, cours, épreuves, exercices et quiz : tape une notion, une épreuve ou une année, on trouve ce
+            qu'il te faut pour ton examen.
+          </p>
         </div>
-      </form>
+      </div>
 
-      {/* Périmètre : l'examen de l'élève par défaut, jamais caché - c'est ce qui explique pourquoi un
-          résultat attendu manque, et un clic suffit pour l'élargir. */}
-      {cursusLabel && (
-        <div className="mt-4 inline-flex rounded-full border border-border bg-muted/50 p-0.5 text-sm" role="group" aria-label="Périmètre de la recherche">
-          {[
-            { actif: !elargir, libelle: `Mon examen · ${cursusLabel}`, valeur: null },
-            { actif: elargir, libelle: "Tous les examens", valeur: "1" },
-          ].map((option) => (
-            <button
-              key={option.libelle}
-              type="button"
-              aria-pressed={option.actif}
-              onClick={() => majParams({ elargir: option.valeur })}
-              className={cn(
-                "rounded-full px-3 py-1 transition-colors",
-                option.actif ? "bg-background font-medium shadow-sm" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {option.libelle}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal de la page, comme
+          sur /epreuves et /cours - et les filtres (examen, matière, type) s'y composent des mêmes pièces. */}
+      <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
+        <form
+          role="search"
+          onSubmit={(e) => {
+            e.preventDefault()
+            majParams({ q: saisie.trim() || null, exact: null })
+            memoriserRecente(saisie)
+            if (saisie.trim().length >= LONGUEUR_MIN_RECHERCHE) tracerRechercheLancee("page")
+          }}
+        >
+          <div className="group relative">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" aria-hidden="true" />
+            <Input
+              type="search"
+              inputMode="search"
+              value={saisie}
+              onChange={(e) => setSaisie(e.target.value)}
+              placeholder="Un thème, une notion, une épreuve, une année…"
+              aria-label="Rechercher"
+              autoFocus={!q}
+              autoComplete="off"
+              enterKeyHint="search"
+              className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
+            />
+            {saisie && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSaisie("")
+                  majParams({ q: null, exact: null })
+                }}
+                aria-label="Effacer la recherche"
+                className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                <X className="size-4" />
+              </button>
+            )}
+          </div>
+        </form>
+
+        {/* Périmètre : l'examen de l'élève par défaut, jamais caché - c'est ce qui explique pourquoi un
+            résultat attendu manque, et un clic suffit pour l'élargir. */}
+        {cursusLabel && (
+          <FiltreLigne titre="Examen">
+            <PastilleFiltre actif={!elargir} onClick={() => majParams({ elargir: null })}>
+              Mon examen · {cursusLabel}
+            </PastilleFiltre>
+            <PastilleFiltre actif={elargir} onClick={() => majParams({ elargir: "1" })}>
+              Tous les examens
+            </PastilleFiltre>
+          </FiltreLigne>
+        )}
+
+        {/* Plusieurs matières : « tangente » existe en maths, en physique et en chimie. Les pastilles disent
+            combien de résultats chacune apporte et filtrent d'un clic - la liste reste complète quand l'une
+            est choisie, pour en changer sans repartir de zéro. */}
+        {filtrable && data.matieres.length > 1 && (
+          <FiltreLigne titre="Matière">
+            <PastilleFiltre actif={!matiere} onClick={() => majParams({ matiere: null })}>
+              Toutes les matières <span className="opacity-75">{data.matieres.reduce((somme, m) => somme + m.total, 0)}</span>
+            </PastilleFiltre>
+            {data.matieres.map((m) => (
+              <PastilleFiltre key={m.code} actif={matiere === m.code} onClick={() => majParams({ matiere: m.code })}>
+                <span className={cn("size-2 rounded-full", couleurMatiere(m.code).barre)} aria-hidden="true" />
+                {m.label} <span className="opacity-75">{m.total}</span>
+              </PastilleFiltre>
+            ))}
+          </FiltreLigne>
+        )}
+
+        {filtrable && <Onglets groupes={groupes} total={data.total} famille={famille} onChoisir={(f) => majParams({ type: f?.cle ?? null })} />}
+      </div>
 
       {termes.length < LONGUEUR_MIN_RECHERCHE ? (
         <Invitation country={country} />
@@ -282,37 +310,7 @@ export function RecherchePage() {
                 </p>
               )}
 
-              {/* Plusieurs matières : « tangente » existe en maths, en physique et en chimie. Les pastilles
-                  disent combien de résultats chacune apporte et filtrent d'un clic - la liste reste
-                  complète quand l'une est choisie, pour en changer sans repartir de zéro. */}
-              {data.matieres.length > 1 && (
-                <div className="mt-4" role="group" aria-label="Matière">
-                  <div className="flex flex-wrap gap-2">
-                    {[{ code: "", label: "Toutes les matières", total: data.matieres.reduce((s, m) => s + m.total, 0) }, ...data.matieres].map((m) => {
-                      const actif = (matiere || "") === m.code
-                      return (
-                        <button
-                          key={m.code || "toutes"}
-                          type="button"
-                          aria-pressed={actif}
-                          onClick={() => majParams({ matiere: m.code || null })}
-                          className={cn(
-                            "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 text-sm transition-colors",
-                            actif ? "border-foreground/70 bg-foreground text-background" : "border-border bg-background hover:border-foreground/40",
-                          )}
-                        >
-                          {m.code && <span className={cn("size-2 rounded-full", couleurMatiere(m.code).barre)} aria-hidden="true" />}
-                          {m.label} <span className={actif ? "opacity-80" : "text-muted-foreground"}>{m.total}</span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              <Onglets groupes={groupes} total={data.total} type={type} onChoisir={(t) => majParams({ type: t ?? null })} />
-
-              {type === undefined ? (
+              {famille === undefined ? (
                 <div>
                   {vedette && <ResultatVedette resultat={vedette} jetons={jetons} country={country} onChoisir={ouvrir(vedette, 0)} />}
 
@@ -356,7 +354,7 @@ export function RecherchePage() {
                             {groupe.total > groupe.resultats.length && (
                               <button
                                 type="button"
-                                onClick={() => majParams({ type: groupe.type })}
+                                onClick={() => majParams({ type: familleDe(groupe.type).cle })}
                                 className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-sm font-medium text-primary transition-colors hover:border-primary"
                               >
                                 Voir les {groupe.total}
@@ -375,26 +373,32 @@ export function RecherchePage() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-4">
-                  {detail.isLoading ? (
-                    <Chargement />
-                  ) : (
-                    <>
-                      <div className="grid gap-3 md:grid-cols-2">
-                        {resultatsDuType.map((resultat, rang) => (
-                          <ResultatCarte key={`${resultat.type}-${resultat.id}`} resultat={resultat} jetons={jetons} country={country} onChoisir={ouvrir(resultat, rang)} />
-                        ))}
-                      </div>
-                      {detail.hasNextPage && (
-                        <div className="mt-5 flex justify-center">
-                          <Button variant="outline" onClick={() => detail.fetchNextPage()} disabled={detail.isFetchingNextPage}>
-                            {detail.isFetchingNextPage && <Loader2 className="animate-spin" />}
-                            Afficher plus de résultats
-                          </Button>
-                        </div>
-                      )}
-                    </>
-                  )}
+                <div className="mt-6 space-y-9">
+                  {/* Un onglet = un ou plusieurs types (Épreuves : épreuves, inédites, exercices). Chaque
+                      type garde sa propre liste paginée, sous son titre quand il y en a plusieurs. */}
+                  {famille.types
+                    .map((t) => groupes.find((g) => g.type === t))
+                    .filter((g): g is GroupeRecherche => g !== undefined)
+                    .map((groupe) => (
+                      <SectionPaginee
+                        key={groupe.type}
+                        groupe={groupe}
+                        avecTitre={famille.types.length > 1}
+                        cle={["recherche", "type", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, groupe.type]}
+                        chercher={(decalage, signal) =>
+                          rechercher(
+                            {
+                              q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact,
+                              type: groupe.type, limite: PAGE_TYPE, decalage,
+                            },
+                            signal,
+                          )
+                        }
+                        jetons={jetons}
+                        country={country}
+                        ouvrir={ouvrir}
+                      />
+                    ))}
                 </div>
               )}
             </>
@@ -406,38 +410,89 @@ export function RecherchePage() {
 }
 
 function Onglets({
-  groupes, total, type, onChoisir,
+  groupes, total, famille, onChoisir,
 }: {
   groupes: GroupeRecherche[]
   total: number
-  type: TypeResultatRecherche | undefined
-  onChoisir: (type: TypeResultatRecherche | undefined) => void
+  famille: FamilleRecherche | undefined
+  onChoisir: (famille: FamilleRecherche | undefined) => void
 }) {
-  // Les compteurs viennent de la vue d'ensemble : toujours à jour, que le type choisi pagine ou non.
-  const bouton = (actif: boolean) =>
-    cn(
-      "whitespace-nowrap rounded-full border px-3 py-1.5 text-sm transition-colors",
-      actif ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/60",
-    )
+  // Mêmes mots et même ordre que les onglets « Réviser » (voir FAMILLES_RECHERCHE), et la même rangée de
+  // pastilles que les filtres de /epreuves et /cours. Les compteurs viennent de la vue d'ensemble :
+  // toujours à jour, que l'onglet choisi pagine ou non. Un type sans résultat n'est pas proposé (sauf
+  // s'il est celui où l'on est).
+  const onglets = FAMILLES_RECHERCHE.map((f) => ({
+    ...f,
+    total: groupes.filter((g) => f.types.includes(g.type)).reduce((somme, g) => somme + g.total, 0),
+  })).filter((f) => f.total > 0 || f.cle === famille?.cle)
   return (
-    <div className="-mx-4 mt-5 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden" role="group" aria-label="Type de résultat">
-      <div className="flex gap-2">
-        <button type="button" onClick={() => onChoisir(undefined)} aria-pressed={type === undefined} className={bouton(type === undefined)}>
-          Tout ({total})
-        </button>
-        {groupes.map((groupe) => (
-          <button
-            key={groupe.type}
-            type="button"
-            onClick={() => onChoisir(groupe.type)}
-            aria-pressed={type === groupe.type}
-            className={bouton(type === groupe.type)}
-          >
-            {LIBELLES_TYPE[groupe.type].pluriel} ({groupe.total})
-          </button>
-        ))}
-      </div>
-    </div>
+    <FiltreLigne titre="Type">
+      <PastilleFiltre actif={famille === undefined} onClick={() => onChoisir(undefined)}>
+        Tout <span className="opacity-75">{total}</span>
+      </PastilleFiltre>
+      {onglets.map((f) => (
+        <PastilleFiltre key={f.cle} actif={famille?.cle === f.cle} onClick={() => onChoisir(f)}>
+          {f.libelle} <span className="opacity-75">{f.total}</span>
+        </PastilleFiltre>
+      ))}
+    </FiltreLigne>
+  )
+}
+
+/** La liste paginée d'UN type de résultat (« Afficher plus » charge la suite). Chaque section porte sa
+ * propre requête : un onglet qui regroupe plusieurs types en affiche plusieurs, indépendantes. */
+function SectionPaginee({
+  groupe, avecTitre, cle, chercher, jetons, country, ouvrir,
+}: {
+  groupe: GroupeRecherche
+  avecTitre: boolean
+  cle: unknown[]
+  chercher: (decalage: number, signal: AbortSignal) => Promise<ReponseRecherche>
+  jetons: string[]
+  country: string
+  ouvrir: (resultat: ResultatRecherche, rang: number) => () => void
+}) {
+  const liste = useInfiniteQuery({
+    queryKey: cle,
+    queryFn: ({ pageParam, signal }) => chercher(pageParam, signal),
+    initialPageParam: 0,
+    getNextPageParam: (derniere, pages) => {
+      const total = derniere.groupes[0]?.total ?? 0
+      const charges = pages.reduce((somme, page) => somme + (page.groupes[0]?.resultats.length ?? 0), 0)
+      return charges < total ? charges : undefined
+    },
+  })
+  const resultats = liste.data?.pages.flatMap((p) => p.groupes[0]?.resultats ?? []) ?? []
+  return (
+    <section aria-labelledby={avecTitre ? `groupe-${groupe.type}` : undefined} aria-label={avecTitre ? undefined : groupe.libelle}>
+      {avecTitre && (
+        <h2 id={`groupe-${groupe.type}`} className="mb-3 flex items-center gap-2 font-display text-lg font-semibold">
+          <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <IconeType type={groupe.type} className="size-4" />
+          </span>
+          {groupe.libelle} <span className="text-sm font-normal text-muted-foreground">({groupe.total})</span>
+        </h2>
+      )}
+      {liste.isLoading ? (
+        <Chargement />
+      ) : (
+        <>
+          <div className="grid gap-3 md:grid-cols-2">
+            {resultats.map((resultat, rang) => (
+              <ResultatCarte key={`${resultat.type}-${resultat.id}`} resultat={resultat} jetons={jetons} country={country} onChoisir={ouvrir(resultat, rang)} />
+            ))}
+          </div>
+          {liste.hasNextPage && (
+            <div className="mt-5 flex justify-center">
+              <Button variant="outline" onClick={() => liste.fetchNextPage()} disabled={liste.isFetchingNextPage}>
+                {liste.isFetchingNextPage && <Loader2 className="animate-spin" />}
+                Afficher plus de résultats
+              </Button>
+            </div>
+          )}
+        </>
+      )}
+    </section>
   )
 }
 

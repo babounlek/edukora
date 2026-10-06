@@ -13,6 +13,9 @@ vi.mock("@/api/endpoints", () => ({ rechercher, listCursus: vi.fn(() => Promise.
 vi.mock("@/lib/analytics", () => ({ trackEvent }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: null }) }))
 vi.mock("@/lib/cursusAccueil", () => ({ useCursusAccueil: () => null }))
+vi.mock("@/context/CountryContext", () => ({
+  useCountry: () => ({ country: "cm", countries: [{ code: "CM", label: "Cameroun" }] }),
+}))
 
 import { RecherchePage } from "./RecherchePage"
 
@@ -106,7 +109,7 @@ describe("RecherchePage", () => {
     rechercher.mockResolvedValue(reponse())
     monter()
     expect(await screen.findByText(/résultats pour « tange »/)).toHaveTextContent("30 résultats pour « tange »")
-    const matieres = screen.getByRole("group", { name: "Matière" })
+    const matieres = screen.getByRole("group", { name: "Filtrer par matière" })
     expect(within(matieres).getByRole("button", { name: /Toutes les matières\s*30/ })).toHaveAttribute("aria-pressed", "true")
     expect(within(matieres).getByRole("button", { name: /Chimie\s*10/ })).toBeInTheDocument()
   })
@@ -114,7 +117,7 @@ describe("RecherchePage", () => {
   it("choisir une matière relance la recherche filtrée, sans perdre les autres pastilles", async () => {
     rechercher.mockResolvedValue(reponse())
     monter()
-    const matieres = await screen.findByRole("group", { name: "Matière" })
+    const matieres = await screen.findByRole("group", { name: "Filtrer par matière" })
     await userEvent.click(within(matieres).getByRole("button", { name: /Chimie/ }))
 
     await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("matiere=CHIMIE"))
@@ -127,7 +130,7 @@ describe("RecherchePage", () => {
     rechercher.mockResolvedValue(reponse({ matieres: [{ code: "MATHS", label: "Mathématiques", total: 30 }] }))
     monter()
     await screen.findByText("Commence par ici")
-    expect(screen.queryByRole("group", { name: "Matière" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("group", { name: "Filtrer par matière" })).not.toBeInTheDocument()
   })
 
   it("note l'ouverture d'un résultat avec son rang, sans le texte tapé", async () => {
@@ -146,5 +149,80 @@ describe("RecherchePage", () => {
     monter("/cm/recherche?q=xyzzyq")
     expect(await screen.findByText(/Aucun résultat pour « xyzzyq »/)).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /Tangente/ })).toBeInTheDocument()
+  })
+})
+
+describe("RecherchePage dans « Réviser »", () => {
+  it("affiche les onglets Réviser (aucun actif) et le bouton de recherche partout", async () => {
+    rechercher.mockResolvedValue(reponse())
+    monter()
+    const onglets = await screen.findByRole("navigation", { name: "Réviser" })
+    for (const nom of ["Épreuves", "Cours", "Thèmes", "Quiz"]) {
+      const lien = within(onglets).getByRole("link", { name: nom })
+      expect(lien).not.toHaveAttribute("aria-current")
+    }
+    expect(within(onglets).getByRole("button", { name: "Rechercher sur tout le site" })).toBeInTheDocument()
+  })
+})
+
+describe("onglets de résultats harmonisés avec « Réviser »", () => {
+  const EPREUVE = resultat({ id: 30, type: "EPREUVE", titre: "Mathématiques BAC C 2019", details: { slug: "maths-2019" } })
+  const EXERCICE = resultat({ id: 31, type: "EXERCICE", titre: "Exercice 2 · Mathématiques BAC C 2019", details: { slug: "maths-2019", ancre: "exercice-2" } })
+  const QUIZ = resultat({ id: 32, type: "QUIZ", titre: "limites", nb: 2, details: { tag_id: 7 } })
+
+  function complet() {
+    return reponse({
+      total: 30,
+      groupes: [
+        { type: "THEME", libelle: "Thèmes", total: 3, resultats: [THEME_MATHS] },
+        { type: "COURS", libelle: "Cours", total: 12, resultats: [resultat({})] },
+        { type: "EPREUVE", libelle: "Épreuves", total: 3, resultats: [EPREUVE] },
+        { type: "EXERCICE", libelle: "Exercices", total: 5, resultats: [EXERCICE] },
+        { type: "QUIZ", libelle: "Questions de quiz", total: 2, resultats: [QUIZ] },
+      ],
+    })
+  }
+
+  it("mêmes onglets et même ordre que Réviser, les exercices rejoignant les épreuves", async () => {
+    rechercher.mockResolvedValue(complet())
+    monter()
+    const onglets = await screen.findByRole("group", { name: "Filtrer par type" })
+    const libelles = within(onglets).getAllByRole("button").map((b) => b.textContent)
+    expect(libelles).toEqual(["Tout 30", "Épreuves 8", "Cours 12", "Thèmes 3", "Quiz 2"])
+  })
+
+  it("l'onglet Épreuves affiche épreuves et exercices, chacun avec sa propre liste paginée", async () => {
+    rechercher.mockImplementation((filtres: { type?: string }) =>
+      Promise.resolve(
+        filtres.type
+          ? reponse({ groupes: complet().groupes.filter((g) => g.type === filtres.type) })
+          : complet(),
+      ),
+    )
+    monter("/cm/recherche?q=tange&type=EPREUVE")
+
+    expect(await screen.findByRole("heading", { name: /Épreuves/ })).toBeInTheDocument()
+    expect(await screen.findByRole("heading", { name: /Exercices/ })).toBeInTheDocument()
+    expect(await screen.findByRole("link", { name: "Mathématiques BAC C 2019" })).toBeInTheDocument()
+    await waitFor(() =>
+      expect(rechercher).toHaveBeenCalledWith(expect.objectContaining({ type: "EXERCICE", limite: 20, decalage: 0 }), expect.anything()),
+    )
+    expect(screen.getByRole("button", { name: /^Épreuves\s*8$/ })).toHaveAttribute("aria-pressed", "true")
+  })
+
+  it("un ancien lien ?type=EXERCICE mène à l'onglet Épreuves", async () => {
+    rechercher.mockImplementation((filtres: { type?: string }) =>
+      Promise.resolve(filtres.type ? reponse({ groupes: complet().groupes.filter((g) => g.type === filtres.type) }) : complet()),
+    )
+    monter("/cm/recherche?q=tange&type=EXERCICE")
+    expect(await screen.findByRole("button", { name: /^Épreuves\s*8$/ })).toHaveAttribute("aria-pressed", "true")
+  })
+
+  it("« Voir les N » d'une section ouvre l'onglet correspondant", async () => {
+    rechercher.mockResolvedValue(complet())
+    monter()
+    const cours = await screen.findByRole("region", { name: /Cours/ })
+    await userEvent.click(within(cours).getByRole("button", { name: /Voir les 12/ }))
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("type=COURS"))
   })
 })

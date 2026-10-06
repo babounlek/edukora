@@ -4,7 +4,7 @@ import { BookOpen, CalendarCheck, TrendingUp } from "lucide-react"
 import { CompteAReboursBadge } from "@/components/CompteAReboursBadge"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { catalogueHomePath, epreuvesListPath, themesFrequentsPath, coursListPath } from "@/lib/countryPath"
+import { catalogueHomePath, epreuvesListPath, recherchePath, themesFrequentsPath, coursListPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
 
 /**
@@ -53,6 +53,7 @@ export function BottomTabBar() {
     >
       {/* Sur mobile, le décompte n'existait que derrière le hamburger : autant dire
           qu'il n'existait pas. Ici il reste sous le pouce sur chaque écran, en gris
+    pathname.startsWith(recherchePath(country)) ||
           comme partout ailleurs. Silencieusement absent sans date d'examen connue. */}
       <div className="flex justify-center pt-1.5 empty:hidden">
         <CompteAReboursBadge variant="pilule" className="whitespace-nowrap" />

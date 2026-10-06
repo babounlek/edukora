@@ -16,7 +16,7 @@ import { useCursusAbonnes } from "@/lib/changerCursusPrepare"
 import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { SITE_NAME } from "@/lib/site"
-import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
+import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import {
   Select,
   SelectContent,
@@ -263,6 +263,7 @@ export function Header() {
     isCoursSection ||
     pathname.startsWith(themesFrequentsPath(country)) ||
     pathname.startsWith("/quiz")
+    pathname.startsWith(recherchePath(country)) ||
 
   // Même clé de cache que CataloguePage ("epreuves-inedites-recente") : un visiteur
   // qui atterrit sur le catalogue puis navigue ailleurs ne repaie pas cette requête

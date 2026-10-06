@@ -173,3 +173,17 @@ describe("recherches récentes", () => {
     expect(lireRecentes()).toEqual([])
   })
 })
+
+describe("familles d'onglets", () => {
+  it("suivent l'ordre et les mots des onglets Réviser", async () => {
+    const { FAMILLES_RECHERCHE } = await import("./recherche")
+    expect(FAMILLES_RECHERCHE.map((f) => f.libelle)).toEqual(["Épreuves", "Cours", "Thèmes", "Quiz"])
+  })
+
+  it("rattachent exercices et inédites à Épreuves", async () => {
+    const { familleDe } = await import("./recherche")
+    expect(familleDe("EXERCICE").cle).toBe("EPREUVE")
+    expect(familleDe("INEDITE").cle).toBe("EPREUVE")
+    expect(familleDe("QUIZ").cle).toBe("QUIZ")
+  })
+})
