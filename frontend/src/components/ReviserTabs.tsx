@@ -2,8 +2,8 @@ import { Link, useLocation } from "react-router-dom"
 import { Search } from "lucide-react"
 
 import { useCountry } from "@/context/CountryContext"
-import { coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
-import { demanderOuvertureRecherche } from "@/lib/useRaccourciRecherche"
+import { coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
+import { ETAT_FOCUS_RECHERCHE } from "@/lib/recherche"
 import { cn } from "@/lib/utils"
 
 /**
@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils"
 export function ReviserTabs() {
   const { country } = useCountry()
   const { pathname } = useLocation()
+  const surLaRecherche = pathname.startsWith(recherchePath(country))
 
   const onglets = [
     { to: epreuvesListPath(country), label: "Épreuves", actif: pathname.startsWith(epreuvesListPath(country)) },
@@ -54,21 +55,24 @@ export function ReviserTabs() {
           ))}
         </div>
         {/* La recherche de TOUT le site (thèmes, cours, épreuves, exercices, quiz), pas un cinquième type de
-            contenu : un bouton en forme de champ qui ouvre la palette de l'en-tête. Volontairement pas un
-            vrai champ - les pages Épreuves et Cours ont déjà le leur, qui ne filtre que leur propre liste,
-            et deux champs côte à côte se feraient concurrence. Sous `sm`, la loupe seule : quatre onglets
-            tiennent à peine dans 375 px. */}
-        <button
-          type="button"
-          onClick={demanderOuvertureRecherche}
-          aria-label="Rechercher sur tout le site"
-          aria-keyshortcuts="/ Control+K Meta+K"
-          className="mb-1 inline-flex h-8 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:w-56 sm:justify-start"
-        >
-          <Search className="size-4 shrink-0" aria-hidden="true" />
-          <span className="hidden sm:inline">Rechercher partout…</span>
-          <kbd className="ml-auto hidden rounded border border-border px-1.5 text-[11px] leading-5 sm:inline" aria-hidden="true">/</kbd>
-        </button>
+            contenu : un lien en forme de champ vers la page de recherche, champ prêt à écrire. Volontairement
+            pas un vrai champ - les pages Épreuves et Cours ont déjà le leur, qui ne filtre que leur propre
+            liste, et deux champs côte à côte se feraient concurrence. Sous `sm`, la loupe seule : quatre
+            onglets tiennent à peine dans 375 px. Absent de la page de recherche elle-même, qui a son grand
+            champ juste en dessous. */}
+        {!surLaRecherche && (
+          <Link
+            to={recherchePath(country)}
+            state={ETAT_FOCUS_RECHERCHE}
+            aria-label="Rechercher sur tout le site"
+            aria-keyshortcuts="/ Control+K Meta+K"
+            className="mb-1 inline-flex h-8 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:w-56 sm:justify-start"
+          >
+            <Search className="size-4 shrink-0" aria-hidden="true" />
+            <span className="hidden sm:inline">Rechercher partout…</span>
+            <kbd className="ml-auto hidden rounded border border-border px-1.5 text-[11px] leading-5 sm:inline" aria-hidden="true">/</kbd>
+          </Link>
+        )}
       </div>
     </nav>
   )

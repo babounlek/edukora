@@ -61,7 +61,7 @@ def rechercher(request):
     # Un zéro n'est un manque du catalogue que s'il ne vient pas d'un filtre : ni type ni matière
     # choisis, et rien de proposé dans les autres examens.
     manque_du_catalogue = (
-        reponse["total"] == 0 and reponse["indexe"] and not reponse["trop_court"]
+        reponse["total"] == 0 and reponse["indexe"] and not reponse["trop_court"] and reponse["q"]
         and not type_ and not matiere and not decalage and reponse["autres_cursus"] == 0
     )
     if manque_du_catalogue and params.get("rapide") != "true":

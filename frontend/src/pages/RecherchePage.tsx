@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { Link, useLocation, useParams, useSearchParams } from "react-router-dom"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { ArrowRight, Loader2, Search, SearchX, X } from "lucide-react"
+import { ArrowRight, BookOpen, Clock, Loader2, Search, SearchX, X } from "lucide-react"
 
-import { listCursus, rechercher } from "@/api/endpoints"
+import { getMyProgression, listCursus, rechercher } from "@/api/endpoints"
 import type { GroupeRecherche, ReponseRecherche, ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { formatCursus } from "@/components/CompteAReboursBadge"
 import { ReviserTabs } from "@/components/ReviserTabs"
@@ -17,7 +17,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { useCursusAccueil } from "@/lib/cursusAccueil"
-import { coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
+import { epreuveReaderPath } from "@/lib/countryPath"
 import {
   actionsTheme,
   cibleResultat,
@@ -26,10 +26,13 @@ import {
   FAMILLES_RECHERCHE,
   type FamilleRecherche,
   LONGUEUR_MIN_RECHERCHE,
+  lireRecentes,
   memoriserRecente,
+  oublierRecentes,
   TYPES_RECHERCHE,
   tracerRechercheLancee,
   tracerResultatClique,
+  veutFocusRecherche,
 } from "@/lib/recherche"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
@@ -45,6 +48,17 @@ export function RecherchePage() {
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
   const [searchParams, setSearchParams] = useSearchParams()
+
+  // Arrivé par la loupe, le bouton des onglets ou un raccourci clavier (voir ETAT_FOCUS_RECHERCHE) : le
+  // champ passe en saisie, texte déjà tapé sélectionné pour être remplacé d'une frappe. `location.key`
+  // dans les dépendances : recliquer sur la loupe depuis cette même page refait la mise au point.
+  const location = useLocation()
+  const champRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (!veutFocusRecherche(location.state)) return
+    champRef.current?.focus()
+    champRef.current?.select()
+  }, [location.key, location.state])
 
   const q = searchParams.get("q") ?? ""
   const matiere = searchParams.get("matiere") ?? ""
@@ -201,6 +215,7 @@ export function RecherchePage() {
             <Input
               type="search"
               inputMode="search"
+              ref={champRef}
               value={saisie}
               onChange={(e) => setSaisie(e.target.value)}
               placeholder="Un thème, une notion, une épreuve, une année…"
@@ -260,7 +275,18 @@ export function RecherchePage() {
       </div>
 
       {termes.length < LONGUEUR_MIN_RECHERCHE ? (
-        <Invitation country={country} />
+        <PageVide
+          country={country}
+          identite={identite}
+          cursusDeclare={cursusDeclare}
+          cursusLabel={cursusLabel}
+          onChercher={(requete) => {
+            setSaisie(requete)
+            majParams({ q: requete, exact: null })
+            memoriserRecente(requete)
+            tracerRechercheLancee("page")
+          }}
+        />
       ) : attente ? (
         <Chargement />
       ) : ensemble.isError ? (
@@ -506,15 +532,121 @@ function Chargement() {
   )
 }
 
-function Invitation({ country }: { country: string }) {
+/**
+ * La page de recherche avant toute requête - celle où arrivent la loupe de l'en-tête, le bouton des onglets
+ * Réviser et les raccourcis clavier. Un champ vide ne dit rien ; elle propose donc de quoi commencer sans
+ * rien taper : reprendre sa lecture, relancer une recherche récente, ou partir d'un thème de son examen.
+ */
+function PageVide({
+  country, identite, cursusDeclare, cursusLabel, onChercher,
+}: {
+  country: string
+  identite: number
+  cursusDeclare: number | null | undefined
+  cursusLabel: string
+  onChercher: (requete: string) => void
+}) {
+  const { isAuthenticated } = useAuth()
+  const [recentes, setRecentes] = useState(lireRecentes)
+
+  const accueil = useQuery({
+    queryKey: ["recherche", "accueil", country, identite, cursusDeclare ?? null],
+    queryFn: ({ signal }) => rechercher({ q: "", pays: country, cursus: cursusDeclare, rapide: true }, signal),
+    enabled: cursusDeclare !== undefined,
+  })
+  const progression = useQuery({
+    queryKey: ["progression"],
+    queryFn: ({ signal }) => getMyProgression(signal),
+    enabled: isAuthenticated,
+  })
+  // `enabled: false` laisse le cache d'une session précédente intact : sans ce garde, une déconnexion sans
+  // rechargement complet afficherait encore la lecture de l'élève précédent.
+  const reprise = isAuthenticated ? progression.data?.lessons[0] : undefined
+  const themes = accueil.data?.suggestions ?? []
+
+  const pastille =
+    "inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:border-primary hover:text-primary"
+
   return (
-    <div className="mt-10 text-center text-sm text-muted-foreground">
-      <p>Cherche un thème (« théorème de Thalès »), une notion (« discriminant »), une épreuve (« BAC C maths 2019 »).</p>
-      <p className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-        <Link to={epreuvesListPath(country)} className="font-medium text-primary hover:underline">Parcourir les épreuves</Link>
-        <Link to={coursListPath(country)} className="font-medium text-primary hover:underline">Parcourir les cours</Link>
-        <Link to={themesFrequentsPath(country)} className="font-medium text-primary hover:underline">Thèmes les plus fréquents</Link>
-      </p>
+    <div className="mt-8 space-y-8">
+      {reprise && (
+        <Link
+          to={epreuveReaderPath(reprise.subject.country.code.toLowerCase(), reprise.slug as string)}
+          className="group flex items-center gap-3 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent px-5 py-4 transition-colors hover:border-primary/50"
+        >
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <BookOpen className="size-5" aria-hidden="true" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">Reprendre ma lecture</span>
+            <span className="block truncate font-display font-medium">{reprise.title}</span>
+          </span>
+          <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+        </Link>
+      )}
+
+      {recentes.length > 0 && (
+        <section aria-labelledby="recherches-recentes">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h2 id="recherches-recentes" className="font-display text-lg font-semibold">
+              Tes dernières recherches
+            </h2>
+            <button
+              type="button"
+              onClick={() => {
+                oublierRecentes()
+                setRecentes([])
+              }}
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              Effacer
+            </button>
+          </div>
+          <ul className="flex flex-wrap gap-2">
+            {recentes.map((requete) => (
+              <li key={requete}>
+                <button type="button" onClick={() => onChercher(requete)} className={pastille}>
+                  <Clock className="size-3.5 text-muted-foreground" aria-hidden="true" />
+                  {requete}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section aria-labelledby="themes-pour-commencer">
+        <h2 id="themes-pour-commencer" className="mb-3 font-display text-lg font-semibold">
+          {cursusLabel ? (
+            <>
+              Des thèmes pour ton examen <span className="text-sm font-normal text-muted-foreground">· {cursusLabel}</span>
+            </>
+          ) : (
+            "Des thèmes pour commencer"
+          )}
+        </h2>
+        {accueil.isLoading ? (
+          <div className="flex flex-wrap gap-2" role="status" aria-label="Chargement des thèmes">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <Skeleton key={i} className="h-9 w-32 rounded-full" />
+            ))}
+          </div>
+        ) : themes.length > 0 ? (
+          <ul className="flex flex-wrap gap-2">
+            {themes.map((theme) => (
+              <li key={theme.id}>
+                <button type="button" onClick={() => onChercher(theme.titre)} className={pastille}>
+                  {theme.titre}
+                  <span className="text-xs text-muted-foreground">{theme.matiere.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        <p className="mt-4 text-sm text-muted-foreground">
+          Tu peux aussi chercher une notion (« discriminant »), une épreuve ou une année (« BAC C maths 2019 »).
+        </p>
+      </section>
     </div>
   )
 }

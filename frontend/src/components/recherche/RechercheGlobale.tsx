@@ -32,6 +32,12 @@ const ID_LISTE = "resultats-recherche-rapide"
 const idOption = (index: number) => `recherche-option-${index}`
 
 /**
+ * NON MONTÉE depuis le 2026-10-06 : la loupe de l'en-tête, le lien des onglets Réviser et les raccourcis
+ * « / » / Ctrl+K mènent tous à la page /:pays/recherche (voir RecherchePage), devenue plus riche que cette
+ * fenêtre. Conservée, avec ses tests, le temps de mesurer l'usage de la page (événements recherche_lancee et
+ * recherche_resultat_clique, source « page ») : si elle suffit, ce composant se supprime ; si l'on regrette
+ * de ne plus chercher sans quitter ce qu'on lit, il se remonte dans Header.
+ *
  * Recherche globale en palette (touche « / », Ctrl/⌘+K, ou la loupe de l'en-tête) : on tape, les
  * meilleurs thèmes, cours, épreuves... s'affichent sous le champ, flèches + Entrée pour ouvrir.
  * Une recherche plus fine (filtres, tous les résultats) vit sur la page /:pays/recherche.

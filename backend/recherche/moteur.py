@@ -41,6 +41,8 @@ LONGUEUR_MAX_REQUETE = 100
 # Sous ce nombre de résultats dans le cursus de l'élève, on lui dit combien il en reste ailleurs.
 SEUIL_AUTRES_CURSUS = 10
 NB_SUGGESTIONS = 6
+# Page de recherche sans requête : quelques thèmes de plus à proposer pour commencer.
+NB_SUGGESTIONS_ACCUEIL = 8
 # Journal des recherches vides (voir RechercheSansResultat) : bornes de prudence.
 JOURNAL_LONGUEUR_MIN = 3
 JOURNAL_LONGUEUR_MAX = 80
@@ -366,7 +368,7 @@ def _theme_generique(titre_norm):
     return not mots or all(mot in texte.MOTS_DE_NIVEAU for mot in mots)
 
 
-def _suggestions(pays, cursus_id, acces):
+def _suggestions(pays, cursus_id, acces, nombre=NB_SUGGESTIONS):
     """Thèmes les plus riches du pays (et du cursus), proposés quand rien ne correspond. Les étiquettes de
     niveau (« Terminale C », « BEPC ») sont écartées : elles dominent le classement par volume sans rien
     proposer à étudier."""
@@ -375,8 +377,8 @@ def _suggestions(pays, cursus_id, acces):
         lien = EntreeRecherche.cursus.through.objects.filter(entreerecherche_id=OuterRef("pk"), cursus_id=cursus_id)
         queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
     # Une marge : quelques-uns des premiers seront écartés.
-    candidats = queryset.order_by("-poids", "id").values_list("id", "titre_norm")[:NB_SUGGESTIONS * 6]
-    ids = [i for i, titre_norm in candidats if not _theme_generique(titre_norm)][:NB_SUGGESTIONS]
+    candidats = queryset.order_by("-poids", "id").values_list("id", "titre_norm")[: nombre * 6]
+    ids = [i for i, titre_norm in candidats if not _theme_generique(titre_norm)][:nombre]
     entrees = _entrees(ids)
     etiquettes = _Etiquettes()
     return [serialiser(entrees[i], acces, etiquettes, cursus_prefere=cursus_id) for i in ids if i in entrees]
@@ -440,6 +442,10 @@ def chercher(
     requis = [j for j in jetons if texte.est_requis(j)]
     if not requis:
         reponse["trop_court"] = bool(jetons or reponse["q"])
+        if not reponse["q"]:
+            # Aucune requête (la page de recherche vient de s'ouvrir) : les thèmes de l'examen de l'élève, de
+            # quoi commencer sans rien taper.
+            reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces, NB_SUGGESTIONS_ACCUEIL)
         return reponse
 
     # La matière ne filtre PAS en SQL : la répartition par matière doit rester visible une fois l'une

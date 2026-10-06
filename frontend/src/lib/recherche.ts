@@ -243,3 +243,15 @@ export const FAMILLES_RECHERCHE: FamilleRecherche[] = [
 export function familleDe(type: TypeResultatRecherche): FamilleRecherche {
   return FAMILLES_RECHERCHE.find((f) => f.types.includes(type)) ?? FAMILLES_RECHERCHE[0]
 }
+
+// --- Arrivée sur la page de recherche ------------------------------------------------
+
+/** État de navigation posé par la loupe de l'en-tête, le bouton des onglets Réviser et les raccourcis
+ * clavier : la page de recherche y reconnaît « l'élève vient CHERCHER » et met le champ en saisie, avec
+ * le texte déjà tapé sélectionné. Un état de navigation plutôt qu'un paramètre d'URL : il ne se partage pas
+ * avec le lien et ne reste pas dans l'historique d'un retour arrière. */
+export const ETAT_FOCUS_RECHERCHE = { focusRecherche: true } as const
+
+export function veutFocusRecherche(etat: unknown): boolean {
+  return typeof etat === "object" && etat !== null && (etat as { focusRecherche?: unknown }).focusRecherche === true
+}

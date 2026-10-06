@@ -451,6 +451,24 @@ class MoteurTests(_CorpusMixin, TestCase):
         self.assertTrue(titres)
         self.assertNotIn("Terminale C", titres)
 
+    def test_sans_requete_la_page_recoit_des_themes_a_proposer(self):
+        for requete in ("", "   "):
+            reponse = self.chercher(requete)
+            self.assertEqual(reponse["total"], 0, requete)
+            self.assertFalse(reponse["trop_court"], requete)
+            self.assertTrue(reponse["suggestions"], requete)
+            self.assertTrue(all(s["type"] == "THEME" for s in reponse["suggestions"]))
+
+    def test_les_themes_proposes_sans_requete_suivent_l_examen(self):
+        # Le thème « limite d'une suite » n'existe qu'au BAC C ; au BEPC il ne doit pas être proposé.
+        au_bepc = [s["titre"] for s in self.chercher("", cursus=self.bepc.id)["suggestions"]]
+        self.assertNotIn("limite d'une suite", au_bepc)
+        au_bac = [s["titre"] for s in self.chercher("", cursus=self.bac_c.id)["suggestions"]]
+        self.assertIn("limite d'une suite", au_bac)
+
+    def test_une_requete_courte_ne_recoit_pas_de_suggestions(self):
+        self.assertEqual(self.chercher("d")["suggestions"], [])
+
     def test_les_details_n_exposent_jamais_les_cursus_d_acces(self):
         reponse = self.chercher("thales")
         for groupe in reponse["groupes"]:
@@ -548,6 +566,11 @@ class VueRechercheTests(_CorpusMixin, TestCase):
         self.get(q="thales", type="QUIZ")
         # Rien dans l'examen choisi, mais un cours existe au BEPC : ce n'est pas un trou du catalogue.
         self.get(q="fractions", cursus=self.bac_c.id)
+        self.assertFalse(RechercheSansResultat.objects.exists())
+
+    def test_la_page_vide_ne_journalise_rien_et_propose_des_themes(self):
+        donnees = self.get(q="").json()
+        self.assertTrue(donnees["suggestions"])
         self.assertFalse(RechercheSansResultat.objects.exists())
 
     def test_une_requete_trop_courte_n_est_pas_journalisee(self):

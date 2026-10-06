@@ -9,9 +9,11 @@ import type { ReponseRecherche, ResultatRecherche } from "@/api/types"
 const rechercher = vi.hoisted(() => vi.fn())
 const trackEvent = vi.hoisted(() => vi.fn())
 
-vi.mock("@/api/endpoints", () => ({ rechercher, listCursus: vi.fn(() => Promise.resolve([])) }))
+const getMyProgression = vi.hoisted(() => vi.fn())
+vi.mock("@/api/endpoints", () => ({ rechercher, getMyProgression, listCursus: vi.fn(() => Promise.resolve([])) }))
 vi.mock("@/lib/analytics", () => ({ trackEvent }))
-vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: null }) }))
+const auth = vi.hoisted(() => ({ user: null as null | { id: number }, isAuthenticated: false }))
+vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/lib/cursusAccueil", () => ({ useCursusAccueil: () => null }))
 vi.mock("@/context/CountryContext", () => ({
   useCountry: () => ({ country: "cm", countries: [{ code: "CM", label: "Cameroun" }] }),
@@ -56,11 +58,12 @@ function Lieu() {
   return <div data-testid="lieu">{`${lieu.pathname}${lieu.search}`}</div>
 }
 
-function monter(url = "/cm/recherche?q=tange") {
+function monter(url = "/cm/recherche?q=tange", etat?: unknown) {
+  const adresse = new URL(url, "http://localhost")
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   render(
     <QueryClientProvider client={client}>
-      <MemoryRouter initialEntries={[url]}>
+      <MemoryRouter initialEntries={[{ pathname: adresse.pathname, search: adresse.search, state: etat }]}>
         <Routes>
           <Route path="/:country/recherche" element={<RecherchePage />} />
         </Routes>
@@ -72,6 +75,9 @@ function monter(url = "/cm/recherche?q=tange") {
 
 beforeEach(() => {
   rechercher.mockReset()
+  getMyProgression.mockReset()
+  auth.user = null
+  auth.isAuthenticated = false
   trackEvent.mockReset()
   localStorage.clear()
 })
@@ -153,7 +159,7 @@ describe("RecherchePage", () => {
 })
 
 describe("RecherchePage dans « Réviser »", () => {
-  it("affiche les onglets Réviser (aucun actif) et le bouton de recherche partout", async () => {
+  it("affiche les onglets Réviser (aucun actif), sans le lien de recherche : le grand champ est juste dessous", async () => {
     rechercher.mockResolvedValue(reponse())
     monter()
     const onglets = await screen.findByRole("navigation", { name: "Réviser" })
@@ -161,7 +167,7 @@ describe("RecherchePage dans « Réviser »", () => {
       const lien = within(onglets).getByRole("link", { name: nom })
       expect(lien).not.toHaveAttribute("aria-current")
     }
-    expect(within(onglets).getByRole("button", { name: "Rechercher sur tout le site" })).toBeInTheDocument()
+    expect(within(onglets).queryByRole("link", { name: "Rechercher sur tout le site" })).not.toBeInTheDocument()
   })
 })
 
@@ -224,5 +230,87 @@ describe("onglets de résultats harmonisés avec « Réviser »", () => {
     const cours = await screen.findByRole("region", { name: /Cours/ })
     await userEvent.click(within(cours).getByRole("button", { name: /Voir les 12/ }))
     await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("type=COURS"))
+  })
+})
+
+describe("page de recherche avant toute requête", () => {
+  const THEME_A = resultat({ id: 40, type: "THEME", titre: "limites", acces: null, matiere: { code: "MATHS", label: "Mathématiques" }, details: { tag_id: 1 } })
+  const THEME_B = resultat({ id: 41, type: "THEME", titre: "Mendel", acces: null, matiere: { code: "SVT", label: "Sciences de la Vie et de la Terre" }, details: { tag_id: 2 } })
+
+  function vide(surcharge: Partial<ReponseRecherche> = {}) {
+    return reponse({ q: "", total: 0, groupes: [], matieres: [], suggestions: [THEME_A, THEME_B], ...surcharge })
+  }
+
+  it("demande les thèmes sans requête, en mode rapide, et les propose", async () => {
+    rechercher.mockResolvedValue(vide())
+    monter("/cm/recherche")
+    expect(await screen.findByRole("button", { name: /limites/ })).toBeInTheDocument()
+    expect(rechercher).toHaveBeenCalledWith({ q: "", pays: "cm", cursus: null, rapide: true }, expect.anything())
+    expect(screen.getByRole("heading", { name: "Des thèmes pour commencer" })).toBeInTheDocument()
+  })
+
+  it("un thème proposé lance sa recherche et la note sans le texte", async () => {
+    rechercher.mockResolvedValue(vide())
+    monter("/cm/recherche")
+    await userEvent.click(await screen.findByRole("button", { name: /Mendel/ }))
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("q=Mendel"))
+    expect(trackEvent).toHaveBeenCalledWith("recherche_lancee", { source: "page" })
+    expect(JSON.stringify(trackEvent.mock.calls)).not.toContain("Mendel")
+  })
+
+  it("propose les recherches récentes, les relance, et les efface", async () => {
+    localStorage.setItem("edukamer_recherches_recentes", JSON.stringify(["thalès", "mendel"]))
+    rechercher.mockResolvedValue(vide())
+    monter("/cm/recherche")
+    const section = await screen.findByRole("region", { name: "Tes dernières recherches" })
+    expect(within(section).getAllByRole("button").map((b) => b.textContent)).toEqual(["Effacer", "thalès", "mendel"])
+
+    await userEvent.click(within(section).getByRole("button", { name: "Effacer" }))
+    expect(screen.queryByRole("region", { name: "Tes dernières recherches" })).not.toBeInTheDocument()
+    expect(localStorage.getItem("edukamer_recherches_recentes")).toBeNull()
+  })
+
+  it("sans recherche récente, pas de section récentes", async () => {
+    rechercher.mockResolvedValue(vide())
+    monter("/cm/recherche")
+    await screen.findByRole("button", { name: /limites/ })
+    expect(screen.queryByText("Tes dernières recherches")).not.toBeInTheDocument()
+  })
+
+  it("propose de reprendre la lecture d'un élève connecté", async () => {
+    auth.user = { id: 7 }
+    auth.isAuthenticated = true
+    getMyProgression.mockResolvedValue({ lessons: [{ title: "Mathématiques BAC C 2019", slug: "maths-2019", subject: { country: { code: "CM" } } }] })
+    rechercher.mockResolvedValue(vide())
+    monter("/cm/recherche")
+    const lien = await screen.findByRole("link", { name: /Reprendre ma lecture/ })
+    expect(lien).toHaveAttribute("href", "/cm/epreuves/maths-2019/lire")
+    expect(lien).toHaveTextContent("Mathématiques BAC C 2019")
+  })
+
+  it("n'interroge pas la progression d'un visiteur", async () => {
+    rechercher.mockResolvedValue(vide())
+    monter("/cm/recherche")
+    await screen.findByRole("button", { name: /limites/ })
+    expect(getMyProgression).not.toHaveBeenCalled()
+    expect(screen.queryByText("Reprendre ma lecture")).not.toBeInTheDocument()
+  })
+})
+
+describe("arrivée par la loupe ou un raccourci", () => {
+  it("met le champ en saisie et sélectionne le texte déjà tapé", async () => {
+    rechercher.mockResolvedValue(reponse())
+    monter("/cm/recherche?q=tange", { focusRecherche: true })
+    const champ = await screen.findByRole("searchbox", { name: "Rechercher" })
+    await waitFor(() => expect(champ).toHaveFocus())
+    expect((champ as HTMLInputElement).selectionStart).toBe(0)
+    expect((champ as HTMLInputElement).selectionEnd).toBe("tange".length)
+  })
+
+  it("sans cet état, un champ déjà rempli n'est pas pris en main", async () => {
+    rechercher.mockResolvedValue(reponse())
+    monter("/cm/recherche?q=tange")
+    const champ = await screen.findByRole("searchbox", { name: "Rechercher" })
+    expect(champ).not.toHaveFocus()
   })
 })
