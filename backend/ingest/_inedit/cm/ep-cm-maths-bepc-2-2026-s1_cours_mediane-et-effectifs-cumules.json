@@ -1,0 +1,112 @@
+{
+  "type": "cours",
+  "cours_id": "cours-effectifs-cumules-mediane-bepc",
+  "meta": {
+    "titre": "Effectifs cumulés et médiane d'une série statistique",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "statistiques",
+      "médiane",
+      "effectifs cumulés"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bepc-2-2026-s1-ex2-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La moyenne se laisse tirer par une valeur extrême, la médiane non : elle sépare les données en deux moitiés égales. Pour la trouver sur un tableau d'effectifs, on cumule d'abord les effectifs, puis on repère le rang du milieu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Effectif d'une valeur et effectif total d'une série statistique",
+        "Lecture d'un tableau d'effectifs à valeurs discrètes",
+        "Moyenne de deux nombres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Effectifs cumulés croissants et médiane",
+      "contenu_markdown": "L'effectif cumulé croissant d'une valeur est la somme des effectifs de cette valeur et de toutes les valeurs plus petites.\n\nLa médiane $M$ partage la série, rangée par ordre croissant, en deux groupes de même effectif. Si l'effectif total $N$ est impair, c'est la valeur de rang $\\dfrac{N+1}{2}$. Si $N$ est pair, c'est la moyenne des valeurs de rang $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$.",
+      "formule_principale": "N\\ \\text{impair} : M=x_{\\frac{N+1}{2}}\\qquad N\\ \\text{pair} : M=\\dfrac{x_{\\frac{N}{2}}+x_{\\frac{N}{2}+1}}{2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un professeur relève le nombre d'absences de 21 élèves sur un trimestre :\n\n| Nombre d'absences | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| Effectif | 5 | 6 | 4 | 4 | 2 |\n\nDéterminer la médiane de cette série.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les effectifs cumulés croissants",
+          "justification": "On additionne les effectifs de gauche à droite.",
+          "resultat_markdown": "Effectifs cumulés : 5, 11, 15, 19, 21"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer l'effectif total et sa parité",
+          "justification": "$N=21$ est impair : la médiane est la valeur de rang $\\dfrac{21+1}{2}=11$.",
+          "resultat_markdown": "Rang 11"
+        },
+        {
+          "numero": 3,
+          "action": "Lire la valeur de rang 11",
+          "justification": "Les 5 premiers élèves ont 0 absence (rangs 1 à 5), les 6 suivants ont 1 absence (rangs 6 à 11) : le rang 11 est atteint dans la colonne de la valeur 1.",
+          "resultat_markdown": "Médiane = 1 absence"
+        }
+      ],
+      "conclusion_markdown": "La médiane est de 1 absence : au moins la moitié des élèves ont 1 absence ou moins, et au moins la moitié ont 1 absence ou plus."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner le rang trouvé (par exemple 11) comme valeur de la médiane.",
+          "pourquoi_faux": "Un rang est une position dans la série rangée, alors que la médiane est une valeur de la série.",
+          "correction_markdown": "Après avoir trouvé le rang, relis la colonne des effectifs cumulés pour trouver la valeur correspondante."
+        },
+        {
+          "erreur_markdown": "Pour $N$ pair, ne prendre qu'une seule valeur au lieu de la moyenne de deux valeurs.",
+          "pourquoi_faux": "Quand $N$ est pair, aucune valeur ne coupe exactement la série en deux : il faut les valeurs de rang $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$.",
+          "correction_markdown": "Écris les deux rangs, lis les deux valeurs, puis calcule leur moyenne même si elles sont égales."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Valeurs : 1, 2, 3, 4 ; effectifs : 3, 5, 4, 2. Donner les effectifs cumulés croissants puis la médiane.",
+          "solution_markdown": "Effectifs cumulés : 3, 8, 12, 14. $N=14$ est pair : rangs 7 et 8. Les rangs 4 à 8 correspondent à la valeur 2, donc $M=\\dfrac{2+2}{2}=2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Valeurs : 10, 12, 14, 16 ; effectifs : 4, 6, 8, 2. Déterminer la médiane.",
+          "solution_markdown": "Effectifs cumulés : 4, 10, 18, 20. $N=20$ : rangs 10 et 11. Le rang 10 correspond à 12 et le rang 11 à 14, donc $M=\\dfrac{12+14}{2}=13$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Notes : 8, 10, 12, 15 ; effectifs : 2, 7, 9, 5. Déterminer la médiane, puis le pourcentage d'élèves ayant au plus 10, arrondi au dixième.",
+          "solution_markdown": "Effectifs cumulés : 2, 9, 18, 23. $N=23$ est impair : rang 12, atteint dans la colonne 12, donc $M=12$. Au plus 10 : $\\dfrac{9}{23}\\approx0{,}391$, soit environ 39,1 %."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'effectif cumulé croissant s'obtient en additionnant les effectifs de gauche à droite.",
+        "$N$ impair : médiane de rang $\\dfrac{N+1}{2}$ ; $N$ pair : moyenne des valeurs de rang $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$.",
+        "Un rang n'est pas une valeur : relis toujours le tableau pour passer de l'un à l'autre.",
+        "La médiane est peu sensible aux valeurs extrêmes, contrairement à la moyenne."
+      ]
+    }
+  ]
+}
