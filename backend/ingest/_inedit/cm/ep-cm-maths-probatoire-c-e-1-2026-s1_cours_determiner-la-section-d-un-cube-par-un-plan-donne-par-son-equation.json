@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-determiner-la-section-d-un-cube-par-un-plan-donne--mpce1",
+  "meta": {
+    "titre": "Déterminer la section d'un cube par un plan donné par son équation",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Géométrie dans l'espace",
+    "duree_estimee_min": 25,
+    "tags": [
+      "géométrie dans l'espace",
+      "cube"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex4-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un plan qui traverse un cube y découpe un polygone : triangle, quadrilatère, pentagone ou hexagone. Pour savoir lequel, inutile de dessiner d'abord : il suffit de savoir de quel côté du plan se trouve chacun des huit sommets. Huit petits calculs de signe remplacent le tâtonnement sur la figure."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Coordonnées des sommets d'un cube dans un repère orthonormé lié à ses arêtes",
+        "Équation cartésienne d'un plan",
+        "Coordonnées du milieu d'un segment",
+        "Distance entre deux points de l'espace"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les signes aux sommets désignent les arêtes coupées",
+      "contenu_markdown": "Soit $(P)$ le plan d'équation $ax+by+cz+d=0$ et $h(x,y,z)=ax+by+cz+d$. Le signe de $h$ indique de quel côté du plan se trouve un point.\n\nLe plan coupe une arête $[SS']$ exactement lorsque $h(S)$ et $h(S')$ sont de signes strictement opposés. Le point d'intersection est $S+t\\,\\overrightarrow{SS'}$, avec $t=\\dfrac{h(S)}{h(S)-h(S')}$ : c'est le milieu de l'arête lorsque $h(S')=-h(S)$. Si $h(S)=0$, le sommet $S$ appartient au plan.\n\nLa section est le polygone qui joint ces points. Deux points consécutifs appartiennent à une même face du cube, ce qui donne l'ordre des sommets du polygone.",
+      "formule_principale": "t=\\dfrac{h(S)}{h(S)-h(S')}\\quad\\text{avec}\\quad h(x,y,z)=ax+by+cz+d"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le cube $ABCDEFGH$ d'arête $2$ est rapporté au repère $\\left(A\\,;\\vec\\imath,\\vec\\jmath,\\vec k\\right)$ tel que $\\overrightarrow{AB}=2\\vec\\imath$, $\\overrightarrow{AD}=2\\vec\\jmath$ et $\\overrightarrow{AE}=2\\vec k$. Déterminer la section du cube par le plan $(Q)$ d'équation $x+y+z-1=0$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $h(x,y,z)=x+y+z-1$ aux huit sommets",
+          "justification": "Les signes de $h$ disent de quel côté du plan se trouve chaque sommet.",
+          "resultat_markdown": "$h(A)=-1$ ; $h(B)=h(D)=h(E)=1$ ; $h(C)=h(F)=h(H)=3$ ; $h(G)=5$"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les arêtes dont les extrémités ont des signes opposés",
+          "justification": "Seul $A$ est du côté négatif, donc seules les arêtes issues de $A$ sont coupées.",
+          "resultat_markdown": "$[AB]$, $[AD]$ et $[AE]$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les points d'intersection",
+          "justification": "Pour $[AB]$ : $t=\\dfrac{h(A)}{h(A)-h(B)}=\\dfrac{-1}{-2}=\\dfrac12$, c'est le milieu. Même résultat pour $[AD]$ et $[AE]$.",
+          "resultat_markdown": "$(1\\,;0\\,;0)$, $(0\\,;1\\,;0)$ et $(0\\,;0\\,;1)$"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier la nature de la section",
+          "justification": "On calcule les trois côtés du triangle formé par ces points.",
+          "resultat_markdown": "Chaque côté vaut $\\sqrt{1+1+0}=\\sqrt2$"
+        }
+      ],
+      "conclusion_markdown": "La section est un triangle équilatéral de côté $\\sqrt2$, dont les sommets sont les milieux des arêtes issues de $A$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Chercher les points d'intersection arête par arête sans avoir calculé les signes d'abord : on oublie des arêtes ou on en invente.",
+        "Oublier qu'un sommet peut appartenir au plan ($h=0$) : la section passe alors par ce sommet, et le polygone a moins de côtés que prévu.",
+        "Placer le point d'intersection au milieu de l'arête sans avoir vérifié que $h(S')=-h(S)$ : quand les valeurs de $h$ sont différentes en valeur absolue, le point est plus près de l'extrémité où $|h|$ est le plus petit.",
+        "Dire que la section est un hexagone parce que le plan passe par le centre du cube : tout dépend de l'orientation du plan, un plan par le centre peut donner un rectangle."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Cube d'arête $4$ rapporté au repère $\\left(A\\,;\\vec\\imath,\\vec\\jmath,\\vec k\\right)$ de même type que dans l'exemple, plan $x+y+z-2=0$. Réponse : $h(A)=-2$ et $h=2$ en $B$, $D$, $E$ ; la section est le triangle des milieux de $[AB]$, $[AD]$, $[AE]$, équilatéral de côté $2\\sqrt2$.",
+        "Cube d'arête $2$, plan $x+y-2=0$. Réponse : les sommets $B$, $D$, $F$, $H$ vérifient $h=0$ ; la section est le rectangle $BDHF$, de côtés $2\\sqrt2$ et $2$, d'aire $4\\sqrt2$.",
+        "Cube d'arête $2$, plan $x+2y+3z-3=0$. Réponse : $h(A)=-3$, $h(B)=-1$, tous les autres sommets sont positifs ; les arêtes coupées sont $[AD]$, $[AE]$, $[BC]$ et $[BF]$, aux points $\\left(0\\,;\\dfrac32\\,;0\\right)$, $(0\\,;0\\,;1)$, $\\left(2\\,;\\dfrac12\\,;0\\right)$ et $\\left(2\\,;0\\,;\\dfrac13\\right)$ : la section est un quadrilatère."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On calcule $h=ax+by+cz+d$ aux huit sommets : les signes disent de quel côté du plan se trouve chacun.",
+        "Le plan coupe exactement les arêtes dont les deux extrémités ont des signes opposés, au point $S+t\\,\\overrightarrow{SS'}$ avec $t=\\dfrac{h(S)}{h(S)-h(S')}$ ; un sommet où $h=0$ appartient au plan.",
+        "La section est le polygone qui relie ces points dans l'ordre des faces traversées ; on identifie sa nature avec les longueurs de ses côtés."
+      ]
+    }
+  ]
+}

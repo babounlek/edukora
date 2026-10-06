@@ -1,0 +1,944 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-maths-probatoire-c-e-1-2026-s1",
+  "titre": "Mathématiques Probatoire C et E – Épreuve inédite n°1",
+  "blueprint_external_id": "bp-cm-maths-probatoire-c-e-1",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "3",
+      "enonce_intro_markdown": "Un pisciculteur de Mbalmayo élève des tilapias dans un bassin. Le $1^{\\text{er}}$ janvier 2026, le bassin contient $400$ poissons. Chaque année, il vend $20\\,\\%$ des poissons présents, puis il remet $150$ alevins dans le bassin. On note $u_n$ le nombre de poissons dans le bassin au $1^{\\text{er}}$ janvier de l'année $2026+n$ : ainsi $u_0=400$ et $u_{n+1}=0{,}8\\,u_n+150$ pour tout entier naturel $n$.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Calculer $u_1$ et $u_2$. La suite $(u_n)$ est-elle arithmétique ? Est-elle géométrique ? Justifier. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour calculer les premiers termes d'une suite définie par récurrence, on remplace $n$ par $0$, puis par $1$, et ainsi de suite, en réutilisant à chaque fois le terme obtenu. Une suite est arithmétique si les différences de termes consécutifs sont toutes égales, géométrique si leurs quotients le sont : deux différences distinctes, ou deux quotients distincts, suffisent à écarter chaque cas.\n\nOn applique la relation avec $n=0$ puis $n=1$ : $u_1=0{,}8\\times400+150=320+150=470$ et $u_2=0{,}8\\times470+150=376+150=526$.\n\n**Arithmétique ?** $u_1-u_0=70$ et $u_2-u_1=56$. Ces différences ne sont pas égales : la suite $(u_n)$ n'est pas arithmétique.\n\n**Géométrique ?** $\\dfrac{u_1}{u_0}=\\dfrac{470}{400}=1{,}175$ et $\\dfrac{u_2}{u_1}=\\dfrac{526}{470}\\approx1{,}119$. Ces quotients ne sont pas égaux : la suite n'est pas géométrique non plus.\n\n### Piège à éviter\nCroire que $(u_n)$ est géométrique de raison $0{,}8$ à cause de la relation $u_{n+1}=0{,}8\\,u_n+150$ : le terme $+150$ empêche le quotient $\\dfrac{u_{n+1}}{u_n}$ d'être constant.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule u1 = 470 et u2 = 526 avec la relation de récurrence",
+              "points": 0.25
+            },
+            {
+              "libelle": "Compare les différences 70 et 56 et conclut que (u_n) n'est pas arithmétique",
+              "points": 0.25
+            },
+            {
+              "libelle": "Compare les quotients 1,175 et environ 1,119 et conclut que (u_n) n'est pas géométrique",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite arithmétique",
+            "suite géométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex1-q1-0",
+              "competence": "Calculer les premiers termes d'une suite définie par récurrence",
+              "contenu_markdown": "Pour calculer les premiers termes d'une suite définie par récurrence, on remplace $n$ par $0$, puis par $1$, et ainsi de suite, en réutilisant à chaque fois le terme obtenu. Une suite est arithmétique si les différences de termes consécutifs sont toutes égales, géométrique si leurs quotients le sont : deux différences distinctes, ou deux quotients distincts, suffisent à écarter chaque cas.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "On pose $v_n=u_n-750$ pour tout entier naturel $n$. Montrer que $(v_n)$ est une suite géométrique, dont on précisera la raison et le premier terme. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une suite auxiliaire $(v_n)$ est géométrique, on exprime $v_{n+1}$ à l'aide de la relation de récurrence de $(u_n)$, puis on remplace $u_n$ par $v_n$ plus la constante : on doit obtenir $v_{n+1}=q\\,v_n$ avec $q$ indépendant de $n$. Le premier terme se calcule à part, avec $v_0$.\n\nPour tout entier naturel $n$ :\n\n$$\nv_{n+1}=u_{n+1}-750=0{,}8\\,u_n+150-750=0{,}8\\,u_n-600=0{,}8\\,(u_n-750)=0{,}8\\,v_n\n$$\n\nDonc $(v_n)$ est une suite géométrique de raison $q=0{,}8$, de premier terme $v_0=u_0-750=400-750=-350$.\n\n### Conseil\nLe nombre $750$ est la solution de l'équation $\\ell=0{,}8\\,\\ell+150$. Quand l'énoncé ne te donne pas la suite auxiliaire, c'est ainsi qu'on la trouve.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit v_{n+1} = u_{n+1} - 750 en utilisant la récurrence",
+              "points": 0.25
+            },
+            {
+              "libelle": "Factorise 0,8 u_n - 600 = 0,8 (u_n - 750) et conclut v_{n+1} = 0,8 v_n",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne la raison 0,8 et le premier terme v_0 = -350",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite géométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex1-q2-0",
+              "competence": "Démontrer qu'une suite auxiliaire est géométrique",
+              "contenu_markdown": "Pour montrer qu'une suite auxiliaire $(v_n)$ est géométrique, on exprime $v_{n+1}$ à l'aide de la relation de récurrence de $(u_n)$, puis on remplace $u_n$ par $v_n$ plus la constante : on doit obtenir $v_{n+1}=q\\,v_n$ avec $q$ indépendant de $n$. Le premier terme se calcule à part, avec $v_0$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Exprimer $v_n$, puis $u_n$, en fonction de $n$. Calculer le nombre de poissons au $1^{\\text{er}}$ janvier 2031, puis la limite de $(u_n)$, et interpréter ce résultat. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite géométrique de raison $q$ et de premier terme $v_0$ est $v_n=v_0\\,q^n$ ; on revient à la suite initiale en isolant $u_n$ comme somme de $v_n$ et de la constante utilisée pour définir la suite auxiliaire. Si $-1<q<1$, alors $q^n$ tend vers $0$ quand $n$ tend vers $+\\infty$.\n\nComme $(v_n)$ est géométrique de raison $0{,}8$ et de premier terme $-350$, on a $v_n=-350\\times0{,}8^n$. Puisque $u_n=v_n+750$ :\n\n$$\nu_n=750-350\\times0{,}8^n\n$$\n\nLe $1^{\\text{er}}$ janvier 2031 correspond à $n=5$ : $0{,}8^5=0{,}32768$, donc $u_5=750-350\\times0{,}32768=750-114{,}688\\approx635$. Le bassin contient environ $635$ poissons.\n\nComme $0<0{,}8<1$, $0{,}8^n\\to0$, donc $\\displaystyle\\lim_{n\\to+\\infty}u_n=750$. Le nombre de poissons se rapproche de $750$ sans jamais l'atteindre, puisque $350\\times0{,}8^n>0$ : le bassin se stabilise autour de $750$ poissons.\n\n### Piège à éviter\nDonner $u_n=-350\\times0{,}8^n$ : c'est l'expression de $v_n$. Pour revenir à $u_n$, n'oublie pas d'ajouter $750$.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit v_n = -350 x 0,8^n",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit u_n = 750 - 350 x 0,8^n et trouve u_5 d'environ 635",
+              "points": 0.25
+            },
+            {
+              "libelle": "Justifie la limite 750 par 0 < 0,8 < 1 et l'interprète",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite géométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex1-q3-0",
+              "competence": "Terme général d'une suite géométrique et retour à la suite initiale",
+              "contenu_markdown": "Le terme général d'une suite géométrique de raison $q$ et de premier terme $v_0$ est $v_n=v_0\\,q^n$ ; on revient à la suite initiale en isolant $u_n$ comme somme de $v_n$ et de la constante utilisée pour définir la suite auxiliaire. Si $-1<q<1$, alors $q^n$ tend vers $0$ quand $n$ tend vers $+\\infty$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Pour nourrir les poissons, le pisciculteur dépense $120\\,000$ F en 2026. Cette dépense augmente ensuite de $15\\,000$ F chaque année. On note $c_n$ la dépense, en francs, de l'année $2026+n$. Exprimer $c_n$ en fonction de $n$, puis calculer la dépense totale de 2026 à 2035 inclus. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite arithmétique de premier terme $c_0$ et de raison $r$ est $c_n=c_0+n\\,r$, et la somme de ses $p$ premiers termes vaut $p\\times\\dfrac{\\text{premier terme}+\\text{dernier terme}}{2}$ ; il faut donc compter avec soin le nombre de termes.\n\nLa dépense augmente d'un montant fixe : $(c_n)$ est arithmétique de raison $r=15\\,000$ et de premier terme $c_0=120\\,000$, donc $c_n=120\\,000+15\\,000\\,n$.\n\nDe 2026 à 2035 inclus, il y a $10$ années : $n$ varie de $0$ à $9$. Le dernier terme est $c_9=120\\,000+15\\,000\\times9=255\\,000$. La dépense totale vaut\n\n$$\nS=10\\times\\dfrac{c_0+c_9}{2}=10\\times\\dfrac{120\\,000+255\\,000}{2}=1\\,875\\,000\\text{ F}\n$$\n\n### Piège à éviter\nCompter $9$ ou $11$ termes. De 2026 à 2035 inclus, il y a $10$ années : l'indice va de $0$ à $9$, pas de $1$ à $10$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Identifie une suite arithmétique de raison 15 000 et écrit c_n = 120 000 + 15 000 n",
+              "points": 0.25
+            },
+            {
+              "libelle": "Compte 10 termes (n de 0 à 9) et calcule c_9 = 255 000",
+              "points": 0.25
+            },
+            {
+              "libelle": "Applique la formule de la somme et obtient 1 875 000 F",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite arithmétique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex1-q4-0",
+              "competence": "Somme des termes d'une suite arithmétique",
+              "contenu_markdown": "Le terme général d'une suite arithmétique de premier terme $c_0$ et de raison $r$ est $c_n=c_0+n\\,r$, et la somme de ses $p$ premiers termes vaut $p\\times\\dfrac{\\text{premier terme}+\\text{dernier terme}}{2}$ ; il faut donc compter avec soin le nombre de termes.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "3,5",
+      "enonce_intro_markdown": "Trois villages $A$, $B$ et $C$ du département du Ndé comptent respectivement $3\\,000$, $1\\,000$ et $2\\,000$ habitants. Le plan est muni d'un repère orthonormé $(O\\,;\\vec{\\imath},\\vec{\\jmath})$ d'unité $1$ km, dans lequel $A(-2\\,;1)$, $B(4\\,;-3)$ et $C(1\\,;3)$. Pour implanter un forage en un point $M$, on étudie la quantité $f(M)=3MA^2+MB^2+2MC^2$, où chaque carré de distance est pondéré par la population, en milliers d'habitants, du village concerné. On note $G$ le barycentre du système de points pondérés $\\{(A\\,;3)\\,;(B\\,;1)\\,;(C\\,;2)\\}$.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Justifier l'existence de $G$ et calculer ses coordonnées. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe barycentre d'un système de points pondérés existe lorsque la somme des coefficients est non nulle ; ses coordonnées sont alors les moyennes pondérées $x_G=\\dfrac{\\sum\\alpha_ix_i}{\\sum\\alpha_i}$ et $y_G=\\dfrac{\\sum\\alpha_iy_i}{\\sum\\alpha_i}$.\n\nLa somme des coefficients vaut $3+1+2=6\\neq0$ : le barycentre $G$ existe. Ses coordonnées sont\n\n$$\nx_G=\\dfrac{3\\times(-2)+1\\times4+2\\times1}{6}=\\dfrac06=0\n\\qquad\ny_G=\\dfrac{3\\times1+1\\times(-3)+2\\times3}{6}=\\dfrac66=1\n$$\n\nDonc $G(0\\,;1)$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Justifie l'existence de G : 3 + 1 + 2 = 6, non nul",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule x_G = 0 et y_G = 1",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "barycentre"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex2-q1-0",
+              "competence": "Calculer les coordonnées d'un barycentre de trois points pondérés",
+              "contenu_markdown": "Le barycentre d'un système de points pondérés existe lorsque la somme des coefficients est non nulle ; ses coordonnées sont alors les moyennes pondérées $x_G=\\dfrac{\\sum\\alpha_ix_i}{\\sum\\alpha_i}$ et $y_G=\\dfrac{\\sum\\alpha_iy_i}{\\sum\\alpha_i}$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Montrer que, pour tout point $M$ du plan, $3\\overrightarrow{MA}+\\overrightarrow{MB}+2\\overrightarrow{MC}=6\\overrightarrow{MG}$. En déduire l'ensemble $(\\Sigma)$ des points $M$ tels que $\\left\\|3\\overrightarrow{MA}+\\overrightarrow{MB}+2\\overrightarrow{MC}\\right\\|=15$. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour déterminer un ensemble de points défini par la norme d'une combinaison vectorielle, on réduit la somme pondérée à $\\left(\\sum\\alpha_i\\right)\\overrightarrow{MG}$ grâce au barycentre $G$, puis on traduit la norme : $\\left\\|k\\,\\overrightarrow{MG}\\right\\|=r$ équivaut à $MG=\\dfrac{r}{|k|}$, c'est-à-dire un cercle de centre $G$.\n\n**Réduction.** Pour tout point $M$, la relation de Chasles donne\n\n$$\n3\\overrightarrow{MA}+\\overrightarrow{MB}+2\\overrightarrow{MC}=3\\left(\\overrightarrow{MG}+\\overrightarrow{GA}\\right)+\\left(\\overrightarrow{MG}+\\overrightarrow{GB}\\right)+2\\left(\\overrightarrow{MG}+\\overrightarrow{GC}\\right)=6\\overrightarrow{MG}+\\left(3\\overrightarrow{GA}+\\overrightarrow{GB}+2\\overrightarrow{GC}\\right)\n$$\n\nComme $G$ est le barycentre de $\\{(A\\,;3)\\,;(B\\,;1)\\,;(C\\,;2)\\}$, on a $3\\overrightarrow{GA}+\\overrightarrow{GB}+2\\overrightarrow{GC}=\\vec0$. Donc $3\\overrightarrow{MA}+\\overrightarrow{MB}+2\\overrightarrow{MC}=6\\overrightarrow{MG}$.\n\n**Ensemble $(\\Sigma)$.** $\\left\\|6\\overrightarrow{MG}\\right\\|=15\\iff6\\,MG=15\\iff MG=\\dfrac52$. L'ensemble $(\\Sigma)$ est le cercle de centre $G(0\\,;1)$ et de rayon $2{,}5$ km.\n\n### Piège à éviter\nÉcrire $MG=15$ : la norme de $6\\overrightarrow{MG}$ vaut $6\\,MG$, il faut diviser $15$ par $6$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Introduit G avec la relation de Chasles et utilise 3GA + GB + 2GC = 0",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut que (Sigma) est le cercle de centre G et de rayon 5/2",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "barycentre",
+            "lieu géométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex2-q2-0",
+              "competence": "Déterminer l'ensemble des points vérifiant une norme de combinaison vectorielle via le barycentre",
+              "contenu_markdown": "Pour déterminer un ensemble de points défini par la norme d'une combinaison vectorielle, on réduit la somme pondérée à $\\left(\\sum\\alpha_i\\right)\\overrightarrow{MG}$ grâce au barycentre $G$, puis on traduit la norme : $\\left\\|k\\,\\overrightarrow{MG}\\right\\|=r$ équivaut à $MG=\\dfrac{r}{|k|}$, c'est-à-dire un cercle de centre $G$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Calculer $GA^2$, $GB^2$ et $GC^2$, puis montrer que, pour tout point $M$, $f(M)=6\\,MG^2+54$. En déduire où le forage doit être implanté pour que $f(M)$ soit minimale, et la valeur de ce minimum. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nL'identité de Leibniz affirme que si $G$ est le barycentre de $\\{(A_i\\,;\\alpha_i)\\}$ avec $\\sum\\alpha_i\\neq0$, alors $\\sum\\alpha_iMA_i^2=\\left(\\sum\\alpha_i\\right)MG^2+\\sum\\alpha_iGA_i^2$. On la démontre en écrivant $\\overrightarrow{MA_i}=\\overrightarrow{MG}+\\overrightarrow{GA_i}$ et en développant le carré scalaire.\n\n**Distances au barycentre.** Avec $G(0\\,;1)$ : $GA^2=(-2)^2+0^2=4$, $GB^2=4^2+(-4)^2=32$ et $GC^2=1^2+2^2=5$.\n\n**Réduction de $f(M)$.** Pour tout point $M$, $MA^2=\\left(\\overrightarrow{MG}+\\overrightarrow{GA}\\right)^2=MG^2+2\\,\\overrightarrow{MG}\\cdot\\overrightarrow{GA}+GA^2$, et de même pour $B$ et $C$. En pondérant par $3$, $1$ et $2$ :\n\n$$\nf(M)=6\\,MG^2+2\\,\\overrightarrow{MG}\\cdot\\left(3\\overrightarrow{GA}+\\overrightarrow{GB}+2\\overrightarrow{GC}\\right)+\\left(3GA^2+GB^2+2GC^2\\right)\n$$\n\nLe vecteur $3\\overrightarrow{GA}+\\overrightarrow{GB}+2\\overrightarrow{GC}$ est nul et $3\\times4+32+2\\times5=54$. Donc $f(M)=6\\,MG^2+54$.\n\n**Minimum.** Comme $6\\,MG^2\\ge0$, on a $f(M)\\ge54$, avec égalité si et seulement si $M=G$. Le forage doit être implanté en $G(0\\,;1)$, et la valeur minimale de $f$ est $54$.\n\n### Piège à éviter\nOublier le facteur $6$ devant $MG^2$ : c'est la somme des coefficients $3+1+2$, et non l'un d'eux.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule GA² = 4, GB² = 32 et GC² = 5",
+              "points": 0.25
+            },
+            {
+              "libelle": "Développe avec Chasles et annule le terme 2 MG.(3GA + GB + 2GC)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut f(M) = 6 MG² + 54, puis le minimum 54 atteint en G",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "produit scalaire",
+            "barycentre"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex2-q3-0",
+              "competence": "Identité de Leibniz pour une somme pondérée de carrés de distances",
+              "contenu_markdown": "L'identité de Leibniz affirme que si $G$ est le barycentre de $\\{(A_i\\,;\\alpha_i)\\}$ avec $\\sum\\alpha_i\\neq0$, alors $\\sum\\alpha_iMA_i^2=\\left(\\sum\\alpha_i\\right)MG^2+\\sum\\alpha_iGA_i^2$. On la démontre en écrivant $\\overrightarrow{MA_i}=\\overrightarrow{MG}+\\overrightarrow{GA_i}$ et en développant le carré scalaire.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Déterminer l'ensemble $(\\Gamma)$ des points $M$ tels que $f(M)=78$, puis vérifier que $A$ appartient à $(\\Gamma)$. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour déterminer un ensemble défini par une somme pondérée de carrés de distances égale à $k$, on la réduit avec l'identité de Leibniz sous la forme $\\left(\\sum\\alpha_i\\right)MG^2+c=k$, puis on isole $MG^2$ : si le second membre est strictement positif, l'ensemble est un cercle de centre $G$ ; s'il est nul, c'est le point $G$ ; s'il est négatif, l'ensemble est vide.\n\nD'après la question 3, $f(M)=78\\iff6\\,MG^2+54=78\\iff MG^2=4\\iff MG=2$. L'ensemble $(\\Gamma)$ est le cercle de centre $G(0\\,;1)$ et de rayon $2$ km.\n\nOn a $GA^2=4$, donc $GA=2$ et $A\\in(\\Gamma)$. Vérification par le calcul direct : $f(A)=3\\times0+AB^2+2\\,AC^2=52+2\\times13=78$.\n\n### Conseil\nLe calcul direct de $f(A)$ ne prend qu'une ligne et protège d'une erreur de signe dans la constante $54$ : fais-le toujours quand l'énoncé te demande de vérifier qu'un point appartient à un lieu.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit 6 MG² + 54 = 78 et en déduit MG² = 4",
+              "points": 0.25
+            },
+            {
+              "libelle": "Reconnaît le cercle de centre G(0 ; 1) et de rayon 2",
+              "points": 0.25
+            },
+            {
+              "libelle": "Montre que A appartient à (Gamma) : GA = 2, ou f(A) = 78 par le calcul direct",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "lieu géométrique",
+            "produit scalaire"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex2-q4-0",
+              "competence": "Lieu géométrique défini par une somme pondérée de carrés de distances",
+              "contenu_markdown": "Pour déterminer un ensemble défini par une somme pondérée de carrés de distances égale à $k$, on la réduit avec l'identité de Leibniz sous la forme $\\left(\\sum\\alpha_i\\right)MG^2+c=k$, puis on isole $MG^2$ : si le second membre est strictement positif, l'ensemble est un cercle de centre $G$ ; s'il est nul, c'est le point $G$ ; s'il est négatif, l'ensemble est vide.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Soit $(\\mathcal{C})$ l'ensemble des points $M$ tels que $\\overrightarrow{MB}\\cdot\\overrightarrow{MC}=0$. Reconnaître $(\\mathcal{C})$ et en donner une équation cartésienne, puis préciser si $G$ est à l'intérieur ou à l'extérieur de $(\\mathcal{C})$. Construire $(\\Gamma)$ et $(\\mathcal{C})$ dans le repère. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nL'ensemble des points $M$ tels que $\\overrightarrow{MB}\\cdot\\overrightarrow{MC}=0$ est le cercle de diamètre $[BC]$ : le produit scalaire est nul lorsque les vecteurs sont orthogonaux, ou lorsque $M$ est confondu avec $B$ ou $C$. En coordonnées, on développe $(x-x_B)(x-x_C)+(y-y_B)(y-y_C)=0$ pour obtenir son équation.\n\n**Nature de $(\\mathcal{C})$.** C'est le cercle de diamètre $[BC]$. Son centre est le milieu $I\\left(\\dfrac52\\,;0\\right)$ de $[BC]$ et son rayon vaut $\\dfrac{BC}{2}=\\dfrac{\\sqrt{45}}{2}=\\dfrac{3\\sqrt5}{2}\\approx3{,}35$ km, car $BC^2=3^2+6^2=45$.\n\n**Équation.** Pour $M(x\\,;y)$, on a $\\overrightarrow{MB}\\,(4-x\\,;-3-y)$ et $\\overrightarrow{MC}\\,(1-x\\,;3-y)$, donc\n\n$$\n\\overrightarrow{MB}\\cdot\\overrightarrow{MC}=(4-x)(1-x)+(-3-y)(3-y)=x^2-5x+4+y^2-9=x^2+y^2-5x-5\n$$\n\nUne équation de $(\\mathcal{C})$ est donc $x^2+y^2-5x-5=0$, soit $\\left(x-\\dfrac52\\right)^2+y^2=\\dfrac{45}{4}$.\n\n**Position de $G$.** $IG^2=\\left(\\dfrac52\\right)^2+1^2=\\dfrac{29}{4}<\\dfrac{45}{4}$ : le point $G$ est à l'intérieur de $(\\mathcal{C})$. L'équation donne le même résultat : pour $G(0\\,;1)$, $0+1-0-5=-4<0$.\n\n**Construction.** On place $A$, $B$, $C$ et $G$, puis on trace $(\\Gamma)$, de centre $G$ et de rayon $2$ (il passe par $A$), et $(\\mathcal{C})$, de centre $I$ et de rayon environ $3{,}35$ (il passe par $B$ et $C$).\n\n<svg viewBox='0 0 560 470' role='img' aria-labelledby='figfac46dedt figfac46dedd' style='width:100%;max-width:560px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='figfac46dedt'>Triangle ABC, barycentre G, cercle de centre G passant par A et cercle de diamètre BC</title><desc id='figfac46dedd'>Dans un repère orthonormé d'unité 1 km, le triangle de sommets A(-2 ; 1), B(4 ; -3) et C(1 ; 3), le barycentre G(0 ; 1) du système (A ; 3), (B ; 1), (C ; 2), le cercle (Γ) de centre G et de rayon 2 qui passe par A, et le cercle (C) de diamètre BC, de centre (2,5 ; 0) et de rayon 3 racine de 5 sur 2, qui contient B et C et dont l'intérieur contient G.</desc><defs><clipPath id='clipfac46ded_1'><rect x='40' y='22' width='480' height='400'/></clipPath></defs><line x1='40' y1='22' x2='40' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='80' y1='22' x2='80' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='120' y1='22' x2='120' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='160' y1='22' x2='160' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='200' y1='22' x2='200' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='240' y1='22' x2='240' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='280' y1='22' x2='280' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='320' y1='22' x2='320' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='360' y1='22' x2='360' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='400' y1='22' x2='400' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='440' y1='22' x2='440' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='480' y1='22' x2='480' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='520' y1='22' x2='520' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='422' x2='520' y2='422' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='382' x2='520' y2='382' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='342' x2='520' y2='342' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='302' x2='520' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='262' x2='520' y2='262' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='222' x2='520' y2='222' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='182' x2='520' y2='182' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='142' x2='520' y2='142' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='102' x2='520' y2='102' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='62' x2='520' y2='62' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='22' x2='520' y2='22' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='219' x2='40' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='80' y1='219' x2='80' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='120' y1='219' x2='120' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='160' y1='219' x2='160' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='200' y1='219' x2='200' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='240' y1='219' x2='240' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='280' y1='219' x2='280' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='320' y1='219' x2='320' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='360' y1='219' x2='360' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='400' y1='219' x2='400' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='440' y1='219' x2='440' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='480' y1='219' x2='480' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='520' y1='219' x2='520' y2='225' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='422' x2='203' y2='422' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='382' x2='203' y2='382' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='342' x2='203' y2='342' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='302' x2='203' y2='302' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='262' x2='203' y2='262' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='222' x2='203' y2='222' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='182' x2='203' y2='182' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='142' x2='203' y2='142' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='102' x2='203' y2='102' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='62' x2='203' y2='62' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='197' y1='22' x2='203' y2='22' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='40' y1='222' x2='526' y2='222' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='526,222 517,226.1 517,217.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='200' y1='422' x2='200' y2='16' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='200,16 204.1,25 195.9,25' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='120' y1='182' x2='360' y2='342' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.4' stroke-linecap='round'/><line x1='360' y1='342' x2='240' y2='102' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.4' stroke-linecap='round'/><line x1='240' y1='102' x2='120' y2='182' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.4' stroke-linecap='round'/><path d='M165.8,222.0 A134.2,134.2 0 1 0 434.2,222.0 A134.2,134.2 0 1 0 165.8,222.0 Z' fill='none' stroke='var(--info,#2a6fba)' stroke-width='2.4' stroke-dasharray='7 5' stroke-linejoin='round'/><path d='M120.0,182.0 A80.0,80.0 0 1 0 280.0,182.0 A80.0,80.0 0 1 0 120.0,182.0 Z' fill='none' stroke='var(--primary,#0f6b4f)' stroke-width='2.8' stroke-linejoin='round'/><circle cx='120' cy='182' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='360' cy='342' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='240' cy='102' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='200' cy='182' r='3.5' fill='var(--success,#1a7a36)' stroke='var(--success,#1a7a36)' stroke-width='1'/><text x='40' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−4</text><text x='80' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−3</text><text x='120' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='160' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='240' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='280' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='320' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='360' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='400' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='440' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='480' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='520' y='239' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='193' y='426' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−5</text><text x='193' y='386' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−4</text><text x='193' y='346' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−3</text><text x='193' y='306' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='193' y='266' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='193' y='186' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='193' y='146' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='193' y='106' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='193' y='66' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='193' y='26' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='193' y='238' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='524' y='213' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='208' y='12' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='112' y='174' font-size='13' text-anchor='end' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='368' y='358' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='248' y='94' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='208' y='200' font-size='13' text-anchor='start' fill='var(--success,#1a7a36)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>G</text><text x='130' y='120' font-size='14' text-anchor='middle' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(Γ)</text><text x='260' y='376' font-size='14' text-anchor='middle' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(C)</text><text x='280' y='462' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure : le cercle (Γ) de centre G et le cercle (C) de diamètre [BC] (1 carreau = 1 km)</text></svg>\n\n### Conseil\nPour situer un point par rapport à un cercle, remplace ses coordonnées dans le membre de gauche de l'équation $x^2+y^2-5x-5=0$ : un résultat négatif signifie que le point est à l'intérieur, un résultat positif qu'il est à l'extérieur.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Reconnaît le cercle de diamètre [BC] de centre I(5/2 ; 0)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Développe le produit scalaire et obtient x² + y² - 5x - 5 = 0",
+              "points": 0.25
+            },
+            {
+              "libelle": "Compare IG² = 29/4 au carré du rayon 45/4 et conclut que G est à l'intérieur",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trace les deux cercles avec les bons centres et rayons, et place A, B, C et G",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "produit scalaire",
+            "lieu géométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex2-q5-0",
+              "competence": "Reconnaître le cercle de diamètre [AB] à partir d'un produit scalaire nul",
+              "contenu_markdown": "L'ensemble des points $M$ tels que $\\overrightarrow{MB}\\cdot\\overrightarrow{MC}=0$ est le cercle de diamètre $[BC]$ : le produit scalaire est nul lorsque les vecteurs sont orthogonaux, ou lorsque $M$ est confondu avec $B$ ou $C$. En coordonnées, on développe $(x-x_B)(x-x_C)+(y-y_B)(y-y_C)=0$ pour obtenir son équation.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "3",
+      "enonce_intro_markdown": "On considère l'équation $(E)$ d'inconnue réelle $x$ : $\\sqrt3\\cos x+\\sin x=1$.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Montrer que, pour tout réel $x$, $\\sqrt3\\cos x+\\sin x=2\\cos\\left(x-\\dfrac\\pi6\\right)$. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour transformer $p\\cos x+q\\sin x$ en $a\\cos(x-\\varphi)$, on pose $a=\\sqrt{p^2+q^2}$, on factorise $a$, puis on repère l'angle $\\varphi$ tel que $\\cos\\varphi=\\dfrac pa$ et $\\sin\\varphi=\\dfrac qa$ ; la formule d'addition $\\cos(x-\\varphi)=\\cos x\\cos\\varphi+\\sin x\\sin\\varphi$ donne le résultat.\n\nOn développe le second membre avec la formule d'addition. Pour tout réel $x$ :\n\n$$\n2\\cos\\left(x-\\dfrac\\pi6\\right)=2\\left(\\cos x\\cos\\dfrac\\pi6+\\sin x\\sin\\dfrac\\pi6\\right)=2\\left(\\dfrac{\\sqrt3}{2}\\cos x+\\dfrac12\\sin x\\right)=\\sqrt3\\cos x+\\sin x\n$$\n\n### Conseil\nPour trouver une telle écriture quand on ne te la donne pas : $a=\\sqrt{\\left(\\sqrt3\\right)^2+1^2}=2$, puis $\\cos\\varphi=\\dfrac{\\sqrt3}{2}$ et $\\sin\\varphi=\\dfrac12$ donnent $\\varphi=\\dfrac\\pi6$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Applique la formule d'addition à cos(x - pi/6)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Utilise cos(pi/6) = racine de 3 sur 2 et sin(pi/6) = 1/2",
+              "points": 0.25
+            },
+            {
+              "libelle": "Multiplie par 2 et retrouve racine de 3 cos x + sin x",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "trigonométrie"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex3-q1-0",
+              "competence": "Transformer p cos x + q sin x en a cos(x − φ)",
+              "contenu_markdown": "Pour transformer $p\\cos x+q\\sin x$ en $a\\cos(x-\\varphi)$, on pose $a=\\sqrt{p^2+q^2}$, on factorise $a$, puis on repère l'angle $\\varphi$ tel que $\\cos\\varphi=\\dfrac pa$ et $\\sin\\varphi=\\dfrac qa$ ; la formule d'addition $\\cos(x-\\varphi)=\\cos x\\cos\\varphi+\\sin x\\sin\\varphi$ donne le résultat.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Résoudre dans $]-\\pi\\,;\\pi]$ l'équation $(E)$, puis placer sur le cercle trigonométrique les points images des solutions. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour résoudre $a\\cos x+b\\sin x=c$, on se ramène à $A\\cos(x-\\varphi)=c$, puis à une équation $\\cos u=\\cos v$ dont les solutions sont $u=v+2k\\pi$ ou $u=-v+2k\\pi$ avec $k\\in\\mathbb{Z}$ ; on ne garde ensuite que les valeurs situées dans l'intervalle demandé.\n\nGrâce à la question 1, $(E)\\iff2\\cos\\left(x-\\dfrac\\pi6\\right)=1\\iff\\cos\\left(x-\\dfrac\\pi6\\right)=\\dfrac12=\\cos\\dfrac\\pi3$. Il existe donc un entier $k$ tel que\n\n$$\nx-\\dfrac\\pi6=\\dfrac\\pi3+2k\\pi\\quad\\text{ou}\\quad x-\\dfrac\\pi6=-\\dfrac\\pi3+2k\\pi\n$$\n\nsoit $x=\\dfrac\\pi2+2k\\pi$ ou $x=-\\dfrac\\pi6+2k\\pi$. Dans $]-\\pi\\,;\\pi]$, la valeur $k=0$ donne $\\dfrac\\pi2$ et $-\\dfrac\\pi6$ ; pour $k=1$ ou $k=-1$, les valeurs sortent de l'intervalle. L'ensemble des solutions est $\\left\\{-\\dfrac\\pi6\\,;\\dfrac\\pi2\\right\\}$.\n\n**Placement.** Le point $M_1$, image de $\\dfrac\\pi2$, est le point $(0\\,;1)$ du cercle. Le point $M_2$, image de $-\\dfrac\\pi6$, est le point $\\left(\\dfrac{\\sqrt3}{2}\\,;-\\dfrac12\\right)$, situé sous l'axe des abscisses.\n\n<svg viewBox='0 0 430 400' role='img' aria-labelledby='figd5e79c8ct figd5e79c8cd' style='width:100%;max-width:430px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='figd5e79c8ct'>Cercle trigonométrique et images des solutions de l'équation</title><desc id='figd5e79c8cd'>Cercle de centre O et de rayon 1. Le point M1, image de pi sur 2, est tout en haut du cercle de coordonnées (0 ; 1). Le point M2, image de moins pi sur 6, est dans le quart inférieur droit, de coordonnées (racine de 3 sur 2 ; moins un demi).</desc><line x1='47' y1='190' x2='385' y2='190' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='385,190 376,194.1 376,185.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='215' y1='358' x2='215' y2='20' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='215,20 219.1,29 210.9,29' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='215' y1='190' x2='215' y2='50' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.3' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='215' y1='190' x2='336.2' y2='260' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.3' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='336.2' y1='260' x2='336.2' y2='190' stroke='var(--gold,#d9a21f)' stroke-width='1.4' stroke-dasharray='4 3' stroke-linecap='round'/><line x1='336.2' y1='260' x2='215' y2='260' stroke='var(--gold,#d9a21f)' stroke-width='1.4' stroke-dasharray='4 3' stroke-linecap='round'/><circle cx='215' cy='190' r='140' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='2'/><text x='383' y='181' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>cos</text><text x='223' y='26' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>sin</text><text x='208' y='207' font-size='13' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>O</text><text x='360' y='207' font-size='12' text-anchor='start' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='70' y='207' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='223' y='64' font-size='12' text-anchor='start' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='223' y='326' font-size='12' text-anchor='start' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='332.2' y='182' font-size='13' text-anchor='end' fill='var(--gold,#d9a21f)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>√3/2</text><text x='209' y='265' font-size='13' text-anchor='end' fill='var(--gold,#d9a21f)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1/2</text><circle cx='215' cy='50' r='4.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='336.2' cy='260' r='4.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='206' y='42' font-size='14' text-anchor='end' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₁ (π/2)</text><text x='346.2' y='280' font-size='14' text-anchor='start' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₂ (−π/6)</text><text x='215' y='392' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure : les points M₁ et M₂, images des solutions de (E) dans ]−π ; π]</text></svg>\n\n### Piège à éviter\nNe garder qu'une seule des deux familles : une équation $\\cos u=\\cos v$ a toujours deux familles de solutions, $u=v+2k\\pi$ et $u=-v+2k\\pi$.\n\n### Conseil\nContrôle une solution dans l'équation de départ : pour $x=\\dfrac\\pi2$, on obtient bien $\\sqrt3\\times0+1=1$.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Se ramène à cos(x - pi/6) = 1/2 = cos(pi/3)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne les deux familles x = pi/2 + 2k pi et x = -pi/6 + 2k pi",
+              "points": 0.25
+            },
+            {
+              "libelle": "Retient -pi/6 et pi/2 dans ]-pi ; pi] et place leurs images sur le cercle",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "équation trigonométrique",
+            "cercle trigonométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex3-q2-0",
+              "competence": "Résoudre une équation du type a cos u + b sin u = c",
+              "contenu_markdown": "Pour résoudre $a\\cos x+b\\sin x=c$, on se ramène à $A\\cos(x-\\varphi)=c$, puis à une équation $\\cos u=\\cos v$ dont les solutions sont $u=v+2k\\pi$ ou $u=-v+2k\\pi$ avec $k\\in\\mathbb{Z}$ ; on ne garde ensuite que les valeurs situées dans l'intervalle demandé.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Résoudre dans $]-\\pi\\,;\\pi]$ l'inéquation $\\sqrt3\\cos x+\\sin x\\ge1$, puis représenter sur le cercle trigonométrique l'ensemble des points images des solutions. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour résoudre une inéquation trigonométrique sur un intervalle, on la ramène à une inéquation du type $\\cos u\\ge c$, on lit sur le cercle trigonométrique l'arc des points dont l'abscisse est au moins $c$, puis on traduit cet arc en intervalle en revenant à la variable $x$ et en le recoupant avec l'intervalle d'étude.\n\nPar la question 1, l'inéquation équivaut à $\\cos\\left(x-\\dfrac\\pi6\\right)\\ge\\dfrac12$. On pose $t=x-\\dfrac\\pi6$ : comme $x\\in]-\\pi\\,;\\pi]$, on a $t\\in\\left]-\\dfrac{7\\pi}6\\,;\\dfrac{5\\pi}6\\right]$.\n\nSur le cercle trigonométrique, $\\cos t\\ge\\dfrac12$ correspond à l'arc des points d'abscisse au moins $\\dfrac12$, soit $-\\dfrac\\pi3\\le t\\le\\dfrac\\pi3$ à $2k\\pi$ près. Les arcs décalés de $\\pm2\\pi$ tombent hors de l'intervalle de $t$. Donc\n\n$$\n-\\dfrac\\pi3\\le x-\\dfrac\\pi6\\le\\dfrac\\pi3\\iff-\\dfrac\\pi6\\le x\\le\\dfrac\\pi2\n$$\n\nL'ensemble des solutions est $\\left[-\\dfrac\\pi6\\,;\\dfrac\\pi2\\right]$. Sur le cercle, c'est l'arc de $M_2$ à $M_1$ qui passe par le point $(1\\,;0)$.\n\n<svg viewBox='0 0 430 400' role='img' aria-labelledby='fig29375135t fig29375135d' style='width:100%;max-width:430px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig29375135t'>Cercle trigonométrique et arc des solutions de l'inéquation</title><desc id='fig29375135d'>Le même cercle trigonométrique avec les points M1 (pi sur 2) et M2 (moins pi sur 6). L'arc en trait épais relie M2 à M1 en passant par le point (1 ; 0) : il représente les réels de l'intervalle de moins pi sur 6 à pi sur 2 qui vérifient l'inéquation.</desc><line x1='47' y1='190' x2='385' y2='190' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='385,190 376,194.1 376,185.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='215' y1='358' x2='215' y2='20' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='215,20 219.1,29 210.9,29' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><path d='M336.2,260.0 A140,140 0 0 0 215.0,50.0' fill='none' stroke='var(--primary,#0f6b4f)' stroke-width='6' stroke-linejoin='round'/><line x1='215' y1='190' x2='215' y2='50' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.3' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='215' y1='190' x2='336.2' y2='260' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.3' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='336.2' y1='260' x2='336.2' y2='190' stroke='var(--gold,#d9a21f)' stroke-width='1.4' stroke-dasharray='4 3' stroke-linecap='round'/><line x1='336.2' y1='260' x2='215' y2='260' stroke='var(--gold,#d9a21f)' stroke-width='1.4' stroke-dasharray='4 3' stroke-linecap='round'/><circle cx='215' cy='190' r='140' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='2'/><text x='383' y='181' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>cos</text><text x='223' y='26' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>sin</text><text x='208' y='207' font-size='13' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>O</text><text x='360' y='207' font-size='12' text-anchor='start' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='70' y='207' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='223' y='64' font-size='12' text-anchor='start' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='223' y='326' font-size='12' text-anchor='start' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='332.2' y='182' font-size='13' text-anchor='end' fill='var(--gold,#d9a21f)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>√3/2</text><text x='209' y='265' font-size='13' text-anchor='end' fill='var(--gold,#d9a21f)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1/2</text><circle cx='215' cy='50' r='4.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='336.2' cy='260' r='4.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='206' y='42' font-size='14' text-anchor='end' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₁ (π/2)</text><text x='346.2' y='280' font-size='14' text-anchor='start' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₂ (−π/6)</text><text x='215' y='392' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure : l'arc M₂M₁ en trait épais, images des solutions de l'inéquation</text></svg>\n\n### Piège à éviter\nOublier de recouper avec l'intervalle d'étude : sur $\\mathbb{R}$, l'ensemble des solutions est une réunion d'intervalles décalés de $2\\pi$, et il faut ne garder que ceux qui rencontrent $]-\\pi\\,;\\pi]$.\n\n### Conseil\nTeste un point de l'intervalle trouvé et un point en dehors : $x=0$ donne $\\sqrt3\\ge1$ (vrai) et $x=\\pi$ donne $-\\sqrt3\\ge1$ (faux).",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Se ramène à cos(x - pi/6) >= 1/2 et situe t = x - pi/6 dans ]-7pi/6 ; 5pi/6]",
+              "points": 0.25
+            },
+            {
+              "libelle": "Lit l'arc -pi/3 <= t <= pi/3 sur le cercle trigonométrique",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut S = [-pi/6 ; pi/2] et représente l'arc de M2 à M1",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "équation trigonométrique",
+            "cercle trigonométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex3-q3-0",
+              "competence": "Inéquations trigonométriques sur un intervalle donné",
+              "contenu_markdown": "Pour résoudre une inéquation trigonométrique sur un intervalle, on la ramène à une inéquation du type $\\cos u\\ge c$, on lit sur le cercle trigonométrique l'arc des points dont l'abscisse est au moins $c$, puis on traduit cet arc en intervalle en revenant à la variable $x$ et en le recoupant avec l'intervalle d'étude.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "**a)** Calculer les valeurs exactes de $\\cos\\dfrac\\pi{12}$ et $\\sin\\dfrac\\pi{12}$ en écrivant $\\dfrac\\pi{12}=\\dfrac\\pi3-\\dfrac\\pi4$.\n\n**b)** Calculer $\\sqrt3\\cos\\dfrac\\pi{12}+\\sin\\dfrac\\pi{12}$ de deux façons : directement avec les valeurs du **a)**, puis grâce à la question 1. Que constate-t-on ? *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLes formules d'addition donnent $\\cos(a-b)=\\cos a\\cos b+\\sin a\\sin b$ et $\\sin(a-b)=\\sin a\\cos b-\\cos a\\sin b$ ; pour obtenir une valeur exacte, on écrit l'angle comme somme ou différence d'angles remarquables dont on connaît le cosinus et le sinus.\n\n**a)** Avec $\\cos\\dfrac\\pi3=\\dfrac12$, $\\sin\\dfrac\\pi3=\\dfrac{\\sqrt3}{2}$ et $\\cos\\dfrac\\pi4=\\sin\\dfrac\\pi4=\\dfrac{\\sqrt2}{2}$ :\n\n$$\n\\cos\\dfrac\\pi{12}=\\dfrac12\\times\\dfrac{\\sqrt2}{2}+\\dfrac{\\sqrt3}{2}\\times\\dfrac{\\sqrt2}{2}=\\dfrac{\\sqrt2+\\sqrt6}{4}\n\\qquad\n\\sin\\dfrac\\pi{12}=\\dfrac{\\sqrt3}{2}\\times\\dfrac{\\sqrt2}{2}-\\dfrac12\\times\\dfrac{\\sqrt2}{2}=\\dfrac{\\sqrt6-\\sqrt2}{4}\n$$\n\n**b)** *Directement* : $\\sqrt3\\cos\\dfrac\\pi{12}+\\sin\\dfrac\\pi{12}=\\dfrac{\\sqrt6+\\sqrt{18}}{4}+\\dfrac{\\sqrt6-\\sqrt2}{4}=\\dfrac{2\\sqrt6+3\\sqrt2-\\sqrt2}{4}=\\dfrac{\\sqrt6+\\sqrt2}{2}$.\n\n*Avec la question 1* : cette expression vaut $2\\cos\\left(\\dfrac\\pi{12}-\\dfrac\\pi6\\right)=2\\cos\\left(-\\dfrac\\pi{12}\\right)=2\\cos\\dfrac\\pi{12}=\\dfrac{\\sqrt2+\\sqrt6}{2}$.\n\nLes deux résultats coïncident, ce qui confirme les valeurs obtenues au **a)**.\n\n### Piège à éviter\nÉcrire $\\cos(a-b)=\\cos a\\cos b-\\sin a\\sin b$ : c'est la formule de $\\cos(a+b)$. Pour $\\cos(a-b)$, les deux produits s'additionnent.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Donne cos(pi/12) = (racine de 2 + racine de 6)/4 avec la formule d'addition",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne sin(pi/12) = (racine de 6 - racine de 2)/4",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trouve (racine de 6 + racine de 2)/2 par les deux méthodes et conclut qu'elles coïncident",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "trigonométrie"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex3-q4-0",
+              "competence": "Formules d'addition et de soustraction du cosinus",
+              "contenu_markdown": "Les formules d'addition donnent $\\cos(a-b)=\\cos a\\cos b+\\sin a\\sin b$ et $\\sin(a-b)=\\sin a\\cos b-\\cos a\\sin b$ ; pour obtenir une valeur exacte, on écrit l'angle comme somme ou différence d'angles remarquables dont on connaît le cosinus et le sinus.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "4",
+      "points": "3,5",
+      "enonce_intro_markdown": "Un architecte d'Edéa conçoit un petit bâtiment en forme de cube $ABCDEFGH$ d'arête $4$ m (figure 1). L'espace est muni du repère orthonormé $\\left(A\\,;\\vec\\imath,\\vec\\jmath,\\vec k\\right)$ tel que $\\overrightarrow{AB}=4\\vec\\imath$, $\\overrightarrow{AD}=4\\vec\\jmath$ et $\\overrightarrow{AE}=4\\vec k$ ; l'unité est le mètre. On note $I$ le milieu de l'arête $[CG]$ et $\\Omega$ le centre du cube.\n\n<svg viewBox='0 0 520 340' role='img' aria-labelledby='fig3a1ccc02t fig3a1ccc02d' style='width:100%;max-width:520px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig3a1ccc02t'>Cube ABCDEFGH en perspective cavalière avec le milieu I de l'arête CG</title><desc id='fig3a1ccc02d'>Cube ABCDEFGH d'arête 4 : la face ABFE est de face, avec A en bas à gauche, B en bas à droite, E en haut à gauche et F en haut à droite. La face DCGH est derrière, décalée vers le haut et la gauche, C étant le sommet caché en bas à droite à l'arrière. Le point I est le milieu de l'arête CG.</desc><line x1='398' y1='300' x2='314.9' y2='252' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='6 5' stroke-linecap='round'/><line x1='314.9' y1='252' x2='122.9' y2='252' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='6 5' stroke-linecap='round'/><line x1='314.9' y1='252' x2='314.9' y2='60' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='6 5' stroke-linecap='round'/><line x1='206' y1='300' x2='398' y2='300' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='398' y1='300' x2='398' y2='108' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='398' y1='108' x2='206' y2='108' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='206' y1='108' x2='206' y2='300' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='206' y1='300' x2='122.9' y2='252' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='122.9' y1='252' x2='122.9' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='122.9' y1='60' x2='314.9' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='314.9' y1='60' x2='398' y2='108' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='206' y1='108' x2='122.9' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><text x='194' y='316' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='410' y='318' font-size='15' text-anchor='start' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='304.9' y='272' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='110.9' y='256' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>D</text><text x='196' y='124' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>E</text><text x='410' y='102' font-size='15' text-anchor='start' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>F</text><text x='324.9' y='52' font-size='15' text-anchor='start' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>G</text><text x='112.9' y='52' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>H</text><circle cx='314.9' cy='156' r='4' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='326.9' y='161' font-size='15' text-anchor='start' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>I</text><text x='260' y='334' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 1 : le cube ABCDEFGH (arête 4 m, perspective cavalière)</text></svg>",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Donner les coordonnées des points $B$, $D$, $E$ et $G$. Montrer que la droite $(AG)$ est orthogonale aux droites $(BD)$ et $(BE)$, puis en déduire que $(AG)$ est orthogonale au plan $(BDE)$. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne droite est orthogonale à un plan lorsqu'elle est orthogonale à deux droites sécantes de ce plan ; dans un repère orthonormé, deux droites sont orthogonales lorsque le produit scalaire de leurs vecteurs directeurs est nul.\n\nDans le repère $\\left(A\\,;\\vec\\imath,\\vec\\jmath,\\vec k\\right)$ : $B(4\\,;0\\,;0)$, $D(0\\,;4\\,;0)$, $E(0\\,;0\\,;4)$ et $G(4\\,;4\\,;4)$.\n\nLes vecteurs $\\overrightarrow{AG}(4\\,;4\\,;4)$, $\\overrightarrow{BD}(-4\\,;4\\,;0)$ et $\\overrightarrow{BE}(-4\\,;0\\,;4)$ donnent, le repère étant orthonormé :\n\n$$\n\\overrightarrow{AG}\\cdot\\overrightarrow{BD}=-16+16+0=0\n\\qquad\n\\overrightarrow{AG}\\cdot\\overrightarrow{BE}=-16+0+16=0\n$$\n\nLa droite $(AG)$ est donc orthogonale à $(BD)$ et à $(BE)$. Ces deux droites sont sécantes en $B$ et contenues dans le plan $(BDE)$ : la droite $(AG)$ est orthogonale au plan $(BDE)$.\n\n### Piège à éviter\nSe contenter d'une seule orthogonalité : être orthogonale à une seule droite d'un plan ne suffit pas pour être orthogonale au plan.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Donne B(4 ; 0 ; 0), D(0 ; 4 ; 0), E(0 ; 0 ; 4) et G(4 ; 4 ; 4)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule les deux produits scalaires AG.BD = 0 et AG.BE = 0",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut avec deux droites sécantes (BD) et (BE) du plan (BDE)",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "géométrie dans l'espace",
+            "cube",
+            "produit scalaire"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex4-q1-0",
+              "competence": "Montrer qu'une droite est orthogonale à un plan via deux produits scalaires nuls",
+              "contenu_markdown": "Une droite est orthogonale à un plan lorsqu'elle est orthogonale à deux droites sécantes de ce plan ; dans un repère orthonormé, deux droites sont orthogonales lorsque le produit scalaire de leurs vecteurs directeurs est nul.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Calculer $AG$, $AI$ et le produit scalaire $\\overrightarrow{AG}\\cdot\\overrightarrow{AI}$, puis en déduire une valeur approchée, au dixième de degré près, de l'angle $\\widehat{GAI}$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe produit scalaire de deux vecteurs non nuls vaut $\\vec u\\cdot\\vec v=\\|\\vec u\\|\\,\\|\\vec v\\|\\cos\\theta$ où $\\theta$ est leur angle, d'où $\\cos\\theta=\\dfrac{\\vec u\\cdot\\vec v}{\\|\\vec u\\|\\,\\|\\vec v\\|}$ ; dans un repère orthonormé, $\\vec u\\cdot\\vec v=xx'+yy'+zz'$ et $\\|\\vec u\\|=\\sqrt{x^2+y^2+z^2}$.\n\nLe point $I$, milieu de $[CG]$ avec $C(4\\,;4\\,;0)$ et $G(4\\,;4\\,;4)$, a pour coordonnées $(4\\,;4\\,;2)$. Donc $\\overrightarrow{AG}(4\\,;4\\,;4)$ et $\\overrightarrow{AI}(4\\,;4\\,;2)$.\n\n$AG=\\sqrt{16+16+16}=4\\sqrt3\\approx6{,}93$ m et $AI=\\sqrt{16+16+4}=6$ m. Le produit scalaire vaut $\\overrightarrow{AG}\\cdot\\overrightarrow{AI}=16+16+8=40$. Ainsi\n\n$$\n\\cos\\widehat{GAI}=\\dfrac{\\overrightarrow{AG}\\cdot\\overrightarrow{AI}}{AG\\times AI}=\\dfrac{40}{4\\sqrt3\\times6}=\\dfrac{5}{3\\sqrt3}=\\dfrac{5\\sqrt3}{9}\\approx0{,}9623\n$$\n\nLa calculatrice donne $\\widehat{GAI}\\approx15{,}8^\\circ$.\n\n### Piège à éviter\nLaisser la calculatrice en radians : $\\arccos(0{,}9623)\\approx0{,}276$ n'est pas un angle en degrés. Vérifie le mode avant de lire le résultat.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule les coordonnées de I et les normes AG = 4 racine de 3 et AI = 6",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule AG.AI = 40",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit cos(GAI) = 40 / (AG x AI) = 5 racine de 3 / 9",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne l'angle d'environ 15,8 degrés",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "produit scalaire",
+            "cube"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex4-q2-0",
+              "competence": "Utiliser la définition du produit scalaire pour calculer le cosinus d'un angle",
+              "contenu_markdown": "Le produit scalaire de deux vecteurs non nuls vaut $\\vec u\\cdot\\vec v=\\|\\vec u\\|\\,\\|\\vec v\\|\\cos\\theta$ où $\\theta$ est leur angle, d'où $\\cos\\theta=\\dfrac{\\vec u\\cdot\\vec v}{\\|\\vec u\\|\\,\\|\\vec v\\|}$ ; dans un repère orthonormé, $\\vec u\\cdot\\vec v=xx'+yy'+zz'$ et $\\|\\vec u\\|=\\sqrt{x^2+y^2+z^2}$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Déterminer une équation cartésienne du plan $(P)$ qui passe par $\\Omega$ et qui est orthogonal à la droite $(AG)$. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn plan de vecteur normal $\\vec n(a\\,;b\\,;c)$ a une équation de la forme $ax+by+cz+d=0$ ; on trouve $d$ en écrivant que les coordonnées d'un point du plan vérifient l'équation. Un vecteur directeur d'une droite orthogonale au plan est un vecteur normal à ce plan.\n\nLe centre $\\Omega$ du cube est le milieu de $[AG]$ : $\\Omega(2\\,;2\\,;2)$. Le plan $(P)$ est orthogonal à $(AG)$, donc $\\overrightarrow{AG}(4\\,;4\\,;4)$ est un vecteur normal à $(P)$, de même que le vecteur colinéaire $\\vec n(1\\,;1\\,;1)$. Une équation de $(P)$ s'écrit $x+y+z+d=0$. Comme $\\Omega\\in(P)$ : $2+2+2+d=0$, donc $d=-6$.\n\n$$\n(P)\\ :\\ x+y+z-6=0\n$$\n\n### Piège à éviter\nPrendre pour vecteur normal un vecteur contenu dans le plan, comme $\\overrightarrow{BD}$. Le vecteur normal est celui de la direction orthogonale au plan, ici la direction de $(AG)$.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule Omega(2 ; 2 ; 2) comme milieu de [AG]",
+              "points": 0.25
+            },
+            {
+              "libelle": "Prend (1 ; 1 ; 1) ou (4 ; 4 ; 4) comme vecteur normal",
+              "points": 0.25
+            },
+            {
+              "libelle": "Détermine d = -6 et conclut x + y + z - 6 = 0",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "géométrie dans l'espace"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex4-q3-0",
+              "competence": "Équation cartésienne d'un plan à partir d'un vecteur normal",
+              "contenu_markdown": "Un plan de vecteur normal $\\vec n(a\\,;b\\,;c)$ a une équation de la forme $ax+by+cz+d=0$ ; on trouve $d$ en écrivant que les coordonnées d'un point du plan vérifient l'équation. Un vecteur directeur d'une droite orthogonale au plan est un vecteur normal à ce plan.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "On note $M_1$, $M_2$, $M_3$, $M_4$, $M_5$ et $M_6$ les milieux respectifs des arêtes $[BC]$, $[CD]$, $[DH]$, $[HE]$, $[EF]$ et $[FB]$.\n\n**a)** Vérifier que ces six points appartiennent à $(P)$.\n\n**b)** Montrer que $(P)$ ne coupe aucune autre arête du cube, et en déduire que la section du cube par $(P)$ est l'hexagone $M_1M_2M_3M_4M_5M_6$.\n\n**c)** Montrer que cet hexagone est régulier, donner la longueur de son côté, puis calculer son aire. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour trouver la section d'un cube par un plan d'équation $ax+by+cz+d=0$, on calcule $h=ax+by+cz+d$ aux huit sommets : le plan coupe une arête exactement lorsque $h$ prend des signes strictement opposés à ses deux extrémités, en un point $S+t\\,\\overrightarrow{SS'}$ avec $t=\\dfrac{h(S)}{h(S)-h(S')}$ (le milieu si $h(S')=-h(S)$). La section est le polygone qui joint ces points, deux points consécutifs appartenant à une même face.\n\n**a)** Les coordonnées sont $M_1(4\\,;2\\,;0)$, $M_2(2\\,;4\\,;0)$, $M_3(0\\,;4\\,;2)$, $M_4(0\\,;2\\,;4)$, $M_5(2\\,;0\\,;4)$ et $M_6(4\\,;0\\,;2)$. Dans chaque cas la somme des coordonnées vaut $6$ : les six points appartiennent à $(P)$.\n\n**b)** Posons $h(x,y,z)=x+y+z-6$. Aux sommets : $h(A)=-6$ ; $h(B)=h(D)=h(E)=-2$ ; $h(C)=h(F)=h(H)=2$ ; $h(G)=6$. Le plan coupe une arête exactement lorsque les signes aux deux extrémités sont opposés. Ce sont les six arêtes $[BC]$, $[BF]$, $[DC]$, $[DH]$, $[EF]$ et $[EH]$, qui joignent chacune un sommet où $h=-2$ à un sommet où $h=2$ : elles sont coupées en leur milieu. Aucune autre arête n'est coupée, par exemple $[AB]$ (de $-6$ à $-2$) ou $[GH]$ (de $6$ à $2$). La section est donc l'hexagone $M_1M_2M_3M_4M_5M_6$.\n\n**c)** Les six côtés ont la même longueur : $M_1M_2=\\sqrt{(-2)^2+2^2+0^2}=2\\sqrt2$, et chacune des cinq autres différences de coordonnées a deux composantes de valeur absolue $2$ et une composante nulle. De plus $\\Omega M_1=\\sqrt{2^2+0^2+(-2)^2}=2\\sqrt2$, et il en va de même pour les cinq autres sommets. Les six triangles $\\Omega M_iM_{i+1}$ sont donc équilatéraux de côté $2\\sqrt2$ : l'hexagone est régulier, de côté $2\\sqrt2$ m. Son aire est celle de six triangles équilatéraux :\n\n$$\n\\mathcal{A}=6\\times\\dfrac{\\sqrt3}{4}\\times\\left(2\\sqrt2\\right)^2=6\\times\\dfrac{\\sqrt3}{4}\\times8=12\\sqrt3\\approx20{,}8\\text{ m}^2\n$$\n\nVoici la section dessinée sur le cube. L'hexagone paraît déformé à cause de la perspective cavalière, mais il est régulier dans l'espace.\n\n<svg viewBox='0 0 520 340' role='img' aria-labelledby='fig83e280b9t fig83e280b9d' style='width:100%;max-width:520px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig83e280b9t'>Section du cube par le plan d'équation x + y + z = 6 : un hexagone régulier</title><desc id='fig83e280b9d'>Le cube ABCDEFGH avec la diagonale AG en pointillés. L'hexagone M1 M2 M3 M4 M5 M6, dont les sommets sont les milieux des arêtes BC, CD, DH, HE, EF et FB, est tracé en trait épais : les côtés cachés M1M2, M2M3 et M6M1 sont en pointillés. Le centre Oméga du cube est le milieu de AG.</desc><line x1='398' y1='300' x2='314.9' y2='252' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='6 5' stroke-linecap='round'/><line x1='314.9' y1='252' x2='122.9' y2='252' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='6 5' stroke-linecap='round'/><line x1='314.9' y1='252' x2='314.9' y2='60' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='6 5' stroke-linecap='round'/><line x1='206' y1='300' x2='398' y2='300' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='398' y1='300' x2='398' y2='108' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='398' y1='108' x2='206' y2='108' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='206' y1='108' x2='206' y2='300' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='206' y1='300' x2='122.9' y2='252' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='122.9' y1='252' x2='122.9' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='122.9' y1='60' x2='314.9' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='314.9' y1='60' x2='398' y2='108' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='206' y1='108' x2='122.9' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linecap='round'/><line x1='206' y1='300' x2='314.9' y2='60' stroke='var(--destructive,#c4352e)' stroke-width='1.3' stroke-dasharray='3 3' stroke-linecap='round'/><line x1='356.4' y1='276' x2='218.9' y2='252' stroke='var(--primary,#0f6b4f)' stroke-width='3.4' stroke-dasharray='7 5' stroke-linecap='round'/><line x1='218.9' y1='252' x2='122.9' y2='156' stroke='var(--primary,#0f6b4f)' stroke-width='3.4' stroke-dasharray='7 5' stroke-linecap='round'/><line x1='122.9' y1='156' x2='164.4' y2='84' stroke='var(--primary,#0f6b4f)' stroke-width='3.4' stroke-linecap='round'/><line x1='164.4' y1='84' x2='302' y2='108' stroke='var(--primary,#0f6b4f)' stroke-width='3.4' stroke-linecap='round'/><line x1='302' y1='108' x2='398' y2='204' stroke='var(--primary,#0f6b4f)' stroke-width='3.4' stroke-linecap='round'/><line x1='398' y1='204' x2='356.4' y2='276' stroke='var(--primary,#0f6b4f)' stroke-width='3.4' stroke-dasharray='7 5' stroke-linecap='round'/><text x='194' y='316' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='410' y='318' font-size='15' text-anchor='start' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='304.9' y='272' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='110.9' y='256' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>D</text><text x='196' y='124' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>E</text><text x='410' y='102' font-size='15' text-anchor='start' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>F</text><text x='324.9' y='52' font-size='15' text-anchor='start' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>G</text><text x='112.9' y='52' font-size='15' text-anchor='end' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>H</text><circle cx='356.4' cy='276' r='3.6' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='370.4' y='272' font-size='14' text-anchor='start' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₁</text><circle cx='218.9' cy='252' r='3.6' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='200.9' y='270' font-size='14' text-anchor='end' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₂</text><circle cx='122.9' cy='156' r='3.6' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='110.9' y='162' font-size='14' text-anchor='end' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₃</text><circle cx='164.4' cy='84' r='3.6' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='174.4' y='76' font-size='14' text-anchor='start' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₄</text><circle cx='302' cy='108' r='3.6' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='312' y='100' font-size='14' text-anchor='start' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₅</text><circle cx='398' cy='204' r='3.6' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='410' y='208' font-size='14' text-anchor='start' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>M₆</text><circle cx='260.4' cy='180' r='3.6' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='270.4' y='198' font-size='14' text-anchor='start' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>Ω</text><text x='260' y='334' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure : la section de (P) est l'hexagone régulier M₁M₂M₃M₄M₅M₆</text></svg>\n\n### Piège à éviter\nPenser que la section d'un cube par un plan est toujours un quadrilatère. Selon l'orientation du plan, elle peut être un triangle, un quadrilatère, un pentagone ou un hexagone : seul le calcul des signes aux sommets le dit.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Donne les coordonnées des six milieux et vérifie que x + y + z = 6",
+              "points": 0.25
+            },
+            {
+              "libelle": "Étudie les signes de x + y + z - 6 aux huit sommets et conclut que seules ces six arêtes sont coupées",
+              "points": 0.25
+            },
+            {
+              "libelle": "Montre que les six côtés et les distances à Omega valent 2 racine de 2, donc l'hexagone est régulier",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule l'aire 12 racine de 3, soit environ 20,8 m²",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "géométrie dans l'espace",
+            "cube"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex4-q4-0",
+              "competence": "Déterminer la section d'un cube par un plan donné par son équation",
+              "contenu_markdown": "Pour trouver la section d'un cube par un plan d'équation $ax+by+cz+d=0$, on calcule $h=ax+by+cz+d$ aux huit sommets : le plan coupe une arête exactement lorsque $h$ prend des signes strictement opposés à ses deux extrémités, en un point $S+t\\,\\overrightarrow{SS'}$ avec $t=\\dfrac{h(S)}{h(S)-h(S')}$ (le milieu si $h(S')=-h(S)$). La section est le polygone qui joint ces points, deux points consécutifs appartenant à une même face.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "5",
+      "points": "7",
+      "enonce_intro_markdown": "Le plan est muni d'un repère orthogonal $(O\\,;\\vec\\imath,\\vec\\jmath)$ d'unités graphiques $1$ cm sur l'axe des abscisses et $0{,}5$ cm sur l'axe des ordonnées. On considère la fonction $f$ définie sur $\\mathbb{R}\\setminus\\{3\\}$ par $f(x)=\\dfrac{x^2-4x+7}{x-3}$ et on note $(\\mathcal{C})$ sa courbe représentative.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Déterminer les réels $a$, $b$ et $c$ tels que, pour tout $x\\neq3$, $f(x)=ax+b+\\dfrac{c}{x-3}$. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour écrire une fraction rationnelle sous la forme « partie entière plus fraction résiduelle », on effectue la division euclidienne du numérateur par le dénominateur, ou on réduit $ax+b+\\dfrac{c}{x-3}$ au même dénominateur et on identifie les coefficients des deux numérateurs.\n\nOn réduit au même dénominateur : $ax+b+\\dfrac{c}{x-3}=\\dfrac{(ax+b)(x-3)+c}{x-3}$, et $(ax+b)(x-3)+c=ax^2+(b-3a)x-3b+c$. Ce numérateur doit être égal à $x^2-4x+7$ pour tout $x$ ; on identifie les coefficients :\n\n$$\n\\begin{cases}\na=1 \\\\\nb-3a=-4 \\\\\n-3b+c=7\n\\end{cases}\n$$\n\nDonc $a=1$, puis $b=-4+3=-1$, puis $c=7+3b=4$. Ainsi $f(x)=x-1+\\dfrac{4}{x-3}$.\n\n### Conseil\nContrôle par la division euclidienne : $x^2-4x+7=(x-3)(x-1)+4$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Réduit au même dénominateur, développe et écrit le système d'identification",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trouve a = 1, b = -1 et c = 4",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "fonction rationnelle"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q1-0",
+              "competence": "Décomposer une fraction rationnelle en partie entière et fraction résiduelle",
+              "contenu_markdown": "Pour écrire une fraction rationnelle sous la forme « partie entière plus fraction résiduelle », on effectue la division euclidienne du numérateur par le dénominateur, ou on réduit $ax+b+\\dfrac{c}{x-3}$ au même dénominateur et on identifie les coefficients des deux numérateurs.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Calculer les limites de $f$ aux bornes de son ensemble de définition. En déduire une asymptote verticale à $(\\mathcal{C})$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour une fraction rationnelle, la limite en $\\pm\\infty$ se lit sur les termes de plus haut degré, ou sur l'écriture $ax+b+\\dfrac{c}{x-d}$ ; en une valeur interdite $a$, le numérateur a une limite non nulle et le dénominateur tend vers $0$ avec un signe à étudier à gauche et à droite de $a$ : la limite est alors $\\pm\\infty$ et la droite d'équation $x=a$ est asymptote verticale.\n\n**En $+\\infty$ et en $-\\infty$.** Avec $f(x)=x-1+\\dfrac{4}{x-3}$ et $\\dfrac{4}{x-3}\\to0$, on obtient $\\displaystyle\\lim_{x\\to+\\infty}f(x)=+\\infty$ et $\\displaystyle\\lim_{x\\to-\\infty}f(x)=-\\infty$.\n\n**En $3$.** Le numérateur $x^2-4x+7$ tend vers $9-12+7=4>0$. Le dénominateur $x-3$ tend vers $0$ en restant négatif quand $x<3$ et positif quand $x>3$ :\n\n$$\n\\lim_{x\\to3^-}f(x)=-\\infty\n\\qquad\n\\lim_{x\\to3^+}f(x)=+\\infty\n$$\n\nUne limite infinie en $3$ prouve que la droite d'équation $x=3$ est asymptote verticale à $(\\mathcal{C})$.\n\n### Piège à éviter\nÉcrire $\\displaystyle\\lim_{x\\to3}f(x)=\\infty$ sans distinguer la gauche de la droite : ici les deux limites sont opposées, et le tableau de variations en a besoin.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Trouve les limites +infini en +infini et -infini en -infini avec justification",
+              "points": 0.25
+            },
+            {
+              "libelle": "Remarque que le numérateur tend vers 4, strictement positif, en 3",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trouve -infini en 3 à gauche et +infini en 3 à droite avec le signe de x - 3",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut que la droite x = 3 est asymptote verticale",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "limites",
+            "asymptote verticale"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q2-0",
+              "competence": "Calculer les limites d'une fonction rationnelle à l'infini et en une valeur interdite",
+              "contenu_markdown": "Pour une fraction rationnelle, la limite en $\\pm\\infty$ se lit sur les termes de plus haut degré, ou sur l'écriture $ax+b+\\dfrac{c}{x-d}$ ; en une valeur interdite $a$, le numérateur a une limite non nulle et le dénominateur tend vers $0$ avec un signe à étudier à gauche et à droite de $a$ : la limite est alors $\\pm\\infty$ et la droite d'équation $x=a$ est asymptote verticale.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Montrer que la droite $(D)$ d'équation $y=x-1$ est asymptote oblique à $(\\mathcal{C})$ en $-\\infty$ et en $+\\infty$, puis étudier la position de $(\\mathcal{C})$ par rapport à $(D)$. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne droite d'équation $y=mx+p$ est asymptote oblique à $(\\mathcal{C})$ en $\\pm\\infty$ lorsque $\\displaystyle\\lim_{x\\to\\pm\\infty}\\big(f(x)-(mx+p)\\big)=0$ ; la position relative se lit sur le signe de $f(x)-(mx+p)$ : si la différence est positive, la courbe est au-dessus de la droite ; si elle est négative, la courbe est en dessous.\n\nPour tout $x\\neq3$, $f(x)-(x-1)=\\dfrac{4}{x-3}$. Cette différence tend vers $0$ quand $x\\to+\\infty$ et quand $x\\to-\\infty$ : la droite $(D)$ est asymptote oblique à $(\\mathcal{C})$ en $-\\infty$ et en $+\\infty$.\n\nLe signe de $\\dfrac{4}{x-3}$ est celui de $x-3$. Pour $x<3$, la différence est négative : $(\\mathcal{C})$ est en dessous de $(D)$. Pour $x>3$, elle est positive : $(\\mathcal{C})$ est au-dessus de $(D)$. Elle ne s'annule jamais, donc $(\\mathcal{C})$ ne coupe pas $(D)$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule f(x) - (x - 1) = 4/(x - 3)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Montre que cette différence tend vers 0 en -infini et en +infini",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut la position : en dessous pour x < 3, au-dessus pour x > 3",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "asymptote oblique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q3-0",
+              "competence": "Déterminer une asymptote oblique et la position de la courbe par rapport à elle",
+              "contenu_markdown": "Une droite d'équation $y=mx+p$ est asymptote oblique à $(\\mathcal{C})$ en $\\pm\\infty$ lorsque $\\displaystyle\\lim_{x\\to\\pm\\infty}\\big(f(x)-(mx+p)\\big)=0$ ; la position relative se lit sur le signe de $f(x)-(mx+p)$ : si la différence est positive, la courbe est au-dessus de la droite ; si elle est négative, la courbe est en dessous.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Montrer que, pour tout $x\\neq3$, $f'(x)=\\dfrac{(x-1)(x-5)}{(x-3)^2}$. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour dériver une fonction écrite sous la forme $ax+b+\\dfrac{c}{x-d}$, on dérive terme à terme avec $\\left(\\dfrac{c}{x-d}\\right)'=-\\dfrac{c}{(x-d)^2}$ ; on réduit ensuite au même dénominateur et on factorise le numérateur pour pouvoir étudier son signe.\n\nAvec $f(x)=x-1+\\dfrac{4}{x-3}$, on dérive terme à terme :\n\n$$\nf'(x)=1-\\dfrac{4}{(x-3)^2}=\\dfrac{(x-3)^2-4}{(x-3)^2}\n$$\n\nLe numérateur est une différence de deux carrés : $(x-3)^2-4=(x-3-2)(x-3+2)=(x-5)(x-1)$. Donc $f'(x)=\\dfrac{(x-1)(x-5)}{(x-3)^2}$.\n\n### Conseil\nContrôle avec la dérivée du quotient : $\\dfrac{(2x-4)(x-3)-(x^2-4x+7)}{(x-3)^2}$ a pour numérateur $x^2-6x+5=(x-1)(x-5)$, le même résultat.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Dérive terme à terme : f'(x) = 1 - 4/(x - 3)²",
+              "points": 0.25
+            },
+            {
+              "libelle": "Réduit au même dénominateur : ((x - 3)² - 4)/(x - 3)²",
+              "points": 0.25
+            },
+            {
+              "libelle": "Factorise la différence de carrés en (x - 5)(x - 1)",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "fonction rationnelle"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q4-0",
+              "competence": "Dérivée d'une fonction ax+b+c/(x-d) et étude de son signe",
+              "contenu_markdown": "Pour dériver une fonction écrite sous la forme $ax+b+\\dfrac{c}{x-d}$, on dérive terme à terme avec $\\left(\\dfrac{c}{x-d}\\right)'=-\\dfrac{c}{(x-d)^2}$ ; on réduit ensuite au même dénominateur et on factorise le numérateur pour pouvoir étudier son signe.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Étudier le signe de $f'(x)$, puis dresser le tableau de variations de $f$ en y faisant figurer les limites et les valeurs de $f$ aux points où $f'$ s'annule. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe signe de $f'(x)$ donne le sens de variation de $f$ sur chaque intervalle de l'ensemble de définition ; dans le tableau, la valeur interdite est marquée par une double barre, avec les limites de chaque côté, et l'on calcule $f$ aux points où $f'$ s'annule pour écrire les extremums locaux.\n\nLe dénominateur $(x-3)^2$ est strictement positif sur $\\mathbb{R}\\setminus\\{3\\}$ : $f'(x)$ a le signe de $(x-1)(x-5)$. Il est positif pour $x<1$ et pour $x>5$, négatif pour $1<x<5$ avec $x\\neq3$.\n\nOn calcule $f(1)=\\dfrac{1-4+7}{1-3}=\\dfrac{4}{-2}=-2$ et $f(5)=\\dfrac{25-20+7}{5-3}=\\dfrac{12}{2}=6$. Avec les limites de la question 2, on obtient le tableau :\n\n$$\n\\begin{array}{c|ccccc|ccccc}\nx & -\\infty &  & 1 &  & 3 & 3 &  & 5 &  & +\\infty \\\\\n\\hline\nf'(x) &  & + & 0 & - &  &  & - & 0 & + &  \\\\\n\\hline\n &  &  & -2 &  &  & +\\infty &  &  &  & +\\infty \\\\\nf(x) &  & \\nearrow &  & \\searrow &  &  & \\searrow &  & \\nearrow &  \\\\\n & -\\infty &  &  &  & -\\infty &  &  & 6 &  & \n\\end{array}\n$$\n\nLa fonction $f$ est strictement croissante sur $]-\\infty\\,;1]$ et sur $[5\\,;+\\infty[$, strictement décroissante sur $[1\\,;3[$ et sur $]3\\,;5]$. Elle admet un maximum local égal à $-2$ en $x=1$ et un minimum local égal à $6$ en $x=5$.\n\n### Piège à éviter\nÉcrire que $f$ est décroissante sur $[1\\,;5]$ : la fonction n'est pas définie en $3$, elle est décroissante sur $[1\\,;3[$ et sur $]3\\,;5]$ séparément, et l'on ne peut pas comparer des valeurs situées de part et d'autre de $3$.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Justifie le signe de f'(x) par (x - 1)(x - 5) et (x - 3)² > 0",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule f(1) = -2 et f(5) = 6",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit un tableau avec le bon sens de variation sur les quatre intervalles",
+              "points": 0.25
+            },
+            {
+              "libelle": "Reporte les limites -infini, -infini, +infini et +infini aux bornes et de part et d'autre de 3",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "tableau de variation"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q5-0",
+              "competence": "Dresser le tableau de variation d'une fonction rationnelle avec valeur interdite",
+              "contenu_markdown": "Le signe de $f'(x)$ donne le sens de variation de $f$ sur chaque intervalle de l'ensemble de définition ; dans le tableau, la valeur interdite est marquée par une double barre, avec les limites de chaque côté, et l'on calcule $f$ aux points où $f'$ s'annule pour écrire les extremums locaux.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Déterminer une équation de la tangente $(T)$ à $(\\mathcal{C})$ au point $A$ d'abscisse $2$. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa tangente à $(\\mathcal{C})$ au point d'abscisse $a$ a pour équation $y=f'(a)(x-a)+f(a)$.\n\nOn a $f(2)=\\dfrac{4-8+7}{2-3}=\\dfrac{3}{-1}=-3$, donc $A(2\\,;-3)$, et $f'(2)=\\dfrac{(2-1)(2-5)}{(2-3)^2}=\\dfrac{-3}{1}=-3$. La tangente a pour équation $y=-3(x-2)-3$, soit $y=-3x+3$.\n\n### Conseil\nVérifie que $A(2\\,;-3)$ appartient à la tangente : $-3\\times2+3=-3$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule f(2) = -3 et f'(2) = -3",
+              "points": 0.25
+            },
+            {
+              "libelle": "Applique la formule et conclut y = -3x + 3",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "Tangente"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q6-0",
+              "competence": "Déterminer l'équation de la tangente à une courbe en un point donné",
+              "contenu_markdown": "La tangente à $(\\mathcal{C})$ au point d'abscisse $a$ a pour équation $y=f'(a)(x-a)+f(a)$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "7",
+          "ordre": 7,
+          "enonce_markdown": "**a)** Montrer que le point $I(3\\,;2)$ est centre de symétrie de $(\\mathcal{C})$.\n\n**b)** Tracer dans le repère les asymptotes de $(\\mathcal{C})$, la tangente $(T)$, puis la courbe $(\\mathcal{C})$, en plaçant les points d'abscisses $1$ et $5$. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour construire une courbe à partir d'une étude complète, on trace d'abord les axes gradués, les asymptotes, la tangente et les points remarquables (extremums, point d'abscisse donnée), puis on dessine chaque branche en suivant le tableau de variations et en se rapprochant des asymptotes. Pour montrer qu'un point $I(a\\,;b)$ est centre de symétrie, on vérifie que $f(a+h)+f(a-h)=2b$ pour tout $h$ tel que $a\\pm h$ appartienne à l'ensemble de définition.\n\n**a)** Avec $f(x)=x-1+\\dfrac{4}{x-3}$, on obtient pour tout $h\\neq0$ : $f(3+h)=2+h+\\dfrac4h$ et $f(3-h)=2-h-\\dfrac4h$. Donc $f(3+h)+f(3-h)=4=2\\times2$ : le point $I(3\\,;2)$ est centre de symétrie de $(\\mathcal{C})$. C'est aussi l'intersection des deux asymptotes, puisque $x=3$ dans $y=x-1$ donne $y=2$.\n\n**b)** Étapes du tracé, avec $1$ cm sur $(Ox)$ et $0{,}5$ cm sur $(Oy)$ :\n\n1. Tracer l'asymptote verticale $x=3$ en pointillés et la droite $(D)$ : $y=x-1$, qui passe par $(1\\,;0)$ et $(5\\,;4)$.\n2. Placer $S(1\\,;-2)$, $S'(5\\,;6)$ et $A(2\\,;-3)$, puis tracer $(T)$ : $y=-3x+3$, qui passe par $A$ et par $(0\\,;3)$.\n3. Branche de gauche : elle monte de $-\\infty$ jusqu'au maximum $S$, passe par $A$ en touchant $(T)$, puis descend vers $-\\infty$ le long de $x=3$. Elle reste en dessous de $(D)$.\n4. Branche de droite : elle vient de $+\\infty$ le long de $x=3$, descend jusqu'au minimum $S'$, puis remonte en se rapprochant de $(D)$ par au-dessus. On peut aussi la tracer par symétrie de centre $I$ à partir de la branche de gauche.\n\nVoici le tracé attendu, à une échelle réduite par rapport à l'énoncé.\n\n<svg viewBox='0 0 560 420' role='img' aria-labelledby='fig8aa8e137t fig8aa8e137d' style='width:100%;max-width:560px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig8aa8e137t'>Courbe de f(x) = (x² − 4x + 7)/(x − 3) avec ses asymptotes et sa tangente en A</title><desc id='fig8aa8e137d'>La courbe de f a deux branches séparées par l'asymptote verticale x = 3. La branche de gauche croît de moins l'infini jusqu'au maximum local (1 ; −2) puis redescend vers moins l'infini le long de x = 3. La branche de droite vient de plus l'infini, atteint le minimum local (5 ; 6) puis croît en suivant l'asymptote oblique y = x − 1. La tangente T en A(2 ; −3) a pour équation y = −3x + 3. Le point I(3 ; 2), intersection des asymptotes, est le centre de symétrie. Les sommets S(1 ; -2) et S'(5 ; 6) sont les extremums locaux.</desc><defs><clipPath id='clip8aa8e137_1'><rect x='40' y='22' width='490' height='350'/></clipPath></defs><line x1='40' y1='22' x2='40' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='75' y1='22' x2='75' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='110' y1='22' x2='110' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='145' y1='22' x2='145' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='180' y1='22' x2='180' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='215' y1='22' x2='215' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='250' y1='22' x2='250' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='285' y1='22' x2='285' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='320' y1='22' x2='320' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='355' y1='22' x2='355' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='390' y1='22' x2='390' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='425' y1='22' x2='425' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='460' y1='22' x2='460' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='495' y1='22' x2='495' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='530' y1='22' x2='530' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='372' x2='530' y2='372' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='337' x2='530' y2='337' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='302' x2='530' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='267' x2='530' y2='267' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='232' x2='530' y2='232' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='197' x2='530' y2='197' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='162' x2='530' y2='162' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='127' x2='530' y2='127' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='92' x2='530' y2='92' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='57' x2='530' y2='57' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='22' x2='530' y2='22' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='229' x2='40' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='75' y1='229' x2='75' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='110' y1='229' x2='110' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='145' y1='229' x2='145' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='180' y1='229' x2='180' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='215' y1='229' x2='215' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='250' y1='229' x2='250' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='285' y1='229' x2='285' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='320' y1='229' x2='320' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='355' y1='229' x2='355' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='390' y1='229' x2='390' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='425' y1='229' x2='425' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='460' y1='229' x2='460' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='495' y1='229' x2='495' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='530' y1='229' x2='530' y2='235' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='372' x2='183' y2='372' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='337' x2='183' y2='337' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='302' x2='183' y2='302' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='267' x2='183' y2='267' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='232' x2='183' y2='232' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='197' x2='183' y2='197' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='162' x2='183' y2='162' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='127' x2='183' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='92' x2='183' y2='92' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='57' x2='183' y2='57' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='177' y1='22' x2='183' y2='22' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='40' y1='232' x2='536' y2='232' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='536,232 527,236.1 527,227.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='180' y1='372' x2='180' y2='16' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='180,16 184.1,25 175.9,25' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='285' y1='22' x2='285' y2='372' stroke='var(--destructive,#c4352e)' stroke-width='1.3' stroke-dasharray='5 4' stroke-linecap='round'/><path d='M40,319.5 L285,197 L530,74.5' fill='none' stroke='var(--info,#2a6fba)' stroke-width='2' stroke-linejoin='round' clip-path='url(#clip8aa8e137_1)'/><path d='M40,-30.5 L285,337 L530,704.5' fill='none' stroke='var(--gold,#d9a21f)' stroke-width='2' stroke-linejoin='round' clip-path='url(#clip8aa8e137_1)'/><path d='M40,329.5 L41.7,328.7 L43.5,327.9 L45.2,327.1 L47,326.3 L48.7,325.5 L50.5,324.7 L52.2,323.9 L53.9,323.1 L55.7,322.3 L57.4,321.6 L59.2,320.8 L60.9,320 L62.7,319.2 L64.4,318.4 L66.1,317.6 L67.9,316.8 L69.6,316.1 L71.4,315.3 L73.1,314.5 L74.8,313.7 L76.6,313 L78.3,312.2 L80.1,311.4 L81.8,310.6 L83.6,309.9 L85.3,309.1 L87,308.4 L88.8,307.6 L90.5,306.8 L92.3,306.1 L94,305.3 L95.8,304.6 L97.5,303.8 L99.2,303.1 L101,302.3 L102.7,301.6 L104.5,300.8 L106.2,300.1 L108,299.4 L109.7,298.6 L111.4,297.9 L113.2,297.2 L114.9,296.4 L116.7,295.7 L118.4,295 L120.2,294.3 L121.9,293.6 L123.6,292.9 L125.4,292.2 L127.1,291.5 L128.9,290.8 L130.6,290.1 L132.4,289.4 L134.1,288.7 L135.8,288 L137.6,287.3 L139.3,286.7 L141.1,286 L142.8,285.3 L144.6,284.7 L146.3,284 L148,283.4 L149.8,282.7 L151.5,282.1 L153.3,281.5 L155,280.8 L156.7,280.2 L158.5,279.6 L160.2,279 L162,278.4 L163.7,277.8 L165.5,277.3 L167.2,276.7 L168.9,276.1 L170.7,275.6 L172.4,275 L174.2,274.5 L175.9,274 L177.7,273.5 L179.4,273 L181.1,272.5 L182.9,272.1 L184.6,271.6 L186.4,271.2 L188.1,270.7 L189.9,270.3 L191.6,269.9 L193.3,269.6 L195.1,269.2 L196.8,268.9 L198.6,268.6 L200.3,268.3 L202.1,268 L203.8,267.8 L205.5,267.6 L207.3,267.4 L209,267.2 L210.8,267.1 L212.5,267 L214.3,267 L216,267 L217.7,267.1 L219.5,267.2 L221.2,267.3 L223,267.5 L224.7,267.8 L226.4,268.1 L228.2,268.5 L229.9,269 L231.7,269.6 L233.4,270.3 L235.2,271.1 L236.9,272 L238.6,273 L240.4,274.2 L242.1,275.6 L243.9,277.1 L245.6,278.9 L247.4,280.9 L249.1,283.2 L250.8,285.8 L252.6,288.8 L254.3,292.2 L256.1,296.2 L257.8,300.7 L259.6,306 L261.3,312.2 L263,319.5 L264.8,328.3 L266.5,338.8 L268.3,351.8 L270,367.9 L271.8,388.6 L273.5,415.7 L275.2,452.8 L277,506.5 L278.7,590.4 L280.5,739.5' fill='none' stroke='var(--primary,#0f6b4f)' stroke-width='2.5' stroke-linejoin='round' clip-path='url(#clip8aa8e137_1)'/><path d='M289.5,-345.5 L291.3,-196.4 L293,-112.5 L294.8,-58.8 L296.5,-21.7 L298.2,5.4 L300,26.1 L301.7,42.2 L303.5,55.2 L305.2,65.7 L307,74.5 L308.7,81.8 L310.4,88 L312.2,93.3 L313.9,97.8 L315.7,101.8 L317.4,105.2 L319.2,108.2 L320.9,110.8 L322.6,113.1 L324.4,115.1 L326.1,116.9 L327.9,118.4 L329.6,119.8 L331.4,121 L333.1,122 L334.8,122.9 L336.6,123.7 L338.3,124.4 L340.1,125 L341.8,125.5 L343.6,125.9 L345.3,126.2 L347,126.5 L348.8,126.7 L350.5,126.8 L352.3,126.9 L354,127 L355.8,127 L357.5,127 L359.2,126.9 L361,126.8 L362.7,126.6 L364.5,126.4 L366.2,126.2 L367.9,126 L369.7,125.7 L371.4,125.4 L373.2,125.1 L374.9,124.8 L376.7,124.4 L378.4,124.1 L380.1,123.7 L381.9,123.3 L383.6,122.8 L385.4,122.4 L387.1,121.9 L388.9,121.5 L390.6,121 L392.3,120.5 L394.1,120 L395.8,119.5 L397.6,119 L399.3,118.4 L401.1,117.9 L402.8,117.3 L404.5,116.7 L406.3,116.2 L408,115.6 L409.8,115 L411.5,114.4 L413.3,113.8 L415,113.2 L416.7,112.5 L418.5,111.9 L420.2,111.3 L422,110.6 L423.7,110 L425.5,109.3 L427.2,108.7 L428.9,108 L430.7,107.3 L432.4,106.7 L434.2,106 L435.9,105.3 L437.6,104.6 L439.4,103.9 L441.1,103.2 L442.9,102.5 L444.6,101.8 L446.4,101.1 L448.1,100.4 L449.8,99.7 L451.6,99 L453.3,98.3 L455.1,97.6 L456.8,96.8 L458.6,96.1 L460.3,95.4 L462,94.6 L463.8,93.9 L465.5,93.2 L467.3,92.4 L469,91.7 L470.8,90.9 L472.5,90.2 L474.2,89.4 L476,88.7 L477.7,87.9 L479.5,87.2 L481.2,86.4 L483,85.6 L484.7,84.9 L486.4,84.1 L488.2,83.4 L489.9,82.6 L491.7,81.8 L493.4,81 L495.1,80.3 L496.9,79.5 L498.6,78.7 L500.4,77.9 L502.1,77.2 L503.9,76.4 L505.6,75.6 L507.3,74.8 L509.1,74 L510.8,73.2 L512.6,72.4 L514.3,71.7 L516.1,70.9 L517.8,70.1 L519.5,69.3 L521.3,68.5 L523,67.7 L524.8,66.9 L526.5,66.1 L528.3,65.3 L530,64.5' fill='none' stroke='var(--primary,#0f6b4f)' stroke-width='2.5' stroke-linejoin='round' clip-path='url(#clip8aa8e137_1)'/><circle cx='215' cy='267' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='355' cy='127' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='250' cy='284.5' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='285' cy='197' r='3.5' fill='var(--success,#1a7a36)' stroke='var(--success,#1a7a36)' stroke-width='1'/><text x='40' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−4</text><text x='75' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−3</text><text x='110' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='145' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='215' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='250' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='285' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='320' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='355' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='390' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='425' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='460' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='495' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>9</text><text x='530' y='249' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>10</text><text x='173' y='376' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−8</text><text x='173' y='341' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−6</text><text x='173' y='306' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−4</text><text x='173' y='271' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='173' y='201' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='173' y='166' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='173' y='131' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='173' y='96' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='173' y='61' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>10</text><text x='173' y='26' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>12</text><text x='173' y='248' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='534' y='223' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='188' y='12' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='291' y='361.5' font-size='12' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x = 3</text><text x='516' y='106' font-size='14' text-anchor='end' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(D)</text><text x='148.5' y='86.8' font-size='14' text-anchor='start' fill='var(--gold,#d9a21f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(T)</text><text x='526.5' y='46.5' font-size='14' text-anchor='end' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(C)</text><text x='207' y='259' font-size='13' text-anchor='end' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>S</text><text x='364' y='145' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>S'</text><text x='242' y='302.5' font-size='13' text-anchor='end' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='276' y='189' font-size='13' text-anchor='end' fill='var(--success,#1a7a36)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>I</text><text x='280' y='412' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure : la courbe (C), les asymptotes et la tangente (T) en A</text></svg>\n\n### Piège à éviter\nRelier les deux branches ou faire traverser l'asymptote verticale : $f$ n'est pas définie en $3$, la courbe a deux branches séparées qui ne franchissent jamais la droite $x=3$.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Montre que f(3 + h) + f(3 - h) = 4 pour tout h non nul, donc I(3 ; 2) est centre de symétrie",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trace l'asymptote x = 3 en pointillés et la droite (D) : y = x - 1, avec des axes gradués",
+              "points": 0.25
+            },
+            {
+              "libelle": "Place les points S(1 ; -2), S'(5 ; 6) et A(2 ; -3) avec leurs ordonnées exactes",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trace la tangente (T) : y = -3x + 3, par A et par (0 ; 3)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trace deux branches conformes au tableau de variations, qui se rapprochent des asymptotes sans les couper",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "tracé de courbe",
+            "asymptote oblique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q7-0",
+              "competence": "Construire la courbe d'une fonction à partir des éléments d'une étude complète",
+              "contenu_markdown": "Pour construire une courbe à partir d'une étude complète, on trace d'abord les axes gradués, les asymptotes, la tangente et les points remarquables (extremums, point d'abscisse donnée), puis on dessine chaque branche en suivant le tableau de variations et en se rapprochant des asymptotes. Pour montrer qu'un point $I(a\\,;b)$ est centre de symétrie, on vérifie que $f(a+h)+f(a-h)=2b$ pour tout $h$ tel que $a\\pm h$ appartienne à l'ensemble de définition.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "8",
+          "ordre": 8,
+          "enonce_markdown": "Discuter graphiquement, selon les valeurs du réel $m$, le nombre de solutions de l'équation $f(x)=m$. Résoudre ensuite par le calcul l'équation $f(x)=7$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe nombre de solutions de $f(x)=m$ est le nombre de points d'intersection de $(\\mathcal{C})$ avec la droite horizontale $y=m$ ; on le lit dans le tableau de variations en examinant, sur chaque intervalle où $f$ est strictement monotone, si $m$ appartient à l'ensemble des valeurs prises, extremums compris.\n\n**Lecture.** Sur le tracé de la question 7, une droite horizontale $y=m$ coupe $(\\mathcal{C})$ en autant de points que l'équation a de solutions. Sur chacun des quatre intervalles où $f$ est strictement monotone, $f$ prend les valeurs : $]-\\infty\\,;-2]$ sur $]-\\infty\\,;1]$ ; $]-\\infty\\,;-2]$ sur $[1\\,;3[$ ; $[6\\,;+\\infty[$ sur $]3\\,;5]$ ; $[6\\,;+\\infty[$ sur $[5\\,;+\\infty[$. D'où :\n\n- si $m<-2$, deux solutions, une dans $]-\\infty\\,;1[$ et une dans $]1\\,;3[$ ;\n- si $m=-2$, une solution, $x=1$ ;\n- si $-2<m<6$, aucune solution : la droite passe entre les deux branches ;\n- si $m=6$, une solution, $x=5$ ;\n- si $m>6$, deux solutions, une dans $]3\\,;5[$ et une dans $]5\\,;+\\infty[$.\n\n**Calcul pour $m=7$.** Pour $x\\neq3$ : $f(x)=7\\iff x^2-4x+7=7(x-3)\\iff x^2-11x+28=0\\iff(x-4)(x-7)=0$. Les solutions $x=4$ et $x=7$ sont différentes de $3$. On retrouve bien les deux solutions annoncées pour $m=7>6$.\n\n### Piège à éviter\nOublier les cas particuliers $m=-2$ et $m=6$ : la droite horizontale touche alors la courbe en un seul point, à l'extremum, et il n'y a qu'une solution.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Se ramène aux intersections de (C) avec la droite y = m et utilise les extremums -2 et 6",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne le bon nombre de solutions dans les cinq cas : 2, 1, 0, 1, 2",
+              "points": 0.5
+            },
+            {
+              "libelle": "Résout f(x) = 7 : x² - 11x + 28 = 0, puis x = 4 ou x = 7",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "tableau de variation",
+            "tracé de courbe"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-1-2026-s1-ex5-q8-0",
+              "competence": "Discuter le nombre de solutions de f(x)=m avec un tableau de variations",
+              "contenu_markdown": "Le nombre de solutions de $f(x)=m$ est le nombre de points d'intersection de $(\\mathcal{C})$ avec la droite horizontale $y=m$ ; on le lit dans le tableau de variations en examinant, sur chaque intervalle où $f$ est strictement monotone, si $m$ appartient à l'ensemble des valeurs prises, extremums compris.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
