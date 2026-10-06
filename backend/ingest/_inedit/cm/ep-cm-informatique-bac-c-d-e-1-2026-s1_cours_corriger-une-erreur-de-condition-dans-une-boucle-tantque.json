@@ -1,0 +1,95 @@
+{
+  "type": "cours",
+  "cours_id": "cours-corriger-une-erreur-de-condition-dans-une-boucle-t-ibcde1",
+  "meta": {
+    "titre": "Corriger une erreur de condition dans une boucle Tantque",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structures répétitives",
+    "duree_estimee_min": 20,
+    "tags": [
+      "boucle while",
+      "algorithmique",
+      "trace d'exécution"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-c-d-e-1-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme qui compte une semaine de trop ou un jour de moins n'a pas besoin d'un gros bug : une seule ligne de condition suffit. La boucle `Tantque` est la structure où ce genre d'erreur se glisse le plus facilement, et un test sur la valeur limite la démasque presque toujours."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure répétitive `Tantque ... Faire ... Fintantque`",
+        "Opérateurs de comparaison `<`, `<=`, `>`, `>=`",
+        "Déroulement d'un algorithme à la main avec un tableau de trace"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La condition d'un Tantque est la condition pour continuer",
+      "contenu_markdown": "La condition écrite après `Tantque` dit quand la boucle **continue** : dès qu'elle devient fausse, la boucle s'arrête et le programme passe à l'instruction suivante.\n\n- Pour s'arrêter quand une valeur qui croît **atteint** un seuil `S`, on écrit `Tantque (v < S)` : le cas `v = S` est déjà un cas d'arrêt.\n- Pour s'arrêter seulement quand le seuil est **dépassé**, on écrit `Tantque (v <= S)`.\n- Pour une valeur qui décroît jusqu'à 0, on écrit `Tantque (v > 0)`.\n\nPour contrôler une condition, on déroule l'algorithme sur la valeur limite, celle où `v` tombe exactement sur `S`.",
+      "formule_principale": "\\text{arret des que } v \\geq S \\iff \\text{continuer tant que } v < S"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un commerçant double sa mise chaque jour, à partir de 5 F. Il veut savoir en combien de jours la mise atteint au moins 80 F. Son algorithme initialise `mise ← 5` et `jours ← 0`, puis exécute `Tantque (mise <= 80) Faire mise ← mise * 2 ; jours ← jours + 1 Fintantque`. Il affiche 5 jours. Trouver l'erreur.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dérouler l'algorithme",
+          "justification": "On note `mise` et `jours` après chaque tour.",
+          "resultat_markdown": "Tour 1 : 10 et 1. Tour 2 : 20 et 2. Tour 3 : 40 et 3. Tour 4 : 80 et 4. Tour 5 : 160 et 5."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la valeur limite",
+          "justification": "Au tour 4, `mise` vaut exactement 80 : l'objectif est atteint.",
+          "resultat_markdown": "Condition `80 <= 80` : vraie, donc un tour de trop est exécuté."
+        },
+        {
+          "numero": 3,
+          "action": "Corriger la condition",
+          "justification": "Pour s'arrêter quand la valeur atteint le seuil, l'inégalité doit être stricte.",
+          "resultat_markdown": "`Tantque (mise < 80) Faire`"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier sur la valeur limite",
+          "justification": "On déroule de nouveau avec la condition corrigée.",
+          "resultat_markdown": "Au tour 4, `80 < 80` est faux : la boucle s'arrête et l'algorithme affiche 4 jours."
+        }
+      ],
+      "conclusion_markdown": "L'erreur est le `<=` : la mise atteint 80 F au quatrième jour, et non au cinquième."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Écrire `<=` alors que l'énoncé demande d'arrêter dès que le seuil est atteint : la boucle fait un tour de trop.",
+        "Écrire `<` alors que le seuil lui-même doit encore être traité : la boucle s'arrête un tour trop tôt.",
+        "Tester la correction sur une valeur quelconque : seule la valeur limite (égalité exacte) révèle l'erreur."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Avec `n ← 1` et `k ← 0`, la boucle `Tantque (n < 10) Faire n ← n + 3 ; k ← k + 1` s'exécute combien de fois ? Réponse : 3 fois (n prend 4, 7, 10).",
+        "Même question avec `Tantque (n <= 10)`. Réponse : 4 fois, car `10 <= 10` est vrai.",
+        "Un réservoir de 100 L perd 20 L par jour. Pour compter les jours jusqu'à ce qu'il soit vide, faut-il écrire `Tantque (volume >= 0)` ou `Tantque (volume > 0)` ? Réponse : `volume > 0` donne 5 jours ; `volume >= 0` donnerait 6 jours."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La condition d'un `Tantque` décrit quand la boucle continue, pas quand elle s'arrête.",
+        "Pour s'arrêter dès qu'un seuil est atteint, on utilise une inégalité stricte ; le cas d'égalité est déjà un cas d'arrêt.",
+        "On vérifie toujours la condition en déroulant l'algorithme sur la valeur limite."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "type": "cours",
+  "cours_id": "cours-ecrire-une-fonction-c-qui-compte-les-elements-d-un-ibcde1",
+  "meta": {
+    "titre": "Écrire une fonction C qui compte les éléments d'un tableau vérifiant une condition",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation en langage C : tableaux et fonctions",
+    "duree_estimee_min": 25,
+    "tags": [
+      "langage C",
+      "tableau",
+      "boucle for"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-c-d-e-1-2026-s1-ex5-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de notes dépassent la moyenne, combien de ventes dépassent un seuil, combien de températures sont négatives ? Toutes ces questions se règlent avec la même petite fonction : un compteur, une boucle et un test."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déclaration et indices d'un tableau en C (de 0 à n - 1)",
+        "Boucle `for` et opérateurs de comparaison",
+        "Définition et appel d'une fonction avec `return`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le modèle de la fonction qui compte",
+      "contenu_markdown": "Une fonction qui compte les cases d'un tableau vérifiant une condition suit toujours quatre étapes :\n\n1. déclarer un compteur et l'initialiser à 0 **avant** la boucle ;\n2. parcourir les cases avec `for (i = 0; i < n; i++)` ;\n3. dans la boucle, tester la condition sur `t[i]` et incrémenter le compteur quand elle est vraie ;\n4. renvoyer le compteur avec `return`, **après** la boucle.\n\nLe tableau est passé avec sa taille `n`, car une fonction ne connaît pas la taille d'un tableau reçu en paramètre.",
+      "formule_principale": "\\text{nb} = 0 \\;\\to\\; \\text{parcourir } t[0..n-1] \\;\\to\\; \\text{nb} = \\text{nb} + 1 \\text{ si la condition est vraie} \\;\\to\\; \\text{renvoyer nb}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la fonction `int admis(float notes[], int n)` qui renvoie le nombre de notes supérieures ou égales à 10 dans un tableau de `n` notes, puis donner le résultat pour le tableau `{8.5, 12, 10, 15.25, 9}`.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'en-tête et le compteur",
+          "justification": "Le tableau et sa taille sont en paramètres ; le compteur démarre à 0 avant la boucle.",
+          "resultat_markdown": "`int admis(float notes[], int n) { int i, nb = 0;`"
+        },
+        {
+          "numero": 2,
+          "action": "Parcourir le tableau",
+          "justification": "Les indices vont de 0 à n - 1.",
+          "resultat_markdown": "`for (i = 0; i < n; i++)`"
+        },
+        {
+          "numero": 3,
+          "action": "Tester et compter",
+          "justification": "Une note est comptée si elle vaut au moins 10 : on utilise `>=`.",
+          "resultat_markdown": "`if (notes[i] >= 10) nb = nb + 1;`"
+        },
+        {
+          "numero": 4,
+          "action": "Renvoyer le résultat",
+          "justification": "Le `return` se place après la boucle.",
+          "resultat_markdown": "`return nb; }`"
+        },
+        {
+          "numero": 5,
+          "action": "Appliquer au tableau donné",
+          "justification": "Les notes 12, 10 et 15.25 sont supérieures ou égales à 10 ; 8.5 et 9 ne le sont pas.",
+          "resultat_markdown": "La fonction renvoie 3."
+        }
+      ],
+      "conclusion_markdown": "La fonction compte 3 notes. En remplaçant le test par `notes[i] > 10`, elle en compterait 2, car 10 n'est plus retenu."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Initialiser le compteur à l'intérieur de la boucle : il repart de 0 à chaque tour.",
+        "Placer le `return` dans la boucle : la fonction s'arrête dès la première case.",
+        "Écrire `i <= n` dans la boucle : la case `t[n]` n'existe pas.",
+        "Confondre `=` (affectation) et `==` (test d'égalité) dans la condition."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Écrire `int pairs(int t[], int n)` qui compte les valeurs paires. Test : sur {4, 7, 10, 3, 8}, elle renvoie 3. Indice : `t[i] % 2 == 0`.",
+        "Écrire `int occurrences(int t[], int n, int x)` qui compte les cases égales à `x`. Test : sur {2, 5, 2, 2, 9} avec `x = 2`, elle renvoie 3.",
+        "Écrire `int somme(int t[], int n)` qui renvoie la somme des cases. Test : sur {6, 2, 9, 4}, elle renvoie 21. Ici le compteur devient un cumul : `s = s + t[i]`."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Compteur à 0 avant la boucle, `return` après la boucle.",
+        "La boucle va de 0 à n - 1 et teste `t[i]` à chaque tour.",
+        "Le même modèle sert à compter, à sommer ou à chercher une valeur : seule l'instruction dans le test change."
+      ]
+    }
+  ]
+}
