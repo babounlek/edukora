@@ -1489,4 +1489,26 @@ export interface ReponseRecherche {
   matieres: { code: string; label: string; total: number }[]
   /** Thèmes proposés quand rien ne correspond. */
   suggestions: ResultatRecherche[]
+  /** Ce que le moteur a compris de la requête (examen, matière, année, type voulu) - null quand elle n'a
+   * pas pu être analysée (trop courte). */
+  intention: IntentionRecherche | null
+}
+
+/** Ce que le moteur a compris d'une requête comme « bac c maths 2019 corrigé » : des filtres, que l'élève
+ * peut retirer un à un (paramètre `sans`), et des types de contenu qui passent devant. */
+export interface IntentionRecherche {
+  cursus: { libelle: string; ids: number[] } | null
+  matiere: { libelle: string; codes: string[] } | null
+  annees: number[]
+  types: TypeResultatRecherche[]
+  /** Mots d'intention retirés de la recherche (« corrige », « sujet »...), ramenés au singulier. */
+  mots_type: string[]
+  /** Vrai quand ces filtres ne donnaient aucun résultat : ils ont été abandonnés, les mots cherchés tels quels. */
+  ignoree: boolean
+}
+
+/** Ce que l'élève est peut-être en train d'écrire : un intitulé de thème et sa matière. */
+export interface CompletionRecherche {
+  texte: string
+  matiere: string
 }

@@ -206,9 +206,27 @@ export function oublierRecentes() {
 /** D'où part une recherche : la palette de l'en-tête ou la page de résultats. */
 export type SourceRecherche = "palette" | "page"
 
-/** Une recherche validée (Entrée ou bouton). Jamais le texte : seulement d'où elle part. */
-export function tracerRechercheLancee(source: SourceRecherche) {
-  trackEvent("recherche_lancee", { source })
+/** Une recherche validée (Entrée, bouton, suggestion, thème proposé). Jamais le texte : seulement d'où elle part
+ * et, quand c'est une suggestion, comment (`via` : "completion" = une complétion pendant la frappe). */
+export function tracerRechercheLancee(source: SourceRecherche, via?: "completion") {
+  trackEvent("recherche_lancee", via ? { source, via } : { source })
+}
+
+/** Les mots d'intention retirés de la requête (« corrigés », « sujets »...), tels qu'on les montre dans la
+ * pastille « Compris ». Clés : le mot ramené au singulier, comme le fait le serveur. */
+export const LIBELLES_MOT_TYPE: Record<string, string> = {
+  corrige: "Corrigés",
+  sujet: "Sujets",
+  epreuve: "Épreuves",
+  annale: "Annales",
+  exercice: "Exercices",
+  cour: "Cours",
+  lecon: "Leçons",
+  fiche: "Fiches",
+  quiz: "Quiz",
+  qcm: "QCM",
+  question: "Questions",
+  theme: "Thèmes",
 }
 
 /** Un résultat ouvert : son type et son rang (1 = premier de son groupe) disent si le classement

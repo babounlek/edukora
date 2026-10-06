@@ -14,6 +14,7 @@ Une recherche qui ne donne rien est retentée avec le vocabulaire du catalogue (
 import math
 import re
 from collections import Counter, defaultdict
+from dataclasses import dataclass, field
 
 from django.db.models import Exists, F, OuterRef, Q
 from django.db.models.functions import Length
@@ -22,7 +23,8 @@ from django.utils import timezone
 from access.services import bulk_active_inedite_cursus_ids, bulk_active_subscription_cursus_ids
 from catalog.models import Cours, Exercise, Lesson, StatutContenu, Subject, resolve_examen_label
 
-from . import texte
+from . import intention as comprendre
+from . import synonymes, texte
 from .indexation import texte_public_cours
 from .models import EntreeRecherche, RechercheSansResultat, TermeRecherche, TypeResultat
 
@@ -57,36 +59,71 @@ def _analyser(requete):
     return list(dict.fromkeys(jetons))[:MAX_JETONS]
 
 
+@dataclass
+class Terme:
+    """Un mot à chercher : lui-même, ses équivalents connus (voir recherche.synonymes), et s'il est exigé."""
+
+    texte: str
+    alts: list = field(default_factory=list)
+    requis: bool = False
+
+    @property
+    def formes(self):
+        return [self.texte, *self.alts]
+
+
+def _termes(jetons):
+    return [Terme(j, synonymes.alternatives(j), synonymes.est_requis(j)) for j in jetons]
+
+
 # --- Étape 1 : candidats ---------------------------------------------------------------
 
 
-def _queryset(pays, requis, *, cursus_id=None, matiere=None, type_=None):
+def _queryset(
+    pays, termes, *, cursus_ids=None, matiere=None, matieres=None, annees=None, type_=None,
+):
+    """`matiere` : un code (le filtre choisi dans l'interface) ; `matieres` : des codes (ce que la requête
+    nomme, voir intention) ; `annees` : les années nommées ; `cursus_ids` : les examens visés."""
     queryset = EntreeRecherche.objects.filter(pays=pays)
     if matiere:
         queryset = queryset.filter(matiere__code=matiere)
+    if matieres:
+        queryset = queryset.filter(matiere__code__in=matieres)
+    if annees:
+        queryset = queryset.filter(annee__in=annees)
     if type_:
         queryset = queryset.filter(type=type_)
-    if cursus_id:
+    if cursus_ids:
         lien = EntreeRecherche.cursus.through.objects.filter(
-            entreerecherche_id=OuterRef("pk"), cursus_id=cursus_id,
+            entreerecherche_id=OuterRef("pk"), cursus_id__in=cursus_ids,
         )
         queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
-    for jeton in requis:
-        # Début de mot : l'index range ses textes entourés d'espaces (voir indexation._cles).
-        debut = f" {jeton}"
-        queryset = queryset.filter(Q(cles_norm__contains=debut) | Q(texte_norm__contains=debut))
+    for terme in termes:
+        if not terme.requis:
+            continue
+        # Début de mot : l'index range ses textes entourés d'espaces (voir indexation._cles). Un mot est
+        # trouvé s'il l'est lui-même OU par l'un de ses équivalents.
+        condition = Q()
+        for forme in terme.formes:
+            debut = f" {forme}"
+            condition |= Q(cles_norm__contains=debut) | Q(texte_norm__contains=debut)
+        queryset = queryset.filter(condition)
     return queryset
 
 
-def _lignes(pays, requis, **filtres):
+def _lignes(pays, termes, **filtres):
     return list(
-        _queryset(pays, requis, **filtres).values_list(
+        _queryset(pays, termes, **filtres).values_list(
             "id", "type", "titre_norm", "cles_norm", "annee", "groupe", "poids", "matiere_id",
         )[:PLAFOND_CANDIDATS],
     )
 
 
 # --- Étape 2 : classement --------------------------------------------------------------
+
+# Un équivalent (« disque » pour « cercle ») vaut un peu moins que le mot tapé : à pertinence égale, celui
+# qui contient le mot de l'élève passe devant.
+POIDS_EQUIVALENT = 0.8
 
 
 def _suite_de_mots(mots, jetons):
@@ -98,32 +135,47 @@ def _suite_de_mots(mots, jetons):
     )
 
 
-def _score(ligne, jetons, requis):
+def _points(forme, mots, titre_norm, cles_norm):
+    """(points, hors_titre) d'UNE forme de mot : (0, None) si elle n'apparaît ni dans le titre ni dans les
+    clés (elle n'a alors été trouvée que dans le texte)."""
+    court = len(forme) < 3
+    # Une forme courte (« d », « ti ») ne vaut que comme MOT entier : en préfixe elle toucherait
+    # n'importe quel mot qui commence par la même lettre.
+    if forme in mots:
+        return 12, False
+    if not court and any(m.startswith(forme) for m in mots):
+        return 8, False
+    if (f" {forme} " if court else f" {forme}") in cles_norm:
+        return 4, True
+    if not court and forme in titre_norm:
+        return 2, False
+    return 0, None
+
+
+def _score(ligne, termes):
     _id, _type, titre_norm, cles_norm, annee, _groupe, poids, _matiere = ligne
     mots = titre_norm.split()
     score = 0.0
     hors_titre = 0
-    for jeton in jetons:
-        court = len(jeton) < 3
-        # Un jeton court (« d », « ti ») ne vaut que comme MOT entier : en préfixe il toucherait
-        # n'importe quel mot qui commence par la même lettre.
-        if jeton in mots:
-            score += 12
-        elif not court and any(m.startswith(jeton) for m in mots):
-            score += 8
-        elif (f" {jeton} " if court else f" {jeton}") in cles_norm:
-            score += 4
-            hors_titre += jeton in requis
-        elif not court and jeton in titre_norm:
-            score += 2
-        elif jeton in requis:
+    for terme in termes:
+        meilleur, hors = 0.0, None
+        for rang, forme in enumerate(terme.formes):
+            points, hors_forme = _points(forme, mots, titre_norm, cles_norm)
+            points *= 1 if rang == 0 else POIDS_EQUIVALENT
+            if points > meilleur:
+                meilleur, hors = points, hors_forme
+        if meilleur > 0:
+            score += meilleur
+            hors_titre += bool(hors and terme.requis)
+        elif terme.requis:
             score += 1  # trouvé seulement dans le texte
             hors_titre += 1
-    if len(requis) > 0 and hors_titre == 0:
+    requis = [t for t in termes if t.requis]
+    if requis and hors_titre == 0:
         score += 10  # tous les mots exigés sont dans le titre
-    if len(jetons) > 1:
+    if len(termes) > 1:
         utiles = [m for m in mots if m not in texte.MOTS_VIDES]
-        if _suite_de_mots(utiles, jetons):
+        if _suite_de_mots(utiles, [t.texte for t in termes]):
             score += 15  # l'expression exacte, dans l'ordre
     # Départages : titre court (plus précis), contenu abondant (thème riche), année récente.
     score -= 0.15 * len(mots)
@@ -132,13 +184,13 @@ def _score(ligne, jetons, requis):
     return score
 
 
-def _classer(lignes, jetons, requis):
+def _classer(lignes, termes):
     """{type: [(score, id, nb)]} trié par score décroissant. Les questions de quiz d'un même
     thème forment UN résultat (nb = nombre de questions qui correspondent), et disparaissent si
     ce thème est déjà proposé en tant que thème - sa carte donne déjà accès au quiz."""
     par_type = defaultdict(list)
     for ligne in lignes:
-        par_type[ligne[1]].append((_score(ligne, jetons, requis), ligne[0], ligne[5]))
+        par_type[ligne[1]].append((_score(ligne, termes), ligne[0], ligne[5]))
 
     themes_proposes = {groupe for _, _, groupe in par_type.get(TypeResultat.THEME.value, ())}
     quiz = {}
@@ -164,31 +216,48 @@ def _classer(lignes, jetons, requis):
 
 # --- Fautes de frappe ------------------------------------------------------------------
 
+# Distance d'édition maximale entre le mot tapé et un mot de même prononciation : « fotosyntese » est à 4 de
+# « photosynthese » - la prononciation rapproche des graphies que la seule distance écarterait.
+ECART_PHONETIQUE_MAX = 4
+
 
 def corriger(jetons):
     """{jeton: mot du catalogue le plus proche} pour les jetons qui n'existent nulle part (même
-    pas comme début de mot). Une ou deux fautes selon la longueur du mot ; à distance égale, le
-    mot le plus fréquent du catalogue gagne. Même initiale exigée : sans cela, comparer chaque mot
-    à tout le vocabulaire coûterait des secondes."""
+    pas comme début de mot).
+
+    D'abord par la PRONONCIATION (voir texte.phonetique) : un élève écrit « teoreme », « fotosyntese »,
+    « hthales » comme il les entend, et la distance d'édition hésite (« tales » est aussi près de « table »
+    que de « thales »). Ensuite, à défaut, par la distance d'édition : une ou deux fautes selon la longueur du
+    mot, même initiale exigée - sans cela, comparer chaque mot à tout le vocabulaire coûterait des secondes.
+    À égalité, le mot le plus fréquent du catalogue gagne."""
     corrections = {}
     for jeton in jetons:
         if len(jeton) < 4 or TermeRecherche.objects.filter(terme__startswith=jeton).exists():
             continue
-        tolerance = 1 if len(jeton) <= 5 else 2
-        proches = (
-            TermeRecherche.objects.filter(terme__startswith=jeton[0])
-            .annotate(longueur=Length("terme"))
-            .filter(longueur__gte=len(jeton) - tolerance, longueur__lte=len(jeton) + tolerance)
-            .values_list("terme", "frequence")
-        )
         meilleur = None
-        for terme, frequence in proches:
-            ecart = texte.distance(jeton, terme, tolerance)
-            if ecart <= tolerance and (meilleur is None or (ecart, -frequence) < meilleur[0]):
-                meilleur = ((ecart, -frequence), terme)
+        cle = texte.phonetique(jeton)
+        if len(cle) >= 3:
+            for terme, frequence in TermeRecherche.objects.filter(phonetique=cle).values_list("terme", "frequence"):
+                ecart = texte.distance(jeton, terme, ECART_PHONETIQUE_MAX)
+                if ecart <= ECART_PHONETIQUE_MAX and (meilleur is None or (ecart, -frequence) < meilleur[0]):
+                    meilleur = ((ecart, -frequence), terme)
+        if meilleur is None:
+            tolerance = 1 if len(jeton) <= 5 else 2
+            proches = (
+                TermeRecherche.objects.filter(terme__startswith=jeton[0])
+                .annotate(longueur=Length("terme"))
+                .filter(longueur__gte=len(jeton) - tolerance, longueur__lte=len(jeton) + tolerance)
+                .values_list("terme", "frequence")
+            )
+            for terme, frequence in proches:
+                ecart = texte.distance(jeton, terme, tolerance)
+                if ecart <= tolerance and (meilleur is None or (ecart, -frequence) < meilleur[0]):
+                    meilleur = ((ecart, -frequence), terme)
         if meilleur:
             corrections[jeton] = meilleur[1]
     return corrections
+
+
 
 
 # --- Étape 3 : habillage ---------------------------------------------------------------
@@ -332,10 +401,12 @@ def _extraits(tranches, entrees, jetons):
     return extraits
 
 
-def _habiller(classement, par_groupe, decalage, type_, acces, cursus_prefere, jetons):
-    """Tranche chaque groupe, relit les lignes retenues et les sérialise."""
+def _habiller(classement, par_groupe, decalage, type_, acces, cursus_prefere, jetons, types_voulus=()):
+    """Tranche chaque groupe, relit les lignes retenues et les sérialise. Les types que la requête réclame
+    (« corrigé », « cours »...) passent en premier : ils ne sont jamais les seuls renvoyés, mais ils ouvrent la liste."""
+    ordre = [t for t in ORDRE_GROUPES if t in types_voulus] + [t for t in ORDRE_GROUPES if t not in types_voulus]
     tranches = {}
-    for type_groupe in ORDRE_GROUPES:
+    for type_groupe in ordre:
         liste = classement.get(type_groupe)
         if not liste:
             continue
@@ -344,7 +415,7 @@ def _habiller(classement, par_groupe, decalage, type_, acces, cursus_prefere, je
     extraits = _extraits(tranches, entrees, jetons)
     etiquettes = _Etiquettes()
     groupes = []
-    for type_groupe in ORDRE_GROUPES:
+    for type_groupe in ordre:
         if type_groupe not in tranches:
             continue
         resultats = [
@@ -407,9 +478,34 @@ def _requete_corrigee(requete, corrections):
     return " ".join(mots)
 
 
+def _recherche(pays, jetons, intention, *, cursus, matiere, type_, corriger_auto, requete):
+    """Une recherche complète avec UNE interprétation de la requête. Renvoie (lignes, termes, corrige) :
+    `corrige` est la requête corrigée à montrer à l'élève, ou None."""
+    termes = _termes(intention.restants)
+    cursus_ids = intention.cursus_ids or ([cursus] if cursus else None)
+    filtres = {
+        "cursus_ids": cursus_ids, "matiere": matiere, "matieres": intention.matiere_codes or None,
+        "annees": intention.annees or None, "type_": type_,
+    }
+    if not any(t.requis for t in termes) and not intention.filtres():
+        return [], termes, None
+    lignes = _lignes(pays, termes, **filtres)
+    corrige = None
+    if not lignes and corriger_auto:
+        requis = [t.texte for t in termes if t.requis]
+        corrections = corriger(requis)
+        if corrections:
+            termes_corriges = _termes([corrections.get(t.texte, t.texte) for t in termes])
+            lignes_corrigees = _lignes(pays, termes_corriges, **filtres)
+            if lignes_corrigees:
+                lignes, termes = lignes_corrigees, termes_corriges
+                corrige = _requete_corrigee(requete, corrections)
+    return lignes, termes, corrige
+
+
 def chercher(
     requete, *, pays, utilisateur=None, cursus=None, matiere=None, type_=None,
-    limite=LIMITE_DEFAUT, decalage=0, elargir=False, corriger_auto=True,
+    limite=LIMITE_DEFAUT, decalage=0, elargir=False, corriger_auto=True, sans=(),
 ):
     """
     Cherche `requete` dans l'index du `pays` (instance de catalog.Country).
@@ -419,6 +515,9 @@ def chercher(
     paginent ce groupe seul) ; sans lui, chaque groupe renvoie ses `limite` premiers résultats.
     `corriger_auto=False` : ne pas retenter avec le mot du catalogue le plus proche quand rien ne
     correspond (l'élève a refusé la suggestion).
+
+    `sans` : parties de l'intention à ne pas interpréter (voir intention.PARTIES) - l'élève a retiré la
+    pastille « BAC C » ou « 2019 », ces mots redeviennent des mots à chercher.
     """
     limite = max(1, min(int(limite), LIMITE_MAX))
     decalage = max(0, int(decalage))
@@ -426,6 +525,7 @@ def chercher(
         type_ = None
     filtre_cursus = None if elargir else cursus
     acces = _Acces(utilisateur)
+    sans = frozenset(sans) & frozenset(comprendre.PARTIES)
 
     reponse = {
         "q": str(requete or "").strip()[:LONGUEUR_MAX_REQUETE],
@@ -437,10 +537,11 @@ def chercher(
         "autres_cursus": 0,
         "matieres": [],
         "suggestions": [],
+        "intention": None,
     }
     jetons = _analyser(requete)
-    requis = [j for j in jetons if texte.est_requis(j)]
-    if not requis:
+    intention = comprendre.analyser(jetons, pays, sans)
+    if not any(synonymes.est_requis(j) for j in intention.restants) and not intention.filtres():
         reponse["trop_court"] = bool(jetons or reponse["q"])
         if not reponse["q"]:
             # Aucune requête (la page de recherche vient de s'ouvrir) : les thèmes de l'examen de l'élève, de
@@ -448,21 +549,26 @@ def chercher(
             reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces, NB_SUGGESTIONS_ACCUEIL)
         return reponse
 
-    # La matière ne filtre PAS en SQL : la répartition par matière doit rester visible une fois l'une
-    # d'elles choisie (« tangente » : maths, physique, chimie), pour pouvoir en changer d'un clic.
-    filtres = {"cursus_id": filtre_cursus, "type_": type_}
-    lignes = _lignes(pays, requis, **filtres)
-    if not lignes and corriger_auto:
-        corrections = corriger(requis)
-        if corrections:
-            jetons_corriges = [corrections.get(j, j) for j in jetons]
-            requis_corriges = [j for j in jetons_corriges if texte.est_requis(j)]
-            lignes_corrigees = _lignes(pays, requis_corriges, **filtres)
-            if lignes_corrigees:
-                lignes, jetons, requis = lignes_corrigees, jetons_corriges, requis_corriges
-                reponse["corrige"] = _requete_corrigee(requete, corrections)
+    # La matière choisie dans l'interface ne filtre PAS en SQL : la répartition par matière doit rester
+    # visible une fois l'une d'elles choisie (« tangente » : maths, physique, chimie), pour pouvoir en
+    # changer d'un clic.
+    lignes, termes, corrige = _recherche(
+        pays, jetons, intention, cursus=filtre_cursus, matiere=None, type_=type_,
+        corriger_auto=corriger_auto, requete=requete,
+    )
+    ignoree = False
+    if not lignes and (intention.filtres() or intention.types):
+        # Une interprétation qui ne donne rien est abandonnée : mieux vaut chercher les mots tels quels que
+        # répondre « aucun résultat » à une requête dont on a mal deviné le sens.
+        intention = comprendre.analyser(jetons, pays, frozenset(comprendre.PARTIES))
+        ignoree = True
+        lignes, termes, corrige = _recherche(
+            pays, jetons, intention, cursus=filtre_cursus, matiere=None, type_=type_,
+            corriger_auto=corriger_auto, requete=requete,
+        )
+    reponse["corrige"] = corrige
 
-    classement = _classer(lignes, jetons, requis)
+    classement = _classer(lignes, termes)
     matiere_de = {ligne[0]: ligne[7] for ligne in lignes}
     reponse["matieres"] = _repartition_matieres(classement, matiere_de)
     matiere_id = None
@@ -473,17 +579,55 @@ def chercher(
             if (gardes := [e for e in liste if matiere_de[e[1]] == matiere_id])
         }
         lignes = [ligne for ligne in lignes if ligne[7] == matiere_id]
-    reponse["groupes"] = _habiller(classement, limite, decalage, type_, acces, cursus, jetons)
+    jetons_affiches = [t.texte for t in termes]
+    reponse["groupes"] = _habiller(
+        classement, limite, decalage, type_, acces, cursus, jetons_affiches, intention.types,
+    )
     reponse["total"] = sum(len(liste) for liste in classement.values())
+    reponse["intention"] = {**intention.en_clair(), "ignoree": ignoree}
 
-    if filtre_cursus and reponse["total"] < SEUIL_AUTRES_CURSUS:
-        ailleurs = _queryset(pays, requis, type_=type_).count()
+    if filtre_cursus and not intention.cursus_ids and reponse["total"] < SEUIL_AUTRES_CURSUS:
+        filtres = {"type_": type_, "matieres": intention.matiere_codes or None, "annees": intention.annees or None}
         if matiere:
-            ailleurs = _queryset(pays, requis, type_=type_, matiere=matiere).count()
+            filtres["matiere"] = matiere
+        ailleurs = _queryset(pays, termes, **filtres).count()
         reponse["autres_cursus"] = max(0, ailleurs - len(lignes))
     if reponse["total"] == 0:
         reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces)
     return reponse
+
+
+# --- Complétion pendant la frappe -----------------------------------------------------
+
+NB_COMPLETIONS = 8
+
+
+def completer(requete, *, pays, cursus=None, limite=NB_COMPLETIONS):
+    """
+    Ce que l'élève est PEUT-ÊTRE en train d'écrire : des intitulés de thèmes qui contiennent tous les mots
+    tapés, le dernier comme début de mot (« theoreme tha » -> « théorème de Thalès »). Les plus riches d'abord,
+    sans les étiquettes de niveau, un seul par intitulé. Des thèmes seulement : ce sont les formulations les plus
+    courtes et les plus proches de ce qu'on tape ; les titres de cours et d'épreuves sont des phrases.
+    """
+    jetons = texte.jetons(str(requete or "")[:LONGUEUR_MAX_REQUETE])
+    if not jetons or len(jetons[-1]) < 2:
+        return []
+    queryset = EntreeRecherche.objects.filter(pays=pays, type=TypeResultat.THEME)
+    if cursus:
+        lien = EntreeRecherche.cursus.through.objects.filter(entreerecherche_id=OuterRef("pk"), cursus_id=cursus)
+        queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
+    for jeton in jetons:
+        queryset = queryset.filter(Q(titre_norm__startswith=jeton) | Q(titre_norm__contains=f" {jeton}"))
+    vus, resultat = set(), []
+    lignes = queryset.order_by("-poids", "id").values_list("titre", "titre_norm", "matiere__label")[: limite * 6]
+    for titre, titre_norm, matiere in lignes:
+        if titre_norm in vus or _theme_generique(titre_norm):
+            continue
+        vus.add(titre_norm)
+        resultat.append({"texte": titre, "matiere": matiere})
+        if len(resultat) >= limite:
+            break
+    return resultat
 
 
 # --- Journal des recherches vides ------------------------------------------------------

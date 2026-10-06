@@ -416,7 +416,8 @@ def _reconstruire_vocabulaire():
     with transaction.atomic():
         TermeRecherche.objects.all().delete()
         TermeRecherche.objects.bulk_create(
-            [TermeRecherche(terme=t, frequence=f) for t, f in compteur.items()], batch_size=2000,
+            [TermeRecherche(terme=t, frequence=f, phonetique=texte.phonetique(t)) for t, f in compteur.items()],
+            batch_size=2000,
         )
     return len(compteur)
 

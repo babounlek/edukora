@@ -206,3 +206,40 @@ def ancre_exercice(numero_exercice):
     texte = "".join(c for c in texte if not unicodedata.combining(c))
     texte = re.sub(r"[^a-z0-9]+", "-", texte).strip("-")
     return f"exercice-{texte or 'sans-numero'}"
+
+
+# --- Phonétique ------------------------------------------------------------------------
+
+# Digraphes ramenés à un seul son, dans cet ordre (« eau » avant « au »). Pas de règle des voyelles nasales :
+# elles créeraient plus de faux rapprochements qu'elles n'en corrigent.
+_DIGRAPHES = (
+    ("eau", "o"), ("au", "o"), ("ou", "u"), ("oi", "wa"), ("ai", "e"), ("ei", "e"),
+    ("ph", "f"), ("th", "t"), ("ch", "S"), ("sh", "S"), ("qu", "k"), ("ck", "k"), ("gn", "n"),
+)
+_FINALES_MUETTES = re.compile(r"(?<=.)(?:es|e|s|t|x|nt)$")
+
+
+def phonetique(mot):
+    """
+    Clé phonétique d'un mot normalisé (voir `normaliser`) : deux graphies qui se prononcent pareil donnent la
+    même clé. « teoreme » et « theoreme » -> « teorem » ; « fotosyntese » et « photosynthese » -> « fotosint » ;
+    « hthales » et « thales » -> « tal ».
+
+    Sert à corriger les fautes d'oreille que fait un élève au clavier d'un téléphone - celles que la distance
+    d'édition ne voit pas (« teoreme » est à 1 de « theoreme », mais « tales » est à 1 de « table » comme de
+    « thales » : seule la prononciation tranche).
+    """
+    cle = re.sub(r"[^a-z]", "", str(mot))
+    for source, cible in _DIGRAPHES:
+        cle = cle.replace(source, cible)
+    cle = cle.replace("tion", "sion")
+    cle = re.sub(r"c(?=[eiy])", "s", cle).replace("c", "k")
+    cle = re.sub(r"g(?=[eiy])", "j", cle)
+    cle = cle.replace("x", "ks").replace("z", "s").replace("w", "v").replace("y", "i").replace("h", "")
+    cle = re.sub(r"(.)\1+", r"\1", cle)
+    for _ in range(3):  # « derivees » : s puis e, une finale muette en découvre une autre
+        nouvelle = _FINALES_MUETTES.sub("", cle)
+        if nouvelle == cle:
+            break
+        cle = nouvelle
+    return cle

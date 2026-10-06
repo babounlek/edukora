@@ -1,6 +1,7 @@
 import { API_BASE_URL, apiRequest, getAccessToken } from "./client"
 import type {
   Accueil,
+  CompletionRecherche,
   Cours,
   CoursContent,
   CoursPreview,
@@ -949,6 +950,8 @@ export interface FiltresRecherche {
   elargir?: boolean
   /** Ne pas corriger la saisie (l'élève a refusé la correction proposée). */
   exact?: boolean
+  /** Parties de l'intention à ne pas interpréter (cursus, matiere, annee, type) : pastilles retirées. */
+  sans?: string[]
   /** Saisie en direct : jamais comptée dans le journal des recherches sans résultat. */
   rapide?: boolean
 }
@@ -967,6 +970,17 @@ export function rechercher(filtres: FiltresRecherche, signal?: AbortSignal) {
   // Jamais `false` : le backend ne teste que la valeur "true".
   if (filtres.elargir) params.set("elargir", "true")
   if (filtres.exact) params.set("exact", "true")
+  if (filtres.sans?.length) params.set("sans", filtres.sans.join(","))
   if (filtres.rapide) params.set("rapide", "true")
   return apiRequest<ReponseRecherche>(`/recherche/?${params.toString()}`, { auth: "optional", signal })
+}
+
+/** Ce que l'élève est peut-être en train d'écrire (intitulés de thèmes), pendant la frappe. */
+export function completerRecherche(filtres: { q: string; pays: string; cursus?: number | null }, signal?: AbortSignal) {
+  const params = new URLSearchParams({ q: filtres.q, pays: filtres.pays })
+  if (filtres.cursus) params.set("cursus", String(filtres.cursus))
+  return apiRequest<{ completions: CompletionRecherche[] }>(`/recherche/completer/?${params.toString()}`, {
+    auth: false,
+    signal,
+  })
 }

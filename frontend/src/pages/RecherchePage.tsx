@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { Link, useLocation, useParams, useSearchParams } from "react-router-dom"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Clock, Loader2, Search, SearchX, X } from "lucide-react"
 
-import { getMyProgression, listCursus, rechercher } from "@/api/endpoints"
+import { completerRecherche, getMyProgression, listCursus, rechercher } from "@/api/endpoints"
 import type { GroupeRecherche, ReponseRecherche, ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { formatCursus } from "@/components/CompteAReboursBadge"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { IconeType, ResultatCarte } from "@/components/recherche/ResultatRecherche"
 import { ResultatVedette } from "@/components/recherche/ResultatVedette"
+import { Surbrillance } from "@/components/recherche/Surbrillance"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,6 +27,7 @@ import {
   FAMILLES_RECHERCHE,
   type FamilleRecherche,
   LONGUEUR_MIN_RECHERCHE,
+  LIBELLES_MOT_TYPE,
   lireRecentes,
   memoriserRecente,
   oublierRecentes,
@@ -67,6 +69,9 @@ export function RecherchePage() {
   const famille = (TYPES_RECHERCHE as string[]).includes(typeBrut) ? familleDe(typeBrut as TypeResultatRecherche) : undefined
   const elargir = searchParams.get("elargir") === "1"
   const exact = searchParams.get("exact") === "1"
+  // Parties de l'intention que l'élève a retirées (pastilles « Compris » : cursus, matiere, annee, type).
+  const sansBrut = searchParams.get("sans") ?? ""
+  const sans = useMemo(() => sansBrut.split(",").filter(Boolean), [sansBrut])
 
   useSeo({
     title: q ? `Recherche : ${q}` : "Recherche",
@@ -87,8 +92,9 @@ export function RecherchePage() {
         const suivant = new URLSearchParams(prev)
         if (saisieStable.trim()) suivant.set("q", saisieStable.trim())
         else suivant.delete("q")
-        // Une nouvelle saisie repart d'une recherche corrigée normalement.
+        // Une nouvelle saisie repart d'une recherche corrigée et interprétée normalement.
         suivant.delete("exact")
+        suivant.delete("sans")
         return suivant
       },
       { replace: true },
@@ -101,6 +107,11 @@ export function RecherchePage() {
     if (q !== saisieStable.trim()) setSaisie(q)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q])
+
+  /** Retire une pastille « Compris » : ce mot redevient un mot comme un autre (paramètre `sans`). */
+  function retirer(partie: "cursus" | "matiere" | "annee" | "type") {
+    majParams({ sans: [...new Set([...sans, partie])].join(",") })
+  }
 
   function majParams(modifs: Record<string, string | null>) {
     setSearchParams(
@@ -133,10 +144,10 @@ export function RecherchePage() {
 
   // Vue d'ensemble : tous les groupes, quelques résultats chacun - et les compteurs des onglets.
   const ensemble = useQuery({
-    queryKey: ["recherche", "page", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact],
+    queryKey: ["recherche", "page", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, sansBrut],
     queryFn: ({ signal }) =>
       rechercher(
-        { q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact, limite: PAR_GROUPE },
+        { q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact, sans, limite: PAR_GROUPE },
         signal,
       ),
     enabled: interroger,
@@ -154,12 +165,76 @@ export function RecherchePage() {
   // Seulement s'il a de quoi proposer, et jamais dans une vue filtrée par type - la carte est une porte
   // d'entrée, pas un résultat de plus.
   const themes = groupes.find((g) => g.type === "THEME")?.resultats ?? []
-  const vedette = famille === undefined ? themes.find((t) => actionsTheme(country, t).length > 0) : undefined
+  // Une requête qui réclame des épreuves ou des cours (« bac c 2019 corrigé ») n'a que faire d'un thème en
+  // vedette : ce qu'elle demande passe devant, pas une porte d'entrée vers un thème.
+  const typesVoulus = data?.intention?.types ?? []
+  const veutAutreChoseQueDesThemes = typesVoulus.length > 0 && !typesVoulus.includes("THEME")
+  const vedette =
+    famille === undefined && !veutAutreChoseQueDesThemes
+      ? themes.find((t) => actionsTheme(country, t).length > 0)
+      : undefined
   // Les autres thèmes, en pastilles : de quoi rebondir sans retaper (un thème par intitulé distinct).
   const associees = themes
     .filter((t) => t.id !== vedette?.id && t.titre.toLowerCase() !== vedette?.titre.toLowerCase())
     .filter((t, i, tous) => tous.findIndex((u) => u.titre.toLowerCase() === t.titre.toLowerCase()) === i)
     .slice(0, 5)
+  // Ce que le moteur a compris de la requête, sous forme de pastilles retirables.
+  const intention = data?.intention
+  const compris: { cle: "cursus" | "matiere" | "annee" | "type"; libelle: string }[] = []
+  if (intention && !intention.ignoree) {
+    if (intention.cursus) compris.push({ cle: "cursus", libelle: intention.cursus.libelle })
+    if (intention.matiere) compris.push({ cle: "matiere", libelle: intention.matiere.libelle })
+    if (intention.annees.length > 0) compris.push({ cle: "annee", libelle: intention.annees.join(", ") })
+    if (intention.mots_type.length > 0) {
+      compris.push({ cle: "type", libelle: intention.mots_type.map((m) => LIBELLES_MOT_TYPE[m] ?? m).join(", ") })
+    }
+  }
+
+  // Complétion pendant la frappe : des intitulés de thèmes, demandés après une courte pause. Fermée tant que
+  // l'élève n'a rien tapé (arriver sur la page avec une recherche ne déroule rien).
+  const [completionOuverte, setCompletionOuverte] = useState(false)
+  const [completionActive, setCompletionActive] = useState(-1)
+  const saisieCompletion = useDebouncedValue(saisie.trim(), 150)
+  const completions = useQuery({
+    queryKey: ["recherche", "completer", country, cursusDeclare ?? null, saisieCompletion],
+    queryFn: ({ signal }) => completerRecherche({ q: saisieCompletion, pays: country, cursus: cursusDeclare }, signal),
+    enabled: completionOuverte && saisieCompletion.length >= LONGUEUR_MIN_RECHERCHE && cursusDeclare !== undefined,
+    staleTime: 5 * 60_000,
+    placeholderData: keepPreviousData,
+  })
+  // Une proposition identique à ce qui est déjà tapé n'apprend rien.
+  const propositions = (completionOuverte ? (completions.data?.completions ?? []) : []).filter(
+    (c) => c.texte.trim().toLowerCase() !== saisie.trim().toLowerCase(),
+  )
+  const jetonsCompletion = useMemo(() => jetonsDeSurbrillance(saisie), [saisie])
+
+  function choisirCompletion(proposition: string) {
+    setCompletionOuverte(false)
+    setCompletionActive(-1)
+    setSaisie(proposition)
+    majParams({ q: proposition, exact: null, sans: null })
+    memoriserRecente(proposition)
+    tracerRechercheLancee("page", "completion")
+  }
+
+  function surTouche(e: KeyboardEvent<HTMLInputElement>) {
+    // Sans liste ouverte, Entrée valide le formulaire comme d'habitude.
+    if (!completionOuverte || propositions.length === 0) return
+    if (e.key === "ArrowDown") {
+      e.preventDefault()
+      setCompletionActive((i) => (i + 1) % propositions.length)
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault()
+      setCompletionActive((i) => (i <= 0 ? propositions.length - 1 : i - 1))
+    } else if (e.key === "Enter" && completionActive >= 0) {
+      e.preventDefault()
+      choisirCompletion(propositions[completionActive].texte)
+    } else if (e.key === "Escape") {
+      setCompletionOuverte(false)
+      setCompletionActive(-1)
+    }
+  }
+
   const retenir = () => memoriserRecente(termes)
   // Ouvrir un résultat : on retient la recherche et on note son type et son rang (1 = premier de son groupe).
   const ouvrir = (resultat: ResultatRecherche, rang: number) => () => {
@@ -205,7 +280,8 @@ export function RecherchePage() {
           role="search"
           onSubmit={(e) => {
             e.preventDefault()
-            majParams({ q: saisie.trim() || null, exact: null })
+            setCompletionOuverte(false)
+            majParams({ q: saisie.trim() || null, exact: null, sans: null })
             memoriserRecente(saisie)
             if (saisie.trim().length >= LONGUEUR_MIN_RECHERCHE) tracerRechercheLancee("page")
           }}
@@ -214,12 +290,23 @@ export function RecherchePage() {
             <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" aria-hidden="true" />
             <Input
               type="search"
+              role="combobox"
               inputMode="search"
               ref={champRef}
               value={saisie}
-              onChange={(e) => setSaisie(e.target.value)}
+              onChange={(e) => {
+                setSaisie(e.target.value)
+                setCompletionOuverte(true)
+                setCompletionActive(-1)
+              }}
+              onKeyDown={surTouche}
+              onBlur={() => setCompletionOuverte(false)}
               placeholder="Un thème, une notion, une épreuve, une année…"
               aria-label="Rechercher"
+              aria-expanded={propositions.length > 0}
+              aria-controls="completions-recherche"
+              aria-autocomplete="list"
+              aria-activedescendant={completionActive >= 0 ? `completion-${completionActive}` : undefined}
               autoFocus={!q}
               autoComplete="off"
               enterKeyHint="search"
@@ -230,7 +317,8 @@ export function RecherchePage() {
                 type="button"
                 onClick={() => {
                   setSaisie("")
-                  majParams({ q: null, exact: null })
+                  setCompletionOuverte(false)
+                  majParams({ q: null, exact: null, sans: null })
                 }}
                 aria-label="Effacer la recherche"
                 className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -238,8 +326,73 @@ export function RecherchePage() {
                 <X className="size-4" />
               </button>
             )}
+            {/* Ce que l'élève est peut-être en train d'écrire : des intitulés de thèmes. Choisir une
+                proposition lance la recherche tout de suite ; le champ garde le focus (onMouseDown) pour que le
+                clic ne le ferme pas avant d'être pris en compte. */}
+            {propositions.length > 0 && (
+              <ul
+                id="completions-recherche"
+                role="listbox"
+                aria-label="Suggestions"
+                className="absolute left-0 right-0 top-full z-30 mt-1 overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg"
+              >
+                {propositions.map((c, i) => (
+                  <li
+                    key={c.texte}
+                    id={`completion-${i}`}
+                    role="option"
+                    aria-selected={i === completionActive}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      choisirCompletion(c.texte)
+                    }}
+                    className={cn(
+                      "flex cursor-pointer items-center gap-3 px-3.5 py-2 text-sm",
+                      i === completionActive ? "bg-accent text-accent-foreground" : "hover:bg-accent/60",
+                    )}
+                  >
+                    <Search className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+                    <span className="min-w-0 flex-1 truncate">
+                      <Surbrillance texte={c.texte} jetons={jetonsCompletion} />
+                    </span>
+                    <span className="shrink-0 text-xs text-muted-foreground">{c.matiere}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </form>
+
+        {/* Ce que le moteur a compris (« bac c maths 2019 corrigé » : un examen, une matière, une année, un type) -
+            jamais en silence : chaque pastille se retire d'un clic, et le mot redevient un mot comme un autre. */}
+        {(compris.length > 0 || intention?.ignoree) && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-sm" aria-live="polite">
+            {compris.length > 0 && (
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Compris</span>
+            )}
+            {compris.map((pastille) => (
+              <span
+                key={pastille.cle}
+                className="inline-flex items-center gap-1 rounded-full bg-primary/10 py-1 pl-3 pr-1 text-sm font-medium text-primary"
+              >
+                {pastille.libelle}
+                <button
+                  type="button"
+                  onClick={() => retirer(pastille.cle)}
+                  aria-label={`Retirer ${pastille.libelle}`}
+                  className="flex size-5 items-center justify-center rounded-full hover:bg-primary/20"
+                >
+                  <X className="size-3" aria-hidden="true" />
+                </button>
+              </span>
+            ))}
+            {intention?.ignoree && (
+              <span className="text-muted-foreground">
+                Rien avec les filtres que j'avais compris : je cherche tes mots tels quels.
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Périmètre : l'examen de l'élève par défaut, jamais caché - c'est ce qui explique pourquoi un
             résultat attendu manque, et un clic suffit pour l'élargir. */}
@@ -410,11 +563,11 @@ export function RecherchePage() {
                         key={groupe.type}
                         groupe={groupe}
                         avecTitre={famille.types.length > 1}
-                        cle={["recherche", "type", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, groupe.type]}
+                        cle={["recherche", "type", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, sansBrut, groupe.type]}
                         chercher={(decalage, signal) =>
                           rechercher(
                             {
-                              q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact,
+                              q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact, sans,
                               type: groupe.type, limite: PAGE_TYPE, decalage,
                             },
                             signal,

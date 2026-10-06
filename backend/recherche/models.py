@@ -91,6 +91,9 @@ class TermeRecherche(models.Model):
 
     terme = models.CharField(max_length=60, unique=True)
     frequence = models.PositiveIntegerField(default=1)
+    # Clé de prononciation (voir texte.phonetique) : « teoreme » retrouve « theoreme » même quand la distance
+    # d'édition hésite entre plusieurs mots.
+    phonetique = models.CharField(max_length=60, blank=True, default="", db_index=True)
 
     class Meta:
         verbose_name = "terme de recherche"

@@ -10,7 +10,10 @@ const rechercher = vi.hoisted(() => vi.fn())
 const trackEvent = vi.hoisted(() => vi.fn())
 
 const getMyProgression = vi.hoisted(() => vi.fn())
-vi.mock("@/api/endpoints", () => ({ rechercher, getMyProgression, listCursus: vi.fn(() => Promise.resolve([])) }))
+const completerRecherche = vi.hoisted(() => vi.fn())
+vi.mock("@/api/endpoints", () => ({
+  rechercher, getMyProgression, completerRecherche, listCursus: vi.fn(() => Promise.resolve([])),
+}))
 vi.mock("@/lib/analytics", () => ({ trackEvent }))
 const auth = vi.hoisted(() => ({ user: null as null | { id: number }, isAuthenticated: false }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
@@ -43,7 +46,7 @@ const THEME_CHIMIE = resultat({
 
 function reponse(surcharge: Partial<ReponseRecherche> = {}): ReponseRecherche {
   return {
-    q: "tange", corrige: null, indexe: true, trop_court: false, total: 30, autres_cursus: 0, suggestions: [],
+    q: "tange", corrige: null, indexe: true, trop_court: false, total: 30, autres_cursus: 0, suggestions: [], intention: null,
     matieres: [{ code: "MATHS", label: "Mathématiques", total: 20 }, { code: "CHIMIE", label: "Chimie", total: 10 }],
     groupes: [
       { type: "THEME", libelle: "Thèmes", total: 3, resultats: [THEME_VIDE, THEME_MATHS, THEME_CHIMIE] },
@@ -76,6 +79,8 @@ function monter(url = "/cm/recherche?q=tange", etat?: unknown) {
 beforeEach(() => {
   rechercher.mockReset()
   getMyProgression.mockReset()
+  completerRecherche.mockReset()
+  completerRecherche.mockResolvedValue({ completions: [] })
   auth.user = null
   auth.isAuthenticated = false
   trackEvent.mockReset()
@@ -301,7 +306,7 @@ describe("arrivée par la loupe ou un raccourci", () => {
   it("met le champ en saisie et sélectionne le texte déjà tapé", async () => {
     rechercher.mockResolvedValue(reponse())
     monter("/cm/recherche?q=tange", { focusRecherche: true })
-    const champ = await screen.findByRole("searchbox", { name: "Rechercher" })
+    const champ = await screen.findByRole("combobox", { name: "Rechercher" })
     await waitFor(() => expect(champ).toHaveFocus())
     expect((champ as HTMLInputElement).selectionStart).toBe(0)
     expect((champ as HTMLInputElement).selectionEnd).toBe("tange".length)
@@ -310,7 +315,187 @@ describe("arrivée par la loupe ou un raccourci", () => {
   it("sans cet état, un champ déjà rempli n'est pas pris en main", async () => {
     rechercher.mockResolvedValue(reponse())
     monter("/cm/recherche?q=tange")
-    const champ = await screen.findByRole("searchbox", { name: "Rechercher" })
+    const champ = await screen.findByRole("combobox", { name: "Rechercher" })
     expect(champ).not.toHaveFocus()
+  })
+})
+
+describe("ce que le moteur a compris", () => {
+  const COMPRIS = {
+    cursus: { libelle: "BAC C", ids: [20] },
+    matiere: { libelle: "Mathématiques", codes: ["MATHS"] },
+    annees: [2019],
+    types: ["EPREUVE", "INEDITE", "EXERCICE"] as ("EPREUVE" | "INEDITE" | "EXERCICE")[],
+    mots_type: ["corrige"],
+    ignoree: false,
+  }
+  const EPREUVE_2019 = resultat({ id: 50, type: "EPREUVE", titre: "Mathématiques BAC C 2019", details: { slug: "maths-2019" } })
+
+  function repondre(intention: ReponseRecherche["intention"], surcharge: Partial<ReponseRecherche> = {}) {
+    return reponse({
+      total: 1,
+      groupes: [{ type: "EPREUVE", libelle: "Épreuves", total: 1, resultats: [EPREUVE_2019] }],
+      matieres: [],
+      intention,
+      ...surcharge,
+    })
+  }
+
+  it("montre chaque chose comprise en pastille", async () => {
+    rechercher.mockResolvedValue(repondre(COMPRIS))
+    monter("/cm/recherche?q=bac+c+maths+2019+corrig%C3%A9")
+    const zone = await screen.findByText("Compris")
+    const pastilles = zone.parentElement!
+    for (const libelle of ["BAC C", "Mathématiques", "2019", "Corrigés"]) {
+      expect(within(pastilles).getByText(libelle)).toBeInTheDocument()
+    }
+  })
+
+  it("retirer une pastille relance la recherche sans cette interprétation", async () => {
+    rechercher.mockResolvedValue(repondre(COMPRIS))
+    monter("/cm/recherche?q=bac+c+maths+2019")
+    await userEvent.click(await screen.findByRole("button", { name: "Retirer BAC C" }))
+
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("sans=cursus"))
+    await waitFor(() =>
+      expect(rechercher).toHaveBeenCalledWith(expect.objectContaining({ q: "bac c maths 2019", sans: ["cursus"] }), expect.anything()),
+    )
+  })
+
+  it("plusieurs pastilles retirées s'ajoutent, sans doublon", async () => {
+    rechercher.mockResolvedValue(repondre(COMPRIS))
+    monter("/cm/recherche?q=bac+c+maths+2019&sans=cursus")
+    await userEvent.click(await screen.findByRole("button", { name: "Retirer 2019" }))
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("sans=cursus%2Cannee"))
+  })
+
+  it("dit quand l'interprétation a été abandonnée faute de résultat", async () => {
+    rechercher.mockResolvedValue(
+      repondre({ ...COMPRIS, cursus: null, matiere: null, annees: [], types: [], mots_type: [], ignoree: true }),
+    )
+    monter("/cm/recherche?q=histoire+thales")
+    expect(await screen.findByText(/je cherche tes mots tels quels/)).toBeInTheDocument()
+    expect(screen.queryByText("Compris")).not.toBeInTheDocument()
+  })
+
+  it("rien de compris, aucune pastille", async () => {
+    rechercher.mockResolvedValue(repondre({ cursus: null, matiere: null, annees: [], types: [], mots_type: [], ignoree: false }))
+    monter("/cm/recherche?q=thales")
+    await screen.findByRole("link", { name: "Mathématiques BAC C 2019" })
+    expect(screen.queryByText("Compris")).not.toBeInTheDocument()
+  })
+
+  it("une requête qui réclame des épreuves n'a pas de thème en vedette", async () => {
+    rechercher.mockResolvedValue(
+      repondre(COMPRIS, {
+        groupes: [
+          { type: "EPREUVE", libelle: "Épreuves", total: 1, resultats: [EPREUVE_2019] },
+          { type: "THEME", libelle: "Thèmes", total: 1, resultats: [THEME_MATHS] },
+        ],
+      }),
+    )
+    monter("/cm/recherche?q=bac+c+2019+corrig%C3%A9")
+    await screen.findByRole("link", { name: "Mathématiques BAC C 2019" })
+    expect(screen.queryByText("Commence par ici")).not.toBeInTheDocument()
+  })
+
+  it("une nouvelle saisie efface les pastilles retirées", async () => {
+    rechercher.mockResolvedValue(repondre(COMPRIS))
+    monter("/cm/recherche?q=bac+c+maths+2019&sans=cursus")
+    const champ = await screen.findByRole("combobox", { name: "Rechercher" })
+    await userEvent.clear(champ)
+    await userEvent.type(champ, "thales")
+    await waitFor(() => expect(screen.getByTestId("lieu")).not.toHaveTextContent("sans="))
+  })
+})
+
+describe("complétion pendant la frappe", () => {
+  const PROPOSITIONS = [
+    { texte: "théorème de Thalès", matiere: "Mathématiques" },
+    { texte: "Thalès", matiere: "Mathématiques" },
+  ]
+
+  it("ne propose rien à l'arrivée sur une page déjà remplie", async () => {
+    rechercher.mockResolvedValue(reponse())
+    monter()
+    await screen.findByRole("combobox", { name: "Rechercher" })
+    expect(completerRecherche).not.toHaveBeenCalled()
+    expect(screen.queryByRole("listbox", { name: "Suggestions" })).not.toBeInTheDocument()
+  })
+
+  it("propose des thèmes après une pause de frappe, avec leur matière", async () => {
+    rechercher.mockResolvedValue(reponse())
+    completerRecherche.mockResolvedValue({ completions: PROPOSITIONS })
+    monter("/cm/recherche")
+    await userEvent.type(await screen.findByRole("combobox", { name: "Rechercher" }), "thal")
+
+    const liste = await screen.findByRole("listbox", { name: "Suggestions" })
+    expect(within(liste).getAllByRole("option").map((o) => o.textContent)).toEqual([
+      "théorème de ThalèsMathématiques",
+      "ThalèsMathématiques",
+    ])
+    expect(completerRecherche).toHaveBeenCalledWith({ q: "thal", pays: "cm", cursus: null }, expect.anything())
+    // Une seule requête malgré quatre frappes : la pause déclenche, pas chaque lettre.
+    expect(completerRecherche).toHaveBeenCalledTimes(1)
+  })
+
+  it("cliquer une proposition lance la recherche et la note comme une complétion", async () => {
+    rechercher.mockResolvedValue(reponse())
+    completerRecherche.mockResolvedValue({ completions: PROPOSITIONS })
+    monter("/cm/recherche")
+    await userEvent.type(await screen.findByRole("combobox", { name: "Rechercher" }), "thal")
+    await userEvent.click(await screen.findByRole("option", { name: /théorème de Thalès/ }))
+
+    await waitFor(() =>
+      expect(screen.getByTestId("lieu")).toHaveTextContent(new URLSearchParams({ q: "théorème de Thalès" }).toString()),
+    )
+    expect(trackEvent).toHaveBeenCalledWith("recherche_lancee", { source: "page", via: "completion" })
+    expect(JSON.stringify(trackEvent.mock.calls)).not.toContain("Thalès")
+    expect(screen.queryByRole("listbox", { name: "Suggestions" })).not.toBeInTheDocument()
+  })
+
+  it("flèches puis Entrée choisissent une proposition", async () => {
+    rechercher.mockResolvedValue(reponse())
+    completerRecherche.mockResolvedValue({ completions: PROPOSITIONS })
+    monter("/cm/recherche")
+    const champ = await screen.findByRole("combobox", { name: "Rechercher" })
+    await userEvent.type(champ, "thal")
+    await screen.findByRole("listbox", { name: "Suggestions" })
+
+    await userEvent.keyboard("{ArrowDown}{ArrowDown}")
+    expect(champ.getAttribute("aria-activedescendant")).toBe("completion-1")
+    await userEvent.keyboard("{Enter}")
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("q=Thal%C3%A8s"))
+  })
+
+  it("Entrée sans proposition choisie valide ce qui est tapé", async () => {
+    rechercher.mockResolvedValue(reponse())
+    completerRecherche.mockResolvedValue({ completions: PROPOSITIONS })
+    monter("/cm/recherche")
+    const champ = await screen.findByRole("combobox", { name: "Rechercher" })
+    await userEvent.type(champ, "thal")
+    await screen.findByRole("listbox", { name: "Suggestions" })
+    await userEvent.keyboard("{Enter}")
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("q=thal"))
+    expect(trackEvent).toHaveBeenCalledWith("recherche_lancee", { source: "page" })
+  })
+
+  it("Échap referme la liste", async () => {
+    rechercher.mockResolvedValue(reponse())
+    completerRecherche.mockResolvedValue({ completions: PROPOSITIONS })
+    monter("/cm/recherche")
+    await userEvent.type(await screen.findByRole("combobox", { name: "Rechercher" }), "thal")
+    await screen.findByRole("listbox", { name: "Suggestions" })
+    await userEvent.keyboard("{Escape}")
+    expect(screen.queryByRole("listbox", { name: "Suggestions" })).not.toBeInTheDocument()
+  })
+
+  it("n'affiche pas une proposition identique à la saisie", async () => {
+    rechercher.mockResolvedValue(reponse())
+    completerRecherche.mockResolvedValue({ completions: [{ texte: "Thalès", matiere: "Mathématiques" }] })
+    monter("/cm/recherche")
+    await userEvent.type(await screen.findByRole("combobox", { name: "Rechercher" }), "thalès")
+    await waitFor(() => expect(completerRecherche).toHaveBeenCalled())
+    expect(screen.queryByRole("listbox", { name: "Suggestions" })).not.toBeInTheDocument()
   })
 })

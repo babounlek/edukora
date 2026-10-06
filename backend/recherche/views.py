@@ -37,7 +37,7 @@ def _entier(valeur):
 def rechercher(request):
     """
     GET /recherche/?q=...&pays=cm[&cursus=<id>][&matiere=<code>][&type=COURS][&limite=][&decalage=]
-                          [&elargir=true][&exact=true][&rapide=true]
+                          [&elargir=true][&exact=true][&sans=cursus,annee][&rapide=true]
 
     Ouverte aux visiteurs anonymes (la recherche sert aussi à décider de s'abonner) : elle ne
     renvoie que de l'identité de contenu (titre, matière, examen, année), jamais un corrigé - voir
@@ -56,6 +56,7 @@ def rechercher(request):
         params.get("q", ""), pays=pays, utilisateur=request.user, cursus=_entier(params.get("cursus")),
         matiere=matiere, type_=type_, limite=_entier(params.get("limite")) or moteur.LIMITE_DEFAUT,
         decalage=decalage, elargir=params.get("elargir") == "true", corriger_auto=params.get("exact") != "true",
+        sans=[p for p in params.get("sans", "").split(",") if p],
     )
 
     # Un zéro n'est un manque du catalogue que s'il ne vient pas d'un filtre : ni type ni matière
@@ -67,3 +68,22 @@ def rechercher(request):
     if manque_du_catalogue and params.get("rapide") != "true":
         moteur.journaliser_vide(reponse["q"], pays.code)
     return Response(reponse)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+@throttle_classes([RechercheThrottle])
+def completer(request):
+    """
+    GET /recherche/completer/?q=...&pays=cm[&cursus=<id>]
+
+    Ce que l'élève est peut-être en train d'écrire (voir recherche.moteur.completer) : une poignée
+    d'intitulés de thèmes, appelée à chaque pause de frappe. Même plafond d'appels que la recherche.
+    """
+    pays = Country.objects.filter(code__iexact=request.query_params.get("pays", ""), actif=True).first()
+    if pays is None:
+        return Response({"error": "Pays inconnu ou indisponible."}, status=400)
+    completions = moteur.completer(
+        request.query_params.get("q", ""), pays=pays, cursus=_entier(request.query_params.get("cursus")),
+    )
+    return Response({"completions": completions})

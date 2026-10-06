@@ -6,4 +6,5 @@ app_name = "recherche"
 
 urlpatterns = [
     path("", views.rechercher, name="rechercher"),
+    path("completer/", views.completer, name="completer"),
 ]
