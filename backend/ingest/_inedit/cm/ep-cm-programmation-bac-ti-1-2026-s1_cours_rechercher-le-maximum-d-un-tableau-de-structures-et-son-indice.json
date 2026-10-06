@@ -1,0 +1,106 @@
+{
+  "type": "cours",
+  "cours_id": "cours-rechercher-le-maximum-d-un-tableau-de-st-progtibac1-ex3-q8",
+  "meta": {
+    "titre": "Rechercher le maximum d'un tableau de structures et son indice",
+    "matiere": "programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C : tableaux de structures et fonctions",
+    "duree_estimee_min": 20,
+    "tags": [
+      "langage C",
+      "tableau de structures"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q8-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quel produit est le plus stocké, quel véhicule rapporte le plus ? Retrouver l'élément maximal et sa position est l'un des traitements les plus demandés sur un tableau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tableau de structures",
+        "Boucle for",
+        "Fonction qui renvoie un entier"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Retenir l'indice du meilleur candidat",
+      "contenu_markdown": "On initialise l'indice du maximum au premier élément (`imax = 0`), puis on parcourt les éléments suivants (`i` de 1 à N-1). Chaque fois qu'un élément dépasse celui d'indice `imax`, on met à jour `imax = i`. À la fin du parcours, `imax` désigne l'élément maximal. On renvoie l'**indice** plutôt que la valeur : il permet d'accéder à tous les champs de l'élément (nom, montant, etc.).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le tableau `stock` contient quatre produits.\n\n```c\ntypedef struct { char nom[20]; int quantite; } Produit;\nProduit stock[4];   /* sucre 12, riz 40, huile 25, sel 40 */\n```\n\nÉcrire la fonction `indiceMax()` qui renvoie l'indice du produit le plus stocké, puis donner sa valeur de retour.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser",
+          "justification": "Le premier produit sert de candidat de départ.",
+          "resultat_markdown": "`imax = 0`"
+        },
+        {
+          "numero": 2,
+          "action": "Parcourir les suivants",
+          "justification": "On compare chaque quantité à celle du candidat courant, avec un test strictement supérieur.",
+          "resultat_markdown": "i = 1 : 40 > 12, donc `imax = 1` ; i = 2 : 25 > 40 est faux ; i = 3 : 40 > 40 est faux"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la fonction",
+          "justification": "Le résultat est l'indice conservé à la fin du parcours.",
+          "resultat_markdown": "```c\nint indiceMax(void) {\n    int i, imax = 0;\n    for (i = 1; i < 4; i++)\n        if (stock[i].quantite > stock[imax].quantite)\n            imax = i;\n    return imax;\n}\n```"
+        }
+      ],
+      "conclusion_markdown": "La fonction renvoie 1 : c'est le riz, premier produit atteignant la quantité maximale de 40. Le sel, à égalité, n'est pas retenu car le test est strict."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Renvoyer `stock[imax].quantite` au lieu de `imax`.",
+          "pourquoi_faux": "On obtient la quantité maximale mais on perd le produit qui la porte.",
+          "correction_markdown": "Renvoyer l'indice et accéder aux champs avec `stock[imax]`."
+        },
+        {
+          "erreur_markdown": "Initialiser le maximum à 0 en valeur puis comparer des indices.",
+          "pourquoi_faux": "Une valeur et une position ne se comparent pas : le résultat n'a aucun sens.",
+          "correction_markdown": "Comparer toujours les champs `.quantite` des éléments désignés."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec les quantités 12, 40, 25 et 40, quel indice renvoie la fonction si le test devient `>=` ?",
+          "solution_markdown": "Elle renvoie 3 : à égalité, le dernier élément rencontré remplace le précédent."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Adapter la fonction pour rechercher l'indice du produit le moins stocké.",
+          "solution_markdown": "On remplace le test par `stock[i].quantite < stock[imin].quantite` et on renomme l'indice `imin`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Initialiser l'indice au premier élément",
+        "Parcourir les suivants et mettre à jour l'indice si un élément dépasse le candidat",
+        "Un test strict garde le premier en cas d'égalité",
+        "Renvoyer l'indice pour accéder à tous les champs"
+      ]
+    }
+  ]
+}

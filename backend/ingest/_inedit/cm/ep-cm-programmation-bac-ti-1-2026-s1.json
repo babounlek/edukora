@@ -1,0 +1,779 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-programmation-bac-ti-1-2026-s1",
+  "titre": "Programmation Terminale TI – Épreuve inédite n°1",
+  "blueprint_external_id": "bp-cm-programmation-bac-ti-1",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "3",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 1** (3 points)\n\nUne coopérative de planteurs de cacao de la Lekié numérise la réception des livraisons dans son entrepôt. Le magasinier enregistre chaque livraison sur la page web dont voici le code HTML, avec ses numéros de ligne.\n\n```html\n 1  <form id=\"livraison\" action=\"recevoir.php\" method=\"post\">\n 2      <label for=\"code\">Code planteur :</label>\n 3      <input type=\"text\" id=\"code\" name=\"code\" maxlength=\"6\">\n 4      <label for=\"poids\">Poids livré (kg) :</label>\n 5      <input type=\"number\" id=\"poids\" name=\"poids\" min=\"1\">\n 6      <label for=\"qualite\">Qualité :</label>\n 7      <select id=\"qualite\" name=\"qualite\">\n 8          <option value=\"A\">Premier choix</option>\n 9          <option value=\"B\">Standard</option>\n10          <option value=\"C\">Humide</option>\n11      </select>\n12      <input type=\"button\" value=\"Valider\" onclick=\"controler()\">\n13  </form>\n```",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Que se passe-t-il lorsque le magasinier clique sur le bouton **Valider** ? Justifier la réponse à l'aide de l'attribut `onclick` de la ligne 12. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn attribut d'événement comme `onclick` associe une fonction JavaScript à une action de l'utilisateur sur l'élément qui le porte : la fonction s'exécute à chaque fois que l'événement se produit, sans recharger la page.\n\nIci, un clic sur le bouton **Valider** appelle la fonction `controler()`. Le bouton est de type `button` et non `submit` : le formulaire ne part donc pas tout seul, c'est la fonction qui décidera de l'envoi après avoir vérifié les champs.\n\n### Conseil\nQuand une question porte sur un attribut, cite toujours l'événement concerné (ici le clic) puis ce qu'il déclenche (ici la fonction `controler()`) : les deux éléments rapportent chacun des points.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "JavaScript",
+            "événement"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex1-q1-0",
+              "competence": "Déclencher une fonction JavaScript depuis un événement HTML (onclick)",
+              "contenu_markdown": "Un attribut d'événement comme `onclick` associe une fonction JavaScript à une action de l'utilisateur sur l'élément qui le porte : la fonction s'exécute à chaque fois que l'événement se produit, sans recharger la page.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Précise que l'événement concerné est le clic sur le bouton Valider",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise que la fonction controler() est alors exécutée",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Indiquer la valeur transmise au script `recevoir.php` pour le champ `qualite` lorsque le magasinier choisit « Standard » dans la liste déroulante (lignes 7 à 11). *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn champ `select` transmet au serveur la valeur de l'attribut `value` de l'option choisie, et non le texte affiché à l'écran, sous le nom donné par l'attribut `name` du `select`.\n\nLe texte affiché est « Standard », mais l'option correspondante (ligne 9) porte `value=\"B\"`. Le script reçoit donc `qualite = B`.\n\n### Piège à éviter\nRépondre « Standard » : c'est le texte lu par le magasinier, pas la donnée envoyée au serveur.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Formulaire HTML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex1-q2-0",
+              "competence": "Structure d'un formulaire HTML",
+              "contenu_markdown": "Un champ `select` transmet au serveur la valeur de l'attribut `value` de l'option choisie, et non le texte affiché à l'écran, sous le nom donné par l'attribut `name` du `select`.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Donne la valeur B",
+              "points": 0.25
+            },
+            {
+              "libelle": "Justifie : c'est l'attribut value de l'option qui est transmis, pas le texte affiché",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Écrire le code JavaScript de la fonction `controler()` qui :\n\n- refuse un code planteur qui ne contient pas exactement 6 caractères, en affichant « Code invalide » dans une boîte de dialogue ;\n- refuse un poids vide ou inférieur ou égal à 0, en affichant « Poids invalide » ;\n- envoie le formulaire dans tous les autres cas.\n\nOn rappelle que la méthode `submit()` d'un formulaire provoque son envoi. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nValider un formulaire côté client consiste à lire la valeur de chaque champ avec `document.getElementById(...).value`, à la tester avec une condition, à signaler l'erreur avec `alert()` puis à interrompre la fonction avec `return` ; le formulaire n'est envoyé que si tous les tests réussissent.\n\n```javascript\nfunction controler() {\n    var code = document.getElementById(\"code\").value;\n    var poids = document.getElementById(\"poids\").value;\n\n    if (code.length != 6) {\n        alert(\"Code invalide\");\n        return;\n    }\n    if (poids == \"\" || poids <= 0) {\n        alert(\"Poids invalide\");\n        return;\n    }\n    document.getElementById(\"livraison\").submit();\n}\n```\n\nLa fonction lit d'abord les deux valeurs. Chaque test d'erreur affiche son message puis quitte la fonction avec `return` : l'envoi, placé tout à la fin, n'a lieu que si aucun test n'a échoué.\n\n### Piège à éviter\nOublier le `return` après `alert()` : la fonction continue alors son exécution et le formulaire est envoyé malgré l'erreur signalée.\n\n### Conseil\nÉcris un `if` par cas d'erreur, dans l'ordre de l'énoncé : ta copie est plus lisible et chaque test te rapporte ses points séparément.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "JavaScript",
+            "Validation de formulaire"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex1-q3-0",
+              "competence": "Validation d'un formulaire avec JavaScript",
+              "contenu_markdown": "Valider un formulaire côté client consiste à lire la valeur de chaque champ avec `document.getElementById(...).value`, à la tester avec une condition, à signaler l'erreur avec `alert()` puis à interrompre la fonction avec `return` ; le formulaire n'est envoyé que si tous les tests réussissent.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Lit les valeurs des deux champs avec getElementById(...).value",
+              "points": 0.5
+            },
+            {
+              "libelle": "Teste la longueur du code (différente de 6) et affiche « Code invalide »",
+              "points": 0.5
+            },
+            {
+              "libelle": "Teste le poids (vide ou inférieur ou égal à 0) et affiche « Poids invalide »",
+              "points": 0.5
+            },
+            {
+              "libelle": "Interrompt la fonction après chaque erreur (return) et envoie le formulaire avec submit() dans le cas contraire",
+              "points": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "7",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 2** (7 points)\n\nLes livraisons validées par la page de l'exercice 1 sont enregistrées dans la base de données MySQL `cooperative`, sur un serveur WAMP installé dans le bureau de la coopérative. Le script `recevoir.php`, appelé par l'attribut `action` du formulaire, est donné ci-dessous avec ses numéros de ligne.\n\n```php\n 1  <?php\n 2  $code = $_POST['code'];\n 3  $poids = $_POST['poids'];\n 4  $qualite = $_POST['qualite'];\n 5  $cnx = mysqli_connect(\"localhost\", \"root\", \"\", \"cooperative\");\n 6  if (!$cnx) {\n 7      die(\"Connexion impossible\");\n 8  }\n 9  $req = \"INSERT INTO livraison (code, poids, qualite) VALUES ('$code', $poids, '$qualite')\";\n10  if (mysqli_query($cnx, $req)) {\n11      echo \"Livraison enregistrée\";\n12  } else {\n13      echo \"Erreur d'enregistrement\";\n14  }\n15  mysqli_close($cnx);\n16  ?>\n```",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Citer les quatre éléments dont WAMP tire son sigle, puis donner le rôle d'Apache dans cet ensemble. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nWAMP regroupe sur un même poste les logiciels nécessaires à un serveur web local : le système Windows, le serveur HTTP Apache, le SGBD MySQL et l'interpréteur PHP, chacun ayant un rôle distinct dans le traitement d'une requête.\n\nLes quatre éléments sont **W**indows (le système d'exploitation), **A**pache (le serveur web), **M**ySQL (le système de gestion de bases de données) et **P**HP (le langage de script exécuté côté serveur).\n\nApache est le serveur web : il reçoit les requêtes HTTP envoyées par les navigateurs, confie l'exécution des scripts PHP à l'interpréteur, puis renvoie au navigateur la page obtenue.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "WAMP",
+            "serveur web"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q1-0",
+              "competence": "Environnements integres de developpement web (WAMP, XAMPP)",
+              "contenu_markdown": "WAMP regroupe sur un même poste les logiciels nécessaires à un serveur web local : le système Windows, le serveur HTTP Apache, le SGBD MySQL et l'interpréteur PHP, chacun ayant un rôle distinct dans le traitement d'une requête.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Cite Windows, Apache, MySQL et PHP",
+              "points": 0.5
+            },
+            {
+              "libelle": "Indique qu'Apache est le serveur web qui reçoit les requêtes HTTP des navigateurs",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise qu'il renvoie au navigateur la page produite (après exécution du PHP)",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Expliquer pourquoi le fichier `recevoir.php` doit être copié dans le dossier `www` de WAMP et ouvert avec une adresse du type `http://localhost/recevoir.php`, plutôt qu'avec un double clic sur le fichier. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn script PHP est exécuté par le serveur web et jamais par le navigateur : il doit donc se trouver dans le répertoire racine du serveur (`www` pour WAMP) et être demandé par une adresse `http://`, faute de quoi le navigateur affiche ou télécharge le code source sans l'exécuter.\n\nAvec un double clic, le navigateur ouvre le fichier directement sur le disque : Apache n'intervient pas, PHP n'interprète rien et on voit le code brut. Avec `http://localhost/recevoir.php`, Apache retrouve le fichier dans `www`, le confie à PHP, puis renvoie le résultat de l'exécution.\n\n<svg viewBox='0 0 600 250' role='img' aria-labelledby='fig47b6fcadt fig47b6fcadd' style='width:100%;max-width:600px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig47b6fcadt'>Exécution d'un script PHP par le serveur web WAMP</title><desc id='fig47b6fcadd'>Avec une adresse http, le navigateur interroge Apache, qui lit le fichier dans le dossier www, le confie à PHP, lequel interroge MySQL. Avec un double clic sur le fichier, le navigateur lit le fichier directement : le code s'affiche tel quel.</desc><line x1='120.2' y1='60' x2='195.9' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='195.9,60 186.9,64 186.9,56' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='304.1' y1='60' x2='387.2' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='387.2,60 378.2,64 378.2,56' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='432.8' y1='60' x2='504.4' y2='60' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='504.4,60 495.4,64 495.4,56' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='97.3' y1='77.5' x2='207.9' y2='148.1' stroke='var(--destructive,#c4352e)' stroke-width='1.5' stroke-dasharray='5 4' stroke-linecap='round'/><polygon points='207.9,148.1 198.1,146.7 202.5,139.8' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-linejoin='round'/><rect x='19.8' y='42.5' width='100.4' height='34.9' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='195.9' y='33.1' width='108.2' height='53.8' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='387.2' y='42.5' width='45.5' height='34.9' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='504.4' y='42.5' width='61.2' height='34.9' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='160.6' y='148.1' width='178.8' height='53.8' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-dasharray='5 4'/><text x='70' y='64.9' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>Navigateur</text><text x='250' y='55.4' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Apache</text><text x='250' y='74.3' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>dossier www</text><text x='410' y='64.9' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>PHP</text><text x='535' y='64.9' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>MySQL</text><text x='158' y='75' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>http://</text><text x='345.7' y='75' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>exécute</text><text x='468.6' y='75' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>SQL</text><text x='250' y='170.5' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>recevoir.php</text><text x='250' y='189.4' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>ouvert sur le disque</text><text x='146.7' y='126' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>double clic (file://)</text><text x='250' y='222' font-size='13' text-anchor='middle' fill='var(--destructive,#c4352e)'>aucun serveur : le code s'affiche tel quel</text><text x='300' y='244' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure : deux façons d'ouvrir un script PHP</text></svg>",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "WAMP",
+            "serveur web"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q2-0",
+              "competence": "Architecture des dossiers d'un serveur local WampServer (répertoire www)",
+              "contenu_markdown": "Un script PHP est exécuté par le serveur web et jamais par le navigateur : il doit donc se trouver dans le répertoire racine du serveur (`www` pour WAMP) et être demandé par une adresse `http://`, faute de quoi le navigateur affiche ou télécharge le code source sans l'exécuter.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Dit que le script est exécuté par le serveur (Apache et PHP) et non par le navigateur",
+              "points": 0.25
+            },
+            {
+              "libelle": "Dit que le fichier doit être dans le répertoire www et demandé par une adresse http://localhost",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Justifier l'utilisation du tableau `$_POST` aux lignes 2 à 4, plutôt que `$_GET`. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn formulaire transmet ses champs par la méthode indiquée dans son attribut `method` : les données arrivent dans le tableau superglobal `$_GET` pour la méthode `get` et dans `$_POST` pour la méthode `post`, et le script doit lire celui qui correspond.\n\nLe formulaire de l'exercice 1 est déclaré avec `method=\"post\"` (ligne 1). Les valeurs de `code`, `poids` et `qualite` arrivent donc dans `$_POST`, indexées par les attributs `name` des champs ; `$_GET` serait vide.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "PHP",
+            "Méthodes GET/POST"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q3-0",
+              "competence": "Recuperer les donnees d'un formulaire avec $_POST",
+              "contenu_markdown": "Un formulaire transmet ses champs par la méthode indiquée dans son attribut `method` : les données arrivent dans le tableau superglobal `$_GET` pour la méthode `get` et dans `$_POST` pour la méthode `post`, et le script doit lire celui qui correspond.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Relève que le formulaire utilise la méthode post",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que les données arrivent alors dans $_POST, indexées par l'attribut name",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Relever la ligne qui ouvre la connexion avec MySQL, puis expliquer à quoi sert chacun de ses quatre paramètres. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\n`mysqli_connect()` ouvre la connexion avec un serveur MySQL : ses paramètres sont, dans l'ordre, l'adresse du serveur, le nom d'utilisateur, le mot de passe et le nom de la base de données à utiliser ; elle renvoie un identifiant de connexion, ou `false` en cas d'échec.\n\nLa connexion est établie à la **ligne 5**. Ses paramètres, dans l'ordre :\n\n- `\"localhost\"` : l'adresse du serveur MySQL, ici la machine même qui exécute le script ;\n- `\"root\"` : le nom de l'utilisateur MySQL ;\n- `\"\"` : le mot de passe, vide ici ;\n- `\"cooperative\"` : la base de données sur laquelle les requêtes vont porter.\n\n### Piège à éviter\nUn mot de passe vide n'est pas un paramètre oublié : la paire de guillemets `\"\"` doit rester en troisième position, sinon la base serait lue comme le mot de passe.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "PHP",
+            "mysqli"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q4-0",
+              "competence": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+              "contenu_markdown": "`mysqli_connect()` ouvre la connexion avec un serveur MySQL : ses paramètres sont, dans l'ordre, l'adresse du serveur, le nom d'utilisateur, le mot de passe et le nom de la base de données à utiliser ; elle renvoie un identifiant de connexion, ou `false` en cas d'échec.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Identifie la ligne 5",
+              "points": 0.25
+            },
+            {
+              "libelle": "Décrit le premier paramètre : l'adresse du serveur, localhost",
+              "points": 0.25
+            },
+            {
+              "libelle": "Décrit l'utilisateur (root) et le mot de passe (vide)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Décrit le quatrième paramètre : la base de données cooperative",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Le service MySQL est arrêté au moment où ce script s'exécute. Décrire ce qui se produit, en vous appuyant sur les lignes 6 à 8. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\n`die()` affiche un message puis arrête immédiatement l'exécution du script ; associée à un test sur la connexion (`if (!$cnx)`), elle évite d'exécuter des requêtes sur une base inaccessible.\n\nLe serveur étant arrêté, `mysqli_connect()` échoue et `$cnx` vaut `false` : la condition `!$cnx` de la ligne 6 est vraie. La ligne 7 affiche alors « Connexion impossible » et arrête le script, donc la requête des lignes 9 à 15 n'est jamais exécutée.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "PHP",
+            "mysqli"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q5-0",
+              "competence": "Arrêter un script PHP quand la connexion à la base échoue",
+              "contenu_markdown": "`die()` affiche un message puis arrête immédiatement l'exécution du script ; associée à un test sur la connexion (`if (!$cnx)`), elle évite d'exécuter des requêtes sur une base inaccessible.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Explique que la connexion échoue ($cnx vaut false) et que la condition de la ligne 6 est vraie",
+              "points": 0.25
+            },
+            {
+              "libelle": "Indique que « Connexion impossible » s'affiche et que le script s'arrête avant la requête (die)",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Écrire la requête SQL qui a permis de créer la table `livraison` utilisée à la ligne 9. Elle comporte une colonne `id` (clé primaire à incrémentation automatique), une colonne `code` de 6 caractères, une colonne `poids` entière et une colonne `qualite` d'un seul caractère. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\n`CREATE TABLE nom (colonne type contrainte, ...)` définit une table : chaque colonne reçoit un type adapté à ses valeurs (`INT`, `CHAR(n)`, `VARCHAR(n)`...), et la clé primaire se déclare avec `PRIMARY KEY`, complétée par `AUTO_INCREMENT` lorsque le SGBD doit numéroter lui-même les lignes.\n\n```sql\nCREATE TABLE livraison (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    code CHAR(6),\n    poids INT,\n    qualite CHAR(1)\n);\n```\n\nLes types suivent la nature des données : `CHAR(6)` pour un code de longueur fixe, `INT` pour un poids en kilogrammes, `CHAR(1)` pour la lettre de qualité.\n\n### Conseil\nTermine toujours ta requête par un point-virgule et sépare les colonnes par des virgules, sans virgule après la dernière : ces deux détails sont vérifiés par le correcteur.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "SQL",
+            "CREATE TABLE"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q6-0",
+              "competence": "Créer une table SQL avec l'instruction CREATE TABLE",
+              "contenu_markdown": "`CREATE TABLE nom (colonne type contrainte, ...)` définit une table : chaque colonne reçoit un type adapté à ses valeurs (`INT`, `CHAR(n)`, `VARCHAR(n)`...), et la clé primaire se déclare avec `PRIMARY KEY`, complétée par `AUTO_INCREMENT` lorsque le SGBD doit numéroter lui-même les lignes.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Utilise la syntaxe CREATE TABLE livraison (...)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Déclare id comme entier, clé primaire à incrémentation automatique",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne un type adapté à code (CHAR(6) ou VARCHAR(6)) et à qualite (CHAR(1))",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne un type entier à poids et termine la requête par un point-virgule",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "7",
+          "ordre": 7,
+          "enonce_markdown": "Écrire le script PHP `bilan.php` qui ouvre la connexion avec les mêmes paramètres que `recevoir.php`, puis affiche dans un tableau HTML le code et le poids de toutes les livraisons de qualité `A`. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour afficher le résultat d'une requête `SELECT` dans un tableau HTML, on exécute la requête avec `mysqli_query()`, on écrit l'en-tête du tableau, puis une boucle `while` appelle `mysqli_fetch_assoc()`, qui renvoie une ligne à la fois sous forme de tableau associatif jusqu'à épuisement des résultats, et on affiche chaque ligne dans une rangée `<tr>`.\n\n```php\n<?php\n$cnx = mysqli_connect(\"localhost\", \"root\", \"\", \"cooperative\");\n$res = mysqli_query($cnx, \"SELECT code, poids FROM livraison WHERE qualite = 'A'\");\n\necho \"<table border='1'>\";\necho \"<tr><th>Code</th><th>Poids (kg)</th></tr>\";\nwhile ($ligne = mysqli_fetch_assoc($res)) {\n    echo \"<tr><td>\" . $ligne['code'] . \"</td><td>\" . $ligne['poids'] . \"</td></tr>\";\n}\necho \"</table>\";\n\nmysqli_close($cnx);\n?>\n```\n\nLa clause `WHERE` ne garde que les livraisons de qualité A. À chaque tour de boucle, `mysqli_fetch_assoc()` place dans `$ligne` la livraison suivante, indexée par le nom des colonnes ; quand il n'y en a plus, elle renvoie `false` et la boucle s'arrête.\n\n### Piège à éviter\nÉcrire `==` à la place de `=` dans la condition du `while` : on compare alors `$ligne` au lieu de lui affecter la ligne suivante, et aucune livraison n'est jamais récupérée.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "PHP",
+            "mysqli_query",
+            "SELECT"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q7-0",
+              "competence": "Afficher un resultat de requete SQL dans un tableau HTML avec PHP",
+              "contenu_markdown": "Pour afficher le résultat d'une requête `SELECT` dans un tableau HTML, on exécute la requête avec `mysqli_query()`, on écrit l'en-tête du tableau, puis une boucle `while` appelle `mysqli_fetch_assoc()`, qui renvoie une ligne à la fois sous forme de tableau associatif jusqu'à épuisement des résultats, et on affiche chaque ligne dans une rangée `<tr>`.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Ouvre la connexion et exécute avec mysqli_query la requête SELECT code, poids ... WHERE qualite = 'A'",
+              "points": 0.5
+            },
+            {
+              "libelle": "Parcourt les résultats avec une boucle while et mysqli_fetch_assoc",
+              "points": 0.5
+            },
+            {
+              "libelle": "Affiche chaque livraison dans un tableau HTML (table, tr, td) avec le code et le poids",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "8",
+          "ordre": 8,
+          "enonce_markdown": "Écrire la requête SQL qui donne, pour chaque qualité, le poids total livré. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour obtenir un résultat par catégorie, on regroupe les lignes avec `GROUP BY` sur la colonne de catégorie et on applique une fonction d'agrégation (`SUM`, `COUNT`, `AVG`...) à la colonne à cumuler ; la colonne de regroupement doit aussi figurer dans la liste du `SELECT`.\n\n```sql\nSELECT qualite, SUM(poids) AS poids_total\nFROM livraison\nGROUP BY qualite;\n```\n\n`GROUP BY qualite` forme un groupe par lettre de qualité (A, B, C) et `SUM(poids)` additionne les poids de chaque groupe : le résultat comporte une ligne par qualité.\n\n### Piège à éviter\nOublier `GROUP BY` : selon la configuration du SGBD, la requête provoque une erreur ou renvoie un seul total pour l'ensemble des livraisons, jamais le détail par qualité.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "SQL",
+            "GROUP BY"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q8-0",
+              "competence": "Calculer un total par catégorie en SQL (SUM et GROUP BY)",
+              "contenu_markdown": "Pour obtenir un résultat par catégorie, on regroupe les lignes avec `GROUP BY` sur la colonne de catégorie et on applique une fonction d'agrégation (`SUM`, `COUNT`, `AVG`...) à la colonne à cumuler ; la colonne de regroupement doit aussi figurer dans la liste du `SELECT`.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Utilise la fonction SUM sur la colonne poids",
+              "points": 0.5
+            },
+            {
+              "libelle": "Regroupe avec GROUP BY qualite",
+              "points": 0.25
+            },
+            {
+              "libelle": "Sélectionne la colonne qualite depuis la table livraison et termine par un point-virgule",
+              "points": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "10",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 3** (10 points)\n\nLe gestionnaire du parking d'un marché de Bafoussam automatise le calcul de la recette de la matinée. Le tarif est de 300 FCFA l'heure jusqu'à 4 heures de stationnement, puis de 200 FCFA par heure supplémentaire. Le programme C suivant enregistre cinq véhicules et leur durée de stationnement (de 1 à 24 heures).\n\n```c\n 1  #include <stdio.h>\n 2  #include <string.h>\n 3  #define N 5\n 4  #define TARIF 300\n 5\n 6  typedef struct {\n 7      char plaque[10];\n 8      int heures;\n 9      int montant;\n10  } Vehicule;\n11\n12  Vehicule parc[N];\n13  int recette = 0;\n14\n15  int calculer(int h) {\n16      int m;\n17      if (h <= 1)\n18          m = TARIF;\n19      else if (h <= 4)\n20          m = TARIF * h;\n21      else\n22          m = TARIF * 4 + 200 * (h - 4);\n23      return m;\n24  }\n25\n26  void saisir(void) {\n27      int i;\n28      for (i = 0; i < N; i++) {\n29          printf(\"Plaque : \");\n30          scanf(\"%s\", parc[i].plaque);\n31          do {\n32              printf(\"Heures (1 a 24) : \");\n33              scanf(\"%d\", &parc[i].heures);\n34          } while (parc[i].heures < 1 || parc[i].heures > 24);\n35          parc[i].montant = calculer(parc[i].heures);\n36          recette = recette + parc[i].montant;\n37      }\n38  }\n39\n40  int main() {\n41      int i, longs = 0;\n42      saisir();\n43      for (i = 0; i < N; i++) {\n44          if (parc[i].heures > 4)\n45              longs++;\n46      }\n47      printf(\"Recette : %d FCFA\\n\", recette);\n48      printf(\"Stationnements longs : %d\\n\", longs);\n49      return 0;\n50  }\n```",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Donner le rôle de la ligne 4 et l'intérêt de cette écriture par rapport à l'emploi direct de la valeur 300 dans le programme. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\n`#define NOM valeur` est une directive du préprocesseur qui remplace chaque occurrence de `NOM` par sa valeur avant la compilation : elle donne un nom parlant à une constante et permet de la modifier à un seul endroit.\n\nLa ligne 4 définit la constante symbolique `TARIF`, égale à 300 : le prix de l'heure en FCFA. Le préprocesseur remplace `TARIF` par `300` partout avant la compilation. Si le tarif change, une seule ligne est à modifier, au lieu de chercher chaque 300 dans le programme.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "#define"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q1-0",
+              "competence": "Les constantes en langage C : #define et le mot-clé const",
+              "contenu_markdown": "`#define NOM valeur` est une directive du préprocesseur qui remplace chaque occurrence de `NOM` par sa valeur avant la compilation : elle donne un nom parlant à une constante et permet de la modifier à un seul endroit.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Dit que TARIF est une constante de valeur 300 remplacée par le préprocesseur avant la compilation",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne l'intérêt : modifier le tarif à un seul endroit",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Une des deux bibliothèques incluses aux lignes 1 et 2 n'est pas nécessaire à ce programme. L'identifier et justifier la réponse. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne bibliothèque s'inclut avec `#include` pour accéder à ses fonctions : `stdio.h` fournit les fonctions d'entrée-sortie comme `printf()` et `scanf()`, `string.h` celles qui manipulent les chaînes de caractères (`strcpy()`, `strlen()`, `strcmp()`) ; on ne garde que celles dont le programme se sert.\n\nLa bibliothèque inutile est `string.h` (ligne 2) : le programme n'appelle aucune de ses fonctions. Même la chaîne `plaque` est lue avec `scanf()`, qui appartient à `stdio.h`, indispensable ici pour `printf()` et `scanf()`.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "bibliothèque standard"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q2-0",
+              "competence": "Les bibliothèques standard du langage C",
+              "contenu_markdown": "Une bibliothèque s'inclut avec `#include` pour accéder à ses fonctions : `stdio.h` fournit les fonctions d'entrée-sortie comme `printf()` et `scanf()`, `string.h` celles qui manipulent les chaînes de caractères (`strcpy()`, `strlen()`, `strcmp()`) ; on ne garde que celles dont le programme se sert.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Identifie string.h comme la bibliothèque inutile",
+              "points": 0.25
+            },
+            {
+              "libelle": "Justifie : aucune fonction de string.h n'est utilisée, printf et scanf viennent de stdio.h",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Relever dans ce programme, en précisant la ligne : a. une variable globale ; b. une variable locale à la fonction `calculer()` ; c. un paramètre formel ; d. un type structuré. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne variable déclarée en dehors de toute fonction est globale, une variable déclarée dans une fonction est locale à cette fonction, un paramètre formel est le nom donné à une valeur reçue dans l'en-tête d'une fonction, et un type structuré regroupe plusieurs champs sous un même nom.\n\na. Variable globale : `recette` (ligne 13), ou `parc` (ligne 12), toutes deux déclarées hors de toute fonction.\n\nb. Variable locale à `calculer()` : `m` (ligne 16).\n\nc. Paramètre formel : `h` (ligne 15), qui reçoit le nombre d'heures au moment de l'appel.\n\nd. Type structuré : `Vehicule` (lignes 6 à 10), qui regroupe la plaque, les heures et le montant.\n\n### Piège à éviter\n`i` est une variable locale de `saisir()` (ligne 27) et de `main()` (ligne 41), pas de `calculer()` : lis bien la fonction demandée avant de recopier un nom de variable.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "Portée des variables",
+            "paramètre formel"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q3-0",
+              "competence": "Identifier bibliotheque, variable globale, parametre, fonction d'entree, format et appel dans un programme C",
+              "contenu_markdown": "Une variable déclarée en dehors de toute fonction est globale, une variable déclarée dans une fonction est locale à cette fonction, un paramètre formel est le nom donné à une valeur reçue dans l'en-tête d'une fonction, et un type structuré regroupe plusieurs champs sous un même nom.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Variable globale correcte (recette ou parc) avec sa ligne",
+              "points": 0.25
+            },
+            {
+              "libelle": "Variable locale de calculer() : m, ligne 16",
+              "points": 0.25
+            },
+            {
+              "libelle": "Paramètre formel : h, ligne 15",
+              "points": 0.25
+            },
+            {
+              "libelle": "Type structuré : Vehicule, lignes 6 à 10",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Que garantit la boucle des lignes 31 à 34 sur la valeur de `parc[i].heures` ? Expliquer son fonctionnement. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne boucle `do ... while` dont la condition décrit les valeurs interdites réalise un contrôle de saisie : la lecture est répétée tant que la valeur saisie est invalide, ce qui garantit qu'elle est valide à la sortie de la boucle.\n\nLa boucle contrôle la saisie du nombre d'heures. Elle demande la durée (ligne 32), la lit (ligne 33), puis la condition de la ligne 34 est évaluée : tant que la valeur est strictement inférieure à 1 ou strictement supérieure à 24, la saisie est redemandée. À la sortie de la boucle, `parc[i].heures` est donc forcément compris entre 1 et 24.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "boucle do while"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q4-0",
+              "competence": "Lecture et simulation d'un algorithme itératif (boucle do...while) en langage C",
+              "contenu_markdown": "Une boucle `do ... while` dont la condition décrit les valeurs interdites réalise un contrôle de saisie : la lecture est répétée tant que la valeur saisie est invalide, ce qui garantit qu'elle est valide à la sortie de la boucle.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Identifie un contrôle de saisie du nombre d'heures, répété tant que la valeur est invalide",
+              "points": 0.5
+            },
+            {
+              "libelle": "Précise la plage acceptée, de 1 à 24 heures",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Exécuter pas à pas la fonction `calculer()` pour h = 1, puis h = 3, puis h = 7. Présenter un tableau dont les colonnes sont : h, condition vérifiée, valeur de `m`, valeur renvoyée. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nExécuter pas à pas une fonction, c'est suivre pour chaque valeur du paramètre les conditions testées dans l'ordre, retenir la première qui est vraie, n'exécuter que son bloc, puis noter la valeur renvoyée par `return`.\n\n| h | Condition vérifiée | Valeur de `m` | Valeur renvoyée |\n|---|---|---|---|\n| 1 | `h <= 1` (ligne 17) | 300 | 300 |\n| 3 | `h <= 4` (ligne 19), la première est fausse | 300 × 3 = 900 | 900 |\n| 7 | aucune des deux, donc `else` (ligne 21) | 300 × 4 + 200 × (7 - 4) = 1 200 + 600 = 1 800 | 1 800 |\n\nPour h = 7, les deux premières conditions sont fausses : seule la branche `else` s'exécute et applique le tarif réduit aux 3 heures au-delà de la quatrième.\n\n### Piège à éviter\nPour h = 3, la condition `h <= 4` est vraie mais la branche `else` ne s'exécute pas : dans une suite `if ... else if ... else`, un seul bloc est exécuté, le premier dont la condition est vraie.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "trace d'exécution"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q5-0",
+              "competence": "Exécuter pas à pas une fonction à conditions successives (if, else if, else)",
+              "contenu_markdown": "Exécuter pas à pas une fonction, c'est suivre pour chaque valeur du paramètre les conditions testées dans l'ordre, retenir la première qui est vraie, n'exécuter que son bloc, puis noter la valeur renvoyée par `return`.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "h = 1 : première condition vérifiée, m = 300, valeur renvoyée 300",
+              "points": 0.5
+            },
+            {
+              "libelle": "h = 3 : deuxième condition vérifiée, m = 900, valeur renvoyée 900",
+              "points": 0.5
+            },
+            {
+              "libelle": "h = 7 : branche else, m = 1 800, valeur renvoyée 1 800",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Pour le premier véhicule, le conducteur indique successivement 0, 30 puis 6 heures. Donner, pour chacune de ces trois saisies, la valeur de la condition de la ligne 34, puis la valeur de `parc[0].montant` à la sortie de la boucle. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne boucle `do ... while` exécute son bloc au moins une fois puis évalue la condition placée après `while` : tant qu'elle est vraie, le bloc recommence, et la boucle s'arrête dès qu'elle devient fausse.\n\n| Saisie | Condition de la ligne 34 | Conséquence |\n|---|---|---|\n| 0 | vraie (0 < 1) | la saisie est redemandée |\n| 30 | vraie (30 > 24) | la saisie est redemandée |\n| 6 | fausse | sortie de la boucle |\n\nLa valeur retenue est 6. La ligne 35 appelle alors `calculer(6)` : 6 est supérieur à 4, donc `m = 300 × 4 + 200 × (6 - 4) = 1 200 + 400`. On obtient `parc[0].montant = 1600`.\n\n### Piège à éviter\nNe retiens pas 0 ou 30 comme durée : seule la dernière valeur saisie, celle qui rend la condition fausse, est conservée dans `parc[0].heures`.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "boucle do while",
+            "trace d'exécution"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q6-0",
+              "competence": "Simulation d'exécution d'une boucle do...while avec contrôle de saisie",
+              "contenu_markdown": "Une boucle `do ... while` exécute son bloc au moins une fois puis évalue la condition placée après `while` : tant qu'elle est vraie, le bloc recommence, et la boucle s'arrête dès qu'elle devient fausse.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Saisie 0 : condition vraie, la saisie est redemandée",
+              "points": 0.25
+            },
+            {
+              "libelle": "Saisie 30 : condition vraie, la saisie est redemandée",
+              "points": 0.25
+            },
+            {
+              "libelle": "Saisie 6 : condition fausse, sortie de la boucle",
+              "points": 0.25
+            },
+            {
+              "libelle": "Montant final : 300 × 4 + 200 × 2 = 1 600",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "7",
+          "ordre": 7,
+          "enonce_markdown": "La boucle `for` des lignes 28 à 37 doit être remplacée par une boucle `while`. Proposer la nouvelle version de ce bloc. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne boucle `for (init; condition; pas)` se réécrit en `while` en plaçant l'initialisation avant la boucle, la condition entre les parenthèses du `while` et le pas en dernière instruction du bloc.\n\n```c\ni = 0;\nwhile (i < N) {\n    printf(\"Plaque : \");\n    scanf(\"%s\", parc[i].plaque);\n    do {\n        printf(\"Heures (1 a 24) : \");\n        scanf(\"%d\", &parc[i].heures);\n    } while (parc[i].heures < 1 || parc[i].heures > 24);\n    parc[i].montant = calculer(parc[i].heures);\n    recette = recette + parc[i].montant;\n    i++;\n}\n```\n\nLe corps de la boucle est recopié sans changement : seuls l'initialisation, la condition et l'incrémentation changent de place.\n\n### Piège à éviter\nOublier `i++` à la fin du bloc : `i` reste égal à 0 et la boucle ne s'arrête jamais.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "boucle while",
+            "Équivalence for/while"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q7-0",
+              "competence": "Convertir une boucle for en boucle while en langage C",
+              "contenu_markdown": "Une boucle `for (init; condition; pas)` se réécrit en `while` en plaçant l'initialisation avant la boucle, la condition entre les parenthèses du `while` et le pas en dernière instruction du bloc.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Place l'initialisation i = 0 avant la boucle",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la condition i < N dans le while",
+              "points": 0.25
+            },
+            {
+              "libelle": "Recopie correctement le corps de la boucle, do ... while compris",
+              "points": 0.25
+            },
+            {
+              "libelle": "Place l'incrémentation i++ en fin de bloc",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "8",
+          "ordre": 8,
+          "enonce_markdown": "Écrire la fonction `plusCher()` qui ne reçoit aucun paramètre et renvoie l'indice, dans le tableau `parc`, du véhicule dont le montant est le plus élevé. La fonction sera placée avant `main()`. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour trouver le plus grand élément d'un tableau et sa position, on retient l'indice du meilleur candidat (initialisé au premier élément), on parcourt les éléments suivants et on remplace cet indice chaque fois qu'un élément le dépasse ; renvoyer l'indice plutôt que la valeur permet de retrouver tous les champs de l'élément.\n\n```c\nint plusCher(void) {\n    int i, imax = 0;\n    for (i = 1; i < N; i++) {\n        if (parc[i].montant > parc[imax].montant)\n            imax = i;\n    }\n    return imax;\n}\n```\n\nLe premier véhicule sert de point de départ (`imax = 0`). La boucle examine les quatre suivants et remplace `imax` dès qu'un montant dépasse celui du meilleur véhicule trouvé jusque-là. Avec un test strictement supérieur, le premier véhicule rencontré l'emporte en cas d'égalité.\n\n### Piège à éviter\nNe confonds pas `imax` (la position) et `parc[imax].montant` (la valeur) : les comparaisons portent sur les montants, mais la fonction doit renvoyer la position.\n\n### Conseil\nCommence la boucle à `i = 1` quand tu initialises le maximum avec l'élément 0 : le comparer à lui-même ne sert à rien.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "tableau de structures"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q8-0",
+              "competence": "Rechercher le maximum d'un tableau de structures et son indice",
+              "contenu_markdown": "Pour trouver le plus grand élément d'un tableau et sa position, on retient l'indice du meilleur candidat (initialisé au premier élément), on parcourt les éléments suivants et on remplace cet indice chaque fois qu'un élément le dépasse ; renvoyer l'indice plutôt que la valeur permet de retrouver tous les champs de l'élément.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "En-tête cohérent avec l'énoncé : fonction de type entier, sans paramètre",
+              "points": 0.5
+            },
+            {
+              "libelle": "Initialise l'indice du maximum au premier véhicule (0)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Parcourt les véhicules restants en comparant les montants (parc[i].montant > parc[imax].montant)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Met à jour l'indice quand un montant est plus grand et renvoie imax avec return",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "9",
+          "ordre": 9,
+          "enonce_markdown": "On suppose que la variable entière `imax` a été déclarée à la ligne 41. Écrire les instructions à insérer avant la ligne 49 pour afficher la plaque et le montant du véhicule le plus cher, en utilisant la fonction `plusCher()`. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nAppeler une fonction qui renvoie une valeur, c'est affecter son résultat à une variable de même type puis utiliser cette variable dans la suite du programme (affichage, indice de tableau) ; dans `printf()`, `%s` affiche une chaîne de caractères et `%d` un entier.\n\n```c\nimax = plusCher();\nprintf(\"Plus fort montant : %s - %d FCFA\\n\", parc[imax].plaque, parc[imax].montant);\n```\n\nLa première ligne range dans `imax` l'indice renvoyé par `plusCher()`, appelée sans argument. La seconde s'en sert pour désigner le bon véhicule dans `parc` : `%s` reçoit la plaque, `%d` le montant.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "appel de fonction"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q9-0",
+              "competence": "Appel de fonction et récupération de sa valeur de retour en C",
+              "contenu_markdown": "Appeler une fonction qui renvoie une valeur, c'est affecter son résultat à une variable de même type puis utiliser cette variable dans la suite du programme (affichage, indice de tableau) ; dans `printf()`, `%s` affiche une chaîne de caractères et `%d` un entier.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Appelle la fonction sans argument et affecte son résultat à imax",
+              "points": 0.5
+            },
+            {
+              "libelle": "Affiche la plaque (%s) et le montant (%d) avec parc[imax].plaque et parc[imax].montant",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "10",
+          "ordre": 10,
+          "enonce_markdown": "Résumer en une phrase le traitement que réalise ce programme, tel qu'il est donné (lignes 1 à 50). *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour décrire ce que fait un programme, on identifie ses entrées (les saisies), ses traitements (calculs, cumuls, compteurs) et ses sorties (les affichages), puis on les résume en une phrase sans recopier les instructions.\n\nLe programme enregistre cinq véhicules avec leur durée de stationnement et calcule le montant dû par chacun selon le tarif. Il affiche ensuite la recette totale de la matinée et le nombre de véhicules restés plus de 4 heures.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C",
+            "lecture de code"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q10-0",
+              "competence": "Décrire l'algorithme réalisé par un extrait de code (analyse de code)",
+              "contenu_markdown": "Pour décrire ce que fait un programme, on identifie ses entrées (les saisies), ses traitements (calculs, cumuls, compteurs) et ses sorties (les affichages), puis on les résume en une phrase sans recopier les instructions.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Dit que le programme saisit cinq véhicules et calcule le montant de chacun selon la durée",
+              "points": 0.25
+            },
+            {
+              "libelle": "Dit qu'il affiche la recette totale et le nombre de stationnements de plus de 4 heures",
+              "points": 0.25
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

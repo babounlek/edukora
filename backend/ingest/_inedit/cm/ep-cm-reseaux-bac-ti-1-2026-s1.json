@@ -1,0 +1,664 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-reseaux-bac-ti-1-2026-s1",
+  "titre": "Réseaux, Internet et Sécurité Informatique Terminale TI – Épreuve inédite n°1",
+  "blueprint_external_id": "bp-cm-reseaux-bac-ti-1",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "8",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 1** (8 points)\n\nLa Résidence Les Alizés, à Kribi, équipe son rez-de-chaussée d'un réseau local. Chaque poste de la réception est relié par un câble à paire torsadée à un commutateur central SW1, lui-même relié au routeur R1 qui assure l'accès à Internet par fibre optique. Les ordinateurs de la réception et le serveur de réservation appartiennent au même sous-réseau, d'adresse 172.16.40.64 et de masque 255.255.255.192. Le routeur R1 porte la première adresse utilisable de ce sous-réseau. Le poste du gérant, PC5, est branché sur un autre commutateur.\n\n| Équipement | Adresse IP | Masque |\n|---|---|---|\n| Routeur R1 (côté réseau local) | 172.16.40.65 | 255.255.255.192 |\n| Serveur de réservation | 172.16.40.66 | 255.255.255.192 |\n| PC1 (réception) | 172.16.40.70 | 255.255.255.192 |\n| PC2 (réception) | 172.16.40.71 | 255.255.255.192 |\n| PC5 (bureau du gérant) | 172.16.40.130 | 255.255.255.192 |\n\nLa figure 1 représente ce réseau.\n\n<svg viewBox='0 0 520 350' role='img' aria-labelledby='fig90df9d52t fig90df9d52d' style='width:100%;max-width:520px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig90df9d52t'>Réseau local de la Résidence Les Alizés</title><desc id='fig90df9d52d'>Les postes PC1 et PC2 et le serveur de réservation sont reliés au commutateur SW1, lui-même relié au routeur R1. Le routeur R1 est relié à Internet et à un second commutateur SW2 sur lequel est branché le poste PC5 du gérant.</desc><rect x='12' y='12' width='232' height='318' rx='10' fill='none' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-dasharray='6 5'/><line x1='97' y1='118' x2='169' y2='166' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><line x1='97' y1='180' x2='158' y2='180' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><line x1='93' y1='243.1' x2='168.5' y2='194' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><line x1='222' y1='180' x2='304' y2='180' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><line x1='349.6' y1='166.9' x2='419.9' y2='120.1' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><line x1='330' y1='200' x2='330' y2='266' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><line x1='362' y1='280' x2='423' y2='280' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><rect x='43' y='80' width='54' height='40' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='49' y='84' width='42' height='26' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><line x1='60' y1='116' x2='80' y2='116' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='70' y1='110' x2='70' y2='116' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><rect x='43' y='160' width='54' height='40' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='49' y='164' width='42' height='26' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><line x1='60' y1='196' x2='80' y2='196' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='70' y1='190' x2='70' y2='196' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><rect x='47' y='232' width='46' height='52' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='50' y='234' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='83' cy='241' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='50' y='251' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='83' cy='258' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='50' y='268' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='83' cy='275' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='158' y='166' width='64' height='28' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='160' y='168' width='60' height='24' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='166' y='177' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='176' y='177' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='186' y='177' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='196' y='177' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='206' y='177' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><ellipse cx='330' cy='180' rx='26' ry='20' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><ellipse cx='330' cy='180' rx='24' ry='18' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><ellipse cx='450' cy='100' rx='45' ry='27' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><path d='M416,114 a14,14 0 0 1 4,-27 a18,18 0 0 1 34,-6 a15,15 0 0 1 28,10 a12,12 0 0 1 -4,23 z' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linejoin='round'/><rect x='298' y='266' width='64' height='28' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='300' y='268' width='60' height='24' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='306' y='277' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='316' y='277' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='326' y='277' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='336' y='277' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='346' y='277' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='423' y='260' width='54' height='40' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='429' y='264' width='42' height='26' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><line x1='440' y1='296' x2='460' y2='296' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='450' y1='290' x2='450' y2='296' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><text x='22' y='32' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)' font-weight='bold'>Réseau de la réception</text><text x='22' y='48' font-size='12' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>172.16.40.64 / 26</text><text x='70' y='135' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>PC1</text><text x='70' y='149' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.70</text><text x='70' y='215' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>PC2</text><text x='70' y='229' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.71</text><text x='70' y='299' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Serveur</text><text x='70' y='313' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.66</text><text x='190' y='160' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>SW1</text><line x1='318' y1='180' x2='342' y2='180' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='342,180 333,184.1 333,175.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='342' y1='180' x2='318' y2='180' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='318,180 327,175.9 327,184.1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><text x='330' y='143' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>R1</text><text x='330' y='156' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.65</text><text x='450' y='142' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Internet</text><text x='330' y='309' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>SW2</text><text x='450' y='315' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>PC5</text><text x='450' y='329' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.130</text><text x='260' y='343' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 1 : réseau de la résidence (Serveur = serveur de réservation)</text></svg>",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Les postes de la réception sont chacun reliés par un câble au commutateur SW1. Nommer la topologie physique obtenue, puis donner un avantage et un inconvénient de cette topologie. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne topologie physique décrit la disposition des câbles et des équipements : dans une topologie en étoile, chaque poste est relié à un équipement central (concentrateur ou commutateur), ce qui isole les pannes de câble mais fait dépendre tout le réseau de cet équipement central.\n\nIl s'agit d'une topologie **en étoile**, avec SW1 au centre.\n\n- Avantage : la panne d'un câble ou d'un poste ne touche que ce poste, les autres continuent de communiquer ; ajouter un poste revient à brancher un câble de plus sur le commutateur.\n- Inconvénient : si SW1 tombe en panne, tout le réseau de la réception est coupé, car il est le point de passage de toutes les communications.\n\n### Piège à éviter\nNe confonds pas la topologie physique (la façon dont les câbles sont posés) et la topologie logique (la façon dont les données circulent) : la question porte ici sur les câbles reliés à SW1.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "topologie réseau",
+            "réseaux informatiques"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q1-0",
+              "competence": "Topologies physiques et architectures reseau",
+              "contenu_markdown": "Une topologie physique décrit la disposition des câbles et des équipements : dans une topologie en étoile, chaque poste est relié à un équipement central (concentrateur ou commutateur), ce qui isole les pannes de câble mais fait dépendre tout le réseau de cet équipement central.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme la topologie en étoile",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne un avantage (isolement des pannes de câble, ajout de postes facile)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne un inconvénient (dépendance de l'équipement central)",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Déterminer l'adresse de diffusion du sous-réseau 172.16.40.64 de masque 255.255.255.192, en détaillant le calcul. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nL'adresse de diffusion est la dernière adresse d'un sous-réseau, celle dont tous les bits d'hôte valent 1 : on la trouve en calculant la taille du bloc (256 moins la valeur de l'octet significatif du masque), puis en prenant l'adresse qui précède le début du bloc suivant.\n\nL'octet significatif du masque est le dernier : 192. La taille d'un bloc est donc 256 - 192 = 64 adresses. Les sous-réseaux commencent aux multiples de 64 : 172.16.40.0, 172.16.40.64, 172.16.40.128, 172.16.40.192.\n\nLe sous-réseau 172.16.40.64 s'étend jusqu'à l'adresse qui précède le début du suivant (172.16.40.128). Son adresse de diffusion est donc **172.16.40.127**.\n\n<svg viewBox='0 0 520 190' role='img' aria-labelledby='fig67796a50t fig67796a50d' style='width:100%;max-width:520px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig67796a50t'>Découpage du dernier octet en quatre sous-réseaux de 64 adresses</title><desc id='fig67796a50d'>Les adresses de 0 à 255 sont découpées en quatre blocs de 64 : 0 à 63, 64 à 127, 128 à 191 et 192 à 255. Le sous-réseau 172.16.40.64 occupe le deuxième bloc, de l'adresse de réseau 64 à l'adresse de diffusion 127. L'adresse 130 est dans le troisième bloc.</desc><line x1='140' y1='40' x2='140' y2='62' stroke='var(--primary,#0f6b4f)' stroke-width='1.6' stroke-linecap='round'/><line x1='259' y1='40' x2='259' y2='62' stroke='var(--primary,#0f6b4f)' stroke-width='1.6' stroke-linecap='round'/><line x1='263.8' y1='102' x2='263.8' y2='140' stroke='var(--destructive,#c4352e)' stroke-width='1.3' stroke-linecap='round'/><rect x='20' y='62' width='120' height='36' rx='0' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.4'/><rect x='140' y='62' width='120' height='36' rx='0' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='2.4'/><rect x='260' y='62' width='120' height='36' rx='0' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.4'/><rect x='380' y='62' width='120' height='36' rx='0' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.4'/><circle cx='263.8' cy='98' r='4' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='80' y='85' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>0 à 63</text><text x='80' y='118' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.0/26</text><text x='200' y='85' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>64 à 127</text><text x='200' y='118' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.64/26</text><text x='320' y='85' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>128 à 191</text><text x='320' y='118' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.128/26</text><text x='440' y='85' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>192 à 255</text><text x='440' y='118' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>172.16.40.192/26</text><text x='136' y='34' font-size='13' text-anchor='end' fill='var(--primary,#0f6b4f)' font-weight='bold'>réseau : 64</text><text x='266' y='34' font-size='13' text-anchor='start' fill='var(--primary,#0f6b4f)' font-weight='bold'>diffusion : 127</text><text x='269.8' y='154' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' font-weight='bold'>PC5 : 130</text><text x='250' y='142' font-size='13' text-anchor='end' fill='var(--primary,#0f6b4f)'>utilisables : 65 à 126</text><text x='260' y='182' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure : le sous-réseau 172.16.40.64 / 26 et l'adresse de PC5</text></svg>\n\n### Piège à éviter\nL'adresse 172.16.40.128 n'est pas l'adresse de diffusion : elle ouvre le sous-réseau suivant. Retire toujours 1 à l'adresse de début du bloc suivant.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "adresse de diffusion",
+            "sous-réseau"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q2-0",
+              "competence": "Calcul de l'adresse de diffusion (broadcast) d'un réseau",
+              "contenu_markdown": "L'adresse de diffusion est la dernière adresse d'un sous-réseau, celle dont tous les bits d'hôte valent 1 : on la trouve en calculant la taille du bloc (256 moins la valeur de l'octet significatif du masque), puis en prenant l'adresse qui précède le début du bloc suivant.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule la taille du bloc (256 - 192 = 64) ou le nombre de bits d'hôte",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne l'adresse de diffusion 172.16.40.127",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Combien de postes et de serveurs peut-on brancher au maximum dans ce sous-réseau ? Justifier par le calcul. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe nombre maximal de machines d'un sous-réseau vaut `2^n - 2`, où `n` est le nombre de bits d'hôte du masque : on retire l'adresse du réseau et l'adresse de diffusion, qui ne s'attribuent à aucune machine.\n\nLe masque 255.255.255.192 s'écrit en binaire `11111111.11111111.11111111.11000000` : il contient 6 bits à 0, donc 6 bits d'hôte. Le sous-réseau comporte `2^6 = 64` adresses, dont deux sont réservées (réseau et diffusion) : `64 - 2 = 62` machines au maximum.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "nombre d'hôtes",
+            "sous-réseau"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q3-0",
+              "competence": "Calculer le nombre maximal de machines (hôtes) d'un sous-réseau",
+              "contenu_markdown": "Le nombre maximal de machines d'un sous-réseau vaut `2^n - 2`, où `n` est le nombre de bits d'hôte du masque : on retire l'adresse du réseau et l'adresse de diffusion, qui ne s'attribuent à aucune machine.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Trouve 6 bits d'hôte",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule 2^6 - 2 = 62 machines",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Donner la première et la dernière adresse utilisables de ce sous-réseau. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa plage utilisable d'un sous-réseau commence à l'adresse qui suit l'adresse du réseau et s'arrête à l'adresse qui précède l'adresse de diffusion.\n\nL'adresse du réseau est 172.16.40.64 et l'adresse de diffusion 172.16.40.127. La plage utilisable va donc de **172.16.40.65** à **172.16.40.126**, soit bien 62 adresses. C'est d'ailleurs 172.16.40.65 que porte le routeur R1.\n\n### Conseil\nVérifie ton résultat avec la question précédente : le nombre d'adresses entre ta première et ta dernière adresse doit être égal au nombre de machines trouvé.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "adressage IPv4",
+            "sous-réseau"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q4-0",
+              "competence": "Déterminer la plage d'adresses utilisables d'un sous-réseau",
+              "contenu_markdown": "La plage utilisable d'un sous-réseau commence à l'adresse qui suit l'adresse du réseau et s'arrête à l'adresse qui précède l'adresse de diffusion.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Donne la première adresse utilisable 172.16.40.65",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne la dernière adresse utilisable 172.16.40.126",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Le poste PC5 du gérant (172.16.40.130) peut-il communiquer directement avec le serveur de réservation, sans passer par le routeur ? Justifier la réponse. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne adresse IPv4 appartient à un réseau lorsqu'elle se situe dans la plage utilisable de ce sous-réseau ; deux machines dont les adresses tombent dans des sous-réseaux différents ne communiquent qu'à travers un routeur.\n\nNon. La plage utilisable du sous-réseau du serveur va de 172.16.40.65 à 172.16.40.126 : l'adresse 172.16.40.130 est en dehors. Elle appartient au sous-réseau suivant, 172.16.40.128, de même masque. PC5 et le serveur sont donc dans deux sous-réseaux distincts et leurs échanges passent obligatoirement par un routeur.\n\n### Piège à éviter\nNe te limite pas aux trois premiers octets : ici ils sont identiques (172.16.40), mais c'est le dernier octet, interprété avec le masque, qui sépare les deux sous-réseaux.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "adresse IP",
+            "sous-réseau"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q5-0",
+              "competence": "Détermination d'une adresse IPv4 valide dans un réseau donné",
+              "contenu_markdown": "Une adresse IPv4 appartient à un réseau lorsqu'elle se situe dans la plage utilisable de ce sous-réseau ; deux machines dont les adresses tombent dans des sous-réseaux différents ne communiquent qu'à travers un routeur.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Constate que 172.16.40.130 est hors de la plage 172.16.40.65 à 172.16.40.126",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conclut que PC5 est dans un autre sous-réseau (172.16.40.128), donc que la communication passe par un routeur",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Les tablettes prêtées aux clients se connectent au Wi-Fi de la résidence et reçoivent automatiquement une adresse IP. Nommer le protocole qui assure cette attribution et donner son avantage par rapport à une configuration manuelle de chaque tablette. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nAvec l'adressage dynamique, un serveur DHCP attribue automatiquement à chaque machine qui se connecte une adresse IP, un masque et une passerelle, alors qu'avec l'adressage statique l'administrateur saisit ces paramètres à la main sur chaque poste.\n\nLe protocole est **DHCP** (Dynamic Host Configuration Protocol). Un serveur DHCP, souvent intégré au routeur, attribue à chaque tablette qui se connecte une adresse libre, le masque et la passerelle.\n\nL'avantage est qu'aucune configuration manuelle n'est nécessaire : l'administrateur n'a pas à intervenir sur chaque tablette de passage, et le serveur évite d'attribuer deux fois la même adresse.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "DHCP",
+            "adresse IP"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q6-0",
+              "competence": "Modes d'adressage IP : statique et dynamique (DHCP)",
+              "contenu_markdown": "Avec l'adressage dynamique, un serveur DHCP attribue automatiquement à chaque machine qui se connecte une adresse IP, un masque et une passerelle, alors qu'avec l'adressage statique l'administrateur saisit ces paramètres à la main sur chaque poste.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme le protocole DHCP",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne un avantage : pas de configuration manuelle, pas de conflit d'adresses",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "7",
+          "ordre": 7,
+          "enonce_markdown": "Donner l'adresse de passerelle par défaut à configurer sur le poste PC1, puis expliquer son rôle. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa passerelle par défaut d'un poste est l'adresse de l'interface du routeur située dans son propre sous-réseau : c'est par elle que partent tous les paquets destinés à une machine extérieure à ce sous-réseau.\n\nPC1 doit utiliser comme passerelle l'adresse du routeur R1 côté réseau local, soit **172.16.40.65**.\n\nSon rôle : lorsque PC1 veut joindre une machine qui n'est pas dans son sous-réseau (un site sur Internet, le poste PC5), il envoie ses paquets à cette adresse, et R1 se charge de les acheminer vers leur destination.\n\n### Piège à éviter\nLa passerelle est l'adresse du routeur dans TON sous-réseau, pas celle de son côté Internet : un poste ne sait joindre que des adresses de son propre sous-réseau.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "passerelle par défaut",
+            "routeur"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q7-0",
+              "competence": "Rôle de la passerelle par défaut",
+              "contenu_markdown": "La passerelle par défaut d'un poste est l'adresse de l'interface du routeur située dans son propre sous-réseau : c'est par elle que partent tous les paquets destinés à une machine extérieure à ce sous-réseau.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Donne l'adresse 172.16.40.65 (interface de R1 côté réseau local)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Explique qu'elle sert de point de sortie vers les réseaux extérieurs au sous-réseau",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "8",
+          "ordre": 8,
+          "enonce_markdown": "Écrire la commande qui permet de tester, depuis PC1, la connectivité avec le serveur de réservation, puis expliquer ce que signifie la réponse « Délai d'attente dépassé ». *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa commande `ping adresse` envoie des paquets à une machine et affiche leur temps de réponse : des réponses prouvent que la machine est joignable, un délai d'attente dépassé indique qu'aucune réponse n'est revenue.\n\nLa commande est `ping 172.16.40.66`, saisie dans l'invite de commandes de PC1.\n\nUn « Délai d'attente dépassé » signifie qu'aucune réponse n'est revenue du serveur dans le temps imparti : il est éteint, déconnecté du réseau ou injoignable (câble débranché, pare-feu qui bloque les réponses, mauvaise adresse).\n\n### Conseil\nTeste d'abord une machine proche (la passerelle, par exemple) avant un site lointain : si le premier test échoue, le problème est dans le réseau local.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "commande PING",
+            "réseaux informatiques"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q8-0",
+              "competence": "Commande ping pour tester l'accessibilité réseau",
+              "contenu_markdown": "La commande `ping adresse` envoie des paquets à une machine et affiche leur temps de réponse : des réponses prouvent que la machine est joignable, un délai d'attente dépassé indique qu'aucune réponse n'est revenue.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit la commande ping suivie de l'adresse 172.16.40.66",
+              "points": 0.5
+            },
+            {
+              "libelle": "Explique qu'aucune réponse n'est revenue : machine éteinte, déconnectée ou injoignable",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "9",
+          "ordre": 9,
+          "enonce_markdown": "Le routeur R1 est aussi identifié par une adresse physique, 4C-1B-7E-90-A3-2D. Donner la taille d'une telle adresse en octets puis en bits. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne adresse MAC identifie une carte réseau : elle s'écrit sur 6 octets, soit 48 bits, présentés en six groupes de deux chiffres hexadécimaux, et reste la même quel que soit le réseau où la machine est branchée.\n\nL'adresse comporte six groupes de deux chiffres hexadécimaux, donc **6 octets**. Chaque octet vaut 8 bits : 6 × 8 = **48 bits**.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "adresse MAC"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex1-q9-0",
+              "competence": "Taille de l'adresse MAC (octets et bits)",
+              "contenu_markdown": "Une adresse MAC identifie une carte réseau : elle s'écrit sur 6 octets, soit 48 bits, présentés en six groupes de deux chiffres hexadécimaux, et reste la même quel que soit le réseau où la machine est branchée.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Donne 6 octets",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne 48 bits",
+              "points": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "7",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 2** (7 points)\n\nUne clinique privée de Maroua, installée hors de portée de la fibre optique, équipe son secrétariat d'un accès à Internet et de plusieurs services en ligne : consultation du site du ministère de la Santé, stockage des dossiers des patients et logiciel de gestion des rendez-vous.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Lorsque la secrétaire saisit l'adresse `www.clinique-sahel.cm` dans son navigateur, deux protocoles interviennent successivement. Les nommer dans l'ordre et donner le rôle de chacun. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour ouvrir une page à partir d'un nom de domaine, le navigateur interroge d'abord un serveur DNS, qui traduit ce nom en adresse IP, puis envoie à l'adresse obtenue une requête HTTP pour demander la page au serveur web.\n\n1. **DNS** (Domain Name System) intervient en premier : le navigateur ne connaît que le nom du site, et le serveur DNS le traduit en adresse IP.\n2. **HTTP** (HyperText Transfer Protocol) intervient ensuite : avec l'adresse IP obtenue, le navigateur envoie une requête au serveur web, qui renvoie la page demandée.\n\n<svg viewBox='0 0 510 262' role='img' aria-labelledby='fig602a97edt fig602a97edd' style='width:100%;max-width:510px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig602a97edt'>Ouverture d'une page web : DNS puis HTTP</title><desc id='fig602a97edd'>Le navigateur demande à un serveur DNS l'adresse IP du site, la reçoit, envoie alors une requête HTTP au serveur web et reçoit la page.</desc><line x1='85' y1='40' x2='85' y2='252' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='255' y1='40' x2='255' y2='252' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='425' y1='40' x2='425' y2='252' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='85' y1='78' x2='254' y2='78' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='254,78 245,82 245,74' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='255' y1='122' x2='86' y2='122' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-dasharray='6 4' stroke-linecap='round'/><polyline points='95,117.5 86,122 95,126.5' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linejoin='round' stroke-linecap='round'/><line x1='85' y1='166' x2='424' y2='166' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='424,166 415,170.1 415,161.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='425' y1='210' x2='86' y2='210' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-dasharray='6 4' stroke-linecap='round'/><polyline points='95,205.5 86,210 95,214.5' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linejoin='round' stroke-linecap='round'/><rect x='30' y='8' width='110' height='32' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='200' y='8' width='110' height='32' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='370' y='8' width='110' height='32' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><text x='85' y='29' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>Navigateur</text><text x='255' y='29' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>Serveur DNS</text><text x='425' y='29' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>Serveur web</text><text x='170' y='70' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1 : adresse du site ?</text><text x='170' y='114' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2 : adresse IP</text><text x='255' y='158' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3 : requête HTTP : la page</text><text x='255' y='202' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4 : page renvoyée</text></svg>\n\n### Piège à éviter\nRespecte l'ordre : sans la traduction du nom par DNS, le navigateur n'a aucune adresse à laquelle envoyer sa requête HTTP.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "DNS",
+            "HTTP"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex2-q1-0",
+              "competence": "Protocoles mobilisés lors de l'ouverture d'une page web (DNS et HTTP)",
+              "contenu_markdown": "Pour ouvrir une page à partir d'un nom de domaine, le navigateur interroge d'abord un serveur DNS, qui traduit ce nom en adresse IP, puis envoie à l'adresse obtenue une requête HTTP pour demander la page au serveur web.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme DNS en premier",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que DNS traduit le nom de domaine en adresse IP",
+              "points": 0.5
+            },
+            {
+              "libelle": "Nomme HTTP en second",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que HTTP demande la page au serveur web et la reçoit",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Classer chacune des technologies d'accès à Internet suivantes parmi les accès filaires ou les accès sans fil : ADSL, fibre optique, VSAT (satellite), réseau mobile 4G. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne technologie d'accès filaire relie l'abonné au fournisseur par un support physique (cuivre, fibre optique), alors qu'une technologie sans fil transmet par ondes radio (satellite, réseau mobile, Wi-Fi) : le critère est le support utilisé entre l'abonné et le fournisseur.\n\n| Technologie | Catégorie | Support |\n|---|---|---|\n| ADSL | filaire | ligne téléphonique en cuivre |\n| Fibre optique | filaire | fibre de verre |\n| VSAT | sans fil | liaison satellite |\n| 4G | sans fil | ondes radio du réseau mobile |\n\nPour une clinique que la fibre n'atteint pas, les deux accès sans fil de la liste restent possibles.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "technologies d'accès à Internet"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex2-q2-0",
+              "competence": "Technologies d'accès au réseau : filaire et sans fil",
+              "contenu_markdown": "Une technologie d'accès filaire relie l'abonné au fournisseur par un support physique (cuivre, fibre optique), alors qu'une technologie sans fil transmet par ondes radio (satellite, réseau mobile, Wi-Fi) : le critère est le support utilisé entre l'abonné et le fournisseur.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "ADSL classé filaire",
+              "points": 0.25
+            },
+            {
+              "libelle": "Fibre optique classée filaire",
+              "points": 0.25
+            },
+            {
+              "libelle": "VSAT classé sans fil",
+              "points": 0.25
+            },
+            {
+              "libelle": "4G classée sans fil",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Pour retrouver uniquement les pages dont le titre contient le mot « paludisme », la secrétaire doit utiliser un opérateur de recherche avancée. Donner cet opérateur et écrire la requête complète. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLes opérateurs de recherche avancée précisent où chercher : `intitle:` limite la recherche aux pages dont le titre contient le mot qui suit, collé aux deux-points sans espace.\n\nL'opérateur est **intitle:**. La requête complète est :\n\n```\nintitle:paludisme\n```\n\nLe moteur ne renvoie alors que les pages dont le titre contient « paludisme », et non celles qui ne citent le mot que dans leur texte.\n\n### Piège à éviter\nNe laisse pas d'espace entre les deux-points et le mot : avec `intitle: paludisme`, le moteur risque de ne plus lire l'opérateur comme prévu et de chercher le mot dans toute la page.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "opérateurs de recherche avancée"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex2-q3-0",
+              "competence": "Opérateur de recherche avancée intitle (Google)",
+              "contenu_markdown": "Les opérateurs de recherche avancée précisent où chercher : `intitle:` limite la recherche aux pages dont le titre contient le mot qui suit, collé aux deux-points sans espace.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme l'opérateur intitle:",
+              "points": 0.5
+            },
+            {
+              "libelle": "Écrit la requête intitle:paludisme, sans espace après les deux-points",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Expliquer l'effet des guillemets dans la requête `\"prise en charge du paludisme\"`. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPlacer une expression entre guillemets dans une requête demande au moteur de ne renvoyer que les pages qui contiennent exactement cette suite de mots, dans cet ordre.\n\nLes guillemets imposent la recherche de l'**expression exacte** : seules les pages contenant « prise en charge du paludisme » telle quelle, mots dans cet ordre, sont renvoyées. Sans eux, le moteur chercherait chaque mot séparément, n'importe où dans la page.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "opérateurs de recherche avancée"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex2-q4-0",
+              "competence": "Recherche par expression exacte avec guillemets (Google)",
+              "contenu_markdown": "Placer une expression entre guillemets dans une requête demande au moteur de ne renvoyer que les pages qui contiennent exactement cette suite de mots, dans cet ordre.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Dit que la recherche porte sur l'expression exacte",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise que les mots doivent apparaître ensemble, dans cet ordre",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "La clinique utilise, par abonnement et dans son navigateur, un logiciel de gestion des rendez-vous hébergé chez un fournisseur : elle n'installe ni ne maintient rien sur ses ordinateurs. Nommer ce modèle de service du Cloud Computing, le définir, puis donner un avantage pour la clinique. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe modèle SaaS (Software as a Service) fournit une application complète accessible par Internet, généralement dans un navigateur : le fournisseur héberge, met à jour et sécurise le logiciel, et le client n'en gère que l'usage.\n\nCe modèle est le **SaaS** (Software as a Service, « logiciel en tant que service »). Le fournisseur met à disposition une application complète, accessible par Internet, qu'il héberge et met à jour lui-même ; le client l'utilise sans l'installer.\n\nAvantage pour la clinique : aucune installation ni maintenance sur ses ordinateurs, des mises à jour assurées par le fournisseur et un accès au logiciel depuis n'importe quel poste connecté.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Cloud Computing"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex2-q5-0",
+              "competence": "Le modèle SaaS (Software as a Service)",
+              "contenu_markdown": "Le modèle SaaS (Software as a Service) fournit une application complète accessible par Internet, généralement dans un navigateur : le fournisseur héberge, met à jour et sécurise le logiciel, et le client n'en gère que l'usage.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme le modèle SaaS",
+              "points": 0.5
+            },
+            {
+              "libelle": "Le définit : application complète fournie par Internet, hébergée et mise à jour par le fournisseur",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne un avantage pour la clinique (pas d'installation, mises à jour, accès depuis tout poste)",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Pour garantir la confidentialité des dossiers médicaux, la clinique veut que l'infrastructure de stockage ne soit utilisée que par elle. Nommer ce type de déploiement du Cloud Computing, puis citer un autre type de déploiement en précisant à qui il s'adresse. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe déploiement d'un Cloud décrit qui utilise l'infrastructure : privé quand elle est réservée à une seule organisation, public quand un fournisseur la met à disposition de nombreux clients, communautaire quand elle est partagée par des organisations aux besoins communs, hybride quand il combine plusieurs de ces types.\n\nLe besoin de la clinique correspond au **Cloud privé** : l'infrastructure est réservée à une seule organisation, qui en maîtrise l'accès et les données.\n\nUn autre type est le **Cloud public** : un fournisseur met son infrastructure à disposition de nombreux clients (entreprises, particuliers) qui la partagent. On peut aussi citer le Cloud communautaire (partagé par des organisations aux besoins communs) ou le Cloud hybride (combinaison de plusieurs types).",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Cloud Computing"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex2-q6-0",
+              "competence": "Les types de déploiement du Cloud Computing (privé, public, communautaire, hybride)",
+              "contenu_markdown": "Le déploiement d'un Cloud décrit qui utilise l'infrastructure : privé quand elle est réservée à une seule organisation, public quand un fournisseur la met à disposition de nombreux clients, communautaire quand elle est partagée par des organisations aux besoins communs, hybride quand il combine plusieurs de ces types.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme le Cloud privé et précise qu'il est réservé à une seule organisation",
+              "points": 0.75
+            },
+            {
+              "libelle": "Cite un autre type de déploiement (public, communautaire ou hybride) et dit à qui il s'adresse",
+              "points": 0.75
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "5",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 3** (5 points)\n\nUne librairie en ligne de Douala conserve sur un serveur les commandes et les coordonnées de ses clients. Elle vient de subir deux incidents : un employé a saisi ses identifiants sur une fausse page imitant le site de sa banque, puis les fichiers du serveur sont devenus illisibles, accompagnés d'un message réclamant une rançon.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Nommer l'attaque dont l'employé a été victime en saisissant ses identifiants sur la fausse page, puis décrire son principe. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe phishing (hameçonnage) consiste à se faire passer pour un organisme de confiance, par message ou par fausse page web, afin d'amener la victime à livrer elle-même ses identifiants ou ses données bancaires.\n\nL'employé a subi une attaque de **phishing** (hameçonnage). L'attaquant a reproduit l'apparence du site de la banque et a conduit l'employé à y saisir ses identifiants : la victime fournit elle-même l'information, sans qu'aucune faille technique ne soit exploitée.\n\n### Conseil\nRetiens le critère qui reconnaît le phishing : c'est la victime qui donne ses informations, trompée par une fausse identité. Un logiciel qui bloque des fichiers contre rançon relève d'une autre attaque.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "attaques informatiques"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex3-q1-0",
+              "competence": "Attaques informatiques : phishing et ransomware",
+              "contenu_markdown": "Le phishing (hameçonnage) consiste à se faire passer pour un organisme de confiance, par message ou par fausse page web, afin d'amener la victime à livrer elle-même ses identifiants ou ses données bancaires.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme le phishing (hameçonnage)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Décrit le principe : imiter un organisme de confiance pour obtenir les identifiants de la victime",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Parmi les principes fondamentaux de la sécurité informatique (confidentialité, intégrité, disponibilité, authentification), indiquer lequel est d'abord atteint par le second incident, et justifier la réponse. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nChaque principe de sécurité protège une qualité de l'information : la confidentialité interdit sa lecture par des tiers, l'intégrité garantit qu'elle n'est pas altérée, la disponibilité assure qu'elle reste accessible à ceux qui y ont droit, l'authentification vérifie l'identité de l'utilisateur.\n\nLe principe atteint est la **disponibilité**. Les fichiers existent toujours sur le serveur, mais les employés ne peuvent plus les ouvrir : l'information n'est plus accessible à ceux qui y ont droit, et la librairie ne peut plus traiter ses commandes.\n\n### Piège à éviter\nNe réponds pas « confidentialité » parce qu'un pirate est en cause : ici personne n'a lu les données, elles sont simplement devenues inutilisables.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "principes de sécurité",
+            "Disponibilité"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex3-q2-0",
+              "competence": "Principes fondamentaux de la sécurité informatique : intégrité, disponibilité, authentification et non-répudiation",
+              "contenu_markdown": "Chaque principe de sécurité protège une qualité de l'information : la confidentialité interdit sa lecture par des tiers, l'intégrité garantit qu'elle n'est pas altérée, la disponibilité assure qu'elle reste accessible à ceux qui y ont droit, l'authentification vérifie l'identité de l'utilisateur.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme la disponibilité",
+              "points": 0.5
+            },
+            {
+              "libelle": "Justifie : les fichiers sont présents mais inaccessibles aux utilisateurs autorisés",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Les pirates ont laissé un message chiffré par la méthode de César avec un décalage de 3 positions vers la droite : « HQYRBHU OH UDSSRUW ». Déchiffrer ce message en détaillant la méthode. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour déchiffrer un message codé par la méthode de César, on remplace chaque lettre par celle qui se trouve, dans l'alphabet, le même nombre de positions avant elle que le décalage utilisé au chiffrement, en repartant de Z après A, et on laisse les espaces inchangés.\n\nLe chiffrement a décalé chaque lettre de 3 rangs vers la droite : pour déchiffrer, on recule de 3 rangs.\n\n| Lettre chiffrée | H | Q | Y | R | B | H | U |\n|---|---|---|---|---|---|---|---|\n| Lettre claire | E | N | V | O | Y | E | R |\n\n| Lettre chiffrée | O | H |\n|---|---|---|\n| Lettre claire | L | E |\n\n| Lettre chiffrée | U | D | S | S | R | U | W |\n|---|---|---|---|---|---|---|---|\n| Lettre claire | R | A | P | P | O | R | T |\n\nLe message déchiffré est **ENVOYER LE RAPPORT**.\n\n### Piège à éviter\nPour B, reculer de 3 rangs oblige à repartir de la fin de l'alphabet : B, A, Z, Y donne Y. Oublier ce retour à Z est l'erreur la plus fréquente.\n\n### Conseil\nÉcris l'alphabet en entier au brouillon, puis vérifie sur le premier mot : un mot qui n'a aucun sens signale un décalage fait dans le mauvais sens.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "chiffrement de César"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex3-q3-0",
+              "competence": "Déchiffrement d'un message chiffré par la méthode de César",
+              "contenu_markdown": "Pour déchiffrer un message codé par la méthode de César, on remplace chaque lettre par celle qui se trouve, dans l'alphabet, le même nombre de positions avant elle que le décalage utilisé au chiffrement, en repartant de Z après A, et on laisse les espaces inchangés.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Déchiffre en reculant de 3 rangs (sens inverse du chiffrement)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Obtient le premier mot ENVOYER, avec le retour de B à Y",
+              "points": 0.5
+            },
+            {
+              "libelle": "Obtient le mot LE",
+              "points": 0.5
+            },
+            {
+              "libelle": "Obtient le mot RAPPORT",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "La librairie veut réserver l'accès à sa salle serveur aux seuls employés habilités. Proposer un dispositif de contrôle d'accès physique et expliquer son fonctionnement. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn contrôle d'accès physique restreint l'entrée d'un local aux personnes autorisées en vérifiant ce qu'elles possèdent (badge, clé), ce qu'elles savent (code) ou ce qu'elles sont (empreinte digitale, visage).\n\nUne solution est le **lecteur de badge** : chaque employé autorisé reçoit un badge personnel, que la porte de la salle du serveur lit avant de s'ouvrir. Le badge d'une personne qui quitte l'entreprise se désactive sans changer la serrure, et chaque passage peut être enregistré.\n\nOn pourrait aussi citer le digicode (code à saisir) ou la biométrie (empreinte digitale), qui vérifient ce que l'on sait ou ce que l'on est.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "contrôle d'accès",
+            "securite physique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-reseaux-bac-ti-1-2026-s1-ex3-q4-0",
+              "competence": "Decrire des technologies de controle d'acces physique aux locaux",
+              "contenu_markdown": "Un contrôle d'accès physique restreint l'entrée d'un local aux personnes autorisées en vérifiant ce qu'elles possèdent (badge, clé), ce qu'elles savent (code) ou ce qu'elles sont (empreinte digitale, visage).",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme une technologie de contrôle d'accès physique (badge, code, biométrie)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Décrit comment elle réserve l'accès aux personnes autorisées",
+              "points": 0.5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

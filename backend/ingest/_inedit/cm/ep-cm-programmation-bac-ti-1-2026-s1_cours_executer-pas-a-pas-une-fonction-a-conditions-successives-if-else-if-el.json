@@ -1,0 +1,106 @@
+{
+  "type": "cours",
+  "cours_id": "cours-executer-pas-a-pas-une-fonction-a-condit-progtibac1-ex3-q5",
+  "meta": {
+    "titre": "Exécuter pas à pas une fonction à conditions successives (if, else if, else)",
+    "matiere": "programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C : structures conditionnelles et fonctions",
+    "duree_estimee_min": 15,
+    "tags": [
+      "langage C",
+      "trace d'exécution"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex3-q5-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une fonction avec trois branches, la seule méthode fiable est de dérouler le code comme le ferait l'ordinateur : une valeur, une branche, un résultat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure if / else if / else",
+        "Notion de fonction qui renvoie une valeur",
+        "Opérateurs de comparaison"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérouler les conditions dans l'ordre",
+      "contenu_markdown": "Dans une suite `if ... else if ... else`, les conditions sont testées de haut en bas. Dès que l'une est vraie, son bloc est exécuté et **toutes les suivantes sont ignorées**. Si aucune ne l'est, c'est le bloc `else` qui s'exécute. Pour une trace, on traite chaque valeur du paramètre séparément et on note : la condition qui a été vérifiée, les valeurs prises par les variables, puis la valeur renvoyée par `return`.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un taxi applique le tarif ci-dessous.\n\n```c\nint tarif(int km) {\n    int t;\n    if (km <= 5)\n        t = 500;\n    else if (km <= 20)\n        t = 500 + 100 * (km - 5);\n    else\n        t = 2000 + 80 * (km - 20);\n    return t;\n}\n```\n\nExécuter `tarif()` pour km = 3, km = 12 puis km = 30.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter km = 3",
+          "justification": "La première condition (3 <= 5) est vraie : seul son bloc s'exécute.",
+          "resultat_markdown": "`t = 500`, valeur renvoyée : 500"
+        },
+        {
+          "numero": 2,
+          "action": "Traiter km = 12",
+          "justification": "La première condition est fausse, la deuxième (12 <= 20) est vraie.",
+          "resultat_markdown": "`t = 500 + 100 × 7 = 1200`, valeur renvoyée : 1200"
+        },
+        {
+          "numero": 3,
+          "action": "Traiter km = 30",
+          "justification": "Les deux conditions sont fausses : le bloc §else§ s'exécute.",
+          "resultat_markdown": "`t = 2000 + 80 × 10 = 2800`, valeur renvoyée : 2800"
+        }
+      ],
+      "conclusion_markdown": "Les valeurs renvoyées sont 500, 1200 et 2800 : à chaque fois, une seule branche a été exécutée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Pour km = 3, calculer aussi les branches suivantes puisque `km <= 20` est vrai.",
+          "pourquoi_faux": "Dès qu'une condition est vraie, le reste de la suite est ignoré.",
+          "correction_markdown": "Arrêter le déroulement au premier bloc exécuté."
+        },
+        {
+          "erreur_markdown": "Oublier de noter la valeur renvoyée.",
+          "pourquoi_faux": "La trace décrit l'effet de la fonction : sa valeur de retour en est l'aboutissement.",
+          "correction_markdown": "Terminer chaque ligne du tableau par la valeur du `return`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec la fonction `tarif()` ci-dessus, quelle valeur est renvoyée pour km = 5 ?",
+          "solution_markdown": "La première condition (5 <= 5) est vraie : `t = 500`, valeur renvoyée 500."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Même fonction : quelle valeur est renvoyée pour km = 20 ?",
+          "solution_markdown": "La première condition est fausse, la deuxième (20 <= 20) est vraie : `t = 500 + 100 × 15 = 2000`, valeur renvoyée 2000."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les conditions sont testées de haut en bas",
+        "Un seul bloc est exécuté : le premier dont la condition est vraie",
+        "Sans condition vraie, le bloc `else` s'exécute",
+        "La trace se termine par la valeur renvoyée"
+      ]
+    }
+  ]
+}

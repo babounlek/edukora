@@ -1,0 +1,104 @@
+{
+  "type": "cours",
+  "cours_id": "cours-calculer-un-total-par-categorie-en-sql-s-progtibac1-ex2-q8",
+  "meta": {
+    "titre": "Calculer un total par catégorie en SQL (SUM et GROUP BY)",
+    "matiere": "programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL : requêtes d'agrégation",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SQL",
+      "GROUP BY"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q8-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de sacs par produit, quel chiffre d'affaires par ville ? Dès qu'une question commence par « pour chaque », il faut regrouper les lignes avant de les additionner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Requête SELECT ... FROM",
+        "Notion de colonne et de ligne d'une table"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Regrouper avec GROUP BY et agréger avec SUM",
+      "contenu_markdown": "`GROUP BY colonne` forme un groupe pour chaque valeur distincte de la colonne. Une fonction d'agrégation calcule alors un résultat par groupe : `SUM(col)` additionne, `COUNT(*)` compte les lignes, `AVG(col)` calcule la moyenne. La colonne de regroupement figure dans le `SELECT` pour que chaque résultat soit identifié, et un alias (`AS nom`) donne un nom lisible à la colonne calculée.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table `vente(id, produit, quantite)` enregistre les ventes d'une boutique. Écrire la requête qui donne la quantité totale vendue pour chaque produit.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la catégorie",
+          "justification": "La question dit « pour chaque produit » : le regroupement porte sur §produit§.",
+          "resultat_markdown": "`GROUP BY produit`"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la fonction d'agrégation",
+          "justification": "On additionne les quantités vendues de chaque produit.",
+          "resultat_markdown": "`SUM(quantite)`"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête",
+          "justification": "Le §SELECT§ contient la colonne de regroupement et le total.",
+          "resultat_markdown": "`SELECT produit, SUM(quantite) AS total FROM vente GROUP BY produit;`"
+        }
+      ],
+      "conclusion_markdown": "`SELECT produit, SUM(quantite) AS total FROM vente GROUP BY produit;` renvoie une ligne par produit avec la quantité totale vendue."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `SELECT produit, SUM(quantite) FROM vente;` sans `GROUP BY`.",
+          "pourquoi_faux": "Sans regroupement, la somme porte sur toute la table et la colonne produit n'a plus de sens.",
+          "correction_markdown": "Ajouter `GROUP BY produit` dès qu'une colonne ordinaire accompagne une fonction d'agrégation."
+        },
+        {
+          "erreur_markdown": "Regrouper sur une colonne absente du `SELECT`.",
+          "pourquoi_faux": "Le résultat donne des totaux sans dire à quel groupe ils appartiennent.",
+          "correction_markdown": "Faire figurer la colonne de regroupement dans le `SELECT`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui compte, pour chaque ville, le nombre de clients de la table `client(id, nom, ville)`.",
+          "solution_markdown": "`SELECT ville, COUNT(*) AS nombre FROM client GROUP BY ville;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans `commande(id, client, montant)`, donner le montant total dépensé par chaque client.",
+          "solution_markdown": "`SELECT client, SUM(montant) AS depense FROM commande GROUP BY client;`"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`GROUP BY` forme un groupe par valeur de la colonne",
+        "`SUM`, `COUNT`, `AVG` calculent un résultat par groupe",
+        "La colonne de regroupement figure dans le `SELECT`"
+      ]
+    }
+  ]
+}

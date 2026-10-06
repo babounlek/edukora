@@ -1,0 +1,105 @@
+{
+  "type": "cours",
+  "cours_id": "cours-arreter-un-script-php-quand-la-connexion-progtibac1-ex2-q5",
+  "meta": {
+    "titre": "Arrêter un script PHP quand la connexion à la base échoue",
+    "matiere": "programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web : PHP et MySQL",
+    "duree_estimee_min": 10,
+    "tags": [
+      "PHP",
+      "mysqli"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-programmation-bac-ti-1-2026-s1-ex2-q5-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script qui interroge une base inaccessible produit des erreurs en cascade devant l'utilisateur. Un simple test après la connexion permet de s'arrêter proprement, avec un message clair."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Fonction mysqli_connect()",
+        "Condition if en PHP",
+        "Notion de booléen"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tester la connexion puis arrêter le script",
+      "contenu_markdown": "`mysqli_connect()` renvoie un identifiant de connexion quand tout va bien et `false` quand elle échoue (serveur arrêté, mot de passe erroné, base inexistante). On teste ce résultat tout de suite avec `if (!$cnx)`, où `!` signifie « n'est pas vrai ». Dans le bloc du test, `die(\"message\")` affiche le message puis arrête immédiatement le script : aucune ligne située après n'est exécutée.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le service MySQL est arrêté. Compléter le script ci-dessous pour qu'il affiche « Base de données indisponible » et n'exécute rien d'autre dans ce cas.\n\n```php\n<?php\n$cnx = mysqli_connect(\"localhost\", \"root\", \"\", \"librairie\");\n// ligne à compléter\necho \"Bienvenue dans la librairie\";\n?>\n```",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la variable qui garde le résultat de la connexion",
+          "justification": "C'est elle qui vaut false quand la connexion échoue.",
+          "resultat_markdown": "C'est `$cnx`."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le test d'échec juste après la connexion",
+          "justification": "Le test doit précéder tout code qui utilise la base.",
+          "resultat_markdown": "`if (!$cnx) {`"
+        },
+        {
+          "numero": 3,
+          "action": "Placer l'arrêt dans le bloc",
+          "justification": "§die()§ affiche le message et stoppe le script.",
+          "resultat_markdown": "`die(\"Base de données indisponible\");` puis `}`"
+        }
+      ],
+      "conclusion_markdown": "Le script complété teste `$cnx` après `mysqli_connect()`. Si MySQL est arrêté, il affiche « Base de données indisponible » et s'arrête : le message « Bienvenue dans la librairie » n'apparaît jamais."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer le `die()` avant la ligne `mysqli_connect()`.",
+          "pourquoi_faux": "Au moment du test, la connexion n'existe pas encore : il n'y a rien à vérifier.",
+          "correction_markdown": "Le test se place toujours juste après la connexion et avant toute requête."
+        },
+        {
+          "erreur_markdown": "Écrire `if ($cnx) { die(...) }`.",
+          "pourquoi_faux": "Le script s'arrêterait quand la connexion a réussi, c'est-à-dire dans le cas normal.",
+          "correction_markdown": "On arrête le script quand la connexion échoue : condition `!$cnx`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que fait `die(\"Erreur\")` lorsqu'il est exécuté ?",
+          "solution_markdown": "Il affiche « Erreur » puis arrête l'exécution du script : les lignes suivantes ne sont pas exécutées."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire le test qui arrête le script avec le message « Serveur injoignable » si la connexion `$connexion` a échoué.",
+          "solution_markdown": "```php\nif (!$connexion) {\n    die(\"Serveur injoignable\");\n}\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`mysqli_connect()` renvoie `false` en cas d'échec",
+        "Le test `if (!$cnx)` se place juste après la connexion",
+        "`die(\"message\")` affiche le message et arrête le script"
+      ]
+    }
+  ]
+}
