@@ -7,6 +7,7 @@ pipeline de génération, aucun endpoint : ces deux hors-scope pour cette phase.
 """
 
 import json
+from decimal import Decimal
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
@@ -1856,3 +1857,342 @@ class CompileFromExercicesTests(TestCase):
         for document in (epreuve.enonce_markdown, epreuve.corrige_markdown):
             self.assertEqual(document.count("**Document 1** : courbe de croissance."), 1)
             self.assertLess(document.index("Document 1"), document.index("Énoncé Q1."))
+
+
+class ReprendreTentativeAPITests(TestCase):
+    """start_tentative reprend la copie en cours au lieu d'en créer une nouvelle à chaque
+    clic sur « Commencer » (copies vides jamais rouvertes), et la fiche expose cette copie
+    (`tentative_en_cours`) pour proposer « Reprendre »."""
+
+    def setUp(self):
+        self.country = Country.objects.get(code="CM")
+        Tag.objects.create(name="Suites numériques")
+        self.cursus = Cursus.objects.get(country=self.country, examen=Examen.BAC, series__code="C")
+        self.epreuve = _make_published_epreuve(self.country)
+        self.user = User.objects.create_user(phone_number="677400090", password="x")
+        self.profil = self.user.profils.first()
+        InscriptionInedite.objects.create(
+            user=self.user, profil=self.profil,
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        self.qcm_question = self.epreuve.exercices.get().questions.get(numero="1")
+
+    def _demarrer(self, **corps):
+        return self.client.post("/inedit/tentatives/", {"epreuve": self.epreuve.id, **corps}, format="json")
+
+    def _nb_tentatives(self):
+        return TentativeInedite.objects.filter(profil=self.profil, epreuve=self.epreuve).count()
+
+    def _repondre(self, tentative_id):
+        self.client.post(
+            f"/inedit/tentatives/{tentative_id}/questions/{self.qcm_question.id}/answer/", {"reponse_choisie": "b"},
+        )
+
+    def test_second_start_returns_the_copy_in_progress(self):
+        premiere = self._demarrer()
+        seconde = self._demarrer()
+
+        self.assertEqual(premiere.status_code, 201)
+        self.assertEqual(seconde.status_code, 200)
+        self.assertEqual(seconde.data["id"], premiere.data["id"])
+        self.assertEqual(self._nb_tentatives(), 1)
+
+    def test_start_creates_a_new_copy_once_the_previous_one_is_submitted(self):
+        premiere = self._demarrer()
+        self.client.post(f"/inedit/tentatives/{premiere.data['id']}/completer/")
+
+        seconde = self._demarrer()
+
+        self.assertEqual(seconde.status_code, 201)
+        self.assertNotEqual(seconde.data["id"], premiere.data["id"])
+
+    def test_nouvelle_restarts_from_scratch_after_a_started_copy(self):
+        premiere = self._demarrer()
+        self._repondre(premiere.data["id"])
+
+        seconde = self._demarrer(nouvelle=True)
+
+        self.assertEqual(seconde.status_code, 201)
+        self.assertNotEqual(seconde.data["id"], premiere.data["id"])
+        self.assertEqual(self._nb_tentatives(), 2)
+
+    def test_nouvelle_reuses_an_empty_copy(self):
+        premiere = self._demarrer()
+
+        seconde = self._demarrer(nouvelle=True)
+
+        self.assertEqual(seconde.status_code, 200)
+        self.assertEqual(seconde.data["id"], premiere.data["id"])
+        self.assertEqual(self._nb_tentatives(), 1)
+
+    def test_nouvelle_cannot_replace_a_copy_whose_chrono_is_running(self):
+        premiere = self._demarrer()
+        self.client.post(f"/inedit/tentatives/{premiere.data['id']}/mode-examen/")
+
+        seconde = self._demarrer(nouvelle=True)
+
+        self.assertEqual(seconde.status_code, 200)
+        self.assertEqual(seconde.data["id"], premiere.data["id"])
+        self.assertEqual(self._nb_tentatives(), 1)
+
+    def test_an_expired_exam_copy_is_locked_and_replaced_by_a_new_one(self):
+        premiere = self._demarrer()
+        tentative = TentativeInedite.objects.get(pk=premiere.data["id"])
+        tentative.exam_mode_started_at = timezone.now() - timezone.timedelta(
+            minutes=self.epreuve.blueprint.duree_minutes + 5,
+        )
+        tentative.save(update_fields=["exam_mode_started_at"])
+
+        seconde = self._demarrer()
+
+        self.assertEqual(seconde.status_code, 201)
+        self.assertNotEqual(seconde.data["id"], premiere.data["id"])
+        tentative.refresh_from_db()
+        self.assertIsNotNone(tentative.submitted_at)
+
+    def test_detail_exposes_the_copy_in_progress_with_its_progress(self):
+        premiere = self._demarrer()
+        self._repondre(premiere.data["id"])
+
+        response = self.client.get(f"/inedit/epreuves/{self.epreuve.slug}/")
+
+        en_cours = response.data["tentative_en_cours"]
+        self.assertEqual(en_cours["id"], premiere.data["id"])
+        self.assertEqual(en_cours["traitees"], 1)
+        self.assertEqual(en_cours["total"], 2)
+        self.assertIsNone(en_cours["echeance"])
+
+    def test_detail_exposes_the_deadline_of_a_running_chrono(self):
+        premiere = self._demarrer()
+        self.client.post(f"/inedit/tentatives/{premiere.data['id']}/mode-examen/")
+
+        response = self.client.get(f"/inedit/epreuves/{self.epreuve.slug}/")
+
+        self.assertIsNotNone(response.data["tentative_en_cours"]["echeance"])
+
+    def test_detail_has_no_copy_in_progress_once_submitted_or_for_a_visitor(self):
+        premiere = self._demarrer()
+        self.client.post(f"/inedit/tentatives/{premiere.data['id']}/completer/")
+        self.assertIsNone(self.client.get(f"/inedit/epreuves/{self.epreuve.slug}/").data["tentative_en_cours"])
+
+        self.assertIsNone(APIClient().get(f"/inedit/epreuves/{self.epreuve.slug}/").data["tentative_en_cours"])
+
+    def test_history_locks_an_expired_copy_instead_of_listing_it_in_progress(self):
+        premiere = self._demarrer()
+        tentative = TentativeInedite.objects.get(pk=premiere.data["id"])
+        tentative.exam_mode_started_at = timezone.now() - timezone.timedelta(
+            minutes=self.epreuve.blueprint.duree_minutes + 5,
+        )
+        tentative.save(update_fields=["exam_mode_started_at"])
+
+        ligne = self.client.get("/inedit/mes-tentatives/").data[0]
+
+        self.assertIsNotNone(ligne["submitted_at"])
+        self.assertIsNone(ligne["echeance"])
+
+
+class MesTentativesCataloguePayloadTests(TestCase):
+    """`mes_tentatives` / `is_read` sur les cartes du catalogue fusionné et sur la fiche :
+    de quoi dire « Faite · 12/20 » ou « Reprendre » sans ouvrir chaque copie."""
+
+    def setUp(self):
+        from django.urls import reverse
+
+        self.url = reverse("catalog:lesson-list")
+        self.country = Country.objects.get(code="CM")
+        Tag.objects.create(name="Suites numériques")
+        self.cursus = Cursus.objects.get(country=self.country, examen=Examen.BAC, series__code="C")
+        self.epreuve = _make_published_epreuve(self.country)
+        self.user = User.objects.create_user(phone_number="677400091", password="x")
+        self.profil = self.user.profils.first()
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _carte(self):
+        resultats = self.client.get(self.url, {"origine": "INEDITE"}).data["results"]
+        return next(r for r in resultats if r["id"] == self.epreuve.id)
+
+    def _copie(self, **champs):
+        return TentativeInedite.objects.create(profil=self.profil, epreuve=self.epreuve, **champs)
+
+    def test_never_opened_has_no_summary_and_is_not_read(self):
+        carte = self._carte()
+        self.assertIsNone(carte["mes_tentatives"])
+        self.assertFalse(carte["is_read"])
+
+    def test_visitor_has_no_summary(self):
+        resultats = APIClient().get(self.url, {"origine": "INEDITE"}).data["results"]
+        self.assertIsNone(next(r for r in resultats if r["id"] == self.epreuve.id)["mes_tentatives"])
+
+    def test_copy_in_progress_is_flagged_but_not_read(self):
+        self._copie()
+        carte = self._carte()
+        self.assertTrue(carte["mes_tentatives"]["en_cours"])
+        self.assertEqual(carte["mes_tentatives"]["nb_terminees"], 0)
+        self.assertFalse(carte["is_read"])
+
+    def test_submitted_copy_gives_the_best_rate_and_marks_read(self):
+        self._copie(submitted_at=timezone.now(), note_obtenue=Decimal("8"), bareme_snapshot=Decimal("20"))
+        self._copie(submitted_at=timezone.now(), note_obtenue=Decimal("30"), bareme_snapshot=Decimal("40"))
+        self._copie(submitted_at=timezone.now(), note_obtenue=Decimal("12"), bareme_snapshot=Decimal("20"))
+
+        carte = self._carte()
+
+        resume = carte["mes_tentatives"]
+        self.assertEqual(resume["nb_terminees"], 3)
+        self.assertFalse(resume["en_cours"])
+        # 30/40 (75 %) bat 12/20 (60 %) : on compare les taux, pas les points bruts.
+        self.assertEqual((resume["meilleure_note"], resume["bareme"]), (30, 40))
+        self.assertTrue(carte["is_read"])
+
+    def test_expired_unlocked_exam_copy_is_not_in_progress(self):
+        self._copie(exam_mode_started_at=timezone.now() - timezone.timedelta(
+            minutes=self.epreuve.blueprint.duree_minutes + 5,
+        ))
+        self.assertFalse(self._carte()["mes_tentatives"]["en_cours"])
+
+    def test_another_profil_copies_are_invisible(self):
+        autre = User.objects.create_user(phone_number="677400092", password="x")
+        TentativeInedite.objects.create(
+            profil=autre.profils.first(), epreuve=self.epreuve, submitted_at=timezone.now(),
+            note_obtenue=Decimal("20"), bareme_snapshot=Decimal("20"),
+        )
+        self.assertIsNone(self._carte()["mes_tentatives"])
+
+    def test_detail_exposes_the_same_summary(self):
+        self._copie(submitted_at=timezone.now(), note_obtenue=Decimal("12"), bareme_snapshot=Decimal("20"))
+        reponse = self.client.get(f"/inedit/epreuves/{self.epreuve.slug}/")
+        self.assertEqual(reponse.data["mes_tentatives"]["meilleure_note"], 12)
+        self.assertTrue(reponse.data["is_read"])
+
+
+class TitreEpreuveInediteTests(TestCase):
+    """« Épreuve blanche » est le mot des vrais examens blancs : une inédite s'appelle
+    « Épreuve inédite », à l'ingestion comme pour les épreuves déjà en base."""
+
+    def setUp(self):
+        self.country = Country.objects.get(code="CM")
+        Tag.objects.create(name="Suites numériques")
+
+    def test_ingestion_renames_epreuve_blanche(self):
+        blueprint, _ = ingest_blueprint(
+            _blueprint_payload(external_id="bp-titre", titre="Mathématiques BAC C – Épreuve blanche n°2"), self.country,
+        )
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        epreuve, _ = ingest_epreuve_inedite(
+            _epreuve_payload(external_id="ep-titre", blueprint_external_id="bp-titre", titre="Mathématiques BAC C – Épreuve blanche n°2"),
+            self.country,
+        )
+        self.assertEqual(blueprint.titre, "Mathématiques BAC C – Épreuve inédite n°2")
+        self.assertEqual(epreuve.titre, "Mathématiques BAC C – Épreuve inédite n°2")
+
+    def test_other_titles_are_left_alone(self):
+        blueprint, _ = ingest_blueprint(
+            _blueprint_payload(external_id="bp-titre-2", titre="Blueprint Maths - Session blanche 1"), self.country,
+        )
+        self.assertEqual(blueprint.titre, "Blueprint Maths - Session blanche 1")
+
+
+class EpreuveGratuiteTests(TestCase):
+    """EpreuveInedite.est_gratuite : la vitrine. Tout COMPTE connecté passe l'épreuve en entier,
+    abonné ou non ; un visiteur doit d'abord créer son compte ; les autres épreuves restent
+    réservées aux abonnés."""
+
+    def setUp(self):
+        from django.urls import reverse
+
+        self.url = reverse("catalog:lesson-list")
+        self.country = Country.objects.get(code="CM")
+        Tag.objects.create(name="Suites numériques")
+        self.cursus = Cursus.objects.get(country=self.country, examen=Examen.BAC, series__code="C")
+        self.offerte = _make_published_epreuve(self.country)
+        self.offerte.est_gratuite = True
+        self.offerte.save(update_fields=["est_gratuite"])
+        blueprint, _ = ingest_blueprint(_blueprint_payload(external_id="bp-payante"), self.country)
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        self.payante = EpreuveInedite.objects.create(
+            blueprint=blueprint, subject=blueprint.subject, titre="Réservée", statut=StatutContenu.VALIDE,
+        )
+        self.payante.cursus.set(blueprint.cursus.all())
+        self.user = User.objects.create_user(phone_number="677400093", password="x")
+        self.client = APIClient()
+
+    def test_a_visitor_has_no_access_but_sees_it_is_free(self):
+        reponse = self.client.get(f"/inedit/epreuves/{self.offerte.slug}/")
+        self.assertFalse(reponse.data["has_access"])
+        self.assertTrue(reponse.data["est_vitrine"])
+
+    def test_a_visitor_cannot_start_it(self):
+        reponse = self.client.post("/inedit/tentatives/", {"epreuve": self.offerte.id})
+        self.assertEqual(reponse.status_code, 401)
+
+    def test_any_connected_account_has_access_without_subscription(self):
+        self.client.force_authenticate(user=self.user)
+        self.assertTrue(self.client.get(f"/inedit/epreuves/{self.offerte.slug}/").data["has_access"])
+        self.assertFalse(self.client.get(f"/inedit/epreuves/{self.payante.slug}/").data["has_access"])
+
+    def test_a_connected_account_can_run_it_from_start_to_finish(self):
+        self.client.force_authenticate(user=self.user)
+
+        creation = self.client.post("/inedit/tentatives/", {"epreuve": self.offerte.id})
+        self.assertEqual(creation.status_code, 201)
+        # Le chrono, la notation et le rapport de fin sont ceux d'une épreuve payante.
+        examen = self.client.post(f"/inedit/tentatives/{creation.data['id']}/mode-examen/")
+        self.assertEqual(examen.status_code, 200)
+        fin = self.client.post(f"/inedit/tentatives/{creation.data['id']}/completer/")
+        self.assertEqual(fin.status_code, 200)
+
+    def test_the_other_inedites_stay_locked_for_that_account(self):
+        self.client.force_authenticate(user=self.user)
+        reponse = self.client.post("/inedit/tentatives/", {"epreuve": self.payante.id})
+        self.assertEqual(reponse.status_code, 403)
+
+    def test_the_sujet_pdf_follows_the_same_rule(self):
+        self.client.force_authenticate(user=self.user)
+        self.offerte.sujet_pdf.name = ""
+        # Accès accordé (donc pas de 403) ; sans PDF généré, le serveur répond 404, pas 403.
+        self.assertEqual(self.client.get(f"/inedit/epreuves/{self.offerte.id}/sujet.pdf").status_code, 404)
+        self.assertEqual(self.client.get(f"/inedit/epreuves/{self.payante.id}/sujet.pdf").status_code, 403)
+
+    def test_catalogue_cards_carry_the_flag_and_the_gratuit_filter_finds_them(self):
+        self.client.force_authenticate(user=self.user)
+
+        toutes = self.client.get(self.url, {"origine": "INEDITE"}).data["results"]
+        par_id = {r["id"]: r for r in toutes}
+        self.assertTrue(par_id[self.offerte.id]["est_vitrine"])
+        self.assertTrue(par_id[self.offerte.id]["has_access"])
+        self.assertFalse(par_id[self.payante.id]["est_vitrine"])
+        self.assertFalse(par_id[self.payante.id]["has_access"])
+
+        gratuites = self.client.get(self.url, {"gratuit": "true", "est_vitrine": "true", "origine": "INEDITE"}).data["results"]
+        self.assertEqual([r["id"] for r in gratuites if r["kind"] == "inedite"], [self.offerte.id])
+
+    def test_a_visitor_sees_the_flag_on_the_card_without_access(self):
+        carte = next(
+            r for r in APIClient().get(self.url, {"origine": "INEDITE"}).data["results"] if r["id"] == self.offerte.id
+        )
+        self.assertTrue(carte["est_vitrine"])
+        self.assertFalse(carte["has_access"])
+
+
+class ResultatExposeLeTitreTests(TestCase):
+    def test_result_payload_names_the_epreuve(self):
+        country = Country.objects.get(code="CM")
+        Tag.objects.create(name="Suites numériques")
+        cursus = Cursus.objects.get(country=country, examen=Examen.BAC, series__code="C")
+        epreuve = _make_published_epreuve(country)
+        user = User.objects.create_user(phone_number="677400095", password="x")
+        InscriptionInedite.objects.create(
+            user=user, profil=user.profils.first(), cursus=cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+        )
+        client = APIClient()
+        client.force_authenticate(user=user)
+        tentative = client.post("/inedit/tentatives/", {"epreuve": epreuve.id}).data
+
+        resultat = client.post(f"/inedit/tentatives/{tentative['id']}/completer/").data
+
+        self.assertEqual(resultat["epreuve_titre"], epreuve.titre)

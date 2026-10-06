@@ -318,6 +318,35 @@ export interface Epreuve {
   // numero_exercice, ex. "1") - même règle de présence que ce dernier (null si pas
   // d'aperçu). Affiché en référence sous l'aperçu, voir EpreuveInediteDetailPage.tsx.
   apercu_numero_exercice: string | null
+  // Copie non rendue de l'élève connecté sur cette épreuve inédite - uniquement sur la
+  // fiche détail (voir inedit.views.epreuve_inedite_detail), absent de la liste. null
+  // pour un visiteur ou quand rien n'est engagé.
+  tentative_en_cours?: TentativeEnCours | null
+  // Où en est l'élève connecté de cette épreuve inédite (liste ET fiche) : null si jamais
+  // ouverte ou visiteur. Alimente « Faite · 12/20 » et « Reprendre » sur les cartes.
+  mes_tentatives?: MesTentatives | null
+}
+
+export interface MesTentatives {
+  en_cours: boolean
+  nb_terminees: number
+  // Note de la copie au meilleur taux (pas aux meilleurs points bruts) - null tant qu'aucune
+  // copie rendue n'a de note.
+  meilleure_note: number | null
+  bareme: number | null
+}
+
+/** Résumé d'une copie d'épreuve inédite entamée : de quoi proposer « Reprendre » sur la fiche. */
+export interface TentativeEnCours {
+  id: number
+  started_at: string
+  // Renseigné seulement si le chrono a été lancé ; `echeance` est alors l'heure où la
+  // copie sera rendue d'office.
+  exam_mode_started_at: string | null
+  echeance: string | null
+  mode_papier: boolean
+  traitees: number
+  total: number
 }
 
 export interface EpreuveHeader {
@@ -1044,6 +1073,9 @@ export interface TentativeInediteListItem {
   subject_label: string
   cursus_display: string
   started_at: string
+  exam_mode_started_at: string | null
+  // Heure à laquelle la copie en cours est rendue d'office (chrono lancé) - null sinon.
+  echeance: string | null
   submitted_at: string | null
   score_obtenu: number | null
   // Note en points sur bareme_snapshot (voir inedit.notation) - null tant que la
@@ -1221,6 +1253,8 @@ export interface Fiche {
 export interface TentativeInediteResult {
   id: number
   epreuve: number
+  // Titre de l'épreuve (ou de l'annale simulée) dont c'est le résultat.
+  epreuve_titre: string
   // Voir la note équivalente dans TentativeInedite.
   country: string
   total_questions: number
@@ -1450,9 +1484,9 @@ export interface ReponseRecherche {
   groupes: GroupeRecherche[]
   /** Résultats cachés par le filtre d'examen (renseigné quand il y en a peu dans l'examen choisi). */
   autres_cursus: number
-  /** Thèmes proposés quand rien ne correspond. */
-  suggestions: ResultatRecherche[]
-}
   /** Matières présentes dans les résultats, la plus fournie d'abord - reste complète quand une matière
    * est choisie, pour pouvoir en changer d'un clic (« tangente » : maths, physique, chimie). */
   matieres: { code: string; label: string; total: number }[]
+  /** Thèmes proposés quand rien ne correspond. */
+  suggestions: ResultatRecherche[]
+}

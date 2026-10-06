@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/select"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { BandeauFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { useInedites } from "@/lib/cursusAccueil"
 
 type ViewMode = "cards" | "list"
 
@@ -168,11 +169,18 @@ export function EpreuvesListPage() {
   const search = searchParams.get("search") ?? ""
   const ordering = (searchParams.get("ordering") ?? "") as keyof typeof ORDERING_LABELS | ""
 
+  // Arrivé par « Inédites » (menu, accueil, fiche) : la page parle d'inédites, pas d'annales. Le
+  // titre « Toutes les annales corrigées » au-dessus d'une liste d'épreuves jamais tirées des
+  // annales disait l'inverse de ce que le visiteur venait chercher.
+  const pageInedites = origineFilter === "INEDITE"
+
   useSeo({
-    title: "Épreuves et corrigés",
-    description: countryLabel
-      ? `${countryLabel} : sujets et corrigés d'annales, examens blancs et épreuves inédites, classés par matière, cursus et série.`
-      : undefined,
+    title: pageInedites ? "Épreuves inédites" : "Épreuves et corrigés",
+    description: pageInedites
+      ? `${countryLabel ? `${countryLabel} : ` : ""}épreuves originales conçues par Edukora, jamais tirées des annales, au niveau et au barème de l'examen réel.`
+      : countryLabel
+        ? `${countryLabel} : sujets et corrigés d'annales, examens blancs et épreuves inédites, classés par matière, cursus et série.`
+        : undefined,
   })
 
   const { data: subjects = [] } = useQuery({
@@ -180,9 +188,29 @@ export function EpreuvesListPage() {
     queryFn: ({ signal }) => listSubjects(country, signal),
   })
 
+  // Sur la page des inédites, ne proposer que les matières et examens qui EN ONT : vingt-deux
+  // pastilles de matières dont la plupart menaient à une liste vide poussaient les résultats à
+  // plus d'un écran de hauteur. Même requête (et même cache) que le point du menu.
+  const { data: ineditesDuPays } = useInedites(country ?? "", null, pageInedites)
+  const couvertureInedites = useMemo(() => {
+    // Liste tronquée par la pagination : on ne sait pas tout ce qu'elle couvre, on ne filtre pas.
+    if (!pageInedites || !ineditesDuPays || ineditesDuPays.results.length < ineditesDuPays.count) return null
+    return {
+      matieres: new Set(ineditesDuPays.results.map((e) => e.subject.code)),
+      cursus: new Set(ineditesDuPays.results.flatMap((e) => e.cursus.map((c) => c.id))),
+    }
+  }, [pageInedites, ineditesDuPays])
+
+  // « Gratuites » n'a de sens sur la page des inédites que s'il y en a une d'offerte (voir
+  // EpreuveInedite.est_gratuite) - sinon la pastille mènerait à une liste vide.
+  const uneInediteOfferte = Boolean(ineditesDuPays?.results.some((e) => e.est_vitrine))
+
   const subjectsTries = useMemo(
-    () => [...subjects].sort((a, b) => a.label.localeCompare(b.label, "fr")),
-    [subjects],
+    () =>
+      [...subjects]
+        .filter((s) => !couvertureInedites || couvertureInedites.matieres.has(s.code) || s.code === subjectFilter)
+        .sort((a, b) => a.label.localeCompare(b.label, "fr")),
+    [subjects, couvertureInedites, subjectFilter],
   )
 
   const { data: cursusList = [] } = useQuery({
@@ -364,16 +392,23 @@ export function EpreuvesListPage() {
   ].filter((chip): chip is { key: string; label: string; clear: () => void } => Boolean(chip))
 
   const examLevels = examLevelsFor(cursusList)
-  const plusVisible = plusOuvert || Boolean(origineFilter || natureFilter)
-  const nbFiltresSecondaires = (origineFilter ? 1 : 0) + (natureFilter ? 1 : 0)
+  // Sur la page des inédites l'origine est déjà la page elle-même : ni panneau ouvert d'office
+  // pour un sélecteur « Origine » redondant, ni pastille « 1 » sur « Plus de filtres ».
+  const origineSecondaire = Boolean(origineFilter) && !pageInedites
+  const plusVisible = plusOuvert || origineSecondaire || Boolean(natureFilter)
+  const nbFiltresSecondaires = (origineSecondaire ? 1 : 0) + (natureFilter ? 1 : 0)
   // Le cursus est LE filtre d'un élève ("mon BAC D") : en pastilles d'un clic plutôt que caché
   // dans une liste déroulante, triées pour que les séries d'un même examen se suivent.
-  const cursusTries = [...cursusList].sort(
+  const cursusTries = cursusList
+    .filter((c) => !couvertureInedites || couvertureInedites.cursus.has(c.id) || String(c.id) === cursusFilter)
+    .sort(
     (x, y) =>
       x.examen_display.localeCompare(y.examen_display, "fr") ||
       (x.series?.code ?? "").localeCompare(y.series?.code ?? "", "fr"),
   )
-  const totalEpreuves = filtresActifs ? totalData?.count : epreuvesQuery.data ? count : undefined
+  const totalEpreuves = pageInedites
+    ? epreuvesQuery.data ? count : undefined
+    : filtresActifs ? totalData?.count : epreuvesQuery.data ? count : undefined
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
@@ -382,7 +417,12 @@ export function EpreuvesListPage() {
       {/* Hero : plus court qu'avant (les résultats doivent apparaître sans défiler sur un
           ordinateur), avec un filigrane et le volume du catalogue - la preuve qu'il y a de quoi
           chercher avant même d'avoir cherché. */}
-      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
+      <div
+        className={cn(
+          "relative mb-6 overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06]",
+          pageInedites ? "border-gold/40 p-5 sm:p-6" : "border-border p-5 sm:p-8",
+        )}
+      >
         <div
           aria-hidden
           className="absolute inset-0 opacity-[0.04]"
@@ -394,22 +434,43 @@ export function EpreuvesListPage() {
         <BookOpen aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
           <p className="mb-2 font-display text-sm italic text-primary">
-            Épreuves et corrigés{countryLabel ? ` - ${countryLabel}` : ""}
+            {pageInedites ? "Épreuves inédites" : "Épreuves et corrigés"}
+            {countryLabel ? ` - ${countryLabel}` : ""}
           </p>
-          <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-            Toutes les <span className="text-primary">annales corrigées</span>, cursus par cursus.
-          </h1>
-          <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-            Sujets officiels, examens blancs et épreuves inédites : choisis ton examen, ta matière, et lis le corrigé
-            détaillé.
-          </p>
+          {pageInedites ? (
+            <>
+              <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-3xl">
+                Des sujets que tu n'as jamais vus, <span className="text-primary">dans les conditions du jour J</span>.
+              </h1>
+              <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
+                Conçues par Edukora, jamais tirées des annales : même niveau et même barème que l'examen réel, avec
+                chrono, notation guidée et rapport de fin.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
+                Toutes les <span className="text-primary">annales corrigées</span>, cursus par cursus.
+              </h1>
+              <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
+                Sujets officiels, examens blancs et épreuves inédites : choisis ton examen, ta matière, et lis le
+                corrigé détaillé.
+              </p>
+            </>
+          )}
 
-          <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
+          {/* Sur la page des inédites, le compte vit déjà dans « N épreuves trouvées » : une rangée
+              de pastilles de plus ne faisait que repousser les résultats vers le bas. */}
+          <div className={cn("mt-4 flex-wrap gap-2 sm:mt-5", pageInedites ? "hidden" : "flex")}>
             {totalEpreuves !== undefined && (
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}
                 valeur={formatAmount(totalEpreuves)}
-                libelle={totalEpreuves > 1 ? "épreuves publiées" : "épreuve publiée"}
+                libelle={
+                  pageInedites
+                    ? totalEpreuves > 1 ? "épreuves inédites" : "épreuve inédite"
+                    : totalEpreuves > 1 ? "épreuves publiées" : "épreuve publiée"
+                }
               />
             )}
             {subjectsTries.length > 0 && (
@@ -432,7 +493,9 @@ export function EpreuvesListPage() {
       {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal
           de la page, comme sur /cours. */}
       <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
-        <div className="group relative">
+        {/* Une vingtaine d'inédites se parcourent aux pastilles : sans champ de recherche, les
+            résultats remontent d'une soixantaine de pixels. */}
+        <div className={cn("group relative", pageInedites && "hidden")}>
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
           <Input
             type="search"
@@ -504,6 +567,7 @@ export function EpreuvesListPage() {
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <button
             type="button"
+            hidden={pageInedites && !uneInediteOfferte}
             onClick={() => updateFilter("gratuit", gratuitFilter ? "" : "true")}
             aria-pressed={gratuitFilter}
             className={cn(

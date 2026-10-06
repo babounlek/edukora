@@ -16,6 +16,9 @@ interface ChoixModeEpreuveProps {
   nbQuestions: number
   unite?: Unite
   papierDisponible: boolean
+  // false : le choix s'insère dans une page qui porte déjà le titre et les faits de
+  // l'épreuve (la fiche), pas de second h1 ni de répétition de la durée et du barème.
+  entete?: boolean
   onExamen: () => void
   onPapier: () => void
   onLibre: () => void
@@ -59,7 +62,7 @@ function Option({
  */
 export function ChoixModeEpreuve({
   titre, dureeMinutes, dureeEstimee, bareme, nbExercices, nbQuestions, papierDisponible, unite = "question",
-  onExamen, onPapier, onLibre,
+  entete = true, onExamen, onPapier, onLibre,
 }: ChoixModeEpreuveProps) {
   const m = mots(unite)
   const faits = [
@@ -72,19 +75,28 @@ export function ChoixModeEpreuve({
   ].filter(Boolean)
 
   return (
-    <section aria-labelledby="choix-mode" className="mb-8 rounded-3xl border border-border bg-card p-5 sm:p-6">
-      <h1 id="choix-mode" className="font-display text-2xl font-semibold leading-tight">
-        {titre}
-      </h1>
-      <p className="mt-1 text-sm text-muted-foreground">{faits.join(" · ")}</p>
-      {dureeMinutes && dureeEstimee && (
-        <p className="mt-1 flex items-start gap-1.5 text-xs text-muted-foreground">
-          <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-          Durée estimée : cette annale n'annonce pas sa durée, {formatDureeMinutes(dureeMinutes)} est celle des autres
-          sessions de cette épreuve.
-        </p>
+    <section
+      aria-labelledby="choix-mode"
+      className={cn(entete ? "mb-8 rounded-3xl border border-border bg-card p-5 sm:p-6" : "w-full")}
+    >
+      {entete && (
+        <>
+          <h1 id="choix-mode" className="font-display text-2xl font-semibold leading-tight">
+            {titre}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">{faits.join(" · ")}</p>
+          {dureeMinutes && dureeEstimee && (
+            <p className="mt-1 flex items-start gap-1.5 text-xs text-muted-foreground">
+              <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+              Durée estimée : cette annale n'annonce pas sa durée, {formatDureeMinutes(dureeMinutes)} est celle des autres
+              sessions de cette épreuve.
+            </p>
+          )}
+        </>
       )}
-      <h2 className="mt-5 text-sm font-semibold">Comment veux-tu la passer ?</h2>
+      <h2 id={entete ? undefined : "choix-mode"} className={cn("text-sm font-semibold", entete && "mt-5")}>
+        Comment veux-tu la passer ?
+      </h2>
       <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {dureeMinutes && (
           <Option

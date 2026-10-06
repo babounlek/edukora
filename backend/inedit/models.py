@@ -126,9 +126,10 @@ class EpreuveInedite(models.Model):
     négociable de l'audit d'origine) - null tant que non évalués, jamais 0 par défaut
     pour ne pas confondre "pas encore évalué" et "évalué, score nul".
 
-    Accès (décision "corrigé gaté comme le reste", audit "Épreuves Inédites") : aucune
-    exception ici - énoncé, tentative et corrigé sont gatés uniformément par le futur
-    access.has_access_inedite, même granularité que access.has_access sur Lesson/Cours.
+    Accès (décision "corrigé gaté comme le reste", audit "Épreuves Inédites") : énoncé,
+    tentative et corrigé sont gatés uniformément par access.has_access_inedite, même
+    granularité que access.has_access sur Lesson/Cours. Seule exception, choisie épreuve par
+    épreuve : est_gratuite (vitrine), qui ouvre l'épreuve à tout compte connecté.
     """
 
     blueprint = models.ForeignKey(Blueprint, on_delete=models.PROTECT, related_name="epreuves")
@@ -176,6 +177,17 @@ class EpreuveInedite(models.Model):
     score_qualite = models.PositiveSmallIntegerField(
         null=True, blank=True,
         help_text="Score 0-100, calculé lors du contrôle qualité (phase pipeline) - null tant que non évalué.",
+    )
+
+    est_gratuite = models.BooleanField(
+        default=False,
+        help_text=(
+            "Épreuve offerte : tout compte connecté peut la passer en entier (chrono, notation, "
+            "rapport de fin), sans abonnement. Sert de vitrine - un visiteur n'achète pas un "
+            "chrono qu'il n'a jamais lancé. Un COMPTE reste requis (la copie est rattachée à un "
+            "profil) : c'est aussi la première inscription. Voir access.has_access_inedite. "
+            "Décision éditoriale : une par cursus suffit."
+        ),
     )
 
     statut = models.CharField(max_length=10, choices=StatutContenu.choices, default=StatutContenu.BROUILLON)

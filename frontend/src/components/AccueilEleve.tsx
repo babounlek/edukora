@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from "react"
 import { Link } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, Clock, Crown } from "lucide-react"
+import { ArrowRight, Clock, Crown, Play } from "lucide-react"
 
-import { getAccueil } from "@/api/endpoints"
-import type { Accueil } from "@/api/types"
+import { getAccueil, listMyTentativesInedites } from "@/api/endpoints"
+import type { Accueil, TentativeInediteListItem } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
 import { Moments } from "@/components/Moments"
@@ -13,7 +13,8 @@ import { InviteRappels } from "@/components/RappelsEmail"
 import { TeteAccueil } from "@/components/TeteAccueil"
 import { ecrireAccueilEnCache, lireAccueilEnCache } from "@/lib/accueilCache"
 import { marquerAffichageAccueil } from "@/lib/accueilChrono"
-import { epreuvesListPath } from "@/lib/countryPath"
+import { epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
+import { formatDuration } from "@/lib/duration"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 
 /**
@@ -78,6 +79,16 @@ export function AccueilEleve({ country }: { country: string }) {
   // Les inédites de SON cursus uniquement - même clé de cache que la vitrine.
   const cursusAccueil = useCursusAccueil(country)
   const { data: inedites } = useInedites(country, cursusAccueil)
+  // Une épreuve inédite commencée et pas rendue : la seule porte d'entrée vers elle était
+  // le menu du compte > Mon historique. staleTime 0 : l'accueil rouvert après avoir rendu sa
+  // copie ne doit pas proposer de la reprendre.
+  const { data: tentatives } = useQuery({
+    queryKey: ["inedit-tentatives"],
+    queryFn: () => listMyTentativesInedites(),
+    staleTime: 0,
+    enabled: Boolean(cursusId),
+  })
+  const enCours = tentatives?.find((t) => t.submitted_at === null)
 
   if (!data || !cursusId) {
     return isError ? <ErreurAccueil /> : <SqueletteAccueil />
@@ -92,8 +103,39 @@ export function AccueilEleve({ country }: { country: string }) {
       {!data.premiers_pas && <InviteRappels />}
       <DepuisLaDerniereFois depuis={data.depuis} revisions={data.revisions} lecture={data.lecture} />
       <OuJenSuis accueil={data} cursusId={cursusId} country={country} />
+      {enCours && <LigneReprise tentative={enCours} />}
       <LigneInedites accueil={data} country={country} inedites={inedites} cursusAccueil={cursusAccueil} />
     </div>
+  )
+}
+
+/**
+ * « Reprendre » : l'épreuve inédite entamée passe avant toute proposition d'en commencer une
+ * autre. Avec un chrono lancé, on dit ce qu'il reste - c'est l'urgence qui compte ici.
+ */
+function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
+  const reste = tentative.echeance
+    ? Math.max(0, Math.round((new Date(tentative.echeance).getTime() - Date.now()) / 1000))
+    : null
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+      <Link
+        to={`/inedit/tentative/${tentative.id}`}
+        className="group flex items-center gap-3 rounded-2xl border border-primary/40 bg-primary/5 px-5 py-3.5 transition-colors hover:border-primary"
+      >
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+          <Play className="size-4" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {reste !== null ? `Chrono en cours · il te reste ${formatDuration(reste)}` : "Épreuve inédite en cours"}
+          </span>
+          <span className="block truncate text-sm font-medium">{tentative.epreuve_titre}</span>
+        </span>
+        <span className="shrink-0 text-sm font-medium text-primary">Reprendre</span>
+        <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
+      </Link>
+    </section>
   )
 }
 
@@ -111,26 +153,34 @@ function LigneInedites({
   cursusAccueil: ReturnType<typeof useCursusAccueil>
 }) {
   if (!inedites || inedites.count === 0) return null
+  const liste = `${epreuvesListPath(country)}?${requeteInedites(cursusAccueil)}`
+  // La prochaine à FAIRE (accessible, jamais rendue), pas toujours la plus récente : une
+  // ligne qui remontait l'épreuve déjà passée n'invitait à rien. Elle mène droit à sa fiche.
+  const suivante = inedites.results.find((e) => e.has_access && !e.is_read)
+  const fiche = suivante ? epreuveInediteDetailPath(country, suivante.slug ?? suivante.id) : null
+  const intitule = suivante?.title ?? inedites.results[0]?.title ?? "Des sujets originaux, chronométrés"
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
-      <Link
-        to={`${epreuvesListPath(country)}?${requeteInedites(cursusAccueil)}`}
-        className="group flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60"
-      >
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
-          <Crown className="size-4" />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {inedites.count} épreuve{inedites.count > 1 ? "s" : ""} inédite{inedites.count > 1 ? "s" : ""}
+      <div className="flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60">
+        <Link to={fiche ?? liste} className="group flex min-w-0 flex-1 items-center gap-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
+            <Crown className="size-4" />
           </span>
-          <span className="block truncate text-sm font-medium">
-            {inedites.results[0]?.title ?? "Des sujets originaux, chronométrés"}
+          <span className="min-w-0 flex-1">
+            <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {fiche ? "Prochaine épreuve inédite" : `${inedites.count} épreuve${inedites.count > 1 ? "s" : ""} inédite${inedites.count > 1 ? "s" : ""}`}
+            </span>
+            <span className="block truncate text-sm font-medium">{intitule}</span>
           </span>
-        </span>
-        <Clock className="size-4 shrink-0 text-muted-foreground" />
-        <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
-      </Link>
+          <Clock className="size-4 shrink-0 text-muted-foreground" />
+          <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
+        </Link>
+        {fiche && (
+          <Link to={liste} className="shrink-0 text-xs font-medium text-gold-text underline-offset-2 hover:underline">
+            Les {inedites.count}
+          </Link>
+        )}
+      </div>
     </section>
   )
 }

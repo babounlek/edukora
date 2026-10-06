@@ -8,6 +8,7 @@ import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
+import { actionInedite, libelleFaite } from "@/lib/statutInedite"
 
 interface EpreuveListRowProps {
   epreuve: Epreuve
@@ -27,6 +28,9 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
       ? epreuveInediteDetailPath(country, epreuve.slug ?? epreuve.id)
       : epreuveDetailPath(country, epreuve.slug as string)
   const Icone = subjectIcon(epreuve.subject.code)
+  const inedite = epreuve.kind === "inedite"
+  const faite = inedite ? libelleFaite(epreuve.mes_tentatives) : null
+  const reprise = inedite && actionInedite(epreuve.mes_tentatives) === "reprendre"
   return (
     <Link
       to={to}
@@ -67,7 +71,15 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
         ) : (
           <Lock className="size-3.5 shrink-0 text-muted-foreground" />
         )}
-        {epreuve.is_read && <CheckCircle2 className="size-3.5 shrink-0 text-success" />}
+        {reprise && <Badge variant="outline">En cours</Badge>}
+        {inedite && faite ? (
+          <span className="inline-flex shrink-0 items-center gap-1 text-xs text-success">
+            <CheckCircle2 className="size-3.5" aria-hidden="true" />
+            {faite}
+          </span>
+        ) : (
+          epreuve.is_read && <CheckCircle2 className="size-3.5 shrink-0 text-success" />
+        )}
       </div>
     </Link>
   )

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { Check, ChevronDown, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
@@ -9,12 +9,13 @@ import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
-import { RechercheGlobale } from "@/components/recherche/RechercheGlobale"
+import { ETAT_FOCUS_RECHERCHE } from "@/lib/recherche"
 import { useRaccourciRecherche } from "@/lib/useRaccourciRecherche"
 import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
 import { useCursusAbonnes } from "@/lib/changerCursusPrepare"
 import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
+import { ineditesNouvelles, marquerIneditesVues, useIneditesVues } from "@/lib/ineditesVues"
 import { SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import {
@@ -240,12 +241,16 @@ export function Header() {
   // uniquement pour savoir si la baseline doit lui laisser la place (voir plus bas).
   const aUnCompteARebours = Boolean(user?.compte_a_rebours && user.cursus_prepare)
   const { country } = useCountry()
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
-
-  const [rechercheOuverte, setRechercheOuverte] = useState(false)
-  const ouvrirRecherche = useCallback(() => setRechercheOuverte(true), [])
+  // « / » et Ctrl/⌘+K mènent à la page de recherche, champ sélectionné (voir RecherchePage).
+  const navigate = useNavigate()
+  const ouvrirRecherche = useCallback(
+    () => navigate(recherchePath(country), { state: ETAT_FOCUS_RECHERCHE }),
+    [navigate, country],
+  )
   useRaccourciRecherche(ouvrirRecherche)
+
   const isTarifsSection = pathname.startsWith("/tarifs")
   const isParcoursSection = !isTarifsSection && pathname.startsWith("/parcours")
   const isCoursSection =
@@ -262,8 +267,8 @@ export function Header() {
     isEpreuvesSection ||
     isCoursSection ||
     pathname.startsWith(themesFrequentsPath(country)) ||
-    pathname.startsWith("/quiz")
     pathname.startsWith(recherchePath(country)) ||
+    pathname.startsWith("/quiz")
 
   // Même clé de cache que CataloguePage ("epreuves-inedites-recente") : un visiteur
   // qui atterrit sur le catalogue puis navigue ailleurs ne repaie pas cette requête
@@ -275,6 +280,15 @@ export function Header() {
     enabled: Boolean(country),
   })
   const hasInedites = Boolean(inediteRecenteData && inediteRecenteData.count > 0)
+  // Le point or signale une NOUVEAUTÉ : il s'éteint dès que la personne a regardé les
+  // inédites (leur liste ou l'une d'elles) et se rallume si une plus récente est publiée.
+  const derniereIneditId = inediteRecenteData?.results[0]?.id
+  const ineditesVues = useIneditesVues()
+  const surLesInedites = pathname.includes("/epreuves-inedites/") || new URLSearchParams(search).get("origine") === "INEDITE"
+  useEffect(() => {
+    if (surLesInedites && derniereIneditId !== undefined) marquerIneditesVues(derniereIneditId)
+  }, [surLesInedites, derniereIneditId])
+  const nouvellesInedites = hasInedites && ineditesNouvelles(derniereIneditId, ineditesVues)
 
   /**
    * Deux navigations, pas une.
@@ -301,14 +315,14 @@ export function Header() {
   const navLinks = suitUnPlan
     ? [
         { to: catalogueHomePath(country), label: "Aujourd'hui", active: isAccueil, badge: false },
-        { to: epreuvesListPath(country), label: "Réviser", active: isReviserSection, badge: hasInedites },
+        { to: epreuvesListPath(country), label: "Réviser", active: isReviserSection, badge: nouvellesInedites },
         { to: "/parcours", label: "Ma progression", active: isParcoursSection, badge: false },
         ...(user?.a_un_abonnement_actif
           ? []
           : [{ to: "/tarifs", label: "Prix", active: isTarifsSection, badge: false }]),
       ]
     : [
-        { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: hasInedites },
+        { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: nouvellesInedites },
         { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
         { to: "/tarifs", label: "Prix", active: isTarifsSection, badge: false },
       ]
@@ -336,20 +350,15 @@ export function Header() {
         </div>
         <div className="flex items-center gap-2">
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
-              desktop plus bas - ce bouton rend la recherche accessible depuis
+              desktop plus bas - ce lien rend la recherche accessible depuis
               n'importe quelle page, y compris sur mobile où la place au clavier
-              manque le plus. Ouvre la recherche globale (thèmes, cours, épreuves,
-              exercices, quiz - voir RechercheGlobale), aussi atteignable au clavier
-              par « / » et Ctrl/⌘+K. */}
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label="Rechercher"
-            aria-keyshortcuts="/ Control+K Meta+K"
-            onClick={ouvrirRecherche}
-          >
-            <Search className="size-4.5" />
+              manque le plus. Mène à la page de recherche (thèmes, cours, épreuves,
+              exercices, quiz - voir RecherchePage) avec le champ prêt à écrire ; aussi
+              atteignable au clavier par « / » et Ctrl/⌘+K. */}
+          <Button asChild variant="ghost" size="icon" aria-label="Rechercher">
+            <Link to={recherchePath(country)} state={ETAT_FOCUS_RECHERCHE} aria-keyshortcuts="/ Control+K Meta+K">
+              <Search className="size-4.5" />
+            </Link>
           </Button>
           <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
             <SheetTrigger asChild>
@@ -361,7 +370,6 @@ export function Header() {
               <SheetTitle>Menu</SheetTitle>
               <SheetDescription>Navigation principale d'{SITE_NAME}</SheetDescription>
               {/* Même raison que le pays et le thème plus bas : retiré de la barre
-          <RechercheGlobale open={rechercheOuverte} onOpenChange={setRechercheOuverte} />
                   sous `sm` faute de place, jamais retiré du mobile. */}
               <CompteAReboursBadge className="mt-3 block sm:hidden" />
               <nav aria-label="Menu" className="mt-3 flex flex-col gap-1">
@@ -380,7 +388,10 @@ export function Header() {
                     {/* Même point discret que la barre desktop (voir plus bas) - pas de
                         deuxième traitement visuel à maintenir en parallèle. */}
                     {link.badge && (
-                      <span className="size-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
+                      <>
+                        <span className="size-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
+                        <span className="sr-only"> - nouvelles épreuves inédites</span>
+                      </>
                     )}
                   </Link>
                 ))}
@@ -401,9 +412,9 @@ export function Header() {
           {navLinks.map((link) => (
             <span key={link.to} className="relative hidden lg:inline-flex">
               <Button asChild variant={link.active ? "secondary" : "ghost"} size="sm">
-                <Link to={link.to}>
+                <Link to={link.to} title={link.badge ? "Nouvelles épreuves inédites" : undefined}>
                   {link.label}
-                  {link.badge && <span className="sr-only"> - épreuves inédites disponibles</span>}
+                  {link.badge && <span className="sr-only"> - nouvelles épreuves inédites</span>}
                 </Link>
               </Button>
               {link.badge && (

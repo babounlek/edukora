@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { BookOpen, CalendarCheck, TrendingUp } from "lucide-react"
 
@@ -24,8 +25,27 @@ export function BottomTabBar() {
   const { isAuthenticated, user } = useAuth()
   const { country } = useCountry()
   const { pathname } = useLocation()
+  const barRef = useRef<HTMLElement>(null)
+  const visible = isAuthenticated && Boolean(user?.cursus_prepare)
 
-  if (!isAuthenticated || !user?.cursus_prepare) return null
+  // Publie la hauteur réelle de la barre (comptage à rebours compris, qui varie) dans
+  // --bottom-tab-bar : une barre d'action fixée en bas d'une page (voir
+  // EpreuveInediteDetailPage) se pose ainsi AU-DESSUS, sans en deviner la hauteur.
+  useEffect(() => {
+    const barre = barRef.current
+    if (!visible || !barre || typeof ResizeObserver === "undefined") return
+    const racine = document.documentElement
+    const publier = () => racine.style.setProperty("--bottom-tab-bar", `${barre.offsetHeight}px`)
+    publier()
+    const observateur = new ResizeObserver(publier)
+    observateur.observe(barre)
+    return () => {
+      observateur.disconnect()
+      racine.style.removeProperty("--bottom-tab-bar")
+    }
+  }, [visible])
+
+  if (!visible) return null
 
   const accueil = catalogueHomePath(country)
   const estAccueil = pathname === accueil || pathname === `${accueil}/`
@@ -33,6 +53,7 @@ export function BottomTabBar() {
     pathname.startsWith(epreuvesListPath(country)) ||
     pathname.startsWith(coursListPath(country)) ||
     pathname.startsWith(themesFrequentsPath(country)) ||
+    pathname.startsWith(recherchePath(country)) ||
     pathname.startsWith("/epreuves") ||
     pathname.startsWith("/cours") ||
     pathname.startsWith("/quiz")
@@ -45,6 +66,7 @@ export function BottomTabBar() {
 
   return (
     <nav
+      ref={barRef}
       aria-label="Navigation principale"
       // `pb-[env(safe-area-inset-bottom)]` : sur un téléphone à barre gestuelle, la
       // dernière rangée de pixels n'est pas cliquable - sans cette marge, le libellé
@@ -53,7 +75,6 @@ export function BottomTabBar() {
     >
       {/* Sur mobile, le décompte n'existait que derrière le hamburger : autant dire
           qu'il n'existait pas. Ici il reste sous le pouce sur chaque écran, en gris
-    pathname.startsWith(recherchePath(country)) ||
           comme partout ailleurs. Silencieusement absent sans date d'examen connue. */}
       <div className="flex justify-center pt-1.5 empty:hidden">
         <CompteAReboursBadge variant="pilule" className="whitespace-nowrap" />

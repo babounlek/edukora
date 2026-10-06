@@ -5,6 +5,18 @@ import { useAuth } from "@/context/AuthContext"
 import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 
 /**
+ * L'id du cursus que la personne a déclaré préparer, tel quel (non vérifié contre un pays) :
+ * celui de son compte si elle est connectée, sinon celui en attente dans le navigateur.
+ */
+export function useCursusDeclare(): number | null {
+  const { isAuthenticated, user } = useAuth()
+  // Toujours appelé, jamais seulement dans la branche "non connecté" : un Hook ne peut
+  // pas s'appeler selon une condition qui change d'un rendu à l'autre.
+  const enAttente = useCursusPrepareEnAttente()
+  return isAuthenticated ? user?.cursus_prepare?.id ?? null : enAttente
+}
+
+/**
  * L'examen que prépare la personne qui regarde l'accueil, qu'elle soit connectée
  * (déclaration sur son compte) ou non (déclaration faite à l'onboarding, en attente
  * dans le navigateur - voir cursusPrepare.ts). Null si elle n'a rien déclaré.
@@ -18,16 +30,12 @@ import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
  * le pays avant de les restreindre.
  */
 export function useCursusAccueil(country: string): number | null | undefined {
-  const { isAuthenticated, user } = useAuth()
   const { data: cursusList, isError } = useQuery({
     queryKey: ["cursus", country],
     queryFn: ({ signal }) => listCursus(country, signal),
     enabled: Boolean(country),
   })
-  // Toujours appelé, jamais seulement dans la branche "non connecté" : un Hook ne peut
-  // pas s'appeler selon une condition qui change d'un rendu à l'autre.
-  const enAttente = useCursusPrepareEnAttente()
-  const declare = isAuthenticated ? user?.cursus_prepare?.id ?? null : enAttente
+  const declare = useCursusDeclare()
   if (declare === null) return null
   // Liste indisponible : on retombe sur tout le pays plutôt que de ne rien montrer.
   if (isError) return null

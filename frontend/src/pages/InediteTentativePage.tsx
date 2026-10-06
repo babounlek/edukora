@@ -98,13 +98,14 @@ function etatPastille(question: FlatQuestion, rendue: boolean): EtatPastille {
 }
 
 export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpreuve }) {
-  useSeo({ title: source === "officielle" ? "Simulation d'épreuve" : "Épreuve inédite" })
   const api = apiPour(source)
 
   const { id } = useParams<{ id: string }>()
   const [searchParams] = useSearchParams()
 
   const [tentative, setTentative] = useState<TentativeInedite | null>(null)
+  // Le titre de l'onglet nomme l'épreuve : avec plusieurs onglets ouverts, « Épreuve inédite » seul ne dit rien.
+  useSeo({ title: tentative?.epreuve_titre ?? (source === "officielle" ? "Simulation d'épreuve" : "Épreuve inédite") })
   // Ce que la page compte et note d'un bloc : des questions, ou des exercices pour une annale.
   const unite = uniteDe(tentative?.granularite)
   const m = mots(unite)
@@ -565,6 +566,15 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         Quitter l'épreuve
       </Link>
 
+      {/* Le briefing porte déjà le titre (son h1) ; ensuite plus rien ne le disait : en plein examen, le site
+          autour de l'épreuve a disparu et on ne savait plus laquelle on composait. */}
+      {!briefingVisible && (
+        <div className="mb-4">
+          <h1 className="font-display text-xl font-semibold leading-tight sm:text-2xl">{tentative.epreuve_titre}</h1>
+          <p className="mt-0.5 text-sm text-muted-foreground">{tentative.cursus_display}</p>
+        </div>
+      )}
+
       {briefingVisible && (
         <ChoixModeEpreuve
           titre={tentative.epreuve_titre}
@@ -593,12 +603,21 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           enExamen ? "top-2" : "top-[72px]",
         )}
       >
+        {/* Rappel du titre dans la barre qui reste à l'écran pendant le défilement. */}
+        {!briefingVisible && (
+          <p className="mb-1.5 truncate text-xs font-medium text-muted-foreground" title={tentative.epreuve_titre}>
+            {tentative.epreuve_titre}
+          </p>
+        )}
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-1 sm:gap-2">
             <Badge variant="secondary" className="hidden max-w-[16rem] truncate md:inline-flex">
               {tentative.cursus_display}
             </Badge>
-            {tentative.sujet_pdf_disponible && (
+            {/* Inédite : pas avant d'avoir choisi son mode - le briefing promet un sujet inédit
+                jusqu'au départ, un PDF complet à un clic de là le contredirait. Une annale
+                officielle, elle, est publique : rien à protéger. */}
+            {tentative.sujet_pdf_disponible && !(briefingVisible && source === "inedit") && (
               <Button
                 size="sm"
                 variant="ghost"
@@ -770,7 +789,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
               <div
                 key={question.id}
                 id={`question-${question.id}`}
-                className={cn("scroll-mt-44", !isNewExercice && !isNewGroupeLocal && "mt-8")}
+                className={cn("scroll-mt-52", !isNewExercice && !isNewGroupeLocal && "mt-8")}
               >
                 {isNewExercice && (
                   <>
@@ -944,7 +963,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         {/* La carte de l'épreuve, à droite sur grand écran (sous la barre d'état, qui la
             précède dans le flux sur mobile : voir BoutonPalette). */}
         <aside className="hidden lg:block">
-          <div className={cn("sticky", enExamen ? "top-36" : "top-56")}>
+          <div className={cn("sticky", enExamen ? "top-40" : "top-60")}>
             <h2 className="mb-3 text-sm font-semibold">{`${m.pluriel[0].toUpperCase()}${m.pluriel.slice(1)}`}</h2>
             <PaletteQuestions
               groupes={groupesPalette}

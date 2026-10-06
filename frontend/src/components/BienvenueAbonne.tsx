@@ -7,6 +7,7 @@ import { getPlanDuJour, getPriorites, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { Button } from "@/components/ui/button"
 import { trackEvent } from "@/lib/analytics"
+import { cn } from "@/lib/utils"
 
 // Un diagnostic d'accueil : trois questions sur chacune des cinq matières qui pèsent le
 // plus (voir quiz.services._selection_diagnostic_par_matiere).
@@ -26,8 +27,15 @@ const DUREE_DIAGNOSTIC_MIN = 12
  * de payer serait le contraire d'un accueil.
  */
 export function BienvenueAbonne({
-  cursusId, country, inclutInedit,
-}: { cursusId: number; country: string; inclutInedit: boolean }) {
+  cursusId, country, inclutInedit, retour,
+}: {
+  cursusId: number
+  country: string
+  inclutInedit: boolean
+  // Le contenu verrouillé qui a motivé l'achat (voir SubscribePage) : quand il existe, c'est
+  // lui l'action principale - l'élève est venu pour CETTE épreuve, pas pour un diagnostic.
+  retour?: string | null
+}) {
   const navigate = useNavigate()
   const [demarrage, setDemarrage] = useState(false)
   const [erreur, setErreur] = useState("")
@@ -86,8 +94,21 @@ export function BienvenueAbonne({
       )}
 
       <div className="mt-7 flex w-full flex-col items-center gap-3">
-        {renouvellement ? (
+        {retour && (
           <Button asChild size="lg" className="h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25">
+            <Link to={retour}>
+              Retourner à mon épreuve
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        )}
+        {renouvellement ? (
+          <Button
+            asChild
+            size="lg"
+            variant={retour ? "outline" : "default"}
+            className={retour ? "h-12 rounded-full px-7 text-base" : "h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25"}
+          >
             <Link to={`/${country}`}>
               Reprendre ma séance
               <ArrowRight className="size-4" />
@@ -97,7 +118,11 @@ export function BienvenueAbonne({
           <>
             <Button
               size="lg"
-              className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
+              variant={retour ? "outline" : "default"}
+              className={cn(
+                "group h-12 rounded-full px-7 text-base transition-all",
+                !retour && "shadow-lg shadow-primary/25 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30",
+              )}
               onClick={situerMonNiveau}
               disabled={demarrage || isLoading}
             >

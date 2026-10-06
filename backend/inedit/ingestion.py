@@ -64,6 +64,17 @@ from . import bareme
 from .models import Blueprint, EpreuveInedite, ExerciceInedite, QuestionInedite, RappelDeMethodeInedite
 from .quality import calculer_scores
 
+# Les titres reçus disent « Épreuve blanche n°1 » : un mot que le catalogue emploie déjà pour les
+# vrais examens blancs d'établissement (origine « Examen blanc »). Une épreuve inédite s'appelle
+# partout « Épreuve inédite » - normalisé ici plutôt que dans chaque JSON source, qui peut être
+# régénéré tel quel. Voir aussi la migration 0018 pour les épreuves déjà en base.
+_TITRE_EPREUVE_BLANCHE = re.compile(r"[ÉéEe]preuve blanche", re.IGNORECASE)
+
+
+def _titre_inedite(titre):
+    return _TITRE_EPREUVE_BLANCHE.sub("Épreuve inédite", _strip_em_dash(titre))
+
+
 SELECTION_FLOOR = 2
 SELECTION_LIMIT = 5
 SELECTION_MAX_REFERENCE_EXERCISES = 4
@@ -290,7 +301,7 @@ def ingest_blueprint(data, country):
         blueprint = Blueprint.objects.create(
             external_id=external_id,
             subject=subject,
-            titre=_strip_em_dash(data["titre"]),
+            titre=_titre_inedite(data["titre"]),
             sections_plan=data.get("sections_plan") or [],
             duree_minutes=data.get("duree_minutes") or None,
             bareme_total=data.get("bareme_total") or None,
@@ -476,7 +487,7 @@ def ingest_epreuve_inedite(data, country):
             blueprint=blueprint,
             external_id=external_id,
             subject=blueprint.subject,
-            titre=_strip_em_dash(data["titre"]),
+            titre=_titre_inedite(data["titre"]),
             statut=StatutContenu.BROUILLON,
         )
         epreuve.cursus.set(blueprint.cursus.all())

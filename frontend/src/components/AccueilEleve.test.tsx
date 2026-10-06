@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import type { Accueil, EtapeSeance } from "@/api/types"
 
 const getAccueil = vi.hoisted(() => vi.fn())
+const listMyTentativesInedites = vi.hoisted(() => vi.fn())
 const trackEvent = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
@@ -24,6 +25,7 @@ const auth = vi.hoisted(() => ({
 
 vi.mock("@/api/endpoints", () => ({
   getAccueil,
+  listMyTentativesInedites,
   getPlanDuJour: vi.fn(),
   terminerSeanceDuJour: vi.fn(),
   continuerSeanceDuJour: vi.fn(),
@@ -136,6 +138,8 @@ function afficher() {
 
 beforeEach(() => {
   getAccueil.mockReset()
+  listMyTentativesInedites.mockReset()
+  listMyTentativesInedites.mockResolvedValue([])
   trackEvent.mockReset()
   localStorage.clear()
 })
@@ -189,6 +193,43 @@ describe("AccueilEleve", () => {
     afficher()
     expect(await screen.findByText("Objectif atteint")).toBeInTheDocument()
     expect(screen.queryByText(/35 \/ 20/)).not.toBeInTheDocument()
+  })
+
+  describe("la reprise d'une épreuve inédite", () => {
+    const tentative = {
+      id: 31, epreuve: 3, epreuve_titre: "Mathématiques BAC D – Épreuve blanche n°1", subject_label: "Mathématiques",
+      cursus_display: "BAC - Série D", started_at: "2026-10-03T08:00:00Z", exam_mode_started_at: null, echeance: null,
+      submitted_at: null, score_obtenu: null, note_obtenue: null, bareme_snapshot: null,
+    }
+
+    it("propose de reprendre la copie en cours, vers la tentative elle-même", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      listMyTentativesInedites.mockResolvedValue([tentative])
+      afficher()
+
+      const lien = await screen.findByRole("link", { name: /Épreuve blanche n°1/ })
+      expect(lien).toHaveAttribute("href", "/inedit/tentative/31")
+      expect(lien).toHaveTextContent("Reprendre")
+    })
+
+    it("dit ce qu'il reste de chrono quand il tourne", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      listMyTentativesInedites.mockResolvedValue([
+        { ...tentative, exam_mode_started_at: "2026-10-04T08:00:00Z", echeance: new Date(Date.now() + 75 * 60_000).toISOString() },
+      ])
+      afficher()
+
+      expect(await screen.findByText(/Chrono en cours · il te reste 1:1\d:\d\d/)).toBeInTheDocument()
+    })
+
+    it("ne propose rien quand toutes les copies sont rendues", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      listMyTentativesInedites.mockResolvedValue([{ ...tentative, submitted_at: "2026-10-03T09:00:00Z" }])
+      afficher()
+
+      await screen.findByText(/Dérivées est tombé dans 28 des 44/)
+      expect(screen.queryByText("Reprendre")).not.toBeInTheDocument()
+    })
   })
 
   describe("le bouton principal et le quiz", () => {

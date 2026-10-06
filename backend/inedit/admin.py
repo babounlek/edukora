@@ -91,16 +91,29 @@ class BlueprintAdmin(admin.ModelAdmin):
 @admin.register(EpreuveInedite)
 class EpreuveInediteAdmin(admin.ModelAdmin):
     list_display = [
-        "titre", "blueprint", "subject", "cursus_list", "statut",
+        "titre", "blueprint", "subject", "cursus_list", "statut", "est_gratuite",
         "score_originalite", "score_qualite", "sujet_pdf_display", "updated_at",
     ]
-    list_filter = ["statut", "subject", "cursus"]
+    list_filter = ["statut", "est_gratuite", "subject", "cursus"]
     search_fields = ["titre", "external_id"]
     autocomplete_fields = ["blueprint", "subject"]  # cursus exclu, voir BlueprintAdmin
     filter_horizontal = ["cursus"]
     readonly_fields = ["sujet_pdf"]
     inlines = [ExerciceInediteInline]
-    actions = ["marquer_valide", "marquer_brouillon", "generer_pdf_sujet"]
+    actions = ["marquer_valide", "marquer_brouillon", "generer_pdf_sujet", "offrir", "retirer_gratuite"]
+
+    @admin.action(description="Offrir (gratuite pour tout compte connecté - vitrine)")
+    def offrir(self, request, queryset):
+        updated = queryset.update(est_gratuite=True)
+        self.message_user(
+            request,
+            f"{updated} épreuve(s) offerte(s). Prévoir UNE par cursus : c'est une vitrine, pas un catalogue.",
+        )
+
+    @admin.action(description="Retirer la gratuité (réservée aux abonnés)")
+    def retirer_gratuite(self, request, queryset):
+        updated = queryset.update(est_gratuite=False)
+        self.message_user(request, f"{updated} épreuve(s) de nouveau réservée(s) aux abonnés.")
 
     @admin.display(description="Cursus")
     def cursus_list(self, obj):

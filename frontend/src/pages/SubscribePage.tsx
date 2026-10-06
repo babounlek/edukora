@@ -2,7 +2,9 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, XCircle, Zap } from "lucide-react"
 
-import { checkPaymentStatus, initiatePayment, listCursus, listPlans, listProfils } from "@/api/endpoints"
+import {
+  checkPaymentStatus, initiatePayment, listCursus, listMyInscriptionsInedites, listPlans, listProfils,
+} from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cursus, ManualPayment, MobileMoneyOperator, Plan } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
@@ -13,6 +15,7 @@ import { Sentry } from "@/lib/sentry"
 import { cn, formatAmount } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
 import { epreuvesListPath } from "@/lib/countryPath"
+import { cheminRetourSur } from "@/lib/retourAchat"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -102,6 +105,9 @@ export function SubscribePage() {
   // formulaire présélectionné sur une autre formule - le choix venait d'être fait, la
   // page suivante le perdait.
   const dureeParam = searchParams.get("duree")
+  // Le contenu verrouillé qui a motivé l'achat (une épreuve inédite) : on y ramène l'élève
+  // une fois abonné, au lieu de le laisser sur un diagnostic sans rapport. Voir retourAchat.ts.
+  const retour = cheminRetourSur(searchParams.get("retour"))
   // L'enfant pour qui cet achat est fait ("Ajouter un enfant", AccesPage.tsx) -
   // absent pour l'immense majorité des achats (compte à un seul profil), relayé tel
   // quel à initiatePayment/declareManualPayment (voir payments.views._resoudre_profil).
@@ -142,6 +148,29 @@ export function SubscribePage() {
   useEffect(() => {
     if (user) setPhoneNumber(user.phone_number)
   }, [user])
+
+  // Déjà abonné à ce cursus (typiquement : session expirée sur la fiche d'une épreuve, vue
+  // comme verrouillée, puis reconnexion) : rien à acheter, on rend l'épreuve. Jamais sans
+  // `retour` : un abonné qui ouvre /abonnement de lui-même veut peut-être prolonger.
+  // N'écoute volontairement ni la phase ni le paiement : un achat qui vient d'aboutir ici
+  // doit afficher son écran de bienvenue, pas être redirigé.
+  useEffect(() => {
+    if (isLoading || !isAuthenticated || !retour || !cursusId) return
+    let annule = false
+    listMyInscriptionsInedites()
+      .then((inscriptions) => {
+        if (annule) return
+        if (inscriptions.some((i) => i.is_active && i.cursus.id === Number(cursusId))) {
+          navigate(retour, { replace: true })
+        }
+      })
+      .catch(() => {
+        // Sans réponse on reste sur le formulaire : au pire l'abonné voit une offre qu'il a déjà.
+      })
+    return () => {
+      annule = true
+    }
+  }, [isLoading, isAuthenticated, retour, cursusId, navigate])
 
   useEffect(() => {
     listPlans(cursusId ? Number(cursusId) : undefined, profilId, true).then((data) => {
@@ -632,6 +661,7 @@ export function SubscribePage() {
               cursusId={cursus.id}
               country={country}
               inclutInedit={Boolean(plans.find((p) => p.id === selectedPlanId)?.inclut_inedit)}
+              retour={retour}
             />
           )}
 

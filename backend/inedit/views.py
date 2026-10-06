@@ -20,7 +20,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from access.services import has_access_inedite
-from catalog.inedit_bridge import epreuve_inedite_catalogue_payload
+from catalog.inedit_bridge import bulk_mes_tentatives, epreuve_inedite_catalogue_payload
 from catalog.models import Cursus, StatutContenu, TypeReponse
 from catalog.rendering import annotate_cours_links
 from catalog.serializers import CursusSerializer
@@ -242,6 +242,40 @@ def _auto_complete_if_expired(tentative):
         _complete(tentative)
 
 
+def _tentative_en_cours(profil, epreuve):
+    """La copie non rendue la plus récente de ce profil sur cette épreuve, ou None. Celles
+    dont le chrono est écoulé sont d'abord verrouillées (voir _auto_complete_if_expired) :
+    une épreuve chronométrée dont le temps est passé n'est plus à « reprendre »."""
+    if profil is None:
+        return None
+    candidates = (
+        TentativeInedite.objects.select_related("epreuve__blueprint")
+        .filter(profil=profil, epreuve=epreuve, submitted_at__isnull=True)
+        .order_by("-started_at")
+    )
+    for tentative in candidates:
+        _auto_complete_if_expired(tentative)
+        if tentative.submitted_at is None:
+            return tentative
+    return None
+
+
+def _resume_tentative_en_cours(tentative):
+    """Ce que la fiche d'une épreuve montre d'une copie entamée : de quoi dire « Reprendre
+    (il reste 1 h 12) » ou « Reprendre (3 / 12 traitées) » sans charger la copie entière."""
+    reponses = {r.question_id: r for r in tentative.reponses.all()}
+    questions = list(QuestionInedite.objects.filter(exercice__epreuve_id=tentative.epreuve_id))
+    return {
+        "id": tentative.id,
+        "started_at": tentative.started_at,
+        "exam_mode_started_at": tentative.exam_mode_started_at,
+        "echeance": _deadline(tentative),
+        "mode_papier": tentative.mode_papier,
+        "traitees": sum(1 for q in questions if notation.est_traitee(q, reponses.get(q.pk))),
+        "total": len(questions),
+    }
+
+
 def _tentative_payload(tentative):
     correction_disponible = _correction_disponible(tentative)
     exercices = list(
@@ -324,6 +358,8 @@ def _tentative_resultat_payload(tentative, bilan=None):
         "epreuve": tentative.epreuve_id,
         # Voir la note équivalente dans _tentative_payload.
         "country": tentative.epreuve.cursus.first().country.code,
+        # De quelle épreuve on lit le résultat : la page ne le disait nulle part.
+        "epreuve_titre": tentative.epreuve.titre,
         "total_questions": bilan["questions_total"],
         # Questions traitées (et non plus « répondues ») : seules les QCM se répondent
         # dans l'application, une question ouverte est traitée sur brouillon ou papier.
@@ -452,7 +488,16 @@ def epreuve_inedite_detail(request, id):
     )
     qs = qs.filter(pk=id) if id.isdigit() else qs.filter(slug=id)
     epreuve = get_object_or_404(qs, statut=StatutContenu.VALIDE)
-    return Response(epreuve_inedite_catalogue_payload(epreuve, request, include_apercu=True))
+    profil = profil_actif(request)
+    payload = epreuve_inedite_catalogue_payload(
+        epreuve, request, include_apercu=True,
+        mes_tentatives=bulk_mes_tentatives(profil, [epreuve]).get(epreuve.id),
+    )
+    # Ce que la fiche doit savoir pour proposer « Reprendre » plutôt que « Commencer » - voir
+    # _tentative_en_cours. None pour un visiteur anonyme comme pour qui n'a rien d'engagé.
+    en_cours = _tentative_en_cours(profil, epreuve)
+    payload["tentative_en_cours"] = _resume_tentative_en_cours(en_cours) if en_cours else None
+    return Response(payload)
 
 
 @api_view(["GET"])
@@ -470,12 +515,17 @@ def list_my_tentatives_inedites(request):
     cursus = request.user.cursus_prepare if profil is not None else None
     tentatives = (
         TentativeInedite.objects.filter(profil=profil)
-        .select_related("epreuve__subject")
+        .select_related("epreuve__subject", "epreuve__blueprint")
         .prefetch_related("epreuve__cursus__series", "epreuve__cursus__country")
         .order_by("-started_at")
     )
     if cursus is not None:
         tentatives = tentatives.filter(epreuve__cursus=cursus)
+    tentatives = list(tentatives)
+    # Une copie dont le chrono est écoulé n'est plus « en cours » : sans cette transition
+    # paresseuse, l'accueil proposerait de « reprendre » une épreuve déjà rendue.
+    for tentative in tentatives:
+        _auto_complete_if_expired(tentative)
     return Response([
         {
             "id": tentative.id,
@@ -484,6 +534,8 @@ def list_my_tentatives_inedites(request):
             "subject_label": tentative.epreuve.subject.label,
             "cursus_display": _cursus_display(tentative.epreuve.cursus.all()),
             "started_at": tentative.started_at,
+            "exam_mode_started_at": tentative.exam_mode_started_at,
+            "echeance": _deadline(tentative) if tentative.submitted_at is None else None,
             "submitted_at": tentative.submitted_at,
             "score_obtenu": tentative.score_obtenu,
             "note_obtenue": notation.en_nombre(tentative.note_obtenue),
@@ -496,11 +548,19 @@ def list_my_tentatives_inedites(request):
 @api_view(["POST"])
 def start_tentative(request):
     """
-    Crée une TentativeInedite pour l'utilisateur connecté - gating par
+    Démarre - ou reprend - une TentativeInedite pour l'utilisateur connecté - gating par
     has_access_inedite (add-on Épreuves Inédites sur ce cursus), jamais has_access
     (le corrigé de ce cursus n'est pas assez : décision "corrigé gaté comme le reste",
     audit "Épreuves Inédites"). Plusieurs tentatives autorisées sur une même épreuve,
-    comme quiz.QuizSession (pas de contrainte d'unicité sur TentativeInedite).
+    comme quiz.QuizSession (pas de contrainte d'unicité sur TentativeInedite), mais jamais
+    deux EN COURS à la fois sur la même épreuve :
+
+    - une tentative en cours existe : elle est renvoyée (200), pas une nouvelle. Chaque
+      clic sur « Commencer » en créait une, d'où des copies vides jamais rouvertes ;
+    - `nouvelle: true` : recommencer à zéro malgré une copie entamée en mode libre (elle
+      reste dans l'historique). Sans effet tant qu'un chrono tourne : lancer une seconde
+      copie en libre, corrigé ouvert, viderait l'épreuve chronométrée de son sens ;
+    - une copie encore vide (ni réponse, ni chrono) est réutilisée même avec `nouvelle`.
     """
     epreuve = get_object_or_404(
         EpreuveInedite.objects.prefetch_related("cursus__country"),
@@ -511,7 +571,15 @@ def start_tentative(request):
     if not has_access_inedite(request.user, epreuve):
         return Response({"error": "Add-on Épreuves Inédites requis pour ce cursus."}, status=403)
 
-    tentative = TentativeInedite.objects.create(profil=profil_actif(request), epreuve=epreuve)
+    profil = profil_actif(request)
+    existante = _tentative_en_cours(profil, epreuve)
+    if existante is not None:
+        recommencer = _as_bool(request.data.get("nouvelle"))
+        chrono_actif = existante.exam_mode_started_at is not None
+        if not recommencer or chrono_actif or not existante.reponses.exists():
+            return Response(_tentative_payload(existante))
+
+    tentative = TentativeInedite.objects.create(profil=profil, epreuve=epreuve)
     return Response(_tentative_payload(tentative), status=201)
 
 

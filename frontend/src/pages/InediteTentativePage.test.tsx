@@ -232,6 +232,23 @@ describe("InediteTentativePage", () => {
       expect(screen.queryByRole("heading", { name: "Comment veux-tu la passer ?" })).not.toBeInTheDocument()
     })
 
+    it("nomme l'épreuve une fois le briefing parti : titre de page, titre de l'onglet et rappel dans la barre", async () => {
+      api.getTentativeInedite.mockResolvedValue(tentative({ epreuve_titre: "Programmation Terminale TI – Épreuve inédite n°1" }))
+      afficher()
+
+      // Pendant le briefing, un seul titre (celui du briefing).
+      expect(await screen.findByRole("heading", { level: 1, name: "Programmation Terminale TI – Épreuve inédite n°1" })).toBeInTheDocument()
+      expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1)
+
+      await userEvent.click(screen.getByRole("button", { name: /Entraînement libre/ }))
+
+      expect(screen.getByRole("heading", { level: 1, name: "Programmation Terminale TI – Épreuve inédite n°1" })).toBeInTheDocument()
+      expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1)
+      // Et le rappel de la barre collante, qui suit le défilement.
+      expect(screen.getAllByText("Programmation Terminale TI – Épreuve inédite n°1").length).toBeGreaterThanOrEqual(2)
+      expect(document.title).toContain("Programmation Terminale TI – Épreuve inédite n°1")
+    })
+
     it("ne propose le papier que quand un sujet PDF existe", async () => {
       api.getTentativeInedite.mockResolvedValue(tentative({ sujet_pdf_disponible: false }))
       afficher()

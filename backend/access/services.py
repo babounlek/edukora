@@ -35,12 +35,16 @@ def has_access_inedite(user, obj):
     (une épreuve inédite peut cibler plusieurs séries à la fois, ex. Maths BAC C/E) - pas
     de fallback "cursus vide" comme has_access (une EpreuveInedite a toujours ≥1 cursus,
     imposé par inedit.ingestion). Seule différence volontaire restante avec has_access :
-    aucun court-circuit `est_vitrine` - décision produit "corrigé gaté comme le reste"
-    (audit "Épreuves Inédites") : cette app n'a aucune notion de contenu vitrine,
-    énoncé/tentative/corrigé sont gatés uniformément.
+    aucun court-circuit `est_vitrine` implicite - décision produit "corrigé gaté comme le
+    reste" (audit "Épreuves Inédites"). La seule exception est choisie épreuve par épreuve :
+    EpreuveInedite.est_gratuite, voir plus bas.
     """
     if not user.is_authenticated:
         return False
+    # Exception explicite et éditoriale (EpreuveInedite.est_gratuite, la vitrine) : tout compte
+    # connecté, abonné ou non. Le compte reste exigé - la copie est rattachée à un profil.
+    if getattr(obj, "est_gratuite", False):
+        return True
     return InscriptionInedite.objects.filter(
         user=user, cursus__in=obj.cursus.all(), expires_at__gt=timezone.now(),
     ).exists()

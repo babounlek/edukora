@@ -8,6 +8,7 @@ import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
 import { useIsTruncated } from "@/lib/useIsTruncated"
+import { actionInedite, LIBELLE_ACTION, libelleFaite } from "@/lib/statutInedite"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -54,6 +55,8 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
   const Icone = subjectIcon(epreuve.subject.code)
   const couleur = couleurMatiere(epreuve.subject.code)
   const duree = dureeAffichee(epreuve)
+  // Une inédite se REFAIT et se REPREND : « Lu » ne dit rien d'une copie, sa note si.
+  const faite = inedite ? libelleFaite(epreuve.mes_tentatives) : null
 
   /**
    * Métadonnées secondaires. L'année n'y figure que si le titre ne la porte pas déjà, ou
@@ -168,7 +171,11 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
                 <>
                   <Unlock className="size-4 shrink-0 text-success" aria-hidden="true" />
                   <span className="truncate font-medium text-foreground">
-                    {inedite ? "Composer l'épreuve" : epreuve.est_vitrine ? "Lire - accès libre" : "Lire le corrigé"}
+                    {inedite
+                      ? epreuve.has_access
+                        ? LIBELLE_ACTION[actionInedite(epreuve.mes_tentatives)]
+                        : "Essayer gratuitement"
+                      : epreuve.est_vitrine ? "Lire - accès libre" : "Lire le corrigé"}
                   </span>
                 </>
               ) : (
@@ -177,10 +184,10 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
                   <span className="truncate font-medium text-foreground">Voir l'aperçu</span>
                 </>
               )}
-              {epreuve.is_read && (
+              {(inedite ? faite : epreuve.is_read) && (
                 <span className="inline-flex shrink-0 items-center gap-1 text-success">
                   <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                  Lu
+                  {inedite ? faite : "Lu"}
                 </span>
               )}
             </span>

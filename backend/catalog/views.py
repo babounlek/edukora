@@ -18,6 +18,7 @@ from users.profils import profil_actif
 
 from .inedit_bridge import (
     bulk_exercises_counts,
+    bulk_mes_tentatives,
     bulk_related_cours_map as bulk_related_cours_map_inedit,
     build_inedit_queryset,
     epreuve_inedite_catalogue_payload,
@@ -338,12 +339,14 @@ class LessonListView(generics.ListAPIView):
             inedit_related_cours_ids = {c.pk for cours_list in inedit_related_cours_map.values() for c in cours_list}
             inedit_context = {**context, "est_vitrine_ids": bulk_cours_est_vitrine(inedit_related_cours_ids)}
             active_inedite_cursus_ids = bulk_active_inedite_cursus_ids(request.user)
+            mes_tentatives_map = bulk_mes_tentatives(profil_actif(request), inedit_objs)
             inedit_payloads_by_id = {
                 obj.id: epreuve_inedite_catalogue_payload(
                     obj, request, exercises_count=exercises_counts.get(obj.id, 0),
                     related_cours=inedit_related_cours_map.get(obj.id, []),
                     context=inedit_context,
                     active_inedite_cursus_ids=active_inedite_cursus_ids,
+                    mes_tentatives=mes_tentatives_map.get(obj.id),
                 )
                 for obj in inedit_objs
             }

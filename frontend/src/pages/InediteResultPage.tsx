@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { ClipboardCheck, Info, Trophy } from "lucide-react"
 
 import { ApiError } from "@/api/client"
@@ -11,9 +11,11 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { CartePertes, CartePosition, CarteTemps } from "@/components/inedit/RapportFin"
 import { formatDuration } from "@/lib/duration"
 import { formatPoints } from "@/lib/notation"
+import { useAuth } from "@/context/AuthContext"
+import { lienAbonnement } from "@/lib/retourAchat"
 import { useSeo } from "@/lib/seo"
 import { apiPour, cheminEpreuve, cheminRetour, type SourceEpreuve } from "@/lib/apiEpreuve"
-import { coursListPath } from "@/lib/countryPath"
+import { coursListPath, epreuvesListPath } from "@/lib/countryPath"
 import { mots, uniteDe } from "@/lib/vocabulaire"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
@@ -58,20 +60,36 @@ function echeanceRelative(iso: string): string {
 export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuve }) {
 
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
+  const { user } = useAuth()
   useSeo({ title: source === "officielle" ? "Résultat de la simulation" : "Résultat de l'épreuve inédite" })
   const [result, setResult] = useState<TentativeInediteResult | null>(null)
   const [error, setError] = useState("")
 
   useEffect(() => {
     if (!id) return
-    // Endpoint idempotent : si la tentative est déjà soumise, il se contente de
-    // retourner le résultat déjà calculé (voir inedit.views.complete_tentative).
-    apiPour(source).terminer(Number(id))
-      .then(setResult)
+    // On regarde D'ABORD où en est la copie : `terminer` rend la copie si elle ne l'est pas
+    // déjà, et cette page s'ouvre aussi depuis l'historique du navigateur ou une adresse
+    // collée - une épreuve chronométrée en cours y était clôturée, notée zéro, sans que
+    // l'élève l'ait décidé. Une copie encore en cours retourne à l'épreuve. (Charger une
+    // copie dont le chrono est écoulé la verrouille, voir inedit.views._auto_complete_if_expired :
+    // elle arrive alors ici déjà rendue.)
+    const api = apiPour(source)
+    const numero = Number(id)
+    api.charger(numero)
+      .then(async (copie) => {
+        if (copie.submitted_at === null) {
+          navigate(cheminEpreuve(source, numero), { replace: true })
+          return
+        }
+        // Endpoint idempotent : copie déjà soumise, il se contente de retourner le résultat
+        // déjà calculé (voir inedit.views.complete_tentative).
+        setResult(await api.terminer(numero))
+      })
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce résultat.")
       })
-  }, [id, source])
+  }, [id, source, navigate])
 
   if (error) {
     return (
@@ -111,6 +129,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
       <div className="mb-8 text-center">
         <Trophy className="mx-auto mb-3 size-8 text-gold-text" />
         <h1 className="font-display text-3xl font-semibold">Épreuve terminée !</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{result.epreuve_titre}</p>
         {/* Comment l'épreuve a été passée : une note d'entraînement ne se lit pas comme une note
             obtenue chronomètre en main. */}
         <Badge variant="outline" className="mt-3">
@@ -275,6 +294,27 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
             ? "Barème estimé : les points de cette épreuve n'étant pas tous indiqués, chaque exercice pèse autant."
             : "Barème estimé : les points de chaque exercice sont répartis à parts égales entre ses questions."}
         </p>
+      )}
+
+      {/* Une copie rendue sans abonnement est forcément celle de l'épreuve offerte : c'est le
+          moment où la valeur du produit vient d'être vécue, pas avant. Jamais pour un abonné. */}
+      {source === "inedit" && user?.a_un_abonnement_actif === false && result.cursus_id !== null && (
+        <div className="mb-6 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3.5">
+          <p className="text-sm">
+            <strong>Tu viens de passer l'épreuve offerte.</strong> Les autres épreuves inédites de ton cursus ont le même
+            chrono, la même notation et le même rapport de fin, avec les corrigés, les cours et la séance du jour.
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg" variant="outline">
+            <Link
+              to={lienAbonnement(
+                result.cursus_id,
+                `${epreuvesListPath(result.country.toLowerCase())}?origine=INEDITE`,
+              )}
+            >
+              Débloquer les autres épreuves
+            </Link>
+          </Button>
+        </div>
       )}
 
       <div className="flex flex-col gap-2">

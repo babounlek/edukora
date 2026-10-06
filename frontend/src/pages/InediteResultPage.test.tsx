@@ -6,13 +6,17 @@ import type { TentativeInediteResult } from "@/api/types"
 
 const completeTentative = vi.hoisted(() => vi.fn())
 const completeSimulation = vi.hoisted(() => vi.fn())
-vi.mock("@/api/endpoints", () => ({ completeTentative, completeSimulation }))
+const getTentativeInedite = vi.hoisted(() => vi.fn())
+const getSimulation = vi.hoisted(() => vi.fn())
+const auth = vi.hoisted(() => ({ user: { a_un_abonnement_actif: true } as { a_un_abonnement_actif: boolean } | null }))
+vi.mock("@/api/endpoints", () => ({ completeTentative, completeSimulation, getTentativeInedite, getSimulation }))
+vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 
 import { InediteResultPage } from "./InediteResultPage"
 
 function resultat(extra: Partial<TentativeInediteResult> = {}): TentativeInediteResult {
   return {
-    id: 7, epreuve: 1, country: "CM", total_questions: 4, questions_repondues: 3, questions_non_traitees: 1,
+    id: 7, epreuve: 1, epreuve_titre: "Programmation Terminale TI – Épreuve inédite n°1", country: "CM", total_questions: 4, questions_repondues: 3, questions_non_traitees: 1,
     questions_a_noter: 0, score: 63, note: 12.5, bareme: 20, note_sur_20: 12.5, bareme_estime: false,
     definitive: true, mode: "examen", granularite: "question", temps_total_secondes: 3725,
     par_exercice: [
@@ -39,6 +43,7 @@ function afficher(source: "inedit" | "officielle" = "inedit") {
     <MemoryRouter initialEntries={[`${base}/7/resultat`]}>
       <Routes>
         <Route path={`${base}/:id/resultat`} element={<InediteResultPage source={source} />} />
+        <Route path={`${base}/:id`} element={<p>Copie en cours</p>} />
       </Routes>
     </MemoryRouter>,
   )
@@ -47,9 +52,68 @@ function afficher(source: "inedit" | "officielle" = "inedit") {
 beforeEach(() => {
   completeTentative.mockReset()
   completeSimulation.mockReset()
+  // Par défaut la copie est déjà rendue : la page affiche son résultat.
+  getTentativeInedite.mockReset()
+  getTentativeInedite.mockResolvedValue({ id: 7, submitted_at: "2026-10-04T09:00:00Z" })
+  getSimulation.mockReset()
+  getSimulation.mockResolvedValue({ id: 7, submitted_at: "2026-10-04T09:00:00Z" })
+  auth.user = { a_un_abonnement_actif: true }
+})
+
+describe("InediteResultPage, après l'épreuve offerte", () => {
+  it("propose l'abonnement à qui n'en a pas, et le ramène à la liste des inédites ensuite", async () => {
+    auth.user = { a_un_abonnement_actif: false }
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+
+    const lien = await screen.findByRole("link", { name: "Débloquer les autres épreuves" })
+    const params = new URL(lien.getAttribute("href") ?? "", "http://x").searchParams
+    expect(params.get("cursus")).toBe("4")
+    expect(params.get("retour")).toBe("/cm/epreuves?origine=INEDITE")
+  })
+
+  it("n'en parle jamais à un abonné", async () => {
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+
+    await screen.findByLabelText("Note : 12,5 sur 20")
+    expect(screen.queryByRole("link", { name: "Débloquer les autres épreuves" })).not.toBeInTheDocument()
+  })
+
+  it("ni sur une simulation d'annale officielle", async () => {
+    auth.user = { a_un_abonnement_actif: false }
+    completeSimulation.mockResolvedValue(resultat({ granularite: "exercice" }))
+    afficher("officielle")
+
+    await screen.findByLabelText("Note : 12,5 sur 20")
+    expect(screen.queryByRole("link", { name: "Débloquer les autres épreuves" })).not.toBeInTheDocument()
+  })
 })
 
 describe("InediteResultPage", () => {
+  it("dit de quelle épreuve on lit le résultat", async () => {
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+
+    expect(await screen.findByText("Programmation Terminale TI – Épreuve inédite n°1")).toBeInTheDocument()
+  })
+
+  it("ne clôture jamais une copie encore en cours : elle retourne à l'épreuve", async () => {
+    getTentativeInedite.mockResolvedValue({ id: 7, submitted_at: null })
+    afficher()
+
+    expect(await screen.findByText("Copie en cours")).toBeInTheDocument()
+    expect(completeTentative).not.toHaveBeenCalled()
+  })
+
+  it("fait de même pour une simulation d'annale en cours", async () => {
+    getSimulation.mockResolvedValue({ id: 7, submitted_at: null })
+    afficher("officielle")
+
+    expect(await screen.findByText("Copie en cours")).toBeInTheDocument()
+    expect(completeSimulation).not.toHaveBeenCalled()
+  })
+
   it("affiche la note sur le barème, définitive, avec le détail par exercice", async () => {
     completeTentative.mockResolvedValue(resultat())
     afficher()

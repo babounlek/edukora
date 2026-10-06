@@ -253,6 +253,7 @@ def _resultat_payload(simulation, bilan=None, exercices=None):
     return {
         "id": simulation.id,
         "epreuve": simulation.lesson_id,
+        "epreuve_titre": simulation.lesson.title,
         "country": simulation.lesson.subject.country.code,
         "total_questions": bilan["questions_total"],
         "questions_repondues": bilan["questions_traitees"],

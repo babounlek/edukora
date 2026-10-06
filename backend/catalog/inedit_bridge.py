@@ -7,6 +7,7 @@ même mapping de champs pour la fiche détail que pour la liste, jamais dupliqu�
 """
 
 from django.db.models import Count
+from django.utils import timezone
 
 from access.services import has_access_inedite
 from inedit.models import EpreuveInedite, ExerciceInedite, RappelDeMethodeInedite
@@ -27,8 +28,11 @@ def build_inedit_queryset(params, *, min_popular_readers):
         .prefetch_related("cursus__series", "cursus__country", "blueprint__competences")
     )
 
-    if params.get("lesson_type") or params.get("nature") or params.get("est_vitrine") == "true":
+    if params.get("lesson_type") or params.get("nature"):
         return qs.none()
+    # « Gratuites » : les inédites offertes (EpreuveInedite.est_gratuite) en font partie.
+    if params.get("est_vitrine") == "true":
+        qs = qs.filter(est_gratuite=True)
     origine = params.get("origine")
     if origine and origine != "INEDITE":
         return qs.none()
@@ -69,6 +73,49 @@ def bulk_exercises_counts(epreuves):
         .annotate(n=Count("id"))
     )
     return {row["epreuve_id"]: row["n"] for row in counts}
+
+
+def bulk_mes_tentatives(profil, epreuves):
+    """Où en est CE profil de chaque épreuve du lot, en une requête : {epreuve_id: {en_cours,
+    nb_terminees, meilleure_note, bareme}}. Une épreuve jamais ouverte n'a pas d'entrée (le
+    payload en fait un null) ; un visiteur anonyme n'a rien du tout. Sert à dire « Faite · 12/20 »
+    ou « Reprendre » sur les cartes, sans que la liste ait à ouvrir chaque copie.
+
+    Une copie en mode examen dont le chrono est écoulé sans avoir été clôturée (la clôture est
+    paresseuse, voir inedit.views._auto_complete_if_expired) n'est plus « en cours » : la
+    proposer en reprise mènerait à une copie déjà rendue. La « meilleure » note est celle du
+    meilleur TAUX - deux épreuves n'ont pas toujours le même barème, une copie sur 40 et une
+    sur 20 ne se comparent pas en points bruts."""
+    from inedit.models import TentativeInedite
+    from inedit.notation import en_nombre
+
+    if profil is None or not epreuves:
+        return {}
+    minutes = {e.id: e.blueprint.duree_minutes for e in epreuves}
+    lignes = TentativeInedite.objects.filter(profil=profil, epreuve_id__in=list(minutes)).values(
+        "epreuve_id", "submitted_at", "exam_mode_started_at", "note_obtenue", "bareme_snapshot",
+    )
+    maintenant = timezone.now()
+    resume, meilleurs_taux = {}, {}
+    for ligne in lignes:
+        epreuve_id = ligne["epreuve_id"]
+        entree = resume.setdefault(
+            epreuve_id, {"en_cours": False, "nb_terminees": 0, "meilleure_note": None, "bareme": None},
+        )
+        if ligne["submitted_at"] is None:
+            debut, duree = ligne["exam_mode_started_at"], minutes.get(epreuve_id)
+            expiree = bool(debut and duree and maintenant >= debut + timezone.timedelta(minutes=duree))
+            if not expiree:
+                entree["en_cours"] = True
+            continue
+        entree["nb_terminees"] += 1
+        note, bareme = ligne["note_obtenue"], ligne["bareme_snapshot"]
+        if note is not None and bareme:
+            taux = float(note) / float(bareme)
+            if taux > meilleurs_taux.get(epreuve_id, -1):
+                meilleurs_taux[epreuve_id] = taux
+                entree["meilleure_note"], entree["bareme"] = en_nombre(note), en_nombre(bareme)
+    return resume
 
 
 def bulk_related_cours_map(epreuve_ids):
@@ -124,7 +171,7 @@ def _apercu_enonce(epreuve):
 
 def epreuve_inedite_catalogue_payload(
     epreuve, request, *, exercises_count=None, include_apercu=False, related_cours=None, context=None,
-    active_inedite_cursus_ids=None,
+    active_inedite_cursus_ids=None, mes_tentatives=None,
 ):
     """Sérialise une EpreuveInedite dans la même forme que LessonSerializer.Meta.fields.
     Réutilisé par le catalogue fusionné (liste) ET inedit.views.epreuve_inedite_detail
@@ -144,7 +191,11 @@ def epreuve_inedite_catalogue_payload(
 
     `active_inedite_cursus_ids` : même correctif, pour has_access_inedite ci-dessous
     (voir access.services.bulk_active_inedite_cursus_ids) - un aller en base par
-    épreuve sans lui, jamais posé pour la fiche détail (un seul objet)."""
+    épreuve sans lui, jamais posé pour la fiche détail (un seul objet).
+
+    `mes_tentatives` : l'entrée de bulk_mes_tentatives pour CETTE épreuve (None = jamais
+    ouverte, ou visiteur). Alimente aussi `is_read`, que les cartes montrent déjà comme une
+    coche : une épreuve rendue est une épreuve « faite »."""
     context = context if context is not None else {"request": request}
     if related_cours is None:
         related_cours = Cours.objects.filter(
@@ -177,12 +228,18 @@ def epreuve_inedite_catalogue_payload(
         "nature_epreuve_display": "",
         "themes": TagSerializer(epreuve.blueprint.competences.all(), many=True).data,
         "has_access": (
-            any(c.pk in active_inedite_cursus_ids for c in epreuve.cursus.all())
+            # Épreuve offerte : tout compte connecté (voir access.has_access_inedite).
+            bool(epreuve.est_gratuite and request.user.is_authenticated)
+            or any(c.pk in active_inedite_cursus_ids for c in epreuve.cursus.all())
             if active_inedite_cursus_ids is not None
             else has_access_inedite(request.user, epreuve)
         ),
-        "is_read": False,
-        "est_vitrine": False,
+        "is_read": bool(mes_tentatives and mes_tentatives["nb_terminees"]),
+        "mes_tentatives": mes_tentatives,
+        # Vitrine : l'épreuve est offerte à tout compte connecté, pas seulement aux abonnés. Un
+        # VISITEUR doit créer un compte d'abord - has_access reste faux pour lui, la fiche le
+        # lui dit (voir EpreuveInediteDetailPage.tsx).
+        "est_vitrine": epreuve.est_gratuite,
         "created_at": epreuve.created_at,
         "exercises_count": epreuve.exercices.count() if exercises_count is None else exercises_count,
         "related_cours": CoursSummarySerializer(related_cours, many=True, context=context).data,

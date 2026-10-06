@@ -625,10 +625,12 @@ export function listEpreuvesInedites(cursusId: number) {
   return apiRequest<EpreuveInediteListItem[]>(`/inedit/epreuves/?cursus=${cursusId}`)
 }
 
-export function startTentativeInedite(epreuveId: number) {
+/** Démarre l'épreuve, ou reprend la copie déjà en cours (le serveur n'en ouvre jamais deux).
+ * `nouvelle` : recommencer à zéro malgré une copie entamée en mode libre. */
+export function startTentativeInedite(epreuveId: number, options: { nouvelle?: boolean } = {}) {
   return apiRequest<TentativeInedite>("/inedit/tentatives/", {
     method: "POST",
-    body: { epreuve: epreuveId },
+    body: { epreuve: epreuveId, ...(options.nouvelle ? { nouvelle: true } : {}) },
   })
 }
 
