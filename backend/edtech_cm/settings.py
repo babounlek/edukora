@@ -68,7 +68,7 @@ if SENTRY_DSN:
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "edtech_cm.admin_site.EdukoraAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

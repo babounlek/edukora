@@ -1,29 +1,75 @@
 {% extends "admin/change_list.html" %}
 
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .mp-btn { display:inline-block; padding:4px 12px; border-radius:6px; color:#fff !important; font-weight:600; font-size:.8rem; text-decoration:none; line-height:1.4; }
+    .mp-btn-ok { background:#15803d; }
+    .mp-btn-ko { background:#b91c1c; }
+    .mp-btn:hover { filter:brightness(1.12); }
+    .mp-badge { display:inline-block; padding:1px 8px; border-radius:999px; font-size:.75rem; font-weight:600; background:var(--darkened-bg, #eee); }
+    .mp-badge-pending { background:#fef3c7; color:#92400e; }
+    .mp-badge-ok { background:#dcfce7; color:#166534; }
+    .mp-badge-ko { background:#fee2e2; color:#991b1b; }
+    .mp-badge-warn { background:#ffedd5; color:#9a3412; margin-left:4px; }
+    .mp-muted { color:var(--body-quiet-color, #666); font-size:.8rem; }
+    .mp-stat { padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem; color:inherit; text-decoration:none; }
+    a.mp-stat:hover { border-color:var(--link-fg, #447e9b); }
+    #mp-lightbox { position:fixed; inset:0; background:rgba(0,0,0,.8); display:none; align-items:center; justify-content:center; z-index:9999; cursor:zoom-out; }
+    #mp-lightbox.open { display:flex; }
+    #mp-lightbox img { max-width:92vw; max-height:92vh; border-radius:6px; background:#fff; }
+  </style>
+{% endblock %}
+
 {% block result_list %}
   <div class="manual-payment-stats" style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.25rem;">
-    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+    <a class="mp-stat" href="?statut=PENDING">
       <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.pending }}</div>
       <div>En attente</div>
-    </div>
-    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+    </a>
+    <a class="mp-stat" href="?statut=APPROVED">
       <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.approved_today }}</div>
       <div>Validés aujourd'hui</div>
-    </div>
-    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+    </a>
+    <a class="mp-stat" href="?statut=REJECTED">
       <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.rejected }}</div>
       <div>Rejetés</div>
-    </div>
-    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+    </a>
+    <div class="mp-stat">
       <div style="font-size:1.4rem; font-weight:700;">{{ manual_payment_stats.total_approved_amount }} FCFA</div>
       <div>Montant total validé</div>
     </div>
     {% for row in manual_payment_stats.repartition %}
-    <div style="padding:.75rem 1rem; border:1px solid var(--hairline-color, #ccc); border-radius:6px; min-width:9rem;">
+    <div class="mp-stat">
       <div style="font-size:1.4rem; font-weight:700;">{{ row.total }} FCFA</div>
       <div>{{ row.operator }} ({{ row.n }})</div>
     </div>
     {% endfor %}
   </div>
   {{ block.super }}
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+  <div id="mp-lightbox" role="dialog" aria-label="Capture du paiement"><img alt="Capture du paiement"></div>
+  <script>
+    (function () {
+      var box = document.getElementById('mp-lightbox');
+      var img = box.querySelector('img');
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest('a.mp-proof');
+        if (link) {
+          if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+          e.preventDefault();
+          img.src = link.href;
+          box.classList.add('open');
+        } else if (box.classList.contains('open')) {
+          box.classList.remove('open');
+        }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') box.classList.remove('open');
+      });
+    })();
+  </script>
 {% endblock %}

@@ -1,0 +1,125 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .mp-card { border:1px solid var(--hairline-color, #ccc); border-radius:8px; padding:1rem 1.25rem; margin-bottom:1rem; display:flex; gap:1.25rem; flex-wrap:wrap; }
+    .mp-card dl { margin:0; display:grid; grid-template-columns:max-content 1fr; gap:.25rem 1rem; }
+    .mp-card dt { color:var(--body-quiet-color, #666); }
+    .mp-card dd { margin:0; font-weight:600; }
+    .mp-proof-img { max-height:340px; max-width:100%; border-radius:6px; border:1px solid var(--hairline-color, #ccc); }
+    .mp-alert { background:#fff7ed; color:#9a3412; border:1px solid #fdba74; border-radius:6px; padding:.5rem .75rem; margin:.5rem 0; }
+    .mp-error { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; border-radius:6px; padding:.5rem .75rem; margin:.5rem 0; }
+    .mp-form-row { margin:1rem 0; }
+    .mp-form-row label { display:block; font-weight:600; margin-bottom:.25rem; }
+    .mp-actions { display:flex; gap:.75rem; align-items:center; margin-top:1.25rem; }
+    .mp-submit { border:0; border-radius:6px; padding:.6rem 1.4rem; color:#fff; font-weight:700; cursor:pointer; }
+    .mp-submit-ok { background:#15803d; }
+    .mp-submit-ko { background:#b91c1c; }
+  </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Accueil</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+    &rsaquo; {{ title }}
+  </div>
+{% endblock %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+
+  {% if bulk %}
+    <p>
+      <strong>{{ items|length }} paiement{{ items|length|pluralize }}</strong>
+      à {% if action == "valider" %}valider (abonnement activé et SMS envoyé à chaque élève){% else %}rejeter (SMS envoyé à chaque élève){% endif %} :
+    </p>
+    {% if ignores %}<p class="mp-muted">{{ ignores }} paiement{{ ignores|pluralize }} de la sélection déjà traité{{ ignores|pluralize }}, ignoré{{ ignores|pluralize }}.</p>{% endif %}
+  {% endif %}
+
+  {% if exclus %}
+    <div class="mp-alert">
+      <strong>{{ exclus|length }} paiement{{ exclus|length|pluralize }} exclu{{ exclus|length|pluralize }} de la validation en lot</strong>
+      (à examiner un par un depuis sa ligne) :
+      <ul>
+        {% for it in exclus %}
+          <li>#{{ it.payment.pk }} - {{ it.payment.user }} : {{ it.alertes|join:" " }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {% if erreur %}<div class="mp-error">{{ erreur }}</div>{% endif %}
+
+  {% for it in items %}
+    {% with p=it.payment %}
+      <div class="mp-card">
+        <dl>
+          <dt>Paiement</dt><dd>#{{ p.pk }} - déclaré le {{ p.created_at|date:"d/m/Y H:i" }}</dd>
+          <dt>Élève</dt><dd>{{ p.user }}</dd>
+          <dt>Offre</dt><dd>{{ p.plan }}</dd>
+          <dt>Opérateur</dt><dd>{{ p.get_operator_display }}</dd>
+          <dt>Montant attendu</dt><dd>{{ p.amount_expected }} FCFA</dd>
+          <dt>Montant déclaré</dt><dd>{{ p.amount_declared }} FCFA</dd>
+          <dt>Numéro payeur</dt><dd>{{ p.payer_phone_number }}</dd>
+          <dt>Référence</dt><dd>{{ p.transaction_reference }}</dd>
+          {% if p.paid_at %}<dt>Payé le</dt><dd>{{ p.paid_at|date:"d/m/Y H:i" }}</dd>{% endif %}
+        </dl>
+        {% if not bulk %}
+          <div>
+            {% if p.proof and it.proof_is_image %}
+              <a href="{{ p.proof.url }}" target="_blank" rel="noopener noreferrer"><img class="mp-proof-img" src="{{ p.proof.url }}" alt="Capture du paiement"></a>
+            {% elif p.proof %}
+              <a href="{{ p.proof.url }}" target="_blank" rel="noopener noreferrer">Ouvrir la preuve</a>
+            {% else %}
+              <span class="mp-muted">Aucune capture jointe.</span>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      {% for a in it.alertes %}<div class="mp-alert">{{ a }}</div>{% endfor %}
+    {% endwith %}
+  {% endfor %}
+
+  <form method="post" action="">
+    {% csrf_token %}
+    {% if bulk %}
+      <input type="hidden" name="action" value="{{ action_name }}">
+      <input type="hidden" name="post" value="yes">
+      <input type="hidden" name="select_across" value="0">
+      {% for pk in selected %}<input type="hidden" name="_selected_action" value="{{ pk }}">{% endfor %}
+    {% else %}
+      <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
+
+    {% if action == "rejeter" %}
+      <div class="mp-form-row">
+        <label for="id_rejection_reason">Motif du rejet (envoyé à l'élève par SMS)</label>
+        <select name="rejection_reason" id="id_rejection_reason" required>
+          <option value="">---------</option>
+          {% for value, label in motifs %}
+            <option value="{{ value }}" {% if value == reason %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mp-form-row">
+        <label for="id_admin_comment">Note interne (facultatif)</label>
+        <textarea name="admin_comment" id="id_admin_comment" rows="3" style="width:100%; max-width:40rem;">{{ comment }}</textarea>
+      </div>
+    {% endif %}
+
+    <div class="mp-actions">
+      <button type="submit" class="mp-submit {% if action == 'valider' %}mp-submit-ok{% else %}mp-submit-ko{% endif %}">
+        {% if action == "valider" %}Confirmer la validation{% else %}Confirmer le rejet{% endif %}
+      </button>
+      {% if bulk %}
+        <a href="{% url opts|admin_urlname:'changelist' %}" class="button cancel-link">Annuler</a>
+      {% else %}
+        <a href="{{ next }}" class="button cancel-link">Annuler</a>
+      {% endif %}
+    </div>
+  </form>
+{% endblock %}
