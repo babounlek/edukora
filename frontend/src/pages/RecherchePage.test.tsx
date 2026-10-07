@@ -46,7 +46,7 @@ const THEME_CHIMIE = resultat({
 
 function reponse(surcharge: Partial<ReponseRecherche> = {}): ReponseRecherche {
   return {
-    q: "tange", corrige: null, indexe: true, trop_court: false, total: 30, autres_cursus: 0, suggestions: [], intention: null,
+    q: "tange", corrige: null, indexe: true, trop_court: false, total: 30, autres_cursus: 0, suggestions: [], intention: null, reponse: null,
     matieres: [{ code: "MATHS", label: "Mathématiques", total: 20 }, { code: "CHIMIE", label: "Chimie", total: 10 }],
     groupes: [
       { type: "THEME", libelle: "Thèmes", total: 3, resultats: [THEME_VIDE, THEME_MATHS, THEME_CHIMIE] },
@@ -497,5 +497,39 @@ describe("complétion pendant la frappe", () => {
     await userEvent.type(await screen.findByRole("combobox", { name: "Rechercher" }), "thalès")
     await waitFor(() => expect(completerRecherche).toHaveBeenCalled())
     expect(screen.queryByRole("listbox", { name: "Suggestions" })).not.toBeInTheDocument()
+  })
+})
+
+describe("la réponse en bref", () => {
+  const COURS_OHM = {
+    ...resultat({ id: 60, type: "COURS", titre: "Loi d'Ohm dans un circuit électrique", details: { slug: "loi-dohm" } }),
+    matiere: { code: "PHYSIQUE", label: "Physique" },
+    regle_md: "La tension aux bornes d'un conducteur ohmique est proportionnelle à l'intensité du courant.",
+  }
+
+  it("montre la règle du cours qui répond, avec un lien vers le cours entier", async () => {
+    rechercher.mockResolvedValue(reponse({ reponse: COURS_OHM }))
+    monter("/cm/recherche?q=loi+d%27ohm")
+    const carte = await screen.findByRole("region", { name: "Loi d'Ohm dans un circuit électrique" })
+    expect(within(carte).getByText("La réponse en bref")).toBeInTheDocument()
+    expect(await within(carte).findByText(/proportionnelle à l'intensité/)).toBeInTheDocument()
+    expect(within(carte).getByRole("link", { name: /Lire le cours en entier/ })).toHaveAttribute("href", "/cours/loi-dohm")
+    // Cours verrouillé : l'indice d'accès reste visible, la règle (publique) aussi.
+    expect(within(carte).getByText("Abonnés")).toBeInTheDocument()
+  })
+
+  it("pas de carte quand le moteur n'en propose pas", async () => {
+    rechercher.mockResolvedValue(reponse({ reponse: null }))
+    monter("/cm/recherche?q=tange")
+    await screen.findByRole("link", { name: "Tangente" }).catch(() => undefined)
+    await waitFor(() => expect(rechercher).toHaveBeenCalled())
+    expect(screen.queryByText("La réponse en bref")).not.toBeInTheDocument()
+  })
+
+  it("cliquer le lien du cours note le clic sur la carte", async () => {
+    rechercher.mockResolvedValue(reponse({ reponse: COURS_OHM }))
+    monter("/cm/recherche?q=loi+d%27ohm")
+    await userEvent.click(await screen.findByRole("link", { name: /Lire le cours en entier/ }))
+    expect(trackEvent).toHaveBeenCalledWith("recherche_resultat_clique", expect.objectContaining({ type: "COURS" }))
   })
 })

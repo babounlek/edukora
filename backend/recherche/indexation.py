@@ -14,12 +14,14 @@ Seul du contenu PUBLIC est indexé (voir EntreeRecherche) : jamais un corrigé.
 from collections import Counter, defaultdict
 
 from django.db import transaction
-from django.db.models import Prefetch
+from django.db.models import Count, Prefetch
 
 from catalog.models import (
-    Cours, Cursus, Exercise, Lesson, LessonType, Origine, RappelDeMethode, StatutContenu, Subject, Tag,
+    Cours, Cursus, Examen, Exercise, Lesson, LessonType, Origine, Question, RappelDeMethode, StatutContenu,
+    Subject, Tag,
     resolve_examen_label,
 )
+from access.models import LectureProgress
 from inedit.models import EpreuveInedite, RappelDeMethodeInedite
 from quiz.models import CompetenceItem
 
@@ -47,6 +49,10 @@ THEME_MIN_CONTENUS = 2
 
 VALIDE = StatutContenu.VALIDE
 
+# Rang d'un examen (même échelle que catalog.views.EXAMEN_RANG : le BEPC avant le Probatoire avant le BAC).
+RANG_EXAMEN = {Examen.BEPC: 0, Examen.CAP: 0, Examen.PROBATOIRE: 1, Examen.GCE: 1, Examen.BAC: 2}
+RANG_EXAMEN_AUTRE = 3
+
 
 class _Contexte:
     """Données de référence partagées par tous les types, chargées une fois."""
@@ -61,6 +67,7 @@ class _Contexte:
         # « Mathématiques et sciences physiques » (série C) ferait remonter toute la série C sur
         # la requête « maths », quelle que soit la matière du contenu.
         self.mots_cursus = {}
+        self.rang_cursus = {}
         for cursus in Cursus.objects.select_related("country", "series"):
             mots = [
                 resolve_examen_label(cursus.country, cursus.examen),
@@ -68,9 +75,65 @@ class _Contexte:
                 cursus.series.code if cursus.series_id else "",
             ]
             self.mots_cursus[cursus.id] = texte.normaliser(" ".join(mots))
+            self.rang_cursus[cursus.id] = RANG_EXAMEN.get(cursus.examen, RANG_EXAMEN_AUTRE)
+        self.frequences = {}
+        self.lectures_lessons = Counter()
+        self.lectures_cours = Counter()
 
     def cursus_mots(self, cursus_ids):
         return " ".join(self.mots_cursus.get(c, "") for c in cursus_ids)
+
+    def niveau(self, cursus_ids):
+        """Rang d'examen le plus bas parmi ces cursus (voir EntreeRecherche.niveau), -1 s'il n'y en a aucun."""
+        rangs = [self.rang_cursus[c] for c in cursus_ids if c in self.rang_cursus]
+        return min(rangs) if rangs else -1
+
+    def charger_frequences(self):
+        """
+        {(tag_id, subject_id): part 0-100 des épreuves où ce thème est tombé}, rapportée aux épreuves des
+        EXAMENS où il tombe : « Thalès » est un thème de BEPC, il se mesure aux épreuves de maths du BEPC,
+        pas à toutes celles de la matière (le BAC le diluerait à zéro). On compte des ÉPREUVES officielles,
+        jamais des questions : un thème bavard ne doit pas compter dix fois (même principe que
+        catalog.views.ThemesFrequentsView).
+        """
+        officielles = Lesson.objects.filter(origine=Origine.OFFICIEL, statut=VALIDE, subject__country__actif=True)
+        matiere_de = dict(officielles.values_list("id", "subject_id"))
+        cursus_de = defaultdict(set)
+        for lesson_id, cursus_id in Lesson.cursus.through.objects.filter(lesson_id__in=matiere_de).values_list(
+            "lesson_id", "cursus_id",
+        ):
+            cursus_de[lesson_id].add(cursus_id)
+        # Les épreuves de chaque (cursus, matière) : le dénominateur d'un thème qui y tombe.
+        epreuves_de = defaultdict(set)
+        for lesson_id, cursus_ids in cursus_de.items():
+            for cursus_id in cursus_ids:
+                epreuves_de[(cursus_id, matiere_de[lesson_id])].add(lesson_id)
+
+        paires = set(
+            Question.themes.through.objects.filter(question__exercise__lesson_id__in=matiere_de)
+            .values_list("tag_id", "question__exercise__lesson_id")
+        )
+        tombees = defaultdict(set)
+        for tag_id, lesson_id in paires:
+            tombees[(tag_id, matiere_de[lesson_id])].add(lesson_id)
+
+        for (tag_id, matiere_id), lessons in tombees.items():
+            examens = set().union(*(cursus_de[lesson_id] for lesson_id in lessons))
+            concurrentes = set().union(*(epreuves_de[(cursus_id, matiere_id)] for cursus_id in examens)) or lessons
+            self.frequences[(tag_id, matiere_id)] = min(100, round(100 * len(lessons) / len(concurrentes)))
+
+    def charger_lectures(self):
+        """Lecteurs DISTINCTS par épreuve et par cours - un agrégat, jamais une trace individuelle."""
+        for champ, compteur in (("lesson_id", self.lectures_lessons), ("cours_id", self.lectures_cours)):
+            lignes = (
+                LectureProgress.objects.filter(**{f"{champ}__isnull": False})
+                .values(champ).annotate(n=Count("profil", distinct=True))
+            )
+            compteur.update({ligne[champ]: ligne["n"] for ligne in lignes})
+
+    def frequence_max(self, tag_ids, matiere_id):
+        """La fréquence du plus fréquent de ces thèmes dans cette matière."""
+        return max((self.frequences.get((t, matiere_id), 0) for t in tag_ids), default=0)
 
 
 def _jetons_plafonnes(chaine, limite):
@@ -95,7 +158,7 @@ def _texte_norm(type_, markdown):
 
 def _entree(
     type_, objet_id, *, matiere, titre, cles, cursus_ids=(), tous_cursus=False, markdown="",
-    apercu_source="", annee=None, gratuit=False, meta=None, groupe="", poids=0,
+    apercu_source="", annee=None, gratuit=False, meta=None, groupe="", poids=0, frequence=0, popularite=0, niveau=-1,
 ):
     entree = EntreeRecherche(
         type=type_, objet_id=objet_id, pays_id=matiere.country_id, matiere_id=matiere.id,
@@ -103,6 +166,7 @@ def _entree(
         texte_norm=_texte_norm(type_, markdown) if markdown and type_ in LIMITE_TEXTE else "",
         apercu=texte.apercu(apercu_source, LONGUEUR_APERCU)[:255] if apercu_source else "",
         annee=annee, est_gratuit=gratuit, meta=meta or {}, groupe=groupe, poids=poids,
+        frequence=frequence, popularite=popularite, niveau=niveau,
     )
     return entree, sorted(set(cursus_ids))
 
@@ -187,6 +251,43 @@ def texte_public_cours(sections):
     return "\n\n".join(m for m in morceaux if isinstance(m, str) and m)
 
 
+# La règle d'un cours, montrée telle quelle en carte-réponse : assez courte pour se lire d'un coup d'œil.
+LONGUEUR_REGLE_MAX = 700
+
+
+def regle_pour_carte(sections):
+    """
+    La RÈGLE d'un cours (accroche exclue), en Markdown, courte et ENTIÈRE : des paragraphes complets jusqu'à
+    LONGUEUR_REGLE_MAX caractères, suivis de la formule principale si elle tient. Chaîne vide si la règle est
+    absente, ou si le premier paragraphe est trop long pour être coupé proprement (une formule tronquée en
+    plein milieu ne s'afficherait pas).
+
+    Section PUBLIQUE (aperçu d'un cours, voir catalog.rendering.cours_preview_markdown) : la montrer ne dévoile
+    rien de payant.
+    """
+    if not isinstance(sections, list):
+        return ""
+    for section in sections:
+        if not isinstance(section, dict) or section.get("type") != "regle":
+            continue
+        corps = (section.get("contenu_markdown") or "").strip()
+        paragraphes, total, retenus = [p.strip() for p in corps.split("\n\n") if p.strip()], 0, []
+        for paragraphe in paragraphes:
+            # Pas de coupe au milieu d'une formule : un nombre impair de « $ » en laisse une ouverte.
+            if total + len(paragraphe) > LONGUEUR_REGLE_MAX or paragraphe.count("$") % 2:
+                break
+            retenus.append(paragraphe)
+            total += len(paragraphe)
+        # Un paragraphe qui annonce une suite (« ... en trois temps : ») ne la montrerait pas : on le retire.
+        while retenus and retenus[-1].rstrip().endswith(":"):
+            retenus.pop()
+        formule = (section.get("formule_principale") or "").strip()
+        if formule and total + len(formule) <= LONGUEUR_REGLE_MAX:
+            retenus.append(formule if "$" in formule else f"$${formule}$$")
+        return "\n\n".join(retenus)
+    return ""
+
+
 def _entrees_cours(ctx, effectifs, acces, vitrine):
     queryset = Cours.objects.visibles().select_related("subject").prefetch_related("tags")
     for cours in _lots(queryset):
@@ -198,7 +299,12 @@ def _entrees_cours(ctx, effectifs, acces, vitrine):
             cles=_cles(cours.titre, cours.sous_theme, ctx.mots_matiere[cours.subject_id], *tags, ctx.cursus_mots(cursus_ids)),
             cursus_ids=cursus_ids, tous_cursus=effectifs.get(cours.id) is None, markdown=apercu_public,
             apercu_source=apercu_public, gratuit=cours.id in vitrine,
-            meta={"slug": cours.slug, "sous_theme": cours.sous_theme, "acces_ids": sorted(acces.get(cours.id, ()))},
+            frequence=ctx.frequence_max([t.id for t in cours.tags.all()], cours.subject_id),
+            popularite=ctx.lectures_cours.get(cours.id, 0), niveau=ctx.niveau(cursus_ids),
+            meta={
+                "slug": cours.slug, "sous_theme": cours.sous_theme, "acces_ids": sorted(acces.get(cours.id, ())),
+                "regle_md": regle_pour_carte(cours.sections_raw),
+            },
         )
 
 
@@ -231,6 +337,7 @@ def _entrees_epreuves(ctx):
             ),
             cursus_ids=cursus_ids, markdown=public, apercu_source=lesson.introduction_markdown or public,
             annee=lesson.year, gratuit=lesson.est_vitrine,
+            popularite=ctx.lectures_lessons.get(lesson.id, 0), niveau=ctx.niveau(cursus_ids),
             meta={
                 "slug": lesson.slug, "lesson_type": lesson.lesson_type, "acces_ids": sorted(cursus_ids),
                 "type_libelle": LessonType(lesson.lesson_type).label,
@@ -262,6 +369,8 @@ def _entrees_exercices(ctx):
                 lesson.year or "", *[t.name for t in exercice.themes.all()[:10]],
             ),
             cursus_ids=cursus_ids, markdown=public, apercu_source=public, annee=lesson.year, gratuit=lesson.est_vitrine,
+            frequence=ctx.frequence_max([t.id for t in exercice.themes.all()], lesson.subject_id),
+            niveau=ctx.niveau(cursus_ids),
             meta={
                 "slug": lesson.slug, "numero": str(exercice.numero_exercice),
                 "ancre": texte.ancre_exercice(exercice.numero_exercice), "libelle": libelle,
@@ -289,7 +398,7 @@ def _entrees_inedites(ctx):
                 epreuve.titre, "inedite blanche", ctx.mots_matiere[epreuve.subject_id],
                 ctx.cursus_mots(cursus_ids), *competences,
             ),
-            cursus_ids=cursus_ids, gratuit=epreuve.est_gratuite,
+            cursus_ids=cursus_ids, gratuit=epreuve.est_gratuite, niveau=ctx.niveau(cursus_ids),
             meta={"slug": epreuve.slug, "id": epreuve.id, "acces_ids": sorted(cursus_ids)},
         )
 
@@ -309,6 +418,7 @@ def _entrees_quiz(ctx):
             cles=_cles(item.theme.name, ctx.mots_matiere[item.subject_id], ctx.cursus_mots(cursus_ids)),
             cursus_ids=cursus_ids, markdown=item.enonce_markdown, apercu_source=item.enonce_markdown,
             gratuit=item.est_vitrine, groupe=f"{item.theme_id}:{item.subject_id}",
+            frequence=ctx.frequences.get((item.theme_id, item.subject_id), 0), niveau=ctx.niveau(cursus_ids),
             meta={"tag_id": item.theme_id, "subject_code": item.subject.code, "acces_ids": sorted(cursus_ids)},
         )
 
@@ -371,6 +481,7 @@ def _entrees_themes(ctx, effectifs):
             cles=_cles(tag.name, ctx.mots_matiere[matiere_id], ctx.cursus_mots(s["cursus"])),
             cursus_ids=s["cursus"], tous_cursus=s["tous"] or not s["cursus"],
             groupe=f"{tag_id}:{matiere_id}", poids=s["cours"] + s["quiz"] + s["exercices"],
+            frequence=ctx.frequences.get((tag_id, matiere_id), 0), niveau=ctx.niveau(s["cursus"]),
             meta={
                 "tag_id": tag_id, "subject_code": matiere.code, "nb_cours": s["cours"], "nb_quiz": s["quiz"],
                 "nb_exercices": s["exercices"],
@@ -436,6 +547,11 @@ def reconstruire(types=None, ecrire=None):
     effectifs = acces = vitrine = None
     if voulus & {TypeResultat.COURS, TypeResultat.THEME}:
         effectifs, acces, vitrine = _cursus_cours()
+    # Signaux de classement : chargés une fois, seulement si un type qui s'en sert est reconstruit.
+    if voulus & {TypeResultat.COURS, TypeResultat.EXERCICE, TypeResultat.QUIZ, TypeResultat.THEME}:
+        ctx.charger_frequences()
+    if voulus & {TypeResultat.COURS, TypeResultat.EPREUVE}:
+        ctx.charger_lectures()
 
     fabriques = {
         TypeResultat.COURS: lambda: _entrees_cours(ctx, effectifs, acces, vitrine),

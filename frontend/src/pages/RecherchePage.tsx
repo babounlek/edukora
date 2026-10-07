@@ -7,6 +7,7 @@ import { completerRecherche, getMyProgression, listCursus, rechercher } from "@/
 import type { GroupeRecherche, ReponseRecherche, ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { formatCursus } from "@/components/CompteAReboursBadge"
 import { ReviserTabs } from "@/components/ReviserTabs"
+import { CarteReponse } from "@/components/recherche/CarteReponse"
 import { IconeType, ResultatCarte } from "@/components/recherche/ResultatRecherche"
 import { ResultatVedette } from "@/components/recherche/ResultatVedette"
 import { Surbrillance } from "@/components/recherche/Surbrillance"
@@ -491,6 +492,7 @@ export function RecherchePage() {
 
               {famille === undefined ? (
                 <div>
+                  {data.reponse && <CarteReponse carte={data.reponse} country={country} onChoisir={ouvrir(data.reponse, 0)} />}
                   {vedette && <ResultatVedette resultat={vedette} jetons={jetons} country={country} onChoisir={ouvrir(vedette, 0)} />}
 
                   {associees.length > 0 && (

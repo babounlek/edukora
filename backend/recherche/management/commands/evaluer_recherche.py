@@ -40,6 +40,12 @@ def verifier(cas, reponse):
             ecarts.append(f"premier groupe {premier}, attendu {cas['premier_type_dans']}")
     if "corrige_contient" in cas and cas["corrige_contient"] not in (reponse["corrige"] or ""):
         ecarts.append(f"correction {reponse['corrige']!r} ne contient pas {cas['corrige_contient']!r}")
+    if "carte" in cas:
+        carte = reponse.get("reponse")
+        if cas["carte"] is None and carte:
+            ecarts.append(f"carte-réponse « {carte['titre']} » alors qu'aucune n'est attendue")
+        elif cas["carte"] is not None and not (carte and _contient([carte["titre"]], cas["carte"])):
+            ecarts.append(f"carte-réponse {carte and carte['titre']!r}, attendu un titre contenant « {cas['carte']} »")
     for cle, attendu in cas.get("intention", {}).items():
         compris = (reponse["intention"] or {}).get(cle)
         valeur = compris.get("libelle") if isinstance(compris, dict) else compris

@@ -60,6 +60,16 @@ class EntreeRecherche(models.Model):
     # Volume de contenu rattaché (THEME : cours + questions + exercices) - départage à pertinence égale
     # et ordonne les thèmes proposés quand la recherche ne donne rien.
     poids = models.PositiveIntegerField(default=0)
+    # Part (0-100) des épreuves OFFICIELLES de la matière où ce thème est tombé - pour un thème, un cours, un
+    # exercice ou une question de quiz (ceux-ci héritent de leurs thèmes). 0 pour une épreuve, qui n'a pas de
+    # thème propre. Un thème qui tombe vraiment passe devant un thème rare à pertinence de texte égale.
+    frequence = models.PositiveSmallIntegerField(default=0)
+    # Élèves distincts qui ont ouvert la lecture complète (access.LectureProgress) : le signal « d'autres élèves
+    # ont jugé ce contenu utile ». Agrégat anonyme, jamais lié à une personne.
+    popularite = models.PositiveIntegerField(default=0)
+    # Rang d'examen le plus BAS auquel ce contenu est proposé (BEPC 0, Probatoire 1, BAC 2) ; -1 : tous les
+    # examens. Sert à préférer, à égalité, ce qui est au niveau de l'élève (voir moteur._score).
+    niveau = models.SmallIntegerField(default=-1)
     est_gratuit = models.BooleanField(
         default=False, help_text="Lisible sans abonnement (vitrine / épreuve offerte).",
     )

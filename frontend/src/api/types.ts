@@ -1492,6 +1492,14 @@ export interface ReponseRecherche {
   /** Ce que le moteur a compris de la requête (examen, matière, année, type voulu) - null quand elle n'a
    * pas pu être analysée (trop courte). */
   intention: IntentionRecherche | null
+  /** La règle du cours qui répond à une question courte (« loi d'ohm ») - null le plus souvent : seulement quand
+   * tout est net, jamais sur un onglet ou une page suivante. */
+  reponse: CarteReponseRecherche | null
+}
+
+/** Un cours (résultat ordinaire) avec sa RÈGLE en Markdown : la section publique de son aperçu. */
+export interface CarteReponseRecherche extends ResultatRecherche {
+  regle_md: string
 }
 
 /** Ce que le moteur a compris d'une requête comme « bac c maths 2019 corrigé » : des filtres, que l'élève

@@ -50,7 +50,7 @@ function reponse(surcharge: Partial<ReponseRecherche> = {}): ReponseRecherche {
     { type: "COURS" as const, libelle: "Cours", total: 1, resultats: [resultat({})] },
   ]
   return {
-    q: "thales", corrige: null, indexe: true, trop_court: false, total: 2, groupes, autres_cursus: 0, matieres: [], suggestions: [], intention: null,
+    q: "thales", corrige: null, indexe: true, trop_court: false, total: 2, groupes, autres_cursus: 0, matieres: [], suggestions: [], intention: null, reponse: null,
     ...surcharge,
   }
 }

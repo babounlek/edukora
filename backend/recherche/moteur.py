@@ -13,6 +13,7 @@ Une recherche qui ne donne rien est retentée avec le vocabulaire du catalogue (
 
 import math
 import re
+import time
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 
@@ -21,11 +22,12 @@ from django.db.models.functions import Length
 from django.utils import timezone
 
 from access.services import bulk_active_inedite_cursus_ids, bulk_active_subscription_cursus_ids
-from catalog.models import Cours, Exercise, Lesson, StatutContenu, Subject, resolve_examen_label
+from catalog.models import Cours, Cursus, Exercise, Lesson, StatutContenu, Subject, resolve_examen_label
+from quiz.services import COEFFICIENT_PAR_DEFAUT, _coefficient_par_subject
 
 from . import intention as comprendre
 from . import synonymes, texte
-from .indexation import texte_public_cours
+from .indexation import RANG_EXAMEN, RANG_EXAMEN_AUTRE, texte_public_cours
 from .models import EntreeRecherche, RechercheSansResultat, TermeRecherche, TypeResultat
 
 # Ordre d'affichage des groupes : le thème d'abord (la meilleure porte d'entrée), les questions
@@ -115,6 +117,7 @@ def _lignes(pays, termes, **filtres):
     return list(
         _queryset(pays, termes, **filtres).values_list(
             "id", "type", "titre_norm", "cles_norm", "annee", "groupe", "poids", "matiere_id",
+            "frequence", "popularite", "niveau",
         )[:PLAFOND_CANDIDATS],
     )
 
@@ -124,6 +127,51 @@ def _lignes(pays, termes, **filtres):
 # Un équivalent (« disque » pour « cercle ») vaut un peu moins que le mot tapé : à pertinence égale, celui
 # qui contient le mot de l'élève passe devant.
 POIDS_EQUIVALENT = 0.8
+
+# Signaux de départage (voir _bonus_signaux). Une fréquence de 100 % vaut 5 points ; un contenu lu par 32
+# élèves distincts en vaut 2 ; un coefficient de 5 en vaut 2.
+POIDS_FREQUENCE = 0.05
+POIDS_POPULARITE = 0.4
+POIDS_COEFFICIENT = 0.4
+BONUS_NIVEAU_EGAL = 2.0
+BONUS_NIVEAU_FONDATION = 1.0
+MALUS_NIVEAU_AU_DELA = -1.5
+# Pas de référentiel de coefficients dans le modèle : on les lit des épreuves (voir _coefficients).
+DUREE_CACHE_COEFFICIENTS_S = 600
+
+
+@dataclass
+class Signaux:
+    """Ce que le moteur sait de l'EXAMEN de l'élève (jamais de l'élève lui-même) : son niveau d'examen et le
+    coefficient de chaque matière à cet examen. Vide pour un visiteur qui n'a rien déclaré."""
+
+    rang_eleve: int | None = None
+    coefficients: dict = field(default_factory=dict)
+
+
+_CACHE_COEFFICIENTS = {}
+
+
+def _coefficients(cursus):
+    """{matière: coefficient dominant à cet examen}, calculé depuis les épreuves (voir
+    quiz.services._coefficient_par_subject) puis gardé dix minutes : la requête parcourt toutes les épreuves
+    du cursus, trop pour être refaite à chaque frappe d'un élève."""
+    maintenant = time.monotonic()
+    en_cache = _CACHE_COEFFICIENTS.get(cursus.id)
+    if en_cache and maintenant - en_cache[0] < DUREE_CACHE_COEFFICIENTS_S:
+        return en_cache[1]
+    coefficients = _coefficient_par_subject(cursus)
+    _CACHE_COEFFICIENTS[cursus.id] = (maintenant, coefficients)
+    return coefficients
+
+
+def _signaux(cursus_id):
+    if not cursus_id:
+        return Signaux()
+    cursus = Cursus.objects.filter(pk=cursus_id).first()
+    if cursus is None:
+        return Signaux()
+    return Signaux(rang_eleve=RANG_EXAMEN.get(cursus.examen, RANG_EXAMEN_AUTRE), coefficients=_coefficients(cursus))
 
 
 def _suite_de_mots(mots, jetons):
@@ -152,8 +200,8 @@ def _points(forme, mots, titre_norm, cles_norm):
     return 0, None
 
 
-def _score(ligne, termes):
-    _id, _type, titre_norm, cles_norm, annee, _groupe, poids, _matiere = ligne
+def _score(ligne, termes, signaux):
+    _id, _type, titre_norm, cles_norm, annee, _groupe, poids, matiere_id, frequence, popularite, niveau = ligne
     mots = titre_norm.split()
     score = 0.0
     hors_titre = 0
@@ -181,20 +229,50 @@ def _score(ligne, termes):
     score -= 0.15 * len(mots)
     score += 0.5 * min(math.log2(1 + poids), 6)
     score += (annee or 0) / 10000
-    return score
+    return score + _bonus_signaux(frequence, popularite, niveau, matiere_id, signaux)
 
 
-def _classer(lignes, termes):
+def _bonus_signaux(frequence, popularite, niveau, matiere_id, signaux):
+    """
+    Ce qui départage deux contenus aussi bien appariés au texte : ce qui tombe vraiment à l'examen, ce que
+    d'autres élèves ont ouvert, ce qui est au niveau de l'élève, ce qui compte dans son examen. Au plus une
+    dizaine de points, contre 12 pour un mot trouvé dans le titre : ces signaux ne font jamais remonter un
+    contenu qui ne correspond pas à la requête, ils ordonnent ceux qui y correspondent.
+    """
+    bonus = POIDS_FREQUENCE * frequence + POIDS_POPULARITE * min(math.log2(1 + popularite), 5)
+    if signaux.rang_eleve is not None and niveau >= 0:
+        if niveau == signaux.rang_eleve:
+            bonus += BONUS_NIVEAU_EGAL
+        elif niveau < signaux.rang_eleve:
+            bonus += BONUS_NIVEAU_FONDATION  # un acquis qui sert encore
+        else:
+            bonus += MALUS_NIVEAU_AU_DELA  # au-delà de son examen
+    if signaux.coefficients:
+        bonus += POIDS_COEFFICIENT * signaux.coefficients.get(matiere_id, COEFFICIENT_PAR_DEFAUT)
+    return bonus
+
+
+def _classer(lignes, termes, signaux):
     """{type: [(score, id, nb)]} trié par score décroissant. Les questions de quiz d'un même
     thème forment UN résultat (nb = nombre de questions qui correspondent), et disparaissent si
     ce thème est déjà proposé en tant que thème - sa carte donne déjà accès au quiz."""
     par_type = defaultdict(list)
     for ligne in lignes:
-        par_type[ligne[1]].append((_score(ligne, termes), ligne[0], ligne[5]))
+        par_type[ligne[1]].append((_score(ligne, termes, signaux), ligne[0], ligne[5], ligne[2], ligne[7]))
 
-    themes_proposes = {groupe for _, _, groupe in par_type.get(TypeResultat.THEME.value, ())}
+    # Deux thèmes de même intitulé dans la même matière (« Thalès » / « thalès », deux étiquettes pour une
+    # notion) ne font qu'un résultat : on garde le mieux classé.
+    uniques = {}
+    for score, entree_id, groupe, titre_norm, matiere_id in par_type.get(TypeResultat.THEME.value, ()):
+        cle = (titre_norm, matiere_id)
+        if cle not in uniques or (score, -entree_id) > (uniques[cle][0], -uniques[cle][1]):
+            uniques[cle] = (score, entree_id, groupe, titre_norm, matiere_id)
+    if uniques:
+        par_type[TypeResultat.THEME.value] = list(uniques.values())
+
+    themes_proposes = {e[2] for e in par_type.get(TypeResultat.THEME.value, ())}
     quiz = {}
-    for score, entree_id, groupe in sorted(par_type.get(TypeResultat.QUIZ.value, ()), reverse=True):
+    for score, entree_id, groupe, _titre, _matiere in sorted(par_type.get(TypeResultat.QUIZ.value, ()), reverse=True):
         if groupe in themes_proposes:
             continue
         if groupe in quiz:
@@ -206,7 +284,7 @@ def _classer(lignes, termes):
     for type_, entrees in par_type.items():
         if type_ == TypeResultat.QUIZ.value:
             continue
-        resultat[type_] = sorted(((s, i, None) for s, i, _g in entrees), key=lambda e: (-e[0], e[1]))
+        resultat[type_] = sorted(((e[0], e[1], None) for e in entrees), key=lambda e: (-e[0], e[1]))
     if quiz:
         resultat[TypeResultat.QUIZ.value] = sorted(
             ((s, i, nb) for s, i, nb in quiz.values()), key=lambda e: (-e[0], e[1]),
@@ -538,6 +616,7 @@ def chercher(
         "matieres": [],
         "suggestions": [],
         "intention": None,
+        "reponse": None,
     }
     jetons = _analyser(requete)
     intention = comprendre.analyser(jetons, pays, sans)
@@ -568,7 +647,9 @@ def chercher(
         )
     reponse["corrige"] = corrige
 
-    classement = _classer(lignes, termes)
+    # L'examen « de l'élève » pour le classement : celui qu'il a déclaré, sinon celui que sa requête nomme.
+    cursus_eleve = cursus or (intention.cursus_ids[0] if intention.cursus_ids else None)
+    classement = _classer(lignes, termes, _signaux(cursus_eleve))
     matiere_de = {ligne[0]: ligne[7] for ligne in lignes}
     reponse["matieres"] = _repartition_matieres(classement, matiere_de)
     matiere_id = None
@@ -585,6 +666,9 @@ def chercher(
     )
     reponse["total"] = sum(len(liste) for liste in classement.values())
     reponse["intention"] = {**intention.en_clair(), "ignoree": ignoree}
+    # Seulement sur la vue d'ensemble : la carte répond à la requête, pas à un onglet ni à une page suivante.
+    if not type_ and not decalage:
+        reponse["reponse"] = _carte_reponse(classement, termes, intention, acces, cursus)
 
     if filtre_cursus and not intention.cursus_ids and reponse["total"] < SEUIL_AUTRES_CURSUS:
         filtres = {"type_": type_, "matieres": intention.matiere_codes or None, "annees": intention.annees or None}
@@ -595,6 +679,63 @@ def chercher(
     if reponse["total"] == 0:
         reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces)
     return reponse
+
+
+# --- Carte-réponse -------------------------------------------------------------------
+
+# Une carte-réponse ne répond qu'à une question COURTE (« loi d'ohm », « théorème de thalès ») : au-delà, la
+# requête cherche autre chose qu'une définition.
+CARTE_MAX_TERMES = 4
+# Combien de mots plus long que la requête le titre du cours peut être (« Loi d'Ohm dans un circuit électrique »
+# répond à « loi d'ohm », « Photosynthèse et respiration cellulaire » à « photosynthèse »).
+CARTE_MARGE_TITRE = 3
+CARTE_CANDIDATS = 5
+
+
+def _carte_reponse(classement, termes, intention, acces, cursus_prefere):
+    """
+    La RÈGLE du cours qui répond le mieux à la requête, montrée en tête des résultats - pour « loi d'ohm », la
+    formule et son énoncé, sans ouvrir le cours. Rien n'est inventé : c'est la section « règle » d'un cours
+    existant, que son aperçu public montre déjà à un visiteur non abonné.
+
+    Seulement quand tout est net : une requête courte, sans type voulu, dont tous les mots exigés sont DANS le
+    titre d'un cours qui a une règle, et dans la MÊME matière que le thème arrivé en tête (« dérivation » est
+    d'abord un thème de maths : un circuit électrique « en dérivation » n'y répond pas). Sinon None : une carte
+    hors sujet est pire qu'aucune carte.
+    """
+    requis = [t for t in termes if t.requis]
+    if intention.types or not requis or len(requis) > CARTE_MAX_TERMES:
+        return None
+    candidats = classement.get(TypeResultat.COURS.value, [])[:CARTE_CANDIDATS]
+    if not candidats:
+        return None
+    themes = classement.get(TypeResultat.THEME.value, [])
+    matiere_du_theme = (
+        EntreeRecherche.objects.filter(id=themes[0][1]).values_list("matiere_id", flat=True).first() if themes else None
+    )
+    entrees = {
+        e.id: e for e in EntreeRecherche.objects.filter(id__in=[i for _s, i, _n in candidats])
+        .select_related("matiere").prefetch_related("cursus__series", "cursus__country")
+    }
+    etiquettes = _Etiquettes()
+    retenus = []
+    for _score_, entree_id, _nb in candidats:
+        entree = entrees.get(entree_id)
+        regle = (entree.meta.get("regle_md") or "") if entree else ""
+        if not regle or (matiere_du_theme and entree.matiere_id != matiere_du_theme):
+            continue
+        mots = entree.titre_norm.split()
+        utiles = [m for m in mots if m not in texte.MOTS_VIDES]
+        if len(utiles) > len(requis) + CARTE_MARGE_TITRE:
+            continue
+        if all(any(_points(f, mots, entree.titre_norm, "")[0] >= 8 for f in terme.formes) for terme in requis):
+            retenus.append((entree, regle))
+    if not retenus:
+        return None
+    # Le mieux classé : le classement pèse déjà fréquence, niveau et popularité ; le titre le plus court n'est pas
+    # un meilleur juge (« Le théorème de Thalès dans un cône » est plus court que le cours de référence).
+    entree, regle = retenus[0]
+    return {**serialiser(entree, acces, etiquettes, cursus_prefere=cursus_prefere), "regle_md": regle}
 
 
 # --- Complétion pendant la frappe -----------------------------------------------------
