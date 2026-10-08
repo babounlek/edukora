@@ -493,7 +493,7 @@ FINS_FREQUENCE_PROCHE = (
 # prise, pas d'urgence.
 FINS_FREQUENCE_LOIN = (
     "{duree}\u00a0minutes pour prendre de l'avance.",
-    "{duree}\u00a0minutes pour poser des bases solides.",
+    "{duree}\u00a0minutes pour qu'il ne te surprenne pas.",
     "{duree}\u00a0minutes aujourd'hui, c'est autant que tu n'auras pas à rattraper plus tard.",
 )
 # Au-delà de ce nombre de jours avant l'examen, on parle d'avance plutôt que du jour J.
@@ -581,7 +581,10 @@ def phrase_coach(plan, phase, absence, premiers_pas_eleve=False, jour=None):
         # sur la part réelle des épreuves, le badge est la preuve.
         jours = (plan.get("compte_a_rebours") or {}).get("jours_restants")
         fins = FINS_FREQUENCE_LOIN if jours is not None and jours > HORIZON_LOINTAIN_JOURS else FINS_FREQUENCE_PROCHE
-        return prefixe + f"Ce thème {accroche}. " + _variante(fins, jour, duree=duree)
+        # Une seule phrase : la fréquence est la raison, la durée la conséquence. Deux phrases
+        # côte à côte laissaient au lecteur le soin de relier « tombe à chaque examen » à
+        # « 25 minutes » (espace insécable avant les deux-points, comme pour la durée).
+        return prefixe + f"Ce thème {accroche}\u00a0: " + _variante(fins, jour, duree=duree)
     if premiers_pas_eleve:
         return prefixe + f"On commence par ce thème : {duree}\u00a0minutes, et un quiz pour voir où tu en es."
     return prefixe + f"{duree}\u00a0minutes sur ce thème, et un quiz pour vérifier."

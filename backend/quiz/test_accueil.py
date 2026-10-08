@@ -89,7 +89,7 @@ class PhaseEtPhraseTests(SimpleTestCase):
         plan = self._plan(frequence={"occurrences": 28, "epreuves_total": 44, "annees": []})
         phrase = accueil.phrase_coach(plan, "normal", 0, jour=JOUR)
         self.assertEqual(
-            phrase, "Ce thème tombe à l'examen plus d'une fois sur deux. 25\u00a0minutes pour ne pas le découvrir le jour J.",
+            phrase, "Ce thème tombe à l'examen plus d'une fois sur deux\u00a0: 25\u00a0minutes pour ne pas le découvrir le jour J.",
         )
         self.assertNotIn("28", phrase)
         self.assertNotIn("érivées", phrase)
@@ -98,9 +98,9 @@ class PhaseEtPhraseTests(SimpleTestCase):
         # Jamais plus fort que la pastille juste dessous : "presque à chaque examen" n'est
         # dit qu'à partir de 75 %, et sous 25 % la phrase ne parle plus de fréquence.
         cas = [
-            ((35, 41), "Ce thème tombe presque à chaque examen."),
-            ((22, 44), "Ce thème tombe à l'examen plus d'une fois sur deux."),
-            ((14, 44), "Ce thème tombe régulièrement à l'examen."),
+            ((35, 41), "Ce thème tombe presque à chaque examen\u00a0:"),
+            ((22, 44), "Ce thème tombe à l'examen plus d'une fois sur deux\u00a0:"),
+            ((14, 44), "Ce thème tombe régulièrement à l'examen\u00a0:"),
         ]
         for (occurrences, total), debut in cas:
             plan = self._plan(frequence={"occurrences": occurrences, "epreuves_total": total, "annees": []})
@@ -121,7 +121,7 @@ class PhaseEtPhraseTests(SimpleTestCase):
         )
         # Toutes les variantes gardent la durée et ne contredisent pas l'accroche.
         for phrase in fins:
-            self.assertTrue(phrase.startswith("Ce thème tombe presque à chaque examen. 25\u00a0minutes"), phrase)
+            self.assertTrue(phrase.startswith("Ce thème tombe presque à chaque examen\u00a0: 25\u00a0minutes"), phrase)
 
     def test_loin_de_l_examen_on_parle_d_avance_pas_du_jour_j(self):
         frequence = {"occurrences": 35, "epreuves_total": 41, "annees": []}
@@ -134,6 +134,17 @@ class PhaseEtPhraseTests(SimpleTestCase):
             self.assertNotIn("jour J", accueil.phrase_coach(loin, "normal", 0, jour=jour))
             self.assertIn("jour J", accueil.phrase_coach(proche, "normal", 0, jour=jour))
             self.assertNotIn("inquiétude", accueil.phrase_coach(proche, "normal", 0, jour=jour))
+
+    def test_la_phrase_de_frequence_est_une_seule_phrase_sans_formule_creuse(self):
+        # La fréquence est la raison, la durée la conséquence : une phrase, reliée par
+        # deux-points, et jamais « bases solides » (slogan) ni « examen » dit deux fois.
+        plan = self._plan(frequence={"occurrences": 35, "epreuves_total": 41, "annees": []})
+        plan["compte_a_rebours"] = {"jours_restants": 240}
+        for i in range(3):
+            phrase = accueil.phrase_coach(plan, "normal", 0, jour=JOUR + timedelta(days=i))
+            self.assertEqual(phrase.count(". "), 0, phrase)
+            self.assertNotIn("bases solides", phrase)
+            self.assertEqual(phrase.count("examen"), 1, phrase)
 
     def test_la_duree_ne_se_coupe_pas_de_son_unite(self):
         plan = self._plan(frequence={"occurrences": 35, "epreuves_total": 41, "annees": []})
