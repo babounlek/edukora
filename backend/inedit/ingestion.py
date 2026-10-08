@@ -343,12 +343,41 @@ def _strip_redundant_exercice_heading(enonce_markdown):
         text = text[match.end():]
 
 
+def numero_repete_en_tete(numero, enonce_markdown):
+    """
+    Vrai si l'énoncé recommence par le numéro de la question (« **2.** », « 2. », « 2) »,
+    « **Tâche 2.** »...). La plateforme affiche déjà ce numéro au-dessus de chaque question
+    et dans le sujet PDF (voir EpreuveInedite.compile_from_exercices) : le redire dans
+    l'énoncé l'affiche deux fois (« 2. 2. Parmi les maladies... »).
+
+    Un énoncé qui se réduit à ce libellé (« Présentation. » pour la question « Présentation »)
+    n'est pas un doublon : il n'y a rien à retirer. Les sous-questions « a) », « b) » à
+    l'intérieur d'un énoncé ne sont pas concernées : seul le numéro de la question l'est.
+    """
+    if not numero or not enonce_markdown:
+        return False
+    match = re.match(r"\s*\*{0,2}\s*" + re.escape(numero) + r"\s*[.)](?:\s|\*|$)", enonce_markdown)
+    if not match:
+        return False
+    return bool(enonce_markdown[match.end():].strip(" *\n\t"))
+
+
 def _ingest_question_inedite(exercice, data, subject):
     numero = str(data.get("numero") or "").strip()
     if not numero or not data.get("enonce_markdown") or not data.get("corrige_markdown"):
         raise IngestionError(
             f"Question incomplète dans l'exercice {exercice.numero_exercice!r} : "
             "numero/enonce_markdown/corrige_markdown requis.",
+        )
+
+    enonce_markdown = _strip_redundant_exercice_heading(_strip_em_dash(data["enonce_markdown"]))
+    # Refusée plutôt que corrigée en silence : le JSON source doit être corrigé lui-même, sinon
+    # une réingestion ferait revenir le doublon (voir la règle correspondante du skill).
+    if numero_repete_en_tete(numero, enonce_markdown):
+        raise IngestionError(
+            f"Question {numero!r} de l'exercice {exercice.numero_exercice!r} : l'énoncé commence par le "
+            f"numéro de la question ({enonce_markdown[:40]!r}...), que la plateforme affiche déjà - "
+            "il serait lu deux fois. Retirer ce préfixe de enonce_markdown.",
         )
 
     type_reponse = TypeReponse.QCM if _normalize(data.get("type_reponse")) == "qcm" else TypeReponse.OUVERTE
@@ -380,7 +409,7 @@ def _ingest_question_inedite(exercice, data, subject):
         # recopier dans enonce_intro_markdown de l'exercice parent, qui ne s'affiche
         # qu'une seule fois en tête de TOUTES ses questions.
         groupe_local=_strip_em_dash(str(data.get("groupe_local") or "")),
-        enonce_markdown=_strip_redundant_exercice_heading(_strip_em_dash(data["enonce_markdown"])),
+        enonce_markdown=enonce_markdown,
         corrige_markdown=_strip_em_dash(data["corrige_markdown"]),
         difficulte_estimee=difficulte,
         type_reponse=type_reponse,

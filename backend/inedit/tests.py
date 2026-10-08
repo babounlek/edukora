@@ -661,6 +661,72 @@ class StripRedundantExerciceHeadingTests(TestCase):
         self.assertEqual(exercice.questions.get().enonce_markdown, "Définir : isotope.")
 
 
+class NumeroRepeteEnTeteTests(TestCase):
+    """La plateforme affiche déjà le numéro de chaque question (page et sujet PDF) : un énoncé
+    qui le répète est lu deux fois (« 2. 2. Parmi... »). Cas réels trouvés en base le 2026-10-08
+    sur 10 épreuves publiées, plus les deux épreuves de la vague 3 corrigées avant publication."""
+
+    def setUp(self):
+        self.epreuve = _make_epreuve()
+        self.exercice = ExerciceInedite.objects.create(epreuve=self.epreuve, numero_exercice="1")
+
+    def _repete(self, numero, enonce):
+        from .ingestion import numero_repete_en_tete
+        return numero_repete_en_tete(numero, enonce)
+
+    def test_detecte_les_formes_du_numero_repete(self):
+        for numero, enonce in [
+            ("1", "**1.** Calcule la limite."),
+            ("2", "2. Parmi les maladies suivantes, laquelle est..."),
+            ("3", "3) Soit f la fonction..."),
+            ("2", "**2. Complete each sentence with the correct form.**"),
+            ("II", "**II. Rewrite the sentences below as instructed.**"),
+            ("Tâche 2", "**Tâche 2.** NGONO pourra-t-elle acheter ce bidon ?"),
+            ("Perfectionnement", "Perfectionnement. Propose une action personnelle."),
+        ]:
+            self.assertTrue(self._repete(numero, enonce), (numero, enonce))
+
+    def test_laisse_passer_les_enonces_legitimes(self):
+        for numero, enonce in [
+            ("1", "Calcule la limite de $f$ en $+\\infty$."),
+            ("1", "1,5 kg de sel sont dissous dans l'eau."),       # la valeur 1,5 n'est pas un numéro
+            ("1", "10. Une valeur après la virgule n'est pas un numéro."),
+            ("1", "a) Calcule $f(1)$. b) Calcule $f(2)$."),         # sous-questions internes autorisées
+            ("2", "Les 2 solutions de l'équation sont..."),
+            ("Présentation", "Présentation."),                       # l'énoncé se réduit à son libellé
+            ("1", ""),
+        ]:
+            self.assertFalse(self._repete(numero, enonce), (numero, enonce))
+
+    def test_l_ingestion_refuse_la_question_avec_un_message_qui_dit_quoi_corriger(self):
+        from .ingestion import _ingest_question_inedite
+        with self.assertRaises(IngestionError) as ctx:
+            _ingest_question_inedite(self.exercice, {
+                "numero": "2", "ordre": 2, "enonce_markdown": "**2.** Parmi les propositions...",
+                "corrige_markdown": "Corrigé.",
+            }, self.epreuve.subject)
+        self.assertIn("Retirer ce préfixe", str(ctx.exception))
+        self.assertFalse(self.exercice.questions.exists())
+
+    def test_l_en_tete_d_exercice_retire_avant_n_est_pas_pris_pour_un_doublon(self):
+        from .ingestion import _ingest_question_inedite
+        _ingest_question_inedite(self.exercice, {
+            "numero": "1", "ordre": 1,
+            "enonce_markdown": "**EXERCICE 1 : Vérification des savoirs (8 points)**\n\nDéfinir : isotope.",
+            "corrige_markdown": "Corrigé.",
+        }, self.epreuve.subject)
+        self.assertEqual(self.exercice.questions.get().enonce_markdown, "Définir : isotope.")
+
+    def test_un_enonce_qui_apres_l_en_tete_recommence_par_le_numero_est_refuse(self):
+        from .ingestion import _ingest_question_inedite
+        with self.assertRaises(IngestionError):
+            _ingest_question_inedite(self.exercice, {
+                "numero": "1", "ordre": 1,
+                "enonce_markdown": "**Partie A (24 pts) - Exercice 1 : Vérification des savoirs (8 pts)**\n\n1) Qu'appelle-t-on...",
+                "corrige_markdown": "Corrigé.",
+            }, self.epreuve.subject)
+
+
 class IngestCoursInediteTests(TestCase):
     """ingest_cours_inedite - miroir de catalog.ingestion.ingest_cours. Cours
     (catalog.models.Cours) est origine-agnostique : le dédoublonnage par titre porte
