@@ -1,0 +1,124 @@
+{
+  "type": "cours",
+  "cours_id": "cours-valeur-moyenne-exponentielle-suite-geometrique-bacd1-ex2-q1c",
+  "meta": {
+    "titre": "Valeur moyenne d'une fonction sur [n ; n+1] et suite géométrique",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Calcul intégral et suites",
+    "duree_estimee_min": 25,
+    "tags": [
+      "valeur moyenne",
+      "suite géométrique"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-d-1-2026-s1-ex2-q1c-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une fonction croît ou décroît exponentiellement, ses valeurs moyennes sur des intervalles successifs $[n\\,;n+1]$ forment une suite très régulière : chaque terme se déduit du précédent en le multipliant toujours par le même nombre. Reconnaître cette structure évite de calculer les termes un à un et ouvre la voie à une somme de termes ou à une limite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Valeur moyenne d'une fonction continue sur $[a\\,;b]$ : $\\dfrac1{b-a}\\displaystyle\\int_a^bf(x)\\,dx$",
+        "Primitive de $x\\mapsto e^{kx}$ pour $k\\neq0$ : $x\\mapsto\\dfrac1ke^{kx}$",
+        "Suite géométrique : le quotient $\\dfrac{u_{n+1}}{u_n}$ est constant et égal à la raison $q$",
+        "Propriété des puissances : $e^{a+b}=e^a\\,e^b$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Valeur moyenne d'une exponentielle sur $[n\\,;n+p]$ : un terme en $q^n$",
+      "contenu_markdown": "La valeur moyenne de $f$ sur $[n\\,;n+p]$ est $u_n=\\dfrac1p\\displaystyle\\int_n^{n+p}f(x)\\,dx$. Pour $f(x)=Ae^{kx}$ avec $k\\neq0$, une primitive est $\\dfrac Ake^{kx}$, donc $u_n=\\dfrac1p\\cdot\\dfrac Ak\\big(e^{k(n+p)}-e^{kn}\\big)=\\dfrac{A\\,(e^{kp}-1)}{kp}\\,e^{kn}$. Le facteur $e^{kn}$ vaut $(e^k)^n$ : on lit directement $u_n=u_0\\,q^n$ avec $q=e^k$ et $u_0=\\dfrac{A\\,(e^{kp}-1)}{kp}$. Pour le démontrer proprement, on calcule le quotient $\\dfrac{u_{n+1}}{u_n}$ : il ne dépend pas de $n$ et vaut $e^k$. La suite $(u_n)$, dont aucun terme n'est nul, est donc géométrique de raison $e^k$.",
+      "formule_principale": "u_n=\\dfrac1{p}\\int_n^{n+p}Ae^{kx}\\,dx=u_0\\,q^n\\quad\\text{avec}\\quad q=e^{k}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère $f(x)=5e^{-2x}$ et, pour tout entier $n\\geq0$, on note $u_n$ la valeur moyenne de $f$ sur $[n\\,;n+1]$. Calculer $u_n$ en fonction de $n$, puis montrer que $(u_n)$ est une suite géométrique dont on précisera la raison et le premier terme.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la définition de la valeur moyenne",
+          "justification": "L'intervalle $[n\\,;n+1]$ a pour longueur $1$ : diviser par la longueur ne change rien, la valeur moyenne est égale à l'intégrale.",
+          "resultat_markdown": "$u_n=\\displaystyle\\int_n^{n+1}5e^{-2x}\\,dx$"
+        },
+        {
+          "numero": 2,
+          "action": "Trouver une primitive",
+          "justification": "Une primitive de $e^{-2x}$ est $\\dfrac1{-2}e^{-2x}$ : on divise par le coefficient de $x$ dans l'exposant. On garde le facteur $5$.",
+          "resultat_markdown": "$u_n=\\Big[-\\dfrac52e^{-2x}\\Big]_n^{n+1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Évaluer aux bornes",
+          "justification": "On soustrait la valeur en $n$ à la valeur en $n+1$, puis on factorise par $e^{-2n}$ en écrivant $e^{-2n-2}=e^{-2n}\\,e^{-2}$.",
+          "resultat_markdown": "$u_n=-\\dfrac52e^{-2n-2}+\\dfrac52e^{-2n}=\\dfrac52\\big(1-e^{-2}\\big)e^{-2n}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le quotient de deux termes consécutifs",
+          "justification": "Le facteur $\\dfrac52(1-e^{-2})$ est non nul et se simplifie. Il reste le quotient des exponentielles, qu'on simplifie par $e^{a}/e^{b}=e^{a-b}$.",
+          "resultat_markdown": "$\\dfrac{u_{n+1}}{u_n}=\\dfrac{e^{-2n-2}}{e^{-2n}}=e^{-2}$"
+        }
+      ],
+      "conclusion_markdown": "Le quotient $e^{-2}$ ne dépend pas de $n$ : $(u_n)$ est géométrique de raison $q=e^{-2}\\approx0{,}135$ et de premier terme $u_0=\\dfrac52\\big(1-e^{-2}\\big)\\approx2{,}162$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de diviser l'intégrale par la longueur $b-a$ de l'intervalle.",
+          "pourquoi_faux": "L'intégrale est une aire cumulée, pas une moyenne. Sur $[n\\,;n+2]$ par exemple, oublier le facteur $\\dfrac12$ double la valeur de chaque terme et fausse le premier terme de la suite.",
+          "correction_markdown": "Écrire d'abord $u_n=\\dfrac1{b-a}\\displaystyle\\int_a^bf(x)\\,dx$ avec la longueur de l'intervalle, puis calculer."
+        },
+        {
+          "erreur_markdown": "Primitiver $e^{-2x}$ en $e^{-2x}$, sans le facteur $\\dfrac1{-2}$.",
+          "pourquoi_faux": "La dérivée de $e^{-2x}$ est $-2e^{-2x}$, pas $e^{-2x}$ : une primitive doit compenser le coefficient de l'exposant.",
+          "correction_markdown": "Dériver la primitive obtenue pour contrôler qu'on retrouve bien la fonction de départ."
+        },
+        {
+          "erreur_markdown": "Conclure qu'une suite est géométrique parce que ses premiers termes semblent décroître régulièrement.",
+          "pourquoi_faux": "Quelques valeurs ne prouvent rien : il faut établir que le quotient $\\dfrac{u_{n+1}}{u_n}$ est constant pour tout entier $n$.",
+          "correction_markdown": "Calculer $\\dfrac{u_{n+1}}{u_n}$ avec l'expression littérale de $u_n$ et vérifier que $n$ disparaît du résultat."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Calculer la valeur moyenne de $f(x)=3x^2$ sur $[1\\,;3]$.",
+          "solution_markdown": "L'intervalle a pour longueur $3-1=2$. On a $\\displaystyle\\int_1^33x^2\\,dx=\\Big[x^3\\Big]_1^3=27-1=26$. La valeur moyenne vaut donc $\\dfrac{26}2=13$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Pour tout entier $n\\geq0$, on note $u_n$ la valeur moyenne de $g(x)=4e^{-x}$ sur $[n\\,;n+1]$. Exprimer $u_n$ en fonction de $n$ et montrer que $(u_n)$ est géométrique.",
+          "solution_markdown": "On a $u_n=\\displaystyle\\int_n^{n+1}4e^{-x}\\,dx=\\Big[-4e^{-x}\\Big]_n^{n+1}=4e^{-n}-4e^{-n-1}=4\\big(1-e^{-1}\\big)e^{-n}$. Le quotient $\\dfrac{u_{n+1}}{u_n}=e^{-1}$ ne dépend pas de $n$ : $(u_n)$ est géométrique de raison $e^{-1}\\approx0{,}368$ et de premier terme $u_0=4\\big(1-e^{-1}\\big)\\approx2{,}528$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Pour tout entier $n\\geq0$, on note $v_n$ la valeur moyenne de $h(x)=e^{2x}$ sur $[n\\,;n+2]$. Calculer $v_n$, montrer que $(v_n)$ est géométrique, puis dire si elle converge.",
+          "solution_markdown": "L'intervalle a pour longueur $2$, donc $v_n=\\dfrac12\\displaystyle\\int_n^{n+2}e^{2x}\\,dx=\\dfrac12\\Big[\\dfrac12e^{2x}\\Big]_n^{n+2}=\\dfrac14\\big(e^{2n+4}-e^{2n}\\big)=\\dfrac{e^4-1}4\\,e^{2n}$. Le quotient $\\dfrac{v_{n+1}}{v_n}=e^2$ est constant : $(v_n)$ est géométrique de raison $e^2\\approx7{,}389$ et de premier terme $v_0=\\dfrac{e^4-1}4\\approx13{,}40$. Comme la raison est strictement supérieure à $1$, $v_n\\to+\\infty$ : la suite diverge."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La valeur moyenne de $f$ sur $[a\\,;b]$ est $\\dfrac1{b-a}\\displaystyle\\int_a^bf(x)\\,dx$ : on divise toujours par la longueur de l'intervalle.",
+        "Pour $f(x)=Ae^{kx}$, la valeur moyenne sur $[n\\,;n+p]$ s'écrit $u_0\\,(e^k)^n$ : elle contient $e^{kn}$ en facteur.",
+        "Une suite est géométrique quand $\\dfrac{u_{n+1}}{u_n}$ est constant : on le démontre en calculant ce quotient avec l'expression littérale de $u_n$.",
+        "La raison est $q=e^k$ et le premier terme est la valeur moyenne sur $[0\\,;p]$.",
+        "Pour contrôler, calcule $u_0$ et $u_1$ à part : leur quotient doit être égal à la raison trouvée."
+      ]
+    }
+  ]
+}

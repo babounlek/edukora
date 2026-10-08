@@ -1,0 +1,129 @@
+{
+  "type": "cours",
+  "cours_id": "cours-resoudre-inequation-trouver-rang-seuil-mbce2-ex3-q5",
+  "meta": {
+    "titre": "Résoudre une inéquation pour trouver un rang seuil",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algèbre : inéquations et problèmes de seuil",
+    "duree_estimee_min": 20,
+    "tags": [
+      "inéquation du premier degré",
+      "seuil",
+      "droite de régression"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-e-2-2026-s1-ex3-q5-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« À partir de quelle année la production dépassera-t-elle 100 000 tonnes ? » Cette question revient dans presque tous les sujets : une droite de régression, une suite arithmétique ou un modèle affine donnent une grandeur qui grandit, et il faut dire quand elle franchit un seuil. On ne tâtonne pas année après année : on résout une inéquation, puis on choisit l'entier qui convient."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une inéquation du premier degré (et inverser le sens quand on divise par un nombre négatif)",
+        "Distinguer une inégalité large ($\\geq$) d'une inégalité stricte ($>$)",
+        "Reconnaître une grandeur de la forme $ax+b$ : droite d'ajustement, terme général d'une suite arithmétique, tarif affine"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trouver le plus petit rang qui dépasse un seuil",
+      "contenu_markdown": "Une grandeur $f(n)=an+b$ dépend d'un rang $n$ entier (année, mois, jour). On cherche le **plus petit entier $n$** pour lequel elle dépasse un seuil $S$. On procède en quatre temps.\n\n**1. Traduire la question en inéquation.** « Dépasse $S$ » donne $an+b>S$ ; « atteint ou dépasse $S$ » donne $an+b\\geq S$.\n\n**2. Isoler $n$.** On retranche $b$, puis on divise par $a$. Si $a>0$, le sens de l'inégalité est conservé. Si $a<0$, il est **inversé**.\n\n**3. Choisir le plus petit entier.** On obtient une valeur limite $n_0$, souvent décimale.\n- Si $n_0$ n'est pas entier, on prend l'entier **immédiatement supérieur** à $n_0$ (jamais l'arrondi au plus proche).\n- Si $n_0$ est entier et que l'inégalité est **stricte**, on prend $n_0+1$ ; si elle est large, on prend $n_0$.\n\n**4. Vérifier.** On calcule $f$ pour l'entier retenu (le seuil est franchi) et pour l'entier précédent (il ne l'est pas encore), puis on répond par une phrase qui reprend le contexte.",
+      "formule_principale": "an+b>S \\iff n>\\dfrac{S-b}{a} \\quad (a>0)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une coopérative modélise sa production de cacao par $y=3{,}2\\,n+41$, où $y$ est exprimée en milliers de tonnes et $n$ est le nombre d'années écoulées depuis 2020. À partir de quelle année la production dépassera-t-elle $100$ milliers de tonnes ?",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire la question par une inéquation",
+          "justification": "« Dépassera » signifie strictement supérieur au seuil de 100.",
+          "resultat_markdown": "$3{,}2\\,n+41>100$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler le terme en $n$",
+          "justification": "On retranche 41 aux deux membres.",
+          "resultat_markdown": "$3{,}2\\,n>59$"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser par le coefficient de $n$",
+          "justification": "Le coefficient $3{,}2$ est positif : le sens de l'inégalité ne change pas.",
+          "resultat_markdown": "$n>\\dfrac{59}{3{,}2}=18{,}4375$"
+        },
+        {
+          "numero": 4,
+          "action": "Choisir le plus petit entier",
+          "justification": "Le rang $n$ est un entier et $18{,}4375$ n'est pas entier : le plus petit entier strictement supérieur est $19$, et non $18$.",
+          "resultat_markdown": "$n=19$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier avec les deux entiers voisins",
+          "justification": "On calcule $y$ pour $n=18$ puis pour $n=19$.",
+          "resultat_markdown": "$y(18)=3{,}2\\times18+41=98{,}6<100$ et $y(19)=3{,}2\\times19+41=101{,}8>100$"
+        }
+      ],
+      "conclusion_markdown": "La production dépasse $100$ milliers de tonnes à partir du rang $n=19$, c'est-à-dire en 2039."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Arrondir $18{,}4375$ à $18$ parce que c'est l'entier le plus proche.",
+          "pourquoi_faux": "Pour $n=18$ la valeur est $98{,}6$, qui est encore sous le seuil : l'arrondi au plus proche donne une réponse qui ne vérifie pas l'inéquation.",
+          "correction_markdown": "Prendre l'entier immédiatement supérieur à la valeur limite, puis vérifier avec $f(n)$ et $f(n-1)$."
+        },
+        {
+          "erreur_markdown": "Garder le même sens d'inégalité en divisant par un coefficient négatif.",
+          "pourquoi_faux": "Diviser les deux membres d'une inégalité par un nombre négatif change le sens de l'inégalité.",
+          "correction_markdown": "Avant de diviser, regarder le signe de $a$ : si $a<0$, écrire le sens inversé."
+        },
+        {
+          "erreur_markdown": "Quand la valeur limite est un entier (par exemple $n>16$), répondre $n=16$.",
+          "pourquoi_faux": "L'inégalité est stricte : pour $n=16$ la grandeur est égale au seuil et ne le dépasse pas.",
+          "correction_markdown": "Pour une inégalité stricte avec une valeur limite entière, prendre l'entier suivant ; vérifier toujours par le calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un compte d'épargne contient $5n+20$ milliers de francs après $n$ mois. À partir de quel mois le montant dépasse-t-il $100$ milliers de francs ?",
+          "solution_markdown": "On résout $5n+20>100$, soit $5n>80$ et $n>16$. La valeur limite est entière et l'inégalité est stricte : on prend $n=17$. Vérification : pour $n=16$ le montant vaut $100$ (le seuil n'est pas dépassé) et pour $n=17$ il vaut $105>100$. C'est à partir du 17e mois."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "La droite de régression de la production $y$ (en centaines de tonnes) en fonction du rang $x$ de l'année a pour équation $y=2{,}5\\,x+12{,}8$. À partir de quel rang la production dépassera-t-elle $50$ centaines de tonnes ?",
+          "solution_markdown": "On résout $2{,}5\\,x+12{,}8>50$, soit $2{,}5\\,x>37{,}2$ et $x>\\dfrac{37{,}2}{2{,}5}=14{,}88$. Le plus petit entier strictement supérieur est $x=15$. Vérification : $y(14)=2{,}5\\times14+12{,}8=47{,}8<50$ et $y(15)=2{,}5\\times15+12{,}8=50{,}3>50$. La production dépassera $50$ centaines de tonnes à partir du rang $15$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Le stock d'un magasin, en kilogrammes, est modélisé après $n$ jours par $s(n)=480-12{,}5\\,n$. À partir de quel jour le stock passe-t-il sous $100$ kg ?",
+          "solution_markdown": "On résout $480-12{,}5\\,n<100$, soit $-12{,}5\\,n<-380$. On divise par $-12{,}5$ qui est négatif : le sens s'inverse, donc $n>\\dfrac{380}{12{,}5}=30{,}4$. Le plus petit entier est $n=31$. Vérification : $s(30)=480-375=105>100$ et $s(31)=480-387{,}5=92{,}5<100$. Le stock passe sous $100$ kg à partir du 31e jour."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour trouver à partir de quel rang une grandeur $an+b$ dépasse un seuil $S$, on résout l'inéquation $an+b>S$ (ou $\\geq$ selon l'énoncé).",
+        "On divise par $a$ en conservant le sens si $a>0$ et en l'**inversant** si $a<0$.",
+        "On retient le **plus petit entier** qui convient : l'entier immédiatement supérieur à la valeur limite, ou le suivant si elle est entière et l'inégalité stricte.",
+        "On vérifie avec l'entier retenu et l'entier précédent, puis on répond par une phrase qui reprend le contexte (année, mois, jour)."
+      ]
+    }
+  ]
+}
