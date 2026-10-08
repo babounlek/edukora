@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ArrowRight, BookOpen, Check, Clock, ListChecks, Lock, PenLine, RotateCcw,
+  ArrowRight, BookOpen, Check, ChevronDown, Clock, Lock, PenLine, RotateCcw,
   Shuffle, Sparkles, Target, Zap, type LucideIcon,
 } from "lucide-react"
 
@@ -63,10 +63,23 @@ export function SeanceDuJour({ country }: { country: string }) {
  *
  * `secondaire` : une action de second rang à côté de "Commencer" (l'annale en
  * conditions d'examen, à un mois du jour J - voir TeteAccueil).
+ *
+ * `phraseDuCoach` : la phrase du coach est affichée juste au-dessus (accueil d'un
+ * abonné). Elle dit déjà le ratage ou la lecture en cours (voir quiz.accueil.phrase_coach) :
+ * la liste de raisons ne les répète pas. La vitrine n'a pas cette phrase, elle les garde.
+ *
+ * `apresDuree` : un bloc posé sous le choix de durée, avant le parcours - l'objectif d'XP et la
+ * semaine de l'accueil, qui poussaient le bouton principal sous le pli quand ils le précédaient.
  */
 export function SeanceCorps({
-  plan, country, secondaire,
-}: { plan: PlanDuJour; country: string; secondaire?: ReactNode }) {
+  plan, country, secondaire, phraseDuCoach, apresDuree,
+}: {
+  plan: PlanDuJour
+  country: string
+  secondaire?: ReactNode
+  phraseDuCoach?: string
+  apresDuree?: ReactNode
+}) {
   const queryClient = useQueryClient()
   const data = plan
 
@@ -160,6 +173,7 @@ export function SeanceCorps({
           country={country}
           onContinuer={() => continuer.mutate()}
           continuationEnCours={continuer.isPending}
+          phraseDuCoach={phraseDuCoach}
           // Le serveur a répondu "rien à proposer" : la demande a abouti, il n'y
           // avait simplement plus rien (voir seance_supplementaire).
           plusRienAProposer={continuer.isSuccess && continuer.data?.etat === "rien_a_proposer"}
@@ -174,6 +188,8 @@ export function SeanceCorps({
           onChoisirDuree={(minutes) => duree.mutate(minutes)}
           ajustementEnCours={duree.isPending}
           secondaire={secondaire}
+          phraseDuCoach={phraseDuCoach}
+          apresDuree={apresDuree}
         />
       )}
       {(afficherSecours || afficherObjectif) && (
@@ -223,6 +239,7 @@ const XP_MAX_PAR_QUESTION = 10
 
 function SeanceAFaire({
   plan, country, onOuvrirEtape, onTerminer, terminaisonEnCours, onChoisirDuree, ajustementEnCours, secondaire,
+  phraseDuCoach, apresDuree,
 }: {
   plan: PlanDuJour
   country: string
@@ -232,8 +249,13 @@ function SeanceAFaire({
   onChoisirDuree: (minutes: number) => void
   ajustementEnCours: boolean
   secondaire?: ReactNode
+  phraseDuCoach?: string
+  apresDuree?: ReactNode
 }) {
   const seance = plan.seance as Seance
+  // Les années derrière la pastille de fréquence : la preuve est un clic, pas une ligne
+  // de plus en permanence (voir PastilleFrequence).
+  const [anneesOuvertes, setAnneesOuvertes] = useState(false)
   // Verrouillée, chaque étape est une EtapeSeanceVerrouillee (voir types.ts) : ni
   // `cle` ni `ouverte`, rien à reprendre - seance.verrouillee dit sans ambiguïté
   // laquelle des deux formes est là, TypeScript ne peut pas le déduire seul.
@@ -281,21 +303,31 @@ function SeanceAFaire({
             {majuscule(titreDeLaSeance(seance))}
           </span>
         </h2>
+        {/* Le mot du coach, juste sous le thème qu'il commente : « Ce thème tombe presque à
+            chaque examen » ne désigne rien tant que le titre n'est pas à côté. */}
+        {phraseDuCoach && (
+          <p className="mt-3 max-w-prose text-base leading-snug text-balance text-foreground/80 sm:text-lg">{phraseDuCoach}</p>
+        )}
         <div className="mt-4 flex flex-wrap items-center gap-2">
           {seance.subject && <PastilleMatiere code={seance.subject.code} label={seance.subject.label} />}
           <Pastille icone={Clock}>{seance.duree_estimee_min} min</Pastille>
-          {seance.nb_etapes > 1 && <Pastille icone={ListChecks}>{seance.nb_etapes} étapes</Pastille>}
           {/* La fréquence à l'examen, l'argument le plus fort, au même rang que les
-              pastilles matière/durée plutôt que dans sa propre carte : la preuve reste
-              visible en permanence (jamais repliée), mais ne pèse plus qu'une pastille
-              de plus au lieu d'un second bloc dont la hauteur varie d'une séance à
-              l'autre (voir PastilleFrequence). */}
-          {frequence && <PastilleFrequence frequence={frequence} />}
+              pastilles matière/durée plutôt que dans sa propre carte : le chiffre reste
+              visible en permanence, jamais replié. Seules les années, qui le détaillent,
+              s'ouvrent au clic (voir PastilleFrequence). */}
+          {frequence && (
+            <PastilleFrequence
+              frequence={frequence}
+              ouvert={aDesAnnees ? anneesOuvertes : undefined}
+              onBascule={() => setAnneesOuvertes((ouvert) => !ouvert)}
+            />
+          )}
         </div>
-        {/* Les années concernées, juste sous les pastilles : sans elles, le chiffre de la
-            pastille est à croire sur parole. Le "…" dit qu'il y en a d'autres plutôt que
+        {/* Les années concernées, sous les pastilles quand on les demande : sans elles, le
+            chiffre de la pastille est à croire sur parole, mais elles n'ont pas à peser sur
+            l'écran de qui lui fait confiance. Le "…" dit qu'il y en a d'autres plutôt que
             de laisser croire à une liste complète (voir ANNEES_FREQUENCE_MAX serveur). */}
-        {aDesAnnees && frequence && (
+        {aDesAnnees && anneesOuvertes && frequence && (
           <p className="mt-1.5 text-xs tabular-nums text-muted-foreground">
             {frequence.annees.join(" · ")}
             {frequence.occurrences > frequence.annees.length ? " …" : ""}
@@ -304,23 +336,14 @@ function SeanceAFaire({
         {/* Les autres raisons (coefficient, jamais travaillé, thème déjà raté) - le fait
             qui justifie l'action précède l'action, dans l'ordre où on convaincrait
             quelqu'un à voix haute. */}
-        <RaisonsSeance seance={seance} />
+        <RaisonsSeance seance={seance} sansRaisonsDites={Boolean(phraseDuCoach)} />
 
         {seance.verrouillee ? (
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            {/* La forme exacte du vrai bouton, inerte : ce que ça deviendrait une fois
-                abonné, pas un message de remplacement. */}
-            <Button
-              size="lg"
-              variant="outline"
-              disabled
-              className="h-12 rounded-full px-7 text-base opacity-50"
-            >
-              Commencer la séance
-              <ArrowRight className="size-4" />
-            </Button>
-            {/* Le seul bouton qui fonctionne reste le plus visible des deux - un
-                visiteur qui compare les deux ne doit jamais hésiter sur lequel agit. */}
+            {/* Un seul bouton, celui qui agit. Il y avait au-dessus un « Commencer la
+                séance » inerte, la forme du vrai bouton une fois abonné : placé en premier,
+                il se lisait comme un bouton cassé et reléguait la seule action possible en
+                deuxième position. Le parcours en dessous montre déjà ce que l'abonnement ouvre. */}
             <Button
               asChild
               size="lg"
@@ -331,17 +354,6 @@ function SeanceAFaire({
                 Débloquer ma séance
               </Link>
             </Button>
-            {!avecQuiz && (
-              <Button variant="ghost" size="sm" disabled className="rounded-full text-muted-foreground opacity-50">
-                <Check className="size-4" />
-                J'ai fini
-              </Button>
-            )}
-            {avecQuiz && (
-              <p className="basis-full text-xs text-muted-foreground">
-                La séance est validée quand tu termines le quiz.
-              </p>
-            )}
           </div>
         ) : (
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -375,7 +387,9 @@ function SeanceAFaire({
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 rounded-full border-gold/50 bg-gold/10 px-5 text-base text-gold-foreground hover:bg-gold/20 dark:text-gold-text"
+                // `h-auto` + retour à la ligne : à 375 px, « Quiz express » et son détail
+                // débordaient du bord de l'écran (le détail passe dessous plutôt que dehors).
+                className="h-auto min-h-11 max-w-full flex-wrap justify-start gap-x-2 gap-y-0.5 whitespace-normal rounded-full border-gold/50 bg-gold/10 px-5 py-2 text-left text-sm text-gold-foreground hover:bg-gold/20 dark:text-gold-text"
               >
                 <Link
                   to={lienEtape(quizExpress, country, plan)}
@@ -433,6 +447,7 @@ function SeanceAFaire({
           enCours={ajustementEnCours}
           desactive={seance.verrouillee}
         />
+        {apresDuree && <div className="mt-5 [&>div]:mb-0">{apresDuree}</div>}
         </div>
       </div>
 
@@ -639,13 +654,14 @@ function majuscule(texte: string): string {
 }
 
 function SeanceFaite({
-  plan, country, onContinuer, continuationEnCours, plusRienAProposer,
+  plan, country, onContinuer, continuationEnCours, plusRienAProposer, phraseDuCoach,
 }: {
   plan: PlanDuJour
   country: string
   onContinuer: () => void
   continuationEnCours: boolean
   plusRienAProposer: boolean
+  phraseDuCoach?: string
 }) {
   const seance = plan.seance as Seance
   return (
@@ -685,7 +701,9 @@ function SeanceFaite({
           demandé, c'est lui rendre la charge de choisir au moment précis où il
           méritait qu'on continue à le guider. */}
       <div className="mt-5 flex flex-wrap items-center gap-3">
-        <span className="text-sm text-muted-foreground">Prochaine séance demain.</span>
+        {/* La phrase du coach, juste au-dessus, dit déjà « Demain, on continue » : la
+            redire ici ferait trois fois la même chose avec le titre « Séance faite ». */}
+        {!phraseDuCoach && <span className="text-sm text-muted-foreground">Prochaine séance demain.</span>}
         <Button variant="outline" size="sm" className="rounded-full" onClick={onContinuer} disabled={continuationEnCours}>
           {continuationEnCours ? "Je cherche…" : "Continuer maintenant"}
           <ArrowRight className="size-4" />
@@ -718,25 +736,71 @@ function SeanceFaite({
  * jauge de progression pesait, seule, plus que le reste de la carte réuni, et sa
  * hauteur variait trop (0 à 6 années citées juste en dessous) pour ne jamais
  * déséquilibrer un voisin. Une pastille a une hauteur fixe, quel que soit le chiffre.
+ *
+ * Seul le détail (les années, qui rendent le chiffre vérifiable) est derrière un clic sur
+ * la pastille : le chiffre, lui, reste toujours à l'écran.
  */
-function PastilleFrequence({ frequence }: { frequence: NonNullable<Seance["frequence"]> }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-medium text-gold-foreground dark:text-gold-text">
+function PastilleFrequence({
+  frequence, ouvert, onBascule,
+}: {
+  frequence: NonNullable<Seance["frequence"]>
+  // Défini seulement quand il y a des années à montrer : la pastille devient alors le
+  // bouton qui les ouvre. Sans années, elle reste un simple texte.
+  ouvert?: boolean
+  onBascule: () => void
+}) {
+  const classes = "inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-medium text-gold-foreground dark:text-gold-text"
+  const contenu = (
+    <>
       <Target className="size-3.5 shrink-0" />
-      {frequence.occurrences} sur {frequence.epreuves_total} épreuves
-    </span>
+      Tombé dans {frequence.occurrences} épreuves sur {frequence.epreuves_total}
+    </>
   )
+  if (ouvert === undefined) return <span className={classes}>{contenu}</span>
+  return (
+    <button
+      type="button"
+      aria-expanded={ouvert}
+      onClick={onBascule}
+      className={cn(classes, "transition-colors hover:bg-gold/25")}
+    >
+      {contenu}
+      <ChevronDown className={cn("size-3 shrink-0 transition-transform", ouvert && "rotate-180")} aria-hidden="true" />
+    </button>
+  )
+}
+
+/** Les codes que la phrase du coach énonce elle-même (voir quiz.accueil.phrase_coach). */
+const RAISONS_DITES_PAR_LE_COACH = ["echec", "lecture", "calibrage"]
+
+const RAISONS_MAX = 2
+/** Du plus personnel au plus général (codes de quiz.services.raisons_de_la_seance). */
+const ORDRE_RAISONS = ["objectif", "echec", "lecture", "calibrage", "jamais", "maitrise", "coefficient"]
+const rangRaison = (code: string) => {
+  const rang = ORDRE_RAISONS.indexOf(code)
+  return rang === -1 ? ORDRE_RAISONS.length : rang
 }
 
 /** Les raisons autres que la fréquence - coefficient, ratage précédent, thème jamais
  * travaillé. Chacune est un fait déjà en base (voir raisons_de_la_seance), affichée
  * juste avant le bouton : le fait qui justifie l'action précède l'action, comme dans
  * un argumentaire dit à voix haute. */
-function RaisonsSeance({ seance }: { seance: Seance }) {
-  if (seance.raisons.length === 0) return null
+function RaisonsSeance({ seance, sansRaisonsDites }: { seance: Seance; sansRaisonsDites: boolean }) {
+  // Le ratage et la lecture en cours sont déjà nommés par la phrase du coach quand elle
+  // est affichée (voir phrase_coach) : les redire ferait la même raison deux fois.
+  const restantes = sansRaisonsDites
+    ? seance.raisons.filter((raison) => !RAISONS_DITES_PAR_LE_COACH.includes(raison.code))
+    : seance.raisons
+  // Les plus parlantes d'abord, deux au plus : une liste de cinq faits se lit comme un
+  // plaidoyer, deux faits comme une raison. Le coefficient, vrai mais commun à toute la
+  // matière, passe après ce qui est propre à l'élève.
+  const raisons = [...restantes]
+    .sort((a, b) => rangRaison(a.code) - rangRaison(b.code))
+    .slice(0, RAISONS_MAX)
+  if (raisons.length === 0) return null
   return (
     <ul className="mt-3 flex flex-col gap-1">
-      {seance.raisons.map((raison) => (
+      {raisons.map((raison) => (
         <li key={raison.code} className="flex items-start gap-2 text-xs text-muted-foreground">
           <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/15">
             <Check className="size-2.5 text-primary" strokeWidth={3} />
@@ -809,7 +873,9 @@ function ChoixDuree({
   // budget de temps ne sert à rien tant qu'on ne peut rien ouvrir.
   desactive?: boolean
 }) {
-  if (seance.budgets_possibles.length < 2) return null
+  // Un calibrage a une longueur fixe (quinze questions) : proposer 10 ou 45 minutes
+  // n'aurait aucun effet, ou le dénaturerait (voir ajuster_duree_seance).
+  if (seance.origine === "DIAGNOSTIC" || seance.budgets_possibles.length < 2) return null
   return (
     <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
       <span className="text-xs text-muted-foreground">Combien de temps as-tu ?</span>
@@ -890,12 +956,61 @@ function EtapesParPhase({
     .map((phase) => ({ ...phase, etapes: seance.etapes.filter((e) => e.type === phase.cle) }))
     .filter((phase) => phase.etapes.length > 0)
   const avecTitres = groupes.length > 1
+  // Plié par défaut : le bouton principal dit déjà par quelle étape commencer, et une
+  // ligne "Comprendre → S'entraîner → Vérifier" suffit à dire où ça mène. Le détail est
+  // à un clic. Jamais plié verrouillé (la structure fait partie de ce que le paywall
+  // doit montrer) ni avec une seule phase (rien à résumer).
+  const [detailOuvert, setDetailOuvert] = useState(false)
+  const pliable = !verrouillee && avecTitres
+
+  if (pliable && !detailOuvert) {
+    return (
+      <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm">
+        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ton parcours</span>
+        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          {groupes.map((phase, index) => {
+            const faite = (phase.etapes as EtapeSeance[]).every((etape) => etape.ouverte)
+            return (
+              <li key={phase.cle} className="flex items-center gap-2">
+                <span className={cn("inline-flex items-center gap-1 font-medium", faite && "text-primary")}>
+                  {faite && <Check className="size-3.5" strokeWidth={3} aria-label="fait" />}
+                  {phase.titre}
+                </span>
+                {index < groupes.length - 1 && <ArrowRight className="size-3 text-muted-foreground" aria-hidden="true" />}
+              </li>
+            )
+          })}
+        </ol>
+        <span className="text-xs tabular-nums text-muted-foreground">· {seance.duree_estimee_min} min</span>
+        <button
+          type="button"
+          aria-expanded={false}
+          onClick={() => setDetailOuvert(true)}
+          className="ml-auto text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
+        >
+          Voir le détail
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="mt-6 rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
       <p className="flex items-baseline justify-between gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         Ton parcours
-        <span className="font-sans normal-case tracking-normal tabular-nums">{seance.duree_estimee_min} min</span>
+        <span className="flex items-baseline gap-3 font-sans normal-case tracking-normal">
+          <span className="tabular-nums">{seance.duree_estimee_min} min</span>
+          {pliable && (
+            <button
+              type="button"
+              aria-expanded
+              onClick={() => setDetailOuvert(false)}
+              className="underline underline-offset-4 transition-colors hover:text-primary"
+            >
+              Réduire
+            </button>
+          )}
+        </span>
       </p>
       {/* Une colonne par phase réellement présente (une à trois), empilées sur
           téléphone : le nombre de classes possibles est fini (1 à 3 phases), autant

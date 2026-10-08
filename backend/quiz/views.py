@@ -1173,7 +1173,7 @@ def duree_seance_view(request):
         return Response({"error": "minutes doit être un entier."}, status=400)
 
     profil = profil_actif(request)
-    seance = ajuster_duree_seance(profil, cursus, minutes)
+    seance = ajuster_duree_seance(profil, cursus, minutes, choisi=True)
     compte = ExamSession.compte_a_rebours_pour(cursus)
     return Response(_charge_utile_plan(profil, cursus, seance, compte))
 

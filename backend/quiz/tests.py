@@ -3981,6 +3981,56 @@ class PrioriteFrequenceTests(TestCase):
         self.assertEqual(seance.etapes, avant)
         self.assertEqual(seance.budget_minutes, 25)
 
+    def test_un_calibrage_n_est_pas_recompose_par_le_choix_de_duree(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        seance = plan_du_jour(self.profil, self.cursus)
+        seance.origine = OrigineSeance.DIAGNOSTIC
+        seance.etapes = [{"type": "quiz", "libelle": "15 questions pour situer ton niveau",
+                          "mode": "DIAGNOSTIC", "n": 15, "duree_min": 12}]
+        seance.save(update_fields=["origine", "etapes"])
+
+        apres = ajuster_duree_seance(self.profil, self.cursus, 10, choisi=True)
+
+        self.assertEqual(apres.etapes[0]["mode"], "DIAGNOSTIC")
+        self.assertEqual(apres.etapes[0]["n"], 15)
+        self.assertEqual(apres.budget_minutes, 25)
+
+    def _seance_d_hier(self, minutes, choisi):
+        hier = timezone.localdate() - timedelta(days=1)
+        plan_du_jour(self.profil, self.cursus, date=hier)
+        ajuster_duree_seance(self.profil, self.cursus, minutes, date=hier, choisi=choisi)
+
+    def test_un_budget_choisi_est_reconduit_le_lendemain(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+        self._seance_d_hier(10, choisi=True)
+
+        seance = plan_du_jour(self.profil, self.cursus)
+
+        # Celui qui a dix minutes chaque soir ne doit pas avoir à le redire chaque matin.
+        self.assertEqual(seance.budget_minutes, 10)
+        self.assertEqual([e["type"] for e in seance.etapes], ["quiz"])
+        # Et la reconduite se reconduit : demain aussi, tant qu'il ne change pas.
+        self.assertTrue(seance.budget_choisi)
+
+    def test_un_budget_impose_n_est_pas_reconduit(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+        # Le retour en douceur après une absence : dix minutes imposées par le système.
+        self._seance_d_hier(10, choisi=False)
+
+        seance = plan_du_jour(self.profil, self.cursus)
+
+        self.assertEqual(seance.budget_minutes, 25)
+        self.assertFalse(seance.budget_choisi)
+
+    def test_sans_historique_le_budget_par_defaut_s_applique(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+
+        seance = plan_du_jour(self.profil, self.cursus)
+
+        self.assertEqual(seance.budget_minutes, 25)
+
     def test_un_theme_deja_maitrise_saute_la_methode(self):
         maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         # Cinq réponses, toutes bonnes : la plus petite preuve qui vaille quelque chose

@@ -434,6 +434,15 @@ class SeanceJournaliere(models.Model):
             "inférieure quand le contenu manque."
         ),
     )
+    budget_choisi = models.BooleanField(
+        default=False,
+        help_text=(
+            "Vrai quand ce budget vient d'un choix de l'élève (ou de la reconduite d'un "
+            "choix), faux quand le système l'a imposé - le retour en douceur après une "
+            "absence. Seul un budget choisi est reconduit à la séance du lendemain : un "
+            "budget imposé ne doit jamais devenir une habitude."
+        ),
+    )
     cours = models.ForeignKey(
         "catalog.Cours", null=True, blank=True, on_delete=models.SET_NULL, related_name="seances",
         help_text=(

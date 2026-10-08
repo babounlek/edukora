@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { Check, ChevronDown, GraduationCap, Moon, Sparkles, Sun } from "lucide-react"
@@ -59,13 +59,36 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
   const cursus = user?.cursus_prepare
   const compte = user?.compte_a_rebours ?? plan?.compte_a_rebours ?? null
   const prenom = (user?.profil_actif?.prenom || user?.pseudo || user?.full_name || "").trim().split(/\s+/)[0]
+  // L'objectif d'XP du jour et la semaine : ce qui fait revenir. Ni le jour de l'examen
+  // ni le lendemain n'ont de séance à tenir, donc rien à compter ces jours-là.
+  const ligneJour =
+    plan?.xp && plan.serie && accueil.phase !== "apres" && accueil.phase !== "jour_j"
+      ? <LigneJour etat={plan.xp} serie={plan.serie} />
+      : null
+  const phraseSousLeTitre =
+    plan?.etat === "plan_pret" && Boolean(plan.seance)
+    && (accueil.phase === "normal" || accueil.phase === "simulation" || accueil.phase === "derniere_ligne_droite")
+    && seanceAffichable(plan)
+  const ligneSousLeBouton =
+    Boolean(ligneJour) && accueil.phase !== "veille" && plan?.etat === "plan_pret"
+    && Boolean(plan.seance) && !plan.seance?.verrouillee
+  // La grande bande verte n'a de raison d'être que si elle porte quelque chose : un mot du
+  // coach (séance faite, veille, jour J...), un vrai compte à rebours, ou l'anneau de
+  // préparation. Avec une séance à faire et rien de tout cela - date seulement estimée -, il
+  // ne restait que « Bonjour » et une date dans 85 à 125 px de vert : une ligne suffit.
+  const anneauVisible = Boolean(accueil.preparation) && !accueil.premiers_pas
+    && (accueil.preparation?.ponderee ?? 0) >= SEUIL_ANNEAU_VISIBLE
+  const joursExacts = Boolean(compte) && !compte?.estimee && (compte?.jours_restants ?? 0) > 0
+  const bandeFine = phraseSousLeTitre && !anneauVisible && !joursExacts
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6" aria-label="Aujourd'hui">
       <div className="animate-fade-up relative overflow-hidden rounded-3xl border border-primary/20 bg-card shadow-xl shadow-primary/[0.07]">
+        {bandeFine && <BandeFine prenom={prenom} cursus={cursus} phase={accueil.phase} compte={compte} />}
         {/* La bande du coach : fond de marque, texte clair. Le dégradé reste au-dessus
             de 90 % de la couleur pleine pour que le blanc garde son contraste jusqu'au
             bord droit (le précédent bandeau descendait à 75 %). */}
+        {!bandeFine && (
         <div className="relative bg-gradient-to-br from-primary via-primary to-primary/90 px-5 py-5 text-primary-foreground sm:px-8 sm:py-6">
           <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 size-64 rounded-full bg-gold/25 blur-3xl" />
           <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-10 size-56 rounded-full bg-white/10 blur-3xl" />
@@ -79,11 +102,17 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
                 <BadgePhase phase={accueil.phase} />
               </p>
               <Decompte compte={compte} premiersPas={accueil.premiers_pas} />
-              {/* text-base sur téléphone : en text-lg, la phrase tenait sur six lignes et
-                  repoussait "Commencer" à la limite du pli. */}
-              <p className="mt-3 max-w-2xl font-display text-base font-medium leading-snug text-balance sm:text-xl">
-                {accueil.phrase_coach}
-              </p>
+              {/* Avec une séance à faire, la phrase du coach vit dans la carte, SOUS le titre
+                  du thème (voir SeanceCorps) : dans la bande, elle parlait d'un « ce thème »
+                  qu'on ne voyait pas, et la date d'examen, plus grosse, passait avant elle.
+                  Les autres cas (séance faite, veille, jour J, après) gardent leur mot ici. */}
+              {!phraseSousLeTitre && (
+                // text-base sur téléphone : en text-lg, la phrase tenait sur six lignes et
+                // repoussait "Commencer" à la limite du pli.
+                <p className="mt-3 max-w-2xl font-display text-base font-medium leading-snug text-balance sm:text-xl">
+                  {accueil.phrase_coach}
+                </p>
+              )}
               {/* Le compteur « N séances cette semaine » a disparu du bandeau : la semaine de
                   série (LigneJour, dans le corps de la carte) dit déjà quels jours ont compté. */}
             </div>
@@ -110,21 +139,25 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
             ) : null}
           </div>
         </div>
+        )}
 
         <div className="relative p-5 sm:p-8">
           {/* L'objectif du jour et la semaine : ce qui fait revenir. Ni le jour de l'examen
               ni le lendemain n'ont de séance à tenir, donc rien à compter ces jours-là. */}
-          {plan?.xp && plan.serie && accueil.phase !== "apres" && accueil.phase !== "jour_j" && (
-            <LigneJour etat={plan.xp} serie={plan.serie} />
-          )}
-          <Corps accueil={accueil} plan={plan} country={country} />
+          {/* Avec une séance à faire, la ligne passe SOUS le bouton et le choix de durée (voir
+              Corps) : en tête de carte, elle prenait ~140 px et repoussait « Commencer » à la
+              limite du pli sur un téléphone. Sans séance à faire, elle garde sa place. */}
+          {ligneJour && !ligneSousLeBouton && ligneJour}
+          <Corps accueil={accueil} plan={plan} country={country} ligneJour={ligneSousLeBouton ? ligneJour : undefined} />
         </div>
       </div>
     </section>
   )
 }
 
-function Corps({ accueil, plan, country }: { accueil: Accueil; plan: Accueil["plan"] | undefined; country: string }) {
+function Corps({
+  accueil, plan, country, ligneJour,
+}: { accueil: Accueil; plan: Accueil["plan"] | undefined; country: string; ligneJour?: ReactNode }) {
   const { phase } = accueil
   if (phase === "apres") return <ApresExamen />
   if (phase === "jour_j") return <JourJ />
@@ -135,6 +168,8 @@ function Corps({ accueil, plan, country }: { accueil: Accueil; plan: Accueil["pl
       <SeanceCorps
         plan={plan}
         country={country}
+        phraseDuCoach={accueil.phrase_coach}
+        apresDuree={ligneJour}
         secondaire={accueil.simulation_suggeree && plan.etat === "plan_pret" ? (
           <SimulationSuggeree suggestion={accueil.simulation_suggeree} />
         ) : undefined}
@@ -167,7 +202,7 @@ function Corps({ accueil, plan, country }: { accueil: Accueil; plan: Accueil["pl
  * seul, qui laisserait le profil actif inchangé et pourrait associer un enfant à un
  * cursus qui n'est pas le sien (régression signalée).
  */
-function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
+function CursusPreparePuce({ cursus, clair = false }: { cursus: Cursus; clair?: boolean }) {
   const { user } = useAuth()
   const cursusAbonnes = useCursusAbonnes()
   const changerProfil = useChangerProfilActif()
@@ -181,10 +216,17 @@ function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="inline-flex items-center gap-0.5 normal-case tracking-normal text-primary-foreground/90 hover:text-primary-foreground"
+          // Une pastille plutôt qu'un texte : avec deux abonnements, savoir lequel on regarde
+          // est la première chose à voir, et un « BEPC ⌄ » de 10 px ne se lisait pas comme un bouton.
+          className={cn(
+            "ml-1.5 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[0.7rem] normal-case tracking-normal transition-colors",
+            clair
+              ? "bg-primary/10 text-primary hover:bg-primary/20"
+              : "bg-white/15 text-primary-foreground hover:bg-white/25",
+          )}
         >
-          · {formatCursus(cursus)}
-          <ChevronDown className="size-3" aria-hidden="true" />
+          {formatCursus(cursus)}
+          <ChevronDown className="size-3.5" aria-hidden="true" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
@@ -209,7 +251,7 @@ function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
 }
 
 /** Un mot sur la phase quand elle change quelque chose à la page - jamais en temps normal. */
-function BadgePhase({ phase }: { phase: PhaseExamen }) {
+function BadgePhase({ phase, clair = false }: { phase: PhaseExamen; clair?: boolean }) {
   const libelle =
     phase === "simulation" ? "Mois des annales"
     : phase === "derniere_ligne_droite" ? "Dernière ligne droite"
@@ -217,9 +259,51 @@ function BadgePhase({ phase }: { phase: PhaseExamen }) {
     : null
   if (!libelle) return null
   return (
-    <span className="rounded-full bg-white/15 px-2 py-0.5 text-[0.65rem] normal-case tracking-normal">
+    <span
+      className={cn(
+        "rounded-full px-2 py-0.5 text-[0.65rem] normal-case tracking-normal",
+        clair ? "bg-primary/10 text-primary" : "bg-white/15",
+      )}
+    >
       {libelle}
     </span>
+  )
+}
+
+/** « mai 2027 » : le mois d'une date d'examen seulement estimée (voir Decompte). */
+function moisEstime(compte: CompteARebours): string {
+  const [annee, mois] = compte.date_examen.split("-").map(Number)
+  const nomMois = new Intl.DateTimeFormat("fr-FR", { month: "long" }).format(new Date(annee, mois - 1, 15))
+  return `${nomMois} ${annee}`
+}
+
+/**
+ * La bande réduite à une ligne : « Bonjour Serge · BAC D », la phase si elle compte, et la
+ * date d'examen quand elle n'est qu'estimée. Remplace le grand bloc vert quand celui-ci n'aurait
+ * rien d'autre à porter (voir `bandeFine` dans TeteAccueil).
+ *
+ * La date est masquée dès `sm` : l'en-tête de la page affiche déjà « BAC D · vers mai 2027 »
+ * à partir de cette largeur (voir Header), et la redire ici ne ferait que doubler le repère.
+ */
+function BandeFine({
+  prenom, cursus, phase, compte,
+}: { prenom: string; cursus: Cursus | null | undefined; phase: PhaseExamen; compte: CompteARebours | null }) {
+  const dateEstimee = compte && compte.estimee && compte.jours_restants >= 0 ? moisEstime(compte) : null
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-primary/10 bg-primary/[0.06] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary sm:px-8">
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span>
+          {prenom ? `Bonjour ${prenom}` : "Bonjour"}
+          {cursus && <CursusPreparePuce cursus={cursus} clair />}
+        </span>
+        <BadgePhase phase={phase} clair />
+      </p>
+      {dateEstimee && (
+        <span className="font-medium normal-case tracking-normal text-muted-foreground sm:hidden">
+          Examen vers {dateEstimee}
+        </span>
+      )}
+    </div>
   )
 }
 
@@ -239,7 +323,9 @@ function Decompte({ compte, premiersPas }: { compte: CompteARebours | null; prem
     const [annee, mois] = compte.date_examen.split("-").map(Number)
     const nomMois = new Intl.DateTimeFormat("fr-FR", { month: "long" }).format(new Date(annee, mois - 1, 15))
     return (
-      <p className="mt-1.5 font-display text-2xl font-semibold leading-tight sm:text-3xl">
+      // Plus petit sur téléphone : une date seulement estimée n'appelle aucune action, elle
+      // ne doit pas dominer la bande, ni passer devant le thème du jour.
+      <p className="mt-1.5 font-display text-lg font-semibold leading-tight sm:text-2xl">
         Examen vers {nomMois} {annee}
       </p>
     )
@@ -292,7 +378,9 @@ function RepereJoursRestants({ compte }: { compte: CompteARebours }) {
  */
 function IllustrationAujourdhui() {
   return (
-    <div aria-hidden="true" className="flex size-20 shrink-0 items-center justify-center sm:size-28">
+    // Absente sur téléphone : purement décorative, elle réduisait la phrase du coach à la
+    // moitié de la largeur (cinq lignes) et repoussait le bouton sous le pli.
+    <div aria-hidden="true" className="hidden size-20 shrink-0 items-center justify-center sm:flex sm:size-28">
       <GraduationCap className="size-12 text-primary-foreground/25 sm:size-16" strokeWidth={1.25} />
     </div>
   )

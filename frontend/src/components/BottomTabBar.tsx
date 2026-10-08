@@ -75,9 +75,11 @@ export function BottomTabBar() {
     >
       {/* Sur mobile, le décompte n'existait que derrière le hamburger : autant dire
           qu'il n'existait pas. Ici il reste sous le pouce sur chaque écran, en gris
-          comme partout ailleurs. Silencieusement absent sans date d'examen connue. */}
+          comme partout ailleurs. Silencieusement absent sans date d'examen connue. Absent
+          aussi sur « Aujourd'hui » : la bande du coach y dit déjà le même repère, en grand
+          (voir TeteAccueil), et la pilule en double prenait de la hauteur à la barre. */}
       <div className="flex justify-center pt-1.5 empty:hidden">
-        <CompteAReboursBadge variant="pilule" className="whitespace-nowrap" />
+        {!estAccueil && <CompteAReboursBadge variant="pilule" className="whitespace-nowrap" />}
       </div>
       <div className="flex items-stretch">
         {onglets.map((onglet) => (

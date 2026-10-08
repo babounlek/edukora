@@ -181,6 +181,9 @@ describe("AccueilEleve", () => {
     afficher()
 
     expect(await screen.findByText("10 / 20 XP")).toBeInTheDocument()
+    // Sous le bouton principal, pas avant lui : en tête de carte, elle le repoussait sous le pli.
+    const commencer = screen.getByRole("link", { name: /Commencer :/ })
+    expect(commencer.compareDocumentPosition(screen.getByText("10 / 20 XP"))).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(screen.getByText("3 jours de suite")).toBeInTheDocument()
     expect(screen.getAllByRole("img", { name: "Travaillé" })).toHaveLength(2)
   })
@@ -291,11 +294,148 @@ describe("AccueilEleve", () => {
       expect(screen.queryByRole("link", { name: /Quiz express/ })).not.toBeInTheDocument()
     })
 
+    it("le parcours tient sur une ligne, et son détail s'ouvre à la demande", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+      await screen.findByRole("link", { name: /Commencer :/ })
+      expect(screen.getByText("Comprendre")).toBeInTheDocument()
+      expect(screen.getByText("Vérifier")).toBeInTheDocument()
+      expect(screen.queryByText("· valide la séance")).not.toBeInTheDocument()
+
+      await userEvent.click(screen.getByRole("button", { name: "Voir le détail" }))
+      expect(screen.getByText("· valide la séance")).toBeInTheDocument()
+
+      await userEvent.click(screen.getByRole("button", { name: "Réduire" }))
+      expect(screen.queryByText("· valide la séance")).not.toBeInTheDocument()
+    })
+
     it("le quiz sort du rang dans « Ton parcours » avec l'XP qu'il peut rapporter", async () => {
       getAccueil.mockResolvedValue(accueil())
       afficher()
-      expect(await screen.findByText("· valide la séance")).toBeInTheDocument()
+      await userEvent.click(await screen.findByRole("button", { name: "Voir le détail" }))
+      expect(screen.getByText("· valide la séance")).toBeInTheDocument()
       expect(screen.getAllByText("jusqu'à 50 XP").length).toBeGreaterThan(0)
+    })
+
+    it("les années ne s'affichent qu'au clic sur la pastille de fréquence", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+      const pastille = await screen.findByRole("button", { name: /Tombé dans 28 épreuves sur 44/ })
+      expect(screen.queryByText(/2025 · 2024/)).not.toBeInTheDocument()
+      await userEvent.click(pastille)
+      expect(screen.getByText(/2025 · 2024/)).toBeInTheDocument()
+    })
+
+    it("un vrai compte à rebours garde la grande bande ; une date estimée la réduit à une ligne", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      const exact = afficher()
+      await screen.findByRole("link", { name: /Commencer :/ })
+      expect(document.querySelector("section[aria-label=\"Aujourd'hui\"] .bg-gradient-to-br")).not.toBeNull()
+      exact.unmount()
+      localStorage.clear() // la dernière version connue (cache local) montrerait encore l'ancien compte
+
+      const avant = auth.user.compte_a_rebours
+      auth.user.compte_a_rebours = { date_examen: "2027-06-12", jours_restants: 240, session_label: "BAC 2027", estimee: true }
+      try {
+        // Sans anneau de préparation : il garderait la grande bande à lui seul.
+        getAccueil.mockResolvedValue(accueil({ preparation: null, plan: { ...accueil().plan, compte_a_rebours: auth.user.compte_a_rebours } }))
+        afficher()
+        await screen.findByRole("link", { name: /Commencer :/ })
+        expect(document.querySelector("section[aria-label=\"Aujourd'hui\"] .bg-gradient-to-br")).toBeNull()
+        expect(screen.getByText(/Bonjour Awa/)).toBeInTheDocument()
+        expect(screen.getByText(/Examen vers juin 2027/)).toBeInTheDocument()
+      } finally {
+        auth.user.compte_a_rebours = avant
+      }
+    })
+
+    it("la phrase du coach suit le titre du thème, elle n'est pas dans la bande", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+      const phrase = await screen.findByText(/Dérivées est tombé dans 28 des 44/)
+      const titre = screen.getByRole("heading", { level: 2, name: /Aujourd'hui/ })
+      expect(titre.compareDocumentPosition(phrase)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+      expect(phrase.closest(".bg-gradient-to-br")).toBeNull()
+    })
+
+    it("verrouillée : un seul bouton, celui qui débloque, et le parcours en entier", async () => {
+      const base = accueil()
+      getAccueil.mockResolvedValue(accueil({
+        plan: {
+          ...base.plan,
+          seance: {
+            ...base.plan.seance!,
+            verrouillee: true,
+            etapes: [
+              { type: "cours", libelle: "Relire la méthode", duree_min: 8 },
+              { type: "quiz", libelle: "5 questions", duree_min: 5 },
+            ],
+          },
+        },
+      }))
+      afficher()
+      expect(await screen.findByRole("link", { name: /Débloquer ma séance/ })).toHaveAttribute("href", "/tarifs")
+      expect(screen.queryByRole("button", { name: /Commencer la séance/ })).not.toBeInTheDocument()
+      expect(screen.queryByRole("button", { name: /Voir le détail/ })).not.toBeInTheDocument()
+      expect(screen.getByText("· valide la séance")).toBeInTheDocument()
+    })
+
+    it("séance faite : « Demain, on continue » n'est dit qu'une fois", async () => {
+      const base = accueil()
+      getAccueil.mockResolvedValue(accueil({
+        plan: { ...base.plan, etat: "deja_fait_aujourdhui", seance: { ...base.plan.seance!, statut: "TERMINEE" } },
+        phrase_coach: "Séance faite. Demain, on continue.",
+      }))
+      afficher()
+      expect(await screen.findByRole("button", { name: /Continuer maintenant/ })).toBeInTheDocument()
+      expect(screen.queryByText("Prochaine séance demain.")).not.toBeInTheDocument()
+    })
+
+    it("montre deux raisons au plus, la plus personnelle d'abord", async () => {
+      const base = accueil()
+      getAccueil.mockResolvedValue(accueil({
+        plan: {
+          ...base.plan,
+          seance: {
+            ...base.plan.seance!,
+            raisons: [
+              { code: "coefficient", texte: "Mathématiques est coefficient 4 à ton examen." },
+              { code: "maitrise", texte: "Tu réussis déjà ce thème : on passe directement à la pratique." },
+              { code: "jamais", texte: "Tu ne l'as encore jamais travaillé." },
+            ],
+          },
+        },
+      }))
+      afficher()
+      await screen.findByRole("link", { name: /Commencer :/ })
+      const items = screen.getAllByRole("listitem").map((li) => li.textContent)
+      const iJamais = items.findIndex((t) => t?.includes("jamais travaillé"))
+      const iMaitrise = items.findIndex((t) => t?.includes("Tu réussis déjà"))
+      expect(iJamais).toBeGreaterThanOrEqual(0)
+      expect(iJamais).toBeLessThan(iMaitrise)
+      expect(screen.queryByText(/coefficient 4/)).not.toBeInTheDocument()
+    })
+
+    it("ne redit pas un ratage que la phrase du coach énonce déjà", async () => {
+      const base = accueil()
+      getAccueil.mockResolvedValue(accueil({
+        plan: {
+          ...base.plan,
+          seance: {
+            ...base.plan.seance!,
+            origine: "REVISION_DUE",
+            raisons: [
+              { code: "echec", texte: "Tu as raté ce thème hier." },
+              { code: "coefficient", texte: "Mathématiques est coefficient 4 à ton examen." },
+            ],
+          },
+        },
+        phrase_coach: "Tu as raté Dérivées hier. 25 minutes pour le fixer avant qu'il ne s'efface.",
+      }))
+      afficher()
+      await screen.findByRole("link", { name: /Commencer :/ })
+      expect(screen.getAllByText(/Tu as raté/)).toHaveLength(1)
+      expect(screen.getByText(/coefficient 4/)).toBeInTheDocument()
     })
   })
 
@@ -345,6 +485,8 @@ describe("AccueilEleve", () => {
     getAccueil.mockResolvedValue(accueil({ phase: "veille", phrase_coach: "C'est demain. Ce soir, on ne découvre rien : on relit, et on dort tôt." }))
     afficher()
     expect(await screen.findByText(/on prépare le sac/)).toBeInTheDocument()
+    // Sans séance à titrer, le mot du coach reste dans la bande.
+    expect(screen.getByText(/C'est demain\. Ce soir/).closest(".bg-gradient-to-br")).not.toBeNull()
     expect(screen.queryByRole("link", { name: /Commencer :/ })).not.toBeInTheDocument()
     await userEvent.click(screen.getByRole("button", { name: /Relire dix minutes/ }))
     expect(screen.getByRole("link", { name: /Commencer :/ })).toBeInTheDocument()

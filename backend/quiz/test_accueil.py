@@ -6,7 +6,7 @@ Ce qui est testé, c'est ce qui rendrait la page menteuse en cassant : la borne 
 affichée sans rythme mesuré, une phrase de coach qui ne nommerait plus le thème, un
 anneau qui repasserait au comptage brut.
 """
-from datetime import timedelta
+from datetime import date, timedelta
 
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
@@ -63,6 +63,11 @@ class VisiteTests(TestCase):
         self.assertEqual(visite.precedente_at, t0 + timedelta(minutes=30))
 
 
+# Une date dont l'ordinal est multiple de 3 : la première variante de chaque série, quel
+# que soit le jour où les tests tournent (la phrase tourne sur trois formulations).
+JOUR = date.fromordinal(3 * 246000)
+
+
 class PhaseEtPhraseTests(SimpleTestCase):
     def test_phases_par_jours_restants(self):
         cas = [(-1, "apres"), (0, "jour_j"), (1, "veille"), (7, "derniere_ligne_droite"),
@@ -78,24 +83,79 @@ class PhaseEtPhraseTests(SimpleTestCase):
         }
         return {"etat": etat, "seance": {**base, **seance}}
 
-    def test_la_phrase_nomme_le_theme_sans_repeter_le_chiffre_du_badge(self):
+    def test_la_phrase_ne_nomme_pas_le_theme_que_le_titre_affiche_dessous(self):
         # Le chiffre exact vit dans le badge de fréquence de la séance (frontend) - la
-        # phrase ne le redit plus mot pour mot, elle garde le thème et l'urgence.
+        # phrase ne le redit pas, et le thème est le titre juste dessous : elle dit « ce thème ».
         plan = self._plan(frequence={"occurrences": 28, "epreuves_total": 44, "annees": []})
-        phrase = accueil.phrase_coach(plan, "normal", 0)
-        self.assertEqual(phrase, "Dérivées revient sans arrêt à l'examen. 25 minutes pour ne pas le découvrir le jour J.")
+        phrase = accueil.phrase_coach(plan, "normal", 0, jour=JOUR)
+        self.assertEqual(
+            phrase, "Ce thème tombe à l'examen plus d'une fois sur deux. 25\u00a0minutes pour ne pas le découvrir le jour J.",
+        )
         self.assertNotIn("28", phrase)
+        self.assertNotIn("érivées", phrase)
+
+    def test_l_accroche_suit_la_part_reelle_des_epreuves(self):
+        # Jamais plus fort que la pastille juste dessous : "presque à chaque examen" n'est
+        # dit qu'à partir de 75 %, et sous 25 % la phrase ne parle plus de fréquence.
+        cas = [
+            ((35, 41), "Ce thème tombe presque à chaque examen."),
+            ((22, 44), "Ce thème tombe à l'examen plus d'une fois sur deux."),
+            ((14, 44), "Ce thème tombe régulièrement à l'examen."),
+        ]
+        for (occurrences, total), debut in cas:
+            plan = self._plan(frequence={"occurrences": occurrences, "epreuves_total": total, "annees": []})
+            self.assertTrue(accueil.phrase_coach(plan, "normal", 0, jour=JOUR).startswith(debut), (occurrences, total))
+
+    def test_une_frequence_faible_ne_donne_aucune_accroche(self):
+        plan = self._plan(frequence={"occurrences": 3, "epreuves_total": 41, "annees": []})
+        phrase = accueil.phrase_coach(plan, "normal", 0, jour=JOUR)
+        self.assertEqual(phrase, "25\u00a0minutes sur ce thème, et un quiz pour vérifier.")
+        self.assertNotIn("tombe", phrase)
+
+    def test_la_fin_de_phrase_tourne_d_un_jour_a_l_autre_mais_reste_stable_dans_la_journee(self):
+        plan = self._plan(frequence={"occurrences": 35, "epreuves_total": 41, "annees": []})
+        fins = {accueil.phrase_coach(plan, "normal", 0, jour=JOUR + timedelta(days=i)) for i in range(3)}
+        self.assertEqual(len(fins), 3)
+        self.assertEqual(
+            accueil.phrase_coach(plan, "normal", 0, jour=JOUR), accueil.phrase_coach(plan, "normal", 0, jour=JOUR),
+        )
+        # Toutes les variantes gardent la durée et ne contredisent pas l'accroche.
+        for phrase in fins:
+            self.assertTrue(phrase.startswith("Ce thème tombe presque à chaque examen. 25\u00a0minutes"), phrase)
+
+    def test_loin_de_l_examen_on_parle_d_avance_pas_du_jour_j(self):
+        frequence = {"occurrences": 35, "epreuves_total": 41, "annees": []}
+        loin = self._plan(frequence=frequence)
+        loin["compte_a_rebours"] = {"jours_restants": 240}
+        proche = self._plan(frequence=frequence)
+        proche["compte_a_rebours"] = {"jours_restants": 40}
+        for i in range(3):
+            jour = JOUR + timedelta(days=i)
+            self.assertNotIn("jour J", accueil.phrase_coach(loin, "normal", 0, jour=jour))
+            self.assertIn("jour J", accueil.phrase_coach(proche, "normal", 0, jour=jour))
+            self.assertNotIn("inquiétude", accueil.phrase_coach(proche, "normal", 0, jour=jour))
+
+    def test_la_duree_ne_se_coupe_pas_de_son_unite(self):
+        plan = self._plan(frequence={"occurrences": 35, "epreuves_total": 41, "annees": []})
+        self.assertIn("25\u00a0minutes", accueil.phrase_coach(plan, "normal", 0, jour=JOUR))
 
     def test_une_revision_reprend_le_fait_du_serveur(self):
         plan = self._plan("REVISION_DUE", raisons=[{"code": "echec", "texte": "Tu as raté ce thème hier."}])
         self.assertEqual(
-            accueil.phrase_coach(plan, "normal", 0),
-            "Tu as raté Dérivées hier. 25 minutes pour le fixer avant qu'il ne s'efface.",
+            accueil.phrase_coach(plan, "normal", 0, jour=JOUR),
+            "Tu as raté ce thème hier. 25\u00a0minutes pour le fixer avant qu'il ne s'efface.",
         )
 
     def test_le_retour_apres_absence_accueille_sans_reproche(self):
         phrase = accueil.phrase_coach(self._plan(), "normal", absence=9)
         self.assertTrue(phrase.startswith("Content de te revoir."))
+
+    def test_on_ne_reprend_pas_ce_qu_on_n_a_jamais_commence(self):
+        phrase = accueil.phrase_coach(self._plan(), "normal", absence=9, premiers_pas_eleve=True, jour=JOUR)
+        self.assertTrue(phrase.startswith("Content de te revoir. "))
+        self.assertNotIn("On reprend", phrase)
+        reprise = accueil.phrase_coach(self._plan(), "normal", absence=9, premiers_pas_eleve=False, jour=JOUR)
+        self.assertTrue(reprise.startswith("Content de te revoir. On reprend en douceur."))
 
     def test_le_jour_j_prime_sur_la_seance(self):
         self.assertIn("aujourd'hui", accueil.phrase_coach(self._plan(), "jour_j", 0))
@@ -108,7 +168,7 @@ class PhaseEtPhraseTests(SimpleTestCase):
 
     def test_derniere_ligne_droite_ne_promet_rien_de_neuf(self):
         phrase = accueil.phrase_coach(self._plan(), "derniere_ligne_droite", 0)
-        self.assertEqual(phrase, "Dernière ligne droite. On consolide Dérivées : 25 minutes, sans rien de neuf.")
+        self.assertEqual(phrase, "Dernière ligne droite. On consolide ce thème : 25\u00a0minutes, sans rien de neuf.")
 
 
 class PoidsTests(SimpleTestCase):
@@ -378,7 +438,10 @@ class AccueilApiTests(AccueilFixture):
         data = self.client.get(reverse("quiz:accueil")).json()
         self.assertEqual(data["absence_jours"], 10)
         if data["plan"]["etat"] == "plan_pret":
-            self.assertEqual(data["plan"]["seance"]["budget_minutes"], accueil.BUDGET_RETOUR_MINUTES)
+            # Un calibrage a une longueur fixe : on ne le raccourcit pas (voir
+            # ajuster_duree_seance), seule une vraie séance passe à dix minutes.
+            if data["plan"]["seance"]["origine"] != "DIAGNOSTIC":
+                self.assertEqual(data["plan"]["seance"]["budget_minutes"], accueil.BUDGET_RETOUR_MINUTES)
             self.assertTrue(data["phrase_coach"].startswith("Content de te revoir."))
 
     def test_sans_cursus_declare_rien_ne_casse(self):

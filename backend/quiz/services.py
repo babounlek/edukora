@@ -1070,10 +1070,33 @@ def plan_du_jour(profil, cursus, date=None):
     # lanceraient deux constructions concurrentes, et la contrainte unique ferait
     # lever la seconde. Celle qui arrive après lit simplement la séance de l'autre -
     # elles proposent de toute façon la même chose.
-    seance, _ = SeanceJournaliere.objects.get_or_create(
+    seance, creee = SeanceJournaliere.objects.get_or_create(
         profil=profil, cursus=cursus, date=date, defaults=proposition,
     )
+    if creee:
+        seance = _reconduire_budget_choisi(profil, cursus, seance, date)
     return seance
+
+
+def _reconduire_budget_choisi(profil, cursus, seance, date):
+    """
+    Reprend le temps que l'élève s'était donné à sa dernière séance : celui qui a dix
+    minutes chaque soir ne doit pas avoir à le redire chaque matin.
+
+    Seul un budget CHOISI se reconduit (voir SeanceJournaliere.budget_choisi). Le retour
+    en douceur après une absence (dix minutes imposées) n'en est pas un : la séance qui le
+    porte n'est pas marquée, donc le lendemain repart du budget par défaut. Un choix
+    reconduit reste marqué, et se reconduit donc de jour en jour jusqu'à ce que l'élève
+    le change.
+    """
+    precedente = (
+        SeanceJournaliere.objects.filter(profil=profil, cursus=cursus, date__lt=date)
+        .order_by("-date", "-ordre")
+        .first()
+    )
+    if precedente is None or not precedente.budget_choisi:
+        return seance
+    return ajuster_duree_seance(profil, cursus, precedente.budget_minutes, date, choisi=True) or seance
 
 
 def _construire_seance(profil, cursus, themes_interdits=frozenset(), avec_calibrage=True):
@@ -2079,10 +2102,14 @@ def prochaine_revision(seance):
     return schedule.due_at if schedule else None
 
 
-def ajuster_duree_seance(profil, cursus, minutes, date=None):
+def ajuster_duree_seance(profil, cursus, minutes, date=None, choisi=False):
     """
     "Combien de temps as-tu ?" - recompose la séance du jour pour le temps que l'élève
     se donne, sans changer de thème.
+
+    `choisi` : le budget vient de l'élève (ou de la reconduite de son choix, voir
+    _reconduire_budget_choisi) et non du système. Seul un budget choisi sera reconduit
+    demain.
 
     Un plan quotidien qui impose 25 minutes ne sert à rien les jours où l'élève en a
     dix : il ne fait rien du tout plutôt que moins. Le thème, lui, ne bouge pas - c'est
@@ -2097,7 +2124,15 @@ def ajuster_duree_seance(profil, cursus, minutes, date=None):
     seance = seance_du_jour(profil, cursus, date)
     if seance is None or minutes not in BUDGETS_SEANCE_MINUTES:
         return seance
-    if seance.statut != StatutSeance.PROPOSEE or seance.budget_minutes == minutes:
+    # Un calibrage a une longueur fixe : le recomposer en « 10 questions » en ferait un quiz
+    # ordinaire, et le diagnostic ne situerait plus rien (constaté en le raccourcissant).
+    if seance.statut != StatutSeance.PROPOSEE or seance.origine == OrigineSeance.DIAGNOSTIC:
+        return seance
+    if seance.budget_minutes == minutes:
+        # Rien à recomposer, mais l'élève vient de confirmer ce budget : qu'il se reconduise.
+        if choisi and not seance.budget_choisi:
+            seance.budget_choisi = True
+            seance.save(update_fields=["budget_choisi"])
         return seance
 
     etapes = _construire_etapes(
@@ -2109,7 +2144,8 @@ def ajuster_duree_seance(profil, cursus, minutes, date=None):
 
     seance.etapes = etapes
     seance.budget_minutes = minutes
-    seance.save(update_fields=["etapes", "budget_minutes"])
+    seance.budget_choisi = choisi
+    seance.save(update_fields=["etapes", "budget_minutes", "budget_choisi"])
     return seance
 
 
