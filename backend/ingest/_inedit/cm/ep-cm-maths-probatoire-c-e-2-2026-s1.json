@@ -1,0 +1,853 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-maths-probatoire-c-e-2-2026-s1",
+  "titre": "Mathématiques Probatoire C et E – Épreuve inédite n°2",
+  "blueprint_external_id": "bp-cm-maths-probatoire-c-e-2",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "3",
+      "enonce_intro_markdown": "Le club d'échecs du lycée de Bertoua compte $15$ élèves : $9$ garçons et $6$ filles. Le professeur responsable prépare le tournoi inter-lycées de la région de l'Est.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Pour représenter le club au tournoi, le professeur choisit une délégation de $5$ élèves, simultanément et sans tenir compte de l'ordre.\n\n**a)** Combien de délégations différentes peut-on former ?\n\n**b)** Combien de ces délégations comportent exactement $2$ filles ? *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour dénombrer des groupes dont l'ordre ne compte pas, on utilise les combinaisons : le nombre de façons de choisir $p$ éléments parmi $n$ est $\\dbinom{n}{p}=\\dfrac{n!}{p!\\,(n-p)!}$. Lorsque la composition du groupe est imposée, on choisit séparément chaque catégorie, puis on multiplie les nombres obtenus (principe multiplicatif).\n\n**a)** Il s'agit de choisir $5$ élèves parmi $15$, sans ordre :\n\n$$\n\\binom{15}{5}=\\dfrac{15\\times14\\times13\\times12\\times11}{5\\times4\\times3\\times2\\times1}=\\dfrac{360\\,360}{120}=3\\,003\n$$\n\nLe professeur peut former $3\\,003$ délégations.\n\n**b)** On choisit $2$ filles parmi $6$, puis $3$ garçons parmi $9$ : $\\dbinom{6}{2}=15$ et $\\dbinom{9}{3}=84$. Ces deux choix se font l'un et l'autre, donc\n\n$$\n\\binom{6}{2}\\times\\binom{9}{3}=15\\times84=1\\,260\n$$\n\nIl y a $1\\,260$ délégations qui comptent exactement $2$ filles.\n\n### Piège à éviter\nAdditionner $15$ et $84$ au lieu de les multiplier. Chaque choix de $2$ filles peut être associé à chaque choix de $3$ garçons : c'est un produit.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Reconnaît un choix sans ordre et écrit C(15, 5) pour la question a",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule 3 003 délégations",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit le produit C(6, 2) x C(9, 3) pour la question b",
+              "points": 0.25
+            },
+            {
+              "libelle": "Obtient 1 260 délégations",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "combinaisons"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex1-q1-0",
+              "competence": "Dénombrer des groupes de composition imposée par des combinaisons",
+              "contenu_markdown": "Pour dénombrer des groupes dont l'ordre ne compte pas, on utilise les combinaisons : le nombre de façons de choisir $p$ éléments parmi $n$ est $\\dbinom{n}{p}=\\dfrac{n!}{p!\\,(n-p)!}$. Lorsque la composition du groupe est imposée, on choisit séparément chaque catégorie, puis on multiplie les nombres obtenus (principe multiplicatif).",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "On souhaite que la délégation de $5$ élèves compte au moins une fille et au moins un garçon. Combien de délégations vérifient cette condition ? *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour dénombrer les cas où une condition du type « au moins un » est vérifiée, il est souvent plus rapide de passer par le cas contraire : on retranche du nombre total de possibilités celles qui ne vérifient pas la condition. Il faut alors décrire sans oubli tous les cas à retirer.\n\nLe nombre total de délégations est $\\binom{15}{5}=3\\,003$. Une délégation ne vérifie pas la condition dans deux cas seulement :\n\n- elle ne contient aucune fille : les $5$ élèves sont des garçons, soit $\\binom{9}{5}=126$ délégations ;\n- elle ne contient aucun garçon : les $5$ élèves sont des filles, soit $\\binom{6}{5}=6$ délégations.\n\nCes deux cas s'excluent l'un l'autre. Le nombre de délégations cherché est donc\n\n$$\n3\\,003-126-6=2\\,871\n$$\n\nOn retrouve ce résultat en additionnant les compositions possibles : $1$ fille et $4$ garçons ($756$), $2$ filles et $3$ garçons ($1\\,260$), $3$ filles et $2$ garçons ($720$), $4$ filles et $1$ garçon ($135$), soit $2\\,871$ délégations.\n\n### Piège à éviter\nChoisir d'abord une fille ($6$ façons), puis $4$ autres élèves parmi les $14$ restants : $6\\times\\binom{14}{4}=6\\,006$, un nombre supérieur au total $3\\,003$. Une délégation qui compte plusieurs filles est alors comptée plusieurs fois.\n\n### Conseil\nDès que tu lis « au moins », demande-toi si le cas contraire est plus court à compter.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Identifie les deux cas contraires : aucune fille et aucun garçon",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule C(9, 5) = 126 et C(6, 5) = 6",
+              "points": 0.25
+            },
+            {
+              "libelle": "Soustrait ces deux nombres du total 3 003",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut avec 2 871 délégations",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "dénombrement",
+            "combinaisons"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex1-q2-0",
+              "competence": "Traduire un événement « au moins » en dénombrement",
+              "contenu_markdown": "Pour dénombrer les cas où une condition du type « au moins un » est vérifiée, il est souvent plus rapide de passer par le cas contraire : on retranche du nombre total de possibilités celles qui ne vérifient pas la condition. Il faut alors décrire sans oubli tous les cas à retirer.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Le local du club est fermé par un cadenas à code. Un code est formé de trois lettres deux à deux distinctes, choisies dans $\\{A\\,;B\\,;C\\,;D\\,;E\\,;F\\}$, puis de deux chiffres de $0$ à $9$ qui peuvent être égaux. Par exemple, $\\mathrm{BDA}\\,07$ et $\\mathrm{FCE}\\,55$ sont des codes possibles.\n\n**a)** Combien de codes différents peut-on former ?\n\n**b)** Combien de ces codes ont leurs deux chiffres distincts ? *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn code dont l'ordre des positions compte se dénombre avec le principe multiplicatif : on multiplie le nombre de choix offerts à chaque position. Sans répétition possible, les $p$ positions se remplissent de $n\\times(n-1)\\times\\dots\\times(n-p+1)$ façons ; avec répétition autorisée, chaque position offre $n$ choix.\n\n**a)** Pour les trois lettres, qui sont distinctes et dont l'ordre compte : $6\\times5\\times4=120$ possibilités. Pour les deux chiffres, qui peuvent être égaux : $10\\times10=100$ possibilités. Le choix des lettres et celui des chiffres sont indépendants, donc\n\n$$\n120\\times100=12\\,000\n$$\n\nIl y a $12\\,000$ codes possibles.\n\n**b)** Les lettres se choisissent toujours de $120$ façons. Pour les chiffres, on a $10$ choix pour le premier et $9$ pour le second, qui doit être différent : $10\\times9=90$. Le nombre de codes à chiffres distincts est\n\n$$\n120\\times90=10\\,800\n$$\n\n### Piège à éviter\nCompter les lettres par une combinaison, $\\binom{6}{3}=20$. Les codes $\\mathrm{BDA}$ et $\\mathrm{ABD}$ sont différents : l'ordre compte, il faut un arrangement.\n\n### Conseil\nDessine les cinq cases du code et écris au-dessus de chacune son nombre de choix : il ne reste plus qu'à multiplier.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Compte 6 x 5 x 4 = 120 choix de lettres, ordre compté et sans répétition",
+              "points": 0.25
+            },
+            {
+              "libelle": "Compte 10 x 10 = 100 choix de chiffres",
+              "points": 0.25
+            },
+            {
+              "libelle": "Multiplie les deux nombres et obtient 12 000 codes",
+              "points": 0.25
+            },
+            {
+              "libelle": "Pour la question b, utilise 10 x 9 = 90 puis obtient 10 800 codes",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "dénombrement"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex1-q3-0",
+              "competence": "Dénombrer des codes en combinant arrangements et listes avec répétition",
+              "contenu_markdown": "Un code dont l'ordre des positions compte se dénombre avec le principe multiplicatif : on multiplie le nombre de choix offerts à chaque position. Sans répétition possible, les $p$ positions se remplissent de $n\\times(n-1)\\times\\dots\\times(n-p+1)$ façons ; avec répétition autorisée, chaque position offre $n$ choix.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "4",
+      "enonce_intro_markdown": "Les quatre questions de cet exercice sont indépendantes.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $|x-3|=2x-1$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour résoudre une équation de la forme $|u(x)|=v(x)$, on écrit d'abord la condition $v(x)\\geqslant0$, puisqu'une valeur absolue n'est jamais négative. On résout ensuite séparément $u(x)=v(x)$ et $u(x)=-v(x)$, puis on ne garde que les solutions qui vérifient la condition.\n\nUne valeur absolue est positive ou nulle, donc l'équation impose $2x-1\\geqslant0$, soit $x\\geqslant\\dfrac12$.\n\n**Premier cas : $x-3=2x-1$.** On obtient $x=-2$. Or $-2<\\dfrac12$ : cette valeur ne vérifie pas la condition, elle est rejetée.\n\n**Second cas : $x-3=-(2x-1)$.** On obtient $x-3=-2x+1$, donc $3x=4$ et $x=\\dfrac43$. Comme $\\dfrac43\\geqslant\\dfrac12$, cette valeur est acceptée.\n\nVérification : $\\left|\\dfrac43-3\\right|=\\dfrac53$ et $2\\times\\dfrac43-1=\\dfrac53$. L'ensemble des solutions est $S=\\left\\{\\dfrac43\\right\\}$.\n\n### Piège à éviter\nGarder $x=-2$ sans contrôle. En le remplaçant, on trouve $|-5|=5$ d'un côté et $2\\times(-2)-1=-5$ de l'autre : l'égalité est fausse.\n\n### Conseil\nUne solution trouvée en levant la valeur absolue n'est valable qu'après vérification dans l'équation de départ. Cette vérification prend dix secondes.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit la condition 2x - 1 >= 0, soit x >= 1/2",
+              "points": 0.25
+            },
+            {
+              "libelle": "Résout les deux cas x - 3 = 2x - 1 et x - 3 = -(2x - 1)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Rejette x = -2 qui ne vérifie pas la condition",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut avec l'ensemble de solutions {4/3}",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "valeur absolue"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex2-q1-0",
+              "competence": "Résoudre une équation contenant une valeur absolue",
+              "contenu_markdown": "Pour résoudre une équation de la forme $|u(x)|=v(x)$, on écrit d'abord la condition $v(x)\\geqslant0$, puisqu'une valeur absolue n'est jamais négative. On résout ensuite séparément $u(x)=v(x)$ et $u(x)=-v(x)$, puis on ne garde que les solutions qui vérifient la condition.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "**a)** Résoudre dans $\\mathbb{R}$ l'équation $5x^2-7x-6=0$.\n\n**b)** En déduire le signe du trinôme $5x^2-7x-6$ suivant les valeurs de $x$, puis résoudre l'inéquation $5x^2-7x-6\\leqslant0$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour résoudre une équation $ax^2+bx+c=0$ avec $a\\neq0$, on calcule le discriminant $\\Delta=b^2-4ac$ : si $\\Delta>0$, il y a deux racines $\\dfrac{-b\\pm\\sqrt\\Delta}{2a}$ ; si $\\Delta=0$, une racine double $-\\dfrac{b}{2a}$ ; si $\\Delta<0$, aucune racine réelle. Le trinôme a le signe de $a$ à l'extérieur des racines et le signe contraire entre elles.\n\n**a)** Ici $a=5$, $b=-7$ et $c=-6$. Le discriminant vaut\n\n$$\n\\Delta=(-7)^2-4\\times5\\times(-6)=49+120=169=13^2\n$$\n\nComme $\\Delta>0$, l'équation a deux solutions :\n\n$$\nx_1=\\dfrac{7-13}{10}=-\\dfrac35\\qquad\\text{et}\\qquad x_2=\\dfrac{7+13}{10}=2\n$$\n\n**b)** Le coefficient $a=5$ est positif. Le trinôme est donc positif pour $x<-\\dfrac35$ et pour $x>2$, nul en $-\\dfrac35$ et en $2$, négatif entre les deux racines. Les solutions de $5x^2-7x-6\\leqslant0$ sont les réels pour lesquels le trinôme est négatif ou nul :\n\n$$\nS=\\left[-\\dfrac35\\,;\\,2\\right]\n$$\n\n### Piège à éviter\nÉcrire un intervalle ouvert. L'inégalité est large : les racines, où le trinôme s'annule, font partie de l'ensemble des solutions.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule le discriminant 169",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne les deux racines -3/5 et 2",
+              "points": 0.25
+            },
+            {
+              "libelle": "Énonce le signe du trinôme avec a = 5 positif",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut avec l'intervalle fermé [-3/5 ; 2]",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "équation du second degré",
+            "discriminant"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex2-q2-0",
+              "competence": "Résoudre une inéquation du second degré par le discriminant",
+              "contenu_markdown": "Pour résoudre une équation $ax^2+bx+c=0$ avec $a\\neq0$, on calcule le discriminant $\\Delta=b^2-4ac$ : si $\\Delta>0$, il y a deux racines $\\dfrac{-b\\pm\\sqrt\\Delta}{2a}$ ; si $\\Delta=0$, une racine double $-\\dfrac{b}{2a}$ ; si $\\Delta<0$, aucune racine réelle. Le trinôme a le signe de $a$ à l'extérieur des racines et le signe contraire entre elles.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Soit $m$ un réel. On considère l'équation $(E_m)$ d'inconnue $x$ : $x^2-mx+m+3=0$.\n\nCalculer le discriminant de $(E_m)$ en fonction de $m$, puis discuter, suivant les valeurs de $m$, le nombre de solutions réelles de $(E_m)$. Donner les solutions lorsque $(E_m)$ a une racine double. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour une équation du second degré qui dépend d'un paramètre $m$, on calcule le discriminant en fonction de $m$, puis on étudie son signe comme celui d'un trinôme en $m$ : deux solutions réelles si $\\Delta>0$, une solution double si $\\Delta=0$, aucune si $\\Delta<0$.\n\nAvec $a=1$, $b=-m$ et $c=m+3$ :\n\n$$\n\\Delta=(-m)^2-4(m+3)=m^2-4m-12=(m+2)(m-6)\n$$\n\nLe trinôme $\\Delta$, vu comme fonction de $m$, a pour racines $-2$ et $6$ et un coefficient dominant positif. On en déduit :\n\n- si $m<-2$ ou $m>6$, alors $\\Delta>0$ : $(E_m)$ a deux solutions réelles distinctes ;\n- si $m=-2$ ou $m=6$, alors $\\Delta=0$ : $(E_m)$ a une solution double ;\n- si $-2<m<6$, alors $\\Delta<0$ : $(E_m)$ n'a aucune solution réelle.\n\nLa racine double vaut $\\dfrac{m}{2}$. Pour $m=-2$, l'équation s'écrit $x^2+2x+1=0$, soit $(x+1)^2=0$, et la solution est $x=-1$. Pour $m=6$, elle s'écrit $x^2-6x+9=0$, soit $(x-3)^2=0$, et la solution est $x=3$.\n\n### Piège à éviter\nMélanger l'inconnue $x$ et le paramètre $m$. Ici le discriminant ne dépend que de $m$ : c'est son signe, étudié en fonction de $m$, qui décide du nombre de solutions en $x$.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule le discriminant m² - 4m - 12",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trouve les racines -2 et 6 de ce discriminant (ou le factorise)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Discute correctement les trois cas selon le signe du discriminant",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne les solutions doubles x = -1 pour m = -2 et x = 3 pour m = 6",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "équation du second degré",
+            "discriminant"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex2-q3-0",
+              "competence": "Calculer le discriminant d'une équation du second degré paramétrée",
+              "contenu_markdown": "Pour une équation du second degré qui dépend d'un paramètre $m$, on calcule le discriminant en fonction de $m$, puis on étudie son signe comme celui d'un trinôme en $m$ : deux solutions réelles si $\\Delta>0$, une solution double si $\\Delta=0$, aucune si $\\Delta<0$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Un grossiste de Foumbot vend de l'ananas à $x$ francs le kilogramme et de la papaye à $y$ francs le kilogramme. Un restaurateur paie $2\\,700$ francs pour $3$ kg d'ananas et $2$ kg de papaye. Un second client paie $4\\,275$ francs pour $2$ kg d'ananas et $5$ kg de papaye.\n\n**a)** Écrire le système que vérifient $x$ et $y$, puis le résoudre par la méthode des déterminants.\n\n**b)** Quel est le prix de $4$ kg d'ananas et de $3$ kg de papaye ? *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn système $\\begin{cases}ax+by=c\\\\a'x+b'y=c'\\end{cases}$ a une solution unique lorsque son déterminant $\\Delta=ab'-a'b$ est non nul, donnée par $x=\\dfrac{cb'-c'b}{\\Delta}$ et $y=\\dfrac{ac'-a'c}{\\Delta}$. Si $\\Delta=0$, le système n'a aucune solution ou en a une infinité.\n\n**a)** Les deux achats donnent le système\n\n$$\n\\begin{cases}\n3x+2y=2\\,700 \\\\\n2x+5y=4\\,275\n\\end{cases}\n$$\n\nSon déterminant est $\\Delta=3\\times5-2\\times2=11$. Il est non nul : le système a une solution unique.\n\n$$\nx=\\dfrac{2\\,700\\times5-4\\,275\\times2}{11}=\\dfrac{13\\,500-8\\,550}{11}=\\dfrac{4\\,950}{11}=450\n$$\n\n$$\ny=\\dfrac{3\\times4\\,275-2\\times2\\,700}{11}=\\dfrac{12\\,825-5\\,400}{11}=\\dfrac{7\\,425}{11}=675\n$$\n\nL'ananas coûte $450$ F le kilogramme et la papaye $675$ F le kilogramme. Vérification : $3\\times450+2\\times675=2\\,700$ et $2\\times450+5\\times675=4\\,275$.\n\n**b)** Quatre kilogrammes d'ananas et trois de papaye coûtent $4\\times450+3\\times675=1\\,800+2\\,025=3\\,825$ francs.\n\n### Piège à éviter\nIntervertir les numérateurs de $x$ et de $y$. Pour $x$, on remplace la colonne des coefficients de $x$ par les seconds membres ; pour $y$, celle des coefficients de $y$.\n\n### Conseil\nTermine toujours en remplaçant $x$ et $y$ dans les deux équations : une erreur sur un déterminant se voit immédiatement.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit le système 3x + 2y = 2 700 et 2x + 5y = 4 275",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le déterminant 11 et constate qu'il est non nul",
+              "points": 0.25
+            },
+            {
+              "libelle": "Obtient x = 450 et y = 675",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le prix demandé, 3 825 francs",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "Systèmes linéaires"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex2-q4-0",
+              "competence": "Résoudre un système de deux équations linéaires par les déterminants",
+              "contenu_markdown": "Un système $\\begin{cases}ax+by=c\\\\a'x+b'y=c'\\end{cases}$ a une solution unique lorsque son déterminant $\\Delta=ab'-a'b$ est non nul, donnée par $x=\\dfrac{cb'-c'b}{\\Delta}$ et $y=\\dfrac{ac'-a'c}{\\Delta}$. Si $\\Delta=0$, le système n'a aucune solution ou en a une infinité.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "4",
+      "enonce_intro_markdown": "Le plan est muni d'un repère orthonormé $(O\\,;\\vec\\imath,\\vec\\jmath)$ d'unité $1$ cm. Pour dessiner le logo d'un club, un graphiste part du triangle $ABC$ de la figure 1, avec $A(2\\,;1)$, $B(6\\,;1)$ et $C(2\\,;4)$. Il utilise trois transformations du plan : la rotation $r$ de centre $O$ et d'angle $\\dfrac{\\pi}{2}$ (sens direct), l'homothétie $h$ de centre $A$ et de rapport $2$, et la translation $t$ de vecteur $\\vec u\\,(1\\,;-3)$.\n\n<svg viewBox='0 0 440 340' role='img' aria-labelledby='fig5d2b1d86t fig5d2b1d86d' style='width:100%;max-width:440px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig5d2b1d86t'>Triangle ABC dans un repère orthonormé</title><desc id='fig5d2b1d86d'>Triangle ABC rectangle en A dans un repère orthonormé d'unité 1 cm, avec A(2 ; 1), B(6 ; 1) et C(2 ; 4). Le côté AB est horizontal et le côté AC est vertical.</desc><defs><clipPath id='clip5d2b1d86_1'><rect x='40' y='16' width='360' height='280'/></clipPath></defs><line x1='40' y1='16' x2='40' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='80' y1='16' x2='80' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='120' y1='16' x2='120' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='160' y1='16' x2='160' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='200' y1='16' x2='200' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='240' y1='16' x2='240' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='280' y1='16' x2='280' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='320' y1='16' x2='320' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='360' y1='16' x2='360' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='400' y1='16' x2='400' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='296' x2='400' y2='296' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='256' x2='400' y2='256' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='216' x2='400' y2='216' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='176' x2='400' y2='176' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='136' x2='400' y2='136' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='96' x2='400' y2='96' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='56' x2='400' y2='56' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='16' x2='400' y2='16' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='253' x2='40' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='80' y1='253' x2='80' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='120' y1='253' x2='120' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='160' y1='253' x2='160' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='200' y1='253' x2='200' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='240' y1='253' x2='240' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='280' y1='253' x2='280' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='320' y1='253' x2='320' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='360' y1='253' x2='360' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='400' y1='253' x2='400' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='296' x2='83' y2='296' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='256' x2='83' y2='256' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='216' x2='83' y2='216' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='176' x2='83' y2='176' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='136' x2='83' y2='136' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='96' x2='83' y2='96' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='56' x2='83' y2='56' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='77' y1='16' x2='83' y2='16' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='40' y1='256' x2='406' y2='256' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='406,256 397,260.1 397,251.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='80' y1='296' x2='80' y2='10' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='80,10 84,19 76,19' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><polygon points='160,216 320,216 160,96' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='2.2' stroke-linejoin='round'/><circle cx='160' cy='216' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='320' cy='216' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='160' cy='96' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><text x='40' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='120' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='160' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='200' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='240' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='280' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='320' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='360' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='400' y='273' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='73' y='300' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='73' y='220' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='73' y='180' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='73' y='140' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='73' y='100' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='73' y='60' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='73' y='20' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='73' y='272' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='404' y='247' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='88' y='6' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='148' y='236' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='330' y='236' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='148' y='90' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='220' y='336' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 1 : le triangle ABC (unité : 1 cm)</text></svg>\n\n",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Déterminer les coordonnées des images $A'$, $B'$ et $C'$ de $A$, $B$ et $C$ par la rotation $r$. Vérifier que $A'B'=AB$ et $A'C'=AC$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne rotation conserve les distances, les angles, les milieux et l'alignement : l'image d'un segment $[MN]$ est le segment $[M'N']$ de même longueur. La rotation de centre $O$ et d'angle $\\dfrac\\pi2$ (sens direct) associe au point $M(x\\,;y)$ le point $M'(-y\\,;x)$.\n\nOn applique $(x\\,;y)\\mapsto(-y\\,;x)$ à chaque sommet :\n\n- $A(2\\,;1)$ a pour image $A'(-1\\,;2)$ ;\n- $B(6\\,;1)$ a pour image $B'(-1\\,;6)$ ;\n- $C(2\\,;4)$ a pour image $C'(-4\\,;2)$.\n\nLes côtés valent $AB=\\sqrt{4^2+0^2}=4$ et $AC=\\sqrt{0^2+3^2}=3$. Pour les images, $A'B'=\\sqrt{0^2+4^2}=4=AB$ et $A'C'=\\sqrt{3^2+0^2}=3=AC$. La rotation conserve bien les longueurs. On a de même $B'C'=\\sqrt{3^2+4^2}=5=BC$.\n\n### Piège à éviter\nSe tromper de sens. Pour l'angle $+\\dfrac\\pi2$, on a $(x\\,;y)\\mapsto(-y\\,;x)$ ; l'angle $-\\dfrac\\pi2$ donnerait $(x\\,;y)\\mapsto(y\\,;-x)$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Utilise la formule (x ; y) devient (-y ; x) pour la rotation d'angle pi/2",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne A'(-1 ; 2), B'(-1 ; 6) et C'(-4 ; 2)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule AB = 4 et A'B' = 4",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule AC = 3 et A'C' = 3",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "rotation"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex3-q1-0",
+              "competence": "Images de points et de segments par une rotation",
+              "contenu_markdown": "Une rotation conserve les distances, les angles, les milieux et l'alignement : l'image d'un segment $[MN]$ est le segment $[M'N']$ de même longueur. La rotation de centre $O$ et d'angle $\\dfrac\\pi2$ (sens direct) associe au point $M(x\\,;y)$ le point $M'(-y\\,;x)$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Déterminer les coordonnées des images $B_1$ et $C_1$ de $B$ et $C$ par l'homothétie $h$. Calculer l'aire du triangle $ABC$ et celle du triangle $AB_1C_1$, puis comparer ces deux aires. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne homothétie de centre $\\Omega$ et de rapport $k$ associe à tout point $M$ le point $M'$ défini par $\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M}$. Elle multiplie les longueurs par $|k|$ et les aires par $k^2$, et elle conserve les angles et le parallélisme.\n\nLe centre de $h$ est $A$, donc $A$ est invariant. Pour $B$ : $\\overrightarrow{AB}=(4\\,;0)$, donc $\\overrightarrow{AB_1}=2\\overrightarrow{AB}=(8\\,;0)$ et $B_1(10\\,;1)$. Pour $C$ : $\\overrightarrow{AC}=(0\\,;3)$, donc $\\overrightarrow{AC_1}=(0\\,;6)$ et $C_1(2\\,;7)$.\n\nLe triangle $ABC$ est rectangle en $A$, avec $AB=4$ et $AC=3$ : son aire vaut $\\dfrac12\\times4\\times3=6\\ \\text{cm}^2$. Le triangle $AB_1C_1$ est rectangle en $A$, avec $AB_1=8$ et $AC_1=6$ : son aire vaut $\\dfrac12\\times8\\times6=24\\ \\text{cm}^2$.\n\nLe rapport des aires est $\\dfrac{24}{6}=4=2^2$ : l'aire a été multipliée par $k^2$. La figure 2 montre les deux triangles $ABC$ et $AB_1C_1$, ainsi que le triangle $A'B'C'$ obtenu à la question précédente.\n\n<svg viewBox='0 0 540 330' role='img' aria-labelledby='figef01048bt figef01048bd' style='width:100%;max-width:540px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='figef01048bt'>Triangle ABC, son image par la rotation r et son image par l'homothétie h</title><desc id='figef01048bd'>Dans un repère orthonormé, le triangle ABC de sommets A(2 ; 1), B(6 ; 1), C(2 ; 4), son image A′B′C′ par la rotation de centre O et d'angle π/2 de sommets A′(−1 ; 2), B′(−1 ; 6), C′(−4 ; 2), et son image AB₁C₁ par l'homothétie de centre A et de rapport 2 de sommets A(2 ; 1), B₁(10 ; 1), C₁(2 ; 7). Le triangle AB₁C₁ a quatre fois l'aire de ABC.</desc><defs><clipPath id='clipef01048b_1'><rect x='36' y='14' width='480' height='270'/></clipPath></defs><line x1='36' y1='14' x2='36' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='66' y1='14' x2='66' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='96' y1='14' x2='96' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='126' y1='14' x2='126' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='156' y1='14' x2='156' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='186' y1='14' x2='186' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='216' y1='14' x2='216' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='246' y1='14' x2='246' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='276' y1='14' x2='276' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='306' y1='14' x2='306' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='336' y1='14' x2='336' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='366' y1='14' x2='366' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='396' y1='14' x2='396' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='426' y1='14' x2='426' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='456' y1='14' x2='456' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='486' y1='14' x2='486' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='516' y1='14' x2='516' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='284' x2='516' y2='284' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='254' x2='516' y2='254' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='224' x2='516' y2='224' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='194' x2='516' y2='194' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='164' x2='516' y2='164' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='134' x2='516' y2='134' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='104' x2='516' y2='104' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='74' x2='516' y2='74' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='44' x2='516' y2='44' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='14' x2='516' y2='14' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='36' y1='251' x2='36' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='66' y1='251' x2='66' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='96' y1='251' x2='96' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='126' y1='251' x2='126' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='156' y1='251' x2='156' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='186' y1='251' x2='186' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='216' y1='251' x2='216' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='246' y1='251' x2='246' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='276' y1='251' x2='276' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='306' y1='251' x2='306' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='336' y1='251' x2='336' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='366' y1='251' x2='366' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='396' y1='251' x2='396' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='426' y1='251' x2='426' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='456' y1='251' x2='456' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='486' y1='251' x2='486' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='516' y1='251' x2='516' y2='257' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='284' x2='189' y2='284' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='254' x2='189' y2='254' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='224' x2='189' y2='224' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='194' x2='189' y2='194' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='164' x2='189' y2='164' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='134' x2='189' y2='134' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='104' x2='189' y2='104' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='74' x2='189' y2='74' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='44' x2='189' y2='44' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='183' y1='14' x2='189' y2='14' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='36' y1='254' x2='522' y2='254' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='522,254 513,258.1 513,249.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='186' y1='284' x2='186' y2='8' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='186,8 190.1,17 181.9,17' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><polygon points='246,224 486,224 246,44' fill='none' stroke='var(--primary,#0f6b4f)' stroke-width='2.2' stroke-linejoin='round'/><polygon points='156,194 156,74 66,194' fill='none' stroke='var(--info,#2a6fba)' stroke-width='2.2' stroke-linejoin='round'/><polygon points='246,224 366,224 246,134' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='2.6' stroke-linejoin='round'/><circle cx='246' cy='224' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='366' cy='224' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='246' cy='134' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='156' cy='194' r='3.5' fill='var(--info,#2a6fba)' stroke='var(--info,#2a6fba)' stroke-width='1'/><circle cx='156' cy='74' r='3.5' fill='var(--info,#2a6fba)' stroke='var(--info,#2a6fba)' stroke-width='1'/><circle cx='66' cy='194' r='3.5' fill='var(--info,#2a6fba)' stroke='var(--info,#2a6fba)' stroke-width='1'/><circle cx='486' cy='224' r='3.5' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='246' cy='44' r='3.5' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='36' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−5</text><text x='66' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−4</text><text x='96' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−3</text><text x='126' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='156' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='216' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='246' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='276' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='306' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='336' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='366' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='396' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='426' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='456' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>9</text><text x='486' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>10</text><text x='516' y='271' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>11</text><text x='179' y='288' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='179' y='228' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='179' y='198' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='179' y='168' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='179' y='138' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='179' y='108' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='179' y='78' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='179' y='48' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='179' y='18' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='179' y='270' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='520' y='245' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='194' y='4' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='236' y='244' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='366' y='244' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='257' y='132' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='146' y='212' font-size='13' text-anchor='end' fill='var(--info,#2a6fba)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A′</text><text x='146' y='70' font-size='13' text-anchor='end' fill='var(--info,#2a6fba)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B′</text><text x='56' y='212' font-size='13' text-anchor='end' fill='var(--info,#2a6fba)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C′</text><text x='486' y='244' font-size='13' text-anchor='middle' fill='var(--primary,#0f6b4f)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B₁</text><text x='256' y='40' font-size='13' text-anchor='start' fill='var(--primary,#0f6b4f)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C₁</text><text x='111' y='32' font-size='14' text-anchor='middle' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>r(ABC)</text><text x='402' y='86' font-size='14' text-anchor='middle' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>h(ABC)</text><text x='276' y='328' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 2 : ABC (noir), r(ABC) (bleu) et h(ABC) (vert)</text></svg>\n\n### Piège à éviter\nMultiplier l'aire par $k$, soit par $2$. Les deux dimensions du triangle sont doublées : l'aire est multipliée par $2\\times2=4$.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Traduit h par la relation vectorielle AM1 = 2 AM",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne B1(10 ; 1) et C1(2 ; 7)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule les aires 6 et 24",
+              "points": 0.25
+            },
+            {
+              "libelle": "Compare les aires : multipliées par 4, soit k au carré",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "homothétie"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex3-q2-0",
+              "competence": "Multiplier les longueurs par |k| sous une homothétie de rapport k",
+              "contenu_markdown": "Une homothétie de centre $\\Omega$ et de rapport $k$ associe à tout point $M$ le point $M'$ défini par $\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M}$. Elle multiplie les longueurs par $|k|$ et les aires par $k^2$, et elle conserve les angles et le parallélisme.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "On note $s=t\\circ r$ la transformation qui consiste à appliquer d'abord $r$, puis $t$.\n\n**a)** Montrer que $s$ associe au point $M(x\\,;y)$ le point $M''(-y+1\\,;x-3)$, puis donner les images de $A$, $B$ et $C$.\n\n**b)** Déterminer le point invariant de $s$. Quelle est la nature de $s$ ? Préciser ses éléments caractéristiques. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa composée d'une rotation d'angle $\\theta\\neq0$ et d'une translation est une rotation de même angle $\\theta$. Pour l'identifier, on écrit l'expression analytique de la composée en appliquant les transformations dans l'ordre indiqué, puis on cherche son point invariant, qui est le centre de la rotation.\n\n**a)** Le point $M(x\\,;y)$ a pour image $r(M)=(-y\\,;x)$. La translation de vecteur $\\vec u\\,(1\\,;-3)$ ajoute ensuite $1$ à l'abscisse et retranche $3$ à l'ordonnée :\n\n$$\ns(M)=(-y+1\\,;\\,x-3)\n$$\n\nOn en déduit $A''=s(A)=(0\\,;-1)$, $B''=s(B)=(0\\,;3)$ et $C''=s(C)=(-3\\,;-1)$.\n\n**b)** Un point $\\Omega(x\\,;y)$ est invariant lorsque $s(\\Omega)=\\Omega$, c'est-à-dire lorsque $x=-y+1$ et $y=x-3$. En remplaçant, $x=-(x-3)+1$, donc $2x=4$, $x=2$ et $y=-1$. Le point invariant est $\\Omega(2\\,;-1)$.\n\nLa composée d'une rotation d'angle $\\dfrac\\pi2$ et d'une translation est une rotation d'angle $\\dfrac\\pi2$. Donc $s$ est la rotation de centre $\\Omega(2\\,;-1)$ et d'angle $\\dfrac\\pi2$. Contrôle sur $A$ : $\\overrightarrow{\\Omega A}=(0\\,;2)$ et $\\overrightarrow{\\Omega A''}=(-2\\,;0)$ ont la même longueur $2$ et forment un angle droit direct, comme sur la figure 3.\n\n<svg viewBox='0 0 520 400' role='img' aria-labelledby='fig3e99d2c9t fig3e99d2c9d' style='width:100%;max-width:520px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig3e99d2c9t'>Triangle ABC et son image par la composée s de la rotation r puis de la translation t</title><desc id='fig3e99d2c9d'>Dans un repère orthonormé, le triangle ABC de sommets A(2 ; 1), B(6 ; 1), C(2 ; 4) et son image A″B″C″ par la transformation s, de sommets A″(0 ; −1), B″(0 ; 3), C″(−3 ; −1). Le point Ω(2 ; −1) est le centre de s, qui est une rotation d'angle π/2. Les segments ΩA et ΩA″ ont la même longueur 2 et sont perpendiculaires.</desc><defs><clipPath id='clip3e99d2c9_1'><rect x='40' y='14' width='432' height='324'/></clipPath></defs><line x1='40' y1='14' x2='40' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='76' y1='14' x2='76' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='112' y1='14' x2='112' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='148' y1='14' x2='148' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='184' y1='14' x2='184' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='220' y1='14' x2='220' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='256' y1='14' x2='256' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='292' y1='14' x2='292' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='328' y1='14' x2='328' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='364' y1='14' x2='364' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='400' y1='14' x2='400' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='436' y1='14' x2='436' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='472' y1='14' x2='472' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='338' x2='472' y2='338' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='302' x2='472' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='266' x2='472' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='230' x2='472' y2='230' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='194' x2='472' y2='194' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='158' x2='472' y2='158' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='122' x2='472' y2='122' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='86' x2='472' y2='86' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='50' x2='472' y2='50' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='14' x2='472' y2='14' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='227' x2='40' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='76' y1='227' x2='76' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='112' y1='227' x2='112' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='148' y1='227' x2='148' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='184' y1='227' x2='184' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='220' y1='227' x2='220' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='256' y1='227' x2='256' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='292' y1='227' x2='292' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='328' y1='227' x2='328' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='364' y1='227' x2='364' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='400' y1='227' x2='400' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='436' y1='227' x2='436' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='472' y1='227' x2='472' y2='233' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='338' x2='187' y2='338' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='302' x2='187' y2='302' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='266' x2='187' y2='266' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='230' x2='187' y2='230' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='194' x2='187' y2='194' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='158' x2='187' y2='158' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='122' x2='187' y2='122' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='86' x2='187' y2='86' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='50' x2='187' y2='50' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='181' y1='14' x2='187' y2='14' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='40' y1='230' x2='478' y2='230' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='478,230 469,234.1 469,225.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='184' y1='338' x2='184' y2='8' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='184,8 188.1,17 179.9,17' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='256' y1='266' x2='256' y2='194' stroke='var(--gold,#d9a21f)' stroke-width='1.8' stroke-dasharray='6 4' stroke-linecap='round'/><line x1='256' y1='266' x2='184' y2='266' stroke='var(--gold,#d9a21f)' stroke-width='1.8' stroke-dasharray='6 4' stroke-linecap='round'/><polyline points='256,254.5 244.5,254.5 244.5,266' fill='none' stroke='var(--gold,#d9a21f)' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'/><polygon points='256,194 400,194 256,86' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='2.4' stroke-linejoin='round'/><polygon points='184,266 184,122 76,266' fill='none' stroke='var(--info,#2a6fba)' stroke-width='2.4' stroke-linejoin='round'/><circle cx='256' cy='194' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='400' cy='194' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='256' cy='86' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='184' cy='266' r='3.5' fill='var(--info,#2a6fba)' stroke='var(--info,#2a6fba)' stroke-width='1'/><circle cx='184' cy='122' r='3.5' fill='var(--info,#2a6fba)' stroke='var(--info,#2a6fba)' stroke-width='1'/><circle cx='76' cy='266' r='3.5' fill='var(--info,#2a6fba)' stroke='var(--info,#2a6fba)' stroke-width='1'/><circle cx='256' cy='266' r='3.5' fill='var(--gold,#d9a21f)' stroke='var(--gold,#d9a21f)' stroke-width='1'/><text x='40' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−4</text><text x='76' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−3</text><text x='112' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='148' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='220' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='256' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='292' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='328' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='364' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='400' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='436' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='472' y='247' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='177' y='342' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−3</text><text x='177' y='306' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='177' y='270' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='177' y='198' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='177' y='162' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='177' y='126' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='177' y='90' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='177' y='54' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='177' y='18' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='177' y='246' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='476' y='221' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='192' y='4' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='246' y='186' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='410' y='214' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='266' y='82' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='174' y='286' font-size='13' text-anchor='end' fill='var(--info,#2a6fba)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A″</text><text x='194' y='118' font-size='13' text-anchor='start' fill='var(--info,#2a6fba)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B″</text><text x='68' y='286' font-size='13' text-anchor='end' fill='var(--info,#2a6fba)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C″</text><text x='266' y='286' font-size='13' text-anchor='start' fill='var(--gold,#d9a21f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>Ω(2 ; −1)</text><text x='126.4' y='57.2' font-size='14' text-anchor='middle' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>s(ABC)</text><text x='256' y='384' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 3 : ABC, son image par s et le centre Ω</text></svg>\n\n### Piège à éviter\nInverser l'ordre des transformations. Avec $r\\circ t$ (d'abord $t$, puis $r$), le point $A$ aurait pour image $(2\\,;3)$, et non $(0\\,;-1)$.\n\n### Conseil\nVérifie ton centre : $\\Omega A$ et $\\Omega A''$ doivent avoir la même longueur et former l'angle de la rotation.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit l'expression analytique s(M) = (-y + 1 ; x - 3)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne A''(0 ; -1), B''(0 ; 3) et C''(-3 ; -1)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Résout s(M) = M et trouve le point invariant (2 ; -1)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut : rotation d'angle pi/2 de centre (2 ; -1)",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "rotation",
+            "translation"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex3-q3-0",
+              "competence": "Identifier la nature de la composée d'une rotation et d'une translation",
+              "contenu_markdown": "La composée d'une rotation d'angle $\\theta\\neq0$ et d'une translation est une rotation de même angle $\\theta$. Pour l'identifier, on écrit l'expression analytique de la composée en appliquant les transformations dans l'ordre indiqué, puis on cherche son point invariant, qui est le centre de la rotation.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Soit $J$ le milieu du segment $[BC]$. On note $\\sigma$ la transformation qui, à tout point $M$ du plan, associe le point $M'$ tel que $\\overrightarrow{JM'}=-\\overrightarrow{JM}$.\n\n**a)** Reconnaître $\\sigma$ et donner ses éléments caractéristiques.\n\n**b)** Calculer les coordonnées de $J$, puis celles du point $D=\\sigma(A)$.\n\n**c)** Démontrer que $ABDC$ est un rectangle et que $J$ est son centre de symétrie. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nSi, pour tout point $M$, le point $M'$ vérifie $\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M}$ avec $k\\neq0$, la transformation est l'homothétie de centre $\\Omega$ et de rapport $k$. Pour $k=-1$, c'est la symétrie centrale de centre $\\Omega$, et $\\Omega$ est le milieu de $[MM']$. Une figure globalement conservée par cette symétrie admet $\\Omega$ pour centre de symétrie.\n\n**a)** La relation $\\overrightarrow{JM'}=-\\overrightarrow{JM}$ est de la forme $\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M}$ avec $\\Omega=J$ et $k=-1$. Donc $\\sigma$ est l'homothétie de centre $J$ et de rapport $-1$, c'est-à-dire la symétrie centrale de centre $J$.\n\n**b)** $J$ est le milieu de $[BC]$ avec $B(6\\,;1)$ et $C(2\\,;4)$ :\n\n$$\nJ\\left(\\dfrac{6+2}{2}\\,;\\dfrac{1+4}{2}\\right)=\\left(4\\,;\\dfrac52\\right)\n$$\n\nComme $D=\\sigma(A)$, le point $J$ est le milieu de $[AD]$, donc $D=2J-A=(8-2\\,;5-1)=(6\\,;4)$.\n\n**c)** Les diagonales $[AD]$ et $[BC]$ du quadrilatère $ABDC$ ont le même milieu $J$ : c'est un parallélogramme. De plus $\\overrightarrow{AB}=(4\\,;0)$ et $\\overrightarrow{AC}=(0\\,;3)$ donnent $\\overrightarrow{AB}\\cdot\\overrightarrow{AC}=0$ : l'angle en $A$ est droit. Un parallélogramme qui a un angle droit est un rectangle : $ABDC$ est un rectangle de dimensions $4$ et $3$.\n\nLa symétrie $\\sigma$ échange $A$ et $D$, $B$ et $C$. Elle transforme donc le rectangle en lui-même : $J$ est le centre de symétrie de $ABDC$ (figure 4).\n\n<svg viewBox='0 0 470 380' role='img' aria-labelledby='fig2c37ae77t fig2c37ae77d' style='width:100%;max-width:470px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig2c37ae77t'>Rectangle ABDC et son centre de symétrie J</title><desc id='fig2c37ae77d'>Dans un repère orthonormé, le rectangle ABDC de sommets A(2 ; 1), B(6 ; 1), D(6 ; 4) et C(2 ; 4). Ses diagonales AD et BC se coupent en leur milieu commun J(4 ; 2,5), centre de symétrie du rectangle.</desc><defs><clipPath id='clip2c37ae77_1'><rect x='40' y='14' width='384' height='288'/></clipPath></defs><line x1='40' y1='14' x2='40' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='88' y1='14' x2='88' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='136' y1='14' x2='136' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='184' y1='14' x2='184' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='232' y1='14' x2='232' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='280' y1='14' x2='280' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='328' y1='14' x2='328' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='376' y1='14' x2='376' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='424' y1='14' x2='424' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='302' x2='424' y2='302' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='254' x2='424' y2='254' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='206' x2='424' y2='206' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='158' x2='424' y2='158' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='110' x2='424' y2='110' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='62' x2='424' y2='62' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='14' x2='424' y2='14' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='40' y1='299' x2='40' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='88' y1='299' x2='88' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='136' y1='299' x2='136' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='184' y1='299' x2='184' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='232' y1='299' x2='232' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='280' y1='299' x2='280' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='328' y1='299' x2='328' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='376' y1='299' x2='376' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='424' y1='299' x2='424' y2='305' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='37' y1='302' x2='43' y2='302' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='37' y1='254' x2='43' y2='254' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='37' y1='206' x2='43' y2='206' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='37' y1='158' x2='43' y2='158' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='37' y1='110' x2='43' y2='110' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='37' y1='62' x2='43' y2='62' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='37' y1='14' x2='43' y2='14' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='40' y1='302' x2='430' y2='302' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='430,302 421,306.1 421,297.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='40' y1='302' x2='40' y2='8' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='40,8 44,17 36,17' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='136' y1='254' x2='328' y2='110' stroke='var(--gold,#d9a21f)' stroke-width='1.8' stroke-dasharray='6 4' stroke-linecap='round'/><line x1='328' y1='254' x2='136' y2='110' stroke='var(--gold,#d9a21f)' stroke-width='1.8' stroke-dasharray='6 4' stroke-linecap='round'/><polyline points='149.4,254 149.4,240.6 136,240.6' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='1.4' stroke-linejoin='round' stroke-linecap='round'/><polygon points='136,254 328,254 328,110 136,110' fill='none' stroke='var(--foreground,#161d1a)' stroke-width='2.4' stroke-linejoin='round'/><circle cx='136' cy='254' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='328' cy='254' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='328' cy='110' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='136' cy='110' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='232' cy='182' r='3.5' fill='var(--gold,#d9a21f)' stroke='var(--gold,#d9a21f)' stroke-width='1'/><text x='88' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='136' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='184' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='232' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='280' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='328' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='376' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='424' y='319' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='33' y='258' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='33' y='210' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='33' y='162' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='33' y='114' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='33' y='66' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='33' y='18' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='33' y='318' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='428' y='293' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='48' y='4' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='126' y='274' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='338' y='274' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='338' y='104' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>D</text><text x='126' y='104' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='232' y='170' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>J</text><text x='232' y='348' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 4 : le rectangle ABDC et son centre J</text></svg>\n\n### Conseil\nPour prouver qu'un quadrilatère est un rectangle, montre d'abord que c'est un parallélogramme (diagonales de même milieu), puis qu'il a un angle droit.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Reconnaît l'homothétie de centre J et de rapport -1, soit la symétrie centrale de centre J",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule J(4 ; 5/2) et D(6 ; 4)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Montre que ABDC est un parallélogramme : diagonales de même milieu J",
+              "points": 0.25
+            },
+            {
+              "libelle": "Montre l'angle droit en A et conclut : rectangle de centre de symétrie J",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "homothétie",
+            "centre de symétrie"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex3-q4-0",
+              "competence": "Identifier une homothétie à partir d'une relation DM' = k·DM",
+              "contenu_markdown": "Si, pour tout point $M$, le point $M'$ vérifie $\\overrightarrow{\\Omega M'}=k\\,\\overrightarrow{\\Omega M}$ avec $k\\neq0$, la transformation est l'homothétie de centre $\\Omega$ et de rapport $k$. Pour $k=-1$, c'est la symétrie centrale de centre $\\Omega$, et $\\Omega$ est le milieu de $[MM']$. Une figure globalement conservée par cette symétrie admet $\\Omega$ pour centre de symétrie.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "4",
+      "points": "4,5",
+      "enonce_intro_markdown": "Pour soigner une infection, une infirmière de Limbé administre à un patient une dose de $300$ mg d'un antibiotique toutes les six heures. Entre deux prises, l'organisme élimine $25\\,\\%$ de la quantité présente. On note $u_n$ la quantité d'antibiotique, en mg, présente dans le sang du patient juste après la $(n+1)$-ième prise. Ainsi $u_0=300$ et, pour tout entier naturel $n$, $u_{n+1}=0{,}75\\,u_n+300$.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Calculer $u_1$, $u_2$ et $u_3$. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour calculer les premiers termes d'une suite définie par une relation de récurrence, on applique la relation en remplaçant $n$ successivement par $0$, $1$, $2$, et ainsi de suite : chaque terme calculé sert à obtenir le suivant.\n\nOn applique la relation $u_{n+1}=0{,}75\\,u_n+300$ trois fois de suite :\n\n$$\nu_1=0{,}75\\times300+300=525\n$$\n\n$$\nu_2=0{,}75\\times525+300=393{,}75+300=693{,}75\n$$\n\n$$\nu_3=0{,}75\\times693{,}75+300=520{,}3125+300=820{,}3125\\approx820{,}31\n$$",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule u1 = 525",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule u2 = 693,75 et u3 environ 820,31",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite récurrente"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex4-q1-0",
+              "competence": "Calculer les premiers termes d'une suite définie par récurrence",
+              "contenu_markdown": "Pour calculer les premiers termes d'une suite définie par une relation de récurrence, on applique la relation en remplaçant $n$ successivement par $0$, $1$, $2$, et ainsi de suite : chaque terme calculé sert à obtenir le suivant.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "On pose $v_n=u_n-1\\,200$ pour tout entier naturel $n$. Montrer que $(v_n)$ est une suite géométrique dont on précisera la raison et le premier terme. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour une suite définie par $u_{n+1}=a\\,u_n+b$ avec $a\\neq1$, la suite auxiliaire $v_n=u_n-\\ell$, où $\\ell$ est la solution de l'équation $\\ell=a\\,\\ell+b$, est géométrique de raison $a$. On le démontre en exprimant $v_{n+1}$ avec la relation de récurrence, puis en factorisant par $a$ pour faire apparaître $v_n$.\n\nPour tout entier naturel $n$ :\n\n$$\nv_{n+1}=u_{n+1}-1\\,200=0{,}75\\,u_n+300-1\\,200=0{,}75\\,u_n-900=0{,}75\\,(u_n-1\\,200)=0{,}75\\,v_n\n$$\n\nLe rapport $\\dfrac{v_{n+1}}{v_n}$ est donc constant : $(v_n)$ est une suite géométrique de raison $q=0{,}75=\\dfrac34$. Son premier terme est $v_0=u_0-1\\,200=300-1\\,200=-900$.\n\n### Conseil\nLe nombre $1\\,200$ est la solution de l'équation $\\ell=0{,}75\\,\\ell+300$, soit $0{,}25\\,\\ell=300$. Quand l'énoncé ne donne pas la suite auxiliaire, c'est ainsi qu'on la trouve.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit v(n+1) = u(n+1) - 1 200 et remplace u(n+1) par sa définition",
+              "points": 0.25
+            },
+            {
+              "libelle": "Factorise 0,75 u(n) - 900 = 0,75 (u(n) - 1 200) et obtient v(n+1) = 0,75 v(n)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut : suite géométrique de raison 0,75",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le premier terme v0 = -900",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite géométrique",
+            "raison"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex4-q2-0",
+              "competence": "Suite auxiliaire géométrique issue d'une récurrence affine",
+              "contenu_markdown": "Pour une suite définie par $u_{n+1}=a\\,u_n+b$ avec $a\\neq1$, la suite auxiliaire $v_n=u_n-\\ell$, où $\\ell$ est la solution de l'équation $\\ell=a\\,\\ell+b$, est géométrique de raison $a$. On le démontre en exprimant $v_{n+1}$ avec la relation de récurrence, puis en factorisant par $a$ pour faire apparaître $v_n$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Démontrer par récurrence que, pour tout entier naturel $n$, $0\\leqslant u_n<1\\,200$. En déduire que la suite $(u_n)$ est croissante. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne démonstration par récurrence se rédige en trois temps : l'initialisation vérifie la propriété au premier rang ; l'hérédité suppose la propriété vraie au rang $n$ et la démontre au rang $n+1$, en partant de l'encadrement de $u_n$ et en appliquant la fonction qui définit la suite ; la conclusion l'affirme pour tout $n$. Pour étudier le sens de variation, on étudie le signe de $u_{n+1}-u_n$.\n\nSoit $P(n)$ la propriété : $0\\leqslant u_n<1\\,200$.\n\n**Initialisation.** $u_0=300$ et $0\\leqslant300<1\\,200$ : $P(0)$ est vraie.\n\n**Hérédité.** Soit $n$ un entier naturel tel que $P(n)$ soit vraie : $0\\leqslant u_n<1\\,200$. On multiplie par $0{,}75>0$, ce qui conserve l'ordre : $0\\leqslant0{,}75\\,u_n<900$. On ajoute $300$ :\n\n$$\n300\\leqslant u_{n+1}<1\\,200\n$$\n\nDonc $0\\leqslant u_{n+1}<1\\,200$ : $P(n+1)$ est vraie.\n\n**Conclusion.** $P(0)$ est vraie et $P$ est héréditaire, donc $0\\leqslant u_n<1\\,200$ pour tout entier naturel $n$.\n\n**Sens de variation.** Pour tout $n$ :\n\n$$\nu_{n+1}-u_n=300-0{,}25\\,u_n=0{,}25\\,(1\\,200-u_n)\n$$\n\nComme $u_n<1\\,200$, cette différence est strictement positive : la suite $(u_n)$ est strictement croissante.\n\n### Piège à éviter\nOublier de vérifier l'initialisation ou de conclure. Sans l'initialisation, l'hérédité seule ne prouve rien.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Vérifie l'initialisation : u0 = 300 appartient à [0 ; 1 200[",
+              "points": 0.25
+            },
+            {
+              "libelle": "Hérédité : part de 0 <= u(n) < 1 200, multiplie par 0,75 puis ajoute 300",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut la récurrence pour tout entier n",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule u(n+1) - u(n) = 0,25 (1 200 - u(n)) et conclut que la suite est croissante",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite récurrente"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex4-q3-0",
+              "competence": "Démontrer par récurrence qu'une suite récurrente reste dans un intervalle",
+              "contenu_markdown": "Une démonstration par récurrence se rédige en trois temps : l'initialisation vérifie la propriété au premier rang ; l'hérédité suppose la propriété vraie au rang $n$ et la démontre au rang $n+1$, en partant de l'encadrement de $u_n$ et en appliquant la fonction qui définit la suite ; la conclusion l'affirme pour tout $n$. Pour étudier le sens de variation, on étudie le signe de $u_{n+1}-u_n$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Exprimer $v_n$, puis $u_n$, en fonction de $n$. Calculer $u_{10}$, arrondi à l'unité. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite géométrique de raison $q$ et de premier terme $v_0$ est $v_n=v_0\\,q^n$. Pour revenir à la suite initiale, on isole $u_n$ en ajoutant à $v_n$ la constante qui a servi à définir la suite auxiliaire.\n\n$(v_n)$ est géométrique de raison $0{,}75$ et de premier terme $-900$, donc\n\n$$\nv_n=-900\\times0{,}75^n\n$$\n\nComme $v_n=u_n-1\\,200$, on obtient\n\n$$\nu_n=1\\,200-900\\times0{,}75^n\n$$\n\nPour $n=10$, $0{,}75^{10}\\approx0{,}0563$, donc $u_{10}\\approx1\\,200-900\\times0{,}0563\\approx1\\,149$. Juste après la onzième prise, il y a environ $1\\,149$ mg d'antibiotique dans le sang.\n\n### Piège à éviter\nÉcrire $u_n=-900\\times0{,}75^n$ en oubliant d'ajouter $1\\,200$. Contrôle avec $n=0$ : on doit retrouver $u_0=300$.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit v(n) = -900 x 0,75^n",
+              "points": 0.25
+            },
+            {
+              "libelle": "En déduit u(n) = 1 200 - 900 x 0,75^n",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule 0,75^10 environ 0,0563",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne u(10) environ 1 149",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite géométrique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex4-q4-0",
+              "competence": "Terme général d'une suite auxiliaire et retour à la suite initiale",
+              "contenu_markdown": "Le terme général d'une suite géométrique de raison $q$ et de premier terme $v_0$ est $v_n=v_0\\,q^n$. Pour revenir à la suite initiale, on isole $u_n$ en ajoutant à $v_n$ la constante qui a servi à définir la suite auxiliaire.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Le seuil de toxicité de ce médicament est de $1\\,500$ mg.\n\n**a)** Calculer la limite de la suite $(u_n)$ et interpréter ce résultat pour le patient.\n\n**b)** Dans un repère (unités graphiques : $1$ cm pour une prise sur l'axe des abscisses, $1$ cm pour $200$ mg sur l'axe des ordonnées), placer les points $M_n(n\\,;u_n)$ pour $n$ entier de $0$ à $8$, puis tracer la droite d'équation $y=1\\,200$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne suite géométrique de raison $q$ avec $-1<q<1$ a pour limite $0$. Comme $u_n$ s'écrit comme la somme de $v_n$ et d'une constante, on obtient la limite de $(u_n)$ par les opérations sur les limites.\n\n**a)** Comme $-1<0{,}75<1$, $0{,}75^n$ tend vers $0$ quand $n$ tend vers $+\\infty$. Donc $900\\times0{,}75^n$ tend vers $0$ et\n\n$$\n\\lim_{n\\to+\\infty}u_n=1\\,200\n$$\n\nLa quantité présente dans le sang juste après une prise se rapproche de $1\\,200$ mg sans jamais l'atteindre, puisque $u_n<1\\,200$. Elle reste donc sous le seuil de toxicité de $1\\,500$ mg : le traitement ne présente pas de risque d'accumulation dangereuse.\n\n**b)** On calcule d'abord les valeurs à placer, en mg :\n\n| $n$ | $0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ |\n|---|---|---|---|---|---|---|---|---|---|\n| $u_n$ | $300$ | $525$ | $694$ | $820$ | $915$ | $986$ | $1\\,040$ | $1\\,080$ | $1\\,110$ |\n\nOn gradue l'axe des abscisses de $0$ à $9$ et l'axe des ordonnées de $0$ à $1\\,400$ de $200$ en $200$, on place les neuf points, puis on trace en pointillés la droite horizontale $y=1\\,200$. Les points montent de plus en plus lentement vers cette droite, qu'ils n'atteignent pas.\n\n<svg viewBox='0 0 480 340' role='img' aria-labelledby='fig70e13f3et fig70e13f3ed' style='width:100%;max-width:480px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig70e13f3et'>Points Mₙ(n ; uₙ) pour n de 0 à 8 et droite y = 1200</title><desc id='fig70e13f3ed'>Neuf points Mₙ(n ; uₙ) d'abscisse n de 0 à 8, qui montent de (0 ; 300) vers la droite horizontale d'équation y = 1200 sans jamais l'atteindre : u₁ = 525, u₂ ≈ 694, u₃ ≈ 820, u₈ ≈ 1110.</desc><defs><clipPath id='clip70e13f3e_1'><rect x='52' y='16' width='400' height='250'/></clipPath></defs><line x1='52' y1='16' x2='52' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='96.4' y1='16' x2='96.4' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='140.9' y1='16' x2='140.9' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='185.3' y1='16' x2='185.3' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='229.8' y1='16' x2='229.8' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='274.2' y1='16' x2='274.2' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='318.7' y1='16' x2='318.7' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='363.1' y1='16' x2='363.1' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='407.6' y1='16' x2='407.6' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='452' y1='16' x2='452' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='266' x2='452' y2='266' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='230.3' x2='452' y2='230.3' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='194.6' x2='452' y2='194.6' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='158.9' x2='452' y2='158.9' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='123.1' x2='452' y2='123.1' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='87.4' x2='452' y2='87.4' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='51.7' x2='452' y2='51.7' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='16' x2='452' y2='16' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='263' x2='52' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='96.4' y1='263' x2='96.4' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='140.9' y1='263' x2='140.9' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='185.3' y1='263' x2='185.3' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='229.8' y1='263' x2='229.8' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='274.2' y1='263' x2='274.2' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='318.7' y1='263' x2='318.7' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='363.1' y1='263' x2='363.1' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='407.6' y1='263' x2='407.6' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='452' y1='263' x2='452' y2='269' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='266' x2='55' y2='266' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='230.3' x2='55' y2='230.3' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='194.6' x2='55' y2='194.6' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='158.9' x2='55' y2='158.9' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='123.1' x2='55' y2='123.1' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='87.4' x2='55' y2='87.4' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='51.7' x2='55' y2='51.7' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='16' x2='55' y2='16' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='52' y1='266' x2='458' y2='266' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='458,266 449,270.1 449,261.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='52' y1='266' x2='52' y2='10' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='52,10 56,19 48,19' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='52' y1='51.7' x2='452' y2='51.7' stroke='var(--destructive,#c4352e)' stroke-width='1.3' stroke-dasharray='5 4' stroke-linecap='round'/><circle cx='52' cy='212.4' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='96.4' cy='172.2' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='140.9' cy='142.1' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='185.3' cy='119.5' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='229.8' cy='102.6' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='274.2' cy='89.9' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='318.7' cy='80.3' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='363.1' cy='73.2' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><circle cx='407.6' cy='67.8' r='4' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><text x='96.4' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='140.9' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='185.3' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='229.8' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='274.2' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='318.7' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='363.1' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>7</text><text x='407.6' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='452' y='283' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>9</text><text x='45' y='234.3' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>200</text><text x='45' y='198.6' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>400</text><text x='45' y='162.9' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>600</text><text x='45' y='127.1' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>800</text><text x='45' y='91.4' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1000</text><text x='45' y='55.7' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1200</text><text x='45' y='20' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1400</text><text x='45' y='282' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='456' y='257' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='60' y='6' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='448' y='46.7' font-size='12' text-anchor='end' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y = 1200</text><text x='62' y='232.4' font-size='12' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(0 ; 300)</text><text x='108.4' y='192.2' font-size='12' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(1 ; 525)</text><text x='130.9' y='132.1' font-size='12' text-anchor='end' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(2 ; 694)</text><text x='407.6' y='89.8' font-size='12' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(8 ; 1110)</text><text x='252' y='312' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 5 : les points Mₙ(n ; uₙ) et la droite y = 1200</text></svg>\n\n### Conseil\nUne limite se commente toujours dans le contexte : ici, compare-la au seuil de toxicité donné par l'énoncé.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Justifie que 0,75^n tend vers 0 car -1 < 0,75 < 1",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut que la limite de u(n) est 1 200 et l'interprète par rapport au seuil de 1 500 mg",
+              "points": 0.25
+            },
+            {
+              "libelle": "Axes gradués avec les unités demandées et points M0 à M8 placés",
+              "points": 0.25
+            },
+            {
+              "libelle": "Droite y = 1 200 tracée en pointillés, points sous cette droite",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite récurrente"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex4-q5-0",
+              "competence": "Calculer la limite d'une suite géométrique et en déduire la convergence d'une suite associée",
+              "contenu_markdown": "Une suite géométrique de raison $q$ avec $-1<q<1$ a pour limite $0$. Comme $u_n$ s'écrit comme la somme de $v_n$ et d'une constante, on obtient la limite de $(u_n)$ par les opérations sur les limites.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "5",
+      "points": "4,5",
+      "enonce_intro_markdown": "On considère la fonction $f$ définie sur $\\mathbb{R}$ par $f(x)=x^3-3x^2-9x+2$. On note $(\\mathcal{C})$ sa courbe représentative dans le plan muni d'un repère orthogonal $(O\\,;\\vec\\imath,\\vec\\jmath)$ d'unités graphiques $1$ cm sur l'axe des abscisses et $0{,}2$ cm sur l'axe des ordonnées.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Calculer $f'(x)$ et vérifier que $f'(x)=3(x+1)(x-3)$ pour tout réel $x$. *(0,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne fonction polynôme se dérive terme à terme, avec $(x^n)'=n\\,x^{n-1}$ pour $n\\geqslant1$ et $(k)'=0$ pour une constante $k$. Pour étudier le signe de la dérivée, on la factorise dès que c'est possible.\n\nOn dérive chaque terme : $(x^3)'=3x^2$, $(-3x^2)'=-6x$, $(-9x)'=-9$ et $(2)'=0$. Donc\n\n$$\nf'(x)=3x^2-6x-9\n$$\n\nOn met $3$ en facteur : $f'(x)=3(x^2-2x-3)$. Or $(x+1)(x-3)=x^2-3x+x-3=x^2-2x-3$, d'où $f'(x)=3(x+1)(x-3)$.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Dérive terme à terme : f'(x) = 3x² - 6x - 9",
+              "points": 0.25
+            },
+            {
+              "libelle": "Factorise ou développe pour retrouver 3(x + 1)(x - 3)",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "dérivée"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex5-q1-0",
+              "competence": "Dériver une fonction polynôme terme à terme",
+              "contenu_markdown": "Une fonction polynôme se dérive terme à terme, avec $(x^n)'=n\\,x^{n-1}$ pour $n\\geqslant1$ et $(k)'=0$ pour une constante $k$. Pour étudier le signe de la dérivée, on la factorise dès que c'est possible.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Étudier le signe de $f'(x)$ suivant les valeurs de $x$. En déduire le sens de variation de $f$ et préciser ses extremums locaux. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn trinôme $ax^2+bx+c$ a le signe de $a$ à l'extérieur de ses racines et le signe contraire entre elles. Si la dérivée s'annule en $x_0$ en changeant de signe, la fonction admet un extremum local en $x_0$ : un maximum quand la dérivée passe du positif au négatif, un minimum dans le cas contraire.\n\nLe trinôme $f'(x)=3(x+1)(x-3)$ a pour racines $-1$ et $3$, et son coefficient dominant $3$ est positif. Donc :\n\n- $f'(x)>0$ pour $x<-1$ et pour $x>3$ ;\n- $f'(x)<0$ pour $-1<x<3$ ;\n- $f'(-1)=f'(3)=0$.\n\nLa fonction $f$ est donc croissante sur $]-\\infty\\,;-1]$, décroissante sur $[-1\\,;3]$ et croissante sur $[3\\,;+\\infty[$.\n\nLa dérivée passe du positif au négatif en $-1$ : $f$ admet un maximum local $f(-1)=-1-3+9+2=7$. Elle passe du négatif au positif en $3$ : $f$ admet un minimum local $f(3)=27-27-27+2=-25$.\n\n### Piège à éviter\nDire que $7$ est le maximum de $f$ sur $\\mathbb{R}$. C'est seulement un maximum local : la fonction prend des valeurs plus grandes quand $x$ devient grand.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Étudie le signe de f'(x) avec les racines -1 et 3 et le coefficient 3 positif",
+              "points": 0.25
+            },
+            {
+              "libelle": "Déduit les trois intervalles de variation de f",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le maximum local f(-1) = 7",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le minimum local f(3) = -25",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "signe de la dérivée",
+            "extremum"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex5-q2-0",
+              "competence": "Étude du signe d'un trinôme du second degré",
+              "contenu_markdown": "Un trinôme $ax^2+bx+c$ a le signe de $a$ à l'extérieur de ses racines et le signe contraire entre elles. Si la dérivée s'annule en $x_0$ en changeant de signe, la fonction admet un extremum local en $x_0$ : un maximum quand la dérivée passe du positif au négatif, un minimum dans le cas contraire.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Calculer les limites de $f$ en $-\\infty$ et en $+\\infty$, puis dresser le tableau de variation de $f$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour dresser le tableau de variation d'une fonction, on reporte dans la première ligne les valeurs remarquables de $x$, dans la deuxième le signe de $f'$, puis dans la troisième les flèches de variation avec les images de ces valeurs et les limites aux bornes. La limite d'un polynôme en $\\pm\\infty$ est celle de son terme de plus haut degré.\n\nEn $\\pm\\infty$, $f(x)$ a la même limite que son terme de plus haut degré $x^3$ :\n\n$$\n\\lim_{x\\to-\\infty}f(x)=-\\infty\\qquad\\text{et}\\qquad\\lim_{x\\to+\\infty}f(x)=+\\infty\n$$\n\nAvec le signe de $f'$ étudié à la question précédente et les valeurs $f(-1)=7$ et $f(3)=-25$, on obtient le tableau de variation :\n\n$$\n\\begin{array}{c|ccccccc}\nx & -\\infty & & -1 & & 3 & & +\\infty \\\\\n\\hline\nf'(x) & & + & 0 & - & 0 & + & \\\\\n\\hline\n & & & 7 & & & & +\\infty \\\\\nf(x) & & \\nearrow & & \\searrow & & \\nearrow & \\\\\n & -\\infty & & & & -25 & &\n\\end{array}\n$$\n\n### Piège à éviter\nConclure que la limite en $-\\infty$ est $+\\infty$ à cause des termes $-3x^2$ et $-9x$. Seul le terme $x^3$ compte, et il est négatif quand $x$ est négatif.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Limite de f en -infini égale à -infini, avec le terme dominant x³",
+              "points": 0.25
+            },
+            {
+              "libelle": "Limite de f en +infini égale à +infini",
+              "points": 0.25
+            },
+            {
+              "libelle": "Tableau cohérent : signe de f' et flèches croissante, décroissante, croissante",
+              "points": 0.25
+            },
+            {
+              "libelle": "Valeurs 7 et -25 placées en -1 et en 3",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "tableau de variation"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex5-q3-0",
+              "competence": "Dresser le tableau de variation d'une fonction à partir du signe de sa dérivée",
+              "contenu_markdown": "Pour dresser le tableau de variation d'une fonction, on reporte dans la première ligne les valeurs remarquables de $x$, dans la deuxième le signe de $f'$, puis dans la troisième les flèches de variation avec les images de ces valeurs et les limites aux bornes. La limite d'un polynôme en $\\pm\\infty$ est celle de son terme de plus haut degré.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "**a)** Déterminer une équation de la tangente $(T)$ à $(\\mathcal{C})$ au point $A$ d'abscisse $-2$.\n\n**b)** Montrer qu'il existe un autre point $B$ de $(\\mathcal{C})$ où la tangente $(T')$ est parallèle à $(T)$. Donner les coordonnées de $B$ et une équation de $(T')$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa tangente à la courbe de $f$ au point d'abscisse $a$ a pour équation $y=f'(a)(x-a)+f(a)$. Deux tangentes sont parallèles lorsqu'elles ont le même coefficient directeur, donc lorsque $f'$ prend la même valeur en leurs points de contact.\n\n**a)** On a $f(-2)=-8-12+18+2=0$ et $f'(-2)=3\\times(-1)\\times(-5)=15$. Donc $A(-2\\,;0)$ et\n\n$$\n(T) : y=15(x+2)+0\\quad\\text{soit}\\quad y=15x+30\n$$\n\n**b)** Une tangente parallèle à $(T)$ a pour coefficient directeur $15$. On résout $f'(x)=15$ :\n\n$$\n3x^2-6x-9=15\\iff x^2-2x-8=0\\iff(x+2)(x-4)=0\n$$\n\nLes solutions sont $x=-2$, qui correspond à $A$, et $x=4$. On a $f(4)=64-48-36+2=-18$, donc $B(4\\,;-18)$. La tangente en $B$ est\n\n$$\n(T') : y=15(x-4)-18\\quad\\text{soit}\\quad y=15x-78\n$$\n\n### Conseil\nPour retrouver les abscisses de contact de deux tangentes parallèles, résous l'équation $f'(x)=k$ : l'une des solutions est toujours le point déjà connu, ce qui te permet de contrôler ton calcul.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule f(-2) = 0 et f'(-2) = 15",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la tangente y = 15x + 30",
+              "points": 0.25
+            },
+            {
+              "libelle": "Résout f'(x) = 15 et trouve x = -2 ou x = 4",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne B(4 ; -18) et la tangente y = 15x - 78",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "dérivée"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex5-q4-0",
+              "competence": "Écrire l'équation de la tangente à une courbe en un point",
+              "contenu_markdown": "La tangente à la courbe de $f$ au point d'abscisse $a$ a pour équation $y=f'(a)(x-a)+f(a)$. Deux tangentes sont parallèles lorsqu'elles ont le même coefficient directeur, donc lorsque $f'$ prend la même valeur en leurs points de contact.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Tracer dans le repère les tangentes $(T)$ et $(T')$, puis la courbe $(\\mathcal{C})$ sur l'intervalle $[-3\\,;5]$, en plaçant les points d'abscisses $-3$, $-2$, $-1$, $3$, $4$ et $5$. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour construire une courbe à partir d'une étude, on gradue d'abord les axes avec les unités imposées, on place les points remarquables (extremums, points d'abscisses données) et on trace les tangentes, puis on dessine la courbe d'un trait continu en respectant les sens de variation du tableau.\n\nOn calcule les ordonnées des points demandés :\n\n| $x$ | $-3$ | $-2$ | $-1$ | $3$ | $4$ | $5$ |\n|---|---|---|---|---|---|---|\n| $f(x)$ | $-25$ | $0$ | $7$ | $-25$ | $-18$ | $7$ |\n\nÉtapes du tracé, avec $1$ cm pour $1$ unité sur $(Ox)$ et $0{,}2$ cm pour $1$ unité sur $(Oy)$, soit $1$ cm pour $5$ unités :\n\n1. Graduer l'axe des abscisses de $-3$ à $5$ et l'axe des ordonnées de $-25$ à $10$ de $5$ en $5$.\n2. Placer les six points du tableau, en particulier le maximum local $(-1\\,;7)$ et le minimum local $(3\\,;-25)$.\n3. Tracer $(T)$ : $y=15x+30$ passe par $A(-2\\,;0)$ et par $(-1\\,;15)$ ; tracer $(T')$ : $y=15x-78$ passe par $B(4\\,;-18)$ et par $(5\\,;-3)$.\n4. Dessiner la courbe : elle monte jusqu'au maximum $(-1\\,;7)$ en traversant l'axe des abscisses en $A$ où elle touche $(T)$, descend jusqu'au minimum $(3\\,;-25)$ en touchant $(T')$ en $B$, puis remonte en passant par $(5\\,;7)$.\n\nVoici le tracé attendu, à une échelle réduite par rapport à l'énoncé.\n\n<svg viewBox='0 0 540 460' role='img' aria-labelledby='fig28ac14d6t fig28ac14d6d' style='width:100%;max-width:540px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig28ac14d6t'>Courbe de f(x) = x³ − 3x² − 9x + 2 avec ses tangentes parallèles en x = −2 et x = 4</title><desc id='fig28ac14d6d'>Courbe de f sur l'intervalle de −3 à 5. Elle croît de −∞ jusqu'au maximum local (−1 ; 7), décroît jusqu'au minimum local (3 ; −25), puis croît. Elle passe par (−3 ; −25), A(−2 ; 0), (4 ; −18) et (5 ; 7). Les tangentes T : y = 15x + 30 en A(−2 ; 0) et T′ : y = 15x − 78 en B(4 ; −18) sont parallèles. Les unités sont différentes sur les deux axes.</desc><defs><clipPath id='clip28ac14d6_1'><rect x='52' y='16' width='440' height='378'/></clipPath></defs><line x1='52' y1='16' x2='52' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='96' y1='16' x2='96' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='140' y1='16' x2='140' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='184' y1='16' x2='184' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='228' y1='16' x2='228' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='272' y1='16' x2='272' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='316' y1='16' x2='316' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='360' y1='16' x2='360' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='404' y1='16' x2='404' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='448' y1='16' x2='448' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='492' y1='16' x2='492' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='394' x2='492' y2='394' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='349' x2='492' y2='349' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='304' x2='492' y2='304' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='259' x2='492' y2='259' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='214' x2='492' y2='214' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='169' x2='492' y2='169' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='124' x2='492' y2='124' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='79' x2='492' y2='79' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='34' x2='492' y2='34' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='121' x2='52' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='96' y1='121' x2='96' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='140' y1='121' x2='140' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='184' y1='121' x2='184' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='228' y1='121' x2='228' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='272' y1='121' x2='272' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='316' y1='121' x2='316' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='360' y1='121' x2='360' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='404' y1='121' x2='404' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='448' y1='121' x2='448' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='492' y1='121' x2='492' y2='127' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='394' x2='231' y2='394' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='349' x2='231' y2='349' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='304' x2='231' y2='304' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='259' x2='231' y2='259' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='214' x2='231' y2='214' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='169' x2='231' y2='169' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='124' x2='231' y2='124' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='79' x2='231' y2='79' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='225' y1='34' x2='231' y2='34' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='52' y1='124' x2='498' y2='124' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='498,124 489,128.1 489,120' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='228' y1='394' x2='228' y2='10' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='228,10 232.1,19 223.9,19' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><path d='M52,394 L272,-281 L492,-956' fill='none' stroke='var(--info,#2a6fba)' stroke-width='2' stroke-linejoin='round' clip-path='url(#clip28ac14d6_1)'/><path d='M52,1366 L272,691 L492,16' fill='none' stroke='var(--gold,#d9a21f)' stroke-width='2' stroke-linejoin='round' clip-path='url(#clip28ac14d6_1)'/><path d='M82.8,456.2 L84.1,445 L85.3,434.1 L86.6,423.4 L87.8,412.8 L89.1,402.4 L90.4,392.3 L91.6,382.3 L92.9,372.4 L94.2,362.8 L95.4,353.3 L96.7,344.1 L97.9,335 L99.2,326 L100.5,317.3 L101.7,308.7 L103,300.3 L104.2,292 L105.5,284 L106.8,276.1 L108,268.3 L109.3,260.8 L110.5,253.3 L111.8,246.1 L113.1,239 L114.3,232.1 L115.6,225.3 L116.9,218.7 L118.1,212.3 L119.4,206 L120.6,199.8 L121.9,193.9 L123.2,188 L124.4,182.3 L125.7,176.8 L126.9,171.4 L128.2,166.2 L129.5,161.1 L130.7,156.1 L132,151.3 L133.3,146.6 L134.5,142.1 L135.8,137.7 L137,133.5 L138.3,129.3 L139.6,125.4 L140.8,121.5 L142.1,117.8 L143.3,114.2 L144.6,110.7 L145.9,107.4 L147.1,104.2 L148.4,101.1 L149.7,98.2 L150.9,95.4 L152.2,92.7 L153.4,90.1 L154.7,87.6 L156,85.3 L157.2,83 L158.5,80.9 L159.7,78.9 L161,77 L162.3,75.3 L163.5,73.6 L164.8,72 L166,70.6 L167.3,69.3 L168.6,68 L169.8,66.9 L171.1,65.9 L172.4,64.9 L173.6,64.1 L174.9,63.4 L176.1,62.8 L177.4,62.2 L178.7,61.8 L179.9,61.5 L181.2,61.2 L182.4,61.1 L183.7,61 L185,61 L186.2,61.1 L187.5,61.3 L188.8,61.6 L190,62 L191.3,62.4 L192.5,63 L193.8,63.6 L195.1,64.3 L196.3,65 L197.6,65.9 L198.8,66.8 L200.1,67.8 L201.4,68.9 L202.6,70 L203.9,71.2 L205.1,72.5 L206.4,73.8 L207.7,75.2 L208.9,76.7 L210.2,78.2 L211.5,79.8 L212.7,81.5 L214,83.2 L215.2,85 L216.5,86.8 L217.8,88.7 L219,90.7 L220.3,92.7 L221.5,94.7 L222.8,96.8 L224.1,99 L225.3,101.2 L226.6,103.4 L227.9,105.7 L229.1,108.1 L230.4,110.5 L231.6,112.9 L232.9,115.3 L234.2,117.8 L235.4,120.4 L236.7,123 L237.9,125.6 L239.2,128.2 L240.5,130.9 L241.7,133.6 L243,136.4 L244.3,139.1 L245.5,141.9 L246.8,144.8 L248,147.6 L249.3,150.5 L250.6,153.4 L251.8,156.3 L253.1,159.3 L254.3,162.2 L255.6,165.2 L256.9,168.2 L258.1,171.2 L259.4,174.3 L260.6,177.3 L261.9,180.3 L263.2,183.4 L264.4,186.5 L265.7,189.5 L267,192.6 L268.2,195.7 L269.5,198.8 L270.7,201.9 L272,205 L273.3,208.1 L274.5,211.2 L275.8,214.3 L277,217.4 L278.3,220.5 L279.6,223.5 L280.8,226.6 L282.1,229.7 L283.4,232.7 L284.6,235.7 L285.9,238.8 L287.1,241.8 L288.4,244.8 L289.7,247.8 L290.9,250.7 L292.2,253.7 L293.4,256.6 L294.7,259.5 L296,262.4 L297.2,265.2 L298.5,268.1 L299.7,270.9 L301,273.6 L302.3,276.4 L303.5,279.1 L304.8,281.8 L306.1,284.4 L307.3,287 L308.6,289.6 L309.8,292.2 L311.1,294.7 L312.4,297.1 L313.6,299.5 L314.9,301.9 L316.1,304.3 L317.4,306.6 L318.7,308.8 L319.9,311 L321.2,313.2 L322.5,315.3 L323.7,317.3 L325,319.3 L326.2,321.3 L327.5,323.2 L328.8,325 L330,326.8 L331.3,328.5 L332.5,330.2 L333.8,331.8 L335.1,333.3 L336.3,334.8 L337.6,336.2 L338.9,337.5 L340.1,338.8 L341.4,340 L342.6,341.1 L343.9,342.2 L345.2,343.2 L346.4,344.1 L347.7,345 L348.9,345.7 L350.2,346.4 L351.5,347 L352.7,347.6 L354,348 L355.2,348.4 L356.5,348.7 L357.8,348.9 L359,349 L360.3,349 L361.6,348.9 L362.8,348.8 L364.1,348.5 L365.3,348.2 L366.6,347.8 L367.9,347.2 L369.1,346.6 L370.4,345.9 L371.6,345.1 L372.9,344.1 L374.2,343.1 L375.4,342 L376.7,340.7 L378,339.4 L379.2,338 L380.5,336.4 L381.7,334.7 L383,333 L384.3,331.1 L385.5,329.1 L386.8,327 L388,324.7 L389.3,322.4 L390.6,319.9 L391.8,317.3 L393.1,314.6 L394.3,311.8 L395.6,308.9 L396.9,305.8 L398.1,302.6 L399.4,299.3 L400.7,295.8 L401.9,292.2 L403.2,288.5 L404.4,284.6 L405.7,280.7 L407,276.5 L408.2,272.3 L409.5,267.9 L410.7,263.4 L412,258.7 L413.3,253.9 L414.5,248.9 L415.8,243.8 L417.1,238.6 L418.3,233.2 L419.6,227.7 L420.8,222 L422.1,216.1 L423.4,210.2 L424.6,204 L425.9,197.7 L427.1,191.3 L428.4,184.7 L429.7,177.9 L430.9,171 L432.2,163.9 L433.5,156.7 L434.7,149.2 L436,141.7 L437.2,133.9 L438.5,126 L439.8,118 L441,109.7 L442.3,101.3 L443.5,92.7 L444.8,84 L446.1,75 L447.3,65.9 L448.6,56.7 L449.8,47.2 L451.1,37.6 L452.4,27.7 L453.6,17.7 L454.9,7.6 L456.2,-2.8 L457.4,-13.4 L458.7,-24.1 L459.9,-35 L461.2,-46.2' fill='none' stroke='var(--primary,#0f6b4f)' stroke-width='2.5' stroke-linejoin='round' clip-path='url(#clip28ac14d6_1)'/><circle cx='96' cy='349' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='140' cy='124' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='184' cy='61' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='360' cy='349' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='404' cy='286' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='448' cy='61' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='52' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−4</text><text x='96' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−3</text><text x='140' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−2</text><text x='184' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−1</text><text x='272' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='316' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>2</text><text x='360' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>3</text><text x='404' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='448' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='492' y='141' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>6</text><text x='221' y='398' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−30</text><text x='221' y='353' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−25</text><text x='221' y='308' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−20</text><text x='221' y='263' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−15</text><text x='221' y='218' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−10</text><text x='221' y='173' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>−5</text><text x='221' y='83' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='221' y='38' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>10</text><text x='221' y='140' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='496' y='115' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='236' y='6' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='164.2' y='34' font-size='14' text-anchor='end' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(T)</text><text x='472.2' y='205' font-size='14' text-anchor='end' fill='var(--gold,#d9a21f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(T′)</text><text x='100.4' y='241' font-size='14' text-anchor='end' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(C)</text><text x='104' y='341' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(−3 ; −25)</text><text x='132' y='114' font-size='13' text-anchor='end' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A(−2 ; 0)</text><text x='194' y='53' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(−1 ; 7)</text><text x='351' y='366' font-size='13' text-anchor='end' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(3 ; −25)</text><text x='414' y='302' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B(4 ; −18)</text><text x='439' y='52' font-size='13' text-anchor='end' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(5 ; 7)</text><text x='272' y='440' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 6 : (C), (T) et (T′) (échelles différentes sur les axes)</text></svg>\n\n### Conseil\nUne courbe lisse arrive horizontalement sur ses extremums : la tangente y est parallèle à l'axe des abscisses. Un tracé qui forme un angle en $(-1\\,;7)$ ou en $(3\\,;-25)$ est à reprendre.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Axes gradués et nommés, avec les unités demandées",
+              "points": 0.25
+            },
+            {
+              "libelle": "Six points placés, dont le maximum (-1 ; 7) et le minimum (3 ; -25)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Tangentes (T) et (T') tracées avec la pente 15, par A et par B",
+              "points": 0.25
+            },
+            {
+              "libelle": "Courbe continue qui monte, descend puis remonte, tangente à (T) en A et à (T') en B",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "tracé de courbe"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex5-q5-0",
+              "competence": "Construire la courbe d'une fonction à partir des éléments d'une étude complète",
+              "contenu_markdown": "Pour construire une courbe à partir d'une étude, on gradue d'abord les axes avec les unités imposées, on place les points remarquables (extremums, points d'abscisses données) et on trace les tangentes, puis on dessine la courbe d'un trait continu en respectant les sens de variation du tableau.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

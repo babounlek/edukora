@@ -1,0 +1,108 @@
+{
+  "type": "cours",
+  "cours_id": "cours-duree-d-un-depot-electrolytique-pour-une-epa-cpde2-ex2-q4",
+  "meta": {
+    "titre": "Durée d'un dépôt électrolytique pour une épaisseur donnée",
+    "matiere": "chimie",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Électrolyse",
+    "duree_estimee_min": 30,
+    "tags": [
+      "électrolyse",
+      "dépôt métallique",
+      "calcul stœchiométrique"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-chimie-probatoire-c-d-e-2-2026-s1-ex2-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un cahier des charges ne dit pas « déposer 5 grammes » mais « une couche de 15 micromètres ». Le technicien doit alors traduire une épaisseur en masse, puis en charge électrique, enfin en durée de traitement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Faraday : $m = \\dfrac{M\\,I\\,t}{z\\,F}$",
+        "Masse volumique $\\rho = \\dfrac{m}{V}$",
+        "Conversions micromètres, centimètres, mètres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De l'épaisseur à la durée",
+      "contenu_markdown": "On enchaîne cinq calculs dans des unités cohérentes (centimètres pour les longueurs si la masse volumique est en $\\mathrm{g\\cdot cm^{-3}}$).\n\n1. **Volume** du dépôt : surface $\\times$ épaisseur, $V = S\\,e$.\n2. **Masse** : $m = \\rho\\,V$.\n3. **Quantité de métal** : $n = \\dfrac{m}{M}$.\n4. **Quantité d'électricité** : $Q = z\\,n\\,F$.\n5. **Durée** : $t = \\dfrac{Q}{I}$.\n\nOn peut aussi remonter : pour une durée donnée, la loi de Faraday donne la masse, puis le volume, puis l'épaisseur $e = \\dfrac{V}{S}$.",
+      "formule_principale": "V = S\\,e \\quad m = \\rho\\,V \\quad n = \\dfrac{m}{M} \\quad Q = z\\,n\\,F \\quad t = \\dfrac{Q}{I}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On cuivre une pièce de surface $S = 50\\ \\mathrm{cm^2}$ avec une couche de $10\\ \\mu\\mathrm{m}$, sous $I = 0{,}80\\ \\mathrm{A}$. Données : $\\rho(\\mathrm{Cu}) = 8{,}96\\ \\mathrm{g\\cdot cm^{-3}}$, $M(\\mathrm{Cu}) = 63{,}5\\ \\mathrm{g\\cdot mol^{-1}}$, $F = 9{,}65\\times10^{4}\\ \\mathrm{C\\cdot mol^{-1}}$. Calculer la durée de l'électrolyse.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir l'épaisseur en centimètres",
+          "justification": "$1\\ \\mu\\mathrm{m} = 10^{-4}\\ \\mathrm{cm}$.",
+          "resultat_markdown": "$e = 10\\times10^{-4} = 1{,}0\\times10^{-3}\\ \\mathrm{cm}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le volume",
+          "justification": "Surface fois épaisseur.",
+          "resultat_markdown": "$V = 50 \\times 1{,}0\\times10^{-3} = 0{,}050\\ \\mathrm{cm^3}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la masse",
+          "justification": "Masse volumique fois volume.",
+          "resultat_markdown": "$m = 8{,}96 \\times 0{,}050 = 0{,}448\\ \\mathrm{g}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la quantité de cuivre",
+          "justification": "On divise par la masse molaire.",
+          "resultat_markdown": "$n = \\dfrac{0{,}448}{63{,}5} = 7{,}055\\times10^{-3}\\ \\mathrm{mol}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la quantité d'électricité",
+          "justification": "Il faut $z = 2$ électrons par atome de cuivre.",
+          "resultat_markdown": "$Q = 2 \\times 7{,}055\\times10^{-3} \\times 9{,}65\\times10^{4} = 1\\,362\\ \\mathrm{C}$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer la durée",
+          "justification": "On divise par l'intensité.",
+          "resultat_markdown": "$t = \\dfrac{1\\,362}{0{,}80} = 1\\,702\\ \\mathrm{s} \\approx 28\\ \\mathrm{min}$"
+        }
+      ],
+      "conclusion_markdown": "Il faut environ $28$ minutes d'électrolyse pour obtenir $10\\ \\mu\\mathrm{m}$ de cuivre sur cette pièce."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Mélanger les unités : une surface en $\\mathrm{cm^2}$ multipliée par une épaisseur en $\\mu\\mathrm{m}$ donne un volume faux d'un facteur $10^{4}$.",
+        "Oublier le facteur $z$ dans $Q = z\\,n\\,F$ pour un cation de charge $2+$ ou $3+$.",
+        "Chercher la durée sans passer par la masse : l'épaisseur n'intervient qu'à travers le volume du dépôt."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "On argente des couverts : surface totale $2{,}0\\times10^{2}\\ \\mathrm{cm^2}$, épaisseur $8{,}0\\ \\mu\\mathrm{m}$, $I = 1{,}5\\ \\mathrm{A}$ ($\\rho = 10{,}5\\ \\mathrm{g\\cdot cm^{-3}}$, $M = 108\\ \\mathrm{g\\cdot mol^{-1}}$, $z = 1$). Calculer la durée. Réponse : $V = 0{,}16\\ \\mathrm{cm^3}$, $m = 1{,}68\\ \\mathrm{g}$, $n = 1{,}556\\times10^{-2}\\ \\mathrm{mol}$, $Q = 1\\,501\\ \\mathrm{C}$, $t = \\dfrac{1\\,501}{1{,}5} \\approx 1\\,000\\ \\mathrm{s}$, soit environ $17\\ \\mathrm{min}$.",
+        "Un nickelage dure $30\\ \\mathrm{min}$ sous $2{,}0\\ \\mathrm{A}$ sur une surface de $100\\ \\mathrm{cm^2}$ ($\\rho = 8{,}9\\ \\mathrm{g\\cdot cm^{-3}}$, $M = 58{,}7\\ \\mathrm{g\\cdot mol^{-1}}$, $z = 2$). Calculer l'épaisseur du dépôt. Réponse : $m = \\dfrac{58{,}7 \\times 2{,}0 \\times 1\\,800}{2 \\times 9{,}65\\times10^{4}} = 1{,}095\\ \\mathrm{g}$, $V = 0{,}123\\ \\mathrm{cm^3}$, $e = \\dfrac{0{,}123}{100} = 1{,}23\\times10^{-3}\\ \\mathrm{cm} \\approx 12\\ \\mu\\mathrm{m}$.",
+        "On zingue $1{,}0\\ \\mathrm{m^2}$ de tôle ($1{,}0\\times10^{4}\\ \\mathrm{cm^2}$) avec $25\\ \\mu\\mathrm{m}$ de zinc sous $50\\ \\mathrm{A}$ ($\\rho = 7{,}1\\ \\mathrm{g\\cdot cm^{-3}}$, $M = 65{,}4\\ \\mathrm{g\\cdot mol^{-1}}$, $z = 2$). Calculer la durée. Réponse : $V = 25\\ \\mathrm{cm^3}$, $m = 177{,}5\\ \\mathrm{g}$, $n = 2{,}714\\ \\mathrm{mol}$, $Q = 5{,}24\\times10^{5}\\ \\mathrm{C}$, $t = \\dfrac{Q}{50} \\approx 1{,}05\\times10^{4}\\ \\mathrm{s}$, soit environ $2\\ \\mathrm{h}\\ 54\\ \\mathrm{min}$."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Épaisseur $\\to$ volume : $V = S\\,e$, en centimètres si $\\rho$ est en $\\mathrm{g\\cdot cm^{-3}}$.",
+        "Volume $\\to$ masse : $m = \\rho\\,V$, puis $n = \\dfrac{m}{M}$.",
+        "Quantité de métal $\\to$ charge : $Q = z\\,n\\,F$.",
+        "Charge $\\to$ durée : $t = \\dfrac{Q}{I}$, avec $t$ en secondes."
+      ]
+    }
+  ]
+}

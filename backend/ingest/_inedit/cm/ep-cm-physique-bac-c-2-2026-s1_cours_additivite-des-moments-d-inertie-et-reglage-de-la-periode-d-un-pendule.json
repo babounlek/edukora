@@ -1,0 +1,118 @@
+{
+  "type": "cours",
+  "cours_id": "cours-additivite-des-moments-d-inertie-et-reglage-de-l-bacc2-ex4-q2",
+  "meta": {
+    "titre": "Additivité des moments d'inertie et réglage de la période d'un pendule de torsion",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Oscillateurs mécaniques",
+    "duree_estimee_min": 22,
+    "tags": [
+      "Moment d'inertie",
+      "période propre",
+      "pendule de torsion"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-c-2-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un balancier de montre ou une balance de torsion, on règle la période en faisant glisser de petites masses le long d'un bras : plus elles s'éloignent de l'axe, plus l'oscillation est lente. Derrière ce réglage, il y a une seule idée : le moment d'inertie d'un ensemble est la somme de celui de ses parties."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Période propre $T_0=2\\pi\\sqrt{J/C}$ d'un pendule de torsion",
+        "Moment d'inertie d'un solide ponctuel $m'd^2$ et d'une tige homogène $m\\ell^2/12$ par rapport à son milieu",
+        "Unités : $J$ en $\\text{kg.m}^2$, $C$ en $\\text{N.m/rad}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moment d'inertie d'un ensemble et période propre",
+      "contenu_markdown": "Quand plusieurs solides tournent ensemble autour du même axe, leurs moments d'inertie s'ajoutent : $J_{tot}=J_1+J_2+\\dots$. Une masse ponctuelle $m'$ située à la distance $d$ de l'axe apporte $m'd^2$ ; la distance intervient au carré, ce qui rend le réglage très sensible à l'éloignement des masses.\n\nLa période propre $T_0=2\\pi\\sqrt{J_{tot}/C}$ s'inverse en $J_{tot}=C\\,T_0^2/(4\\pi^2)$ : pour viser une période donnée, on calcule d'abord le moment d'inertie total à réaliser, puis on retire celui du système de départ pour trouver ce que les masses ajoutées doivent apporter.",
+      "formule_principale": "J_{tot}=J_1+J_2+\\dots\\qquad J=\\dfrac{C\\,T_0^{2}}{4\\pi^{2}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un disque homogène de masse $M=0{,}200\\ \\text{kg}$ et de rayon $R=5{,}0\\ \\text{cm}$ ($J_d=\\tfrac12MR^2$) est suspendu en son centre à un fil de constante de torsion $C=1{,}0\\times10^{-2}\\ \\text{N.m/rad}$. On veut une période propre $T_0=1{,}20\\ \\text{s}$ en collant sur le disque deux masselottes identiques de $25\\ \\text{g}$, symétriques par rapport au fil, à la distance $d$ du centre. Calculer $d$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le moment d'inertie du disque",
+          "justification": "On applique la formule du disque homogène, rayon en mètres.",
+          "resultat_markdown": "$J_d=\\tfrac12\\times0{,}200\\times0{,}050^2=2{,}5\\times10^{-4}\\ \\text{kg.m}^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le moment d'inertie total à réaliser",
+          "justification": "On inverse $T_0=2\\pi\\sqrt{J_{tot}/C}$.",
+          "resultat_markdown": "$J_{tot}=\\dfrac{C\\,T_0^2}{4\\pi^2}=\\dfrac{1{,}0\\times10^{-2}\\times1{,}20^2}{4\\pi^2}\\approx3{,}65\\times10^{-4}\\ \\text{kg.m}^2$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire l'apport des deux masselottes",
+          "justification": "Les moments d'inertie s'ajoutent : $J_{tot}=J_d+2m'd^2$.",
+          "resultat_markdown": "$2m'd^2=3{,}65\\times10^{-4}-2{,}5\\times10^{-4}=1{,}15\\times10^{-4}\\ \\text{kg.m}^2$"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler la distance",
+          "justification": "On divise par $2m'=0{,}050\\ \\text{kg}$ puis on prend la racine carrée.",
+          "resultat_markdown": "$d=\\sqrt{\\dfrac{1{,}15\\times10^{-4}}{0{,}050}}\\approx4{,}8\\times10^{-2}\\ \\text{m}=4{,}8\\ \\text{cm}$"
+        }
+      ],
+      "conclusion_markdown": "Les masselottes doivent être collées à $4{,}8\\ \\text{cm}$ du centre, ce qui reste sur le disque de rayon $5{,}0\\ \\text{cm}$ : le réglage est réalisable. Sans elles, la période propre vaudrait seulement $0{,}99\\ \\text{s}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter les périodes ou les constantes de torsion au lieu des moments d'inertie.",
+          "pourquoi_faux": "Seul le moment d'inertie est additif quand les solides tournent ensemble ; la période dépend de $J$ par une racine carrée et n'est donc jamais additive.",
+          "correction_markdown": "Calculer d'abord $J_{tot}$ à partir de la période visée, puis soustraire les moments d'inertie connus."
+        },
+        {
+          "erreur_markdown": "Compter une seule masselotte, ou écrire $m'd$ au lieu de $m'd^2$.",
+          "pourquoi_faux": "Le moment d'inertie d'une masse ponctuelle est $m'd^2$, et il y a deux masselottes symétriques qui apportent chacune ce terme.",
+          "correction_markdown": "Écrire explicitement $J_{tot}=J+2m'd^2$ et contrôler l'unité du résultat : $\\text{kg.m}^2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Une tige de moment d'inertie $4{,}0\\times10^{-3}\\ \\text{kg.m}^2$ porte une masse ponctuelle de $0{,}30\\ \\text{kg}$ à $0{,}20\\ \\text{m}$ de l'axe. Calculer le moment d'inertie de l'ensemble.",
+          "solution_markdown": "$J_{tot}=4{,}0\\times10^{-3}+0{,}30\\times0{,}20^2=4{,}0\\times10^{-3}+1{,}2\\times10^{-2}=1{,}6\\times10^{-2}\\ \\text{kg.m}^2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un pendule de torsion de constante $C=0{,}060\\ \\text{N.m/rad}$ a pour période propre $1{,}0\\ \\text{s}$. Calculer son moment d'inertie.",
+          "solution_markdown": "$J=\\dfrac{C\\,T_0^2}{4\\pi^2}=\\dfrac{0{,}060\\times1{,}0^2}{4\\pi^2}\\approx1{,}52\\times10^{-3}\\ \\text{kg.m}^2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Le pendule de l'exercice 2 reçoit deux masses de $50\\ \\text{g}$ placées symétriquement à $8{,}0\\ \\text{cm}$ de l'axe. Calculer sa nouvelle période propre.",
+          "solution_markdown": "$J_{tot}=1{,}52\\times10^{-3}+2\\times0{,}050\\times0{,}080^2=1{,}52\\times10^{-3}+6{,}4\\times10^{-4}\\approx2{,}16\\times10^{-3}\\ \\text{kg.m}^2$. Alors $T_0=2\\pi\\sqrt{\\dfrac{2{,}16\\times10^{-3}}{0{,}060}}\\approx1{,}19\\ \\text{s}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les moments d'inertie de solides qui tournent ensemble autour du même axe s'ajoutent.",
+        "Une masse ponctuelle $m'$ à la distance $d$ de l'axe apporte $m'd^2$ ; la distance compte au carré.",
+        "Pour viser une période $T_0$, calculer $J_{tot}=C\\,T_0^2/(4\\pi^2)$ puis soustraire le moment d'inertie du système initial.",
+        "Vérifier que la distance trouvée reste compatible avec la géométrie du support."
+      ]
+    }
+  ]
+}

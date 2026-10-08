@@ -1,0 +1,118 @@
+{
+  "type": "cours",
+  "cours_id": "cours-vitesse-limite-d-une-tige-soumise-a-une-force-de-bacc2-ex5-q1",
+  "meta": {
+    "titre": "Vitesse limite d'une tige soumise à une force de Laplace et à un frottement fluide",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Force de Laplace",
+    "duree_estimee_min": 22,
+    "tags": [
+      "force de Laplace",
+      "champ magnétique",
+      "deuxième loi de Newton"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-c-2-2026-s1-ex5-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une tige lancée par la force de Laplace n'accélère pas indéfiniment : dès qu'elle bouge dans un liquide visqueux, la résistance du milieu grandit avec sa vitesse jusqu'à compenser exactement la force motrice. La tige poursuit alors son chemin à vitesse constante, la vitesse limite. Calculer cette vitesse et le temps qu'il faut pour l'approcher est un problème classique de dynamique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Force de Laplace $F=BI\\ell$ et règle de la main droite pour son sens",
+        "Deuxième loi de Newton $\\sum\\vec F=m\\vec a$ et projection sur un axe",
+        "Équation différentielle du premier ordre $\\dfrac{dv}{dt}+\\dfrac{v}{\\tau}=A$ et sa solution exponentielle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Équation du mouvement et vitesse limite",
+      "contenu_markdown": "Pour une tige horizontale, perpendiculaire au champ vertical, parcourue par un courant constant $I$ et freinée par un frottement fluide $f=kv$, la deuxième loi de Newton projetée sur l'axe des rails donne $m\\,dv/dt=BI\\ell-kv$. Le poids et la réaction, verticaux, se compensent et n'interviennent pas.\n\nÀ $t=0$, $v=0$ : l'accélération initiale est $a_0=BI\\ell/m$. Lorsque $dv/dt=0$, la vitesse limite est $v_{lim}=BI\\ell/k$. La solution partant du repos est $v(t)=v_{lim}\\left(1-e^{-t/\\tau}\\right)$ avec $\\tau=m/k$ : $63$ % de $v_{lim}$ à $t=\\tau$, $95$ % à $3\\tau$.",
+      "formule_principale": "m\\dfrac{dv}{dt}=BI\\ell-kv\\;\\Rightarrow\\;v_{lim}=\\dfrac{BI\\ell}{k},\\;\\tau=\\dfrac{m}{k},\\;v(t)=v_{lim}\\left(1-e^{-t/\\tau}\\right)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une tige de cuivre de masse $m=0{,}12\\ \\text{kg}$ et de longueur $\\ell=0{,}25\\ \\text{m}$ glisse sur deux rails horizontaux plongés dans de l'huile ($f=kv$ avec $k=0{,}40\\ \\text{kg/s}$). Le courant constant est $I=4{,}0\\ \\text{A}$ et le champ vertical vaut $B=0{,}080\\ \\text{T}$. Calculer la force de Laplace, l'accélération initiale, la vitesse limite et la constante de temps.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la force de Laplace",
+          "justification": "La tige est perpendiculaire au champ : $F=BI\\ell$.",
+          "resultat_markdown": "$F=0{,}080\\times4{,}0\\times0{,}25=0{,}080\\ \\text{N}$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'équation du mouvement",
+          "justification": "Deuxième loi de Newton projetée sur l'axe des rails.",
+          "resultat_markdown": "$m\\dfrac{dv}{dt}=F-kv$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'accélération initiale",
+          "justification": "À $t=0$, $v=0$ donc $f=0$.",
+          "resultat_markdown": "$a_0=\\dfrac{F}{m}=\\dfrac{0{,}080}{0{,}12}\\approx0{,}67\\ \\text{m/s}^2$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la vitesse limite et la constante de temps",
+          "justification": "La vitesse limite annule l'accélération ; $\\tau=m/k$ caractérise la durée de mise en vitesse.",
+          "resultat_markdown": "$v_{lim}=\\dfrac{F}{k}=\\dfrac{0{,}080}{0{,}40}=0{,}20\\ \\text{m/s}$ et $\\tau=\\dfrac{m}{k}=\\dfrac{0{,}12}{0{,}40}=0{,}30\\ \\text{s}$"
+        }
+      ],
+      "conclusion_markdown": "La tige part avec $0{,}67\\ \\text{m/s}^2$ et se stabilise à $0{,}20\\ \\text{m/s}$ ; elle atteint $63$ % de cette vitesse au bout de $0{,}30\\ \\text{s}$ et l'a pratiquement atteinte après $1{,}5\\ \\text{s}$ ($5\\tau$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que la vitesse limite est atteinte à l'instant $t=\\tau$.",
+          "pourquoi_faux": "À $t=\\tau$ la vitesse n'est qu'à $63$ % de sa valeur limite. La vitesse limite n'est qu'approchée, de plus en plus près, quand $t$ devient grand devant $\\tau$.",
+          "correction_markdown": "Retenir les repères : $63$ % à $\\tau$, $95$ % à $3\\tau$, $99$ % à $5\\tau$."
+        },
+        {
+          "erreur_markdown": "Mettre le poids dans l'équation du mouvement sur les rails.",
+          "pourquoi_faux": "Le poids est vertical et équilibré par la réaction des rails ; seule la composante horizontale de la somme des forces fait varier la vitesse.",
+          "correction_markdown": "Projeter la deuxième loi de Newton sur l'axe du mouvement, puis sur la verticale pour vérifier $R=P$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Calculer la force de Laplace sur une tige de $0{,}30\\ \\text{m}$ parcourue par un courant de $2{,}0\\ \\text{A}$ dans un champ de $0{,}15\\ \\text{T}$ perpendiculaire à la tige.",
+          "solution_markdown": "$F=BI\\ell=0{,}15\\times2{,}0\\times0{,}30=0{,}090\\ \\text{N}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "La tige précédente, de masse $50\\ \\text{g}$, glisse sur des rails horizontaux avec un frottement fluide $f=kv$, $k=0{,}30\\ \\text{kg/s}$. Calculer sa vitesse limite et sa constante de temps.",
+          "solution_markdown": "$v_{lim}=\\dfrac{F}{k}=\\dfrac{0{,}090}{0{,}30}=0{,}30\\ \\text{m/s}$ et $\\tau=\\dfrac{m}{k}=\\dfrac{0{,}050}{0{,}30}\\approx0{,}17\\ \\text{s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Quelle intensité faut-il imposer pour doubler la vitesse limite de l'exercice 2 ? Calculer alors l'accélération initiale et dire si la constante de temps change.",
+          "solution_markdown": "$v_{lim}$ est proportionnelle à $I$ : il faut doubler l'intensité, soit $I'=4{,}0\\ \\text{A}$. Alors $F'=0{,}15\\times4{,}0\\times0{,}30=0{,}18\\ \\text{N}$ et $a_0'=\\dfrac{F'}{m}=\\dfrac{0{,}18}{0{,}050}=3{,}6\\ \\text{m/s}^2$. La constante de temps $\\tau=m/k$ ne dépend pas de $I$ : elle reste égale à $0{,}17\\ \\text{s}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La force de Laplace sur une tige perpendiculaire au champ vaut $F=BI\\ell$ ; son sens se trouve avec la règle de la main droite.",
+        "La deuxième loi de Newton projetée sur l'axe des rails donne $m\\,dv/dt=BI\\ell-kv$.",
+        "L'accélération initiale est $a_0=BI\\ell/m$ et la vitesse limite $v_{lim}=BI\\ell/k$.",
+        "La solution est $v=v_{lim}(1-e^{-t/\\tau})$ avec $\\tau=m/k$, indépendante du courant."
+      ]
+    }
+  ]
+}

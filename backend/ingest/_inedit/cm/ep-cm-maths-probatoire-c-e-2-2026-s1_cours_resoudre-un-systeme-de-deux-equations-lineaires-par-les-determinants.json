@@ -1,0 +1,116 @@
+{
+  "type": "cours",
+  "cours_id": "cours-resoudre-un-systeme-de-deux-equations-lineaires-par-les-determinants-mpce2",
+  "meta": {
+    "titre": "Résoudre un système de deux équations linéaires par les déterminants",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "C-E",
+    "sous_theme": "Algèbre - systèmes linéaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "Systèmes linéaires"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-probatoire-c-e-2-2026-s1-ex2-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux achats, deux totaux, deux prix inconnus : un grand nombre de situations de la vie courante conduisent à un système de deux équations à deux inconnues. La méthode des déterminants donne la solution par une formule, sans avoir à choisir une substitution ou une combinaison."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Mise en équation d'un problème à deux inconnues",
+        "Calcul avec des nombres relatifs et des fractions",
+        "Résolution d'un système par substitution ou par combinaison (pour comparer les résultats)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le déterminant d'un système et les formules de Cramer",
+      "contenu_markdown": "Soit le système $\\begin{cases}ax+by=c\\\\a'x+b'y=c'\\end{cases}$. Son déterminant est le nombre $\\Delta=ab'-a'b$.\n\nSi $\\Delta\\neq0$, le système a une solution unique, donnée par $x=\\dfrac{cb'-c'b}{\\Delta}$ et $y=\\dfrac{ac'-a'c}{\\Delta}$. Si $\\Delta=0$, les deux équations représentent des droites parallèles : le système n'a aucune solution ou une infinité de solutions, et il faut examiner les équations pour trancher.",
+      "formule_principale": "\\Delta=\\begin{vmatrix}a&b\\\\a'&b'\\end{vmatrix}=ab'-a'b,\\qquad x=\\dfrac{cb'-c'b}{\\Delta},\\qquad y=\\dfrac{ac'-a'c}{\\Delta}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résous par la méthode des déterminants le système $\\begin{cases}2x+3y=12\\\\x-4y=-5\\end{cases}$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les coefficients",
+          "justification": "On identifie $a=2$, $b=3$, $c=12$ pour la première équation et $a'=1$, $b'=-4$, $c'=-5$ pour la seconde.",
+          "resultat_markdown": "$a=2$, $b=3$, $c=12$, $a'=1$, $b'=-4$, $c'=-5$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le déterminant du système",
+          "justification": "S'il est nul, la formule n'est pas applicable ; ici on vérifie qu'il est différent de zéro.",
+          "resultat_markdown": "$\\Delta=2\\times(-4)-1\\times3=-11\\neq0$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $x$",
+          "justification": "On remplace dans $x=\\dfrac{cb'-c'b}{\\Delta}$.",
+          "resultat_markdown": "$x=\\dfrac{12\\times(-4)-(-5)\\times3}{-11}=\\dfrac{-48+15}{-11}=3$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $y$",
+          "justification": "On remplace dans $y=\\dfrac{ac'-a'c}{\\Delta}$.",
+          "resultat_markdown": "$y=\\dfrac{2\\times(-5)-1\\times12}{-11}=\\dfrac{-22}{-11}=2$"
+        }
+      ],
+      "conclusion_markdown": "La solution est le couple $(3\\,;2)$. Vérification : $2\\times3+3\\times2=12$ et $3-4\\times2=-5$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer les formules sans avoir calculé $\\Delta$, ou sans constater qu'il est non nul.",
+          "pourquoi_faux": "Si $\\Delta=0$, on divise par zéro : le système n'a pas de solution unique.",
+          "correction_markdown": "Calcule toujours $\\Delta$ en premier et écris qu'il est différent de zéro avant de poursuivre."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe dans $cb'-c'b$, en particulier quand $b'$ ou $c'$ est négatif.",
+          "pourquoi_faux": "Un signe oublié donne une valeur de $x$ qui ne vérifie pas le système.",
+          "correction_markdown": "Écris les produits avec des parenthèses autour des nombres négatifs et vérifie la solution dans les deux équations."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Résous par les déterminants le système $\\begin{cases}4x+y=9\\\\3x-2y=4\\end{cases}$.",
+          "solution_markdown": "$\\Delta=4\\times(-2)-3\\times1=-11$. $x=\\dfrac{9\\times(-2)-4\\times1}{-11}=\\dfrac{-22}{-11}=2$ et $y=\\dfrac{4\\times4-3\\times9}{-11}=\\dfrac{-11}{-11}=1$. La solution est $(2\\,;1)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un commerçant vend le kilogramme de riz $a$ francs et le kilogramme de haricots $b$ francs. Deux kilogrammes de riz et un de haricots coûtent $1\\,700$ francs ; un kilogramme de riz et trois de haricots coûtent $2\\,350$ francs. Calcule $a$ et $b$.",
+          "solution_markdown": "Système : $2a+b=1\\,700$ et $a+3b=2\\,350$. $\\Delta=2\\times3-1\\times1=5$. $a=\\dfrac{1\\,700\\times3-2\\,350\\times1}{5}=\\dfrac{2\\,750}{5}=550$ et $b=\\dfrac{2\\times2\\,350-1\\times1\\,700}{5}=\\dfrac{3\\,000}{5}=600$. Le riz coûte $550$ F le kilogramme et les haricots $600$ F."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Montre que le système $\\begin{cases}2x+4y=6\\\\x+2y=5\\end{cases}$ n'a aucune solution.",
+          "solution_markdown": "$\\Delta=2\\times2-1\\times4=0$ : pas de solution unique. En multipliant la seconde équation par $2$, on obtient $2x+4y=10$, incompatible avec $2x+4y=6$. Le système n'a aucune solution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le déterminant du système $\\begin{cases}ax+by=c\\\\a'x+b'y=c'\\end{cases}$ est $\\Delta=ab'-a'b$.",
+        "Si $\\Delta\\neq0$ : $x=\\dfrac{cb'-c'b}{\\Delta}$ et $y=\\dfrac{ac'-a'c}{\\Delta}$, solution unique.",
+        "Si $\\Delta=0$ : pas de solution unique ; on compare les deux équations pour savoir s'il n'y a aucune solution ou une infinité.",
+        "On vérifie toujours le couple trouvé dans les deux équations."
+      ]
+    }
+  ]
+}
