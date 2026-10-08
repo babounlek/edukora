@@ -13,6 +13,7 @@ from access.services import (
     has_access,
     has_access_jusqua_examen,
 )
+from inedit.models import EpreuveInedite
 from quiz.models import CompetenceItem
 from users.profils import profil_actif
 
@@ -519,6 +520,19 @@ class SubjectListView(generics.ListAPIView):
     def get_queryset(self):
         cours_publies = Cours.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE)
         lessons_publiees = Lesson.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE)
+        inedites_publiees = EpreuveInedite.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE)
+
+        # ?cursus=<id> : les filtres Examen puis Matière des pages /epreuves et /cours -
+        # une fois l'examen choisi, seules les matières de CE cursus ont un sens (« Allemand »
+        # sous BEPC menait à une liste vide). Les trois sources comptent, comme pour la liste
+        # fusionnée des épreuves : annales, cours et inédites.
+        cursus_id = self.request.query_params.get("cursus")
+        if cursus_id and cursus_id.isdigit():
+            cours_publies = cours_publies.filter(cursus__id=cursus_id)
+            lessons_publiees = lessons_publiees.filter(cursus__id=cursus_id)
+            inedites_publiees = inedites_publiees.filter(cursus__id=cursus_id)
+        else:
+            inedites_publiees = None
 
         # Ne propose que les matières ayant déjà du contenu publié (Épreuve ou Cours) -
         # même principe que CountrySerializer.get_has_lessons, sinon le select liste
@@ -535,10 +549,13 @@ class SubjectListView(generics.ListAPIView):
         # bug réel, constaté en local le 2026-08-17. Sans jointure il n'y a plus de
         # doublons à écarter, donc plus de DISTINCT, et la sous-requête ne tourne
         # qu'une fois par matière.
+        a_du_contenu = Exists(lessons_publiees) | Exists(cours_publies)
+        if inedites_publiees is not None:
+            a_du_contenu = a_du_contenu | Exists(inedites_publiees)
         qs = (
             Subject.objects.select_related("country")
             .filter(country__actif=True)
-            .filter(Exists(lessons_publiees) | Exists(cours_publies))
+            .filter(a_du_contenu)
             # Coalesce : une matière qui n'a que des épreuves et aucun cours ne remonte
             # aucune ligne de la sous-requête, donc NULL - jamais servi tel quel, le
             # client attend un entier (un tri sur null casserait l'ordre des pastilles

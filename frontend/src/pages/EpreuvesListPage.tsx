@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
+import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import {
   BookOpen,
   ChevronDown,
@@ -183,10 +183,21 @@ export function EpreuvesListPage() {
         : undefined,
   })
 
-  const { data: subjects = [] } = useQuery({
-    queryKey: ["subjects", country],
-    queryFn: ({ signal }) => listSubjects(country, signal),
+  // Un examen choisi → seules les matières de cet examen (« Allemand » sous BEPC menait à une
+  // liste vide). Sans examen, toutes les matières du pays.
+  const { data: subjects = [], isSuccess: subjectsChargees, isPlaceholderData: subjectsPlaceholder } = useQuery({
+    queryKey: ["subjects", country, cursusFilter],
+    queryFn: ({ signal }) => listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined),
+    placeholderData: keepPreviousData,
   })
+
+  // Une matière déjà choisie qui n'existe pas dans le nouvel examen ferait une liste vide
+  // sans pastille active pour s'en défaire : on l'abandonne.
+  useEffect(() => {
+    if (!cursusFilter || !subjectFilter || !subjectsChargees || subjectsPlaceholder) return
+    if (!subjects.some((s) => s.code === subjectFilter)) updateFilter("subject", "")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cursusFilter, subjectFilter, subjects, subjectsChargees, subjectsPlaceholder])
 
   // Sur la page des inédites, ne proposer que les matières et examens qui EN ONT : vingt-deux
   // pastilles de matières dont la plupart menaient à une liste vide poussaient les résultats à

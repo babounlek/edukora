@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
+import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
   BookOpen,
@@ -135,10 +135,21 @@ export function CoursListPage() {
   })
   const progression = isAuthenticated ? progressionData : undefined
 
-  const { data: subjects = [] } = useQuery({
-    queryKey: ["subjects", country],
-    queryFn: ({ signal }) => listSubjects(country, signal),
+  // Un examen choisi → seules les matières de cet examen, jamais des pastilles qui mènent à une
+  // liste vide. Sans examen, toutes les matières du pays.
+  const { data: subjects = [], isSuccess: subjectsChargees, isPlaceholderData: subjectsPlaceholder } = useQuery({
+    queryKey: ["subjects", country, cursusFilter],
+    queryFn: ({ signal }) => listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined),
+    placeholderData: keepPreviousData,
   })
+
+  // Une matière déjà choisie qui n'existe pas dans le nouvel examen : on l'abandonne plutôt que
+  // de laisser une liste vide sans pastille active pour s'en défaire.
+  useEffect(() => {
+    if (!cursusFilter || !subjectFilter || !subjectsChargees || subjectsPlaceholder) return
+    if (!subjects.some((s) => s.code === subjectFilter)) updateFilter("subject", "")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cursusFilter, subjectFilter, subjects, subjectsChargees, subjectsPlaceholder])
 
   // Par volume de cours décroissant, jamais l'ordre alphabétique de l'API : celui-ci
   // ouvrait la rangée sur Anglais, Chimie, Espagnol et reléguait Mathématiques en 8e

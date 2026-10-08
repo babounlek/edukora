@@ -371,8 +371,13 @@ export function previewCours(slug: string) {
   return apiRequest<CoursPreview>(`/access/cours/preview/${slug}/`, { auth: false })
 }
 
-export function listSubjects(country?: string, signal?: AbortSignal) {
-  const query = country ? `?country=${country}` : ""
+/** `cursus` : ne garde que les matières ayant du contenu publié pour ce cursus (filtre
+ * Examen choisi → pastilles Matière limitées à cet examen). */
+export function listSubjects(country?: string, signal?: AbortSignal, cursus?: number) {
+  const params = new URLSearchParams()
+  if (country) params.set("country", country)
+  if (cursus) params.set("cursus", String(cursus))
+  const query = params.size ? `?${params}` : ""
   return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: false, signal })
 }
 
