@@ -11,13 +11,13 @@ afterEach(() => {
 })
 
 describe("textePartage", () => {
-  it("dit le score, l'XP et la série, et porte le lien de parrainage", () => {
+  it("dit le score, les points et la série, et porte le lien de parrainage", () => {
     expect(textePartage(donnees)).toBe(
-      "J'ai eu 7/8 à mon quiz sur EduKora (+60 XP, 12 jours de suite). Tu fais mieux ? https://edukora.africa/?ref=ABC123",
+      "J'ai eu 7/8 à mon quiz sur EduKora (+60 points, 12 jours de suite). Tu fais mieux ? https://edukora.africa/?ref=ABC123",
     )
   })
 
-  it("n'invente rien : sans XP ni série, le score et le lien suffisent", () => {
+  it("n'invente rien : sans points ni série, le score et le lien suffisent", () => {
     const texte = textePartage({ ...donnees, xp: 0, serie: 1 })
     expect(texte).toBe("J'ai eu 7/8 à mon quiz sur EduKora. Tu fais mieux ? https://edukora.africa/?ref=ABC123")
   })

@@ -25,12 +25,12 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
           <Zap className="size-4 text-gold-text" aria-hidden="true" />
         )}
         <span className={cn("font-semibold", etat.atteint && "text-success")}>
-          {etat.atteint ? "Objectif atteint" : `${etat.xp} / ${etat.objectif} XP`}
+          {etat.atteint ? "Objectif atteint" : `${etat.xp} / ${etat.objectif} points`}
         </span>
         <div
           className="h-1.5 w-16 overflow-hidden rounded-full bg-secondary sm:w-24"
           role="progressbar"
-          aria-label="Objectif d'XP du jour"
+          aria-label="Objectif de points du jour"
           aria-valuemin={0}
           aria-valuemax={etat.objectif}
           aria-valuenow={Math.min(etat.xp, etat.objectif)}

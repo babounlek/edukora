@@ -92,7 +92,7 @@ def composer_push(user, maintenant=None):
 
     if serie["jours"] >= SERIE_MINIMUM_ANNONCEE and not serie["actif_aujourdhui"]:
         title = f"Ta série de {serie['jours']} jours se prolonge ce soir"
-        body = f"{etat['objectif']} XP suffisent, soit environ 25 minutes."
+        body = f"{etat['objectif']} points suffisent, soit environ 25 minutes."
     else:
         title = f"{prenom}, ta séance du jour est prête" if prenom else "Ta séance du jour est prête"
         morceaux = []

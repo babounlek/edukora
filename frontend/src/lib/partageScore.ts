@@ -13,7 +13,7 @@ export interface DonneesPartage {
 }
 
 export function textePartage({ score, total, xp, serie, nomSite, lien }: DonneesPartage): string {
-  const details = [xp > 0 ? `+${xp} XP` : "", serie >= 2 ? `${serie} jours de suite` : ""].filter(Boolean)
+  const details = [xp > 0 ? `+${xp} points` : "", serie >= 2 ? `${serie} jours de suite` : ""].filter(Boolean)
   return (
     `J'ai eu ${score}/${total} à mon quiz sur ${nomSite}` +
     (details.length ? ` (${details.join(", ")})` : "") +
@@ -51,7 +51,7 @@ export async function carteEnImage(donnees: DonneesPartage): Promise<Blob | null
 
   ctx.font = "600 64px system-ui, sans-serif"
   ctx.fillStyle = "#f5c84b"
-  const lignes = [donnees.xp > 0 ? `+${donnees.xp} XP` : "", donnees.serie >= 2 ? `Série de ${donnees.serie} jours` : ""].filter(Boolean)
+  const lignes = [donnees.xp > 0 ? `+${donnees.xp} points` : "", donnees.serie >= 2 ? `Série de ${donnees.serie} jours` : ""].filter(Boolean)
   lignes.forEach((ligne, i) => ctx.fillText(ligne, TAILLE / 2, 745 + i * 78))
 
   ctx.fillStyle = "#ffffff"

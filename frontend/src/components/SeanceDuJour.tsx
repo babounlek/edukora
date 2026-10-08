@@ -405,7 +405,7 @@ function SeanceAFaire({
                   <Zap className="size-4" aria-hidden="true" />
                   Quiz express
                   <span className="text-xs font-normal">
-                    {quizExpress.n} questions · jusqu'à {quizExpress.n * XP_MAX_PAR_QUESTION} XP
+                    {quizExpress.n} questions · jusqu'à {quizExpress.n * XP_MAX_PAR_QUESTION} points
                   </span>
                 </Link>
               </Button>
@@ -1070,7 +1070,7 @@ function EtapesParPhase({
                         {etape.type === "quiz" && (
                           <span className="mt-0.5 flex items-center gap-1 text-xs font-medium text-gold-foreground dark:text-gold-text">
                             <Zap className="size-3" aria-hidden="true" />
-                            jusqu'à {etape.n * XP_MAX_PAR_QUESTION} XP
+                            jusqu'à {etape.n * XP_MAX_PAR_QUESTION} points
                           </span>
                         )}
                       </span>

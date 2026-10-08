@@ -50,13 +50,28 @@ describe("ObjectifXp", () => {
 
   it("montre la progression vers l'objectif", () => {
     render(<ObjectifXp etat={etat()} />)
-    expect(screen.getByText("12 / 20 XP")).toBeInTheDocument()
-    expect(screen.getByRole("progressbar", { name: "Objectif d'XP du jour" })).toHaveAttribute("aria-valuenow", "12")
+    expect(screen.getByText("12 / 20 points")).toBeInTheDocument()
+    expect(screen.getByRole("progressbar", { name: "Objectif de points du jour" })).toHaveAttribute("aria-valuenow", "12")
+  })
+
+  it("dit ce qu'il reste en bonnes réponses, sans le dire une fois l'objectif atteint ni dans l'en-tête", () => {
+    const { rerender } = render(<ObjectifXp etat={etat()} />)
+    // 8 points restants : une bonne réponse (10 points) suffit.
+    expect(screen.getByText(/Encore environ 1 bonne réponse pour atteindre/)).toBeInTheDocument()
+
+    rerender(<ObjectifXp etat={etat({ xp: 0 })} />)
+    expect(screen.getByText(/Encore environ 2 bonnes réponses pour atteindre/)).toBeInTheDocument()
+
+    rerender(<ObjectifXp etat={etat({ xp: 25, atteint: true })} />)
+    expect(screen.queryByText(/Encore environ/)).not.toBeInTheDocument()
+
+    rerender(<ObjectifXp etat={etat()} compact />)
+    expect(screen.queryByText(/Encore environ/)).not.toBeInTheDocument()
   })
 
   it("plafonne la barre une fois l'objectif dépassé", () => {
     render(<ObjectifXp etat={etat({ xp: 35, atteint: true })} />)
     expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "20")
-    expect(screen.getByText("35 / 20 XP")).toBeInTheDocument()
+    expect(screen.getByText("35 / 20 points")).toBeInTheDocument()
   })
 })

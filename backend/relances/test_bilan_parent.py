@@ -57,7 +57,7 @@ class ComposerTests(BilanParentTestCase):
         self.assertEqual(sujet, "Bilan de la semaine de Awa")
         self.assertIn("2 jours de révision sur 7", corps)
         self.assertIn("2 séances", corps)
-        self.assertIn("40 XP", corps)
+        self.assertIn("40 points", corps)
         self.assertIn("/relances/desabonner-bilan/", corps)
         self.assertNotIn("%", corps.split("Voici")[1].split("Ouvrir")[0].replace("de réussite", ""))
 

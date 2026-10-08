@@ -184,7 +184,7 @@ class ComposerTests(PushTestCase):
             self.seance_terminee(user, SOIR - timedelta(days=decalage))
         charge = push.composer_push(user, SOIR)
         self.assertIn("3 jours", charge["title"])
-        self.assertIn("XP", charge["body"])
+        self.assertIn("points", charge["body"])
 
     def test_sans_serie_c_est_la_seance(self):
         charge = push.composer_push(self.eleve(), SOIR)

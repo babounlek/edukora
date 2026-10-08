@@ -12,9 +12,9 @@ import { definirRetoursActifs, jouerRetour, retoursActifs } from "@/lib/retours"
 import { cn } from "@/lib/utils"
 
 const LIBELLES: Record<number, { nom: string; detail: string }> = {
-  10: { nom: "Tranquille", detail: "10 XP : environ 1 bonne réponse" },
-  20: { nom: "Régulier", detail: "20 XP : environ 2 bonnes réponses" },
-  30: { nom: "Intense", detail: "30 XP : environ 3 bonnes réponses" },
+  10: { nom: "Tranquille", detail: "10 points : environ 1 bonne réponse" },
+  20: { nom: "Régulier", detail: "20 points : environ 2 bonnes réponses" },
+  30: { nom: "Intense", detail: "30 points : environ 3 bonnes réponses" },
 }
 
 /**
@@ -55,10 +55,10 @@ export function ChoixRythme() {
         Ton rythme de chaque jour
       </p>
       <p className="mt-0.5 text-sm text-muted-foreground">
-        Atteindre ton objectif d'XP compte pour ta série, même sans séance du jour. Les points se gagnent sur les
+        Atteindre ton objectif de points compte pour ta série, même sans séance du jour. Les points se gagnent sur les
         bonnes réponses, surtout sur les thèmes à revoir.
       </p>
-      <div role="radiogroup" aria-label="Objectif d'XP par jour" className="mt-3 grid grid-cols-3 gap-2">
+      <div role="radiogroup" aria-label="Objectif de points par jour" className="mt-3 grid grid-cols-3 gap-2">
         {etat.objectifs_possibles.map((valeur) => {
           const choisi = valeur === etat.objectif
           return (
@@ -75,8 +75,8 @@ export function ChoixRythme() {
                 choisi ? "border-primary bg-primary/10" : "border-border hover:border-primary/40",
               )}
             >
-              <span className="block text-sm font-semibold">{LIBELLES[valeur]?.nom ?? `${valeur} XP`}</span>
-              <span className="block text-xs tabular-nums text-muted-foreground">{valeur} XP</span>
+              <span className="block text-sm font-semibold">{LIBELLES[valeur]?.nom ?? `${valeur} points`}</span>
+              <span className="block text-xs tabular-nums text-muted-foreground">{valeur} points</span>
             </button>
           )
         })}

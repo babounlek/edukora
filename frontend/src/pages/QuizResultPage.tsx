@@ -90,7 +90,7 @@ function BilanXp({
         <p className="text-sm text-muted-foreground">Gagné dans ce quiz</p>
         <p className="flex items-center justify-center gap-1.5 font-display text-4xl font-semibold tabular-nums text-gold-text sm:justify-start">
           <Zap className="size-7" aria-hidden="true" />
-          +{gagne} XP
+          +{gagne} points
         </p>
         {xp.session.seance > 0 && (
           <p className="text-xs text-muted-foreground">dont {xp.session.seance} pour la séance du jour</p>

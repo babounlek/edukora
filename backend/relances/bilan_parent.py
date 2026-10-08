@@ -116,7 +116,7 @@ def _bloc_profil(prenom, bilan):
         + (f" ({bilan['taux_reussite']} % de réussite)" if bilan["taux_reussite"] is not None else ""),
     ]
     if bilan["xp"]:
-        faits.append(f"{bilan['xp']} XP")
+        faits.append(f"{bilan['xp']} points")
     lignes = [f"■ {prenom}", "  " + ", ".join(faits) + "."]
     if bilan["themes_consolides"]:
         citations = ", ".join(f"{t['theme']} ({t['subject_label']})" for t in bilan["themes_consolides"])

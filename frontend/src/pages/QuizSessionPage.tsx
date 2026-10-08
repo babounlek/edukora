@@ -467,7 +467,7 @@ export function QuizSessionPage() {
                 className="animate-xp-pop ml-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-1 text-sm font-bold tabular-nums text-gold-text"
               >
                 <Zap className="size-4" aria-hidden="true" />
-                +{question.reponse?.xp_gagne} XP
+                +{question.reponse?.xp_gagne} points
               </span>
             )}
           </div>
