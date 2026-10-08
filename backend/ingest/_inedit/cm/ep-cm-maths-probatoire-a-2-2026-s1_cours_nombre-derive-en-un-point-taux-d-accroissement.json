@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-nombre-derive-en-un-point-taux-d-accroissement-mpa2",
+  "meta": {
+    "titre": "Nombre dérivé en un point : taux d'accroissement",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Analyse - dérivation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "nombre dérivé",
+      "tangente à une courbe"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-probatoire-a-2-2026-s1-ex3-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le compteur d'un véhicule indique la vitesse à un instant précis, alors qu'on ne mesure que des distances parcourues sur des durées. Le nombre dérivé fait la même chose pour une courbe : il donne la pente exacte en un point, à partir de pentes calculées sur des intervalles de plus en plus petits."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le coefficient directeur d'une droite passant par deux points",
+        "Développer et réduire une expression du second degré",
+        "Simplifier une fraction contenant un facteur commun"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Taux d'accroissement et nombre dérivé",
+      "contenu_markdown": "**Taux d'accroissement.** Pour $h\\neq0$, le taux d'accroissement de $f$ entre $a$ et $a+h$ est $\\dfrac{f(a+h)-f(a)}{h}$ : c'est le coefficient directeur de la droite passant par les points d'abscisses $a$ et $a+h$ de la courbe.\n\n**Nombre dérivé.** Quand $h$ tend vers $0$, ce taux peut se rapprocher d'un nombre fini : c'est le nombre dérivé $f'(a)$. Il mesure la pente de la courbe au point d'abscisse $a$.\n\n**Méthode.** On calcule $f(a)$ et $f(a+h)$, on développe $f(a+h)-f(a)$, on simplifie par $h$ puis on remplace $h$ par $0$ dans l'expression obtenue.\n\n**Lien avec la tangente.** La tangente au point d'abscisse $a$ est la droite de coefficient directeur $f'(a)$ passant par $(a\\,;f(a))$.",
+      "formule_principale": "f'(a)=\\lim_{h\\to0}\\dfrac{f(a+h)-f(a)}{h}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $g(x)=x^2-3x$. Calcule le taux d'accroissement de $g$ entre $4$ et $4+h$, puis le nombre dérivé $g'(4)$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $g(4)$",
+          "justification": "On remplace $x$ par $4$.",
+          "resultat_markdown": "$g(4)=16-12=4$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $g(4+h)$",
+          "justification": "On développe $(4+h)^2$ avec l'identité remarquable, sans oublier le terme $8h$.",
+          "resultat_markdown": "$g(4+h)=16+8h+h^2-12-3h=4+5h+h^2$"
+        },
+        {
+          "numero": 3,
+          "action": "Former et simplifier le taux d'accroissement",
+          "justification": "Le numérateur $g(4+h)-g(4)=5h+h^2$ se factorise par $h$, que l'on simplifie car $h\\neq0$.",
+          "resultat_markdown": "$\\dfrac{g(4+h)-g(4)}{h}=\\dfrac{h(5+h)}{h}=5+h$"
+        },
+        {
+          "numero": 4,
+          "action": "Passer à la limite",
+          "justification": "Quand $h$ tend vers $0$, l'expression simplifiée $5+h$ tend vers $5$.",
+          "resultat_markdown": "$g'(4)=5$"
+        }
+      ],
+      "conclusion_markdown": "Le nombre dérivé de $g$ en $4$ est $5$ : la tangente à la courbe au point $(4\\,;4)$ a pour coefficient directeur $5$, soit l'équation $y=5(x-4)+4=5x-16$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Remplacer $h$ par $0$ dans le taux d'accroissement avant de simplifier.",
+          "pourquoi_faux": "On obtient $\\dfrac00$, qui n'a pas de sens : le taux n'est défini que pour $h\\neq0$.",
+          "correction_markdown": "Développe, factorise le numérateur par $h$ et simplifie ; tu remplaces $h$ par $0$ seulement dans l'expression simplifiée."
+        },
+        {
+          "erreur_markdown": "Développer $(a+h)^2$ en $a^2+h^2$.",
+          "pourquoi_faux": "Le double produit $2ah$ disparaît : or c'est lui qui donne la valeur du nombre dérivé.",
+          "correction_markdown": "Utilise l'identité remarquable : $(a+h)^2=a^2+2ah+h^2$."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre dérivé $f'(a)$ avec la valeur $f(a)$.",
+          "pourquoi_faux": "$f(a)$ est l'ordonnée du point de la courbe, alors que $f'(a)$ est le coefficient directeur de la tangente en ce point.",
+          "correction_markdown": "Retiens que $f(a)$ donne la hauteur, $f'(a)$ la pente."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Pour $f(x)=x^2$, calcule le taux d'accroissement entre $3$ et $3+h$, puis $f'(3)$.",
+          "solution_markdown": "$f(3+h)-f(3)=9+6h+h^2-9=6h+h^2$, donc le taux vaut $6+h$ pour $h\\neq0$ et $f'(3)=6$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Pour $f(x)=-x^2+5x$, calcule $f'(1)$ à l'aide du taux d'accroissement.",
+          "solution_markdown": "$f(1)=4$ et $f(1+h)=-(1+2h+h^2)+5+5h=4+3h-h^2$. Le taux vaut $\\dfrac{3h-h^2}{h}=3-h$, donc $f'(1)=3$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Pour $f(x)=2x^2+x-1$, calcule $f'(-1)$ puis donne l'équation de la tangente au point d'abscisse $-1$.",
+          "solution_markdown": "$f(-1)=0$ et $f(-1+h)=2(1-2h+h^2)-1+h-1=-3h+2h^2$. Le taux vaut $-3+2h$, donc $f'(-1)=-3$. La tangente a pour équation $y=-3(x+1)+0=-3x-3$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Taux d'accroissement : $\\dfrac{f(a+h)-f(a)}{h}$, avec $h\\neq0$.",
+        "Nombre dérivé : $f'(a)$ est la limite de ce taux quand $h$ tend vers $0$.",
+        "On simplifie par $h$ avant de remplacer $h$ par $0$.",
+        "$f'(a)$ est le coefficient directeur de la tangente au point d'abscisse $a$."
+      ]
+    }
+  ]
+}

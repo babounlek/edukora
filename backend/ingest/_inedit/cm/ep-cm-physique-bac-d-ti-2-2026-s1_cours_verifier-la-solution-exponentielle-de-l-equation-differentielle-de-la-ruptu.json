@@ -1,0 +1,89 @@
+{
+  "type": "cours",
+  "cours_id": "cours-verifier-la-solution-exponentielle-de-l-equation-d-pbdti2",
+  "meta": {
+    "titre": "Vérifier la solution exponentielle de l'équation différentielle de la rupture du courant dans un dipôle RL",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Dipôle RL : rupture du courant",
+    "duree_estimee_min": 25,
+    "tags": [
+      "équation différentielle",
+      "Bobine réelle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-d-ti-2-2026-s1-ex1-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un relais claque, une sonnerie s'arrête : le courant dans la bobine ne tombe pas à zéro d'un seul coup, il s'éteint progressivement. Cette décroissance suit une loi exponentielle que tu peux démontrer en quelques lignes, à condition de savoir vérifier qu'une fonction est solution d'une équation différentielle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi des mailles et loi d'Ohm",
+        "Tension aux bornes d'une bobine réelle : $u=r\\,i+L\\,\\dfrac{di}{dt}$",
+        "Dérivée de la fonction $t\\mapsto e^{-t/\\tau}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rupture du courant dans un dipôle RL",
+      "contenu_markdown": "Un dipôle RL série, de résistance totale $R_t=R+r$ et d'inductance $L$, est mis en court-circuit à la date $t=0$ alors qu'il est parcouru par l'intensité $I_0$ du régime permanent.\n\nLa loi des mailles donne $R_t\\,i+L\\,\\dfrac{di}{dt}=0$, soit $\\dfrac{di}{dt}+\\dfrac{R_t}{L}\\,i=0$.\n\nPour vérifier que $i=I_0\\,e^{-t/\\tau}$ est solution, on dérive : $\\dfrac{di}{dt}=-\\dfrac{I_0}{\\tau}\\,e^{-t/\\tau}$, on remplace dans l'équation et on obtient $I_0\\,e^{-t/\\tau}\\left(\\dfrac{R_t}{L}-\\dfrac{1}{\\tau}\\right)=0$. L'égalité est vraie à tout instant si $\\tau=\\dfrac{L}{R_t}$.\n\nLa condition initiale $i(0^+)=I_0$ vient de la continuité de l'intensité dans une bobine.",
+      "formule_principale": "i(t)=I_0\\,e^{-t/\\tau}\\qquad\\tau=\\dfrac{L}{R+r}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine ($L=0{,}60\\ \\text{H}$, $r=10\\ \\Omega$) en série avec un résistor $R=50\\ \\Omega$ est parcourue par $I_0=0{,}20\\ \\text{A}$ en régime permanent. À $t=0$, on remplace le générateur par un fil. Établir l'équation différentielle, vérifier la solution exponentielle et calculer $\\tau$ ainsi que la date où l'intensité vaut $0{,}10\\ \\text{A}$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi des mailles",
+          "justification": "Après la coupure, il ne reste que la bobine et le résistor en série : $u_R+u_L=0$.",
+          "resultat_markdown": "$(R+r)\\,i+L\\,\\dfrac{di}{dt}=0$, soit $\\dfrac{di}{dt}+100\\,i=0$ (avec $i$ en ampères et $t$ en secondes)"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que $i=I_0\\,e^{-t/\\tau}$ est solution",
+          "justification": "On dérive, on remplace dans l'équation et on identifie $\\tau$.",
+          "resultat_markdown": "$\\tau=\\dfrac{L}{R+r}=\\dfrac{0{,}60}{60}=1{,}0\\times10^{-2}\\ \\text{s}=10\\ \\text{ms}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la date où $i=0{,}10\\ \\text{A}$",
+          "justification": "On résout $I_0\\,e^{-t/\\tau}=\\dfrac{I_0}{2}$.",
+          "resultat_markdown": "$t=\\tau\\ln2\\approx6{,}9\\ \\text{ms}$"
+        }
+      ],
+      "conclusion_markdown": "L'intensité décroît exponentiellement avec la constante de temps $10\\ \\text{ms}$ ; elle est divisée par deux au bout de $6{,}9\\ \\text{ms}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Oublier la résistance $r$ de la bobine dans la constante de temps : on utilise la résistance totale du circuit, $\\tau=\\dfrac{L}{R+r}$.",
+        "Prendre $i(0^+)=0$ comme à la fermeture du circuit : à la rupture, l'intensité garde la valeur du régime permanent.",
+        "Remplacer la fonction dans l'équation sans la dériver : la vérification exige $\\dfrac{di}{dt}$."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Même circuit avec $L=0{,}30\\ \\text{H}$ et $R+r=60\\ \\Omega$ : calculer $\\tau$. Réponse : $\\tau=5{,}0\\ \\text{ms}$.",
+        "Pour $\\tau=4{,}0\\ \\text{ms}$ et $I_0=0{,}15\\ \\text{A}$, calculer $i$ à $t=8{,}0\\ \\text{ms}$. Réponse : $i=I_0\\,e^{-2}\\approx0{,}020\\ \\text{A}$.",
+        "La fonction $i=I_0\\,e^{-t/\\tau}$ vérifie-t-elle $\\dfrac{di}{dt}+\\dfrac{i}{\\tau}=1$ ? Réponse : non, le premier membre vaut $0$ ; la fonction est solution de l'équation sans second membre."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Rupture du courant : $(R+r)\\,i+L\\,\\dfrac{di}{dt}=0$.",
+        "Solution : $i=I_0\\,e^{-t/\\tau}$ avec $\\tau=\\dfrac{L}{R+r}$, où $I_0$ est l'intensité du régime permanent.",
+        "Vérifier une solution : dériver, remplacer, identifier.",
+        "À $t=\\tau$, $i\\approx0{,}37\\,I_0$ ; l'intensité est presque nulle après $5\\,\\tau$."
+      ]
+    }
+  ]
+}

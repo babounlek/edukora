@@ -1,0 +1,89 @@
+{
+  "type": "cours",
+  "cours_id": "cours-etablir-l-equation-differentielle-de-l-intensite-a-pbdti2",
+  "meta": {
+    "titre": "Établir l'équation différentielle de l'intensité à l'établissement du courant dans une bobine réelle et calculer la constante de temps",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Dipôle RL : établissement du courant",
+    "duree_estimee_min": 25,
+    "tags": [
+      "équation différentielle",
+      "Bobine réelle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-d-ti-2-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu allumes un moteur, l'intensité n'atteint pas sa valeur finale instantanément. Ce retard d'établissement est celui d'une bobine : le courant monte selon une exponentielle dont tu peux calculer la durée avant même de brancher les appareils."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi des mailles et tension aux bornes d'une bobine réelle",
+        "Dérivée de la fonction $t\\mapsto e^{-t/\\tau}$",
+        "Fonction exponentielle et logarithme népérien"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Établissement du courant dans un dipôle RL",
+      "contenu_markdown": "Une bobine réelle $(r,\\,L)$ est branchée à la date $t=0$ sur un générateur de tension continue $U$, avec $i(0)=0$. La loi des mailles donne $U=r\\,i+L\\,\\dfrac{di}{dt}$, soit $\\dfrac{di}{dt}+\\dfrac{r}{L}\\,i=\\dfrac{U}{L}$.\n\nLa solution est $i(t)=\\dfrac{U}{r}\\left(1-e^{-t/\\tau}\\right)$ avec $\\tau=\\dfrac{L}{r}$ ; on la vérifie en la dérivant et en l'injectant dans l'équation. Avec un résistor $R$ en série, on remplace $r$ par $R+r$.\n\nLa constante de temps $\\tau$ se mesure en secondes : à $t=\\tau$, l'intensité atteint $63\\ \\%$ de sa valeur finale $\\dfrac{U}{r}$ ; à $3\\,\\tau$, $95\\ \\%$ ; à $5\\,\\tau$, environ $99\\ \\%$. La durée pour atteindre une fraction $x$ de la valeur finale est $t=-\\tau\\ln(1-x)$.",
+      "formule_principale": "i(t)=\\dfrac{U}{r}\\left(1-e^{-t/\\tau}\\right)\\qquad\\tau=\\dfrac{L}{r}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine de $L=0{,}50\\ \\text{H}$ et $r=25\\ \\Omega$ est branchée à $t=0$ sur un générateur de $U=10\\ \\text{V}$. Établir l'équation différentielle, calculer $\\tau$ et l'intensité finale, puis la durée pour atteindre $90\\ \\%$ de celle-ci.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi des mailles",
+          "justification": "La tension du générateur est égale à la tension aux bornes de la bobine réelle.",
+          "resultat_markdown": "$10=25\\,i+0{,}50\\,\\dfrac{di}{dt}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la constante de temps et l'intensité finale",
+          "justification": "$\\tau=\\dfrac{L}{r}$ ; en régime permanent, $\\dfrac{di}{dt}=0$.",
+          "resultat_markdown": "$\\tau=\\dfrac{0{,}50}{25}=20\\ \\text{ms}$ et $I_\\infty=\\dfrac{10}{25}=0{,}40\\ \\text{A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la durée pour $90\\ \\%$",
+          "justification": "On résout $1-e^{-t/\\tau}=0{,}90$.",
+          "resultat_markdown": "$t=-\\tau\\ln0{,}10\\approx2{,}3\\,\\tau\\approx46\\ \\text{ms}$"
+        }
+      ],
+      "conclusion_markdown": "L'intensité atteint $0{,}36\\ \\text{A}$ au bout de $46\\ \\text{ms}$ environ et tend vers $0{,}40\\ \\text{A}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Confondre $\\tau$ avec la durée totale d'établissement : à $t=\\tau$, il manque encore $37\\ \\%$ de la valeur finale.",
+        "Calculer $\\tau=\\dfrac{L}{r}$ avec $L$ en millihenrys, sans convertir en henrys.",
+        "Écrire $I_\\infty=\\dfrac{U}{L}$ au lieu de $\\dfrac{U}{r}$ : en régime permanent, la bobine ne se comporte que comme sa résistance."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Pour $L=0{,}10\\ \\text{H}$ et $r=10\\ \\Omega$, calculer $\\tau$. Réponse : $\\tau=10\\ \\text{ms}$.",
+        "Pour $\\tau=10\\ \\text{ms}$, $U=5{,}0\\ \\text{V}$ et $r=10\\ \\Omega$, calculer $i$ à $t=10\\ \\text{ms}$. Réponse : $i=0{,}50\\times(1-e^{-1})\\approx0{,}32\\ \\text{A}$.",
+        "Après combien de temps $i$ atteint-il $99\\ \\%$ de $I_\\infty$ pour $\\tau=10\\ \\text{ms}$ ? Réponse : $t=-\\tau\\ln0{,}01\\approx46\\ \\text{ms}$."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Loi des mailles : $U=r\\,i+L\\,\\dfrac{di}{dt}$.",
+        "Solution : $i=\\dfrac{U}{r}\\left(1-e^{-t/\\tau}\\right)$ avec $\\tau=\\dfrac{L}{r}$.",
+        "$63\\ \\%$ de $I_\\infty$ à $\\tau$, $95\\ \\%$ à $3\\,\\tau$, $99\\ \\%$ à $5\\,\\tau$.",
+        "Avec un résistor en série, remplacer $r$ par $R+r$."
+      ]
+    }
+  ]
+}
