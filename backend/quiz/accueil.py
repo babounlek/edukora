@@ -565,7 +565,7 @@ def phrase_coach(plan, phase, absence, premiers_pas_eleve=False, jour=None):
         # hier. » ou « Ce thème t'a déjà posé problème. », repris tel quel.
         constat = next((r["texte"] for r in seance.get("raisons", []) if r["code"] == "echec"), None)
         constat = constat or "Ce thème t'a déjà résisté."
-        return prefixe + f"{constat} " + _variante(FINS_REVISION, jour, duree=duree)
+        return prefixe + constat.rstrip(" .") + "\u00a0: " + _variante(FINS_REVISION, jour, duree=duree)
 
     if origine == "LECTURE_EN_COURS":
         return prefixe + f"Tu avais commencé ce cours. On finit ce qu'on a commencé : {duree}\u00a0minutes."

@@ -154,7 +154,7 @@ class PhaseEtPhraseTests(SimpleTestCase):
         plan = self._plan("REVISION_DUE", raisons=[{"code": "echec", "texte": "Tu as raté ce thème hier."}])
         self.assertEqual(
             accueil.phrase_coach(plan, "normal", 0, jour=JOUR),
-            "Tu as raté ce thème hier. 25\u00a0minutes pour le fixer avant qu'il ne s'efface.",
+            "Tu as raté ce thème hier\u00a0: 25\u00a0minutes pour le fixer avant qu'il ne s'efface.",
         )
 
     def test_le_retour_apres_absence_accueille_sans_reproche(self):
