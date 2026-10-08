@@ -306,7 +306,15 @@ function SeanceAFaire({
         {/* Le mot du coach, juste sous le thème qu'il commente : « Ce thème tombe presque à
             chaque examen » ne désigne rien tant que le titre n'est pas à côté. */}
         {phraseDuCoach && (
-          <p className="mt-3 max-w-prose text-base leading-snug text-balance text-foreground/80 sm:text-lg">{phraseDuCoach}</p>
+          // max-w-4xl et non max-w-prose (65 caractères), et 16 px partout : la phrase de
+          // fréquence fait environ 80 caractères, 650 à 716 px à 16 px (732 à 806 px à 18 px,
+          // mesurés) ; elle se coupait en deux après les deux-points alors que la carte avait
+          // la place. text-balance reste : si la variante la plus longue doit passer à la
+          // ligne, les deux lignes sont équilibrées au lieu de laisser un mot seul.
+          // Une bande teintée (paire accent / accent-foreground du thème, définie en clair et en
+          // sombre) avec une barre d'appui : le mot du coach se détache de la carte au lieu de se
+          // fondre dans le texte gris, et le contraste reste fort (vert foncé sur menthe).
+          <p className="mt-3 max-w-4xl rounded-lg border-l-4 border-primary bg-accent px-3 py-2.5 text-base leading-snug font-medium text-balance text-accent-foreground">{phraseDuCoach}</p>
         )}
         <div className="mt-4 flex flex-wrap items-center gap-2">
           {seance.subject && <PastilleMatiere code={seance.subject.code} label={seance.subject.label} />}
