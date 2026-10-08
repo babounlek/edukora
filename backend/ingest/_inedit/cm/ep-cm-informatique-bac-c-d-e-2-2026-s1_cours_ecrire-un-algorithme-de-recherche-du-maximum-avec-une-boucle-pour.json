@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-ecrire-un-algorithme-de-recherche-du-maximum-avec-ibcde2",
+  "meta": {
+    "titre": "Écrire un algorithme de recherche du maximum avec une boucle Pour",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structures répétitives et conditionnelles",
+    "duree_estimee_min": 20,
+    "tags": [
+      "algorithmique",
+      "boucle Pour",
+      "structure conditionnelle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-c-d-e-2-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le meilleur score, la plus forte pluie, le prix le plus bas : chercher un extrême dans une série de valeurs est l'un des algorithmes les plus demandés. La méthode tient en quelques lignes, à condition de bien choisir la valeur de départ."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "La structure répétitive `Pour ... Faire ... Finpour`",
+        "La structure conditionnelle `Si ... Alors ... Finsi`",
+        "Les instructions `Lire` et `Écrire`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Garder en mémoire le plus grand élément rencontré",
+      "contenu_markdown": "Pour trouver le maximum de n valeurs lues une à une :\n\n1. on lit la première valeur et on la range dans `maxi` : c'est le plus grand élément rencontré jusque-là ;\n2. une boucle `Pour` lit les n - 1 valeurs suivantes ; à chaque lecture, `Si v > maxi Alors maxi ← v` ;\n3. on affiche `maxi` **après** la boucle.\n\n```pseudo\nLire(maxi)\nPour i de 2 à n Faire\n    Lire(v)\n    Si v > maxi Alors\n        maxi ← v\n    Finsi\nFinpour\nÉcrire(maxi)\n```\n\nPour le minimum, on change seulement le sens de la comparaison (`v < mini`). Initialiser `maxi` à 0 est une erreur quand toutes les valeurs peuvent être négatives.",
+      "formule_principale": "\\text{maxi} \\leftarrow v_1 \\quad ; \\quad v_i > \\text{maxi} \\Rightarrow \\text{maxi} \\leftarrow v_i"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Cinq températures sont lues dans l'ordre : 27, 31, 29, 35, 33. Donner les valeurs successives de `maxi` et l'affichage de l'algorithme du maximum.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser maxi avec la première valeur",
+          "justification": "La première température est, à cet instant, la plus grande rencontrée.",
+          "resultat_markdown": "`maxi = 27`"
+        },
+        {
+          "numero": 2,
+          "action": "Dérouler les tours 2 et 3",
+          "justification": "On compare chaque valeur lue à `maxi` : 31 > 27 est vrai, 29 > 31 est faux.",
+          "resultat_markdown": "`maxi` passe à 31, puis reste à 31."
+        },
+        {
+          "numero": 3,
+          "action": "Dérouler les tours 4 et 5",
+          "justification": "35 > 31 est vrai, 33 > 35 est faux.",
+          "resultat_markdown": "`maxi` passe à 35, puis reste à 35."
+        },
+        {
+          "numero": 4,
+          "action": "Afficher après la boucle",
+          "justification": "L'affichage se fait une seule fois, quand toutes les valeurs ont été lues.",
+          "resultat_markdown": "L'algorithme affiche 35."
+        }
+      ],
+      "conclusion_markdown": "Les valeurs successives de `maxi` sont 27, 31, 31, 35, 35 et l'algorithme affiche 35."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Initialiser `maxi` à 0 sans lire la première valeur : sur une série de nombres négatifs, l'algorithme afficherait 0 au lieu du vrai maximum.",
+        "Placer `Écrire(maxi)` dans la boucle : l'algorithme afficherait un résultat à chaque tour au lieu d'un seul.",
+        "Lire la première valeur puis faire varier `i` de 1 à n : on lit alors n + 1 valeurs au lieu de n.",
+        "Écrire le test sans l'affectation : la comparaison `v > maxi` ne change rien tant que `maxi ← v` n'est pas écrit."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Quel est l'affichage de l'algorithme du maximum pour les valeurs 12, 4, 19, 7 ? Réponse : 19.",
+        "Comment modifier l'algorithme pour obtenir le minimum ? Réponse : on initialise `mini` avec la première valeur et on écrit `Si v < mini Alors mini ← v` ; sur 12, 4, 19, 7 il affiche 4.",
+        "Pourquoi initialiser `maxi ← 0` est-il faux pour les valeurs -5, -2, -9 ? Réponse : l'algorithme afficherait 0, qui n'est pas dans la série, alors que le maximum est -2."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On range la première valeur dans `maxi`, puis on parcourt les suivantes avec une boucle `Pour`.",
+        "À chaque valeur, un `Si v > maxi` remplace `maxi` quand c'est nécessaire ; l'affichage se fait après la boucle.",
+        "Pour un minimum, seule la comparaison change."
+      ]
+    }
+  ]
+}

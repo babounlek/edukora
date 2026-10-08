@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-integration-parties-polynome-cosinus-dti3-ex3-q1",
+  "meta": {
+    "titre": "Intégration par parties : produit d'un polynôme et d'un cosinus",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Calcul intégral",
+    "duree_estimee_min": 25,
+    "tags": [
+      "intégration par parties",
+      "calcul intégral"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-d-ti-3-2026-s1-ex3-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une intégrale comme $\\displaystyle\\int(2x+1)\\cos x\\,dx$ ne se calcule pas en cherchant une primitive à vue : le produit d'un polynôme et d'une fonction trigonométrique résiste à la dérivation « à l'envers ». L'intégration par parties transforme ce produit en une intégrale plus simple, en faisant baisser le degré du polynôme. C'est l'outil de base des problèmes d'aire et de valeur moyenne où apparaît un facteur $\\cos x$ ou $\\sin x$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivées de $\\cos x$ et de $\\sin x$, et primitives associées",
+        "Primitive d'un polynôme et calcul d'une intégrale à partir d'une primitive",
+        "Valeurs usuelles de $\\cos$ et de $\\sin$ en $0$, $\\dfrac\\pi2$ et $\\pi$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intégration par parties avec un polynôme et un sinus ou un cosinus",
+      "contenu_markdown": "Si $u$ et $v$ sont dérivables sur $[a\\,;b]$ avec des dérivées continues, alors $\\displaystyle\\int_a^bu(x)\\,v'(x)\\,dx=\\Big[u(x)\\,v(x)\\Big]_a^b-\\int_a^bu'(x)\\,v(x)\\,dx$. Pour une intégrale $\\displaystyle\\int_a^bP(x)\\cos x\\,dx$ où $P$ est un polynôme, on pose $u=P$ (la dérivation fait baisser son degré) et $v'=\\cos x$, donc $v=\\sin x$. Avec un sinus, $v'=\\sin x$ et $v=-\\cos x$. Si $P$ est de degré $n$, on recommence l'opération $n$ fois.",
+      "formule_principale": "\\int_a^b u(x)\\,v'(x)\\,dx=\\Big[u(x)\\,v(x)\\Big]_a^b-\\int_a^b u'(x)\\,v(x)\\,dx"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer $J=\\displaystyle\\int_0^{\\pi}(x+1)\\sin x\\,dx$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir $u$ et $v'$",
+          "justification": "Le polynôme $x+1$ est de degré $1$ : en le dérivant on obtient une constante. On pose donc $u(x)=x+1$ et $v'(x)=\\sin x$.",
+          "resultat_markdown": "$u'(x)=1$ et $v(x)=-\\cos x$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule",
+          "justification": "On remplace dans $\\displaystyle\\int_a^bu\\,v'=\\big[uv\\big]_a^b-\\int_a^bu'\\,v$.",
+          "resultat_markdown": "$J=\\Big[-(x+1)\\cos x\\Big]_0^{\\pi}+\\displaystyle\\int_0^{\\pi}\\cos x\\,dx$"
+        },
+        {
+          "numero": 3,
+          "action": "Évaluer le crochet",
+          "justification": "En $\\pi$ : $-(\\pi+1)\\cos\\pi=\\pi+1$. En $0$ : $-(0+1)\\cos0=-1$. On soustrait la valeur en $0$ à la valeur en $\\pi$.",
+          "resultat_markdown": "$\\Big[-(x+1)\\cos x\\Big]_0^{\\pi}=(\\pi+1)-(-1)=\\pi+2$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'intégrale restante",
+          "justification": "Une primitive de $\\cos x$ est $\\sin x$, qui vaut $0$ en $0$ comme en $\\pi$.",
+          "resultat_markdown": "$\\displaystyle\\int_0^{\\pi}\\cos x\\,dx=\\big[\\sin x\\big]_0^{\\pi}=0$"
+        }
+      ],
+      "conclusion_markdown": "$J=\\pi+2+0=\\pi+2\\approx5{,}14$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Poser $u=\\cos x$ et $v'=x+1$ (le polynôme en position de $v'$).",
+          "pourquoi_faux": "Le polynôme est alors intégré : son degré augmente et l'intégrale restante, avec $x^2\\sin x$, est plus compliquée que l'intégrale de départ.",
+          "correction_markdown": "Poser $u$ égal au polynôme, qu'on dérive, et $v'$ égal au sinus ou au cosinus, qu'on intègre."
+        },
+        {
+          "erreur_markdown": "Prendre $v=\\cos x$ quand $v'=\\sin x$.",
+          "pourquoi_faux": "On a $(\\cos x)'=-\\sin x$ : une primitive de $\\sin x$ est $-\\cos x$. Le signe oublié fausse tout le reste du calcul.",
+          "correction_markdown": "Dériver $v$ avant de poursuivre pour contrôler qu'on retrouve bien $v'$."
+        },
+        {
+          "erreur_markdown": "Évaluer le crochet $\\big[uv\\big]_a^b$ seulement à la borne supérieure.",
+          "pourquoi_faux": "Le crochet vaut $u(b)v(b)-u(a)v(a)$ : la borne inférieure donne souvent un terme non nul (ici $-1$).",
+          "correction_markdown": "Écrire séparément les valeurs en $b$ et en $a$ avant de soustraire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Calculer $\\displaystyle\\int_0^{\\pi/2}x\\cos x\\,dx$.",
+          "solution_markdown": "On pose $u=x$ et $v'=\\cos x$, donc $u'=1$ et $v=\\sin x$. Alors $\\displaystyle\\int_0^{\\pi/2}x\\cos x\\,dx=\\Big[x\\sin x\\Big]_0^{\\pi/2}-\\int_0^{\\pi/2}\\sin x\\,dx=\\dfrac\\pi2-\\Big[-\\cos x\\Big]_0^{\\pi/2}=\\dfrac\\pi2-1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Calculer $\\displaystyle\\int_0^{\\pi}(2x-1)\\sin x\\,dx$.",
+          "solution_markdown": "On pose $u=2x-1$ et $v'=\\sin x$, donc $u'=2$ et $v=-\\cos x$. Le crochet $\\Big[-(2x-1)\\cos x\\Big]_0^{\\pi}$ vaut $(2\\pi-1)-1=2\\pi-2$ et $2\\displaystyle\\int_0^{\\pi}\\cos x\\,dx=0$. Le résultat est $2\\pi-2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Calculer $\\displaystyle\\int_0^{\\pi/2}x^2\\cos x\\,dx$ (deux intégrations par parties successives).",
+          "solution_markdown": "Première étape : $u=x^2$ et $v'=\\cos x$ donnent $\\Big[x^2\\sin x\\Big]_0^{\\pi/2}-2\\displaystyle\\int_0^{\\pi/2}x\\sin x\\,dx=\\dfrac{\\pi^2}4-2\\int_0^{\\pi/2}x\\sin x\\,dx$. Seconde étape : $\\displaystyle\\int_0^{\\pi/2}x\\sin x\\,dx=\\Big[-x\\cos x\\Big]_0^{\\pi/2}+\\int_0^{\\pi/2}\\cos x\\,dx=0+1=1$. Le résultat est $\\dfrac{\\pi^2}4-2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule est $\\displaystyle\\int_a^bu\\,v'=\\big[uv\\big]_a^b-\\int_a^bu'\\,v$, valable quand $u'$ et $v'$ sont continues.",
+        "Avec un polynôme et un sinus ou un cosinus, $u$ est le polynôme et $v'$ la fonction trigonométrique : le degré baisse à chaque étape.",
+        "Une primitive de $\\cos$ est $\\sin$ ; une primitive de $\\sin$ est $-\\cos$, avec le signe moins.",
+        "Le crochet s'évalue aux deux bornes avant de soustraire.",
+        "Pour contrôler, dérive la primitive obtenue : tu dois retrouver la fonction à intégrer."
+      ]
+    }
+  ]
+}

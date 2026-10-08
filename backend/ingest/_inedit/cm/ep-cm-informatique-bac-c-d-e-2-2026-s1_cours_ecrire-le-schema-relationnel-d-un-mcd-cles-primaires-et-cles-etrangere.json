@@ -1,0 +1,95 @@
+{
+  "type": "cours",
+  "cours_id": "cours-ecrire-le-schema-relationnel-d-un-mcd-cles-primair-ibcde2",
+  "meta": {
+    "titre": "Écrire le schéma relationnel d'un MCD : clés primaires et clés étrangères",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Systèmes d'information : du MCD au schéma relationnel",
+    "duree_estimee_min": 25,
+    "tags": [
+      "schéma relationnel",
+      "clé primaire",
+      "clé étrangère"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-c-d-e-2-2026-s1-ex2-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un MCD se dessine pour réfléchir, mais un SGBD ne sait pas ranger des ellipses : il lui faut des tables. Le passage du MCD au schéma relationnel obéit à trois règles mécaniques qu'il suffit d'appliquer dans le bon ordre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Entités, associations et cardinalités d'un MCD",
+        "Notion de table, de colonne et de clé primaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écrire le schéma relationnel d'un MCD",
+      "contenu_markdown": "**Notation.** Un schéma relationnel s'écrit table par table : `NOM (colonne1, colonne2, ...)`. La clé primaire est soulignée et chaque clé étrangère est précédée de `#`.\n\n**Règles de passage.**\n\n1. Chaque entité devient une table : son identifiant est la clé primaire, ses propriétés sont les colonnes.\n2. Une association dont une entité a la cardinalité maximale 1 ne devient pas une table : l'identifiant de l'autre entité est ajouté, comme clé étrangère, dans la table de l'entité qui a le maximum 1.\n3. Une association dont les deux cardinalités maximales valent n devient une table : sa clé primaire est formée des identifiants des entités reliées, qui sont aussi des clés étrangères, et ses propriétés deviennent ses colonnes.",
+      "formule_principale": "\\text{association } (n,n) \\Rightarrow \\text{nouvelle table de clé primaire } (id_1, id_2)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un lycée gère ses départements, ses enseignants et ses matières. Entités : DEPARTEMENT (codeD, libD), ENSEIGNANT (matE, nomE), MATIERE (codeM, libM). Association APPARTENIR : ENSEIGNANT (1,1) et DEPARTEMENT (1,n). Association ENSEIGNER : ENSEIGNANT (0,n) et MATIERE (1,n), avec la propriété volumeHoraire. Écrire le schéma relationnel.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Transformer les entités en tables",
+          "justification": "Chaque entité donne une table dont l'identifiant est la clé primaire.",
+          "resultat_markdown": "DEPARTEMENT (codeD, libD) ; ENSEIGNANT (matE, nomE) ; MATIERE (codeM, libM)."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter APPARTENIR",
+          "justification": "La cardinalité maximale vaut 1 du côté de ENSEIGNANT : un enseignant n'a qu'un département. L'identifiant du département migre dans ENSEIGNANT.",
+          "resultat_markdown": "ENSEIGNANT (matE, nomE, #codeD)."
+        },
+        {
+          "numero": 3,
+          "action": "Traiter ENSEIGNER",
+          "justification": "Les deux cardinalités maximales valent n : une table intermédiaire est nécessaire, de clé primaire (matE, codeM), avec la propriété de l'association.",
+          "resultat_markdown": "ENSEIGNER (#matE, #codeM, volumeHoraire)."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire le schéma complet",
+          "justification": "On regroupe les quatre tables en soulignant les clés primaires (en gras ici) et en plaçant # devant les clés étrangères.",
+          "resultat_markdown": "DEPARTEMENT (**codeD**, libD) ; MATIERE (**codeM**, libM) ; ENSEIGNANT (**matE**, nomE, #codeD) ; ENSEIGNER (**#matE**, **#codeM**, volumeHoraire)."
+        }
+      ],
+      "conclusion_markdown": "Le MCD de trois entités et deux associations donne quatre tables : une par entité, plus la table intermédiaire de l'association de type n,n."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Créer une table pour une association dont une cardinalité maximale vaut 1 : une clé étrangère suffit.",
+        "Placer la clé étrangère du mauvais côté : elle va dans la table de l'entité qui a la cardinalité maximale 1.",
+        "Donner à la table d'une association n,n une clé primaire d'une seule colonne : elle est formée des deux identifiants.",
+        "Oublier les propriétés portées par l'association : elles deviennent des colonnes de la table intermédiaire."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "CLIENT (codeC, nomC) et COMMANDE (numCmd, dateCmd) sont reliés par PASSER, avec CLIENT (0,n) et COMMANDE (1,1). Où place-t-on la clé étrangère ? Réponse : dans COMMANDE, sous la forme COMMANDE (numCmd, dateCmd, #codeC).",
+        "ELEVE (matEl, nomEl) et CLUB (codeClub, nomClub) sont reliés par INSCRIRE, avec ELEVE (0,n), CLUB (0,n) et la propriété dateInscription. Combien de tables obtient-on et quelle est celle de l'association ? Réponse : trois tables, dont INSCRIRE (#matEl, #codeClub, dateInscription).",
+        "Pourquoi une association dont une cardinalité maximale vaut 1 ne donne-t-elle pas de table ? Réponse : parce qu'une colonne de la table du côté 1 suffit pour désigner l'unique correspondant."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une entité devient une table ; son identifiant est la clé primaire.",
+        "Cardinalité maximale 1 : clé étrangère dans la table de l'entité qui porte ce maximum. Cardinalités maximales n des deux côtés : table intermédiaire.",
+        "La clé primaire de la table intermédiaire est formée des identifiants des entités reliées ; les propriétés de l'association s'y ajoutent."
+      ]
+    }
+  ]
+}
