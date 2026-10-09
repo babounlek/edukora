@@ -7471,6 +7471,68 @@ class CoursVideTests(TestCase):
             ingest_cours(payload)
         self.assertFalse(Cours.objects.filter(external_id="cours-ebauche").exists())
 
+    def _rappel(self, external_id):
+        exercise = Exercise.objects.create(
+            lesson=self.lesson, numero_exercice="1", statut=StatutContenu.VALIDE,
+            corrige_markdown="Corrigé.\n\n### Rappel de méthode\n\nContenu du rappel.",
+        )
+        return RappelDeMethode.objects.create(
+            exercise=exercise, external_id=external_id, competence="Test", contenu_markdown="Contenu du rappel.",
+        )
+
+    def _squelette(self, titre="Resoudre une equation", rappel_id="rdm-squelette"):
+        return {
+            "cours_id": "cours-squelette", "sections": [],
+            "source": {"rappel_id": rappel_id, "epreuve_source": "bepc-maths-2020-cameroun.pdf"},
+            "meta": {"titre": titre, "matiere": "Mathématiques"},
+        }
+
+    def test_a_skeleton_joins_the_published_cours_with_the_same_title(self):
+        # Le geste documenté par le skill correction-experte : sections vides + titre du
+        # catalogue = « ce rappel est déjà couvert par ce cours ». Casse ignorée comme pour
+        # le dédoublonnage par titre (titres sans accents ici : avec la collation de la base,
+        # iexact ne change pas la casse des lettres accentuées).
+        existant = Cours.objects.create(
+            external_id="cours-existant", titre="Resoudre une equation", subject=self.subject,
+            statut=StatutContenu.VALIDE, content_markdown="Contenu du cours.",
+        )
+        rappel = self._rappel("rdm-squelette")
+
+        cours, created = ingest_cours(self._squelette(titre="RESOUDRE UNE EQUATION"))
+
+        self.assertEqual(cours.pk, existant.pk)
+        self.assertFalse(created)
+        rappel.refresh_from_db()
+        self.assertEqual(rappel.cours_id, existant.pk)
+        self.assertFalse(Cours.objects.filter(external_id="cours-squelette").exists())
+
+    def test_a_skeleton_does_not_join_an_empty_cours(self):
+        Cours.objects.create(
+            external_id="cours-vide", titre="Resoudre une equation", subject=self.subject,
+            statut=StatutContenu.VALIDE, content_markdown="",
+        )
+        with self.assertRaisesMessage(IngestionError, "sans aucune section"):
+            ingest_cours(self._squelette())
+
+    def test_a_skeleton_does_not_join_an_unpublished_cours(self):
+        Cours.objects.create(
+            external_id="cours-brouillon-titre", titre="Resoudre une equation", subject=self.subject,
+            statut=StatutContenu.BROUILLON, content_markdown="Contenu du brouillon.",
+        )
+        with self.assertRaisesMessage(IngestionError, "sans aucune section"):
+            ingest_cours(self._squelette())
+
+    def test_a_skeleton_with_an_unknown_rappel_still_joins_without_failing(self):
+        existant = Cours.objects.create(
+            external_id="cours-existant", titre="Resoudre une equation", subject=self.subject,
+            statut=StatutContenu.VALIDE, content_markdown="Contenu du cours.",
+        )
+
+        cours, created = ingest_cours(self._squelette(rappel_id="rdm-introuvable"))
+
+        self.assertEqual(cours.pk, existant.pk)
+        self.assertFalse(created)
+
     def test_no_link_to_an_unpublished_cours(self):
         cours = Cours.objects.create(
             external_id="cours-brouillon", titre="Cours en brouillon", subject=self.subject, statut=StatutContenu.BROUILLON,

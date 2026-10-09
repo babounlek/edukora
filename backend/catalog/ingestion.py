@@ -1892,7 +1892,24 @@ def ingest_cours(data, source_dir=None):
     # vers une page vide. Vérifié après le chemin « déjà ingéré » ci-dessus, pour que
     # les ébauches déjà en base ne remontent pas une erreur à chaque relance sur ingest/.
     if not data.get("sections"):
-        raise IngestionError(f"Cours {cours_id} sans aucune section : ébauche non rédigée, à générer avant ingestion")
+        # Un squelette (`sections: []`, titre copié du catalogue) est le geste documenté par
+        # le skill correction-experte pour dire « ce rappel est déjà couvert par ce cours ».
+        # Il est valable uniquement s'il rejoint un cours publié ET non vide : constaté le
+        # 2026-10-08 sur bac-a-abi-espagnol-2021 (9 squelettes, 5 titres déjà en base),
+        # rejetés ici alors que le dédoublonnage par titre ci-dessous les aurait absorbés.
+        # Sans cours de même titre, ou avec un cours vide, l'ébauche reste une erreur.
+        titre_squelette = _strip_em_dash(meta["titre"])
+        couvert_par = Cours.objects.filter(
+            titre__iexact=titre_squelette, statut=StatutContenu.VALIDE,
+        ).exclude(content_markdown="").first()
+        if couvert_par is None:
+            raise IngestionError(f"Cours {cours_id} sans aucune section : ébauche non rédigée, à générer avant ingestion")
+        rappel_squelette = RappelDeMethode.objects.filter(external_id=source["rappel_id"]).first()
+        if rappel_squelette:
+            rappel_squelette.cours = couvert_par
+            rappel_squelette.save(update_fields=["cours"])
+        _link_rappels_lies(couvert_par, source)
+        return couvert_par, False
 
     rappel = RappelDeMethode.objects.select_related("exercise__lesson").filter(
         external_id=source["rappel_id"],
