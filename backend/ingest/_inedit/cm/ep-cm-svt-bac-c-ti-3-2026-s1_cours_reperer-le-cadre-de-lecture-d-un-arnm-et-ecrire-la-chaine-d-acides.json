@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-reperer-le-cadre-de-lecture-d-un-arnm-svtbacctii3-ex4-q2",
+  "meta": {
+    "titre": "Repérer le cadre de lecture d'un ARNm et écrire la chaîne d'acides aminés",
+    "matiere": "svt",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Génétique moléculaire - traduction",
+    "duree_estimee_min": 22,
+    "tags": [
+      "traduction",
+      "code génétique",
+      "codon"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-svt-bac-c-ti-3-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite de lettres comme CCGACAUGGCU... n'a de sens qu'à partir d'un endroit précis et en la lisant par groupes de trois. Se tromper d'une seule lettre au départ, c'est lire une autre phrase et obtenir un autre peptide : le cadre de lecture est la première chose à fixer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un codon est un groupe de trois nucléotides de l'ARN messager",
+        "Savoir utiliser un tableau du code génétique pour passer d'un codon à un acide aminé",
+        "Savoir que la traduction a lieu dans le cytoplasme, sur les ribosomes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du codon AUG au codon stop",
+      "contenu_markdown": "Pour traduire un ARNm, on procède en quatre temps :\n\n1. **Repérer le premier codon AUG**, lu de 5' vers 3'. Il code la méthionine et fixe le **cadre de lecture**. Les nucléotides placés avant lui ne sont pas traduits.\n2. **Découper** la séquence en codons de trois nucléotides, sans en sauter ni en chevaucher.\n3. **Traduire** chaque codon avec le tableau du code génétique. Le code est *redondant* (plusieurs codons pour un même acide aminé) mais jamais ambigu (un codon ne désigne qu'un acide aminé).\n4. **S'arrêter au premier codon stop** (UAA, UAG ou UGA) : il ne code aucun acide aminé. Les nucléotides qui suivent ne sont pas traduits.\n\nUne chaîne de $n$ acides aminés correspond donc à $n+1$ codons, le dernier étant le codon stop.",
+      "formule_principale": "\\text{AUG} \\rightarrow \\text{codons de 3 nucléotides} \\rightarrow \\text{codon stop}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ARNm a pour séquence 5'-GCAUGCCAAAGUUCUGAUCG-3'. Codons utiles : AUG (Met), CCA (Pro), AAG (Lys), UUC (Phe), UGA (stop). Écris la chaîne d'acides aminés.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le premier AUG",
+          "justification": "On lit de 5' vers 3' et on s'arrête au premier AUG rencontré : c'est lui qui fixe le cadre.",
+          "resultat_markdown": "AUG occupe les positions 3 à 5. Les deux premiers nucléotides, GC, ne sont pas traduits."
+        },
+        {
+          "numero": 2,
+          "action": "Découper en codons",
+          "justification": "À partir de l'AUG, on trace une barre tous les trois nucléotides.",
+          "resultat_markdown": "AUG / CCA / AAG / UUC / UGA / UCG"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire chaque codon",
+          "justification": "On associe chaque codon à son acide aminé avec le tableau.",
+          "resultat_markdown": "AUG = Met ; CCA = Pro ; AAG = Lys ; UUC = Phe ; UGA = stop"
+        },
+        {
+          "numero": 4,
+          "action": "Arrêter la lecture au codon stop",
+          "justification": "Le codon UGA ne code aucun acide aminé et termine la traduction : le codon UCG qui le suit n'est pas lu.",
+          "resultat_markdown": "Chaîne : Met-Pro-Lys-Phe (4 acides aminés pour 5 codons)."
+        }
+      ],
+      "conclusion_markdown": "Le peptide obtenu est Met-Pro-Lys-Phe. Les nucléotides GC en tête et UCG en fin de séquence n'interviennent pas dans la chaîne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Commencer la lecture au premier nucléotide de l'ARNm au lieu du premier AUG.",
+          "pourquoi_faux": "Le cadre de lecture est fixé par l'AUG. Partir d'ailleurs décale tous les codons et donne une chaîne entièrement différente.",
+          "correction_markdown": "Souligne l'AUG avant de découper en codons."
+        },
+        {
+          "erreur_markdown": "Compter le codon stop comme un acide aminé.",
+          "pourquoi_faux": "Un codon stop ne code aucun acide aminé : il arrête la traduction.",
+          "correction_markdown": "Compte les codons, puis retire le codon stop : une chaîne de $n$ acides aminés se lit sur $n+1$ codons."
+        },
+        {
+          "erreur_markdown": "Continuer la lecture après le codon stop.",
+          "pourquoi_faux": "Le ribosome se détache de l'ARNm au premier codon stop, quels que soient les nucléotides qui suivent.",
+          "correction_markdown": "Barre le reste de la séquence dès que tu rencontres UAA, UAG ou UGA."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Le cadre de lecture d'un ARNm compte 12 codons, dont le dernier est un codon stop. Combien d'acides aminés compte la chaîne ?",
+          "solution_markdown": "Le codon stop ne code aucun acide aminé : la chaîne compte $12-1=11$ acides aminés."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Écris la chaîne d'acides aminés de l'ARNm 5'-AGGAUGUUUGAAGGCUAGCC-3'. Codons utiles : AUG (Met), UUU (Phe), GAA (Glu), GGC (Gly), UAG (stop).",
+          "solution_markdown": "Les trois premiers nucléotides AGG ne sont pas traduits. La lecture commence à l'AUG : AUG / UUU / GAA / GGC / UAG. La chaîne est Met-Phe-Glu-Gly, la lecture s'arrête à UAG et les nucléotides CC ne sont pas lus."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "L'ARNm 5'-CGAUGGAUGAUUAAGC-3' contient deux AUG. Écris la chaîne correcte, puis celle qu'obtiendrait un élève qui commence la lecture au second AUG. Codons utiles : AUG (Met), GAU (Asp), UAA (stop), AUU (Ile), AAG (Lys).",
+          "solution_markdown": "Le premier AUG fixe le cadre : AUG / GAU / GAU / UAA, soit la chaîne Met-Asp-Asp. Un élève qui part du second AUG lit AUG / AUU / AAG, soit Met-Ile-Lys, et manque le codon stop : cadre faux, donc chaîne fausse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le cadre de lecture est fixé par le premier AUG, lu de 5' vers 3'.",
+        "On découpe en codons de trois nucléotides et on traduit chaque codon avec le tableau du code génétique.",
+        "La lecture s'arrête au premier codon stop (UAA, UAG, UGA), qui ne code aucun acide aminé.",
+        "Les nucléotides avant l'AUG et après le codon stop ne sont pas traduits."
+      ]
+    }
+  ]
+}

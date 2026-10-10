@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-trouver-le-point-fixe-d-une-fonction-et-etudier-le-signe-de-mbce3-ex4-q4",
+  "meta": {
+    "titre": "Trouver le point fixe d'une fonction et étudier le signe de f(x) − x",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Suites : point fixe et signe de f(x) − x",
+    "duree_estimee_min": 20,
+    "tags": [
+      "point fixe",
+      "suite récurrente"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour étudier une suite $u_{n+1}=f(u_n)$, la première question est toujours la même : vers quelle valeur $\\ell$ la suite peut-elle se stabiliser ? Si elle converge, sa limite vérifie $f(\\ell)=\\ell$. Cette équation, celle des points fixes, se résout en étudiant la différence $f(x)-x$, dont le signe renseigne en plus sur la position de la courbe par rapport à la droite $y=x$ et sur le sens de variation de la suite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation contenant un logarithme ou un produit nul",
+        "Étudier le signe d'un produit ou d'un quotient",
+        "Position relative d'une courbe et d'une droite"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Point fixe et signe de $f(x)-x$",
+      "contenu_markdown": "Un **point fixe** de $f$ est un réel $\\ell$ de l'ensemble de définition tel que $f(\\ell)=\\ell$. Graphiquement, c'est l'abscisse d'un point d'intersection de la courbe $(\\mathcal C_f)$ et de la droite $(D):y=x$.\n\n**Méthode.** (1) On forme $h(x)=f(x)-x$ et on la **factorise** (mise en facteur, identité remarquable) pour que ses zéros soient lisibles. (2) Les solutions de $h(x)=0$ dans l'ensemble de définition sont les points fixes. (3) Le signe de $h$ donne la position de la courbe : si $h(x)>0$, $(\\mathcal C_f)$ est au-dessus de $(D)$ ; si $h(x)<0$, elle est en dessous.\n\n**Lien avec la suite.** Pour $u_{n+1}=f(u_n)$, on a $u_{n+1}-u_n=f(u_n)-u_n=h(u_n)$. Si $u_n$ reste dans un intervalle où $h\\ge0$, la suite est croissante ; où $h\\le0$, elle est décroissante. Et si $(u_n)$ converge vers $\\ell$ avec $f$ continue en $\\ell$, alors $f(\\ell)=\\ell$.",
+      "formule_principale": "f(\\ell)=\\ell\\iff h(\\ell)=0\\quad\\text{avec}\\quad h(x)=f(x)-x"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $g$ la fonction définie sur $]0\\,;+\\infty[$ par $g(x)=x(2+\\ln x)$. Déterminer les points fixes de $g$ et la position de sa courbe par rapport à la droite d'équation $y=x$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Former $h(x)=g(x)-x$",
+          "justification": "On met $x$ en facteur pour obtenir un produit.",
+          "resultat_markdown": "$h(x)=x(2+\\ln x)-x=x(1+\\ln x)$"
+        },
+        {
+          "numero": 2,
+          "action": "Résoudre $h(x)=0$",
+          "justification": "Un produit est nul si l'un des facteurs l'est ; comme $x>0$, seul le second facteur peut s'annuler.",
+          "resultat_markdown": "$1+\\ln x=0\\iff x=\\mathrm e^{-1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Étudier le signe de $h$",
+          "justification": "Pour $x>0$, $h(x)$ a le signe de $1+\\ln x$, qui est croissante et nulle en $\\mathrm e^{-1}$.",
+          "resultat_markdown": "$h(x)>0\\iff x>\\mathrm e^{-1}$"
+        },
+        {
+          "numero": 4,
+          "action": "Interpréter",
+          "justification": "Le signe de $g(x)-x$ donne la position de la courbe.",
+          "resultat_markdown": "$(\\mathcal C_g)$ est en dessous de $(D)$ sur $]0\\,;\\mathrm e^{-1}[$ et au-dessus sur $]\\mathrm e^{-1}\\,;+\\infty[$"
+        }
+      ],
+      "conclusion_markdown": "Le seul point fixe de $g$ est $\\mathrm e^{-1}$ : la courbe coupe la droite $y=x$ au point $\\left(\\mathrm e^{-1}\\,;\\mathrm e^{-1}\\right)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher une solution $x=0$ dans $x(1+\\ln x)=0$.",
+          "pourquoi_faux": "Le nombre $0$ n'appartient pas à l'ensemble de définition : une solution hors du domaine n'est pas un point fixe.",
+          "correction_markdown": "Écrire le domaine avant de résoudre et rejeter toute valeur qui en sort."
+        },
+        {
+          "erreur_markdown": "Développer $f(x)-x$ jusqu'à un polynôme sans le factoriser.",
+          "pourquoi_faux": "On perd la structure de la différence et le signe devient difficile à étudier.",
+          "correction_markdown": "Factoriser $f(x)-x$ dès que possible pour obtenir des facteurs de signe connu."
+        },
+        {
+          "erreur_markdown": "Penser que tout point fixe est la limite de la suite.",
+          "pourquoi_faux": "Un point fixe n'est qu'une limite possible : selon $u_0$, la suite peut converger vers un autre point fixe ou diverger.",
+          "correction_markdown": "Démontrer la convergence (monotonie et bornes, ou majoration) avant d'affirmer la limite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Déterminer les points fixes de $f(x)=x^2-2x$ sur $\\mathbb R$.",
+          "solution_markdown": "$f(x)-x=x^2-3x=x(x-3)$. Cette expression est nulle pour $x=0$ et $x=3$ : ce sont les deux points fixes de $f$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{x+6}{x+2}$ sur $]-2\\,;+\\infty[$. Déterminer le point fixe de $f$ et la position de la courbe par rapport à $y=x$.",
+          "solution_markdown": "$f(x)-x=\\dfrac{x+6-x^2-2x}{x+2}=\\dfrac{-(x+3)(x-2)}{x+2}$. Sur $]-2\\,;+\\infty[$, $x+2>0$ et $x+3>0$ : le seul zéro est $x=2$ ($-3$ est hors du domaine). Le signe est celui de $-(x-2)$ : la courbe est au-dessus de la droite pour $x<2$ et en dessous pour $x>2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Déterminer les points fixes de $f(x)=x\\,\\mathrm e^{1-x}$ sur $\\mathbb R$, puis la position de la courbe par rapport à $y=x$ sur $]0\\,;+\\infty[$.",
+          "solution_markdown": "$f(x)-x=x\\left(\\mathrm e^{1-x}-1\\right)$ est nul si $x=0$ ou si $\\mathrm e^{1-x}=1$, c'est-à-dire $x=1$ : les points fixes sont $0$ et $1$. Sur $]0\\,;+\\infty[$, le signe est celui de $\\mathrm e^{1-x}-1$, positif si $x<1$ : la courbe est au-dessus de la droite sur $]0\\,;1[$ et en dessous sur $]1\\,;+\\infty[$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un point fixe de $f$ est une solution de $f(x)=x$ dans l'ensemble de définition.",
+        "On étudie $h(x)=f(x)-x$, que l'on factorise pour lire ses zéros et son signe.",
+        "Le signe de $h$ donne la position de la courbe par rapport à la droite $y=x$ et le sens de variation de la suite via $u_{n+1}-u_n=h(u_n)$.",
+        "Une limite éventuelle de la suite est un point fixe, mais un point fixe n'est pas forcément la limite : il faut démontrer la convergence."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-rendement-energetique-d-un-accumulateur-charge-e-ppdt2-ex4-q4",
+  "meta": {
+    "titre": "Rendement énergétique d'un accumulateur : charge et décharge",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Électricité - accumulateurs et rendement",
+    "duree_estimee_min": 25,
+    "tags": [
+      "rendement énergétique",
+      "accumulateur au plomb"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-probatoire-d-ti-2-2026-s1-ex4-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un téléphone qui chauffe pendant la charge perd de l'énergie dans l'air : l'énergie prise sur la prise de courant n'est jamais restituée en totalité par la batterie. Le rendement énergétique chiffre cette perte, et il est toujours plus mauvais que ce que laisse penser la seule capacité en ampères-heures."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Quantité d'électricité $Q=I\\,\\Delta t$ et conversion $1\\ \\text{A}\\cdot\\text{h}=3600\\ \\text{C}$",
+        "Énergie électrique reçue ou fournie sous une tension constante : $W=U\\,Q$",
+        "Rendement d'un convertisseur : énergie utile divisée par énergie reçue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rendement énergétique d'un cycle charge-décharge",
+      "contenu_markdown": "Un accumulateur reçoit de l'énergie électrique à la charge, la stocke sous forme chimique et la restitue à la décharge. L'énergie reçue à la charge vaut $W_c=U_c\\,Q_c$ et l'énergie restituée vaut $W_d=U_d\\,Q_d$, où $U$ est la tension moyenne aux bornes et $Q$ la quantité d'électricité échangée, en coulombs.\n\nLe rendement énergétique est $\\eta_E=W_d/W_c$. Il est toujours inférieur à $1$ pour deux raisons qui se cumulent : l'accumulateur restitue moins de charge qu'il n'en reçoit (rendement en quantité $\\eta_Q=Q_d/Q_c$) et la tension moyenne de décharge est inférieure à celle de charge. Donc $\\eta_E=\\eta_Q\\,\\dfrac{U_d}{U_c}$.",
+      "formule_principale": "\\eta_E=\\dfrac{W_d}{W_c}=\\dfrac{U_d\\,Q_d}{U_c\\,Q_c}=\\eta_Q\\,\\dfrac{U_d}{U_c}\\qquad\\left(W\\ \\text{en J},\\ U\\ \\text{en V},\\ Q\\ \\text{en C}\\right)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un accumulateur de scooter débite $40\\ \\text{A}\\cdot\\text{h}$ sous une tension moyenne de $12{,}0\\ \\text{V}$. Pour le recharger, on lui fournit sous $14{,}4\\ \\text{V}$ en moyenne la charge $Q_c$ telle que son rendement en quantité soit $\\eta_Q=0{,}80$, avec un courant constant de $5{,}0\\ \\text{A}$. Calculer la durée de charge, les énergies échangées et le rendement énergétique.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la charge à fournir et la durée",
+          "justification": "Le rendement en quantité relie la charge restituée à la charge reçue.",
+          "resultat_markdown": "$Q_c=\\dfrac{40}{0{,}80}=50\\ \\text{A}\\cdot\\text{h}$ et $\\Delta t=\\dfrac{50}{5{,}0}=10\\ \\text{h}$"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir les charges en coulombs",
+          "justification": "Une énergie en joules exige une charge en coulombs.",
+          "resultat_markdown": "$Q_c=50\\times3600=1{,}8\\times10^{5}\\ \\text{C}$ et $Q_d=40\\times3600=1{,}44\\times10^{5}\\ \\text{C}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les énergies",
+          "justification": "On multiplie chaque charge par la tension moyenne correspondante.",
+          "resultat_markdown": "$W_c=14{,}4\\times1{,}8\\times10^{5}=2{,}592\\times10^{6}\\ \\text{J}\\ (0{,}72\\ \\text{kWh})$ et $W_d=12{,}0\\times1{,}44\\times10^{5}=1{,}728\\times10^{6}\\ \\text{J}\\ (0{,}48\\ \\text{kWh})$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le rendement énergétique",
+          "justification": "C'est le rapport de l'énergie restituée à l'énergie reçue.",
+          "resultat_markdown": "$\\eta_E=\\dfrac{1{,}728}{2{,}592}\\approx0{,}67$, que l'on retrouve par $\\eta_Q\\dfrac{U_d}{U_c}=0{,}80\\times\\dfrac{12{,}0}{14{,}4}\\approx0{,}67$"
+        }
+      ],
+      "conclusion_markdown": "La charge dure $10\\ \\text{h}$ et l'accumulateur ne restitue que $67\\ \\%$ de l'énergie reçue, bien moins que son rendement en quantité de $80\\ \\%$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le rendement énergétique comme le rapport des charges $Q_d/Q_c$.",
+          "pourquoi_faux": "Ce rapport est le rendement en quantité. Il ignore que l'énergie dépend aussi de la tension, plus élevée à la charge qu'à la décharge : on surestime le rendement.",
+          "correction_markdown": "Multiplier chaque charge par sa tension moyenne avant de faire le rapport, ou écrire $\\eta_E=\\eta_Q\\,U_d/U_c$."
+        },
+        {
+          "erreur_markdown": "Multiplier une tension par une charge exprimée en ampères-heures et lire le résultat en joules.",
+          "pourquoi_faux": "Le produit volts par ampères-heures est en wattheures, pas en joules : l'erreur est un facteur $3600$.",
+          "correction_markdown": "Convertir $Q$ en coulombs ($\\times3600$) ou garder des wattheures pour toutes les énergies."
+        },
+        {
+          "erreur_markdown": "Obtenir un rendement supérieur à $1$ en inversant le rapport.",
+          "pourquoi_faux": "L'accumulateur ne crée pas d'énergie : il restitue toujours moins qu'il ne reçoit.",
+          "correction_markdown": "Placer l'énergie restituée au numérateur et l'énergie reçue au dénominateur, et contrôler que le résultat est inférieur à $1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un accumulateur reçoit $3{,}6\\ \\text{MJ}$ à la charge et restitue $2{,}7\\ \\text{MJ}$ à la décharge. Calculer son rendement énergétique.",
+          "solution_markdown": "$\\eta_E=\\dfrac{2{,}7}{3{,}6}=0{,}75$, soit $75\\ \\%$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Une batterie délivre $20\\ \\text{A}\\cdot\\text{h}$ sous $12{,}0\\ \\text{V}$ en moyenne, puis reçoit $24\\ \\text{A}\\cdot\\text{h}$ sous $13{,}5\\ \\text{V}$ en moyenne pour être rechargée. Calculer son rendement énergétique.",
+          "solution_markdown": "$W_d=12{,}0\\times20\\times3600=864000\\ \\text{J}$ et $W_c=13{,}5\\times24\\times3600=1166400\\ \\text{J}$, donc $\\eta_E=\\dfrac{864000}{1166400}\\approx0{,}74$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un accumulateur de rendement énergétique $70\\ \\%$ a reçu $0{,}50\\ \\text{kWh}$ à la charge. Combien de temps peut-il alimenter une lampe de $14\\ \\text{W}$ ?",
+          "solution_markdown": "L'énergie restituée est $0{,}70\\times0{,}50=0{,}35\\ \\text{kWh}$. La durée est $\\dfrac{0{,}35\\ \\text{kWh}}{0{,}014\\ \\text{kW}}=25\\ \\text{h}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Rendement énergétique : $\\eta_E=W_d/W_c$, énergie restituée à la décharge divisée par énergie reçue à la charge.",
+        "Chaque énergie vaut $U\\,Q$, avec $Q$ en coulombs : $1\\ \\text{A}\\cdot\\text{h}=3600\\ \\text{C}$.",
+        "$\\eta_E=\\eta_Q\\,U_d/U_c$ : il est plus faible que le rendement en quantité parce que la tension de décharge est plus basse que celle de charge.",
+        "Un rendement est toujours inférieur à $1$ : sinon, le rapport est inversé."
+      ]
+    }
+  ]
+}

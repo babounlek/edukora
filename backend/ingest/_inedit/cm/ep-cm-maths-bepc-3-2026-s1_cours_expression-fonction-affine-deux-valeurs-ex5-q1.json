@@ -1,0 +1,113 @@
+{
+  "type": "cours",
+  "cours_id": "cours-expression-fonction-affine-deux-valeurs-bepc",
+  "meta": {
+    "titre": "Déterminer l'expression d'une fonction affine à partir de deux valeurs",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Fonctions affines",
+    "duree_estimee_min": 20,
+    "tags": [
+      "fonction affine",
+      "coefficient directeur",
+      "ordonnée à l'origine"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bepc-3-2026-s1-ex5-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un énoncé donne deux valeurs d'une fonction affine et demande de retrouver la fonction : deux points suffisent pour fixer une droite, donc pour retrouver son expression. La méthode tient en deux calculs, d'abord le coefficient directeur, ensuite l'ordonnée à l'origine."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Forme d'une fonction affine $f(x)=ax+b$ : coefficient directeur $a$ et ordonnée à l'origine $b$",
+        "Calculer avec des nombres relatifs et des fractions",
+        "Remplacer $x$ par un nombre dans une expression",
+        "Résoudre une équation du premier degré à une inconnue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Retrouver $a$ puis $b$ à partir de deux valeurs",
+      "contenu_markdown": "Une fonction affine s'écrit $f(x)=ax+b$ : $a$ est le coefficient directeur et $b$ l'ordonnée à l'origine, c'est-à-dire $f(0)$.\n\nSi l'on connaît deux valeurs $f(x_1)$ et $f(x_2)$ avec $x_1\\neq x_2$, le coefficient directeur est le quotient de la variation de $f(x)$ par la variation de $x$ : $a=\\dfrac{f(x_2)-f(x_1)}{x_2-x_1}$.\n\nOn remplace ensuite $x$ et $f(x)$ par les valeurs de l'un des deux couples dans $f(x)=ax+b$ : on obtient une équation d'inconnue $b$, que l'on résout. Si l'une des valeurs données est $f(0)$, elle donne directement $b$.",
+      "formule_principale": "a=\\dfrac{f(x_2)-f(x_1)}{x_2-x_1}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$g$ est une fonction affine telle que $g(2)=7$ et $g(6)=19$. Déterminer l'expression de $g(x)$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le coefficient directeur $a$",
+          "justification": "On applique la formule avec $x_1=2$ et $x_2=6$, en gardant le même ordre en haut et en bas.",
+          "resultat_markdown": "$a=\\dfrac{g(6)-g(2)}{6-2}=\\dfrac{19-7}{4}=\\dfrac{12}{4}=3$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'ordonnée à l'origine $b$",
+          "justification": "On écrit $g(x)=3x+b$ puis on remplace $x$ et $g(x)$ par $2$ et $7$.",
+          "resultat_markdown": "$3\\times2+b=7$, donc $b=7-6=1$"
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler avec l'autre valeur",
+          "justification": "Si l'expression est juste, elle doit redonner $g(6)=19$.",
+          "resultat_markdown": "$3\\times6+1=19$"
+        }
+      ],
+      "conclusion_markdown": "$g(x)=3x+1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $a=\\dfrac{f(x_2)-f(x_1)}{x_1-x_2}$.",
+          "pourquoi_faux": "En changeant l'ordre dans un seul des deux termes, on obtient l'opposé du coefficient directeur.",
+          "correction_markdown": "Garde le même ordre en haut et en bas : valeur de $f$ en $x_2$ moins valeur en $x_1$, puis $x_2$ moins $x_1$."
+        },
+        {
+          "erreur_markdown": "Écrire $b=f(x_1)$ sans calcul.",
+          "pourquoi_faux": "Le nombre $f(x_1)$ n'est égal à $b$ que si $x_1=0$ : sinon $f(x_1)=ax_1+b$.",
+          "correction_markdown": "Remplace $x$ et $f(x)$ dans $f(x)=ax+b$ avec $a$ connu, puis résous l'équation d'inconnue $b$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "$f$ est affine avec $f(0)=-2$ et $f(4)=6$. Déterminer $f(x)$.",
+          "solution_markdown": "$a=\\dfrac{6-(-2)}{4-0}=\\dfrac{8}{4}=2$ et $b=f(0)=-2$, donc $f(x)=2x-2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "$h$ est affine avec $h(1)=5$ et $h(4)=-1$. Déterminer $h(x)$.",
+          "solution_markdown": "$a=\\dfrac{-1-5}{4-1}=\\dfrac{-6}{3}=-2$. Puis $-2\\times1+b=5$ donne $b=7$, donc $h(x)=-2x+7$. Contrôle : $-2\\times4+7=-1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un taxi-moto facture $1\\,100$ F pour une course de $2$ km et $2\\,300$ F pour une course de $6$ km. Le prix $p(x)$ est une fonction affine de la distance $x$ en km. Déterminer $p(x)$ puis le prix d'une course de $10$ km.",
+          "solution_markdown": "$a=\\dfrac{2\\,300-1\\,100}{6-2}=\\dfrac{1\\,200}{4}=300$. Puis $300\\times2+b=1\\,100$ donne $b=500$, donc $p(x)=300x+500$. Pour $10$ km : $p(10)=300\\times10+500=3\\,500$ F."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction affine s'écrit $f(x)=ax+b$ avec $b=f(0)$.",
+        "Avec deux valeurs, $a=\\dfrac{f(x_2)-f(x_1)}{x_2-x_1}$, en gardant le même ordre en haut et en bas.",
+        "Pour trouver $b$, on remplace $x$ et $f(x)$ d'un des couples dans $f(x)=ax+b$ et on résout.",
+        "Contrôle toujours avec l'autre valeur donnée par l'énoncé."
+      ]
+    }
+  ]
+}

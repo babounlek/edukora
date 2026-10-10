@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-calculer-la-probabilite-d-un-phenotype-svtbacctii3-ex3-q4",
+  "meta": {
+    "titre": "Calculer la probabilité d'un phénotype en F2 quand les gamètes ont des fréquences inégales",
+    "matiere": "svt",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Génétique - dihybridisme et gènes liés",
+    "duree_estimee_min": 25,
+    "tags": [
+      "Probabilité génétique",
+      "Liaison génétique",
+      "crossing-over"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-svt-bac-c-ti-3-2026-s1-ex3-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le rapport 9:3:3:1 est célèbre, mais il ne vaut que pour des gènes indépendants. Dès que deux gènes sont liés, les gamètes d'un double hétérozygote ne sont plus à 25 % chacun, et une simple multiplication de fréquences remplace la mémorisation d'un rapport."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire les génotypes d'un double hétérozygote pour deux gènes liés",
+        "Savoir ce que sont les gamètes parentaux et recombinés (crossing-over)",
+        "Savoir construire un échiquier de croisement et multiplier des pourcentages"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Échiquier de croisement avec des fréquences de gamètes",
+      "contenu_markdown": "Quand les gamètes d'un double hétérozygote n'ont pas tous la même fréquence (cas de gènes liés avec crossing-over), le rapport 9:3:3:1 ne s'applique plus. La méthode comporte quatre temps :\n\n1. Écrire en marge de l'échiquier chaque type de gamète avec sa fréquence.\n2. Calculer la probabilité de chaque case : c'est le **produit** de la fréquence du gamète de la ligne par celle du gamète de la colonne, car les deux gamètes se rencontrent au hasard.\n3. Repérer **toutes** les cases qui donnent le phénotype cherché et **additionner** leurs probabilités.\n4. Contrôler que la somme des seize cases vaut 1.\n\nUn phénotype récessif pour les deux gènes n'occupe qu'une case : celle où les deux gamètes sont doubles récessifs.",
+      "formule_principale": "P(\\text{case}) = f(\\text{gamète 1}) \\times f(\\text{gamète 2})"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un double hétérozygote $\\dfrac{A\\,B}{a\\,b}$ forme les gamètes $AB$ (40 %), $ab$ (40 %), $Ab$ (10 %) et $aB$ (10 %). On l'autoféconde. Calcule la probabilité d'un descendant $aabb$ puis celle d'un descendant de phénotype $[A,b]$ (dominant pour le premier gène, récessif pour le second).",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les gamètes et leurs fréquences",
+          "justification": "Ces fréquences sont les valeurs placées en marge de l'échiquier.",
+          "resultat_markdown": "$f(AB)=0{,}40$ ; $f(ab)=0{,}40$ ; $f(Ab)=0{,}10$ ; $f(aB)=0{,}10$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la probabilité du double récessif",
+          "justification": "Le génotype $aabb$ n'apparaît que par la rencontre de deux gamètes $ab$.",
+          "resultat_markdown": "$P(aabb)=0{,}40 \\times 0{,}40 = 0{,}16$"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer les cases du phénotype $[A,b]$",
+          "justification": "Il faut le gène $b$ à l'état homozygote et au moins un allèle $A$ : le descendant porte deux gamètes parmi $Ab$ et $ab$, avec au moins un $Ab$.",
+          "resultat_markdown": "Trois cases : ($Ab$, $ab$), ($ab$, $Ab$) et ($Ab$, $Ab$)."
+        },
+        {
+          "numero": 4,
+          "action": "Additionner les probabilités de ces cases",
+          "justification": "Chaque case est un produit de fréquences ; les cases du même phénotype s'additionnent.",
+          "resultat_markdown": "$P([A,b]) = 0{,}10\\times0{,}40 + 0{,}40\\times0{,}10 + 0{,}10\\times0{,}10 = 0{,}04+0{,}04+0{,}01 = 0{,}09$"
+        }
+      ],
+      "conclusion_markdown": "Après autofécondation, 16 descendants sur 100 sont $aabb$ et 9 sur 100 sont de phénotype $[A,b]$, soit 16 % et 9 %. Sur 1000 descendants, on attend environ 160 doubles récessifs et 90 individus $[A,b]$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser 1/16 ou le rapport 9:3:3:1 alors que les gamètes n'ont pas la même fréquence.",
+          "pourquoi_faux": "1/16 suppose quatre gamètes à 25 % chacun. Avec des gènes liés, les gamètes parentaux dominent et la probabilité du double récessif est bien plus grande.",
+          "correction_markdown": "Vérifie d'abord les fréquences des gamètes : si elles ne valent pas toutes 25 %, passe par le produit des fréquences."
+        },
+        {
+          "erreur_markdown": "Ne compter qu'une case pour un phénotype qui en occupe plusieurs.",
+          "pourquoi_faux": "Un phénotype dominant correspond à plusieurs génotypes, donc à plusieurs cases, dont les probabilités s'additionnent.",
+          "correction_markdown": "Surligne toutes les cases du phénotype, puis additionne."
+        },
+        {
+          "erreur_markdown": "Additionner les fréquences des deux gamètes au lieu de les multiplier.",
+          "pourquoi_faux": "Le descendant résulte de la rencontre de deux gamètes, deux événements indépendants : leurs probabilités se multiplient.",
+          "correction_markdown": "Écris le produit en toutes lettres, par exemple $0{,}4 \\times 0{,}4$, avant de calculer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un double hétérozygote forme les gamètes $AB$, $ab$, $Ab$ et $aB$ avec les fréquences 0,45 ; 0,45 ; 0,05 ; 0,05. Calcule la probabilité d'un descendant $aabb$ après autofécondation.",
+          "solution_markdown": "$0{,}45 \\times 0{,}45 = 0{,}2025$, soit 20,25 %."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Avec les mêmes gamètes, calcule la probabilité d'un descendant de phénotype $[a,B]$ (récessif pour le premier gène, dominant pour le second).",
+          "solution_markdown": "Il faut $aa$ et au moins un $B$ : cases ($aB$, $aB$), ($aB$, $ab$) et ($ab$, $aB$). $P = 0{,}05\\times0{,}05 + 2\\times0{,}05\\times0{,}45 = 0{,}0025+0{,}045 = 0{,}0475$, soit 4,75 %."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Un double hétérozygote forme les gamètes $AB$ (0,3), $ab$ (0,3), $Ab$ (0,2) et $aB$ (0,2). Calcule les probabilités des quatre phénotypes après autofécondation et vérifie que leur somme vaut 1.",
+          "solution_markdown": "$P([a,b]) = 0{,}3\\times0{,}3 = 0{,}09$. $P([a,B]) = 0{,}2\\times0{,}2 + 2\\times0{,}2\\times0{,}3 = 0{,}04+0{,}12 = 0{,}16$ et, par symétrie, $P([A,b]) = 0{,}16$. $P([A,B]) = 1 - 0{,}09 - 0{,}16 - 0{,}16 = 0{,}59$. Contrôle : $0{,}09+0{,}16+0{,}16+0{,}59=1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Des gamètes à fréquences inégales interdisent le rapport 9:3:3:1 et le 1/16 automatique.",
+        "Probabilité d'une case = fréquence du gamète de la ligne multipliée par celle du gamète de la colonne.",
+        "Probabilité d'un phénotype = somme des cases qui le donnent ; le double récessif n'occupe qu'une case.",
+        "Contrôle : les seize cases totalisent 1, soit 100 %."
+      ]
+    }
+  ]
+}

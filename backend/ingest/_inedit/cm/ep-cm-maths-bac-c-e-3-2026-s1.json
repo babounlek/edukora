@@ -1,0 +1,811 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-maths-bac-c-e-3-2026-s1",
+  "titre": "Mathématiques BAC C et E – Épreuve inédite n°3",
+  "blueprint_external_id": "bp-cm-maths-bac-c-e-3",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": 4.5,
+      "enonce_intro_markdown": "",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "a) Recopier et compléter le tableau suivant, où $r_n$ désigne le reste de la division euclidienne de $5^n$ par $9$.\n\n| $n$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|---|\n| $r_n$ | | | | | | | |\n\nb) En déduire le reste de la division euclidienne de $5^{2027}$ par $9$.\n\nc) Montrer que $5^{2027}+7$ est divisible par $9$.",
+          "corrige_markdown": "### Rappel de méthode\nPour trouver le reste de $a^N$ modulo $n$, on calcule les puissances successives de $a$ modulo $n$ jusqu'à retrouver le reste $1$ (ou un reste déjà rencontré) : la suite des restes est alors périodique, et le reste de $a^N$ est celui de $a^r$ où $r$ est le reste de la division de $N$ par la période.\n\na) On calcule de proche en proche en réduisant modulo $9$ à chaque étape : $5^0=1$, $5^1\\equiv5$, $5^2=25\\equiv7$, $5^3\\equiv7\\times5=35\\equiv8$, $5^4\\equiv8\\times5=40\\equiv4$, $5^5\\equiv4\\times5=20\\equiv2$ et $5^6\\equiv2\\times5=10\\equiv1\\ [9]$.\n\n| $n$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|---|\n| $r_n$ | 1 | 5 | 7 | 8 | 4 | 2 | 1 |\n\nb) Comme $5^6\\equiv1\\ [9]$, les restes se répètent avec la période $6$ : $5^{n+6}=5^n\\times5^6\\equiv5^n\\ [9]$. On écrit $2027=6\\times337+5$. Alors $5^{2027}=(5^6)^{337}\\times5^5\\equiv1^{337}\\times5^5\\equiv2\\ [9]$. Le reste est donc $2$.\n\nc) D'après b), $5^{2027}+7\\equiv2+7=9\\equiv0\\ [9]$ : le nombre $5^{2027}+7$ est divisible par $9$.\n\n### Piège à éviter\nLe reste de $5^{2027}$ est celui de $5^{r}$ où $r$ est le reste de $2027$ divisé par la période $6$ (ici $r=5$), jamais celui de $5^{2027\\bmod 9}$ : c'est la période, pas le module, qui sert de diviseur sur l'exposant.\n\n### Conseil\nArrête le tableau dès que tu retrouves le reste $1$ : à partir de là, tout se répète.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.25,
+          "criteres_notation": [
+            {
+              "libelle": "Dresse le tableau des restes de $n=0$ à $n=6$ sans erreur",
+              "points": 0.5
+            },
+            {
+              "libelle": "Repère que $5^6\\equiv1\\ [9]$ et en déduit la période $6$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit $2027=6\\times337+5$ et conclut que le reste est $2$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut par congruence que $5^{2027}+7\\equiv0\\ [9]$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "congruences"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex1-q1-0",
+              "competence": "Déterminer le reste d'une grande puissance par périodicité modulaire",
+              "contenu_markdown": "Pour trouver le reste de $a^N$ modulo $n$, on calcule les puissances successives de $a$ modulo $n$ jusqu'à retrouver le reste $1$ (ou un reste déjà rencontré) : la suite des restes est alors périodique, et le reste de $a^N$ est celui de $a^r$ où $r$ est le reste de la division de $N$ par la période.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "a) Montrer que, pour tout entier relatif $n$, le nombre $n^2+n$ est pair.\n\nb) En déduire que l'équation $x^2+x=2\\,025$ n'admet aucune solution dans $\\mathbb Z$.",
+          "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une expression en $n$ est paire pour tout entier $n$, on distingue deux cas, $n=2k$ puis $n=2k+1$ avec $k$ entier, et on vérifie dans chaque cas que la valeur obtenue s'écrit $2m$ avec $m$ entier ; une égalité entre un nombre pair et un nombre impair est impossible, ce qui permet d'exclure l'existence de solutions entières.\n\na) Si $n=2k$ avec $k\\in\\mathbb Z$, alors $n^2+n=4k^2+2k=2(2k^2+k)$ est pair. Si $n=2k+1$, alors $n^2+n=(4k^2+4k+1)+(2k+1)=4k^2+6k+2=2(2k^2+3k+1)$ est pair aussi. Dans les deux cas, $n^2+n$ est pair.\n\nb) Supposons qu'un entier $x$ vérifie $x^2+x=2\\,025$. D'après a), le membre de gauche est pair, alors que $2\\,025$ est impair : c'est impossible. L'équation n'a donc aucune solution entière.\n\n### Piège à éviter\nVérifier la propriété pour $n=1$, $n=2$, $n=3$ ne démontre rien : il faut traiter les deux cas pour un entier quelconque.\n\n### Conseil\nPour un produit comme $n(n+1)$, tu peux aussi dire directement que l'un des deux facteurs consécutifs est pair, donc le produit l'est.\n",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Distingue les cas $n$ pair et $n$ impair (ou factorise $n(n+1)$)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Met $2$ en facteur et conclut que $n^2+n$ est pair dans chaque cas",
+              "points": 0.25
+            },
+            {
+              "libelle": "Oppose le membre de gauche pair à $2\\,025$ impair pour exclure toute solution",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "parité"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex1-q2-0",
+              "competence": "Prouver la parité d'une expression entière en distinguant n pair et n impair",
+              "contenu_markdown": "Pour montrer qu'une expression en $n$ est paire pour tout entier $n$, on distingue deux cas, $n=2k$ puis $n=2k+1$ avec $k$ entier, et on vérifie dans chaque cas que la valeur obtenue s'écrit $2m$ avec $m$ entier ; une égalité entre un nombre pair et un nombre impair est impossible, ce qui permet d'exclure l'existence de solutions entières.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Une coopérative de Mbalmayo conditionne des tablettes de chocolat dans deux types de boîtes : les petites boîtes contiennent $12$ tablettes et les grandes en contiennent $17$. On cherche les couples $(x\\,;y)$ d'entiers relatifs tels que\n\n$$12x+17y=500\\qquad(E)$$\n\na) Calculer $\\mathrm{PGCD}(12\\,;17)$ et justifier que l'équation $(E)$ admet des solutions dans $\\mathbb Z^2$.\n\nb) Déterminer une solution particulière de $(E)$.\n\nc) Résoudre $(E)$ dans $\\mathbb Z^2$.",
+          "corrige_markdown": "### Rappel de méthode\nPour résoudre $ax+by=c$ dans $\\mathbb Z^2$, on calcule $d=\\mathrm{PGCD}(a\\,;b)$ : il y a des solutions si et seulement si $d$ divise $c$. On cherche alors une solution particulière $(x_0\\,;y_0)$ (algorithme d'Euclide remonté, ou essais), puis on soustrait $ax_0+by_0=c$ pour obtenir $a(x-x_0)=-b(y-y_0)$ et, après simplification par $d$, le théorème de Gauss donne la forme générale des solutions en fonction d'un entier $k$.\n\na) L'algorithme d'Euclide donne $17=1\\times12+5$, puis $12=2\\times5+2$, puis $5=2\\times2+1$ : le dernier reste non nul est $1$, donc $\\mathrm{PGCD}(12\\,;17)=1$. Comme $1$ divise $500$, l'équation $(E)$ admet des solutions dans $\\mathbb Z^2$ (théorème de Bézout).\n\nb) On remonte l'algorithme : $1=5-2\\times2=5-2\\times(12-2\\times5)=5\\times5-2\\times12=5\\times(17-12)-2\\times12=5\\times17-7\\times12$. Donc $12\\times(-7)+17\\times5=1$ et, en multipliant par $500$, $12\\times(-3\\,500)+17\\times2\\,500=500$. Le couple $(-3\\,500\\,;2\\,500)$ est une solution, mais on trouve plus simple par essais : $500=12\\times36+17\\times4$, car $12\\times36=432$ et $432+68=500$. On retient la solution particulière $(36\\,;4)$.\n\nc) Soit $(x\\,;y)$ une solution quelconque. En soustrayant $12\\times36+17\\times4=500$, on obtient $12(x-36)+17(y-4)=0$, soit $12(x-36)=-17(y-4)$. Le nombre $17$ divise $12(x-36)$ et il est premier avec $12$ : d'après le théorème de Gauss, $17$ divise $x-36$. On écrit $x-36=-17k$ avec $k\\in\\mathbb Z$, donc $x=36-17k$. En reportant, $12\\times(-17k)=-17(y-4)$ donne $y-4=12k$, donc $y=4+12k$. Réciproquement, ces couples vérifient $12(36-17k)+17(4+12k)=432+68=500$. L'ensemble des solutions est\n\n$$\\mathcal S=\\{(36-17k\\,;\\,4+12k)\\ \\mid\\ k\\in\\mathbb Z\\}.$$\n\n### Piège à éviter\nLe signe de $k$ doit rester cohérent entre $x$ et $y$ : si $x$ perd $17k$, alors $y$ gagne $12k$. Écrire $y=4-12k$ donne des couples qui ne vérifient pas $(E)$.\n\n### Conseil\nQuand $500$ est modeste, essaie quelques valeurs de $y$ : tu cherches $y$ tel que $500-17y$ soit un multiple de $12$, et $y=4$ apparaît vite.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Justifie l'existence : $\\mathrm{PGCD}(12\\,;17)=1$ divise $500$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trouve une solution particulière et la vérifie",
+              "points": 0.5
+            },
+            {
+              "libelle": "Soustrait pour obtenir $12(x-36)=-17(y-4)$ et applique le théorème de Gauss",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne l'ensemble des solutions $(36-17k\\,;4+12k)$, $k\\in\\mathbb Z$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "équation diophantienne"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex1-q3-0",
+              "competence": "Résoudre une équation diophantienne ax + by = c",
+              "contenu_markdown": "Pour résoudre $ax+by=c$ dans $\\mathbb Z^2$, on calcule $d=\\mathrm{PGCD}(a\\,;b)$ : il y a des solutions si et seulement si $d$ divise $c$. On cherche alors une solution particulière $(x_0\\,;y_0)$ (algorithme d'Euclide remonté, ou essais), puis on soustrait $ax_0+by_0=c$ pour obtenir $a(x-x_0)=-b(y-y_0)$ et, après simplification par $d$, le théorème de Gauss donne la forme générale des solutions en fonction d'un entier $k$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "La coopérative doit expédier exactement $500$ tablettes en n'utilisant que des boîtes pleines : $x$ petites boîtes et $y$ grandes boîtes, avec $x$ et $y$ entiers naturels.\n\na) Déterminer tous les couples $(x\\,;y)$ d'entiers naturels solutions de $(E)$.\n\nb) Quelle répartition minimise le nombre total de boîtes utilisées ? Préciser ce nombre.",
+          "corrige_markdown": "### Rappel de méthode\nPour chercher les solutions positives d'une équation diophantienne, on écrit la solution générale en fonction d'un entier $k$, puis on traduit les conditions de positivité par des inégalités sur $k$ qui bornent le paramètre ; le nombre à optimiser s'exprime alors comme une fonction affine de $k$, dont l'extremum sur ces valeurs entières se lit à une borne.\n\na) D'après la question précédente, $x=36-17k$ et $y=4+12k$ avec $k\\in\\mathbb Z$. La condition $y\\ge0$ donne $k\\ge-\\dfrac13$, donc $k\\ge0$ puisque $k$ est entier. La condition $x\\ge0$ donne $k\\le\\dfrac{36}{17}\\approx2{,}1$, donc $k\\le2$. Les valeurs possibles sont $k\\in\\{0\\,;1\\,;2\\}$, d'où trois couples : $(36\\,;4)$, $(19\\,;16)$ et $(2\\,;28)$. La figure 2 montre la droite d'équation $12x+17y=500$ et ces trois points à coordonnées entières positives.\n\n<svg viewBox='0 0 500 310' role='img' aria-labelledby='fig11ee9ab8t fig11ee9ab8d' style='width:100%;max-width:500px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig11ee9ab8t'>Droite 12x + 17y = 500 et points à coordonnées entières</title><desc id='fig11ee9ab8d'>Droite d'équation 12x + 17y = 500 dans le premier quadrant. Trois points à coordonnées entières positives : (2 ; 28), (19 ; 16) et (36 ; 4).</desc><defs><clipPath id='clip11ee9ab8_1'><rect x='46' y='18' width='420' height='232'/></clipPath></defs><line x1='46' y1='18' x2='46' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='92.7' y1='18' x2='92.7' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='139.3' y1='18' x2='139.3' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='186' y1='18' x2='186' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='232.7' y1='18' x2='232.7' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='279.3' y1='18' x2='279.3' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='326' y1='18' x2='326' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='372.7' y1='18' x2='372.7' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='419.3' y1='18' x2='419.3' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='466' y1='18' x2='466' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='250' x2='466' y2='250' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='221' x2='466' y2='221' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='192' x2='466' y2='192' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='163' x2='466' y2='163' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='134' x2='466' y2='134' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='105' x2='466' y2='105' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='76' x2='466' y2='76' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='47' x2='466' y2='47' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='18' x2='466' y2='18' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='46' y1='247' x2='46' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='92.7' y1='247' x2='92.7' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='139.3' y1='247' x2='139.3' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='186' y1='247' x2='186' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='232.7' y1='247' x2='232.7' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='279.3' y1='247' x2='279.3' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='326' y1='247' x2='326' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='372.7' y1='247' x2='372.7' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='419.3' y1='247' x2='419.3' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='466' y1='247' x2='466' y2='253' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='250' x2='49' y2='250' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='221' x2='49' y2='221' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='192' x2='49' y2='192' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='163' x2='49' y2='163' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='134' x2='49' y2='134' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='105' x2='49' y2='105' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='76' x2='49' y2='76' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='47' x2='49' y2='47' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='43' y1='18' x2='49' y2='18' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='46' y1='250' x2='472' y2='250' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='472,250 463,254.1 463,245.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='46' y1='250' x2='46' y2='12' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='46,12 50,21 42,21' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><path d='M46,36.8 L256,151.9 L466,267.1' fill='none' stroke='var(--info,#2a6fba)' stroke-width='2' stroke-linejoin='round' clip-path='url(#clip11ee9ab8_1)'/><line x1='64.7' y1='47' x2='64.7' y2='250' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><line x1='46' y1='47' x2='64.7' y2='47' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><line x1='223.3' y1='134' x2='223.3' y2='250' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><line x1='46' y1='134' x2='223.3' y2='134' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><line x1='382' y1='221' x2='382' y2='250' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><line x1='46' y1='221' x2='382' y2='221' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><circle cx='64.7' cy='47' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='223.3' cy='134' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='382' cy='221' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='92.7' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>5</text><text x='139.3' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>10</text><text x='186' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>15</text><text x='232.7' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>20</text><text x='279.3' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>25</text><text x='326' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>30</text><text x='372.7' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>35</text><text x='419.3' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>40</text><text x='466' y='267' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>45</text><text x='39' y='225' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>4</text><text x='39' y='196' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>8</text><text x='39' y='167' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>12</text><text x='39' y='138' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>16</text><text x='39' y='109' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>20</text><text x='39' y='80' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>24</text><text x='39' y='51' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>28</text><text x='39' y='22' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>32</text><text x='39' y='266' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='470' y='241' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='54' y='8' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='461.3' y='197.8' font-size='14' text-anchor='end' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>12x + 17y = 500</text><text x='73.7' y='38' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(2 ; 28)</text><text x='232.3' y='125' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(19 ; 16)</text><text x='391' y='212' font-size='13' text-anchor='start' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(36 ; 4)</text><text x='250' y='300' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 2 : x petites boîtes, y grandes boîtes, 12x + 17y = 500</text></svg>\n\nb) Le nombre de boîtes est $x+y=(36-17k)+(4+12k)=40-5k$. C'est une fonction décroissante de $k$ : le minimum est atteint pour la plus grande valeur admissible, $k=2$. Il faut donc $2$ petites boîtes et $28$ grandes boîtes, soit $30$ boîtes au total. Vérification : $12\\times2+17\\times28=24+476=500$.\n\n### Piège à éviter\nChercher le minimum en prenant $k$ le plus petit : ici $x+y=40-5k$ diminue quand $k$ augmente, et c'est le signe du coefficient de $k$ qui décide.\n\n### Conseil\nAvec seulement trois couples, tu peux aussi calculer $x+y$ pour chacun ($40$, $35$, $30$) et lire le plus petit.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Traduit $x\\ge0$ et $y\\ge0$ en un encadrement de $k$ : $0\\le k\\le2$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Liste les trois couples $(36\\,;4)$, $(19\\,;16)$, $(2\\,;28)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Exprime $x+y=40-5k$ et en déduit que le minimum est pour $k=2$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut : $2$ petites boîtes, $28$ grandes boîtes, $30$ boîtes",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "équation diophantienne"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex1-q4-0",
+              "competence": "Résoudre une équation diophantienne linéaire à deux inconnues et minimiser la somme des solutions",
+              "contenu_markdown": "Pour chercher les solutions positives d'une équation diophantienne, on écrit la solution générale en fonction d'un entier $k$, puis on traduit les conditions de positivité par des inégalités sur $k$ qui bornent le paramètre ; le nombre à optimiser s'exprime alors comme une fonction affine de $k$, dont l'extremum sur ces valeurs entières se lit à une borne.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": 4.5,
+      "enonce_intro_markdown": "Soit $f$ l'endomorphisme de $\\mathbb R^3$ dont la matrice dans la base canonique $\\mathcal B=(\\vec\\imath\\,,\\vec\\jmath\\,,\\vec k)$ est\n\n$$A=\\begin{pmatrix}1&0&-2\\\\1&1&-2\\\\-1&0&2\\end{pmatrix}.$$",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Déterminer le noyau de $f$ : en donner une base et la dimension. En déduire le rang de $f$ à l'aide du théorème du rang.",
+          "corrige_markdown": "### Rappel de méthode\nLe noyau d'un endomorphisme se détermine en résolvant le système $AX=0$, où $A$ est sa matrice, et il se décrit par une base obtenue avec les paramètres libres du système ; le théorème du rang relie ensuite les dimensions par $\\dim(\\ker f)+\\dim(\\mathrm{Im}\\,f)=\\dim E$, ce qui donne le rang sans calcul supplémentaire.\n\nUn vecteur $\\vec v(x\\,;y\\,;z)$ appartient à $\\ker f$ si et seulement si $A\\begin{pmatrix}x\\\\y\\\\z\\end{pmatrix}=\\begin{pmatrix}0\\\\0\\\\0\\end{pmatrix}$, c'est-à-dire\n\n$$\\begin{cases}x-2z=0\\\\x+y-2z=0\\\\-x+2z=0\\end{cases}$$\n\nLa première et la troisième équations sont équivalentes : elles donnent $x=2z$. La deuxième s'écrit alors $2z+y-2z=0$, soit $y=0$. Les solutions sont les vecteurs $(2z\\,;0\\,;z)=z\\,(2\\,;0\\,;1)$ avec $z\\in\\mathbb R$. Donc $\\ker f=\\mathrm{Vect}(\\vec e_1)$ avec $\\vec e_1(2\\,;0\\,;1)$ : c'est une droite vectorielle, $(\\vec e_1)$ en est une base et $\\dim\\ker f=1$.\n\nLe théorème du rang donne $\\dim\\ker f+\\mathrm{rg}\\,f=\\dim\\mathbb R^3=3$, donc $\\mathrm{rg}\\,f=3-1=2$ : l'image de $f$ est un plan vectoriel.\n\n### Piège à éviter\nÉcrire $\\ker f=\\{(2\\,;0\\,;1)\\}$ : le noyau est l'ensemble de tous les multiples de ce vecteur, pas un vecteur isolé.\n\n### Conseil\nContrôle ton résultat en calculant $A\\,\\vec e_1$ : tu dois trouver le vecteur nul.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit le système $AX=0$ correspondant à la matrice",
+              "points": 0.25
+            },
+            {
+              "libelle": "Résout le système : $x=2z$ et $y=0$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne la base $(2\\,;0\\,;1)$ et $\\dim\\ker f=1$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Applique le théorème du rang : $\\mathrm{rg}\\,f=3-1=2$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "noyau",
+            "théorème du rang",
+            "endomorphisme"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex2-q1-0",
+              "competence": "Théorème du rang : noyau et image d'un endomorphisme",
+              "contenu_markdown": "Le noyau d'un endomorphisme se détermine en résolvant le système $AX=0$, où $A$ est sa matrice, et il se décrit par une base obtenue avec les paramètres libres du système ; le théorème du rang relie ensuite les dimensions par $\\dim(\\ker f)+\\dim(\\mathrm{Im}\\,f)=\\dim E$, ce qui donne le rang sans calcul supplémentaire.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Montrer que $\\vec u=f(\\vec\\imath)$ et $\\vec v=f(\\vec\\jmath)$ forment une base de $\\mathrm{Im}\\,f$, puis déterminer une équation cartésienne du plan $\\mathrm{Im}\\,f$.",
+          "corrige_markdown": "### Rappel de méthode\nL'image d'un endomorphisme est engendrée par les images des vecteurs d'une base, c'est-à-dire par les colonnes de sa matrice ; on en extrait une famille libre dont le nombre de vecteurs est égal au rang donné par le théorème du rang, ce qui fournit une base de l'image et, en dimension $3$, un plan dont on obtient l'équation à partir d'un vecteur normal.\n\nLes colonnes de $A$ sont les images des vecteurs de la base canonique : $f(\\vec\\imath)=(1\\,;1\\,;-1)$, $f(\\vec\\jmath)=(0\\,;1\\,;0)$ et $f(\\vec k)=(-2\\,;-2\\,;2)$. On remarque que $f(\\vec k)=-2f(\\vec\\imath)$. Donc $\\mathrm{Im}\\,f=\\mathrm{Vect}\\big(f(\\vec\\imath),f(\\vec\\jmath),f(\\vec k)\\big)=\\mathrm{Vect}(\\vec u,\\vec v)$. Les vecteurs $\\vec u(1\\,;1\\,;-1)$ et $\\vec v(0\\,;1\\,;0)$ ne sont pas colinéaires : la famille $(\\vec u,\\vec v)$ est libre et génératrice de $\\mathrm{Im}\\,f$, c'est une base, ce qui confirme $\\mathrm{rg}\\,f=2$.\n\nUn vecteur normal au plan $\\mathrm{Im}\\,f$ est $\\vec u\\wedge\\vec v=\\big(1\\times0-(-1)\\times1\\ ;\\ (-1)\\times0-1\\times0\\ ;\\ 1\\times1-1\\times0\\big)=(1\\,;0\\,;1)$. Le plan passe par l'origine, son équation est donc $x+z=0$. Vérification : $\\vec u$ donne $1+(-1)=0$ et $\\vec v$ donne $0+0=0$.\n\n### Piège à éviter\nChoisir deux colonnes de $A$ au hasard : la famille retenue doit être libre. Ici $f(\\vec\\imath)$ et $f(\\vec k)$ sont colinéaires et ne forment pas une base de l'image.\n\n### Conseil\nPour trouver l'équation d'un plan vectoriel, tu peux aussi écrire $(x\\,;y\\,;z)=a\\,\\vec u+b\\,\\vec v$ et éliminer $a$ et $b$.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Lit $f(\\vec\\imath)$, $f(\\vec\\jmath)$, $f(\\vec k)$ comme colonnes de $A$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Observe $f(\\vec k)=-2f(\\vec\\imath)$ et en déduit $\\mathrm{Im}\\,f=\\mathrm{Vect}(\\vec u,\\vec v)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Justifie que $\\vec u$ et $\\vec v$ ne sont pas colinéaires",
+              "points": 0.25
+            },
+            {
+              "libelle": "Obtient l'équation $x+z=0$ (produit vectoriel ou élimination)",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "endomorphisme",
+            "matrice d'un endomorphisme"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex2-q2-0",
+              "competence": "Trouver une base de l'image d'une application linéaire",
+              "contenu_markdown": "L'image d'un endomorphisme est engendrée par les images des vecteurs d'une base, c'est-à-dire par les colonnes de sa matrice ; on en extrait une famille libre dont le nombre de vecteurs est égal au rang donné par le théorème du rang, ce qui fournit une base de l'image et, en dimension $3$, un plan dont on obtient l'équation à partir d'un vecteur normal.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "a) Calculer $\\det(A-\\lambda I_3)$ en fonction du réel $\\lambda$, puis écrire le résultat sous forme factorisée.\n\nb) En déduire les valeurs propres de $f$.",
+          "corrige_markdown": "### Rappel de méthode\nUn réel $\\lambda$ est valeur propre de $f$ si et seulement si $A-\\lambda I$ n'est pas inversible, c'est-à-dire si $\\det(A-\\lambda I)=0$ ; on développe ce déterminant suivant la ligne ou la colonne qui contient le plus de zéros, on factorise le polynôme obtenu et ses racines sont les valeurs propres.\n\na) On a $A-\\lambda I_3=\\begin{pmatrix}1-\\lambda&0&-2\\\\1&1-\\lambda&-2\\\\-1&0&2-\\lambda\\end{pmatrix}$. La deuxième colonne ne contient qu'un coefficient non nul, ce qui rend le développement suivant cette colonne très rapide :\n\n$$\\det(A-\\lambda I_3)=(1-\\lambda)\\begin{vmatrix}1-\\lambda&-2\\\\-1&2-\\lambda\\end{vmatrix}=(1-\\lambda)\\big[(1-\\lambda)(2-\\lambda)-2\\big].$$\n\nOr $(1-\\lambda)(2-\\lambda)-2=\\lambda^2-3\\lambda=\\lambda(\\lambda-3)$. Donc\n\n$$\\det(A-\\lambda I_3)=\\lambda\\,(1-\\lambda)(\\lambda-3).$$\n\nb) Un réel $\\lambda$ est valeur propre de $f$ si et seulement si $\\det(A-\\lambda I_3)=0$, c'est-à-dire $\\lambda=0$, $\\lambda=1$ ou $\\lambda=3$. Les valeurs propres de $f$ sont $0$, $1$ et $3$ ; le fait que $0$ soit valeur propre est cohérent avec $\\ker f\\neq\\{\\vec 0\\}$.\n\n### Piège à éviter\nOublier de soustraire $\\lambda$ sur toute la diagonale : si tu ne le fais que sur un coefficient, le polynôme obtenu est faux.\n\n### Conseil\nVérifie ton résultat avec la trace : la somme des valeurs propres $0+1+3=4$ doit valoir $\\mathrm{tr}\\,A=1+1+2=4$.\n",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.25,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit correctement la matrice $A-\\lambda I_3$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Développe le déterminant suivant une colonne ou une ligne bien choisie",
+              "points": 0.5
+            },
+            {
+              "libelle": "Factorise : $\\lambda(1-\\lambda)(\\lambda-3)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut : valeurs propres $0$, $1$ et $3$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "endomorphisme",
+            "matrice d'un endomorphisme"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex2-q3-0",
+              "competence": "Calculer les valeurs propres d'une matrice 3×3 avec le déterminant de A − λI",
+              "contenu_markdown": "Un réel $\\lambda$ est valeur propre de $f$ si et seulement si $A-\\lambda I$ n'est pas inversible, c'est-à-dire si $\\det(A-\\lambda I)=0$ ; on développe ce déterminant suivant la ligne ou la colonne qui contient le plus de zéros, on factorise le polynôme obtenu et ses racines sont les valeurs propres.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "a) Déterminer un vecteur propre $\\vec e_1$ associé à la valeur propre $0$, un vecteur propre $\\vec e_2$ associé à $1$ et un vecteur propre $\\vec e_3$ associé à $3$, en choisissant des coordonnées entières.\n\nb) Montrer que $(\\vec e_1,\\vec e_2,\\vec e_3)$ est une base de $\\mathbb R^3$, puis donner la matrice de $f$ dans cette base.",
+          "corrige_markdown": "### Rappel de méthode\nPour chaque valeur propre $\\lambda$, un vecteur propre est une solution non nulle du système $(A-\\lambda I)X=0$ ; des vecteurs propres associés à des valeurs propres distinctes sont indépendants, et s'ils sont aussi nombreux que la dimension de l'espace ils forment une base, ce que l'on contrôle par un déterminant non nul, la matrice de $f$ dans cette base étant diagonale avec les valeurs propres dans l'ordre des vecteurs.\n\na) Pour $\\lambda=0$, on retrouve le noyau : $\\vec e_1(2\\,;0\\,;1)$.\n\nPour $\\lambda=1$, on résout $(A-I_3)X=0$, soit $-2z=0$, $x-2z=0$ et $-x+z=0$ : on obtient $z=0$, puis $x=0$, et $y$ est libre. On prend $\\vec e_2(0\\,;1\\,;0)$.\n\nPour $\\lambda=3$, on résout $(A-3I_3)X=0$ : $-2x-2z=0$, $x-2y-2z=0$ et $-x-z=0$. Les première et troisième équations donnent $x=-z$ ; la deuxième devient $-z-2y-2z=0$, soit $y=-\\dfrac{3z}{2}$. Pour $z=2$ on obtient $\\vec e_3(-2\\,;-3\\,;2)$. Contrôle : $A\\vec e_3=(-6\\,;-9\\,;6)=3\\vec e_3$.\n\nb) On calcule le déterminant des coordonnées des trois vecteurs, en développant suivant la deuxième colonne :\n\n$$\\begin{vmatrix}2&0&-2\\\\0&1&-3\\\\1&0&2\\end{vmatrix}=1\\times\\begin{vmatrix}2&-2\\\\1&2\\end{vmatrix}=2\\times2-(-2)\\times1=6.$$\n\nCe déterminant est non nul : les trois vecteurs sont indépendants et forment une base de $\\mathbb R^3$. Dans cette base, $f(\\vec e_1)=0\\,\\vec e_1$, $f(\\vec e_2)=1\\,\\vec e_2$ et $f(\\vec e_3)=3\\,\\vec e_3$, d'où la matrice diagonale\n\n$$D=\\begin{pmatrix}0&0&0\\\\0&1&0\\\\0&0&3\\end{pmatrix}.$$\n\nLa figure 3 montre cette décomposition : $\\mathbb R^3$ est somme directe de la droite $\\ker f=\\mathrm{Vect}(\\vec e_1)$ et du plan $\\mathrm{Im}\\,f$, qui contient $\\vec e_2$ et $\\vec e_3$ (leurs coordonnées vérifient $x+z=0$).\n\n<svg viewBox='0 0 500 330' role='img' aria-labelledby='fige0df8f09t fige0df8f09d' style='width:100%;max-width:500px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fige0df8f09t'>Noyau et image de f dans R3</title><desc id='fige0df8f09d'>Perspective cavalière : l'image de f est le plan x + z = 0 (zone grisée), le noyau est la droite dirigée par e1 de coordonnées (2 ; 0 ; 1), hors de ce plan. Les vecteurs e2 (0 ; 1 ; 0) et e3 (−2 ; −3 ; 2) sont dans le plan, avec les valeurs propres 1 et 3.</desc><polygon points='36.2,49.2 132.5,285.5 327.5,285.5 231.2,49.2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='1.4' stroke-linejoin='round'/><line x1='215' y1='218' x2='170' y2='203' stroke='var(--destructive,#c4352e)' stroke-width='2.4' stroke-linecap='round'/><polygon points='170,203 180.9,201.9 178.1,210.4' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-linejoin='round'/><line x1='215' y1='218' x2='265' y2='218' stroke='var(--info,#2a6fba)' stroke-width='2.4' stroke-linecap='round'/><polygon points='265,218 255,222.5 255,213.5' fill='var(--info,#2a6fba)' stroke='var(--info,#2a6fba)' stroke-width='1' stroke-linejoin='round'/><line x1='215' y1='218' x2='110' y2='83' stroke='var(--gold,#d9a21f)' stroke-width='2.4' stroke-linecap='round'/><polygon points='110,83 119.7,88.1 112.6,93.7' fill='var(--gold,#d9a21f)' stroke='var(--gold,#d9a21f)' stroke-width='1' stroke-linejoin='round'/><line x1='291.5' y1='243.5' x2='129.5' y2='189.5' stroke='var(--destructive,#c4352e)' stroke-width='1.3' stroke-dasharray='6 4' stroke-linecap='round'/><circle cx='215' cy='218' r='3' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><text x='211' y='236' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>O</text><text x='125.5' y='180.5' font-size='14' text-anchor='end' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>e1 : λ = 0</text><text x='271' y='209' font-size='14' text-anchor='start' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>e2 : λ = 1</text><text x='119' y='80' font-size='14' text-anchor='start' fill='var(--gold,#d9a21f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>e3 : λ = 3</text><text x='301.5' y='257.5' font-size='14' text-anchor='start' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>Ker f</text><text x='241.2' y='41.2' font-size='14' text-anchor='start' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>Im f : x + z = 0</text><text x='250' y='320' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 3 : R3 est somme directe de la droite Ker f et du plan Im f</text></svg>\n\n### Piège à éviter\nDans $D$, l'ordre des valeurs propres suit l'ordre des vecteurs de la base : si tu échanges $\\vec e_2$ et $\\vec e_3$, tu dois échanger $1$ et $3$ sur la diagonale.\n\n### Conseil\nUn vecteur propre n'est défini qu'à un coefficient près : choisis des coordonnées entières pour éviter les fractions.\n",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.25,
+          "criteres_notation": [
+            {
+              "libelle": "Donne $\\vec e_1(2\\,;0\\,;1)$ (vecteur du noyau)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Résout $(A-I_3)X=0$ et trouve $\\vec e_2(0\\,;1\\,;0)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Résout $(A-3I_3)X=0$ et trouve $\\vec e_3(-2\\,;-3\\,;2)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le déterminant $6\\neq0$ pour justifier la base",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la matrice diagonale $\\mathrm{diag}(0\\,;1\\,;3)$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "endomorphisme",
+            "matrice d'un endomorphisme"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex2-q4-0",
+              "competence": "Déterminer les vecteurs propres d'une matrice 3×3 et la diagonaliser",
+              "contenu_markdown": "Pour chaque valeur propre $\\lambda$, un vecteur propre est une solution non nulle du système $(A-\\lambda I)X=0$ ; des vecteurs propres associés à des valeurs propres distinctes sont indépendants, et s'ils sont aussi nombreux que la dimension de l'espace ils forment une base, ce que l'on contrôle par un déterminant non nul, la matrice de $f$ dans cette base étant diagonale avec les valeurs propres dans l'ordre des vecteurs.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": 4.0,
+      "enonce_intro_markdown": "L'espace est muni d'un repère orthonormé $(O\\,;\\vec\\imath,\\vec\\jmath,\\vec k)$ d'unité $1$ m. Sur un marché de Dschang, un artisan tend une bâche triangulaire entre trois points d'ancrage $A(3\\,;2\\,;0)$, $B(0\\,;4\\,;0)$ et $C(0\\,;0\\,;2)$ : $A$ et $B$ sont deux piquets plantés au sol et $C$ est le sommet d'un poteau de $2$ m. Un projecteur est fixé au point $D(1\\,;2\\,;3)$. La figure 1 représente le tétraèdre $ABCD$.\n\n<svg viewBox='0 0 500 350' role='img' aria-labelledby='figb5fc6045t figb5fc6045d' style='width:100%;max-width:500px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='figb5fc6045t'>Tétraèdre ABCD dans le repère orthonormé</title><desc id='figb5fc6045d'>Perspective cavalière du tétraèdre ABCD : A(3 ; 2 ; 0) et B(0 ; 4 ; 0) au sol, C(0 ; 0 ; 2) sur l'axe vertical, D(1 ; 2 ; 3). Le triangle ABC est la face grisée.</desc><polygon points='183.8,286.6 358,232 150,128' fill='var(--accent,#e4f3ec)' stroke='var(--accent,#e4f3ec)' stroke-width='1' stroke-linejoin='round'/><line x1='150' y1='232' x2='58.7' y2='303' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><polygon points='58.7,303 62.3,296.2 66.2,301.2' fill='var(--muted-foreground,#5b6560)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1' stroke-linejoin='round'/><line x1='150' y1='232' x2='420.4' y2='232' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><polygon points='420.4,232 413.4,235.2 413.4,228.8' fill='var(--muted-foreground,#5b6560)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1' stroke-linejoin='round'/><line x1='150' y1='232' x2='150' y2='39.6' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><polygon points='150,39.6 153.2,46.6 146.8,46.6' fill='var(--muted-foreground,#5b6560)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1' stroke-linejoin='round'/><line x1='183.8' y1='286.6' x2='358' y2='232' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='183.8' y1='286.6' x2='150' y2='128' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='183.8' y1='286.6' x2='230.6' y2='94.2' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='358' y1='232' x2='150' y2='128' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='358' y1='232' x2='230.6' y2='94.2' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='150' y1='128' x2='230.6' y2='94.2' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><text x='49.7' y='317' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='431.4' y='237' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='150' y='31.6' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>z</text><text x='138' y='248' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>O</text><circle cx='183.8' cy='286.6' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='358' cy='232' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='150' cy='128' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='230.6' cy='94.2' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><text x='179.8' y='305.6' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='360' y='221' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='137' y='133' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='230.6' y='83.2' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>D</text><text x='250' y='344' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 1 : le tétraèdre ABCD (unité : 1 m)</text></svg>",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Calculer les coordonnées des vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$, puis celles du produit vectoriel $\\overrightarrow{AB}\\wedge\\overrightarrow{AC}$. Les points $A$, $B$ et $C$ sont-ils alignés ?",
+          "corrige_markdown": "### Rappel de méthode\nPour deux vecteurs $\\vec u(x\\,;y\\,;z)$ et $\\vec v(x'\\,;y'\\,;z')$, le produit vectoriel est le vecteur de coordonnées $(yz'-zy'\\ ;\\ zx'-xz'\\ ;\\ xy'-yx')$, obtenu par la règle des cofacteurs où l'on change le signe de la composante centrale ; il est nul si et seulement si les deux vecteurs sont colinéaires.\n\nOn calcule $\\overrightarrow{AB}=(0-3\\,;4-2\\,;0-0)=(-3\\,;2\\,;0)$ et $\\overrightarrow{AC}=(0-3\\,;0-2\\,;2-0)=(-3\\,;-2\\,;2)$. Pour le produit vectoriel, on utilise trois déterminants $2\\times2$ en changeant le signe de la composante du milieu :\n\n$$\\overrightarrow{AB}\\wedge\\overrightarrow{AC}=\\left(\\begin{vmatrix}2&0\\\\-2&2\\end{vmatrix}\\ ;\\ -\\begin{vmatrix}-3&0\\\\-3&2\\end{vmatrix}\\ ;\\ \\begin{vmatrix}-3&2\\\\-3&-2\\end{vmatrix}\\right)=(4\\ ;\\ 6\\ ;\\ 12).$$\n\nCe vecteur n'est pas nul, donc $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ ne sont pas colinéaires : les points $A$, $B$ et $C$ ne sont pas alignés et déterminent bien un plan.\n\n### Piège à éviter\nSans le changement de signe de la composante centrale, tu obtiens $-6$ au lieu de $6$ et ton vecteur n'est plus orthogonal à $\\overrightarrow{AB}$.\n\n### Conseil\nContrôle avec deux produits scalaires : $(4\\,;6\\,;12)\\cdot(-3\\,;2\\,;0)=-12+12=0$ et $(4\\,;6\\,;12)\\cdot(-3\\,;-2\\,;2)=-12-12+24=0$.\n",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule correctement $\\overrightarrow{AB}(-3\\,;2\\,;0)$ et $\\overrightarrow{AC}(-3\\,;-2\\,;2)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Obtient le produit vectoriel $(4\\,;6\\,;12)$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conclut que $A$, $B$, $C$ ne sont pas alignés car le produit vectoriel est non nul",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "produit vectoriel",
+            "géométrie dans l'espace"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex3-q1-0",
+              "competence": "Calculer un produit vectoriel par la règle des cofacteurs",
+              "contenu_markdown": "Pour deux vecteurs $\\vec u(x\\,;y\\,;z)$ et $\\vec v(x'\\,;y'\\,;z')$, le produit vectoriel est le vecteur de coordonnées $(yz'-zy'\\ ;\\ zx'-xz'\\ ;\\ xy'-yx')$, obtenu par la règle des cofacteurs où l'on change le signe de la composante centrale ; il est nul si et seulement si les deux vecteurs sont colinéaires.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Déterminer une équation cartésienne du plan $(ABC)$.",
+          "corrige_markdown": "### Rappel de méthode\nTrois points non alignés $A$, $B$, $C$ définissent un plan dont un vecteur normal est $\\overrightarrow{AB}\\wedge\\overrightarrow{AC}$ ; une équation cartésienne s'écrit $ax+by+cz+d=0$ où $(a\\,;b\\,;c)$ est ce vecteur normal, et $d$ s'obtient en écrivant que les coordonnées de $A$ vérifient l'équation, ce que l'on contrôle avec $B$ et $C$.\n\nLe vecteur $\\vec n=\\overrightarrow{AB}\\wedge\\overrightarrow{AC}=(4\\,;6\\,;12)$ est normal au plan $(ABC)$ ; le vecteur $\\dfrac12\\vec n=(2\\,;3\\,;6)$ l'est aussi et donne des coefficients plus simples. Une équation de $(ABC)$ s'écrit donc $2x+3y+6z+d=0$. Le point $A(3\\,;2\\,;0)$ appartient au plan : $2\\times3+3\\times2+6\\times0+d=0$, donc $d=-12$. Une équation cartésienne du plan $(ABC)$ est\n\n$$2x+3y+6z-12=0.$$\n\nVérification avec les deux autres points : pour $B$, $0+12+0-12=0$ ; pour $C$, $0+0+12-12=0$.\n\n### Piège à éviter\nOublier de vérifier avec $B$ et $C$ : une erreur dans le produit vectoriel donne une équation qui passe par $A$ mais pas par les deux autres points.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Prend $\\overrightarrow{AB}\\wedge\\overrightarrow{AC}$ (ou $(2\\,;3\\,;6)$) comme vecteur normal",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit $2x+3y+6z+d=0$ et trouve $d=-12$ avec un point",
+              "points": 0.5
+            },
+            {
+              "libelle": "Vérifie l'équation avec les deux autres points",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "équation cartésienne",
+            "produit vectoriel"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex3-q2-0",
+              "competence": "Déterminer l'équation cartésienne d'un plan à partir de trois points",
+              "contenu_markdown": "Trois points non alignés $A$, $B$, $C$ définissent un plan dont un vecteur normal est $\\overrightarrow{AB}\\wedge\\overrightarrow{AC}$ ; une équation cartésienne s'écrit $ax+by+cz+d=0$ où $(a\\,;b\\,;c)$ est ce vecteur normal, et $d$ s'obtient en écrivant que les coordonnées de $A$ vérifient l'équation, ce que l'on contrôle avec $B$ et $C$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Calculer la distance $d$ du point $D$ au plan $(ABC)$. Déterminer ensuite les coordonnées du projeté orthogonal $H$ de $D$ sur ce plan.",
+          "corrige_markdown": "### Rappel de méthode\nLa distance d'un point $M(x_M\\,;y_M\\,;z_M)$ à un plan d'équation $ax+by+cz+d=0$ est $\\dfrac{|ax_M+by_M+cz_M+d|}{\\sqrt{a^2+b^2+c^2}}$ ; elle est égale à $MH$ où $H$ est le projeté orthogonal de $M$ sur le plan, c'est-à-dire le point du plan tel que $\\overrightarrow{MH}$ est colinéaire à un vecteur normal.\n\nLe plan $(ABC)$ a pour équation $2x+3y+6z-12=0$. Pour $D(1\\,;2\\,;3)$ :\n\n$$d(D\\,;(ABC))=\\frac{|2\\times1+3\\times2+6\\times3-12|}{\\sqrt{2^2+3^2+6^2}}=\\frac{|2+6+18-12|}{\\sqrt{49}}=\\frac{14}{7}=2.$$\n\nLe projecteur est donc à $2$ m de la bâche.\n\nLe projeté orthogonal $H$ de $D$ est le point du plan tel que $\\overrightarrow{DH}$ est colinéaire au vecteur normal $\\vec n'(2\\,;3\\,;6)$ : $H=D+t\\,\\vec n'$, soit $H(1+2t\\,;2+3t\\,;3+6t)$. Il appartient au plan : $2(1+2t)+3(2+3t)+6(3+6t)-12=0$, ce qui donne $14+49t=0$, donc $t=-\\dfrac27$. Alors $H\\left(\\dfrac37\\,;\\dfrac87\\,;\\dfrac97\\right)$. Contrôle : $DH=|t|\\times\\|\\vec n'\\|=\\dfrac27\\times7=2$.\n\nLa figure 4 représente le segment $[DH]$, perpendiculaire au plan $(ABC)$.\n\n<svg viewBox='0 0 500 350' role='img' aria-labelledby='fig4e403f17t fig4e403f17d' style='width:100%;max-width:500px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig4e403f17t'>Tétraèdre ABCD dans le repère orthonormé</title><desc id='fig4e403f17d'>Perspective cavalière du tétraèdre ABCD : A(3 ; 2 ; 0) et B(0 ; 4 ; 0) au sol, C(0 ; 0 ; 2) sur l'axe vertical, D(1 ; 2 ; 3). Le triangle ABC est la face grisée. Le segment DH, perpendiculaire au plan (ABC), a pour longueur 2.</desc><polygon points='183.8,286.6 358,232 150,128' fill='var(--accent,#e4f3ec)' stroke='var(--accent,#e4f3ec)' stroke-width='1' stroke-linejoin='round'/><line x1='150' y1='232' x2='58.7' y2='303' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><polygon points='58.7,303 62.3,296.2 66.2,301.2' fill='var(--muted-foreground,#5b6560)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1' stroke-linejoin='round'/><line x1='150' y1='232' x2='420.4' y2='232' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><polygon points='420.4,232 413.4,235.2 413.4,228.8' fill='var(--muted-foreground,#5b6560)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1' stroke-linejoin='round'/><line x1='150' y1='232' x2='150' y2='39.6' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><polygon points='150,39.6 153.2,46.6 146.8,46.6' fill='var(--muted-foreground,#5b6560)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1' stroke-linejoin='round'/><line x1='183.8' y1='286.6' x2='358' y2='232' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='183.8' y1='286.6' x2='150' y2='128' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='183.8' y1='286.6' x2='230.6' y2='94.2' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='358' y1='232' x2='150' y2='128' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='358' y1='232' x2='230.6' y2='94.2' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='150' y1='128' x2='230.6' y2='94.2' stroke='var(--foreground,#161d1a)' stroke-width='1.9' stroke-linecap='round'/><line x1='230.6' y1='94.2' x2='199.4' y2='172.9' stroke='var(--destructive,#c4352e)' stroke-width='1.8' stroke-dasharray='6 4' stroke-linecap='round'/><text x='49.7' y='317' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='431.4' y='237' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='150' y='31.6' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>z</text><text x='138' y='248' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>O</text><circle cx='183.8' cy='286.6' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='358' cy='232' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='150' cy='128' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><circle cx='230.6' cy='94.2' r='3.5' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><text x='179.8' y='305.6' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>A</text><text x='360' y='221' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>B</text><text x='137' y='133' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>C</text><text x='230.6' y='83.2' font-size='15' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>D</text><circle cx='199.4' cy='172.9' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='189.4' y='188.9' font-size='15' text-anchor='end' fill='var(--destructive,#c4352e)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>H</text><text x='250' y='344' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 4 : DH est perpendiculaire au plan (ABC), avec DH = 2 m</text></svg>\n\n### Piège à éviter\nDans la formule, la valeur absolue porte sur tout le numérateur, et $\\sqrt{2^2+3^2+6^2}=7$ est la norme du vecteur normal, pas la somme $2+3+6$.\n\n### Conseil\nPour vérifier $H$, remplace ses coordonnées dans l'équation du plan : $2\\times\\dfrac37+3\\times\\dfrac87+6\\times\\dfrac97=\\dfrac{84}{7}=12$.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.25,
+          "criteres_notation": [
+            {
+              "libelle": "Applique la formule de distance avec les bons coefficients",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule $d=\\dfrac{14}{7}=2$ m",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit $H=D+t\\,\\vec n$ avec $\\vec n(2\\,;3\\,;6)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Détermine $t=-\\dfrac27$ avec l'équation du plan",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne $H\\left(\\dfrac37\\,;\\dfrac87\\,;\\dfrac97\\right)$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "géométrie dans l'espace",
+            "produit scalaire"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex3-q3-0",
+              "competence": "Calculer la distance d'un point à un plan via son projeté orthogonal",
+              "contenu_markdown": "La distance d'un point $M(x_M\\,;y_M\\,;z_M)$ à un plan d'équation $ax+by+cz+d=0$ est $\\dfrac{|ax_M+by_M+cz_M+d|}{\\sqrt{a^2+b^2+c^2}}$ ; elle est égale à $MH$ où $H$ est le projeté orthogonal de $M$ sur le plan, c'est-à-dire le point du plan tel que $\\overrightarrow{MH}$ est colinéaire à un vecteur normal.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Calculer l'aire du triangle $ABC$, puis le volume du tétraèdre $ABCD$.",
+          "corrige_markdown": "### Rappel de méthode\nL'aire d'un triangle $ABC$ de l'espace est la moitié de la norme du produit vectoriel, $\\mathcal A=\\dfrac12\\left\\|\\overrightarrow{AB}\\wedge\\overrightarrow{AC}\\right\\|$, car cette norme est l'aire du parallélogramme construit sur $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$.\n\nOn a calculé $\\overrightarrow{AB}\\wedge\\overrightarrow{AC}=(4\\,;6\\,;12)$, dont la norme est $\\sqrt{4^2+6^2+12^2}=\\sqrt{196}=14$. L'aire du triangle $ABC$ est donc $\\mathcal A=\\dfrac12\\times14=7\\ \\mathrm{m}^2$.\n\nLe volume du tétraèdre $ABCD$, de base $ABC$ et de hauteur $d(D\\,;(ABC))=2$, est $V=\\dfrac13\\times\\mathcal A\\times d=\\dfrac13\\times7\\times2=\\dfrac{14}{3}\\ \\mathrm{m}^3$, soit environ $4{,}67\\ \\mathrm{m}^3$.\n\nVérification par le produit mixte : $\\overrightarrow{AD}=(-2\\,;0\\,;3)$ et $V=\\dfrac16\\left|(\\overrightarrow{AB}\\wedge\\overrightarrow{AC})\\cdot\\overrightarrow{AD}\\right|=\\dfrac16\\,|-8+0+36|=\\dfrac{28}{6}=\\dfrac{14}{3}$.\n\n### Piège à éviter\nSans le facteur $\\dfrac12$, tu calcules l'aire du parallélogramme, pas celle du triangle ; pour le volume, n'oublie pas le facteur $\\dfrac13$.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Calcule $\\left\\|\\overrightarrow{AB}\\wedge\\overrightarrow{AC}\\right\\|=14$",
+              "points": 0.25
+            },
+            {
+              "libelle": "En déduit l'aire $7\\ \\mathrm{m}^2$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le volume $\\dfrac13\\times7\\times2=\\dfrac{14}{3}\\ \\mathrm{m}^3$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "produit vectoriel",
+            "géométrie dans l'espace"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex3-q4-0",
+              "competence": "Aire d'un triangle dans l'espace grâce au produit vectoriel",
+              "contenu_markdown": "L'aire d'un triangle $ABC$ de l'espace est la moitié de la norme du produit vectoriel, $\\mathcal A=\\dfrac12\\left\\|\\overrightarrow{AB}\\wedge\\overrightarrow{AC}\\right\\|$, car cette norme est l'aire du parallélogramme construit sur $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "4",
+      "points": 7.0,
+      "enonce_intro_markdown": "Soit $f$ la fonction définie sur $]0\\,;+\\infty[$ par $f(x)=x-x\\ln x$. On note $(\\mathcal C)$ sa courbe représentative dans un repère orthonormé $(O\\,;\\vec\\imath,\\vec\\jmath)$ d'unité graphique $4$ cm.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Déterminer les limites de $f$ en $0$ (à droite) et en $+\\infty$.",
+          "corrige_markdown": "### Rappel de méthode\nLa limite $\\lim_{x\\to0^+}x\\ln x=0$ est un résultat de croissances comparées : on ne l'obtient pas par un produit de limites, mais on l'utilise directement pour lever la forme indéterminée $0\\times(-\\infty)$ dans les expressions qui contiennent $x\\ln x$.\n\nEn $0^+$, $f(x)=x-x\\ln x$. Le terme $x$ tend vers $0$ et, par croissances comparées, $x\\ln x\\to0$ quand $x\\to0^+$. Donc $\\lim_{x\\to0^+}f(x)=0$.\n\nEn $+\\infty$, on factorise : $f(x)=x\\,(1-\\ln x)$. Quand $x\\to+\\infty$, $x\\to+\\infty$ et $1-\\ln x\\to-\\infty$ : le produit tend vers $-\\infty$. Donc $\\lim_{x\\to+\\infty}f(x)=-\\infty$.\n\n### Piège à éviter\nÉcrire que $x\\ln x$ vaut $0\\times(-\\infty)$ et que la limite n'existe donc pas : cette forme est indéterminée, et la croissance comparée de $\\ln x$ et de $x$ en $0$ la lève.\n\n### Conseil\nEn $+\\infty$, factorise par $x$ : tu évites la forme indéterminée $+\\infty-\\infty$.\n",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Cite la limite de croissances comparées $\\lim_{x\\to0^+}x\\ln x=0$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut $\\lim_{x\\to0^+}f(x)=0$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Factorise $f(x)=x(1-\\ln x)$ et obtient $-\\infty$ en $+\\infty$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "croissances comparées",
+            "logarithmes"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q1-0",
+              "competence": "Déterminer la limite d'une fonction contenant x ln x en un point",
+              "contenu_markdown": "La limite $\\lim_{x\\to0^+}x\\ln x=0$ est un résultat de croissances comparées : on ne l'obtient pas par un produit de limites, mais on l'utilise directement pour lever la forme indéterminée $0\\times(-\\infty)$ dans les expressions qui contiennent $x\\ln x$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie A : étude de la fonction f"
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "a) Montrer que $f$ se prolonge par continuité en $0$. On note encore $f$ le prolongement, avec $f(0)=0$.\n\nb) Étudier la dérivabilité de $f$ en $0$ et interpréter graphiquement le résultat.",
+          "corrige_markdown": "### Rappel de méthode\nPour étudier un prolongement en un point $a$, on compare la limite de $f$ en $a$ à la valeur choisie pour la continuité, puis on forme le taux d'accroissement $\\dfrac{f(x)-f(a)}{x-a}$ que l'on simplifie avant de passer à la limite ; si cette limite est finie elle vaut $f'(a)$, si elle est infinie la courbe admet une demi-tangente verticale en ce point.\n\na) D'après la question précédente, $\\lim_{x\\to0^+}f(x)=0$ : cette limite est finie, donc $f$ se prolonge par continuité en $0$ en posant $f(0)=0$.\n\nb) Pour $x>0$, le taux d'accroissement est $\\dfrac{f(x)-f(0)}{x-0}=\\dfrac{x-x\\ln x}{x}=1-\\ln x$. Quand $x\\to0^+$, $\\ln x\\to-\\infty$, donc $1-\\ln x\\to+\\infty$. Le taux d'accroissement n'a pas de limite finie : $f$ n'est pas dérivable en $0$. Graphiquement, la courbe $(\\mathcal C)$ admet à l'origine une demi-tangente verticale, dirigée vers le haut.\n\n### Piège à éviter\nDéduire la dérivabilité de la continuité : une fonction continue en un point n'y est pas forcément dérivable, et ici le taux d'accroissement tend vers $+\\infty$.\n\n### Conseil\nSimplifie le taux d'accroissement par $x$ avant de passer à la limite : tout devient immédiat.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Compare la limite $0$ à $f(0)=0$ pour la continuité",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit le taux d'accroissement simplifié $1-\\ln x$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut : limite $+\\infty$, non dérivable, demi-tangente verticale à l'origine",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "logarithmes",
+            "croissances comparées"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q2-0",
+              "competence": "Continuité et dérivabilité en un point de raccordement avec $x\\ln x$",
+              "contenu_markdown": "Pour étudier un prolongement en un point $a$, on compare la limite de $f$ en $a$ à la valeur choisie pour la continuité, puis on forme le taux d'accroissement $\\dfrac{f(x)-f(a)}{x-a}$ que l'on simplifie avant de passer à la limite ; si cette limite est finie elle vaut $f'(a)$, si elle est infinie la courbe admet une demi-tangente verticale en ce point.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie A : étude de la fonction f"
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Calculer $f'(x)$ pour $x>0$, étudier son signe et dresser le tableau de variations de $f$ sur $[0\\,;+\\infty[$.",
+          "corrige_markdown": "### Rappel de méthode\nPour dériver une expression contenant $x\\ln x$, on applique la formule du produit $(uv)'=u'v+uv'$, ce qui donne $(x\\ln x)'=\\ln x+1$ ; on étudie ensuite le signe de la dérivée, qui se ramène à une inéquation en $\\ln x$, puis on reporte les variations et les valeurs aux bornes dans le tableau.\n\nLa fonction $f$ est dérivable sur $]0\\,;+\\infty[$. Comme $(x\\ln x)'=1\\times\\ln x+x\\times\\dfrac1x=\\ln x+1$, on obtient $f'(x)=1-(\\ln x+1)=-\\ln x$. Or $-\\ln x>0\\iff x<1$ : $f'$ est positive sur $]0\\,;1[$ et négative sur $]1\\,;+\\infty[$. De plus $f(1)=1-0=1$. Tableau de variations :\n\n$$\\begin{array}{c|ccccc} x & 0 & & 1 & & +\\infty \\\\ \\hline f'(x) & & + & 0 & - & \\\\ \\hline f(x) & 0 & \\nearrow & 1 & \\searrow & -\\infty \\end{array}$$\n\n### Piège à éviter\nOublier le terme $+1$ dans $(x\\ln x)'$ : la formule du produit comporte deux termes, $\\ln x$ et $x\\times\\dfrac1x=1$.\n\n### Conseil\nLe signe de $-\\ln x$ se lit directement : $\\ln x$ change de signe en $x=1$.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Dérive le produit : $(x\\ln x)'=\\ln x+1$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Obtient $f'(x)=-\\ln x$ et son signe",
+              "points": 0.25
+            },
+            {
+              "libelle": "Dresse le tableau : $0$, maximum $1$ en $x=1$, puis $-\\infty$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "logarithmes"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q3-0",
+              "competence": "Dériver une fonction contenant x ln x et dresser son tableau de variations",
+              "contenu_markdown": "Pour dériver une expression contenant $x\\ln x$, on applique la formule du produit $(uv)'=u'v+uv'$, ce qui donne $(x\\ln x)'=\\ln x+1$ ; on étudie ensuite le signe de la dérivée, qui se ramène à une inéquation en $\\ln x$, puis on reporte les variations et les valeurs aux bornes dans le tableau.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie A : étude de la fonction f"
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "a) Résoudre dans $]0\\,;+\\infty[$ l'équation $f(x)=x$.\n\nb) Étudier le signe de $f(x)-x$ et en déduire la position de $(\\mathcal C)$ par rapport à la droite $(D)$ d'équation $y=x$.",
+          "corrige_markdown": "### Rappel de méthode\nUn point fixe de $f$ est une solution de l'équation $f(x)=x$ ; on étudie la différence $f(x)-x$, que l'on factorise pour en lire les zéros et le signe, ce qui donne la position de la courbe par rapport à la droite d'équation $y=x$ et, pour une suite $u_{n+1}=f(u_n)$, le sens de variation.\n\na) Pour $x>0$, $f(x)-x=-x\\ln x$. Cette expression est nulle si et seulement si $\\ln x=0$ (car $x>0$), c'est-à-dire $x=1$. L'équation $f(x)=x$ admet donc pour unique solution $1$ : c'est le seul point fixe de $f$, et $(\\mathcal C)$ coupe $(D)$ au seul point $S(1\\,;1)$.\n\nb) Comme $x>0$, $f(x)-x=-x\\ln x$ a le signe de $-\\ln x$ : positif pour $0<x<1$, négatif pour $x>1$. La courbe $(\\mathcal C)$ est donc au-dessus de $(D)$ sur $]0\\,;1[$ et en dessous sur $]1\\,;+\\infty[$ : elle traverse $(D)$ en $S$.\n\n### Piège à éviter\nChercher une solution en $x=0$ : ce nombre n'appartient pas à l'intervalle de résolution $]0\\,;+\\infty[$.\n",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 0.5,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit $f(x)-x=-x\\ln x$ et trouve l'unique solution $x=1$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Étudie le signe de $-x\\ln x$ et donne la position de $(\\mathcal C)$ par rapport à $(D)$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "point fixe"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q4-0",
+              "competence": "Trouver le point fixe d'une fonction et étudier le signe de f(x) − x",
+              "contenu_markdown": "Un point fixe de $f$ est une solution de l'équation $f(x)=x$ ; on étudie la différence $f(x)-x$, que l'on factorise pour en lire les zéros et le signe, ce qui donne la position de la courbe par rapport à la droite d'équation $y=x$ et, pour une suite $u_{n+1}=f(u_n)$, le sens de variation.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie A : étude de la fonction f"
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "On considère la suite $(u_n)$ définie par $u_0=\\dfrac12$ et, pour tout entier naturel $n$, $u_{n+1}=f(u_n)$.\n\na) Démontrer par récurrence que, pour tout entier naturel $n$, $\\dfrac12\\le u_n\\le1$.\n\nb) Montrer que la suite $(u_n)$ est croissante.",
+          "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une suite $u_{n+1}=f(u_n)$ reste dans un intervalle $[a\\,;b]$ sur lequel $f$ est croissante, on initialise avec $u_0\\in[a\\,;b]$, puis dans l'hérédité on applique $f$ à l'encadrement $a\\le u_n\\le b$ pour obtenir $f(a)\\le u_{n+1}\\le f(b)$, et on conclut si $f(a)\\ge a$ et $f(b)\\le b$.\n\na) Pour $n=0$ : $u_0=\\dfrac12$ vérifie $\\dfrac12\\le u_0\\le1$. Supposons $\\dfrac12\\le u_n\\le1$ pour un entier $n$. La fonction $f$ est croissante sur $\\left[\\dfrac12\\,;1\\right]\\subset\\,]0\\,;1]$ (question 3), donc $f\\!\\left(\\dfrac12\\right)\\le f(u_n)\\le f(1)$. Or $f\\!\\left(\\dfrac12\\right)=\\dfrac12\\,(1+\\ln2)\\ge\\dfrac12$ car $\\ln2>0$, et $f(1)=1$. Donc $\\dfrac12\\le u_{n+1}\\le1$. La propriété est héréditaire : elle est vraie pour tout entier $n$.\n\nb) Pour tout $n$, $u_{n+1}-u_n=f(u_n)-u_n=-u_n\\ln u_n$ d'après la question 4. Comme $\\dfrac12\\le u_n\\le1$, on a $u_n>0$ et $\\ln u_n\\le0$, donc $-u_n\\ln u_n\\ge0$ : $u_{n+1}\\ge u_n$. La suite $(u_n)$ est croissante.\n\n### Piège à éviter\nAppliquer la croissance de $f$ hors de son intervalle de croissance : $f$ décroît sur $[1\\,;+\\infty[$, donc l'encadrement doit rester dans $]0\\,;1]$.\n\n### Conseil\nPour l'hérédité, vérifie que les images des bornes, $f\\!\\left(\\dfrac12\\right)$ et $f(1)$, retombent dans l'intervalle : c'est ce qui rend la récurrence possible.\n",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.25,
+          "criteres_notation": [
+            {
+              "libelle": "Initialisation : $u_0=\\dfrac12\\in\\left[\\dfrac12\\,;1\\right]$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Hérédité : utilise la croissance de $f$ pour encadrer $f(u_n)$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Calcule $f\\!\\left(\\dfrac12\\right)=\\dfrac{1+\\ln2}{2}\\ge\\dfrac12$ et $f(1)=1$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Monotonie : $u_{n+1}-u_n=-u_n\\ln u_n\\ge0$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite récurrente",
+            "encadrement"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q5-0",
+              "competence": "Démontrer par récurrence la stabilité d'un intervalle pour une suite récurrente",
+              "contenu_markdown": "Pour montrer qu'une suite $u_{n+1}=f(u_n)$ reste dans un intervalle $[a\\,;b]$ sur lequel $f$ est croissante, on initialise avec $u_0\\in[a\\,;b]$, puis dans l'hérédité on applique $f$ à l'encadrement $a\\le u_n\\le b$ pour obtenir $f(a)\\le u_{n+1}\\le f(b)$, et on conclut si $f(a)\\ge a$ et $f(b)\\le b$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie B : étude d'une suite définie par f"
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Dans le repère $(O\\,;\\vec\\imath,\\vec\\jmath)$, tracer la droite $(D)$ d'équation $y=x$ et la courbe $(\\mathcal C)$, en indiquant son allure à l'origine et sa tangente au point d'abscisse $1$. Construire ensuite sur l'axe des abscisses les termes $u_0$, $u_1$ et $u_2$ de la suite $(u_n)$.\n\nOn donne : $f(0{,}1)\\approx0{,}33$, $f(0{,}25)\\approx0{,}60$, $f(0{,}5)\\approx0{,}85$, $f(1{,}5)\\approx0{,}89$, $f(2)\\approx0{,}61$ et $f(\\mathrm e)=0$ avec $\\mathrm e\\approx2{,}72$.",
+          "corrige_markdown": "### Rappel de méthode\nPour construire les termes d'une suite $u_{n+1}=f(u_n)$, on place $u_0$ sur l'axe des abscisses, on monte verticalement jusqu'à la courbe de $f$ pour lire $u_1=f(u_0)$ en ordonnée, puis on rejoint horizontalement la droite d'équation $y=x$ qui reporte cette valeur en abscisse, et on recommence.\n\nOn gradue les axes avec $4$ cm pour une unité et on trace la droite $(D)$ passant par $O$ et $S(1\\,;1)$. Pour $(\\mathcal C)$, on place l'origine avec une demi-tangente verticale (question 2), les points $(0{,}1\\,;0{,}33)$, $(0{,}25\\,;0{,}60)$ et $(0{,}5\\,;0{,}85)$, le sommet $S(1\\,;1)$ où la tangente est horizontale puisque $f'(1)=0$, puis $(1{,}5\\,;0{,}89)$, $(2\\,;0{,}61)$ et le point $(\\mathrm e\\,;0)$ : la courbe coupe l'axe des abscisses en $\\mathrm e$ car $f(x)=x(1-\\ln x)=0\\iff x=\\mathrm e$.\n\nPour l'escalier, on place $u_0=0{,}5$ sur l'axe des abscisses, on monte jusqu'à $(\\mathcal C)$ au point d'ordonnée $f(u_0)=u_1\\approx0{,}85$, puis on se déplace horizontalement jusqu'à $(D)$, ce qui reporte $u_1$ en abscisse. On recommence : on monte jusqu'à $(\\mathcal C)$ en $u_2=f(u_1)\\approx0{,}99$ et on rejoint $(D)$. Les termes se rapprochent de $1$, abscisse du point $S$ commun à $(\\mathcal C)$ et $(D)$.\n\n| $n$ | 0 | 1 | 2 | 3 |\n|---|---|---|---|---|\n| $u_n$ | 0,5 | 0,847 | 0,988 | 0,9999 |\n\n\n<svg viewBox='0 0 520 400' role='img' aria-labelledby='figc8ad01f5t figc8ad01f5d' style='width:100%;max-width:520px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='figc8ad01f5t'>Courbe de f(x) = x − x ln x, droite y = x et premiers termes de la suite</title><desc id='figc8ad01f5d'>Courbe de f, de pente verticale à l'origine, de maximum 1 atteint en x = 1, et droite d'équation y = x qui la touche au point (1 ; 1). Construction en escalier des termes u0 = 0,5, u1 ≈ 0,847, u2 ≈ 0,988 qui croissent vers 1.</desc><defs><clipPath id='clipc8ad01f5_1'><rect x='52' y='18' width='440' height='330'/></clipPath></defs><line x1='52' y1='18' x2='52' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='107' y1='18' x2='107' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='162' y1='18' x2='162' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='217' y1='18' x2='217' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='272' y1='18' x2='272' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='327' y1='18' x2='327' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='382' y1='18' x2='382' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='437' y1='18' x2='437' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='492' y1='18' x2='492' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='348' x2='492' y2='348' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='293' x2='492' y2='293' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='238' x2='492' y2='238' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='183' x2='492' y2='183' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='128' x2='492' y2='128' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='73' x2='492' y2='73' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='18' x2='492' y2='18' stroke='var(--border,#c9cfcb)' stroke-width='1' stroke-linecap='round'/><line x1='52' y1='345' x2='52' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='107' y1='345' x2='107' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='162' y1='345' x2='162' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='217' y1='345' x2='217' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='272' y1='345' x2='272' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='327' y1='345' x2='327' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='382' y1='345' x2='382' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='437' y1='345' x2='437' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='492' y1='345' x2='492' y2='351' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='348' x2='55' y2='348' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='293' x2='55' y2='293' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='238' x2='55' y2='238' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='183' x2='55' y2='183' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='128' x2='55' y2='128' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='73' x2='55' y2='73' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='49' y1='18' x2='55' y2='18' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2' stroke-linecap='round'/><line x1='52' y1='348' x2='498' y2='348' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='498,348 489,352.1 489,343.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='52' y1='348' x2='52' y2='12' stroke='var(--foreground,#161d1a)' stroke-width='1.6' stroke-linecap='round'/><polygon points='52,12 56,21 48,21' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><path d='M52,348 L272,128 L492,-92' fill='none' stroke='var(--info,#2a6fba)' stroke-width='2' stroke-linejoin='round' clip-path='url(#clipc8ad01f5_1)'/><path d='M52,348 L53.1,340.8 L54.2,335.2 L55.3,330.1 L56.4,325.4 L57.5,321 L58.6,316.8 L59.7,312.8 L60.8,308.9 L61.9,305.2 L63,301.6 L64.1,298.1 L65.2,294.7 L66.3,291.4 L67.4,288.2 L68.5,285.1 L69.6,282 L70.7,279 L71.8,276.1 L72.9,273.2 L74,270.4 L75.1,267.7 L76.2,265 L77.3,262.3 L78.4,259.7 L79.5,257.2 L80.6,254.7 L81.7,252.2 L82.8,249.8 L83.9,247.4 L85,245 L86.1,242.7 L87.2,240.4 L88.3,238.2 L89.4,236 L90.5,233.8 L91.6,231.7 L92.7,229.5 L93.8,227.5 L94.9,225.4 L96,223.4 L97.1,221.4 L98.2,219.4 L99.3,217.4 L100.4,215.5 L101.5,213.6 L102.6,211.7 L103.7,209.9 L104.8,208.1 L105.9,206.3 L107,204.5 L108.1,202.7 L109.2,201 L110.3,199.3 L111.4,197.6 L112.5,195.9 L113.6,194.2 L114.7,192.6 L115.8,191 L116.9,189.4 L118,187.8 L119.1,186.2 L120.2,184.7 L121.3,183.2 L122.4,181.7 L123.5,180.2 L124.6,178.7 L125.7,177.3 L126.8,175.8 L127.9,174.4 L129,173 L130.1,171.6 L131.2,170.2 L132.3,168.9 L133.4,167.5 L134.5,166.2 L135.6,164.9 L136.7,163.6 L137.8,162.3 L138.9,161 L140,159.7 L141.1,158.5 L142.2,157.3 L143.3,156 L144.4,154.8 L145.5,153.6 L146.6,152.5 L147.7,151.3 L148.8,150.1 L149.9,149 L151,147.9 L152.1,146.7 L153.2,145.6 L154.3,144.5 L155.4,143.5 L156.5,142.4 L157.6,141.3 L158.7,140.3 L159.8,139.2 L160.9,138.2 L162,137.2 L163.1,136.2 L164.2,135.2 L165.3,134.2 L166.4,133.3 L167.5,132.3 L168.6,131.4 L169.7,130.4 L170.8,129.5 L171.9,128.6 L173,127.7 L174.1,126.8 L175.2,125.9 L176.3,125 L177.4,124.1 L178.5,123.3 L179.6,122.4 L180.7,121.6 L181.8,120.7 L182.9,119.9 L184,119.1 L185.1,118.3 L186.2,117.5 L187.3,116.7 L188.4,116 L189.5,115.2 L190.6,114.4 L191.7,113.7 L192.8,112.9 L193.9,112.2 L195,111.5 L196.1,110.8 L197.2,110.1 L198.3,109.4 L199.4,108.7 L200.5,108 L201.6,107.3 L202.7,106.7 L203.8,106 L204.9,105.3 L206,104.7 L207.1,104.1 L208.2,103.4 L209.3,102.8 L210.4,102.2 L211.5,101.6 L212.6,101 L213.7,100.4 L214.8,99.9 L215.9,99.3 L217,98.7 L218.1,98.2 L219.2,97.6 L220.3,97.1 L221.4,96.5 L222.5,96 L223.6,95.5 L224.7,95 L225.8,94.4 L226.9,93.9 L228,93.5 L229.1,93 L230.2,92.5 L231.3,92 L232.4,91.5 L233.5,91.1 L234.6,90.6 L235.7,90.2 L236.8,89.7 L237.9,89.3 L239,88.9 L240.1,88.5 L241.2,88 L242.3,87.6 L243.4,87.2 L244.5,86.8 L245.6,86.5 L246.7,86.1 L247.8,85.7 L248.9,85.3 L250,85 L251.1,84.6 L252.2,84.2 L253.3,83.9 L254.4,83.6 L255.5,83.2 L256.6,82.9 L257.7,82.6 L258.8,82.3 L259.9,81.9 L261,81.6 L262.1,81.3 L263.2,81.1 L264.3,80.8 L265.4,80.5 L266.5,80.2 L267.6,79.9 L268.7,79.7 L269.8,79.4 L270.9,79.2 L272,78.9 L273.1,78.7 L274.2,78.4 L275.3,78.2 L276.4,78 L277.5,77.7 L278.6,77.5 L279.7,77.3 L280.8,77.1 L281.9,76.9 L283,76.7 L284.1,76.5 L285.2,76.4 L286.3,76.2 L287.4,76 L288.5,75.8 L289.6,75.7 L290.7,75.5 L291.8,75.4 L292.9,75.2 L294,75.1 L295.1,74.9 L296.2,74.8 L297.3,74.7 L298.4,74.5 L299.5,74.4 L300.6,74.3 L301.7,74.2 L302.8,74.1 L303.9,74 L305,73.9 L306.1,73.8 L307.2,73.7 L308.3,73.7 L309.4,73.6 L310.5,73.5 L311.6,73.4 L312.7,73.4 L313.8,73.3 L314.9,73.3 L316,73.2 L317.1,73.2 L318.2,73.1 L319.3,73.1 L320.4,73.1 L321.5,73.1 L322.6,73 L323.7,73 L324.8,73 L325.9,73 L327,73 L328.1,73 L329.2,73 L330.3,73 L331.4,73 L332.5,73.1 L333.6,73.1 L334.7,73.1 L335.8,73.1 L336.9,73.2 L338,73.2 L339.1,73.3 L340.2,73.3 L341.3,73.4 L342.4,73.4 L343.5,73.5 L344.6,73.6 L345.7,73.6 L346.8,73.7 L347.9,73.8 L349,73.9 L350.1,73.9 L351.2,74 L352.3,74.1 L353.4,74.2 L354.5,74.3 L355.6,74.4 L356.7,74.5 L357.8,74.7 L358.9,74.8 L360,74.9 L361.1,75 L362.2,75.2 L363.3,75.3 L364.4,75.4 L365.5,75.6 L366.6,75.7 L367.7,75.9 L368.8,76 L369.9,76.2 L371,76.3 L372.1,76.5 L373.2,76.7 L374.3,76.9 L375.4,77 L376.5,77.2 L377.6,77.4 L378.7,77.6 L379.8,77.8 L380.9,78 L382,78.2 L383.1,78.4 L384.2,78.6 L385.3,78.8 L386.4,79 L387.5,79.2 L388.6,79.4 L389.7,79.7 L390.8,79.9 L391.9,80.1 L393,80.4 L394.1,80.6 L395.2,80.8 L396.3,81.1 L397.4,81.3 L398.5,81.6 L399.6,81.8 L400.7,82.1 L401.8,82.4 L402.9,82.6 L404,82.9 L405.1,83.2 L406.2,83.4 L407.3,83.7 L408.4,84 L409.5,84.3 L410.6,84.6 L411.7,84.9 L412.8,85.2 L413.9,85.5 L415,85.8 L416.1,86.1 L417.2,86.4 L418.3,86.7 L419.4,87 L420.5,87.3 L421.6,87.7 L422.7,88 L423.8,88.3 L424.9,88.7 L426,89 L427.1,89.3 L428.2,89.7 L429.3,90 L430.4,90.4 L431.5,90.7 L432.6,91.1 L433.7,91.4 L434.8,91.8 L435.9,92.2 L437,92.5 L438.1,92.9 L439.2,93.3 L440.3,93.7 L441.4,94 L442.5,94.4 L443.6,94.8 L444.7,95.2 L445.8,95.6 L446.9,96 L448,96.4 L449.1,96.8 L450.2,97.2 L451.3,97.6 L452.4,98 L453.5,98.4 L454.6,98.9 L455.7,99.3 L456.8,99.7 L457.9,100.1 L459,100.6 L460.1,101 L461.2,101.4 L462.3,101.9 L463.4,102.3 L464.5,102.8 L465.6,103.2 L466.7,103.7 L467.8,104.1 L468.9,104.6 L470,105 L471.1,105.5 L472.2,105.9 L473.3,106.4 L474.4,106.9 L475.5,107.4 L476.6,107.8 L477.7,108.3 L478.8,108.8 L479.9,109.3 L481,109.8 L482.1,110.3 L483.2,110.8 L484.3,111.3 L485.4,111.7 L486.5,112.3 L487.6,112.8 L488.7,113.3 L489.8,113.8 L490.9,114.3 L492,114.8' fill='none' stroke='var(--primary,#0f6b4f)' stroke-width='2.5' stroke-linejoin='round' clip-path='url(#clipc8ad01f5_1)'/><line x1='272' y1='73' x2='382' y2='73' stroke='var(--primary,#0f6b4f)' stroke-width='1.4' stroke-dasharray='5 4' stroke-linecap='round'/><line x1='284.8' y1='115.2' x2='284.8' y2='348' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><line x1='323.6' y1='76.4' x2='323.6' y2='348' stroke='var(--destructive,#c4352e)' stroke-width='1' stroke-dasharray='3 4' stroke-linecap='round'/><circle cx='327' cy='73' r='3.5' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><polyline points='189.5,348 189.5,115.2 284.8,115.2 284.8,76.4 323.6,76.4 323.6,73 327,73 327,73' fill='none' stroke='var(--destructive,#c4352e)' stroke-width='1.7' stroke-linejoin='round' stroke-linecap='round'/><circle cx='189.5' cy='348' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='284.8' cy='348' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><circle cx='323.6' cy='348' r='3.5' fill='var(--destructive,#c4352e)' stroke='var(--destructive,#c4352e)' stroke-width='1'/><text x='107' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,2</text><text x='162' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,4</text><text x='217' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,6</text><text x='272' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,8</text><text x='327' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='382' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1,2</text><text x='437' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1,4</text><text x='492' y='365' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1,6</text><text x='45' y='297' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,2</text><text x='45' y='242' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,4</text><text x='45' y='187' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,6</text><text x='45' y='132' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0,8</text><text x='45' y='77' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='45' y='22' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1,2</text><text x='45' y='364' font-size='12' text-anchor='end' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0</text><text x='496' y='339' font-size='13' text-anchor='end' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>x</text><text x='60' y='8' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' font-style='italic' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>y</text><text x='486.5' y='23.5' font-size='14' text-anchor='end' fill='var(--info,#2a6fba)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(D) : y = x</text><text x='486.5' y='118' font-size='14' text-anchor='end' fill='var(--primary,#0f6b4f)' font-weight='bold' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>(C)</text><text x='335' y='64' font-size='13' text-anchor='start' fill='var(--primary,#0f6b4f)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>S(1 ; 1)</text><text x='189.5' y='338' font-size='14' text-anchor='middle' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>u0</text><text x='283.8' y='338' font-size='14' text-anchor='middle' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>u1</text><text x='308.6' y='338' font-size='14' text-anchor='middle' fill='var(--destructive,#c4352e)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>u2</text><text x='260' y='390' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 5 : (C), (D) et construction de u0, u1, u2</text></svg>\n\n### Piège à éviter\nReporter $u_1$ sur l'axe des abscisses à l'œil au lieu de passer par la droite $(D)$ : l'escalier n'est exact que si les horizontales s'arrêtent sur $(D)$.\n\n### Conseil\nTrace d'abord $(D)$ et $(\\mathcal C)$ proprement, puis l'escalier au crayon fin : une marche approximative décale tous les termes suivants.\n",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Axes gradués (unité $4$ cm) et droite $(D):y=x$ tracée",
+              "points": 0.25
+            },
+            {
+              "libelle": "Courbe $(\\mathcal C)$ : départ vertical à l'origine, sommet $(1\\,;1)$ à tangente horizontale, passage par $(\\mathrm e\\,;0)$",
+              "points": 0.25
+            },
+            {
+              "libelle": "$u_0$, $u_1$, $u_2$ construits par l'escalier (verticales jusqu'à $(\\mathcal C)$, horizontales jusqu'à $(D)$)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Constate que les termes croissent vers $1$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "suite récurrente",
+            "point fixe"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q6-0",
+              "competence": "Construire graphiquement une suite $u_{n+1}=f(u_n)$ (méthode de l'escalier)",
+              "contenu_markdown": "Pour construire les termes d'une suite $u_{n+1}=f(u_n)$, on place $u_0$ sur l'axe des abscisses, on monte verticalement jusqu'à la courbe de $f$ pour lire $u_1=f(u_0)$ en ordonnée, puis on rejoint horizontalement la droite d'équation $y=x$ qui reporte cette valeur en abscisse, et on recommence.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie B : étude d'une suite définie par f"
+        },
+        {
+          "numero": "7",
+          "ordre": 7,
+          "enonce_markdown": "a) Montrer que, pour tout réel $x$ de $\\left[\\dfrac12\\,;1\\right]$, $0\\le f'(x)\\le\\ln2$.\n\nb) En déduire que, pour tout entier naturel $n$, $|u_{n+1}-1|\\le(\\ln2)\\,|u_n-1|$.",
+          "corrige_markdown": "### Rappel de méthode\nSi $|f'(x)|\\le k$ sur un intervalle contenant $u_n$ et le point fixe $\\ell$ de $f$, l'inégalité des accroissements finis donne $|f(u_n)-f(\\ell)|\\le k\\,|u_n-\\ell|$, soit $|u_{n+1}-\\ell|\\le k\\,|u_n-\\ell|$ puisque $f(\\ell)=\\ell$ ; cette inégalité de contraction se propage par récurrence en $|u_n-\\ell|\\le k^n|u_0-\\ell|$.\n\na) Pour $x\\in\\left[\\dfrac12\\,;1\\right]$, $f'(x)=-\\ln x$. La fonction $\\ln$ est croissante, donc $\\ln\\dfrac12\\le\\ln x\\le\\ln1=0$, soit $-\\ln2\\le\\ln x\\le0$. En multipliant par $-1$, ce qui renverse l'ordre : $0\\le-\\ln x\\le\\ln2$, c'est-à-dire $0\\le f'(x)\\le\\ln2$.\n\nb) D'après la question 5, $u_n\\in\\left[\\dfrac12\\,;1\\right]$, et $1$ appartient aussi à cet intervalle ; d'après a), $|f'(x)|\\le\\ln2$ sur cet intervalle. L'inégalité des accroissements finis entre $u_n$ et $1$ donne $|f(u_n)-f(1)|\\le\\ln2\\times|u_n-1|$. Or $f(u_n)=u_{n+1}$ et $f(1)=1$ (le point fixe de la question 4). Donc $|u_{n+1}-1|\\le(\\ln2)\\,|u_n-1|$.\n\n### Piège à éviter\nOublier que $\\ln$ est négatif sur $]0\\,;1[$ : $\\ln\\dfrac12=-\\ln2$, et multiplier une inégalité par $-1$ en inverse le sens.\n\n### Conseil\nVérifie que le majorant est strictement inférieur à $1$ : ici $\\ln2\\approx0{,}69$. C'est ce qui permettra de conclure à la convergence.\n",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Établit $f'(x)=-\\ln x\\ge0$ sur $\\left[\\dfrac12\\,;1\\right]$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Majore : $\\ln x\\ge\\ln\\dfrac12$ donc $f'(x)\\le\\ln2$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Énonce l'inégalité des accroissements finis entre $u_n$ et $1$ avec $|f'|\\le\\ln2$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Utilise $f(1)=1$ et $u_{n+1}=f(u_n)$ pour conclure",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "encadrement",
+            "suite récurrente"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q7-0",
+              "competence": "Établir une inégalité de contraction pour une suite récurrente, à partir de l'inégalité des accroissements finis",
+              "contenu_markdown": "Si $|f'(x)|\\le k$ sur un intervalle contenant $u_n$ et le point fixe $\\ell$ de $f$, l'inégalité des accroissements finis donne $|f(u_n)-f(\\ell)|\\le k\\,|u_n-\\ell|$, soit $|u_{n+1}-\\ell|\\le k\\,|u_n-\\ell|$ puisque $f(\\ell)=\\ell$ ; cette inégalité de contraction se propage par récurrence en $|u_n-\\ell|\\le k^n|u_0-\\ell|$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie B : étude d'une suite définie par f"
+        },
+        {
+          "numero": "8",
+          "ordre": 8,
+          "enonce_markdown": "a) Montrer que, pour tout entier naturel $n$, $0\\le1-u_n\\le\\dfrac{(\\ln2)^n}{2}$.\n\nb) En déduire que la suite $(u_n)$ converge et donner sa limite.\n\nc) Déterminer le plus petit entier $n$ pour lequel ce résultat garantit $1-u_n\\le10^{-3}$.",
+          "corrige_markdown": "### Rappel de méthode\nSi l'on a établi $0\\le|u_n-\\ell|\\le C\\,k^n$ avec $0\\le k<1$, alors $C\\,k^n$ tend vers $0$, et le théorème des gendarmes appliqué à $|u_n-\\ell|$ donne $|u_n-\\ell|\\to0$, c'est-à-dire $u_n\\to\\ell$.\n\na) D'après la question 7, $|u_{n+1}-1|\\le\\ln2\\,|u_n-1|$. Par récurrence, on en déduit $|u_n-1|\\le(\\ln2)^n\\,|u_0-1|=\\dfrac{(\\ln2)^n}{2}$ : pour $n=0$, $|u_0-1|=\\dfrac12$ ; si l'inégalité est vraie au rang $n$, on la multiplie par $\\ln2>0$ et on la combine avec celle de la question 7. Comme $u_n\\le1$ (question 5), $|u_n-1|=1-u_n\\ge0$. D'où $0\\le1-u_n\\le\\dfrac{(\\ln2)^n}{2}$.\n\nb) Comme $0<\\ln2<1$, la suite géométrique $\\big((\\ln2)^n\\big)$ tend vers $0$, donc $\\dfrac{(\\ln2)^n}{2}\\to0$. Le théorème des gendarmes appliqué à $0\\le1-u_n\\le\\dfrac{(\\ln2)^n}{2}$ donne $\\lim(1-u_n)=0$, c'est-à-dire $\\lim u_n=1$.\n\nc) On veut $\\dfrac{(\\ln2)^n}{2}\\le10^{-3}$, soit $(\\ln2)^n\\le2\\times10^{-3}$. En composant avec la fonction $\\ln$, croissante, on obtient $n\\ln(\\ln2)\\le\\ln(2\\times10^{-3})$. Comme $\\ln(\\ln2)\\approx-0{,}3665$ est négatif, on divise en renversant l'inégalité : $n\\ge\\dfrac{\\ln(2\\times10^{-3})}{\\ln(\\ln2)}\\approx\\dfrac{-6{,}215}{-0{,}3665}\\approx16{,}96$. Le plus petit entier est $n=17$.\n\n### Piège à éviter\nDiviser par $\\ln(\\ln2)$ sans renverser l'inégalité : ce nombre est négatif.\n\n### Conseil\nLa majoration est pessimiste : en réalité $1-u_3\\approx7{,}7\\times10^{-5}$. Ne confonds pas le rang garanti par la majoration et le rang réel.\n",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.0,
+          "criteres_notation": [
+            {
+              "libelle": "Établit par récurrence $|u_n-1|\\le\\dfrac{(\\ln2)^n}{2}$ puis l'encadrement $0\\le1-u_n$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit l'encadrement $0\\le1-u_n\\le\\dfrac{(\\ln2)^n}{2}$",
+              "points": 0.25
+            },
+            {
+              "libelle": "Justifie $(\\ln2)^n\\to0$ car $0<\\ln2<1$, puis conclut $u_n\\to1$ par les gendarmes",
+              "points": 0.25
+            },
+            {
+              "libelle": "Résout $\\dfrac{(\\ln2)^n}{2}\\le10^{-3}$ avec $\\ln$ (inégalité renversée) : $n=17$",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "théorème des gendarmes",
+            "encadrement"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex4-q8-0",
+              "competence": "Conclure à la convergence d'une suite par le théorème des gendarmes à partir d'une majoration géométrique",
+              "contenu_markdown": "Si l'on a établi $0\\le|u_n-\\ell|\\le C\\,k^n$ avec $0\\le k<1$, alors $C\\,k^n$ tend vers $0$, et le théorème des gendarmes appliqué à $|u_n-\\ell|$ donne $|u_n-\\ell|\\to0$, c'est-à-dire $u_n\\to\\ell$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "groupe_local": "Partie B : étude d'une suite définie par f"
+        }
+      ]
+    }
+  ]
+}

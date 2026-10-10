@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-prouver-la-parite-d-une-expression-entiere-en-distinguant-n-mbce3-ex1-q2",
+  "meta": {
+    "titre": "Prouver la parité d'une expression entière en distinguant n pair et n impair",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Arithmétique : parité et divisibilité",
+    "duree_estimee_min": 15,
+    "tags": [
+      "parité",
+      "congruences"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex1-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Montre que $n^2+3n$ est toujours pair. » Ce type de question revient souvent en arithmétique : on te demande une propriété vraie pour tous les entiers, et tester quelques valeurs ne prouve rien. La parité offre une méthode simple et sûre : on traite les deux cas possibles, puis on conclut. Elle sert aussi dans l'autre sens, pour montrer qu'une équation n'a aucune solution entière."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Un entier pair s'écrit $2k$, un entier impair s'écrit $2k+1$, avec $k$ entier",
+        "Développer et réduire une expression du second degré en $n$",
+        "Une somme de nombres pairs est paire, et le produit d'un nombre pair par un entier quelconque est pair"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Démontrer qu'une expression est paire pour tout entier $n$",
+      "contenu_markdown": "Pour prouver qu'une expression $E(n)$ est paire pour tout entier $n$, on procède en trois temps.\n\n**1. Partager les entiers en deux familles.** Tout entier est pair ($n=2k$) ou impair ($n=2k+1$), avec $k\\in\\mathbb Z$.\n\n**2. Traiter chaque cas.** On remplace $n$ par $2k$, puis par $2k+1$, on développe, et on vérifie que le résultat se met sous la forme $2m$ avec $m$ entier (on met $2$ en facteur).\n\n**3. Conclure.** Si $E(n)$ est pair dans les deux cas, il l'est pour tout entier $n$.\n\nOn peut raisonner de façon équivalente par congruences modulo $2$ : $n\\equiv0$ ou $n\\equiv1\\ [2]$, et on calcule $E(n)$ modulo $2$.\n\nLa parité sert aussi à **exclure des solutions** : un nombre pair n'est jamais égal à un nombre impair. Si le membre de gauche d'une équation est toujours pair et celui de droite est impair, l'équation n'a aucune solution entière.",
+      "formule_principale": "n=2k\\ \\text{ou}\\ n=2k+1\\quad(k\\in\\mathbb Z)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que, pour tout entier $n$, le nombre $n^2+3n$ est pair, puis que l'équation $x^2+3x=101$ n'a aucune solution entière.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter le cas $n$ pair",
+          "justification": "On pose $n=2k$ avec $k$ entier et on développe.",
+          "resultat_markdown": "$n^2+3n=4k^2+6k=2(2k^2+3k)$ : pair"
+        },
+        {
+          "numero": 2,
+          "action": "Traiter le cas $n$ impair",
+          "justification": "On pose $n=2k+1$ avec $k$ entier et on développe.",
+          "resultat_markdown": "$n^2+3n=4k^2+4k+1+6k+3=4k^2+10k+4=2(2k^2+5k+2)$ : pair"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure pour tout entier",
+          "justification": "Les deux cas couvrent tous les entiers.",
+          "resultat_markdown": "$n^2+3n$ est pair pour tout $n\\in\\mathbb Z$"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer avec le second membre",
+          "justification": "Le nombre $101$ est impair alors que $x^2+3x$ est pair.",
+          "resultat_markdown": "Contradiction : l'égalité est impossible"
+        }
+      ],
+      "conclusion_markdown": "L'expression $n^2+3n$ est paire pour tout entier $n$, et l'équation $x^2+3x=101$ n'a aucune solution entière."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Vérifier la propriété pour $n=0,1,2,3$ et conclure qu'elle est vraie pour tout $n$.",
+          "pourquoi_faux": "Quelques exemples ne démontrent rien : une propriété peut être vraie pour les premières valeurs puis fausse.",
+          "correction_markdown": "Traiter les deux cas $n=2k$ et $n=2k+1$ avec un entier $k$ quelconque."
+        },
+        {
+          "erreur_markdown": "Écrire $n=2k$ et oublier le cas impair.",
+          "pourquoi_faux": "Les entiers impairs ne sont pas couverts : la démonstration est incomplète.",
+          "correction_markdown": "Annoncer les deux cas avant de commencer, puis les traiter tous les deux."
+        },
+        {
+          "erreur_markdown": "Dire qu'un nombre est pair parce que le résultat semble divisible par $2$, sans le factoriser.",
+          "pourquoi_faux": "La parité se prouve par l'écriture $2m$ avec $m$ entier ; une impression ne suffit pas.",
+          "correction_markdown": "Mettre $2$ en facteur explicitement et nommer l'entier $m$ obtenu."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Montrer que $n(n+1)$ est pair pour tout entier $n$.",
+          "solution_markdown": "Si $n=2k$, $n(n+1)=2k(2k+1)$ est pair. Si $n=2k+1$, $n(n+1)=(2k+1)(2k+2)=2(2k+1)(k+1)$ est pair. Dans les deux cas le produit est pair."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Montrer que $n^2+n+2$ est pair pour tout entier $n$, puis que l'équation $x^2+x+2=2\\,031$ n'a aucune solution entière.",
+          "solution_markdown": "Si $n=2k$, $n^2+n+2=4k^2+2k+2=2(2k^2+k+1)$. Si $n=2k+1$, $n^2+n+2=4k^2+6k+4=2(2k^2+3k+2)$. L'expression est paire. Comme $2\\,031$ est impair, l'égalité $x^2+x+2=2\\,031$ est impossible pour un entier $x$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Montrer que $a^2+a+1$ est impair pour tout entier $a$, puis que l'équation $a^2+a+1=3\\,000$ n'a aucune solution entière.",
+          "solution_markdown": "On sait que $a^2+a=a(a+1)$ est pair (cas $a$ pair, cas $a$ impair), donc $a^2+a+1$ est impair. Le nombre $3\\,000$ est pair : l'égalité est impossible, l'équation n'a aucune solution entière."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prouver qu'une expression est paire pour tout entier $n$, on traite séparément $n=2k$ et $n=2k+1$.",
+        "Dans chaque cas, on met $2$ en facteur pour écrire le résultat sous la forme $2m$ avec $m$ entier.",
+        "Quelques essais numériques ne remplacent jamais cette démonstration sur un entier quelconque.",
+        "Un nombre pair n'est jamais égal à un nombre impair : cela permet de montrer qu'une équation n'a aucune solution entière."
+      ]
+    }
+  ]
+}

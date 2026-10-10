@@ -1,0 +1,134 @@
+{
+  "type": "cours",
+  "cours_id": "cours-determiner-les-vecteurs-propres-d-une-matrice-33-et-la-diago-mbce3-ex2-q4",
+  "meta": {
+    "titre": "Déterminer les vecteurs propres d'une matrice 3×3 et la diagonaliser",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algèbre linéaire : vecteurs propres et diagonalisation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "endomorphisme",
+      "matrice d'un endomorphisme"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-c-e-3-2026-s1-ex2-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois les valeurs propres connues, il reste à trouver les directions que $f$ laisse invariantes. Ce sont les vecteurs propres, et lorsqu'on en trouve trois qui forment une base, la matrice de $f$ devient diagonale : tout le comportement de $f$ se lit sur la diagonale, et les puissances de la matrice deviennent faciles à calculer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Valeurs propres d'une matrice $3\\times3$ obtenues par $\\det(A-\\lambda I)=0$",
+        "Résolution d'un système linéaire homogène à trois inconnues",
+        "Déterminant $3\\times3$ et critère de base"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un vecteur propre est une solution non nulle de $(A-\\lambda I)X=0$",
+      "contenu_markdown": "Soit $f$ un endomorphisme de $\\mathbb R^3$ de matrice $A$ et $\\lambda$ une valeur propre. Un **vecteur propre** associé à $\\lambda$ est un vecteur non nul $\\vec v(x\\,;y\\,;z)$ tel que $f(\\vec v)=\\lambda\\vec v$, c'est-à-dire une solution non nulle du système $(A-\\lambda I)X=0$. Comme $\\lambda$ est une valeur propre, ce système a une infinité de solutions : une équation est redondante et il reste un paramètre libre (deux si $\\lambda$ est double).\n\n**Méthode.** (1) Pour chaque valeur propre, on écrit le système $(A-\\lambda I)X=0$ et on le résout en gardant un paramètre libre. (2) On fixe ce paramètre à une valeur simple, de préférence entière, pour obtenir un vecteur propre. (3) On contrôle en calculant $A\\vec v$ : on doit trouver $\\lambda\\vec v$. (4) Trois vecteurs propres associés à trois valeurs propres distinctes forment une base, ce que l'on confirme par un déterminant non nul. (5) Dans cette base, la matrice de $f$ est diagonale, avec les valeurs propres sur la diagonale dans l'ordre des vecteurs.",
+      "formule_principale": "A\\vec v=\\lambda\\vec v\\iff(A-\\lambda I)X=0,\\qquad \\mathrm{Mat}_{(\\vec e_1,\\vec e_2,\\vec e_3)}(f)=\\mathrm{diag}(\\lambda_1,\\lambda_2,\\lambda_3)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $g$ l'endomorphisme de $\\mathbb R^3$ de matrice $B=\\begin{pmatrix}1&0&2\\\\3&5&3\\\\2&0&1\\end{pmatrix}$, dont les valeurs propres sont $-1$, $3$ et $5$. Déterminer des vecteurs propres et diagonaliser $g$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Valeur propre $-1$",
+          "justification": "On résout $(B+I)X=0$.",
+          "resultat_markdown": "$2x+2z=0$ et $3x+6y+3z=0$ : $z=-x$, puis $y=0$ ; vecteur propre $\\vec e_1(1\\,;0\\,;-1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Valeur propre $3$",
+          "justification": "On résout $(B-3I)X=0$.",
+          "resultat_markdown": "$-2x+2z=0$ et $3x+2y+3z=0$ : $z=x$, puis $y=-3x$ ; vecteur propre $\\vec e_2(1\\,;-3\\,;1)$"
+        },
+        {
+          "numero": 3,
+          "action": "Valeur propre $5$",
+          "justification": "On résout $(B-5I)X=0$.",
+          "resultat_markdown": "$-4x+2z=0$ et $3x+3z=0$ : $x=z=0$ et $y$ est libre ; vecteur propre $\\vec e_3(0\\,;1\\,;0)$"
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler chaque vecteur",
+          "justification": "On calcule $B\\vec v$ et on compare à $\\lambda\\vec v$.",
+          "resultat_markdown": "$B\\vec e_1=(-1\\,;0\\,;1)=-\\vec e_1$, $B\\vec e_2=(3\\,;-9\\,;3)=3\\vec e_2$, $B\\vec e_3=(0\\,;5\\,;0)=5\\vec e_3$"
+        },
+        {
+          "numero": 5,
+          "action": "Prouver que c'est une base",
+          "justification": "On développe le déterminant des trois vecteurs suivant la troisième colonne.",
+          "resultat_markdown": "$\\begin{vmatrix}1&1&0\\\\0&-3&1\\\\-1&1&0\\end{vmatrix}=-2\\neq0$"
+        },
+        {
+          "numero": 6,
+          "action": "Écrire la matrice dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$",
+          "justification": "Chaque vecteur est envoyé sur un multiple de lui-même.",
+          "resultat_markdown": "$D=\\begin{pmatrix}-1&0&0\\\\0&3&0\\\\0&0&5\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "La famille $(\\vec e_1,\\vec e_2,\\vec e_3)$ est une base de vecteurs propres de $g$ et la matrice de $g$ dans cette base est la matrice diagonale $\\mathrm{diag}(-1,3,5)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre le vecteur nul comme vecteur propre.",
+          "pourquoi_faux": "Par définition un vecteur propre est non nul ; le vecteur nul vérifie $f(\\vec 0)=\\lambda\\vec 0$ pour tout $\\lambda$ et ne dit rien.",
+          "correction_markdown": "Garder un paramètre libre et le fixer à une valeur non nulle."
+        },
+        {
+          "erreur_markdown": "Écrire dans $D$ les valeurs propres dans un ordre différent de celui des vecteurs de la base.",
+          "pourquoi_faux": "Le coefficient diagonal numéro $i$ est la valeur propre du $i$-ème vecteur de la base.",
+          "correction_markdown": "Écrire d'abord la base avec sa valeur propre à côté de chaque vecteur, puis recopier dans cet ordre."
+        },
+        {
+          "erreur_markdown": "Ne pas contrôler que $A\\vec v=\\lambda\\vec v$.",
+          "pourquoi_faux": "Une erreur de signe dans la résolution du système passe inaperçue et fausse toute la suite (base, matrice diagonale).",
+          "correction_markdown": "Calculer $A\\vec v$ pour chaque vecteur trouvé : c'est un calcul de quelques lignes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Soit $C=\\begin{pmatrix}2&1&0\\\\0&3&0\\\\0&1&5\\end{pmatrix}$, de valeurs propres $2$, $3$ et $5$. Déterminer un vecteur propre associé à $3$.",
+          "solution_markdown": "On résout $(C-3I)X=0$ : $-x+y=0$ et $y+2z=0$ (la deuxième ligne est nulle). Donc $y=x$ et $z=-\\dfrac x2$. Pour $x=2$, on obtient $\\vec v(2\\,;2\\,;-1)$. Contrôle : $C\\vec v=(6\\,;6\\,;-3)=3\\vec v$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Soit $M=\\begin{pmatrix}0&1&0\\\\1&0&0\\\\0&0&2\\end{pmatrix}$, de valeurs propres $-1$, $1$ et $2$. Déterminer un vecteur propre pour chaque valeur propre.",
+          "solution_markdown": "Pour $-1$ : $x+y=0$ et $z=0$, d'où $(1\\,;-1\\,;0)$. Pour $1$ : $-x+y=0$ et $z=0$, d'où $(1\\,;1\\,;0)$. Pour $2$ : $-2x+y=0$, $x-2y=0$, donc $x=y=0$ et $z$ est libre, d'où $(0\\,;0\\,;1)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Avec les vecteurs de l'exercice précédent, montrer qu'ils forment une base de $\\mathbb R^3$ et donner la matrice de $M$ dans cette base.",
+          "solution_markdown": "Le déterminant $\\begin{vmatrix}1&1&0\\\\-1&1&0\\\\0&0&1\\end{vmatrix}=1\\times\\begin{vmatrix}1&1\\\\-1&1\\end{vmatrix}=2\\neq0$ : les trois vecteurs forment une base. Dans cette base, la matrice de $M$ est $\\mathrm{diag}(-1,1,2)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un vecteur propre associé à $\\lambda$ est une solution non nulle de $(A-\\lambda I)X=0$ : on garde un paramètre libre et on le fixe à une valeur simple.",
+        "On contrôle chaque vecteur en vérifiant que $A\\vec v=\\lambda\\vec v$.",
+        "Trois vecteurs propres associés à trois valeurs propres distinctes forment une base ; un déterminant non nul le confirme.",
+        "Dans cette base, la matrice de $f$ est diagonale, avec les valeurs propres dans l'ordre des vecteurs."
+      ]
+    }
+  ]
+}
