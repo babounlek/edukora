@@ -2232,7 +2232,7 @@ class RappelIdRecoveryFromCoursSiblingTests(TestCase):
 
 
 class SitemapCountryFanOutTests(TestCase):
-    """`/{code}` et `/{code}/cours` doivent apparaître une fois par pays - voir
+    """`/{code}`, `/{code}/epreuves` et `/{code}/cours` doivent apparaître une fois par pays - voir
     catalog.sitemap._PER_COUNTRY_PAGES."""
 
     def setUp(self):
@@ -2246,6 +2246,7 @@ class SitemapCountryFanOutTests(TestCase):
         base = settings.FRONTEND_URL
         for code in ["cm", "bj"]:
             self.assertIn(f"<loc>{base}/{code}</loc>", xml)
+            self.assertIn(f"<loc>{base}/{code}/epreuves</loc>", xml)
             self.assertIn(f"<loc>{base}/{code}/cours</loc>", xml)
 
     def test_sitemap_prefixes_lesson_urls_with_their_country(self):

@@ -1,7 +1,9 @@
 import re
 
+from django.contrib.postgres.indexes import GinIndex, OpClass
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.functions import Upper
 from django.utils import timezone
 from django.utils.text import slugify
 
@@ -753,6 +755,11 @@ class Lesson(models.Model):
         ordering = ["-year", "title"]
         indexes = [
             models.Index(fields=["subject", "lesson_type"]),
+            # Index trigramme sur UPPER(...) : c'est ce que Django émet pour __icontains sur
+            # Postgres (UPPER(col) LIKE UPPER(%x%)), un index sur la colonne brute ne servirait
+            # pas. Voir LessonListView (filtre search) : ~700 ms -> quelques ms.
+            GinIndex(OpClass(Upper("title"), name="gin_trgm_ops"), name="lesson_title_trgm"),
+            GinIndex(OpClass(Upper("content_markdown"), name="gin_trgm_ops"), name="lesson_content_trgm"),
         ]
 
     def __str__(self):
@@ -1149,6 +1156,12 @@ class Cours(models.Model):
     class Meta:
         ordering = ["titre"]
         verbose_name_plural = "cours"
+        indexes = [
+            # Voir Lesson.Meta.indexes : UPPER(...) car c'est la forme émise par __icontains.
+            # CoursListView (filtre search) passait ~2 s à balayer 56 Mo de content_markdown.
+            GinIndex(OpClass(Upper("titre"), name="gin_trgm_ops"), name="cours_titre_trgm"),
+            GinIndex(OpClass(Upper("content_markdown"), name="gin_trgm_ops"), name="cours_content_trgm"),
+        ]
 
     def __str__(self):
         return self.titre

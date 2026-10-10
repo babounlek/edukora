@@ -1,8 +1,12 @@
 {$SITE_DOMAIN::80} {
     encode zstd gzip
 
+    # Indexable par défaut (prod). Un environnement de recette/staging qui ne doit pas être
+    # référencé définit ROBOTS_TAG="noindex, nofollow, noarchive" dans son .env (lu par ce
+    # conteneur via env_file) - jamais en dur ici : un noindex global sur toutes les réponses,
+    # sitemap.xml et robots.txt compris, rendait le sitemap inutile.
     header {
-        X-Robots-Tag "noindex, nofollow, noarchive"
+        X-Robots-Tag "{$ROBOTS_TAG:index, follow}"
     }
 
     # Fichiers de /assets : le nom contient le hash du contenu (Vite), un fichier ne change

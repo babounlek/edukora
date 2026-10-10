@@ -221,14 +221,18 @@ class LessonListView(generics.ListAPIView):
             # une fois par ligne fantôme au lieu d'une fois par épreuve. Mesuré en
             # conditions réelles : recherche "2022" sur ~225 épreuves passée de 107s
             # (JOIN+DISTINCT, 217 082 lignes intermédiaires) à quelques millisecondes.
-            theme_match = Tag.objects.filter(lessons_as_theme=OuterRef("pk"), name__icontains=search)
-            keyword_match = Tag.objects.filter(lessons_as_keyword=OuterRef("pk"), name__icontains=search)
-            qs = qs.filter(
-                Q(title__icontains=search)
-                | Q(content_markdown__icontains=search)
-                | Exists(theme_match)
-                | Exists(keyword_match),
-            )
+            #
+            # Chaque bras est une sous-requête NON corrélée (pk__in), évaluée une seule fois
+            # et dans sa propre requête (aucun JOIN croisé, donc pas de lignes fantômes) :
+            # un Exists() corrélé dans un OR interdit le BitmapOr sur les index trigramme
+            # de Lesson.Meta.indexes (title, content_markdown) et force un balayage
+            # séquentiel du texte (~0,7 s au lieu de quelques ms).
+            texte_match = Lesson.objects.filter(
+                Q(title__icontains=search) | Q(content_markdown__icontains=search),
+            ).values("pk")
+            theme_match = Lesson.objects.filter(themes__name__icontains=search).values("pk")
+            keyword_match = Lesson.objects.filter(mots_cles_recherche__name__icontains=search).values("pk")
+            qs = qs.filter(Q(pk__in=texte_match) | Q(pk__in=theme_match) | Q(pk__in=keyword_match))
         if theme := params.get("theme"):
             # Lien "s'entraîner sur ce thème" depuis le classement des thèmes fréquents
             # (voir ThemesFrequentsView) - correspondance exacte sur Question.themes
@@ -447,12 +451,18 @@ class CoursListView(generics.ListAPIView):
             # EXISTS() plutôt qu'un JOIN sur tags - même raison que LessonListView
             # ci-dessus (évite de réévaluer content_markdown une fois par tag au lieu
             # d'une fois par Cours).
-            tag_match = Tag.objects.filter(cours=OuterRef("pk"), name__icontains=search)
-            qs = qs.filter(
-                Q(titre__icontains=search)
-                | Q(content_markdown__icontains=search)
-                | Exists(tag_match),
-            )
+            #
+            # Sous-requêtes NON corrélées (pk__in) plutôt qu'un Exists() corrélé dans le
+            # OR : un SubPlan corrélé dans un OR interdit au planificateur Postgres le
+            # BitmapOr sur les index trigramme de Cours.Meta.indexes (titre et
+            # content_markdown), et la recherche retombait sur un balayage séquentiel de
+            # 56 Mo de texte (~2 s). Ici chaque bras est évalué une seule fois, le texte
+            # via l'index (~3 ms), et le OR externe ne compare plus que des ids.
+            texte_match = Cours.objects.filter(
+                Q(titre__icontains=search) | Q(content_markdown__icontains=search),
+            ).values("pk")
+            tag_match = Cours.objects.filter(tags__name__icontains=search).values("pk")
+            qs = qs.filter(Q(pk__in=texte_match) | Q(pk__in=tag_match))
 
         # Plus récent d'abord - remplace l'ordre alphabétique par défaut de Cours.Meta
         # (utile pour l'admin, pas pour un visiteur qui veut voir les derniers cours
@@ -472,7 +482,10 @@ class CoursListView(generics.ListAPIView):
             )
             ordering = ["_meme_sous_theme", *ordering]
 
-        return qs.distinct().order_by(*ordering)
+        # Pas de .distinct() : tous les filtres ci-dessus passent par Exists()/pk__in, aucun
+        # JOIN M2M ne multiplie les lignes. Le DISTINCT dédoublonnait pour rien des lignes
+        # larges (sections_raw, content_markdown) : ~200 ms -> ~40 ms sur la liste complète.
+        return qs.order_by(*ordering)
 
     def list(self, request, *args, **kwargs):
         """Comme generics.ListAPIView.list(), à ceci près que le contexte de

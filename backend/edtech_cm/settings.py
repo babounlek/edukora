@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",  # GinIndex trigramme (catalog.Lesson/Cours.Meta.indexes) exige cette app
     "rest_framework",
     "corsheaders",
     "users",
@@ -278,6 +279,11 @@ DATABASES = {
         "PASSWORD": config("DB_PASSWORD"),
         "HOST": config("DB_HOST", default="localhost"),
         "PORT": config("DB_PORT", default="5432"),
+        # random_page_cost=1.1 (valeur recommandée sur SSD, le défaut 4 suppose un disque
+        # tournant) : avec le défaut, sur une table de ~1000 épreuves le planificateur préfère un
+        # balayage séquentiel (~500 ms de TEXT lus et décompressés) aux index trigramme de
+        # catalog.Lesson/Cours (~50 ms) - voir LessonListView, filtre search.
+        "OPTIONS": {"options": "-c random_page_cost=1.1"},
     }
 }
 

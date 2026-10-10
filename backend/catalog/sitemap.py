@@ -26,12 +26,13 @@ _STATIC_PAGES = [
     ("/confidentialite", "0.3", "monthly"),
 ]
 
-# Catalogue et liste des cours existent une fois par pays (/cm, /cm/cours, /sn, ...) -
-# voir CataloguePage/CoursListPage côté frontend, qui filtrent par pays via l'URL :
+# Catalogue, liste des épreuves et liste des cours existent une fois par pays (/cm, /cm/epreuves, /cm/cours, ...) -
+# voir CataloguePage/EpreuvesListPage/CoursListPage côté frontend, qui filtrent par pays via l'URL :
 # chacune affiche un résultat différent selon le pays, donc mérite sa propre entrée
 # indexable plutôt qu'une seule version mélangée.
 _PER_COUNTRY_PAGES = [
     ("", "1.0", "daily"),
+    ("/epreuves", "0.9", "daily"),
     ("/cours", "0.8", "daily"),
 ]
 
