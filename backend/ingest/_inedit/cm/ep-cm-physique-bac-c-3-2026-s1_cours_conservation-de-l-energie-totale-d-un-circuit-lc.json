@@ -1,0 +1,117 @@
+{
+  "type": "cours",
+  "cours_id": "cours-conservation-de-l-energie-totale-d-un-circuit-lc-bacc3-ex1-q3",
+  "meta": {
+    "titre": "Conservation de l'énergie totale d'un circuit LC",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Oscillations électriques libres",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Circuit LC",
+      "équation différentielle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-c-3-2026-s1-ex1-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un circuit $LC$, le condensateur se vide dans la bobine, qui le recharge en sens inverse, et ainsi de suite sans jamais s'arrêter. Rien ne s'use puisque la résistance est négligeable : l'énergie change simplement de forme, électrique d'un côté, magnétique de l'autre. Cette conservation est un outil de calcul précieux, car elle relie la charge et l'intensité à n'importe quelle date sans qu'on ait besoin de $t$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation différentielle $\\ddot q+\\dfrac{q}{LC}=0$ du circuit $LC$ et $\\omega_0^2=\\dfrac{1}{LC}$",
+        "Charge $q(t)=Q_m\\cos(\\omega_0t)$ et intensité $i=\\dot q$",
+        "Relation $\\cos^2x+\\sin^2x=1$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Énergie électrique, énergie magnétique et énergie totale",
+      "contenu_markdown": "L'énergie emmagasinée dans un condensateur est $E_C=\\dfrac{q^2}{2C}=\\dfrac12Cu_C^2$ ; celle d'une bobine est $E_L=\\dfrac12Li^2$. Sans résistance, aucune énergie n'est dissipée par effet Joule et l'énergie totale $E=E_C+E_L$ est constante.\n\nOn le démontre en dérivant : $\\dfrac{dE}{dt}=\\dfrac{q}{C}\\dot q+Li\\dfrac{di}{dt}=i\\left(\\dfrac{q}{C}+L\\dfrac{di}{dt}\\right)=0$ d'après l'équation différentielle. La valeur de $E$ se lit à un instant commode : quand $i=0$, $E=\\dfrac{Q_m^2}{2C}$ ; quand $q=0$, $E=\\dfrac12LI_m^2$.",
+      "formule_principale": "E=E_C+E_L=\\dfrac{q^2}{2C}+\\dfrac12Li^2=\\dfrac{Q_m^2}{2C}=\\dfrac12LI_m^2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un circuit $LC$ avec $L=0{,}80\\ \\text{H}$ et $C=5{,}0\\ \\mu\\text{F}$, la charge maximale est $Q_m=45\\ \\mu\\text{C}$. À un instant donné, la charge du condensateur vaut $q=27\\ \\mu\\text{C}$. Calculer l'énergie totale, puis l'énergie magnétique et l'intensité à cet instant.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'énergie totale",
+          "justification": "Elle se lit quand $i=0$, c'est-à-dire pour $q=Q_m$.",
+          "resultat_markdown": "$E=\\dfrac{Q_m^2}{2C}=\\dfrac{(4{,}5\\times10^{-5})^2}{2\\times5{,}0\\times10^{-6}}=2{,}025\\times10^{-4}\\ \\text{J}=202{,}5\\ \\mu\\text{J}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'énergie électrique à l'instant considéré",
+          "justification": "On applique $E_C=q^2/(2C)$ avec $q=27\\ \\mu\\text{C}$.",
+          "resultat_markdown": "$E_C=\\dfrac{(2{,}7\\times10^{-5})^2}{2\\times5{,}0\\times10^{-6}}=7{,}29\\times10^{-5}\\ \\text{J}=72{,}9\\ \\mu\\text{J}$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire l'énergie magnétique",
+          "justification": "L'énergie totale se conserve : $E_L=E-E_C$.",
+          "resultat_markdown": "$E_L=202{,}5-72{,}9=129{,}6\\ \\mu\\text{J}$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire l'intensité",
+          "justification": "On isole $i$ dans $E_L=\\frac12Li^2$.",
+          "resultat_markdown": "$|i|=\\sqrt{\\dfrac{2E_L}{L}}=\\sqrt{\\dfrac{2\\times1{,}296\\times10^{-4}}{0{,}80}}=\\sqrt{3{,}24\\times10^{-4}}=1{,}8\\times10^{-2}\\ \\text{A}=18\\ \\text{mA}$"
+        }
+      ],
+      "conclusion_markdown": "À cet instant, $E_C=72{,}9\\ \\mu\\text{J}$, $E_L=129{,}6\\ \\mu\\text{J}$ et $|i|=18\\ \\text{mA}$, sans avoir eu besoin de connaître la date. Contrôle : $I_m=\\omega_0Q_m=22{,}5\\ \\text{mA}$ et $18\\leq22{,}5$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $E_L=\\dfrac12Li$ ou $E_C=\\dfrac12Cq^2$.",
+          "pourquoi_faux": "Une énergie contient l'intensité au carré pour la bobine, et la charge au carré divisée par la capacité pour le condensateur.",
+          "correction_markdown": "Retenir $E_L=\\tfrac12Li^2$ et $E_C=\\dfrac{q^2}{2C}$ ; avec la tension, $E_C=\\tfrac12Cu_C^2$."
+        },
+        {
+          "erreur_markdown": "Dire que l'énergie totale reste constante parce que $E_C$ et $E_L$ le sont.",
+          "pourquoi_faux": "$E_C$ et $E_L$ varient au cours du temps ; seule leur somme est constante, chaque perte de l'une étant un gain de l'autre.",
+          "correction_markdown": "Écrire $E=E_C(t)+E_L(t)$ et montrer que la somme ne dépend plus de $t$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un condensateur de $2{,}0\\ \\mu\\text{F}$, chargé sous $10\\ \\text{V}$, est relié à une bobine idéale. Quelle est l'énergie totale du circuit ?",
+          "solution_markdown": "$E=\\tfrac12CU^2=\\tfrac12\\times2{,}0\\times10^{-6}\\times10^2=1{,}0\\times10^{-4}\\ \\text{J}=100\\ \\mu\\text{J}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Dans un circuit $LC$ idéal avec $L=0{,}10\\ \\text{H}$, l'intensité maximale est $40\\ \\text{mA}$ et $C=0{,}50\\ \\mu\\text{F}$. Calculer l'énergie totale puis la tension maximale aux bornes du condensateur.",
+          "solution_markdown": "$E=\\tfrac12LI_m^2=\\tfrac12\\times0{,}10\\times0{,}040^2=8{,}0\\times10^{-5}\\ \\text{J}=80\\ \\mu\\text{J}$ ; $E=\\tfrac12CU_m^2$ donne $U_m=\\sqrt{\\dfrac{2E}{C}}=\\sqrt{\\dfrac{2\\times8{,}0\\times10^{-5}}{0{,}50\\times10^{-6}}}\\approx17{,}9\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Avec les données de l'exercice 2, quelle est l'énergie magnétique quand l'intensité vaut $20\\ \\text{mA}$ ? Quelle fraction de l'énergie totale est alors électrique ?",
+          "solution_markdown": "$E_L=\\tfrac12\\times0{,}10\\times0{,}020^2=2{,}0\\times10^{-5}\\ \\text{J}=20\\ \\mu\\text{J}$, soit $E_L=E/4$. Alors $E_C=E-E_L=60\\ \\mu\\text{J}$ : les trois quarts de l'énergie totale sont électriques."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$E_C=q^2/(2C)$ et $E_L=\\tfrac12Li^2$ : toutes deux sont des carrés.",
+        "Sans résistance, $E=E_C+E_L$ est constante : $dE/dt=0$ d'après l'équation différentielle.",
+        "$E=Q_m^2/(2C)=\\tfrac12LI_m^2$ : on la calcule quand $i=0$ ou quand $q=0$.",
+        "À une date quelconque, $E_L=E-E_C$ donne l'intensité sans connaître $t$."
+      ]
+    }
+  ]
+}

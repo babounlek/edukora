@@ -1,0 +1,116 @@
+{
+  "type": "cours",
+  "cours_id": "cours-majorite-absolue-premier-tour-bepc-ecm",
+  "meta": {
+    "titre": "Déterminer la majorité absolue et conclure à l'élection au premier tour",
+    "matiere": "education civique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Calcul électoral",
+    "duree_estimee_min": 15,
+    "tags": [
+      "calcul électoral",
+      "scrutin"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-ecm-bepc-3-2026-s1-ex2-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un candidat arrive en tête avec 79 voix sur 188 : est-il élu ? Tout dépend du règlement. Si celui-ci exige la majorité absolue, arriver en tête ne suffit pas, il faut franchir un seuil que l'on sait calculer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir faire une soustraction et une division par 2",
+        "Connaître le vocabulaire : inscrits, votants, bulletin nul, bulletin blanc, suffrages exprimés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Suffrages exprimés, puis majorité absolue",
+      "contenu_markdown": "Le calcul se fait toujours dans le même ordre.\n\n1. **Suffrages exprimés (SE)** : on retire des votants les bulletins nuls et les bulletins blancs. SE = votants − nuls − blancs. La somme des voix de tous les candidats doit donner SE, ce qui permet de vérifier le calcul.\n2. **Majorité absolue** : c'est le plus petit nombre entier de voix strictement supérieur à la moitié de SE. On divise SE par 2, puis on retient l'entier immédiatement supérieur.\n3. **Conclusion** : un candidat est élu au premier tour s'il atteint ou dépasse ce seuil. Sinon, si le règlement prévoit un second tour, il oppose les candidats arrivés en tête.\n\nLa **majorité relative**, elle, désigne simplement le plus grand nombre de voix, sans seuil : ne la confonds pas avec la majorité absolue.",
+      "formule_principale": "\\text{majorité absolue} = \\left\\lfloor \\dfrac{SE}{2} \\right\\rfloor + 1",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une classe de 3e, l'élection du chef de classe donne : 120 votants, 6 bulletins nuls, 4 bulletins blancs. Les trois candidats obtiennent 58, 36 et 16 voix. Un candidat est-il élu dès le premier tour si le règlement exige la majorité absolue ?",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les suffrages exprimés",
+          "justification": "Les nuls et les blancs ne comptent pas comme des voix pour un candidat.",
+          "resultat_markdown": "SE = 120 − 6 − 4 = 110. Vérification : 58 + 36 + 16 = 110."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la moitié de SE",
+          "justification": "La majorité absolue se mesure par rapport aux suffrages exprimés, pas aux votants.",
+          "resultat_markdown": "110 ÷ 2 = 55."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la majorité absolue",
+          "justification": "Il faut strictement plus que la moitié, donc 55 voix ne suffisent pas.",
+          "resultat_markdown": "Majorité absolue = 56 voix."
+        },
+        {
+          "numero": 4,
+          "action": "Comparer le meilleur score au seuil",
+          "justification": "L'élection dépend de la comparaison avec le seuil, pas du rang seul.",
+          "resultat_markdown": "58 est supérieur ou égal à 56."
+        }
+      ],
+      "conclusion_markdown": "Le candidat qui a obtenu 58 voix est **élu dès le premier tour**, puisqu'il dépasse la majorité absolue de 56 voix."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la moitié du nombre d'inscrits ou de votants au lieu de celle des suffrages exprimés.",
+          "pourquoi_faux": "Les inscrits comptent les abstentionnistes, et les votants comptent les bulletins nuls et blancs : aucun des deux ne mesure les voix réellement exprimées.",
+          "correction_markdown": "Calcule toujours d'abord SE, puis prends sa moitié."
+        },
+        {
+          "erreur_markdown": "Prendre exactement la moitié de SE comme majorité absolue.",
+          "pourquoi_faux": "La majorité absolue est strictement supérieure à la moitié : avec 110 suffrages exprimés, 55 voix font seulement la moitié.",
+          "correction_markdown": "Ajoute une voix quand SE est pair ; quand SE est impair, passe à l'entier supérieur de la moitié."
+        },
+        {
+          "erreur_markdown": "Déclarer élu le candidat arrivé en tête sans comparer son score au seuil.",
+          "pourquoi_faux": "Arriver en tête est une majorité relative. Quand le règlement exige la majorité absolue, un candidat en tête peut ne pas être élu.",
+          "correction_markdown": "Compare toujours le meilleur score au seuil, puis applique la règle du second tour si personne ne l'atteint."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Il y a 151 suffrages exprimés. Quelle est la majorité absolue ?",
+          "solution_markdown": "La moitié de 151 est 75,5. Le plus petit entier strictement supérieur est 76 : la majorité absolue est de 76 voix."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Trois candidats obtiennent 45, 41 et 14 voix, sans bulletin nul ni blanc. Un candidat est-il élu au premier tour si la majorité absolue est exigée ? Quels candidats se retrouveraient au second tour ?",
+          "solution_markdown": "SE = 45 + 41 + 14 = 100, la moitié est 50 et la majorité absolue est de 51 voix. Le meilleur score (45) est inférieur à 51 : personne n'est élu. Le second tour opposerait les candidats aux 45 et 41 voix."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SE = votants − bulletins nuls − bulletins blancs, et la somme des voix des candidats doit redonner SE",
+        "Majorité absolue = plus petit entier strictement supérieur à la moitié de SE",
+        "Élu au premier tour si le meilleur score atteint ce seuil, sinon second tour si le règlement le prévoit",
+        "Majorité relative (le plus de voix) et majorité absolue (plus de la moitié) sont deux notions différentes"
+      ]
+    }
+  ]
+}

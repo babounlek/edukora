@@ -1,0 +1,143 @@
+{
+  "type": "cours",
+  "cours_id": "cours-rang-de-depassement-seuil-modele-exponentiel-ln-bac-a-3",
+  "meta": {
+    "titre": "Prévoir le rang de dépassement d'un seuil avec un modèle e^(ax+b) et le logarithme népérien",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques à deux variables",
+    "duree_estimee_min": 30,
+    "tags": [
+      "inéquation exponentielle",
+      "logarithme népérien",
+      "prévision",
+      "exponentielle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-a-3-2026-s1-ex4-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un modèle $y=e^{ax+b}$ ne sert pas seulement à estimer une valeur pour un rang donné : il répond aussi à la question inverse, bien plus utile pour décider. À partir de quelle année un service dépassera-t-il 50 000 abonnés ? Pour y répondre, il faut résoudre une inéquation où l'inconnue est dans l'exposant, et c'est le logarithme népérien qui permet de la « faire descendre »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que $\\ln$ est la fonction réciproque de $\\exp$ et qu'elle est strictement croissante sur $]0\\,;+\\infty[$",
+        "Utiliser $\\ln\\left(e^{u}\\right)=u$ et calculer un logarithme népérien à la calculatrice",
+        "Résoudre une inéquation du premier degré en changeant le sens de l'inégalité quand on divise par un nombre négatif",
+        "Convertir une unité : $40\\,000$ personnes correspondent à $y=40$ lorsque $y$ est en milliers"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre e^(ax+b) > S avec le logarithme népérien",
+      "contenu_markdown": "Pour trouver le plus petit rang $x$ entier pour lequel le modèle $y=e^{ax+b}$ dépasse un seuil $S>0$ :\n\n1. On écrit l'inéquation $e^{ax+b}>S$, avec $S$ exprimé dans la même unité que $y$.\n2. On applique $\\ln$ aux deux membres. Comme $\\ln$ est strictement croissante, le sens de l'inégalité est conservé : $ax+b>\\ln S$.\n3. On isole $x$. Si $a>0$ : $x>\\dfrac{\\ln S-b}{a}$. Si $a<0$, on change le sens de l'inégalité en divisant.\n4. On arrondit à l'**entier immédiatement supérieur** (le rang doit être un entier) puis on vérifie avec le rang trouvé et le rang précédent.\n\nCes prévisions supposent que la tendance observée se poursuit : elles valent tant que le modèle reste réaliste.",
+      "formule_principale": "e^{ax+b}>S\\iff ax+b>\\ln S\\iff x>\\dfrac{\\ln S-b}{a}\\quad(a>0,\\ S>0)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le nombre d'abonnés d'un service de télévision en ligne, en milliers, est modélisé par $y=e^{0{,}28x+0{,}35}$ où $x$ est le rang de l'année ($x=0$ en 2018). On suppose que la tendance se poursuit.\n\n**a)** Estime le nombre d'abonnés en 2026, au millier près.\n\n**b)** À partir de quel rang, puis de quelle année, y aura-t-il plus de 50 000 abonnés ?",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Trouver le rang de 2026",
+          "justification": "On a $x=0$ en 2018 donc $x=2026-2018=8$.",
+          "resultat_markdown": "Le rang est $x=8$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'estimation",
+          "justification": "On remplace $x$ par $8$ dans le modèle sans arrondir l'exposant.",
+          "resultat_markdown": "$y=e^{0{,}28\\times8+0{,}35}=e^{2{,}59}\\approx13{,}3$ soit environ $13\\,000$ abonnés."
+        },
+        {
+          "numero": 3,
+          "action": "Convertir le seuil et écrire l'inéquation",
+          "justification": "$y$ est en milliers : $50\\,000$ abonnés correspondent à $y=50$.",
+          "resultat_markdown": "$e^{0{,}28x+0{,}35}>50$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer $\\ln$ aux deux membres",
+          "justification": "$\\ln$ est strictement croissante : le sens est conservé et $\\ln\\left(e^{u}\\right)=u$.",
+          "resultat_markdown": "$0{,}28x+0{,}35>\\ln50$ avec $\\ln50\\approx3{,}912$"
+        },
+        {
+          "numero": 5,
+          "action": "Isoler $x$",
+          "justification": "On retranche $0{,}35$ puis on divise par $0{,}28>0$ : le sens est conservé.",
+          "resultat_markdown": "$x>\\dfrac{3{,}912-0{,}35}{0{,}28}\\approx12{,}72$"
+        },
+        {
+          "numero": 6,
+          "action": "Arrondir et vérifier",
+          "justification": "Le rang est un entier : on prend l'entier immédiatement supérieur à $12{,}72$, soit $13$. On teste $12$ et $13$.",
+          "resultat_markdown": "$x=12$ : $y\\approx40{,}9<50$ ; $x=13$ : $y\\approx54{,}1>50$."
+        }
+      ],
+      "conclusion_markdown": "En 2026 on estime environ $13\\,000$ abonnés. Le plus petit rang pour lequel $y>50$ est $13$, c'est-à-dire l'année $2018+13=2031$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de convertir le seuil : écrire $e^{0{,}28x+0{,}35}>50\\,000$ alors que $y$ est en milliers.",
+          "pourquoi_faux": "Le seuil doit être dans la même unité que $y$ ; avec $50\\,000$ on trouverait un rang absurde (autour de $38$).",
+          "correction_markdown": "Lis l'unité de $y$ dans l'énoncé et écris $S=50$ si $y$ est en milliers."
+        },
+        {
+          "erreur_markdown": "Arrondir à l'entier le plus proche : à partir de $x>10{,}04$, écrire que le rang cherché est $10$.",
+          "pourquoi_faux": "On cherche le premier entier qui vérifie l'inégalité stricte : $10$ ne convient pas puisque $10<10{,}04$. Il faut l'entier immédiatement supérieur, donc $11$.",
+          "correction_markdown": "Prends toujours l'entier immédiatement supérieur puis vérifie avec le rang trouvé et le rang précédent."
+        },
+        {
+          "erreur_markdown": "Écrire $\\ln\\left(e^{0{,}28x+0{,}35}\\right)=\\ln(0{,}28x)+\\ln(0{,}35)$.",
+          "pourquoi_faux": "On ne sépare pas ainsi un exposant : $\\ln\\left(e^{u}\\right)=u$ s'applique à l'exposant entier.",
+          "correction_markdown": "Écris directement $\\ln\\left(e^{0{,}28x+0{,}35}\\right)=0{,}28x+0{,}35$."
+        },
+        {
+          "erreur_markdown": "Garder le sens de l'inégalité quand $a<0$ (modèle décroissant).",
+          "pourquoi_faux": "Diviser par un nombre négatif renverse l'inégalité.",
+          "correction_markdown": "Si $a<0$, écris $x<\\dfrac{\\ln S-b}{a}$ pour $e^{ax+b}>S$ et lis bien la question posée (dépasse ou passe sous le seuil)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "On considère $y=e^{0{,}4x+0{,}2}$. Détermine le plus petit entier $x$ tel que $y>30$.",
+          "solution_markdown": "On résout $e^{0{,}4x+0{,}2}>30\\iff0{,}4x+0{,}2>\\ln30$ avec $\\ln30\\approx3{,}401$. Alors $x>\\dfrac{3{,}401-0{,}2}{0{,}4}\\approx8{,}003$. Le plus petit entier supérieur est $9$. Vérification : $x=8$ donne $y\\approx29{,}96<30$ et $x=9$ donne $y\\approx44{,}7>30$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Le nombre de visiteurs d'un site, en milliers, suit le modèle $y=e^{0{,}25x+1{,}1}$ avec $x=0$ en 2015. **a)** Estime $y$ en 2025. **b)** À partir de quelle année dépassera-t-on $100\\,000$ visiteurs ?",
+          "solution_markdown": "**a)** $x=10$ : $y=e^{0{,}25\\times10+1{,}1}=e^{3{,}6}\\approx36{,}6$, soit environ $36\\,600$ visiteurs. **b)** Le seuil est $y=100$. $e^{0{,}25x+1{,}1}>100\\iff0{,}25x+1{,}1>\\ln100\\approx4{,}605\\iff x>\\dfrac{4{,}605-1{,}1}{0{,}25}\\approx14{,}02$. Le plus petit entier est $15$ ; vérification : $y(14)\\approx99{,}5<100$ et $y(15)\\approx127{,}7>100$. Le seuil est donc dépassé en $2015+15=2030$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Le stock d'un produit, en centaines d'unités, évolue selon $y=e^{-0{,}15x+4{,}2}$ où $x$ est le nombre de semaines écoulées. À partir de quelle semaine le stock passera-t-il sous $2\\,000$ unités ? Justifie le sens de l'inégalité.",
+          "solution_markdown": "Le seuil est $S=20$ centaines. On résout $e^{-0{,}15x+4{,}2}<20\\iff-0{,}15x+4{,}2<\\ln20$ avec $\\ln20\\approx2{,}996$. Alors $-0{,}15x<2{,}996-4{,}2=-1{,}204$ et, en divisant par $-0{,}15<0$, le sens est renversé : $x>\\dfrac{1{,}204}{0{,}15}\\approx8{,}03$. Le plus petit entier est $9$. Vérification : $y(8)\\approx20{,}09>20$ et $y(9)\\approx17{,}29<20$. Le stock passe sous $2\\,000$ unités à la semaine $9$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Convertis le seuil dans l'unité de $y$ puis écris l'inéquation $e^{ax+b}>S$.",
+        "Applique $\\ln$ aux deux membres : $\\ln$ est strictement croissante, le sens est conservé, et $\\ln\\left(e^{u}\\right)=u$.",
+        "Isole $x$ : $x>\\dfrac{\\ln S-b}{a}$ si $a>0$ ; le sens est renversé si $a<0$.",
+        "Arrondis à l'entier immédiatement supérieur, vérifie avec le rang trouvé et le rang précédent, puis convertis en année.",
+        "Une prévision suppose que la tendance observée se poursuit."
+      ]
+    }
+  ]
+}

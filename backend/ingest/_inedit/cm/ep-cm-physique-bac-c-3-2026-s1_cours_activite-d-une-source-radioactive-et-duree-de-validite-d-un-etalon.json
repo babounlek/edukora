@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-activite-d-une-source-radioactive-et-duree-de-va-bacc3-ex3-q4",
+  "meta": {
+    "titre": "Activité d'une source radioactive et durée de validité d'un étalon",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Radioactivité : décroissance",
+    "duree_estimee_min": 22,
+    "tags": [
+      "période radioactive",
+      "Réaction nucléaire"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-c-3-2026-s1-ex3-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un compteur Geiger se règle avec une source dont l'activité est connue : c'est un étalon. Mais l'activité d'une source baisse avec le temps, lentement ou vite selon l'élément. Savoir combien vaut l'activité aujourd'hui, et combien de temps l'étalon reste utilisable avant que sa valeur nominale ne soit trop fausse, est un calcul courant en laboratoire comme en radiologie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de décroissance $N(t)=N_0e^{-\\lambda t}$ et période radioactive $T$ telle que $\\lambda=\\dfrac{\\ln2}{T}$",
+        "Nombre de noyaux d'un échantillon : $N=\\dfrac{m}{M}N_A$",
+        "Unité d'activité : le becquerel, une désintégration par seconde"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Activité, loi de décroissance et durée pour une perte donnée",
+      "contenu_markdown": "L'activité d'une source est le nombre de désintégrations par seconde : $A=-\\dfrac{dN}{dt}=\\lambda N$. Elle est proportionnelle au nombre de noyaux restants, avec la constante radioactive $\\lambda=\\dfrac{\\ln2}{T}$, où $T$ doit être exprimée en **secondes** pour obtenir des becquerels.\n\nComme $N(t)=N_0e^{-\\lambda t}$, l'activité suit la même loi : $A(t)=A_0e^{-\\lambda t}$, avec $A_0=\\lambda N_0$. L'activité est divisée par $2$ à chaque période.\n\nSi l'activité a perdu la fraction $x$ de sa valeur initiale, il reste $1-x$ de $A_0$ : $e^{-\\lambda t}=1-x$, d'où la durée $t=-\\dfrac{\\ln(1-x)}{\\lambda}$.",
+      "formule_principale": "A=\\lambda N\\qquad A(t)=A_0e^{-\\lambda t}\\qquad t=-\\dfrac{\\ln(1-x)}{\\lambda}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une source de radiothérapie contient $m=1{,}0\\ \\text{mg}$ de cobalt 60 ($M=60\\ \\text{g/mol}$, période $T=5{,}27$ ans). Calculer son activité initiale puis la durée au bout de laquelle elle a perdu $20\\ \\%$ (données : $N_A=6{,}02\\times10^{23}\\ \\text{mol}^{-1}$, $1\\ \\text{an}=3{,}156\\times10^{7}\\ \\text{s}$).",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre de noyaux",
+          "justification": "$m=1{,}0\\times10^{-3}\\ \\text{g}$ et $N=\\dfrac{m}{M}N_A$.",
+          "resultat_markdown": "$N_0=\\dfrac{1{,}0\\times10^{-3}}{60}\\times6{,}02\\times10^{23}\\approx1{,}00\\times10^{19}$"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir la période en secondes",
+          "justification": "La constante $\\lambda$ doit être en $\\text{s}^{-1}$.",
+          "resultat_markdown": "$T=5{,}27\\times3{,}156\\times10^{7}\\approx1{,}663\\times10^{8}\\ \\text{s}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la constante radioactive",
+          "justification": "$\\lambda=\\ln2/T$.",
+          "resultat_markdown": "$\\lambda=\\dfrac{0{,}693}{1{,}663\\times10^{8}}\\approx4{,}167\\times10^{-9}\\ \\text{s}^{-1}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'activité initiale",
+          "justification": "$A_0=\\lambda N_0$.",
+          "resultat_markdown": "$A_0=4{,}167\\times10^{-9}\\times1{,}00\\times10^{19}\\approx4{,}2\\times10^{10}\\ \\text{Bq}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la durée pour une perte de $20\\ \\%$",
+          "justification": "Il reste $80\\ \\%$ : $e^{-\\lambda t}=0{,}80$.",
+          "resultat_markdown": "$t=-\\dfrac{\\ln(0{,}80)}{\\lambda}=\\dfrac{0{,}2231}{4{,}167\\times10^{-9}}\\approx5{,}35\\times10^{7}\\ \\text{s}\\approx1{,}70\\ \\text{an}$"
+        }
+      ],
+      "conclusion_markdown": "L'activité initiale est d'environ $4{,}2\\times10^{10}\\ \\text{Bq}$ et elle perd $20\\ \\%$ en $1{,}70$ an, soit moins du tiers de la période : pour une perte aussi faible, la durée est nettement inférieure à $T$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Garder la période en années dans $\\lambda=\\ln2/T$ et annoncer l'activité en becquerels.",
+          "pourquoi_faux": "Le becquerel est une désintégration par seconde : la constante $\\lambda$ doit être en $\\text{s}^{-1}$, donc $T$ en secondes.",
+          "correction_markdown": "Convertir $T$ en secondes avant le calcul, ou garder des années partout et exprimer $A$ par an."
+        },
+        {
+          "erreur_markdown": "Confondre « perdre $20\\ \\%$ » avec « tomber à $20\\ \\%$ ».",
+          "pourquoi_faux": "Perdre $20\\ \\%$ laisse $80\\ \\%$ de l'activité initiale : $e^{-\\lambda t}=0{,}80$. Tomber à $20\\ \\%$ correspond à $e^{-\\lambda t}=0{,}20$.",
+          "correction_markdown": "Écrire d'abord la fraction restante $1-x$ avant de prendre le logarithme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un échantillon d'iode 131 (période $8{,}0$ jours) contient $2{,}0\\times10^{15}$ noyaux. Calculer son activité.",
+          "solution_markdown": "$T=8{,}0\\times86400=6{,}91\\times10^{5}\\ \\text{s}$ ; $\\lambda=\\dfrac{0{,}693}{6{,}91\\times10^{5}}\\approx1{,}00\\times10^{-6}\\ \\text{s}^{-1}$ ; $A=\\lambda N\\approx2{,}0\\times10^{9}\\ \\text{Bq}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Une source a une activité initiale de $8{,}0\\times10^{8}\\ \\text{Bq}$. Quelle est son activité après trois périodes ?",
+          "solution_markdown": "À chaque période l'activité est divisée par $2$ : $A=\\dfrac{8{,}0\\times10^{8}}{2^3}=1{,}0\\times10^{8}\\ \\text{Bq}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Pour la source de cobalt 60 de l'exemple, une perte de $5\\ \\%$ rend l'étalon inutilisable. Calculer la durée de validité, en mois.",
+          "solution_markdown": "$t=-\\dfrac{\\ln(0{,}95)}{\\lambda}=\\dfrac{0{,}0513}{4{,}167\\times10^{-9}}\\approx1{,}23\\times10^{7}\\ \\text{s}\\approx0{,}39\\ \\text{an}\\approx4{,}7\\ \\text{mois}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$A=\\lambda N$ avec $\\lambda=\\ln2/T$ et $T$ en secondes pour obtenir des becquerels.",
+        "$A(t)=A_0e^{-\\lambda t}$ : l'activité décroît comme le nombre de noyaux et est divisée par $2$ à chaque période.",
+        "Perte d'une fraction $x$ : $t=-\\ln(1-x)/\\lambda$.",
+        "Une petite perte demande une durée bien inférieure à la période."
+      ]
+    }
+  ]
+}

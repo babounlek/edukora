@@ -1,0 +1,117 @@
+{
+  "type": "cours",
+  "cours_id": "cours-evolution-des-energies-electrique-et-magnetique-bacc3-ex1-q4",
+  "meta": {
+    "titre": "Évolution des énergies électrique et magnétique dans un circuit LC",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Oscillations électriques libres",
+    "duree_estimee_min": 22,
+    "tags": [
+      "Circuit LC",
+      "équation différentielle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-c-3-2026-s1-ex1-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un enfant se balance, son énergie passe sans cesse de la hauteur à la vitesse, deux fois par aller-retour : au point le plus haut tout est potentiel, au point le plus bas tout est cinétique. Le circuit $LC$ fait exactement de même avec le condensateur et la bobine. Et, comme sur la balançoire, l'échange se répète deux fois plus vite que l'oscillation elle-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Énergies $E_C=\\dfrac{q^2}{2C}$ et $E_L=\\dfrac12Li^2$, énergie totale $E$ constante",
+        "Relations $\\cos^2x=\\dfrac{1+\\cos2x}{2}$ et $\\sin^2x=\\dfrac{1-\\cos2x}{2}$",
+        "Période et fréquence d'une fonction sinusoïdale $\\cos(\\omega t)$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les énergies oscillent deux fois plus vite que la charge",
+      "contenu_markdown": "Avec $q=Q_m\\cos(\\omega_0t)$ et $E=\\dfrac{Q_m^2}{2C}$, on a $E_C=E\\cos^2(\\omega_0t)$ et $E_L=E\\sin^2(\\omega_0t)$. En linéarisant,\n\n$$E_C=\\dfrac{E}{2}\\left[1+\\cos(2\\omega_0t)\\right]\\qquad E_L=\\dfrac{E}{2}\\left[1-\\cos(2\\omega_0t)\\right]$$\n\nLes deux énergies oscillent autour de la valeur moyenne $E/2$ avec la pulsation $2\\omega_0$ : leur période est $T_0/2$ et leur fréquence $2f_0$. Elles sont en opposition de phase, et leur somme vaut $E$ à chaque instant. Elles sont égales, chacune à $E/2$, lorsque $\\cos(2\\omega_0t)=0$, soit $t=\\dfrac{T_0}{8}+k\\dfrac{T_0}{4}$.",
+      "formule_principale": "E_C=\\dfrac{E}{2}\\left[1+\\cos(2\\omega_0t)\\right]\\qquad E_L=\\dfrac{E}{2}\\left[1-\\cos(2\\omega_0t)\\right]\\qquad T_E=\\dfrac{T_0}{2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit $LC$ avec $L=0{,}80\\ \\text{H}$ et $C=5{,}0\\ \\mu\\text{F}$ a pour énergie totale $E=202{,}5\\ \\mu\\text{J}$ ; son condensateur est chargé au maximum à $t=0$. Donner la période des énergies, la première date où $E_C=E_L$ et la valeur de $E_C$ à $t=T_0/4$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la période propre du circuit",
+          "justification": "$T_0=2\\pi\\sqrt{LC}$.",
+          "resultat_markdown": "$T_0=2\\pi\\sqrt{0{,}80\\times5{,}0\\times10^{-6}}=2\\pi\\times2{,}0\\times10^{-3}\\approx12{,}57\\ \\text{ms}$"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la période des énergies",
+          "justification": "Les énergies oscillent à $2\\omega_0$.",
+          "resultat_markdown": "$T_E=\\dfrac{T_0}{2}\\approx6{,}28\\ \\text{ms}$"
+        },
+        {
+          "numero": 3,
+          "action": "Chercher l'égalité des énergies",
+          "justification": "$E_C=E_L$ équivaut à $\\cos(2\\omega_0t)=0$, donc $2\\omega_0t=\\pi/2$ pour la première fois.",
+          "resultat_markdown": "$t=\\dfrac{\\pi}{4\\omega_0}=\\dfrac{T_0}{8}\\approx1{,}57\\ \\text{ms}$ ; alors $E_C=E_L=\\dfrac{E}{2}=101{,}25\\ \\mu\\text{J}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $E_C$ à $T_0/4$",
+          "justification": "On remplace $t$ par $T_0/4$ : $\\omega_0t=\\pi/2$.",
+          "resultat_markdown": "$E_C=E\\cos^2\\left(\\dfrac{\\pi}{2}\\right)=0$ et $E_L=E=202{,}5\\ \\mu\\text{J}$ : toute l'énergie est dans la bobine"
+        }
+      ],
+      "conclusion_markdown": "Les énergies ont pour période $6{,}28\\ \\text{ms}$, deux fois plus courte que $T_0=12{,}57\\ \\text{ms}$. Elles se croisent à $1{,}57\\ \\text{ms}$ à la valeur $101{,}25\\ \\mu\\text{J}$, et le condensateur est vide à $T_0/4=3{,}14\\ \\text{ms}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner à $E_C$ la même période $T_0$ que la charge.",
+          "pourquoi_faux": "Comme $E_C$ dépend de $q^2$, elle atteint son maximum chaque fois que $q$ est extrémale, positive ou négative : elle passe deux fois par son maximum par période de $q$.",
+          "correction_markdown": "Linéariser $\\cos^2$ : l'argument devient $2\\omega_0t$, donc la période est $T_0/2$."
+        },
+        {
+          "erreur_markdown": "Écrire que $E_C=E_L$ à $t=T_0/4$.",
+          "pourquoi_faux": "À $T_0/4$ la charge s'annule : $E_C=0$ et $E_L=E$. L'égalité demande $\\cos^2=\\sin^2$, soit $\\omega_0t=\\pi/4$.",
+          "correction_markdown": "Résoudre $\\cos(2\\omega_0t)=0$, qui donne $t=T_0/8$ pour la première date."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "La fréquence propre d'un circuit $LC$ est $f_0=100\\ \\text{Hz}$. Quelle est la fréquence des variations de l'énergie magnétique ?",
+          "solution_markdown": "$E_L$ oscille à la pulsation $2\\omega_0$ : sa fréquence est $2f_0=200\\ \\text{Hz}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Pour le circuit de l'exemple ($T_0=12{,}57\\ \\text{ms}$, condensateur chargé au maximum à $t=0$), à quelle date $E_L=\\dfrac34E$ pour la première fois ?",
+          "solution_markdown": "$E_L=E\\sin^2(\\omega_0t)=\\dfrac34E$ donne $\\sin(\\omega_0t)=\\dfrac{\\sqrt3}{2}$, soit $\\omega_0t=\\dfrac{\\pi}{3}$ et $t=\\dfrac{T_0}{6}\\approx2{,}09\\ \\text{ms}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Dresser le tableau de $E_C$ et $E_L$ (en $\\mu\\text{J}$) aux dates $0$, $T_0/8$, $T_0/4$, $3T_0/8$ et $T_0/2$ pour $E=202{,}5\\ \\mu\\text{J}$, puis décrire l'allure des courbes.",
+          "solution_markdown": "$E_C=101{,}25\\,[1+\\cos(2\\omega_0t)]$ donne $202{,}5$ ; $101{,}25$ ; $0$ ; $101{,}25$ ; $202{,}5$, et $E_L$ donne $0$ ; $101{,}25$ ; $202{,}5$ ; $101{,}25$ ; $0$. $E_C$ décroît de $202{,}5$ à $0$ puis remonte, $E_L$ fait l'inverse ; elles se croisent à $101{,}25\\ \\mu\\text{J}$ en $T_0/8$ et $3T_0/8$, et leur somme reste sur la droite $E=202{,}5\\ \\mu\\text{J}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$E_C=\\dfrac E2[1+\\cos(2\\omega_0t)]$ et $E_L=\\dfrac E2[1-\\cos(2\\omega_0t)]$.",
+        "Période des énergies : $T_0/2$ ; fréquence : $2f_0$.",
+        "Les énergies sont en opposition de phase et leur somme vaut $E$ à tout instant.",
+        "$E_C=E_L=E/2$ aux dates $T_0/8$, $3T_0/8$, $5T_0/8$, $7T_0/8$ sur une période."
+      ]
+    }
+  ]
+}

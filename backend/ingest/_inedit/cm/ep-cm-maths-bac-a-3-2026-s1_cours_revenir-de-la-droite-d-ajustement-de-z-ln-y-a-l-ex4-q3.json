@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-revenir-de-z-ln-y-a-y-bac-a",
+  "meta": {
+    "titre": "Revenir de la droite d'ajustement de z = ln y à l'expression de y en fonction de x",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques à deux variables",
+    "duree_estimee_min": 25,
+    "tags": [
+      "changement de variable",
+      "fonction exponentielle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-a-3-2026-s1-ex4-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu viens d'ajuster une droite sur les points $(x\\,;z)$ avec $z=\\ln y$. Reste l'essentiel : que dit cette droite sur la grandeur $y$ elle-même ? Une seule opération, la fonction exponentielle, te ramène à $y$ et te donne en plus le taux d'augmentation par rang."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "La fonction exponentielle est la réciproque de $\\ln$ : $e^{\\ln y}=y$ pour $y>0$",
+        "Propriétés des puissances : $e^{a+b}=e^{a}\\times e^{b}$ et $e^{ax}=(e^{a})^{x}$",
+        "Passer d'un coefficient multiplicateur à un pourcentage d'évolution"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De z = ax + b à y = A × B^x",
+      "contenu_markdown": "Si $z=\\ln y$ vérifie $z=ax+b$, alors $y=e^{z}=e^{ax+b}=e^{b}\\times\\left(e^{a}\\right)^{x}$.\n\nOn obtient donc $y=A\\,B^{x}$ avec $A=e^{b}$ et $B=e^{a}$.\n\nLe nombre $B$ est le coefficient multiplicateur de $y$ quand $x$ augmente de 1. Si $B>1$, la grandeur augmente de $(B-1)\\times100\\ \\%$ à chaque rang ; si $0<B<1$, elle diminue de $(1-B)\\times100\\ \\%$ à chaque rang.\n\nPour une prévision, on remplace $x$ dans $e^{ax+b}$ sans arrondir $A$ et $B$ avant, afin de limiter l'erreur d'arrondi.",
+      "formule_principale": "z=ax+b \\;\\Longrightarrow\\; y=e^{b}\\,\\left(e^{a}\\right)^{x}=A\\,B^{x}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour une série, la droite d'ajustement de $z=\\ln y$ en $x$ est $z=0{,}41\\,x+0{,}18$ ($y$ en milliers d'abonnés, $x$ rang de l'année). Exprime $y$ en fonction de $x$, interprète le résultat, puis estime $y$ pour $x=6$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Revenir à $y$ avec la fonction exponentielle",
+          "justification": "Comme $z=\\ln y$, on a $y=e^{z}$ ; on remplace $z$ par son expression.",
+          "resultat_markdown": "$y=e^{0{,}41x+0{,}18}=e^{0{,}18}\\times\\left(e^{0{,}41}\\right)^{x}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $A$ et $B$",
+          "justification": "On identifie $A=e^{b}$ et $B=e^{a}$ puis on arrondit au centième.",
+          "resultat_markdown": "$A=e^{0{,}18}\\approx1{,}20$ et $B=e^{0{,}41}\\approx1{,}51$, donc $y\\approx1{,}20\\times1{,}51^{x}$."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter $B$",
+          "justification": "$B>1$ : $y$ est multiplié par $B$ à chaque rang.",
+          "resultat_markdown": "$B\\approx1{,}51$ correspond à une augmentation d'environ $51\\ \\%$ par rang."
+        },
+        {
+          "numero": 4,
+          "action": "Estimer $y$ pour $x=6$",
+          "justification": "On remplace $x$ dans $e^{0{,}41x+0{,}18}$ sans arrondir $A$ et $B$.",
+          "resultat_markdown": "$y=e^{0{,}41\\times6+0{,}18}=e^{2{,}64}\\approx14{,}0$"
+        }
+      ],
+      "conclusion_markdown": "On a $y\\approx1{,}20\\times1{,}51^{x}$ : le nombre d'abonnés augmente d'environ $51\\ \\%$ par rang, et on estime $y\\approx14{,}0$ milliers pour $x=6$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $y=0{,}41\\,x+0{,}18$ en oubliant que $0{,}41\\,x+0{,}18$ est la valeur de $z$ et non de $y$.",
+          "pourquoi_faux": "La droite d'ajustement donne $z=\\ln y$ ; $y$ s'obtient avec l'exponentielle de cette expression.",
+          "correction_markdown": "Écris toujours $y=e^{z}$ avant de remplacer $z$ par $ax+b$."
+        },
+        {
+          "erreur_markdown": "Confondre $B=e^{a}$ avec $a$ pour l'interprétation en pourcentage.",
+          "pourquoi_faux": "C'est le coefficient $B$ qui multiplie $y$ à chaque rang ; $a=0{,}41$ n'est pas un pourcentage d'augmentation.",
+          "correction_markdown": "Calcule $B=e^{a}$, puis le taux $(B-1)\\times100$."
+        },
+        {
+          "erreur_markdown": "Calculer $e^{b}\\times e^{a}\\times x$ au lieu de $e^{b}\\times(e^{a})^{x}$.",
+          "pourquoi_faux": "Le rang $x$ est l'exposant de $B$ et non un facteur : $e^{ax}=(e^{a})^{x}$.",
+          "correction_markdown": "Contrôle avec $x=0$ : on doit retrouver $y=A$, soit $e^{b}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "On a $z=0{,}22\\,x+0{,}5$ avec $z=\\ln y$. Écris $y=A\\,B^{x}$ avec $A$ et $B$ au centième et donne le pourcentage d'augmentation par rang.",
+          "solution_markdown": "$y=e^{0{,}5}\\times(e^{0{,}22})^{x}$, soit $A\\approx1{,}65$ et $B\\approx1{,}25$. $B\\approx1{,}25$ : augmentation d'environ $25\\ \\%$ par rang."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "On a $z=-0{,}1\\,x+2$ avec $z=\\ln y$. Donne $A$ et $B$ (au millième pour $B$) puis interprète $B$.",
+          "solution_markdown": "$A=e^{2}\\approx7{,}39$ et $B=e^{-0{,}1}\\approx0{,}905$. Comme $0<B<1$, la grandeur diminue d'environ $9{,}5\\ \\%$ à chaque rang."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "On a $z=0{,}3\\,x+0{,}5$ avec $z=\\ln y$. Estime $y$ pour $x=10$ au dixième, puis donne le premier rang entier pour lequel $y$ dépasse $100$.",
+          "solution_markdown": "$y=e^{0{,}3\\times10+0{,}5}=e^{3{,}5}\\approx33{,}1$. Pour $y>100$ : $0{,}3\\,x+0{,}5>\\ln100\\approx4{,}605$, donc $x>13{,}68$ : premier rang entier $x=14$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Comme $z=\\ln y$, on revient à $y$ par l'exponentielle : $y=e^{z}=e^{ax+b}$.",
+        "$y=A\\,B^{x}$ avec $A=e^{b}$ (valeur de $y$ pour $x=0$) et $B=e^{a}$ (coefficient multiplicateur par rang).",
+        "$B>1$ : augmentation de $(B-1)\\times100\\ \\%$ par rang ; $0<B<1$ : diminution de $(1-B)\\times100\\ \\%$.",
+        "Pour une prévision, remplace $x$ dans $e^{ax+b}$ sans arrondir $A$ et $B$ avant."
+      ]
+    }
+  ]
+}

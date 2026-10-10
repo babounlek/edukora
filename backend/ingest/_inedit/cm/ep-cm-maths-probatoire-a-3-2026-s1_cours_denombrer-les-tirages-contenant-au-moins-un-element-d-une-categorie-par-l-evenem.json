@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-denombrer-les-tirages-contenant-au-moins-un-element-d-une-categorie-par-l-evenem-mpa3",
+  "meta": {
+    "titre": "Dénombrer les tirages contenant au moins un élément d'une catégorie par l'événement contraire",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement et probabilités",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dénombrement",
+      "combinaisons",
+      "tirage simultané"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-probatoire-a-3-2026-s1-ex2-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un chef de quartier tire au sort $3$ jeunes parmi $10$ pour porter le drapeau, dont $4$ filles. Combien de tirages comptent au moins une fille ? Compter séparément les tirages avec une, deux puis trois filles est long et on s'y trompe. Il est bien plus court de compter les tirages sans aucune fille et de les retirer du total."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer un nombre de combinaisons $\\dbinom{n}{p}$",
+        "Reconnaître un tirage simultané : l'ordre n'intervient pas et un élément ne se tire qu'une fois",
+        "Savoir ce qu'est l'événement contraire d'un événement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Au moins un : le total moins le cas où il n'y en a aucun",
+      "contenu_markdown": "Dans un tirage simultané de $p$ éléments parmi $n$, l'événement « au moins un élément de la catégorie $E$ » a pour événement contraire « aucun élément de $E$ ». Tout tirage appartient à l'un de ces deux ensembles et jamais aux deux : leurs nombres s'ajoutent pour donner le total.\n\nSi $m$ éléments n'appartiennent pas à $E$, un tirage sans élément de $E$ est un choix de $p$ éléments parmi ces $m$ : il y en a $\\dbinom{m}{p}$. Le nombre de tirages avec au moins un élément de $E$ est donc le nombre total de tirages moins $\\dbinom{m}{p}$.\n\nPour un événement du type « au moins deux » ou « au plus un », on choisit entre cette méthode et la somme des cas disjoints selon le plus court des deux calculs.",
+      "formule_principale": "\\text{au moins un élément de }E \\;:\\; \\dbinom{n}{p}-\\dbinom{m}{p}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une boîte contient $9$ ampoules, dont $3$ sont défectueuses. On prélève simultanément $4$ ampoules au hasard. Combien de prélèvements contiennent au moins une ampoule défectueuse ?",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter tous les prélèvements possibles",
+          "justification": "Le prélèvement est simultané : on choisit $4$ ampoules parmi $9$, sans ordre.",
+          "resultat_markdown": "$\\dbinom{9}{4}=\\dfrac{9\\times8\\times7\\times6}{4\\times3\\times2\\times1}=126$"
+        },
+        {
+          "numero": 2,
+          "action": "Passer à l'événement contraire",
+          "justification": "Le contraire de « au moins une ampoule défectueuse » est « aucune ampoule défectueuse » : les $4$ ampoules sont choisies parmi les $6$ ampoules en bon état.",
+          "resultat_markdown": "$\\dbinom{6}{4}=\\dfrac{6\\times5}{2\\times1}=15$"
+        },
+        {
+          "numero": 3,
+          "action": "Soustraire",
+          "justification": "Chaque prélèvement a soit au moins une ampoule défectueuse, soit aucune : on retire du total les prélèvements sans ampoule défectueuse.",
+          "resultat_markdown": "$126-15=111$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier par la somme des cas",
+          "justification": "On compte les prélèvements avec $1$, $2$ puis $3$ ampoules défectueuses, $3$ étant le maximum possible.",
+          "resultat_markdown": "$3\\times\\dbinom{6}{3}+\\dbinom{3}{2}\\times\\dbinom{6}{2}+\\dbinom{3}{3}\\times\\dbinom{6}{1}=60+45+6=111$"
+        }
+      ],
+      "conclusion_markdown": "Il y a $111$ prélèvements qui contiennent au moins une ampoule défectueuse. Les deux méthodes donnent le même nombre, mais celle du contraire demande deux combinaisons au lieu de trois produits."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir d'abord une ampoule défectueuse ($3$ façons), puis $3$ ampoules parmi les $8$ restantes : $3\\times\\dbinom{8}{3}=168$.",
+          "pourquoi_faux": "On obtient plus que le total de $126$ prélèvements, ce qui est impossible : un prélèvement contenant deux ampoules défectueuses est compté plusieurs fois, une fois pour chacune d'elles.",
+          "correction_markdown": "Passe par l'événement contraire, ou découpe en cas disjoints : exactement une, exactement deux, exactement trois."
+        },
+        {
+          "erreur_markdown": "Prendre pour contraire de « au moins une défectueuse » l'événement « exactement une défectueuse ».",
+          "pourquoi_faux": "Les tirages avec deux ou trois ampoules défectueuses ne seraient dans aucun des deux ensembles.",
+          "correction_markdown": "Le contraire de « au moins un » est toujours « aucun »."
+        },
+        {
+          "erreur_markdown": "Retirer $\\dbinom{3}{4}$ ou prendre pour $m$ le nombre d'éléments de la catégorie $E$.",
+          "pourquoi_faux": "Le tirage sans élément de $E$ se fait dans les éléments qui ne sont pas dans $E$.",
+          "correction_markdown": "Calcule $m=n-\\text{(effectif de }E)$ avant d'écrire la combinaison."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un sac contient $8$ jetons, dont $5$ rouges. On tire simultanément $3$ jetons. Combien de tirages comptent au moins un jeton rouge ?",
+          "solution_markdown": "Il y a $\\dbinom{8}{3}=56$ tirages. Sans jeton rouge, on choisit $3$ jetons parmi les $3$ non rouges : $\\dbinom{3}{3}=1$. Il y a $56-1=55$ tirages avec au moins un jeton rouge."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "On forme un comité de $3$ personnes parmi $7$ femmes et $5$ hommes. Combien de comités comptent au moins un homme ?",
+          "solution_markdown": "Il y a $\\dbinom{12}{3}=220$ comités. Sans homme, on choisit $3$ femmes parmi $7$ : $\\dbinom{7}{3}=35$. Il y a $220-35=185$ comités avec au moins un homme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Dans une classe de $20$ élèves dont $12$ filles, on choisit $4$ délégués. Combien de choix comptent au moins une fille et au moins un garçon ?",
+          "solution_markdown": "Il y a $\\dbinom{20}{4}=4\\,845$ choix. Les choix sans fille sont des choix de $4$ garçons parmi $8$ : $\\dbinom{8}{4}=70$. Les choix sans garçon sont des choix de $4$ filles parmi $12$ : $\\dbinom{12}{4}=495$. Il reste $4\\,845-70-495=4\\,280$ choix."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "« Au moins un » a pour contraire « aucun ».",
+        "Nombre de tirages avec au moins un élément de $E$ : $\\dbinom{n}{p}-\\dbinom{m}{p}$, où $m$ est le nombre d'éléments hors de $E$.",
+        "Un contrôle simple : le résultat ne doit jamais dépasser le nombre total de tirages.",
+        "Pour « au moins un de chaque sorte », on retire du total les deux cas où une sorte manque."
+      ]
+    }
+  ]
+}

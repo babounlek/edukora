@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-deriver-une-fonction-polynome-du-troisieme-degre-et-etudier-le-signe-de-sa-deriv-mpa3",
+  "meta": {
+    "titre": "Dériver une fonction polynôme du troisième degré et étudier le signe de sa dérivée",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Analyse - dérivation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dérivée d'une fonction polynôme",
+      "tableau de variation"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-probatoire-a-3-2026-s1-ex4-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ingénieur modélise le profil d'une route de montagne par un polynôme de degré $3$. Pour savoir où la route monte, où elle descend et où elle est horizontale, il lui suffit de dériver le polynôme et d'étudier le signe de la dérivée. Le calcul de la dérivée est mécanique ; le travail est dans l'étude de son signe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dériver $x^n$, un produit $ax^n$, une somme et une constante",
+        "Factoriser un trinôme avec le discriminant",
+        "Signe d'un trinôme et signe d'un produit de facteurs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dériver terme à terme, factoriser, étudier le signe",
+      "contenu_markdown": "**Dérivée.** Pour $f(x)=ax^3+bx^2+cx+d$, la dérivée se calcule terme à terme : $(ax^n)'=n\\,a\\,x^{n-1}$, donc $f'(x)=3ax^2+2bx+c$. La dérivée de $cx$ est $c$ et celle d'une constante est $0$.\n\n**Signe.** La dérivée d'un polynôme de degré $3$ est un trinôme du second degré. On le factorise en commençant par un facteur commun éventuel, puis avec ses racines $x_1$ et $x_2$ : $f'(x)=3a(x-x_1)(x-x_2)$. Un trinôme est du signe de son coefficient dominant à l'extérieur de ses racines et du signe contraire entre elles.\n\n**Lien avec les variations.** Là où $f'>0$, la fonction $f$ est croissante ; là où $f'<0$, elle est décroissante.",
+      "formule_principale": "(ax^n)'=n\\,a\\,x^{n-1}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $g(x)=2x^3-9x^2+12x-4$. Calcule $g'(x)$, factorise-la et donne son signe sur $\\mathbb R$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver terme à terme",
+          "justification": "On abaisse chaque exposant d'une unité et on multiplie par l'ancien exposant.",
+          "resultat_markdown": "$g'(x)=6x^2-18x+12$"
+        },
+        {
+          "numero": 2,
+          "action": "Mettre un facteur commun",
+          "justification": "Les trois coefficients sont multiples de $6$.",
+          "resultat_markdown": "$g'(x)=6(x^2-3x+2)$"
+        },
+        {
+          "numero": 3,
+          "action": "Factoriser le trinôme",
+          "justification": "Le discriminant de $x^2-3x+2$ est $\\Delta=9-8=1$, et les racines sont $\\dfrac{3-1}{2}=1$ et $\\dfrac{3+1}{2}=2$.",
+          "resultat_markdown": "$g'(x)=6(x-1)(x-2)$"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier le signe",
+          "justification": "Le coefficient dominant $6$ est positif : $g'(x)$ est positif à l'extérieur des racines $1$ et $2$ et négatif entre elles.",
+          "resultat_markdown": "$g'(x)>0$ sur $]-\\infty\\,;1[$ et sur $]2\\,;+\\infty[$, $g'(x)<0$ sur $]1\\,;2[$"
+        }
+      ],
+      "conclusion_markdown": "La fonction $g$ est croissante jusqu'à $x=1$, décroissante entre $1$ et $2$, puis de nouveau croissante. On a $g(1)=1$ et $g(2)=0$, ce qui donne les valeurs du tableau de variation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dériver $x^3$ en $3x^3$ ou $12x$ en $12x$.",
+          "pourquoi_faux": "L'exposant doit baisser d'une unité : $x^3$ donne $3x^2$, et $12x$ donne $12$.",
+          "correction_markdown": "Écris la règle $(ax^n)'=n\\,a\\,x^{n-1}$ avant de dériver chaque terme."
+        },
+        {
+          "erreur_markdown": "Oublier le facteur commun et conserver une dérivée non factorisée pour étudier son signe.",
+          "pourquoi_faux": "Le signe d'une somme ne se lit pas terme à terme.",
+          "correction_markdown": "Factorise : un produit de facteurs du premier degré se lit directement."
+        },
+        {
+          "erreur_markdown": "Dire que $f'(x)$ est positif entre les racines quand le coefficient dominant est positif.",
+          "pourquoi_faux": "Un trinôme de coefficient dominant positif est négatif entre ses racines.",
+          "correction_markdown": "Rappelle-toi le dessin de la parabole : tournée vers le haut, elle est sous l'axe entre ses racines."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Soit $h(x)=x^3-12x+5$. Calcule $h'(x)$, factorise-la et donne son signe.",
+          "solution_markdown": "$h'(x)=3x^2-12=3(x^2-4)=3(x-2)(x+2)$. Le coefficient dominant est positif : $h'(x)>0$ sur $]-\\infty\\,;-2[$ et sur $]2\\,;+\\infty[$, et $h'(x)<0$ sur $]-2\\,;2[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Soit $k(x)=-x^3+3x^2+9x-1$. Calcule $k'(x)$ et étudie son signe.",
+          "solution_markdown": "$k'(x)=-3x^2+6x+9=-3(x^2-2x-3)=-3(x-3)(x+1)$. Le coefficient dominant $-3$ est négatif : $k'(x)<0$ à l'extérieur des racines $-1$ et $3$, et $k'(x)>0$ sur $]-1\\,;3[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Soit $p(x)=2x^3-3x^2-12x+1$. Détermine les variations de $p$ sur $\\mathbb R$ puis ses valeurs aux points où la tangente est horizontale.",
+          "solution_markdown": "$p'(x)=6x^2-6x-12=6(x^2-x-2)=6(x-2)(x+1)$. La dérivée est positive sur $]-\\infty\\,;-1[$ et sur $]2\\,;+\\infty[$, négative sur $]-1\\,;2[$. La tangente est horizontale pour $x=-1$ et $x=2$ : $p(-1)=-2-3+12+1=8$ et $p(2)=16-12-24+1=-19$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dérivée terme à terme : $(ax^n)'=n\\,a\\,x^{n-1}$, $(cx)'=c$, $(\\text{constante})'=0$.",
+        "La dérivée d'un polynôme de degré $3$ est un trinôme du second degré.",
+        "On factorise la dérivée avant d'étudier son signe.",
+        "Trinôme : signe du coefficient dominant à l'extérieur des racines, signe contraire entre elles."
+      ]
+    }
+  ]
+}

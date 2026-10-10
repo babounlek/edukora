@@ -1,0 +1,116 @@
+{
+  "type": "cours",
+  "cours_id": "cours-reconnaitre-croissance-exponentielle-z-ln-y-bac-a",
+  "meta": {
+    "titre": "Reconnaître une croissance exponentielle par le changement de variable z = ln y",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques à deux variables",
+    "duree_estimee_min": 25,
+    "tags": [
+      "changement de variable",
+      "statistique à deux variables"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-a-3-2026-s1-ex4-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le nombre d'abonnés d'une application, la population d'une ville ou un capital placé à intérêts composés ne grandissent pas d'une même quantité chaque année : ils sont multipliés par un coefficient presque constant. Le nuage de points d'une telle série se redresse comme une courbe et ne se laisse pas ajuster par une droite. Pourtant, en passant au logarithme népérien, le nuage devient presque aligné, et tu sais ajuster une droite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le logarithme népérien d'un nombre strictement positif à la calculatrice (touche ln)",
+        "Construire un nuage de points d'une série statistique à deux variables",
+        "Déterminer une droite d'ajustement affine, à la calculatrice ou par la méthode des moindres carrés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Poser z = ln y pour redresser un nuage en forme de courbe croissante",
+      "contenu_markdown": "Quand les accroissements successifs de $y$ augmentent d'un rang à l'autre, le nuage $(x\\,;y)$ se redresse et un ajustement affine de $y$ en fonction de $x$ convient mal.\n\nOn calcule alors, pour chaque valeur strictement positive $y_i$, le nombre $z_i=\\ln y_i$. Si les accroissements successifs de $z$ sont voisins l'un de l'autre, c'est-à-dire si le nuage des points $(x_i\\,;z_i)$ est presque aligné, la série suit une croissance de type exponentiel : $y$ est multiplié par un coefficient à peu près constant à chaque rang. On ajuste alors $z$ en fonction de $x$ par une droite $z=ax+b$.\n\nLa démarche tient en trois temps : calculer les $z_i$ avec la touche $\\ln$ (jamais la touche $\\log$), comparer les accroissements de $y$ et de $z$ ou construire le nuage $(x\\,;z)$, puis ajuster une droite sur $(x\\,;z)$.",
+      "formule_principale": "z=\\ln y \\quad\\text{puis}\\quad z \\approx ax+b"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une commune relève le nombre $y$ de motos immatriculées (en centaines) sur cinq années consécutives, de rang $x$ égal à 1, 2, 3, 4, 5 : $y=5\\,;7\\,;10\\,;14\\,;20$. Montre qu'un ajustement affine de $z=\\ln y$ en fonction de $x$ est adapté.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les accroissements successifs de $y$",
+          "justification": "On soustrait chaque valeur de la précédente pour voir si la croissance est régulière.",
+          "resultat_markdown": "$7-5=2$ ; $10-7=3$ ; $14-10=4$ ; $20-14=6$ : les accroissements augmentent, le nuage $(x\\,;y)$ se redresse."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $z=\\ln y$ pour chaque rang",
+          "justification": "On utilise la touche $\\ln$ de la calculatrice et on arrondit au millième.",
+          "resultat_markdown": "$z=1{,}609\\,;\\,1{,}946\\,;\\,2{,}303\\,;\\,2{,}639\\,;\\,2{,}996$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les accroissements successifs de $z$",
+          "justification": "On compare ensuite avec ceux de $y$ : s'ils sont voisins, le nuage $(x\\,;z)$ est presque aligné.",
+          "resultat_markdown": "$0{,}337\\,;\\,0{,}357\\,;\\,0{,}336\\,;\\,0{,}357$ : ces accroissements sont tous voisins de $0{,}35$."
+        }
+      ],
+      "conclusion_markdown": "Les accroissements de $y$ augmentent alors que ceux de $z=\\ln y$ restent voisins de $0{,}35$ : le nuage $(x\\,;z)$ est presque aligné, donc un ajustement affine de $z$ en fonction de $x$ est adapté et la série a une croissance de type exponentiel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $z$ avec la touche $\\log$ de la calculatrice au lieu de la touche $\\ln$.",
+          "pourquoi_faux": "La touche $\\log$ donne le logarithme décimal, qui n'est pas celui du programme ; les valeurs de $z$ sont alors fausses, et les coefficients $a$ et $b$ aussi.",
+          "correction_markdown": "Contrôle sur une valeur connue : $\\ln 1=0$ et $\\ln \\mathrm e\\approx 1$, alors que $\\log 10=1$."
+        },
+        {
+          "erreur_markdown": "Conclure qu'un ajustement affine de $z$ convient sans comparer ni représenter les points $(x\\,;z)$.",
+          "pourquoi_faux": "Le changement de variable n'est justifié que si les points $(x\\,;z)$ sont presque alignés ; ce n'est pas automatique.",
+          "correction_markdown": "Calcule les accroissements de $z$ ou construis le nuage $(x\\,;z)$ avant d'ajuster une droite."
+        },
+        {
+          "erreur_markdown": "Appliquer $\\ln$ à une valeur de $y$ nulle ou négative.",
+          "pourquoi_faux": "Le logarithme népérien n'est défini que sur les réels strictement positifs.",
+          "correction_markdown": "Vérifie que toutes les valeurs de $y$ sont strictement positives avant de poser $z=\\ln y$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "On a $y=3\\,;6\\,;12\\,;24$ pour $x=1\\,;2\\,;3\\,;4$. Calcule les valeurs de $z=\\ln y$ (arrondies au millième) et leurs accroissements successifs.",
+          "solution_markdown": "$z=1{,}099\\,;\\,1{,}792\\,;\\,2{,}485\\,;\\,3{,}178$. Les accroissements sont tous égaux à $0{,}693$ : les points $(x\\,;z)$ sont alignés, car $y$ est doublé à chaque rang."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "On a $y=100\\,;130\\,;170\\,;220\\,;285$ pour $x=1$ à $5$. Compare les accroissements de $y$ et ceux de $z=\\ln y$ (au millième), puis conclus.",
+          "solution_markdown": "Accroissements de $y$ : $30\\,;\\,40\\,;\\,50\\,;\\,65$, ils augmentent. Valeurs de $z$ : $4{,}605\\,;\\,4{,}868\\,;\\,5{,}136\\,;\\,5{,}394\\,;\\,5{,}652$ ; accroissements de $z$ : $0{,}263\\,;\\,0{,}268\\,;\\,0{,}258\\,;\\,0{,}258$, voisins de $0{,}26$. Un ajustement affine de $z$ en $x$ est adapté."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "On a $y=40\\,;45\\,;50\\,;55\\,;60$ pour $x=1$ à $5$. Un ajustement affine de $y$ ou de $z=\\ln y$ est-il plus adapté ? Justifie avec les accroissements.",
+          "solution_markdown": "Accroissements de $y$ : $5\\,;5\\,;5\\,;5$, ils sont constants : un ajustement affine de $y$ en $x$ est exact et le changement de variable n'est pas nécessaire. Les accroissements de $z$ valent $0{,}118\\,;\\,0{,}105\\,;\\,0{,}095\\,;\\,0{,}087$ : ils diminuent, donc les points $(x\\,;z)$ ne sont pas alignés et la série n'est pas de type exponentiel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Si les accroissements de $y$ augmentent d'un rang à l'autre, le nuage $(x\\,;y)$ se redresse : pense à poser $z=\\ln y$.",
+        "Calcule les $z_i=\\ln y_i$ avec la touche $\\ln$, jamais $\\log$, et seulement pour $y_i>0$.",
+        "Des accroissements de $z$ voisins signifient que le nuage $(x\\,;z)$ est presque aligné : on ajuste $z=ax+b$.",
+        "Une droite sur $(x\\,;z)$ correspond à une croissance exponentielle de $y$ : $y$ est multiplié par un coefficient à peu près constant à chaque rang."
+      ]
+    }
+  ]
+}

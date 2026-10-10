@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-denombrer-les-groupes-qui-contiennent-ou-excluent-des-personnes-imposees-mpa3",
+  "meta": {
+    "titre": "Dénombrer les groupes qui contiennent ou excluent des personnes imposées",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement et probabilités",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dénombrement",
+      "combinaisons",
+      "tirage simultané"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-probatoire-a-3-2026-s1-ex2-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour un voyage d'étude, la directrice choisit $5$ élèves parmi $14$. Elle impose que Mireille soit du voyage et refuse que Paul y soit. Ces conditions réduisent le nombre de groupes possibles, et la façon de les compter est toujours la même : on place d'abord les personnes imposées, puis on complète avec les autres."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer un nombre de combinaisons $\\dbinom{n}{p}$",
+        "Reconnaître un choix de groupe dans lequel l'ordre n'intervient pas",
+        "Distinguer « et », « ou » et « mais pas » dans un énoncé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Placer les personnes imposées, retirer les personnes exclues",
+      "contenu_markdown": "On forme un groupe de $p$ personnes parmi $n$. Si $k$ personnes données doivent y figurer, elles occupent $k$ places : il reste $p-k$ places à pourvoir parmi les $n-k$ autres personnes, donc $\\dbinom{n-k}{p-k}$ groupes.\n\nSi $j$ personnes données ne doivent pas y figurer, on les retire de l'ensemble où l'on choisit : les places restantes se pourvoient parmi $n-k-j$ personnes.\n\nPour $k$ personnes imposées et $j$ personnes exclues, le nombre de groupes est donc $\\dbinom{n-k-j}{p-k}$. Il ne faut jamais multiplier par un nombre de façons de choisir la personne imposée : elle est déjà placée.",
+      "formule_principale": "\\dbinom{n-k-j}{p-k}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une équipe de $5$ élèves est choisie parmi $12$, dont Sandra et Théo. Combien d'équipes **a)** contiennent Sandra, **b)** contiennent Sandra et Théo, **c)** contiennent Sandra mais pas Théo ?",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter le cas a)",
+          "justification": "Sandra occupe une place : il reste $4$ places à pourvoir parmi les $11$ autres élèves.",
+          "resultat_markdown": "$\\dbinom{11}{4}=\\dfrac{11\\times10\\times9\\times8}{4\\times3\\times2\\times1}=330$"
+        },
+        {
+          "numero": 2,
+          "action": "Traiter le cas b)",
+          "justification": "Sandra et Théo occupent deux places : il reste $3$ places à pourvoir parmi les $10$ autres élèves.",
+          "resultat_markdown": "$\\dbinom{10}{3}=\\dfrac{10\\times9\\times8}{3\\times2\\times1}=120$"
+        },
+        {
+          "numero": 3,
+          "action": "Traiter le cas c)",
+          "justification": "Sandra est placée et Théo est exclu : il reste $4$ places à pourvoir parmi les $12-2=10$ élèves qui ne sont ni Sandra ni Théo.",
+          "resultat_markdown": "$\\dbinom{10}{4}=\\dfrac{10\\times9\\times8\\times7}{4\\times3\\times2\\times1}=210$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la cohérence",
+          "justification": "Les équipes qui contiennent Sandra se partagent en celles qui contiennent aussi Théo et celles qui n'en contiennent pas.",
+          "resultat_markdown": "$120+210=330$"
+        }
+      ],
+      "conclusion_markdown": "Il y a $330$ équipes qui contiennent Sandra, dont $120$ qui contiennent aussi Théo et $210$ qui n'en contiennent pas."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir la personne imposée parmi les $n$ personnes puis compléter : $5\\times\\dbinom{11}{4}$.",
+          "pourquoi_faux": "La personne imposée est connue : elle n'a pas à être choisie. On compte chaque groupe plusieurs fois.",
+          "correction_markdown": "Place la personne imposée et choisis seulement les places restantes."
+        },
+        {
+          "erreur_markdown": "Pour « Sandra mais pas Théo », calculer $\\dbinom{11}{4}$ en oubliant de retirer Théo.",
+          "pourquoi_faux": "Le groupe pourrait alors contenir Théo, ce qui est interdit.",
+          "correction_markdown": "Retire à la fois les personnes imposées et les personnes exclues de l'ensemble où l'on choisit."
+        },
+        {
+          "erreur_markdown": "Confondre « contient Sandra et Théo » avec « contient Sandra ou Théo ».",
+          "pourquoi_faux": "Le « et » impose deux personnes à la fois, le « ou » en impose au moins une et se traite par l'événement contraire.",
+          "correction_markdown": "Souligne les mots « et », « ou », « mais pas » dans l'énoncé avant de calculer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Parmi $9$ candidats, on choisit $3$ membres d'un jury. Combien de jurys contiennent Karim ?",
+          "solution_markdown": "Karim occupe une place, il reste $2$ places à pourvoir parmi $8$ candidats : $\\dbinom{8}{2}=28$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Parmi $10$ élèves, on choisit $4$ élèves pour un exposé. Combien de choix contiennent Lina mais pas Omar ?",
+          "solution_markdown": "Lina est placée et Omar est exclu : il reste $3$ places à pourvoir parmi $10-2=8$ élèves, soit $\\dbinom{8}{3}=56$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Parmi $11$ personnes, on choisit un comité de $4$. Combien de comités contiennent Aline ou Bruno, ou les deux ?",
+          "solution_markdown": "Le contraire est « ni Aline ni Bruno » : $\\dbinom{9}{4}=126$ comités. Il y a $\\dbinom{11}{4}-126=330-126=204$ comités. Contrôle : $120+120-36=204$, avec $\\dbinom{10}{3}=120$ comités contenant Aline, autant contenant Bruno, et $\\dbinom{9}{2}=36$ contenant les deux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Personnes imposées : elles occupent des places, on choisit les places restantes.",
+        "Personnes exclues : on les retire de l'ensemble où l'on choisit.",
+        "Avec $k$ imposées et $j$ exclues : $\\dbinom{n-k-j}{p-k}$ groupes.",
+        "« Et » impose les deux personnes, « ou » se traite par le contraire."
+      ]
+    }
+  ]
+}

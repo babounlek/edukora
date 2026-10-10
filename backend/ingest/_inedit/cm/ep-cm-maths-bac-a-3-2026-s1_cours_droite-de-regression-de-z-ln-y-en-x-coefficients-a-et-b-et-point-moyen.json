@@ -1,0 +1,142 @@
+{
+  "type": "cours",
+  "cours_id": "cours-droite-regression-de-z-ln-y-en-x-bac-a-3",
+  "meta": {
+    "titre": "Droite de régression de z = ln y en x : coefficients a et b et point moyen",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques à deux variables",
+    "duree_estimee_min": 30,
+    "tags": [
+      "droite de régression",
+      "moindres carrés",
+      "changement de variable",
+      "point moyen"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-bac-a-3-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le nombre de clients d'un service de paiement mobile à Bafoussam n'augmente pas d'une même quantité chaque année : il est multiplié par un coefficient à peu près constant. Le nuage des points $(x\\,;y)$ est donc courbe. Mais après le changement de variable $z=\\ln y$, les points $(x\\,;z)$ s'alignent presque, et on peut leur ajuster une droite. Cette leçon t'apprend à calculer précisément l'équation $z=ax+b$ de cette droite par la méthode des moindres carrés, à la main puis à la calculatrice."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le logarithme népérien d'un nombre strictement positif à la calculatrice (touche ln)",
+        "Calculer une moyenne $\\bar x=\\dfrac{1}{n}\\sum x_i$ et une somme de produits $\\sum x_iz_i$",
+        "Savoir qu'une droite d'équation $z=ax+b$ a pour coefficient directeur $a$ et pour ordonnée à l'origine $b$",
+        "Lire le sens de $z=\\ln y$ : $z$ est le logarithme népérien de $y$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Droite de régression de z en x par la méthode des moindres carrés",
+      "contenu_markdown": "On dispose de $n$ couples $(x_i\\,;y_i)$ avec $y_i>0$. On calcule d'abord $z_i=\\ln y_i$, puis on ajuste les points $(x_i\\,;z_i)$ par la droite de régression de $z$ en $x$, d'équation $z=ax+b$.\n\nLes coefficients sont donnés par :\n\n- $a=\\dfrac{\\sum x_iz_i-n\\,\\bar x\\,\\bar z}{\\sum x_i^{2}-n\\,\\bar x^{2}}$ ;\n- $b=\\bar z-a\\,\\bar x$.\n\nAvec $\\bar x=\\dfrac{1}{n}\\sum x_i$ et $\\bar z=\\dfrac{1}{n}\\sum z_i$. La droite passe toujours par le **point moyen** $G(\\bar x\\,;\\bar z)$, ce qui fournit un contrôle : $a\\,\\bar x+b$ doit être égal à $\\bar z$.\n\nÀ la calculatrice, on saisit la liste des $x_i$ et la liste des $z_i$ (et non celle des $y_i$), puis on lit $a$ et $b$ dans le menu de régression linéaire. On garde les valeurs non arrondies des $z_i$ en mémoire et on n'arrondit $a$ et $b$ qu'à la fin (ici au centième).",
+      "formule_principale": "a=\\dfrac{\\sum x_iz_i-n\\,\\bar x\\,\\bar z}{\\sum x_i^{2}-n\\,\\bar x^{2}}\\qquad b=\\bar z-a\\,\\bar x"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un service de paiement mobile à Bafoussam compte $y$ centaines de clients au rang $x$ ($x=1$ pour 2021). On a :\n\n| Rang $x$ | 1 | 2 | 3 | 4 | 5 |\n|---|---|---|---|---|---|\n| Clients $y$ (centaines) | 2,3 | 3,4 | 5,2 | 8,1 | 12,0 |\n\nOn pose $z=\\ln y$. Détermine l'équation de la droite de régression de $z$ en $x$ sous la forme $z=ax+b$, avec $a$ et $b$ arrondis au centième.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les $z_i=\\ln y_i$",
+          "justification": "Le changement de variable est $z=\\ln y$ ; on garde quatre décimales pour le calcul à la main.",
+          "resultat_markdown": "$z_i\\approx0{,}8329\\ ;\\ 1{,}2238\\ ;\\ 1{,}6487\\ ;\\ 2{,}0919\\ ;\\ 2{,}4849$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les moyennes",
+          "justification": "$n=5$ ; $\\sum x_i=15$ et $\\sum z_i\\approx8{,}2822$.",
+          "resultat_markdown": "$\\bar x=3$ et $\\bar z\\approx1{,}6564$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les deux sommes",
+          "justification": "On additionne les carrés des $x_i$ puis les produits $x_iz_i$.",
+          "resultat_markdown": "$\\sum x_i^{2}=1+4+9+16+25=55$ et $\\sum x_iz_i\\approx0{,}8329+2{,}4476+4{,}9461+8{,}3676+12{,}4245=29{,}0187$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $a$",
+          "justification": "On applique la formule de la règle.",
+          "resultat_markdown": "$a=\\dfrac{29{,}0187-5\\times3\\times1{,}6564}{55-5\\times3^{2}}=\\dfrac{29{,}0187-24{,}846}{10}\\approx0{,}417\\approx0{,}42$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer $b$",
+          "justification": "$b=\\bar z-a\\,\\bar x$ avec la valeur non arrondie $a\\approx0{,}417$.",
+          "resultat_markdown": "$b\\approx1{,}6564-0{,}417\\times3\\approx0{,}405\\approx0{,}40$"
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler avec le point moyen et la calculatrice",
+          "justification": "La droite doit passer par $G(3\\,;1{,}66)$ ; la calculatrice, avec les listes $x$ et $z$, doit donner les mêmes $a$ et $b$.",
+          "resultat_markdown": "$0{,}42\\times3+0{,}40=1{,}66\\approx\\bar z$ : le contrôle est bon."
+        }
+      ],
+      "conclusion_markdown": "La droite de régression de $z$ en $x$ a pour équation $z=0{,}42\\,x+0{,}40$ et elle passe par le point moyen $G(3\\,;1{,}66)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Saisir les $y_i$ dans la calculatrice au lieu des $z_i=\\ln y_i$.",
+          "pourquoi_faux": "La droite demandée est celle de $z$ en $x$ ; avec les $y_i$ on obtiendrait la droite de $y$ en $x$, qui est une autre droite.",
+          "correction_markdown": "Calcule d'abord la liste des $z_i=\\ln y_i$, puis saisis les listes $x$ et $z$."
+        },
+        {
+          "erreur_markdown": "Arrondir les $z_i$ à une seule décimale, ou arrondir $a$ avant de calculer $b$.",
+          "pourquoi_faux": "Les erreurs d'arrondi s'accumulent et $b=\\bar z-a\\,\\bar x$ peut changer sur le dernier chiffre.",
+          "correction_markdown": "Garde au moins trois ou quatre décimales pour les $z_i$ et n'arrondis $a$ et $b$ qu'à la fin."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier par $n$ dans $n\\,\\bar x\\,\\bar z$ ou dans $n\\,\\bar x^{2}$.",
+          "pourquoi_faux": "Dans la formule, $n\\,\\bar x\\,\\bar z$ remplace $\\dfrac{(\\sum x_i)(\\sum z_i)}{n}$ ; sans le facteur $n$ le résultat est faux.",
+          "correction_markdown": "Écris $n\\,\\bar x\\,\\bar z$ et $n\\,\\bar x^{2}$ en entier, puis contrôle que la droite passe par $G(\\bar x\\,;\\bar z)$."
+        },
+        {
+          "erreur_markdown": "Confondre $\\sum x_i^{2}$ (somme des carrés) et $\\left(\\sum x_i\\right)^{2}$ (carré de la somme).",
+          "pourquoi_faux": "Ces deux nombres sont différents : pour $x=1;2;3;4;5$ on trouve $55$ et $225$.",
+          "correction_markdown": "Élève chaque $x_i$ au carré avant d'additionner."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Les points $(x_i\\,;z_i)$ sont $(0\\,;0{,}4)$, $(1\\,;0{,}8)$, $(2\\,;1{,}5)$ et $(3\\,;1{,}9)$. Détermine $a$ et $b$ par la formule des moindres carrés, puis vérifie que la droite passe par le point moyen.",
+          "solution_markdown": "$n=4$, $\\bar x=1{,}5$, $\\bar z=\\dfrac{4{,}6}{4}=1{,}15$. $\\sum x_i^{2}=0+1+4+9=14$ et $\\sum x_iz_i=0+0{,}8+3+5{,}7=9{,}5$. Donc $a=\\dfrac{9{,}5-4\\times1{,}5\\times1{,}15}{14-4\\times1{,}5^{2}}=\\dfrac{2{,}6}{5}=0{,}52$ et $b=1{,}15-0{,}52\\times1{,}5=0{,}37$. La droite est $z=0{,}52\\,x+0{,}37$. Contrôle : $0{,}52\\times1{,}5+0{,}37=1{,}15=\\bar z$, donc elle passe par $G(1{,}5\\,;1{,}15)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Une pâtisserie de Yaoundé relève le nombre $y$ de commandes hebdomadaires (en dizaines) : $4\\,;6\\,;9\\,;13$ pour les rangs $x=1\\,;2\\,;3\\,;4$. On pose $z=\\ln y$. Calcule les $z_i$ à $10^{-3}$ près, puis la droite de régression de $z$ en $x$ ($a$ et $b$ au centième).",
+          "solution_markdown": "$z_i\\approx1{,}386\\ ;\\ 1{,}792\\ ;\\ 2{,}197\\ ;\\ 2{,}565$. $\\bar x=2{,}5$, $\\bar z\\approx1{,}985$, $\\sum x_i^{2}=30$ et $\\sum x_iz_i\\approx21{,}821$. Alors $a=\\dfrac{21{,}821-4\\times2{,}5\\times1{,}985}{30-4\\times2{,}5^{2}}=\\dfrac{1{,}971}{5}\\approx0{,}39$ et $b=1{,}985-0{,}394\\times2{,}5\\approx1{,}00$. La droite est $z=0{,}39\\,x+1{,}00$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Le nombre $y$ de visiteurs (en milliers) d'un site d'actualités est $1{,}8\\,;2{,}9\\,;4{,}1\\,;6{,}6\\,;10{,}2\\,;16{,}3$ pour les rangs $x=0\\,;1\\,;2\\,;3\\,;4\\,;5$. **a)** Calcule les $z_i=\\ln y_i$ (quatre décimales). **b)** Détermine $a$ et $b$ au centième. **c)** Calcule les coordonnées de $G$ et vérifie que la droite passe par $G$ à l'arrondi près. **d)** Avec l'équation arrondie obtenue en b), estime $z$ puis $y$ pour $x=7$ ($y$ à l'unité près).",
+          "solution_markdown": "**a)** $z_i\\approx0{,}5878\\ ;\\ 1{,}0647\\ ;\\ 1{,}4110\\ ;\\ 1{,}8871\\ ;\\ 2{,}3224\\ ;\\ 2{,}7912$. **b)** $n=6$, $\\bar x=2{,}5$, $\\bar z\\approx1{,}6774$, $\\sum x_i^{2}=55$, $\\sum x_iz_i\\approx32{,}793$. $a=\\dfrac{32{,}793-6\\times2{,}5\\times1{,}6774}{55-6\\times2{,}5^{2}}=\\dfrac{7{,}632}{17{,}5}\\approx0{,}44$ et $b\\approx1{,}6774-0{,}436\\times2{,}5\\approx0{,}59$. D'où $z=0{,}44\\,x+0{,}59$. **c)** $G(2{,}5\\,;1{,}68)$ et $0{,}44\\times2{,}5+0{,}59=1{,}69$ : l'écart de $0{,}01$ vient des arrondis. **d)** $z\\approx0{,}44\\times7+0{,}59=3{,}67$ donc $y\\approx e^{3{,}67}\\approx39$ milliers de visiteurs. (Sans arrondir $a$ et $b$, on trouverait $y\\approx38$ : la différence vient des arrondis de $a$ et de $b$.)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On pose $z_i=\\ln y_i$ puis on ajuste les points $(x_i\\,;z_i)$ par la droite $z=ax+b$.",
+        "$a=\\dfrac{\\sum x_iz_i-n\\,\\bar x\\,\\bar z}{\\sum x_i^{2}-n\\,\\bar x^{2}}$ et $b=\\bar z-a\\,\\bar x$.",
+        "La droite passe par le point moyen $G(\\bar x\\,;\\bar z)$ : c'est le contrôle à faire.",
+        "À la calculatrice, saisis les listes $x$ et $z$ (pas $y$) et n'arrondis $a$ et $b$ qu'à la fin."
+      ]
+    }
+  ]
+}

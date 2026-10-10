@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-charge-et-intensite-d-un-circuit-lc-conditions-i-bacc3-ex1-q2",
+  "meta": {
+    "titre": "Charge et intensité d'un circuit LC : conditions initiales et valeurs maximales",
+    "matiere": "physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Oscillations électriques libres",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Circuit LC",
+      "condensateur"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-physique-bac-c-3-2026-s1-ex1-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois l'équation différentielle d'un circuit $LC$ résolue, il reste à savoir de quelle oscillation on parle : combien de coulombs, quelle intensité, à quelle date ? La réponse ne vient pas de $L$ et $C$, qui fixent seulement le rythme, mais de la façon dont on a lancé le circuit. Un condensateur chargé puis relié à la bobine, et un condensateur vide traversé par un courant, produisent des oscillations différentes avec les mêmes composants."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation différentielle $\\ddot q+\\dfrac{1}{LC}q=0$ et pulsation propre $\\omega_0=\\dfrac{1}{\\sqrt{LC}}$",
+        "Définition de l'intensité $i=\\dfrac{dq}{dt}$ et relation $q=Cu_C$",
+        "Dérivée de $\\cos(\\omega t+\\varphi)$ et de $\\sin(\\omega t+\\varphi)$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Constantes d'intégration et intensité maximale",
+      "contenu_markdown": "La solution générale est $q(t)=Q_m\\cos(\\omega_0t+\\varphi)$. Les deux constantes $Q_m$ et $\\varphi$ ne dépendent pas des composants mais des **conditions initiales** : la charge $q(0)$, connue par la tension initiale du condensateur ($q(0)=Cu_C(0)$), et l'intensité $i(0)=\\dot q(0)$, nulle si le circuit est lancé sans courant, puisqu'une bobine ne laisse pas l'intensité varier brusquement.\n\nL'intensité s'obtient en dérivant : $i=\\dot q=-\\omega_0Q_m\\sin(\\omega_0t+\\varphi)$. Elle a pour valeur maximale $I_m=\\omega_0Q_m$ et elle est en quadrature avec la charge : elle s'annule quand $q$ est extrémale, et elle est extrémale quand $q=0$, c'est-à-dire un quart de période plus tard.",
+      "formule_principale": "q(t)=Q_m\\cos(\\omega_0t+\\varphi)\\qquad i(t)=-\\omega_0Q_m\\sin(\\omega_0t+\\varphi)\\qquad I_m=\\omega_0Q_m"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un condensateur de capacité $C=5{,}0\\ \\mu\\text{F}$ est chargé sous $E=9{,}0\\ \\text{V}$, puis relié, à l'instant $t=0$, à une bobine d'inductance $L=0{,}80\\ \\text{H}$ de résistance négligeable. Écrire $q(t)$ et $i(t)$, calculer $I_m$ et la première date où $|i|$ est maximale.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la pulsation propre",
+          "justification": "Elle ne dépend que de $L$ et $C$.",
+          "resultat_markdown": "$\\omega_0=\\dfrac{1}{\\sqrt{0{,}80\\times5{,}0\\times10^{-6}}}=\\dfrac{1}{\\sqrt{4{,}0\\times10^{-6}}}=5{,}0\\times10^{2}\\ \\text{rad/s}$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire les conditions initiales",
+          "justification": "Le condensateur est chargé sous $E$ et le courant est nul à la bascule.",
+          "resultat_markdown": "$q(0)=CE=5{,}0\\times10^{-6}\\times9{,}0=4{,}5\\times10^{-5}\\ \\text{C}=45\\ \\mu\\text{C}$ ; $i(0)=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer $\\varphi$ et $Q_m$",
+          "justification": "$i(0)=-\\omega_0Q_m\\sin\\varphi=0$ impose $\\sin\\varphi=0$ ; avec $q(0)>0$ et $Q_m>0$, on a $\\varphi=0$.",
+          "resultat_markdown": "$Q_m=q(0)=45\\ \\mu\\text{C}$, donc $q(t)=4{,}5\\times10^{-5}\\cos(500\\,t)$ (SI)"
+        },
+        {
+          "numero": 4,
+          "action": "Dériver pour obtenir $i(t)$",
+          "justification": "$i=\\dfrac{dq}{dt}$.",
+          "resultat_markdown": "$i(t)=-\\omega_0Q_m\\sin(\\omega_0t)=-2{,}25\\times10^{-2}\\sin(500\\,t)$ (SI) ; $I_m=500\\times4{,}5\\times10^{-5}=22{,}5\\ \\text{mA}$"
+        },
+        {
+          "numero": 5,
+          "action": "Chercher la première date où $|i|$ est maximale",
+          "justification": "$|i|$ est maximale quand $\\sin(\\omega_0t)=1$, soit $\\omega_0t=\\pi/2$.",
+          "resultat_markdown": "$t=\\dfrac{T_0}{4}=\\dfrac{\\pi}{2\\omega_0}=\\dfrac{\\pi}{1000}\\approx3{,}14\\times10^{-3}\\ \\text{s}$"
+        }
+      ],
+      "conclusion_markdown": "La charge est $q(t)=45\\cos(500\\,t)\\ \\mu\\text{C}$ et l'intensité $i(t)=-22{,}5\\sin(500\\,t)\\ \\text{mA}$. L'intensité est extrémale pour la première fois à $3{,}14\\ \\text{ms}$, quand la charge s'annule."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre $\\varphi=\\pi/2$ pour un condensateur chargé lancé sans courant.",
+          "pourquoi_faux": "Avec $\\varphi=\\pi/2$, $q(0)=Q_m\\cos(\\pi/2)=0$ : on décrirait un condensateur vide, et $i(0)$ serait maximale, ce qui contredit les données.",
+          "correction_markdown": "Écrire d'abord $q(0)$ et $i(0)$, puis choisir $\\varphi$ qui les reproduit : ici $\\varphi=0$."
+        },
+        {
+          "erreur_markdown": "Calculer $I_m$ par $I_m=Q_m/\\omega_0$.",
+          "pourquoi_faux": "La dérivée de $\\cos(\\omega_0t)$ fait apparaître $\\omega_0$ en facteur, pas en diviseur : $I_m=\\omega_0Q_m$.",
+          "correction_markdown": "Contrôler l'homogénéité : $\\omega_0Q_m$ s'exprime en $\\text{s}^{-1}\\cdot\\text{C}=\\text{A}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "La charge d'un condensateur est $q(t)=10\\cos(2000\\,t)\\ \\mu\\text{C}$. Donner l'intensité maximale du circuit.",
+          "solution_markdown": "$I_m=\\omega_0Q_m=2000\\times10\\times10^{-6}=2{,}0\\times10^{-2}\\ \\text{A}=20\\ \\text{mA}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un condensateur de $0{,}20\\ \\mu\\text{F}$ chargé sous $15\\ \\text{V}$ est relié à une bobine de $0{,}50\\ \\text{H}$ (résistance négligeable). Calculer la charge maximale et l'intensité maximale.",
+          "solution_markdown": "$Q_m=CE=0{,}20\\times10^{-6}\\times15=3{,}0\\ \\mu\\text{C}$ ; $\\omega_0=\\dfrac{1}{\\sqrt{0{,}50\\times0{,}20\\times10^{-6}}}\\approx3162\\ \\text{rad/s}$ ; $I_m=\\omega_0Q_m\\approx9{,}49\\ \\text{mA}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Dans un circuit $LC$ de pulsation propre $1500\\ \\text{rad/s}$, le condensateur est vide à $t=0$ et l'intensité vaut alors $+12\\ \\text{mA}$ (valeur maximale). Écrire $q(t)$.",
+          "solution_markdown": "$q(0)=0$ donne $\\cos\\varphi=0$ ; $i(0)=-\\omega_0Q_m\\sin\\varphi=+12\\ \\text{mA}>0$ impose $\\sin\\varphi=-1$, soit $\\varphi=-\\pi/2$. Alors $Q_m=\\dfrac{I_m}{\\omega_0}=\\dfrac{12\\times10^{-3}}{1500}=8\\ \\mu\\text{C}$ et $q(t)=8\\cos(1500\\,t-\\pi/2)=8\\sin(1500\\,t)\\ \\mu\\text{C}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\omega_0=1/\\sqrt{LC}$ fixe le rythme ; $Q_m$ et $\\varphi$ viennent des conditions initiales $q(0)$ et $i(0)$.",
+        "Condensateur chargé sous $E$ et courant nul : $\\varphi=0$ et $Q_m=CE$.",
+        "$i=\\dot q=-\\omega_0Q_m\\sin(\\omega_0t+\\varphi)$, d'où $I_m=\\omega_0Q_m$.",
+        "Charge et intensité sont en quadrature : $|i|$ est maximale quand $q=0$, à $T_0/4$ pour un départ chargé."
+      ]
+    }
+  ]
+}
