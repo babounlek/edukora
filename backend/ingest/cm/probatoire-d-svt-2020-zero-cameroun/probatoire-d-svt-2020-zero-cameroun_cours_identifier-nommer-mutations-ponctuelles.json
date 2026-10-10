@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-identifier-nommer-mutations-ponctuelles-1ere",
+  "meta": {
+    "titre": "Comparer deux séquences d'ADN et nommer les mutations",
+    "matiere": "SVT",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Mutations et variabilité génétique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "mutation",
+      "substitution",
+      "délétion",
+      "insertion",
+      "mutation silencieuse"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-svt-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire D - Sciences de la Vie et de la Terre (SVTEEHB) - Épreuve zéro, session 2020 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-d-svt-2020-zero-cameroun-ex4-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux versions du même gène, une seule différence de quelques lettres, et la protéine peut être inchangée, abîmée ou totalement perdue. Les généticiens comparent des séquences pour retrouver ces différences et les nommer. C'est exactement ce que le probatoire demande quand il présente un gène normal et un gène muté : repérer, nommer, puis mesurer les conséquences."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une séquence d'ADN en triplets.",
+        "Savoir déduire une séquence peptidique d'un brin transcrit (cours précédent).",
+        "Connaître la notion de code génétique dégénéré."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer, nommer, mesurer l'effet",
+      "contenu_markdown": "Une **mutation** est une modification de la séquence de l'ADN. La méthode comporte trois temps.\n\n1. **Aligner** les deux séquences triplet par triplet et repérer les rangs où elles diffèrent.\n2. **Nommer** chaque modification :\n   - **substitution** : une base (ou un triplet) en remplace une autre à la même place, sans changer la longueur ;\n   - **délétion** : un ou plusieurs nucléotides disparaissent ;\n   - **insertion** (ou addition) : un ou plusieurs nucléotides sont ajoutés ; on parle de duplication quand la séquence ajoutée est la copie de la séquence voisine.\n3. **Mesurer l'effet** sur la protéine en traduisant les deux séquences : mutation **silencieuse** (même acide aminé), **faux-sens** (acide aminé différent), **non-sens** (codon stop créé).\n\nUne délétion ou une insertion dont la taille n'est pas un multiple de 3 décale le cadre de lecture et modifie tous les acides aminés qui suivent.",
+      "formule_principale": "\\text{même longueur} \\Rightarrow \\text{substitution} \\qquad \\text{plus court} \\Rightarrow \\text{délétion} \\qquad \\text{plus long} \\Rightarrow \\text{insertion}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Gène normal : TTT CTT TTA TAG TAG AAA CCA CAA AGG ATA. Gène muté : TTT CTT TTA TAG TAA CCA CAA CAA AGG ATA. Localise les modifications et nomme-les.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Aligner les deux séquences triplet par triplet",
+          "justification": "Les deux séquences ont dix triplets : on compare rang par rang.",
+          "resultat_markdown": "Rangs 1 à 4 identiques ; différences aux rangs 5, 6 et 7 ; rangs 8 à 10 identiques."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser le rang 5 : TAG devient TAA",
+          "justification": "Une seule base change (G remplacé par A) et la longueur reste la même.",
+          "resultat_markdown": "Substitution G vers A."
+        },
+        {
+          "numero": 3,
+          "action": "Analyser l'écart des rangs 6 et 7 en décalant la comparaison",
+          "justification": "Après le rang 5, le gène normal lit AAA CCA CAA AGG et le gène muté lit CCA CAA CAA AGG : le triplet AAA a disparu et un triplet CAA est apparu à côté d'un CAA identique.",
+          "resultat_markdown": "Délétion du triplet AAA, puis insertion (duplication) d'un triplet CAA."
+        },
+        {
+          "numero": 4,
+          "action": "Mesurer l'effet de la substitution",
+          "justification": "TAG donne le codon AUC et TAA donne AUU : les deux codent l'isoleucine.",
+          "resultat_markdown": "Mutation silencieuse."
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler le cadre de lecture",
+          "justification": "Les deux indels portent sur un triplet entier : la longueur totale reste de dix triplets.",
+          "resultat_markdown": "Cadre de lecture conservé."
+        }
+      ],
+      "conclusion_markdown": "Le gène muté présente une substitution silencieuse (TAG vers TAA), une délétion du triplet AAA et une insertion d'un triplet CAA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure à trois substitutions parce que trois triplets diffèrent rang par rang.",
+          "pourquoi_faux": "Une comparaison rang par rang ne tient pas compte d'un décalage : quand un triplet disparaît et qu'un autre apparaît plus loin, les triplets intermédiaires semblent différents alors qu'ils sont seulement déplacés d'un rang.",
+          "correction_markdown": "Décaler la comparaison d'un triplet après la première différence pour voir si les séquences redeviennent identiques."
+        },
+        {
+          "erreur_markdown": "Dire que toute mutation modifie la protéine.",
+          "pourquoi_faux": "Le code génétique est dégénéré : plusieurs codons codent le même acide aminé. Une substitution qui change AUC en AUU laisse l'isoleucine inchangée.",
+          "correction_markdown": "Traduire les deux séquences avant de conclure sur l'effet, et utiliser le mot « silencieuse » quand l'acide aminé est le même."
+        },
+        {
+          "erreur_markdown": "Confondre délétion et substitution quand la longueur change.",
+          "pourquoi_faux": "Une substitution garde toujours le même nombre de nucléotides ; si la séquence est plus courte ou plus longue, il y a eu perte ou ajout de nucléotides.",
+          "correction_markdown": "Compter le nombre total de nucléotides de chaque séquence avant de nommer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Gène normal (brin transcrit) : TAC GGA TTT. Gène muté : TAC GGA TTA. Nomme la mutation et compare les peptides.",
+          "solution_markdown": "**Alignement.** Les deux séquences ont trois triplets de longueur identique ; seul le 3e triplet diffère : TTT devient TTA.\n\n**Nom.** Une base (T) est remplacée par une autre (A) : c'est une **substitution**.\n\n**Effet.** Gène normal : TAC GGA TTT donne AUG CCU AAA, soit Met - Pro - Lys. Gène muté : TAC GGA TTA donne AUG CCU AAU, soit Met - Pro - Asn. La lysine est remplacée par l'asparagine : mutation de type **faux-sens**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Gène normal : TAC CTT GGA TTT ACC. Gène muté : TAC CTT TTT ACC. Nomme la mutation, détermine les deux peptides et décris l'effet.",
+          "solution_markdown": "**Alignement.** Le gène normal compte cinq triplets, le gène muté quatre : les deux séquences ont des longueurs différentes. Les triplets TAC, CTT, TTT et ACC se retrouvent dans l'ordre dans les deux, et c'est GGA qui manque dans le gène muté.\n\n**Nom.** Un triplet entier a disparu : **délétion** de trois nucléotides (GGA).\n\n**Peptides.** Gène normal : AUG GAA CCU AAA UGG, soit Met - Glu - Pro - Lys - Trp. Gène muté : AUG GAA AAA UGG, soit Met - Glu - Lys - Trp.\n\n**Effet.** La proline a disparu, mais les autres acides aminés sont inchangés : comme la délétion porte sur un triplet complet, le cadre de lecture est conservé."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Gène normal : TAC GGA TTT CAC. Gène muté : TAC GAT TTC AC (une seule base du gène normal a disparu). Détermine le nom de la mutation, puis les deux ARNm, et explique pourquoi elle est plus grave qu'une substitution.",
+          "solution_markdown": "**Alignement.** Le gène normal compte 12 nucléotides, le gène muté 11 : il y a **délétion** d'un seul nucléotide, la base G du 2e triplet (TACGGATTTCAC devient TACGATTTCAC).\n\n**ARNm.** Gène normal : AUG CCU AAA GUG, soit Met - Pro - Lys - Val. Gène muté : AUG CUA AAG UG, soit Met - Leu - Lys, suivi d'un codon incomplet.\n\n**Pourquoi c'est grave.** La perte d'un seul nucléotide décale le cadre de lecture : toutes les bases qui suivent sont regroupées en triplets différents, donc tous les acides aminés en aval sont susceptibles d'être modifiés et le codon stop peut apparaître au mauvais endroit. Une substitution ne touche en général qu'un seul acide aminé, voire aucun si elle est silencieuse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour nommer une mutation, commence par comparer la longueur des deux séquences : même longueur, c'est une substitution ; plus court, une délétion ; plus long, une insertion.",
+        "Décale la comparaison après la première différence : cela évite de compter plusieurs substitutions là où il y a une délétion et une insertion.",
+        "Traduis toujours les deux séquences : une mutation silencieuse ne change pas l'acide aminé, une mutation faux-sens le change, une mutation non-sens crée un codon stop.",
+        "Une délétion ou une insertion d'un nombre de nucléotides non multiple de 3 décale le cadre de lecture et bouleverse la suite de la protéine.",
+        "Au probatoire, cette question vient après la traduction du gène normal : « localise les modifications et attribue-leur un nom commun » rapporte les points quand chaque modification est localisée puis nommée."
+      ]
+    }
+  ]
+}
