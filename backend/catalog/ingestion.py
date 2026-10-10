@@ -55,6 +55,7 @@ from .ingestion_repairs import (
     _dedupe_trailing_exercise_reference,
     _drop_processing_notes,
     _merge_series_from_folder_name,
+    _repair_accented_cours_section_types,
     _repair_control_chars_in_math,
     _repair_dict_shaped_cours_sections,
     _repair_double_json_escaping,
@@ -1847,6 +1848,7 @@ def ingest_cours(data, source_dir=None):
     data, _ = _repair_control_chars_in_math(data)
     data, _ = _repair_missing_matrix_row_separators(data)
     data, _ = _repair_dict_shaped_cours_sections(data)
+    data, _ = _repair_accented_cours_section_types(data)
     data, _ = _repair_literal_dollars(data, f"cours {data.get('cours_id', '?')}")
 
     meta = data.get("meta") or {}

@@ -762,6 +762,32 @@ class IngestCoursInediteTests(TestCase):
         self.assertEqual(cours.statut, StatutContenu.VALIDE)
         self.assertEqual(RappelDeMethodeInedite.objects.get(external_id="rdi-a").cours_id, cours.id)
 
+    def test_les_types_de_section_accentues_sont_remis_a_leur_forme_canonique(self):
+        """Un type « règle » n'est reconnu par aucune branche du rendu : la section disparaissait
+        de la page sans erreur (36 cours publiés constatés le 2026-10-10)."""
+        self._make_rappel()
+        sections = [
+            {"type": "accroche", "contenu_markdown": "Accroche."},
+            {"type": "règle", "titre": "La règle générale", "contenu_markdown": "Énoncé de la règle.", "formule_principale": "a+b"},
+            {"type": "synthèse", "items_markdown": ["À retenir."]},
+        ]
+        cours, _ = ingest_cours_inedite(self._cours_payload(sections=sections))
+
+        self.assertEqual([s["type"] for s in cours.sections_raw], ["accroche", "regle", "synthese"])
+        self.assertIn("## La règle générale", cours.content_markdown)
+        self.assertIn("À retenir.", cours.content_markdown)
+
+    def test_la_reparation_laisse_intacts_les_types_canoniques_et_inconnus(self):
+        from catalog.ingestion_repairs import _repair_accented_cours_section_types
+        data = {"sections": [{"type": "regle", "contenu_markdown": "x"}, {"type": "bonus", "contenu_markdown": "y"}]}
+        reparees, modifie = _repair_accented_cours_section_types(data)
+        self.assertFalse(modifie)
+        self.assertIs(reparees, data)
+        _, modifie = _repair_accented_cours_section_types({"sections": [{"type": "prérequis", "items": ["a"]}]})
+        self.assertTrue(modifie)
+        _, modifie = _repair_accented_cours_section_types({"sections": {"regle": {}}})  # forme dict : autre réparation
+        self.assertFalse(modifie)
+
     def test_missing_rappel_raises(self):
         with self.assertRaises(IngestionError):
             ingest_cours_inedite(self._cours_payload())

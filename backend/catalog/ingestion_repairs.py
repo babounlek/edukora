@@ -19,6 +19,7 @@ contenu).
 """
 
 import re
+import unicodedata
 
 # Le SKILL.md proscrit déjà l'em dash à la génération, mais un modèle de langage
 # n'applique pas une consigne de style avec une fiabilité de 100% sur un texte long -
@@ -958,6 +959,43 @@ def _repair_dict_shaped_cours_sections(data):
 
     data = dict(data)
     data["sections"] = [_normalize_cours_section_entry(key, sections[key]) for key in ordered_keys]
+    return data, True
+
+
+# Types de section reconnus par le rendu (voir catalog.rendering) : une section dont le type est
+# écrit avec des accents (« règle », « prérequis », « exemple_résolu », « synthèse ») n'est
+# reconnue par aucune branche du rendu et disparaît de la page sans erreur - 36 cours publiés
+# s'affichaient ainsi sans leur règle (constaté le 2026-10-10). On remet le type à sa forme canonique.
+_COURS_SECTION_TYPES_CANONIQUES = (
+    "accroche", "prerequis", "regle", "exemple_resolu", "erreurs_classiques", "exercices_application", "synthese",
+)
+
+
+def _canonical_section_type(valeur):
+    sans_accents = "".join(c for c in unicodedata.normalize("NFKD", valeur) if not unicodedata.combining(c))
+    return sans_accents.strip().lower().replace(" ", "_")
+
+
+def _repair_accented_cours_section_types(data):
+    if not isinstance(data, dict):
+        return data, False
+    sections = data.get("sections")
+    if not isinstance(sections, list):
+        return data, False
+    nouvelles, modifie = [], False
+    for section in sections:
+        if (
+            isinstance(section, dict) and isinstance(section.get("type"), str)
+            and section["type"] not in _COURS_SECTION_TYPES_CANONIQUES
+        ):
+            canonique = _canonical_section_type(section["type"])
+            if canonique in _COURS_SECTION_TYPES_CANONIQUES:
+                section, modifie = {**section, "type": canonique}, True
+        nouvelles.append(section)
+    if not modifie:
+        return data, False
+    data = dict(data)
+    data["sections"] = nouvelles
     return data, True
 
 

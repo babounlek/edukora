@@ -56,7 +56,7 @@ from catalog.ingestion import (
     _strip_em_dash,
     _validate_pays_matches_country,
 )
-from catalog.ingestion_repairs import _repair_dict_shaped_cours_sections
+from catalog.ingestion_repairs import _repair_accented_cours_section_types, _repair_dict_shaped_cours_sections
 from catalog.models import Cours, Cursus, Exercise, Lesson, Question, StatutContenu, Subject, Tag, TypeReponse
 from programme.models import Savoir
 
@@ -545,6 +545,7 @@ def ingest_cours_inedite(data):
     sur le pré-traitement de run_ingestion pour ces deux réparations.
     """
     data, _ = _repair_dict_shaped_cours_sections(data)
+    data, _ = _repair_accented_cours_section_types(data)
 
     meta = data.get("meta") or {}
     source = data.get("source") or {}
