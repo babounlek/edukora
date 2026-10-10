@@ -42,40 +42,63 @@
     },
     {
       "type": "exemple_resolu",
-      "enonce_markdown": "Dans un systeme de reservation de billets d'avion consulte a la fois par un client et par un systeme distant de gestion des disponibilites, qui sont les acteurs et lequel est principal ?",
-      "epreuve_source": true,
       "etapes": [
         {
-          "numero": 1,
           "action": "Identifier les entites externes au systeme",
+          "numero": 1,
           "justification": "Un acteur doit etre externe au systeme etudie et interagir avec lui",
           "resultat_markdown": "Le client (personne physique) et le systeme distant de gestion des disponibilites (autre systeme informatique) sont tous deux externes au systeme de reservation."
         },
         {
-          "numero": 2,
           "action": "Determiner qui initie l'interaction",
+          "numero": 2,
           "justification": "L'acteur principal declenche le cas d'utilisation pour obtenir un resultat",
           "resultat_markdown": "Le client initie la reservation : c'est l'acteur principal."
         },
         {
-          "numero": 3,
           "action": "Qualifier l'autre acteur",
+          "numero": 3,
           "justification": "Un acteur simplement sollicite en cours de scenario est secondaire",
           "resultat_markdown": "Le systeme distant, consulte par le systeme etudie, est un acteur secondaire."
         }
       ],
+      "epreuve_source": true,
+      "enonce_markdown": "Dans un systeme de reservation de billets d'avion consulte a la fois par un client et par un systeme distant de gestion des disponibilites, qui sont les acteurs et lequel est principal ?",
       "conclusion_markdown": "Un acteur n'est pas necessairement humain : un systeme externe interroge par le systeme etudie est un acteur secondaire a part entiere."
     },
     {
       "type": "erreurs_classiques",
       "items": [
         {
-          "erreur_markdown": "Croire qu'un acteur est toujours une personne physique",
-          "pourquoi_faux": "Un acteur peut aussi etre un autre systeme informatique ou un dispositif materiel, des lors qu'il interagit avec le systeme etudie depuis l'exterieur."
+          "pourquoi_faux": "Un acteur peut aussi etre un autre systeme informatique ou un dispositif materiel, des lors qu'il interagit avec le systeme etudie depuis l'exterieur.",
+          "erreur_markdown": "Croire qu'un acteur est toujours une personne physique"
         },
         {
-          "erreur_markdown": "Representer un acteur comme faisant partie du systeme (a l'interieur du rectangle systeme)",
-          "pourquoi_faux": "Un acteur est par definition externe au systeme : il se place toujours en dehors du rectangle representant les limites du systeme."
+          "pourquoi_faux": "Un acteur est par definition externe au systeme : il se place toujours en dehors du rectangle representant les limites du systeme.",
+          "erreur_markdown": "Representer un acteur comme faisant partie du systeme (a l'interieur du rectangle systeme)"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On étudie le système « distributeur automatique de billets (DAB) » d'une banque de Douala, matériel et logiciel compris. Parmi les entités suivantes, lesquelles sont des acteurs du système ? (a) le client titulaire d'une carte ; (b) le serveur d'autorisation de la banque, interrogé pour valider chaque retrait ; (c) le lecteur de carte intégré au distributeur ; (d) le module logiciel de calcul du solde, situé dans le distributeur.",
+          "solution_markdown": "Sont des acteurs les entités externes au système qui interagissent avec lui :\n- (a) le client titulaire de la carte : acteur principal, il initie le retrait ;\n- (b) le serveur d'autorisation de la banque : acteur secondaire, un système informatique externe sollicité en cours de scénario.\n\nNe sont pas des acteurs : (c) le lecteur de carte et (d) le module de calcul du solde, car ils font partie du système étudié."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une application de transfert d'argent par téléphone (type Mobile Money) propose le cas d'utilisation « Envoyer de l'argent ». L'abonné saisit le numéro du bénéficiaire et le montant ; l'application demande la validation au serveur de l'opérateur, puis un SMS de notification est envoyé au bénéficiaire, qui n'a rien d'autre à faire dans ce cas. Identifier l'acteur principal et les acteurs secondaires de ce cas d'utilisation, et dire si le bénéficiaire en est un.",
+          "solution_markdown": "- Acteur principal : l'abonné qui envoie l'argent, car il déclenche le cas d'utilisation.\n- Acteur secondaire : le serveur de l'opérateur, système externe sollicité par l'application pour valider l'opération (la passerelle d'envoi de SMS peut aussi être représentée, si on la considère comme un système externe appelé par l'application).\n- Le bénéficiaire n'est pas un acteur de ce cas d'utilisation : il reçoit simplement un SMS et n'échange aucune information avec le système dans ce scénario. Il deviendrait acteur d'un autre cas, par exemple « Retirer l'argent reçu »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "difficile",
+          "enonce_markdown": "Dans le système de gestion de la bibliothèque d'un lycée de Yaoundé, les élèves et les enseignants empruntent des livres de la même façon. Le bibliothécaire enregistre les prêts et les retours. M. Atangana, enseignant de physique, emprunte des livres et remplace aussi le bibliothécaire pendant son congé. À la fin d'un prêt, le système fait imprimer une fiche sur l'imprimante de la salle. (a) Combien d'acteurs humains faut-il représenter, et lesquels ? (b) M. Atangana doit-il être un acteur ? (c) L'imprimante est-elle un acteur ?",
+          "solution_markdown": "(a) Deux acteurs humains, définis par leur rôle : « Emprunteur » (élèves et enseignants, qui ont les mêmes interactions avec le système) et « Bibliothécaire ».\n(b) Non : un acteur représente un rôle, pas une personne. M. Atangana n'apparaît pas sous son nom ; il joue tantôt le rôle Emprunteur, tantôt le rôle Bibliothécaire.\n(c) Oui : l'imprimante est un dispositif matériel externe au système, sollicité par celui-ci pour imprimer la fiche. C'est donc un acteur secondaire, placé à droite du système."
         }
       ]
     },

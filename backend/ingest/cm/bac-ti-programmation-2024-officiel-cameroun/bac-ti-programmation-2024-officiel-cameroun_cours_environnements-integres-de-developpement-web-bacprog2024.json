@@ -29,37 +29,69 @@
       "contenu_markdown": "Developper une application web dynamique (HTML/PHP/MySQL) suppose de disposer, sur sa machine, d'un environnement capable a la fois d'executer le PHP et de gerer une base de donnees."
     },
     {
+      "type": "prerequis",
+      "items": [
+        "Architecture client/serveur : navigateur web (client) et serveur web",
+        "Notion de page web dynamique (PHP exécuté côté serveur)",
+        "Notion de SGBD (MySQL, MariaDB) et de base de données",
+        "Adresse locale localhost : accès à son propre ordinateur comme à un serveur"
+      ]
+    },
+    {
       "type": "regle",
       "titre": "Exemples d'environnements integres",
       "contenu_markdown": "**WampServer** et **XAMPP** sont deux environnements integres (« stacks ») qui regroupent en une seule installation un serveur web (Apache), un interpreteur PHP et un SGBD (MySQL/MariaDB), ce qui permet de developper ET d'heberger localement une page web dynamique sans configurer chaque brique separement. D'autres exemples existent : EasyPHP, MAMP (pour Mac)."
     },
     {
       "type": "exemple_resolu",
-      "enonce_markdown": "Citer deux environnements integres de developpement web.",
-      "epreuve_source": true,
       "etapes": [
         {
-          "numero": 1,
           "action": "Citer un premier environnement courant",
+          "numero": 1,
           "justification": "WampServer est tres repandu dans l'enseignement du PHP sous Windows.",
           "resultat_markdown": "WampServer."
         },
         {
-          "numero": 2,
           "action": "Citer un second environnement courant",
+          "numero": 2,
           "justification": "XAMPP est multiplateforme et tout aussi repandu.",
           "resultat_markdown": "XAMPP."
         }
       ],
+      "epreuve_source": true,
+      "enonce_markdown": "Citer deux environnements integres de developpement web.",
       "conclusion_markdown": "Ces environnements combinent toujours serveur web + PHP + SGBD, ce qui les rend utilisables directement pour heberger une page comme celle de l'enonce."
     },
     {
       "type": "erreurs_classiques",
       "items": [
         {
-          "erreur_markdown": "Confondre un environnement integre (WampServer, XAMPP) avec un simple editeur de texte/code (VS Code, Sublime Text).",
           "pourquoi_faux": "Un editeur de code permet d'ecrire le code mais pas de l'executer/l'heberger comme serveur web local.",
+          "erreur_markdown": "Confondre un environnement integre (WampServer, XAMPP) avec un simple editeur de texte/code (VS Code, Sublime Text).",
           "correction_markdown": "Reserver le terme 'environnement integre de developpement web' aux outils qui fournissent serveur + PHP + SGBD ensemble."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Que signifient les lettres W, A, M et P dans le nom WampServer ? (b) Quel est le rôle de chacun des trois composants logiciels qui y figurent (Apache, MySQL, PHP) ?",
+          "solution_markdown": "(a) W : Windows ; A : Apache ; M : MySQL ; P : PHP.\n(b) Apache est le serveur web : il reçoit les requêtes du navigateur et renvoie les pages. PHP est l'interpréteur qui exécute le code PHP et produit la page HTML renvoyée. MySQL est le SGBD qui stocke les données et répond aux requêtes SQL du script PHP."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève installe XAMPP, enregistre son fichier `notes.php` sur le Bureau et le « double-clique » : le navigateur affiche le code PHP tel quel, sans l'exécuter. Expliquer pourquoi et indiquer comment procéder pour que la page s'exécute.",
+          "solution_markdown": "En double-cliquant, le navigateur ouvre le fichier directement depuis le disque (adresse de type `file:///...`) : la requête ne passe pas par Apache, et le PHP n'est donc pas interprété.\n\nIl faut : (1) démarrer Apache depuis le panneau de contrôle de XAMPP ; (2) copier `notes.php` dans le dossier des documents du serveur (`htdocs` pour XAMPP, `www` pour WampServer) ; (3) ouvrir `http://localhost/notes.php` dans le navigateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "difficile",
+          "enonce_markdown": "Au démarrage de XAMPP, le voyant d'Apache reste rouge : le port 80 est déjà utilisé par un autre programme. (a) Donner deux solutions. (b) Après avoir changé le port d'écoute d'Apache pour 8080, à quelle adresse accède-t-on à `notes.php` ? (c) Apache fonctionne, la page s'affiche, mais la connexion à la base échoue avec « connexion refusée » : quelle vérification faire en premier ?",
+          "solution_markdown": "(a) Soit fermer ou arrêter le programme qui occupe le port 80 (autre serveur web, par exemple) ; soit modifier le port d'écoute d'Apache dans son fichier de configuration (`httpd.conf`, ligne `Listen 80` remplacée par `Listen 8080`), puis redémarrer Apache.\n(b) Il faut préciser le port dans l'adresse : `http://localhost:8080/notes.php`.\n(c) Vérifier que le module MySQL est bien démarré dans le panneau de contrôle : Apache et MySQL sont deux services distincts, et la connexion est refusée si MySQL est arrêté."
         }
       ]
     },

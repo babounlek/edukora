@@ -31,37 +31,69 @@
       "contenu_markdown": "Savoir 'lire' un programme C suppose de reconnaitre au premier coup d'oeil ses briques syntaxiques de base."
     },
     {
+      "type": "prerequis",
+      "items": [
+        "Structure générale d'un programme C : directives #include, déclarations, fonction main",
+        "Notion de fonction : en-tête (type de retour, nom, paramètres) et corps",
+        "Types de base (int, float, char) et portée d'une variable (locale ou globale)",
+        "Formats d'affichage et de saisie de printf et scanf (%d, %f, %c)"
+      ]
+    },
+    {
       "type": "regle",
       "titre": "Reperes de lecture",
       "contenu_markdown": "- **Bibliotheque** : nom apres `#include <...>`.\n- **Variable globale** : declaree en dehors de toute fonction.\n- **Parametre formel** : nom declare entre parentheses dans l'en-tete d'une fonction.\n- **Fonction d'entree** : toujours `main()`.\n- **Format de donnees** : specificateur dans une chaine de `printf`/`scanf` (`%d`, `%f`, `%c`...).\n- **Appel de fonction** : nom d'une fonction suivi de parentheses, utilise dans une expression.\n- **Structure de donnees** : type defini par `struct`, utilise pour regrouper des membres."
     },
     {
       "type": "exemple_resolu",
-      "enonce_markdown": "Recenser une bibliotheque, une variable globale, un parametre formel, etc. dans un programme donne.",
-      "epreuve_source": true,
       "etapes": [
         {
-          "numero": 1,
           "action": "Reperer chaque #include",
+          "numero": 1,
           "justification": "Chaque bibliotheque standard est nommee apres #include.",
           "resultat_markdown": "stdio.h, stdlib.h, math.h."
         },
         {
-          "numero": 2,
           "action": "Reperer les declarations hors fonction",
+          "numero": 2,
           "justification": "Une variable declaree hors de toute fonction est globale.",
           "resultat_markdown": "int taille=4; est une variable globale."
         }
       ],
+      "epreuve_source": true,
+      "enonce_markdown": "Recenser une bibliotheque, une variable globale, un parametre formel, etc. dans un programme donne.",
       "conclusion_markdown": "Cette grille de lecture s'applique a n'importe quel programme C, pas seulement a celui de l'enonce."
     },
     {
       "type": "erreurs_classiques",
       "items": [
         {
-          "erreur_markdown": "Confondre parametre formel (dans l'en-tete de la fonction) et argument effectif (dans l'appel de la fonction).",
           "pourquoi_faux": "Le parametre formel est le nom utilise DANS la definition de la fonction ; l'argument effectif est la valeur passee LORS de l'appel.",
+          "erreur_markdown": "Confondre parametre formel (dans l'en-tete de la fonction) et argument effectif (dans l'appel de la fonction).",
           "correction_markdown": "Chercher le parametre formel dans l'en-tete de definition (ex. int module(complexe z) -> z), l'argument effectif dans l'appel (ex. module(z[tmp]) -> z[tmp])."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le programme suivant, relever : la bibliothèque, la variable globale, le paramètre formel, la fonction d'entrée, l'argument effectif de l'appel de `carre` et le format utilisé. Quel affichage est produit ?\n\n```c\n#include <stdio.h>\n\nint total = 0;\n\nint carre(int x) {\n    return x * x;\n}\n\nint main() {\n    int n = 5;\n    total = carre(n);\n    printf(\"Carre : %d\", total);\n    return 0;\n}\n```",
+          "solution_markdown": "- Bibliothèque : `stdio.h` (après `#include`).\n- Variable globale : `total`, déclarée hors de toute fonction.\n- Paramètre formel : `x`, dans l'en-tête de `carre`.\n- Fonction d'entrée : `main`.\n- Argument effectif : `n`, dans l'appel `carre(n)`.\n- Format : `%d` (entier) dans le `printf`.\n\nAffichage : `Carre : 25`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans le programme suivant, indiquer : (a) les bibliothèques et ce que chacune apporte ; (b) la structure de données et ses membres ; (c) les paramètres formels de `distance` et les arguments effectifs de son appel ; (d) le rôle de `%f` et de `%.2f` ; (e) s'il existe une variable globale ; (f) l'affichage obtenu si l'on saisit `0 0` puis `3 4`.\n\n```c\n#include <stdio.h>\n#include <math.h>\n\ntypedef struct {\n    float x;\n    float y;\n} Point;\n\nfloat distance(Point a, Point b) {\n    return sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));\n}\n\nint main() {\n    Point p1, p2;\n    scanf(\"%f %f\", &p1.x, &p1.y);\n    scanf(\"%f %f\", &p2.x, &p2.y);\n    printf(\"%.2f\", distance(p1, p2));\n    return 0;\n}\n```",
+          "solution_markdown": "(a) `stdio.h` fournit `printf` et `scanf` (entrées-sorties) ; `math.h` fournit `sqrt` (racine carrée).\n(b) `Point`, définie par `struct`, regroupe deux membres : `x` et `y` (de type `float`).\n(c) Paramètres formels : `a` et `b` (de type `Point`), dans l'en-tête de `distance`. Arguments effectifs : `p1` et `p2`, dans l'appel `distance(p1, p2)`.\n(d) `%f` indique à `scanf` de lire un réel ; `%.2f` demande à `printf` d'afficher un réel avec deux décimales.\n(e) Non : toutes les variables (`p1`, `p2`) sont déclarées dans `main`, donc locales.\n(f) Distance entre (0, 0) et (3, 4) : racine de 9 + 16, soit 5. Affichage : `5.00`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "difficile",
+          "enonce_markdown": "On considère le programme suivant.\n\n```c\n#include <stdio.h>\n\nint compteur = 10;\n\nvoid augmenter(int compteur) {\n    compteur = compteur + 1;\n}\n\nint main() {\n    augmenter(compteur);\n    printf(\"%d\", compteur);\n    return 0;\n}\n```\n\n(a) Repérer la variable globale, le paramètre formel et l'argument effectif. (b) Que s'affiche-t-il, et pourquoi ? (c) Modifier la fonction `augmenter` pour que le programme affiche 11.",
+          "solution_markdown": "(a) Variable globale : `compteur` (hors de toute fonction). Paramètre formel : `compteur`, dans l'en-tête de `augmenter` (une variable locale distincte, qui porte le même nom). Argument effectif : `compteur` dans l'appel `augmenter(compteur)`, c'est-à-dire la variable globale.\n(b) Il s'affiche `10`. Le paramètre est une copie de la valeur passée : la fonction augmente la copie locale, qui masque la variable globale dans la fonction, et la variable globale reste inchangée. Le `printf` de `main` lit la globale.\n(c) Supprimer le paramètre, pour que la fonction modifie directement la variable globale :\n```c\nvoid augmenter() {\n    compteur = compteur + 1;\n}\n```\navec l'appel `augmenter();` dans `main` ; le programme affiche alors `11`."
         }
       ]
     },

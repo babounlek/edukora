@@ -30,37 +30,69 @@
       "contenu_markdown": "Le diagramme de classes decrit une structure generale ; le diagramme d'objets en montre un exemple concret, fige a un instant donne."
     },
     {
+      "type": "prerequis",
+      "items": [
+        "Notion de classe, d'attribut et d'objet (instance d'une classe)",
+        "Lecture d'un diagramme de classes UML : classes, associations et cardinalités",
+        "Notation d'un objet en UML : nom:Classe ou :Classe, suivi des valeurs de ses attributs",
+        "Notion de lien : instance d'une association entre deux objets"
+      ]
+    },
+    {
       "type": "regle",
       "titre": "Role et construction du diagramme d'objets",
       "contenu_markdown": "Le **diagramme d'objets** represente un instantane (une \"photographie\") du systeme a un instant donne : des **objets** (instances concretes de classes, notees `:NomDeClasse`, avec des valeurs reelles pour leurs attributs) relies par des **liens** (instances d'associations) qui existent effectivement entre eux a ce moment precis.\n\n**Role** : valider et illustrer concretement un diagramme de classes, en verifiant que les associations et leurs cardinalites sont coherentes et exploitables sur un exemple reel.\n\n**Construction a partir d'un diagramme de classes** : on instancie chaque classe retenue en une occurrence concrete avec des valeurs plausibles pour ses attributs, puis on relie ces objets par des liens qui respectent exactement les associations et cardinalites du diagramme de classes d'origine."
     },
     {
       "type": "exemple_resolu",
-      "enonce_markdown": "Donner le role du diagramme d'objets, puis en deduire un exemple a partir d'un diagramme de classes donne.",
-      "epreuve_source": true,
       "etapes": [
         {
-          "numero": 1,
           "action": "Enoncer le role du diagramme d'objets",
+          "numero": 1,
           "justification": "Le diagramme d'objets sert a verifier concretement un diagramme de classes.",
           "resultat_markdown": "Il valide les associations et cardinalites du diagramme de classes sur un exemple reel."
         },
         {
-          "numero": 2,
           "action": "Instancier chaque classe et relier les objets",
+          "numero": 2,
           "justification": "Chaque lien du diagramme d'objets doit correspondre a une association precise du diagramme de classes.",
           "resultat_markdown": "Un objet :Employe relie a un objet :DemandeFormation illustre l'association 'soumet' entre les classes Employe et DemandeFormation."
         }
       ],
+      "epreuve_source": true,
+      "enonce_markdown": "Donner le role du diagramme d'objets, puis en deduire un exemple a partir d'un diagramme de classes donne.",
       "conclusion_markdown": "Un diagramme d'objets coherent ne contient aucun lien qui ne corresponde a une association existante dans le diagramme de classes."
     },
     {
       "type": "erreurs_classiques",
       "items": [
         {
-          "erreur_markdown": "Ajouter un lien entre deux objets sans association correspondante dans le diagramme de classes.",
           "pourquoi_faux": "Le diagramme d'objets doit rester une instance fidele du diagramme de classes, jamais une structure independante.",
+          "erreur_markdown": "Ajouter un lien entre deux objets sans association correspondante dans le diagramme de classes.",
           "correction_markdown": "Verifier, pour chaque lien trace, qu'il existe bien une association nommee correspondante entre les deux classes concernees."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un diagramme de classes contient les classes `Eleve(matricule, nom)` et `Classe(nom, effectif)`, reliées par l'association « est inscrit dans » : un élève est inscrit dans exactement une classe ; une classe compte plusieurs élèves. Dessiner (ou décrire) un diagramme d'objets avec deux élèves de la classe « Terminale TI 1 ».",
+          "solution_markdown": "Trois objets et deux liens :\n- `:Classe` avec `nom = \"Terminale TI 1\"` et `effectif = 45` ;\n- `:Eleve` avec `matricule = \"TI-001\"` et `nom = \"Mballa\"` ;\n- `:Eleve` avec `matricule = \"TI-002\"` et `nom = \"Fotso\"` ;\n- un lien « est inscrit dans » de chaque objet `:Eleve` vers l'unique objet `:Classe`.\n\nChaque élève a bien exactement un lien vers une classe, ce qui respecte la cardinalité du diagramme de classes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Diagramme de classes : `Client(nom, telephone)` et `Commande(numero, date)`, reliées par l'association « passe » ; un client passe 0 ou plusieurs commandes, une commande est passée par exactement un client. Un élève propose le diagramme d'objets suivant : l'objet `c1:Commande` (numero = \"C-102\") est relié à la fois à `:Client` (nom = \"Ngono\") et à `:Client` (nom = \"Tchoua\"). Ce diagramme est-il valide ? Sinon, le corriger.",
+          "solution_markdown": "Il n'est pas valide : la cardinalité côté `Client` est « exactement 1 », donc l'objet `c1` ne peut avoir qu'un seul lien « passe » vers un client. Ici il en a deux.\n\nCorrection possible : conserver le lien entre `c1` (C-102) et le client Ngono, et rattacher le client Tchoua à une autre commande, par exemple `c2:Commande` (numero = \"C-103\"). En revanche, le client Ngono pourrait être lié à plusieurs commandes sans erreur, car la cardinalité côté `Commande` est « 0..* »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "difficile",
+          "enonce_markdown": "Diagramme de classes : `Medecin(nom, specialite)`, `Patient(nom, age)` et `Consultation(date, motif)`. Un médecin effectue 0 ou plusieurs consultations ; un patient est concerné par 0 ou plusieurs consultations ; chaque consultation est effectuée par exactement un médecin et concerne exactement un patient.\nConstruire le diagramme d'objets de la situation suivante : le Dr Kamga (généraliste) a reçu Mme Ndzana (34 ans) le 12/03 pour de la fièvre, puis M. Ekani (52 ans) le 14/03 pour de l'hypertension. Peut-on ajouter une consultation reliée à un médecin mais à aucun patient ?",
+          "solution_markdown": "Le diagramme comporte 5 objets et 4 liens :\n- `dr_kamga:Medecin` (nom = \"Kamga\", specialite = \"généraliste\") ;\n- `p1:Patient` (nom = \"Ndzana\", age = 34) et `p2:Patient` (nom = \"Ekani\", age = 52) ;\n- `c1:Consultation` (date = 12/03, motif = \"fièvre\") et `c2:Consultation` (date = 14/03, motif = \"hypertension\") ;\n- liens : `dr_kamga` - `c1`, `dr_kamga` - `c2`, `c1` - `p1`, `c2` - `p2`.\n\nNon, on ne peut pas ajouter une consultation sans patient : la cardinalité côté `Patient` est « exactement 1 », donc toute consultation doit être reliée à un patient. À l'inverse, un médecin ou un patient sans consultation serait accepté (cardinalité 0..*)."
         }
       ]
     },

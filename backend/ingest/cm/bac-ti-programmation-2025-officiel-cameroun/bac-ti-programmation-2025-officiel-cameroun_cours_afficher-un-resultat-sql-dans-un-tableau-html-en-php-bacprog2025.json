@@ -43,36 +43,59 @@
     },
     {
       "type": "exemple_resolu",
-      "enonce_markdown": "Afficher toutes les lignes d'un resultat dans un tableau HTML.",
-      "epreuve_source": true,
       "etapes": [
         {
-          "numero": 1,
           "action": "Ouvrir la balise table avant la boucle",
+          "numero": 1,
           "justification": "Le tableau HTML englobe toutes les lignes affichees",
           "resultat_markdown": "echo \"<table>\";"
         },
         {
-          "numero": 2,
           "action": "Boucler sur chaque ligne du resultat",
+          "numero": 2,
           "justification": "mysqli_fetch_assoc() avance d'une ligne a chaque appel",
           "resultat_markdown": "`while($ligne = mysqli_fetch_assoc($resultat)){ echo \"<tr>\"; foreach($ligne as $val){ echo \"<td>$val</td>\"; } echo \"</tr>\"; }`"
         },
         {
-          "numero": 3,
           "action": "Fermer la balise table apres la boucle",
+          "numero": 3,
           "justification": "Toutes les lignes ont ete inserees",
           "resultat_markdown": "echo \"</table>\";"
         }
       ],
+      "epreuve_source": true,
+      "enonce_markdown": "Afficher toutes les lignes d'un resultat dans un tableau HTML.",
       "conclusion_markdown": "Le tableau HTML final contient autant de lignes <tr> que de lignes retournees par la requete SQL."
     },
     {
       "type": "erreurs_classiques",
       "items": [
         {
-          "erreur_markdown": "Rouvrir la balise <table> a chaque tour de boucle",
-          "pourquoi_faux": "La balise table doit englober toutes les lignes ; elle ne s'ouvre et ne se ferme qu'une seule fois, en dehors de la boucle."
+          "pourquoi_faux": "La balise table doit englober toutes les lignes ; elle ne s'ouvre et ne se ferme qu'une seule fois, en dehors de la boucle.",
+          "erreur_markdown": "Rouvrir la balise <table> a chaque tour de boucle"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La variable `$res` contient le résultat de `mysqli_query($conn, \"SELECT code, intitule FROM matiere\")`. Écrire le code PHP qui affiche toutes les lignes dans un tableau HTML à deux colonnes. Quel HTML est produit si la table contient (INFO, Informatique) et (MATH, Mathématiques) ?",
+          "solution_markdown": "```php\necho \"<table>\";\nwhile ($ligne = mysqli_fetch_assoc($res)) {\n    echo \"<tr><td>\" . $ligne['code'] . \"</td><td>\" . $ligne['intitule'] . \"</td></tr>\";\n}\necho \"</table>\";\n```\n\nHTML produit pour les deux lignes :\n`<table><tr><td>INFO</td><td>Informatique</td></tr><tr><td>MATH</td><td>Mathématiques</td></tr></table>`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Table `produit(id, nom, prix)` d'un marché de Yaoundé. Écrire le code qui exécute une requête classant les produits du plus cher au moins cher, les affiche dans un tableau avec une ligne d'en-tête « Produit » et « Prix (FCFA) », puis affiche sous le tableau le total des prix.",
+          "solution_markdown": "```php\n$res = mysqli_query($conn, \"SELECT nom, prix FROM produit ORDER BY prix DESC\");\n$total = 0;\necho \"<table>\";\necho \"<tr><th>Produit</th><th>Prix (FCFA)</th></tr>\";\nwhile ($ligne = mysqli_fetch_assoc($res)) {\n    echo \"<tr><td>\" . $ligne['nom'] . \"</td><td>\" . $ligne['prix'] . \"</td></tr>\";\n    $total = $total + $ligne['prix'];\n}\necho \"</table>\";\necho \"Total : \" . $total . \" FCFA\";\n```\n\nLa ligne d'en-tête est écrite une seule fois, avant la boucle. Le total est cumulé à chaque tour et affiché après la fermeture du tableau."
+        },
+        {
+          "numero": 3,
+          "difficulte": "difficile",
+          "enonce_markdown": "Le code suivant doit afficher le nom et la note de chaque élève, mais le résultat est incorrect.\n\n```php\n$res = mysqli_query($conn, \"SELECT nom, note FROM resultat\");\nwhile ($ligne = mysqli_fetch_assoc($res)) {\n    echo \"<table>\";\n    echo \"<tr><td>\" . $ligne['nom'] . \"</td><td>\" . $ligne['note'] . \"</td></tr>\";\n}\necho \"</table>\";\n```\n\n(a) Quelle est l'erreur ? (b) Corriger le code et ajouter une troisième colonne affichant « Admis » si la note est au moins 10, « Ajourné » sinon. (c) Que produit le code corrigé si la requête ne retourne aucune ligne ?",
+          "solution_markdown": "(a) La balise `<table>` est ouverte à chaque tour de boucle, alors que `</table>` n'est écrite qu'une fois : on obtient autant de tableaux ouverts que de lignes et un seul fermé. Elle doit être ouverte une seule fois, avant la boucle.\n\n(b)\n```php\necho \"<table>\";\nwhile ($ligne = mysqli_fetch_assoc($res)) {\n    if ($ligne['note'] >= 10) {\n        $decision = \"Admis\";\n    } else {\n        $decision = \"Ajourné\";\n    }\n    echo \"<tr><td>\" . $ligne['nom'] . \"</td><td>\" . $ligne['note'] . \"</td><td>\" . $decision . \"</td></tr>\";\n}\necho \"</table>\";\n```\n\n(c) La boucle ne s'exécute pas : le code affiche seulement `<table></table>`, un tableau vide. On peut tester `mysqli_num_rows($res)` avant pour afficher un message à la place."
         }
       ]
     },
