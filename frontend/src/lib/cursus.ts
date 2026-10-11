@@ -27,6 +27,12 @@ export function examCodesFor(cursus: Cursus[]): { code: string; label: string }[
     .map(([code, label]) => ({ code, label }))
 }
 
+/** « Série C » / « Séries C, D et E » pour l'en-tête d'une épreuve ou d'un cours : le libellé accordé
+ * par l'API, ou à défaut `Série` + la liste brute (réponse d'un backend plus ancien). */
+export function libelleSerieEntete(header: { serie: string | null; serie_libelle?: string | null }): string | null {
+  return header.serie_libelle ?? (header.serie ? `Série ${header.serie}` : null)
+}
+
 /** Mêmes niveaux que `examCodesFor`, sans le code interne (ex: badges d'affichage). */
 export function examLevelsFor(cursus: Cursus[]): string[] {
   return examCodesFor(cursus).map((e) => e.label)

@@ -21,6 +21,7 @@ from rest_framework.response import Response
 
 from access.services import has_access_inedite
 from catalog.inedit_bridge import bulk_mes_tentatives, epreuve_inedite_catalogue_payload
+from catalog.libelles import libelle_cursus
 from catalog.models import Cursus, StatutContenu, TypeReponse
 from catalog.rendering import annotate_cours_links
 from catalog.serializers import CursusSerializer
@@ -133,11 +134,7 @@ def _alimenter_revision(tentative, question, correcte):
             )
 
 
-def _cursus_display(cursus_iterable):
-    return ", ".join(
-        f"{c.display_examen()} - Série {c.series.code}" if c.series else c.display_examen()
-        for c in cursus_iterable
-    )
+_cursus_display = libelle_cursus
 
 
 def _correction_disponible(tentative):

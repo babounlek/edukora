@@ -14,6 +14,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from access.services import has_access
+from catalog.libelles import libelle_cursus
 from catalog.models import Lesson, LessonType
 from inedit import notation, rapport
 from inedit.models import CausePerte
@@ -99,10 +100,7 @@ def _auto_complete_if_expired(simulation):
 # --------------------------------------------------------------------------- charges utiles
 
 
-def _cursus_display(cursus_list):
-    return ", ".join(
-        f"{c.display_examen()} - Série {c.series.code}" if c.series else c.display_examen() for c in cursus_list
-    )
+_cursus_display = libelle_cursus
 
 
 def _exercice_payload(simulation, exercice, reponse, correction, points_info):

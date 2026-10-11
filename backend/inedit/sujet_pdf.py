@@ -29,6 +29,7 @@ from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 from django.utils.text import slugify
 
+from catalog.libelles import libelle_cursus
 from catalog.sujet_pdf import (
     _FLAGS_DIR,
     _footer_template,
@@ -47,11 +48,7 @@ from playwright.sync_api import sync_playwright
 _KATEX_DIR = Path(settings.BASE_DIR) / "catalog" / "static" / "katex"
 
 
-def _cursus_display(cursus_iterable):
-    return ", ".join(
-        f"{c.display_examen()} - Série {c.series.code}" if c.series else c.display_examen()
-        for c in cursus_iterable
-    )
+_cursus_display = libelle_cursus
 
 
 # ?ref=pdf_sujet_inedit distingue cette provenance de celle du sujet catalog (voir

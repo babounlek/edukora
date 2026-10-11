@@ -7,6 +7,10 @@ from django.db.models.functions import Upper
 from django.utils import timezone
 from django.utils.text import slugify
 
+# `_join_fr` : nom historique, importé tel quel par catalog.ingestion et reclassify_physique_chimie.
+from .libelles import joindre_fr as _join_fr
+from .libelles import libelle_series
+
 # "La courbe ci-contre...", "le tableau ci-dessous..." : renvoi explicite à une figure
 # supposée visible - voir Question.references_missing_figure.
 _MISSING_FIGURE_REFERENCE_RE = re.compile(r"\bci[- ]contre\b|\bci[- ]dessous\b|\bci[- ]apr[eè]s\b", re.IGNORECASE)
@@ -16,16 +20,6 @@ _MISSING_FIGURE_REFERENCE_RE = re.compile(r"\bci[- ]contre\b|\bci[- ]dessous\b|\
 # pas le bon, et le placeholder entier passe inaperçu pour ce regex (constaté en
 # production sur des questions dont la figure existait bien).
 _IMAGE_PLACEHOLDER_RE = re.compile(r"!\[.*?\]\([^)]+\)")
-
-
-def _join_fr(items):
-    """Joint des éléments à la française : "C", "C et E", "C, D et E" - pour ne pas
-    répéter le diplôme quand une épreuve concerne plusieurs séries (ex: "BAC C et E")."""
-    if len(items) <= 1:
-        return "".join(items)
-    if len(items) == 2:
-        return " et ".join(items)
-    return f"{', '.join(items[:-1])} et {items[-1]}"
 
 
 class Examen(models.TextChoices):
@@ -790,6 +784,7 @@ class Lesson(models.Model):
         return {
             "matiere": self.subject.label,
             "serie": _join_fr(series_codes) or None,
+            "serie_libelle": libelle_series(series_codes),
             "examen": examen_display,
             "annee": self.year,
             "duree": self.duree_epreuve or None,
@@ -1179,6 +1174,7 @@ class Cours(models.Model):
         return {
             "matiere": self.subject.label,
             "serie": _join_fr(series_codes) or None,
+            "serie_libelle": libelle_series(series_codes),
             "sous_theme": self.sous_theme or None,
             "duree_estimee_min": self.duree_estimee_min,
             "pays": {"code": self.subject.country.code, "label": self.subject.country.label},

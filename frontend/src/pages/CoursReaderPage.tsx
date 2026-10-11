@@ -18,6 +18,7 @@ import { CoursSommaire } from "@/components/CoursSommaire"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
+import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
 import { coursListPath, coursReaderPath } from "@/lib/countryPath"
@@ -170,7 +171,7 @@ export function CoursReaderPage() {
             </Badge>
           )}
           <Badge variant="secondary">{content.header.matiere}</Badge>
-          {content.header.serie && <Badge variant="outline">Série {content.header.serie}</Badge>}
+          {libelleSerieEntete(content.header) && <Badge variant="outline">{libelleSerieEntete(content.header)}</Badge>}
           {content.header.sous_theme && <Badge variant="outline">{capitaliserTheme(content.header.sous_theme)}</Badge>}
           {content.header.duree_estimee_min && <Badge variant="outline">{content.header.duree_estimee_min} min</Badge>}
         </div>

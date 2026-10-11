@@ -571,7 +571,9 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       {!briefingVisible && (
         <div className="mb-4">
           <h1 className="font-display text-xl font-semibold leading-tight sm:text-2xl">{tentative.epreuve_titre}</h1>
-          <p className="mt-0.5 text-sm text-muted-foreground">{tentative.cursus_display}</p>
+          {/* Le titre d'une inédite dit déjà son public ("… BAC C, D, E et TI – Épreuve inédite n°1") :
+              le répéter dessous, puis dans la barre, faisait quatre fois la série à l'écran. */}
+          {source !== "inedit" && <p className="mt-0.5 text-sm text-muted-foreground">{tentative.cursus_display}</p>}
         </div>
       )}
 
@@ -611,9 +613,11 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         )}
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-1 sm:gap-2">
-            <Badge variant="secondary" className="hidden max-w-[16rem] truncate md:inline-flex">
-              {tentative.cursus_display}
-            </Badge>
+            {source !== "inedit" && (
+              <Badge variant="secondary" className="hidden max-w-[16rem] truncate md:inline-flex">
+                {tentative.cursus_display}
+              </Badge>
+            )}
             {/* Inédite : pas avant d'avoir choisi son mode - le briefing promet un sujet inédit
                 jusqu'au départ, un PDF complet à un clic de là le contredirait. Une annale
                 officielle, elle, est publique : rien à protéger. */}

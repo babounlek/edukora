@@ -24,6 +24,7 @@ import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
+import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
@@ -233,7 +234,7 @@ export function EpreuveReaderPage() {
               titre={content.title}
               matiereCode={epreuve?.subject.code}
               matiere={content.header.matiere}
-              cursus={[content.header.examen, content.header.serie ? `Série ${content.header.serie}` : ""].filter(Boolean).join(" ")}
+              cursus={[content.header.examen, libelleSerieEntete(content.header)].filter(Boolean).join(" ")}
               session={content.header.annee}
               faits={faitsEpreuve({
                 exercices: exercises.length,

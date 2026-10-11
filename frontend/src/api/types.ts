@@ -352,6 +352,8 @@ export interface TentativeEnCours {
 export interface EpreuveHeader {
   matiere: string
   serie: string | null
+  /** "Série C" / "Séries C, D et E" - le mot déjà accordé côté API. */
+  serie_libelle?: string | null
   examen: string | null
   annee: number | null
   duree: string | null
@@ -468,6 +470,8 @@ export interface Cours {
 export interface CoursHeader {
   matiere: string
   serie: string | null
+  /** "Série C" / "Séries C, D et E" - le mot déjà accordé côté API. */
+  serie_libelle?: string | null
   sous_theme: string | null
   duree_estimee_min: number | null
   pays: Pays

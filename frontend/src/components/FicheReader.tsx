@@ -6,6 +6,7 @@ import rehypeRaw from "rehype-raw"
 import { ArrowLeft, ArrowRight, Eye, RotateCcw } from "lucide-react"
 
 import type { EpreuveHeader } from "@/api/types"
+import { libelleSerieEntete } from "@/lib/cursus"
 import { parseFicheCards } from "@/lib/ficheCards"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -67,7 +68,7 @@ export function FicheReader({ title, header, markdown }: FicheReaderProps) {
       <div className="mt-3 flex flex-wrap gap-1.5">
         <CountryBadge code={header.pays.code} label={header.pays.label} />
         <Badge variant="secondary">{header.matiere}</Badge>
-        {header.serie && <Badge variant="outline">Série {header.serie}</Badge>}
+        {libelleSerieEntete(header) && <Badge variant="outline">{libelleSerieEntete(header)}</Badge>}
       </div>
 
       <div className="mt-6 mb-3 flex items-center justify-between">
