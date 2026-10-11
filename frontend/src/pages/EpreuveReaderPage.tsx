@@ -23,6 +23,7 @@ import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { BackToTopBar } from "@/components/BackToTopBar"
+import { AccesRefuse } from "@/components/AccesRefuse"
 import { CountryBadge } from "@/components/CountryBadge"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
@@ -39,6 +40,7 @@ export function EpreuveReaderPage() {
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
   const [epreuveFailed, setEpreuveFailed] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [accesRefuse, setAccesRefuse] = useState(false)
 
   useSeo({ title: content?.title ?? "Corrigé" })
 
@@ -90,6 +92,11 @@ export function EpreuveReaderPage() {
     readEpreuve(slug)
       .then(setContent)
       .catch((err) => {
+        // 403 : pas d'abonnement pour ce contenu - une proposition d'achat, pas une erreur.
+        if (err instanceof ApiError && err.status === 403) {
+          setAccesRefuse(true)
+          return
+        }
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce contenu.")
       })
   }, [slug, isLoading, isAuthenticated, navigate, epreuve, epreuveFailed, countryParam, fallbackCountry])
@@ -110,7 +117,7 @@ export function EpreuveReaderPage() {
   // "retour" pendant que epreuve charge encore.
   const displayCountry = epreuve?.subject.country.code.toLowerCase() ?? countryParam ?? fallbackCountry
 
-  if (isLoading || (!content && !error)) {
+  if (isLoading || (!content && !error && !accesRefuse)) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <Skeleton className="mb-6 h-6 w-40" />
@@ -119,6 +126,20 @@ export function EpreuveReaderPage() {
         <Skeleton className="mt-2 h-4 w-full" />
         <Skeleton className="mt-2 h-4 w-3/4" />
       </div>
+    )
+  }
+
+  if (accesRefuse) {
+    return (
+      <AccesRefuse
+        cursus={epreuve?.cursus ?? []}
+        retour={epreuveReaderPath(displayCountry, slug ?? "")}
+        nature="épreuve"
+        liens={[
+          { to: epreuveDetailPath(displayCountry, slug ?? ""), label: "Voir le sujet en libre accès" },
+          { to: epreuvesListPath(displayCountry), label: "Retour au catalogue" },
+        ]}
+      />
     )
   }
 

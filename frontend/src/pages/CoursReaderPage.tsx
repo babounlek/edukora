@@ -21,7 +21,8 @@ import { RelatedCours } from "@/components/RelatedCours"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
-import { coursListPath, coursReaderPath } from "@/lib/countryPath"
+import { AccesRefuse } from "@/components/AccesRefuse"
+import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
 import { capitaliserTheme } from "@/lib/utils"
 
 export function CoursReaderPage() {
@@ -32,6 +33,7 @@ export function CoursReaderPage() {
 
   const [content, setContent] = useState<CoursContent | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [accesRefuse, setAccesRefuse] = useState(false)
   // Requête séparée de readCours (voir EpreuveReaderPage.getEpreuve, même raison) :
   // CoursContent.header ne porte que des libellés d'affichage (matiere, pas
   // subject.code ; pas de cursus.id), insuffisant pour RelatedCours ci-dessous. Sert
@@ -75,6 +77,11 @@ export function CoursReaderPage() {
     readCours(slug)
       .then(setContent)
       .catch((err) => {
+        // 403 : pas d'abonnement pour ce contenu - une proposition d'achat, pas une erreur.
+        if (err instanceof ApiError && err.status === 403) {
+          setAccesRefuse(true)
+          return
+        }
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce contenu.")
       })
   }, [slug, isLoading, isAuthenticated, navigate, cours, coursFailed])
@@ -95,7 +102,7 @@ export function CoursReaderPage() {
     if (id) document.getElementById(id)?.scrollIntoView()
   }, [content])
 
-  if (isLoading || (!content && !error)) {
+  if (isLoading || (!content && !error && !accesRefuse)) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         <Skeleton className="mb-6 h-6 w-40" />
@@ -104,6 +111,20 @@ export function CoursReaderPage() {
         <Skeleton className="mt-2 h-4 w-full" />
         <Skeleton className="mt-2 h-4 w-3/4" />
       </div>
+    )
+  }
+
+  if (accesRefuse) {
+    return (
+      <AccesRefuse
+        cursus={cours?.cursus ?? []}
+        retour={coursReaderPath(slug ?? "")}
+        nature="cours"
+        liens={[
+          { to: coursDetailPath(slug ?? ""), label: "Voir l'aperçu du cours" },
+          { to: coursListPath(country), label: "Retour aux cours" },
+        ]}
+      />
     )
   }
 
