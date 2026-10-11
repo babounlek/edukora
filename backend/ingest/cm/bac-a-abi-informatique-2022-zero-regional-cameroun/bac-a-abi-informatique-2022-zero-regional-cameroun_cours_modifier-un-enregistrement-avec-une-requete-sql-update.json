@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-modifier-un-enregistrement-avec-une-requete-sql-update-tle-a",
+  "meta": {
+    "titre": "Modifier un enregistrement avec une requête SQL UPDATE",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 30,
+    "tags": [
+      "SQL",
+      "UPDATE",
+      "WHERE",
+      "modification de données",
+      "base de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2022-zero-regional-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique, Baccalauréat A, ABI, AC, SH, session 2022, région de l'Ouest (MINESEC/DRES-O)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-a-abi-informatique-2022-zero-regional-cameroun-ex5-q4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2022-zero-regional-cameroun-ex5"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une erreur de saisie s'est glissée dans une base : un prix a un zéro de trop. Refaire toute la table serait absurde. Une requête SQL de modification corrige la seule ligne fautive, à condition de bien cibler cette ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table, un champ et un enregistrement",
+        "Connaître la notion de clé primaire",
+        "Savoir lire une requête SELECT simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'ordre UPDATE et la clause WHERE",
+      "contenu_markdown": "La syntaxe de modification est :\n\n```sql\nUPDATE nom_table SET champ = nouvelle_valeur WHERE condition;\n```\n\n- **UPDATE nom_table** : indique la table à modifier ;\n- **SET champ = nouvelle_valeur** : indique le champ et sa nouvelle valeur (on sépare plusieurs champs par des virgules) ;\n- **WHERE condition** : sélectionne les enregistrements concernés ; le plus sûr est de cibler la clé primaire.\n\nLes valeurs de type texte se mettent entre apostrophes, les valeurs numériques s'écrivent sans. **Sans WHERE, tous les enregistrements de la table sont modifiés.**\n\nPour vérifier avant de modifier, on exécute d'abord `SELECT * FROM nom_table WHERE condition;` : les lignes affichées sont celles que UPDATE modifiera."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la table ARTICLE (ref, libelle, prix), le prix de l'article de référence R45 est 1500 au lieu de 1050. Écrire la requête de correction.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table et le champ",
+          "justification": "Le prix se trouve dans le champ prix de la table ARTICLE.",
+          "resultat_markdown": "UPDATE ARTICLE SET prix = 1050"
+        },
+        {
+          "numero": 2,
+          "action": "Cibler la ligne avec la clé primaire",
+          "justification": "La référence identifie l'article de façon unique : un seul enregistrement sera modifié.",
+          "resultat_markdown": "WHERE ref = 'R45'"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler et terminer par un point-virgule",
+          "justification": "On vérifie les types : ref est un texte (apostrophes), prix est numérique (sans apostrophes).",
+          "resultat_markdown": "`UPDATE ARTICLE SET prix = 1050 WHERE ref = 'R45';`"
+        }
+      ],
+      "conclusion_markdown": "La requête `UPDATE ARTICLE SET prix = 1050 WHERE ref = 'R45';` corrige uniquement le prix de l'article R45."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la clause WHERE.",
+          "pourquoi_faux": "UPDATE s'applique alors à toutes les lignes : tous les articles auraient le prix 1050.",
+          "correction_markdown": "Écris toujours WHERE et teste-le d'abord avec un SELECT."
+        },
+        {
+          "erreur_markdown": "Écrire `UPDATE ARTICLE SET prix = 1050 AND ref = 'R45'` au lieu de WHERE.",
+          "pourquoi_faux": "AND n'a pas de sens dans SET : c'est le mot WHERE qui introduit la condition de sélection.",
+          "correction_markdown": "Sépare le rôle de chaque partie : SET modifie, WHERE sélectionne."
+        },
+        {
+          "erreur_markdown": "Oublier les apostrophes autour d'un code qui contient des zéros ou des lettres.",
+          "pourquoi_faux": "Sans apostrophes, la valeur est lue comme un nombre : '000202' devient 202 et ne correspond plus au bon enregistrement.",
+          "correction_markdown": "Mets entre apostrophes toute valeur de type texte."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Dans la table ELEVE (matricule, nom, classe), le nom de l'élève de matricule A05 est « Mabaga » au lieu de « Mbarga ». Écris la requête de correction.",
+          "solution_markdown": "`UPDATE ELEVE SET nom = 'Mbarga' WHERE matricule = 'A05';`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans la table PRODUIT (code, prix), on veut augmenter de 100 le prix du produit de code P12. Écris la requête.",
+          "solution_markdown": "`UPDATE PRODUIT SET prix = prix + 100 WHERE code = 'P12';` La nouvelle valeur peut être calculée à partir de l'ancienne."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans la table EMPLOYE (matricule, poste, salaire), tous les employés du poste « caissier » reçoivent 5 000 de plus. Écris la requête et précise combien de lignes elle modifie.",
+          "solution_markdown": "`UPDATE EMPLOYE SET salaire = salaire + 5000 WHERE poste = 'caissier';` La condition porte sur le poste, pas sur la clé primaire : la requête modifie autant de lignes qu'il y a de caissiers dans la table."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "UPDATE table SET champ = valeur WHERE condition : trois blocs, trois rôles.",
+        "WHERE cible les lignes à modifier, de préférence par la clé primaire.",
+        "Sans WHERE, toute la table est modifiée.",
+        "Texte entre apostrophes, nombres sans apostrophes.",
+        "Avant de modifier, vérifie la condition avec un SELECT : au BAC, la question « écrire une requête de modification » se corrige en vérifiant ces trois blocs."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "epreuve_source": "bac-a-abi-informatique-2022-zero-regional-cameroun.pdf",
+  "numero_exercice": "5",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "A",
+  "filiere_serie_a": "abi",
+  "examen": "bac",
+  "origine": "sujet zero",
+  "etablissement": null,
+  "institution": "MINESEC, Délégation régionale de l'Ouest (DRES-O)",
+  "annee": 2022,
+  "duree_epreuve": "1h30",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "points": 4,
+  "groupes": [
+    "PARTIE III : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (08 pts)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de Données (04 pts)**\n\nLa table PRODUIT ci-dessous contient les enregistrements de produits vendus par une PME.\n\n| désignation | code_produit | prix | description |\n|---|---|---|---|\n| Yaourt fresh 150ml | 000101 | 350 | Yaourt à boire |\n| Yaourt fresh fraise 400g | 000102 | 900 | Yaourt à boire |\n| Lait entier fresh 1Kg | 000201 | 2500 | Lait entier |\n| Lait écrémé fresh 1L | 000202 | 20000 | Lait écrémé |",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Définir : Table, Enregistrement. *[1 pt]*",
+      "corrige_markdown": "Une **table** est un ensemble de données organisées en lignes et en colonnes, qui décrit un même type d'objets du monde réel (ici, les produits).\n\nUn **enregistrement** est une ligne de la table : l'ensemble des valeurs des champs qui décrivent un seul objet (ici, un produit, par exemple Lait entier fresh 1Kg, 000201, 2500, Lait entier).\n\n### Piège à éviter\nNe confonds pas enregistrement (une ligne) et champ (une colonne).",
+      "themes": [
+        "Bases de données",
+        "Table",
+        "Enregistrement"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Citer deux exemples de SGBD. *[1 pt]*",
+      "corrige_markdown": "MySQL et Microsoft Access conviennent. PostgreSQL, Oracle, SQLite et SQL Server sont d'autres exemples de systèmes de gestion de bases de données.\n\n### Piège à éviter\nNe cite pas SQL, qui est un langage de requêtes, ni Excel, qui est un tableur.",
+      "themes": [
+        "Bases de données",
+        "SGBD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Parmi les champs de cette table, déterminer celui pouvant jouer le rôle de clé primaire, justifier votre réponse. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne clé primaire est un champ, ou un groupe de champs, dont la valeur identifie de façon unique et obligatoire chaque enregistrement de la table ; pour la choisir, on écarte les champs dont les valeurs peuvent se répéter ou changer et on retient celui qui est unique, non vide et stable.\n\nLe champ `code_produit` peut jouer le rôle de clé primaire. Justification : chaque produit possède un code différent (000101, 000102, 000201, 000202), le code est toujours renseigné et il ne change pas au cours de la vie du produit, donc il identifie sans ambiguïté chaque enregistrement.\n\nLes autres champs ne conviennent pas : `description` se répète (« Yaourt à boire » apparaît deux fois), et `prix` peut se répéter ou être modifié, comme le montre la question suivante. La désignation est unique ici, mais un texte long est un identifiant fragile, sensible aux fautes de frappe.\n\n### Piège à éviter\nChoisir le prix ou la description parce qu'ils sont « importants » : une clé primaire ne se choisit pas sur l'intérêt du champ mais sur l'unicité de ses valeurs.\n\n### Conseil\nDans une réponse de ce type, nomme le champ, puis écris la raison en une phrase : « les valeurs sont uniques et jamais vides ».",
+      "themes": [
+        "Bases de données",
+        "Clé primaire",
+        "Modèle relationnel"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-abi-informatique-2022-zero-regional-cameroun-ex5-q3-1",
+          "competence": "Choisir la clé primaire d'une table",
+          "contenu_markdown": "Une clé primaire est un champ, ou un groupe de champs, dont la valeur identifie de façon unique et obligatoire chaque enregistrement de la table ; pour la choisir, on écarte les champs dont les valeurs peuvent se répéter ou changer et on retient celui qui est unique, non vide et stable.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Le prix du produit ayant le code 000202 est erroné (20000 au lieu de 2000). Écrire une requête SQL permettant de modifier ce prix dans la base de données. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour modifier des données déjà présentes dans une table, on utilise l'ordre UPDATE nom_table SET champ = nouvelle_valeur suivi d'une clause WHERE qui désigne exactement les enregistrements concernés ; sans clause WHERE, tous les enregistrements de la table sont modifiés.\n\nLe prix à corriger est celui du seul produit de code 000202, qu'on désigne dans la clause WHERE grâce à la clé primaire :\n\n```sql\nUPDATE PRODUIT SET prix = 2000 WHERE code_produit = '000202';\n```\n\nLe code est écrit entre apostrophes, car il commence par des zéros qui se perdraient dans un champ numérique : c'est un champ de type texte. Si le champ était défini comme numérique, on écrirait `code_produit = 202`.\n\n### Piège à éviter\nOublier la clause WHERE : la requête fixerait alors le prix de tous les produits à 2000.\n\n### Conseil\nAvant d'exécuter un UPDATE, vérifie ta clause WHERE avec un SELECT qui utilise la même condition : tu vois ainsi quelles lignes seront modifiées.",
+      "themes": [
+        "Bases de données",
+        "Langage SQL",
+        "Requête UPDATE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-abi-informatique-2022-zero-regional-cameroun-ex5-q4-1",
+          "competence": "Modifier un enregistrement avec une requête SQL UPDATE",
+          "contenu_markdown": "Pour modifier des données déjà présentes dans une table, on utilise l'ordre UPDATE nom_table SET champ = nouvelle_valeur suivi d'une clause WHERE qui désigne exactement les enregistrements concernés ; sans clause WHERE, tous les enregistrements de la table sont modifiés.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "base de données",
+    "table",
+    "enregistrement",
+    "SGBD",
+    "clé primaire",
+    "requête SQL UPDATE"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

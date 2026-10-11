@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-choisir-la-classe-d-adresses-ip-d-un-reseau-local-tle-a",
+  "meta": {
+    "titre": "Choisir la classe d'adresses IP d'un réseau local",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Adressage IP et réseaux locaux",
+    "duree_estimee_min": 30,
+    "tags": [
+      "adressage IP",
+      "classes d'adresses",
+      "réseau local",
+      "IPv4",
+      "masque"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2022-zero-regional-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique, Baccalauréat A, ABI, AC, SH, session 2022, région de l'Ouest (MINESEC/DRES-O)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-abi-informatique-2022-zero-regional-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2022-zero-regional-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu câbles quatre ordinateurs, tout est branché, mais aucun ne se parle : les adresses IP n'ont pas été choisies avec méthode. Savoir quelle classe d'adresses convient à un réseau évite ce genre de panne et gaspille moins d'adresses."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 s'écrit avec quatre nombres séparés par des points",
+        "Connaître la différence entre un réseau et une machine connectée à ce réseau",
+        "Savoir ce qu'est un réseau local (LAN)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les classes d'adresses IPv4",
+      "contenu_markdown": "Une adresse IPv4 est composée de quatre octets (nombres de 0 à 255). Les classes se distinguent par le premier octet et par le nombre de machines qu'elles autorisent :\n\n| Classe | Premier octet | Masque par défaut | Machines par réseau |\n|---|---|---|---|\n| A | 1 à 126 | 255.0.0.0 | plus de 16 millions |\n| B | 128 à 191 | 255.255.0.0 | plus de 65 000 |\n| C | 192 à 223 | 255.255.255.0 | 254 |\n| D | 224 à 239 | sans objet | diffusion multicast |\n\n**Méthode de choix** : on compte les machines à connecter, y compris le routeur ou la passerelle, puis on retient la plus petite classe qui suffit. Pour un petit réseau, c'est la classe C. Dans le panneau de configuration, on configure ensuite l'adresse, le masque et la passerelle dans les propriétés du protocole TCP/IPv4 de la carte réseau."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une salle informatique relie 25 ordinateurs et un routeur. Choisir la classe d'adresses du réseau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les machines",
+          "justification": "Il faut prévoir une adresse par ordinateur et une pour le routeur.",
+          "resultat_markdown": "25 + 1 = 26 adresses de machines"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer aux capacités",
+          "justification": "Chaque classe autorise un nombre maximal de machines : C en autorise 254, B plus de 65 000, A plus de 16 millions.",
+          "resultat_markdown": "26 est inférieur à 254 : la classe C suffit."
+        },
+        {
+          "numero": 3,
+          "action": "Retenir la plus petite classe suffisante",
+          "justification": "Prendre A ou B gaspillerait des millions d'adresses inutiles.",
+          "resultat_markdown": "Classe C, par exemple 192.168.1.0 avec le masque 255.255.255.0"
+        },
+        {
+          "numero": 4,
+          "action": "Attribuer les adresses",
+          "justification": "Chaque poste a une adresse différente dans le même réseau.",
+          "resultat_markdown": "Postes de 192.168.1.2 à 192.168.1.26, routeur en 192.168.1.1"
+        }
+      ],
+      "conclusion_markdown": "La salle de 26 machines utilise un réseau de classe C, avec le masque 255.255.255.0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir la classe A parce que « A » veut dire la meilleure.",
+          "pourquoi_faux": "La classe ne mesure pas la qualité mais la taille : A convient aux très grands réseaux et gaspille des adresses dans un petit.",
+          "correction_markdown": "Choisis la plus petite classe qui contient assez d'adresses."
+        },
+        {
+          "erreur_markdown": "Donner la même adresse IP à deux ordinateurs du même réseau.",
+          "pourquoi_faux": "Deux machines ne peuvent pas avoir la même adresse : cela provoque un conflit et l'une des deux perd la connexion.",
+          "correction_markdown": "Attribue une adresse unique à chaque poste, avec le même masque pour tous."
+        },
+        {
+          "erreur_markdown": "Mélanger des adresses de réseaux différents, comme 192.168.1.5 et 192.168.2.5, avec le masque 255.255.255.0.",
+          "pourquoi_faux": "Avec ce masque, ces deux adresses appartiennent à deux réseaux distincts : les postes ne communiquent pas sans routeur.",
+          "correction_markdown": "Garde les trois premiers octets identiques pour les postes d'un même réseau de classe C."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Un réseau d'une salle de classe relie 12 ordinateurs. Quelle classe convient ?",
+          "solution_markdown": "12 machines sont bien en dessous des 254 permis par la classe C : la classe C convient."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donne la classe de chacune des adresses : 10.4.2.1 ; 172.16.0.8 ; 192.168.10.3.",
+          "solution_markdown": "Le premier octet décide : 10 est entre 1 et 126, c'est la classe A ; 172 est entre 128 et 191, classe B ; 192 est entre 192 et 223, classe C."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un établissement doit relier 400 ordinateurs dans un même réseau. La classe C suffit-elle ? Justifie et propose la classe.",
+          "solution_markdown": "La classe C n'autorise que 254 machines : elle est insuffisante pour 400. La classe B, avec plus de 65 000 machines, convient et c'est la plus petite classe qui suffit. (Dans la pratique, on peut aussi découper en plusieurs réseaux de classe C reliés par un routeur.)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les classes sont distinguées par le premier octet : A de 1 à 126, B de 128 à 191, C de 192 à 223.",
+        "On choisit la plus petite classe dont la capacité couvre le nombre de machines.",
+        "Un petit réseau local relève de la classe C : 254 machines au maximum.",
+        "Chaque machine reçoit une adresse unique ; les postes d'un même réseau partagent le même masque.",
+        "Au BAC, la question tombe souvent sous forme de QCM : retiens la table des classes pour y répondre en dix secondes."
+      ]
+    }
+  ]
+}

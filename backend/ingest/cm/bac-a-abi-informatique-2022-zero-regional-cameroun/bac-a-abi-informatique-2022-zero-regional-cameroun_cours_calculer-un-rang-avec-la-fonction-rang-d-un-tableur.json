@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-calculer-un-rang-avec-la-fonction-rang-d-un-tableur-tle-a",
+  "meta": {
+    "titre": "Calculer un rang avec la fonction RANG d'un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Formules et fonctions du tableur",
+    "duree_estimee_min": 30,
+    "tags": [
+      "tableur",
+      "RANG",
+      "références absolues",
+      "recopie de formule",
+      "classement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2022-zero-regional-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique, Baccalauréat A, ABI, AC, SH, session 2022, région de l'Ouest (MINESEC/DRES-O)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-abi-informatique-2022-zero-regional-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2022-zero-regional-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un procès-verbal de concours sans classement ne sert à rien : il faut savoir qui est premier, deuxième, troisième. Plutôt que de trier à la main, le tableur calcule le rang tout seul, et le remet à jour si une note change. Ce cours t'apprend la formule qui le fait et la précaution qui empêche qu'elle se dérègle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir saisir une formule dans une cellule (elle commence par le signe égal)",
+        "Connaître la notion de référence de cellule (B6, E10) et de plage (E6:E10)",
+        "Savoir recopier une formule vers le bas avec la poignée de recopie"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction RANG et les références absolues",
+      "contenu_markdown": "La fonction de classement s'écrit :\n\n`=RANG(valeur ; plage ; ordre)`\n\n- **valeur** : la cellule dont on cherche le rang (par exemple E6) ;\n- **plage** : l'ensemble des valeurs à comparer (par exemple E6:E10) ;\n- **ordre** : 0 (ou omis) pour un classement décroissant, où la plus grande valeur a le rang 1 ; une valeur non nulle pour un classement croissant.\n\nQuand on recopie la formule vers le bas, une **référence relative** (E6) se décale d'une ligne à chaque cellule, ce qui est voulu pour la valeur. La plage, elle, doit rester fixe : on la fige en **référence absolue** avec le signe dollar devant la lettre et le numéro, `$E$6:$E$10`. On obtient la formule type `=RANG(E6;$E$6:$E$10;0)`.\n\nEn cas d'égalité, les valeurs identiques reçoivent le même rang et le rang suivant est sauté (deux premiers ex æquo, puis un troisième rang, pas de deuxième)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un procès-verbal, les moyennes des cinq candidats sont en E6:E10 et la colonne F doit afficher le rang. Écrire la formule de F6 et prévoir sa recopie.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la valeur et la plage",
+          "justification": "La valeur à classer est la moyenne du candidat de la ligne 6, et on la compare à toutes les moyennes.",
+          "resultat_markdown": "valeur : `E6` ; plage : `E6:E10`"
+        },
+        {
+          "numero": 2,
+          "action": "Figer la plage",
+          "justification": "La plage doit rester identique sur toutes les lignes, donc on la passe en références absolues.",
+          "resultat_markdown": "`$E$6:$E$10`"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir l'ordre",
+          "justification": "La plus forte moyenne doit être première : classement décroissant, ordre 0.",
+          "resultat_markdown": "`=RANG(E6;$E$6:$E$10;0)`"
+        },
+        {
+          "numero": 4,
+          "action": "Recopier vers le bas",
+          "justification": "La poignée de recopie adapte E6 en E7, E8, etc., et laisse la plage intacte.",
+          "resultat_markdown": "F7 contient `=RANG(E7;$E$6:$E$10;0)`"
+        }
+      ],
+      "conclusion_markdown": "La formule `=RANG(E6;$E$6:$E$10;0)` saisie en F6 puis recopiée jusqu'en F10 classe les cinq candidats automatiquement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `=RANG(E6;E6:E10;0)` sans les dollars.",
+          "pourquoi_faux": "Au moment de la recopie, la plage devient E7:E11 puis E8:E12 : elle sort du tableau et le rang calculé est faux ou affiche une erreur.",
+          "correction_markdown": "Fige la plage avec F4 ou en tapant les signes dollar : `$E$6:$E$10`."
+        },
+        {
+          "erreur_markdown": "Croire que deux candidats à égalité ont les rangs 1 et 2.",
+          "pourquoi_faux": "RANG donne le même rang aux valeurs égales et saute le suivant : deux premiers ex æquo reçoivent tous deux 1, et le candidat suivant reçoit 3.",
+          "correction_markdown": "Lis le résultat en tenant compte des ex æquo avant de conclure que le calcul est faux."
+        },
+        {
+          "erreur_markdown": "Classer sur la mauvaise colonne, par exemple la note de l'épreuve orale au lieu de la moyenne.",
+          "pourquoi_faux": "Le rang d'un concours se fonde sur la moyenne, qui résume toutes les matières.",
+          "correction_markdown": "Relis l'énoncé pour identifier la colonne qui sert de critère."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Dans une feuille, les notes sont en C2:C21. Écris la formule du rang de la cellule C2, avec un classement décroissant.",
+          "solution_markdown": "La formule est `=RANG(C2;$C$2:$C$21;0)`. La plage est en références absolues pour rester fixe quand on recopie la formule vers C21."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les notes de huit élèves sont en B3:B10 et on veut le classement du moins bon au meilleur (la plus petite note a le rang 1). Quelle formule saisis-tu en C3 ?",
+          "solution_markdown": "Il faut un ordre croissant, donc un troisième argument non nul : `=RANG(B3;$B$3:$B$10;1)`. La plage reste en références absolues."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Cinq moyennes : 14 ; 12 ; 14 ; 9 ; 12. Donne les rangs obtenus avec `=RANG(...;0)` et explique pourquoi aucun élève n'est classé quatrième.",
+          "solution_markdown": "Les deux moyennes de 14 sont les plus fortes : rang 1 pour les deux. Les deux moyennes de 12 viennent ensuite : elles occupent les positions 3 et 4 mais reçoivent toutes deux le rang 3. La moyenne de 9 est en dernière position : rang 5. Le rang 2 et le rang 4 n'existent pas, parce que la fonction saute autant de rangs qu'il y a d'ex æquo."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule type est `=RANG(valeur;plage;0)` : valeur relative, plage absolue.",
+        "Le signe dollar fige la ligne et la colonne : sans lui, la plage glisse pendant la recopie.",
+        "L'ordre 0 donne le rang 1 à la plus grande valeur.",
+        "Les ex æquo partagent le même rang et le suivant est sauté.",
+        "Au BAC, les questions de tableur demandent presque toujours une formule à écrire puis sa recopie : la distinction entre références relatives et absolues est la notion clé."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-references-de-cellules-informatique-bac-a-n1",
+  "meta": {
+    "titre": "Choisir entre références relative, absolue et mixte dans un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Tableur : références de cellules et recopie de formules",
+    "duree_estimee_min": 33,
+    "tags": [
+      "Références de cellules",
+      "Recopie de formules",
+      "Fonctions de calcul d'un tableur",
+      "Plage de cellules",
+      "Tableur",
+      "références absolues",
+      "références relatives"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2022-zero-regional-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique, Baccalauréat A, ABI, AC, SH, session 2022, région de l'Ouest (MINESEC/DRES-O)",
+    "epreuve_source": "bac-a-abi-informatique-2022-zero-regional-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-abi-informatique-2022-zero-regional-cameroun-cours-references-cellules-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu écris une formule dans une seule cellule, tu la fais glisser vers le bas, et tout un tableau se remplit tout seul. Magique ? Pas vraiment : le tableur **adapte la formule à chaque ligne**, selon des règles précises. Quand ces règles te surprennent, le résultat est faux sans aucun message d'erreur.\n\nPour la partie « Production des contenus numériques » du BAC, tu dois savoir **décider si une référence doit bouger ou rester fixe** quand on recopie une formule. Ce cours te donne la règle, trois types de références et une méthode de contrôle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire l'adresse d'une cellule : la lettre de la colonne puis le numéro de la ligne (B2, E6)",
+        "Savoir écrire une formule simple commençant par le signe égal, par exemple =B2*C2",
+        "Savoir utiliser la poignée de recopie : le petit carré en bas à droite de la cellule sélectionnée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois types de références et une règle de recopie",
+      "contenu_markdown": "### 1. Cellule, plage et fonctions\n\nUne **cellule** se désigne par sa colonne et sa ligne : B2 est à l'intersection de la colonne B et de la ligne 2. Une **plage de cellules** est un rectangle de cellules contiguës, désigné par sa première et sa dernière cellule séparées par deux-points : **B2:B6** désigne les cinq cellules de la colonne B, de la ligne 2 à la ligne 6.\n\nLes **fonctions** de calcul courantes prennent souvent une plage en argument. Dans une version française du tableur, on sépare les arguments par un **point-virgule**.\n\n| Fonction | Résultat | Exemple |\n|---|---|---|\n| SOMME | Total des valeurs de la plage | =SOMME(B2:B6) |\n| MOYENNE | Moyenne des valeurs de la plage | =MOYENNE(B2:B6) |\n| MAX | Plus grande valeur de la plage | =MAX(B2:B6) |\n| MIN | Plus petite valeur de la plage | =MIN(B2:B6) |\n| RANG | Rang d'une valeur dans une plage | =RANG(E6;E6:E10;0) |\n\n### 2. Que devient une formule quand on la recopie ?\n\nQuand on recopie une formule, le tableur la **déplace** : il décale chaque référence du même nombre de colonnes et de lignes que la cellule. Par exemple, la formule =B2*C2 écrite en D2 et recopiée une ligne plus bas devient =B3*C3 en D3.\n\n### 3. Les trois types de références\n\n| Type | Écriture | Comportement à la recopie |\n|---|---|---|\n| **Relative** | B2 | Elle s'adapte : colonne et ligne se décalent. |\n| **Absolue** | signe dollar devant la lettre ET devant le numéro | Elle ne change jamais : la cellule reste la même. |\n| **Mixte** | signe dollar devant la lettre OU devant le numéro | Une partie est figée, l'autre se décale. |\n\nPour verrouiller une référence, on ajoute un **signe dollar** juste avant la lettre de la colonne et/ou juste avant le numéro de la ligne. Dans de nombreux tableurs, la touche F4 ajoute ces signes automatiquement quand le curseur est dans la référence.\n\nDans ce cours, on décrit chaque version verrouillée avec des mots : par exemple, « H2 avec un signe dollar devant le H et un signe dollar devant le 2 » est la référence absolue de la cellule H2.\n\n### 4. Méthode : relative ou verrouillée ?\n\nPour chaque référence de la formule, pose la question : **cette cellule doit-elle changer quand je descends ou quand je vais à droite ?**\n\n- Si oui, laisse-la **relative**.\n- Si elle doit rester la même quelle que soit la ligne et la colonne (un taux, un total, une plage de comparaison), **verrouille la lettre et le numéro**.\n- Si seule la colonne doit rester fixe (ou seule la ligne), verrouille **uniquement la lettre** (ou **uniquement le numéro**) : c'est la référence mixte.",
+      "formule_principale": "Référence relative = elle se décale à la recopie ; absolue = signe dollar devant la lettre et le numéro, elle ne bouge pas ; mixte = une seule des deux parties verrouillée ; plage = première cellule deux-points dernière cellule",
+      "variantes": [
+        {
+          "nom": "Figer une plage dans une fonction de classement",
+          "quand_utiliser": "Quand une formule compare chaque ligne à toute une colonne, comme dans la formule de rang de l'épreuve",
+          "contenu_markdown": "Dans la formule =RANG(E6;E6:E10;0) écrite en F6, la première référence E6 est **relative** : elle doit devenir E7, E8... à chaque ligne. En revanche, la plage E6:E10 doit être **verrouillée entièrement** (signe dollar devant chaque lettre et chaque numéro de la plage), sinon elle glisse d'une ligne à chaque recopie et le classement devient faux sans message d'erreur. C'est la raison pour laquelle l'épreuve verrouille la plage avant de demander la recopie."
+        },
+        {
+          "nom": "Verrouiller uniquement la colonne ou uniquement la ligne",
+          "quand_utiliser": "Quand un tableau à double entrée doit se remplir en une seule formule recopiée vers le bas et vers la droite",
+          "contenu_markdown": "Dans un tableau de prix par produit et par quantité, la quantité se lit toujours dans la **colonne A** et le prix du produit toujours dans la **ligne 1**. La formule de la première case est =A2*B1. Pour la recopier partout, on verrouille la colonne A seule (signe dollar devant le A, mais pas devant le 2) et la ligne 1 seule (signe dollar devant le 1, mais pas devant le B). La lettre de A reste fixe quand on va à droite, le numéro de ligne de 1 reste fixe quand on descend."
+        },
+        {
+          "nom": "Recopier une formule sans la ressaisir",
+          "quand_utiliser": "Quand l'énoncé demande une procédure pour obtenir le résultat dans les cellules suivantes",
+          "contenu_markdown": "Cette procédure vaut dans la plupart des tableurs : sélectionner la cellule qui contient la formule, placer le pointeur sur la poignée de recopie (il devient une croix noire), puis faire glisser jusqu'à la dernière cellule à remplir. Autre méthode : copier la cellule avec Ctrl + C, sélectionner la plage de destination, puis coller avec Ctrl + V. Dans les deux cas, les références relatives s'adaptent et les références verrouillées restent identiques."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une papeterie de Dschang enregistre ses ventes dans une feuille de calcul.\n\n| | A | B | C | D | E | G |\n|---|---|---|---|---|---|---|\n| 1 | Article | Prix unitaire (F) | Quantité | Montant | Remise | Taux de remise |\n| 2 | Cahier | 300 | 10 | | | 0,10 |\n| 3 | Stylo | 100 | 25 | | | |\n| 4 | Règle | 200 | 12 | | | |\n| 5 | Calculatrice | 6000 | 2 | | | |\n\n1. Écrire la formule du montant en D2 et la recopier jusqu'en D5.\n2. Écrire en E2 la formule de la remise, qui doit utiliser le taux de remise de la cellule G2, puis la recopier jusqu'en E5.\n3. Écrire la formule du total des montants en D6.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le montant en D2",
+          "justification": "Le montant est le produit du prix unitaire par la quantité de la même ligne.",
+          "resultat_markdown": "En D2 : **=B2*C2**. Recopiée vers D3, D4 et D5, elle devient =B3*C3, =B4*C4, =B5*C5 : les deux références sont relatives et c'est bien ce qu'on veut."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la référence qui ne doit pas bouger",
+          "justification": "Le taux de remise est écrit une seule fois en G2. Toutes les lignes doivent le lire, quelle que soit la ligne de la remise.",
+          "resultat_markdown": "Le montant D2 est **relatif** (il doit devenir D3, D4, D5) ; le taux G2 doit être **absolu**."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la remise avec le taux verrouillé",
+          "justification": "On verrouille G2 en mettant un signe dollar devant le G et un signe dollar devant le 2. Sans cela, la recopie fait glisser G2 vers G3, G4, G5, qui sont vides.",
+          "resultat_markdown": "En E2 : la formule s'écrit =D2*G2, avec un signe dollar devant le G et un signe dollar devant le 2 dans la partie G2 (D2 reste sans signe dollar). Sans verrouillage, la formule recopiée donnerait =D3*G3 en E3, puis 0 (cellule vide), donc un résultat faux."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier les résultats",
+          "justification": "On contrôle avec un calcul mental : les montants valent 3000, 2500, 2400 et 12000 ; avec 10 % de remise, les remises valent 300, 250, 240 et 1200.",
+          "resultat_markdown": "Montants : 3000, 2500, 2400, 12000. Remises : 300, 250, 240, 1200."
+        },
+        {
+          "numero": 5,
+          "action": "Écrire le total avec une plage",
+          "justification": "Pour additionner les montants des lignes 2 à 5, on désigne la plage D2:D5 par sa première et sa dernière cellule.",
+          "resultat_markdown": "En D6 : **=SOMME(D2:D5)**, qui donne 19900."
+        }
+      ],
+      "conclusion_markdown": "La règle est simple : les références qui doivent suivre la ligne (prix, quantité, montant) restent relatives ; la cellule du taux est verrouillée. La plage de la fonction SOMME est écrite avec la première et la dernière cellule séparées par deux-points."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier une formule qui utilise un taux ou un total sans verrouiller sa cellule.",
+          "pourquoi_faux": "Les références relatives se décalent à chaque recopie : le taux placé en G2 devient G3 puis G4, cellules vides. Le tableur calcule sans erreur apparente, mais le résultat est faux.",
+          "correction_markdown": "Avant de recopier, repère toute cellule qui doit rester la même et verrouille la lettre et le numéro avec un signe dollar."
+        },
+        {
+          "erreur_markdown": "Verrouiller toutes les références d'une formule par précaution.",
+          "pourquoi_faux": "Si on verrouille aussi le prix et la quantité, chaque ligne recopiée reprend la ligne 2 et affiche le même résultat. La recopie ne remplit plus le tableau correctement.",
+          "correction_markdown": "Ne verrouille que ce qui doit rester fixe : un taux, un total, une plage de comparaison."
+        },
+        {
+          "erreur_markdown": "Écrire une plage avec une virgule ou un tiret, comme B2-B6 ou B2,B6.",
+          "pourquoi_faux": "Le tiret est le signe de la soustraction. La virgule désigne deux cellules distinctes, pas toutes celles qui se trouvent entre elles. La plage se note avec deux-points.",
+          "correction_markdown": "Écris B2:B6 pour désigner toutes les cellules de B2 à B6, et utilise un point-virgule pour séparer les arguments d'une fonction."
+        },
+        {
+          "erreur_markdown": "Croire que verrouiller une référence mixte fige toute la cellule.",
+          "pourquoi_faux": "Une référence mixte ne fige qu'une moitié : si seul le numéro de ligne est verrouillé, la colonne continue de se décaler quand on recopie vers la droite.",
+          "correction_markdown": "Choisis le verrouillage d'après le sens de la recopie : vers le bas, la ligne bouge ; vers la droite, la colonne bouge."
+        },
+        {
+          "erreur_markdown": "Juger qu'une formule est bonne parce que le tableur n'affiche aucune erreur.",
+          "pourquoi_faux": "Une mauvaise référence ne provoque presque jamais de message d'erreur : elle donne simplement un résultat faux, que seul un contrôle permet de découvrir.",
+          "correction_markdown": "Recalcule à la main une ou deux cases du tableau et compare avec le résultat du tableur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une feuille de calcul, la formule =A4*B4 est écrite en C4 puis recopiée vers C5 et C6.\n\n1. Écris les formules obtenues en C5 et en C6.\n2. Les références A4 et B4 sont-elles relatives, absolues ou mixtes ?\n3. Écris la plage qui contient les cellules C4, C5 et C6.",
+          "solution_markdown": "1. En C5 : **=A5*B5**. En C6 : **=A6*B6**. Le tableur décale chaque référence d'une ligne à chaque cellule vers le bas.\n\n2. Elles sont **relatives**, car il n'y a aucun signe dollar : elles se décalent à la recopie.\n\n3. La plage est **C4:C6**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le chiffre d'affaires mensuel (en milliers de francs) d'une boutique est saisi dans les cellules B2 à B6 : 200, 300, 100, 250, 150. La cellule B7 contient le total.\n\n1. Écris la formule de B7 avec la fonction SOMME.\n2. Écris la formule de C2 qui calcule la part du premier mois dans le total (B2 divisé par B7).\n3. On recopie la formule de C2 vers le bas jusqu'en C6. Quelle référence faut-il verrouiller ? Écris la formule obtenue en C3 si le total est correctement verrouillé, puis le résultat en C2.",
+          "solution_markdown": "1. En B7 : **=SOMME(B2:B6)**. Le total vaut 200 + 300 + 100 + 250 + 150 = 1000.\n\n2. En C2 : **=B2/B7**.\n\n3. Il faut verrouiller **B7** (signe dollar devant le B et signe dollar devant le 7), car le total est unique et doit rester le diviseur de toutes les lignes. Si le total est verrouillé, la formule en C3 est : B3 divisé par le total verrouillé en B7, c'est-à-dire **=B3/B7** avec B7 inchangé. En C2, le résultat est 200 / 1000 = **0,2**, soit 20 % du total.\n\nSans verrouillage, la formule en C3 deviendrait =B3/B8 : la cellule B8 est vide, ce qui provoquerait une division par zéro."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un vendeur de céréales du marché de Foumbot prépare un tableau des prix. Les quantités en kilogrammes sont écrites en A2, A3 et A4 (1, 2 et 5). Les prix du kilogramme de trois produits sont écrits en B1, C1 et D1 (500, 800 et 1200 francs).\n\n1. Écris la formule de B2 : quantité de la ligne multipliée par le prix du produit de la colonne.\n2. Pour pouvoir recopier cette formule vers la droite puis vers le bas, indique avec des mots quelles parties de la formule il faut verrouiller.\n3. Donne ensuite les valeurs obtenues en C3 et en D4.",
+          "solution_markdown": "1. En B2 : **=A2*B1**.\n\n2. La quantité se lit toujours dans la **colonne A** : on verrouille la lettre A (signe dollar devant le A), et on laisse le numéro de ligne relatif pour qu'il suive les lignes 2, 3, 4. Le prix se lit toujours dans la **ligne 1** : on verrouille le numéro 1 (signe dollar devant le 1), et on laisse la lettre relative pour qu'elle suive les colonnes B, C, D. Ce sont deux références mixtes.\n\n3. En C3, la formule devient : quantité de la ligne 3 (A3 = 2) multipliée par le prix de la colonne C (C1 = 800), soit 2 × 800 = **1600 francs**. En D4 : A4 = 5 et D1 = 1200, soit 5 × 1200 = **6000 francs**.\n\nContrôle : en B4, la formule donne 5 × 500 = 2500 francs, ce qui est cohérent avec les prix de départ."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une plage de cellules s'écrit avec la première et la dernière cellule séparées par deux-points : B2:B6.",
+        "À la recopie, une référence relative se décale du même nombre de lignes et de colonnes que la formule.",
+        "Une référence absolue, avec un signe dollar devant la lettre et devant le numéro, désigne toujours la même cellule.",
+        "Une référence mixte ne verrouille que la colonne ou que la ligne : choisis selon le sens de la recopie.",
+        "Verrouille ce qui est unique et partagé (taux, total, plage de comparaison) ; laisse relatif ce qui suit la ligne.",
+        "Contrôle toujours un résultat à la main : une mauvaise référence ne produit presque jamais de message d'erreur."
+      ]
+    }
+  ]
+}
