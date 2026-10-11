@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-copier-et-supprimer-un-fichier-en-ligne-de-command-ipcde1",
+  "meta": {
+    "titre": "Copier et supprimer un fichier en ligne de commande avec COPY et DEL",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Environnement numérique : ligne de commande",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Ligne de commande",
+      "Gestion des fichiers et répertoires"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-probatoire-c-d-e-1-2026-s1-ex1-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Copier un bulletin sur une clé USB ou supprimer un fichier devenu inutile : deux gestes quotidiens que l'invite de commandes réalise en une ligne. Il suffit de connaître l'ordre des éléments de la commande et de savoir lire le chemin qui désigne chaque fichier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Chemin absolu et chemin relatif d'un fichier",
+        "Notion de répertoire courant affiché dans l'invite",
+        "Commandes MD et DIR"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Syntaxe de COPY et de DEL",
+      "contenu_markdown": "- `COPY source destination` copie le fichier `source` vers la `destination`. La destination est un répertoire (le fichier garde son nom) ou un nouveau nom de fichier. La source reste à sa place.\n- `DEL fichier` supprime le fichier désigné. Un fichier supprimé avec `DEL` ne passe pas par la corbeille.\n\nChaque fichier est désigné par un **chemin absolu** (depuis la racine du lecteur) ou par un **chemin relatif** (depuis le répertoire courant affiché dans l'invite). Quand le répertoire courant est sur un autre lecteur que le fichier, seul le chemin absolu convient. Dans `COPY`, la source se donne toujours **avant** la destination.",
+      "formule_principale": "\\text{COPY source destination}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le disque `D:` contient l'arborescence suivante.\n\n```\nD:\\\n+-- BOUTIQUE\n    +-- VENTES\n    |   +-- janvier.txt\n    +-- COPIES\n```\n\nL'invite affiche `D:\\BOUTIQUE>`. Écrire la commande qui copie `janvier.txt` dans `COPIES` avec des chemins relatifs. Puis, l'invite affichant maintenant `C:\\>`, écrire la commande qui supprime cette copie avec un chemin absolu.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le répertoire courant",
+          "justification": "L'invite est `D:\\BOUTIQUE>` : les chemins relatifs partent de `BOUTIQUE`.",
+          "resultat_markdown": "Source : `VENTES\\janvier.txt` ; destination : `COPIES`."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la commande COPY",
+          "justification": "La source se place avant la destination.",
+          "resultat_markdown": "`COPY VENTES\\janvier.txt COPIES`"
+        },
+        {
+          "numero": 3,
+          "action": "Trouver le chemin de la copie",
+          "justification": "Dans `COPIES`, le fichier garde son nom.",
+          "resultat_markdown": "Chemin absolu de la copie : `D:\\BOUTIQUE\\COPIES\\janvier.txt`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la commande DEL",
+          "justification": "L'invite est sur le lecteur `C:` : un chemin relatif ne mènerait pas au fichier, il faut le chemin absolu complet.",
+          "resultat_markdown": "`DEL D:\\BOUTIQUE\\COPIES\\janvier.txt`"
+        }
+      ],
+      "conclusion_markdown": "Après les deux commandes, `janvier.txt` existe toujours dans `VENTES` : la copie n'a pas déplacé le fichier, et seule la copie placée dans `COPIES` a été supprimée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Inverser la source et la destination dans COPY : la commande cherche le fichier source au mauvais endroit.",
+        "Écrire un chemin relatif quand l'invite est sur un autre lecteur : le fichier est introuvable.",
+        "Croire que COPY déplace le fichier : l'original reste à sa place.",
+        "Oublier que DEL ne passe pas par la corbeille : une suppression par erreur est difficile à rattraper."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Avec l'arborescence de l'exemple et l'invite `D:\\BOUTIQUE>`, écrire la commande qui copie `janvier.txt` dans `D:\\BOUTIQUE\\COPIES` avec des chemins absolus. Test : `COPY D:\\BOUTIQUE\\VENTES\\janvier.txt D:\\BOUTIQUE\\COPIES`.",
+        "L'invite affiche `D:\\BOUTIQUE\\VENTES>`. Écrire la commande qui supprime `janvier.txt` avec un chemin relatif. Test : `DEL janvier.txt`.",
+        "L'invite affiche `D:\\BOUTIQUE>`. Écrire la commande qui copie `janvier.txt` dans `COPIES` sous le nouveau nom `archive.txt`. Test : `COPY VENTES\\janvier.txt COPIES\\archive.txt`."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "COPY s'écrit avec la source d'abord, la destination ensuite ; la source reste en place.",
+        "DEL supprime un fichier sans passer par la corbeille.",
+        "Chemin relatif depuis le répertoire courant de l'invite, chemin absolu depuis la racine du lecteur.",
+        "Sur un autre lecteur que celui du fichier, utilise toujours le chemin absolu."
+      ]
+    }
+  ]
+}

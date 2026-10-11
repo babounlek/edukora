@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-traduire-une-boucle-pour-avec-tests-en-instruction-ipcde1",
+  "meta": {
+    "titre": "Traduire une boucle Pour avec tests en instruction for du langage C",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation en langage C : boucles et tests",
+    "duree_estimee_min": 25,
+    "tags": [
+      "traduction algorithme vers C",
+      "boucle for",
+      "structure conditionnelle"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-probatoire-c-d-e-1-2026-s1-ex2-q6-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme en pseudo-code est un plan ; le langage C en est la version que l'ordinateur comprend. La boucle Pour avec des tests à l'intérieur est le cas le plus fréquent à l'épreuve : il faut savoir la traduire ligne par ligne, sans rien oublier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Boucle Pour et structure Si ... alors ... Finsi en algorithmique",
+        "Déclaration des variables et des tableaux en C",
+        "Opérateurs de comparaison (`<`, `>`, `<=`) et affectation `=`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du pseudo-code au langage C, instruction par instruction",
+      "contenu_markdown": "Une boucle Pour se traduit en une instruction `for` à trois parties séparées par des points-virgules : `for (initialisation; condition; pas)`. Le corps de la boucle est placé entre accolades.\n\n| Pseudo-code | Langage C |\n|---|---|\n| `Pour i de 0 a N-1 faire` | `for (i = 0; i < N; i++) {` |\n| `Fin Pour` | `}` |\n| `Lire(x)` | `scanf(\"%d\", &x);` |\n| `Si cond alors ... Finsi` | `if (cond) { ... }` |\n| `a <- b` | `a = b;` |\n| `Afficher(\"texte\", x)` | `printf(\"texte %d\", x);` |\n\nTrois précautions : la borne `N-1` devient `i < N` (ou `i <= N - 1`), le symbole `<-` devient `=` et chaque instruction se termine par un point-virgule. Le `&` de `scanf` donne l'adresse de la variable à remplir.",
+      "formule_principale": "\\text{for (initialisation ; condition ; pas)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C la boucle suivante, qui lit `N` entiers et compte les valeurs négatives.\n\n```\nPour k de 1 a N faire\n  Lire(x) ;\n  Si x < 0 alors\n    Neg <- Neg + 1 ;\n  Finsi\nFin Pour\n```",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire l'en-tête de la boucle",
+          "justification": "La variable k va de 1 à N inclus : la condition de poursuite est donc `k <= N`.",
+          "resultat_markdown": "`for (k = 1; k <= N; k++) {`"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire la lecture",
+          "justification": "Lire devient `scanf` avec le format `%d` pour un entier et un `&` devant la variable.",
+          "resultat_markdown": "`scanf(\"%d\", &x);`"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire le test",
+          "justification": "Si devient `if`, la condition garde ses parenthèses et la flèche `<-` devient `=`.",
+          "resultat_markdown": "`if (x < 0) { Neg = Neg + 1; }`"
+        },
+        {
+          "numero": 4,
+          "action": "Fermer les blocs",
+          "justification": "Une accolade ferme le `if`, une autre ferme le `for`.",
+          "resultat_markdown": "Deux accolades fermantes à la fin."
+        }
+      ],
+      "conclusion_markdown": "Le code C complet de la boucle est :\n\n```c\nfor (k = 1; k <= N; k++) {\n    scanf(\"%d\", &x);\n    if (x < 0) {\n        Neg = Neg + 1;\n    }\n}\n```\n\nAvec `Neg` initialisé à 0 avant la boucle, `N = 5` et les valeurs 4, -2, 0, -7 et 3, la variable `Neg` vaut 2 à la sortie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Écrire `i <= N` quand l'algorithme va de 0 à N-1 : la boucle fait un tour de trop.",
+        "Garder la flèche `<-` ou écrire `==` pour une affectation : en C, l'affectation s'écrit `=`.",
+        "Oublier le `&` devant la variable dans `scanf` : la lecture échoue.",
+        "Oublier une accolade fermante : le compilateur signale une erreur loin de l'oubli."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Traduire `Pour i de 1 a 10 faire Afficher(i) ; Fin Pour`. Test : `for (i = 1; i <= 10; i++) { printf(\"%d\", i); }`.",
+        "Traduire une boucle qui lit `N` réels dans `T[i]` pour `i` de 0 à N-1. Indice : le format d'un réel est `%f`. Test : `for (i = 0; i < N; i++) { scanf(\"%f\", &T[i]); }`.",
+        "Traduire `Pour i de 0 a N-1 faire Si T[i] > 10 alors Nb <- Nb + 1 ; Finsi Fin Pour`. Test : `for (i = 0; i < N; i++) { if (T[i] > 10) { Nb = Nb + 1; } }`."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Boucle Pour : `for (initialisation; condition; pas)` suivi d'un bloc entre accolades.",
+        "`Lire` devient `scanf` avec `&`, `Si` devient `if`, `<-` devient `=`.",
+        "La borne `N-1` devient `i < N` ; chaque instruction se termine par un point-virgule."
+      ]
+    }
+  ]
+}

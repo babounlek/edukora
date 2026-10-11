@@ -1,0 +1,101 @@
+{
+  "type": "cours",
+  "cours_id": "cours-ecrire-une-fonction-javascript-qui-calcule-un-mont-ipcde1",
+  "meta": {
+    "titre": "Écrire une fonction JavaScript qui calcule un montant à partir de deux champs de saisie",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : JavaScript et formulaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "Programmation web"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-probatoire-c-d-e-1-2026-s1-ex3-q7-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un champ de saisie ne calcule rien tout seul. Pour obtenir le prix total d'un achat ou le montant d'une cotisation, la page doit lire ce que l'utilisateur a tapé, faire le calcul, puis afficher le résultat. Ces trois temps tiennent dans une fonction JavaScript de quelques lignes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Balise `input` et attribut `id`",
+        "Variables et opérateurs arithmétiques",
+        "Fonction `alert` et balise `script`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire, convertir, calculer, afficher",
+      "contenu_markdown": "Une fonction JavaScript se déclare avec le mot `function`, un nom, des parenthèses et un bloc entre accolades. Pour un calcul à partir de champs de saisie, elle suit trois temps :\n\n1. **lire** chaque champ avec `document.getElementById(\"identifiant\").value`, où l'identifiant est la valeur de l'attribut `id` du champ ;\n2. **convertir** le texte lu en nombre avec `parseInt` (entier) ou `parseFloat` (nombre décimal), car `.value` renvoie toujours du texte ;\n3. **calculer**, puis **afficher** le résultat, par exemple avec `alert`.\n\nLe code JavaScript se place entre les balises `<script>` et `</script>`.",
+      "formule_principale": "\\text{document.getElementById(identifiant).value}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une boutique a deux champs de saisie :\n\n```html\nQuantité : <input type=\"number\" id=\"qte\">\nPrix unitaire (F) : <input type=\"number\" id=\"prix\">\n```\n\nÉcrire la fonction `total()` qui affiche le prix total avec `alert`, puis donner le résultat pour 4 articles à 1500 F.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer la fonction",
+          "justification": "On utilise le mot `function`, le nom demandé et un bloc entre accolades.",
+          "resultat_markdown": "`function total() { ... }`"
+        },
+        {
+          "numero": 2,
+          "action": "Lire la quantité",
+          "justification": "L'identifiant du champ est `qte`, et `.value` donne le texte saisi, qu'on convertit en entier.",
+          "resultat_markdown": "`var q = parseInt(document.getElementById(\"qte\").value);`"
+        },
+        {
+          "numero": 3,
+          "action": "Lire le prix",
+          "justification": "Même démarche avec l'identifiant `prix`.",
+          "resultat_markdown": "`var p = parseInt(document.getElementById(\"prix\").value);`"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le total",
+          "justification": "Le prix total est la quantité multipliée par le prix unitaire.",
+          "resultat_markdown": "`var t = q * p;`"
+        },
+        {
+          "numero": 5,
+          "action": "Afficher le résultat",
+          "justification": "`alert` affiche un texte dans une boîte de dialogue ; le `+` colle les morceaux.",
+          "resultat_markdown": "`alert(\"Total : \" + t + \" F\");`"
+        }
+      ],
+      "conclusion_markdown": "Le code complet est :\n\n```html\n<script>\nfunction total() {\n    var q = parseInt(document.getElementById(\"qte\").value);\n    var p = parseInt(document.getElementById(\"prix\").value);\n    var t = q * p;\n    alert(\"Total : \" + t + \" F\");\n}\n</script>\n```\n\nPour 4 articles à 1500 F, la boîte affiche : Total : 6000 F."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Oublier `.value` : on obtient l'élément de la page et non le texte saisi.",
+        "Écrire `getElementById(qte)` sans guillemets : `qte` est alors lu comme une variable qui n'existe pas.",
+        "Additionner deux valeurs non converties : `\"4\" + \"1500\"` donne `41500` et non 1504.",
+        "Oublier d'appeler la fonction : une fonction déclarée ne s'exécute que si un évènement, comme `onclick`, l'appelle."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Écrire la fonction `surface()` qui lit les champs `longueur` et `largeur` et affiche la surface avec `alert`. Test : 12 et 5 donnent 60.",
+        "Écrire la fonction `somme()` qui lit deux champs `a` et `b` et affiche leur somme. Indice : sans `parseInt`, `\"3\" + \"4\"` donnerait `34`. Test : 3 et 4 donnent 7.",
+        "Écrire la balise `<button>` qui appelle `total()` au clic. Test : `<button onclick=\"total()\">Calculer</button>`."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lire un champ : `document.getElementById(\"id\").value`, qui renvoie du texte.",
+        "Convertir avec `parseInt` ou `parseFloat` avant de calculer.",
+        "Afficher avec `alert`, et appeler la fonction par un évènement comme `onclick`."
+      ]
+    }
+  ]
+}

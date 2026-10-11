@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-ecrire-le-chemin-absolu-et-le-chemin-relatif-d-un-ipcde1",
+  "meta": {
+    "titre": "Écrire le chemin absolu et le chemin relatif d'un fichier dans une arborescence",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Environnement numérique : fichiers et répertoires",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Gestion des fichiers et répertoires",
+      "Ligne de commande"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-probatoire-c-d-e-1-2026-s1-ex1-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour dire à l'ordinateur où se trouve un fichier, on n'écrit pas « dans le dossier des photos » : on écrit un chemin. Le chemin absolu est l'adresse complète, comme une adresse postale avec la ville ; le chemin relatif est une indication donnée à partir de l'endroit où l'on se trouve, comme « la deuxième porte à gauche »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un répertoire et un sous-répertoire",
+        "Lire une arborescence dessinée sous forme d'arbre",
+        "Savoir que l'invite de commandes affiche le répertoire courant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Chemin absolu et chemin relatif",
+      "contenu_markdown": "Un **répertoire** (ou dossier) est un espace de rangement repéré par un nom, qui contient des fichiers et d'autres répertoires. Un **chemin** est la liste des répertoires à traverser pour atteindre un fichier, séparés par des antislashs `\\`.\n\n- Le **chemin absolu** commence à la racine du lecteur et ne dépend pas de l'endroit où l'on se trouve. Il commence toujours par la lettre du lecteur : `D:\\LYCEE\\ADMIN\\liste.txt`.\n- Le **chemin relatif** commence au **répertoire courant**, celui que l'invite affiche (`D:\\LYCEE>`). Il ne commence ni par la lettre du lecteur ni par un antislash et ne cite que les répertoires situés en dessous du répertoire courant : `ADMIN\\liste.txt`. Pour remonter d'un niveau, on écrit `..`.",
+      "formule_principale": "\\text{chemin absolu} = \\text{lecteur} + \\text{répertoires} + \\text{fichier}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le disque `E:` contient l'arborescence suivante.\n\n```\nE:\\\n+-- CLUB\n    +-- DOCS\n    |   +-- statuts.txt\n    +-- PHOTOS\n        +-- match.jpg\n```\n\nLe répertoire courant est `E:\\CLUB\\DOCS`. Écrire le chemin absolu du fichier `match.jpg`, puis son chemin relatif à partir du répertoire courant.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les répertoires traversés",
+          "justification": "Le fichier `match.jpg` est dans `PHOTOS`, lui-même dans `CLUB`, sur le lecteur `E:`.",
+          "resultat_markdown": "E: puis CLUB puis PHOTOS puis match.jpg."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le chemin absolu",
+          "justification": "On part de la lettre du lecteur et on nomme chaque répertoire, séparés par des antislashs.",
+          "resultat_markdown": "`E:\\CLUB\\PHOTOS\\match.jpg`"
+        },
+        {
+          "numero": 3,
+          "action": "Situer le répertoire courant",
+          "justification": "Le répertoire courant est `DOCS`. Le fichier n'est pas en dessous de `DOCS` : il faut d'abord remonter dans `CLUB`.",
+          "resultat_markdown": "Remonter d'un niveau s'écrit `..`."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire le chemin relatif",
+          "justification": "Après avoir remonté dans `CLUB`, on descend dans `PHOTOS`, puis on atteint le fichier.",
+          "resultat_markdown": "`..\\PHOTOS\\match.jpg`"
+        }
+      ],
+      "conclusion_markdown": "Le chemin absolu est `E:\\CLUB\\PHOTOS\\match.jpg` ; le chemin relatif depuis `E:\\CLUB\\DOCS` est `..\\PHOTOS\\match.jpg`. Les deux écritures désignent le même fichier."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Commencer un chemin relatif par la lettre du lecteur : il devient un chemin absolu.",
+        "Oublier un répertoire intermédiaire dans un chemin absolu : `E:\\PHOTOS\\match.jpg` ne désigne aucun fichier existant.",
+        "Séparer les répertoires par des barres obliques `/` : les commandes MS-DOS attendent l'antislash.",
+        "Écrire un chemin relatif sans relire le répertoire courant dans l'invite : le point de départ change tout."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Avec l'arborescence de l'exemple, écrire le chemin absolu de `statuts.txt`. Test : `E:\\CLUB\\DOCS\\statuts.txt`.",
+        "Le répertoire courant est `E:\\CLUB`. Écrire le chemin relatif de `statuts.txt`. Test : `DOCS\\statuts.txt`.",
+        "Le répertoire courant est `E:\\CLUB\\PHOTOS`. Écrire le chemin relatif de `statuts.txt`. Indice : remonte d'un niveau avec `..`. Test : `..\\DOCS\\statuts.txt`."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chemin absolu : la lettre du lecteur, puis tous les répertoires traversés, puis le fichier.",
+        "Chemin relatif : il part du répertoire courant, sans lettre de lecteur, et utilise `..` pour remonter.",
+        "Les noms sont séparés par des antislashs `\\` en MS-DOS.",
+        "Avant d'écrire un chemin relatif, relis le répertoire courant dans l'invite."
+      ]
+    }
+  ]
+}
