@@ -46,6 +46,12 @@ SENTRY_DSN = config("SENTRY_DSN", default="")
 # Agrégateur de paiement Mobile Money par défaut pour les NOUVELLES transactions (voir
 # payments.providers). Une transaction existante garde le sien (Transaction.provider).
 PAYMENT_PROVIDER = config("PAYMENT_PROVIDER", default="campay")
+# Interrupteur de secours du paiement automatique Campay (1 = actif, 0 = coupé). Coupé :
+# /payments/initiate/ refuse toute NOUVELLE demande et le frontend (lu via
+# /payments/config/) ne propose plus que le paiement manuel - mais le suivi des
+# transactions déjà initiées continue (voir payments.views.check_payment_status).
+# Défaut actif : une variable absente ne change rien.
+CAMPAY_ACTIVE = config("CAMPAY_ACTIVE", default=True, cast=bool)
 if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,

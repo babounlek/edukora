@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 from django.db import IntegrityError, connection, connections
 from django.db import transaction as db_transaction
-from django.test import TestCase, TransactionTestCase
+from django.test import TestCase, TransactionTestCase, override_settings
 from django.utils import timezone
 from rest_framework.test import APIClient
 
@@ -442,6 +442,41 @@ class PaymentFlowAPITests(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    @override_settings(CAMPAY_ACTIVE=False)
+    @patch("payments.campay_client.init_collect")
+    def test_initiate_payment_is_refused_when_campay_is_switched_off(self, mock_init):
+        response = self.client.post(
+            "/payments/initiate/", {"plan_id": self.plan.id, "phone_number": self.user.phone_number},
+        )
+
+        self.assertEqual(response.status_code, 503)
+        mock_init.assert_not_called()
+        self.assertFalse(Transaction.objects.filter(user=self.user).exists())
+
+    @override_settings(CAMPAY_ACTIVE=False)
+    @patch("payments.campay_client.get_transaction_status")
+    def test_status_of_an_already_initiated_payment_still_works_when_campay_is_switched_off(self, mock_status):
+        mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "campay-ref-1"}
+        transaction = Transaction.objects.create(
+            user=self.user, plan=self.plan, amount=2000, phone_number=self.user.phone_number,
+            provider_reference="campay-ref-1", profil=self.user.profils.first(),
+        )
+
+        response = self.client.get(f"/payments/status/{transaction.id}/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["status"], StatutTransaction.SUCCESSFUL)
+        self.assertTrue(response.data["subscription_active"])
+
+    def test_payment_config_is_public_and_reports_campay_state(self):
+        anonyme = APIClient()
+        with override_settings(CAMPAY_ACTIVE=True):
+            self.assertEqual(anonyme.get("/payments/config/").data, {"campay_active": True})
+        with override_settings(CAMPAY_ACTIVE=False):
+            response = anonyme.get("/payments/config/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {"campay_active": False})
 
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_marks_transaction_failed_on_campay_error(self, mock_init):

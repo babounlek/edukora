@@ -23,6 +23,7 @@ import type {
   InscriptionRepetiteur,
   ManualPayment,
   MobileMoneyAccount,
+  PaymentConfig,
   ModeQuiz,
   Paginated,
   ParcoursModule,
@@ -460,6 +461,10 @@ export function initiatePayment({ planId, phoneNumber, profilId }: InitiatePayme
 
 export function checkPaymentStatus(transactionId: number) {
   return apiRequest<PaymentStatusResponse>(`/payments/status/${transactionId}/`)
+}
+
+export function getPaymentConfig() {
+  return apiRequest<PaymentConfig>("/payments/config/", { auth: false })
 }
 
 export function listManualPaymentMethods() {

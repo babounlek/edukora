@@ -758,6 +758,11 @@ export interface PaymentStatusResponse {
 
 export type MobileMoneyOperator = "ORANGE" | "MTN"
 
+/** État des moyens de paiement (backend : settings.CAMPAY_ACTIVE). */
+export interface PaymentConfig {
+  campay_active: boolean
+}
+
 export interface MobileMoneyAccount {
   operator: MobileMoneyOperator
   operator_display: string

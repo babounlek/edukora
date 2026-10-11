@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMyInscriptionsInedites = vi.hoisted(() => vi.fn())
+const getPaymentConfig = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
   isLoading: false,
@@ -17,6 +18,7 @@ vi.mock("@/api/endpoints", () => ({
   listPlans: vi.fn(() => Promise.resolve([])),
   listProfils: vi.fn(() => Promise.resolve([])),
   listMyInscriptionsInedites,
+  getPaymentConfig,
 }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
@@ -50,6 +52,8 @@ function afficher(url: string) {
 
 beforeEach(() => {
   listMyInscriptionsInedites.mockReset()
+  getPaymentConfig.mockReset()
+  getPaymentConfig.mockResolvedValue({ campay_active: true })
   auth.isAuthenticated = true
   auth.isLoading = false
 })
@@ -93,5 +97,34 @@ describe("SubscribePage : retour vers l'épreuve qui a motivé l'achat", () => {
 
     expect(await screen.findByText("Page de connexion")).toBeInTheDocument()
     expect(listMyInscriptionsInedites).not.toHaveBeenCalled()
+  })
+})
+
+describe("SubscribePage : interrupteur Campay (CAMPAY_ACTIVE)", () => {
+  it("propose Campay en recommandé, le paiement manuel restant replié, quand il est actif", async () => {
+    afficher("/abonnement?cursus=4&duree=examen")
+
+    expect(await screen.findByText("Recommandé")).toBeInTheDocument()
+    expect(screen.getByText(/Des difficultés avec Campay/)).toBeInTheDocument()
+    expect(screen.queryByText(/momentanément indisponible/)).not.toBeInTheDocument()
+  })
+
+  it("ne montre plus que le paiement manuel, déjà déplié, quand Campay est coupé", async () => {
+    getPaymentConfig.mockResolvedValue({ campay_active: false })
+    afficher("/abonnement?cursus=4&duree=examen")
+
+    expect(await screen.findByText(/momentanément indisponible/)).toBeInTheDocument()
+    expect(screen.getByText("Orange Money")).toBeInTheDocument()
+    expect(screen.getByText("MTN MoMo")).toBeInTheDocument()
+    expect(screen.queryByText("Recommandé")).not.toBeInTheDocument()
+    expect(screen.queryByText(/Des difficultés avec Campay/)).not.toBeInTheDocument()
+    expect(screen.queryByLabelText(/Numéro Mobile Money/)).not.toBeInTheDocument()
+  })
+
+  it("retombe sur Campay actif si l'état ne peut pas être lu (le backend refuse de toute façon)", async () => {
+    getPaymentConfig.mockRejectedValue(new Error("réseau"))
+    afficher("/abonnement?cursus=4&duree=examen")
+
+    expect(await screen.findByText("Recommandé")).toBeInTheDocument()
   })
 })

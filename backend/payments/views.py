@@ -1,6 +1,8 @@
 import sentry_sdk
-from rest_framework.decorators import api_view, parser_classes
+from django.conf import settings
+from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 
@@ -50,10 +52,29 @@ def _report_provider_error(exc, transaction):
         sentry_sdk.capture_exception(exc)
 
 
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def payment_config(request):
+    """
+    État public des moyens de paiement, lu par /tarifs et /abonnement pour n'afficher
+    que ce qui est réellement utilisable (voir settings.CAMPAY_ACTIVE). Public : la page
+    des tarifs est ouverte aux visiteurs non connectés.
+    """
+    return Response({"campay_active": bool(settings.CAMPAY_ACTIVE)})
+
+
 @api_view(["POST"])
 def initiate_payment(request):
     if (refus := exiger_mode_parent(request)) is not None:
         return refus
+    if not settings.CAMPAY_ACTIVE:
+        # Refus net, avant toute Transaction créée : un paiement lancé sur un fournisseur
+        # coupé resterait sinon PENDING dans l'historique sans jamais pouvoir aboutir.
+        return Response(
+            {"error": "Le paiement automatique est momentanément indisponible. "
+                      "Utilise le paiement manuel via Orange Money ou MTN MoMo."},
+            status=503,
+        )
     plan_id = request.data.get("plan_id")
     phone_number = request.data.get("phone_number")
 

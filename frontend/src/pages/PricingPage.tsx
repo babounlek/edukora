@@ -19,6 +19,7 @@ import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
@@ -227,6 +228,8 @@ export function PricingPage() {
   const navigate = useNavigate()
   const { country } = useCountry()
   const { user } = useAuth()
+  // Campay coupé côté serveur : la FAQ ne doit plus promettre une activation instantanée.
+  const { campayActif } = usePaymentConfig()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
   // Présent quand on arrive ici pour acheter l'abonnement d'un enfant qu'on vient de
   // créer ("Ajouter un enfant", AccesPage.tsx) - relayé tel quel vers /abonnement,
@@ -563,9 +566,9 @@ export function PricingPage() {
             <div>
               <p className="font-medium">Comment je paie ?</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Par Mobile Money, MTN ou Orange. Avec Campay, la demande de paiement arrive directement sur ton
-                téléphone pour une activation instantanée ; tu peux aussi transférer toi-même et déclarer ta
-                transaction.
+                {campayActif
+                  ? "Par Mobile Money, MTN ou Orange. Avec Campay, la demande de paiement arrive directement sur ton téléphone pour une activation instantanée ; tu peux aussi transférer toi-même et déclarer ta transaction."
+                  : "Par Mobile Money, MTN ou Orange : tu transfères toi-même le montant, puis tu déclares ta transaction. Notre équipe la vérifie avant d'activer ton accès."}
               </p>
             </div>
           </li>
@@ -598,10 +601,13 @@ export function PricingPage() {
               <ArrowRightLeft className="size-4" />
             </span>
             <div>
-              <p className="font-medium">Et si le paiement Mobile Money échoue ?</p>
+              <p className="font-medium">
+                {campayActif ? "Et si le paiement Mobile Money échoue ?" : "Quand mon accès est-il activé ?"}
+              </p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection -
-                un transfert direct, vérifié avant activation.
+                {campayActif
+                  ? "Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection - un transfert direct, vérifié avant activation."
+                  : "Dès que ton transfert est vérifié par notre équipe, généralement en quelques heures. Tu reçois un SMS de confirmation et ton accès s'active tout seul."}
               </p>
             </div>
           </li>

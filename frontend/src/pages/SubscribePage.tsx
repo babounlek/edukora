@@ -16,6 +16,7 @@ import { cn, formatAmount } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { cheminRetourSur } from "@/lib/retourAchat"
+import { PAYMENT_CONFIG_KEY, usePaymentConfig } from "@/lib/paymentConfig"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -130,6 +131,12 @@ export function SubscribePage() {
   const [error, setError] = useState<string | null>(null)
   const pollRef = useRef<number | null>(null)
   const queryClient = useQueryClient()
+  // Campay coupé côté serveur (CAMPAY_ACTIVE=0) : seul le paiement manuel reste proposé,
+  // directement déplié et présélectionné. `methode` est la méthode réellement affichée -
+  // dérivée plutôt que corrigée dans un effet, pour ne jamais montrer Campay un instant.
+  const { campayActif, pret: configPrete } = usePaymentConfig()
+  const methode: PaymentMethod = !campayActif && paymentMethod === "CAMPAY" ? "ORANGE" : paymentMethod
+  const optionsManuellesVisibles = !campayActif || showManualOptions
 
   useEffect(() => {
     trackEvent("abonnement_ouvert")
@@ -296,6 +303,9 @@ export function SubscribePage() {
       // de la promesse ici est inattendu (réseau, réponse invalide...) - jamais capturé
       // ailleurs, donc explicitement priorisé côté Sentry (voir l'audit UX, reco 5.1).
       Sentry.captureException(err, { tags: { critical_path: "payment" } })
+      // Campay a peut-être été coupé depuis le chargement de la page : on relit l'état
+      // pour que « Réessayer » ramène un formulaire déjà basculé sur le paiement manuel.
+      queryClient.invalidateQueries({ queryKey: PAYMENT_CONFIG_KEY })
     }
   }
 
@@ -437,7 +447,7 @@ export function SubscribePage() {
         <CardContent className="p-6 sm:p-7">
           {phase === "form" && (
             <div className="flex flex-col gap-6">
-              {creditDisponible > 0 && (
+              {campayActif && creditDisponible > 0 && (
                 <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">
                   <Gift className="size-4 shrink-0 text-gold-text" />
                   <span>
@@ -461,139 +471,148 @@ export function SubscribePage() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2.5">
-                <StepLabel n={2}>Moyen de paiement</StepLabel>
+              {!configPrete ? (
+                <Loader2 className="mx-auto size-6 animate-spin text-primary" aria-label="Chargement des moyens de paiement" />
+              ) : (
+                <>
+                  <div className="flex flex-col gap-2.5">
+                    <StepLabel n={2}>Moyen de paiement</StepLabel>
 
-                <label
-                  className={cn(
-                    "flex cursor-pointer items-start gap-3 rounded-xl border-2 px-4 py-3.5 transition-all",
-                    paymentMethod === "CAMPAY" ? "border-primary bg-accent ring-1 ring-primary" : "border-input",
-                  )}
-                >
-                  <input
-                    type="radio"
-                    name="payment-method"
-                    checked={paymentMethod === "CAMPAY"}
-                    onChange={() => setPaymentMethod("CAMPAY")}
-                    className="sr-only"
-                  />
-                  <span
-                    className={cn(
-                      "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-bold",
-                      CAMPAY_METHOD.badgeClass,
-                    )}
-                  >
-                    {CAMPAY_METHOD.content}
-                  </span>
-                  <span className="flex flex-col gap-0.5">
-                    <span className="flex items-center gap-1.5">
-                      <span className="text-sm font-semibold">{CAMPAY_METHOD.label}</span>
-                      <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-success">
-                        Recommandé
-                      </span>
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      Paiement Mobile Money automatique - confirmation en quelques secondes, accès débloqué
-                      immédiatement.
-                    </span>
-                  </span>
-                </label>
-
-                {!showManualOptions ? (
-                  <button
-                    type="button"
-                    onClick={() => setShowManualOptions(true)}
-                    className="self-start text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
-                  >
-                    Des difficultés avec Campay ? Payer manuellement via Orange Money ou MTN MoMo
-                  </button>
-                ) : (
-                  <div className="flex flex-col gap-2.5 rounded-lg border border-dashed border-input p-3">
-                    <p className="text-xs text-muted-foreground">
-                      Paiement manuel : vous effectuez vous-même le transfert, puis déclarez votre transaction.
-                      Vérifiée par notre équipe sous quelques heures.
-                    </p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {MANUAL_METHODS.map((method) => (
-                        <label
-                          key={method.value}
-                          className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-input px-3 py-2.5 transition-all has-[:checked]:border-primary has-[:checked]:bg-accent has-[:checked]:ring-1 has-[:checked]:ring-primary"
+                    {campayActif && (
+                      <label
+                        className={cn(
+                          "flex cursor-pointer items-start gap-3 rounded-xl border-2 px-4 py-3.5 transition-all",
+                          methode === "CAMPAY" ? "border-primary bg-accent ring-1 ring-primary" : "border-input",
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          name="payment-method"
+                          checked={methode === "CAMPAY"}
+                          onChange={() => setPaymentMethod("CAMPAY")}
+                          className="sr-only"
+                        />
+                        <span
+                          className={cn(
+                            "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-bold",
+                            CAMPAY_METHOD.badgeClass,
+                          )}
                         >
-                          <input
-                            type="radio"
-                            name="payment-method"
-                            checked={paymentMethod === method.value}
-                            onChange={() => setPaymentMethod(method.value)}
-                            className="sr-only"
-                          />
-                          <span
-                            className={cn(
-                              "flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold",
-                              method.badgeClass,
-                            )}
-                          >
-                            {method.content}
+                          {CAMPAY_METHOD.content}
+                        </span>
+                        <span className="flex flex-col gap-0.5">
+                          <span className="flex items-center gap-1.5">
+                            <span className="text-sm font-semibold">{CAMPAY_METHOD.label}</span>
+                            <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-success">
+                              Recommandé
+                            </span>
                           </span>
-                          <span className="text-xs font-semibold leading-tight">{method.label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-2.5">
-                <StepLabel n={3}>Paiement</StepLabel>
-
-                {paymentMethod === "CAMPAY" ? (
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                    <div className="flex flex-col gap-2">
-                      <Label htmlFor="momo-phone">Numéro Mobile Money</Label>
-                      <Input
-                        id="momo-phone"
-                        inputMode="numeric"
-                        placeholder="677123456"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
-                        maxLength={9}
-                      />
-                    </div>
-
-                    {error && <p className="text-sm text-destructive">{error}</p>}
-
-                    {selectedPlan && creditAppliqueSelection > 0 && (
-                      <p className="text-xs text-muted-foreground">
-                        {formatAmount(selectedPlan.effective_price)} FCFA − {formatAmount(creditAppliqueSelection)} FCFA
-                        de crédit parrainage
-                      </p>
+                          <span className="text-xs text-muted-foreground">
+                            Paiement Mobile Money automatique - confirmation en quelques secondes, accès débloqué
+                            immédiatement.
+                          </span>
+                        </span>
+                      </label>
                     )}
-                    <Button type="submit" disabled={!selectedPlan} size="lg" className="w-full">
-                      Payer {selectedPlan ? `${formatAmount(netAPayerSelection)} FCFA` : ""}
-                    </Button>
-                  </form>
-                ) : (
-                  selectedPlan && (
-                    <ManualPaymentPanel
-                      plan={selectedPlan}
-                      operator={paymentMethod}
-                      profilId={profilId}
-                      defaultPayerPhone={phoneNumber}
-                      onDeclared={(payment) => {
-                        setDeclaredPayment(payment)
-                        setPhase("manual_submitted")
-                        // Pas d'évènement dédié côté vocabulaire fermé (voir analytics.models.EventName) -
-                        // une déclaration manuelle est la même intention qu'un paiement Campay initié,
-                        // juste sur un autre canal (voir `operator` dans les properties pour les distinguer).
-                        trackEvent("payment_initiated", {
-                          cursus_id: cursusId ? Number(cursusId) : undefined,
-                          plan_id: selectedPlan.id,
-                          operator: paymentMethod,
-                        })
-                      }}
-                    />
-                  )
-                )}
-              </div>
+
+                    {!optionsManuellesVisibles ? (
+                      <button
+                        type="button"
+                        onClick={() => setShowManualOptions(true)}
+                        className="self-start text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                      >
+                        Des difficultés avec Campay ? Payer manuellement via Orange Money ou MTN MoMo
+                      </button>
+                    ) : (
+                      <div className="flex flex-col gap-2.5 rounded-lg border border-dashed border-input p-3">
+                        <p className="text-xs text-muted-foreground">
+                          {!campayActif && "Le paiement automatique est momentanément indisponible. "}
+                          Paiement manuel : vous effectuez vous-même le transfert, puis déclarez votre transaction.
+                          Vérifiée par notre équipe sous quelques heures.
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {MANUAL_METHODS.map((method) => (
+                            <label
+                              key={method.value}
+                              className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-input px-3 py-2.5 transition-all has-[:checked]:border-primary has-[:checked]:bg-accent has-[:checked]:ring-1 has-[:checked]:ring-primary"
+                            >
+                              <input
+                                type="radio"
+                                name="payment-method"
+                                checked={methode === method.value}
+                                onChange={() => setPaymentMethod(method.value)}
+                                className="sr-only"
+                              />
+                              <span
+                                className={cn(
+                                  "flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold",
+                                  method.badgeClass,
+                                )}
+                              >
+                                {method.content}
+                              </span>
+                              <span className="text-xs font-semibold leading-tight">{method.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-2.5">
+                    <StepLabel n={3}>Paiement</StepLabel>
+
+                    {methode === "CAMPAY" ? (
+                      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                          <Label htmlFor="momo-phone">Numéro Mobile Money</Label>
+                          <Input
+                            id="momo-phone"
+                            inputMode="numeric"
+                            placeholder="677123456"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
+                            maxLength={9}
+                          />
+                        </div>
+
+                        {error && <p className="text-sm text-destructive">{error}</p>}
+
+                        {selectedPlan && creditAppliqueSelection > 0 && (
+                          <p className="text-xs text-muted-foreground">
+                            {formatAmount(selectedPlan.effective_price)} FCFA − {formatAmount(creditAppliqueSelection)} FCFA
+                            de crédit parrainage
+                          </p>
+                        )}
+                        <Button type="submit" disabled={!selectedPlan} size="lg" className="w-full">
+                          Payer {selectedPlan ? `${formatAmount(netAPayerSelection)} FCFA` : ""}
+                        </Button>
+                      </form>
+                    ) : (
+                      selectedPlan && (
+                        <ManualPaymentPanel
+                          plan={selectedPlan}
+                          operator={methode}
+                          profilId={profilId}
+                          defaultPayerPhone={phoneNumber}
+                          onDeclared={(payment) => {
+                            setDeclaredPayment(payment)
+                            setPhase("manual_submitted")
+                            // Pas d'évènement dédié côté vocabulaire fermé (voir analytics.models.EventName) -
+                            // une déclaration manuelle est la même intention qu'un paiement Campay initié,
+                            // juste sur un autre canal (voir `operator` dans les properties pour les distinguer).
+                            trackEvent("payment_initiated", {
+                              cursus_id: cursusId ? Number(cursusId) : undefined,
+                              plan_id: selectedPlan.id,
+                              operator: methode,
+                            })
+                          }}
+                        />
+                      )
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           )}
 
@@ -645,13 +664,15 @@ export function SubscribePage() {
               <Button variant="outline" onClick={() => setPhase("form")}>
                 Réessayer
               </Button>
-              <button
-                type="button"
-                onClick={passerAuPaiementManuel}
-                className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
-              >
-                Payer manuellement via Orange Money ou MTN MoMo
-              </button>
+              {campayActif && (
+                <button
+                  type="button"
+                  onClick={passerAuPaiementManuel}
+                  className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                >
+                  Payer manuellement via Orange Money ou MTN MoMo
+                </button>
+              )}
             </div>
           )}
 
@@ -689,13 +710,15 @@ export function SubscribePage() {
               <Button variant="outline" onClick={() => setPhase("form")}>
                 Réessayer
               </Button>
-              <button
-                type="button"
-                onClick={passerAuPaiementManuel}
-                className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
-              >
-                Payer manuellement via Orange Money ou MTN MoMo
-              </button>
+              {campayActif && (
+                <button
+                  type="button"
+                  onClick={passerAuPaiementManuel}
+                  className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                >
+                  Payer manuellement via Orange Money ou MTN MoMo
+                </button>
+              )}
             </div>
           )}
         </CardContent>
