@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useAuth } from "@/context/AuthContext"
 import { trackEvent } from "@/lib/analytics"
 import {
-  copierLienDePartage, ouvrirWhatsApp, partageNatifDisponible, partagerNativement, type CanalPartage,
+  copierLienDePartage, ouvrirWhatsApp, partageNatifPrefere, partagerNativement, type CanalPartage,
 } from "@/lib/partage"
 
 interface BoutonPartagerProps {
@@ -54,13 +54,13 @@ export function BoutonPartager({ chemin, texte, type, className, variant = "outl
   }
 
   const bouton = (
-    <Button variant={variant} size={size} className={className} onClick={partageNatifDisponible() ? partagerSurMobile : undefined}>
+    <Button variant={variant} size={size} className={className} onClick={partageNatifPrefere() ? partagerSurMobile : undefined}>
       <Share2 aria-hidden="true" />
       {libelle}
     </Button>
   )
 
-  if (partageNatifDisponible()) return bouton
+  if (partageNatifPrefere()) return bouton
 
   return (
     <DropdownMenu>

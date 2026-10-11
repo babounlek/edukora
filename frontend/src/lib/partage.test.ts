@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import {
-  copierLienDePartage, lienDePartage, messageDePartage, ouvrirWhatsApp, partagerNativement, type DonneesPartageLien,
+  copierLienDePartage, lienDePartage, messageDePartage, ouvrirWhatsApp, partageNatifPrefere, partagerNativement, type DonneesPartageLien,
 } from "./partage"
 
 const donnees: DonneesPartageLien = { texte: "Regarde ce corrigé", chemin: "/cm/epreuves/maths-bac-c-2023", codeParrainage: "ABC123" }
@@ -70,5 +70,24 @@ describe("copierLienDePartage", () => {
   it("renvoie false quand le presse-papiers est refusé", async () => {
     Object.defineProperty(navigator, "clipboard", { value: { writeText: () => Promise.reject(new Error("refusé")) }, configurable: true })
     expect(await copierLienDePartage(donnees)).toBe(false)
+  })
+})
+
+describe("partageNatifPrefere", () => {
+  afterEach(() => Reflect.deleteProperty(window, "matchMedia"))
+
+  const simuler = (tactile: boolean) => {
+    Object.defineProperty(navigator, "share", { value: vi.fn(), configurable: true })
+    Object.defineProperty(window, "matchMedia", { value: () => ({ matches: tactile }), configurable: true })
+  }
+
+  it("préfère le partage natif sur un appareil tactile", () => {
+    simuler(true)
+    expect(partageNatifPrefere()).toBe(true)
+  })
+
+  it("laisse le menu WhatsApp / copier sur ordinateur, même si le navigateur sait partager", () => {
+    simuler(false)
+    expect(partageNatifPrefere()).toBe(false)
   })
 })

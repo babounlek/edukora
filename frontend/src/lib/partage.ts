@@ -29,6 +29,15 @@ export function partageNatifDisponible(): boolean {
   return typeof navigator !== "undefined" && typeof navigator.share === "function"
 }
 
+/**
+ * Le partage natif n'est proposé que sur un appareil tactile : sur ordinateur, Windows ouvre un
+ * panneau capricieux (« Nous n'avons pas pu vous montrer tous les partages possibles ») alors que le
+ * menu WhatsApp / copier le lien marche à tous les coups.
+ */
+export function partageNatifPrefere(): boolean {
+  return partageNatifDisponible() && typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches
+}
+
 /** Le panneau de partage du téléphone. "indisponible" : rien à ouvrir ici, proposer WhatsApp / copier. */
 export async function partagerNativement(donnees: DonneesPartageLien): Promise<ResultatPartageLien> {
   if (!partageNatifDisponible()) return "indisponible"
