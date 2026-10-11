@@ -3,6 +3,7 @@ import { Check, ScrollText, ShieldCheck, Smartphone } from "lucide-react"
 import { ChipLegale, ListeLegale, PageLegale, PuceLegale, type SectionLegale } from "@/components/PageLegale"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
+import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
 
 // Date de la dernière révision de fond de ces conditions - jamais « aujourd'hui » : une date
 // qui change toute seule laisserait croire à une mise à jour qui n'a pas eu lieu.
@@ -99,7 +100,7 @@ const SECTIONS: SectionLegale[] = [
           Le paiement se fait par Mobile Money (MTN MoMo, Orange Money). Deux modes sont proposés : le paiement
           automatique via notre prestataire CamPay, qui active l'accès en quelques secondes, ou le paiement manuel -
           tu transfères toi-même le montant au numéro indiqué puis tu déclares ta transaction, que notre équipe
-          vérifie, généralement en quelques heures, avant d'activer l'accès. Tu suis l'état de tes déclarations dans
+          vérifie, généralement sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}, avant d'activer l'accès. Tu suis l'état de tes déclarations dans
           « Mes paiements ».
         </p>
         <p className="mt-3">

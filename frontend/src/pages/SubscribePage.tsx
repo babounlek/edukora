@@ -24,6 +24,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { BienvenueAbonne } from "@/components/BienvenueAbonne"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
+import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
 
 type PaymentPhase = "form" | "pending" | "success" | "failed" | "timeout" | "manual_submitted"
 type PaymentMethod = "CAMPAY" | MobileMoneyOperator
@@ -543,7 +544,7 @@ export function SubscribePage() {
                         <p className="text-xs text-muted-foreground">
                           {!campayActif && "Le paiement automatique est momentanément indisponible. "}
                           Paiement manuel : vous effectuez vous-même le transfert, puis déclarez votre transaction.
-                          Vérifiée par notre équipe sous quelques heures.
+                          Vérifiée par notre équipe sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}.
                         </p>
                         <div className="grid grid-cols-2 gap-2">
                           {MANUAL_METHODS.map((method) => (
@@ -636,7 +637,7 @@ export function SubscribePage() {
               <CheckCircle2 className="size-10 text-success" />
               <p className="font-display font-medium">Votre déclaration a bien été enregistrée</p>
               <p className="text-sm text-muted-foreground">
-                Notre équipe la vérifie, généralement en quelques heures. Tu recevras un SMS dès qu'elle est validée,
+                Notre équipe la vérifie, généralement sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}. Tu recevras un SMS dès qu'elle est validée,
                 et ton accès s'active alors tout seul : rien d'autre à faire, tu peux fermer cette page.
                 Numéro de demande : #{declaredPayment.id}.
               </p>

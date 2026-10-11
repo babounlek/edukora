@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { useSeo } from "@/lib/seo"
 import { cn, formatAmount } from "@/lib/utils"
+import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
 
 /**
  * Un statut = une icône ET un libellé, jamais la couleur seule. « En vérification » reste neutre :
@@ -181,7 +182,7 @@ function CartePaiement({
 
       {payment.status === "PENDING" && (
         <p className="mt-3 text-sm text-muted-foreground">
-          Notre équipe vérifie ton transfert, généralement en quelques heures. Ton accès s'active dès la validation.
+          Notre équipe vérifie ton transfert, généralement sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}. Ton accès s'active dès la validation.
         </p>
       )}
 

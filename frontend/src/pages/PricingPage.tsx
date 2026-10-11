@@ -24,6 +24,7 @@ import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
+import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
 
 function formatDateDansNJours(jours: number): string {
   const cible = new Date(Date.now() + jours * 24 * 60 * 60 * 1000)
@@ -607,7 +608,7 @@ export function PricingPage() {
               <p className="mt-0.5 text-sm text-muted-foreground">
                 {campayActif
                   ? "Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection - un transfert direct, vérifié avant activation."
-                  : "Dès que ton transfert est vérifié par notre équipe, généralement en quelques heures. Tu reçois un SMS de confirmation et ton accès s'active tout seul."}
+                  : `Dès que ton transfert est vérifié par notre équipe, généralement sous ${DELAI_VERIFICATION_PAIEMENT_MANUEL}. Tu reçois un SMS de confirmation et ton accès s'active tout seul.`}
               </p>
             </div>
           </li>
