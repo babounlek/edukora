@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-lire-un-test-if-else-en-javascript-iba2",
+  "meta": {
+    "titre": "Lire un test if ... else en JavaScript",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web - JavaScript",
+    "duree_estimee_min": 20,
+    "tags": [
+      "JavaScript",
+      "condition if"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-a-2-2026-s1-ex5-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un site de lycée affiche « Admis » ou « Ajourné » selon la moyenne d'un élève : derrière l'écran, une seule ligne décide entre deux messages. En JavaScript, cette décision s'écrit avec `if ... else`. À l'épreuve, on te donne le programme tout fait et on te demande ce qu'il fait, quelle est sa condition et ce que devient une variable selon le cas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une variable se déclare avec `var` et reçoit une valeur avec `=`",
+        "Connaître les symboles de comparaison `<`, `>`, `<=`, `>=`",
+        "Savoir que `alert` affiche un message dans une boîte de dialogue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "if ... else : une condition, deux branches, une seule exécutée",
+      "contenu_markdown": "Un test `if ... else` s'écrit ainsi :\n\n```javascript\nif (condition) {\n  instructions si la condition est vraie\n} else {\n  instructions si la condition est fausse\n}\n```\n\nPour lire un tel programme, on procède dans cet ordre :\n\n1. **Ce qui est calculé** : on relève les variables et les calculs placés avant le test.\n2. **La condition** : c'est ce qui est entre parenthèses après `if`. Elle ne peut être que vraie ou fausse.\n3. **La branche `if`** : elle s'exécute seulement quand la condition est vraie.\n4. **La branche `else`** : elle s'exécute seulement quand la condition est fausse.\n5. **Ce qui est affiché** : les instructions placées après le test s'exécutent dans tous les cas.\n\n**Une seule des deux branches s'exécute à chaque passage.**",
+      "formule_principale": "\\text{condition vraie} \\Rightarrow \\text{branche } if \\qquad \\text{condition fausse} \\Rightarrow \\text{branche } else"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un programme range trois notes dans les variables `a = 6`, `b = 9` et `c = 9`, calcule `moyenne = (a + b + c) / 3`, puis exécute `if (moyenne >= 10) { resultat = \"Admis\"; } else { resultat = \"Ajourné\"; }` avant d'afficher `resultat` avec `alert`. Dire ce que fait le programme, donner la condition et la valeur de `resultat`.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever ce qui est calculé",
+          "justification": "Avant le test, le programme prépare la donnée sur laquelle il va décider.",
+          "resultat_markdown": "`moyenne = (6 + 9 + 9) / 3 = 24 / 3 = 8`."
+        },
+        {
+          "numero": 2,
+          "action": "Recopier la condition",
+          "justification": "La condition est le texte entre les parenthèses qui suivent `if`.",
+          "resultat_markdown": "La condition est `moyenne >= 10`."
+        },
+        {
+          "numero": 3,
+          "action": "Évaluer la condition avec la valeur calculée",
+          "justification": "On remplace `moyenne` par 8 et on se demande si 8 est supérieur ou égal à 10.",
+          "resultat_markdown": "`8 >= 10` est **fausse**."
+        },
+        {
+          "numero": 4,
+          "action": "Suivre la bonne branche",
+          "justification": "Condition fausse : seule la branche `else` s'exécute, la branche `if` est ignorée.",
+          "resultat_markdown": "`resultat` reçoit « Ajourné »."
+        }
+      ],
+      "conclusion_markdown": "Le programme calcule la moyenne de trois notes, choisit « Admis » ou « Ajourné » selon que cette moyenne atteint 10, puis affiche le résultat dans une boîte de dialogue. Avec ces notes, la condition est fausse et `resultat` vaut **« Ajourné »**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Dire que la variable reçoit les deux valeurs : seule la branche choisie par la condition s'exécute.",
+        "Recopier la condition de travers, par exemple `moyenne > 10` au lieu de `moyenne >= 10` : le symbole `>=` inclut la valeur 10 elle-même.",
+        "Oublier la valeur calculée avant le test et juger la condition sans avoir fait le calcul de la moyenne.",
+        "Croire que l'instruction placée après le test ne s'exécute que dans une branche : elle s'exécute dans tous les cas."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Avec `moyenne = 12` et le test `if (moyenne >= 10)` de l'exemple, quelle valeur reçoit `resultat` ? Indice : évalue d'abord la condition.",
+        "Avec `moyenne = 10`, la condition `moyenne >= 10` est-elle vraie ? Indice : regarde le symbole `>=`.",
+        "Un programme calcule `prix = 8000`, puis `if (prix > 5000) { remise = 500; } else { remise = 0; }`. Que vaut `remise` ? Indice : compare 8000 à 5000."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`if (condition) { ... } else { ... }` choisit entre deux branches.",
+        "La condition est vraie ou fausse : on remplace les variables par leurs valeurs pour l'évaluer.",
+        "Une seule des deux branches s'exécute à chaque passage.",
+        "Les instructions placées après le test, comme `alert`, s'exécutent dans tous les cas."
+      ]
+    }
+  ]
+}
