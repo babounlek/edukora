@@ -1,0 +1,122 @@
+{
+  "type": "cours",
+  "cours_id": "cours-formater-un-disque-dur-definition-et-pre-sitibac2-ex2-q3",
+  "meta": {
+    "titre": "Formater un disque dur : définition et précautions à prendre",
+    "matiere": "systemes d'information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 15,
+    "tags": [
+      "Formatage",
+      "disque dur"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex2-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formatage lancé trop vite sur la mauvaise partition, et trois mois de dossiers de classe disparaissent. Pour un technicien, formater un disque est une opération courante, mais qui ne se rattrape presque jamais : tout se joue avant de valider la commande."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un disque dur et ce qu'est une partition",
+        "Connaître la notion de système de fichiers (NTFS, FAT32)",
+        "Distinguer le système d'exploitation, les logiciels et les données de l'utilisateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le formatage prépare le disque et efface les données, donc on se protège avant",
+      "contenu_markdown": "Le **formatage** prépare un disque ou une partition à recevoir des données : il crée la structure d'un système de fichiers (table d'allocation, secteurs organisés). Il efface les données présentes ou les rend inaccessibles. Un formatage rapide recrée seulement la structure, un formatage complet vérifie en plus l'état de chaque secteur.\n\nLes précautions découlent directement de cet effet :\n\n- **sauvegarder** sur un autre support (disque externe, clé USB, serveur) tout ce qui doit être conservé ;\n- **vérifier** le disque ou la partition sélectionné avant de valider ;\n- **préparer** le support d'installation du système et les pilotes pour remettre le poste en service ;\n- **protéger l'alimentation** (onduleur ou secteur stable) pour qu'une coupure ne laisse pas le disque dans un état incohérent.",
+      "formule_principale": "\\text{Formatage} = \\text{nouvelle structure} + \\text{données effacées} \\;\\Rightarrow\\; \\text{sauvegarde avant}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le poste n°3 d'une salle informatique doit être formaté avant la réinstallation du système. Son disque contient la partition C (système) et la partition D (dossiers des élèves). Décrire la marche à suivre.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce qui sera perdu et ce qui doit être conservé",
+          "justification": "Le formatage de C efface tout ce qu'elle contient ; la partition D contient les dossiers des élèves, qu'il faut conserver.",
+          "resultat_markdown": "À formater : C. À protéger : D, et les documents personnels qui seraient dans C."
+        },
+        {
+          "numero": 2,
+          "action": "Sauvegarder avant toute opération",
+          "justification": "Après le formatage, les fichiers ne sont plus accessibles : la copie doit exister avant.",
+          "resultat_markdown": "Copie des dossiers sur un disque externe, puis contrôle que les fichiers copiés s'ouvrent."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la cible dans l'assistant d'installation",
+          "justification": "Une erreur de partition détruirait les dossiers des élèves.",
+          "resultat_markdown": "Partition C reconnue par son nom et sa taille, partition D laissée intacte."
+        },
+        {
+          "numero": 4,
+          "action": "Préparer l'installation et l'alimentation",
+          "justification": "Un poste sans système ne peut plus télécharger ce qui manque, et une coupure en cours d'opération peut abîmer le disque.",
+          "resultat_markdown": "Support d'installation et pilotes prêts, poste branché sur onduleur ; le formatage peut être lancé."
+        }
+      ],
+      "conclusion_markdown": "Sauvegarde, vérification de la cible, matériel prêt : ces trois précautions précèdent toujours la commande de formatage."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Sauvegarder les données après avoir lancé le formatage.",
+          "pourquoi_faux": "Le formatage efface les données ou les rend inaccessibles : la sauvegarde n'a de sens que si elle précède l'opération.",
+          "correction_markdown": "Place la sauvegarde en premier dans la liste des précautions."
+        },
+        {
+          "erreur_markdown": "Formater le disque entier alors que seule la partition du système est concernée.",
+          "pourquoi_faux": "Les autres partitions, qui contiennent souvent les données de l'utilisateur, seraient effacées inutilement.",
+          "correction_markdown": "Identifie la partition à formater par son nom et sa taille, et laisse les autres intactes."
+        },
+        {
+          "erreur_markdown": "Confondre le formatage et la suppression de quelques fichiers.",
+          "pourquoi_faux": "Le formatage agit sur toute la structure du disque ou de la partition, pas sur des fichiers isolés.",
+          "correction_markdown": "Présente-le comme une opération globale qui recrée le système de fichiers."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Donner deux raisons qui amènent un technicien à formater un disque dur, et une précaution à prendre avant.",
+          "solution_markdown": "Raisons possibles : réinstaller proprement un système d'exploitation, éliminer une infection virale sévère, changer de système de fichiers, préparer un disque neuf. Précaution : sauvegarder les fichiers à conserver sur un autre support avant de lancer l'opération."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Un élève réclame son projet après un formatage rapide du poste, sans sauvegarde préalable. Que s'est-il passé et que peut-on tenter ?",
+          "solution_markdown": "Le formatage rapide a recréé la structure du système de fichiers : les fichiers ne sont plus listés, mais les données restent souvent présentes sur le disque tant que de nouvelles données ne les ont pas écrasées. On peut tenter un logiciel de récupération, en n'écrivant plus rien sur le disque. Aucun résultat n'est garanti, d'où l'importance de la sauvegarde préalable."
+        },
+        {
+          "numero": 3,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Ranger dans l'ordre les quatre actions suivantes avant une réinstallation : lancer le formatage ; sauvegarder les dossiers ; vérifier la partition choisie ; préparer le support d'installation.",
+          "solution_markdown": "Ordre logique : sauvegarder les dossiers, préparer le support d'installation, vérifier la partition choisie, lancer le formatage. Le formatage est toujours la dernière action de la liste."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le formatage crée un système de fichiers et efface ou rend inaccessibles les données présentes.",
+        "Formatage rapide : recrée la structure ; formatage complet : vérifie aussi chaque secteur.",
+        "Avant de formater : sauvegarder, vérifier la partition visée, préparer l'installation, protéger l'alimentation.",
+        "La sauvegarde précède toujours le formatage."
+      ]
+    }
+  ]
+}

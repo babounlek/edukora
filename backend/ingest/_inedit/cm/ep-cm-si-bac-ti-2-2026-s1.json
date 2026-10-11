@@ -1,0 +1,688 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-si-bac-ti-2-2026-s1",
+  "titre": "Systèmes d'Information Terminale TI – Épreuve inédite n°2",
+  "blueprint_external_id": "bp-cm-si-bac-ti-2",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "4",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 1** (4 points)\n\nLe centre de formation Horizon, à Bafoussam, équipe sa salle de pratique d'un réseau local. Un commutateur SW1 relie le routeur R1 (passerelle vers Internet), le serveur SRV1, le poste P1 du formateur et deux postes d'élèves, P2 et P3. Le serveur SRV1 héberge les documents de cours et le service DHCP : il distribue automatiquement aux postes d'élèves les adresses comprises entre 192.168.20.80 et 192.168.20.120. Les équipements R1, SRV1 et P1 ont une adresse fixe. Tous utilisent le masque 255.255.255.192 (figure 1).\n\n<svg viewBox='0 0 520 384' role='img' aria-labelledby='fig1756cbc1t fig1756cbc1d' style='width:100%;max-width:520px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig1756cbc1t'>Réseau local du centre de formation</title><desc id='fig1756cbc1d'>Le commutateur SW1 est au centre. Il relie le routeur R1 d'adresse 192.168.20.65, le serveur SRV1 d'adresse 192.168.20.70, le poste P1 du formateur d'adresse 192.168.20.77 et les deux postes d'élèves P2 et P3 dont l'adresse est attribuée par DHCP.</desc><line x1='96' y1='185' x2='218' y2='185' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-linecap='round'/><line x1='268.3' y1='171' x2='417' y2='57.6' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-linecap='round'/><line x1='282' y1='175.7' x2='413' y2='137.8' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-linecap='round'/><line x1='282' y1='190.9' x2='413' y2='215' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-linecap='round'/><line x1='271.3' y1='199' x2='413' y2='292.2' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.5' stroke-linecap='round'/><ellipse cx='70' cy='185' rx='26' ry='20' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><ellipse cx='70' cy='185' rx='24' ry='18' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='218' y='171' width='64' height='28' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='220' y='173' width='60' height='24' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='226' y='182' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='236' y='182' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='246' y='182' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='256' y='182' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='266' y='182' width='6' height='7' rx='1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1'/><rect x='417' y='14' width='46' height='52' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='420' y='16' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='453' cy='23' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='420' y='33' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='453' cy='40' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='420' y='50' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='453' cy='57' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='413' y='110' width='54' height='40' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='419' y='114' width='42' height='26' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><line x1='430' y1='146' x2='450' y2='146' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='440' y1='140' x2='440' y2='146' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><rect x='413' y='200' width='54' height='40' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='419' y='204' width='42' height='26' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><line x1='430' y1='236' x2='450' y2='236' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='440' y1='230' x2='440' y2='236' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><rect x='413' y='290' width='54' height='40' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='419' y='294' width='42' height='26' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><line x1='430' y1='326' x2='450' y2='326' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='440' y1='320' x2='440' y2='326' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='58' y1='185' x2='82' y2='185' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='82,185 73,189.1 73,180.9' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='82' y1='185' x2='58' y2='185' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='58,185 67,180.9 67,189.1' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><text x='70' y='220' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>R1</text><text x='70' y='234' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>192.168.20.65</text><text x='250' y='214' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>SW1</text><text x='440' y='81' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>SRV1</text><text x='440' y='95' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>192.168.20.70</text><text x='440' y='165' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>P1</text><text x='440' y='179' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>192.168.20.77</text><text x='440' y='255' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>P2</text><text x='440' y='269' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>adresse DHCP</text><text x='440' y='345' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>P3</text><text x='440' y='359' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>adresse DHCP</text><text x='260' y='378' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 1 : réseau local du centre de formation</text></svg>\n\n| Équipement | Adresse IPv4 | Attribution |\n|---|---|---|\n| R1 (routeur) | 192.168.20.65 | fixe |\n| SRV1 (serveur) | 192.168.20.70 | fixe |\n| P1 (poste du formateur) | 192.168.20.77 | fixe |\n| P2 et P3 (postes d'élèves) | de 192.168.20.80 à 192.168.20.120 | DHCP |",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Donner le rôle du commutateur SW1 et dire en quoi il diffère d'un concentrateur (hub). *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour décrire un commutateur, on précise à quel niveau il agit (liaison de données, adresses MAC) et ce qu'il fait d'une trame reçue, puis on l'oppose au concentrateur, qui travaille au niveau physique sans lire aucune adresse.\n\nLe commutateur SW1 relie entre eux les équipements du réseau local. Il apprend l'adresse MAC de la machine branchée sur chacun de ses ports, lit l'adresse MAC de destination de chaque trame et ne transmet celle-ci que vers le port du destinataire.\n\nUn concentrateur (hub) ne lit aucune adresse : il recopie chaque trame sur tous ses autres ports, que les machines soient concernées ou non. Le commutateur réduit donc le trafic inutile et les collisions, et plusieurs échanges peuvent se dérouler en même temps.\n\n### Piège à éviter\nNe confonds pas le commutateur avec le routeur : le commutateur relie des machines d'un même réseau, c'est R1 qui relie le réseau local à un autre réseau, ici Internet.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "commutateur",
+            "réseaux informatiques"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex1-q1-0",
+              "competence": "Commutateur et concentrateur",
+              "contenu_markdown": "Pour décrire un commutateur, on précise à quel niveau il agit (liaison de données, adresses MAC) et ce qu'il fait d'une trame reçue, puis on l'oppose au concentrateur, qui travaille au niveau physique sans lire aucune adresse.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Indique que le commutateur relie les machines d'un même réseau local",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise qu'il envoie la trame au seul port du destinataire grâce à l'adresse MAC",
+              "points": 0.25
+            },
+            {
+              "libelle": "Oppose au concentrateur, qui recopie la trame sur tous les ports",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Donner la signification du sigle DHCP et le rôle du service hébergé par SRV1. Citer un avantage de l'attribution automatique des adresses pour les postes P2 et P3. *(0,75 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour présenter un protocole ou un service réseau, on développe d'abord son sigle, on indique ce qu'il fournit aux machines et à quel moment, puis on précise l'intérêt concret qu'il apporte à l'utilisateur ou à l'administrateur.\n\nDHCP signifie *Dynamic Host Configuration Protocol*, protocole de configuration dynamique des hôtes.\n\nLe service DHCP de SRV1 gère la plage d'adresses de 192.168.20.80 à 192.168.20.120. Lorsqu'un poste se connecte, il lui attribue automatiquement une adresse libre de cette plage, avec le masque, la passerelle (ici R1, 192.168.20.65) et les autres paramètres réseau, pour une durée limitée appelée bail.\n\nAvantage : l'administrateur n'a rien à saisir sur chaque poste d'élève, ce qui évite les erreurs de frappe et surtout les conflits d'adresses, c'est-à-dire deux machines qui porteraient la même adresse.\n\n### Conseil\nPour le sigle, écris les trois mots en anglais puis leur traduction : c'est la partie de la réponse qui rapporte sans réfléchir.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "DHCP",
+            "adresse IP"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex1-q2-0",
+              "competence": "Le protocole DHCP : sigle et rôle",
+              "contenu_markdown": "Pour présenter un protocole ou un service réseau, on développe d'abord son sigle, on indique ce qu'il fournit aux machines et à quel moment, puis on précise l'intérêt concret qu'il apporte à l'utilisateur ou à l'administrateur.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 0.75,
+          "criteres_notation": [
+            {
+              "libelle": "Développe correctement le sigle DHCP",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que le serveur attribue automatiquement une adresse et les paramètres réseau aux postes",
+              "points": 0.25
+            },
+            {
+              "libelle": "Cite un avantage : pas de saisie manuelle ou pas de conflit d'adresses",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Le poste P1 a pour adresse IP 192.168.20.77 et pour masque 255.255.255.192.\n\na) Donner le masque en notation CIDR.\n\nb) Calculer l'adresse de réseau de P1 en écrivant le dernier octet en binaire.\n\nc) Donner l'adresse de diffusion de ce réseau et la plage des adresses utilisables par des machines.\n\nd) Un poste de stagiaire a pour adresse 192.168.20.130 avec le même masque. Peut-il communiquer avec P1 sans passer par le routeur R1 ? Justifier. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nL'adresse de réseau s'obtient par un ET logique, bit à bit, entre l'adresse IP et le masque ; l'adresse de diffusion s'obtient en mettant à 1 tous les bits de la partie machine, et les adresses utilisables sont celles qui se trouvent strictement entre l'adresse de réseau et l'adresse de diffusion.\n\na) Le masque 255.255.255.192 s'écrit 11111111.11111111.11111111.11000000. Il compte 8 + 8 + 8 + 2 = 26 bits à 1, donc il se note /26.\n\nb) Les trois premiers octets du masque valent 255 : ils sont recopiés tels quels. Seul le dernier octet demande un calcul : 77 s'écrit 01001101 en binaire (64 + 8 + 4 + 1) et 192 s'écrit 11000000.\n\n```\n  01001101   (77)\nET 11000000   (192)\n= 01000000   (64)\n```\n\nL'adresse de réseau est donc **192.168.20.64**.\n\nc) La partie machine est formée des 6 derniers bits du dernier octet. Les mettre tous à 1 donne 01111111, soit 127 : l'adresse de diffusion est **192.168.20.127**. Les adresses utilisables vont de l'adresse qui suit le réseau à celle qui précède la diffusion : de **192.168.20.65 à 192.168.20.126**, soit $2^6 - 2 = 62$ machines.\n\nd) Pour 130, on a 10000010 ET 11000000 = 10000000, soit 128. Le poste du stagiaire est dans le réseau 192.168.20.128/26, différent de 192.168.20.64/26 : il n'est pas dans le même réseau que P1. La communication doit passer par le routeur R1.\n\n### Piège à éviter\nAvec un masque dont le dernier octet est 192, ne te contente pas de comparer les trois premiers octets : 192.168.20.77 et 192.168.20.130 les partagent, et pourtant ils appartiennent à deux réseaux différents.\n\n### Conseil\nPour un octet de masque égal à 192, un bloc compte 256 - 192 = 64 adresses : les réseaux commencent à 0, 64, 128 et 192. Tu situes une adresse d'un coup d'œil, 77 est entre 64 et 127.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "adresse IP",
+            "sous-réseau"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex1-q3-0",
+              "competence": "Calculer l'adresse de réseau, l'adresse de diffusion et la plage d'hôtes d'un sous-réseau",
+              "contenu_markdown": "L'adresse de réseau s'obtient par un ET logique, bit à bit, entre l'adresse IP et le masque ; l'adresse de diffusion s'obtient en mettant à 1 tous les bits de la partie machine, et les adresses utilisables sont celles qui se trouvent strictement entre l'adresse de réseau et l'adresse de diffusion.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Trouve le masque /26 en comptant les 26 bits à 1",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit 77 et 192 en binaire et applique le ET bit à bit pour obtenir 192.168.20.64",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne l'adresse de diffusion 192.168.20.127",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne la plage utilisable de 192.168.20.65 à 192.168.20.126",
+              "points": 0.25
+            },
+            {
+              "libelle": "Conclut que 192.168.20.130 est dans un autre réseau (192.168.20.128) et passe par R1",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Depuis le poste P1, l'administrateur teste la connexion avec la commande ping. Voici les résultats affichés.\n\nTest 1 : `ping 192.168.20.70`\n\n```\nRéponse de 192.168.20.70 : octets=32 temps<1ms TTL=128\nRéponse de 192.168.20.70 : octets=32 temps<1ms TTL=128\nRéponse de 192.168.20.70 : octets=32 temps<1ms TTL=128\nRéponse de 192.168.20.70 : octets=32 temps<1ms TTL=128\n\nPaquets : envoyés = 4, reçus = 4, perdus = 0\n```\n\nTest 2 : `ping 192.168.20.95` (adresse que le poste P3 avait reçue du serveur DHCP en début de matinée)\n\n```\nDélai d'attente de la demande dépassé.\nDélai d'attente de la demande dépassé.\nDélai d'attente de la demande dépassé.\nDélai d'attente de la demande dépassé.\n\nPaquets : envoyés = 4, reçus = 0, perdus = 4\n```\n\na) Que montre le test 1 ?\n\nb) Calculer le pourcentage de paquets perdus au test 2 et donner deux causes possibles de l'absence de réponse.\n\nc) Un test 3, vers l'adresse 192.168.30.5 d'un autre réseau, affiche le message « Hôte de destination inaccessible ». Que signifie ce message et en quoi diffère-t-il de « Délai d'attente de la demande dépassé » ? *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour interpréter un résultat de ping, on lit le message de chaque requête : une réponse prouve que l'hôte est joignable, tandis qu'un délai d'attente dépassé ou un message d'erreur signale un problème de connectivité, de configuration ou de filtrage ; on compte ensuite les paquets reçus et perdus pour calculer le taux de perte (perdus divisés par envoyés).\n\na) Les quatre requêtes ont reçu une réponse et aucun paquet n'est perdu : SRV1 est allumé, correctement relié au commutateur et joignable depuis P1. Le temps de réponse inférieur à 1 ms est normal sur un réseau local.\n\nb) Le taux de perte vaut perdus ÷ envoyés × 100 = 4 ÷ 4 × 100 = **100 %**. Les requêtes sont parties mais rien n'est revenu. Causes possibles : le poste d'adresse 192.168.20.95 est éteint ou débranché, sa carte réseau ou son câble est défaillant, un pare-feu bloque les requêtes, ou aucune machine ne porte actuellement cette adresse.\n\nc) Le message « Hôte de destination inaccessible » indique qu'aucun chemin n'est connu vers le réseau visé, par exemple parce que la passerelle n'est pas configurée ou que la route manque : le paquet n'a pas pu être acheminé. Avec « Délai d'attente de la demande dépassé », le paquet est bien parti vers sa destination, mais aucune réponse n'est revenue à temps.\n\n### Piège à éviter\nUn délai d'attente dépassé ne prouve pas que la machine n'existe pas : un pare-feu qui bloque les requêtes donne exactement le même affichage.\n\n### Conseil\nPour localiser une panne, teste dans l'ordre ta propre adresse, la passerelle, puis la machine visée : le premier test qui échoue désigne l'endroit où la liaison est coupée.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "commande PING",
+            "réseaux informatiques"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex1-q4-0",
+              "competence": "La commande PING et le protocole ICMP",
+              "contenu_markdown": "Pour interpréter un résultat de ping, on lit le message de chaque requête : une réponse prouve que l'hôte est joignable, tandis qu'un délai d'attente dépassé ou un message d'erreur signale un problème de connectivité, de configuration ou de filtrage ; on compte ensuite les paquets reçus et perdus pour calculer le taux de perte (perdus divisés par envoyés).",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Interprète le test 1 : quatre réponses, SRV1 est joignable",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule le taux de perte du test 2 : 4 ÷ 4 × 100 = 100 %",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne deux causes possibles de l'absence de réponse",
+              "points": 0.25
+            },
+            {
+              "libelle": "Distingue destination inaccessible (aucun chemin) et délai dépassé (pas de réponse)",
+              "points": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "4",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 2** (4 points)\n\nDans la salle informatique d'un lycée technique, le poste n°7 met plus de cinq minutes à démarrer. Plusieurs fichiers du dossier Projets, enregistrés la semaine dernière, ne s'ouvrent plus. Un outil de diagnostic signale des secteurs défectueux sur le disque dur. Le technicien constate aussi que l'antivirus de la salle n'a pas été mis à jour depuis huit mois et que l'unité centrale est couverte de poussière.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Le technicien ouvre l'unité centrale et repère la carte mère et le disque dur.\n\na) Donner le rôle de la carte mère et citer deux composants qui se fixent sur elle.\n\nb) Donner le rôle du disque dur et dire en quoi il diffère de la mémoire vive (RAM). *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour présenter la carte mère, on indique qu'elle est le circuit imprimé central de l'ordinateur sur lequel les composants se fixent ou s'enfichent et par lequel ils communiquent, puis on nomme ceux qu'elle porte : le processeur sur son support, les barrettes de mémoire vive dans leurs emplacements, le chipset, les connecteurs d'extension et les ports.\n\na) La carte mère est le circuit imprimé principal de l'unité centrale : elle porte les composants et les relie entre eux pour qu'ils échangent des données. Deux composants qui se fixent sur elle : le processeur, placé sur son support (le socket), et les barrettes de mémoire vive, enfichées dans leurs emplacements.\n\nb) Le disque dur est le périphérique de stockage de masse de l'ordinateur : il conserve de façon durable le système d'exploitation, les logiciels et les fichiers de l'utilisateur, même quand la machine est éteinte. La mémoire vive, au contraire, est une mémoire de travail temporaire : elle contient les programmes et les données en cours d'utilisation et se vide à l'extinction. Elle est plus rapide que le disque dur mais de capacité plus faible.\n\n### Piège à éviter\nNe dis pas que le disque dur « fait fonctionner » l'ordinateur : il stocke. Le traitement des données revient au processeur, qui travaille avec la mémoire vive.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "carte mère",
+            "disque dur"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex2-q1-0",
+              "competence": "Identifier les composants portés par la carte mère",
+              "contenu_markdown": "Pour présenter la carte mère, on indique qu'elle est le circuit imprimé central de l'ordinateur sur lequel les composants se fixent ou s'enfichent et par lequel ils communiquent, puis on nomme ceux qu'elle porte : le processeur sur son support, les barrettes de mémoire vive dans leurs emplacements, le chipset, les connecteurs d'extension et les ports.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Indique que la carte mère porte les composants et les relie entre eux",
+              "points": 0.25
+            },
+            {
+              "libelle": "Cite deux composants fixés sur la carte mère (processeur, RAM, chipset, connecteurs)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne le rôle du disque dur : stockage durable du système, des logiciels et des fichiers",
+              "points": 0.25
+            },
+            {
+              "libelle": "Oppose la RAM : mémoire temporaire vidée à l'extinction",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Le technicien envisage quatre interventions : (1) dépoussiérer l'unité centrale et les ventilateurs ; (2) remplacer le disque dur dont les secteurs sont défectueux ; (3) mettre à jour l'antivirus ; (4) réinstaller le système d'exploitation après la panne.\n\na) Définir la maintenance préventive et la maintenance curative.\n\nb) Classer chacune des quatre interventions dans l'une de ces deux catégories. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nOn classe la maintenance selon le moment de l'intervention par rapport à la panne : la maintenance préventive agit avant la panne pour l'éviter, la maintenance curative agit après la panne pour la réparer et rétablir le fonctionnement normal.\n\na) La **maintenance préventive** regroupe les opérations réalisées avant qu'une panne ne survienne, pour l'empêcher ou la retarder. La **maintenance curative** (ou corrective) regroupe les opérations réalisées après la panne, pour réparer et remettre le poste en état de marche.\n\nb) Le critère est le moment de l'intervention :\n\n- (1) dépoussiérer : préventive, car elle limite la surchauffe avant qu'un composant ne tombe en panne ;\n- (3) mettre à jour l'antivirus : préventive, car elle protège le poste avant une nouvelle infection ;\n- (2) remplacer le disque dur : curative, car la défaillance a déjà eu lieu ;\n- (4) réinstaller le système : curative, car on répare après la panne.\n\n### Piège à éviter\nNe classe pas une opération d'après le composant concerné (matériel ou logiciel) : une mise à jour et un nettoyage sont tous deux préventifs, alors que l'un touche le logiciel et l'autre le matériel.\n\n### Conseil\nPose-toi toujours la même question : la panne a-t-elle déjà eu lieu ? Si oui, c'est curatif, sinon c'est préventif.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "maintenance informatique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex2-q2-0",
+              "competence": "Distinguer les catégories de maintenance informatique",
+              "contenu_markdown": "On classe la maintenance selon le moment de l'intervention par rapport à la panne : la maintenance préventive agit avant la panne pour l'éviter, la maintenance curative agit après la panne pour la réparer et rétablir le fonctionnement normal.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Définit la maintenance préventive : avant la panne, pour l'éviter",
+              "points": 0.25
+            },
+            {
+              "libelle": "Définit la maintenance curative : après la panne, pour réparer",
+              "points": 0.25
+            },
+            {
+              "libelle": "Classe en préventive le dépoussiérage (1) et la mise à jour de l'antivirus (3)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Classe en curative le remplacement du disque (2) et la réinstallation du système (4)",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Après le remplacement du disque dur, le technicien décide de formater la partition système avant de réinstaller le système d'exploitation.\n\na) Définir le formatage d'un disque dur.\n\nb) Citer deux précautions à prendre avant de lancer le formatage et justifier chacune. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour traiter une question sur le formatage, on définit d'abord l'opération (elle prépare le support à recevoir des données en y créant un système de fichiers), on signale qu'elle efface ou rend inaccessibles les données présentes, puis on en déduit les précautions : sauvegarder ce qui doit être conservé et vérifier le support visé avant de valider.\n\na) Le **formatage** est l'opération qui prépare un disque ou une partition à recevoir des données : elle y crée la structure d'un système de fichiers (table d'allocation, secteurs). Elle efface les données présentes ou les rend inaccessibles.\n\nb) Deux précautions, qui découlent de cet effet :\n\n- sauvegarder sur un autre support (disque externe, clé USB, serveur) tous les fichiers à conserver, car ils seront perdus après le formatage ;\n- vérifier la partition ou le disque sélectionné avant de valider, pour ne pas formater par erreur la partition qui contient les dossiers des élèves.\n\nOn peut aussi préparer le support d'installation du système et les pilotes, ou brancher le poste sur un onduleur pour éviter une coupure en cours d'opération.\n\n### Piège à éviter\nLa sauvegarde se fait avant le formatage, jamais après : une fois l'opération lancée, il est trop tard, et même un formatage rapide ne garantit pas que les fichiers soient récupérables.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Formatage",
+            "disque dur"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex2-q3-0",
+              "competence": "Formater un disque dur : définition et précautions à prendre",
+              "contenu_markdown": "Pour traiter une question sur le formatage, on définit d'abord l'opération (elle prépare le support à recevoir des données en y créant un système de fichiers), on signale qu'elle efface ou rend inaccessibles les données présentes, puis on en déduit les précautions : sauvegarder ce qui doit être conservé et vérifier le support visé avant de valider.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Définit le formatage : préparation du support avec un système de fichiers",
+              "points": 0.25
+            },
+            {
+              "libelle": "Indique que les données présentes sont effacées ou inaccessibles",
+              "points": 0.25
+            },
+            {
+              "libelle": "Cite la sauvegarde préalable des fichiers à conserver",
+              "points": 0.25
+            },
+            {
+              "libelle": "Cite et justifie une seconde précaution (vérifier la partition, préparer l'installation, protéger l'alimentation)",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "L'antivirus n'étant plus à jour, le technicien soupçonne une infection virale du poste n°7.\n\na) Donner deux manifestations possibles d'une infection virale.\n\nb) Expliquer le rôle d'un antivirus et pourquoi sa mise à jour régulière est indispensable. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour traiter une infection virale, on se demande ce que le programme malveillant perturbe sur la machine (ses performances, ses fichiers, ses logiciels), puis ce que fait l'antivirus pour s'y opposer : il détecte, bloque et supprime les virus en les comparant à une base de signatures qu'il faut tenir à jour.\n\na) Un virus perturbe le fonctionnement normal de la machine. Deux manifestations possibles : un ralentissement anormal, des plantages ou redémarrages fréquents, des fichiers qui disparaissent ou ne s'ouvrent plus, des messages publicitaires intempestifs. Les lenteurs et les fichiers inaccessibles du poste n°7 en font partie, mais ils peuvent aussi venir du disque défectueux : seule une analyse tranche.\n\nb) Un **antivirus** est le logiciel qui détecte, bloque et supprime les programmes malveillants, en analysant les fichiers présents ou entrants (clé USB, pièce jointe, téléchargement) et en les comparant à une base de signatures de virus connus. Cette base s'enrichit chaque jour de nouvelles menaces : un antivirus non mis à jour depuis huit mois ignore tous les virus apparus depuis et laisse le poste sans défense contre eux.\n\n### Conseil\nEn salle informatique, la porte d'entrée la plus fréquente d'un virus est la clé USB d'un élève : ajoute une analyse de chaque clé avant ouverture si on te demande une mesure de prévention.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "infection virale",
+            "maintenance informatique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex2-q4-0",
+              "competence": "Reconnaître une infection virale et le rôle d'un antivirus",
+              "contenu_markdown": "Pour traiter une infection virale, on se demande ce que le programme malveillant perturbe sur la machine (ses performances, ses fichiers, ses logiciels), puis ce que fait l'antivirus pour s'y opposer : il détecte, bloque et supprime les virus en les comparant à une base de signatures qu'il faut tenir à jour.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Cite une première manifestation d'une infection virale",
+              "points": 0.25
+            },
+            {
+              "libelle": "Cite une seconde manifestation d'une infection virale",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne le rôle de l'antivirus : détecter, bloquer et supprimer les virus",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique la mise à jour : la base de signatures doit connaître les nouveaux virus",
+              "points": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "6",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 3** (6 points)\n\nL'entreprise de transport Wouri Express gère un parc de véhicules et veut concevoir l'application qui en assure le suivi. L'analyse du besoin a abouti aux règles de gestion suivantes.\n\n- **R1.** Un véhicule est identifié par son immatriculation ; on mémorise aussi sa marque, son année de mise en service et son kilométrage. L'application doit pouvoir calculer l'âge d'un véhicule.\n- **R2.** Le parc comprend des camions et des voitures de service. Pour un camion, on mémorise en plus la charge utile en kilogrammes et le nombre d'essieux ; pour une voiture, en plus le nombre de places.\n- **R3.** Un conducteur est identifié par un matricule ; on connaît aussi son nom et son numéro de téléphone.\n- **R4.** Un conducteur détient au moins un permis de conduire, décrit par un numéro, une catégorie et une date d'expiration. Un permis n'est enregistré que pour un conducteur de l'entreprise : si le conducteur quitte l'entreprise, ses permis sont supprimés du système. L'application doit pouvoir dire si un permis est encore valide.\n- **R5.** Un véhicule est confié à au plus un conducteur à la fois ; un conducteur peut se voir confier plusieurs véhicules, ou aucun.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Relever les classes de ce cas. Pour les classes Vehicule, Conducteur et Permis, donner les attributs avec leur type (texte, entier, réel ou date). *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nDans un texte de règles de gestion, une classe correspond à un nom commun qui désigne une catégorie d'objets décrits par plusieurs propriétés ; chaque propriété d'un seul exemplaire (un nom, un nombre, une date) devient un attribut auquel on associe un type, et les attributs communs à plusieurs classes se placent dans une classe mère.\n\nLes classes sont les catégories d'objets que l'entreprise doit décrire : **Vehicule**, **Camion**, **Voiture**, **Conducteur** et **Permis**.\n\nLes attributs découlent des propriétés citées dans les règles :\n\n- Vehicule (R1) : immatriculation : texte, marque : texte, anneeService : entier, kilometrage : entier ;\n- Conducteur (R3) : matricule : texte, nom : texte, telephone : texte ;\n- Permis (R4) : numero : texte, categorie : texte, dateExpiration : date.\n\nCamion et Voiture ont des attributs propres (R2) qu'on place à la question suivante.\n\n### Piège à éviter\nL'âge d'un véhicule n'est pas un attribut : il se calcule à partir de l'année de mise en service, c'est donc une opération (calculerAge). Un numéro de téléphone se type en texte, car on ne calcule jamais avec lui.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "UML",
+            "diagramme de classes"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex3-q1-0",
+              "competence": "Identifier les classes et les attributs d'un diagramme de classe",
+              "contenu_markdown": "Dans un texte de règles de gestion, une classe correspond à un nom commun qui désigne une catégorie d'objets décrits par plusieurs propriétés ; chaque propriété d'un seul exemplaire (un nom, un nombre, une date) devient un attribut auquel on associe un type, et les attributs communs à plusieurs classes se placent dans une classe mère.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Relève les cinq classes : Vehicule, Camion, Voiture, Conducteur, Permis",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne les attributs de Vehicule avec un type cohérent pour chacun",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne les attributs de Conducteur et de Permis avec leur type",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Justifier à l'aide des règles de gestion que Camion et Voiture héritent de Vehicule, puis préciser :\n\n- les attributs propres à chacune de ces deux sous-classes ;\n- ce qu'elles reçoivent de la classe Vehicule. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour décider qu'une classe B hérite d'une classe A, on applique le test « B est un A particulier » ; si le test réussit, B reçoit tous les attributs et toutes les opérations de A, n'ajoute que ses propriétés propres et se relie à A par une flèche à pointe triangulaire creuse dirigée vers A.\n\nUn camion est un véhicule et une voiture est un véhicule (R2) : le test « est un » réussit pour les deux, donc Camion et Voiture sont des sous-classes de Vehicule.\n\nChaque sous-classe reçoit tous les attributs et toutes les opérations de Vehicule (immatriculation, marque, anneeService, kilometrage, calculerAge) : on ne les récrit pas dans Camion ni dans Voiture.\n\nElle n'ajoute que ses propriétés propres :\n\n- Camion : chargeUtile : réel et nbEssieux : entier ;\n- Voiture : nbPlaces : entier.\n\n### Piège à éviter\nNe recopie pas la marque ou l'immatriculation dans Camion et dans Voiture : ce serait redonner à chaque classe ce qu'elle hérite déjà.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Héritage",
+            "UML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex3-q2-0",
+              "competence": "Choisir entre héritage, composition et association dans un diagramme de classe",
+              "contenu_markdown": "Pour décider qu'une classe B hérite d'une classe A, on applique le test « B est un A particulier » ; si le test réussit, B reçoit tous les attributs et toutes les opérations de A, n'ajoute que ses propriétés propres et se relie à A par une flèche à pointe triangulaire creuse dirigée vers A.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Applique le test « est un » : un camion est un véhicule, une voiture est un véhicule",
+              "points": 0.25
+            },
+            {
+              "libelle": "Indique que les sous-classes reçoivent les attributs et opérations de Vehicule",
+              "points": 0.25
+            },
+            {
+              "libelle": "Place chargeUtile et nbEssieux dans Camion",
+              "points": 0.25
+            },
+            {
+              "libelle": "Place nbPlaces dans Voiture sans recopier les attributs de Vehicule",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Justifier que la relation entre Conducteur et Permis est une composition et non une simple association. Indiquer les multiplicités de cette relation et le côté où se place le losange. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne relation est une composition lorsque la partie n'a pas d'existence propre en dehors du tout : elle est créée et détruite avec lui et n'appartient qu'à un seul tout ; elle se note par un losange plein placé du côté du tout, alors que dans une simple association chaque classe peut exister indépendamment de l'autre.\n\nLa règle R4 précise que les permis d'un conducteur sont supprimés du système quand il quitte l'entreprise : le permis n'existe pas sans son conducteur. Un permis appartient à un seul conducteur, et il disparaît avec lui. C'est le critère d'une composition, le conducteur étant le tout et le permis la partie.\n\nMultiplicités : un permis appartient à exactement un conducteur, donc **1** du côté de Conducteur ; un conducteur détient au moins un permis, donc **1..∗** du côté de Permis. Le losange plein se place du côté du tout, c'est-à-dire sur Conducteur.\n\n### Piège à éviter\nPlacer le losange du côté de la partie est l'erreur la plus fréquente : le losange touche toujours le tout, ici le conducteur.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "composition",
+            "UML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex3-q3-0",
+              "competence": "Distinguer une relation d'agrégation d'une relation de composition en UML",
+              "contenu_markdown": "Une relation est une composition lorsque la partie n'a pas d'existence propre en dehors du tout : elle est créée et détruite avec lui et n'appartient qu'à un seul tout ; elle se note par un losange plein placé du côté du tout, alors que dans une simple association chaque classe peut exister indépendamment de l'autre.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Applique le critère du cycle de vie : le permis disparaît avec le conducteur",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise qu'un permis appartient à un seul conducteur",
+              "points": 0.25
+            },
+            {
+              "libelle": "Indique les multiplicités 1 côté Conducteur et 1..∗ côté Permis",
+              "points": 0.25
+            },
+            {
+              "libelle": "Place le losange plein du côté de Conducteur",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Construire le diagramme de classes complet du parc de véhicules. Il comprendra :\n\n- les cinq classes, avec leurs attributs typés et les deux opérations demandées par les règles R1 et R4 ;\n- les relations d'héritage, de composition et d'association entre les classes ;\n- les multiplicités de chaque association. *(2,5 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour élaborer un diagramme de classes à partir de règles de gestion, on trace les classes retenues avec leurs attributs typés et leurs opérations, on les relie par la relation que justifie chaque règle (héritage, composition ou association), puis on indique à chaque extrémité la multiplicité qui traduit la règle.\n\nOn procède règle par règle ; le résultat est la figure 2.\n\n1. R1 et R2 donnent la classe Vehicule et ses deux sous-classes. L'opération calculerAge() : entier est portée par Vehicule. Camion et Voiture sont reliées à Vehicule par une flèche à pointe triangulaire creuse dirigée vers Vehicule.\n2. R3 et R4 donnent les classes Conducteur et Permis. La relation est une composition : le losange plein est collé à Conducteur, avec 1 du côté de Conducteur et 1..∗ du côté de Permis. L'opération estValide() : booléen est portée par Permis.\n3. R5 donne une association entre Conducteur et Vehicule, nommée « conduit ». Un véhicule est confié à au plus un conducteur, donc 0..1 du côté de Conducteur ; un conducteur peut conduire plusieurs véhicules ou aucun, donc 0..∗ du côté de Vehicule.\n\n<svg viewBox='0 0 560 372' role='img' aria-labelledby='fig96a856bbt fig96a856bbd' style='width:100%;max-width:560px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig96a856bbt'>Diagramme de classes du parc de véhicules</title><desc id='fig96a856bbd'>Cinq classes. Camion et Voiture héritent de Vehicule. Un Conducteur est composé d'au moins un Permis, avec un losange plein du côté de Conducteur. Un Conducteur conduit zéro ou plusieurs Vehicule, et un Vehicule est conduit par au plus un Conducteur.</desc><line x1='305.3' y1='254' x2='352.2' y2='170.9' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='357.5,161.5 356.9,173.6 347.5,168.3' fill='var(--background,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linejoin='round'/><line x1='442.2' y1='262.5' x2='416.7' y2='171.9' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='413.8,161.5 421.9,170.4 411.5,173.4' fill='var(--background,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linejoin='round'/><line x1='100' y1='222' x2='100' y2='155.7' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><polygon points='100,139.5 105,147.6 100,155.7 95,147.6' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linejoin='round'/><line x1='173.9' y1='95' x2='299.3' y2='95' stroke='var(--foreground,#161d1a)' stroke-width='1.5' stroke-linecap='round'/><rect x='26.1' y='50.5' width='147.8' height='89' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='299.3' y='28.5' width='191.4' height='133' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='11.6' y='222' width='176.9' height='116' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='207.5' y='254' width='155' height='72' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='376.1' y='262.5' width='147.8' height='55' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><text x='100' y='69.5' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Conducteur</text><line x1='26.1' y1='78.5' x2='173.9' y2='78.5' stroke='var(--foreground,#161d1a)' stroke-width='1.2' stroke-linecap='round'/><text x='36.1' y='93.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>matricule : texte</text><text x='36.1' y='110.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>nom : texte</text><text x='36.1' y='127.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>telephone : texte</text><text x='395' y='47.5' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Vehicule</text><line x1='299.3' y1='56.5' x2='490.7' y2='56.5' stroke='var(--foreground,#161d1a)' stroke-width='1.2' stroke-linecap='round'/><text x='309.3' y='71.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>immatriculation : texte</text><text x='309.3' y='88.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>marque : texte</text><text x='309.3' y='105.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>anneeService : entier</text><text x='309.3' y='122.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>kilometrage : entier</text><line x1='299.3' y1='134.5' x2='490.7' y2='134.5' stroke='var(--foreground,#161d1a)' stroke-width='1.2' stroke-linecap='round'/><text x='309.3' y='149.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>calculerAge() : entier</text><text x='100' y='241' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Permis</text><line x1='11.6' y1='250' x2='188.4' y2='250' stroke='var(--foreground,#161d1a)' stroke-width='1.2' stroke-linecap='round'/><text x='21.6' y='265' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>numero : texte</text><text x='21.6' y='282' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>categorie : texte</text><text x='21.6' y='299' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>dateExpiration : date</text><line x1='11.6' y1='311' x2='188.4' y2='311' stroke='var(--foreground,#161d1a)' stroke-width='1.2' stroke-linecap='round'/><text x='21.6' y='326' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>estValide() : booléen</text><text x='285' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Camion</text><line x1='207.5' y1='282' x2='362.5' y2='282' stroke='var(--foreground,#161d1a)' stroke-width='1.2' stroke-linecap='round'/><text x='217.5' y='297' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>chargeUtile : réel</text><text x='217.5' y='314' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>nbEssieux : entier</text><text x='450' y='281.5' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Voiture</text><line x1='376.1' y1='290.5' x2='523.9' y2='290.5' stroke='var(--foreground,#161d1a)' stroke-width='1.2' stroke-linecap='round'/><text x='386.1' y='305.5' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)'>nbPlaces : entier</text><text x='236.6' y='110' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>conduit</text><text x='189.9' y='111' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0..1</text><text x='283.3' y='111' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>0..∗</text><text x='109' y='172' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1</text><text x='109' y='214' font-size='13' text-anchor='start' fill='var(--foreground,#161d1a)' stroke='var(--background,#ffffff)' stroke-width='4' paint-order='stroke' stroke-linejoin='round'>1..∗</text><text x='280' y='366' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 2 : diagramme de classes du parc de véhicules</text></svg>\n\nLecture des multiplicités : un conducteur détient un ou plusieurs permis, un permis appartient à un seul conducteur ; un conducteur conduit zéro ou plusieurs véhicules, un véhicule est conduit par zéro ou un conducteur.\n\n### Piège à éviter\nVérifie la direction de la flèche d'héritage : elle part de la sous-classe et son triangle creux touche la classe mère. Place aussi chaque multiplicité près de la classe qu'elle concerne, pas près de l'autre.\n\n### Conseil\nRelis les règles R1 à R5 une à une quand ton schéma est fini et coche dans chacune la relation ou l'attribut qui lui correspond : une règle sans trace sur le schéma signale un oubli.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "diagramme de classes",
+            "modélisation statique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex3-q4-0",
+              "competence": "Élaborer un diagramme de classes UML à partir d'un texte décrivant un processus",
+              "contenu_markdown": "Pour élaborer un diagramme de classes à partir de règles de gestion, on trace les classes retenues avec leurs attributs typés et leurs opérations, on les relie par la relation que justifie chaque règle (héritage, composition ou association), puis on indique à chaque extrémité la multiplicité qui traduit la règle.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2.5,
+          "criteres_notation": [
+            {
+              "libelle": "Dessine les cinq classes avec leurs attributs typés et les opérations calculerAge() et estValide()",
+              "points": 0.5
+            },
+            {
+              "libelle": "Relie Camion et Voiture à Vehicule par des flèches d'héritage à triangle creux pointant vers Vehicule",
+              "points": 0.5
+            },
+            {
+              "libelle": "Relie Conducteur et Permis par une composition, avec le losange plein côté Conducteur",
+              "points": 0.5
+            },
+            {
+              "libelle": "Relie Conducteur et Vehicule par une association nommée",
+              "points": 0.5
+            },
+            {
+              "libelle": "Indique les multiplicités : 1 et 1..∗ pour la composition, 0..1 et 0..∗ pour l'association",
+              "points": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "4",
+      "points": "6",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 4** (6 points)\n\nUne boutique en ligne de Douala enregistre ses ventes dans une base de données relationnelle composée de deux tables :\n\n`CLIENT (numCli, nom, ville)`\n\n`COMMANDE (numCmd, dateCmd, montant, numCli)`\n\n`numCli` est la clé primaire de CLIENT, `numCmd` celle de COMMANDE, et `numCli` dans COMMANDE est une clé étrangère qui référence CLIENT. Le montant est exprimé en francs CFA et la date au format AAAA-MM-JJ. Le contenu actuel des tables est le suivant.\n\nTable CLIENT\n\n| numCli | nom | ville |\n|---|---|---|\n| 1 | Mbarga | Yaoundé |\n| 2 | Fotso | Douala |\n| 3 | Tchoua | Bafoussam |\n| 4 | Ndongo | Douala |\n| 5 | Kamga | Garoua |\n\nTable COMMANDE\n\n| numCmd | dateCmd | montant | numCli |\n|---|---|---|---|\n| 101 | 2026-01-12 | 15000 | 2 |\n| 102 | 2026-01-20 | 8500 | 1 |\n| 103 | 2026-02-03 | 24000 | 4 |\n| 104 | 2026-02-17 | 6000 | 2 |\n| 105 | 2026-03-05 | 12500 | 1 |\n| 106 | 2026-03-18 | 30000 | 4 |\n| 107 | 2026-04-02 | 7500 | 3 |\n| 108 | 2026-04-21 | 9500 | 2 |",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Écrire la requête SQL qui affiche le nom du client, le numéro et le montant de chaque commande dont le montant est supérieur ou égal à 10 000 F, puis donner le nombre de lignes obtenues sur les données ci-dessus. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour interroger deux tables liées, on les relie par JOIN ... ON en égalant la clé étrangère à la clé primaire qu'elle référence, puis on ajoute la clause WHERE pour filtrer sur les colonnes voulues ; les alias évitent toute ambiguïté sur les noms de colonnes.\n\nLe nom du client est dans CLIENT, le numéro et le montant dans COMMANDE : il faut joindre les deux tables par la clé étrangère `numCli`, puis filtrer sur le montant.\n\n```sql\nSELECT cl.nom, cm.numCmd, cm.montant\nFROM client cl\nJOIN commande cm ON cl.numCli = cm.numCli\nWHERE cm.montant >= 10000;\n```\n\nSeules les commandes 101 (15000), 103 (24000), 105 (12500) et 106 (30000) dépassent 10000 F : la requête renvoie **4 lignes**, à savoir (Fotso, 101, 15000), (Ndongo, 103, 24000), (Mbarga, 105, 12500) et (Ndongo, 106, 30000).\n\n### Piège à éviter\nSans la condition ON, chaque client serait associé à chaque commande : 5 × 8 = 40 lignes avant le filtre, des associations sans aucun sens.\n\n### Conseil\nÉcris d'abord le FROM et le JOIN avec sa condition ON, puis reviens remplir le SELECT et le WHERE : tu ne risques plus d'oublier la jointure.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "SQL",
+            "jointure",
+            "SELECT"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex4-q1-0",
+              "competence": "Combiner jointures et conditions en SQL (JOIN et WHERE)",
+              "contenu_markdown": "Pour interroger deux tables liées, on les relie par JOIN ... ON en égalant la clé étrangère à la clé primaire qu'elle référence, puis on ajoute la clause WHERE pour filtrer sur les colonnes voulues ; les alias évitent toute ambiguïté sur les noms de colonnes.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Sélectionne les trois colonnes demandées (nom, numCmd, montant)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit FROM client ... JOIN commande avec des alias",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la condition de jointure ON cl.numCli = cm.numCli",
+              "points": 0.5
+            },
+            {
+              "libelle": "Filtre avec WHERE cm.montant >= 10000",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trouve 4 lignes sur les données données",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Écrire la requête SQL qui donne, pour chaque client ayant passé au moins une commande, son nom, le nombre de ses commandes et le montant total de ses achats, classés par ordre alphabétique des noms. Donner le résultat sur les données ci-dessus. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nAvec GROUP BY, les lignes sont réparties en groupes selon les colonnes indiquées et chaque fonction d'agrégation (COUNT, SUM, AVG) est calculée séparément pour chaque groupe ; toute colonne du SELECT doit être soit agrégée, soit listée dans le GROUP BY.\n\nOn joint les deux tables, on regroupe les commandes par client, puis on compte et on additionne dans chaque groupe.\n\n```sql\nSELECT cl.nom, COUNT(cm.numCmd) AS nb_commandes, SUM(cm.montant) AS total\nFROM client cl\nJOIN commande cm ON cl.numCli = cm.numCli\nGROUP BY cl.numCli, cl.nom\nORDER BY cl.nom;\n```\n\nRésultat sur les données de l'énoncé :\n\n| nom | nb_commandes | total |\n|---|---|---|\n| Fotso | 3 | 30500 |\n| Mbarga | 2 | 21000 |\n| Ndongo | 2 | 54000 |\n| Tchoua | 1 | 7500 |\n\nPour Fotso : 15000 + 6000 + 9500 = 30500 ; pour Mbarga : 8500 + 12500 = 21000 ; pour Ndongo : 24000 + 30000 = 54000. Kamga n'apparaît pas : il n'a passé aucune commande, et la jointure ne retient que les clients qui ont au moins une commande.\n\n### Piège à éviter\nUne colonne du SELECT qui n'est ni agrégée ni présente dans le GROUP BY fait échouer la requête ou donne un résultat incohérent : ici, cl.nom doit figurer dans le GROUP BY.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "SQL",
+            "GROUP BY"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex4-q2-0",
+              "competence": "Agréger des données par groupe en SQL (GROUP BY)",
+              "contenu_markdown": "Avec GROUP BY, les lignes sont réparties en groupes selon les colonnes indiquées et chaque fonction d'agrégation (COUNT, SUM, AVG) est calculée séparément pour chaque groupe ; toute colonne du SELECT doit être soit agrégée, soit listée dans le GROUP BY.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Utilise COUNT et SUM dans le SELECT",
+              "points": 0.25
+            },
+            {
+              "libelle": "Joint CLIENT et COMMANDE par ON cl.numCli = cm.numCli",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit GROUP BY avec les colonnes non agrégées du SELECT",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trie par nom avec ORDER BY",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne le résultat exact : Fotso 3 et 30500, Mbarga 2 et 21000, Ndongo 2 et 54000, Tchoua 1 et 7500",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Écrire la requête SQL qui affiche le numéro et le montant des commandes dont le montant est strictement supérieur à la moyenne des montants de toutes les commandes. Donner cette moyenne, puis le résultat de la requête sur les données ci-dessus. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne sous-requête est une requête complète placée entre parenthèses là où l'on attend une valeur ; après un opérateur de comparaison elle doit renvoyer une seule valeur, calculée une fois avant que la requête principale ne compare chaque ligne à cette valeur.\n\nLa moyenne se calcule dans une sous-requête, que la requête principale utilise comme valeur de comparaison.\n\n```sql\nSELECT numCmd, montant\nFROM commande\nWHERE montant > (SELECT AVG(montant) FROM commande);\n```\n\nLa somme des montants vaut 15000 + 8500 + 24000 + 6000 + 12500 + 30000 + 7500 + 9500 = 113000 F pour 8 commandes, donc la moyenne est 113000 ÷ 8 = **14125 F**.\n\nLes commandes dont le montant dépasse 14125 F sont :\n\n| numCmd | montant |\n|---|---|\n| 101 | 15000 |\n| 103 | 24000 |\n| 106 | 30000 |\n\n### Piège à éviter\nÉcrire WHERE montant > AVG(montant) est refusé : une fonction d'agrégation ne s'emploie pas directement dans WHERE, d'où la sous-requête entre parenthèses.\n\n### Conseil\nTeste d'abord la sous-requête seule : si elle renvoie bien une valeur unique (14125), la requête complète est correcte.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Sous-requêtes",
+            "SELECT"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex4-q3-0",
+              "competence": "Les sous-requêtes en SQL",
+              "contenu_markdown": "Une sous-requête est une requête complète placée entre parenthèses là où l'on attend une valeur ; après un opérateur de comparaison elle doit renvoyer une seule valeur, calculée une fois avant que la requête principale ne compare chaque ligne à cette valeur.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit la sous-requête (SELECT AVG(montant) FROM commande) entre parenthèses",
+              "points": 0.5
+            },
+            {
+              "libelle": "Compare avec WHERE montant > (sous-requête)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Calcule la moyenne : 113000 ÷ 8 = 14125",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne le résultat : commandes 101, 103 et 106 avec leurs montants",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "La boutique ajoute 500 F de frais de livraison à toutes les commandes dont le montant est inférieur à 10 000 F.\n\na) Écrire la requête SQL qui effectue cette modification.\n\nb) Combien de lignes de la table COMMANDE sont modifiées ? Donner le nouveau montant de la commande 108. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nL'instruction UPDATE table SET colonne = nouvelle_valeur WHERE condition modifie la colonne indiquée pour toutes les lignes qui vérifient la condition ; sans clause WHERE, la modification s'applique à toutes les lignes de la table.\n\na) Le nouveau montant se calcule à partir de l'ancien, et la condition limite la modification aux petites commandes.\n\n```sql\nUPDATE commande\nSET montant = montant + 500\nWHERE montant < 10000;\n```\n\nb) Les commandes de moins de 10000 F sont 102 (8500), 104 (6000), 107 (7500) et 108 (9500) : **4 lignes** sont modifiées. Les nouveaux montants sont 9000, 6500, 8000 et 10000. La commande 108 passe donc de 9500 à **10000 F**.\n\n### Piège à éviter\nOublier la clause WHERE ajouterait 500 F aux huit commandes sans qu'aucune erreur ne soit signalée.\n\n### Conseil\nAvant de lancer un UPDATE, exécute un SELECT avec la même condition WHERE : tu vois les lignes visées (ici quatre) avant de les modifier.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "SQL",
+            "UPDATE"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex4-q4-0",
+              "competence": "Mettre à jour des données avec UPDATE ... SET ... WHERE",
+              "contenu_markdown": "L'instruction UPDATE table SET colonne = nouvelle_valeur WHERE condition modifie la colonne indiquée pour toutes les lignes qui vérifient la condition ; sans clause WHERE, la modification s'applique à toutes les lignes de la table.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit UPDATE commande",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit SET montant = montant + 500",
+              "points": 0.5
+            },
+            {
+              "libelle": "Limite la modification avec WHERE montant < 10000",
+              "points": 0.25
+            },
+            {
+              "libelle": "Trouve 4 lignes modifiées",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne le nouveau montant de la commande 108 : 10000",
+              "points": 0.25
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

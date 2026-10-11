@@ -1,0 +1,590 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-programmation-bac-ti-2-2026-s1",
+  "titre": "Programmation Terminale TI – Épreuve inédite n°2",
+  "blueprint_external_id": "bp-cm-programmation-bac-ti-2",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "3",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 1** (3 points)\n\nLe centre culturel Les Palmiers, à Limbé, propose à ses adhérents un site web de réservation de salles. L'adhérent ouvre le site depuis son téléphone ou son ordinateur, choisit une salle et une date, puis consulte les créneaux libres. Les pages sont écrites en HTML, CSS et JavaScript pour l'affichage et en PHP pour le traitement, et les réservations sont stockées dans une base de données MySQL hébergée sur le serveur du centre.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Dans l'architecture client-serveur de ce site, préciser quel élément joue le rôle de client et quel élément joue le rôle de serveur, puis décrire en deux phrases l'échange qui se produit lorsque l'adhérent demande la page des créneaux libres. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nDans une architecture client-serveur, le client est le programme qui émet une requête et affiche la réponse reçue, tandis que le serveur reste en attente, traite chaque requête qui lui arrive et renvoie une réponse ; l'échange est toujours déclenché par le client, et un même serveur répond à de nombreux clients.\n\nLe **client** est le navigateur de l'adhérent, sur son téléphone ou son ordinateur. Le **serveur** est la machine du centre culturel qui héberge le site : elle fait tourner le serveur web, l'interpréteur PHP et la base MySQL.\n\nQuand l'adhérent demande la page des créneaux libres, son navigateur envoie une **requête** HTTP au serveur. Le serveur la traite (il exécute le script PHP et interroge la base de données si nécessaire), puis renvoie une **réponse** : la page HTML que le navigateur affiche.\n\nLa figure 1 résume cet échange.\n\n<svg viewBox='0 0 540 200' role='img' aria-labelledby='fig76e873c0t fig76e873c0d' style='width:100%;max-width:540px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig76e873c0t'>Échange entre le navigateur et le serveur du centre culturel</title><desc id='fig76e873c0d'>Le navigateur de l'adhérent envoie une requête HTTP au serveur web, qui exécute le script PHP. Le script envoie une requête SQL à la base MySQL, qui renvoie les réservations. Le serveur renvoie ensuite une page HTML au navigateur.</desc><line x1='106' y1='87' x2='238' y2='87' stroke='var(--primary,#0f6b4f)' stroke-width='2' stroke-linecap='round'/><polygon points='238,87 229,91 229,83' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1' stroke-linejoin='round'/><line x1='238' y1='115' x2='106' y2='115' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><polygon points='106,115 115,111 115,119' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><line x1='302' y1='87' x2='424' y2='87' stroke='var(--primary,#0f6b4f)' stroke-width='2' stroke-linecap='round'/><polygon points='424,87 415,91 415,83' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1' stroke-linejoin='round'/><line x1='424' y1='115' x2='302' y2='115' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><polygon points='302,115 311,111 311,119' fill='var(--foreground,#161d1a)' stroke='var(--foreground,#161d1a)' stroke-width='1' stroke-linejoin='round'/><rect x='43' y='80' width='54' height='40' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='49' y='84' width='42' height='26' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><line x1='60' y1='116' x2='80' y2='116' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><line x1='70' y1='110' x2='70' y2='116' stroke='var(--foreground,#161d1a)' stroke-width='2' stroke-linecap='round'/><rect x='247' y='74' width='46' height='52' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><rect x='250' y='76' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='283' cy='83' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='250' y='93' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='283' cy='100' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='250' y='110' width='40' height='14' rx='3' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><circle cx='283' cy='117' r='2' fill='var(--primary,#0f6b4f)' stroke='var(--primary,#0f6b4f)' stroke-width='1'/><rect x='428' y='74' width='84' height='52' rx='6' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.5'/><text x='70' y='135' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Navigateur</text><text x='70' y='149' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>client</text><text x='270' y='141' font-size='13' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>Serveur web</text><text x='270' y='155' font-size='12' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Apache + PHP</text><text x='470' y='104.9' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>MySQL</text><text x='172' y='77' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>requête HTTP</text><text x='172' y='133' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>page HTML</text><text x='363' y='77' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>requête SQL</text><text x='363' y='133' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>résultats</text><text x='270' y='194' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 1 : le client demande, le serveur traite et répond</text></svg>\n\n### Piège à éviter\nFaire démarrer l'échange par le serveur. C'est toujours le client qui prend l'initiative : le serveur attend une requête et ne répond que lorsqu'on le sollicite.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Architecture client-serveur"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex1-q1-0",
+              "competence": "Application web : définition et fonctionnement client-serveur",
+              "contenu_markdown": "Dans une architecture client-serveur, le client est le programme qui émet une requête et affiche la réponse reçue, tandis que le serveur reste en attente, traite chaque requête qui lui arrive et renvoie une réponse ; l'échange est toujours déclenché par le client, et un même serveur répond à de nombreux clients.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Désigne le navigateur de l'adhérent comme client",
+              "points": 0.25
+            },
+            {
+              "libelle": "Désigne la machine du centre qui héberge le site (serveur web) comme serveur",
+              "points": 0.25
+            },
+            {
+              "libelle": "Décrit la requête envoyée par le client pour obtenir la page",
+              "points": 0.25
+            },
+            {
+              "libelle": "Décrit la réponse (page HTML) renvoyée par le serveur après traitement",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Le site utilise les quatre éléments suivants :\n\n- **a)** la feuille de style `style.css`, qui donne leur couleur aux boutons ;\n- **b)** la fonction JavaScript `verifierDate()`, qui vérifie que la date saisie n'est pas déjà passée ;\n- **c)** le script PHP `creneaux.php`, qui construit la liste des créneaux libres ;\n- **d)** la requête SQL `SELECT`, exécutée par MySQL pour lire les réservations existantes.\n\nIndiquer, pour chacun, s'il est traité par le navigateur (côté client) ou par le serveur (côté serveur). *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe code PHP et les requêtes SQL sont exécutés sur le serveur, alors que le HTML, le CSS et le JavaScript sont envoyés au navigateur, qui les interprète sur le poste du client : pour classer un élément, on se demande s'il a besoin du navigateur de l'utilisateur ou de la machine qui héberge le site.\n\n- **a)** `style.css` : côté client. Le navigateur télécharge la feuille de style et applique lui-même les couleurs ;\n- **b)** `verifierDate()` : côté client. Le code JavaScript est envoyé au navigateur, qui l'exécute sur le poste de l'adhérent ;\n- **c)** `creneaux.php` : côté serveur. C'est l'interpréteur PHP du serveur qui exécute le script, avant l'envoi de la page ;\n- **d)** la requête `SELECT` : côté serveur. Le script PHP l'envoie à MySQL, qui l'exécute dans la base hébergée sur le serveur.\n\n### Piège à éviter\nRanger JavaScript côté serveur parce qu'il fait partie du site. Il est écrit dans la page, donc il voyage jusqu'au navigateur, et c'est le navigateur qui l'exécute. PHP, lui, n'arrive jamais jusqu'au navigateur.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "exécution côté serveur",
+            "langage de programmation"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex1-q2-0",
+              "competence": "Exécution côté serveur d'un script PHP (opposition client/serveur)",
+              "contenu_markdown": "Le code PHP et les requêtes SQL sont exécutés sur le serveur, alors que le HTML, le CSS et le JavaScript sont envoyés au navigateur, qui les interprète sur le poste du client : pour classer un élément, on se demande s'il a besoin du navigateur de l'utilisateur ou de la machine qui héberge le site.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Classe style.css côté client",
+              "points": 0.25
+            },
+            {
+              "libelle": "Classe la fonction JavaScript verifierDate() côté client",
+              "points": 0.25
+            },
+            {
+              "libelle": "Classe le script PHP creneaux.php côté serveur",
+              "points": 0.25
+            },
+            {
+              "libelle": "Classe la requête SQL SELECT côté serveur (exécutée par MySQL)",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Le fichier `salles.php` ci-dessous est stocké sur le serveur du centre.\n\n```php\n<?php\n$salle = \"Sawa\";\n$places = 120;\n?>\n<h2>Salle <?php echo $salle; ?></h2>\n<p>Capacité : <?php echo $places; ?> places</p>\n```\n\nUn adhérent ouvre cette page dans son navigateur, puis demande l'affichage du code source de la page. Écrire ce qu'il lit et expliquer pourquoi il ne voit aucune instruction PHP. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe serveur exécute les scripts PHP avant d'envoyer la page : le navigateur ne reçoit que le résultat produit (du HTML), jamais les instructions PHP, ce qui explique qu'elles soient invisibles dans le code source affiché.\n\nLe navigateur reçoit ceci, et c'est ce que l'adhérent lit dans le code source :\n\n```html\n<h2>Salle Sawa</h2>\n<p>Capacité : 120 places</p>\n```\n\nLe serveur web confie le fichier à l'interpréteur PHP, qui remplace chaque bloc `<?php ... ?>` par ce qu'il affiche avec `echo`, puis envoie la page obtenue. Le premier bloc ne contient que des affectations : il n'affiche rien et disparaît de la page. L'adhérent n'a donc jamais accès aux instructions PHP, seulement à leur résultat.\n\n### Conseil\nPour ce type de question, remplace chaque bloc PHP par le texte qu'il affiche et recopie le HTML qui l'entoure tel quel.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "exécution côté serveur",
+            "serveur web"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex1-q3-0",
+              "competence": "PHP : un langage de script exécuté côté serveur",
+              "contenu_markdown": "Le serveur exécute les scripts PHP avant d'envoyer la page : le navigateur ne reçoit que le résultat produit (du HTML), jamais les instructions PHP, ce qui explique qu'elles soient invisibles dans le code source affiché.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit la ligne HTML h2 avec la salle Sawa",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la ligne HTML p avec la capacité de 120 places",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que le serveur exécute le PHP avant d'envoyer la page",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise que seul le résultat (du HTML) est transmis au navigateur, jamais le code PHP",
+              "points": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "7",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 2** (7 points)\n\nLe centre culturel consulte ses réservations avec le script `reservations.php`, qui reçoit en paramètre le nom d'une salle. Les réservations sont enregistrées dans la table `reservation` de la base MySQL `centre`. Le script est donné ci-dessous avec ses numéros de ligne, qui ne font pas partie du code.\n\n```php\n 1  <?php\n 2  $salle = $_GET['salle'];\n 3  $cnx = mysqli_connect(\"localhost\", \"root\", \"\", \"centre\");\n 4  if (!$cnx) {\n 5      die(\"Connexion impossible\");\n 6  }\n 7  $req = \"SELECT date_res, client, heures FROM reservation WHERE salle = '$salle' ORDER BY date_res\";\n 8  $res = mysqli_query($cnx, $req);\n 9  $total = 0;\n10  $longues = 0;\n11  echo \"<table border='1'>\";\n12  echo \"<tr><th>Date</th><th>Client</th><th>Heures</th></tr>\";\n13  while ($ligne = mysqli_fetch_assoc($res)) {\n14      $total = $total + $ligne['heures'];\n15      if ($ligne['heures'] > 4) {\n16          $longues = $longues + 1;\n17      }\n18      echo \"<tr><td>\" . $ligne['date_res'] . \"</td><td>\" . $ligne['client'] . \"</td><td>\" . $ligne['heures'] . \"</td></tr>\";\n19  }\n20  echo \"</table>\";\n21  echo \"Total : \" . $total . \" h, dont \" . $longues . \" longues\";\n22  mysqli_close($cnx);\n23  ?>\n```\n\nContenu de la table `reservation` :\n\n| id | salle | date_res | client | heures |\n|---|---|---|---|---|\n| 1 | Sawa | 2026-03-14 | Chorale Lumière | 3 |\n| 2 | Sawa | 2026-03-09 | Club Théâtre Mvog | 5 |\n| 3 | Foto | 2026-03-10 | Atelier Couture Mbo | 2 |\n| 4 | Sawa | 2026-03-21 | Troupe Ndolo | 6 |\n| 5 | Sawa | 2026-03-02 | Lycée Bilingue | 4 |\n| 6 | Foto | 2026-03-16 | Chorale Lumière | 4 |\n\nLes dates sont enregistrées au format `AAAA-MM-JJ`.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Un adhérent veut consulter les réservations de la salle Sawa. Écrire l'adresse (URL) qu'il doit saisir dans son navigateur, sachant que le script est installé à la racine du serveur local, puis expliquer comment la ligne 2 récupère le nom de la salle. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nAvec la méthode GET, les données voyagent dans l'adresse, après un point d'interrogation, sous la forme `nom=valeur` (plusieurs paramètres sont séparés par `&`), et le script les lit dans le tableau superglobal `$_GET`, indexé par le nom du paramètre.\n\nL'adhérent saisit l'adresse :\n\n```text\nhttp://localhost/reservations.php?salle=Sawa\n```\n\nAprès le nom du script, le point d'interrogation introduit le paramètre `salle`, de valeur `Sawa`. À la ligne 2, `$_GET['salle']` lit dans le tableau `$_GET` la valeur associée à la clé `salle` : la variable `$salle` reçoit donc la chaîne `Sawa`.\n\n### Piège à éviter\nSéparer le script et son paramètre par `&` ou par `/`. Le premier paramètre est toujours précédé de `?` ; le signe `&` sert seulement à en ajouter un deuxième.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Méthodes GET/POST",
+            "PHP"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q1-0",
+              "competence": "Recuperer les donnees d'un formulaire en PHP avec GET et POST",
+              "contenu_markdown": "Avec la méthode GET, les données voyagent dans l'adresse, après un point d'interrogation, sous la forme `nom=valeur` (plusieurs paramètres sont séparés par `&`), et le script les lit dans le tableau superglobal `$_GET`, indexé par le nom du paramètre.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit une adresse de la forme reservations.php?salle=Sawa avec le point d'interrogation",
+              "points": 0.25
+            },
+            {
+              "libelle": "Nomme correctement le paramètre (salle) et sa valeur (Sawa)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Indique que la ligne 2 lit la valeur dans le tableau `$_GET` avec la clé salle",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise que la valeur est rangée dans la variable `$salle`",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Expliquer le rôle des lignes 7 et 8, puis dire ce que contient la variable `$res` après l'exécution de la ligne 8. Écrire la requête SQL exacte construite à la ligne 7 lorsque le paramètre `salle` vaut `Sawa`. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\n`mysqli_query($connexion, $requete)` envoie une requête SQL à la base par la connexion ouverte, la connexion en premier paramètre et la chaîne SQL en second ; pour une requête `SELECT`, elle renvoie un jeu de résultats (et `false` en cas d'échec), qui ne se lit pas directement : on en extrait les lignes une à une avec `mysqli_fetch_assoc()`.\n\nLa ligne 7 construit, dans la variable `$req`, la chaîne qui contient la requête SQL : le nom de la salle reçu en paramètre y remplace `$salle`. La ligne 8 envoie cette requête à MySQL par la connexion `$cnx`, avec `mysqli_query()`.\n\nAvec `salle=Sawa`, la requête construite est :\n\n```sql\nSELECT date_res, client, heures FROM reservation WHERE salle = 'Sawa' ORDER BY date_res\n```\n\nAprès la ligne 8, `$res` contient le **jeu de résultats** de la requête, et non directement les données : on ne peut pas l'afficher avec `echo`, il faut en extraire les lignes une à une avec `mysqli_fetch_assoc()`, ce que fait la boucle de la ligne 13.\n\n### Conseil\nSur un vrai site, ne place jamais une valeur reçue dans l'adresse directement dans une requête : n'importe quel visiteur peut modifier l'adresse. On filtre d'abord la valeur, par exemple avec `mysqli_real_escape_string()`.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "mysqli_query",
+            "mysqli"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q2-0",
+              "competence": "Exécuter une requête SELECT avec mysqli_query et obtenir le jeu de résultats",
+              "contenu_markdown": "`mysqli_query($connexion, $requete)` envoie une requête SQL à la base par la connexion ouverte, la connexion en premier paramètre et la chaîne SQL en second ; pour une requête `SELECT`, elle renvoie un jeu de résultats (et `false` en cas d'échec), qui ne se lit pas directement : on en extrait les lignes une à une avec `mysqli_fetch_assoc()`.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Dit que la ligne 7 construit la chaîne de requête en y insérant le nom de la salle",
+              "points": 0.25
+            },
+            {
+              "libelle": "Dit que la ligne 8 envoie la requête à MySQL par la connexion `$cnx` avec mysqli_query",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise que `$res` contient un jeu de résultats à parcourir, pas les données prêtes à afficher",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la requête exacte avec WHERE salle = 'Sawa' et ORDER BY date_res",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "On demande l'adresse `reservations.php?salle=Sawa`. Pour le jeu de données donné dans l'énoncé :\n\na) donner le contenu de `$ligne` au premier tour de la boucle (lignes 13 à 19), sous la forme `clé => valeur` ;\n\nb) écrire le code HTML produit par le script, de la balise `<table>` jusqu'au texte final (les instructions `echo` n'ajoutent aucun retour à la ligne : une rangée par ligne est acceptée pour plus de lisibilité) ;\n\nc) donner les valeurs de `$total` et de `$longues` à la fin de la boucle, en justifiant. *(2,5 pts)*",
+          "corrige_markdown": "### Rappel de méthode\n`mysqli_fetch_assoc($resultat)` extrait la ligne suivante d'un résultat de requête SQL et la retourne sous forme de tableau associatif dont les clés sont les noms des colonnes ; rappelée, elle avance à la ligne suivante, et elle renvoie `NULL` quand il n'y a plus de ligne, ce qui arrête une boucle `while`.\n\nLa requête garde les réservations de la salle Sawa (id 1, 2, 4 et 5) et les classe par date croissante. La première ligne lue est donc celle du 2 mars (id 5), et non celle de l'id 1.\n\na) Au premier tour de la boucle, `$ligne` contient :\n\n```text\ndate_res => 2026-03-02\nclient   => Lycée Bilingue\nheures   => 4\n```\n\nb) Le script produit le code HTML suivant, présenté ici une rangée par ligne :\n\n```html\n<table border='1'>\n<tr><th>Date</th><th>Client</th><th>Heures</th></tr>\n<tr><td>2026-03-02</td><td>Lycée Bilingue</td><td>4</td></tr>\n<tr><td>2026-03-09</td><td>Club Théâtre Mvog</td><td>5</td></tr>\n<tr><td>2026-03-14</td><td>Chorale Lumière</td><td>3</td></tr>\n<tr><td>2026-03-21</td><td>Troupe Ndolo</td><td>6</td></tr>\n</table>\nTotal : 18 h, dont 2 longues\n```\n\nc) `$total` additionne les heures de chaque tour : 4 + 5 + 3 + 6 = 18. `$longues` compte les réservations de plus de 4 heures : la condition `$ligne['heures'] > 4` de la ligne 15 est fausse pour 4 et pour 3, vraie pour 5 et pour 6. À la fin de la boucle, `$total` vaut donc 18 et `$longues` vaut 2.\n\n### Piège à éviter\nLire les lignes dans l'ordre de la table : la clause `ORDER BY date_res` les réordonne avant que la boucle ne les lise. Autre erreur fréquente : compter la réservation de 4 heures comme longue, alors que la condition est strictement supérieure à 4.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "Tableaux associatifs PHP",
+            "mysqli"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q3-0",
+              "competence": "Le role de la fonction mysqli_fetch_assoc()",
+              "contenu_markdown": "`mysqli_fetch_assoc($resultat)` extrait la ligne suivante d'un résultat de requête SQL et la retourne sous forme de tableau associatif dont les clés sont les noms des colonnes ; rappelée, elle avance à la ligne suivante, et elle renvoie `NULL` quand il n'y a plus de ligne, ce qui arrête une boucle `while`.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2.5,
+          "criteres_notation": [
+            {
+              "libelle": "Identifie la première ligne lue (2026-03-02, Lycée Bilingue, 4), conséquence du tri ORDER BY date_res",
+              "points": 0.5
+            },
+            {
+              "libelle": "Écrit le contenu de `$ligne` sous forme de tableau associatif avec les clés date_res, client et heures",
+              "points": 0.5
+            },
+            {
+              "libelle": "Écrit la balise table, l'en-tête, puis une rangée par réservation de la salle Sawa dans l'ordre des dates",
+              "points": 0.5
+            },
+            {
+              "libelle": "Reporte exactement les valeurs des quatre rangées et le texte final du script",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne `$total` égal à 18 et `$longues` égal à 2 en précisant que la condition > 4 exclut la réservation de 4 heures",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Un élève recopie le début de la boucle du script. À l'exécution, au lieu de la page attendue, le navigateur affiche un message commençant par `Parse error: syntax error`. Voici son extrait, avec les numéros de ligne du script de référence :\n\n```php\n13  while ($ligne = mysqli_fetch_assoc($res)) {\n14      $total = $total + $ligne['heures']\n15      if ($ligne['heures'] > 4) {\n16          $longues = $longues + 1;\n17      }\n```\n\nIndiquer la ligne qui contient l'erreur, nommer l'erreur, écrire la ligne corrigée, puis dire si le script affiche une rangée du tableau avant le message d'erreur. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nEn PHP, chaque instruction se termine par un point-virgule ; quand il manque, l'interpréteur ne s'en aperçoit qu'en lisant le mot suivant et signale une erreur d'analyse (`Parse error`) à la ligne qui suit celle de la faute, avant d'exécuter la moindre instruction du script.\n\nL'erreur est à la **ligne 14** : l'instruction `$total = $total + $ligne['heures']` n'est pas terminée par un point-virgule. La ligne corrigée est :\n\n```php\n14      $total = $total + $ligne['heures'];\n```\n\nPHP ne s'en aperçoit qu'en lisant le mot suivant : le `if` de la ligne 15 arrive alors qu'il attendait la fin de l'instruction. Il signale donc l'erreur à la ligne 15, soit une ligne après la vraie faute. Comme PHP analyse tout le fichier avant de l'exécuter, aucune instruction du script ne s'exécute : aucune rangée du tableau n'est affichée, seulement le message d'erreur (ou une page blanche si l'affichage des erreurs est désactivé sur le serveur).\n\n### Piège à éviter\nChercher la faute à la ligne que PHP indique. Quand le message parle d'un mot inattendu, remonte à l'instruction précédente : c'est elle qui manque de point-virgule.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "syntaxe PHP",
+            "PHP"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q4-0",
+              "competence": "Repérer et corriger une erreur de syntaxe dans un script PHP",
+              "contenu_markdown": "En PHP, chaque instruction se termine par un point-virgule ; quand il manque, l'interpréteur ne s'en aperçoit qu'en lisant le mot suivant et signale une erreur d'analyse (`Parse error`) à la ligne qui suit celle de la faute, avant d'exécuter la moindre instruction du script.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Situe l'erreur à la ligne 14, et non à la ligne 15 signalée par PHP",
+              "points": 0.25
+            },
+            {
+              "libelle": "Nomme l'erreur : point-virgule oublié à la fin de l'instruction",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la ligne 14 corrigée, avec le point-virgule",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise qu'aucune rangée n'est affichée : le script n'est pas exécuté tant que la syntaxe est fausse",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "La page `annuler.php` supprime une réservation dont l'identifiant est transmis dans l'adresse, par exemple `annuler.php?id=5`. Recopier le script suivant et remplacer les trois emplacements `.....` par ce qui convient.\n\n```php\n<?php\n$id = .....;\n$cnx = mysqli_connect(\"localhost\", \"root\", \"\", \"centre\");\n$req = \"DELETE FROM reservation WHERE id = \" . $id;\n$ok = mysqli_query(....., .....);\nif ($ok) {\n    echo \"Réservation annulée\";\n} else {\n    echo \"Annulation impossible\";\n}\nmysqli_close($cnx);\n?>\n```\n\nPréciser ensuite ce que contient `$ok` après l'appel et ce que la page affiche lorsque la suppression réussit. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour une requête de modification (`INSERT`, `UPDATE`, `DELETE`), `mysqli_query($connexion, $requete)` attend la connexion ouverte puis la chaîne SQL, et renvoie `true` si MySQL a exécuté la requête, `false` en cas d'échec : cette valeur se teste avec un `if` pour informer l'utilisateur.\n\nLe script complété est :\n\n```php\n<?php\n$id = $_GET['id'];\n$cnx = mysqli_connect(\"localhost\", \"root\", \"\", \"centre\");\n$req = \"DELETE FROM reservation WHERE id = \" . $id;\n$ok = mysqli_query($cnx, $req);\nif ($ok) {\n    echo \"Réservation annulée\";\n} else {\n    echo \"Annulation impossible\";\n}\nmysqli_close($cnx);\n?>\n```\n\nL'identifiant arrive par l'adresse (`annuler.php?id=5`) : il se lit donc dans `$_GET['id']`. La fonction `mysqli_query()` reçoit d'abord la connexion `$cnx`, puis la requête `$req`.\n\nAprès l'appel, `$ok` vaut `true` si MySQL a exécuté la suppression et `false` en cas d'échec. Pour `annuler.php?id=5` avec une base disponible, `$ok` vaut `true` et la page affiche `Réservation annulée`.\n\n### Piège à éviter\nCroire que `true` prouve qu'une réservation a disparu. Pour un identifiant qui n'existe pas, la requête s'exécute correctement, ne supprime aucune ligne, et `$ok` vaut quand même `true`.\n\n### Conseil\nSur un vrai site, convertis l'identifiant en nombre entier avec `(int) $_GET['id']` avant de l'insérer dans la requête : sans cela, un visiteur peut modifier l'adresse pour y glisser du SQL.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "mysqli_query",
+            "Méthodes GET/POST"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q5-0",
+              "competence": "Exécuter une requête de modification (DELETE, UPDATE) avec mysqli_query et tester son résultat",
+              "contenu_markdown": "Pour une requête de modification (`INSERT`, `UPDATE`, `DELETE`), `mysqli_query($connexion, $requete)` attend la connexion ouverte puis la chaîne SQL, et renvoie `true` si MySQL a exécuté la requête, `false` en cas d'échec : cette valeur se teste avec un `if` pour informer l'utilisateur.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Complète la première ligne avec `$_GET['id']`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Complète l'appel avec la connexion `$cnx` puis la requête `$req`, dans cet ordre",
+              "points": 0.5
+            },
+            {
+              "libelle": "Indique que `$ok` vaut true en cas de succès et que la page affiche Réservation annulée",
+              "points": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "10",
+      "groupes": [],
+      "enonce_intro_markdown": "**Exercice 3** (10 points)\n\nL'entraîneur du club de basket de Bafang range par ordre croissant les points marqués par ses 8 joueuses lors du dernier match, puis cherche si l'une d'elles a marqué un nombre de points donné. Il utilise le programme C suivant, donné avec ses numéros de ligne, qui ne font pas partie du code.\n\n```c\n 1  #include <stdio.h>\n 2  #define N 8\n 3\n 4  void echanger(int *a, int *b);\n 5  void trier(int t[], int n);\n 6  int chercher(int t[], int n, int x);\n 7  int somme(int n);\n 8\n 9  int main() {\n10      int points[N] = {14, 11, 17, 9, 12, 15, 10, 16};\n11      int pos;\n12      trier(points, N);\n13      pos = chercher(points, N, 16);\n14      if (pos >= 0)\n15          printf(\"Valeur trouvee a l'indice %d\\n\", pos);\n16      else\n17          printf(\"Valeur absente\\n\");\n18      return 0;\n19  }\n20\n21  void echanger(int *a, int *b) {\n22      int tmp = *a;\n23      *a = *b;\n24      *b = tmp;\n25  }\n26\n27  void trier(int t[], int n) {\n28      int i, j, min;\n29      for (i = 0; i < n - 1; i++) {\n30          min = i;\n31          for (j = i + 1; j < n; j++) {\n32              if (t[j] < t[min])\n33                  min = j;\n34          }\n35          if (min != i)\n36              echanger(&t[i], &t[min]);\n37      }\n38  }\n39\n40  int chercher(int t[], int n, int x) {\n41      int bas = 0, haut = n - 1, milieu;\n42      while (bas <= haut) {\n43          milieu = (bas + haut) / 2;\n44          if (t[milieu] == x)\n45              return milieu;\n46          else if (t[milieu] < x)\n47              bas = milieu + 1;\n48          else\n49              haut = milieu - 1;\n50      }\n51      return -1;\n52  }\n53\n54  int somme(int n) {\n55      if (n == 0)\n56          return 0;\n57      return n + somme(n - 1);\n58  }\n```\n\nLa fonction `somme` calcule le nombre de places d'une tribune de `n` rangées dans laquelle la rangée numéro `k` compte `k` places.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "À partir du prototype de la ligne 6, indiquer le type de la valeur renvoyée par la fonction `chercher`, le nom et le type de chacun de ses trois paramètres, puis expliquer pourquoi les prototypes des lignes 4 à 7 sont placés avant la fonction `main`. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLe prototype d'une fonction C se compose du type de retour, du nom et de la liste typée des paramètres, terminée par un point-virgule ; placé avant `main`, il permet au compilateur, qui lit le fichier de haut en bas, de connaître les fonctions définies plus loin et de contrôler leurs appels.\n\nLe prototype de la ligne 6 est `int chercher(int t[], int n, int x);`.\n\n- La fonction renvoie un `int` : l'indice de la valeur trouvée, ou -1 si elle est absente (ligne 51).\n- Elle reçoit trois paramètres : `int t[]`, un tableau d'entiers dans lequel on cherche ; `int n`, le nombre d'éléments à explorer ; `int x`, la valeur recherchée.\n\nLes prototypes sont placés avant `main` parce que les définitions des fonctions se trouvent après. Le compilateur lit le fichier de haut en bas : sans prototype, il ne connaîtrait pas `trier` ni `chercher` aux lignes 12 et 13, et ne pourrait pas vérifier le nombre et le type des arguments de ces appels.\n\n### Piège à éviter\nOublier le point-virgule à la fin d'un prototype. Sans lui, le compilateur attend le corps de la fonction et signale une erreur.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "themes": [
+            "prototype de fonction",
+            "langage C"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex3-q1-0",
+              "competence": "Le prototype (déclaration anticipée) d'une fonction en C",
+              "contenu_markdown": "Le prototype d'une fonction C se compose du type de retour, du nom et de la liste typée des paramètres, terminée par un point-virgule ; placé avant `main`, il permet au compilateur, qui lit le fichier de haut en bas, de connaître les fonctions définies plus loin et de contrôler leurs appels.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Indique que la fonction renvoie un int",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne les trois paramètres avec leur type : tableau d'entiers t, entier n, entier x",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise le rôle des paramètres : tableau exploré, nombre d'éléments, valeur cherchée",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que main appelle les fonctions avant leur définition et que le compilateur doit les connaître d'avance",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "La fonction `echanger` (lignes 21 à 25) est appelée à la ligne 36 par `echanger(&t[i], &t[min])`.\n\na) Expliquer pourquoi ses paramètres `a` et `b` sont déclarés avec une étoile (`int *a`) et pourquoi l'appel utilise l'opérateur `&`.\n\nb) Dans un autre programme, on déclare `int u = 5, v = 8;` puis on appelle `echanger(&u, &v);`. Donner les valeurs de `u` et de `v` après l'appel.\n\nc) On écrit une version `void echanger2(int a, int b)` dont le corps est `int tmp = a; a = b; b = tmp;`. Donner les valeurs de `u` et de `v` après l'appel `echanger2(u, v);` et justifier. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nEn langage C, un paramètre passé par valeur est une copie : la fonction ne peut pas modifier la variable de l'appelant ; pour qu'elle la modifie, on transmet son adresse avec l'opérateur `&`, on déclare le paramètre comme un pointeur (`int *p`) et on lit ou on modifie la valeur pointée avec `*p`.\n\na) `echanger` doit modifier les cases du tableau de la fonction `trier`, et non des copies. Ses paramètres sont donc des pointeurs (`int *a`, `int *b`) qui reçoivent des **adresses**, et l'appel `echanger(&t[i], &t[min])` fournit ces adresses avec l'opérateur `&`. Dans la fonction, `*a` et `*b` désignent les valeurs situées à ces adresses, et ce sont elles que la fonction échange.\n\nb) Avec `echanger(&u, &v)`, la fonction reçoit les adresses de `u` et de `v`. `tmp` prend la valeur 5, puis `*a` (donc `u`) prend 8, puis `*b` (donc `v`) prend 5. On obtient `u = 8` et `v = 5`.\n\nc) Avec `echanger2(u, v)`, les paramètres `a` et `b` sont des copies de `u` et de `v`. L'échange se fait sur ces copies, qui disparaissent à la fin de l'appel. Les variables de l'appelant ne changent pas : `u = 5` et `v = 8`.\n\n### Piège à éviter\nÉcrire `echanger(u, v)` avec la version à pointeurs. L'appel transmet des valeurs là où des adresses sont attendues, et le compilateur le signale : le `&` à l'appel et l'étoile dans l'en-tête vont toujours ensemble.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "passage par adresse",
+            "langage C"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex3-q2-0",
+              "competence": "Passage par valeur vs passage par pointeur en C",
+              "contenu_markdown": "En langage C, un paramètre passé par valeur est une copie : la fonction ne peut pas modifier la variable de l'appelant ; pour qu'elle la modifie, on transmet son adresse avec l'opérateur `&`, on déclare le paramètre comme un pointeur (`int *p`) et on lit ou on modifie la valeur pointée avec `*p`.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Explique que les paramètres sont des pointeurs qui reçoivent les adresses des cases, fournies par &, pour modifier les valeurs de l'appelant",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne u = 8 et v = 5 après echanger(&u, &v) en suivant l'échange avec tmp",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne u = 5 et v = 8 avec echanger2 et justifie : le passage par valeur travaille sur des copies",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "L'appel de la ligne 12 trie le tableau `points`, qui contient au départ 14, 11, 17, 9, 12, 15, 10, 16.\n\na) Recopier et compléter le tableau de trace ci-dessous : pour chaque passage `i` de la boucle externe, donner l'indice `min` trouvé à la fin de la boucle interne et le contenu du tableau après le passage.\n\n| Passage `i` | Indice `min` | Tableau après le passage |\n|---|---|---|\n| 0 | | |\n| 1 | | |\n| 2 | | |\n| 3 | | |\n| 4 | | |\n| 5 | | |\n| 6 | | |\n\nb) Donner le nombre d'appels à `echanger` effectués pendant le tri, puis le nombre total de comparaisons `t[j] < t[min]`. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nLe tri par sélection parcourt le tableau position par position : pour chaque indice `i`, il cherche l'indice du plus petit élément parmi les cases `i` à `n-1`, puis l'échange avec la case `i`, de sorte qu'après le passage `i` les `i+1` premières cases sont définitivement en place.\n\na) À chaque passage `i`, on cherche le plus petit élément des cases `i` à 7, on note son indice dans `min`, puis on l'échange avec la case `i` si `min` est différent de `i`. Le tableau passe de 14, 11, 17, 9, 12, 15, 10, 16 à l'état final suivant, passage par passage :\n\n| Passage `i` | Indice `min` | Échange | Tableau après le passage |\n|---|---|---|---|\n| départ | | | 14, 11, 17, 9, 12, 15, 10, 16 |\n| 0 | 3 | `t[0]` et `t[3]` | 9, 11, 17, 14, 12, 15, 10, 16 |\n| 1 | 6 | `t[1]` et `t[6]` | 9, 10, 17, 14, 12, 15, 11, 16 |\n| 2 | 6 | `t[2]` et `t[6]` | 9, 10, 11, 14, 12, 15, 17, 16 |\n| 3 | 4 | `t[3]` et `t[4]` | 9, 10, 11, 12, 14, 15, 17, 16 |\n| 4 | 4 | aucun | 9, 10, 11, 12, 14, 15, 17, 16 |\n| 5 | 5 | aucun | 9, 10, 11, 12, 14, 15, 17, 16 |\n| 6 | 7 | `t[6]` et `t[7]` | 9, 10, 11, 12, 14, 15, 16, 17 |\n\nLa figure 2 montre ces états : les cases déjà placées sont à gauche, et les cases échangées ont un cadre épais.\n\n<svg viewBox='0 0 560 338' role='img' aria-labelledby='fig825d824t fig825d824d' style='width:100%;max-width:560px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='fig825d824t'>États du tableau pendant le tri par sélection</title><desc id='fig825d824d'>Huit cases d'entiers affichées après chacun des sept passages du tri par sélection. Le tableau passe de 14, 11, 17, 9, 12, 15, 10, 16 à 9, 10, 11, 12, 14, 15, 16, 17. Les cases déjà placées sont en vert clair et les cases échangées ont un cadre épais.</desc><rect x='82' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='118' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='154' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='190' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='226' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='262' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='334' y='38' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='82' y='69' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='118' y='69' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='154' y='69' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='190' y='69' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='226' y='69' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='262' y='69' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='69' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='334' y='69' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='82' y='100' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='118' y='100' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='154' y='100' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='190' y='100' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='226' y='100' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='262' y='100' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='100' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='334' y='100' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='82' y='131' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='118' y='131' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='154' y='131' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='190' y='131' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='226' y='131' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='262' y='131' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='131' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='334' y='131' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='82' y='162' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='118' y='162' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='154' y='162' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='190' y='162' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='226' y='162' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='262' y='162' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='162' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='334' y='162' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='82' y='193' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='118' y='193' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='154' y='193' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='190' y='193' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='226' y='193' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='262' y='193' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='193' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='334' y='193' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='82' y='224' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='118' y='224' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='154' y='224' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='190' y='224' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='226' y='224' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='262' y='224' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='224' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='334' y='224' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='82' y='255' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='118' y='255' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='154' y='255' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='190' y='255' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='226' y='255' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='262' y='255' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='298' y='255' width='36' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='334' y='255' width='36' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><text x='100' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>0</text><text x='136' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>1</text><text x='172' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>2</text><text x='208' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>3</text><text x='244' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>4</text><text x='280' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>5</text><text x='316' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>6</text><text x='352' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>7</text><text x='8' y='28' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>indice</text><text x='8' y='56' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>départ</text><text x='100' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='136' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>11</text><text x='172' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='208' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='244' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>12</text><text x='280' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='352' y='56' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='8' y='87' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>i = 0</text><text x='100' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>9</text><text x='136' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>11</text><text x='172' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='208' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>14</text><text x='244' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>12</text><text x='280' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='352' y='87' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='382' y='87' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>min = 3, échange t[0] et t[3]</text><text x='8' y='118' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>i = 1</text><text x='100' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='136' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>10</text><text x='172' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='208' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='244' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>12</text><text x='280' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>11</text><text x='352' y='118' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='382' y='118' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>min = 6, échange t[1] et t[6]</text><text x='8' y='149' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>i = 2</text><text x='100' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='136' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='172' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>11</text><text x='208' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='244' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>12</text><text x='280' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>17</text><text x='352' y='149' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='382' y='149' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>min = 6, échange t[2] et t[6]</text><text x='8' y='180' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>i = 3</text><text x='100' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='136' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='172' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>11</text><text x='208' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>12</text><text x='244' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>14</text><text x='280' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='352' y='180' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='382' y='180' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>min = 4, échange t[3] et t[4]</text><text x='8' y='211' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>i = 4</text><text x='100' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='136' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='172' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>11</text><text x='208' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>12</text><text x='244' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='280' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='352' y='211' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='382' y='211' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>min = 4, pas d'échange</text><text x='8' y='242' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>i = 5</text><text x='100' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='136' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='172' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>11</text><text x='208' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>12</text><text x='244' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='280' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='352' y='242' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='382' y='242' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>min = 5, pas d'échange</text><text x='8' y='273' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>i = 6</text><text x='100' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='136' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='172' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>11</text><text x='208' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>12</text><text x='244' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='280' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='316' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>16</text><text x='352' y='273' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>17</text><text x='382' y='273' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>min = 7, échange t[6] et t[7]</text><text x='280' y='302' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Fond vert clair : cases définitivement placées. Cadre épais : cases échangées.</text><text x='280' y='322' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 2 : le tableau après chaque passage du tri par sélection</text></svg>\n\nb) L'échange n'a lieu qu'aux passages 0, 1, 2, 3 et 6 : `echanger` est appelé **5 fois**. Aux passages 4 et 5, le plus petit élément est déjà à sa place (`min` vaut `i`) et le test de la ligne 35 l'évite. La boucle interne du passage `i` fait `7 - i` comparaisons, quelles que soient les valeurs : 7 + 6 + 5 + 4 + 3 + 2 + 1 = **28 comparaisons**.\n\n### Piège à éviter\nCroire que chaque passage échange deux cases. Ici, les passages 4 et 5 ne modifient pas le tableau, parce que l'élément cherché est déjà en position `i`.\n\n### Conseil\nSur ta copie, trace un trait après la case `i` à chaque passage : tout ce qui est à gauche est définitivement trié et ne bougera plus.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "tri par sélection",
+            "trace d'exécution"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex3-q3-0",
+              "competence": "Algorithme du tri par sélection en langage C",
+              "contenu_markdown": "Le tri par sélection parcourt le tableau position par position : pour chaque indice `i`, il cherche l'indice du plus petit élément parmi les cases `i` à `n-1`, puis l'échange avec la case `i`, de sorte qu'après le passage `i` les `i+1` premières cases sont définitivement en place.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Donne les indices min corrects et les tableaux des passages 0 et 1",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne les tableaux corrects des passages 2 et 3",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne les passages 4, 5 et 6, en notant l'absence d'échange aux passages 4 et 5",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne 5 échanges et 28 comparaisons avec le calcul 7 + 6 + 5 + 4 + 3 + 2 + 1",
+              "points": 0.5
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Après l'appel de la ligne 12, le tableau `points` est trié par ordre croissant.\n\na) Expliquer pourquoi la recherche dichotomique de la fonction `chercher` exige un tableau trié.\n\nb) Recopier et compléter un tableau donnant, à chaque tour de la boucle `while`, les valeurs de `bas`, `haut`, `milieu` et `t[milieu]` pour l'appel de la ligne 13 (la valeur cherchée est 16). Donner la valeur renvoyée et le message affiché.\n\nc) Mêmes questions si la ligne 13 est remplacée par `pos = chercher(points, N, 13);`. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nLa recherche dichotomique ne s'applique qu'à un tableau trié : à chaque tour, on calcule l'indice du milieu de la zone de recherche et on compare la valeur cherchée à l'élément du milieu ; si elle est plus petite on garde la moitié gauche, si elle est plus grande la moitié droite, et la recherche s'arrête quand la valeur est trouvée ou quand la zone est vide.\n\na) À chaque tour, la fonction compare `x` à `t[milieu]` et élimine toute une moitié de la zone de recherche. Ce raisonnement n'est valable que si le tableau est trié par ordre croissant : si `t[milieu]` est plus petit que `x`, alors toutes les cases situées à sa gauche sont aussi plus petites et ne peuvent pas contenir `x`.\n\nLe tableau trié est 9, 10, 11, 12, 14, 15, 16, 17 (indices de 0 à 7). Le milieu se calcule par une division entière : `(bas + haut) / 2`.\n\nb) Recherche de 16 :\n\n| Tour | bas | haut | milieu | `t[milieu]` | Décision |\n|---|---|---|---|---|---|\n| 1 | 0 | 7 | 3 | 12 | 12 < 16 : `bas = 4` |\n| 2 | 4 | 7 | 5 | 15 | 15 < 16 : `bas = 6` |\n| 3 | 6 | 7 | 6 | 16 | trouvé : `return 6` |\n\nLa fonction renvoie 6 et le programme affiche `Valeur trouvee a l'indice 6`. La figure 3 montre la zone de recherche à chaque tour.\n\n<svg viewBox='0 0 560 202' role='img' aria-labelledby='figf52f3018t figf52f3018d' style='width:100%;max-width:560px;height:auto;display:block;margin:0.75rem auto' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,-apple-system,Segoe UI,Roboto,sans-serif'><title id='figf52f3018t'>Recherche dichotomique de la valeur 16 dans le tableau trié</title><desc id='figf52f3018d'>Tableau trié 9, 10, 11, 12, 14, 15, 16, 17. À chaque tour, la zone de recherche est en vert clair et la case du milieu a un cadre épais. La zone passe de l'indice 0 à 7, puis de 4 à 7, puis de 6 à 7, et la valeur 16 est trouvée à l'indice 6.</desc><rect x='66' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='99' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='132' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='165' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='198' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='231' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='264' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='297' y='40' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='66' y='76' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='99' y='76' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='132' y='76' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='165' y='76' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='198' y='76' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='231' y='76' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='264' y='76' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='297' y='76' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><rect x='66' y='112' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='99' y='112' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='132' y='112' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='165' y='112' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='198' y='112' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='231' y='112' width='33' height='26' rx='2' fill='var(--card,#ffffff)' stroke='var(--muted-foreground,#5b6560)' stroke-width='1.2'/><rect x='264' y='112' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--primary,#0f6b4f)' stroke-width='3'/><rect x='297' y='112' width='33' height='26' rx='2' fill='var(--accent,#e4f3ec)' stroke='var(--foreground,#161d1a)' stroke-width='1.2'/><text x='82.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>0</text><text x='115.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>1</text><text x='148.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>2</text><text x='181.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>3</text><text x='214.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>4</text><text x='247.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>5</text><text x='280.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>6</text><text x='313.5' y='28' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>7</text><text x='8' y='28' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>indice</text><text x='8' y='58' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>Tour 1</text><text x='82.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>9</text><text x='115.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>10</text><text x='148.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>11</text><text x='181.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>12</text><text x='214.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='247.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>15</text><text x='280.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='313.5' y='58' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='342' y='58' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>milieu 3 : 12 &lt; 16</text><text x='8' y='94' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>Tour 2</text><text x='82.5' y='94' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>9</text><text x='115.5' y='94' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>10</text><text x='148.5' y='94' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>11</text><text x='181.5' y='94' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>12</text><text x='214.5' y='94' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>14</text><text x='247.5' y='94' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>15</text><text x='280.5' y='94' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>16</text><text x='313.5' y='94' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='342' y='94' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>milieu 5 : 15 &lt; 16</text><text x='8' y='130' font-size='14' text-anchor='start' fill='var(--foreground,#161d1a)'>Tour 3</text><text x='82.5' y='130' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>9</text><text x='115.5' y='130' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>10</text><text x='148.5' y='130' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>11</text><text x='181.5' y='130' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>12</text><text x='214.5' y='130' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>14</text><text x='247.5' y='130' font-size='14' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>15</text><text x='280.5' y='130' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)' font-weight='bold'>16</text><text x='313.5' y='130' font-size='14' text-anchor='middle' fill='var(--foreground,#161d1a)'>17</text><text x='342' y='130' font-size='13' text-anchor='start' fill='var(--muted-foreground,#5b6560)'>milieu 6 : 16 trouvé</text><text x='280' y='164' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Fond vert clair : zone de recherche. Cadre épais : case du milieu.</text><text x='280' y='184' font-size='13' text-anchor='middle' fill='var(--muted-foreground,#5b6560)'>Figure 3 : recherche de 16 par dichotomie</text></svg>\n\nc) Recherche de 13 :\n\n| Tour | bas | haut | milieu | `t[milieu]` | Décision |\n|---|---|---|---|---|---|\n| 1 | 0 | 7 | 3 | 12 | 12 < 13 : `bas = 4` |\n| 2 | 4 | 7 | 5 | 15 | 15 > 13 : `haut = 4` |\n| 3 | 4 | 4 | 4 | 14 | 14 > 13 : `haut = 3` |\n\nAprès le tour 3, `bas` vaut 4 et `haut` vaut 3 : la condition `bas <= haut` est fausse, la zone de recherche est vide. La fonction exécute `return -1` et le programme affiche `Valeur absente`.\n\n### Piège à éviter\nCalculer le milieu avec une division décimale. En C, `(bas + haut) / 2` sur des entiers est une division entière : au tour 2 de la recherche de 16, `(4 + 7) / 2` donne 5 et non 5,5.\n\n### Conseil\nÉcris toujours `bas` et `haut` sur ta copie avant de calculer `milieu` : la plupart des erreurs viennent d'une borne mal mise à jour.",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "themes": [
+            "recherche dichotomique",
+            "trace d'exécution"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex3-q4-0",
+              "competence": "La recherche dichotomique (recherche binaire) dans un tableau trie",
+              "contenu_markdown": "La recherche dichotomique ne s'applique qu'à un tableau trié : à chaque tour, on calcule l'indice du milieu de la zone de recherche et on compare la valeur cherchée à l'élément du milieu ; si elle est plus petite on garde la moitié gauche, si elle est plus grande la moitié droite, et la recherche s'arrête quand la valeur est trouvée ou quand la zone est vide.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Explique que le tableau doit être trié pour éliminer une moitié à chaque comparaison",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne la trace correcte pour 16 : (0 ; 7 ; 3 ; 12), (4 ; 7 ; 5 ; 15), (6 ; 7 ; 6 ; 16)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Indique que 16 est trouvé, que la fonction renvoie 6 et que l'indice 6 est affiché",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne la trace correcte pour 13 : (0 ; 7 ; 3 ; 12), (4 ; 7 ; 5 ; 15), (4 ; 4 ; 4 ; 14)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Indique que la zone devient vide (bas > haut), que la fonction renvoie -1 et que Valeur absente s'affiche",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "La fonction `somme` (lignes 54 à 58) est récursive. On ajoute dans `main`, avant `return 0;`, l'instruction `printf(\"%d\\n\", somme(4));`.\n\na) Donner la condition d'arrêt de la fonction `somme`.\n\nb) Déplier l'appel `somme(4)` : écrire la suite des appels jusqu'à la condition d'arrêt, puis les valeurs renvoyées en remontant.\n\nc) Donner la valeur affichée et le nombre total d'appels de la fonction `somme`. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour dérouler une fonction récursive, on écrit d'abord la descente : chaque appel avec son paramètre, jusqu'à la condition d'arrêt dont la valeur est connue directement ; puis la remontée : on calcule, de l'appel le plus profond vers le premier, la valeur renvoyée par chaque niveau à partir de celle du niveau suivant.\n\na) La condition d'arrêt est `n == 0` (ligne 55) : l'appel `somme(0)` renvoie 0 sans s'appeler lui-même. Sans elle, la fonction s'appellerait indéfiniment.\n\nb) Descente : chaque appel attend le résultat du suivant.\n\n```text\nsomme(4) = 4 + somme(3)\nsomme(3) = 3 + somme(2)\nsomme(2) = 2 + somme(1)\nsomme(1) = 1 + somme(0)\nsomme(0) = 0\n```\n\nRemontée, de l'appel le plus profond vers le premier : `somme(1) = 1 + 0 = 1`, puis `somme(2) = 2 + 1 = 3`, puis `somme(3) = 3 + 3 = 6`, enfin `somme(4) = 4 + 6 = 10`.\n\nc) Le programme affiche `10`. La fonction est appelée 5 fois au total, avec les valeurs 4, 3, 2, 1 et 0.\n\n### Piège à éviter\nCompter 4 appels. L'appel `somme(0)`, qui déclenche la condition d'arrêt, est lui aussi un appel de la fonction.\n\n### Conseil\nUne tribune de 4 rangées compte bien 1 + 2 + 3 + 4 = 10 places : quand un calcul direct existe, utilise-le pour vérifier ton résultat récursif.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "récursivité",
+            "trace d'exécution"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex3-q5-0",
+              "competence": "Trace d'exécution d'une fonction récursive (pile d'appels)",
+              "contenu_markdown": "Pour dérouler une fonction récursive, on écrit d'abord la descente : chaque appel avec son paramètre, jusqu'à la condition d'arrêt dont la valeur est connue directement ; puis la remontée : on calcule, de l'appel le plus profond vers le premier, la valeur renvoyée par chaque niveau à partir de celle du niveau suivant.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Donne la condition d'arrêt n == 0 qui renvoie 0",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit la descente somme(4), somme(3), somme(2), somme(1), somme(0)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Écrit la remontée 0, 1, 3, 6, 10 et indique que la valeur affichée est 10",
+              "points": 0.5
+            },
+            {
+              "libelle": "Compte 5 appels de la fonction, y compris somme(0)",
+              "points": 0.25
+            }
+          ]
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Écrire la fonction `compter` de prototype `int compter(int t[], int n, int seuil);`, qui renvoie le nombre de cases du tableau `t` (de taille `n`) contenant une valeur supérieure ou égale à `seuil`. Écrire ensuite l'instruction à placer dans `main`, avant `return 0;`, pour afficher le nombre de joueuses ayant marqué au moins 15 points, et donner la valeur affichée. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour compter les éléments d'un tableau qui vérifient une condition, on initialise un compteur à 0, on parcourt toutes les cases avec une boucle `for` de 0 à `n-1`, on incrémente le compteur chaque fois que la condition est vraie, puis on renvoie le compteur après la boucle.\n\nLa fonction suit le modèle du comptage : un compteur initialisé avant la boucle, un test dans la boucle, un `return` après la boucle.\n\n```c\nint compter(int t[], int n, int seuil) {\n    int i, nb = 0;\n    for (i = 0; i < n; i++) {\n        if (t[i] >= seuil)\n            nb++;\n    }\n    return nb;\n}\n```\n\nDans `main`, l'instruction est :\n\n```c\nprintf(\"%d\\n\", compter(points, N, 15));\n```\n\nLes valeurs supérieures ou égales à 15 sont 17, 15 et 16 : le programme affiche `3`, que le tableau soit trié ou non.\n\n### Piège à éviter\nPlacer `return nb;` dans la boucle, ou initialiser `nb` à l'intérieur de la boucle. Dans le premier cas la fonction s'arrête au premier tour, dans le second le compteur repart à 0 à chaque tour.\n\n### Conseil\nUtilise `>=` quand l'énoncé dit « supérieur ou égal ». Avec `>`, la valeur 15 serait oubliée et tu afficherais 2.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "themes": [
+            "langage C"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex3-q6-0",
+              "competence": "Écrire une fonction C qui compte les éléments d'un tableau vérifiant une condition",
+              "contenu_markdown": "Pour compter les éléments d'un tableau qui vérifient une condition, on initialise un compteur à 0, on parcourt toutes les cases avec une boucle `for` de 0 à `n-1`, on incrémente le compteur chaque fois que la condition est vraie, puis on renvoie le compteur après la boucle.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ],
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit l'en-tête de la fonction conforme au prototype donné",
+              "points": 0.5
+            },
+            {
+              "libelle": "Initialise un compteur à 0 avant une boucle for qui parcourt les cases de 0 à n-1",
+              "points": 0.5
+            },
+            {
+              "libelle": "Teste t[i] >= seuil, incrémente le compteur et renvoie le compteur après la boucle",
+              "points": 0.5
+            },
+            {
+              "libelle": "Écrit l'appel printf avec compter(points, N, 15) et donne la valeur affichée 3",
+              "points": 0.5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

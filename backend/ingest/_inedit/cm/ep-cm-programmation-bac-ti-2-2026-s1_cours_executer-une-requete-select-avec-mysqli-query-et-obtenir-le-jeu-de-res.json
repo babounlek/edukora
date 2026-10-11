@@ -1,0 +1,110 @@
+{
+  "type": "cours",
+  "cours_id": "cours-executer-une-requete-select-avec-mysqli-progtibac2-ex2-q2",
+  "meta": {
+    "titre": "Exécuter une requête SELECT avec mysqli_query et obtenir le jeu de résultats",
+    "matiere": "programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web : PHP et MySQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "mysqli_query"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script PHP peut se connecter à la base, mais tant qu'il n'a envoyé aucune requête il ne sait rien des données. C'est `mysqli_query()` qui transmet l'ordre SQL à MySQL et qui rapporte le résultat. Savoir ce qu'elle renvoie évite de chercher les données là où elles ne sont pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connexion à MySQL avec mysqli_connect()",
+        "Écriture d'une requête SELECT ... WHERE",
+        "Variables et concaténation dans une chaîne PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "mysqli_query envoie la requête et renvoie un jeu de résultats",
+      "contenu_markdown": "`mysqli_query($connexion, $requete)` prend deux paramètres, dans cet ordre : la connexion ouverte avec `mysqli_connect()`, puis la requête SQL écrite dans une chaîne de caractères. Pour une requête `SELECT`, elle renvoie un **jeu de résultats** (et `false` si la requête échoue). Ce jeu de résultats n'est pas un texte que l'on peut afficher avec `echo` : on en extrait les lignes une à une avec `mysqli_fetch_assoc()`. Quand la requête dépend d'une variable, on écrit la chaîne entre guillemets doubles et on place la variable à l'intérieur, par exemple `\"... WHERE classe = '$classe'\"`.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table `eleve(id, nom, classe)` se trouve dans la base `ecole`. Le script a déjà ouvert la connexion `$cnx` et lu la classe demandée dans la variable `$classe`. Écrire les deux lignes qui construisent puis exécutent la requête donnant le nom des élèves de cette classe, et dire ce que contient la variable de résultat.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la requête dans une chaîne",
+          "justification": "La classe change d'une demande à l'autre : on place la variable dans la chaîne entre guillemets doubles, et la valeur textuelle entre apostrophes SQL.",
+          "resultat_markdown": "`$req = \"SELECT nom FROM eleve WHERE classe = '$classe'\";`"
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter la requête",
+          "justification": "mysqli_query reçoit d'abord la connexion, puis la requête.",
+          "resultat_markdown": "`$res = mysqli_query($cnx, $req);`"
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter la variable de résultat",
+          "justification": "Pour un SELECT, la fonction renvoie un jeu de résultats, pas les noms eux-mêmes.",
+          "resultat_markdown": "`$res` désigne le jeu de résultats. Les noms se lisent ensuite ligne par ligne avec `mysqli_fetch_assoc($res)`."
+        }
+      ],
+      "conclusion_markdown": "Les deux lignes sont `$req = \"SELECT nom FROM eleve WHERE classe = '$classe'\";` puis `$res = mysqli_query($cnx, $req);`. La variable `$res` contient le jeu de résultats de la requête, à parcourir avec `mysqli_fetch_assoc()`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Afficher `$res` avec `echo $res;` pour voir les données.",
+          "pourquoi_faux": "Le jeu de résultats n'est pas un texte : il ne contient pas les données sous une forme directement affichable.",
+          "correction_markdown": "Parcourir `$res` avec une boucle `while ($ligne = mysqli_fetch_assoc($res))`, puis afficher les cases de `$ligne`."
+        },
+        {
+          "erreur_markdown": "Inverser les paramètres : `mysqli_query($req, $cnx)`.",
+          "pourquoi_faux": "La fonction attend la connexion en premier : elle prendrait la chaîne SQL pour une connexion.",
+          "correction_markdown": "Toujours la connexion d'abord, puis la requête : `mysqli_query($cnx, $req)`."
+        },
+        {
+          "erreur_markdown": "Oublier les apostrophes autour d'une valeur texte dans la requête.",
+          "pourquoi_faux": "MySQL lit alors `Sawa` comme le nom d'une colonne et la requête échoue.",
+          "correction_markdown": "Une valeur texte s'écrit entre apostrophes dans la requête : `WHERE salle = 'Sawa'`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que renvoie `mysqli_query($cnx, \"SELECT nom FROM eleve\")` si la table `eleve` n'existe pas ?",
+          "solution_markdown": "La fonction renvoie `false` : la requête échoue, et il n'y a donc aucun jeu de résultats à parcourir."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec la connexion `$cnx`, écrire les lignes qui exécutent la requête donnant toutes les colonnes des produits de la table `produit` dont le prix est supérieur à 500, en rangeant le résultat dans `$res`.",
+          "solution_markdown": "```php\n$req = \"SELECT * FROM produit WHERE prix > 500\";\n$res = mysqli_query($cnx, $req);\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`mysqli_query($connexion, $requete)` : la connexion d'abord, la requête ensuite",
+        "Pour un `SELECT`, elle renvoie un jeu de résultats, ou `false` en cas d'échec",
+        "On lit les lignes du jeu de résultats avec `mysqli_fetch_assoc()`, jamais avec `echo`"
+      ]
+    }
+  ]
+}

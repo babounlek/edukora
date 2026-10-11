@@ -1,0 +1,110 @@
+{
+  "type": "cours",
+  "cours_id": "cours-executer-une-requete-de-modification-del-progtibac2-ex2-q5",
+  "meta": {
+    "titre": "Exécuter une requête de modification (DELETE, UPDATE) avec mysqli_query et tester son résultat",
+    "matiere": "programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web : PHP et MySQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "mysqli_query"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q5-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Supprimer, modifier, ajouter : un script PHP qui change le contenu de la base n'attend pas de données en retour, mais il doit savoir si l'opération a réussi pour prévenir l'utilisateur. La valeur renvoyée par `mysqli_query()` sert exactement à cela."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connexion à MySQL avec mysqli_connect()",
+        "Lecture d'un paramètre dans le tableau `$_GET`",
+        "Requêtes SQL INSERT, UPDATE et DELETE"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "mysqli_query renvoie true ou false pour une requête de modification",
+      "contenu_markdown": "Pour une requête de modification (`INSERT`, `UPDATE`, `DELETE`), `mysqli_query($connexion, $requete)` attend la connexion ouverte puis la chaîne SQL, et renvoie `true` si MySQL a exécuté la requête, `false` en cas d'échec (erreur SQL, table inexistante, connexion perdue). Il n'y a pas de jeu de résultats à parcourir : on teste la valeur renvoyée avec un `if` pour afficher un message. `true` indique seulement que la requête s'est exécutée : une suppression qui ne trouve aucune ligne renvoie aussi `true`. Un paramètre transmis dans l'adresse se lit avec `$_GET['nom']` avant d'être placé dans la requête.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La page `retirer.php?num=12` supprime l'article de numéro 12 de la table `article(num, titre)`. Compléter les lignes manquantes.\n\n```php\n$num = .....;\n$req = \"DELETE FROM article WHERE num = \" . $num;\n$ok = mysqli_query(....., .....);\n```",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le paramètre de l'adresse",
+          "justification": "Le paramètre `num` arrive par la méthode GET : sa valeur se trouve dans le tableau `$_GET`, à la clé `num`.",
+          "resultat_markdown": "`$num = $_GET['num'];`"
+        },
+        {
+          "numero": 2,
+          "action": "Compléter l'appel de mysqli_query",
+          "justification": "La fonction attend d'abord la connexion, puis la requête.",
+          "resultat_markdown": "`$ok = mysqli_query($cnx, $req);`"
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter la valeur de `$ok`",
+          "justification": "Pour un DELETE, mysqli_query renvoie un booléen.",
+          "resultat_markdown": "`$ok` vaut `true` si la requête s'est exécutée, `false` sinon."
+        }
+      ],
+      "conclusion_markdown": "Les lignes complétées sont `$num = $_GET['num'];` et `$ok = mysqli_query($cnx, $req);`. La variable `$ok` se teste ensuite avec un `if` pour afficher un message de réussite ou d'échec."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que `$ok` égal à `true` prouve qu'une ligne a été supprimée.",
+          "pourquoi_faux": "La requête peut s'exécuter correctement sans trouver aucune ligne à supprimer : `mysqli_query` renvoie alors `true` quand même.",
+          "correction_markdown": "`true` signifie seulement que la requête n'a pas échoué."
+        },
+        {
+          "erreur_markdown": "Oublier la connexion en écrivant `mysqli_query($req)`.",
+          "pourquoi_faux": "La fonction attend la connexion comme premier paramètre et la requête comme second.",
+          "correction_markdown": "Écrire `mysqli_query($cnx, $req)`."
+        },
+        {
+          "erreur_markdown": "Placer `$_GET['num']` tel quel dans la requête sur un vrai site.",
+          "pourquoi_faux": "N'importe quel visiteur peut modifier l'adresse et y glisser du SQL.",
+          "correction_markdown": "Convertir d'abord la valeur avec `(int) $_GET['num']` quand on attend un nombre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que renvoie `mysqli_query($cnx, \"DELETE FROM article WHERE num = 12\")` lorsque la requête s'exécute correctement ?",
+          "solution_markdown": "Elle renvoie `true`, que l'article 12 existe ou non."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire le code qui exécute `UPDATE article SET titre = 'Annulé' WHERE num = 12` avec la connexion `$cnx`, puis affiche `Modifié` en cas de réussite et `Échec` sinon.",
+          "solution_markdown": "```php\n$ok = mysqli_query($cnx, \"UPDATE article SET titre = 'Annulé' WHERE num = 12\");\nif ($ok) {\n    echo \"Modifié\";\n} else {\n    echo \"Échec\";\n}\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour `INSERT`, `UPDATE` et `DELETE`, `mysqli_query` renvoie `true` ou `false`",
+        "Le premier paramètre est la connexion, le second la requête",
+        "`true` ne garantit pas qu'une ligne a été modifiée : seulement que la requête s'est exécutée"
+      ]
+    }
+  ]
+}

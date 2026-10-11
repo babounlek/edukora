@@ -1,0 +1,109 @@
+{
+  "type": "cours",
+  "cours_id": "cours-reperer-et-corriger-une-erreur-de-syntax-progtibac2-ex2-q4",
+  "meta": {
+    "titre": "Repérer et corriger une erreur de syntaxe dans un script PHP",
+    "matiere": "programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web : syntaxe PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "syntaxe PHP"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-programmation-bac-ti-2-2026-s1-ex2-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un point-virgule oublié suffit à transformer toute une page en message d'erreur. Savoir où PHP signale la faute, et où elle se trouve vraiment, fait gagner des points dans les questions de correction de code."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'un script PHP entre `<?php` et `?>`",
+        "Affectation d'une variable et instruction echo"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une instruction PHP se termine par un point-virgule",
+      "contenu_markdown": "En PHP, chaque instruction (affectation, `echo`, appel de fonction) se termine par un point-virgule. Les chaînes sont entourées de guillemets ou d'apostrophes qui doivent se refermer, et les variables commencent par `$`. PHP lit tout le fichier avant de l'exécuter : une faute de syntaxe provoque une erreur d'analyse (`Parse error`) et aucune instruction du script ne s'exécute. Le message donne la ligne où PHP a compris qu'il y avait un problème. Pour un point-virgule oublié, c'est la ligne qui suit la vraie faute, puisque PHP ne s'en aperçoit qu'en lisant le mot suivant.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le script suivant provoque un message `Parse error` qui désigne la ligne 3. Trouver la vraie faute et corriger le script.\n\n```php\n1  <?php\n2  $prix = 500\n3  $total = $prix * 3;\n4  echo $total;\n5  ?>\n```",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le message d'erreur",
+          "justification": "PHP signale un mot inattendu à la ligne 3 : la variable `$total`, qui arrive alors que PHP attendait la fin d'une instruction.",
+          "resultat_markdown": "Le problème est repéré à la ligne 3."
+        },
+        {
+          "numero": 2,
+          "action": "Remonter à l'instruction précédente",
+          "justification": "Un mot inattendu en début de ligne signifie souvent que la ligne d'avant n'est pas terminée.",
+          "resultat_markdown": "La ligne 2, `$prix = 500`, n'a pas de point-virgule."
+        },
+        {
+          "numero": 3,
+          "action": "Corriger et relire",
+          "justification": "On ajoute le point-virgule manquant, puis on vérifie que les autres lignes sont complètes.",
+          "resultat_markdown": "`$prix = 500;`"
+        }
+      ],
+      "conclusion_markdown": "La faute est à la ligne 2, un point-virgule oublié, alors que PHP signale la ligne 3. Le script corrigé affiche `1500`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher la faute uniquement à la ligne indiquée par PHP.",
+          "pourquoi_faux": "Pour un point-virgule oublié, PHP signale la ligne suivante : la ligne indiquée est correcte.",
+          "correction_markdown": "Regarder la ligne indiquée, puis la ligne juste au-dessus."
+        },
+        {
+          "erreur_markdown": "Ajouter un point-virgule après l'accolade fermante d'un bloc `if` ou `while`.",
+          "pourquoi_faux": "Une accolade fermante n'est pas une instruction : elle n'a pas besoin de point-virgule.",
+          "correction_markdown": "Le point-virgule termine les instructions à l'intérieur du bloc, pas le bloc lui-même."
+        },
+        {
+          "erreur_markdown": "Croire que les instructions situées avant la faute s'exécutent quand même.",
+          "pourquoi_faux": "PHP analyse tout le fichier avant de l'exécuter : une erreur d'analyse empêche toute exécution.",
+          "correction_markdown": "Après une `Parse error`, le script n'affiche aucun résultat avant d'avoir été corrigé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle ligne contient la faute ?\n\n```php\n1  <?php\n2  $nom = \"Aline\"\n3  echo $nom;\n4  ?>\n```",
+          "solution_markdown": "La faute est à la ligne 2 : il manque le point-virgule après `\"Aline\"`. PHP signale l'erreur à la ligne 3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le script ci-dessous provoque une `Parse error`. Donner la ligne fautive et la ligne corrigée.\n\n```php\n1  <?php\n2  $a = 4;\n3  $b = 7;\n4  echo \"Somme : \" . ($a + $b)\n5  echo \"<br>\";\n6  ?>\n```",
+          "solution_markdown": "La faute est à la ligne 4 (PHP signale la ligne 5). Ligne corrigée : `echo \"Somme : \" . ($a + $b);`"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque instruction PHP se termine par un point-virgule",
+        "PHP signale un point-virgule oublié à la ligne suivante : on regarde aussi la ligne du dessus",
+        "Après une erreur d'analyse, aucune instruction du script ne s'exécute"
+      ]
+    }
+  ]
+}

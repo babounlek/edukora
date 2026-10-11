@@ -1,0 +1,123 @@
+{
+  "type": "cours",
+  "cours_id": "cours-calculer-l-adresse-de-reseau-l-adresse-d-sitibac2-ex1-q3",
+  "meta": {
+    "titre": "Calculer l'adresse de réseau, l'adresse de diffusion et la plage d'hôtes d'un sous-réseau",
+    "matiere": "systemes d'information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - adressage IP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "sous-réseau",
+      "adresse IP",
+      "adresse de diffusion"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-si-bac-ti-2-2026-s1-ex1-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux postes d'une même salle portent les adresses 192.168.20.77 et 192.168.20.130, presque identiques, et pourtant ils ne communiquent pas directement : un routeur doit les séparer. Le masque de sous-réseau en est la raison. Il découpe l'espace d'adresses en blocs, et savoir calculer les bornes d'un bloc permet de dire en quelques lignes quelles machines se voient et lesquelles ne se voient pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Convertir un nombre de 0 à 255 en binaire sur 8 bits, et inversement",
+        "Savoir qu'un masque est une suite de bits à 1 suivie de bits à 0",
+        "Connaître la notation CIDR : /24 signifie 24 bits à 1 dans le masque"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois calculs à partir de l'adresse et du masque",
+      "contenu_markdown": "Un masque partage les 32 bits d'une adresse en une **partie réseau** (bits où le masque vaut 1) et une **partie machine** (bits où le masque vaut 0).\n\n1. **Adresse de réseau** : ET logique, bit à bit, entre l'adresse IP et le masque. Les octets où le masque vaut 255 sont recopiés, ceux où il vaut 0 deviennent 0, et l'octet intermédiaire (128, 192, 224, 240...) se calcule en binaire.\n2. **Adresse de diffusion** : l'adresse de réseau dont tous les bits de la partie machine sont mis à 1.\n3. **Plage utilisable** : de l'adresse de réseau + 1 à l'adresse de diffusion - 1. Avec $h$ bits de machine, on dispose de $2^h - 2$ adresses utilisables, car l'adresse de réseau et l'adresse de diffusion sont réservées.\n\nRaccourci pour l'octet intermédiaire : la taille d'un bloc est 256 moins la valeur du masque dans cet octet (64 pour 192, 32 pour 224). Les réseaux commencent aux multiples de cette taille.",
+      "formule_principale": "\\text{Adresse de réseau} = \\text{adresse IP} \\;\\text{ET}\\; \\text{masque}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une machine a pour adresse 172.16.5.200 et pour masque 255.255.255.224. Déterminer son adresse de réseau, l'adresse de diffusion, la plage des adresses utilisables et le nombre de machines possibles.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le masque en CIDR et repérer la partie machine",
+          "justification": "224 s'écrit 11100000 : le dernier octet compte 3 bits à 1, donc 24 + 3 = 27 bits pour le réseau et 5 bits pour les machines.",
+          "resultat_markdown": "Masque /27, partie machine de 5 bits."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le ET logique au dernier octet",
+          "justification": "Les trois premiers octets sont recopiés (masque 255). Pour le dernier : 200 = 11001000 et 224 = 11100000, donc 11001000 ET 11100000 = 11000000.",
+          "resultat_markdown": "11000000 = 192, donc adresse de réseau 172.16.5.192."
+        },
+        {
+          "numero": 3,
+          "action": "Mettre à 1 les 5 bits de la partie machine",
+          "justification": "Sur l'adresse de réseau 11000000, les 5 derniers bits à 1 donnent 11011111.",
+          "resultat_markdown": "11011111 = 223, donc adresse de diffusion 172.16.5.223."
+        },
+        {
+          "numero": 4,
+          "action": "Encadrer la plage utilisable et compter les machines",
+          "justification": "On exclut l'adresse de réseau et l'adresse de diffusion. Avec 5 bits de machine : 2^5 - 2 = 32 - 2 = 30.",
+          "resultat_markdown": "Plage de 172.16.5.193 à 172.16.5.222, soit 30 machines."
+        }
+      ],
+      "conclusion_markdown": "La machine 172.16.5.200/27 appartient au réseau 172.16.5.192, dont la diffusion est 172.16.5.223 ; ses voisins utilisables vont de .193 à .222."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Comparer seulement les trois premiers octets pour dire que deux machines sont dans le même réseau, alors que le masque est 255.255.255.192.",
+          "pourquoi_faux": "Avec ce masque, le réseau est découpé dans le dernier octet : 192.168.20.77 est dans le bloc 64 à 127 et 192.168.20.130 dans le bloc 128 à 191, bien que leurs trois premiers octets soient identiques.",
+          "correction_markdown": "Calcule l'adresse de réseau de chaque machine par le ET logique, puis compare les deux résultats."
+        },
+        {
+          "erreur_markdown": "Proposer l'adresse de réseau (ou l'adresse de diffusion) comme adresse utilisable pour une machine.",
+          "pourquoi_faux": "La première adresse du bloc identifie le réseau lui-même et la dernière sert à joindre toutes les machines à la fois : aucune ne peut être attribuée à un poste.",
+          "correction_markdown": "Donne la plage utilisable de l'adresse de réseau + 1 à l'adresse de diffusion - 1."
+        },
+        {
+          "erreur_markdown": "Calculer le nombre de machines par 2^h au lieu de 2^h - 2.",
+          "pourquoi_faux": "Dans un bloc de 2^h adresses, deux sont réservées (réseau et diffusion).",
+          "correction_markdown": "Retire toujours 2 au nombre d'adresses du bloc, par exemple 64 - 2 = 62 pour un /26."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "faible",
+          "enonce_markdown": "Une machine a pour adresse 192.168.1.45 et pour masque 255.255.255.192. Donner l'adresse de réseau, l'adresse de diffusion et la plage utilisable.",
+          "solution_markdown": "45 = 00101101 et 192 = 11000000 : le ET donne 00000000, soit 0. Réseau 192.168.1.0. La partie machine compte 6 bits : 00111111 = 63, diffusion 192.168.1.63. Plage utilisable de 192.168.1.1 à 192.168.1.62, soit 62 machines."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Une machine a pour adresse 192.168.7.150 et pour masque 255.255.255.240. Donner la notation CIDR, l'adresse de réseau, l'adresse de diffusion et le nombre de machines.",
+          "solution_markdown": "240 = 11110000 : 4 bits à 1 dans le dernier octet, donc /28. 150 = 10010110, le ET avec 11110000 donne 10010000 = 144 : réseau 192.168.7.144. Partie machine de 4 bits : 10011111 = 159, diffusion 192.168.7.159. Plage de 192.168.7.145 à 192.168.7.158, soit 2^4 - 2 = 14 machines."
+        },
+        {
+          "numero": 3,
+          "difficulte": "elevee",
+          "enonce_markdown": "Les machines 192.168.3.100 et 192.168.3.140 utilisent le masque 255.255.255.192. Sont-elles dans le même réseau ? Justifier par le calcul.",
+          "solution_markdown": "100 = 01100100, le ET avec 11000000 donne 01000000 = 64 : réseau 192.168.3.64. 140 = 10001100, le ET avec 11000000 donne 10000000 = 128 : réseau 192.168.3.128. Les deux adresses de réseau diffèrent : les machines sont dans deux réseaux distincts et ne communiquent que par un routeur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Adresse de réseau = adresse IP ET masque, calculé bit à bit ; on passe en binaire pour l'octet intermédiaire du masque.",
+        "Adresse de diffusion = adresse de réseau avec tous les bits de la partie machine à 1.",
+        "Plage utilisable = de réseau + 1 à diffusion - 1, soit 2^h - 2 machines pour h bits de machine.",
+        "Deux machines sont dans le même réseau si et seulement si leurs adresses de réseau sont égales."
+      ]
+    }
+  ]
+}
