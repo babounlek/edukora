@@ -345,10 +345,10 @@ class _Acces:
     """Ce que le visiteur a le droit de lire - calculé UNE fois par requête HTTP (voir
     access.services.bulk_active_*), jamais un test par résultat affiché."""
 
-    def __init__(self, utilisateur):
+    def __init__(self, utilisateur, profil=None):
         self.connecte = bool(utilisateur is not None and utilisateur.is_authenticated)
-        self.abonnements = bulk_active_subscription_cursus_ids(utilisateur)
-        self.inedites = bulk_active_inedite_cursus_ids(utilisateur)
+        self.abonnements = bulk_active_subscription_cursus_ids(utilisateur, profil)
+        self.inedites = bulk_active_inedite_cursus_ids(utilisateur, profil)
 
     def niveau(self, entree):
         """"libre" (sans abonnement), "ouvert" (ce visiteur y a droit), "verrouille" (abonnement
@@ -582,7 +582,7 @@ def _recherche(pays, jetons, intention, *, cursus, matiere, type_, corriger_auto
 
 
 def chercher(
-    requete, *, pays, utilisateur=None, cursus=None, matiere=None, type_=None,
+    requete, *, pays, utilisateur=None, profil=None, cursus=None, matiere=None, type_=None,
     limite=LIMITE_DEFAUT, decalage=0, elargir=False, corriger_auto=True, sans=(),
 ):
     """
@@ -602,7 +602,7 @@ def chercher(
     if type_ and type_ not in ORDRE_GROUPES:
         type_ = None
     filtre_cursus = None if elargir else cursus
-    acces = _Acces(utilisateur)
+    acces = _Acces(utilisateur, profil)
     sans = frozenset(sans) & frozenset(comprendre.PARTIES)
 
     reponse = {

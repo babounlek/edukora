@@ -6,6 +6,7 @@ from rest_framework.throttling import SimpleRateThrottle
 from catalog.models import Country
 
 from . import moteur
+from users.profils import profil_actif
 
 
 class RechercheThrottle(SimpleRateThrottle):
@@ -53,7 +54,7 @@ def rechercher(request):
     matiere = params.get("matiere") or None
     decalage = _entier(params.get("decalage")) or 0
     reponse = moteur.chercher(
-        params.get("q", ""), pays=pays, utilisateur=request.user, cursus=_entier(params.get("cursus")),
+        params.get("q", ""), pays=pays, utilisateur=request.user, profil=profil_actif(request), cursus=_entier(params.get("cursus")),
         matiere=matiere, type_=type_, limite=_entier(params.get("limite")) or moteur.LIMITE_DEFAUT,
         decalage=decalage, elargir=params.get("elargir") == "true", corriger_auto=params.get("exact") != "true",
         sans=[p for p in params.get("sans", "").split(",") if p],

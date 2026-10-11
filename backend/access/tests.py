@@ -15,10 +15,18 @@ from rest_framework.test import APIClient
 from catalog.models import Cours, Cursus, Examen, Exercise, Lesson, LessonType, RappelDeMethode, StatutContenu, Subject
 from inedit.models import Blueprint, EpreuveInedite
 from subscriptions.models import DureeMode, InscriptionInedite, Subscription
-from users.models import User
+from rest_framework_simplejwt.tokens import AccessToken
+
+from users.models import Profil, User
 
 from .models import LectureProgress
-from .services import has_access, has_access_inedite, has_access_jusqua_examen
+from .services import (
+    bulk_active_inedite_cursus_ids,
+    bulk_active_subscription_cursus_ids,
+    has_access,
+    has_access_inedite,
+    has_access_jusqua_examen,
+)
 
 
 class HasAccessTests(TestCase):
@@ -578,3 +586,52 @@ class MyProgressionAPITests(TestCase):
         self.user.save(update_fields=["cursus_prepare"])
         response = self.client.get("/access/progression/")
         self.assertEqual([c["id"] for c in response.data["cours"]], [cours_commun.id])
+
+
+class AccesParProfilTests(TestCase):
+    """Un abonnement est payé pour UN profil (Subscription.profil) : un frère ou une sœur du même
+    compte, sans abonnement à son nom, ne doit jamais lire ce qui a été payé pour un autre."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677100099", password="x")
+        self.abonne = self.user.profils.first()
+        self.sans_abonnement = Profil.objects.create(compte=self.user, prenom="Zaza", ordre=1)
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.lesson = Lesson.objects.create(
+            title="Maths BAC C", subject=Subject.objects.get(code="MATHS"), lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, content_markdown="## Corrigé secret",
+        )
+        self.lesson.cursus.add(self.cursus)
+        Subscription.objects.create(
+            user=self.user, profil=self.abonne, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+        )
+        InscriptionInedite.objects.create(
+            user=self.user, profil=self.abonne, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+        )
+
+    def _client_du_profil(self, profil):
+        token = AccessToken.for_user(self.user)
+        token["profil_id"] = profil.id
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+        return client
+
+    def test_has_access_suit_le_profil(self):
+        self.assertTrue(has_access(self.user, self.lesson, self.abonne))
+        self.assertFalse(has_access(self.user, self.lesson, self.sans_abonnement))
+
+    def test_les_ensembles_de_cursus_suivent_le_profil(self):
+        """Ensembles calculés une fois par requête (catalogue, recherche) : même règle que has_access."""
+        self.assertEqual(bulk_active_subscription_cursus_ids(self.user, self.abonne), {self.cursus.id})
+        self.assertEqual(bulk_active_subscription_cursus_ids(self.user, self.sans_abonnement), set())
+        self.assertEqual(bulk_active_inedite_cursus_ids(self.user, self.abonne), {self.cursus.id})
+        self.assertEqual(bulk_active_inedite_cursus_ids(self.user, self.sans_abonnement), set())
+
+    def test_lecture_refusee_au_profil_sans_abonnement(self):
+        reponse = self._client_du_profil(self.sans_abonnement).get(f"/access/read/{self.lesson.id}/")
+        self.assertEqual(reponse.status_code, 403)
+        self.assertNotIn("Corrigé secret", str(reponse.data))
+
+    def test_lecture_autorisee_au_profil_abonne(self):
+        reponse = self._client_du_profil(self.abonne).get(f"/access/read/{self.lesson.id}/")
+        self.assertEqual(reponse.status_code, 200)

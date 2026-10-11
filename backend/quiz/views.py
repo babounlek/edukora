@@ -40,11 +40,12 @@ from .services import (
 )
 
 
-def _has_active_subscription(user, cursus):
+def _has_active_subscription(user, cursus, profil=None):
     """Même vérification que start_session (voir sa docstring) - revérifiée à chaque
     téléchargement de fiche PDF puisqu'un abonnement peut avoir expiré depuis la fin
     du quiz, même principe que inedit.views.download_sujet_pdf."""
-    return Subscription.objects.filter(user=user, cursus=cursus, expires_at__gt=timezone.now()).exists()
+    filtre = {} if profil is None else {"profil": profil}
+    return Subscription.objects.filter(user=user, cursus=cursus, expires_at__gt=timezone.now(), **filtre).exists()
 
 
 # Années d'épreuves listées derrière "tombé dans N des M dernières épreuves" - assez
@@ -469,7 +470,7 @@ def start_session(request):
     theme = get_object_or_404(Tag, pk=request.data["theme"]) if request.data.get("theme") else None
     savoir = get_object_or_404(Savoir, pk=request.data["savoir"]) if request.data.get("savoir") else None
 
-    if not _has_active_subscription(request.user, cursus) and not perimetre_est_vitrine(cursus, subject=subject, theme=theme, savoir=savoir):
+    if not _has_active_subscription(request.user, cursus, profil_actif(request)) and not perimetre_est_vitrine(cursus, subject=subject, theme=theme, savoir=savoir):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     try:
@@ -611,7 +612,7 @@ def quiz_fiche_pdf(request, session_id):
     portent sur la même ressource (LA paire de PDF de CETTE session, pas une collection).
     """
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
-    if not _has_active_subscription(request.user, session.cursus):
+    if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     if request.method == "POST" and session.fiche_pdf_statut not in (StatutFichePdf.EN_COURS, StatutFichePdf.PRETE):
@@ -625,7 +626,7 @@ def quiz_fiche_pdf(request, session_id):
 @api_view(["GET"])
 def download_quiz_sujet_pdf(request, session_id):
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
-    if not _has_active_subscription(request.user, session.cursus):
+    if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     if not session.sujet_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
@@ -638,7 +639,7 @@ def download_quiz_sujet_pdf(request, session_id):
 @api_view(["GET"])
 def download_quiz_corrige_pdf(request, session_id):
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
-    if not _has_active_subscription(request.user, session.cursus):
+    if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     if not session.corrige_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
@@ -922,7 +923,7 @@ def _charge_utile_plan(profil, cursus, seance, compte):
     if seance is None:
         return {**base, "etat": "rien_a_proposer", "seance": None}
 
-    verrouillee = not _has_active_subscription(profil.compte, cursus)
+    verrouillee = not _has_active_subscription(profil.compte, cursus, profil)
     etat = "deja_fait_aujourdhui" if seance.statut == StatutSeance.TERMINEE else "plan_pret"
     return {**base, "etat": etat, "seance": _serialiser_seance(seance, verrouillee)}
 
@@ -1017,7 +1018,7 @@ def terminer_seance_view(request):
     cursus = request.user.cursus_prepare
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
-    if not _has_active_subscription(request.user, cursus):
+    if not _has_active_subscription(request.user, cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     profil = profil_actif(request)
@@ -1053,7 +1054,7 @@ def continuer_view(request):
     cursus = request.user.cursus_prepare
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
-    if not _has_active_subscription(request.user, cursus):
+    if not _has_active_subscription(request.user, cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     profil = profil_actif(request)
@@ -1094,7 +1095,7 @@ def objectif_matiere_view(request):
     cursus = request.user.cursus_prepare
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
-    if not _has_active_subscription(request.user, cursus):
+    if not _has_active_subscription(request.user, cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     profil = profil_actif(request)
@@ -1122,7 +1123,7 @@ def autre_chose_view(request):
     cursus = request.user.cursus_prepare
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
-    if not _has_active_subscription(request.user, cursus):
+    if not _has_active_subscription(request.user, cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     profil = profil_actif(request)
@@ -1143,7 +1144,7 @@ def etape_ouverte_view(request):
     cursus = request.user.cursus_prepare
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
-    if not _has_active_subscription(request.user, cursus):
+    if not _has_active_subscription(request.user, cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     seance = marquer_etape_ouverte(profil_actif(request), cursus, str(request.data.get("cle") or ""))
@@ -1164,7 +1165,7 @@ def duree_seance_view(request):
     cursus = request.user.cursus_prepare
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
-    if not _has_active_subscription(request.user, cursus):
+    if not _has_active_subscription(request.user, cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     try:
@@ -1237,7 +1238,7 @@ def refaire_ratees_view(request, session_id):
 
     profil = profil_actif(request)
     session = get_object_or_404(QuizSession.objects.select_related("cursus"), pk=session_id, profil=profil)
-    if not _has_active_subscription(request.user, session.cursus):
+    if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     try:
         refaite = session_des_ratees(profil, session)

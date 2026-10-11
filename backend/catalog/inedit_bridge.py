@@ -10,6 +10,7 @@ from django.db.models import Count
 from django.utils import timezone
 
 from access.services import has_access_inedite
+from users.profils import profil_actif
 from inedit.models import EpreuveInedite, ExerciceInedite, RappelDeMethodeInedite
 
 from .models import Cours, StatutContenu, SUBJECT_FAMILIES
@@ -232,7 +233,7 @@ def epreuve_inedite_catalogue_payload(
             bool(epreuve.est_gratuite and request.user.is_authenticated)
             or any(c.pk in active_inedite_cursus_ids for c in epreuve.cursus.all())
             if active_inedite_cursus_ids is not None
-            else has_access_inedite(request.user, epreuve)
+            else has_access_inedite(request.user, epreuve, profil_actif(request))
         ),
         "is_read": bool(mes_tentatives and mes_tentatives["nb_terminees"]),
         "mes_tentatives": mes_tentatives,

@@ -5,7 +5,17 @@ from subscriptions.models import DureeMode, InscriptionInedite, InscriptionRepet
 from .models import LectureProgress
 
 
-def has_access(user, obj):
+def _du_profil(profil):
+    """Restreint un filtre d'abonnement au PROFIL qui étudie. Un abonnement est payé pour un
+    profil précis (voir Subscription.profil : « deux enfants du même compte ont chacun leur
+    propre paiement ») - sans ce filtre, le compte payeur donnait l'accès à tous ses profils,
+    et un frère ou une sœur sans abonnement lisait le contenu payé pour un autre. Tous les
+    appelants passent `users.profils.profil_actif(request)` ; `profil=None` ne restreint pas
+    (scripts, tests sans profil), jamais atteint par une requête authentifiée."""
+    return {} if profil is None else {"profil": profil}
+
+
+def has_access(user, obj, profil=None):
     """
     Vrai si l'utilisateur a un abonnement actif donnant droit à ce contenu (Lesson ou
     Cours, tous deux exposent un `.cursus` M2M). Si `obj.cursus` est vide (Cours "toutes
@@ -22,13 +32,13 @@ def has_access(user, obj):
 
     cursus_qs = obj.cursus.all()
     if not cursus_qs.exists():
-        return Subscription.objects.filter(user=user, expires_at__gt=timezone.now()).exists()
+        return Subscription.objects.filter(user=user, expires_at__gt=timezone.now(), **_du_profil(profil)).exists()
     return Subscription.objects.filter(
-        user=user, cursus__in=cursus_qs, expires_at__gt=timezone.now(),
+        user=user, cursus__in=cursus_qs, expires_at__gt=timezone.now(), **_du_profil(profil),
     ).exists()
 
 
-def has_access_inedite(user, obj):
+def has_access_inedite(user, obj, profil=None):
     """
     Miroir de has_access, pour l'add-on Épreuves Inédites (voir
     subscriptions.models.InscriptionInedite). `obj.cursus` est un M2M comme Lesson.cursus
@@ -46,11 +56,11 @@ def has_access_inedite(user, obj):
     if getattr(obj, "est_gratuite", False):
         return True
     return InscriptionInedite.objects.filter(
-        user=user, cursus__in=obj.cursus.all(), expires_at__gt=timezone.now(),
+        user=user, cursus__in=obj.cursus.all(), expires_at__gt=timezone.now(), **_du_profil(profil),
     ).exists()
 
 
-def bulk_active_subscription_cursus_ids(user):
+def bulk_active_subscription_cursus_ids(user, profil=None):
     """Ensemble des cursus_id couverts par un abonnement actif de l'utilisateur -
     calculé une fois par requête HTTP plutôt qu'un Subscription.objects.filter(...)
     .exists() par objet Lesson/Cours affiché sur une page (voir has_access ci-dessus et
@@ -61,18 +71,18 @@ def bulk_active_subscription_cursus_ids(user):
     if not user or not user.is_authenticated:
         return set()
     return set(
-        Subscription.objects.filter(user=user, expires_at__gt=timezone.now())
+        Subscription.objects.filter(user=user, expires_at__gt=timezone.now(), **_du_profil(profil))
         .values_list("cursus_id", flat=True),
     )
 
 
-def bulk_active_inedite_cursus_ids(user):
+def bulk_active_inedite_cursus_ids(user, profil=None):
     """Miroir de bulk_active_subscription_cursus_ids ci-dessus, pour has_access_inedite
     (add-on Épreuves Inédites)."""
     if not user or not user.is_authenticated:
         return set()
     return set(
-        InscriptionInedite.objects.filter(user=user, expires_at__gt=timezone.now())
+        InscriptionInedite.objects.filter(user=user, expires_at__gt=timezone.now(), **_du_profil(profil))
         .values_list("cursus_id", flat=True),
     )
 
@@ -90,7 +100,7 @@ def bulk_read_ids(profil, *, field):
     )
 
 
-def has_access_jusqua_examen(user, cursus):
+def has_access_jusqua_examen(user, cursus, profil=None):
     """
     Vrai si l'utilisateur a un abonnement actif de palier Jusqu'à l'Examen sur ce
     cursus - distinct de has_access, qui accepte n'importe quel palier (y compris
@@ -103,10 +113,11 @@ def has_access_jusqua_examen(user, cursus):
         return False
     return Subscription.objects.filter(
         user=user, cursus=cursus, expires_at__gt=timezone.now(), duration_mode=DureeMode.JUSQUA_EXAMEN,
+        **_du_profil(profil),
     ).exists()
 
 
-def has_access_fiches(user, cursus):
+def has_access_fiches(user, cursus, profil=None):
     """
     Vrai si l'utilisateur a un accès actif à l'add-on Fiches (répétiteur) pour ce cursus
     (voir subscriptions.models.InscriptionRepetiteur). `cursus` est directement une
@@ -119,5 +130,5 @@ def has_access_fiches(user, cursus):
     if not user.is_authenticated:
         return False
     return InscriptionRepetiteur.objects.filter(
-        user=user, cursus=cursus, expires_at__gt=timezone.now(),
+        user=user, cursus=cursus, expires_at__gt=timezone.now(), **_du_profil(profil),
     ).exists()

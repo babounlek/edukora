@@ -53,7 +53,7 @@ def read_lesson(request, lesson_slug):
     qs = Lesson.objects.visibles().select_related("subject__country").par_slug_ou_id(lesson_slug)
     lesson = get_object_or_404(qs)
 
-    if not has_access(request.user, lesson):
+    if not has_access(request.user, lesson, profil_actif(request)):
         return Response({"error": "Abonnement requis pour lire ce contenu."}, status=403)
 
     profil = profil_actif(request) if request.user.is_authenticated else None
@@ -127,7 +127,7 @@ def read_cours(request, cours_id):
     qs = Cours.objects.visibles().select_related("subject__country").par_slug_ou_id(cours_id)
     cours = get_object_or_404(qs)
 
-    if not has_access(request.user, cours):
+    if not has_access(request.user, cours, profil_actif(request)):
         return Response({"error": "Abonnement requis pour lire ce contenu."}, status=403)
 
     if request.user.is_authenticated:
@@ -216,7 +216,7 @@ def marquer_exercice_fait(request, exercise_id):
     derrière.
     """
     exercise = get_object_or_404(Exercise.objects.select_related("lesson"), pk=exercise_id)
-    if not has_access(request.user, exercise.lesson):
+    if not has_access(request.user, exercise.lesson, profil_actif(request)):
         return Response({"error": "Abonnement requis pour cette épreuve."}, status=403)
 
     profil = profil_actif(request)
@@ -261,7 +261,7 @@ def etude_marques(request):
     cible = _cible_etude(source)
     if cible is None:
         return Response({"error": "Préciser cours ou lesson."}, status=400)
-    if not has_access(request.user, cible):
+    if not has_access(request.user, cible, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce contenu."}, status=403)
 
     profil = profil_actif(request)

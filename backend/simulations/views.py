@@ -316,7 +316,7 @@ def start_simulation(request):
         Lesson.objects.visibles().select_related("subject__country"),
         pk=request.data.get("epreuve"), lesson_type=LessonType.CORR,
     )
-    if not has_access(request.user, lesson):
+    if not has_access(request.user, lesson, profil_actif(request)):
         return Response({"error": "Abonnement requis pour simuler cette épreuve."}, status=403)
     if not charger_exercices(lesson):
         return Response({"error": "Cette épreuve n'est pas découpée en exercices : simulation impossible."}, status=400)

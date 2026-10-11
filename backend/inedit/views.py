@@ -565,7 +565,7 @@ def start_tentative(request):
     )
     if not epreuve.cursus.first().country.actif:
         return Response({"error": "Ce cursus n'est pas disponible."}, status=404)
-    if not has_access_inedite(request.user, epreuve):
+    if not has_access_inedite(request.user, epreuve, profil_actif(request)):
         return Response({"error": "Add-on Épreuves Inédites requis pour ce cursus."}, status=403)
 
     profil = profil_actif(request)
@@ -826,7 +826,7 @@ def download_sujet_pdf(request, epreuve_id):
     question par question, après tentative (voir reveal_corrige ci-dessus).
     """
     epreuve = get_object_or_404(EpreuveInedite, pk=epreuve_id, statut=StatutContenu.VALIDE)
-    if not has_access_inedite(request.user, epreuve):
+    if not has_access_inedite(request.user, epreuve, profil_actif(request)):
         return Response({"error": "Add-on Épreuves Inédites requis pour ce cursus."}, status=403)
     if not epreuve.sujet_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)

@@ -13,6 +13,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from access.services import has_access_fiches
+from users.profils import profil_actif
 from catalog.models import Cursus, Subject, Tag
 from catalog.serializers import CursusSerializer
 from subscriptions.models import InscriptionRepetiteur
@@ -87,7 +88,7 @@ def create_fiche(request):
     cursus = get_object_or_404(Cursus.objects.select_related("country"), pk=request.data.get("cursus"))
     if not cursus.country.actif:
         return Response({"error": "Ce cursus n'est pas disponible."}, status=404)
-    if not has_access_fiches(request.user, cursus):
+    if not has_access_fiches(request.user, cursus, profil_actif(request)):
         return Response({"error": "Add-on Fiches requis pour ce cursus."}, status=403)
 
     subject = get_object_or_404(Subject, pk=request.data.get("subject"))

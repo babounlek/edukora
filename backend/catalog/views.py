@@ -269,7 +269,7 @@ class LessonListView(generics.ListAPIView):
             # connecté - voir _HasAccessMixin.get_has_access/get_is_read côté
             # catalog.serializers. set() immédiat pour un visiteur anonyme (voir
             # access.services.bulk_*), donc aucun coût ajouté hors connexion.
-            "active_subscription_cursus_ids": bulk_active_subscription_cursus_ids(request.user),
+            "active_subscription_cursus_ids": bulk_active_subscription_cursus_ids(request.user, profil_actif(request)),
             "read_lesson_ids": bulk_read_ids(profil_actif(request), field="lesson"),
             "read_cours_ids": bulk_read_ids(profil_actif(request), field="cours"),
         }
@@ -343,7 +343,7 @@ class LessonListView(generics.ListAPIView):
             inedit_related_cours_map = bulk_related_cours_map_inedit(page_inedit_ids)
             inedit_related_cours_ids = {c.pk for cours_list in inedit_related_cours_map.values() for c in cours_list}
             inedit_context = {**context, "est_vitrine_ids": bulk_cours_est_vitrine(inedit_related_cours_ids)}
-            active_inedite_cursus_ids = bulk_active_inedite_cursus_ids(request.user)
+            active_inedite_cursus_ids = bulk_active_inedite_cursus_ids(request.user, profil_actif(request))
             mes_tentatives_map = bulk_mes_tentatives(profil_actif(request), inedit_objs)
             inedit_payloads_by_id = {
                 obj.id: epreuve_inedite_catalogue_payload(
@@ -502,7 +502,7 @@ class CoursListView(generics.ListAPIView):
 
         context = self.get_serializer_context()
         context["est_vitrine_ids"] = bulk_cours_est_vitrine([obj.pk for obj in objs])
-        context["active_subscription_cursus_ids"] = bulk_active_subscription_cursus_ids(request.user)
+        context["active_subscription_cursus_ids"] = bulk_active_subscription_cursus_ids(request.user, profil_actif(request))
         context["read_cours_ids"] = bulk_read_ids(profil_actif(request), field="cours")
 
         serializer = self.get_serializer(objs, many=True, context=context)
@@ -720,7 +720,7 @@ class ThemesFrequentsView(APIView):
             .order_by("-nb_epreuves", "name")[:MAX_THEMES_FREQUENTS],
         )
 
-        acces_jusqua_examen = has_access_jusqua_examen(request.user, cursus)
+        acces_jusqua_examen = has_access_jusqua_examen(request.user, cursus, profil_actif(request))
         themes_visibles = classement if acces_jusqua_examen else classement[:TEASER_THEMES_FREQUENTS]
 
         # Un thème du classement peut n'avoir aucune CompetenceItem sur SON tag - deux
@@ -842,7 +842,7 @@ class ThemeExerciceLectureView(APIView):
         )
         tag = get_object_or_404(Tag, pk=tag_id)
         lesson = exercise.lesson
-        acces = has_access(request.user, lesson)
+        acces = has_access(request.user, lesson, profil_actif(request))
         profil = profil_actif(request) if request.user.is_authenticated else None
 
         if acces and profil is not None:
@@ -937,7 +937,7 @@ class ThemeExercicesView(APIView):
         # même correctif que catalog.serializers._HasAccessMixin.get_has_access, avec
         # lesson.cursus désormais prefetch_related ci-dessus pour que le court-circuit
         # "cursus vide" ne redéclenche pas non plus une requête par exercice.
-        active_cursus_ids = bulk_active_subscription_cursus_ids(request.user)
+        active_cursus_ids = bulk_active_subscription_cursus_ids(request.user, profil_actif(request))
 
         # Un exercice bavard peut porter le thème sur plusieurs de ses Question - une
         # seule entrée par exercice, jamais par question (même principe que
