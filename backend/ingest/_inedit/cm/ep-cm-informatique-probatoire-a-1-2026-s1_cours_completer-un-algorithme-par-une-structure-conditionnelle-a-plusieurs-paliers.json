@@ -1,0 +1,102 @@
+{
+  "type": "cours",
+  "cours_id": "cours-completer-un-algorithme-par-une-structu-ipa1",
+  "meta": {
+    "titre": "Compléter un algorithme par une structure conditionnelle à plusieurs paliers",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Algorithmique : structures de contrôle",
+    "duree_estimee_min": 25,
+    "tags": [
+      "structure conditionnelle",
+      "algorithmique"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex3-q5-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tarif de transport, une remise selon le montant, une mention selon la moyenne : dans la vie courante, une règle a souvent plusieurs paliers. Un seul `Si` sépare deux cas ; pour en distinguer trois ou davantage, il faut emboîter des structures conditionnelles dans le bon ordre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire une structure conditionnelle `Si ... alors ... Sinon ... FinSi`",
+        "Écrire une instruction d'affectation `variable ← expression`",
+        "Évaluer une condition (`>`, `>=`, `<`) sur une valeur donnée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Emboîter les tests du plus grand seuil au plus petit",
+      "contenu_markdown": "Pour traiter n paliers, on utilise n − 1 structures `Si` emboîtées dans les parties `Sinon`.\n\n1. **Teste d'abord le plus grand seuil.** Une valeur qui le dépasse reçoit son traitement et sort de la structure.\n2. **Place le seuil suivant dans la partie `Sinon`.** Cette partie ne s'exécute que pour les valeurs qui n'ont pas dépassé le premier seuil.\n3. **Traite le dernier cas dans le dernier `Sinon`** (ou avant le premier `Si`, par une affectation de départ).\n4. **Garde l'inégalité du texte.** « Plus de 20 » s'écrit `> 20`, « au moins 20 » s'écrit `>= 20`.\n\n```\nSi x > seuil_haut alors\n  traitement_haut\nSinon\n  Si x > seuil_bas alors\n    traitement_milieu\n  Sinon\n    traitement_bas\n  FinSi\nFinSi\n```\n\nChaque valeur ne passe que dans une branche. Pour vérifier, teste une valeur de chaque palier et chaque seuil lui-même, parce que c'est aux seuils que les inégalités se trompent.",
+      "formule_principale": "\\text{n paliers} \\Rightarrow \\text{n - 1 tests emboîtés}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un transporteur facture l'envoi d'un colis selon sa masse en kilogrammes : 1500 F jusqu'à 5 kg inclus ; 3000 F au-delà de 5 kg et jusqu'à 20 kg inclus ; 7500 F au-delà de 20 kg. Écrire l'algorithme qui lit la masse et affiche le prix, puis le tester pour 12 kg et 25 kg.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les seuils",
+          "justification": "Les paliers sont séparés par deux seuils : 5 kg et 20 kg.",
+          "resultat_markdown": "Trois cas, donc deux tests emboîtés."
+        },
+        {
+          "numero": 2,
+          "action": "Tester le plus grand seuil en premier",
+          "justification": "Une masse de plus de 20 kg est aussi de plus de 5 kg : si on testait 5 d'abord, elle recevrait le mauvais tarif.",
+          "resultat_markdown": "`Si masse > 20 alors prix ← 7500`"
+        },
+        {
+          "numero": 3,
+          "action": "Placer le seuil de 5 kg dans le Sinon",
+          "justification": "Ce test ne concerne que les masses de 20 kg ou moins.",
+          "resultat_markdown": "`Sinon Si masse > 5 alors prix ← 3000 Sinon prix ← 1500 FinSi`"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler l'algorithme",
+          "justification": "On lit la masse avant les tests et on affiche le prix après.",
+          "resultat_markdown": "```\nLire(masse)\nSi masse > 20 alors\n  prix ← 7500\nSinon\n  Si masse > 5 alors\n    prix ← 3000\n  Sinon\n    prix ← 1500\n  FinSi\nFinSi\nEcrire(prix)\n```"
+        },
+        {
+          "numero": 5,
+          "action": "Tester les valeurs",
+          "justification": "On vérifie une valeur par palier et les seuils.",
+          "resultat_markdown": "12 kg : 12 > 20 est faux, 12 > 5 est vrai, prix = 3000. 25 kg : 25 > 20 est vrai, prix = 7500. Aux seuils : 5 kg donne 1500 et 20 kg donne 3000."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme donne 3000 F pour 12 kg et 7500 F pour 25 kg ; aux seuils, 5 kg coûte 1500 F et 20 kg coûte 3000 F, conformément au texte."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Tester d'abord le plus petit seuil : toutes les grandes valeurs entrent dans ce premier test et le palier supérieur n'est jamais atteint.",
+        "Écrire `>=` quand le texte dit « plus de » : la valeur du seuil elle-même recevrait le mauvais traitement.",
+        "Oublier un `FinSi` : chaque `Si` emboîté a son propre `FinSi`.",
+        "Ne tester que des valeurs au milieu de chaque palier : les erreurs d'inégalité se révèlent sur les seuils."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Une recharge de plus de 10000 F donne 10 % de bonus et une recharge de plus de 25000 F donne 20 % de bonus ; sinon aucun bonus. Écrire les lignes qui calculent `bonus` à partir de `recharge`. Test : 30000 donne 6000, 15000 donne 1500, 5000 donne 0.",
+        "Une moyenne `m` donne la mention « Très bien » à partir de 16, « Bien » à partir de 14, « Passable » à partir de 10, sinon « Insuffisant ». Écrire la structure à trois tests emboîtés. Test : 17 donne Très bien, 15 donne Bien, 10 donne Passable, 9,5 donne Insuffisant.",
+        "Un élève écrit `Si montant > 20000 alors remise ← 10 Sinon Si montant > 50000 alors remise ← 15 FinSi FinSi`. Quelle remise obtient-on pour 60000 ? Pourquoi est-ce faux ? Test : 10, car le second test est dans le Sinon du premier et n'est jamais atteint par un montant de plus de 20000."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour n paliers, on emboîte n − 1 structures `Si` dans les parties `Sinon`.",
+        "On teste toujours le plus grand seuil en premier.",
+        "L'inégalité écrite suit le texte : « plus de » donne `>`, « au moins » donne `>=`.",
+        "On vérifie une valeur de chaque palier et chaque seuil."
+      ]
+    }
+  ]
+}

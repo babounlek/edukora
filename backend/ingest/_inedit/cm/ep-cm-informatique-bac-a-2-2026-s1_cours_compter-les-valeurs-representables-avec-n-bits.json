@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-compter-les-valeurs-representables-avec-n-bits-iba2",
+  "meta": {
+    "titre": "Compter les valeurs représentables avec n bits",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Représentation de l'information : capacité d'un nombre de bits",
+    "duree_estimee_min": 20,
+    "tags": [
+      "représentation de l'information",
+      "Codification de l'information"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-a-2-2026-s1-ex2-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une carte de téléphone propose 100 codes différents, un afficheur d'horloge montre des chiffres de 0 à 9, un appareil photo mémorise la couleur de chaque point sur 8 bits. Chaque fois, la même question se pose : avec tant de bits, combien de choses différentes peut-on distinguer ? La réponse tient en une puissance de 2."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un bit vaut 0 ou 1",
+        "Calculer les puissances de 2 jusqu'à 2 puissance 10 (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)",
+        "Savoir lire un nombre écrit en binaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Avec n bits, on obtient 2 puissance n combinaisons",
+      "contenu_markdown": "Chaque bit a **2 états** possibles. Quand on ajoute un bit, le nombre de combinaisons est multiplié par 2 :\n\n| Nombre de bits | 1 | 2 | 3 | 4 | 8 |\n|---|---|---|---|---|---|\n| Combinaisons | 2 | 4 | 8 | 16 | 256 |\n\nAvec $n$ bits, on obtient donc $2^n$ combinaisons différentes. Si elles servent à écrire des entiers positifs, la première combinaison (tous les bits à 0) représente **0** et la dernière (tous les bits à 1) représente $2^n - 1$.\n\nLa plus grande valeur est toujours inférieure d'une unité au nombre de valeurs, parce qu'on compte à partir de 0.\n\nPour la question inverse (combien de bits faut-il pour distinguer N valeurs ?), on cherche le plus petit $n$ tel que $2^n$ soit supérieur ou égal à N.",
+      "formule_principale": "n \\text{ bits} \\Rightarrow 2^n \\text{ valeurs, de } 0 \\text{ à } 2^n - 1"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un thermomètre numérique code la température sur 5 bits. Combien de valeurs différentes peut-il afficher ? Donner la plus petite et la plus grande valeur, en décimal et en binaire.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les combinaisons",
+          "justification": "Chaque bit a 2 états, et il y a 5 bits : on multiplie 5 fois par 2.",
+          "resultat_markdown": "$2^5 = 2 \\times 2 \\times 2 \\times 2 \\times 2 = 32$ valeurs différentes."
+        },
+        {
+          "numero": 2,
+          "action": "Donner la plus petite valeur",
+          "justification": "C'est la combinaison où tous les bits valent 0.",
+          "resultat_markdown": "$(00000)_2 = 0$."
+        },
+        {
+          "numero": 3,
+          "action": "Donner la plus grande valeur",
+          "justification": "C'est la combinaison où tous les bits valent 1. On compte à partir de 0, donc la dernière valeur est $2^5 - 1$.",
+          "resultat_markdown": "$2^5 - 1 = 31$ et $(11111)_2 = 16 + 8 + 4 + 2 + 1 = 31$."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler la cohérence",
+          "justification": "De 0 à 31 inclus, il y a bien 32 valeurs.",
+          "resultat_markdown": "Les valeurs vont de 0 à 31, soit 32 valeurs."
+        }
+      ],
+      "conclusion_markdown": "Sur 5 bits, le thermomètre distingue 32 valeurs, de $(00000)_2 = 0$ à $(11111)_2 = 31$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Écrire que la plus grande valeur est $2^n$ : c'est le nombre de valeurs, la plus grande valeur est $2^n - 1$.",
+        "Calculer $n \\times 2$ au lieu de $2^n$ : 4 bits donnent 16 valeurs et non 8.",
+        "Oublier la valeur 0 en comptant : la première combinaison (0000) existe et vaut 0.",
+        "Répondre 8 bits pour 8 valeurs : il suffit de 3 bits, car $2^3 = 8$."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Combien de valeurs différentes peut-on représenter sur 3 bits ? Donner la plus grande valeur en décimal et en binaire. Indice : $2^3$ et $2^3 - 1$.",
+        "Un octet comprend 8 bits. Donner le nombre de valeurs qu'il peut représenter et sa plus grande valeur. Indice : $2^8 = 256$.",
+        "Un magasin veut coder 20 articles avec des mots binaires de même longueur. Trouver le nombre minimal de bits. Indice : cherche le plus petit $n$ avec $2^n \\geq 20$."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque bit double le nombre de combinaisons : n bits donnent $2^n$ valeurs.",
+        "Pour les entiers positifs, les valeurs vont de 0 à $2^n - 1$.",
+        "4 bits : 16 valeurs (0 à 15). 8 bits : 256 valeurs (0 à 255).",
+        "Pour distinguer N valeurs, prends le plus petit n tel que $2^n \\geq N$."
+      ]
+    }
+  ]
+}

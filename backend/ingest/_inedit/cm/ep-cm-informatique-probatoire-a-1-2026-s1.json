@@ -1,0 +1,580 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-informatique-probatoire-a-1-2026-s1",
+  "titre": "Informatique Probatoire A – Épreuve inédite n°1",
+  "blueprint_external_id": "bp-cm-informatique-probatoire-a-1",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "7",
+      "enonce_intro_markdown": "**Exercice 1 : pages web et langage HTML (7 points)**\n\nL'association « Jeunes Bâtisseurs de Mfou » veut publier sa première page web. Le secrétaire a saisi le code ci-dessous dans le Bloc-notes, mais la page ne s'affiche pas correctement. Les lignes sont numérotées pour faciliter les réponses ; les numéros ne font pas partie du code.\n\n```\n1.  <html>\n2.  <head>\n3.  <title>Jeunes Bâtisseurs de Mfou</titel>\n4.  </head>\n5.  <body>\n6.  <h1>Association des Jeunes Bâtisseurs</h1>\n7.  <p>Nous nettoyons le quartier <b>chaque samedi</b> matin.</p>\n8.  <tabel border=\"1\">\n9.  <tr><td>Samedi</td><td>Nettoyage du marché</td></tr>\n10. </table>\n11. <a href=\"inscription.html>S'inscrire</a>\n12. </body>\n13. </html>\n```",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Donner le nom du langage utilisé pour écrire ce code, puis relever deux éléments du code qui permettent de le reconnaître. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour identifier le langage d'un code, observe sa forme : le HTML se reconnaît à ses balises placées entre chevrons, ouvrantes (`<nom>`) et fermantes (`</nom>`), qui encadrent le contenu d'une page web.\n\nLe code est écrit en **HTML** (*HyperText Markup Language*), le langage de description des pages web.\n\nDeux éléments le montrent : les balises entre chevrons, par exemple `<h1>` ligne 6, refermée par `</h1>` ; le squelette `<html>`, `<head>`, `<body>` (lignes 1, 2 et 5), qui est celui d'une page web. Les balises `<p>` et `<b>` de la ligne 7 conviennent aussi.\n\n### Piège à éviter\nRépondre « Bloc-notes » ou « navigateur » : le Bloc-notes est le logiciel qui a servi à écrire le code et le navigateur celui qui affiche la page, mais le langage s'appelle HTML.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme le langage HTML",
+              "points": 0.5
+            },
+            {
+              "libelle": "Relève deux éléments du code qui le montrent (balises entre chevrons, squelette html/head/body, balises p ou b)",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "HTML",
+            "Balises HTML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex1-q1-0",
+              "competence": "Identifier le langage HTML et un editeur de code adapte",
+              "contenu_markdown": "Pour identifier le langage d'un code, observe sa forme : le HTML se reconnaît à ses balises placées entre chevrons, ouvrantes (`<nom>`) et fermantes (`</nom>`), qui encadrent le contenu d'une page web.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Ce code contient trois erreurs de syntaxe. Pour chacune, donner le numéro de la ligne, nommer l'erreur et écrire la ligne corrigée. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour repérer les erreurs de syntaxe en HTML, lis le code ligne par ligne et contrôle quatre points : le nom de chaque balise doit exister, chaque balise ouverte doit être refermée par une balise fermante de même nom, les valeurs d'attribut s'écrivent entre des guillemets qui s'ouvrent et se ferment, et les balises s'emboîtent dans le bon ordre.\n\n| Ligne | Erreur | Ligne corrigée |\n|---|---|---|\n| 3 | La balise fermante du titre est mal écrite : `</titel>` n'existe pas. | `<title>Jeunes Bâtisseurs de Mfou</title>` |\n| 8 | La balise du tableau est mal écrite : `<tabel>` n'existe pas. | `<table border=\"1\">` |\n| 11 | Le guillemet fermant de l'attribut `href` est oublié. | `<a href=\"inscription.html\">S'inscrire</a>` |\n\nCode complet corrigé :\n\n```\n1.  <html>\n2.  <head>\n3.  <title>Jeunes Bâtisseurs de Mfou</title>\n4.  </head>\n5.  <body>\n6.  <h1>Association des Jeunes Bâtisseurs</h1>\n7.  <p>Nous nettoyons le quartier <b>chaque samedi</b> matin.</p>\n8.  <table border=\"1\">\n9.  <tr><td>Samedi</td><td>Nettoyage du marché</td></tr>\n10. </table>\n11. <a href=\"inscription.html\">S'inscrire</a>\n12. </body>\n13. </html>\n```\n\n### Piège à éviter\nCompter la ligne 10 (`</table>`) comme une quatrième erreur : elle est juste. C'est la ligne 8 qui manquait de sa balise ouvrante `<table>`, et sa correction suffit pour que la paire `<table>` / `</table>` soit complète.\n\n### Conseil\nPour chaque balise ouvrante, cherche sa balise fermante et coche-la : une balise qui reste sans partenaire t'indique la ligne à regarder de près.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Ligne 3 : repère `</titel>` et écrit `</title>`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Ligne 8 : repère `<tabel>` et écrit `<table border=\"1\">`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Ligne 11 : repère le guillemet fermant oublié et écrit `href=\"inscription.html\"`",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "erreurs de syntaxe HTML",
+            "Balises HTML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex1-q2-0",
+              "competence": "Repérer et corriger les erreurs de syntaxe en HTML",
+              "contenu_markdown": "Pour repérer les erreurs de syntaxe en HTML, lis le code ligne par ligne et contrôle quatre points : le nom de chaque balise doit exister, chaque balise ouverte doit être refermée par une balise fermante de même nom, les valeurs d'attribut s'écrivent entre des guillemets qui s'ouvrent et se ferment, et les balises s'emboîtent dans le bon ordre.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Le secrétaire veut ajouter la liste du bureau sous la forme d'un tableau avec bordure, de deux lignes et deux colonnes. La première ligne contient « Fonction » et « Nom », la seconde « Trésorier » et « Paul Essomba ». Écrire le code HTML de ce tableau. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn tableau HTML s'écrit dans la balise conteneur `<table>`, qui contient une balise `<tr>` par ligne, elle-même composée d'une balise `<td>` par cellule (ou `<th>` pour une cellule d'en-tête) ; toutes ces balises se ferment, et l'attribut `border=\"1\"` trace les bordures.\n\n```html\n<table border=\"1\">\n<tr><th>Fonction</th><th>Nom</th></tr>\n<tr><td>Trésorier</td><td>Paul Essomba</td></tr>\n</table>\n```\n\nLes deux balises `<tr>` donnent les deux lignes, et chacune contient deux cellules, soit deux colonnes. Les cellules de la première ligne sont écrites avec `<th>` parce qu'elles sont des en-têtes ; `<td>` est accepté.\n\n### Piège à éviter\nÉcrire une balise `<tr>` par cellule : `<tr>` désigne une ligne et non une cellule. Deux lignes demandent deux `<tr>`, et deux colonnes demandent deux cellules dans chacune.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Encadre le tableau par `<table border=\"1\">` et `</table>`",
+              "points": 0.25
+            },
+            {
+              "libelle": "Écrit exactement deux balises `<tr>` fermées",
+              "points": 0.25
+            },
+            {
+              "libelle": "Place deux cellules (`td` ou `th`) par ligne, avec les textes demandés",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Tableaux HTML",
+            "Balises HTML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex1-q3-0",
+              "competence": "Écrire la syntaxe des balises HTML d'un tableau et d'une image",
+              "contenu_markdown": "Un tableau HTML s'écrit dans la balise conteneur `<table>`, qui contient une balise `<tr>` par ligne, elle-même composée d'une balise `<td>` par cellule (ou `<th>` pour une cellule d'en-tête) ; toutes ces balises se ferment, et l'attribut `border=\"1\"` trace les bordures.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Le secrétaire veut afficher le logo de l'association, enregistré dans le fichier `logo.png` situé dans le même dossier que la page. Écrire la balise HTML qui affiche ce logo avec une largeur de 150 pixels et le texte de remplacement « Logo de l'association ». *(1 pt)*",
+          "corrige_markdown": "La balise demandée est :\n\n```html\n<img src=\"logo.png\" alt=\"Logo de l'association\" width=\"150\">\n```\n\n`<img>` est une balise vide : elle n'a pas de balise fermante. L'attribut `src` donne le nom du fichier à afficher, `alt` le texte qui remplace l'image si elle ne se charge pas, et `width` la largeur en pixels. Le fichier étant dans le même dossier que la page, son nom suffit comme chemin.\n\n### Piège à éviter\nÉcrire `</img>` après la balise ou oublier l'attribut `src` : sans `src`, le navigateur ne sait pas quelle image afficher.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Utilise la balise `<img>` sans balise fermante, avec l'attribut `src=\"logo.png\"`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Ajoute `alt=\"Logo de l'association\"` et `width=\"150\"`",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Balises HTML"
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Écrire la balise qui crée un lien portant le texte « Voir le bilan » et ouvrant la page `bilan.html`, enregistrée dans le dossier `C:\\Association\\Documents`. Dire ensuite quel est le rôle de l'attribut qui contient l'adresse de la page. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn lien hypertexte s'écrit avec la balise `<a>` dont l'attribut `href` contient l'adresse de la cible, c'est-à-dire le chemin du fichier à ouvrir, écrit depuis la racine du lecteur pour un chemin absolu ou depuis le dossier de la page pour un chemin relatif ; le texte placé entre `<a>` et `</a>` est ce que l'utilisateur voit et sur quoi il clique.\n\n```html\n<a href=\"C:\\Association\\Documents\\bilan.html\">Voir le bilan</a>\n```\n\nLe chemin complet `C:\\Association\\Documents\\bilan.html` est placé dans l'attribut `href`, entre guillemets. Le texte « Voir le bilan » est écrit entre la balise ouvrante `<a>` et la balise fermante `</a>`.\n\nL'attribut `href` (*hypertext reference*) indique l'adresse de la page cible : c'est lui qui dit au navigateur quel fichier ouvrir quand on clique sur le lien.\n\n### Piège à éviter\nÉcrire le chemin entre `<a>` et `</a>` au lieu de le mettre dans `href` : le chemin s'afficherait comme texte, mais le lien ne mènerait nulle part. Penser aussi à `</a>` : sans elle, tout le texte qui suit devient cliquable.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Utilise la balise `<a>` avec sa balise fermante `</a>` et le texte « Voir le bilan » entre les deux",
+              "points": 0.5
+            },
+            {
+              "libelle": "Place le chemin `C:\\Association\\Documents\\bilan.html` entre guillemets dans l'attribut `href`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Explique que `href` donne l'adresse de la page à ouvrir",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "lien hypertexte",
+            "Balises HTML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex1-q5-0",
+              "competence": "Écrire un lien hypertexte vers une page locale en HTML",
+              "contenu_markdown": "Un lien hypertexte s'écrit avec la balise `<a>` dont l'attribut `href` contient l'adresse de la cible, c'est-à-dire le chemin du fichier à ouvrir, écrit depuis la racine du lecteur pour un chemin absolu ou depuis le dossier de la page pour un chemin relatif ; le texte placé entre `<a>` et `</a>` est ce que l'utilisateur voit et sur quoi il clique.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "6",
+          "ordre": 6,
+          "enonce_markdown": "Avant le tableau, le secrétaire veut laisser aux autres membres de l'équipe la note « Tableau à mettre à jour chaque semaine » sans qu'elle apparaisse sur la page. Écrire la ligne HTML qui convient, puis dire quel est le rôle d'un commentaire. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUn commentaire HTML est un texte placé entre `<!--` et `-->` : le navigateur l'ignore, donc il n'apparaît pas sur la page affichée, et il sert à expliquer le code ou à laisser une consigne aux personnes qui le modifieront.\n\n```html\n<!-- Tableau à mettre à jour chaque semaine -->\n```\n\nLe commentaire explique le code et guide les autres membres de l'équipe, mais il n'est pas affiché dans le navigateur : le visiteur de la page ne le voit pas.\n\n### Piège à éviter\nÉcrire dans un commentaire une information confidentielle, par exemple un mot de passe : le commentaire reste invisible sur la page, mais il se lit dans le code source.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit le commentaire avec `<!--` et `-->`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne le rôle : expliquer le code ou laisser une consigne",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise qu'il n'est pas affiché sur la page",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "HTML",
+            "Balises HTML"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex1-q6-0",
+              "competence": "Donner le rôle et la syntaxe d'un commentaire en HTML",
+              "contenu_markdown": "Un commentaire HTML est un texte placé entre `<!--` et `-->` : le navigateur l'ignore, donc il n'apparaît pas sur la page affichée, et il sert à expliquer le code ou à laisser une consigne aux personnes qui le modifieront.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "6",
+      "enonce_intro_markdown": "**Exercice 2 : multimédia et image numérique (6 points)**\n\nLe club photo du lycée de Mbalmayo prépare une exposition pour la fête de fin d'année. Il présentera un diaporama de photographies prises avec un appareil numérique, fera numériser d'anciennes photographies de l'établissement conservées sur papier, et réalisera une affiche portant le logo du club. Ce logo est un dessin géométrique à couleurs unies, un cercle vert traversé d'un trait jaune.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Définir le mot « multimédia » et citer deux types de contenus que le diaporama de l'exposition peut associer. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour définir le multimédia, dis qu'il associe plusieurs types de contenus (texte, image fixe, son, animation, vidéo) sur un même support numérique, puis appuie la définition sur des types de contenus précis et non sur un appareil.\n\nLe **multimédia** est l'association, dans un même document ou une même application numérique, de plusieurs types de contenus : texte, image, son, animation, vidéo.\n\nLe diaporama de l'exposition peut par exemple associer des **images** (les photos), du **texte** (les légendes) et du **son** (une musique de fond). Une courte **vidéo** de présentation du club convient aussi.\n\n### Piège à éviter\nRépondre « le multimédia, c'est l'ordinateur » ou « c'est Internet » : ce sont des moyens de lire du multimédia, pas sa définition. Un document qui ne contient qu'un seul type de contenu, un texte seul par exemple, n'est pas multimédia.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Définit le multimédia comme l'association de plusieurs types de contenus sur un même support numérique",
+              "points": 0.5
+            },
+            {
+              "libelle": "Cite deux types de contenus (texte, image, son, animation, vidéo)",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "multimédia"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex2-q1-0",
+              "competence": "Définir le multimédia et ses composantes",
+              "contenu_markdown": "Pour définir le multimédia, dis qu'il associe plusieurs types de contenus (texte, image fixe, son, animation, vidéo) sur un même support numérique, puis appuie la définition sur des types de contenus précis et non sur un appareil.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Expliquer la différence entre une image matricielle et une image vectorielle, puis dire laquelle des deux peut être agrandie sans perte de qualité et pourquoi. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour comparer deux types d'images, présente pour chacune la manière dont elle est mémorisée, puis rattache à cette différence son comportement à l'agrandissement et le type d'usage qui lui convient.\n\nUne **image matricielle** est formée d'une grille de petits carrés de couleur, les **pixels** : le fichier mémorise la couleur de chaque pixel. Les photos du club sont de ce type.\n\nUne **image vectorielle** est décrite par des formes géométriques (segments, courbes, cercles) définies par des formules mathématiques : le fichier mémorise ces formules et non des pixels. Le logo du club, fait de formes simples, peut être de ce type.\n\nL'image **vectorielle** s'agrandit sans perte de qualité, parce que l'ordinateur recalcule les formes à la nouvelle taille. L'image matricielle, elle, se **pixellise** : en l'agrandissant, on agrandit les pixels, et des carrés visibles apparaissent.\n\n### Piège à éviter\nCroire qu'une image qui paraît nette à l'écran restera nette en grand format : une photo matricielle de faible définition se dégrade à l'impression sur une bâche.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Explique que l'image matricielle est une grille de pixels",
+              "points": 0.5
+            },
+            {
+              "libelle": "Explique que l'image vectorielle est décrite par des formes géométriques définies par des formules",
+              "points": 0.5
+            },
+            {
+              "libelle": "Précise que la vectorielle s'agrandit sans perte alors que la matricielle se pixellise",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "image matricielle",
+            "image vectorielle"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex2-q2-0",
+              "competence": "Distinguer image matricielle et image vectorielle",
+              "contenu_markdown": "Pour comparer deux types d'images, présente pour chacune la manière dont elle est mémorisée, puis rattache à cette différence son comportement à l'agrandissement et le type d'usage qui lui convient.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Choisir, pour chacun des deux fichiers suivants, le format le mieux adapté et justifier le choix : a) une photo de groupe prise par le club et publiée sur le site du lycée ; b) le logo du club, dessin à couleurs unies qui doit s'afficher sur un fond transparent et pouvoir être imprimé aussi bien sur un badge que sur une bâche. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour choisir un format d'image, repère d'abord la nature de l'image (photographie aux nuances riches, dessin à couleurs unies, petite animation), puis compare les formats sur la compression, le nombre de couleurs et la transparence, et retiens le plus léger qui répond au besoin.\n\na) Pour la photo de groupe, le format adapté est le **JPEG** (`.jpg`). Il gère des millions de couleurs, ce qui convient aux nuances d'une photographie, et sa compression avec perte allège beaucoup le fichier, ce qui accélère l'ouverture de la page.\n\nb) Pour le logo, le format le mieux adapté est le **SVG**, format vectoriel : les formes sont recalculées à chaque taille, donc le logo reste net sur un badge comme sur une bâche, et le fond est transparent. Le **PNG** est aussi accepté : il garde la transparence et ne dégrade pas les couleurs unies, mais, matriciel, il perd en netteté si on l'agrandit beaucoup.\n\n### Piège à éviter\nChoisir le GIF pour la photo : il est limité à 256 couleurs, la photo paraîtrait appauvrie et marquée de taches. Choisir le BMP est aussi une erreur, car son fichier non compressé est trop lourd pour le web.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Photo : choisit le JPEG",
+              "points": 0.25
+            },
+            {
+              "libelle": "Justifie : millions de couleurs et fichier léger grâce à la compression",
+              "points": 0.5
+            },
+            {
+              "libelle": "Logo : choisit le SVG ou le PNG",
+              "points": 0.25
+            },
+            {
+              "libelle": "Justifie : transparence, et netteté à toute taille pour le vectoriel",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "formats d'image",
+            "image vectorielle"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex2-q3-0",
+              "competence": "Choisir un format d'image adapté au web",
+              "contenu_markdown": "Pour choisir un format d'image, repère d'abord la nature de l'image (photographie aux nuances riches, dessin à couleurs unies, petite animation), puis compare les formats sur la compression, le nombre de couleurs et la transparence, et retiens le plus léger qui répond au besoin.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Définir la résolution d'une image et donner son unité, puis dire pourquoi le club choisit 300 ppp plutôt que 72 ppp pour imprimer ses photos sur papier. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour répondre sur la résolution, distingue-la de la définition : la résolution est la densité de pixels, c'est-à-dire le nombre de pixels par unité de longueur, alors que la définition est le nombre total de pixels de l'image ; la résolution décide de la finesse de l'image à l'affichage ou à l'impression, et une valeur élevée alourdit le fichier.\n\nLa **résolution** d'une image est le nombre de pixels par unité de longueur sur le support où elle est affichée ou imprimée. Elle s'exprime en **ppp** (points par pouce, *dpi* en anglais), avec 1 pouce = 2,54 cm.\n\nÀ 300 ppp, chaque pouce de papier contient 300 pixels : les détails sont fins et la photo imprimée est nette. À 72 ppp, valeur suffisante pour un écran, les pixels sont trop gros à l'impression et la photo paraît pixellisée. Le fichier à 300 ppp est en revanche plus lourd.\n\n### Piège à éviter\nConfondre la résolution avec la définition : une image de 4000 × 3000 pixels a 12 000 000 de pixels au total, mais sa résolution dépend de la taille sur laquelle on l'imprime.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Définit la résolution comme le nombre de pixels par unité de longueur",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne l'unité : ppp (points par pouce)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que 300 ppp donne une impression plus fine et plus nette que 72 ppp",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "résolution d'image"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex2-q4-0",
+              "competence": "Distinguer définition et résolution d'une image numérique",
+              "contenu_markdown": "Pour répondre sur la résolution, distingue-la de la définition : la résolution est la densité de pixels, c'est-à-dire le nombre de pixels par unité de longueur, alors que la définition est le nombre total de pixels de l'image ; la résolution décide de la finesse de l'image à l'affichage ou à l'impression, et une valeur élevée alourdit le fichier.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Une ancienne photographie de la promotion 1998 n'existe que sur papier. Nommer l'appareil qui permet de la numériser et décrire, dans l'ordre, deux étapes pour obtenir le fichier. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour répondre sur une numérisation, dis d'abord qu'elle convertit un document papier en fichier numérique, nomme ensuite le périphérique d'entrée qui la réalise, puis décris les gestes dans l'ordre : placer le document, régler la numérisation, la lancer, enregistrer le fichier.\n\n**Numériser** un document, c'est le convertir en fichier à l'aide d'un **scanner** (numériseur), périphérique d'entrée qui lit le papier et le transforme en données numériques.\n\nDeux étapes, dans l'ordre : 1. poser la photographie face contre la vitre du scanner et refermer le couvercle ; 2. dans le logiciel du scanner, régler la résolution (300 ppp par exemple) et le format (JPEG), lancer la numérisation, puis enregistrer le fichier obtenu.\n\n### Piège à éviter\nCiter l'imprimante : elle fait l'opération inverse, du fichier vers le papier. L'imprimante est un périphérique de sortie, le scanner un périphérique d'entrée.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme le scanner",
+              "points": 0.5
+            },
+            {
+              "libelle": "Décrit deux étapes dans l'ordre (poser le document, régler et lancer, enregistrer)",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "numérisation"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex2-q5-0",
+              "competence": "Identifier le périphérique d'entrée qui réalise la numérisation",
+              "contenu_markdown": "Pour répondre sur une numérisation, dis d'abord qu'elle convertit un document papier en fichier numérique, nomme ensuite le périphérique d'entrée qui la réalise, puis décris les gestes dans l'ordre : placer le document, régler la numérisation, la lancer, enregistrer le fichier.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "7",
+      "enonce_intro_markdown": "**Exercice 3 : algorithmique (7 points)**\n\nLa librairie « Le Savoir » de Bertoua accorde une remise à ses clients : un achat de plus de 20000 F bénéficie de 10 % de remise, alors qu'un achat de 20000 F ou moins n'en bénéficie pas. Le caissier utilise l'algorithme suivant, dont les lignes sont numérotées pour faciliter les réponses.\n\n```\n1.  Algorithme Remise\n2.  Variables montant, apayer : réel\n3.  Début\n4.    Lire(montant)\n5.    apayer ← montant\n6.    Si montant > 20000 alors\n7.      apayer ← montant × 0,9\n8.    FinSi\n9.    Ecrire(\"Montant à payer : \", apayer)\n10. Fin\n```",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Identifier la donnée d'entrée et la donnée de sortie de cet algorithme, en indiquant pour chacune le numéro de la ligne de l'instruction qui la concerne. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne donnée d'entrée est une valeur que l'algorithme demande à l'utilisateur avec l'instruction `Lire`, pour la ranger dans une variable ; une donnée de sortie est un résultat que l'algorithme affiche avec l'instruction `Ecrire` ; pour les repérer, cherche ces deux instructions et la variable qu'elles contiennent.\n\nLa donnée d'entrée est **`montant`**, le montant de l'achat : elle est saisie par le caissier à la ligne 4, `Lire(montant)`.\n\nLa donnée de sortie est **`apayer`**, le montant à payer : elle est affichée à la ligne 9, `Ecrire(\"Montant à payer : \", apayer)`.\n\n### Piège à éviter\nPrendre `apayer` pour une entrée parce qu'elle est déclarée à la ligne 2 : une variable n'est une donnée d'entrée que si une instruction `Lire` la remplit. La valeur de `apayer` est calculée par l'algorithme.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Donne `montant` comme donnée d'entrée, lue à la ligne 4",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne `apayer` comme donnée de sortie, affichée à la ligne 9",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "algorithmique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex3-q1-0",
+              "competence": "Les instructions d'entrée et de sortie dans un algorithme",
+              "contenu_markdown": "Une donnée d'entrée est une valeur que l'algorithme demande à l'utilisateur avec l'instruction `Lire`, pour la ranger dans une variable ; une donnée de sortie est un résultat que l'algorithme affiche avec l'instruction `Ecrire` ; pour les repérer, cherche ces deux instructions et la variable qu'elles contiennent.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Relever dans cet algorithme une instruction d'affectation, en donnant son numéro de ligne, puis expliquer ce qu'elle fait. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne instruction d'affectation s'écrit `variable ← expression` : l'expression située à droite de la flèche est calculée d'abord, avec les valeurs actuelles des variables, puis son résultat est rangé dans la variable de gauche, dont l'ancienne valeur est perdue.\n\nL'instruction de la ligne 5, `apayer ← montant`, est une affectation. Elle prend la valeur de `montant` et la range dans la variable `apayer`, qui contient alors le montant sans remise.\n\nLa ligne 7, `apayer ← montant × 0,9`, est aussi une affectation : elle calcule 90 % du montant, puis range ce résultat dans `apayer`, dont elle remplace l'ancienne valeur.\n\n### Piège à éviter\nCiter `Lire(montant)` ou `Ecrire(...)` : ces instructions lisent une valeur ou en affichent une, mais elles ne rangent pas le résultat d'un calcul dans une variable avec la flèche. Seules les lignes 5 et 7 sont des affectations.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Relève une affectation (ligne 5 ou ligne 7)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Explique que l'expression de droite est calculée puis rangée dans la variable de gauche",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Instruction d'affectation",
+            "algorithmique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex3-q2-0",
+              "competence": "Reconnaître une instruction d'affectation",
+              "contenu_markdown": "Une instruction d'affectation s'écrit `variable ← expression` : l'expression située à droite de la flèche est calculée d'abord, avec les valeurs actuelles des variables, puis son résultat est rangé dans la variable de gauche, dont l'ancienne valeur est perdue.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Recopier la structure conditionnelle de cet algorithme, puis donner sa condition et dire si elle comporte une partie « Sinon ». *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne structure conditionnelle commence par `Si` et se termine par `FinSi` : le traitement placé après `alors` n'est exécuté que si la condition est vraie, et la partie `Sinon`, facultative, donne le traitement à faire quand elle est fausse ; pour la recopier, repère `Si` et `FinSi` et recopie tout ce qui se trouve entre les deux.\n\nLa structure conditionnelle occupe les lignes 6 à 8 :\n\n```\nSi montant > 20000 alors\n  apayer ← montant × 0,9\nFinSi\n```\n\nSa condition est `montant > 20000`. Elle ne comporte **pas de partie « Sinon »** : c'est une structure conditionnelle simple. Quand la condition est fausse, rien n'est exécuté et l'algorithme passe directement à la ligne 9.\n\n### Piège à éviter\nRecopier aussi la ligne 5 ou la ligne 9 : elles se trouvent avant `Si` et après `FinSi`, donc en dehors de la structure.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Recopie les lignes 6 à 8, de `Si` à `FinSi`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne la condition `montant > 20000`",
+              "points": 0.25
+            },
+            {
+              "libelle": "Précise qu'il n'y a pas de partie Sinon",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "structure conditionnelle",
+            "structures de contrôle"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex3-q3-0",
+              "competence": "Identifier une structure alternative dans un algorithme",
+              "contenu_markdown": "Une structure conditionnelle commence par `Si` et se termine par `FinSi` : le traitement placé après `alors` n'est exécuté que si la condition est vraie, et la partie `Sinon`, facultative, donne le traitement à faire quand elle est fausse ; pour la recopier, repère `Si` et `FinSi` et recopie tout ce qui se trouve entre les deux.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Exécuter l'algorithme pour une valeur saisie de 15000, puis pour une valeur saisie de 30000. Présenter chaque exécution dans un tableau de suivi (une colonne par variable, une colonne pour la condition et une colonne pour l'affichage) et donner ce qui est affiché. *(2,5 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour dérouler un algorithme sur une valeur donnée, prépare un tableau avec une colonne par variable, une pour la condition testée et une pour l'affichage ; note la valeur saisie à chaque `Lire`, évalue chaque condition avec les valeurs courantes, exécute uniquement la branche qui correspond, et recopie exactement le texte affiché.\n\n**Pour 15000** (la condition est fausse, la ligne 7 n'est pas exécutée) :\n\n| Ligne exécutée | `montant` | `apayer` | Condition `montant > 20000` | Affichage |\n|---|---|---|---|---|\n| 4 | 15000 | non définie |  |  |\n| 5 | 15000 | 15000 |  |  |\n| 6 | 15000 | 15000 | faux |  |\n| 9 | 15000 | 15000 |  | Montant à payer : 15000 |\n\nLe caissier lit : **Montant à payer : 15000**. Un achat de 15000 F ne dépasse pas 20000 F, donc il n'y a pas de remise.\n\n**Pour 30000** (la condition est vraie, la ligne 7 est exécutée) :\n\n| Ligne exécutée | `montant` | `apayer` | Condition `montant > 20000` | Affichage |\n|---|---|---|---|---|\n| 4 | 30000 | non définie |  |  |\n| 5 | 30000 | 30000 |  |  |\n| 6 | 30000 | 30000 | vrai |  |\n| 7 | 30000 | 27000 |  |  |\n| 9 | 30000 | 27000 |  | Montant à payer : 27000 |\n\nLe caissier lit : **Montant à payer : 27000**. La remise est de 10 % de 30000 F, soit 3000 F, et 30000 − 3000 = 27000.\n\n### Piège à éviter\nExécuter la ligne 7 pour 15000 parce qu'elle figure dans l'algorithme : une ligne placée entre `Si` et `FinSi` n'est exécutée que si la condition est vraie.\n\n### Conseil\nRecopie le message affiché tel qu'il est écrit dans `Ecrire`, libellé compris. Après avoir rempli le tableau, vérifie la valeur finale par un calcul direct : 30000 × 0,9 = 27000.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 2.5,
+          "criteres_notation": [
+            {
+              "libelle": "Pour 15000 : montant égal à 15000 et apayer égal à 15000 après la ligne 5",
+              "points": 0.5
+            },
+            {
+              "libelle": "Pour 15000 : condition fausse, ligne 7 non exécutée, affichage de 15000",
+              "points": 0.5
+            },
+            {
+              "libelle": "Pour 30000 : condition vraie, ligne 7 exécutée",
+              "points": 0.5
+            },
+            {
+              "libelle": "Pour 30000 : apayer égal à 27000 et affichage de 27000",
+              "points": 0.5
+            },
+            {
+              "libelle": "Présente un tableau de suivi lisible, avec une colonne par variable et une colonne pour l'affichage",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "trace d'exécution",
+            "algorithmique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex3-q4-0",
+              "competence": "Dérouler un algorithme sur des valeurs données",
+              "contenu_markdown": "Pour dérouler un algorithme sur une valeur donnée, prépare un tableau avec une colonne par variable, une pour la condition testée et une pour l'affichage ; note la valeur saisie à chaque `Lire`, évalue chaque condition avec les valeurs courantes, exécute uniquement la branche qui correspond, et recopie exactement le texte affiché.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "La librairie ajoute un second palier : un achat de plus de 50000 F bénéficie de 15 % de remise, et un achat de plus de 20000 F mais d'au plus 50000 F garde les 10 %. Écrire les lignes qui doivent remplacer les lignes 6 à 8 pour tenir compte de ce second palier, puis donner le montant à payer pour un achat de 60000 F. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour gérer plusieurs paliers, teste d'abord la condition qui correspond au plus grand seuil, puis place les paliers moins élevés dans la partie `Sinon` d'une nouvelle structure `Si ... FinSi`, afin qu'une valeur ne reçoive qu'un seul traitement ; vérifie ensuite la solution sur une valeur de chaque palier et sur chaque seuil.\n\nLes lignes 6 à 8 sont remplacées par :\n\n```\nSi montant > 50000 alors\n  apayer ← montant × 0,85\nSinon\n  Si montant > 20000 alors\n    apayer ← montant × 0,9\n  FinSi\nFinSi\n```\n\nPour un achat de plus de 50000 F, la première condition est vraie : le client paie 85 % du montant. Sinon, l'algorithme teste la seconde condition, qui garde les 10 % de remise entre 20000 F exclus et 50000 F inclus ; en dessous, `apayer` reste égal à `montant` (ligne 5).\n\nPour 60000 F : 60000 > 50000 est vrai, donc `apayer` vaut 60000 × 0,85 = **51000**. Le montant à payer est 51000 F.\n\n### Piège à éviter\nTester d'abord `montant > 20000` : un achat de 60000 F entrerait dans ce premier test et ne recevrait que 10 % de remise, et le palier de 15 % ne serait jamais atteint.\n\n### Conseil\nTeste ta solution aux seuils : 20000 F donne 20000 (pas de remise), 50000 F donne 45000 (10 %), et 60000 F donne 51000 (15 %).",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Teste `montant > 50000` en premier et affecte `montant × 0,85`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conserve le palier de 10 % pour un montant supérieur à 20000 dans la partie Sinon (structures emboîtées ou conditions équivalentes)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne 51000 F pour un achat de 60000 F",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "structure conditionnelle",
+            "algorithmique",
+            "structures de contrôle"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-1-2026-s1-ex3-q5-0",
+              "competence": "Compléter un algorithme par une structure conditionnelle à plusieurs paliers",
+              "contenu_markdown": "Pour gérer plusieurs paliers, teste d'abord la condition qui correspond au plus grand seuil, puis place les paliers moins élevés dans la partie `Sinon` d'une nouvelle structure `Si ... FinSi`, afin qu'une valeur ne reçoive qu'un seul traitement ; vérifie ensuite la solution sur une valeur de chaque palier et sur chaque seuil.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

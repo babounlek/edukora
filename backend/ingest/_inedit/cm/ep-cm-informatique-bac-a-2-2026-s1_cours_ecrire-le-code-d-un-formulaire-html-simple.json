@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-ecrire-le-code-d-un-formulaire-html-simple-iba2",
+  "meta": {
+    "titre": "Écrire le code d'un formulaire HTML simple",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : formulaires",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Formulaire HTML",
+      "Balises HTML"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-a-2-2026-s1-ex4-q3-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu t'inscris à un concours en ligne, tu remplis un nom, une adresse et tu cliques sur un bouton. Ces trois éléments forment un formulaire, et sa version la plus simple s'écrit en six lignes. À l'épreuve, on te demande de l'écrire de mémoire : il faut connaître les balises et leurs attributs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une balise ouvrante et une balise fermante",
+        "Savoir qu'un attribut s'écrit nom=\"valeur\" dans la balise ouvrante",
+        "Savoir qu'un formulaire permet à l'internaute de saisir des données et de les envoyer"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un formulaire : form, input et un bouton submit",
+      "contenu_markdown": "Un formulaire se construit en trois temps :\n\n1. La paire de balises `<form>` et `</form>` **enferme** tous les champs.\n2. Chaque champ est une balise `<input>`, **sans balise fermante**. L'attribut `type` indique la nature de la saisie et l'attribut `name` donne un nom à la donnée envoyée.\n3. Le **bouton d'envoi** est un `<input>` de type `submit`. L'attribut `value` donne le texte écrit sur le bouton.\n\n| Attribut `type` | Champ obtenu |\n|---|---|\n| `text` | une ligne de texte (nom, prénom) |\n| `email` | une adresse électronique |\n| `tel` | un numéro de téléphone |\n| `submit` | un bouton qui envoie le formulaire |\n\nLa balise `<br>` fait passer à la ligne pour séparer les champs.",
+      "formule_principale": "\\text{form} \\supset (\\text{input text} + \\text{input email} + \\text{input submit})"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code d'un formulaire d'inscription à une chorale : un champ pour le prénom, un champ pour le numéro de téléphone et un bouton portant le texte « S'inscrire ».",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir et fermer le formulaire",
+          "justification": "Tous les champs doivent se trouver entre les deux balises, sinon ils ne seront pas envoyés ensemble.",
+          "resultat_markdown": "`<form>` au début, `</form>` à la fin."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le champ du prénom",
+          "justification": "Le prénom est une ligne de texte : `type=\"text\"`. L'attribut `name` nomme la donnée.",
+          "resultat_markdown": "`Prénom : <input type=\"text\" name=\"prenom\">`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le champ du téléphone",
+          "justification": "Le numéro de téléphone a son propre type, `tel`. On sépare les champs par un retour à la ligne.",
+          "resultat_markdown": "`<br>` puis `Téléphone : <input type=\"tel\" name=\"telephone\">`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire le bouton d'envoi",
+          "justification": "Un bouton qui envoie est de type `submit` ; `value` donne le texte affiché.",
+          "resultat_markdown": "`<br>` puis `<input type=\"submit\" value=\"S'inscrire\">`"
+        }
+      ],
+      "conclusion_markdown": "Le formulaire complet s'écrit :\n\n```html\n<form>\nPrénom : <input type=\"text\" name=\"prenom\">\n<br>\nTéléphone : <input type=\"tel\" name=\"telephone\">\n<br>\n<input type=\"submit\" value=\"S'inscrire\">\n</form>\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Écrire `type=\"button\"` pour le bouton d'envoi : il s'affiche mais n'envoie rien. Le bon type est `submit`.",
+        "Oublier `</form>` ou placer un champ en dehors de la paire `<form>` et `</form>`.",
+        "Écrire `</input>` : la balise `<input>` n'a pas de balise fermante.",
+        "Écrire `name=\"S'inscrire\"` au lieu de `value=\"S'inscrire\"` : `name` ne s'affiche pas, c'est `value` qui donne le texte du bouton."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Écrire le code d'un formulaire avec un champ pour le nom et un bouton « Valider ». Indice : form, input text, input submit.",
+        "Ajouter au formulaire de l'exemple un champ pour l'âge. Indice : un champ de texte supplémentaire, avec son `name`.",
+        "Un bouton affiche « Envoyer » mais rien ne part. Son code est `<input type=\"button\" value=\"Envoyer\">`. Corriger. Indice : le type de l'attribut."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<form>` et `</form>` enferment tous les champs.",
+        "Un champ est un `<input>` avec `type` (nature de la saisie) et `name` (nom de la donnée).",
+        "Le bouton d'envoi est un `<input type=\"submit\">` dont `value` donne le texte.",
+        "`<input>` n'a pas de balise fermante."
+      ]
+    }
+  ]
+}

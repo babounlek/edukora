@@ -1,0 +1,90 @@
+{
+  "type": "cours",
+  "cours_id": "cours-interpreter-les-balises-de-titre-et-de-lien-d-une-iba2",
+  "meta": {
+    "titre": "Interpréter les balises de titre et de lien d'une page HTML",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : titres, liens et attributs",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Balises HTML",
+      "HTML"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-a-2-2026-s1-ex4-q2-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un code HTML se lit comme une recette : certains mots sont destinés au navigateur, d'autres au visiteur. Quand le sujet te demande « ce que produit cette ligne », il attend que tu distingues les deux. Les titres et les liens sont les deux éléments que l'on rencontre le plus souvent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître une balise ouvrante et une balise fermante",
+        "Connaître la structure d'une page (html, head, body)",
+        "Savoir ce qu'est un lien hypertexte sur une page web"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une ligne HTML : ce qui s'affiche, ce qui reste caché",
+      "contenu_markdown": "Pour interpréter une ligne, procède en trois temps : repère la balise ouvrante et la balise fermante, dis quel **élément** elle crée, puis sépare ce que le visiteur **voit** de ce qu'il ne voit pas.\n\n- Les balises `<h1>` à `<h6>` créent des **titres** : `<h1>` est le titre principal, le plus grand, les suivants sont des sous-titres de plus en plus petits.\n- La balise `<p>` crée un **paragraphe**.\n- La balise `<a>` crée un **lien hypertexte** : le texte placé entre `<a>` et `</a>` s'affiche et se clique.\n- Un **attribut** s'écrit dans la balise ouvrante sous la forme `nom=\"valeur\"`. Il précise le comportement et ne s'affiche pas. Pour un lien, `href` donne la **destination** : le nom d'une page du site ou une adresse complète.\n\nLe visiteur voit donc uniquement le texte situé entre la balise ouvrante et la balise fermante.",
+      "formule_principale": "\\text{lien} = \\text{balise a} + \\text{attribut href} + \\text{texte cliquable}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un lycée publie ces deux lignes sur son site :\n\n```html\n<h2>Résultats du concours</h2>\n<a href=\"resultats.html\">Consulter la liste</a>\n```\n\nExpliquer ce que produit chaque ligne et donner le rôle de `href`.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Interpréter la première ligne",
+          "justification": "La balise `<h2>` est une balise de titre. Elle est de niveau 2 : un sous-titre, moins grand que le titre principal `<h1>`.",
+          "resultat_markdown": "Elle crée un titre de niveau 2. Le visiteur lit « Résultats du concours » en gros caractères, sans voir les balises."
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter la seconde ligne",
+          "justification": "La balise `<a>` crée un lien. Le texte entre `<a ...>` et `</a>` est la seule partie visible.",
+          "resultat_markdown": "Elle crée un lien hypertexte. Le visiteur voit « Consulter la liste » et peut cliquer dessus."
+        },
+        {
+          "numero": 3,
+          "action": "Donner le rôle de href",
+          "justification": "`href=\"resultats.html\"` est un attribut : il n'est pas affiché, il dit où mène le lien.",
+          "resultat_markdown": "`href` indique la destination : au clic, le navigateur ouvre la page `resultats.html`."
+        }
+      ],
+      "conclusion_markdown": "Le visiteur voit un sous-titre puis un texte cliquable ; le nom de la page `resultats.html` reste invisible, mais c'est lui que le navigateur ouvre au clic."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Penser que l'adresse placée dans `href` s'affiche : seul le texte entre `<a>` et `</a>` est visible.",
+        "Confondre `<h1>` et `<p>` : `<h1>` est un titre en gros caractères, `<p>` un paragraphe de texte courant.",
+        "Écrire que `href` est le texte du lien : c'est la destination, le texte du lien est placé entre les balises.",
+        "Oublier la balise fermante `</a>` : tout ce qui suit deviendrait cliquable."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Expliquer ce que produit `<h1>Atelier de théâtre</h1>` à l'écran. Indice : titre principal.",
+        "Écrire la ligne HTML qui affiche le texte cliquable « Nous contacter » et mène à la page `contact.html`. Indice : balise `<a>` et attribut `href`.",
+        "Dans `<a href=\"inscription.html\">S'inscrire</a>`, dire ce que le visiteur lit et ce qu'il ne lit pas. Indice : texte entre les balises."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<h1>` à `<h6>` créent des titres, du plus important au moins important.",
+        "`<p>` crée un paragraphe ; `<a>` crée un lien hypertexte.",
+        "L'attribut `href` donne la destination du lien et ne s'affiche pas.",
+        "Le visiteur voit uniquement le texte situé entre la balise ouvrante et la balise fermante."
+      ]
+    }
+  ]
+}

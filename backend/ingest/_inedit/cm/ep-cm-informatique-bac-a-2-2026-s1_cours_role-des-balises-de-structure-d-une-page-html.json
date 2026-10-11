@@ -1,0 +1,90 @@
+{
+  "type": "cours",
+  "cours_id": "cours-role-des-balises-de-structure-d-une-page-html-iba2",
+  "meta": {
+    "titre": "Rôle des balises de structure d'une page HTML",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : structure d'une page HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "HTML",
+      "Balises HTML"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bac-a-2-2026-s1-ex4-q1-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ouvre n'importe quelle page web et demande à ton navigateur d'afficher le code source : tu y trouveras toujours les mêmes quatre balises, dans le même ordre. Elles forment le squelette de la page. À l'examen, on te donne un petit code et on te demande le rôle de chacune : la réponse n'est jamais « elle sert à écrire », mais ce que le navigateur en fait."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page web est un fichier texte écrit en langage HTML",
+        "Reconnaître une balise ouvrante `<nom>` et une balise fermante `</nom>`",
+        "Savoir qu'un navigateur affiche la page à partir de son code"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre balises du squelette d'une page",
+      "contenu_markdown": "Une page HTML est une suite de balises emboîtées. Pour donner le rôle d'une balise, dis **ce qu'elle délimite**, puis **ce que le navigateur en fait**.\n\n| Balise | Ce qu'elle délimite | Ce que le navigateur en fait |\n|---|---|---|\n| `<html>` | toute la page | marque le début et la fin du document HTML |\n| `<head>` | l'en-tête | contient des informations sur la page, sans les afficher dans la zone de contenu |\n| `<title>` | le titre de la page, placé dans `<head>` | l'affiche dans l'onglet ou la barre de titre de la fenêtre |\n| `<body>` | le corps de la page | affiche tout ce que le visiteur voit : textes, titres, liens, images |\n\nLes balises s'emboîtent comme des boîtes : `<head>` et `<body>` sont dans `<html>`, et `<title>` est dans `<head>`. Chaque balise ouvrante est refermée dans l'ordre inverse de son ouverture.",
+      "formule_principale": "\\text{html} \\supset (\\text{head} \\supset \\text{title}) + \\text{body}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Voici le code de la page d'une bibliothèque de quartier :\n\n```html\n<html>\n<head>\n<title>Bibliothèque du quartier</title>\n</head>\n<body>\n<h1>Horaires d'ouverture</h1>\n<p>Du lundi au samedi, de 9 h à 17 h.</p>\n</body>\n</html>\n```\n\nDonner le rôle des balises `<head>`, `<title>` et `<body>`.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer ce que délimite head",
+          "justification": "La balise `<head>` s'ouvre juste après `<html>` et se ferme avant `<body>` : elle entoure seulement le titre de la page.",
+          "resultat_markdown": "`<head>` délimite l'en-tête, qui regroupe des informations sur la page. Son contenu ne s'affiche pas dans la zone de contenu."
+        },
+        {
+          "numero": 2,
+          "action": "Donner le rôle de title",
+          "justification": "Le texte placé entre `<title>` et `</title>` est « Bibliothèque du quartier ». Le navigateur le montre à un seul endroit : l'onglet.",
+          "resultat_markdown": "`<title>` donne le titre de la page, affiché dans l'onglet du navigateur."
+        },
+        {
+          "numero": 3,
+          "action": "Donner le rôle de body",
+          "justification": "La balise `<body>` entoure le titre « Horaires d'ouverture » et le paragraphe : c'est ce que le visiteur lit dans la page.",
+          "resultat_markdown": "`<body>` délimite le corps de la page, c'est-à-dire tout ce qui s'affiche à l'écran."
+        }
+      ],
+      "conclusion_markdown": "`<head>` contient les informations sur la page, `<title>` donne le titre de l'onglet et `<body>` contient ce que le visiteur voit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Croire que le texte de `<title>` s'affiche dans la page : il apparaît dans l'onglet, le titre visible dans la page est celui d'une balise comme `<h1>` placée dans `<body>`.",
+        "Placer du texte à afficher dans `<head>` : le navigateur ne le montre pas dans la zone de contenu.",
+        "Oublier de refermer une balise ou les refermer dans le désordre : `<html><body></html></body>` est faux.",
+        "Répondre « `<body>` sert à écrire le corps » sans dire que c'est la partie affichée à l'écran."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Dans le code de l'exemple, indiquer où s'affiche le texte « Horaires d'ouverture » et dans quelle balise il est placé. Indice : il est visible dans la page.",
+        "Écrire le squelette minimal d'une page dont le titre d'onglet est « Accueil », sans contenu dans le corps. Indice : quatre balises emboîtées.",
+        "Dire si le texte `Bienvenue` est visible dans la page quand il est placé entre `<head>` et `</head>`. Indice : l'en-tête n'est pas la zone de contenu."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<html>` entoure toute la page.",
+        "`<head>` est l'en-tête : informations sur la page, non affichées dans la zone de contenu.",
+        "`<title>` donne le titre affiché dans l'onglet du navigateur.",
+        "`<body>` est le corps de la page : tout ce que le visiteur voit à l'écran."
+      ]
+    }
+  ]
+}
