@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-reperer-la-structure-d-un-algorithme-3e",
+  "meta": {
+    "titre": "Repérer la structure d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "structure d'un algorithme",
+      "nom",
+      "début",
+      "fin",
+      "pseudo-code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-epreuve-zero-informatique-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique au BEPC 2022 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex3-q2a-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-epreuve-zero-informatique-2022-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme écrit en pseudo-code a toujours la même charpente : un nom, des déclarations, un corps encadré par début et fin. Une fois cette charpente connue, tu retrouves n'importe quel élément en quelques secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un algorithme",
+        "Savoir lire quelques lignes de pseudo-code"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La charpente d'un algorithme",
+      "contenu_markdown": "```\nAlgorithme NomDeLAlgorithme\nvariable ... : type ;\ndébut\n    instructions ;\nfin\n```\n\n- **En-tête** : le mot-clé `Algorithme` suivi du **nom**, écrit d'un seul bloc (sans espace) ;\n- **Déclarations** : les variables, avec leur type, avant `début` ;\n- **Corps** : les instructions, entre `début` et `fin` ;\n- **Fin** : le mot `fin`.\n\nPour relever un élément, localise sa **zone** : le nom sur la première ligne, les variables avant `début`, les instructions entre `début` et `fin`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Relever le nom de l'algorithme dont la première ligne est « Algorithme Examen_BEPC ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Localiser la première ligne",
+          "justification": "Le nom se trouve dans l'en-tête, c'est-à-dire la première ligne.",
+          "resultat_markdown": "Ligne : `Algorithme Examen_BEPC`."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter le mot-clé",
+          "justification": "`Algorithme` est un mot-clé du pseudo-code, il ne fait pas partie du nom.",
+          "resultat_markdown": "Reste : `Examen_BEPC`."
+        },
+        {
+          "numero": 3,
+          "action": "Recopier",
+          "justification": "On recopie le nom exactement, avec le tiret bas.",
+          "resultat_markdown": "Nom : `Examen_BEPC`."
+        }
+      ],
+      "conclusion_markdown": "Le nom de l'algorithme est Examen_BEPC."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier la ligne entière en écrivant « Algorithme Examen_BEPC ».",
+          "pourquoi_faux": "Le premier mot est un mot-clé, pas une partie du nom.",
+          "correction_markdown": "Ne recopie que le mot placé après `Algorithme`."
+        },
+        {
+          "erreur_markdown": "Prendre le nom d'une variable pour le nom de l'algorithme.",
+          "pourquoi_faux": "Les variables sont déclarées avant `début`, sur une ligne distincte de l'en-tête.",
+          "correction_markdown": "Regarde la première ligne."
+        },
+        {
+          "erreur_markdown": "Modifier l'orthographe du nom.",
+          "pourquoi_faux": "Le correcteur compare à l'original : un caractère manquant fait perdre le point.",
+          "correction_markdown": "Recopie exactement, majuscules et tiret bas compris."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme « Algorithme Surface / variable L, l, S : Réel ; / début / ... / fin », relever le nom.",
+          "solution_markdown": "Le nom est Surface : c'est le mot qui suit `Algorithme` sur la première ligne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans « Algorithme Surface / variable L, l, S : Réel ; / début / lire(L) ; lire(l) ; S ← L * l ; écrire(S) ; / fin », où se situent les déclarations et où se situent les instructions ?",
+          "solution_markdown": "Les déclarations se situent avant `début` : c'est la ligne `variable L, l, S : Réel ;`. Les instructions se situent entre `début` et `fin` : `lire(L)`, `lire(l)`, `S ← L * l` et `écrire(S)`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire la charpente complète d'un algorithme nommé Moyenne qui lit deux notes réelles A et B et affiche leur moyenne M.",
+          "solution_markdown": "```\nAlgorithme Moyenne\nvariable A, B, M : Réel ;\ndébut\n    lire(A) ;\n    lire(B) ;\n    M ← (A + B) / 2 ;\n    écrire(M) ;\nfin\n```\n\nNom : Moyenne (après `Algorithme`). Déclarations : A, B et M de type Réel, avant `début`. Corps : deux lectures, un calcul de la moyenne et un affichage, entre `début` et `fin`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un algorithme en pseudo-code a un nom, des déclarations et un corps encadré par début et fin.",
+        "Le nom se lit sur la première ligne, après le mot-clé Algorithme.",
+        "Les variables se déclarent avant début.",
+        "Les instructions se trouvent entre début et fin.",
+        "Au BEPC, relever le nom ou une partie d'un algorithme donné est une question quasi systématique."
+      ]
+    }
+  ]
+}

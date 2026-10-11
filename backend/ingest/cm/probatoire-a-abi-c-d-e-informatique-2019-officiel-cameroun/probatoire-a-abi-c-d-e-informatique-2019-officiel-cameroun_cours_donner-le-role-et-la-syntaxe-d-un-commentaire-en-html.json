@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-donner-le-role-et-la-syntaxe-d-un-commentaire-en-html-probatoire",
+  "meta": {
+    "titre": "Donner le rôle et la syntaxe d'un commentaire en HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Langages du web",
+    "duree_estimee_min": 15,
+    "tags": [
+      "HTML",
+      "commentaire",
+      "documentation du code",
+      "code source"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex1-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Relis un code que tu as écrit il y a un mois : tu auras oublié pourquoi tu as fait tel choix. Les commentaires servent à laisser des notes dans le code sans les montrer au visiteur. Ils sont vieux comme la programmation et se retrouvent dans tous les langages."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un code source",
+        "Savoir qu'un navigateur affiche le contenu d'une page sans montrer ses balises"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le commentaire HTML",
+      "contenu_markdown": "Un commentaire est un texte placé dans le code, ignoré par le navigateur et donc invisible sur la page.\n\n```html\n<!-- Ceci est un commentaire -->\n```\n\n**Rôles** : expliquer le code, repérer les parties d'une page, laisser des consignes à l'équipe, désactiver temporairement une portion de code.\n\n**Limite** : le commentaire reste visible dans le code source de la page, on n'y met jamais de mot de passe ou d'information confidentielle.\n\nChaque langage a sa syntaxe : HTML `<!-- ... -->`, CSS `/* ... */`, JavaScript `//` ou `/* ... */`, Python `#`, SQL `--`.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code `<p>Bonjour</p>` suivi de `<!-- <p>Au revoir</p> -->`, quel texte le navigateur affiche-t-il ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le commentaire",
+          "justification": "Tout ce qui est entre `<!--` et `-->` est un commentaire",
+          "resultat_markdown": "`<!-- <p>Au revoir</p> -->` est un commentaire."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la règle d'affichage",
+          "justification": "Le navigateur ignore les commentaires, même s'ils contiennent des balises",
+          "resultat_markdown": "La balise `<p>Au revoir</p>` n'est pas exécutée."
+        },
+        {
+          "numero": 3,
+          "action": "Lire le reste du code",
+          "justification": "Seule la première ligne est du code actif",
+          "resultat_markdown": "`<p>Bonjour</p>` affiche « Bonjour »."
+        }
+      ],
+      "conclusion_markdown": "Le navigateur affiche uniquement « Bonjour » ; le commentaire a désactivé la ligne « Au revoir »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'un commentaire s'affiche sur la page",
+          "pourquoi_faux": "Il est justement fait pour ne pas s'afficher.",
+          "correction_markdown": "Retenir qu'il est lu par les développeurs, ignoré du navigateur."
+        },
+        {
+          "erreur_markdown": "Y mettre des informations secrètes",
+          "pourquoi_faux": "Le visiteur peut lire le code source de la page.",
+          "correction_markdown": "Ne jamais mettre de mot de passe en commentaire."
+        },
+        {
+          "erreur_markdown": "Écrire `<!- texte ->`",
+          "pourquoi_faux": "Le début est `<!--` (deux tirets) et la fin `-->` (deux tirets) ; avec un seul tiret, le navigateur n'y voit pas un commentaire.",
+          "correction_markdown": "Écrire `<!-- texte -->`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire un commentaire HTML « Menu principal ».",
+          "solution_markdown": "`<!-- Menu principal -->`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Comment désactiver temporairement la ligne `<img src=\"logo.png\">` sans la supprimer ?",
+          "solution_markdown": "On l'entoure du commentaire : `<!-- <img src=\"logo.png\"> -->`. Le navigateur ne charge plus l'image, et il suffit de retirer `<!--` et `-->` pour la réactiver."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Donner la syntaxe d'un commentaire en CSS, en Python et en SQL, avec un exemple pour chacun.",
+          "solution_markdown": "CSS : `/* couleur du titre */`. Python : `# calcul de la moyenne`. SQL : `-- liste des élèves`. Ce sont des conventions propres à chaque langage : le commentaire HTML `<!-- -->` n'y est pas reconnu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un commentaire HTML s'écrit `<!-- ... -->`.",
+        "Il explique le code et peut en désactiver une partie ; il n'est jamais affiché.",
+        "Il reste lisible dans le code source : pas d'information secrète.",
+        "Chaque langage a sa syntaxe de commentaire.",
+        "La question « rôle d'un commentaire » est une question de cours classique, notée sur un point."
+      ]
+    }
+  ]
+}

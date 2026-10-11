@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-calculer-la-resolution-d-impression-d-une-image-en-ppp-1ere-a-abi-2021",
+  "meta": {
+    "titre": "Calculer la résolution d'impression d'une image en ppp",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Infographie - calculs de résolution",
+    "duree_estimee_min": 30,
+    "tags": [
+      "résolution",
+      "ppp",
+      "pouce",
+      "impression",
+      "conversion d'unités"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2021-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH et AC, session 2021 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2021-officiel-cameroun-ex3-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une imprimerie te dit : « Pour une affiche d'un mètre, il me faut au moins 150 ppp. » Ton image est-elle assez grande ? Pour répondre, il faut savoir passer des pixels aux pouces et calculer une densité. Ce calcul tient en deux lignes dès que l'on maîtrise la conversion centimètres-pouces."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un pixel et connaître la notion de définition",
+        "Connaître la conversion 1 pouce = 2,54 cm",
+        "Savoir effectuer une division avec une calculatrice"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résolution = pixels ÷ longueur en pouces",
+      "contenu_markdown": "La résolution d'impression (en points par pouce, ppp) se calcule dimension par dimension :\n\n1. convertir la longueur du support en pouces : longueur en pouces = longueur en cm ÷ 2,54 ;\n2. diviser le nombre de pixels de cette dimension par la longueur en pouces.\n\nOn peut regrouper les deux étapes en un seul calcul en multipliant d'abord par 2,54 : $R = \\dfrac{N \\times 2{,}54}{L}$ avec $N$ le nombre de pixels et $L$ la longueur en cm.\n\nRepères d'ordre de grandeur : écran 72 à 96 ppp, grande affiche vue de loin 100 à 150 ppp, photo imprimée de bonne qualité 300 ppp.",
+      "formule_principale": "R = \\dfrac{N \\times 2{,}54}{L}",
+      "variantes": [
+        {
+          "nom": "Nombre de pixels nécessaires pour une résolution voulue",
+          "quand_utiliser": "Quand on connaît la résolution exigée et la taille du support, et que l'on cherche la définition minimale de l'image.",
+          "contenu_markdown": "On inverse la formule : nombre de pixels = résolution (ppp) × longueur en pouces. Pour 50 cm à 150 ppp : 50 ÷ 2,54 × 150 ≈ 2953 pixels."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer la résolution en largeur d'affiches de 100 cm imprimées à partir d'images de 6000 pixels de large. *[1 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever les données",
+          "justification": "Le nombre de pixels en largeur et la largeur du support en cm.",
+          "resultat_markdown": "$N = 6000$ pixels ; $L = 100$ cm."
+        },
+        {
+          "numero": 2,
+          "action": "Convertir la largeur du support en pouces",
+          "justification": "La résolution se mesure en points par pouce : la longueur doit être en pouces.",
+          "resultat_markdown": "$100 \\div 2{,}54 \\approx 39{,}37$ pouces."
+        },
+        {
+          "numero": 3,
+          "action": "Diviser le nombre de pixels par la largeur en pouces",
+          "justification": "On obtient le nombre de pixels par pouce.",
+          "resultat_markdown": "$6000 \\div 39{,}37 \\approx 152{,}4$ ppp."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler par le calcul regroupé",
+          "justification": "Un second calcul indépendant évite une erreur de conversion.",
+          "resultat_markdown": "$R = \\dfrac{6000 \\times 2{,}54}{100} = \\dfrac{15\\,240}{100} = 152{,}4$ ppp."
+        },
+        {
+          "numero": 5,
+          "action": "Interpréter",
+          "justification": "On compare à l'ordre de grandeur pour une grande affiche.",
+          "resultat_markdown": "152 ppp convient pour une affiche vue à plusieurs mètres."
+        }
+      ],
+      "conclusion_markdown": "La résolution en largeur est de 152,4 ppp."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser 6000 par 100 et répondre « 60 ppp ».",
+          "pourquoi_faux": "60 est une densité en pixels par centimètre, pas en pixels par pouce.",
+          "correction_markdown": "Multiplie par 2,54 : $60 \\times 2{,}54 = 152{,}4$ ppp."
+        },
+        {
+          "erreur_markdown": "Multiplier par 2,54 au lieu de diviser pour passer des cm aux pouces.",
+          "pourquoi_faux": "Un pouce est plus long qu'un centimètre : une longueur en pouces est plus petite que la même longueur en cm.",
+          "correction_markdown": "Pouces = cm ÷ 2,54. Contrôle : 100 cm donne environ 39 pouces, pas 254."
+        },
+        {
+          "erreur_markdown": "Mélanger largeur de l'affiche et hauteur de l'image.",
+          "pourquoi_faux": "La résolution se calcule avec une dimension de l'image et la dimension correspondante du support.",
+          "correction_markdown": "Associe largeur avec largeur, hauteur avec hauteur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image de 2000 pixels de large est imprimée sur 25,4 cm de large. Calcule sa résolution.",
+          "solution_markdown": "$25{,}4 \\div 2{,}54 = 10$ pouces. $R = 2000 \\div 10 = 200$ ppp."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une affiche de 50 cm de large doit être imprimée à 150 ppp. Combien de pixels faut-il en largeur ?",
+          "solution_markdown": "Largeur en pouces : $50 \\div 2{,}54 \\approx 19{,}685$ pouces. Nombre de pixels : $19{,}685 \\times 150 \\approx 2952{,}8$, soit **2953 pixels** en arrondissant à l'entier supérieur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une image de 4000 × 3000 pixels est imprimée en 80 cm × 60 cm. Calcule sa résolution en largeur et en hauteur, puis la largeur maximale d'impression à 150 ppp, en conservant les proportions.",
+          "solution_markdown": "Largeur : $4000 \\times 2{,}54 \\div 80 = 127$ ppp. Hauteur : $3000 \\times 2{,}54 \\div 60 = 127$ ppp (mêmes proportions, donc même résolution).\n\nÀ 150 ppp : largeur maximale en pouces $= 4000 \\div 150 \\approx 26{,}67$ pouces, soit $26{,}67 \\times 2{,}54 \\approx 67{,}7$ cm.\n\nÀ 150 ppp, l'image ne peut donc pas dépasser environ 67,7 cm de large : imprimée sur 80 cm, elle n'atteint que 127 ppp, en dessous du seuil de 150 ppp."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Résolution en ppp = nombre de pixels ÷ longueur en pouces.",
+        "Pour passer des centimètres aux pouces, on divise par 2,54.",
+        "Formule regroupée : $R = N \\times 2{,}54 \\div L$ avec $L$ en cm.",
+        "Associe toujours la largeur de l'image à la largeur du support, la hauteur à la hauteur.",
+        "Au Probatoire, un calcul de résolution ou de définition d'image est fréquent dans l'exercice d'infographie, avec la conversion 1 pouce = 2,54 cm à connaître."
+      ]
+    }
+  ]
+}

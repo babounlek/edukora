@@ -1,0 +1,324 @@
+[
+  {
+    "external_id": "cqc-langage-c-informatique-faible-0",
+    "theme": "langage C",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "enonce_markdown": "En algorithmique, un tableau est déclaré par :\n\n```text\nTab : Tableau[0..5] d'entiers\n```\n\nQuelle déclaration en langage C lui correspond ?",
+    "corrige_markdown": "### Rappel de méthode\nEn C, un tableau se déclare par son type, son nom et le **nombre** de cases entre crochets. Les indices commencent à 0 et vont jusqu'à taille - 1. Les indices 0 à 5 représentent donc 6 cases.\n\n### Corrigé\n**Réponse : B.** Les indices 0, 1, 2, 3, 4, 5 font 6 cases : `int Tab[6];`.\n\n- **A** est fausse : `Tab[5]` n'a que 5 cases (indices 0 à 4), la case d'indice 5 serait hors du tableau.\n- **C** est fausse : en C, le type précède le nom (`int Tab[6];`).\n- **D** est fausse : cette syntaxe ressemble au Pascal et n'existe pas en C.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`int Tab[5];`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`int Tab[6];`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`Tab int[6];`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`array Tab[0..5] of int;`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      7590
+    ],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-langage-c-informatique-faible-1",
+    "theme": "langage C",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "enonce_markdown": "On considère le début d'un programme C :\n\n```c\nint i = 0, s = 0;\nwhile (i < 3) {\n    s = s + i;\n    i++;\n}\n```\n\nQuelle ligne est l'instruction d'**incrémentation**, c'est-à-dire celle qui augmente de 1 la variable `i` ?",
+    "corrige_markdown": "### Rappel de méthode\nIncrémenter une variable, c'est lui ajouter 1 : en C on écrit `i++;` ou `i = i + 1;`. Il ne faut pas confondre cette opération avec la déclaration, le cumul d'une somme et la condition d'une boucle.\n\n### Corrigé\n**Réponse : C.** `i++;` augmente `i` de 1 à chaque passage dans la boucle.\n\n- **A** est fausse : c'est la déclaration et l'initialisation de `i` et de `s`.\n- **B** est fausse : elle ajoute la valeur de `i` à `s` (cumul), pas 1 à `i`.\n- **D** est fausse : c'est la condition de la boucle, elle ne modifie aucune variable.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`int i = 0, s = 0;`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`s = s + i;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`i++;`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`while (i < 3) {`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      7577
+    ],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-langage-c-informatique-moyenne-2",
+    "theme": "langage C",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche le programme suivant ?\n\n```c\n#include <stdio.h>\n\nint main() {\n    int i, s = 0;\n    for (i = 1; i <= 4; i++) {\n        s = s + i * 2;\n    }\n    printf(\"%d\", s);\n    return 0;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\nPour prévoir l'affichage d'une boucle, on écrit la trace : la valeur de chaque variable à chaque passage. Ici, la boucle `for` s'exécute pour `i` valant 1, 2, 3 puis 4.\n\n### Corrigé\n**Réponse : A.** Trace de `s` : i = 1 donne 0 + 2 = 2 ; i = 2 donne 2 + 4 = 6 ; i = 3 donne 6 + 6 = 12 ; i = 4 donne 12 + 8 = 20. Le programme affiche **20**.\n\n- **B** est fausse : 10 = 1 + 2 + 3 + 4 oublie le facteur 2.\n- **C** est fausse : 30 serait obtenu avec une boucle qui va jusqu'à `i = 5`.\n- **D** est fausse : 8 est seulement le dernier terme ajouté, pas le cumul.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`20`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`10`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`30`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`8`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      7585
+    ],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-langage-c-informatique-moyenne-3",
+    "theme": "langage C",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche le programme suivant ?\n\n```c\n#include <stdio.h>\n\nint main() {\n    int T[5] = {4, 7, 1, 8, 3};\n    printf(\"%d\", T[1] + T[4]);\n    return 0;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\nLes indices d'un tableau C commencent à 0 : `T[0]` est le premier élément et `T[4]` le cinquième. Pour évaluer une expression, on écrit d'abord la valeur de chaque case.\n\n### Corrigé\n**Réponse : D.** T[0] = 4, T[1] = 7, T[2] = 1, T[3] = 8, T[4] = 3. Donc `T[1] + T[4]` vaut 7 + 3 = **10**.\n\n- **A** est fausse : 7 = T[0] + T[4], elle prend la première case au lieu de la deuxième.\n- **B** est fausse : 12 = 4 + 8 suppose une numérotation à partir de 1 (premier et quatrième éléments).\n- **C** est fausse : 15 = T[1] + T[3], elle prend une mauvaise case de fin.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`7`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`12`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`15`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`10`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      7590
+    ],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-langage-c-informatique-moyenne-4",
+    "theme": "langage C",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "enonce_markdown": "On considère l'algorithme suivant :\n\n```text\nAlgorithme Decision\nVariables a, b, m : Réels\nDébut\n    Lire(a)\n    Lire(b)\n    m <- (a + b) / 2\n    Si (m >= 10) alors\n        Écrire(\"Admis\")\n    sinon\n        Écrire(\"Refuse\")\n    finsi\nFin\n```\n\n1. Traduire cet algorithme en un programme C complet (sans accents dans les messages affichés).\n2. Donner l'affichage obtenu pour a = 8 et b = 13.",
+    "corrige_markdown": "### Rappel de méthode\nPour traduire un algorithme en C : déclarer les variables avec leur type (`float` pour un réel), remplacer `Lire` par `scanf` (format `%f` et adresse `&` de la variable), `Écrire` par `printf`, et `Si ... sinon` par `if ... else` avec des accolades.\n\n### Corrigé\n**1.**\n\n```c\n#include <stdio.h>\n\nint main() {\n    float a, b, m;\n    scanf(\"%f\", &a);\n    scanf(\"%f\", &b);\n    m = (a + b) / 2;\n    if (m >= 10) {\n        printf(\"Admis\");\n    } else {\n        printf(\"Refuse\");\n    }\n    return 0;\n}\n```\n\n**2.** Pour a = 8 et b = 13, m = (8 + 13) / 2 = 10,5. Comme 10,5 >= 10, le programme affiche **Admis**.\n\n### Critères de notation\n- Déclaration `float a, b, m;` et en-tête `#include <stdio.h>` avec `main` (1 point).\n- Deux `scanf(\"%f\", ...)` avec l'opérateur `&` (1 point).\n- Calcul de `m` et structure `if ... else` avec la condition `m >= 10` (1 point).\n- Affichage correct pour a = 8 et b = 13 : Admis (1 point).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      7585,
+      7595
+    ],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-langage-c-informatique-elevee-5",
+    "theme": "langage C",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "enonce_markdown": "On considère l'algorithme suivant, qui compte les notes supérieures ou égales à 10 parmi cinq notes saisies :\n\n```text\nAlgorithme Compter\nVariables T : Tableau[0..4] d'entiers\n          i, nb : Entiers\nDébut\n    Pour i allant de 0 à 4 faire\n        Lire(T[i])\n    finpour\n    nb <- 0\n    Pour i allant de 0 à 4 faire\n        Si (T[i] >= 10) alors\n            nb <- nb + 1\n        finsi\n    finpour\n    Écrire(nb)\nFin\n```\n\n1. Traduire cet algorithme en un programme C complet.\n2. Donner l'affichage obtenu si l'utilisateur saisit successivement 8, 12, 10, 5 et 15.\n3. Un élève écrit la première boucle `for (i = 0; i <= 5; i++)` à la place de `for (i = 0; i < 5; i++)`. Quelle erreur commet-il et quelles en sont les conséquences ?",
+    "corrige_markdown": "### Rappel de méthode\nUne boucle `Pour i allant de 0 à 4` se traduit par `for (i = 0; i < 5; i++)` (ou `i <= 4`). Un tableau de 5 cases a pour indices 0 à 4 : accéder à `T[5]` sort du tableau, ce que le compilateur ne signale pas.\n\n### Corrigé\n**1.**\n\n```c\n#include <stdio.h>\n\nint main() {\n    int T[5];\n    int i, nb;\n    for (i = 0; i < 5; i++) {\n        scanf(\"%d\", &T[i]);\n    }\n    nb = 0;\n    for (i = 0; i < 5; i++) {\n        if (T[i] >= 10) {\n            nb = nb + 1;\n        }\n    }\n    printf(\"%d\", nb);\n    return 0;\n}\n```\n\n**2.** Les notes supérieures ou égales à 10 sont 12, 10 et 15 (la note 10 compte, car la condition est `>=`). Le programme affiche **3**.\n\n**3.** Avec `i <= 5`, la boucle fait un sixième passage avec `i = 5` et lit une valeur dans `T[5]`, une case qui n'existe pas (les indices valides sont 0 à 4). C'est un accès hors du tableau : le comportement est imprévisible (valeur écrasée dans une autre variable, résultat faux, voire arrêt du programme), et le compilateur ne signale pas d'erreur.\n\n### Critères de notation\n- Déclaration `int T[5];` et boucle de lecture avec `scanf(\"%d\", &T[i])` (1 point).\n- Compteur `nb` initialisé à 0, test `T[i] >= 10` et incrémentation (1 point).\n- Affichage correct : 3, avec la note 10 comptée (1 point).\n- Question 3 : accès à `T[5]` hors du tableau et conséquences imprévisibles (1 point).",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      7590,
+      7585
+    ],
+    "figures": []
+  }
+]

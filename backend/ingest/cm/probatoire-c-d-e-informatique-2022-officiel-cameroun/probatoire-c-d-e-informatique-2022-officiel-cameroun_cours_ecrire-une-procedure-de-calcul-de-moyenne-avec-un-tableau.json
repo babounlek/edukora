@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-ecrire-une-procedure-de-calcul-de-moyenne-avec-un-tableau-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Écrire une procédure de calcul de moyenne avec un tableau",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 35,
+    "tags": [
+      "tableau",
+      "boucle Pour",
+      "moyenne",
+      "procédure",
+      "accumulateur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex3-qA.2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer une moyenne à la main : on additionne tout, on divise par le nombre de valeurs. Un algorithme fait exactement la même chose, mais avec une boucle pour additionner. Ce schéma (parcourir, cumuler, conclure) sert aussi pour le maximum, le minimum et les comptages."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer et lire un tableau",
+        "Connaître la boucle Pour",
+        "Savoir ce qu'est une affectation et une variable accumulateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Parcourir, cumuler, conclure",
+      "contenu_markdown": "Trois étapes :\n\n1. **Initialiser** l'accumulateur : `somme ← 0`.\n2. **Parcourir** toutes les cases avec `Pour i de 1 à n Faire` et cumuler : `somme ← somme + T[i]`.\n3. **Conclure** après la boucle : `moyenne ← somme / n`, puis afficher le résultat.\n\nUne **procédure** s'écrit avec son nom, ses paramètres, ses variables locales, puis le corps entre `Début` et `Fin`. Elle affiche son résultat, alors qu'une fonction le renvoie."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la procédure qui calcule et affiche la moyenne du tableau Notes (10, 12, 16, 14, 17).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer les variables locales",
+          "justification": "`i` compte les cases, `somme` accumule, `moyenne` est décimale.",
+          "resultat_markdown": "i, somme : Entier ; moyenne : Réel"
+        },
+        {
+          "numero": 2,
+          "action": "Initialiser",
+          "justification": "Sans valeur de départ, `somme` est indéterminée.",
+          "resultat_markdown": "somme ← 0"
+        },
+        {
+          "numero": 3,
+          "action": "Parcourir et cumuler",
+          "justification": "Une boucle de 1 à 5 visite chaque case.",
+          "resultat_markdown": "Pour i de 1 à 5 Faire somme ← somme + Notes[i] FinPour"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer et afficher",
+          "justification": "Après la boucle, on divise la somme par le nombre de notes.",
+          "resultat_markdown": "moyenne ← somme / 5 puis Écrire(moyenne)"
+        },
+        {
+          "numero": 5,
+          "action": "Tester par une trace",
+          "justification": "On suit `somme` : 10, 22, 38, 52, 69.",
+          "resultat_markdown": "moyenne = 69 / 5 = 13,8"
+        }
+      ],
+      "conclusion_markdown": "La procédure `MoyenneNotes` affiche 13,8 pour le tableau de l'énoncé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'initialiser `somme`.",
+          "pourquoi_faux": "Sa valeur de départ est quelconque : le résultat est faux.",
+          "correction_markdown": "Écris toujours `somme ← 0` avant la boucle."
+        },
+        {
+          "erreur_markdown": "Mettre `moyenne ← somme / 5` dans la boucle.",
+          "pourquoi_faux": "La division serait refaite à chaque tour, avec une somme partielle : seul le dernier tour est juste, mais l'algorithme est faux dans sa structure.",
+          "correction_markdown": "Le calcul final se place après `FinPour`."
+        },
+        {
+          "erreur_markdown": "Écrire `Pour i de 1 à 4` pour 5 notes.",
+          "pourquoi_faux": "La boucle oublie la dernière case.",
+          "correction_markdown": "La borne finale est le nombre d'éléments."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la procédure `Somme` qui affiche la somme des 5 notes du tableau Notes.",
+          "solution_markdown": "```\nProcédure Somme(Notes : Tableau[1..5] d'Entier)\nVariables\n    i, s : Entier\nDébut\n    s ← 0\n    Pour i de 1 à 5 Faire\n        s ← s + Notes[i]\n    FinPour\n    Écrire(\"Somme = \", s)\nFin\n```\nPour (10, 12, 16, 14, 17), la somme est 69."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la procédure `Maximum` qui affiche la plus grande note du tableau.",
+          "solution_markdown": "```\nProcédure Maximum(Notes : Tableau[1..5] d'Entier)\nVariables\n    i, max : Entier\nDébut\n    max ← Notes[1]\n    Pour i de 2 à 5 Faire\n        Si Notes[i] > max Alors\n            max ← Notes[i]\n        FinSi\n    FinPour\n    Écrire(\"Maximum = \", max)\nFin\n```\nOn part de la première case et on la compare aux suivantes. Pour (10, 12, 16, 14, 17), le résultat est 17."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris la procédure qui compte les notes supérieures ou égales à 10 et affiche aussi la moyenne, puis teste-la avec 8, 12, 9, 15, 10.",
+          "solution_markdown": "```\nProcédure Bilan(Notes : Tableau[1..5] d'Entier)\nVariables\n    i, somme, nb : Entier\n    moyenne : Réel\nDébut\n    somme ← 0\n    nb ← 0\n    Pour i de 1 à 5 Faire\n        somme ← somme + Notes[i]\n        Si Notes[i] >= 10 Alors\n            nb ← nb + 1\n        FinSi\n    FinPour\n    moyenne ← somme / 5\n    Écrire(\"Notes >= 10 : \", nb)\n    Écrire(\"Moyenne : \", moyenne)\nFin\n```\nTrace avec 8, 12, 9, 15, 10 : somme = 54 ; notes >= 10 : 12, 15 et 10, donc nb = 3 ; moyenne = 54 / 5 = 10,8. Ces valeurs ont été confirmées par un programme C équivalent compilé et exécuté."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Moyenne d'un tableau : initialiser, parcourir en cumulant, diviser après la boucle.",
+        "L'accumulateur se met à 0 avant la boucle, jamais dedans.",
+        "Le même schéma donne la somme, le maximum, le minimum ou un comptage.",
+        "Vérifie ton algorithme par une trace à la main sur les valeurs de l'énoncé.",
+        "Au Probatoire, « écrire la procédure de calcul de la moyenne » est une question classique à 1 pt."
+      ]
+    }
+  ]
+}

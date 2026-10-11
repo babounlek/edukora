@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-prevoir-le-resultat-d-un-code-javascript-conditionnel-1ere-c-d-e",
+  "meta": {
+    "titre": "Prévoir le résultat d'un code JavaScript conditionnel",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "JavaScript : exécution d'une fonction",
+    "duree_estimee_min": 30,
+    "tags": [
+      "JavaScript",
+      "if else",
+      "alert",
+      "concaténation",
+      "do while"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB6-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de tester une page web, le développeur sait déjà ce qu'elle va afficher : il lit le code en jouant le navigateur. Cette lecture de code, qui consiste à substituer des valeurs et à suivre la bonne branche, est exactement ce que demande l'examen quand il vous donne les valeurs d'un formulaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une structure `if ... else`",
+        "Connaître les opérateurs de comparaison et logiques (`!=`, `||`, `&&`)",
+        "Savoir ce que fait `alert()` et ce qu'est la concaténation (`+` entre textes)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Substituer, évaluer, suivre la branche, lire le message",
+      "contenu_markdown": "Pour prévoir le résultat d'un code conditionnel :\n\n1. **Substitue** les valeurs données aux paramètres de la fonction.\n2. **Évalue chaque comparaison** séparément (vrai ou faux).\n3. **Combine** avec l'opérateur logique : OU vrai dès qu'une condition est vraie, ET vrai seulement si toutes le sont.\n4. **Suis la branche** `if` (condition vraie) ou `else` (condition fausse).\n5. **Lis le message** de l'`alert` en assemblant les textes concaténés par `+`, espaces et ponctuation comprises.\n6. **Regarde la boucle** éventuelle autour : un `do ... while(cond)` recommence tant que `cond` est vraie."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le formulaire est rempli avec identifiant = OBC et mot de passe = Probatoire. Quel message reçoit l'utilisateur avec la fonction `traitement(name, pass)` de l'énoncé ? (Probatoire 2021, exercice III B, question 6)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Substituer",
+          "justification": "`name` vaut `'OBC'` et `pass` vaut `'Probatoire'`.",
+          "resultat_markdown": "Condition : `'OBC'!='OBC' || 'Probatoire'!='Probatoire'`."
+        },
+        {
+          "numero": 2,
+          "action": "Évaluer chaque comparaison",
+          "justification": "Deux textes identiques ne sont pas différents.",
+          "resultat_markdown": "`'OBC'!='OBC'` est faux ; `'Probatoire'!='Probatoire'` est faux."
+        },
+        {
+          "numero": 3,
+          "action": "Combiner avec le OU",
+          "justification": "`faux || faux` est faux : aucune des deux conditions n'est vraie.",
+          "resultat_markdown": "La condition du `if` est fausse."
+        },
+        {
+          "numero": 4,
+          "action": "Suivre la branche",
+          "justification": "Une condition fausse conduit à la branche `else`.",
+          "resultat_markdown": "On exécute `valide=true` puis l'alert de la ligne 11."
+        },
+        {
+          "numero": 5,
+          "action": "Lire le message",
+          "justification": "On concatène `\"Bonjour, \"`, `name`, `\"! \"` et `\"Bienvenu sur le site de l'OBC\"`.",
+          "resultat_markdown": "Message : `Bonjour, OBC! Bienvenu sur le site de l'OBC`."
+        }
+      ],
+      "conclusion_markdown": "L'utilisateur reçoit le message « Bonjour, OBC! Bienvenu sur le site de l'OBC ». Comme `valide` vaut alors `true`, la boucle `do...while(valide)` répète l'alerte indéfiniment : la logique du code est à corriger."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Afficher « Informations invalides » alors que les données sont correctes.",
+          "pourquoi_faux": "La condition du `if` teste le contraire (`!=`, « différent ») : avec des données correctes elle est fausse et c'est le `else` qui s'exécute.",
+          "correction_markdown": "Évalue la condition avec les valeurs avant de choisir la branche."
+        },
+        {
+          "erreur_markdown": "Oublier les espaces ou la ponctuation de la concaténation.",
+          "pourquoi_faux": "Le message est la mise bout à bout exacte des textes : sans l'espace après la virgule, ou avec un point à la place du point d'exclamation, le message est faux.",
+          "correction_markdown": "Recopie le message caractère par caractère, en remplaçant les variables."
+        },
+        {
+          "erreur_markdown": "Ignorer la boucle `do...while`.",
+          "pourquoi_faux": "Le bloc se répète tant que la condition du `while` est vraie : ici `valide` devient `true`, donc il recommence sans fin.",
+          "correction_markdown": "Après le corps de la boucle, évalue toujours la condition du `while`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit `function f(age){ if (age>=18){ return \"Accès autorisé\"; } else { return \"Accès refusé\"; } }`. Quel résultat pour `f(20)` puis `f(15)` ?",
+          "solution_markdown": "`f(20)` : `20 >= 18` est vrai, on suit le `if` et on obtient « Accès autorisé ». `f(15)` : `15 >= 18` est faux, on suit le `else` et on obtient « Accès refusé »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit `function g(n, m){ if (n>10 && m<5){ return \"A\"; } else if (n>10 || m<5){ return \"B\"; } else { return \"C\"; } }`. Quel résultat pour `g(12,3)`, `g(12,8)` et `g(5,8)` ?",
+          "solution_markdown": "`g(12,3)` : `12>10` vrai et `3<5` vrai, le ET est vrai : **A**. `g(12,8)` : `12>10` vrai mais `8<5` faux, le ET est faux ; le OU est vrai : **B**. `g(5,8)` : `5>10` faux et `8<5` faux, le ET et le OU sont faux : **C**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit `function suite(n){ var r=0; do{ r=r+n; alert(r); n=n-1; }while(n>0); }`. Quels messages reçoit l'utilisateur après l'appel `suite(4)` ?",
+          "solution_markdown": "| passage | `n` au début | `r` après `r=r+n` | alerte | `n` après `n=n-1` | `n>0` ? |\n|---|---|---|---|---|---|\n| 1 | 4 | 4 | 4 | 3 | vrai |\n| 2 | 3 | 7 | 7 | 2 | vrai |\n| 3 | 2 | 9 | 9 | 1 | vrai |\n| 4 | 1 | 10 | 10 | 0 | faux |\n\nLe corps du `do...while` s'exécute d'abord, puis la condition est testée. L'utilisateur reçoit successivement les messages 4, 7, 9 et 10, puis la boucle s'arrête."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prévoir un résultat, substitue les valeurs, évalue chaque comparaison, combine, puis suis la bonne branche.",
+        "Un OU est vrai dès qu'une comparaison est vraie ; un ET exige que toutes le soient.",
+        "Recopie le message de l'alerte à la lettre : espaces et ponctuation comptent.",
+        "Après le corps d'un `do...while`, évalue la condition du `while` pour savoir si la boucle recommence.",
+        "Au Probatoire, la question « quel message recevra l'utilisateur avec ces données » s'obtient par cette lecture méthodique et rapporte un demi-point à un point."
+      ]
+    }
+  ]
+}

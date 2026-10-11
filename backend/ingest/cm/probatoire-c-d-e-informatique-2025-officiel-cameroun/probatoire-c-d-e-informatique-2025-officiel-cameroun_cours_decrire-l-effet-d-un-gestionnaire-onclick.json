@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-decrire-l-effet-d-un-gestionnaire-onclick-1ere-cde",
+  "meta": {
+    "titre": "Décrire l'effet d'un gestionnaire onclick",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "JavaScript : évènements",
+    "duree_estimee_min": 30,
+    "tags": [
+      "JavaScript",
+      "onclick",
+      "évènement",
+      "appel de fonction",
+      "HTML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction JavaScript déclarée dans une page ne fait rien tant que personne ne l'appelle. C'est l'attribut `onclick` du bouton qui lance son exécution au moment du clic. Décrire ce qui se passe, c'est suivre le code ligne par ligne, dans l'ordre, comme le fait le navigateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une fonction JavaScript (variables, `prompt`, calcul, affichage)",
+        "Savoir écrire un bouton en HTML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Évènement, appel, déroulement",
+      "contenu_markdown": "L'attribut `onclick=\"instruction;\"` d'une balise exécute l'instruction lorsque l'utilisateur **clique** sur l'élément.\n\nPour décrire l'effet d'un clic :\n\n1. **nomme** l'évènement et la fonction appelée ;\n2. **déroule** les instructions de la fonction dans l'ordre : saisies, calcul, affichage ;\n3. **précise le résultat visible** pour l'utilisateur, avec un exemple chiffré ;\n4. signale un effet particulier s'il y en a (par exemple la page remplacée par `document.write`).\n\nPour appeler la fonction, les **parenthèses sont obligatoires** : `onclick=\"surfaceRect();\"` appelle la fonction, `onclick=\"surfaceRect\"` ne fait rien."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire ce qui se produit au clic sur le bouton « Calculer » auquel on ajoute l'attribut `onClick=\"surfaceRect();\"` (fonction `surfaceRect` du code de l'agence immobilière).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Nommer l'évènement et l'appel",
+          "justification": "Le clic déclenche l'instruction contenue dans `onClick`.",
+          "resultat_markdown": "Au clic, le navigateur appelle `surfaceRect()`."
+        },
+        {
+          "numero": 2,
+          "action": "Dérouler les saisies",
+          "justification": "Les trois premières lignes de la fonction appellent `prompt` puis `parseFloat`.",
+          "resultat_markdown": "Trois boîtes s'ouvrent : longueur, largeur, prix du mètre carré ; chaque réponse est convertie en nombre."
+        },
+        {
+          "numero": 3,
+          "action": "Dérouler le calcul",
+          "justification": "La ligne suivante multiplie les trois valeurs.",
+          "resultat_markdown": "`prixVente = longueur × largeur × prixUnitaire`."
+        },
+        {
+          "numero": 4,
+          "action": "Dérouler l'affichage et l'effet particulier",
+          "justification": "`document.write` est appelée après le chargement de la page.",
+          "resultat_markdown": "La page affiche « le prix de vente est ... FCFA. » et remplace tout son contenu précédent (exemple : 20, 15 et 5000 donnent 1500000)."
+        }
+      ],
+      "conclusion_markdown": "Le clic lance `surfaceRect()` : trois saisies, un calcul du prix de vente, puis l'affichage du résultat qui remplace le contenu de la page."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que le bouton calcule la surface.",
+          "pourquoi_faux": "Le nom `surfaceRect` est trompeur : la fonction multiplie longueur, largeur et prix unitaire, donc elle calcule un prix de vente.",
+          "correction_markdown": "Décris ce que fait le code, pas ce que suggère son nom."
+        },
+        {
+          "erreur_markdown": "Écrire « la fonction s'exécute » sans rien détailler.",
+          "pourquoi_faux": "La question demande de décrire : le correcteur attend le déroulement (saisies, calcul, affichage).",
+          "correction_markdown": "Suis les instructions dans l'ordre et cite l'effet visible."
+        },
+        {
+          "erreur_markdown": "Oublier les parenthèses : `onclick=\"surfaceRect\"`.",
+          "pourquoi_faux": "Sans parenthèses, la fonction n'est pas appelée : l'expression est évaluée sans effet. Rien ne se passe au clic.",
+          "correction_markdown": "Écris toujours `onclick=\"nomFonction();\"`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décrire l'effet du bouton `<button onclick=\"alert('Merci');\">OK</button>`.",
+          "solution_markdown": "Au clic sur « OK », le navigateur exécute `alert('Merci');` : une boîte de message s'ouvre avec le texte « Merci ». Rien d'autre ne change dans la page."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le code est : `function doubler(){ n=parseFloat(prompt(\"n\")); alert(n*2); }` avec le bouton `<button onclick=\"doubler();\">Doubler</button>`. Décrire l'effet du clic si l'utilisateur saisit 7.",
+          "solution_markdown": "1. Le clic appelle `doubler()`.\n2. Une boîte de saisie « n » s'ouvre ; l'utilisateur tape 7, que `parseFloat` convertit en nombre 7.\n3. Le programme calcule $7 \\times 2 = 14$.\n4. `alert` affiche une boîte contenant 14.\n\nLa page elle-même ne change pas."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On teste trois boutons avec la fonction `doubler()` déclarée : (A) `onclick=\"doubler();\"` ; (B) `onclick=\"doubler\"` ; (C) `onclick=\"doubleur();\"`. Pour chacun, dire ce qui se passe au clic.",
+          "solution_markdown": "- **(A)** : la fonction est appelée et s'exécute normalement.\n- **(B)** : sans parenthèses, la fonction n'est pas appelée, le nom est simplement évalué : il ne se passe rien, sans message d'erreur.\n- **(C)** : le nom `doubleur` ne correspond à aucune fonction déclarée : le navigateur produit une erreur (« doubleur is not defined » dans la console) et rien ne s'exécute.\n\nLeçon : le nom appelé doit être identique à celui qui est déclaré, parenthèses comprises."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`onclick` exécute son instruction au clic sur l'élément.",
+        "Appeler une fonction exige les parenthèses : `nomFonction();`.",
+        "Décris l'effet dans l'ordre du code : saisies, calcul, affichage.",
+        "Appuie ta description sur un exemple chiffré et signale l'effet particulier de `document.write`.",
+        "Au Probatoire, la description de l'effet d'un clic sur un bouton relié à une fonction est une question classique de programmation web : le déroulement ordonné fait gagner le point."
+      ]
+    }
+  ]
+}

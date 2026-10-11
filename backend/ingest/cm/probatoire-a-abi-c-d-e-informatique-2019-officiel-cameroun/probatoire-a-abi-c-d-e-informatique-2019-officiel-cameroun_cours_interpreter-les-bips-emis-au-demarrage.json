@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-interpreter-les-bips-emis-au-demarrage-probatoire",
+  "meta": {
+    "titre": "Interpréter les bips émis au démarrage",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "bip",
+      "POST",
+      "codes sonores",
+      "diagnostic",
+      "panne matérielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex3-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un technicien qui entend un ordinateur bipper sait déjà s'il doit inquiéter son client. Les bips du démarrage sont le langage sonore du BIOS : un signe de bonne santé ou un message de panne quand l'écran reste noir. Ce cours t'apprend à les interpréter sans les confondre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le BIOS et le POST",
+        "Connaître les composants de la carte mère (RAM, carte graphique)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire un signal sonore du démarrage",
+      "contenu_markdown": "Les bips sont émis par le BIOS pendant le POST, par le petit haut-parleur de la carte mère.\n\n- **Un seul bip court** après l'allumage : sur la plupart des ordinateurs, le POST s'est terminé correctement et le démarrage continue.\n- **Aucun bip, écran noir** : problème d'alimentation, de carte mère ou de haut-parleur interne absent.\n- **Bips répétés ou longs** : anomalie matérielle (mémoire vive mal enfichée, carte graphique, processeur).\n\n**Limite** : les codes dépendent du fabricant du BIOS (AMI, Award, Phoenix) et de la carte mère. On consulte la documentation de la machine pour la signification précise, et de nombreux portables récents n'émettent plus de bip.\n\nDiagnostic d'une série de bips : 1) noter le nombre et la longueur des bips ; 2) chercher le code dans le manuel ; 3) contrôler le composant désigné (réenficher la RAM, par exemple).",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avant d'afficher le bureau, l'ordinateur émet un bip sonore. Que signifie ce bip ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Situer le bip dans le démarrage",
+          "justification": "Il est émis avant le bureau, pendant le contrôle du matériel",
+          "resultat_markdown": "Il appartient à la phase du POST."
+        },
+        {
+          "numero": 2,
+          "action": "Qualifier le bip",
+          "justification": "Il est unique et court, et le démarrage se poursuit ensuite jusqu'au bureau",
+          "resultat_markdown": "Pas de série de bips répétés."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter",
+          "justification": "Sur la plupart des BIOS, un bip court signale la réussite de l'auto-test",
+          "resultat_markdown": "Le matériel essentiel est détecté."
+        },
+        {
+          "numero": 4,
+          "action": "Nuancer",
+          "justification": "Les codes varient selon le fabricant",
+          "resultat_markdown": "À confirmer dans le manuel de la carte mère."
+        }
+      ],
+      "conclusion_markdown": "Ce bip court signifie que le POST s'est terminé correctement et que le démarrage peut continuer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre un bip court pour une panne",
+          "pourquoi_faux": "Il est, au contraire, le signal normal de réussite sur la plupart des machines.",
+          "correction_markdown": "Chercher une panne seulement si les bips sont répétés ou absents avec un écran noir."
+        },
+        {
+          "erreur_markdown": "Croire que tous les constructeurs utilisent les mêmes codes",
+          "pourquoi_faux": "Chaque fabricant de BIOS a sa propre table.",
+          "correction_markdown": "Consulter la documentation du constructeur."
+        },
+        {
+          "erreur_markdown": "Oublier de lier le bip au POST",
+          "pourquoi_faux": "Le bip est un message du BIOS pendant l'auto-test.",
+          "correction_markdown": "Toujours nommer le POST dans la réponse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un ordinateur émet un seul bip court puis démarre normalement. Est-il en panne ?",
+          "solution_markdown": "Non : sur la plupart des ordinateurs, un bip court indique que le POST s'est terminé correctement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur reste sur écran noir en émettant des bips répétés. Que peut-on soupçonner ?",
+          "solution_markdown": "Une anomalie matérielle détectée par le POST, souvent la mémoire vive mal enfichée ou la carte graphique. On note le nombre de bips, on lit le manuel et on contrôle le composant."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Proposer une démarche de dépannage pour un ordinateur qui émet des bips répétés et n'affiche rien.",
+          "solution_markdown": "1) Noter le nombre et la longueur des bips. 2) Consulter la documentation de la carte mère pour connaître le composant désigné. 3) Éteindre et débrancher, puis retirer et réenficher la barrette de RAM. 4) Tester avec une seule barrette, puis réessayer ; si le problème persiste, tester la carte graphique. 5) Remplacer le composant défectueux. On procède toujours machine débranchée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les bips sont émis par le BIOS pendant le POST.",
+        "Un bip court unique signifie, en général, que l'auto-test est réussi.",
+        "Des bips répétés ou le silence avec écran noir annoncent une anomalie matérielle.",
+        "Les codes dépendent du fabricant : on vérifie dans la documentation.",
+        "Les questions sur les signaux du démarrage sont des classiques de l'épreuve de maintenance."
+      ]
+    }
+  ]
+}

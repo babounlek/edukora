@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-definir-un-champ-de-saisie-avec-la-balise-input-1ere-a-abi-2021",
+  "meta": {
+    "titre": "Définir un champ de saisie avec la balise input",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Programmation web - formulaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "balise input",
+      "champ de saisie",
+      "attribut type",
+      "attribut name"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2021-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH et AC, session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2021-officiel-cameroun-ex2-q2d-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un formulaire, chaque case dans laquelle on écrit est un champ de saisie. Le nom, l'adresse, le mot de passe, la date de naissance : tout passe par la même balise `<input>`, que l'on adapte avec ses attributs. C'est la balise la plus utilisée de tous les formulaires."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir créer la balise `<form>`",
+        "Connaître la notion d'attribut d'une balise (nom=\"valeur\")"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise input, ses attributs type et name",
+      "contenu_markdown": "La balise **`<input>`** définit un champ de saisie. Elle est **orpheline** : elle n'a pas de balise fermante.\n\n- `type` : la nature du champ. `text` (texte sur une ligne), `password` (texte masqué), `submit` (bouton d'envoi), `checkbox` (case à cocher), `radio` (bouton d'option).\n- `name` : le nom de la donnée envoyée au serveur. Sans `name`, la valeur saisie n'est pas transmise.\n- `id` (facultatif) : un identifiant qui relie le champ à son libellé `<label for=\"...\">`.\n\n`<input type=\"text\" name=\"nom\">`",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Champ avec libellé",
+          "quand_utiliser": "Quand le sujet demande d'afficher un libellé devant le champ.",
+          "contenu_markdown": "On écrit `<label for=\"nom\">Nom :</label>` suivi de `<input type=\"text\" name=\"nom\" id=\"nom\">` : le libellé et le champ sont reliés par l'identifiant `nom`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la balise HTML complète permettant de définir le champ de saisie du nom. *[1 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la balise",
+          "justification": "Un champ de saisie se définit avec `input`.",
+          "resultat_markdown": "`<input ...>`"
+        },
+        {
+          "numero": 2,
+          "action": "Fixer le type du champ",
+          "justification": "Le nom est un texte court écrit sur une ligne : le type est `text`.",
+          "resultat_markdown": "`type=\"text\"`"
+        },
+        {
+          "numero": 3,
+          "action": "Nommer la donnée",
+          "justification": "L'attribut `name` identifie la valeur pour le serveur ; on choisit un nom parlant.",
+          "resultat_markdown": "`name=\"nom\"`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la balise sans fermeture",
+          "justification": "`<input>` est orpheline : aucune balise fermante n'existe.",
+          "resultat_markdown": "`<input type=\"text\" name=\"nom\">`"
+        }
+      ],
+      "conclusion_markdown": "Le champ de saisie du nom s'écrit `<input type=\"text\" name=\"nom\">`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `<input type=\"text\" name=\"nom\"></input>`.",
+          "pourquoi_faux": "`</input>` n'existe pas : la balise est orpheline.",
+          "correction_markdown": "Écris seulement `<input type=\"text\" name=\"nom\">`."
+        },
+        {
+          "erreur_markdown": "Omettre l'attribut `name`.",
+          "pourquoi_faux": "Sans `name`, le serveur ne reçoit pas la valeur saisie : le champ s'affiche mais est inutile.",
+          "correction_markdown": "Donne toujours un `name` à un champ de formulaire."
+        },
+        {
+          "erreur_markdown": "Mettre `type=\"nom\"` au lieu de `type=\"text\"`.",
+          "pourquoi_faux": "Le type désigne la nature du champ (texte, mot de passe...), pas la donnée attendue.",
+          "correction_markdown": "Le type est `text` ; c'est `name` qui vaut `nom`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la balise d'un champ de saisie pour l'adresse (texte sur une ligne).",
+          "solution_markdown": "`<input type=\"text\" name=\"adresse\">`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la balise d'un champ pour un mot de passe (caractères masqués) et celle du bouton d'envoi « Valider ».",
+          "solution_markdown": "```html\n<input type=\"password\" name=\"mdp\">\n<input type=\"submit\" value=\"Valider\">\n```\n\n`type=\"password\"` masque les caractères ; `type=\"submit\"` crée le bouton d'envoi, dont le texte affiché est donné par `value`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris le code complet d'un formulaire envoyant ses données par la méthode `post` à `traitement.php`, comportant les champs Nom et Adresse, chacun avec son libellé, et un bouton Valider.",
+          "solution_markdown": "```html\n<form action=\"traitement.php\" method=\"post\">\n   <label for=\"nom\">Nom :</label>\n   <input type=\"text\" name=\"nom\" id=\"nom\"><br>\n   <label for=\"adresse\">Adresse :</label>\n   <input type=\"text\" name=\"adresse\" id=\"adresse\"><br>\n   <input type=\"submit\" value=\"Valider\">\n</form>\n```\n\nLes balises `<input>` et `<br>` sont orphelines ; `<form>` et `<label>` sont refermées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<input>` définit un champ de saisie ; elle est orpheline.",
+        "`type` donne la nature du champ (`text`, `password`, `submit`), `name` donne le nom de la donnée envoyée.",
+        "Sans `name`, la valeur n'est pas transmise au serveur.",
+        "Ne ferme jamais `<input>` avec `</input>`.",
+        "Au Probatoire, écrire la balise d'un champ de saisie est la question de code HTML la plus classique après la balise de titre."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-calculer-le-resultat-d-une-formule-nb-si-1ere-a-abi-2021",
+  "meta": {
+    "titre": "Calculer le résultat d'une formule NB.SI",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Tableur - fonctions de comptage",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "NB.SI",
+      "plage de cellules",
+      "critère",
+      "comptage conditionnel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2021-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH et AC, session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2021-officiel-cameroun-ex1-q3a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien d'élèves sont originaires de Yaoundé dans une liste ? Combien ont plus de 10 de moyenne ? Un tableur répond à ces questions en une formule, sans compter à la main : `NB.SI`. Savoir en prédire le résultat à la main est une compétence classique de l'épreuve théorique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir désigner une cellule (A2) et une plage de cellules (A1:A5)",
+        "Connaître la syntaxe générale d'une formule de tableur (signe égal, nom de fonction, arguments)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "NB.SI(plage ; critère)",
+      "contenu_markdown": "La fonction `NB.SI` (COUNTIF en anglais) compte les cellules d'une plage qui répondent à un critère :\n\n`=NB.SI(plage ; critère)`\n\n- La **plage** est l'ensemble des cellules examinées (A1:A5).\n- Le **critère** est la condition à satisfaire : une valeur écrite (`\"Douala\"`, `10`), une comparaison (`\">=10\"`) ou la référence d'une cellule dont le contenu sert de critère (`A6`).\n- Le résultat est un **nombre de cellules**, pas une somme de valeurs.\n\nMéthode à la main : tester chaque cellule de la plage l'une après l'autre, compter celles qui répondent au critère.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Critère de comparaison",
+          "quand_utiliser": "Quand il s'agit de compter des nombres supérieurs, inférieurs ou différents d'une valeur.",
+          "contenu_markdown": "On écrit le critère entre guillemets avec son opérateur : `\">=10\"` compte les valeurs supérieures ou égales à 10, `\"<10\"` celles inférieures à 10, `\"<>Douala\"` celles différentes de « Douala »."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Les cellules A1 à A6 contiennent Mbouda, Yaoundé, Douala, Yaoundé, Douala, Yaoundé. Donner le résultat de `=NB.SI(A1:A5 ; A6)`. *[2 pts]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la plage",
+          "justification": "Le premier argument donne les cellules à examiner.",
+          "resultat_markdown": "Plage : A1:A5, soit cinq cellules."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le critère",
+          "justification": "Le second argument, A6, est une référence : on lit son contenu pour obtenir la valeur recherchée.",
+          "resultat_markdown": "Critère : le contenu de A6, soit « Yaoundé »."
+        },
+        {
+          "numero": 3,
+          "action": "Tester chaque cellule",
+          "justification": "NB.SI compare le contenu de chaque cellule de la plage au critère.",
+          "resultat_markdown": "A1 non, A2 oui, A3 non, A4 oui, A5 non."
+        },
+        {
+          "numero": 4,
+          "action": "Compter les cellules conformes",
+          "justification": "Le résultat est le nombre de cellules vérifiant le critère.",
+          "resultat_markdown": "2 cellules conformes (A2 et A4)."
+        }
+      ],
+      "conclusion_markdown": "La formule `=NB.SI(A1:A5 ; A6)` renvoie **2** ; elle compte les cellules de A1:A5 dont le contenu est identique à celui de A6."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter A6 dans le résultat et répondre 3.",
+          "pourquoi_faux": "A6 n'appartient pas à la plage A1:A5 : elle sert seulement de critère.",
+          "correction_markdown": "Délimite la plage avec précision avant de compter."
+        },
+        {
+          "erreur_markdown": "Additionner les contenus des cellules, comme avec SOMME.",
+          "pourquoi_faux": "NB.SI compte des cellules, elle ne calcule jamais une somme de valeurs.",
+          "correction_markdown": "Compte le nombre de cellules qui répondent au critère."
+        },
+        {
+          "erreur_markdown": "Oublier les guillemets autour d'un critère écrit en toutes lettres ou avec un opérateur.",
+          "pourquoi_faux": "Sans guillemets, `Douala` est lu comme un nom inconnu et la formule produit une erreur.",
+          "correction_markdown": "Écris `\"Douala\"` ou `\">=10\"` entre guillemets, mais une référence de cellule (A6) sans guillemets."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "B1 à B6 contiennent Douala, Bafoussam, Douala, Garoua, Douala, Kribi. Donne le résultat de `=NB.SI(B1:B6 ; \"Douala\")`.",
+          "solution_markdown": "On teste les six cellules : B1 oui, B2 non, B3 oui, B4 non, B5 oui, B6 non. Trois cellules contiennent « Douala ».\n\n**Résultat : 3.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les cellules C2 à C8 contiennent les notes 12, 8, 15, 10, 7, 14, 10. Donne le résultat de `=NB.SI(C2:C8 ; \">=10\")` et celui de `=NB.SI(C2:C8 ; \"<10\")`.",
+          "solution_markdown": "Notes supérieures ou égales à 10 : 12, 15, 10, 14, 10, soit **5** cellules. Notes inférieures à 10 : 8 et 7, soit **2** cellules. Contrôle : 5 + 2 = 7, le nombre total de notes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec les notes de l'exercice précédent, écris une formule qui donne le taux de réussite (proportion de notes supérieures ou égales à 10) et calcule sa valeur.",
+          "solution_markdown": "Le taux est le nombre de notes conformes divisé par le nombre total de notes : `=NB.SI(C2:C8 ; \">=10\")/NB(C2:C8)`, où `NB(C2:C8)` compte les cellules numériques de la plage.\n\nValeur : 5 ÷ 7 ≈ 0,714, soit environ **71,4 %** en format pourcentage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`NB.SI(plage ; critère)` compte des cellules, pas des valeurs à additionner.",
+        "La plage dit où chercher, le critère dit ce qu'on cherche.",
+        "Un critère donné par une référence de cellule (A6) prend le contenu de cette cellule.",
+        "Méthode sûre : tester chaque cellule dans un tableau, puis compter.",
+        "Au Probatoire, « donner le résultat d'une formule » avec NB.SI, SOMME.SI ou RANG est une question de tableur très fréquente."
+      ]
+    }
+  ]
+}

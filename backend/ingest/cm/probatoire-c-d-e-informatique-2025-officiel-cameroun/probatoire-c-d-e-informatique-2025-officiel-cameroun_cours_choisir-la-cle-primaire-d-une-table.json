@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-choisir-la-cle-primaire-d-une-table-1ere-cde",
+  "meta": {
+    "titre": "Choisir la clé primaire d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données : clé primaire",
+    "duree_estimee_min": 25,
+    "tags": [
+      "clé primaire",
+      "unicité",
+      "matricule",
+      "table",
+      "identifiant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex2-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un lycée, deux élèves peuvent s'appeler FOUDA et avoir le même prénom. Comment la base de données les distingue-t-elle sans jamais se tromper ? Grâce à un champ dont la valeur est propre à chaque élève : la clé primaire. Savoir la repérer fait partie des questions de base sur les tables."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un champ et un enregistrement",
+        "Distinguer ce qui peut se répéter de ce qui est unique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Qu'est-ce qu'une clé primaire ?",
+      "contenu_markdown": "Une **clé primaire** est un champ (ou un ensemble minimal de champs) dont la valeur :\n\n- est **unique** : deux enregistrements n'ont jamais la même valeur ;\n- n'est **jamais vide** ;\n- identifie sans ambiguïté un enregistrement.\n\n**Méthode de choix** : teste chaque champ avec la question « deux individus différents peuvent-ils avoir la même valeur ? ». Si oui, ce n'est pas une clé. Les champs de type matricule, numéro, code ou identifiant sont les candidats naturels.\n\nLa clé doit rester unique pour **toutes les lignes futures**, pas seulement pour celles qu'on voit."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir la clé primaire, puis identifier dans la table ELEVE (matricule, nom, prenom, date_naissance, sexe, note) le champ pouvant être considéré comme tel.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la définition",
+          "justification": "On rappelle les deux propriétés : unicité et valeur non vide.",
+          "resultat_markdown": "Une clé primaire identifie de façon unique chaque enregistrement."
+        },
+        {
+          "numero": 2,
+          "action": "Tester les champs qui peuvent se répéter",
+          "justification": "`nom`, `prenom`, `date_naissance` : des homonymes ou des élèves nés le même jour existent ; `sexe` : deux valeurs seulement ; `note` : 14 apparaît trois fois.",
+          "resultat_markdown": "Aucun de ces champs n'est unique."
+        },
+        {
+          "numero": 3,
+          "action": "Tester le matricule",
+          "justification": "Un matricule est attribué à un seul élève, et ne se répète pas.",
+          "resultat_markdown": "`matricule` est unique."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "Un seul champ remplit les conditions.",
+          "resultat_markdown": "Clé primaire : `matricule`."
+        }
+      ],
+      "conclusion_markdown": "Le champ `matricule` est la clé primaire de la table ELEVE, car il identifie chaque élève de façon unique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir `nom` parce que les cinq noms visibles sont différents.",
+          "pourquoi_faux": "Le tableau affiché est un instantané : dès qu'un élève homonyme s'inscrit, l'unicité est perdue.",
+          "correction_markdown": "Teste l'unicité sur toutes les valeurs possibles, pas seulement sur les lignes visibles."
+        },
+        {
+          "erreur_markdown": "Choisir `note` parce que c'est un nombre.",
+          "pourquoi_faux": "Un nombre n'est pas forcément unique : 14 apparaît trois fois dans la table.",
+          "correction_markdown": "Une clé est choisie pour son unicité, pas pour son type."
+        },
+        {
+          "erreur_markdown": "Ne pas justifier le choix.",
+          "pourquoi_faux": "Annoncer « le matricule » sans explication peut ne pas valoir tous les points.",
+          "correction_markdown": "Écarte au moins deux autres champs avec la raison."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Table VOITURE (immatriculation, marque, couleur, annee). Quel champ est la clé primaire ?",
+          "solution_markdown": "L'**immatriculation** est la clé primaire : chaque véhicule a un numéro d'immatriculation propre. La marque, la couleur et l'année se répètent d'une voiture à l'autre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Table INSCRIPTION (numero_carte, nom, filiere, annee_entree). Identifier la clé primaire et justifier.",
+          "solution_markdown": "**Clé primaire** : `numero_carte`.\n\n**Justification** : le numéro de carte est attribué à un étudiant et un seul. `nom` peut se répéter (homonymes), `filiere` et `annee_entree` sont communs à de nombreux étudiants."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table CANDIDAT contient nom, prenom, date_naissance et ville. Aucun champ n'est unique à lui seul. Explique pourquoi la combinaison (nom, prenom, date_naissance) est dangereuse comme clé et propose une solution.",
+          "solution_markdown": "**Risque** : deux candidats homonymes nés le même jour auraient la même combinaison. La base refuserait le second ou confondrait les deux. De plus, une faute de frappe sur le nom change la valeur de la clé.\n\n**Solution** : ajouter un champ identifiant, par exemple `id_candidat`, numéro attribué automatiquement à chaque nouvel enregistrement, qui devient la clé primaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une clé primaire est unique et jamais vide.",
+        "Teste chaque champ : deux individus peuvent-ils avoir la même valeur ?",
+        "Matricule, numéro, code, identifiant : candidats naturels.",
+        "L'unicité doit tenir pour les lignes futures, pas seulement pour celles qu'on voit.",
+        "Au Probatoire, « définir la clé primaire et l'identifier dans la table » revient presque chaque année : justifie ton choix en écartant d'autres champs."
+      ]
+    }
+  ]
+}

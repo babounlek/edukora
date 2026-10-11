@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-creer-un-formulaire-html-avec-la-balise-form-1ere-a-abi-2021",
+  "meta": {
+    "titre": "Créer un formulaire HTML avec la balise form",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Programmation web - formulaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "balise form",
+      "formulaire HTML",
+      "action",
+      "method"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2021-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH et AC, session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2021-officiel-cameroun-ex2-q2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour qu'un visiteur puisse s'inscrire sur le site d'une école, il faut un formulaire. Avant de placer le moindre champ de saisie, on commence par créer le conteneur qui regroupe tout : la balise `<form>`. Sans elle, les champs existent mais ne sont reliés à aucun envoi."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une balise ouvrante et une balise fermante",
+        "Connaître la définition d'un formulaire web"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise form et ses attributs",
+      "contenu_markdown": "Le formulaire est créé avec la balise **`<form>`**, fermée par `</form>`. Tous les champs et le bouton d'envoi se placent entre les deux.\n\nSes deux attributs essentiels :\n\n- `action` : l'adresse de la page qui recevra et traitera les données (par exemple `traitement.php`) ;\n- `method` : la manière d'envoyer les données, `get` (données visibles dans l'adresse) ou `post` (données non visibles, à préférer pour des informations personnelles).\n\n```html\n<form action=\"traitement.php\" method=\"post\">\n   ... champs et bouton ...\n</form>\n```",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Méthodes GET et POST",
+          "quand_utiliser": "Quand le sujet demande de choisir la méthode d'envoi.",
+          "contenu_markdown": "`get` ajoute les données à l'adresse de la page (utile pour une recherche) ; `post` les envoie dans le corps de la requête, sans les afficher dans l'adresse, donc mieux adapté à un nom, une adresse ou un mot de passe."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le nom de la balise de création du formulaire. *[0,5 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce que l'on crée",
+          "justification": "On ne crée pas un champ mais l'ensemble qui contient les champs : le formulaire.",
+          "resultat_markdown": "Objet : le conteneur du formulaire."
+        },
+        {
+          "numero": 2,
+          "action": "Donner le nom de la balise",
+          "justification": "La balise conteneur d'un formulaire est `form`.",
+          "resultat_markdown": "`<form>`"
+        },
+        {
+          "numero": 3,
+          "action": "Préciser la fermeture",
+          "justification": "Une balise conteneur se referme.",
+          "resultat_markdown": "`</form>`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter les attributs si le temps le permet",
+          "justification": "Ils décrivent où et comment envoyer les données.",
+          "resultat_markdown": "`action=\"traitement.php\" method=\"post\"`"
+        }
+      ],
+      "conclusion_markdown": "La balise de création du formulaire est `<form>` (fermée par `</form>`), avec les attributs `action` et `method`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `<input>`.",
+          "pourquoi_faux": "`<input>` définit un champ de saisie placé à l'intérieur du formulaire, pas le formulaire.",
+          "correction_markdown": "Réponds `<form>`."
+        },
+        {
+          "erreur_markdown": "Placer le bouton d'envoi après `</form>`.",
+          "pourquoi_faux": "Un bouton situé hors de la balise ne fait pas partie du formulaire et n'envoie rien.",
+          "correction_markdown": "Place tous les champs et le bouton entre `<form>` et `</form>`."
+        },
+        {
+          "erreur_markdown": "Oublier l'attribut `method`.",
+          "pourquoi_faux": "Sans lui, le navigateur utilise `get` par défaut : les données personnelles apparaissent dans l'adresse.",
+          "correction_markdown": "Écris `method=\"post\"` pour des informations personnelles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris les balises ouvrante et fermante d'un formulaire dont les données vont vers la page `inscription.php`.",
+          "solution_markdown": "```html\n<form action=\"inscription.php\" method=\"post\">\n</form>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire de recherche doit afficher dans l'adresse du navigateur le mot recherché. Quelle méthode utilises-tu ? Écris la balise ouvrante pour la page `recherche.php`.",
+          "solution_markdown": "Il faut la méthode `get`, qui ajoute les données à l'adresse :\n\n```html\n<form action=\"recherche.php\" method=\"get\">\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quel est le défaut du code suivant, et comment le corriger ? `<form action=\"envoi.php\" method=\"post\"><input type=\"text\" name=\"nom\"></form><input type=\"submit\" value=\"Valider\">`",
+          "solution_markdown": "Le bouton `<input type=\"submit\">` est placé **après** `</form>` : il n'appartient pas au formulaire et ne déclenche aucun envoi. Code corrigé :\n\n```html\n<form action=\"envoi.php\" method=\"post\">\n   <input type=\"text\" name=\"nom\">\n   <input type=\"submit\" value=\"Valider\">\n</form>\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La balise de création d'un formulaire est `<form>`, fermée par `</form>`.",
+        "Tous les champs et le bouton d'envoi se placent à l'intérieur.",
+        "`action` désigne la page de traitement, `method` la manière d'envoyer (`get` ou `post`).",
+        "Ne confonds pas `<form>` (le conteneur) et `<input>` (un champ).",
+        "Au Probatoire, la question « Donner le nom de la balise de création du formulaire » est une question de cours à 0,5 point."
+      ]
+    }
+  ]
+}

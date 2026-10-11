@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-dessiner-le-rendu-d-un-formulaire-html-1ere-c-d-e",
+  "meta": {
+    "titre": "Dessiner le rendu d'un formulaire HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Langage HTML : formulaires",
+    "duree_estimee_min": 30,
+    "tags": [
+      "formulaire HTML",
+      "INPUT",
+      "rendu d'une page",
+      "tableau HTML",
+      "navigateur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB7-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un navigateur transforme du texte (le code HTML) en page visuelle. Dessiner le rendu d'un code revient à jouer le navigateur : on lit les balises et on dessine, dans l'ordre, ce qu'elles produisent. C'est aussi la meilleure façon de relire sa propre page avant de la tester."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises de titre (H1 à H6), de tableau (TABLE, TR, TD) et de formulaire (FORM, INPUT)",
+        "Savoir ce que sont les types d'INPUT : text, password, submit"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Chaque balise a un rendu précis",
+      "contenu_markdown": "Pour dessiner le rendu, on lit le code balise par balise, de haut en bas :\n\n| Balise | Rendu |\n|---|---|\n| `<H3>texte</H3>` | titre en gras, en gros caractères, sur sa propre ligne |\n| `<u>texte</u>` | texte souligné |\n| `<TABLE>`, `<TR>`, `<TD>` | grille de lignes et de cellules (bordures visibles si `BORDER` est supérieur à 0) |\n| `<INPUT type=text>` | zone de saisie d'une ligne |\n| `<INPUT type=password>` | zone de saisie dont les caractères sont masqués (points ou étoiles) |\n| `<INPUT type=submit value=\"Ok\">` | bouton portant le texte « Ok » |\n| `<INPUT type=radio>` | petit rond (un seul choix possible dans le groupe) |\n| `<INPUT type=checkbox>` | petite case carrée à cocher |\n| `align=center` | contenu centré dans sa cellule |\n\nLe contenu de `<TITLE>` s'affiche dans l'onglet du navigateur, pas dans la page."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dessiner le rendu du formulaire de connexion de l'énoncé (titre Connexion, tableau 3 lignes et 2 colonnes sans bordure, champs name et pass, bouton Ok). (Probatoire 2021, exercice III B, question 7)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dessiner le titre",
+          "justification": "`<H3><u>Connexion</u></H3>` donne un titre gras et souligné, en haut.",
+          "resultat_markdown": "Mot « Connexion » souligné, en gros caractères."
+        },
+        {
+          "numero": 2,
+          "action": "Tracer la grille",
+          "justification": "Le tableau a 3 lignes et 2 colonnes, avec `BORDER=0` : la grille existe mais ses traits sont invisibles.",
+          "resultat_markdown": "Une grille 3 × 2 sans cadre."
+        },
+        {
+          "numero": 3,
+          "action": "Remplir la première ligne",
+          "justification": "Une cellule de texte et une cellule contenant `<INPUT type=text>`.",
+          "resultat_markdown": "« Identifiant » et une zone de saisie."
+        },
+        {
+          "numero": 4,
+          "action": "Remplir la deuxième ligne",
+          "justification": "Même disposition, avec `<INPUT type=password>`.",
+          "resultat_markdown": "« Mot de passe » et une zone de saisie à caractères masqués."
+        },
+        {
+          "numero": 5,
+          "action": "Remplir la troisième ligne",
+          "justification": "La première cellule est vide ; la seconde contient le bouton, centré par `align=center`.",
+          "resultat_markdown": "Cellule vide, puis bouton « Ok » centré."
+        }
+      ],
+      "conclusion_markdown": "Le dessin obtenu est un titre « Connexion » au-dessus d'un tableau sans bordure de trois lignes (identifiant, mot de passe, bouton Ok)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Entourer le tableau d'un cadre alors que `BORDER=0`.",
+          "pourquoi_faux": "La valeur 0 de `BORDER` signifie des traits invisibles. Dessiner un cadre contredit le code.",
+          "correction_markdown": "Dessine les zones de saisie et les boutons, pas les traits du tableau."
+        },
+        {
+          "erreur_markdown": "Oublier la cellule vide de la dernière ligne.",
+          "pourquoi_faux": "Elle décale le bouton dans la deuxième colonne : sans elle, le bouton se retrouve à gauche.",
+          "correction_markdown": "Dessine d'abord la grille complète, puis remplis cellule par cellule."
+        },
+        {
+          "erreur_markdown": "Écrire en clair le texte du champ mot de passe.",
+          "pourquoi_faux": "Un champ `type=password` masque les caractères saisis.",
+          "correction_markdown": "Dessine des points ou des étoiles, ou laisse la zone vide."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décrire et dessiner le rendu de `<H1>Bienvenue</H1><P>Merci de votre visite.</P>`.",
+          "solution_markdown": "```text\nBienvenue            <- grand titre en gras (H1)\n\nMerci de votre visite.  <- paragraphe en caractères normaux, sous le titre\n```\nLe titre H1 occupe sa propre ligne en grands caractères gras ; le paragraphe `<P>` est placé en dessous, avec un petit espace au-dessus."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décrire et dessiner le rendu de : `<FORM> Nom : <INPUT type=text name=\"nom\"><BR> Sexe : <INPUT type=radio name=\"s\" value=\"M\"> M <INPUT type=radio name=\"s\" value=\"F\"> F<BR> <INPUT type=checkbox name=\"c\"> J'accepte<BR> <INPUT type=submit value=\"Envoyer\"> </FORM>`.",
+          "solution_markdown": "```text\nNom : [______________]\nSexe : (o) M  ( ) F\n[ ] J'accepte\n[ Envoyer ]\n```\nChaque balise `<BR>` passe à la ligne. Les deux boutons radio portent le même nom `s` : ils sont ronds et un seul peut être choisi. La case à cocher est carrée. Le bouton `submit` affiche le texte « Envoyer »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Décrire et dessiner le rendu de : `<TABLE BORDER=1> <TR><TD colspan=2 align=center>Horaires</TD></TR> <TR><TD>Lundi</TD><TD>8h</TD></TR> </TABLE>`.",
+          "solution_markdown": "```text\n+-----------------------+\n|       Horaires        |\n+-----------+-----------+\n| Lundi     | 8h        |\n+-----------+-----------+\n```\nLe tableau a 2 lignes et 2 colonnes, avec des bordures visibles (`BORDER=1`). La première ligne ne contient qu'une cellule, étirée sur les deux colonnes par `colspan=2` et centrée par `align=center`. La seconde ligne compte deux cellules : « Lundi » et « 8h »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dessiner un rendu HTML, c'est lire le code balise par balise, de haut en bas.",
+        "Le tableau fixe la grille : compte les lignes (TR) et les cellules (TD) avant de dessiner.",
+        "Chaque INPUT se dessine selon son type : zone de saisie (text), zone masquée (password), bouton (submit), rond (radio), case (checkbox).",
+        "`BORDER=0` signifie pas de traits visibles ; `align=center` centre le contenu de sa cellule.",
+        "Au Probatoire, le dessin du rendu d'un formulaire est noté sur 1 point : soigne la disposition (titre, grille, champs) plutôt que les couleurs."
+      ]
+    }
+  ]
+}

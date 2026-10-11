@@ -1,0 +1,147 @@
+{
+  "epreuve_source": "bepc-epreuve-zero-informatique-2022-cameroun.pdf",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": null,
+  "filiere_serie_a": null,
+  "examen": "bepc",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": null,
+  "groupes": [
+    "Deuxième partie : Organisation et traitement de l'information, Algorithmique (7 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bepc-epreuve-zero-informatique-2022-cameroun_exercice_2_fig_1.png",
+      "page_source": 2,
+      "type": "tableau",
+      "legende": "Capture d'une feuille de calcul : en-têtes Désignation, Quantité, Prix unitaire, Montant ; ligne 2 BIC, 2, 150 ; ligne 3 Cahier, 3, 750 ; ligne 4 Total ; la colonne Montant est vide.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bepc-epreuve-zero-informatique-2022-cameroun_exercice_2_fig_2.png",
+      "page_source": null,
+      "type": "tableau",
+      "legende": "Tableau de facturation reproduit et complété : formules =B2*C2, =B3*C3 et =SOMME(D2:D3) dans la colonne D, puis résultats affichés 300, 2250 et 2550.",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Deuxième partie : Organisation et traitement de l'information, Algorithmique (7 points)**\n\n*Cette partie comprend un premier exercice sur l'organisation et le traitement de l'information (numéroté 2 ici) et un second sur l'algorithmique (numéroté 3 ici).*\n\n**Exercice 2 (exercice 1 de la deuxième partie) : Organisation et traitement de l'information dans un environnement numérique**\n\nDans l'ordinateur, toute information est codée uniquement en binaire (et dans ses multiples).",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "**1.a)** Convertir $(27)_{10}$ en base 2 en présentant les étapes de calcul, puis compléter : $(27)_{10} = (\\ ?\\ )_2$.",
+      "corrige_markdown": "### Rappel de méthode\nPour convertir un entier décimal en binaire, divise-le successivement par 2 en notant chaque reste, jusqu'à obtenir un quotient nul, puis lis les restes de bas en haut, c'est-à-dire du dernier reste obtenu au premier.\n\nOn divise 27 par 2, puis chaque quotient par 2, jusqu'à obtenir 0.\n\n$$\n\\begin{array}{c|c|c}\n\\text{Division} & \\text{Quotient} & \\text{Reste} \\\\\n\\hline \n27 = 2 \\times 13 + 1 & 13 & 1 \\\\\n13 = 2 \\times 6 + 1 & 6 & 1 \\\\\n6 = 2 \\times 3 + 0 & 3 & 0 \\\\\n3 = 2 \\times 1 + 1 & 1 & 1 \\\\\n1 = 2 \\times 0 + 1 & 0 & 1\n\\end{array}\n$$\n\nOn lit les restes de bas en haut : $1$, $1$, $0$, $1$, $1$.\n\nVérification en repassant en décimal : $1 \\times 2^4 + 1 \\times 2^3 + 0 \\times 2^2 + 1 \\times 2^1 + 1 \\times 2^0 = 16 + 8 + 0 + 2 + 1 = 27$.\n\nPhrase complétée : $(27)_{10} = (11011)_2$.\n\n### Piège à éviter\nLire les restes dans l'ordre où on les a obtenus (de haut en bas) donne $11011$ ici par hasard de symétrie, mais $13 = (1101)_2$ deviendrait $1011$, ce qui est faux. Lis toujours de bas en haut.\n\n### Conseil\nContrôle ton résultat en reconvertissant avec les puissances de 2 (1, 2, 4, 8, 16, 32...) : si tu retrouves le nombre de départ, la conversion est juste.",
+      "themes": [
+        "codage binaire",
+        "base 2",
+        "représentation de l'information"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex2-q1a-1",
+          "competence": "Convertir un nombre décimal en binaire",
+          "contenu_markdown": "Pour convertir un entier décimal en binaire, divise-le successivement par 2 en notant chaque reste, jusqu'à obtenir un quotient nul, puis lis les restes de bas en haut, c'est-à-dire du dernier reste obtenu au premier.",
+          "cours_genere": true,
+          "cours_id": "cours-convertir-un-nombre-decimal-en-binaire-3e"
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "**1.b)** Poser et effectuer l'opération $(11010 + 10111)_2$ en présentant les étapes de calcul.",
+      "corrige_markdown": "### Rappel de méthode\nPour additionner deux nombres binaires, pose-les en colonnes, aligne-les à droite et additionne colonne par colonne en partant de la droite avec les règles 0+0=0, 0+1=1, 1+1=10 (on écrit 0 et on retient 1) et 1+1+1=11 (on écrit 1 et on retient 1).\n\nOn pose l'addition en alignant les chiffres à droite :\n\n```\n    1 1 0 1 0\n  + 1 0 1 1 1\n  -----------\n  1 1 0 0 0 1\n```\n\nColonne par colonne, de la droite vers la gauche :\n\n1. Colonne des unités : $0 + 1 = 1$. On écrit 1, retenue 0.\n2. Colonne suivante : $1 + 1 = 10$. On écrit 0 et on retient 1.\n3. Colonne suivante : $0 + 1 + 1$ (retenue) $= 10$. On écrit 0 et on retient 1.\n4. Colonne suivante : $1 + 0 + 1$ (retenue) $= 10$. On écrit 0 et on retient 1.\n5. Dernière colonne : $1 + 1 + 1$ (retenue) $= 11$. On écrit 1 et on retient 1.\n6. La retenue finale 1 s'écrit en tête du résultat.\n\nRésultat : $(11010 + 10111)_2 = (110001)_2$.\n\nVérification en décimal : $(11010)_2 = 16 + 8 + 2 = 26$ et $(10111)_2 = 16 + 4 + 2 + 1 = 23$, donc $26 + 23 = 49$. Et $(110001)_2 = 32 + 16 + 1 = 49$. Le résultat est exact.\n\n### Piège à éviter\nDans une colonne, $1 + 1 = 2$ n'existe pas en binaire : le chiffre 2 n'existe pas, on écrit 0 et on reporte la retenue 1 à la colonne suivante.\n\n### Conseil\nVérifie toujours par la conversion en décimal : l'addition binaire se contrôle en deux lignes et la vérification est généralement valorisée par le barème.",
+      "themes": [
+        "codage binaire",
+        "base 2",
+        "représentation de l'information"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex2-q1b-1",
+          "competence": "Additionner deux nombres binaires",
+          "contenu_markdown": "Pour additionner deux nombres binaires, pose-les en colonnes, aligne-les à droite et additionne colonne par colonne en partant de la droite avec les règles 0+0=0, 0+1=1, 1+1=10 (on écrit 0 et on retient 1) et 1+1+1=11 (on écrit 1 et on retient 1).",
+          "cours_genere": true,
+          "cours_id": "cours-additionner-deux-nombres-binaires-3e"
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "**2.** Le tableau ci-dessous représente un extrait de la facture d'un client dans un magasin.\n\n![fig-1](bepc-epreuve-zero-informatique-2022-cameroun_exercice_2_fig_1.png)\n\n**2.a)** Proposer le nom de deux tableurs qui permettent de produire cette facture.",
+      "corrige_markdown": "Deux tableurs possibles : **Microsoft Excel** et **LibreOffice Calc**. **Google Sheets** (tableur en ligne) et Apache OpenOffice Calc conviennent également.\n\n### Piège à éviter\nWord, PowerPoint ou Access ne sont pas des tableurs : Word est un traitement de texte, PowerPoint un logiciel de présentation, Access un gestionnaire de base de données.\n\n### Conseil\nRetiens un tableur payant (Excel) et un tableur libre (Calc) : deux noms sûrs que tu pourras donner sans hésiter.",
+      "themes": [
+        "tableur",
+        "suite bureautique",
+        "logiciel d'application"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "**2.b)** Reproduire le tableau, puis écrire une formule permettant de calculer le montant de la dépense dans la cellule D2 et dans la cellule D3, ainsi que le total dans la cellule D4. *(Le sujet imprime « D2 et D4, ainsi que le total dans D4 » : D4 y figure deux fois, on lit D2 et D3 pour les montants.)*",
+      "corrige_markdown": "### Rappel de méthode\nPour calculer dans un tableur, commence la formule par le signe égal, utilise les références des cellules (colonne puis ligne) plutôt que les valeurs recopiées, et choisis l'opérateur ou la fonction adaptés : l'étoile pour un produit, la fonction SOMME pour le total d'une plage de cellules.\n\nL'énoncé écrit « D2 et D4, ainsi que le total dans D4 » : c'est une coquille évidente, car D4 ne peut pas recevoir à la fois un montant et le total. Les montants se calculent en D2 et D3 (lignes BIC et Cahier), le total en D4 (ligne Total).\n\n![fig-2](bepc-epreuve-zero-informatique-2022-cameroun_exercice_2_fig_2.png)\n\nLe tableau est reproduit ci-dessus, avec les formules saisies (en haut) puis les résultats affichés (en bas). Le montant est le produit de la quantité par le prix unitaire.\n\n- Cellule D2 : `=B2*C2`, soit $2 \\times 150 = 300$.\n- Cellule D3 : `=B3*C3`, soit $3 \\times 750 = 2250$.\n- Cellule D4 : `=SOMME(D2:D3)`, soit $300 + 2250 = 2550$ (on peut aussi écrire `=D2+D3`).\n\nPour reproduire le tableau, on saisit les en-têtes en ligne 1 (Désignation, Quantité, Prix unitaire, Montant), puis les lignes BIC et Cahier avec leurs quantités et prix, puis le mot Total en A4. Les formules se saisissent dans les cellules D2, D3 et D4 ; le tableur affiche alors les résultats.\n\n### Piège à éviter\nÉcrire `=2*150` fige la valeur : si la quantité change, le montant ne se met plus à jour. Écris toujours `=B2*C2`, avec les références de cellules. N'oublie pas non plus le signe `=` en tête : sans lui, le tableur lit un simple texte.\n\n### Conseil\nPour le total, évite la plage `D2:D4` : la cellule D4 contiendrait alors une formule qui se somme elle-même (référence circulaire). La plage s'arrête à la dernière ligne de montants.",
+      "themes": [
+        "tableur",
+        "formule de tableur",
+        "suite bureautique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex2-q2b-1",
+          "competence": "Écrire une formule de tableur",
+          "contenu_markdown": "Pour calculer dans un tableur, commence la formule par le signe égal, utilise les références des cellules (colonne puis ligne) plutôt que les valeurs recopiées, et choisis l'opérateur ou la fonction adaptés : l'étoile pour un produit, la fonction SOMME pour le total d'une plage de cellules.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-formule-de-tableur-3e"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "conversion décimal binaire",
+    "addition binaire",
+    "tableur",
+    "formule",
+    "Excel",
+    "Calc",
+    "facture"
+  ],
+  "incertitudes": [],
+  "statut": "brouillon"
+}

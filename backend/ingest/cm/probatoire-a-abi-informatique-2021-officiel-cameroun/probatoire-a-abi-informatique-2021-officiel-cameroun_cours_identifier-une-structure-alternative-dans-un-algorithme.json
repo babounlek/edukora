@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-identifier-une-structure-alternative-dans-un-algorithme-1ere-a-abi-2021",
+  "meta": {
+    "titre": "Identifier une structure alternative dans un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Algorithmique - structures de contrôle",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algorithmique",
+      "structure alternative",
+      "si alors sinon",
+      "structures de contrôle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2021-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH et AC, session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2021-officiel-cameroun-ex2-q1a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme n'est pas qu'une suite d'ordres : il sait aussi décider et répéter. Quand un programme affiche « admis » ou « ajourné » selon une moyenne, il utilise une structure alternative. Savoir la reconnaître dans un texte d'algorithme est la première compétence de lecture qu'on attend d'un candidat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les instructions de base (lire, écrire, affectation)",
+        "Savoir ce qu'est une condition (comparaison vraie ou fausse)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois familles de structures de contrôle",
+      "contenu_markdown": "- **Structure séquentielle** : les instructions s'exécutent l'une après l'autre.\n- **Structure alternative** (ou conditionnelle) : le programme choisit entre deux traitements selon une condition.\n- **Structure répétitive** (ou itérative) : le programme répète des instructions (`pour`, `tant que`, `répéter ... jusqu'à`).\n\nLa structure alternative complète s'écrit :\n\n```\nsi condition alors\n   traitement 1\nsinon\n   traitement 2\nfinsi\n```\n\nElle commence par `si`, se termine par `finsi` et contient `sinon` (absent dans la forme simple `si ... alors ... finsi`). Pour la recopier, on repère `si` et `finsi` et on recopie tout ce qui est entre les deux.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Alternative simple (sans sinon)",
+          "quand_utiliser": "Quand un traitement n'a lieu que si une condition est vraie, sans traitement de remplacement.",
+          "contenu_markdown": "On écrit `si condition alors traitement finsi` : si la condition est fausse, on passe directement à la suite."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier dans l'algorithme `jechoisi` et recopier une structure alternative. *[1 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les mots-clés de chaque structure",
+          "justification": "Chaque famille a ses mots d'ouverture et de fermeture.",
+          "resultat_markdown": "`pour ... finpour` : répétitive ; `si ... finsi` : alternative."
+        },
+        {
+          "numero": 2,
+          "action": "Isoler le bloc qui commence par `si`",
+          "justification": "Un `si ... alors` ouvre toujours une alternative ; on cherche le `finsi` qui la ferme.",
+          "resultat_markdown": "Début : `si valeur1>valeur2 alors` ; fin : `finsi`."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la présence du `sinon`",
+          "justification": "Il montre que l'alternative est complète et propose deux traitements.",
+          "resultat_markdown": "`sinon` présent : deux branches."
+        },
+        {
+          "numero": 4,
+          "action": "Recopier le bloc complet",
+          "justification": "On recopie de `si` à `finsi`, sans la boucle qui l'entoure.",
+          "resultat_markdown": "```\nsi valeur1>valeur2 alors\n   écrire (\"La plus grande valeur est Valeur1 = \", valeur1);\nsinon\n   écrire (\"La plus grande valeur est Valeur2 = \", valeur2);\nfinsi\n```"
+        }
+      ],
+      "conclusion_markdown": "La structure alternative est le bloc `si valeur1>valeur2 alors ... sinon ... finsi` : elle choisit entre l'affichage de `valeur1` et celui de `valeur2` selon la condition."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier la boucle `pour` comme une alternative.",
+          "pourquoi_faux": "La boucle répète des instructions, elle ne choisit rien : c'est une structure répétitive.",
+          "correction_markdown": "Cherche le mot-clé `si`, pas `pour`."
+        },
+        {
+          "erreur_markdown": "Oublier le `finsi` en recopiant.",
+          "pourquoi_faux": "Sans `finsi`, la structure est incomplète et l'on ne sait plus où elle s'arrête.",
+          "correction_markdown": "Recopie toujours de `si` jusqu'à `finsi`."
+        },
+        {
+          "erreur_markdown": "Recopier seulement la condition.",
+          "pourquoi_faux": "La condition n'est que l'en-tête : la structure comprend aussi ses branches `alors` et `sinon`.",
+          "correction_markdown": "Recopie condition, branche `alors`, branche `sinon`, `finsi`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme suivant, nomme la famille de chaque structure : `lire (age); si age>=18 alors écrire (\"majeur\"); sinon écrire (\"mineur\"); finsi`.",
+          "solution_markdown": "La lecture `lire (age)` est séquentielle ; le bloc `si ... finsi` est une **structure alternative** (deux branches : majeur ou mineur). Aucune structure répétitive."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans l'algorithme `pour i allant_de 1 à 5 faire lire (note); si note>=10 alors écrire (\"admis\"); finsi finpour`, identifie la structure répétitive et la structure alternative, et précise si l'alternative est complète.",
+          "solution_markdown": "Structure répétitive : `pour i allant_de 1 à 5 ... finpour` (cinq passages). Structure alternative : `si note>=10 alors ... finsi`. Elle est **simple** (sans `sinon`) : si la note est inférieure à 10, rien n'est affiché."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris un algorithme qui lit un nombre entier `n` et affiche « pair » si `n` est divisible par 2, « impair » sinon. Indique la structure alternative utilisée.",
+          "solution_markdown": "```\nalgorithme parite\nvariables n : entier;\ndébut\n   lire (n);\n   si n mod 2 = 0 alors\n      écrire (\"pair\");\n   sinon\n      écrire (\"impair\");\n   finsi\nfin\n```\n\nLa structure alternative complète est le bloc `si n mod 2 = 0 alors ... sinon ... finsi` : le reste de la division par 2 décide de la branche."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Séquentielle : l'une après l'autre. Alternative : on choisit. Répétitive : on recommence.",
+        "La structure alternative s'ouvre par `si` et se ferme par `finsi`, avec `sinon` pour la forme complète.",
+        "La boucle `pour ... finpour` n'est jamais une alternative.",
+        "Pour recopier, va du `si` jusqu'au `finsi` sans rien oublier entre les deux.",
+        "Au Probatoire, identifier et recopier une structure (alternative ou répétitive) est une question classique de lecture d'algorithme."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-distinguer-entree-et-sortie-dans-une-page-web-javascript-1ere-cde",
+  "meta": {
+    "titre": "Distinguer entrée et sortie dans une page web JavaScript",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "JavaScript : interactions avec l'utilisateur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "document.write",
+      "prompt",
+      "alert",
+      "entrée-sortie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.2.b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web qui calcule un prix doit d'abord demander des valeurs, puis afficher un résultat. Demander et afficher sont deux gestes opposés : l'entrée et la sortie. JavaScript fournit une fonction pour chacun, et les confondre est une erreur courante à l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les fonctions `prompt`, `alert` et `document.write`",
+        "Savoir ce qu'est une page HTML et son corps `<body>`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Qui fait entrer, qui fait sortir ?",
+      "contenu_markdown": "| Fonction | Sens | Effet |\n|---|---|---|\n| `prompt(message)` | **Entrée** | boîte de saisie, renvoie le texte tapé |\n| `confirm(message)` | **Entrée** | boîte OK / Annuler, renvoie vrai ou faux |\n| `alert(message)` | **Sortie** | boîte de message, sans écriture dans la page |\n| `document.write(texte)` | **Sortie** | écrit le texte dans la page affichée |\n| `console.log(texte)` | **Sortie** | écrit dans la console du développeur |\n\n**Point d'attention** : `document.write()` appelée **après** le chargement de la page (par exemple au clic sur un bouton) **remplace tout le contenu de la page**. Appelée pendant le chargement, elle ajoute du texte à l'endroit où elle se trouve."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de l'agence immobilière, donner le rôle de `document.write(\"le prix de vente est \", prixVente, \" FCFA.\");`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Classer la fonction",
+          "justification": "Elle ne demande rien à l'utilisateur : elle montre un résultat. C'est une fonction de sortie.",
+          "resultat_markdown": "`document.write` = sortie."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire ce qu'elle écrit",
+          "justification": "Elle assemble trois éléments : un texte, la valeur de `prixVente`, un second texte.",
+          "resultat_markdown": "« le prix de vente est », puis la valeur calculée, puis « FCFA. »."
+        },
+        {
+          "numero": 3,
+          "action": "Dire où l'écriture a lieu",
+          "justification": "Elle écrit dans le document HTML affiché.",
+          "resultat_markdown": "Dans la page web, et non dans une boîte de dialogue."
+        },
+        {
+          "numero": 4,
+          "action": "Donner un exemple",
+          "justification": "Avec 20, 15 et 5000, `prixVente` vaut 1 500 000.",
+          "resultat_markdown": "La page affiche : le prix de vente est 1500000 FCFA."
+        }
+      ],
+      "conclusion_markdown": "`document.write()` est une fonction de sortie qui écrit le résultat dans la page web."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre `document.write()` et `alert()`.",
+          "pourquoi_faux": "`alert()` ouvre une boîte de message qui n'écrit rien dans la page. `document.write()` écrit dans la page elle-même.",
+          "correction_markdown": "Retiens : `alert` = boîte, `document.write` = page."
+        },
+        {
+          "erreur_markdown": "Dire que `prompt()` affiche un résultat.",
+          "pourquoi_faux": "`prompt()` fait entrer une donnée : elle demande une saisie à l'utilisateur et renvoie le texte tapé.",
+          "correction_markdown": "Entrée : `prompt`. Sortie : `alert`, `document.write`."
+        },
+        {
+          "erreur_markdown": "Croire que `document.write()` ajoute simplement une ligne après un clic.",
+          "pourquoi_faux": "Une fois la page chargée, elle ouvre un nouveau document qui remplace l'ancien : titre, texte et boutons disparaissent.",
+          "correction_markdown": "Pour modifier la page sans l'effacer, on emploie d'autres techniques (par exemple modifier un élément existant)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classe chacune de ces fonctions en entrée ou en sortie : `prompt()`, `alert()`, `document.write()`.",
+          "solution_markdown": "- `prompt()` : **entrée** (saisie de l'utilisateur) ;\n- `alert()` : **sortie** (message dans une boîte) ;\n- `document.write()` : **sortie** (texte écrit dans la page)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un script qui demande le nom de l'utilisateur et affiche « Bonjour » suivi de son nom dans la page.",
+          "solution_markdown": "```javascript\nnom = prompt(\"Votre nom ?\");\ndocument.write(\"Bonjour \", nom);\n```\n\n`prompt` fait entrer le nom (entrée), `document.write` écrit le message dans la page (sortie). Si l'utilisateur tape « Amina », la page affiche : Bonjour Amina."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un script additionne deux saisies : `a = prompt(\"a\"); b = prompt(\"b\"); document.write(a + b);`. Pour a = 2 et b = 3, la page affiche 23. Explique pourquoi et corrige le script.",
+          "solution_markdown": "**Cause** : `prompt()` renvoie du **texte**. Avec a = \"2\" et b = \"3\", l'opérateur `+` **concatène** les deux chaînes et produit \"23\".\n\n**Correction** : convertir les saisies en nombres avant d'additionner :\n\n```javascript\na = parseFloat(prompt(\"a\"));\nb = parseFloat(prompt(\"b\"));\ndocument.write(a + b);\n```\n\nAvec a = 2 et b = 3, la page affiche 5."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Entrée : `prompt` (et `confirm`). Sortie : `alert`, `document.write`, `console.log`.",
+        "`prompt` renvoie toujours du texte : convertis-le avant tout calcul.",
+        "`alert` ouvre une boîte, `document.write` écrit dans la page.",
+        "Après un clic, `document.write` remplace tout le contenu de la page.",
+        "Au Probatoire, le rôle des fonctions d'entrée et de sortie JavaScript tombe presque chaque année avec un code à lire : retiens leur sens (entrée ou sortie)."
+      ]
+    }
+  ]
+}

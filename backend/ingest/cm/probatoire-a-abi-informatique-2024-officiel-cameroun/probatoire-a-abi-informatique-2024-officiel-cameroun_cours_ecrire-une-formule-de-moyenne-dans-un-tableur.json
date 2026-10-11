@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-ecrire-une-formule-de-moyenne-dans-un-tableur-1ere-prob-a-2024",
+  "meta": {
+    "titre": "Écrire une formule de moyenne dans un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Tableur : formules et fonctions",
+    "duree_estimee_min": 30,
+    "tags": [
+      "tableur",
+      "formule",
+      "fonction MOYENNE",
+      "références de cellules",
+      "recopie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH, AC, session 2024 (MINESEC/OBC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2024-officiel-cameroun-ex1-q3.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une enseignante qui doit calculer cinquante moyennes ne les calcule pas à la main : elle écrit une formule une seule fois et la recopie vers le bas. L'examinateur du Probatoire attend exactement cela de toi : une formule qui utilise les adresses de cellules et qui reste valable si les notes changent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Désigner une cellule (B3) et une plage de cellules (B3:D3)",
+        "Calculer une moyenne arithmétique à la main"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écrire une formule avec des références de cellules",
+      "contenu_markdown": "Une formule de tableur :\n\n- commence **toujours** par le signe `=` ;\n- utilise les **adresses** des cellules et non leurs valeurs, pour se mettre à jour automatiquement ;\n- peut employer une fonction : `=MOYENNE(plage)` calcule la moyenne des valeurs de la plage.\n\nUne moyenne arithmétique de plusieurs valeurs est égale à la somme des valeurs divisée par leur nombre : `=MOYENNE(B2:D2)` est équivalent à `=(B2+C2+D2)/3`.",
+      "formule_principale": "\\text{moyenne} = \\dfrac{\\text{somme des valeurs}}{\\text{nombre de valeurs}}",
+      "variantes": [
+        {
+          "nom": "Moyenne pondérée",
+          "quand_utiliser": "Quand les valeurs n'ont pas le même coefficient.",
+          "contenu_markdown": "On multiplie chaque valeur par son coefficient, on additionne, puis on divise par la somme des coefficients : `=SOMMEPROD(B2:B4;C2:C4)/SOMME(C2:C4)` si les valeurs sont en B2:B4 et les coefficients en C2:C4."
+        },
+        {
+          "nom": "Références absolues",
+          "quand_utiliser": "Quand une cellule doit rester fixe lors de la recopie de la formule.",
+          "contenu_markdown": "On fige la ligne et la colonne avec le symbole dollar : `$B$2` reste B2 quand on recopie la formule, alors que `B2` devient `B3` une ligne plus bas."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une feuille de calcul, les moyennes trimestrielles de l'élève AB0029 sont en B11 (9), C11 (11) et D11 (11). Écrire en E11 la formule de sa moyenne annuelle.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les cellules des trois moyennes",
+          "justification": "Les trois valeurs sont côte à côte sur la ligne 11, de la colonne B à la colonne D : elles forment une plage.",
+          "resultat_markdown": "Plage : B11:D11"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la fonction",
+          "justification": "La moyenne annuelle est la moyenne arithmétique des trois moyennes trimestrielles, donc la fonction MOYENNE convient.",
+          "resultat_markdown": "Fonction : MOYENNE"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la formule dans E11",
+          "justification": "Une formule commence par `=` et contient la fonction suivie de la plage entre parenthèses.",
+          "resultat_markdown": "`=MOYENNE(B11:D11)`"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le résultat",
+          "justification": "On refait le calcul à la main : (9 + 11 + 11) / 3 = 31 / 3, et le résultat doit se situer entre 9 et 11.",
+          "resultat_markdown": "31 / 3 ≈ 10,33, cohérent."
+        }
+      ],
+      "conclusion_markdown": "La formule `=MOYENNE(B11:D11)` donne environ 10,33 et se recopie vers le bas pour les autres élèves."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `MOYENNE(B11:D11)` sans le signe égal.",
+          "pourquoi_faux": "Sans `=`, le tableur considère la saisie comme du texte et n'effectue aucun calcul.",
+          "correction_markdown": "Commence toujours la formule par `=`."
+        },
+        {
+          "erreur_markdown": "Écrire les valeurs au lieu des adresses : `=(9+11+11)/3`.",
+          "pourquoi_faux": "La formule donne le bon résultat aujourd'hui, mais si une note est corrigée, la moyenne ne change pas : on perd tout l'intérêt du tableur.",
+          "correction_markdown": "Utilise les adresses de cellules : `=(B11+C11+D11)/3`."
+        },
+        {
+          "erreur_markdown": "Oublier les parenthèses dans `=B11+C11+D11/3`.",
+          "pourquoi_faux": "La division est prioritaire sur l'addition : on divise seulement D11 par 3 avant d'additionner. Avec 9, 11 et 11, on obtient 9 + 11 + 3,67 = 23,67 au lieu de 10,33.",
+          "correction_markdown": "Écris `=(B11+C11+D11)/3` ou utilise `=MOYENNE(B11:D11)`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "En B2, C2 et D2 se trouvent les notes 12, 15 et 9. Écrire la formule de la moyenne en E2 et donner son résultat.",
+          "solution_markdown": "Formule : `=MOYENNE(B2:D2)`. Résultat : (12 + 15 + 9) / 3 = 36 / 3 = 12."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les moyennes du 1er trimestre de huit élèves (11, 12, 9, 4, 7, 8, 9, 13) sont rangées en B5:B12. Écrire la formule de la moyenne générale en B13 et donner son résultat arrondi à deux décimales.",
+          "solution_markdown": "Formule : `=MOYENNE(B5:B12)`. Somme : 11 + 12 + 9 + 4 + 7 + 8 + 9 + 13 = 73. Moyenne : 73 / 8 = 9,125, soit 9,13 arrondi à deux décimales."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Les notes de Maths, Informatique et Français sont en B2:B4 (14, 16, 10) et leurs coefficients en C2:C4 (4, 2, 3). Écrire la formule de la moyenne pondérée et la calculer.",
+          "solution_markdown": "Formule : `=SOMMEPROD(B2:B4;C2:C4)/SOMME(C2:C4)`. Numérateur : 14 x 4 + 16 x 2 + 10 x 3 = 56 + 32 + 30 = 118. Dénominateur : 4 + 2 + 3 = 9. Résultat : 118 / 9 ≈ 13,11."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une formule commence par `=` et utilise des adresses de cellules.",
+        "`=MOYENNE(B11:D11)` et `=(B11+C11+D11)/3` sont équivalentes : choisis celle que tu maîtrises le mieux.",
+        "Les parenthèses sont indispensables dans la version avec division.",
+        "Vérifie toujours que la moyenne se situe entre la plus petite et la plus grande valeur.",
+        "Au Probatoire, « Écrire la formule qui permet de calculer... » est une question de tableur classique ; la formule sans `=` ne rapporte pas le point."
+      ]
+    }
+  ]
+}

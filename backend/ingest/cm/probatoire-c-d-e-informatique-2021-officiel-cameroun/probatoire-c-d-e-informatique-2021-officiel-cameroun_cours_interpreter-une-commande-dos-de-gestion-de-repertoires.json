@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-interpreter-une-commande-dos-de-gestion-de-repertoires-1ere-c-d-e",
+  "meta": {
+    "titre": "Interpréter une commande DOS de gestion de répertoires",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Ligne de commande et gestion des fichiers",
+    "duree_estimee_min": 25,
+    "tags": [
+      "commande DOS",
+      "MKDIR",
+      "RMDIR",
+      "répertoire courant",
+      "invite de commande"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex1-q2a-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant l'interface graphique, tout se faisait en tapant des commandes. Elles servent encore à l'administrateur système, et l'examen te demande de dire ce que fait une commande sans la lancer. Il suffit de savoir lire une commande comme une phrase : un verbe, un complément et un lieu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un répertoire (dossier) et un lecteur (C:, D:)",
+        "Savoir lire un chemin comme `D:\\Premiere\\docs`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une commande DOS : verbe, argument, répertoire courant",
+      "contenu_markdown": "Une commande DOS se lit en trois éléments :\n\n1. **Le verbe** (la commande) : il dit l'action.\n2. **L'argument** : il désigne l'objet de l'action (un nom de dossier ou de fichier).\n3. **Le répertoire courant** : il est affiché dans l'invite (par exemple `D:\\Premiere>`) et sert de point de départ à tout chemin relatif.\n\n| Commande | Origine du nom | Rôle |\n|---|---|---|\n| `DIR` | directory | affiche le contenu du répertoire courant |\n| `CD nom` | change directory | se place dans le répertoire `nom` (`CD ..` remonte d'un niveau) |\n| `MKDIR nom` (ou `MD`) | make directory | crée le répertoire `nom` |\n| `RMDIR nom` (ou `RD`) | remove directory | supprime le répertoire `nom` (vide, sauf option `/S`) |\n| `COPY a b` | copy | copie le fichier `a` vers `b` |\n| `DEL fichier` | delete | supprime un fichier |\n| `REN a b` | rename | renomme `a` en `b` |",
+      "variantes": [
+        {
+          "nom": "Chemin absolu",
+          "quand_utiliser": "Quand on veut viser un dossier sans dépendre du répertoire courant",
+          "contenu": "Un chemin absolu commence par la lettre du lecteur : `MKDIR D:\\Premiere\\docs` crée le même dossier quel que soit le répertoire courant. Un chemin relatif (`MKDIR docs`) part du répertoire courant."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que `docs` est un nom de répertoire, donner le rôle de la commande `MKDIR docs` saisie à l'invite `D:\\Premiere>`. (Probatoire 2021, exercice I, question 2a)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire l'invite",
+          "justification": "L'invite donne le répertoire courant, point de départ du chemin.",
+          "resultat_markdown": "Répertoire courant : `D:\\Premiere`."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le verbe",
+          "justification": "`MKDIR` vient de *make directory* : faire un répertoire.",
+          "resultat_markdown": "Action : création d'un répertoire."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier l'argument",
+          "justification": "Le mot qui suit la commande est le nom visé.",
+          "resultat_markdown": "Nom du répertoire : `docs`."
+        },
+        {
+          "numero": 4,
+          "action": "Rédiger la phrase de rôle",
+          "justification": "On réunit action, objet et lieu.",
+          "resultat_markdown": "`MKDIR docs` crée un répertoire nommé `docs` dans `D:\\Premiere`, de chemin complet `D:\\Premiere\\docs`."
+        }
+      ],
+      "conclusion_markdown": "La commande crée le dossier `docs` dans le répertoire courant ; elle ne change pas le répertoire courant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire que `MKDIR docs` « ouvre » le dossier `docs`.",
+          "pourquoi_faux": "Ouvrir ou se placer dans un dossier est le rôle de `CD`. `MKDIR` crée seulement : le répertoire courant ne change pas.",
+          "correction_markdown": "Associe `MKDIR` à « créer » et `CD` à « se déplacer »."
+        },
+        {
+          "erreur_markdown": "Croire que `RMDIR` supprime des fichiers.",
+          "pourquoi_faux": "`RMDIR` ne supprime que des répertoires, et seulement vides sans l'option `/S`. Les fichiers se suppriment avec `DEL`.",
+          "correction_markdown": "Retiens : RMDIR pour les dossiers, DEL pour les fichiers."
+        },
+        {
+          "erreur_markdown": "Oublier de citer le répertoire courant.",
+          "pourquoi_faux": "Sans lui, le lecteur ne sait pas où le dossier est créé ou supprimé : la réponse est incomplète.",
+          "correction_markdown": "Termine ta phrase par « dans le répertoire courant, ici `D:\\Premiere` »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "À l'invite `D:\\Premiere\\docs>`, quel est le rôle de la commande `CD ..` ?",
+          "solution_markdown": "`CD ..` fait remonter d'un niveau dans l'arborescence : le répertoire courant devient le répertoire parent, `D:\\Premiere`. L'invite passe de `D:\\Premiere\\docs>` à `D:\\Premiere>`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "À l'invite `D:\\Premiere>`, quelles commandes faut-il saisir pour obtenir l'arborescence `D:\\Premiere\\notes\\2021` ?",
+          "solution_markdown": "On crée d'abord le dossier parent puis le sous-dossier : `MKDIR notes`, puis `MKDIR notes\\2021`. Le chemin `notes\\2021` est relatif : il part du répertoire courant `D:\\Premiere`, et `notes` doit exister avant que `2021` y soit créé."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On saisit successivement : `D:\\Premiere>MKDIR docs`, `D:\\Premiere>CD docs`, `D:\\Premiere\\docs>MKDIR tp`, `D:\\Premiere\\docs>CD ..`, `D:\\Premiere>RMDIR docs`. Que se passe-t-il à la dernière commande ? Quelle commande permet de supprimer `docs` malgré tout ?",
+          "solution_markdown": "Après les quatre premières commandes, `docs` contient le sous-dossier `tp`. La dernière commande échoue : `RMDIR` refuse de supprimer un répertoire non vide et affiche un message du type « Le répertoire n'est pas vide ». Pour supprimer `docs` avec son contenu, on utilise `RMDIR /S docs` (le système demande une confirmation), ou on supprime d'abord `tp` avec `RMDIR docs\\tp`, puis `docs`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une commande DOS se lit comme une phrase : verbe, argument, répertoire courant.",
+        "`MKDIR` crée un dossier, `RMDIR` le supprime, `CD` s'y place, `DIR` en liste le contenu.",
+        "L'invite `D:\\Premiere>` te donne le répertoire courant : cite-le dans ta réponse.",
+        "`RMDIR` refuse un dossier non vide, sauf avec l'option `/S`.",
+        "Au Probatoire, la question « donner le rôle de la commande... » apparaît régulièrement avec deux commandes opposées (créer et supprimer) : réponds par une phrase pour chacune."
+      ]
+    }
+  ]
+}

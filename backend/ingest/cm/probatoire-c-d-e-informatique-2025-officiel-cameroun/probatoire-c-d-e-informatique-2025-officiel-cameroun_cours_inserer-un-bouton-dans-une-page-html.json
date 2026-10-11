@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-inserer-un-bouton-dans-une-page-html-1ere-cde",
+  "meta": {
+    "titre": "Insérer un bouton dans une page HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "HTML : éléments de formulaire",
+    "duree_estimee_min": 20,
+    "tags": [
+      "HTML",
+      "bouton",
+      "button",
+      "input",
+      "body"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un bouton « Calculer » : le plus simple des éléments d'interface, et pourtant il suppose de connaître la structure d'une page HTML. Où le placer, quelle balise employer, comment lui donner un texte ? Trois réflexes suffisent pour écrire un bouton correct sans hésiter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une page HTML : `<html>`, `<head>`, `<body>`",
+        "Savoir ouvrir et fermer une balise"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux écritures possibles",
+      "contenu_markdown": "**Avec la balise `button`** : le texte du bouton est le contenu entre les balises.\n\n```html\n<button>Calculer</button>\n```\n\n**Avec la balise `input`** : le texte du bouton est la valeur de l'attribut `value`, la balise est orpheline (sans fermeture).\n\n```html\n<input type=\"button\" value=\"Calculer\">\n```\n\n**Où ?** Dans le corps de la page, entre `<body>` et `</body>`, à l'endroit où le bouton doit apparaître. Le contenu de `<head>` ne s'affiche pas dans la page."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code HTML qui insère dans le corps de la page web un bouton portant le texte « Calculer ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la balise",
+          "justification": "`<button>` est la balise dédiée au bouton ; son texte se place entre les balises.",
+          "resultat_markdown": "`<button> ... </button>`"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le texte du bouton",
+          "justification": "Le sujet demande « Calculer ».",
+          "resultat_markdown": "`<button>Calculer</button>`"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir l'emplacement",
+          "justification": "Un élément visible va dans le corps, par exemple après le titre `<h2>`.",
+          "resultat_markdown": "Entre `<body>` et `</body>`."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler la structure",
+          "justification": "Balise ouvrante, texte, balise fermante, dans le `<body>`.",
+          "resultat_markdown": "Code final : `<button>Calculer</button>` dans le corps de la page."
+        }
+      ],
+      "conclusion_markdown": "Le code `<button>Calculer</button>`, placé dans le `<body>`, insère le bouton demandé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `<button value=\"Calculer\"/>` sans texte entre les balises.",
+          "pourquoi_faux": "Avec la balise `button`, le texte affiché est le contenu entre les balises ; `value` n'est pas affiché ici.",
+          "correction_markdown": "Écris `<button>Calculer</button>`, ou utilise `input` avec `value`."
+        },
+        {
+          "erreur_markdown": "Placer le bouton dans `<head>`.",
+          "pourquoi_faux": "L'en-tête contient des informations sur la page (titre, styles) mais n'affiche rien dans la fenêtre.",
+          "correction_markdown": "Place tout élément visible dans `<body>`."
+        },
+        {
+          "erreur_markdown": "Oublier la balise fermante `</button>`.",
+          "pourquoi_faux": "Sans fermeture, le navigateur peut absorber la suite de la page dans le bouton.",
+          "correction_markdown": "Ferme chaque balise que tu ouvres."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le code HTML d'un bouton portant le texte « Valider ».",
+          "solution_markdown": "```html\n<button>Valider</button>\n```\n\nou, avec `input` :\n\n```html\n<input type=\"button\" value=\"Valider\">\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un bouton « Dire bonjour » qui affiche une boîte contenant « Bonjour » au clic.",
+          "solution_markdown": "```html\n<button onclick=\"alert('Bonjour');\">Dire bonjour</button>\n```\n\nL'attribut `onclick` associe l'instruction `alert('Bonjour');` au clic ; l'apostrophe autour de Bonjour évite de fermer l'attribut, entouré de guillemets. Au clic, une boîte affiche « Bonjour »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire dans le corps d'une page un champ de saisie d'identifiant `nom` et un bouton « Saluer » qui affiche « Bonjour » suivi du nom saisi.",
+          "solution_markdown": "```html\n<body>\n  <input type=\"text\" id=\"nom\">\n  <button onclick=\"alert('Bonjour ' + document.getElementById('nom').value);\">Saluer</button>\n</body>\n```\n\n- `id=\"nom\"` donne un nom au champ pour le retrouver ;\n- `document.getElementById('nom').value` lit le texte saisi ;\n- l'opérateur `+` concatène « Bonjour » et ce texte.\n\nSi le champ contient « Paul », la boîte affiche « Bonjour Paul »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un bouton s'écrit `<button>Texte</button>` ou `<input type=\"button\" value=\"Texte\">`.",
+        "Avec `button`, le texte est entre les balises ; avec `input`, il est dans `value`.",
+        "Le bouton va dans `<body>`, jamais dans `<head>`.",
+        "Ferme toujours la balise `</button>`.",
+        "Au Probatoire, écrire le code d'un bouton est une question simple d'un point : balise correcte, texte correct et emplacement dans le corps suffisent."
+      ]
+    }
+  ]
+}

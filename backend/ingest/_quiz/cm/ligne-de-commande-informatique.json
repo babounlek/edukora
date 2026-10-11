@@ -1,0 +1,112 @@
+[
+  {
+    "external_id": "cqc-ligne-de-commande-informatique-faible-0",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "D"}, {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "A"}, {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "E"}],
+    "enonce_markdown": "Dans l'invite de commande d'un ordinateur du cybercafé de Bamenda, un utilisateur veut afficher la liste des fichiers et des dossiers contenus dans le répertoire courant. Quelle commande MS-DOS doit-il taper ?",
+    "corrige_markdown": "### Rappel de méthode\nEn ligne de commande MS-DOS, chaque commande est une abréviation anglaise : DIR vient de « Directory » (répertoire), CD de « Change Directory », MD de « Make Directory », CLS de « Clear Screen ». Le nom d'origine donne directement le sens de la commande.\n\n### Corrigé\n**Réponse : B.** La commande `DIR` affiche le contenu du répertoire courant : noms des fichiers et des sous-dossiers, avec leurs tailles et leurs dates.\n\n- **A** est fausse : `CD` (Change Directory) sert à changer de répertoire, elle ne liste rien.\n- **C** est fausse : `MD` (Make Directory) crée un nouveau dossier ; elle ne montre pas le contenu existant.\n- **D** est fausse : `CLS` (Clear Screen) efface l'écran de l'invite de commande, sans toucher aux fichiers.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "CD"},
+      {"lettre": "B", "texte": "DIR"},
+      {"lettre": "C", "texte": "MD"},
+      {"lettre": "D", "texte": "CLS"}
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [10252, 11334],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-ligne-de-commande-informatique-faible-1",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "D"}, {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "A"}, {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "E"}],
+    "enonce_markdown": "Une élève a créé par erreur un dossier vide nommé `Brouillon` dans le répertoire courant. Quelle commande MS-DOS permet de supprimer ce dossier vide ?",
+    "corrige_markdown": "### Rappel de méthode\nLes commandes de gestion des dossiers sont symétriques : MD (Make Directory) crée un dossier, RD (Remove Directory) le supprime, CD (Change Directory) permet de s'y placer. Les noms anglais donnent le sens.\n\n### Corrigé\n**Réponse : D.** `RD Brouillon` (Remove Directory) supprime le dossier `Brouillon` à condition qu'il soit vide, ce qui est le cas ici.\n\n- **A** est fausse : `MD Brouillon` essaierait de créer un dossier qui existe déjà.\n- **B** est fausse : `CD Brouillon` place l'utilisateur dans ce dossier, sans le supprimer.\n- **C** est fausse : `CLS` efface seulement l'écran et ne prend pas de nom de dossier à supprimer.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "MD Brouillon"},
+      {"lettre": "B", "texte": "CD Brouillon"},
+      {"lettre": "C", "texte": "CLS Brouillon"},
+      {"lettre": "D", "texte": "RD Brouillon"}
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [11163, 11323],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-ligne-de-commande-informatique-moyenne-2",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "D"}, {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "A"}, {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "E"}],
+    "enonce_markdown": "Le répertoire courant est la racine du lecteur D (aucun dossier n'existe encore). Un élève tape successivement les commandes suivantes :\n\n```text\nMD LYCEE\nCD LYCEE\nMD CLASSE1\nCD CLASSE1\nMD TP\n```\n\nOù se trouve le dossier `TP` après l'exécution de ces commandes ?",
+    "corrige_markdown": "### Rappel de méthode\nSous MS-DOS, `MD` crée un dossier à l'intérieur du répertoire courant, et `CD` déplace le répertoire courant dans le dossier indiqué. Il faut donc suivre, commande après commande, l'endroit où l'on se trouve avant chaque `MD`.\n\n### Corrigé\n**Réponse : C.** Trace des commandes :\n\n- `MD LYCEE` crée LYCEE à la racine du lecteur D ; `CD LYCEE` place l'élève dans LYCEE.\n- `MD CLASSE1` crée CLASSE1 dans LYCEE ; `CD CLASSE1` place l'élève dans CLASSE1.\n- `MD TP` crée TP dans le répertoire courant, c'est-à-dire dans CLASSE1.\n\nAinsi TP est dans CLASSE1, qui est dans LYCEE, qui est à la racine du lecteur D.\n\n- **A** est fausse : TP n'est pas à la racine, car l'élève s'est déplacé deux fois avant de le créer.\n- **B** est fausse : CLASSE1 a été créé dans LYCEE puis l'élève y est entré ; TP est donc plus bas que CLASSE1 et non à côté de lui.\n- **D** est fausse : CLASSE1 n'est pas à la racine, il a été créé dans LYCEE.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "TP est directement à la racine du lecteur D, à côté de LYCEE."},
+      {"lettre": "B", "texte": "TP est dans LYCEE, à côté de CLASSE1."},
+      {"lettre": "C", "texte": "TP est dans CLASSE1, lui-même dans LYCEE, à la racine du lecteur D."},
+      {"lettre": "D", "texte": "TP est dans CLASSE1, mais CLASSE1 est à la racine du lecteur D, à côté de LYCEE."}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [11323, 11334],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-ligne-de-commande-informatique-moyenne-3",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "D"}, {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "A"}, {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "E"}],
+    "enonce_markdown": "Le répertoire courant contient uniquement deux fichiers : `RAPPORT.DOC` et `PHOTO.JPG`. Un technicien tape successivement :\n\n```text\nCOPY RAPPORT.DOC SAUVEGARDE.DOC\nDEL RAPPORT.DOC\nREN PHOTO.JPG LOGO.JPG\n```\n\nQuels fichiers contient ensuite le répertoire courant ?",
+    "corrige_markdown": "### Rappel de méthode\nTrois commandes agissent sur les fichiers : `COPY` fabrique une copie en gardant l'original, `DEL` supprime un fichier, `REN` change le nom d'un fichier sans modifier son contenu.\n\n### Corrigé\n**Réponse : A.** Trace des commandes :\n\n- `COPY RAPPORT.DOC SAUVEGARDE.DOC` : le répertoire contient maintenant RAPPORT.DOC, SAUVEGARDE.DOC et PHOTO.JPG.\n- `DEL RAPPORT.DOC` : l'original est supprimé, il reste SAUVEGARDE.DOC et PHOTO.JPG.\n- `REN PHOTO.JPG LOGO.JPG` : PHOTO.JPG change de nom, il reste SAUVEGARDE.DOC et LOGO.JPG.\n\n- **B** est fausse : elle oublie la copie SAUVEGARDE.DOC, qui n'a pas été supprimée.\n- **C** est fausse : elle ignore le renommage, PHOTO.JPG s'appelle désormais LOGO.JPG.\n- **D** est fausse : elle oublie la suppression de RAPPORT.DOC par `DEL`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "LOGO.JPG et SAUVEGARDE.DOC"},
+      {"lettre": "B", "texte": "LOGO.JPG seulement"},
+      {"lettre": "C", "texte": "PHOTO.JPG et SAUVEGARDE.DOC"},
+      {"lettre": "D", "texte": "LOGO.JPG, RAPPORT.DOC et SAUVEGARDE.DOC"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [10252, 11163],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-ligne-de-commande-informatique-moyenne-4",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "D"}, {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "A"}, {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "E"}],
+    "enonce_markdown": "Le répertoire courant est la racine du lecteur D, qui contient un fichier `PLAN.TXT`. Écrire, dans l'ordre, les commandes MS-DOS qui permettent de :\n\n1. créer un répertoire nommé `ECOLE` ;\n2. copier le fichier `PLAN.TXT` dans le répertoire `ECOLE` ;\n3. se placer dans le répertoire `ECOLE` ;\n4. renommer le fichier `PLAN.TXT` (qui se trouve maintenant dans `ECOLE`) en `PROGRAMME.TXT` ;\n5. afficher le contenu du répertoire courant pour vérifier le résultat.\n\nPréciser ensuite si le fichier `PLAN.TXT` existe toujours à la racine du lecteur D.",
+    "corrige_markdown": "### Rappel de méthode\nOn raisonne toujours par rapport au répertoire courant : `MD` crée un dossier dedans, `COPY fichier dossier` place une copie du fichier dans le dossier cible, `CD` change de répertoire courant, `REN ancien nouveau` renomme un fichier du répertoire courant, `DIR` liste le contenu.\n\n### Corrigé\n**Réponse modèle.**\n\n```text\nMD ECOLE\nCOPY PLAN.TXT ECOLE\nCD ECOLE\nREN PLAN.TXT PROGRAMME.TXT\nDIR\n```\n\nLe fichier `PLAN.TXT` **existe toujours** à la racine du lecteur D : la commande `COPY` fabrique une copie sans toucher à l'original. Seule la copie, située dans `ECOLE`, a été renommée en `PROGRAMME.TXT`.\n\n**Critères de notation.**\n\n- `MD ECOLE` : 1 point.\n- `COPY PLAN.TXT ECOLE` effectuée avant le déplacement : 1 point.\n- `CD ECOLE` : 1 point.\n- `REN PLAN.TXT PROGRAMME.TXT` avec l'ancien nom puis le nouveau : 1 point.\n- `DIR` : 0,5 point.\n- Précision que l'original reste à la racine, car COPY ne supprime rien : 0,5 point.\n\n### Piège à éviter\nIl faut copier le fichier avant de se déplacer dans `ECOLE`, sinon `PLAN.TXT` ne se trouve plus dans le répertoire courant et la commande `COPY` échoue.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11323, 11334, 11163],
+    "figures": []
+  },
+  {
+    "external_id": "cqc-ligne-de-commande-informatique-elevee-5",
+    "theme": "Ligne de commande",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "D"}, {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "A"}, {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "E"}],
+    "enonce_markdown": "Au départ, le répertoire courant est la racine du lecteur D. Elle contient un fichier `INFO.TXT` et un dossier vide `LYCEE`. Un élève tape successivement les commandes suivantes (la commande `CD ..` remonte au répertoire parent) :\n\n```text\n1. COPY INFO.TXT LYCEE\n2. CD LYCEE\n3. MD SECONDE\n4. MD PREMIERE\n5. CD PREMIERE\n6. MD TP\n7. CD ..\n8. REN INFO.TXT LISEZMOI.TXT\n9. RD SECONDE\n10. CD ..\n```\n\n1. Représenter l'arborescence finale du lecteur D (dossiers et fichiers).\n2. Quel est le répertoire courant à la fin ? Justifier.\n3. À l'étape 9, la commande `RD PREMIERE` aurait-elle fonctionné à la place de `RD SECONDE` ? Justifier.\n4. Le fichier `INFO.TXT` existe-t-il encore à la racine du lecteur D ? Justifier.",
+    "corrige_markdown": "### Rappel de méthode\nPour interpréter une suite de commandes, on tient à jour deux informations : le répertoire courant et le contenu de l'arborescence. `MD` ajoute un dossier dans le répertoire courant, `CD` et `CD ..` déplacent le répertoire courant vers un sous-dossier ou vers le parent, `RD` ne supprime qu'un dossier vide, `COPY` garde l'original et `REN` ne modifie que le nom.\n\n### Corrigé\n**Réponse modèle.**\n\n**Suivi pas à pas.**\n\n- Étape 1 : une copie de INFO.TXT est placée dans LYCEE.\n- Étape 2 : courant = LYCEE.\n- Étapes 3 et 4 : SECONDE et PREMIERE sont créés dans LYCEE.\n- Étape 5 : courant = PREMIERE. Étape 6 : TP est créé dans PREMIERE.\n- Étape 7 : `CD ..` ramène le courant à LYCEE.\n- Étape 8 : la copie INFO.TXT de LYCEE devient LISEZMOI.TXT.\n- Étape 9 : SECONDE, vide, est supprimé.\n- Étape 10 : `CD ..` ramène le courant à la racine du lecteur D.\n\n**1. Arborescence finale.**\n\n```text\nD (racine)\n  INFO.TXT\n  LYCEE\n    LISEZMOI.TXT\n    PREMIERE\n      TP\n```\n\n**2.** Le répertoire courant est la **racine du lecteur D** : à l'étape 7 il était LYCEE, et `CD ..` de l'étape 10 remonte d'un niveau, au parent de LYCEE.\n\n**3.** Non. Le dossier `PREMIERE` n'est pas vide, il contient `TP`. La commande `RD` ne supprime qu'un dossier vide : elle aurait refusé et affiché un message d'erreur. Il aurait fallu supprimer TP d'abord.\n\n**4.** Oui. `COPY INFO.TXT LYCEE` crée une copie dans LYCEE et ne retire rien de la racine. Seule la copie a été renommée à l'étape 8.\n\n**Critères de notation.**\n\n- Arborescence finale exacte, avec INFO.TXT conservé à la racine, LISEZMOI.TXT dans LYCEE, TP dans PREMIERE et SECONDE absent : 3 points (retirer 1 point par élément faux).\n- Répertoire courant final (racine du lecteur D) avec justification : 1 point.\n- Refus de `RD PREMIERE` car le dossier contient TP : 1 point.\n- INFO.TXT toujours présent car COPY ne déplace pas : 1 point.\n\n### Piège à éviter\nOn confond souvent `COPY` et un déplacement : après une copie, le fichier existe en deux exemplaires, et c'est la copie, pas l'original, que `REN` renomme si l'on se trouve dans le dossier de destination.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [11323, 11334, 11163],
+    "figures": []
+  }
+]

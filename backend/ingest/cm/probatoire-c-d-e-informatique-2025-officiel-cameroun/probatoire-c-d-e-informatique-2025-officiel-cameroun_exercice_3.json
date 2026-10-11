@@ -1,0 +1,250 @@
+{
+  "epreuve_source": "probatoire-c-d-e-informatique-2025-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2025,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "points": 8,
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 3 : Algorithmique et programmation (8 points)**",
+  "questions": [
+    {
+      "numero": "1.1",
+      "enonce_markdown": "**Partie 1 : Algorithmique** *[4 pts]*\n\nUn camarade veut écrire un algorithme qui manipule les âges de 10 élèves. Il souhaite déclarer le tableau `tabAge` contenant les données : 15 ; 13 ; 16 ; 17 ; 21 ; 18 ; 19 ; 20 ; 12 ; 14. Ne sachant pas comment s'y prendre, il vous demande de l'aide.\n\n**1.** Dans le contexte des algorithmes, définir le terme « tableau ». *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir une structure de données, indique ce qu'elle regroupe (type des éléments), comment ses éléments sont organisés, comment on accède à chacun d'eux, et précise si sa taille est fixe ou variable.\n\nEn algorithmique, un **tableau** est une structure de données qui regroupe, sous un même nom, un nombre fixe d'éléments de même type, rangés les uns à la suite des autres. Chaque élément est repéré par son numéro de position, appelé **indice**.\n\nExemple du sujet : `tabAge` regroupe 10 entiers ; `tabAge[3]` désigne le troisième âge, soit 16 (en indexant à partir de 1).\n\n### Piège à éviter\nNe dis pas qu'un tableau peut contenir des éléments de types différents : cela décrirait un enregistrement. Ne le confonds pas non plus avec une variable simple, qui ne contient qu'une seule valeur.\n\n### Conseil\nUne bonne définition de tableau contient trois mots-clés : « même type », « nombre fixe d'éléments » et « indice ». Vérifie qu'ils figurent dans ta phrase.",
+      "themes": [
+        "Algorithmique",
+        "Tableau",
+        "Structure de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q1.1-1",
+          "competence": "Définir une structure de données",
+          "contenu_markdown": "Pour définir une structure de données, indique ce qu'elle regroupe (type des éléments), comment ses éléments sont organisés, comment on accède à chacun d'eux, et précise si sa taille est fixe ou variable.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-une-structure-de-donnees-1ere-cde"
+        }
+      ]
+    },
+    {
+      "numero": "1.2",
+      "enonce_markdown": "**2.** Énumérer 2 autres exemples de structures de données capables de gérer ces données. *[1 pt]*",
+      "corrige_markdown": "Deux autres structures de données capables de gérer une série de dix âges :\n\n- la **liste** (par exemple la liste chaînée), qui range des éléments à la suite et permet d'en insérer ou d'en supprimer sans fixer la taille à l'avance ;\n- la **file** (premier entré, premier sorti) ou la **pile** (dernier entré, premier sorti), qui rangent les éléments dans un ordre d'arrivée précis.\n\nLa pile, la file et la liste sont toutes les trois des structures linéaires, comme le tableau.\n\n### Piège à éviter\nNe cite pas la « matrice » ni le « tableau à deux dimensions » : ce sont des tableaux, pas une autre structure. Ne cite pas non plus un type simple (entier, réel), qui ne regroupe qu'une valeur.",
+      "themes": [
+        "Algorithmique",
+        "Structure de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "1.3",
+      "enonce_markdown": "**3.** Écrire la déclaration d'un tableau pouvant contenir les âges de ces 10 élèves. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDéclarer un tableau en algorithmique, c'est donner son nom, ses bornes (indices du premier et du dernier élément) et le type commun de ses éléments, dans la partie des déclarations de variables, avant les instructions de l'algorithme.\n\nLes âges sont des entiers et il y a 10 élèves : le tableau a donc 10 cases, indexées de 1 à 10.\n\n```\nAlgorithme GestionAges\nVariable\n    tabAge : Tableau[1..10] d'entiers\nDébut\n    ...\nFin\n```\n\nPour y ranger les données du sujet, on affecte ensuite chaque case :\n\n```\ntabAge[1] ← 15    tabAge[2] ← 13    tabAge[3] ← 16    tabAge[4] ← 17    tabAge[5] ← 21\ntabAge[6] ← 18    tabAge[7] ← 19    tabAge[8] ← 20    tabAge[9] ← 12    tabAge[10] ← 14\n```\n\nLa déclaration attendue est la ligne `tabAge : Tableau[1..10] d'entiers`. Selon les manuels, on rencontre aussi `Var tabAge : tableau[10] d'entier` : les deux notations disent la même chose.\n\n### Piège à éviter\nVérifie le nombre de cases : `[1..9]` en donne 9 et `[0..10]` en donne 11. Ne déclare pas non plus le tableau sans préciser le type de ses éléments.\n\n### Conseil\nCalcule le nombre de cases avec « dernier indice - premier indice + 1 » : $10 - 1 + 1 = 10$. Garde la même notation tout au long de l'exercice pour que le correcteur la reconnaisse.",
+      "themes": [
+        "Algorithmique",
+        "Tableau",
+        "Déclaration de variables"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q1.3-1",
+          "competence": "Déclarer un tableau en pseudo-code",
+          "contenu_markdown": "Déclarer un tableau en algorithmique, c'est donner son nom, ses bornes (indices du premier et du dernier élément) et le type commun de ses éléments, dans la partie des déclarations de variables, avant les instructions de l'algorithme.",
+          "cours_genere": true,
+          "cours_id": "cours-declarer-un-tableau-en-pseudo-code-1ere-cde"
+        }
+      ]
+    },
+    {
+      "numero": "1.4",
+      "enonce_markdown": "**4.** Écrire l'instruction qui permet d'ajouter 3 à la valeur 14 du tableau (on suppose le tableau indexé à partir de 1). *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn élément de tableau se lit et se modifie par son indice : pour lui ajouter une valeur, on le réaffecte à lui-même augmenté de cette valeur, avec la forme t[i] ← t[i] + k, après avoir déterminé l'indice i en comptant à partir du premier indice du tableau.\n\n**Étape 1 : trouver l'indice de la valeur 14.** On numérote les cases à partir de 1 :\n\n| indice | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |\n|---|---|---|---|---|---|---|---|---|---|---|\n| valeur | 15 | 13 | 16 | 17 | 21 | 18 | 19 | 20 | 12 | 14 |\n\nLa valeur 14 est dans la dixième case : son indice est **10**.\n\n**Étape 2 : écrire l'instruction.**\n\n```\ntabAge[10] ← tabAge[10] + 3\n```\n\nAprès exécution, `tabAge[10]` vaut $14 + 3 = 17$.\n\n### Piège à éviter\nNe confonds pas la valeur et l'indice : `tabAge[14]` n'existe pas (le tableau n'a que 10 cases) et `14 ← 14 + 3` n'a aucun sens. Fais attention aussi à l'indexation : en partant de 0, la valeur 14 serait à l'indice 9.\n\n### Conseil\nNumérote les cases au brouillon, juste au-dessus des valeurs, avant d'écrire l'instruction. Ça évite l'erreur de décalage de 1 qui coûte le point.",
+      "themes": [
+        "Algorithmique",
+        "Tableau",
+        "Affectation",
+        "Indice d'un tableau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q1.4-1",
+          "competence": "Modifier un élément de tableau par son indice",
+          "contenu_markdown": "Un élément de tableau se lit et se modifie par son indice : pour lui ajouter une valeur, on le réaffecte à lui-même augmenté de cette valeur, avec la forme t[i] ← t[i] + k, après avoir déterminé l'indice i en comptant à partir du premier indice du tableau.",
+          "cours_genere": true,
+          "cours_id": "cours-modifier-un-element-de-tableau-par-son-indice-1ere-cde"
+        }
+      ]
+    },
+    {
+      "numero": "2.1",
+      "enonce_markdown": "**Partie 2 : Programmation** *[4 pts]*\n\nOn considère l'extrait suivant d'un code JavaScript inséré dans une page web :\n\n```html\n<html>\n  <head>\n    <title>Page de l'agence immobilière</title>\n  </head>\n  <body>\n    <img src=\"logo.png\"/>\n    <h1> Agence Immobilière de la Cité</h1>\n    <h2> Application de Calcul du prix de votre parcelle</h2>\n    <SCRIPT language=\"Javascript\">\n      function surfaceRect() {\n        longueur=parseFloat(prompt(\"longueur\"));\n        largeur=parseFloat(prompt(\"largeur\"));\n        prixUnitaire=parseFloat(prompt(\"prix du mètre carré\"));\n        prixVente=longueur*largeur*prixUnitaire;\n        document.write(\"le prix de vente est \", prixVente,\" FCFA.\");\n      }\n    </SCRIPT>\n  </body>\n</html>\n```\n\n**1.** Identifier le nom de la fonction déclarée. *[1 pt]*",
+      "corrige_markdown": "La fonction déclarée est **`surfaceRect`** : elle est introduite par le mot-clé `function`, suivi de son nom et de parenthèses vides (elle ne reçoit aucun paramètre).\n\nSon nom parle de surface, alors qu'elle calcule un prix de vente ; le nom attendu reste `surfaceRect`.\n\n### Piège à éviter\nNe cite pas `parseFloat` ni `prompt` : ce sont des fonctions prédéfinies, appelées dans le code mais pas déclarées par le programmeur. Seule une fonction introduite par `function` est déclarée.",
+      "themes": [
+        "JavaScript",
+        "Fonction",
+        "Programmation web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2.2.a",
+      "enonce_markdown": "**2.** Donner le rôle des fonctions prédéfinies suivantes. *[0,5 pt chacune]*\n\n**a)** `parseFloat()`",
+      "corrige_markdown": "### Rappel de méthode\nPour donner le rôle d'une fonction prédéfinie, dis ce qu'elle reçoit en entrée, ce qu'elle fait et ce qu'elle renvoie, en t'appuyant sur la façon dont elle est utilisée dans le code donné.\n\n`parseFloat()` **convertit une chaîne de caractères en nombre réel** (nombre décimal).\n\nDans le code, `prompt(...)` renvoie toujours un texte, même si l'utilisateur tape 20. `parseFloat(prompt(\"longueur\"))` transforme ce texte en nombre, ce qui permet ensuite de multiplier `longueur`, `largeur` et `prixUnitaire`. Exemple : `parseFloat(\"12.5\")` donne le nombre 12,5.\n\n### Piège à éviter\nNe dis pas que `parseFloat()` « demande » une valeur à l'utilisateur : c'est le rôle de `prompt()`. Ne la confonds pas avec `parseInt()`, qui ne garde que la partie entière.\n\n### Conseil\nDans une page web, écris les nombres décimaux avec un point, jamais avec une virgule : `parseFloat(\"12,5\")` donne 12 et non 12,5.",
+      "themes": [
+        "JavaScript",
+        "Fonctions prédéfinies",
+        "Conversion de type"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.2.a-1",
+          "competence": "Expliquer le rôle d'une fonction prédéfinie JavaScript",
+          "contenu_markdown": "Pour donner le rôle d'une fonction prédéfinie, dis ce qu'elle reçoit en entrée, ce qu'elle fait et ce qu'elle renvoie, en t'appuyant sur la façon dont elle est utilisée dans le code donné.",
+          "cours_genere": true,
+          "cours_id": "cours-expliquer-le-role-d-une-fonction-predefinie-javascript-1ere-cde"
+        }
+      ]
+    },
+    {
+      "numero": "2.2.b",
+      "enonce_markdown": "**b)** `document.write()` *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn JavaScript dans un navigateur, `prompt()` fait entrer une donnée saisie par l'utilisateur sous forme de texte, tandis que `document.write()` fait sortir un résultat en l'écrivant dans le document affiché ; pour expliquer une fonction prédéfinie, précise si elle sert à l'entrée ou à la sortie.\n\n`document.write()` **écrit du texte (ou du code HTML) dans la page web** affichée par le navigateur : c'est une fonction de sortie.\n\nDans le code, elle assemble le texte « le prix de vente est », la valeur de `prixVente` et le texte « FCFA. » puis les affiche. Avec les valeurs 20, 15 et 5000, le navigateur affiche : *le prix de vente est 1500000 FCFA.*\n\nRemarque : si `document.write()` est exécutée une fois la page entièrement chargée, par exemple après un clic, elle remplace tout le contenu de la page par le texte écrit.\n\n### Piège à éviter\nNe la confonds pas avec `alert()`, qui ouvre une boîte de message, ni avec `prompt()`, qui demande une saisie. `document.write()` n'affiche rien dans une boîte : elle écrit dans la page elle-même.\n\n### Conseil\nPour une fonction prédéfinie, une phrase suffit : « elle sert à ... » suivie de son effet visible. Pour 0,5 point, vise la précision plutôt que la longueur.",
+      "themes": [
+        "JavaScript",
+        "Fonctions prédéfinies",
+        "Affichage dans une page web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.2.b-1",
+          "competence": "Distinguer entrée et sortie dans une page web JavaScript",
+          "contenu_markdown": "En JavaScript dans un navigateur, `prompt()` fait entrer une donnée saisie par l'utilisateur sous forme de texte, tandis que `document.write()` fait sortir un résultat en l'écrivant dans le document affiché ; pour expliquer une fonction prédéfinie, précise si elle sert à l'entrée ou à la sortie.",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-entree-et-sortie-dans-une-page-web-javascript-1ere-cde"
+        }
+      ]
+    },
+    {
+      "numero": "2.3",
+      "enonce_markdown": "**3.** Écrire sur votre copie le code HTML qui insère dans le corps de la page web un bouton portant le texte « Calculer ». *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour insérer un bouton en HTML, on utilise la balise `<button>` dont le contenu est le texte affiché, ou la balise `<input type=\"button\" value=\"texte\">` ; cet élément se place dans le corps (`<body>`) de la page, à l'endroit où le bouton doit apparaître.\n\nCode HTML du bouton :\n\n```html\n<button>Calculer</button>\n```\n\nÉcriture équivalente avec la balise `input` :\n\n```html\n<input type=\"button\" value=\"Calculer\">\n```\n\nCe code se place **dans le corps** de la page, entre `<body>` et `</body>`, par exemple juste après le titre `<h2>` :\n\n```html\n<body>\n  <img src=\"logo.png\"/>\n  <h1> Agence Immobilière de la Cité</h1>\n  <h2> Application de Calcul du prix de votre parcelle</h2>\n  <button>Calculer</button>\n  <SCRIPT language=\"Javascript\"> ... </SCRIPT>\n</body>\n```\n\n### Piège à éviter\nNe place pas le bouton dans `<head>` : le contenu de l'en-tête ne s'affiche pas dans la page. N'oublie pas la balise fermante `</button>` et ne mets pas le texte « Calculer » dans un attribut inexistant.\n\n### Conseil\nAu Probatoire, `<button>Calculer</button>` suffit largement. Entoure-le des balises du corps si le sujet insiste sur « le corps de la page » pour montrer que tu connais la structure d'un document HTML.",
+      "themes": [
+        "HTML",
+        "Bouton",
+        "Programmation web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.3-1",
+          "competence": "Insérer un bouton dans une page HTML",
+          "contenu_markdown": "Pour insérer un bouton en HTML, on utilise la balise `<button>` dont le contenu est le texte affiché, ou la balise `<input type=\"button\" value=\"texte\">` ; cet élément se place dans le corps (`<body>`) de la page, à l'endroit où le bouton doit apparaître.",
+          "cours_genere": true,
+          "cours_id": "cours-inserer-un-bouton-dans-une-page-html-1ere-cde"
+        }
+      ]
+    },
+    {
+      "numero": "2.4",
+      "enonce_markdown": "**4.** Décrire ce qui se produit lors du clic sur le bouton « Calculer » si on lui ajoute l'attribut `onClick=\"surfaceRect();\"`. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'attribut `onclick` d'une balise HTML associe un traitement à l'évènement « clic » sur cet élément : au clic, le navigateur exécute l'instruction indiquée, ici l'appel d'une fonction, et l'on décrit alors les instructions de cette fonction dans l'ordre d'exécution avec leur effet visible pour l'utilisateur.\n\nLe bouton devient :\n\n```html\n<button onClick=\"surfaceRect();\">Calculer</button>\n```\n\nAu clic, le navigateur appelle la fonction `surfaceRect()`, qui déroule ses instructions dans l'ordre :\n\n1. trois boîtes de dialogue `prompt` s'ouvrent l'une après l'autre et demandent la longueur, la largeur puis le prix du mètre carré ; chaque réponse est convertie en nombre par `parseFloat()` ;\n2. le programme calcule `prixVente = longueur × largeur × prixUnitaire` ;\n3. `document.write()` affiche « le prix de vente est ... FCFA. » avec la valeur calculée.\n\nExemple : pour 20, 15 et 5000, la page affiche *le prix de vente est 1500000 FCFA.*\n\nPoint d'attention : la page étant déjà chargée, `document.write()` remplace tout son contenu, donc le titre, les en-têtes et le bouton disparaissent. Sans l'attribut `onClick`, rien ne se passe au clic : la fonction est déclarée mais jamais appelée.\n\n### Piège à éviter\nNe dis pas que le bouton calcule une surface : malgré son nom, la fonction calcule un prix de vente. Ne te contente pas non plus de « la fonction s'exécute » : le correcteur attend le déroulement (saisies, calcul, affichage).\n\n### Conseil\nSuis le code ligne par ligne, dans l'ordre, et appuie ta description sur un exemple chiffré (20, 15, 5000). Un exemple numérique prouve que tu as vraiment compris ce que le programme fait.",
+      "themes": [
+        "JavaScript",
+        "Évènement",
+        "Appel de fonction",
+        "Programmation web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.4-1",
+          "competence": "Décrire l'effet d'un gestionnaire onclick",
+          "contenu_markdown": "L'attribut `onclick` d'une balise HTML associe un traitement à l'évènement « clic » sur cet élément : au clic, le navigateur exécute l'instruction indiquée, ici l'appel d'une fonction, et l'on décrit alors les instructions de cette fonction dans l'ordre d'exécution avec leur effet visible pour l'utilisateur.",
+          "cours_genere": true,
+          "cours_id": "cours-decrire-l-effet-d-un-gestionnaire-onclick-1ere-cde"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "tableau",
+    "tabAge",
+    "déclaration d'un tableau",
+    "pile",
+    "file",
+    "liste",
+    "JavaScript",
+    "parseFloat",
+    "document.write",
+    "prompt",
+    "bouton HTML",
+    "onclick",
+    "fonction"
+  ],
+  "incertitudes": [
+    "Question 1.3 : la syntaxe de déclaration d'un tableau varie selon les manuels (Tableau[1..10] d'entiers ou tableau[10] d'entier) ; la notation retenue n'est pas imposée par l'énoncé.",
+    "Question 1.4 : « la valeur 14 » est comprise comme l'élément de valeur 14, seul de cette valeur dans le tableau, situé au 10e rang.",
+    "Question 1.2 : plusieurs réponses sont recevables (liste, pile, file, arbre) ; le barème officiel n'est pas connu.",
+    "Question 2.3 : deux écritures du bouton sont recevables (balise button ou input de type button).",
+    "Code JavaScript retranscrit depuis un scan : « prixUnitaire » et le point-virgule final de la ligne du calcul lus avec un léger bruit de numérisation ; aucune ambiguïté sur le comportement, le code testé donne 1 500 000 pour 20, 15 et 5000.",
+    "Le nom de la fonction (surfaceRect) évoque une surface alors que le code calcule un prix de vente : particularité de l'énoncé, pas une coquille corrigée."
+  ],
+  "statut": "brouillon"
+}

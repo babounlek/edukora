@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-construire-l-algorigramme-d-un-algorithme-1ere-prob-a-2024",
+  "meta": {
+    "titre": "Construire l'algorigramme d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : représentation graphique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "algorithmique",
+      "algorigramme",
+      "organigramme",
+      "structure conditionnelle",
+      "symboles normalisés"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH, AC, session 2024 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2024-officiel-cameroun-ex2-qA.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorigramme est le plan d'un algorithme : on voit d'un coup d'œil où il commence, où il décide et où il finit. C'est aussi une question de dessin que les élèves réussissent très bien, à condition de connaître les symboles et de suivre l'algorithme ligne par ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un algorithme et reconnaître ses structures",
+        "Connaître les instructions Lire, Ecrire et la structure Si ... Sinon"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un symbole par instruction, reliés par des flèches",
+      "contenu_markdown": "Chaque instruction devient un symbole normalisé :\n\n- **ovale** : début et fin ;\n- **parallélogramme** : entrée ou sortie (`Lire`, `Ecrire`) ;\n- **rectangle** : traitement (affectation, calcul) ;\n- **losange** : test, avec deux sorties étiquetées **Oui** et **Non**.\n\nLes symboles sont reliés par des flèches orientées dans le sens de l'exécution. Après un `Si ... Sinon`, les deux branches se rejoignent avant la suite. La déclaration des variables n'a pas de symbole.",
+      "formule_principale": "\\text{instruction} \\longrightarrow \\text{symbole normalisé} \\longrightarrow \\text{flèche vers le suivant}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Représenter l'algorigramme de l'algorithme Controle_Temperature.\n\n```\nAlgorithme Controle_Temperature\nVar Temperature : réel ;\nDébut\n   Ecrire(\"Mesurer la température des cuves\") ;\n   Lire(Temperature) ;\n   Si (Temperature <= 17) alors\n       Ecrire(\"Ouvrir le Vanne\") ;\n   Sinon\n       Ecrire(\"Fermer le Vanne\") ;\n   FinSi\nFin.\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tracer l'ovale Début",
+          "justification": "Tout algorigramme commence par un ovale de début.",
+          "resultat_markdown": "Ovale : Début."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire les deux premières instructions",
+          "justification": "`Ecrire` et `Lire` sont des sorties et entrées : parallélogrammes.",
+          "resultat_markdown": "Parallélogramme : Ecrire(\"Mesurer la température des cuves\") ; parallélogramme : Lire(Temperature)."
+        },
+        {
+          "numero": 3,
+          "action": "Traduire le `Si`",
+          "justification": "Un test se dessine par un losange à deux sorties.",
+          "resultat_markdown": "Losange : Temperature <= 17 ? avec les sorties Oui et Non."
+        },
+        {
+          "numero": 4,
+          "action": "Traduire les deux blocs",
+          "justification": "Chaque branche contient une instruction de sortie.",
+          "resultat_markdown": "Oui : parallélogramme Ecrire(\"Ouvrir le Vanne\") ; Non : parallélogramme Ecrire(\"Fermer le Vanne\")."
+        },
+        {
+          "numero": 5,
+          "action": "Joindre les branches puis terminer",
+          "justification": "Le `FinSi` ramène les deux chemins vers un seul, puis vient l'ovale de fin.",
+          "resultat_markdown": "Les deux branches rejoignent l'ovale Fin."
+        }
+      ],
+      "conclusion_markdown": "L'algorigramme comprend deux ovales, quatre parallélogrammes et un losange, soit sept symboles reliés par des flèches."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner un losange sans étiqueter ses deux sorties.",
+          "pourquoi_faux": "On ne sait plus quelle branche correspond à la condition vraie : l'algorigramme est ambigu.",
+          "correction_markdown": "Écris Oui et Non près des deux flèches qui sortent du losange."
+        },
+        {
+          "erreur_markdown": "Mettre une instruction `Ecrire` dans un rectangle.",
+          "pourquoi_faux": "Le rectangle est réservé aux traitements (calculs, affectations) ; les entrées-sorties ont leur parallélogramme.",
+          "correction_markdown": "Parallélogramme pour Lire et Ecrire, rectangle pour les calculs."
+        },
+        {
+          "erreur_markdown": "Laisser une branche du losange sans suite.",
+          "pourquoi_faux": "Chaque chemin doit arriver à l'ovale de fin, sinon l'exécution n'est pas terminée.",
+          "correction_markdown": "Fais converger les deux branches avant « Fin »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner le symbole normalisé de chacune de ces instructions : Début ; Lire(a) ; a ← a + 1 ; a > 10 ?",
+          "solution_markdown": "Début : **ovale**. `Lire(a)` : **parallélogramme** (entrée). `a ← a + 1` : **rectangle** (traitement). `a > 10 ?` : **losange** (test à deux sorties Oui et Non)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décrire, symbole par symbole, l'algorigramme de l'algorithme qui lit deux nombres a et b et affiche leur somme.",
+          "solution_markdown": "Ordre des symboles reliés par des flèches : (1) ovale **Début** ; (2) parallélogramme **Lire(a)** ; (3) parallélogramme **Lire(b)** ; (4) rectangle **s ← a + b** ; (5) parallélogramme **Ecrire(s)** ; (6) ovale **Fin**. Il n'y a pas de test : tout est séquentiel, donc un seul chemin."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Décrire l'algorigramme de l'algorithme qui lit un entier n et affiche « pair » si n est divisible par 2, « impair » sinon.",
+          "solution_markdown": "Ordre des symboles : (1) ovale **Début** ; (2) parallélogramme **Lire(n)** ; (3) losange **n mod 2 = 0 ?** (le reste de la division de n par 2 est nul) ; (4) sortie **Oui** : parallélogramme **Ecrire(\"pair\")** ; sortie **Non** : parallélogramme **Ecrire(\"impair\")** ; (5) les deux branches se rejoignent ; (6) ovale **Fin**. Test : n = 6 donne 6 mod 2 = 0, donc « pair » ; n = 7 donne 1, donc « impair »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un symbole par instruction : ovale, parallélogramme, rectangle, losange.",
+        "Le losange a deux sorties étiquetées Oui et Non.",
+        "Après un `Si ... Sinon`, les deux branches se rejoignent.",
+        "La déclaration des variables n'a pas de symbole.",
+        "Au Probatoire, l'algorigramme d'un algorithme court rapporte un point entier : sois propre, utilise la règle et étiquette les flèches."
+      ]
+    }
+  ]
+}

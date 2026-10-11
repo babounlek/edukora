@@ -1,0 +1,154 @@
+{
+  "cours_id": "cours-additionner-deux-nombres-binaires-3e",
+  "meta": {
+    "titre": "Additionner deux nombres binaires",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Codage de l'information",
+    "duree_estimee_min": 25,
+    "tags": [
+      "binaire",
+      "addition binaire",
+      "retenue",
+      "base 2"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-epreuve-zero-informatique-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique au BEPC 2022 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex2-q1b-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-epreuve-zero-informatique-2022-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une addition en binaire se fait comme en CM1, avec une seule différence : on n'a que deux chiffres, donc la retenue arrive dès que la somme atteint 2. L'ordinateur additionne ainsi des milliards de fois par seconde."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir poser une addition en colonnes avec retenue en base 10",
+        "Savoir convertir un nombre binaire en décimal"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre règles de l'addition binaire",
+      "contenu_markdown": "Pose les deux nombres en colonnes, **alignés à droite**, puis additionne colonne par colonne **de droite à gauche**, en ajoutant la retenue éventuelle de la colonne précédente.\n\n| Somme dans la colonne | On écrit | On retient |\n|---|---|---|\n| $0 + 0 = 0$ | 0 | 0 |\n| $0 + 1 = 1$ | 1 | 0 |\n| $1 + 1 = 10$ | 0 | 1 |\n| $1 + 1 + 1 = 11$ | 1 | 1 |\n\nSi une retenue reste après la dernière colonne, elle devient le chiffre de tête du résultat. **Contrôle** : convertis les deux termes et le résultat en décimal ; la somme doit correspondre."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Effectuer $(11010 + 10111)_2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser l'opération",
+          "justification": "On aligne à droite les deux nombres de 5 chiffres.",
+          "resultat_markdown": "$11010$ au-dessus de $10111$."
+        },
+        {
+          "numero": 2,
+          "action": "Colonne 1 (à droite)",
+          "justification": "$0 + 1 = 1$",
+          "resultat_markdown": "On écrit 1, retenue 0."
+        },
+        {
+          "numero": 3,
+          "action": "Colonne 2",
+          "justification": "$1 + 1 = 10$",
+          "resultat_markdown": "On écrit 0, retenue 1."
+        },
+        {
+          "numero": 4,
+          "action": "Colonne 3",
+          "justification": "$0 + 1 + 1 = 10$",
+          "resultat_markdown": "On écrit 0, retenue 1."
+        },
+        {
+          "numero": 5,
+          "action": "Colonne 4",
+          "justification": "$1 + 0 + 1 = 10$",
+          "resultat_markdown": "On écrit 0, retenue 1."
+        },
+        {
+          "numero": 6,
+          "action": "Colonne 5",
+          "justification": "$1 + 1 + 1 = 11$",
+          "resultat_markdown": "On écrit 1, retenue 1."
+        },
+        {
+          "numero": 7,
+          "action": "Reporter la retenue finale",
+          "justification": "Il ne reste plus de colonne : la retenue devient le chiffre de tête.",
+          "resultat_markdown": "Résultat : $110001$."
+        },
+        {
+          "numero": 8,
+          "action": "Vérifier en décimal",
+          "justification": "$26 + 23 = 49$ et $(110001)_2 = 32 + 16 + 1 = 49$.",
+          "resultat_markdown": "Les deux valeurs coïncident."
+        }
+      ],
+      "conclusion_markdown": "$(11010 + 10111)_2 = (110001)_2$, soit $26 + 23 = 49$ en décimal."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $1 + 1 = 2$.",
+          "pourquoi_faux": "Le chiffre 2 n'existe pas en binaire : on écrit 0 et on retient 1, car $2 = (10)_2$.",
+          "correction_markdown": "Retiens la ligne $1 + 1 = 10$."
+        },
+        {
+          "erreur_markdown": "Oublier d'ajouter la retenue dans la colonne suivante.",
+          "pourquoi_faux": "La retenue fait partie de la colonne : la somme $0 + 1 + 1$ vaut 2 et non 1.",
+          "correction_markdown": "Écris la retenue au-dessus de la colonne concernée."
+        },
+        {
+          "erreur_markdown": "Aligner les nombres à gauche.",
+          "pourquoi_faux": "Les colonnes représentent les puissances de 2 : elles se comptent depuis la droite.",
+          "correction_markdown": "Aligne toujours à droite, quitte à compléter par des zéros à gauche."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $(101 + 11)_2$.",
+          "solution_markdown": "Colonne 1 : $1 + 1 = 10$, on écrit 0, retenue 1. Colonne 2 : $0 + 1 + 1 = 10$, on écrit 0, retenue 1. Colonne 3 : $1 + 0 + 1 = 10$, on écrit 0, retenue 1. La retenue finale 1 devient le chiffre de tête. Résultat : $1000$. Vérification : $5 + 3 = 8 = (1000)_2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $(1101 + 1011)_2$.",
+          "solution_markdown": "Colonne 1 : $1 + 1 = 10$, on écrit 0, retenue 1. Colonne 2 : $0 + 1 + 1 = 10$, on écrit 0, retenue 1. Colonne 3 : $1 + 0 + 1 = 10$, on écrit 0, retenue 1. Colonne 4 : $1 + 1 + 1 = 11$, on écrit 1, retenue 1. Retenue finale : 1. Résultat : $11000$. Vérification : $13 + 11 = 24 = 16 + 8 = (11000)_2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $(101101 + 11011)_2$ et vérifier en décimal.",
+          "solution_markdown": "$(101101)_2$ vaut $32 + 8 + 4 + 1 = 45$ ; $(011011)_2$ vaut $16 + 8 + 2 + 1 = 27$. Colonne 1 : $1 + 1 = 10$, on écrit 0, retenue 1. Colonne 2 : $0 + 1 + 1 = 10$, on écrit 0, retenue 1. Colonne 3 : $1 + 0 + 1 = 10$, on écrit 0, retenue 1. Colonne 4 : $1 + 1 + 1 = 11$, on écrit 1, retenue 1. Colonne 5 : $0 + 1 + 1 = 10$, on écrit 0, retenue 1. Colonne 6 : $1 + 0 + 1 = 10$, on écrit 0, retenue 1. Retenue finale : 1. Résultat : $1001000$. Vérification : $45 + 27 = 72$ et $(1001000)_2 = 64 + 8 = 72$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En binaire, $1 + 1 = 10$ : on écrit 0 et on retient 1.",
+        "Aligne à droite et additionne de droite à gauche.",
+        "N'oublie pas la retenue dans la colonne suivante ni la retenue finale.",
+        "Contrôle par une conversion en décimal.",
+        "Au BEPC, l'addition binaire de deux nombres de 5 ou 6 chiffres revient dans l'exercice de codage."
+      ]
+    }
+  ]
+}

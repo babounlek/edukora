@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-modifier-un-element-de-tableau-par-son-indice-1ere-cde",
+  "meta": {
+    "titre": "Modifier un élément de tableau par son indice",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique : accès aux éléments d'un tableau",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableau",
+      "indice",
+      "affectation",
+      "t[i]",
+      "boucle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q1.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une enseignante veut ajouter 2 points à la note d'un élève dans un tableau de notes : comment dire à l'algorithme « cet élève-là » ? Avec l'indice, qui est l'adresse de la case. Lire et modifier une case par son indice est le geste de base de tout algorithme sur les tableaux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer un tableau et connaître ses bornes",
+        "Connaître l'affectation `←`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire, modifier, parcourir",
+      "contenu_markdown": "Un élément de tableau s'écrit `nom[indice]` et se comporte comme une variable :\n\n- **lire** : `x ← t[i]` ;\n- **modifier** : `t[i] ← nouvelle valeur` ;\n- **ajouter k à l'élément i** : `t[i] ← t[i] + k` (on lit l'ancienne valeur, on calcule, on range le résultat dans la même case).\n\n**Méthode** : (1) numérote les cases à partir du **premier indice du tableau** ; (2) repère l'indice de la valeur visée ; (3) écris l'instruction.\n\nPour traiter toutes les cases : `Pour i de 1 à n faire ... FinPour`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire l'instruction qui ajoute 3 à la valeur 14 du tableau tabAge = [15 ; 13 ; 16 ; 17 ; 21 ; 18 ; 19 ; 20 ; 12 ; 14], indexé à partir de 1.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Numéroter les cases à partir de 1",
+          "justification": "Le sujet précise l'indexation : la première valeur est à l'indice 1.",
+          "resultat_markdown": "15 → 1, 13 → 2, 16 → 3, 17 → 4, 21 → 5, 18 → 6, 19 → 7, 20 → 8, 12 → 9, 14 → 10."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer l'indice de la valeur 14",
+          "justification": "La valeur 14 apparaît une seule fois, en dernière position.",
+          "resultat_markdown": "Indice 10."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'instruction",
+          "justification": "On réaffecte la case à elle-même augmentée de 3.",
+          "resultat_markdown": "`tabAge[10] ← tabAge[10] + 3`"
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler",
+          "justification": "La valeur de la case passe de 14 à 17.",
+          "resultat_markdown": "tabAge[10] = 17."
+        }
+      ],
+      "conclusion_markdown": "L'instruction `tabAge[10] ← tabAge[10] + 3` fait passer la valeur 14 à 17."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `tabAge[14] ← tabAge[14] + 3`.",
+          "pourquoi_faux": "14 est la valeur, pas l'indice. Le tableau n'a que 10 cases : l'indice 14 n'existe pas.",
+          "correction_markdown": "Cherche d'abord la position de la valeur, puis écris cette position entre crochets."
+        },
+        {
+          "erreur_markdown": "Se tromper de un dans la numérotation : écrire `tabAge[9]`.",
+          "pourquoi_faux": "L'indice 9 correspond à la valeur 12 : le sujet indexe à partir de 1, pas de 0.",
+          "correction_markdown": "Numérote les cases au brouillon, juste au-dessus des valeurs."
+        },
+        {
+          "erreur_markdown": "Écrire `tabAge[10] + 3` sans affectation.",
+          "pourquoi_faux": "Cette expression calcule 17 mais ne range le résultat nulle part : la case garde la valeur 14.",
+          "correction_markdown": "Une modification est toujours une affectation : `t[i] ← ...`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le tableau t, indexé à partir de 1, vaut [5 ; 8 ; 2 ; 9]. Écrire l'instruction qui double la valeur 2 et donner le tableau obtenu.",
+          "solution_markdown": "La valeur 2 est à l'indice 3.\n\n```\nt[3] ← t[3] * 2\n```\n\nLa case 3 passe de 2 à 4 : t = [5 ; 8 ; 4 ; 9]."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Même tableau t = [5 ; 8 ; 2 ; 9]. Écrire les instructions qui échangent les valeurs des cases 1 et 4, et donner le tableau obtenu.",
+          "solution_markdown": "On utilise une variable temporaire pour ne pas perdre une valeur :\n\n```\ntemp ← t[1]\nt[1] ← t[4]\nt[4] ← temp\n```\n\n1. `temp` reçoit 5 ;\n2. `t[1]` reçoit 9 ;\n3. `t[4]` reçoit 5.\n\nRésultat : t = [9 ; 8 ; 2 ; 5].\n\nSans `temp`, écrire `t[1] ← t[4]` puis `t[4] ← t[1]` donnerait [9 ; 8 ; 2 ; 9] : la valeur 5 serait perdue."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une boucle qui ajoute 1 à chacune des quatre cases de t = [5 ; 8 ; 2 ; 9], puis donner le tableau obtenu.",
+          "solution_markdown": "```\nPour i de 1 à 4 faire\n    t[i] ← t[i] + 1\nFinPour\n```\n\nLa boucle prend successivement i = 1, 2, 3, 4 :\n\n- `t[1]` passe de 5 à 6 ;\n- `t[2]` passe de 8 à 9 ;\n- `t[3]` passe de 2 à 3 ;\n- `t[4]` passe de 9 à 10.\n\nRésultat : t = [6 ; 9 ; 3 ; 10]."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une case de tableau s'écrit `nom[indice]` et se modifie par une affectation.",
+        "Ajouter k à une case : `t[i] ← t[i] + k`.",
+        "Numérote les cases à partir du premier indice du tableau avant d'écrire l'instruction.",
+        "Ne confonds pas la valeur d'une case et son indice.",
+        "Au Probatoire, la modification d'une case par son indice est une question d'un point fréquente en algorithmique : la numérotation soignée évite l'erreur de décalage."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-reconnaitre-une-structure-de-controle-algorithmique-1ere-prob-a-2024",
+  "meta": {
+    "titre": "Reconnaître une structure de contrôle algorithmique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structures de contrôle",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algorithmique",
+      "structure conditionnelle",
+      "structure itérative",
+      "structure séquentielle",
+      "structures de contrôle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH, AC, session 2024 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2024-officiel-cameroun-ex2-qA.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme n'est pas qu'une liste d'ordres : il décide, il répète, il enchaîne. Les structures de contrôle sont les trois façons d'organiser ces ordres. Savoir en reconnaître une d'un coup d'œil, grâce à ses mots-clés, te permet de répondre aux questions « quelle structure est utilisée ? » sans lire tout l'algorithme ligne par ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un algorithme écrit en pseudo-code",
+        "Connaître les instructions Lire, Ecrire et l'affectation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois structures de contrôle et leurs mots-clés",
+      "contenu_markdown": "- **Structure séquentielle** : les instructions s'exécutent l'une après l'autre, dans l'ordre. Aucun mot-clé particulier.\n- **Structure conditionnelle** : l'exécution dépend d'une condition. *Simple* : `Si condition alors ... FinSi`. *Alternative* : `Si condition alors ... Sinon ... FinSi` (deux blocs, un seul est exécuté).\n- **Structure itérative (répétitive)** : un bloc est répété. Mots-clés : `Pour ... de ... à ...`, `Tant que ... faire`, `Répéter ... jusqu'à`.\n\nPour recopier une structure, on la prend **du mot-clé d'ouverture jusqu'au mot-clé de fermeture** (du `Si` au `FinSi`, du `Pour` au `FinPour`).",
+      "formule_principale": "\\text{Si} \\; \\text{condition} \\; \\text{alors} \\; A \\; \\text{Sinon} \\; B \\; \\text{FinSi}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Recopier la structure de contrôle utilisée dans l'algorithme suivant.\n\n```\nAlgorithme Controle_Temperature\nVar Temperature : réel ;\nDébut\n   Ecrire(\"Mesurer la température des cuves\") ;\n   Lire(Temperature) ;\n   Si (Temperature <= 17) alors\n       Ecrire(\"Ouvrir le Vanne\") ;\n   Sinon\n       Ecrire(\"Fermer le Vanne\") ;\n   FinSi\nFin.\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher les mots-clés de répétition",
+          "justification": "Aucun `Pour`, `Tant que` ni `Répéter` n'apparaît.",
+          "resultat_markdown": "Pas de structure itérative."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher les mots-clés de condition",
+          "justification": "`Si`, `alors`, `Sinon` et `FinSi` apparaissent.",
+          "resultat_markdown": "Structure conditionnelle."
+        },
+        {
+          "numero": 3,
+          "action": "Préciser le type de conditionnelle",
+          "justification": "La présence du `Sinon` signifie qu'un bloc est exécuté dans chaque cas : la condition vraie ou la condition fausse.",
+          "resultat_markdown": "Structure conditionnelle alternative."
+        },
+        {
+          "numero": 4,
+          "action": "Recopier du `Si` au `FinSi`",
+          "justification": "La structure commence au mot-clé d'ouverture et se termine au mot-clé de fermeture.",
+          "resultat_markdown": "```\nSi (Temperature <= 17) alors\n    Ecrire(\"Ouvrir le Vanne\") ;\nSinon\n    Ecrire(\"Fermer le Vanne\") ;\nFinSi\n```"
+        }
+      ],
+      "conclusion_markdown": "La structure utilisée est une structure conditionnelle alternative, qui affiche l'un des deux messages selon la valeur de Temperature."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier tout l'algorithme.",
+          "pourquoi_faux": "La question demande la structure de contrôle, pas l'algorithme : les lignes `Ecrire` et `Lire` du début sont des instructions séquentielles.",
+          "correction_markdown": "Recopie uniquement du `Si` au `FinSi`."
+        },
+        {
+          "erreur_markdown": "Ne recopier que la ligne `Si (Temperature <= 17) alors`.",
+          "pourquoi_faux": "La structure inclut ses deux blocs et son mot-clé de fermeture. Sans le `Sinon` et le `FinSi`, on ne voit pas qu'elle est alternative.",
+          "correction_markdown": "Va jusqu'au `FinSi`."
+        },
+        {
+          "erreur_markdown": "Confondre conditionnelle simple et alternative.",
+          "pourquoi_faux": "Sans `Sinon`, rien ne se passe quand la condition est fausse. Avec `Sinon`, un second bloc est exécuté.",
+          "correction_markdown": "Cherche le mot `Sinon` avant de nommer la structure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Nommer la structure de contrôle : `Lire(a)`, `Lire(b)`, `s ← a + b`, `Ecrire(s)`.",
+          "solution_markdown": "Les instructions s'exécutent l'une après l'autre sans condition ni répétition : c'est une **structure séquentielle**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Nommer la structure et son type : `Lire(note)`, puis `Si (note >= 10) alors Ecrire(\"Admis\") FinSi`.",
+          "solution_markdown": "Le mot-clé `Si` ouvre une **structure conditionnelle** ; comme il n'y a pas de `Sinon`, elle est **simple** : rien n'est affiché si la note est inférieure à 10."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Nommer les structures de l'algorithme : `Lire(n)`, `Pour i de 1 à n faire Ecrire(i) FinPour`, `Si (n > 5) alors Ecrire(\"Grand\") Sinon Ecrire(\"Petit\") FinSi`.",
+          "solution_markdown": "Trois structures s'enchaînent : la lecture de `n` est **séquentielle** ; `Pour ... FinPour` est une **structure itérative** (le bloc `Ecrire(i)` est répété n fois) ; `Si ... Sinon ... FinSi` est une **structure conditionnelle alternative**. L'ensemble des trois est lui-même exécuté en séquence."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois structures : séquentielle, conditionnelle, itérative.",
+        "Le `Si ... Sinon ... FinSi` est une alternative, le `Si ... FinSi` seul est une conditionnelle simple.",
+        "`Pour`, `Tant que` et `Répéter` signalent une répétition.",
+        "On recopie une structure du mot-clé d'ouverture au mot-clé de fermeture.",
+        "Au Probatoire, « Recopier la structure de contrôle » ou « Nommer la structure » apporte un demi-point facile dans l'exercice d'algorithmique."
+      ]
+    }
+  ]
+}

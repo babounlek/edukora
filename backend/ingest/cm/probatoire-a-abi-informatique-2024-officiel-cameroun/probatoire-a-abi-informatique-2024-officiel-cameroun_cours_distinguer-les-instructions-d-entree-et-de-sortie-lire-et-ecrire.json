@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-distinguer-les-instructions-d-entree-et-de-sortie-lire-et-ecrire-1ere-prob-a-2024",
+  "meta": {
+    "titre": "Distinguer les instructions d'entrée et de sortie Lire et Écrire",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : instructions élémentaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algorithmique",
+      "instruction de lecture",
+      "Lire",
+      "Ecrire",
+      "entrées-sorties"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH, AC, session 2024 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2024-officiel-cameroun-ex2-qA.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme dialogue avec l'utilisateur : il lui pose des questions, il reçoit des réponses, il affiche des résultats. Deux instructions assurent ce dialogue, `Lire` et `Ecrire`, et on les confond souvent. Ce cours t'apprend à dire en une phrase juste le rôle de chacune."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et son type",
+        "Lire un algorithme simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire reçoit, Ecrire montre",
+      "contenu_markdown": "- `Lire(variable)` est une instruction d'**entrée** : l'algorithme attend que l'utilisateur saisisse une donnée au clavier, et il la range dans la variable indiquée.\n- `Ecrire(...)` est une instruction de **sortie** : l'algorithme affiche à l'écran un message (texte entre guillemets) ou la valeur d'une variable (nom sans guillemets).\n\nPour donner le rôle d'une instruction, on précise **l'action** (saisie ou affichage) et **la variable concernée**.",
+      "formule_principale": "\\text{Lire}(x) : \\text{utilisateur} \\to x \\qquad \\text{Ecrire}(x) : x \\to \\text{écran}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme Controle_Temperature, donner le rôle de l'instruction de la ligne 5 : `Lire(Temperature)`.\n\n```\nAlgorithme Controle_Temperature\nVar Temperature : réel ;\nDébut\n   Ecrire(\"Mesurer la température des cuves\") ;\n   Lire(Temperature) ;\n   Si (Temperature <= 17) alors\n       Ecrire(\"Ouvrir le Vanne\") ;\n   Sinon\n       Ecrire(\"Fermer le Vanne\") ;\n   FinSi\nFin.\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type d'instruction",
+          "justification": "Le mot `Lire` désigne une instruction d'entrée : les données vont de l'utilisateur vers l'algorithme.",
+          "resultat_markdown": "Instruction d'entrée."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la variable concernée",
+          "justification": "Entre parenthèses se trouve la variable qui reçoit la valeur ; la ligne 2 dit qu'elle est de type réel.",
+          "resultat_markdown": "Variable : `Temperature` (réel)."
+        },
+        {
+          "numero": 3,
+          "action": "Dire à quoi la valeur servira",
+          "justification": "Pour être complet, on précise la suite : la valeur saisie est utilisée dans la condition de la ligne 6.",
+          "resultat_markdown": "Elle sera comparée à 17."
+        },
+        {
+          "numero": 4,
+          "action": "Rédiger la réponse",
+          "justification": "On assemble action, variable et usage.",
+          "resultat_markdown": "La ligne 5 demande à l'utilisateur de saisir la température mesurée et la range dans la variable `Temperature`."
+        }
+      ],
+      "conclusion_markdown": "`Lire(Temperature)` est une instruction d'entrée qui stocke la température saisie dans la variable `Temperature`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que `Lire(Temperature)` affiche la température.",
+          "pourquoi_faux": "L'affichage est le rôle de `Ecrire`. `Lire` ne montre rien : elle attend une saisie.",
+          "correction_markdown": "Retiens : Lire = saisie, Ecrire = affichage."
+        },
+        {
+          "erreur_markdown": "Confondre `Ecrire(Prix)` et `Ecrire(\"Prix\")`.",
+          "pourquoi_faux": "Sans guillemets, `Prix` désigne la variable et on affiche sa valeur (par exemple 500). Avec guillemets, on affiche le mot Prix lui-même.",
+          "correction_markdown": "Texte entre guillemets, variable sans guillemets."
+        },
+        {
+          "erreur_markdown": "Oublier de nommer la variable qui reçoit la valeur.",
+          "pourquoi_faux": "« Elle lit une valeur » reste incomplet : le correcteur attend de savoir où la valeur est rangée.",
+          "correction_markdown": "Écris « et la range dans la variable X »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner le rôle de l'instruction `Ecrire(\"Entrez votre âge\")`.",
+          "solution_markdown": "C'est une instruction de **sortie** : elle affiche à l'écran le message « Entrez votre âge » pour guider l'utilisateur avant la saisie. Le texte étant entre guillemets, il est affiché tel quel."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un algorithme qui lit deux nombres entiers a et b puis affiche leur somme. Donner son résultat si l'utilisateur saisit 3 puis 4.",
+          "solution_markdown": "```\nAlgorithme Somme\nVar a, b, s : entier ;\nDébut\n   Ecrire(\"Entrez deux nombres\") ;\n   Lire(a) ;\n   Lire(b) ;\n   s <- a + b ;\n   Ecrire(s) ;\nFin.\n```\n\nAvec a = 3 et b = 4 : s = 3 + 4 = 7, donc l'algorithme affiche 7."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Si Prix contient la valeur 500, quel affichage produisent `Ecrire(Prix)` puis `Ecrire(\"Prix\")` ? Pourquoi sont-ils différents ?",
+          "solution_markdown": "`Ecrire(Prix)` affiche **500** : sans guillemets, Prix est le nom d'une variable et on affiche sa valeur. `Ecrire(\"Prix\")` affiche le mot **Prix** : entre guillemets, c'est un texte. Les guillemets distinguent la chaîne de caractères littérale du nom d'une variable."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`Lire` est une entrée : de l'utilisateur vers la variable.",
+        "`Ecrire` est une sortie : de l'algorithme vers l'écran.",
+        "Entre guillemets, c'est du texte ; sans guillemets, c'est une variable.",
+        "Pour donner un rôle, dis l'action et nomme la variable.",
+        "Au Probatoire, « Donner le rôle de l'instruction de la ligne n » est une question fréquente sur un algorithme court."
+      ]
+    }
+  ]
+}

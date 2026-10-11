@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-calculer-la-resolution-d-une-image-numerique-1ere-cde",
+  "meta": {
+    "titre": "Calculer la résolution d'une image numérique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Multimédia : image numérique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "résolution",
+      "ppp",
+      "dpi",
+      "pixel",
+      "pouce"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex1-q5.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une photo qui paraît nette sur l'écran du téléphone devient floue une fois imprimée en grand. La différence vient de la résolution : le nombre de pixels disponibles sur chaque pouce de papier. Ce cours te donne le calcul qui décide si une image est assez fine pour l'usage voulu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un pixel et la définition d'une image (nombre de pixels en largeur et en hauteur)",
+        "Savoir diviser avec des nombres décimaux",
+        "Connaître 1 pouce = 2,54 cm"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résolution = pixels par pouce",
+      "contenu_markdown": "La **résolution** d'une image est le nombre de pixels qu'elle contient par pouce de sa dimension. Elle s'exprime en **ppp** (pixels par pouce) ou **dpi** (*dots per inch*).\n\n1. Convertis la dimension de l'image en pouces : divise les centimètres par 2,54.\n2. Divise la définition correspondante (en pixels) par cette dimension en pouces.\n3. Contrôle avec l'autre dimension : les deux résultats doivent être égaux aux arrondis près.",
+      "formule_principale": "R = \\dfrac{\\text{définition en pixels}}{\\text{dimension en pouces}} \\qquad 1\\ \\text{pouce} = 2{,}54\\ \\text{cm}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une image de définition $3744 \\times 5616$ pixels mesure $31{,}7 \\times 47{,}55$ cm. Calculer sa résolution.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la largeur en pouces",
+          "justification": "La résolution est en pixels par pouce : il faut des pouces.",
+          "resultat_markdown": "$\\dfrac{31{,}7}{2{,}54} \\approx 12{,}480$ pouces"
+        },
+        {
+          "numero": 2,
+          "action": "Diviser la largeur en pixels par la largeur en pouces",
+          "justification": "On applique la formule dans le sens de la largeur.",
+          "resultat_markdown": "$\\dfrac{3744}{12{,}480} \\approx 299{,}99$ ppp"
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler avec la hauteur",
+          "justification": "La même résolution doit s'obtenir sur l'autre dimension.",
+          "resultat_markdown": "$\\dfrac{47{,}55}{2{,}54} \\approx 18{,}720$ pouces, puis $\\dfrac{5616}{18{,}720} \\approx 299{,}99$ ppp"
+        },
+        {
+          "numero": 4,
+          "action": "Arrondir",
+          "justification": "Les dimensions sont données à 0,1 cm près : l'écart de 0,01 ppp avec 300 vient de cet arrondi.",
+          "resultat_markdown": "Résolution : 300 ppp."
+        }
+      ],
+      "conclusion_markdown": "L'image a une résolution d'environ 300 ppp, valeur usuelle pour l'impression."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser les pixels par les centimètres et annoncer le résultat en ppp.",
+          "pourquoi_faux": "$\\dfrac{3744}{31{,}7} \\approx 118$ est un nombre de pixels par **centimètre**. Le ppp compte par pouce, et 1 pouce vaut 2,54 cm.",
+          "correction_markdown": "Multiplie par 2,54 : $118{,}11 \\times 2{,}54 \\approx 300$ ppp."
+        },
+        {
+          "erreur_markdown": "Diviser la dimension par la définition (le quotient à l'envers).",
+          "pourquoi_faux": "On obtiendrait des pouces par pixel, soit un tout petit nombre (0,0033). Une résolution est un nombre de pixels par pouce : le nombre de pixels est au numérateur.",
+          "correction_markdown": "Écris l'unité du résultat avant de calculer : pixels ÷ pouces."
+        },
+        {
+          "erreur_markdown": "Confondre résolution et définition.",
+          "pourquoi_faux": "La définition est le nombre total de pixels de l'image (3744 par 5616). La résolution mesure la densité des pixels par pouce.",
+          "correction_markdown": "Définition = nombre de pixels ; résolution = pixels par pouce."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image de 1200 pixels de large mesure 10,16 cm de large. Calculer sa résolution.",
+          "solution_markdown": "**Conversion** : $\\dfrac{10{,}16}{2{,}54} = 4$ pouces.\n\n**Résolution** : $\\dfrac{1200}{4} = 300$ ppp."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image de définition $2480 \\times 3508$ pixels est destinée à une impression sur une feuille A4 ($21 \\times 29{,}7$ cm). Calculer la résolution dans les deux sens.",
+          "solution_markdown": "**Largeur** : $\\dfrac{21}{2{,}54} \\approx 8{,}268$ pouces, donc $\\dfrac{2480}{8{,}268} \\approx 299{,}96$ ppp.\n\n**Hauteur** : $\\dfrac{29{,}7}{2{,}54} \\approx 11{,}693$ pouces, donc $\\dfrac{3508}{11{,}693} \\approx 300{,}01$ ppp.\n\n**Conclusion** : les deux sens donnent environ 300 ppp."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut imprimer une photo de $15 \\times 10$ cm à 300 ppp. Quelle définition minimale en pixels l'image doit-elle avoir ?",
+          "solution_markdown": "Il faut inverser la formule : définition = résolution $\\times$ dimension en pouces.\n\n**Largeur** : $\\dfrac{15}{2{,}54} \\approx 5{,}906$ pouces, donc $300 \\times 5{,}906 \\approx 1771{,}7$ pixels, soit **1772 pixels** (arrondi par excès pour ne pas descendre sous 300 ppp).\n\n**Hauteur** : $\\dfrac{10}{2{,}54} \\approx 3{,}937$ pouces, donc $300 \\times 3{,}937 \\approx 1181{,}1$ pixels, soit **1182 pixels**.\n\n**Définition minimale** : $1772 \\times 1182$ pixels, c'est-à-dire environ 2,1 millions de pixels."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une résolution se compte en pixels par pouce : convertis toujours les centimètres en pouces.",
+        "Formule : $R = \\dfrac{\\text{pixels}}{\\text{pouces}}$, avec 1 pouce = 2,54 cm.",
+        "Contrôle avec l'autre dimension : les deux résultats doivent être égaux aux arrondis près.",
+        "300 ppp est la valeur classique pour l'impression, 72 à 96 ppp pour l'écran.",
+        "Au Probatoire, le calcul de la résolution suivi du calcul de la taille d'une image forme un duo classique de l'Exercice 1 : il rapporte des points à qui connaît la formule."
+      ]
+    }
+  ]
+}

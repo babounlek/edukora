@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-definir-une-structure-de-donnees-1ere-cde",
+  "meta": {
+    "titre": "Définir une structure de données",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique : structures de données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "structure de données",
+      "tableau",
+      "pile",
+      "file",
+      "indice"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q1.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour ranger dix âges, tu pourrais créer dix variables différentes. Il existe bien mieux : une structure de données qui range tout sous un seul nom. Savoir définir une structure de données, tableau, pile ou file, revient à dire ce qu'elle contient, comment c'est organisé et comment on y accède."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et son type",
+        "Connaître la notion d'indice ou de position"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre questions d'une définition de structure",
+      "contenu_markdown": "Pour définir une structure de données, réponds à quatre questions :\n\n1. **Que regroupe-t-elle ?** (éléments de même type, de types différents)\n2. **Comment sont-ils organisés ?** (à la suite, par niveaux, par ordre d'arrivée)\n3. **Comment accède-t-on à un élément ?** (par indice, par la tête, par le début)\n4. **Sa taille est-elle fixe ou variable ?**\n\nRepères :\n\n| Structure | Éléments | Accès | Taille |\n|---|---|---|---|\n| Tableau | même type | par indice | fixe |\n| Pile | même type | dernier entré, premier sorti (LIFO) | variable |\n| File | même type | premier entré, premier sorti (FIFO) | variable |\n| Enregistrement | types différents | par nom de champ | fixe |"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le contexte des algorithmes, définir le terme « tableau ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Que regroupe un tableau ?",
+          "justification": "Un tableau range plusieurs valeurs sous un seul nom, et toutes sont du même type (par exemple 10 entiers).",
+          "resultat_markdown": "Éléments de même type sous un même nom."
+        },
+        {
+          "numero": 2,
+          "action": "Comment sont-ils organisés ?",
+          "justification": "Les éléments sont rangés les uns à la suite des autres, chacun a une position.",
+          "resultat_markdown": "Rangés à la suite, de façon ordonnée."
+        },
+        {
+          "numero": 3,
+          "action": "Comment accède-t-on à un élément ?",
+          "justification": "On désigne la case par son numéro de position, l'indice.",
+          "resultat_markdown": "Accès direct par l'indice, par exemple `tabAge[3]`."
+        },
+        {
+          "numero": 4,
+          "action": "Taille",
+          "justification": "On fixe le nombre de cases à la déclaration.",
+          "resultat_markdown": "Nombre fixe d'éléments."
+        }
+      ],
+      "conclusion_markdown": "Un tableau est une structure de données regroupant un nombre fixe d'éléments de même type, repérés par un indice."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire qu'un tableau contient des éléments de types différents.",
+          "pourquoi_faux": "Cela décrit un enregistrement. Un tableau est homogène : toutes ses cases ont le même type.",
+          "correction_markdown": "Écris « éléments de même type »."
+        },
+        {
+          "erreur_markdown": "Définir le tableau comme « une variable qui contient des nombres ».",
+          "pourquoi_faux": "Une variable simple contient une seule valeur. Le tableau en contient plusieurs, repérées par un indice.",
+          "correction_markdown": "Cite le mot « indice » et l'idée de plusieurs éléments."
+        },
+        {
+          "erreur_markdown": "Confondre le tableau à une dimension et la matrice.",
+          "pourquoi_faux": "La matrice est un tableau à deux dimensions (lignes et colonnes) : un cas particulier de tableau.",
+          "correction_markdown": "Précise le nombre de dimensions si le sujet le demande."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définir : pile.",
+          "solution_markdown": "Une **pile** est une structure de données linéaire dont les éléments sont ajoutés et retirés par une seule extrémité, le sommet : le dernier élément entré est le premier sorti (principe LIFO). Exemple : une pile d'assiettes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Définir : file, et donner une situation de la vie courante qui l'illustre.",
+          "solution_markdown": "Une **file** est une structure de données linéaire dans laquelle les éléments sont ajoutés à une extrémité (la queue) et retirés à l'autre (la tête) : le premier élément entré est le premier sorti (principe FIFO).\n\nExemple : les clients d'un guichet de banque, servis dans l'ordre d'arrivée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un enregistrement et un tableau regroupent tous deux plusieurs valeurs sous un seul nom. Donne la différence et un exemple de chacun pour un élève (nom, prénom, âge).",
+          "solution_markdown": "**Tableau** : éléments de **même type**, accédés par un indice. Exemple : `ages[1..10]` contient les âges de dix élèves, tous des entiers.\n\n**Enregistrement** : éléments de **types différents**, accédés par le nom de leur champ. Exemple : l'enregistrement `eleve` avec `nom` (chaîne), `prenom` (chaîne) et `age` (entier), accessible par `eleve.nom`.\n\nOn peut combiner les deux : un tableau d'enregistrements pour gérer toute une classe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une structure de données se définit par son contenu, son organisation, son accès et sa taille.",
+        "Tableau : éléments de même type, nombre fixe, accès par indice.",
+        "Pile : dernier entré, premier sorti. File : premier entré, premier sorti.",
+        "Ne confonds pas tableau (même type) et enregistrement (types différents).",
+        "Au Probatoire, définir un tableau et citer d'autres structures est une question classique d'algorithmique : deux mots-clés, « même type » et « indice », assurent le point."
+      ]
+    }
+  ]
+}

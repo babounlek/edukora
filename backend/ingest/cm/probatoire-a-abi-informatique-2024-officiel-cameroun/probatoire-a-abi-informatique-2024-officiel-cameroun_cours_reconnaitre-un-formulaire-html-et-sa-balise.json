@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-reconnaitre-un-formulaire-html-et-sa-balise-1ere-prob-a-2024",
+  "meta": {
+    "titre": "Reconnaître un formulaire HTML et sa balise",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : HTML et formulaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "formulaire web",
+      "balise form",
+      "balises HTML",
+      "programmation web"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH, AC, session 2024 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2024-officiel-cameroun-ex2-qB.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu t'inscris sur un site, que tu te connectes ou que tu envoies un message, tu remplis un formulaire. Derrière cette interface, une seule balise HTML en regroupe tous les éléments. Savoir la nommer et reconnaître ce qu'elle contient suffit pour la plupart des questions du Probatoire sur les pages web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page web est écrite en HTML avec des balises",
+        "Distinguer balise ouvrante et balise fermante"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise form et ses éléments de saisie",
+      "contenu_markdown": "Un **formulaire web** est une interface qui permet à l'internaute de saisir des données et de les envoyer à un serveur. Il se déclare avec la balise `<form>` ouvrante et `</form>` fermante. À l'intérieur on place les éléments de saisie :\n\n- `<input type=\"text\">` : champ de texte sur une ligne ;\n- `<input type=\"radio\">` : bouton radio (un seul choix possible dans un groupe de même `name`) ;\n- `<input type=\"checkbox\">` : case à cocher ;\n- `<textarea>` : zone de texte sur plusieurs lignes ;\n- `<select>` avec `<option>` : liste déroulante ;\n- `<input type=\"submit\">` : bouton d'envoi.",
+      "formule_principale": "\\text{formulaire} = \\text{balise form} + \\text{éléments de saisie}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une page web affiche deux champs de texte (Nom, Prénom), deux boutons radio (Masculin, Féminin) et deux boutons (envoyer, annuler). Nommer l'interface et donner la balise qui l'insère.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les éléments visibles",
+          "justification": "Savoir ce que contient l'interface permet de la nommer.",
+          "resultat_markdown": "Deux champs de texte, deux boutons radio, deux boutons."
+        },
+        {
+          "numero": 2,
+          "action": "Reconnaître la nature de l'interface",
+          "justification": "Des champs à remplir et un bouton d'envoi forment un formulaire.",
+          "resultat_markdown": "Interface : un formulaire."
+        },
+        {
+          "numero": 3,
+          "action": "Donner la balise qui délimite l'ensemble",
+          "justification": "C'est `<form>` et non `<input>` : `<input>` insère un seul élément à l'intérieur.",
+          "resultat_markdown": "Balise : `<form> ... </form>`."
+        }
+      ],
+      "conclusion_markdown": "L'interface est un formulaire, inséré par la balise `<form>` fermée par `</form>`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `<input>`.",
+          "pourquoi_faux": "`<input>` insère un champ ou un bouton, un seul à la fois. Elle se place à l'intérieur du formulaire sans le déclarer.",
+          "correction_markdown": "Réponds `<form>` pour l'ensemble."
+        },
+        {
+          "erreur_markdown": "Répondre `<table>` parce que les champs sont alignés.",
+          "pourquoi_faux": "`<table>` sert à présenter des données en tableau ; la mise en page n'est pas la nature de l'interface.",
+          "correction_markdown": "Regarde ce que l'internaute fait (il saisit puis envoie) pour nommer l'interface."
+        },
+        {
+          "erreur_markdown": "Oublier la balise fermante `</form>`.",
+          "pourquoi_faux": "Sans elle, le navigateur ne sait pas où le formulaire s'arrête, et les éléments suivants peuvent s'y retrouver rattachés.",
+          "correction_markdown": "Écris `<form>` et `</form>` d'abord, puis remplis l'intérieur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle balise permet d'insérer une zone de saisie de texte de plusieurs lignes dans un formulaire ?",
+          "solution_markdown": "La balise `<textarea>` ... `</textarea>`. Exemple : `<textarea name=\"message\" rows=\"5\" cols=\"30\"></textarea>`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire le code HTML d'un formulaire de connexion avec un champ identifiant, un champ mot de passe (caractères masqués) et un bouton « Connexion ».",
+          "solution_markdown": "```html\n<form action=\"connexion.php\" method=\"post\">\n  <label for=\"id\">Identifiant :</label>\n  <input type=\"text\" id=\"id\" name=\"identifiant\"><br>\n  <label for=\"mdp\">Mot de passe :</label>\n  <input type=\"password\" id=\"mdp\" name=\"mdp\"><br>\n  <input type=\"submit\" value=\"Connexion\">\n</form>\n```\n\nLe type `password` masque les caractères saisis."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire le code HTML d'un groupe de boutons radio « Sexe » (Masculin, Féminin) tel qu'un seul choix soit possible, puis d'une liste déroulante « Classe » avec les options Première A et Première C.",
+          "solution_markdown": "```html\nSexe :\n<input type=\"radio\" name=\"sexe\" value=\"M\"> Masculin\n<input type=\"radio\" name=\"sexe\" value=\"F\"> Féminin<br>\nClasse :\n<select name=\"classe\">\n  <option value=\"1A\">Première A</option>\n  <option value=\"1C\">Première C</option>\n</select>\n```\n\nLes deux boutons radio portent le **même** attribut `name` (sexe) : c'est ce qui les rend exclusifs. Leurs `value` diffèrent pour identifier le choix envoyé au serveur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire est délimité par `<form>` et `</form>`.",
+        "`<input>` insère un seul élément de saisie à l'intérieur du formulaire.",
+        "Boutons radio : même `name` pour un choix exclusif, `value` différentes.",
+        "`type=\"password\"` masque la saisie, `type=\"submit\"` envoie.",
+        "Au Probatoire, « Nommer l'interface » et « Donner la balise » reviennent dans l'exercice de programmation web."
+      ]
+    }
+  ]
+}

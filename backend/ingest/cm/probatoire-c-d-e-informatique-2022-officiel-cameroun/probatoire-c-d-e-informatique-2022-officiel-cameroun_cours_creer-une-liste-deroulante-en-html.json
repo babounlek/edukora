@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-creer-une-liste-deroulante-en-html-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Créer une liste déroulante en HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Programmation web",
+    "duree_estimee_min": 30,
+    "tags": [
+      "HTML",
+      "formulaire",
+      "liste déroulante",
+      "select"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex3-qB.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un site d'inscription, tu choisis ton examen, ta ville, ta classe dans des listes : ce sont des listes déroulantes. Elles évitent les fautes de frappe, car l'utilisateur ne peut choisir que ce qui est proposé. Savoir en écrire une est une compétence de base des formulaires HTML."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une balise HTML (ouvrante, fermante, attributs)",
+        "Connaître les champs d'un formulaire (input, label)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les balises label, select et option",
+      "contenu_markdown": "```html\n<label for=\"identifiant\">Intitulé :</label>\n<select name=\"nom_du_champ\" id=\"identifiant\">\n    <option value=\"valeur1\">Texte affiché 1</option>\n    <option value=\"valeur2\">Texte affiché 2</option>\n</select>\n```\n\n- `<select>` crée la liste, `<option>` crée un choix.\n- Le texte entre `<option>` et `</option>` est ce que voit l'utilisateur ; `value` est ce qui est envoyé au serveur.\n- `for` du `label` reprend l'`id` du `select` : cliquer sur l'intitulé active la liste.\n- `selected` présélectionne un choix."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code de la ligne « 4. Examen sollicité » du formulaire de l'épreuve, avec la liste Choisir, Probatoire C, Probatoire D, Probatoire E.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'intitulé",
+          "justification": "Le label annonce la ligne et se relie à la liste par `for`.",
+          "resultat_markdown": "`<label for=\"examen\">4. Examen sollicité :</label>`"
+        },
+        {
+          "numero": 2,
+          "action": "Ouvrir la liste",
+          "justification": "On donne un `name` pour le serveur et un `id` pour le label.",
+          "resultat_markdown": "`<select name=\"examen\" id=\"examen\">`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire les choix",
+          "justification": "Un `option` par choix, le premier en invite avec une valeur vide.",
+          "resultat_markdown": "`<option value=\"\">Choisir</option>` puis les trois Probatoire C, D et E"
+        },
+        {
+          "numero": 4,
+          "action": "Fermer la liste",
+          "justification": "Chaque balise ouvrante doit se fermer.",
+          "resultat_markdown": "`</select>`"
+        }
+      ],
+      "conclusion_markdown": "La liste déroulante se code avec un `label`, un `select` et quatre `option`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire les `option` en dehors du `select`.",
+          "pourquoi_faux": "Les choix n'appartiennent alors à aucune liste et ne s'affichent pas comme attendu.",
+          "correction_markdown": "Place toujours les `option` entre `<select>` et `</select>`."
+        },
+        {
+          "erreur_markdown": "Oublier de fermer `</select>` ou `</option>`.",
+          "pourquoi_faux": "Le navigateur devine, mais le code n'est plus valide et peut afficher la page de travers.",
+          "correction_markdown": "Ferme chaque balise avant de passer à la suivante."
+        },
+        {
+          "erreur_markdown": "Confondre `select` et `input type=\"radio\"`.",
+          "pourquoi_faux": "`select` donne une liste déroulante, `radio` des boutons ronds où tous les choix sont visibles.",
+          "correction_markdown": "Liste déroulante : `select`. Un seul choix visible : `radio`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris une liste déroulante « Ville » avec Douala, Yaoundé et Bafoussam.",
+          "solution_markdown": "```html\n<label for=\"ville\">Ville :</label>\n<select name=\"ville\" id=\"ville\">\n    <option value=\"douala\">Douala</option>\n    <option value=\"yaounde\">Yaoundé</option>\n    <option value=\"bafoussam\">Bafoussam</option>\n</select>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Modifie la liste précédente pour que Yaoundé soit sélectionné au chargement de la page.",
+          "solution_markdown": "On ajoute l'attribut `selected` à l'option voulue : `<option value=\"yaounde\" selected>Yaoundé</option>`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Trouve les trois erreurs : `<select name=examen> <option>Probatoire C <option>Probatoire D </select>`",
+          "solution_markdown": "1) Les valeurs d'attribut doivent être entre guillemets : `name=\"examen\"`. 2) Les balises `</option>` ne sont pas fermées. 3) Aucune valeur `value` n'est précisée : le serveur recevra le texte affiché au lieu d'une valeur choisie (acceptable, mais peu rigoureux). Version corrigée : `<select name=\"examen\"><option value=\"C\">Probatoire C</option><option value=\"D\">Probatoire D</option></select>`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une liste déroulante utilise `select` et `option`.",
+        "Le texte affiché et la valeur envoyée sont deux choses : `value` pour le serveur.",
+        "Le `for` du `label` reprend l'`id` du champ.",
+        "Chaque balise ouvrante se ferme.",
+        "Au Probatoire, le code d'une ligne de formulaire vaut 1 pt : écris-le sans omettre une fermeture."
+      ]
+    }
+  ]
+}

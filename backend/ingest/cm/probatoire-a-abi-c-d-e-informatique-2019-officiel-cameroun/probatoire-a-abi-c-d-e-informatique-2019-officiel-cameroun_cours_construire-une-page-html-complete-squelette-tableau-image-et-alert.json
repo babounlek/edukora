@@ -1,0 +1,176 @@
+{
+  "cours_id": "cours-page-html-complete-informatique-probatoire-i1",
+  "meta": {
+    "titre": "Construire une page HTML complète : squelette, tableau, image et boîte alert",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Langages du web",
+    "duree_estimee_min": 35,
+    "tags": [
+      "Structure d'une page web",
+      "Syntaxe des balises",
+      "Balises table et img",
+      "Affichage dans une page web",
+      "Boîte de dialogue alert",
+      "HTML",
+      "JavaScript"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "epreuve_source": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-cours-page-html-complete-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Derrière chaque page que tu ouvres sur ton téléphone ou à l'ordinateur, il y a un simple fichier texte plein de balises. Le navigateur le lit de haut en bas et le transforme en titres, en tableaux, en images et parfois en petites fenêtres de message. Au Probatoire, on te demande d'écrire ou de corriger quelques lignes de ce fichier : la syntaxe d'un tableau, celle d'une image, la structure complète d'une page, ou encore un message en JavaScript.\n\nCe cours te donne un plan unique en quatre blocs : le squelette, le contenu (texte, tableau, image), le comportement (boîte alert) et la façon dont le navigateur affiche le tout. Avec ce plan, tu n'oublies plus rien et tu repères une erreur en quelques secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page web est un fichier texte enregistré avec l'extension .html et ouvert avec un navigateur",
+        "Connaître le rôle d'un éditeur de texte (Bloc-notes, par exemple) et celui d'un navigateur",
+        "Distinguer un langage de balisage (HTML) d'un langage de script (JavaScript)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le plan en quatre blocs : squelette, contenu, comportement, affichage",
+      "contenu_markdown": "**Bloc 1. Le squelette d'une page.** Toute page contient les mêmes pièces, toujours dans le même ordre.\n\n| Élément | Rôle | Place dans le fichier |\n|---|---|---|\n| `<!DOCTYPE html>` | annonce au navigateur que le document est écrit en HTML (pas de balise fermante) | toute première ligne |\n| `<html> ... </html>` | enveloppe toute la page | de la deuxième ligne à la dernière |\n| `<head> ... </head>` | informations sur la page, qui ne s'affichent pas dans la page | juste après `<html>` |\n| `<title> ... </title>` | titre montré dans l'onglet du navigateur | à l'intérieur de `<head>` |\n| `<body> ... </body>` | tout ce que l'internaute voit dans la page | après `</head>` |\n\n**Syntaxe d'une balise.** Une balise ouvrante s'écrit `<nom attribut=\"valeur\">`, puis vient le contenu, puis la balise fermante `</nom>` (chevron, barre oblique, nom, chevron, sans espace). Les attributs ne se placent que dans la balise ouvrante. Les balises s'imbriquent comme des poupées russes : la dernière ouverte est la première fermée. Quelques balises sont vides et n'ont pas de balise fermante, comme `<img>` et `<br>`.\n\n**Bloc 2. Le contenu.**\n\n- Un tableau : `<table>` contient des lignes `<tr>` (table row), et chaque ligne contient des cellules `<td>` (table data) ou des cellules d'en-tête `<th>` (table header). Une cellule ne se place jamais directement dans `<table>` : elle est toujours dans une ligne.\n- Une image : `<img src=\"logo.png\" alt=\"Logo du lycée\">`. L'attribut `src` (source) donne le nom ou le chemin du fichier ; l'attribut `alt` donne le texte de remplacement. Pas de balise fermante.\n\n**Bloc 3. Le comportement.** Une boîte de dialogue s'obtient avec JavaScript, dans une balise `<script>` : `alert(\"Bonjour\");`. Le message est écrit entre guillemets, entre parenthèses, et l'instruction se termine par un point-virgule.\n\n**Bloc 4. L'affichage.** Le navigateur lit le fichier de haut en bas et n'affiche jamais les balises elles-mêmes, seulement leur effet. Le contenu de `<head>` n'apparaît pas dans la page (sauf le titre, qui va dans l'onglet). Une instruction `alert` ouvre une fenêtre qui bloque la page jusqu'au clic sur OK.",
+      "formule_principale": "Page web = DOCTYPE + html (head avec title, puis body) ; table = tr puis td ; img = src (et alt) sans balise fermante ; alert(message) ouvre une boîte de dialogue ; toute balise ouverte est refermée dans l'ordre inverse",
+      "variantes": [
+        {
+          "nom": "Tableau avec ligne d'en-têtes et traits visibles",
+          "quand_utiliser": "Quand l'énoncé demande une première ligne de titres de colonnes ou un tableau avec des bordures",
+          "contenu_markdown": "Les cellules d'en-tête s'écrivent avec `<th>` (texte en gras et centré par défaut). L'attribut `border=\"1\"` de la balise `<table>` fait apparaître les traits. Dans les sujets du Probatoire, c'est la forme attendue.\n\n```html\n<table border=\"1\">\n  <tr><th>Nom</th><th>Note</th></tr>\n  <tr><td>Mbarga</td><td>14</td></tr>\n</table>\n```\n\nLe tableau a 2 lignes (deux `<tr>`) et 2 colonnes (deux cellules par ligne)."
+        },
+        {
+          "nom": "Écrire dans la page ou ouvrir une boîte de message",
+          "quand_utiliser": "Quand l'énoncé demande d'afficher un texte avec JavaScript et que tu dois choisir entre alert et document.write",
+          "contenu_markdown": "| Instruction | Effet visible | Où le texte apparaît |\n|---|---|---|\n| `alert(\"Texte\");` | ouvre une petite fenêtre avec un bouton OK | dans une boîte, au-dessus de la page |\n| `document.write(\"Texte\");` | écrit le texte dans le document | dans la page elle-même |\n\nUne fenêtre alert est une sortie, comme document.write. Ne la confonds pas avec `prompt()`, qui demande une saisie à l'utilisateur. Attention : si document.write s'exécute après le chargement complet de la page (par exemple après un clic), elle remplace tout le contenu de la page."
+        },
+        {
+          "nom": "Image : chemin du fichier et texte de remplacement",
+          "quand_utiliser": "Quand l'image est rangée dans un dossier ou quand il faut penser à l'accessibilité",
+          "contenu_markdown": "Si le fichier image est dans le même dossier que la page, `src=\"logo.png\"` suffit. S'il est dans un sous-dossier nommé images, on écrit le chemin relatif `src=\"images/logo.png\"` avec des barres obliques normales. L'attribut `alt` s'affiche si l'image est introuvable et il est lu à voix haute par les lecteurs d'écran : un bon texte décrit ce que montre l'image. On peut aussi imposer la taille avec `width=\"150\"` et `height=\"100\"` (en pixels)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code complet d'une page web qui a pour titre « Mon lycée » et qui contient : un titre de niveau 1 « Bienvenue au lycée », une image `logo.png` de texte de remplacement « Logo du lycée », un tableau de 2 lignes et 2 colonnes (en-têtes « Nom » et « Note », puis une ligne « Mbarga » et « 14 ») et, à l'ouverture, une boîte de dialogue affichant « Bienvenue sur la page du lycée ».",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser le squelette",
+          "justification": "Toute page commence par le doctype, puis html, head et body, dans cet ordre",
+          "resultat_markdown": "Les lignes `<!DOCTYPE html>`, `<html>`, `<head>`, `</head>`, `<body>`, `</body>` et `</html>` sont écrites ; on remplira ensuite head et body."
+        },
+        {
+          "numero": 2,
+          "action": "Renseigner la tête de page",
+          "justification": "Le titre de la page va dans head, à l'intérieur de title, et jamais dans body",
+          "resultat_markdown": "Dans head : `<meta charset=\"UTF-8\">` (pour les accents) puis `<title>Mon lycée</title>`."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le titre et l'image dans body",
+          "justification": "Le titre de niveau 1 se fait avec h1 ; l'image utilise img, qui n'a pas de balise fermante et qui exige src",
+          "resultat_markdown": "`<h1>Bienvenue au lycée</h1>` puis `<img src=\"logo.png\" alt=\"Logo du lycée\">`."
+        },
+        {
+          "numero": 4,
+          "action": "Construire le tableau ligne par ligne",
+          "justification": "Deux lignes donc deux balises tr ; deux colonnes donc deux cellules par ligne ; la première ligne contient des th car ce sont les en-têtes",
+          "resultat_markdown": "Ligne 1 : `<tr><th>Nom</th><th>Note</th></tr>`. Ligne 2 : `<tr><td>Mbarga</td><td>14</td></tr>`. Le tout est entouré de `<table border=\"1\">` et `</table>`."
+        },
+        {
+          "numero": 5,
+          "action": "Ajouter la boîte de dialogue",
+          "justification": "alert est une instruction JavaScript : elle se place dans une balise script, avec le message entre guillemets et un point-virgule final",
+          "resultat_markdown": "`<script>alert(\"Bienvenue sur la page du lycée\");</script>` placé en fin de body."
+        },
+        {
+          "numero": 6,
+          "action": "Assembler et vérifier avec la pile",
+          "justification": "Chaque balise ouverte doit être fermée dans l'ordre inverse de son ouverture",
+          "resultat_markdown": "```html\n<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Mon lycée</title>\n</head>\n<body>\n<h1>Bienvenue au lycée</h1>\n<img src=\"logo.png\" alt=\"Logo du lycée\">\n<table border=\"1\">\n  <tr><th>Nom</th><th>Note</th></tr>\n  <tr><td>Mbarga</td><td>14</td></tr>\n</table>\n<script>\nalert(\"Bienvenue sur la page du lycée\");\n</script>\n</body>\n</html>\n```"
+        }
+      ],
+      "conclusion_markdown": "Le code respecte le plan : squelette complet, titre dans head, contenu dans body, tableau en tr puis td, image avec src et alt, boîte alert dans un script. À l'ouverture dans le navigateur, la fenêtre de bienvenue apparaît ; après le clic sur OK, on voit le titre, l'image et le tableau, et l'onglet porte le nom « Mon lycée »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `<image src=\"logo.png\">` ou fermer l'image avec `</img>`",
+          "pourquoi_faux": "La balise s'appelle `img` et non `image`. C'est une balise vide : elle ne contient rien, donc elle n'a pas de balise fermante.",
+          "correction_markdown": "Écrire `<img src=\"logo.png\" alt=\"Logo\">`, sans `</img>`, et ne jamais oublier l'attribut `src`."
+        },
+        {
+          "erreur_markdown": "Placer les cellules `<td>` directement dans `<table>`, sans `<tr>`",
+          "pourquoi_faux": "Une cellule appartient à une ligne. Sans `<tr>`, la structure du tableau n'est pas valide et son affichage devient imprévisible.",
+          "correction_markdown": "Toujours suivre l'emboîtement `table` puis `tr` puis `td` (ou `th`)."
+        },
+        {
+          "erreur_markdown": "Mettre le titre de la page (`<title>`) dans `<body>` en pensant qu'il s'affichera au-dessus du texte",
+          "pourquoi_faux": "Le titre appartient à `<head>` : il apparaît dans l'onglet du navigateur, pas dans la page. Pour un titre visible dans la page, on utilise `<h1>` dans `<body>`.",
+          "correction_markdown": "Distinguer `<title>` (onglet, dans head) et `<h1>` (titre visible, dans body)."
+        },
+        {
+          "erreur_markdown": "Écrire `alert(Bonjour)` sans guillemets, ou placer `alert(\"Bonjour\");` directement dans le body, hors de `<script>`",
+          "pourquoi_faux": "Sans guillemets, JavaScript lit Bonjour comme le nom d'une variable qui n'existe pas. Sans balise `script`, le navigateur traite l'instruction comme du simple texte à afficher.",
+          "correction_markdown": "Écrire `<script>alert(\"Bonjour\");</script>` : message entre guillemets, instruction dans un script."
+        },
+        {
+          "erreur_markdown": "Penser que le contenu de `<head>` s'affiche dans la page",
+          "pourquoi_faux": "La tête de page contient des informations sur la page (titre de l'onglet, jeu de caractères). Seul le contenu de `<body>` est dessiné dans la fenêtre.",
+          "correction_markdown": "Tout ce qui doit être vu par l'internaute va dans `<body>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associer chaque balise à son rôle : `<head>`, `<title>`, `<body>`, `<html>`. Rôles : (a) contient tout ce qui s'affiche dans la page ; (b) enveloppe toute la page ; (c) donne le nom de l'onglet du navigateur ; (d) regroupe les informations sur la page qui ne s'affichent pas dans la page.",
+          "solution_markdown": "`<head>` correspond à (d), `<title>` à (c), `<body>` à (a) et `<html>` à (b). Ordre dans le fichier : `<!DOCTYPE html>`, puis `<html>`, puis `<head>` contenant `<title>`, puis `<body>`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire le code HTML d'un tableau de 3 lignes et 2 colonnes, avec bordures. La première ligne contient les en-têtes « Produit » et « Prix en FCFA ». Les deux autres lignes contiennent « Cahier » et « 500 », puis « Stylo » et « 100 ». Ensuite, écrire la balise qui insère l'image `cartable.jpg` avec le texte de remplacement « Cartable ».",
+          "solution_markdown": "```html\n<table border=\"1\">\n  <tr><th>Produit</th><th>Prix en FCFA</th></tr>\n  <tr><td>Cahier</td><td>500</td></tr>\n  <tr><td>Stylo</td><td>100</td></tr>\n</table>\n<img src=\"cartable.jpg\" alt=\"Cartable\">\n```\nTrois balises `<tr>` donnent les 3 lignes ; chaque ligne contient 2 cellules donc 2 colonnes. La première ligne utilise `<th>` pour les en-têtes. L'image n'a pas de balise fermante. Les prix sont des exemples inventés pour l'exercice."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une page complète intitulée « Boutique du quartier » : un titre h1 « Nos produits », un tableau avec en-têtes (Article, Quantité) et une ligne (Riz, 10), puis un script qui ouvre une boîte avec le message « Bienvenue ». Ensuite, décrire dans l'ordre ce que voit l'internaute quand il ouvre la page.",
+          "solution_markdown": "```html\n<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Boutique du quartier</title>\n</head>\n<body>\n<h1>Nos produits</h1>\n<table border=\"1\">\n  <tr><th>Article</th><th>Quantité</th></tr>\n  <tr><td>Riz</td><td>10</td></tr>\n</table>\n<script>\nalert(\"Bienvenue\");\n</script>\n</body>\n</html>\n```\nCe que voit l'internaute : l'onglet du navigateur porte le nom « Boutique du quartier ». Le navigateur lit la page de haut en bas ; quand il arrive à l'instruction alert, une fenêtre « Bienvenue » s'ouvre et bloque la suite tant qu'on n'a pas cliqué sur OK. Après le clic, la page est entièrement affichée : le titre « Nos produits » puis le tableau à deux colonnes. Le contenu de head (jeu de caractères et titre) n'apparaît pas dans la page. Vérification de l'imbrication : table contient tr, qui contient th ou td ; script est refermé avant body, et body avant html."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une page web suit toujours le squelette : doctype, puis html contenant head (avec title) et body.",
+        "Une balise ouvrante porte les attributs, la balise fermante s'écrit sans espace ni attribut, et l'on ferme dans l'ordre inverse de l'ouverture.",
+        "Un tableau s'emboîte en table, tr, puis td ou th ; une image s'écrit avec img, l'attribut src obligatoire, alt conseillé et aucune balise fermante.",
+        "Une boîte de dialogue s'écrit en JavaScript dans une balise script : alert avec le message entre guillemets et un point-virgule.",
+        "Le navigateur lit de haut en bas et n'affiche que le contenu de body ; le titre de head va dans l'onglet.",
+        "Au Probatoire, écris toujours un exemple de code complet : il prouve que tu connais la syntaxe."
+      ]
+    }
+  ]
+}

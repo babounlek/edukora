@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-reconnaitre-une-instruction-de-lecture-et-d-ecriture-3e",
+  "meta": {
+    "titre": "Reconnaître une instruction de lecture et d'écriture",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "lire",
+      "écrire",
+      "entrée",
+      "sortie",
+      "instruction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-epreuve-zero-informatique-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique au BEPC 2022 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex3-q2b-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-epreuve-zero-informatique-2022-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme qui ne reçoit rien ni ne montre rien est inutile. Pour dialoguer avec l'utilisateur, il dispose de deux instructions : une pour recevoir une donnée, l'autre pour afficher un message ou un résultat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'un algorithme",
+        "Savoir ce qu'est une variable"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire pour entrer, écrire pour sortir",
+      "contenu_markdown": "| Instruction | Forme | Effet | Sens |\n|---|---|---|---|\n| Lecture | `lire(variable)` | l'utilisateur saisit une valeur, rangée dans la variable | entrée |\n| Écriture | `écrire(\"texte\")` ou `écrire(variable)` | le texte ou la valeur s'affiche | sortie |\n\nPour relever une instruction de lecture, cherche le verbe `lire` : l'instruction **recopie une variable entre parenthèses**. Un `écrire` qui contient une consigne (« Saisir la moyenne ») est une sortie, même s'il invite à saisir."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme Examen_BEPC (instructions : écrire(\"Saisir la moyenne M du candidat\") ; lire(M) ; si (M >= 10) alors écrire(\"Admis\") sinon écrire(\"Refusé\")), relever une instruction de lecture.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le mot lire",
+          "justification": "Une lecture reçoit une valeur de l'utilisateur ; elle s'écrit avec le verbe `lire`.",
+          "resultat_markdown": "Seule candidate : `lire(M)`."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les instructions écrire",
+          "justification": "Les trois `écrire` affichent un texte : ce sont des sorties.",
+          "resultat_markdown": "Écartées : les instructions `écrire`."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure avec la variable",
+          "justification": "`lire(M)` range la valeur saisie dans M.",
+          "resultat_markdown": "Réponse : `lire(M)`."
+        }
+      ],
+      "conclusion_markdown": "L'instruction de lecture est lire(M)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `écrire(\"Saisir la moyenne\")` parce que le texte contient le mot Saisir.",
+          "pourquoi_faux": "Cette instruction affiche une consigne, elle ne reçoit rien.",
+          "correction_markdown": "Cherche le verbe `lire`."
+        },
+        {
+          "erreur_markdown": "Recopier `lire` sans la variable.",
+          "pourquoi_faux": "L'instruction complète est `lire(M)` : la variable indique où ranger la donnée.",
+          "correction_markdown": "Recopie l'instruction complète."
+        },
+        {
+          "erreur_markdown": "Confondre lecture (entrée) et écriture (sortie).",
+          "pourquoi_faux": "Lire reçoit une donnée de l'utilisateur, écrire lui en montre une.",
+          "correction_markdown": "Retiens : lire = entrer, écrire = sortir."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans « lire(A) ; lire(B) ; écrire(A + B) », relever les instructions de lecture.",
+          "solution_markdown": "Les instructions de lecture sont `lire(A)` et `lire(B)` : elles reçoivent deux valeurs. `écrire(A + B)` est une écriture : elle affiche la somme."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire les instructions qui demandent à l'utilisateur un entier N : d'abord un message, puis la lecture.",
+          "solution_markdown": "`écrire(\"Saisir un entier N\") ;` puis `lire(N) ;`. Le message précède la lecture pour que l'utilisateur sache quoi saisir."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Combien d'instructions de lecture et d'écriture comporte l'algorithme Examen_BEPC ? Les classer.",
+          "solution_markdown": "Il y a une instruction de lecture (`lire(M)`) et trois instructions d'écriture : `écrire(\"Saisir la moyenne M du candidat\")`, `écrire(\"Admis\")` et `écrire(\"Refusé\")`. Un seul `écrire` parmi les deux derniers s'exécute selon la valeur de M, mais le texte de l'algorithme en comporte bien trois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "lire reçoit une donnée de l'utilisateur et la range dans une variable.",
+        "écrire affiche un texte ou une valeur à l'écran.",
+        "Une consigne affichée (« Saisir… ») est une écriture, pas une lecture.",
+        "Recopie l'instruction complète, variable comprise.",
+        "Au BEPC, relever une instruction de lecture ou d'écriture est la question type sur un algorithme donné."
+      ]
+    }
+  ]
+}

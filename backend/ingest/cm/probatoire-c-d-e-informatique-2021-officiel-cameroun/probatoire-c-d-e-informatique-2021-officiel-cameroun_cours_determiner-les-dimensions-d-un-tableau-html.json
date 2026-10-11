@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-determiner-les-dimensions-d-un-tableau-html-1ere-c-d-e",
+  "meta": {
+    "titre": "Déterminer les dimensions d'un tableau HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Langage HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "tableau HTML",
+      "TABLE",
+      "TR",
+      "TD",
+      "lignes et colonnes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Les formulaires de connexion et les tableaux de prix des sites web sont presque toujours construits avec un tableau HTML. Pour lire ou écrire une page, il faut savoir compter ses lignes et ses colonnes à partir de quelques balises."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître une balise ouvrante et sa balise fermante",
+        "Savoir ce qu'est une ligne et une colonne dans un tableau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "TR crée une ligne, TD crée une cellule",
+      "contenu_markdown": "Un tableau HTML se construit avec trois balises imbriquées :\n\n- `<TABLE> ... </TABLE>` : le tableau entier ;\n- `<TR> ... </TR>` (*table row*) : **une ligne** ;\n- `<TD> ... </TD>` (*table data*) ou `<TH>` (cellule d'en-tête) : **une cellule** de la ligne.\n\n**Nombre de lignes** = nombre de balises `<TR>`.\n\n**Nombre de colonnes** = nombre de cellules de la ligne la plus fournie.\n\nUne cellule vide (`<TD> </TD>`) compte comme une cellule. L'attribut `BORDER=0` rend les bordures invisibles sans supprimer le tableau.",
+      "variantes": [
+        {
+          "nom": "Cellule étendue (colspan)",
+          "quand_utiliser": "Quand une cellule est étirée sur plusieurs colonnes",
+          "contenu": "Avec `<TD colspan=3>`, une seule cellule occupe 3 colonnes : elle compte pour 3 dans le calcul du nombre de colonnes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le nombre de lignes et de colonnes du tableau du formulaire de connexion (le code contient trois balises TR contenant chacune deux balises TD). (Probatoire 2021, exercice III B, question 3)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Délimiter le tableau",
+          "justification": "`<TABLE BORDER=0>` ouvre le tableau, `</TABLE>` le ferme.",
+          "resultat_markdown": "On ne compte que ce qui est entre ces deux balises."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les lignes",
+          "justification": "Chaque `<TR>` ouvre une ligne : Identifiant, Mot de passe, bouton Ok.",
+          "resultat_markdown": "3 balises TR, donc 3 lignes."
+        },
+        {
+          "numero": 3,
+          "action": "Compter les cellules de chaque ligne",
+          "justification": "Ligne 1 : libellé et zone de texte. Ligne 2 : libellé et zone de mot de passe. Ligne 3 : cellule vide et bouton.",
+          "resultat_markdown": "2 balises TD dans chaque ligne."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "La ligne la plus fournie compte 2 cellules.",
+          "resultat_markdown": "2 colonnes."
+        }
+      ],
+      "conclusion_markdown": "Le tableau compte 3 lignes et 2 colonnes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter les lignes du code source plutôt que les balises TR.",
+          "pourquoi_faux": "Une même ligne de tableau peut s'étendre sur plusieurs lignes de code, et une ligne de code peut contenir plusieurs balises : le tableau se lit dans ses balises, pas dans la mise en page du texte.",
+          "correction_markdown": "Compte uniquement les `<TR>`."
+        },
+        {
+          "erreur_markdown": "Oublier la cellule vide `<TD> </TD>`.",
+          "pourquoi_faux": "Une cellule vide existe quand même : elle occupe une colonne et décale les cellules suivantes.",
+          "correction_markdown": "Compte toutes les balises TD, vides ou non."
+        },
+        {
+          "erreur_markdown": "Penser que `BORDER=0` supprime le tableau.",
+          "pourquoi_faux": "L'attribut règle seulement l'épaisseur du cadre : la grille existe encore, invisible.",
+          "correction_markdown": "Dessine ou compte le tableau comme s'il était bordé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner les dimensions du tableau :\n```html\n<TABLE BORDER=1>\n<TR><TD>A</TD><TD>B</TD><TD>C</TD></TR>\n<TR><TD>D</TD><TD>E</TD><TD>F</TD></TR>\n</TABLE>\n```",
+          "solution_markdown": "Deux balises `<TR>` donnent 2 lignes ; chaque ligne contient 3 balises `<TD>`, donc 3 colonnes. Le tableau a 2 lignes et 3 colonnes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner les dimensions du tableau :\n```html\n<TABLE>\n<TR><TH>Nom</TH><TH>Note</TH></TR>\n<TR><TD>Paul</TD><TD>12</TD></TR>\n<TR><TD>Marie</TD><TD>15</TD></TR>\n<TR><TD>Jean</TD><TD>09</TD></TR>\n</TABLE>\n```",
+          "solution_markdown": "Quatre balises `<TR>` : la ligne d'en-tête (cellules `<TH>`) compte comme une ligne comme les autres, soit 4 lignes. Chaque ligne a 2 cellules : 2 colonnes. Le tableau a 4 lignes et 2 colonnes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Donner les dimensions du tableau et justifier :\n```html\n<TABLE BORDER=1>\n<TR><TD colspan=3>Bulletin</TD></TR>\n<TR><TD>Maths</TD><TD>14</TD><TD>Coef 4</TD></TR>\n<TR><TD>Français</TD><TD>12</TD><TD>Coef 3</TD></TR>\n</TABLE>\n```",
+          "solution_markdown": "Trois balises `<TR>` : 3 lignes. La ligne la plus fournie (lignes 2 et 3) compte 3 cellules : 3 colonnes. La première ligne ne contient qu'une cellule, mais l'attribut `colspan=3` l'étire sur les 3 colonnes : elle occupe toute la largeur. Le tableau a 3 lignes et 3 colonnes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque `<TR>` crée une ligne ; chaque `<TD>` ou `<TH>` crée une cellule.",
+        "Le nombre de colonnes est le nombre de cellules de la ligne la plus fournie.",
+        "Une cellule vide compte, et `colspan` étire une cellule sur plusieurs colonnes.",
+        "`BORDER=0` cache les bordures, il ne supprime pas le tableau.",
+        "Au Probatoire, la question sur le tableau d'un formulaire est une application directe sur 0,5 point : repère les TR, compte les TD de chaque ligne."
+      ]
+    }
+  ]
+}

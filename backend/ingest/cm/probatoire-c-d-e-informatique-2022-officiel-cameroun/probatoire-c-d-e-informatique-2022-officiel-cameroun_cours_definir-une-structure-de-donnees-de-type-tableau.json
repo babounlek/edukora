@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-definir-une-structure-de-donnees-de-type-tableau-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Définir une structure de données de type tableau",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableau",
+      "structure de données",
+      "indice",
+      "algorithmique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex3-qA.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour stocker 5 notes, tu pourrais créer cinq variables `note1`, `note2`... Et pour 500 notes ? Le tableau règle ce problème : un seul nom, beaucoup de cases. Sans tableau, aucune moyenne ni aucun tri de série de données n'est raisonnable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et son type"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un nom, un type, des indices",
+      "contenu_markdown": "Un **tableau** est une structure de données qui regroupe un nombre fini d'éléments de **même type**, rangés à la suite les uns des autres, désignés par un **même nom** et repérés chacun par un **indice**.\n\n- En algorithmique, les indices commencent généralement à 1 : `T[1]`, `T[2]`, ...\n- En langage C, les indices commencent à **0** : `T[0]`, `T[1]`, ...\n- Un tableau de `n` éléments a pour dernier indice `n` en algorithmique (indices de 1 à `n`) et `n - 1` en C."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir « tableau » et décrire le tableau de notes 10, 12, 16, 14, 17.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Donner les caractéristiques",
+          "justification": "Même nom, même type, accès par indice.",
+          "resultat_markdown": "Regroupement d'éléments de même type sous un même nom, accessibles par indice."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire le tableau de l'énoncé",
+          "justification": "Il contient 5 entiers.",
+          "resultat_markdown": "5 cases de type entier."
+        },
+        {
+          "numero": 3,
+          "action": "Donner le contenu avec indices partant de 1",
+          "justification": "L'indice repère la position.",
+          "resultat_markdown": "Notes[1] = 10, Notes[2] = 12, Notes[3] = 16, Notes[4] = 14, Notes[5] = 17"
+        },
+        {
+          "numero": 4,
+          "action": "Donner la même chose en C",
+          "justification": "En C, l'indice de la première case est 0.",
+          "resultat_markdown": "Notes[0] = 10, ..., Notes[4] = 17"
+        }
+      ],
+      "conclusion_markdown": "Un tableau est une suite de cases de même type, sous un même nom, repérées par un indice."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser qu'un tableau peut mélanger des types : des nombres et des noms.",
+          "pourquoi_faux": "Un tableau est homogène : toutes les cases ont le même type. Un mélange se fait avec une structure.",
+          "correction_markdown": "Un tableau = un seul type."
+        },
+        {
+          "erreur_markdown": "Oublier que l'indice est la position, pas la valeur.",
+          "pourquoi_faux": "Dans `Notes[3] = 16`, 3 est l'indice (la case) et 16 la valeur.",
+          "correction_markdown": "Distingue toujours indice et contenu."
+        },
+        {
+          "erreur_markdown": "Écrire `Notes[5]` en C pour le dernier élément d'un tableau de 5 cases.",
+          "pourquoi_faux": "En C, l'indice 5 est hors du tableau (indices 0 à 4), ce qui provoque une erreur ou un comportement imprévisible.",
+          "correction_markdown": "En C, le dernier indice est la taille moins 1."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le tableau 10, 12, 16, 14, 17 (indices de 1 à 5), que vaut Notes[3] ?",
+          "solution_markdown": "Notes[3] = 16 : c'est la troisième case."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Lequel de ces ensembles est un tableau : (a) 5 entiers sous un même nom ; (b) un entier, un texte et un réel sous un même nom ? Justifie.",
+          "solution_markdown": "Seul (a) est un tableau : tous ses éléments ont le même type. Le cas (b) mélange trois types, c'est une structure (enregistrement), pas un tableau."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le tableau T contient 4, 8, 15, 16, 23 en algorithmique (indices de 1 à 5). Donne l'indice correspondant en C de l'élément 15, et le dernier indice en C.",
+          "solution_markdown": "En algorithmique, 15 est en T[3]. En C, tous les indices diminuent de 1 : 15 est en T[2]. Le dernier indice en C est 4 (5 - 1)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau regroupe des éléments de même type sous un même nom.",
+        "Chaque élément se repère par son indice.",
+        "En algorithmique, les indices commencent à 1, en C ils commencent à 0.",
+        "Un tableau de n cases a pour dernier indice n - 1 en C.",
+        "Au Probatoire, « définir tableau » est une question de cours à 1 pt : même nom, même type, indice."
+      ]
+    }
+  ]
+}

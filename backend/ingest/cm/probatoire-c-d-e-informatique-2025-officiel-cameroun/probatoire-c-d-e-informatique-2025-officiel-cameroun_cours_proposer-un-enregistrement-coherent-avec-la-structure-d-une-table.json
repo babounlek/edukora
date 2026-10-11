@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-proposer-un-enregistrement-coherent-avec-la-structure-d-une-table-1ere-cde",
+  "meta": {
+    "titre": "Proposer un enregistrement cohérent avec la structure d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données : enregistrement et saisie",
+    "duree_estimee_min": 25,
+    "tags": [
+      "enregistrement",
+      "structure de table",
+      "insertion",
+      "format de données",
+      "SQL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex2-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Saisir un nouvel élève dans la table ELEVE paraît trivial, jusqu'à ce que la base refuse la ligne : matricule déjà utilisé, champ oublié, date au mauvais format. Un enregistrement doit respecter la structure de la table. Voici la liste de contrôle qui évite ces refus et fait gagner tous les points."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire la structure d'une table (liste des champs)",
+        "Connaître le rôle de la clé primaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre contrôles d'un enregistrement valide",
+      "contenu_markdown": "Avant de présenter un enregistrement, vérifie :\n\n1. **Nombre de valeurs** : autant de valeurs que de champs, dans l'ordre des champs.\n2. **Clé primaire** : une valeur nouvelle, jamais déjà utilisée, jamais vide.\n3. **Format** de chaque champ : date au format de la table (jj/mm/aaaa), sexe M ou F, note entre 0 et 20, texte pour les noms.\n4. **Cohérence avec l'existant** : imite la logique des lignes déjà saisies (matricules qui se suivent, noms en majuscules).\n\nPrésente l'enregistrement sous forme de tableau pour que chaque valeur soit sous son champ.\n\nEn SQL, la saisie s'écrit : `INSERT INTO table (champs) VALUES (valeurs);`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Proposer un autre exemple d'enregistrement pour la table ELEVE (matricule, nom, prenom, date_naissance, sexe, note).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les champs dans l'ordre",
+          "justification": "On prépare six cases : matricule, nom, prenom, date_naissance, sexe, note.",
+          "resultat_markdown": "6 valeurs à fournir."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir une clé nouvelle",
+          "justification": "Les matricules existants vont de 12a22 à 16a22 ; on prolonge la suite.",
+          "resultat_markdown": "matricule = 17a22, jamais utilisé."
+        },
+        {
+          "numero": 3,
+          "action": "Remplir les autres champs au bon format",
+          "justification": "Date au format jj/mm/aaaa, sexe F, note entre 0 et 20.",
+          "resultat_markdown": "NGONO, ESTHER, 03/03/2005, F, 13."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler et présenter",
+          "justification": "On vérifie nombre de valeurs, clé nouvelle, formats.",
+          "resultat_markdown": "| 17a22 | NGONO | ESTHER | 03/03/2005 | F | 13 |"
+        }
+      ],
+      "conclusion_markdown": "L'enregistrement 17a22, NGONO, ESTHER, 03/03/2005, F, 13 respecte la structure de la table ELEVE et ne duplique aucune clé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Réutiliser le matricule 14a22 pour le nouvel élève.",
+          "pourquoi_faux": "La clé primaire doit rester unique : un doublon est refusé par la base ou écrase l'ancien élève.",
+          "correction_markdown": "Choisis un matricule jamais utilisé."
+        },
+        {
+          "erreur_markdown": "Oublier un champ et fournir 5 valeurs.",
+          "pourquoi_faux": "Chaque enregistrement doit renseigner tous les champs : un champ manquant décale ou invalide les valeurs.",
+          "correction_markdown": "Compte les valeurs : 6 champs, 6 valeurs."
+        },
+        {
+          "erreur_markdown": "Mettre une note de 25 ou une date au format américain.",
+          "pourquoi_faux": "Une note ne dépasse pas 20 et les dates de la table sont au format jj/mm/aaaa.",
+          "correction_markdown": "Imite le format des enregistrements existants."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Table PRODUIT (code, designation, prix) contenant P01 Cahier 500, P02 Stylo 150, P03 Règle 200. Proposer un nouvel enregistrement.",
+          "solution_markdown": "| code | designation | prix |\n|---|---|---|\n| P04 | Gomme | 100 |\n\nLe code **P04** prolonge la suite P01 à P03 sans doublon ; trois valeurs pour trois champs ; le prix est un nombre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans la table ELEVE, parmi les trois enregistrements suivants, lesquels sont recevables ? (a) 17a22, NGONO, ESTHER, 03/03/2005, F, 13 ; (b) 14a22, ONANA, PAUL, 10/10/2004, M, 12 ; (c) 18a22, BELLA, MARIE, 05/05/2005, F, 25.",
+          "solution_markdown": "- **(a)** : recevable (clé nouvelle, formats corrects, note entre 0 et 20).\n- **(b)** : refusé, car le matricule 14a22 existe déjà (DOUANLA PIERRETTE) : doublon de clé primaire.\n- **(c)** : refusé, car la note 25 est supérieure à 20."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris la requête SQL qui ajoute l'enregistrement (a) à la table ELEVE et explique ce qui se passe si on exécute ensuite une requête d'ajout avec le matricule 12a22.",
+          "solution_markdown": "**Requête** :\n\n```sql\nINSERT INTO ELEVE (matricule, nom, prenom, date_naissance, sexe, note)\nVALUES ('17a22', 'NGONO', 'ESTHER', '03/03/2005', 'F', 13);\n```\n\nLes textes sont entre apostrophes, la note (un nombre) ne l'est pas.\n\n**Doublon** : si `matricule` est clé primaire, une requête d'ajout avec 12a22 est refusée par le système de gestion de la base (erreur d'unicité), car 12a22 existe déjà. La clé primaire protège ainsi la table contre les doublons."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Autant de valeurs que de champs, dans l'ordre de la table.",
+        "La clé primaire d'un nouvel enregistrement est une valeur jamais utilisée.",
+        "Respecte les formats : date jj/mm/aaaa, sexe M ou F, note de 0 à 20.",
+        "Présente l'enregistrement sous forme de tableau pour montrer chaque champ.",
+        "Au Probatoire, « proposer un autre exemple d'enregistrement » est une question généreuse en points (jusqu'à 1,5) : les contrôles de format et de clé en font un gain facile."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-choisir-un-format-d-image-adapte-au-web-probatoire",
+  "meta": {
+    "titre": "Choisir un format d'image adapté au web",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Infographie et multimédia",
+    "duree_estimee_min": 30,
+    "tags": [
+      "format d'image",
+      "GIF",
+      "JPEG",
+      "PNG",
+      "poids du fichier",
+      "débit"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page qui met trente secondes à s'afficher fait fuir le visiteur. La cause numéro un : des images trop lourdes. Choisir le bon format, c'est trouver le meilleur compromis entre qualité et poids du fichier. Dans cette leçon, tu apprends à comparer les formats et à calculer le poids d'une image."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un pixel",
+        "Connaître les unités de stockage (octet, kilooctet, mégaoctet)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer les formats selon cinq critères",
+      "contenu_markdown": "| Format | Couleurs | Compression | Transparence | Animation | Usage typique |\n|---|---|---|---|---|---|\n| JPEG (`.jpg`) | millions | avec perte | non | non | photographies |\n| PNG (`.png`) | millions | sans perte | oui | non (dans sa forme courante) | logos, captures d'écran |\n| GIF (`.gif`) | 256 au maximum | sans perte | oui (1 bit) | oui | animations simples, petits logos |\n| BMP (`.bmp`) | millions | aucune | non | non | non adapté au web (trop lourd) |\n\nPour le web, retiens le format le plus léger qui répond au besoin. Un débit de connexion faible impose des fichiers légers.\n\n**Poids non compressé d'une image** : nombre de pixels multiplié par le nombre d'octets par pixel (24 bits = 3 octets ; 256 couleurs = 8 bits = 1 octet). La compression réduit ensuite ce poids.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'animation sera diffusée sur Internet et le débit ne sera pas toujours bon. Quel format d'images animées choisir ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister le besoin",
+          "justification": "L'énoncé exige du mouvement et un fichier léger",
+          "resultat_markdown": "Besoin 1 : animation. Besoin 2 : petit poids."
+        },
+        {
+          "numero": 2,
+          "action": "Éliminer les formats sans animation",
+          "justification": "JPEG et PNG, dans leur forme courante, contiennent une seule image",
+          "resultat_markdown": "On garde le GIF (et les formats vidéo)."
+        },
+        {
+          "numero": 3,
+          "action": "Éliminer les formats trop lourds",
+          "justification": "Une vidéo est beaucoup plus lourde pour un bandeau simple",
+          "resultat_markdown": "Le GIF animé est limité à 256 couleurs, compressé sans perte, donc léger."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la compatibilité",
+          "justification": "Le GIF s'affiche dans tous les navigateurs sans module",
+          "resultat_markdown": "Compatibilité confirmée."
+        }
+      ],
+      "conclusion_markdown": "On choisit le format GIF (extension `.gif`) : il porte l'animation, reste léger et s'affiche partout."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir JPEG pour une animation",
+          "pourquoi_faux": "JPEG ne gère pas l'animation et dégrade les logos aux bords nets.",
+          "correction_markdown": "Réserver JPEG aux photographies."
+        },
+        {
+          "erreur_markdown": "Proposer BMP parce que « la qualité est la meilleure »",
+          "pourquoi_faux": "Le BMP n'est pas compressé : le fichier est énorme, inadapté au web.",
+          "correction_markdown": "Choisir PNG ou JPEG pour le web."
+        },
+        {
+          "erreur_markdown": "Oublier le critère du débit",
+          "pourquoi_faux": "L'énoncé le mentionne pour guider le choix vers un fichier léger.",
+          "correction_markdown": "Relier le choix du format au poids du fichier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel format choisir pour une photographie de paysage destinée à un site web ?",
+          "solution_markdown": "**JPEG** : il gère des millions de couleurs et sa compression avec perte réduit fortement le poids, avec peu de dégradation visible sur une photographie."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel format choisir pour un logo à fond transparent ? Justifier.",
+          "solution_markdown": "**PNG** : il conserve les bords nets (compression sans perte) et gère la transparence. Le GIF gère aussi la transparence mais se limite à 256 couleurs."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer le poids non compressé d'une image de $800 \\times 600$ pixels en 24 bits, puis en 256 couleurs. Calculer ensuite le poids non compressé d'une animation de 10 images de $800 \\times 600$ pixels en 256 couleurs et le temps de téléchargement à 512 kbit/s.",
+          "solution_markdown": "Nombre de pixels : $800 \\times 600 = 480\\,000$.\n\nEn 24 bits, un pixel occupe 3 octets : $480\\,000 \\times 3 = 1\\,440\\,000$ octets, soit environ 1,44 Mo.\n\nEn 256 couleurs, un pixel occupe 8 bits, soit 1 octet : $480\\,000 \\times 1 = 480\\,000$ octets, soit environ 0,48 Mo.\n\nAnimation de 10 images en 256 couleurs : $480\\,000 \\times 10 = 4\\,800\\,000$ octets.\n\nEn bits : $4\\,800\\,000 \\times 8 = 38\\,400\\,000$ bits. À 512 kbit/s, soit $512\\,000$ bits par seconde : $38\\,400\\,000 \\div 512\\,000 = 75$ secondes.\n\nCes valeurs sont celles avant compression : la compression du GIF réduit ce poids, souvent beaucoup pour un logo uni, et le délai réel est plus court. Le calcul montre pourquoi on compresse et pourquoi on choisit un format léger."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "JPEG pour les photographies, PNG pour les logos et les captures, GIF pour les animations simples.",
+        "Le GIF est limité à 256 couleurs mais léger et animable : c'est le format du bandeau animé.",
+        "Débit faible, fichier léger : le poids guide le choix.",
+        "Poids non compressé = nombre de pixels fois octets par pixel.",
+        "Cette question de choix de format d'image et de calcul de poids revient souvent en infographie à l'examen."
+      ]
+    }
+  ]
+}

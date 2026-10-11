@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-identifier-les-balises-html-d-un-tableau-probatoire-acde-2018",
+  "meta": {
+    "titre": "Identifier les balises HTML d'un tableau",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique : HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "HTML",
+      "balise table",
+      "balise tr",
+      "balise td",
+      "balise th"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2018 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2018-officiel-cameroun-ex1-q4.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Les horaires d'un lycée, les notes d'un bulletin, un catalogue de prix : toutes ces informations se présentent en tableau, et tous les tableaux des pages web reposent sur les mêmes quelques balises. Les connaître, c'est pouvoir lire et écrire n'importe quel tableau HTML."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une balise HTML (ouvrante et fermante)",
+        "Connaître la structure minimale d'une page HTML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre balises d'un tableau",
+      "contenu_markdown": "| Balise | Rôle |\n|---|---|\n| `<table>` | Crée le tableau (balise conteneur) |\n| `<tr>` | Crée une ligne (*table row*) |\n| `<td>` | Crée une cellule de données (*table data*) |\n| `<th>` | Crée une cellule d'en-tête (*table header*), en gras et centrée par défaut |\n\nLes balises s'emboîtent : un tableau contient des lignes, une ligne contient des cellules. Chaque balise ouverte est refermée (`</table>`, `</tr>`, `</td>`, `</th>`).",
+      "variantes": [
+        {
+          "nom": "Tableau long avec `<thead>` et `<tbody>`",
+          "quand_utiliser": "Quand on veut séparer l'en-tête du corps du tableau dans un tableau volumineux.",
+          "contenu_markdown": "`<thead>` regroupe la ligne d'en-tête et `<tbody>` regroupe les lignes de données ; ces balises se placent à l'intérieur de `<table>`, autour des `<tr>`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la balise qui permet de créer un tableau et celle qui permet de créer les lignes de ce tableau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la balise du tableau entier",
+          "justification": "Le tableau est l'élément qui contient tout le reste : c'est la balise conteneur.",
+          "resultat_markdown": "`<table>` ... `</table>`"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la balise d'une ligne",
+          "justification": "Chaque ligne est un bloc horizontal du tableau ; sa balise vient de *table row*.",
+          "resultat_markdown": "`<tr>` ... `</tr>`"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier qu'on ne confond pas avec la cellule",
+          "justification": "La cellule est un niveau en dessous : `<td>` ou `<th>`, jamais demandée ici.",
+          "resultat_markdown": "Ne pas répondre `<td>` pour la ligne."
+        }
+      ],
+      "conclusion_markdown": "La balise du tableau est `<table>` et celle des lignes est `<tr>`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `<td>` pour une ligne.",
+          "pourquoi_faux": "`<td>` crée une cellule à l'intérieur d'une ligne, pas la ligne elle-même.",
+          "correction_markdown": "Retenir : `tr` = *table row* = ligne ; `td` = *table data* = cellule."
+        },
+        {
+          "erreur_markdown": "Inventer des balises en français : `<tableau>`, `<ligne>`, `<cellule>`.",
+          "pourquoi_faux": "HTML utilise des noms de balises anglais, fixés par la norme ; un navigateur ignore une balise inconnue.",
+          "correction_markdown": "Utiliser uniquement `<table>`, `<tr>`, `<td>` et `<th>`."
+        },
+        {
+          "erreur_markdown": "Oublier de refermer une balise : `<tr>` sans `</tr>`.",
+          "pourquoi_faux": "Une balise non refermée peut déformer l'affichage de tout le tableau.",
+          "correction_markdown": "À chaque balise ouvrante correspond une balise fermante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle balise crée une cellule d'en-tête ? Quelle balise crée une cellule de données ?",
+          "solution_markdown": "Une cellule d'en-tête est créée par `<th>` (*table header*) ; une cellule de données est créée par `<td>` (*table data*)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Combien de lignes et de colonnes crée le code suivant ?\n\n```html\n<table border=\"1\">\n  <tr><td>Lundi</td><td>Mardi</td></tr>\n  <tr><td>Maths</td><td>Informatique</td></tr>\n  <tr><td>Anglais</td><td>Français</td></tr>\n</table>\n```",
+          "solution_markdown": "On compte les balises `<tr>` : il y en a 3, donc 3 lignes. Dans chaque ligne, on compte les balises `<td>` : il y en a 2, donc 2 colonnes. Le tableau a 3 lignes et 2 colonnes (6 cellules). Vérifié par analyse du code : 3 lignes de 2 cellules."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Ce code contient trois erreurs. Trouve-les et corrige-les.\n\n```html\n<table>\n  <td>Nom</td><td>Note</td>\n  <tr><td>Paul</td><td>14</td>\n</table>\n```",
+          "solution_markdown": "Erreur 1 : les cellules de la première ligne sont placées directement dans `<table>`, sans balise `<tr>` : il faut entourer `<td>Nom</td><td>Note</td>` d'un `<tr>` ... `</tr>`.\nErreur 2 : la deuxième ligne `<tr>` n'est pas refermée : il manque `</tr>`.\nErreur 3 : les cellules de la ligne de titres devraient être des cellules d'en-tête `<th>`, et le tableau n'a pas de quadrillage (attribut `border=\"1\"` absent, optionnel mais conseillé ici).\n\nCode corrigé :\n\n```html\n<table border=\"1\">\n  <tr><th>Nom</th><th>Note</th></tr>\n  <tr><td>Paul</td><td>14</td></tr>\n</table>\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<table>` crée le tableau, `<tr>` une ligne, `<td>` une cellule de données, `<th>` une cellule d'en-tête.",
+        "L'emboîtement est toujours : tableau, lignes, cellules.",
+        "Les noms de balises HTML sont en anglais : ne les traduis jamais.",
+        "Chaque balise ouverte doit être refermée.",
+        "Au Probatoire, la question sur les balises précède souvent l'écriture du code complet du tableau : retiens le sens des sigles pour ne pas les confondre."
+      ]
+    }
+  ]
+}

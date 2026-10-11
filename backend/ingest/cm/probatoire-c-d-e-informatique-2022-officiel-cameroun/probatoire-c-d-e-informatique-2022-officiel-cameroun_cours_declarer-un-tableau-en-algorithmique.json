@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-declarer-un-tableau-en-algorithmique-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Déclarer un tableau en algorithmique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "tableau",
+      "déclaration",
+      "algorithmique",
+      "type de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex3-qA.2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'utiliser une variable, il faut la déclarer : lui donner un nom et un type. Pour un tableau, il faut en plus dire combien de cases on réserve. Une déclaration complète est un point sûr si tu en connais le modèle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et son type (Entier, Réel, Caractère, Chaîne)",
+        "Savoir ce qu'est un tableau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Modèle de déclaration d'un tableau",
+      "contenu_markdown": "Dans la partie déclaration, avant `Début` :\n\n```\nVariable nom_du_tableau : Tableau[indice_min..indice_max] de Type\n```\n\nLe nombre de cases est `indice_max - indice_min + 1`. Le type est celui de toutes les cases : choisis-le d'après les valeurs à ranger (entiers : `Entier`, nombres décimaux : `Réel`, textes : `Chaîne`)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déclarer le tableau `Notes` de 5 valeurs entières 10, 12, 16, 14, 17.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le nom",
+          "justification": "L'énoncé impose `Notes`.",
+          "resultat_markdown": "Nom : Notes"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la plage d'indices",
+          "justification": "5 cases, indices de 1 à 5 par convention.",
+          "resultat_markdown": "Tableau[1..5]"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir le type",
+          "justification": "Les 5 valeurs 10, 12, 16, 14, 17 sont des entiers.",
+          "resultat_markdown": "d'Entier"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler",
+          "justification": "On respecte le modèle de déclaration.",
+          "resultat_markdown": "Variable Notes : Tableau[1..5] d'Entier"
+        }
+      ],
+      "conclusion_markdown": "La déclaration est `Variable Notes : Tableau[1..5] d'Entier`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `Variable Notes : Tableau` sans taille.",
+          "pourquoi_faux": "La machine ne sait pas combien de cases réserver.",
+          "correction_markdown": "Indique toujours la plage ou la taille."
+        },
+        {
+          "erreur_markdown": "Déclarer le tableau avec un mauvais type, par exemple `Chaîne` pour des notes.",
+          "pourquoi_faux": "Les opérations arithmétiques (somme, moyenne) deviennent impossibles sur des chaînes.",
+          "correction_markdown": "Choisis le type d'après les valeurs et l'usage."
+        },
+        {
+          "erreur_markdown": "Compter les cases en faisant `indice_max - indice_min`.",
+          "pourquoi_faux": "Pour 1..5, cela donne 4 au lieu de 5. Il faut ajouter 1.",
+          "correction_markdown": "Nombre de cases = indice_max - indice_min + 1."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déclare un tableau `Temp` pouvant contenir 7 températures décimales (une par jour de la semaine).",
+          "solution_markdown": "`Variable Temp : Tableau[1..7] de Réel`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déclare un tableau `Noms` pour les noms de 30 élèves.",
+          "solution_markdown": "`Variable Noms : Tableau[1..30] de Chaîne`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un tableau est déclaré `Tableau[0..11] d'Entier`. Combien de cases contient-il ? Quel indice porte la dernière ?",
+          "solution_markdown": "Nombre de cases = 11 - 0 + 1 = 12. La dernière case porte l'indice 11. Cette plage convient par exemple pour ranger une valeur par mois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau se déclare avec son nom, sa plage d'indices et son type.",
+        "Le nombre de cases est indice_max - indice_min + 1.",
+        "Le type est choisi d'après les valeurs : entiers, réels ou chaînes.",
+        "La déclaration se place avant Début.",
+        "Au Probatoire, la déclaration d'un tableau vaut 1 pt et accompagne souvent une procédure de calcul."
+      ]
+    }
+  ]
+}

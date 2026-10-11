@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-denombrer-les-champs-et-les-enregistrements-d-une-table-1ere-cde",
+  "meta": {
+    "titre": "Dénombrer les champs et les enregistrements d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données : vocabulaire de la table",
+    "duree_estimee_min": 20,
+    "tags": [
+      "table",
+      "champ",
+      "enregistrement",
+      "attribut",
+      "base de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une table de base de données ressemble à un tableau de ton cahier. Pourtant, ses colonnes et ses lignes portent des noms précis, et l'examen te demande régulièrement de les compter. Une erreur d'une unité est facile à faire : ce cours t'apprend à ne pas tomber dans le piège de l'en-tête."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un tableau à lignes et à colonnes",
+        "Connaître le mot « base de données »"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Champs et enregistrements",
+      "contenu_markdown": "Dans une table :\n\n- chaque **colonne** est un **champ** (ou attribut) : il décrit une caractéristique (nom, date de naissance, note) ;\n- chaque **ligne de données** est un **enregistrement** (ou n-uplet) : il décrit un individu complet ;\n- la **ligne d'en-tête** porte les noms des champs : elle n'est **pas** un enregistrement.\n\nNombre de champs = nombre de colonnes. Nombre d'enregistrements = nombre de lignes de données, en-tête exclu."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Table ELEVE : matricule, nom, prenom, date_naissance, sexe, note, avec cinq lignes de données (12a22 à 16a22). Donner le nombre de champs et d'enregistrements.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne d'en-tête",
+          "justification": "Elle porte les noms des colonnes : matricule, nom, prenom, date_naissance, sexe, note.",
+          "resultat_markdown": "Cette ligne définit les champs, ce n'est pas un enregistrement."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les champs",
+          "justification": "Un champ par colonne.",
+          "resultat_markdown": "6 champs."
+        },
+        {
+          "numero": 3,
+          "action": "Compter les lignes de données",
+          "justification": "On compte les élèves de matricules 12a22, 13a22, 14a22, 15a22, 16a22.",
+          "resultat_markdown": "5 enregistrements."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler",
+          "justification": "6 noms de champs listés, 5 matricules différents.",
+          "resultat_markdown": "6 champs et 5 enregistrements."
+        }
+      ],
+      "conclusion_markdown": "La table ELEVE comporte 6 champs et 5 enregistrements."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter l'en-tête parmi les enregistrements et annoncer 6.",
+          "pourquoi_faux": "L'en-tête ne décrit aucun individu : il nomme les colonnes.",
+          "correction_markdown": "Barre mentalement la première ligne avant de compter."
+        },
+        {
+          "erreur_markdown": "Inverser champs et enregistrements.",
+          "pourquoi_faux": "Les champs sont les colonnes, les enregistrements sont les lignes de données.",
+          "correction_markdown": "Colonne = champ ; ligne = enregistrement."
+        },
+        {
+          "erreur_markdown": "Annoncer le nombre de cellules au lieu des champs.",
+          "pourquoi_faux": "Ici 6 champs et 5 enregistrements font 30 cellules de données, mais ce n'est pas ce qu'on demande.",
+          "correction_markdown": "Relis la question : « champs » et « enregistrements », séparément."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Table PRODUIT :\n\n| code | designation | prix |\n|---|---|---|\n| P01 | Cahier | 500 |\n| P02 | Stylo | 150 |\n| P03 | Règle | 200 |\n\nDonner le nombre de champs et d'enregistrements.",
+          "solution_markdown": "**Champs** : `code`, `designation`, `prix`, soit **3 champs**.\n\n**Enregistrements** : P01, P02, P03, soit **3 enregistrements** (l'en-tête n'est pas compté)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Table CLIENT :\n\n| numero | nom | ville | telephone |\n|---|---|---|---|\n| 1 | MBALLA | Yaoundé | 677000001 |\n| 2 | TCHOUA | Douala | 699000002 |\n| 3 | ABENA | Garoua | 655000003 |\n| 4 | NKENG | Bafoussam | 670000004 |\n| 5 | ESSOMBA | Ebolowa | 690000005 |\n| 6 | FOTSO | Dschang | 656000006 |\n\nDonner le nombre de champs, d'enregistrements et de valeurs saisies.",
+          "solution_markdown": "**Champs** : 4 (`numero`, `nom`, `ville`, `telephone`).\n\n**Enregistrements** : 6 (clients 1 à 6).\n\n**Valeurs saisies** : une valeur par champ et par enregistrement, soit $4 \\times 6 = 24$ valeurs."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La table ELEVE (6 champs, 5 enregistrements) reçoit deux nouveaux élèves et un nouveau champ `classe`. Donner le nombre de champs, d'enregistrements et de valeurs saisies après modification, en supposant tous les champs renseignés.",
+          "solution_markdown": "**Champs** : $6 + 1 = 7$.\n\n**Enregistrements** : $5 + 2 = 7$.\n\n**Valeurs saisies** : $7 \\times 7 = 49$.\n\nAjouter un champ ajoute une colonne à tous les enregistrements existants, d'où l'importance de renseigner `classe` pour les cinq anciens élèves comme pour les deux nouveaux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Colonne = champ, ligne de données = enregistrement.",
+        "L'en-tête nomme les champs : elle n'est jamais un enregistrement.",
+        "Liste les noms des champs sur ta copie pour justifier ton comptage.",
+        "Nombre de valeurs saisies = champs $\\times$ enregistrements, si tous les champs sont renseignés.",
+        "Au Probatoire, compter les champs et les enregistrements d'une table est une question d'un point presque systématique dans l'exercice sur les bases de données."
+      ]
+    }
+  ]
+}

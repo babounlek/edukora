@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-calculer-la-taille-d-une-image-non-compressee-1ere-cde",
+  "meta": {
+    "titre": "Calculer la taille d'une image non compressée",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Multimédia : taille d'un fichier image",
+    "duree_estimee_min": 25,
+    "tags": [
+      "taille d'une image",
+      "profondeur des couleurs",
+      "octet",
+      "kilo-octet",
+      "conversion"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex1-q5.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de photos tiennent sur une clé USB de 8 Go ? Pour le savoir, il faut connaître le poids d'une image. Une image brute n'est qu'une grille de pixels, chacun codé sur un certain nombre de bits : la taille se calcule donc par une multiplication et quelques conversions d'unités."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître 1 octet = 8 bits",
+        "Connaître 1 Ko = 1024 octets et 1 Mo = 1024 Ko",
+        "Savoir poser une multiplication de grands nombres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Pixels, bits, octets, kilo-octets",
+      "contenu_markdown": "Pour une image non compressée :\n\n1. **Nombre de pixels** = largeur $\\times$ hauteur (en pixels).\n2. **Taille en bits** = nombre de pixels $\\times$ profondeur des couleurs (bits par pixel).\n3. **Taille en octets** = taille en bits $\\div$ 8.\n4. **Taille en Ko** = octets $\\div$ 1024 ; **en Mo** = Ko $\\div$ 1024.\n\nRaccourci pour 24 bits : un pixel occupe 3 octets, donc taille en octets = nombre de pixels $\\times 3$.\n\nPrécise toujours la convention retenue : 1 Ko = 1024 octets (usage scolaire) ou 1 Ko = 1000 octets.",
+      "formule_principale": "T_{\\text{octets}} = \\dfrac{L \\times H \\times p}{8} \\qquad (p : \\text{profondeur en bits})"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une image a pour définition $3744 \\times 5616$ pixels avec une profondeur de couleurs de 24 bits. Calculer sa taille en Ko.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre de pixels",
+          "justification": "La définition donne le nombre de pixels par ligne et par colonne.",
+          "resultat_markdown": "$3744 \\times 5616 = 18\\,720\\,000 + 2\\,246\\,400 + 59\\,904 = 21\\,026\\,304$ pixels"
+        },
+        {
+          "numero": 2,
+          "action": "Passer en bits",
+          "justification": "Chaque pixel est codé sur 24 bits.",
+          "resultat_markdown": "$21\\,026\\,304 \\times 24 = 504\\,631\\,296$ bits"
+        },
+        {
+          "numero": 3,
+          "action": "Passer en octets",
+          "justification": "1 octet = 8 bits.",
+          "resultat_markdown": "$504\\,631\\,296 \\div 8 = 63\\,078\\,912$ octets (contrôle : $21\\,026\\,304 \\times 3$)"
+        },
+        {
+          "numero": 4,
+          "action": "Passer en Ko",
+          "justification": "1 Ko = 1024 octets.",
+          "resultat_markdown": "$63\\,078\\,912 \\div 1024 = 61\\,600{,}5$ Ko"
+        }
+      ],
+      "conclusion_markdown": "L'image non compressée pèse environ 61 600,5 Ko, soit près de 60,2 Mo."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de diviser par 8.",
+          "pourquoi_faux": "La profondeur est en bits et la taille demandée en octets : sans la division, on compte huit fois trop.",
+          "correction_markdown": "Écris la chaîne des unités : pixels, bits, octets, Ko."
+        },
+        {
+          "erreur_markdown": "Diviser par 1000 au lieu de 1024 sans le dire.",
+          "pourquoi_faux": "En informatique scolaire, 1 Ko = 1024 octets. Avec 1000, le résultat change (63 078,9 Ko au lieu de 61 600,5 Ko).",
+          "correction_markdown": "Annonce ta convention au début du calcul."
+        },
+        {
+          "erreur_markdown": "S'arrêter en octets alors que le sujet demande des Ko, ou des Mo.",
+          "pourquoi_faux": "La réponse non convertie est comptée fausse, même si le calcul est juste.",
+          "correction_markdown": "Relis l'unité demandée avant d'écrire la conclusion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la taille en Ko d'une image de $800 \\times 600$ pixels en 24 bits.",
+          "solution_markdown": "**Pixels** : $800 \\times 600 = 480\\,000$.\n\n**Octets** : 24 bits = 3 octets, donc $480\\,000 \\times 3 = 1\\,440\\,000$ octets.\n\n**Ko** : $1\\,440\\,000 \\div 1024 = 1406{,}25$ Ko."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image de $1024 \\times 768$ pixels est codée en 256 couleurs. Calculer sa taille en Ko.",
+          "solution_markdown": "**Profondeur** : 256 couleurs = $2^8$ couleurs, donc 8 bits (1 octet) par pixel.\n\n**Pixels** : $1024 \\times 768 = 786\\,432$.\n\n**Octets** : $786\\,432 \\times 1 = 786\\,432$ octets.\n\n**Ko** : $786\\,432 \\div 1024 = 768$ Ko."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une photo de $3000 \\times 2000$ pixels en 24 bits est enregistrée sans compression. Calculer sa taille en Mo, puis le nombre d'images de ce type qui tiennent sur une clé de 8 Go (1 Go = 1024 Mo).",
+          "solution_markdown": "**Pixels** : $3000 \\times 2000 = 6\\,000\\,000$.\n\n**Octets** : $6\\,000\\,000 \\times 3 = 18\\,000\\,000$.\n\n**Mo** : $18\\,000\\,000 \\div 1024 \\div 1024 \\approx 17{,}17$ Mo.\n\n**Capacité** : $8 \\text{ Go} = 8 \\times 1024 = 8192$ Mo ; $8192 \\div 17{,}17 \\approx 477{,}2$.\n\n**Conclusion** : 477 images entières tiennent sur la clé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Taille = pixels $\\times$ profondeur, puis $\\div 8$ pour les octets.",
+        "24 bits = 3 octets par pixel : un raccourci qui évite une étape.",
+        "1 Ko = 1024 octets, 1 Mo = 1024 Ko : annonce ta convention.",
+        "Termine toujours dans l'unité demandée par le sujet.",
+        "Au Probatoire, la taille d'une image non compressée est une question de calcul récurrente du multimédia : les points s'obtiennent par la rigueur sur les étapes."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "cours_id": "cours-derouler-pas-a-pas-la-trace-d-execution-d-un-algorithme-1ere-c-d-e",
+  "meta": {
+    "titre": "Dérouler pas à pas la trace d'exécution d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique : exécution et suivi de variables",
+    "duree_estimee_min": 35,
+    "tags": [
+      "trace d'exécution",
+      "tableau de suivi",
+      "boucle Pour",
+      "condition",
+      "algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qA4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme n'est qu'un texte tant qu'on ne l'a pas fait tourner. Dérouler sa trace, c'est jouer le rôle de l'ordinateur : exécuter les instructions une par une et noter ce qui change. C'est la meilleure façon de comprendre ce que fait un algorithme inconnu, et de trouver ses erreurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une boucle Pour et une structure Si ... Sinon",
+        "Savoir ce qu'est une affectation (`nb←nb-1`) et un tableau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du tableau de suivi",
+      "contenu_markdown": "Pour exécuter un algorithme pas à pas :\n\n1. **Prépare le tableau de suivi** : une colonne par variable modifiée, une colonne par condition testée, une colonne pour l'affichage.\n2. **Initialise** avec les données saisies (valeurs des variables, contenu du tableau).\n3. **Déroule la boucle tour par tour** : une ligne du tableau par tour. Note les valeurs *avant* modification, puis la valeur *après*.\n4. **Évalue chaque condition** : écris si elle est vraie ou fausse, et suis la branche correspondante (Alors ou Sinon).\n5. **Arrête-toi quand la condition de fin est atteinte**, puis note le résultat affiché.\n\nSi la borne d'une boucle Pour est modifiée dans le corps de la boucle, annonce la convention suivie (borne relue à chaque tour, comme en langage C, ou évaluée une seule fois)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Exécuter pas à pas l'algorithme palindrome en supposant que l'utilisateur saisit le mot RESSASSER (9 lettres). (Probatoire 2021, exercice III A, question 4)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser avec la saisie",
+          "justification": "RESSASSER compte 9 lettres : R, E, S, S, A, S, S, E, R.",
+          "resultat_markdown": "`nb = 9` ; `T = [R, E, S, S, A, S, S, E, R]`."
+        },
+        {
+          "numero": 2,
+          "action": "Tour 1 : i = 1",
+          "justification": "On compare `T[1]` = R avec `T[nb]` = `T[9]` = R : égaux, donc `nb` devient 8. Tests de la ligne 13 : `1 = 8` faux, `8 = 2` faux.",
+          "resultat_markdown": "Aucun affichage."
+        },
+        {
+          "numero": 3,
+          "action": "Tours 2 et 3 : i = 2, 3",
+          "justification": "`T[2]` = E contre `T[8]` = E, `nb` devient 7 ; `T[3]` = S contre `T[7]` = S, `nb` devient 6. Tests faux : `2 = 7`, `7 = 3`, `3 = 6`, `6 = 4`.",
+          "resultat_markdown": "Aucun affichage."
+        },
+        {
+          "numero": 4,
+          "action": "Tour 4 : i = 4",
+          "justification": "`T[4]` = S contre `T[6]` = S : égaux, `nb` devient 5. Test : `4 = 5` faux, mais `nb = i+1` s'écrit `5 = 5` : vrai.",
+          "resultat_markdown": "Affichage : Bravo! ce mot est un palindrome."
+        },
+        {
+          "numero": 5,
+          "action": "Tour 5 : i = 5",
+          "justification": "`T[5]` = A contre `T[5]` = A : égaux, `nb` devient 4. Tests : `5 = 4` faux, `4 = 6` faux.",
+          "resultat_markdown": "Aucun affichage."
+        },
+        {
+          "numero": 6,
+          "action": "Fin de boucle",
+          "justification": "Au tour suivant `i` vaut 6 et dépasse `nb` = 4 : la boucle s'arrête.",
+          "resultat_markdown": "Résultat : un seul message, Bravo! ce mot est un palindrome."
+        }
+      ],
+      "conclusion_markdown": "La trace montre que RESSASSER est reconnu comme palindrome : le message n'apparaît qu'une fois, au tour 4."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de mettre à jour `nb` avant de comparer au tour suivant.",
+          "pourquoi_faux": "`nb` change à chaque comparaison réussie (ligne 12) : si tu gardes la valeur 9, tu compares les mauvaises lettres.",
+          "correction_markdown": "Ajoute une colonne « `nb` avant / `nb` après » dans le tableau de suivi."
+        },
+        {
+          "erreur_markdown": "S'arrêter au premier message affiché.",
+          "pourquoi_faux": "La boucle continue tant que sa condition n'est pas atteinte : s'arrêter trop tôt fausse le nombre d'affichages.",
+          "correction_markdown": "Va jusqu'à la condition d'arrêt et vérifie les tours restants."
+        },
+        {
+          "erreur_markdown": "Évaluer les deux tests de la ligne 13 comme un seul.",
+          "pourquoi_faux": "Un `OU` est vrai dès qu'un des deux tests l'est : il faut écrire le résultat de chacun pour être sûr de la conclusion.",
+          "correction_markdown": "Écris une colonne par test, avec la valeur numérique comparée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dérouler l'algorithme : `S←0 ; Pour i←1 à 4 Faire S←S+i ; FinPour ; Ecrire(S)`. Quel est l'affichage ?",
+          "solution_markdown": "| i | S avant | S après |\n|---|---|---|\n| 1 | 0 | 1 |\n| 2 | 1 | 3 |\n| 3 | 3 | 6 |\n| 4 | 6 | 10 |\n\nAprès le tour 4, la boucle s'arrête : l'affichage est `10` (somme des entiers de 1 à 4)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dérouler : `P←1 ; Pour i←1 à 6 Faire Si (i MOD 2 = 0) Alors P←P*i FinSi ; FinPour ; Ecrire(P)`. Quel est l'affichage ?",
+          "solution_markdown": "`i MOD 2 = 0` est vrai pour les valeurs paires.\n\n| i | test `i MOD 2 = 0` | P après |\n|---|---|---|\n| 1 | faux | 1 |\n| 2 | vrai | 2 |\n| 3 | faux | 2 |\n| 4 | vrai | 8 |\n| 5 | faux | 8 |\n| 6 | vrai | 48 |\n\nL'affichage est `48` (produit des nombres pairs 2 × 4 × 6)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dérouler l'algorithme palindrome pour le mot ABCA (borne du Pour relue à chaque tour). Quel est l'affichage ?",
+          "solution_markdown": "Saisie : `nb = 4`, `T = [A, B, C, A]`.\n\nTour 1 (`i = 1`) : `T[1]` = A contre `T[4]` = A, égaux ; `nb` devient 3 ; tests `1 = 3` faux, `3 = 2` faux ; aucun affichage.\n\nTour 2 (`i = 2`) : `T[2]` = B contre `T[3]` = C, différents : on exécute le `Sinon` : affichage de « Désolé, ce mot n'est pas un palindrome », puis `i←nb` donne `i = 3`.\n\nFin du tour : `i` passe à 4 et dépasse `nb` = 3 : la boucle s'arrête.\n\nAffichage : « Désolé, ce mot n'est pas un palindrome » (une seule fois)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dérouler une trace, c'est exécuter l'algorithme à la main avec un tableau de suivi.",
+        "Une colonne par variable modifiée, une par condition testée, une pour l'affichage.",
+        "Une ligne par tour de boucle : n'en saute aucune et note les valeurs avant et après.",
+        "Évalue chaque condition à part (vrai ou faux) avant de suivre la branche Alors ou Sinon.",
+        "Au Probatoire, la trace d'exécution est une question régulière sur 1 point : le correcteur compare ton tableau tour par tour."
+      ]
+    }
+  ]
+}

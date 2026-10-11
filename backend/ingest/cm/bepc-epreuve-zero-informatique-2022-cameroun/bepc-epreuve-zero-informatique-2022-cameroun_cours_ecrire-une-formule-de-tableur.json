@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-ecrire-une-formule-de-tableur-3e",
+  "meta": {
+    "titre": "Écrire une formule de tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Tableur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "formule",
+      "référence de cellule",
+      "fonction SOMME",
+      "Excel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-epreuve-zero-informatique-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique au BEPC 2022 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex2-q2b-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-epreuve-zero-informatique-2022-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une facture, tu ne veux pas recalculer à la main chaque montant dès qu'une quantité change. Le tableur le fait pour toi, à condition de lui écrire une formule au lieu d'un résultat. Savoir écrire cette formule est le cœur de la partie tableur du programme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une feuille de calcul : colonnes A, B, C, lignes 1, 2, 3",
+        "Connaître la multiplication et l'addition"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une formule commence par = et utilise des références de cellules",
+      "contenu_markdown": "1. Une formule **commence toujours par le signe `=`** ; sinon le tableur lit un simple texte.\n2. On désigne une cellule par sa **colonne puis sa ligne** : `B2` est à l'intersection de la colonne B et de la ligne 2.\n3. Les opérateurs sont `+`, `-`, `*` (produit), `/` (quotient).\n4. Pour additionner une **plage** de cellules, on utilise la fonction `SOMME(premiere:derniere)`, par exemple `=SOMME(D2:D3)`.\n5. On utilise les **références** et non les valeurs recopiées : si une valeur change, le résultat se met à jour automatiquement.\n\nUne fois la formule saisie dans la première cellule, on peut la recopier vers les cellules voisines avec la poignée de recopie : les références s'adaptent.",
+      "variantes": [
+        {
+          "nom": "Total avec l'opérateur +",
+          "quand_utiliser": "Quand il y a seulement deux ou trois cellules à additionner",
+          "contenu_markdown": "`=D2+D3` donne le même résultat que `=SOMME(D2:D3)`. La fonction SOMME est plus pratique dès que la plage compte plus de trois cellules."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la facture (A1 : Désignation, B1 : Quantité, C1 : Prix unitaire, D1 : Montant ; ligne 2 : BIC, 2, 150 ; ligne 3 : Cahier, 3, 750 ; ligne 4 : Total), écrire les formules des cellules D2, D3 et D4.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir l'opération pour le montant d'une ligne",
+          "justification": "Un montant est la quantité multipliée par le prix unitaire : colonnes B et C.",
+          "resultat_markdown": "Opération : produit B × C."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule de D2",
+          "justification": "On commence par `=`, puis références de la ligne 2 avec `*`.",
+          "resultat_markdown": "`=B2*C2`, soit $2 \\times 150 = 300$."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la formule de D3",
+          "justification": "Même raisonnement avec la ligne 3.",
+          "resultat_markdown": "`=B3*C3`, soit $3 \\times 750 = 2250$."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la formule du total en D4",
+          "justification": "Le total additionne les montants des lignes 2 et 3 : plage D2:D3, on s'arrête avant D4 pour éviter de se sommer soi-même.",
+          "resultat_markdown": "`=SOMME(D2:D3)`, soit $300 + 2250 = 2550$."
+        }
+      ],
+      "conclusion_markdown": "Les formules sont `=B2*C2` en D2, `=B3*C3` en D3 et `=SOMME(D2:D3)` en D4."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `=2*150` dans D2.",
+          "pourquoi_faux": "La valeur est figée : si la quantité en B2 change, D2 ne bouge plus.",
+          "correction_markdown": "Écris `=B2*C2` avec les références."
+        },
+        {
+          "erreur_markdown": "Oublier le signe égal : `B2*C2`.",
+          "pourquoi_faux": "Sans le signe égal, le tableur affiche le texte B2*C2 et ne calcule rien.",
+          "correction_markdown": "Commence toujours par `=`."
+        },
+        {
+          "erreur_markdown": "Écrire `=SOMME(D2:D4)` dans D4.",
+          "pourquoi_faux": "D4 serait dans sa propre plage : référence circulaire, le tableur signale une erreur.",
+          "correction_markdown": "La plage s'arrête à la ligne précédant celle du total."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une feuille, B2 contient une quantité (4) et C2 un prix (2500). Écrire la formule du montant en D2 et donner son résultat.",
+          "solution_markdown": "La formule est `=B2*C2`. Résultat : $4 \\times 2500 = 10000$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La ligne 2 contient Sac, 4, 2500 et la ligne 3 contient Cahier, 10, 300 (colonnes A, B, C). Écrire les formules des montants en D2 et D3, puis le total en D4 avec SOMME, et donner les résultats.",
+          "solution_markdown": "D2 : `=B2*C2`, résultat $4 \\times 2500 = 10000$. D3 : `=B3*C3`, résultat $10 \\times 300 = 3000$. D4 : `=SOMME(D2:D3)`, résultat $10000 + 3000 = 13000$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec le total 13000 en D4, écrire en D5 une formule qui calcule le total après une remise de 10 %, puis en D6 la moyenne des quantités B2 et B3.",
+          "solution_markdown": "Remise de 10 % : on paie 90 % du total, donc D5 : `=D4*0,9` (en saisie française ; `=D4*0.9` selon le réglage décimal) ou `=D4-D4*10%`. Résultat : $13000 \\times 0{,}9 = 11700$. Moyenne des quantités : D6 : `=MOYENNE(B2:B3)`, résultat $(4 + 10) \\div 2 = 7$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une formule commence toujours par le signe `=`.",
+        "Désigne les cellules par leur colonne puis leur ligne : B2, C2, D4.",
+        "Utilise `*` pour le produit et `SOMME(D2:D3)` pour le total d'une plage.",
+        "Écris des références, pas des valeurs recopiées.",
+        "Au BEPC, la facture avec montants et total est le sujet classique de la question sur le tableur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-reconnaitre-une-declaration-de-variable-3e",
+  "meta": {
+    "titre": "Reconnaître une déclaration de variable",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "variable",
+      "déclaration",
+      "type de données",
+      "Réel",
+      "Entier"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-epreuve-zero-informatique-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique au BEPC 2022 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex3-q2c-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-epreuve-zero-informatique-2022-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de ranger une valeur, il faut réserver une place et lui donner un nom : c'est le rôle de la déclaration de variable. Elle se trouve toujours au début de l'algorithme, avant que les instructions ne commencent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable",
+        "Connaître la structure d'un algorithme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Nom, type et position d'une déclaration",
+      "contenu_markdown": "Une **déclaration de variable** :\n\n- se place **avant le mot `début`** ;\n- commence par le mot-clé `variable` ;\n- associe un **nom** à un **type** : `variable nom : type ;`.\n\n| Type | Contient | Exemple de valeur |\n|---|---|---|\n| Entier | un nombre entier | 12 |\n| Réel | un nombre à virgule | 12,5 |\n| Chaîne | du texte | \"Admis\" |\n| Booléen | vrai ou faux | vrai |\n\nUne variable est déclarée **une fois** ; ensuite, on l'utilise sans répéter le mot `variable`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Relever la déclaration de variable de l'algorithme Examen_BEPC.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Localiser la zone avant début",
+          "justification": "Les déclarations se placent avant le mot `début`.",
+          "resultat_markdown": "Zone : la ligne située entre `Algorithme Examen_BEPC` et `début`."
+        },
+        {
+          "numero": 2,
+          "action": "Reconnaître la forme",
+          "justification": "La ligne commence par `variable` et associe un nom à un type.",
+          "resultat_markdown": "`variable M : Réel ;`"
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter",
+          "justification": "M est le nom, Réel le type : M pourra contenir une moyenne à virgule.",
+          "resultat_markdown": "Variable M de type Réel."
+        }
+      ],
+      "conclusion_markdown": "La déclaration est variable M : Réel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `lire(M)` comme déclaration.",
+          "pourquoi_faux": "`lire(M)` utilise M déjà déclarée : elle ne la crée pas.",
+          "correction_markdown": "Cherche le mot `variable` avant `début`."
+        },
+        {
+          "erreur_markdown": "Oublier le type.",
+          "pourquoi_faux": "Une déclaration sans type est incomplète : le type indique la nature des valeurs.",
+          "correction_markdown": "Recopie `variable M : Réel` en entier."
+        },
+        {
+          "erreur_markdown": "Déclarer une moyenne de type Entier.",
+          "pourquoi_faux": "Une moyenne comme 12,5 n'est pas un entier : la valeur serait tronquée ou refusée.",
+          "correction_markdown": "Choisis Réel pour tout nombre pouvant avoir des décimales."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la déclaration d'une variable AGE destinée à contenir l'âge d'un élève (entier).",
+          "solution_markdown": "`variable AGE : Entier ;` L'âge est un nombre entier."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la déclaration d'une variable NOM (texte) et d'une variable PRIX (nombre avec décimales).",
+          "solution_markdown": "`variable NOM : Chaîne ;` et `variable PRIX : Réel ;`. Le nom est du texte, le prix peut avoir des décimales."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un algorithme, on lit deux notes A et B, on calcule leur moyenne M et on affiche « Admis » si M ≥ 10. Écrire toutes les déclarations nécessaires, avec le type de chaque variable.",
+          "solution_markdown": "`variable A, B, M : Réel ;`. A et B sont des notes qui peuvent avoir des décimales, donc Réel ; M, leur moyenne, peut aussi avoir une décimale (par exemple $(11 + 12) \\div 2 = 11{,}5$), donc Réel. Aucune variable de type Chaîne n'est nécessaire : le texte « Admis » est affiché directement dans l'instruction `écrire`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une déclaration de variable se place avant début.",
+        "Elle s'écrit variable nom : type.",
+        "Le type dit quelle nature de valeur la variable contiendra.",
+        "Une moyenne se déclare en Réel.",
+        "Au BEPC, on te demande de relever la déclaration d'une variable dans un algorithme donné."
+      ]
+    }
+  ]
+}

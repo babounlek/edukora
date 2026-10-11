@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-identifier-la-cle-primaire-d-une-table-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Identifier la clé primaire d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "clé primaire",
+      "table",
+      "champ",
+      "unicité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex2-q2.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "On te donne la liste des champs d'une table et on te demande laquelle est la clé primaire. La réponse est parfois évidente, mais certains élèves choisissent le nom ou la date de naissance. Avec trois tests, tu trouves la bonne réponse à tous les coups."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir définir la clé primaire",
+        "Savoir lire la liste des champs d'une table"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le test des trois questions",
+      "contenu_markdown": "Pour chaque champ, pose trois questions :\n\n1. **Peut-il se répéter** d'un enregistrement à l'autre ? Si oui, on l'écarte (nom, ville, date, service).\n2. **Peut-il être vide** ? Si oui, on l'écarte.\n3. **Peut-il changer** pendant la vie de l'objet décrit ? Si oui, il vaut mieux l'écarter.\n\nLe champ qui passe les trois tests est la clé primaire. Cherche en priorité un champ créé pour identifier : numéro, code, matricule, identifiant. Si aucun champ seul ne passe, on construit une clé composée."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier la clé primaire de la table Employés (numero, nom, description_service, date_naissance).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tester `nom`",
+          "justification": "Deux employés peuvent porter le même nom.",
+          "resultat_markdown": "Peut se répéter : écarté."
+        },
+        {
+          "numero": 2,
+          "action": "Tester `description_service`",
+          "justification": "Plusieurs employés travaillent dans un même service.",
+          "resultat_markdown": "Se répète : écarté."
+        },
+        {
+          "numero": 3,
+          "action": "Tester `date_naissance`",
+          "justification": "Deux employés peuvent être nés le même jour.",
+          "resultat_markdown": "Peut se répéter : écarté."
+        },
+        {
+          "numero": 4,
+          "action": "Tester `numero`",
+          "justification": "Un numéro est attribué à chaque employé, différent pour chacun, jamais vide.",
+          "resultat_markdown": "Unique, non vide, stable : retenu."
+        }
+      ],
+      "conclusion_markdown": "La clé primaire de la table est `numero`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir `nom` parce que c'est le champ le plus naturel pour désigner une personne.",
+          "pourquoi_faux": "Les homonymes existent. Une clé primaire doit rester unique quelles que soient les données ajoutées demain.",
+          "correction_markdown": "Raisonne sur ce qui est possible, pas sur les lignes visibles."
+        },
+        {
+          "erreur_markdown": "Choisir un champ parce que toutes ses valeurs sont différentes dans l'exemple donné.",
+          "pourquoi_faux": "Des valeurs différentes dans un petit exemple ne garantissent pas l'unicité future.",
+          "correction_markdown": "Juge la nature du champ, pas seulement l'échantillon."
+        },
+        {
+          "erreur_markdown": "Répondre sans justifier.",
+          "pourquoi_faux": "La question demande souvent « identifier et justifier ». Sans la raison, le point est partiel.",
+          "correction_markdown": "Écris le champ puis « car il est unique pour chaque enregistrement »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Table ELEVE (matricule, nom, classe, date_naissance). Quelle est la clé primaire ?",
+          "solution_markdown": "`matricule` : attribué à chaque élève, unique. Le nom, la classe et la date de naissance peuvent se répéter."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Table VOITURE (immatriculation, marque, couleur). Quelle est la clé primaire et pourquoi ?",
+          "solution_markdown": "`immatriculation` : chaque voiture a un numéro d'immatriculation unique. La marque et la couleur sont partagées par de nombreuses voitures."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Table NOTE (matricule, code_matiere, valeur). Propose une clé primaire et justifie.",
+          "solution_markdown": "Aucun champ seul n'est unique : un matricule se répète (plusieurs matières) et un code_matiere se répète (plusieurs élèves). Le couple (matricule, code_matiere) est unique, car un élève n'a qu'une note par matière. On choisit donc la clé composée (matricule, code_matiere)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Teste chaque champ : peut-il se répéter, être vide, changer ?",
+        "Cherche d'abord un numéro, un code ou un matricule.",
+        "Un nom, une ville ou une date ne sont presque jamais de bonnes clés.",
+        "Si aucun champ seul ne convient, utilise une clé composée.",
+        "Au Probatoire, « identifier la clé primaire » rapporte 0,5 pt : écris le champ et la raison."
+      ]
+    }
+  ]
+}

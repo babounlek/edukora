@@ -1,0 +1,156 @@
+{
+  "cours_id": "cours-convertir-un-nombre-decimal-en-binaire-3e",
+  "meta": {
+    "titre": "Convertir un nombre décimal en binaire",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Codage de l'information",
+    "duree_estimee_min": 25,
+    "tags": [
+      "binaire",
+      "base 2",
+      "division par 2",
+      "conversion"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-epreuve-zero-informatique-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro d'informatique au BEPC 2022 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-epreuve-zero-informatique-2022-cameroun-ex2-q1a-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-epreuve-zero-informatique-2022-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'ordinateur ne comprend que deux symboles, 0 et 1. Tout nombre que tu tapes au clavier est donc traduit en binaire avant d'être traité. Savoir faire cette traduction à la main est une compétence centrale du programme de numération."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Maîtriser la division euclidienne (quotient et reste)",
+        "Connaître les puissances de 2 : 1, 2, 4, 8, 16, 32, 64"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode des divisions successives par 2",
+      "contenu_markdown": "Pour écrire un entier $N$ en base 2 :\n\n1. Divise $N$ par 2 : note le **quotient** et le **reste** (0 ou 1).\n2. Divise le quotient par 2 et note le reste.\n3. Continue **jusqu'à obtenir un quotient égal à 0**.\n4. Lis les restes **de bas en haut** : le dernier reste obtenu est le chiffre de gauche.\n\n**Contrôle** : reconvertis en décimal avec les puissances de 2 et vérifie que tu retrouves $N$.",
+      "formule_principale": "N = a_k \\times 2^k + \\cdots + a_1 \\times 2^1 + a_0 \\times 2^0 \\quad (a_i \\in \\{0,1\\})",
+      "variantes": [
+        {
+          "nom": "Méthode par soustraction des puissances de 2",
+          "quand_utiliser": "Quand le nombre est petit et que tu connais bien les puissances de 2",
+          "contenu_markdown": "On cherche la plus grande puissance de 2 inférieure ou égale au nombre, on la soustrait, et on recommence avec le reste. Exemple pour 27 : $27 - 16 = 11$ ; $11 - 8 = 3$ ; $3 - 2 = 1$ ; $1 - 1 = 0$. Les puissances utilisées sont 16, 8, 2, 1 : le nombre s'écrit $11011$ (1 pour 16, 1 pour 8, 0 pour 4, 1 pour 2, 1 pour 1)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Convertir $(27)_{10}$ en base 2.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Première division",
+          "justification": "$27 = 2 \\times 13 + 1$",
+          "resultat_markdown": "Quotient 13, reste 1."
+        },
+        {
+          "numero": 2,
+          "action": "Deuxième division",
+          "justification": "$13 = 2 \\times 6 + 1$",
+          "resultat_markdown": "Quotient 6, reste 1."
+        },
+        {
+          "numero": 3,
+          "action": "Troisième division",
+          "justification": "$6 = 2 \\times 3 + 0$",
+          "resultat_markdown": "Quotient 3, reste 0."
+        },
+        {
+          "numero": 4,
+          "action": "Quatrième division",
+          "justification": "$3 = 2 \\times 1 + 1$",
+          "resultat_markdown": "Quotient 1, reste 1."
+        },
+        {
+          "numero": 5,
+          "action": "Dernière division",
+          "justification": "$1 = 2 \\times 0 + 1$ ; le quotient vaut 0, on s'arrête.",
+          "resultat_markdown": "Reste 1."
+        },
+        {
+          "numero": 6,
+          "action": "Lire les restes de bas en haut",
+          "justification": "Le dernier reste (1) est le chiffre de gauche.",
+          "resultat_markdown": "$1\\,1\\,0\\,1\\,1$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier",
+          "justification": "$1 \\times 16 + 1 \\times 8 + 0 \\times 4 + 1 \\times 2 + 1 \\times 1$",
+          "resultat_markdown": "$= 27$, ce qui confirme."
+        }
+      ],
+      "conclusion_markdown": "$(27)_{10} = (11011)_2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire les restes de haut en bas.",
+          "pourquoi_faux": "Le premier reste est le chiffre de poids faible (à droite), le dernier est celui de poids fort (à gauche). Pour 13, lire de haut en bas donne $1011$ au lieu de $1101$.",
+          "correction_markdown": "Lis toujours de bas en haut."
+        },
+        {
+          "erreur_markdown": "S'arrêter quand le quotient vaut 1 au lieu de 0.",
+          "pourquoi_faux": "Le dernier quotient 1 doit encore être divisé : il fournit le chiffre de gauche.",
+          "correction_markdown": "Continue jusqu'à un quotient nul."
+        },
+        {
+          "erreur_markdown": "Écrire un reste supérieur à 1.",
+          "pourquoi_faux": "Dans une division par 2 le reste vaut 0 ou 1. Un reste de 2 montre une erreur de division.",
+          "correction_markdown": "Refais la division en vérifiant que $\\text{reste} < 2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir $(13)_{10}$ en base 2.",
+          "solution_markdown": "$13 = 2 \\times 6 + 1$, $6 = 2 \\times 3 + 0$, $3 = 2 \\times 1 + 1$, $1 = 2 \\times 0 + 1$. Les restes lus de bas en haut sont $1, 1, 0, 1$. Donc $(13)_{10} = (1101)_2$. Vérification : $8 + 4 + 0 + 1 = 13$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir $(45)_{10}$ en base 2.",
+          "solution_markdown": "$45 = 2 \\times 22 + 1$ ; $22 = 2 \\times 11 + 0$ ; $11 = 2 \\times 5 + 1$ ; $5 = 2 \\times 2 + 1$ ; $2 = 2 \\times 1 + 0$ ; $1 = 2 \\times 0 + 1$. Les restes de bas en haut : $1, 0, 1, 1, 0, 1$. Donc $(45)_{10} = (101101)_2$. Vérification : $32 + 0 + 8 + 4 + 0 + 1 = 45$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Convertir $(100)_{10}$ en base 2, puis dire combien de chiffres binaires (bits) sont nécessaires pour écrire tous les nombres de 0 à 100.",
+          "solution_markdown": "$100 = 2 \\times 50 + 0$ ; $50 = 2 \\times 25 + 0$ ; $25 = 2 \\times 12 + 1$ ; $12 = 2 \\times 6 + 0$ ; $6 = 2 \\times 3 + 0$ ; $3 = 2 \\times 1 + 1$ ; $1 = 2 \\times 0 + 1$. Les restes de bas en haut : $1, 1, 0, 0, 1, 0, 0$. Donc $(100)_{10} = (1100100)_2$, soit 7 bits. Vérification : $64 + 32 + 4 = 100$. Le plus grand nombre à coder est 100, qui s'écrit sur 7 bits ; tous les nombres inférieurs tiennent donc sur 7 bits aussi (on complète à gauche avec des zéros), et $2^7 = 128 > 100$ confirme que 7 bits suffisent alors que $2^6 = 64 < 100$ montre que 6 bits ne suffisent pas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Divise par 2 jusqu'à obtenir un quotient nul, en notant chaque reste.",
+        "Lis les restes de bas en haut.",
+        "Contrôle en reconvertissant avec les puissances de 2.",
+        "Un reste vaut toujours 0 ou 1 en division par 2.",
+        "Au BEPC, la conversion d'un petit entier en binaire figure presque chaque année dans l'exercice sur le codage de l'information."
+      ]
+    }
+  ]
+}

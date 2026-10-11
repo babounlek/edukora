@@ -1,0 +1,136 @@
+{
+  "cours_id": "cours-initialiser-un-tableau-en-langage-c-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Initialiser un tableau en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Programmation en C",
+    "duree_estimee_min": 25,
+    "tags": [
+      "langage C",
+      "tableau",
+      "initialisation",
+      "indice"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex3-qA.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau de notes ne sert à rien tant qu'il est vide. En C, tu peux le remplir au moment même de sa création, en une seule ligne. Mais attention : les indices partent de 0, et c'est là que la plupart des erreurs se produisent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un tableau",
+        "Connaître les types `int` et `float` du langage C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déclaration avec liste de valeurs",
+      "contenu_markdown": "Syntaxe d'un tableau initialisé :\n\n```c\ntype nom[taille] = {valeur0, valeur1, ..., valeurN};\n```\n\n- La taille est mise entre crochets ; on peut l'omettre si on donne la liste complète (le compilateur compte).\n- Les valeurs sont entre **accolades** et séparées par des **virgules**.\n- L'instruction se termine par un **point-virgule**.\n- Les indices vont de **0** à `taille - 1`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire en C l'instruction qui initialise le tableau Notes avec 10, 12, 16, 14, 17.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le type",
+          "justification": "Les notes sont entières.",
+          "resultat_markdown": "int"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le nom et la taille",
+          "justification": "5 cases : le nom est Notes.",
+          "resultat_markdown": "Notes[5]"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la liste",
+          "justification": "Accolades et virgules, dans l'ordre.",
+          "resultat_markdown": "{10, 12, 16, 14, 17}"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler et conclure par ;",
+          "justification": "Chaque instruction C se termine par un point-virgule.",
+          "resultat_markdown": "int Notes[5] = {10, 12, 16, 14, 17};"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier les indices",
+          "justification": "La première valeur est à l'indice 0, la dernière à l'indice 4.",
+          "resultat_markdown": "Notes[0] = 10 et Notes[4] = 17"
+        }
+      ],
+      "conclusion_markdown": "L'instruction est `int Notes[5] = {10, 12, 16, 14, 17};`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser des parenthèses : `int Notes[5] = (10, 12, 16, 14, 17);`.",
+          "pourquoi_faux": "Les parenthèses ne servent pas à initialiser un tableau. Le compilateur signale une erreur.",
+          "correction_markdown": "Utilise des accolades pour la liste de valeurs."
+        },
+        {
+          "erreur_markdown": "Accéder à `Notes[5]` pour la dernière note.",
+          "pourquoi_faux": "En C, le tableau a des indices de 0 à 4. `Notes[5]` est hors du tableau.",
+          "correction_markdown": "Dernier indice = taille - 1."
+        },
+        {
+          "erreur_markdown": "Oublier le point-virgule final.",
+          "pourquoi_faux": "Le compilateur indique une erreur à la ligne suivante, ce qui désoriente.",
+          "correction_markdown": "Termine chaque instruction par `;`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris l'initialisation d'un tableau `temp` de 3 réels : 12.5, 14.0 et 13.2.",
+          "solution_markdown": "`float temp[3] = {12.5, 14.0, 13.2};`. En C, le séparateur décimal est le point."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit `int t[] = {4, 8, 15, 16, 23, 42};`. Combien de cases ? Que valent t[2] et t[5] ?",
+          "solution_markdown": "Le compilateur compte 6 valeurs : le tableau a 6 cases (indices 0 à 5). t[2] = 15 (troisième case) et t[5] = 42 (dernière case). Ces valeurs ont été confirmées en exécutant le programme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Corrige cette ligne : `int Notes(5) = [10, 12, 16, 14, 17]`.",
+          "solution_markdown": "Trois erreurs : les parenthèses doivent être des crochets pour la taille (`Notes[5]`), les crochets de la liste doivent être des accolades (`{...}`), et le point-virgule final manque. Correction : `int Notes[5] = {10, 12, 16, 14, 17};`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau C s'initialise avec des accolades et des virgules.",
+        "La taille est entre crochets, la liste entre accolades, l'instruction finit par un point-virgule.",
+        "Les indices vont de 0 à taille - 1.",
+        "Les nombres décimaux utilisent le point, pas la virgule.",
+        "Au Probatoire, l'initialisation d'un tableau en C se demande en une ligne : ne la complique pas."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-definir-la-cle-primaire-d-une-table-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Définir la clé primaire d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données",
+    "duree_estimee_min": 20,
+    "tags": [
+      "clé primaire",
+      "table",
+      "modèle relationnel",
+      "identifiant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex2-q2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux élèves peuvent porter le même nom, pas le même matricule. C'est exactement ce que fait une clé primaire dans une table : donner à chaque ligne une identité unique. Savoir la définir est une question de cours qui revient à presque tous les examens d'informatique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table, un champ et un enregistrement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définition et propriétés de la clé primaire",
+      "contenu_markdown": "La **clé primaire** d'une table est le champ (ou le plus petit ensemble de champs) dont la valeur identifie de façon unique chaque enregistrement.\n\nPropriétés :\n\n1. **Unicité** : deux enregistrements n'ont jamais la même valeur.\n2. **Non-nullité** : la valeur est toujours renseignée.\n3. **Stabilité** : la valeur ne change pas dans le temps.\n\nElle est **simple** si elle tient en un champ, **composée** si plusieurs champs sont nécessaires. Elle sert à relier les tables entre elles (clé étrangère)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir « clé primaire » comme à l'épreuve (0,5 pt).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Donner la catégorie",
+          "justification": "La clé primaire est un champ d'une table.",
+          "resultat_markdown": "Un champ (ou ensemble de champs)."
+        },
+        {
+          "numero": 2,
+          "action": "Donner la fonction",
+          "justification": "Son rôle est d'identifier chaque ligne.",
+          "resultat_markdown": "Identifie chaque enregistrement."
+        },
+        {
+          "numero": 3,
+          "action": "Donner la propriété décisive",
+          "justification": "Ce qui la distingue d'un champ ordinaire, c'est que ses valeurs ne se répètent jamais.",
+          "resultat_markdown": "De façon unique, sans valeur vide."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler la phrase",
+          "justification": "On réunit les trois éléments.",
+          "resultat_markdown": "La clé primaire est le champ d'une table qui identifie de façon unique chaque enregistrement."
+        }
+      ],
+      "conclusion_markdown": "La clé primaire est le champ qui identifie de façon unique chaque enregistrement de la table."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire « la clé primaire est le premier champ de la table ».",
+          "pourquoi_faux": "La position n'a aucun rapport. C'est l'unicité qui fait la clé primaire, pas l'ordre des champs.",
+          "correction_markdown": "Parle de fonction (identifier) et de propriété (unique)."
+        },
+        {
+          "erreur_markdown": "Écrire « la clé primaire est un champ qui ne change pas » sans parler d'unicité.",
+          "pourquoi_faux": "La stabilité n'est pas la propriété essentielle : un champ stable peut très bien se répéter. L'unicité est le mot clé.",
+          "correction_markdown": "Mets toujours le mot « unique » dans ta phrase."
+        },
+        {
+          "erreur_markdown": "Confondre clé primaire et clé étrangère.",
+          "pourquoi_faux": "La clé étrangère est un champ qui reprend la clé primaire d'une autre table pour les relier.",
+          "correction_markdown": "Primaire = identifie la ligne. Étrangère = renvoie vers une autre table."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Complète : la clé primaire est le champ qui ........ de façon ........ chaque ........ d'une table.",
+          "solution_markdown": "identifie, unique, enregistrement (ligne)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Vrai ou faux : « Une clé primaire peut être vide pour certains enregistrements. » Justifie.",
+          "solution_markdown": "Faux. Une valeur vide ne permettrait pas d'identifier l'enregistrement, donc la clé primaire ne peut pas être vide (non-nullité)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une table qui enregistre les notes (matricule, code_matiere, valeur), aucun champ seul n'est unique. Peut-on parler de clé primaire ? Laquelle ?",
+          "solution_markdown": "Oui, une clé primaire composée : le couple (matricule, code_matiere), car un élève n'a qu'une note par matière. Chaque couple est donc unique, alors que chaque champ pris seul se répète."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La clé primaire identifie de façon unique chaque enregistrement.",
+        "Elle est unique, jamais vide, stable.",
+        "Elle peut être simple ou composée.",
+        "Elle ne dépend pas de la position du champ dans la table.",
+        "Au Probatoire, « définir clé primaire » est une question de cours : le mot « unique » rapporte le point."
+      ]
+    }
+  ]
+}

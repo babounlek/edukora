@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-identifier-le-post-et-le-bios-au-demarrage-probatoire",
+  "meta": {
+    "titre": "Identifier le POST et le BIOS au démarrage",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "POST",
+      "BIOS",
+      "UEFI",
+      "carte mère",
+      "auto-test"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de lancer Windows ou Linux, l'ordinateur doit s'assurer que ses composants fonctionnent. Cette inspection, faite chaque matin comme un contrôle avant le décollage, est réalisée par un petit programme gravé sur la carte mère. Le nommer et dire ce qu'il vérifie est un point de cours qui rapporte facilement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les composants de l'unité centrale : processeur, RAM, carte mère, disque dur",
+        "Connaître la notion de micrologiciel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "BIOS et POST : qui fait quoi",
+      "contenu_markdown": "Le **BIOS** (*Basic Input/Output System*, système de base d'entrée-sortie) est un micrologiciel enregistré dans une mémoire non volatile de la carte mère (mémoire flash ou ROM). C'est le premier programme exécuté à la mise sous tension. Son successeur moderne est l'**UEFI**.\n\nLe **POST** (*Power-On Self-Test*, auto-test à la mise sous tension) est la routine du BIOS qui vérifie le matériel : processeur, mémoire vive, carte graphique, clavier, contrôleurs de disques. Si tout va bien, le BIOS cherche le disque de démarrage ; sinon il signale l'anomalie par un message ou des bips.\n\nLe **BIOS Setup** (accessible avec une touche pressée au démarrage, souvent Suppr, F2 ou F10 selon la carte mère) permet de régler l'heure, l'ordre de démarrage et d'autres paramètres, enregistrés grâce à la pile de la carte mère.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Comment appelle-t-on le programme qui vérifie l'état de l'ordinateur pendant la phase de démarrage ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Situer le moment",
+          "justification": "L'énoncé parle de la phase de démarrage, juste après la mise sous tension",
+          "resultat_markdown": "Moment : début du démarrage."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la fonction",
+          "justification": "Le programme vérifie l'état du matériel",
+          "resultat_markdown": "C'est un auto-test."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le programme",
+          "justification": "L'auto-test à la mise sous tension s'appelle POST",
+          "resultat_markdown": "**POST**, *Power-On Self-Test*."
+        },
+        {
+          "numero": 4,
+          "action": "Préciser le composant qui l'exécute",
+          "justification": "Le POST appartient au BIOS",
+          "resultat_markdown": "Il est lancé par le **BIOS**, stocké sur la carte mère."
+        }
+      ],
+      "conclusion_markdown": "Le programme est le POST (*Power-On Self-Test*), exécuté par le BIOS au démarrage."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « antivirus »",
+          "pourquoi_faux": "Un antivirus est un logiciel installé sur le système d'exploitation, donc il n'existe pas avant son chargement. Il cherche des programmes malveillants, pas des pannes de matériel.",
+          "correction_markdown": "Répondre POST."
+        },
+        {
+          "erreur_markdown": "Confondre BIOS et POST",
+          "pourquoi_faux": "Le BIOS est le micrologiciel complet, le POST est un de ses tests.",
+          "correction_markdown": "Dire que le BIOS exécute le POST."
+        },
+        {
+          "erreur_markdown": "Croire que le BIOS est stocké sur le disque dur",
+          "pourquoi_faux": "Il est sur la carte mère, ce qui permet de démarrer même avec un disque en panne.",
+          "correction_markdown": "Dire « mémoire de la carte mère »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Développer les sigles BIOS et POST.",
+          "solution_markdown": "BIOS : *Basic Input/Output System*. POST : *Power-On Self-Test*."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Citer quatre composants vérifiés par le POST.",
+          "solution_markdown": "Le processeur, la mémoire vive, la carte graphique, le clavier. On peut aussi citer les contrôleurs de disques."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur affiche « No bootable device » après le POST. Que peut-on en conclure ?",
+          "solution_markdown": "Le POST a réussi et le BIOS a fonctionné, mais il ne trouve pas de périphérique contenant un système à démarrer (disque débranché, panne ou mauvais ordre de démarrage dans le BIOS Setup). L'anomalie ne vient pas du processeur ni de la mémoire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le BIOS est le micrologiciel de la carte mère, premier programme exécuté.",
+        "Le POST est son auto-test à la mise sous tension.",
+        "Il vérifie le processeur, la mémoire, la carte graphique, le clavier et les disques.",
+        "Un antivirus n'intervient pas à cette étape.",
+        "Les sigles et le rôle du BIOS et du POST sont des questions de cours classiques en maintenance."
+      ]
+    }
+  ]
+}

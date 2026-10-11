@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-ecrire-la-syntaxe-minimale-d-une-balise-html-de-formulaire-probatoire-a-abi-2022",
+  "meta": {
+    "titre": "Écrire la syntaxe minimale d'une balise HTML de formulaire",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique - HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "HTML",
+      "balise form",
+      "formulaire",
+      "balise ouvrante et fermante",
+      "attributs"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2022 - Épreuve théorique d'informatique (séries A, ABI, AC et SH) - MINESEC/OBC",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2022-officiel-cameroun-ex2-qB2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Inscription à un site, connexion, commande : chaque fois qu'un internaute remplit des champs et clique sur « Envoyer », un formulaire HTML est à l'œuvre. À l'examen, on te demande d'en écrire la balise de base. La question paraît courte, mais elle teste deux réflexes : connaître le nom exact de la balise et savoir qu'elle s'ouvre puis se ferme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une balise HTML s'écrit entre chevrons `<` et `>`",
+        "Connaître la différence entre balise ouvrante et balise fermante"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise form : un conteneur ouvert puis fermé",
+      "contenu_markdown": "La plupart des balises HTML fonctionnent par paires : une balise ouvrante `<nom>` et une balise fermante `</nom>` qui entourent le contenu. Le formulaire est introduit par la balise **`<form>`**. La syntaxe minimale se limite à cette paire, sans attribut :\n\n```html\n<form>\n  ... champs de saisie et bouton d'envoi ...\n</form>\n```\n\nDeux attributs facultatifs complètent l'usage courant : `action`, adresse du script qui traite les données, et `method`, mode d'envoi (`get` ou `post`). Les valeurs d'attributs se mettent entre guillemets.",
+      "formule_principale": "\\text{balise ouvrante} + \\text{contenu} + \\text{balise fermante}",
+      "variantes": [
+        {
+          "nom": "Balises sans contenu (auto-fermantes)",
+          "quand_utiliser": "Pour les éléments qui ne contiennent rien, comme une image ou un champ de saisie.",
+          "contenu_markdown": "Ces balises n'ont pas de fermeture : `<img src=\"photo.jpg\">` ou `<input type=\"text\">`. Il faut donc connaître la nature de la balise : conteneur (paire obligatoire) ou élément isolé."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la syntaxe minimale de la balise qui permet d'insérer un formulaire (Probatoire A-ABI 2022, exercice II, partie B, question 2).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Retrouver le nom de la balise",
+          "justification": "Le formulaire s'écrit `form`, nom anglais comme tous les noms de balises HTML.",
+          "resultat_markdown": "Nom : form"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le type de balise",
+          "justification": "Un formulaire contient des champs : c'est un conteneur, il faut une balise ouvrante et une balise fermante.",
+          "resultat_markdown": "Paire de balises"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la syntaxe minimale",
+          "justification": "On écrit la paire autour d'un contenu représenté par des points de suspension, sans attribut.",
+          "resultat_markdown": "`<form> ... </form>`"
+        },
+        {
+          "numero": 4,
+          "action": "Mentionner les attributs usuels",
+          "justification": "On précise qu'`action` et `method` sont facultatifs et ne font pas partie de la syntaxe minimale.",
+          "resultat_markdown": "`<form action=\"enregistrer.php\" method=\"post\">` en version complète"
+        }
+      ],
+      "conclusion_markdown": "La syntaxe minimale de la balise de formulaire est `<form> ... </form>`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `<formulaire>` ou `<forme>`",
+          "pourquoi_faux": "Les noms de balises HTML sont fixés par le langage et viennent de l'anglais : `<formulaire>` n'est pas reconnu par le navigateur.",
+          "correction_markdown": "Écrire `<form>`."
+        },
+        {
+          "erreur_markdown": "Oublier la balise fermante `</form>`",
+          "pourquoi_faux": "Sans fermeture, le navigateur ne sait pas où le formulaire se termine et la page peut s'afficher de façon incorrecte.",
+          "correction_markdown": "Toujours écrire la paire de balises pour un conteneur."
+        },
+        {
+          "erreur_markdown": "Confondre `<form>` et `<input>`",
+          "pourquoi_faux": "`<input>` crée un seul champ de saisie à l'intérieur du formulaire ; `<form>` enveloppe l'ensemble des champs.",
+          "correction_markdown": "`<form>` est le conteneur, `<input>` un élément placé dedans."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner la syntaxe minimale de la balise qui insère une liste à puces.",
+          "solution_markdown": "La liste à puces s'écrit avec `<ul>`, et chaque élément avec `<li>` :\n\n```html\n<ul>\n  <li>élément</li>\n</ul>\n```\n\nLa syntaxe minimale est `<ul> ... </ul>`, avec au moins un `<li>` à l'intérieur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner la syntaxe minimale de la balise qui insère une image. Cette balise a-t-elle une balise fermante ?",
+          "solution_markdown": "La balise est `<img>`. Elle n'a pas de contenu, donc pas de balise fermante, mais elle exige l'attribut `src` qui indique le fichier :\n\n```html\n<img src=\"photo.jpg\">\n```\n\nC'est une balise auto-fermante : la syntaxe minimale n'est donc pas toujours une paire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire un formulaire minimal d'inscription contenant un champ « nom » et un bouton « Envoyer », qui transmet ses données en `post` au script `inscrire.php`.",
+          "solution_markdown": "```html\n<form action=\"inscrire.php\" method=\"post\">\n  <label for=\"nom\">Nom</label>\n  <input type=\"text\" id=\"nom\" name=\"nom\">\n  <input type=\"submit\" value=\"Envoyer\">\n</form>\n```\n\nLe conteneur `<form>` reçoit `action` et `method`. Le champ `<input type=\"text\">` et le bouton `<input type=\"submit\">` n'ont pas de balise fermante. Le `name` du champ sera le nom sous lequel le script reçoit la valeur saisie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire s'écrit avec la balise `<form>`, nom anglais comme toutes les balises HTML.",
+        "C'est un conteneur : balise ouvrante `<form>` et balise fermante `</form>`.",
+        "La syntaxe minimale ne contient aucun attribut ; `action` et `method` sont facultatifs mais courants.",
+        "Tous les éléments n'ont pas de fermeture : `<img>` et `<input>` s'écrivent seuls.",
+        "Au Probatoire, la partie programmation web demande souvent une balise de base (formulaire, liste, tableau) : savoir la paire de balises suffit pour le point."
+      ]
+    }
+  ]
+}

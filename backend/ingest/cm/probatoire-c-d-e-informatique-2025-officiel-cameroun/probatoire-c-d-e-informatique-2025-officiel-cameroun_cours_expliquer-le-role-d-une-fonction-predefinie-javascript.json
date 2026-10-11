@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-expliquer-le-role-d-une-fonction-predefinie-javascript-1ere-cde",
+  "meta": {
+    "titre": "Expliquer le rôle d'une fonction prédéfinie JavaScript",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "JavaScript : fonctions prédéfinies",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "parseFloat",
+      "fonction prédéfinie",
+      "conversion",
+      "prompt"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q2.2.a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu écris `parseFloat(prompt(\"longueur\"))`, deux fonctions travaillent à la suite sans que tu les aies programmées : elles sont prédéfinies, fournies par le langage. À l'examen, il suffit de dire en une phrase ce que chacune fait. Ce cours te donne les fonctions à connaître et la façon de les décrire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une fonction (entrée, traitement, sortie)",
+        "Connaître les types texte et nombre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Entrée, action, résultat",
+      "contenu_markdown": "Pour donner le rôle d'une fonction prédéfinie, dis :\n\n1. ce qu'elle **reçoit** ;\n2. ce qu'elle **fait** ;\n3. ce qu'elle **renvoie** ou produit.\n\nFonctions du programme :\n\n| Fonction | Rôle |\n|---|---|\n| `parseFloat(texte)` | convertit un texte en nombre réel (décimal) |\n| `parseInt(texte)` | convertit un texte en nombre entier (partie entière) |\n| `prompt(message)` | ouvre une boîte de saisie et renvoie le texte saisi |\n| `alert(message)` | ouvre une boîte qui affiche un message |\n| `document.write(texte)` | écrit du texte ou du HTML dans la page |\n| `Math.round(x)` | arrondit x à l'entier le plus proche |\n\nEn JavaScript, `prompt()` renvoie toujours du texte, même si l'utilisateur tape un nombre : il faut le convertir avant de calculer."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code JavaScript : `longueur=parseFloat(prompt(\"longueur\"));`, donner le rôle de la fonction prédéfinie `parseFloat()`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ce qu'elle reçoit",
+          "justification": "`parseFloat` est appliquée au résultat de `prompt(\"longueur\")`, c'est-à-dire au texte saisi par l'utilisateur.",
+          "resultat_markdown": "Elle reçoit une chaîne de caractères."
+        },
+        {
+          "numero": 2,
+          "action": "Ce qu'elle fait",
+          "justification": "Elle lit le texte et le transforme en nombre décimal.",
+          "resultat_markdown": "Elle convertit la chaîne en nombre réel."
+        },
+        {
+          "numero": 3,
+          "action": "Ce qu'elle renvoie",
+          "justification": "Le résultat est un nombre, qui peut entrer dans un calcul.",
+          "resultat_markdown": "Elle renvoie un nombre, par exemple 12.5 pour \"12.5\"."
+        },
+        {
+          "numero": 4,
+          "action": "Pourquoi c'est nécessaire ici",
+          "justification": "`prompt()` renvoie du texte ; sans conversion, `\"2\" + \"3\"` donnerait \"23\" et non 5.",
+          "resultat_markdown": "La conversion permet de calculer `longueur*largeur*prixUnitaire`."
+        }
+      ],
+      "conclusion_markdown": "`parseFloat()` convertit le texte saisi par l'utilisateur en nombre réel utilisable dans un calcul."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que `parseFloat()` demande une valeur à l'utilisateur.",
+          "pourquoi_faux": "C'est `prompt()` qui affiche la boîte de saisie. `parseFloat()` agit après, sur le texte déjà saisi.",
+          "correction_markdown": "Associe chaque fonction à son verbe : `prompt` demande, `parseFloat` convertit."
+        },
+        {
+          "erreur_markdown": "Confondre `parseFloat` et `parseInt`.",
+          "pourquoi_faux": "`parseInt(\"12.9\")` donne 12 (partie entière), alors que `parseFloat(\"12.9\")` donne 12,9.",
+          "correction_markdown": "Utilise `parseFloat` pour des décimaux, `parseInt` pour des entiers."
+        },
+        {
+          "erreur_markdown": "Écrire une virgule décimale dans la saisie : `12,5`.",
+          "pourquoi_faux": "`parseFloat(\"12,5\")` renvoie 12 : la lecture s'arrête à la virgule. JavaScript attend un point.",
+          "correction_markdown": "Écris 12.5 avec un point."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner le rôle de `parseInt()` et le résultat de `parseInt(\"12.9\")`.",
+          "solution_markdown": "`parseInt()` **convertit une chaîne en nombre entier** en ne gardant que la partie entière.\n\n`parseInt(\"12.9\")` renvoie **12**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner le rôle de `alert()` et de `prompt()` et dire laquelle renvoie une valeur.",
+          "solution_markdown": "- `alert(message)` ouvre une boîte qui **affiche** un message ; elle ne renvoie pas de valeur utile.\n- `prompt(message)` ouvre une boîte de **saisie** et **renvoie** le texte saisi par l'utilisateur.\n\nSeule `prompt()` renvoie une valeur exploitable dans le programme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quel est le résultat de `parseInt(\"12.9\") + parseFloat(\"0.5\")`, de `Math.round(2.5)` et de `\"2\" + \"3\"` ? Explique chacun.",
+          "solution_markdown": "- `parseInt(\"12.9\")` vaut 12 et `parseFloat(\"0.5\")` vaut 0,5 : la somme est **12,5**.\n- `Math.round(2.5)` arrondit à l'entier le plus proche, soit **3** (valeur au milieu arrondie vers le haut).\n- `\"2\" + \"3\"` additionne deux chaînes : le signe `+` les **concatène** et donne la chaîne **\"23\"**, non le nombre 5. C'est pourquoi on convertit avec `parseFloat` avant d'additionner des saisies."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une fonction prédéfinie, dis ce qu'elle reçoit, ce qu'elle fait, ce qu'elle renvoie.",
+        "`prompt` renvoie toujours du texte : on le convertit avec `parseFloat` ou `parseInt`.",
+        "`parseFloat` garde les décimaux (avec un point), `parseInt` garde la partie entière.",
+        "Ne confonds pas la fonction qui demande (`prompt`) et celle qui convertit (`parseFloat`).",
+        "Au Probatoire, le rôle d'une ou deux fonctions prédéfinies d'un code JavaScript est demandé presque chaque année : une phrase précise rapporte les 0,5 point."
+      ]
+    }
+  ]
+}

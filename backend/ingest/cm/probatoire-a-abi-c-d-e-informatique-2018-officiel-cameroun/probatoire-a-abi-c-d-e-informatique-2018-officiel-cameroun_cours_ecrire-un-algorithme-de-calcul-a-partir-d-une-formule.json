@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-ecrire-un-algorithme-de-calcul-a-partir-d-une-formule-probatoire-acde-2018",
+  "meta": {
+    "titre": "Écrire un algorithme de calcul à partir d'une formule",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : algorithmes de calcul simples",
+    "duree_estimee_min": 30,
+    "tags": [
+      "algorithme",
+      "variable",
+      "lecture",
+      "affectation",
+      "formule",
+      "périmètre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2018 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2018-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer le périmètre d'un carré, la moyenne de trois notes, le prix après remise : en classe comme à l'examen, ces petits problèmes ont tous la même forme. Quand tu maîtrises la méthode, tu peux écrire un algorithme correct pour n'importe quelle formule en moins de cinq minutes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'un algorithme (en-tête, déclarations, corps)",
+        "Savoir ce qu'est une variable et choisir son type",
+        "Connaître les instructions `Lire`, `Écrire` et l'affectation `←`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode en quatre temps",
+      "contenu_markdown": "1. **Analyser** : relever les données (ce qu'il faut lire), la formule (ce qu'il faut calculer) et le résultat (ce qu'il faut afficher).\n2. **Déclarer** : une variable par donnée et par résultat, avec un nom parlant et un type adapté (réel si la valeur peut être décimale, entier sinon).\n3. **Écrire le corps dans l'ordre** : lecture des données, calcul par affectation (`←`), affichage du résultat.\n4. **Tester** : dérouler l'algorithme à la main avec une valeur simple.",
+      "variantes": [
+        {
+          "nom": "Valeur fixe dans la formule",
+          "quand_utiliser": "Quand la formule contient une constante comme π.",
+          "contenu_markdown": "On la déclare dans la rubrique `Constantes` (par exemple `PI = 3.14`) au lieu de l'écrire en dur dans le calcul."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire l'algorithme qui permet de calculer le périmètre d'un carré.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser le problème",
+          "justification": "On identifie donnée, formule et résultat avant d'écrire.",
+          "resultat_markdown": "Donnée : le côté `cote`. Formule : périmètre = 4 × côté. Résultat : `perimetre`."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir les types",
+          "justification": "Un côté peut être décimal (2,5 m) : le type réel est le plus sûr.",
+          "resultat_markdown": "`cote, perimetre : réel`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'en-tête et les déclarations",
+          "justification": "Ce sont les deux premières parties de l'algorithme.",
+          "resultat_markdown": "`Algorithme perimetre_carre` puis `Variables cote, perimetre : réel`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire le corps dans l'ordre",
+          "justification": "Il faut lire avant de calculer, et calculer avant d'afficher.",
+          "resultat_markdown": "`Lire(cote)` ; `perimetre ← 4 * cote` ; `Écrire(\"Le périmètre est : \", perimetre)`"
+        },
+        {
+          "numero": 5,
+          "action": "Tester avec une valeur simple",
+          "justification": "On déroule à la main pour contrôler la formule.",
+          "resultat_markdown": "`cote` = 5, donc `perimetre` = 4 × 5 = 20 : résultat attendu."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme complet est :\n\n```\nAlgorithme perimetre_carre\nVariables\n  cote, perimetre : réel\nDébut\n  Écrire(\"Entrer la longueur du côté du carré : \")\n  Lire(cote)\n  perimetre ← 4 * cote\n  Écrire(\"Le périmètre du carré est : \", perimetre)\nFin\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer avant de lire : `perimetre ← 4 * cote` placé avant `Lire(cote)`.",
+          "pourquoi_faux": "À ce moment, `cote` n'a aucune valeur : le calcul est impossible ou donne un résultat faux.",
+          "correction_markdown": "Respecter l'ordre lecture, calcul, affichage."
+        },
+        {
+          "erreur_markdown": "Écrire `perimetre = 4 * cote` à la place de `perimetre ← 4 * cote`.",
+          "pourquoi_faux": "Le signe `=` exprime une égalité ou une comparaison ; pour ranger un résultat dans une variable, on utilise l'affectation `←`.",
+          "correction_markdown": "Utiliser `←` pour toute affectation."
+        },
+        {
+          "erreur_markdown": "Oublier de déclarer une variable utilisée dans le corps.",
+          "pourquoi_faux": "Une variable non déclarée n'a ni type ni emplacement mémoire réservé : l'algorithme est incorrect.",
+          "correction_markdown": "Après avoir écrit le corps, relire chaque nom de variable et vérifier qu'il figure dans la partie déclarative."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'algorithme qui lit la longueur et la largeur d'un rectangle et affiche son aire.",
+          "solution_markdown": "Analyse : données `longueur` et `largeur`, formule aire = longueur × largeur, résultat `aire`, types réels.\n\n```\nAlgorithme aire_rectangle\nVariables\n  longueur, largeur, aire : réel\nDébut\n  Lire(longueur)\n  Lire(largeur)\n  aire ← longueur * largeur\n  Écrire(\"Aire du rectangle : \", aire)\nFin\n```\n\nTest : longueur = 5 et largeur = 3 donnent aire = 15 ; longueur = 8 et largeur = 2,5 donnent aire = 20 (exécution vérifiée)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire l'algorithme qui lit trois notes et affiche leur moyenne.",
+          "solution_markdown": "Analyse : données `n1`, `n2`, `n3`, formule moyenne = (n1 + n2 + n3) / 3, résultat `moyenne`. Les parenthèses sont indispensables : sans elles, seule `n3` serait divisée par 3.\n\n```\nAlgorithme moyenne_trois_notes\nVariables\n  n1, n2, n3, moyenne : réel\nDébut\n  Lire(n1)\n  Lire(n2)\n  Lire(n3)\n  moyenne ← (n1 + n2 + n3) / 3\n  Écrire(\"La moyenne est : \", moyenne)\nFin\n```\n\nTest : 12, 14 et 16 donnent (12 + 14 + 16) / 3 = 42 / 3 = 14 (exécution vérifiée)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire l'algorithme qui lit le rayon d'un cercle et affiche sa circonférence et son aire, avec π pris égal à 3,14.",
+          "solution_markdown": "Analyse : donnée `rayon`, constante `PI = 3.14`, formules circonférence = 2 × PI × rayon et aire = PI × rayon × rayon, résultats `circonference` et `aire`.\n\n```\nAlgorithme cercle\nConstantes\n  PI = 3.14\nVariables\n  rayon, circonference, aire : réel\nDébut\n  Lire(rayon)\n  circonference ← 2 * PI * rayon\n  aire ← PI * rayon * rayon\n  Écrire(\"Circonférence : \", circonference)\n  Écrire(\"Aire : \", aire)\nFin\n```\n\nTest avec rayon = 10 : circonférence = 2 × 3,14 × 10 = 62,8 ; aire = 3,14 × 10 × 10 = 314 (exécution vérifiée)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'écrire, identifie la donnée, la formule et le résultat : c'est la moitié du travail.",
+        "Une variable par donnée et par résultat, avec un type adapté (réel si la valeur peut être décimale).",
+        "Dans le corps, l'ordre est toujours lecture, calcul, affichage.",
+        "Affectation avec `←`, jamais avec `=`.",
+        "Teste ton algorithme avec une valeur simple : au Probatoire, ce réflexe évite les erreurs de formule et rassure le correcteur."
+      ]
+    }
+  ]
+}

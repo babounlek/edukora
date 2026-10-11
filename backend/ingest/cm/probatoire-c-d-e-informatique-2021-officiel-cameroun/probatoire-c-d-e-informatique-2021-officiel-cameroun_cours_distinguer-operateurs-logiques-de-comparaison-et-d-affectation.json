@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-distinguer-operateurs-logiques-de-comparaison-et-d-affectation-1ere-c-d-e",
+  "meta": {
+    "titre": "Distinguer opérateurs logiques, de comparaison et d'affectation",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "JavaScript : opérateurs et conditions",
+    "duree_estimee_min": 25,
+    "tags": [
+      "opérateur logique",
+      "opérateur de comparaison",
+      "affectation",
+      "JavaScript",
+      "condition"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une ligne de code comme `if (a != 1 || b != 2)`, trois sortes de symboles coexistent. Les confondre fait écrire des conditions fausses, et c'est une cause fréquente de bogues. Savoir les distinguer permet aussi de répondre en une ligne à la question « identifier un opérateur logique »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une condition (vraie ou fausse)",
+        "Connaître la structure `if ... else`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois familles d'opérateurs",
+      "contenu_markdown": "| Famille | Rôle | Opérateurs JavaScript |\n|---|---|---|\n| **Comparaison** | compare deux valeurs, résultat vrai ou faux | `==` (égal), `!=` (différent), `<`, `>`, `<=`, `>=` |\n| **Logiques** | combinent des conditions | `&&` (ET), `\\|\\|` (OU), `!` (NON) |\n| **Affectation** | range une valeur dans une variable | `=`, `+=`, `-=` |\n\nUn **ET** est vrai si toutes les conditions sont vraies ; un **OU** est vrai dès qu'une condition est vraie ; un **NON** inverse la valeur.\n\n**Loi de De Morgan** : `!(a || b)` est équivalent à `!a && !b`, et `!(a && b)` est équivalent à `!a || !b`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier un opérateur logique dans la ligne 6 du code : `if (name!='OBC'||pass!='Probatoire')`. (Probatoire 2021, exercice III B, question 4)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les symboles de la ligne",
+          "justification": "On relève tous les opérateurs : `!=` (deux fois) et `||`.",
+          "resultat_markdown": "Symboles : `!=`, `||`."
+        },
+        {
+          "numero": 2,
+          "action": "Classer `!=`",
+          "justification": "Il compare deux valeurs et renvoie vrai ou faux : c'est une comparaison.",
+          "resultat_markdown": "`!=` est un opérateur de comparaison (différent de)."
+        },
+        {
+          "numero": 3,
+          "action": "Classer `||`",
+          "justification": "Il relie deux conditions complètes (`name!='OBC'` et `pass!='Probatoire'`).",
+          "resultat_markdown": "`||` est un opérateur logique (OU)."
+        }
+      ],
+      "conclusion_markdown": "L'opérateur logique du code est `||` (OU), situé à la ligne 6."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `!=` pour « opérateur logique ».",
+          "pourquoi_faux": "`!=` compare deux valeurs : il ne combine pas de conditions. Le nom « logique » est réservé à `&&`, `||` et `!`.",
+          "correction_markdown": "Cherche le symbole qui relie deux conditions."
+        },
+        {
+          "erreur_markdown": "Confondre `=` et `==`.",
+          "pourquoi_faux": "`=` range une valeur dans une variable (affectation) ; `==` teste l'égalité. Écrire `if (x = 5)` modifie `x` au lieu de le comparer.",
+          "correction_markdown": "Dans une condition, utilise `==` ou `!=`."
+        },
+        {
+          "erreur_markdown": "Lire `||` comme « et ».",
+          "pourquoi_faux": "`||` est le OU : vrai dès qu'une des deux conditions est vraie. Le ET s'écrit `&&`.",
+          "correction_markdown": "Mémorise : deux barres = OU, deux esperluettes = ET."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classer chaque opérateur de `if (age >= 18 && pays == \"CM\")` : `>=`, `&&`, `==`.",
+          "solution_markdown": "`>=` est un opérateur de comparaison (supérieur ou égal). `&&` est un opérateur logique (ET), qui relie les deux conditions. `==` est un opérateur de comparaison (égal)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour x = 4, 7, 12 puis 13, évaluer la condition `(x % 2 == 0 || x > 10) && x != 12` (vrai ou faux).",
+          "solution_markdown": "x = 4 : `x % 2 == 0` vrai, donc `(vrai || ...)` vrai ; `4 != 12` vrai ; vrai ET vrai donne **vrai**. x = 7 : `7 % 2 == 0` faux, `7 > 10` faux, donc le OU est faux ; la condition est **fausse**. x = 12 : le OU est vrai, mais `12 != 12` est faux ; la condition est **fausse**. x = 13 : `13 % 2 == 0` faux, `13 > 10` vrai, donc le OU est vrai ; `13 != 12` vrai ; la condition est **vraie**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut le contraire de la condition `name!='OBC' || pass!='Probatoire'`. Écrire la condition inverse sans utiliser `!( ... )` et justifier avec De Morgan.",
+          "solution_markdown": "La négation s'écrit `!(name!='OBC' || pass!='Probatoire')`. D'après la loi de De Morgan, la négation d'un OU est le ET des négations : `!(name!='OBC') && !(pass!='Probatoire')`. Or la négation de « différent » est « égal » : la condition inverse est `name=='OBC' && pass=='Probatoire'`. Elle est vraie seulement quand l'identifiant ET le mot de passe sont tous deux corrects."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois familles de symboles : comparaison (`==`, `!=`, `<`), logiques (`&&`, `||`, `!`) et affectation (`=`).",
+        "Un opérateur logique relie des conditions entre elles ; une comparaison compare deux valeurs.",
+        "OU est vrai si une condition l'est ; ET exige que toutes le soient.",
+        "`=` range une valeur, `==` teste l'égalité : ne les confonds jamais dans un `if`.",
+        "Au Probatoire, « identifier un opérateur logique dans ce code » est une question de lecture sur 0,5 point : cherche `&&`, `||` ou `!`."
+      ]
+    }
+  ]
+}

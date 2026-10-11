@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-ecrire-la-syntaxe-des-balises-html-d-un-tableau-et-d-une-image-probatoire",
+  "meta": {
+    "titre": "Écrire la syntaxe des balises HTML d'un tableau et d'une image",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Langages du web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "table",
+      "tr",
+      "td",
+      "img",
+      "attribut src"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau d'horaires, un logo, une photo : presque toutes les pages web en contiennent. Pour les écrire, il suffit de connaître deux familles de balises : les balises conteneurs, qui se ferment, et les balises vides, qui ne se ferment pas. Le tableau et l'image illustrent chacune de ces familles, d'où leur succès à l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une balise HTML (ouvrante, fermante, attribut)",
+        "Savoir ce qu'est un fichier image (`.jpg`, `.png`, `.gif`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Balises conteneurs et balises vides",
+      "contenu_markdown": "**Tableau.** `<table>` est le conteneur du tableau ; il contient des lignes `<tr>` (*table row*), elles-mêmes faites de cellules `<td>` (*table data*) ou de cellules d'en-tête `<th>` (*table header*). Tout se ferme : `</td>`, `</tr>`, `</table>`. L'attribut `border=\"1\"` trace les bordures.\n\n```html\n<table border=\"1\">\n  <tr><th>Nom</th><th>Note</th></tr>\n  <tr><td>Paul</td><td>14</td></tr>\n</table>\n```\n\n**Image.** `<img>` est une balise vide : elle n'a pas de balise fermante. L'attribut obligatoire est `src`, qui désigne le fichier à afficher ; `alt` donne un texte de remplacement et `width` et `height` fixent la taille.\n\n```html\n<img src=\"logo.png\" alt=\"Logo\" width=\"100\">\n```",
+      "variantes": [
+        {
+          "nom": "Fusion de cellules",
+          "quand_utiliser": "Quand une cellule doit s'étendre sur plusieurs colonnes",
+          "contenu_markdown": "On ajoute `colspan=\"3\"` à la balise `<td>` ou `<th>` pour que la cellule s'étende sur trois colonnes (`rowspan` pour les lignes)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code d'un tableau de 2 lignes et 2 colonnes (cellules « A », « B », « C », « D ») avec des bordures, suivi de l'image `photo.jpg`.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir le conteneur du tableau",
+          "justification": "`<table>` délimite tout le tableau, `border` trace les bordures",
+          "resultat_markdown": "`<table border=\"1\">`"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la première ligne",
+          "justification": "Une ligne `<tr>` contient autant de `<td>` que de colonnes",
+          "resultat_markdown": "`<tr><td>A</td><td>B</td></tr>`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la deuxième ligne",
+          "justification": "Même structure, avec les deux autres cellules",
+          "resultat_markdown": "`<tr><td>C</td><td>D</td></tr>`"
+        },
+        {
+          "numero": 4,
+          "action": "Fermer le tableau puis insérer l'image",
+          "justification": "`<table>` se ferme, `<img>` s'écrit seule avec `src`",
+          "resultat_markdown": "`</table>` puis `<img src=\"photo.jpg\">`"
+        }
+      ],
+      "conclusion_markdown": "Le code complet est :\n\n```html\n<table border=\"1\">\n<tr><td>A</td><td>B</td></tr>\n<tr><td>C</td><td>D</td></tr>\n</table>\n<img src=\"photo.jpg\">\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `<image src=...>`",
+          "pourquoi_faux": "La balise s'appelle `img` ; `image` n'existe pas, donc rien ne s'affiche.",
+          "correction_markdown": "Écrire `<img src=\"...\">`."
+        },
+        {
+          "erreur_markdown": "Oublier l'attribut `src`",
+          "pourquoi_faux": "Sans `src`, le navigateur ne sait pas quel fichier charger.",
+          "correction_markdown": "Toujours écrire `src=\"nom_du_fichier\"`."
+        },
+        {
+          "erreur_markdown": "Placer des `<td>` directement dans `<table>` sans `<tr>`",
+          "pourquoi_faux": "Les cellules doivent être regroupées en lignes : `<tr>` est la balise qui crée la ligne.",
+          "correction_markdown": "Respecter l'emboîtement `table`, `tr`, `td`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la balise qui insère l'image `logo.png`.",
+          "solution_markdown": "`<img src=\"logo.png\">`. On peut ajouter `alt=\"Logo\"`. La balise est vide : pas de `</img>`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un tableau de 2 lignes et 3 colonnes contenant les nombres de 1 à 6, avec bordures.",
+          "solution_markdown": "```html\n<table border=\"1\">\n<tr><td>1</td><td>2</td><td>3</td></tr>\n<tr><td>4</td><td>5</td><td>6</td></tr>\n</table>\n```\nChaque `<tr>` contient trois `<td>` (trois colonnes) ; il y a deux `<tr>` (deux lignes)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire un tableau dont la première ligne est une cellule de titre « Bulletin » qui occupe les 2 colonnes, puis une ligne contenant une cellule avec l'image `photo.jpg` (largeur 80) et une cellule « Paul ».",
+          "solution_markdown": "```html\n<table border=\"1\">\n<tr><th colspan=\"2\">Bulletin</th></tr>\n<tr><td><img src=\"photo.jpg\" width=\"80\"></td><td>Paul</td></tr>\n</table>\n```\nLa cellule de titre `<th colspan=\"2\">` s'étend sur deux colonnes ; la deuxième ligne a deux cellules ; l'image se place dans une balise `<td>`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau se construit par emboîtement : `table`, puis `tr` pour les lignes, puis `td` pour les cellules.",
+        "`<img>` est une balise vide : pas de fermeture, mais un attribut `src` obligatoire.",
+        "Pour chaque balise, donne le nom, la fermeture éventuelle et l'attribut indispensable.",
+        "Écris un exemple complet : il prouve que tu maîtrises l'emboîtement.",
+        "Au Probatoire comme au BEPC, la syntaxe de `table` et de `img` est demandée sous forme de tableau à compléter."
+      ]
+    }
+  ]
+}

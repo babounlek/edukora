@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-ecrire-un-lien-hypertexte-vers-une-page-locale-en-html-probatoire",
+  "meta": {
+    "titre": "Écrire un lien hypertexte vers une page locale en HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Langages du web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "lien hypertexte",
+      "balise a",
+      "attribut href",
+      "chemin d'accès"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sans liens, le web ne serait qu'un tas de pages isolées. Le lien hypertexte est ce qui fait d'un ensemble de fichiers un site où l'on navigue d'une page à l'autre. Il s'écrit en une ligne, mais chaque détail compte : la balise, l'attribut et surtout le chemin du fichier cible."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de dossier et de chemin d'accès (`C:\\Documents\\fichier.html`)",
+        "Connaître les balises ouvrante et fermante en HTML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise `<a>` et son attribut `href`",
+      "contenu_markdown": "Un lien se crée avec la balise `<a>` (*anchor*) :\n\n```html\n<a href=\"adresse_de_la_cible\">Texte cliquable</a>\n```\n\n- `href` (*hypertext reference*) contient l'adresse de la cible.\n- Le texte entre `<a>` et `</a>` est ce que l'utilisateur voit et sur quoi il clique.\n- La balise fermante `</a>` est obligatoire.\n\nTypes d'adresses : un **chemin absolu** local, du lecteur jusqu'au fichier (`C:\\Mes documents\\mon site\\page.html`) ; un **chemin relatif** à partir du dossier de la page courante (`page.html`, `pages/contact.html`, `../index.html`) ; une **URL** complète (`https://www.exemple.cm/accueil.html`) ; une adresse de courriel (`mailto:nom@exemple.cm`).\n\nDans le navigateur, les chemins locaux se normalisent en `file:///C:/Mes%20documents/mon%20site/page.html` : barres obliques `/` et espace remplacé par `%20`.",
+      "variantes": [
+        {
+          "nom": "Lien sur une image",
+          "quand_utiliser": "Quand on veut un bouton ou un logo cliquable",
+          "contenu_markdown": "On place la balise `<img>` à l'intérieur de `<a>` : `<a href=\"accueil.html\"><img src=\"logo.png\" alt=\"Accueil\"></a>`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le lien vers la page `probatoire.html` située dans le répertoire `C:\\Mes documents\\mon site`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la balise du lien",
+          "justification": "Un lien hypertexte se crée avec la balise `<a>`",
+          "resultat_markdown": "`<a ...>...</a>`"
+        },
+        {
+          "numero": 2,
+          "action": "Construire le chemin complet",
+          "justification": "Le chemin va du lecteur au fichier, extension incluse",
+          "resultat_markdown": "`C:\\Mes documents\\mon site\\probatoire.html`"
+        },
+        {
+          "numero": 3,
+          "action": "Placer le chemin dans `href`",
+          "justification": "L'attribut `href` désigne la cible du lien",
+          "resultat_markdown": "`<a href=\"C:\\Mes documents\\mon site\\probatoire.html\">`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter le texte cliquable et fermer",
+          "justification": "Sans texte il n'y a rien à cliquer, sans `</a>` toute la page deviendrait cliquable",
+          "resultat_markdown": "`Ouvrir la page du probatoire</a>`"
+        }
+      ],
+      "conclusion_markdown": "Le lien complet est `<a href=\"C:\\Mes documents\\mon site\\probatoire.html\">Ouvrir la page du probatoire</a>`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'attribut `href` et écrire `<a C:\\...>`",
+          "pourquoi_faux": "Sans `href=\"...\"`, le navigateur ne sait pas que le texte suivant est une adresse.",
+          "correction_markdown": "Toujours écrire `href=\"adresse\"`."
+        },
+        {
+          "erreur_markdown": "Omettre le nom du fichier dans le chemin",
+          "pourquoi_faux": "Un chemin qui s'arrête au dossier ouvre un répertoire, pas la page demandée.",
+          "correction_markdown": "Terminer par le nom du fichier et son extension."
+        },
+        {
+          "erreur_markdown": "Oublier `</a>`",
+          "pourquoi_faux": "Tout le texte suivant devient cliquable.",
+          "correction_markdown": "Fermer chaque lien par `</a>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire un lien de texte « Contact » vers la page `contact.html` située dans le même dossier que la page courante.",
+          "solution_markdown": "Même dossier : chemin relatif, donc `<a href=\"contact.html\">Contact</a>`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un lien de texte « Notes » vers la page `notes.html` qui se trouve dans le sous-dossier `pages` du dossier courant.",
+          "solution_markdown": "Chemin relatif avec le sous-dossier : `<a href=\"pages/notes.html\">Notes</a>`. On sépare le dossier et le fichier par une barre oblique `/`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire un lien qui affiche l'image `logo.png` et qui, au clic, ouvre `https://www.exemple.cm`. Écrire ensuite un lien qui ouvre le courrier électronique vers `info@exemple.cm`.",
+          "solution_markdown": "```html\n<a href=\"https://www.exemple.cm\"><img src=\"logo.png\" alt=\"Logo\"></a>\n<a href=\"mailto:info@exemple.cm\">Nous écrire</a>\n```\nLe premier lien enveloppe l'image dans `<a>` : l'image devient la zone cliquable. Le second utilise le préfixe `mailto:` qui lance le logiciel de messagerie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un lien s'écrit `<a href=\"cible\">texte</a>`.",
+        "`href` contient l'adresse, le texte entre les balises est ce qui est cliquable.",
+        "Chemin absolu : du lecteur au fichier ; chemin relatif : à partir du dossier de la page.",
+        "N'oublie ni l'extension du fichier ni la balise fermante.",
+        "Au Probatoire, la question vaut souvent 2 points : balise, attribut, chemin et texte rapportent chacun un demi-point."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "cours_id": "cours-formules-de-calcul-et-nb-si-informatique-probatoire-i1",
+  "meta": {
+    "titre": "Formules de calcul et fonction NB.SI dans un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Tableur : formules et fonctions",
+    "duree_estimee_min": 33,
+    "tags": [
+      "fonction NB.SI",
+      "Formules de calcul",
+      "tableur",
+      "Plage de cellules",
+      "références de cellules"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2021-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH et AC, session 2021 (Cameroun)",
+    "epreuve_source": "probatoire-a-abi-informatique-2021-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2021-officiel-cameroun-cours-formules-calcul-nb-si-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le professeur principal de ta classe veut connaître en quelques secondes la moyenne générale, le nombre d'élèves qui ont au moins 10 et le taux de réussite. À la main, il y en a pour vingt minutes et le risque d'erreur est grand. Dans un tableur, trois formules suffisent, et elles se recalculent toutes seules quand une note change. À l'examen, on te demande souvent l'inverse : lire une formule et dire ce qu'elle fait, avec le résultat chiffré."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir désigner une cellule par sa colonne et sa ligne (B3) et une plage de cellules (B2:B9)",
+        "Connaître les quatre opérations et la priorité de la multiplication sur l'addition",
+        "Savoir calculer une moyenne et un pourcentage"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formules de calcul, fonctions usuelles et NB.SI",
+      "contenu_markdown": "**1. Une formule de calcul** commence toujours par le signe `=`. Sans lui, le tableur lit un simple texte. Elle combine des références de cellules, des nombres, des opérateurs et des fonctions.\n\n| Opérateur | Rôle | Exemple | Résultat |\n|---|---|---|---|\n| `+` `-` | addition, soustraction | `=B2+B3` | somme des deux cellules |\n| `*` `/` | multiplication, division | `=B2*C2` | produit des deux cellules |\n| `^` | puissance | `=2^3` | 8 |\n| `&` | concaténation de textes | `=\"Bonjour \"&A2` | texte assemblé |\n\nLa multiplication et la division passent avant l'addition et la soustraction : `=2+3*4` donne 14, alors que `=(2+3)*4` donne 20. Les parenthèses imposent l'ordre.\n\n**2. Les fonctions usuelles.** Dans un tableur en français, les arguments sont séparés par un point-virgule.\n\n| Fonction | Rôle |\n|---|---|\n| `SOMME(plage)` | additionne les nombres de la plage |\n| `MOYENNE(plage)` | moyenne des nombres de la plage |\n| `MAX(plage)` et `MIN(plage)` | plus grande et plus petite valeur |\n| `NB(plage)` | nombre de cellules contenant un nombre |\n| `NBVAL(plage)` | nombre de cellules non vides |\n| `SI(test ; si_vrai ; si_faux)` | choisit une valeur selon une condition |\n\n**3. La fonction NB.SI** compte les cellules d'une plage qui répondent à un critère :\n\n`=NB.SI(plage ; critère)`\n\n- La **plage** dit où chercher (B2:B9).\n- Le **critère** dit ce qu'on cherche : un texte entre guillemets (`\"Douala\"`), un nombre (`10`), une comparaison entre guillemets (`\">=10\"`), ou la référence d'une cellule dont le contenu sert de critère (`B3`).\n- Le résultat est un **nombre de cellules**, jamais une somme de valeurs. NB.SI ne tient pas compte de la casse : « douala » et « Douala » sont comptés ensemble.\n\n**4. Méthode à la main.** Teste chaque cellule de la plage l'une après l'autre dans un petit tableau, puis compte les oui. Vérifie avec le contrôle « conformes + non conformes = effectif de la plage ».",
+      "formule_principale": "=NB.SI(plage ; critère) compte les cellules de la plage qui vérifient le critère ; toute formule commence par = et utilise des références de cellules",
+      "variantes": [
+        {
+          "nom": "Critères de comparaison et de texte",
+          "quand_utiliser": "Quand on compte des nombres supérieurs ou inférieurs à une valeur, ou des textes différents d'une valeur ou commençant par une lettre.",
+          "contenu_markdown": "| Critère | Cellules comptées |\n|---|---|\n| `10` | égales à 10 |\n| `\">=10\"` | supérieures ou égales à 10 |\n| `\"<10\"` | strictement inférieures à 10 |\n| `\"<>Douala\"` | différentes de « Douala » (les cellules vides comptent) |\n| `\"D*\"` | textes qui commencent par D |\n\nLe signe `*` remplace n'importe quelle suite de caractères et `?` remplace un seul caractère. Pour comparer à la valeur d'une cellule, assemble le critère avec le signe `&` : `\">=\"&B2` compte les valeurs supérieures ou égales à celle de B2."
+        },
+        {
+          "nom": "Fonctions conditionnelles voisines",
+          "quand_utiliser": "Quand on veut additionner ou moyenner selon un critère, et non seulement compter.",
+          "contenu_markdown": "`=SOMME.SI(plage_critère ; critère ; plage_somme)` additionne les cellules de la plage_somme situées sur les mêmes lignes que les cellules de la plage_critère qui vérifient le critère.\n\nExemple : `=SOMME.SI(B2:B9 ; \"Douala\" ; C2:C9)` additionne les notes des élèves de Douala.\n\nNB.SI compte, SOMME.SI additionne : ne les confonds pas. Une moyenne conditionnelle s'obtient en divisant l'une par l'autre : `=SOMME.SI(B2:B9 ; \"Douala\" ; C2:C9)/NB.SI(B2:B9 ; \"Douala\")`."
+        },
+        {
+          "nom": "Recopier une formule vers le bas",
+          "quand_utiliser": "Quand la même formule doit servir sur toutes les lignes d'un tableau (montants, moyennes, appréciations).",
+          "contenu_markdown": "Quand on recopie `=B2*C2` une ligne plus bas, elle devient `=B3*C3` : les références relatives suivent la ligne.\n\nPour qu'une référence ne bouge pas (un taux de TVA rangé dans une seule cellule, par exemple), on la verrouille : on place un signe dollar devant la lettre de la colonne et un autre devant le numéro de la ligne, ce que la touche F4 fait automatiquement. C'est une référence absolue : elle désigne toujours la même cellule, où que la formule soit recopiée."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La feuille de calcul d'une classe contient, de la ligne 2 à la ligne 9, la ville d'origine (colonne B) et la note (colonne C) de huit élèves. La ligne 1 contient les titres.\n\n| | B | C |\n|---|---|---|\n| 1 | Ville | Note |\n| 2 | Douala | 12 |\n| 3 | Yaoundé | 8 |\n| 4 | Douala | 15 |\n| 5 | Garoua | 10 |\n| 6 | Yaoundé | 7 |\n| 7 | Douala | 14 |\n| 8 | Bafoussam | 10 |\n| 9 | Douala | 18 |\n\nDonner le résultat de : a) `=NB.SI(B2:B9 ; B3)` ; b) `=NB.SI(C2:C9 ; \">=10\")` ; c) `=SOMME(C2:C9)/NB(C2:C9)` ; d) `=NB.SI(C2:C9 ; \">=10\")/NB(C2:C9)`.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Évaluer la formule a",
+          "justification": "Le critère B3 est une référence : on lit son contenu, « Yaoundé ». On teste ensuite chaque cellule de B2:B9.",
+          "resultat_markdown": "Seules B3 et B6 contiennent « Yaoundé » : le résultat est 2."
+        },
+        {
+          "numero": 2,
+          "action": "Évaluer la formule b",
+          "justification": "On compte les notes supérieures ou égales à 10 : 12, 15, 10, 14, 10 et 18.",
+          "resultat_markdown": "Six cellules répondent au critère : le résultat est 6. Contrôle : les notes 8 et 7 sont en dessous, 6 + 2 = 8 élèves."
+        },
+        {
+          "numero": 3,
+          "action": "Évaluer la formule c",
+          "justification": "SOMME additionne : 12 + 8 + 15 + 10 + 7 + 14 + 10 + 18 = 94. NB compte les nombres de la plage : 8.",
+          "resultat_markdown": "94 ÷ 8 = 11,75. C'est la moyenne de la classe, la même valeur que donnerait MOYENNE(C2:C9)."
+        },
+        {
+          "numero": 4,
+          "action": "Évaluer la formule d",
+          "justification": "On divise le résultat de la formule b par l'effectif de la plage.",
+          "resultat_markdown": "6 ÷ 8 = 0,75, soit 75 % en format pourcentage."
+        }
+      ],
+      "conclusion_markdown": "Les résultats sont **2**, **6**, **11,75** et **0,75 (75 %)**. Les formules a et b sont des comptages (nombres de cellules), la formule c est une moyenne et la formule d est un taux de réussite : un tableur combine librement ces fonctions dans une même formule."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `=NB.SI(C2:C9 ; >=10)` sans guillemets autour du critère de comparaison.",
+          "pourquoi_faux": "Un critère qui contient un opérateur est un texte : sans guillemets, la syntaxe est refusée et le tableur affiche une erreur.",
+          "correction_markdown": "Écris `\">=10\"` entre guillemets. Seule une référence de cellule (B3) s'écrit sans guillemets."
+        },
+        {
+          "erreur_markdown": "Inclure la ligne de titres dans la plage : `=NB.SI(B1:B9 ; \"<>Douala\")`.",
+          "pourquoi_faux": "La cellule B1 contient le texte « Ville », différent de « Douala » : elle est comptée à tort. On obtient 5 au lieu de 4.",
+          "correction_markdown": "Délimite la plage aux seules données : B2:B9. Relis la première et la dernière ligne avant de valider."
+        },
+        {
+          "erreur_markdown": "Utiliser NB.SI quand on demande le total des notes d'une ville.",
+          "pourquoi_faux": "NB.SI compte des cellules (4 élèves de Douala) mais n'additionne rien. Le total des notes (59) demande SOMME.SI.",
+          "correction_markdown": "Demande-toi : compter (NB.SI) ou additionner (SOMME.SI) ? Le verbe de l'énoncé décide."
+        },
+        {
+          "erreur_markdown": "Taper `B2*C2` sans le signe égal au début.",
+          "pourquoi_faux": "Sans `=`, le tableur lit un texte et affiche B2*C2 tel quel dans la cellule, sans calcul.",
+          "correction_markdown": "Commence toute formule par `=` et vérifie que la cellule affiche un nombre, pas ta formule."
+        },
+        {
+          "erreur_markdown": "Calculer `=2+3*4` et répondre 20.",
+          "pourquoi_faux": "La multiplication est prioritaire : 3 × 4 = 12, puis 2 + 12 = 14. Pour obtenir 20, il faut écrire `=(2+3)*4`.",
+          "correction_markdown": "Applique la priorité des opérateurs, ou impose l'ordre avec des parenthèses."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Les cellules D1 à D6 contiennent 5, 12, 12, 7, 12 et 20. Donne le résultat de :\n\na) `=NB.SI(D1:D6 ; 12)`\nb) `=NB.SI(D1:D6 ; \">10\")`\nc) `=NB.SI(D1:D6 ; \"<>12\")`",
+          "solution_markdown": "a) La valeur 12 apparaît en D2, D3 et D5 : **3**.\n\nb) Les valeurs strictement supérieures à 10 sont 12, 12, 12 et 20 : **4**.\n\nc) Les valeurs différentes de 12 sont 5, 7 et 20 : **3**.\n\nContrôle : 3 cellules égales à 12 et 3 différentes font bien les 6 cellules de la plage."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une papeterie de Bafoussam note ses ventes de la ligne 2 à la ligne 5 : produit (colonne A), quantité (colonne B), prix unitaire en francs CFA (colonne C).\n\n| | A | B | C |\n|---|---|---|---|\n| 2 | Cahier | 10 | 250 |\n| 3 | Stylo | 20 | 100 |\n| 4 | Règle | 5 | 150 |\n| 5 | Gomme | 8 | 50 |\n\na) Écris la formule du montant en D2 et indique ce qu'elle devient une fois recopiée en D3.\nb) Écris la formule du total en D6 et calcule-le.\nc) Que renvoie `=NB.SI(D2:D5 ; \">1000\")` ?",
+          "solution_markdown": "a) En D2 : `=B2*C2`. Recopiée en D3, elle devient `=B3*C3`. Les montants sont 2500, 2000, 750 et 400.\n\nb) En D6 : `=SOMME(D2:D5)`. Total : 2500 + 2000 + 750 + 400 = **5650 francs CFA**.\n\nc) Les montants strictement supérieurs à 1000 sont 2500 et 2000 : le résultat est **2**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Les cellules E2 à E11 contiennent les notes de dix élèves : 9, 14, 11, 6, 15, 10, 13, 8, 12, 16. Écris une formule pour chaque demande et donne sa valeur.\n\na) La moyenne de la classe.\nb) Le nombre d'élèves qui ont au moins 10.\nc) Le pourcentage d'élèves qui ont au moins 10.\nd) Le nombre d'élèves dont la note est supérieure ou égale à la moyenne de la classe.",
+          "solution_markdown": "La somme des notes est 9 + 14 + 11 + 6 + 15 + 10 + 13 + 8 + 12 + 16 = 114.\n\na) `=MOYENNE(E2:E11)` : 114 ÷ 10 = **11,4**.\n\nb) `=NB.SI(E2:E11 ; \">=10\")` : les notes 14, 11, 15, 10, 13, 12 et 16 conviennent, soit **7** élèves (les notes 9, 6 et 8 sont en dessous).\n\nc) `=NB.SI(E2:E11 ; \">=10\")/NB(E2:E11)` : 7 ÷ 10 = 0,7, soit **70 %**.\n\nd) `=NB.SI(E2:E11 ; \">=\"&MOYENNE(E2:E11))` : le critère devient `\">=11,4\"`. Les notes 14, 15, 13, 12 et 16 conviennent, la note 11 est trop basse : **5** élèves."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute formule commence par le signe `=` ; la multiplication et la division passent avant l'addition et la soustraction, et les parenthèses imposent l'ordre.",
+        "`NB.SI(plage ; critère)` compte des cellules, jamais une somme : la plage dit où chercher, le critère dit ce qu'on cherche.",
+        "Un critère qui contient un opérateur ou un texte s'écrit entre guillemets (`\">=10\"`, `\"Douala\"`) ; une référence de cellule s'écrit sans guillemets.",
+        "SOMME, MOYENNE, MAX, MIN et NB se combinent avec NB.SI : taux de réussite = NB.SI(notes ; \">=10\") ÷ NB(notes).",
+        "Pour évaluer une formule à la main, teste chaque cellule dans un petit tableau, puis vérifie que conformes plus non conformes égalent l'effectif de la plage.",
+        "Au Probatoire, « donner le résultat de cette formule » et « que fait cette formule ? » demandent un nombre exact et une phrase d'explication."
+      ]
+    }
+  ]
+}

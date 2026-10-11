@@ -1,0 +1,348 @@
+{
+  "epreuve_source": "probatoire-c-d-e-informatique-2021-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "points": 8,
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_1.png",
+      "page_source": 2,
+      "type": "document",
+      "legende": "Listing numéroté (lignes 1 à 22) de l'algorithme palindrome : déclarations, saisie du mot dans le tableau T, boucle Pour de comparaison T[i]=T[nb] avec affichage du résultat",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_2.png",
+      "page_source": 3,
+      "type": "document",
+      "legende": "Code source HTML et JavaScript d'une page de connexion (fonction traitement, formulaire avec champs name et pass, bouton Ok avec onClick)",
+      "indispensable": true,
+      "lisibilite": "partielle",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-3",
+      "fichier": "probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_3.png",
+      "page_source": 3,
+      "type": "schema",
+      "legende": "Rendu du formulaire dans le navigateur : titre Connexion souligné, tableau sans bordure de 3 lignes et 2 colonnes (Identifiant, Mot de passe, bouton Ok centré)",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice III : ALGORITHMIQUE ET PROGRAMMATION (8 pts)**",
+  "questions": [
+    {
+      "numero": "A.1",
+      "enonce_markdown": "**A/ Algorithmique et programmation en langage C (4 pts)**\n\nUn palindrome est un mot qui peut se lire dans les deux sens (de la gauche vers la droite et inversement) de la même façon. Exemple : non. On considère l'algorithme `palindrome` ci-dessous (lignes numérotées de 1 à 22) :\n\n![fig-1](probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_1.png)\n\nObserver attentivement cet algorithme et répondre aux questions suivantes.\n\n1. Définir procédure. *[0,5 pt]*",
+      "corrige_markdown": "Une **procédure** est un sous-programme, c'est-à-dire un bloc d'instructions regroupé sous un nom, qui réalise une tâche précise et que l'on exécute en l'appelant par son nom, avec ou sans paramètres.\n\nContrairement à une fonction, une procédure ne renvoie pas de valeur : elle agit (affichage, modification de variables passées en paramètres) sans « retourner » un résultat. En langage C, une procédure s'écrit comme une fonction de type `void`.\n\nL'algorithme `palindrome` de l'énoncé est un algorithme principal : il ne contient aucune procédure.\n\n### Piège à éviter\nNe confonds pas procédure et fonction : « une fonction retourne une valeur » est la phrase qui fait la différence et que le correcteur attend.",
+      "themes": [
+        "Procédure",
+        "Sous-programmes",
+        "Algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "A.2",
+      "enonce_markdown": "2. Identifier dans l'algorithme une instruction de communication du résultat à l'utilisateur. *[0,5 pt]*",
+      "corrige_markdown": "L'instruction de communication du résultat à l'utilisateur est l'instruction d'affichage `Ecrire`. Le résultat de l'algorithme est communiqué par :\n\n- la ligne 14 : `Ecrire(\"Bravo! ce mot est un palindrome\") ;`\n- ou les lignes 17 et 18 : `Ecrire(\"Désolé, ce mot n'est pas un palindrome\") ;`\n\nUne seule des deux suffit pour répondre.\n\n### Piège à éviter\nL'instruction `Ecrire` de la ligne 5 n'est pas la bonne réponse : elle affiche une invite qui demande une donnée à l'utilisateur, elle ne communique pas le résultat.",
+      "themes": [
+        "Instructions d'entrée-sortie",
+        "Algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "A.3",
+      "enonce_markdown": "3. Recopier sur votre feuille de composition la séquence de code qui permet de remplir les données dans le tableau utilisé. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour remplir un tableau de nb éléments, utilise une boucle Pour dont l'indice parcourt toutes les cases du tableau et qui lit au clavier la valeur de la case courante ; la borne supérieure de la boucle est le nombre d'éléments à saisir.\n\nLe tableau utilisé est `T`. La séquence qui le remplit est constituée des lignes 7 à 9 :\n\n```text\nPour i←1 à nb Faire\n  Lire(T[i]) ;\nFinPour\n```\n\nÀ chaque tour de boucle, l'indice `i` prend la valeur suivante (de 1 à `nb`) et `Lire(T[i])` range dans la case `T[i]` la lettre tapée par l'utilisateur.\n\n### Piège à éviter\nRecopie la boucle complète, de `Pour` jusqu'à `FinPour` : `Lire(T[i])` seul ne remplit qu'une case. Et n'inclus pas la ligne 6 `Lire(nb)`, qui lit la taille du mot et non le contenu du tableau.",
+      "themes": [
+        "Tableau",
+        "Boucle Pour",
+        "Algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qA3-1",
+          "competence": "Remplir un tableau avec une boucle Pour",
+          "contenu_markdown": "Pour remplir un tableau de nb éléments, utilise une boucle Pour dont l'indice parcourt toutes les cases du tableau et qui lit au clavier la valeur de la case courante ; la borne supérieure de la boucle est le nombre d'éléments à saisir.",
+          "cours_genere": true,
+          "cours_id": "cours-remplir-un-tableau-avec-une-boucle-pour-1ere-c-d-e"
+        }
+      ]
+    },
+    {
+      "numero": "A.4",
+      "enonce_markdown": "4. Exécuter pas à pas, sur votre feuille d'examen, cet algorithme en supposant que l'utilisateur saisit le mot RESSASSER. *[1 pt]*\n\n![fig-1](probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_1.png)",
+      "corrige_markdown": "### Rappel de méthode\nPour exécuter un algorithme pas à pas, construis un tableau de suivi avec une colonne par variable et par condition testée, puis déroule les instructions dans l'ordre en notant à chaque tour les valeurs avant et après modification ; ne saute aucun tour et vérifie à chaque test quelle branche du Si est suivie.\n\n**Données de départ (lignes 5 à 9).** Le mot RESSASSER compte 9 lettres : R, E, S, S, A, S, S, E, R. L'utilisateur saisit donc `nb = 9`, puis les neuf lettres, et le tableau devient :\n\n| indice | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|\n| `T` | R | E | S | S | A | S | S | E | R |\n\n**Exécution de la boucle Pour (lignes 10 à 21).** La borne `nb` est relue à chaque tour : elle diminue de 1 à chaque comparaison réussie (ligne 12), comme dans une boucle `for` du langage C. À chaque tour on compare `T[i]` avec `T[nb]`, puis on applique les deux tests de la ligne 13.\n\n| Tour | `i` | `T[i]` | `nb` avant | `T[nb]` | `T[i]=T[nb]` (l. 11) | `nb` après (l. 12) | `i=nb` ? | `nb=i+1` ? | Affichage |\n|---|---|---|---|---|---|---|---|---|---|\n| 1 | 1 | R | 9 | R | oui | 8 | non (1 ≠ 8) | non (8 ≠ 2) | aucun |\n| 2 | 2 | E | 8 | E | oui | 7 | non (2 ≠ 7) | non (7 ≠ 3) | aucun |\n| 3 | 3 | S | 7 | S | oui | 6 | non (3 ≠ 6) | non (6 ≠ 4) | aucun |\n| 4 | 4 | S | 6 | S | oui | 5 | non (4 ≠ 5) | oui (5 = 5) | Bravo! ce mot est un palindrome |\n| 5 | 5 | A | 5 | A | oui | 4 | non (5 ≠ 4) | non (4 ≠ 6) | aucun |\n\n**Fin de la boucle.** Au tour suivant, `i = 6` dépasse `nb = 4` : la boucle s'arrête (ligne 21) et l'algorithme se termine (ligne 22).\n\n**Résultat affiché à l'écran :** `Bravo! ce mot est un palindrome` (une seule fois). RESSASSER lu de droite à gauche donne bien RESSASSER : le résultat est cohérent.\n\n**Si la borne 9 de la boucle est évaluée une seule fois** (lecture stricte du `Pour i←1 à nb`), les tours 6 à 9 ont lieu aussi : `i=6` compare S et S (`nb` devient 3), `i=7` compare S et S (`nb` devient 2), `i=8` compare E et E (`nb` devient 1), `i=9` compare R et R (`nb` devient 0). Aucun de ces tours ne vérifie la condition de la ligne 13 : l'affichage final reste identique.\n\n### Piège à éviter\nNe t'arrête pas au tour 4 sous prétexte que « Bravo » s'affiche : la boucle continue tant que `i ≤ nb`. Et ne conclus pas à un second affichage : au tour 5, aucune des deux conditions de la ligne 13 n'est vraie.\n\n### Conseil\nPrécise en une ligne la convention que tu appliques pour la borne de la boucle quand elle est modifiée dans le corps (ici `nb`). Le correcteur attend un tableau de suivi complet, tour par tour.",
+      "themes": [
+        "Trace d'exécution",
+        "Boucle Pour",
+        "Structure conditionnelle",
+        "Tableau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qA4-1",
+          "competence": "Dérouler pas à pas la trace d'exécution d'un algorithme",
+          "contenu_markdown": "Pour exécuter un algorithme pas à pas, construis un tableau de suivi avec une colonne par variable et par condition testée, puis déroule les instructions dans l'ordre en notant à chaque tour les valeurs avant et après modification ; ne saute aucun tour et vérifie à chaque test quelle branche du Si est suivie.",
+          "cours_genere": true,
+          "cours_id": "cours-derouler-pas-a-pas-la-trace-d-execution-d-un-algorithme-1ere-c-d-e"
+        }
+      ]
+    },
+    {
+      "numero": "A.5",
+      "enonce_markdown": "5. Donner la structure de base d'un programme C. *[0,5 pt]*",
+      "corrige_markdown": "Un programme C a au minimum la forme suivante :\n\n```c\n#include <stdio.h>\n\nint main()\n{\n    /* déclaration des variables */\n    /* instructions */\n    return 0;\n}\n```\n\nElle comporte : l'inclusion des bibliothèques (`#include <stdio.h>` pour `printf` et `scanf`), la fonction principale `main` qui délimite le programme par des accolades, la zone de déclaration des variables, puis les instructions, chacune terminée par un point-virgule.\n\n### Piège à éviter\nN'oublie ni les accolades de `main`, ni le point-virgule en fin d'instruction, ni `#include <stdio.h>` : sans lui, `printf` n'est pas reconnu.",
+      "themes": [
+        "Langage C",
+        "Structure d'un programme C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "A.6",
+      "enonce_markdown": "6. Traduire les lignes allant de 13 à 15 de cet algorithme en langage C. *[1 pt]*\n\n![fig-1](probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_1.png)",
+      "corrige_markdown": "### Rappel de méthode\nPour traduire une structure conditionnelle de l'algorithme en C, remplace Si par if, la paire Alors ... FinSi par un bloc entre accolades, OU par ||, ET par &&, le test d'égalité = par ==, et Ecrire par printf, en terminant chaque instruction par un point-virgule.\n\nLes lignes 13 à 15 sont :\n\n```text\nSI (i=nb OU nb=i+1) Alors\n  Ecrire(\"Bravo! ce mot est un palindrome\") ;\nFinSI\n```\n\n**Table de correspondance utilisée.**\n\n| Algorithme | Langage C |\n|---|---|\n| `SI ... Alors` | `if (...) {` |\n| `i=nb` (test d'égalité) | `i == nb` |\n| `OU` | `\\|\\|` |\n| `Ecrire(\"...\")` | `printf(\"...\\n\");` |\n| `FinSI` | `}` |\n\n**Traduction en C.**\n\n```c\nif (i == nb || nb == i + 1)\n{\n    printf(\"Bravo ! ce mot est un palindrome\\n\");\n}\n```\n\nLe test d'égalité s'écrit `==` : un seul `=` est une affectation, qui modifierait `i` au lieu de le comparer.\n\n### Piège à éviter\nÉcrire `if (i = nb || ...)` avec un seul signe égal est l'erreur classique : la syntaxe est acceptée par le compilateur mais le sens est faux.\n\n### Conseil\nAnnonce d'abord la correspondance des mots-clés (SI → if, OU → ||, Ecrire → printf), puis donne le code : le correcteur peut ainsi attribuer les points partiels.",
+      "themes": [
+        "Langage C",
+        "Structure conditionnelle",
+        "Traduction d'algorithme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qA6-1",
+          "competence": "Traduire une structure conditionnelle d'un algorithme en langage C",
+          "contenu_markdown": "Pour traduire une structure conditionnelle de l'algorithme en C, remplace Si par if, la paire Alors ... FinSi par un bloc entre accolades, OU par ||, ET par &&, le test d'égalité = par ==, et Ecrire par printf, en terminant chaque instruction par un point-virgule.",
+          "cours_genere": true,
+          "cours_id": "cours-traduire-une-structure-conditionnelle-d-un-algorithme-en-langage-c-1ere-c-d-e"
+        }
+      ]
+    },
+    {
+      "numero": "B.1",
+      "enonce_markdown": "**B/ Langage HTML et JavaScript (4 pts)**\n\nOn souhaite écrire le code source qui permet à un usager de s'authentifier sur une application web. Le code source proposé par un élève de première est le suivant (32 lignes ; la numérotation imprimée étant en partie effacée sur le scan, la ligne 1 est celle de `<HTML>`) :\n\n![fig-2](probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_2.png)\n\nObserver attentivement ce code et répondre aux questions suivantes.\n\n1. Donner un avantage du JavaScript par rapport au HTML. *[0,5 pt]*",
+      "corrige_markdown": "Le HTML est un langage de balisage : il décrit seulement la structure et la présentation statique d'une page. Le JavaScript est un langage de programmation exécuté par le navigateur : il rend la page **dynamique et interactive**.\n\nUn avantage suffit : avec JavaScript, on peut contrôler les données d'un formulaire avant leur envoi au serveur, réagir aux actions de l'utilisateur (clic, saisie), faire des calculs ou modifier la page sans la recharger.\n\n### Piège à éviter\nNe cite pas un avantage du HTML (balises simples, universel) : la question compare dans le sens JavaScript contre HTML.",
+      "themes": [
+        "JavaScript",
+        "HTML",
+        "Page web dynamique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "B.2",
+      "enonce_markdown": "2. Donner le rôle de la ligne 7. *[0,5 pt]*",
+      "corrige_markdown": "La ligne 7 est `alert(\"Informations invalides\");`. Elle **affiche une boîte de dialogue** contenant le message « Informations invalides ».\n\nElle s'exécute lorsque la condition de la ligne 6 est vraie, c'est-à-dire lorsque l'identifiant saisi n'est pas `OBC` ou que le mot de passe n'est pas `Probatoire` : elle prévient l'utilisateur que sa saisie est refusée.\n\n### Piège à éviter\nLe rôle d'une ligne ne se réduit pas à sa fonction `alert` : précise aussi dans quel cas elle s'exécute (mauvais identifiant ou mauvais mot de passe).",
+      "themes": [
+        "JavaScript",
+        "Boîte de dialogue alert",
+        "Structure conditionnelle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "B.3",
+      "enonce_markdown": "3. Déterminer le nombre de lignes et de colonnes du tableau utilisé dans la balise `<FORM>`. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDans un tableau HTML, chaque balise TR ouvre une ligne et chaque balise TD (ou TH) placée dans une ligne crée une cellule, donc une colonne : le nombre de lignes est le nombre de TR et le nombre de colonnes est le nombre de cellules de la ligne la plus fournie.\n\nLe tableau est délimité par `<TABLE BORDER=0>` et `</TABLE>`.\n\n**Lignes.** On compte les balises `<TR>` : celle de la ligne Identifiant, celle de la ligne Mot de passe et celle de la ligne du bouton Ok. Le tableau a donc **3 lignes**.\n\n**Colonnes.** Chaque ligne contient deux balises `<TD>` :\n\n- ligne 1 : `<TD>Identifiant</TD>` et `<TD><INPUT type=text ...></TD>` ;\n- ligne 2 : `<TD>Mot de passe</TD>` et `<TD><INPUT type=password ...></TD>` ;\n- ligne 3 : `<TD> </TD>` (cellule vide) et `<TD align=center>...</TD>` (bouton Ok).\n\nLe tableau a donc **2 colonnes**.\n\n**Conclusion.** Le tableau compte 3 lignes et 2 colonnes.\n\n### Piège à éviter\n`BORDER=0` ne supprime pas le tableau, il rend seulement ses bordures invisibles. Ne compte pas non plus les lignes de code du fichier (32) : seules les balises TR comptent.\n\n### Conseil\nSouligne chaque balise TR du code au crayon, puis compte les TD de chaque ligne : cette méthode évite l'oubli de la cellule vide de la dernière ligne.",
+      "themes": [
+        "Tableau HTML",
+        "HTML",
+        "Formulaire HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB3-1",
+          "competence": "Déterminer les dimensions d'un tableau HTML",
+          "contenu_markdown": "Dans un tableau HTML, chaque balise TR ouvre une ligne et chaque balise TD (ou TH) placée dans une ligne crée une cellule, donc une colonne : le nombre de lignes est le nombre de TR et le nombre de colonnes est le nombre de cellules de la ligne la plus fournie.",
+          "cours_genere": true,
+          "cours_id": "cours-determiner-les-dimensions-d-un-tableau-html-1ere-c-d-e"
+        }
+      ]
+    },
+    {
+      "numero": "B.4",
+      "enonce_markdown": "4. Identifier dans ce code un opérateur logique. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDans un code JavaScript, les opérateurs logiques (&& pour ET, || pour OU, ! pour NON) combinent des conditions ; ils ne se confondent ni avec les opérateurs de comparaison (==, !=, <, >), qui comparent deux valeurs, ni avec l'affectation (=), qui range une valeur dans une variable.\n\nL'opérateur logique du code est **`||`** (OU logique), à la ligne 6 : `if (name!='OBC'||pass!='Probatoire')`. Il combine deux conditions et le résultat est vrai dès que l'une des deux est vraie.\n\nLes symboles `!=` (« différent de ») de la même ligne sont des opérateurs de comparaison, et le signe `=` de `valide=false` est une affectation.\n\n### Piège à éviter\nNe réponds pas `!=` : c'est un opérateur de comparaison. Un opérateur logique relie des conditions entre elles, il ne compare pas des valeurs.\n\n### Conseil\nPour repérer un opérateur logique, cherche les doubles symboles `&&` et `||` et le point d'exclamation seul `!` placé devant une condition.",
+      "themes": [
+        "Opérateurs logiques",
+        "JavaScript",
+        "Structure conditionnelle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB4-1",
+          "competence": "Distinguer opérateurs logiques, de comparaison et d'affectation",
+          "contenu_markdown": "Dans un code JavaScript, les opérateurs logiques (&& pour ET, || pour OU, ! pour NON) combinent des conditions ; ils ne se confondent ni avec les opérateurs de comparaison (==, !=, <, >), qui comparent deux valeurs, ni avec l'affectation (=), qui range une valeur dans une variable.",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-operateurs-logiques-de-comparaison-et-d-affectation-1ere-c-d-e"
+        }
+      ]
+    },
+    {
+      "numero": "B.5",
+      "enonce_markdown": "5. Identifier dans ce code un évènement. *[0,5 pt]*",
+      "corrige_markdown": "L'évènement du code est **`onClick`**, placé dans la balise du bouton « Ok » : `onClick='traitement(this.name.value, this.pass.value);'`.\n\nIl se déclenche lorsque l'utilisateur **clique sur le bouton « Ok »** et provoque alors l'appel de la fonction `traitement`.\n\n### Piège à éviter\n`traitement` n'est pas un évènement mais la fonction appelée en réaction à l'évènement ; `submit` est le type du bouton, pas l'évènement.",
+      "themes": [
+        "Événements JavaScript",
+        "JavaScript",
+        "Formulaire HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "B.6",
+      "enonce_markdown": "6. Donner le message que recevra l'utilisateur s'il remplit le formulaire avec les données suivantes : champ identifiant = OBC et champ mot de passe = Probatoire. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour prévoir le résultat d'un code conditionnel, remplace les variables par les valeurs saisies, évalue chaque comparaison (vrai ou faux), combine-les avec l'opérateur logique (un OU est vrai dès qu'une condition est vraie, un ET exige que toutes le soient), puis suis la branche if ou else correspondante pour lire le message de l'alert.\n\nOn remplace `name` par `'OBC'` et `pass` par `'Probatoire'` dans la condition de la ligne 6 :\n\n- `name!='OBC'` : `'OBC' != 'OBC'` est **faux** ;\n- `pass!='Probatoire'` : `'Probatoire' != 'Probatoire'` est **faux** ;\n- `faux || faux` est **faux**.\n\nLa condition du `if` est fausse : on exécute la branche `else` (lignes 9 à 12). La variable `valide` prend la valeur `true`, puis la ligne 11 affiche la concaténation :\n\n`\"Bonjour, \" + name + \"! \" + \"Bienvenu sur le site de l'OBC\"`\n\n**Message reçu :** `Bonjour, OBC! Bienvenu sur le site de l'OBC`\n\n**Remarque sur le code de l'élève.** Comme `valide` vaut `true`, la condition `while(valide)` de la ligne 13 est vraie et le bloc `do ... while` recommence : la boîte de dialogue réapparaît sans fin. La logique de la boucle est inversée (elle devrait se répéter tant que les informations sont invalides). Autre défaut : dans `onClick`, `this` désigne le bouton lui-même : pour lire les champs du formulaire, il faut écrire `this.form.name.value` et `this.form.pass.value`.\n\n### Piège à éviter\nRespecte la concaténation à la lettre : espace après la virgule de « Bonjour, », point d'exclamation suivi d'une espace, puis « Bienvenu... ». Et n'affiche pas « Informations invalides » : la condition est fausse, c'est la branche `else` qui s'exécute.\n\n### Conseil\nÉvalue d'abord chaque comparaison séparément, puis seulement l'opérateur `||`. Pour un OU, il suffit qu'une comparaison soit vraie ; ici les deux sont fausses.",
+      "themes": [
+        "JavaScript",
+        "Structure conditionnelle",
+        "Opérateurs logiques",
+        "Concaténation de chaînes"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB6-1",
+          "competence": "Prévoir le résultat d'un code JavaScript conditionnel",
+          "contenu_markdown": "Pour prévoir le résultat d'un code conditionnel, remplace les variables par les valeurs saisies, évalue chaque comparaison (vrai ou faux), combine-les avec l'opérateur logique (un OU est vrai dès qu'une condition est vraie, un ET exige que toutes le soient), puis suis la branche if ou else correspondante pour lire le message de l'alert.",
+          "cours_genere": true,
+          "cours_id": "cours-prevoir-le-resultat-d-un-code-javascript-conditionnel-1ere-c-d-e"
+        }
+      ]
+    },
+    {
+      "numero": "B.7",
+      "enonce_markdown": "7. Dessiner sur votre feuille de composition le rendu du formulaire qui s'affichera sur la page web lors de l'interprétation de ce code par le navigateur. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour dessiner le rendu d'une page HTML, lis le code balise par balise : un titre (H3) se dessine au-dessus, les balises TABLE, TR et TD fixent la grille de cellules, chaque champ INPUT se dessine selon son type (zone de saisie pour text, zone aux caractères masqués pour password, bouton pour submit) et le texte des balises est écrit à sa place.\n\n**Rendu attendu :**\n\n![fig-3](probatoire-c-d-e-informatique-2021-officiel-cameroun_exercice_3_fig_3.png)\n\n**Construction pas à pas.**\n\n1. La balise `<H3><u>Connexion</u></H3>` donne le titre « Connexion » en gros caractères gras, souligné par la balise `<u>`, en haut de la page.\n2. Le tableau qui suit (de `<TABLE BORDER=0>` à `</TABLE>`) a 3 lignes et 2 colonnes, sans bordure visible (`BORDER=0`).\n3. Ligne 1 du tableau : le texte « Identifiant » dans la première cellule et une zone de saisie de texte (`type=text`) dans la seconde.\n4. Ligne 2 du tableau : le texte « Mot de passe » et une zone de saisie de mot de passe (`type=password`) : les caractères tapés apparaîtront sous forme de points ou d'étoiles.\n5. Ligne 3 du tableau : une cellule vide, puis un bouton « Ok » (`type=\"submit\"`, `value=\"Ok\"`) centré dans la seconde cellule (`align=center`).\n\nLe texte « acceuil » de la balise `<TITLE>` s'affiche dans l'onglet ou la barre de titre du navigateur, pas dans la page.\n\n### Piège à éviter\nN'entoure pas le tableau d'un cadre : `BORDER=0` signifie des bordures invisibles. N'oublie pas la cellule vide de la dernière ligne, qui décale le bouton dans la seconde colonne.\n\n### Conseil\nDessine d'abord la grille de 3 lignes et 2 colonnes à main levée, puis place le titre au-dessus et remplis chaque cellule : tu évites les oublis.",
+      "themes": [
+        "Formulaire HTML",
+        "HTML",
+        "Tableau HTML",
+        "Rendu d'une page web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qB7-1",
+          "competence": "Dessiner le rendu d'un formulaire HTML",
+          "contenu_markdown": "Pour dessiner le rendu d'une page HTML, lis le code balise par balise : un titre (H3) se dessine au-dessus, les balises TABLE, TR et TD fixent la grille de cellules, chaque champ INPUT se dessine selon son type (zone de saisie pour text, zone aux caractères masqués pour password, bouton pour submit) et le texte des balises est écrit à sa place.",
+          "cours_genere": true,
+          "cours_id": "cours-dessiner-le-rendu-d-un-formulaire-html-1ere-c-d-e"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "algorithme palindrome",
+    "procédure",
+    "tableau",
+    "boucle Pour",
+    "trace d'exécution",
+    "langage C",
+    "structure conditionnelle",
+    "HTML",
+    "JavaScript",
+    "formulaire",
+    "opérateur logique",
+    "évènement onClick",
+    "alert",
+    "table HTML"
+  ],
+  "incertitudes": [
+    "Scan dégradé (taches, déchirure sur la page 3) : la page reste lisible dans son ensemble ; aucune donnée utile à la résolution n'est illisible.",
+    "Bandeau lu : « Probatoire ESG », séries C, D & E, session 2021, durée 2 h, coefficient 2, MINESEC/OBC ; il concorde avec le nom du fichier, aucun écart.",
+    "Numérotation des lignes du code HTML/JavaScript en partie effacée sur le scan : elle a été reconstituée en comptant les lignes de 1 (balise HTML) à 32 (fermeture de BODY et HTML) ; la ligne 7 désigne bien l'alert(\"Informations invalides\") et la ligne 5 le do{.",
+    "Question 4 de la partie A : la borne du Pour i←1 à nb est modifiée dans le corps de la boucle (ligne 12) ; le corrigé suit la convention du langage C (borne relue à chaque tour) et montre que la lecture stricte (borne évaluée une fois) donne le même affichage pour RESSASSER (9 lettres, palindrome).",
+    "L'algorithme de l'énoncé a des limites : un mot d'une seule lettre n'affiche aucun message, et la lecture stricte de la borne du Pour provoquerait une boucle infinie sur certains mots non palindromes (par exemple ABCA).",
+    "Question 6 de la partie B : la réponse attendue (message de bienvenue) est donnée, mais le code de l'énoncé est défectueux : la boucle do...while(valide) répète l'alerte sans fin lorsque les informations sont valides, et this.name.value / this.pass.value dans onClick provoquent une erreur JavaScript (il faudrait this.form.name.value et this.form.pass.value).",
+    "Coquilles de l'énoncé : « acceuil » (accueil) dans la balise TITLE, « Bienvenu » (bienvenue) dans le message, « Entrer le nombre des lettres dans le mot ».",
+    "Les définitions de la partie A (procédure) et les propriétés de HTML/JavaScript sont rédigées de mémoire à partir du cours usuel (à vérifier avec le manuel officiel utilisé en classe)."
+  ],
+  "statut": "brouillon"
+}

@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-calculer-le-nombre-total-de-pixels-d-une-image-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Calculer le nombre total de pixels d'une image",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Multimédia",
+    "duree_estimee_min": 20,
+    "tags": [
+      "image numérique",
+      "pixel",
+      "définition d'une image",
+      "calcul"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex1-q3.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un appareil photo « 12 mégapixels » : qu'est-ce que cela veut dire ? Simplement que l'image contient 12 millions de points. Savoir compter les pixels est la première étape pour calculer le poids d'une image, question qui revient presque chaque année au Probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un pixel",
+        "Savoir multiplier de grands nombres en posant le calcul"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Largeur fois hauteur",
+      "contenu_markdown": "Une image numérique est un quadrillage de pixels : un nombre de colonnes (la largeur $L$) et un nombre de lignes (la hauteur $H$). Son nombre total de pixels est le nombre de cases du quadrillage.\n\n$$N = L \\times H$$\n\nLe couple $L \\times H$ s'appelle la **définition** de l'image (par exemple 1920×1080). Pour exprimer $N$ en mégapixels, on divise par un million."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer le nombre de pixels d'une image de définition 2048×3072.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la formule",
+          "justification": "Le nombre de pixels est le produit de la largeur par la hauteur.",
+          "resultat_markdown": "$N = 2048 \\times 3072$"
+        },
+        {
+          "numero": 2,
+          "action": "Décomposer un facteur",
+          "justification": "3072 = 3000 + 72 : on multiplie 2048 par chaque terme.",
+          "resultat_markdown": "$2048 \\times 3000 = 6\\,144\\,000$ et $2048 \\times 72 = 147\\,456$"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner",
+          "justification": "On additionne les deux produits partiels.",
+          "resultat_markdown": "$N = 6\\,144\\,000 + 147\\,456 = 6\\,291\\,456$"
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler par les puissances de 2",
+          "justification": "$2048 = 2^{11}$ et $3072 = 3 \\times 2^{10}$.",
+          "resultat_markdown": "$N = 3 \\times 2^{21} = 6\\,291\\,456$ : même résultat"
+        }
+      ],
+      "conclusion_markdown": "L'image contient 6 291 456 pixels, soit environ 6,3 mégapixels."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner la largeur et la hauteur : $2048 + 3072 = 5120$.",
+          "pourquoi_faux": "L'addition donne la longueur d'un chemin le long de deux côtés, pas le nombre de cases du quadrillage.",
+          "correction_markdown": "Le nombre de cases d'un rectangle est toujours largeur × hauteur."
+        },
+        {
+          "erreur_markdown": "Donner le résultat en octets alors que la question demande des pixels.",
+          "pourquoi_faux": "Un pixel n'est pas un octet : le nombre de pixels se multiplie ensuite par la quantité de bits par pixel.",
+          "correction_markdown": "Garde l'unité « pixels » tant qu'on ne parle pas de bits ou d'octets."
+        },
+        {
+          "erreur_markdown": "Se tromper dans le produit : $2048 \\times 3072$ posé de tête.",
+          "pourquoi_faux": "Un grand produit calculé mentalement dérape facilement. Une seule erreur fausse toute la suite.",
+          "correction_markdown": "Décompose un facteur et contrôle avec les puissances de 2."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image a pour définition 800×600. Combien de pixels contient-elle ?",
+          "solution_markdown": "$N = 800 \\times 600 = 480\\,000$ pixels."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image plein écran a pour définition 1920×1080. Calcule son nombre de pixels.",
+          "solution_markdown": "$N = 1920 \\times 1080 = 1920 \\times 1000 + 1920 \\times 80 = 1\\,920\\,000 + 153\\,600 = 2\\,073\\,600$ pixels, soit environ 2,07 mégapixels."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une photo de 4000×3000 pixels est réduite de moitié en largeur et en hauteur. Par combien le nombre de pixels est-il divisé ?",
+          "solution_markdown": "Avant : $4000 \\times 3000 = 12\\,000\\,000$ pixels (12 mégapixels). Après : $2000 \\times 1500 = 3\\,000\\,000$ pixels. Le rapport est $\\dfrac{12\\,000\\,000}{3\\,000\\,000} = 4$ : le nombre de pixels est divisé par 4, car chaque dimension est divisée par 2 et $2 \\times 2 = 4$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le nombre de pixels est le produit largeur × hauteur, jamais leur somme.",
+        "La définition d'une image (L×H) n'est pas sa résolution (pixels par pouce).",
+        "Pour un grand produit, décompose un facteur et contrôle avec les puissances de 2.",
+        "Diviser chaque dimension par 2 divise le nombre de pixels par 4.",
+        "Au Probatoire, ce calcul est presque toujours la première étape de la question sur le poids d'une image."
+      ]
+    }
+  ]
+}

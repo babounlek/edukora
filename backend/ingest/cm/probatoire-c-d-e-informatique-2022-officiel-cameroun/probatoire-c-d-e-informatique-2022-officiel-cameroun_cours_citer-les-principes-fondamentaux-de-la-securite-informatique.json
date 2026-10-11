@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-citer-les-principes-fondamentaux-de-la-securite-informatique-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Les principes fondamentaux de la sécurité informatique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Sécurité informatique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "confidentialité",
+      "intégrité",
+      "disponibilité",
+      "sécurité informatique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex1-q2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un banquier qui laisse la porte du coffre ouverte, un compte dont le solde change tout seul, un site de paiement en panne le jour des salaires : ce sont trois façons différentes de manquer à la sécurité. Les spécialistes les ont classées en trois principes que tu dois savoir nommer et illustrer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une information, un système informatique et un utilisateur autorisé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La triade confidentialité, intégrité, disponibilité",
+      "contenu_markdown": "- **Confidentialité** : seules les personnes autorisées accèdent à l'information.\n- **Intégrité** : l'information n'est ni modifiée ni détruite de façon non autorisée.\n- **Disponibilité** : le système et les données sont accessibles aux personnes autorisées quand elles en ont besoin.\n\nOn les retient par le sigle **DIC**. On y ajoute parfois l'**authenticité** (l'identité d'un utilisateur ou d'une source est prouvée) et la **non-répudiation** (on ne peut pas nier avoir fait une opération). Une attaque ou un incident se classe en cherchant lequel de ces principes est violé."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'arnaque de l'épreuve, le code secret est divulgué puis le compte est vidé. Quels principes de sécurité sont violés ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier fait",
+          "justification": "Le code secret est communiqué à un tiers non autorisé.",
+          "resultat_markdown": "Seul le titulaire doit connaître ce code : la confidentialité est violée."
+        },
+        {
+          "numero": 2,
+          "action": "Isoler le deuxième fait",
+          "justification": "Le solde du compte passe de 100 000 F à 0 sans l'accord du titulaire.",
+          "resultat_markdown": "L'information « solde » a été modifiée sans autorisation : l'intégrité est violée."
+        },
+        {
+          "numero": 3,
+          "action": "Tester la disponibilité",
+          "justification": "Le service a-t-il cessé de fonctionner pour le client ? Pas dans ce récit.",
+          "resultat_markdown": "La disponibilité n'est pas en cause ici."
+        }
+      ],
+      "conclusion_markdown": "L'arnaque viole la confidentialité (code divulgué) puis l'intégrité (solde modifié)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer un antivirus, un pare-feu ou un mot de passe comme « principe ».",
+          "pourquoi_faux": "Ce sont des moyens de protection, pas des principes. Un principe dit ce que l'on veut garantir.",
+          "correction_markdown": "Réponds confidentialité, intégrité, disponibilité, puis cite les moyens en exemple."
+        },
+        {
+          "erreur_markdown": "Confondre intégrité et confidentialité : « un pirate lit mon fichier, donc l'intégrité est violée ».",
+          "pourquoi_faux": "Lire sans modifier atteint la confidentialité. L'intégrité est atteinte quand le contenu change.",
+          "correction_markdown": "Lecture non autorisée = confidentialité. Modification non autorisée = intégrité."
+        },
+        {
+          "erreur_markdown": "Oublier la disponibilité parce qu'elle ne concerne « pas les pirates ».",
+          "pourquoi_faux": "Une panne, une coupure ou une attaque qui sature un service violent la disponibilité sans rien voler.",
+          "correction_markdown": "Pense aux pannes, au délestage, aux attaques de saturation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associe chaque situation à un principe : (a) un élève lit la copie d'un camarade ; (b) un virus change des notes dans un fichier ; (c) le serveur du lycée est en panne le jour des résultats.",
+          "solution_markdown": "(a) confidentialité, (b) intégrité, (c) disponibilité."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un technicien chiffre le disque d'un ordinateur portable. Quel principe est protégé en premier lieu ? Justifie.",
+          "solution_markdown": "La confidentialité : si le portable est volé, les données restent illisibles sans la clé de déchiffrement, donc seules les personnes autorisées y accèdent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une banque met en place trois mesures : une sauvegarde quotidienne, un contrôle de somme de vérification des fichiers, un double code pour se connecter. Relie chaque mesure au principe qu'elle protège.",
+          "solution_markdown": "La sauvegarde protège la disponibilité (on retrouve les données après une perte). La somme de vérification protège l'intégrité (une modification du fichier change la somme). Le double code protège la confidentialité (et l'authenticité) : on prouve son identité avant d'accéder aux données."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La sécurité informatique repose sur trois principes : confidentialité, intégrité, disponibilité.",
+        "Un principe dit ce que l'on veut garantir, un outil dit comment on le garantit.",
+        "Lire sans autorisation attaque la confidentialité, modifier attaque l'intégrité, empêcher d'utiliser attaque la disponibilité.",
+        "Associe toujours un exemple à chaque principe : c'est ce qui complète la réponse.",
+        "Au Probatoire, « citer trois principes fondamentaux de la sécurité » se répond en trois lignes, un nom et un exemple pour chacun."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-reconnaitre-une-instruction-d-affectation-probatoire-a-abi-2022",
+  "meta": {
+    "titre": "Reconnaître une instruction d'affectation",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique - instructions élémentaires",
+    "duree_estimee_min": 20,
+    "tags": [
+      "algorithme",
+      "affectation",
+      "variable",
+      "instruction",
+      "pseudo-code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2022 - Épreuve théorique d'informatique (séries A, ABI, AC et SH) - MINESEC/OBC",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2022-officiel-cameroun-ex2-qA2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un algorithme s'exécute, tout ce qui change se passe dans les variables. Pour comprendre ce qu'il fait, il faut savoir repérer l'instruction qui modifie une variable : l'affectation. Les sujets demandent souvent de la relever, de l'expliquer ou de calculer ce qu'elle produit, et la confondre avec une lecture fait perdre des points faciles."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable (une case mémoire qui porte un nom)",
+        "Connaître les mots-clés d'un algorithme : Variable, Début, Fin, Lire, Ecrire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois familles d'instructions et le sens de la flèche",
+      "contenu_markdown": "Dans un algorithme élémentaire, il y a trois familles d'instructions :\n\n- l'**entrée** `Lire (X)` : la valeur est saisie par l'utilisateur et rangée dans X ;\n- la **sortie** `Ecrire (X)` : la valeur de X est affichée, X ne change pas ;\n- l'**affectation** `X ← expression` : on calcule l'expression située à droite de la flèche, puis on range le résultat dans la variable de gauche.\n\nLa flèche est orientée de la source vers la destination : `C ← A` signifie « C reçoit la valeur de A ». Le signe `←` n'est pas une égalité mathématique : `N ← N + 1` est parfaitement valide, il augmente N de 1.",
+      "formule_principale": "\\text{variable} \\leftarrow \\text{expression}",
+      "variantes": [
+        {
+          "nom": "Affectation avec calcul",
+          "quand_utiliser": "Quand la partie droite est une expression et non une simple variable.",
+          "contenu_markdown": "On évalue d'abord la partie droite avec les valeurs actuelles des variables, puis on range le résultat à gauche. Dans `S ← S + 5`, avec S valant 3, on calcule 3 + 5 = 8 et S prend la valeur 8."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme `permute`, relever une instruction d'affectation (Probatoire A-ABI 2022, exercice II, partie A, question 2).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer et écarter les instructions d'entrée",
+          "justification": "`Lire (A)` et `Lire (B)` reçoivent leurs valeurs de l'utilisateur : ce ne sont pas des affectations.",
+          "resultat_markdown": "À écarter : Lire (A), Lire (B)"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer et écarter les instructions de sortie",
+          "justification": "`Ecrire (A)` et `Ecrire (B)` affichent sans rien modifier.",
+          "resultat_markdown": "À écarter : Ecrire (A), Ecrire (B)"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer la flèche",
+          "justification": "Les lignes qui contiennent `←` sont les affectations.",
+          "resultat_markdown": "`C ← A ;`, `A ← B ;`, `B ← C ;`"
+        },
+        {
+          "numero": 4,
+          "action": "Choisir et expliquer",
+          "justification": "On retient `C ← A ;` : la valeur de A est copiée dans C, A ne change pas.",
+          "resultat_markdown": "Réponse : `C ← A ;`"
+        }
+      ],
+      "conclusion_markdown": "Les trois instructions munies d'une flèche sont des affectations ; une seule est demandée, par exemple `C ← A ;`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Relever `Lire (A)` comme une affectation",
+          "pourquoi_faux": "Lire place bien une valeur dans A, mais cette valeur vient de l'utilisateur. Le sujet distingue l'affectation (calcul interne) de la lecture (saisie).",
+          "correction_markdown": "Réserver le nom d'affectation aux lignes qui contiennent la flèche."
+        },
+        {
+          "erreur_markdown": "Lire `A ← B` dans le mauvais sens : « B reçoit A »",
+          "pourquoi_faux": "La flèche pointe vers la variable qui reçoit : A reçoit la valeur de B.",
+          "correction_markdown": "Lire la flèche de la droite vers la gauche : « on prend B, on le range dans A »."
+        },
+        {
+          "erreur_markdown": "Prendre `N ← N + 1` pour une équation impossible",
+          "pourquoi_faux": "Le signe ← n'exprime pas une égalité, mais une action : calculer à droite, ranger à gauche.",
+          "correction_markdown": "Remplacer N par sa valeur actuelle à droite, calculer, puis ranger le résultat dans N."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme `X ← 5 ; Y ← X * 2 ; Ecrire (Y)`, relever les affectations et donner la valeur affichée.",
+          "solution_markdown": "Les affectations sont `X ← 5` et `Y ← X * 2`. Après la première, X vaut 5. Pour la seconde, on calcule 5 × 2 = 10 et Y reçoit 10. `Ecrire (Y)` affiche **10**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "N vaut 7. Quelle est la valeur de N après l'instruction `N ← N + 1` ? Pourquoi cette instruction n'est-elle pas absurde ?",
+          "solution_markdown": "On remplace N par 7 à droite : 7 + 1 = 8, et 8 est rangé dans N. N vaut **8**. L'instruction n'est pas absurde car ← n'est pas une égalité : elle désigne une action, calculer à droite puis ranger à gauche."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Après les instructions `X ← 4 ; Y ← X + 3 ; X ← Y * 2 ; Y ← X - Y`, quelles sont les valeurs de X et de Y ?",
+          "solution_markdown": "1. `X ← 4` : X = 4.\n2. `Y ← X + 3` : Y = 4 + 3 = 7.\n3. `X ← Y * 2` : X = 7 × 2 = 14 (X est écrasé, Y vaut toujours 7).\n4. `Y ← X - Y` : Y = 14 - 7 = 7.\n\nÀ la fin, **X = 14 et Y = 7**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une affectation s'écrit variable ← expression : on calcule à droite, on range à gauche.",
+        "Lire reçoit une valeur de l'utilisateur, Ecrire affiche : aucun des deux n'est une affectation.",
+        "La flèche pointe vers la variable qui reçoit la valeur.",
+        "Le signe ← n'est pas le signe égal : N ← N + 1 est valide et augmente N de 1.",
+        "Au Probatoire, cette question précède presque toujours l'exécution à la main de l'algorithme : bien reconnaître les affectations prépare la trace."
+      ]
+    }
+  ]
+}

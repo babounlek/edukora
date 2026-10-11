@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-calculer-la-taille-en-octets-d-une-image-numerique-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Calculer la taille en octets d'une image numérique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Multimédia",
+    "duree_estimee_min": 30,
+    "tags": [
+      "image numérique",
+      "taille d'un fichier",
+      "octet",
+      "conversion d'unités"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex1-q3.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi une photo prise avec ton téléphone remplit-elle si vite la mémoire ? Parce que chaque pixel occupe plusieurs bits et qu'il y en a des millions. Ce cours t'apprend à prévoir le poids d'une image avant de l'enregistrer, une compétence que le Probatoire vérifie régulièrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le nombre total de pixels d'une image",
+        "Connaître la relation 1 octet = 8 bits",
+        "Connaître les unités : 1 ko = 1024 octets, 1 Mo = 1024 ko, 1 Go = 1024 Mo"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De pixels à octets",
+      "contenu_markdown": "La taille d'une image non compressée se calcule en trois temps :\n\n1. nombre de pixels $N = L \\times H$ ;\n2. nombre de bits par pixel $b$ (profondeur de couleur) : le poids en bits vaut $N \\times b$ ;\n3. conversion en octets en divisant par 8, puis en ko, Mo... en divisant par 1024 à chaque étape.\n\nCompression exclue, la taille en octets est donnée par la formule encadrée ci-dessous.",
+      "formule_principale": "T_{\\text{octets}} = \\dfrac{L \\times H \\times b}{8}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer la taille d'une image de définition 2048×3072 dont chaque pixel est codé sur 32 bits.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre de pixels",
+          "justification": "$N = 2048 \\times 3072$.",
+          "resultat_markdown": "$N = 6\\,291\\,456$ pixels"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir les bits par pixel en octets",
+          "justification": "$1$ octet $= 8$ bits donc $\\dfrac{32}{8} = 4$ octets par pixel.",
+          "resultat_markdown": "4 octets par pixel"
+        },
+        {
+          "numero": 3,
+          "action": "Multiplier",
+          "justification": "Taille $= N \\times 4$.",
+          "resultat_markdown": "$6\\,291\\,456 \\times 4 = 24\\,000\\,000 + 1\\,165\\,824 = 25\\,165\\,824$ octets"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir en unités lisibles",
+          "justification": "On divise par 1024 pour passer des octets aux ko, puis encore par 1024 pour les Mo.",
+          "resultat_markdown": "$\\dfrac{25\\,165\\,824}{1024} = 24\\,576$ ko et $\\dfrac{24\\,576}{1024} = 24$ Mo"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler par l'autre chemin",
+          "justification": "On passe par les bits : $N \\times 32$ puis on divise par 8.",
+          "resultat_markdown": "$6\\,291\\,456 \\times 32 = 201\\,326\\,592$ bits et $\\dfrac{201\\,326\\,592}{8} = 25\\,165\\,824$ octets"
+        }
+      ],
+      "conclusion_markdown": "L'image pèse 25 165 824 octets, soit 24 Mo non compressés."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de diviser par 8 et présenter 201 326 592 comme un nombre d'octets.",
+          "pourquoi_faux": "Ce nombre est une quantité de bits. Un octet contient 8 bits : la conversion est obligatoire.",
+          "correction_markdown": "Écris l'unité à chaque ligne et convertis les bits en octets dès que possible."
+        },
+        {
+          "erreur_markdown": "Convertir avec 1000 au lieu de 1024.",
+          "pourquoi_faux": "L'énoncé impose 1 ko = 1024 octets. Avec 1000 tu obtiens un résultat légèrement différent, compté faux.",
+          "correction_markdown": "Utilise la convention de l'énoncé, 1024 en informatique scolaire."
+        },
+        {
+          "erreur_markdown": "Multiplier le nombre de pixels par 32 puis donner le résultat comme octets, au lieu de passer d'abord par 4 octets par pixel.",
+          "pourquoi_faux": "C'est la même erreur que la première, dissimulée dans un calcul plus court.",
+          "correction_markdown": "Divise 32 bits par 8 avant de multiplier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image de 800×600 pixels est codée en 24 bits par pixel. Calcule sa taille en octets.",
+          "solution_markdown": "$N = 800 \\times 600 = 480\\,000$ pixels. $24$ bits $= 3$ octets. Taille $= 480\\,000 \\times 3 = 1\\,440\\,000$ octets, soit $\\dfrac{1\\,440\\,000}{1024} = 1\\,406{,}25$ ko, environ 1,37 Mo."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image en noir et blanc (1 bit par pixel) mesure 1024×1024. Donne sa taille en octets puis en ko.",
+          "solution_markdown": "$N = 1024 \\times 1024 = 1\\,048\\,576$ pixels, donc $1\\,048\\,576$ bits. En octets : $\\dfrac{1\\,048\\,576}{8} = 131\\,072$ octets. En ko : $\\dfrac{131\\,072}{1024} = 128$ ko."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Combien d'images de 1920×1080 pixels en 24 bits non compressées peut-on stocker sur une clé USB de 8 Go (1 Go = 1024 Mo) ?",
+          "solution_markdown": "Pixels : $1920 \\times 1080 = 2\\,073\\,600$. Octets par image : $2\\,073\\,600 \\times 3 = 6\\,220\\,800$. Capacité : $8 \\times 1024 \\times 1024 \\times 1024 = 8\\,589\\,934\\,592$ octets. Nombre d'images : $\\dfrac{8\\,589\\,934\\,592}{6\\,220\\,800} \\approx 1380{,}8$, donc **1380 images entières**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Taille en octets = nombre de pixels × bits par pixel ÷ 8.",
+        "Convertis les bits en octets avant ou après le produit, mais ne l'oublie jamais.",
+        "En informatique scolaire, 1 ko = 1024 octets, sauf si l'énoncé en décide autrement.",
+        "Compare toujours ton résultat à un ordre de grandeur plausible : une photo non compressée pèse des Mo.",
+        "Au Probatoire, cette question suit presque toujours le calcul du nombre de pixels : traite-les ensemble."
+      ]
+    }
+  ]
+}

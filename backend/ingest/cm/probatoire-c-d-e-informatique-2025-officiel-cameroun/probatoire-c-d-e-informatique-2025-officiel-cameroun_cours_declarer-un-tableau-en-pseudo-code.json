@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-declarer-un-tableau-en-pseudo-code-1ere-cde",
+  "meta": {
+    "titre": "Déclarer un tableau en pseudo-code",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique : déclaration d'un tableau",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableau",
+      "déclaration",
+      "pseudo-code",
+      "bornes",
+      "type"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2025-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG, séries C, D, E, session 2025 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2025-officiel-cameroun-ex3-q1.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de ranger quoi que ce soit dans un tableau, l'algorithme doit le déclarer : il réserve de la place en mémoire. Une déclaration mal écrite, c'est un tableau trop petit ou sans type, et un algorithme qui ne peut pas fonctionner. Trois informations suffisent : un nom, des bornes, un type."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une variable simple dans un algorithme",
+        "Connaître les types entier, réel, chaîne"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Nom, bornes, type",
+      "contenu_markdown": "Dans la partie déclaration des variables, on écrit :\n\n```\nVariable\n    nom : Tableau[premier..dernier] de type\n```\n\n- **nom** : un identifiant significatif (`tabAge`, `notes`) ;\n- **bornes** : indice du premier et du dernier élément ; le nombre de cases vaut $\\text{dernier} - \\text{premier} + 1$ ;\n- **type** : le type commun de tous les éléments.\n\nEn Python ou en C, la même idée existe : `int tab[10];` en C, une liste en Python. Seule la syntaxe change, pas le principe.",
+      "formule_principale": "\\text{nombre de cases} = \\text{dernier indice} - \\text{premier indice} + 1"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la déclaration d'un tableau pouvant contenir les âges de 10 élèves.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le nom",
+          "justification": "Le sujet nomme le tableau `tabAge`.",
+          "resultat_markdown": "Nom : `tabAge`."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer le type",
+          "justification": "Les âges sont des nombres entiers.",
+          "resultat_markdown": "Type : entiers."
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer les bornes",
+          "justification": "10 élèves, indexation à partir de 1 : dernier indice = 10.",
+          "resultat_markdown": "Bornes : 1..10 ($10 - 1 + 1 = 10$ cases)."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la déclaration",
+          "justification": "On assemble les trois informations dans la partie Variable.",
+          "resultat_markdown": "`tabAge : Tableau[1..10] d'entiers`"
+        }
+      ],
+      "conclusion_markdown": "La déclaration `tabAge : Tableau[1..10] d'entiers` réserve exactement dix cases pour les dix âges."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `Tableau[1..9]` ou `Tableau[0..10]`.",
+          "pourquoi_faux": "[1..9] ne contient que 9 cases ; [0..10] en contient 11. Le nombre de cases vaut dernier moins premier plus un.",
+          "correction_markdown": "Calcule toujours le nombre de cases avec la formule avant d'écrire les bornes."
+        },
+        {
+          "erreur_markdown": "Oublier le type des éléments.",
+          "pourquoi_faux": "Sans type, on ne sait pas quelle place réserver ni quelles opérations sont permises.",
+          "correction_markdown": "Écris toujours « d'entiers », « de réels » ou « de chaînes »."
+        },
+        {
+          "erreur_markdown": "Mettre les valeurs dans la déclaration comme `tabAge = [15, 13, ...]`.",
+          "pourquoi_faux": "La déclaration indique la forme du tableau, pas son contenu. Les valeurs sont affectées ensuite, case par case, entre Début et Fin.",
+          "correction_markdown": "Sépare déclaration (partie Variable) et affectation (corps de l'algorithme)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la déclaration d'un tableau `notes` pouvant contenir les notes de 20 élèves, qui peuvent être décimales.",
+          "solution_markdown": "Les notes décimales sont des **réels**, il y a 20 élèves : bornes 1..20.\n\n```\nVariable\n    notes : Tableau[1..20] de réels\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la déclaration d'un tableau `mois` contenant les noms des 12 mois de l'année, puis les deux premières affectations.",
+          "solution_markdown": "Les noms sont des chaînes de caractères, il y a 12 cases : bornes 1..12.\n\n```\nVariable\n    mois : Tableau[1..12] de chaînes\nDébut\n    mois[1] ← \"janvier\"\n    mois[2] ← \"février\"\n    ...\nFin\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire la déclaration d'un tableau `tabAge` de 10 entiers, puis les instructions qui mettent toutes ses cases à 0 avec une boucle.",
+          "solution_markdown": "```\nVariable\n    tabAge : Tableau[1..10] d'entiers\n    i : entier\nDébut\n    Pour i de 1 à 10 faire\n        tabAge[i] ← 0\n    FinPour\nFin\n```\n\nLa boucle parcourt les indices de 1 à 10 (bornes du tableau) et affecte 0 à chaque case : après son exécution, les dix cases valent 0."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une déclaration de tableau précise un nom, des bornes et un type.",
+        "Nombre de cases $= \\text{dernier} - \\text{premier} + 1$ : vérifie-le toujours.",
+        "La déclaration va dans la partie Variable, les valeurs s'affectent ensuite.",
+        "Garde la même notation du début à la fin de l'algorithme.",
+        "Au Probatoire, écrire la déclaration d'un tableau est une question d'un point récurrente en algorithmique : bornes justes et type précisé suffisent à l'obtenir."
+      ]
+    }
+  ]
+}

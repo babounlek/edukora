@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-remplir-un-tableau-avec-une-boucle-pour-1ere-c-d-e",
+  "meta": {
+    "titre": "Remplir un tableau avec une boucle Pour",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique : tableaux et boucles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableau",
+      "boucle Pour",
+      "Lire",
+      "indice",
+      "algorithmique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qA3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour comparer les lettres d'un mot, un algorithme doit d'abord les garder en mémoire, chacune dans sa case. Un tableau est une suite de cases numérotées, et la boucle Pour est l'outil qui les visite une à une. Remplir un tableau est le geste de départ de presque tous les algorithmes de traitement de listes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une variable et lire une donnée avec `Lire`",
+        "Connaître la boucle Pour avec son compteur et ses bornes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplir un tableau : déclaration, boucle, lecture",
+      "contenu_markdown": "Un **tableau** de `n` éléments se déclare avec son type : `Var T:Tableau[1..n]:Caractère ;`. On accède à une case par son **indice** : `T[i]`.\n\nPour remplir le tableau, on utilise une boucle Pour dont le compteur parcourt tous les indices :\n\n```text\nPour i←1 à nb Faire\n  Lire(T[i]) ;\nFinPour\n```\n\nÀ chaque tour, `Lire(T[i])` range dans la case numéro `i` la valeur saisie. La borne supérieure `nb` est le nombre d'éléments à saisir (lu juste avant avec `Lire(nb)`).",
+      "variantes": [
+        {
+          "nom": "En langage C",
+          "quand_utiliser": "Quand on traduit la saisie en programme C",
+          "contenu": "En C, les indices d'un tableau commencent à 0 : `for (i = 0; i < nb; i++) { scanf(\" %c\", &T[i]); }` remplit les cases `T[0]` à `T[nb-1]`. L'espace avant `%c` ignore le retour à la ligne laissé par la saisie précédente."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme palindrome, recopier la séquence de code qui permet de remplir les données dans le tableau utilisé. (Probatoire 2021, exercice III A, question 3)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le tableau",
+          "justification": "La ligne 2 déclare `T:Tableau[1..n]:Caractère` : le tableau à remplir est `T`.",
+          "resultat_markdown": "Tableau utilisé : `T`."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la boucle qui y écrit",
+          "justification": "On cherche l'instruction qui range une valeur dans `T[i]` : c'est `Lire(T[i])`, ligne 8.",
+          "resultat_markdown": "L'instruction est à l'intérieur d'une boucle Pour (lignes 7 à 9)."
+        },
+        {
+          "numero": 3,
+          "action": "Recopier la séquence complète",
+          "justification": "La boucle commence à `Pour` et se termine à `FinPour`.",
+          "resultat_markdown": "`Pour i←1 à nb Faire`, `Lire(T[i]) ;`, `FinPour`."
+        },
+        {
+          "numero": 4,
+          "action": "Écarter la ligne 6",
+          "justification": "`Lire(nb)` lit la taille du mot, pas son contenu.",
+          "resultat_markdown": "Elle ne fait pas partie de la séquence demandée."
+        }
+      ],
+      "conclusion_markdown": "Les lignes 7 à 9 forment la séquence qui remplit le tableau T avec les nb lettres saisies."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `Lire(T)` sans indice.",
+          "pourquoi_faux": "`T` désigne le tableau entier : on ne peut pas lire un tableau d'un coup ; il faut préciser la case visée par `T[i]`.",
+          "correction_markdown": "Écris toujours `Lire(T[i])` à l'intérieur de la boucle."
+        },
+        {
+          "erreur_markdown": "Mettre `Lire(nb)` dans la boucle.",
+          "pourquoi_faux": "La taille serait redemandée à chaque tour et le nombre de tours changerait en cours de route.",
+          "correction_markdown": "Lis `nb` une seule fois, avant la boucle."
+        },
+        {
+          "erreur_markdown": "Faire aller le compteur de 0 à `nb` dans un tableau déclaré `[1..n]`.",
+          "pourquoi_faux": "L'indice 0 n'existe pas dans ce tableau : l'exécution sort des limites.",
+          "correction_markdown": "Respecte les bornes de la déclaration : 1 à `nb` ici."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la séquence qui remplit un tableau `N:Tableau[1..5]:Réel` avec cinq notes saisies au clavier.",
+          "solution_markdown": "```text\nPour i←1 à 5 Faire\n  Lire(N[i]) ;\nFinPour\n```\nLe compteur `i` va de 1 à 5, comme le tableau, et chaque note est rangée dans la case `N[i]`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Compléter la séquence précédente pour afficher la moyenne des cinq notes après la saisie.",
+          "solution_markdown": "```text\nS←0 ;\nPour i←1 à 5 Faire\n  Lire(N[i]) ;\n  S←S+N[i] ;\nFinPour\nEcrire(\"Moyenne : \", S/5) ;\n```\nOn initialise la somme `S` à 0 avant la boucle, on l'augmente de la note saisie à chaque tour, puis on divise par 5 à la fin. Pour les notes 10, 12, 8, 14 et 11, la somme vaut 55 et la moyenne 11."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire la séquence qui saisit cinq notes puis les affiche dans l'ordre inverse de la saisie.",
+          "solution_markdown": "```text\nPour i←1 à 5 Faire\n  Lire(N[i]) ;\nFinPour\nPour i←5 à 1 pas -1 Faire\n  Ecrire(N[i]) ;\nFinPour\n```\nLa première boucle remplit le tableau. La seconde le parcourt de la dernière case à la première (pas de -1). Avec la saisie 10, 12, 8, 14, 11, l'affichage est 11, 14, 8, 12, 10."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau se remplit avec une boucle Pour qui parcourt tous les indices.",
+        "`Lire(T[i])` range la valeur saisie dans la case numéro `i` ; `Lire(T)` n'a pas de sens.",
+        "Lis la taille `nb` une seule fois, avant la boucle, et prends-la pour borne supérieure.",
+        "Respecte les bornes de la déclaration du tableau (1 à `n` ici, 0 à `n-1` en langage C).",
+        "Au Probatoire, la question « recopier la séquence qui remplit le tableau » demande la boucle entière, de `Pour` à `FinPour`."
+      ]
+    }
+  ]
+}

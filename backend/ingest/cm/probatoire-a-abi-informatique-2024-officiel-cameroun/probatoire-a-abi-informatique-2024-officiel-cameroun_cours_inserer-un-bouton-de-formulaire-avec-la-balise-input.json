@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-inserer-un-bouton-de-formulaire-avec-la-balise-input-1ere-prob-a-2024",
+  "meta": {
+    "titre": "Insérer un bouton de formulaire avec la balise input",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : HTML et formulaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "balise input",
+      "bouton submit",
+      "attributs HTML",
+      "formulaire web"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH, AC, session 2024 (MINESEC/OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2024-officiel-cameroun-ex2-qB.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire sans bouton d'envoi ne sert à rien : l'internaute remplit ses champs, mais rien ne part vers le serveur. Le bouton est une seule ligne de HTML, mais elle repose sur deux attributs que le sujet de Probatoire teste régulièrement : `type` et `value`."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître un formulaire HTML et sa balise `<form>`",
+        "Savoir qu'une balise peut avoir des attributs de la forme nom=\"valeur\""
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise input, ses attributs type et value",
+      "contenu_markdown": "La balise `<input>` n'a pas de balise fermante. Pour un bouton :\n\n- `type=\"submit\"` : envoie les données du formulaire au serveur ;\n- `type=\"reset\"` : efface la saisie du formulaire ;\n- `type=\"button\"` : bouton sans effet prédéfini (on lui associe un comportement en JavaScript) ;\n- `value=\"texte\"` : texte affiché sur le bouton.\n\nLa balise `<button type=\"submit\">texte</button>` produit le même résultat et, elle, possède une balise fermante.",
+      "formule_principale": "\\text{bouton} = \\text{type} + \\text{value}",
+      "variantes": [
+        {
+          "nom": "Bouton avec la balise button",
+          "quand_utiliser": "Quand le sujet autorise ou demande la balise button.",
+          "contenu_markdown": "`<button type=\"submit\">envoyer</button>` : le texte du bouton est écrit entre la balise ouvrante et la balise fermante, et non dans un attribut `value`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la commande HTML qui insère le bouton « envoyer » d'un formulaire.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la balise",
+          "justification": "Un bouton de formulaire s'obtient avec `<input>`.",
+          "resultat_markdown": "`<input`"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir le type du bouton",
+          "justification": "« Envoyer » transmet les données au serveur : c'est le rôle de `submit`.",
+          "resultat_markdown": "`type=\"submit\"`"
+        },
+        {
+          "numero": 3,
+          "action": "Fixer le texte affiché",
+          "justification": "Le texte lisible sur le bouton se règle avec l'attribut `value`.",
+          "resultat_markdown": "`value=\"envoyer\"`"
+        },
+        {
+          "numero": 4,
+          "action": "Fermer la balise",
+          "justification": "`<input>` n'a pas de balise fermante : on termine par `>`.",
+          "resultat_markdown": "`<input type=\"submit\" value=\"envoyer\">`"
+        }
+      ],
+      "conclusion_markdown": "La commande `<input type=\"submit\" value=\"envoyer\">`, placée entre `<form>` et `</form>`, crée le bouton d'envoi."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `<input type=\"button\" value=\"envoyer\">`.",
+          "pourquoi_faux": "Un bouton de type `button` s'affiche, mais n'envoie aucune donnée tant qu'on ne lui associe pas du code JavaScript.",
+          "correction_markdown": "Utilise `type=\"submit\"` pour envoyer."
+        },
+        {
+          "erreur_markdown": "Écrire `name=\"envoyer\"` à la place de `value=\"envoyer\"`.",
+          "pourquoi_faux": "`name` identifie la donnée côté serveur, il n'affiche aucun texte : le bouton apparaîtrait avec un texte par défaut (par exemple « Envoyer »).",
+          "correction_markdown": "Le texte visible se règle avec `value`."
+        },
+        {
+          "erreur_markdown": "Ajouter une balise fermante `</input>`.",
+          "pourquoi_faux": "`<input>` est une balise orpheline : `</input>` n'existe pas.",
+          "correction_markdown": "Termine simplement par `>` ou `/>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la commande HTML du bouton « annuler » qui efface la saisie du formulaire.",
+          "solution_markdown": "`<input type=\"reset\" value=\"annuler\">`. Le type `reset` remet tous les champs à leur valeur initiale."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire le bouton « Valider » avec la balise `<button>`, puis dire ce qui change par rapport à `<input>`.",
+          "solution_markdown": "`<button type=\"submit\">Valider</button>`. Le texte du bouton est écrit entre les balises ouvrante et fermante au lieu de l'attribut `value`, et la balise `<button>` possède une balise fermante."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire un bouton de type button qui affiche une boîte de message « Bonjour » au clic, puis expliquer pourquoi `type=\"submit\"` ne convient pas ici.",
+          "solution_markdown": "`<input type=\"button\" value=\"Dire bonjour\" onclick=\"alert('Bonjour')\">`.\n\nL'attribut `onclick` exécute le code JavaScript `alert('Bonjour')` au clic. Le type `submit` enverrait le formulaire au serveur et rechargerait la page, ce qu'on ne veut pas pour un simple message : on utilise donc le type `button`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<input>` est une balise orpheline : pas de balise fermante.",
+        "`type` dit ce que fait le bouton, `value` dit ce qu'on lit dessus.",
+        "`submit` envoie, `reset` efface, `button` ne fait rien sans JavaScript.",
+        "`name` ne change pas le texte affiché.",
+        "Au Probatoire, « Écrire la commande HTML permettant d'insérer le bouton... » est une question de code à un point : écris-la en entier, sans oublier les guillemets."
+      ]
+    }
+  ]
+}

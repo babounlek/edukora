@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-traduire-une-structure-conditionnelle-d-un-algorithme-en-langage-c-1ere-c-d-e",
+  "meta": {
+    "titre": "Traduire une structure conditionnelle d'un algorithme en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Programmation en langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "langage C",
+      "if",
+      "opérateur ||",
+      "printf",
+      "traduction d'algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3-qA6-1",
+    "rappels_lies": [],
+    "correction_id": "corr-probatoire-c-d-e-informatique-2021-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme est écrit pour être lu par un humain ; un ordinateur ne comprend que le langage C (ou un autre langage de programmation). Passer de l'un à l'autre se fait presque mot à mot : chaque mot-clé a son équivalent. Quelques correspondances à connaître suffisent pour traduire une condition sans erreur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une structure Si ... Alors ... Sinon",
+        "Connaître les opérateurs logiques ET, OU et les comparaisons"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Table de correspondance algorithme et langage C",
+      "contenu_markdown": "| Algorithme | Langage C |\n|---|---|\n| `Si (cond) Alors ... FinSi` | `if (cond) { ... }` |\n| `Sinon` | `else { ... }` |\n| `=` (test d'égalité) | `==` |\n| `≠` | `!=` |\n| `ET` | `&&` |\n| `OU` | `\\|\\|` |\n| `NON` | `!` |\n| `x←valeur` | `x = valeur;` |\n| `Ecrire(\"texte\")` | `printf(\"texte\\n\");` |\n| `Lire(x)` | `scanf(\"%d\", &x);` (pour un entier) |\n\nChaque instruction C se termine par un point-virgule. La condition du `if` est toujours entre parenthèses, et le bloc des instructions entre accolades."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C les lignes 13 à 15 de l'algorithme palindrome : `SI (i=nb OU nb=i+1) Alors Ecrire(\"Bravo! ce mot est un palindrome\") ; FinSI`. (Probatoire 2021, exercice III A, question 6)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire SI ... Alors",
+          "justification": "Le mot-clé `SI` devient `if` et la condition reste entre parenthèses.",
+          "resultat_markdown": "`if ( ... )`"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire le test d'égalité",
+          "justification": "Dans l'algorithme `=` compare ; en C, comparer s'écrit `==` (un seul `=` serait une affectation).",
+          "resultat_markdown": "`i == nb`"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire le OU",
+          "justification": "L'opérateur logique OU s'écrit `||` en C.",
+          "resultat_markdown": "`i == nb || nb == i + 1`"
+        },
+        {
+          "numero": 4,
+          "action": "Traduire l'affichage",
+          "justification": "`Ecrire(...)` devient `printf(...)` avec un retour à la ligne `\\n` et un point-virgule.",
+          "resultat_markdown": "`printf(\"Bravo ! ce mot est un palindrome\\n\");`"
+        },
+        {
+          "numero": 5,
+          "action": "Fermer le bloc",
+          "justification": "`FinSI` devient l'accolade fermante.",
+          "resultat_markdown": "`}`"
+        }
+      ],
+      "conclusion_markdown": "Le code C obtenu est : `if (i == nb || nb == i + 1) { printf(\"Bravo ! ce mot est un palindrome\\n\"); }`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `if (i = nb || ...)` avec un seul signe égal.",
+          "pourquoi_faux": "Un seul `=` est une affectation : le programme modifie `i` au lieu de tester l'égalité, sans message d'erreur du compilateur.",
+          "correction_markdown": "Dans une condition, écris toujours `==`."
+        },
+        {
+          "erreur_markdown": "Écrire `OU` ou `OR` à la place de `||`.",
+          "pourquoi_faux": "Ces mots n'existent pas en C standard : le compilateur signale une erreur.",
+          "correction_markdown": "Utilise `||` pour OU, `&&` pour ET."
+        },
+        {
+          "erreur_markdown": "Oublier le point-virgule après `printf(...)`.",
+          "pourquoi_faux": "Chaque instruction C doit se terminer par un point-virgule : sans lui, la compilation échoue.",
+          "correction_markdown": "Relis chaque ligne en cherchant le `;` final."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C : `Si (age >= 18) Alors Ecrire(\"Majeur\") Sinon Ecrire(\"Mineur\") FinSi`.",
+          "solution_markdown": "```c\nif (age >= 18)\n{\n    printf(\"Majeur\\n\");\n}\nelse\n{\n    printf(\"Mineur\\n\");\n}\n```\n`Alors` disparaît (les accolades remplacent le mot), `Sinon` devient `else`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en C : `Si (note >= 10 ET note <= 20) Alors Ecrire(\"Note valide et admis\") FinSI`.",
+          "solution_markdown": "```c\nif (note >= 10 && note <= 20)\n{\n    printf(\"Note valide et admis\\n\");\n}\n```\n`ET` devient `&&`, et chaque comparaison est écrite en entier (on n'écrit pas `10 <= note <= 20`)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Traduire en C : `Pour i←0 à n-1 Faire Si (T[i] MOD 2 = 0) Alors Ecrire(T[i]) FinSi FinPour`, où `T` est un tableau d'entiers de `n` éléments.",
+          "solution_markdown": "```c\nfor (i = 0; i < n; i++)\n{\n    if (T[i] % 2 == 0)\n    {\n        printf(\"%d \", T[i]);\n    }\n}\n```\n`Pour i←0 à n-1` devient `for (i = 0; i < n; i++)`, `MOD` devient `%`, le test d'égalité devient `==`, et `Ecrire` d'un entier devient `printf` avec le format `%d`. Pour `T = {3, 8, 5, 10, 7, 4}`, le programme affiche `8 10 4`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque mot de l'algorithme a un équivalent en C : Si devient `if`, Sinon devient `else`, Ecrire devient `printf`.",
+        "Le test d'égalité s'écrit `==`, jamais `=`, qui est l'affectation.",
+        "OU devient `||`, ET devient `&&`, NON devient `!`.",
+        "Une condition `if` est entre parenthèses, son bloc entre accolades, chaque instruction finit par un point-virgule.",
+        "Au Probatoire, la traduction d'un extrait d'algorithme en C est notée sur 1 point : annonce les correspondances puis écris le code."
+      ]
+    }
+  ]
+}

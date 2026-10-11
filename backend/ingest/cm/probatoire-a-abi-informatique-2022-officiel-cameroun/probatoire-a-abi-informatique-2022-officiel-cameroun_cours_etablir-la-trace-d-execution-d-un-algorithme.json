@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-etablir-la-trace-d-execution-d-un-algorithme-probatoire-a-abi-2022",
+  "meta": {
+    "titre": "Établir la trace d'exécution d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique - exécution à la main",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algorithme",
+      "trace d'exécution",
+      "variables",
+      "affectation",
+      "tableau de suivi"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2022 - Épreuve théorique d'informatique (séries A, ABI, AC et SH) - MINESEC/OBC",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2022-officiel-cameroun-ex2-qA3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un correcteur d'informatique demande souvent « exécuter cet algorithme pour telles valeurs » sans te laisser d'ordinateur. Il faut alors jouer le rôle de la machine : lire les instructions une à une et suivre l'état de chaque variable. Cette méthode permet de vérifier qu'un algorithme fait bien ce qu'on croit, et de repérer une erreur avant même de programmer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître les instructions Lire, Ecrire et l'affectation (←)",
+        "Effectuer les quatre opérations de base"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le tableau de trace : une colonne par variable, une ligne par instruction",
+      "contenu_markdown": "On exécute les instructions dans l'ordre du texte, **une seule à la fois**. Après chacune, on reporte dans un tableau la valeur de chaque variable : seule la variable visée par l'instruction change, les autres gardent la valeur de la ligne précédente. Les valeurs fournies par l'énoncé servent aux instructions Lire ; les instructions Ecrire alimentent une colonne « Affichage ». Une case encore non initialisée se note « ? ».",
+      "formule_principale": "\\text{Trace} = \\text{tableau (une colonne par variable)} \\times \\text{(une ligne par instruction)}",
+      "variantes": [
+        {
+          "nom": "Trace en ligne, sans tableau",
+          "quand_utiliser": "Algorithme très court, avec une seule variable qui change.",
+          "contenu_markdown": "On peut noter l'état directement dans une phrase : `X ← 5` puis `X ← X + 1` donne X = 6. Dès que deux variables changent, le tableau reste la méthode sûre."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Exécuter l'algorithme `permute` pour A = 10 et B = 15 (Probatoire A-ABI 2022, exercice II, partie A, question 3).\n\n```\nLire (A) ; Lire (B) ;\nC ← A ; A ← B ; B ← C ;\nEcrire (A) ; Ecrire (B)\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Préparer le tableau",
+          "justification": "Les variables sont A, B et C : trois colonnes, plus une colonne pour l'affichage.",
+          "resultat_markdown": "Colonnes : A | B | C | Affichage"
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter les deux lectures",
+          "justification": "`Lire (A)` donne A = 10, `Lire (B)` donne B = 15. C n'est pas encore initialisée.",
+          "resultat_markdown": "A = 10, B = 15, C = ?"
+        },
+        {
+          "numero": 3,
+          "action": "Exécuter `C ← A`",
+          "justification": "C reçoit la valeur actuelle de A, soit 10. A et B ne changent pas.",
+          "resultat_markdown": "A = 10, B = 15, C = 10"
+        },
+        {
+          "numero": 4,
+          "action": "Exécuter `A ← B`",
+          "justification": "A reçoit 15. L'ancienne valeur 10 est perdue pour A, mais C la conserve.",
+          "resultat_markdown": "A = 15, B = 15, C = 10"
+        },
+        {
+          "numero": 5,
+          "action": "Exécuter `B ← C`",
+          "justification": "B reçoit la valeur de C, soit 10.",
+          "resultat_markdown": "A = 15, B = 10, C = 10"
+        },
+        {
+          "numero": 6,
+          "action": "Exécuter les deux écritures",
+          "justification": "`Ecrire (A)` affiche 15, puis `Ecrire (B)` affiche 10.",
+          "resultat_markdown": "Affichage : 15 puis 10"
+        }
+      ],
+      "conclusion_markdown": "Pour A = 10 et B = 15, l'algorithme affiche 15 puis 10 : il a permuté les valeurs de A et de B, la variable C servant de case temporaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Modifier plusieurs variables en une seule instruction",
+          "pourquoi_faux": "Chaque instruction n'agit que sur la variable à gauche de sa flèche. Écrire B = 10 dès `A ← B` est faux : B vaut encore 15 à ce moment.",
+          "correction_markdown": "Une ligne du tableau par instruction, une seule variable modifiée."
+        },
+        {
+          "erreur_markdown": "Oublier que l'ancienne valeur est écrasée",
+          "pourquoi_faux": "Sans la variable C, `A ← B` puis `B ← A` donnerait A = 15 et B = 15 : la valeur 10 serait perdue.",
+          "correction_markdown": "Toujours lire la valeur actuelle des variables dans la ligne précédente, pas la valeur initiale."
+        },
+        {
+          "erreur_markdown": "Ne pas faire de tableau et calculer de tête",
+          "pourquoi_faux": "Sans tableau, on perd la trace des valeurs intermédiaires et l'on se trompe dès la quatrième instruction.",
+          "correction_markdown": "Dessiner le tableau avant la première instruction."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Exécuter `Lire (X) ; Y ← X + 5 ; Z ← Y * 2 ; Ecrire (Z)` pour X = 3.",
+          "solution_markdown": "| Instruction | X | Y | Z | Affichage |\n|---|---|---|---|---|\n| `Lire (X)` | 3 | ? | ? | |\n| `Y ← X + 5` | 3 | 8 | ? | |\n| `Z ← Y * 2` | 3 | 8 | 16 | |\n| `Ecrire (Z)` | 3 | 8 | 16 | 16 |\n\nL'algorithme affiche **16**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Exécuter `Lire (A) ; Lire (B) ; A ← A + B ; B ← A - B ; A ← A - B ; Ecrire (A) ; Ecrire (B)` pour A = 10 et B = 15. Que réalise cet algorithme ?",
+          "solution_markdown": "| Instruction | A | B |\n|---|---|---|\n| `Lire (A)`, `Lire (B)` | 10 | 15 |\n| `A ← A + B` | 25 | 15 |\n| `B ← A - B` | 25 | 10 |\n| `A ← A - B` | 15 | 10 |\n\nL'algorithme affiche 15 puis 10 : il échange A et B **sans variable auxiliaire**, en passant par la somme (25 - 15 = 10 puis 25 - 10 = 15)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Exécuter `S ← 0 ; Lire (N) ; S ← S + N ; S ← S + N * 2 ; N ← S - 4 ; Ecrire (S) ; Ecrire (N)` pour N = 3.",
+          "solution_markdown": "| Instruction | S | N |\n|---|---|---|\n| `S ← 0` | 0 | ? |\n| `Lire (N)` | 0 | 3 |\n| `S ← S + N` | 3 | 3 |\n| `S ← S + N * 2` | 9 | 3 |\n| `N ← S - 4` | 9 | 5 |\n\nPour la quatrième ligne : S = 3 + 3 × 2 = 3 + 6 = 9 (la multiplication est prioritaire). Pour la cinquième : N = 9 - 4 = 5. L'algorithme affiche **9** puis **5**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Exécuter un algorithme, c'est jouer le rôle de la machine : une instruction à la fois.",
+        "Un tableau avec une colonne par variable évite de perdre une valeur en route.",
+        "Une instruction ne change que la variable à gauche de sa flèche, les autres gardent leur valeur.",
+        "Une valeur écrasée est perdue : c'est pourquoi la permutation de deux variables exige une variable temporaire.",
+        "Au Probatoire, l'exécution d'un algorithme court (deux ou trois variables) revient presque chaque année, notée sur 2 points."
+      ]
+    }
+  ]
+}

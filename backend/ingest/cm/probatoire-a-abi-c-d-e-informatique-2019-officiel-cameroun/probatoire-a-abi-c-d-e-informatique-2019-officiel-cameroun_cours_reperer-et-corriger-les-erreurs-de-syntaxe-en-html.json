@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-reperer-et-corriger-les-erreurs-de-syntaxe-en-html-probatoire",
+  "meta": {
+    "titre": "Repérer et corriger les erreurs de syntaxe en HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Langages du web",
+    "duree_estimee_min": 30,
+    "tags": [
+      "HTML",
+      "balises",
+      "attributs",
+      "erreurs de syntaxe",
+      "structure d'une page"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex1-q1_3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web qui s'affiche mal vient presque toujours d'une balise oubliée, mal orthographiée ou mal fermée. Le navigateur pardonne beaucoup, l'examinateur beaucoup moins. Savoir relire un code comme un correcteur de copie, c'est un point sûr au Probatoire, et c'est aussi la base du dépannage de n'importe quelle page."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une page : `html`, `head`, `title`, `body`",
+        "Savoir ce qu'est une balise ouvrante, une balise fermante et un attribut"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre contrôles à faire ligne par ligne",
+      "contenu_markdown": "1. **Orthographe** : le nom de chaque balise doit exister (`head`, jamais `haed`).\n2. **Fermeture et imbrication** : toute balise ouverte doit être fermée, dans l'ordre inverse de l'ouverture (la dernière ouverte se ferme la première).\n3. **Forme de la balise fermante** : `</nom>`, c'est-à-dire chevron, barre oblique, nom, chevron, sans espace. `< /title>` n'est pas reconnue.\n4. **Attributs** : ils s'écrivent uniquement dans la balise ouvrante, sous la forme `nom=\"valeur\"`. La balise fermante n'en porte jamais.\n\nStructure attendue : `<html>`, `<head>`, `<title>...</title>`, `</head>`, `<body>...</body>`, `</html>`.\n\nPour répondre, écris pour chaque erreur le numéro de ligne, la faute, puis la ligne corrigée.",
+      "variantes": [
+        {
+          "nom": "Méthode de la pile",
+          "quand_utiliser": "Quand l'imbrication est compliquée (plusieurs balises dans une même ligne)",
+          "contenu_markdown": "On lit le code de gauche à droite en empilant chaque balise ouvrante ; chaque balise fermante doit correspondre au sommet de la pile, qu'on retire alors. Une pile non vide à la fin ou une fermeture qui ne correspond pas au sommet signale une erreur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Corriger la ligne 6 du code de l'épreuve : `<p> ceci est un <b>paragraphe centré où le mot paragraphe est en gras. < /p align = \"center\" >` (on souhaite un paragraphe centré dont le mot « paragraphe » est en gras).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer le contrôle 1 (orthographe)",
+          "justification": "Les noms `p` et `b` existent",
+          "resultat_markdown": "Aucune faute de nom sur cette ligne."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le contrôle 2 (fermeture)",
+          "justification": "`<b>` est ouvert, mais rien ne le ferme avant la fin du paragraphe",
+          "resultat_markdown": "Erreur : il manque `</b>`, à placer juste après le mot à mettre en gras."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le contrôle 3 (forme de la balise fermante)",
+          "justification": "Après la fermeture éventuelle de `<b>`, le paragraphe doit se terminer par `</p>` sans espace",
+          "resultat_markdown": "Erreur : `< /p` contient un espace parasite."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le contrôle 4 (attributs)",
+          "justification": "L'attribut `align=\"center\"` est dans la balise fermante alors qu'il appartient à la balise ouvrante",
+          "resultat_markdown": "Erreur : à déplacer dans `<p ...>`."
+        },
+        {
+          "numero": 5,
+          "action": "Écrire la ligne corrigée",
+          "justification": "On regroupe les quatre corrections",
+          "resultat_markdown": "`<p align=\"center\"> ceci est un <b>paragraphe</b> centré où le mot paragraphe est en gras. </p>`"
+        }
+      ],
+      "conclusion_markdown": "La ligne 6 est corrigée : `<b>` est refermé, l'attribut `align` est dans la balise ouvrante et la balise `</p>` est écrite correctement. Chaque correction correspond à l'un des contrôles de la règle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Corriger la faute d'orthographe visible et s'arrêter là",
+          "pourquoi_faux": "Les erreurs de fermeture se voient moins : une balise absente ne se remarque pas à la lecture rapide.",
+          "correction_markdown": "Faire les quatre contrôles sur chaque ligne."
+        },
+        {
+          "erreur_markdown": "Écrire l'attribut dans la balise fermante, `</p align=\"center\">`",
+          "pourquoi_faux": "Une balise fermante ne fait que terminer l'élément : elle n'a aucun attribut.",
+          "correction_markdown": "Écrire `<p align=\"center\">` au début et `</p>` à la fin."
+        },
+        {
+          "erreur_markdown": "Penser que `<html>` en dernière ligne convient",
+          "pourquoi_faux": "Sans barre oblique, c'est une nouvelle balise ouvrante et non la fin de la page.",
+          "correction_markdown": "Fermer par `</html>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Corriger ce code :\n\n```html\n1 <html>\n2 <head>\n3 <titel>Mon site</title>\n4 </head>\n5 <body>\n6 <h1>Bienvenue</h2>\n7 </body>\n8 </html>\n```",
+          "solution_markdown": "Ligne 3 : `<titel>` est mal orthographié, on écrit `<title>Mon site</title>`. Ligne 6 : la balise ouverte est `<h1>`, donc elle se ferme par `</h1>` et non `</h2>` : `<h1>Bienvenue</h1>`. Les autres lignes sont correctes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Corriger ce code :\n\n```html\n1 <html>\n2 <head><title>Test</title></head>\n3 <body>\n4 <p align=\"left\">Bonjour</p align=\"left\">\n5 </body>\n```",
+          "solution_markdown": "Ligne 4 : l'attribut `align=\"left\"` ne se répète pas dans la balise fermante, qui devient `</p>`. Ligne 5 : après `</body>`, il manque la fermeture de la page, donc on ajoute une ligne 6 : `</html>`. Code corrigé : `<p align=\"left\">Bonjour</p>` puis `</body>` puis `</html>`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une page complète, de titre « Accueil », contenant un paragraphe centré où le mot « Bienvenue » est en gras et en italique. Vérifier l'imbrication.",
+          "solution_markdown": "```html\n<html>\n<head>\n<title>Accueil</title>\n</head>\n<body>\n<p align=\"center\"><b><i>Bienvenue</i></b> sur mon site.</p>\n</body>\n</html>\n```\nVérification par la pile : `<html>`, `<head>`, `<title>` empilés puis `</title>` et `</head>` dépilés ; `<body>`, `<p>`, `<b>`, `<i>` empilés ; `</i>` puis `</b>` puis `</p>` dépilent dans l'ordre inverse (la dernière ouverte est la première fermée) ; enfin `</body>` et `</html>`. La pile est vide à la fin : le code est correct."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Contrôle ligne par ligne : orthographe, fermeture, forme de la balise fermante, attributs.",
+        "Toute balise ouverte se ferme, dans l'ordre inverse de l'ouverture.",
+        "Une balise fermante s'écrit `</nom>` sans espace et sans attribut.",
+        "Le numéro de ligne, l'erreur et la ligne corrigée forment la réponse complète.",
+        "L'exercice « repérer quatre erreurs dans un code HTML » est un classique du Probatoire et du BEPC d'informatique."
+      ]
+    }
+  ]
+}

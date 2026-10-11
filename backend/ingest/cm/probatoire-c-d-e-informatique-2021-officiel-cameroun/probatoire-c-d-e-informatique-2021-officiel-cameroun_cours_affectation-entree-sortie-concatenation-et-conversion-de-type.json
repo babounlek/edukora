@@ -1,0 +1,168 @@
+{
+  "cours_id": "cours-affectation-entree-sortie-concatenation-informatique-probatoire-i1",
+  "meta": {
+    "titre": "Affectation, entrée-sortie, concaténation et conversion de type",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique : instructions de base",
+    "duree_estimee_min": 33,
+    "tags": [
+      "Concaténation de chaînes",
+      "Instruction d'affectation",
+      "Instructions d'entrée-sortie",
+      "Conversion de type",
+      "Algorithmique",
+      "JavaScript"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2021-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries C, D et E, session 2021 (MINESEC/OBC)",
+    "epreuve_source": "probatoire-c-d-e-informatique-2021-officiel-cameroun.pdf",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2021-officiel-cameroun-cours-affectation-es-concatenation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu tapes ton nom dans un formulaire et que la page répond « Bonjour Awa ! », quatre gestes élémentaires ont eu lieu : le programme a lu une donnée, l'a rangée dans une variable, l'a assemblée à un autre texte, puis l'a affichée. Ces quatre gestes (entrée, affectation, concaténation, sortie) et une cinquième difficulté, le changement de type d'une donnée, reviennent dans presque tous les algorithmes du Probatoire. Les maîtriser, c'est savoir lire un algorithme sans se tromper d'un caractère."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable : une case mémoire qui porte un nom et contient une valeur",
+        "Connaître les types simples : entier, réel, chaîne de caractères, booléen",
+        "Savoir lire la structure d'un algorithme : Algorithme, Variables, Début, Fin"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Affecter, lire, écrire, concaténer et convertir",
+      "contenu_markdown": "**1. L'affectation** range une valeur dans une variable. On l'écrit avec une flèche tournée vers la variable :\n\n`variable ← expression ;`\n\nLa flèche se lit « reçoit ». Le sens compte : `C ← A` donne à C la valeur de A, et A ne change pas. L'expression de droite est calculée d'abord, puis son résultat remplace l'ancienne valeur de la variable. Ainsi `i ← i + 1` ajoute 1 à `i` : ce n'est pas une égalité mathématique.\n\n**2. Les instructions d'entrée-sortie** font dialoguer le programme et l'utilisateur.\n\n| Instruction | Sens | Effet |\n|---|---|---|\n| `Lire(x)` | entrée | l'utilisateur tape une valeur au clavier, elle est rangée dans `x` |\n| `Ecrire(...)` | sortie | le programme affiche à l'écran |\n\nDans `Ecrire`, un texte entre guillemets est affiché tel quel ; une variable écrite sans guillemets est remplacée par sa valeur. `Ecrire(\"Bravo\")` affiche Bravo, alors que `Ecrire(nom)` affiche le contenu de `nom`.\n\n**3. La concaténation** met des chaînes bout à bout pour en former une seule. Elle ne rajoute rien : les espaces et la ponctuation doivent être écrits.\n\n| Expression | Résultat |\n|---|---|\n| `\"Bonjour\" + \"Awa\"` | `BonjourAwa` |\n| `\"Bonjour \" + \"Awa\"` | `Bonjour Awa` |\n| `\"Bonjour, \" + nom + \"!\"` avec `nom` = `\"Awa\"` | `Bonjour, Awa!` |\n\n**4. La conversion de type** transforme une donnée d'un type en un autre. Elle est nécessaire parce que le clavier ne fournit que du texte : en JavaScript, `prompt()` renvoie toujours une chaîne, même si l'utilisateur tape 20.\n\n| Fonction JavaScript | Rôle | Exemple |\n|---|---|---|\n| `parseInt(t)` | chaîne vers entier (partie entière, sans arrondi) | `parseInt(\"12.9\")` donne 12 |\n| `parseFloat(t)` | chaîne vers réel | `parseFloat(\"12.5\")` donne 12,5 |\n| `String(n)` | nombre vers chaîne | `String(15)` donne `\"15\"` |\n\nDans un nombre écrit en JavaScript, le séparateur décimal est le point : `parseFloat(\"12,5\")` donne 12.\n\n**5. Attention au signe plus.** Entre deux nombres, il additionne : `5 + 3` vaut 8. Dès qu'un des deux opérandes est une chaîne, il concatène : `\"5\" + 3` donne `\"53\"`. Les autres opérateurs (`-`, `*`, `/`) convertissent la chaîne en nombre : `\"5\" * 3` donne 15.",
+      "formule_principale": "variable ← expression : l'expression est calculée puis rangée dans la variable ; Lire entre une donnée, Ecrire affiche ; le signe plus entre chaînes les concatène",
+      "variantes": [
+        {
+          "nom": "En pseudo-code des épreuves",
+          "quand_utiliser": "Quand le sujet donne un algorithme avec Algorithme, Variables, Début, Fin, Lire, Ecrire et la flèche.",
+          "contenu_markdown": "Chaque instruction se termine par un point-virgule. Les variables sont déclarées avec leur type avant `Début`. Quand `Ecrire` reçoit plusieurs éléments séparés par des virgules, ils sont affichés l'un après l'autre sans espace ajouté : `Ecrire(\"Total : \", s)` affiche `Total : 12` si `s` vaut 12.\n\nPour une trace, construis un tableau avec une colonne par variable et une ligne par instruction exécutée."
+        },
+        {
+          "nom": "En JavaScript",
+          "quand_utiliser": "Quand le sujet donne le code d'une page web avec prompt, alert, parseFloat et le signe plus.",
+          "contenu_markdown": "| Pseudo-code | JavaScript |\n|---|---|\n| `Lire(x)` | `x = prompt(\"message\");` |\n| `Ecrire(x)` | `alert(x);` ou `document.write(x);` |\n| `x ← y + 1` | `x = y + 1;` |\n| concaténation | `\"texte \" + variable` |\n\nLe signe `=` de JavaScript est une affectation. Le test d'égalité s'écrit `==`."
+        },
+        {
+          "nom": "En langage C",
+          "quand_utiliser": "Quand le sujet demande de traduire un algorithme en C ou d'interpréter un programme C simple.",
+          "contenu_markdown": "| Pseudo-code | Langage C |\n|---|---|\n| `Lire(n)` | `scanf(\"%d\", &n);` |\n| `Ecrire(n)` | `printf(\"%d\", n);` |\n| `x ← y + 1` | `x = y + 1;` |\n\nEn C, les types sont fixes. Pour deux entiers, `7 / 2` donne 3 (division entière), alors que `7 / 2.0` donne 3,5 : le type des opérandes décide du résultat. Pour afficher un texte et une valeur, le code de format (%d pour un entier) indique le type à convertir."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère l'algorithme suivant.\n\n```text\nAlgorithme accueil\nVariables nom, message : chaîne ; age : entier\nDébut\n  Lire(nom) ;\n  Lire(age) ;\n  age ← age + 1 ;\n  message ← \"Bonjour \" + nom ;\n  Ecrire(message, \", tu auras \", age, \" ans\") ;\nFin\n```\n\nL'utilisateur saisit Awa puis 15. Donner l'état des variables après chaque instruction et le texte affiché.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les déclarations",
+          "justification": "Les types disent ce que chaque variable peut contenir : nom et message sont des chaînes, age est un entier.",
+          "resultat_markdown": "Avant `Début`, aucune variable n'a de valeur."
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter les deux instructions Lire",
+          "justification": "`Lire` range la valeur tapée dans la variable indiquée, dans l'ordre des instructions.",
+          "resultat_markdown": "`nom` = `\"Awa\"` et `age` = 15."
+        },
+        {
+          "numero": 3,
+          "action": "Exécuter l'affectation age ← age + 1",
+          "justification": "On calcule d'abord l'expression de droite avec l'ancienne valeur (15 + 1), puis on range le résultat dans `age`.",
+          "resultat_markdown": "`age` passe de 15 à 16."
+        },
+        {
+          "numero": 4,
+          "action": "Exécuter la concaténation",
+          "justification": "`\"Bonjour \"` se termine par une espace : elle apparaît dans le résultat entre Bonjour et Awa.",
+          "resultat_markdown": "`message` = `\"Bonjour Awa\"`."
+        },
+        {
+          "numero": 5,
+          "action": "Exécuter Ecrire",
+          "justification": "Les éléments sont affichés l'un après l'autre : la variable `message`, le texte, la variable `age`, le texte.",
+          "resultat_markdown": "Affichage : `Bonjour Awa, tu auras 16 ans`."
+        }
+      ],
+      "conclusion_markdown": "| Après l'instruction | `nom` | `age` | `message` |\n|---|---|---|---|\n| `Lire(nom)` | Awa | | |\n| `Lire(age)` | Awa | 15 | |\n| `age ← age + 1` | Awa | 16 | |\n| `message ← ...` | Awa | 16 | Bonjour Awa |\n\nLe texte affiché est **Bonjour Awa, tu auras 16 ans**. Sur la copie, un tableau de ce type montre ta méthode et permet de gagner les points partiels."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire `C ← A` comme « A reçoit la valeur de C » et inverser les deux variables.",
+          "pourquoi_faux": "La flèche pointe vers la variable qui reçoit. À gauche se trouve la variable modifiée, à droite l'expression dont on lit la valeur.",
+          "correction_markdown": "Lis toujours la flèche comme « reçoit » : C reçoit la valeur de A. Seule C change."
+        },
+        {
+          "erreur_markdown": "Écrire `Ecrire(\"nom\")` pour afficher le contenu de la variable nom.",
+          "pourquoi_faux": "Entre guillemets, le texte est affiché tel quel : l'écran montre le mot nom, pas la valeur saisie par l'utilisateur.",
+          "correction_markdown": "Mets des guillemets autour des textes, aucun autour des variables : `Ecrire(nom)`."
+        },
+        {
+          "erreur_markdown": "Oublier l'espace ou la virgule dans une concaténation et écrire BonjourAwa.",
+          "pourquoi_faux": "L'opérateur de concaténation ne rajoute aucun caractère. Le résultat est la mise bout à bout exacte des morceaux.",
+          "correction_markdown": "Place l'espace à l'intérieur des guillemets (`\"Bonjour \"`) et recopie le résultat caractère par caractère."
+        },
+        {
+          "erreur_markdown": "Croire que `prompt()` renvoie un nombre et conclure que `\"13\" + \"16\"` donne 29.",
+          "pourquoi_faux": "`prompt()` renvoie une chaîne. Le signe plus entre deux chaînes les concatène : le résultat est la chaîne `\"1316\"`.",
+          "correction_markdown": "Convertis avant de calculer : `parseFloat(\"13\") + parseFloat(\"16\")` donne 29."
+        },
+        {
+          "erreur_markdown": "Utiliser `parseInt(\"12.9\")` en attendant 13.",
+          "pourquoi_faux": "`parseInt` garde la partie entière sans arrondir : il renvoie 12. Pour garder les décimales, il faut `parseFloat`.",
+          "correction_markdown": "Choisis `parseInt` pour un entier, `parseFloat` pour un réel, et écris le point décimal et non la virgule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne les valeurs affichées par cet algorithme.\n\n```text\na ← 5 ;\nb ← a + 2 ;\na ← b * 2 ;\nEcrire(a, \" \", b) ;\n```",
+          "solution_markdown": "| Instruction | `a` | `b` |\n|---|---|---|\n| `a ← 5` | 5 | |\n| `b ← a + 2` | 5 | 7 |\n| `a ← b * 2` | 14 | 7 |\n\nL'instruction `Ecrire` affiche `14 7`. La dernière affectation a écrasé l'ancienne valeur de `a` (5), mais `b` n'a pas changé."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "En JavaScript, on définit `var x = \"4\";` et `var y = 6;`. Donne le résultat de chaque instruction.\n\na) `alert(x + y);`\nb) `alert(parseInt(x) + y);`\nc) `alert(x * y);`",
+          "solution_markdown": "a) `x` est une chaîne : le signe plus concatène. Résultat : **46** (le texte `\"46\"`).\n\nb) `parseInt(x)` convertit `\"4\"` en nombre 4, puis 4 + 6 = **10**.\n\nc) L'opérateur `*` convertit la chaîne en nombre : 4 × 6 = **24**.\n\nLa même variable donne trois résultats différents selon la conversion de type : lis le type avant de calculer."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève écrit ce code pour afficher la moyenne de deux notes :\n\n```text\nvar n1 = prompt(\"Note 1\");\nvar n2 = prompt(\"Note 2\");\nalert(\"Moyenne : \" + (n1 + n2) / 2);\n```\n\nL'utilisateur saisit 13 puis 16.\n\na) Quel message est affiché ? Explique.\nb) Corrige le code pour obtenir la moyenne correcte et donne le message obtenu.",
+          "solution_markdown": "a) `n1` et `n2` sont des chaînes. Dans les parenthèses, `n1 + n2` est une concaténation : `\"1316\"`. Ce texte est converti en nombre pour la division : 1316 ÷ 2 = 658. Le message affiché est **Moyenne : 658**, ce qui est absurde pour une note sur 20.\n\nb) Il faut convertir les saisies en nombres avant d'additionner :\n\n```text\nvar n1 = parseFloat(prompt(\"Note 1\"));\nvar n2 = parseFloat(prompt(\"Note 2\"));\nalert(\"Moyenne : \" + ((n1 + n2) / 2));\n```\n\nCalcul : (13 + 16) ÷ 2 = 29 ÷ 2 = 14,5. Le message est **Moyenne : 14.5** (JavaScript affiche le point décimal). Les parenthèses gardent le calcul avant la concaténation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'affectation `variable ← expression` calcule l'expression de droite puis écrase l'ancienne valeur de la variable de gauche.",
+        "`Lire` reçoit une donnée du clavier (entrée) ; `Ecrire` affiche (sortie) : un texte entre guillemets est affiché tel quel, une variable est remplacée par sa valeur.",
+        "La concaténation met des chaînes bout à bout sans rien ajouter : espaces et ponctuation sont à écrire.",
+        "Le clavier fournit du texte : convertis avec `parseInt` (entier) ou `parseFloat` (réel) avant tout calcul, et rappelle-toi que `\"5\" + 3` donne `\"53\"`.",
+        "Pour tout algorithme, fais un tableau de trace avec une colonne par variable : il évite les erreurs et rapporte les points partiels."
+      ]
+    }
+  ]
+}

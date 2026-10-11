@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-reconnaitre-les-operations-de-manipulation-d-une-table-1ere-c-d-e-2022",
+  "meta": {
+    "titre": "Reconnaître les opérations de manipulation d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données",
+    "duree_estimee_min": 30,
+    "tags": [
+      "SQL",
+      "opérations sur une table",
+      "INSERT",
+      "DELETE"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2022-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG, séries C, D, E, session 2022 : épreuve théorique d'informatique (MINESEC/OBC, durée 2 h, coefficient 2)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2022-officiel-cameroun-ex2-q2.5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Insérer un nouvel employé, changer un nom, supprimer une ligne, renommer la table : ce sont les gestes quotidiens d'un administrateur de base. Savoir les nommer, et les distinguer des actions qui ne concernent pas la table, te permet de répondre vite à une question d'intrus."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table et un enregistrement",
+        "Savoir que SQL est le langage des bases de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les ordres SQL de manipulation d'une table",
+      "contenu_markdown": "| Opération | Ordre SQL | Effet |\n|---|---|---|\n| Insérer | `INSERT INTO` | ajoute une ligne |\n| Modifier | `UPDATE ... SET` | change des valeurs |\n| Supprimer une ligne | `DELETE FROM` | enlève des lignes |\n| Supprimer la table | `DROP TABLE` | détruit la table entière |\n| Renommer ou restructurer | `ALTER TABLE` | modifie le nom ou les champs |\n| Consulter | `SELECT` | lit les données |\n\nUne action sur un logiciel ou le système (installer, désinstaller, formater, redémarrer) n'est pas une opération sur la table : elle n'a aucun équivalent SQL.\n\n**Méthode pour l'intrus** : pour chaque verbe, demande-toi si un ordre SQL le réalise sur la table."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Trouver l'intrus parmi : supprimer, installer, renommer, insérer (table Employés).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tester « supprimer »",
+          "justification": "On peut supprimer une ligne (`DELETE`) ou la table (`DROP`).",
+          "resultat_markdown": "Opération valide."
+        },
+        {
+          "numero": 2,
+          "action": "Tester « renommer »",
+          "justification": "`ALTER TABLE ... RENAME TO` change le nom de la table.",
+          "resultat_markdown": "Opération valide."
+        },
+        {
+          "numero": 3,
+          "action": "Tester « insérer »",
+          "justification": "`INSERT INTO` ajoute une ligne.",
+          "resultat_markdown": "Opération valide."
+        },
+        {
+          "numero": 4,
+          "action": "Tester « installer »",
+          "justification": "Aucun ordre SQL « installer » n'existe : on installe un logiciel sur un ordinateur, pas une table.",
+          "resultat_markdown": "Aucune opération de table : c'est l'intrus."
+        }
+      ],
+      "conclusion_markdown": "L'intrus est « installer »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir « renommer » parce qu'il semble moins courant.",
+          "pourquoi_faux": "C'est bien une opération sur la table (`ALTER TABLE ... RENAME`). Le choix se fait sur le sens, pas sur la fréquence.",
+          "correction_markdown": "Cherche le verbe sans rapport avec les données."
+        },
+        {
+          "erreur_markdown": "Confondre `DELETE` et `DROP`.",
+          "pourquoi_faux": "`DELETE` enlève des lignes mais garde la table, `DROP` détruit la table elle-même.",
+          "correction_markdown": "DELETE vide, DROP détruit."
+        },
+        {
+          "erreur_markdown": "Oublier la clause `WHERE` dans `DELETE` ou `UPDATE`.",
+          "pourquoi_faux": "Sans `WHERE`, l'ordre s'applique à toutes les lignes de la table.",
+          "correction_markdown": "Écris toujours la condition qui désigne la ligne visée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associe chaque verbe à son ordre SQL : insérer, modifier, supprimer une ligne.",
+          "solution_markdown": "Insérer : `INSERT INTO`. Modifier : `UPDATE ... SET`. Supprimer une ligne : `DELETE FROM`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Parmi : modifier, lire, compiler, supprimer, trouve l'intrus pour une table et justifie.",
+          "solution_markdown": "L'intrus est « compiler » : on compile un programme, pas une table. Modifier (`UPDATE`), lire (`SELECT`) et supprimer (`DELETE`/`DROP`) sont des opérations de table."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris les ordres SQL qui, sur la table Employes, changent le nom de l'employé de numero 2 en 'Ngono Marie' puis suppriment l'employé de numero 1.",
+          "solution_markdown": "```sql\nUPDATE Employes SET nom = 'Ngono Marie' WHERE numero = 2;\nDELETE FROM Employes WHERE numero = 1;\n```\nCes deux ordres ont été exécutés avec SQLite sur une table de deux lignes : il reste une ligne, celle de numero 2, avec le nom modifié."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les opérations de table sont : insérer, modifier, supprimer, renommer, consulter.",
+        "Elles s'écrivent avec INSERT, UPDATE, DELETE ou DROP, ALTER, SELECT.",
+        "Installer, formater ou redémarrer ne sont pas des opérations de table.",
+        "Pour un intrus, vérifie qu'un ordre SQL existe pour chaque verbe.",
+        "Au Probatoire, la question de l'intrus vaut 1 pt et se résout en une ligne."
+      ]
+    }
+  ]
+}

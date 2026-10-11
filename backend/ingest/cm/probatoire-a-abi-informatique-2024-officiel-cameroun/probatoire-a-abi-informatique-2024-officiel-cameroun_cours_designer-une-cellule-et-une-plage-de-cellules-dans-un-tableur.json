@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-designer-une-cellule-et-une-plage-de-cellules-dans-un-tableur-1ere-prob-a-2024",
+  "meta": {
+    "titre": "Désigner une cellule et une plage de cellules dans un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Tableur : adresses et plages",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "cellule",
+      "plage de cellules",
+      "adresse de cellule",
+      "formule"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire ESG séries A, ABI, SH, AC, session 2024 (MINESEC/OBC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-2024-officiel-cameroun-ex1-q1.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableur calcule à ta place, à condition de savoir lui dire sur quelles cellules travailler. Pour additionner trente notes, personne ne tape trente additions : on désigne un bloc de cellules en une seule expression. Ce cours t'apprend à écrire l'adresse d'une cellule et d'une plage sans hésiter, ce qui est la base de toutes les formules."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une feuille de calcul est un tableau de lignes et de colonnes",
+        "Reconnaître les lettres des colonnes et les numéros des lignes à l'écran"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Adresse d'une cellule et adresse d'une plage",
+      "contenu_markdown": "Une **cellule** est l'intersection d'une colonne et d'une ligne. Son adresse s'écrit : **lettre de la colonne, puis numéro de la ligne** (B3 : colonne B, ligne 3).\n\nUne **plage de cellules** est un groupe de cellules contiguës formant un rectangle. Son adresse s'écrit : **première cellule, deux-points, dernière cellule** (de la cellule en haut à gauche à celle en bas à droite). Pour désigner des cellules qui ne se touchent pas, on les sépare par un point-virgule.",
+      "formule_principale": "\\text{plage} = \\text{cellule de début} \\; {:} \\; \\text{cellule de fin}",
+      "variantes": [
+        {
+          "nom": "Cellules non contiguës",
+          "quand_utiliser": "Quand les cellules à utiliser ne se touchent pas.",
+          "contenu_markdown": "On sépare les adresses par un point-virgule : `=SOMME(B2;B4)` ajoute seulement B2 et B4, alors que `=SOMME(B2:B4)` ajoute B2, B3 et B4."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une feuille où les moyennes du 2e trimestre de huit élèves sont rangées dans la colonne C, de la ligne 5 à la ligne 12, désigner cette plage et écrire la formule qui en calcule la somme.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la colonne",
+          "justification": "Les huit moyennes sont dans une seule colonne, la colonne C.",
+          "resultat_markdown": "Colonne : C"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la première et la dernière ligne",
+          "justification": "La plage commence à la première moyenne (ligne 5) et finit à la dernière (ligne 12).",
+          "resultat_markdown": "Première cellule : C5 ; dernière cellule : C12"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'adresse de la plage",
+          "justification": "On relie la première et la dernière cellule par le signe deux-points.",
+          "resultat_markdown": "Plage : `C5:C12`"
+        },
+        {
+          "numero": 4,
+          "action": "Utiliser la plage dans une fonction",
+          "justification": "La fonction SOMME accepte une plage comme argument.",
+          "resultat_markdown": "`=SOMME(C5:C12)` : avec les valeurs 10, 11, 7, 12, 10, 9, 11, 10, on obtient 80."
+        }
+      ],
+      "conclusion_markdown": "La plage C5:C12 désigne les huit cellules de la colonne C et se passe en un seul argument à la fonction SOMME."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire l'adresse dans l'ordre « ligne puis colonne » : `5C`.",
+          "pourquoi_faux": "Dans un tableur, la colonne (lettre) vient toujours avant la ligne (numéro) : `5C` n'est pas une adresse valide.",
+          "correction_markdown": "Écris `C5` : lettre, puis numéro."
+        },
+        {
+          "erreur_markdown": "Confondre `C5:C12` et `C5;C12`.",
+          "pourquoi_faux": "Le deux-points désigne toutes les cellules comprises entre C5 et C12 (huit cellules), le point-virgule désigne seulement les deux cellules C5 et C12.",
+          "correction_markdown": "Utilise « : » pour un bloc continu et « ; » pour des cellules séparées."
+        },
+        {
+          "erreur_markdown": "Désigner une plage en commençant par la cellule du bas : `C12:C5`.",
+          "pourquoi_faux": "Les tableurs la corrigent parfois, mais en rédaction on respecte l'ordre haut gauche vers bas droite pour éviter toute ambiguïté.",
+          "correction_markdown": "Écris toujours la cellule de début avant la cellule de fin."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On donne la feuille suivante.\n\n| | A | B | C |\n|---|---|---|---|\n| 1 | Produit | Prix | Quantité |\n| 2 | Cahier | 500 | 10 |\n| 3 | Stylo | 150 | 20 |\n| 4 | Règle | 200 | 5 |\n\nDonner l'adresse de la cellule qui contient 150, puis celle de la plage des quantités.",
+          "solution_markdown": "Le nombre 150 est dans la colonne B (Prix), ligne 3 : adresse `B3`.\n\nLes quantités sont dans la colonne C, des lignes 2 à 4 : première cellule C2, dernière cellule C4, donc la plage est `C2:C4`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec la même feuille, écrire la formule qui donne la quantité totale puis celle qui donne le prix le plus élevé, et donner leurs résultats.",
+          "solution_markdown": "Quantité totale : `=SOMME(C2:C4)`, soit 10 + 20 + 5 = 35.\n\nPrix le plus élevé : `=MAX(B2:B4)`, la plage B2:B4 contient 500, 150 et 200, donc le résultat est 500."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec la même feuille, on ajoute une colonne D « Montant ». Écrire la formule de D2 (prix multiplié par quantité), puis la formule du total des montants, et calculer les résultats.",
+          "solution_markdown": "En D2 : `=B2*C2`, soit 500 x 10 = 5 000. On recopie vers le bas : D3 donne `=B3*C3` = 150 x 20 = 3 000 et D4 donne `=B4*C4` = 200 x 5 = 1 000.\n\nTotal des montants : `=SOMME(D2:D4)` = 5 000 + 3 000 + 1 000 = 9 000."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une cellule s'écrit lettre de colonne puis numéro de ligne : B3, jamais 3B.",
+        "Une plage s'écrit première cellule, deux-points, dernière cellule : B2:B4.",
+        "Le deux-points couvre toutes les cellules intermédiaires, le point-virgule désigne des cellules séparées.",
+        "Passer une plage à une fonction (SOMME, MOYENNE, MAX) évite d'écrire cellule par cellule.",
+        "Au Probatoire, « Définir plage de cellules » et « Écrire la formule qui calcule... » reviennent presque chaque année dans l'exercice de bureautique."
+      ]
+    }
+  ]
+}

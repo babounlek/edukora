@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-coder-un-tableau-en-html-probatoire-acde-2018",
+  "meta": {
+    "titre": "Écrire le code HTML d'un tableau",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique : HTML",
+    "duree_estimee_min": 30,
+    "tags": [
+      "HTML",
+      "tableau",
+      "attribut border",
+      "colspan",
+      "balise th"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2018 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2018-officiel-cameroun-ex1-q4.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une page web, un tableau n'est pas dessiné : il est décrit, ligne après ligne, par du code. Savoir passer d'un tableau vu sur papier à son code HTML est une compétence que l'examen vérifie presque chaque année."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises `<table>`, `<tr>`, `<td>` et `<th>`",
+        "Savoir refermer correctement les balises"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du tableau au code, ligne par ligne",
+      "contenu_markdown": "1. **Lire le tableau** : compter les lignes et les colonnes, repérer les cellules d'en-tête (gras, centrées) et la présence d'un quadrillage.\n2. **Ouvrir** `<table border=\"1\">` (l'attribut `border` produit le quadrillage).\n3. **Pour chaque ligne**, écrire `<tr>`, puis une cellule par colonne (`<th>` pour un en-tête, `<td>` pour une donnée), puis `</tr>`.\n4. **Refermer** `</table>` et vérifier que toutes les balises sont fermées dans l'ordre inverse de leur ouverture.\n\nPour une cellule qui s'étend sur plusieurs colonnes, on ajoute l'attribut `colspan` (par exemple `colspan=\"2\"`).",
+      "variantes": [
+        {
+          "nom": "Tableau sans quadrillage",
+          "quand_utiliser": "Quand le tableau du sujet n'a pas de bordure visible.",
+          "contenu_markdown": "On écrit simplement `<table>` sans l'attribut `border`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code HTML qui produit le tableau suivant : première ligne ENIET et ENIEG en en-têtes, seconde ligne « 250 enseignants » et « 340 enseignants », avec quadrillage.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le tableau",
+          "justification": "On compte 2 lignes et 2 colonnes ; la première ligne est en gras et centrée, donc en-têtes ; le quadrillage est visible.",
+          "resultat_markdown": "2 lignes, 2 colonnes, `<th>` en ligne 1, `border`."
+        },
+        {
+          "numero": 2,
+          "action": "Ouvrir le tableau",
+          "justification": "Le quadrillage demande l'attribut `border`.",
+          "resultat_markdown": "`<table border=\"1\">`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la ligne d'en-têtes",
+          "justification": "Une ligne `<tr>` avec une cellule `<th>` par colonne.",
+          "resultat_markdown": "`<tr><th>ENIET</th><th>ENIEG</th></tr>`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la ligne de données",
+          "justification": "Même principe avec des cellules `<td>`.",
+          "resultat_markdown": "`<tr><td>250 enseignants</td><td>340 enseignants</td></tr>`"
+        },
+        {
+          "numero": 5,
+          "action": "Refermer le tableau",
+          "justification": "On ferme la balise ouverte à l'étape 2.",
+          "resultat_markdown": "`</table>`"
+        }
+      ],
+      "conclusion_markdown": "Code final (testé : 2 lignes de 2 cellules, balises toutes refermées) :\n\n```html\n<table border=\"1\">\n  <tr>\n    <th>ENIET</th>\n    <th>ENIEG</th>\n  </tr>\n  <tr>\n    <td>250 enseignants</td>\n    <td>340 enseignants</td>\n  </tr>\n</table>\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'attribut `border=\"1\"` alors que le tableau est quadrillé.",
+          "pourquoi_faux": "Sans `border`, le navigateur n'affiche aucun trait : le résultat ne ressemble pas au tableau du sujet.",
+          "correction_markdown": "Ajouter `border=\"1\"` dans la balise `<table>` dès qu'un quadrillage est visible."
+        },
+        {
+          "erreur_markdown": "Écrire les cellules sans les placer dans une ligne `<tr>`.",
+          "pourquoi_faux": "Les cellules doivent être contenues dans une ligne : sans `<tr>`, le code est invalide et l'affichage imprévisible.",
+          "correction_markdown": "Toujours entourer les cellules d'une même ligne par `<tr>` ... `</tr>`."
+        },
+        {
+          "erreur_markdown": "Mettre un `<td>` partout, même pour les en-têtes.",
+          "pourquoi_faux": "Le résultat reste lisible mais ne reproduit pas la mise en forme (gras et centré) des titres du tableau.",
+          "correction_markdown": "Utiliser `<th>` pour les cellules d'en-tête."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le code HTML d'un tableau quadrillé de 2 lignes et 2 colonnes : en-têtes « Nom » et « Classe », puis « Paul » et « Première ».",
+          "solution_markdown": "```html\n<table border=\"1\">\n  <tr>\n    <th>Nom</th>\n    <th>Classe</th>\n  </tr>\n  <tr>\n    <td>Paul</td>\n    <td>Première</td>\n  </tr>\n</table>\n```\n\nLe code a été analysé par un analyseur HTML : 2 lignes de 2 cellules, balises correctement fermées."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire le code d'un tableau quadrillé de 3 lignes et 3 colonnes : en-têtes « Matière », « Note », « Coefficient » ; puis « Informatique », 15, 2 ; puis « Anglais », 12, 3.",
+          "solution_markdown": "```html\n<table border=\"1\">\n  <tr>\n    <th>Matière</th>\n    <th>Note</th>\n    <th>Coefficient</th>\n  </tr>\n  <tr>\n    <td>Informatique</td>\n    <td>15</td>\n    <td>2</td>\n  </tr>\n  <tr>\n    <td>Anglais</td>\n    <td>12</td>\n    <td>3</td>\n  </tr>\n</table>\n```\n\nIl y a 3 balises `<tr>` (3 lignes) et 3 cellules dans chacune (3 colonnes). Code vérifié par analyse."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire le code d'un tableau quadrillé dont la première ligne est un titre unique « Effectifs 2018 » qui s'étend sur les deux colonnes, suivi de deux lignes : « Filles » 120 et « Garçons » 135.",
+          "solution_markdown": "Le titre occupe les deux colonnes : une seule cellule `<th>` avec l'attribut `colspan=\"2\"`.\n\n```html\n<table border=\"1\">\n  <tr>\n    <th colspan=\"2\">Effectifs 2018</th>\n  </tr>\n  <tr>\n    <td>Filles</td>\n    <td>120</td>\n  </tr>\n  <tr>\n    <td>Garçons</td>\n    <td>135</td>\n  </tr>\n</table>\n```\n\nLa première ligne ne contient qu'une cellule, qui couvre 2 colonnes ; les deux autres lignes ont 2 cellules (code vérifié par analyse)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lis le tableau d'abord : lignes, colonnes, en-têtes, quadrillage.",
+        "Structure fixe : `<table>`, puis une balise `<tr>` par ligne, puis une cellule par colonne.",
+        "`<th>` pour les en-têtes, `<td>` pour les données, `border=\"1\"` pour le quadrillage.",
+        "Referme toutes les balises, dans l'ordre inverse de leur ouverture.",
+        "Au Probatoire, ce code vaut en général deux points : la présence de `border`, des `<tr>` et des cellules bien placées est ce qui est noté."
+      ]
+    }
+  ]
+}

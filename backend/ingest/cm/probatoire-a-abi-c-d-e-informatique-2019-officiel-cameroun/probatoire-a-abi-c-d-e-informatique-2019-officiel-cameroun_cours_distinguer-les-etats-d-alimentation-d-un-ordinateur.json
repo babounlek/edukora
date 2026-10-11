@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-distinguer-les-etats-d-alimentation-d-un-ordinateur-probatoire",
+  "meta": {
+    "titre": "Distinguer les états d'alimentation d'un ordinateur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D, E",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "éteint",
+      "veille",
+      "veille prolongée",
+      "démarrage",
+      "alimentation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire ESG 2019, Épreuve théorique d'informatique (séries A, C, D, E et ABI)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2019-officiel-cameroun-ex3-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur « qui ne fait rien » n'est pas toujours éteint. Il peut dormir, avec la mémoire alimentée, ou être endormi sur le disque, sans courant. Chaque état change la façon dont l'appareil reprend : en deux secondes, en vingt secondes, ou avec un long défilement de messages. Savoir lire ces symptômes permet de diagnostiquer l'état de départ d'une machine."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la mémoire vive (RAM) et le disque dur",
+        "Savoir ce qu'est un système d'exploitation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois états et leurs symptômes de reprise",
+      "contenu_markdown": "| État | Courant | Contenu de la RAM | Reprise |\n|---|---|---|---|\n| **Éteint** (arrêt complet) | coupé | perdu | démarrage complet : le BIOS, le POST et le chargement du système défilent à l'écran, puis le bureau apparaît |\n| **Veille** | RAM alimentée | conservé | reprise en quelques secondes, avec les programmes ouverts et sans messages de démarrage |\n| **Veille prolongée** (hibernation) | coupé | copié sur le disque dur | reprise plus longue que la veille, avec retour des programmes ouverts |\n\nMéthode : lire les symptômes décrits après le réveil (messages qui défilent, durée, programmes retrouvés) et en déduire l'état de départ. Des messages qui défilent avant le bureau indiquent un démarrage complet, donc une machine partie de l'état éteint.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un portable a mis un bon moment à faire défiler des écritures à l'écran avant d'afficher le bureau. Dans quel état se trouvait-il ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever le symptôme",
+          "justification": "Les écritures qui défilent sont des messages de démarrage",
+          "resultat_markdown": "Un démarrage complet a eu lieu."
+        },
+        {
+          "numero": 2,
+          "action": "Comparer avec la reprise de la veille",
+          "justification": "La veille retrouve le bureau en quelques secondes, sans messages",
+          "resultat_markdown": "Ce n'est pas une veille."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer avec la veille prolongée",
+          "justification": "Elle restaure la session sans repasser par le BIOS",
+          "resultat_markdown": "Ce n'est pas non plus une veille prolongée."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "Seul un ordinateur éteint exécute le démarrage complet",
+          "resultat_markdown": "L'ordinateur était éteint."
+        }
+      ],
+      "conclusion_markdown": "Avant l'événement, l'ordinateur était éteint : c'est le démarrage complet observé qui le prouve."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire « en veille » parce que l'écran était allumé quand on l'a vu",
+          "pourquoi_faux": "L'état concerne la machine avant la reprise, et la reprise de la veille est rapide, sans défilement de messages.",
+          "correction_markdown": "Se baser sur les symptômes de la reprise."
+        },
+        {
+          "erreur_markdown": "Confondre veille et veille prolongée",
+          "pourquoi_faux": "La veille garde la RAM sous tension, la veille prolongée enregistre tout sur le disque et coupe le courant.",
+          "correction_markdown": "Retenir qu'en veille prolongée le courant est coupé."
+        },
+        {
+          "erreur_markdown": "Croire qu'un ordinateur éteint ne peut pas démarrer seul",
+          "pourquoi_faux": "Certains portables démarrent à l'ouverture de l'écran (réglage du BIOS).",
+          "correction_markdown": "Ne pas exclure un démarrage sans appui sur le bouton."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un ordinateur retrouve en 2 secondes ses programmes ouverts quand on touche la souris. Dans quel état était-il ?",
+          "solution_markdown": "En **veille** : la RAM est restée alimentée, donc la reprise est quasi immédiate et tous les programmes sont retrouvés."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Après un appui sur le bouton Power, un ordinateur affiche pendant 20 secondes le logo du constructeur et des lignes de texte avant de proposer l'écran de connexion. Quel était son état et pourquoi ?",
+          "solution_markdown": "Il était **éteint**. Le logo et les lignes de texte sont ceux du BIOS et du POST, puis du chargement du système : c'est un démarrage complet."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quelle différence entre veille et veille prolongée du point de vue de l'alimentation et de la perte de données en cas de coupure d'électricité ?",
+          "solution_markdown": "En **veille**, la RAM reste alimentée : si le courant disparaît (batterie vide), le contenu de la RAM est perdu, donc les documents non enregistrés aussi. En **veille prolongée**, le contenu de la RAM est d'abord copié sur le disque, puis le courant est coupé : une coupure ne fait rien perdre. La contrepartie est une reprise plus lente."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Éteint, veille et veille prolongée se distinguent par l'alimentation de la RAM et par la vitesse de reprise.",
+        "Des messages qui défilent avant le bureau indiquent un démarrage complet, donc un ordinateur éteint.",
+        "La veille se réveille en quelques secondes avec les programmes ouverts.",
+        "Justifie toujours l'état par un symptôme décrit dans l'énoncé.",
+        "Ces questions de diagnostic partent d'un cas concret et se retrouvent dans l'épreuve de maintenance du Probatoire."
+      ]
+    }
+  ]
+}
