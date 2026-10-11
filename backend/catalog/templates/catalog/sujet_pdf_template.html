@@ -180,16 +180,11 @@
             <span class="pays-line">{% if flag_url %}<img src="{{ flag_url }}" alt="" class="flag-icon">{% endif %}{{ header.pays.label }}</span>
         </div>
         <h1>{{ lesson.title }}</h1>
+        {% if meta %}
         <div class="meta-row">
-            <span>{{ header.matiere }}</span>
-            {% if header.serie_libelle %}<span>{{ header.serie_libelle }}</span>{% endif %}
-            {% if header.examen %}<span>{{ header.examen }}</span>{% endif %}
-            {% if header.annee %}<span>Session {{ header.annee }}</span>{% endif %}
-            {% if header.duree %}<span>Durée : {{ header.duree }}</span>{% endif %}
-            {% if header.coefficient %}<span>Coefficient : {{ header.coefficient }}</span>{% endif %}
-            {% if header.origine %}<span>{{ header.origine }}{% if header.etablissement %} - {{ header.etablissement }}{% endif %}</span>{% endif %}
-            {% if header.institution and header.institution != header.etablissement %}<span>{{ header.institution }}</span>{% endif %}
+            {% for item in meta %}<span>{{ item }}</span>{% endfor %}
         </div>
+        {% endif %}
     </div>
 
     {{ content_html|safe }}

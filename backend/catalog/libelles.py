@@ -1,3 +1,6 @@
+import re
+
+
 def joindre_fr(items):
     """Joint des éléments à la française : "C", "C et E", "C, D et E"."""
     items = list(items)
@@ -14,6 +17,24 @@ def libelle_series(codes):
     if not codes:
         return None
     return f"{'Séries' if len(codes) > 1 else 'Série'} {joindre_fr(codes)}"
+
+
+def matiere_dans_titre(titre, matiere):
+    """True si le titre nomme déjà la matière (« Mathématiques BAC C et E 2002 »)."""
+    return bool(matiere) and matiere.casefold() in titre.casefold()
+
+
+def public_dans_titre(titre, cursus_iterable):
+    """True si le titre dit déjà le public visé : chaque examen et chaque série du cursus y figurent
+    (« … BAC C, D et E 2026 », « … Probatoire C et E – Épreuve inédite n°2 ») - l'en-tête d'un PDF
+    n'a alors pas à le répéter dessous."""
+    cursus = list(cursus_iterable)
+    if not cursus:
+        return False
+    texte = titre.casefold()
+    if not all(c.display_examen().casefold() in texte for c in cursus):
+        return False
+    return all(re.search(rf"\b{re.escape(c.series.code)}\b", titre) for c in cursus if c.series)
 
 
 def libelle_cursus(cursus_iterable):

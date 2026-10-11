@@ -29,7 +29,7 @@ from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 from django.utils.text import slugify
 
-from catalog.libelles import libelle_cursus
+from catalog.libelles import libelle_cursus, matiere_dans_titre, public_dans_titre
 from catalog.sujet_pdf import (
     _FLAGS_DIR,
     _footer_template,
@@ -74,15 +74,22 @@ def _render_html(epreuve):
     blueprint = epreuve.blueprint
     epreuve_url = _epreuve_deep_link(epreuve)
 
+    # Le titre d'une inédite dit déjà matière et public ("Anglais Probatoire C, D, E et TI – Épreuve
+    # inédite n°2") : la ligne sous le titre ne garde que ce qu'il ne dit pas.
+    meta = []
+    if not matiere_dans_titre(epreuve.titre, epreuve.subject.label):
+        meta.append(epreuve.subject.label)
+    if not public_dans_titre(epreuve.titre, epreuve.cursus.select_related("series", "country")):
+        meta.append(_cursus_display(epreuve.cursus.all()))
+    if blueprint.duree_minutes:
+        meta.append(f"Durée : {blueprint.duree_minutes} min")
+    if blueprint.bareme_total:
+        meta.append(f"Barème : {blueprint.bareme_total} points")
+
     return render_to_string("inedit/sujet_pdf_template.html", {
         "epreuve": epreuve,
-        "header": {
-            "matiere": epreuve.subject.label,
-            "cursus_display": _cursus_display(epreuve.cursus.all()),
-            "pays_label": country.label,
-            "duree_minutes": blueprint.duree_minutes,
-            "bareme_total": blueprint.bareme_total,
-        },
+        "header": {"pays_label": country.label},
+        "meta": meta,
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
         "site_url": settings.PDF_SITE_URL,

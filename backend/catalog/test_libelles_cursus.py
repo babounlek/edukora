@@ -2,7 +2,7 @@ from types import SimpleNamespace
 
 from django.test import SimpleTestCase
 
-from catalog.libelles import libelle_cursus, libelle_series
+from catalog.libelles import libelle_cursus, libelle_series, matiere_dans_titre, public_dans_titre
 
 
 def _cursus(examen, code=None):
@@ -35,3 +35,27 @@ class LibelleCursusTests(SimpleTestCase):
     def test_doublons_ecartes_et_vide(self):
         self.assertEqual(libelle_cursus([_cursus("BAC", "C"), _cursus("BAC", "C")]), "BAC - Série C")
         self.assertEqual(libelle_cursus([]), "")
+
+
+class DejaDansLeTitreTests(SimpleTestCase):
+    def test_public_dit_par_le_titre(self):
+        cursus = [_cursus("BAC", "C"), _cursus("BAC", "E")]
+        self.assertTrue(public_dans_titre("Mathématiques BAC C et E 2002", cursus))
+        self.assertTrue(public_dans_titre("Anglais BAC C, D, E et TI – Épreuve inédite n°2", [_cursus("BAC", c) for c in ("C", "D", "E", "TI")]))
+
+    def test_public_absent_ou_incomplet_du_titre(self):
+        cursus = [_cursus("BAC", "C"), _cursus("BAC", "E")]
+        self.assertFalse(public_dans_titre("Mathématiques 2002", cursus))
+        self.assertFalse(public_dans_titre("Mathématiques BAC C 2002", cursus))
+        self.assertFalse(public_dans_titre("Mathématiques BAC", []))
+
+    def test_cursus_sans_serie(self):
+        self.assertTrue(public_dans_titre("Français BEPC – Épreuve inédite n°2", [_cursus("BEPC")]))
+
+    def test_code_de_serie_cherche_comme_mot_entier(self):
+        self.assertFalse(public_dans_titre("Physique BAC TI 2020", [_cursus("BAC", "T")]))
+
+    def test_matiere_dans_titre(self):
+        self.assertTrue(matiere_dans_titre("Mathématiques BAC C 2002", "Mathématiques"))
+        self.assertFalse(matiere_dans_titre("BAC C 2002", "Mathématiques"))
+        self.assertFalse(matiere_dans_titre("BAC C 2002", ""))

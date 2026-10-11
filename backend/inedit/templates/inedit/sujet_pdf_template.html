@@ -163,12 +163,11 @@
             <span class="pays-line">{% if flag_url %}<img src="{{ flag_url }}" alt="" class="flag-icon">{% endif %}{{ header.pays_label }}</span>
         </div>
         <h1>{{ epreuve.titre }}</h1>
+        {% if meta %}
         <div class="meta-row">
-            <span>{{ header.matiere }}</span>
-            <span>{{ header.cursus_display }}</span>
-            {% if header.duree_minutes %}<span>Durée : {{ header.duree_minutes }} min</span>{% endif %}
-            {% if header.bareme_total %}<span>Barème : {{ header.bareme_total }} points</span>{% endif %}
+            {% for item in meta %}<span>{{ item }}</span>{% endfor %}
         </div>
+        {% endif %}
     </div>
 
     {{ content_html|safe }}

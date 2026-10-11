@@ -21,6 +21,8 @@ from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 from django.utils.text import slugify
 
+from catalog.libelles import matiere_dans_titre, public_dans_titre
+
 # PLAYWRIGHT_BROWSERS_PATH=0 : installe/résout les navigateurs sous
 # venv/Lib/site-packages/playwright/.../.local-browsers (dans le projet) plutôt que
 # dans le cache utilisateur par défaut (%LOCALAPPDATA%\ms-playwright, hors du projet).
@@ -143,6 +145,28 @@ def _qr_code_data_uri(url):
     return f"data:image/png;base64,{encoded}"
 
 
+def _meta_entete(lesson, header):
+    """La ligne sous le titre : seulement ce que le titre ne dit pas déjà (« Mathématiques BAC C et E
+    2002 » porte matière, examen, séries et session) - sinon l'en-tête répète tout deux fois."""
+    titre = lesson.title
+    meta = []
+    if not matiere_dans_titre(titre, header["matiere"]):
+        meta.append(header["matiere"])
+    if not public_dans_titre(titre, lesson.cursus.select_related("series", "country")):
+        meta += [x for x in (header["serie_libelle"], header["examen"]) if x]
+    if header["annee"] and str(header["annee"]) not in titre:
+        meta.append(f"Session {header['annee']}")
+    if header["duree"]:
+        meta.append(f"Durée : {header['duree']}")
+    if header["coefficient"]:
+        meta.append(f"Coefficient : {header['coefficient']}")
+    if header["origine"]:
+        meta.append(f"{header['origine']} - {header['etablissement']}" if header["etablissement"] else header["origine"])
+    if header["institution"] and header["institution"] != header["etablissement"]:
+        meta.append(header["institution"])
+    return meta
+
+
 def _render_html(lesson):
     markdown_text = _resolve_media_paths(lesson.preview_markdown())
     protected_markdown, math_spans = _protect_math(markdown_text)
@@ -158,6 +182,7 @@ def _render_html(lesson):
     return render_to_string("catalog/sujet_pdf_template.html", {
         "lesson": lesson,
         "header": header,
+        "meta": _meta_entete(lesson, header),
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
         "site_url": settings.PDF_SITE_URL,
