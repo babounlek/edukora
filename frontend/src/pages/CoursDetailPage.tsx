@@ -16,7 +16,9 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { CoursSection } from "@/components/CoursSection"
 import { RelatedCours } from "@/components/RelatedCours"
 import { CountryBadge } from "@/components/CountryBadge"
-import { coursListPath, coursReaderPath } from "@/lib/countryPath"
+import { BoutonPartager } from "@/components/BoutonPartager"
+import { SITE_NAME } from "@/lib/site"
+import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
 
 export function CoursDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -123,6 +125,12 @@ export function CoursDetailPage() {
             {cours.sous_theme && <Badge variant="outline">{capitaliserTheme(cours.sous_theme)}</Badge>}
             {cours.duree_estimee_min && <Badge variant="outline">{cours.duree_estimee_min} min</Badge>}
           </div>
+          <BoutonPartager
+            chemin={coursDetailPath(cours.slug)}
+            texte={`Regarde ce cours : « ${cours.titre} » sur ${SITE_NAME} :`}
+            type="cours"
+            className="mt-4"
+          />
         </div>
 
         {cours.tags.length > 0 && (

@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { ParrainageHint } from "@/components/ParrainageHint"
+import { BoutonPartager } from "@/components/BoutonPartager"
+import { SITE_NAME } from "@/lib/site"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
 import { ChoixModeEpreuve } from "@/components/inedit/ChoixModeEpreuve"
@@ -334,6 +336,12 @@ export function EpreuveInediteDetailPage() {
               </Badge>
             )}
           </div>
+          <BoutonPartager
+            chemin={cheminFiche}
+            texte={`Teste-toi sur « ${epreuve.title} » sur ${SITE_NAME} :`}
+            type="inedite"
+            className="mt-4"
+          />
         </div>
 
         <p className="text-sm text-muted-foreground">

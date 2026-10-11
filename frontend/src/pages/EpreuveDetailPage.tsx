@@ -12,6 +12,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { exerciceAnchorId, libelleLong } from "@/components/EpreuveSommaire"
 import { ParrainageHint } from "@/components/ParrainageHint"
+import { BoutonPartager } from "@/components/BoutonPartager"
+import { SITE_NAME } from "@/lib/site"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { BoutonSimulation } from "@/components/BoutonSimulation"
@@ -215,6 +217,14 @@ export function EpreuveDetailPage() {
               </a>
             </Button>
           )}
+          {/* Le sujet est public : n'importe quel élève peut l'envoyer à un camarade. */}
+          <BoutonPartager
+            chemin={epreuveDetailPath(countryCode, epreuve.slug as string)}
+            texte={`Regarde « ${epreuve.title} » sur ${SITE_NAME} :`}
+            type="epreuve"
+            size="lg"
+            className="h-12 rounded-full"
+          />
         </EnTeteEpreuve>
 
         {/* Pas d'accès : la proposition vient tout de suite après l'en-tête, avec ce qu'elle
@@ -257,7 +267,11 @@ export function EpreuveDetailPage() {
               ))}
             </div>
             <div className="mt-4">
-              <ParrainageHint />
+              <ParrainageHint
+                chemin={epreuveDetailPath(countryCode, epreuve.slug as string)}
+                texte={`Regarde « ${epreuve.title} » sur ${SITE_NAME} :`}
+                type="epreuve"
+              />
             </div>
           </section>
         )}

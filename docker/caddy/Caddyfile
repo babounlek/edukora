@@ -58,8 +58,22 @@
     # /recherche/* (recherche globale, voir recherche/urls.py) : avec le slash final, par la même
     # logique que /fiches/* - la page de résultats du frontend est "/:pays/recherche", jamais
     # un chemin qui COMMENCE par /recherche, mais autant ne rien laisser d'ambigu.
-    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /quiz/xp* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /recherche/* /simulations* /sitemap.xml /sitemap-*.xml
+    # /healthz : contrôle de déploiement (deploy/deploy.sh), voir edtech_cm/health.py.
+    @backend path /healthz /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /quiz/xp* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /recherche/* /simulations* /partage-apercu* /partage-image/* /sitemap.xml /sitemap-*.xml
     handle @backend {
+        reverse_proxy backend:8000
+    }
+
+    # Aperçu des liens partagés : les robots de WhatsApp, Facebook, Telegram... ne lancent pas le
+    # JavaScript de la SPA, donc ne voient que les balises génériques d'index.html. Pour les pages
+    # d'épreuve, de cours et d'épreuve inédite, ils reçoivent à la place une page de balises <meta>
+    # propres au contenu (voir backend/catalog/apercu_partage.py). Les visiteurs n'y passent jamais.
+    @robots_apercu {
+        header_regexp User-Agent (?i)(whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|skypeuripreview|pinterest)
+        path_regexp ^/([a-z]{2}/)?(epreuves|cours|epreuves-inedites)/[^/]+(/lire)?/?$
+    }
+    handle @robots_apercu {
+        rewrite * /partage-apercu{path}
         reverse_proxy backend:8000
     }
 

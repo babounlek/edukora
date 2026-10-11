@@ -27,10 +27,10 @@ interface SeoOptions {
 }
 
 /**
- * SPA sans rendu serveur : Googlebot exécute le JS et voit ces balises, mais les
- * bots qui ne l'exécutent pas (aperçus de lien WhatsApp/Facebook) ne verront que
- * les balises statiques par défaut d'index.html, pas ce hook - limite acceptée
- * plutôt qu'une migration SSR pour ce besoin.
+ * SPA sans rendu serveur : Googlebot exécute le JS et voit ces balises. Les bots qui ne
+ * l'exécutent pas (aperçus de lien WhatsApp/Facebook) ne voient pas ce hook : pour les pages
+ * d'épreuve, de cours et d'épreuve inédite, Caddy leur sert à la place des balises propres au
+ * contenu (backend/catalog/apercu_partage.py) ; les autres pages gardent celles d'index.html.
  */
 export function useSeo({ title, description = DEFAULT_DESCRIPTION, noindex = false }: SeoOptions) {
   useEffect(() => {

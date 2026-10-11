@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from catalog.apercu_partage import apercu_partage, image_partage
 from catalog.sitemap import sitemap_chunk, sitemap_index
 
 urlpatterns = [
@@ -36,6 +37,12 @@ urlpatterns = [
     path("relances/", include("relances.urls")),
     path("simulations/", include("simulations.urls")),
     path("recherche/", include("recherche.urls")),
+    # Aperçu des liens partagés (WhatsApp, Facebook...) : Caddy y envoie les robots d'aperçu à la
+    # place de la SPA, voir catalog/apercu_partage.py.
+    path("partage-apercu/", apercu_partage, name="partage-apercu-racine"),
+    path("partage-apercu/<path:chemin>", apercu_partage, name="partage-apercu"),
+    path("partage-image/defaut.png", image_partage, {"genre": "defaut", "ident": ""}, name="partage-image-defaut"),
+    path("partage-image/<str:genre>/<str:ident>.png", image_partage, name="partage-image"),
     path("sitemap.xml", sitemap_index, name="sitemap-index"),
     path("sitemap-<int:page>.xml", sitemap_chunk, name="sitemap-chunk"),
 ]

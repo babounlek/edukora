@@ -1,26 +1,33 @@
-import { Link } from "react-router-dom"
-import { Share2 } from "lucide-react"
+import { useLocation } from "react-router-dom"
 
-import { useAuth } from "@/context/AuthContext"
+import { BoutonPartager } from "@/components/BoutonPartager"
+import { SITE_NAME } from "@/lib/site"
+
+type TypeContenu = "epreuve" | "cours" | "inedite"
 
 /**
- * Rappel compact du parrainage, à poser sur un mur payant (corrigé/épreuve inédite
- * verrouillés). Décision du 2026-09-28 : le parrainage est un simple partage de lien,
- * sans remise ni récompense d'aucun côté - voir project_parrainage_eleve_recalibrage.
- * Rien à afficher côté anonyme (pas encore de referral_code, voir AccountPage.tsx) :
- * le lien mène vers la page compte, qui porte le mécanisme complet (copier/WhatsApp).
+ * Partage compact, à poser sur un mur payant (corrigé/épreuve inédite verrouillés) : l'élève qui ne
+ * peut pas payer maintenant envoie la page à un ami en un clic. Décision du 2026-09-28 : le
+ * parrainage est un simple partage de lien, sans remise ni récompense d'aucun côté - voir
+ * project_parrainage_eleve_recalibrage. Le lien porte le code de parrainage s'il est connecté.
+ *
+ * Sans `chemin`, on partage la page courante (sans son lecteur, derrière le mur payant) : c'est le
+ * cas des écrans qui ne connaissent pas leur contenu (voir AccesRefuse).
  */
-export function ParrainageHint() {
-  const { isAuthenticated } = useAuth()
-  if (!isAuthenticated) return null
+export function ParrainageHint({ chemin, texte, type }: { chemin?: string; texte?: string; type?: TypeContenu }) {
+  const { pathname } = useLocation()
+  const cheminPartage = chemin ?? pathname.replace(/\/lire$/, "")
+  const genre: TypeContenu = type ?? (cheminPartage.startsWith("/cours/") ? "cours" : "epreuve")
+  const titre = document.title.replace(new RegExp(`\\s*\\|\\s*${SITE_NAME}$`), "")
 
   return (
-    <Link
-      to="/compte"
-      className="flex w-fit items-center gap-1.5 text-xs text-muted-foreground hover:text-primary hover:underline"
-    >
-      <Share2 className="size-3.5 shrink-0" />
-      Ou partage cette épreuve avec un ami
-    </Link>
+    <BoutonPartager
+      chemin={cheminPartage}
+      texte={texte ?? (titre ? `Regarde « ${titre} » sur ${SITE_NAME} :` : `Regarde ça sur ${SITE_NAME} :`)}
+      type={genre}
+      variant="ghost"
+      className="h-auto w-fit gap-1.5 px-0 text-xs font-normal text-muted-foreground hover:bg-transparent hover:text-primary hover:underline"
+      libelle="Ou partage-le avec un ami"
+    />
   )
 }

@@ -63,6 +63,8 @@ class EventName(models.TextChoices):
     QUIZ_ABANDONNE = "quiz_abandonne", "Quiz quitté avant la fin"
     OBJECTIF_XP_CHOISI = "objectif_xp_choisi", "Objectif quotidien choisi"
     OBJECTIF_XP_ATTEINT = "objectif_xp_atteint", "Objectif quotidien atteint"
+    # Partage d'un cours / d'une épreuve : la page partagée et le canal, jamais le destinataire.
+    CONTENU_PARTAGE = "contenu_partage", "Contenu partagé (épreuve, cours, épreuve inédite)"
 
 
 class AnalyticsEvent(models.Model):

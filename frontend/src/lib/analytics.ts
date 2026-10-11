@@ -15,6 +15,7 @@ export type AnalyticsEventName =
   | "quiz_completed"
   | "inedit_tentative_started"
   | "inedit_tentative_completed"
+  | "contenu_partage"
   | "pdf_sujet_landing"
   | "pdf_sujet_inedit_landing"
   | "pdf_fiche_sujet_landing"
