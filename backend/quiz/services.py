@@ -1,6 +1,7 @@
 import random
 import unicodedata
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, namedtuple
+from functools import lru_cache
 from datetime import timedelta
 
 from django.db.models import Count, Q
@@ -26,6 +27,9 @@ SEUIL_MAITRISE = 70
 # de tagging à corriger côté données, pas une raison de charger une liste illimitée
 # côté page.
 PARCOURS_COURS_PAR_SAVOIR_MAX = 3
+
+# Les seuls champs d'un Cours lus par construire_parcours (voir sa requête groupée).
+_CoursCandidat = namedtuple("_CoursCandidat", "id slug titre sous_theme")
 
 # construire_parcours : matières où le classement des thèmes réels par fréquence
 # d'examen remplace le Module→Savoir officiel (voir
@@ -543,8 +547,12 @@ def maitrise_par_savoir(profil, cursus=None):
     return {savoir_id: round(100 * s["reussies"] / s["total"]) for savoir_id, s in stats.items()}
 
 
+@lru_cache(maxsize=20000)
 def _normaliser_pour_recherche(texte):
-    """Minuscules sans accents, pour comparer un nom de thème à un titre de cours."""
+    """Minuscules sans accents, pour comparer un nom de thème à un titre de cours.
+
+    Mémoïsée : fonction pure, appelée pour chaque (thème x cours candidat) de chaque matière
+    par construire_parcours_par_frequence (~370 000 caractères normalisés sur un accueil)."""
     decompose = unicodedata.normalize("NFD", texte.lower())
     return "".join(ch for ch in decompose if unicodedata.category(ch) != "Mn")
 
@@ -591,7 +599,10 @@ def construire_parcours_par_frequence(profil, cursus, subject):
 
     tags_bruts = list(
         Tag.objects.filter(questions_as_theme__exercise__lesson__in=lessons)
-        .exclude(name__in=TAGS_BLOCKLIST_PARCOURS_FREQUENCE),
+        .exclude(name__in=TAGS_BLOCKLIST_PARCOURS_FREQUENCE)
+        # (id, nom) distincts : sans cela le JOIN sur les questions renvoyait un Tag par question
+        # qui le porte (des milliers de doublons instanciés pour rien, puis regroupés par id).
+        .values_list("id", "name").distinct(),
     )
     if not tags_bruts:
         return []
@@ -599,10 +610,10 @@ def construire_parcours_par_frequence(profil, cursus, subject):
     # Regroupement par alias : un groupe = une forme canonique + l'ensemble des ids
     # de Tag qui y renvoient (lui-même si le tag n'a pas d'alias connu).
     groupes = {}
-    for tag in tags_bruts:
-        canonique = TAGS_ALIAS_PARCOURS_FREQUENCE.get(tag.name, tag.name)
+    for tag_id, tag_name in tags_bruts:
+        canonique = TAGS_ALIAS_PARCOURS_FREQUENCE.get(tag_name, tag_name)
         groupe = groupes.setdefault(canonique, {"nom": canonique, "tag_ids": set()})
-        groupe["tag_ids"].add(tag.id)
+        groupe["tag_ids"].add(tag_id)
     tous_tag_ids = {tid for g in groupes.values() for tid in g["tag_ids"]}
 
     # Fréquence par groupe = nb de Lesson distinctes couvertes par l'UNION de ses
@@ -813,6 +824,26 @@ def construire_parcours(profil, cursus, subject):
 
     modules = Module.objects.filter(subject=subject, cursus=cursus).prefetch_related("savoirs").distinct()
 
+    # Un seul aller-retour pour tous les savoirs de la matière (et non une requête par savoir :
+    # 54 requêtes identiques, ~300 ms, sur l'accueil d'un abonné qui appelle ce parcours pour
+    # chaque matière via resume_parcours). Même filtre, même ordre (id) et même fenêtre de
+    # candidats par savoir que la requête unitaire qu'elle remplace.
+    savoir_ids = {savoir.id for module in modules for savoir in module.savoirs.all()}
+    candidats_par_savoir = defaultdict(list)
+    if savoir_ids:
+        for savoir_id, cours_id, slug, titre, sous_theme in (
+            Cours.objects.visibles()
+            .filter(subject=subject, tags__savoir_officiel__in=savoir_ids)
+            .filter(q_cours_du_cursus([cursus.id]))
+            # values_list : le DISTINCT ne compare que ces champs, jamais le contenu du cours.
+            .values_list("tags__savoir_officiel_id", "id", "slug", "titre", "sous_theme")
+            .distinct()
+            .order_by("tags__savoir_officiel_id", "id")
+        ):
+            candidats = candidats_par_savoir[savoir_id]
+            if len(candidats) < PARCOURS_COURS_PAR_SAVOIR_MAX * 3:
+                candidats.append(_CoursCandidat(cours_id, slug, titre, sous_theme))
+
     parcours = []
     for module in modules:
         savoirs_payload = []
@@ -832,16 +863,7 @@ def construire_parcours(profil, cursus, subject):
             # sous_theme avant de plafonner, sans pour autant charger tous les
             # candidats (jusqu'à plusieurs centaines dans les cas de tag trop
             # générique - voir la note sur PARCOURS_COURS_PAR_SAVOIR_MAX).
-            candidats_bruts = (
-                Cours.objects.visibles()
-                .filter(subject=subject, tags__savoir_officiel=savoir)
-                .filter(q_cours_du_cursus([cursus.id]))
-                # Voir construire_parcours_par_frequence : sans only(), le DISTINCT
-                # compare aussi le contenu entier de chaque cours.
-                .only("id", "slug", "titre", "sous_theme")
-                .distinct()
-                .order_by("id")[: PARCOURS_COURS_PAR_SAVOIR_MAX * 3]
-            )
+            candidats_bruts = candidats_par_savoir.get(savoir.id, ())
             cours_candidats = []
             sous_themes_vus = set()
             for c in candidats_bruts:
