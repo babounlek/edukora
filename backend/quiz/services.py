@@ -35,7 +35,7 @@ _CoursCandidat = namedtuple("_CoursCandidat", "id slug titre sous_theme")
 # d'examen remplace le Module→Savoir officiel (voir
 # project_parcours_par_frequence_conception_2026_09_14) - décision arrêtée par
 # pilotage concret sur le corpus, pas un choix arbitraire : Français/Philo/
-# Histoire-Géo/Anglais testent une méthodologie sur des sujets renouvelés, pas un
+# Histoire-Géo testent une méthodologie sur des sujets renouvelés, pas un
 # stock fixe de notions récurrentes (BEPC Français : 94 tags, fréquence max 4,
 # aucun thème n'atteindrait SEUIL_MINIMUM_THEMES_PARCOURS). PHYSIQUE_CHIMIE et
 # PHYSIQUE_CHIMIE_TECH sont la même matière (4e/3e) sous deux codes historiques.
@@ -59,6 +59,12 @@ SUBJECTS_PARCOURS_PAR_FREQUENCE = {
     # et gardent le parcours Module→Savoir. Le régime « corpus mince » (aucun plancher) donnait
     # 208 thèmes au BEPC et 273 au Probatoire C/D/E : inexploitable.
     "GEOGRAPHIE",
+    # Langues vivantes : mesuré le 2026-10-11 sur le corpus réel, l'Anglais (BEPC 9 épreuves
+    # officielles, Probatoire A/C/D 24, BAC C/D 21) et l'Espagnol (BEPC 11, Probatoire A 8)
+    # donnent 47 à 66 thèmes dont 80 à 95 % ont un cours ou un quiz. Les cursus sous le seuil
+    # (Espagnol BAC, Allemand, ...) gardent le Module→Savoir. L'Allemand n'y est pas encore :
+    # 21 thèmes sur 86 sans quiz ni cours en Probatoire A.
+    "ANGLAIS", "ESPAGNOL",
 }
 
 # Matières classées par thème qui n'ont AUCUN programme officiel : leur classement est leur seul

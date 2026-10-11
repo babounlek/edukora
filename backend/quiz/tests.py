@@ -2390,6 +2390,53 @@ class ParcoursEducationCiviqueParThemeTests(TestCase):
         self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject), [])
 
 
+class ParcoursLanguesVivantesParThemeTests(TestCase):
+    """ANGLAIS et ESPAGNOL sont classés par thème dès que le cursus compte assez d'épreuves
+    officielles (SUBJECTS_PARCOURS_PAR_FREQUENCE) ; en dessous du seuil, le Module→Savoir est
+    conservé. L'ALLEMAND, au contenu quiz/cours encore trop lacunaire, reste hors du mode."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200034", password="x")
+        self.profil = self.user.profils.first()
+        self.bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+
+    def _avec_programme(self, subject):
+        module = Module.objects.create(subject=subject, classe="3e", serie_label="", numero="1", titre="M")
+        module.cursus.add(self.bepc)
+        Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
+
+    def test_languages_are_declared_in_the_frequency_table(self):
+        self.assertIn("ANGLAIS", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+        self.assertIn("ESPAGNOL", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+        self.assertNotIn("ALLEMAND", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+
+    def test_bepc_switches_to_theme_mode_with_enough_official_exams(self):
+        for code in ("ANGLAIS", "ESPAGNOL"):
+            with self.subTest(code=code):
+                subject = Subject.objects.get(country__code="CM", code=code)
+                self._avec_programme(subject)
+                tag = Tag.objects.create(name=f"theme-{code}-test")
+                for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+                    _make_lesson_avec_themes(subject, self.bepc, f"{code} BEPC {i}", [[tag]])
+
+                parcours = construire_parcours(self.profil, self.bepc, subject)
+
+                self.assertEqual(len(parcours), 1)
+                self.assertEqual(parcours[0]["savoirs"][0]["intitule"], f"theme-{code}-test")
+                self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
+
+    def test_a_thin_corpus_keeps_the_programme_parcours(self):
+        for code in ("ANGLAIS", "ESPAGNOL"):
+            with self.subTest(code=code):
+                subject = Subject.objects.get(country__code="CM", code=code)
+                self._avec_programme(subject)
+                tag = Tag.objects.create(name=f"theme-{code}-test")
+                for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
+                    _make_lesson_avec_themes(subject, self.bepc, f"{code} BEPC {i}", [[tag]])
+
+                self.assertEqual(construire_parcours(self.profil, self.bepc, subject)[0]["titre"], "M")
+
+
 class ParcoursGeographieParThemeTests(TestCase):
     """GEOGRAPHIE est classée par thème en régime normal (SUBJECTS_PARCOURS_PAR_FREQUENCE) dès
     que le cursus compte assez d'épreuves officielles ; en dessous du seuil, le parcours
