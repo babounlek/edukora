@@ -401,7 +401,7 @@ export function SubscribePage() {
   }
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-12 sm:py-16">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
       {/* Même gabarit de hero que /tarifs (voir PricingPage.tsx) : fond dégradé, trame
           de points discrète, halo doré décentré - cette page reste le point d'entrée
           d'un paiement réel, elle doit inspirer la même confiance que la page qui y
@@ -442,7 +442,36 @@ export function SubscribePage() {
           pour un premier achat (404) ou sans activité. */}
       {phase === "form" && cursus && <BilanDePeriode cursusId={cursus.id} className="mb-6" />}
 
-      <Card className="animate-fade-up overflow-hidden shadow-lg shadow-primary/5">
+      {/* Deux colonnes dès `lg` pour le formulaire : l'offre (récapitulatif, collé en haut au
+          défilement) à droite, le paiement à gauche. Sous `lg`, une seule colonne avec l'offre
+          d'abord (ordre du DOM), comme avant. Les autres phases (attente, succès, échec...) restent
+          une colonne étroite centrée : rien à comparer, juste un message. */}
+      <div className={cn("grid gap-6", phase === "form" && "lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start")}>
+        {phase === "form" && (
+          <Card className="animate-fade-up overflow-hidden shadow-lg shadow-primary/5 lg:sticky lg:top-24 lg:col-start-2 lg:row-start-1">
+            <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
+            <CardContent className="flex flex-col gap-2.5 p-6">
+              <Label className="text-sm font-semibold">Votre offre</Label>
+              <div className="flex flex-col gap-2">
+                {plans.length === 1 ? renderPlanRecap(plans[0]) : plans.map(renderPlanOption)}
+                {plans.length === 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    {requireRepetiteur
+                      ? "L'add-on Fiches n'est pas encore disponible à l'achat pour ce cursus - reviens bientôt."
+                      : "Aucune offre disponible pour ce cursus actuellement."}
+                  </p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+      <Card
+        className={cn(
+          "animate-fade-up overflow-hidden shadow-lg shadow-primary/5",
+          phase === "form" ? "lg:col-start-1 lg:row-start-1" : "mx-auto w-full max-w-lg",
+        )}
+      >
         <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
         <CardContent className="p-6 sm:p-7">
           {phase === "form" && (
@@ -457,26 +486,12 @@ export function SubscribePage() {
                 </div>
               )}
 
-              <div className="flex flex-col gap-2.5">
-                <StepLabel n={1}>Votre offre</StepLabel>
-                <div className="flex flex-col gap-2">
-                  {plans.length === 1 ? renderPlanRecap(plans[0]) : plans.map(renderPlanOption)}
-                  {plans.length === 0 && (
-                    <p className="text-sm text-muted-foreground">
-                      {requireRepetiteur
-                        ? "L'add-on Fiches n'est pas encore disponible à l'achat pour ce cursus - reviens bientôt."
-                        : "Aucune offre disponible pour ce cursus actuellement."}
-                    </p>
-                  )}
-                </div>
-              </div>
-
               {!configPrete ? (
                 <Loader2 className="mx-auto size-6 animate-spin text-primary" aria-label="Chargement des moyens de paiement" />
               ) : (
                 <>
                   <div className="flex flex-col gap-2.5">
-                    <StepLabel n={2}>Moyen de paiement</StepLabel>
+                    <StepLabel n={1}>Moyen de paiement</StepLabel>
 
                     {campayActif && (
                       <label
@@ -560,7 +575,7 @@ export function SubscribePage() {
                   </div>
 
                   <div className="flex flex-col gap-2.5">
-                    <StepLabel n={3}>Paiement</StepLabel>
+                    <StepLabel n={2}>Paiement</StepLabel>
 
                     {methode === "CAMPAY" ? (
                       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -723,6 +738,7 @@ export function SubscribePage() {
           )}
         </CardContent>
       </Card>
+      </div>
 
       <p className="mt-6 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <ShieldCheck className="size-3.5 shrink-0" />
