@@ -88,7 +88,7 @@ export function DialogueTerminer({
             Continuer l'épreuve
           </Button>
           <Button disabled={enCours} onClick={onConfirmer}>
-            {enCours ? "Envoi..." : "Terminer et voir le corrigé"}
+            {enCours ? "Envoi…" : "Terminer et voir le corrigé"}
           </Button>
         </div>
       </DialogContent>
@@ -141,7 +141,7 @@ export function DialogueModeExamen({
           </Button>
           <Button disabled={enCours} onClick={onConfirmer}>
             <Timer className="size-4" />
-            {enCours ? "Démarrage..." : "Lancer le chrono"}
+            {enCours ? "Démarrage…" : "Lancer le chrono"}
           </Button>
         </div>
       </DialogContent>

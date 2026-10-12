@@ -799,7 +799,7 @@ export function FichesPage() {
                             <Input
                               value={themeQuery}
                               onChange={(e) => setThemeQuery(e.target.value)}
-                              placeholder="Filtrer les compétences..."
+                              placeholder="Filtrer les compétences…"
                               className="pl-9"
                               aria-label="Filtrer les compétences"
                             />
@@ -1074,7 +1074,7 @@ export function FichesPage() {
 
                   <Button onClick={handleSubmit} disabled={creating || !pretAGenerer} size="lg" className="w-full">
                     {creating ? (
-                      "Préparation..."
+                      "Préparation…"
                     ) : (
                       <>
                         {fiche ? "Générer une nouvelle fiche" : "Générer la fiche"}

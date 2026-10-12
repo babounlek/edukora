@@ -192,7 +192,7 @@ export function CarnetPage() {
               disabled={retirer.isPending}
               onClick={() => aConfirmer && retirer.mutate(aConfirmer)}
             >
-              {retirer.isPending ? "Suppression..." : "Retirer"}
+              {retirer.isPending ? "Suppression…" : "Retirer"}
             </Button>
           </div>
         </DialogContent>

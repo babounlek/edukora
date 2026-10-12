@@ -4,9 +4,8 @@ import { ArrowLeft, Mail, MessageCircle, type LucideIcon } from "lucide-react"
 
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
-import { SITE_DOMAIN } from "@/lib/site"
+import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, CONTACT_WHATSAPP_AFFICHAGE } from "@/lib/site"
 
-const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
 
 export interface SectionLegale {
   id: string
@@ -139,13 +138,13 @@ export function PageLegale({
                   {CONTACT_EMAIL}
                 </a>
                 <a
-                  href="https://wa.me/237670401393"
+                  href={CONTACT_WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
                 >
                   <MessageCircle className="size-4" />
-                  WhatsApp +237 670 40 13 93
+                  WhatsApp {CONTACT_WHATSAPP_AFFICHAGE}
                 </a>
               </div>
               <p className="mt-4 border-t border-border pt-3 text-sm text-muted-foreground">

@@ -16,6 +16,7 @@ import {
 import { trackEvent } from "@/lib/analytics"
 import { examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
+import { SITE_NAME } from "@/lib/site"
 import {
   epreuveInediteDetailPath,
   epreuveReaderPath,
@@ -474,7 +475,7 @@ function CatalogueVitrine() {
                 </span>
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Un sujet original conçu par Edukora, jamais tiré des annales - même niveau, même barème que l'épreuve réelle, dans les conditions du jour J.
+                Un sujet original conçu par {SITE_NAME}, jamais tiré des annales - même niveau, même barème que l'épreuve réelle, dans les conditions du jour J.
               </p>
             </div>
             <span className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-gold-text">
@@ -492,9 +493,9 @@ function CatalogueVitrine() {
           page (quiz, corrigés pas à pas, thèmes fréquents, inédites) plutôt que des
           promesses nouvelles - jamais un argument que le reste de la page ne prouve pas. */}
       <section className="mx-auto max-w-5xl px-4 pb-10 sm:px-6">
-        <h2 className="font-display text-xl font-semibold">Pourquoi Edukora ?</h2>
+        <h2 className="font-display text-xl font-semibold">Pourquoi {SITE_NAME} ?</h2>
         <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-          Les annales et leurs corrigés existent déjà gratuitement sur Internet. Voici ce qu'Edukora fait en plus.
+          Les annales et leurs corrigés existent déjà gratuitement sur Internet. Voici ce qu'{SITE_NAME} fait en plus.
         </p>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-2xl border border-border bg-card p-5">
@@ -564,7 +565,7 @@ function CatalogueVitrine() {
             </div>
             <h2 className="mt-3 font-display text-xl font-semibold">{inediteVedette.title}</h2>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              Une épreuve originale conçue par Edukora, jamais tirée des annales - même niveau, même barème que
+              Une épreuve originale conçue par {SITE_NAME}, jamais tirée des annales - même niveau, même barème que
               l'examen réel. Voici la première question, en accès libre.
             </p>
             <div className="mt-5 rounded-xl border border-border bg-card p-5 sm:p-6">
@@ -613,7 +614,7 @@ function CatalogueVitrine() {
               <div className="flex-1">
                 <h2 className="font-display text-base font-semibold">Des épreuves inédites t'attendent</h2>
                 <p className="mt-0.5 text-sm text-muted-foreground">
-                  Des sujets originaux conçus par Edukora, dans les conditions du jour J.
+                  Des sujets originaux conçus par {SITE_NAME}, dans les conditions du jour J.
                 </p>
               </div>
               <Button asChild>

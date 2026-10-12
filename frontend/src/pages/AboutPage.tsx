@@ -19,13 +19,12 @@ import {
 
 import { getPlatformStats, listCursus, listSubjects } from "@/api/endpoints"
 import { useSeo } from "@/lib/seo"
-import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
+import { SITE_NAME, CONTACT_EMAIL, CONTACT_WHATSAPP_URL, CONTACT_WHATSAPP_AFFICHAGE } from "@/lib/site"
 import { useCountry } from "@/context/CountryContext"
 import { catalogueHomePath, epreuvesListPath } from "@/lib/countryPath"
 import { formatAmount } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
-const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
 
 // Du plus tôt au plus tard dans la scolarité, pas l'ordre alphabétique de l'API.
 const ORDRE_EXAMENS = ["BEPC", "PROBATOIRE", "BAC"]
@@ -343,7 +342,7 @@ export function AboutPage() {
 
       {/* Audiences */}
       <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
-        <Eyebrow>Que tu sois...</Eyebrow>
+        <Eyebrow>Que tu sois…</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           Ce qu'{SITE_NAME} te doit, concrètement
         </h2>
@@ -435,13 +434,13 @@ export function AboutPage() {
                 {CONTACT_EMAIL}
               </a>
               <a
-                href="https://wa.me/237670401393"
+                href={CONTACT_WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
               >
                 <MessageCircle className="size-4" />
-                WhatsApp +237 670 40 13 93
+                WhatsApp {CONTACT_WHATSAPP_AFFICHAGE}
               </a>
             </div>
             <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">

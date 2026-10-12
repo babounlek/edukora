@@ -22,6 +22,7 @@ import { jouerRetour } from "@/lib/retours"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
+import { libellePoints } from "@/lib/notation"
 import { memoriserQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
@@ -47,7 +48,7 @@ const RESULTAT_OPTIONS: { value: "REUSSI" | "PARTIEL" | "ECHEC"; label: string }
 const MESSAGES_BONNE = ["Bravo !", "Excellent !", "Exactement !", "Bien vu !", "Tu maîtrises !"]
 const MESSAGES_MAUVAISE = [
   "Pas tout à fait, mais c'est comme ça qu'on retient.",
-  "Raté de peu : lis la correction, elle vaut de l'or.",
+  "Pas cette fois : lis la correction, elle vaut de l'or.",
   "Une erreur comprise, c'est un point gagné pour l'examen.",
 ]
 
@@ -303,7 +304,7 @@ export function QuizSessionPage() {
             aria-label={`Question ${i + 1}`}
             title={accessible(i) ? `Question ${i + 1}` : undefined}
             className={cn(
-              "h-2.5 flex-1 rounded-full transition-all duration-500 enabled:cursor-pointer enabled:hover:scale-y-150 disabled:cursor-default",
+              "relative h-2.5 flex-1 rounded-full transition-all duration-500 after:absolute after:-inset-y-3 after:inset-x-0 after:content-[''] enabled:cursor-pointer enabled:hover:scale-y-150 disabled:cursor-default",
               segmentClass(q, i === currentIndex),
               i === currentIndex && "ring-2 ring-primary/30 ring-offset-1 ring-offset-background",
             )}
@@ -464,10 +465,12 @@ export function QuizSessionPage() {
           </div>
         )}
 
-        {/* Le retour immédiat : dit tout de suite si c'est bon, encourage dans les deux cas. */}
+        {/* Le retour immédiat : dit tout de suite si c'est bon, encourage dans les deux cas. Le
+            conteneur `status` est TOUJOURS présent : un lecteur d'écran n'annonce que les
+            changements d'une région déjà montée, pas une région qui apparaît avec son contenu. */}
+        <div role="status" aria-live="polite">
         {answered && (
           <div
-            role="status"
             className={cn(
               "animate-fade-up mt-5 flex items-start gap-3 rounded-xl border px-4 py-3",
               correct ? "border-success/40 bg-success/10" : "border-border bg-muted/50",
@@ -483,7 +486,7 @@ export function QuizSessionPage() {
                 {correct
                   ? pick(MESSAGES_BONNE, question.id)
                   : question.reponse?.resultat_declare === "PARTIEL"
-                    ? "Presque ! Tu y es presque."
+                    ? "Presque ! Il t'a manqué peu de chose."
                     : pick(MESSAGES_MAUVAISE, question.id)}
               </p>
               {correct && streak >= 3 && (
@@ -504,11 +507,12 @@ export function QuizSessionPage() {
                 className="animate-xp-pop ml-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-1 text-sm font-bold tabular-nums text-gold-text"
               >
                 <Zap className="size-4" aria-hidden="true" />
-                +{question.reponse?.xp_gagne} points
+                +{libellePoints(question.reponse?.xp_gagne ?? 0)}
               </span>
             )}
           </div>
         )}
+        </div>
 
         {isQcm && answered && question.corrige_markdown && (
           <details className="mt-4 rounded-xl border bg-muted/30 px-4 py-3" open={!correct}>

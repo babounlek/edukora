@@ -35,9 +35,9 @@ export function SocialProofSection() {
                 )}
               </p>
               {temoignage.note !== null && (
-                <div className="flex shrink-0 items-center gap-0.5">
+                <div className="flex shrink-0 items-center gap-0.5" role="img" aria-label={`Note : ${temoignage.note} sur 5`}>
                   {Array.from({ length: temoignage.note }).map((_, index) => (
-                    <Star key={index} className="size-3.5 fill-gold text-gold-text" />
+                    <Star key={index} aria-hidden="true" className="size-3.5 fill-gold text-gold-text" />
                   ))}
                 </div>
               )}

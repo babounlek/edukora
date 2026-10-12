@@ -71,7 +71,7 @@ export function InterrupteurRappelsEmail() {
         disabled={enCours || (!peutActiver && !actif)}
         onClick={() => modifier({ rappels_actifs: !actif })}
         className={cn(
-          "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors disabled:opacity-60",
+          "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors after:absolute after:-inset-2 after:content-[''] disabled:opacity-60",
           actif ? "border-primary bg-primary" : "border-border bg-muted",
         )}
       >
@@ -128,7 +128,7 @@ export function InterrupteurBilanParent() {
         disabled={enCours || (!peutActiver && !actif)}
         onClick={() => modifier({ bilan_parent_actif: !actif })}
         className={cn(
-          "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors disabled:opacity-60",
+          "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors after:absolute after:-inset-2 after:content-[''] disabled:opacity-60",
           actif ? "border-primary bg-primary" : "border-border bg-muted",
         )}
       >

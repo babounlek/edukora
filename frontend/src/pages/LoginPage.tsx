@@ -361,7 +361,7 @@ export function LoginPage() {
                 className="w-full"
                 size="lg"
               >
-                {isSubmitting ? "Envoi..." : "Recevoir le code"}
+                {isSubmitting ? "Envoi…" : "Recevoir le code"}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
                 En continuant, tu acceptes les{" "}
@@ -428,7 +428,7 @@ export function LoginPage() {
               {/* Désactivé tant que le code est incomplet : un envoi à 3 chiffres ne pouvait
                   que revenir en erreur (le code fait toujours 6 chiffres). */}
               <Button type="submit" disabled={isSubmitting || code.length < 6} className="w-full" size="lg">
-                {isSubmitting ? "Vérification..." : "Valider"}
+                {isSubmitting ? "Vérification…" : "Valider"}
               </Button>
               <Button
                 type="button"
@@ -439,7 +439,7 @@ export function LoginPage() {
                 {resendSecondsLeft > 0
                   ? `Renvoyer le code (${resendSecondsLeft}s)`
                   : isResending
-                    ? "Envoi..."
+                    ? "Envoi…"
                     : "Renvoyer le code"}
               </Button>
               <Button

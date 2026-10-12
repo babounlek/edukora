@@ -210,7 +210,7 @@ function CalloutExclusifsJusquaExamen() {
       <div>
         <p className="flex items-center gap-1 font-display text-xs font-semibold uppercase tracking-wide text-gold-text">
           <Sparkles className="size-3" />
-          Exclusif Edukora
+          Exclusif {SITE_NAME}
         </p>
         <p className="mt-0.5 text-sm text-foreground">
           Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.
@@ -469,7 +469,7 @@ export function PricingPage() {
                     <li className="flex items-start gap-2">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
                       <span>
-                        Épreuves inédites Edukora
+                        Épreuves inédites {SITE_NAME}
                         <span className="block text-xs text-muted-foreground">
                           Des sujets originaux, jamais vus ailleurs, au format de ton examen.
                         </span>

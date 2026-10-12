@@ -19,18 +19,20 @@ const CHOIX_DEMO = [
  */
 export function DemoQuizQuestion({ lienConnexion }: { lienConnexion: ReactNode }) {
   return (
-    <Card aria-hidden className="select-none">
-      <CardHeader className="pb-4">
+    // aria-hidden sur la question factice seulement, pas sur la carte : le lien de connexion
+    // qu'elle porte est un vrai contrôle, qu'un lecteur d'écran doit atteindre.
+    <Card className="select-none">
+      <CardHeader aria-hidden className="pb-4">
         <CardTitle className="flex items-center gap-2 font-display text-base">
           <Sparkles className="size-4 text-primary" />
           Exemple de question
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <p className="text-sm">
+        <p aria-hidden className="text-sm">
           À quelle condition un extremum local d'une fonction dérivable est-il atteint en un point ?
         </p>
-        <div className="flex flex-col gap-2">
+        <div aria-hidden className="flex flex-col gap-2">
           {CHOIX_DEMO.map((choix) => (
             <div
               key={choix.lettre}

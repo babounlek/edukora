@@ -96,7 +96,7 @@ function LigneAcces({
       )}
 
       {renouvelable && (!actif || bientot) && (
-        <Button asChild size="sm" variant={actif ? "default" : "outline"} className="mt-3 h-8 rounded-full text-xs">
+        <Button asChild size="sm" variant={actif ? "default" : "outline"} className="mt-3 h-11 rounded-full text-xs sm:h-8">
           {/* `profil=` : sans lui, prolonger depuis la carte d'un enfant précis
               retomberait sur le profil par défaut du compte (voir
               payments.views._resoudre_profil), pas nécessairement le bon enfant. */}
@@ -157,7 +157,7 @@ function NomProfilEditable({ profil, onRenamed }: { profil: Profil; onRenamed: (
           onBlur={enregistrer}
           disabled={saving}
           maxLength={60}
-          className="h-8 w-40 text-sm font-semibold"
+          className="h-10 w-40 text-sm font-semibold sm:h-8"
         />
         {saving && <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" />}
       </form>
@@ -372,7 +372,7 @@ export function AccesPage() {
                     {accesDuProfil.map(({ key, ...props }) => <LigneAcces key={key} {...props} />)}
                   </ul>
                 ) : (
-                  <Button asChild size="sm" variant="outline" className="h-8 w-fit rounded-full text-xs">
+                  <Button asChild size="sm" variant="outline" className="h-11 w-fit rounded-full text-xs sm:h-8">
                     <Link to={`/tarifs?profil=${profil.id}`}>
                       Choisir un abonnement
                       <ArrowRight className="size-3.5" />

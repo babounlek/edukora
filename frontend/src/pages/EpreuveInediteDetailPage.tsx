@@ -58,7 +58,7 @@ export function EpreuveInediteDetailPage() {
   useSeo({
     title: epreuve?.title ?? "Épreuve inédite",
     description: epreuve
-      ? `${epreuve.subject.label} - épreuve inédite originale conçue par Edukora, jamais tirée des annales.`
+      ? `${epreuve.subject.label} - épreuve inédite originale conçue par ${SITE_NAME}, jamais tirée des annales.`
       : undefined,
   })
 
@@ -291,7 +291,7 @@ export function EpreuveInediteDetailPage() {
     return (
       <Button size="lg" className={classe} onClick={() => lancer("libre")} disabled={starting}>
         <Sparkles />
-        {starting ? "Préparation..." : "Commencer cette épreuve"}
+        {starting ? "Préparation…" : "Commencer cette épreuve"}
       </Button>
     )
   }
@@ -346,7 +346,7 @@ export function EpreuveInediteDetailPage() {
         </div>
 
         <p className="text-sm text-muted-foreground">
-          Une épreuve originale conçue par Edukora, jamais tirée des annales - même niveau, même structure, même
+          Une épreuve originale conçue par {SITE_NAME}, jamais tirée des annales - même niveau, même structure, même
           barème que l'examen réel. Le seul moyen de te tester en conditions réelles sans déjà connaître les
           réponses.
         </p>
@@ -560,7 +560,7 @@ export function EpreuveInediteDetailPage() {
               Garder ma copie
             </Button>
             <Button disabled={starting} onClick={() => handleStart({ nouvelle: true })}>
-              {starting ? "Préparation..." : "Recommencer"}
+              {starting ? "Préparation…" : "Recommencer"}
             </Button>
           </div>
         </DialogContent>

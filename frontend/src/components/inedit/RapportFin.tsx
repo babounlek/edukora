@@ -1,6 +1,6 @@
 import type { ComparaisonCandidats, PertesParCause, TempsExercice } from "@/api/types"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatPoints } from "@/lib/notation"
+import { formatPoints, libellePoints } from "@/lib/notation"
 import { cn } from "@/lib/utils"
 
 /** « 42 min », « 1 h 05 » - un temps de travail, jamais des secondes brutes. */
@@ -33,7 +33,7 @@ export function CartePertes({ pertes }: { pertes: PertesParCause }) {
     <Card className="mb-6">
       <CardHeader>
         <CardTitle className="font-display text-lg">Où sont passés tes points</CardTitle>
-        <p className="text-xs text-muted-foreground">Tu as perdu {formatPoints(pertes.total_perdu)} points, répartis ainsi.</p>
+        <p className="text-xs text-muted-foreground">Tu as perdu {libellePoints(pertes.total_perdu)}, répartis ainsi.</p>
       </CardHeader>
       <CardContent>
         <ul className="flex flex-col gap-4">

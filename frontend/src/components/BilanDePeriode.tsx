@@ -54,7 +54,7 @@ export function BilanDePeriode({ cursusId, className }: { cursusId: number; clas
             icone={Sparkles}
             valeur={bilan.taux_reussite === null ? "–" : `${bilan.taux_reussite} %`}
             unite="de réussite"
-            note={gain !== null ? `+${gain} points` : undefined}
+            note={gain !== null ? `+${gain} point${gain > 1 ? "s" : ""}` : undefined}
           />
           {bilan.meilleure_serie >= 2 ? (
             <Chiffre icone={Flame} valeur={bilan.meilleure_serie} unite="bonnes réponses d'affilée" />
@@ -127,11 +127,13 @@ function Chiffre({
   icone: Icone, valeur, unite, note,
 }: { icone: LucideIcon; valeur: number | string; unite: string; note?: string }) {
   return (
-    <div className="rounded-2xl border border-border/70 bg-background/70 p-3.5">
-      <Icone className="size-4 text-primary" />
-      <dd className="mt-2 font-display text-2xl font-semibold tabular-nums leading-none">{valeur}</dd>
-      <dt className="mt-1.5 text-xs leading-snug text-muted-foreground">{unite}</dt>
-      {note && <p className="mt-1 text-xs font-semibold text-success">{note}</p>}
+    // Libellé (dt) avant la valeur (dd) dans le DOM, comme l'exige une liste de définitions ; l'ordre
+    // visuel (icône, chiffre, libellé) est rétabli avec `order`.
+    <div className="flex flex-col rounded-2xl border border-border/70 bg-background/70 p-3.5">
+      <Icone className="order-1 size-4 text-primary" aria-hidden="true" />
+      <dt className="order-3 mt-1.5 text-xs leading-snug text-muted-foreground">{unite}</dt>
+      <dd className="order-2 mt-2 font-display text-2xl font-semibold tabular-nums leading-none">{valeur}</dd>
+      {note && <p className="order-4 mt-1 text-xs font-semibold text-success">{note}</p>}
     </div>
   )
 }

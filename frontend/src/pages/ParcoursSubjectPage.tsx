@@ -227,7 +227,7 @@ function ActionsSavoir({
             onClick={() => onQuiz()}
             className={cn("group rounded-full", arrow && "shadow-md shadow-primary/20")}
           >
-            {starting ? "Préparation..." : "Tester mes connaissances"}
+            {starting ? "Préparation…" : "Tester mes connaissances"}
             {arrow && <ArrowRight className="transition-transform group-hover:translate-x-0.5" />}
           </Button>
         )
@@ -724,7 +724,7 @@ export function ParcoursSubjectPage() {
                       onClick={() => lancerQuiz({ mode: "DIAGNOSTIC" })}
                     >
                       <Target className="size-4" />
-                      {starting ? "Préparation..." : "Faire le test de positionnement"}
+                      {starting ? "Préparation…" : "Faire le test de positionnement"}
                     </Button>
                   ) : (
                     <Button asChild size="lg" variant="outline" className="h-12 shrink-0 rounded-full px-7 text-base">
@@ -802,7 +802,7 @@ export function ParcoursSubjectPage() {
                 <Input
                   value={recherche}
                   onChange={(e) => setRecherche(e.target.value)}
-                  placeholder="Filtrer les thèmes..."
+                  placeholder="Filtrer les thèmes…"
                   className="rounded-full pl-10"
                   aria-label="Filtrer les thèmes"
                 />

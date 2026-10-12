@@ -717,7 +717,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                 aria-label="Ouvrir l'épreuve en PDF"
               >
                 <FileDown className="size-3.5" />
-                <span className="hidden sm:inline">{downloadingSujet ? "Ouverture..." : "PDF"}</span>
+                <span className="hidden sm:inline">{downloadingSujet ? "Ouverture…" : "PDF"}</span>
               </Button>
             )}
             {tentative.correction_disponible && (
@@ -855,7 +855,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           {tentative.sujet_pdf_disponible && (
             <Button className="mt-3" size="sm" disabled={downloadingSujet} onClick={handleDownloadSujet}>
               <FileDown />
-              {downloadingSujet ? "Ouverture..." : "Ouvrir le sujet (PDF)"}
+              {downloadingSujet ? "Ouverture…" : "Ouvrir le sujet (PDF)"}
             </Button>
           )}
         </div>
@@ -957,7 +957,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                     aria-label="Marquer à revoir"
                     title="Marquer cette question pour y revenir plus tard"
                     className={cn(
-                      "mt-1 shrink-0 rounded-md p-2 transition-colors focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
+                      "relative mt-1 shrink-0 rounded-md p-2 transition-colors after:absolute after:-inset-1.5 after:content-[''] focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
                       isFlagged ? "text-gold-text" : "text-muted-foreground hover:text-foreground",
                     )}
                   >

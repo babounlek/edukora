@@ -2,7 +2,7 @@ import { Suspense, lazy } from "react"
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useParams } from "react-router-dom"
 import { Toaster } from "sonner"
 
-import { AuthProvider } from "@/context/AuthContext"
+import { AuthProvider, useAuth } from "@/context/AuthContext"
 import { CountryProvider, useCountry } from "@/context/CountryContext"
 import { ThemeProvider, useTheme } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
@@ -81,6 +81,18 @@ function CountryGuard() {
   const { countries } = useCountry()
   const inconnu = countries.length > 0 && !countries.some((c) => c.code.toLowerCase() === country?.toLowerCase())
   return inconnu ? <NotFoundPage /> : <Outlet />
+}
+
+/**
+ * Réserve la hauteur de la barre d'onglets, qui est en position fixe : sans elle, les derniers
+ * liens du pied de page sont recouverts et donc inatteignables sur mobile. Seulement quand la barre
+ * existe (voir BottomTabBar : élève connecté avec un examen préparé) - pour un visiteur, ces 80 px
+ * n'étaient qu'un grand vide sous le pied de page.
+ */
+function ReserveBarreOnglets() {
+  const { isAuthenticated, user } = useAuth()
+  if (!isAuthenticated || !user?.cursus_prepare) return null
+  return <div className="h-20 lg:hidden" aria-hidden="true" />
 }
 
 // Composant à part plutôt qu'appelé directement dans App() : useTheme() exige un
@@ -179,7 +191,7 @@ function App() {
               {/* Réserve la hauteur de la barre d'onglets, qui est en position fixe :
                   sans elle, les derniers liens du pied de page sont recouverts et donc
                   inatteignables sur mobile. */}
-              {!enExamen && <div className="h-20 lg:hidden" aria-hidden="true" />}
+              {!enExamen && <ReserveBarreOnglets />}
             </div>
             {!enExamen && <BottomTabBar />}
             <OnboardingModal />

@@ -60,7 +60,7 @@ export function BoutonHorsLigne({ type, slug }: { type: TypeContenu; slug: strin
   return (
     <Button variant="outline" size="sm" className="rounded-full" disabled={enCours} onClick={telecharger}>
       {enCours ? <Loader2 className="animate-spin" /> : <Download />}
-      {enCours ? "Téléchargement..." : "Lire sans réseau"}
+      {enCours ? "Téléchargement…" : "Lire sans réseau"}
     </Button>
   )
 }

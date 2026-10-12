@@ -7,12 +7,10 @@ import { getPlatformStats, listCursus } from "@/api/endpoints"
 import type { Cursus, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
+import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn, formatAmount } from "@/lib/utils"
 
-const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
-const CONTACT_WHATSAPP_URL = "https://wa.me/237670401393"
 
 // Ordre de lecture d'un élève : du premier examen au dernier.
 const ORDRE_EXAMENS = ["BEPC", "Probatoire", "BAC"]

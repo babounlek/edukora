@@ -47,6 +47,7 @@ import { ReviserTabs } from "@/components/ReviserTabs"
 import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 import { useInedites } from "@/lib/cursusAccueil"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { SITE_NAME } from "@/lib/site"
 
 type ViewMode = "cards" | "list"
 
@@ -181,7 +182,7 @@ export function EpreuvesListPage() {
   useSeo({
     title: pageInedites ? "Épreuves inédites" : "Épreuves et corrigés",
     description: pageInedites
-      ? `${countryLabel ? `${countryLabel} : ` : ""}épreuves originales conçues par Edukora, jamais tirées des annales, au niveau et au barème de l'examen réel.`
+      ? `${countryLabel ? `${countryLabel} : ` : ""}épreuves originales conçues par ${SITE_NAME}, jamais tirées des annales, au niveau et au barème de l'examen réel.`
       : countryLabel
         ? `${countryLabel} : sujets et corrigés d'annales, examens blancs et épreuves inédites, classés par matière, cursus et série.`
         : undefined,
@@ -470,7 +471,7 @@ export function EpreuvesListPage() {
                 Des sujets que tu n'as jamais vus, <span className="text-primary">dans les conditions du jour J</span>.
               </h1>
               <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-                Conçues par Edukora, jamais tirées des annales : même niveau et même barème que l'examen réel, avec
+                Conçues par {SITE_NAME}, jamais tirées des annales : même niveau et même barème que l'examen réel, avec
                 chrono, notation guidée et rapport de fin.
               </p>
             </>

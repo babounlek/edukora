@@ -896,7 +896,7 @@ function ChoixDuree({
             aria-pressed={minutes === seance.budget_minutes}
             onClick={() => onChoisir(minutes)}
             className={cn(
-              "rounded-full px-3.5 py-1 text-xs font-medium tabular-nums transition-all disabled:opacity-60",
+              "min-h-9 rounded-full px-3.5 py-1 text-xs font-medium tabular-nums transition-all disabled:opacity-60",
               minutes === seance.budget_minutes
                 ? "bg-background text-primary shadow-sm ring-1 ring-primary/25"
                 : "text-muted-foreground hover:text-foreground",

@@ -151,7 +151,7 @@ export function AccountPage() {
             {profileError && <p role="alert" className="text-sm text-destructive">{profileError}</p>}
             <div className="flex gap-2">
               <Button type="submit" disabled={isSavingProfile} className="rounded-full">
-                {isSavingProfile ? "Enregistrement..." : "Enregistrer"}
+                {isSavingProfile ? "Enregistrement…" : "Enregistrer"}
               </Button>
               <Button
                 type="button"
