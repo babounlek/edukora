@@ -5,6 +5,8 @@ garde-fous. approve()/reject() sont déjà couverts dans tests.py - ici, seule l
 admin qui les appelle.
 """
 
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.urls import reverse
 
@@ -16,6 +18,7 @@ from .models import (
     ManualPayment,
     ManualPaymentRejectReason,
     ManualPaymentStatus,
+    MobileMoneyAccount,
     MobileMoneyOperator,
 )
 
@@ -200,3 +203,50 @@ class ManualPaymentAdminDecisionTests(TestCase):
 
         nouveau.refresh_from_db()
         self.assertEqual(nouveau.status, ManualPaymentStatus.PENDING)
+
+
+class ManualPaymentSmsContentTests(TestCase):
+    """Les SMS parlent de l'offre et du montant - jamais d'un numéro interne (#id)."""
+
+    def setUp(self):
+        cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.admin = User.objects.create_user(phone_number="677000061", password="x", is_staff=True)
+        self.user = User.objects.create_user(phone_number="677000060", password="x")
+        self.plan = Plan.objects.create(name="BAC Série C - Mensuel", cursus=cursus, price=2000, duration_days=30)
+        self.payment = ManualPayment.objects.create(
+            user=self.user, profil=self.user.profils.first(), plan=self.plan,
+            operator=MobileMoneyOperator.ORANGE, amount_expected=2000, amount_declared=2000,
+            payer_phone_number=self.user.phone_number, transaction_reference="OM-SMS-1",
+        )
+
+    def _message(self, mock_notify):
+        return mock_notify.call_args.args[1]
+
+    def test_sms_de_validation(self):
+        with patch("payments.models._notifier_utilisateur") as mock_notify:
+            self.payment.approve(admin_user=self.admin)
+        message = self._message(mock_notify)
+        self.assertIn("2000 FCFA", message)
+        self.assertIn("BAC Série C - Mensuel", message)
+        self.assertNotIn("#", message)
+
+    def test_sms_de_rejet(self):
+        with patch("payments.models._notifier_utilisateur") as mock_notify:
+            self.payment.reject(admin_user=self.admin, reason=ManualPaymentRejectReason.MONTANT_INCORRECT)
+        message = self._message(mock_notify)
+        self.assertIn("BAC Série C - Mensuel", message)
+        self.assertIn("Montant incorrect", message)
+        self.assertNotIn("#", message)
+
+    def test_sms_de_declaration(self):
+        MobileMoneyAccount.objects.create(
+            operator=MobileMoneyOperator.ORANGE, phone_number="677000099", account_name="Edukora",
+        )
+        with patch("payments.models._notifier_utilisateur") as mock_notify:
+            ManualPayment.objects.declare(
+                user=self.user, plan=self.plan, operator=MobileMoneyOperator.ORANGE, amount_declared=2000,
+                payer_phone_number=self.user.phone_number, transaction_reference="OM-SMS-2",
+            )
+        message = self._message(mock_notify)
+        self.assertIn("BAC Série C - Mensuel", message)
+        self.assertNotIn("#", message)

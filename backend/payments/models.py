@@ -312,8 +312,8 @@ class ManualPaymentManager(models.Manager):
         )
         _notifier_utilisateur(
             user.phone_number,
-            f"Edukora : ta déclaration de paiement #{payment.id} a bien été enregistrée. "
-            "Elle est en cours de vérification par notre équipe.",
+            f"Edukora : ta déclaration de paiement de {payment.amount_declared} FCFA ({plan.name}) "
+            "a bien été enregistrée. Elle est en cours de vérification par notre équipe.",
         )
         return payment
 
@@ -443,7 +443,8 @@ class ManualPayment(models.Model):
 
         _notifier_utilisateur(
             locked.user.phone_number,
-            f"Edukora : ton paiement #{locked.id} est validé ! Ton abonnement est actif.",
+            f"Edukora : ton paiement de {locked.amount_declared} FCFA est validé ! "
+            f"Ton accès « {locked.plan.name} » est actif.",
         )
         return locked
 
@@ -469,7 +470,8 @@ class ManualPayment(models.Model):
 
         _notifier_utilisateur(
             locked.user.phone_number,
-            f"Edukora : ton paiement #{locked.id} a été rejeté ({locked.get_rejection_reason_display()}). "
+            f"Edukora : ton paiement de {locked.amount_declared} FCFA ({locked.plan.name}) "
+            f"a été rejeté ({locked.get_rejection_reason_display()}). "
             "Tu peux déclarer un nouveau paiement.",
         )
         return locked
