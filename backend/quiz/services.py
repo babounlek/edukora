@@ -96,7 +96,13 @@ SUBJECTS_PARCOURS_PAR_THEME_EXAMENS = {}
 # BEPC : 10 épreuves officielles depuis le reclassement du 2026-10-12 des BEPC 2008/2017/2020
 # (histoire pure, longtemps rangés sous HISTOIRE_GEO). Le Probatoire C/D/E/TI et le BAC, dont
 # 40 à 75 % des thèmes n'ont ni quiz ni cours, gardent le parcours Module→Savoir.
-SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS = {"HISTOIRE": {Examen.BEPC}}
+#
+# Français au BEPC : la décision de septembre 2026 (méthodologie sur des sujets renouvelés, 94 tags,
+# fréquence max 4) ne tient plus sur le corpus du 2026-10-12 : 25 documents officiels 2014-2026
+# (étude de texte, expression écrite, orthographe), 70 thèmes dont des notions de langue qui
+# reviennent 6 à 11 fois (passé simple, connecteurs logiques, phrase complexe...). Les libellés
+# de section et les thèmes de sujet de rédaction sont écartés par TAGS_BLOCKLIST_PAR_MATIERE.
+SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS = {"HISTOIRE": {Examen.BEPC}, "FRANCAIS": {Examen.BEPC}}
 
 
 def _classee_par_theme_pour_cet_examen(subject, cursus):
@@ -173,6 +179,25 @@ TAGS_BLOCKLIST_PAR_MATIERE = {
     "HISTOIRE": {
         "vocabulaire historique", "frise chronologique", "Repérage dans le temps", "cause et conséquence",
         "méthodologie", "situation-problème", "déforestation",
+    },
+    # Français (BEPC), relevé du 2026-10-12 : libellés de section d'épreuve, sujets de rédaction
+    # (thèmes de contenu, pas notions de langue).
+    "FRANCAIS": {
+        "expression écrite", "expression écrite BEPC", "compréhension de texte",
+        "conseils de prévention", "conseils pratiques", "conséquences négatives",
+    },
+}
+
+# Variantes d'une même notion, propres à UNE matière (« vocabulaire » désigne ailleurs, en Anglais par
+# exemple, un autre classement) : même mécanique que TAGS_ALIAS_PARCOURS_FREQUENCE, jamais parent-enfant.
+TAGS_ALIAS_PAR_MATIERE = {
+    "FRANCAIS": {
+        "vocabulaire": "lexique",
+        "Titre d'un texte": "titre du texte",
+        "relevé d'indices": "indices textuels",
+        # « dérivation » désigne ici la formation des mots (préfixes, suffixes), pas le calcul de
+        # dérivées : alias neutre qui l'empêche d'être absorbé par l'alias global des Maths.
+        "dérivation": "dérivation",
     },
 }
 
@@ -645,8 +670,9 @@ def construire_parcours_par_frequence(profil, cursus, subject):
     # Regroupement par alias : un groupe = une forme canonique + l'ensemble des ids
     # de Tag qui y renvoient (lui-même si le tag n'a pas d'alias connu).
     groupes = {}
+    alias_matiere = TAGS_ALIAS_PAR_MATIERE.get(subject.code, {})
     for tag_id, tag_name in tags_bruts:
-        canonique = TAGS_ALIAS_PARCOURS_FREQUENCE.get(tag_name, tag_name)
+        canonique = alias_matiere.get(tag_name) or TAGS_ALIAS_PARCOURS_FREQUENCE.get(tag_name, tag_name)
         groupe = groupes.setdefault(canonique, {"nom": canonique, "tag_ids": set()})
         groupe["tag_ids"].add(tag_id)
     tous_tag_ids = {tid for g in groupes.values() for tid in g["tag_ids"]}

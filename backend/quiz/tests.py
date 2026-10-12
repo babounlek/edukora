@@ -2521,7 +2521,7 @@ class ParcoursHistoireBepcParThemeTests(TestCase):
             Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
 
     def test_history_is_classified_by_theme_for_the_bepc_only(self):
-        self.assertEqual(SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS, {"HISTOIRE": {Examen.BEPC}})
+        self.assertEqual(SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS["HISTOIRE"], {Examen.BEPC})
         self.assertNotIn("HISTOIRE", SUBJECTS_PARCOURS_PAR_FREQUENCE)
         self.assertNotIn("HISTOIRE", SUBJECTS_PARCOURS_PAR_THEME_EXAMENS)
 
@@ -2571,6 +2571,65 @@ class ParcoursHistoireBepcParThemeTests(TestCase):
         tag = Tag.objects.create(name="décolonisation-test")
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.bac_c, f"Histoire BAC {i}", [[tag]])
+
+        self.assertEqual(construire_parcours(self.profil, self.bac_c, self.subject)[0]["titre"], "M")
+
+
+class ParcoursFrancaisBepcParThemeTests(TestCase):
+    """FRANCAIS est classé par thème au BEPC SEULEMENT (SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS) ; les
+    libellés de section et les sujets de rédaction sont écartés, les variantes regroupées par matière."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200036", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="FRANCAIS")
+        self.bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        self.bac_c = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        for cursus, classe in ((self.bepc, "3e"), (self.bac_c, "Tle")):
+            module = Module.objects.create(subject=self.subject, classe=classe, serie_label="", numero="F1", titre="M")
+            module.cursus.add(cursus)
+            Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
+
+    def test_french_is_classified_by_theme_for_the_bepc_only(self):
+        self.assertEqual(SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS["FRANCAIS"], {Examen.BEPC})
+        self.assertNotIn("FRANCAIS", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+        self.assertNotIn("FRANCAIS", SUBJECTS_PARCOURS_PAR_THEME_EXAMENS)
+
+    def test_bepc_switches_to_theme_mode_and_leaves_out_section_labels(self):
+        passe = Tag.objects.create(name="passé simple-test")
+        section, _ = Tag.objects.get_or_create(name="expression écrite")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Français BEPC {i}", [[passe, section]])
+
+        savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
+
+        self.assertEqual([s["intitule"] for s in savoirs], ["passé simple-test"])
+
+    def test_variants_are_grouped_for_french_only(self):
+        lexique = Tag.objects.create(name="lexique")
+        vocabulaire = Tag.objects.create(name="vocabulaire")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Français BEPC {i}", [[lexique if i % 2 else vocabulaire]])
+
+        savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
+
+        self.assertEqual([(s["intitule"], s["frequence_pct"]) for s in savoirs], [("lexique", 100)])
+        self.assertNotIn("vocabulaire", TAGS_ALIAS_PARCOURS_FREQUENCE)
+
+    def test_word_formation_is_not_absorbed_by_the_maths_derivative_alias(self):
+        derivation = Tag.objects.create(name="dérivation")
+        self.assertEqual(TAGS_ALIAS_PARCOURS_FREQUENCE["dérivation"], "dérivée")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Français BEPC {i}", [[derivation]])
+
+        savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
+
+        self.assertEqual([s["intitule"] for s in savoirs], ["dérivation"])
+
+    def test_bac_keeps_the_programme_parcours(self):
+        tag = Tag.objects.create(name="passé simple-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bac_c, f"Français BAC {i}", [[tag]])
 
         self.assertEqual(construire_parcours(self.profil, self.bac_c, self.subject)[0]["titre"], "M")
 
