@@ -97,7 +97,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
         <div
           className={cn(
             "relative bg-gradient-to-br from-primary via-primary to-primary/90 px-5 text-primary-foreground sm:px-8",
-            salutationSeule ? "py-4 sm:py-5" : "py-5 sm:py-6",
+            salutationSeule ? "py-2.5 sm:py-3" : "py-5 sm:py-6",
           )}
         >
           {/* Halo doré atténué : à 25 %, il éclaircissait justement le coin où se lit le nombre de
@@ -110,7 +110,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
                 className={cn(
                   "flex flex-wrap items-center gap-x-2 gap-y-1",
                   salutationSeule
-                    ? "font-display text-lg font-semibold leading-tight text-primary-foreground sm:text-xl"
+                    ? "font-display text-base font-semibold leading-tight text-primary-foreground sm:text-lg"
                     : "text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/80",
                 )}
               >
@@ -383,8 +383,8 @@ function RepereJoursRestants({ compte, compact = false }: { compte: CompteARebou
     // Sur téléphone le libellé passe sous le nombre, dès `sm` tout tient sur une ligne.
     return (
       <div className="flex shrink-0 flex-col items-end leading-tight sm:flex-row sm:items-baseline sm:gap-2">
-        <span className="font-display text-3xl font-semibold tabular-nums">{compte.jours_restants}</span>
-        <span className="whitespace-nowrap text-xs text-primary-foreground/85 sm:text-sm">{unite}</span>
+        <span className="font-display text-xl font-semibold tabular-nums">{compte.jours_restants}</span>
+        <span className="whitespace-nowrap text-xs text-primary-foreground/85">{unite}</span>
       </div>
     )
   }
