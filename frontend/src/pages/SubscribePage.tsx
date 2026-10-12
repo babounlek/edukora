@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { BienvenueAbonne } from "@/components/BienvenueAbonne"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
+import { ContenuDebloque } from "@/components/ContenuDebloque"
 import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
 import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
 import { chiffresNumeroLocal } from "@/lib/telephone"
@@ -490,7 +491,8 @@ export function SubscribePage() {
           une colonne étroite centrée : rien à comparer, juste un message. */}
       <div className={cn("grid gap-6", phase === "form" && "lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start")}>
         {phase === "form" && (
-          <Card className="animate-fade-up overflow-hidden shadow-lg shadow-primary/5 lg:sticky lg:top-24 lg:col-start-2 lg:row-start-1">
+          <div className="flex flex-col gap-6 lg:sticky lg:top-24 lg:col-start-2 lg:row-start-1">
+          <Card className="animate-fade-up overflow-hidden shadow-lg shadow-primary/5">
             <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
             <CardContent className="flex flex-col gap-2.5 p-6">
               <Label className="text-sm font-semibold">Ton offre</Label>
@@ -514,6 +516,13 @@ export function SubscribePage() {
               )}
             </CardContent>
           </Card>
+          {cursus && !requireRepetiteur && (
+            <ContenuDebloque
+              cursusId={cursus.id}
+              inclutInedit={plans.find((p) => p.id === selectedPlanId)?.inclut_inedit ?? false}
+            />
+          )}
+          </div>
         )}
 
       <Card

@@ -41,6 +41,7 @@ import type {
   QuizQuestion,
   QuizResult,
   QuizSession,
+  CursusContenu,
   PlatformStats,
   ResumeMatiere,
   RevisionDue,
@@ -427,6 +428,10 @@ export function listCountries() {
 
 export function listTemoignages() {
   return apiRequest<Temoignage[]>("/catalog/temoignages/", { auth: false })
+}
+
+export function getCursusContenu(cursusId: number, signal?: AbortSignal) {
+  return apiRequest<CursusContenu>(`/catalog/cursus/${cursusId}/contenu/`, { auth: false, signal })
 }
 
 export function getPlatformStats() {

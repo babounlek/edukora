@@ -39,6 +39,7 @@ from .models import (
     SUBJECT_FAMILIES,
     Tag,
     Temoignage,
+    q_cours_du_cursus,
 )
 from .rendering import exercise_questions_breakdown
 from .serializers import (
@@ -623,6 +624,35 @@ class PlatformStatsView(APIView):
             "corriges_disponibles": nb_corriges + nb_inedites,
             "cours_disponibles": Cours.objects.filter(contenu_valide).count(),
             "pays_actifs": Country.objects.filter(actif=True).count(),
+        })
+
+
+class CursusContenuView(APIView):
+    """
+    Chiffres de ce que débloque un abonnement sur un cursus donné (encadré « Ce que tu
+    débloques » de la page d'abonnement). Comptages de contenu VALIDE uniquement, sur le
+    même périmètre que le catalogue, restreints au cursus. Les cours passent par
+    q_cours_du_cursus : compter tout cours sans cursus gonflerait le chiffre avec les cours
+    d'autres niveaux (7082 « cours BEPC » mesurés avec l'ancien filtre).
+    """
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, cursus_id):
+        cursus = get_object_or_404(Cursus, pk=cursus_id, country__actif=True)
+        valide = Q(statut=StatutContenu.VALIDE)
+        corriges = Lesson.objects.filter(valide, cursus=cursus, lesson_type=LessonType.CORR)
+        cours = Cours.objects.filter(valide).filter(q_cours_du_cursus([cursus.pk]))
+        quiz = CompetenceItem.objects.filter(valide, cursus=cursus)
+        inedites = EpreuveInedite.objects.filter(valide, cursus=cursus)
+        matieres = set(corriges.values_list("subject_id", flat=True))
+        matieres |= set(cours.values_list("subject_id", flat=True))
+        return Response({
+            "corriges": corriges.count(),
+            "cours": cours.count(),
+            "questions_quiz": quiz.count(),
+            "epreuves_inedites": inedites.count(),
+            "matieres": len(matieres),
         })
 
 

@@ -250,6 +250,14 @@ export interface PlatformStats {
   pays_actifs: number
 }
 
+export interface CursusContenu {
+  corriges: number
+  cours: number
+  questions_quiz: number
+  epreuves_inedites: number
+  matieres: number
+}
+
 export type EpreuveType = "FICHE" | "CORR" | "SUJET"
 
 export interface EpreuveRelatedCours {
