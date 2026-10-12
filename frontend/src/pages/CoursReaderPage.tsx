@@ -12,6 +12,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreLecture } from "@/components/BarreLecture"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
+import { BoutonPartager } from "@/components/BoutonPartager"
+import { SITE_NAME } from "@/lib/site"
 import { CoursSection } from "@/components/CoursSection"
 import { MarquesSection } from "@/components/MarquesSection"
 import { CoursSommaire } from "@/components/CoursSommaire"
@@ -175,7 +177,13 @@ export function CoursReaderPage() {
           </Link>
         )}
         {slug && (
-          <span className="sm:ml-auto">
+          <span className="flex items-center gap-2 sm:ml-auto">
+            <BoutonPartager
+              chemin={coursDetailPath(slug)}
+              texte={`Regarde ce cours : « ${content?.title ?? "cours"} » sur ${SITE_NAME} :`}
+              type="cours"
+              variant="ghost"
+            />
             <BoutonHorsLigne type="cours" slug={slug} />
           </span>
         )}
