@@ -6,12 +6,13 @@ import 'katex/dist/katex.min.css'
 import 'flag-icons/css/flag-icons.min.css'
 import '@fontsource/work-sans/400.css'
 import '@fontsource/work-sans/500.css'
+// Pas de graisse 700 : elle ne sert qu'à de petites pastilles, où le 600 est indiscernable, et chaque
+// graisse est un fichier de plus à télécharger avant le premier affichage (le navigateur retombe sur
+// la graisse chargée la plus proche).
 import '@fontsource/work-sans/600.css'
-import '@fontsource/work-sans/700.css'
 import '@fontsource/fraunces/400.css'
 import '@fontsource/fraunces/500-italic.css'
 import '@fontsource/fraunces/600.css'
-import '@fontsource/fraunces/700.css'
 import './index.css'
 import App from './App.tsx'
 import { captureReferralCode } from '@/lib/referral'

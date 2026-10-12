@@ -1,4 +1,5 @@
 import { enregistrerDateServeur } from "@/lib/horlogeServeur"
+import { effacerMarqueAnonyme } from "@/lib/sessionAnonyme"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001"
 
@@ -21,6 +22,8 @@ export function getAccessToken() {
 
 export function setAccessToken(token: string) {
   accessToken = token
+  // Une session existe : ce navigateur n'est plus « constaté anonyme » (voir lib/sessionAnonyme.ts).
+  effacerMarqueAnonyme()
 }
 
 export function clearAccessToken() {

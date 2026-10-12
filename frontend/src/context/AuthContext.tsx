@@ -2,11 +2,12 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { toast } from "sonner"
 
 import { getMe, updateMe } from "@/api/endpoints"
-import { clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPIRED_EVENT } from "@/api/client"
+import { ApiError, clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPIRED_EVENT } from "@/api/client"
 import type { User } from "@/api/types"
 import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { viderCacheHorsLigne } from "@/lib/pwa"
 import { oublierPushLocal } from "@/lib/push"
+import { estVisiteurAnonymeConnu, marquerVisiteurAnonyme } from "@/lib/sessionAnonyme"
 
 interface AuthContextValue {
   user: User | null
@@ -31,10 +32,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // rechargement. Résultat silencieux dans les deux cas : reconnecté si le cookie
   // est encore valide, sinon simplement déconnecté (catch vide, rien à faire de plus
   // - clearAccessToken() a déjà été appelé par refreshAccessToken() en cas d'échec).
+  //
+  // Exception : un navigateur déjà constaté anonyme (voir lib/sessionAnonyme.ts) saute ces deux
+  // appels, qui échoueraient à coup sûr - ils retardaient pour rien chaque chargement de page.
   useEffect(() => {
+    if (estVisiteurAnonymeConnu()) {
+      setIsLoading(false)
+      return
+    }
     getMe()
       .then(setUser)
-      .catch(() => {})
+      .catch((err) => {
+        // 401 seulement : une panne réseau ne dit rien de l'état de la session.
+        if (err instanceof ApiError && err.status === 401) marquerVisiteurAnonyme()
+      })
       .finally(() => setIsLoading(false))
   }, [])
 
