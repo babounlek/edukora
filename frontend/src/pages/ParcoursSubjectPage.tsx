@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ArrowLeft, ArrowRight, BookOpenText, Check, CheckCircle2, Compass, Eye, EyeOff, GraduationCap, List, Lock, Route,
-  Search, Sparkles, Target,
+  ArrowLeft, ArrowRight, BookOpenText, Check, CheckCircle2, Compass, Eye, EyeOff, GraduationCap, Lock,
+  Search, Sparkles, Star, Target,
 } from "lucide-react"
 
 import { getParcours, listMySubscriptions, listSubjects, startQuizSession } from "@/api/endpoints"
@@ -11,14 +11,12 @@ import { ApiError } from "@/api/client"
 import type { Cursus, ParcoursModule, ParcoursSavoir, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
-import { CheminParcours } from "@/components/CheminParcours"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
-import { seuilOr as seuilOrFrequence } from "@/lib/cheminParcours"
+import { estDore, seuilOr as seuilOrFrequence } from "@/lib/frequenceOr"
 import { coursDetailPath } from "@/lib/countryPath"
 import { SEUIL_MAITRISE } from "@/lib/maitrise"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -254,7 +252,7 @@ function ActionsSavoir({
  * garde le rang dans l'ordre du programme ou de la fréquence.
  */
 function LigneSavoir({
-  savoir, rang, dernier, isModeFrequence, starting, onQuiz, verrouille,
+  savoir, rang, dernier, isModeFrequence, starting, onQuiz, verrouille, prochain, dore,
 }: {
   savoir: ParcoursSavoir
   rang: number
@@ -263,6 +261,10 @@ function LigneSavoir({
   starting: boolean
   onQuiz: () => void
   verrouille: boolean
+  /** Première étape recommandée : le badge « Commence ici ». */
+  prochain: boolean
+  /** Le thème tombe souvent à l'examen (mode Parcours par fréquence) : l'étoile dorée. */
+  dore: boolean
 }) {
   const bucket = bucketDeSavoir(savoir)
   const inactif = bucket === "sans_contenu"
@@ -285,6 +287,14 @@ function LigneSavoir({
         )}
       >
         {bucket === "maitrise" ? <Check className="size-4" strokeWidth={3} /> : rang}
+        {dore && (
+          <span
+            aria-hidden
+            className="absolute -right-1.5 -top-1.5 flex size-4 items-center justify-center rounded-full bg-gold text-gold-foreground shadow-sm ring-2 ring-card"
+          >
+            <Star className="size-2.5" fill="currentColor" />
+          </span>
+        )}
       </span>
       <div
         className={cn(
@@ -294,7 +304,15 @@ function LigneSavoir({
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <p className="font-display text-base font-semibold leading-snug">{capitaliserTheme(savoir.intitule)}</p>
+            <p className="font-display text-base font-semibold leading-snug">
+              {capitaliserTheme(savoir.intitule)}
+              {prochain && (
+                <span className="ml-2 inline-block rounded-full bg-primary px-2.5 py-0.5 align-middle text-[0.7rem] font-semibold text-primary-foreground">
+                  Commence ici
+                </span>
+              )}
+              {dore && <span className="sr-only"> (tombe souvent à l'examen)</span>}
+            </p>
             <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <BadgeSavoir savoir={savoir} />
               {isModeFrequence && <Frequence savoir={savoir} />}
@@ -311,45 +329,6 @@ function LigneSavoir({
           )}
         </div>
       </div>
-    </div>
-  )
-}
-
-type VueParcours = "chemin" | "liste"
-const CLE_VUE = "edukora.parcours.vue"
-
-// Le chemin par défaut, la liste pour qui la préfère : le choix est propre à l'appareil et
-// n'est jamais perdu si le stockage est indisponible (navigation privée).
-function vueMemorisee(): VueParcours {
-  try {
-    return localStorage.getItem(CLE_VUE) === "liste" ? "liste" : "chemin"
-  } catch {
-    return "chemin"
-  }
-}
-
-function BasculeVue({ vue, onChange }: { vue: VueParcours; onChange: (v: VueParcours) => void }) {
-  const options: { valeur: VueParcours; libelle: string; Icone: typeof Route }[] = [
-    { valeur: "chemin", libelle: "Chemin", Icone: Route },
-    { valeur: "liste", libelle: "Liste", Icone: List },
-  ]
-  return (
-    <div role="group" aria-label="Affichage des thèmes" className="inline-flex rounded-full border border-border/80 bg-muted/60 p-0.5">
-      {options.map(({ valeur, libelle, Icone }) => (
-        <button
-          key={valeur}
-          type="button"
-          aria-pressed={vue === valeur}
-          onClick={() => onChange(valeur)}
-          className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors",
-            vue === valeur ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
-          )}
-        >
-          <Icone className="size-3.5" aria-hidden="true" />
-          {libelle}
-        </button>
-      ))}
     </div>
   )
 }
@@ -391,18 +370,6 @@ export function ParcoursSubjectPage() {
   // totalSavoirsAffiches ci-dessous) - contourne la pagination : un thème cherché doit
   // apparaître tout de suite, pas après plusieurs "Afficher plus".
   const [recherche, setRecherche] = useState("")
-  const [vue, setVue] = useState<VueParcours>(vueMemorisee)
-  // Le thème dont le détail est ouvert (vue Chemin : un nœud ne porte pas ses actions).
-  const [savoirOuvertId, setSavoirOuvertId] = useState<number | null>(null)
-
-  function changerVue(suivante: VueParcours) {
-    setVue(suivante)
-    try {
-      localStorage.setItem(CLE_VUE, suivante)
-    } catch {
-      // Stockage indisponible : le choix ne tient que pour cette page.
-    }
-  }
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) navigate("/connexion", { state: { from: `/parcours/${subjectId}` } })
@@ -492,12 +459,11 @@ export function ParcoursSubjectPage() {
   const etapes = useMemo(() => prochainesEtapes(savoirs), [savoirs])
   const buckets = useMemo(() => compterBuckets(savoirs), [savoirs])
   const totalAvecContenu = savoirs.length - buckets.sans_contenu
-  // Le nœud « Commence ici » du chemin : la première étape recommandée, ou - avant tout
+  // Le badge « Commence ici » : la première étape recommandée, ou - avant tout
   // historique - le premier thème qui a du contenu (c'est là que le diagnostic mène aussi).
   const prochainId = Array.isArray(etapes)
     ? (etapes[0]?.id ?? null)
     : (savoirs.find((s) => bucketDeSavoir(s) !== "sans_contenu")?.id ?? null)
-  const savoirOuvert = savoirOuvertId !== null ? (savoirs.find((s) => s.id === savoirOuvertId) ?? null) : null
 
   // Sommaire de navigation entre modules - seulement utile à partir de 2 modules
   // effectivement affichés (voir SommaireNav, qui se masque déjà si `entries` est
@@ -829,7 +795,6 @@ export function ParcoursSubjectPage() {
                     : `Afficher aussi maîtrisés et sans contenu (${buckets.maitrises + buckets.sans_contenu})`}
                 </button>
               )}
-              <BasculeVue vue={vue} onChange={changerVue} />
             </div>
             {totalSavoirsAffiches > SAVOIRS_PAGE_SIZE && (
               <div className="relative sm:w-64">
@@ -874,6 +839,9 @@ export function ParcoursSubjectPage() {
               if (resultats.length === 0) return null
 
               const moduleKey = module.numero || "unique"
+              // Le seuil se lit sur TOUT le module, pas sur la page visible : un thème ne devient
+              // pas « doré » parce que la pagination en cache d'autres.
+              const seuilModule = seuilOrFrequence(module.savoirs.map((s) => s.frequence_pct))
               const visibleCount = visibleParModule[moduleKey] ?? SAVOIRS_PAGE_SIZE
               // Pagination désactivée pendant une recherche : un thème trouvé doit
               // apparaître tout de suite, jamais caché derrière un "Afficher plus".
@@ -927,36 +895,20 @@ export function ParcoursSubjectPage() {
                     )}
                   </header>
                   <div className="px-3 py-4 sm:px-5">
-                    {vue === "chemin" ? (
-                      <CheminParcours
-                        items={resultatsMontres.map(({ savoir, rang }) => ({
-                          id: savoir.id,
-                          titre: capitaliserTheme(savoir.intitule),
-                          rang,
-                          bucket: bucketDeSavoir(savoir),
-                          taux: savoir.taux,
-                          frequencePct: savoir.frequence_pct,
-                        }))}
-                        prochainId={prochainId}
-                        // Le seuil se lit sur TOUT le module, pas sur la page visible : un thème
-                        // ne devient pas « doré » parce que la pagination en cache d'autres.
-                        seuilOr={seuilOrFrequence(module.savoirs.map((s) => s.frequence_pct))}
-                        onSelect={setSavoirOuvertId}
+                    {resultatsMontres.map(({ savoir, rang }, index) => (
+                      <LigneSavoir
+                        key={savoir.id}
+                        savoir={savoir}
+                        rang={rang}
+                        dernier={resteAAfficher === 0 && index === resultatsMontres.length - 1}
+                        isModeFrequence={isModeFrequence}
+                        starting={starting}
+                        onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir), true)}
+                        verrouille={!abonneAuCursus}
+                        prochain={savoir.id === prochainId}
+                        dore={estDore(savoir.frequence_pct, seuilModule)}
                       />
-                    ) : (
-                      resultatsMontres.map(({ savoir, rang }, index) => (
-                        <LigneSavoir
-                          key={savoir.id}
-                          savoir={savoir}
-                          rang={rang}
-                          dernier={resteAAfficher === 0 && index === resultatsMontres.length - 1}
-                          isModeFrequence={isModeFrequence}
-                          starting={starting}
-                          onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir), true)}
-                          verrouille={!abonneAuCursus}
-                        />
-                      ))
-                    )}
+                    ))}
                     {resteAAfficher > 0 && (
                       <Button
                         variant="outline"
@@ -1006,37 +958,6 @@ export function ParcoursSubjectPage() {
       )}
 
       {erreurChargement && <p className="mt-4 text-sm text-destructive">{erreurChargement}</p>}
-
-      {/* Détail d'un thème ouvert depuis le chemin : les mêmes badges et les mêmes actions que
-          la ligne de la vue Liste, donc le même comportement (quiz dans un nouvel onglet,
-          renvoi vers l'abonnement quand le cursus n'est pas abonné). */}
-      <Dialog open={savoirOuvert !== null} onOpenChange={(ouvert) => !ouvert && setSavoirOuvertId(null)}>
-        <DialogContent>
-          {savoirOuvert && (
-            <>
-              <DialogTitle className="font-display text-xl leading-snug">{capitaliserTheme(savoirOuvert.intitule)}</DialogTitle>
-              <DialogDescription className="sr-only">Détail et actions pour ce thème</DialogDescription>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                <BadgeSavoir savoir={savoirOuvert} />
-                {isModeFrequence && <Frequence savoir={savoirOuvert} />}
-              </div>
-              <SansCoursIndice savoir={savoirOuvert} />
-              {bucketDeSavoir(savoirOuvert) !== "sans_contenu" && (
-                <ActionsSavoir
-                  savoir={savoirOuvert}
-                  starting={starting}
-                  onQuiz={() => {
-                    void lancerQuiz(paramsQuizPourSavoir(savoirOuvert), true)
-                    setSavoirOuvertId(null)
-                  }}
-                  verrouille={!abonneAuCursus}
-                  className="mt-2"
-                />
-              )}
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
