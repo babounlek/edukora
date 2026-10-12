@@ -91,13 +91,26 @@ SUBJECTS_CORPUS_MINCE_PARCOURS = {"PROGRAMMATION", "SYSTEMES_INFORMATION", "RESE
 # Le mécanisme est conservé pour un futur examen au corpus trop mince pour le seuil de 8.
 SUBJECTS_PARCOURS_PAR_THEME_EXAMENS = {}
 
+# Matières classées par thème POUR CERTAINS EXAMENS SEULEMENT, en régime NORMAL (épreuves
+# officielles seules, seuil SEUIL_MINIMUM_THEMES_PARCOURS, plancher d'occurrences). Histoire au
+# BEPC : 10 épreuves officielles depuis le reclassement du 2026-10-12 des BEPC 2008/2017/2020
+# (histoire pure, longtemps rangés sous HISTOIRE_GEO). Le Probatoire C/D/E/TI et le BAC, dont
+# 40 à 75 % des thèmes n'ont ni quiz ni cours, gardent le parcours Module→Savoir.
+SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS = {"HISTOIRE": {Examen.BEPC}}
+
 
 def _classee_par_theme_pour_cet_examen(subject, cursus):
-    return cursus.examen in SUBJECTS_PARCOURS_PAR_THEME_EXAMENS.get(subject.code, ())
+    return (
+        cursus.examen in SUBJECTS_PARCOURS_PAR_THEME_EXAMENS.get(subject.code, ())
+        or cursus.examen in SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS.get(subject.code, ())
+    )
 
 
 def _corpus_mince(subject, cursus):
-    return subject.code in SUBJECTS_CORPUS_MINCE_PARCOURS or _classee_par_theme_pour_cet_examen(subject, cursus)
+    return (
+        subject.code in SUBJECTS_CORPUS_MINCE_PARCOURS
+        or cursus.examen in SUBJECTS_PARCOURS_PAR_THEME_EXAMENS.get(subject.code, ())
+    )
 
 # Fusion mécanique haute confiance (variantes grammaticales/de casse d'une même
 # notion, jamais des familles parent-enfant - voir la règle de granularité
@@ -131,6 +144,10 @@ TAGS_ALIAS_PARCOURS_FREQUENCE = {
     "vecteurs colinéaires": "colinéarité",
     "convergence de suite": "convergence",
     "distance entre deux points": "distance",
+    # Histoire (BEPC) : mêmes événements ou notions écrits de deux façons.
+    "Seconde Guerre mondiale": "Deuxième Guerre mondiale",
+    "Résistance africaine à la colonisation": "Résistance à la colonisation",
+    "histoire coloniale du Cameroun": "Colonisation du Cameroun",
 }
 
 # Tags-poubelle à exclure du classement (jamais à fusionner : un nom de discipline
@@ -145,6 +162,18 @@ TAGS_BLOCKLIST_PARCOURS_FREQUENCE = {
     "exploitation de document", "commentaire de document", "Analyse documentaire",
     "présentation de documents", "fond de carte", "dissertation de géographie",
     "Production écrite argumentée", "cartographie thématique",
+}
+
+# Thèmes de MÉTHODE ou hors discipline à exclure du classement d'UNE matière seulement (la liste
+# globale ci-dessus s'applique à toutes : « méthodologie » ou « situation-problème » désignent
+# ailleurs une vraie notion). Histoire au BEPC, relevé du 2026-10-12 : ces thèmes reviennent d'une
+# épreuve à l'autre sans nommer un chapitre à réviser, et « déforestation » (géographie) vient
+# d'une situation-problème d'éducation civique.
+TAGS_BLOCKLIST_PAR_MATIERE = {
+    "HISTOIRE": {
+        "vocabulaire historique", "frise chronologique", "Repérage dans le temps", "cause et conséquence",
+        "méthodologie", "situation-problème", "déforestation",
+    },
 }
 
 # Un thème qui n'est jamais retombé qu'une seule fois n'est justement pas un thème
@@ -605,7 +634,7 @@ def construire_parcours_par_frequence(profil, cursus, subject):
 
     tags_bruts = list(
         Tag.objects.filter(questions_as_theme__exercise__lesson__in=lessons)
-        .exclude(name__in=TAGS_BLOCKLIST_PARCOURS_FREQUENCE)
+        .exclude(name__in=TAGS_BLOCKLIST_PARCOURS_FREQUENCE | TAGS_BLOCKLIST_PAR_MATIERE.get(subject.code, set()))
         # (id, nom) distincts : sans cela le JOIN sur les questions renvoyait un Tag par question
         # qui le porte (des milliers de doublons instanciés pour rien, puis regroupés par id).
         .values_list("id", "name").distinct(),

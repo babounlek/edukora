@@ -48,7 +48,7 @@ from .models import (
 from .services import (
     BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX,
     PARCOURS_FREQUENCE_OCCURRENCES_MIN, SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE,
-    SUBJECTS_PARCOURS_PAR_THEME_EXAMENS, TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
+    SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS, SUBJECTS_PARCOURS_PAR_THEME_EXAMENS, TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PAR_MATIERE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
     REFUS_MAX_PAR_JOUR, _contient_quiz, ajuster_duree_seance, remplacer_seance, revisions_dues, seance_du_jour,
@@ -2503,6 +2503,76 @@ class ParcoursGeographieParThemeTests(TestCase):
         parcours = construire_parcours(self.profil, self.bepc, self.subject)
 
         self.assertEqual(parcours[0]["titre"], "M")
+
+
+class ParcoursHistoireBepcParThemeTests(TestCase):
+    """HISTOIRE est classée par thème au BEPC SEULEMENT (SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS,
+    régime normal : épreuves officielles seules) ; le BAC garde le parcours Module→Savoir."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200035", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="HISTOIRE")
+        self.bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        self.bac_c = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        for cursus, classe in ((self.bepc, "3e"), (self.bac_c, "Tle")):
+            module = Module.objects.create(subject=self.subject, classe=classe, serie_label="", numero="H1", titre="M")
+            module.cursus.add(cursus)
+            Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
+
+    def test_history_is_classified_by_theme_for_the_bepc_only(self):
+        self.assertEqual(SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS, {"HISTOIRE": {Examen.BEPC}})
+        self.assertNotIn("HISTOIRE", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+        self.assertNotIn("HISTOIRE", SUBJECTS_PARCOURS_PAR_THEME_EXAMENS)
+
+    def test_bepc_switches_to_theme_mode_with_enough_official_exams(self):
+        tag = Tag.objects.create(name="décolonisation-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Histoire BEPC {i}", [[tag]])
+
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+
+        self.assertEqual(len(parcours), 1)
+        self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "décolonisation-test")
+        self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
+
+    def test_bepc_keeps_the_normal_regime_without_the_thin_corpus_shortcuts(self):
+        # Sous le seuil d'épreuves officielles, un sujet zéro ou blanc ne rattrape pas le compte.
+        tag = Tag.objects.create(name="décolonisation-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Histoire BEPC {i}", [[tag]])
+
+        self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject)[0]["titre"], "M")
+
+    def test_method_themes_are_left_out_of_the_history_ranking_only(self):
+        tag = Tag.objects.create(name="décolonisation-test")
+        methode, _ = Tag.objects.get_or_create(name="méthodologie")
+        self.assertIn("méthodologie", TAGS_BLOCKLIST_PAR_MATIERE["HISTOIRE"])
+        self.assertNotIn("méthodologie", TAGS_BLOCKLIST_PARCOURS_FREQUENCE)
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Histoire BEPC {i}", [[tag, methode]])
+
+        savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
+
+        self.assertEqual([s["intitule"] for s in savoirs], ["décolonisation-test"])
+
+    def test_two_spellings_of_the_same_war_count_as_one_theme(self):
+        deuxieme = Tag.objects.create(name="Deuxième Guerre mondiale")
+        seconde = Tag.objects.create(name="Seconde Guerre mondiale")
+        self.assertEqual(TAGS_ALIAS_PARCOURS_FREQUENCE["Seconde Guerre mondiale"], "Deuxième Guerre mondiale")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bepc, f"Histoire BEPC {i}", [[deuxieme if i % 2 else seconde]])
+
+        savoirs = construire_parcours(self.profil, self.bepc, self.subject)[0]["savoirs"]
+
+        self.assertEqual([(s["intitule"], s["frequence_pct"]) for s in savoirs], [("Deuxième Guerre mondiale", 100)])
+
+    def test_bac_keeps_the_programme_parcours_even_with_many_exams(self):
+        tag = Tag.objects.create(name="décolonisation-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.bac_c, f"Histoire BAC {i}", [[tag]])
+
+        self.assertEqual(construire_parcours(self.profil, self.bac_c, self.subject)[0]["titre"], "M")
 
 
 class ParcoursApiTests(TestCase):

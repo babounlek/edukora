@@ -12,8 +12,9 @@ le "matiere" du JSON source de chacun de leurs exercices (voir HISTOIRE_SEULE/
 GEOGRAPHIE_SEULE ci-dessous) : 12 n'examinent qu'une seule discipline (mal
 rattachées à l'époque où "histoire"/"geographie" pointaient toutes deux vers
 HISTOIRE_GEO) et sont reclassées ici. Les 3 restantes (bepc-histoire-2008/2017/2020-
-officiel-cameroun) ont bien "matiere": "Histoire-Géographie" dans leur JSON source -
-laissées sous HISTOIRE_GEO, volontairement absentes des listes ci-dessous.
+officiel-cameroun) avaient "matiere": "Histoire-Géographie" dans leur JSON source et
+avaient été laissées sous HISTOIRE_GEO ; relues le 2026-10-12, elles sont de l'histoire
+pure et ont rejoint HISTOIRE_SEULE.
 
 MàJ 2026-09-29 : le corpus a continué de grossir sous l'ancien mapping ("matiere":
 "Histoire-Géographie" écrit par correction-experte même pour une épreuve mono-
@@ -106,6 +107,16 @@ HISTOIRE_SEULE = {
     "probaboire-a-abi-histoire-2021-officiel-cameroun",
     "bac-a-abi-histoire-2024-officiel-cameroun",
     "probatoire-c-d-ti-histoire-2025-officiel-cameroun.pdf",
+    # Repérées le 2026-10-12 : les 3 BEPC laissés sous HISTOIRE_GEO comme « réellement mixtes »
+    # (voir la docstring) sont de l'histoire pure. 2017 : définitions, conquête coloniale,
+    # Cameroun allemand, étude de texte sur Sarajevo, 8 questions au choix (socialisme, Gandhi,
+    # fascisme, décolonisation) ; 2008 : Conférence de Berlin, Inde, Meiji, Chine ; 2020 :
+    # puissances au Cameroun, nationalistes nigérians, situation-problème sur les deux guerres.
+    # Aucune question de géographie, barème complet sur 20 points (BEPC Histoire et Géographie
+    # sont deux épreuves distinctes, comme bepc-geographie-2019/2021/2026).
+    "bepc-histoire-2008-officiel-cameroun.pdf",
+    "bepc-histoire-2017-officiel-cameroun.pdf",
+    "bepc-histoire-2020-officiel-cameroun.pdf",
 }
 GEOGRAPHIE_SEULE = {
     "bac-c-d-ti-geographie-2025-cameroun.pdf",
