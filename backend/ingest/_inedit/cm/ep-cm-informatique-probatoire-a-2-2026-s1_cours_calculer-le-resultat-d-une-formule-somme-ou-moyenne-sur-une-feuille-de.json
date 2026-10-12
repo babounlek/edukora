@@ -1,0 +1,108 @@
+{
+  "type": "cours",
+  "cours_id": "cours-calculer-le-resultat-d-une-formule-somm-ipa2",
+  "meta": {
+    "titre": "Calculer le résultat d'une formule SOMME ou MOYENNE sur une feuille de calcul",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Tableur : formules et fonctions",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Formules de calcul",
+      "plage de cellules"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex1-q4-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le tableur affiche un nombre dans une cellule, mais l'examen te donne souvent la formule et te demande ce que la cellule va afficher. Personne ne saisit la formule sur un ordinateur pendant l'épreuve : il faut calculer à la main, comme le ferait le tableur. La méthode est toujours la même, remplacer les références par les valeurs, puis appliquer la fonction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Désigner une cellule (`B3`) et une plage de cellules (`B3:D3`)",
+        "Savoir qu'une formule de tableur commence par le signe `=`",
+        "Calculer à la main la somme et la moyenne de quelques nombres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplacer les références par les valeurs, puis appliquer la fonction",
+      "contenu_markdown": "Pour prévoir le résultat d'une formule, procède en quatre temps.\n\n1. **Repère les cellules désignées.** Une plage écrite avec deux-points (`B4:D4`) désigne toutes les cellules du rectangle, de la première à la dernière. Des cellules séparées par un point-virgule (`B4;D4`) désignent seulement celles qui sont citées.\n2. **Lis la valeur de chaque cellule** dans le tableau, en descendant à la bonne ligne puis en lisant la bonne colonne.\n3. **Applique la fonction.** `SOMME` additionne les valeurs. `MOYENNE` divise la somme des valeurs par leur nombre.\n4. **Contrôle le résultat.** Une moyenne est comprise entre la plus petite et la plus grande valeur ; une somme de nombres positifs est plus grande que chacun de ses termes.",
+      "formule_principale": "\\text{résultat} = \\text{fonction}\\left(\\text{valeurs des cellules désignées}\\right)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une feuille de calcul, les cellules B2, B3, B4 et B5 contiennent 8, 12, 10 et 6. Donner le résultat de `=SOMME(B2:B4)`, de `=SOMME(B2;B5)` et de `=MOYENNE(B2:B5)`.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les cellules de chaque formule",
+          "justification": "Les deux-points désignent un rectangle entier, le point-virgule des cellules isolées.",
+          "resultat_markdown": "`B2:B4` désigne B2, B3 et B4 ; `B2;B5` désigne B2 et B5 ; `B2:B5` désigne B2, B3, B4 et B5."
+        },
+        {
+          "numero": 2,
+          "action": "Lire la valeur de chaque cellule",
+          "justification": "Les valeurs sont données par l'énoncé.",
+          "resultat_markdown": "B2 = 8, B3 = 12, B4 = 10, B5 = 6."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer `=SOMME(B2:B4)`",
+          "justification": "SOMME additionne les trois valeurs de la plage.",
+          "resultat_markdown": "8 + 12 + 10 = 30."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer `=SOMME(B2;B5)`",
+          "justification": "Le point-virgule ne retient que les deux cellules citées, B3 et B4 ne comptent pas.",
+          "resultat_markdown": "8 + 6 = 14."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer `=MOYENNE(B2:B5)`",
+          "justification": "On divise la somme des quatre valeurs par leur nombre, 4.",
+          "resultat_markdown": "(8 + 12 + 10 + 6) / 4 = 36 / 4 = 9."
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler la moyenne",
+          "justification": "Une moyenne se trouve entre la plus petite et la plus grande valeur.",
+          "resultat_markdown": "9 est compris entre 6 et 12 : le résultat est cohérent."
+        }
+      ],
+      "conclusion_markdown": "Les trois formules donnent 30, 14 et 9."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Lire `B2;B5` comme une plage allant de B2 à B5 : le point-virgule sépare des cellules, il n'ajoute pas celles qui sont entre elles.",
+        "Diviser par le mauvais nombre de valeurs dans une moyenne : compte les valeurs réellement désignées par la plage.",
+        "Inverser la colonne et la ligne en lisant une référence : `C3` est la colonne C, ligne 3.",
+        "Oublier la première ou la dernière cellule d'une plage : elles font partie du rectangle."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Les cellules C2, C3 et C4 contiennent 4, 9 et 5. Donner le résultat de `=SOMME(C2:C4)`, de `=MOYENNE(C2:C4)` et de `=SOMME(C2;C4)`. Réponse : 18, 6 et 9.",
+        "Les cellules B2, B3 et B4 contiennent 7, 20 et 9. Donner le résultat de `=MOYENNE(B2;B4)`, puis de `=MOYENNE(B2:B4)`, et expliquer pourquoi ils diffèrent. Réponse : 8 et 12 ; le point-virgule ne retient que B2 et B4, alors que les deux-points ajoutent B3, qui vaut 20.",
+        "La cellule A1 contient 12, la cellule A2 contient 15, et la formule `=SOMME(A1:A3)` affiche 45. Quelle valeur contient A3 ? Réponse : 18, car 45 − 12 − 15 = 18."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une plage avec deux-points désigne tout le rectangle ; des cellules séparées par un point-virgule ne désignent que celles qui sont citées.",
+        "On remplace les références par les valeurs, puis on applique la fonction.",
+        "`SOMME` additionne ; `MOYENNE` divise la somme par le nombre de valeurs.",
+        "Une moyenne est toujours comprise entre la plus petite et la plus grande valeur."
+      ]
+    }
+  ]
+}

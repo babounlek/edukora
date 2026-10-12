@@ -1,0 +1,558 @@
+{
+  "type": "epreuve",
+  "external_id": "ep-cm-informatique-probatoire-a-2-2026-s1",
+  "titre": "Informatique Probatoire A – Épreuve inédite n°2",
+  "blueprint_external_id": "bp-cm-informatique-probatoire-a-2",
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "7",
+      "enonce_intro_markdown": "**Exercice 1 : le tableur (7 points)**\n\nAu lycée de Mbankomo, le professeur principal de la classe de Première A saisit dans un tableur les notes de cinq élèves en trois matières, sur 20. Les coefficients figurent dans la ligne 1 : Maths 3, Français 2, Informatique 1. Les colonnes E, F et G sont encore vides. Voici la feuille de calcul, avec les lettres des colonnes et les numéros des lignes tels qu'ils apparaissent à l'écran.\n\n| | A | B | C | D | E | F | G |\n|---|---|---|---|---|---|---|---|\n| **1** | Élève | Maths (coef. 3) | Français (coef. 2) | Informatique (coef. 1) | Total | Moyenne | Moyenne pondérée |\n| **2** | Aïcha | 9 | 15 | 12 | | | |\n| **3** | Brice | 11 | 10 | 12 | | | |\n| **4** | Carine | 13 | 16 | 10 | | | |\n| **5** | Dieudonné | 8 | 13 | 9 | | | |\n| **6** | Estelle | 14 | 17 | 11 | | | |\n\nDans tout l'exercice, le tableur utilise la syntaxe française : une formule commence par `=`, les arguments d'une fonction sont séparés par un point-virgule `;`, une plage de cellules s'écrit avec deux-points `:` (par exemple `B2:D2`) et la virgule est le séparateur décimal.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Le professeur clique sur une cellule du tableau : la zone de nom, à gauche de la barre de formule, affiche `D4` et la barre de formule affiche `10`. Donner la cellule active et expliquer comment se lit sa référence. Donner ensuite la référence de la cellule qui contient la note de Français de Brice. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa cellule active est la cellule actuellement sélectionnée, celle qui recevra la prochaine saisie : elle se reconnaît à son contour épais, et sa référence s'affiche dans la zone de nom ; une référence se lit toujours en nommant d'abord la lettre de la colonne, puis le numéro de la ligne.\n\nLa **cellule active** est **D4**. Sa référence se lit en nommant d'abord la lettre de la colonne, puis le numéro de la ligne : D4 est l'intersection de la colonne D (celle de l'Informatique) et de la ligne 4 (celle de Carine). La barre de formule affiche 10, qui est bien la note d'informatique de Carine dans le tableau.\n\nLa note de Français de Brice se trouve dans la colonne C (Français) et sur la ligne 3 (Brice) : sa référence est **C3**, et la cellule contient 10.\n\n### Piège à éviter\nÉcrire la référence à l'envers (`4D`) ou prendre la cellule B3 pour la note de Français de Brice : B3 est sa note de Maths (11). Descends d'abord à la ligne de l'élève, puis lis l'en-tête de la colonne de la matière.\n\n### Conseil\nVérifie ta référence en relisant la valeur : si la cellule C3 contient bien 10, la lettre et le numéro sont justes.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Désigne D4 comme cellule active",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique la lecture de la référence : lettre de la colonne D, puis numéro de la ligne 4",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne C3 pour la note de Français de Brice",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "tableur",
+            "Références de cellules"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex1-q1-0",
+              "competence": "Identifier la cellule active dans une feuille de calcul (tableur)",
+              "contenu_markdown": "La cellule active est la cellule actuellement sélectionnée, celle qui recevra la prochaine saisie : elle se reconnaît à son contour épais, et sa référence s'affiche dans la zone de nom ; une référence se lit toujours en nommant d'abord la lettre de la colonne, puis le numéro de la ligne.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Écrire la plage de cellules qui désigne : a) toutes les notes de Maths ; b) toutes les notes de Dieudonné. Donner ensuite le nombre de cellules que contient la plage `B2:D6`. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne cellule se désigne par sa colonne puis sa ligne, et une plage de cellules par la première cellule, le signe deux-points, puis la dernière cellule du rectangle (de la cellule en haut à gauche à celle en bas à droite) ; le nombre de cellules d'une plage est le nombre de colonnes multiplié par le nombre de lignes.\n\na) Les notes de Maths occupent la colonne B, de la ligne 2 (Aïcha) à la ligne 6 (Estelle) : la plage est **B2:B6**.\n\nb) Les notes de Dieudonné occupent la ligne 5, de la colonne B (Maths) à la colonne D (Informatique) : la plage est **B5:D5**.\n\nc) La plage `B2:D6` est le rectangle qui va de B2 (en haut à gauche) à D6 (en bas à droite). Elle compte 3 colonnes (B, C et D) et 5 lignes (2 à 6), soit 3 × 5 = **15 cellules**, c'est-à-dire les 15 notes du tableau.\n\n### Piège à éviter\nCompter 3 + 5 = 8 cellules pour la plage `B2:D6` : une plage est un rectangle, et son nombre de cellules est le produit du nombre de colonnes par le nombre de lignes. Autre erreur fréquente : inclure la ligne 1 ou la colonne A, qui contiennent des titres et des noms et non des notes.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "a) Écrit B2:B6",
+              "points": 0.5
+            },
+            {
+              "libelle": "b) Écrit B5:D5",
+              "points": 0.5
+            },
+            {
+              "libelle": "c) Trouve 15 cellules en multipliant 3 colonnes par 5 lignes",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "plage de cellules",
+            "Références de cellules"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex1-q2-0",
+              "competence": "Désigner une cellule et une plage de cellules dans un tableur",
+              "contenu_markdown": "Une cellule se désigne par sa colonne puis sa ligne, et une plage de cellules par la première cellule, le signe deux-points, puis la dernière cellule du rectangle (de la cellule en haut à gauche à celle en bas à droite) ; le nombre de cellules d'une plage est le nombre de colonnes multiplié par le nombre de lignes.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Écrire les formules à saisir pour obtenir : a) en E2, le total des trois notes d'Aïcha, avec une fonction ; b) en F2, la moyenne simple de ses trois notes, avec une fonction ; c) en G2, sa moyenne pondérée avec les coefficients de la ligne 1. Donner le résultat de chaque formule. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne formule de tableur commence par le signe `=`, désigne les données par leurs adresses de cellules et non par leurs valeurs, et peut appeler une fonction sur une plage : `SOMME(plage)` additionne les valeurs, `MOYENNE(plage)` divise leur somme par leur nombre ; pour une moyenne pondérée, on multiplie chaque valeur par son coefficient, on additionne, puis on divise par la somme des coefficients.\n\na) Le total des trois notes d'Aïcha (cellules B2, C2 et D2) s'obtient avec la fonction SOMME appliquée à la plage B2:D2. En E2, on saisit `=SOMME(B2:D2)`, qui donne 9 + 15 + 12 = **36**. La formule `=B2+C2+D2` est aussi acceptée.\n\nb) En F2, on saisit `=MOYENNE(B2:D2)`, qui donne 36 / 3 = **12**. La formule `=(B2+C2+D2)/3` est aussi acceptée.\n\nc) La moyenne pondérée multiplie chaque note par son coefficient (3, 2 et 1), additionne, puis divise par la somme des coefficients, 3 + 2 + 1 = 6. En G2, on saisit `=(B2*3+C2*2+D2*1)/6`, qui donne (27 + 30 + 12) / 6 = 69 / 6 = **11,5**.\n\n### Piège à éviter\nOublier les parenthèses : `=B2*3+C2*2+D2*1/6` ne divise que D2 par 6 (le tableur effectue les multiplications et les divisions avant les additions) et donne 27 + 30 + 2 = 59 au lieu de 11,5. Autre erreur : écrire `=SOMME(B2;D2)`, qui n'additionne que B2 et D2 et oublie C2.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "E2 : écrit `=SOMME(B2:D2)` (ou `=B2+C2+D2`) et trouve 36",
+              "points": 0.5
+            },
+            {
+              "libelle": "F2 : écrit `=MOYENNE(B2:D2)` (ou `=(B2+C2+D2)/3`) et trouve 12",
+              "points": 0.5
+            },
+            {
+              "libelle": "G2 : écrit `=(B2*3+C2*2+D2*1)/6`, avec les parenthèses autour de la somme pondérée, et trouve 11,5",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Formules de calcul",
+            "tableur"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex1-q3-0",
+              "competence": "Écrire une formule de moyenne dans un tableur",
+              "contenu_markdown": "Une formule de tableur commence par le signe `=`, désigne les données par leurs adresses de cellules et non par leurs valeurs, et peut appeler une fonction sur une plage : `SOMME(plage)` additionne les valeurs, `MOYENNE(plage)` divise leur somme par leur nombre ; pour une moyenne pondérée, on multiplie chaque valeur par son coefficient, on additionne, puis on divise par la somme des coefficients.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Donner le résultat de chacune des formules suivantes, saisies dans une cellule libre de la feuille : a) `=SOMME(C2:C6)` ; b) `=MOYENNE(B3:D3)` ; c) `=SOMME(B4;D4)` ; d) `=SOMME(B4:D4)`. Expliquer ensuite pourquoi les résultats c) et d) sont différents. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour trouver le résultat d'une formule, remplace chaque référence par la valeur de la cellule correspondante, puis applique la fonction : avec une plage écrite avec deux-points, toutes les cellules du rectangle comptent, alors qu'avec des cellules séparées par un point-virgule, seules les cellules citées comptent ; `SOMME` additionne les valeurs, et `MOYENNE` divise leur somme par leur nombre.\n\nOn remplace chaque référence par la valeur de la cellule, puis on applique la fonction.\n\na) `=SOMME(C2:C6)` additionne la colonne Français : 15 + 10 + 16 + 13 + 17 = **71**.\n\nb) `=MOYENNE(B3:D3)` porte sur les trois notes de Brice : (11 + 10 + 12) / 3 = 33 / 3 = **11**.\n\nc) `=SOMME(B4;D4)` : le point-virgule sépare deux cellules distinctes. Seules B4 (13) et D4 (10) sont additionnées : 13 + 10 = **23**.\n\nd) `=SOMME(B4:D4)` : les deux-points désignent la plage entière, donc B4, C4 et D4 : 13 + 16 + 10 = **39**.\n\nLes résultats c) et d) diffèrent parce que le point-virgule n'additionne que les cellules citées, alors que les deux-points ajoutent toutes les cellules comprises entre la première et la dernière, ici C4 (16) en plus : 39 − 23 = 16.\n\n### Piège à éviter\nLire `B4;D4` comme une plage qui irait de B4 à D4. Le signe qui désigne une plage est le deux-points.\n\n### Conseil\nPour une moyenne, vérifie le résultat à l'œil : il doit se trouver entre la plus petite et la plus grande des valeurs. Pour la moyenne de Brice, 11 est bien compris entre 10 et 12.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "a) Trouve 71",
+              "points": 0.25
+            },
+            {
+              "libelle": "b) Trouve 11",
+              "points": 0.25
+            },
+            {
+              "libelle": "c) Trouve 23 en n'additionnant que B4 et D4",
+              "points": 0.25
+            },
+            {
+              "libelle": "d) Trouve 39 en additionnant B4, C4 et D4",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique la différence : le point-virgule ne retient que les cellules citées, les deux-points toute la plage (C4 en plus)",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Formules de calcul",
+            "plage de cellules"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex1-q4-0",
+              "competence": "Calculer le résultat d'une formule SOMME ou MOYENNE sur une feuille de calcul",
+              "contenu_markdown": "Pour trouver le résultat d'une formule, remplace chaque référence par la valeur de la cellule correspondante, puis applique la fonction : avec une plage écrite avec deux-points, toutes les cellules du rectangle comptent, alors qu'avec des cellules séparées par un point-virgule, seules les cellules citées comptent ; `SOMME` additionne les valeurs, et `MOYENNE` divise leur somme par leur nombre.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "La formule `=SOMME(B2:D2)` est saisie en E2, puis recopiée vers le bas jusqu'en E6 avec la poignée de recopie. Écrire la formule qui se trouve alors en E5, donner son résultat, puis expliquer ce qui change d'une cellule à l'autre dans la formule et pourquoi cette recopie est utile. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nQuand on recopie une formule vers le bas, les références relatives se décalent du même nombre de lignes que la cellule d'arrivée par rapport à la cellule de départ, alors que les lettres de colonnes restent inchangées ; la formule s'adapte ainsi à chaque ligne sans être retapée.\n\nDans E2, la formule `=SOMME(B2:D2)` utilise des références relatives. Quand on la recopie vers le bas, le tableur décale chaque référence du même nombre de lignes que la cellule d'arrivée : de E2 à E5, on descend de 3 lignes, donc B2:D2 devient B5:D5. Les lettres des colonnes ne bougent pas.\n\nLa formule en E5 est donc `=SOMME(B5:D5)`, et son résultat est 8 + 13 + 9 = **30**, le total de Dieudonné.\n\nD'une cellule à l'autre, le numéro de ligne des références augmente de 1 à chaque ligne descendue ; les lettres de colonne et la fonction restent les mêmes. Chaque ligne de la colonne E calcule ainsi le total de son propre élève, et la recopie évite de retaper la formule cinq fois.\n\n### Piège à éviter\nCroire que la formule recopiée reste identique à celle de E2 : en E5, `=SOMME(B2:D2)` donnerait encore le total d'Aïcha, 36, et non celui de Dieudonné.\n\n### Conseil\nAprès une recopie, clique sur la dernière cellule remplie et lis sa formule dans la barre de formule : si elle désigne la bonne ligne, toute la colonne est juste.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit `=SOMME(B5:D5)` en E5",
+              "points": 0.5
+            },
+            {
+              "libelle": "Calcule le résultat : 30 (8 + 13 + 9)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que les références sont relatives : le numéro de ligne passe de 2 à 5 alors que les lettres de colonne restent B et D",
+              "points": 0.5
+            },
+            {
+              "libelle": "Précise que la recopie évite de retaper la formule pour chaque élève",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "Formules de calcul",
+            "Références de cellules"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex1-q5-0",
+              "competence": "Utiliser la poignée de recopie (recopie incrémentée) d'un tableur pour dupliquer une formule",
+              "contenu_markdown": "Quand on recopie une formule vers le bas, les références relatives se décalent du même nombre de lignes que la cellule d'arrivée par rapport à la cellule de départ, alors que les lettres de colonnes restent inchangées ; la formule s'adapte ainsi à chaque ligne sans être retapée.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "6",
+      "enonce_intro_markdown": "**Exercice 2 : sécurité informatique et réseaux sociaux (6 points)**\n\nJunior, élève de Première A au lycée de Maroua, reçoit un soir sur son téléphone le message suivant, envoyé par un expéditeur inconnu : « Ton compte va être supprimé dans une heure. Clique vite sur ce lien et saisis ton mot de passe pour le conserver. » Le lien mène à une page qui ressemble en tout point à celle de son réseau social. Junior y saisit son identifiant et son mot de passe, `junior2009`, formé de son prénom et de son année de naissance. Le lendemain, il ne peut plus se connecter : son compte a été piraté et des publications qu'il n'a jamais écrites circulent chez ses amis. Quelques jours plus tôt, il avait publié, sans régler la confidentialité de son compte, des photos de sa famille devant leur maison, avec le nom de son quartier.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Définir les quatre termes suivants : virus informatique, antivirus, hameçonnage, mot de passe robuste. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour définir un terme de sécurité informatique, indique sa nature (programme, logiciel, technique de fraude, règle de choix), puis son rôle ou son effet en une ou deux phrases précises, sans te contenter d'un exemple ni répéter le mot à définir.\n\nLes quatre définitions attendues :\n\n- Un **virus informatique** est un programme malveillant qui s'installe à l'insu de l'utilisateur, se copie d'un fichier ou d'un ordinateur à l'autre et perturbe le fonctionnement de la machine ou détruit des données.\n- Un **antivirus** est un logiciel qui détecte, bloque et supprime les virus et les autres programmes malveillants ; il doit être mis à jour régulièrement pour reconnaître les menaces récentes.\n- L'**hameçonnage** (*phishing*) est une fraude qui consiste à envoyer un faux message ou à renvoyer vers un faux site, imitant un service connu, pour pousser la victime à donner elle-même des informations confidentielles comme son mot de passe. C'est ce qui est arrivé à Junior.\n- Un **mot de passe robuste** est un mot de passe difficile à deviner : il est assez long (au moins 8 caractères, davantage de préférence), mélange majuscules, minuscules, chiffres et symboles, et ne contient aucune information personnelle (nom, date de naissance). Le mot de passe `junior2009` n'est pas robuste : il contient le prénom et l'année de naissance de son propriétaire.\n\n### Piège à éviter\nDéfinir le virus par un de ses symptômes (« l'ordinateur devient lent ») ou confondre virus et antivirus : le premier attaque, le second protège. Autre confusion : croire qu'un mot de passe est robuste parce qu'on s'en souvient facilement, alors que c'est souvent le signe qu'il se devine.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Définit le virus : programme malveillant qui se copie et perturbe le fonctionnement ou détruit des données",
+              "points": 0.5
+            },
+            {
+              "libelle": "Définit l'antivirus : logiciel qui détecte, bloque et supprime les programmes malveillants",
+              "points": 0.5
+            },
+            {
+              "libelle": "Définit l'hameçonnage : faux message ou faux site qui pousse à donner des informations confidentielles",
+              "points": 0.5
+            },
+            {
+              "libelle": "Définit le mot de passe robuste : long, mélange de caractères, sans information personnelle",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "sécurité informatique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex2-q1-0",
+              "competence": "Définir les termes de la sécurité informatique : virus, antivirus, hameçonnage, mot de passe robuste",
+              "contenu_markdown": "Pour définir un terme de sécurité informatique, indique sa nature (programme, logiciel, technique de fraude, règle de choix), puis son rôle ou son effet en une ou deux phrases précises, sans te contenter d'un exemple ni répéter le mot à définir.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Citer trois règles que Junior doit respecter pour protéger ses données personnelles quand il utilise un réseau social. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour protéger ses données personnelles sur un réseau social, limite à la source qui peut voir et récupérer ses informations : règle les paramètres de confidentialité du compte pour réserver les publications aux personnes de confiance, ne publie ni adresse ni numéro de téléphone, n'accepte pas les demandes d'inconnus et utilise un mot de passe fort et personnel que tu ne communiques à personne.\n\nTrois règles possibles, à choisir parmi d'autres :\n\n1. Ne jamais donner son mot de passe, même en réponse à un message qui prétend venir du réseau social : un service sérieux ne le demande pas.\n2. Choisir un mot de passe robuste, différent pour chaque compte, et le changer après un piratage.\n3. Régler les paramètres de confidentialité du compte pour que les publications ne soient visibles que par les personnes de confiance.\n\nD'autres réponses sont acceptées : ne publier ni adresse ni numéro de téléphone, refuser les demandes d'inconnus, ne pas cliquer sur un lien reçu d'un expéditeur inconnu, se déconnecter après usage sur un téléphone partagé.\n\n### Piège à éviter\nRépondre par des généralités comme « faire attention » ou « être prudent » : chaque règle doit nommer une action précise que l'on peut vérifier.\n\n### Conseil\nÉcris chaque règle en une seule phrase qui commence par un verbe d'action, par exemple « Régler les paramètres de confidentialité » : le correcteur reconnaît tout de suite une règle applicable.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Énonce une première règle précise et applicable",
+              "points": 0.5
+            },
+            {
+              "libelle": "Énonce une deuxième règle précise et applicable, différente de la première",
+              "points": 0.5
+            },
+            {
+              "libelle": "Énonce une troisième règle précise et applicable, différente des deux autres",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "sécurité informatique",
+            "confidentialité"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex2-q2-0",
+              "competence": "Protéger sa vie privée sur les réseaux sociaux",
+              "contenu_markdown": "Pour protéger ses données personnelles sur un réseau social, limite à la source qui peut voir et récupérer ses informations : règle les paramètres de confidentialité du compte pour réserver les publications aux personnes de confiance, ne publie ni adresse ni numéro de téléphone, n'accepte pas les demandes d'inconnus et utilise un mot de passe fort et personnel que tu ne communiques à personne.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Citer deux risques d'un partage excessif de photos et d'informations personnelles sur un réseau social, en prenant pour exemple les photos de la famille de Junior, et expliquer chacun en une phrase. *(1,5 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour citer des risques d'un réseau social, nomme des risques précis et de natures différentes (atteinte à la vie privée, vol de données ou usurpation d'identité, cyberharcèlement, exposition à des contenus inadaptés), puis explique pour chacun ce qui se passe, car un contenu publié est copié, rediffusé et reste accessible longtemps.\n\nPremier risque : **l'atteinte à la vie privée et à la sécurité de la famille**. Une photo prise devant la maison, accompagnée du nom du quartier, indique où la famille habite. Des inconnus peuvent ainsi repérer la maison et en profiter pour cambrioler ou harceler ses habitants.\n\nSecond risque : **l'usage détourné des photos**. Une photo publiée peut être copiée, retouchée et rediffusée par d'autres personnes, pour créer un faux compte au nom de Junior (usurpation d'identité) ou pour se moquer de lui (cyberharcèlement). Une fois diffusée, elle est presque impossible à retirer, même si Junior la supprime de son compte.\n\nD'autres risques sont acceptés : le vol de données personnelles utilisées pour une escroquerie, le tort fait à la réputation quand une photo gênante est retrouvée des années plus tard.\n\n### Piège à éviter\nCiter deux fois le même risque sous deux formulations (« vol de photos » et « photos copiées »). Choisis deux risques de natures différentes et explique chacun par ce qui se passe réellement.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "criteres_notation": [
+            {
+              "libelle": "Nomme un premier risque précis",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique le premier risque en une phrase cohérente avec la situation",
+              "points": 0.5
+            },
+            {
+              "libelle": "Nomme un second risque précis, de nature différente",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique le second risque en une phrase",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "réseaux sociaux",
+            "confidentialité"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex2-q3-0",
+              "competence": "Les réseaux sociaux : usages, avantages et risques",
+              "contenu_markdown": "Pour citer des risques d'un réseau social, nomme des risques précis et de natures différentes (atteinte à la vie privée, vol de données ou usurpation d'identité, cyberharcèlement, exposition à des contenus inadaptés), puis explique pour chacun ce qui se passe, car un contenu publié est copié, rediffusé et reste accessible longtemps.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Après cette mésaventure, Junior veut mieux utiliser son réseau social. Proposer deux bons usages qu'il peut adopter. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour décrire un comportement responsable sur un réseau social, nomme une action précise et dis ce qu'elle protège : avant de publier un contenu qui concerne une autre personne, vérifie que l'information est exacte et demande l'accord de la personne concernée, parce qu'une information vraie peut quand même porter atteinte à sa vie privée.\n\nDeux bons usages que Junior peut adopter :\n\n1. **Demander l'accord avant de publier le contenu d'une autre personne.** Une photo où apparaissent des camarades ou des membres de sa famille ne se publie qu'avec leur accord, car sa diffusion touche leur vie privée.\n2. **Vérifier une information avant de la partager.** Junior contrôle la source d'un message alarmant avant de le transmettre à ses amis, pour ne pas propager une rumeur ni tomber dans un piège comme celui qui a fait pirater son compte.\n\nSont aussi acceptés : utiliser le réseau pour communiquer avec des proches éloignés ou pour travailler en groupe sur les cours, signaler un contenu choquant ou un compte suspect, limiter le temps passé en ligne pour garder du temps pour le travail et le sommeil.\n\n### Piège à éviter\nRépondre « bien l'utiliser » ou « ne pas aller sur les réseaux » : la première réponse est vide, la seconde ne décrit pas un usage.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Propose un premier bon usage précis",
+              "points": 0.5
+            },
+            {
+              "libelle": "Propose un second bon usage précis, différent du premier",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "réseaux sociaux",
+            "Services numériques"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex2-q4-0",
+              "competence": "Adopter un comportement numérique responsable envers autrui",
+              "contenu_markdown": "Pour décrire un comportement responsable sur un réseau social, nomme une action précise et dis ce qu'elle protège : avant de publier un contenu qui concerne une autre personne, vérifie que l'information est exacte et demande l'accord de la personne concernée, parce qu'une information vraie peut quand même porter atteinte à sa vie privée.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "3",
+      "points": "7",
+      "enonce_intro_markdown": "**Exercice 3 : algorithmique (7 points)**\n\nAu marché de Ngaoundéré, un commerçant range des boîtes de sardines en forme de pyramide : une boîte sur la première rangée, deux sur la deuxième, trois sur la troisième, et ainsi de suite jusqu'à la dernière rangée. Il utilise l'algorithme suivant pour connaître le nombre total de boîtes. Les lignes sont numérotées pour faciliter les réponses ; les numéros ne font pas partie de l'algorithme.\n\n```\n1.  Algorithme TotalBoites\n2.  Variables n, i, total : entier\n3.  Début\n4.    Lire(n)\n5.    total ← 0\n6.    Pour i de 1 à n faire\n7.      total ← total + i\n8.    FinPour\n9.    Ecrire(\"Nombre total de boîtes : \", total)\n10. Fin\n```",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "enonce_markdown": "Relever la donnée que l'algorithme demande à l'utilisateur et le résultat qu'il affiche, en précisant le numéro de ligne de chacune de ces instructions. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nUne donnée d'entrée est une valeur que l'algorithme demande avec l'instruction `Lire` pour la ranger dans une variable, et une donnée de sortie est un résultat qu'il affiche avec l'instruction `Ecrire` ; pour les repérer, cherche ces deux instructions : l'argument d'un `Lire` est toujours une variable, et un texte entre guillemets dans un `Ecrire` est un message affiché.\n\nLa donnée d'entrée est la valeur de **`n`**, le nombre de rangées : elle est lue au clavier à la ligne 4, `Lire(n)`.\n\nLa donnée de sortie est **`total`**, le nombre total de boîtes : elle est affichée à la ligne 9, `Ecrire(\"Nombre total de boîtes : \", total)`, après le texte.\n\n### Piège à éviter\nPrendre `i` pour une donnée d'entrée parce qu'elle apparaît dans la boucle : aucune instruction `Lire` ne la remplit, c'est la boucle `Pour` qui lui donne ses valeurs successives.",
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Donne `n` comme donnée d'entrée, lue à la ligne 4",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne `total` comme donnée de sortie, affichée à la ligne 9",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "algorithmique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex3-q1-0",
+              "competence": "Les instructions d'entrée et de sortie dans un algorithme",
+              "contenu_markdown": "Une donnée d'entrée est une valeur que l'algorithme demande avec l'instruction `Lire` pour la ranger dans une variable, et une donnée de sortie est un résultat qu'il affiche avec l'instruction `Ecrire` ; pour les repérer, cherche ces deux instructions : l'argument d'un `Lire` est toujours une variable, et un texte entre guillemets dans un `Ecrire` est un message affiché.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "enonce_markdown": "Citer les variables déclarées à la ligne 2 avec leur type, puis donner le rôle de `i` et celui de `total`. Expliquer enfin pourquoi la ligne 5 donne la valeur 0 à `total`. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nPour déterminer le rôle d'une variable, observe sa valeur de départ, ce qu'on lui affecte à chaque passage de la boucle et ce qu'on en fait à la fin : une variable qui prend successivement les valeurs de la boucle est un compteur, et une variable mise à 0 avant la boucle puis augmentée à chaque passage est un accumulateur qui construit un total.\n\nLes variables déclarées à la ligne 2 sont `n`, `i` et `total`, toutes de type **entier** : elles ne contiennent que des nombres entiers (un nombre de rangées, un numéro de rangée, un nombre de boîtes).\n\n- `i` est le **compteur** de la boucle : il prend successivement les valeurs 1, 2, 3, jusqu'à `n`, et représente le numéro de la rangée en cours.\n- `total` est un **accumulateur** : il garde le nombre de boîtes déjà rangées et augmente de `i` à chaque passage (ligne 7).\n\nLa ligne 5 met `total` à 0 avant la boucle parce que 0 est le point de départ d'une addition : sans cette initialisation, `total` contiendrait au départ une valeur inconnue et le résultat serait faux.\n\n### Piège à éviter\nConfondre le compteur `i` et l'accumulateur `total`. `i` augmente toujours de 1, alors que `total` augmente de la valeur de `i`, donc de plus en plus à chaque passage.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Cite `n`, `i` et `total`, de type entier",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne à `i` le rôle de compteur de la boucle (numéro de la rangée)",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne à `total` le rôle d'accumulateur du nombre de boîtes",
+              "points": 0.25
+            },
+            {
+              "libelle": "Explique que 0 est le point de départ de l'addition et évite une valeur inconnue",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "algorithmique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex3-q2-0",
+              "competence": "Déterminer le rôle d'une variable dans un algorithme",
+              "contenu_markdown": "Pour déterminer le rôle d'une variable, observe sa valeur de départ, ce qu'on lui affecte à chaque passage de la boucle et ce qu'on en fait à la fin : une variable qui prend successivement les valeurs de la boucle est un compteur, et une variable mise à 0 avant la boucle puis augmentée à chaque passage est un accumulateur qui construit un total.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "enonce_markdown": "Exécuter l'algorithme pour la valeur saisie n = 5. Présenter un tableau de suivi qui donne, après chaque passage dans la boucle, les valeurs de `i` et de `total`, puis indiquer ce qui est affiché. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour dérouler la trace d'un algorithme, construis un tableau avec une colonne par variable et note l'état initial ; à chaque passage de la boucle, mets à jour uniquement les variables modifiées par les instructions du bloc, dans l'ordre où elles sont écrites, et vérifie le test de la boucle, y compris celui qui l'arrête, avant de relever ce qui est affiché.\n\nLe tableau de suivi pour n = 5 :\n\n| Étape | `n` | `i` | `total` |\n|---|---|---|---|\n| Avant la boucle (lignes 4 et 5) | 5 | non défini | 0 |\n| Passage 1 (ligne 7) | 5 | 1 | 0 + 1 = 1 |\n| Passage 2 (ligne 7) | 5 | 2 | 1 + 2 = 3 |\n| Passage 3 (ligne 7) | 5 | 3 | 3 + 3 = 6 |\n| Passage 4 (ligne 7) | 5 | 4 | 6 + 4 = 10 |\n| Passage 5 (ligne 7) | 5 | 5 | 10 + 5 = 15 |\n| Fin de la boucle, puis ligne 9 | 5 | 5 | 15 |\n\nÀ la ligne 9, l'algorithme affiche : **Nombre total de boîtes : 15**.\n\nContrôle : la pyramide de 5 rangées contient 1 + 2 + 3 + 4 + 5 = 15 boîtes.\n\n### Piège à éviter\nOublier la ligne de départ ou sauter un passage : le tableau doit contenir l'état avant la boucle, puis exactement 5 passages, un par valeur de `i`. Autre erreur : écrire dans la colonne `total` la seule valeur de `i` au lieu du cumul.\n\n### Conseil\nRecopie le message affiché tel qu'il est écrit dans `Ecrire`, texte compris, et vérifie la valeur finale par un calcul direct, ici 1 + 2 + 3 + 4 + 5 = 15.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Présente un tableau avec une colonne par variable (`n`, `i`, `total`)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne l'état avant la boucle : n = 5 et total = 0",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne les valeurs de `i` sur les cinq passages, de 1 à 5",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne les valeurs de `total` : 1, 3, 6, 10 puis 15",
+              "points": 0.5
+            },
+            {
+              "libelle": "Indique l'affichage final : Nombre total de boîtes : 15",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "trace d'exécution",
+            "algorithmique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex3-q3-0",
+              "competence": "Dérouler la trace d'exécution d'un algorithme",
+              "contenu_markdown": "Pour dérouler la trace d'un algorithme, construis un tableau avec une colonne par variable et note l'état initial ; à chaque passage de la boucle, mets à jour uniquement les variables modifiées par les instructions du bloc, dans l'ordre où elles sont écrites, et vérifie le test de la boucle, y compris celui qui l'arrête, avant de relever ce qui est affiché.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "4",
+          "ordre": 4,
+          "enonce_markdown": "Dire combien de fois la ligne 7 est exécutée quand l'utilisateur saisit n = 5, puis n = 12, puis n = 0. Justifier la réponse pour n = 5 à l'aide des bornes de la boucle. *(1 pt)*",
+          "corrige_markdown": "### Rappel de méthode\nLa structure `Pour i de début à fin faire ... FinPour` répète son bloc un nombre de fois connu à l'avance : le compteur prend chaque valeur entière de la borne de départ à la borne d'arrivée, bornes comprises, ce qui donne fin − début + 1 passages ; si la borne d'arrivée est plus petite que la borne de départ, le bloc n'est jamais exécuté.\n\nLa boucle `Pour i de 1 à n faire` s'exécute une fois pour chaque valeur de `i` comprise entre 1 et `n`, bornes comprises : quand `n` vaut au moins 1, le nombre de passages est donc `n`.\n\n- Pour `n = 5`, `i` prend les valeurs 1, 2, 3, 4 et 5 : la ligne 7 est exécutée **5 fois**.\n- Pour `n = 12`, elle est exécutée **12 fois**.\n- Pour `n = 0`, la borne d'arrivée (0) est plus petite que la borne de départ (1) : le bloc n'est jamais exécuté, soit **0 passage**. `total` garde la valeur 0 et l'algorithme affiche « Nombre total de boîtes : 0 ».\n\n### Piège à éviter\nCompter 4 passages pour `n = 5` en oubliant que la borne 5 est comprise : de 1 à 5 inclus, il y a 5 valeurs, donc 5 passages.",
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1,
+          "criteres_notation": [
+            {
+              "libelle": "Donne 5 passages pour n = 5 en justifiant par les bornes : `i` va de 1 à 5, bornes comprises",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne 12 passages pour n = 12",
+              "points": 0.25
+            },
+            {
+              "libelle": "Donne 0 passage pour n = 0 : la borne d'arrivée est plus petite que la borne de départ",
+              "points": 0.25
+            }
+          ],
+          "themes": [
+            "boucle Pour",
+            "structures de contrôle"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex3-q4-0",
+              "competence": "Identifier une structure répétitive Pour",
+              "contenu_markdown": "La structure `Pour i de début à fin faire ... FinPour` répète son bloc un nombre de fois connu à l'avance : le compteur prend chaque valeur entière de la borne de départ à la borne d'arrivée, bornes comprises, ce qui donne fin − début + 1 passages ; si la borne d'arrivée est plus petite que la borne de départ, le bloc n'est jamais exécuté.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "5",
+          "ordre": 5,
+          "enonce_markdown": "Le commerçant veut que l'algorithme affiche aussi, à chaque rangée posée, le numéro de la rangée et le nombre de boîtes déjà rangées, sous la forme « Rangée 3 : 6 ». Il remplace les lignes 6 à 8 par les lignes suivantes, dont la ligne 8 a été effacée ; le reste de l'algorithme ne change pas.\n\n```\n6.    Pour i de 1 à n faire\n7.      total ← total + i\n8.      ..............................\n9.    FinPour\n```\n\nÉcrire la ligne 8 manquante, puis donner tout ce que l'algorithme affiche quand l'utilisateur saisit n = 4. *(2 pts)*",
+          "corrige_markdown": "### Rappel de méthode\nPour compléter une ligne manquante dans une boucle, lis d'abord ce que la ligne doit produire, puis décide de sa place : une instruction qui doit se répéter à chaque tour va entre `Pour` et `FinPour`, une initialisation se met avant la boucle et un résultat final après `FinPour` ; à l'intérieur du bloc, respecte l'ordre des lignes, en mettant à jour une variable avant de l'afficher si l'on veut afficher sa nouvelle valeur.\n\nLa ligne manquante est un affichage qui doit être répété à chaque rangée : elle se place donc à l'intérieur de la boucle. Elle doit aussi venir après la ligne 7, pour afficher la valeur de `total` déjà mise à jour. La ligne 8 est :\n\n```\n8.      Ecrire(\"Rangée \", i, \" : \", total)\n```\n\nPour `n = 4`, la valeur de `total` après chaque passage est 1, 3, 6 puis 10. L'affichage obtenu est :\n\n```\nRangée 1 : 1\nRangée 2 : 3\nRangée 3 : 6\nRangée 4 : 10\nNombre total de boîtes : 10\n```\n\nLa dernière ligne vient de l'instruction `Ecrire` finale, placée après `FinPour`, qui n'est exécutée qu'une seule fois.\n\n### Piège à éviter\nPlacer la ligne avant `total ← total + i` : elle afficherait le total de la rangée précédente (0, 1, 3 puis 6). Placée après `FinPour`, elle n'afficherait qu'une seule ligne, le total final.\n\n### Conseil\nPour savoir où placer une instruction dans une boucle, demande-toi si elle doit s'exécuter à chaque tour (dans la boucle), une seule fois au début (avant la boucle) ou une seule fois à la fin (après `FinPour`).",
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 2,
+          "criteres_notation": [
+            {
+              "libelle": "Écrit une instruction `Ecrire` qui affiche le texte Rangée, `i`, le séparateur et `total`",
+              "points": 0.5
+            },
+            {
+              "libelle": "Place la ligne dans la boucle, après la mise à jour de `total` (entre les lignes 7 et 9)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne les quatre lignes affichées dans la boucle : Rangée 1 : 1, Rangée 2 : 3, Rangée 3 : 6, Rangée 4 : 10",
+              "points": 0.5
+            },
+            {
+              "libelle": "Ajoute la dernière ligne affichée après la boucle : Nombre total de boîtes : 10",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "boucle Pour",
+            "algorithmique"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex3-q5-0",
+              "competence": "Compléter une boucle Pour par l'instruction qui manque",
+              "contenu_markdown": "Pour compléter une ligne manquante dans une boucle, lis d'abord ce que la ligne doit produire, puis décide de sa place : une instruction qui doit se répéter à chaque tour va entre `Pour` et `FinPour`, une initialisation se met avant la boucle et un résultat final après `FinPour` ; à l'intérieur du bloc, respecte l'ordre des lignes, en mettant à jour une variable avant de l'afficher si l'on veut afficher sa nouvelle valeur.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

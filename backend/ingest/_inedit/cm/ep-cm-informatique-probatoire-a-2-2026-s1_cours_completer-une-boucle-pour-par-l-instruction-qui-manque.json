@@ -1,0 +1,96 @@
+{
+  "type": "cours",
+  "cours_id": "cours-completer-une-boucle-pour-par-l-instruc-ipa2",
+  "meta": {
+    "titre": "Compléter une boucle Pour par l'instruction qui manque",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Algorithmique : structures de contrôle",
+    "duree_estimee_min": 25,
+    "tags": [
+      "boucle Pour",
+      "algorithmique"
+    ]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-probatoire-a-2-2026-s1-ex3-q5-0"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un exercice d'algorithmique, une ligne est effacée et remplacée par des pointillés. Le texte dit ce que l'algorithme doit afficher ou calculer, et ton travail consiste à retrouver la ligne qui produit exactement cela, puis à la mettre au bon endroit. La même instruction, placée ailleurs, donne un autre résultat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire une affectation `variable ← expression`",
+        "Connaître la boucle `Pour i de début à fin faire ... FinPour`",
+        "Dérouler un algorithme à la main avec un tableau de suivi"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Décider ce que la ligne doit produire, puis où la placer",
+      "contenu_markdown": "1. **Lis ce que la ligne doit produire** : un calcul, un affichage, une initialisation. Le texte de la question et les lignes voisines l'indiquent.\n2. **Choisis son emplacement.** Une instruction qui doit se répéter à chaque tour va entre `Pour` et `FinPour`. Une initialisation se met avant la boucle. Un résultat final se met après `FinPour`.\n3. **Respecte l'ordre dans le bloc.** Pour afficher la nouvelle valeur d'une variable, mets-la à jour avant de l'afficher ; dans l'ordre inverse, tu affiches l'ancienne valeur.\n4. **Écris la ligne avec les noms de variables de l'algorithme** et dans la même forme que les lignes voisines.\n5. **Teste sur deux ou trois tours** en déroulant la trace avec la ligne ajoutée.",
+      "formule_principale": "\\text{à chaque tour : mise à jour} \\Rightarrow \\text{affichage}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Compléter la ligne manquante pour que l'algorithme affiche la table de multiplication de 3, de 3 × 1 à 3 × 4.\n\n```\nAlgorithme TableDeTrois\nVariables i, produit : entier\nDébut\n  Pour i de 1 à 4 faire\n    ..............................\n    Ecrire(\"3 × \", i, \" = \", produit)\n  FinPour\nFin\n```",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire ce que la ligne doit produire",
+          "justification": "L'affichage utilise `produit`, qui doit donc contenir 3 × i avant l'instruction `Ecrire`.",
+          "resultat_markdown": "La ligne manquante doit calculer `produit`."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir l'emplacement",
+          "justification": "Le produit change à chaque valeur de `i`, et l'affichage a besoin de la valeur à jour.",
+          "resultat_markdown": "La ligne est dans la boucle, avant `Ecrire`."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la ligne",
+          "justification": "On utilise les noms de variables de l'algorithme.",
+          "resultat_markdown": "`produit ← 3 × i`"
+        },
+        {
+          "numero": 4,
+          "action": "Tester sur les quatre tours",
+          "justification": "On déroule la boucle avec la ligne ajoutée.",
+          "resultat_markdown": "`i` = 1 : produit = 3 ; `i` = 2 : produit = 6 ; `i` = 3 : produit = 9 ; `i` = 4 : produit = 12."
+        }
+      ],
+      "conclusion_markdown": "La ligne manquante est `produit ← 3 × i`. L'algorithme affiche 3 × 1 = 3, 3 × 2 = 6, 3 × 3 = 9 puis 3 × 4 = 12."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Placer le calcul après l'instruction `Ecrire` : au premier tour `produit` n'a pas encore de valeur, et aux tours suivants l'affichage montre la valeur du tour précédent.",
+        "Placer la ligne avant `Pour` : elle n'est alors exécutée qu'une seule fois, avec une valeur de `i` qui n'existe pas encore.",
+        "Oublier l'initialisation d'un accumulateur (`total ← 0`) avant la boucle.",
+        "Écrire la ligne avec un autre nom de variable que celui de l'algorithme : `p ← 3 × i` ne remplit pas `produit`."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Un bloc `Pour i de 1 à 3 faire` contient une ligne manquante suivie de `Ecrire(carre)`. Quelle ligne faut-il écrire pour afficher 1, 4 puis 9 ? Réponse : `carre ← i × i`, placée avant `Ecrire`.",
+        "Un algorithme met `total` à 0 avant la boucle `Pour i de 1 à 3 faire`, dont le bloc contient `Ecrire(total)` puis `total ← total + i`. Quels nombres sont affichés ? Réponse : 0, 1 puis 3, parce que l'affichage se fait avant la mise à jour.",
+        "Un algorithme doit afficher la somme des entiers de 1 à n. Où faut-il placer `total ← 0` et où faut-il placer `Ecrire(total)` ? Réponse : `total ← 0` avant la boucle, une seule fois ; `Ecrire(total)` après `FinPour`, pour afficher le résultat final."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "On lit d'abord ce que la ligne doit produire, puis on décide de sa place.",
+        "À chaque tour : dans la boucle ; au début : avant la boucle ; à la fin : après `FinPour`.",
+        "On met à jour une variable avant de l'afficher si l'on veut afficher sa nouvelle valeur.",
+        "On vérifie la ligne trouvée en déroulant deux ou trois tours."
+      ]
+    }
+  ]
+}
