@@ -15,6 +15,7 @@ import { ecrireAccueilEnCache, lireAccueilEnCache } from "@/lib/accueilCache"
 import { marquerAffichageAccueil } from "@/lib/accueilChrono"
 import { epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
 import { formatDuration } from "@/lib/duration"
+import { maintenantServeur } from "@/lib/horlogeServeur"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 
 /**
@@ -119,7 +120,7 @@ export function AccueilEleve({ country }: { country: string }) {
  */
 function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
   const reste = tentative.echeance
-    ? Math.max(0, Math.round((new Date(tentative.echeance).getTime() - Date.now()) / 1000))
+    ? Math.max(0, Math.round((new Date(tentative.echeance).getTime() - maintenantServeur()) / 1000))
     : null
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">

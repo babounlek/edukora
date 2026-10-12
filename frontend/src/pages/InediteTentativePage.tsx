@@ -24,6 +24,7 @@ import { BoutonPalette, PaletteQuestions, type EtatPastille, type GroupePalette 
 import { GrilleNotation } from "@/components/inedit/GrilleNotation"
 import { messageAlerte, reperesFranchis, type CleAlerte } from "@/lib/alertesTemps"
 import { formatDuration } from "@/lib/duration"
+import { maintenantServeur } from "@/lib/horlogeServeur"
 import { definirModeExamen } from "@/lib/modeExamen"
 import { estANoter, formatNote, formatPoints } from "@/lib/notation"
 import { trackEvent } from "@/lib/analytics"
@@ -192,7 +193,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
     const deadline = new Date(tentative.exam_mode_started_at).getTime() + tentative.duree_minutes * 60_000
     // ceil et non round : avec round, le compteur tombait à 0 jusqu'à une demi-seconde AVANT
     // l'échéance, le refetch de verrouillage partait trop tôt et le serveur répondait « pas encore ».
-    const tick = () => setRemainingSeconds(Math.max(0, Math.ceil((deadline - Date.now()) / 1000)))
+    const tick = () => setRemainingSeconds(Math.max(0, Math.ceil((deadline - maintenantServeur()) / 1000)))
     tick()
     const interval = window.setInterval(tick, 1000)
     return () => window.clearInterval(interval)
@@ -266,8 +267,8 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   useEffect(() => {
     if (remainingSeconds === null || repriseSignalee.current) return
     repriseSignalee.current = true
-    const debut = tentative?.exam_mode_started_at ? new Date(tentative.exam_mode_started_at).getTime() : Date.now()
-    if (chargementInitial.current && Date.now() - debut > 30_000) {
+    const debut = tentative?.exam_mode_started_at ? new Date(tentative.exam_mode_started_at).getTime() : maintenantServeur()
+    if (chargementInitial.current && maintenantServeur() - debut > 30_000) {
       toast("Reprise de l'épreuve", { description: `Il te reste ${formatDuration(remainingSeconds)}.` })
     }
   }, [remainingSeconds, tentative?.exam_mode_started_at])

@@ -66,3 +66,24 @@ describe("apiRequest : pannes réseau", () => {
     expect(err.message).toMatch(/Trop de demandes/)
   })
 })
+
+describe("apiRequest : heure du serveur", () => {
+  it("aligne l'horloge d'affichage sur l'en-tête Date de la réponse", async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date("2026-10-12T10:00:00Z"))
+    const { maintenantServeur, reinitialiserHorlogeServeur } = await import("@/lib/horlogeServeur")
+    // Téléphone en retard de 7 minutes sur le serveur.
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response("{}", {
+          status: 200,
+          headers: { "content-type": "application/json", date: "Mon, 12 Oct 2026 10:07:00 GMT" },
+        }),
+      ),
+    )
+    await apiRequest("/x/", { auth: false })
+    expect(maintenantServeur() - Date.now()).toBe(7 * 60_000 + 500)
+    reinitialiserHorlogeServeur()
+  })
+})

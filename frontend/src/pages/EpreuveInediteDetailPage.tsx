@@ -13,6 +13,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { SITE_NAME } from "@/lib/site"
+import { maintenantServeur } from "@/lib/horlogeServeur"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
 import { ChoixModeEpreuve } from "@/components/inedit/ChoixModeEpreuve"
@@ -215,7 +216,7 @@ export function EpreuveInediteDetailPage() {
   const chronoLance = enCours?.exam_mode_started_at != null
   const reprise = enCours !== null && (chronoLance || enCours.traitees > 0)
   const resteSecondes =
-    enCours?.echeance ? Math.max(0, Math.round((new Date(enCours.echeance).getTime() - Date.now()) / 1000)) : null
+    enCours?.echeance ? Math.max(0, Math.round((new Date(enCours.echeance).getTime() - maintenantServeur()) / 1000)) : null
   const avancement = enCours
     ? resteSecondes !== null
       ? `Chrono en cours : il te reste ${formatDuration(resteSecondes)}.`

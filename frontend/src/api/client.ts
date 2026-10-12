@@ -1,3 +1,5 @@
+import { enregistrerDateServeur } from "@/lib/horlogeServeur"
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001"
 
 // Access token gardé en mémoire uniquement, jamais en localStorage/sessionStorage :
@@ -146,8 +148,12 @@ async function fetchAvecDelai(
   const relayer = () => controller.abort()
   if (signal?.aborted) controller.abort()
   else signal?.addEventListener("abort", relayer, { once: true })
+  const debut = Date.now()
   try {
-    return await fetch(url, { ...init, signal: controller.signal })
+    const reponse = await fetch(url, { ...init, signal: controller.signal })
+    // Aligne l'affichage des chronos sur l'heure du serveur (voir lib/horlogeServeur.ts).
+    enregistrerDateServeur(reponse.headers.get("date"), debut, Date.now())
+    return reponse
   } catch (err) {
     if (expire) throw new NetworkError(true)
     // Annulation voulue par l'appelant (clé de query changée...) : React Query sait la distinguer.
