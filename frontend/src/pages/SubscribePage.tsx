@@ -18,6 +18,7 @@ import { epreuvesListPath } from "@/lib/countryPath"
 import { cheminRetourSur } from "@/lib/retourAchat"
 import { PAYMENT_CONFIG_KEY, usePaymentConfig } from "@/lib/paymentConfig"
 import { Button } from "@/components/ui/button"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
@@ -25,6 +26,7 @@ import { BienvenueAbonne } from "@/components/BienvenueAbonne"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
 import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
+import { chiffresNumeroLocal } from "@/lib/telephone"
 
 type PaymentPhase = "form" | "pending" | "success" | "failed" | "timeout" | "manual_submitted"
 type PaymentMethod = "CAMPAY" | MobileMoneyOperator
@@ -122,6 +124,13 @@ export function SubscribePage() {
   const [cursus, setCursus] = useState<Cursus | null>(null)
   const [profilPrenom, setProfilPrenom] = useState<string | null>(null)
   const [plans, setPlans] = useState<Plan[]>([])
+  // `plans` vide veut dire trois choses différentes : pas encore chargé, chargement en échec,
+  // ou vraiment aucune offre. Sans ces deux états on affichait « Aucune offre disponible »
+  // pendant le chargement ou après une coupure réseau, soit un faux verdict sur le catalogue.
+  const [plansPrets, setPlansPrets] = useState(false)
+  const [plansErreur, setPlansErreur] = useState(false)
+  // Incrémenté par « Réessayer » pour relancer l'effet de chargement des offres.
+  const [tentativePlans, setTentativePlans] = useState(0)
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CAMPAY")
@@ -149,12 +158,19 @@ export function SubscribePage() {
       // searchParams.toString() plutôt que reconstruire juste "cursus" à la main :
       // préserve aussi require=repetiteur au retour de connexion, sinon le filtre
       // ci-dessus se perdait silencieusement pour quiconque n'était pas déjà connecté.
-      navigate("/connexion", { state: { from: `/abonnement?${searchParams.toString()}` } })
+      // `intent` : sans lui, l'élève arrive sur la connexion sans savoir pourquoi on la lui demande.
+      navigate("/connexion", {
+        state: {
+          from: `/abonnement?${searchParams.toString()}`,
+          intent: "Connecte-toi pour finaliser ton abonnement.",
+        },
+      })
     }
   }, [isLoading, isAuthenticated, searchParams, navigate])
 
   useEffect(() => {
-    if (user) setPhoneNumber(user.phone_number)
+    // Le numéro du compte peut être stocké avec l'indicatif : le champ attend les 9 chiffres locaux.
+    if (user) setPhoneNumber(chiffresNumeroLocal(user.phone_number))
   }, [user])
 
   // Déjà abonné à ce cursus (typiquement : session expirée sur la fiche d'une épreuve, vue
@@ -181,7 +197,10 @@ export function SubscribePage() {
   }, [isLoading, isAuthenticated, retour, cursusId, navigate])
 
   useEffect(() => {
+    // Les réponses d'une page déjà quittée (changement de cursus, retour) ne doivent pas écraser la courante.
+    let annule = false
     listPlans(cursusId ? Number(cursusId) : undefined, profilId, true).then((data) => {
+      if (annule) return
       // require=repetiteur : ne garder que l'add-on Fiches, seul point d'entrée qui
       // le propose encore (voir FichesPage.tsx). Par défaut, l'abonnement de base
       // uniquement - un seul palier existe par cursus (Jusqu'à l'Examen), il inclut
@@ -206,13 +225,31 @@ export function SubscribePage() {
         : undefined
       const populaire = eligiblePlans.find((p) => p.duration_mode === "JUSQUA_EXAMEN")
       setSelectedPlanId((demande ?? populaire ?? eligiblePlans[0])?.id ?? null)
+      setPlansPrets(true)
+    }).catch(() => {
+      if (annule) return
+      setPlansErreur(true)
+      setPlansPrets(true)
     })
     if (cursusId) {
-      listCursus().then((all) => {
-        setCursus(all.find((c) => c.id === Number(cursusId)) ?? null)
-      })
+      listCursus()
+        .then((all) => {
+          if (!annule) setCursus(all.find((c) => c.id === Number(cursusId)) ?? null)
+        })
+        .catch(() => {
+          // Le cursus ne sert qu'au titre : sans lui la page garde son titre générique « S'abonner ».
+        })
     }
-  }, [cursusId, requireRepetiteur, dureeParam, profilId])
+    return () => {
+      annule = true
+    }
+  }, [cursusId, requireRepetiteur, dureeParam, profilId, tentativePlans])
+
+  function reessayerPlans() {
+    setPlansErreur(false)
+    setPlansPrets(false)
+    setTentativePlans((n) => n + 1)
+  }
 
   // Confirmation visuelle qu'on achète pour le bon enfant ("Abonnement pour Awa") -
   // uniquement quand la page arrive avec un profil explicite (voir "Ajouter un
@@ -220,9 +257,13 @@ export function SubscribePage() {
   // l'immense majorité des achats.
   useEffect(() => {
     if (!profilId) return
-    listProfils().then((profils) => {
-      setProfilPrenom(profils.find((p) => p.id === profilId)?.prenom ?? null)
-    })
+    listProfils()
+      .then((profils) => {
+        setProfilPrenom(profils.find((p) => p.id === profilId)?.prenom ?? null)
+      })
+      .catch(() => {
+        // Simple confirmation visuelle (« pour Awa ») : l'achat reste possible sans elle.
+      })
   }, [profilId])
 
   useEffect(() => {
@@ -272,7 +313,7 @@ export function SubscribePage() {
 
     setError(null)
     if (!/^6\d{8}$/.test(phoneNumber)) {
-      setError("Entrez un numéro Mobile Money valide (9 chiffres, commence par 6).")
+      setError("Entre un numéro Mobile Money valide (9 chiffres, commence par 6).")
       return
     }
 
@@ -452,17 +493,25 @@ export function SubscribePage() {
           <Card className="animate-fade-up overflow-hidden shadow-lg shadow-primary/5 lg:sticky lg:top-24 lg:col-start-2 lg:row-start-1">
             <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
             <CardContent className="flex flex-col gap-2.5 p-6">
-              <Label className="text-sm font-semibold">Votre offre</Label>
-              <div className="flex flex-col gap-2">
-                {plans.length === 1 ? renderPlanRecap(plans[0]) : plans.map(renderPlanOption)}
-                {plans.length === 0 && (
-                  <p className="text-sm text-muted-foreground">
-                    {requireRepetiteur
-                      ? "L'add-on Fiches n'est pas encore disponible à l'achat pour ce cursus - reviens bientôt."
-                      : "Aucune offre disponible pour ce cursus actuellement."}
-                  </p>
-                )}
-              </div>
+              <Label className="text-sm font-semibold">Ton offre</Label>
+              {!plansPrets ? (
+                <div className="flex flex-col gap-2" aria-busy="true" aria-label="Chargement de l'offre">
+                  <div className="h-16 w-full animate-pulse rounded-xl bg-muted" />
+                </div>
+              ) : plansErreur ? (
+                <ErreurChargement compact objet="l'offre" onRetry={reessayerPlans} />
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {plans.length === 1 ? renderPlanRecap(plans[0]) : plans.map(renderPlanOption)}
+                  {plans.length === 0 && (
+                    <p className="text-sm text-muted-foreground">
+                      {requireRepetiteur
+                        ? "L'add-on Fiches n'est pas encore disponible à l'achat pour ce cursus - reviens bientôt."
+                        : "Aucune offre disponible pour ce cursus actuellement."}
+                    </p>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
@@ -481,7 +530,7 @@ export function SubscribePage() {
                 <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">
                   <Gift className="size-4 shrink-0 text-gold-text" />
                   <span>
-                    Vous avez <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong> de
+                    Tu as <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong> de
                     crédit parrainage - appliqué automatiquement pour un paiement Campay.
                   </span>
                 </div>
@@ -535,7 +584,7 @@ export function SubscribePage() {
                       <button
                         type="button"
                         onClick={() => setShowManualOptions(true)}
-                        className="self-start text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                        className="min-h-11 self-start text-left text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
                       >
                         Des difficultés avec Campay ? Payer manuellement via Orange Money ou MTN MoMo
                       </button>
@@ -543,7 +592,7 @@ export function SubscribePage() {
                       <div className="flex flex-col gap-2.5 rounded-lg border border-dashed border-input p-3">
                         <p className="text-xs text-muted-foreground">
                           {!campayActif && "Le paiement automatique est momentanément indisponible. "}
-                          Paiement manuel : vous effectuez vous-même le transfert, puis déclarez votre transaction.
+                          Paiement manuel : tu effectues toi-même le transfert, puis tu déclares ta transaction.
                           Vérifiée par notre équipe sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}.
                         </p>
                         <div className="grid grid-cols-2 gap-2">
@@ -587,8 +636,11 @@ export function SubscribePage() {
                             inputMode="numeric"
                             placeholder="677123456"
                             value={phoneNumber}
-                            onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
-                            maxLength={9}
+                            // Pas de maxLength : il tronquait un collage « +237 6… » ; le helper
+                            // retire l'indicatif et ramène à 9 chiffres.
+                            onChange={(e) => setPhoneNumber(chiffresNumeroLocal(e.target.value))}
+                            type="tel"
+                            autoComplete="tel-national"
                           />
                         </div>
 
@@ -635,7 +687,7 @@ export function SubscribePage() {
           {phase === "manual_submitted" && declaredPayment && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <CheckCircle2 className="size-10 text-success" />
-              <p className="font-display font-medium">Votre déclaration a bien été enregistrée</p>
+              <p className="font-display font-medium">Ta déclaration a bien été enregistrée</p>
               <p className="text-sm text-muted-foreground">
                 Notre équipe la vérifie, généralement sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}. Tu recevras un SMS dès qu'elle est validée,
                 et ton accès s'active alors tout seul : rien d'autre à faire, tu peux fermer cette page.
@@ -655,17 +707,23 @@ export function SubscribePage() {
           {phase === "pending" && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <Loader2 className="size-8 animate-spin text-primary" />
-              <p className="font-display font-medium">Confirmez le paiement sur votre téléphone</p>
+              <p className="font-display font-medium">Confirme le paiement sur ton téléphone</p>
               <p className="text-sm text-muted-foreground">
                 Une demande Mobile Money a été envoyée au {phoneNumber}. Cette page se met à jour automatiquement.
               </p>
+              {/* Pas « Annuler » : ce bouton n'annule rien côté opérateur, il arrête seulement
+                  de sonder le statut sur cette page. Le dire évite qu'on croie sa demande
+                  retirée, puis qu'on repaie une deuxième fois. */}
               <button
                 type="button"
                 onClick={cancelPending}
-                className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
               >
-                Annuler
+                Revenir au formulaire
               </button>
+              <p className="text-xs text-muted-foreground">
+                Si tu as déjà validé le paiement, ton accès s'activera quand même.
+              </p>
             </div>
           )}
 
@@ -674,7 +732,7 @@ export function SubscribePage() {
               <AlertCircle className="size-10 text-warning" />
               <p className="font-display font-medium">La confirmation prend plus de temps que prévu</p>
               <p className="text-sm text-muted-foreground">
-                Avez-vous validé la demande sur votre téléphone ? Si le paiement passe malgré tout, votre
+                As-tu validé la demande sur ton téléphone ? Si le paiement passe malgré tout, ton
                 abonnement s'activera automatiquement dès la confirmation de l'opérateur.
               </p>
               <Button variant="outline" onClick={() => setPhase("form")}>
@@ -684,7 +742,7 @@ export function SubscribePage() {
                 <button
                   type="button"
                   onClick={passerAuPaiementManuel}
-                  className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                  className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
                 >
                   Payer manuellement via Orange Money ou MTN MoMo
                 </button>
@@ -730,7 +788,7 @@ export function SubscribePage() {
                 <button
                   type="button"
                   onClick={passerAuPaiementManuel}
-                  className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                  className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
                 >
                   Payer manuellement via Orange Money ou MTN MoMo
                 </button>
@@ -743,7 +801,7 @@ export function SubscribePage() {
 
       <p className="mt-6 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <ShieldCheck className="size-3.5 shrink-0" />
-        Paiement sécurisé - votre abonnement s'active dès la confirmation du paiement.
+        Paiement sécurisé - ton abonnement s'active dès la confirmation du paiement.
       </p>
     </div>
   )

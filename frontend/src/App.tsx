@@ -1,9 +1,9 @@
 import { Suspense, lazy } from "react"
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useParams } from "react-router-dom"
 import { Toaster } from "sonner"
 
 import { AuthProvider } from "@/context/AuthContext"
-import { CountryProvider } from "@/context/CountryContext"
+import { CountryProvider, useCountry } from "@/context/CountryContext"
 import { ThemeProvider, useTheme } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
 import { BandeauHorsLigne } from "@/components/BandeauHorsLigne"
@@ -19,6 +19,7 @@ import { BottomTabBar } from "@/components/BottomTabBar"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
 import { RouteFallback } from "@/components/RouteFallback"
 import { ScrollToTop } from "@/components/ScrollToTop"
+import { BalisesDeRoute } from "@/components/BalisesDeRoute"
 import { COUNTRY_STORAGE_KEY, DEFAULT_COUNTRY_CODE } from "@/lib/countryPath"
 
 // Chargées à la demande (une par route) plutôt qu'au démarrage : les pages de
@@ -56,6 +57,7 @@ const ParcoursSubjectPage = lazy(() => import("@/pages/ParcoursSubjectPage").the
 const InediteTentativePage = lazy(() => import("@/pages/InediteTentativePage").then((m) => ({ default: m.InediteTentativePage })))
 const InediteResultPage = lazy(() => import("@/pages/InediteResultPage").then((m) => ({ default: m.InediteResultPage })))
 const FichesPage = lazy(() => import("@/pages/FichesPage").then((m) => ({ default: m.FichesPage })))
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })))
 const RecherchePage = lazy(() => import("@/pages/RecherchePage").then((m) => ({ default: m.RecherchePage })))
 
 /**
@@ -67,6 +69,18 @@ const RecherchePage = lazy(() => import("@/pages/RecherchePage").then((m) => ({ 
 function RootRedirect() {
   const target = localStorage.getItem(COUNTRY_STORAGE_KEY) || DEFAULT_COUNTRY_CODE
   return <Navigate to={`/${target}`} replace />
+}
+
+/**
+ * `/:country` accepte n'importe quel premier segment : sans ce garde, `/n-importe-quoi` affichait
+ * l'accueil d'un pays inexistant (vide). Tant que la liste des pays n'est pas arrivée (ou si son
+ * chargement échoue), on laisse passer plutôt que d'afficher un 404 à tort.
+ */
+function CountryGuard() {
+  const { country } = useParams<{ country: string }>()
+  const { countries } = useCountry()
+  const inconnu = countries.length > 0 && !countries.some((c) => c.code.toLowerCase() === country?.toLowerCase())
+  return inconnu ? <NotFoundPage /> : <Outlet />
 }
 
 // Composant à part plutôt qu'appelé directement dans App() : useTheme() exige un
@@ -85,6 +99,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <BalisesDeRoute />
           <CountryProvider>
             <div className="flex min-h-screen flex-col">
               {/* Premier élément atteint au clavier : évite de retraverser tout l'en-tête à
@@ -107,16 +122,18 @@ function App() {
                   <Suspense fallback={<RouteFallback />}>
                     <Routes>
                       <Route path="/" element={<RootRedirect />} />
-                      <Route path="/:country" element={<CataloguePage />} />
-                      <Route path="/:country/epreuves" element={<EpreuvesListPage />} />
-                      <Route path="/:country/recherche" element={<RecherchePage />} />
-                      <Route path="/:country/themes-frequents" element={<ThemesFrequentsPage />} />
-                      <Route path="/:country/themes-frequents/:tagId/exercices" element={<ThemeExercicesPage />} />
-                      <Route path="/:country/themes-frequents/:tagId/exercices/:exerciseId" element={<ThemeExerciceLecturePage />} />
-                      <Route path="/:country/cours" element={<CoursListPage />} />
-                      <Route path="/:country/epreuves/:slug" element={<EpreuveDetailPage />} />
-                      <Route path="/:country/epreuves/:slug/lire" element={<EpreuveReaderPage />} />
-                      <Route path="/:country/epreuves-inedites/:id" element={<EpreuveInediteDetailPage />} />
+                      <Route path="/:country" element={<CountryGuard />}>
+                        <Route index element={<CataloguePage />} />
+                        <Route path="epreuves" element={<EpreuvesListPage />} />
+                        <Route path="recherche" element={<RecherchePage />} />
+                        <Route path="themes-frequents" element={<ThemesFrequentsPage />} />
+                        <Route path="themes-frequents/:tagId/exercices" element={<ThemeExercicesPage />} />
+                        <Route path="themes-frequents/:tagId/exercices/:exerciseId" element={<ThemeExerciceLecturePage />} />
+                        <Route path="cours" element={<CoursListPage />} />
+                        <Route path="epreuves/:slug" element={<EpreuveDetailPage />} />
+                        <Route path="epreuves/:slug/lire" element={<EpreuveReaderPage />} />
+                        <Route path="epreuves-inedites/:id" element={<EpreuveInediteDetailPage />} />
+                      </Route>
                       {/* Anciennes URLs sans préfixe pays (avant la reco d'audit UX qui l'a
                           introduit) - conservées pour les liens/favoris/index déjà en
                           circulation, chaque page se recanonicalise elle-même dès que le
@@ -153,6 +170,7 @@ function App() {
                       <Route path="/confidentialite" element={<PrivacyPage />} />
                       <Route path="/cgu" element={<TermsPage />} />
                       <Route path="/a-propos" element={<AboutPage />} />
+                      <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                   </Suspense>
                 </ErrorBoundary>

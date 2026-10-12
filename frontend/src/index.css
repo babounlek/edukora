@@ -156,8 +156,11 @@
     border-color: var(--border);
   }
 
-  html {
-    scroll-behavior: smooth;
+  /* Défilement animé seulement pour qui ne l'a pas désactivé dans son système (vestibulaire). */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
@@ -304,4 +307,31 @@
   .animate-xp-pop,
   .animate-quiz-flame { animation: none; }
   .quiz-confetti-piece { display: none; }
+}
+
+/* Formules centrées plus larges que l'écran (corrigés, cours) : elles défilent dans leur bloc au
+   lieu d'élargir toute la page sur mobile. */
+.katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Texte justifié en français sur ~375 px : de larges blancs entre les mots. Sur petit écran on
+   aligne à gauche, au-delà on garde le justifié avec césure pour réduire ces blancs. Hors du
+   @layer pour primer sur la classe utilitaire text-justify. */
+.prose,
+.text-justify {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.katex {
+  hyphens: none;
+}
+
+@media (max-width: 639px) {
+  .text-justify {
+    text-align: left;
+  }
 }

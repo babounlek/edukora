@@ -23,6 +23,21 @@ import { useAuth } from "@/context/AuthContext"
 export const PARAM_VOIR_TOUT = "tout"
 
 /**
+ * Retire le cursus de l'URL ET pose `tout=1`, dans une même opération.
+ *
+ * Retirer `cursus` seul ne suffit pas : useFiltreCursusParDefaut le remet aussitôt tant
+ * que `tout=1` est absent, si bien que la puce, « Tous » ou « Tout effacer » semblaient
+ * sans effet. À appeler sur tout retrait EXPLICITE du cursus par l'élève (jamais pour un
+ * changement de pays, où le défaut doit au contraire se réappliquer). Mute `params` et le
+ * renvoie, pour s'enchaîner dans un callback de setSearchParams.
+ */
+export function desactiverFiltreCursus(params: URLSearchParams): URLSearchParams {
+  params.delete("cursus")
+  params.set(PARAM_VOIR_TOUT, "1")
+  return params
+}
+
+/**
  * Lecture seule : quel est l'état du pré-filtrage, sans jamais l'appliquer.
  *
  * Séparé de useFiltreCursusParDefaut à cause de l'ordre des effets de React, qui
@@ -75,10 +90,7 @@ export function BandeauFiltreCursus() {
 
   const libelle = `${cursusPrepare.examen_display}${cursusPrepare.series ? ` ${cursusPrepare.series.code}` : ""}`
   const montrerTout = () => {
-    const suivant = new URLSearchParams(searchParams)
-    suivant.delete("cursus")
-    suivant.set(PARAM_VOIR_TOUT, "1")
-    setSearchParams(suivant)
+    setSearchParams(desactiverFiltreCursus(new URLSearchParams(searchParams)))
   }
   return (
     <p className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">

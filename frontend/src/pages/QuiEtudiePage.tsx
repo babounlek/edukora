@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 import { Loader2, UserCircle } from "lucide-react"
 
 import { listProfils } from "@/api/endpoints"
+import { ApiError } from "@/api/client"
 import { activerProfilProtege } from "@/lib/changerProfilActif"
+import { PinAnnule } from "@/lib/pinPrompts"
 import type { Profil } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Card, CardContent } from "@/components/ui/card"
@@ -57,8 +60,11 @@ export function QuiEtudiePage() {
       const response = await activerProfilProtege(profil.id, profil.prenom)
       login(response.access, response.user)
       navigate(redirectTo, { replace: true })
-    } catch {
+    } catch (err) {
       setActivatingId(null)
+      // Annuler la saisie du code PIN est un choix de l'élève, pas une panne : pas de message.
+      if (err instanceof PinAnnule) return
+      toast.error(err instanceof ApiError ? err.message : "Impossible de choisir ce profil pour le moment. Réessaie.")
     }
   }
 

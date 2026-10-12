@@ -44,8 +44,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ReviserTabs } from "@/components/ReviserTabs"
-import { BandeauFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 import { useInedites } from "@/lib/cursusAccueil"
+import { ErreurChargement } from "@/components/ErreurChargement"
 
 type ViewMode = "cards" | "list"
 
@@ -111,10 +112,13 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
     <button
       type="button"
       onClick={onRemove}
-      className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
+      // Le libellé seul (« BAC D ») ne dit pas que le bouton retire le filtre : sans cela, un
+      // lecteur d'écran annonce juste le nom de la puce. min-h-9 : cible tactile utilisable.
+      aria-label={`Retirer le filtre ${label}`}
+      className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
     >
       {label}
-      <X className="size-3" />
+      <X className="size-3" aria-hidden="true" />
     </button>
   )
 }
@@ -159,7 +163,7 @@ export function EpreuvesListPage() {
   // Pré-filtrage sur l'examen déclaré, déclaré APRÈS la restauration de session
   // ci-dessus : l'ordre des deux effets compte, sans quoi une recherche sauvegardée
   // serait ignorée (voir useFiltreCursusParDefaut).
-  useFiltreCursusParDefaut()
+  const { cursusPrepare } = useFiltreCursusParDefaut()
 
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
@@ -285,6 +289,9 @@ export function EpreuvesListPage() {
   const hasMore = epreuvesQuery.hasNextPage ?? false
   const isLoading = epreuvesQuery.isLoading
   const isLoadingMore = epreuvesQuery.isFetchingNextPage
+  // Page N+1 en échec alors que les pages précédentes sont là : on garde la liste et on offre un
+  // repli (voir plus bas). Sans ce drapeau, l'observateur ci-dessous relançait la requête en boucle.
+  const erreurPageSuivante = epreuvesQuery.isFetchNextPageError
 
   // Chargement automatique au défilement plutôt qu'un bouton "Charger plus" : sur un
   // catalogue de plusieurs centaines d'épreuves, laisser la lecture continuer sans
@@ -294,7 +301,9 @@ export function EpreuvesListPage() {
   const sentinelRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = sentinelRef.current
-    if (!el || !hasMore) return
+    // Pas d'observateur après un échec : la sentinelle est encore dans le viewport, il
+    // relancerait la requête à chaque rendu. Le bouton « Charger plus » prend le relais.
+    if (!el || !hasMore || erreurPageSuivante) return
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !isLoadingMore) epreuvesQuery.fetchNextPage()
@@ -304,7 +313,7 @@ export function EpreuvesListPage() {
     observer.observe(el)
     return () => observer.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMore, isLoadingMore])
+  }, [hasMore, isLoadingMore, erreurPageSuivante])
 
   const [viewMode, setViewModeState] = useState<ViewMode>(() => {
     try {
@@ -343,6 +352,9 @@ export function EpreuvesListPage() {
       (prev) => {
         const next = new URLSearchParams(prev)
         if (value) next.set(key, value)
+        // Retirer le cursus (puce, « Tous », re-clic sur la pastille) est un choix explicite :
+        // sans `tout=1`, le pré-filtrage le remettait aussitôt dans l'URL.
+        else if (key === "cursus" && cursusPrepare) desactiverFiltreCursus(next)
         else next.delete(key)
         try {
           sessionStorage.setItem(FILTERS_SESSION_KEY, next.toString())
@@ -360,8 +372,12 @@ export function EpreuvesListPage() {
       (prev) => {
         const next = new URLSearchParams(prev)
         for (const key of FILTER_KEYS) next.delete(key)
+        // « Tout effacer » veut dire tout le catalogue : on garde `tout=1` (et on le mémorise en
+        // session) pour que le cursus par défaut ne revienne pas au prochain rendu.
+        if (cursusPrepare) desactiverFiltreCursus(next)
         try {
-          sessionStorage.removeItem(FILTERS_SESSION_KEY)
+          if (cursusPrepare) sessionStorage.setItem(FILTERS_SESSION_KEY, next.toString())
+          else sessionStorage.removeItem(FILTERS_SESSION_KEY)
         } catch {
           // stockage indisponible - rien à effacer
         }
@@ -694,19 +710,11 @@ export function EpreuvesListPage() {
       ) : epreuvesQuery.isError && epreuvesList.length === 0 ? (
         // Une panne n'est pas "aucun résultat" : sans ce cas, une coupure réseau se lisait
         // comme un catalogue vide et l'élève cherchait l'erreur dans ses filtres.
-        <div role="alert" className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
-            <RefreshCw className="size-6" />
-          </span>
-          <p className="font-display text-lg font-semibold">Impossible de charger les épreuves</p>
-          <p className="max-w-sm text-sm text-muted-foreground">
-            Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer.
-          </p>
-          <Button onClick={() => epreuvesQuery.refetch()} className="rounded-full">
-            <RefreshCw />
-            Réessayer
-          </Button>
-        </div>
+        <ErreurChargement
+          objet="les épreuves"
+          message="Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer."
+          onRetry={() => epreuvesQuery.refetch()}
+        />
       ) : epreuvesList.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
           <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -808,6 +816,15 @@ export function EpreuvesListPage() {
           {hasMore && (
             <div ref={sentinelRef} className="mt-8 flex flex-col items-center gap-2 py-4">
               {isLoadingMore && <Loader2 className="size-5 animate-spin text-muted-foreground" />}
+              {erreurPageSuivante && !isLoadingMore && (
+                <div role="alert" className="flex flex-col items-center gap-2 text-center">
+                  <p className="text-sm text-destructive">Impossible de charger la suite des épreuves.</p>
+                  <Button variant="outline" onClick={() => epreuvesQuery.fetchNextPage()} className="min-h-11">
+                    <RefreshCw />
+                    Charger plus
+                  </Button>
+                </div>
+              )}
               <p className="text-xs tabular-nums text-muted-foreground">
                 {formatAmount(epreuvesList.length)} sur {formatAmount(count)}
               </p>

@@ -10,7 +10,6 @@ import {
   Layers,
   List,
   Loader2,
-  RefreshCw,
   Search,
   SearchX,
   X,
@@ -35,7 +34,8 @@ import { CoursCard } from "@/components/CoursCard"
 import { CoursListRow } from "@/components/CoursListRow"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { ReviserTabs } from "@/components/ReviserTabs"
-import { BandeauFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { ErreurChargement } from "@/components/ErreurChargement"
 
 type ViewMode = "cards" | "list"
 
@@ -71,10 +71,13 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
     <button
       type="button"
       onClick={onRemove}
-      className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
+      // Le libellé seul (« BAC D ») ne dit pas que le bouton retire le filtre : sans cela, un
+      // lecteur d'écran annonce juste le nom de la puce. min-h-9 : cible tactile utilisable.
+      aria-label={`Retirer le filtre ${label}`}
+      className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
     >
       {label}
-      <X className="size-3" />
+      <X className="size-3" aria-hidden="true" />
     </button>
   )
 }
@@ -102,7 +105,7 @@ export function CoursListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   // Pré-filtrage sur l'examen déclaré - voir useFiltreCursusParDefaut : un défaut
   // annoncé et réversible, jamais un masquage.
-  useFiltreCursusParDefaut()
+  const { cursusPrepare } = useFiltreCursusParDefaut()
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
   const nonLusFilter = searchParams.get("nonlus") === "true"
@@ -219,6 +222,8 @@ export function CoursListPage() {
   const hasMore = coursQuery.hasNextPage ?? false
   const isLoading = coursQuery.isLoading
   const isLoadingMore = coursQuery.isFetchingNextPage
+  // Page suivante en échec : voir l'observateur ci-dessous, qui sinon la relançait en boucle.
+  const erreurPageSuivante = coursQuery.isFetchNextPageError
 
   // Chargement automatique au défilement, comme /epreuves : la lecture d'un catalogue de plusieurs
   // milliers de cours ne doit pas s'interrompre sur un bouton. Le bouton "Charger plus" reste
@@ -226,7 +231,7 @@ export function CoursListPage() {
   const sentinelRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = sentinelRef.current
-    if (!el || !hasMore) return
+    if (!el || !hasMore || erreurPageSuivante) return
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !isLoadingMore) coursQuery.fetchNextPage()
@@ -236,7 +241,7 @@ export function CoursListPage() {
     observer.observe(el)
     return () => observer.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMore, isLoadingMore])
+  }, [hasMore, isLoadingMore, erreurPageSuivante])
 
   // Préférence d'affichage personnelle (pas un filtre de recherche) : persistée en
   // localStorage plutôt que dans l'URL, comme le thème - pas besoin d'être partagée
@@ -285,6 +290,9 @@ export function CoursListPage() {
       (prev) => {
         const next = new URLSearchParams(prev)
         if (value) next.set(key, value)
+        // Retirer le cursus (puce, « Tous », re-clic sur la pastille) est un choix explicite :
+        // sans `tout=1`, le pré-filtrage le remettait aussitôt dans l'URL.
+        else if (key === "cursus" && cursusPrepare) desactiverFiltreCursus(next)
         else next.delete(key)
         return next
       },
@@ -300,6 +308,8 @@ export function CoursListPage() {
       (prev) => {
         const next = new URLSearchParams(prev)
         for (const key of ["subject", "cursus", "nonlus", "search", "savoir", "theme", "savoir_label"]) next.delete(key)
+        // « Tout effacer » veut dire tout le catalogue : `tout=1` empêche le cursus par défaut de revenir.
+        if (cursusPrepare) desactiverFiltreCursus(next)
         return next
       },
       { replace: true },
@@ -572,19 +582,11 @@ export function CoursListPage() {
       ) : coursQuery.isError && coursList.length === 0 ? (
         // Une panne n'est pas "aucun résultat" : sans ce cas, une coupure réseau se lisait comme
         // un catalogue vide et l'élève cherchait l'erreur dans ses filtres.
-        <div role="alert" className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
-            <RefreshCw className="size-6" />
-          </span>
-          <p className="font-display text-lg font-semibold">Impossible de charger les cours</p>
-          <p className="max-w-sm text-sm text-muted-foreground">
-            Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer.
-          </p>
-          <Button onClick={() => coursQuery.refetch()} className="rounded-full">
-            <RefreshCw />
-            Réessayer
-          </Button>
-        </div>
+        <ErreurChargement
+          objet="les cours"
+          message="Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer."
+          onRetry={() => coursQuery.refetch()}
+        />
       ) : coursList.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
           <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -671,6 +673,11 @@ export function CoursListPage() {
                 {isLoadingMore && <Loader2 className="size-4 animate-spin" />}
                 Charger plus
               </Button>
+              {erreurPageSuivante && !isLoadingMore && (
+                <p role="alert" className="text-sm text-destructive">
+                  Impossible de charger la suite des cours. Réessaie.
+                </p>
+              )}
               {/* Repère de progression dans la liste : sans lui, "Charger plus" sur
                   3 700 résultats ne dit jamais où on en est ni combien il reste. */}
               <p className="text-xs tabular-nums text-muted-foreground">

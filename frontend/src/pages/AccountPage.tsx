@@ -1,8 +1,9 @@
 import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 import {
   Check, Copy, Crown, FileText, GraduationCap,
-  MessageCircle, NotebookPen, Pencil, Settings2, Share2, Sparkles, TrendingUp, Zap, type LucideIcon,
+  MessageCircle, NotebookPen, Pencil, RefreshCw, Settings2, Share2, Sparkles, TrendingUp, Zap, type LucideIcon,
 } from "lucide-react"
 
 import { getWhatsAppStatus, optInWhatsApp, optOutWhatsApp, updateMe } from "@/api/endpoints"
@@ -32,6 +33,8 @@ export function AccountPage() {
   const [copied, setCopied] = useState(false)
   const [whatsappOptedIn, setWhatsappOptedIn] = useState<boolean | null>(null)
   const [whatsappLoading, setWhatsappLoading] = useState(false)
+  // Lecture de l'état WhatsApp en échec : sans ce signal le bloc restait sur « Chargement… » à vie.
+  const [whatsappErreur, setWhatsappErreur] = useState(false)
 
   const [isEditingProfile, setIsEditingProfile] = useState(false)
   const [fullNameDraft, setFullNameDraft] = useState("")
@@ -45,14 +48,24 @@ export function AccountPage() {
       navigate("/connexion", { state: { from: "/compte" } })
       return
     }
-    getWhatsAppStatus().then((status) => setWhatsappOptedIn(status.opted_in))
+    chargerWhatsApp()
   }, [isLoading, isAuthenticated, navigate])
+
+  function chargerWhatsApp() {
+    setWhatsappErreur(false)
+    getWhatsAppStatus()
+      .then((status) => setWhatsappOptedIn(status.opted_in))
+      .catch(() => setWhatsappErreur(true))
+  }
 
   async function handleToggleWhatsApp() {
     setWhatsappLoading(true)
     try {
       const status = whatsappOptedIn ? await optOutWhatsApp() : await optInWhatsApp()
       setWhatsappOptedIn(status.opted_in)
+    } catch (err) {
+      // L'interrupteur reste sur son état d'avant : sans message, on croyait le réglage changé.
+      toast.error(err instanceof ApiError ? err.message : "Impossible de modifier ce réglage pour le moment.")
     } finally {
       setWhatsappLoading(false)
     }
@@ -86,9 +99,15 @@ export function AccountPage() {
   const whatsappMessage = `Salut ! Je révise sur ${SITE_NAME} (corrigés BEPC/Probatoire/BAC) - viens jeter un œil : ${referralLink}`
 
   function handleCopyLink() {
-    navigator.clipboard.writeText(referralLink)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    // navigator.clipboard est absent hors contexte sécurisé et refusé dans certains navigateurs
+    // intégrés : on n'affiche le « copié » qu'une fois la copie réellement faite.
+    Promise.resolve()
+      .then(() => navigator.clipboard.writeText(referralLink))
+      .then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      })
+      .catch(() => toast.error("Impossible de copier le lien. Utilise le bouton WhatsApp ou copie-le à la main."))
   }
 
   const nom = user.full_name || user.pseudo || user.phone_number || user.email || "Mon compte"
@@ -237,7 +256,15 @@ export function AccountPage() {
         </Section>
 
         <Section icone={Settings2} titre="Réglages">
-          {whatsappOptedIn === null ? (
+          {whatsappErreur ? (
+            <div role="alert" className="flex items-center justify-between gap-4">
+              <p className="text-sm text-muted-foreground">Impossible de lire ton réglage WhatsApp pour le moment.</p>
+              <Button onClick={chargerWhatsApp} variant="outline" size="sm" className="min-h-11 shrink-0 rounded-full">
+                <RefreshCw className="size-3.5" />
+                Réessayer
+              </Button>
+            </div>
+          ) : whatsappOptedIn === null ? (
             <p className="text-sm text-muted-foreground">Chargement…</p>
           ) : (
             <div className="flex items-center justify-between gap-4">

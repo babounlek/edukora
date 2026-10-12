@@ -36,6 +36,7 @@ import type { Cursus, Difficulte, Fiche, FicheThemeEligible, InscriptionRepetite
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { ApercuFichesPdf } from "@/components/ApercuFichesPdf"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { Etape, EtapesPresentation, Eyebrow, LigneRecap, RecapVide, StatChip } from "@/components/Configurateur"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -103,6 +104,9 @@ export function FichesPage() {
 
   const [inscriptions, setInscriptions] = useState<InscriptionRepetiteur[]>([])
   const [inscriptionsLoaded, setInscriptionsLoaded] = useState(false)
+  const [erreurChargement, setErreurChargement] = useState(false)
+  // Incrémenté par « Réessayer » : relance l'effet de chargement initial.
+  const [essai, setEssai] = useState(0)
   const [cursusList, setCursusList] = useState<Cursus[]>([])
   const [selectedCursus, setSelectedCursus] = useState("")
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -141,13 +145,32 @@ export function FichesPage() {
       setInscriptionsLoaded(true)
       return
     }
-    listMyInscriptionsRepetiteur().then((data) => {
-      setInscriptions(data.filter((i) => i.is_active))
-      setInscriptionsLoaded(true)
-    })
-    listCursus(country).then(setCursusList)
+    // Sans .catch, un échec laissait `inscriptionsLoaded` à false : le squelette de page ne
+    // partait jamais. Les deux requêtes conditionnent l'écran (accès + cursus), donc un échec de
+    // l'une ou l'autre passe par le même état d'erreur avec « Réessayer ».
+    let annule = false
+    setErreurChargement(false)
+    listMyInscriptionsRepetiteur()
+      .then((data) => {
+        if (annule) return
+        setInscriptions(data.filter((i) => i.is_active))
+        setInscriptionsLoaded(true)
+      })
+      .catch(() => {
+        if (!annule) setErreurChargement(true)
+      })
+    listCursus(country)
+      .then((data) => {
+        if (!annule) setCursusList(data)
+      })
+      .catch(() => {
+        if (!annule) setErreurChargement(true)
+      })
     rafraichirMesFiches()
-  }, [authLoading, isAuthenticated, country, rafraichirMesFiches])
+    return () => {
+      annule = true
+    }
+  }, [authLoading, isAuthenticated, country, rafraichirMesFiches, essai])
 
   useEffect(() => {
     // ?ref=pdf_fiche_corrige : posé par le PDF corrigé d'une fiche (voir
@@ -195,7 +218,9 @@ export function FichesPage() {
       return
     }
     setSelectedSubject("")
-    listQuizSubjects(cursusObj.id).then(setSubjects)
+    listQuizSubjects(cursusObj.id)
+      .then(setSubjects)
+      .catch(() => toast.error("Impossible de charger les matières de ce cursus. Change de cursus ou réessaie."))
   }, [selectedCursus, cursusList, hasAccessForCursus])
 
   useEffect(() => {
@@ -216,6 +241,9 @@ export function FichesPage() {
         if (annule) return
         setEligibleThemes(themes)
         setSelectedThemeIds(new Set())
+      })
+      .catch(() => {
+        if (!annule) toast.error("Impossible de charger les compétences de cette matière. Réessaie.")
       })
       .finally(() => {
         if (!annule) setThemesLoading(false)
@@ -349,6 +377,14 @@ export function FichesPage() {
     if (!ficheId) return
     resultatRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
   }, [ficheId])
+
+  if (!authLoading && isAuthenticated && erreurChargement) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+        <ErreurChargement objet="tes accès Fiches" onRetry={() => setEssai((n) => n + 1)} />
+      </div>
+    )
+  }
 
   if (authLoading || !inscriptionsLoaded) {
     return (
@@ -596,10 +632,10 @@ export function FichesPage() {
                     pleine largeur, constaté à 375px). */}
                 {isAuthenticated ? (
                   <Button asChild size="lg" className="w-full sm:w-auto">
-                    <a href="/tarifs">
+                    <Link to="/tarifs">
                       Voir les prix
                       <ArrowRight className="size-4" />
-                    </a>
+                    </Link>
                   </Button>
                 ) : (
                   <div className="flex w-full flex-col items-start gap-2">

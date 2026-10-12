@@ -1,5 +1,6 @@
-import { useEffect, useState, type FormEvent } from "react"
+import { useCallback, useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 import { ArrowRight, CalendarClock, Check, Loader2, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
 
 import {
@@ -14,6 +15,7 @@ import { ApiError } from "@/api/client"
 import type { InscriptionInedite, InscriptionRepetiteur, Profil, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { SecuriteProfils } from "@/components/SecuriteProfils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -129,8 +131,10 @@ function NomProfilEditable({ profil, onRenamed }: { profil: Profil; onRenamed: (
     try {
       const updated = await renameProfil(profil.id, prenom)
       onRenamed(updated)
-    } catch {
+    } catch (err) {
       setValeur(profil.prenom)
+      // Sans message, le prénom reprenait simplement son ancienne valeur : on croyait avoir renommé.
+      toast.error(err instanceof ApiError ? err.message : "Impossible de renommer ce profil pour le moment.")
     } finally {
       setSaving(false)
       setEditing(false)
@@ -164,12 +168,15 @@ function NomProfilEditable({ profil, onRenamed }: { profil: Profil; onRenamed: (
     <button
       type="button"
       onClick={() => setEditing(true)}
-      className="group flex items-center gap-1.5 text-left"
+      aria-label={`Renommer le profil ${profil.prenom || "sans nom"}`}
+      className="group flex min-h-11 items-center gap-1.5 text-left"
     >
       <h3 className="font-display text-base font-semibold">
         {profil.prenom || "Sans nom"}
       </h3>
-      <Pencil className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+      {/* Visible en permanence : sur tactile il n'y a pas de survol qui révèle le crayon, la
+          possibilité de renommer restait invisible. Discret au repos, renforcé au survol. */}
+      <Pencil className="size-3.5 shrink-0 text-muted-foreground/70 transition-colors group-hover:text-foreground" aria-hidden="true" />
     </button>
   )
 }
@@ -241,10 +248,28 @@ export function AccesPage() {
 
   const { isAuthenticated, isLoading, user } = useAuth()
   const navigate = useNavigate()
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  // null = pas encore chargé : un tableau vide initial se lisait « aucun abonnement », donc
+  // « Aucun accès actif » s'affichait à tort tant que la réponse n'était pas arrivée (ou échouait).
+  const [subscriptions, setSubscriptions] = useState<Subscription[] | null>(null)
   const [inscriptionsInedites, setInscriptionsInedites] = useState<InscriptionInedite[] | null>(null)
   const [inscriptionsRepetiteur, setInscriptionsRepetiteur] = useState<InscriptionRepetiteur[] | null>(null)
   const [profils, setProfils] = useState<Profil[] | null>(null)
+  const [erreur, setErreur] = useState(false)
+
+  // Les quatre appels sont indissociables : sans l'un d'eux, l'écran afficherait un état faux
+  // (accès manquant, profils absents). Un seul échec suffit donc à basculer sur l'erreur.
+  const charger = useCallback(() => {
+    setErreur(false)
+    setSubscriptions(null)
+    setInscriptionsInedites(null)
+    setInscriptionsRepetiteur(null)
+    setProfils(null)
+    const echec = () => setErreur(true)
+    listMySubscriptions().then(setSubscriptions).catch(echec)
+    listMyInscriptionsInedites().then(setInscriptionsInedites).catch(echec)
+    listMyInscriptionsRepetiteur().then(setInscriptionsRepetiteur).catch(echec)
+    listProfils().then(setProfils).catch(echec)
+  }, [])
 
   useEffect(() => {
     if (isLoading) return
@@ -252,15 +277,13 @@ export function AccesPage() {
       navigate("/connexion", { state: { from: "/mes-acces" } })
       return
     }
-    listMySubscriptions().then(setSubscriptions)
-    listMyInscriptionsInedites().then(setInscriptionsInedites)
-    listMyInscriptionsRepetiteur().then(setInscriptionsRepetiteur)
-    listProfils().then(setProfils)
-  }, [isLoading, isAuthenticated, navigate])
+    charger()
+  }, [isLoading, isAuthenticated, navigate, charger])
 
   if (isLoading) return null
 
-  const charge = inscriptionsInedites !== null && inscriptionsRepetiteur !== null && profils !== null
+  const charge =
+    subscriptions !== null && inscriptionsInedites !== null && inscriptionsRepetiteur !== null && profils !== null
 
   // L'add-on Épreuves Inédites n'est plus achetable séparément (retiré le 2026-09-30) :
   // il est désormais TOUJOURS activé pour la même durée que l'abonnement qui l'inclut
@@ -276,7 +299,7 @@ export function AccesPage() {
   // forme (cursus/expires_at/is_active) : une seule liste plutôt que deux blocs distincts qui
   // répètent chacun leur propre état vide.
   const acces = [
-    ...subscriptions.map((sub) => ({
+    ...(subscriptions ?? []).map((sub) => ({
       key: `sub-${sub.id}`,
       titre: libelleCursus(sub.cursus),
       sous_titre: sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? "Jusqu'à l'Examen" : "Mensuel"),
@@ -327,7 +350,11 @@ export function AccesPage() {
       />
 
       <Section icone={Sparkles} titre="Abonnements et accès">
-        {!charge ? (
+        {erreur ? (
+          // Une panne n'est pas « aucun accès » : l'élève qui a payé doit voir qu'on n'a pas pu
+          // lire son compte, pas qu'il n'a rien.
+          <ErreurChargement compact objet="tes accès" onRetry={charger} />
+        ) : !charge ? (
           <p className="text-sm text-muted-foreground">Chargement…</p>
         ) : acces.length === 0 ? (
           <EtatVide

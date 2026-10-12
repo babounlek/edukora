@@ -5,6 +5,8 @@ import type { Cursus } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { lienAbonnement } from "@/lib/retourAchat"
+import { PRIX_ABONNEMENT_FCFA } from "@/lib/tarifs"
+import { formatAmount } from "@/lib/utils"
 
 const AVANTAGES = [
   "Corrigés détaillés, pas à pas",
@@ -80,6 +82,13 @@ export function AccesRefuse({
             )}
           </div>
 
+          {/* Le prix avant le clic : « S'abonner » sans montant fait hésiter, et la page suivante
+              demande déjà un numéro de téléphone. Aucun Plan n'est chargé ici (seulement des
+              Cursus) : la valeur vient de la constante partagée, pas d'un nombre recopié. */}
+          <p className="mt-3 text-sm text-muted-foreground">
+            {formatAmount(PRIX_ABONNEMENT_FCFA)} FCFA, une seule fois, jusqu'à l'examen · Mobile Money
+          </p>
+
           <div className="mt-4 flex justify-center">
             <ParrainageHint />
           </div>
@@ -88,7 +97,7 @@ export function AccesRefuse({
 
       <nav className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
         {liens.map((lien) => (
-          <Link key={lien.to} to={lien.to} className="inline-flex items-center gap-1.5 hover:text-primary">
+          <Link key={lien.to} to={lien.to} className="inline-flex min-h-11 items-center gap-1.5 hover:text-primary">
             <ArrowLeft className="size-4" aria-hidden="true" />
             {lien.label}
           </Link>

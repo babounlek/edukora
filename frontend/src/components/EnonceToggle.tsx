@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react"
+import { useId, useState, type ReactNode } from "react"
 import { ChevronDown, ChevronRight } from "lucide-react"
 
 interface EnonceToggleProps {
@@ -20,19 +20,24 @@ interface EnonceToggleProps {
  */
 export function EnonceToggle({ children }: EnonceToggleProps) {
   const [open, setOpen] = useState(false)
+  const idContenu = useId()
 
   return (
     <div className="my-4 rounded-lg border border-border">
+      {/* aria-expanded/aria-controls : le bouton déplie un contenu, un lecteur d'écran doit le savoir.
+          min-h-11 : la rangée entière est cliquable, autant qu'elle soit une vraie cible tactile. */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex w-full items-center gap-1.5 px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        aria-expanded={open}
+        aria-controls={idContenu}
+        className="flex min-h-11 w-full items-center gap-1.5 px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        {open ? <ChevronDown className="size-3.5 shrink-0" /> : <ChevronRight className="size-3.5 shrink-0" />}
+        {open ? <ChevronDown className="size-3.5 shrink-0" aria-hidden="true" /> : <ChevronRight className="size-3.5 shrink-0" aria-hidden="true" />}
         {open ? "Masquer l'énoncé" : "Voir l'énoncé"}
       </button>
       {open && (
-        <div className="prose prose-neutral max-w-none border-t border-border px-3.5 py-3 text-justify dark:prose-invert">
+        <div id={idContenu} className="prose prose-neutral max-w-none border-t border-border px-3.5 py-3 text-justify dark:prose-invert">
           {children}
         </div>
       )}

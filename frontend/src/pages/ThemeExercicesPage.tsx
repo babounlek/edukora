@@ -12,6 +12,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { subjectShortLabel } from "@/lib/subjectLabel"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
 import { StatChip } from "@/components/Configurateur"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { Button } from "@/components/ui/button"
@@ -47,7 +48,7 @@ export function ThemeExercicesPage() {
   const cursusId = searchParams.get("cursus") ?? ""
   const [filtreOrigine, setFiltreOrigine] = useState<FiltreOrigine>("tous")
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["theme-exercices", cursusId, tagId, subjectCode],
     queryFn: ({ signal }) => getThemeExercices(Number(cursusId), Number(tagId), subjectCode, signal),
     enabled: Boolean(cursusId && tagId && subjectCode),
@@ -238,6 +239,9 @@ export function ThemeExercicesPage() {
             <Skeleton key={i} className="h-16 w-full rounded-xl" />
           ))}
         </div>
+      ) : isError && !data ? (
+        // Une panne n'est pas « aucun exercice » : sans ce cas, l'élève croyait son thème vide.
+        <ErreurChargement objet="les exercices de ce thème" onRetry={() => refetch()} />
       ) : !data || data.exercices.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border px-6 py-14 text-center">
           <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">

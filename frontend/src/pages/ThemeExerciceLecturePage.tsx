@@ -17,6 +17,7 @@ import {
   PartyPopper,
   Target,
 } from "lucide-react"
+import { toast } from "sonner"
 
 import { getExerciceLecture, getThemeExercices, marquerExerciceFait } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -33,6 +34,7 @@ import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -92,7 +94,7 @@ export function ThemeExerciceLecturePage() {
   const cursusId = searchParams.get("cursus") ?? ""
   const contexte = cursusId && subjectCode ? `?subject=${subjectCode}&cursus=${cursusId}` : ""
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["exercice-lecture", tagId, exerciseId],
     queryFn: ({ signal }) => getExerciceLecture(Number(tagId), Number(exerciseId), signal),
     // Un exercice introuvable ne le sera pas davantage au 3e essai : réponse immédiate.
@@ -130,6 +132,18 @@ export function ThemeExerciceLecturePage() {
   const retourListe = `${themeExercicesPath(country, Number(tagId))}${contexte}`
 
   if (isError) {
+    // « Introuvable » n'est vrai que pour un 404 : une coupure réseau ou une erreur serveur
+    // se réessaie, et dire à l'élève que son exercice n'existe plus serait faux.
+    if (!(error instanceof ApiError && error.status === 404)) {
+      return (
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+          <ErreurChargement objet="cet exercice" onRetry={() => refetch()} />
+          <Link to={retourListe} className="mt-4 block text-center text-sm text-primary hover:underline">
+            Retour aux exercices du thème
+          </Link>
+        </div>
+      )
+    }
     return (
       <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6">
         <p className="text-muted-foreground">Cet exercice est introuvable.</p>
@@ -141,7 +155,7 @@ export function ThemeExerciceLecturePage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pb-12 sm:pt-10">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pt-10 lg:pb-12">
       {/* Barre de file : retour au thème, position, précédent/suivant. */}
       <div className="mb-5 flex items-center justify-between gap-3">
         <Link
@@ -187,9 +201,12 @@ export function ThemeExerciceLecturePage() {
         />
       )}
 
-      {/* Sur téléphone, précédent/suivant restent sous le pouce, sans remonter. */}
+      {/* Sur téléphone et tablette, précédent/suivant restent sous le pouce, sans remonter.
+          Posée au-dessus de la barre d'onglets (BottomTabBar, z-40, lg:hidden) : sa hauteur est
+          publiée dans --bottom-tab-bar, 0 quand la barre n'existe pas. lg:hidden comme elle,
+          sinon la plage 640-1024 px n'avait ni la barre du bas ni de quoi avancer au pouce. */}
       {index >= 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:hidden">
+        <div className="fixed inset-x-0 bottom-[var(--bottom-tab-bar,0px)] z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur lg:hidden">
           <div className="flex items-center gap-2">
             {precedent ? (
               <Button asChild variant="outline" size="lg" className="flex-1">
@@ -543,10 +560,18 @@ function FinExercice({
     setEnCours(true)
     try {
       await marquerExerciceFait(exerciseId, cible)
-      // La liste et sa barre d'avancement doivent refléter la validation au retour.
+      // La liste et sa barre d'avancement doivent refléter la validation au retour. Le parcours
+      // et le reste de l'app lisent la même progression (["progression"]), et la lecture
+      // elle-même garde `fait` en cache : sans l'invalider, rouvrir l'exercice rendait l'ancien état.
       queryClient.invalidateQueries({ queryKey: ["theme-exercices"] })
+      queryClient.invalidateQueries({ queryKey: ["progression"] })
+      queryClient.invalidateQueries({ queryKey: ["exercice-lecture"] })
     } catch {
+      // Revenir en arrière sans rien dire laissait croire que le clic n'avait pas été pris en compte.
       setFait(!cible)
+      toast.error(
+        cible ? "Impossible de valider cet exercice. Réessaie." : "Impossible d'annuler la validation. Réessaie.",
+      )
     } finally {
       setEnCours(false)
     }

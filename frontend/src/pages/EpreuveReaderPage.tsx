@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
+import { useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { ArrowLeft, Check, CheckCheck, FileDown, NotebookPen, Sparkles } from "lucide-react"
 
 import { getEpreuve, marquerExerciceFait, readEpreuve } from "@/api/endpoints"
@@ -14,6 +16,8 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreExercices } from "@/components/BarreExercices"
 import { BarreLecture } from "@/components/BarreLecture"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
+import { BoutonPartager } from "@/components/BoutonPartager"
+import { SITE_NAME } from "@/lib/site"
 import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { EnonceToggle } from "@/components/EnonceToggle"
 import { MarquesSection } from "@/components/MarquesSection"
@@ -239,7 +243,13 @@ export function EpreuveReaderPage() {
           </>
         )}
         {slug && (
-          <span className="sm:ml-auto">
+          <span className="flex items-center gap-2 sm:ml-auto">
+            <BoutonPartager
+              chemin={epreuveDetailPath(displayCountry, slug)}
+              texte={`Regarde « ${content?.title ?? "ce corrigé"} » sur ${SITE_NAME} :`}
+              type="epreuve"
+              variant="ghost"
+            />
             <BoutonHorsLigne type="epreuve" slug={slug} />
           </span>
         )}
@@ -339,6 +349,7 @@ export function EpreuveReaderPage() {
 function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
   const [fait, setFait] = useState(exercise.fait)
   const [enCours, setEnCours] = useState(false)
+  const queryClient = useQueryClient()
 
   // Pas d'identifiant : épreuve inédite ou contenu non sectionné, rien à valider.
   if (!exercise.id) return null
@@ -349,8 +360,14 @@ function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
     setEnCours(true)
     try {
       await marquerExerciceFait(exercise.id as number, cible)
+      // Sans cela, la liste d'un thème (cache de 60 s) et le suivi affichaient encore « pas
+      // traité » au retour du lecteur. Mêmes clés que la validation de ThemeExerciceLecturePage.
+      queryClient.invalidateQueries({ queryKey: ["theme-exercices"] })
+      queryClient.invalidateQueries({ queryKey: ["progression"] })
+      queryClient.invalidateQueries({ queryKey: ["exercice-lecture"] })
     } catch {
       setFait(!cible)
+      toast.error("Impossible d'enregistrer ce choix", { description: "Vérifie ta connexion, puis réessaie." })
     } finally {
       setEnCours(false)
     }

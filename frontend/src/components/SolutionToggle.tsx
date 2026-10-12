@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react"
+import { useId, useState, type ReactNode } from "react"
 import { Eye, EyeOff } from "lucide-react"
 
 interface SolutionToggleProps {
@@ -19,19 +19,24 @@ interface SolutionToggleProps {
  */
 export function SolutionToggle({ children }: SolutionToggleProps) {
   const [open, setOpen] = useState(false)
+  const idContenu = useId()
 
   return (
     <div className="my-4">
+      {/* aria-expanded/aria-controls : sans eux, un lecteur d'écran ne sait pas que le bouton déplie
+          un contenu. min-h-10 : cible tactile utilisable (le bouton faisait ≈ 32 px). */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-accent"
+        aria-expanded={open}
+        aria-controls={idContenu}
+        className="flex min-h-10 items-center gap-1.5 rounded-md border border-border px-3.5 py-2 text-sm font-medium text-primary transition-colors hover:bg-accent"
       >
-        {open ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+        {open ? <EyeOff className="size-3.5" aria-hidden="true" /> : <Eye className="size-3.5" aria-hidden="true" />}
         {open ? "Masquer la solution" : "Voir la solution"}
       </button>
       {open && (
-        <div className="prose prose-neutral mt-3 max-w-none text-justify border-l-2 border-border pl-4 dark:prose-invert">
+        <div id={idContenu} className="prose prose-neutral mt-3 max-w-none text-justify border-l-2 border-border pl-4 dark:prose-invert">
           {children}
         </div>
       )}

@@ -66,7 +66,8 @@ interface SommaireNavProps {
  * en commun que "une liste de blocs ancrés dans la page courante".
  *
  * Chaque `id` doit exister dans le DOM et porter une marge de défilement (scroll-mt-*)
- * suffisante pour ne pas passer sous le Header sticky.
+ * suffisante pour ne pas passer sous le Header sticky (72 px) ni, sous `lg`, sous la barre
+ * de pastilles qui le prolonge (≈ 57 px) : scroll-mt-36 en dessous de `lg`, scroll-mt-24 au-delà.
  */
 export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
   const [activeId, setActiveId] = useState<string | null>(entries[0]?.id ?? null)
@@ -100,10 +101,12 @@ export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
 
   return (
     <>
-      {/* Mobile/tablette : pastilles sticky, défilement horizontal. */}
+      {/* Mobile/tablette : pastilles sticky, défilement horizontal. top-[72px] = la hauteur
+          exacte du Header collant (z-40, même hauteur en mobile et en desktop, voir Header.tsx) :
+          avec top-0, la barre se collait SOUS le header et ses pastilles étaient recouvertes. */}
       <nav
         aria-label={ariaLabel}
-        className="not-prose sticky top-0 z-10 -mx-4 mb-6 overflow-x-auto border-b border-border bg-background/95 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6 lg:hidden"
+        className="not-prose sticky top-[72px] z-10 -mx-4 mb-6 overflow-x-auto border-b border-border bg-background/95 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6 lg:hidden"
       >
         <ul className="flex w-max gap-1.5">
           {entries.map((entry) => (
@@ -112,7 +115,7 @@ export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
                 href={`#${entry.id}`}
                 aria-current={activeId === entry.id ? "true" : undefined}
                 className={cn(
-                  "block whitespace-nowrap rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+                  "flex min-h-9 items-center whitespace-nowrap rounded-full border px-3.5 py-1 text-xs font-medium transition-colors",
                   activeId === entry.id
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border text-muted-foreground hover:text-foreground",

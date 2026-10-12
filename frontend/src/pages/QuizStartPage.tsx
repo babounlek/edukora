@@ -21,6 +21,7 @@ import { useAuth } from "@/context/AuthContext"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { useCountry } from "@/context/CountryContext"
 import { EtapesPresentation, StatChip } from "@/components/Configurateur"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
@@ -123,10 +124,10 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
         </ul>
         {error && <p className="text-sm text-destructive">{error}</p>}
         <Button asChild size="lg" className="w-full sm:w-auto">
-          <a href="/tarifs">
+          <Link to="/tarifs">
             Voir les prix
             <ArrowRight className="size-4" />
-          </a>
+          </Link>
         </Button>
       </CardContent>
     </Card>
@@ -271,6 +272,12 @@ export function QuizStartPage() {
   const [mode, setMode] = useState<ModeQuiz>("PRATIQUE")
   const [n, setN] = useState(10)
   const [subscriptionsLoaded, setSubscriptionsLoaded] = useState(false)
+  // Échecs de chargement : sans eux, un .then sans .catch laissait le squelette (ou la liste de
+  // matières) à l'écran pour toujours. Les compteurs d'essai relancent les effets via « Réessayer ».
+  const [erreurAbonnements, setErreurAbonnements] = useState(false)
+  const [essaiAbonnements, setEssaiAbonnements] = useState(0)
+  const [erreurMatieres, setErreurMatieres] = useState(false)
+  const [essaiMatieres, setEssaiMatieres] = useState(0)
   const [starting, setStarting] = useState(false)
   const [startingThemeId, setStartingThemeId] = useState<number | null>(null)
   const [error, setError] = useState("")
@@ -294,21 +301,24 @@ export function QuizStartPage() {
       setSubscriptionsLoaded(true)
       return
     }
-    listMySubscriptions().then((subs) => {
-      // L'enfant connecté seulement : pas les cursus de la fratrie.
-      const active = abonnementsActifsDuProfil(subs, user?.profil_actif?.id)
-      setAbonnementsProfil(active)
-      setSubscriptionsLoaded(true)
-      // Sans lien direct, la sélection par défaut vient de l'effet de synchronisation ci-dessous
-      // (l'examen préparé), pas du premier abonnement de la liste.
-      const viaParam = cursusParam && active.some((sub) => String(sub.cursus.id) === cursusParam)
-      if (viaParam) setSelectedCursus(cursusParam)
-    })
+    setErreurAbonnements(false)
+    listMySubscriptions()
+      .then((subs) => {
+        // L'enfant connecté seulement : pas les cursus de la fratrie.
+        const active = abonnementsActifsDuProfil(subs, user?.profil_actif?.id)
+        setAbonnementsProfil(active)
+        setSubscriptionsLoaded(true)
+        // Sans lien direct, la sélection par défaut vient de l'effet de synchronisation ci-dessous
+        // (l'examen préparé), pas du premier abonnement de la liste.
+        const viaParam = cursusParam && active.some((sub) => String(sub.cursus.id) === cursusParam)
+        if (viaParam) setSelectedCursus(cursusParam)
+      })
+      .catch(() => setErreurAbonnements(true))
     // cursusParam volontairement absent des deps : un changement d'URL après coup ne
     // doit pas redéclencher un nouvel appel listMySubscriptions(), seule la valeur au
-    // moment où l'authentification se résout compte.
+    // moment où l'authentification se résout compte (ou un clic sur « Réessayer »).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authLoading, isAuthenticated])
+  }, [authLoading, isAuthenticated, essaiAbonnements])
 
   // La sélection reste toujours dans la liste proposée : à l'arrivée elle prend l'examen
   // préparé, et elle y revient si l'élève en change depuis le bandeau pendant que la page est ouverte.
@@ -328,9 +338,14 @@ export function QuizStartPage() {
       return
     }
     let annule = false
-    listQuizSubjects(cursusPrepareId).then((data) => {
-      if (!annule) setPreviewSubjects(data)
-    })
+    listQuizSubjects(cursusPrepareId)
+      .then((data) => {
+        if (!annule) setPreviewSubjects(data)
+      })
+      // L'aperçu est un confort : en cas d'échec, la carte générique "Débloque le Quiz" reprend la place.
+      .catch(() => {
+        if (!annule) setPreviewSubjects([])
+      })
     return () => {
       annule = true
     }
@@ -347,20 +362,35 @@ export function QuizStartPage() {
       return
     }
     setSubjectsLoaded(false)
-    listQuizSubjects(sub.cursus.id).then((data) => {
-      setSubjects(data)
-      setSubjectsLoaded(true)
-      // La matière en cours est gardée d'un examen à l'autre quand elle y existe ; sinon
-      // la plus fournie est présélectionnée - comme sur /themes-frequents, on arrive sur
-      // une séance prête à lancer, jamais sur un formulaire à compléter.
-      setSelectedSubject((courante) => {
-        const precedente = data.find((s) => String(s.id) === courante)
-        if (precedente) return courante
-        const plusFournie = [...data].sort((a, b) => (b.nb_questions ?? 0) - (a.nb_questions ?? 0))[0]
-        return plusFournie ? String(plusFournie.id) : ""
+    setErreurMatieres(false)
+    // Drapeau d'annulation : un changement d'examen rapide ne doit pas laisser la réponse la plus
+    // lente écraser les matières de l'examen courant.
+    let annule = false
+    listQuizSubjects(sub.cursus.id)
+      .then((data) => {
+        if (annule) return
+        setSubjects(data)
+        setSubjectsLoaded(true)
+        // La matière en cours est gardée d'un examen à l'autre quand elle y existe ; sinon
+        // la plus fournie est présélectionnée - comme sur /themes-frequents, on arrive sur
+        // une séance prête à lancer, jamais sur un formulaire à compléter.
+        setSelectedSubject((courante) => {
+          const precedente = data.find((s) => String(s.id) === courante)
+          if (precedente) return courante
+          const plusFournie = [...data].sort((a, b) => (b.nb_questions ?? 0) - (a.nb_questions ?? 0))[0]
+          return plusFournie ? String(plusFournie.id) : ""
+        })
       })
-    })
-  }, [selectedCursus, subscriptions])
+      .catch(() => {
+        if (annule) return
+        setSubjects([])
+        setErreurMatieres(true)
+        setSubjectsLoaded(true)
+      })
+    return () => {
+      annule = true
+    }
+  }, [selectedCursus, subscriptions, essaiMatieres])
 
   const subjectChoisi = subjects.find((s) => String(s.id) === selectedSubject)
 
@@ -423,6 +453,14 @@ export function QuizStartPage() {
     lancer(Number(themeParam))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCursus, cursusParam, themeParam])
+
+  if (!authLoading && isAuthenticated && erreurAbonnements && !subscriptionsLoaded) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+        <ErreurChargement objet="ton quiz" onRetry={() => setEssaiAbonnements((n) => n + 1)} />
+      </div>
+    )
+  }
 
   if (authLoading || !subscriptionsLoaded) {
     return (
@@ -517,10 +555,10 @@ export function QuizStartPage() {
                     items-start, le bouton se rétractait à 269px à 375px de large). */}
                 {isAuthenticated ? (
                   <Button asChild size="lg" className="w-full sm:w-auto">
-                    <a href="/tarifs">
+                    <Link to="/tarifs">
                       Voir les prix
                       <ArrowRight className="size-4" />
-                    </a>
+                    </Link>
                   </Button>
                 ) : (
                   <div className="flex w-full flex-col items-start gap-2">
@@ -580,6 +618,17 @@ export function QuizStartPage() {
             <FiltreLigne titre="Matière">
               {!subjectsLoaded ? (
                 [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-9 w-24 shrink-0 rounded-full" />)
+              ) : erreurMatieres ? (
+                <p role="alert" className="flex flex-wrap items-center gap-x-2 py-1.5 text-sm text-muted-foreground">
+                  Les matières n'ont pas pu être chargées.
+                  <button
+                    type="button"
+                    onClick={() => setEssaiMatieres((n) => n + 1)}
+                    className="font-medium text-primary underline-offset-4 hover:underline"
+                  >
+                    Réessayer
+                  </button>
+                </p>
               ) : subjects.length === 0 ? (
                 <p className="py-1.5 text-sm text-muted-foreground">Aucune matière n'a encore de questions sur ce cursus.</p>
               ) : (

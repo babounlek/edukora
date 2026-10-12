@@ -26,6 +26,7 @@ import { lienExercicesTheme } from "@/components/ThemesFrequents"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
 import { EtapesPresentation, StatChip } from "@/components/Configurateur"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ReviserTabs } from "@/components/ReviserTabs"
@@ -374,7 +375,11 @@ export function ThemesFrequentsPage() {
       : undefined,
   })
 
-  const { data: cursusList = [] } = useQuery({
+  const {
+    data: cursusList = [],
+    isError: cursusEnErreur,
+    refetch: recharger,
+  } = useQuery({
     queryKey: ["cursus", country],
     queryFn: ({ signal }) => listCursus(country, signal),
   })
@@ -388,14 +393,24 @@ export function ThemesFrequentsPage() {
 
   // Seulement les matières qui ont des épreuves officielles sur ce cursus : le
   // référentiel complet proposait l'EPS ou l'Allemand en BAC C, pour un écran vide.
-  const { data: matieres, isLoading: matieresEnChargement } = useQuery({
+  const {
+    data: matieres,
+    isLoading: matieresEnChargement,
+    isError: matieresEnErreur,
+    refetch: rechargerMatieres,
+  } = useQuery({
     queryKey: ["themes-frequents-matieres", cursusId],
     queryFn: ({ signal }) => getThemesFrequentsMatieres(cursusId!, signal),
     enabled: Boolean(cursusId),
   })
   const matiereCourante: ThemesFrequentsMatiere | undefined = matieres?.find((m) => m.code === subjectFilter)
 
-  const { data: themesData, isLoading: themesEnChargement } = useQuery({
+  const {
+    data: themesData,
+    isLoading: themesEnChargement,
+    isError: themesEnErreur,
+    refetch: rechargerThemes,
+  } = useQuery({
     queryKey: ["themes-frequents", cursusId, subjectFilter],
     queryFn: ({ signal }) => getThemesFrequents(cursusId!, subjectFilter, signal),
     enabled: Boolean(cursusId && subjectFilter),
@@ -532,6 +547,9 @@ export function ThemesFrequentsPage() {
               </PastilleFiltre>
             ))}
           </FiltreLigne>
+        ) : cursusEnErreur ? (
+          // Sans ce cas, un échec laissait le squelette à l'écran pour toujours.
+          <ErreurChargement objet="les examens" compact className="mt-4" onRetry={() => recharger()} />
         ) : (
           <Skeleton className="mt-4 h-16 rounded-xl" />
         )}
@@ -541,6 +559,9 @@ export function ThemesFrequentsPage() {
             <p className="py-1.5 text-sm text-muted-foreground">Choisis d'abord ton examen.</p>
           ) : matieresEnChargement ? (
             [0, 1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-9 w-24 shrink-0 rounded-full" />)
+          ) : matieresEnErreur ? (
+            // Une panne n'est pas « pas d'épreuve en base » : le détail et le bouton sont plus bas.
+            <p className="py-1.5 text-sm text-muted-foreground">Les matières n'ont pas pu être chargées.</p>
           ) : matieres && matieres.length > 0 ? (
             matieres.map((m) => {
               const Icon = subjectIcon(m.code)
@@ -601,6 +622,14 @@ export function ThemesFrequentsPage() {
             />
           </div>
         </div>
+      ) : matieresEnErreur || themesEnErreur ? (
+        <ErreurChargement
+          objet="le classement"
+          onRetry={() => {
+            if (matieresEnErreur) rechargerMatieres()
+            if (themesEnErreur) rechargerThemes()
+          }}
+        />
       ) : !subjectFilter || themesEnChargement || matieresEnChargement ? (
         matieres && matieres.length > 0 && !matieres.some((m) => m.disponible) ? (
           <div className="rounded-2xl border border-dashed border-border px-6 py-14 text-center text-muted-foreground">

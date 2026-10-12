@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react"
+import { toast } from "sonner"
 import { AlertTriangle, Check, Copy, Loader2, ShieldAlert } from "lucide-react"
 
 import { declareManualPayment, listManualPaymentMethods } from "@/api/endpoints"
@@ -8,6 +9,7 @@ import { cn, formatAmount } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { chiffresNumeroLocal } from "@/lib/telephone"
 
 interface ManualPaymentPanelProps {
   plan: Plan
@@ -77,17 +79,26 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
   const account = accounts?.find((a) => a.operator === operator) ?? null
   const style = OPERATOR_STYLES[operator]
 
+  // Le « Copié » ne s'affiche qu'une fois la copie réellement faite : navigator.clipboard est absent
+  // hors contexte sécurisé et refusé dans certains navigateurs intégrés. Ici l'élève recopie un
+  // montant et un numéro à la main sinon - un échec silencieux risque un transfert au mauvais montant.
+  function copier(texte: string, marquerCopie: (copie: boolean) => void) {
+    Promise.resolve()
+      .then(() => navigator.clipboard.writeText(texte))
+      .then(() => {
+        marquerCopie(true)
+        setTimeout(() => marquerCopie(false), 2000)
+      })
+      .catch(() => toast.error("Impossible de copier automatiquement. Recopie-le à la main."))
+  }
+
   function handleCopyAmount() {
-    navigator.clipboard.writeText(String(plan.effective_price))
-    setCopiedAmount(true)
-    setTimeout(() => setCopiedAmount(false), 2000)
+    copier(String(plan.effective_price), setCopiedAmount)
   }
 
   function handleCopyNumber() {
     if (!account) return
-    navigator.clipboard.writeText(account.phone_number)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    copier(account.phone_number, setCopied)
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -192,11 +203,14 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
               <Label htmlFor="payer-phone">Numéro ayant payé</Label>
               <Input
                 id="payer-phone"
+                type="tel"
                 inputMode="numeric"
+                autoComplete="tel-national"
                 placeholder="677123456"
                 value={payerPhoneNumber}
-                onChange={(e) => setPayerPhoneNumber(e.target.value.replace(/\D/g, ""))}
-                maxLength={9}
+                // Pas de maxLength : il tronquait un collage « +237 6… » ; le helper retire
+                // l'indicatif et ramène à 9 chiffres.
+                onChange={(e) => setPayerPhoneNumber(chiffresNumeroLocal(e.target.value))}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -214,7 +228,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
             </div>
           </div>
 
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
 
           <Button type="submit" size="lg" className="w-full" disabled={submitting}>
             {submitting ? <Loader2 className="size-4 animate-spin" /> : "Envoyer ma déclaration"}

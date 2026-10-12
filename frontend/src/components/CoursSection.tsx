@@ -60,7 +60,9 @@ export function CoursSection({ section, pied }: { section: CoursSectionData; pie
   const label = COURS_SECTION_LABELS[section.type]
 
   return (
-    <section id={section.type} className="scroll-mt-24">
+    // scroll-mt-36 sous `lg` : l'ancre doit passer sous le Header (72 px) ET la barre de pastilles
+    // du sommaire (≈ 57 px, voir SommaireNav) ; au-delà, seule la sidebar existe, 24 suffit.
+    <section id={section.type} className="scroll-mt-36 lg:scroll-mt-24">
       {label && <h2 className="mb-3 font-display text-xl font-semibold">{label.full}</h2>}
 
       {section.type === "prerequis" && (

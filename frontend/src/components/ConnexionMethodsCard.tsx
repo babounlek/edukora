@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { chiffresNumeroLocal } from "@/lib/telephone"
 
 const LIBELLES: Record<string, string> = {
   phone: "Numéro de téléphone",
@@ -145,11 +146,19 @@ export function ConnexionMethodsCard() {
   }
 
   async function handleDetacher(provider: string) {
+    // Confirmation native faute de boîte de dialogue partagée dans ce fichier : détacher est
+    // une action qui peut enfermer dehors (voir l'encart « une seule méthode » plus bas), un clic
+    // sur une icône de corbeille ne doit pas suffire.
+    const libelle = LIBELLES[provider] ?? provider
+    if (!window.confirm(`Détacher « ${libelle} » de ton compte ? Tu ne pourras plus te connecter avec cette méthode.`)) {
+      return
+    }
     setErreur(null)
     setSucces(null)
     setEnCours(true)
     try {
       updateUser(await unlinkIdentity(provider))
+      setSucces(`${libelle} a bien été détaché de ton compte.`)
     } catch (err) {
       echoue(err)
     } finally {
@@ -193,6 +202,7 @@ export function ConnexionMethodsCard() {
                   disabled={enCours}
                   onClick={() => handleDetacher(methode)}
                   aria-label={`Détacher ${LIBELLES[methode] ?? methode}`}
+                  className="min-h-11 min-w-11"
                 >
                   <Trash2 className="size-4" />
                 </Button>
@@ -247,10 +257,11 @@ export function ConnexionMethodsCard() {
                 <Input
                   id="code-email"
                   inputMode="numeric"
+                  autoComplete="one-time-code"
                   maxLength={6}
                   placeholder="123456"
                   value={codeEmail}
-                  onChange={(event) => setCodeEmail(event.target.value)}
+                  onChange={(event) => setCodeEmail(event.target.value.replace(/\D/g, ""))}
                 />
                 <Button type="submit" disabled={enCours}>
                   {enCours ? "..." : "Confirmer"}
@@ -269,10 +280,13 @@ export function ConnexionMethodsCard() {
             <div className="flex gap-2">
               <Input
                 id="nouveau-numero"
+                type="tel"
                 inputMode="numeric"
+                autoComplete="tel-national"
                 placeholder="677123456"
                 value={nouveauNumero}
-                onChange={(event) => setNouveauNumero(event.target.value)}
+                // Ramène un collage « +237 6… » aux 9 chiffres locaux attendus par l'API.
+                onChange={(event) => setNouveauNumero(chiffresNumeroLocal(event.target.value))}
               />
               <Button type="submit" variant="outline" disabled={enCours}>
                 {enCours ? "..." : "Envoyer le code"}
@@ -289,10 +303,11 @@ export function ConnexionMethodsCard() {
               <Input
                 id="code-changement"
                 inputMode="numeric"
+                autoComplete="one-time-code"
                 maxLength={6}
                 placeholder="123456"
                 value={code}
-                onChange={(event) => setCode(event.target.value)}
+                onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))}
               />
               <Button type="submit" disabled={enCours}>
                 {enCours ? "..." : "Confirmer"}
@@ -304,8 +319,8 @@ export function ConnexionMethodsCard() {
           </form>
         )}
 
-        {erreur && <p className="text-sm text-destructive">{erreur}</p>}
-        {succes && <p className="text-sm text-primary">{succes}</p>}
+        {erreur && <p role="alert" className="text-sm text-destructive">{erreur}</p>}
+        {succes && <p role="status" className="text-sm text-primary">{succes}</p>}
       </CardContent>
     </Card>
   )

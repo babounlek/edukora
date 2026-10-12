@@ -23,7 +23,7 @@ import {
   themesFrequentsPath,
 } from "@/lib/countryPath"
 import { formatAmount } from "@/lib/utils"
-import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { EpreuveMarkdownLazy } from "@/components/EpreuveMarkdownLazy"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
@@ -331,7 +331,12 @@ function CatalogueVitrine() {
           <img
             src={heroStudent}
             alt="Élève souriante prenant des notes, ordinateur portable ouvert sur son bureau"
-            className="w-full rounded-2xl border border-border"
+            // Image du premier écran (probablement l'élément le plus grand = LCP) : priorité de
+            // téléchargement, et dimensions réservées pour que le texte ne saute pas à son arrivée.
+            fetchPriority="high"
+            width={816}
+            height={499}
+            className="h-auto w-full rounded-2xl border border-border"
           />
         </div>
 
@@ -393,7 +398,7 @@ function CatalogueVitrine() {
                 un vrai exercice noté, pas une phrase retouchée pour la démonstration. */}
             {exempleExercice.enonce_intro_markdown && (
               <div className="mb-4 text-sm font-semibold text-primary">
-                <EpreuveMarkdown markdown={exempleExercice.enonce_intro_markdown} />
+                <EpreuveMarkdownLazy markdown={exempleExercice.enonce_intro_markdown} />
               </div>
             )}
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">Corrigé pas à pas</p>
@@ -401,7 +406,7 @@ function CatalogueVitrine() {
                 il commence déjà par l'énoncé de la question 1 lui-même, donc pas de
                 section "Énoncé" séparée qui le répéterait. */}
             <div className="prose prose-neutral max-w-none text-sm dark:prose-invert prose-headings:font-display">
-              <EpreuveMarkdown markdown={exempleCorrigeQ1} />
+              <EpreuveMarkdownLazy markdown={exempleCorrigeQ1} />
             </div>
             <div className="mt-4 flex justify-center border-t border-border pt-4">
               <Button asChild variant="outline">
@@ -565,7 +570,7 @@ function CatalogueVitrine() {
             <div className="mt-5 rounded-xl border border-border bg-card p-5 sm:p-6">
               <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold-text">Aperçu</p>
               <div className="prose prose-neutral max-w-none text-sm dark:prose-invert prose-headings:font-display">
-                <EpreuveMarkdown markdown={inediteVedette.apercu_enonce_markdown} />
+                <EpreuveMarkdownLazy markdown={inediteVedette.apercu_enonce_markdown} />
               </div>
             </div>
             <div className="mt-4 flex flex-wrap justify-center gap-3">

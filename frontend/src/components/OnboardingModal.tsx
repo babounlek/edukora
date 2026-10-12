@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
 
@@ -11,6 +11,7 @@ import { epreuvesListPath } from "@/lib/countryPath"
 import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { examCodesFor } from "@/lib/cursus"
 import { countryFlagClassName } from "@/lib/countryFlag"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 // Mis en veilleuse le 2026-08-18, rétabli le 2026-09-22 : l'écran ne sert plus
@@ -74,6 +75,11 @@ export function OnboardingModal() {
   const [selectedCountry, setSelectedCountry] = useState(country)
   const [cursusList, setCursusList] = useState<Cursus[]>([])
   const [selectedExamen, setSelectedExamen] = useState<string | null>(null)
+  // Liste des examens introuvable (panne ou réponse vide) : sans ce signal, l'étape « examen »
+  // restait sur « Chargement... » sans issue. `tentative` relance l'effet de chargement.
+  const [cursusErreur, setCursusErreur] = useState(false)
+  const [tentative, setTentative] = useState(0)
+  const titreId = useId()
 
   // Comme le sélecteur de pays de l'en-tête (voir Header.tsx) : un Country peut
   // exister en base avant tout contenu réel ingéré, jamais proposé ici.
@@ -104,10 +110,23 @@ export function OnboardingModal() {
 
   useEffect(() => {
     if (!shouldShow) return
+    let annule = false
+    setCursusErreur(false)
     listCursus(selectedCountry)
-      .then(setCursusList)
-      .catch(() => setCursusList([]))
-  }, [shouldShow, selectedCountry])
+      .then((data) => {
+        if (annule) return
+        setCursusList(data)
+        if (data.length === 0) setCursusErreur(true)
+      })
+      .catch(() => {
+        if (annule) return
+        setCursusList([])
+        setCursusErreur(true)
+      })
+    return () => {
+      annule = true
+    }
+  }, [shouldShow, selectedCountry, tentative])
 
   useEffect(() => {
     if (!shouldShow) return
@@ -118,6 +137,11 @@ export function OnboardingModal() {
     return () => window.removeEventListener("keydown", handleKey)
   }, [shouldShow])
 
+  // Sert à Échap et au lien « Plus tard » : on ne redemande pas dans la visite en cours. Pour la
+  // suite, tout dépend de `questionReglee` : un visiteur anonyme a posé le drapeau local et ne
+  // revoit plus l'écran ; un élève connecté sans cursus déclaré le reverra à sa prochaine visite
+  // (le drapeau local ne compte pas pour lui, voir plus haut) - reporter ne lui ferme donc jamais
+  // le chemin pour déclarer son examen.
   function close() {
     markOnboardingDone()
     setDismissed(true)
@@ -215,7 +239,7 @@ export function OnboardingModal() {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Personnaliser le catalogue"
+      aria-labelledby={titreId}
       className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-sm"
     >
       <Card className="w-full max-w-sm animate-fade-up shadow-lg shadow-primary/10">
@@ -224,7 +248,7 @@ export function OnboardingModal() {
             <button
               type="button"
               onClick={() => handleBack(etapePrecedente)}
-              className="-ml-1 mb-1 flex items-center gap-1 self-start text-sm text-muted-foreground transition-colors hover:text-primary"
+              className="-ml-1 mb-1 flex min-h-11 items-center gap-1 self-start text-sm text-muted-foreground transition-colors hover:text-primary"
             >
               <ChevronLeft aria-hidden="true" className="size-4" />
               Retour
@@ -238,7 +262,7 @@ export function OnboardingModal() {
               />
             ))}
           </div>
-          <CardTitle className="font-display text-xl font-semibold">
+          <CardTitle id={titreId} className="font-display text-xl font-semibold">
             {stepEffectif === "pays" && "Dans quel pays prépares-tu ton examen ?"}
             {stepEffectif === "examen" && "Quel examen prépares-tu ?"}
             {stepEffectif === "serie" && "Quelle est ta série ?"}
@@ -265,7 +289,25 @@ export function OnboardingModal() {
 
           {stepEffectif === "examen" &&
             (examOptions.length === 0 ? (
-              <p className="py-4 text-center text-sm text-muted-foreground">Chargement...</p>
+              cursusErreur ? (
+                <div role="alert" className="flex flex-col items-center gap-2 py-2 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    La liste des examens n'a pas pu se charger. Vérifie ta connexion, puis réessaie.
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <Button size="sm" className="min-h-11 rounded-full" onClick={() => setTentative((n) => n + 1)}>
+                      Réessayer
+                    </Button>
+                    {/* Sans markOnboardingDone : c'est la panne qui empêche de répondre, pas un
+                        refus - la question doit revenir à la prochaine visite. */}
+                    <Button size="sm" variant="ghost" className="min-h-11 rounded-full" onClick={() => setDismissed(true)}>
+                      Passer
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <p className="py-4 text-center text-sm text-muted-foreground">Chargement...</p>
+              )
             ) : (
               examOptions.map((e, i) => (
                 <button
@@ -301,6 +343,17 @@ export function OnboardingModal() {
               className="rounded-md border border-primary bg-primary px-3.5 py-2.5 text-left text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Oui, c'est mon examen
+            </button>
+          )}
+
+          {/* Pas pendant l'erreur de chargement : « Passer » y fait déjà la même chose. */}
+          {!(stepEffectif === "examen" && examOptions.length === 0 && cursusErreur) && (
+            <button
+              type="button"
+              onClick={close}
+              className="mt-1 min-h-11 self-center px-3 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+            >
+              Plus tard
             </button>
           )}
         </CardContent>

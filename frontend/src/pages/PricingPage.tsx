@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import {
   ArrowRight,
   ArrowRightLeft,
@@ -23,8 +23,10 @@ import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
+import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
 
 function formatDateDansNJours(jours: number): string {
   const cible = new Date(Date.now() + jours * 24 * 60 * 60 * 1000)
@@ -68,7 +70,8 @@ function ChipCursus({ texte, selected, onClick }: { texte: string; selected: boo
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
+        // min-h-11 : cible tactile de 44 px, sinon la puce ne fait qu'une trentaine de pixels de haut.
+        "inline-flex min-h-11 items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
         selected
           ? "border-primary bg-primary text-primary-foreground shadow-sm"
           : "border-border bg-background text-foreground hover:border-primary/40 hover:bg-primary/5",
@@ -242,6 +245,11 @@ export function PricingPage() {
     trackEvent("tarifs_vus")
   }, [])
   const [chargement, setChargement] = useState(true)
+  // Échec du chargement des offres : sans ce signal, `planTarif` restait indéfini et le bloc
+  // prix affichait « 0 FCFA » - un prix faux, pire qu'une absence de prix.
+  const [erreurPlans, setErreurPlans] = useState(false)
+  // Incrémenté par « Réessayer » pour relancer l'effet de chargement.
+  const [tentative, setTentative] = useState(0)
   const [selectedCursus, setSelectedCursus] = useState("")
   // Passe à true quand on tente de continuer sans avoir choisi de cursus : le
   // sélecteur se signale au lieu de laisser un bouton inerte sans explication.
@@ -259,10 +267,27 @@ export function PricingPage() {
   const cursusRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    let annule = false
     listPlans()
-      .then(setAllPlans)
-      .finally(() => setChargement(false))
-  }, [])
+      .then((plans) => {
+        if (!annule) setAllPlans(plans)
+      })
+      .catch(() => {
+        if (!annule) setErreurPlans(true)
+      })
+      .finally(() => {
+        if (!annule) setChargement(false)
+      })
+    return () => {
+      annule = true
+    }
+  }, [tentative])
+
+  function reessayerPlans() {
+    setErreurPlans(false)
+    setChargement(true)
+    setTentative((n) => n + 1)
+  }
 
   // Offre unique depuis le 2026-08-30 (voir migration subscriptions/0013_retire_
   // mensuel) : Mensuel est désactivé, Jusqu'à l'Examen est la seule formule vendue aux
@@ -337,7 +362,7 @@ export function PricingPage() {
             Un seul prix, <span className="text-primary">jusqu'à ton examen</span>.
           </h1>
           <p className="mt-2 text-muted-foreground">
-            15 000 FCFA par enfant, puis 12 000 FCFA pour chaque enfant supplémentaire de la même famille.
+            {formatAmount(PRIX_ABONNEMENT_FCFA)} FCFA par enfant, puis {formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA)} FCFA pour chaque enfant supplémentaire de la même famille.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -348,7 +373,10 @@ export function PricingPage() {
               Aucun prélèvement automatique
             </ChipReassurance>
             <ChipReassurance icon={<Zap className="size-3.5 text-gold-text" />}>
-              Accès activé dès le paiement
+              {/* Même condition que la FAQ plus bas : Campay coupé, l'accès n'est activé qu'après la vérification manuelle. */}
+              {campayActif
+                ? "Accès activé dès le paiement"
+                : `Activé après vérification (≈ ${DELAI_VERIFICATION_PAIEMENT_MANUEL})`}
             </ChipReassurance>
           </div>
         </div>
@@ -468,6 +496,8 @@ export function PricingPage() {
                     <div className="h-9 w-32 animate-pulse rounded bg-muted" />
                     <div className="h-28 w-full animate-pulse rounded bg-muted" />
                   </div>
+                ) : erreurPlans && allPlans.length === 0 ? (
+                  <ErreurChargement compact objet="les tarifs" onRetry={reessayerPlans} className="h-full justify-center" />
                 ) : (
                   <>
                     <p className="font-display font-semibold">Jusqu'à l'Examen</p>
@@ -479,10 +509,13 @@ export function PricingPage() {
                         une page Tarifs, c'est la première chose qu'on scanne. */}
                     <div className="mt-4 flex flex-col gap-4">
                       <div>
-                        <p className="font-display text-3xl font-semibold text-primary">
-                          {formatAmount(planTarif?.price ?? 0)}
-                          <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                        </p>
+                        {/* Jamais de repli sur 0 : sans plan chargé, on n'affiche pas de prix du tout. */}
+                        {planTarif && (
+                          <p className="font-display text-3xl font-semibold text-primary">
+                            {formatAmount(planTarif.price)}
+                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                          </p>
+                        )}
                         <p className="mt-0.5 text-xs text-muted-foreground">
                           par enfant, jusqu'à l'examen
                           {jusquaExamen && (
@@ -592,8 +625,8 @@ export function PricingPage() {
             <div>
               <p className="font-medium">Le prix change-t-il selon la date d'achat ?</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Non. Le prix est de 15 000 FCFA par enfant, quel que soit le moment où tu t'abonnes, et couvre
-                l'accès jusqu'à ton examen. Pour chaque enfant supplémentaire de la même famille, c'est 12 000 FCFA.
+                Non. Le prix est de {formatAmount(PRIX_ABONNEMENT_FCFA)} FCFA par enfant, quel que soit le moment où tu t'abonnes, et couvre
+                l'accès jusqu'à ton examen. Pour chaque enfant supplémentaire de la même famille, c'est {formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA)} FCFA.
               </p>
             </div>
           </li>
@@ -617,14 +650,13 @@ export function PricingPage() {
         {/* Jamais "/cm/cours" en dur : /tarifs n'est pas une route préfixée par pays,
             le pays courant vient donc du contexte (URL précédente, sinon dernier choix
             mémorisé) - voir CountryContext et coursListPath. */}
-        <button
-          type="button"
-          onClick={() => navigate(coursListPath(country))}
-          className="group mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
+        <Link
+          to={coursListPath(country)}
+          className="group mt-8 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
         >
           Découvrir un cours avant de t'abonner
           <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-        </button>
+        </Link>
       </section>
     </div>
   )

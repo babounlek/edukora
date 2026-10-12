@@ -90,7 +90,11 @@ class ApiError extends Error {
   code: string | null
 
   constructor(status: number, body: unknown) {
-    const message = extraireMessage(body) ?? `Erreur API (${status})`
+    let message = extraireMessage(body) ?? `Erreur API (${status})`
+    // Le message de limitation de débit de DRF est en anglais ("Request was throttled...").
+    if (status === 429 && /throttled/i.test(message)) {
+      message = "Trop de demandes en peu de temps. Patiente un instant, puis réessaie."
+    }
     super(message)
     this.status = status
     this.body = body
@@ -98,6 +102,61 @@ class ApiError extends Error {
       typeof body === "object" && body !== null && typeof (body as { code?: unknown }).code === "string"
         ? (body as { code: string }).code
         : null
+  }
+}
+
+/**
+ * Pas de réponse du serveur : réseau coupé, serveur injoignable ou trop lent. Volontairement
+ * DISTINCTE d'ApiError : des écrans (voir InediteTentativePage, file hors ligne) reconnaissent
+ * « pas de réponse du tout » à `!(err instanceof ApiError)` pour garder le geste de l'élève et
+ * le renvoyer plus tard - la convertir en ApiError casserait cette détection.
+ */
+class NetworkError extends Error {
+  timedOut: boolean
+
+  constructor(timedOut: boolean) {
+    super(
+      timedOut
+        ? "Le serveur met trop de temps à répondre. Vérifie ta connexion, puis réessaie."
+        : "Connexion instable : impossible de joindre le serveur. Réessaie dans un instant.",
+    )
+    this.name = "NetworkError"
+    this.timedOut = timedOut
+  }
+}
+
+// Sans délai, une requête qui pend sur une 2G laisse un squelette ou un bouton désactivé
+// indéfiniment, et les écrans qui basculent en mode hors ligne sur une exception ne le font
+// jamais. Le délai ne couvre que l'attente de la réponse (les en-têtes), pas le téléchargement.
+const DELAI_REQUETE_MS = 25_000
+const DELAI_ENVOI_FICHIER_MS = 60_000
+
+async function fetchAvecDelai(
+  url: string,
+  init: RequestInit,
+  signal: AbortSignal | undefined,
+  delaiMs: number,
+): Promise<Response> {
+  const controller = new AbortController()
+  let expire = false
+  const minuteur = setTimeout(() => {
+    expire = true
+    controller.abort()
+  }, delaiMs)
+  const relayer = () => controller.abort()
+  if (signal?.aborted) controller.abort()
+  else signal?.addEventListener("abort", relayer, { once: true })
+  try {
+    return await fetch(url, { ...init, signal: controller.signal })
+  } catch (err) {
+    if (expire) throw new NetworkError(true)
+    // Annulation voulue par l'appelant (clé de query changée...) : React Query sait la distinguer.
+    if (signal?.aborted) throw err
+    if (err instanceof TypeError) throw new NetworkError(false)
+    throw err
+  } finally {
+    clearTimeout(minuteur)
+    signal?.removeEventListener("abort", relayer)
   }
 }
 
@@ -110,10 +169,12 @@ class ApiError extends Error {
  * lit rien d'autre pour authentifier cet appel.
  */
 async function refreshAccessToken(): Promise<string | null> {
-  const response = await fetch(`${API_BASE_URL}/auth/token/refresh/`, {
-    method: "POST",
-    credentials: "include",
-  })
+  const response = await fetchAvecDelai(
+    `${API_BASE_URL}/auth/token/refresh/`,
+    { method: "POST", credentials: "include" },
+    undefined,
+    DELAI_REQUETE_MS,
+  )
   if (!response.ok) {
     clearAccessToken()
     return null
@@ -176,11 +237,10 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     const parent = sendToken && token ? currentParentToken() : null
     if (parent) headers["X-Parent-Token"] = parent
 
-    return fetch(`${API_BASE_URL}${path}`, {
+    return fetchAvecDelai(`${API_BASE_URL}${path}`, {
       method,
       headers,
       body: isFormData ? (body as FormData) : body !== undefined ? JSON.stringify(body) : undefined,
-      signal,
       // Nécessaire pour que le navigateur pose/relise le cookie httpOnly du refresh
       // token (voir SESSION_EXPIRED_EVENT plus haut) dès que frontend et API vivent
       // sur des origines distinctes (ex. localhost:5173 -> localhost:8001 en dev) -
@@ -190,7 +250,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
       // côté serveur (voir users.views.REFRESH_COOKIE_PATH), le navigateur ne
       // l'attache de toute façon qu'aux requêtes vers ce chemin.
       credentials: "include",
-    })
+    }, signal, isFormData ? DELAI_ENVOI_FICHIER_MS : DELAI_REQUETE_MS)
   }
 
   let response = await doFetch(getAccessToken())
@@ -241,4 +301,4 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   return data as T
 }
 
-export { API_BASE_URL, ApiError }
+export { API_BASE_URL, ApiError, NetworkError }

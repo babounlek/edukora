@@ -1,12 +1,15 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Link, Navigate } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, Bookmark, BookOpen, FileText, NotebookPen, Trash2 } from "lucide-react"
+import { toast } from "sonner"
 
 import { getCarnet, saveMarqueEtude } from "@/api/endpoints"
 import type { CarnetEntree } from "@/api/types"
 import { COURS_SECTION_LABELS } from "@/components/CoursSection"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -44,7 +47,7 @@ export function CarnetPage() {
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const { country } = useCountry()
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["carnet"],
     queryFn: ({ signal }) => getCarnet(signal),
     enabled: isAuthenticated,
@@ -57,12 +60,24 @@ export function CarnetPage() {
         entree.cle,
         { signet: false, note: "" },
       ),
+    onError: () => {
+      toast.error("Impossible de retirer cette entrée du carnet. Réessaie.")
+    },
     onSuccess: (_reponse, entree) => {
+      setAConfirmer(null)
       queryClient.invalidateQueries({ queryKey: ["carnet"] })
       // La page du lecteur garde son propre cache de marques pour ce document.
       queryClient.invalidateQueries({ queryKey: ["etude", entree.type === "cours" ? "cours" : "lesson", entree.slug] })
     },
   })
+
+  // La corbeille supprime le signet ET la note : une note écrite à la main ne se récupère pas,
+  // on demande donc confirmation quand l'entrée en porte une (un simple signet se refait en un clic).
+  const [aConfirmer, setAConfirmer] = useState<CarnetEntree | null>(null)
+  function demanderRetrait(entree: CarnetEntree) {
+    if (entree.note) setAConfirmer(entree)
+    else retirer.mutate(entree)
+  }
 
   const entrees = useMemo(() => data ?? [], [data])
 
@@ -86,6 +101,14 @@ export function CarnetPage() {
           <Skeleton className="h-28 w-full rounded-2xl" />
           <Skeleton className="h-28 w-full rounded-2xl" />
         </div>
+      ) : isError ? (
+        // Une panne n'est pas un carnet vide : sans ce cas, l'élève croyait avoir perdu ses notes.
+        <ErreurChargement
+          objet="ton carnet"
+          message="Tes signets et tes notes sont bien là : vérifie ta connexion, puis réessaie."
+          onRetry={() => refetch()}
+          className="mt-8"
+        />
       ) : entrees.length === 0 ? (
         <div className="mt-8 rounded-3xl border border-dashed border-border bg-card/60 p-8 text-center">
           <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -132,7 +155,7 @@ export function CarnetPage() {
                   className="shrink-0 text-muted-foreground hover:text-destructive"
                   aria-label="Retirer du carnet"
                   disabled={retirer.isPending}
-                  onClick={() => retirer.mutate(entree)}
+                  onClick={() => demanderRetrait(entree)}
                 >
                   <Trash2 className="size-4" />
                 </Button>
@@ -153,6 +176,27 @@ export function CarnetPage() {
           ))}
         </ul>
       )}
+
+      <Dialog open={aConfirmer !== null} onOpenChange={(ouvert) => !ouvert && setAConfirmer(null)}>
+        <DialogContent>
+          <DialogTitle>Retirer cette note du carnet ?</DialogTitle>
+          <DialogDescription>
+            Le signet et la note de cette section seront supprimés. Tu ne pourras pas récupérer ce que tu as écrit.
+          </DialogDescription>
+          <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button variant="outline" onClick={() => setAConfirmer(null)}>
+              Garder
+            </Button>
+            <Button
+              variant="destructive"
+              disabled={retirer.isPending}
+              onClick={() => aConfirmer && retirer.mutate(aConfirmer)}
+            >
+              {retirer.isPending ? "Suppression..." : "Retirer"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

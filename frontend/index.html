@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/pwa-192.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover : sans lui, env(safe-area-inset-bottom) vaut 0 sur iPhone et la barre
+         d'onglets du bas passe sous le geste « accueil ». -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- Applique le thème sombre choisi avant le premier rendu : sans cela, la classe n'était
+         posée qu'après le chargement de React, d'où un flash blanc. Même clé et même logique que
+         theme-provider.tsx ; le thème par défaut de l'app est « clair ». -->
+    <script>
+      try {
+        var t = localStorage.getItem("edukamer-theme") || "light";
+        if (t === "system") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.classList.add(t === "dark" ? "dark" : "light");
+      } catch (e) {}
+    </script>
     <title>%VITE_SITE_NAME% - Corrigés BEPC, Probatoire et BAC au Cameroun</title>
     <meta
       name="description"
@@ -36,6 +48,12 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; font-family: sans-serif; text-align: center">
+        %VITE_SITE_NAME% a besoin de JavaScript pour fonctionner. Active-le dans ton navigateur, ou ouvre
+        ce lien dans Chrome ou Safari, puis recharge la page.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

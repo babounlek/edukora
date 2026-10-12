@@ -6,6 +6,7 @@ import { ArrowRight, BookOpen, Clock, Loader2, Search, SearchX, X } from "lucide
 import { completerRecherche, getMyProgression, listCursus, rechercher } from "@/api/endpoints"
 import type { GroupeRecherche, ReponseRecherche, ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { formatCursus } from "@/components/CompteAReboursBadge"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { CarteReponse } from "@/components/recherche/CarteReponse"
 import { IconeType, ResultatCarte } from "@/components/recherche/ResultatRecherche"
@@ -158,7 +159,9 @@ export function RecherchePage() {
   const data = ensemble.data
   const jetons = useMemo(() => jetonsDeSurbrillance(data?.corrige ?? termes), [data?.corrige, termes])
   const groupes: GroupeRecherche[] = data?.groupes ?? []
-  const attente = interroger && ensemble.isLoading
+  // Tant que l'examen déclaré n'est pas vérifié (liste des cursus en cours de chargement), la requête
+  // est suspendue : sans ce cas, la page restait vide au lieu d'annoncer qu'une recherche arrive.
+  const attente = termes.length >= LONGUEUR_MIN_RECHERCHE && (cursusDeclare === undefined || ensemble.isLoading)
   // Les filtres (matière, type) n'existent qu'une fois des résultats connus : ils s'en déduisent.
   const filtrable = data !== undefined && data.indexe && data.total > 0
 
@@ -429,27 +432,36 @@ export function RecherchePage() {
       </div>
 
       {termes.length < LONGUEUR_MIN_RECHERCHE ? (
-        <PageVide
-          country={country}
-          identite={identite}
-          cursusDeclare={cursusDeclare}
-          cursusLabel={cursusLabel}
-          onChercher={(requete) => {
-            setSaisie(requete)
-            majParams({ q: requete, exact: null })
-            memoriserRecente(requete)
-            tracerRechercheLancee("page")
-          }}
-        />
+        <>
+          {/* Un seul caractère ne lance rien : sans cette phrase, la page ne réagissait pas et la
+              recherche semblait cassée. */}
+          {termes.length > 0 && (
+            <p role="status" className="mb-4 text-sm text-muted-foreground">
+              {LONGUEUR_MIN_RECHERCHE} lettres minimum pour lancer la recherche.
+            </p>
+          )}
+          <PageVide
+            country={country}
+            identite={identite}
+            cursusDeclare={cursusDeclare}
+            cursusLabel={cursusLabel}
+            onChercher={(requete) => {
+              setSaisie(requete)
+              majParams({ q: requete, exact: null })
+              memoriserRecente(requete)
+              tracerRechercheLancee("page")
+            }}
+          />
+        </>
       ) : attente ? (
         <Chargement />
       ) : ensemble.isError ? (
-        <p role="alert" className="mt-8 text-center text-sm text-muted-foreground">
-          La recherche est momentanément indisponible.{" "}
-          <button type="button" onClick={() => ensemble.refetch()} className="font-medium text-primary hover:underline">
-            Réessayer
-          </button>
-        </p>
+        <ErreurChargement
+          message="La recherche est momentanément indisponible. Vérifie ta connexion, puis réessaie."
+          compact
+          className="mt-8"
+          onRetry={() => ensemble.refetch()}
+        />
       ) : data && !data.indexe ? (
         <p className="mt-8 text-center text-sm text-muted-foreground">
           La recherche est en cours de préparation. Réessaie dans quelques minutes.
@@ -656,6 +668,13 @@ function SectionPaginee({
       )}
       {liste.isLoading ? (
         <Chargement />
+      ) : liste.isError && resultats.length === 0 ? (
+        // Sans ce cas, une panne sur cet onglet affichait une section vide, sans un mot.
+        <ErreurChargement
+          objet={groupe.libelle.toLowerCase()}
+          compact
+          onRetry={() => liste.refetch()}
+        />
       ) : (
         <>
           <div className="grid gap-3 md:grid-cols-2">
@@ -664,7 +683,12 @@ function SectionPaginee({
             ))}
           </div>
           {liste.hasNextPage && (
-            <div className="mt-5 flex justify-center">
+            <div className="mt-5 flex flex-col items-center gap-2">
+              {liste.isFetchNextPageError && !liste.isFetchingNextPage && (
+                <p role="alert" className="text-sm text-destructive">
+                  Impossible de charger la suite. Réessaie.
+                </p>
+              )}
               <Button variant="outline" onClick={() => liste.fetchNextPage()} disabled={liste.isFetchingNextPage}>
                 {liste.isFetchingNextPage && <Loader2 className="animate-spin" />}
                 Afficher plus de résultats
@@ -780,7 +804,7 @@ function PageVide({
             "Des thèmes pour commencer"
           )}
         </h2>
-        {accueil.isLoading ? (
+        {accueil.isLoading || cursusDeclare === undefined ? (
           <div className="flex flex-wrap gap-2" role="status" aria-label="Chargement des thèmes">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <Skeleton key={i} className="h-9 w-32 rounded-full" />

@@ -1,11 +1,13 @@
 import { useEffect, useState, type ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
 import { BookOpen, CheckCircle2, Crown, History } from "lucide-react"
 
 import { getMyProgression, listMyTentativesInedites } from "@/api/endpoints"
 import type { Progression, TentativeInediteListItem } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
+import { ErreurChargement } from "@/components/ErreurChargement"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { formatNote } from "@/lib/notation"
@@ -130,29 +132,39 @@ export function HistoriquePage() {
 
   const { isAuthenticated, isLoading, user } = useAuth()
   const navigate = useNavigate()
-  const [progression, setProgression] = useState<Progression | null>(null)
-  const [tentatives, setTentatives] = useState<TentativeInediteListItem[] | null>(null)
   // Les deux réponses sont filtrées côté serveur sur le cursus préparé actuellement
   // (voir access.views.my_progression/inedit.views.list_my_tentatives_inedites) - sans
-  // cette dépendance, basculer d'examen (voir le sélecteur dans Header.tsx) depuis
-  // cette page laissait l'historique de l'ancien cursus affiché jusqu'au prochain
-  // aller-retour de page.
+  // cette dépendance dans la clé, basculer d'examen (voir le sélecteur dans Header.tsx)
+  // depuis cette page laissait l'historique de l'ancien cursus affiché jusqu'au prochain
+  // aller-retour de page. staleTime 0 : un historique ne doit jamais être périmé.
   const cursusId = user?.cursus_prepare?.id
 
   useEffect(() => {
     if (isLoading) return
-    if (!isAuthenticated) {
-      navigate("/connexion", { state: { from: "/historique" } })
-      return
-    }
-    getMyProgression().then(setProgression)
-    listMyTentativesInedites().then(setTentatives)
-  }, [isLoading, isAuthenticated, navigate, cursusId])
+    if (!isAuthenticated) navigate("/connexion", { state: { from: "/historique" } })
+  }, [isLoading, isAuthenticated, navigate])
+
+  const actif = !isLoading && isAuthenticated
+  const progressionQuery = useQuery({
+    queryKey: ["progression", cursusId ?? null],
+    queryFn: ({ signal }) => getMyProgression(signal),
+    enabled: actif,
+    staleTime: 0,
+  })
+  const tentativesQuery = useQuery({
+    queryKey: ["inedit-tentatives", cursusId ?? null],
+    queryFn: () => listMyTentativesInedites(),
+    enabled: actif,
+    staleTime: 0,
+  })
+  const progression = progressionQuery.data ?? null
+  const tentatives = tentativesQuery.data ?? null
 
   if (isLoading) return null
 
   const totalRead = (progression?.lessons.length ?? 0) + (progression?.cours.length ?? 0)
   const charge = progression !== null && tentatives !== null
+  const enErreur = progressionQuery.isError || tentativesQuery.isError
   const vide = charge && totalRead === 0 && tentatives.length === 0
 
   return (
@@ -163,7 +175,17 @@ export function HistoriquePage() {
         sousTitre="Tes tentatives d'épreuves inédites et ce que tu as déjà lu."
       />
 
-      {!charge ? (
+      {enErreur && !charge ? (
+        // Sans ce cas, une requête en échec laissait « Chargement… » à l'écran pour toujours.
+        <ErreurChargement
+          objet="ton historique"
+          compact
+          onRetry={() => {
+            if (progressionQuery.isError) progressionQuery.refetch()
+            if (tentativesQuery.isError) tentativesQuery.refetch()
+          }}
+        />
+      ) : !charge ? (
         <Section icone={History} titre="Activité">
           <p className="text-sm text-muted-foreground">Chargement…</p>
         </Section>

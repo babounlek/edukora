@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 
 import { googleSignIn, listProfils, requestEmailCode, requestOtp, verifyEmailCode, verifyOtp } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -21,6 +21,7 @@ import { useSeo } from "@/lib/seo"
 import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { countryFlagClassName } from "@/lib/countryFlag"
+import { chiffresNumeroLocal } from "@/lib/telephone"
 
 type Step = "identifiant" | "code"
 
@@ -313,10 +314,12 @@ export function LoginPage() {
                       id="phone"
                       inputMode="numeric"
                       placeholder="677123456"
-                      autoComplete="off"
+                      type="tel"
+                      autoComplete="tel-national"
                       value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
-                      maxLength={9}
+                      // Pas de maxLength : il tronquait un collage « +237 6… » ; le helper retire
+                      // l'indicatif et ramène à 9 chiffres (format attendu par l'API).
+                      onChange={(e) => setPhoneNumber(chiffresNumeroLocal(e.target.value))}
                       // Pas d'autoFocus : sur mobile il ouvre le clavier et fait défiler
                       // la carte, ce qui pousserait hors de l'écran le bouton Google
                       // placé juste au-dessus - exactement ce qu'on cherche à mettre en
@@ -360,6 +363,17 @@ export function LoginPage() {
               >
                 {isSubmitting ? "Envoi..." : "Recevoir le code"}
               </Button>
+              <p className="text-center text-xs text-muted-foreground">
+                En continuant, tu acceptes les{" "}
+                <Link to="/cgu" className="underline underline-offset-4 hover:text-primary">
+                  Conditions d'utilisation
+                </Link>{" "}
+                et la{" "}
+                <Link to="/confidentialite" className="underline underline-offset-4 hover:text-primary">
+                  Politique de confidentialité
+                </Link>
+                .
+              </p>
               <Button
                 type="button"
                 variant="ghost"
@@ -411,7 +425,9 @@ export function LoginPage() {
                 </p>
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
-              <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
+              {/* Désactivé tant que le code est incomplet : un envoi à 3 chiffres ne pouvait
+                  que revenir en erreur (le code fait toujours 6 chiffres). */}
+              <Button type="submit" disabled={isSubmitting || code.length < 6} className="w-full" size="lg">
                 {isSubmitting ? "Vérification..." : "Valider"}
               </Button>
               <Button

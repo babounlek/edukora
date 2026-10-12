@@ -25,7 +25,7 @@ export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
       {precedent ? (
         <a
           href={`#${exerciceAnchorId(precedent.numero_exercice)}`}
-          className="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
+          className="inline-flex min-h-11 items-center gap-1.5 px-1 transition-colors hover:text-primary"
         >
           <ArrowLeft className="size-4" />
           {libelleCourtExercice(precedent)}
@@ -38,7 +38,7 @@ export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
+        className="inline-flex min-h-11 items-center gap-1.5 px-1 transition-colors hover:text-primary"
       >
         <ArrowUp className="size-4" />
         Haut de page
@@ -47,7 +47,7 @@ export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
       {suivant ? (
         <a
           href={`#${exerciceAnchorId(suivant.numero_exercice)}`}
-          className="inline-flex items-center gap-1.5 font-medium text-primary transition-colors hover:underline"
+          className="inline-flex min-h-11 items-center gap-1.5 px-1 font-medium text-primary transition-colors hover:underline"
         >
           {libelleCourtExercice(suivant)}
           <ArrowRight className="size-4" />
