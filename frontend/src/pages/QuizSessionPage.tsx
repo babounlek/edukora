@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Sparkles, Target, X, Zap } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Loader2, Sparkles, Target, X, Zap } from "lucide-react"
 
 import { answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -22,6 +22,7 @@ import { jouerRetour } from "@/lib/retours"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
+import { memoriserQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
 /** Rendu inline (pas de <p> bloc) pour le texte d'un choix QCM, qui peut contenir du LaTeX. */
@@ -70,6 +71,7 @@ export function QuizSessionPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { country } = useCountry()
+  const cleReprise = useCleQuizEnCours()
 
   const [session, setSession] = useState<QuizSession | null>(null)
   // Deux erreurs distinctes : un échec de CHARGEMENT remplace la page, mais un échec d'ACTION
@@ -80,6 +82,9 @@ export function QuizSessionPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [revealed, setRevealed] = useState<Record<number, QuizCorrige>>({})
   const [submitting, setSubmitting] = useState(false)
+  // Le choix tapé, tant que le serveur n'a pas répondu : sur une connexion lente, la case doit
+  // réagir tout de suite (sans connaître encore le verdict, que seul le serveur donne).
+  const [choixEnCours, setChoixEnCours] = useState<string | null>(null)
   // Toujours la dernière version des gestionnaires, pour un écouteur clavier posé une seule fois.
   const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {})
 
@@ -99,12 +104,22 @@ export function QuizSessionPage() {
         }
         setSession(data)
         const firstUnanswered = data.questions.findIndex((q) => !q.reponse)
-        setCurrentIndex(firstUnanswered === -1 ? 0 : firstUnanswered)
+        // Tout répondu mais pas rendu (reprise après coup) : on arrive sur la dernière question,
+        // d'où « Voir mon résultat » est à portée, plutôt qu'au début d'un quiz fini.
+        setCurrentIndex(firstUnanswered === -1 ? Math.max(0, data.questions.length - 1) : firstUnanswered)
       })
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce quiz.")
       })
   }, [id, navigate])
+
+  // Retenu pour « Reprendre mon quiz » (accueil et page Quiz) tant qu'il n'est pas terminé. Séparé
+  // du chargement : la clé n'existe qu'une fois le compte connu, souvent après la séance.
+  const sessionId = session?.id
+  const sessionTerminee = Boolean(session?.completed_at)
+  useEffect(() => {
+    if (cleReprise && sessionId !== undefined && !sessionTerminee) memoriserQuizEnCours(cleReprise, sessionId)
+  }, [cleReprise, sessionId, sessionTerminee])
 
   if (error) {
     return (
@@ -153,6 +168,7 @@ export function QuizSessionPage() {
     if (submitting || question.reponse) return
     setActionError("")
     setSubmitting(true)
+    setChoixEnCours(lettre)
     try {
       const updated = await answerQuizQuestion(session!.id, question.id, { reponse_choisie: lettre })
       updateQuestion(updated)
@@ -160,6 +176,7 @@ export function QuizSessionPage() {
       setActionError("Impossible d'enregistrer ta réponse. Réessaie.")
     } finally {
       setSubmitting(false)
+      setChoixEnCours(null)
     }
   }
 
@@ -202,6 +219,7 @@ export function QuizSessionPage() {
     setSubmitting(true)
     try {
       await completeQuizSession(session!.id)
+      if (cleReprise) oublierQuizEnCours(cleReprise, session!.id)
       trackEvent("quiz_completed", { cursus_id: session!.cursus, mode: session!.mode })
       navigate(`/quiz/session/${session!.id}/resultat`)
     } catch {
@@ -351,10 +369,12 @@ export function QuizSessionPage() {
             {question.choix.map((choix) => {
               const isSelected = question.reponse?.reponse_choisie === choix.lettre
               const isCorrectChoice = answered && question.reponse_correcte === choix.lettre
+              const enCours = choixEnCours === choix.lettre
               return (
                 <button
                   key={choix.lettre}
                   type="button"
+                  aria-busy={enCours || undefined}
                   disabled={submitting || answered}
                   onClick={() => handleAnswerQcm(choix.lettre)}
                   className={cn(
@@ -364,6 +384,8 @@ export function QuizSessionPage() {
                     isCorrectChoice && "animate-quiz-pop border-success bg-success/10",
                     isSelected && !isCorrectChoice && "animate-quiz-shake border-destructive bg-destructive/10",
                     answered && !isSelected && !isCorrectChoice && "border-border opacity-50",
+                    enCours && "border-primary bg-primary/5",
+                    choixEnCours !== null && !enCours && "opacity-50",
                   )}
                 >
                   <span
@@ -374,7 +396,9 @@ export function QuizSessionPage() {
                       isSelected && !isCorrectChoice && "border-destructive bg-destructive text-destructive-foreground",
                     )}
                   >
-                    {isCorrectChoice ? (
+                    {enCours ? (
+                      <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                    ) : isCorrectChoice ? (
                       <Check className="size-4" />
                     ) : isSelected ? (
                       <X className="size-4" />

@@ -91,6 +91,9 @@ function scrollToQuestion(questionId: number) {
 
 const REPONSE_VIDE = { reponse_choisie: "", resultat_declare: "" }
 
+/** Ce qui attend le retour du réseau pour une question (voir fileHorsLigne). */
+type EnvoiEnAttente = { type: "qcm"; lettre: string } | { type: "noter"; corps: NoterTentativeQuestionParams }
+
 /** Avant la copie rendue : traitée ou pas. Après : à noter, notée, ou non traitée. */
 function etatPastille(question: FlatQuestion, rendue: boolean): EtatPastille {
   if (!question.traitee) return "a_traiter"
@@ -113,7 +116,6 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   const [questions, setQuestions] = useState<FlatQuestion[]>([])
   const [notation, setNotation] = useState<NotationResume | null>(null)
   const [loadError, setLoadError] = useState("")
-  const [submitting, setSubmitting] = useState(false)
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
   const [showCorrection, setShowCorrection] = useState(false)
   const [flaggedIds, setFlaggedIds] = useState<Set<number>>(new Set())
@@ -148,7 +150,9 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   const traiteesRef = useRef(0)
   const totalRef = useRef(0)
   // Dernier envoi tenté par question quand le réseau était coupé (le dernier gagne).
-  const fileHorsLigne = useRef(new Map<number, NoterTentativeQuestionParams>())
+  // Une réponse QCM et un geste sur une question ouverte passent par deux routes différentes : la
+  // file garde de quelle sorte il s'agit pour rejouer le bon appel.
+  const fileHorsLigne = useRef(new Map<number, EnvoiEnAttente>())
   // Envoi de la file en cours (partagé : l'intervalle, le retour du réseau et « Terminer » peuvent
   // le déclencher en même temps, et un second envoi concurrent doublerait les requêtes).
   const envoiEnCours = useRef<Promise<void> | null>(null)
@@ -287,7 +291,11 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       setEnAttente(0)
       for (const [questionId, corps] of file) {
         try {
-          appliquer(await api.noter(tentativeId, questionId, corps))
+          appliquer(
+            corps.type === "qcm"
+              ? await answerTentativeQuestion(tentativeId, questionId, { reponse_choisie: corps.lettre })
+              : await api.noter(tentativeId, questionId, corps.corps),
+          )
         } catch (err) {
           if (err instanceof ApiError && err.status === 409) {
             await refetchAfterLock(true)
@@ -456,7 +464,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       if (!(err instanceof ApiError)) {
         // Pas de réponse du tout : le réseau est coupé. On GARDE le geste de l'élève (revenir en
         // arrière lui ferait perdre une case cochée en pleine épreuve) et on l'enverra au retour.
-        fileHorsLigne.current.set(question.id, corps)
+        fileHorsLigne.current.set(question.id, { type: "noter", corps })
         setEnAttente(fileHorsLigne.current.size)
         if (fileHorsLigne.current.size === 1) {
           toast("Hors connexion", { description: "Tes changements sont gardés et partiront au retour du réseau." })
@@ -515,20 +523,38 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
     )
   }
 
+  /** Réponse à un QCM : même principe que `ecrire` - le choix s'affiche tout de suite (sur une
+   * connexion lente, attendre le serveur laissait la case sans réaction pendant plusieurs secondes,
+   * et bloquait tous les autres QCM), puis il est confirmé, remis en file hors connexion, ou
+   * annulé avec un message si le serveur le refuse. L'appel est idempotent : le rejouer est sans risque. */
   async function handleAnswerQcm(question: FlatQuestion, lettre: string) {
-    if (submitting || showCorrection) return
-    setSubmitting(true)
+    if (showCorrection) return
+    const numero = (sequences.current.get(question.id) ?? 0) + 1
+    sequences.current.set(question.id, numero)
+    remplacer(question.id, (q) => ({
+      ...q,
+      traitee: true,
+      reponse: { ...(q.reponse ?? REPONSE_VIDE), reponse_choisie: lettre },
+    }))
     try {
       const updated = await answerTentativeQuestion(tentative!.id, question.id, { reponse_choisie: lettre })
-      appliquer(updated)
+      if (sequences.current.get(question.id) === numero) appliquer(updated)
     } catch (err) {
-      if (err instanceof ApiError && err.status === 409) {
+      if (sequences.current.get(question.id) !== numero) return
+      if (!(err instanceof ApiError)) {
+        fileHorsLigne.current.set(question.id, { type: "qcm", lettre })
+        setEnAttente(fileHorsLigne.current.size)
+        if (fileHorsLigne.current.size === 1) {
+          toast("Hors connexion", { description: "Tes changements sont gardés et partiront au retour du réseau." })
+        }
+        return
+      }
+      remplacer(question.id, () => question)
+      if (err.status === 409) {
         await refetchAfterLock(true)
       } else {
         toast.error("Impossible d'enregistrer ta réponse. Réessaie.")
       }
-    } finally {
-      setSubmitting(false)
     }
   }
 
@@ -949,7 +975,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                         <button
                           key={choix.lettre}
                           type="button"
-                          disabled={submitting || showCorrection}
+                          disabled={showCorrection}
                           onClick={() => handleAnswerQcm(question, choix.lettre)}
                           className={cn(
                             "flex min-h-11 items-center justify-between gap-2 rounded-md border px-3.5 py-2.5 text-left text-sm transition-colors focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none disabled:cursor-default",

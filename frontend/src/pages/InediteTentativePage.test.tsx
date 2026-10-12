@@ -387,6 +387,65 @@ describe("InediteTentativePage", () => {
       expect(screen.getByText(/1 changement en attente/)).toBeInTheDocument()
     })
 
+    describe("QCM", () => {
+      const avecQcm = () =>
+        enExamen({
+          exercices: [{
+            id: 1, numero_exercice: "1", points: "8", groupes: [], enonce_intro_markdown: "",
+            questions: [
+              question(1, "1", { type_reponse: "QCM", choix: [{ lettre: "a", texte: "Un" }, { lettre: "b", texte: "Deux" }] }),
+              question(2, "2"),
+            ],
+          }],
+        })
+
+      it("compte la réponse tout de suite, sans attendre le serveur", async () => {
+        api.getTentativeInedite.mockResolvedValue(avecQcm())
+        // Réponse du serveur volontairement jamais livrée : une connexion très lente.
+        api.answerTentativeQuestion.mockReturnValue(new Promise(() => {}))
+        afficher()
+
+        await userEvent.click(await screen.findByRole("button", { name: /B\. Deux/ }))
+
+        expect(await screen.findByText("1 / 2 traitées")).toBeInTheDocument()
+        // Le QCM n'est plus bloqué par la requête en vol : on peut corriger son choix.
+        expect(screen.getByRole("button", { name: /A\. Un/ })).toBeEnabled()
+      })
+
+      it("garde la réponse hors connexion et la rejoue au retour du réseau", async () => {
+        api.getTentativeInedite.mockResolvedValue(avecQcm())
+        api.answerTentativeQuestion.mockRejectedValueOnce(new TypeError("Failed to fetch"))
+        afficher()
+
+        await userEvent.click(await screen.findByRole("button", { name: /B\. Deux/ }))
+
+        expect(await screen.findByText(/1 changement en attente/)).toBeInTheDocument()
+        expect(screen.getByText("1 / 2 traitées")).toBeInTheDocument()
+        expect(toast.error).not.toHaveBeenCalled()
+
+        api.answerTentativeQuestion.mockResolvedValue({
+          ...question(1, "1", { traitee: true, type_reponse: "QCM" }),
+          reponse: { reponse_choisie: "b", resultat_declare: "", notee: false },
+          notation: null,
+        })
+        window.dispatchEvent(new Event("online"))
+
+        await waitFor(() => expect(api.answerTentativeQuestion).toHaveBeenLastCalledWith(7, 1, { reponse_choisie: "b" }))
+        await waitFor(() => expect(screen.queryByText(/changement en attente/)).not.toBeInTheDocument())
+      })
+
+      it("annule le choix et prévient quand le serveur le refuse", async () => {
+        api.getTentativeInedite.mockResolvedValue(avecQcm())
+        api.answerTentativeQuestion.mockRejectedValue(new ApiError(400, { error: "invalide" }))
+        afficher()
+
+        await userEvent.click(await screen.findByRole("button", { name: /B\. Deux/ }))
+
+        await waitFor(() => expect(toast.error).toHaveBeenCalled())
+        expect(screen.getByText("0 / 2 traitées")).toBeInTheDocument()
+      })
+    })
+
     it("la carte de l'épreuve montre l'état de chaque question et y conduit", async () => {
       api.getTentativeInedite.mockResolvedValue(
         enExamen({

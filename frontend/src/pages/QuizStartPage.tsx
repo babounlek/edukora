@@ -25,6 +25,7 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
+import { ReprendreQuiz } from "@/components/ReprendreQuiz"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { lienExercicesTheme } from "@/components/ThemesFrequents"
 import { Button } from "@/components/ui/button"
@@ -517,6 +518,8 @@ export function QuizStartPage() {
           )}
         </div>
       </div>
+
+      <ReprendreQuiz className="mb-6" />
 
       {!abonne ? (
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">

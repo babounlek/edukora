@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
 import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
+import { ReprendreQuiz } from "@/components/ReprendreQuiz"
 import { InviteRappels } from "@/components/RappelsEmail"
 import { TeteAccueil } from "@/components/TeteAccueil"
 import { ecrireAccueilEnCache, lireAccueilEnCache } from "@/lib/accueilCache"
@@ -109,6 +110,7 @@ export function AccueilEleve({ country }: { country: string }) {
       <DepuisLaDerniereFois depuis={data.depuis} revisions={data.revisions} lecture={data.lecture} />
       <OuJenSuis accueil={data} cursusId={cursusId} country={country} />
       {enCours && <LigneReprise tentative={enCours} />}
+      <ReprendreQuiz enveloppe />
       <LigneInedites accueil={data} country={country} inedites={inedites} cursusAccueil={cursusAccueil} />
     </div>
   )

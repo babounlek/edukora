@@ -512,7 +512,9 @@ describe("la réponse en bref", () => {
     monter("/cm/recherche?q=loi+d%27ohm")
     const carte = await screen.findByRole("region", { name: "Loi d'Ohm dans un circuit électrique" })
     expect(within(carte).getByText("La réponse en bref")).toBeInTheDocument()
-    expect(await within(carte).findByText(/proportionnelle à l'intensité/)).toBeInTheDocument()
+    // Le rendu Markdown est chargé à la demande : le premier import (react-markdown + KaTeX) peut dépasser
+    // la seconde par défaut quand la machine est chargée.
+    expect(await within(carte).findByText(/proportionnelle à l'intensité/, {}, { timeout: 8000 })).toBeInTheDocument()
     expect(within(carte).getByRole("link", { name: /Lire le cours en entier/ })).toHaveAttribute("href", "/cours/loi-dohm")
     // Cours verrouillé : l'indice d'accès reste visible, la règle (publique) aussi.
     expect(within(carte).getByText("Abonnés")).toBeInTheDocument()
