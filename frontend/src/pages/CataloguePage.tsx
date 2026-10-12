@@ -317,13 +317,10 @@ function CatalogueVitrine() {
               <Button variant="outline" size="lg" asChild className="border-primary/40 text-primary hover:text-primary">
                 <Link to="/quiz">
                   <Target />
-                  {isAuthenticated ? "Faire un quiz gratuit" : "Teste-toi gratuitement"}
+                  {isAuthenticated ? "Faire un quiz gratuit" : "Quiz gratuit, sans compte"}
                 </Link>
               </Button>
             </div>
-            {!isAuthenticated && (
-              <p className="mt-3 text-sm text-muted-foreground">Quiz gratuit, sans compte : un thème complet avec correction.</p>
-            )}
 
             {/* Mention légère plutôt qu'une carte à part entière (voir la discussion
                 produit) : l'accueil vient d'être volontairement réduit à trois piliers
@@ -335,7 +332,7 @@ function CatalogueVitrine() {
               className="mt-3 flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
             >
               <TrendingUp className="size-3.5 text-primary" />
-              Découvre les thèmes qui reviennent le plus à ton examen
+              Les thèmes qui tombent le plus à ton examen
               <ArrowRight className="size-3" />
             </Link>
           </div>
