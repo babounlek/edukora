@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-citer-des-environnements-de-developpement-integres-ide-pour-compiler-un-programme-en-langage-c-terminale-c (bac-c-d-e-informatique-theorique-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "IDE",
+      "compilateur",
+      "langage C",
+      "Code::Blocks",
+      "Dev-C++"
+    ],
+    "sous_theme": "Outils de développement en langage C",
+    "duree_estimee_min": 20
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
@@ -17,5 +26,109 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu viens d'écrire ton premier programme C dans le Bloc-notes. Tu l'enregistres, tu double-cliques dessus : rien ne se passe. Un fichier .c n'est que du texte, il faut un outil qui le transforme en programme exécutable. Les développeurs ne jonglent pas entre trois logiciels : ils utilisent un seul environnement qui regroupe tout. Ce cours te fait connaître cet outil, ses exemples les plus courants et la différence avec un compilateur, une question qui revient régulièrement au BAC TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un programme et un langage de programmation",
+        "Connaître la structure minimale d'un programme C (`#include`, `main`)",
+        "Distinguer un fichier source d'un fichier exécutable"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Qu'est-ce qu'un IDE ?",
+      "contenu_markdown": "Un **IDE** (*Integrated Development Environment*, en français **environnement de développement intégré**, EDI) est un logiciel qui réunit au même endroit les outils nécessaires pour écrire, compiler, exécuter et corriger un programme.\n\nUn IDE contient en général :\n\n- un **éditeur de code** (coloration syntaxique, indentation automatique, complétion) ;\n- un lien avec un **compilateur** (pour le C, le plus souvent **GCC** ou MinGW sous Windows) qui traduit le code source en exécutable ;\n- un **débogueur** pour exécuter pas à pas et observer les variables ;\n- une gestion de **projets** (plusieurs fichiers, options de compilation).\n\n**IDE courants pour le langage C :**\n\n| IDE | Remarque |\n|---|---|\n| Code::Blocks | libre, très utilisé dans les établissements |\n| Dev-C++ | libre, léger, adapté aux petites machines |\n| CLion | professionnel, de JetBrains |\n| Eclipse CDT | extension C/C++ pour Eclipse |\n| Visual Studio | de Microsoft, très complet |\n\n**Deux manières de produire un exécutable :**\n\n1. Avec un IDE : on écrit le code, puis on clique sur *Build and Run* (ou la touche F9 dans Code::Blocks).\n2. Sans IDE : un simple éditeur de texte pour écrire, puis la commande `gcc fichier.c -o programme` dans un terminal.\n\nLa seconde méthode montre ce que l'IDE fait en coulisses : il appelle le compilateur à ta place.",
+      "formule_principale": "IDE = éditeur de code + compilateur (ou lien vers lui) + débogueur"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer deux IDE permettant de développer et de compiler un programme en langage C, puis expliquer pourquoi un simple éditeur de texte ne suffit pas.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître le type de question",
+          "justification": "Le verbe « citer » demande des noms, pas une explication longue.",
+          "resultat_markdown": "On cherche des environnements qui intègrent éditeur et compilateur pour le C."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir des IDE adaptés au C",
+          "justification": "Les IDE doivent réellement gérer le langage C et être connus du programme.",
+          "resultat_markdown": "`Code::Blocks` et `Dev-C++`."
+        },
+        {
+          "numero": 3,
+          "action": "Donner le rôle d'un IDE en une phrase",
+          "justification": "Un correcteur apprécie que le nom soit accompagné de sa fonction.",
+          "resultat_markdown": "Ils réunissent éditeur, compilateur et débogueur dans une seule interface."
+        },
+        {
+          "numero": 4,
+          "action": "Justifier pourquoi l'éditeur de texte seul ne suffit pas",
+          "justification": "Un éditeur de texte ne fait qu'enregistrer du texte : il ne traduit rien en langage machine.",
+          "resultat_markdown": "Il faut un compilateur (GCC par exemple) pour produire l'exécutable, que l'IDE pilote automatiquement."
+        }
+      ],
+      "conclusion_markdown": "Réponse rédigée : « Deux IDE pour le C sont Code::Blocks et Dev-C++. Un éditeur de texte ne compile pas : il faut un compilateur, que l'IDE intègre et pilote. »"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire « GCC » ou « le compilateur C » quand on demande un IDE",
+          "pourquoi_faux": "GCC est un compilateur : il traduit le code, mais n'offre ni éditeur ni débogueur intégré. Un IDE est l'environnement qui l'utilise.",
+          "correction_markdown": "Réserver les noms Code::Blocks, Dev-C++, CLion, Eclipse CDT, Visual Studio aux IDE ; citer GCC seulement comme compilateur lié."
+        },
+        {
+          "erreur_markdown": "Citer le Bloc-notes ou Notepad comme exemple d'IDE",
+          "pourquoi_faux": "Ce sont des éditeurs de texte : aucun compilateur, aucun débogueur, aucun bouton pour exécuter.",
+          "correction_markdown": "Un éditeur simple n'est un IDE que s'il est complété par une chaîne de compilation. Dans ce cas, on cite l'IDE complet."
+        },
+        {
+          "erreur_markdown": "Citer un langage (Python, HTML) ou un SGBD (MySQL) à la place d'un IDE",
+          "pourquoi_faux": "La question porte sur l'outil de développement, pas sur le langage ni la base de données. La réponse est hors sujet et ne rapporte aucun point.",
+          "correction_markdown": "Relire la question et ne garder que des logiciels de développement pour le C."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite trois IDE qui permettent de compiler un programme en langage C.",
+          "solution_markdown": "Trois exemples : **Code::Blocks**, **Dev-C++** et **CLion**. On pourrait aussi citer Eclipse CDT ou Visual Studio."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On te donne la liste : Bloc-notes, GCC, Code::Blocks, Dev-C++, MinGW, Notepad++. Classe chaque élément en **IDE**, **compilateur** ou **éditeur de texte**.",
+          "solution_markdown": "- Bloc-notes : éditeur de texte.\n- Notepad++ : éditeur de texte (avec coloration, mais sans compilateur intégré par défaut).\n- GCC : compilateur.\n- MinGW : portage de GCC pour Windows, donc compilateur (c'est lui que Code::Blocks et Dev-C++ utilisent souvent).\n- Code::Blocks et Dev-C++ : IDE.\n\nLe critère est simple : un IDE réunit éditeur et compilateur dans une seule interface, un compilateur traduit sans éditer, un éditeur édite sans traduire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Compare les deux méthodes suivantes pour obtenir l'exécutable du fichier `bonjour.c` : (A) avec Code::Blocks, (B) avec un éditeur de texte et le terminal. Écris la commande de la méthode B, puis indique dans quel cas la méthode B est préférable.",
+          "solution_markdown": "**Méthode B.** Dans un terminal, placé dans le dossier du fichier :\n\n```bash\ngcc bonjour.c -o bonjour\n./bonjour\n```\n\nLa première commande lance la compilation de `bonjour.c` et crée l'exécutable `bonjour` (option `-o` pour son nom). La seconde l'exécute. Si le code contient une erreur de syntaxe, GCC affiche le message et ne crée pas l'exécutable.\n\n**Méthode A.** Dans Code::Blocks, le bouton *Build and Run* enchaîne ces deux opérations et affiche les erreurs dans une fenêtre, avec un clic pour aller à la ligne fautive.\n\n**Quand préférer B ?** Sur une machine très limitée, sur un serveur sans interface graphique, ou pour automatiser la compilation dans un script. Dans les autres cas, l'IDE fait gagner du temps, surtout avec le débogueur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un IDE réunit éditeur, compilateur (ou lien vers lui) et débogueur : tu écris, compiles et corriges au même endroit.",
+        "Pour le C, retiens au moins deux noms sûrs : Code::Blocks et Dev-C++ ; CLion, Eclipse CDT et Visual Studio sont aussi acceptés.",
+        "Un IDE n'est pas un compilateur : il en pilote un (GCC, MinGW). Ne confonds jamais les deux dans une réponse.",
+        "Un éditeur de texte seul ne suffit pas à lancer la compilation.",
+        "Au BAC TI, cette notion apparaît dans la question « citer deux IDE » de l'épreuve de programmation : donne le nom exact et une phrase sur son rôle."
+      ]
+    }
+  ]
 }

@@ -7,7 +7,17 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-execution-cote-serveur-d-un-script-php-opposition-client-serveur-tle-ti (bac-ti-epreuve-zero-programmation-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "page web dynamique",
+      "client-serveur",
+      "HTTP",
+      "PHP",
+      "SGBD",
+      "requête-réponse"
+    ],
+    "sous_theme": "Architecture client-serveur du Web",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +27,121 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu consultes tes résultats en ligne, la page affiche ton nom et tes notes, et pas ceux de ton voisin. Pourtant personne n'a écrit une page HTML pour chaque élève. La page est fabriquée à la demande, à partir d'une base de données. C'est cela, une page web dynamique. Comprendre qui fait quoi entre ton navigateur, le serveur et la base te permet de dessiner le schéma demandé au BAC TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Différence entre page statique et page dynamique",
+        "Rôle d'un navigateur (client) et d'un serveur Web",
+        "Notion de base de données et de requête SQL"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le cycle requête-réponse d'une page dynamique",
+      "contenu_markdown": "Une page **statique** est un fichier HTML identique pour tous, renvoyé tel quel. Une page **dynamique** est **construite par le serveur au moment de la demande**, à partir de données (base de données, saisie de l'utilisateur, heure...).\n\n**Les acteurs :**\n\n- le **client** : le navigateur, qui envoie la requête et affiche le HTML reçu ;\n- le **serveur Web** (Apache) : reçoit la requête HTTP et donne le script à l'interpréteur ;\n- l'**interpréteur PHP** : exécute le script, interroge la base et fabrique du HTML ;\n- le **SGBD** (MySQL) : exécute les requêtes SQL et renvoie les données.\n\n**Les étapes, dans l'ordre chronologique :**\n\n1. Le client envoie une requête HTTP (par exemple `GET /notes.php`).\n2. Le serveur Web reçoit la requête et repère que c'est un script PHP.\n3. Il transmet le script à PHP, qui l'exécute.\n4. PHP envoie une requête SQL au SGBD.\n5. Le SGBD renvoie le résultat à PHP.\n6. PHP insère les données dans du HTML.\n7. Le serveur Web renvoie ce HTML au client en réponse HTTP.\n8. Le navigateur affiche la page.\n\n**Pour un schéma :** un bloc nommé par acteur, des flèches entre les blocs, et un numéro sur chaque flèche pour l'ordre des échanges.\n\n**Point clé :** le code PHP s'exécute **côté serveur** ; le navigateur ne reçoit que du HTML (et éventuellement du JavaScript, exécuté chez lui).",
+      "formule_principale": "Client (navigateur) → serveur Web + PHP → SGBD → PHP → serveur Web → Client"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire, à l'aide d'un schéma, le fonctionnement de l'affichage de la liste des élèves par une page `liste.php` liée à une base MySQL.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les acteurs",
+          "justification": "Un schéma représente chaque acteur par un bloc nommé.",
+          "resultat_markdown": "Quatre blocs : Navigateur (client), Serveur Web Apache, Interpréteur PHP, SGBD MySQL."
+        },
+        {
+          "numero": 2,
+          "action": "Placer la première flèche",
+          "justification": "Tout commence par la demande de l'utilisateur.",
+          "resultat_markdown": "Flèche 1 : Navigateur → Serveur Web, requête HTTP `GET liste.php`."
+        },
+        {
+          "numero": 3,
+          "action": "Représenter le passage au script",
+          "justification": "Apache ne sait pas exécuter PHP lui-même, il délègue.",
+          "resultat_markdown": "Flèche 2 : Serveur Web → PHP, transmission du script `liste.php`."
+        },
+        {
+          "numero": 4,
+          "action": "Représenter l'accès aux données",
+          "justification": "Le script a besoin des noms des élèves, stockés dans la base.",
+          "resultat_markdown": "Flèche 3 : PHP → MySQL, requête `SELECT nom FROM eleve`. Flèche 4 : MySQL → PHP, résultat (lignes de la table)."
+        },
+        {
+          "numero": 5,
+          "action": "Représenter la fabrication de la page",
+          "justification": "PHP transforme les données en HTML, seul format que le navigateur comprend.",
+          "resultat_markdown": "Flèche 5 : PHP → Serveur Web, page HTML générée."
+        },
+        {
+          "numero": 6,
+          "action": "Terminer par la réponse",
+          "justification": "La dernière flèche rapporte le résultat à celui qui a fait la demande.",
+          "resultat_markdown": "Flèche 6 : Serveur Web → Navigateur, réponse HTTP contenant le HTML. Le navigateur l'affiche."
+        }
+      ],
+      "conclusion_markdown": "Le schéma comporte quatre blocs et six flèches numérotées : l'utilisateur ne voit que la requête 1 et la réponse 6, tout le reste se passe sur le serveur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer l'exécution du PHP dans le navigateur",
+          "pourquoi_faux": "Le navigateur ne connaît pas PHP. Il reçoit seulement le résultat, du HTML. C'est pourquoi « Afficher le code source » ne montre jamais le PHP.",
+          "correction_markdown": "Dessiner PHP du côté serveur, entre Apache et le SGBD."
+        },
+        {
+          "erreur_markdown": "Faire communiquer directement le navigateur avec la base de données",
+          "pourquoi_faux": "Le navigateur n'a pas accès à MySQL : ce serait une faille de sécurité grave. Toute demande passe par le script PHP.",
+          "correction_markdown": "Faire passer chaque échange avec la base par le bloc PHP."
+        },
+        {
+          "erreur_markdown": "Oublier les numéros ou l'ordre des flèches",
+          "pourquoi_faux": "Sans numéros, on ne sait pas dans quel ordre se font les échanges. Un schéma sans ordre est incomplet.",
+          "correction_markdown": "Numéroter chaque flèche et vérifier que la dernière est la réponse au client."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est la différence entre une page web statique et une page web dynamique ?",
+          "solution_markdown": "Une page **statique** est un fichier HTML déjà écrit, renvoyé identique à tous les visiteurs. Une page **dynamique** est générée par le serveur à chaque demande (script PHP, données de la base...), donc son contenu peut changer d'un visiteur ou d'un moment à l'autre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Remets dans l'ordre chronologique : (a) PHP interroge la base ; (b) le navigateur affiche la page ; (c) le client envoie la requête HTTP ; (d) PHP génère le HTML ; (e) le serveur Web renvoie la réponse ; (f) la base renvoie les données.",
+          "solution_markdown": "Ordre : **c, a, f, d, e, b**. Le client demande (c), PHP interroge la base (a), la base répond (f), PHP fabrique le HTML (d), le serveur renvoie la réponse (e) et le navigateur l'affiche (b)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une page contient `<script>alert(\"Bonjour\");</script>` et un bloc `<?php echo date(\"Y\"); ?>`. Pour chacun, indique où il s'exécute et ce que le navigateur reçoit du bloc PHP. Pourquoi l'élève ne voit-il jamais le PHP dans le code source de la page ?",
+          "solution_markdown": "- Le bloc **PHP** s'exécute **sur le serveur** : l'interpréteur calcule l'année courante et la remplace par sa valeur. Si l'on est en 2025, le navigateur reçoit simplement `2025` à la place du bloc, sans trace de `<?php`.\n- Le bloc **JavaScript** est envoyé tel quel au navigateur et s'exécute **chez le client**, qui affiche la boîte « Bonjour ».\n\nL'élève ne voit jamais le PHP dans le code source car le serveur l'a déjà exécuté et supprimé avant l'envoi : le client reçoit le résultat, pas le programme. Le JavaScript, lui, reste visible."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une page dynamique est fabriquée par le serveur à chaque demande, à partir de données.",
+        "Quatre acteurs : navigateur, serveur Web, PHP, SGBD. Le navigateur ne parle jamais directement à la base.",
+        "Le PHP s'exécute côté serveur ; le client ne reçoit que du HTML.",
+        "Dans un schéma : un bloc par acteur, des flèches, des numéros dans l'ordre chronologique.",
+        "Au BAC TI, on te demande de décrire ce fonctionnement par un schéma commenté : sois précis sur la direction et l'ordre des flèches."
+      ]
+    }
+  ]
 }

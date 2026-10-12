@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-serveur-web-definition-roles-types-dres-jan2024 (terminale-ti-programmation-dres-en-janvier-2024-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "serveur web",
+      "requête HTTP",
+      "client-serveur",
+      "Apache",
+      "page dynamique"
+    ],
+    "sous_theme": "Architecture client-serveur et web",
+    "duree_estimee_min": 25
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +26,110 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu tapes une adresse dans ton navigateur, une machine quelque part te répond en quelques millisecondes avec une page complète. Cette machine, ou plus exactement le logiciel qui tourne dessus, c'est un serveur web. Sans lui, pas de site, pas de formulaire, pas de PHP. Au BAC TI, on te demande de le définir, de dire si des affirmations sont vraies ou fausses (« un serveur communique via un réseau », « serveur HTTP = serveur web ») ou de décrire ce qui se passe quand une page est demandée."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de réseau et d'adresse (URL)",
+        "Rôle d'un navigateur web",
+        "Distinction page HTML statique / page générée par un script"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le serveur web et le dialogue client-serveur",
+      "contenu_markdown": "Un **serveur web** (ou serveur HTTP) est un logiciel qui reçoit, par le réseau, les requêtes HTTP envoyées par les navigateurs (les **clients**), les traite et renvoie une réponse, le plus souvent une page HTML. Par extension, le mot désigne aussi la machine qui héberge ce logiciel. Exemples : Apache, Nginx, IIS.\n\nDéroulement d'une consultation :\n1. l'utilisateur saisit une URL, le navigateur envoie une **requête HTTP** au serveur, par le réseau ;\n2. le serveur cherche le fichier demandé ; si c'est un script PHP, il l'**exécute** d'abord (au besoin en interrogeant la base de données) ;\n3. il renvoie une **réponse HTTP** qui contient le code de statut (200 si tout va bien) et la page HTML produite ;\n4. le navigateur affiche la page.\n\nUn serveur web communique donc toujours **via un réseau** (Internet ou réseau local). Il écoute par défaut sur le port 80 (HTTP) ou 443 (HTTPS). Il sert des pages **statiques** (fichiers HTML tels quels) ou **dynamiques** (générées par un script).\n\nPour répondre par **vrai ou faux** à une affirmation sur une définition, cherche dans la phrase le mot ou le groupe de mots qui contredit la définition du cours : une seule partie fausse suffit à rendre l'affirmation fausse. Pour une **équivalence de termes** (« serveur HTTP = serveur web »), demande-toi si les deux mots désignent le même objet dans le vocabulaire du cours.",
+      "formule_principale": "Navigateur (client) --requête HTTP--> Serveur web --réponse HTTP (page)--> Navigateur",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dire si chaque affirmation est vraie ou fausse :\na) Un serveur web communique avec ses clients par l'intermédiaire d'un réseau.\nb) Serveur HTTP et serveur web désignent la même chose.\nc) Un serveur web exécute le PHP sur l'ordinateur du visiteur.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la définition",
+          "justification": "Un serveur web reçoit des requêtes HTTP envoyées par des clients à travers un réseau et renvoie des pages.",
+          "resultat_markdown": "Mots-clés : requêtes HTTP, réseau, réponse, page."
+        },
+        {
+          "numero": 2,
+          "action": "Examiner l'affirmation a)",
+          "justification": "Elle reprend un mot-clé de la définition : la communication passe par un réseau.",
+          "resultat_markdown": "a) Vrai."
+        },
+        {
+          "numero": 3,
+          "action": "Examiner l'affirmation b)",
+          "justification": "Le protocole du web est HTTP : le serveur qui répond aux requêtes HTTP est le serveur web. Les deux termes désignent le même objet.",
+          "resultat_markdown": "b) Vrai."
+        },
+        {
+          "numero": 4,
+          "action": "Examiner l'affirmation c)",
+          "justification": "Le script PHP est exécuté **sur le serveur**, avant l'envoi de la page. Le visiteur ne reçoit que du HTML. Le groupe « sur l'ordinateur du visiteur » contredit le cours.",
+          "resultat_markdown": "c) Faux."
+        }
+      ],
+      "conclusion_markdown": "a) et b) sont vraies, c) est fausse : le PHP s'exécute côté serveur et le navigateur ne reçoit que le résultat en HTML."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre serveur web et navigateur",
+          "pourquoi_faux": "Le navigateur est le client : il envoie les requêtes et affiche les pages. Le serveur web les reçoit, les traite et répond. Ce sont deux rôles opposés dans le dialogue.",
+          "correction_markdown": "Retenir : le navigateur demande, le serveur web répond."
+        },
+        {
+          "erreur_markdown": "Croire que le code PHP s'exécute dans le navigateur",
+          "pourquoi_faux": "Le navigateur ne connaît pas PHP. Le serveur exécute le script et n'envoie que la page HTML produite, c'est pourquoi un visiteur qui affiche le code source de la page ne voit jamais de balises PHP.",
+          "correction_markdown": "PHP s'exécute côté serveur ; HTML, CSS et JavaScript sont interprétés côté client."
+        },
+        {
+          "erreur_markdown": "Confondre serveur web et serveur de base de données",
+          "pourquoi_faux": "Le serveur web répond aux requêtes HTTP des navigateurs. Le serveur de base de données (MySQL) stocke et fournit les données au script PHP. Les deux peuvent tourner sur la même machine, mais ils jouent des rôles distincts.",
+          "correction_markdown": "Chaîne type : navigateur, puis serveur web (PHP), puis serveur de base de données."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définir « serveur web » et citer deux exemples de logiciels serveurs web.",
+          "solution_markdown": "Un serveur web est un logiciel qui reçoit, par le réseau, les requêtes HTTP envoyées par les navigateurs, les traite (en exécutant au besoin un script côté serveur) et leur renvoie une réponse, le plus souvent une page HTML. Exemples : Apache et Nginx (ou IIS de Microsoft)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Répondre par vrai ou faux et corriger les affirmations fausses :\na) Apache est un serveur web.\nb) Le navigateur exécute les scripts PHP.\nc) Un serveur HTTP écoute par défaut sur le port 80.\nd) Un serveur web ne peut renvoyer que des pages statiques.",
+          "solution_markdown": "a) **Vrai.** Apache est l'un des serveurs web les plus répandus.\n\nb) **Faux.** Les scripts PHP sont exécutés par le serveur ; le navigateur reçoit seulement le HTML produit.\n\nc) **Vrai.** Le port 80 est le port par défaut du protocole HTTP (443 pour HTTPS).\n\nd) **Faux.** Un serveur web peut aussi renvoyer des pages dynamiques, générées par un script comme PHP."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève installe XAMPP sur son ordinateur et saisit `http://localhost/index.php` dans son navigateur. Décrire pas à pas ce qui se passe.",
+          "solution_markdown": "1. `localhost` désigne la machine locale (adresse 127.0.0.1) : le navigateur envoie sa requête HTTP au serveur web installé sur le même ordinateur, qui écoute sur le port 80.\n2. Le serveur web (Apache, dans XAMPP) reçoit la requête et repère le fichier `index.php` dans son dossier de publication.\n3. Comme le fichier est un script PHP, Apache le confie à l'interpréteur PHP, qui l'exécute. Si le script interroge une base, MySQL (également fourni par XAMPP) renvoie les données demandées.\n4. Le résultat de l'exécution est une page HTML. Apache la renvoie dans une réponse HTTP, avec le code de statut 200.\n5. Le navigateur affiche la page. Il n'a jamais vu le code PHP, seulement le HTML.\n\nMême sur une seule machine, le dialogue client-serveur est complet : le navigateur joue le client et Apache le serveur, la communication passant par le réseau local de la machine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un serveur web est un logiciel qui reçoit des requêtes HTTP par le réseau et renvoie des pages. Le mot désigne aussi la machine qui l'héberge.",
+        "Serveur HTTP et serveur web désignent la même chose.",
+        "Le PHP s'exécute sur le serveur ; le navigateur ne reçoit que le HTML.",
+        "Dans une question vrai ou faux, cherche le mot qui contredit la définition : un seul suffit pour que l'affirmation soit fausse.",
+        "Au BAC TI, le serveur web intervient dans les définitions, les questions vrai ou faux et la description du dialogue client-serveur."
+      ]
+    }
+  ]
 }

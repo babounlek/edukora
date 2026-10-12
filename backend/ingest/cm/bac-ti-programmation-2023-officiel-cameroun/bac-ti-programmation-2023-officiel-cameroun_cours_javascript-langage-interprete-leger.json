@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-javascript-langage-interprete-leger-premiere-ti (probatoire-blanc-ti-avril-2024-college-vogt-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "JavaScript",
+      "côté client",
+      "langage interprété",
+      "validation de formulaire",
+      "DOM"
+    ],
+    "sous_theme": "Programmation web côté client",
+    "duree_estimee_min": 25
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
@@ -17,5 +26,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu remplis un formulaire d'inscription, tu oublies ton âge, et le message d'erreur apparaît instantanément, sans que la page se recharge. Aucun aller-retour avec le serveur n'a eu lieu : c'est ton navigateur lui-même qui a vérifié. Cette réactivité vient de JavaScript. Ce cours explique ce que veut dire « langage interprété, côté client », ce que cela apporte et quelle limite il faut absolument connaître."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'une page HTML (balises, formulaire, `id`)",
+        "Notion de variable et de condition `if`",
+        "Différence entre client et serveur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "JavaScript : un langage interprété exécuté côté client",
+      "contenu_markdown": "**JavaScript** est un langage de programmation **interprété** : il n'est pas compilé en exécutable à l'avance. Le navigateur lit le code ligne par ligne et l'exécute directement. Il s'exécute **côté client**, c'est-à-dire sur l'ordinateur de l'utilisateur, sans aller-retour avec le serveur.\n\n**Avantages du JavaScript côté client :**\n\n- **réactivité** : la page répond immédiatement aux actions (clic, saisie) ;\n- **validation immédiate** des saisies avant l'envoi du formulaire ;\n- **modification dynamique** du contenu HTML et du style de la page ;\n- **allègement du serveur** : les vérifications simples n'utilisent pas ses ressources ni le réseau ;\n- code léger, écrit directement dans la page (balise `<script>`) ou dans un fichier `.js`.\n\n**Insertion dans une page :**\n\n```html\n<script>\n  // code JavaScript\n</script>\n```\n\n**Limite essentielle :** le code JavaScript est entièrement visible et modifiable par l'utilisateur (outils du navigateur, JavaScript désactivé). Une validation côté client améliore le confort mais est **contournable** : elle ne remplace jamais le contrôle côté serveur (PHP).",
+      "formule_principale": "JavaScript = code interprété par le navigateur, exécuté chez l'utilisateur"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire une page contenant un formulaire avec un champ `age` qui refuse l'envoi si l'âge saisi n'est pas un nombre ou est inférieur à 18, avec un message d'alerte.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Prévoir le formulaire et l'événement",
+          "justification": "La vérification doit se faire au moment de l'envoi : on utilise l'événement `onsubmit`.",
+          "resultat_markdown": "`<form onsubmit=\"return verifier()\">` : si la fonction renvoie `false`, l'envoi est annulé."
+        },
+        {
+          "numero": 2,
+          "action": "Donner un identifiant au champ",
+          "justification": "JavaScript retrouve un élément de la page grâce à son `id`.",
+          "resultat_markdown": "`<input type=\"text\" id=\"age\">`"
+        },
+        {
+          "numero": 3,
+          "action": "Lire la valeur et la convertir",
+          "justification": "Une valeur lue dans un champ est du texte ; la comparer à 18 exige un nombre.",
+          "resultat_markdown": "`var age = Number(document.getElementById(\"age\").value);`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la condition d'erreur",
+          "justification": "Il faut refuser si ce n'est pas un nombre ou si le nombre est inférieur à 18. `Number(\"\")` vaut 0 : un champ vide est donc refusé aussi.",
+          "resultat_markdown": "`isNaN(age) || age < 18`"
+        },
+        {
+          "numero": 5,
+          "action": "Réagir : message et annulation",
+          "justification": "Dans l'erreur, on prévient l'utilisateur puis on bloque l'envoi ; sinon on autorise.",
+          "resultat_markdown": "`alert(...); return false;` dans le cas d'erreur, `return true;` sinon."
+        }
+      ],
+      "conclusion_markdown": "Page complète :\n\n```html\n<form onsubmit=\"return verifier()\">\n  <input type=\"text\" id=\"age\">\n  <button type=\"submit\">Envoyer</button>\n</form>\n<script>\nfunction verifier() {\n  var age = Number(document.getElementById(\"age\").value);\n  if (isNaN(age) || age < 18) {\n    alert(\"Age invalide ou inférieur à 18 ans\");\n    return false;\n  }\n  return true;\n}\n</script>\n```\n\nPour la saisie `abc`, `Number(\"abc\")` vaut `NaN` : alerte. Pour `16` : `16 < 18`, alerte. Pour `20` : le formulaire est envoyé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que JavaScript s'exécute sur le serveur comme PHP",
+          "pourquoi_faux": "JavaScript du navigateur s'exécute chez l'utilisateur. Le serveur ne le voit jamais s'exécuter.",
+          "correction_markdown": "Retenir : PHP = serveur, JavaScript = client (dans le cadre de ce programme)."
+        },
+        {
+          "erreur_markdown": "Se fier uniquement à la validation JavaScript",
+          "pourquoi_faux": "Un utilisateur peut désactiver JavaScript ou modifier le code, ou envoyer directement une requête. Les données invalides arrivent alors au serveur.",
+          "correction_markdown": "Refaire toujours les vérifications côté serveur avec PHP, même si JavaScript les a déjà faites."
+        },
+        {
+          "erreur_markdown": "Comparer directement une valeur de champ à un nombre sans conversion",
+          "pourquoi_faux": "La valeur lue est une chaîne de caractères. La comparaison peut se faire par ordre alphabétique selon le contexte et donner des résultats surprenants.",
+          "correction_markdown": "Convertir avec `Number()` ou `parseInt()` avant de comparer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite trois avantages de JavaScript côté client.",
+          "solution_markdown": "Réactivité de la page, validation immédiate des saisies sans aller-retour avec le serveur, modification dynamique du contenu HTML, allègement de la charge du serveur (trois au choix)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le code d'un bouton qui, au clic, remplace le contenu d'un paragraphe d'identifiant `msg` par « Bonjour ».",
+          "solution_markdown": "```html\n<p id=\"msg\">Texte initial</p>\n<button onclick=\"saluer()\">Dire bonjour</button>\n<script>\nfunction saluer() {\n  document.getElementById(\"msg\").innerHTML = \"Bonjour\";\n}\n</script>\n```\n\nL'attribut `onclick` appelle `saluer()` au clic. La fonction retrouve le paragraphe par son `id` et remplace son contenu HTML. Aucune communication avec le serveur n'est nécessaire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire est validé en JavaScript (âge supérieur ou égal à 18). Explique pourquoi cela ne suffit pas, puis écris le contrôle PHP équivalent pour un champ `age` envoyé en méthode POST.",
+          "solution_markdown": "**Pourquoi cela ne suffit pas.** Le code JavaScript est visible et modifiable chez l'utilisateur, qui peut le désactiver ou envoyer directement une requête HTTP sans passer par la page. Le serveur reçoit alors des données non vérifiées. Seul un contrôle côté serveur est fiable.\n\n**Contrôle PHP :**\n\n```php\n<?php\nif (!isset($_POST[\"age\"]) || !is_numeric($_POST[\"age\"]) || $_POST[\"age\"] < 18) {\n    die(\"Age invalide ou inférieur à 18 ans\");\n}\necho \"Inscription acceptée\";\n?>\n```\n\nLa condition refuse si le champ est absent, s'il n'est pas numérique, ou s'il est inférieur à 18. Les deux contrôles sont complémentaires : JavaScript pour le confort, PHP pour la sécurité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "JavaScript est interprété par le navigateur et s'exécute côté client, sans aller-retour avec le serveur.",
+        "Ses atouts : réactivité, validation immédiate, modification dynamique du HTML, serveur allégé.",
+        "Une saisie lue dans un champ est du texte : convertis-la avant de la comparer à un nombre.",
+        "Une validation côté client est contournable : le contrôle côté serveur reste obligatoire.",
+        "Au BAC TI, on demande souvent un avantage de JavaScript ou un petit script de validation ; cite toujours la limite de sécurité pour compléter ta réponse."
+      ]
+    }
+  ]
 }

@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-convertir-for-en-while-php-tle-ti (bac-ti-informatique-etude-de-cas-2017-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "boucle for",
+      "boucle while",
+      "boucles imbriquées",
+      "PHP",
+      "équivalence de boucles"
+    ],
+    "sous_theme": "Structures itératives en PHP",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +26,122 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Les boucles `for` et `while` font le même travail : répéter des instructions. Le `for` range tout au même endroit, le `while` laisse chaque morceau à sa place. À l'examen, on te donne un `for` (souvent deux `for` imbriqués qui dessinent un motif) et on te demande de le réécrire avec `while`. Si tu sais où va chaque morceau, c'est de la mécanique. Si tu hésites, une boucle infinie ou un affichage faux te coûtent tous les points."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Boucle for en PHP : initialisation, condition, incrément",
+        "Boucle while et condition d'arrêt",
+        "Affichage avec echo et variables PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire un for en while",
+      "contenu_markdown": "Une boucle `for` contient trois éléments dans ses parenthèses. Pour la convertir en `while` :\n1. l'**initialisation** se place **avant** la boucle ;\n2. la **condition** devient celle du `while` ;\n3. l'**incrément** (le pas) se place **à la fin** du corps de la boucle.\n\n```php\nfor ($i = 1; $i <= 3; $i++) {\n    echo $i;\n}\n```\n\ndevient\n\n```php\n$i = 1;\nwhile ($i <= 3) {\n    echo $i;\n    $i++;\n}\n```\n\nPour deux boucles imbriquées, on applique la règle à chacune. L'initialisation de la boucle interne se place **dans** le corps de la boucle externe, avant le `while` interne, car le compteur interne doit repartir à sa valeur de départ à chaque tour de la boucle externe.",
+      "formule_principale": "for (init ; condition ; pas) { corps }   équivaut à   init ; while (condition) { corps ; pas }",
+      "variantes": [
+        {
+          "nom": "Conversion inverse : while en for",
+          "quand_utiliser": "Quand le nombre de tours est connu à l'avance et qu'on veut regrouper initialisation, condition et pas.",
+          "contenu_markdown": "On remonte l'initialisation dans la première partie des parenthèses du `for`, la condition dans la deuxième, le pas dans la troisième."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire avec des boucles `while` le script suivant, puis donner ce qu'il affiche.\n\n```php\nfor ($i = 1; $i <= 3; $i++) {\n    for ($j = 1; $j <= $i; $j++) {\n        echo \"*\";\n    }\n    echo \"<br>\";\n}\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la boucle externe",
+          "justification": "Initialisation `$i = 1` avant la boucle ; condition `$i <= 3` dans le `while` ; pas `$i++` en dernière instruction du corps.",
+          "resultat_markdown": "`$i = 1; while ($i <= 3) { ... $i++; }`"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir la boucle interne",
+          "justification": "Même règle. Son initialisation `$j = 1` se place au début du corps de la boucle externe, pour que `$j` redémarre à 1 à chaque valeur de `$i`.",
+          "resultat_markdown": "`$j = 1; while ($j <= $i) { echo \"*\"; $j++; }`"
+        },
+        {
+          "numero": 3,
+          "action": "Garder `echo \"<br>\"` au bon endroit",
+          "justification": "Il se trouve dans le corps de la boucle externe, après la boucle interne et avant l'incrément de `$i`.",
+          "resultat_markdown": "Il s'exécute une fois par valeur de `$i`."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler",
+          "justification": "On place les morceaux dans cet ordre : initialisation de `$i`, `while` externe, initialisation de `$j`, `while` interne, saut de ligne, incrément de `$i`.",
+          "resultat_markdown": "```php\n$i = 1;\nwhile ($i <= 3) {\n    $j = 1;\n    while ($j <= $i) {\n        echo \"*\";\n        $j++;\n    }\n    echo \"<br>\";\n    $i++;\n}\n```"
+        },
+        {
+          "numero": 5,
+          "action": "Déterminer l'affichage",
+          "justification": "Pour `$i = 1` la boucle interne affiche 1 étoile ; pour `$i = 2`, 2 étoiles ; pour `$i = 3`, 3 étoiles. Un `<br>` termine chaque ligne.",
+          "resultat_markdown": "`*` puis `**` puis `***`, chacun sur sa ligne."
+        }
+      ],
+      "conclusion_markdown": "Le script équivalent utilise deux `while` imbriqués avec `$j = 1` réinitialisé dans la boucle externe, et il affiche un triangle de 1, 2 puis 3 étoiles."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer `$j = 1` avant la boucle externe",
+          "pourquoi_faux": "Après le premier tour, `$j` vaut 2 à la sortie du `while` interne. Pour `$i = 2`, la condition `$j <= 2` est vraie une seule fois (`$j = 2`), puis `$j` passe à 3 et ne repart jamais. L'affichage devient une étoile par ligne : *, *, *, au lieu de *, **, ***.",
+          "correction_markdown": "Réinitialiser le compteur interne dans le corps de la boucle externe, juste avant le `while` interne."
+        },
+        {
+          "erreur_markdown": "Oublier l'incrément `$i++` (ou `$j++`)",
+          "pourquoi_faux": "La condition ne change jamais, donc elle reste vraie : la boucle ne s'arrête plus (boucle infinie) et le serveur finit par interrompre le script.",
+          "correction_markdown": "Terminer systématiquement le corps du `while` par le pas du compteur."
+        },
+        {
+          "erreur_markdown": "Mettre l'incrément au début du corps",
+          "pourquoi_faux": "Avec `$i = 1` et `$i++` en première ligne, la boucle qui affichait 1, 2, 3 affiche 2, 3, 4 : l'incrément a lieu avant l'affichage et décale tout.",
+          "correction_markdown": "Placer le pas en dernière instruction du corps, comme dans un `for` où il s'exécute après le corps."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir en `while` et donner l'affichage :\n\n```php\nfor ($i = 0; $i < 5; $i++) {\n    echo $i . \" \";\n}\n```",
+          "solution_markdown": "```php\n$i = 0;\nwhile ($i < 5) {\n    echo $i . \" \";\n    $i++;\n}\n```\n\nLa boucle s'exécute pour `$i` = 0, 1, 2, 3, 4 (elle s'arrête quand `$i` vaut 5, car 5 < 5 est faux). Affichage : `0 1 2 3 4`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir en `while` et donner l'affichage :\n\n```php\nfor ($i = 10; $i > 0; $i = $i - 3) {\n    echo $i . \" \";\n}\n```",
+          "solution_markdown": "```php\n$i = 10;\nwhile ($i > 0) {\n    echo $i . \" \";\n    $i = $i - 3;\n}\n```\n\nValeurs de `$i` : 10 (10 > 0, affiché), puis 7 (affiché), puis 4 (affiché), puis 1 (affiché), puis -2 (-2 > 0 est faux, arrêt). Affichage : `10 7 4 1`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Convertir en `while` et donner l'affichage :\n\n```php\nfor ($i = 1; $i <= 2; $i++) {\n    for ($j = 1; $j <= 3; $j++) {\n        echo $i * $j . \" \";\n    }\n    echo \"<br>\";\n}\n```",
+          "solution_markdown": "```php\n$i = 1;\nwhile ($i <= 2) {\n    $j = 1;\n    while ($j <= 3) {\n        echo $i * $j . \" \";\n        $j++;\n    }\n    echo \"<br>\";\n    $i++;\n}\n```\n\nCalcul : pour `$i = 1`, `$j` prend 1, 2, 3 et on affiche $1 \\times 1 = 1$, $1 \\times 2 = 2$, $1 \\times 3 = 3$. Pour `$i = 2` : $2 \\times 1 = 2$, $2 \\times 2 = 4$, $2 \\times 3 = 6$.\n\nAffichage : `1 2 3` sur une ligne, puis `2 4 6` sur la ligne suivante."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Initialisation avant la boucle, condition dans le `while`, pas à la fin du corps : trois morceaux, trois emplacements.",
+        "Pour deux boucles imbriquées, le compteur interne est réinitialisé dans le corps de la boucle externe.",
+        "Oublier le pas donne une boucle infinie ; le mettre au début décale tous les résultats.",
+        "Après toute conversion, teste sur la première valeur et sur la valeur d'arrêt : l'affichage doit être identique à celui du `for`.",
+        "Au BAC TI, la conversion for vers while est une question classique de la partie PHP : elle rapporte des points si chaque morceau est bien placé."
+      ]
+    }
+  ]
 }

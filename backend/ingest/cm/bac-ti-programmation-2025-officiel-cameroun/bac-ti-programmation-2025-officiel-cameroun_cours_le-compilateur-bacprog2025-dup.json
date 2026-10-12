@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-le-compilateur-premiere-ti (probatoire-blanc-ti-avril-2024-college-vogt-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "compilateur",
+      "code source",
+      "erreur de syntaxe",
+      "langage C",
+      "exécutable"
+    ],
+    "sous_theme": "Chaîne de compilation du langage C",
+    "duree_estimee_min": 25
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
@@ -17,5 +26,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu lances la compilation de ton programme C et l'écran affiche une liste d'erreurs en rouge. Désagréable, mais en réalité précieux : c'est le compilateur qui a lu tout ton code avant qu'il ne s'exécute et t'indique les fautes de grammaire. Sans lui, ces erreurs seraient découvertes en pleine exécution, ou pas du tout. Comprenons ce qu'il fait exactement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Différence entre code source et programme exécutable",
+        "Syntaxe de base du langage C (instructions terminées par `;`)",
+        "Notion de langage machine"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le compilateur : du code source au code exécutable",
+      "contenu_markdown": "Le **compilateur** est un programme qui **traduit le code source** (écrit dans un langage de haut niveau comme le C) en **langage machine**, le seul que le processeur comprend. En C, le compilateur le plus répandu est **GCC**.\n\n**Ce que fait le compilateur, avant toute exécution :**\n\n1. il **lit tout le code source** ;\n2. il **vérifie la conformité à la grammaire** du langage (syntaxe) ;\n3. il **signale chaque erreur** rencontrée, avec la ligne et la nature de l'erreur ;\n4. s'il n'y a aucune erreur, il **produit le code exécutable**.\n\n**Étapes de la chaîne (vue simplifiée) :** préprocesseur (traite les `#include`), compilation proprement dite, assemblage, puis **édition de liens** qui relie le code aux bibliothèques et crée l'exécutable.\n\n**Compilateur et interpréteur :** le compilateur traduit **tout le programme d'abord** ; un interpréteur (comme celui de JavaScript) traduit et exécute **ligne par ligne**.\n\n**Deux familles d'erreurs :**\n\n| Erreur | Détectée par | Quand |\n|---|---|---|\n| Syntaxe (point-virgule oublié, parenthèse manquante) | le compilateur | avant l'exécution |\n| Exécution (division par zéro, accès hors tableau) | personne avant | pendant l'exécution |",
+      "formule_principale": "code source (.c) → compilateur → code exécutable"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un élève compile le programme suivant. Quel outil détecte l'erreur, quand, et laquelle est-ce ?\n\n```c\n#include <stdio.h>\nint main(void) {\n    int a = 5\n    printf(\"%d\\n\", a);\n    return 0;\n}\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le code en cherchant les fautes de grammaire",
+          "justification": "Le compilateur vérifie la syntaxe : on fait le même travail à la main.",
+          "resultat_markdown": "Chaque instruction C doit se terminer par `;`. La ligne `int a = 5` n'en a pas."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la nature de l'erreur",
+          "justification": "L'instruction suivante commence alors que la précédente n'est pas terminée.",
+          "resultat_markdown": "C'est une erreur de syntaxe : point-virgule manquant."
+        },
+        {
+          "numero": 3,
+          "action": "Dire quel outil la détecte",
+          "justification": "C'est la lecture du code source par le compilateur qui vérifie la grammaire.",
+          "resultat_markdown": "Le compilateur (GCC par exemple)."
+        },
+        {
+          "numero": 4,
+          "action": "Dire à quel moment",
+          "justification": "Le programme n'a pas encore été exécuté : aucun exécutable n'est produit.",
+          "resultat_markdown": "À la compilation, avant toute exécution."
+        },
+        {
+          "numero": 5,
+          "action": "Prévoir le message",
+          "justification": "GCC indique la ligne et la nature de l'erreur, souvent à la ligne suivante car il détecte le problème en arrivant sur `printf`.",
+          "resultat_markdown": "Un message du type « expected ; before printf », avec le numéro de ligne."
+        }
+      ],
+      "conclusion_markdown": "Le compilateur détecte, avant l'exécution, l'erreur de syntaxe due au point-virgule manquant après `int a = 5`. Après correction (`int a = 5;`), le programme compile et affiche `5`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « l'interpréteur » ou « l'éditeur » pour l'outil qui détecte les erreurs de syntaxe en C",
+          "pourquoi_faux": "En C, la traduction se fait par compilation. L'éditeur ne fait que saisir le texte, il peut colorer le code mais ne vérifie pas la grammaire complète.",
+          "correction_markdown": "Répondre « le compilateur », qui lit le code source avant exécution et signale chaque erreur."
+        },
+        {
+          "erreur_markdown": "Croire qu'un programme sans erreur de compilation est forcément correct",
+          "pourquoi_faux": "Le compilateur ne vérifie que la syntaxe. `int c = 10 / b;` avec `b = 0` compile très bien, mais plante à l'exécution.",
+          "correction_markdown": "Distinguer erreurs de syntaxe (compilateur) et erreurs d'exécution ou de logique (à trouver en testant)."
+        },
+        {
+          "erreur_markdown": "Corriger seulement la dernière erreur affichée",
+          "pourquoi_faux": "Une première erreur peut en provoquer d'autres en cascade. Corriger la dernière ne règle rien si la première subsiste.",
+          "correction_markdown": "Corriger la première erreur de la liste, puis recompiler."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une chaîne de développement en C, quel outil lit le code source avant toute exécution, vérifie sa conformité à la grammaire et signale les erreurs ?",
+          "solution_markdown": "Le **compilateur** (par exemple GCC). Il lit tout le code source avant l'exécution, vérifie la syntaxe et indique la ligne et la nature de chaque erreur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour chaque cas, dis si l'erreur est détectée à la **compilation** ou à l'**exécution** : (a) `printf(\"Bonjour\")` sans point-virgule ; (b) `int b = 0; int c = 10 / b;` ; (c) parenthèse fermante oubliée dans un `if`.",
+          "solution_markdown": "(a) Compilation : erreur de syntaxe, point-virgule manquant.\n(b) Exécution : le code est syntaxiquement correct et compile, mais la division par zéro est impossible à l'exécution (arrêt du programme).\n(c) Compilation : parenthèse non fermée, erreur de syntaxe.\n\nLe compilateur contrôle la forme du code, pas son comportement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Remets dans l'ordre les étapes de la production d'un exécutable : (1) édition de liens ; (2) écriture du code source ; (3) compilation ; (4) préprocesseur. Indique à quelle étape une erreur d'oubli de `;` est signalée, et ce qu'on obtient si tout se passe bien.",
+          "solution_markdown": "Ordre : **(2) écriture du code source, (4) préprocesseur, (3) compilation, (1) édition de liens**.\n\nLe préprocesseur traite d'abord les directives `#include`, puis la compilation traduit le code et vérifie la syntaxe, puis l'édition de liens relie le résultat aux bibliothèques.\n\nUn point-virgule oublié est signalé à l'étape de **compilation**. Si tout se passe bien, on obtient le **fichier exécutable** (par exemple `a.out` avec GCC sans option `-o`, ou `programme.exe` sous Windows)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le compilateur traduit le code source en langage machine avant toute exécution.",
+        "Il lit le code, vérifie la grammaire du langage et signale chaque erreur avec sa ligne et sa nature.",
+        "Il ne trouve que les erreurs de syntaxe : division par zéro et erreurs de logique se découvrent en exécutant.",
+        "Corrige les erreurs dans l'ordre, en commençant par la première, puis recompile.",
+        "Au BAC TI, la question « quel outil détecte les erreurs avant l'exécution ? » a pour réponse : le compilateur."
+      ]
+    }
+  ]
 }

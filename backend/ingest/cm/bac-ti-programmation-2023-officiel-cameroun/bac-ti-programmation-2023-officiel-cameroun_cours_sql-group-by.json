@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-sql-group-by-tle-ti (bac-epreuve-zero-ti-dres-ouest-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "SQL",
+      "GROUP BY",
+      "COUNT",
+      "HAVING",
+      "regroupement"
+    ],
+    "sous_theme": "Interrogation d'une base de données en SQL",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
@@ -17,5 +26,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le proviseur te demande : « Combien d'élèves viennent de chaque ville ? » Compter à la main demande de trier toute la liste. En SQL, une seule requête répond. La clause GROUP BY range les lignes par catégorie, puis la fonction COUNT compte chaque rangée. Cette technique est l'une des questions les plus fréquentes de l'épreuve de programmation du BAC TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Requête `SELECT ... FROM ... WHERE`",
+        "Notion de fonction d'agrégation (`COUNT`, `SUM`, `AVG`)",
+        "Savoir lire une table (colonnes, lignes)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Compter par catégorie : COUNT(*) et GROUP BY",
+      "contenu_markdown": "La clause `GROUP BY colonne` **regroupe** les lignes ayant la même valeur dans la colonne indiquée. Une fonction d'agrégation (`COUNT(*)`, `SUM()`, `AVG()`, `MAX()`...) est alors calculée **une fois par groupe**.\n\n**Forme générale, avec l'ordre des clauses à respecter :**\n\n```sql\nSELECT colonne, COUNT(*)\nFROM table\nWHERE condition\nGROUP BY colonne\nHAVING condition_sur_le_groupe\nORDER BY ...;\n```\n\n**Rôle de chaque clause :**\n\n| Clause | Agit sur | Exemple |\n|---|---|---|\n| `WHERE` | les lignes, **avant** le regroupement | `WHERE sexe = 'F'` |\n| `GROUP BY` | forme les groupes | `GROUP BY ville` |\n| `HAVING` | les groupes, **après** le regroupement | `HAVING COUNT(*) >= 2` |\n\n**Règle clé :** toute colonne du `SELECT` qui n'est pas dans une fonction d'agrégation doit figurer dans le `GROUP BY`.\n\n**Condition sur un calcul de groupe :** `WHERE` ne peut pas contenir `COUNT(*)`. On utilise `HAVING`.",
+      "formule_principale": "SELECT colonne, COUNT(*) FROM table WHERE condition GROUP BY colonne;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit la table `eleve(nom, ville, sexe)` :\n\n| nom | ville | sexe |\n|---|---|---|\n| Ngono | Yaoundé | F |\n| Tchoua | Douala | M |\n| Mbarga | Douala | F |\n| Fotso | Douala | M |\n| Oumarou | Garoua | M |\n| Essomba | Yaoundé | M |\n\nÉcrire une requête qui donne le nombre d'élèves par ville et donner son résultat.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la colonne de regroupement",
+          "justification": "On veut un résultat par ville : la catégorie est la colonne `ville`.",
+          "resultat_markdown": "`GROUP BY ville`"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la fonction d'agrégation",
+          "justification": "On compte des élèves, c'est-à-dire des lignes : `COUNT(*)`.",
+          "resultat_markdown": "`SELECT ville, COUNT(*)`"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête",
+          "justification": "La colonne non agrégée `ville` est bien dans le `GROUP BY`.",
+          "resultat_markdown": "`SELECT ville, COUNT(*) FROM eleve GROUP BY ville;`"
+        },
+        {
+          "numero": 4,
+          "action": "Former les groupes à la main",
+          "justification": "On regroupe les six lignes par valeur de `ville`.",
+          "resultat_markdown": "Douala : Tchoua, Mbarga, Fotso. Yaoundé : Ngono, Essomba. Garoua : Oumarou."
+        },
+        {
+          "numero": 5,
+          "action": "Compter chaque groupe",
+          "justification": "`COUNT(*)` compte les lignes de chaque groupe.",
+          "resultat_markdown": "Douala = 3, Yaoundé = 2, Garoua = 1. Vérification : 3 + 2 + 1 = 6 lignes au total."
+        }
+      ],
+      "conclusion_markdown": "Résultat : (Douala, 3), (Yaoundé, 2), (Garoua, 1). Pour ne compter que les filles, on ajoute `WHERE sexe = 'F'` avant le `GROUP BY` : on obtient (Yaoundé, 1) et (Douala, 1)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `SELECT ville, COUNT(*) FROM eleve;` sans `GROUP BY`",
+          "pourquoi_faux": "Sans regroupement, `COUNT(*)` compte toutes les lignes de la table en une seule valeur. La colonne `ville` est alors incohérente avec ce total unique : la requête est refusée ou donne un résultat faux.",
+          "correction_markdown": "Ajouter `GROUP BY ville` dès qu'une colonne non agrégée est sélectionnée avec `COUNT(*)`."
+        },
+        {
+          "erreur_markdown": "Mettre `COUNT(*) >= 2` dans la clause `WHERE`",
+          "pourquoi_faux": "`WHERE` filtre les lignes avant le regroupement : le comptage n'existe pas encore. SQL signale une erreur d'utilisation d'une fonction d'agrégation.",
+          "correction_markdown": "Filtrer les groupes avec `HAVING COUNT(*) >= 2`, placé après `GROUP BY`."
+        },
+        {
+          "erreur_markdown": "Placer `WHERE` après `GROUP BY`",
+          "pourquoi_faux": "L'ordre des clauses est imposé : `WHERE` vient avant `GROUP BY`. Une inversion provoque une erreur de syntaxe.",
+          "correction_markdown": "Respecter l'ordre `SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec la table de l'exemple, écris la requête donnant le nombre d'élèves de chaque sexe, puis son résultat.",
+          "solution_markdown": "```sql\nSELECT sexe, COUNT(*) FROM eleve GROUP BY sexe;\n```\n\nFilles (F) : Ngono, Mbarga, donc 2. Garçons (M) : Tchoua, Fotso, Oumarou, Essomba, donc 4. Résultat : (F, 2), (M, 4). Vérification : 2 + 4 = 6."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Toujours avec la même table, écris la requête qui compte les garçons par ville et donne le résultat.",
+          "solution_markdown": "```sql\nSELECT ville, COUNT(*) FROM eleve WHERE sexe = 'M' GROUP BY ville;\n```\n\nLe `WHERE` garde d'abord les quatre garçons : Tchoua et Fotso (Douala), Oumarou (Garoua), Essomba (Yaoundé). Puis le regroupement donne : Douala = 2, Garoua = 1, Yaoundé = 1. Vérification : 2 + 1 + 1 = 4 garçons."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris la requête qui affiche les villes comptant au moins 2 élèves, classées par effectif décroissant, et donne le résultat.",
+          "solution_markdown": "```sql\nSELECT ville, COUNT(*)\nFROM eleve\nGROUP BY ville\nHAVING COUNT(*) >= 2\nORDER BY COUNT(*) DESC;\n```\n\nLes comptages sont Douala 3, Yaoundé 2, Garoua 1. `HAVING COUNT(*) >= 2` élimine Garoua (1 < 2). Le tri décroissant donne : (Douala, 3), puis (Yaoundé, 2). On utilise `HAVING` et non `WHERE` car la condition porte sur un comptage de groupe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`GROUP BY colonne` crée un groupe par valeur de la colonne ; `COUNT(*)` compte les lignes de chaque groupe.",
+        "Forme à connaître : `SELECT colonne, COUNT(*) FROM table WHERE condition GROUP BY colonne;`",
+        "`WHERE` filtre les lignes avant le regroupement, `HAVING` filtre les groupes après.",
+        "Toute colonne non agrégée du `SELECT` doit figurer dans le `GROUP BY`.",
+        "Au BAC TI, on demande souvent « le nombre de ... par ... » : pense immédiatement `COUNT(*)` et `GROUP BY`, et vérifie que la somme des groupes égale le nombre de lignes."
+      ]
+    }
+  ]
 }

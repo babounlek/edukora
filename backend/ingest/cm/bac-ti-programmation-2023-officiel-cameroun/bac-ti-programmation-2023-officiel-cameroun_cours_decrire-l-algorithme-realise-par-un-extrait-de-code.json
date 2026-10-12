@@ -7,7 +7,17 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-decrire-l-algorithme-realise-par-un-extrait-de-code-analyse-de-code-tle-ti (bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "lecture de code",
+      "boucle for",
+      "tableau",
+      "saisie scanf",
+      "parcours de tableau",
+      "langage C"
+    ],
+    "sous_theme": "Lecture et analyse de code C",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
@@ -17,5 +27,104 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Que fait cet extrait de programme ? » C'est une question de lecture de code que le BAC TI pose presque chaque année. Elle ne demande pas de recopier les lignes en français : elle demande le **rôle** du bloc, en une ou deux phrases. Un correcteur qui lit « i vaut 0, tant que i est inférieur à 5... » sait que tu as traduit mot à mot sans comprendre. Un correcteur qui lit « cette boucle réalise la saisie des 5 éléments du tableau » met les points. Ce cours t'apprend à passer des lignes au rôle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Boucle for et indices de tableau en C (le premier indice est 0)",
+        "Fonctions scanf et printf",
+        "Variables, affectations, opérateurs de comparaison"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Décrire le rôle d'un bloc de code",
+      "contenu_markdown": "Pour décrire ce que réalise un extrait, procède en trois temps :\n1. **Repérer la structure** : boucle `for`, `while` ou test `if`.\n2. **Dire ce que fait un tour** : quelle variable change, quelle fonction est appelée (`scanf` lit, `printf` affiche).\n3. **Donner l'effet d'ensemble** une fois la boucle terminée : saisie, affichage, somme, recherche du plus grand...\n\nQuelques motifs à reconnaître :\n- une boucle qui lit une valeur avec `scanf` dans `t[i]` à chaque tour : **saisie** du tableau ;\n- une boucle qui affiche `t[i]` à chaque tour avec `printf` : **affichage** (parcours) du tableau ;\n- une boucle qui fait `s = s + t[i]` : **somme** des éléments ;\n- une boucle qui compare `t[i]` à une variable `max` et la met à jour : **recherche du maximum**.\n\nLes bornes sont décisives : un tableau de `n` éléments a pour indices 0 à `n-1`, donc `for(i = 0; i < n; i++)` parcourt tout le tableau.",
+      "formule_principale": "structure de contrôle + ce que fait un tour + effet global à la fin",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Que réalise l'extrait suivant ?\n\n```c\nint t[5], i;\nfor (i = 0; i < 5; i++) {\n    printf(\"t[%d] = \", i);\n    scanf(\"%d\", &t[i]);\n}\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la structure",
+          "justification": "C'est une boucle `for` dont le compteur `i` va de 0 à 4 (`i < 5`).",
+          "resultat_markdown": "La boucle effectue 5 tours, un par case du tableau `t` (indices 0 à 4)."
+        },
+        {
+          "numero": 2,
+          "action": "Dire ce que fait un tour",
+          "justification": "Le `printf` affiche un message du type `t[0] = ` qui invite l'utilisateur à répondre. Le `scanf` lit un entier au clavier et le range dans `t[i]` (`&t[i]` est l'adresse de la case).",
+          "resultat_markdown": "À chaque tour, une valeur saisie est stockée dans la case `i`."
+        },
+        {
+          "numero": 3,
+          "action": "Donner l'effet d'ensemble",
+          "justification": "Après les 5 tours, les cases `t[0]` à `t[4]` contiennent les 5 valeurs tapées.",
+          "resultat_markdown": "Le tableau est entièrement rempli par l'utilisateur."
+        }
+      ],
+      "conclusion_markdown": "Cet extrait réalise la **saisie** des 5 éléments du tableau `t` : il demande à l'utilisateur 5 entiers et les range dans `t[0]` à `t[4]`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Traduire ligne à ligne : « i vaut 0, si i est inférieur à 5, on affiche, on lit, on augmente i »",
+          "pourquoi_faux": "C'est une paraphrase, pas une description. L'énoncé demande ce que l'extrait réalise : son rôle, pas sa syntaxe.",
+          "correction_markdown": "Répondre par le rôle : « saisie des 5 éléments du tableau »."
+        },
+        {
+          "erreur_markdown": "Confondre saisie et affichage",
+          "pourquoi_faux": "`scanf` **lit** une valeur au clavier et la range dans une variable ; `printf` **affiche** une valeur à l'écran. Un extrait qui contient `scanf(\"%d\", &t[i])` remplit le tableau, il ne l'affiche pas.",
+          "correction_markdown": "Repérer la fonction d'entrée-sortie : `scanf` signale une saisie, `printf` un affichage."
+        },
+        {
+          "erreur_markdown": "Dire que le tableau a des éléments numérotés de 1 à 5",
+          "pourquoi_faux": "En C, le premier indice est 0 : avec `i < 5` et `i` de 0 à 4, les éléments sont `t[0]` à `t[4]`. Dire « de 1 à 5 » trahit une lecture fausse des bornes.",
+          "correction_markdown": "Écrire les indices exacts : de `t[0]` à `t[4]`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que réalise cet extrait ?\n\n```c\nfor (i = 0; i < n; i++)\n    printf(\"%d \", t[i]);\n```",
+          "solution_markdown": "C'est une boucle `for` de 0 à `n-1` : elle passe sur toutes les cases du tableau. À chaque tour, `printf` affiche la valeur de `t[i]` suivie d'un espace.\n\nCet extrait réalise l'**affichage** de tous les éléments du tableau `t`, de `t[0]` à `t[n-1]`, séparés par des espaces."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que réalise cet extrait ? Donner sa valeur finale pour `t = {10, 12, 14, 8}` et `n = 4` (`s` et `n` sont des `int`, `m` est un `float`).\n\n```c\ns = 0;\nfor (i = 0; i < n; i++) {\n    s = s + t[i];\n}\nm = (float) s / n;\n```",
+          "solution_markdown": "La variable `s` part de 0 et reçoit à chaque tour la valeur de `t[i]` : elle accumule la **somme** des éléments. Ensuite `m` est cette somme divisée par le nombre d'éléments : c'est la **moyenne**. Le `(float)` évite une division entière qui supprimerait les décimales.\n\nApplication : $s = 10 + 12 + 14 + 8 = 44$ et $m = \\frac{44}{4} = 11$.\n\nL'extrait calcule la moyenne des éléments du tableau ; ici `m = 11`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que réalise cet extrait ? Donner ce qu'il affiche pour `t = {4, 9, 2, 7}` et `n = 4`. Que se passerait-il si `max` était initialisé à 0 pour un tableau de nombres tous négatifs ?\n\n```c\nmax = t[0];\nfor (i = 1; i < n; i++) {\n    if (t[i] > max)\n        max = t[i];\n}\nprintf(\"%d\", max);\n```",
+          "solution_markdown": "`max` commence à la première valeur. Chaque tour compare `t[i]` au meilleur résultat connu et le remplace s'il est plus grand : l'extrait cherche le **plus grand élément** du tableau et l'affiche.\n\nSuivi pour `{4, 9, 2, 7}` : `max = 4` ; i=1 : 9 > 4, `max = 9` ; i=2 : 2 > 9 faux ; i=3 : 7 > 9 faux. Affichage : `9`.\n\nSi `max` valait 0 au départ avec un tableau de négatifs, comme `{-5, -2, -8}`, aucun `t[i]` ne serait supérieur à 0 : le programme afficherait 0, une valeur qui n'est pas dans le tableau. Initialiser `max` avec `t[0]` évite ce défaut."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour décrire un extrait, on donne son rôle, pas une traduction ligne à ligne.",
+        "Trois temps : la structure de contrôle, ce que fait un tour, l'effet d'ensemble.",
+        "`scanf` dans une boucle sur un tableau : saisie. `printf` : affichage. `s = s + t[i]` : somme. Comparaison à `max` : plus grand élément.",
+        "Les indices commencent à 0 : une boucle de 0 à `n-1` parcourt tout le tableau.",
+        "Au BAC TI, cette question rapporte des points rapides si tu nommes le rôle avec le vocabulaire exact (saisie, affichage, somme, recherche du maximum)."
+      ]
+    }
+  ]
 }

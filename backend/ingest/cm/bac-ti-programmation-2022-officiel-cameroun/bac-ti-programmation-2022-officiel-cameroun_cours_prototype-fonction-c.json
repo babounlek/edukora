@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-le-prototype-declaration-anticipee-d-une-fonction-en-c-ti-2021 (bac-ti-informatique-programmation-2021-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "prototype",
+      "fonction",
+      "langage C",
+      "déclaration",
+      "tableau de structures"
+    ],
+    "sous_theme": "Fonctions en langage C",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +26,120 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu écris ton programme C avec `main()` en haut et tes fonctions en dessous. À la compilation, le compilateur s'arrête sur l'appel d'une fonction qu'il n'a pas encore rencontrée. Comment lui annoncer à l'avance qu'elle existe, avec le bon nombre et les bons types de paramètres ? C'est le rôle du prototype, et la question « définir le prototype de la fonction qui calcule ... » tombe régulièrement au BAC TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Types de base du C (`int`, `float`, `char`)",
+        "Écriture et appel d'une fonction simple",
+        "Tableaux et structures (`struct`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le prototype d'une fonction en C",
+      "contenu_markdown": "Le **prototype** (ou **déclaration anticipée**) est l'en-tête d'une fonction **sans son corps**, terminé par un **point-virgule**. Il informe le compilateur du nom de la fonction, du type de sa valeur de retour et du type de chacun de ses paramètres, avant que la fonction ne soit définie.\n\n**Syntaxe :**\n\n```c\ntype_retour nom_fonction(type1 param1, type2 param2);\n```\n\n**Comment le construire en trois questions :**\n\n1. **Que renvoie la fonction ?** Le type du résultat donne le type de retour (un total de montants décimaux : `float` ; un nombre d'éléments : `int` ; rien : `void`).\n2. **De quelles données a-t-elle besoin ?** Chaque donnée devient un paramètre avec son type.\n3. **Quel nom ?** Un nom explicite (`total`, `moyenne`, `maximum`).\n\n**Cas du tableau :** une fonction ne connaît pas la taille d'un tableau reçu. On transmet donc **le tableau et sa taille** : `float total(Depense tab[], int n);`\n\n**Place dans le programme :** les prototypes se mettent en haut du fichier, après les `#include` et les définitions de types, **avant** `main()`. La définition complète (avec accolades) peut venir après `main()`.\n\n**Le prototype ne contient pas les accolades** et se termine par `;`. Les noms des paramètres sont facultatifs dans un prototype, mais ils rendent la lecture plus claire.",
+      "formule_principale": "type_retour nom_fonction(type1 param1, type2 param2);"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une structure décrit une dépense :\n\n```c\ntypedef struct {\n    char nom[30];\n    float montant;\n} Depense;\n```\n\nÉcrire le prototype d'une fonction `total` qui calcule la somme des montants d'un tableau de dépenses, puis sa définition, et calculer son résultat pour des montants 1500,5 ; 2000 et 499,5.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer le type de retour",
+          "justification": "La fonction renvoie un total de montants décimaux. Le champ `montant` est un `float`, donc la somme aussi.",
+          "resultat_markdown": "Type de retour : `float`."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer les paramètres",
+          "justification": "La fonction a besoin du tableau de dépenses, et de sa taille car elle ne peut pas la deviner.",
+          "resultat_markdown": "`Depense tab[]` et `int n`."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le prototype",
+          "justification": "On assemble type, nom et paramètres, et on termine par un point-virgule, sans accolades.",
+          "resultat_markdown": "`float total(Depense tab[], int n);`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la définition",
+          "justification": "Même en-tête, sans point-virgule, suivi du corps : on accumule les montants dans une somme initialisée à 0.",
+          "resultat_markdown": "```c\nfloat total(Depense tab[], int n) {\n    float s = 0;\n    for (int i = 0; i < n; i++) {\n        s = s + tab[i].montant;\n    }\n    return s;\n}\n```"
+        },
+        {
+          "numero": 5,
+          "action": "Simuler pour n = 3",
+          "justification": "On suit la variable `s` à chaque tour.",
+          "resultat_markdown": "s = 0, puis 1500,5, puis 1500,5 + 2000 = 3500,5, puis 3500,5 + 499,5 = 4000."
+        }
+      ],
+      "conclusion_markdown": "Le prototype est `float total(Depense tab[], int n);` et l'appel de la fonction sur les trois dépenses renvoie 4000,0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le point-virgule à la fin du prototype",
+          "pourquoi_faux": "Sans `;`, le compilateur croit que l'en-tête annonce le corps de la fonction et cherche une accolade. Il signale une erreur.",
+          "correction_markdown": "Le prototype se termine toujours par `;`, la définition jamais."
+        },
+        {
+          "erreur_markdown": "Écrire le corps avec les accolades dans le prototype",
+          "pourquoi_faux": "Le prototype ne fait qu'annoncer la fonction. Y mettre le corps le transforme en définition, et la fonction se retrouve définie deux fois.",
+          "correction_markdown": "Prototype en haut du fichier sans corps ; définition complète plus bas."
+        },
+        {
+          "erreur_markdown": "Ne pas passer la taille du tableau",
+          "pourquoi_faux": "Une fonction qui reçoit un tableau ne peut pas en connaître la longueur : elle ne saurait pas quand arrêter la boucle.",
+          "correction_markdown": "Ajouter un paramètre `int n` pour la taille."
+        },
+        {
+          "erreur_markdown": "Choisir `int` comme type de retour pour un total décimal",
+          "pourquoi_faux": "Le résultat serait tronqué : 4000,5 deviendrait 4000.",
+          "correction_markdown": "Choisir le type de retour d'après la nature du résultat : `float` pour des montants décimaux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris le prototype d'une fonction `carre` qui reçoit un entier et renvoie son carré.",
+          "solution_markdown": "`int carre(int x);` : elle reçoit un entier, renvoie un entier. Le point-virgule termine le prototype."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le prototype d'une fonction `maximum` qui reçoit un tableau d'entiers et son nombre d'éléments, et renvoie la plus grande valeur.",
+          "solution_markdown": "`int maximum(int t[], int n);` : le résultat est un entier (une valeur du tableau), les paramètres sont le tableau et sa taille."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Complète le programme suivant : écris le prototype et la définition de `moyenne` qui renvoie la moyenne de `n` réels, puis donne l'affichage.\n\n```c\n#include <stdio.h>\n\n/* prototype a ecrire */\n\nint main(void) {\n    float notes[3] = {10, 12, 14};\n    printf(\"%.1f\\n\", moyenne(notes, 3));\n    return 0;\n}\n\n/* definition a ecrire */\n```",
+          "solution_markdown": "```c\n#include <stdio.h>\n\nfloat moyenne(float t[], int n);\n\nint main(void) {\n    float notes[3] = {10, 12, 14};\n    printf(\"%.1f\\n\", moyenne(notes, 3));\n    return 0;\n}\n\nfloat moyenne(float t[], int n) {\n    float s = 0;\n    for (int i = 0; i < n; i++) {\n        s = s + t[i];\n    }\n    return s / n;\n}\n```\n\nCalcul : 10 + 12 = 22, puis 22 + 14 = 36. La moyenne est 36 / 3 = 12. Affichage : `12.0`. Le prototype avant `main()` permet l'appel de `moyenne` alors que sa définition vient après."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un prototype est l'en-tête de la fonction suivi de `;`, sans corps : `type_retour nom(type param, ...);`",
+        "Le type de retour se déduit de la nature du résultat ; les paramètres correspondent aux données dont la fonction a besoin.",
+        "Un tableau se transmet toujours avec sa taille.",
+        "Le prototype se place avant `main()` ; la définition peut venir après.",
+        "Au BAC TI, on demande le prototype d'une fonction décrite en français : réponds avec type, nom, paramètres typés et point-virgule."
+      ]
+    }
+  ]
 }

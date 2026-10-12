@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-simulation-boucle-do-while-en-c-premiere-ti (probatoire-blanc-ti-avril-2024-college-vogt-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "do while",
+      "boucle",
+      "saisie contrôlée",
+      "simulation",
+      "langage C"
+    ],
+    "sous_theme": "Structures itératives en langage C",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
@@ -17,5 +26,120 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme demande une note entre 0 et 20. Si l'utilisateur tape 25, il faut redemander, encore et encore, jusqu'à ce que la saisie soit correcte. Il faut demander au moins une fois, avant de pouvoir juger la réponse. La boucle `do...while` est faite pour cela. Au BAC TI, on te donne souvent un tel algorithme et tu dois le lire et simuler son exécution pas à pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Variables, affectation et opérateurs de comparaison (`<`, `>`, `||`, `&&`)",
+        "Fonctions `printf` et `scanf`",
+        "Notion de boucle (répéter des instructions)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La boucle do ... while",
+      "contenu_markdown": "La boucle `do ... while` exécute **d'abord** le bloc d'instructions, **puis** évalue la condition. Tant que la condition est **vraie**, le bloc est répété. Dès qu'elle devient **fausse**, la boucle s'arrête.\n\n```c\ndo {\n    instructions;\n} while (condition);\n```\n\nLe point-virgule après la parenthèse est **obligatoire**.\n\n**Conséquence importante : le bloc est exécuté au moins une fois**, même si la condition est fausse dès le départ.\n\n**Comparaison avec `while` :**\n\n| | `while (cond) { ... }` | `do { ... } while (cond);` |\n|---|---|---|\n| Condition testée | avant le bloc | après le bloc |\n| Nombre minimum d'exécutions | 0 | 1 |\n| Usage typique | parcours, répétition conditionnelle | saisie contrôlée |\n\n**Saisie contrôlée :** on demande la valeur dans la boucle et on répète **tant que la valeur est invalide**.\n\n**Méthode pour simuler :** dresser un tableau avec une ligne par passage, les valeurs des variables après le bloc, la valeur de la condition, et la décision (répéter ou arrêter).",
+      "formule_principale": "do { instructions } while (condition);"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On exécute le fragment suivant et l'utilisateur saisit successivement 25, puis -3, puis 14. Simuler l'exécution et dire combien de fois le bloc est exécuté.\n\n```c\nint n;\ndo {\n    printf(\"Entrez une note (0 a 20) : \");\n    scanf(\"%d\", &n);\n} while (n < 0 || n > 20);\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la condition de répétition",
+          "justification": "La boucle recommence tant que la condition est vraie, c'est-à-dire tant que la note est invalide.",
+          "resultat_markdown": "Répéter si `n < 0` ou `n > 20`."
+        },
+        {
+          "numero": 2,
+          "action": "Premier passage",
+          "justification": "Le bloc s'exécute toujours une fois avant le test. L'utilisateur saisit 25.",
+          "resultat_markdown": "n = 25. Test : 25 < 0 est faux, 25 > 20 est vrai, donc la condition est vraie. On répète."
+        },
+        {
+          "numero": 3,
+          "action": "Deuxième passage",
+          "justification": "Le bloc affiche de nouveau le message et lit une valeur : -3.",
+          "resultat_markdown": "n = -3. Test : -3 < 0 est vrai, donc la condition est vraie. On répète."
+        },
+        {
+          "numero": 4,
+          "action": "Troisième passage",
+          "justification": "Nouvelle saisie : 14.",
+          "resultat_markdown": "n = 14. Test : 14 < 0 est faux et 14 > 20 est faux, donc la condition est fausse. La boucle s'arrête."
+        },
+        {
+          "numero": 5,
+          "action": "Compter les exécutions",
+          "justification": "Chaque passage dans le bloc correspond à une saisie.",
+          "resultat_markdown": "Le bloc a été exécuté 3 fois, la note retenue est 14."
+        }
+      ],
+      "conclusion_markdown": "La boucle impose une note valide : elle s'est répétée pour 25 et -3 (hors de [0 ; 20]) et s'est arrêtée à 14, après 3 exécutions du bloc."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que la boucle s'arrête quand la condition est vraie",
+          "pourquoi_faux": "C'est l'inverse : `do...while` répète tant que la condition est vraie. Elle s'arrête quand elle devient fausse.",
+          "correction_markdown": "Lire `while (cond)` comme « tant que cond est vraie, on continue »."
+        },
+        {
+          "erreur_markdown": "Croire que le bloc peut ne jamais s'exécuter",
+          "pourquoi_faux": "Le test arrive après le bloc : une première exécution a toujours lieu, même si la condition est fausse dès le départ.",
+          "correction_markdown": "Pour un bloc éventuellement jamais exécuté, utiliser `while`."
+        },
+        {
+          "erreur_markdown": "Oublier le point-virgule après le `while(...)` final",
+          "pourquoi_faux": "C'est une erreur de syntaxe propre à cette boucle : le compilateur la signale.",
+          "correction_markdown": "Terminer par `while (condition);`."
+        },
+        {
+          "erreur_markdown": "Écrire `n < 0 && n > 20` au lieu de `n < 0 || n > 20`",
+          "pourquoi_faux": "Aucun entier n'est à la fois négatif et supérieur à 20 : la condition est toujours fausse, la boucle ne répète jamais et laisse passer 25 ou -3.",
+          "correction_markdown": "Pour contrôler l'intervalle [0 ; 20], la condition d'erreur est `n < 0 || n > 20` (\"ou\")."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne l'affichage du fragment :\n\n```c\nint i = 10;\ndo {\n    printf(\"%d \", i);\n    i = i - 3;\n} while (i > 0);\n```",
+          "solution_markdown": "Simulation :\n\n| Passage | Affichage | i après le bloc | i > 0 ? |\n|---|---|---|---|\n| 1 | 10 | 7 | oui |\n| 2 | 7 | 4 | oui |\n| 3 | 4 | 1 | oui |\n| 4 | 1 | -2 | non |\n\nAffichage : `10 7 4 1`. Le bloc s'exécute 4 fois."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On pose `int k = 5;`. Combien de fois s'exécute le bloc dans chacun des cas, et pourquoi ?\n\n(a) `while (k < 3) { k++; }`\n(b) `do { k++; } while (k < 3);`",
+          "solution_markdown": "(a) La condition `5 < 3` est fausse dès le test initial : le bloc s'exécute **0 fois** et `k` reste 5.\n\n(b) Le bloc s'exécute d'abord : `k` passe à 6. Le test `6 < 3` est faux : arrêt. Le bloc s'exécute **1 fois** et `k` vaut 6.\n\nLa différence vient de la place du test : avant le bloc pour `while`, après pour `do...while`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris un programme C qui lit des entiers jusqu'à la saisie de 0 (le 0 est inclus comme signal d'arrêt) et affiche la somme des entiers **strictement positifs** saisis. Simule avec les saisies 4, -2, 6, 0.",
+          "solution_markdown": "```c\n#include <stdio.h>\n\nint main(void) {\n    int x, s = 0;\n    do {\n        printf(\"Entrez un entier (0 pour finir) : \");\n        scanf(\"%d\", &x);\n        if (x > 0) {\n            s = s + x;\n        }\n    } while (x != 0);\n    printf(\"Somme : %d\\n\", s);\n    return 0;\n}\n```\n\nSimulation :\n\n| Passage | x | x > 0 ? | s | x != 0 ? |\n|---|---|---|---|---|\n| 1 | 4 | oui | 4 | oui |\n| 2 | -2 | non | 4 | oui |\n| 3 | 6 | oui | 10 | oui |\n| 4 | 0 | non | 10 | non |\n\nLa boucle s'arrête au 4e passage. Affichage : `Somme : 10`. On a besoin de `do...while` car la première saisie doit avoir lieu avant tout test."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`do { ... } while (condition);` exécute le bloc d'abord, teste ensuite, et répète tant que la condition est vraie.",
+        "Le bloc est exécuté au moins une fois.",
+        "Le point-virgule après le `while(...)` est obligatoire.",
+        "Pour une saisie contrôlée, la condition de répétition est la condition d'invalidité, par exemple `n < 0 || n > 20`.",
+        "Au BAC TI, on te demande de lire un tel algorithme et de simuler son exécution : dresse un tableau passage par passage et vérifie la condition à chaque ligne."
+      ]
+    }
+  ]
 }

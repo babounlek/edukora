@@ -7,7 +7,17 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-role-methode-query-mysqli-bacprog2023 (bac-ti-programmation-2023-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "mysqli",
+      "query",
+      "close",
+      "PHP",
+      "MySQL",
+      "connexion"
+    ],
+    "sous_theme": "Accès à une base MySQL avec PHP",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +27,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ta page PHP doit afficher la liste des élèves stockée dans MySQL. Le script ne peut pas parler au SGBD par magie : il ouvre une connexion, envoie une requête SQL, lit la réponse, puis referme. Dans l'extension mysqli, c'est la méthode `query()` qui envoie la requête et `close()` qui termine proprement. Les connaître et dire ce qu'elles renvoient est une question classique du BAC TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notions de PHP : variables, `echo`, boucle `while`",
+        "Requêtes SQL `SELECT` et `INSERT`",
+        "Notion d'objet et de méthode (`$objet->methode()`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les méthodes query() et close() de mysqli",
+      "contenu_markdown": "**mysqli** (*MySQL Improved*) est l'extension PHP qui permet de dialoguer avec MySQL. Pour décrire le rôle d'une ligne de code, on identifie **l'objet**, **la méthode appelée** et **ce qu'elle produit**.\n\n**Les étapes d'un accès à la base :**\n\n1. **Connexion** : `$connexion = new mysqli($hote, $utilisateur, $mdp, $base);`\n2. **Requête** : `$resultat = $connexion->query($requete);`\n3. **Lecture** : `$resultat->fetch_assoc()` renvoie une ligne sous forme de tableau associatif, ou `null` quand il n'y en a plus.\n4. **Fermeture** : `$connexion->close();`\n\n**Rôle de `query()` :** elle **exécute une requête SQL** sur la connexion et renvoie :\n\n| Type de requête | Valeur renvoyée en cas de succès | En cas d'échec |\n|---|---|---|\n| `SELECT` | un objet résultat (`mysqli_result`) | `false` |\n| `INSERT`, `UPDATE`, `DELETE` | `true` | `false` |\n\n**Rôle de `close()` :** elle **ferme la connexion** à la base et libère les ressources. Après `close()`, plus aucune requête n'est possible sur cette connexion.",
+      "formule_principale": "$resultat = $connexion->query($requete);   $connexion->close();"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le rôle des lignes `$resultat = $connexion->query(\"SELECT nom FROM eleve\");` et `$connexion->close();` dans le script ci-dessous, puis dire ce que contient `$resultat`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'objet et la méthode de la première ligne",
+          "justification": "L'objet est `$connexion`, la méthode appelée est `query()`.",
+          "resultat_markdown": "Objet : connexion à la base. Méthode : `query()`."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire ce que la méthode fait",
+          "justification": "`query()` envoie au SGBD la requête SQL passée en paramètre.",
+          "resultat_markdown": "Elle exécute `SELECT nom FROM eleve` sur la base."
+        },
+        {
+          "numero": 3,
+          "action": "Préciser ce qu'elle produit",
+          "justification": "Une requête `SELECT` réussie renvoie un objet résultat, sinon `false`.",
+          "resultat_markdown": "`$resultat` contient l'objet résultat (les noms des élèves), ou `false` en cas d'échec."
+        },
+        {
+          "numero": 4,
+          "action": "Décrire la dernière ligne",
+          "justification": "Même démarche : objet `$connexion`, méthode `close()`.",
+          "resultat_markdown": "Elle ferme la connexion à la base et libère les ressources."
+        },
+        {
+          "numero": 5,
+          "action": "Situer ces lignes dans l'ordre du script",
+          "justification": "La fermeture se fait après la lecture des résultats.",
+          "resultat_markdown": "connexion, `query()`, lecture avec `fetch_assoc()`, `close()`."
+        }
+      ],
+      "conclusion_markdown": "`query()` exécute la requête SQL et renvoie un objet résultat (ou `false`) ; `close()` ferme la connexion à la base."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que `query()` « affiche » les résultats",
+          "pourquoi_faux": "`query()` n'affiche rien : elle renvoie un objet résultat. L'affichage vient d'une boucle avec `fetch_assoc()` et `echo`.",
+          "correction_markdown": "Écrire « exécute la requête et renvoie un objet résultat » puis lire les lignes avec `fetch_assoc()`."
+        },
+        {
+          "erreur_markdown": "Croire qu'un `INSERT` renvoie un objet résultat",
+          "pourquoi_faux": "Seul un `SELECT` produit des lignes à lire. Les requêtes de modification renvoient seulement `true` ou `false`.",
+          "correction_markdown": "Tester le succès d'un `INSERT` avec `if ($connexion->query(...))`, sans `fetch_assoc()`."
+        },
+        {
+          "erreur_markdown": "Appeler `query()` après `close()`",
+          "pourquoi_faux": "La connexion est fermée : l'appel échoue et provoque une erreur.",
+          "correction_markdown": "Placer `close()` en toute dernière instruction, après la lecture des résultats."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne le rôle de `$connexion->query($requete)` et de `$connexion->close()`.",
+          "solution_markdown": "`query()` exécute la requête SQL contenue dans `$requete` sur la connexion et renvoie un objet résultat (ou `false` en cas d'échec). `close()` ferme la connexion à la base et libère les ressources."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris les instructions PHP qui ajoutent l'élève « Fotso » de la ville « Douala » dans la table `eleve(nom, ville)`, via une connexion déjà ouverte `$connexion`, et qui affichent un message selon le résultat.",
+          "solution_markdown": "```php\n$requete = \"INSERT INTO eleve (nom, ville) VALUES ('Fotso', 'Douala')\";\nif ($connexion->query($requete)) {\n    echo \"Eleve ajouté\";\n} else {\n    echo \"Erreur : \" . $connexion->error;\n}\n```\n\nUn `INSERT` réussi renvoie `true` : la condition est vraie et le premier message s'affiche. En cas d'échec, `query()` renvoie `false` et `$connexion->error` donne la cause."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris un script complet qui se connecte à la base `ecole` (serveur `localhost`, utilisateur `root`, mot de passe vide), affiche les noms de la table `eleve` séparés par des sauts de ligne HTML, vérifie les erreurs de connexion et de requête, puis ferme la connexion.",
+          "solution_markdown": "```php\n<?php\n$connexion = new mysqli(\"localhost\", \"root\", \"\", \"ecole\");\nif ($connexion->connect_error) {\n    die(\"Echec de connexion : \" . $connexion->connect_error);\n}\n$resultat = $connexion->query(\"SELECT nom FROM eleve\");\nif ($resultat === false) {\n    echo \"Erreur de requête : \" . $connexion->error;\n} else {\n    while ($ligne = $resultat->fetch_assoc()) {\n        echo $ligne[\"nom\"] . \"<br>\";\n    }\n}\n$connexion->close();\n?>\n```\n\nOrdre : connexion, test de l'erreur de connexion, requête, test de `false`, lecture ligne par ligne (la boucle s'arrête quand `fetch_assoc()` renvoie `null`), puis `close()`. Le test `=== false` distingue un échec d'un résultat vide, qui est un objet valide sans ligne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`query()` exécute une requête SQL sur la connexion et renvoie un objet résultat pour un `SELECT`, `true` pour une modification, `false` en cas d'échec.",
+        "`close()` ferme la connexion et libère les ressources ; elle se place en dernier.",
+        "Pour décrire une ligne de code : objet, méthode, ce qu'elle produit.",
+        "`query()` n'affiche rien : l'affichage se fait avec `fetch_assoc()` et `echo`.",
+        "Au BAC TI, on demande le rôle de ces deux méthodes : donne l'action et la valeur renvoyée."
+      ]
+    }
+  ]
 }

@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-citer-des-environnements-de-developpement-integres-ide-pour-compiler-un-programme-en-langage-c-terminale-c (bac-c-d-e-informatique-theorique-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "IDE",
+      "compilateur",
+      "éditeur de code",
+      "débogueur",
+      "langage C"
+    ],
+    "sous_theme": "Outils de développement",
+    "duree_estimee_min": 20
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
@@ -17,5 +26,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour écrire un programme en C, il suffit en théorie d'un éditeur de texte et d'un compilateur lancé en ligne de commande. En pratique, tous les développeurs utilisent un seul logiciel qui fait tout : écrire, compiler, exécuter, chercher les erreurs. Ce logiciel s'appelle un IDE. Au BAC TI, on te demande de le définir et d'en citer des exemples qui permettent de compiler du C. Le piège est de citer un compilateur ou un simple éditeur à la place d'un IDE."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de programme et de langage de programmation",
+        "Idée générale de la compilation (traduire le code source en exécutable)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Qu'est-ce qu'un IDE ?",
+      "contenu_markdown": "Un **IDE** (Integrated Development Environment, environnement de développement intégré) est un logiciel qui regroupe au même endroit les outils nécessaires pour fabriquer un programme : un **éditeur** de code (coloration syntaxique, indentation), un **compilateur** ou un interpréteur, et un **débogueur** pour suivre l'exécution pas à pas. Il propose en général un bouton « compiler et exécuter ».\n\nExemples d'IDE qui compilent du langage C : Code::Blocks, Dev-C++, Eclipse avec le plugin CDT, Visual Studio, CLion.\n\nÀ ne pas confondre avec les outils qu'un IDE contient ou utilise :\n- un **éditeur de texte** (Bloc-notes, Notepad++) sert seulement à écrire le code ;\n- un **compilateur** (gcc, par exemple) traduit le code source en exécutable, sans interface de rédaction ;\n- un **débogueur** (gdb) sert à traquer les erreurs d'exécution.",
+      "formule_principale": "IDE = éditeur de code + compilateur + débogueur, réunis dans un seul environnement",
+      "variantes": [
+        {
+          "nom": "Compiler en ligne de commande, sans IDE",
+          "quand_utiliser": "Pour un petit programme, sur un poste sans IDE, ou pour comprendre ce que l'IDE fait à ta place.",
+          "contenu_markdown": "On écrit le fichier avec un éditeur, puis on tape `gcc prog.c -o prog` pour compiler et `./prog` pour exécuter. Un IDE enchaîne ces deux actions en un clic."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Parmi les logiciels suivants, lesquels sont des IDE permettant de compiler un programme C ? Code::Blocks, gcc, Notepad++, Dev-C++, Eclipse CDT, Bloc-notes. Citer trois IDE.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler ce qui définit un IDE",
+          "justification": "Un IDE réunit éditeur, compilateur et débogueur dans le même environnement.",
+          "resultat_markdown": "Critère : le logiciel permet d'écrire, de compiler et de déboguer sans quitter son interface."
+        },
+        {
+          "numero": 2,
+          "action": "Examiner gcc",
+          "justification": "gcc traduit le code source en exécutable, mais n'offre aucun éditeur ni interface graphique.",
+          "resultat_markdown": "gcc est un compilateur, pas un IDE."
+        },
+        {
+          "numero": 3,
+          "action": "Examiner Notepad++ et Bloc-notes",
+          "justification": "Ce sont des éditeurs de texte : ils servent à écrire le code, sans compilateur ni débogueur intégré.",
+          "resultat_markdown": "Notepad++ et Bloc-notes sont des éditeurs, pas des IDE."
+        },
+        {
+          "numero": 4,
+          "action": "Examiner Code::Blocks, Dev-C++ et Eclipse CDT",
+          "justification": "Chacun propose un éditeur, un compilateur C configuré et un débogueur, avec une commande « Build and run ».",
+          "resultat_markdown": "Ce sont trois IDE."
+        }
+      ],
+      "conclusion_markdown": "Trois IDE pour compiler du C : Code::Blocks, Dev-C++ et Eclipse CDT. Les autres logiciels de la liste sont un compilateur (gcc) et deux éditeurs de texte."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer gcc comme exemple d'IDE",
+          "pourquoi_faux": "gcc est un compilateur : il ne fait que traduire le code source en exécutable. Un IDE contient un compilateur, mais ne s'y réduit pas.",
+          "correction_markdown": "Se demander : ce logiciel offre-t-il aussi un éditeur et un débogueur ? Si non, ce n'est pas un IDE."
+        },
+        {
+          "erreur_markdown": "Citer le Bloc-notes ou Notepad++ parce qu'on y écrit du code",
+          "pourquoi_faux": "Ce sont des éditeurs de texte. Sans compilateur ni débogueur intégré, ils ne permettent pas de compiler depuis le logiciel.",
+          "correction_markdown": "Ne retenir que des logiciels où l'on peut écrire, compiler et exécuter au même endroit."
+        },
+        {
+          "erreur_markdown": "Citer des IDE qui ne compilent pas le C (par exemple un outil réservé à un autre langage)",
+          "pourquoi_faux": "La question demande des IDE pour compiler un programme en langage C. Un IDE dédié à un autre langage ne répond pas à la question.",
+          "correction_markdown": "Choisir des IDE C/C++ : Code::Blocks, Dev-C++, Eclipse CDT."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définir un IDE et citer les trois outils qu'il regroupe.",
+          "solution_markdown": "Un IDE (environnement de développement intégré) est un logiciel qui regroupe en un seul environnement les outils nécessaires pour écrire, compiler et mettre au point un programme. Il réunit un éditeur de code, un compilateur (ou un interpréteur) et un débogueur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Classer chaque logiciel dans la bonne catégorie (IDE, compilateur, éditeur de texte, débogueur) : Code::Blocks, gcc, Bloc-notes, gdb, Dev-C++.",
+          "solution_markdown": "- Code::Blocks : IDE.\n- gcc : compilateur.\n- Bloc-notes : éditeur de texte.\n- gdb : débogueur.\n- Dev-C++ : IDE.\n\nJustification : Code::Blocks et Dev-C++ proposent l'écriture, la compilation et le débogage dans une même interface ; les trois autres outils n'assurent chacun qu'une seule de ces tâches."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève compile le fichier `prog.c` sans IDE avec la commande `gcc prog.c -o prog`.\n1. Quelle commande lance ensuite le programme sous Linux ?\n2. Cette compilation enchaîne quatre étapes. Les citer dans l'ordre.\n3. Que fait l'IDE à la place de l'élève ?",
+          "solution_markdown": "1. On exécute avec `./prog`.\n\n2. Les quatre étapes de la chaîne de compilation du C :\n- le **préprocesseur** traite les lignes commençant par `#` (`#include`, `#define`) ;\n- la **compilation** traduit le code C en langage assembleur ;\n- l'**assemblage** produit un fichier objet en code machine ;\n- l'**édition de liens** réunit les fichiers objets et les bibliothèques (comme celle de `printf`) pour fabriquer l'exécutable.\n\n3. L'IDE lance ces commandes pour l'élève quand il clique sur « Build and run » : il règle les options du compilateur, affiche les erreurs dans l'éditeur à la ligne concernée et exécute le programme ensuite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un IDE réunit trois choses : un éditeur, un compilateur et un débogueur, accessibles dans une seule interface.",
+        "Pour compiler du C, cite Code::Blocks, Dev-C++ ou Eclipse CDT.",
+        "gcc est un compilateur et Notepad++ un éditeur : ce ne sont pas des IDE, même s'ils servent à programmer.",
+        "Avant de citer un logiciel, demande-toi s'il permet d'écrire, de compiler et de déboguer au même endroit.",
+        "Au BAC TI, la question prend la forme « définir un IDE » ou « citer deux IDE » : réponds par la définition puis par des exemples exacts."
+      ]
+    }
+  ]
 }

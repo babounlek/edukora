@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-balises-d-ouverture-et-de-fermeture-d-un-bloc-de-code-php-php-tle-ti (bac-ti-epreuve-zero-programmation-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "PHP",
+      "balises PHP",
+      "bloc de code",
+      "script côté serveur",
+      "numéro de ligne"
+    ],
+    "sous_theme": "Langage PHP : structure d'un script",
+    "duree_estimee_min": 25
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +26,116 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu ouvres une page web dynamique, le navigateur ne voit jamais ton code PHP : il ne reçoit que du HTML déjà fabriqué. Pourtant, dans le fichier, PHP et HTML sont mélangés. Comment le serveur sait-il où commence le code à exécuter et où il s'arrête ? Grâce à deux balises. Au BAC TI, on te donne souvent un script numéroté et on te demande les lignes où s'ouvre et se ferme un bloc PHP : question courte, points faciles, à condition de connaître la règle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'une page HTML (balises, corps de page)",
+        "Notion de serveur web et de script exécuté côté serveur",
+        "Lecture d'un code numéroté ligne par ligne"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Délimiter un bloc de code PHP",
+      "contenu_markdown": "Un bloc PHP commence par la balise d'ouverture `<?php` et se termine par la balise de fermeture `?>`. Le serveur exécute ce qui est entre les deux et laisse le reste du fichier (HTML, texte) intact : ce reste est envoyé tel quel au navigateur.\n\n```php\n<?php\n$nom = \"Awa\";\necho \"Bonjour \" . $nom;\n?>\n```\n\nTrois points à retenir :\n- Un même fichier peut contenir **plusieurs blocs** PHP successifs, séparés par du HTML. Les variables d'un bloc restent disponibles dans les blocs suivants du même fichier.\n- Les deux balises peuvent se trouver sur la même ligne : `<?php echo date(\"Y\"); ?>`.\n- Dans un fichier qui ne contient que du PHP, la balise de fermeture `?>` peut être omise en fin de fichier. Dans une page mélangée à du HTML, elle est nécessaire pour revenir au HTML.\n\nPour répondre à une question « à quelles lignes... ? », on parcourt le script de haut en bas et on note le numéro de chaque `<?php` puis de chaque `?>`.",
+      "formule_principale": "<?php  ...instructions PHP...  ?>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le fichier suivant, donner les numéros de ligne des balises d'ouverture et de fermeture de chaque bloc PHP.\n\n```php\n1  <!DOCTYPE html>\n2  <html>\n3  <body>\n4  <?php\n5  $nom = \"Awa\";\n6  echo \"Bonjour \" . $nom;\n7  ?>\n8  <p>Page d'accueil</p>\n9  <?php echo date(\"Y\"); ?>\n10 </body>\n11 </html>\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les lignes 1 à 3",
+          "justification": "Aucune balise `<?php` : c'est du HTML pur, envoyé tel quel au navigateur.",
+          "resultat_markdown": "Pas de code PHP avant la ligne 4."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la première balise d'ouverture",
+          "justification": "Elle s'écrit `<?php` et elle est seule sur la ligne 4.",
+          "resultat_markdown": "Premier bloc : ouverture à la ligne 4."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer la balise de fermeture qui lui correspond",
+          "justification": "Les lignes 5 et 6 sont du PHP (affectation et affichage). La première balise `?>` rencontrée ensuite ferme le bloc.",
+          "resultat_markdown": "Premier bloc : fermeture à la ligne 7."
+        },
+        {
+          "numero": 4,
+          "action": "Examiner la ligne 8",
+          "justification": "Elle est située après la fermeture : c'est du HTML, donc non exécuté par PHP.",
+          "resultat_markdown": "Aucune balise PHP ligne 8."
+        },
+        {
+          "numero": 5,
+          "action": "Examiner la ligne 9",
+          "justification": "Elle contient `<?php` puis `?>` sur la même ligne : un second bloc, ouvert et fermé à la ligne 9.",
+          "resultat_markdown": "Second bloc : ouverture et fermeture à la ligne 9."
+        }
+      ],
+      "conclusion_markdown": "Le fichier contient deux blocs PHP : le premier s'ouvre ligne 4 et se ferme ligne 7, le second s'ouvre et se ferme ligne 9."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'il n'existe qu'un seul bloc PHP par fichier et s'arrêter à la première fermeture",
+          "pourquoi_faux": "Après un `?>`, le serveur repasse en mode HTML, mais un nouveau `<?php` plus bas rouvre un bloc. Un script réel en enchaîne souvent plusieurs, comme la ligne 9 de l'exemple.",
+          "correction_markdown": "Lire le fichier jusqu'à la dernière ligne et noter chaque couple ouverture/fermeture."
+        },
+        {
+          "erreur_markdown": "Écrire une balise incorrecte : `<php`, `<?PHP>` ou `?php>`",
+          "pourquoi_faux": "Le serveur ne reconnaît que `<?php` à l'ouverture et `?>` à la fermeture. Une autre forme est affichée comme du texte brut ou provoque une erreur.",
+          "correction_markdown": "Recopier exactement `<?php` puis `?>`."
+        },
+        {
+          "erreur_markdown": "Penser que le HTML placé entre deux blocs est exécuté par PHP, ou au contraire qu'il disparaît",
+          "pourquoi_faux": "Le HTML situé hors des balises n'est pas interprété : il est envoyé tel quel au navigateur, à sa place dans la page.",
+          "correction_markdown": "Retenir : dans les balises, PHP calcule ; en dehors, le texte passe sans changement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Indiquer les lignes d'ouverture et de fermeture du bloc PHP :\n\n```php\n1  <html>\n2  <body>\n3  <h1>Boutique</h1>\n4  <?php\n5  $prix = 1500;\n6  echo $prix * 2;\n7  ?>\n8  </body>\n9  </html>\n```",
+          "solution_markdown": "Les lignes 1 à 3 sont du HTML. La balise `<?php` apparaît ligne 4, la balise `?>` ligne 7. Les lignes 8 et 9 sont du HTML.\n\nRéponse : ouverture ligne 4, fermeture ligne 7."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire une page HTML qui affiche le titre « Bonjour Awa » dans une balise `<h1>`, le prénom étant fourni par PHP au moyen d'une variable `$prenom`.",
+          "solution_markdown": "On place le HTML autour d'un petit bloc PHP :\n\n```php\n<html>\n<body>\n<?php $prenom = \"Awa\"; ?>\n<h1>Bonjour <?php echo $prenom; ?></h1>\n</body>\n</html>\n```\n\nLe premier bloc crée la variable. Le second, ouvert et fermé au milieu de la ligne du titre, affiche sa valeur. Le serveur envoie au navigateur : `<h1>Bonjour Awa</h1>`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que reçoit le navigateur pour le fichier suivant ? Justifier en indiquant ce qui est exécuté.\n\n```php\n1  <?php $a = 3; ?>\n2  <p>Valeur : <?php echo $a * 2; ?></p>\n3  <?php\n4  $a = $a + 1;\n5  echo \"<p>a = $a</p>\";\n6  ?>\n```",
+          "solution_markdown": "Trois blocs PHP se succèdent, et la variable `$a` reste disponible d'un bloc à l'autre.\n\n1. Ligne 1 : `$a` reçoit 3. Le bloc n'affiche rien.\n2. Ligne 2 : le texte `<p>Valeur : ` est du HTML envoyé tel quel. Le bloc suivant calcule $3 \\times 2 = 6$ et l'affiche, puis `</p>` est envoyé tel quel.\n3. Lignes 3 à 6 : `$a` devient $3 + 1 = 4$. L'instruction `echo` affiche `<p>a = 4</p>`, car la variable est remplacée par sa valeur dans une chaîne entre guillemets doubles.\n\nLe navigateur reçoit donc : `<p>Valeur : 6</p>` puis `<p>a = 4</p>`. Aucune balise PHP n'est visible côté navigateur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un bloc PHP s'ouvre avec `<?php` et se ferme avec `?>` : ce qui est dedans est exécuté par le serveur.",
+        "Tout ce qui est hors des balises est du HTML ou du texte envoyé tel quel au navigateur.",
+        "Un fichier peut contenir plusieurs blocs, et les variables restent disponibles de l'un à l'autre.",
+        "Dans un fichier 100 % PHP, la balise de fermeture finale peut être omise.",
+        "Au BAC TI, on te demande de repérer les lignes d'ouverture et de fermeture dans un script numéroté : parcours le fichier en entier avant de répondre."
+      ]
+    }
+  ]
 }

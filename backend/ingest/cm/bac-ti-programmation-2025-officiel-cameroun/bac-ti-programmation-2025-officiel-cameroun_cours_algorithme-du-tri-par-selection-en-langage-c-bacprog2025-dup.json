@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-algorithme-du-tri-par-selection-en-langage-c-tle-ti (bac-ti-epreuve-zero-programmation-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "tri par sélection",
+      "tableau",
+      "boucles imbriquées",
+      "échange de valeurs",
+      "langage C"
+    ],
+    "sous_theme": "Algorithmes de tri sur les tableaux",
+    "duree_estimee_min": 35
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
@@ -17,5 +26,123 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une enseignante veut afficher sa liste de classe du plus faible au meilleur résultat. Trier 40 moyennes à la main est long, mais l'idée se programme en quelques lignes : on cherche la plus petite valeur, on la met en première place, puis on recommence avec le reste du tableau. C'est le tri par sélection, l'un des algorithmes de tri les plus demandés en Programmation au BAC TI, aussi bien en lecture de code (que fait ce programme ?) qu'en écriture. Ce cours t'apprend à le comprendre, à le tracer à la main et à l'écrire en langage C."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tableaux à une dimension en C (indices de 0 à n-1)",
+        "Boucle for et boucles imbriquées",
+        "Instruction if et opérateurs de comparaison",
+        "Échange de deux variables avec une variable temporaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le tri par sélection du minimum",
+      "contenu_markdown": "À chaque tour `i` (de 0 à n-2), on cherche l'**indice** `min` de la plus petite valeur parmi les cases `i` à `n-1`, puis on échange `t[i]` et `t[min]`. Après le tour `i`, les cases 0 à `i` contiennent les plus petites valeurs, définitivement placées.\n\n```c\nvoid triSelection(int t[], int n){\n    int i, j, min, tmp;\n    for(i = 0; i < n - 1; i++){\n        min = i;\n        for(j = i + 1; j < n; j++){\n            if(t[j] < t[min])\n                min = j;\n        }\n        if(min != i){\n            tmp = t[i];\n            t[i] = t[min];\n            t[min] = tmp;\n        }\n    }\n}\n```\n\nLa boucle externe s'arrête à `n-2` : quand il ne reste qu'une case, elle est forcément à sa place. Le nombre de comparaisons ne dépend pas du contenu du tableau : il vaut $\\frac{n(n-1)}{2}$. Le nombre d'échanges est au plus `n-1`.",
+      "formule_principale": "min = i ; pour j de i+1 à n-1 : si t[j] < t[min] alors min = j ; échanger t[i] et t[min]",
+      "variantes": [
+        {
+          "nom": "Tri décroissant",
+          "quand_utiliser": "Quand on veut le plus grand élément en tête (classement du meilleur au moins bon).",
+          "contenu_markdown": "On cherche le maximum au lieu du minimum : la condition devient `if(t[j] > t[max]) max = j;`, le reste ne change pas."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le tableau `t = {64, 25, 12, 22, 11}` (n = 5) est trié par la fonction `triSelection` ci-dessus. Donner le contenu du tableau après chaque tour de la boucle externe.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tour i = 0 : chercher le minimum parmi les indices 0 à 4",
+          "justification": "`min` part de 0 (valeur 64) et change chaque fois qu'on rencontre une valeur plus petite que `t[min]`.",
+          "resultat_markdown": "j=1 : 25 < 64, min=1 ; j=2 : 12 < 25, min=2 ; j=3 : 22 < 12 faux ; j=4 : 11 < 12, min=4. On échange `t[0]` et `t[4]` : `{11, 25, 12, 22, 64}`"
+        },
+        {
+          "numero": 2,
+          "action": "Tour i = 1 : minimum parmi les indices 1 à 4 (25, 12, 22, 64)",
+          "justification": "On repart de `min = 1` et on ne regarde plus la case 0, déjà placée.",
+          "resultat_markdown": "j=2 : 12 < 25, min=2 ; j=3 : 22 < 12 faux ; j=4 : 64 < 12 faux. Échange de `t[1]` et `t[2]` : `{11, 12, 25, 22, 64}`"
+        },
+        {
+          "numero": 3,
+          "action": "Tour i = 2 : minimum parmi les indices 2 à 4 (25, 22, 64)",
+          "justification": "Même démarche sur la partie non triée, qui rétrécit d'une case à chaque tour.",
+          "resultat_markdown": "j=3 : 22 < 25, min=3 ; j=4 : 64 < 22 faux. Échange de `t[2]` et `t[3]` : `{11, 12, 22, 25, 64}`"
+        },
+        {
+          "numero": 4,
+          "action": "Tour i = 3 : minimum parmi les indices 3 à 4 (25, 64)",
+          "justification": "Le minimum est déjà en place, donc `min == i` et le test `if(min != i)` évite un échange inutile.",
+          "resultat_markdown": "j=4 : 64 < 25 faux, min reste 3. Aucun échange : `{11, 12, 22, 25, 64}`"
+        },
+        {
+          "numero": 5,
+          "action": "Fin de l'algorithme",
+          "justification": "La condition `i < n - 1` (soit `i < 4`) interdit un cinquième tour : il ne reste qu'une case, forcément bien placée.",
+          "resultat_markdown": "Tableau final : `{11, 12, 22, 25, 64}`"
+        }
+      ],
+      "conclusion_markdown": "Le tableau est trié par ordre croissant en 4 tours et 3 échanges effectifs : `{11, 12, 22, 25, 64}`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Échanger sans variable temporaire : `t[i] = t[min]; t[min] = t[i];`",
+          "pourquoi_faux": "La première affectation écrase l'ancienne valeur de `t[i]`. La seconde recopie alors la valeur qui vient d'être copiée. Exemple avec `t[i] = 64` et `t[min] = 11` : après les deux lignes, les deux cases valent 11 et le 64 a disparu.",
+          "correction_markdown": "Passer par une variable intermédiaire : `tmp = t[i]; t[i] = t[min]; t[min] = tmp;`"
+        },
+        {
+          "erreur_markdown": "Retenir la valeur du minimum au lieu de son indice : `min = t[j];`",
+          "pourquoi_faux": "L'échange a besoin de la position de l'élément. Avec une valeur, `t[min]` désigne une case sans rapport avec le minimum, voire une case hors du tableau.",
+          "correction_markdown": "Mémoriser l'indice : `min = j;` et comparer `t[j] < t[min]`."
+        },
+        {
+          "erreur_markdown": "Écrire la boucle interne `for(j = 0; j < n; j++)` ou `j <= n`",
+          "pourquoi_faux": "Avec `j = 0`, on compare à nouveau des cases déjà triées et on peut ramener en arrière une valeur déjà placée. Avec `j <= n`, on lit `t[n]`, qui n'existe pas (le dernier indice valide est `n-1`) : le comportement est indéterminé.",
+          "correction_markdown": "Boucle interne : `for(j = i + 1; j < n; j++)`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Tracer à la main le tri par sélection croissant de `t = {5, 2, 9, 1}` (n = 4). Donner le tableau après chaque tour.",
+          "solution_markdown": "n = 4, donc `i` varie de 0 à 2.\n\n- i = 0 : min=0 (5) ; j=1 : 2 < 5, min=1 ; j=2 : 9 < 2 faux ; j=3 : 1 < 2, min=3. Échange de `t[0]` et `t[3]` : `{1, 2, 9, 5}`.\n- i = 1 : min=1 (2) ; j=2 : 9 < 2 faux ; j=3 : 5 < 2 faux. Aucun échange : `{1, 2, 9, 5}`.\n- i = 2 : min=2 (9) ; j=3 : 5 < 9, min=3. Échange de `t[2]` et `t[3]` : `{1, 2, 5, 9}`.\n\nRésultat : `{1, 2, 5, 9}`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour un tableau de n = 6 éléments, combien de comparaisons `t[j] < t[min]` la fonction effectue-t-elle ? Même question pour n = 10. Ce nombre change-t-il si le tableau est déjà trié ?",
+          "solution_markdown": "Au tour `i`, la boucle interne va de `i+1` à `n-1`, soit `n-1-i` comparaisons.\n\nPour n = 6, les tours i = 0 à 4 donnent 5 + 4 + 3 + 2 + 1 = 15 comparaisons. Contrôle avec la formule : $\\frac{6 \\times 5}{2} = 15$.\n\nPour n = 10 : $\\frac{10 \\times 9}{2} = 45$ comparaisons.\n\nLe nombre de comparaisons ne dépend pas du contenu : un tableau déjà trié donne aussi 15 comparaisons pour n = 6 (seuls les échanges disparaissent grâce au test `min != i`)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On dispose de `struct Eleve { char nom[20]; float moyenne; };` et d'un tableau `tab` de 4 élèves, dans cet ordre : Awa (12.5), Paul (9), Ndi (15), Fanta (10).\n1. Écrire la fonction `triParMoyenne(struct Eleve tab[], int n)` qui range les élèves par moyenne croissante.\n2. Donner l'ordre des noms après chaque tour.",
+          "solution_markdown": "1. On reprend le tri par sélection en comparant les champs `moyenne` et en échangeant les structures entières.\n\n```c\nvoid triParMoyenne(struct Eleve tab[], int n){\n    int i, j, min;\n    struct Eleve tmp;\n    for(i = 0; i < n - 1; i++){\n        min = i;\n        for(j = i + 1; j < n; j++){\n            if(tab[j].moyenne < tab[min].moyenne)\n                min = j;\n        }\n        if(min != i){\n            tmp = tab[i];\n            tab[i] = tab[min];\n            tab[min] = tmp;\n        }\n    }\n}\n```\n\nLa variable temporaire est de type `struct Eleve` : en C, l'affectation d'une structure recopie tous ses champs.\n\n2. Moyennes de départ : 12.5, 9, 15, 10.\n- i = 0 : min=0 ; j=1 : 9 < 12.5, min=1 ; j=2 : 15 < 9 faux ; j=3 : 10 < 9 faux. Échange des cases 0 et 1 : Paul (9), Awa (12.5), Ndi (15), Fanta (10).\n- i = 1 : min=1 (12.5) ; j=2 : 15 < 12.5 faux ; j=3 : 10 < 12.5, min=3. Échange des cases 1 et 3 : Paul (9), Fanta (10), Ndi (15), Awa (12.5).\n- i = 2 : min=2 (15) ; j=3 : 12.5 < 15, min=3. Échange des cases 2 et 3 : Paul (9), Fanta (10), Awa (12.5), Ndi (15).\n\nClassement final : Paul, Fanta, Awa, Ndi."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le tri par sélection répète deux gestes : chercher l'indice du minimum dans la partie non triée, puis l'échanger avec la case `i`.",
+        "On retient l'indice `min`, jamais la valeur, parce que l'échange a besoin d'une position.",
+        "Un échange passe toujours par une variable temporaire : sans elle, une valeur est perdue.",
+        "La boucle externe va de 0 à `n-2`, la boucle interne de `i+1` à `n-1` : écris ces bornes avant tout le reste.",
+        "Au BAC TI, ce tri tombe en lecture de code (tracer le tableau tour par tour, corriger une ligne fausse) ou en écriture, souvent appliqué à des moyennes d'élèves."
+      ]
+    }
+  ]
 }

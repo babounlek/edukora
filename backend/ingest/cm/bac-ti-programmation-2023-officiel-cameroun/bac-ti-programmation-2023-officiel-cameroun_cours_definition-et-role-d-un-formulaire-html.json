@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-definition-et-role-d-un-formulaire-html-tle-ti (bac-ti-epreuve-zero-programmation-2022-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "formulaire HTML",
+      "balise form",
+      "input",
+      "méthode GET et POST",
+      "attribut name"
+    ],
+    "sous_theme": "Langage HTML : formulaires",
+    "duree_estimee_min": 35
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
@@ -17,5 +26,116 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Inscription à un concours, connexion à un compte, recherche sur un site : chaque fois que tu remplis des champs et que tu cliques sur « Envoyer », tu utilises un formulaire HTML. C'est le seul moyen, côté page web, de transmettre des informations de l'utilisateur au serveur. Au BAC TI, on te montre une maquette dessinée (champ de texte, boutons radio, liste, bouton) et on te demande le code HTML qui la reproduit. Tout repose sur la balise `<form>` et sur quelques types de champs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'une page HTML",
+        "Notion de serveur web et de script PHP qui reçoit des données",
+        "Balises ouvrantes, fermantes et attributs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définition, rôle et code d'un formulaire",
+      "contenu_markdown": "Un **formulaire HTML** est un ensemble de champs de saisie, regroupés dans une balise `<form>`, qui permet à l'utilisateur d'envoyer des données au serveur. Son rôle : transmettre ces données à un script de traitement (PHP, par exemple) quand l'utilisateur valide.\n\nLa balise `<form>` possède deux attributs essentiels :\n- `action` : le script qui reçoit les données ;\n- `method` : le mode d'envoi, `get` (données visibles dans l'URL, pour une recherche) ou `post` (données dans le corps de la requête, pour un mot de passe ou une inscription).\n\nLes champs courants :\n- texte libre : `<input type=\"text\" name=\"nom\">`\n- mot de passe : `<input type=\"password\" name=\"mdp\">`\n- choix unique : `<input type=\"radio\" name=\"sexe\" value=\"M\">`, les boutons d'un même groupe partageant le **même** `name` ;\n- choix multiples : `<input type=\"checkbox\" name=\"matiere\" value=\"maths\">`\n- liste déroulante : `<select name=\"classe\">` avec des `<option value=\"...\">`\n- texte long : `<textarea name=\"commentaire\"></textarea>`\n- bouton d'envoi : `<input type=\"submit\" value=\"Envoyer\">`\n\nL'attribut `name` est obligatoire sur chaque champ à transmettre : le serveur retrouve la valeur grâce à lui (`$_POST['nom']` en PHP).",
+      "formule_principale": "<form action=\"script.php\" method=\"post\"> champs <input type=\"submit\"> </form>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code HTML du formulaire d'inscription suivant, envoyé en `post` au script `inscription.php` : un champ « Nom » (texte), le « Sexe » (choix unique : Masculin ou Féminin), la « Classe » (liste : Terminale TI ou Terminale C) et un bouton « Envoyer ».",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir la balise `<form>`",
+          "justification": "Elle encadre tous les champs. On précise le script de traitement et le mode d'envoi demandé.",
+          "resultat_markdown": "`<form action=\"inscription.php\" method=\"post\">`"
+        },
+        {
+          "numero": 2,
+          "action": "Coder le champ « Nom »",
+          "justification": "Un texte libre : `type=\"text\"`. Sans attribut `name`, la valeur ne serait pas transmise.",
+          "resultat_markdown": "`<input type=\"text\" name=\"nom\">`"
+        },
+        {
+          "numero": 3,
+          "action": "Coder le sexe",
+          "justification": "Choix unique entre deux possibilités : deux boutons radio qui portent le **même** `name`, avec une valeur différente chacun.",
+          "resultat_markdown": "`<input type=\"radio\" name=\"sexe\" value=\"M\"> Masculin` et `<input type=\"radio\" name=\"sexe\" value=\"F\"> Féminin`"
+        },
+        {
+          "numero": 4,
+          "action": "Coder la classe",
+          "justification": "Une liste déroulante : `<select>` contenant une `<option>` par choix.",
+          "resultat_markdown": "`<select name=\"classe\"><option value=\"TI\">Terminale TI</option><option value=\"C\">Terminale C</option></select>`"
+        },
+        {
+          "numero": 5,
+          "action": "Ajouter le bouton et fermer le formulaire",
+          "justification": "Le bouton `submit` déclenche l'envoi. On referme ensuite la balise `</form>`.",
+          "resultat_markdown": "```html\n<form action=\"inscription.php\" method=\"post\">\n    Nom : <input type=\"text\" name=\"nom\"><br>\n    Sexe :\n    <input type=\"radio\" name=\"sexe\" value=\"M\"> Masculin\n    <input type=\"radio\" name=\"sexe\" value=\"F\"> Féminin<br>\n    Classe :\n    <select name=\"classe\">\n        <option value=\"TI\">Terminale TI</option>\n        <option value=\"C\">Terminale C</option>\n    </select><br>\n    <input type=\"submit\" value=\"Envoyer\">\n</form>\n```"
+        }
+      ],
+      "conclusion_markdown": "Le formulaire est complet : chaque champ a son attribut `name`, les deux boutons radio partagent le nom `sexe` et l'envoi se fait en `post` vers `inscription.php`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'attribut `name` d'un champ",
+          "pourquoi_faux": "Le navigateur n'envoie au serveur que les champs qui ont un `name`. Le champ s'affiche normalement, mais sa valeur n'arrive jamais au script : `$_POST['nom']` n'existe pas.",
+          "correction_markdown": "Donner un `name` à chaque champ qui doit être transmis."
+        },
+        {
+          "erreur_markdown": "Donner des `name` différents à des boutons radio du même groupe (`name=\"m\"` et `name=\"f\"`)",
+          "pourquoi_faux": "Le navigateur ne regroupe les boutons radio que s'ils ont le même `name`. Avec des noms différents, l'utilisateur peut cocher Masculin et Féminin en même temps, ce qui n'a pas de sens pour un choix unique.",
+          "correction_markdown": "Même `name` pour tout le groupe, `value` différente pour chaque bouton."
+        },
+        {
+          "erreur_markdown": "Utiliser `method=\"get\"` pour un mot de passe",
+          "pourquoi_faux": "Avec `get`, les données apparaissent dans l'URL, donc dans l'historique et dans la barre d'adresse : n'importe qui à côté peut lire le mot de passe.",
+          "correction_markdown": "Réserver `get` aux recherches et utiliser `post` pour les données sensibles ou les inscriptions."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le code HTML d'un formulaire de connexion : un champ « Login » (texte), un champ « Mot de passe » (masqué) et un bouton « Connexion », envoyé en `post` au script `connexion.php`.",
+          "solution_markdown": "```html\n<form action=\"connexion.php\" method=\"post\">\n    Login : <input type=\"text\" name=\"login\"><br>\n    Mot de passe : <input type=\"password\" name=\"mdp\"><br>\n    <input type=\"submit\" value=\"Connexion\">\n</form>\n```\n\nLe type `password` masque les caractères saisis ; la méthode `post` évite que le mot de passe apparaisse dans l'URL."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le formulaire de l'exemple (champ `nom`, `sexe`, `classe`) envoie ses données à `inscription.php`. Écrire ce script PHP pour qu'il affiche « Bienvenue Awa, classe TI » lorsque l'élève a saisi Awa et choisi la classe TI.",
+          "solution_markdown": "En PHP, les données envoyées en `post` sont dans le tableau `$_POST`, indexé par les attributs `name` du formulaire.\n\n```php\n<?php\n$nom = $_POST['nom'];\n$classe = $_POST['classe'];\necho \"Bienvenue \" . $nom . \", classe \" . $classe;\n?>\n```\n\nPour Awa et TI, le script affiche : `Bienvenue Awa, classe TI`. Cela fonctionne parce que les champs ont les attributs `name=\"nom\"` et `name=\"classe\"`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire un formulaire d'avis envoyé en `post` à `avis.php` avec : un nom (texte), un email (texte), une case à cocher « J'accepte les conditions », une zone de texte « Commentaire » de 4 lignes et 30 colonnes, un bouton d'envoi. Puis indiquer comment le script PHP lit la case à cocher.",
+          "solution_markdown": "```html\n<form action=\"avis.php\" method=\"post\">\n    Nom : <input type=\"text\" name=\"nom\"><br>\n    Email : <input type=\"text\" name=\"email\"><br>\n    <input type=\"checkbox\" name=\"cgu\" value=\"oui\"> J'accepte les conditions<br>\n    Commentaire :<br>\n    <textarea name=\"commentaire\" rows=\"4\" cols=\"30\"></textarea><br>\n    <input type=\"submit\" value=\"Envoyer l'avis\">\n</form>\n```\n\nPour la case à cocher, le navigateur n'envoie le champ que si la case est cochée. Le script teste donc son existence :\n\n```php\n<?php\nif (isset($_POST['cgu'])) {\n    echo \"Conditions acceptées\";\n} else {\n    echo \"Vous devez accepter les conditions\";\n}\n?>\n```\n\nLe `textarea` se lit avec `$_POST['commentaire']`, comme n'importe quel autre champ."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire HTML regroupe des champs dans une balise `<form>` et envoie les données saisies à un script du serveur.",
+        "`action` désigne le script qui reçoit les données, `method` le mode d'envoi : `get` visible dans l'URL, `post` pour les données sensibles.",
+        "Chaque champ à transmettre porte un attribut `name` : sans lui, la valeur est perdue.",
+        "Des boutons radio du même groupe partagent le même `name` ; un `select` contient des `option` ; l'envoi se fait avec `type=\"submit\"`.",
+        "Au BAC TI, on demande le code HTML d'un formulaire à partir d'une maquette : repère chaque champ de la maquette, associe-lui son type, puis vérifie les `name` et la fermeture de `</form>`."
+      ]
+    }
+  ]
 }
