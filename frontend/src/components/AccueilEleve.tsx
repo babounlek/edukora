@@ -72,6 +72,10 @@ export function AccueilEleve({ country }: { country: string }) {
     // page dont la donnée bouge entre deux ouvertures.
     initialData: enCache?.data,
     initialDataUpdatedAt: enCache?.date,
+    // Un onglet ou une PWA laissé ouvert la veille affichait encore « Séance faite » le lendemain :
+    // au retour sur l'onglet, on revérifie si la donnée a plus de 5 minutes (le réglage global
+    // coupe cette revérification, pensée pour du contenu qui ne bouge pas).
+    refetchOnWindowFocus: (query) => Date.now() - query.state.dataUpdatedAt > 5 * 60_000,
     staleTime: 0,
     enabled: Boolean(cursusId),
   })

@@ -148,6 +148,11 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   const totalRef = useRef(0)
   // Dernier envoi tenté par question quand le réseau était coupé (le dernier gagne).
   const fileHorsLigne = useRef(new Map<number, NoterTentativeQuestionParams>())
+  // Envoi de la file en cours (partagé : l'intervalle, le retour du réseau et « Terminer » peuvent
+  // le déclencher en même temps, et un second envoi concurrent doublerait les requêtes).
+  const envoiEnCours = useRef<Promise<void> | null>(null)
+  // Relance du verrouillage quand le serveur n'a pas encore verrouillé à 00:00 (voir plus bas).
+  const [essaisVerrou, setEssaisVerrou] = useState(0)
 
   const charger = useCallback((data: TentativeInedite) => {
     setTentative(data)
@@ -185,7 +190,9 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       return
     }
     const deadline = new Date(tentative.exam_mode_started_at).getTime() + tentative.duree_minutes * 60_000
-    const tick = () => setRemainingSeconds(Math.max(0, Math.round((deadline - Date.now()) / 1000)))
+    // ceil et non round : avec round, le compteur tombait à 0 jusqu'à une demi-seconde AVANT
+    // l'échéance, le refetch de verrouillage partait trop tôt et le serveur répondait « pas encore ».
+    const tick = () => setRemainingSeconds(Math.max(0, Math.ceil((deadline - Date.now()) / 1000)))
     tick()
     const interval = window.setInterval(tick, 1000)
     return () => window.clearInterval(interval)
@@ -207,12 +214,18 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           window.scrollTo({ top: 0 })
         }
       })
+      // Hors ligne au moment de l'échéance : on réessaiera ci-dessous plutôt que de laisser le
+      // chrono figé à 00:00 jusqu'à la prochaine action de l'élève.
+      .catch(() => {})
       .finally(() => {
         window.setTimeout(() => {
           verrouillageDemande.current = false
+          // Relance l'effet : rien d'autre ne change quand le serveur n'a toujours pas verrouillé.
+          // Borné, pour ne pas marteler l'API indéfiniment si la panne dure.
+          setEssaisVerrou((n) => (n < 20 ? n + 1 : n))
         }, 3000)
       })
-  }, [remainingSeconds, tentative, charger])
+  }, [remainingSeconds, tentative, charger, essaisVerrou])
 
   // Arrivée depuis « Terminer ma notation » (page de résultat) : on amène l'élève droit
   // sur la première question à noter, pas en haut d'une longue épreuve.
@@ -259,31 +272,68 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
     }
   }, [remainingSeconds, tentative?.exam_mode_started_at])
 
-  // Retour du réseau : on envoie ce qui attendait.
-  useEffect(() => {
-    async function envoyerLaFile() {
-      if (!tentative || fileHorsLigne.current.size === 0) return
+  // Envoie ce qui attendait (réseau coupé au moment du geste). Déclenché au retour du réseau, au
+  // retour sur l'onglet, toutes les 10 s tant qu'il reste quelque chose, et avant « Terminer » :
+  // sur une connexion simplement mauvaise, le navigateur n'émet souvent jamais « online ».
+  // Toujours appelée via envoyerRef, qui pointe sur la version du rendu courant.
+  function envoyerLaFile(): Promise<void> {
+    if (envoiEnCours.current) return envoiEnCours.current
+    if (!tentative || fileHorsLigne.current.size === 0) return Promise.resolve()
+    const tentativeId = tentative.id
+    const envoi = (async () => {
       const file = Array.from(fileHorsLigne.current.entries())
       fileHorsLigne.current.clear()
       setEnAttente(0)
       for (const [questionId, corps] of file) {
         try {
-          appliquer(await api.noter(tentative.id, questionId, corps))
+          appliquer(await api.noter(tentativeId, questionId, corps))
         } catch (err) {
           if (err instanceof ApiError && err.status === 409) {
             await refetchAfterLock(true)
             return
           }
           if (!(err instanceof ApiError)) {
-            fileHorsLigne.current.set(questionId, corps)
+            // Un geste plus récent sur la même question prime sur celui qu'on remet en file.
+            if (!fileHorsLigne.current.has(questionId)) fileHorsLigne.current.set(questionId, corps)
             setEnAttente(fileHorsLigne.current.size)
+          } else {
+            toast.error("Une de tes réponses n'a pas pu être enregistrée.")
           }
         }
       }
+    })().finally(() => {
+      envoiEnCours.current = null
+    })
+    envoiEnCours.current = envoi
+    return envoi
+  }
+  const envoyerRef = useRef(envoyerLaFile)
+  envoyerRef.current = envoyerLaFile
+
+  useEffect(() => {
+    const envoyer = () => void envoyerRef.current()
+    const auRetourSurLOnglet = () => {
+      if (document.visibilityState === "visible") envoyer()
     }
-    window.addEventListener("online", envoyerLaFile)
-    return () => window.removeEventListener("online", envoyerLaFile)
-  }, [tentative])
+    window.addEventListener("online", envoyer)
+    document.addEventListener("visibilitychange", auRetourSurLOnglet)
+    return () => {
+      window.removeEventListener("online", envoyer)
+      document.removeEventListener("visibilitychange", auRetourSurLOnglet)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (enAttente === 0) return
+    const intervalle = window.setInterval(() => void envoyerRef.current(), 10_000)
+    // Quitter ou recharger avec des cases en attente les ferait disparaître : on prévient.
+    const avertir = (e: BeforeUnloadEvent) => e.preventDefault()
+    window.addEventListener("beforeunload", avertir)
+    return () => {
+      window.clearInterval(intervalle)
+      window.removeEventListener("beforeunload", avertir)
+    }
+  }, [enAttente])
 
   // La question « courante », pour la surligner dans la carte de l'épreuve.
   useEffect(() => {
@@ -522,6 +572,15 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   async function handleFinish() {
     setFinishing(true)
     try {
+      // Terminer avec des changements encore en file les perdrait (et fausserait la note) :
+      // on les envoie d'abord, et on n'abandonne l'épreuve que si tout est parti.
+      await envoyerLaFile()
+      if (fileHorsLigne.current.size > 0) {
+        toast.error("Tes derniers changements ne sont pas encore partis", {
+          description: "La connexion est instable. Réessaie dans un instant : rien n'est perdu.",
+        })
+        return
+      }
       await api.terminer(tentative!.id)
       setTerminerOuvert(false)
       await refetchAfterLock(false)

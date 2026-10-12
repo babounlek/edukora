@@ -191,6 +191,9 @@ export function ParcoursPage() {
     queryKey: ["parcours-resume", cursusId],
     queryFn: () => getResumeParcours(Number(cursusId)),
     enabled: isAuthenticated && cursusId !== null,
+    // Le quiz se fait dans un autre onglet : au retour ici, les taux et « à réviser » doivent
+    // refléter la séance qui vient de finir (le réglage global coupe la revalidation au focus).
+    refetchOnWindowFocus: true,
   })
 
   if (authLoading || !subscriptions) {

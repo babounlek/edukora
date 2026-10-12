@@ -6,6 +6,7 @@ import type { Profil } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { activerProfilProtege, useProfils } from "@/lib/changerProfilActif"
 import { PinAnnule } from "@/lib/pinPrompts"
+import { useModeExamen } from "@/lib/modeExamen"
 import { Button } from "@/components/ui/button"
 
 // Au-delà, on repasse par « Qui étudie ? » : l'appareil est sans doute passé à quelqu'un
@@ -46,10 +47,17 @@ export function VerrouInactivite() {
   const [erreur, setErreur] = useState<string | null>(null)
 
   const actif = isAuthenticated && !user?.session_restreinte && profils.length > 1 && profils.some((p) => p.pin_actif)
+  // Salle d'examen : un élève qui compose sur papier ne touche pas l'écran pendant des dizaines
+  // de minutes, et l'écran de verrouillage recouvrirait le chrono en plein sujet.
+  const enExamen = useModeExamen()
 
   const verifier = useCallback(() => {
+    if (enExamen) {
+      noterActivite()
+      return
+    }
     if (Date.now() - lireDerniereActivite() > INACTIVITE_MS) setVerrouille(true)
-  }, [])
+  }, [enExamen])
 
   useEffect(() => {
     if (!actif) {

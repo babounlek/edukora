@@ -341,6 +341,52 @@ describe("InediteTentativePage", () => {
       await waitFor(() => expect(screen.queryByText(/changement en attente/)).not.toBeInTheDocument())
     })
 
+    it("envoie les changements en attente AVANT de rendre la copie", async () => {
+      api.getTentativeInedite.mockResolvedValue(enExamen())
+      api.noterTentativeQuestion.mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      api.completeTentative.mockResolvedValue({})
+      afficher()
+
+      const cases = await screen.findAllByRole("checkbox", { name: /J'ai traité cette question/ })
+      await userEvent.click(cases[0])
+      expect(await screen.findByText(/1 changement en attente/)).toBeInTheDocument()
+
+      // Le réseau est revenu, mais le navigateur n'a pas émis « online » : l'élève rend sa copie.
+      api.noterTentativeQuestion.mockResolvedValue({
+        ...question(1, "1", { traitee: true }),
+        reponse: { reponse_choisie: "", resultat_declare: "", notee: false },
+        notation: null,
+      })
+      await userEvent.click(await screen.findByRole("button", { name: /Terminer/ }))
+      const dialogue = await screen.findByRole("dialog")
+      await userEvent.click(within(dialogue).getByRole("button", { name: /Terminer et voir le corrigé/ }))
+
+      await waitFor(() => expect(api.completeTentative).toHaveBeenCalledWith(7))
+      expect(api.noterTentativeQuestion).toHaveBeenCalledTimes(2)
+      expect(api.noterTentativeQuestion.mock.invocationCallOrder[1]).toBeLessThan(
+        api.completeTentative.mock.invocationCallOrder[0],
+      )
+    })
+
+    it("ne rend pas la copie tant que des changements n'ont pas pu partir", async () => {
+      api.getTentativeInedite.mockResolvedValue(enExamen())
+      api.noterTentativeQuestion.mockRejectedValue(new TypeError("Failed to fetch"))
+      api.completeTentative.mockResolvedValue({})
+      afficher()
+
+      const cases = await screen.findAllByRole("checkbox", { name: /J'ai traité cette question/ })
+      await userEvent.click(cases[0])
+      expect(await screen.findByText(/1 changement en attente/)).toBeInTheDocument()
+
+      await userEvent.click(await screen.findByRole("button", { name: /Terminer/ }))
+      const dialogue = await screen.findByRole("dialog")
+      await userEvent.click(within(dialogue).getByRole("button", { name: /Terminer et voir le corrigé/ }))
+
+      await waitFor(() => expect(toast.error).toHaveBeenCalled())
+      expect(api.completeTentative).not.toHaveBeenCalled()
+      expect(screen.getByText(/1 changement en attente/)).toBeInTheDocument()
+    })
+
     it("la carte de l'épreuve montre l'état de chaque question et y conduit", async () => {
       api.getTentativeInedite.mockResolvedValue(
         enExamen({

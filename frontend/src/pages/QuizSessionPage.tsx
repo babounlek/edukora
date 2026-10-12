@@ -72,7 +72,11 @@ export function QuizSessionPage() {
   const { country } = useCountry()
 
   const [session, setSession] = useState<QuizSession | null>(null)
+  // Deux erreurs distinctes : un échec de CHARGEMENT remplace la page, mais un échec d'ACTION
+  // (réponse, correction, fin du quiz) ne doit jamais effacer un quiz en cours - l'élève
+  // garde ses réponses sous les yeux et peut simplement réessayer.
   const [error, setError] = useState("")
+  const [actionError, setActionError] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [revealed, setRevealed] = useState<Record<number, QuizCorrige>>({})
   const [submitting, setSubmitting] = useState(false)
@@ -147,12 +151,13 @@ export function QuizSessionPage() {
 
   async function handleAnswerQcm(lettre: string) {
     if (submitting || question.reponse) return
+    setActionError("")
     setSubmitting(true)
     try {
       const updated = await answerQuizQuestion(session!.id, question.id, { reponse_choisie: lettre })
       updateQuestion(updated)
     } catch {
-      setError("Impossible d'enregistrer ta réponse. Réessaie.")
+      setActionError("Impossible d'enregistrer ta réponse. Réessaie.")
     } finally {
       setSubmitting(false)
     }
@@ -160,12 +165,13 @@ export function QuizSessionPage() {
 
   async function handleReveal() {
     if (submitting) return
+    setActionError("")
     setSubmitting(true)
     try {
       const corrige = await revealQuizCorrige(session!.id, question.id)
       setRevealed((prev) => ({ ...prev, [question.id]: corrige }))
     } catch {
-      setError("Impossible de charger la correction. Réessaie.")
+      setActionError("Impossible de charger la correction. Réessaie.")
     } finally {
       setSubmitting(false)
     }
@@ -173,20 +179,24 @@ export function QuizSessionPage() {
 
   async function handleDeclare(resultat: "REUSSI" | "PARTIEL" | "ECHEC") {
     if (submitting || question.reponse) return
+    setActionError("")
     setSubmitting(true)
     try {
       const updated = await answerQuizQuestion(session!.id, question.id, { resultat_declare: resultat })
       updateQuestion(updated)
     } catch {
-      setError("Impossible d'enregistrer ta réponse. Réessaie.")
+      setActionError("Impossible d'enregistrer ta réponse. Réessaie.")
     } finally {
       setSubmitting(false)
     }
   }
 
   async function handleNext() {
+    setActionError("")
     if (!isLast) {
       setCurrentIndex((i) => i + 1)
+      // Après avoir lu une longue correction, la question suivante s'afficherait à mi-page.
+      window.scrollTo({ top: 0 })
       return
     }
     setSubmitting(true)
@@ -195,7 +205,7 @@ export function QuizSessionPage() {
       trackEvent("quiz_completed", { cursus_id: session!.cursus, mode: session!.mode })
       navigate(`/quiz/session/${session!.id}/resultat`)
     } catch {
-      setError("Impossible de terminer le quiz. Réessaie.")
+      setActionError("Impossible de terminer le quiz. Réessaie.")
       setSubmitting(false)
     }
   }
@@ -268,7 +278,10 @@ export function QuizSessionPage() {
             key={q.id}
             type="button"
             disabled={!accessible(i)}
-            onClick={() => setCurrentIndex(i)}
+            onClick={() => {
+              setCurrentIndex(i)
+              window.scrollTo({ top: 0 })
+            }}
             aria-label={`Question ${i + 1}`}
             title={accessible(i) ? `Question ${i + 1}` : undefined}
             className={cn(
@@ -504,7 +517,11 @@ export function QuizSessionPage() {
           </a>
         )}
 
-        {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+        {actionError && (
+          <p role="alert" className="mt-4 text-sm text-destructive">
+            {actionError}
+          </p>
+        )}
       </div>
 
       {/* Sur téléphone, "Question suivante" reste sous le pouce, sans remonter. */}

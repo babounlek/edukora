@@ -458,6 +458,9 @@ export function ParcoursSubjectPage() {
     queryKey: ["parcours", selectedCursus, subjectId],
     queryFn: () => getParcours(Number(selectedCursus), Number(subjectId)),
     enabled: isAuthenticated && Boolean(selectedCursus) && Boolean(subjectId),
+    // Le quiz se fait dans un autre onglet : au retour ici, les taux et « à réviser » doivent
+    // refléter la séance qui vient de finir (le réglage global coupe la revalidation au focus).
+    refetchOnWindowFocus: true,
   })
 
   // Le nom de la matière : déjà en cache quand on arrive depuis Ma progression (le
