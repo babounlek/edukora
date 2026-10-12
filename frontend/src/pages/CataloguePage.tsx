@@ -310,10 +310,20 @@ function CatalogueVitrine() {
                   <ArrowRight />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link to={epreuvesListPath(country ?? "")}>Chercher une épreuve</Link>
+              {/* Le quiz gratuit est la façon la plus rapide de goûter au produit (une minute, un
+                  résultat) et il ne demande pas de compte. La recherche d'épreuve n'a plus de bouton
+                  ici : « Épreuves » et la loupe de l'en-tête la portent sur toutes les pages. Pour un
+                  visiteur connecté, « sans compte » serait faux. */}
+              <Button variant="outline" size="lg" asChild className="border-primary/40 text-primary hover:text-primary">
+                <Link to="/quiz">
+                  <Target />
+                  {isAuthenticated ? "Faire un quiz gratuit" : "Teste-toi gratuitement"}
+                </Link>
               </Button>
             </div>
+            {!isAuthenticated && (
+              <p className="mt-3 text-sm text-muted-foreground">Quiz gratuit, sans compte : un thème complet avec correction.</p>
+            )}
 
             {/* Mention légère plutôt qu'une carte à part entière (voir la discussion
                 produit) : l'accueil vient d'être volontairement réduit à trois piliers
