@@ -17,6 +17,12 @@ python manage.py collectstatic --noinput
 # par scripts/ingerer_et_valider.sh après un lot). Un échec n'arrête jamais le démarrage.
 (python manage.py indexer_recherche --si-vide || echo "Indexation de la recherche en échec (voir ci-dessus).") &
 
+# Cours qui « tombent souvent » (catalog.FrequenceCours) : une table dérivée du contenu, recalculée en
+# quelques secondes. Rejouée à chaque démarrage - donc à chaque déploiement - pour qu'elle ne reste jamais
+# périmée ni vide après la migration qui la crée ; le reste du temps, scripts/ingerer_et_valider.sh la
+# rafraîchit après un lot. En arrière-plan et sans jamais bloquer le démarrage.
+(python manage.py calculer_frequences_cours || echo "Calcul des cours fréquents en échec (voir ci-dessus).") &
+
 echo "Starting gunicorn..."
 # GUNICORN_RELOAD=1 (voir docker-compose.dev.yml) : worker redémarré sur toute
 # modification d'un fichier .py source - seule façon de voir un changement de code

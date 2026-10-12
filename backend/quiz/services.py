@@ -617,6 +617,109 @@ def _normaliser_pour_recherche(texte):
     return "".join(ch for ch in decompose if unicodedata.category(ch) != "Mn")
 
 
+def cours_prioritaires_du_theme(candidats, nom_theme):
+    """
+    Les cours à proposer pour un thème, du plus pertinent au moins pertinent (jusqu'ici : ordre des
+    id, donc "ellipse" proposait un cours de probabilités) : le thème apparaît dans le titre, puis le
+    cours sert le plus d'exercices de ce cursus, puis il est le plus ciblé (peu de tags), puis id pour
+    la stabilité. Même dédoublonnage par sous_theme + plafond que construire_parcours - voir
+    PARCOURS_COURS_PAR_SAVOIR_MAX. Les candidats portent `nb_rappels` et leurs tags préchargés.
+    Partagé avec catalog.frequences_cours : un cours est « fréquent » exactement quand le parcours
+    le propose pour un thème fréquent.
+    """
+    nom_normalise = _normaliser_pour_recherche(nom_theme)
+    candidats = sorted(candidats, key=lambda c: (
+        nom_normalise not in _normaliser_pour_recherche(f"{c.titre} {c.sous_theme or ''}"),
+        -c.nb_rappels,
+        len(c.tags.all()),
+        c.id,
+    ))
+    cours_finaux, sous_themes_vus = [], set()
+    for c in candidats:
+        cle = c.sous_theme or c.slug
+        if cle in sous_themes_vus:
+            continue
+        sous_themes_vus.add(cle)
+        cours_finaux.append(c)
+        if len(cours_finaux) >= PARCOURS_COURS_PAR_SAVOIR_MAX:
+            break
+    return cours_finaux
+
+
+def plancher_occurrences(groupes, mince, nb_sessions):
+    """Nombre minimal d'épreuves pour qu'un thème figure au classement : le plancher de base, relevé
+    tant que le classement dépasserait PARCOURS_FREQUENCE_THEMES_MAX thèmes (corpus mince : aucun)."""
+    plancher = 1 if mince else PARCOURS_FREQUENCE_OCCURRENCES_MIN
+    if not mince:
+        while (
+            plancher < nb_sessions
+            and sum(1 for g in groupes.values() if g["nb_epreuves"] >= plancher) > PARCOURS_FREQUENCE_THEMES_MAX
+        ):
+            plancher += 1
+    return plancher
+
+
+def groupes_par_frequence(cursus, subject):
+    """
+    Première moitié de construire_parcours_par_frequence, SANS rien qui dépende d'un élève :
+    les thèmes (catalog.Tag, regroupés par alias) d'un (cursus, subject) avec le nombre
+    d'épreuves où chacun est tombé. Sert aussi au calcul des cours fréquents (voir
+    catalog.frequences_cours), pour que le parcours et le badge « tombe souvent » ne puissent
+    jamais compter deux fréquences différentes.
+
+    Renvoie None si le corpus est trop mince pour un classement fiable
+    (SEUIL_MINIMUM_THEMES_PARCOURS), sinon (mince, lessons, nb_sessions, groupes, tous_tag_ids) -
+    `groupes` est vide quand aucun thème n'est tombé. Chaque groupe porte nom, tag_ids et
+    nb_epreuves.
+    """
+    mince = _corpus_mince(subject, cursus)
+    lessons = Lesson.objects.filter(statut=StatutContenu.VALIDE, subject=subject, cursus=cursus)
+    if not mince:
+        # Corpus mince (TI) : les blancs/établissements comptent, sinon le Probatoire n'a aucune épreuve officielle.
+        lessons = lessons.filter(origine=Origine.OFFICIEL)
+    lessons = lessons.distinct()
+    nb_sessions = lessons.count()
+    if nb_sessions < (1 if mince else SEUIL_MINIMUM_THEMES_PARCOURS):
+        return None
+
+    tags_bruts = list(
+        Tag.objects.filter(questions_as_theme__exercise__lesson__in=lessons)
+        .exclude(name__in=TAGS_BLOCKLIST_PARCOURS_FREQUENCE | TAGS_BLOCKLIST_PAR_MATIERE.get(subject.code, set()))
+        # (id, nom) distincts : sans cela le JOIN sur les questions renvoyait un Tag par question
+        # qui le porte (des milliers de doublons instanciés pour rien, puis regroupés par id).
+        .values_list("id", "name").distinct(),
+    )
+    if not tags_bruts:
+        return mince, lessons, nb_sessions, {}, set()
+
+    # Regroupement par alias : un groupe = une forme canonique + l'ensemble des ids
+    # de Tag qui y renvoient (lui-même si le tag n'a pas d'alias connu).
+    groupes = {}
+    alias_matiere = TAGS_ALIAS_PAR_MATIERE.get(subject.code, {})
+    for tag_id, tag_name in tags_bruts:
+        canonique = alias_matiere.get(tag_name) or TAGS_ALIAS_PARCOURS_FREQUENCE.get(tag_name, tag_name)
+        groupe = groupes.setdefault(canonique, {"nom": canonique, "tag_ids": set()})
+        groupe["tag_ids"].add(tag_id)
+    tous_tag_ids = {tid for g in groupes.values() for tid in g["tag_ids"]}
+
+    # Fréquence par groupe = nb de Lesson distinctes couvertes par l'UNION de ses
+    # tags (jamais la somme des fréquences individuelles, qui compterait deux fois
+    # une épreuve mobilisant à la fois "vecteur" et "vecteurs"). Une seule requête
+    # (lesson_id, tag_id) pour tous les tags candidats, recombinée en Python.
+    tags_par_lesson = defaultdict(set)
+    for lesson_id, tag_id in (
+        Lesson.objects.filter(pk__in=lessons.values("pk"), exercises__questions__themes__id__in=tous_tag_ids)
+        .values_list("id", "exercises__questions__themes__id")
+        .distinct()
+    ):
+        tags_par_lesson[lesson_id].add(tag_id)
+    for groupe in groupes.values():
+        groupe["nb_epreuves"] = sum(
+            1 for tags_de_la_lesson in tags_par_lesson.values() if tags_de_la_lesson & groupe["tag_ids"]
+        )
+    return mince, lessons, nb_sessions, groupes, tous_tag_ids
+
+
 def construire_parcours_par_frequence(profil, cursus, subject):
     """
     Variante de construire_parcours pour SUBJECTS_PARCOURS_PAR_FREQUENCE : au lieu du
@@ -647,51 +750,12 @@ def construire_parcours_par_frequence(profil, cursus, subject):
     thèmes candidats d'un coup, puis les résultats sont recombinés en Python par
     groupe d'alias.
     """
-    mince = _corpus_mince(subject, cursus)
-    lessons = Lesson.objects.filter(statut=StatutContenu.VALIDE, subject=subject, cursus=cursus)
-    if not mince:
-        # Corpus mince (TI) : les blancs/établissements comptent, sinon le Probatoire n'a aucune épreuve officielle.
-        lessons = lessons.filter(origine=Origine.OFFICIEL)
-    lessons = lessons.distinct()
-    nb_sessions = lessons.count()
-    if nb_sessions < (1 if mince else SEUIL_MINIMUM_THEMES_PARCOURS):
+    contexte = groupes_par_frequence(cursus, subject)
+    if contexte is None:
         return None
-
-    tags_bruts = list(
-        Tag.objects.filter(questions_as_theme__exercise__lesson__in=lessons)
-        .exclude(name__in=TAGS_BLOCKLIST_PARCOURS_FREQUENCE | TAGS_BLOCKLIST_PAR_MATIERE.get(subject.code, set()))
-        # (id, nom) distincts : sans cela le JOIN sur les questions renvoyait un Tag par question
-        # qui le porte (des milliers de doublons instanciés pour rien, puis regroupés par id).
-        .values_list("id", "name").distinct(),
-    )
-    if not tags_bruts:
+    mince, lessons, nb_sessions, groupes, tous_tag_ids = contexte
+    if not groupes:
         return []
-
-    # Regroupement par alias : un groupe = une forme canonique + l'ensemble des ids
-    # de Tag qui y renvoient (lui-même si le tag n'a pas d'alias connu).
-    groupes = {}
-    alias_matiere = TAGS_ALIAS_PAR_MATIERE.get(subject.code, {})
-    for tag_id, tag_name in tags_bruts:
-        canonique = alias_matiere.get(tag_name) or TAGS_ALIAS_PARCOURS_FREQUENCE.get(tag_name, tag_name)
-        groupe = groupes.setdefault(canonique, {"nom": canonique, "tag_ids": set()})
-        groupe["tag_ids"].add(tag_id)
-    tous_tag_ids = {tid for g in groupes.values() for tid in g["tag_ids"]}
-
-    # Fréquence par groupe = nb de Lesson distinctes couvertes par l'UNION de ses
-    # tags (jamais la somme des fréquences individuelles, qui compterait deux fois
-    # une épreuve mobilisant à la fois "vecteur" et "vecteurs"). Une seule requête
-    # (lesson_id, tag_id) pour tous les tags candidats, recombinée en Python.
-    tags_par_lesson = defaultdict(set)
-    for lesson_id, tag_id in (
-        Lesson.objects.filter(pk__in=lessons.values("pk"), exercises__questions__themes__id__in=tous_tag_ids)
-        .values_list("id", "exercises__questions__themes__id")
-        .distinct()
-    ):
-        tags_par_lesson[lesson_id].add(tag_id)
-    for groupe in groupes.values():
-        groupe["nb_epreuves"] = sum(
-            1 for tags_de_la_lesson in tags_par_lesson.values() if tags_de_la_lesson & groupe["tag_ids"]
-        )
 
     # Étiquette de savoir informative (jamais une clé de jointure) : le savoir
     # dominant parmi les Question.savoir_officiel déjà rattachées à ce thème sur ce
@@ -766,13 +830,7 @@ def construire_parcours_par_frequence(profil, cursus, subject):
         .values_list("cours__tags__id", flat=True),
     )
 
-    plancher = 1 if mince else PARCOURS_FREQUENCE_OCCURRENCES_MIN
-    if not mince:
-        while (
-            plancher < nb_sessions
-            and sum(1 for g in groupes.values() if g["nb_epreuves"] >= plancher) > PARCOURS_FREQUENCE_THEMES_MAX
-        ):
-            plancher += 1
+    plancher = plancher_occurrences(groupes, mince, nb_sessions)
 
     resultat = []
     for groupe in groupes.values():
@@ -788,26 +846,7 @@ def construire_parcours_par_frequence(profil, cursus, subject):
                 if c.id not in vus:
                     vus.add(c.id)
                     candidats.append(c)
-        # Du plus pertinent au moins pertinent (jusqu'ici : ordre des id, donc "ellipse"
-        # proposait un cours de probabilités) : le thème apparaît dans le titre, puis
-        # le cours sert le plus d'exercices de ce cursus, puis il est le plus ciblé
-        # (peu de tags), puis id pour la stabilité.
-        nom_normalise = _normaliser_pour_recherche(groupe["nom"])
-        candidats.sort(key=lambda c: (
-            nom_normalise not in _normaliser_pour_recherche(f"{c.titre} {c.sous_theme or ''}"),
-            -c.nb_rappels,
-            len(c.tags.all()),
-            c.id,
-        ))
-        cours_finaux, sous_themes_vus = [], set()
-        for c in candidats:
-            cle = c.sous_theme or c.slug
-            if cle in sous_themes_vus:
-                continue
-            sous_themes_vus.add(cle)
-            cours_finaux.append(c)
-            if len(cours_finaux) >= PARCOURS_COURS_PAR_SAVOIR_MAX:
-                break
+        cours_finaux = cours_prioritaires_du_theme(candidats, groupe["nom"])
 
         total = sum(stats_par_tag[tid]["total"] for tid in tag_ids if tid in stats_par_tag)
         reussies = sum(stats_par_tag[tid]["reussies"] for tid in tag_ids if tid in stats_par_tag)

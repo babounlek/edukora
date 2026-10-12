@@ -52,4 +52,14 @@ if [ $TUNNEL -eq 0 ] && [ "${SANS_INDEX_RECHERCHE:-0}" != "1" ]; then
   echo "=== Index de la recherche globale ==="
   docker exec edukora-backend-1 python manage.py indexer_recherche 2>&1 | grep -Ev '^\([0-9.]+\) '
 fi
+
+# Les cours « Tombe souvent » (catalog.FrequenceCours) dépendent des épreuves et des tags qu'on vient
+# d'ingérer : même principe que la recherche, recalculés une fois le lot validé (~5 s).
+# SANS_FREQUENCES_COURS=1 pour ne les lancer qu'à la fin d'une série de dossiers
+# (docker exec edukora-backend-1 python manage.py calculer_frequences_cours).
+if [ $TUNNEL -eq 0 ] && [ "${SANS_FREQUENCES_COURS:-0}" != "1" ]; then
+  echo
+  echo "=== Cours qui tombent souvent ==="
+  docker exec edukora-backend-1 python manage.py calculer_frequences_cours 2>&1 | grep -Ev '^\([0-9.]+\) '
+fi
 exit $TUNNEL

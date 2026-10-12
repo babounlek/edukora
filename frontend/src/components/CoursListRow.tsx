@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { CheckCircle2, Clock, ListChecks, Lock, Unlock } from "lucide-react"
+import { CheckCircle2, Clock, ListChecks, Lock, Star, Unlock } from "lucide-react"
 
 import type { Cours } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
@@ -37,7 +37,17 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
             omis : deux cours d'une même matière portent souvent des titres proches,
             c'est lui qui les distingue au survol de la liste. */}
         <div className="min-w-0 flex-1">
-          <h2 className="truncate font-display text-sm font-medium">{cours.titre}</h2>
+          <h2 className="flex items-center gap-1.5 font-display text-sm font-medium">
+            <span className="truncate">{cours.titre}</span>
+            {cours.tombe_souvent && (
+              <Star
+                className="size-3.5 shrink-0 text-gold-text"
+                fill="currentColor"
+                role="img"
+                aria-label={`Tombé dans ${cours.tombe_souvent.nb_epreuves} épreuves sur ${cours.tombe_souvent.nb_sessions}`}
+              />
+            )}
+          </h2>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             {cours.sous_theme && <span className="truncate">{capitaliserTheme(cours.sous_theme)}</span>}
             {cours.duree_estimee_min && (

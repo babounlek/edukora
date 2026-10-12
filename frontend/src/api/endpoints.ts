@@ -330,6 +330,10 @@ export interface CoursFilters {
   search?: string
   page?: number
   exclude_read?: boolean
+  // Ne garde que les cours qui tombent souvent à l'examen (voir catalog.FrequenceCours) - ceux du
+  // cursus demandé quand `cursus` l'est aussi. `ordering: "frequent"` les classe du plus fréquent au moins.
+  tombe_souvent?: boolean
+  ordering?: "frequent"
   // Fait remonter les cours de ce sous-thème sans exclure le reste (voir
   // catalog.views.CoursListView) - utilisé par RelatedCours pour prioriser les
   // suggestions sur le même sous-thème que le cours consulté.

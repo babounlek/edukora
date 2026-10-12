@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.urls import path
 
 from .ingestion import IngestionError, _appliquer_gate_publication, ingest_exercise, queue_ingestion, read_ingestion_report
-from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Filiere, Lesson, Question, RappelDeMethode, Series, Subject, Tag, Temoignage
+from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Filiere, FrequenceCours, Lesson, Question, RappelDeMethode, Series, Subject, Tag, Temoignage
 from .sujet_pdf import queue_sujet_pdf_generation
 
 # Phrase à taper pour confirmer la purge (voir LessonAdmin.purge_view) - une action qui
@@ -388,3 +388,21 @@ class CoursAdmin(admin.ModelAdmin):
         for cours in queryset:
             cours.compile_from_sections()
         self.message_user(request, f"{queryset.count()} cours compilé(s).")
+
+
+@admin.register(FrequenceCours)
+class FrequenceCoursAdmin(admin.ModelAdmin):
+    """Lecture seule : table dérivée, reconstruite par `manage.py calculer_frequences_cours`.
+    `calcule_le` dit d'un coup d'œil si les badges « Tombe souvent » sont à jour."""
+
+    list_display = ["cours", "cursus", "theme", "frequence_pct", "nb_epreuves", "nb_sessions", "calcule_le"]
+    list_filter = ["cursus", "calcule_le"]
+    search_fields = ["cours__titre", "theme"]
+    list_select_related = ["cours", "cursus__series"]
+    ordering = ["cursus", "-frequence_pct"]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

@@ -9,6 +9,7 @@ import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface CoursCardProps {
@@ -60,6 +61,7 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5">
+            {cours.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
             {cours.est_vitrine && (
               <Badge variant="success" className="gap-1">
                 <Sparkles className="size-3" />

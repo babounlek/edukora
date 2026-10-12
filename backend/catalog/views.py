@@ -30,6 +30,7 @@ from .models import (
     Cursus,
     Examen,
     Exercise,
+    FrequenceCours,
     Lesson,
     LessonType,
     Origine,
@@ -382,6 +383,18 @@ class LessonDetailView(generics.RetrieveAPIView):
         return obj
 
 
+def bulk_frequences_cours(cours_ids, cursus_id=None):
+    """{cours_id: ligne FrequenceCours} pour une page de cours : la plus forte fréquence du cours, ou
+    celle du cursus demandé. Un seul aller en base pour toute la page (voir CoursListView.list)."""
+    lignes = FrequenceCours.objects.filter(cours_id__in=cours_ids)
+    if cursus_id and str(cursus_id).isdigit():
+        lignes = lignes.filter(cursus_id=cursus_id)
+    par_cours = {}
+    for ligne in lignes.order_by("frequence_pct"):
+        par_cours[ligne.cours_id] = ligne  # la dernière lue est la plus forte
+    return par_cours
+
+
 class CoursListView(generics.ListAPIView):
     serializer_class = CoursSerializer
     permission_classes = [permissions.AllowAny]
@@ -465,11 +478,28 @@ class CoursListView(generics.ListAPIView):
             tag_match = Cours.objects.filter(tags__name__icontains=search).values("pk")
             qs = qs.filter(Q(pk__in=texte_match) | Q(pk__in=tag_match))
 
+        # Cours qui tombent souvent (voir catalog.FrequenceCours) : seulement ceux de la table, qui ne
+        # contient que le quart supérieur de chaque matière classée. Avec ?cursus=, ceux de CET examen.
+        frequences = FrequenceCours.objects.filter(cours=OuterRef("pk"))
+        if cursus_id:
+            frequences = frequences.filter(cursus_id=cursus_id)
+        if params.get("tombe_souvent") == "true":
+            qs = qs.filter(Exists(frequences))
+
         # Plus récent d'abord - remplace l'ordre alphabétique par défaut de Cours.Meta
         # (utile pour l'admin, pas pour un visiteur qui veut voir les derniers cours
         # ajoutés). published_at n'est jamais renseigné en pratique (aucun code ne
         # l'écrit) donc pas fiable pour ce tri, contrairement à created_at.
         ordering = ["-created_at"]
+        if params.get("ordering") == "frequent":
+            # Les plus fréquents d'abord ; les cours sans fréquence gardent leur ordre récent derrière.
+            qs = qs.annotate(
+                _frequence=Coalesce(
+                    Subquery(frequences.order_by("-frequence_pct").values("frequence_pct")[:1]),
+                    -1, output_field=IntegerField(),
+                ),
+            )
+            ordering = ["-_frequence", *ordering]
         if sous_theme_prioritaire := params.get("sous_theme_prioritaire"):
             # Fait remonter les cours du même sous-thème (voir RelatedCours côté
             # frontend, qui l'utilise pour les suggestions sous un cours) sans les
@@ -505,6 +535,7 @@ class CoursListView(generics.ListAPIView):
         context["est_vitrine_ids"] = bulk_cours_est_vitrine([obj.pk for obj in objs])
         context["active_subscription_cursus_ids"] = bulk_active_subscription_cursus_ids(request.user, profil_actif(request))
         context["read_cours_ids"] = bulk_read_ids(profil_actif(request), field="cours")
+        context["frequences_cours"] = bulk_frequences_cours([obj.pk for obj in objs], request.query_params.get("cursus"))
 
         serializer = self.get_serializer(objs, many=True, context=context)
         if page is not None:
@@ -524,6 +555,14 @@ class CoursDetailView(generics.RetrieveAPIView):
         obj = get_object_or_404(qs)
         self.check_object_permissions(self.request, obj)
         return obj
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        # Un seul cours : la fréquence se lit ici (sans ?cursus=, la plus forte de ses cursus).
+        if (slug := self.kwargs.get("slug")) is not None:
+            cours = Cours.objects.visibles().par_slug_ou_id(slug).values_list("pk", flat=True).first()
+            context["frequences_cours"] = bulk_frequences_cours([cours] if cours else [], self.request.query_params.get("cursus"))
+        return context
 
 
 class SubjectListView(generics.ListAPIView):

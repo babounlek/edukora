@@ -17,6 +17,7 @@ import { CoursSection } from "@/components/CoursSection"
 import { RelatedCours } from "@/components/RelatedCours"
 import { CountryBadge } from "@/components/CountryBadge"
 import { BoutonPartager } from "@/components/BoutonPartager"
+import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { SITE_NAME } from "@/lib/site"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
 
@@ -114,6 +115,7 @@ export function CoursDetailPage() {
           <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{cours.titre}</h1>
           <div className="mt-3 flex flex-wrap gap-1.5">
             <CountryBadge code={cours.subject.country.code} label={cours.subject.country.label} />
+            {cours.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
             <Badge variant="secondary">{cours.subject.label}</Badge>
             {cours.cursus.length > 0 ? (
               formatCursusGroups(cours.cursus).map((group) => (

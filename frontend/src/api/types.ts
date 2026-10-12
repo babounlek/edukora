@@ -472,7 +472,19 @@ export interface Cours {
   // qu'à décider l'accès : has_access reste la seule source de vérité pour ça.
   est_vitrine: boolean
   apercu_contenu: CoursApercuContenu
+  /** Le cours fait partie de ceux qui tombent le plus souvent à l'examen (quart supérieur de sa
+   * matière, voir catalog.FrequenceCours) : null pour tous les autres. Son absence ne veut jamais dire
+   * « sans importance » - matière non classée, thème rare ou cours sans thème. */
+  tombe_souvent?: CoursTombeSouvent | null
   created_at: string
+}
+
+export interface CoursTombeSouvent {
+  frequence_pct: number
+  nb_epreuves: number
+  nb_sessions: number
+  /** Le thème dont le cours hérite cette fréquence. */
+  theme: string
 }
 
 export interface CoursHeader {

@@ -12,6 +12,7 @@ import {
   Loader2,
   Search,
   SearchX,
+  Star,
   X,
 } from "lucide-react"
 
@@ -109,6 +110,7 @@ export function CoursListPage() {
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
   const nonLusFilter = searchParams.get("nonlus") === "true"
+  const frequentFilter = searchParams.get("frequent") === "true"
   const search = searchParams.get("search") ?? ""
   // Arrivée depuis /parcours ("voir tous les cours" d'un savoir/thème) - `savoir` et
   // `theme` pilotent le filtre API (voir CoursListView), mutuellement exclusifs selon
@@ -173,7 +175,7 @@ export function CoursListPage() {
     queryFn: ({ signal }) => listCursus(country, signal),
   })
 
-  const filtresActifs = Boolean(subjectFilter || cursusFilter || nonLusFilter || search || savoirFilter || themeFilter)
+  const filtresActifs = Boolean(subjectFilter || cursusFilter || nonLusFilter || frequentFilter || search || savoirFilter || themeFilter)
 
   // Volumétrie totale du pays, affichée dans le hero : jamais `count` de la liste
   // ci-dessous, qui est le nombre de résultats APRÈS filtrage et tomberait à 3 dès
@@ -196,7 +198,7 @@ export function CoursListPage() {
   const debouncedSearch = useDebouncedValue(search, 300)
 
   const coursQuery = useInfiniteQuery({
-    queryKey: ["cours", country, subjectFilter, cursusFilter, nonLusFilter, debouncedSearch, savoirFilter, themeFilter],
+    queryKey: ["cours", country, subjectFilter, cursusFilter, nonLusFilter, frequentFilter, debouncedSearch, savoirFilter, themeFilter],
     queryFn: ({ pageParam, signal }) =>
       listCours(
         {
@@ -207,6 +209,9 @@ export function CoursListPage() {
           // Jamais `false` : le backend ne teste que la valeur "true", mais envoyer
           // exclude_read=false polluerait l'URL de l'API pour rien.
           exclude_read: nonLusFilter || undefined,
+          // Les plus fréquents d'abord : filtrer sur « tombe souvent » sans les classer ne servirait à rien.
+          tombe_souvent: frequentFilter || undefined,
+          ordering: frequentFilter ? "frequent" : undefined,
           savoir: savoirFilter ? Number(savoirFilter) : undefined,
           theme: themeFilter ? Number(themeFilter) : undefined,
           page: pageParam,
@@ -307,7 +312,7 @@ export function CoursListPage() {
     setSearchParams(
       (prev) => {
         const next = new URLSearchParams(prev)
-        for (const key of ["subject", "cursus", "nonlus", "search", "savoir", "theme", "savoir_label"]) next.delete(key)
+        for (const key of ["subject", "cursus", "nonlus", "frequent", "search", "savoir", "theme", "savoir_label"]) next.delete(key)
         // « Tout effacer » veut dire tout le catalogue : `tout=1` empêche le cursus par défaut de revenir.
         if (cursusPrepare) desactiverFiltreCursus(next)
         return next
@@ -354,6 +359,11 @@ export function CoursListPage() {
       key: "nonlus",
       label: "Non lus uniquement",
       clear: () => updateFilter("nonlus", ""),
+    },
+    frequentFilter && {
+      key: "frequent",
+      label: "Tombe souvent à l'examen",
+      clear: () => updateFilter("frequent", ""),
     },
     savoirFilter && {
       key: "savoir",
@@ -533,10 +543,27 @@ export function CoursListPage() {
           </FiltreLigne>
         )}
 
-        {/* Réservé aux connectés : le backend n'a aucun historique de lecture à exclure pour un
-            visiteur anonyme (voir CoursListView.exclude_read), le bouton n'y filtrerait rien. */}
-        {isAuthenticated && (
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          {/* Ouvert à tous, visiteurs compris : c'est un repère de contenu, pas un historique. Seuls les cours
+              du quart supérieur de leur matière y figurent (voir catalog.FrequenceCours) : le filtre montre ce
+              qu'on sait, jamais le reste n'est déclaré sans importance. */}
+          <button
+            type="button"
+            onClick={() => updateFilter("frequent", frequentFilter ? "" : "true")}
+            aria-pressed={frequentFilter}
+            className={cn(
+              "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
+              frequentFilter
+                ? "border-gold/50 bg-gold/15 text-gold-text"
+                : "border-border text-muted-foreground hover:border-gold/50 hover:text-gold-text",
+            )}
+          >
+            <Star className="size-4" fill={frequentFilter ? "currentColor" : "none"} />
+            Tombe souvent à l'examen
+          </button>
+          {/* Réservé aux connectés : le backend n'a aucun historique de lecture à exclure pour un
+              visiteur anonyme (voir CoursListView.exclude_read), le bouton n'y filtrerait rien. */}
+          {isAuthenticated && (
             <button
               type="button"
               onClick={() => updateFilter("nonlus", nonLusFilter ? "" : "true")}
@@ -551,8 +578,8 @@ export function CoursListPage() {
               <CheckCircle2 className="size-4" />
               Masquer les cours déjà lus
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
         {activeFilterChips.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3.5">

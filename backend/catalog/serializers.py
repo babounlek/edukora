@@ -371,13 +371,26 @@ class CoursSerializer(_HasAccessMixin, serializers.ModelSerializer):
     # jamais passer par _HasAccessMixin._est_vitrine ni son cache/bulk ci-dessus -
     # c'était encore le cas jusqu'ici même après le correctif sur get_has_access.
     est_vitrine = serializers.SerializerMethodField()
+    # {frequence_pct, nb_epreuves, nb_sessions, theme} ou null : voir catalog.FrequenceCours. Lu dans le
+    # contexte posé par la vue (un aller par page) ; absent du contexte = null, jamais une requête par ligne.
+    tombe_souvent = serializers.SerializerMethodField()
 
     class Meta:
         model = Cours
         fields = [
             "id", "slug", "titre", "subject", "cursus", "sous_theme",
-            "duree_estimee_min", "tags", "has_access", "is_read", "est_vitrine", "apercu_contenu", "created_at",
+            "duree_estimee_min", "tags", "has_access", "is_read", "est_vitrine", "apercu_contenu",
+            "tombe_souvent", "created_at",
         ]
+
+    def get_tombe_souvent(self, obj):
+        ligne = self.context.get("frequences_cours", {}).get(obj.pk)
+        if ligne is None:
+            return None
+        return {
+            "frequence_pct": ligne.frequence_pct, "nb_epreuves": ligne.nb_epreuves,
+            "nb_sessions": ligne.nb_sessions, "theme": ligne.theme,
+        }
 
     def get_apercu_contenu(self, obj):
         return _cours_content_summary(obj.sections_raw)

@@ -1259,6 +1259,38 @@ def q_cours_du_cursus(cursus_ids):
     )
 
 
+class FrequenceCours(models.Model):
+    """
+    Un cours qui « tombe souvent » à l'examen d'un cursus, avec la fréquence de son thème - lue
+    telle quelle par le catalogue (badge et filtre), jamais recalculée à la requête.
+
+    Table dérivée, reconstruite en entier par `manage.py calculer_frequences_cours` (voir
+    catalog.frequences_cours) : elle ne bouge que lorsque le contenu bouge (épreuves ingérées,
+    tags fusionnés, cours rattachés), donc après un lot ou une campagne de tags, pas à chaque
+    sauvegarde. Seuls les cours du quart supérieur de leur matière y figurent : l'absence de ligne
+    ne veut JAMAIS dire « sans importance » (matière non classée, thème rare, cours sans thème).
+    """
+
+    cursus = models.ForeignKey(Cursus, on_delete=models.CASCADE, related_name="frequences_cours")
+    cours = models.ForeignKey(Cours, on_delete=models.CASCADE, related_name="frequences")
+    theme = models.CharField(max_length=100, help_text="Nom du thème dont le cours hérite sa fréquence.")
+    nb_epreuves = models.PositiveSmallIntegerField(help_text="Épreuves de référence où le thème est tombé.")
+    nb_sessions = models.PositiveSmallIntegerField(help_text="Épreuves de référence de la matière sur ce cursus.")
+    frequence_pct = models.PositiveSmallIntegerField()
+    calcule_le = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "fréquence d'un cours"
+        verbose_name_plural = "fréquences des cours"
+        constraints = [
+            models.UniqueConstraint(fields=["cursus", "cours"], name="unique_frequence_cours_par_cursus"),
+        ]
+        indexes = [models.Index(fields=["cursus", "-frequence_pct"])]
+
+    def __str__(self):
+        return f"{self.cours} - {self.frequence_pct} % ({self.cursus})"
+
+
 class RappelDeMethode(models.Model):
     """
     Un bloc "### Rappel de méthode" extrait d'un Exercise par correction-experte,

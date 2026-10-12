@@ -13,6 +13,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreLecture } from "@/components/BarreLecture"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { BoutonPartager } from "@/components/BoutonPartager"
+import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { SITE_NAME } from "@/lib/site"
 import { CoursSection } from "@/components/CoursSection"
 import { MarquesSection } from "@/components/MarquesSection"
@@ -199,6 +200,7 @@ export function CoursReaderPage() {
               Cours en accès libre
             </Badge>
           )}
+          {cours?.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
           <Badge variant="secondary">{content.header.matiere}</Badge>
           {libelleSerieEntete(content.header) && <Badge variant="outline">{libelleSerieEntete(content.header)}</Badge>}
           {content.header.sous_theme && <Badge variant="outline">{capitaliserTheme(content.header.sous_theme)}</Badge>}
