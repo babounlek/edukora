@@ -40,6 +40,7 @@ import type {
   QuizFichePdfStatus,
   QuizQuestion,
   QuizResult,
+  QuizEssai,
   QuizSession,
   CursusContenu,
   PlatformStats,
@@ -563,6 +564,35 @@ export function answerQuizQuestion(sessionId: number, quizQuestionId: number, pa
 
 export function completeQuizSession(sessionId: number) {
   return apiRequest<QuizResult>(`/quiz/sessions/${sessionId}/completer/`, { method: "POST" })
+}
+
+/**
+ * Essai gratuit SANS compte (voir quiz.essai côté backend) : routes publiques, "auth: false" -
+ * jamais de token, un connecté non abonné les utilise aussi. Rien n'est enregistré côté serveur.
+ */
+export function listQuizEssais(signal?: AbortSignal) {
+  return apiRequest<QuizEssai[]>("/quiz/essais/", { auth: false, signal })
+}
+
+export interface StartQuizEssaiParams {
+  cursus: number
+  subject: number
+  theme: number
+  n?: number
+}
+
+export function startQuizEssai(params: StartQuizEssaiParams) {
+  return apiRequest<QuizSession>("/quiz/essais/demarrer/", { method: "POST", body: params, auth: false })
+}
+
+export function revealQuizEssaiCorrige(cursus: number, item: number) {
+  return apiRequest<QuizCorrige>(`/quiz/essais/corrige/?cursus=${cursus}&item=${item}`, { auth: false })
+}
+
+export function answerQuizEssai(cursus: number, item: number, params: AnswerQuizQuestionParams) {
+  return apiRequest<QuizQuestion>("/quiz/essais/repondre/", {
+    method: "POST", body: { cursus, item, ...params }, auth: false,
+  })
 }
 
 export function requestQuizFichePdf(sessionId: number) {

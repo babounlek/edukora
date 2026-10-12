@@ -52,6 +52,7 @@ const AboutPage = lazy(() => import("@/pages/AboutPage").then((m) => ({ default:
 const QuizStartPage = lazy(() => import("@/pages/QuizStartPage").then((m) => ({ default: m.QuizStartPage })))
 const QuizSessionPage = lazy(() => import("@/pages/QuizSessionPage").then((m) => ({ default: m.QuizSessionPage })))
 const QuizResultPage = lazy(() => import("@/pages/QuizResultPage").then((m) => ({ default: m.QuizResultPage })))
+const QuizEssaiResultPage = lazy(() => import("@/pages/QuizEssaiResultPage").then((m) => ({ default: m.QuizEssaiResultPage })))
 const ParcoursPage = lazy(() => import("@/pages/ParcoursPage").then((m) => ({ default: m.ParcoursPage })))
 const ParcoursSubjectPage = lazy(() => import("@/pages/ParcoursSubjectPage").then((m) => ({ default: m.ParcoursSubjectPage })))
 const InediteTentativePage = lazy(() => import("@/pages/InediteTentativePage").then((m) => ({ default: m.InediteTentativePage })))
@@ -164,6 +165,8 @@ function App() {
                       <Route path="/carnet" element={<CarnetPage />} />
                       <Route path="/mes-paiements" element={<MesPaiementsPage />} />
                       <Route path="/quiz" element={<QuizStartPage />} />
+                      <Route path="/quiz/essai" element={<QuizSessionPage essai />} />
+                      <Route path="/quiz/essai/resultat" element={<QuizEssaiResultPage />} />
                       <Route path="/quiz/session/:id" element={<QuizSessionPage />} />
                       <Route path="/quiz/session/:id/resultat" element={<QuizResultPage />} />
                       {/* /parcours a absorbé "à réviser" (badge par savoir) - une ancienne

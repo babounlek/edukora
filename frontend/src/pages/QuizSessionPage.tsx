@@ -6,7 +6,9 @@ import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
 import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Loader2, Sparkles, Target, X, Zap } from "lucide-react"
 
-import { answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige } from "@/api/endpoints"
+import {
+  answerQuizEssai, answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige, revealQuizEssaiCorrige,
+} from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizCorrige, QuizSession } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
@@ -24,6 +26,7 @@ import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { libellePoints } from "@/lib/notation"
 import { memoriserQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
+import { avecQuestionCorrigee, lireEssai, memoriserEssai } from "@/lib/quizEssai"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
 /** Rendu inline (pas de <p> bloc) pour le texte d'un choix QCM, qui peut contenir du LaTeX. */
@@ -66,8 +69,13 @@ function segmentClass(q: QuizSession["questions"][number], isCurrent: boolean) {
   return isCurrent ? "bg-primary" : "bg-secondary"
 }
 
-export function QuizSessionPage() {
-  useSeo({ title: "Quiz" })
+/**
+ * Le lecteur de quiz. `essai` : l'essai gratuit d'un visiteur sans compte (route /quiz/essai) -
+ * même écran, mais le quiz vient du navigateur (voir lib/quizEssai.ts) et chaque réponse est
+ * corrigée par les routes publiques /quiz/essais/*, sans XP, série ni PDF (rien n'est enregistré).
+ */
+export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
+  useSeo({ title: essai ? "Essai gratuit du quiz" : "Quiz" })
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -96,6 +104,17 @@ export function QuizSessionPage() {
   }, [])
 
   useEffect(() => {
+    if (essai) {
+      const enCours = lireEssai()
+      if (!enCours) {
+        navigate("/quiz", { replace: true })
+        return
+      }
+      setSession(enCours)
+      const premiere = enCours.questions.findIndex((q) => !q.reponse)
+      setCurrentIndex(premiere === -1 ? Math.max(0, enCours.questions.length - 1) : premiere)
+      return
+    }
     if (!id) return
     getQuizSession(Number(id))
       .then((data) => {
@@ -112,15 +131,15 @@ export function QuizSessionPage() {
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce quiz.")
       })
-  }, [id, navigate])
+  }, [id, navigate, essai])
 
   // Retenu pour « Reprendre mon quiz » (accueil et page Quiz) tant qu'il n'est pas terminé. Séparé
   // du chargement : la clé n'existe qu'une fois le compte connu, souvent après la séance.
   const sessionId = session?.id
   const sessionTerminee = Boolean(session?.completed_at)
   useEffect(() => {
-    if (cleReprise && sessionId !== undefined && !sessionTerminee) memoriserQuizEnCours(cleReprise, sessionId)
-  }, [cleReprise, sessionId, sessionTerminee])
+    if (cleReprise && !essai && sessionId !== undefined && !sessionTerminee) memoriserQuizEnCours(cleReprise, sessionId)
+  }, [cleReprise, essai, sessionId, sessionTerminee])
 
   if (error) {
     return (
@@ -148,6 +167,8 @@ export function QuizSessionPage() {
   const questionCorrige = revealed[question.id]
 
   function updateQuestion(updated: QuizSession["questions"][number]) {
+    // Essai : la réponse corrigée est réécrite dans le navigateur, seule mémoire de ce quiz.
+    if (essai) memoriserEssai(avecQuestionCorrigee(session!, updated))
     setSession((prev) => {
       if (!prev) return prev
       const questions = prev.questions.map((q) => (q.id === updated.id ? updated : q))
@@ -171,7 +192,10 @@ export function QuizSessionPage() {
     setSubmitting(true)
     setChoixEnCours(lettre)
     try {
-      const updated = await answerQuizQuestion(session!.id, question.id, { reponse_choisie: lettre })
+      const params = { reponse_choisie: lettre }
+      const updated = essai
+        ? await answerQuizEssai(session!.cursus, question.id, params)
+        : await answerQuizQuestion(session!.id, question.id, params)
       updateQuestion(updated)
     } catch {
       setActionError("Impossible d'enregistrer ta réponse. Réessaie.")
@@ -186,7 +210,9 @@ export function QuizSessionPage() {
     setActionError("")
     setSubmitting(true)
     try {
-      const corrige = await revealQuizCorrige(session!.id, question.id)
+      const corrige = essai
+        ? await revealQuizEssaiCorrige(session!.cursus, question.id)
+        : await revealQuizCorrige(session!.id, question.id)
       setRevealed((prev) => ({ ...prev, [question.id]: corrige }))
     } catch {
       setActionError("Impossible de charger la correction. Réessaie.")
@@ -200,7 +226,10 @@ export function QuizSessionPage() {
     setActionError("")
     setSubmitting(true)
     try {
-      const updated = await answerQuizQuestion(session!.id, question.id, { resultat_declare: resultat })
+      const params = { resultat_declare: resultat }
+      const updated = essai
+        ? await answerQuizEssai(session!.cursus, question.id, params)
+        : await answerQuizQuestion(session!.id, question.id, params)
       updateQuestion(updated)
     } catch {
       setActionError("Impossible d'enregistrer ta réponse. Réessaie.")
@@ -215,6 +244,12 @@ export function QuizSessionPage() {
       setCurrentIndex((i) => i + 1)
       // Après avoir lu une longue correction, la question suivante s'afficherait à mi-page.
       window.scrollTo({ top: 0 })
+      return
+    }
+    if (essai) {
+      // Rien à clore côté serveur : le score se calcule depuis les réponses gardées dans le navigateur.
+      trackEvent("quiz_completed", { cursus_id: session!.cursus, mode: session!.mode, source: "essai_anonyme" })
+      navigate("/quiz/essai/resultat")
       return
     }
     setSubmitting(true)
@@ -275,17 +310,17 @@ export function QuizSessionPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <Link
-          to={session.subject ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
+          to={session.subject && !essai ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
           onClick={() => {
             // Quitter avant la dernière réponse : le contre-indicateur de la boucle de séance.
-            if (answeredCount < total) trackEvent("quiz_abandonne", { cursus_id: session.cursus, mode: session.mode, repondues: answeredCount, total })
+            if (answeredCount < total) trackEvent("quiz_abandonne", { cursus_id: session.cursus, mode: session.mode, repondues: answeredCount, total, ...(essai && { source: "essai_anonyme" }) })
           }}
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
         >
           <ArrowLeft className="size-4" />
           Quitter le quiz
         </Link>
-        <QuizFichePdfButtons sessionId={session.id} />
+        {!essai && <QuizFichePdfButtons sessionId={session.id} />}
       </div>
 
       {/* Progression : un segment par question, coloré selon le résultat - on voit d'un

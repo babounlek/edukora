@@ -51,6 +51,8 @@
     # frontend n'a AUCUNE page sous ce mot (l'opt-in vit dans /compte) - rien à
     # distinguer, tout /whatsapp* va à Django.
     # /quiz/xp* (objectif d'XP du jour) est une API aussi, ajoutée avec les trois suivantes.
+    # /quiz/essais* (essai gratuit sans compte, voir quiz/essai.py) : avec le S, jamais /quiz/essai* - le frontend
+    # a ses propres pages "/quiz/essai" et "/quiz/essai/resultat" (App.tsx), qui doivent rester servies par la SPA.
     # /quiz/accueil*, /quiz/priorites*, /quiz/bilan-periode* : trois routes d'API de
     # quiz/urls.py qui manquaient à cette liste - Caddy répondait 405 (fichier
     # statique, GET/HEAD seulement) à leur preflight CORS depuis le serveur de dev, et
@@ -59,7 +61,7 @@
     # logique que /fiches/* - la page de résultats du frontend est "/:pays/recherche", jamais
     # un chemin qui COMMENCE par /recherche, mais autant ne rien laisser d'ambigu.
     # /healthz : contrôle de déploiement (deploy/deploy.sh), voir edtech_cm/health.py.
-    @backend path /healthz /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /quiz/xp* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /recherche/* /simulations* /partage-apercu* /partage-image/* /sitemap.xml /sitemap-*.xml
+    @backend path /healthz /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /quiz/xp* /quiz/essais* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /recherche/* /simulations* /partage-apercu* /partage-image/* /sitemap.xml /sitemap-*.xml
     handle @backend {
         reverse_proxy backend:8000
     }

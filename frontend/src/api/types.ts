@@ -870,7 +870,22 @@ export interface QuizSession {
   completed_at: string | null
   total_questions: number
   xp_jour?: EtatXp
+  // Essai gratuit sans compte (voir quiz.essai côté backend) : id 0, rien n'est enregistré
+  // côté serveur - le navigateur garde le quiz (lib/quizEssai.ts) et calcule le score.
+  essai?: boolean
   questions: QuizQuestion[]
+}
+
+/** Un essai gratuit proposable sans compte : un thème entièrement vitrine d'un cursus. */
+export interface QuizEssai {
+  cursus: number
+  cursus_display: string
+  subject: number
+  subject_label: string
+  subject_code: string
+  theme: number
+  theme_name: string
+  nb_questions: number
 }
 
 export interface QuizCorrige {

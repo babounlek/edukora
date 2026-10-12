@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import essai, views
 
 app_name = "quiz"
 
@@ -33,4 +33,10 @@ urlpatterns = [
     path("xp/objectif/", views.objectif_xp_view, name="objectif-xp"),
     path("plan-du-jour/etape-ouverte/", views.etape_ouverte_view, name="etape-ouverte"),
     path("plan-du-jour/duree/", views.duree_seance_view, name="duree-seance"),
+    # Essai gratuit sans compte : routes publiques, rien n'est enregistré (voir quiz.essai).
+    # Sous /quiz/essais/ (avec le S) : /quiz/essai est une page du frontend, voir le Caddyfile.
+    path("essais/", essai.liste_essais, name="essais"),
+    path("essais/demarrer/", essai.demarrer_essai, name="essai-demarrer"),
+    path("essais/corrige/", essai.corrige_essai, name="essai-corrige"),
+    path("essais/repondre/", essai.repondre_essai, name="essai-repondre"),
 ]
