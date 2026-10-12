@@ -1,0 +1,100 @@
+# Construit les images de production UNE FOIS, en CI, après les tests - le Droplet (2 Go de RAM)
+# ne compile plus ni le frontend ni l'image Playwright : il se contente de tirer l'image déjà
+# validée (deploy/deploy.sh). L'étiquette d'une image est le SHA du commit : déployer ou revenir
+# en arrière = choisir un SHA, sans rien reconstruire.
+#
+# Se déclenche sur chaque push vers main (build seulement, JAMAIS de déploiement : voir
+# deploy.yml, volontairement manuel à cause des paiements CamPay réels) et à la demande.
+#
+# Prérequis (une fois) :
+#   - Settings > Actions > General > Workflow permissions : « Read and write » (pour pousser sur GHCR).
+#   - Variables du dépôt (Settings > Secrets and variables > Actions > Variables) :
+#       SITE_DOMAIN, VITE_GOOGLE_CLIENT_ID (public par nature : c'est l'identifiant client OAuth).
+
+name: Release (build des images)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "backend/ingest/**"   # contenu : voir contenu.yml, aucune image à reconstruire
+      - "docs-relecture/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      SECRET_KEY: ci-test-secret-key-not-used-for-anything-real-32-bytes-min
+      DB_NAME: ci
+      DB_USER: ci
+      DB_PASSWORD: ci
+      SECURE_SSL_REDIRECT: "False"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Tests backend
+        run: python manage.py test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - image: edukora-backend
+            dockerfile: docker/backend/Dockerfile
+          - image: edukora-caddy
+            dockerfile: docker/caddy/Dockerfile
+          - image: edukora-backup
+            dockerfile: docker/backup/Dockerfile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build et push ${{ matrix.image }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          # Deux étiquettes : le SHA (immuable, c'est ce que déploie/restaure deploy.sh) et
+          # « main » (confort : dernière version construite).
+          tags: |
+            ${{ env.REGISTRY }}/${{ matrix.image }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ matrix.image }}:main
+          # Les VITE_* sont figées dans le bundle au build (voir docker/caddy/Dockerfile) ;
+          # ignorés par les deux autres Dockerfiles.
+          build-args: |
+            VITE_SITE_URL=https://${{ vars.SITE_DOMAIN || 'edukora.africa' }}
+            VITE_SITE_NAME=EduKora
+            VITE_GOOGLE_CLIENT_ID=${{ vars.VITE_GOOGLE_CLIENT_ID }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}

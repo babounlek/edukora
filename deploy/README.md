@@ -84,6 +84,11 @@ le détail de chaque variable) : `SECRET_KEY` frais, identifiants CamPay PROD,
 chmod 600 .env
 ```
 
+> **Après la première mise en ligne**, ce runbook ne sert plus : les mises à jour de
+> l'application, du contenu et des données de test suivent [README-TUNNEL.md](README-TUNNEL.md)
+> (images construites en CI et tirées depuis GHCR, plus de build sur le Droplet). Les étapes 7 et 8
+> ci-dessous décrivent le tout premier démarrage et le branchement GitHub Actions.
+
 ## 7. Premier démarrage
 
 ```bash

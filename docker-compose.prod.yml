@@ -1,0 +1,37 @@
+# Override de PRODUCTION : le serveur ne construit rien, il tire les images construites et
+# testées par la CI (.github/workflows/release.yml, registre GHCR).
+#
+#   IMAGE_TAG=<sha> docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+#   IMAGE_TAG=<sha> docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-build
+#
+# Ne jamais le lancer à la main : deploy/deploy.sh s'en charge (sauvegarde, migrations,
+# vérification de santé, retour arrière automatique). Le service `frontend` de
+# docker-compose.yml (un simple build Node de contrôle) n'est volontairement pas démarré ici ;
+# le bundle est déjà dans l'image `caddy`.
+#
+# IMAGE_REGISTRY et IMAGE_TAG viennent de deploy/deploy.sh (via .deploy/env). Le défaut de
+# IMAGE_TAG est volontairement invalide : un `up` lancé sans étiquette doit échouer plutôt que de
+# tirer une version au hasard.
+x-version: &version
+  APP_VERSION: ${IMAGE_TAG:?IMAGE_TAG est obligatoire, utilisez deploy/deploy.sh}
+
+services:
+  backend:
+    image: ${IMAGE_REGISTRY:-ghcr.io/babounlek}/edukora-backend:${IMAGE_TAG:?}
+    pull_policy: always
+    restart: unless-stopped
+    environment: *version
+
+  relances:
+    image: ${IMAGE_REGISTRY:-ghcr.io/babounlek}/edukora-backend:${IMAGE_TAG:?}
+    pull_policy: always
+    environment: *version
+
+  caddy:
+    image: ${IMAGE_REGISTRY:-ghcr.io/babounlek}/edukora-caddy:${IMAGE_TAG:?}
+    pull_policy: always
+    restart: unless-stopped
+
+  backup:
+    image: ${IMAGE_REGISTRY:-ghcr.io/babounlek}/edukora-backup:${IMAGE_TAG:?}
+    pull_policy: always

@@ -22,7 +22,10 @@ from django.urls import include, path
 from catalog.apercu_partage import apercu_partage, image_partage
 from catalog.sitemap import sitemap_chunk, sitemap_index
 
+from .health import healthz
+
 urlpatterns = [
+    path("healthz", healthz, name="healthz"),
     path("admin/", admin.site.urls),
     path("auth/", include("users.urls")),
     path("catalog/", include("catalog.urls")),

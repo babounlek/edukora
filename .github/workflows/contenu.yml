@@ -1,0 +1,58 @@
+# Mise à jour du CONTENU de la prod (cours, épreuves, inédites, quiz, programme) - voir
+# deploy/contenu.sh pour la mécanique et ses limites. Aucune base n'est copiée : les commandes
+# d'ingestion de Django rejouent les JSON versionnés, puis les portes de validation tournent.
+#
+# MANUEL, et en SIMULATION par défaut : une première exécution cochée telle quelle affiche ce qui
+# serait ingéré sans rien toucher. Décochez « simulation » pour appliquer.
+#
+# Le contenu est celui du commit actuellement déployé : lancer d'abord « Deploy » si l'application
+# doit changer aussi.
+
+name: Contenu
+
+on:
+  workflow_dispatch:
+    inputs:
+      simulation:
+        description: "Simulation (affiche le plan, ne modifie rien)"
+        type: boolean
+        default: true
+      depuis:
+        description: "Commit de départ (vide = depuis la dernière mise à jour du contenu)"
+        required: false
+        default: ""
+      tout:
+        description: "Premier chargement : ingérer TOUS les dossiers (ignore « depuis »)"
+        type: boolean
+        default: false
+
+jobs:
+  contenu:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Mettre à jour le contenu sur le Droplet
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          SIMULATION: ${{ github.event.inputs.simulation }}
+          DEPUIS: ${{ github.event.inputs.depuis }}
+          TOUT: ${{ github.event.inputs.tout }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          envs: SIMULATION,DEPUIS,TOUT
+          script_stop: true
+          # Un ingest complet (--tout) peut durer longtemps sur 2 vCPU.
+          command_timeout: 120m
+          script: |
+            cd "${{ secrets.DEPLOY_PATH }}"
+            # Le clone est déjà sur le commit déployé (écrit par deploy.sh) : on récupère
+            # seulement les objets git pour que le contenu de CE commit soit présent.
+            git fetch --all --tags --prune
+            args=()
+            [ "$SIMULATION" = "true" ] && args+=(--simulation)
+            [ "$TOUT" = "true" ] && args+=(--tout)
+            [ -n "$DEPUIS" ] && [ "$TOUT" != "true" ] && args+=(--depuis "$DEPUIS")
+            chmod +x deploy/*.sh
+            deploy/contenu.sh auto "${args[@]}"

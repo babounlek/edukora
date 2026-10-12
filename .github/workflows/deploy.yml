@@ -1,57 +1,88 @@
-# Declenchement manuel uniquement (bouton "Run workflow" dans l'onglet Actions de
-# GitHub) - CamPay fait transiter de vrais paiements en production, un merge sur
-# main ne doit pas partir tout seul sans qu'un humain choisisse le moment.
+# Déploiement de l'APPLICATION en production - déclenchement MANUEL uniquement (bouton « Run
+# workflow ») : CamPay fait transiter de vrais paiements, un merge sur main ne doit pas partir tout
+# seul sans qu'un humain choisisse le moment.
 #
-# Secrets requis (Settings > Secrets and variables > Actions du repo GitHub) :
-#   DEPLOY_HOST     - IP ou domaine du Droplet
-#   DEPLOY_USER     - utilisateur SSH (non-root, avec droits sur DEPLOY_PATH et Docker)
-#   DEPLOY_SSH_KEY  - cle privee SSH correspondante (jamais celle de ton poste perso -
-#                      en generer une dediee au deploiement, cle publique ajoutee au
-#                      Droplet via authorized_keys)
-#   DEPLOY_PATH     - chemin absolu du clone du repo sur le Droplet (ex. /srv/edukora)
+# Ce workflow ne construit rien : il déploie les images déjà construites et testées par release.yml
+# pour un SHA donné, puis lance deploy/deploy.sh sur le Droplet (sauvegarde, migrations, bascule,
+# vérification de santé, retour arrière automatique). Pour le CONTENU, voir contenu.yml.
+#
+# Pour revenir à une version antérieure : relancer ce workflow avec son SHA dans `sha`
+# (ou, sur le serveur, deploy/rollback.sh).
+#
+# Secrets requis (Settings > Secrets and variables > Actions) :
+#   DEPLOY_HOST / DEPLOY_USER / DEPLOY_SSH_KEY / DEPLOY_PATH   (voir deploy/README.md, étape 8)
+# Environnement `production` : activer « Required reviewers » (Settings > Environments) pour
+# exiger une approbation explicite avant chaque déploiement.
+# Prérequis sur le serveur, une fois : `docker login ghcr.io` avec un jeton en lecture (read:packages).
 
 name: Deploy
 
 on:
   workflow_dispatch:
     inputs:
-      ref:
-        description: "Branche, tag ou commit a deployer"
+      sha:
+        description: "SHA du commit à déployer (vide = tête de la branche choisie ci-dessus)"
         required: false
-        default: main
+        default: ""
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: read
+      packages: read
+    env:
+      SHA: ${{ github.event.inputs.sha || github.sha }}
+      REGISTRY: ghcr.io/${{ github.repository_owner }}
     steps:
-      - name: Deploy sur le Droplet via SSH
+      - name: Vérifier le format du SHA
+        run: |
+          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::SHA complet (40 caractères) attendu, reçu « $SHA »."
+            exit 1
+          fi
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Refuse de déployer un commit dont les images n'ont pas été construites (donc dont les
+      # tests de release.yml n'ont pas tous réussi).
+      - name: Vérifier que les trois images existent pour ce SHA
+        run: |
+          for image in edukora-backend edukora-caddy edukora-backup; do
+            docker buildx imagetools inspect "$REGISTRY/$image:$SHA" >/dev/null \
+              || { echo "::error::Image $image:$SHA introuvable. Le workflow « Release » a-t-il réussi sur ce commit ?"; exit 1; }
+          done
+
+      - name: Déployer sur le Droplet
         uses: appleboy/ssh-action@v1.2.0
+        env:
+          SHA: ${{ env.SHA }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          envs: SHA
+          script_stop: true
           script: |
-            set -euo pipefail
             cd "${{ secrets.DEPLOY_PATH }}"
-
-            echo "Recuperation de ${{ github.event.inputs.ref }}..."
             git fetch --all --tags --prune
-            git checkout --detach "origin/${{ github.event.inputs.ref }}" 2>/dev/null \
-              || git checkout --detach "${{ github.event.inputs.ref }}"
+            git checkout --detach "$SHA"
+            chmod +x deploy/*.sh
+            deploy/deploy.sh "$SHA"
 
-            echo "Build et redemarrage des services..."
-            docker compose up -d --build
-
-            echo "Nettoyage des images/layers inutilisees (>72h)..."
-            docker system prune -f --filter "until=72h"
-
-      - name: Verification post-deploiement
+      - name: Vérification depuis l'extérieur
         run: |
-          sleep 5
-          status=$(curl -s -o /dev/null -w "%{http_code}" "https://${{ vars.SITE_DOMAIN || 'edukora.africa' }}")
-          echo "HTTP $status"
-          if [ "$status" -lt 200 ] || [ "$status" -ge 400 ]; then
-            echo "::error::Le site ne repond pas correctement apres le deploiement (HTTP $status)"
-            exit 1
-          fi
+          domaine="${{ vars.SITE_DOMAIN || 'edukora.africa' }}"
+          for essai in 1 2 3 4 5 6; do
+            reponse="$(curl -fsS --max-time 10 "https://$domaine/healthz" || true)"
+            echo "healthz : $reponse"
+            if echo "$reponse" | grep -q "$SHA"; then exit 0; fi
+            sleep 5
+          done
+          echo "::error::Le site ne sert pas la version $SHA."
+          exit 1
