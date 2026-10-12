@@ -80,6 +80,11 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
     && (accueil.preparation?.ponderee ?? 0) >= SEUIL_ANNEAU_VISIBLE
   const joursExacts = Boolean(compte) && !compte?.estimee && (compte?.jours_restants ?? 0) > 0
   const bandeFine = phraseSousLeTitre && !anneauVisible && !joursExacts
+  // Premier passage avec une vraie date : à gauche il ne reste que la salutation (Decompte se
+  // tait, la phrase du coach est dans la carte) et à droite le nombre de jours. Deux petits textes
+  // aux deux bouts d'une bande haute de 170 px : on la resserre, la salutation devient le titre et
+  // le compte à rebours tient sur une ligne. Séance, série et points restent dans la carte.
+  const salutationSeule = phraseSousLeTitre && accueil.premiers_pas && joursExacts
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6" aria-label="Aujourd'hui">
@@ -89,12 +94,26 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
             de 90 % de la couleur pleine pour que le blanc garde son contraste jusqu'au
             bord droit (le précédent bandeau descendait à 75 %). */}
         {!bandeFine && (
-        <div className="relative bg-gradient-to-br from-primary via-primary to-primary/90 px-5 py-5 text-primary-foreground sm:px-8 sm:py-6">
-          <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 size-64 rounded-full bg-gold/25 blur-3xl" />
+        <div
+          className={cn(
+            "relative bg-gradient-to-br from-primary via-primary to-primary/90 px-5 text-primary-foreground sm:px-8",
+            salutationSeule ? "py-4 sm:py-5" : "py-5 sm:py-6",
+          )}
+        >
+          {/* Halo doré atténué : à 25 %, il éclaircissait justement le coin où se lit le nombre de
+              jours, et le texte blanc y perdait du contraste. */}
+          <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 size-64 rounded-full bg-gold/15 blur-3xl" />
           <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-10 size-56 rounded-full bg-white/10 blur-3xl" />
-          <div className="relative flex items-start justify-between gap-5">
+          <div className={cn("relative flex justify-between gap-5", salutationSeule ? "items-center" : "items-start")}>
             <div className="min-w-0 flex-1">
-              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/80">
+              <p
+                className={cn(
+                  "flex flex-wrap items-center gap-x-2 gap-y-1",
+                  salutationSeule
+                    ? "font-display text-lg font-semibold leading-tight text-primary-foreground sm:text-xl"
+                    : "text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/80",
+                )}
+              >
                 <span>
                   {prenom ? `Bonjour ${prenom}` : "Bonjour"}
                   {cursus && <CursusPreparePuce cursus={cursus} />}
@@ -133,7 +152,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
             {accueil.preparation && !accueil.premiers_pas && accueil.preparation.ponderee >= SEUIL_ANNEAU_VISIBLE ? (
               <AnneauPreparation part={accueil.preparation.ponderee} />
             ) : accueil.premiers_pas && compte && !compte.estimee && compte.jours_restants > 0 ? (
-              <RepereJoursRestants compte={compte} />
+              <RepereJoursRestants compte={compte} compact={salutationSeule} />
             ) : accueil.premiers_pas ? (
               <IllustrationAujourdhui />
             ) : null}
@@ -357,7 +376,18 @@ function Decompte({ compte, premiersPas }: { compte: CompteARebours | null; prem
  * Pas de cercle autour : un anneau plein tromperait ("t'es prêt à 100 %"), un anneau
  * vide découragerait sans rien mesurer - seul le chiffre, honnête sur ce qu'il dit.
  */
-function RepereJoursRestants({ compte }: { compte: CompteARebours }) {
+function RepereJoursRestants({ compte, compact = false }: { compte: CompteARebours; compact?: boolean }) {
+  const unite = `jour${compte.jours_restants > 1 ? "s" : ""} avant l'examen`
+  if (compact) {
+    // Sans boîte de taille fixe : c'est elle qui rendait la bande aussi haute que l'anneau.
+    // Sur téléphone le libellé passe sous le nombre, dès `sm` tout tient sur une ligne.
+    return (
+      <div className="flex shrink-0 flex-col items-end leading-tight sm:flex-row sm:items-baseline sm:gap-2">
+        <span className="font-display text-3xl font-semibold tabular-nums">{compte.jours_restants}</span>
+        <span className="whitespace-nowrap text-xs text-primary-foreground/85 sm:text-sm">{unite}</span>
+      </div>
+    )
+  }
   return (
     <div className="flex size-20 shrink-0 flex-col items-center justify-center text-center leading-tight sm:size-28">
       <span className="font-display text-3xl font-semibold tabular-nums sm:text-4xl">{compte.jours_restants}</span>
