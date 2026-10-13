@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-distinguer-instruction-de-saisie-et-instruction-d-affectation-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Distinguer instruction de saisie et instruction d'affectation",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "algorithmique",
+      "saisie",
+      "affectation",
+      "variable",
+      "lire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qA.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme est une suite d'ordres donnés à la machine. Certains lui demandent d'attendre une valeur de l'utilisateur, d'autres de ranger un résultat dans une variable, d'autres d'afficher un message. Savoir reconnaître chaque type d'instruction est le premier réflexe quand on lit un algorithme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et son type",
+        "Connaître la structure d'un algorithme (variables, début, fin)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Saisie, affectation, affichage",
+      "contenu_markdown": "Trois types d'instructions de base :\n\n| Type | Écriture | Effet |\n|---|---|---|\n| Saisie (entrée) | `lire (x)` | la valeur tapée au clavier est rangée dans `x` |\n| Affectation | `x ← expression` | la valeur de l'expression est rangée dans `x` |\n| Affichage (sortie) | `Ecrire (...)` | le message ou la valeur est montré à l'utilisateur |\n\nL'affectation lit toujours de droite à gauche : on calcule l'expression, puis on range le résultat dans la variable à gauche de la flèche.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme Calcul (lignes 4 à 10), identifier une instruction de saisie et une instruction d'affectation (question A.1 de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher le verbe lire",
+          "justification": "La saisie est l'instruction qui récupère une valeur au clavier.",
+          "resultat_markdown": "Ligne 6 : `lire (n);`"
+        },
+        {
+          "numero": 2,
+          "action": "Chercher la flèche ←",
+          "justification": "L'affectation range un résultat dans une variable.",
+          "resultat_markdown": "Ligne 4 : `X ← 1 ;` et ligne 8 : `X ← X*i ;`"
+        },
+        {
+          "numero": 3,
+          "action": "Écarter les instructions d'affichage",
+          "justification": "Les lignes 5 et 10 utilisent `Ecrire` : ce sont des sorties.",
+          "resultat_markdown": "Lignes 5 et 10 : affichage."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "On donne une instruction de chaque type, avec le numéro de ligne.",
+          "resultat_markdown": "Saisie : ligne 6. Affectation : ligne 4."
+        }
+      ],
+      "conclusion_markdown": "La ligne 6, `lire (n);`, est une saisie ; la ligne 4, `X ← 1 ;`, est une affectation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre `Ecrire` pour une saisie.",
+          "pourquoi_faux": "`Ecrire` affiche à l'écran, il envoie une information vers l'utilisateur. La saisie va dans l'autre sens, de l'utilisateur vers la variable.",
+          "correction_markdown": "Saisie : `lire`. Affichage : `Ecrire`."
+        },
+        {
+          "erreur_markdown": "Lire l'affectation de gauche à droite.",
+          "pourquoi_faux": "`X ← X*i` ne signifie pas « X est égal à X fois i » comme en mathématiques. On calcule `X*i` avec l'ancienne valeur de `X`, puis on range le résultat dans `X`.",
+          "correction_markdown": "Lis la flèche comme « reçoit » : `X` reçoit `X*i`."
+        },
+        {
+          "erreur_markdown": "Confondre affectation et comparaison.",
+          "pourquoi_faux": "La flèche range une valeur. Le test d'égalité s'écrit `=` dans une condition et `==` en langage C.",
+          "correction_markdown": "Flèche : ranger. `=` dans une condition : comparer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `lire (age)`, `age ← age + 1` et `Ecrire (age)`, quelle est la saisie, quelle est l'affectation, quel est l'affichage ?",
+          "solution_markdown": "Saisie : `lire (age)`. Affectation : `age ← age + 1`. Affichage : `Ecrire (age)`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Après `a ← 5` puis `a ← a + 2`, quelle est la valeur de `a` ? Explique.",
+          "solution_markdown": "1. `a ← 5` : `a` vaut 5.\n2. `a ← a + 2` : on calcule $5 + 2 = 7$ avec l'ancienne valeur, puis on range 7 dans `a`.\n3. `a` vaut 7."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris les trois instructions qui lisent deux nombres `x` et `y` puis échangent leurs valeurs à l'aide d'une variable `t`.",
+          "solution_markdown": "1. `lire (x)` puis `lire (y)` : saisie des deux nombres.\n2. `t ← x` : on met à l'abri la valeur de `x`.\n3. `x ← y` : `x` prend la valeur de `y`.\n4. `y ← t` : `y` reçoit l'ancienne valeur de `x`.\n5. Exemple : x = 3, y = 8 donne t = 3, puis x = 8, puis y = 3. Sans `t`, la valeur de `x` serait perdue dès `x ← y`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`lire` est une saisie : la valeur vient du clavier.",
+        "La flèche ← est une affectation : on calcule à droite, on range à gauche.",
+        "`Ecrire` est un affichage, pas une saisie.",
+        "Donne le numéro de ligne avec l'instruction recopiée.",
+        "Au Probatoire, ce type de question ouvre souvent l'exercice d'algorithmique."
+      ]
+    }
+  ]
+}

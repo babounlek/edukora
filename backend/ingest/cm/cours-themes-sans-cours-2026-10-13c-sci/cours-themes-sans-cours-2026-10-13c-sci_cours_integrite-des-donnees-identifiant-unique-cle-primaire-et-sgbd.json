@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-integrite-des-donnees-identifiant-unique-cle-primaire-et-sgbd-admin13",
+  "meta": {
+    "titre": "Intégrité des données : identifiant unique, clé primaire et SGBD",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données et sécurité",
+    "duree_estimee_min": 30,
+    "tags": [
+      "identifiant unique",
+      "intégrité des données",
+      "logiciel de gestion de données",
+      "clé primaire",
+      "SGBD"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "epreuve_source": "probatoire-c-d-e-informatique-2023-officiel-cameroun.html",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex2-qB.3-1-admin13",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux élèves s'appellent tous les deux Mbarga et sont dans la même classe. Si le secrétariat les retrouve par leur nom, la note de l'un peut finir dans le bulletin de l'autre. Pour que les données restent exactes, chaque élève doit avoir un identifiant qui n'appartient qu'à lui, et un logiciel doit refuser les saisies incohérentes. C'est ce qu'on appelle garantir l'intégrité des données. Au probatoire, on te demande d'identifier la clé primaire d'une table, de donner son rôle et de nommer un logiciel capable de gérer la base."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Vocabulaire d'une table : champ (colonne) et enregistrement (ligne)",
+        "Notion de base de données : plusieurs tables reliées entre elles",
+        "Les trois objectifs de la sécurité informatique : confidentialité, intégrité, disponibilité"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intégrité, identifiant unique et logiciel de gestion de données",
+      "contenu_markdown": "**Intégrité des données.** Des données sont intègres quand elles sont exactes, complètes, cohérentes et n'ont pas été altérées depuis leur saisie. Deux points de vue :\n\n- en **sécurité informatique**, l'intégrité est l'un des objectifs fondamentaux, avec la confidentialité (données lues seulement par les personnes autorisées) et la disponibilité (système utilisable à tout moment) : les données ne doivent être modifiées ou détruites que par les personnes autorisées. Moyens : droits d'accès, sauvegardes, antivirus ;\n- dans une **base de données**, l'intégrité est protégée par des contraintes.\n\n**Identifiant unique : la clé primaire.** C'est le champ (ou le groupe de champs) dont la valeur identifie **sans ambiguïté** chaque enregistrement. Elle est **unique**, **jamais vide** et **stable**. Bons choix : numéro de carte nationale d'identité, matricule, numéro de compte. Mauvais choix : nom, âge, ville, numéro de téléphone (qui peuvent se répéter ou changer). **Rôle** : identifier chaque enregistrement, le retrouver sans confusion et relier la table à d'autres tables.\n\n**Contraintes d'intégrité.**\n\n| Contrainte | Ce qu'elle impose |\n|---|---|\n| d'entité | la clé primaire est unique et non vide |\n| de domaine | chaque champ respecte son type et ses valeurs permises (une note est comprise entre 0 et 20) |\n| référentielle | une valeur qui renvoie à une autre table doit exister dans cette table (une note concerne un élève existant) |\n\n**Logiciel de gestion de données.** C'est un **SGBD** (système de gestion de bases de données) : il permet de créer, remplir, interroger et protéger une base, et il applique les contraintes. Exemples : MySQL, Microsoft Access, PostgreSQL, SQLite, Oracle. Excel est un tableur, SQL un langage de requêtes et Windows un système d'exploitation : ce ne sont pas des SGBD.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Clé primaire composée",
+          "quand_utiliser": "Quand aucun champ seul n'est unique, comme dans la table des notes",
+          "contenu_markdown": "On associe plusieurs champs : dans la table Note, un élève a une note par matière et par trimestre, donc la clé est le groupe (Matricule, Matiere, Trimestre). Aucun des trois champs n'est unique seul, mais leur combinaison l'est."
+        },
+        {
+          "nom": "Déclarer la clé dans un SGBD",
+          "quand_utiliser": "Quand l'énoncé demande de créer la table avec MySQL",
+          "contenu_markdown": "```sql\nCREATE TABLE Eleve (\n  Matricule VARCHAR(10) PRIMARY KEY,\n  Nom VARCHAR(40) NOT NULL,\n  Classe VARCHAR(10)\n);\n```\nLe SGBD refuse alors un matricule déjà présent ou vide."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table Eleve contient trois enregistrements : (E001, Mbarga, 1ère D), (E002, Mbarga, 1ère D) et (E003, Ngono, 1ère A). Choisir la clé primaire et dire ce que fait le SGBD si on tente d'ajouter (E002, Tchinda, 2nde A).",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tester le champ Nom",
+          "justification": "Mbarga apparaît deux fois : deux élèves peuvent être homonymes.",
+          "resultat_markdown": "Nom ne convient pas."
+        },
+        {
+          "numero": 2,
+          "action": "Tester le champ Classe",
+          "justification": "« 1ère D » est partagée par plusieurs élèves.",
+          "resultat_markdown": "Classe ne convient pas."
+        },
+        {
+          "numero": 3,
+          "action": "Tester le champ Matricule",
+          "justification": "Les trois valeurs sont distinctes, aucune n'est vide et un matricule ne change pas pendant la scolarité.",
+          "resultat_markdown": "Matricule convient : c'est l'identifiant unique."
+        },
+        {
+          "numero": 4,
+          "action": "Déclarer la clé primaire",
+          "justification": "Le SGBD doit connaître la contrainte pour la faire respecter.",
+          "resultat_markdown": "`Matricule VARCHAR(10) PRIMARY KEY`"
+        },
+        {
+          "numero": 5,
+          "action": "Tenter d'ajouter (E002, Tchinda, 2nde A)",
+          "justification": "Le matricule E002 existe déjà : la contrainte d'entité est violée.",
+          "resultat_markdown": "Le SGBD refuse l'insertion avec un message d'erreur de doublon ; une ligne sans matricule serait refusée aussi."
+        }
+      ],
+      "conclusion_markdown": "La clé primaire est Matricule. Elle identifie chaque élève de façon unique, et le SGBD protège l'intégrité de la table en refusant les doublons."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir Nom ou Âge comme clé primaire parce que les valeurs sont différentes dans l'extrait.",
+          "pourquoi_faux": "La clé doit rester unique pour toutes les données possibles, y compris celles de demain. Deux clients peuvent être homonymes et l'âge change chaque année.",
+          "correction_markdown": "Choisis un champ qui identifie la personne par nature : numéro de carte d'identité, matricule."
+        },
+        {
+          "erreur_markdown": "Donner Excel, SQL ou Windows comme SGBD.",
+          "pourquoi_faux": "Excel est un tableur, SQL est un langage de requêtes et Windows un système d'exploitation.",
+          "correction_markdown": "Réponds MySQL ou Microsoft Access, et soigne l'orthographe."
+        },
+        {
+          "erreur_markdown": "Confondre intégrité et confidentialité.",
+          "pourquoi_faux": "La confidentialité empêche la lecture par des personnes non autorisées ; l'intégrité empêche la modification ou la destruction non autorisée.",
+          "correction_markdown": "Un virus qui modifie des notes attaque l'intégrité ; un intrus qui lit des notes attaque la confidentialité."
+        },
+        {
+          "erreur_markdown": "Croire qu'une clé primaire peut contenir des valeurs vides ou répétées.",
+          "pourquoi_faux": "Un enregistrement sans identifiant ne peut pas être retrouvé, et un identifiant répété ne le désigne plus de façon unique.",
+          "correction_markdown": "Clé primaire : unique et jamais vide."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La table Client a pour champs NumCNI, Nom, Age et Telephone. Quelle colonne est la clé primaire ? Pourquoi pas Telephone ?",
+          "solution_markdown": "La clé primaire est **NumCNI** : chaque personne a un numéro de carte d'identité qui lui est propre et qui ne change pas. Le téléphone ne convient pas : un client peut changer de numéro, deux membres d'une famille peuvent partager le même, et il peut être non renseigné."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réponds par vrai ou faux et justifie : a) Excel est un SGBD. b) MySQL est un SGBD. c) Une clé primaire peut être vide pour un enregistrement. d) Un virus qui modifie les notes porte atteinte à l'intégrité des données.",
+          "solution_markdown": "a) **Faux** : Excel est un tableur. b) **Vrai**. c) **Faux** : la clé primaire est unique et jamais vide. d) **Vrai** : les données ont été altérées par une personne non autorisée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La table Note a pour champs Matricule, Matiere, Trimestre et Valeur. a) Propose une clé primaire. b) On tente d'ajouter (E999, Maths, 1, 14) alors que E999 n'existe pas dans Eleve. c) On tente d'ajouter une note égale à 25. Que doit faire le SGBD dans chaque cas ?",
+          "solution_markdown": "a) Un élève a une note par matière et par trimestre : clé primaire composée (**Matricule, Matiere, Trimestre**).\n\nb) Matricule renvoie à la table Eleve : E999 n'y figure pas, donc la contrainte **référentielle** est violée et l'insertion est refusée.\n\nc) Une note est comprise entre 0 et 20 : la contrainte de **domaine** refuse 25."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Intégrité : des données exactes, cohérentes et non altérées par une personne non autorisée.",
+        "Clé primaire = identifiant unique : valeur unique, jamais vide, stable ; elle identifie chaque enregistrement et relie les tables.",
+        "Contraintes : d'entité (clé unique et non vide), de domaine (type et valeurs permises), référentielle (renvoi vers une ligne existante).",
+        "Un logiciel de gestion de données est un SGBD (MySQL, Access, PostgreSQL) ; Excel, SQL et Windows n'en sont pas.",
+        "Au probatoire, « identifier la clé primaire et donner son rôle » s'appuie sur les mots « unique » et « identifier »."
+      ]
+    }
+  ]
+}

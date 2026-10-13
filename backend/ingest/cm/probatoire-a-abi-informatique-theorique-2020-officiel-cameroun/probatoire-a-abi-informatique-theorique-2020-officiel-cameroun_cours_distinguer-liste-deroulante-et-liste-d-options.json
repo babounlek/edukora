@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-distinguer-liste-deroulante-et-liste-d-options-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Distinguer liste déroulante et liste d'options",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Programmation web - formulaires",
+    "duree_estimee_min": 20,
+    "tags": [
+      "liste déroulante",
+      "select",
+      "bouton radio",
+      "formulaire HTML",
+      "options"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex2-q2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un site, tu choisis ta date de naissance dans un menu qui se déploie, mais tu réponds « oui » ou « non » en cliquant sur un rond. Ces deux façons de proposer un choix ne se codent pas pareil. Savoir les distinguer évite de se tromper dans une question d'identification."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les composants d'un formulaire web",
+        "Savoir qu'un formulaire se code avec des balises HTML",
+        "Distinguer choix unique et choix multiple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une flèche et un seul choix visible signalent la liste déroulante",
+      "contenu_markdown": "Deux façons de proposer un choix :\n\n- la **liste déroulante** : balise `<select>` contenant des balises `<option>`. Une seule valeur est visible, une **flèche** indique que le menu se déploie au clic. Adaptée quand il y a beaucoup de choix (villes, années) ;\n- la **liste d'options** : boutons radio `<input type=\"radio\">` (un seul choix) ou cases à cocher (plusieurs choix). Tous les choix sont **visibles en permanence**. Adaptée quand il y a peu de choix (oui ou non).\n\nCritère rapide : présence de la flèche et nombre de choix visibles sans cliquer.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur la figure du sujet, le champ « Votre âge » (valeur 20 et petite flèche) et la question « Serez-vous disponibles ? » (OUI, Non) sont-ils de même nature ? Justifier. *[0,5 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Examiner le champ « Votre âge »",
+          "justification": "On cherche la flèche et on compte les choix visibles.",
+          "resultat_markdown": "Une seule valeur (20) et une flèche : liste déroulante."
+        },
+        {
+          "numero": 2,
+          "action": "Examiner la question « Serez-vous disponibles ? »",
+          "justification": "On vérifie si les choix sont visibles sans cliquer.",
+          "resultat_markdown": "Deux choix, OUI et Non, côte à côte et sans flèche : liste d'options."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer",
+          "justification": "Les deux composants offrent un choix, mais pas selon le même mode.",
+          "resultat_markdown": "L'un cache ses choix derrière une flèche, l'autre les montre tous."
+        }
+      ],
+      "conclusion_markdown": "Les deux champs ne sont pas de même nature : « Votre âge » est une liste déroulante, « Serez-vous disponibles ? » est une liste d'options."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appeler « liste d'options » un menu avec une flèche.",
+          "pourquoi_faux": "La flèche indique un menu déroulant : les choix sont cachés tant qu'on ne clique pas.",
+          "correction_markdown": "Dès que tu vois une flèche, réponds liste déroulante."
+        },
+        {
+          "erreur_markdown": "Penser que « option » désigne seulement les boutons radio.",
+          "pourquoi_faux": "La balise `<option>` s'utilise aussi dans la liste déroulante : le mot ne suffit pas pour trancher.",
+          "correction_markdown": "Base-toi sur l'aspect à l'écran, pas sur le mot."
+        },
+        {
+          "erreur_markdown": "Choisir des boutons radio pour trente villes.",
+          "pourquoi_faux": "Une liste de trente boutons occuperait toute la page : une liste déroulante est plus adaptée.",
+          "correction_markdown": "Peu de choix, radio ; beaucoup de choix, liste déroulante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel composant affiche une flèche qui permet de dérouler un menu ?",
+          "solution_markdown": "La liste déroulante, codée avec la balise `<select>`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour choisir son pays parmi une cinquantaine de pays, vaut-il mieux utiliser des boutons radio ou une liste déroulante ? Justifie.",
+          "solution_markdown": "Il vaut mieux une liste déroulante.\n\nCinquante boutons radio seraient tous affichés en même temps et rendraient la page très longue et peu lisible, alors que la liste déroulante n'occupe qu'une ligne et ne montre les choix qu'au clic."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris le code d'une liste déroulante « ville » avec trois choix (Yaoundé, Douala, Garoua) et celui de deux boutons radio « disponible » (oui, non).",
+          "solution_markdown": "```html\n<select name=\"ville\">\n   <option value=\"yaounde\">Yaoundé</option>\n   <option value=\"douala\">Douala</option>\n   <option value=\"garoua\">Garoua</option>\n</select>\n\n<input type=\"radio\" name=\"disponible\" value=\"oui\"> OUI\n<input type=\"radio\" name=\"disponible\" value=\"non\"> Non\n```\n\nLa liste déroulante utilise `<select>` et `<option>` ; les boutons radio partagent le même `name` pour qu'un seul reste coché."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Liste déroulante : une flèche, un seul choix visible, balise select.",
+        "Liste d'options : tous les choix visibles, boutons radio ou cases à cocher.",
+        "Beaucoup de choix : liste déroulante ; peu de choix : boutons radio.",
+        "Base-toi sur l'aspect à l'écran, pas sur le mot « option ».",
+        "Au probatoire, la distinction sert à répondre sans erreur aux questions d'identification de composants."
+      ]
+    }
+  ]
+}

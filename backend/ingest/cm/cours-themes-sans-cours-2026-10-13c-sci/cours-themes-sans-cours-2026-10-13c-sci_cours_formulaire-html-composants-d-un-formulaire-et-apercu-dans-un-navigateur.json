@@ -1,0 +1,156 @@
+{
+  "cours_id": "cours-formulaire-html-composants-d-un-formulaire-et-apercu-dans-un-navigateur-admin13",
+  "meta": {
+    "titre": "Formulaire HTML : composants d'un formulaire et aperçu dans un navigateur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : HTML",
+    "duree_estimee_min": 30,
+    "tags": [
+      "aperçu d'une page web",
+      "composants d'un formulaire",
+      "formulaire HTML",
+      "balise INPUT"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "epreuve_source": "probatoire-c-d-e-informatique-2023-officiel-cameroun.html",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qB.4-1-admin13",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu t'inscris sur un site, que tu saisis ton mot de passe ou que tu coches « se souvenir de moi », tu utilises un formulaire. Derrière chaque champ se cache une balise HTML, et le navigateur la transforme en un élément visible. Au probatoire, on te donne un morceau de code et on te demande de dessiner ce que le navigateur affichera, ou de reconnaître les composants d'un formulaire. Il suffit de savoir lire le code ligne par ligne, comme le fait le navigateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'une page HTML : balises ouvrantes et fermantes, attributs",
+        "Un éditeur de texte écrit le code ; un navigateur l'affiche",
+        "Balise de saut de ligne `<BR>`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Composants d'un formulaire et lecture du code par le navigateur",
+      "contenu_markdown": "**Le formulaire.** Les balises `<FORM>` et `</FORM>` délimitent le formulaire ; elles n'ont aucun aspect visible. Chaque composant se déclare surtout avec `<INPUT>` dont l'attribut `TYPE` donne la nature :\n\n| Composant | Balise | Aspect dans le navigateur |\n|---|---|---|\n| zone de texte | `<INPUT TYPE=\"Text\" NAME=\"nom\">` | champ rectangulaire, le texte tapé est visible |\n| mot de passe | `<INPUT TYPE=\"Password\" NAME=\"mdp\">` | champ dont les caractères sont masqués |\n| bouton radio | `<INPUT TYPE=\"Radio\" NAME=\"sexe\" VALUE=\"M\">` | petit cercle ; avec le même `NAME`, un seul choix possible |\n| case à cocher | `<INPUT TYPE=\"Checkbox\" NAME=\"info\">` | petit carré ; plusieurs choix possibles |\n| liste déroulante | `<SELECT>` avec des `<OPTION>` | menu muni d'une flèche, un choix visible à la fois |\n| texte sur plusieurs lignes | `<TEXTAREA ROWS=\"3\" COLS=\"30\">` | grand cadre de 3 lignes |\n| bouton d'envoi | `<INPUT TYPE=\"Submit\" VALUE=\"Envoyer\">` | bouton qui porte le texte de `VALUE` et valide le formulaire |\n| bouton d'effacement | `<INPUT TYPE=\"Reset\" VALUE=\"Effacer\">` | bouton qui vide tous les champs |\n\n**Prévoir l'aperçu : lire de haut en bas.** Le navigateur ignore les retours à la ligne et les espaces multiples du fichier source. Il ne passe à la ligne que sur `<BR>` (ou sur un élément de bloc comme `<P>`). Le texte placé avant un `<INPUT>` s'affiche sur la même ligne que lui, et deux composants écrits à la suite sans `<BR>` restent côte à côte.\n\n**Méthode en quatre temps.** (1) Repérer `<FORM>` et `</FORM>`, qui ne s'affichent pas. (2) Lire chaque ligne et transformer chaque balise en composant. (3) Marquer les `<BR>` : chacun ouvre une nouvelle ligne. (4) Dessiner dans l'ordre, en recopiant les libellés exactement comme dans le code.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Bouton radio ou case à cocher ?",
+          "quand_utiliser": "Quand on te demande un choix unique ou des choix multiples",
+          "contenu_markdown": "Choix unique parmi plusieurs (sexe, série) : boutons radio qui ont le même `NAME`. Plusieurs réponses possibles (centres d'intérêt, options) : cases à cocher."
+        },
+        {
+          "nom": "Liste déroulante ou liste d'options ?",
+          "quand_utiliser": "Quand le code utilise la balise `<SELECT>`",
+          "contenu_markdown": "Sans attribut `SIZE`, `<SELECT>` donne une liste déroulante : un seul élément visible, les autres apparaissent quand on clique sur la flèche. Avec `SIZE=\"3\"`, trois lignes sont affichées en permanence : c'est une liste d'options."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire l'aperçu que le navigateur produit pour le code suivant.\n\n```\n1 <FORM>\n2 Inscription<BR>\n3 Nom : <INPUT TYPE=\"Text\" NAME=\"nom\"><BR>\n4 Mot de passe : <INPUT TYPE=\"Password\" NAME=\"mdp\"><BR>\n5 Série : <INPUT TYPE=\"Radio\" NAME=\"serie\" VALUE=\"C\"> C\n6 <INPUT TYPE=\"Radio\" NAME=\"serie\" VALUE=\"D\"> D<BR>\n7 <INPUT TYPE=\"Checkbox\" NAME=\"info\"> Recevoir les informations\n8 <INPUT TYPE=\"Submit\" VALUE=\"Valider\">\n9 <INPUT TYPE=\"Reset\" VALUE=\"Effacer\">\n10 </FORM>\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter les balises sans aspect visible",
+          "justification": "`<FORM>` et `</FORM>` (lignes 1 et 10) délimitent le formulaire sans rien afficher.",
+          "resultat_markdown": "Rien à dessiner pour les lignes 1 et 10."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire les lignes 2 à 4",
+          "justification": "Chaque ligne se termine par `<BR>` : on change de ligne à l'écran après chacune.",
+          "resultat_markdown": "Ligne 1 de l'aperçu : « Inscription ». Ligne 2 : « Nom : » suivi d'un champ vide. Ligne 3 : « Mot de passe : » suivi d'un champ aux caractères masqués."
+        },
+        {
+          "numero": 3,
+          "action": "Traduire les lignes 5 et 6",
+          "justification": "Il n'y a pas de `<BR>` à la fin de la ligne 5 : les deux boutons radio sont côte à côte ; leur `NAME` identique impose un seul choix.",
+          "resultat_markdown": "Ligne 4 de l'aperçu : « Série : » puis deux cercles libellés C et D, aucun coché."
+        },
+        {
+          "numero": 4,
+          "action": "Traduire les lignes 7 à 9",
+          "justification": "Aucun `<BR>` : case à cocher, texte et deux boutons restent sur la même ligne (le navigateur coupe seulement si la fenêtre est trop étroite).",
+          "resultat_markdown": "Ligne 5 de l'aperçu : un carré décoché, « Recevoir les informations », puis les boutons « Valider » et « Effacer »."
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler avec les `<BR>`",
+          "justification": "Il y a 4 balises `<BR>` (lignes 2, 3, 4 et 6), donc 4 sauts de ligne et 5 lignes affichées.",
+          "resultat_markdown": "L'aperçu compte bien 5 lignes."
+        }
+      ],
+      "conclusion_markdown": "Le navigateur affiche cinq lignes : le titre, deux champs (le second masqué), deux boutons radio exclusifs, puis une case à cocher suivie de deux boutons. Les retours à la ligne du fichier source n'ont eu aucun effet."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner chaque ligne du code sur une ligne séparée de l'aperçu.",
+          "pourquoi_faux": "Le navigateur ignore les retours à la ligne du fichier source. Seul `<BR>` (ou un élément de bloc) passe à la ligne.",
+          "correction_markdown": "Compte les `<BR>` : ils fixent le nombre de lignes de l'aperçu."
+        },
+        {
+          "erreur_markdown": "Afficher en clair ce qui est tapé dans un champ `TYPE=\"Password\"`.",
+          "pourquoi_faux": "Ce type de champ masque les caractères saisis, par des points ou des étoiles.",
+          "correction_markdown": "Dessine un champ de saisie sans texte lisible, avec des points si tu dois montrer une saisie."
+        },
+        {
+          "erreur_markdown": "Utiliser des `NAME` différents pour des boutons radio qui doivent s'exclure.",
+          "pourquoi_faux": "Le navigateur regroupe les boutons radio par `NAME` ; avec des noms différents, on peut tous les cocher.",
+          "correction_markdown": "Donne le même `NAME` à tous les boutons d'un même choix."
+        },
+        {
+          "erreur_markdown": "Inventer le texte d'un bouton au lieu de lire l'attribut `VALUE`.",
+          "pourquoi_faux": "Le libellé d'un bouton `Submit` ou `Reset` est celui de `VALUE` : ce n'est ni « Submit » ni « Reset ».",
+          "correction_markdown": "Recopie `VALUE` tel qu'il est écrit, fautes de frappe comprises."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne la valeur de `TYPE` qui convient pour : a) un champ où les caractères tapés sont masqués ; b) un choix unique parmi plusieurs ; c) plusieurs choix cumulables ; d) un bouton qui envoie le formulaire ; e) un bouton qui efface les champs.",
+          "solution_markdown": "a) `Password`. b) `Radio` (avec le même `NAME`). c) `Checkbox`. d) `Submit`. e) `Reset`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décris l'aperçu du code suivant.\n\n```\n<FORM>\nPays : <SELECT NAME=\"pays\"><OPTION>Cameroun<OPTION>Gabon<OPTION>Tchad</SELECT><BR>\nMessage :<BR>\n<TEXTAREA ROWS=\"3\" COLS=\"30\"></TEXTAREA><BR>\n<INPUT TYPE=\"Submit\" VALUE=\"Envoyer\">\n</FORM>\n```",
+          "solution_markdown": "Ligne 1 : « Pays : » suivi d'une liste déroulante qui affiche « Cameroun » (premier élément) avec une flèche ; le menu propose Cameroun, Gabon et Tchad. Ligne 2 : « Message : ». Lignes 3 à 5 : une grande zone de texte de 3 lignes. Dernière ligne : un bouton « Envoyer ». Il y a trois `<BR>`, donc quatre lignes de composants et de texte, la zone de texte occupant 3 lignes de hauteur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris le code d'un formulaire qui contient : un champ Nom, un champ Mot de passe masqué, un choix Masculin ou Féminin (deux boutons radio sur la même ligne), puis les boutons « Envoyer » et « Effacer ».",
+          "solution_markdown": "```\n<FORM>\nNom : <INPUT TYPE=\"Text\" NAME=\"nom\"><BR>\nMot de passe : <INPUT TYPE=\"Password\" NAME=\"mdp\"><BR>\nSexe : <INPUT TYPE=\"Radio\" NAME=\"sexe\" VALUE=\"M\"> Masculin\n<INPUT TYPE=\"Radio\" NAME=\"sexe\" VALUE=\"F\"> Féminin<BR>\n<INPUT TYPE=\"Submit\" VALUE=\"Envoyer\">\n<INPUT TYPE=\"Reset\" VALUE=\"Effacer\">\n</FORM>\n```\nLes deux boutons radio portent le même `NAME` (`sexe`) pour qu'un seul puisse être coché. Le seul `<BR>` qui les concerne est après « Féminin » : ils restent donc sur la même ligne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<FORM>` délimite le formulaire sans rien afficher ; `<INPUT TYPE=\"...\">` crée un composant selon son type.",
+        "Text : champ visible ; Password : champ masqué ; Radio : choix unique (même NAME) ; Checkbox : choix multiples.",
+        "Submit envoie, Reset efface ; le texte du bouton est celui de VALUE.",
+        "Le navigateur ignore les retours à la ligne du fichier : seul `<BR>` passe à la ligne.",
+        "Pour dessiner un aperçu : repérer FORM, lire ligne par ligne, compter les BR, recopier les libellés exactement."
+      ]
+    }
+  ]
+}

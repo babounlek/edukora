@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-denombrer-les-champs-et-les-enregistrements-d-une-table-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Dénombrer les champs et les enregistrements d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données",
+    "duree_estimee_min": 15,
+    "tags": [
+      "table",
+      "champ",
+      "enregistrement",
+      "base de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex2-qB.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau de clients, de notes ou de produits ressemble à une feuille de tableur, mais le vocabulaire change dès qu'on parle de base de données : on ne compte plus des colonnes et des lignes, mais des champs et des enregistrements. Une question simple, qui rapporte un point à ceux qui connaissent le vocabulaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un tableau à lignes et colonnes",
+        "Connaître le mot « base de données »"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Champ, enregistrement, ligne d'en-tête",
+      "contenu_markdown": "Dans une table :\n\n- un **champ** (ou attribut) est une colonne : il décrit une caractéristique (nom, âge, sexe) ;\n- un **enregistrement** (ou tuple) est une ligne de données : il décrit un élément complet (un client, un élève) ;\n- la **ligne d'en-tête** contient seulement les noms des champs : elle n'est pas un enregistrement.\n\nNombre de champs = nombre de colonnes. Nombre d'enregistrements = nombre de lignes de données, en-tête exclu.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Table des clients : colonnes NumCNI, Nom, Age, Sexe ; quatre lignes de données (Abba, Majolie, Florence, Kadazi). Recenser le nombre de champs et d'enregistrements (question B.1 de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne d'en-tête",
+          "justification": "Elle porte les noms des champs et ne sera pas comptée comme enregistrement.",
+          "resultat_markdown": "En-tête : NumCNI, Nom, Age, Sexe."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les colonnes",
+          "justification": "Une colonne correspond à un champ.",
+          "resultat_markdown": "4 colonnes, donc 4 champs."
+        },
+        {
+          "numero": 3,
+          "action": "Compter les lignes de données",
+          "justification": "Chaque ligne sous l'en-tête est un enregistrement.",
+          "resultat_markdown": "Abba, Majolie, Florence, Kadazi : 4 lignes."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "On donne les deux nombres avec leur nom exact.",
+          "resultat_markdown": "4 champs et 4 enregistrements."
+        }
+      ],
+      "conclusion_markdown": "La table comporte 4 champs et 4 enregistrements."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter la ligne d'en-tête comme un enregistrement.",
+          "pourquoi_faux": "L'en-tête indique le nom des champs, il ne décrit aucun client. On obtiendrait 5 enregistrements au lieu de 4.",
+          "correction_markdown": "Ne compte que les lignes de données."
+        },
+        {
+          "erreur_markdown": "Inverser champs et enregistrements.",
+          "pourquoi_faux": "Les champs sont les colonnes, les enregistrements les lignes. Ici les deux nombres sont égaux, mais l'inversion coûte le point quand ils diffèrent.",
+          "correction_markdown": "Note « colonnes = champs » avant de compter."
+        },
+        {
+          "erreur_markdown": "Donner la liste des noms au lieu du nombre.",
+          "pourquoi_faux": "La question demande un nombre. Une liste de noms aide à vérifier mais ne répond pas à la question.",
+          "correction_markdown": "Écris les nombres, avec les noms entre parenthèses si tu veux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Table Élève (Matricule, Nom, Classe) avec 3 élèves : donne le nombre de champs et d'enregistrements.",
+          "solution_markdown": "Champs : 3 (Matricule, Nom, Classe). Enregistrements : 3 (un par élève)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Table Produit :\n\n| Code | Désignation | Prix | Stock |\n|---|---|---|---|\n| P01 | Cahier | 500 | 120 |\n| P02 | Stylo | 150 | 300 |\n| P03 | Règle | 250 | 80 |\n| P04 | Gomme | 100 | 200 |\n| P05 | Crayon | 120 | 150 |\n\nDonne le nombre de champs et d'enregistrements.",
+          "solution_markdown": "1. Colonnes : Code, Désignation, Prix, Stock, donc 4 champs.\n2. Lignes de données (en-tête exclu) : P01, P02, P03, P04, P05, donc 5 enregistrements."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On ajoute à la table Produit un champ « Fournisseur » et deux nouveaux produits. Combien de champs et d'enregistrements la table contient-elle ensuite ?",
+          "solution_markdown": "1. Ajouter un champ ajoute une colonne : $4 + 1 = 5$ champs.\n2. Ajouter deux produits ajoute deux lignes : $5 + 2 = 7$ enregistrements.\n3. Chacun des 7 enregistrements comporte désormais 5 valeurs, soit $7 \\times 5 = 35$ valeurs au total."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Champ = colonne, enregistrement = ligne de données.",
+        "La ligne d'en-tête ne compte pas comme enregistrement.",
+        "Donne deux nombres, chacun avec son nom exact.",
+        "Ajouter un champ augmente le nombre de colonnes, ajouter un client augmente le nombre de lignes.",
+        "Au Probatoire, cette question ouvre souvent la partie Bases de données : c'est un point facile à ne pas perdre."
+      ]
+    }
+  ]
+}

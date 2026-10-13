@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-traduire-un-algorithme-en-langage-c-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Traduire un algorithme en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Programmation en langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "langage C",
+      "traduction",
+      "scanf",
+      "printf",
+      "for"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qA.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme est écrit pour l'humain, le langage C pour la machine. Passer de l'un à l'autre est un travail de traduction : à chaque instruction de l'algorithme correspond une instruction C. Quand on connaît le dictionnaire, la traduction devient mécanique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme (saisie, affectation, boucle, affichage)",
+        "Connaître les types de base du langage C (int, float)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le dictionnaire algorithme vers C",
+      "contenu_markdown": "| Algorithme | Langage C |\n|---|---|\n| `Variable x : Entier` | `int x;` |\n| `Variable y : Réel` | `float y;` |\n| `x ← expression` | `x = expression;` |\n| `lire (x)` pour un entier | `scanf(\"%d\", &x);` |\n| `Ecrire (\"texte\")` | `printf(\"texte\");` |\n| `Ecrire (x)` pour un entier | `printf(\"%d\", x);` |\n| `Pour i allant de 1 à n faire ... FinPour` | `for (i = 1; i <= n; i++) { ... }` |\n| `Tant que cond faire ... FinTantQue` | `while (cond) { ... }` |\n\nChaque instruction C se termine par un point-virgule. Le code de format indique le type : `%d` pour un entier, `%f` pour un réel. Dans `scanf`, le `&` devant la variable est obligatoire.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C les lignes 6 à 10 de l'algorithme Calcul (question A.3 de l'épreuve, 2 points).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire la ligne 6",
+          "justification": "`lire (n)` devient `scanf` avec le code `%d` (n est entier) et `&n`.",
+          "resultat_markdown": "`scanf(\"%d\", &n);`"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire les lignes 7 et 9",
+          "justification": "`Pour i allant de 1 à n` devient un `for` : départ `i = 1`, condition `i <= n`, pas `i++`.",
+          "resultat_markdown": "`for (i = 1; i <= n; i++)` avec des accolades."
+        },
+        {
+          "numero": 3,
+          "action": "Traduire la ligne 8",
+          "justification": "La flèche devient `=`, et on ajoute le point-virgule.",
+          "resultat_markdown": "`X = X * i;`"
+        },
+        {
+          "numero": 4,
+          "action": "Traduire la ligne 10",
+          "justification": "`Ecrire` devient `printf` avec `%d` pour afficher la valeur de X.",
+          "resultat_markdown": "`printf(\"Le résultat de ce calcul est X= %d\", X);`"
+        },
+        {
+          "numero": 5,
+          "action": "Assembler",
+          "justification": "On remet les lignes dans l'ordre, avec l'indentation.",
+          "resultat_markdown": "scanf, puis for avec X = X * i, puis printf."
+        }
+      ],
+      "conclusion_markdown": "La boucle et la lecture se traduisent par scanf et for, l'affichage par printf avec %d : le programme C calcule et affiche n!."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le `&` dans `scanf`.",
+          "pourquoi_faux": "`scanf` a besoin de l'adresse de la variable pour y ranger la valeur. Sans `&`, le programme plante ou se comporte de façon imprévisible.",
+          "correction_markdown": "Pour un entier ou un réel lu avec `scanf`, écris toujours `&nom`."
+        },
+        {
+          "erreur_markdown": "Écrire `X` à l'intérieur des guillemets du `printf`.",
+          "pourquoi_faux": "Tout ce qui est entre guillemets est affiché tel quel : le programme afficherait la lettre X. La valeur s'affiche grâce au code `%d` et à la variable placée après la virgule.",
+          "correction_markdown": "Texte entre guillemets, `%d`, puis la variable après la virgule."
+        },
+        {
+          "erreur_markdown": "Écrire `i < n` au lieu de `i <= n`.",
+          "pourquoi_faux": "Avec `i < n`, la boucle s'arrête avant n : pour n = 3 elle ne ferait que deux tours.",
+          "correction_markdown": "« de 1 à n » se traduit par `i <= n`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduis en C : `Ecrire (\"Bonjour\")` puis `lire (age)` avec `age` entier.",
+          "solution_markdown": "1. `Ecrire (\"Bonjour\")` devient `printf(\"Bonjour\");`.\n2. `lire (age)` devient `scanf(\"%d\", &age);`, car `age` est un entier et `scanf` exige l'adresse."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduis en C : `lire (x)` avec `x` réel, `y ← x * 2`, puis `Ecrire (y)` avec `y` réel.",
+          "solution_markdown": "1. Déclarations : `float x, y;`.\n2. `scanf(\"%f\", &x);` : code `%f` pour un réel.\n3. `y = x * 2;` : la flèche devient `=`.\n4. `printf(\"%f\", y);` : même code de format pour afficher le réel."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Traduis en programme C complet : `Variable n, S : Entier`, `S ← 0`, `lire (n)`, `Tant que n > 0 faire S ← S + n ; n ← n - 1 FinTantQue`, `Ecrire (S)`. Que vaut S pour n = 4 ?",
+          "solution_markdown": "1. Programme :\n\n```c\n#include <stdio.h>\n\nint main()\n{\n    int n, S;\n    S = 0;\n    scanf(\"%d\", &n);\n    while (n > 0)\n    {\n        S = S + n;\n        n = n - 1;\n    }\n    printf(\"%d\", S);\n    return 0;\n}\n```\n\n2. Pour n = 4 : S = 4, puis 4 + 3 = 7, puis 7 + 2 = 9, puis 9 + 1 = 10. Le programme affiche 10, la somme des entiers de 1 à 4."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Traduis instruction par instruction, dans l'ordre des lignes.",
+        "`lire` devient `scanf` avec le code de format et le `&`.",
+        "`Pour` devient `for (init; condition; pas)`, et « jusqu'à n inclus » devient `<= n`.",
+        "`Ecrire` devient `printf` : texte entre guillemets, valeur par un code de format.",
+        "Au Probatoire, la traduction en C de quelques lignes d'un algorithme est très fréquente : soigne `&`, `%d` et les points-virgules."
+      ]
+    }
+  ]
+}

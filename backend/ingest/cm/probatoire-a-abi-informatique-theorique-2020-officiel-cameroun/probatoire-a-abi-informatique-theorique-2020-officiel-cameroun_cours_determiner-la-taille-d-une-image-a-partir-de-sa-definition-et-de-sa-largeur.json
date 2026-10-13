@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-determiner-la-taille-d-une-image-a-partir-de-sa-definition-et-de-sa-largeur-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Déterminer la taille d'une image à partir de sa définition et de sa largeur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Infographie - dimensions et résolution",
+    "duree_estimee_min": 30,
+    "tags": [
+      "taille d'une image",
+      "résolution",
+      "proportionnalité",
+      "ppp",
+      "dimensions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex3-q2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu veux imprimer une image numérisée, mais l'imprimante a besoin de dimensions en centimètres, pas en pixels. Comment passer des unes aux autres ? Par proportionnalité : la forme de l'image ne change pas quand on l'agrandit. Ce raisonnement permet aussi de trouver la résolution d'impression."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition d'une image (largeur × hauteur en pixels)",
+        "Savoir utiliser la proportionnalité",
+        "Savoir que 1 pouce vaut 2,54 cm"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Même rapport hauteur sur largeur en pixels et en centimètres",
+      "contenu_markdown": "La **taille** (dimensions réelles) se déduit de la définition par proportionnalité :\n\n$$H_{cm} = L_{cm} \\times \\dfrac{H_{px}}{L_{px}}$$\n\nLa **résolution** (pixels par pouce, ppp) se déduit de la largeur : $R = \\dfrac{L_{px}}{L_{cm}} \\times 2{,}54$.\n\nTrois grandeurs à ne pas confondre : **définition** en pixels, **taille** en centimètres, **poids** en octets. Le poids exige en plus la profondeur de codage : poids en octets = nombre de pixels × bits par pixel ÷ 8.",
+      "formule_principale": "H_{cm} = L_{cm} \\times \\dfrac{H_{px}}{L_{px}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'image a pour définition 640 × 480 pixels et sa largeur est de 12 cm. Calculer la taille de l'image. *[2 pts]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les données",
+          "justification": "Il faut distinguer pixels et centimètres.",
+          "resultat_markdown": "$L_{px} = 640$, $H_{px} = 480$, $L_{cm} = 12$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le rapport hauteur sur largeur",
+          "justification": "Ce rapport est le même en pixels et en centimètres.",
+          "resultat_markdown": "$\\dfrac{480}{640} = \\dfrac{3}{4} = 0{,}75$ (division du haut et du bas par 160)."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la hauteur en centimètres",
+          "justification": "La hauteur se déduit de la largeur et du rapport.",
+          "resultat_markdown": "$H_{cm} = 12 \\times 0{,}75 = 9$ cm."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur la taille",
+          "justification": "La taille se donne en largeur × hauteur.",
+          "resultat_markdown": "Taille : 12 cm × 9 cm."
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler avec la résolution",
+          "justification": "Les deux directions doivent donner la même résolution.",
+          "resultat_markdown": "$\\dfrac{640}{12} \\approx 53{,}33$ pixels/cm et $\\dfrac{480}{9} \\approx 53{,}33$ pixels/cm : cohérent."
+        }
+      ],
+      "conclusion_markdown": "La taille de l'image est de 12 cm × 9 cm, soit une résolution d'environ 135,47 ppp."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer 12 × 640 ÷ 480.",
+          "pourquoi_faux": "Le rapport doit être hauteur sur largeur ; inverser donne 16 cm, qui rendrait l'image plus haute que large alors qu'elle est plus large que haute.",
+          "correction_markdown": "Vérifie que la hauteur est plus petite que la largeur si l'image est horizontale."
+        },
+        {
+          "erreur_markdown": "Mélanger pixels et centimètres.",
+          "pourquoi_faux": "Les unités ne se mélangent pas : 12 cm × 480 n'a aucun sens physique.",
+          "correction_markdown": "Écris l'unité à chaque ligne."
+        },
+        {
+          "erreur_markdown": "Confondre taille et poids.",
+          "pourquoi_faux": "La taille est en centimètres ; le poids est en octets et dépend de la profondeur de codage.",
+          "correction_markdown": "Lis le contexte avant de calculer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image de 800 × 600 pixels a une largeur de 20 cm. Calcule sa hauteur.",
+          "solution_markdown": "Rapport : $\\dfrac{600}{800} = 0{,}75$.\n\nHauteur : $20 \\times 0{,}75 = 15$ cm.\n\nLa taille est de 20 cm × 15 cm."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image de 1 024 × 768 pixels est imprimée avec une largeur de 16 cm. Donne sa taille.",
+          "solution_markdown": "Rapport : $\\dfrac{768}{1\\,024} = 0{,}75$.\n\nHauteur : $16 \\times 0{,}75 = 12$ cm.\n\nLa taille est de 16 cm × 12 cm."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une image de 1 600 × 1 200 pixels est imprimée sur 10 cm de large. Calcule la hauteur et la résolution en ppp.",
+          "solution_markdown": "Hauteur : $\\dfrac{1\\,200}{1\\,600} = 0{,}75$ donc $10 \\times 0{,}75 = 7{,}5$ cm.\n\nRésolution : $\\dfrac{1\\,600}{10} = 160$ pixels par centimètre, puis $160 \\times 2{,}54 = 406{,}4$ ppp.\n\nL'image mesure 10 cm × 7,5 cm à environ 406 ppp."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La taille en cm se déduit de la définition par proportionnalité.",
+        "Hauteur en cm = largeur en cm × (lignes ÷ colonnes).",
+        "La résolution en ppp vaut les pixels par centimètre multipliés par 2,54.",
+        "Distingue définition (pixels), taille (cm) et poids (octets).",
+        "Au probatoire, ce calcul se retrouve après le nombre total de pixels."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-calculer-la-definition-en-pixels-d-une-image-a-partir-de-sa-resolution-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Calculer la définition en pixels d'une image à partir de sa résolution",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Multimédia",
+    "duree_estimee_min": 25,
+    "tags": [
+      "image numérique",
+      "définition",
+      "résolution",
+      "pixel",
+      "dpi"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex1-q2.a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi une photo imprimée à 300 dpi paraît-elle nette alors que la même photo à 72 dpi semble floue ? Parce que le nombre de pixels disponibles par pouce n'est pas le même. Ce cours te donne la méthode pour passer d'une taille en centimètres et d'une résolution en dpi au nombre de pixels de l'image."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir convertir des centimètres en pouces (1 pouce = 2,54 cm)",
+        "Maîtriser les produits et divisions avec de grands nombres",
+        "Connaître la notion de pixel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définition = dimension en pouces × résolution",
+      "contenu_markdown": "La **résolution** d'une image est le nombre de pixels par pouce (dpi, ou ppp en français). La **définition** est le nombre de pixels en largeur par le nombre de pixels en hauteur.\n\nPour chaque dimension : convertir les centimètres en pouces (1 pouce = 2,54 cm), puis multiplier par la résolution.\n\nVariante utile : calculer d'abord les pixels par centimètre, $\\frac{R}{2{,}54}$, puis multiplier par la dimension en centimètres. Le résultat est le même ; on choisit la voie qui donne les nombres les plus simples.",
+      "formule_principale": "N_{px} = \\frac{L_{cm}}{2{,}54} \\times R_{dpi}",
+      "variantes": [
+        {
+          "nom": "Passer par les pixels par centimètre",
+          "quand_utiliser": "Quand la résolution est un multiple simple de 2,54 (254 dpi donne 100 pixels par cm)",
+          "contenu_markdown": "Calcule $\\frac{R}{2{,}54}$ une seule fois, puis multiplie chaque dimension en centimètres par ce nombre. Cela évite de manipuler les décimales de $\\frac{20}{2{,}54}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une image de 20 cm × 15 cm a une résolution de 130 048 dpi. Déterminer sa définition en pixels (question 2.a de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la méthode",
+          "justification": "Le nombre 130 048 est divisible par 2,54 : on passe par les pixels par centimètre.",
+          "resultat_markdown": "$\\frac{130\\,048}{2{,}54} = 51\\,200$ pixels par cm"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier ce quotient",
+          "justification": "Un produit inverse confirme la division.",
+          "resultat_markdown": "$2{,}54 \\times 51\\,200 = 102\\,400 + 25\\,600 + 2\\,048 = 130\\,048$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la largeur en pixels",
+          "justification": "On multiplie la largeur en cm par les pixels par cm.",
+          "resultat_markdown": "$20 \\times 51\\,200 = 1\\,024\\,000$ pixels"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la hauteur en pixels",
+          "justification": "Même procédé pour la hauteur.",
+          "resultat_markdown": "$15 \\times 51\\,200 = 768\\,000$ pixels"
+        },
+        {
+          "numero": 5,
+          "action": "Écrire la définition",
+          "justification": "On donne largeur × hauteur avec l'unité.",
+          "resultat_markdown": "$1\\,024\\,000 \\times 768\\,000$ pixels"
+        }
+      ],
+      "conclusion_markdown": "La définition de l'image est de 1 024 000 × 768 000 pixels."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier directement 20 par 130 048.",
+          "pourquoi_faux": "La résolution est donnée par pouce, la dimension en centimètres : les unités ne sont pas compatibles. Le résultat serait 2,54 fois trop grand.",
+          "correction_markdown": "Convertis toujours la dimension en pouces, ou la résolution en pixels par cm, avant de multiplier."
+        },
+        {
+          "erreur_markdown": "Confondre résolution et définition.",
+          "pourquoi_faux": "La résolution (dpi) est une densité de pixels. La définition est un nombre total de pixels en largeur et en hauteur.",
+          "correction_markdown": "Écris l'unité : dpi pour la résolution, pixels pour la définition."
+        },
+        {
+          "erreur_markdown": "Donner un seul nombre pour la définition.",
+          "pourquoi_faux": "La définition d'une image comporte deux nombres, largeur et hauteur. Le total de pixels est un autre résultat.",
+          "correction_markdown": "Écris « largeur × hauteur » et ajoute au besoin le produit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image de 12 cm × 8 cm a une résolution de 254 dpi. Donne sa définition en pixels.",
+          "solution_markdown": "1. Pixels par cm : $\\frac{254}{2{,}54} = 100$.\n2. Largeur : $12 \\times 100 = 1\\,200$ pixels.\n3. Hauteur : $8 \\times 100 = 800$ pixels.\n4. Définition : $1\\,200 \\times 800$ pixels."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une feuille A4 (21 cm × 29,7 cm) est numérisée à 300 dpi. Quelle est la définition obtenue, arrondie à l'unité ?",
+          "solution_markdown": "1. Pixels par cm : $\\frac{300}{2{,}54} \\approx 118{,}11$.\n2. Largeur : $21 \\times 118{,}11 \\approx 2\\,480{,}3$, soit 2 480 pixels. Détail : $\\frac{21 \\times 300}{2{,}54} = \\frac{6\\,300}{2{,}54} \\approx 2\\,480{,}3$.\n3. Hauteur : $\\frac{29{,}7 \\times 300}{2{,}54} = \\frac{8\\,910}{2{,}54} \\approx 3\\,507{,}9$, soit 3 508 pixels.\n4. Définition : environ $2\\,480 \\times 3\\,508$ pixels."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une image de 1 800 × 1 200 pixels doit être imprimée à 300 dpi. Quelles dimensions en centimètres obtient-on ? Que se passe-t-il si on l'imprime à 150 dpi ?",
+          "solution_markdown": "1. À 300 dpi : largeur $\\frac{1\\,800}{300} = 6$ pouces, hauteur $\\frac{1\\,200}{300} = 4$ pouces.\n2. Conversion : $6 \\times 2{,}54 = 15{,}24$ cm et $4 \\times 2{,}54 = 10{,}16$ cm. L'image mesure 15,24 cm × 10,16 cm.\n3. À 150 dpi : $\\frac{1\\,800}{150} = 12$ pouces et $\\frac{1\\,200}{150} = 8$ pouces, soit 30,48 cm × 20,32 cm.\n4. Les pixels sont les mêmes, donc l'image imprimée est deux fois plus grande dans chaque direction, mais chaque pouce contient moitié moins de pixels : elle est moins fine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La résolution se mesure en pixels par pouce ; la définition est un nombre de pixels en largeur et en hauteur.",
+        "Les dimensions en centimètres se convertissent en pouces avec 1 pouce = 2,54 cm.",
+        "Pixels = dimension en pouces × résolution, pour la largeur comme pour la hauteur.",
+        "Passer par les pixels par centimètre simplifie les calculs quand la résolution est un multiple de 2,54.",
+        "Au Probatoire, c'est la première étape d'un calcul de taille d'image : une erreur ici fausse toute la suite."
+      ]
+    }
+  ]
+}

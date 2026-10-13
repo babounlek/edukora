@@ -1,0 +1,143 @@
+{
+  "cours_id": "cours-identifier-la-cle-primaire-d-une-table-et-donner-son-role-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Identifier la clé primaire d'une table et donner son rôle",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Bases de données",
+    "duree_estimee_min": 20,
+    "tags": [
+      "clé primaire",
+      "table",
+      "identifiant",
+      "unicité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex2-qB.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un lycée de 1 000 élèves, plusieurs s'appellent Mballa, plusieurs ont 17 ans. Comment l'administration retrouve-t-elle sans erreur un élève précis ? Grâce à un numéro qui n'appartient qu'à lui. En base de données, ce numéro joue le rôle de clé primaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un champ et un enregistrement",
+        "Comprendre ce qu'est une valeur unique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer la clé primaire et dire à quoi elle sert",
+      "contenu_markdown": "La **clé primaire** est le champ (ou le groupe de champs) dont la valeur identifie **de façon unique** chaque enregistrement.\n\nPour la repérer :\n\n1. Liste les colonnes.\n2. Pour chacune, demande-toi si deux enregistrements différents pourraient avoir la même valeur, aujourd'hui ou plus tard.\n3. Retiens la colonne dont la valeur est toujours unique et jamais vide : numéro de carte d'identité, matricule, code produit.\n\n**Rôle** : identifier sans ambiguïté chaque enregistrement et permettre de relier la table à d'autres (clé étrangère).",
+      "variantes": [
+        {
+          "nom": "Clé primaire composée",
+          "quand_utiliser": "Quand aucun champ seul n'est unique mais qu'un couple de champs l'est",
+          "contenu_markdown": "Dans une table de notes (matricule, code de matière, valeur), un élève a une note par matière : le couple (matricule, code de matière) identifie chaque ligne. La clé est dite composée."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Table des clients : NumCNI, Nom, Age, Sexe. Identifier la colonne de la clé primaire et donner son rôle (question B.3 de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les colonnes candidates",
+          "justification": "On examine chaque champ à tour de rôle.",
+          "resultat_markdown": "NumCNI, Nom, Age, Sexe."
+        },
+        {
+          "numero": 2,
+          "action": "Éliminer Sexe",
+          "justification": "Il n'a que deux valeurs : il se répète forcément.",
+          "resultat_markdown": "Sexe écarté."
+        },
+        {
+          "numero": 3,
+          "action": "Éliminer Age et Nom",
+          "justification": "Deux clients peuvent avoir le même âge ou le même nom, et l'âge change chaque année. Dans l'extrait ils sont distincts, mais rien ne le garantit pour la suite.",
+          "resultat_markdown": "Age et Nom écartés."
+        },
+        {
+          "numero": 4,
+          "action": "Retenir NumCNI",
+          "justification": "Chaque personne a un seul numéro de carte d'identité, différent des autres.",
+          "resultat_markdown": "Clé primaire : NumCNI."
+        },
+        {
+          "numero": 5,
+          "action": "Donner le rôle",
+          "justification": "On finit par ce qu'elle permet.",
+          "resultat_markdown": "Identifier chaque client de façon unique et relier la table à d'autres."
+        }
+      ],
+      "conclusion_markdown": "La clé primaire est la colonne NumCNI : elle identifie de façon unique chaque client."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir Nom parce que tous les noms sont différents dans l'extrait.",
+          "pourquoi_faux": "Deux clients peuvent être homonymes. La clé doit être unique pour toutes les données possibles, pas seulement celles qu'on voit.",
+          "correction_markdown": "Pose-toi la question : « Pourrait-on un jour avoir deux fois cette valeur ? »"
+        },
+        {
+          "erreur_markdown": "Oublier de donner le rôle.",
+          "pourquoi_faux": "La question comporte deux parties : identifier la colonne et donner son rôle. Sans le rôle, on perd la moitié du point.",
+          "correction_markdown": "Termine avec les mots « identifie de façon unique chaque enregistrement »."
+        },
+        {
+          "erreur_markdown": "Choisir un champ qui peut changer, comme l'âge.",
+          "pourquoi_faux": "La clé primaire doit rester stable. L'âge change chaque année et n'est pas unique.",
+          "correction_markdown": "Préfère un identifiant stable : numéro, matricule, code."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans la table Élève (Matricule, Nom, Classe), quelle colonne est la clé primaire ? Pourquoi ?",
+          "solution_markdown": "Matricule. Chaque élève reçoit un matricule différent, alors que plusieurs élèves peuvent porter le même nom ou être dans la même classe."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Vrai ou faux : « Une clé primaire peut être vide pour certains enregistrements. » Justifie.",
+          "solution_markdown": "Faux. Une valeur vide ne permettrait pas d'identifier l'enregistrement. La clé primaire est donc toujours renseignée, en plus d'être unique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Table Note (Matricule, CodeMatiere, Valeur) : aucun champ seul n'est unique. Y a-t-il une clé primaire ? Laquelle ?",
+          "solution_markdown": "1. Matricule se répète (un élève a plusieurs notes) et CodeMatiere se répète (une matière a plusieurs notes) : aucun des deux seul n'est unique.\n2. Un élève a une seule note par matière : le couple (Matricule, CodeMatiere) est unique pour chaque ligne.\n3. La clé primaire est donc composée : (Matricule, CodeMatiere)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La clé primaire identifie de façon unique chaque enregistrement.",
+        "Sa valeur est unique, jamais vide et stable dans le temps.",
+        "Pour la repérer, écarte les colonnes dont une valeur peut se répéter.",
+        "Elle sert aussi à relier une table à d'autres par une clé étrangère.",
+        "Au Probatoire, donne toujours la colonne et son rôle : les deux parties sont notées."
+      ]
+    }
+  ]
+}

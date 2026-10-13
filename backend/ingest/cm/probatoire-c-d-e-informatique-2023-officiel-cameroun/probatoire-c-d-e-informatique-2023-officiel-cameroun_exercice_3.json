@@ -1,0 +1,239 @@
+{
+  "epreuve_source": "probatoire-c-d-e-informatique-2023-officiel-cameroun.html",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2023,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": 8,
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-c-d-e-informatique-2023-officiel-cameroun_exercice_3_fig_1.png",
+      "page_source": null,
+      "type": "document",
+      "legende": "Capture d'un éditeur de code montrant 19 lignes de HTML : titre « Lycée de X », script JavaScript avec alert, formulaire (Password, Text, deux boutons Radio de NAME Sexe, boutons Submit « Envoyer » et Reset « Effacer »)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "probatoire-c-d-e-informatique-2023-officiel-cameroun_exercice_3_fig_2.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Aperçu attendu dans un navigateur des lignes 8 à 17 : texte d'en-tête, champ mot de passe masqué, champ texte, deux boutons radio sur la même ligne, boutons Envoyer et Effacer",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice III : Algorithmique et programmation (8 pts)**",
+  "questions": [
+    {
+      "numero": "A.1",
+      "enonce_markdown": "**Partie A (4 pts)**\n\nOn considère l'algorithme suivant :\n\n```\n1 Algorithme Calcul\n2 Variable X, n, i : Entier;\n3 Début\n4   X ← 1 ;\n5   Ecrire (\"Entrez n : \") ;\n6   lire (n);\n7   Pour i allant de 1 à n faire\n8     X ← X*i ;\n9   FinPour\n10  Ecrire (\"Le résultat de ce calcul est X= X\") ;\n11 Fin\n```\n\n**1.** Identifier dans cet algorithme une instruction de saisie et une instruction d'affectation. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne instruction de saisie lit une valeur fournie par l'utilisateur et la range dans une variable (verbe `lire`) ; une instruction d'affectation range dans une variable le résultat d'une expression (flèche ←) ; une instruction d'affichage communique un résultat (verbe `Ecrire`).\n\n- **Instruction de saisie** : `lire (n);` à la ligne 6. La valeur tapée au clavier est rangée dans la variable `n`.\n- **Instruction d'affectation** : `X ← 1 ;` à la ligne 4 (la valeur 1 est rangée dans `X`). La ligne 8, `X ← X*i ;`, est aussi une affectation.\n\nLes lignes 5 et 10 (`Ecrire`) sont des instructions d'affichage, pas des saisies.\n\n### Piège à éviter\nNe confonds pas `Ecrire` et `lire` : le premier affiche à l'écran (sortie), le second récupère une valeur au clavier (entrée). Le mot « saisie » correspond à `lire`.\n\n### Conseil\nDonne le numéro de ligne avec l'instruction recopiée : cela prouve que tu as bien repéré l'instruction demandée. Une seule instruction par type suffit, mais deux affectations ne font pas perdre le point.",
+      "themes": [
+        "algorithmique",
+        "instruction de saisie",
+        "affectation",
+        "variable"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qA.1-1",
+          "competence": "Distinguer instruction de saisie et instruction d'affectation",
+          "contenu_markdown": "Une instruction de saisie lit une valeur fournie par l'utilisateur et la range dans une variable (verbe `lire`) ; une instruction d'affectation range dans une variable le résultat d'une expression (flèche ←) ; une instruction d'affichage communique un résultat (verbe `Ecrire`).",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-instruction-de-saisie-et-instruction-d-affectation-1ere-c-d-e-2023"
+        }
+      ]
+    },
+    {
+      "numero": "A.2",
+      "enonce_markdown": "**2.** Exécuter cet algorithme pour $n=3$ et en déduire ce qu'il fait. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour exécuter un algorithme à la main, construis un tableau de suivi avec une colonne par variable et une ligne par étape, mets à jour les valeurs dans l'ordre exact des instructions, puis interprète le résultat final en le comparant à une formule connue.\n\n**Initialisation** : ligne 4, `X` prend la valeur 1. Ligne 6, `n` reçoit la valeur 3 saisie.\n\n**Boucle** `Pour i allant de 1 à 3` : trois tours.\n\n| Tour | Valeur de `i` | Calcul `X ← X*i` | Valeur de `X` |\n|---|---|---|---|\n| départ | | | 1 |\n| 1 | 1 | $1 \\times 1$ | 1 |\n| 2 | 2 | $1 \\times 2$ | 2 |\n| 3 | 3 | $2 \\times 3$ | 6 |\n\nÀ la fin de la boucle, $X = 6$.\n\n**Ce que fait l'algorithme** : il calcule le produit $1 \\times 2 \\times \\dots \\times n$, c'est-à-dire la **factorielle** de $n$ : $X = n!$. Pour $n=3$, $3! = 1 \\times 2 \\times 3 = 6$, ce qui confirme le tableau.\n\nRemarque sur la ligne 10 : le texte `\"Le résultat de ce calcul est X= X\"` est entièrement entre guillemets, donc pris à la lettre l'algorithme afficherait ce texte tel quel, sans la valeur 6. L'intention de l'auteur est d'afficher la valeur de `X`.\n\n### Piège à éviter\nN'oublie pas l'initialisation `X ← 1` : avec `X = 0` au départ, tous les produits seraient nuls. Attention aussi à la borne : `de 1 à n` inclut `n`, donc la boucle fait bien trois tours pour $n=3$.\n\n### Conseil\nPour « déduire ce que fait l'algorithme », teste une deuxième valeur (par exemple $n=4$ qui donne 24) et compare avec une formule que tu connais : un résultat qui coïncide avec $n!$ valide ton hypothèse.",
+      "themes": [
+        "algorithmique",
+        "trace d'exécution",
+        "boucle Pour",
+        "factorielle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qA.2-1",
+          "competence": "Exécuter un algorithme à la main avec un tableau de suivi",
+          "contenu_markdown": "Pour exécuter un algorithme à la main, construis un tableau de suivi avec une colonne par variable et une ligne par étape, mets à jour les valeurs dans l'ordre exact des instructions, puis interprète le résultat final en le comparant à une formule connue.",
+          "cours_genere": true,
+          "cours_id": "cours-executer-un-algorithme-a-la-main-avec-un-tableau-de-suivi-1ere-c-d-e-2023"
+        }
+      ]
+    },
+    {
+      "numero": "A.3",
+      "enonce_markdown": "**3.** Traduire en langage C les lignes 6 à 10 de cet algorithme. *[2 pts]*\n\n```\n6   lire (n);\n7   Pour i allant de 1 à n faire\n8     X ← X*i ;\n9   FinPour\n10  Ecrire (\"Le résultat de ce calcul est X= X\") ;\n```",
+      "corrige_markdown": "### Rappel de méthode\nPour traduire un algorithme en langage C, traduis instruction par instruction : `lire` devient `scanf` avec le code de format du type et l'adresse de la variable (`&`), la boucle `Pour` devient `for(initialisation; condition; incrément)`, l'affectation devient `=` et `Ecrire` devient `printf` avec un code de format pour chaque valeur à afficher.\n\nTraduction ligne par ligne :\n\n| Ligne | Algorithme | Langage C |\n|---|---|---|\n| 6 | `lire (n);` | `scanf(\"%d\", &n);` |\n| 7 et 9 | `Pour i allant de 1 à n faire` ... `FinPour` | `for (i = 1; i <= n; i++) { ... }` |\n| 8 | `X ← X*i ;` | `X = X * i;` |\n| 10 | `Ecrire (...)` | `printf(\"Le résultat de ce calcul est X= %d\", X);` |\n\nCode complet des lignes 6 à 10 :\n\n```c\nscanf(\"%d\", &n);\nfor (i = 1; i <= n; i++)\n{\n    X = X * i;\n}\nprintf(\"Le résultat de ce calcul est X= %d\", X);\n```\n\nPour que le programme compile, il faut aussi (lignes 1 à 4, hors du périmètre demandé) : `#include <stdio.h>`, `int main()`, `int X, n, i;` et `X = 1;` avant la boucle.\n\nRemarque : avec le type `int` sur 32 bits, le résultat déborde dès $n = 13$, car $13! = 6\\,227\\,020\\,800$ dépasse $2\\,147\\,483\\,647$.\n\n### Piège à éviter\nTrois oublis fréquents : le `&` devant `n` dans `scanf` (sans lui le programme plante), le code de format `%d` dans `printf` (si tu écris `X` entre les guillemets, le programme affiche la lettre X et non la valeur), et la confusion entre `=` (affectation) et `==` (comparaison). La flèche `←` n'existe pas en C.\n\n### Conseil\nFais la traduction dans l'ordre des lignes et termine chaque instruction par un point-virgule. Écris `i <= n` (et non `i < n`) pour que la boucle aille jusqu'à n inclus, comme `de 1 à n`.",
+      "themes": [
+        "langage C",
+        "traduction d'un algorithme",
+        "scanf et printf",
+        "boucle for"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qA.3-1",
+          "competence": "Traduire un algorithme en langage C",
+          "contenu_markdown": "Pour traduire un algorithme en langage C, traduis instruction par instruction : `lire` devient `scanf` avec le code de format du type et l'adresse de la variable (`&`), la boucle `Pour` devient `for(initialisation; condition; incrément)`, l'affectation devient `=` et `Ecrire` devient `printf` avec un code de format pour chaque valeur à afficher.",
+          "cours_genere": true,
+          "cours_id": "cours-traduire-un-algorithme-en-langage-c-1ere-c-d-e-2023"
+        }
+      ]
+    },
+    {
+      "numero": "B.1",
+      "enonce_markdown": "**Partie B (4 pts)**\n\nUn élève a écrit le code HTML suivant :\n\n![fig-1](probatoire-c-d-e-informatique-2023-officiel-cameroun_exercice_3_fig_1.png)\n\n**1.** Donner deux exemples de logiciels qui permettent de saisir ce code. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn fichier HTML est un simple fichier texte : pour le saisir, il suffit d'un éditeur de texte brut ou d'un éditeur de code, jamais d'un traitement de texte qui ajoute sa propre mise en forme ; cite deux logiciels réels de cette famille.\n\nDeux logiciels qui permettent de saisir ce code :\n\n1. **Notepad++**, l'éditeur dont la capture d'écran porte la numérotation des lignes et le repliement des blocs.\n2. **Bloc-notes** (Notepad) de Windows.\n\nAutres réponses acceptées : Visual Studio Code, Sublime Text, Brackets, Atom.\n\n### Piège à éviter\nMicrosoft Word n'est pas adapté : il enregistre dans un format propre (.docx) et ajoute de la mise en forme qui rend le fichier illisible pour un navigateur. Un navigateur (Chrome, Firefox) sert à visualiser le code, pas à le saisir.\n\n### Conseil\nCite un éditeur très simple (Bloc-notes) et un éditeur de code (Notepad++ ou Visual Studio Code) : deux logiciels réels, correctement orthographiés, suffisent pour le point.",
+      "themes": [
+        "HTML",
+        "éditeur de texte",
+        "développement web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qB.1-1",
+          "competence": "Choisir un éditeur de texte pour écrire du code HTML",
+          "contenu_markdown": "Un fichier HTML est un simple fichier texte : pour le saisir, il suffit d'un éditeur de texte brut ou d'un éditeur de code, jamais d'un traitement de texte qui ajoute sa propre mise en forme ; cite deux logiciels réels de cette famille.",
+          "cours_genere": true,
+          "cours_id": "cours-choisir-un-editeur-de-texte-pour-ecrire-du-code-html-1ere-c-d-e-2023"
+        }
+      ]
+    },
+    {
+      "numero": "B.2",
+      "enonce_markdown": "**2.** Citer deux exemples de logiciels permettant de visualiser le résultat de ce code. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour répondre à une question sur un logiciel qui visualise un code, identifie d'abord le type de fichier à afficher et le rôle qui lit ce code, puis cite deux logiciels de ce rôle, en écartant ceux qui ont une autre fonction (moteur de recherche, éditeur).\n\nUne page HTML est interprétée et affichée par un navigateur web, qui lit les balises et construit l'aperçu ; pour visualiser un code HTML, cite deux navigateurs, et non un moteur de recherche ni un éditeur.\n\nDeux logiciels qui permettent de visualiser le résultat de ce code (des navigateurs web) :\n\n1. **Google Chrome**\n2. **Mozilla Firefox**\n\nAutres réponses acceptées : Microsoft Edge, Opera, Safari.\n\n### Piège à éviter\nGoogle n'est pas un navigateur mais un moteur de recherche ; Internet non plus. Ne cite pas non plus un éditeur comme Notepad++ : il affiche le code source, pas son résultat.\n\n### Conseil\nPour visualiser, il suffit d'enregistrer le fichier avec l'extension `.html` puis de l'ouvrir avec un navigateur par double clic : tu peux le préciser en une demi-ligne.",
+      "themes": [
+        "HTML",
+        "navigateur web",
+        "développement web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qB.2-1",
+          "competence": "Choisir un navigateur pour visualiser une page web",
+          "contenu_markdown": "Pour répondre à une question sur un logiciel qui visualise un code, identifie d'abord le type de fichier à afficher et le rôle qui lit ce code, puis cite deux logiciels de ce rôle, en écartant ceux qui ont une autre fonction (moteur de recherche, éditeur).",
+          "cours_genere": true,
+          "cours_id": "cours-choisir-un-navigateur-pour-visualiser-une-page-web-1ere-c-d-e-2023"
+        }
+      ]
+    },
+    {
+      "numero": "B.3",
+      "enonce_markdown": "**3.** Expliquer l'effet produit par la balise de la ligne 10. *[1 pt]*\n\n![fig-1](probatoire-c-d-e-informatique-2023-officiel-cameroun_exercice_3_fig_1.png)",
+      "corrige_markdown": "### Rappel de méthode\nPour expliquer l'effet d'une balise HTML, identifie son nom, ses attributs et leur valeur, puis décris ce que l'utilisateur voit et peut faire dans le navigateur ; pour la balise INPUT, c'est l'attribut TYPE qui décide de l'aspect et du comportement du champ.\n\nLa ligne 10 est `Non : <INPUT TYPE= \"Password\"> <BR>`.\n\n- **`<INPUT TYPE=\"Password\">`** insère dans le formulaire un champ de saisie d'une ligne de type **mot de passe** : les caractères tapés par l'utilisateur sont masqués à l'écran (remplacés par des points ou des astérisques). La balise `INPUT` n'a pas de balise fermante.\n- **`<BR>`** provoque un retour à la ligne : le champ suivant (Prénom) s'affiche en dessous.\n\nRemarque : le libellé « Non : » (probablement « Nom ») est associé à un champ de type mot de passe, donc le nom saisi serait masqué. Pour un nom, on utiliserait `TYPE=\"Text\"`, comme à la ligne 11.\n\n### Piège à éviter\nNe dis pas que la balise « crée un mot de passe » ni qu'elle « cache le champ » : le champ est visible, c'est son contenu qui est masqué pendant la frappe. Ne confonds pas non plus avec `TYPE=\"Text\"`, dont la saisie reste lisible.\n\n### Conseil\nStructure ta réponse en trois éléments : la balise (INPUT), l'attribut qui décide (TYPE=\"Password\"), l'effet visible (caractères masqués). Mentionne `<BR>` en une phrase, au cas où le sujet attendait la balise de saut de ligne.",
+      "themes": [
+        "HTML",
+        "formulaire HTML",
+        "balise INPUT",
+        "champ de saisie"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qB.3-1",
+          "competence": "Expliquer l'effet d'une balise HTML",
+          "contenu_markdown": "Pour expliquer l'effet d'une balise HTML, identifie son nom, ses attributs et leur valeur, puis décris ce que l'utilisateur voit et peut faire dans le navigateur ; pour la balise INPUT, c'est l'attribut TYPE qui décide de l'aspect et du comportement du champ.",
+          "cours_genere": true,
+          "cours_id": "cours-expliquer-l-effet-d-une-balise-html-1ere-c-d-e-2023"
+        }
+      ]
+    },
+    {
+      "numero": "B.4",
+      "enonce_markdown": "**4.** Reproduire sur ta feuille de composition l'aperçu du résultat produit par les lignes 8 à 17. *[1 pt]*\n\n![fig-1](probatoire-c-d-e-informatique-2023-officiel-cameroun_exercice_3_fig_1.png)",
+      "corrige_markdown": "### Rappel de méthode\nPour prévoir l'aperçu d'un code HTML, lis les balises de haut en bas : le navigateur ignore les retours à la ligne du fichier source et ne passe à la ligne que sur une balise BR ou sur un élément de bloc, et chaque balise de formulaire se traduit en champ, case, bouton radio ou bouton.\n\nLes lignes 8 et 17 (`<FORM>` et `</FORM>`) délimitent le formulaire et n'ont aucun aspect visible. Lecture ligne par ligne :\n\n| Ligne(s) | Code | Aperçu |\n|---|---|---|\n| 9 | texte puis `<BR>` | le texte « Infornations sur les éléves », puis retour à la ligne |\n| 10 | `INPUT TYPE=\"Password\"` | « Non : » suivi d'un champ de saisie à caractères masqués, puis retour à la ligne |\n| 11 | `INPUT TYPE=\"Text\"` | « Prénon : » suivi d'un champ de saisie ordinaire, puis retour à la ligne |\n| 12 et 13 | deux `INPUT TYPE=\"Radio\"` de même `NAME=\"Sexe\"` | « Sexe : » suivi de deux boutons radio « Masculin » et « Féminin » **sur la même ligne** (le seul `<BR>` est après Féminin), aucun coché, un seul choix possible |\n| 14 | ligne vide | aucun effet |\n| 15 et 16 | `Submit` « Envoyer » et `Reset` « Effacer » | deux boutons côte à côte, sur la même ligne |\n\nAperçu à reproduire (le texte est reproduit tel qu'il est écrit dans le code, fautes de frappe comprises) :\n\n![fig-2](probatoire-c-d-e-informatique-2023-officiel-cameroun_exercice_3_fig_2.png)\n\nLes lignes 3 et 4 (hors de l'intervalle demandé) afficheraient une boîte de dialogue « Je dois avoir mon Probatoire » à l'ouverture de la page, et le titre « Lycée de X » apparaîtrait dans l'onglet du navigateur.\n\n### Piège à éviter\nNe dessine pas « Masculin » et « Féminin » l'un sous l'autre sous prétexte qu'ils sont sur deux lignes du code : un retour à la ligne dans le fichier source n'est pas un retour à la ligne à l'écran, seul `<BR>` en produit un. N'oublie pas non plus de masquer la saisie du premier champ et de laisser les boutons radio décochés.\n\n### Conseil\nDessine un cadre, puis reprends les lignes dans l'ordre : texte, deux champs, deux boutons radio, deux boutons. Écris le libellé exact des boutons (Envoyer, Effacer) : ils viennent de l'attribut VALUE du code.",
+      "themes": [
+        "HTML",
+        "formulaire HTML",
+        "balise INPUT",
+        "aperçu d'une page web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qB.4-1",
+          "competence": "Prévoir l'aperçu d'un formulaire HTML dans un navigateur",
+          "contenu_markdown": "Pour prévoir l'aperçu d'un code HTML, lis les balises de haut en bas : le navigateur ignore les retours à la ligne du fichier source et ne passe à la ligne que sur une balise BR ou sur un élément de bloc, et chaque balise de formulaire se traduit en champ, case, bouton radio ou bouton.",
+          "cours_genere": true,
+          "cours_id": "cours-prevoir-l-apercu-d-un-formulaire-html-dans-un-navigateur-1ere-c-d-e-2023"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "algorithme",
+    "factorielle",
+    "saisie",
+    "affectation",
+    "langage C",
+    "scanf",
+    "printf",
+    "HTML",
+    "formulaire",
+    "balise INPUT",
+    "éditeur de texte",
+    "navigateur"
+  ],
+  "incertitudes": [
+    "Ligne 10 de l'algorithme : le texte « Le résultat de ce calcul est X= X » est entièrement entre guillemets, donc pris à la lettre il n'affiche pas la valeur de X. Le corrigé exécute l'algorithme sur n = 3 (X = 6) en interprétant l'intention de l'auteur (afficher la valeur de X), et traduit la ligne 10 avec %d.",
+    "Code HTML : l'énoncé contient des fautes de frappe (« Infornations », « éléves », « Non », « Prénon », attribut « lanquage ») ; l'aperçu reproduit les libellés tels qu'imprimés. « La balise de la ligne 10 » est interprétée comme INPUT TYPE=\"Password\" (la balise BR de la même ligne est aussi commentée).",
+    "Question B.4 : l'aperçu a été reconstitué par raisonnement sur les balises (aucune capture de résultat fournie par le sujet)."
+  ],
+  "statut": "brouillon"
+}

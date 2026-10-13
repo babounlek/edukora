@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-prevoir-l-apercu-d-un-formulaire-html-dans-un-navigateur-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Prévoir l'aperçu d'un formulaire HTML dans un navigateur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Programmation web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "formulaire HTML",
+      "aperçu",
+      "balise BR",
+      "retour à la ligne"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qB.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un navigateur n'affiche pas le code comme il est écrit : il l'interprète. Le même fichier peut tenir sur dix lignes et s'afficher sur trois, ou l'inverse. Savoir prévoir l'aperçu d'un code HTML, c'est savoir ce que le navigateur fera de chaque balise."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises INPUT, FORM et BR",
+        "Savoir lire un code HTML ligne par ligne"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire le code comme un navigateur",
+      "contenu_markdown": "Pour prévoir l'aperçu :\n\n1. Lis le code de haut en bas.\n2. Ignore les retours à la ligne et les espaces multiples du fichier source : pour le navigateur, ce sont de simples espaces.\n3. Ne passe à la ligne que sur une balise `<BR>` ou sur un élément de bloc (titre, paragraphe).\n4. Traduis chaque balise : `INPUT` `Text` en zone de saisie, `Password` en zone de saisie masquée, `Radio` en bouton rond, `Submit` et `Reset` en boutons.\n5. Les balises `<FORM>` et `</FORM>` délimitent le formulaire et n'ont aucun aspect visible.\n\nPour dessiner, trace un cadre de page et reprends les éléments dans l'ordre, ligne après ligne.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reproduire l'aperçu du résultat produit par les lignes 8 à 17 du code HTML de l'épreuve (question B.4).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter les balises invisibles",
+          "justification": "Les lignes 8 et 17 (`FORM`) délimitent le formulaire sans rien afficher.",
+          "resultat_markdown": "Aucun élément visible pour 8 et 17."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire les lignes 9 à 11",
+          "justification": "Un texte suivi de BR, puis deux champs précédés de leur libellé.",
+          "resultat_markdown": "Texte, champ masqué « Non : », champ texte « Prénon : », chacun sur sa ligne."
+        },
+        {
+          "numero": 3,
+          "action": "Traduire les lignes 12 et 13",
+          "justification": "Le seul BR est après Féminin : les deux boutons radio restent sur la même ligne.",
+          "resultat_markdown": "« Sexe : » puis ○ Masculin ○ Féminin, aucun coché."
+        },
+        {
+          "numero": 4,
+          "action": "Traduire les lignes 15 et 16",
+          "justification": "Aucun BR entre les deux boutons : ils sont côte à côte.",
+          "resultat_markdown": "Boutons [Envoyer] et [Effacer] sur une même ligne."
+        },
+        {
+          "numero": 5,
+          "action": "Dessiner",
+          "justification": "On reprend les éléments dans l'ordre, de haut en bas.",
+          "resultat_markdown": "Cadre de page avec cinq lignes : texte, Non, Prénon, Sexe, boutons."
+        }
+      ],
+      "conclusion_markdown": "L'aperçu comporte cinq lignes : le texte, le champ masqué, le champ texte, les deux boutons radio côte à côte, puis les boutons Envoyer et Effacer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner Masculin et Féminin l'un sous l'autre.",
+          "pourquoi_faux": "Ils sont sur deux lignes du fichier, mais le navigateur ignore ce retour à la ligne : seul `<BR>` en produit un.",
+          "correction_markdown": "Compte les `<BR>` pour savoir où changer de ligne."
+        },
+        {
+          "erreur_markdown": "Dessiner le champ du mot de passe avec des lettres visibles.",
+          "pourquoi_faux": "Le type `Password` masque les caractères saisis.",
+          "correction_markdown": "Représente le champ avec des points ou laisse-le vide, en précisant « masqué »."
+        },
+        {
+          "erreur_markdown": "Oublier les libellés des boutons ou les remplacer.",
+          "pourquoi_faux": "Les textes « Envoyer » et « Effacer » viennent de l'attribut `VALUE`. Les omettre rend l'aperçu incomplet.",
+          "correction_markdown": "Reprends les valeurs de `VALUE` telles quelles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décris l'aperçu de : `Bonjour <BR> Au revoir`.",
+          "solution_markdown": "Le navigateur affiche « Bonjour » sur une première ligne, puis « Au revoir » sur la ligne suivante, car `<BR>` provoque le retour à la ligne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décris l'aperçu de : `Nom : <INPUT TYPE=\"Text\"> Age : <INPUT TYPE=\"Text\"> <BR> <INPUT TYPE=\"Submit\" VALUE=\"OK\">`.",
+          "solution_markdown": "1. Première ligne : « Nom : », une zone de saisie, « Age : », une autre zone de saisie, tous sur la même ligne car aucun `<BR>` ne les sépare.\n2. Après le `<BR>`, deuxième ligne : un bouton portant l'étiquette « OK »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève écrit chaque champ sur une ligne de son fichier sans mettre de `<BR>`, et constate que tout s'affiche sur une seule ligne. Explique le phénomène et donne deux remèdes.",
+          "solution_markdown": "1. Le navigateur traite les retours à la ligne du fichier source comme de simples espaces : il place les éléments les uns à la suite des autres tant qu'il y a de la place.\n2. Remède 1 : ajouter `<BR>` à la fin de chaque ligne pour forcer le retour à la ligne.\n3. Remède 2 : placer chaque champ dans son propre paragraphe `<P> ... </P>` ou dans un bloc distinct."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le navigateur ignore les retours à la ligne du fichier source.",
+        "Seul `<BR>` (ou un élément de bloc) fait passer à la ligne à l'écran.",
+        "`Password` masque la saisie, `Radio` donne un bouton rond, `Submit` et `Reset` des boutons.",
+        "Les balises `FORM` ne s'affichent pas : elles délimitent le formulaire.",
+        "Au Probatoire, reproduis l'aperçu en reprenant les éléments dans l'ordre et en comptant les `<BR>`."
+      ]
+    }
+  ]
+}

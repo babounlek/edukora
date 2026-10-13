@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-saisie-affichage-et-initialisation-en-langage-c-lire-scanf-printf-et-variables-initialisees-admin13",
+  "meta": {
+    "titre": "Saisie, affichage et initialisation en langage C : lire, scanf, printf et variables initialisées",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique et langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "instruction de saisie",
+      "scanf et printf",
+      "traduction d'un algorithme",
+      "initialisation d'une variable",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "epreuve_source": "probatoire-c-d-e-informatique-2023-officiel-cameroun.html",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qA.3-1-admin13",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme qui ne demande rien à l'utilisateur et n'affiche rien ne sert à personne. Entre l'algorithme écrit sur ta feuille et le programme qui tourne sur l'ordinateur, trois mots font toute la différence : lire devient scanf, Ecrire devient printf, et une variable doit recevoir une première valeur avant d'être utilisée. Ces points reviennent à chaque épreuve d'algorithmique du probatoire, souvent sous la forme « traduire en langage C »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'un algorithme : en-tête, déclaration des variables, Début, instructions, Fin",
+        "Types de base : Entier et Réel",
+        "Notion de variable : un nom qui désigne une case de la mémoire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire saisie, affichage et initialisation en langage C",
+      "contenu_markdown": "**Trois instructions à ne pas confondre.** La **saisie** (`lire`) range dans une variable une valeur tapée au clavier. L'**affectation** (`←`) range dans une variable le résultat d'une expression. L'**affichage** (`Ecrire`) envoie un message ou une valeur à l'écran.\n\n**Initialisation.** Une variable est *initialisée* quand elle reçoit sa première valeur par une affectation, avant d'être utilisée : un total ou un compteur démarre à 0, un produit démarre à 1. En C, une variable seulement déclarée contient une valeur quelconque laissée en mémoire : l'utiliser sans l'avoir initialisée donne un résultat faux.\n\n**Table de traduction.**\n\n| Algorithme | Langage C |\n|---|---|\n| `Variable a, b : Entier` | `int a, b;` |\n| `Variable r : Réel` | `float r;` |\n| `s ← 0` | `s = 0;` |\n| `lire (a)` | `scanf(\"%d\", &a);` |\n| `lire (r)` | `scanf(\"%f\", &r);` |\n| `Ecrire (\"Bonjour\")` | `printf(\"Bonjour\");` |\n| `Ecrire (\"Somme = \", s)` | `printf(\"Somme = %d\", s);` |\n\n**Codes de format.** `%d` pour un entier, `%f` pour un réel, `%c` pour un caractère. Dans `scanf`, le `&` devant la variable est obligatoire (adresse de la variable). Il faut `#include <stdio.h>` en tête du programme, un point-virgule à la fin de chaque instruction, et le point (et non la virgule) comme séparateur décimal : `3.14`.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Plusieurs valeurs en une seule saisie",
+          "quand_utiliser": "Quand l'algorithme lit deux variables à la suite",
+          "contenu_markdown": "On peut écrire `scanf(\"%d %d\", &a, &b);` : un code de format et un `&` par variable, dans le même ordre."
+        },
+        {
+          "nom": "Affichage d'un réel avec décimales choisies",
+          "quand_utiliser": "Quand le résultat est un réel et que l'énoncé impose le nombre de décimales",
+          "contenu_markdown": "`printf(\"Moyenne = %.2f\", m);` affiche deux chiffres après la virgule. Ajoute `\\n` dans le texte pour passer à la ligne."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C l'algorithme suivant, puis donner l'affichage pour a = 7 et b = 5.\n\n```\nAlgorithme Somme\nVariable a, b, s : Entier ;\nDébut\n  s ← 0 ;\n  Ecrire (\"Entrez deux nombres : \") ;\n  lire (a) ;\n  lire (b) ;\n  s ← a + b ;\n  Ecrire (\"La somme est \", s) ;\nFin\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire l'en-tête et les déclarations",
+          "justification": "Le programme C a besoin de la bibliothèque d'entrées-sorties et d'une fonction principale ; les trois variables sont des entiers.",
+          "resultat_markdown": "`#include <stdio.h>`, `int main()` et `int a, b, s;`"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire l'initialisation",
+          "justification": "`s ← 0` est une affectation faite avant l'utilisation de `s`.",
+          "resultat_markdown": "`s = 0;`"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire l'affichage et les saisies",
+          "justification": "`Ecrire` du texte seul devient `printf` sans code de format ; chaque `lire` devient `scanf` avec `%d` et `&`.",
+          "resultat_markdown": "`printf(\"Entrez deux nombres : \");` puis `scanf(\"%d\", &a);` et `scanf(\"%d\", &b);`"
+        },
+        {
+          "numero": 4,
+          "action": "Traduire l'affectation et l'affichage du résultat",
+          "justification": "Le résultat est un entier : le texte est suivi de `%d`, et la variable `s` est donnée après la virgule.",
+          "resultat_markdown": "`s = a + b;` puis `printf(\"La somme est %d\", s);`"
+        },
+        {
+          "numero": 5,
+          "action": "Exécuter avec a = 7 et b = 5",
+          "justification": "On remplace les variables par leurs valeurs : s = 7 + 5.",
+          "resultat_markdown": "L'écran affiche : La somme est 12"
+        }
+      ],
+      "conclusion_markdown": "Programme complet :\n\n```c\n#include <stdio.h>\nint main()\n{\n    int a, b, s;\n    s = 0;\n    printf(\"Entrez deux nombres : \");\n    scanf(\"%d\", &a);\n    scanf(\"%d\", &b);\n    s = a + b;\n    printf(\"La somme est %d\", s);\n    return 0;\n}\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `scanf(\"%d\", a);` sans le `&`.",
+          "pourquoi_faux": "`scanf` a besoin de l'adresse de la variable pour y ranger la valeur. Sans `&`, le programme plante ou écrit n'importe où en mémoire.",
+          "correction_markdown": "Écris `scanf(\"%d\", &a);` pour chaque variable lue."
+        },
+        {
+          "erreur_markdown": "Écrire `printf(\"La somme est s\");` pour afficher la valeur de `s`.",
+          "pourquoi_faux": "Entre guillemets, `s` est un simple texte : l'écran affiche la lettre s, pas le résultat.",
+          "correction_markdown": "Mets `%d` dans le texte et la variable après la virgule : `printf(\"La somme est %d\", s);`."
+        },
+        {
+          "erreur_markdown": "Utiliser `total = total + a;` sans avoir écrit `total = 0;` avant.",
+          "pourquoi_faux": "En C, une variable non initialisée contient une valeur quelconque : le total est faussé dès la première addition.",
+          "correction_markdown": "Initialise les totaux et compteurs à 0 (les produits à 1) avant la boucle ou l'addition."
+        },
+        {
+          "erreur_markdown": "Afficher un réel avec `%d`.",
+          "pourquoi_faux": "Le code `%d` attend un entier : un réel affiché ainsi donne un nombre absurde.",
+          "correction_markdown": "Utilise `%f` (ou `%.2f`) pour un réel."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme ci-dessous, repère une instruction de saisie, une instruction d'affectation et les variables initialisées.\n\n```\nVariable n, cpt, total : Entier ;\nDébut\n  cpt ← 0 ;\n  total ← 0 ;\n  lire (n) ;\n  total ← total + n ;\n  cpt ← cpt + 1 ;\n  Ecrire (total) ;\nFin\n```",
+          "solution_markdown": "Saisie : `lire (n) ;`. Affectation : `total ← total + n ;` (ou `cpt ← cpt + 1 ;`). Variables initialisées : **cpt** et **total**, toutes deux à 0 avant d'être utilisées. La variable `n` n'est pas initialisée par affectation : sa valeur vient de la saisie."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduis en C : `Variable r, s : Réel ;` puis `lire (r) ;`, `s ← 3,14159 * r * r ;` et `Ecrire (\"Surface = \", s) ;` en affichant deux décimales. Donne l'affichage pour r = 2,5.",
+          "solution_markdown": "```c\nfloat r, s;\nscanf(\"%f\", &r);\ns = 3.14159 * r * r;\nprintf(\"Surface = %.2f\", s);\n```\nAttention au point décimal. Pour r = 2,5 : s = 3,14159 × 6,25 = 19,6349375, affiché **Surface = 19.63**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Trouve les trois erreurs du programme suivant et corrige-le.\n\n```c\n#include <stdio.h>\nint main()\n{\n    int a, total;\n    printf(\"Entrez un nombre : \");\n    scanf(\"%d\", a);\n    total = total + a;\n    printf(\"Total = total\");\n    return 0;\n}\n```",
+          "solution_markdown": "Erreur 1 : `scanf(\"%d\", a);` manque le `&`. Erreur 2 : `total` n'est pas initialisé. Erreur 3 : `printf(\"Total = total\");` affiche le mot total au lieu de sa valeur.\n\nVersion corrigée :\n\n```c\n#include <stdio.h>\nint main()\n{\n    int a, total;\n    total = 0;\n    printf(\"Entrez un nombre : \");\n    scanf(\"%d\", &a);\n    total = total + a;\n    printf(\"Total = %d\", total);\n    return 0;\n}\n```\nPour a = 5, l'écran affiche **Total = 5**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`lire` devient `scanf(\"%d\", &variable);` : le code de format dépend du type et le `&` est obligatoire.",
+        "`Ecrire` devient `printf` : texte entre guillemets, un code de format (`%d`, `%f`) pour chaque valeur, puis les variables après la virgule.",
+        "Initialiser une variable, c'est lui donner une première valeur par affectation : 0 pour un total ou un compteur, 1 pour un produit.",
+        "Traduire dans l'ordre des lignes ; chaque instruction C se termine par un point-virgule ; le séparateur décimal est le point.",
+        "Au probatoire, « traduire en langage C » et « repérer les variables initialisées » sont des questions récurrentes d'algorithmique."
+      ]
+    }
+  ]
+}

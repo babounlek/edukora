@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-definir-une-partition-principale-d-un-disque-dur-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Définir une partition principale d'un disque dur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Environnement numérique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "partition",
+      "disque dur",
+      "partition principale",
+      "partition étendue",
+      "MBR"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex1-q1.a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as un disque de 500 Go et l'explorateur de fichiers t'affiche deux lecteurs, C: et D:. Il n'y a pourtant qu'un seul disque physique : il a été découpé en partitions. Savoir ce qu'est une partition principale, et ce qui la distingue d'une partition étendue, explique comment on installe plusieurs systèmes sur un même disque, et te donne les mots exacts d'une question de cours classique du Probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un disque dur et à quoi sert un système d'exploitation",
+        "Connaître la notion de lecteur (C:, D:) dans l'explorateur de fichiers"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Partition principale, partition étendue, lecteur logique",
+      "contenu_markdown": "Une **partition** est une portion logique d'un support de stockage. Le système la voit comme un lecteur indépendant, avec son propre système de fichiers (NTFS, FAT32, ext4).\n\n- La **partition principale** (ou primaire) peut contenir un système d'exploitation et être déclarée **active** : c'est elle que l'ordinateur démarre.\n- La **partition étendue** ne contient pas de fichiers directement. Elle sert de conteneur à plusieurs **lecteurs logiques**.\n- Un **lecteur logique** est une partition créée à l'intérieur d'une partition étendue.\n\nLimite d'un disque au format MBR : quatre entrées au maximum, soit quatre partitions principales, soit trois principales et une étendue.",
+      "variantes": [
+        {
+          "nom": "Disque au format GPT",
+          "quand_utiliser": "Disque récent, démarrage UEFI, ou disque de plus de 2 To",
+          "contenu_markdown": "Le format GPT ne distingue plus partition principale et partition étendue. Windows accepte jusqu'à 128 partitions sur un disque GPT. La notion de partition principale reste celle qu'on attend dans un sujet de Probatoire, car le programme présente le format MBR."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir le terme « partition principale » (question 1.a de l'épreuve, 1 point).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Donner la catégorie générale",
+          "justification": "On commence par ce que c'est : une partition est une portion d'un disque dur.",
+          "resultat_markdown": "Une partition principale est une portion d'un disque dur."
+        },
+        {
+          "numero": 2,
+          "action": "Donner la caractéristique propre",
+          "justification": "Ce qui distingue la principale des autres, c'est qu'elle peut recevoir un système d'exploitation et être activée pour démarrer l'ordinateur.",
+          "resultat_markdown": "Elle peut contenir un système d'exploitation et être active au démarrage."
+        },
+        {
+          "numero": 3,
+          "action": "Donner la limite de nombre",
+          "justification": "Un disque MBR est limité à quatre entrées, ce qui précise le vocabulaire.",
+          "resultat_markdown": "Quatre au maximum par disque (ou trois avec une étendue)."
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter un exemple",
+          "justification": "Un exemple concret fixe l'idée et rassure le correcteur.",
+          "resultat_markdown": "La partition C: de Windows."
+        }
+      ],
+      "conclusion_markdown": "Une partition principale est une portion de disque dur pouvant contenir un système d'exploitation et démarrer l'ordinateur ; un disque MBR en accepte quatre au plus."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire « la partition principale, c'est le disque dur ».",
+          "pourquoi_faux": "Un disque dur peut porter plusieurs partitions principales. La partition est une portion du disque, pas le disque lui-même.",
+          "correction_markdown": "Écris « portion d'un disque dur » et non « disque dur »."
+        },
+        {
+          "erreur_markdown": "Penser que la partition principale est la plus grande partition.",
+          "pourquoi_faux": "La taille n'a aucun rapport avec le type. Une partition principale de 20 Go reste principale, et une étendue peut atteindre 400 Go.",
+          "correction_markdown": "Le type (principale, étendue, logique) dépend de la fonction et non de la capacité."
+        },
+        {
+          "erreur_markdown": "Confondre partitionner et formater.",
+          "pourquoi_faux": "Partitionner découpe le disque en zones. Formater prépare une zone à recevoir des fichiers en y installant un système de fichiers.",
+          "correction_markdown": "Pars toujours de l'ordre des opérations : on partitionne d'abord, on formate ensuite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Complète : un disque au format MBR peut contenir au plus ........ partitions principales.",
+          "solution_markdown": "Quatre. Le format MBR offre quatre entrées de partition ; chacune peut être une partition principale."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un disque MBR contient déjà trois partitions principales. Peut-on encore y créer une partition étendue puis des lecteurs logiques ? Peut-on y créer une quatrième partition principale en plus ? Justifie.",
+          "solution_markdown": "1. Le disque MBR a quatre entrées au total et trois sont occupées. Il reste donc une entrée libre.\n2. On peut l'utiliser pour une partition étendue, qui contiendra ensuite autant de lecteurs logiques qu'on veut. Réponse : oui.\n3. Une quatrième partition principale utiliserait la dernière entrée libre, et il n'en resterait aucune pour l'étendue. On doit choisir : quatrième principale ou une étendue, pas les deux. Réponse : non, pas en plus."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un disque de 500 Go (format MBR) doit accueillir Windows (150 Go), Linux (100 Go), une zone de données (150 Go) et une zone de sauvegarde (100 Go). Propose un schéma de partitionnement qui respecte la limite du MBR.",
+          "solution_markdown": "1. Quatre zones sont demandées, mais deux seulement ont besoin d'un système d'exploitation (Windows et Linux) : elles seront des partitions principales.\n2. Les deux autres zones n'ont pas besoin de démarrer : on les place dans des lecteurs logiques à l'intérieur d'une partition étendue.\n3. Schéma : partition principale 1 de 150 Go (Windows, active) ; partition principale 2 de 100 Go (Linux) ; partition étendue de 250 Go contenant le lecteur logique D: de 150 Go (données) et le lecteur logique E: de 100 Go (sauvegarde).\n4. Vérification : $150 + 100 + 250 = 500$ Go, et $150 + 100 = 250$ Go dans l'étendue. Le disque utilise trois entrées MBR sur quatre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une partition est une portion logique d'un disque, vue comme un lecteur à part.",
+        "La partition principale peut contenir un système d'exploitation et démarrer l'ordinateur.",
+        "La partition étendue n'est qu'un conteneur de lecteurs logiques.",
+        "Un disque MBR offre quatre entrées : quatre principales, ou trois principales et une étendue.",
+        "Au Probatoire, « définir partition principale » est une question de cours à 1 point : nature, particularité, exemple."
+      ]
+    }
+  ]
+}

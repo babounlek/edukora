@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-reperer-les-variables-initialisees-d-un-algorithme-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Repérer les variables initialisées d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Algorithmique - affectation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "initialisation",
+      "affectation",
+      "variables",
+      "compteur",
+      "lecture d'algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex2-q3b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu comptes des élèves, tu commences à zéro avant d'ajouter. Un algorithme fait pareil : avant de s'en servir comme compteur, il donne une première valeur à ses variables. Reconnaître ces initialisations est une question de lecture d'algorithme courante."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de variable et d'affectation",
+        "Savoir lire une partie Variables",
+        "Distinguer affectation et lecture au clavier"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Initialiser, c'est affecter une première valeur avant l'emploi",
+      "contenu_markdown": "Une variable est **initialisée** quand une **affectation** lui donne une première valeur avant son utilisation : `Jeunes ← 0`. Le symbole d'affectation est `←` (ou `:=`).\n\nÀ ne pas prendre pour une initialisation :\n\n- la **déclaration** dans la partie Variables, qui réserve la case mémoire sans lui donner de valeur ;\n- la **lecture** `Lire(age)`, qui reçoit la valeur de l'utilisateur ;\n- le **compteur de boucle** `i`, dont la boucle Pour règle elle-même la valeur de départ.\n\nMéthode : parcourir le corps avant la boucle et relever toute ligne de la forme `variable ← valeur`.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Examiner l'algorithme de la figure du sujet et identifier deux variables initialisées. *[0,5 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Parcourir le corps avant la boucle",
+          "justification": "Les initialisations se placent avant la première utilisation.",
+          "resultat_markdown": "Les lignes 7 et 8 précèdent la boucle Pour."
+        },
+        {
+          "numero": 2,
+          "action": "Relever les affectations",
+          "justification": "On cherche le symbole ← avec une valeur.",
+          "resultat_markdown": "`Jeunes←0` et `Vieux←0`."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter les autres variables",
+          "justification": "`age` est lue au clavier, `i` est réglée par la boucle.",
+          "resultat_markdown": "`age` et `i` ne sont pas initialisées par affectation."
+        }
+      ],
+      "conclusion_markdown": "Les deux variables initialisées sont Jeunes et Vieux, toutes deux à 0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `age` parmi les variables initialisées.",
+          "pourquoi_faux": "`age` est déclarée puis lue au clavier ; aucune affectation ne lui donne de valeur avant la boucle.",
+          "correction_markdown": "Réserve « initialisée » aux lignes de la forme `x ← valeur`."
+        },
+        {
+          "erreur_markdown": "Citer `i`.",
+          "pourquoi_faux": "La boucle Pour règle elle-même le départ de `i` (ici 1) ; ce n'est pas une affectation écrite dans le corps.",
+          "correction_markdown": "Cherche une ligne explicite avec le symbole ←."
+        },
+        {
+          "erreur_markdown": "Prendre la déclaration pour l'initialisation.",
+          "pourquoi_faux": "Déclarer réserve l'emplacement mémoire, rien de plus : la valeur reste indéterminée jusqu'à la première affectation.",
+          "correction_markdown": "Lis les lignes du corps, pas seulement la partie Variables."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme `total` ci-dessous, quelle variable est initialisée ?\n\n```\nAlgorithme total\nVariables\n   n, i, somme : Entiers\nDebut\n   somme ← 0\n   Lire(n)\n   Pour i allant de 1 à n faire\n      somme ← somme + i\n   Finpour\n   Ecrire(somme)\nFin\n```",
+          "solution_markdown": "La ligne `somme ← 0` donne une première valeur à `somme` avant la boucle : c'est la variable initialisée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans le même algorithme, `n` est-elle initialisée ? Justifie.",
+          "solution_markdown": "Non. La variable `n` reçoit sa valeur par `Lire(n)`, c'est-à-dire de l'utilisateur, et non par une affectation du corps.\n\nElle est lue, pas initialisée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déroule l'algorithme `total` pour `n = 4` et donne la valeur affichée.",
+          "solution_markdown": "Initialisation : `somme = 0`. Lecture : `n = 4`. La boucle fait varier `i` de 1 à 4.\n\n- Passage `i = 1` : `somme = 0 + 1 = 1`.\n- Passage `i = 2` : `somme = 1 + 2 = 3`.\n- Passage `i = 3` : `somme = 3 + 3 = 6`.\n- Passage `i = 4` : `somme = 6 + 4 = 10`.\n\nL'algorithme affiche 10, somme des entiers de 1 à 4."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Initialiser une variable, c'est lui donner une première valeur par affectation.",
+        "Cherche le symbole ← avant la boucle.",
+        "Une variable lue au clavier ou réglée par une boucle Pour n'est pas initialisée par affectation.",
+        "Les compteurs (d'invités, de passages) commencent souvent à 0.",
+        "Au probatoire, la question « citer deux variables initialisées » rapporte un demi-point par variable correcte."
+      ]
+    }
+  ]
+}

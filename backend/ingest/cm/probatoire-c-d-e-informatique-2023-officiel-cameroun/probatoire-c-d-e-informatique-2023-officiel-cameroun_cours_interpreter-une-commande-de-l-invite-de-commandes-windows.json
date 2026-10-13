@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-interpreter-une-commande-de-l-invite-de-commandes-windows-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Interpréter une commande de l'invite de commandes Windows",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Environnement numérique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "invite de commandes",
+      "commande CD",
+      "arborescence",
+      "dossier courant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex1-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant l'interface graphique, tout se faisait au clavier. L'invite de commandes existe toujours et les techniciens s'en servent chaque jour. Sa clé de lecture est le prompt, qui affiche où tu te trouves. Comprendre ce que fait une commande revient à comparer le prompt avant et après."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une arborescence de dossiers",
+        "Reconnaître la structure d'un chemin Windows (lecteur, dossiers séparés par \\)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le prompt et la commande CD",
+      "contenu_markdown": "Le **prompt** (par exemple `C:\\Users\\OBC>`) indique le lecteur et le dossier courant. La commande **CD** (Change Directory) change le dossier courant.\n\n| Commande | Effet |\n|---|---|\n| `CD Dossier` | entre dans le sous-dossier `Dossier` |\n| `CD..` | remonte d'un niveau |\n| `CD\\` | remonte à la racine du lecteur courant |\n| `D:` | change de lecteur courant |\n| `CD /D D:\\Cours` | change de lecteur et de dossier en une fois |\n\nPour interpréter une commande : lis le nom, lis l'argument, puis imagine le prompt obtenu.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer ce que fait `CD\\` à la suite du prompt `C:\\Users\\OBC\\Probatoire>` (question 4 de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le prompt",
+          "justification": "Il donne le point de départ : lecteur C:, trois niveaux de dossiers.",
+          "resultat_markdown": "Dossier courant : `C:\\Users\\OBC\\Probatoire`."
+        },
+        {
+          "numero": 2,
+          "action": "Lire la commande",
+          "justification": "CD change le dossier courant. L'argument `\\` désigne la racine du lecteur.",
+          "resultat_markdown": "Destination : la racine de C:."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le prompt obtenu",
+          "justification": "On compare avant et après pour vérifier l'effet.",
+          "resultat_markdown": "`C:\\>`"
+        },
+        {
+          "numero": 4,
+          "action": "Préciser ce qui ne change pas",
+          "justification": "Une commande de déplacement ne touche pas aux fichiers.",
+          "resultat_markdown": "Aucun dossier n'est supprimé ni modifié."
+        }
+      ],
+      "conclusion_markdown": "`CD\\` ramène l'utilisateur à la racine du lecteur courant : le prompt devient `C:\\>`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre `CD\\` et `CD..`.",
+          "pourquoi_faux": "`CD..` remonte d'un seul niveau (ici vers `C:\\Users\\OBC>`), alors que `CD\\` remonte à la racine.",
+          "correction_markdown": "Deux points : un niveau. Barre oblique inverse : la racine."
+        },
+        {
+          "erreur_markdown": "Croire que `CD\\` supprime les dossiers.",
+          "pourquoi_faux": "CD ne fait que changer le dossier courant. La suppression passe par d'autres commandes (RD, DEL).",
+          "correction_markdown": "Retiens : CD = se déplacer, jamais effacer."
+        },
+        {
+          "erreur_markdown": "Utiliser `CD D:\\Cours` pour changer de lecteur.",
+          "pourquoi_faux": "Sans l'option /D, la commande change le dossier mémorisé pour D: mais reste sur le lecteur C:.",
+          "correction_markdown": "Tape `D:` puis `CD \\Cours`, ou utilise `CD /D D:\\Cours`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel est le prompt obtenu après `CD..` à partir de `C:\\Users\\OBC\\Probatoire>` ?",
+          "solution_markdown": "`CD..` remonte d'un niveau : on quitte `Probatoire`. Le prompt devient `C:\\Users\\OBC>`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Partant de `C:\\Users\\OBC>`, quelle commande permet d'atteindre `C:\\Users\\OBC\\Probatoire\\Maths>` ?",
+          "solution_markdown": "1. Le dossier cible est dans `Probatoire`, lui-même dans le dossier courant.\n2. On peut y aller en une seule commande avec le chemin relatif : `CD Probatoire\\Maths`.\n3. Prompt obtenu : `C:\\Users\\OBC\\Probatoire\\Maths>`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Partant de `C:\\Users\\OBC\\Probatoire>`, comment arriver dans `D:\\Cours>` ? Quel est le prompt si on exécute ensuite `CD\\` ?",
+          "solution_markdown": "1. Première méthode : `D:` change de lecteur, puis `CD \\Cours` entre dans le dossier. Deuxième méthode : `CD /D D:\\Cours` fait tout en une commande.\n2. Prompt obtenu : `D:\\Cours>`.\n3. Ensuite `CD\\` ramène à la racine du lecteur courant, qui est maintenant D: : le prompt devient `D:\\>`, et non `C:\\>`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le prompt indique toujours le lecteur et le dossier courant.",
+        "CD change le dossier courant et ne supprime rien.",
+        "`CD..` remonte d'un niveau, `CD\\` remonte à la racine du lecteur courant.",
+        "Pour changer de lecteur, tape `D:` ou utilise `CD /D`.",
+        "Au Probatoire, on te demande souvent l'effet d'une commande : compare le prompt avant et après."
+      ]
+    }
+  ]
+}

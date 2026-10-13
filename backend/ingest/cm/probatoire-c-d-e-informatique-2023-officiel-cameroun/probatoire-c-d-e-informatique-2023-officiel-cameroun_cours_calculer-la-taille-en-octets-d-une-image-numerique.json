@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-calculer-la-taille-en-octets-d-une-image-numerique-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Calculer la taille en octets d'une image numérique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Multimédia",
+    "duree_estimee_min": 25,
+    "tags": [
+      "image numérique",
+      "taille d'une image",
+      "profondeur de codage",
+      "octet",
+      "Ko"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex1-q2.b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une photo de téléphone pèse plusieurs mégaoctets, une icône quelques kilo-octets. D'où vient cet écart ? Du nombre de pixels et du nombre de bits utilisés pour chacun. Ce cours te donne la formule pour prévoir le poids d'une image avant même de l'enregistrer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer la définition d'une image en pixels",
+        "Connaître la relation 1 octet = 8 bits",
+        "Savoir convertir octets, Ko, Mo, Go avec le facteur 1 024"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Taille = pixels × profondeur de codage ÷ 8",
+      "contenu_markdown": "La **taille non compressée** d'une image est obtenue en trois temps :\n\n1. nombre total de pixels = largeur × hauteur ;\n2. taille en bits = nombre de pixels × bits par pixel ;\n3. taille en octets = taille en bits ÷ 8.\n\nPour convertir : 1 Ko = 1 024 octets, 1 Mo = 1 024 Ko, 1 Go = 1 024 Mo. On divise donc par 1 024 à chaque changement d'unité.\n\nCas courants : 24 bits par pixel (couleurs vraies) font 3 octets par pixel ; 8 bits (256 niveaux de gris) font 1 octet ; 1 bit (noir et blanc) font 1/8 d'octet.",
+      "formule_principale": "T_{octets} = \\frac{N_{px} \\times p}{8}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Image de 1 024 000 × 768 000 pixels codée sur 24 bits : déterminer sa taille en octets (question 2.b de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre total de pixels",
+          "justification": "C'est le produit largeur × hauteur trouvé à la question précédente.",
+          "resultat_markdown": "$1\\,024\\,000 \\times 768\\,000 = (1\\,024 \\times 768) \\times 10^6 = 786\\,432 \\times 10^6$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le résultat complet",
+          "justification": "On remplace la puissance de 10 par ses zéros.",
+          "resultat_markdown": "$786\\,432\\,000\\,000$ pixels"
+        },
+        {
+          "numero": 3,
+          "action": "Passer en bits",
+          "justification": "Chaque pixel occupe 24 bits.",
+          "resultat_markdown": "$786\\,432\\,000\\,000 \\times 24 = 18\\,874\\,368\\,000\\,000$ bits"
+        },
+        {
+          "numero": 4,
+          "action": "Passer en octets",
+          "justification": "1 octet = 8 bits : on divise par 8 (ou on multiplie les pixels par 3, car 24 ÷ 8 = 3).",
+          "resultat_markdown": "$786\\,432\\,000\\,000 \\times 3 = 2\\,359\\,296\\,000\\,000$ octets"
+        },
+        {
+          "numero": 5,
+          "action": "Convertir en Ko",
+          "justification": "L'énoncé donne 1 Ko = 1 024 octets.",
+          "resultat_markdown": "$2\\,359\\,296\\,000\\,000 \\div 1\\,024 = 2\\,304\\,000\\,000$ Ko"
+        }
+      ],
+      "conclusion_markdown": "La taille de l'image, avant compression, est de 2 359 296 000 000 octets, soit 2 304 000 000 Ko."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de diviser par 8.",
+          "pourquoi_faux": "Le produit pixels × bits donne une taille en bits, pas en octets. Sans la division, le résultat est 8 fois trop grand.",
+          "correction_markdown": "Écris l'unité à chaque ligne : bits, puis octets."
+        },
+        {
+          "erreur_markdown": "Utiliser 1 000 au lieu de 1 024 pour les conversions.",
+          "pourquoi_faux": "L'énoncé fixe 1 Ko = 1 024 octets. Avec 1 000, on obtient un résultat faux.",
+          "correction_markdown": "Relis la donnée de l'énoncé avant de convertir."
+        },
+        {
+          "erreur_markdown": "Prendre 24 octets par pixel.",
+          "pourquoi_faux": "24 est un nombre de bits. Un pixel en couleurs vraies occupe 24 ÷ 8 = 3 octets.",
+          "correction_markdown": "Retiens : 24 bits = 3 octets, 8 bits = 1 octet."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image en niveaux de gris de 100 × 100 pixels est codée sur 8 bits par pixel. Quelle est sa taille en octets puis en Ko ?",
+          "solution_markdown": "1. Pixels : $100 \\times 100 = 10\\,000$.\n2. 8 bits = 1 octet par pixel, donc $10\\,000 \\times 1 = 10\\,000$ octets.\n3. En Ko : $\\frac{10\\,000}{1\\,024} \\approx 9{,}77$ Ko."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image de 1 920 × 1 080 pixels est codée sur 24 bits. Donne sa taille en octets, en Ko puis en Mo.",
+          "solution_markdown": "1. Pixels : $1\\,920 \\times 1\\,080 = 2\\,073\\,600$ (car $1\\,920 \\times 1\\,000 = 1\\,920\\,000$ et $1\\,920 \\times 80 = 153\\,600$).\n2. Octets : $2\\,073\\,600 \\times 3 = 6\\,220\\,800$ octets.\n3. Ko : $\\frac{6\\,220\\,800}{1\\,024} = 6\\,075$ Ko.\n4. Mo : $\\frac{6\\,075}{1\\,024} \\approx 5{,}93$ Mo."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une page A4 numérisée en noir et blanc (1 bit par pixel) a une définition de 2 480 × 3 508 pixels. Calcule sa taille en octets et en Ko. De combien de fois la taille serait-elle multipliée en 24 bits ?",
+          "solution_markdown": "1. Pixels : $2\\,480 \\times 3\\,508 = 8\\,699\\,840$ (car $2\\,480 \\times 3\\,500 = 8\\,680\\,000$ et $2\\,480 \\times 8 = 19\\,840$).\n2. Bits : $8\\,699\\,840 \\times 1 = 8\\,699\\,840$ bits.\n3. Octets : $\\frac{8\\,699\\,840}{8} = 1\\,087\\,480$ octets.\n4. Ko : $\\frac{1\\,087\\,480}{1\\,024} \\approx 1\\,062$ Ko.\n5. En 24 bits, la taille est multipliée par $\\frac{24}{1} = 24$, car seul le nombre de bits par pixel change."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Taille en octets = nombre de pixels × bits par pixel ÷ 8.",
+        "24 bits par pixel font 3 octets, 8 bits en font 1, 1 bit en fait un huitième.",
+        "On convertit avec 1 024 à chaque palier : octets, Ko, Mo, Go.",
+        "Écris l'unité à chaque ligne de calcul : c'est ainsi que tu repères l'oubli de la division par 8.",
+        "Au Probatoire, la taille d'image suit presque toujours le calcul de la définition : prépare les deux ensemble."
+      ]
+    }
+  ]
+}

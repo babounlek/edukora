@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-identifier-les-composants-d-un-formulaire-web-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Identifier les composants d'un formulaire web",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Programmation web - formulaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "formulaire HTML",
+      "input",
+      "select",
+      "bouton radio",
+      "composants"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex2-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu remplis un formulaire d'inscription, tu manipules quatre ou cinq composants différents : une zone pour écrire ton nom, un menu pour choisir ta ville, des cases à cocher, un bouton pour envoyer. Savoir les reconnaître sur une capture d'écran est une compétence qui s'évalue régulièrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un formulaire collecte des informations",
+        "Connaître la notion de balise HTML",
+        "Avoir déjà rempli un formulaire sur un site web"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître un composant à sa forme et à son comportement",
+      "contenu_markdown": "| Composant | Aspect à l'écran | Balise HTML |\n|---|---|---|\n| Zone de saisie (champ de texte) | rectangle vide où l'on tape | `<input type=\"text\">` |\n| Zone de mot de passe | champ qui affiche des points | `<input type=\"password\">` |\n| Liste déroulante | une valeur visible et une flèche | `<select>` avec des `<option>` |\n| Liste d'options (boutons radio) | choix côte à côte, un seul retenu | `<input type=\"radio\">` |\n| Cases à cocher | choix multiples | `<input type=\"checkbox\">` |\n| Bouton | rectangle cliquable avec un verbe d'action | `<input type=\"submit\">` ou `<button>` |\n\nMéthode sur une capture numérotée : suivre chaque trait jusqu'à l'élément visé, lire sa forme, puis consulter le tableau.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Observer le formulaire de la figure (repères 1 à 4) et identifier le numéro d'un bouton, d'une zone de saisie, d'une liste déroulante et d'une liste d'options. *[0,5 pt × 4]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Suivre le trait 1",
+          "justification": "Le trait aboutit au rectangle vide à droite de « Votre nom ».",
+          "resultat_markdown": "Repère 1 : zone de saisie."
+        },
+        {
+          "numero": 2,
+          "action": "Suivre le trait 2",
+          "justification": "Le champ « 20 ▾ » porte une flèche : un menu se déploie.",
+          "resultat_markdown": "Repère 2 : liste déroulante."
+        },
+        {
+          "numero": 3,
+          "action": "Suivre le trait 3",
+          "justification": "« OUI » et « Non » sont visibles côte à côte et un seul sera retenu.",
+          "resultat_markdown": "Repère 3 : liste d'options (boutons radio)."
+        },
+        {
+          "numero": 4,
+          "action": "Suivre le trait 4",
+          "justification": "Le rectangle « Envoyer » est cliquable et porte un verbe d'action.",
+          "resultat_markdown": "Repère 4 : bouton."
+        }
+      ],
+      "conclusion_markdown": "Sur la figure : bouton = 4, zone de saisie = 1, liste déroulante = 2, liste d'options = 3."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Se fier à l'ordre des numéros.",
+          "pourquoi_faux": "Les numéros 1 à 4 ne suivent pas l'ordre des questions a, b, c, d : chaque question a sa propre réponse.",
+          "correction_markdown": "Associe chaque numéro à un composant avant de répondre."
+        },
+        {
+          "erreur_markdown": "Confondre liste déroulante et liste d'options.",
+          "pourquoi_faux": "Une liste déroulante masque ses choix derrière une flèche ; une liste d'options les montre tous.",
+          "correction_markdown": "Cherche la flèche."
+        },
+        {
+          "erreur_markdown": "Prendre un bouton pour une zone de saisie.",
+          "pourquoi_faux": "Un bouton ne reçoit pas de texte : il déclenche une action (envoyer, annuler).",
+          "correction_markdown": "Regarde si le composant porte un verbe d'action."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un rectangle vide affiche des points quand on y tape un texte. De quel composant s'agit-il ?",
+          "solution_markdown": "C'est une zone de mot de passe, un champ de saisie de type `password` : le navigateur remplace les caractères par des points pour les cacher."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour demander « Masculin » ou « Féminin » avec un seul choix possible, quel composant faut-il utiliser et avec quelle balise ?",
+          "solution_markdown": "Il faut une liste d'options à choix unique, c'est-à-dire des boutons radio : `<input type=\"radio\" name=\"sexe\" value=\"M\">` et `<input type=\"radio\" name=\"sexe\" value=\"F\">`. Le même attribut `name` relie les deux boutons, de sorte qu'un seul reste coché."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut demander les loisirs d'un élève (football, lecture, musique), plusieurs réponses étant possibles. Choisis le composant, justifie-le et écris le code.",
+          "solution_markdown": "Plusieurs réponses sont possibles : des boutons radio n'en autorisent qu'une, il faut des cases à cocher.\n\n```html\n<input type=\"checkbox\" name=\"loisir\" value=\"football\"> Football\n<input type=\"checkbox\" name=\"loisir\" value=\"lecture\"> Lecture\n<input type=\"checkbox\" name=\"loisir\" value=\"musique\"> Musique\n```\n\nChaque case est indépendante : l'élève coche zéro, une ou plusieurs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un composant se reconnaît à sa forme et à son comportement.",
+        "Zone de saisie : rectangle vide ; liste déroulante : flèche ; liste d'options : choix visibles ; bouton : verbe d'action.",
+        "Sur une capture numérotée, suis chaque trait jusqu'à l'élément visé.",
+        "Radio pour un seul choix, cases à cocher pour plusieurs.",
+        "Au probatoire, la reconnaissance de composants sur une figure de formulaire est un classique, valant 0,5 point par composant."
+      ]
+    }
+  ]
+}

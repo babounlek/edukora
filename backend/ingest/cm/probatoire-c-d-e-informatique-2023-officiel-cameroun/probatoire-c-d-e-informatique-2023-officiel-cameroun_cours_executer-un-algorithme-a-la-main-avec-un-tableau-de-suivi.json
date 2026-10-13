@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-executer-un-algorithme-a-la-main-avec-un-tableau-de-suivi-1ere-c-d-e-2023",
+  "meta": {
+    "titre": "Exécuter un algorithme à la main avec un tableau de suivi",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algorithmique",
+      "trace d'exécution",
+      "boucle Pour",
+      "factorielle",
+      "tableau de suivi"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex3-qA.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire un programme, les informaticiens vérifient à la main ce qu'il fait. C'est l'exécution à la main, ou trace d'exécution. Avec un tableau bien construit, tu suis chaque variable pas à pas et tu découvres ce que calcule l'algorithme, sans l'ordinateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une affectation et une boucle Pour",
+        "Calculer des produits et des sommes simples"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le tableau de suivi",
+      "contenu_markdown": "Pour exécuter un algorithme à la main :\n\n1. Prépare un tableau avec une colonne par variable et une ligne par étape (ou par tour de boucle).\n2. Exécute les instructions dans l'ordre exact, en mettant à jour la valeur de chaque variable concernée.\n3. Dans une boucle `Pour i allant de a à b`, `i` prend successivement toutes les valeurs de `a` à `b` incluses : il y a $b - a + 1$ tours.\n4. Quand la boucle est finie, lis le résultat, puis cherche ce qu'il représente (somme, produit, puissance, factorielle).\n\nPour confirmer une hypothèse, refais la trace avec une deuxième valeur d'entrée.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Exécuter l'algorithme Calcul pour n = 3 et dire ce qu'il fait (question A.2 de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser",
+          "justification": "Avant la boucle, `X ← 1` (ligne 4) et `lire (n)` reçoit 3 (ligne 6).",
+          "resultat_markdown": "X = 1 ; n = 3."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les tours",
+          "justification": "La boucle va de 1 à 3 inclus : 3 tours.",
+          "resultat_markdown": "$3 - 1 + 1 = 3$ tours"
+        },
+        {
+          "numero": 3,
+          "action": "Tour 1 (i = 1)",
+          "justification": "On calcule `X*i` avec l'ancienne valeur de X.",
+          "resultat_markdown": "$X = 1 \\times 1 = 1$"
+        },
+        {
+          "numero": 4,
+          "action": "Tour 2 (i = 2)",
+          "justification": "Même calcul avec la nouvelle valeur.",
+          "resultat_markdown": "$X = 1 \\times 2 = 2$"
+        },
+        {
+          "numero": 5,
+          "action": "Tour 3 (i = 3)",
+          "justification": "Dernier tour de boucle.",
+          "resultat_markdown": "$X = 2 \\times 3 = 6$"
+        },
+        {
+          "numero": 6,
+          "action": "Interpréter",
+          "justification": "On reconnaît le produit des entiers de 1 à n, noté n!.",
+          "resultat_markdown": "$X = 1 \\times 2 \\times 3 = 3! = 6$"
+        }
+      ],
+      "conclusion_markdown": "Pour n = 3, l'algorithme donne X = 6 : il calcule la factorielle de n."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'initialisation `X ← 1`.",
+          "pourquoi_faux": "Avec X = 0 au départ, tous les produits seraient nuls. L'initialisation à 1 est l'élément neutre de la multiplication.",
+          "correction_markdown": "Écris la valeur initiale dans la première ligne du tableau."
+        },
+        {
+          "erreur_markdown": "Se tromper de nombre de tours.",
+          "pourquoi_faux": "Dans `de 1 à n`, la borne n est incluse : pour n = 3, il y a trois tours et non deux.",
+          "correction_markdown": "Écris les valeurs successives de i : 1, 2, 3."
+        },
+        {
+          "erreur_markdown": "Utiliser la nouvelle valeur de i à la place de l'ancienne valeur de X.",
+          "pourquoi_faux": "À chaque tour, `X*i` utilise l'ancienne valeur de X (celle du tour précédent). Mélanger les lignes donne un produit faux.",
+          "correction_markdown": "Une ligne du tableau par tour, avec la colonne « X avant » et la colonne « X après »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Exécute : `S ← 0`, puis `Pour i allant de 1 à 4 faire S ← S + i`. Quelle est la valeur finale de S ? Que calcule l'algorithme ?",
+          "solution_markdown": "1. Départ : S = 0.\n2. i = 1 : S = 0 + 1 = 1.\n3. i = 2 : S = 1 + 2 = 3.\n4. i = 3 : S = 3 + 3 = 6.\n5. i = 4 : S = 6 + 4 = 10.\n6. S = 10 = 1 + 2 + 3 + 4 : l'algorithme calcule la somme des entiers de 1 à 4."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Exécute : `P ← 1`, puis `Pour i allant de 1 à 5 faire P ← P*2`. Donne P à chaque tour et dis ce que calcule l'algorithme.",
+          "solution_markdown": "1. Départ : P = 1.\n2. i = 1 : P = 2.\n3. i = 2 : P = 4.\n4. i = 3 : P = 8.\n5. i = 4 : P = 16.\n6. i = 5 : P = 32.\n7. P = $2^5 = 32$ : l'algorithme calcule 2 à la puissance 5. La variable i ne sert qu'à compter les tours."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Exécute : `A ← 0`, `B ← 1`, puis `Pour i allant de 1 à 5 faire` : `T ← A + B`, `A ← B`, `B ← T`. Donne A et B à chaque tour et dis ce que contient B à la fin.",
+          "solution_markdown": "1. Départ : A = 0, B = 1.\n2. i = 1 : T = 0 + 1 = 1 ; A = 1 ; B = 1.\n3. i = 2 : T = 1 + 1 = 2 ; A = 1 ; B = 2.\n4. i = 3 : T = 1 + 2 = 3 ; A = 2 ; B = 3.\n5. i = 4 : T = 2 + 3 = 5 ; A = 3 ; B = 5.\n6. i = 5 : T = 3 + 5 = 8 ; A = 5 ; B = 8.\n7. À la fin, B = 8. Les valeurs successives de B (1, 1, 2, 3, 5, 8) sont les termes de la suite de Fibonacci : B contient le sixième terme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Construis un tableau avec une colonne par variable et une ligne par tour.",
+        "Initialise toujours avant la boucle : la valeur de départ compte.",
+        "Dans `de 1 à n`, la boucle fait n tours, bornes incluses.",
+        "Après la trace, cherche ce que représente le résultat : somme, produit, puissance, factorielle.",
+        "Au Probatoire, « exécuter puis déduire » rapporte le point si le tableau est visible et la conclusion nommée."
+      ]
+    }
+  ]
+}

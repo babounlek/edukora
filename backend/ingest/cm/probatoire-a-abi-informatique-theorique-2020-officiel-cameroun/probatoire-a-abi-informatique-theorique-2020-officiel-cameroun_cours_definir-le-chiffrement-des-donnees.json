@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-definir-le-chiffrement-des-donnees-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Définir le chiffrement des données",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Sécurité informatique - protection des données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "chiffrement",
+      "clé",
+      "confidentialité",
+      "cryptographie",
+      "définition"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex1-q1b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu paies en ligne ou que tu envoies un message privé, tes données traversent des réseaux que n'importe qui peut écouter. Le chiffrement rend ces données illisibles pour quiconque n'a pas la clé. C'est la technique de base de la confidentialité sur Internet, et une définition classique de la partie sécurité informatique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de donnée et de message",
+        "Savoir que les données circulent sur des réseaux (Internet, réseau local)",
+        "Avoir entendu parler de mot de passe et de clé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Chiffrer : rendre illisible sans la clé",
+      "contenu_markdown": "Le **chiffrement** est l'opération qui transforme une information lisible (texte en clair) en une information incompréhensible (texte chiffré) au moyen d'un algorithme et d'une **clé**. Seule la personne qui possède la bonne clé peut rétablir l'information d'origine : c'est le **déchiffrement**.\n\nObjectif : garantir la **confidentialité** des données stockées (disque, base de données) ou transmises (messages, paiements, sites en `https`).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir : chiffrement. *[1 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dire ce qui est transformé",
+          "justification": "Le chiffrement agit sur une information, pas sur le matériel.",
+          "resultat_markdown": "Une information lisible (texte en clair)."
+        },
+        {
+          "numero": 2,
+          "action": "Dire en quoi elle est transformée",
+          "justification": "Le résultat est l'élément qui distingue le chiffrement d'une simple copie.",
+          "resultat_markdown": "En une information incompréhensible (texte chiffré)."
+        },
+        {
+          "numero": 3,
+          "action": "Citer le moyen",
+          "justification": "Sans algorithme et clé, la transformation ne serait pas réversible par le destinataire.",
+          "resultat_markdown": "Au moyen d'un algorithme et d'une clé."
+        },
+        {
+          "numero": 4,
+          "action": "Citer l'objectif de sécurité",
+          "justification": "Une définition de sécurité doit dire quel risque elle écarte.",
+          "resultat_markdown": "Garantir la confidentialité : seul le détenteur de la clé peut lire."
+        }
+      ],
+      "conclusion_markdown": "Le chiffrement transforme une information lisible en information illisible grâce à un algorithme et à une clé, pour que seul le détenteur de la clé puisse la lire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que le chiffrement « cache » le fichier.",
+          "pourquoi_faux": "Le fichier chiffré reste présent et visible ; c'est son contenu qui est devenu illisible.",
+          "correction_markdown": "Écris « rend le contenu illisible »."
+        },
+        {
+          "erreur_markdown": "Confondre chiffrement et compression.",
+          "pourquoi_faux": "La compression réduit la taille d'un fichier sans le rendre secret ; n'importe qui peut la défaire.",
+          "correction_markdown": "Rappelle que le chiffrement exige une clé."
+        },
+        {
+          "erreur_markdown": "Oublier la clé dans la définition.",
+          "pourquoi_faux": "Sans clé, il n'y a pas de différence entre chiffrer et brouiller : la clé est ce qui permet au destinataire légitime de lire.",
+          "correction_markdown": "Cite toujours « algorithme et clé »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Chiffre le mot « ABC » avec le chiffrement de César de décalage 3 (chaque lettre est remplacée par celle qui se trouve 3 rangs plus loin dans l'alphabet).",
+          "solution_markdown": "A (rang 1) devient D (rang 4), B (rang 2) devient E (rang 5), C (rang 3) devient F (rang 6).\n\nLe texte chiffré est « DEF »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déchiffre « HFROH » sachant qu'il a été chiffré par un décalage de 3.",
+          "solution_markdown": "Pour déchiffrer, on recule de 3 rangs : H devient E, F devient C, R devient O, O devient L, H devient E.\n\nLe texte en clair est « ECOLE »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un site de paiement affiche un cadenas et une adresse en `https`. Explique le rôle du chiffrement et pourquoi une personne qui intercepte la communication ne peut pas exploiter les données.",
+          "solution_markdown": "Étape 1 : le navigateur et le site conviennent d'une clé de chiffrement au début de la connexion.\n\nÉtape 2 : toutes les données échangées (numéro de carte, mot de passe) sont chiffrées avec cette clé avant d'être envoyées.\n\nÉtape 3 : un pirate qui intercepte la communication ne capte que du texte chiffré, c'est-à-dire une suite de signes incompréhensibles, et il n'a pas la clé.\n\nConclusion : le chiffrement assure la confidentialité des données de paiement même si le canal est écouté."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chiffrer, c'est rendre une information illisible pour qui n'a pas la clé.",
+        "Une définition complète nomme l'algorithme, la clé et l'objectif de confidentialité.",
+        "Le déchiffrement est l'opération inverse, réservée au détenteur de la clé.",
+        "Le chiffrement n'est ni la compression ni une cachette de fichier.",
+        "Au probatoire, cette définition apparaît dans la partie sécurité informatique, avec les antivirus, les pare-feux et les mots de passe."
+      ]
+    }
+  ]
+}

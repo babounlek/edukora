@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-determiner-la-condition-d-arret-d-une-boucle-pour-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Déterminer la condition d'arrêt d'une boucle Pour",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Algorithmique - boucles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "boucle pour",
+      "condition d'arrêt",
+      "borne",
+      "itérations",
+      "lecture d'algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex2-q3c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Si tu as dix invités à noter, tu t'arrêtes au dixième. Une boucle Pour fonctionne comme cela : elle compte de 1 à une valeur limite puis s'arrête. Savoir dire quand elle s'arrête et combien de fois elle tourne est une compétence de base de l'algorithmique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure Pour ... faire ... Finpour",
+        "Savoir ce qu'est un compteur de boucle",
+        "Savoir compter les entiers entre deux bornes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La boucle s'arrête quand le compteur dépasse la borne finale",
+      "contenu_markdown": "Dans `Pour i allant de a à b faire ... Finpour`, le compteur `i` prend les valeurs `a`, `a+1`, ..., `b`.\n\n- **Condition d'arrêt** : la boucle s'arrête dès que `i` dépasse la borne finale `b`, c'est-à-dire pour `i > b` (dernier passage pour `i = b`).\n- **Nombre de passages** : $b - a + 1$ si $b \\geq a$, et 0 si $b < a$.\n\nÀ ne pas confondre avec la condition d'un `Si`, qui choisit une branche sans arrêter la boucle.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Examiner l'algorithme de la figure du sujet, dont la boucle est `Pour i allant de 1 à 10 faire`, et identifier la condition d'arrêt de la boucle. *[0,5 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la boucle",
+          "justification": "On lit la ligne qui commence par Pour.",
+          "resultat_markdown": "`Pour i allant de 1 à 10 faire`."
+        },
+        {
+          "numero": 2,
+          "action": "Lire les bornes",
+          "justification": "La borne de départ est 1 et la borne finale est 10.",
+          "resultat_markdown": "`i` varie de 1 à 10."
+        },
+        {
+          "numero": 3,
+          "action": "Compter les passages",
+          "justification": "Entre 1 et 10 inclus il y a 10 - 1 + 1 valeurs.",
+          "resultat_markdown": "10 passages, un par invité."
+        },
+        {
+          "numero": 4,
+          "action": "Énoncer la condition d'arrêt",
+          "justification": "Après le passage où `i` vaut 10, `i` passe à 11 et dépasse la borne.",
+          "resultat_markdown": "La boucle s'arrête quand `i` dépasse 10."
+        }
+      ],
+      "conclusion_markdown": "La boucle s'arrête quand i dépasse 10 : elle s'exécute exactement 10 fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer la condition `age<30`.",
+          "pourquoi_faux": "Cette condition appartient au `Si` du corps de la boucle : elle choisit entre Jeunes et Vieux, mais n'arrête pas la boucle.",
+          "correction_markdown": "Cherche la borne dans la ligne Pour."
+        },
+        {
+          "erreur_markdown": "Compter 9 passages en faisant 10 - 1.",
+          "pourquoi_faux": "Les deux bornes sont incluses : il faut ajouter 1 à la différence.",
+          "correction_markdown": "Utilise la formule borne finale moins borne de départ plus 1."
+        },
+        {
+          "erreur_markdown": "Dire que la boucle s'arrête quand `i = 10`.",
+          "pourquoi_faux": "Pour `i = 10`, le corps s'exécute encore une fois : l'arrêt a lieu quand `i` passe à 11.",
+          "correction_markdown": "Écris « quand i dépasse 10 »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien de passages fait la boucle `Pour k allant de 3 à 8 faire` ?",
+          "solution_markdown": "Les valeurs de `k` sont 3, 4, 5, 6, 7, 8. Nombre de passages : $8 - 3 + 1 = 6$.\n\nLa boucle fait 6 passages."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donne le nombre de passages de `Pour j allant de 0 à 4 faire` et la condition d'arrêt.",
+          "solution_markdown": "Les valeurs de `j` sont 0, 1, 2, 3, 4. Nombre de passages : $4 - 0 + 1 = 5$.\n\nCondition d'arrêt : la boucle s'arrête quand `j` dépasse 4, c'est-à-dire quand `j` vaut 5."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que fait la boucle `Pour i allant de 1 à n faire` lorsque `n = 0` ? Généralise le nombre de passages.",
+          "solution_markdown": "Pour `n = 0`, la borne de départ 1 est déjà supérieure à la borne finale 0 : la condition d'arrêt `i > 0` est vérifiée d'emblée.\n\nLe corps ne s'exécute donc aucune fois.\n\nGénéralisation : de a à b, le nombre de passages est $b - a + 1$ si $b \\geq a$ et 0 sinon."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une boucle Pour s'arrête quand son compteur dépasse la borne finale.",
+        "Le nombre de passages est borne finale moins borne de départ plus un.",
+        "La condition d'un Si n'arrête pas une boucle : elle choisit une branche.",
+        "Si la borne de départ dépasse la borne finale, la boucle ne s'exécute pas.",
+        "Au probatoire, cette question demande la borne et le nombre de passages."
+      ]
+    }
+  ]
+}

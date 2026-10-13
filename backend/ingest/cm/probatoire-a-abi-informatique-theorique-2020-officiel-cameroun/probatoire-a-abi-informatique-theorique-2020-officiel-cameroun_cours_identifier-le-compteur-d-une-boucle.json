@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-identifier-le-compteur-d-une-boucle-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Identifier le compteur d'une boucle",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Algorithmique - boucles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "compteur",
+      "boucle pour",
+      "accumulateur",
+      "incrémentation",
+      "lecture d'algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex2-q3d-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un algorithme de comptage, plusieurs variables changent de valeur à chaque tour. Certaines comptent les passages de la boucle, d'autres comptent des événements, par exemple le nombre de jeunes. Savoir distinguer le compteur de boucle des autres variables évite les confusions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la boucle Pour et ses bornes",
+        "Savoir lire une affectation du type x ← x + 1",
+        "Connaître la notion d'incrémentation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le compteur de la boucle Pour est la variable placée après le mot Pour",
+      "contenu_markdown": "Le **compteur de boucle** est la variable placée juste après le mot `Pour` : elle prend la valeur de départ au premier tour, augmente de 1 à chaque tour et sert à compter les passages.\n\nÀ distinguer des **compteurs d'événements** (ou accumulateurs) : ce sont des variables que le corps de la boucle incrémente lui-même (`Jeunes ← Jeunes + 1`) pour compter des cas particuliers.\n\n| Variable | Rôle | Qui la fait évoluer |\n|---|---|---|\n| compteur de boucle | compte les passages | la boucle Pour |\n| compteur d'événements | compte des cas | une affectation dans le corps |",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Examiner l'algorithme de la figure du sujet et identifier le compteur. *[0,5 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la boucle",
+          "justification": "Le compteur de boucle est lié à l'instruction Pour.",
+          "resultat_markdown": "`Pour i allant de 1 à 10 faire`."
+        },
+        {
+          "numero": 2,
+          "action": "Lire la variable après Pour",
+          "justification": "C'est elle que la boucle fait varier.",
+          "resultat_markdown": "Compteur de boucle : `i`."
+        },
+        {
+          "numero": 3,
+          "action": "Examiner les autres variables",
+          "justification": "Jeunes et Vieux sont incrémentées dans le Si, selon l'âge.",
+          "resultat_markdown": "Ce sont des compteurs d'invités, pas des compteurs de boucle."
+        },
+        {
+          "numero": 4,
+          "action": "Remarquer l'omission",
+          "justification": "La partie Variables de la figure ne déclare que Jeunes, Vieux et age.",
+          "resultat_markdown": "`i` devrait être déclarée de type entier."
+        }
+      ],
+      "conclusion_markdown": "Le compteur de la boucle Pour est la variable i ; Jeunes et Vieux comptent des invités."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « Jeunes » ou « Vieux » sans précision.",
+          "pourquoi_faux": "Ces variables comptent des invités, pas des passages : elles ne sont pas le compteur de la boucle.",
+          "correction_markdown": "Réponds `i` et mentionne les autres comme compteurs d'invités."
+        },
+        {
+          "erreur_markdown": "Croire qu'un compteur doit être déclaré à part.",
+          "pourquoi_faux": "Le compteur de boucle est une variable comme les autres ; elle doit être déclarée, même si certains énoncés l'omettent.",
+          "correction_markdown": "Signale l'omission si l'énoncé la présente."
+        },
+        {
+          "erreur_markdown": "Confondre compteur et borne.",
+          "pourquoi_faux": "Le compteur varie ; la borne (10) est une valeur fixe.",
+          "correction_markdown": "Le compteur est un nom de variable, pas un nombre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `Pour k allant de 1 à 5 faire`, quel est le compteur de la boucle ?",
+          "solution_markdown": "Le compteur est `k`, la variable qui suit le mot `Pour`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans l'algorithme `total` (`somme ← somme + i` dans une boucle `Pour i allant de 1 à n`), distingue le compteur de boucle et l'accumulateur.",
+          "solution_markdown": "Le compteur de boucle est `i` : la boucle Pour le fait passer de 1 à `n`.\n\nL'accumulateur est `somme` : le corps de la boucle y ajoute `i` à chaque passage pour calculer la somme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Les dix âges saisis sont 12, 45, 29, 30, 18, 60, 25, 31, 22 et 70. Donne la valeur finale de `Jeunes` et de `Vieux` dans l'algorithme `decision`, et celle du compteur `i` à la fin de la boucle.",
+          "solution_markdown": "Le test est `age < 30`.\n\nÂges inférieurs à 30 : 12, 29, 18, 25, 22. Cela fait 5 âges, donc `Jeunes = 5`.\n\nLes autres âges (45, 30, 60, 31, 70) ne vérifient pas la condition (30 n'est pas strictement inférieur à 30) : `Vieux = 5`.\n\nContrôle : $5 + 5 = 10$, autant que de passages.\n\nLe compteur `i` a pris les valeurs de 1 à 10 ; il vaut 10 au dernier passage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le compteur de la boucle Pour est la variable placée après le mot Pour.",
+        "Il compte les passages, de la borne de départ à la borne finale.",
+        "Les variables incrémentées dans le corps sont des compteurs d'événements.",
+        "Le compteur doit être déclaré comme toute variable.",
+        "Au probatoire, la question « le compteur » vaut un demi-point et se répond en un mot."
+      ]
+    }
+  ]
+}

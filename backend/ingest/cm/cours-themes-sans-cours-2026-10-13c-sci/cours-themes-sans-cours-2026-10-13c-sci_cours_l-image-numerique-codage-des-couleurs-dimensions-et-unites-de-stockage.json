@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-l-image-numerique-codage-des-couleurs-dimensions-et-unites-de-stockage-admin13",
+  "meta": {
+    "titre": "L'image numérique : codage des couleurs, dimensions et unités de stockage",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Multimédia : image numérique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "codage des couleurs",
+      "dimensions d'une image",
+      "unité de stockage",
+      "image numérique",
+      "pixel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-e-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Probatoire séries C, D, E, session 2023 : épreuve d'informatique (reproduction du site Camerecole)",
+    "epreuve_source": "probatoire-c-d-e-informatique-2023-officiel-cameroun.html",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-2023-officiel-cameroun-ex1-q2.b-1-admin13",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ton téléphone prend une photo en une fraction de seconde, et pourtant cette photo est faite de plusieurs millions de petits carrés colorés, chacun codé par des nombres. Pour savoir combien de couleurs une image peut afficher, quelle taille elle aura une fois imprimée et combien de place elle prendra sur une clé USB, il suffit de trois outils : le codage des couleurs, les dimensions de l'image et les unités de stockage. Ils reviennent à presque chaque épreuve d'informatique du probatoire, sous forme de calculs courts."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Un bit vaut 0 ou 1 ; un octet est un groupe de 8 bits",
+        "Puissances de 2 : 2, 4, 8, 16, 32, 64, 128, 256, 512, 1 024",
+        "Règle de proportionnalité et conversion d'unités"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Couleurs, dimensions et taille d'une image numérique",
+      "contenu_markdown": "**Pixel et définition.** Une image numérique est une grille de points appelés **pixels**. Sa **définition** est le nombre de colonnes multiplié par le nombre de lignes : une image de 640 × 480 contient 640 × 480 = 307 200 pixels.\n\n**Codage des couleurs.** Chaque pixel est codé sur n bits (profondeur de codage). Avec n bits, on obtient **2 puissance n** couleurs :\n\n| Bits par pixel | Nombre de couleurs |\n|---|---|\n| 1 | 2 (noir et blanc) |\n| 8 | 256 |\n| 16 | 65 536 |\n| 24 | 16 777 216 (couleurs vraies) |\n\nEn 24 bits, le pixel est codé par trois octets : un pour le rouge, un pour le vert, un pour le bleu, chacun compris entre 0 et 255. Exemples : (255, 0, 0) est rouge, (0, 0, 0) est noir, (255, 255, 255) est blanc.\n\n**Dimensions et résolution.** La **résolution** s'exprime en pixels par pouce (ppp ou dpi), avec 1 pouce = 2,54 cm. Pour passer des centimètres aux pixels : dimension en cm ÷ 2,54 = dimension en pouces, puis dimension en pouces × résolution = dimension en pixels.\n\n**Unités de stockage.** 1 octet = 8 bits ; 1 Ko = 1 024 octets ; 1 Mo = 1 024 Ko ; 1 Go = 1 024 Mo. La **taille non compressée** d'une image est : nombre de pixels × bits par pixel ÷ 8, en octets.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Taille d'affichage par proportionnalité",
+          "quand_utiliser": "Quand l'énoncé donne la définition et une seule dimension réelle",
+          "contenu_markdown": "Le rapport hauteur sur largeur est le même en pixels et en centimètres : hauteur en cm = largeur en cm × (nombre de lignes ÷ nombre de colonnes). Pour 640 × 480 imprimée sur 12 cm de large : 12 × 480 ÷ 640 = 9 cm."
+        },
+        {
+          "nom": "Nombre de bits nécessaire pour N couleurs",
+          "quand_utiliser": "Quand l'énoncé donne le nombre de couleurs à afficher",
+          "contenu_markdown": "Cherche le plus petit n tel que 2 puissance n soit supérieur ou égal au nombre de couleurs. Pour 4 096 couleurs : 2 puissance 12 = 4 096, donc 12 bits ; le nombre de bits est l'exposant, pas le nombre de couleurs."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une photo de 10,16 cm × 7,62 cm est numérisée à la résolution de 300 ppp et codée sur 24 bits. Donner le nombre de couleurs, la définition de l'image en pixels, puis sa taille non compressée en octets, en Ko et en Mo (1 Ko = 1 024 octets ; 1 pouce = 2,54 cm).",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre de couleurs",
+          "justification": "Avec 24 bits par pixel, on a 2 puissance 24 combinaisons.",
+          "resultat_markdown": "2 puissance 24 = 16 777 216 couleurs"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir les dimensions en pouces",
+          "justification": "La résolution est donnée en pixels par pouce : il faut des pouces.",
+          "resultat_markdown": "10,16 ÷ 2,54 = 4 pouces et 7,62 ÷ 2,54 = 3 pouces"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la définition",
+          "justification": "Dimension en pouces × résolution, pour la largeur puis pour la hauteur.",
+          "resultat_markdown": "4 × 300 = 1 200 colonnes et 3 × 300 = 900 lignes, soit 1 200 × 900 = 1 080 000 pixels"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la taille en octets",
+          "justification": "24 bits = 3 octets par pixel : on évite ainsi la division par 8.",
+          "resultat_markdown": "1 080 000 × 3 = 3 240 000 octets"
+        },
+        {
+          "numero": 5,
+          "action": "Convertir en Ko et en Mo",
+          "justification": "On divise par 1 024 à chaque changement d'unité.",
+          "resultat_markdown": "3 240 000 ÷ 1 024 = 3 164,0625 Ko, puis 3 164,0625 ÷ 1 024 ≈ 3,09 Mo"
+        }
+      ],
+      "conclusion_markdown": "L'image compte 16 777 216 couleurs possibles et 1 080 000 pixels (1 200 × 900) ; sa taille non compressée est de 3 240 000 octets, soit environ 3,09 Mo."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de diviser par 8 et donner la taille en bits comme si c'était des octets.",
+          "pourquoi_faux": "Le nombre de pixels multiplié par les bits par pixel donne des bits. Un pixel de 24 bits occupe 3 octets, pas 24 octets.",
+          "correction_markdown": "Divise par 8 (ou multiplie par 3 octets en 24 bits) avant toute conversion en Ko."
+        },
+        {
+          "erreur_markdown": "Convertir avec 1 000 au lieu de 1 024.",
+          "pourquoi_faux": "L'énoncé précise que 1 Ko = 1 024 octets. Avec 1 000, on obtient 3 240 Ko au lieu de 3 164,06 Ko.",
+          "correction_markdown": "Utilise le facteur donné dans l'énoncé, ici 1 024."
+        },
+        {
+          "erreur_markdown": "Répondre « 256 bits » pour coder 256 couleurs.",
+          "pourquoi_faux": "Le nombre de bits est l'exposant n tel que 2 puissance n = 256, c'est-à-dire 8.",
+          "correction_markdown": "Cherche l'exposant, pas le nombre de couleurs."
+        },
+        {
+          "erreur_markdown": "Multiplier les centimètres par la résolution sans convertir en pouces.",
+          "pourquoi_faux": "La résolution est en pixels par pouce : appliquée à des centimètres, elle donne un résultat 2,54 fois trop grand.",
+          "correction_markdown": "Divise d'abord les centimètres par 2,54."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne le nombre de couleurs d'une image codée sur 1 bit, sur 8 bits et sur 16 bits. Combien de bits faut-il pour 4 096 couleurs ?",
+          "solution_markdown": "1 bit : 2 couleurs. 8 bits : 256 couleurs. 16 bits : 65 536 couleurs. Pour 4 096 couleurs : 2 puissance 12 = 4 096, donc **12 bits**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image de définition 640 × 480 est imprimée avec une largeur de 12 cm. Calcule sa hauteur, puis sa taille non compressée en Ko si elle est codée sur 24 bits.",
+          "solution_markdown": "Hauteur : 12 × 480 ÷ 640 = **9 cm**.\n\nPixels : 640 × 480 = 307 200. Octets : 307 200 × 3 = 921 600. En Ko : 921 600 ÷ 1 024 = **900 Ko**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une photo de 4 000 × 3 000 pixels est codée sur 24 bits, sans compression. Calcule sa taille en octets, en Ko et en Mo. Combien de photos de ce type tiennent sur une carte mémoire de 4 Go ?",
+          "solution_markdown": "Pixels : 4 000 × 3 000 = 12 000 000. Octets : 12 000 000 × 3 = **36 000 000 octets**.\n\nEn Ko : 36 000 000 ÷ 1 024 = 35 156,25 Ko. En Mo : 35 156,25 ÷ 1 024 ≈ **34,33 Mo**.\n\nCarte de 4 Go : 4 × 1 024 × 1 024 × 1 024 = 4 294 967 296 octets. Nombre de photos : 4 294 967 296 ÷ 36 000 000 ≈ 119,3, soit **119 photos** entières."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Définition = colonnes × lignes (en pixels) ; avec n bits par pixel, on obtient 2 puissance n couleurs.",
+        "24 bits = 3 octets par pixel (rouge, vert, bleu) = 16 777 216 couleurs.",
+        "Centimètres vers pixels : diviser par 2,54 pour avoir des pouces, puis multiplier par la résolution en ppp.",
+        "Taille non compressée en octets = pixels × bits par pixel ÷ 8.",
+        "1 Ko = 1 024 octets, 1 Mo = 1 024 Ko, 1 Go = 1 024 Mo ; ne mélange pas dimensions en cm, définition en pixels et poids en octets."
+      ]
+    }
+  ]
+}

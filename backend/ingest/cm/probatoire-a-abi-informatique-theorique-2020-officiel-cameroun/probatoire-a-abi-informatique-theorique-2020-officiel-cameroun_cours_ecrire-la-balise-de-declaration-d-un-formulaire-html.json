@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-ecrire-la-balise-de-declaration-d-un-formulaire-html-1ere-a-abi-2020",
+  "meta": {
+    "titre": "Écrire la balise de déclaration d'un formulaire HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Programmation web - formulaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "balise form",
+      "formulaire HTML",
+      "action",
+      "method",
+      "HTML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-THEORIQUE-2020-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire série A (filière ABI), session 2020 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-abi-informatique-theorique-2020-officiel-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour qu'une page web recueille les informations de ses visiteurs, elle doit contenir un formulaire. Le navigateur ne le reconnaît que s'il est délimité par une balise précise. Savoir l'écrire correctement est une question de code fréquente à l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page web est écrite en HTML avec des balises",
+        "Connaître la différence entre balise ouvrante et balise fermante",
+        "Connaître la notion d'attribut"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise form encadre tous les champs du formulaire",
+      "contenu_markdown": "Un formulaire est délimité par la balise `<form>` (ouvrante) et `</form>` (fermante). Tous ses champs et ses boutons se placent entre les deux.\n\nLa balise ouvrante porte deux attributs importants :\n\n- `action` : adresse du fichier qui traite les données reçues ;\n- `method` : mode de transmission, `get` ou `post`.\n\nForme complète :\n\n```html\n<form action=\"traitement.php\" method=\"post\">\n   ... champs et boutons ...\n</form>\n```",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la balise qui permet de déclarer un formulaire. *[0,5 pt]*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Nommer la balise",
+          "justification": "Le formulaire est délimité par une balise dont le nom est form.",
+          "resultat_markdown": "Balise : `<form>`."
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter les attributs",
+          "justification": "Sans action, le navigateur ne sait pas où envoyer les données.",
+          "resultat_markdown": "`<form action=\"confirmation.php\" method=\"post\">`."
+        },
+        {
+          "numero": 3,
+          "action": "Fermer la balise",
+          "justification": "Une balise ouvrante doit être refermée.",
+          "resultat_markdown": "`</form>` après le dernier champ."
+        },
+        {
+          "numero": 4,
+          "action": "Placer les champs à l'intérieur",
+          "justification": "Un champ hors des balises n'est pas envoyé.",
+          "resultat_markdown": "Champs et boutons entre `<form ...>` et `</form>`."
+        }
+      ],
+      "conclusion_markdown": "La balise qui déclare un formulaire est <form>, fermée par </form>, avec les attributs action et method."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la balise fermante `</form>`.",
+          "pourquoi_faux": "Sans elle, le navigateur ne sait pas où le formulaire se termine et l'envoi peut échouer.",
+          "correction_markdown": "Écris la balise fermante dès que tu écris l'ouvrante."
+        },
+        {
+          "erreur_markdown": "Placer le bouton Envoyer hors du formulaire.",
+          "pourquoi_faux": "Un bouton hors des balises ne déclenche l'envoi d'aucun champ.",
+          "correction_markdown": "Mets tous les champs et le bouton entre les deux balises."
+        },
+        {
+          "erreur_markdown": "Écrire `<forme>` ou `<formulaire>`.",
+          "pourquoi_faux": "HTML ne reconnaît que `form` : toute autre orthographe est ignorée.",
+          "correction_markdown": "Retiens : form, comme le début du mot formulaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Complète : `<form ... =\"traiter.php\" method=\"post\">`.",
+          "solution_markdown": "L'attribut manquant est `action` : `<form action=\"traiter.php\" method=\"post\">`. Il indique l'adresse du script qui traitera les données."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la différence entre `method=\"get\"` et `method=\"post\"` ?",
+          "solution_markdown": "Avec `get`, les données sont ajoutées à l'adresse de la page, donc visibles et limitées en taille.\n\nAvec `post`, les données sont envoyées dans le corps de la requête : elles ne s'affichent pas dans l'adresse, ce qui convient aux mots de passe et aux données personnelles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris le code complet d'un formulaire de confirmation avec un champ « nom » et un bouton « Envoyer ».",
+          "solution_markdown": "```html\n<form action=\"confirmation.php\" method=\"post\">\n   Votre nom : <input type=\"text\" name=\"nom\">\n   <input type=\"submit\" value=\"Envoyer\">\n</form>\n```\n\nLe champ de saisie et le bouton sont placés entre `<form ...>` et `</form>`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire s'écrit entre `<form>` et `</form>`.",
+        "La balise ouvrante porte `action` (où envoyer) et `method` (comment envoyer).",
+        "Tous les champs et le bouton se placent à l'intérieur du formulaire.",
+        "Ferme toujours la balise.",
+        "Au probatoire, la question sur la balise de formulaire accompagne souvent une identification de composants."
+      ]
+    }
+  ]
+}
