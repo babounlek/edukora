@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-calculer-la-portee-d-un-projectile-en-posant-y-0-tle-c-e-2016",
+  "meta": {
+    "titre": "Calculer la portée d'un projectile en posant y = 0",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mouvement dans le champ de pesanteur uniforme",
+    "duree_estimee_min": 25,
+    "tags": [
+      "portée",
+      "équation du second degré",
+      "trajectoire parabolique",
+      "lancer"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex1-q1.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Au lancer du poids comme au tir à l'arc, ce qui compte à la fin, c'est la distance parcourue avant de toucher le sol. Une fois l'équation de la trajectoire établie, ce résultat tient en une idée : au point d'impact, l'ordonnée est nulle. Le reste est une équation du second degré à résoudre proprement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation cartésienne de la trajectoire d'un projectile",
+        "Résolution d'une équation du second degré (discriminant)",
+        "Valeurs de $\\cos 45°$ et $\\tan 45°$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Portée et point d'impact",
+      "contenu_markdown": "Dans un repère dont l'origine est au niveau du sol, le point d'impact est le point de la trajectoire d'ordonnée $y = 0$. On pose $y = 0$ dans l'équation cartésienne $y = A\\,x^2 + B\\,x + h$, avec $A = -\\dfrac{g}{2\\,v_0^2\\cos^2\\alpha}$ et $B = \\tan\\alpha$, et on résout l'équation du second degré :\n\n$$\\Delta = B^2 - 4\\,A\\,h \\qquad ; \\qquad x = \\dfrac{-B \\pm \\sqrt{\\Delta}}{2A}$$\n\nOn retient la racine positive (l'autre correspond à un point derrière le lanceur). Si le départ est au sol ($h = 0$), la portée vaut $\\dfrac{v_0^2\\sin 2\\alpha}{g}$.",
+      "formule_principale": "x_P = \\dfrac{-B - \\sqrt{B^2 - 4Ah}}{2A}\\quad (A < 0)",
+      "variantes": [
+        {
+          "nom": "Lancer depuis le sol",
+          "quand_utiliser": "Quand $h = 0$",
+          "contenu_markdown": "L'équation $x\\,(A\\,x + B) = 0$ donne $x = 0$ (départ) ou $x = -\\dfrac{B}{A} = \\dfrac{v_0^2\\sin 2\\alpha}{g}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Lancer du poids : $h = 2{,}62$ m, $v_0 = 13{,}7$ m/s, $\\alpha = 45°$, $g = 10$ m/s². Calculer la longueur du lancer, mesurée sur l'axe $Ox$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la condition d'impact",
+          "justification": "Au point P, la boule touche le sol (origine au sol)",
+          "resultat_markdown": "$y = 0$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les coefficients",
+          "justification": "Pour $45°$ : $\\cos^2\\alpha = \\dfrac{1}{2}$, $\\tan\\alpha = 1$",
+          "resultat_markdown": "$A = -\\dfrac{g}{v_0^2} = -\\dfrac{10}{187{,}69} = -0{,}05328$ ; $B = 1$ ; $h = 2{,}62$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le discriminant",
+          "justification": "Il décide du nombre de solutions réelles",
+          "resultat_markdown": "$\\Delta = 1 - 4\\times(-0{,}05328)\\times 2{,}62 = 1{,}5584$, $\\sqrt{\\Delta} = 1{,}2483$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les deux racines",
+          "justification": "Formule du second degré",
+          "resultat_markdown": "$x = \\dfrac{-1 \\pm 1{,}2483}{2\\times(-0{,}05328)}$ donne $x_1 = -2{,}33$ m et $x_2 = 21{,}10$ m"
+        },
+        {
+          "numero": 5,
+          "action": "Choisir la racine acceptable",
+          "justification": "La boule retombe devant le lanceur, donc $x > 0$",
+          "resultat_markdown": "$x_P = 21{,}1$ m"
+        }
+      ],
+      "conclusion_markdown": "La longueur du lancer est $OP \\approx 21{,}1$ m. Contrôle : la durée du vol est $t = \\dfrac{21{,}10}{13{,}7\\times 0{,}7071} = 2{,}18$ s et $y(2{,}18) \\approx 0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conserver la racine négative de l'équation du second degré",
+          "pourquoi_faux": "Une abscisse négative est située derrière le lanceur : la boule ne peut pas y arriver. Cette racine est une solution mathématique de l'équation, pas du problème physique.",
+          "correction_markdown": "Après la résolution, écris une phrase qui élimine la racine négative et justifie le choix."
+        },
+        {
+          "erreur_markdown": "Utiliser la formule $\\dfrac{v_0^2\\sin 2\\alpha}{g}$ alors que le départ n'est pas au niveau du sol",
+          "pourquoi_faux": "Cette formule suppose $h = 0$. Avec une hauteur de lâcher non nulle, la portée est plus grande et il faut résoudre l'équation complète.",
+          "correction_markdown": "Avant d'utiliser une formule de portée, vérifie que la hauteur initiale est nulle."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe dans le discriminant ($\\Delta = B^2 + 4Ah$ au lieu de $B^2 - 4Ah$)",
+          "pourquoi_faux": "Le coefficient $A$ est négatif et $h$ positif : le produit $-4Ah$ est positif. Un signe inversé donne un discriminant plus petit, voire négatif, et une portée fausse.",
+          "correction_markdown": "Écris $\\Delta = B^2 - 4Ah$ en toutes lettres avant de remplacer, avec les parenthèses autour de $A$ négatif."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un projectile est lancé du sol avec $v_0 = 20$ m/s sous l'angle $\\alpha = 30°$ ($g = 10$ m/s²). Calculer sa portée.",
+          "solution_markdown": "Équation de la trajectoire depuis le sol : $y = -\\dfrac{g}{2\\,v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x$. Avec $\\cos^2 30° = 0{,}75$ et $\\tan 30° = 0{,}5774$ :\n\n$$A = -\\dfrac{10}{2\\times 400\\times 0{,}75} = -\\dfrac{10}{600} = -0{,}016667\\ \\text{m}^{-1}$$\n\n$y = 0$ : $x\\,(A\\,x + 0{,}5774) = 0$, donc $x = 0$ (départ) ou $x = -\\dfrac{0{,}5774}{-0{,}016667} = 34{,}64$ m. La portée vaut $34{,}6$ m, ce que confirme $\\dfrac{v_0^2\\sin 60°}{g} = \\dfrac{400\\times 0{,}866}{10} = 34{,}64$ m."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une boule est lancée d'une hauteur $h = 2{,}0$ m avec $v_0 = 10$ m/s sous l'angle $\\alpha = 45°$ ($g = 10$ m/s²). Calculer la longueur du lancer.",
+          "solution_markdown": "Pour $45°$ : $A = -\\dfrac{g}{v_0^2} = -\\dfrac{10}{100} = -0{,}1$ m$^{-1}$, $B = 1$, $h = 2{,}0$ m. L'équation $y = 0$ s'écrit $-0{,}1\\,x^2 + x + 2 = 0$.\n\n$$\\Delta = 1^2 - 4\\times(-0{,}1)\\times 2 = 1 + 0{,}8 = 1{,}8 \\qquad ; \\qquad \\sqrt{\\Delta} = 1{,}3416$$\n\n$$x = \\dfrac{-1 \\pm 1{,}3416}{2\\times(-0{,}1)} = \\dfrac{-1 \\pm 1{,}3416}{-0{,}2} \\qquad\\Longrightarrow\\qquad x_1 = -1{,}71\\ \\text{m}\\ ;\\ x_2 = 11{,}71\\ \\text{m}$$\n\nOn retient la racine positive : longueur du lancer $\\approx 11{,}7$ m."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour un tir depuis le sol ($h = 0$) avec la vitesse $v_0$ fixée, montrer que la portée vaut $\\dfrac{v_0^2\\sin 2\\alpha}{g}$, puis montrer qu'elle est maximale pour $\\alpha = 45°$. Calculer cette portée maximale pour $v_0 = 10$ m/s ($g = 10$ m/s²).",
+          "solution_markdown": "**Portée.** Pour $h = 0$ : $y = x\\left(-\\dfrac{g\\,x}{2\\,v_0^2\\cos^2\\alpha} + \\tan\\alpha\\right) = 0$. La racine non nulle vérifie $\\dfrac{g\\,x}{2\\,v_0^2\\cos^2\\alpha} = \\tan\\alpha$, soit\n\n$$x = \\dfrac{2\\,v_0^2\\cos^2\\alpha\\,\\tan\\alpha}{g} = \\dfrac{2\\,v_0^2\\sin\\alpha\\cos\\alpha}{g} = \\dfrac{v_0^2\\sin 2\\alpha}{g}$$\n\n**Maximum.** Pour $v_0$ fixée, la portée est maximale quand $\\sin 2\\alpha = 1$, donc $2\\alpha = 90°$ et $\\alpha = 45°$.\n\n**Application numérique.** $x_{max} = \\dfrac{v_0^2}{g} = \\dfrac{100}{10} = 10$ m."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Au point d'impact sur le sol, $y = 0$ : c'est la condition qui donne la portée.",
+        "On résout $y = 0$ comme une équation du second degré en $x$ : discriminant, deux racines, une seule physiquement acceptable.",
+        "La formule $\\dfrac{v_0^2\\sin 2\\alpha}{g}$ n'est valable que pour un départ au niveau du sol.",
+        "Contrôle toujours ta portée avec la durée du vol : $x = v_0\\cos\\alpha\\times t$ et $y(t) \\approx 0$.",
+        "Au BAC, la portée d'un lancer (poids, javelot, ballon) est la question de calcul classique après l'équation de la trajectoire."
+      ]
+    }
+  ]
+}

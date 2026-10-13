@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-se-connecter-a-mysql-depuis-php-et-gerer-les-erreurs-tle-ti-2019",
+  "meta": {
+    "titre": "Se connecter à MySQL depuis PHP et gérer les erreurs",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP et bases de données",
+    "duree_estimee_min": 30,
+    "tags": [
+      "mysqli_connect",
+      "PDO",
+      "connexion MySQL",
+      "gestion des erreurs"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un site dynamique n'a d'intérêt que s'il parle à sa base de données : produits, comptes, avis. Cette conversation commence par une connexion, qui peut échouer pour mille raisons : mauvais mot de passe, serveur arrêté, base inconnue. Un bon script se connecte, vérifie, travaille puis referme proprement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une base de données et un SGBD",
+        "Savoir déclarer des variables et écrire un `if` en PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Connexion, test, requêtes, fermeture",
+      "contenu_markdown": "Avec l'extension **mysqli** (style procédural), la connexion suit quatre temps :\n\n```php\n$connexion = mysqli_connect($hote, $utilisateur, $motdepasse, $base);\nif (!$connexion) {\n    die('Erreur : ' . mysqli_connect_error());\n}\n// ... requêtes ...\nmysqli_close($connexion);\n```\n\nL'**ordre des paramètres** est fixe : hôte, utilisateur, mot de passe, base. `mysqli_connect` renvoie `false` en cas d'échec ; `mysqli_connect_error()` donne la cause et `die()` arrête le script avec un message.\n\nAvec **PDO**, la connexion est un objet et les erreurs sont des exceptions interceptées par `try/catch` :\n\n```php\ntry {\n    $pdo = new PDO(\"mysql:host=$hote;dbname=$base;charset=utf8\", $utilisateur, $motdepasse,\n                   [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);\n} catch (PDOException $e) {\n    die('Erreur : ' . $e->getMessage());\n}\n$pdo = null; // fermeture\n```",
+      "formule_principale": "\\text{connexion} \\to \\text{test du résultat} \\to \\text{requêtes} \\to \\text{fermeture}",
+      "variantes": [
+        {
+          "nom": "mysqli ou PDO",
+          "quand_utiliser": "Quand le sujet ne précise pas la bibliothèque",
+          "contenu_markdown": "mysqli ne parle qu'à MySQL et MariaDB ; PDO sait parler à plusieurs SGBD avec la même syntaxe et gère naturellement les exceptions. Les deux sont acceptés ; choisis celle que tu maîtrises."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code de connexion à la base avec les identifiants `$user`, `$passwd`, `$localhost` et `$bdd`, fermer la connexion et gérer les erreurs (question 5 de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir la connexion",
+          "justification": "L'ordre est hôte, utilisateur, mot de passe, base",
+          "resultat_markdown": "`$connexion = mysqli_connect($localhost, $user, $passwd, $bdd);`"
+        },
+        {
+          "numero": 2,
+          "action": "Gérer l'échec",
+          "justification": "`mysqli_connect` renvoie `false` si la connexion échoue",
+          "resultat_markdown": "`if (!$connexion) { die('Erreur de connexion : ' . mysqli_connect_error()); }`"
+        },
+        {
+          "numero": 3,
+          "action": "Travailler avec la base",
+          "justification": "La connexion valide permet d'envoyer des requêtes",
+          "resultat_markdown": "Zone réservée aux requêtes SQL (hors sujet)."
+        },
+        {
+          "numero": 4,
+          "action": "Fermer la connexion",
+          "justification": "Fermer libère la ressource côté serveur",
+          "resultat_markdown": "`mysqli_close($connexion);`"
+        }
+      ],
+      "conclusion_markdown": "Le code est composé de `mysqli_connect`, du test `if (!$connexion)` avec `die`, puis de `mysqli_close`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `mysqli_connect($user, $passwd, $localhost, $bdd)`.",
+          "pourquoi_faux": "La fonction attend l'hôte en premier : avec cette inversion, MySQL cherche un serveur nommé comme l'utilisateur et la connexion échoue.",
+          "correction_markdown": "Retenir l'ordre « hôte, utilisateur, mot de passe, base »."
+        },
+        {
+          "erreur_markdown": "Ne pas tester la connexion avant de s'en servir.",
+          "pourquoi_faux": "Si la connexion a échoué, les requêtes suivantes déclenchent des erreurs en cascade difficiles à comprendre, voire exposent des détails techniques.",
+          "correction_markdown": "Tester `if (!$connexion)` juste après `mysqli_connect` et arrêter le script avec un message."
+        },
+        {
+          "erreur_markdown": "Oublier de fermer la connexion.",
+          "pourquoi_faux": "PHP ferme la connexion en fin de script, mais la question demande explicitement de la fermer, et sur un site chargé une connexion laissée ouverte coûte de la mémoire au serveur.",
+          "correction_markdown": "Terminer par `mysqli_close($connexion);` (ou `$pdo = null;`)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `$c = mysqli_connect('localhost', 'root', '', 'ecole');`, nomme les quatre paramètres et dis quelle valeur est le mot de passe.",
+          "solution_markdown": "1. `'localhost'` : l'hôte, la machine où se trouve MySQL.\n2. `'root'` : le nom d'utilisateur.\n3. `''` : le mot de passe (vide ici, courant en test local).\n4. `'ecole'` : le nom de la base de données."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Compléter le code pour afficher « Connexion impossible » en cas d'échec et « Connecté » sinon : `$c = mysqli_connect($h, $u, $p, $b);` puis ...",
+          "solution_markdown": "```php\n$c = mysqli_connect($h, $u, $p, $b);\nif (!$c) {\n    echo 'Connexion impossible';\n} else {\n    echo 'Connecté';\n    mysqli_close($c);\n}\n```\n1. `!$c` est vrai quand `mysqli_connect` a renvoyé `false`.\n2. Dans le cas contraire, on affiche « Connecté » puis on ferme la connexion."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Réécrire la connexion avec PDO et gérer les erreurs par exception, puis expliquer l'intérêt de `PDO::ERRMODE_EXCEPTION`.",
+          "solution_markdown": "```php\ntry {\n    $pdo = new PDO(\"mysql:host=$h;dbname=$b;charset=utf8\", $u, $p, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);\n} catch (PDOException $e) {\n    die('Erreur : ' . $e->getMessage());\n}\n```\n1. Le premier argument (DSN) donne le type de base, l'hôte, le nom de la base et l'encodage.\n2. `PDO::ERRMODE_EXCEPTION` fait lever une exception à chaque erreur SQL ou de connexion, au lieu d'un silence.\n3. Le bloc `catch` récupère l'exception et affiche son message ; on peut aussi enregistrer l'erreur dans un fichier journal plutôt que de l'afficher au visiteur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une connexion suit quatre temps : ouvrir, tester, travailler, fermer.",
+        "L'ordre de `mysqli_connect` est hôte, utilisateur, mot de passe, base.",
+        "Gérer les erreurs, c'est tester le résultat de la connexion (`die`) ou intercepter une exception (`try/catch`).",
+        "On ferme avec `mysqli_close` ou en affectant `null` à l'objet PDO.",
+        "Au baccalauréat, cette question rapporte des points sur quatre éléments : connexion, test, message d'erreur, fermeture."
+      ]
+    }
+  ]
+}

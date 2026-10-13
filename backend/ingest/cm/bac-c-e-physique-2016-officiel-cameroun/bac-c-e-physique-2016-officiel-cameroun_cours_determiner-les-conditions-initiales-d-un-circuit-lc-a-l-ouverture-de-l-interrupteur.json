@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-determiner-les-conditions-initiales-d-un-circuit-lc-a-l-ouverture-de-l-interrupteur-tle-c-e-2016",
+  "meta": {
+    "titre": "Déterminer les conditions initiales d'un circuit LC à l'ouverture de l'interrupteur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillations électriques libres",
+    "duree_estimee_min": 20,
+    "tags": [
+      "circuit LC",
+      "bobine",
+      "conditions initiales",
+      "régime permanent"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex2-q1.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un circuit LC oscille parce qu'on lui a donné une énergie de départ : dans le cas classique du Baccalauréat, un courant qui traverse la bobine juste avant l'ouverture d'un interrupteur. Pour écrire la solution de l'équation différentielle, il faut d'abord savoir combien valent la tension et le courant à l'instant précis où tout démarre. Cette étape, souvent bâclée, décide du signe et de l'amplitude de la solution."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation $u_L = L\\,\\dfrac{di}{dt} + r\\,i$ pour une bobine",
+        "Relation $q = C\\,u_C$ pour un condensateur",
+        "Deux dipôles en dérivation ont la même tension"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Conditions initiales en régime permanent continu",
+      "contenu_markdown": "En régime permanent continu, toutes les grandeurs sont constantes : $\\dfrac{di}{dt} = 0$ pour la bobine et $\\dfrac{du_C}{dt} = 0$ pour le condensateur. On en déduit :\n\n- la tension aux bornes d'une bobine de résistance $r$ vaut $u_L = r\\,i$ (nulle si $r$ est négligeable) ;\n- le courant dans un condensateur est nul ;\n- deux dipôles en dérivation ont la même tension.\n\nÀ l'ouverture de l'interrupteur, l'intensité du courant dans une bobine est continue (elle ne peut pas varier brusquement), de même que la tension aux bornes d'un condensateur. Les conditions initiales de la phase d'oscillations sont donc les valeurs du régime permanent précédent.",
+      "formule_principale": "u_L = r\\,i \\quad (\\text{régime permanent}) \\;\\Longrightarrow\\; u_L = 0\\ \\text{si}\\ r \\approx 0",
+      "variantes": [
+        {
+          "nom": "Bobine résistive",
+          "quand_utiliser": "Quand la bobine a une résistance $r$ non négligeable",
+          "contenu_markdown": "La tension aux bornes de la bobine en régime permanent vaut $u_L = r\\,I$ et le condensateur en dérivation est chargé sous cette tension."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de courant continu alimente, par l'intermédiaire d'un interrupteur fermé et d'un ampèremètre, une bobine d'inductance $L = 42{,}20\\times10^{-3}$ H de résistance négligeable en dérivation avec un condensateur de capacité $C = 14{,}83\\ \\mu$F. L'ampèremètre indique $I = 225$ mA. À $t = 0$, on ouvre l'interrupteur. Déterminer la tension aux bornes de la bobine à cet instant, puis celle aux bornes du condensateur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le régime",
+          "justification": "L'interrupteur est fermé depuis longtemps : régime permanent",
+          "resultat_markdown": "Courant constant dans la bobine : $\\dfrac{di}{dt} = 0$ et $i = I = 0{,}225$ A"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la tension de la bobine",
+          "justification": "Résistance négligeable : $u_L = L\\,\\dfrac{di}{dt} + r\\,i$ avec $r = 0$",
+          "resultat_markdown": "$u_L(0) = L\\times 0 = 0$ V"
+        },
+        {
+          "numero": 3,
+          "action": "Passer au condensateur",
+          "justification": "Bobine et condensateur sont en dérivation",
+          "resultat_markdown": "$u_C(0) = u_L(0) = 0$ V"
+        },
+        {
+          "numero": 4,
+          "action": "Relever les conditions initiales de la suite",
+          "justification": "Condensateur déchargé, courant continu dans la bobine",
+          "resultat_markdown": "$q_0 = C\\,u_C(0) = 0$ et $i(0) = I = 0{,}225$ A"
+        }
+      ],
+      "conclusion_markdown": "À $t = 0$, la tension aux bornes de la bobine est nulle, donc celle du condensateur aussi : le condensateur est déchargé et tout le courant $I = 0{,}225$ A traverse la bobine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'une tension existe aux bornes de la bobine parce qu'elle est parcourue par un courant",
+          "pourquoi_faux": "La tension d'une bobine idéale est proportionnelle à la variation du courant ($u_L = L\\,\\dfrac{di}{dt}$), pas au courant lui-même. Un courant constant ne produit aucune tension.",
+          "correction_markdown": "Pose $\\dfrac{di}{dt} = 0$ en régime permanent avant tout calcul."
+        },
+        {
+          "erreur_markdown": "Supposer que le condensateur est chargé à l'ouverture",
+          "pourquoi_faux": "Dans le montage en dérivation avec une bobine idéale, la tension commune est nulle en régime permanent : le condensateur n'a aucune charge, quel que soit le courant dans la bobine.",
+          "correction_markdown": "Calcule $u_C(0)$ à partir de $u_L(0)$, jamais de $I$."
+        },
+        {
+          "erreur_markdown": "Dire que le courant dans la bobine s'annule à l'ouverture de l'interrupteur",
+          "pourquoi_faux": "Une bobine s'oppose aux variations brusques du courant : $i(0^+) = i(0^-) = I$. C'est ce courant qui va charger le condensateur.",
+          "correction_markdown": "Retiens : continuité du courant dans une bobine, continuité de la tension aux bornes d'un condensateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un montage identique, $I = 0{,}5$ A, $L = 0{,}1$ H et $C = 10\\ \\mu$F, la bobine étant idéale. Donner $u_C(0)$, $i(0)$ et l'énergie emmagasinée dans le circuit à $t = 0$.",
+          "solution_markdown": "Régime permanent : $\\dfrac{di}{dt} = 0$ donc $u_L(0) = 0$ et $u_C(0) = u_L(0) = 0$ V ; $i(0) = I = 0{,}5$ A.\n\nL'énergie est celle de la bobine, le condensateur étant déchargé : $E = \\dfrac{1}{2}L\\,I^2 = \\dfrac{1}{2}\\times 0{,}1\\times 0{,}5^2 = 0{,}0125$ J."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La bobine précédente ($L = 0{,}1$ H, traversée par $I = 0{,}5$ A) a maintenant une résistance $r = 2\\ \\Omega$. Calculer sa tension en régime permanent, la charge initiale du condensateur ($C = 10\\ \\mu$F) et expliquer ce qui change.",
+          "solution_markdown": "En régime permanent, $\\dfrac{di}{dt} = 0$ donc $u_L = r\\,I = 2\\times 0{,}5 = 1{,}0$ V.\n\nLe condensateur en dérivation a la même tension : $u_C(0) = 1{,}0$ V et $q_0 = C\\,u_C(0) = 10\\times10^{-6}\\times 1{,}0 = 1{,}0\\times10^{-5}$ C.\n\nAvec une résistance non nulle, la tension de la bobine n'est plus nulle en régime permanent : le condensateur est chargé à l'origine des dates, et la condition $u_C(0) = 0$ n'est plus valable."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour la bobine idéale ($L = 0{,}1$ H) traversée par $I = 0{,}5$ A et le condensateur $C = 10\\ \\mu$F, calculer par un bilan d'énergie la tension maximale que le condensateur atteindra après l'ouverture de l'interrupteur.",
+          "solution_markdown": "Le circuit LC idéal ne dissipe pas d'énergie : l'énergie initiale, entièrement magnétique, devient à un instant donné entièrement électrique.\n\n$$\\dfrac{1}{2}L\\,I^2 = \\dfrac{1}{2}C\\,U_{max}^2 \\quad\\Longrightarrow\\quad U_{max} = I\\sqrt{\\dfrac{L}{C}} = 0{,}5\\times\\sqrt{\\dfrac{0{,}1}{10\\times10^{-6}}} = 0{,}5\\times\\sqrt{10^{4}} = 0{,}5\\times 100 = 50\\ \\text{V}$$\n\nLe condensateur atteindra $50$ V en valeur absolue : une tension bien supérieure à celle que fournit un générateur courant, ce qui explique les étincelles à l'ouverture des circuits inductifs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En régime permanent continu : bobine idéale = fil (tension nulle), condensateur = interrupteur ouvert (courant nul).",
+        "Deux dipôles en dérivation ont la même tension : $u_C(0) = u_L(0)$.",
+        "Le courant dans une bobine et la tension aux bornes d'un condensateur sont continus : leurs valeurs juste avant l'ouverture sont les conditions initiales de la suite.",
+        "Les conditions initiales fixent l'amplitude et la phase de la solution sinusoïdale : elles se déterminent avant de résoudre.",
+        "Au BAC, la question « tension à la date $t = 0$ » ouvre presque tous les exercices de circuit LC ou RLC avec interrupteur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-ecrire-la-loi-horaire-de-la-tension-d-un-circuit-lc-a-partir-des-conditions-initiales-tle-c-e-2016",
+  "meta": {
+    "titre": "Écrire la loi horaire de la tension d'un circuit LC à partir des conditions initiales",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillations électriques libres",
+    "duree_estimee_min": 35,
+    "tags": [
+      "circuit LC",
+      "solution sinusoïdale",
+      "conditions initiales",
+      "phase initiale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex2-q1.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Résoudre l'équation différentielle d'un circuit LC, c'est trouver une sinusoïde. Mais une sinusoïde a deux paramètres libres, l'amplitude et la phase, que l'équation ne peut pas fixer. Ce sont les conditions initiales qui les imposent, et c'est là que se joue le signe de la réponse : un piège sur lequel butent beaucoup de candidats."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation différentielle $u'' + \\omega_0^2\\,u = 0$ du circuit LC",
+        "Dérivée d'un cosinus et d'un sinus",
+        "Résolution de $\\cos\\varphi = 0$ et $\\sin\\varphi > 0$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Solution sinusoïdale et détermination de $U_m$ et $\\varphi$",
+      "contenu_markdown": "La solution générale de $u'' + \\omega_0^2\\,u = 0$ est $u(t) = U_m\\cos(\\omega_0 t + \\varphi)$. Pour déterminer $U_m > 0$ et $\\varphi$ :\n\n1. écrire $u(0) = U_m\\cos\\varphi$ et $u'(0) = -U_m\\,\\omega_0\\sin\\varphi$ ;\n2. remplacer par les valeurs initiales connues (celles de $u_C(0)$ et de $\\dfrac{du_C}{dt}(0) = -\\dfrac{i(0)}{C}$) ;\n3. déduire $\\varphi$ à l'aide de $\\cos\\varphi$ et de $\\sin\\varphi$ **ensemble** : la valeur de $\\cos\\varphi$ laisse deux angles possibles, le signe de $\\sin\\varphi$ tranche ;\n4. en déduire $U_m$, puis contrôler avec l'énergie : $\\dfrac{1}{2}C\\,U_m^2 = \\dfrac{1}{2}L\\,I^2$.",
+      "formule_principale": "u_C(t) = U_m\\cos(\\omega_0 t + \\varphi)",
+      "variantes": [
+        {
+          "nom": "Écriture en sinus",
+          "quand_utiliser": "Quand la tension est nulle à l'origine",
+          "contenu_markdown": "Si $u(0) = 0$ et $u'(0) > 0$, la solution s'écrit $u = U_m\\sin(\\omega_0 t)$ ; si $u'(0) < 0$, $u = -U_m\\sin(\\omega_0 t)$ (équivalent à $\\varphi = \\pm\\dfrac{\\pi}{2}$)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Circuit LC ($L = 42{,}20\\times10^{-3}$ H, $C = 14{,}83\\ \\mu$F, résistance négligeable) : à $t = 0$, $u_C(0) = 0$ et le courant dans la bobine vaut $I = 0{,}225$ A. Écrire la loi horaire de $u_C(t)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la forme générale",
+          "justification": "Solution de $u'' + \\omega_0^2\\,u = 0$",
+          "resultat_markdown": "$u_C = U_m\\cos(\\omega_0 t + \\varphi)$ avec $\\omega_0 = 1\\,264$ rad/s"
+        },
+        {
+          "numero": 2,
+          "action": "Exploiter $u_C(0) = 0$",
+          "justification": "Condition sur la valeur à l'origine",
+          "resultat_markdown": "$U_m\\cos\\varphi = 0$ donc $\\varphi = \\pm\\dfrac{\\pi}{2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer la dérivée initiale",
+          "justification": "$i = -C\\,\\dfrac{du_C}{dt}$ et $i(0) = I$",
+          "resultat_markdown": "$\\dfrac{du_C}{dt}(0) = -\\dfrac{I}{C} = -1{,}517\\times10^{4}$ V/s"
+        },
+        {
+          "numero": 4,
+          "action": "Trancher le signe de la phase",
+          "justification": "$-U_m\\,\\omega_0\\sin\\varphi = -\\dfrac{I}{C}$ impose $\\sin\\varphi > 0$",
+          "resultat_markdown": "$\\varphi = +\\dfrac{\\pi}{2}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer l'amplitude",
+          "justification": "$U_m = \\dfrac{I}{C\\,\\omega_0}$",
+          "resultat_markdown": "$U_m = \\dfrac{0{,}225}{14{,}83\\times10^{-6}\\times 1\\,264} = 12{,}0$ V"
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler avec l'énergie",
+          "justification": "$\\dfrac{1}{2}L\\,I^2 = \\dfrac{1}{2}C\\,U_m^2$",
+          "resultat_markdown": "$1{,}07\\times10^{-3}$ J des deux côtés"
+        }
+      ],
+      "conclusion_markdown": "$u_C(t) = 12{,}0\\cos\\left(1\\,264\\,t + \\dfrac{\\pi}{2}\\right) = -12{,}0\\sin(1\\,264\\,t)$ (V, avec $t$ en s) ; le signe $-$ vient de l'orientation choisie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir $\\varphi = -\\dfrac{\\pi}{2}$ après avoir trouvé seulement $\\cos\\varphi = 0$",
+          "pourquoi_faux": "La condition $\\cos\\varphi = 0$ admet deux solutions, $+\\dfrac{\\pi}{2}$ et $-\\dfrac{\\pi}{2}$. Seul le signe de la dérivée initiale permet de choisir ; sans lui, le signe de toute la loi horaire peut être faux.",
+          "correction_markdown": "Écris toujours la seconde condition initiale (sur la dérivée) et regarde le signe de $\\sin\\varphi$."
+        },
+        {
+          "erreur_markdown": "Oublier la seconde condition initiale parce que $u_C(0)$ suffit en apparence",
+          "pourquoi_faux": "Deux paramètres inconnus ($U_m$ et $\\varphi$) demandent deux équations. Avec $u(0) = 0$ seul, $U_m$ reste indéterminée.",
+          "correction_markdown": "Écris deux équations : une pour $u(0)$, une pour $u'(0)$."
+        },
+        {
+          "erreur_markdown": "Calculer $U_m$ à partir de $I$ sans tenir compte de $\\omega_0$",
+          "pourquoi_faux": "$U_m = \\dfrac{I}{C\\,\\omega_0}$ : omettre $\\omega_0$ revient à ignorer la dérivée de la solution et donne une amplitude fausse d'un facteur $1\\,264$.",
+          "correction_markdown": "Contrôle avec l'énergie, qui ne dépend pas des conventions de signe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit LC est tel que $u(0) = U_m = 5$ V (maximum) et $\\dfrac{du}{dt}(0) = 0$, avec $\\omega_0 = 1\\,000$ rad/s. Donner $\\varphi$ et écrire $u(t)$.",
+          "solution_markdown": "$u(0) = U_m\\cos\\varphi = U_m$ donne $\\cos\\varphi = 1$, donc $\\varphi = 0$. Contrôle avec la dérivée : $\\dfrac{du}{dt}(0) = -U_m\\,\\omega_0\\sin 0 = 0$, ce qui est bien la condition donnée.\n\n$$u(t) = 5\\cos(1\\,000\\,t)\\ \\text{(V)}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Circuit LC avec $L = 0{,}1$ H, $C = 10\\ \\mu$F, bobine idéale traversée par $I = 0{,}5$ A à $t = 0$, condensateur déchargé. Écrire la loi horaire de $u_C(t)$, avec les mêmes orientations que dans l'exemple.",
+          "solution_markdown": "$\\omega_0 = \\dfrac{1}{\\sqrt{L\\,C}} = 1\\,000$ rad/s. Conditions initiales : $u_C(0) = 0$ donne $\\varphi = \\pm\\dfrac{\\pi}{2}$ ; $\\dfrac{du_C}{dt}(0) = -\\dfrac{I}{C} = -5\\times10^{4}$ V/s $< 0$ donne $\\sin\\varphi > 0$, donc $\\varphi = +\\dfrac{\\pi}{2}$.\n\n$$U_m = \\dfrac{I}{C\\,\\omega_0} = \\dfrac{0{,}5}{10\\times10^{-6}\\times 1\\,000} = 50\\ \\text{V}$$\n\n$$u_C(t) = 50\\cos\\left(1\\,000\\,t + \\dfrac{\\pi}{2}\\right) = -50\\sin(1\\,000\\,t)\\ \\text{(V)}$$\n\nContrôle énergétique : $\\dfrac{1}{2}L\\,I^2 = 0{,}0125$ J et $\\dfrac{1}{2}C\\,U_m^2 = \\dfrac{1}{2}\\times 10^{-5}\\times 2\\,500 = 0{,}0125$ J."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour le circuit précédent ($u_C = -50\\sin(1\\,000\\,t)$ V, $C = 10\\ \\mu$F), déterminer l'intensité $i(t)$ du courant dans la bobine, puis vérifier la condition $i(0) = 0{,}5$ A.",
+          "solution_markdown": "De la loi des nœuds, $i = -C\\,\\dfrac{du_C}{dt}$. On dérive : $\\dfrac{du_C}{dt} = -50\\times 1\\,000\\cos(1\\,000\\,t) = -5\\times10^{4}\\cos(1\\,000\\,t)$.\n\n$$i(t) = -10\\times10^{-6}\\times\\left(-5\\times10^{4}\\cos(1\\,000\\,t)\\right) = 0{,}5\\cos(1\\,000\\,t)\\ \\text{(A)}$$\n\nÀ $t = 0$ : $i(0) = 0{,}5\\cos 0 = 0{,}5$ A, ce qui est bien la valeur imposée par l'énoncé. Le courant est maximal quand la tension est nulle, et inversement : tension et courant sont en quadrature."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La solution est $u_C = U_m\\cos(\\omega_0 t + \\varphi)$ ; deux conditions initiales sont nécessaires pour fixer $U_m$ et $\\varphi$.",
+        "Quand $\\cos\\varphi = 0$, le signe de la dérivée initiale, donc de $\\sin\\varphi$, tranche entre $+\\dfrac{\\pi}{2}$ et $-\\dfrac{\\pi}{2}$.",
+        "La dérivée initiale de $u_C$ est liée au courant : $\\dfrac{du_C}{dt}(0) = -\\dfrac{i(0)}{C}$.",
+        "Contrôle l'amplitude avec l'énergie : $\\dfrac{1}{2}L\\,I^2 = \\dfrac{1}{2}C\\,U_m^2$.",
+        "Au BAC, la loi horaire d'un circuit LC ou d'un oscillateur mécanique se demande en fin d'exercice avec ses conditions initiales."
+      ]
+    }
+  ]
+}

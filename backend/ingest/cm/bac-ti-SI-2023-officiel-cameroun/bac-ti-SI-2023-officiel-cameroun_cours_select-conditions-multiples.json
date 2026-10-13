@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-select-conditions-multiples-tle-ti-si2023",
+  "meta": {
+    "titre": "Écrire une requête SELECT avec plusieurs conditions",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 22,
+    "tags": [
+      "SELECT",
+      "WHERE",
+      "AND",
+      "SQL",
+      "opérateurs de comparaison"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q6.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Les noms des fournisseurs de Yaoundé dont le chiffre d'affaires dépasse 40 millions » : une phrase simple, qu'il faut traduire en SQL sans se tromper de colonne, d'opérateur ni de guillemet. La méthode est toujours la même : colonnes, table, conditions. Elle fonctionne pour toutes les requêtes de sélection du BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure d'une table",
+        "Opérateurs de comparaison : =, <, >, <=, >="
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Structure SELECT FROM WHERE",
+      "contenu_markdown": "```sql\nSELECT colonnes\nFROM table\nWHERE condition1 AND condition2;\n```\n\n- Les **colonnes** demandées se placent après SELECT.\n- `AND` : les deux conditions doivent être vraies. `OR` : l'une des deux suffit.\n- Valeurs **texte** entre apostrophes (`'Yaoundé'`), **nombres** sans espace ni apostrophe (`40000000`).\n- « supérieur à » est strict (`>`), « supérieur ou égal à » est `>=`.",
+      "variantes": [
+        {
+          "nom": "Condition sur un intervalle",
+          "quand_utiliser": "Quand la phrase donne une borne basse et une borne haute",
+          "contenu_markdown": "`WHERE CA BETWEEN 40000000 AND 60000000` équivaut à `CA >= 40000000 AND CA <= 60000000` : bornes incluses."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête qui affiche le nom et le chiffre d'affaires des fournisseurs domiciliés à Yaoundé dont le chiffre d'affaires est supérieur à 40 000 000.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les colonnes demandées",
+          "justification": "Après SELECT, on met ce qu'on veut afficher.",
+          "resultat_markdown": "NomF, CA."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la table",
+          "justification": "Les données des fournisseurs sont dans Fournisseur.",
+          "resultat_markdown": "FROM Fournisseur."
+        },
+        {
+          "numero": 3,
+          "action": "Traduire la première condition",
+          "justification": "Un texte se compare avec = et des apostrophes.",
+          "resultat_markdown": "Domiciliation = 'Yaoundé'."
+        },
+        {
+          "numero": 4,
+          "action": "Traduire la seconde condition",
+          "justification": "« supérieur à » est strict ; le nombre s'écrit sans espace.",
+          "resultat_markdown": "CA > 40000000."
+        },
+        {
+          "numero": 5,
+          "action": "Relier les conditions",
+          "justification": "Elles doivent être vraies simultanément.",
+          "resultat_markdown": "AND."
+        }
+      ],
+      "conclusion_markdown": "SELECT NomF, CA FROM Fournisseur WHERE Domiciliation = 'Yaoundé' AND CA > 40000000;"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire 40 000 000 avec des espaces",
+          "pourquoi_faux": "Les espaces provoquent une erreur de syntaxe.",
+          "correction_markdown": "Écrire 40000000."
+        },
+        {
+          "erreur_markdown": "Oublier les apostrophes autour de Yaoundé",
+          "pourquoi_faux": "Sans apostrophes, SQL cherche une colonne nommée Yaoundé.",
+          "correction_markdown": "Mettre les textes entre apostrophes."
+        },
+        {
+          "erreur_markdown": "Utiliser >= à la place de >",
+          "pourquoi_faux": "La borne exacte serait incluse à tort.",
+          "correction_markdown": "Lire « supérieur à » comme strict."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Affiche le nom des clients de Douala (table Client(NumClient, Nom, Ville)).",
+          "solution_markdown": "1. Colonne : Nom.\n2. Table : Client.\n3. Condition : Ville = 'Douala'.\n`SELECT Nom FROM Client WHERE Ville = 'Douala';`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Affiche le nom et le prix des produits dont la quantité est inférieure à 10 et le prix supérieur ou égal à 5000 (Produit(Designation, Qte, PU)).",
+          "solution_markdown": "1. Colonnes : Designation, PU.\n2. Conditions : Qte < 10 AND PU >= 5000.\n`SELECT Designation, PU FROM Produit WHERE Qte < 10 AND PU >= 5000;`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Fournisseurs domiciliés à Yaoundé ou à Douala dont le CA dépasse 60 000 000. Écris la requête sans te tromper de priorité.",
+          "solution_markdown": "1. AND est prioritaire sur OR : sans parenthèses, la condition porterait mal.\n2. On groupe donc les villes entre parenthèses.\n`SELECT NomF, CA FROM Fournisseur WHERE (Domiciliation = 'Yaoundé' OR Domiciliation = 'Douala') AND CA > 60000000;`\n3. Sur le jeu de l'énoncé, le résultat est DENGUE (65 000 000) et MEBA (70 000 000)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT colonnes FROM table WHERE conditions.",
+        "AND : les deux, OR : l'une des deux, parenthèses si on mélange.",
+        "Texte entre apostrophes, nombres sans espace.",
+        "« supérieur à » : >, « supérieur ou égal à » : >=.",
+        "Au BAC TI, une requête de sélection vaut 1 à 2 points chaque année."
+      ]
+    }
+  ]
+}

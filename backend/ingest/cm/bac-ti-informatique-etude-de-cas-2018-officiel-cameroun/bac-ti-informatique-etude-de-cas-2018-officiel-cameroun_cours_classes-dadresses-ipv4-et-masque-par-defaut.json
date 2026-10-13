@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-classes-dadresses-ipv4-et-masque-par-defaut-tle-ti",
+  "meta": {
+    "titre": "Classes d'adresses IPv4 et masque par défaut",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "adresse IPv4",
+      "classe A",
+      "classe B",
+      "classe C",
+      "masque de sous-réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q6-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une adresse IP comme 172.10.0.1 ressemble à quatre nombres sans lien entre eux. Pourtant, le premier suffit pour savoir à quelle famille d'adresses on a affaire et quel masque s'applique par défaut. Cette lecture, que l'examen demande presque chaque année, se fait en deux secondes une fois la table apprise."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 comporte quatre octets séparés par des points",
+        "Savoir convertir un nombre de 0 à 255 en binaire sur 8 bits"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La classe se lit sur le premier octet",
+      "contenu_markdown": "Le premier octet de l'adresse détermine la classe, qui fixe le masque par défaut et donc la partie réseau.\n\n| Classe | Premier octet | Bits de tête | Masque par défaut | Hôtes par réseau |\n|---|---|---|---|---|\n| A | 1 à 126 | 0 | 255.0.0.0 (/8) | 16 777 214 |\n| B | 128 à 191 | 10 | 255.255.0.0 (/16) | 65 534 |\n| C | 192 à 223 | 110 | 255.255.255.0 (/24) | 254 |\n\nLe nombre d'hôtes se calcule par 2 puissance (bits de la partie machine) moins 2 : on retire l'adresse du réseau et l'adresse de diffusion. Pour la classe B, 2^16 - 2 = 65 534.\n\nÀ retenir aussi : 127.x.x.x est réservé au bouclage local (la machine elle-même, avec 127.0.0.1) ; les classes D (224 à 239) et E (240 à 255) servent à la diffusion de groupe et à l'expérimentation.",
+      "formule_principale": "\\text{nombre d'hôtes} = 2^{\\text{bits machine}} - 2",
+      "variantes": [
+        {
+          "nom": "Lecture par les bits de tête",
+          "quand_utiliser": "Quand on te donne l'adresse en binaire",
+          "contenu_markdown": "Un premier octet qui commence par 0 est de classe A, par 10 de classe B, par 110 de classe C. Exemple : 10101100 commence par 10, donc classe B (172)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Les adresses des machines du réseau du complexe scolaire vont de 172.10.0.1 à 172.10.0.6. Déterminer la classe et le masque par défaut.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier octet",
+          "justification": "Il détermine la classe",
+          "resultat_markdown": "Le premier octet est 172."
+        },
+        {
+          "numero": 2,
+          "action": "Le situer dans la table",
+          "justification": "On compare aux intervalles de chaque classe",
+          "resultat_markdown": "128 ≤ 172 ≤ 191 : classe B."
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler par les bits",
+          "justification": "Le binaire de 172 doit commencer par 10",
+          "resultat_markdown": "172 = 10101100 commence par 10 : classe B confirmée."
+        },
+        {
+          "numero": 4,
+          "action": "Lire le masque par défaut",
+          "justification": "Le masque est lié à la classe",
+          "resultat_markdown": "255.255.0.0, soit /16."
+        }
+      ],
+      "conclusion_markdown": "Les adresses sont de classe B, avec le masque par défaut 255.255.0.0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre la classe d'après le dernier octet.",
+          "pourquoi_faux": "C'est le premier octet qui décide. Dans 172.10.0.1, le 1 final n'a aucune valeur pour la classe.",
+          "correction_markdown": "Lis toujours l'adresse de gauche à droite : seul le premier nombre compte."
+        },
+        {
+          "erreur_markdown": "Associer 172 à la classe A parce que le nombre est « grand ».",
+          "pourquoi_faux": "La classe A s'arrête à 126. Un premier octet entre 128 et 191 est de classe B.",
+          "correction_markdown": "Garde les trois bornes en tête : 126, 191, 223."
+        },
+        {
+          "erreur_markdown": "Donner 255.255.255.0 comme masque d'une adresse de classe B.",
+          "pourquoi_faux": "Ce masque est celui de la classe C. Avec lui, une adresse de classe B serait vue comme appartenant à un réseau beaucoup plus petit.",
+          "correction_markdown": "Associe chaque classe à son nombre d'octets de réseau : A = 1, B = 2, C = 3 octets à 255."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne la classe et le masque par défaut de l'adresse 192.168.1.10.",
+          "solution_markdown": "Le premier octet est 192, compris entre 192 et 223 : **classe C**. Le masque par défaut est **255.255.255.0** (/24)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donne la classe de 10.0.0.1 et de 130.45.2.9, puis le nombre d'hôtes possibles dans un réseau de la seconde classe.",
+          "solution_markdown": "10 est compris entre 1 et 126 : **classe A**. 130 est compris entre 128 et 191 : **classe B**.\n\nLe masque de classe B est 255.255.0.0, donc 16 bits pour la partie machine. Nombre d'hôtes : 2^16 - 2 = 65 536 - 2 = **65 534**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un établissement veut placer 500 machines dans un même réseau, sans sous-réseaux. Quelle classe faut-il choisir ? Justifie par le calcul.",
+          "solution_markdown": "Une classe C ne permet que 2^8 - 2 = 254 hôtes : insuffisant pour 500 machines.\n\nUne classe B permet 2^16 - 2 = 65 534 hôtes : suffisant. Une classe A (16 777 214 hôtes) conviendrait aussi, mais elle gaspille inutilement des adresses.\n\nOn choisit donc la **classe B**, avec le masque 255.255.0.0."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le premier octet donne la classe : A de 1 à 126, B de 128 à 191, C de 192 à 223.",
+        "La classe donne le masque par défaut : 255.0.0.0, 255.255.0.0, 255.255.255.0.",
+        "Le nombre d'hôtes vaut 2 puissance (bits machine) moins 2.",
+        "Ne regarde jamais le dernier octet pour déterminer la classe.",
+        "Au BAC TI, la question « masque et classe » vaut environ 1 point et ouvre souvent la suite sur l'adresse du réseau."
+      ]
+    }
+  ]
+}

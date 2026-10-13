@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-ports-et-interfaces-dun-equipement-reseau-tle-ti-2019",
+  "meta": {
+    "titre": "Ports et interfaces d'un équipement réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Équipements réseau",
+    "duree_estimee_min": 15,
+    "tags": [
+      "port",
+      "interface",
+      "RJ45",
+      "commutateur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.4.c-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Regarde l'arrière d'un commutateur : une rangée de petites ouvertures où l'on enfiche les câbles. Ces ouvertures portent un nom précis, et le nombre qui apparaît dans la référence de l'appareil n'est pas là par hasard. Un peu de vocabulaire suffit pour répondre sans hésiter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un câble réseau et un connecteur RJ45",
+        "Avoir vu un commutateur ou une box"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Port, interface, prise",
+      "contenu_markdown": "Une **interface** (ou **port**) est le point par lequel un équipement se connecte à un câble ou à un réseau. Sur un équipement Ethernet, le port est une prise **RJ45** où l'on enfiche un câble à paires torsadées.\n\n- Les ports d'un commutateur sont numérotés (par exemple `FastEthernet0/1` à `FastEthernet0/24`).\n- Le nombre qui suit le nom du modèle indique souvent le nombre de ports : un commutateur « 2950-24 » a 24 ports, un « 2960-48 » en a 48.\n- Un port **uplink** sert à relier le commutateur à un autre équipement ; un port **console** sert à le configurer ; un port **SFP** accueille un module de fibre optique.\n- La **carte réseau** d'un ordinateur a elle aussi un port RJ45 ; la **prise murale** est le point de raccordement du câblage fixe.\n\nOn parle de « slot » pour un emplacement d'extension à l'intérieur d'un ordinateur (PCI Express), pas pour les prises d'un commutateur.",
+      "formule_principale": "\\text{ouverture où l'on enfiche un câble} = \\text{port (interface)}",
+      "variantes": [
+        {
+          "nom": "Interface logique",
+          "quand_utiliser": "Quand le sujet parle d'interface dans un système d'exploitation",
+          "contenu_markdown": "Dans `ipconfig /all`, « Carte Ethernet Connexion au réseau local » est une interface réseau logique associée à la carte physique ; elle porte l'adresse IP."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur le schéma de l'épreuve, comment appelle-t-on les ouvertures du commutateur « 2950-24 » dans lesquelles les câbles sont enfichés ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Observer la face du commutateur",
+          "justification": "Le boîtier montre une rangée d'ouvertures identiques",
+          "resultat_markdown": "Chaque ouverture reçoit un connecteur RJ45."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer ces ouvertures",
+          "justification": "Le terme technique est port ou interface",
+          "resultat_markdown": "Ce sont des **ports** Ethernet."
+        },
+        {
+          "numero": 3,
+          "action": "Exploiter la référence",
+          "justification": "Le nombre qui suit le modèle indique le nombre de ports",
+          "resultat_markdown": "2950-24 : 24 ports, dont 4 seulement sont utilisés ici."
+        }
+      ],
+      "conclusion_markdown": "Les ouvertures du commutateur s'appellent des ports (ports Ethernet de type RJ45)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Les appeler « slots ».",
+          "pourquoi_faux": "Un slot est un emplacement d'extension à l'intérieur d'un ordinateur pour une carte ; ce n'est pas la prise d'un commutateur.",
+          "correction_markdown": "Employer le mot port pour les prises d'un commutateur."
+        },
+        {
+          "erreur_markdown": "Les appeler « prises » seulement.",
+          "pourquoi_faux": "Le mot « prise » est familier ou désigne la prise murale ; un équipement réseau a des ports.",
+          "correction_markdown": "Dire port (ou interface) RJ45."
+        },
+        {
+          "erreur_markdown": "Croire que le nombre de la référence est une vitesse.",
+          "pourquoi_faux": "Le nombre qui suit 2950- est le nombre de ports, pas un débit ni une année.",
+          "correction_markdown": "Lire la référence comme modèle suivi du nombre de ports."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien de ports a un commutateur de référence « 2960-48 » ? Combien restent libres s'il relie 30 appareils ?",
+          "solution_markdown": "1. Le nombre qui suit le modèle est 48 : 48 ports.\n2. Ports libres : 48 - 30 = 18."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Distinguer port RJ45, port console et port SFP en une phrase chacun.",
+          "solution_markdown": "1. Port RJ45 : prise pour les câbles à paires torsadées (liaison de données).\n2. Port console : prise utilisée pour configurer l'équipement en ligne de commande depuis un ordinateur.\n3. Port SFP : emplacement qui accueille un module de fibre optique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un bureau compte 20 postes et 2 imprimantes réseau à relier par un seul commutateur, avec une réserve de 25 % de ports pour l'avenir. Quel commutateur (8, 24 ou 48 ports) choisir ? Justifie par un calcul.",
+          "solution_markdown": "1. Appareils à relier : 20 + 2 = 22 ports utilisés.\n2. Réserve de 25 % : 22 × 1,25 = 27,5, soit au moins 28 ports.\n3. Un commutateur de 24 ports est insuffisant (24 < 28) ; un commutateur de 48 ports convient.\n4. On peut aussi empiler deux commutateurs de 24 ports (48 ports au total), mais les liaisons entre eux occupent des ports."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les ouvertures où l'on enfiche les câbles d'un équipement réseau s'appellent des ports (ou interfaces).",
+        "Sur un équipement Ethernet, un port est une prise RJ45.",
+        "Le nombre qui suit le modèle indique souvent le nombre de ports.",
+        "Port console, port uplink et port SFP ont des usages différents.",
+        "À l'examen, réponds simplement « ports » ou « ports RJ45 » ; évite « slots »."
+      ]
+    }
+  ]
+}

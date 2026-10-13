@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-reconnaitre-equation-homogene-tle-ti",
+  "meta": {
+    "titre": "Reconnaître une équation homogène",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Analyse dimensionnelle",
+    "duree_estimee_min": 20,
+    "tags": [
+      "homogénéité",
+      "équation aux dimensions",
+      "contrôle de formule",
+      "analyse dimensionnelle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-PHYSIQUE-2023-CM",
+    "epreuve_titre": "Épreuve de physique au baccalauréat TI 2023 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-physique-2023-officiel-cameroun-ex1-q5.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as appris une formule il y a trois mois et tu hésites : est-ce $\\sqrt{\\ell/g}$ ou $\\sqrt{g/\\ell}$ ? Plutôt que de deviner, tu peux trancher en calculant les dimensions des deux membres. Ce réflexe s'appelle le contrôle d'homogénéité, et la définition d'une équation homogène est une question de cours classique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation aux dimensions d'une grandeur",
+        "Règles de calcul sur les puissances",
+        "Principales dimensions : $L$, $M$, $T$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Homogénéité d'une équation",
+      "contenu_markdown": "Une équation $A = B$ est homogène lorsque $[A] = [B]$ : ses deux membres ont la même dimension. Dans une somme ou une différence, tous les termes ont la même dimension. L'argument d'une fonction ($\\sin$, $\\cos$, $\\exp$, $\\ln$) est sans dimension. Une équation non homogène est forcément fausse ; une équation homogène peut encore être fausse (coefficient numérique manquant, mauvaise fonction).",
+      "formule_principale": "[A] = [B]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une équation du type $A = B$ est dite homogène si $[A] = [B]$. Vrai ou Faux ? Contrôler ensuite l'homogénéité de $E_c = \\dfrac{1}{2}\\,m\\,v^2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la définition",
+          "justification": "On compare les dimensions des deux membres.",
+          "resultat_markdown": "Une équation $A = B$ est homogène si $[A] = [B]$ : l'affirmation est vraie."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la dimension du membre de gauche",
+          "justification": "L'énergie cinétique est une énergie, de dimension identique à celle d'un travail.",
+          "resultat_markdown": "$[E_c] = M\\,L^2\\,T^{-2}$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la dimension du membre de droite",
+          "justification": "Le facteur $\\frac{1}{2}$ est sans dimension.",
+          "resultat_markdown": "$\\left[\\tfrac{1}{2}\\,m\\,v^2\\right] = M \\times (L\\,T^{-1})^2 = M\\,L^2\\,T^{-2}$."
+        },
+        {
+          "numero": 4,
+          "action": "Comparer",
+          "justification": "Les deux dimensions sont identiques.",
+          "resultat_markdown": "$[E_c] = \\left[\\tfrac{1}{2}\\,m\\,v^2\\right]$ : l'équation est homogène."
+        }
+      ],
+      "conclusion_markdown": "L'affirmation est vraie, et la formule de l'énergie cinétique passe le contrôle d'homogénéité."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure qu'une formule est juste parce qu'elle est homogène",
+          "pourquoi_faux": "L'homogénéité ne contrôle ni les coefficients numériques ni les fonctions : $E_c = m\\,v^2$ est homogène mais fausse, il manque le $\\frac{1}{2}$.",
+          "correction_markdown": "Considère l'homogénéité comme une condition nécessaire, jamais suffisante."
+        },
+        {
+          "erreur_markdown": "Additionner des termes de dimensions différentes",
+          "pourquoi_faux": "Une somme comme $x + v$ n'a aucun sens : on ne peut ajouter qu'une longueur à une longueur.",
+          "correction_markdown": "Avant d'écrire une somme, compare la dimension de chaque terme."
+        },
+        {
+          "erreur_markdown": "Donner une dimension à l'argument d'un sinus",
+          "pourquoi_faux": "L'argument d'un sinus est un angle, donc sans dimension : dans $\\sin(\\omega\\,t)$, le produit $\\omega\\,t$ est sans dimension, donc $[\\omega] = T^{-1}$.",
+          "correction_markdown": "Vérifie que l'argument d'une fonction est sans dimension."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La relation $v = v_0 + a\\,t$ est-elle homogène ?",
+          "solution_markdown": "$[v] = L\\,T^{-1}$ et $[v_0] = L\\,T^{-1}$. Pour le dernier terme : $[a\\,t] = L\\,T^{-2} \\times T = L\\,T^{-1}$. Les trois termes ont la même dimension : la relation est homogène."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève propose $x = \\dfrac{1}{2}\\,a\\,t$ pour la position d'un mobile partant du repos. Cette relation est-elle homogène ? Si non, la corriger.",
+          "solution_markdown": "$[x] = L$ tandis que $\\left[\\tfrac{1}{2}\\,a\\,t\\right] = L\\,T^{-2} \\times T = L\\,T^{-1}$. Les dimensions diffèrent : la relation n'est pas homogène, donc fausse.\n\nPour retrouver une longueur il faut multiplier $a$ par $T^2$ : la relation correcte est $x = \\dfrac{1}{2}\\,a\\,t^2$, avec $\\left[\\tfrac{1}{2}\\,a\\,t^2\\right] = L\\,T^{-2} \\times T^2 = L$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On cherche la période d'un pendule simple sous la forme $T = k\\,\\ell^{\\alpha}\\,g^{\\beta}$, où $\\ell$ est la longueur, $g$ l'intensité de la pesanteur et $k$ une constante sans dimension. Déterminer $\\alpha$ et $\\beta$ par analyse dimensionnelle.",
+          "solution_markdown": "On écrit l'égalité des dimensions : $[T] = [\\ell]^{\\alpha}\\,[g]^{\\beta}$ avec $[T] = T$, $[\\ell] = L$ et $[g] = L\\,T^{-2}$ :\n\n$$T^{1} = L^{\\alpha} \\times (L\\,T^{-2})^{\\beta} = L^{\\alpha+\\beta}\\,T^{-2\\beta}$$\n\nPar identification des exposants : $\\alpha + \\beta = 0$ (pas de $L$ à gauche) et $-2\\beta = 1$.\n\nDonc $\\beta = -\\dfrac{1}{2}$ puis $\\alpha = \\dfrac{1}{2}$ :\n\n$$T = k\\sqrt{\\frac{\\ell}{g}}$$\n\nL'analyse dimensionnelle donne la forme de la formule, mais pas la constante $k$ ($k = 2\\pi$, établie par la dynamique) : c'est la limite du contrôle d'homogénéité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une équation $A = B$ est homogène si $[A] = [B]$ ; tous les termes d'une somme ont la même dimension.",
+        "Une équation non homogène est fausse ; une équation homogène n'est pas forcément juste.",
+        "L'argument d'un sinus, d'un cosinus ou d'une exponentielle est sans dimension.",
+        "Pour tester une formule douteuse, calcule la dimension de chaque membre : c'est rapide et fiable.",
+        "Au Probatoire et au BAC, l'homogénéité est demandée en Vrai ou Faux et sert à vérifier les formules littérales de tes résultats."
+      ]
+    }
+  ]
+}

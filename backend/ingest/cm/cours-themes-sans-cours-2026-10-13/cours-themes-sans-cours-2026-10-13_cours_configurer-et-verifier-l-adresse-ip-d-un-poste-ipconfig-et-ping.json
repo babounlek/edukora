@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-configurer-et-verifier-l-adresse-ip-d-un-poste-ipconfig-et-ping-gap24",
+  "meta": {
+    "titre": "Configurer et vérifier l'adresse IP d'un poste (ipconfig et ping)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Réseaux informatiques et adressage IP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "configuration IP",
+      "commande ipconfig",
+      "configuration réseau",
+      "test de connectivité",
+      "appartenance à un réseau",
+      "vocabulaire réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qB.4.1-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun.pdf"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un poste de la salle informatique n'arrive plus à joindre l'imprimante. Avant de changer le câble, le technicien tape deux commandes dans l'invite de commandes : l'une pour lire la configuration réseau du poste, l'autre pour tester si la machine voisine répond. Ce cours t'explique les éléments d'une configuration IP, comment décider si deux machines sont dans le même réseau, et comment lire les résultats de ipconfig et de ping."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 est formée de quatre octets séparés par des points",
+        "Connaître l'écriture binaire d'un octet (8 bits)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Configuration IP, appartenance à un réseau et commandes de diagnostic",
+      "contenu_markdown": "**Vocabulaire.** Une **adresse IP** est un identifiant numérique qui désigne un équipement dans un réseau IP. La **carte réseau** est le composant qui relie l'ordinateur au réseau (filaire ou Wi-Fi). Le **modem** convertit le signal numérique en signal adapté à la ligne (téléphone, par exemple) et inversement.\n\n**Configuration IP d'un poste** (ou configuration réseau) :\n\n- l'**adresse IP** du poste ;\n- le **masque de sous-réseau** : il sépare la partie réseau de la partie machine (255.255.255.0 : les trois premiers octets désignent le réseau) ;\n- la **passerelle par défaut** : le routeur qui permet de sortir du réseau ;\n- le ou les **serveurs DNS** : ils traduisent les noms de domaine en adresses IP.\n\n**Appartenance à un réseau.** On calcule l'**adresse réseau** par un ET logique bit à bit entre l'adresse et le masque. Deux machines sont dans le même réseau si leurs adresses réseau sont identiques. Sinon, elles ne communiquent pas sans routeur. Une adresse valide a quatre octets compris entre 0 et 255 ; l'adresse réseau et l'adresse de diffusion ne s'attribuent à aucune machine.\n\n**Lire la configuration : `ipconfig`** (Windows, dans l'invite de commandes). `ipconfig` affiche l'adresse IP, le masque et la passerelle. `ipconfig /all` ajoute la description de la carte, l'adresse physique (MAC), l'état du DHCP, le bail et les serveurs DNS. Sous Linux : `ip addr` ou `ifconfig`.\n\n**Tester la connectivité : `ping`.** `ping 192.168.122.50` envoie des paquets ICMP (*echo request*) à l'adresse indiquée et attend les réponses. Des lignes « Réponse de ... » prouvent que la machine est joignable. « Délai d'attente de la demande dépassé » signifie qu'aucune réponse n'arrive. « Impossible de joindre l'hôte de destination » indique le plus souvent qu'aucun chemin ne mène à l'adresse (réseaux différents sans passerelle). L'adresse 127.0.0.1 est l'adresse de bouclage : elle désigne la machine elle-même et sert à tester la pile TCP/IP.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Méthode : comparer deux adresses avec un masque 255.255.255.0",
+          "quand_utiliser": "Pour décider vite si deux postes sont dans le même réseau.",
+          "contenu_markdown": "Avec un masque 255.255.255.0, il suffit de comparer les trois premiers octets. S'ils sont identiques, les deux postes sont dans le même réseau ; si l'un diffère, ils sont dans des réseaux différents."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'adresse IP de l'équipement A est 192.168.122.50 et son masque est 255.255.255.0. 1) Quelle commande permet de lire sa configuration IP à l'écran ? 2) Le poste F a pour configuration 192.168.123.60 avec le même masque. Donner la commande à saisir sur F pour tester la liaison avec A, puis justifier le message « Impossible de joindre l'hôte de destination ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la commande de lecture",
+          "justification": "Sous Windows, la configuration IP s'affiche dans l'invite de commandes.",
+          "resultat_markdown": "La commande est `ipconfig` (ou `ipconfig /all` pour le détail)."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la commande de test",
+          "justification": "On teste la liaison en envoyant des paquets vers l'adresse de A.",
+          "resultat_markdown": "`ping 192.168.122.50`, saisie depuis F."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'adresse réseau de A",
+          "justification": "ET logique avec 255.255.255.0 : les trois premiers octets sont recopiés, le dernier devient 0.",
+          "resultat_markdown": "192.168.122.50 ET 255.255.255.0 = 192.168.122.0."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'adresse réseau de F",
+          "justification": "Même calcul avec l'adresse de F.",
+          "resultat_markdown": "192.168.123.60 ET 255.255.255.0 = 192.168.123.0."
+        },
+        {
+          "numero": 5,
+          "action": "Comparer",
+          "justification": "Les troisièmes octets diffèrent (122 et 123).",
+          "resultat_markdown": "F et A sont dans deux réseaux différents."
+        }
+      ],
+      "conclusion_markdown": "F et A appartiennent à deux réseaux IP différents (192.168.123.0 et 192.168.122.0) et aucune passerelle ne les relie : le ping échoue avec « Impossible de joindre l'hôte de destination »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `ipconfig` seul quand la capture montre l'adresse physique et le bail.",
+          "pourquoi_faux": "Ces rubriques n'apparaissent qu'avec l'option /all.",
+          "correction_markdown": "Écris `ipconfig /all` quand la capture contient description, adresse physique, DHCP ou bail."
+        },
+        {
+          "erreur_markdown": "Penser que deux adresses commençant par 192.168 sont toujours dans le même réseau.",
+          "pourquoi_faux": "Avec le masque 255.255.255.0, le troisième octet fait aussi partie de l'adresse réseau.",
+          "correction_markdown": "Calcule l'adresse réseau des deux machines et compare."
+        },
+        {
+          "erreur_markdown": "Croire qu'un ping sans réponse prouve toujours que la machine est éteinte.",
+          "pourquoi_faux": "Le câble, l'adresse, le masque ou un pare-feu peuvent aussi être en cause.",
+          "correction_markdown": "Vérifie l'alimentation, le câble, la configuration IP et le réseau d'appartenance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer les quatre éléments d'une configuration IP et la commande Windows qui les affiche.",
+          "solution_markdown": "Adresse IP, masque de sous-réseau, passerelle par défaut, serveur DNS. Commande : **`ipconfig`** (ou `ipconfig /all` pour le détail complet) dans l'invite de commandes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les postes P1 (192.168.1.20) et P2 (192.168.1.200) ont le masque 255.255.255.0. Sont-ils dans le même réseau ? Même question pour P1 et P3 (192.168.2.20).",
+          "solution_markdown": "P1 : 192.168.1.20 ET 255.255.255.0 = 192.168.1.0. P2 : 192.168.1.200 ET 255.255.255.0 = 192.168.1.0. Les adresses réseau sont identiques : **P1 et P2 sont dans le même réseau**.\n\nP3 : 192.168.2.20 ET 255.255.255.0 = 192.168.2.0, différente de 192.168.1.0 : **P1 et P3 sont dans des réseaux différents**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un poste a l'adresse 192.168.1.70 et le masque 255.255.255.192. Déterminer l'adresse réseau, l'adresse de diffusion, le nombre de machines possibles, et dire si 192.168.1.130 est dans le même réseau.",
+          "solution_markdown": "Le dernier octet du masque est 192, soit 11000000 : deux bits pour le réseau, six bits pour les machines.\n\nAdresse réseau : 70 ET 192. En binaire, 70 = 01000110 et 192 = 11000000, donc le ET donne 01000000 = 64. Adresse réseau : **192.168.1.64**.\n\nAdresse de diffusion : on met à 1 les six bits machines : 64 + 63 = 127, soit **192.168.1.127**.\n\nNombre de machines : 2 puissance 6 = 64 adresses, moins l'adresse réseau et l'adresse de diffusion : **62 machines** (de .65 à .126).\n\nPour 192.168.1.130 : 130 ET 192 = 128, adresse réseau 192.168.1.128, différente de .64 : **réseau différent**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Configuration IP : adresse IP, masque de sous-réseau, passerelle par défaut, serveur DNS.",
+        "Adresse réseau = adresse ET masque ; deux machines communiquent directement si leurs adresses réseau sont égales.",
+        "`ipconfig` affiche la configuration ; `ipconfig /all` ajoute adresse MAC, DHCP, bail et DNS.",
+        "`ping adresse` teste la joignabilité (ICMP) ; 127.0.0.1 est l'adresse de bouclage de la machine.",
+        "Au BAC, nomme toujours la commande complète et justifie par le calcul de l'adresse réseau."
+      ]
+    }
+  ]
+}

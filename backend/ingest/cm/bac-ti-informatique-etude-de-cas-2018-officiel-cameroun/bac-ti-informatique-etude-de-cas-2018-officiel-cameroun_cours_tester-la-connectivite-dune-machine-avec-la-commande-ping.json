@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-tester-la-connectivite-dune-machine-avec-la-commande-ping-tle-ti",
+  "meta": {
+    "titre": "Tester la connectivité avec la commande ping",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagnostic réseau",
+    "duree_estimee_min": 25,
+    "tags": [
+      "ping",
+      "ICMP",
+      "connectivité",
+      "diagnostic réseau",
+      "invite de commandes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q9-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'imprimante ne répond plus depuis deux jours : est-ce le réseau, la machine ou le logiciel ? Avant de démonter quoi que ce soit, une seule commande de quelques mots donne la première réponse. `ping` est l'outil de diagnostic le plus utilisé des techniciens réseau, et il tient en une ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ouvrir l'invite de commandes de Windows",
+        "Savoir lire une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ping : envoyer un signal, attendre l'écho",
+      "contenu_markdown": "La commande `ping` envoie à une machine des paquets ICMP de type **echo request** et attend les **echo reply**. Syntaxe :\n\n```\nping adresse_ou_nom\n```\n\nExemples : `ping 192.168.1.1`, `ping www.exemple.cm`. Sous Windows, `ping` envoie quatre paquets ; l'option `-t` répète l'envoi jusqu'à l'arrêt par Ctrl+C.\n\n| Résultat | Interprétation |\n|---|---|\n| « Réponse de ... : octets=32 temps<1ms TTL=... » | La machine est joignable sur le réseau |\n| « Délai d'attente de la demande dépassé » | Aucune réponse : câble, extinction, adresse incorrecte ou pare-feu |\n| « Impossible de joindre l'hôte de destination » | Pas de chemin vers l'adresse (mauvais réseau, passerelle absente) |\n\nUn ping qui réussit prouve que le **réseau** fonctionne jusqu'à la machine ; le problème, s'il persiste, est alors **logiciel**. Un ping sans réponse oriente vers le **matériel ou la configuration**.",
+      "formule_principale": "\\texttt{ping } \\text{adresse IP de la machine testée}",
+      "variantes": [
+        {
+          "nom": "Diagnostic progressif",
+          "quand_utiliser": "Quand tu ne sais pas où se situe la panne",
+          "contenu_markdown": "On teste du plus proche au plus lointain : `ping 127.0.0.1` (pile réseau du poste), `ping` sur sa propre adresse, `ping` sur la passerelle, `ping` sur la machine visée, puis `ping` sur un nom (teste le DNS). Le premier test qui échoue localise la panne."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Depuis deux jours, la secrétaire n'arrive plus à imprimer. L'imprimante a l'adresse 172.10.0.6. Écrire la commande permettant de tester sa connectivité et interpréter les résultats possibles.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la commande",
+          "justification": "Pour tester la joignabilité d'une machine, on utilise ping",
+          "resultat_markdown": "`ping`."
+        },
+        {
+          "numero": 2,
+          "action": "Désigner la cible",
+          "justification": "Le schéma donne l'adresse de l'imprimante",
+          "resultat_markdown": "172.10.0.6."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la commande complète",
+          "justification": "On la saisit dans l'invite de commandes du poste de la secrétaire",
+          "resultat_markdown": "`ping 172.10.0.6`."
+        },
+        {
+          "numero": 4,
+          "action": "Interpréter une réponse positive",
+          "justification": "Des « Réponse de ... » prouvent que l'imprimante est joignable",
+          "resultat_markdown": "Le problème vient alors du logiciel (pilote, file d'attente, imprimante par défaut)."
+        },
+        {
+          "numero": 5,
+          "action": "Interpréter l'absence de réponse",
+          "justification": "Un délai dépassé oriente vers le matériel ou la configuration",
+          "resultat_markdown": "Vérifier qu'elle est allumée, que son câble est branché au switch et que son adresse n'a pas changé."
+        }
+      ],
+      "conclusion_markdown": "La commande est `ping 172.10.0.6` : des réponses prouvent que le réseau fonctionne jusqu'à l'imprimante et que la panne est logicielle ; sans réponse, on contrôle matériel et configuration."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire seulement `ping`, sans adresse.",
+          "pourquoi_faux": "Sans cible, la commande n'a rien à tester : elle affiche son aide. La question demande de tester l'imprimante.",
+          "correction_markdown": "Ajoute l'adresse de l'équipement lue sur le schéma."
+        },
+        {
+          "erreur_markdown": "Conclure qu'un « Délai dépassé » prouve que l'imprimante est en panne.",
+          "pourquoi_faux": "L'absence de réponse peut venir d'un câble, d'une mauvaise adresse ou d'un pare-feu qui bloque ICMP. Elle indique seulement qu'il faut chercher.",
+          "correction_markdown": "Parle d'hypothèses à vérifier, pas de certitude."
+        },
+        {
+          "erreur_markdown": "Croire qu'un ping réussi prouve que l'impression doit fonctionner.",
+          "pourquoi_faux": "Un ping teste la liaison réseau, pas le pilote ni la file d'attente d'impression.",
+          "correction_markdown": "Quand le ping réussit, déplace le diagnostic vers le logiciel."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la commande pour tester la passerelle d'adresse 192.168.1.1.",
+          "solution_markdown": "On ouvre l'invite de commandes et on saisit :\n\n```\nping 192.168.1.1\n```\n\nWindows envoie quatre paquets et affiche les réponses ou « Délai d'attente de la demande dépassé »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ping vers 172.10.0.6 renvoie quatre fois « Délai d'attente de la demande dépassé ». Cite deux vérifications à faire et une cause qui n'est pas une panne de l'imprimante.",
+          "solution_markdown": "**Vérifications** : l'imprimante est-elle allumée, son câble est-il bien branché au switch, son adresse IP est-elle toujours 172.10.0.6 ?\n\n**Cause qui n'est pas une panne** : un pare-feu sur l'imprimante ou sur le poste peut bloquer les paquets ICMP, donc l'imprimante ne répond pas au ping tout en fonctionnant."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un poste n'accède plus à `www.exemple.cm`. Décris, en quatre pings, une démarche qui localise la panne.",
+          "solution_markdown": "1. `ping 127.0.0.1` : teste la pile réseau du poste. S'il échoue, la configuration réseau du poste est défaillante.\n2. `ping` vers la passerelle (adresse du routeur) : teste la liaison jusqu'au routeur. S'il échoue, le problème est local : câble, Wi-Fi, switch.\n3. `ping` vers une adresse IP d'Internet : teste la sortie vers Internet. S'il échoue, le problème est au niveau du routeur ou du fournisseur d'accès.\n4. `ping www.exemple.cm` : teste la résolution du nom. Si l'étape 3 réussit et celle-ci échoue, le serveur DNS est en cause.\n\nLe premier test qui échoue localise la panne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`ping adresse` envoie des paquets ICMP et attend des réponses : c'est le test de base de la connectivité.",
+        "Des réponses prouvent que le réseau fonctionne jusqu'à la machine ; la panne est alors plutôt logicielle.",
+        "« Délai dépassé » oriente vers le matériel ou la configuration, sans prouver une panne de la machine.",
+        "Écris toujours la commande complète avec l'adresse de l'équipement.",
+        "Au BAC TI, la question « écrire la commande qui teste la connectivité » vaut 0,5 point et attend `ping` plus l'adresse."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-commandes-windows-taskkill-start-et-net-tle-ti",
+  "meta": {
+    "titre": "Les commandes taskkill, start et net",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance des systèmes d'exploitation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "taskkill",
+      "start",
+      "net",
+      "commandes Windows",
+      "processus"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex3-q5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un logiciel est figé et refuse de se fermer, tu dois créer un compte pour un nouvel élève, ou lancer un programme depuis la console : trois besoins, trois commandes courtes. Le sujet demande à quoi elles servent, et la bonne réponse est celle d'un technicien : le rôle, la syntaxe et un exemple."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ouvrir l'invite de commandes",
+        "Savoir ce qu'est un processus et son PID"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rôle, syntaxe, exemple",
+      "contenu_markdown": "Pour chaque commande, on donne son rôle en une phrase, sa syntaxe et un exemple.\n\n| Commande | Rôle | Syntaxe usuelle | Exemple |\n|---|---|---|---|\n| `taskkill` | Met fin à un ou plusieurs processus | `taskkill /PID numéro` ou `taskkill /IM nom.exe`, option `/F` pour forcer | `taskkill /IM notepad.exe /F` |\n| `start` | Lance un programme, un fichier, un dossier ou une adresse web dans une nouvelle fenêtre | `start programme` ou `start document` | `start notepad` |\n| `net` | Administre comptes, partages, connexions et services réseau, par sous-commandes | `net sous-commande ...` | `net use Z: \\\\serveur\\partage` |\n\nSous-commandes principales de `net` :\n\n- `net user` : gère les comptes utilisateurs (liste, ajout `/add`, suppression `/delete`) ;\n- `net share` : gère les dossiers partagés ;\n- `net use` : connecte ou déconnecte un lecteur réseau ;\n- `net start` et `net stop` : démarrent et arrêtent des services Windows.\n\nLes commandes d'administration exigent une console ouverte en administrateur.",
+      "formule_principale": "\\texttt{taskkill} \\text{ arrête} \\;;\\; \\texttt{start} \\text{ lance} \\;;\\; \\texttt{net} \\text{ administre}",
+      "variantes": [
+        {
+          "nom": "Désigner le processus par son PID ou son nom",
+          "quand_utiliser": "Quand plusieurs processus portent le même nom",
+          "contenu_markdown": "`taskkill /IM nom.exe` arrête tous les processus de ce nom, alors que `taskkill /PID numéro` n'en arrête qu'un seul. Le PID est plus précis."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dire à quoi servent les commandes taskkill, start et net.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Expliquer taskkill",
+          "justification": "Son nom signifie « tuer une tâche »",
+          "resultat_markdown": "Elle met fin à un processus, désigné par son PID (`/PID`) ou son nom (`/IM`), `/F` forçant l'arrêt. Exemple : `taskkill /IM notepad.exe /F`."
+        },
+        {
+          "numero": 2,
+          "action": "Expliquer start",
+          "justification": "Elle ouvre quelque chose sans bloquer la console",
+          "resultat_markdown": "Elle lance un programme, un fichier, un dossier ou une adresse web dans une nouvelle fenêtre. Exemple : `start notepad`."
+        },
+        {
+          "numero": 3,
+          "action": "Expliquer net",
+          "justification": "Elle regroupe des sous-commandes réseau et comptes",
+          "resultat_markdown": "Elle administre comptes, partages, connexions et services : `net user`, `net share`, `net use`, `net start`, `net stop`."
+        },
+        {
+          "numero": 4,
+          "action": "Terminer par un exemple de net",
+          "justification": "L'exemple prouve l'usage",
+          "resultat_markdown": "`net use Z: \\\\serveur\\partage` relie le lecteur Z à un dossier partagé."
+        }
+      ],
+      "conclusion_markdown": "taskkill arrête des processus, start lance programmes et documents, net administre les ressources réseau et les comptes par ses sous-commandes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire que `taskkill` supprime un programme.",
+          "pourquoi_faux": "Elle arrête un processus actif ; elle ne supprime aucun fichier ni ne désinstalle rien. Le programme reste installé.",
+          "correction_markdown": "Dis « met fin à un processus en cours d'exécution »."
+        },
+        {
+          "erreur_markdown": "Présenter `net` seule comme une commande complète.",
+          "pourquoi_faux": "Sans sous-commande, `net` affiche simplement la liste de ses sous-commandes. L'action dépend de `user`, `use`, `share`...",
+          "correction_markdown": "Cite au moins deux sous-commandes avec leur rôle."
+        },
+        {
+          "erreur_markdown": "Oublier `/F` quand un programme refuse de se fermer.",
+          "pourquoi_faux": "Sans `/F`, `taskkill` demande une fermeture normale, que le programme figé n'honore pas. `/F` force l'arrêt.",
+          "correction_markdown": "Ajoute `/F` pour un programme bloqué."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la commande qui ferme de force le Bloc-notes.",
+          "solution_markdown": "```\ntaskkill /IM notepad.exe /F\n```\n\n`/IM` désigne le processus par le nom de son image (`notepad.exe`), `/F` force l'arrêt."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris les commandes pour afficher les comptes utilisateurs de la machine, puis pour créer un compte `eleve1` avec un mot de passe. Précise une condition d'exécution.",
+          "solution_markdown": "```\nnet user\nnet user eleve1 MotDePasse2024 /add\n```\n\n`net user` seule liste les comptes. Avec `/add`, elle crée le compte nommé, avec le mot de passe indiqué. **Condition** : la console doit être ouverte en administrateur, sinon la création est refusée. On choisit un mot de passe solide dans la pratique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux fenêtres du Bloc-notes sont ouvertes et une seule est figée. Décris la suite de commandes pour trouver le bon PID, arrêter cette fenêtre seulement, puis relancer un Bloc-notes.",
+          "solution_markdown": "1. `tasklist | find /I \"notepad\"` : affiche les lignes de la liste des processus qui contiennent « notepad » (sans tenir compte de la casse) ; on obtient deux lignes, donc deux PID. Le Gestionnaire des tâches, qui indique l'état « Ne répond pas », permet de repérer le PID de la fenêtre figée.\n2. `taskkill /PID numéro /F` : arrête ce seul processus, `numéro` étant remplacé par le PID repéré. L'autre fenêtre reste ouverte.\n3. `start notepad` : relance un Bloc-notes dans une nouvelle fenêtre.\n\nAvec `taskkill /IM notepad.exe /F`, les deux fenêtres auraient été fermées : le PID est la seule façon d'en viser une."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`taskkill` met fin à un processus, désigné par son PID (`/PID`) ou son nom (`/IM`), `/F` forçant.",
+        "`start` lance un programme, un fichier, un dossier ou une adresse web dans une nouvelle fenêtre.",
+        "`net` administre comptes, partages, connexions et services grâce à ses sous-commandes.",
+        "Pour chaque commande, donne le rôle, la syntaxe et un exemple.",
+        "Au BAC TI, trois commandes à expliquer valent environ 1,5 point : 0,5 point chacune."
+      ]
+    }
+  ]
+}

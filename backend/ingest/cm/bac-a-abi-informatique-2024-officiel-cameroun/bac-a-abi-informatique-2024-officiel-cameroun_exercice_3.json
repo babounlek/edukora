@@ -1,0 +1,132 @@
+{
+  "epreuve_source": "bac-a-abi-informatique-2024-officiel-cameroun.html",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "A",
+  "filiere_serie_a": "abi",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": 4,
+  "groupes": [
+    "Partie II : Systèmes informatiques et humanités numériques (8 pts)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-a-abi-informatique-2024-officiel-cameroun_exercice_3_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Schéma d'un réseau local : deux ordinateurs portables Port 1 (128.100.0.10) et Port 2 (125.100.0.11), un ordinateur de bureau Port 3 (128.100.0.12) et une imprimante (étiquette 128.100.200) reliés par un bus commun au routeur (128.100.0.1), lui-même relié à Internet par une liaison à double flèche.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2 : Humanités numériques (4 pts)**\n\nLe schéma ci-dessous représente un réseau informatique. L'objectif est de décrire son fonctionnement. À l'aide du schéma et de vos connaissances, répondre aux questions suivantes.\n\n![fig-1](bac-a-abi-informatique-2024-officiel-cameroun_exercice_3_fig_1.png)",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Définir l'expression « réseau informatique ». *[1 pt]*",
+      "corrige_markdown": "Un **réseau informatique** est un ensemble d'équipements informatiques (ordinateurs, imprimantes, routeurs, serveurs) reliés entre eux par des supports de transmission, filaires (câbles) ou sans fil (Wi-Fi), afin d'échanger des données et de partager des ressources (fichiers, imprimante, connexion Internet).\n\nSur le schéma, trois ordinateurs, une imprimante et un routeur forment un réseau local, ouvert sur Internet par le routeur.\n\n### Piège à éviter\nLe réseau ne se limite pas à Internet : Internet est un réseau de réseaux particulier. Une définition réduite à « des ordinateurs connectés à Internet » est incomplète.\n\n### Conseil\nAppuie ta définition sur le schéma : cite le routeur, l'imprimante et les ordinateurs que tu vois. Le correcteur y lit la preuve que tu as observé le document.",
+      "themes": [
+        "Réseaux informatiques",
+        "Définitions informatiques"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Citer deux services Internet. *[0,5 × 2 = 1 pt]*",
+      "corrige_markdown": "Deux services Internet : le **Web** (World Wide Web), qui permet de consulter des pages hébergées sur des serveurs, et la **messagerie électronique**, qui permet d'envoyer et de recevoir des courriers. Sont aussi acceptés : le transfert de fichiers (FTP), la messagerie instantanée, la visioconférence, la téléphonie sur IP, les forums.\n\n### Piège à éviter\nInternet et Web ne sont pas synonymes : le Web n'est qu'un service parmi d'autres. Cite des services (Web, messagerie), pas des sites ou des applications comme Facebook ou Google, ni des équipements comme le routeur.\n\n### Conseil\nChoisis deux services de nature différente, par exemple le Web et la messagerie : tu évites de citer deux fois le même service sous deux noms.",
+      "themes": [
+        "Services Internet",
+        "Internet"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Déterminer la classe de l'adresse IP de l'imprimante. *[barème non imprimé]*",
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer la classe d'une adresse IPv4, on lit son premier octet, c'est-à-dire le nombre situé avant le premier point, et on le place dans les plages : classe A de 1 à 126, classe B de 128 à 191, classe C de 192 à 223 (le 127 est réservé au bouclage local, 224 à 239 correspondent à la classe D de diffusion, 240 à 255 à la classe E réservée).\n\nSur le schéma, l'adresse de l'imprimante est écrite **128.100.200**. Le premier octet est **128**.\n\nVérification par l'écriture binaire : 128 = 2 puissance 7, donc 128 s'écrit 10000000 en binaire. Les deux bits de tête sont 10, ce qui caractérise la classe B. La plage de la classe B va de 10000000 (128) à 10111111 (191), et 128 s'y trouve.\n\nL'imprimante a donc une adresse de **classe B**, dont le masque par défaut est 255.255.0.0 : les deux premiers octets (128.100) identifient le réseau, les deux derniers identifient la machine.\n\nRemarque : l'étiquette porte trois groupes de nombres alors qu'une adresse IPv4 en compte quatre ; il s'agit vraisemblablement de 128.100.0.200, comme les autres machines du réseau 128.100.0.x. La classe ne dépend que du premier octet : elle reste B dans les deux lectures.\n\n### Piège à éviter\nNe lis pas le dernier nombre : 200 se situerait dans la classe C, et la réponse serait fausse. C'est le premier octet qui décide. Autre point de vigilance sur ce schéma : l'ordinateur Port 2 porte 125.100.0.11, dont le premier octet 125 relève de la classe A, alors que les autres machines sont en 128.100.0.x.\n\n### Conseil\nÉcris trois lignes : le premier octet, la plage où il tombe, la classe obtenue. Mémorise les bornes 126, 191 et 223 : elles suffisent pour classer n'importe quelle adresse en quelques secondes.",
+      "themes": [
+        "Adressage IP",
+        "Classes d'adresses IP",
+        "Réseaux locaux"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex3-q3-1",
+          "competence": "Déterminer la classe d'une adresse IPv4",
+          "contenu_markdown": "Pour déterminer la classe d'une adresse IPv4, on lit son premier octet, c'est-à-dire le nombre situé avant le premier point, et on le place dans les plages : classe A de 1 à 126, classe B de 128 à 191, classe C de 192 à 223 (le 127 est réservé au bouclage local, 224 à 239 correspondent à la classe D de diffusion, 240 à 255 à la classe E réservée).",
+          "cours_genere": true,
+          "cours_id": "cours-determiner-la-classe-d-une-adresse-ipv4-tle-a-abi-2024"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Établir la différence entre l'adressage statique et l'adressage dynamique. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour établir la différence entre deux notions, on présente chacune avec sa définition, puis on les oppose point par point sur des critères communs (qui attribue l'adresse, comment, avec quelle stabilité, pour quel usage), plutôt que de décrire les deux séparément sans lien.\n\n| Critère | Adressage statique | Adressage dynamique |\n|---|---|---|\n| Attribution | Saisie manuelle par l'administrateur sur chaque équipement | Automatique, par un serveur DHCP (souvent le routeur) |\n| Stabilité | L'adresse ne change jamais | L'adresse est prêtée pour une durée limitée (bail) et peut changer |\n| Configuration | Longue, avec un risque de doublon ou d'erreur de saisie | Rapide et sans doublon, gérée par le serveur |\n| Usage typique | Serveurs, imprimantes, routeurs, équipements que l'on doit toujours retrouver à la même adresse | Ordinateurs et téléphones des utilisateurs |\n\nSur le schéma, l'imprimante gagne à avoir une adresse statique (128.100.0.200 ou 128.100.200 selon l'étiquette), alors que les ordinateurs Port 1, Port 2 et Port 3 peuvent recevoir une adresse dynamique du routeur 128.100.0.1.\n\n### Piège à éviter\nNe dis pas que l'adressage dynamique « n'a pas d'adresse » ou qu'il « change tout le temps » : la machine a bien une adresse, simplement attribuée par un serveur et renouvelée à l'expiration du bail. Ne confonds pas DHCP (attribution des adresses) avec DNS (traduction des noms en adresses).\n\n### Conseil\nNomme le protocole DHCP et donne un exemple d'équipement pour chaque mode : ces deux éléments distinguent une bonne réponse d'une simple paraphrase des mots statique et dynamique.",
+      "themes": [
+        "Adressage IP",
+        "Adressage statique et dynamique",
+        "Protocole DHCP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex3-q4-1",
+          "competence": "Distinguer adressage IP statique et dynamique",
+          "contenu_markdown": "Pour établir la différence entre deux notions, on présente chacune avec sa définition, puis on les oppose point par point sur des critères communs (qui attribue l'adresse, comment, avec quelle stabilité, pour quel usage), plutôt que de décrire les deux séparément sans lien.",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-adressage-ip-statique-et-dynamique-tle-a-abi-2024"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "réseau informatique",
+    "services Internet",
+    "adresse IP",
+    "classe B",
+    "routeur",
+    "adressage statique",
+    "adressage dynamique",
+    "DHCP"
+  ],
+  "incertitudes": [
+    "Sur le schéma, l'adresse de l'imprimante est imprimée « 128.100.200 » (trois groupes au lieu de quatre) : lue comme 128.100.0.200 par analogie avec les autres machines ; la classe B ne dépend que du premier octet 128 et reste la même dans les deux lectures.",
+    "Le portable Port 2 porte l'adresse 125.100.0.11 (classe A), alors que le routeur et les autres machines sont en 128.100.0.x (classe B) : possible coquille du schéma, non corrigée, sans effet sur les questions posées.",
+    "La question 3 n'a pas de note imprimée (la somme des notes imprimées est de 3 points sur 4) : barème de la question 3 non précisé."
+  ],
+  "statut": "brouillon"
+}

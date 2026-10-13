@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-calculer-la-periode-radioactive-a-partir-de-la-constante-radioactive-tle-c-e-2016",
+  "meta": {
+    "titre": "Calculer la période radioactive à partir de la constante radioactive",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Radioactivité : loi de décroissance",
+    "duree_estimee_min": 15,
+    "tags": [
+      "période radioactive",
+      "constante radioactive",
+      "loi de décroissance radioactive",
+      "demi-vie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex3-q1.2.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de temps faut-il pour que la moitié d'un échantillon radioactif disparaisse ? Cette durée, la période, caractérise chaque radioélément : de quelques microsecondes à des milliards d'années. Elle se déduit de la constante radioactive $\\lambda$ par une formule à connaître et à savoir redémontrer en deux lignes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de décroissance $N = N_0\\,e^{-\\lambda t}$",
+        "Logarithme népérien : $\\ln(e^x) = x$ et $\\ln\\dfrac{1}{2} = -\\ln 2$",
+        "Unités : $\\lambda$ en s$^{-1}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Période et constante radioactive",
+      "contenu_markdown": "La période radioactive $T$ (ou demi-vie) est la durée au bout de laquelle la moitié des noyaux d'un échantillon s'est désintégrée. On l'obtient en posant $N = \\dfrac{N_0}{2}$ dans la loi de décroissance :\n\n$$\\dfrac{1}{2} = e^{-\\lambda T} \\quad\\Longrightarrow\\quad T = \\dfrac{\\ln 2}{\\lambda}$$\n\nAprès $n$ périodes, il reste la fraction $\\left(\\dfrac{1}{2}\\right)^n$ des noyaux. La constante de temps $\\tau = \\dfrac{1}{\\lambda}$ est une autre durée caractéristique, supérieure à $T$ : $T = \\tau\\ln 2 \\approx 0{,}69\\,\\tau$.",
+      "formule_principale": "T = \\dfrac{\\ln 2}{\\lambda}",
+      "variantes": [
+        {
+          "nom": "Retrouver la période graphiquement",
+          "quand_utiliser": "Quand on dispose de la courbe $N(t)$",
+          "contenu_markdown": "On lit la date où $N$ vaut la moitié de $N_0$ : elle donne directement $T$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La constante radioactive du bismuth 212 est $\\lambda = 1{,}906\\times10^{-4}$ s$^{-1}$. Calculer sa période radioactive.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la condition de demi-vie",
+          "justification": "À $t = T$, il reste la moitié des noyaux",
+          "resultat_markdown": "$N(T) = \\dfrac{N_0}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Reporter dans la loi de décroissance",
+          "justification": "$N = N_0\\,e^{-\\lambda t}$",
+          "resultat_markdown": "$\\dfrac{1}{2} = e^{-\\lambda T}$"
+        },
+        {
+          "numero": 3,
+          "action": "Prendre le logarithme népérien",
+          "justification": "$\\ln$ est la fonction réciproque de l'exponentielle",
+          "resultat_markdown": "$-\\ln 2 = -\\lambda T$ donc $T = \\dfrac{\\ln 2}{\\lambda}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer",
+          "justification": "Application numérique",
+          "resultat_markdown": "$T = \\dfrac{0{,}693}{1{,}906\\times10^{-4}} = 3{,}64\\times10^{3}$ s soit $60{,}6$ min"
+        }
+      ],
+      "conclusion_markdown": "La période du bismuth 212 est $T \\approx 3\\,640$ s, soit un peu plus d'une heure."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le $\\ln 2$ et écrire $T = \\dfrac{1}{\\lambda}$",
+          "pourquoi_faux": "$\\dfrac{1}{\\lambda}$ est la constante de temps $\\tau$, pas la période. Ici $\\tau = 5\\,247$ s alors que $T = 3\\,637$ s : l'erreur est de $44\\,\\%$.",
+          "correction_markdown": "Retiens : $T = \\tau\\ln 2$, donc $T < \\tau$."
+        },
+        {
+          "erreur_markdown": "Utiliser $\\log$ (décimal) à la place de $\\ln$",
+          "pourquoi_faux": "La loi de décroissance utilise l'exponentielle de base $e$ : la fonction réciproque est $\\ln$, pas $\\log_{10}$. Avec $\\log 2 = 0{,}301$, le résultat est faux d'un facteur $2{,}3$.",
+          "correction_markdown": "Vérifie que ta calculatrice affiche bien $\\ln 2 = 0{,}693$."
+        },
+        {
+          "erreur_markdown": "Donner la période dans une unité incohérente avec $\\lambda$",
+          "pourquoi_faux": "Si $\\lambda$ est en s$^{-1}$, $T$ sort en secondes. Écrire « $3\\,640$ » sans unité, ou en heures sans conversion, est une faute.",
+          "correction_markdown": "Écris l'unité et convertis ensuite en minutes ou en heures si utile."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La constante radioactive du carbone 14 est $\\lambda = 1{,}21\\times10^{-4}$ an$^{-1}$. Calculer sa période.",
+          "solution_markdown": "$T = \\dfrac{\\ln 2}{\\lambda} = \\dfrac{0{,}693}{1{,}21\\times10^{-4}} = 5{,}73\\times10^{3}$ ans, soit environ $5\\,730$ ans."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La période de l'iode 131 est $T = 8{,}0$ jours. Calculer sa constante radioactive en s$^{-1}$.",
+          "solution_markdown": "**Conversion.** $T = 8{,}0\\times 24\\times 3\\,600 = 6{,}912\\times10^{5}$ s.\n\n**Constante.** $\\lambda = \\dfrac{\\ln 2}{T} = \\dfrac{0{,}693}{6{,}912\\times10^{5}} = 1{,}00\\times10^{-6}$ s$^{-1}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quelle fraction d'un échantillon d'iode 131 ($T = 8{,}0$ jours) reste-t-elle après $24$ jours ? Quelle durée faut-il pour qu'il n'en reste que $1\\,\\%$ ?",
+          "solution_markdown": "**Après $24$ jours.** $\\dfrac{24}{8{,}0} = 3$ périodes : il reste $\\left(\\dfrac{1}{2}\\right)^3 = \\dfrac{1}{8} = 12{,}5\\,\\%$.\n\n**Reste de $1\\,\\%$.** $\\dfrac{N}{N_0} = e^{-\\lambda t} = 0{,}01$ donne $t = \\dfrac{\\ln 100}{\\lambda} = \\dfrac{\\ln 100}{\\ln 2}\\,T = 6{,}64\\times 8{,}0 = 53{,}2$ jours."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La période $T$ est la durée au bout de laquelle la moitié des noyaux a disparu : $T = \\dfrac{\\ln 2}{\\lambda}$.",
+        "Ne confonds pas période $T$ et constante de temps $\\tau = \\dfrac{1}{\\lambda}$ : $T = 0{,}69\\,\\tau$.",
+        "Après $n$ périodes, il reste $\\left(\\dfrac{1}{2}\\right)^n$ des noyaux.",
+        "Écris $T$ avec son unité, cohérente avec celle de $\\lambda$, et juge la vraisemblance en changeant d'unité.",
+        "Au BAC, $T = \\dfrac{\\ln 2}{\\lambda}$ est exigée dans presque tout exercice de radioactivité, souvent avant un calcul d'activité ou d'âge."
+      ]
+    }
+  ]
+}

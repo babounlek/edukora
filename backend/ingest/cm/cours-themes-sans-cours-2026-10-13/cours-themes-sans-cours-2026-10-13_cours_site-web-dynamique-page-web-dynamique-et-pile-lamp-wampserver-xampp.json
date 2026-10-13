@@ -1,0 +1,142 @@
+{
+  "cours_id": "cours-site-web-dynamique-page-web-dynamique-et-pile-lamp-wampserver-xampp-gap24",
+  "meta": {
+    "titre": "Site web dynamique, page web dynamique et pile LAMP (WampServer, XAMPP)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web en PHP",
+    "duree_estimee_min": 35,
+    "tags": [
+      "site web dynamique",
+      "Page web dynamique",
+      "pile LAMP",
+      "pile logicielle",
+      "WampServer et XAMPP",
+      "serveur web Apache",
+      "serveur web local",
+      "installation de PHP",
+      "module PHP",
+      "configuration serveur",
+      "langage HTML",
+      "structure d'une page HTML",
+      "Rendu d'une page web"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q2-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun.pdf"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le gérant d'une boutique veut présenter ses produits sur Internet et laisser ses clients écrire leur avis. Un simple fichier HTML ne suffit pas : il affiche toujours la même chose. Il lui faut un site web dynamique, dont les pages se fabriquent à la demande à partir de données. Pour le construire et le tester sur ton ordinateur, tu installes une pile logicielle comme WampServer ou XAMPP. Ce cours explique la différence entre statique et dynamique, le rôle de chaque brique et la méthode d'installation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de client/serveur et de requête HTTP",
+        "Savoir ce qu'est une base de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Statique, dynamique et pile logicielle LAMP / WAMP / XAMPP",
+      "contenu_markdown": "**Page HTML et rendu.** Une page HTML est un fichier texte formé de **balises**. Le navigateur lit ces balises et en fabrique le **rendu** (ce que tu vois). Squelette minimal :\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n<title>Ma page</title>\n</head>\n<body>\n<h1>Bienvenue</h1>\n<p>Un paragraphe.</p>\n</body>\n</html>\n```\n\nLa balise `title` (dans l'en-tête `head`) donne le titre affiché dans l'onglet ; le contenu visible est dans `body`.\n\n| Critère | Site web statique | Site web dynamique |\n|---|---|---|\n| Pages | fichiers HTML fixes, envoyés tels quels | pages fabriquées à la demande par un script |\n| Contenu | identique pour tous les visiteurs | peut changer selon l'utilisateur, la date, les données |\n| Données | écrites dans le code | souvent stockées dans une base (MySQL) |\n| Interactivité | liens et affichage | formulaires, avis, comptes, panier |\n\nUne **page web dynamique** est une page dont le contenu est produit par un script exécuté côté serveur (fichier `.php`). Le serveur exécute le script et envoie au navigateur du HTML ordinaire : le visiteur ne voit jamais le code PHP.\n\n**La pile logicielle.** Un site dynamique en PHP s'appuie sur quatre briques :\n\n1. un **système d'exploitation** : Linux (L) ou Windows (W) ;\n2. le **serveur web Apache** (A), qui reçoit les requêtes HTTP et renvoie les réponses ;\n3. le **SGBD MySQL** ou MariaDB (M), qui stocke les données ;\n4. l'interpréteur **PHP** (P), qui exécute les scripts. Apache le charge sous forme de **module PHP**.\n\n**LAMP** = Linux, Apache, MySQL, PHP. **WAMP** = la même pile sous Windows. **WampServer** (Windows) et **XAMPP** (plusieurs systèmes) sont des packs tout-en-un qui installent ces briques d'un seul coup et créent un **serveur web local**.\n\n**Installer et vérifier.** Sous Windows : installer le pack, le démarrer (les services Apache et MySQL doivent tourner), placer les fichiers dans le dossier racine (`www` pour WampServer, `htdocs` pour XAMPP). Sous Linux : `sudo apt install apache2 php libapache2-mod-php mysql-server php-mysql`, racine `/var/www/html`. On teste dans le navigateur avec l'adresse `http://localhost/`.\n\n**Vérifier que PHP est pris en compte** : créer un fichier `info.php` dans le dossier racine contenant `<?php phpinfo(); ?>`, puis l'ouvrir par `http://localhost/info.php`. Si la page de configuration de PHP s'affiche, la configuration du serveur est correcte. Ne double-clique jamais sur le fichier : il s'ouvrirait par `file://`, sans passer par Apache, et le navigateur afficherait le code.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Chemin d'une requête dans la pile",
+          "quand_utiliser": "Quand on demande de décrire le fonctionnement d'un site dynamique.",
+          "contenu_markdown": "Navigateur, puis Apache, puis PHP, puis MySQL. La réponse refait le chemin en sens inverse : MySQL renvoie les données à PHP, PHP produit le HTML, Apache l'envoie au navigateur. Le navigateur est côté client ; les quatre briques sont côté serveur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le responsable d'une boutique veut présenter ses produits et recueillir les avis de ses clients par Internet. Pourquoi a-t-il choisi de mettre en place un site web dynamique plutôt qu'un site statique ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever les besoins du responsable",
+          "justification": "Le choix de la technologie se justifie par les besoins.",
+          "resultat_markdown": "Publier de nouveaux produits régulièrement ; recueillir les avis des clients."
+        },
+        {
+          "numero": 2,
+          "action": "Montrer la limite du site statique",
+          "justification": "Un site statique affiche des pages figées, écrites à l'avance.",
+          "resultat_markdown": "Impossible de recevoir une saisie du visiteur et de l'afficher ensuite."
+        },
+        {
+          "numero": 3,
+          "action": "Montrer l'apport du site dynamique",
+          "justification": "Les pages sont générées par un script, à partir d'une base de données.",
+          "resultat_markdown": "Les avis sont enregistrés dans la base et affichés automatiquement ; les produits se mettent à jour sans réécrire les pages."
+        }
+      ],
+      "conclusion_markdown": "Un site dynamique permet de collecter les avis des clients, de les stocker en base de données et de mettre à jour les produits sans modifier le code des pages, ce qu'un site statique ne permet pas."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter phpMyAdmin parmi les quatre composants de la pile.",
+          "pourquoi_faux": "phpMyAdmin est une interface web d'administration de MySQL ; ce n'est pas le SGBD lui-même.",
+          "correction_markdown": "Les quatre briques sont : système d'exploitation, Apache, MySQL, PHP."
+        },
+        {
+          "erreur_markdown": "Ouvrir un fichier PHP par double-clic et conclure que PHP ne marche pas.",
+          "pourquoi_faux": "Le fichier est lu directement par le navigateur, sans serveur web : le script n'est pas exécuté.",
+          "correction_markdown": "Place le fichier dans le dossier racine et ouvre-le par http://localhost/."
+        },
+        {
+          "erreur_markdown": "Croire que le visiteur reçoit le code PHP.",
+          "pourquoi_faux": "Le serveur exécute le script et n'envoie que le résultat, du HTML.",
+          "correction_markdown": "Le code PHP reste sur le serveur ; le navigateur ne reçoit que le HTML produit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Développer LAMP et WAMP, et dire ce qui les distingue.",
+          "solution_markdown": "**LAMP** : Linux, Apache, MySQL, PHP. **WAMP** : Windows, Apache, MySQL, PHP. La seule différence est le système d'exploitation (L pour Linux, W pour Windows)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un fichier bonjour.php contient `<p><?php echo 'Bonjour'; ?></p>`. Que reçoit le navigateur quand on demande ce fichier par http://localhost/bonjour.php ? Que verrait-on en l'ouvrant par double-clic ?",
+          "solution_markdown": "Apache confie le fichier à PHP, qui exécute `echo 'Bonjour';`. Le navigateur reçoit uniquement **`<p>Bonjour</p>`** et affiche le mot Bonjour dans un paragraphe.\n\nEn double-clic, l'adresse commence par file:// : aucun serveur n'intervient, PHP n'est pas exécuté et le navigateur affiche le code ou une page incorrecte."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Décrire la démarche pour installer un environnement PHP sur Windows et vérifier que le serveur prend bien en compte PHP.",
+          "solution_markdown": "1. Télécharger WampServer (ou XAMPP) sur le site officiel et l'installer.\n2. Démarrer le pack : les services Apache et MySQL doivent être actifs.\n3. Créer dans le dossier racine (`www` ou `htdocs`) un fichier `info.php` contenant `<?php phpinfo(); ?>`.\n4. Ouvrir `http://localhost/info.php` dans le navigateur.\n\nSi la page de configuration de PHP (version, modules, chemins) s'affiche, Apache a bien chargé le module PHP. Sinon, on vérifie que le module est activé dans la configuration d'Apache et on redémarre le serveur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Site statique : pages HTML fixes. Site dynamique : pages fabriquées à la demande par un script serveur, souvent à partir d'une base de données.",
+        "Pile LAMP : Linux, Apache, MySQL, PHP ; WAMP sous Windows ; WampServer et XAMPP sont des packs tout-en-un qui créent un serveur web local.",
+        "Chaîne d'une requête : navigateur, Apache, PHP, MySQL, puis retour en sens inverse.",
+        "Test de l'installation : fichier avec phpinfo dans le dossier racine, appelé par http://localhost/.",
+        "Le navigateur ne reçoit que du HTML : le code PHP reste sur le serveur."
+      ]
+    }
+  ]
+}

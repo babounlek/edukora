@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-calculer-la-duree-dun-bail-dhcp-tle-ti-2019",
+  "meta": {
+    "titre": "Calculer la durée d'un bail DHCP",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Services réseau",
+    "duree_estimee_min": 22,
+    "tags": [
+      "bail DHCP",
+      "calcul de durée",
+      "date et heure",
+      "renouvellement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.6-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une configuration DHCP n'est pas éternelle : elle est prêtée pour une durée donnée, le bail. Une capture indique seulement les deux dates, et c'est à toi de calculer la durée entre elles. Une soustraction de dates, avec un peu de méthode, suffit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir convertir heures, minutes et secondes",
+        "Savoir ce qu'est un bail DHCP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Soustraire deux instants",
+      "contenu_markdown": "La durée d'un bail est l'écart entre l'instant d'**expiration** et l'instant d'**obtention** :\n\n**durée = date et heure d'expiration - date et heure d'obtention**\n\nMéthode : (1) avancer jusqu'à la même heure, minutes et secondes que l'instant de début, en comptant les jours entiers ; (2) corriger de l'écart entre l'heure de fin et cette heure ; (3) convertir en une unité usuelle. Conversions utiles : 1 jour = 24 h = 1 440 min = 86 400 s ; 1 h = 3 600 s.\n\nLe client essaie de **renouveler** son bail à 50 % de la durée (*T1*) puis à 87,5 % (*T2*) s'il n'a pas réussi.",
+      "formule_principale": "\\text{durée} = t_{\\text{expiration}} - t_{\\text{obtention}}",
+      "variantes": [
+        {
+          "nom": "Calcul en secondes",
+          "quand_utiliser": "Quand les deux instants sont sur des jours différents avec des écarts de secondes",
+          "contenu_markdown": "Convertis chaque instant en secondes depuis un même repère puis soustrais : par exemple de jeudi 13:27:37 à vendredi 13:27:36, l'écart est $86\\,400 - 1 = 86\\,399$ s."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la capture de l'épreuve, le bail est obtenu le jeudi 4 février 2016 à 13:27:37 et expire le vendredi 5 février 2016 à 13:27:36. Calculer la durée du bail.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Avancer jusqu'à la même heure",
+          "justification": "On compte d'abord les jours entiers",
+          "resultat_markdown": "De jeudi 13:27:37 à vendredi 13:27:37 : 1 jour = 24 h = 86 400 s."
+        },
+        {
+          "numero": 2,
+          "action": "Corriger de l'écart restant",
+          "justification": "L'expiration est affichée à 13:27:36, soit une seconde plus tôt que 13:27:37",
+          "resultat_markdown": "86 400 s - 1 s = 86 399 s."
+        },
+        {
+          "numero": 3,
+          "action": "Convertir en heures, minutes, secondes",
+          "justification": "86 399 s = 24 h - 1 s",
+          "resultat_markdown": "23 h 59 min 59 s."
+        },
+        {
+          "numero": 4,
+          "action": "Interpréter",
+          "justification": "Une durée de 24 h est un bail usuel et l'écart d'une seconde vient de l'affichage",
+          "resultat_markdown": "Bail de 24 heures (1 jour)."
+        }
+      ],
+      "conclusion_markdown": "La durée du bail est de 23 h 59 min 59 s, soit 24 heures à une seconde près."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Soustraire seulement les heures, 13 - 13 = 0.",
+          "pourquoi_faux": "Les deux instants ne sont pas le même jour : il faut tenir compte du passage de jeudi à vendredi, qui ajoute 24 h.",
+          "correction_markdown": "Compter d'abord les jours entiers, puis corriger avec l'écart des heures, minutes et secondes."
+        },
+        {
+          "erreur_markdown": "Oublier l'emprunt dans la soustraction des secondes ou des minutes.",
+          "pourquoi_faux": "36 s - 37 s est négatif : il faut emprunter une minute (60 s), ce qui réduit les minutes d'une unité.",
+          "correction_markdown": "Poser la soustraction avec retenues, ou convertir en secondes."
+        },
+        {
+          "erreur_markdown": "Conclure « 1 seconde » ou « 1 jour » sans vérifier.",
+          "pourquoi_faux": "Une soustraction qui donne un résultat très éloigné d'une durée usuelle doit éveiller le doute : ici 24 h, et non une seconde.",
+          "correction_markdown": "Comparer le résultat aux durées de bail courantes (1 h, 8 h, 24 h, 8 jours)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un bail est obtenu le lundi 10 mars à 08:00:00 et expire le mercredi 12 mars à 08:00:00. Calculer sa durée en heures.",
+          "solution_markdown": "1. De lundi 08:00 à mardi 08:00 : 24 h.\n2. De mardi 08:00 à mercredi 08:00 : 24 h.\n3. Durée = 24 + 24 = 48 h, soit 2 jours."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un bail est obtenu le mardi à 08:15:30 et expire le mardi à 20:45:10. Calculer la durée en heures, minutes et secondes.",
+          "solution_markdown": "1. Écart des heures : de 08:15:30 à 20:15:30, il y a 12 h.\n2. Reste à passer de 20:15:30 à 20:45:10 : 29 min 40 s, car de 20:15:30 à 20:45:30 il y a 30 min et on retire 20 s.\n3. Total : 12 h + 29 min 40 s = 12 h 29 min 40 s."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un bail de 24 h a été obtenu le jeudi à 13:27:37. À quels instants le client essaie-t-il de le renouveler (T1 à 50 %, T2 à 87,5 %) ?",
+          "solution_markdown": "1. T1 = 50 % de 24 h = 12 h : $13:27:37 + 12\\text{ h} = 01:27:37$ le vendredi.\n2. T2 = 87,5 % de 24 h = $0{,}875 \\times 24 = 21$ h : $13:27:37 + 21\\text{ h} = 10:27:37$ le vendredi.\n3. Vérification : 13 h 27 min 37 s + 21 h = 34 h 27 min 37 s, soit 24 h + 10 h 27 min 37 s, donc vendredi 10:27:37."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Durée du bail = instant d'expiration - instant d'obtention.",
+        "Compte d'abord les jours entiers, puis corrige avec les heures, minutes et secondes.",
+        "1 jour = 24 h = 86 400 s ; une soustraction de secondes peut exiger une retenue.",
+        "Compare ton résultat aux durées usuelles : un bail de 24 h est très courant.",
+        "Au baccalauréat, ce calcul vaut peu de points mais il est sans piège si tu poses la soustraction proprement."
+      ]
+    }
+  ]
+}

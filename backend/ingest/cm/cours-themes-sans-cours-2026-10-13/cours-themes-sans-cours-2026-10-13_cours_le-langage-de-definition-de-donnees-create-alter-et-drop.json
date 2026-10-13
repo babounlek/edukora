@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-le-langage-de-definition-de-donnees-create-alter-et-drop-gap24",
+  "meta": {
+    "titre": "Le langage de définition de données : CREATE, ALTER et DROP",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Langage SQL : définition de données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "langage de définition de données",
+      "langage de manipulation de données",
+      "SQL",
+      "CREATE TABLE",
+      "ALTER TABLE",
+      "DROP TABLE",
+      "contraintes d'intégrité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "epreuve_source": "bac-ti-SI-2023-officiel-cameroun.html",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q3-1-gap24",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de ranger la moindre note ou le moindre nom dans une base de données, il faut construire les tables qui les recevront : choisir les colonnes, leurs types, les clés. C'est le travail du langage de définition de données, le LDD. À l'examen, on te demande souvent de l'identifier, d'en citer les commandes et d'en écrire quelques-unes. Ce cours te donne la syntaxe exacte et les pièges de l'ordre d'exécution."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notions de table, de colonne (attribut) et de ligne (enregistrement)",
+        "Clé primaire et clé étrangère",
+        "Types de données de base : entier, texte, date"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois commandes du langage de définition de données",
+      "contenu_markdown": "Le **langage de définition de données (LDD)** regroupe les commandes SQL qui créent, modifient ou suppriment la **structure** de la base. Elles ne traitent pas les lignes : c'est le rôle du langage de manipulation de données (LMD : `INSERT`, `UPDATE`, `DELETE`, `SELECT`).\n\n**CREATE** : créer un objet.\n\n```sql\nCREATE TABLE Classe (\n  CodeC CHAR(4) PRIMARY KEY,\n  NomC  VARCHAR(30) NOT NULL\n);\n```\n\n**ALTER** : modifier la structure d'une table existante.\n\n```sql\nALTER TABLE Eleve ADD Telephone VARCHAR(15);\nALTER TABLE Eleve DROP COLUMN Telephone;\n```\n\n**DROP** : supprimer un objet avec tout son contenu.\n\n```sql\nDROP TABLE Eleve;\n```\n\n**Contraintes courantes** : `PRIMARY KEY` (identifiant unique et non nul), `FOREIGN KEY ... REFERENCES` (lien vers la clé primaire d'une autre table), `NOT NULL` (valeur obligatoire), `UNIQUE` (pas de doublon), `DEFAULT` (valeur par défaut), `CHECK` (condition à respecter).\n\n**Ordre d'exécution** : on crée la table mère avant la table fille, et on supprime la table fille avant la table mère.",
+      "variantes": [
+        {
+          "nom": "Changer le type d'une colonne",
+          "quand_utiliser": "Quand l'énoncé demande de modifier une colonne existante",
+          "contenu_markdown": "La syntaxe dépend du SGBD : `ALTER TABLE Eleve MODIFY NomE VARCHAR(60);` (MySQL, Oracle) ou `ALTER TABLE Eleve ALTER COLUMN NomE TYPE VARCHAR(60);` (PostgreSQL). À l'examen, utilise la forme de ton cours et écris `ALTER TABLE` suivi de l'action."
+        },
+        {
+          "nom": "Classer une commande en LDD ou en LMD",
+          "quand_utiliser": "Quand on te donne une liste de commandes à ranger",
+          "contenu_markdown": "Pose-toi une seule question : la commande agit-elle sur la structure (CREATE, ALTER, DROP : LDD) ou sur les lignes (INSERT, UPDATE, DELETE : LMD) ? DROP supprime une table, DELETE supprime des lignes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une base ÉCOLE contient Classe (CodeC, NomC) et Eleve (Matricule, NomE, DateNais, #CodeC). Écrire les commandes qui créent les deux tables, puis ajoutent à Eleve une colonne Sexe de type CHAR(1).",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir l'ordre de création",
+          "justification": "Eleve référence Classe par la clé étrangère CodeC : la table Classe doit exister avant.",
+          "resultat_markdown": "Créer Classe, puis Eleve."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire CREATE TABLE pour la table mère",
+          "justification": "CodeC identifie une classe : clé primaire. Le nom est obligatoire.",
+          "resultat_markdown": "`CREATE TABLE Classe (CodeC CHAR(4) PRIMARY KEY, NomC VARCHAR(30) NOT NULL);`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire CREATE TABLE pour la table fille",
+          "justification": "Matricule est la clé primaire d'Eleve ; CodeC est une clé étrangère qui référence Classe(CodeC).",
+          "resultat_markdown": "`CREATE TABLE Eleve (Matricule CHAR(8) PRIMARY KEY, NomE VARCHAR(40) NOT NULL, DateNais DATE, CodeC CHAR(4), FOREIGN KEY (CodeC) REFERENCES Classe(CodeC));`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter la colonne avec ALTER",
+          "justification": "La table existe déjà : on modifie sa structure sans la recréer.",
+          "resultat_markdown": "`ALTER TABLE Eleve ADD Sexe CHAR(1);`"
+        }
+      ],
+      "conclusion_markdown": "Trois commandes du LDD suffisent : deux CREATE TABLE dans le bon ordre, puis un ALTER TABLE. Aucune ligne n'a encore été insérée : insérer relève du LMD."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ranger DROP TABLE dans le langage de manipulation.",
+          "pourquoi_faux": "DROP supprime la structure de la table avec tout son contenu : c'est une commande de définition. La commande de manipulation qui retire des lignes est DELETE.",
+          "correction_markdown": "CREATE, ALTER, DROP : LDD ; INSERT, UPDATE, DELETE : LMD."
+        },
+        {
+          "erreur_markdown": "Créer la table fille avant la table mère.",
+          "pourquoi_faux": "La clause FOREIGN KEY référence une table qui n'existe pas encore : le SGBD signale une erreur.",
+          "correction_markdown": "Crée toujours la table qui porte la clé primaire avant celle qui porte la clé étrangère."
+        },
+        {
+          "erreur_markdown": "Utiliser INSERT pour ajouter une colonne à une table.",
+          "pourquoi_faux": "INSERT ajoute une ligne. Ajouter une colonne change la structure, donc c'est ALTER TABLE ... ADD.",
+          "correction_markdown": "Colonne : ALTER TABLE. Ligne : INSERT."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classe en LDD ou en LMD : CREATE TABLE, UPDATE, DROP TABLE, INSERT INTO, ALTER TABLE, DELETE.",
+          "solution_markdown": "- LDD : CREATE TABLE, DROP TABLE, ALTER TABLE.\n- LMD : UPDATE, INSERT INTO, DELETE."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la commande qui crée la table Matiere (CodeM de 3 caractères, clé primaire ; Intitule de 30 caractères maximum, obligatoire ; Coef entier, valeur par défaut 1).",
+          "solution_markdown": "```sql\nCREATE TABLE Matiere (\n  CodeM CHAR(3) PRIMARY KEY,\n  Intitule VARCHAR(30) NOT NULL,\n  Coef INTEGER DEFAULT 1\n);\n```\n\nCodeM est la clé primaire, `NOT NULL` rend l'intitulé obligatoire et `DEFAULT 1` donne la valeur 1 quand aucun coefficient n'est précisé."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans la base ÉCOLE de l'exemple, on veut supprimer les deux tables. Dans quel ordre exécuter les DROP TABLE, et pourquoi ? Que fait DELETE FROM Eleve par rapport à DROP TABLE Eleve ?",
+          "solution_markdown": "On supprime d'abord Eleve, puis Classe : tant que Eleve existe, sa clé étrangère référence Classe et le SGBD refuse de supprimer la table mère.\n\n```sql\nDROP TABLE Eleve;\nDROP TABLE Classe;\n```\n\n`DELETE FROM Eleve;` retire toutes les lignes mais conserve la table et ses colonnes (LMD). `DROP TABLE Eleve;` supprime la table elle-même, structure comprise (LDD)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le LDD agit sur la structure de la base : CREATE, ALTER, DROP.",
+        "Le LMD agit sur les données : INSERT, UPDATE, DELETE, et SELECT pour interroger.",
+        "Les contraintes se déclarent à la création : PRIMARY KEY, FOREIGN KEY, NOT NULL, UNIQUE, DEFAULT.",
+        "Création : table mère d'abord. Suppression : table fille d'abord.",
+        "Au BAC TI, on te demande de citer des commandes de chaque famille et de justifier le classement de DROP et de DELETE."
+      ]
+    }
+  ]
+}

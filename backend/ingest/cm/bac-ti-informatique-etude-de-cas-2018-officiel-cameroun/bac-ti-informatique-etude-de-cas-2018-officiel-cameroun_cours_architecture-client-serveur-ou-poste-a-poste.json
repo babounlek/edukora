@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-architecture-client-serveur-ou-poste-a-poste-tle-ti",
+  "meta": {
+    "titre": "Architecture client/serveur et poste à poste",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Typologie des réseaux informatiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "client/serveur",
+      "poste à poste",
+      "serveur",
+      "architecture réseau",
+      "avantages"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un cybercafé de quartier, chaque ordinateur partage ce qu'il veut avec les autres. Dans un lycée, un serveur central garde les notes et les comptes de tous. Même câblage possible, mais deux façons de répartir les rôles. Cette répartition s'appelle l'architecture du réseau, et on la reconnaît à un indice précis."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un serveur et ce qu'est un poste client",
+        "Ne pas confondre architecture (répartition des rôles) et topologie (forme des liaisons)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Qui offre les services, qui les demande ?",
+      "contenu_markdown": "L'**architecture** d'un réseau décrit la répartition des rôles entre les machines.\n\n| | Client/serveur | Poste à poste (égal à égal) |\n|---|---|---|\n| Rôles | Serveurs dédiés qui fournissent des services ; clients qui les demandent | Chaque machine est à la fois cliente et serveuse |\n| Données | Centralisées sur le serveur | Dispersées sur les postes |\n| Indice | Un serveur central héberge des applications ou des données | Aucun serveur dédié, chaque poste partage ses ressources |\n| Avantages | Données centralisées et sécurisées, sauvegarde unique, administration centralisée, évolutivité | Simple, peu coûteux, adapté aux petits groupes |\n| Inconvénients | Dépendance du serveur (point unique de défaillance), coût du serveur et de son administration | Sécurité et sauvegarde difficiles, ralentissement des postes qui partagent |\n\nPour **justifier**, cite toujours l'indice du schéma ou de l'énoncé : « un serveur central héberge... ».",
+      "formule_principale": "\\text{serveur dédié} \\Rightarrow \\text{client/serveur} \\qquad \\text{pas de serveur dédié} \\Rightarrow \\text{poste à poste}",
+      "variantes": [
+        {
+          "nom": "Architecture trois tiers",
+          "quand_utiliser": "Quand le sujet évoque un serveur d'applications et un serveur de données distincts",
+          "contenu_markdown": "Le client (navigateur) dialogue avec un serveur d'applications qui interroge lui-même un serveur de base de données. C'est une extension du client/serveur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un serveur central héberge une application de gestion comptable, une application de gestion des notes et un logiciel de messagerie, et stocke toutes les données du complexe. Quelle est l'architecture ? Donner deux avantages et l'inconvénient majeur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher l'indice de rôle",
+          "justification": "On regarde s'il existe un serveur dédié qui fournit des services",
+          "resultat_markdown": "Un serveur central héberge les applications et les données."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer l'architecture",
+          "justification": "Un serveur dédié et des postes qui le sollicitent caractérisent le client/serveur",
+          "resultat_markdown": "Architecture client/serveur."
+        },
+        {
+          "numero": 3,
+          "action": "Justifier avec l'énoncé",
+          "justification": "La justification cite l'indice",
+          "resultat_markdown": "Les postes (PC2, PC3, PC4) sont clients ; le serveur fournit applications et données."
+        },
+        {
+          "numero": 4,
+          "action": "Donner deux avantages",
+          "justification": "Ils découlent de la centralisation",
+          "resultat_markdown": "Données centralisées et sécurisées (droits, sauvegarde unique) ; applications installées et administrées une seule fois."
+        },
+        {
+          "numero": 5,
+          "action": "Donner l'inconvénient majeur",
+          "justification": "Il découle aussi de la centralisation",
+          "resultat_markdown": "Dépendance du serveur : s'il tombe en panne, les clients perdent services et données."
+        }
+      ],
+      "conclusion_markdown": "Le réseau est de type client/serveur : le serveur centralise applications et données, ce qui facilite sécurité et administration mais le rend indispensable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « étoile » à la question sur l'architecture.",
+          "pourquoi_faux": "L'étoile est une topologie (forme des câbles). L'architecture décrit la répartition des rôles.",
+          "correction_markdown": "Réponds client/serveur ou poste à poste."
+        },
+        {
+          "erreur_markdown": "Réponse sans justification : « client/serveur ».",
+          "pourquoi_faux": "La question demande de justifier. Sans l'indice (le serveur central), le point est perdu.",
+          "correction_markdown": "Ajoute une phrase qui cite le serveur et son contenu."
+        },
+        {
+          "erreur_markdown": "Dire que dans un réseau client/serveur « les clients n'ont pas besoin du serveur ».",
+          "pourquoi_faux": "Les clients dépendent du serveur pour les applications et les données : c'est justement l'inconvénient majeur.",
+          "correction_markdown": "Retiens que la force du modèle (centralisation) est aussi sa faiblesse (dépendance)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Trois ordinateurs d'une famille partagent une imprimante, sans aucun serveur. Quelle est l'architecture ?",
+          "solution_markdown": "Aucun serveur dédié n'existe : chaque ordinateur peut partager ses ressources (ici une imprimante) avec les autres et utiliser les leurs. L'architecture est **poste à poste** (égal à égal)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le réseau d'un cabinet médical comprend un serveur de fichiers où sont rangés tous les dossiers et six postes qui y accèdent. Indique l'architecture et deux avantages dans ce contexte.",
+          "solution_markdown": "L'architecture est **client/serveur** : un serveur dédié stocke les dossiers et six postes clients y accèdent.\n\n**Avantages** : (1) les dossiers sont centralisés, donc protégés par des droits d'accès et sauvegardés au même endroit ; (2) les logiciels et les données sont gérés une fois, sur le serveur, ce qui facilite la maintenance."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une petite boutique a quatre postes, un budget très limité et aucune compétence d'administration. Propose une architecture, justifie-la et indique la limite à surveiller.",
+          "solution_markdown": "On peut proposer une architecture **poste à poste** : quatre postes ne justifient pas l'achat d'un serveur ni d'un administrateur, et le partage direct des fichiers et de l'imprimante suffit.\n\n**Limite à surveiller** : la sécurité et la sauvegarde. Les données sont dispersées sur les postes, sans contrôle central des droits ; il faut organiser des sauvegardes régulières, par exemple sur un disque externe.\n\nSi la boutique grossit ou si ses données deviennent sensibles, elle passera à une architecture client/serveur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'architecture décrit la répartition des rôles : client/serveur ou poste à poste.",
+        "Un serveur dédié qui centralise applications ou données indique le client/serveur.",
+        "Justifie toujours en citant l'indice de l'énoncé ou du schéma.",
+        "La centralisation est à la fois l'avantage (sécurité, administration) et l'inconvénient (dépendance) du client/serveur.",
+        "Au BAC TI, on demande l'architecture, sa justification, deux avantages et l'inconvénient majeur, soit environ 1,5 point."
+      ]
+    }
+  ]
+}

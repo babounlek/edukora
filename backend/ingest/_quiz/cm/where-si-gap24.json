@@ -1,0 +1,162 @@
+[
+  {
+    "external_id": "cqc-where-si-faible-0",
+    "theme": "WHERE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans la table `Eleve(Matricule, Nom, Classe, Moyenne)`, quelle requête affiche les noms des élèves de la classe TI1 ?",
+    "corrige_markdown": "### Rappel de méthode\nPour filtrer des lignes, écris les clauses dans l'ordre `SELECT colonnes FROM table WHERE condition` et place les valeurs de type texte entre apostrophes.\n\n### Corrigé\n**Réponse : C.**\n\n- A) `TI1` sans apostrophes est lu comme un nom de colonne, qui n'existe pas.\n- B) `WHERE` doit venir après `FROM`.\n- D) `IF` n'est pas une clause SQL de filtrage : c'est `WHERE`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`SELECT Nom FROM Eleve WHERE Classe = TI1;`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`SELECT Nom WHERE Classe = 'TI1' FROM Eleve;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`SELECT Nom FROM Eleve WHERE Classe = 'TI1';`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`SELECT Nom FROM Eleve IF Classe = 'TI1';`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      12510
+    ]
+  },
+  {
+    "external_id": "cqc-where-si-faible-1",
+    "theme": "WHERE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On donne la table `Produit` :\n\n| CodeP | Designation | Prix |\n|---|---|---|\n| P1 | Cahier | 500 |\n| P2 | Sac | 4500 |\n| P3 | Stylo | 150 |\n| P4 | Calculatrice | 8500 |\n| P5 | Règle | 300 |\n| P6 | Classeur | 1200 |\n\nÉcris la requête qui affiche la désignation des produits dont le prix est compris entre 500 et 1500 (bornes incluses), puis donne son résultat.",
+    "corrige_markdown": "### Rappel de méthode\nPour sélectionner les valeurs comprises dans un intervalle, utilise `WHERE colonne BETWEEN borne_basse AND borne_haute` : les deux bornes sont incluses dans le résultat ; les nombres s'écrivent sans espace ni séparateur.\n\n### Corrigé\n```sql\nSELECT Designation\nFROM Produit\nWHERE Prix BETWEEN 500 AND 1500;\n```\n\nRésultat : **Cahier** (500, borne incluse) et **Classeur** (1200). La règle (300) et le stylo (150) sont en dessous ; le sac et la calculatrice sont au-dessus.\n\n### Piège à éviter\n`BETWEEN` inclut les bornes : le cahier à 500 fait bien partie du résultat. Équivalent : `Prix >= 500 AND Prix <= 1500`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12510
+    ]
+  },
+  {
+    "external_id": "cqc-where-si-moyenne-0",
+    "theme": "WHERE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On donne la table `Fournisseur` (CA en millions de francs) :\n\n| CodeF | Ville | CA |\n|---|---|---|\n| F1 | Douala | 30 |\n| F2 | Yaoundé | 5 |\n| F3 | Yaoundé | 50 |\n| F4 | Douala | 8 |\n| F5 | Bafoussam | 60 |\n\nOn exécute :\n\n```sql\nSELECT CodeF FROM Fournisseur\nWHERE Ville = 'Douala' OR Ville = 'Yaoundé' AND CA > 10;\n```\n\nCombien de lignes sont affichées ?",
+    "corrige_markdown": "### Rappel de méthode\nPour évaluer un `WHERE` mêlant `AND` et `OR`, rappelle-toi que `AND` est prioritaire sur `OR` ; ajoute mentalement des parenthèses autour des `AND` avant de tester chaque ligne.\n\n### Corrigé\n**Réponse : B (3 lignes).** La condition équivaut à : Ville = 'Douala' **OU** (Ville = 'Yaoundé' **ET** CA > 10).\n\n- F1 : Douala, retenue.\n- F2 : Yaoundé mais CA = 5, rejetée.\n- F3 : Yaoundé et CA = 50, retenue.\n- F4 : Douala, retenue (le CA n'est pas testé pour Douala).\n- F5 : Bafoussam, rejetée.\n\nRésultat : F1, F3, F4.\n\n### Piège à éviter\nSi tu voulais « Douala ou Yaoundé, avec CA supérieur à 10 », il fallait écrire `(Ville = 'Douala' OR Ville = 'Yaoundé') AND CA > 10`, qui donne seulement F1 et F3.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "2"
+      },
+      {
+        "lettre": "B",
+        "texte": "3"
+      },
+      {
+        "lettre": "C",
+        "texte": "4"
+      },
+      {
+        "lettre": "D",
+        "texte": "5"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      12510
+    ]
+  },
+  {
+    "external_id": "cqc-where-si-moyenne-1",
+    "theme": "WHERE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On donne la table `Eleve(Matricule, Nom, Classe, Moyenne)` :\n\n| Matricule | Nom | Classe | Moyenne |\n|---|---|---|---|\n| E01 | Mballa | TI1 | 12,5 |\n| E02 | Mvogo | TI3 | 14 |\n| E03 | Nkoulou | TI1 | 9 |\n| E04 | Mekongo | TI2 | 7,5 |\n| E05 | Manga | TI2 | 15 |\n| E06 | Ndongo | TI1 | 11 |\n\nÉcris la requête qui affiche le nom et la moyenne des élèves dont le nom commence par la lettre M, qui sont en TI1 ou en TI2, et dont la moyenne est supérieure ou égale à 10. Donne ensuite le résultat.",
+    "corrige_markdown": "### Rappel de méthode\nPour combiner plusieurs critères, traduis chacun en une condition du `WHERE` : un début de texte se teste avec `LIKE 'M%'`, une liste de valeurs avec `IN (...)`, une borne avec `>=` ; relie le tout par `AND`. Le séparateur décimal en SQL est le point.\n\n### Corrigé\n```sql\nSELECT Nom, Moyenne\nFROM Eleve\nWHERE Nom LIKE 'M%'\n  AND Classe IN ('TI1', 'TI2')\n  AND Moyenne >= 10;\n```\n\nExamen des lignes :\n\n- Mballa : M, TI1, 12,5, retenue.\n- Mvogo : M, mais TI3, rejetée.\n- Nkoulou : ne commence pas par M, rejetée.\n- Mekongo : M, TI2, mais 7,5 < 10, rejetée.\n- Manga : M, TI2, 15, retenue.\n- Ndongo : ne commence pas par M, rejetée.\n\nRésultat : **Mballa (12,5)** et **Manga (15)**.\n\n### Piège à éviter\nLe symbole `%` remplace n'importe quelle suite de caractères : `LIKE '%M'` chercherait les noms qui **finissent** par M.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12510
+    ]
+  },
+  {
+    "external_id": "cqc-where-si-moyenne-2",
+    "theme": "WHERE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Voici la table `Fournisseur(CodeF, NomF, Domiciliation, CA, Sexe)` :\n\n| CodeF | NomF | Domiciliation | CA | Sexe |\n|---|---|---|---|---|\n| A01 | Tamo | Bafoussam | 45000000 | M |\n| A02 | Njoya | Yaoundé | 62000000 | F |\n| A03 | Essomba | Douala | 38000000 | F |\n| A04 | Kenfack | Yaoundé | 41000000 | M |\n| A05 | Biloa | Yaoundé | 27000000 | F |\n| A06 | Mbiya | Garoua | 53000000 | F |\n\nÉcris la requête qui affiche le nom et le chiffre d'affaires des fournisseurs de sexe féminin domiciliées à Yaoundé ou à Douala et dont le chiffre d'affaires dépasse 30 000 000. Donne le résultat.",
+    "corrige_markdown": "### Rappel de méthode\nPour écrire une requête de sélection à plusieurs critères, place après `SELECT` les colonnes demandées, après `FROM` la table, puis traduis chaque critère du texte dans le `WHERE` ; les valeurs texte sont entre apostrophes et les nombres s'écrivent sans espace.\n\n### Corrigé\n**Colonnes :** `NomF, CA`. **Table :** `Fournisseur`.\n\n```sql\nSELECT NomF, CA\nFROM Fournisseur\nWHERE Sexe = 'F'\n  AND Domiciliation IN ('Yaoundé', 'Douala')\n  AND CA > 30000000;\n```\n\nRésultat : **Njoya (62000000)** et **Essomba (38000000)**. Biloa est à Yaoundé mais son CA (27000000) est trop bas ; Mbiya a un CA suffisant mais est domiciliée à Garoua ; Tamo et Kenfack sont des hommes.\n\n### Piège à éviter\nÉcris 30000000 sans espaces : `30 000 000` n'est pas un nombre valide en SQL.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12510
+    ]
+  },
+  {
+    "external_id": "cqc-where-si-elevee-0",
+    "theme": "WHERE",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On donne la table `Article` où la colonne `Remise` est vide (`NULL`) pour certains articles :\n\n| Ref | Nom | Remise | Stock |\n|---|---|---|---|\n| R1 | Ballon | 10 | 5 |\n| R2 | Filet | NULL | 12 |\n| R3 | Maillot | 0 | 0 |\n| R4 | Chaussette | NULL | 0 |\n| R5 | Short | 5 | 8 |\n\nPour chaque requête, donne les références (Ref) qu'elle affiche et justifie :\n\na) `SELECT Ref FROM Article WHERE Remise = NULL;`\n\nb) `SELECT Ref FROM Article WHERE Remise IS NULL;`\n\nc) `SELECT Ref FROM Article WHERE Remise <> 0;`\n\nd) `SELECT Ref FROM Article WHERE NOT (Remise > 0 AND Stock > 0);`",
+    "corrige_markdown": "### Rappel de méthode\nPour prévoir le résultat d'un `WHERE` en présence de valeurs `NULL`, rappelle-toi que toute comparaison avec `NULL` donne « inconnu » et qu'une ligne n'est retenue que si la condition est **vraie** ; teste l'absence de valeur avec `IS NULL` et évalue `AND` / `NOT` ligne par ligne.\n\n### Corrigé\na) **Aucune ligne.** `Remise = NULL` est toujours inconnu, jamais vrai.\n\nb) **R2 et R4.** `IS NULL` est le bon test pour une valeur absente.\n\nc) **R1 et R5.** Pour R2 et R4, `NULL <> 0` est inconnu : elles sont exclues, comme R3 dont la remise vaut 0.\n\nd) **R3 et R4.**\n\n- R1 : (vrai ET vrai) = vrai, NOT donne faux, exclue.\n- R2 : (inconnu ET vrai) = inconnu, NOT inconnu = inconnu, exclue.\n- R3 : (faux ET faux) = faux, NOT donne vrai, retenue.\n- R4 : (inconnu ET faux) = faux, NOT donne vrai, retenue.\n- R5 : (vrai ET vrai) = vrai, exclue.\n\n### Piège à éviter\n`<> 0` ne retrouve pas les valeurs absentes : pour « remise différente de 0 ou absente », écris `Remise <> 0 OR Remise IS NULL`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12510
+    ]
+  }
+]

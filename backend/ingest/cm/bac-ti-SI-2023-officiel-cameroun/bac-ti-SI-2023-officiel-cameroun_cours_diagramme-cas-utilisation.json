@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-diagramme-cas-utilisation-tle-ti-si2023",
+  "meta": {
+    "titre": "Construire un diagramme de cas d'utilisation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "diagramme de cas d'utilisation",
+      "acteurs",
+      "include",
+      "extend",
+      "généralisation",
+      "UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le diagramme de cas d'utilisation est la première vue UML que l'on dessine : il montre, d'un seul coup d'œil, qui utilise le système et pour faire quoi. Il est demandé presque chaque année en BAC TI et se prépare par une méthode simple en quatre temps. Une fois cette méthode maîtrisée, aucun énoncé ne te prendra de court."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'un acteur et d'un cas d'utilisation",
+        "Les trois relations entre cas : inclusion, extension, héritage"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode en quatre temps",
+      "contenu_markdown": "1. **Cadre du système** : un rectangle portant le nom du système, qui contient les cas d'utilisation.\n2. **Acteurs** : bonshommes filaires à l'extérieur du cadre, nommés par leur rôle.\n3. **Cas d'utilisation** : une ellipse par fonction, nommée par un verbe à l'infinitif et un complément.\n4. **Relations** : trait plein acteur - cas (association) ; entre cas : flèche pointillée «include» (vers le cas obligatoire), flèche pointillée «extend» (vers le cas étendu, depuis le cas facultatif) ; triangle creux (vers le cas général).",
+      "variantes": [
+        {
+          "nom": "Traduction des contraintes de l'énoncé",
+          "quand_utiliser": "Quand l'énoncé donne des contraintes en phrases",
+          "contenu_markdown": "« obligatoirement après » : include. « on peut ne pas... » : extend. « par... ou par... » : héritage. Une ligne de brouillon par contrainte évite les oublis."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Construire le diagramme de cas d'utilisation de la gestion des réservations d'un hôtel (acteurs Réceptionniste et Client ; cas Enregistrer le client, Vérifier la provenance, Répartir les clients, Réserver la chambre, Payer la note ; trois contraintes de l'énoncé).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tracer le cadre et nommer le système",
+          "justification": "Le cadre délimite ce qui est dans le système.",
+          "resultat_markdown": "Rectangle « Système de gestion des réservations de l'hôtel »."
+        },
+        {
+          "numero": 2,
+          "action": "Placer les deux acteurs à l'extérieur",
+          "justification": "Les acteurs sont extérieurs au système.",
+          "resultat_markdown": "Client à gauche, Réceptionniste à droite."
+        },
+        {
+          "numero": 3,
+          "action": "Placer les cas d'utilisation à l'intérieur",
+          "justification": "Chaque fonction rendue devient une ellipse à verbe d'action.",
+          "resultat_markdown": "Cinq ellipses de l'énoncé, plus Réserver par Internet et Réserver au guichet."
+        },
+        {
+          "numero": 4,
+          "action": "Relier chaque acteur à ses cas",
+          "justification": "Un trait plein indique qui déclenche quoi.",
+          "resultat_markdown": "Client : Réserver la chambre, Payer la note ; Réceptionniste : Enregistrer, Répartir, Vérifier."
+        },
+        {
+          "numero": 5,
+          "action": "Traduire les trois contraintes",
+          "justification": "Chaque contrainte devient une relation entre cas.",
+          "resultat_markdown": "Répartir ---«include»---> Vérifier ; Payer ---«extend»---> Réserver ; Réserver par Internet et au guichet ---|> Réserver la chambre."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme final comporte 2 acteurs, 7 cas d'utilisation et 3 types de relations entre cas, tout ce que demande le barème."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Nommer un cas par un nom au lieu d'un verbe (« Paiement »)",
+          "pourquoi_faux": "Un cas d'utilisation décrit une action qu'un acteur réalise, ce qu'un verbe à l'infinitif exprime.",
+          "correction_markdown": "Écrire « Payer la note »."
+        },
+        {
+          "erreur_markdown": "Placer un acteur à l'intérieur du cadre",
+          "pourquoi_faux": "Les acteurs sont externes au système, seuls les cas sont internes.",
+          "correction_markdown": "Dessiner les acteurs hors du rectangle."
+        },
+        {
+          "erreur_markdown": "Inverser la flèche d'extension",
+          "pourquoi_faux": "extend part du cas qui s'ajoute et pointe vers le cas étendu.",
+          "correction_markdown": "Faire partir la flèche de Payer la note vers Réserver la chambre."
+        },
+        {
+          "erreur_markdown": "Oublier d'étiqueter include et extend",
+          "pourquoi_faux": "Sans étiquette, le correcteur ne sait pas quelle relation tu as voulu dessiner.",
+          "correction_markdown": "Écrire «include» ou «extend» sur chaque flèche pointillée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dessine (en texte) le diagramme d'une borne de recharge de crédit : acteur Client, cas Choisir l'opérateur, Saisir le montant, Payer.",
+          "solution_markdown": "1. Cadre : Système de la borne de recharge.\n2. Acteur extérieur : Client.\n3. Cas à l'intérieur : Choisir l'opérateur, Saisir le montant, Payer.\n4. Associations : Client relié aux trois cas par des traits pleins.\n5. Aucune relation entre cas n'est donnée par l'énoncé."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Bibliothèque : acteur Lecteur (Emprunter un livre, Réserver un livre) et acteur Bibliothécaire (Vérifier l'abonnement). Contrainte : emprunter nécessite de vérifier l'abonnement. Quelles relations dessines-tu ?",
+          "solution_markdown": "1. Cadre : Système de la bibliothèque.\n2. Lecteur relié à Emprunter et Réserver ; Bibliothécaire relié à Vérifier l'abonnement.\n3. « nécessite » : Emprunter un livre ---«include»---> Vérifier l'abonnement.\n4. Aucune autre relation."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Agence de voyage : acteurs Agent et Client. Cas : Vendre un billet, Vérifier la disponibilité, Appliquer une remise, Payer. Contraintes : vendre exige de vérifier la disponibilité ; la remise est possible seulement pour les clients fidèles ; on peut payer en espèces ou par carte. Construis les relations.",
+          "solution_markdown": "1. Vendre un billet ---«include»---> Vérifier la disponibilité (obligatoire).\n2. Appliquer une remise ---«extend»---> Vendre un billet (facultatif et conditionnel).\n3. Payer en espèces et Payer par carte ---|> Payer (variantes du même but).\n4. Agent relié à Vendre un billet et Vérifier la disponibilité ; Client relié à Payer et Appliquer une remise.\n5. Chaque flèche porte son stéréotype ou son triangle creux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Méthode : cadre, acteurs dehors, cas dedans, relations.",
+        "Cas = verbe à l'infinitif + complément.",
+        "include : obligatoire, vers le cas inclus. extend : facultatif, vers le cas étendu.",
+        "Héritage : triangle creux vers le cas général.",
+        "Écris les contraintes de l'énoncé une par une avant de dessiner.",
+        "Au BAC TI, ce diagramme vaut 2 à 4 points : acteurs, cas, relations."
+      ]
+    }
+  ]
+}

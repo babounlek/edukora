@@ -1,0 +1,136 @@
+{
+  "cours_id": "cours-la-hierarchie-des-memoires-et-la-memoire-cache-gap24",
+  "meta": {
+    "titre": "La hiérarchie des mémoires et la mémoire cache",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Architecture matérielle",
+    "duree_estimee_min": 25,
+    "tags": [
+      "mémoire cache"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.4-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un processeur moderne exécute plusieurs milliards d'instructions par seconde, mais la mémoire vive n'arrive pas à lui fournir les données aussi vite. Pour que le processeur n'attende pas, les constructeurs placent entre lui et la RAM une petite mémoire très rapide : la mémoire cache. Ce cours te montre où elle se trouve dans la hiérarchie des mémoires, comment elle fonctionne et comment calculer le gain de temps qu'elle apporte."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Distinguer la RAM (mémoire centrale) d'une mémoire de masse",
+        "Savoir ce qu'est une fréquence d'horloge"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La hiérarchie des mémoires et le fonctionnement du cache",
+      "contenu_markdown": "**La hiérarchie des mémoires.** Plus une mémoire est proche du processeur, plus elle est rapide, plus elle est chère et plus sa capacité est faible.\n\n| Niveau | Place | Capacité (ordre de grandeur) | Rapidité |\n|---|---|---|---|\n| Registres | dans le processeur | quelques dizaines d'octets | la plus rapide |\n| Cache L1 | dans le cœur du processeur | dizaines de Ko | très rapide |\n| Cache L2 (et L3) | dans ou près du processeur | Ko à Mo | rapide |\n| RAM | sur la carte mère | Go | moyenne |\n| Disque dur ou SSD | boîtier | centaines de Go à To | lente |\n\nLa **mémoire cache** est une petite mémoire très rapide placée entre le processeur et la RAM. Elle garde une **copie** des données et des instructions utilisées récemment. Elle fonctionne parce que les programmes réutilisent souvent les mêmes données ou des données voisines (principe de localité). Le cache de premier niveau (L1) est dans le cœur du processeur et cadencé à la même fréquence que lui.\n\n**Parcours d'une demande du processeur**\n\n- **Succès de cache** (*hit*) : la donnée est déjà dans le cache. Le processeur la demande au cache, qui la renvoie aussitôt. La RAM n'est pas sollicitée : deux trajets seulement.\n- **Défaut de cache** (*miss*) : la donnée n'est pas dans le cache. Le processeur la demande au cache, qui transmet la demande à la RAM ; la RAM envoie la donnée au cache, qui la conserve pour les accès suivants, puis la transmet au processeur : quatre trajets.\n\nL'information ne va jamais directement de la RAM au processeur : elle passe toujours par le cache.\n\n**Temps moyen d'accès.** Avec un taux de succès p (nombre entre 0 et 1), un temps d'accès cache tc et un temps d'accès RAM tr :\n\ntemps moyen = p × tc + (1 − p) × (tc + tr)",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Lire les tailles de cache dans une fiche de processeur",
+          "quand_utiliser": "Quand une fiche technique donne deux tailles en Ko ou en Mo.",
+          "contenu_markdown": "Dans la fiche de l'Athlon 64 4000+ (2400 MHz, 200 MHz, 128 Ko, 1024 Ko, Socket 939), 128 Ko est la taille du cache L1 et 1024 Ko (soit 1 Mo) celle du cache L2. Les échanges entre le cœur et le cache L1 se font à la fréquence interne, 2400 MHz, et non à celle du bus, 200 MHz."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La gestion de la mémoire cache se schématise par quatre échanges : (1) du processeur vers le cache ; (2) du cache vers la mémoire centrale ; (3) de la mémoire centrale vers le cache ; (4) du cache vers le processeur. Représenter le chemin parcouru par l'information en cas de « succès de cache » et en cas de « défaut de cache ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Toujours commencer par l'échange 1",
+          "justification": "Le processeur interroge d'abord le cache, jamais la RAM.",
+          "resultat_markdown": "Tous les chemins commencent par l'échange 1."
+        },
+        {
+          "numero": 2,
+          "action": "Cas du succès",
+          "justification": "La donnée est dans le cache : la RAM n'est pas utilisée.",
+          "resultat_markdown": "Chemin : 1 puis 4."
+        },
+        {
+          "numero": 3,
+          "action": "Cas du défaut",
+          "justification": "La donnée est absente : le cache doit la demander à la RAM, puis la retransmettre.",
+          "resultat_markdown": "Chemin : 1, puis 2, puis 3, puis 4."
+        },
+        {
+          "numero": 4,
+          "action": "Comparer",
+          "justification": "Le nombre de trajets mesure le temps perdu.",
+          "resultat_markdown": "Deux trajets contre quatre : le succès est plus rapide, et il évite d'attendre la RAM."
+        }
+      ],
+      "conclusion_markdown": "Succès de cache : 1 puis 4. Défaut de cache : 1, 2, 3 puis 4."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer une flèche directe de la RAM vers le processeur en cas de défaut.",
+          "pourquoi_faux": "La donnée est d'abord rangée dans le cache, puis transmise au processeur. Elle passe toujours par le cache.",
+          "correction_markdown": "Après le défaut : RAM vers cache (3), puis cache vers processeur (4)."
+        },
+        {
+          "erreur_markdown": "Confondre le cache avec la mémoire vive.",
+          "pourquoi_faux": "Le cache est plus petit, plus rapide et plus proche du processeur ; la RAM est plus grande et plus lente.",
+          "correction_markdown": "Place les mémoires dans la hiérarchie : registres, cache, RAM, disque."
+        },
+        {
+          "erreur_markdown": "Croire que le cache augmente la capacité de stockage de l'ordinateur.",
+          "pourquoi_faux": "Le cache ne contient que des copies temporaires. Il accélère les accès, il n'ajoute pas d'espace de stockage.",
+          "correction_markdown": "Écris : le cache réduit le temps d'accès aux données."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classer du plus rapide au plus lent : disque dur, RAM, registres, cache L1.",
+          "solution_markdown": "**Registres, cache L1, RAM, disque dur.** Plus on s'éloigne du processeur, plus la mémoire est lente."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un cache a un temps d'accès de 1 ns, la RAM de 50 ns, et le taux de succès est de 95 %. Calculer le temps moyen d'accès.",
+          "solution_markdown": "p = 0,95, tc = 1 ns, tr = 50 ns.\n\nTemps moyen = 0,95 × 1 + 0,05 × (1 + 50) = 0,95 + 0,05 × 51 = 0,95 + 2,55 = **3,5 ns**.\n\nC'est quatorze fois moins que les 50 ns d'un accès direct à la RAM (50 ÷ 3,5 ≈ 14,3)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec les mêmes temps (1 ns et 50 ns), calculer le temps moyen d'accès si le taux de succès tombe à 50 %. Que conclure ?",
+          "solution_markdown": "p = 0,5 : temps moyen = 0,5 × 1 + 0,5 × 51 = 0,5 + 25,5 = **26 ns**.\n\nLe temps moyen passe de 3,5 ns à 26 ns. Un cache n'est efficace que si le taux de succès est élevé : c'est pourquoi on cherche à y garder les données les plus souvent utilisées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Hiérarchie : registres, cache L1, L2, L3, RAM, disque. Plus on se rapproche du processeur, plus c'est rapide, petit et cher.",
+        "La mémoire cache est une petite mémoire rapide entre le processeur et la RAM ; elle garde des copies de données récentes.",
+        "Succès de cache : la donnée est présente, 2 trajets. Défaut de cache : elle est absente, 4 trajets (via la RAM).",
+        "L'information passe toujours par le cache, même en cas de défaut.",
+        "Temps moyen = p × tc + (1 − p) × (tc + tr) ; le gain dépend du taux de succès."
+      ]
+    }
+  ]
+}

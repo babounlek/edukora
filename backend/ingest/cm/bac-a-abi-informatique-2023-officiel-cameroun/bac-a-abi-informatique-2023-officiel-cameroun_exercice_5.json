@@ -1,0 +1,131 @@
+{
+  "epreuve_source": "bac-a-abi-informatique-2023-officiel-cameroun.html",
+  "numero_exercice": "5",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "A",
+  "filiere_serie_a": "abi",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2023,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": 4,
+  "groupes": [
+    "PARTIE III : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (08 pts)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-a-abi-informatique-2023-officiel-cameroun_exercice_5_fig_1.png",
+      "page_source": null,
+      "type": "tableau",
+      "legende": "Table ELEVES : champs Matricule, Noms, Classe, Série, Age ; quatre enregistrements : 23D75 ABADA Terminale C 16 ; 45U26 IBRAHIM 2nde A 15 ; 42V63 EKWATA 1ère D 19 ; 15M74 KAMENI 3ème ESP 16.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de données (04 pts)**\n\nLa table ELEVES ci-dessous est extraite d'une base de données créée dans un établissement scolaire à l'aide d'un SGBD.\n\n![fig-1](bac-a-abi-informatique-2023-officiel-cameroun_exercice_5_fig_1.png)\n\nÀ l'aide des connaissances acquises sur les bases de données, répondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Définir chacune des expressions suivantes : « base de données » et « clé primaire ». *[1 pt]*",
+      "corrige_markdown": "Une **base de données** est un ensemble structuré de données relatives à un même domaine (ici, les élèves d'un établissement), enregistrées sur un support informatique de façon à pouvoir être consultées, mises à jour et exploitées facilement, grâce à un système de gestion de base de données (SGBD).\n\nUne **clé primaire** est un champ (ou un groupe de champs) d'une table dont la valeur identifie de façon unique chaque enregistrement : deux enregistrements ne peuvent jamais avoir la même valeur, et la valeur n'est jamais vide.\n\n### Piège à éviter\nNe définis pas la base de données par « un tableau » : une base peut contenir plusieurs tables reliées entre elles. Pour la clé primaire, la notion d'unicité est indispensable : « un champ important » ne rapporte aucun point.\n\n### Conseil\nDeux expressions demandées : une phrase pour chacune, avec le genre (ensemble de données, champ) puis la fonction (organiser et retrouver les données, identifier un enregistrement).",
+      "themes": [
+        "Bases de données",
+        "Clé primaire",
+        "Définitions informatiques"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Donner un exemple de SGBD qui permet de créer la table ELEVES. *[1 pt]*",
+      "corrige_markdown": "Un SGBD (système de gestion de base de données) est le logiciel qui permet de créer, remplir et interroger une base de données. Pour une table aussi simple que ELEVES, on peut utiliser **Microsoft Access**, très répandu à l'école. **MySQL**, **LibreOffice Base**, **PostgreSQL**, **SQLite** ou **Oracle** conviennent aussi.\n\n### Piège à éviter\nNe cite pas Excel : c'est un tableur, qui peut stocker des listes mais n'est pas un SGBD (il ne gère pas les clés ni les relations entre tables).\n\n### Conseil\nUn seul exemple est demandé : choisis celui que tu sais orthographier sans erreur (Access ou MySQL).",
+      "themes": [
+        "Bases de données",
+        "SGBD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Identifier le champ qui correspond à la clé primaire de la table ELEVES. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa clé primaire d'une table est le champ dont la valeur est unique et jamais vide pour chaque enregistrement ; pour la repérer, teste chaque champ : s'il peut se répéter d'un enregistrement à l'autre (nom, âge, classe, série), il ne convient pas, et le champ qui joue le rôle d'identifiant (matricule, code, numéro) est retenu.\n\nLa table ELEVES compte cinq champs : Matricule, Noms, Classe, Série et Age. On les teste un à un :\n\n| Champ | Peut se répéter ? | Verdict |\n|---|---|---|\n| Noms | Oui : deux élèves peuvent être homonymes | Non retenu |\n| Classe | Oui : plusieurs élèves sont dans la même classe | Non retenu |\n| Série | Oui : plusieurs élèves sont dans la même série | Non retenu |\n| Age | Oui : la valeur 16 apparaît déjà pour ABADA et KAMENI | Non retenu |\n| Matricule | Non : un matricule est attribué à un seul élève | Retenu |\n\nLe champ qui correspond à la clé primaire est donc **Matricule** : chaque élève en a un, il est différent d'un élève à l'autre, et il ne reste jamais vide.\n\n### Piège à éviter\nNe choisis pas Noms sous prétexte que les quatre noms affichés sont différents : le choix d'une clé se justifie par la règle (aucune répétition possible), pas par les quelques lignes visibles. Dans un vrai établissement, deux élèves peuvent porter le même nom.\n\n### Conseil\nJustifie en une phrase : « le matricule est propre à chaque élève, donc unique ». Cette justification fait partie de ce que le correcteur attend.",
+      "themes": [
+        "Bases de données",
+        "Clé primaire",
+        "Modèle relationnel"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-abi-informatique-2023-officiel-cameroun-ex5-q3-1",
+          "competence": "Choisir la clé primaire d'une table",
+          "contenu_markdown": "La clé primaire d'une table est le champ dont la valeur est unique et jamais vide pour chaque enregistrement ; pour la repérer, teste chaque champ : s'il peut se répéter d'un enregistrement à l'autre (nom, âge, classe, série), il ne convient pas, et le champ qui joue le rôle d'identifiant (matricule, code, numéro) est retenu.",
+          "cours_genere": true,
+          "cours_id": "cours-choisir-la-cle-primaire-d-une-table-tle-a-abi-2023"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Donner le résultat de la requête suivante :\n\n```sql\nSELECT Matricule, Noms FROM ELEVES WHERE Age < 16;\n```\n*[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour donner le résultat d'une requête SELECT, lis-la en trois temps : la clause FROM désigne la table, la clause WHERE ne garde que les lignes dont la condition est vraie, la clause SELECT ne garde que les colonnes citées ; le résultat est un tableau portant ces colonnes et uniquement les lignes retenues.\n\nOn applique la requête en trois temps.\n\n1. `FROM ELEVES` : on travaille sur la table ELEVES, soit 4 enregistrements.\n2. `WHERE Age < 16` : on garde les lignes dont l'âge est strictement inférieur à 16. Test ligne par ligne :\n\n| Matricule | Noms | Age | Age < 16 ? |\n|---|---|---|---|\n| 23D75 | ABADA | 16 | Faux (16 n'est pas inférieur à 16) |\n| 45U26 | IBRAHIM | 15 | Vrai |\n| 42V63 | EKWATA | 19 | Faux |\n| 15M74 | KAMENI | 16 | Faux |\n\n3. `SELECT Matricule, Noms` : parmi les lignes retenues, on n'affiche que les colonnes Matricule et Noms.\n\nRésultat de la requête :\n\n| Matricule | Noms |\n|---|---|\n| 45U26 | IBRAHIM |\n\nUn seul élève a moins de 16 ans : IBRAHIM, 15 ans.\n\n### Piège à éviter\nL'opérateur `<` est strict : un élève de 16 ans n'est pas retenu. Avec `<=`, on aurait obtenu ABADA, IBRAHIM et KAMENI. N'affiche pas non plus toutes les colonnes : seules celles citées après `SELECT` apparaissent.\n\n### Conseil\nRedessine le tableau de résultat avec ses en-têtes de colonnes : sans les en-têtes Matricule et Noms, le résultat est incomplet.",
+      "themes": [
+        "Bases de données",
+        "Langage SQL",
+        "Requête SELECT"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-abi-informatique-2023-officiel-cameroun-ex5-q4-1",
+          "competence": "Lire le résultat d'une requête SELECT avec WHERE",
+          "contenu_markdown": "Pour donner le résultat d'une requête SELECT, lis-la en trois temps : la clause FROM désigne la table, la clause WHERE ne garde que les lignes dont la condition est vraie, la clause SELECT ne garde que les colonnes citées ; le résultat est un tableau portant ces colonnes et uniquement les lignes retenues.",
+          "cours_genere": true,
+          "cours_id": "cours-lire-le-resultat-d-une-requete-select-avec-where-tle-a-abi-2023"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "base de données",
+    "clé primaire",
+    "SGBD",
+    "requête SELECT",
+    "SQL",
+    "table ELEVES"
+  ],
+  "incertitudes": [
+    "Source : page HTML du site Camerecole.org reproduisant le sujet officiel, sans en-tête imprimé (ni durée, ni coefficient, ni consigne d'organisation) : origine « officiel » retenue d'après la présentation de la page, durée et coefficient laissés à null.",
+    "Série : la métadonnée de la page indique « A », le titre de la page et l'intitulé du corrigé indiquent « A et ABI » ; retenu : serie « A » avec filière « abi » (A4 Bilingue), conformément à la règle de la Série A.",
+    "Table ELEVES : image JPG de 600 x 125 pixels, lisible mais bruitée ; valeurs lues : matricules 23D75, 45U26, 42V63, 15M74 ; âges 16, 15, 19, 16 ; la série de la dernière ligne est lue « ESP » (code non explicité, sans incidence sur les réponses). Le résultat de la requête dépend de l'âge 15 d'IBRAHIM, seul âge strictement inférieur à 16."
+  ],
+  "statut": "brouillon"
+}

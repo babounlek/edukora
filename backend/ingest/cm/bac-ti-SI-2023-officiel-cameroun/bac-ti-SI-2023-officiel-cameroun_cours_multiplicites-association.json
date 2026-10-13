@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-multiplicites-association-tle-ti-si2023",
+  "meta": {
+    "titre": "Déterminer les multiplicités d'une association",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes",
+    "duree_estimee_min": 22,
+    "tags": [
+      "multiplicités",
+      "cardinalités",
+      "association",
+      "composition",
+      "UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex2-q2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Les multiplicités sont de petits chiffres posés au bout des traits d'un diagramme de classes, mais ce sont eux qui disent les règles de gestion : un client doit-il réserver au moins une suite ? Une douche peut-elle appartenir à deux suites ? Une erreur de côté inverse la règle. Ce cours te donne une méthode de lecture qui évite ces inversions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Identifier les classes et les relations",
+        "Notions de minimum et de maximum"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une multiplicité dans le bon sens",
+      "contenu_markdown": "Une multiplicité s'écrit **minimum..maximum** : `0..1`, `1`, `0..*`, `1..*`.\n\n- **Minimum 0** : le lien est facultatif. **Minimum 1** : il est obligatoire.\n- **Maximum 1** : un seul. **Maximum \\*** : plusieurs.\n- **Méthode** : place-toi sur un objet de la classe A et demande-toi « avec combien d'objets de B est-il lié ? » : la réponse s'écrit **du côté de B**.\n- Dans une composition, le côté du tout vaut presque toujours `1`.",
+      "variantes": [
+        {
+          "nom": "Lecture de contrôle",
+          "quand_utiliser": "Après avoir placé les multiplicités",
+          "contenu_markdown": "Relis chaque lien dans les deux sens avec une phrase : « un client réserve de 1 à plusieurs suites » et « une suite est réservée par 0 à plusieurs clients ». Si une phrase est fausse, la multiplicité est mal placée."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer les multiplicités des liens réserver (Client - Suite) et contient (Suite - Douche) de MINTELE.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Client vers Suite",
+          "justification": "« Un client peut réserver plusieurs suites » et il réserve au moins une pour être enregistré.",
+          "resultat_markdown": "Côté Suite : 1..*."
+        },
+        {
+          "numero": 2,
+          "action": "Suite vers Client",
+          "justification": "Une suite peut ne pas encore avoir été réservée, ou l'avoir été plusieurs fois à des dates différentes.",
+          "resultat_markdown": "Côté Client : 0..*."
+        },
+        {
+          "numero": 3,
+          "action": "Suite vers Douche",
+          "justification": "La création d'une suite entraîne celle de la douche, donc au moins une.",
+          "resultat_markdown": "Côté Douche : 1..*."
+        },
+        {
+          "numero": 4,
+          "action": "Douche vers Suite",
+          "justification": "Une douche appartient à une seule suite (composition).",
+          "resultat_markdown": "Côté Suite : 1."
+        }
+      ],
+      "conclusion_markdown": "Réserver : 0..* côté Client et 1..* côté Suite. Contient : 1 côté Suite et 1..* côté Douche."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire la multiplicité du mauvais côté",
+          "pourquoi_faux": "La valeur se place du côté de la classe que l'on compte, pas du côté de celle où l'on se place.",
+          "correction_markdown": "Se placer sur A, compter les B, écrire côté B."
+        },
+        {
+          "erreur_markdown": "Mettre 0..1 côté tout d'une composition",
+          "pourquoi_faux": "Une partie composée appartient toujours à un tout : minimum 1.",
+          "correction_markdown": "Écrire 1 côté tout."
+        },
+        {
+          "erreur_markdown": "Oublier le cas du minimum 0",
+          "pourquoi_faux": "Un objet peut exister sans être lié : une suite jamais réservée.",
+          "correction_markdown": "Se demander à chaque fois si le lien est facultatif."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un enseignant enseigne plusieurs classes ; une classe a un seul enseignant principal. Multiplicités ?",
+          "solution_markdown": "1. Enseignant vers Classe : plusieurs classes, minimum 1 : 1..* côté Classe.\n2. Classe vers Enseignant : exactement un : 1 côté Enseignant."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bibliothèque : un adhérent peut emprunter de 0 à 5 livres ; un livre est emprunté par 0 ou 1 adhérent à la fois. Multiplicités ?",
+          "solution_markdown": "1. Côté Livre : 0..5.\n2. Côté Adhérent : 0..1."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un cours a au moins 1 chapitre ; un chapitre appartient à un seul cours et disparaît avec lui. Quelle relation et quelles multiplicités ?",
+          "solution_markdown": "1. Le chapitre disparaît avec le cours : composition, losange plein côté Cours.\n2. Côté Chapitre : 1..*.\n3. Côté Cours : 1."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Format minimum..maximum : 0..1, 1, 0..*, 1..*.",
+        "Place-toi sur A, compte les B, écris côté B.",
+        "Minimum 0 : facultatif, minimum 1 : obligatoire.",
+        "Composition : 1 côté tout.",
+        "Au BAC TI, les multiplicités rapportent 1 point sur le diagramme de classes."
+      ]
+    }
+  ]
+}

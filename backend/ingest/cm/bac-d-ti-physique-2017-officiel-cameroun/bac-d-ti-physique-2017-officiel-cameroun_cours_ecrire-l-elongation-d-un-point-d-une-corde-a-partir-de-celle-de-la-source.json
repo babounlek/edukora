@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-ecrire-l-elongation-d-un-point-d-une-corde-a-partir-de-celle-de-la-source-tle-d-ti",
+  "meta": {
+    "titre": "Écrire l'élongation d'un point d'une corde à partir de celle de la source",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Ondes mécaniques progressives",
+    "duree_estimee_min": 30,
+    "tags": [
+      "onde progressive",
+      "retard de propagation",
+      "propagation le long d'une corde",
+      "élongation",
+      "déphasage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-TI-PHYSIQUE-2017-OFFICIEL-CM",
+    "epreuve_titre": "Baccalauréat Physique Séries D et TI - Session 2017 (Cameroun), sujet officiel reproduit par Camerecole",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-d-ti-physique-2017-officiel-cameroun-ex3-qA2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand on secoue le bout d'une corde, un point plus loin ne bouge pas en même temps : il reproduit le mouvement de la source avec un décalage. Ce retard est la clé de la propagation. Il permet d'écrire la loi horaire de n'importe quel point de la corde et de savoir s'il vibre en phase ou en opposition avec la source."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de la période et de la longueur d'onde",
+        "Retard $\\tau = x/v$",
+        "Propriétés de périodicité du cosinus"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Retard et phase",
+      "contenu_markdown": "Un point P à la distance $x$ de la source, dans le sens de propagation, reproduit le mouvement de la source avec le retard $\\tau = x/v$ :\n\n$$y_P(t) = y_O(t - \\tau) \\quad \\text{pour } t \\geq \\tau$$\n\nAvec $y_O = Y_m\\cos(\\omega t)$ : $y_P(t) = Y_m\\cos\\left(\\omega t - \\dfrac{2\\pi x}{\\lambda}\\right)$. Avant l'instant $\\tau$, P est au repos. Si $x/\\lambda$ est un entier, P vibre en phase avec O ; si c'est un demi-entier, en opposition de phase.",
+      "formule_principale": "y_P(t) = Y_m\\cos\\left[\\omega\\left(t - \\frac{x}{v}\\right)\\right]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La source O d'une corde vibre selon $y_O = 3\\cos(100\\pi\\,t)$ (cm), la célérité est $8\\ \\text{m/s}$. Écrire l'élongation du point P situé à $24\\ \\text{cm}$ de O.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la distance",
+          "justification": "Les unités SI imposent des mètres.",
+          "resultat_markdown": "$x = 0{,}24\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le retard",
+          "justification": "$\\tau = x/v$.",
+          "resultat_markdown": "$\\tau = \\dfrac{0{,}24}{8} = 0{,}03\\ \\text{s}$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'élongation retardée",
+          "justification": "$y_P(t) = y_O(t - \\tau)$.",
+          "resultat_markdown": "$y_P(t) = 3\\cos[100\\pi\\,(t - 0{,}03)] = 3\\cos(100\\pi\\,t - 3\\pi)$"
+        },
+        {
+          "numero": 4,
+          "action": "Simplifier la phase",
+          "justification": "$\\cos(\\theta - 3\\pi) = \\cos(\\theta - \\pi)$ car on retire $2\\pi$ ; et $\\cos(\\theta - \\pi) = -\\cos\\theta$.",
+          "resultat_markdown": "$y_P(t) = -3\\cos(100\\pi\\,t)$ pour $t \\geq 0{,}03\\ \\text{s}$"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler par $x/\\lambda$",
+          "justification": "$\\lambda = 0{,}16\\ \\text{m}$ donc $x/\\lambda = 1{,}5$ : demi-entier, opposition de phase.",
+          "resultat_markdown": "Résultat cohérent avec $-3\\cos(100\\pi\\,t)$."
+        }
+      ],
+      "conclusion_markdown": "Pour $t \\geq 0{,}03\\ \\text{s}$, $y_P(t) = 3\\cos(100\\pi\\,t - \\pi)$ en cm : P vibre en opposition de phase avec la source, et reste au repos avant $0{,}03\\ \\text{s}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $t + \\tau$ au lieu de $t - \\tau$.",
+          "pourquoi_faux": "P reçoit l'onde après O : il reproduit ce que O faisait un peu plus tôt, donc la date à insérer est $t - \\tau$.",
+          "correction_markdown": "Raisonner : P est en retard sur O, donc on retranche le retard."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir les centimètres en mètres.",
+          "pourquoi_faux": "Avec $x = 24$ et $v = 8\\ \\text{m/s}$, on trouverait $\\tau = 3\\ \\text{s}$ au lieu de $0{,}03\\ \\text{s}$.",
+          "correction_markdown": "Écrire $x = 0{,}24\\ \\text{m}$ avant tout calcul."
+        },
+        {
+          "erreur_markdown": "Ne pas préciser que l'expression n'est valable que pour $t \\geq \\tau$.",
+          "pourquoi_faux": "Avant l'arrivée de l'onde, le point P est immobile : $y_P = 0$.",
+          "correction_markdown": "Ajouter « pour $t \\geq \\tau$ » à l'expression."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer le retard pris par un point situé à $0{,}5\\ \\text{m}$ de la source dans une corde où la célérité est $10\\ \\text{m/s}$.",
+          "solution_markdown": "$\\tau = \\dfrac{x}{v} = \\dfrac{0{,}5}{10} = 0{,}05\\ \\text{s}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La source vibre selon $y_O = 2\\cos(40\\pi\\,t)$ (cm), célérité $4\\ \\text{m/s}$. Écrire l'élongation d'un point à $0{,}30\\ \\text{m}$ et dire s'il vibre en phase avec la source.",
+          "solution_markdown": "$\\tau = \\dfrac{0{,}30}{4} = 0{,}075\\ \\text{s}$. $y(t) = 2\\cos[40\\pi(t - 0{,}075)] = 2\\cos(40\\pi\\,t - 3\\pi) = -2\\cos(40\\pi\\,t)$ (cm) pour $t \\geq 0{,}075\\ \\text{s}$. Contrôle : $T = \\dfrac{2\\pi}{40\\pi} = 0{,}05\\ \\text{s}$, $\\lambda = 4 \\times 0{,}05 = 0{,}2\\ \\text{m}$, $\\dfrac{x}{\\lambda} = 1{,}5$ : opposition de phase."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour la corde du cours ($\\lambda = 0{,}16\\ \\text{m}$), donner les trois premières abscisses (non nulles) de points vibrant en phase avec O, puis en opposition de phase avec O.",
+          "solution_markdown": "En phase : $x = k\\lambda$ avec $k = 1, 2, 3$, soit $0{,}16\\ \\text{m}$, $0{,}32\\ \\text{m}$, $0{,}48\\ \\text{m}$. En opposition de phase : $x = (2k+1)\\dfrac{\\lambda}{2}$ avec $k = 0, 1, 2$, soit $0{,}08\\ \\text{m}$, $0{,}24\\ \\text{m}$, $0{,}40\\ \\text{m}$. On retrouve l'abscisse $0{,}24\\ \\text{m}$ de l'exemple."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un point à la distance $x$ de la source reproduit son mouvement avec le retard $\\tau = x/v$.",
+        "$y_P(t) = y_O(t - \\tau)$ pour $t \\geq \\tau$ ; avant, P est au repos.",
+        "Le déphasage avec la source est $2\\pi x/\\lambda$ : entier, phase ; demi-entier, opposition.",
+        "Convertis les distances en mètres avant de calculer le retard.",
+        "Au BAC, on te demande souvent l'élongation d'un point précis puis son état vibratoire par rapport à la source."
+      ]
+    }
+  ]
+}

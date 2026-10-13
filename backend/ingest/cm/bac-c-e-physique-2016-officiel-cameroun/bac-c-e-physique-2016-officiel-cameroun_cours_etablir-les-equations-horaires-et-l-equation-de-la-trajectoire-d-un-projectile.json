@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-etablir-les-equations-horaires-et-l-equation-de-la-trajectoire-d-un-projectile-tle-c-e-2016",
+  "meta": {
+    "titre": "Établir les équations horaires et l'équation de la trajectoire d'un projectile",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mouvement dans le champ de pesanteur uniforme",
+    "duree_estimee_min": 30,
+    "tags": [
+      "équations horaires",
+      "trajectoire parabolique",
+      "conditions initiales",
+      "intégration"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex1-q1.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "À quelle distance retombe un poids, quelle hauteur atteint un ballon, où une balle franchit-elle un filet ? Toutes ces questions se règlent avec deux outils : les équations horaires, qui donnent la position à chaque instant, et l'équation de la trajectoire, qui relie $y$ à $x$ sans le temps. Ce cours t'apprend à les établir sans jamais mémoriser de formule toute faite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Théorème du centre d'inertie appliqué à un projectile ($\\vec{a} = \\vec{g}$)",
+        "Primitives de fonctions constantes et affines",
+        "Projection d'un vecteur sur deux axes (sinus, cosinus)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intégrations successives avec conditions initiales",
+      "contenu_markdown": "Pour un projectile soumis à son seul poids, dans un repère $(O,\\vec{i},\\vec{j})$ avec $Oy$ ascendant, $a_x = 0$ et $a_y = -g$. On intègre deux fois chaque composante et on détermine les constantes avec les conditions initiales : $\\vec{v}(0) = \\vec{v_0}\\,(v_0\\cos\\alpha\\ ;\\ v_0\\sin\\alpha)$ et position initiale $(x_0\\ ;\\ y_0)$.\n\n$$x(t) = (v_0\\cos\\alpha)\\,t + x_0 \\qquad ; \\qquad y(t) = -\\dfrac{1}{2}g\\,t^2 + (v_0\\sin\\alpha)\\,t + y_0$$\n\nOn élimine ensuite le temps ($t = \\dfrac{x - x_0}{v_0\\cos\\alpha}$) pour obtenir l'équation de la trajectoire, une parabole.",
+      "formule_principale": "y = -\\dfrac{g}{2\\,v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x + h",
+      "variantes": [
+        {
+          "nom": "Départ du sol",
+          "quand_utiliser": "Quand l'origine du repère est le point de lancement ($x_0 = 0$ et $y_0 = h = 0$)",
+          "contenu_markdown": "La constante $y_0$ est nulle : $y = -\\dfrac{g}{2\\,v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Lancer du poids : la boule part du point S de coordonnées $(0\\ ;\\ h)$ avec $h = 2{,}62$ m, la vitesse initiale $\\vec{v_0}$ faisant l'angle $\\alpha = 45°$ avec l'horizontale ($g = 10$ m/s², air négligé). Établir les équations horaires du mouvement de G puis l'équation cartésienne de sa trajectoire.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'accélération",
+          "justification": "Le poids est la seule force : $\\vec{a} = \\vec{g}$",
+          "resultat_markdown": "$a_x = 0$ et $a_y = -g$"
+        },
+        {
+          "numero": 2,
+          "action": "Intégrer une première fois",
+          "justification": "La vitesse est une primitive de l'accélération, à une constante près",
+          "resultat_markdown": "$v_x = C_1$ et $v_y = -g\\,t + C_2$"
+        },
+        {
+          "numero": 3,
+          "action": "Fixer les constantes de vitesse",
+          "justification": "À $t = 0$, $v_x = v_0\\cos\\alpha$ et $v_y = v_0\\sin\\alpha$",
+          "resultat_markdown": "$v_x = v_0\\cos\\alpha$ ; $v_y = -g\\,t + v_0\\sin\\alpha$"
+        },
+        {
+          "numero": 4,
+          "action": "Intégrer une seconde fois et fixer les constantes de position",
+          "justification": "À $t = 0$, G est en S $(0\\ ;\\ h)$ : $C_3 = 0$ et $C_4 = h$",
+          "resultat_markdown": "$x = (v_0\\cos\\alpha)\\,t$ ; $y = -\\dfrac{1}{2}g\\,t^2 + (v_0\\sin\\alpha)\\,t + h$"
+        },
+        {
+          "numero": 5,
+          "action": "Éliminer le temps",
+          "justification": "On exprime $t$ avec $x(t)$ puis on reporte dans $y(t)$",
+          "resultat_markdown": "$t = \\dfrac{x}{v_0\\cos\\alpha}$ donc $y = -\\dfrac{g}{2\\,v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x + h$"
+        }
+      ],
+      "conclusion_markdown": "Les équations horaires sont $x(t) = (v_0\\cos\\alpha)\\,t$ et $y(t) = -\\dfrac{1}{2}g\\,t^2 + (v_0\\sin\\alpha)\\,t + h$ ; la trajectoire est la parabole d'équation $y = -\\dfrac{g}{2\\,v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x + h$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la hauteur initiale $h$ dans l'équation de $y(t)$",
+          "pourquoi_faux": "La constante d'intégration de $y$ est la position initiale. Prendre $0$ au lieu de $h$ revient à lancer la boule du sol : toute la trajectoire est décalée et la portée est fausse.",
+          "correction_markdown": "Écris toujours les conditions initiales en deux lignes : position $(x_0\\ ;\\ y_0)$ et vitesse $(v_0\\cos\\alpha\\ ;\\ v_0\\sin\\alpha)$."
+        },
+        {
+          "erreur_markdown": "Échanger sinus et cosinus dans les composantes de la vitesse initiale",
+          "pourquoi_faux": "L'angle $\\alpha$ est mesuré avec l'horizontale : la composante horizontale est adjacente à l'angle (cosinus) et la composante verticale est opposée (sinus). Avec un angle mesuré avec la verticale, ce serait l'inverse.",
+          "correction_markdown": "Fais un petit schéma du triangle de vitesse et lis le côté adjacent à l'angle donné."
+        },
+        {
+          "erreur_markdown": "Écrire $a_y = +g$ avec un axe ascendant",
+          "pourquoi_faux": "L'axe $Oy$ est orienté vers le haut alors que $\\vec{g}$ pointe vers le bas : la composante est négative. Un signe oublié donne un projectile qui s'éloigne du sol indéfiniment.",
+          "correction_markdown": "Relis l'orientation de l'axe sur la figure avant d'écrire le signe de $a_y$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un projectile est lancé depuis le sol, pris comme origine du repère, avec $v_0 = 20$ m/s sous l'angle $\\alpha = 30°$ ($g = 10$ m/s², air négligé). Écrire $x(t)$ et $y(t)$.",
+          "solution_markdown": "Accélération : $a_x = 0$ et $a_y = -10$ m/s². Vitesse initiale : $v_{0x} = 20\\cos 30° = 20\\times 0{,}866 = 17{,}32$ m/s et $v_{0y} = 20\\sin 30° = 20\\times 0{,}5 = 10$ m/s. Position initiale : $(0\\ ;\\ 0)$.\n\n$$x(t) = 17{,}32\\,t \\qquad ; \\qquad y(t) = -5\\,t^2 + 10\\,t \\qquad (\\text{m, } t \\text{ en s})$$\n\nLe coefficient $-5$ vient de $-\\dfrac{1}{2}g = -\\dfrac{10}{2}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour le projectile précédent ($v_0 = 20$ m/s, $\\alpha = 30°$, départ du sol), calculer la date et l'altitude du sommet de la trajectoire.",
+          "solution_markdown": "Au sommet, la composante verticale de la vitesse s'annule : $v_y = -g\\,t_S + v_0\\sin\\alpha = 0$, donc\n\n$$t_S = \\dfrac{v_0\\sin\\alpha}{g} = \\dfrac{10}{10} = 1{,}0\\ \\text{s}$$\n\nL'altitude correspondante est $y_S = -5\\times 1{,}0^2 + 10\\times 1{,}0 = 5{,}0$ m. L'abscisse est $x_S = 17{,}32\\times 1{,}0 = 17{,}3$ m : le sommet est à la moitié de la portée, comme le veut la symétrie de la parabole."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une balle est lancée horizontalement ($\\alpha = 0$) depuis le haut d'une falaise de hauteur $h = 45$ m, avec $v_0 = 15$ m/s ($g = 10$ m/s², air négligé, origine au pied de la falaise). Établir l'équation de la trajectoire et trouver à quelle distance du pied elle touche le sol.",
+          "solution_markdown": "Pour $\\alpha = 0$ : $\\cos\\alpha = 1$ et $\\tan\\alpha = 0$. La formule générale devient\n\n$$y = -\\dfrac{g}{2\\,v_0^2}\\,x^2 + h = -\\dfrac{10}{2\\times 15^2}\\,x^2 + 45 = -\\dfrac{x^2}{45} + 45$$\n\nAu sol, $y = 0$ : $\\dfrac{x^2}{45} = 45$, donc $x^2 = 2\\,025$ et $x = 45$ m.\n\nContrôle : la durée de chute est $t = \\sqrt{\\dfrac{2h}{g}} = \\sqrt{9} = 3$ s et $x = v_0\\,t = 15\\times 3 = 45$ m."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une équation horaire s'obtient en deux intégrations, chacune suivie de la détermination de sa constante par une condition initiale.",
+        "La composante horizontale du mouvement est uniforme ($a_x = 0$) ; la composante verticale est uniformément accélérée ($a_y = -g$).",
+        "On obtient la trajectoire en éliminant $t$ : c'est une parabole, d'équation $y = -\\dfrac{g}{2\\,v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x + h$.",
+        "Teste toujours tes équations à $t = 0$ : tu dois retrouver la position et la vitesse initiales.",
+        "Au BAC C-E, l'établissement des équations horaires et de la trajectoire est une question quasi systématique du chapitre « mouvements dans les champs »."
+      ]
+    }
+  ]
+}

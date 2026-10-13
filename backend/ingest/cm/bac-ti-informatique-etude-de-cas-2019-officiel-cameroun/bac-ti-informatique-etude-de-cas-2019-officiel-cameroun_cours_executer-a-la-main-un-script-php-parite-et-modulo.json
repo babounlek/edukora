@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-executer-a-la-main-un-script-php-parite-et-modulo-tle-ti-2019",
+  "meta": {
+    "titre": "Exécuter à la main un script PHP : parité et modulo",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorithmique en PHP",
+    "duree_estimee_min": 28,
+    "tags": [
+      "trace d'exécution",
+      "opérateur modulo",
+      "parité",
+      "fonction PHP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.6-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire ses propres programmes, un informaticien apprend à jouer l'ordinateur : suivre le code ligne par ligne, noter les valeurs, prévoir l'affichage. C'est exactement ce que demandent les questions « exécuter le script avec les valeurs suivantes ». Avec une méthode de trace et l'opérateur modulo, ces questions deviennent mécaniques."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une condition `if/else`",
+        "Connaître la division entière et son reste",
+        "Savoir ce que fait une fonction appelée avec un argument"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tracer l'exécution et utiliser le modulo",
+      "contenu_markdown": "Pour **exécuter à la main**, on respecte l'ordre réel : les définitions de fonctions sont lues mais pas exécutées ; chaque instruction hors fonction s'exécute dans l'ordre ; à chaque appel, on saute dans la fonction avec la valeur de l'argument, on exécute son corps, puis on revient avec la valeur de `return`. On note la valeur de chaque variable dans un **tableau de trace**.\n\nL'opérateur `%` (**modulo**) donne le **reste de la division entière** : `17 % 5` vaut 2 car 17 = 5 × 3 + 2. Un entier `n` est **pair** si `n % 2` vaut 0, **impair** si `n % 2` vaut 1.\n\nConversions : les données d'un formulaire sont des chaînes. Dans une opération arithmétique, une chaîne numérique est convertie en nombre ; pour `%`, les deux opérandes sont convertis en entiers (la partie décimale est supprimée, `80.4` devient `80`). Une chaîne non numérique donne 0 en PHP 7 (avec avertissement selon la version) et une erreur fatale `TypeError` en PHP 8.",
+      "formule_principale": "n \\bmod 2 = 0 \\iff n \\text{ pair} \\qquad ; \\qquad a = b \\times q + r,\\ 0 \\le r < b",
+      "variantes": [
+        {
+          "nom": "Test rapide de parité",
+          "quand_utiliser": "Quand l'entier est grand et que tu veux éviter la division",
+          "contenu_markdown": "Un entier est pair si son dernier chiffre est 0, 2, 4, 6 ou 8 : 208 est pair, 109 est impair. Ce test rapide ne remplace pas le calcul demandé quand l'énoncé exige la justification."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Exécuter le script `fonction.php` de l'épreuve pour les saisies 109 puis 208, en rappelant que la fonction `parito` renvoie `'OUI'` si `$nombre%2` vaut 0 et `'NON'` sinon, et que l'affichage est `Cette expression est ` suivi du verdict puis ` .`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'ordre d'exécution",
+          "justification": "Les lignes 3 à 11 définissent `parito` sans l'exécuter ; le traitement est aux lignes 18 à 21",
+          "resultat_markdown": "Après validation, `isset($_POST['valider'])` est vrai : on entre dans le bloc."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter la saisie 109",
+          "justification": "On calcule le reste de la division par 2",
+          "resultat_markdown": "109 = 2 × 54 + 1, donc `109 % 2` vaut 1, différent de 0 : branche `else`, `$verdict` = `'NON'`."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'affichage pour 109",
+          "justification": "La ligne 21 concatène la phrase, le verdict et ` .`",
+          "resultat_markdown": "Cette expression est NON ."
+        },
+        {
+          "numero": 4,
+          "action": "Traiter la saisie 208",
+          "justification": "Même méthode",
+          "resultat_markdown": "208 = 2 × 104 + 0, reste 0 : `$verdict` = `'OUI'`."
+        },
+        {
+          "numero": 5,
+          "action": "Écrire l'affichage pour 208",
+          "justification": "Même ligne 21",
+          "resultat_markdown": "Cette expression est OUI ."
+        }
+      ],
+      "conclusion_markdown": "109 donne « NON » (impair) et 208 donne « OUI » (pair)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que `208 % 2` donne 104.",
+          "pourquoi_faux": "Le modulo donne le **reste** de la division, pas le quotient : 208 / 2 = 104 est le quotient, le reste est 0.",
+          "correction_markdown": "Écrire la division euclidienne complète : 208 = 2 × 104 + 0, reste 0."
+        },
+        {
+          "erreur_markdown": "Traiter `80.4` comme « non pair ».",
+          "pourquoi_faux": "L'opérateur `%` convertit d'abord les opérandes en entiers : `80.4` devient `80`, qui est pair. La virgule ne rend pas le résultat impair.",
+          "correction_markdown": "Appliquer la conversion en entier avant de calculer le reste."
+        },
+        {
+          "erreur_markdown": "Écrire « erreur » pour une saisie `Toto` sans expliquer.",
+          "pourquoi_faux": "Le résultat dépend de la version de PHP : conversion en 0 donc « OUI » en PHP 7, erreur fatale `TypeError` en PHP 8. Une réponse sans précision ne montre pas que tu comprends ce qui se passe.",
+          "correction_markdown": "Donner le mécanisme (conversion ou erreur) et préciser que le script ne contrôle pas la saisie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer `17 % 5`, `20 % 4` et `7 % 2`, et dire lesquels des nombres 17, 20 et 7 sont pairs.",
+          "solution_markdown": "1. 17 = 5 × 3 + 2 donc `17 % 5` vaut 2.\n2. 20 = 4 × 5 + 0 donc `20 % 4` vaut 0.\n3. 7 = 2 × 3 + 1 donc `7 % 2` vaut 1.\n4. Pair si `n % 2` vaut 0 : 20 est pair ; 17 (17 = 2 × 8 + 1) et 7 sont impairs."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On modifie la fonction : `function parito($n){ if ($n % 3 == 0) { return 'MULTIPLE'; } else { return 'AUTRE'; } }`. Quel résultat pour les saisies 27, 50 et 0 ?",
+          "solution_markdown": "1. 27 = 3 × 9 + 0 : reste 0, la fonction renvoie `'MULTIPLE'`.\n2. 50 = 3 × 16 + 2 : reste 2, elle renvoie `'AUTRE'`.\n3. 0 = 3 × 0 + 0 : reste 0, elle renvoie `'MULTIPLE'` (0 est multiple de tout entier)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une fonction `typeNombre($n)` qui renvoie `'pair'` ou `'impair'`, puis exécuter à la main le script qui l'appelle avec les saisies 15, 0 et `12.9`, en tenant compte de la conversion en entier. (PHP 8.1 ou plus : un avis de dépréciation accompagne 12.9.)",
+          "solution_markdown": "```php\nfunction typeNombre($n) {\n    if ($n % 2 == 0) { return 'pair'; }\n    else { return 'impair'; }\n}\n```\n1. 15 = 2 × 7 + 1 : reste 1, résultat `'impair'`.\n2. 0 = 2 × 0 + 0 : reste 0, résultat `'pair'`.\n3. `12.9` est converti en entier 12 (la partie décimale est supprimée, il n'y a pas d'arrondi) : 12 = 2 × 6 + 0, reste 0, résultat `'pair'`.\n4. La fonction répond `'pair'` pour 12.9, qui n'est pas un entier : il faudrait contrôler la saisie avec `ctype_digit` pour éviter ce faux résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour exécuter un script, déroule les lignes dans l'ordre et note les variables dans un tableau de trace.",
+        "Une définition de fonction ne s'exécute qu'à l'appel ; le `return` ramène la valeur à l'endroit de l'appel.",
+        "`n % 2` donne le reste de la division par 2 : 0 pour un nombre pair, 1 pour un nombre impair.",
+        "`%` convertit en entiers : `80.4` devient 80, une chaîne non numérique est un cas à expliquer.",
+        "À l'examen, présente tes résultats dans un tableau saisie, calcul, verdict, affichage : il rapporte les points même si une réponse est discutable."
+      ]
+    }
+  ]
+}

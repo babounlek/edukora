@@ -1,0 +1,353 @@
+{
+  "epreuve_source": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun.html",
+  "numero_exercice": "1",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2019,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "8",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": null,
+      "type": "document",
+      "legende": "Capture d'un éditeur de code montrant le script de la page fonction.php (23 lignes de HTML et de PHP : fonction parito, formulaire, traitement de la saisie)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_1_fig_2.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Rendu dans le navigateur du formulaire des lignes 13 à 16 : texte « Entrez votre nombre », champ de saisie vide et bouton OK sur une même ligne",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\n**Première partie : Les bases du langage PHP (8 points)**\n\nVous êtes un jeune programmeur recruté par une entreprise d'édition de logiciels. On vous demande de répondre aux questions suivantes à partir de vos connaissances sur les bases du langage PHP.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Développer les sigles suivants : PHP, HTML. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir un sigle informatique, développe chaque lettre dans la langue d'origine (le plus souvent l'anglais), donne la traduction française, puis ajoute en une phrase la nature et le rôle de l'objet désigné.\n\n**PHP** : *PHP: Hypertext Preprocessor* (acronyme récursif ; à l'origine *Personal Home Page*). C'est un langage de script exécuté **côté serveur** : il produit en sortie du code HTML que le serveur envoie au navigateur.\n\n**HTML** : *HyperText Markup Language*, soit « langage de balisage hypertexte ». Il décrit la structure et le contenu d'une page web (titres, paragraphes, liens, formulaires) à l'aide de balises, et c'est le navigateur du client qui l'interprète pour afficher la page.\n\nLe script de l'énoncé mélange les deux : les lignes 1, 13 à 16 et 23 sont du HTML, les blocs placés entre `<?php` et `?>` sont du PHP.\n\n### Piège à éviter\nNe présente pas HTML comme un langage de programmation : il ne contient ni variable, ni condition, ni boucle. Et PHP n'est jamais exécuté par le navigateur, seulement par le serveur.\n\n### Conseil\nÉcris le sigle développé en anglais, sa traduction, puis une courte phrase sur le rôle : c'est cette dernière phrase qui sécurise le demi-point.",
+      "themes": [
+        "langage PHP",
+        "langage HTML",
+        "acronymes informatiques",
+        "développement web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q1-0",
+          "competence": "HTML et PHP : sigles et rôles",
+          "contenu_markdown": "Pour définir un sigle informatique, développe chaque lettre dans la langue d'origine (le plus souvent l'anglais), donne la traduction française, puis ajoute en une phrase la nature et le rôle de l'objet désigné.",
+          "cours_genere": true,
+          "cours_id": "cours-html-et-php-sigles-et-roles-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.1",
+      "enonce_markdown": "**2.** Examiner le script ci-dessous afin de répondre aux questions 2.1 à 2.6. *NB : ce script est syntaxiquement correct.*\n\n![fig-1](bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_1_fig_1.png)\n\nTranscription du code visible sur la figure (les nombres en marge sont les numéros de ligne ; sur la figure, les guillemets de la ligne 21 sont typographiques et le script est déclaré correct) :\n\n```php\n 1  <html><head><title>oui ou non ? </title></head> <body>\n 2  <?php\n 3  Function parito($nombre){\n 4  If (($nombre%2)==0){\n 5  $verdict='OUI';\n 6  }\n 7  else\n 8  {$verdict='NON';\n 9  }\n10  Return $verdict;\n11  }\n12  ?>\n13  <form method=\"POST\" action=\"fonction.php\">\n14   Entrez votre nombre<input type=\"text\" name=\"num\"/>\n15   <input type=\"submit\" name=\"valider\" value=\"OK\"/>\n16  </form>\n17  <?php\n18  If(isset($_POST['valider'])){\n19  $nombre=$_POST['num'];\n20  $toto=parito($nombre);\n21  Echo 'Cette expression est '.$toto.' .';\n22  }\n23  ?> </body></html>\n```\n\n**2.1.** Identifier une variable de type tableau utilisée dans ce script. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn tableau PHP se reconnaît aux crochets qui suivent le nom de la variable quand on accède à un élément, ou à la construction `array(...)` ; les superglobales (`$_POST`, `$_GET`, `$_SESSION`, `$_SERVER`) sont des tableaux associatifs prédéfinis, disponibles dans tout le script.\n\nLa variable de type tableau est **`$_POST`** (lignes 18 et 19).\n\n1. On cherche un nom de variable suivi de crochets, car c'est ainsi que PHP désigne un élément de tableau : `$_POST['valider']` à la ligne 18 et `$_POST['num']` à la ligne 19.\n2. `$_POST` est une **superglobale** : un tableau associatif créé par PHP, rempli automatiquement avec les données d'un formulaire envoyé par la méthode POST. Ses clés sont les attributs `name` des champs du formulaire (ici `num` et `valider`) et ses valeurs sont les données transmises.\n3. Les autres variables du script sont des variables simples : `$nombre` reçoit la chaîne lue dans `$_POST['num']`, `$verdict` et `$toto` contiennent la chaîne `'OUI'` ou `'NON'`.\n\n### Piège à éviter\nUne variable qui reçoit un élément de tableau n'est pas elle-même un tableau : `$nombre` contient une seule valeur, seul `$_POST` est un tableau.\n\n### Conseil\nQuand on te demande un tableau, cherche les crochets collés à un nom de variable ; les superglobales commencent par `$_` et s'écrivent en majuscules.",
+      "themes": [
+        "tableau PHP",
+        "variable superglobale",
+        "variable PHP",
+        "formulaire HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.1-0",
+          "competence": "Reconnaître un tableau et les superglobales en PHP",
+          "contenu_markdown": "Un tableau PHP se reconnaît aux crochets qui suivent le nom de la variable quand on accède à un élément, ou à la construction `array(...)` ; les superglobales (`$_POST`, `$_GET`, `$_SESSION`, `$_SERVER`) sont des tableaux associatifs prédéfinis, disponibles dans tout le script.",
+          "cours_genere": true,
+          "cours_id": "cours-reconnaitre-un-tableau-et-les-superglobales-en-php-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.2",
+      "enonce_markdown": "**2.2.** Identifier le nom de la page web qui contient le script. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDans un formulaire HTML, l'attribut `action` désigne le fichier qui reçoit et traite les données, et l'attribut `method` choisit le mode d'envoi (GET dans l'adresse, POST dans le corps de la requête) ; quand le traitement est dans le même fichier que le formulaire, `action` contient le nom de ce fichier.\n\nLa page qui contient le script s'appelle **`fonction.php`**.\n\n1. À la ligne 13, la balise `<form method=\"POST\" action=\"fonction.php\">` indique que les données du formulaire sont envoyées, à la validation, au fichier `fonction.php`.\n2. Les lignes 17 à 23 lisent `$_POST['valider']` et `$_POST['num']` : ce bloc PHP traite les données du formulaire, il se trouve donc dans le fichier qui les reçoit.\n3. Le formulaire (lignes 13 à 16) et son traitement (lignes 17 à 23) sont dans la même page : le formulaire s'envoie à sa propre page, dont le nom est celui de l'attribut `action`.\n\nL'extension `.php` est indispensable : elle demande au serveur de faire interpréter le contenu par PHP avant de répondre au navigateur.\n\n### Piège à éviter\nNe réponds pas « oui ou non ? » : c'est le titre affiché dans l'onglet du navigateur (balise `title`, ligne 1), pas le nom du fichier.\n\n### Conseil\nPour trouver le nom d'une page de traitement, lis l'attribut `action` du formulaire, puis vérifie que le script lit bien les données de ce formulaire.",
+      "themes": [
+        "formulaire HTML",
+        "attribut action",
+        "méthode POST",
+        "page web dynamique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.2-0",
+          "competence": "Formulaire HTML et page cible (attribut action)",
+          "contenu_markdown": "Dans un formulaire HTML, l'attribut `action` désigne le fichier qui reçoit et traite les données, et l'attribut `method` choisit le mode d'envoi (GET dans l'adresse, POST dans le corps de la requête) ; quand le traitement est dans le même fichier que le formulaire, `action` contient le nom de ce fichier.",
+          "cours_genere": true,
+          "cours_id": "cours-formulaire-html-et-page-cible-attribut-action-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.3",
+      "enonce_markdown": "**2.3.** Identifier une instruction d'appel de fonction dans le script. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn appel de fonction s'écrit avec le nom de la fonction suivi de parenthèses contenant les arguments, sans le mot-clé `function` ; la définition, qui commence par `function`, ne s'exécute que lorsque la fonction est appelée, et la valeur renvoyée par `return` revient à l'endroit de l'appel.\n\nUne instruction d'appel de fonction du script est **`$toto=parito($nombre);`** (ligne 20).\n\n1. La fonction `parito` est **définie** aux lignes 3 à 11 avec le mot-clé `Function` ; cette définition ne s'exécute pas toute seule.\n2. À la ligne 20, `parito($nombre)` est un **appel** : le nom de la fonction suivi de parenthèses qui contiennent l'argument `$nombre`. PHP exécute alors les lignes 4 à 10 avec cette valeur ; l'instruction `Return $verdict;` de la ligne 10 renvoie le verdict, qui est rangé dans `$toto`.\n3. La ligne 18 contient un second appel : `isset($_POST['valider'])`, construction prédéfinie du langage qui s'utilise comme une fonction et renvoie `true` ou `false`.\n\n### Piège à éviter\nLa ligne 3, `Function parito($nombre){`, est une définition de fonction et non un appel : elle contient le mot-clé `Function` et déclare un paramètre.\n\n### Conseil\nCite le numéro de la ligne et recopie l'instruction en entier : cela montre que tu distingues l'appel de la définition.",
+      "themes": [
+        "fonction PHP",
+        "appel de fonction",
+        "définition de fonction",
+        "paramètre et valeur de retour"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.3-0",
+          "competence": "Appel et définition de fonction en PHP",
+          "contenu_markdown": "Un appel de fonction s'écrit avec le nom de la fonction suivi de parenthèses contenant les arguments, sans le mot-clé `function` ; la définition, qui commence par `function`, ne s'exécute que lorsque la fonction est appelée, et la valeur renvoyée par `return` revient à l'endroit de l'appel.",
+          "cours_genere": true,
+          "cours_id": "cours-appel-et-definition-de-fonction-en-php-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.4",
+      "enonce_markdown": "**2.4.** Expliquer le rôle de la ligne 18. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\n`isset(variable)` renvoie `true` si la variable existe et n'est pas `NULL` ; appliquée à un élément de `$_POST` dont la clé est l'attribut `name` d'un bouton submit, elle sert à détecter qu'un formulaire a été soumis avant d'utiliser ses données.\n\nLa ligne 18, `If(isset($_POST['valider'])){`, **teste si le formulaire a été soumis**, c'est-à-dire si le bouton `OK` a été cliqué.\n\n1. Le bouton de la ligne 15 porte l'attribut `name=\"valider\"`. Le navigateur n'envoie la paire `valider=OK` que si l'utilisateur a validé le formulaire avec ce bouton.\n2. `isset($_POST['valider'])` renvoie `true` quand la clé `valider` existe dans `$_POST`, donc seulement après la soumission. À la première ouverture de la page, `$_POST` est vide et `isset` renvoie `false`.\n3. L'accolade `{` ouvre le bloc des lignes 19 à 21, fermé par l'accolade de la ligne 22 : lecture du nombre saisi, appel de `parito`, affichage du verdict. Ce bloc n'est exécuté que si la condition est vraie.\n\nSans cette ligne, la page essaierait de lire `$_POST['num']` dès le premier chargement, sans aucune saisie, ce qui provoquerait un avertissement (clé inexistante) et un affichage sans objet.\n\n### Piège à éviter\nNe dis pas que la ligne 18 « vérifie que le nombre est valide » : `isset` teste seulement l'existence de la variable, jamais son contenu.\n\n### Conseil\nRetiens la formule : `isset` sur le bouton submit signifie « le formulaire a-t-il été envoyé ? ». Utilise ces mots dans ta réponse.",
+      "themes": [
+        "fonction isset",
+        "soumission de formulaire",
+        "tableau POST",
+        "structure conditionnelle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.4-0",
+          "competence": "Détecter la soumission d'un formulaire avec isset",
+          "contenu_markdown": "`isset(variable)` renvoie `true` si la variable existe et n'est pas `NULL` ; appliquée à un élément de `$_POST` dont la clé est l'attribut `name` d'un bouton submit, elle sert à détecter qu'un formulaire a été soumis avant d'utiliser ses données.",
+          "cours_genere": true,
+          "cours_id": "cours-detecter-la-soumission-dun-formulaire-avec-isset-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.5",
+      "enonce_markdown": "**2.5.** Reproduire le formulaire dont le code apparaît dans le script. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour reproduire le rendu d'un formulaire HTML, repère chaque balise `input` et son attribut `type` (`text` : champ de saisie d'une ligne, `submit` : bouton dont `value` est le libellé), recopie le texte brut tel qu'il apparaît entre les balises, et rappelle-toi que sans balise de saut de ligne tous les éléments s'alignent sur la même ligne.\n\nLe rendu obtenu dans le navigateur est le suivant (figure produite en affichant réellement le code des lignes 13 à 16) :\n\n![fig-2](bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_1_fig_2.png)\n\nReconstitution, ligne par ligne :\n\n1. Ligne 13 : la balise `<form>` ouvre le formulaire ; elle ne s'affiche pas. Ses attributs `method` et `action` règlent seulement l'envoi des données.\n2. Ligne 14 : le texte « Entrez votre nombre » est affiché tel quel, suivi immédiatement d'un champ de saisie d'une ligne (`type=\"text\"`). L'attribut `name=\"num\"` n'est pas visible.\n3. Ligne 15 : `type=\"submit\"` produit un bouton dont le libellé est la valeur de `value`, soit **OK**. Aucune balise de saut de ligne ne sépare le champ du bouton, ils restent sur la même ligne.\n4. Ligne 16 : `</form>` ferme le formulaire.\n\nÀ dessiner sur la copie : le texte « Entrez votre nombre », un rectangle vide (le champ de saisie) puis un bouton rectangulaire portant l'inscription OK, le tout sur une seule ligne.\n\n### Piège à éviter\nNe mets pas le texte « Entrez votre nombre » dans le champ : il se trouve à gauche, en dehors du champ, qui est vide au départ.\n\n### Conseil\nLa question demande le rendu et non le code, déjà donné dans l'énoncé : un petit dessin propre vaut mieux que le code recopié.",
+      "themes": [
+        "formulaire HTML",
+        "balise input",
+        "rendu d'une page web",
+        "bouton submit"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.5-0",
+          "competence": "Reproduire le rendu d'un formulaire HTML",
+          "contenu_markdown": "Pour reproduire le rendu d'un formulaire HTML, repère chaque balise `input` et son attribut `type` (`text` : champ de saisie d'une ligne, `submit` : bouton dont `value` est le libellé), recopie le texte brut tel qu'il apparaît entre les balises, et rappelle-toi que sans balise de saut de ligne tous les éléments s'alignent sur la même ligne.",
+          "cours_genere": true,
+          "cours_id": "cours-reproduire-le-rendu-dun-formulaire-html-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.6",
+      "enonce_markdown": "**2.6.** Exécuter le script en supposant que l'utilisateur a successivement saisi les nombres ou expressions suivants : *[2 pts]*\n\na) 109 ; b) 208 ; c) Toto ; d) 80.4",
+      "corrige_markdown": "### Rappel de méthode\nPour exécuter un script à la main, simule l'ordre réel : les définitions de fonctions sont lues mais non exécutées, puis chaque instruction se déroule dans l'ordre en notant la valeur des variables à chaque affectation ; l'opérateur `%` donne le reste de la division entière, et un entier est pair si ce reste est nul.\n\nÀ l'ouverture de la page, seul le formulaire s'affiche (`isset` est faux). À la validation, le script lit la saisie, appelle `parito` et affiche la phrase de la ligne 21. Les lignes 3 à 11 ne font que définir la fonction ; le test de la ligne 4, `($nombre%2)==0`, compare à 0 le reste de la division de `$nombre` par 2 : reste nul, donc `'OUI'` ; sinon `'NON'`. L'affichage est `Cette expression est ` suivi du verdict puis ` .`.\n\n| Saisie | Calcul de `$nombre%2` | Test `==0` | `$verdict` | Affichage |\n|---|---|---|---|---|\n| a) 109 | 109 = 2 × 54 + 1, reste 1 | faux | `'NON'` | Cette expression est NON . |\n| b) 208 | 208 = 2 × 104 + 0, reste 0 | vrai | `'OUI'` | Cette expression est OUI . |\n| c) Toto | conversion en entier, voir ci-dessous | vrai en PHP 7, erreur en PHP 8 | `'OUI'` en PHP 7 | voir ci-dessous |\n| d) 80.4 | partie entière 80 = 2 × 40 + 0, reste 0 | vrai | `'OUI'` | Cette expression est OUI . |\n\n**Cas c) « Toto ».** La chaîne n'est pas numérique. Avec PHP 7 (version courante à l'époque de l'épreuve), l'opérateur `%` la convertit en entier 0, avec un avertissement selon la version ; `0 % 2` donne 0, le test est vrai et l'affichage est « Cette expression est OUI . ». Avec PHP 8 (essai fait en PHP 8.4), la même instruction lève l'erreur fatale `Unsupported operand types: string % int` : le script s'arrête et la phrase n'est pas affichée. Dans les deux cas le script ne contrôle pas la saisie : le « OUI » de PHP 7 pour Toto n'a aucune signification.\n\n**Cas d) 80.4.** La saisie arrive dans `$_POST['num']` sous forme de chaîne `'80.4'`. L'opérateur `%` travaille sur des entiers : il convertit l'opérande en supprimant la partie décimale, ce qui donne 80 (PHP 8.1 et suivants ajoutent un avis de dépréciation sur la perte de précision). Comme 80 = 2 × 40 + 0, le reste est nul et l'affichage est « Cette expression est OUI . ». Le script répond « OUI » pour un nombre qui n'est pas entier.\n\n### Piège à éviter\nNe conclus pas que 80.4 donne « NON » parce qu'il est décimal : `%` ne regarde que la partie entière. Pour Toto, n'écris pas simplement « erreur » sans dire ce que fait PHP.\n\n### Conseil\nDresse un tableau de trace avec une ligne par saisie. Pour la parité d'un entier, regarde seulement le dernier chiffre : il est pair si c'est 0, 2, 4, 6 ou 8.",
+      "themes": [
+        "exécution d'un script",
+        "opérateur modulo",
+        "parité d'un nombre",
+        "structure conditionnelle",
+        "fonction PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "2",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.6-0",
+          "competence": "Exécuter à la main un script PHP : parité et modulo",
+          "contenu_markdown": "Pour exécuter un script à la main, simule l'ordre réel : les définitions de fonctions sont lues mais non exécutées, puis chaque instruction se déroule dans l'ordre en notant la valeur des variables à chaque affectation ; l'opérateur `%` donne le reste de la division entière, et un entier est pair si ce reste est nul.",
+          "cours_genere": true,
+          "cours_id": "cours-executer-a-la-main-un-script-php-parite-et-modulo-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Décrire une manière simple d'installer PHP dans un environnement Linux ou Windows. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nInstaller PHP en local consiste à mettre en place un serveur web capable d'interpréter PHP : sous Windows on installe un pack tout-en-un, sous Linux on installe les paquets Apache, PHP et MySQL avec le gestionnaire de paquets, puis on place les pages dans le dossier racine du serveur et on les appelle par l'adresse `http://localhost/`.\n\n**Sous Windows : un pack tout-en-un.**\n\n1. Télécharger l'installateur d'un pack serveur (WampServer, XAMPP ou EasyPHP) sur le site officiel de l'éditeur.\n2. Lancer l'installation et accepter le dossier proposé (par exemple `C:\\wamp64` pour WampServer).\n3. Démarrer le pack : il lance Apache, MySQL et PHP, et l'icône indique que les services tournent.\n4. Placer les fichiers du site dans le dossier `www` (dossier `htdocs` pour XAMPP).\n5. Tester dans le navigateur avec l'adresse `http://localhost/`.\n\n**Sous Linux (Debian, Ubuntu) : les paquets du système.**\n\n```bash\nsudo apt update\nsudo apt install apache2 php libapache2-mod-php mysql-server php-mysql\nsudo systemctl restart apache2\n```\n\nLes fichiers du site se placent dans `/var/www/html/`. Pour vérifier l'installation, on crée dans ce dossier un fichier `info.php` contenant `<?php phpinfo(); ?>` puis on l'appelle par `http://localhost/info.php` : si la page de configuration de PHP s'affiche, les scripts sont bien interprétés.\n\nDans les deux cas, PHP ne s'installe pas seul : il s'ajoute à un serveur web.\n\n### Piège à éviter\nInstaller seulement l'interpréteur (`php-cli`) ne suffit pas pour un site : sans serveur web, le navigateur ne peut pas demander les pages.\n\n### Conseil\nCite un nom de produit précis (WampServer, XAMPP, `apt install`) : les réponses vagues du type « télécharger PHP » rapportent moins de points.",
+      "themes": [
+        "installation de PHP",
+        "serveur web local",
+        "WampServer et XAMPP",
+        "Apache"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q3-0",
+          "competence": "Installer un environnement PHP en local",
+          "contenu_markdown": "Installer PHP en local consiste à mettre en place un serveur web capable d'interpréter PHP : sous Windows on installe un pack tout-en-un, sous Linux on installe les paquets Apache, PHP et MySQL avec le gestionnaire de paquets, puis on place les pages dans le dossier racine du serveur et on les appelle par l'adresse `http://localhost/`.",
+          "cours_genere": true,
+          "cours_id": "cours-installer-un-environnement-php-en-local-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Décrire les quatre composants nécessaires au fonctionnement d'un site web dynamique développé en PHP. *[1 pt]*\n\n*NB : les noms des composants seront évalués.*",
+      "corrige_markdown": "### Rappel de méthode\nUn site dynamique repose sur une pile logicielle de quatre briques : un système d'exploitation, un serveur web qui reçoit les requêtes HTTP, un interpréteur de langage serveur qui exécute les scripts et un SGBD qui stocke les données ; selon le système, la pile s'appelle LAMP (Linux), WAMP (Windows) ou MAMP (macOS).\n\nLes quatre composants correspondent aux lettres des sigles WAMP (Windows) et LAMP (Linux) :\n\n1. **Le système d'exploitation** (Windows ou Linux) : il fait fonctionner la machine et héberge les trois autres logiciels.\n2. **Le serveur web Apache** : il reçoit les requêtes HTTP du navigateur, repère le fichier demandé et renvoie la réponse.\n3. **L'interpréteur PHP** : il exécute les scripts `.php` demandés et produit du code HTML.\n4. **Le SGBD MySQL** (ou MariaDB) : il stocke les données du site (produits, avis, comptes) que les scripts PHP lisent ou modifient grâce à des requêtes SQL.\n\nParcours d'une requête : navigateur, puis Apache, puis PHP, puis MySQL ; la réponse refait le chemin en sens inverse jusqu'au navigateur. Le navigateur du visiteur n'est pas compté : il se trouve côté client, alors que les quatre composants sont installés côté serveur.\n\n### Piège à éviter\nNe confonds pas phpMyAdmin, interface web d'administration de MySQL, avec le SGBD lui-même : ce n'est pas l'un des quatre composants.\n\n### Conseil\nRetiens les sigles : la première lettre (L ou W) donne le système, puis A pour Apache, M pour MySQL, P pour PHP. Les quatre noms demandés y sont.",
+      "themes": [
+        "site web dynamique",
+        "pile LAMP",
+        "serveur web Apache",
+        "SGBD MySQL",
+        "architecture web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "1",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q4-0",
+          "competence": "Les quatre composants d'un site dynamique (LAMP, WAMP)",
+          "contenu_markdown": "Un site dynamique repose sur une pile logicielle de quatre briques : un système d'exploitation, un serveur web qui reçoit les requêtes HTTP, un interpréteur de langage serveur qui exécute les scripts et un SGBD qui stocke les données ; selon le système, la pile s'appelle LAMP (Linux), WAMP (Windows) ou MAMP (macOS).",
+          "cours_genere": true,
+          "cours_id": "cours-les-quatre-composants-dun-site-dynamique-lamp-wamp-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** On suppose que les quatre composants de la question précédente sont installés sur votre ordinateur et l'on veut maintenant se connecter à la base depuis PHP. Écrire le code de connexion en utilisant les identifiants suivants, puis fermer la connexion et gérer les erreurs. *[1 pt]*\n\n- `$user` : le nom d'utilisateur ;\n- `$passwd` : le mot de passe ;\n- `$localhost` : l'hôte (ordinateur sur lequel le SGBD est installé) ;\n- `$bdd` : le nom de la base de données.",
+      "corrige_markdown": "### Rappel de méthode\nSe connecter à MySQL depuis PHP demande, dans cet ordre, l'ouverture de la connexion avec l'hôte, l'utilisateur, le mot de passe et la base, le test du résultat pour traiter l'échec, l'exécution des requêtes, puis la fermeture explicite de la connexion.\n\nLes quatre variables contiennent déjà les identifiants fournis. Version avec l'extension `mysqli` :\n\n```php\n<?php\n$localhost = 'localhost';   // hôte du SGBD\n$user      = 'utilisateur'; // nom d'utilisateur\n$passwd    = 'motdepasse';  // mot de passe\n$bdd       = 'maBase';      // nom de la base\n\n// 1. Ouverture de la connexion (ordre : hôte, utilisateur, mot de passe, base)\n$connexion = mysqli_connect($localhost, $user, $passwd, $bdd);\n\n// 2. Gestion des erreurs : arrêt avec un message si la connexion échoue\nif (!$connexion) {\n    die('Erreur de connexion (' . mysqli_connect_errno() . ') : ' . mysqli_connect_error());\n}\n\necho 'Connexion réussie à la base ' . $bdd;\n\n// 3. ... requêtes SQL ...\n\n// 4. Fermeture de la connexion\nmysqli_close($connexion);\n?>\n```\n\nExplication des étapes :\n\n1. `mysqli_connect` ouvre la connexion et renvoie une ressource de connexion, ou `false` en cas d'échec (mauvais mot de passe, base inconnue, serveur éteint).\n2. Le test `if (!$connexion)` détecte l'échec : `mysqli_connect_error()` donne la cause et `die()` arrête le script en affichant le message.\n3. Une fois connecté, on exécute les requêtes SQL (hors sujet ici).\n4. `mysqli_close` libère la connexion.\n\nVariante équivalente avec PDO, où les erreurs se gèrent par exception :\n\n```php\n<?php\ntry {\n    $pdo = new PDO(\"mysql:host=$localhost;dbname=$bdd;charset=utf8\", $user, $passwd,\n                   [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);\n    echo 'Connexion réussie';\n} catch (PDOException $e) {\n    die('Erreur de connexion : ' . $e->getMessage());\n}\n$pdo = null; // fermeture de la connexion\n?>\n```\n\n### Piège à éviter\nÉcrire `mysqli_connect($user, $passwd, $localhost, $bdd)` : l'énoncé liste l'utilisateur en premier, mais la fonction attend l'hôte en premier. Une inversion fait échouer la connexion.\n\n### Conseil\nRetiens l'ordre « hôte, utilisateur, mot de passe, base ». Les deux mots-clés qui rapportent les points demandés sont le test de la connexion (`die` ou `try/catch`) et la fermeture (`mysqli_close` ou `$pdo = null`).",
+      "themes": [
+        "connexion à une base de données",
+        "MySQL",
+        "fonction mysqli_connect",
+        "gestion des erreurs",
+        "PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "1",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q5-0",
+          "competence": "Se connecter à MySQL depuis PHP et gérer les erreurs",
+          "contenu_markdown": "Se connecter à MySQL depuis PHP demande, dans cet ordre, l'ouverture de la connexion avec l'hôte, l'utilisateur, le mot de passe et la base, le test du résultat pour traiter l'échec, l'exécution des requêtes, puis la fermeture explicite de la connexion.",
+          "cours_genere": true,
+          "cours_id": "cours-se-connecter-a-mysql-depuis-php-et-gerer-les-erreurs-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "**6.** Déterminer deux raisons qui expliquent pourquoi beaucoup de sites en ligne sont développés avec le langage PHP. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour justifier le choix d'une technologie, avance des critères objectifs et distincts : coût et licence, facilité d'apprentissage, portabilité et disponibilité chez les hébergeurs, intégration avec les autres briques (base de données) et richesse de l'écosystème (communauté, outils, modèles de sites).\n\nDeux raisons suffisent :\n\n1. **PHP est gratuit et libre** : aucune licence à payer, ce qui réduit le coût de développement et d'hébergement ; il est proposé par presque tous les hébergeurs.\n2. **PHP est simple à apprendre et bien intégré au web** : il s'insère directement dans les pages HTML et dialogue de façon native avec MySQL, ce qui permet de produire rapidement des pages dynamiques.\n\nAutres raisons recevables : fonctionne sous Windows, Linux et macOS ; grande communauté et documentation abondante ; nombreux outils et logiciels déjà écrits en PHP (WordPress, Joomla, Drupal, Laravel).\n\n### Piège à éviter\nÉvite les raisons vagues comme « PHP est le meilleur langage » : une raison doit être un fait vérifiable (gratuité, compatibilité, intégration à MySQL).\n\n### Conseil\nQuand on demande deux raisons, donne exactement deux raisons de nature différente (par exemple le coût et la facilité) plutôt que deux formulations de la même idée.",
+      "themes": [
+        "langage PHP",
+        "choix technologique",
+        "développement web",
+        "logiciel libre"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q6-0",
+          "competence": "Atouts du langage PHP pour le web",
+          "contenu_markdown": "Pour justifier le choix d'une technologie, avance des critères objectifs et distincts : coût et licence, facilité d'apprentissage, portabilité et disponibilité chez les hébergeurs, intégration avec les autres briques (base de données) et richesse de l'écosystème (communauté, outils, modèles de sites).",
+          "cours_genere": true,
+          "cours_id": "cours-atouts-du-langage-php-pour-le-web-tle-ti-2019"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "PHP",
+    "site web dynamique",
+    "formulaire HTML",
+    "fonction PHP",
+    "isset",
+    "MySQL",
+    "pile LAMP et WAMP",
+    "installation de PHP"
+  ],
+  "incertitudes": [
+    "Le script de la page fonction.php est transcrit d'après la capture d'écran de l'énoncé ; sur la figure, les guillemets de la ligne 21 sont typographiques et mêlés (apostrophes et guillemets courbes), lecture rétablie en `'Cette expression est '.$toto.' .'` conformément à la mention « ce script est syntaxiquement correct ».",
+    "Question 5 : les identifiants de l'énoncé apparaissent dans la page source précédés de séquences corrompues de parenthèses et de barres obliques inverses (perte du signe dollar à l'extraction) ; ils sont interprétés comme les variables PHP `$user`, `$passwd`, `$localhost` et `$bdd`.",
+    "Question 2.6 c) : le résultat pour la saisie « Toto » dépend de la version de PHP (conversion en 0 donc « OUI » en PHP 7, erreur fatale TypeError en PHP 8) ; les deux comportements sont donnés, le comportement PHP 8 ayant été vérifié par exécution.",
+    "Question 4 : la liste des quatre composants (système d'exploitation, Apache, PHP, MySQL) suit les sigles WAMP/LAMP ; le corrigé officiel de la page n'a pas été consulté et une autre liste (navigateur, serveur web, PHP, SGBD) pourrait être acceptée.",
+    "Source : reproduction du site Camerecole d'un sujet officiel ; durée et coefficient non imprimés dans la page ; corrigé officiel (lien « Correction ») non consulté."
+  ],
+  "statut": "brouillon"
+}

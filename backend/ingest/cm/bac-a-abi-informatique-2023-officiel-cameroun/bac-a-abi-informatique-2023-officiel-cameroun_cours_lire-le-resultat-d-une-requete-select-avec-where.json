@@ -1,0 +1,150 @@
+{
+  "cours_id": "cours-lire-le-resultat-d-une-requete-select-avec-where-tle-a-abi-2023",
+  "meta": {
+    "titre": "Lire le résultat d'une requête SELECT avec WHERE",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Bases de données : langage SQL",
+    "duree_estimee_min": 30,
+    "tags": [
+      "requête SELECT",
+      "clause WHERE",
+      "SQL",
+      "condition"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat séries A et ABI, session 2023",
+    "exercice_numero": 5,
+    "rappel_id": "rdm-bac-a-abi-informatique-2023-officiel-cameroun-ex5-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une base de plusieurs milliers d'élèves, personne ne parcourt la table à l'œil : on pose une question en SQL. Au BAC A, on ne te demande pas d'écrire de longues requêtes mais de dire ce qu'une requête affiche. Ce cours t'apprend à la lire pas à pas, sans te tromper sur un seul élève."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une table : champs et enregistrements",
+        "Savoir comparer des nombres : <, >, =, <=, >="
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une requête en trois temps : FROM, WHERE, SELECT",
+      "contenu_markdown": "Une requête `SELECT colonnes FROM table WHERE condition;` se lit dans cet ordre : **1. FROM** : quelle table ? **2. WHERE** : pour chaque ligne, la condition est-elle vraie ? On ne garde que les lignes où elle est vraie. **3. SELECT** : parmi les lignes gardées, on n'affiche que les colonnes citées. Le résultat est un tableau avec ces colonnes, et seulement les lignes retenues.\n\nAttention aux opérateurs : `<` et `>` sont stricts (la valeur égale est exclue), `<=` et `>=` incluent la valeur. Un texte dans une condition se met entre apostrophes : `Série = 'A'`.",
+      "formule_principale": "\\text{résultat} = \\text{lignes où WHERE est vrai} \\; \\cap \\; \\text{colonnes de SELECT}",
+      "variantes": [
+        {
+          "nom": "Requête sans clause WHERE",
+          "quand_utiliser": "Quand la requête ne contient pas de condition.",
+          "contenu_markdown": "Toutes les lignes sont gardées : le résultat est la table entière, limitée aux colonnes citées après SELECT."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le résultat de `SELECT Matricule, Noms FROM ELEVES WHERE Age < 16;` sur la table ELEVES : 23D75 ABADA Terminale C 16 ; 45U26 IBRAHIM 2nde A 15 ; 42V63 EKWATA 1ère D 19 ; 15M74 KAMENI 3ème ESP 16.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "FROM : repérer la table",
+          "justification": "La requête travaille sur ELEVES.",
+          "resultat_markdown": "4 enregistrements."
+        },
+        {
+          "numero": 2,
+          "action": "WHERE : tester la ligne ABADA",
+          "justification": "Age = 16 ; la condition est Age < 16 ; 16 n'est pas inférieur à 16.",
+          "resultat_markdown": "Faux : ligne écartée."
+        },
+        {
+          "numero": 3,
+          "action": "WHERE : tester la ligne IBRAHIM",
+          "justification": "Age = 15 et 15 < 16.",
+          "resultat_markdown": "Vrai : ligne gardée."
+        },
+        {
+          "numero": 4,
+          "action": "WHERE : tester les lignes EKWATA et KAMENI",
+          "justification": "EKWATA : 19 < 16 est faux. KAMENI : 16 < 16 est faux.",
+          "resultat_markdown": "Les deux sont écartées."
+        },
+        {
+          "numero": 5,
+          "action": "SELECT : choisir les colonnes",
+          "justification": "Seule la ligne IBRAHIM reste, et la requête demande Matricule et Noms.",
+          "resultat_markdown": "On garde les colonnes Matricule et Noms."
+        },
+        {
+          "numero": 6,
+          "action": "Écrire le tableau de résultat avec ses en-têtes",
+          "justification": "Un résultat de requête est un tableau, avec les noms de colonnes.",
+          "resultat_markdown": "| Matricule | Noms |\n|---|---|\n| 45U26 | IBRAHIM |"
+        }
+      ],
+      "conclusion_markdown": "La requête renvoie une seule ligne : le matricule 45U26 et le nom IBRAHIM, seul élève de moins de 16 ans."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Retenir ABADA et KAMENI parce qu'ils ont 16 ans.",
+          "pourquoi_faux": "L'opérateur `<` est strict : 16 n'est pas strictement inférieur à 16.",
+          "correction_markdown": "Avec `<=` seulement, 16 serait retenu."
+        },
+        {
+          "erreur_markdown": "Afficher toutes les colonnes de la table.",
+          "pourquoi_faux": "Seules les colonnes citées après SELECT apparaissent.",
+          "correction_markdown": "Garde exactement Matricule et Noms."
+        },
+        {
+          "erreur_markdown": "Oublier les en-têtes dans le résultat.",
+          "pourquoi_faux": "Sans noms de colonnes, on ne sait pas lire le tableau.",
+          "correction_markdown": "Écris la ligne d'en-tête avant les valeurs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Table PRODUIT : P1 Savon 500 ; P2 Sucre 800 ; P3 Riz 600 ; P4 Huile 1500 (colonnes code, désignation, prix). Donner le résultat de `SELECT désignation FROM PRODUIT WHERE prix > 600;`.",
+          "solution_markdown": "On teste le prix de chaque ligne : Savon 500 > 600 faux ; Sucre 800 > 600 vrai ; Riz 600 > 600 faux (strict) ; Huile 1500 > 600 vrai.\n\nRésultat :\n\n| désignation |\n|---|\n| Sucre |\n| Huile |"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Même table. Donner le résultat de `SELECT code, prix FROM PRODUIT WHERE prix >= 600 AND prix < 1500;`.",
+          "solution_markdown": "Les deux conditions doivent être vraies en même temps. Savon : 500 >= 600 faux. Sucre : 800 >= 600 et 800 < 1500 vrai. Riz : 600 >= 600 et 600 < 1500 vrai. Huile : 1500 < 1500 faux.\n\nRésultat :\n\n| code | prix |\n|---|---|\n| P2 | 800 |\n| P3 | 600 |"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur la table ELEVES de l'exemple, écrire la requête qui affiche les noms des élèves de la série A, puis donner son résultat.",
+          "solution_markdown": "**Écriture.** La table est ELEVES, la colonne affichée est Noms, la condition porte sur la colonne Série avec un texte, donc entre apostrophes :\n\n`SELECT Noms FROM ELEVES WHERE Série = 'A';`\n\n**Résultat.** On teste la série de chaque ligne : ABADA : C, faux. IBRAHIM : A, vrai. EKWATA : D, faux. KAMENI : ESP, faux.\n\n| Noms |\n|---|\n| IBRAHIM |"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lis une requête dans l'ordre FROM, WHERE, SELECT.",
+        "WHERE filtre les lignes ; SELECT choisit les colonnes.",
+        "`<` et `>` excluent la valeur limite, `<=` et `>=` l'incluent.",
+        "Teste chaque ligne dans un petit tableau, puis recopie le résultat avec ses en-têtes.",
+        "Au BAC A, l'exercice de bases de données se termine presque toujours par « Donner le résultat de la requête » : la lecture ligne par ligne évite les erreurs sur les valeurs limites."
+      ]
+    }
+  ]
+}

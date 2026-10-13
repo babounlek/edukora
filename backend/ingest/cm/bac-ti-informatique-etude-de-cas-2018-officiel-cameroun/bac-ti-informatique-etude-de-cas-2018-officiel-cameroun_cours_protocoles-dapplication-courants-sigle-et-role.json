@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-protocoles-dapplication-courants-sigle-et-role-tle-ti",
+  "meta": {
+    "titre": "Protocoles d'application : HTTP, FTP, DNS, DHCP et les autres",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Protocoles et services réseau",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTTP",
+      "FTP",
+      "DNS",
+      "DHCP",
+      "ports",
+      "protocoles"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu ouvres un site, que tu envoies un fichier ou que tu connectes ton téléphone au Wi-Fi, des protocoles invisibles travaillent à ta place. Les sujets d'examen aiment les tableaux « sigle, signification, rôle » parce qu'ils vérifient d'un coup ton vocabulaire réseau. Ce cours te donne la fiche à connaître et une méthode pour retrouver une ligne manquante."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP",
+        "Connaître la différence entre un nom de domaine et une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Sigle, développé, rôle, port",
+      "contenu_markdown": "Un protocole d'application est un ensemble de règles qui permet à deux programmes de dialoguer sur un réseau. Chacun se retient par son sigle, son développé anglais, son rôle et son port habituel.\n\n| Sigle | Développé | Rôle | Port |\n|---|---|---|---|\n| HTTP | HyperText Transfer Protocol | Transfert des pages web entre navigateur et serveur | 80 |\n| HTTPS | HTTP Secure | Version chiffrée de HTTP | 443 |\n| FTP | File Transfer Protocol | Transfert de fichiers entre client et serveur | 21 |\n| DNS | Domain Name System | Traduction des noms de domaine en adresses IP | 53 |\n| DHCP | Dynamic Host Configuration Protocol | Attribution automatique de la configuration IP | 67 et 68 |\n| SMTP | Simple Mail Transfer Protocol | Envoi du courrier électronique | 25 |\n| POP3 | Post Office Protocol version 3 | Réception du courrier, télécharge les messages | 110 |\n| IMAP | Internet Message Access Protocol | Consultation du courrier laissé sur le serveur | 143 |\n\n**Méthode pour une ligne manquante** : repère l'indice présent (sigle, développé ou rôle). Si c'est le rôle, cherche dans la fiche le protocole dont le rôle correspond mot pour mot. Si c'est le sigle, développe-le avec soin, puis déduis le rôle de chaque mot du développé.",
+      "formule_principale": "\\text{protocole} = \\text{sigle} + \\text{développé} + \\text{rôle} + \\text{port}",
+      "variantes": [
+        {
+          "nom": "Distinguer deux protocoles proches",
+          "quand_utiliser": "Quand deux sigles se ressemblent (DNS et DHCP, POP3 et IMAP, HTTP et HTTPS)",
+          "contenu_markdown": "DNS traduit des noms en adresses, DHCP distribue des adresses. POP3 télécharge les messages vers le poste, IMAP les laisse sur le serveur. HTTPS est HTTP chiffré."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Compléter le tableau suivant : HTTP (signification et rôle à donner) ; une ligne dont seul le rôle est donné, « permet à un ordinateur qui se connecte sur un réseau d'obtenir automatiquement sa configuration IP » ; FTP (rôle à donner) ; DNS (signification à donner, rôle : conversion des noms de domaine en adresses IP).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter la ligne HTTP à partir du sigle",
+          "justification": "Le sigle seul est donné : on le développe",
+          "resultat_markdown": "HTTP : HyperText Transfer Protocol ; rôle : transférer les pages web entre le navigateur et le serveur web."
+        },
+        {
+          "numero": 2,
+          "action": "Retrouver la ligne dont seul le rôle est donné",
+          "justification": "L'attribution automatique de la configuration IP est propre à un seul protocole",
+          "resultat_markdown": "Le protocole est DHCP : Dynamic Host Configuration Protocol."
+        },
+        {
+          "numero": 3,
+          "action": "Compléter FTP à partir du développé",
+          "justification": "Le développé indique directement le rôle",
+          "resultat_markdown": "FTP : File Transfer Protocol ; rôle : transférer des fichiers entre un client et un serveur."
+        },
+        {
+          "numero": 4,
+          "action": "Compléter DNS à partir du rôle",
+          "justification": "Le rôle donné est celui du Domain Name System",
+          "resultat_markdown": "DNS : Domain Name System ; il convertit les noms de domaine en adresses IP."
+        }
+      ],
+      "conclusion_markdown": "Le tableau est complété : HTTP (pages web), DHCP (configuration IP automatique), FTP (transfert de fichiers), DNS (noms en adresses IP)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre DNS et DHCP.",
+          "pourquoi_faux": "Les deux sont liés aux adresses IP, mais DNS traduit un nom en adresse tandis que DHCP attribue une adresse à une machine qui se connecte.",
+          "correction_markdown": "Associe DNS à « nom » (Domain Name) et DHCP à « configuration » (Configuration Protocol)."
+        },
+        {
+          "erreur_markdown": "Confondre HTTP, protocole de transfert, avec HTML, langage de description des pages.",
+          "pourquoi_faux": "HTTP transporte les pages ; HTML les décrit. Le premier est un protocole, le second un langage.",
+          "correction_markdown": "Dis « protocole » pour HTTP et « langage » pour HTML."
+        },
+        {
+          "erreur_markdown": "Écrire « File Transfert Protocol ».",
+          "pourquoi_faux": "En anglais, transfer s'écrit avec un seul t avant le r. La faute coûte la précision du développé.",
+          "correction_markdown": "Recopie le développé de la fiche sans l'adapter au français."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne la signification et le rôle des sigles SMTP et POP3.",
+          "solution_markdown": "**SMTP** : Simple Mail Transfer Protocol. Il assure l'envoi du courrier électronique, du poste de l'expéditeur vers le serveur puis entre serveurs.\n\n**POP3** : Post Office Protocol version 3. Il assure la réception du courrier : il télécharge les messages du serveur vers le poste du destinataire."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quand tu saisis `www.exemple.cm` dans un navigateur, quels protocoles interviennent et dans quel ordre ?",
+          "solution_markdown": "1. **DNS** : le navigateur demande à un serveur DNS l'adresse IP correspondant au nom `www.exemple.cm`.\n2. **HTTP** (ou HTTPS) : connaissant l'adresse IP, le navigateur envoie sa requête au serveur web, qui renvoie la page.\n\nDNS passe en premier, car HTTP a besoin de l'adresse IP pour atteindre le serveur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur neuf est branché au réseau de l'école. Il reçoit automatiquement une adresse, puis son utilisateur télécharge un fichier depuis un serveur dont il connaît le nom. Cite, dans l'ordre, les protocoles employés et le rôle de chacun.",
+          "solution_markdown": "1. **DHCP** : l'ordinateur obtient automatiquement son adresse IP, son masque et les adresses de la passerelle et du serveur DNS.\n2. **DNS** : le nom du serveur est converti en adresse IP.\n3. **FTP** (ou HTTP selon le service) : le fichier est transféré entre le serveur et l'ordinateur.\n\nL'ordre est imposé : sans configuration IP (DHCP) aucun échange n'est possible ; sans adresse du serveur (DNS) on ne peut pas le joindre ; le transfert vient en dernier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque protocole se retient par quatre éléments : sigle, développé, rôle, port.",
+        "Retrouve une ligne manquante à partir de l'indice disponible, en privilégiant le rôle.",
+        "DNS traduit les noms en adresses IP, DHCP distribue les adresses IP.",
+        "HTTP est un protocole, HTML un langage : ne les confonds pas.",
+        "Au BAC TI, ce type de tableau rapporte de 1 à 1,5 point et revient presque chaque année."
+      ]
+    }
+  ]
+}

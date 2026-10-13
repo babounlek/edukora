@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-composants-dun-microprocesseur-tle-ti-2019",
+  "meta": {
+    "titre": "Composants d'un microprocesseur",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Architecture matérielle",
+    "duree_estimee_min": 22,
+    "tags": [
+      "microprocesseur",
+      "unité de commande",
+      "UAL",
+      "registres"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.1-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le microprocesseur est le cerveau de l'ordinateur, mais ce cerveau n'est pas d'un seul bloc : plusieurs unités se partagent le travail à l'intérieur de la puce. Comprendre cette organisation explique ce que veulent dire les mots « unité de commande » et « UAL » qui reviennent dans toutes les épreuves de maintenance. Une fois le schéma en tête, la question « donner deux composants » devient immédiate."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un microprocesseur et son rôle dans l'ordinateur",
+        "Connaître la notion d'instruction et de programme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les unités d'un microprocesseur",
+      "contenu_markdown": "Un microprocesseur (CPU) exécute les instructions d'un programme. Ses composants principaux :\n\n| Composant | Rôle |\n|---|---|\n| **Unité de commande (UC)** | lit et décode les instructions, séquence leur exécution et envoie les signaux de commande |\n| **Unité de traitement (UT) ou UAL** | effectue les opérations arithmétiques (addition, soustraction) et logiques (ET, OU, comparaison) |\n| **Registres** | petites mémoires internes très rapides qui contiennent les données et les adresses en cours de traitement |\n| **Horloge** | cadence le fonctionnement par des impulsions régulières (fréquence en GHz) |\n| **Mémoire cache** | mémoire rapide intégrée qui garde les données les plus utilisées |\n\nLe CPU travaille par **cycles** : (1) chercher l'instruction en mémoire, (2) la décoder, (3) l'exécuter, (4) ranger le résultat. Les trois premières étapes mobilisent l'UC, l'UAL et les registres.",
+      "formule_principale": "\\text{CPU} = \\text{unité de commande} + \\text{unité de traitement (UAL)} + \\text{registres} + \\text{horloge}",
+      "variantes": [
+        {
+          "nom": "Processeur multicœur",
+          "quand_utiliser": "Quand le sujet évoque plusieurs cœurs",
+          "contenu_markdown": "Chaque cœur contient sa propre UC, son UAL et ses registres ; plusieurs cœurs exécutent plusieurs suites d'instructions en parallèle et se partagent souvent un cache de dernier niveau."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner deux composants des microprocesseurs (question 1.1 de la troisième partie de l'épreuve), en t'appuyant sur le schéma de la mémoire cache où le CPU est représenté.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le schéma",
+          "justification": "Le bloc CPU contient des sous-blocs étiquetés",
+          "resultat_markdown": "Le CPU est composé de l'UT et de l'UC (et dialogue avec le cache)."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer le premier composant",
+          "justification": "L'UC décode les instructions",
+          "resultat_markdown": "Unité de commande (UC) : décode et commande."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le second composant",
+          "justification": "L'UT effectue les calculs",
+          "resultat_markdown": "Unité de traitement (UT, ou UAL) : opérations arithmétiques et logiques."
+        },
+        {
+          "numero": 4,
+          "action": "Compléter si besoin",
+          "justification": "Registres, horloge et cache sont aussi des composants",
+          "resultat_markdown": "Autres réponses recevables."
+        }
+      ],
+      "conclusion_markdown": "Deux composants : l'unité de commande et l'unité de traitement (UAL)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer la mémoire vive ou le disque dur.",
+          "pourquoi_faux": "Ce sont des composants de l'ordinateur, situés hors du microprocesseur, sur la carte mère ou dans le boîtier.",
+          "correction_markdown": "Ne citer que ce qui se trouve dans la puce : UC, UAL, registres, horloge, cache."
+        },
+        {
+          "erreur_markdown": "Confondre unité de commande et unité de traitement.",
+          "pourquoi_faux": "L'UC dirige (décode, séquence) ; l'UT calcule. Inverser les rôles est une erreur de fond.",
+          "correction_markdown": "Retenir : commande = chef d'orchestre, traitement = calculateur."
+        },
+        {
+          "erreur_markdown": "Oublier le sens du sigle UAL.",
+          "pourquoi_faux": "UAL signifie unité arithmétique et logique ; le mot « logique » rappelle les opérations ET, OU, comparaison.",
+          "correction_markdown": "Écrire le sigle développé quand on cite le composant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associer chaque composant à son rôle : UC, UAL, registre, horloge.",
+          "solution_markdown": "1. UC : décode les instructions et commande les autres éléments.\n2. UAL : effectue les opérations arithmétiques et logiques.\n3. Registre : petite mémoire interne très rapide pour les données en cours de traitement.\n4. Horloge : cadence le fonctionnement du processeur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décrire le cycle d'exécution de l'instruction « additionner 2 et 3 » en indiquant quel composant intervient à chaque étape.",
+          "solution_markdown": "1. Recherche : l'UC va chercher l'instruction en mémoire (par le cache) et la place dans un registre d'instruction.\n2. Décodage : l'UC reconnaît une addition et prépare les signaux de commande.\n3. Exécution : l'UAL additionne 2 et 3 (valeurs lues dans les registres) et obtient 5.\n4. Rangement : le résultat 5 est placé dans un registre ; l'UC passe à l'instruction suivante."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Classe du plus rapide au plus lent : disque dur, mémoire vive, registres, cache L1. Explique pourquoi le processeur n'utilise pas uniquement des registres.",
+          "solution_markdown": "1. Du plus rapide au plus lent : registres, cache L1, mémoire vive, disque dur.\n2. Les registres sont les plus rapides mais en très petit nombre (quelques dizaines d'octets à quelques kilo-octets) car ils coûtent cher et occupent de la place dans la puce.\n3. Chaque niveau plus lent est plus grand et moins cher ; l'ensemble forme une hiérarchie qui offre à la fois de la capacité et une vitesse moyenne élevée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un microprocesseur se compose d'une unité de commande, d'une unité de traitement (UAL), de registres, d'une horloge et de mémoire cache.",
+        "L'UC commande, l'UAL calcule, les registres stockent temporairement, l'horloge cadence.",
+        "La mémoire vive et le disque dur sont hors du microprocesseur.",
+        "Le CPU travaille par cycles : chercher, décoder, exécuter, ranger le résultat.",
+        "À l'examen, cite deux composants et ajoute leur rôle : UC et UAL sont les réponses les plus sûres."
+      ]
+    }
+  ]
+}

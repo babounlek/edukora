@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-resistance-bobine-courant-continu-tle-ti",
+  "meta": {
+    "titre": "Déterminer la résistance d'une bobine en courant continu",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bobine et dipôle RL",
+    "duree_estimee_min": 30,
+    "tags": [
+      "bobine réelle",
+      "résistance interne",
+      "loi d'Ohm",
+      "régime continu",
+      "conformité",
+      "démarche scientifique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-PHYSIQUE-2023-CM",
+    "epreuve_titre": "Épreuve de physique au baccalauréat TI 2023 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-ti-physique-2023-officiel-cameroun-ex4-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une entreprise reçoit mille bobines annoncées « $2{,}0\\ \\Omega$ ». Peut-elle vérifier chacune en trente secondes avec un générateur, un ampèremètre et un voltmètre ? Oui, à condition de savoir ce que fait une bobine quand le courant est continu. Ce cours t'apprend ce raisonnement et la façon de le présenter dans une question de « démarche scientifique »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm $U = R\\,I$",
+        "Tension aux bornes d'une inductance $u = L\\,\\dfrac{di}{dt}$",
+        "Utilisation d'un ampèremètre et d'un voltmètre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La bobine en régime continu",
+      "contenu_markdown": "Une bobine réelle est modélisée par une inductance $L$ en série avec un résistor de résistance $r$ : $u = r\\,i + L\\,\\dfrac{di}{dt}$. En régime permanent continu, $i$ est constant donc $\\dfrac{di}{dt} = 0$ : la tension se réduit à $U = r\\,I$. La bobine se comporte comme un résistor pur, et la résistance se mesure par $r = \\dfrac{U}{I}$. Pour conclure sur la conformité, compare la valeur mesurée à la valeur annoncée en tenant compte de la précision des mesures (nombre de chiffres significatifs, tolérance).",
+      "formule_principale": "U = r\\,I \\quad\\Longrightarrow\\quad r = \\frac{U}{I}",
+      "variantes": [
+        {
+          "nom": "Démarche scientifique en cinq temps",
+          "quand_utiliser": "Pour toute question de compétence du type « Prononce-toi sur... » ou « Examine si... »",
+          "contenu_markdown": "(1) Analyser la situation et les données ; (2) choisir le modèle ; (3) calculer avec les unités ; (4) comparer avec la valeur de référence et discuter la précision ; (5) conclure explicitement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine annoncée $r = 2{,}0\\ \\Omega$ est montée en série avec un générateur de tension continue et un ampèremètre. Un voltmètre branché à ses bornes indique $U = 1{,}0\\ \\text{V}$ pour $I = 0{,}50\\ \\text{A}$. La résistance annoncée est-elle conforme ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser la situation",
+          "justification": "Le courant est continu : $\\dfrac{di}{dt} = 0$ donc la tension aux bornes de l'inductance est nulle.",
+          "resultat_markdown": "La bobine se comporte comme un résistor pur de résistance $r$."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir le modèle",
+          "justification": "Loi d'Ohm appliquée à la bobine seule (le voltmètre est à ses bornes).",
+          "resultat_markdown": "$U = r\\,I$ donc $r = \\dfrac{U}{I}$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer",
+          "justification": "Homogénéité : $\\text{V}/\\text{A} = \\Omega$.",
+          "resultat_markdown": "$r_{mes} = \\dfrac{1{,}0}{0{,}50} = 2{,}0\\ \\Omega$."
+        },
+        {
+          "numero": 4,
+          "action": "Comparer",
+          "justification": "On confronte la valeur mesurée à la valeur annoncée.",
+          "resultat_markdown": "$|2{,}0 - 2{,}0| = 0\\ \\Omega$, écart relatif nul."
+        },
+        {
+          "numero": 5,
+          "action": "Conclure",
+          "justification": "La mesure est compatible avec l'inscription (précision de deux chiffres significatifs).",
+          "resultat_markdown": "La résistance de la bobine est conforme."
+        }
+      ],
+      "conclusion_markdown": "La résistance mesurée vaut $2{,}0\\ \\Omega$ : elle est conforme à la valeur inscrite."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Faire intervenir $L$ dans la mesure en courant continu",
+          "pourquoi_faux": "En régime permanent continu, $\\dfrac{di}{dt} = 0$ : l'inductance n'a aucun effet sur la tension. Seule la résistance interne $r$ compte.",
+          "correction_markdown": "Dans toute mesure en continu, remplace la bobine par son résistor $r$."
+        },
+        {
+          "erreur_markdown": "Brancher le voltmètre aux bornes du générateur au lieu de la bobine",
+          "pourquoi_faux": "On mesurerait la tension aux bornes du générateur, qui contient aussi les pertes dans le générateur et les fils : on n'aurait pas $r$ seul.",
+          "correction_markdown": "Branche toujours le voltmètre en dérivation aux bornes du dipôle étudié."
+        },
+        {
+          "erreur_markdown": "Conclure sans comparer ni argumenter",
+          "pourquoi_faux": "Une question de démarche scientifique est notée sur le raisonnement : la seule phrase « c'est conforme » ne rapporte pas la totalité des points.",
+          "correction_markdown": "Écris l'écart, la précision des mesures, puis la conclusion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bobine soumise à une tension continue $U = 3{,}6\\ \\text{V}$ est traversée par un courant $I = 0{,}30\\ \\text{A}$. Calculer sa résistance.",
+          "solution_markdown": "$$r = \\frac{U}{I} = \\frac{3{,}6}{0{,}30} = 12\\ \\Omega$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine de résistance $r = 5{,}0\\ \\Omega$ est parcourue par un courant continu $I = 0{,}40\\ \\text{A}$. Calculer la tension à ses bornes, puis la puissance dissipée par effet Joule.",
+          "solution_markdown": "**Tension.** $U = r\\,I = 5{,}0\\times0{,}40 = 2{,}0\\ \\text{V}$ (l'inductance n'intervient pas en continu).\n\n**Puissance.** $P = r\\,I^2 = 5{,}0\\times(0{,}40)^2 = 5{,}0\\times0{,}16 = 0{,}80\\ \\text{W}$ ; vérification : $P = U\\,I = 2{,}0\\times0{,}40 = 0{,}80\\ \\text{W}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine est annoncée avec $r = 8{,}0\\ \\Omega$, tolérance $\\pm5\\ \\%$. En courant continu, on mesure $I = 0{,}30\\ \\text{A}$ et une tension (a) $U_1 = 2{,}46\\ \\text{V}$ puis (b) $U_2 = 2{,}64\\ \\text{V}$. Pour chaque cas, conclure sur la conformité.",
+          "solution_markdown": "**Intervalle de conformité.** $8{,}0\\times0{,}95 = 7{,}6\\ \\Omega$ et $8{,}0\\times1{,}05 = 8{,}4\\ \\Omega$ : la bobine est conforme si $7{,}6\\ \\Omega \\leq r \\leq 8{,}4\\ \\Omega$.\n\n**(a)** $r_1 = \\dfrac{2{,}46}{0{,}30} = 8{,}2\\ \\Omega$. Écart relatif : $\\dfrac{8{,}2 - 8{,}0}{8{,}0} = 2{,}5\\ \\%$, dans la tolérance : conforme.\n\n**(b)** $r_2 = \\dfrac{2{,}64}{0{,}30} = 8{,}8\\ \\Omega$. Écart relatif : $\\dfrac{8{,}8 - 8{,}0}{8{,}0} = 10\\ \\%$, au-delà de $5\\ \\%$ : non conforme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En régime continu, une bobine se comporte comme un résistor de résistance $r$ : $U = r\\,I$.",
+        "On mesure $r$ avec un voltmètre aux bornes de la bobine et un ampèremètre en série : $r = U/I$.",
+        "Pour juger la conformité, compare la valeur mesurée à la valeur annoncée en tenant compte de la précision ou de la tolérance.",
+        "Structure une réponse de démarche scientifique : analyse, modèle, calcul, comparaison, conclusion.",
+        "Au BAC, cette mesure est le préalable de l'étude du dipôle RLC : on y détermine $r$ avant d'utiliser $R + r$ dans les formules en régime sinusoïdal."
+      ]
+    }
+  ]
+}

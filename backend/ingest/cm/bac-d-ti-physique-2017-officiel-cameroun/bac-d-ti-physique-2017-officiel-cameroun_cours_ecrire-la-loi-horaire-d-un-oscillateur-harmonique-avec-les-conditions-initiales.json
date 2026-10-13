@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-ecrire-la-loi-horaire-d-un-oscillateur-harmonique-avec-les-conditions-initiales-tle-d-ti",
+  "meta": {
+    "titre": "Écrire la loi horaire d'un oscillateur harmonique avec les conditions initiales",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Oscillations mécaniques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "oscillateur harmonique",
+      "loi horaire",
+      "conditions initiales",
+      "phase à l'origine",
+      "pendule simple"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-TI-PHYSIQUE-2017-OFFICIEL-CM",
+    "epreuve_titre": "Baccalauréat Physique Séries D et TI - Session 2017 (Cameroun), sujet officiel reproduit par Camerecole",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-d-ti-physique-2017-officiel-cameroun-ex2-qB3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Connaître l'équation différentielle d'un oscillateur ne suffit pas : elle admet une infinité de solutions sinusoïdales, une pour chaque façon de lancer le mouvement. Ce sont les conditions initiales (où l'on lâche le pendule, avec quelle vitesse) qui choisissent la bonne. Les écrire correctement est le cœur de cette méthode."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation différentielle $\\ddot{x} + \\omega_0^2 x = 0$ et pulsation propre",
+        "Dérivée des fonctions sinus et cosinus",
+        "Résolution de $\\sin\\varphi = 0$ ou $\\cos\\varphi = 0$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Solution et conditions initiales",
+      "contenu_markdown": "La solution de $\\ddot{x} + \\omega_0^2 x = 0$ est $x(t) = X_m\\cos(\\omega_0 t + \\varphi)$, de dérivée $\\dot{x}(t) = -X_m\\omega_0\\sin(\\omega_0 t + \\varphi)$.\n\nOn écrit les deux conditions à $t = 0$ :\n\n$$x(0) = X_m\\cos\\varphi \\qquad \\dot{x}(0) = -X_m\\,\\omega_0\\sin\\varphi$$\n\nCes deux équations déterminent les deux inconnues $X_m$ (positive) et $\\varphi$.",
+      "formule_principale": "x(t) = X_m\\cos(\\omega_0 t + \\varphi)",
+      "variantes": [
+        {
+          "nom": "Lâché sans vitesse depuis l'élongation $x_0$",
+          "quand_utiliser": "Cas le plus fréquent à l'examen",
+          "contenu_markdown": "$\\dot{x}(0) = 0$ impose $\\sin\\varphi = 0$ ; avec $x_0 > 0$, $\\varphi = 0$ et $X_m = x_0$ : $x(t) = x_0\\cos(\\omega_0 t)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un pendule de pulsation propre $\\omega_0 = 3{,}5\\ \\text{rad/s}$ est écarté de $\\theta_0 = 0{,}140\\ \\text{rad}$ puis lâché sans vitesse. Écrire sa loi horaire.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la solution générale et sa dérivée",
+          "justification": "On choisit la forme cosinus.",
+          "resultat_markdown": "$\\theta(t) = \\theta_m\\cos(3{,}5\\,t + \\varphi)$ ; $\\dot{\\theta}(t) = -3{,}5\\,\\theta_m\\sin(3{,}5\\,t + \\varphi)$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition sur la vitesse",
+          "justification": "Le pendule est lâché sans vitesse : $\\dot{\\theta}(0) = 0$.",
+          "resultat_markdown": "$-3{,}5\\,\\theta_m\\sin\\varphi = 0$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre",
+          "justification": "$\\theta_m \\neq 0$ et $\\omega_0 \\neq 0$, donc $\\sin\\varphi = 0$.",
+          "resultat_markdown": "$\\varphi = 0$ ou $\\varphi = \\pi$"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la condition sur la position",
+          "justification": "À $t = 0$, $\\theta = 0{,}140\\ \\text{rad}$.",
+          "resultat_markdown": "$\\theta_m\\cos\\varphi = 0{,}140$"
+        },
+        {
+          "numero": 5,
+          "action": "Choisir la phase",
+          "justification": "L'amplitude est positive et $\\theta(0) > 0$ : il faut $\\cos\\varphi > 0$.",
+          "resultat_markdown": "$\\varphi = 0$ et $\\theta_m = 0{,}140\\ \\text{rad}$"
+        }
+      ],
+      "conclusion_markdown": "La loi horaire est $\\theta(t) = 0{,}140\\cos(3{,}5\\,t)$, avec $\\theta$ en radians et $t$ en secondes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\theta_m\\sin(\\omega_0 t)$ sans examiner les conditions initiales.",
+          "pourquoi_faux": "Avec un sinus sans phase, $\\theta(0) = 0$, alors que le pendule est écarté de l'équilibre à l'instant initial.",
+          "correction_markdown": "Toujours écrire $x(0)$ et $\\dot{x}(0)$ avant de choisir la phase."
+        },
+        {
+          "erreur_markdown": "Oublier le facteur $\\omega_0$ dans la dérivée de la vitesse.",
+          "pourquoi_faux": "La dérivée de $\\cos(\\omega_0 t + \\varphi)$ est $-\\omega_0\\sin(\\omega_0 t + \\varphi)$ : sans ce facteur, la condition sur la vitesse est fausse dès que $\\dot{x}(0) \\neq 0$.",
+          "correction_markdown": "Dériver avec la règle de la fonction composée."
+        },
+        {
+          "erreur_markdown": "Mélanger degrés et radians.",
+          "pourquoi_faux": "Dans $\\cos(\\omega_0 t + \\varphi)$, l'argument est en radians. L'amplitude angulaire peut être donnée en degrés, mais la phase doit rester en radians.",
+          "correction_markdown": "Convertir l'amplitude angulaire en radians ou préciser clairement l'unité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un oscillateur de pulsation propre $10\\ \\text{rad/s}$ est écarté de $5\\ \\text{cm}$ puis abandonné sans vitesse. Écrire $x(t)$.",
+          "solution_markdown": "$\\dot{x}(0) = 0$ donne $\\sin\\varphi = 0$, et $x(0) = 0{,}05\\ \\text{m} > 0$ impose $\\varphi = 0$, $X_m = 0{,}05\\ \\text{m}$. Donc $x(t) = 0{,}05\\cos(10\\,t)$ en mètres."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un oscillateur de pulsation propre $6\\ \\text{rad/s}$ passe par sa position d'équilibre à $t = 0$ avec la vitesse $+0{,}3\\ \\text{m/s}$. Écrire $x(t)$.",
+          "solution_markdown": "$x(0) = X_m\\cos\\varphi = 0$ donc $\\cos\\varphi = 0$, $\\varphi = \\pm\\tfrac{\\pi}{2}$. $\\dot{x}(0) = -X_m \\times 6\\sin\\varphi = 0{,}3 > 0$ impose $\\sin\\varphi < 0$, donc $\\varphi = -\\tfrac{\\pi}{2}$ et $X_m = \\dfrac{0{,}3}{6} = 0{,}05\\ \\text{m}$. Alors $x(t) = 0{,}05\\cos\\left(6t - \\tfrac{\\pi}{2}\\right) = 0{,}05\\sin(6t)$ en mètres."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un oscillateur de pulsation propre $2\\ \\text{rad/s}$ est lancé de la position $x(0) = 2\\ \\text{cm}$ avec la vitesse $\\dot{x}(0) = +4\\ \\text{cm/s}$. Écrire $x(t)$.",
+          "solution_markdown": "Les deux conditions s'écrivent $X_m\\cos\\varphi = 2$ et $-2X_m\\sin\\varphi = 4$, soit $X_m\\sin\\varphi = -2$ (en cm). En divisant : $\\tan\\varphi = -1$. Comme $X_m\\cos\\varphi = 2 > 0$, $\\cos\\varphi > 0$ donc $\\varphi = -\\tfrac{\\pi}{4}$. Alors $X_m = \\dfrac{2}{\\cos(-\\pi/4)} = 2\\sqrt{2} = 2{,}83\\ \\text{cm}$. Donc $x(t) = 2{,}83\\cos\\left(2t - \\tfrac{\\pi}{4}\\right)$ en cm."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La solution de $\\ddot{x} + \\omega_0^2 x = 0$ est $x(t) = X_m\\cos(\\omega_0 t + \\varphi)$.",
+        "Deux conditions initiales, deux inconnues : $x(0) = X_m\\cos\\varphi$ et $\\dot{x}(0) = -X_m\\omega_0\\sin\\varphi$.",
+        "Lâché sans vitesse depuis $x_0$ : $\\varphi = 0$ et $X_m = x_0$.",
+        "L'argument du cosinus est toujours en radians.",
+        "Au BAC, la loi horaire d'un oscillateur est demandée après l'équation différentielle et la période propre."
+      ]
+    }
+  ]
+}

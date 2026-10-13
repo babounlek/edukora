@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-classes-dadresses-ipv4-tle-ti-2019",
+  "meta": {
+    "titre": "Classes d'adresses IPv4",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 26,
+    "tags": [
+      "classe A B C",
+      "adresse IPv4",
+      "masque de sous-réseau",
+      "adresse privée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une adresse IPv4 comme 195.24.192.33 n'est pas un simple numéro : son premier nombre en dit déjà beaucoup sur la taille du réseau auquel elle appartient. Les classes d'adresses, même si on s'en sert moins aujourd'hui, restent au programme parce qu'elles structurent tout l'adressage. Ce cours te donne les bornes à retenir et la méthode pour classer une adresse en trois secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 est composée de quatre nombres de 0 à 255",
+        "Savoir convertir un nombre décimal en binaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire la classe dans le premier octet",
+      "contenu_markdown": "La classe se lit dans le **premier octet** :\n\n| Classe | Premier octet | Bits de tête | Masque par défaut | Usage |\n|---|---|---|---|---|\n| A | de 1 à 126 | 0 | 255.0.0.0 (/8) | très grands réseaux |\n| B | de 128 à 191 | 10 | 255.255.0.0 (/16) | réseaux moyens |\n| C | de 192 à 223 | 110 | 255.255.255.0 (/24) | petits réseaux |\n| D | de 224 à 239 | 1110 | | multidiffusion |\n| E | de 240 à 255 | 1111 | | réservée |\n\n127 est réservé au bouclage local (`127.0.0.1`). Adresses **privées** (non routées sur Internet) : `10.0.0.0/8`, `172.16.0.0/12` (de 172.16 à 172.31) et `192.168.0.0/16`. Une adresse en `169.254.x.x` est une adresse APIPA auto-attribuée.\n\nLa classe d'une adresse ne dépend pas de son caractère privé ou public : 172.16.1.100 est privée **et** de classe B.",
+      "formule_principale": "\\text{classe C} \\iff 192 \\le \\text{premier octet} \\le 223 \\quad (\\text{bits de tête } 110)",
+      "variantes": [
+        {
+          "nom": "Vérification par les bits de tête",
+          "quand_utiliser": "Quand tu veux contrôler ta lecture",
+          "contenu_markdown": "Convertis le premier octet en binaire : 195 = 11000011 commence par 110, donc classe C ; 172 = 10101100 commence par 10, donc classe B ; 8 = 00001000 commence par 0, donc classe A."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la capture `ipconfig /all` de l'épreuve figurent 172.16.1.100, 172.16.0.254, 195.24.192.33 et 8.8.8.8. Relever l'adresse de classe C.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier octet de chaque adresse",
+          "justification": "La classe se lit dans le premier octet",
+          "resultat_markdown": "172, 172, 195 et 8."
+        },
+        {
+          "numero": 2,
+          "action": "Comparer aux intervalles",
+          "justification": "A : 1 à 126 ; B : 128 à 191 ; C : 192 à 223",
+          "resultat_markdown": "172 est dans [128 ; 191] : classe B ; 8 est dans [1 ; 126] : classe A ; 195 est dans [192 ; 223] : classe C."
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler 195 en binaire",
+          "justification": "Les bits de tête de la classe C sont 110",
+          "resultat_markdown": "195 = 128 + 64 + 2 + 1 = 11000011, il commence par 110 : classe C confirmée."
+        }
+      ],
+      "conclusion_markdown": "L'adresse de classe C est 195.24.192.33."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Classer 172.16.1.100 en classe C parce que l'adresse est privée.",
+          "pourquoi_faux": "Privé ou public n'a rien à voir avec la classe : 172 est dans l'intervalle 128 à 191, c'est de la classe B.",
+          "correction_markdown": "Toujours regarder le premier octet."
+        },
+        {
+          "erreur_markdown": "Oublier que 127 est à part.",
+          "pourquoi_faux": "Les adresses commençant par 127 sont réservées au bouclage (la machine elle-même) et ne servent à aucune classe d'hôtes.",
+          "correction_markdown": "Retenir 127 comme exception entre les classes A et B."
+        },
+        {
+          "erreur_markdown": "Utiliser le dernier octet pour classer.",
+          "pourquoi_faux": "Le dernier octet identifie la machine dans le réseau ; la classe est donnée par le premier octet uniquement.",
+          "correction_markdown": "Lire de gauche à droite et s'arrêter au premier nombre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner la classe de 10.5.4.3, 192.168.1.10 et 224.0.0.5.",
+          "solution_markdown": "1. 10 est dans [1 ; 126] : classe A.\n2. 192 est dans [192 ; 223] : classe C.\n3. 224 est dans [224 ; 239] : classe D (multidiffusion)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner la classe, le masque par défaut et le nombre de bits de la partie réseau de 150.20.1.1.",
+          "solution_markdown": "1. Premier octet 150, dans [128 ; 191] : classe B.\n2. Masque par défaut de la classe B : 255.255.0.0.\n3. Ce masque comporte 16 bits à 1 : partie réseau de 16 bits (/16), il reste 16 bits pour les machines."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Combien de machines peut-on adresser au maximum dans un réseau de classe C ? Justifie, puis dis pourquoi la capture de l'épreuve (172.16.1.100 avec le masque 255.255.0.0) est cohérente avec la classe B.",
+          "solution_markdown": "1. Un réseau de classe C a le masque 255.255.255.0 : 8 bits pour les machines, soit $2^8 = 256$ adresses.\n2. On retire l'adresse du réseau (tous les bits machine à 0) et l'adresse de diffusion (tous à 1) : $256 - 2 = 254$ machines.\n3. La capture donne 172.16.1.100, de classe B, et le masque 255.255.0.0, qui est exactement le masque par défaut de la classe B : l'adresse et le masque sont cohérents."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La classe se lit dans le premier octet : A de 1 à 126, B de 128 à 191, C de 192 à 223.",
+        "Les bits de tête sont 0 pour A, 10 pour B, 110 pour C.",
+        "127 est réservé au bouclage ; 224 à 239 est la multidiffusion.",
+        "Une adresse privée peut être de classe A, B ou C : classe et caractère privé sont indépendants.",
+        "Au baccalauréat, on te demande de relever ou de justifier une classe : cite le premier octet et l'intervalle."
+      ]
+    }
+  ]
+}

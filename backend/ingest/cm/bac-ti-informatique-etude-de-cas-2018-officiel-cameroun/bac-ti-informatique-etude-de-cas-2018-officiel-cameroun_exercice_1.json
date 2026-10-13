@@ -1,0 +1,337 @@
+{
+  "epreuve_source": "bac-ti-informatique-etude-de-cas-2018-officiel-cameroun.html",
+  "numero_exercice": "1",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2018,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "8",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-informatique-etude-de-cas-2018-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": null,
+      "type": "document",
+      "legende": "Code PHP de 22 lignes dans un éditeur : page HTML avec un tableau à bordure 2 et deux boucles for imbriquées qui écrivent des en-têtes et des produits, de la ligne 1 (HTML, BODY) à la ligne 22 (fin de page)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-ti-informatique-etude-de-cas-2018-officiel-cameroun_exercice_1_fig_2.png",
+      "page_source": null,
+      "type": "document",
+      "legende": "Capture d'un navigateur : page intitulée « Ma page de test » avec les champs « Votre nom : » et « Votre fonction : » (zones de saisie à bordure rouge) et un bouton « Envoyer » bleu",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\n**Partie I : Les bases du langage PHP (8 points)**\n\nVous voulez créer un site web dynamique et vous disposez pour cela d'un environnement logiciel de type LAMP. On vous demande d'expliquer certains aspects de votre travail en répondant aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "**1.** Définir les termes suivants *[0,75 pt pour l'ensemble des trois définitions]* :\n\n**a)** serveur web.",
+      "corrige_markdown": "### Rappel de méthode\nPour définir un terme technique, indique d'abord sa nature (matériel, logiciel, service ou ensemble de ressources), puis son rôle principal et, si la question s'y prête, un exemple connu qui montre que tu as compris la notion.\n\nUn **serveur web** est un ordinateur, ou plus précisément le logiciel qui s'y exécute, chargé de recevoir les requêtes HTTP envoyées par les navigateurs, de retrouver ou de produire la page demandée, puis de la renvoyer au client. Quand le site est dynamique, il confie l'exécution des scripts (PHP) à un interpréteur, qui peut lui-même interroger une base de données.\n\nExemple : Apache, le serveur web de l'environnement LAMP de l'énoncé ; Nginx et IIS sont d'autres serveurs web.\n\n### Piège à éviter\nNe confonds pas le serveur web (qui répond aux requêtes) avec le navigateur (le client qui les envoie) ni avec le site web (le contenu publié). Une définition qui parle seulement de « l'ordinateur qui héberge le site » reste incomplète : il manque le rôle de traitement des requêtes HTTP.",
+      "themes": [
+        "serveur web",
+        "site web dynamique",
+        "LAMP",
+        "vocabulaire du web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,75",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q1.a-0",
+          "competence": "Définir un terme technique du web",
+          "contenu_markdown": "Pour définir un terme technique, indique d'abord sa nature (matériel, logiciel, service ou ensemble de ressources), puis son rôle principal et, si la question s'y prête, un exemple connu qui montre que tu as compris la notion.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-un-terme-technique-du-web-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "**b)** site web.",
+      "corrige_markdown": "Un **site web** est un ensemble de pages web (fichiers HTML, images, feuilles de style, scripts) reliées entre elles par des liens hypertextes, regroupées sous un même nom de domaine et stockées sur un serveur web. Un navigateur le consulte à partir de son adresse (URL).\n\nOn distingue le site **statique**, dont les pages sont des fichiers fixes envoyés tels quels, du site **dynamique**, dont les pages sont fabriquées à la demande par des scripts (PHP) à partir de données, souvent tirées d'une base MySQL. Le site que l'énoncé demande de créer est de la seconde catégorie.\n\n### Conseil\nPour une définition à 0,25 point, deux idées suffisent : la nature (ensemble de pages liées) et le lieu ou le moyen d'accès (un serveur, une adresse). Ajoute la distinction statique et dynamique si tu as le temps, elle montre que tu connais le programme.",
+      "themes": [
+        "site web",
+        "page web",
+        "hypertexte",
+        "hébergement"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "1.c",
+      "enonce_markdown": "**c)** LAMP.",
+      "corrige_markdown": "**LAMP** est un sigle qui désigne une pile de logiciels libres servant à construire et à héberger des sites web dynamiques :\n\n- **L** pour Linux, le système d'exploitation ;\n- **A** pour Apache, le serveur web ;\n- **M** pour MySQL (ou son dérivé MariaDB), le système de gestion de bases de données ;\n- **P** pour PHP, le langage de script exécuté côté serveur (Perl ou Python peuvent aussi occuper cette place).\n\nSous Windows, la pile équivalente s'appelle WAMP (W pour Windows), et XAMPP existe pour plusieurs systèmes.\n\n### Piège à éviter\nÉcrire seulement « Linux, Apache, MySQL, PHP » sans dire que c'est un ensemble de logiciels libres qui fonctionnent ensemble fait perdre le sens du terme : LAMP n'est pas un logiciel unique mais un assemblage.",
+      "themes": [
+        "LAMP",
+        "pile logicielle",
+        "Apache",
+        "MySQL",
+        "PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Décrire la contribution du serveur web dans le cadre de votre travail. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn serveur web intervient dans le cycle requête-réponse du protocole HTTP : il reçoit la requête du client, localise la ressource demandée, confie l'exécution des scripts à l'interpréteur adapté, puis renvoie la réponse au navigateur ; pour décrire sa contribution, suis ce parcours dans l'ordre.\n\nDans la création du site dynamique, le serveur web Apache joue les rôles suivants :\n\n1. il **héberge** les fichiers du site (pages HTML, scripts PHP, images) dans son dossier racine ;\n2. il **reçoit** les requêtes HTTP envoyées par les navigateurs des visiteurs ;\n3. quand le fichier demandé porte l'extension `.php`, il le **transmet à l'interpréteur PHP**, qui exécute le script et peut interroger la base MySQL ;\n4. il **renvoie** au navigateur le résultat de l'exécution, c'est-à-dire une page HTML ordinaire ;\n5. il **contrôle l'accès** aux ressources (droits, erreurs 403 ou 404) et tient un journal des requêtes.\n\nSans serveur web, un script PHP ne s'exécute pas : le navigateur afficherait son code source au lieu de son résultat.\n\n### Conseil\nStructure ta réponse en quatre ou cinq verbes d'action (héberger, recevoir, exécuter, renvoyer). Un correcteur retrouve ainsi vite les points du barème.",
+      "themes": [
+        "serveur web",
+        "requête HTTP",
+        "cycle requête-réponse",
+        "PHP",
+        "MySQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q2-0",
+          "competence": "Rôle d'un serveur web dans le cycle requête-réponse HTTP",
+          "contenu_markdown": "Un serveur web intervient dans le cycle requête-réponse du protocole HTTP : il reçoit la requête du client, localise la ressource demandée, confie l'exécution des scripts à l'interpréteur adapté, puis renvoie la réponse au navigateur ; pour décrire sa contribution, suis ce parcours dans l'ordre.",
+          "cours_genere": true,
+          "cours_id": "cours-role-dun-serveur-web-dans-le-cycle-requete-reponse-http-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Expliquer comment s'assurer que le serveur web prend en compte le langage PHP. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour s'assurer qu'un serveur web prend en compte PHP, on vérifie que l'interpréteur et son module sont installés et activés, que les fichiers d'extension .php lui sont associés, puis on teste en demandant par navigateur un petit script qui appelle la fonction phpinfo().\n\nDémarche complète :\n\n1. **Installer et activer PHP** pour Apache : sous Linux, `apt install php libapache2-mod-php` ; sous Windows, utiliser WAMP ou XAMPP qui l'embarquent. Dans la configuration d'Apache, le module PHP est chargé par une directive `LoadModule` et les fichiers `.php` lui sont associés.\n2. **Redémarrer Apache** pour que la configuration soit relue.\n3. **Créer un fichier de test** `info.php` dans le dossier racine du serveur (`/var/www/html` sous Linux, `www` sous WAMP) contenant :\n\n```php\n<?php phpinfo(); ?>\n```\n\n4. **L'ouvrir par le serveur** : saisir `http://localhost/info.php` dans le navigateur (jamais en double-cliquant sur le fichier, qui passerait par `file://`).\n\nSi une page de configuration PHP s'affiche (version, modules, chemins), PHP est bien pris en compte. Si le navigateur affiche le code source du fichier ou propose de le télécharger, PHP n'est pas associé aux fichiers `.php`.\n\n### Piège à éviter\nTester en ouvrant le fichier directement depuis l'explorateur de fichiers prouve seulement que le navigateur sait lire du texte. Le test n'a de valeur que si la page passe par l'adresse `http://localhost/`.",
+      "themes": [
+        "Apache",
+        "module PHP",
+        "phpinfo",
+        "configuration serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q3-0",
+          "competence": "Vérifier la prise en charge de PHP par un serveur web",
+          "contenu_markdown": "Pour s'assurer qu'un serveur web prend en compte PHP, on vérifie que l'interpréteur et son module sont installés et activés, que les fichiers d'extension .php lui sont associés, puis on teste en demandant par navigateur un petit script qui appelle la fonction phpinfo().",
+          "cours_genere": true,
+          "cours_id": "cours-verifier-la-prise-en-charge-de-php-par-un-serveur-web-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Reproduire puis compléter le tableau suivant par les éléments manquants. *[1,5 pt]*\n\n| Protocole (service) | Signification du sigle | Rôle du protocole |\n|---|---|---|\n| HTTP | | |\n| | | Permet à un ordinateur qui se connecte sur un réseau d'obtenir automatiquement sa configuration IP |\n| FTP | File transfert protocole | |\n| DNS | | Assure la conversion des noms de domaine en adresses IP |",
+      "corrige_markdown": "### Rappel de méthode\nPour compléter un tableau de protocoles, retrouve chaque ligne à partir de l'indice disponible (sigle, développé ou rôle) : un protocole d'application a un sigle, un développé en anglais et un rôle précis, et c'est le rôle qui permet de départager deux sigles voisins.\n\nLe rôle « obtenir automatiquement sa configuration IP » est celui de **DHCP** (le sigle manquait à la deuxième ligne). Le tableau complété est :\n\n| Protocole (service) | Signification du sigle | Rôle du protocole |\n|---|---|---|\n| HTTP | HyperText Transfer Protocol (protocole de transfert hypertexte) | Transfère les pages web et leurs ressources entre le navigateur (client) et le serveur web |\n| DHCP | Dynamic Host Configuration Protocol (protocole de configuration dynamique des hôtes) | Permet à un ordinateur qui se connecte sur un réseau d'obtenir automatiquement sa configuration IP (adresse, masque, passerelle, DNS) |\n| FTP | File Transfer Protocol (protocole de transfert de fichiers) | Transfère des fichiers entre un client et un serveur, par exemple pour publier les fichiers d'un site sur son serveur |\n| DNS | Domain Name System (système de noms de domaine) | Assure la conversion des noms de domaine en adresses IP |\n\nRepères utiles : HTTP utilise le port 80 (443 pour sa version sécurisée HTTPS), FTP le port 21, DNS le port 53.\n\n### Piège à éviter\nNe mets pas « DNS » sur la ligne de l'attribution automatique d'adresses : DNS traduit des noms en adresses, DHCP en distribue. Le sigle FTP se développe « File Transfer Protocol » (avec un seul « t » à Transfer), même si l'énoncé imprimé écrit « transfert ».",
+      "themes": [
+        "protocoles d'application",
+        "HTTP",
+        "FTP",
+        "DNS",
+        "DHCP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "1,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q4-0",
+          "competence": "Protocoles d'application courants : sigle et rôle",
+          "contenu_markdown": "Pour compléter un tableau de protocoles, retrouve chaque ligne à partir de l'indice disponible (sigle, développé ou rôle) : un protocole d'application a un sigle, un développé en anglais et un rôle précis, et c'est le rôle qui permet de départager deux sigles voisins.",
+          "cours_genere": true,
+          "cours_id": "cours-protocoles-dapplication-courants-sigle-et-role-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Décrire deux syntaxes pouvant être utilisées pour introduire des commentaires dans un code PHP. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn PHP, un commentaire est ignoré par l'interpréteur et n'apparaît jamais dans la page envoyée au navigateur ; on dispose de `//` ou `#` pour une ligne et de `/* ... */` pour un bloc de plusieurs lignes, à ne pas confondre avec les commentaires HTML qui, eux, sont envoyés au navigateur.\n\nDeux syntaxes à décrire :\n\n1. **Commentaire sur une ligne** : il commence par `//` (ou par `#`) et s'étend jusqu'à la fin de la ligne.\n\n```php\n// ceci est un commentaire sur une ligne\necho \"Bonjour\"; // commentaire en fin de ligne\n```\n\n2. **Commentaire sur plusieurs lignes** : il est encadré par `/*` au début et `*/` à la fin, et peut occuper autant de lignes que nécessaire.\n\n```php\n/* ceci est un commentaire\n   écrit sur deux lignes */\n```\n\nLe code de la question suivante en contient deux exemples : `// 1ère ligne` (ligne 4) et `// toutes les lignes` (ligne 10).\n\n### Piège à éviter\nLe commentaire HTML `<!-- ... -->` n'est pas une syntaxe PHP : il reste visible dans le code source de la page reçue par le visiteur. Un commentaire PHP ne l'est jamais.",
+      "themes": [
+        "commentaires PHP",
+        "syntaxe PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q5-0",
+          "competence": "Commentaires en PHP",
+          "contenu_markdown": "En PHP, un commentaire est ignoré par l'interpréteur et n'apparaît jamais dans la page envoyée au navigateur ; on dispose de `//` ou `#` pour une ligne et de `/* ... */` pour un bloc de plusieurs lignes, à ne pas confondre avec les commentaires HTML qui, eux, sont envoyés au navigateur.",
+          "cours_genere": true,
+          "cours_id": "cours-commentaires-en-php-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "**6.** Soit le code PHP suivant, écrit sur 22 lignes.\n\n![fig-1](bac-ti-informatique-etude-de-cas-2018-officiel-cameroun_exercice_1_fig_1.png)\n\n```php\n 1. <HTML><BODY>\n 2. <TABLE BORDER=2>\n 3. <?php\n 4. // 1ère ligne\n 5. echo \"<TR><TD></TD>\";\n 6. for ($c=0;$c<6;$c++) {\n 7. echo \"<TH>$c</TH>\";\n 8. }\n 9. Echo \"</TR>\\n\";\n10.  // toutes les lignes\n11.  for ($i=0;$i<6;$i++) {\n12. // 1 ligne\n13. echo \"<TR><TH>$i<fTH>.\";\n14. for ($c=0;$c<6;$c++) {\n15. $r=$c*$i;\n16. echo\"<TD ALIGN=right>'$r</TD>\";\n17. }\n18. echo \"</TR>\\n\";\n19. }\n20. ?>\n21. </TABLE>\n22. </BODY></HTML>\n```\n\n**7.** Exécuter ce code et représenter sur la copie le tableau qui s'affichera à l'écran à la fin. *[1,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour exécuter à la main un script qui contient des boucles for imbriquées, repère d'abord ce que produit chaque boucle, puis déroule la boucle externe valeur par valeur : à chaque valeur, la boucle interne repart de son initialisation, et les balises HTML dictent la place de chaque résultat dans le tableau.\n\n**Lecture du code.**\n\n- Lignes 1 et 2 : début de la page et ouverture d'un tableau HTML avec bordure d'épaisseur 2.\n- Ligne 5 : ouverture de la première ligne du tableau, avec une cellule vide `<TD></TD>` dans le coin.\n- Lignes 6 à 8 : la boucle sur `$c` prend les valeurs 0, 1, 2, 3, 4, 5 et écrit une cellule d'en-tête `<TH>$c</TH>` à chaque tour. L'en-tête de colonnes affiche donc 0 à 5.\n- Ligne 9 : fermeture de la première ligne (`Echo` avec une majuscule fonctionne, car les constructions du langage PHP ne sont pas sensibles à la casse ; le `\\n` ne sert qu'à aérer le code source, il ne produit aucun saut de ligne à l'écran).\n- Lignes 11 à 19 : la boucle externe sur `$i` prend les valeurs 0 à 5, chaque valeur produisant une ligne du tableau.\n- Ligne 13 : début de la ligne, avec l'en-tête de ligne contenant la valeur de `$i`.\n- Lignes 14 à 17 : la boucle interne repart de `$c=0` et va jusqu'à 5. À chaque tour, `$r` reçoit le produit `$c*$i` (ligne 15) et la cellule `<TD ALIGN=right>` l'affiche, alignée à droite (ligne 16).\n- Ligne 18 : fermeture de la ligne.\n\n**Déroulement.** Pour `$i = 0`, les produits `$c*0` valent 0, 0, 0, 0, 0, 0. Pour `$i = 1`, ils valent 0, 1, 2, 3, 4, 5. Pour `$i = 2` : 0, 2, 4, 6, 8, 10. Pour `$i = 3` : 0, 3, 6, 9, 12, 15. Pour `$i = 4` : 0, 4, 8, 12, 16, 20. Pour `$i = 5` : 0, 5, 10, 15, 20, 25.\n\n**Tableau affiché** (7 lignes et 7 colonnes) : la table de multiplication de 0 à 5.\n\n| | 0 | 1 | 2 | 3 | 4 | 5 |\n|---|---:|---:|---:|---:|---:|---:|\n| **0** | 0 | 0 | 0 | 0 | 0 | 0 |\n| **1** | 0 | 1 | 2 | 3 | 4 | 5 |\n| **2** | 0 | 2 | 4 | 6 | 8 | 10 |\n| **3** | 0 | 3 | 6 | 9 | 12 | 15 |\n| **4** | 0 | 4 | 8 | 12 | 16 | 20 |\n| **5** | 0 | 5 | 10 | 15 | 20 | 25 |\n\nL'exécution du code tel qu'il est imprimé (testée sous PHP) donne exactement ces valeurs. Deux détails de la copie imprimée se verraient à l'écran : ligne 13, la fin `<fTH>.` remplace une balise `</TH>` et laisse un point derrière chaque en-tête de ligne (« 0. », « 1. », ...) ; ligne 16, une apostrophe précède chaque produit (« '0 », « '5 »...). Ils ne changent ni la structure ni les valeurs du tableau, que l'on reproduit tel que ci-dessus.\n\n### Piège à éviter\nNe cherche pas un tableau de 6 lignes sur 6 colonnes : il y a une ligne et une colonne d'en-têtes en plus, soit 7 sur 7. Ne mélange pas non plus les rôles de `$c` et de `$i` : `$c` varie le plus vite (boucle interne) et décrit une ligne, `$i` décrit la ligne suivante.\n\n### Conseil\nLe jour de l'examen, écris d'abord les valeurs de la première ligne et de la première colonne, puis remplis le corps par le produit ligne par colonne. Contrôle avec la diagonale : 0, 1, 4, 9, 16, 25 (les carrés).",
+      "themes": [
+        "boucle for",
+        "boucles imbriquées",
+        "tableau HTML",
+        "echo",
+        "exécution d'un script PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "1,25",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q7-0",
+          "competence": "Dérouler un script PHP à boucles for imbriquées",
+          "contenu_markdown": "Pour exécuter à la main un script qui contient des boucles for imbriquées, repère d'abord ce que produit chaque boucle, puis déroule la boucle externe valeur par valeur : à chaque valeur, la boucle interne repart de son initialisation, et les balises HTML dictent la place de chaque résultat dans le tableau.",
+          "cours_genere": true,
+          "cours_id": "cours-derouler-un-script-php-a-boucles-for-imbriquees-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "**8.** Réécrire le code de la question 6 en utilisant la boucle `while`. *[1 pt]*\n\n![fig-1](bac-ti-informatique-etude-de-cas-2018-officiel-cameroun_exercice_1_fig_1.png)",
+      "corrige_markdown": "### Rappel de méthode\nUne boucle for(initialisation; condition; incrément) se réécrit en while en plaçant l'initialisation avant la boucle, en gardant la condition entre les parenthèses du while et en mettant l'incrément comme dernière instruction du corps ; avec des boucles imbriquées, la variable de la boucle interne doit être réinitialisée à chaque tour de la boucle externe.\n\n**Correspondance.** Pour chacune des trois boucles du code :\n\n| Boucle `for` | Initialisation | Condition | Incrément |\n|---|---|---|---|\n| lignes 6 à 8 | `$c=0;` avant la boucle | `$c<6` | `$c++;` en fin de corps |\n| lignes 11 à 19 | `$i=0;` avant la boucle | `$i<6` | `$i++;` en fin de corps |\n| lignes 14 à 17 | `$c=0;` dans le corps de la boucle externe, juste avant la boucle | `$c<6` | `$c++;` en fin de corps |\n\n**Code réécrit** (les instructions `echo` sont conservées à l'identique, seule la structure de répétition change) :\n\n```php\n<HTML><BODY>\n<TABLE BORDER=2>\n<?php\n// 1ère ligne\necho \"<TR><TD></TD>\";\n$c=0;\nwhile ($c<6) {\necho \"<TH>$c</TH>\";\n$c++;\n}\nEcho \"</TR>\\n\";\n// toutes les lignes\n$i=0;\nwhile ($i<6) {\n// 1 ligne\necho \"<TR><TH>$i<fTH>.\";\n$c=0;\nwhile ($c<6) {\n$r=$c*$i;\necho\"<TD ALIGN=right>'$r</TD>\";\n$c++;\n}\necho \"</TR>\\n\";\n$i++;\n}\n?>\n</TABLE>\n</BODY></HTML>\n```\n\nVérification : ce code, exécuté sous PHP, produit exactement le même texte HTML que le code de la question 6.\n\n### Piège à éviter\nDeux oublis fréquents : omettre `$c++;` (la condition `$c<6` reste vraie à jamais, la boucle ne s'arrête pas) et omettre de remettre `$c=0;` avant la boucle interne. Dans ce second cas, `$c` vaut 6 après la première ligne et les lignes suivantes restent vides.\n\n### Conseil\nPour contrôler une conversion, vérifie pour chaque boucle les trois éléments : où est l'initialisation, que devient la condition, où est l'incrément. Il en faut exactement trois dans le résultat.",
+      "themes": [
+        "boucle while",
+        "boucle for",
+        "conversion de boucle",
+        "boucles imbriquées"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "1",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q8-0",
+          "competence": "Convertir une boucle for en boucle while en PHP",
+          "contenu_markdown": "Une boucle for(initialisation; condition; incrément) se réécrit en while en plaçant l'initialisation avant la boucle, en gardant la condition entre les parenthèses du while et en mettant l'incrément comme dernière instruction du corps ; avec des boucles imbriquées, la variable de la boucle interne doit être réinitialisée à chaque tour de la boucle externe.",
+          "cours_genere": true,
+          "cours_id": "cours-convertir-une-boucle-for-en-boucle-while-en-php-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "9.a",
+      "enonce_markdown": "**9.** Soit la page web suivante.\n\n![fig-2](bac-ti-informatique-etude-de-cas-2018-officiel-cameroun_exercice_1_fig_2.png)\n\n**a.** Identifier le nom de cette page. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe nom d'une page web tel qu'il s'affiche dans l'onglet ou la barre de titre du navigateur est défini par la balise title placée dans l'en-tête head du document HTML ; il ne faut pas le confondre avec le nom du fichier, qui se lit dans la barre d'adresse.\n\nSur la capture, l'onglet du navigateur porte le texte **« Ma page de test »**. C'est le titre de la page, celui que déclare la balise `<TITLE>Ma page de test</TITLE>` dans l'en-tête du fichier. Le nom de cette page est donc « Ma page de test ».\n\nLa barre d'adresse montre un chemin local (`file:///C:/Users/Djongwanjar/De...`) coupé par la capture : le nom du fichier lui-même n'y est pas lisible et l'énoncé ne le demande pas.\n\n### Piège à éviter\nNe réponds pas « script1.php » : c'est le fichier de traitement cité dans la question suivante, pas le nom de la page affichée. N'invente pas non plus un nom de fichier à partir de la barre d'adresse tronquée.\n\n### Conseil\nPour la question suivante, recopie ce titre exactement dans la balise `<TITLE>`, avec la même casse et la même ponctuation : c'est un point facile du barème.",
+      "themes": [
+        "balise title",
+        "structure d'une page HTML",
+        "formulaire HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q9.a-0",
+          "competence": "Identifier le titre d'une page web (balise title)",
+          "contenu_markdown": "Le nom d'une page web tel qu'il s'affiche dans l'onglet ou la barre de titre du navigateur est défini par la balise title placée dans l'en-tête head du document HTML ; il ne faut pas le confondre avec le nom du fichier, qui se lit dans la barre d'adresse.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-le-titre-dune-page-web-balise-title-tle-ti"
+        }
+      ]
+    },
+    {
+      "numero": "9.b",
+      "enonce_markdown": "**b.** On suppose qu'un clic sur le bouton « Envoyer » déclenche l'exécution du script contenu dans le fichier `script1.php`. Écrire le code HTML qui affiche la page web ci-dessus, en supposant que les données sont transmises de façon confidentielle. *[1,5 pt]*\n\n![fig-2](bac-ti-informatique-etude-de-cas-2018-officiel-cameroun_exercice_1_fig_2.png)",
+      "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML s'écrit avec la balise form, dont l'attribut action désigne le script qui traitera les données et l'attribut method le mode de transmission : POST place les données dans le corps de la requête, sans les montrer dans l'adresse, alors que GET les ajoute à l'URL ; chaque champ porte un attribut name qui devient la clé de la donnée reçue par le script.\n\n**Analyse de la capture.** Le titre de l'onglet est « Ma page de test ». La page contient deux libellés en bleu et en gras (« Votre nom : » et « Votre fonction : »), chacun suivi d'une zone de texte à bordure rouge épaisse, puis un bouton « Envoyer » à fond bleu avec texte blanc en gras, centré sous les zones de texte.\n\n**Choix imposés par l'énoncé.** Les données sont transmises « de façon confidentielle » : on utilise `method=\"post\"` (avec GET, le nom et la fonction apparaîtraient dans l'URL). Le bouton déclenche `script1.php` : `action=\"script1.php\"`. Le bouton est de type `submit`.\n\n**Code HTML.**\n\n```html\n<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Ma page de test</title>\n<style>\nlabel { color: blue; font-weight: bold; }\ninput[type=\"text\"] { border: 3px solid crimson; }\ninput[type=\"submit\"] { background-color: blue; color: white; font-weight: bold; }\n</style>\n</head>\n<body>\n<form method=\"post\" action=\"script1.php\">\n<table>\n<tr>\n<td align=\"right\"><label for=\"nom\">Votre nom :</label></td>\n<td><input type=\"text\" id=\"nom\" name=\"nom\"></td>\n</tr>\n<tr>\n<td align=\"right\"><label for=\"fonction\">Votre fonction :</label></td>\n<td><input type=\"text\" id=\"fonction\" name=\"fonction\"></td>\n</tr>\n<tr>\n<td></td>\n<td align=\"center\"><input type=\"submit\" value=\"Envoyer\"></td>\n</tr>\n</table>\n</form>\n</body>\n</html>\n```\n\nVérification : testé avec le serveur intégré de PHP, un envoi de ce formulaire vers un script `script1.php` fait arriver `nom` et `fonction` dans le tableau `$_POST` (la méthode relevée côté serveur est bien POST) et laisse `$_GET` vide.\n\n### Piège à éviter\nOublier l'attribut `name` sur les champs : le navigateur n'envoie alors rien pour eux et le script ne reçoit aucune donnée. Autre erreur fréquente : écrire `method=\"get\"` alors que l'énoncé exige la confidentialité, ou placer les champs en dehors de la balise `<form>`.\n\n### Conseil\nMême si la mise en forme (couleurs, bordures) rapporte peu de points, les trois éléments décisifs du barème sont la balise `form` avec `action` et `method=\"post\"`, deux champs `text` nommés et le bouton `submit` portant la valeur « Envoyer ».",
+      "themes": [
+        "formulaire HTML",
+        "méthode POST",
+        "balise form",
+        "attribut action",
+        "champs de saisie"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "1,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q9.b-0",
+          "competence": "Construire un formulaire HTML transmis par POST",
+          "contenu_markdown": "Un formulaire HTML s'écrit avec la balise form, dont l'attribut action désigne le script qui traitera les données et l'attribut method le mode de transmission : POST place les données dans le corps de la requête, sans les montrer dans l'adresse, alors que GET les ajoute à l'URL ; chaque champ porte un attribut name qui devient la clé de la donnée reçue par le script.",
+          "cours_genere": true,
+          "cours_id": "cours-construire-un-formulaire-html-transmis-par-post-tle-ti"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "PHP",
+    "LAMP",
+    "serveur web",
+    "boucle for",
+    "boucle while",
+    "formulaire HTML",
+    "méthode POST",
+    "protocoles HTTP FTP DNS DHCP",
+    "baccalauréat TI 2018",
+    "étude de cas EPS"
+  ],
+  "incertitudes": [
+    "Source : page HTML du site Camerecole reproduisant le sujet officiel de l'étude de cas TI 2018 (aucun en-tête imprimé) : durée et coefficient absents de la page, laissés à null.",
+    "Code PHP du sujet (figure fig-1) : la ligne 13 se lit `echo \"<TR><TH>$i<fTH>.\";` (la fin `<fTH>.` tient probablement lieu de `</TH>`) et la ligne 16 contient une apostrophe devant `$r`. Le code est transcrit tel qu'imprimé ; le tableau attendu à la question 7 est donné sur les valeurs, qui ne dépendent pas de ces deux détails.",
+    "Question 9.a : le nom de la page est lu sur l'onglet de la capture (« Ma page de test ») ; la barre d'adresse est coupée et ne permet pas de lire le nom du fichier.",
+    "Numérotation : l'énoncé source n'a pas de question numérotée 6 (c'est la phrase qui introduit le code) ; les questions 7 et 8 portent donc les numéros de la source."
+  ],
+  "statut": "brouillon"
+}

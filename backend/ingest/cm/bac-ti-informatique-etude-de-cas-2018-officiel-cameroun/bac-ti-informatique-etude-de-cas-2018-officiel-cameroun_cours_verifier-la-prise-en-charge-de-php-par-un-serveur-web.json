@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-verifier-la-prise-en-charge-de-php-par-un-serveur-web-tle-ti",
+  "meta": {
+    "titre": "Vérifier que le serveur web prend en charge PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Installation et configuration d'un serveur web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "PHP",
+      "Apache",
+      "phpinfo",
+      "localhost",
+      "configuration"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu viens d'installer Apache et tu écris ta première page PHP, mais le navigateur affiche le code au lieu du résultat. Ce problème classique tient presque toujours à la prise en charge de PHP par le serveur. Ce cours te donne la procédure de mise en place et le test qui tranche en trente secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un serveur web et son dossier racine",
+        "Savoir créer et enregistrer un fichier texte avec l'extension `.php`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Installer, activer, redémarrer, tester",
+      "contenu_markdown": "Pour qu'un serveur web exécute PHP, quatre actions sont nécessaires :\n\n1. **Installer** l'interpréteur PHP et son module pour le serveur : `apt install php libapache2-mod-php` sous Linux ; WAMP ou XAMPP l'installent d'office sous Windows.\n2. **Activer** le module et associer l'extension `.php` à l'interpréteur dans la configuration du serveur (directive `LoadModule` dans Apache).\n3. **Redémarrer** le serveur pour qu'il relise sa configuration.\n4. **Tester** avec un fichier `info.php` placé dans le dossier racine et contenant `<?php phpinfo(); ?>`, appelé par `http://localhost/info.php`.\n\nLa page de configuration de PHP qui s'affiche prouve que le serveur prend en charge PHP. Si le code source s'affiche ou si le fichier est téléchargé, PHP n'est pas associé aux fichiers `.php`.",
+      "formule_principale": "\\text{test} : \\; \\texttt{http://localhost/info.php} \\Rightarrow \\texttt{phpinfo()} \\text{ affiché}",
+      "variantes": [
+        {
+          "nom": "Test en ligne de commande",
+          "quand_utiliser": "Quand tu veux seulement savoir si PHP est installé, sans passer par le serveur",
+          "contenu_markdown": "La commande `php -v` affiche la version de PHP installée. Elle prouve l'installation de l'interpréteur, mais pas son association avec le serveur web : le test par navigateur reste nécessaire."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer comment s'assurer que le serveur web prend en compte le langage PHP.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier l'installation et l'activation",
+          "justification": "Sans interpréteur ni module, le serveur ne sait pas traiter les fichiers `.php`",
+          "resultat_markdown": "Installer PHP et son module pour Apache (ou utiliser WAMP/XAMPP), vérifier que le module est chargé."
+        },
+        {
+          "numero": 2,
+          "action": "Redémarrer le serveur",
+          "justification": "La configuration n'est relue qu'au démarrage",
+          "resultat_markdown": "Redémarrer Apache."
+        },
+        {
+          "numero": 3,
+          "action": "Créer le fichier de test dans le dossier racine",
+          "justification": "Seuls les fichiers du dossier racine sont servis",
+          "resultat_markdown": "Créer `info.php` dans `/var/www/html` (Linux) ou `www` (WAMP), contenant `<?php phpinfo(); ?>`."
+        },
+        {
+          "numero": 4,
+          "action": "Appeler le fichier par le serveur",
+          "justification": "C'est le passage par HTTP qui déclenche l'interpréteur",
+          "resultat_markdown": "Saisir `http://localhost/info.php` dans le navigateur."
+        },
+        {
+          "numero": 5,
+          "action": "Interpréter le résultat",
+          "justification": "L'affichage décide de la conclusion",
+          "resultat_markdown": "Page de configuration affichée : PHP est pris en charge ; code source affiché : il ne l'est pas."
+        }
+      ],
+      "conclusion_markdown": "Le serveur prend en charge PHP si, après installation, activation et redémarrage, l'appel de `http://localhost/info.php` affiche la page de configuration de PHP."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tester en ouvrant `info.php` par un double-clic.",
+          "pourquoi_faux": "L'adresse `file://` ne passe pas par le serveur : l'interpréteur n'est pas appelé, le test échoue même si PHP est parfaitement installé.",
+          "correction_markdown": "Appelle toujours le fichier par `http://localhost/`."
+        },
+        {
+          "erreur_markdown": "Placer le fichier de test ailleurs que dans le dossier racine.",
+          "pourquoi_faux": "Le serveur ne publie que son dossier racine (et ses sous-dossiers) : le fichier introuvable donne une erreur 404.",
+          "correction_markdown": "Repère le dossier racine (`www` sous WAMP, `/var/www/html` sous Linux)."
+        },
+        {
+          "erreur_markdown": "Écrire `<? phpinfo(); ?>` avec la balise courte.",
+          "pourquoi_faux": "Les balises courtes sont désactivées dans de nombreuses configurations : le texte ne s'exécute pas.",
+          "correction_markdown": "Utilise toujours la forme complète `<?php ... ?>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris le contenu du fichier de test et l'adresse à saisir dans le navigateur pour vérifier que PHP est pris en charge.",
+          "solution_markdown": "Contenu du fichier `info.php` :\n\n```php\n<?php phpinfo(); ?>\n```\n\nAdresse à saisir : `http://localhost/info.php`. Si la page de configuration de PHP s'affiche, PHP est pris en charge."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Après l'installation de PHP, le navigateur propose de télécharger `info.php` au lieu de l'afficher. Donne deux causes possibles et la correction de chacune.",
+          "solution_markdown": "**Cause 1** : le module PHP n'est pas activé ou le serveur n'a pas été redémarré après l'installation. Correction : activer le module, puis redémarrer Apache.\n\n**Cause 2** : l'extension `.php` n'est pas associée à l'interpréteur dans la configuration du serveur. Correction : ajouter l'association dans la configuration d'Apache (ou réinstaller le paquet du module), puis redémarrer.\n\nDans les deux cas, le serveur traite le fichier comme un fichier ordinaire et le renvoie sans l'exécuter, d'où le téléchargement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sous WAMP, un élève range son fichier `test.php` dans le dossier `C:\\wamp64\\www\\monsite\\`. Quelle adresse saisit-il ? Que se passe-t-il s'il saisit `http://localhost/test.php` ?",
+          "solution_markdown": "Le dossier racine de WAMP est `www`. Le fichier se trouve dans son sous-dossier `monsite`, donc l'adresse est `http://localhost/monsite/test.php`.\n\nAvec `http://localhost/test.php`, le serveur cherche `test.php` directement dans `www`, ne le trouve pas et renvoie l'erreur **404** (page introuvable). Le chemin dans l'URL reproduit l'arborescence à partir du dossier racine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quatre actions rendent PHP opérationnel : installer, activer, redémarrer, tester.",
+        "Le test de référence est `info.php` avec `phpinfo()`, appelé par `http://localhost/`.",
+        "Un fichier ouvert par double-clic n'est jamais traité par le serveur : le test n'a alors aucune valeur.",
+        "Code source affiché ou fichier téléchargé : PHP n'est pas associé aux fichiers `.php`.",
+        "Au BAC TI, cette question demande la démarche complète en trois ou quatre phrases, avec le nom du fichier de test."
+      ]
+    }
+  ]
+}

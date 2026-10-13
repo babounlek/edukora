@@ -1,0 +1,150 @@
+{
+  "cours_id": "cours-choisir-la-cle-primaire-d-une-table-tle-a-abi-2023",
+  "meta": {
+    "titre": "Choisir la clé primaire d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Bases de données : modèle relationnel",
+    "duree_estimee_min": 25,
+    "tags": [
+      "clé primaire",
+      "table",
+      "champ",
+      "enregistrement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat séries A et ABI, session 2023",
+    "exercice_numero": 5,
+    "rappel_id": "rdm-bac-a-abi-informatique-2023-officiel-cameroun-ex5-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un lycée compte deux élèves nommés Ngono Marie, nés la même année, dans la même classe. Comment la base de données les distingue-t-elle, par exemple pour leur donner chacun sa note ? Par un champ qui ne peut pas se répéter : la clé primaire. Ce cours t'apprend à la repérer en testant chaque champ."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une table se compose de champs (colonnes) et d'enregistrements (lignes)",
+        "Savoir ce qu'est une base de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le test d'unicité",
+      "contenu_markdown": "La **clé primaire** est le champ (ou le groupe de champs) dont la valeur **identifie chaque enregistrement de façon unique** et n'est **jamais vide**. Pour la repérer, on teste chaque champ avec une question : **ce champ peut-il avoir la même valeur pour deux enregistrements ?** Si oui, il ne convient pas. Les noms, âges, classes, villes se répètent. Les identifiants (matricule, code, numéro) sont créés pour ne jamais se répéter.",
+      "formule_principale": "\\text{clé primaire} = \\text{valeur unique} + \\text{jamais vide}",
+      "variantes": [
+        {
+          "nom": "Clé composée",
+          "quand_utiliser": "Quand aucun champ seul n'est unique, mais qu'une combinaison l'est (table des notes : élève et matière).",
+          "contenu_markdown": "On associe plusieurs champs : le couple (matricule, code de la matière) identifie une note, alors que chaque champ seul se répète."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la table ELEVES (Matricule, Noms, Classe, Série, Age), identifier le champ qui joue le rôle de clé primaire.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les champs",
+          "justification": "Il faut tous les tester.",
+          "resultat_markdown": "Matricule, Noms, Classe, Série, Age."
+        },
+        {
+          "numero": 2,
+          "action": "Tester Noms",
+          "justification": "Deux élèves peuvent avoir le même nom.",
+          "resultat_markdown": "Peut se répéter : refusé."
+        },
+        {
+          "numero": 3,
+          "action": "Tester Classe et Série",
+          "justification": "Plusieurs élèves sont dans la même classe et la même série.",
+          "resultat_markdown": "Peuvent se répéter : refusés."
+        },
+        {
+          "numero": 4,
+          "action": "Tester Age",
+          "justification": "Dans la table, la valeur 16 apparaît déjà deux fois (ABADA et KAMENI).",
+          "resultat_markdown": "Se répète : refusé."
+        },
+        {
+          "numero": 5,
+          "action": "Tester Matricule",
+          "justification": "Un matricule est attribué à un seul élève et rempli pour tous.",
+          "resultat_markdown": "Unique et jamais vide : retenu."
+        },
+        {
+          "numero": 6,
+          "action": "Rédiger",
+          "justification": "On conclut avec la raison.",
+          "resultat_markdown": "« La clé primaire est Matricule, car il identifie chaque élève de façon unique. »"
+        }
+      ],
+      "conclusion_markdown": "Le champ qui correspond à la clé primaire est Matricule."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir Noms parce que les quatre noms affichés sont différents.",
+          "pourquoi_faux": "Le choix d'une clé repose sur ce que le champ permet, pas sur quelques lignes visibles : demain deux élèves porteront le même nom.",
+          "correction_markdown": "Teste chaque champ avec la question « peut-il se répéter ? »."
+        },
+        {
+          "erreur_markdown": "Choisir le premier champ de la table par habitude.",
+          "pourquoi_faux": "Ici le premier champ est le bon, mais dans une autre table il peut être un nom ou une désignation qui se répète.",
+          "correction_markdown": "Vérifie l'unicité à chaque fois."
+        },
+        {
+          "erreur_markdown": "Laisser une clé primaire vide pour un enregistrement.",
+          "pourquoi_faux": "Un enregistrement sans valeur ne peut pas être identifié.",
+          "correction_markdown": "La clé primaire est obligatoire pour chaque ligne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans la table PRODUIT (code_produit, désignation, prix), quel champ choisir comme clé primaire ?",
+          "solution_markdown": "Test : la désignation peut se répéter (deux produits du même nom, de marques différentes), le prix aussi. Le **code_produit** est propre à chaque produit : c'est la clé primaire."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans la table CLIENT (nom, prénom, ville, téléphone), aucun champ ne semble sûr. Que faire ?",
+          "solution_markdown": "Test : nom, prénom et ville se répètent. Le téléphone peut changer ou être partagé par une famille.\n\nOn **ajoute** un champ identifiant, par exemple `id_client` : numéro attribué à chaque client à son inscription, unique et jamais vide. Ce champ devient la clé primaire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Table NOTE (matricule, code_matiere, valeur_note) : un élève a une note par matière. Quelle clé primaire choisir ?",
+          "solution_markdown": "**Test de chaque champ seul.** Le matricule se répète (un élève a plusieurs notes). Le code_matiere se répète (plusieurs élèves ont la même matière). La valeur_note se répète aussi.\n\n**Test d'une combinaison.** Le couple (matricule, code_matiere) est unique : un élève n'a qu'une note dans une matière donnée.\n\n**Conclusion.** La clé primaire est composée des deux champs (matricule, code_matiere)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La clé primaire identifie chaque enregistrement : valeur unique et jamais vide.",
+        "Teste chaque champ : peut-il se répéter ? Si oui, refuse-le.",
+        "Les identifiants (matricule, code) sont faits pour être uniques : ce sont les candidats naturels.",
+        "Ne justifie jamais par les quelques lignes visibles : justifie par la règle.",
+        "Au BAC A, l'exercice de bases de données demande presque toujours la clé primaire de la table donnée : cherche l'identifiant et justifie par l'unicité."
+      ]
+    }
+  ]
+}

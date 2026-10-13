@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-etablir-l-equation-differentielle-de-la-tension-aux-bornes-du-condensateur-d-un-circuit-lc-tle-c-e-2016",
+  "meta": {
+    "titre": "Établir l'équation différentielle de la tension aux bornes du condensateur d'un circuit LC",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillations électriques libres",
+    "duree_estimee_min": 30,
+    "tags": [
+      "circuit LC",
+      "équation différentielle",
+      "oscillations électriques libres",
+      "pulsation propre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex2-q1.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi un circuit formé d'une bobine et d'un condensateur oscille-t-il indéfiniment, alors qu'un circuit RC se contente de se décharger ? La réponse est dans l'équation différentielle : elle a la même forme que celle du ressort, et ses solutions sont des sinusoïdes. Savoir l'établir proprement, avec les bons signes, est l'une des compétences les plus rentables de l'épreuve de physique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relations des dipôles : $u_L = L\\,\\dfrac{di}{dt}$ et $i = C\\,\\dfrac{du_C}{dt}$ (convention récepteur)",
+        "Loi des mailles et loi des nœuds",
+        "Dérivées première et seconde d'une fonction du temps"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Équation différentielle d'un circuit LC",
+      "contenu_markdown": "Méthode : (1) choisir les orientations (courant, tensions) et la convention récepteur pour chaque dipôle ; (2) écrire les relations de la bobine et du condensateur ; (3) écrire la loi des nœuds ou des mailles ; (4) éliminer le courant pour ne garder que la grandeur demandée et ses dérivées.\n\nPour une bobine idéale et un condensateur en dérivation, sans générateur :\n\n$$\\dfrac{d^2u_C}{dt^2} + \\dfrac{1}{L\\,C}\\,u_C = 0 \\qquad\\text{avec}\\qquad \\omega_0 = \\dfrac{1}{\\sqrt{L\\,C}}$$\n\nC'est l'équation d'un oscillateur harmonique. Le signe $+$ devant $\\dfrac{u_C}{LC}$ est indispensable : il garantit des solutions sinusoïdales.",
+      "formule_principale": "\\dfrac{d^2u_C}{dt^2} + \\dfrac{1}{L\\,C}\\,u_C = 0",
+      "variantes": [
+        {
+          "nom": "Équation en charge",
+          "quand_utiliser": "Quand l'énoncé demande la charge $q$ du condensateur",
+          "contenu_markdown": "Avec $u_C = \\dfrac{q}{C}$ et $i = \\dfrac{dq}{dt}$, la loi des mailles donne $\\dfrac{d^2q}{dt^2} + \\dfrac{1}{L\\,C}\\,q = 0$ : même forme, même pulsation propre."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Après l'ouverture de l'interrupteur, le circuit est formé d'une bobine d'inductance $L = 42{,}20\\times10^{-3}$ H (résistance négligeable) montée en dérivation avec un condensateur de capacité $C = 14{,}83\\ \\mu$F. Établir l'équation différentielle de la tension $u_C$ aux bornes du condensateur pour $t > 0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir les orientations",
+          "justification": "La convention récepteur s'applique à la bobine et au condensateur",
+          "resultat_markdown": "$u_C = u_L$ orientée de haut en bas ; $i$ (bobine) et $i_C$ (condensateur) orientés de haut en bas"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire les relations des dipôles",
+          "justification": "Une bobine idéale et un condensateur",
+          "resultat_markdown": "$u_L = L\\,\\dfrac{di}{dt}$ et $i_C = C\\,\\dfrac{du_C}{dt}$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la loi des nœuds",
+          "justification": "Plus aucun courant ne vient du générateur après l'ouverture",
+          "resultat_markdown": "$i + i_C = 0$ donc $i = -C\\,\\dfrac{du_C}{dt}$"
+        },
+        {
+          "numero": 4,
+          "action": "Dériver le courant",
+          "justification": "Pour faire apparaître $u_L$",
+          "resultat_markdown": "$\\dfrac{di}{dt} = -C\\,\\dfrac{d^2u_C}{dt^2}$"
+        },
+        {
+          "numero": 5,
+          "action": "Utiliser l'égalité des tensions",
+          "justification": "$u_C = u_L$",
+          "resultat_markdown": "$u_C = L\\,\\dfrac{di}{dt} = -L\\,C\\,\\dfrac{d^2u_C}{dt^2}$ donc $\\dfrac{d^2u_C}{dt^2} + \\dfrac{1}{L\\,C}\\,u_C = 0$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer la pulsation propre",
+          "justification": "$\\omega_0 = \\dfrac{1}{\\sqrt{LC}}$",
+          "resultat_markdown": "$L\\,C = 6{,}258\\times10^{-7}\\ \\text{s}^2$ ; $\\omega_0 = 1\\,264$ rad/s"
+        }
+      ],
+      "conclusion_markdown": "La tension du condensateur vérifie $\\dfrac{d^2u_C}{dt^2} + \\dfrac{1}{L\\,C}\\,u_C = 0$ : c'est un oscillateur harmonique de pulsation propre $\\omega_0 = 1\\,264$ rad/s."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $u_C'' - \\dfrac{1}{L\\,C}\\,u_C = 0$ avec un signe moins",
+          "pourquoi_faux": "Ce signe moins donnerait des solutions exponentielles croissantes ou décroissantes, sans oscillation. Il vient d'un oubli du signe de $i = -C\\,\\dfrac{du_C}{dt}$ dans la loi des nœuds.",
+          "correction_markdown": "Contrôle le signe final : un circuit qui oscille a toujours $u'' + \\omega_0^2\\,u = 0$."
+        },
+        {
+          "erreur_markdown": "Mélanger les conventions générateur et récepteur",
+          "pourquoi_faux": "Les relations $u_L = L\\,\\dfrac{di}{dt}$ et $i = C\\,\\dfrac{du_C}{dt}$ ne sont vraies que si la flèche de tension et la flèche de courant sont de sens opposés pour chaque dipôle récepteur (flèche de tension dans le sens du courant). Une orientation mal choisie change les signes.",
+          "correction_markdown": "Dessine les flèches avant d'écrire la moindre équation, et vérifie la convention dipôle par dipôle."
+        },
+        {
+          "erreur_markdown": "Oublier que $i$ dans la bobine et $i_C$ dans le condensateur sont deux courants distincts",
+          "pourquoi_faux": "En posant le même courant partout, on obtient $u_C = L\\,\\dfrac{di}{dt}$ et $i = C\\,\\dfrac{du_C}{dt}$ avec des signes faux, donc une équation fausse.",
+          "correction_markdown": "Applique la loi des nœuds au point commun : $i + i_C = 0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la pulsation propre, la période propre et la fréquence propre d'un circuit LC où $L = 0{,}1$ H et $C = 10\\ \\mu$F.",
+          "solution_markdown": "$\\omega_0 = \\dfrac{1}{\\sqrt{L\\,C}} = \\dfrac{1}{\\sqrt{0{,}1\\times10\\times10^{-6}}} = \\dfrac{1}{\\sqrt{10^{-6}}} = 1\\,000$ rad/s.\n\n$T_0 = \\dfrac{2\\pi}{\\omega_0} = \\dfrac{2\\pi}{1\\,000} = 6{,}28\\times10^{-3}$ s et $f_0 = \\dfrac{1}{T_0} = \\dfrac{\\omega_0}{2\\pi} = 159$ Hz."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Établir l'équation différentielle vérifiée par la charge $q$ de l'armature par laquelle arrive le courant $i = \\dfrac{dq}{dt}$, dans un circuit formé d'une bobine idéale et d'un condensateur en série (maille unique).",
+          "solution_markdown": "**Relations.** Condensateur : $u_C = \\dfrac{q}{C}$. Bobine : $u_L = L\\,\\dfrac{di}{dt} = L\\,\\dfrac{d^2q}{dt^2}$.\n\n**Loi des mailles.** Dans la maille unique, orientée dans le sens de $i$ : $u_C + u_L = 0$, soit\n\n$$\\dfrac{q}{C} + L\\,\\dfrac{d^2q}{dt^2} = 0 \\quad\\Longrightarrow\\quad \\dfrac{d^2q}{dt^2} + \\dfrac{1}{L\\,C}\\,q = 0$$\n\nOn retrouve la même équation que pour $u_C$, avec la même pulsation propre $\\omega_0 = \\dfrac{1}{\\sqrt{L\\,C}}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut réaliser un circuit LC de fréquence propre $f_0 = 500$ Hz avec une bobine d'inductance $L = 50$ mH. Quelle capacité faut-il choisir ?",
+          "solution_markdown": "De $f_0 = \\dfrac{1}{2\\pi\\sqrt{L\\,C}}$, on tire $\\sqrt{L\\,C} = \\dfrac{1}{2\\pi f_0}$ puis $L\\,C = \\dfrac{1}{4\\pi^2 f_0^2}$, soit\n\n$$C = \\dfrac{1}{4\\pi^2 f_0^2\\,L} = \\dfrac{1}{39{,}478\\times 500^2\\times 50\\times10^{-3}} = \\dfrac{1}{39{,}478\\times 250\\,000\\times 0{,}05} = \\dfrac{1}{4{,}935\\times10^{5}} = 2{,}03\\times10^{-6}\\ \\text{F}$$\n\nIl faut un condensateur d'environ $2{,}0\\ \\mu$F."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les étapes sont toujours les mêmes : orientations, relations des dipôles, loi des nœuds ou des mailles, élimination du courant.",
+        "Un circuit LC idéal obéit à $u'' + \\dfrac{1}{LC}\\,u = 0$ : oscillateur harmonique de pulsation propre $\\omega_0 = \\dfrac{1}{\\sqrt{LC}}$.",
+        "Le signe $+$ de l'équation est la signature d'un circuit oscillant ; un signe $-$ trahit une erreur de signe.",
+        "Contrôle l'homogénéité : $\\dfrac{1}{LC}$ s'exprime en s$^{-2}$.",
+        "Au BAC, l'équation différentielle d'un circuit LC ou RLC est une question de cours fréquente, suivie de sa solution sinusoïdale."
+      ]
+    }
+  ]
+}

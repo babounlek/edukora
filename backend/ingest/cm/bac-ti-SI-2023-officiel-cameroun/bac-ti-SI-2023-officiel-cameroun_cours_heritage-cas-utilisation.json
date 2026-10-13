@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-heritage-cas-utilisation-tle-ti-si2023",
+  "meta": {
+    "titre": "Identifier une relation d'héritage entre cas d'utilisation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation",
+    "duree_estimee_min": 18,
+    "tags": [
+      "héritage",
+      "généralisation",
+      "cas d'utilisation",
+      "UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex1-q4.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un client peut réserver une chambre sur Internet ou au guichet. Le but est le même, mais la manière change. UML a un outil précis pour dire cela : l'héritage, ou généralisation. Le repérer dans un énoncé est une compétence qui revient régulièrement au BAC TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de cas d'utilisation",
+        "Notion d'héritage entre classes (idée de cas général et de cas particulier)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La généralisation entre cas d'utilisation",
+      "contenu_markdown": "Il y a **héritage** (ou généralisation) quand plusieurs cas d'utilisation sont des **variantes d'un même but**. Le **cas général** porte le but commun ; chaque **cas spécialisé** décrit une manière particulière de l'atteindre.\n\n- Indices dans le texte : « par... ou par... », « soit en... soit au... », « de plusieurs manières ».\n- Notation : flèche à **triangle creux**, qui part du cas spécialisé et pointe vers le cas général.\n- Les cas spécialisés héritent de l'association du cas général avec les acteurs.",
+      "variantes": [
+        {
+          "nom": "Héritage entre acteurs",
+          "quand_utiliser": "Quand deux types d'acteurs partagent les mêmes droits",
+          "contenu_markdown": "Le même triangle creux sert pour deux acteurs : Client distant et Client local héritent de Client. Ils peuvent faire tout ce que Client fait, plus leurs propres cas."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "« Le client distant peut faire une réservation par Internet et le client local au guichet. » Identifier deux cas d'utilisation en relation d'héritage.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le but commun",
+          "justification": "On cherche une action réalisée de plusieurs manières.",
+          "resultat_markdown": "Réserver la chambre."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les variantes",
+          "justification": "Chaque manière de procéder est un cas spécialisé.",
+          "resultat_markdown": "Réserver par Internet et Réserver au guichet."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier le critère",
+          "justification": "Les variantes poursuivent le même but et ne diffèrent que par le moyen.",
+          "resultat_markdown": "But identique : obtenir une chambre, moyens différents."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la relation",
+          "justification": "Le triangle creux va du cas spécialisé vers le cas général.",
+          "resultat_markdown": "Réserver par Internet ---|> Réserver la chambre ; Réserver au guichet ---|> Réserver la chambre."
+        }
+      ],
+      "conclusion_markdown": "Réserver par Internet et Réserver au guichet héritent de Réserver la chambre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre héritage et extension",
+          "pourquoi_faux": "Une action facultative qui s'ajoute (payer la note) n'est pas une variante du même but.",
+          "correction_markdown": "Réserver l'héritage aux manières différentes d'atteindre le même but."
+        },
+        {
+          "erreur_markdown": "Inverser le sens du triangle",
+          "pourquoi_faux": "Le triangle pointe vers le cas général, car c'est lui que les cas spécialisés étendent.",
+          "correction_markdown": "Placer le triangle creux côté Réserver la chambre."
+        },
+        {
+          "erreur_markdown": "Ne citer qu'un seul cas spécialisé",
+          "pourquoi_faux": "L'héritage suppose au moins deux variantes d'un cas général.",
+          "correction_markdown": "Citer les deux variantes et le cas général."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« L'élève peut payer ses frais de scolarité en espèces ou par mobile money. » Quels cas sont en héritage ?",
+          "solution_markdown": "1. But commun : Payer les frais.\n2. Variantes : Payer en espèces et Payer par mobile money.\n3. Notation : chaque variante ---|> Payer les frais."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une compagnie de transport : « Le voyageur peut acheter son billet à l'agence, sur le site web ou via l'application mobile. » Donne les relations.",
+          "solution_markdown": "1. But commun : Acheter un billet.\n2. Trois variantes : Acheter à l'agence, Acheter sur le site, Acheter via l'application.\n3. Trois triangles creux, un depuis chaque variante vers Acheter un billet."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "« Le client peut payer sa commande ; il peut aussi, s'il possède une carte de fidélité, bénéficier d'une remise. » Quelle relation relie Bénéficier d'une remise à Payer la commande ?",
+          "solution_markdown": "1. La remise n'est pas une manière différente de payer : elle s'ajoute au paiement dans certains cas.\n2. Elle est facultative et conditionnelle : c'est une extension.\n3. Notation : Bénéficier d'une remise ---«extend»---> Payer la commande, et non un triangle creux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Héritage : variantes d'un même but, cas général et cas spécialisés.",
+        "Indices : « par... ou par... », « au guichet... ou en ligne ».",
+        "Triangle creux du cas spécialisé vers le cas général.",
+        "Héritage et extension se distinguent par le caractère facultatif ou non du comportement ajouté.",
+        "Au BAC TI, cette identification précède le diagramme complet et rapporte un demi-point."
+      ]
+    }
+  ]
+}

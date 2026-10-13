@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-role-dun-commutateur-et-table-dadresses-mac-tle-ti-2019",
+  "meta": {
+    "titre": "Rôle d'un commutateur et table d'adresses MAC",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Équipements réseau",
+    "duree_estimee_min": 26,
+    "tags": [
+      "commutateur",
+      "adresse MAC",
+      "table de commutation",
+      "trame"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.4.b-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une salle où dix ordinateurs échangent des fichiers en même temps, le réseau ne se bouscule pas : chaque message va directement à son destinataire. C'est le travail du commutateur, qui a appris où se trouve chaque machine. Comprendre cet apprentissage explique pourquoi le commutateur a remplacé le concentrateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse MAC (adresse physique)",
+        "Savoir ce qu'est une trame"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Apprendre, filtrer, diffuser",
+      "contenu_markdown": "Un **commutateur** (switch) relie les machines d'un réseau local en étoile et fonctionne au niveau liaison de données. Il tient une **table d'adresses MAC** qui associe chaque adresse MAC au port où la machine est branchée.\n\n1. **Apprentissage** : à chaque trame reçue, il lit l'adresse MAC **source** et l'enregistre avec le port d'arrivée.\n2. **Transmission ciblée** : il lit l'adresse MAC **destination** ; si elle est dans la table, il envoie la trame au seul port correspondant.\n3. **Inondation** : si l'adresse est inconnue ou si la trame est une diffusion (broadcast), il l'envoie sur tous les ports sauf celui d'arrivée.\n\nChaque port forme un domaine de collision distinct, ce qui permet des communications simultanées ; tous les ports restent dans le même domaine de diffusion (sauf VLAN).",
+      "formule_principale": "\\text{trame destinée à une MAC connue} \\Rightarrow \\text{envoi sur un seul port}",
+      "variantes": [
+        {
+          "nom": "Différence avec le concentrateur",
+          "quand_utiliser": "Quand on compare commutateur et hub",
+          "contenu_markdown": "Le hub répète tout sur tous les ports (un seul domaine de collision) ; le commutateur ne le fait que pour les adresses inconnues et les diffusions."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le réseau de l'épreuve, expliquer le rôle du commutateur 2950-24 qui relie PC1, PC2, PC3 et PC4.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dire à quoi il sert",
+          "justification": "Il relie des machines en étoile",
+          "resultat_markdown": "Il connecte PC1 à PC4 et l'imprimante via PC4 en un même réseau local."
+        },
+        {
+          "numero": 2,
+          "action": "Expliquer l'apprentissage",
+          "justification": "Il lit les adresses sources",
+          "resultat_markdown": "Il enregistre l'adresse MAC de chaque PC avec son port."
+        },
+        {
+          "numero": 3,
+          "action": "Expliquer la transmission",
+          "justification": "Il lit l'adresse destination et consulte sa table",
+          "resultat_markdown": "Il envoie la trame au seul port du destinataire."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur l'avantage",
+          "justification": "Les autres liaisons restent libres",
+          "resultat_markdown": "Moins de trafic inutile et pas de collisions entre conversations."
+        }
+      ],
+      "conclusion_markdown": "Le commutateur relie les machines et transmet chaque trame au seul port de son destinataire grâce à sa table d'adresses MAC."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que le commutateur donne accès à Internet.",
+          "pourquoi_faux": "L'accès à Internet est assuré par le routeur (ou la box), qui relie le réseau local à l'extérieur.",
+          "correction_markdown": "Limiter le rôle du commutateur au réseau local."
+        },
+        {
+          "erreur_markdown": "Confondre adresse MAC et adresse IP.",
+          "pourquoi_faux": "Le commutateur raisonne avec les adresses MAC (liaison de données) ; le routeur raisonne avec les adresses IP (réseau).",
+          "correction_markdown": "Associer MAC au commutateur, IP au routeur."
+        },
+        {
+          "erreur_markdown": "Croire que le commutateur ne diffuse jamais.",
+          "pourquoi_faux": "Pour une adresse inconnue ou une trame de diffusion, il envoie sur tous les ports sauf celui d'arrivée.",
+          "correction_markdown": "Distinguer transmission ciblée (adresse connue) et inondation (inconnue ou diffusion)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un commutateur à 4 ports a une table vide. PC1 (port 1, MAC A) envoie une trame à PC2 (port 2, MAC B). Que fait-il, et que retient-il ?",
+          "solution_markdown": "1. La table est vide : l'adresse destination B est inconnue, il envoie la trame sur tous les ports sauf le port 1 (inondation).\n2. Il enregistre dans sa table : MAC A, port 1 (adresse source de la trame).\n3. Quand PC2 répondra, il apprendra de même MAC B, port 2."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La table contient A-port 1 et B-port 2. PC3 (port 3, MAC C) envoie une trame à A. Que devient la table et sur quels ports la trame sort-elle ?",
+          "solution_markdown": "1. L'adresse destination A est connue : la trame sort uniquement sur le port 1.\n2. Les ports 2 et 4 ne reçoivent rien.\n3. L'adresse source C est ajoutée à la table : C-port 3.\n4. La table contient alors A-1, B-2, C-3."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "PC1 envoie une trame de diffusion (adresse destination FF-FF-FF-FF-FF-FF). Comment réagit le commutateur ? Pourquoi une diffusion limite-t-elle l'intérêt du commutateur si elle est trop fréquente ?",
+          "solution_markdown": "1. L'adresse FF-FF-FF-FF-FF-FF désigne toutes les machines : le commutateur envoie la trame sur tous les ports sauf celui d'arrivée.\n2. Chaque machine reçoit et traite la trame, même si elle ne la concerne pas.\n3. Si les diffusions sont trop nombreuses (grand réseau non découpé), elles encombrent toutes les liaisons ; on découpe alors le réseau en VLAN ou en sous-réseaux séparés par un routeur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le commutateur relie les machines d'un réseau local et oriente chaque trame vers le seul port du destinataire.",
+        "Il apprend les adresses MAC sources et les range dans sa table avec le port.",
+        "Adresse inconnue ou diffusion : il envoie sur tous les ports sauf celui d'arrivée.",
+        "Il n'assure pas l'accès à Internet, qui est le travail du routeur.",
+        "À l'examen, le mot-clé « adresse MAC » montre que tu sais comment le port est choisi."
+      ]
+    }
+  ]
+}

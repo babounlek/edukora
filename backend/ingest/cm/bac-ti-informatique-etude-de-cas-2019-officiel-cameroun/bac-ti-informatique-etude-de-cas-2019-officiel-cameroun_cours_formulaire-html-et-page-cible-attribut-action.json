@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-formulaire-html-et-page-cible-attribut-action-tle-ti-2019",
+  "meta": {
+    "titre": "Formulaire HTML et page cible (attribut action)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Formulaires HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "formulaire",
+      "attribut action",
+      "méthode POST",
+      "page cible"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu remplis un formulaire d'inscription, tu cliques sur « Envoyer » : où partent tes données ? La réponse tient dans un attribut de deux mots que l'on peut lire dans le code. Maîtriser ce lien entre un formulaire et la page qui le traite est indispensable pour comprendre un site dynamique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une balise HTML et un attribut",
+        "Connaître la différence entre une page HTML et une page PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise form et ses deux attributs",
+      "contenu_markdown": "La balise `<form>` délimite un formulaire. Deux attributs règlent l'envoi :\n\n- `action` : nom du fichier (ou adresse) qui reçoit et traite les données à la validation ; s'il est absent, la page s'envoie à elle-même.\n- `method` : mode d'envoi. **GET** place les données dans l'adresse (visibles, limitées) ; **POST** les place dans le corps de la requête (non visibles dans l'adresse, adaptées aux mots de passe et aux gros volumes).\n\nChaque champ porte un attribut `name` : c'est la **clé** sous laquelle sa valeur arrivera dans `$_POST` ou `$_GET`. Quand le traitement est écrit dans le même fichier que le formulaire, `action` contient le nom de ce fichier.",
+      "formule_principale": "\\text{page de traitement} = \\text{valeur de l'attribut action de la balise form}",
+      "variantes": [
+        {
+          "nom": "Formulaire qui s'envoie à une autre page",
+          "quand_utiliser": "Quand le traitement est séparé de l'affichage",
+          "contenu_markdown": "`<form method=\"POST\" action=\"traitement.php\">` : le formulaire est dans `inscription.php` et ses données partent vers `traitement.php`. La page de traitement lit alors `$_POST` et affiche le résultat ou redirige l'utilisateur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le script de l'épreuve, la ligne 13 est `<form method=\"POST\" action=\"fonction.php\">` et les lignes 17 à 23 lisent `$_POST['valider']` et `$_POST['num']`. Donner le nom de la page qui contient le script.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire la balise form",
+          "justification": "L'attribut `action` désigne le fichier qui reçoit les données",
+          "resultat_markdown": "`action=\"fonction.php\"` : les données partent vers `fonction.php`."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer où les données sont lues",
+          "justification": "Un script qui lit `$_POST` appartient au fichier qui reçoit le formulaire",
+          "resultat_markdown": "Les lignes 17 à 23 sont dans le même fichier que le formulaire."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le nom de la page",
+          "justification": "Le formulaire s'envoie à sa propre page",
+          "resultat_markdown": "La page s'appelle `fonction.php`."
+        }
+      ],
+      "conclusion_markdown": "Le script est dans la page `fonction.php`, et non « oui ou non ? » qui n'est que le titre de l'onglet."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner le contenu de la balise `title` comme nom de page.",
+          "pourquoi_faux": "La balise `title` (ici « oui ou non ? ») s'affiche dans l'onglet du navigateur ; ce n'est pas le nom du fichier.",
+          "correction_markdown": "Chercher le nom de fichier dans l'attribut `action`, qui se termine par `.php`."
+        },
+        {
+          "erreur_markdown": "Oublier l'extension `.php`.",
+          "pourquoi_faux": "Sans extension `.php`, le serveur ne confie pas le fichier à l'interpréteur PHP : le script ne s'exécute pas.",
+          "correction_markdown": "Écrire le nom complet du fichier avec son extension."
+        },
+        {
+          "erreur_markdown": "Confondre `method` et `action`.",
+          "pourquoi_faux": "`method` dit comment les données voyagent (GET ou POST) ; `action` dit où elles vont. Une réponse à « quelle page ? » ne se lit pas dans `method`.",
+          "correction_markdown": "Associer `action` à la page cible et `method` au mode de transport."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `<form method=\"GET\" action=\"recherche.php\"><input type=\"text\" name=\"mot\"/></form>`, quelle page reçoit les données et où les retrouve-t-on ?",
+          "solution_markdown": "1. L'attribut `action` désigne `recherche.php` : c'est la page cible.\n2. La méthode est GET : les données apparaissent dans l'adresse, `recherche.php?mot=...`.\n3. Dans la page, la valeur se lit avec `$_GET['mot']`, `mot` étant l'attribut `name` du champ."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi utiliser POST plutôt que GET pour un formulaire de connexion avec mot de passe ?",
+          "solution_markdown": "1. Avec GET, le mot de passe apparaîtrait dans l'adresse de la page, donc dans l'historique du navigateur et dans les journaux du serveur.\n2. Avec POST, les données sont dans le corps de la requête, absentes de l'adresse.\n3. POST convient aussi aux gros volumes, que l'adresse ne peut pas contenir. (POST seul ne chiffre rien : le chiffrement vient de HTTPS.)"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire de la page `saisie.php` doit envoyer ses données à `resultat.php`. Écrire la balise form, puis dire comment `resultat.php` lit un champ `email` et ce qu'il fait si le formulaire n'a pas été envoyé.",
+          "solution_markdown": "1. Balise : `<form method=\"POST\" action=\"resultat.php\">`.\n2. Dans `resultat.php`, la valeur se lit avec `$_POST['email']`.\n3. Si l'on ouvre directement `resultat.php` sans passer par le formulaire, `$_POST` est vide : il faut tester `isset($_POST['email'])` avant de lire la valeur, pour éviter un avertissement et afficher un message du type « aucune donnée reçue »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'attribut `action` donne la page qui traite le formulaire ; `method` donne le mode d'envoi.",
+        "GET met les données dans l'adresse, POST les met dans le corps de la requête.",
+        "L'attribut `name` d'un champ est la clé qui le désigne dans `$_POST` ou `$_GET`.",
+        "Quand formulaire et traitement sont dans le même fichier, `action` contient le nom de ce fichier.",
+        "À l'examen, pour trouver le nom d'une page, lis l'attribut `action` et vérifie que le script lit `$_POST`."
+      ]
+    }
+  ]
+}

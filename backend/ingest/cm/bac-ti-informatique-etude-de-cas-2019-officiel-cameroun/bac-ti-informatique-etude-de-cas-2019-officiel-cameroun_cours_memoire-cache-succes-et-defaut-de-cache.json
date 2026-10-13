@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-memoire-cache-succes-et-defaut-de-cache-tle-ti-2019",
+  "meta": {
+    "titre": "Mémoire cache : succès et défaut de cache",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Hiérarchie mémoire",
+    "duree_estimee_min": 28,
+    "tags": [
+      "cache",
+      "succès de cache",
+      "défaut de cache",
+      "temps d'accès moyen"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu relis un cahier que tu viens d'ouvrir, tu le trouves tout de suite sur ton bureau ; pour un livre rangé au fond d'une bibliothèque, il faut aller le chercher. Le processeur fait pareil avec la mémoire cache : si la donnée est déjà sous la main, il gagne un temps précieux. Le schéma de la question t'apprend à suivre le chemin d'une information dans les deux cas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce que sont le microprocesseur, la mémoire cache et la mémoire vive",
+        "Savoir lire un schéma avec des flèches numérotées"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Toujours passer par le cache",
+      "contenu_markdown": "La mémoire cache est une petite mémoire très rapide placée entre le processeur et la mémoire vive. Elle conserve les données déjà utilisées, car un programme réutilise souvent les mêmes données.\n\n- **Succès de cache** (*cache hit*) : la donnée demandée est dans le cache. Chemin : le processeur interroge le cache, le cache répond.\n- **Défaut de cache** (*cache miss*) : la donnée n'y est pas. Chemin : le processeur interroge le cache, le cache interroge la mémoire, la mémoire envoie la donnée au cache (qui la conserve), le cache la transmet au processeur.\n\nLe processeur ne lit **jamais** directement la mémoire vive : tout passe par le cache.\n\nSur le schéma de l'épreuve : ① processeur vers cache, ② cache vers mémoire, ③ mémoire vers cache, ④ cache vers processeur. Succès : ① puis ④. Défaut : ① ② ③ ④.\n\nLe **temps d'accès moyen** se calcule avec le taux de succès $h$, le temps d'accès au cache $t_c$ et le temps d'accès à la mémoire $t_m$ :\n\n$$t_{\\text{moyen}} = t_c + (1 - h)\\, t_m$$",
+      "formule_principale": "t_{\\text{moyen}} = t_c + (1 - h)\\, t_m",
+      "variantes": [
+        {
+          "nom": "Plusieurs niveaux de cache",
+          "quand_utiliser": "Quand le processeur a des caches L1, L2 et L3",
+          "contenu_markdown": "La recherche descend les niveaux : L1, puis L2, puis L3, puis la mémoire vive. Un défaut au niveau n renvoie la demande au niveau n+1, et la donnée remonte en laissant une copie à chaque niveau traversé."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur le schéma de l'épreuve (flèches ① processeur vers cache, ② cache vers mémoire, ③ mémoire vers cache, ④ cache vers processeur), représenter le chemin de l'information en cas de succès et de défaut de cache.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les flèches",
+          "justification": "Chaque numéro a un sens précis",
+          "resultat_markdown": "① UT et UC vers cache ; ② cache vers mémoire ; ③ mémoire vers cache ; ④ cache vers UT et UC."
+        },
+        {
+          "numero": 2,
+          "action": "Tracer le succès",
+          "justification": "La donnée est dans le cache : la mémoire n'est pas sollicitée",
+          "resultat_markdown": "① puis ④."
+        },
+        {
+          "numero": 3,
+          "action": "Tracer le défaut",
+          "justification": "La donnée est absente : il faut la chercher en mémoire",
+          "resultat_markdown": "① (demande), ② (cache vers mémoire), ③ (mémoire vers cache), ④ (cache vers processeur)."
+        },
+        {
+          "numero": 4,
+          "action": "Comparer",
+          "justification": "Moins il y a de flèches, plus c'est rapide",
+          "resultat_markdown": "Succès : 2 trajets ; défaut : 4 trajets, dont l'accès lent à la mémoire."
+        }
+      ],
+      "conclusion_markdown": "Succès de cache : ① puis ④ ; défaut de cache : ① puis ② puis ③ puis ④."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer une flèche directe de la mémoire vers le processeur en cas de défaut.",
+          "pourquoi_faux": "Le processeur ne reçoit jamais la donnée directement de la mémoire : elle est d'abord déposée dans le cache (③), puis transmise (④).",
+          "correction_markdown": "Faire passer toute information par le cache."
+        },
+        {
+          "erreur_markdown": "Inverser succès et défaut.",
+          "pourquoi_faux": "Un succès est un cas favorable (la donnée est là) : il est le plus court. Le défaut est le cas défavorable, plus long.",
+          "correction_markdown": "Se rappeler : succès = court (① ④), défaut = long (① ② ③ ④)."
+        },
+        {
+          "erreur_markdown": "Oublier le numéro ④ dans le défaut.",
+          "pourquoi_faux": "Après le chargement de la donnée dans le cache, il faut encore la transmettre au processeur (④), sinon la demande n'aboutit pas.",
+          "correction_markdown": "Terminer chaque chemin par ④."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifient « cache hit » et « cache miss » ? Lequel est le plus rapide ?",
+          "solution_markdown": "1. Cache hit (succès) : la donnée est dans le cache.\n2. Cache miss (défaut) : elle n'y est pas et il faut la charger depuis la mémoire.\n3. Le succès est le plus rapide : pas d'accès à la mémoire vive."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un cache a un temps d'accès de 1 ns, la mémoire de 60 ns, et un taux de succès de 90 %. Calculer le temps d'accès moyen.",
+          "solution_markdown": "1. Formule : $t_{\\text{moyen}} = t_c + (1 - h)\\, t_m$.\n2. $t_{\\text{moyen}} = 1 + (1 - 0{,}90) \\times 60 = 1 + 0{,}10 \\times 60$.\n3. $t_{\\text{moyen}} = 1 + 6 = 7$ ns, contre 60 ns sans cache."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec les mêmes temps, le taux de succès passe à 98 %. Calculer le nouveau temps moyen, le gain par rapport à 90 %, et expliquer pourquoi quelques points de taux de succès comptent beaucoup.",
+          "solution_markdown": "1. $t_{\\text{moyen}} = 1 + (1 - 0{,}98) \\times 60 = 1 + 0{,}02 \\times 60 = 1 + 1{,}2 = 2{,}2$ ns.\n2. Gain par rapport à 7 ns : $7 - 2{,}2 = 4{,}8$ ns, soit environ 69 % de moins.\n3. Chaque défaut coûte 60 ns, soixante fois plus qu'un succès : réduire les défauts de 10 % à 2 % a un effet considérable sur le temps moyen."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le processeur interroge toujours le cache en premier.",
+        "Succès de cache : ① puis ④ ; défaut de cache : ① puis ② puis ③ puis ④.",
+        "Après un défaut, la donnée est copiée dans le cache pour les accès suivants.",
+        "Temps moyen : $t_c + (1 - h)\\, t_m$ ; un bon taux de succès réduit fortement l'attente.",
+        "À l'examen, trace les chemins sur le schéma avec les numéros et nomme chaque cas."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-equation-trajectoire-projectile-tle-ti",
+  "meta": {
+    "titre": "Établir l'équation de la trajectoire d'un projectile",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Mouvement d'un projectile dans le champ de pesanteur uniforme",
+    "duree_estimee_min": 35,
+    "tags": [
+      "projectile",
+      "théorème du centre d'inertie",
+      "équations horaires",
+      "trajectoire parabolique",
+      "chute libre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-PHYSIQUE-2023-CM",
+    "epreuve_titre": "Épreuve de physique au baccalauréat TI 2023 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-physique-2023-officiel-cameroun-ex3-qA-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ballon de basket qui retombe dans le panier, une balle de tennis qui franchit le filet, un jet d'eau : tous ces mouvements dessinent une parabole. Cette forme n'est pas un hasard : elle découle d'une seule loi, le théorème du centre d'inertie, appliquée au poids seul. Dans ce cours tu apprends à retrouver l'équation de la trajectoire, étape par étape, pour n'importe quel lancer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Théorème du centre d'inertie (deuxième loi de Newton)",
+        "Intégration d'une fonction constante et d'une fonction affine",
+        "Projection d'un vecteur sur des axes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode en sept étapes",
+      "contenu_markdown": "Pour un projectile soumis au seul poids, dans un référentiel galiléen : (1) définir le système et le repère ; (2) faire le bilan des forces (le poids seul) ; (3) appliquer $\\sum\\vec F = m\\,\\vec a$, donc $\\vec a = \\vec g$ ; (4) projeter pour obtenir $a_x = 0$ et $a_y = -g$ (axe $Oy$ vers le haut) ; (5) intégrer deux fois avec les conditions initiales pour obtenir $v_x, v_y$ puis $x(t), y(t)$ ; (6) éliminer $t$ ; (7) vérifier la condition initiale. Pour une vitesse initiale $\\vec v_0$ inclinée de $\\alpha$ sur l'horizontale et un départ en $(0\\,;\\,y_0)$, le résultat est $y = -\\dfrac{g}{2v_0^2\\cos^2\\alpha}\\,x^2 + x\\tan\\alpha + y_0$.",
+      "formule_principale": "y = -\\frac{g}{2\\,v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x + y_0",
+      "variantes": [
+        {
+          "nom": "Composantes de la vitesse initiale données",
+          "quand_utiliser": "Quand l'énoncé donne $V_x$ et $V_y$ plutôt que $v_0$ et $\\alpha$",
+          "contenu_markdown": "On utilise $V_x = v_0\\cos\\alpha$ et $V_y = v_0\\sin\\alpha$, d'où $y = -\\dfrac{g}{2V_x^2}\\,x^2 + \\dfrac{V_y}{V_x}\\,x + y_0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une balle est frappée en $A$ (hauteur $H = 2{,}7\\ \\text{m}$) avec $V_x = 7{,}5\\ \\text{m}\\cdot\\text{s}^{-1}$ et $V_y = 7{,}5\\ \\text{m}\\cdot\\text{s}^{-1}$. Établir l'équation de sa trajectoire ($g = 9{,}8\\ \\text{m}\\cdot\\text{s}^{-2}$, résistance de l'air négligée).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser le système et le repère",
+          "justification": "Système : la balle ; repère $(O, \\vec i, \\vec j)$ avec $A = (0\\,;\\,H)$ et $t = 0$ à la frappe.",
+          "resultat_markdown": "Référentiel terrestre galiléen."
+        },
+        {
+          "numero": 2,
+          "action": "Faire le bilan des forces",
+          "justification": "La résistance de l'air est négligée.",
+          "resultat_markdown": "Le poids $m\\vec g$ seul."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le théorème du centre d'inertie",
+          "justification": "$\\sum\\vec F = m\\,\\vec a$ donne $m\\vec g = m\\vec a$.",
+          "resultat_markdown": "$\\vec a = \\vec g$ donc $a_x = 0$ et $a_y = -g$."
+        },
+        {
+          "numero": 4,
+          "action": "Intégrer une première fois",
+          "justification": "Conditions initiales : $v_x(0) = V_x$ et $v_y(0) = V_y$.",
+          "resultat_markdown": "$v_x = V_x$ ; $v_y = -g\\,t + V_y$."
+        },
+        {
+          "numero": 5,
+          "action": "Intégrer une seconde fois",
+          "justification": "Conditions initiales : $x(0) = 0$ et $y(0) = H$.",
+          "resultat_markdown": "$x = V_x\\,t$ ; $y = -\\dfrac{1}{2}g\\,t^2 + V_y\\,t + H$."
+        },
+        {
+          "numero": 6,
+          "action": "Éliminer le temps",
+          "justification": "$t = x/V_x$ puis on reporte dans $y(t)$.",
+          "resultat_markdown": "$y = -\\dfrac{g}{2V_x^2}\\,x^2 + \\dfrac{V_y}{V_x}\\,x + H$."
+        },
+        {
+          "numero": 7,
+          "action": "Faire l'application numérique",
+          "justification": "$\\dfrac{g}{2V_x^2} = \\dfrac{9{,}8}{112{,}5} = 0{,}0871$ et $\\dfrac{V_y}{V_x} = 1$.",
+          "resultat_markdown": "$y = -0{,}087\\,x^2 + x + 2{,}7$ ($x$ et $y$ en m)."
+        }
+      ],
+      "conclusion_markdown": "La trajectoire de la balle est la parabole d'équation $y = -0{,}087\\,x^2 + x + 2{,}7$, qui passe bien par $A(0\\,;\\,2{,}7)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la condition initiale $y(0) = H$",
+          "pourquoi_faux": "Sans la constante d'intégration $H$, la parabole passe par l'origine : elle décrirait un lancer depuis le sol et non depuis la hauteur $H$.",
+          "correction_markdown": "Écris les quatre conditions initiales avant d'intégrer : $x(0)$, $y(0)$, $v_x(0)$, $v_y(0)$."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe sur $g$",
+          "pourquoi_faux": "Si l'axe $Oy$ est dirigé vers le haut, le poids a pour coordonnée $-m\\,g$ donc $a_y = -g$.",
+          "correction_markdown": "Fais le schéma avec le repère avant de projeter."
+        },
+        {
+          "erreur_markdown": "Appliquer la deuxième loi à la vitesse au lieu de l'accélération",
+          "pourquoi_faux": "Le théorème du centre d'inertie relie la somme des forces à l'accélération ; la vitesse s'obtient ensuite par une intégration.",
+          "correction_markdown": "Suis toujours l'ordre accélération, vitesse, position."
+        },
+        {
+          "erreur_markdown": "Éliminer $t$ sans l'exprimer à partir de la loi la plus simple",
+          "pourquoi_faux": "Isoler $t$ dans $y(t)$ demande de résoudre une équation du second degré inutilement compliquée. Dans $x(t) = V_x\\,t$, $t$ s'isole immédiatement.",
+          "correction_markdown": "Isole $t$ dans l'équation horaire du mouvement uniforme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une pierre est lancée horizontalement du haut d'une falaise de hauteur $h = 20\\ \\text{m}$ avec la vitesse $v_0 = 10\\ \\text{m}\\cdot\\text{s}^{-1}$ ($g = 9{,}8\\ \\text{m}\\cdot\\text{s}^{-2}$). Établir l'équation de la trajectoire dans un repère d'origine au pied de la falaise ($x$ horizontal, $y$ vertical vers le haut).",
+          "solution_markdown": "Le poids est la seule force, donc $\\vec a = \\vec g$ : $a_x = 0$, $a_y = -g$. Conditions initiales : $\\vec v(0) = v_0\\,\\vec i$ (donc $v_x(0) = v_0$, $v_y(0) = 0$) et $A = (0\\,;\\,h)$.\n\n**Vitesse.** $v_x = v_0$ ; $v_y = -g\\,t$.\n\n**Position.** $x = v_0\\,t$ ; $y = -\\dfrac{1}{2}g\\,t^2 + h$.\n\n**Élimination.** $t = \\dfrac{x}{v_0}$ donc :\n\n$$y = h - \\frac{g}{2v_0^2}\\,x^2 = 20 - \\frac{9{,}8}{2\\times100}\\,x^2 = 20 - 0{,}049\\,x^2$$\n\nLa pierre touche le sol quand $y = 0$ : $x = \\sqrt{\\dfrac{20}{0{,}049}} = 20\\ \\text{m}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ballon est lancé depuis le sol (origine du repère) avec $v_0 = 20\\ \\text{m}\\cdot\\text{s}^{-1}$ sous un angle $\\alpha = 30°$ avec l'horizontale ($g = 9{,}8\\ \\text{m}\\cdot\\text{s}^{-2}$). Établir l'équation de la trajectoire et calculer la portée (distance horizontale parcourue avant de retomber au sol).",
+          "solution_markdown": "**Composantes initiales.** $V_x = v_0\\cos30°$ et $V_y = v_0\\sin30°$. Équations horaires (départ en $(0\\,;\\,0)$) : $x = v_0\\cos\\alpha\\;t$ ; $y = -\\dfrac{1}{2}g\\,t^2 + v_0\\sin\\alpha\\;t$.\n\n**Élimination de $t$.** $t = \\dfrac{x}{v_0\\cos\\alpha}$ donc $y = -\\dfrac{g}{2v_0^2\\cos^2\\alpha}\\,x^2 + (\\tan\\alpha)\\,x$.\n\n**Application numérique.** $\\cos^2 30° = 0{,}75$ donc $\\dfrac{g}{2v_0^2\\cos^2\\alpha} = \\dfrac{9{,}8}{2\\times400\\times0{,}75} = \\dfrac{9{,}8}{600} = 0{,}0163$ et $\\tan30° = 0{,}577$ :\n\n$$y = -0{,}0163\\,x^2 + 0{,}577\\,x$$\n\n**Portée.** $y = 0$ donne $x\\,(-0{,}0163\\,x + 0{,}577) = 0$ ; la solution non nulle est $x = \\dfrac{0{,}577}{0{,}0163} = 35\\ \\text{m}$. Contrôle par la formule $\\dfrac{v_0^2\\sin2\\alpha}{g} = \\dfrac{400\\times0{,}866}{9{,}8} = 35\\ \\text{m}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour le ballon précédent, remplacé par un lancer à $v_0 = 15\\ \\text{m}\\cdot\\text{s}^{-1}$ sous $\\alpha = 60°$ depuis le sol, déterminer les coordonnées du sommet de la trajectoire. Aide : au sommet, la composante verticale de la vitesse est nulle.",
+          "solution_markdown": "**Composantes.** $V_x = v_0\\cos60° = 7{,}5\\ \\text{m}\\cdot\\text{s}^{-1}$ et $V_y = v_0\\sin60° = 15\\times0{,}866 = 13{,}0\\ \\text{m}\\cdot\\text{s}^{-1}$.\n\n**Date du sommet.** $v_y = -g\\,t + V_y = 0$ donne $t_S = \\dfrac{V_y}{g} = \\dfrac{13{,}0}{9{,}8} = 1{,}33\\ \\text{s}$.\n\n**Coordonnées.**\n\n$$x_S = V_x\\,t_S = 7{,}5\\times1{,}33 = 9{,}9\\ \\text{m}$$\n\n$$y_S = -\\frac{1}{2}g\\,t_S^2 + V_y\\,t_S = \\frac{V_y^2}{2g} = \\frac{225\\times0{,}75}{2\\times9{,}8} = 8{,}6\\ \\text{m}$$\n\nLe sommet est donc en $S(9{,}9\\ \\text{m}\\,;\\,8{,}6\\ \\text{m})$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour un projectile sans frottement, $\\vec a = \\vec g$ : l'accélération est constante et verticale.",
+        "Le mouvement est uniforme sur $Ox$ ($x = V_x\\,t$) et uniformément varié sur $Oy$ ($y = -\\frac{1}{2}g\\,t^2 + V_y\\,t + y_0$).",
+        "La trajectoire s'obtient en éliminant $t$ : c'est une parabole $y = -\\dfrac{g}{2V_x^2}\\,x^2 + \\dfrac{V_y}{V_x}\\,x + y_0$.",
+        "Vérifie toujours que la courbe passe par le point de départ ($x = 0 \\Rightarrow y = y_0$).",
+        "Au BAC, cet exercice est classique (balle, ballon, jet, skieur) et se prolonge par la portée, la flèche ou le passage au-dessus d'un obstacle."
+      ]
+    }
+  ]
+}

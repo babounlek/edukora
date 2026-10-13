@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-drop-delete-tle-ti-si2023",
+  "meta": {
+    "titre": "Distinguer DROP et DELETE",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "DROP",
+      "DELETE",
+      "SQL",
+      "LDD",
+      "LMD"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux commandes SQL « suppriment » quelque chose, mais l'une détruit la table, l'autre seulement ses lignes. Confondre les deux est une question piège classique et, en pratique, une erreur qui peut effacer toute une table. Ce cours t'apprend à les distinguer sans hésiter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Classer les commandes en LDD et LMD",
+        "Notion de table, ligne et structure"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux niveaux de suppression",
+      "contenu_markdown": "- **`DROP TABLE nom`** (LDD) supprime la **table entière** : structure et données disparaissent.\n- **`DELETE FROM nom WHERE condition`** (LMD) supprime des **lignes** ; la table reste, avec sa structure, même vide.\n- DELETE accepte `WHERE`, DROP non.\n- Sans `WHERE`, DELETE vide toute la table mais ne la détruit pas.",
+      "variantes": [
+        {
+          "nom": "TRUNCATE",
+          "quand_utiliser": "Quand on veut vider une grosse table rapidement",
+          "contenu_markdown": "`TRUNCATE TABLE nom` vide la table (comme DELETE sans WHERE) mais plus vite et sans condition. C'est une commande de définition dans la plupart des SGBD."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la différence entre la commande DROP et la commande DELETE.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Situer les deux commandes",
+          "justification": "L'une est LDD, l'autre LMD.",
+          "resultat_markdown": "DROP : définition ; DELETE : manipulation."
+        },
+        {
+          "numero": 2,
+          "action": "Comparer la cible",
+          "justification": "On regarde ce qui est supprimé.",
+          "resultat_markdown": "DROP : la table ; DELETE : des lignes."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer le résultat",
+          "justification": "On regarde ce qui reste.",
+          "resultat_markdown": "Après DROP, la table n'existe plus ; après DELETE, la table existe (éventuellement vide)."
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter la clause WHERE",
+          "justification": "C'est un critère concret de différence.",
+          "resultat_markdown": "DELETE accepte WHERE, DROP non."
+        }
+      ],
+      "conclusion_markdown": "DROP supprime la table avec sa structure, DELETE supprime seulement des enregistrements."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que DROP supprime plus de lignes que DELETE",
+          "pourquoi_faux": "Le sujet n'est pas la quantité de lignes mais la structure.",
+          "correction_markdown": "Parler de la table qui disparaît ou subsiste."
+        },
+        {
+          "erreur_markdown": "Croire que DELETE sans WHERE détruit la table",
+          "pourquoi_faux": "Il vide seulement la table, qui existe toujours.",
+          "correction_markdown": "Vérifier avec SELECT COUNT(*) : il renvoie 0."
+        },
+        {
+          "erreur_markdown": "Utiliser DROP pour retirer un enregistrement",
+          "pourquoi_faux": "DROP détruirait toute la table.",
+          "correction_markdown": "Utiliser DELETE avec WHERE."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle commande supprime la table Client ?",
+          "solution_markdown": "1. Supprimer la table entière relève du LDD.\n2. `DROP TABLE Client;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle commande supprime les clients de Douala sans détruire la table ?",
+          "solution_markdown": "1. On cible des lignes : DELETE.\n2. `DELETE FROM Client WHERE Ville = 'Douala';`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un stagiaire exécute `DELETE FROM Client;`. La table existe-t-elle encore ? Que renvoie `SELECT COUNT(*) FROM Client;` ? Et après `DROP TABLE Client;` ?",
+          "solution_markdown": "1. DELETE sans WHERE supprime toutes les lignes, la table existe encore.\n2. Le SELECT COUNT renvoie 0.\n3. Après DROP, la table n'existe plus : le SELECT échoue avec une erreur de table inexistante."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DROP : définition, détruit la table et sa structure.",
+        "DELETE : manipulation, supprime des lignes, structure conservée.",
+        "DELETE accepte WHERE, pas DROP.",
+        "DELETE sans WHERE vide la table sans la détruire.",
+        "Au BAC TI, cette comparaison revient régulièrement et vaut 1 point."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-cle-etrangere-liaison-tables-tle-ti-si2023",
+  "meta": {
+    "titre": "Identifier la clé étrangère qui lie deux tables",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modèle relationnel",
+    "duree_estimee_min": 15,
+    "tags": [
+      "clé étrangère",
+      "clé primaire",
+      "schéma relationnel",
+      "jointure"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une base de données, les tables ne vivent pas isolées : un produit appartient à un fournisseur, une facture à un client. Ce lien s'écrit par un seul attribut, la clé étrangère. Tu vas apprendre à le repérer en un coup d'œil dans un schéma relationnel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de table, ligne et colonne",
+        "Notion de clé primaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Clé primaire et clé étrangère",
+      "contenu_markdown": "- **Clé primaire** : attribut (souvent souligné) qui identifie une ligne de façon unique.\n- **Clé étrangère** : attribut précédé de **#** dans la table fille, qui reprend la valeur de la clé primaire d'une autre table (la table mère).\n- Le lien est de type un-à-plusieurs : la clé étrangère se place du côté « plusieurs ».\n- Méthode : repérer le #, lire son nom, retrouver la table où ce nom est clé primaire.",
+      "variantes": [
+        {
+          "nom": "Schéma sans dièse",
+          "quand_utiliser": "Quand l'énoncé ne marque pas la clé étrangère",
+          "contenu_markdown": "Cherche le nom d'attribut commun à deux tables : s'il est clé primaire dans l'une, il est clé étrangère dans l'autre."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Fournisseur (CodeF, NomF, Domiciliation, CA, Sexe) ; Produit (CodeBarre, Désignation, Qte, PU, #CodeF). Quel attribut lie les deux tables ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le dièse",
+          "justification": "Il signale la clé étrangère.",
+          "resultat_markdown": "#CodeF dans Produit."
+        },
+        {
+          "numero": 2,
+          "action": "Retrouver la table mère",
+          "justification": "On cherche où CodeF est clé primaire.",
+          "resultat_markdown": "Fournisseur (CodeF)."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le lien",
+          "justification": "La clé étrangère est du côté plusieurs.",
+          "resultat_markdown": "Un fournisseur fournit plusieurs produits, un produit n'a qu'un fournisseur."
+        }
+      ],
+      "conclusion_markdown": "L'attribut de liaison est CodeF, clé étrangère de Produit vers Fournisseur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer la clé primaire de la table fille (CodeBarre)",
+          "pourquoi_faux": "Elle identifie les produits mais ne les relie à rien.",
+          "correction_markdown": "Chercher l'attribut précédé de #."
+        },
+        {
+          "erreur_markdown": "Citer un attribut qui n'apparaît que dans une table",
+          "pourquoi_faux": "Un attribut de liaison est présent dans les deux tables.",
+          "correction_markdown": "Chercher le nom commun."
+        },
+        {
+          "erreur_markdown": "Placer la clé étrangère du mauvais côté",
+          "pourquoi_faux": "Elle se place du côté « plusieurs », ici Produit.",
+          "correction_markdown": "Se demander qui peut avoir plusieurs lignes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Élève (Matricule, Nom, #CodeClasse) ; Classe (CodeClasse, Libellé). Quelle est la clé étrangère ?",
+          "solution_markdown": "1. Le dièse est devant CodeClasse.\n2. CodeClasse est clé étrangère dans Élève, clé primaire dans Classe."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Commande (NumCmd, Date, #NumClient) ; Client (NumClient, Nom). Quelle table contient la clé étrangère ? Pourquoi ?",
+          "solution_markdown": "1. Commande contient #NumClient.\n2. Un client passe plusieurs commandes, une commande a un seul client : la clé est du côté plusieurs, donc dans Commande."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Livre (Isbn, Titre, #CodeAuteur) ; Auteur (CodeAuteur, Nom). Un livre peut avoir deux auteurs. Ce schéma suffit-il ?",
+          "solution_markdown": "1. Avec #CodeAuteur dans Livre, un livre n'a qu'un auteur.\n2. Pour deux auteurs, la relation devient plusieurs-à-plusieurs.\n3. Il faut une table de jonction Écrit (#Isbn, #CodeAuteur) : le schéma actuel ne suffit pas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La clé étrangère est précédée de # dans la table fille.",
+        "Elle reprend la clé primaire de la table mère.",
+        "Elle se place du côté « plusieurs ».",
+        "Sans dièse, cherche le nom d'attribut commun.",
+        "Au BAC TI, cette question vaut 1 point et prépare la jointure."
+      ]
+    }
+  ]
+}

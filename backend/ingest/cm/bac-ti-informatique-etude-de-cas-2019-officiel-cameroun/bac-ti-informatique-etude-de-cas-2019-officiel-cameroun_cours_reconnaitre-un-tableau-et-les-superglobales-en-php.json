@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-reconnaitre-un-tableau-et-les-superglobales-en-php-tle-ti-2019",
+  "meta": {
+    "titre": "Reconnaître un tableau et les superglobales en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Variables et tableaux PHP",
+    "duree_estimee_min": 22,
+    "tags": [
+      "tableau",
+      "superglobale",
+      "POST",
+      "variable PHP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.1-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès qu'un formulaire envoie des données à une page PHP, celles-ci arrivent dans une variable que tu n'as pas créée toi-même. Cette variable est un tableau, et il faut apprendre à la reconnaître d'un coup d'œil dans un script. C'est un réflexe qui sert à chaque exercice de PHP au baccalauréat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et comment on la désigne par son nom précédé du signe dollar",
+        "Connaître la notion de formulaire HTML et de champ nommé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tableaux et superglobales",
+      "contenu_markdown": "Une **variable simple** (scalaire) contient une seule valeur : `$age = 17;`. Un **tableau** regroupe plusieurs valeurs rangées sous des clés ; on accède à un élément avec des crochets : `$notes[0]`, `$eleve['nom']`.\n\nUn tableau **indexé** a des clés numériques (0, 1, 2...) ; un tableau **associatif** a des clés textuelles. On en crée avec `array(...)` ou `[...]`.\n\nLes **superglobales** sont des tableaux associatifs prédéfinis par PHP, disponibles partout sans déclaration. Elles commencent par `$_` : `$_POST` (données d'un formulaire envoyé en POST), `$_GET` (données passées dans l'adresse), `$_SESSION` (données de session), `$_SERVER` (informations sur le serveur et la requête).",
+      "formule_principale": "\\text{tableau} \\Longleftrightarrow \\text{nom de variable suivi de crochets pour accéder à un élément}",
+      "variantes": [
+        {
+          "nom": "Tableau indexé ou associatif",
+          "quand_utiliser": "Quand il faut préciser le type de tableau",
+          "contenu_markdown": "`$jours = ['lundi', 'mardi'];` est indexé : `$jours[1]` vaut `'mardi'`. `$eleve = ['nom' => 'Paul', 'age' => 17];` est associatif : `$eleve['nom']` vaut `'Paul'`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le script de la page `fonction.php` (lignes 18 à 21 : `If(isset($_POST['valider'])){`, `$nombre=$_POST['num'];`, `$toto=parito($nombre);`, `Echo ...`), identifier une variable de type tableau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les variables du bloc",
+          "justification": "On les repère par le signe dollar",
+          "resultat_markdown": "`$_POST`, `$nombre`, `$toto`."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher celles qui sont suivies de crochets",
+          "justification": "Les crochets servent à désigner un élément de tableau",
+          "resultat_markdown": "`$_POST['valider']` (ligne 18) et `$_POST['num']` (ligne 19)."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la nature de `$_POST`",
+          "justification": "Son nom commence par `$_` : c'est une superglobale, donc un tableau associatif prérempli par PHP",
+          "resultat_markdown": "Ses clés sont les attributs `name` du formulaire (`valider`, `num`)."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler les deux autres variables",
+          "justification": "`$nombre` reçoit une seule valeur lue dans le tableau ; `$toto` reçoit une chaîne renvoyée par la fonction",
+          "resultat_markdown": "Ce sont des variables simples."
+        }
+      ],
+      "conclusion_markdown": "La variable de type tableau est `$_POST`, superglobale associative qui contient les données du formulaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `$nombre` parce qu'elle reçoit `$_POST['num']`.",
+          "pourquoi_faux": "`$nombre` reçoit un seul élément du tableau : c'est une chaîne, donc une variable simple. Le tableau est `$_POST` lui-même.",
+          "correction_markdown": "Chercher le nom suivi de crochets, ici `$_POST`, et non la variable qui recopie une valeur."
+        },
+        {
+          "erreur_markdown": "Écrire `$POST` ou `$_post`.",
+          "pourquoi_faux": "PHP distingue les majuscules et minuscules dans les noms de variables : `$_post` n'existe pas, seule `$_POST` est prédéfinie.",
+          "correction_markdown": "Recopier `$_POST` en majuscules, avec le tiret bas."
+        },
+        {
+          "erreur_markdown": "Croire que `$_POST` contient des nombres.",
+          "pourquoi_faux": "Toutes les valeurs reçues d'un formulaire sont des chaînes de caractères, même si l'utilisateur tape `109`.",
+          "correction_markdown": "Convertir si nécessaire avec `(int)` ou `intval()`, et ne pas supposer que la saisie est numérique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `$eleve = ['nom' => 'Paul', 'age' => 17]; echo $eleve['nom'];`, quelle variable est un tableau et que s'affiche-t-il ?",
+          "solution_markdown": "1. `$eleve` est suivi de crochets à la ligne `echo` et construit avec `[...]` : c'est un tableau associatif.\n2. `$eleve['nom']` désigne l'élément de clé `nom`, dont la valeur est `'Paul'`.\n3. Il s'affiche donc `Paul`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire en méthode GET contient un champ `name=\"ville\"`. Comment le script lit-il la valeur saisie ? Quelle différence avec `$_POST` ?",
+          "solution_markdown": "1. Avec la méthode GET, les données sont transmises dans l'adresse (`page.php?ville=Douala`) et rangées dans la superglobale `$_GET`.\n2. Le script lit donc `$_GET['ville']`, dont la clé est l'attribut `name` du champ.\n3. `$_POST` fonctionne de la même façon mais pour les formulaires en méthode POST, où les données voyagent dans le corps de la requête et n'apparaissent pas dans l'adresse."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire un script qui, après envoi d'un formulaire POST contenant les champs `nom` et `age`, affiche « Bonjour NOM, tu as AGE ans » seulement si les deux champs existent.",
+          "solution_markdown": "```php\n<?php\nif (isset($_POST['nom']) && isset($_POST['age'])) {\n    $nom = $_POST['nom'];\n    $age = (int) $_POST['age'];\n    echo 'Bonjour ' . $nom . ', tu as ' . $age . ' ans';\n}\n?>\n```\n1. `isset` sur chaque clé garantit que le formulaire a été envoyé avec les deux champs.\n2. `$_POST['nom']` et `$_POST['age']` sont des chaînes : on convertit l'âge avec `(int)`.\n3. Le point `.` concatène les morceaux de texte et les variables."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau se reconnaît aux crochets qui suivent le nom de la variable.",
+        "`$_POST`, `$_GET`, `$_SESSION` et `$_SERVER` sont des tableaux associatifs prédéfinis, écrits en majuscules avec `$_`.",
+        "Les clés de `$_POST` sont les attributs `name` des champs du formulaire.",
+        "Une variable qui recopie un élément du tableau reste une variable simple.",
+        "Au baccalauréat, la question « identifier une variable de type tableau » se traite en citant `$_POST` et en justifiant par les crochets et le formulaire."
+      ]
+    }
+  ]
+}

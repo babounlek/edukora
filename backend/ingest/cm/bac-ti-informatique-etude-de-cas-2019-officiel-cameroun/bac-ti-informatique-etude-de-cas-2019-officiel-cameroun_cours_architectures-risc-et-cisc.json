@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-architectures-risc-et-cisc-tle-ti-2019",
+  "meta": {
+    "titre": "Architectures RISC et CISC",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Architecture matérielle",
+    "duree_estimee_min": 20,
+    "tags": [
+      "RISC",
+      "CISC",
+      "jeu d'instructions",
+      "microprocesseur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux philosophies s'affrontent depuis les années 1980 pour concevoir un processeur : peu d'instructions très simples, ou beaucoup d'instructions puissantes. Ces deux familles ont un nom, RISC et CISC, que l'on retrouve dans les ordinateurs, les téléphones et les consoles. Savoir développer ces sigles et opposer les deux approches est une question de cours très fréquente."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une instruction machine",
+        "Connaître le rôle d'un microprocesseur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Réduit contre complexe",
+      "contenu_markdown": "**RISC** : *Reduced Instruction Set Computer*, « ordinateur à jeu d'instructions réduit ». **CISC** : *Complex Instruction Set Computer*, « ordinateur à jeu d'instructions complexe ».\n\n| | RISC | CISC |\n|---|---|---|\n| Nombre d'instructions | réduit | élevé |\n| Complexité | instructions simples, de longueur fixe | instructions complexes, de longueur variable |\n| Durée d'exécution | le plus souvent un cycle d'horloge | plusieurs cycles selon l'instruction |\n| Accès à la mémoire | séparé (instructions de chargement et de rangement) | possible dans beaucoup d'instructions |\n| Taille du programme | plus d'instructions pour une même tâche | moins d'instructions |\n| Exemples | ARM (téléphones), MIPS, RISC-V | x86 (Intel, AMD) |\n\nDans la pratique, les processeurs x86 actuels décodent leurs instructions CISC en micro-opérations de type RISC : la frontière s'est atténuée.",
+      "formule_principale": "\\text{RISC} : \\text{instructions simples et peu nombreuses} \\quad ; \\quad \\text{CISC} : \\text{instructions complexes et nombreuses}",
+      "variantes": [
+        {
+          "nom": "Comparer sur un exemple",
+          "quand_utiliser": "Quand le sujet demande d'illustrer la différence",
+          "contenu_markdown": "Multiplier deux valeurs en mémoire : le CISC peut le faire avec une seule instruction `MUL A, B` ; le RISC l'exprime en quatre instructions simples (`LOAD`, `LOAD`, `MUL`, `STORE`)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la signification des acronymes RISC et CISC (question 1.2 de la troisième partie de l'épreuve, dont l'énoncé écrit « ClSC » par coquille).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer RISC",
+          "justification": "Chaque lettre est un mot anglais",
+          "resultat_markdown": "*Reduced Instruction Set Computer*."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire RISC",
+          "justification": "Reduced = réduit, Instruction Set = jeu d'instructions",
+          "resultat_markdown": "Ordinateur à jeu d'instructions réduit."
+        },
+        {
+          "numero": 3,
+          "action": "Développer et traduire CISC",
+          "justification": "Complex = complexe",
+          "resultat_markdown": "*Complex Instruction Set Computer*, ordinateur à jeu d'instructions complexe."
+        },
+        {
+          "numero": 4,
+          "action": "Opposer les deux",
+          "justification": "La différence porte sur le nombre et la complexité des instructions",
+          "resultat_markdown": "RISC : peu d'instructions simples ; CISC : beaucoup d'instructions complexes."
+        }
+      ],
+      "conclusion_markdown": "RISC signifie jeu d'instructions réduit, CISC jeu d'instructions complexe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Traduire RISC par « risque ».",
+          "pourquoi_faux": "RISC est un sigle anglais dont le R vient de *Reduced* (réduit) ; le mot français « risque » n'a aucun rapport.",
+          "correction_markdown": "Développer chaque lettre : Reduced, Instruction, Set, Computer."
+        },
+        {
+          "erreur_markdown": "Dire que CISC est « plus lent » que RISC.",
+          "pourquoi_faux": "Ni l'un ni l'autre n'est universellement plus rapide : la performance dépend de la conception, des compilateurs et de l'usage.",
+          "correction_markdown": "Décrire la différence de conception sans la réduire à une vitesse."
+        },
+        {
+          "erreur_markdown": "Croire que les PC actuels sont purement CISC.",
+          "pourquoi_faux": "Les processeurs x86 exposent un jeu d'instructions CISC mais le traduisent en interne en micro-opérations de type RISC.",
+          "correction_markdown": "Mentionner cette convergence quand le sujet demande plus qu'une définition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classer en RISC ou CISC : processeur ARM d'un téléphone, processeur Intel Core d'un PC de bureau (jeu d'instructions x86).",
+          "solution_markdown": "1. ARM : architecture RISC.\n2. Intel Core (x86) : jeu d'instructions CISC (avec décodage interne en micro-opérations)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour calculer `C = A * B` avec A et B en mémoire, un processeur CISC a une instruction `MUL C, A, B`, un processeur RISC doit utiliser `LOAD R1, A`, `LOAD R2, B`, `MUL R3, R1, R2`, `STORE C, R3`. Combien d'instructions chacun, et que montre l'exemple ?",
+          "solution_markdown": "1. CISC : 1 instruction. RISC : 4 instructions.\n2. L'exemple montre qu'un programme RISC est plus long en nombre d'instructions.\n3. En revanche, chaque instruction RISC est simple et rapide à exécuter, et le matériel qui les exécute est plus simple."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi les téléphones privilégient-ils des processeurs de type RISC ? Donne deux arguments.",
+          "solution_markdown": "1. Consommation : des instructions simples demandent un circuit plus simple, qui consomme moins d'énergie, ce qui prolonge l'autonomie de la batterie.\n2. Chaleur et taille : un circuit simple chauffe moins et occupe moins de place, avantage pour un appareil fin sans ventilateur.\n3. Les processeurs ARM, de type RISC, dominent donc ce marché."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "RISC : Reduced Instruction Set Computer ; CISC : Complex Instruction Set Computer.",
+        "RISC : peu d'instructions simples ; CISC : beaucoup d'instructions complexes.",
+        "ARM, MIPS et RISC-V sont RISC ; la famille x86 d'Intel et d'AMD est CISC.",
+        "Ne traduis jamais RISC par « risque » : développe chaque lettre.",
+        "À l'examen, donne le développement, la traduction et, si possible, une opposition en une phrase."
+      ]
+    }
+  ]
+}

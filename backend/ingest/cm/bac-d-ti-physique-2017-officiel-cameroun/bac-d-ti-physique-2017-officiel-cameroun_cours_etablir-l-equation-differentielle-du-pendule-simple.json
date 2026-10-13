@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-etablir-l-equation-differentielle-du-pendule-simple-tle-d-ti",
+  "meta": {
+    "titre": "Établir l'équation différentielle du pendule simple",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Oscillations mécaniques",
+    "duree_estimee_min": 35,
+    "tags": [
+      "pendule simple",
+      "équation différentielle",
+      "petites oscillations",
+      "théorème du centre d'inertie",
+      "oscillateur harmonique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-TI-PHYSIQUE-2017-OFFICIEL-CM",
+    "epreuve_titre": "Baccalauréat Physique Séries D et TI - Session 2017 (Cameroun), sujet officiel reproduit par Camerecole",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-d-ti-physique-2017-officiel-cameroun-ex2-qB1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une balançoire, un lustre qui se balance, le balancier d'une horloge : tous obéissent à la même équation, celle du pendule simple. Pour de petits angles, elle prend la forme remarquable de l'oscillateur harmonique, dont on connaît la solution complète. Établir cette équation est un exercice de méthode très fréquent au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Théorème du centre d'inertie",
+        "Projection d'une force sur un axe tangent à la trajectoire",
+        "Radian et approximation $\\sin\\theta \\approx \\theta$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Équation du pendule simple",
+      "contenu_markdown": "On applique le théorème du centre d'inertie au solide de masse $m$ attaché à un fil de longueur $\\ell$, dans le référentiel terrestre. Forces : le poids $\\vec{P}$ et la tension $\\vec{T}$ (radiale).\n\nEn projetant sur la tangente à la trajectoire, orientée dans le sens des angles $\\theta$ croissants, la tension disparaît et il reste $-mg\\sin\\theta = m\\,\\ell\\,\\ddot{\\theta}$. Pour de petits angles (en radians), $\\sin\\theta \\approx \\theta$ :\n\n$$\\ddot{\\theta} + \\frac{g}{\\ell}\\,\\theta = 0$$",
+      "formule_principale": "\\ddot{\\theta} + \\frac{g}{\\ell}\\,\\theta = 0",
+      "variantes": [
+        {
+          "nom": "Méthode énergétique",
+          "quand_utiliser": "Quand l'énoncé donne l'énergie mécanique ou demande de la conserver",
+          "contenu_markdown": "L'énergie mécanique $E_m = \\tfrac{1}{2}m\\ell^2\\dot{\\theta}^2 + mg\\ell(1 - \\cos\\theta)$ est constante (pas de frottement). Sa dérivée par rapport au temps est nulle : $m\\ell^2\\dot{\\theta}\\ddot{\\theta} + mg\\ell\\sin\\theta\\,\\dot{\\theta} = 0$, ce qui redonne $\\ddot{\\theta} + \\dfrac{g}{\\ell}\\sin\\theta = 0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un pendule simple de longueur $\\ell$ oscille sans frottement. Établir l'équation différentielle de son mouvement pour de faibles amplitudes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le système et le référentiel",
+          "justification": "Le solide, assimilé à un point matériel, dans le référentiel terrestre supposé galiléen.",
+          "resultat_markdown": "Système : solide M."
+        },
+        {
+          "numero": 2,
+          "action": "Faire le bilan des forces",
+          "justification": "Poids vertical et tension du fil (dirigée vers le point de suspension).",
+          "resultat_markdown": "$\\vec{P}$ et $\\vec{T}$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le théorème du centre d'inertie",
+          "justification": "On écrit la relation vectorielle.",
+          "resultat_markdown": "$\\vec{P} + \\vec{T} = m\\vec{a}$"
+        },
+        {
+          "numero": 4,
+          "action": "Projeter sur la tangente",
+          "justification": "$\\vec{T}$ est perpendiculaire à la tangente ; la composante tangentielle du poids est $-mg\\sin\\theta$ ; l'accélération tangentielle vaut $\\ell\\ddot{\\theta}$.",
+          "resultat_markdown": "$-mg\\sin\\theta = m\\,\\ell\\,\\ddot{\\theta}$"
+        },
+        {
+          "numero": 5,
+          "action": "Simplifier par $m$",
+          "justification": "La masse disparaît.",
+          "resultat_markdown": "$\\ddot{\\theta} + \\dfrac{g}{\\ell}\\sin\\theta = 0$"
+        },
+        {
+          "numero": 6,
+          "action": "Linéariser",
+          "justification": "Pour $\\theta$ petit, en radians, $\\sin\\theta \\approx \\theta$.",
+          "resultat_markdown": "$\\ddot{\\theta} + \\dfrac{g}{\\ell}\\theta = 0$"
+        }
+      ],
+      "conclusion_markdown": "L'équation différentielle des petites oscillations du pendule simple est $\\ddot{\\theta} + \\dfrac{g}{\\ell}\\theta = 0$ : c'est celle d'un oscillateur harmonique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Garder $\\sin\\theta$ dans l'équation finale.",
+          "pourquoi_faux": "Avec $\\sin\\theta$, l'équation n'est pas celle d'un oscillateur harmonique et sa solution n'est pas sinusoïdale. L'énoncé demande l'équation des oscillations de faible amplitude.",
+          "correction_markdown": "Écrire explicitement l'approximation $\\sin\\theta \\approx \\theta$ avec la condition « $\\theta$ petit en radians »."
+        },
+        {
+          "erreur_markdown": "Appliquer l'approximation avec un angle en degrés.",
+          "pourquoi_faux": "$\\sin\\theta \\approx \\theta$ n'est vraie que si $\\theta$ est en radians. En degrés, $\\sin 8^\\circ = 0{,}139$ alors que $\\theta = 8$.",
+          "correction_markdown": "Convertir $\\theta$ en radians pour toute comparaison."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins de la projection du poids.",
+          "pourquoi_faux": "Le poids ramène le pendule vers la verticale : sa composante tangentielle est de signe opposé à $\\theta$. Sans le signe moins, l'équation décrirait un mouvement qui s'éloigne de l'équilibre.",
+          "correction_markdown": "Contrôler le signe avec un schéma : à droite de la verticale ($\\theta > 0$), la composante tangentielle pointe vers la gauche."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la composante tangentielle du poids d'un solide de masse $0{,}1\\ \\text{kg}$ lorsque le fil fait $5^\\circ$ avec la verticale ($g = 9{,}8\\ \\text{m/s}^2$).",
+          "solution_markdown": "$P_t = -mg\\sin\\theta = -0{,}1 \\times 9{,}8 \\times \\sin 5^\\circ = -0{,}98 \\times 0{,}0872 = -0{,}0854\\ \\text{N}$. Le signe moins indique qu'elle ramène le solide vers la verticale."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur la Lune, $g = 1{,}6\\ \\text{m/s}^2$. Pour un pendule de longueur $\\ell = 1{,}0\\ \\text{m}$, donner l'équation différentielle des petites oscillations et la pulsation propre.",
+          "solution_markdown": "$\\ddot{\\theta} + \\dfrac{g}{\\ell}\\theta = 0$ avec $\\dfrac{g}{\\ell} = 1{,}6\\ \\text{s}^{-2}$, soit $\\ddot{\\theta} + 1{,}6\\,\\theta = 0$. La pulsation propre est $\\omega_0 = \\sqrt{1{,}6} = 1{,}26\\ \\text{rad/s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer l'erreur relative $\\dfrac{\\theta - \\sin\\theta}{\\sin\\theta}$ commise en remplaçant $\\sin\\theta$ par $\\theta$ pour $\\theta = 8^\\circ$, $15^\\circ$ et $30^\\circ$. Que conclure ?",
+          "solution_markdown": "On convertit en radians : $8^\\circ = 0{,}1396$, $15^\\circ = 0{,}2618$, $30^\\circ = 0{,}5236$. Les sinus valent $0{,}1392$, $0{,}2588$ et $0{,}5000$. Erreurs relatives : $\\dfrac{0{,}1396 - 0{,}1392}{0{,}1392} \\approx 0{,}33\\ \\%$ ; $\\dfrac{0{,}2618 - 0{,}2588}{0{,}2588} \\approx 1{,}2\\ \\%$ ; $\\dfrac{0{,}5236 - 0{,}5000}{0{,}5000} \\approx 4{,}7\\ \\%$. L'approximation est excellente pour $8^\\circ$, correcte jusqu'à $15^\\circ$, mais devient discutable à $30^\\circ$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour le pendule simple, la projection du théorème du centre d'inertie sur la tangente donne $\\ddot{\\theta} + \\dfrac{g}{\\ell}\\sin\\theta = 0$.",
+        "Pour de petits angles en radians, $\\sin\\theta \\approx \\theta$ : on obtient l'équation de l'oscillateur harmonique.",
+        "La masse disparaît de l'équation : le mouvement est indépendant de $m$.",
+        "Le signe moins traduit la force de rappel.",
+        "Au BAC, établir l'équation différentielle (avec schéma) est la première étape de l'étude d'un pendule."
+      ]
+    }
+  ]
+}

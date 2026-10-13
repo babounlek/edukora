@@ -1,0 +1,161 @@
+{
+  "epreuve_source": "bac-ti-SI-2023-officiel-cameroun.html",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2023,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "5",
+  "groupes": [
+    "PARTIE I : Modélisation des systèmes d'information (12 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-SI-2023-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Diagramme de classes MINTELE : Client, Suite, Douche, SuiteVIP, SuiteA et classe d'association Réservation, avec multiplicités",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2 (5 points)**\n\nMINTELE est un établissement supérieur de formation en hôtellerie. Son directeur veut mettre en place un système d'information de gestion des réservations de suites. Les règles de gestion sont les suivantes :\n\n- Un client peut réserver plusieurs suites. Il existe des suites VIP, pour recevoir les autorités, et des suites A, pour les mariés.\n- Une suite contient des douches : la création d'une suite entraîne obligatoirement celle de la douche.\n- Avant de réserver, un client doit présenter sa carte d'identité. Il est caractérisé par un numéro d'enregistrement, un nom et une provenance.\n- Le système doit pouvoir donner le nombre de clients qui ont réservé des suites à une date donnée.\n- Une suite est caractérisée par un code, un niveau de standing et un prix. Elle permet de recevoir un client.\n- Une douche est caractérisée par un numéro et un nom. Elle permet de soulager le client.\n\nEn vous basant sur ces règles de gestion et sur vos connaissances, répondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Citer un langage permettant de modéliser un système d'information. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour citer un langage de modélisation, distingue d'abord les trois notions voisines (langage, méthode, outil) et ne retiens que la notation graphique normalisée qui sert à dessiner les diagrammes.\n\nUn langage de modélisation est une notation graphique normalisée ; il ne faut pas le confondre avec une méthode, qui est une démarche d'analyse (comme MERISE), ni avec un outil, qui est un logiciel servant à dessiner les diagrammes.\n\nLe langage de modélisation attendu est **UML** (*Unified Modeling Language*, langage de modélisation unifié). C'est une notation graphique normalisée par l'OMG, qui sert à représenter un système en utilisant des diagrammes (cas d'utilisation, classes, séquences, objets...). L'exercice 1 de cette épreuve l'emploie d'ailleurs expressément.\n\nAutres réponses recevables : SysML (dérivé d'UML pour les systèmes) ou BPMN (notation des processus métier).\n\nMERISE ne répond pas à la question : c'est une **méthode** d'analyse, pas un langage. StarUML ou PowerAMC sont des **outils** logiciels.\n\n### Piège à éviter\nNe réponds pas « MERISE » ni « StarUML » : la question porte sur un langage. Un langage donne la notation, la méthode donne la démarche, l'outil donne le dessin.\n\n### Conseil\nSi une question demande « un langage de modélisation », écris UML et développe l'acronyme : le point est acquis et tu montres que tu connais le sigle.",
+      "themes": [
+        "UML",
+        "langage de modélisation",
+        "MERISE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex2-q1-1",
+          "competence": "Distinguer langage, méthode et outil de modélisation",
+          "contenu_markdown": "Pour citer un langage de modélisation, distingue d'abord les trois notions voisines (langage, méthode, outil) et ne retiens que la notation graphique normalisée qui sert à dessiner les diagrammes.",
+          "cours_genere": true,
+          "cours_id": "cours-langage-methode-outil-modelisation-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "2.1",
+      "enonce_markdown": "**2.1.** Élaborer le diagramme de classes en mettant en évidence la représentation des classes. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour trouver les classes à partir de règles de gestion, relève les noms qui désignent des objets du domaine possédant des propriétés propres : les caractéristiques citées deviennent leurs attributs, les opérations demandées au système deviennent leurs méthodes et les variantes d'un même objet donnent des classes filles.\n\n**Étape 1 : repérer les noms porteurs de caractéristiques.** Le texte décrit trois objets avec leurs propriétés : le **client** (numéro d'enregistrement, nom, provenance), la **suite** (code, niveau de standing, prix) et la **douche** (numéro, nom).\n\n**Étape 2 : repérer les variantes.** « Il existe des suites VIP [...] et des suites A » : les deux sont des types de suite. On en fait deux classes filles **SuiteVIP** et **SuiteA** de la classe mère **Suite**. Elles n'ont pas d'attribut propre dans l'énoncé.\n\n**Étape 3 : exploiter la phrase sur la date.** Le système doit donner le nombre de clients ayant réservé « à une date donnée ». La date appartient à la réservation elle-même (ni au client, ni à la suite). On la place dans la classe d'association **Réservation**, qui porte l'attribut `dateReservation` et l'opération statique `nombreClients(d : Date) : Integer`.\n\n**Étape 4 : typer les attributs.** Numéro d'enregistrement, nom, provenance, code et niveau de standing sont des chaînes (`String`), le prix un réel (`Real`), le numéro de douche un entier (`Integer`).\n\nClasses obtenues (le schéma complet est donné à la question 2.3) :\n\n| Classe | Attributs | Opération |\n|---|---|---|\n| Client | numEnregistrement : String, nom : String, provenance : String | - |\n| Suite | code : String, niveauStanding : String, prix : Real | - |\n| SuiteVIP, SuiteA | héritent de Suite | - |\n| Douche | numero : Integer, nom : String | - |\n| Réservation (classe d'association) | dateReservation : Date | nombreClients(d : Date) : Integer |\n\n### Piège à éviter\nNe crée pas de classe pour chaque nom du texte : « autorités » et « mariés » décrivent l'usage des suites, pas des objets du domaine, et « carte d'identité » sert seulement de justificatif (aucun attribut utile). Une classe sans propriété propre est un faux ami.\n\n### Conseil\nSouligne dans l'énoncé les noms qui reviennent avec « est caractérisé par » : ce sont tes classes. Ce qui suit « par » donne les attributs, et il suffit de les recopier.",
+      "themes": [
+        "diagramme de classes",
+        "classe",
+        "attribut",
+        "règles de gestion",
+        "UML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex2-q2.1-1",
+          "competence": "Identifier les classes et les attributs à partir de règles de gestion",
+          "contenu_markdown": "Pour trouver les classes à partir de règles de gestion, relève les noms qui désignent des objets du domaine possédant des propriétés propres : les caractéristiques citées deviennent leurs attributs, les opérations demandées au système deviennent leurs méthodes et les variantes d'un même objet donnent des classes filles.",
+          "cours_genere": true,
+          "cours_id": "cours-classes-attributs-regles-gestion-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "2.2",
+      "enonce_markdown": "**2.2.** Élaborer le diagramme de classes en mettant en évidence la représentation des relations entre les classes. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nChoisis la relation d'après la phrase de l'énoncé : un verbe d'action entre deux objets indépendants donne une association, un tout dont les parties naissent et disparaissent avec lui donne une composition (losange plein côté tout), et « il existe des types de » donne un héritage (triangle creux côté classe mère).\n\n**1. Client - Suite : association « réserver ».** « Un client peut réserver plusieurs suites » : le verbe d'action relie deux objets qui existent indépendamment l'un de l'autre. On trace une association simple, avec la classe d'association Réservation (date de la réservation) accrochée par un trait pointillé.\n\n**2. Suite - Douche : composition.** « La création d'une suite entraîne obligatoirement celle de la douche » : la douche n'existe pas sans sa suite et naît avec elle, c'est le critère de la composition. Le **losange plein** se place du côté de Suite (le tout).\n\n**3. Suite - SuiteVIP et SuiteA : héritage.** « Il existe des suites VIP [...] et des suites A » : ce sont des types de suite. Le **triangle creux** se place du côté de Suite (la classe mère).\n\n**4. Les formules « permet de recevoir un client » et « permet de soulager le client ».** Ce sont des reformulations de l'utilité des objets : recevoir un client est le but de la réservation, déjà modélisée, et soulager le client est l'usage de la douche. Ajouter une association Douche - Client serait redondant, car le client atteint la douche à travers sa suite.\n\nRésumé :\n\n| Relation | Classes | Type | Justification dans le texte |\n|---|---|---|---|\n| réserver | Client - Suite | association (+ classe d'association Réservation) | verbe « réserver » |\n| contient | Suite - Douche | composition | création de la suite = création de la douche |\n| - | Suite - SuiteVIP / SuiteA | héritage | « il existe des suites VIP et des suites A » |\n\n### Piège à éviter\nNe confonds pas composition et agrégation : dans une agrégation (losange vide) la partie survit à la disparition du tout. Ici « entraîne obligatoirement la création » impose le losange plein.\n\n### Conseil\nPose-toi la question « si je supprime le tout, la partie a-t-elle encore un sens ? ». Si non, composition ; si oui, agrégation ou simple association.",
+      "themes": [
+        "diagramme de classes",
+        "association",
+        "composition",
+        "héritage",
+        "UML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex2-q2.2-1",
+          "competence": "Distinguer association, composition et héritage",
+          "contenu_markdown": "Choisis la relation d'après la phrase de l'énoncé : un verbe d'action entre deux objets indépendants donne une association, un tout dont les parties naissent et disparaissent avec lui donne une composition (losange plein côté tout), et « il existe des types de » donne un héritage (triangle creux côté classe mère).",
+          "cours_genere": true,
+          "cours_id": "cours-association-composition-heritage-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "2.3",
+      "enonce_markdown": "**2.3.** Élaborer le diagramme de classes en mettant en évidence les multiplicités. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne multiplicité se lit en se plaçant sur une classe et en comptant combien d'objets de l'autre classe lui sont liés : le minimum vaut 0 si le lien est facultatif et 1 s'il est obligatoire, le maximum vaut 1 ou * selon qu'on peut en avoir un seul ou plusieurs.\n\n**Association réserver (Client - Suite).**\n\n- Côté Suite : « un client peut réserver plusieurs suites », et un client n'existe dans le système que parce qu'il réserve, donc au minimum une suite. Multiplicité **1..\\***.\n- Côté Client : une suite est réservée par un client à une date donnée, mais au fil du temps elle peut être réservée par plusieurs clients, ou n'avoir encore jamais été réservée. Multiplicité **0..\\***.\n\n**Composition contient (Suite - Douche).**\n\n- Côté Douche : une suite contient des douches et sa création entraîne celle de la douche, donc au moins une. Multiplicité **1..\\***.\n- Côté Suite : une douche appartient toujours à une seule suite (composition). Multiplicité **1**.\n\n**Héritage.** Aucune multiplicité n'est portée par un lien d'héritage.\n\nDiagramme de classes complet :\n\n![fig-1](bac-ti-SI-2023-officiel-cameroun_exercice_2_fig_1.png)\n\nLecture de contrôle, dans les deux sens : un client réserve de 1 à plusieurs suites ; une suite est réservée par 0 à plusieurs clients ; une suite contient de 1 à plusieurs douches ; une douche appartient à exactement une suite.\n\nCas de la lecture stricte de « une suite permet de recevoir un client » : pour une date donnée, une suite est occupée par un seul client. Cette contrainte se lit sur la classe d'association Réservation (un couple client - suite par date) et ne change pas les multiplicités de l'association elle-même.\n\n### Piège à éviter\nNe place pas les multiplicités du mauvais côté : le nombre écrit près d'une classe dit combien d'objets de CETTE classe sont reliés à un objet de l'autre, pas l'inverse. Relis chaque lien à voix haute dans les deux sens.\n\n### Conseil\nPour une composition, la multiplicité côté tout vaut presque toujours 1 (la partie n'a qu'un seul propriétaire). Ça te fait gagner une valeur sûre sur chaque diagramme.",
+      "themes": [
+        "diagramme de classes",
+        "multiplicités",
+        "composition",
+        "UML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex2-q2.3-1",
+          "competence": "Déterminer les multiplicités d'une association",
+          "contenu_markdown": "Une multiplicité se lit en se plaçant sur une classe et en comptant combien d'objets de l'autre classe lui sont liés : le minimum vaut 0 si le lien est facultatif et 1 s'il est obligatoire, le maximum vaut 1 ou * selon qu'on peut en avoir un seul ou plusieurs.",
+          "cours_genere": true,
+          "cours_id": "cours-multiplicites-association-tle-ti-si2023"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "diagramme de classes",
+    "MINTELE",
+    "suite",
+    "douche",
+    "client",
+    "composition",
+    "héritage",
+    "multiplicités",
+    "classe d'association",
+    "UML"
+  ],
+  "incertitudes": [
+    "Source : reproduction du sujet sur une page du site Camerecole, sans en-tête officiel imprimé : durée et coefficient absents (null), origine « officiel » par reproduction, session 2023 donnée par les métadonnées de la page.",
+    "Série TI : cohérente entre les métadonnées, le titre de la page (« baccalauréat TI 2023 ») et le corps.",
+    "Aucun corrigé officiel n'accompagne la page : le corrigé est une proposition fondée sur le programme de Systèmes d'Information de la série TI.",
+    "Coquilles de la page rétablies : « l. » et « Il. » lus comme I. et II., « PARTIE Il » lu PARTIE II, « fa commande Drop » lu « la commande Drop », « PU. #CodeF » lu « PU, #CodeF », « n numéro » lu « un numéro », « Repartir » lu « Répartir ».",
+    "Diagramme de classes : aucune solution officielle. Choix de modélisation : classe d'association Réservation portant la date (« nombre de clients à une date donnée »), composition Suite - Douche, héritage SuiteVIP et SuiteA. Multiplicités de l'association réserver (0..* côté Client, 1..* côté Suite) déduites de « un client peut réserver plusieurs suites » ; la formule « une suite permet de recevoir un client » admet aussi la lecture 1 client par suite et par date.",
+    "Les phrases « permet de recevoir un client » et « permet de soulager le client » sont traitées comme des formules d'usage et non comme des associations supplémentaires.",
+    "Barème de l'exercice 2 : 1 + 1,5 + 1,5 + 1 = 5 points."
+  ],
+  "statut": "brouillon"
+}

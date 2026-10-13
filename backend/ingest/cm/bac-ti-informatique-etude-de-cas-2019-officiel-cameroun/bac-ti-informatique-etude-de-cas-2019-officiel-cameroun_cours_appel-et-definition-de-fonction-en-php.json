@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-appel-et-definition-de-fonction-en-php-tle-ti-2019",
+  "meta": {
+    "titre": "Appel et définition de fonction en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Fonctions PHP",
+    "duree_estimee_min": 22,
+    "tags": [
+      "fonction",
+      "appel de fonction",
+      "return",
+      "paramètre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction, c'est une recette que l'on écrit une fois et que l'on peut appeler autant de fois que l'on veut. Mais écrire la recette et la lancer sont deux gestes différents, et les sujets d'examen aiment demander de repérer l'un ou l'autre. Voyons comment ne jamais les confondre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable",
+        "Connaître la notion de bloc d'instructions entre accolades"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définir puis appeler",
+      "contenu_markdown": "La **définition** d'une fonction commence par le mot-clé `function`, suivi du nom, des paramètres entre parenthèses et du corps entre accolades. Elle ne s'exécute pas toute seule :\n\n```php\nfunction carre($x) {\n    return $x * $x;\n}\n```\n\nL'**appel** donne le nom de la fonction suivi de parenthèses contenant les **arguments**, sans le mot `function` : `$r = carre(5);`. À l'appel, PHP exécute le corps avec la valeur de l'argument ; l'instruction `return` renvoie une valeur qui prend la place de l'appel, ici `25` rangé dans `$r`.\n\nLes variables créées dans la fonction sont **locales** : elles n'existent pas en dehors d'elle. PHP ne distingue pas les majuscules des minuscules dans les mots-clés et les noms de fonctions (`Function`, `RETURN` sont valides).",
+      "formule_principale": "\\text{appel} = \\text{nom}(\\text{arguments}) \\quad ; \\quad \\text{définition} = \\text{function nom}(\\text{paramètres}) \\{ \\ldots \\}",
+      "variantes": [
+        {
+          "nom": "Fonctions prédéfinies",
+          "quand_utiliser": "Quand le script appelle une fonction qu'on n'a pas écrite",
+          "contenu_markdown": "`strlen('abc')`, `isset($x)`, `date('Y')`, `mysqli_connect(...)` sont des fonctions fournies par PHP : on les appelle sans les définir."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le script de l'épreuve, la ligne 3 est `Function parito($nombre){` et la ligne 20 est `$toto=parito($nombre);`. Identifier une instruction d'appel de fonction et décrire ce qui se passe à l'exécution.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la définition",
+          "justification": "Elle contient le mot-clé `Function` et déclare le paramètre `$nombre`",
+          "resultat_markdown": "Lignes 3 à 11 : définition de `parito`, qui ne s'exécute pas encore."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer l'appel",
+          "justification": "Un appel est le nom de la fonction suivi d'arguments entre parenthèses, sans `Function`",
+          "resultat_markdown": "Ligne 20 : `$toto=parito($nombre);`."
+        },
+        {
+          "numero": 3,
+          "action": "Suivre l'exécution de l'appel",
+          "justification": "L'argument est copié dans le paramètre, puis le corps s'exécute",
+          "resultat_markdown": "PHP exécute les lignes 4 à 10 avec la valeur saisie."
+        },
+        {
+          "numero": 4,
+          "action": "Récupérer la valeur renvoyée",
+          "justification": "`Return $verdict;` renvoie la chaîne qui remplace l'appel",
+          "resultat_markdown": "Elle est rangée dans `$toto` par l'affectation de la ligne 20."
+        }
+      ],
+      "conclusion_markdown": "L'appel est `$toto=parito($nombre);` à la ligne 20 ; la ligne 3 n'est qu'une définition."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer la ligne `Function parito($nombre){` comme appel.",
+          "pourquoi_faux": "Cette ligne définit la fonction : elle contient le mot-clé `Function` et nomme le paramètre. Rien ne s'exécute tant que la fonction n'est pas appelée.",
+          "correction_markdown": "Chercher le nom de la fonction sans `Function` devant, avec une valeur ou une variable entre parenthèses."
+        },
+        {
+          "erreur_markdown": "Oublier d'utiliser la valeur renvoyée.",
+          "pourquoi_faux": "Écrire `parito($nombre);` sans l'affecter ni l'afficher exécute la fonction mais jette son résultat.",
+          "correction_markdown": "Ranger le résultat dans une variable (`$toto = parito($nombre);`) ou l'afficher directement."
+        },
+        {
+          "erreur_markdown": "Penser que `$verdict` est utilisable après la fonction.",
+          "pourquoi_faux": "`$verdict` est une variable locale à `parito` : elle n'existe plus dès que la fonction a renvoyé sa valeur.",
+          "correction_markdown": "Utiliser la valeur renvoyée par `return`, récupérée dans une variable de l'extérieur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit `function double($n){ return 2*$n; }`. Écrire un appel qui range le double de 7 dans `$d`, puis donner la valeur de `$d`.",
+          "solution_markdown": "1. Appel : `$d = double(7);`.\n2. Le paramètre `$n` prend la valeur 7 ; le corps calcule `2*7 = 14`.\n3. `return` renvoie 14, rangé dans `$d` : `$d` vaut 14."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire une fonction `estMajeur($age)` qui renvoie `true` si `$age` est au moins 18, puis l'appeler pour 17 et pour 18 et donner les résultats.",
+          "solution_markdown": "```php\nfunction estMajeur($age) {\n    return $age >= 18;\n}\n```\n1. `estMajeur(17)` : `17 >= 18` est faux, la fonction renvoie `false`.\n2. `estMajeur(18)` : `18 >= 18` est vrai, elle renvoie `true`.\n3. La comparaison renvoie directement un booléen : pas besoin de `if`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une fonction `moyenne($a, $b)` qui renvoie la moyenne de deux notes, puis une page qui lit deux notes d'un formulaire POST (champs `n1` et `n2`) et affiche leur moyenne.",
+          "solution_markdown": "```php\n<?php\nfunction moyenne($a, $b) {\n    return ($a + $b) / 2;\n}\nif (isset($_POST['valider'])) {\n    $m = moyenne((float) $_POST['n1'], (float) $_POST['n2']);\n    echo 'Moyenne : ' . $m;\n}\n?>\n```\n1. La fonction est définie une fois.\n2. `isset($_POST['valider'])` détecte l'envoi du formulaire.\n3. Les saisies, qui sont des chaînes, sont converties avec `(float)` avant l'appel.\n4. La valeur renvoyée par `moyenne` est rangée dans `$m` puis affichée avec le point de concaténation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Définir une fonction, c'est écrire `function nom(...) { ... }` ; ce n'est pas l'exécuter.",
+        "Appeler une fonction, c'est écrire son nom suivi des arguments entre parenthèses, sans `function`.",
+        "`return` renvoie une valeur à l'endroit de l'appel ; il faut la ranger ou l'afficher.",
+        "Les variables d'une fonction sont locales.",
+        "Au baccalauréat, cite le numéro de ligne et recopie l'instruction : cela prouve que tu distingues l'appel de la définition."
+      ]
+    }
+  ]
+}

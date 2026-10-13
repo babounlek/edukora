@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-transmission-dune-trame-par-un-hub-ou-un-switch-tle-ti",
+  "meta": {
+    "titre": "Hub et switch : comment circule une trame",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Équipements d'interconnexion",
+    "duree_estimee_min": 30,
+    "tags": [
+      "hub",
+      "switch",
+      "adresse MAC",
+      "collision",
+      "diffusion"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un hub et un switch ont la même allure : un boîtier avec plusieurs prises. Pourtant, ils ne traitent pas du tout les messages de la même façon. L'un crie à toute la salle, l'autre glisse le message à l'oreille du destinataire. Cette différence explique la lenteur d'un vieux réseau et la rapidité d'un réseau moderne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse MAC",
+        "Savoir qu'un message est découpé en trames lors de sa transmission"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Diffuser à tous ou commuter vers un seul",
+      "contenu_markdown": "**Concentrateur (hub)** : équipement de couche 1 (physique). Il ne lit aucune adresse et répète tout signal reçu sur **tous ses autres ports**. Toutes les machines voient toutes les trames, et la carte réseau de chaque machine trie : seule celle dont l'adresse correspond au destinataire garde la trame. Le hub forme un seul domaine de collision : si deux machines émettent en même temps, les signaux se heurtent et les trames doivent être réémises.\n\n**Commutateur (switch)** : équipement de couche 2 (liaison de données). Il lit l'adresse MAC de destination et la cherche dans sa table de correspondance entre adresses MAC et ports. Il n'envoie la trame que vers le **port du destinataire**. Si l'adresse est inconnue, il diffuse la trame sur tous les ports sauf celui d'entrée, puis apprend l'adresse de l'émetteur.\n\nPour décrire une transmission, indique : par où entre la trame, vers quels ports elle sort, qui l'accepte.",
+      "formule_principale": "\\text{hub} : \\text{entrée} \\Rightarrow \\text{tous les autres ports} \\qquad \\text{switch} : \\text{entrée} \\Rightarrow \\text{port du destinataire}",
+      "variantes": [
+        {
+          "nom": "Switch à table d'adresses vide",
+          "quand_utiliser": "Quand le switch vient d'être allumé ou ne connaît pas encore le destinataire",
+          "contenu_markdown": "Il se comporte d'abord comme un hub pour la première trame (diffusion sur tous les ports sauf celui d'entrée) puis mémorise l'adresse de l'émetteur et son port. Dès que le destinataire répond, la table est complète et les trames suivantes sont ciblées."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur le réseau du complexe scolaire, on remplace le switch par un hub et PC2 veut envoyer un message à PC4. Décrire la transmission.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décrire l'entrée de la trame",
+          "justification": "On suit la trame depuis l'émetteur",
+          "resultat_markdown": "PC2 envoie la trame, qui contient l'adresse de PC4, vers le hub."
+        },
+        {
+          "numero": 2,
+          "action": "Dire où le hub la renvoie",
+          "justification": "Le hub ne lit pas les adresses",
+          "resultat_markdown": "Il la répète sur tous ses autres ports : serveur, PC3, PC4, scanner, imprimante."
+        },
+        {
+          "numero": 3,
+          "action": "Dire qui l'accepte",
+          "justification": "Chaque carte réseau compare l'adresse de destination à la sienne",
+          "resultat_markdown": "Seule PC4 la prend en compte ; les autres l'ignorent."
+        },
+        {
+          "numero": 4,
+          "action": "Indiquer la conséquence",
+          "justification": "Le hub forme un seul domaine de collision",
+          "resultat_markdown": "Si deux machines émettent en même temps, il y a collision et réémission."
+        }
+      ],
+      "conclusion_markdown": "Avec un hub, la trame de PC2 est diffusée à toutes les machines et seule PC4 la conserve ; un switch l'aurait envoyée uniquement vers le port de PC4."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire que le hub envoie le message « seulement à PC4 ».",
+          "pourquoi_faux": "Le hub ne connaît pas les adresses : il ne peut pas choisir un port. Le comportement ciblé est celui du switch.",
+          "correction_markdown": "Pour un hub, écris toujours « diffuse à tous les ports »."
+        },
+        {
+          "erreur_markdown": "Dire que les autres machines ne reçoivent rien.",
+          "pourquoi_faux": "Elles reçoivent la trame et l'abandonnent après comparaison des adresses. Ce n'est pas la même chose, et cela gaspille de la bande passante.",
+          "correction_markdown": "Écris « reçue par toutes, acceptée par la seule destinataire »."
+        },
+        {
+          "erreur_markdown": "Oublier la collision dans le cas d'un hub.",
+          "pourquoi_faux": "C'est la conséquence essentielle du partage d'un domaine de collision par tous les ports.",
+          "correction_markdown": "Ajoute une phrase sur les collisions et le partage de la bande passante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Lequel de ces deux équipements envoie une trame uniquement vers le destinataire : le hub ou le switch ?",
+          "solution_markdown": "C'est le **switch**, grâce à sa table de correspondance entre adresses MAC et ports. Le hub ne lit aucune adresse et diffuse sur tous les ports."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le switch du complexe vient d'être allumé. PC2 envoie une première trame à PC4. Décris ce qui se passe, puis ce qui se passe à la deuxième trame.",
+          "solution_markdown": "**Première trame** : le switch ne connaît pas encore l'adresse de PC4. Il mémorise que l'adresse de PC2 est sur le port de PC2, puis diffuse la trame sur tous les ports sauf celui d'entrée. Seule PC4 l'accepte.\n\n**Réponse de PC4** : le switch apprend que l'adresse de PC4 est sur son port.\n\n**Trames suivantes** : le switch connaît les deux adresses. Il envoie les trames de PC2 vers PC4 uniquement sur le port de PC4, sans déranger les autres machines."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un réseau à hub de cinq postes, PC1 envoie à PC2 pendant que PC3 envoie à PC4. Explique ce qui se produit, puis ce que changerait un switch.",
+          "solution_markdown": "Le hub répète sur tous les ports ce qu'il reçoit. Les deux émissions simultanées se heurtent sur le support partagé : c'est une **collision**. Les deux machines détectent la collision, attendent un délai aléatoire et réémettent ; le débit effectif chute, car les cinq postes partagent une seule bande passante.\n\nAvec un **switch**, les deux conversations (PC1 vers PC2 et PC3 vers PC4) empruntent des ports différents et se déroulent en parallèle, sans collision. Chaque liaison dispose de sa propre bande passante."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le hub diffuse chaque trame à tous ses autres ports ; la carte réseau de chaque machine fait le tri.",
+        "Le switch lit l'adresse MAC de destination et n'envoie la trame que vers le port concerné.",
+        "Un hub forme un seul domaine de collision : les émissions simultanées entrent en collision.",
+        "Pour décrire une transmission, dis par où la trame entre, où elle sort et qui l'accepte.",
+        "Au BAC TI, cette question prend la forme « décrire la transmission » ou « différence entre hub et switch »."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-create-table-dictionnaire-donnees-tle-ti-si2023",
+  "meta": {
+    "titre": "Écrire des requêtes CREATE TABLE à partir d'un dictionnaire de données",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 30,
+    "tags": [
+      "CREATE TABLE",
+      "dictionnaire de données",
+      "clé primaire",
+      "clé étrangère",
+      "SQL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un dictionnaire de données est le plan de construction d'une base : il liste chaque identifiant, son type et sa taille. Transformer ce tableau en requêtes SQL est un exercice de traduction, à faire avec rigueur. Avec la méthode qui suit, tu peux écrire des CREATE TABLE justes même pour une base inconnue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Types SQL de base : CHAR, VARCHAR, INTEGER, DECIMAL",
+        "Notions de clé primaire et de clé étrangère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire un dictionnaire en CREATE TABLE",
+      "contenu_markdown": "1. **Répartir** les identifiants entre les tables du schéma relationnel.\n2. **Typer** : Texte de taille n devient `VARCHAR(n)` (ou `CHAR(n)` si la longueur est fixe) ; Numérique devient `INTEGER` ou `DECIMAL(p,s)`.\n3. **Clé primaire** : `PRIMARY KEY` sur l'identifiant de chaque table.\n4. **Clé étrangère** : `FOREIGN KEY (col) REFERENCES table_mère(col)`.\n5. **Ordre** : créer la table mère avant la table fille.\n\n```sql\nCREATE TABLE Mere (Id CHAR(4) PRIMARY KEY, Nom VARCHAR(20));\nCREATE TABLE Fille (Num INTEGER PRIMARY KEY, IdMere CHAR(4), FOREIGN KEY (IdMere) REFERENCES Mere(Id));\n```",
+      "variantes": [
+        {
+          "nom": "Colonne Nature du dictionnaire",
+          "quand_utiliser": "Quand le dictionnaire donne Permanent ou Mouvement",
+          "contenu_markdown": "Permanent : donnée stable, souvent un identifiant ou une description. Mouvement : donnée qui varie (quantité, montant). Les clés primaires se cherchent parmi les permanents."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire les requêtes de création de Fournisseur (CodeF, NomF, Domiciliation, CA, Sexe) et Produit (CodeBarre, Designation, Qte, PU, #CodeF) d'après le dictionnaire (types, tailles).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Typer les colonnes de Fournisseur",
+          "justification": "CodeF texte 6, NomF texte 30, Domiciliation texte 32, CA numérique, Sexe texte 1.",
+          "resultat_markdown": "CHAR(6), VARCHAR(30), VARCHAR(32), DECIMAL(15,2), CHAR(1)."
+        },
+        {
+          "numero": 2,
+          "action": "Typer les colonnes de Produit",
+          "justification": "CodeBarre texte 15, Designation texte 30, Qte numérique, PU numérique.",
+          "resultat_markdown": "CHAR(15), VARCHAR(30), INTEGER, DECIMAL(10,2)."
+        },
+        {
+          "numero": 3,
+          "action": "Poser les clés",
+          "justification": "CodeF identifie un fournisseur, CodeBarre un produit, CodeF dans Produit référence Fournisseur.",
+          "resultat_markdown": "PRIMARY KEY (CodeF), PRIMARY KEY (CodeBarre), FOREIGN KEY (CodeF)."
+        },
+        {
+          "numero": 4,
+          "action": "Ordonner et rédiger",
+          "justification": "Fournisseur d'abord, sinon la référence échoue.",
+          "resultat_markdown": "CREATE TABLE Fournisseur (...) ; puis CREATE TABLE Produit (...)."
+        }
+      ],
+      "conclusion_markdown": "Les deux requêtes respectent les types, les clés et l'ordre de création."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Créer la table fille avant la table mère",
+          "pourquoi_faux": "La clé étrangère référence une table qui n'existe pas encore.",
+          "correction_markdown": "Créer toujours Fournisseur avant Produit."
+        },
+        {
+          "erreur_markdown": "Oublier la clé étrangère",
+          "pourquoi_faux": "Le lien du schéma relationnel (#CodeF) n'existe plus dans la base.",
+          "correction_markdown": "Ajouter FOREIGN KEY ... REFERENCES."
+        },
+        {
+          "erreur_markdown": "Utiliser des accents ou des espaces dans les noms de colonnes",
+          "pourquoi_faux": "Certains SGBD refusent ces noms.",
+          "correction_markdown": "Écrire Designation sans accent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la requête de création de Client (NumClient texte 5, Nom texte 30, Ville texte 20), clé primaire NumClient.",
+          "solution_markdown": "1. NumClient : CHAR(5) PRIMARY KEY.\n2. Nom : VARCHAR(30).\n3. Ville : VARCHAR(20).\n`CREATE TABLE Client (NumClient CHAR(5) PRIMARY KEY, Nom VARCHAR(30), Ville VARCHAR(20));`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la requête de création de Commande (NumCmd entier, DateCmd date, #NumClient texte 5) liée à Client.",
+          "solution_markdown": "1. NumCmd : INTEGER PRIMARY KEY.\n2. DateCmd : DATE.\n3. NumClient : CHAR(5) NOT NULL, clé étrangère vers Client(NumClient).\n`CREATE TABLE Commande (NumCmd INTEGER PRIMARY KEY, DateCmd DATE, NumClient CHAR(5) NOT NULL, FOREIGN KEY (NumClient) REFERENCES Client(NumClient));`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table Inscription relie Etudiant (Matricule texte 8) et Cours (Code texte 6) avec une Note numérique. Écris sa création avec une clé primaire composée.",
+          "solution_markdown": "1. Une inscription est identifiée par le couple (Matricule, Code) : clé primaire composée.\n2. Les deux colonnes sont aussi des clés étrangères.\n`CREATE TABLE Inscription (Matricule CHAR(8), Code CHAR(6), Note DECIMAL(4,2), PRIMARY KEY (Matricule, Code), FOREIGN KEY (Matricule) REFERENCES Etudiant(Matricule), FOREIGN KEY (Code) REFERENCES Cours(Code));`"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque identifiant devient une colonne typée.",
+        "Texte n : VARCHAR(n) ou CHAR(n). Numérique : INTEGER ou DECIMAL.",
+        "PRIMARY KEY pour l'identifiant, FOREIGN KEY ... REFERENCES pour le lien.",
+        "Table mère d'abord, table fille ensuite.",
+        "Au BAC TI, cette question vaut 2 points : 1 par table, avec types, clés et ordre."
+      ]
+    }
+  ]
+}

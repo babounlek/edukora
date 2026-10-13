@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-ldd-lmd-commandes-sql-tle-ti-si2023",
+  "meta": {
+    "titre": "Classer les commandes SQL en définition et en manipulation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 18,
+    "tags": [
+      "SQL",
+      "LDD",
+      "LMD",
+      "CREATE",
+      "INSERT"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Les commandes SQL ne se ressemblent pas toutes : certaines construisent la base, d'autres la remplissent. Savoir les classer évite de confondre CREATE et INSERT ou DROP et DELETE. Ce classement revient dans presque tous les sujets de bases de données."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de base de données et de table",
+        "Avoir déjà vu quelques requêtes SQL"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux familles de commandes",
+      "contenu_markdown": "- **LDD, langage de définition de données** : agit sur la **structure** (tables, colonnes, bases) : `CREATE`, `ALTER`, `DROP`.\n- **LMD, langage de manipulation de données** : agit sur le **contenu** (lignes) : `INSERT`, `UPDATE`, `DELETE`, et `SELECT` pour interroger.\n\nMoyen de retenir : le LDD touche le contenant, le LMD touche le contenu.",
+      "variantes": [
+        {
+          "nom": "Autres familles",
+          "quand_utiliser": "Quand la question cite d'autres langages",
+          "contenu_markdown": "LCD (langage de contrôle des données) : `GRANT`, `REVOKE`. LCT (langage de contrôle des transactions) : `COMMIT`, `ROLLBACK`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer deux opérations de définition et deux opérations de manipulation de données dans la base COMMANDE.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir deux commandes de structure",
+          "justification": "Elles créent ou modifient des tables.",
+          "resultat_markdown": "CREATE TABLE et ALTER TABLE."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir deux commandes de contenu",
+          "justification": "Elles ajoutent ou modifient des lignes.",
+          "resultat_markdown": "INSERT et UPDATE."
+        },
+        {
+          "numero": 3,
+          "action": "Illustrer sur la base COMMANDE",
+          "justification": "Un exemple montre la compréhension.",
+          "resultat_markdown": "CREATE TABLE Fournisseur (...) ; INSERT INTO Fournisseur VALUES (...)."
+        }
+      ],
+      "conclusion_markdown": "Définition : CREATE et ALTER. Manipulation : INSERT et UPDATE."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Classer DROP en manipulation",
+          "pourquoi_faux": "Il supprime une structure, donc c'est du LDD.",
+          "correction_markdown": "DROP, CREATE, ALTER : définition."
+        },
+        {
+          "erreur_markdown": "Classer INSERT en définition",
+          "pourquoi_faux": "Il ajoute une ligne, donc c'est du contenu : LMD.",
+          "correction_markdown": "INSERT, UPDATE, DELETE : manipulation."
+        },
+        {
+          "erreur_markdown": "Citer une clause comme une commande (WHERE)",
+          "pourquoi_faux": "WHERE est une clause qui précise une commande, pas une commande.",
+          "correction_markdown": "Citer SELECT, UPDATE, DELETE, qui acceptent WHERE."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classe CREATE, INSERT, ALTER, DELETE.",
+          "solution_markdown": "1. CREATE : LDD.\n2. INSERT : LMD.\n3. ALTER : LDD.\n4. DELETE : LMD."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris une commande LDD qui ajoute la colonne Marque (30 caractères) à Produit, puis une commande LMD qui fixe PU à 1500 pour le code barre 'B1'.",
+          "solution_markdown": "1. LDD : `ALTER TABLE Produit ADD Marque VARCHAR(30);`\n2. LMD : `UPDATE Produit SET PU = 1500 WHERE CodeBarre = 'B1';`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi SELECT n'est-il parfois classé ni en LDD ni en LMD ?",
+          "solution_markdown": "1. SELECT ne modifie ni la structure ni les données, il les lit.\n2. Certains manuels le rangent donc dans un langage d'interrogation (LID).\n3. D'autres l'incluent au LMD parce qu'il manipule des données au sens large.\n4. À l'examen, ranger SELECT en LMD est accepté."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "LDD : CREATE, ALTER, DROP, qui touchent la structure.",
+        "LMD : INSERT, UPDATE, DELETE, qui touchent les données.",
+        "SELECT est rangé en LMD ou en langage d'interrogation.",
+        "DROP est du LDD, DELETE du LMD.",
+        "Au BAC TI, cette question vaut 1 point et se rédige en quatre lignes."
+      ]
+    }
+  ]
+}

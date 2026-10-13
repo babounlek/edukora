@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-l-invite-de-commandes-windows-la-variable-path-et-le-chemin-de-recherche-gap24",
+  "meta": {
+    "titre": "L'invite de commandes Windows, la variable PATH et le chemin de recherche",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "interface en ligne de commande",
+      "invite de commandes Windows",
+      "chemin de recherche",
+      "exécutables",
+      "gestion des processus"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex3-q4.a-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2018-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'enseignant te dit : « Le bureau graphique ne répond plus, interviens en ligne de commandes. » Tu ouvres une fenêtre noire, tu tapes un nom de programme, et Windows répond que cette commande n'est pas reconnue, alors que le programme est bien installé. Le coupable est presque toujours la variable PATH. Ce cours t'explique ce qu'est une interface en ligne de commande, comment Windows retrouve un exécutable et comment arrêter un processus qui bloque."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de dossier et de chemin d'accès (C:\\Windows\\system32)",
+        "Savoir qu'un programme est stocké dans un fichier exécutable"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Piloter Windows au clavier : commandes, PATH et processus",
+      "contenu_markdown": "**Interface en ligne de commande (CLI).** On agit sur le système en **tapant des commandes** dans une console ; un interpréteur lit la ligne, l'exécute et affiche le résultat en texte. À l'opposé, l'interface graphique (GUI) utilise fenêtres, icônes et menus. La CLI est précise, rapide, automatisable avec des scripts et reste utilisable quand le bureau graphique ne démarre plus.\n\n**L'invite de commandes Windows** (`cmd.exe`) : on l'ouvre avec les touches Windows et R, en saisissant `cmd` puis Entrée. PowerShell est un interpréteur plus récent et plus puissant.\n\n| Commande | Rôle |\n|---|---|\n| `dir` | lister le contenu du dossier courant |\n| `cd dossier` | changer de dossier |\n| `cls` | effacer l'écran |\n| `ipconfig` | afficher la configuration IP |\n| `ping adresse` | tester la connectivité |\n| `tasklist` | lister les processus en cours (avec leur PID) |\n| `taskkill /PID 1234` | arrêter le processus de PID 1234 |\n| `taskkill /IM notepad.exe /F` | forcer l'arrêt du Bloc-notes par son nom |\n| `start` | lancer un programme, un fichier ou une adresse web |\n\n**Gestion des processus.** Un processus est un programme en cours d'exécution ; le **PID** (*Process IDentifier*) est son numéro unique. On le lit dans le Gestionnaire des tâches ou avec `tasklist`.\n\n**Variables d'environnement.** Une variable d'environnement est un nom associé à une valeur lue par Windows et les programmes. On affiche sa valeur en entourant son nom du signe pourcentage : `echo %TEMP%` (dossier des fichiers temporaires), `echo %PATH%`. La commande `set` les liste toutes.\n\n**La variable PATH et le chemin de recherche.** PATH contient la **liste des dossiers**, séparés par des points-virgules, où Windows cherche les **exécutables** quand on tape un nom de commande sans chemin complet. Exemple : `C:\\Windows\\system32;C:\\Windows;C:\\Outils`. L'invite de commandes cherche d'abord dans le **dossier courant**, puis dans chaque dossier de PATH, **dans l'ordre**, un fichier du nom demandé avec une extension d'exécutable (`.exe`, `.com`, `.bat`, `.cmd`). Dès qu'il est trouvé, il est lancé.\n\nSi le programme n'est dans aucun de ces dossiers, la console répond : « n'est pas reconnu en tant que commande interne ou externe ». Deux remèdes : saisir le **chemin complet** du programme, ou **ajouter son dossier à PATH**. Pour la session en cours : `set PATH=%PATH%;C:\\Outils`. Pour une modification permanente, on passe par les propriétés système, rubrique variables d'environnement.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Variable PROMPT",
+          "quand_utiliser": "Quand on demande la différence entre PROMPT et PATH.",
+          "contenu_markdown": "PROMPT définit l'aspect du texte d'invite affiché avant la zone de saisie (par défaut le chemin du dossier courant suivi du signe supérieur à). PATH, elle, liste les dossiers où chercher les programmes. Les deux sont des variables d'environnement, mais leur rôle n'a rien à voir."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Que contient la variable d'environnement Windows PATH ? Un outil installé dans C:\\Outils n'est pas reconnu quand on tape son nom dans l'invite de commandes : pourquoi, et que faire ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Définir PATH",
+          "justification": "On commence par le contenu de la variable.",
+          "resultat_markdown": "PATH est la liste des dossiers, séparés par des points-virgules, dans lesquels Windows cherche les programmes exécutables."
+        },
+        {
+          "numero": 2,
+          "action": "Expliquer la recherche",
+          "justification": "Quand on tape un nom sans chemin, Windows examine le dossier courant, puis chaque dossier de PATH dans l'ordre.",
+          "resultat_markdown": "Il s'arrête dès qu'il trouve un fichier exécutable portant ce nom."
+        },
+        {
+          "numero": 3,
+          "action": "Diagnostiquer",
+          "justification": "C:\\Outils ne figure pas dans la liste de PATH.",
+          "resultat_markdown": "La console répond « n'est pas reconnu en tant que commande interne ou externe »."
+        },
+        {
+          "numero": 4,
+          "action": "Proposer deux remèdes",
+          "justification": "Soit on indique où est le programme, soit on le rend trouvable.",
+          "resultat_markdown": "Saisir le chemin complet, ou ajouter C:\\Outils à PATH, par exemple avec `set PATH=%PATH%;C:\\Outils` pour la session en cours."
+        }
+      ],
+      "conclusion_markdown": "PATH liste les dossiers où Windows cherche les exécutables. L'outil n'est pas reconnu parce que son dossier n'est pas dans PATH : on utilise son chemin complet ou on l'ajoute à PATH."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre PROMPT et PATH.",
+          "pourquoi_faux": "PROMPT règle l'aspect de l'invite ; PATH liste les dossiers de recherche des programmes.",
+          "correction_markdown": "Programme introuvable : pense à PATH. Aspect de l'invite : pense à PROMPT."
+        },
+        {
+          "erreur_markdown": "Répondre « le DOS » à la question « quel espace de travail ? ».",
+          "pourquoi_faux": "DOS est un ancien système. L'outil actuel de Windows est l'invite de commandes (cmd.exe), ou PowerShell.",
+          "correction_markdown": "Écris « invite de commandes (cmd.exe) » et précise comment l'ouvrir."
+        },
+        {
+          "erreur_markdown": "Séparer les dossiers de PATH par des virgules ou des espaces.",
+          "pourquoi_faux": "Windows attend des points-virgules : sinon un seul « dossier » invalide est lu.",
+          "correction_markdown": "Sépare toujours les dossiers par un point-virgule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que contiennent les variables TEMP, PROMPT et PATH ? Quelle commande affiche la valeur de PATH ?",
+          "solution_markdown": "**TEMP** : le chemin du dossier des fichiers temporaires. **PROMPT** : le format du texte d'invite de l'invite de commandes. **PATH** : la liste des dossiers où Windows cherche les exécutables. Pour afficher PATH : `echo %PATH%`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "PATH vaut `C:\\Windows\\system32;C:\\Windows;C:\\Outils`. Le fichier calc.exe est dans C:\\Windows\\system32 et le fichier jeu.exe dans D:\\Jeux. On tape calc puis jeu depuis le dossier C:\\Users\\Eleve. Que se passe-t-il ? Combien de dossiers contient PATH ?",
+          "solution_markdown": "PATH contient **3 dossiers** (trois éléments séparés par deux points-virgules).\n\n`calc` : absent du dossier courant, mais trouvé dans C:\\Windows\\system32, premier dossier de PATH : le programme se lance.\n\n`jeu` : ni dans C:\\Users\\Eleve, ni dans les trois dossiers de PATH. Windows répond « n'est pas reconnu en tant que commande interne ou externe ». Remèdes : saisir `D:\\Jeux\\jeu.exe`, ou ajouter D:\\Jeux à PATH."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un programme bloqué empêche d'utiliser le bureau. Décrire en ligne de commandes comment l'arrêter, d'abord par son PID, puis par son nom. Pourquoi l'option /F ?",
+          "solution_markdown": "1. Ouvrir l'invite de commandes (Windows + R, `cmd`).\n2. Lister les processus : `tasklist`. On repère le programme et son PID, par exemple 1234.\n3. Arrêt par le PID : `taskkill /PID 1234`.\n4. Arrêt par le nom : `taskkill /IM notepad.exe`.\n\nL'option **/F** (force) termine le processus sans attendre sa réponse : elle est utile quand le programme est bloqué et ignore la demande de fermeture normale, par exemple `taskkill /IM notepad.exe /F`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Interface en ligne de commande : on tape des commandes dans une console ; invite de commandes = cmd.exe (Windows + R, cmd).",
+        "Variable d'environnement : nom associé à une valeur ; on l'affiche avec echo et le nom entre signes pourcentage.",
+        "PATH : liste de dossiers séparés par des points-virgules où Windows cherche les exécutables (.exe, .com, .bat, .cmd).",
+        "Ordre de recherche : dossier courant, puis chaque dossier de PATH dans l'ordre ; sinon « n'est pas reconnu en tant que commande interne ou externe ».",
+        "Processus : tasklist donne le PID ; taskkill /PID ou /IM arrête un processus, avec /F pour forcer."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-lire-la-fiche-technique-dun-microprocesseur-tle-ti-2019",
+  "meta": {
+    "titre": "Lire la fiche technique d'un microprocesseur",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Caractéristiques des composants",
+    "duree_estimee_min": 26,
+    "tags": [
+      "fiche technique",
+      "FSB",
+      "multiplicateur",
+      "socket"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.3.a-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur l'étiquette d'un processeur ou dans une annonce de vente, une ligne de chiffres comme « 2400 MHz - 200 MHz - 128 Ko - 1024 Ko - Socket 939 » résume tout. Savoir lire chaque valeur évite d'acheter le mauvais composant et permet de répondre sans hésiter à une question d'examen. La clé est de regarder les unités."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir convertir MHz, GHz, Ko et Mo",
+        "Connaître les notions de bus, de cache et de support de processeur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une unité, une signification",
+      "contenu_markdown": "Dans une fiche technique de processeur :\n\n- **MHz ou GHz** : des **fréquences**. La plus élevée est la **fréquence interne** du cœur ; la plus basse est la **fréquence du bus système** (FSB, *Front Side Bus*), qui relie le processeur au reste de la carte mère.\n- **Ko ou Mo** : des **tailles de mémoire cache** (L1 puis L2 par ordre croissant de taille).\n- **Socket** : le type de support sur la carte mère (ici Socket 939) ; il doit correspondre à la carte mère.\n\nLa fréquence interne est le produit de la fréquence du bus par un **multiplicateur** :\n\n$$f_{\\text{interne}} = f_{\\text{bus}} \\times k$$\n\nSur les processeurs récents, le FSB est remplacé par des liaisons rapides directes (HyperTransport, QPI, DMI), mais la lecture par les unités reste valable.",
+      "formule_principale": "f_{\\text{interne}} = f_{\\text{bus}} \\times k",
+      "variantes": [
+        {
+          "nom": "Fréquence effective du bus",
+          "quand_utiliser": "Quand le bus transfère plusieurs fois par cycle d'horloge",
+          "contenu_markdown": "Certains bus transfèrent 2 ou 4 fois par cycle (*double* ou *quad pumped*) : un FSB annoncé à 800 MHz repose sur une horloge de 200 MHz multipliée par 4. Dans l'épreuve, la fiche donne directement la valeur à retenir."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le microprocesseur AMD Athlon 64 4000+ possède les caractéristiques : 2400 MHz - 200 MHz - 128 Ko - 1024 Ko - Socket 939. Identifier la fréquence du bus système (FSB).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Classer les valeurs par unité",
+          "justification": "MHz : fréquence ; Ko : mémoire ; Socket : support",
+          "resultat_markdown": "2400 MHz et 200 MHz sont des fréquences ; 128 Ko et 1024 Ko sont des caches ; Socket 939 est le support."
+        },
+        {
+          "numero": 2,
+          "action": "Distinguer les deux fréquences",
+          "justification": "La plus élevée est interne, la plus basse est celle du bus",
+          "resultat_markdown": "2400 MHz : fréquence interne ; 200 MHz : bus système."
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler par le multiplicateur",
+          "justification": "$k = f_{\\text{interne}} / f_{\\text{bus}}$ doit être un entier raisonnable",
+          "resultat_markdown": "$k = \\frac{2400}{200} = 12$, cohérent."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "La question demande le FSB",
+          "resultat_markdown": "FSB = 200 MHz."
+        }
+      ],
+      "conclusion_markdown": "La fréquence du bus système de l'Athlon 64 4000+ est de 200 MHz."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre 2400 MHz.",
+          "pourquoi_faux": "Cette valeur est la fréquence interne du processeur. Le bus système est la liaison plus lente avec la carte mère.",
+          "correction_markdown": "Choisir la plus petite des deux fréquences comme fréquence du bus."
+        },
+        {
+          "erreur_markdown": "Prendre 128 Ko ou 1024 Ko pour une fréquence.",
+          "pourquoi_faux": "Ko est une unité de capacité, pas de fréquence : ces valeurs sont les tailles des caches L1 et L2.",
+          "correction_markdown": "Vérifier l'unité avant d'interpréter un nombre."
+        },
+        {
+          "erreur_markdown": "Confondre Socket 939 avec une fréquence ou une capacité.",
+          "pourquoi_faux": "Le socket désigne le type de support sur la carte mère ; le chiffre n'est qu'une référence de brochage.",
+          "correction_markdown": "Associer socket et compatibilité avec la carte mère."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une fiche indique « 3000 MHz - 200 MHz - 64 Ko - 512 Ko - Socket AM2 ». Donner la fréquence interne, la fréquence du bus et la taille des caches.",
+          "solution_markdown": "1. Fréquences : 3000 MHz (la plus élevée, fréquence interne) et 200 MHz (la plus basse, bus).\n2. Tailles de caches : 64 Ko (L1) et 512 Ko (L2).\n3. Socket AM2 : le support."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour la fiche précédente, calculer le multiplicateur et la fréquence interne si le bus passe à 250 MHz avec le même multiplicateur.",
+          "solution_markdown": "1. $k = \\frac{3000}{200} = 15$.\n2. Avec un bus de 250 MHz : $f_{\\text{interne}} = 250 \\times 15 = 3750$ MHz.\n3. La fréquence interne augmente de 25 % : c'est le principe du surcadençage, qui exige un refroidissement adapté."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une carte mère a un socket 754 et un processeur porte « Socket 939 ». Peut-on les associer ? Que doit-on vérifier avant un achat ?",
+          "solution_markdown": "1. Non : le socket du processeur doit correspondre à celui de la carte mère ; 939 et 754 ont des brochages différents.\n2. Avant l'achat on vérifie : le socket, la fréquence du bus supportée, la version du BIOS compatible avec le processeur, la puissance thermique et la mémoire acceptée.\n3. Un processeur incompatible ne s'enfiche pas correctement ou ne démarre pas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les valeurs en MHz ou GHz sont des fréquences ; celles en Ko ou Mo sont des tailles de cache.",
+        "La plus haute fréquence est la fréquence interne, la plus basse est celle du bus système (FSB).",
+        "Fréquence interne = fréquence du bus multipliée par le multiplicateur.",
+        "Le socket doit correspondre à la carte mère.",
+        "À l'examen, commence toujours par repérer les unités avant de répondre."
+      ]
+    }
+  ]
+}

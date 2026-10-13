@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-du-bouton-power-au-bureau-sequence-de-demarrage-d-un-ordinateur-gap24",
+  "meta": {
+    "titre": "Du bouton power au bureau : la séquence de démarrage d'un ordinateur",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "démarrage d'un ordinateur",
+      "installation d'un système d'exploitation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qA.2-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun.pdf"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu appuies sur le bouton power : quelques secondes plus tard, le bureau apparaît. Entre les deux, une chaîne d'opérations très précise se déroule, et chaque maillon peut tomber en panne. Un technicien qui connaît cet ordre sait dire, d'après le symptôme (écran noir, bips, message d'erreur), à quelle étape le démarrage s'arrête. C'est aussi la base de l'installation d'un système d'exploitation, que le BAC TI demande régulièrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la carte mère, la ROM et le disque dur",
+        "Savoir ce qu'est un système d'exploitation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La séquence de démarrage et l'installation d'un système",
+      "contenu_markdown": "**Séquence de démarrage (dans l'ordre)**\n\n1. **Mise sous tension** : l'alimentation fournit le courant ; les voyants (LED) s'allument et les ventilateurs tournent. C'est le premier événement perceptible, avant tout affichage à l'écran.\n2. **Exécution du micrologiciel** : le processeur lit le **BIOS** (ou son successeur UEFI), programme conservé dans une mémoire non volatile de la carte mère.\n3. **POST** (*Power-On Self-Test*) : auto-test du processeur, de la mémoire, du clavier et de la carte graphique. Un bip, ou une série de bips, signale une anomalie.\n4. **Initialisation du matériel de base**, puis lecture de l'**ordre d'amorçage** configuré dans le BIOS (disque dur, clé USB, lecteur optique, réseau).\n5. **Amorçage** : le BIOS charge le programme d'amorçage du premier périphérique valide, qui charge à son tour le noyau du système d'exploitation en mémoire vive.\n6. **Chargement du système** : le système initialise les pilotes, lance ses services, puis affiche l'écran d'ouverture de session et le bureau.\n\nLe BIOS fait donc le lien entre le matériel et le système d'exploitation ; il s'exécute avant lui et ne dépend d'aucun disque.\n\n**Installer un système d'exploitation depuis une clé USB**\n\n1. Préparer une clé USB **amorçable** à partir de l'image ISO du système (outil comme Rufus ou balenaEtcher).\n2. Brancher la clé, allumer l'ordinateur et entrer dans le **BIOS** (touche Suppr, F2, F10 ou Échap selon la carte mère).\n3. Placer la clé en **premier dans l'ordre d'amorçage**, enregistrer et quitter.\n4. Lancer le programme d'installation et choisir la langue, le clavier et le fuseau horaire.\n5. **Partitionner** le disque (créer les zones logiques), puis **formater** la partition choisie (préparer le système de fichiers).\n6. Laisser copier les fichiers du système, créer le compte utilisateur.\n7. **Retirer la clé** et redémarrer sur le disque ; installer les pilotes et les mises à jour.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Partitionner ou formater ?",
+          "quand_utiliser": "Quand le sujet emploie les deux mots.",
+          "contenu_markdown": "Le partitionnement divise le disque en zones logiques indépendantes (partitions). Le formatage prépare ensuite chaque partition à recevoir des fichiers en créant son système de fichiers (NTFS, FAT32, ext4). Ce sont deux étapes successives, pas des synonymes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Quel est le premier évènement perceptible après la pression du « bouton power » ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Replacer la question dans la séquence",
+          "justification": "Le démarrage suit un ordre strict : le courant d'abord, le logiciel ensuite.",
+          "resultat_markdown": "Avant que le BIOS ne s'exécute, il faut que les composants soient alimentés."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier ce que l'utilisateur perçoit en premier",
+          "justification": "L'écran n'affiche rien tant que la carte graphique n'est pas initialisée.",
+          "resultat_markdown": "Les voyants s'allument et les ventilateurs se mettent à tourner."
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter l'évènement suivant",
+          "justification": "Le POST donne un signal sonore avant le premier affichage.",
+          "resultat_markdown": "Un bip bref peut suivre, émis par le POST."
+        }
+      ],
+      "conclusion_markdown": "Le premier évènement perceptible est la mise sous tension des composants : voyants allumés et ventilateurs en rotation, avant même le premier affichage à l'écran."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre que le premier évènement est l'apparition du logo du constructeur ou du système.",
+          "pourquoi_faux": "L'écran ne s'allume qu'après l'initialisation de la carte graphique, bien après la mise sous tension.",
+          "correction_markdown": "Commence par la mise sous tension : voyants et ventilateurs."
+        },
+        {
+          "erreur_markdown": "Confondre BIOS et système d'exploitation.",
+          "pourquoi_faux": "Le BIOS est un micrologiciel de la carte mère exécuté avant le système et qui ne dépend d'aucun disque.",
+          "correction_markdown": "Le BIOS démarre et teste le matériel, puis lance le système d'exploitation."
+        },
+        {
+          "erreur_markdown": "Oublier de modifier l'ordre d'amorçage lors d'une installation depuis une clé USB.",
+          "pourquoi_faux": "L'ordinateur démarre alors sur le disque (vide) et la clé n'est jamais lue.",
+          "correction_markdown": "Place la clé USB en premier dans l'ordre d'amorçage, puis retire-la avant le redémarrage final."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Remettre dans l'ordre : ouverture de session ; POST ; mise sous tension ; chargement du système d'exploitation ; exécution du BIOS.",
+          "solution_markdown": "1. Mise sous tension. 2. Exécution du BIOS. 3. POST. 4. Chargement du système d'exploitation. 5. Ouverture de session."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Tu viens d'acheter un ordinateur portable sans système d'exploitation et tu disposes d'une clé USB contenant un système libre. Énumérer les principales étapes pour l'installer.",
+          "solution_markdown": "1. Vérifier que la clé est **amorçable** (sinon la préparer avec Rufus à partir de l'ISO).\n2. Brancher la clé, allumer et entrer dans le **BIOS**.\n3. Mettre la clé USB **en premier dans l'ordre d'amorçage**, enregistrer, quitter.\n4. Lancer l'installation et choisir langue, clavier, fuseau horaire.\n5. **Partitionner et formater** le disque.\n6. Copier les fichiers du système et créer le compte utilisateur.\n7. **Retirer la clé**, redémarrer sur le disque, installer pilotes et mises à jour."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Après l'installation, l'ordinateur affiche « système d'exploitation introuvable ». Proposer deux causes et une vérification pour chacune.",
+          "solution_markdown": "**Cause 1 : mauvais ordre d'amorçage.** L'ordinateur essaie de démarrer sur un périphérique sans système (clé retirée, lecteur vide). Vérification : entrer dans le BIOS et placer le disque d'installation en premier.\n\n**Cause 2 : installation incomplète ou disque non reconnu.** Le système n'a pas été copié jusqu'au bout, ou le disque n'apparaît pas dans le BIOS. Vérification : regarder si le disque est détecté dans le BIOS ; sinon, contrôler le câble ou relancer l'installation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ordre du démarrage : mise sous tension, BIOS, POST, ordre d'amorçage, chargement du système, ouverture de session.",
+        "Le premier événement perceptible est la mise sous tension (voyants, ventilateurs), avant l'affichage.",
+        "Le BIOS est un micrologiciel de la carte mère qui teste le matériel (POST) puis lance le système d'exploitation.",
+        "Installation : clé amorçable, ordre d'amorçage dans le BIOS, partitionnement, formatage, copie, redémarrage sans la clé.",
+        "Partitionner crée les zones du disque ; formater prépare chaque zone à recevoir des fichiers."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-codage-de-l-information-numeration-binaire-conversions-et-parite-gap24",
+  "meta": {
+    "titre": "Codage de l'information : numération binaire, conversions et parité",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Codage de l'information",
+    "duree_estimee_min": 30,
+    "tags": [
+      "Codage de l'information",
+      "numération binaire",
+      "parité d'un nombre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-informatique-theorique-officiel-2015",
+    "epreuve_titre": "Baccalauréat ESG - Séries A, C, D, E - Informatique (Épreuve théorique) - Session 2015",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2015-ex2-q1-1-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-a-c-d-e-informatique-theorique-officiel-2015.pdf"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur ne connaît que deux états électriques : le courant passe, ou il ne passe pas. Pourtant il affiche des lettres, des photos, des nombres comme 43. Tout repose sur le codage de l'information : chaque donnée est traduite en suites de 0 et de 1. Ce cours te donne les trois outils que le BAC demande presque chaque année : compter le nombre de bits nécessaires, convertir d'une base à l'autre, et reconnaître la parité d'un nombre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les puissances de 2 jusqu'à 2 puissance 10 (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)",
+        "Savoir faire une division euclidienne avec reste"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Coder en binaire, convertir et reconnaître la parité",
+      "contenu_markdown": "**Bit et octet.** Un **bit** (*binary digit*) vaut 0 ou 1. Un **octet** est un groupe de 8 bits. Avec n bits, on forme **2 puissance n** codes différents ; pour coder N informations, on cherche le plus petit n tel que 2 puissance n soit supérieur ou égal à N. Exemple : 256 couleurs demandent 8 bits, car 2 puissance 8 = 256.\n\n**Numération binaire (base 2).** Le poids d'un chiffre dépend de sa position, en partant de la droite : 1, 2, 4, 8, 16, 32, 64, 128...\n\n**Binaire vers décimal.** On additionne les poids des positions où il y a un 1.\n\n**Décimal vers binaire.** On divise par 2 jusqu'à obtenir un quotient nul ; on lit les restes **de bas en haut**.\n\n**Octal et hexadécimal.** Pour passer du binaire à l'octal (base 8), on groupe les bits **par 3** en partant de la droite. Pour l'hexadécimal (base 16, chiffres 0 à 9 puis A=10, B=11, C=12, D=13, E=14, F=15), on groupe **par 4**.\n\n**Parité d'un nombre.** Un entier est **pair** si le reste de sa division par 2 est nul, **impair** sinon. En binaire, tous les poids sont pairs sauf celui de la dernière position (1) : un nombre est **pair si son dernier bit est 0** et **impair si son dernier bit est 1**. En décimal, on regarde le dernier chiffre (0, 2, 4, 6, 8 : pair).",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Bit de parité pour détecter une erreur",
+          "quand_utiliser": "Quand on veut contrôler qu'une suite de bits n'a pas été altérée pendant une transmission.",
+          "contenu_markdown": "On ajoute un bit pour que le nombre total de 1 soit pair (parité paire). Exemple : 1011001 contient quatre 1 (nombre pair), donc le bit de parité est 0 et on envoie 10110010. Si le récepteur compte un nombre impair de 1, il sait qu'une erreur s'est glissée dans le message. Cette méthode détecte une erreur isolée mais ne la corrige pas."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reproduire et compléter le tableau de conversion : Binaire 101011, Octal ?, Décimal ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Numéroter les positions de la droite vers la gauche",
+          "justification": "Le poids de chaque bit est une puissance de 2.",
+          "resultat_markdown": "Les poids sont 32, 16, 8, 4, 2, 1 pour 1, 0, 1, 0, 1, 1."
+        },
+        {
+          "numero": 2,
+          "action": "Additionner les poids des bits à 1",
+          "justification": "Les bits à 0 ne comptent pas.",
+          "resultat_markdown": "32 + 8 + 2 + 1 = 43. Décimal : 43."
+        },
+        {
+          "numero": 3,
+          "action": "Grouper les bits par 3 en partant de la droite",
+          "justification": "Trois bits donnent un chiffre de 0 à 7, donc un chiffre octal.",
+          "resultat_markdown": "101011 se coupe en 101 et 011."
+        },
+        {
+          "numero": 4,
+          "action": "Convertir chaque groupe",
+          "justification": "101 = 4 + 0 + 1 = 5 ; 011 = 0 + 2 + 1 = 3.",
+          "resultat_markdown": "Octal : 53."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier par un autre chemin",
+          "justification": "53 en octal = 5 × 8 + 3 = 43 : on retrouve le décimal.",
+          "resultat_markdown": "Les deux conversions sont cohérentes."
+        }
+      ],
+      "conclusion_markdown": "101011 en binaire s'écrit 53 en octal et 43 en décimal (2B en hexadécimal)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire les restes de haut en bas dans une conversion décimal vers binaire.",
+          "pourquoi_faux": "Le premier reste est le bit de poids le plus faible. Lus à l'envers, ils donnent un autre nombre.",
+          "correction_markdown": "Lis les restes de bas en haut. Vérifie en reconvertissant en décimal."
+        },
+        {
+          "erreur_markdown": "Répondre « 256 bits » pour coder 256 couleurs.",
+          "pourquoi_faux": "Le nombre de bits est l'exposant n tel que 2 puissance n = 256, c'est-à-dire 8, pas le nombre de couleurs.",
+          "correction_markdown": "Cherche le plus petit n tel que 2 puissance n soit supérieur ou égal à N."
+        },
+        {
+          "erreur_markdown": "Juger la parité d'un nombre binaire avec son premier bit.",
+          "pourquoi_faux": "Seul le dernier bit (poids 1) décide de la parité ; le premier bit est celui de plus fort poids.",
+          "correction_markdown": "Regarde le bit tout à droite : 0 pour un nombre pair, 1 pour un nombre impair."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir 11001 (binaire) en décimal. Ce nombre est-il pair ?",
+          "solution_markdown": "Poids : 16, 8, 4, 2, 1 pour 1, 1, 0, 0, 1. Donc 16 + 8 + 1 = **25**. Le dernier bit vaut 1 : le nombre est **impair** (25 = 2 × 12 + 1)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir 45 (décimal) en binaire, en octal et en hexadécimal.",
+          "solution_markdown": "Divisions par 2 : 45 = 2 × 22 + 1 ; 22 = 2 × 11 + 0 ; 11 = 2 × 5 + 1 ; 5 = 2 × 2 + 1 ; 2 = 2 × 1 + 0 ; 1 = 2 × 0 + 1. Restes lus de bas en haut : **101101**.\n\nOctal : 101 | 101 donne 5 et 5, soit **55**. Hexadécimal : 0010 | 1101 donne 2 et D (13), soit **2D**.\n\nVérification : 2 × 16 + 13 = 45."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "a) Combien de bits faut-il pour coder les 26 lettres de l'alphabet ? b) Le nombre 10110111 est-il pair ? Donner sa valeur décimale. c) Quel bit de parité (parité paire) faut-il ajouter à 1011001 ?",
+          "solution_markdown": "a) 2 puissance 4 = 16 est insuffisant, 2 puissance 5 = 32 convient : **5 bits**.\n\nb) Le dernier bit vaut 1 : **impair**. Valeur : 128 + 32 + 16 + 4 + 2 + 1 = **183** (et 183 = 2 × 91 + 1). En hexadécimal : B7.\n\nc) 1011001 contient quatre 1 (nombre pair) : le bit de parité est **0**, on envoie 10110010."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un bit vaut 0 ou 1 ; un octet = 8 bits ; n bits donnent 2 puissance n codes.",
+        "Nombre de bits pour N informations : le plus petit n tel que 2 puissance n est supérieur ou égal à N.",
+        "Binaire vers décimal : somme des poids des bits à 1. Décimal vers binaire : divisions par 2, restes lus de bas en haut.",
+        "Octal : groupes de 3 bits. Hexadécimal : groupes de 4 bits (A=10 ... F=15).",
+        "Un nombre est pair si son dernier bit est 0 ; un bit de parité ajouté rend pair le nombre de 1 et permet de détecter une erreur."
+      ]
+    }
+  ]
+}

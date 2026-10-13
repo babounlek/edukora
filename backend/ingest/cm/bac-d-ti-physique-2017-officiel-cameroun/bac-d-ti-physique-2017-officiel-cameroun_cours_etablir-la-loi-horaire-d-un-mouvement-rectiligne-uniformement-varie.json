@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-etablir-la-loi-horaire-d-un-mouvement-rectiligne-uniformement-varie-tle-d-ti",
+  "meta": {
+    "titre": "Établir la loi horaire d'un mouvement rectiligne uniformément varié",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Cinématique du point",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi horaire",
+      "mouvement rectiligne uniformément varié",
+      "conditions initiales",
+      "intégration",
+      "vitesse"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-TI-PHYSIQUE-2017-OFFICIEL-CM",
+    "epreuve_titre": "Baccalauréat Physique Séries D et TI - Session 2017 (Cameroun), sujet officiel reproduit par Camerecole",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-d-ti-physique-2017-officiel-cameroun-ex1-qA4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Connaître l'accélération d'un solide ne dit pas encore où il sera dans trois secondes. La loi horaire donne sa position à chaque instant : c'est elle qui permet de savoir quand un mobile atteint un point, ou à quelle distance il s'arrête. Elle s'obtient en remontant de l'accélération à la vitesse puis à la position, ce qui fait intervenir les conditions initiales."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition de la vitesse et de l'accélération comme dérivées de la position",
+        "Primitives de fonctions simples ($t \\mapsto at$, $t \\mapsto t^2$)",
+        "Notion de conditions initiales"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi horaire à accélération constante",
+      "contenu_markdown": "Pour un mouvement rectiligne d'accélération constante $a$, on intègre deux fois par rapport au temps, en fixant chaque constante d'intégration par les conditions initiales $v_0 = v(0)$ et $x_0 = x(0)$ :\n\n$$v(t) = a\\,t + v_0 \\qquad x(t) = \\tfrac{1}{2}a\\,t^2 + v_0\\,t + x_0$$\n\nEn éliminant le temps, on obtient aussi la relation $v^2 - v_0^2 = 2a\\,(x - x_0)$, utile quand la durée n'est pas demandée.",
+      "formule_principale": "x(t) = \\tfrac{1}{2}a\\,t^2 + v_0\\,t + x_0",
+      "variantes": [
+        {
+          "nom": "Relation sans le temps",
+          "quand_utiliser": "Quand on cherche une distance ou une vitesse finale sans connaître la durée",
+          "contenu_markdown": "$v^2 - v_0^2 = 2a\\,(x - x_0)$, obtenue en éliminant $t$ entre $v(t)$ et $x(t)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un solide part de l'origine avec la vitesse $7\\ \\text{m/s}$ et une accélération constante de $1{,}9\\ \\text{m/s}^2$. Écrire sa loi horaire et calculer sa position et sa vitesse à $t = 2\\ \\text{s}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reconnaître la nature du mouvement",
+          "justification": "L'accélération est constante : mouvement rectiligne uniformément varié.",
+          "resultat_markdown": "$a = 1{,}9\\ \\text{m/s}^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Intégrer l'accélération",
+          "justification": "$a = \\dfrac{dv}{dt}$, donc $v$ est une primitive de $a$, à une constante près.",
+          "resultat_markdown": "$v(t) = 1{,}9\\,t + C_1$"
+        },
+        {
+          "numero": 3,
+          "action": "Fixer $C_1$",
+          "justification": "À $t = 0$, la vitesse vaut $7\\ \\text{m/s}$.",
+          "resultat_markdown": "$C_1 = 7$, donc $v(t) = 1{,}9\\,t + 7$"
+        },
+        {
+          "numero": 4,
+          "action": "Intégrer la vitesse",
+          "justification": "$v = \\dfrac{dx}{dt}$ ; une primitive de $1{,}9\\,t$ est $0{,}95\\,t^2$.",
+          "resultat_markdown": "$x(t) = 0{,}95\\,t^2 + 7\\,t + C_2$"
+        },
+        {
+          "numero": 5,
+          "action": "Fixer $C_2$",
+          "justification": "Le solide part de l'origine : $x(0) = 0$.",
+          "resultat_markdown": "$C_2 = 0$, donc $x(t) = 0{,}95\\,t^2 + 7\\,t$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer à $t = 2\\ \\text{s}$",
+          "justification": "On remplace $t$ dans les deux expressions.",
+          "resultat_markdown": "$x(2) = 0{,}95 \\times 4 + 14 = 17{,}8\\ \\text{m}$ ; $v(2) = 1{,}9 \\times 2 + 7 = 10{,}8\\ \\text{m/s}$"
+        }
+      ],
+      "conclusion_markdown": "La loi horaire est $x(t) = 0{,}95\\,t^2 + 7\\,t$ ; à $t = 2\\ \\text{s}$, le solide est à $17{,}8\\ \\text{m}$ de l'origine avec une vitesse de $10{,}8\\ \\text{m/s}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le facteur $\\tfrac{1}{2}$ : écrire $x = a\\,t^2 + v_0\\,t$.",
+          "pourquoi_faux": "La primitive de $a\\,t$ est $\\tfrac{1}{2}a\\,t^2$, pas $a\\,t^2$. Sans le $\\tfrac{1}{2}$, la dérivée seconde donnerait $2a$.",
+          "correction_markdown": "Dériver le résultat deux fois pour retrouver $a$."
+        },
+        {
+          "erreur_markdown": "Oublier les constantes d'intégration ou leur donner la valeur zéro sans justification.",
+          "pourquoi_faux": "Les constantes valent la vitesse et la position initiales ; elles ne sont nulles que si le mobile part du repos ou de l'origine.",
+          "correction_markdown": "Écrire explicitement $v(0) = \\dots$ et $x(0) = \\dots$ avant de conclure."
+        },
+        {
+          "erreur_markdown": "Confondre le signe de $a$ lors d'un freinage.",
+          "pourquoi_faux": "Si l'axe est orienté dans le sens du mouvement, un freinage correspond à $a < 0$. Mettre $a > 0$ ferait accélérer le mobile au lieu de le freiner.",
+          "correction_markdown": "Fixer l'orientation de l'axe, puis lire le signe de $a$ sur le schéma."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un mobile part du repos de l'origine avec une accélération de $2\\ \\text{m/s}^2$. Calculer sa position et sa vitesse à $t = 5\\ \\text{s}$.",
+          "solution_markdown": "$x(t) = \\tfrac{1}{2} \\times 2 \\times t^2 = t^2$, donc $x(5) = 25\\ \\text{m}$ ; $v(t) = 2\\,t$, donc $v(5) = 10\\ \\text{m/s}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un véhicule roule à $12\\ \\text{m/s}$ et freine avec une accélération constante de $-3\\ \\text{m/s}^2$. Calculer la durée de freinage et la distance parcourue jusqu'à l'arrêt.",
+          "solution_markdown": "$v(t) = -3\\,t + 12$ s'annule pour $t = \\dfrac{12}{3} = 4\\ \\text{s}$. Distance : $x(4) = \\tfrac{1}{2}(-3)(16) + 12 \\times 4 = -24 + 48 = 24\\ \\text{m}$. Contrôle avec $v^2 - v_0^2 = 2a\\,d$ : $0 - 144 = -6\\,d$, donc $d = 24\\ \\text{m}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un mobile part de la position $x_0 = -10\\ \\text{m}$ avec la vitesse $4\\ \\text{m/s}$ et l'accélération $2\\ \\text{m/s}^2$. À quelle date passe-t-il par l'origine ?",
+          "solution_markdown": "$x(t) = \\tfrac{1}{2} \\times 2\\,t^2 + 4\\,t - 10 = t^2 + 4t - 10$. On cherche $x(t) = 0$ : $\\Delta = 16 + 40 = 56$, $\\sqrt{56} = 7{,}48$. Racines : $t = \\dfrac{-4 \\pm 7{,}48}{2}$, soit $t = 1{,}74\\ \\text{s}$ ou $t = -5{,}74\\ \\text{s}$. Seule la racine positive a un sens : le mobile passe par l'origine à $t = 1{,}74\\ \\text{s}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "À accélération constante, $v(t) = a\\,t + v_0$ et $x(t) = \\tfrac{1}{2}a\\,t^2 + v_0\\,t + x_0$.",
+        "Les constantes d'intégration sont les conditions initiales : elles se lisent dans l'énoncé.",
+        "Le facteur $\\tfrac{1}{2}$ devant $a\\,t^2$ est l'erreur la plus fréquente.",
+        "Dérive deux fois ton résultat pour le contrôler : tu dois retrouver $v$ puis $a$.",
+        "Au BAC, la loi horaire est demandée après le calcul de l'accélération et sert ensuite à trouver une date ou une distance."
+      ]
+    }
+  ]
+}

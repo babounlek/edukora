@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-role-dun-serveur-web-dans-le-cycle-requete-reponse-http-tle-ti",
+  "meta": {
+    "titre": "Le serveur web dans le cycle requête-réponse HTTP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Fonctionnement du web dynamique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "serveur web",
+      "requête HTTP",
+      "réponse HTTP",
+      "interpréteur PHP",
+      "Apache"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu tapes l'adresse d'un site et, une seconde plus tard, la page est là. Entre ces deux instants, un échange précis a eu lieu entre ton navigateur et une machine distante. Comprendre cet échange permet de répondre à toute question qui demande « le rôle du serveur » et d'expliquer pourquoi un script PHP ne fonctionne pas toujours."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la différence entre client et serveur",
+        "Savoir qu'un fichier PHP contient du code exécuté avant l'envoi de la page"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le cycle requête-réponse en cinq temps",
+      "contenu_markdown": "Le web fonctionne selon le modèle client-serveur : le client (navigateur) demande, le serveur répond. Le serveur web intervient dans cinq temps :\n\n1. **Réception** : le navigateur envoie une requête HTTP contenant l'adresse demandée (URL) et la méthode (GET pour lire, POST pour transmettre des données).\n2. **Localisation** : le serveur cherche le fichier correspondant dans son dossier racine.\n3. **Traitement** : si le fichier est statique (`.html`, image), il le lit tel quel. Si c'est un script (`.php`), il le confie à l'interpréteur PHP, qui l'exécute et peut interroger une base de données.\n4. **Production** : l'interpréteur renvoie au serveur une page HTML ordinaire, le code PHP ayant disparu.\n5. **Réponse** : le serveur envoie la page au navigateur avec un code d'état (200 : succès, 404 : fichier introuvable, 500 : erreur du serveur ou du script).\n\nLe serveur web assure en plus l'hébergement des fichiers, le contrôle des accès et la journalisation des requêtes.",
+      "formule_principale": "\\text{navigateur} \\rightarrow \\text{serveur web} \\rightarrow \\text{interpréteur PHP} \\rightarrow \\text{page HTML} \\rightarrow \\text{navigateur}",
+      "variantes": [
+        {
+          "nom": "Cas d'une page statique",
+          "quand_utiliser": "Quand le fichier demandé est un simple fichier HTML ou une image",
+          "contenu_markdown": "Le temps de traitement n'existe pas : le serveur lit le fichier et l'envoie sans le modifier. Tous les visiteurs reçoivent le même contenu."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire la contribution du serveur web (Apache de l'environnement LAMP) dans la création et le fonctionnement d'un site dynamique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Parcourir le cycle dans l'ordre",
+          "justification": "La contribution du serveur se décrit en suivant le trajet d'une requête",
+          "resultat_markdown": "Réception, localisation, traitement, production, réponse."
+        },
+        {
+          "numero": 2,
+          "action": "Dire où le serveur intervient avant la requête",
+          "justification": "Le site doit déjà être hébergé pour répondre",
+          "resultat_markdown": "Le serveur héberge les fichiers du site (pages HTML, scripts PHP, images) dans son dossier racine."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire le traitement d'un script",
+          "justification": "C'est ce qui distingue un site dynamique",
+          "resultat_markdown": "Pour un fichier `.php`, le serveur le transmet à l'interpréteur PHP, qui s'exécute et peut interroger MySQL."
+        },
+        {
+          "numero": 4,
+          "action": "Terminer par la réponse et le contrôle",
+          "justification": "Le cycle se termine par l'envoi de la page",
+          "resultat_markdown": "Le serveur renvoie la page HTML produite et gère les accès et les erreurs (403, 404)."
+        }
+      ],
+      "conclusion_markdown": "Le serveur web héberge le site, reçoit les requêtes, fait exécuter les scripts PHP par l'interpréteur et renvoie le résultat HTML au navigateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire que le serveur web exécute le PHP « dans le navigateur de l'utilisateur ».",
+          "pourquoi_faux": "Le PHP s'exécute toujours côté serveur. Le navigateur ne reçoit jamais le code PHP, seulement son résultat en HTML.",
+          "correction_markdown": "Précise « côté serveur » dès que tu parles de PHP."
+        },
+        {
+          "erreur_markdown": "Confondre le serveur web avec le serveur de base de données.",
+          "pourquoi_faux": "Apache reçoit les requêtes HTTP ; MySQL stocke et fournit les données. Le script PHP fait le lien entre les deux.",
+          "correction_markdown": "Cite les trois acteurs : serveur web, interpréteur PHP, base de données."
+        },
+        {
+          "erreur_markdown": "Décrire seulement « il envoie des pages ».",
+          "pourquoi_faux": "La réponse omet l'hébergement, la réception et surtout le traitement des scripts, qui sont les points du barème.",
+          "correction_markdown": "Structure ta réponse en quatre verbes : héberger, recevoir, exécuter, renvoyer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Remets dans l'ordre : (a) le serveur renvoie la page HTML ; (b) le navigateur envoie la requête ; (c) l'interpréteur PHP exécute le script ; (d) le serveur localise le fichier.",
+          "solution_markdown": "L'ordre est : **(b)** le navigateur envoie la requête, **(d)** le serveur localise le fichier demandé, **(c)** l'interpréteur PHP exécute le script, **(a)** le serveur renvoie la page HTML.\n\nLe traitement par l'interpréteur ne peut avoir lieu qu'une fois le fichier localisé, et la réponse vient en dernier."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève ouvre un fichier `bonjour.php` en double-cliquant dessus dans l'explorateur de fichiers. Le navigateur affiche le code source au lieu du résultat. Explique pourquoi.",
+          "solution_markdown": "Le double-clic ouvre le fichier par une adresse locale du type `file:///C:/.../bonjour.php`. Aucune requête HTTP n'est envoyée à un serveur web : l'interpréteur PHP n'est jamais appelé et le navigateur traite le fichier comme du texte.\n\nPour que le script s'exécute, il faut le placer dans le dossier racine du serveur et le demander par `http://localhost/bonjour.php`, ce qui engage le cycle complet."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un visiteur obtient d'abord l'erreur 404, puis, après une tentative sur une autre page, l'erreur 500. Explique chacune et dis ce que le webmaster doit vérifier.",
+          "solution_markdown": "**Erreur 404** : le serveur n'a trouvé aucun fichier correspondant à l'adresse demandée (étape de localisation). Le webmaster vérifie l'orthographe de l'adresse, le nom exact du fichier (majuscules comprises sous Linux) et son emplacement dans le dossier racine.\n\n**Erreur 500** : le fichier existe et a été transmis à l'interpréteur, mais l'exécution du script a échoué (étape de traitement) : erreur de syntaxe, base de données injoignable, mauvaise configuration. Le webmaster consulte le journal d'erreurs du serveur et corrige le script.\n\nLa première erreur vient donc de la localisation, la seconde du traitement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le web repose sur un échange : le client demande, le serveur répond.",
+        "Pour décrire le rôle du serveur web, suis le trajet de la requête : héberger, recevoir, exécuter, renvoyer.",
+        "Le PHP s'exécute côté serveur ; le navigateur ne reçoit que du HTML.",
+        "Les codes 200, 404 et 500 disent à quelle étape du cycle on en est.",
+        "Au BAC TI, cette question prend la forme « décrire le rôle du serveur » ou « expliquer pourquoi le script ne s'exécute pas »."
+      ]
+    }
+  ]
+}

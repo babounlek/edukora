@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-le-protocole-dhcp-le-serveur-dhcp-et-l-adressage-apipa-gap24",
+  "meta": {
+    "titre": "Le protocole DHCP, le serveur DHCP et l'adressage APIPA",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Réseaux informatiques et adressage IP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "protocole DHCP",
+      "serveur DHCP",
+      "adressage APIPA",
+      "panne réseau",
+      "Adressage statique et dynamique",
+      "sigles réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.5-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu allumes ton téléphone dans la salle des profs : en quelques secondes il obtient une adresse IP et accède à Internet, sans que tu aies rien tapé. Quelqu'un, dans le réseau, a distribué cette adresse : c'est le serveur DHCP. Et si ce serveur tombe en panne ? Les ordinateurs se donnent alors eux-mêmes une adresse spéciale, dite APIPA. Ce cours t'explique ces deux mécanismes, leurs sigles et les questions qu'ils inspirent au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP et un masque de sous-réseau",
+        "Connaître la différence entre un client et un serveur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "DHCP : attribution automatique des adresses, et repli APIPA",
+      "contenu_markdown": "**DHCP** signifie *Dynamic Host Configuration Protocol* (protocole de configuration dynamique des hôtes). C'est un protocole d'application qui attribue **automatiquement** une configuration IP aux machines qui se connectent. La machine qui fournit ce service est le **serveur DHCP** (souvent le routeur ou la box).\n\n**Ce que le serveur distribue (le bail)** : une adresse IP prise dans une plage prédéfinie, le masque de sous-réseau, la passerelle par défaut, les adresses des serveurs DNS, et la **durée du bail** (durée de validité de l'attribution).\n\n**Déroulement en quatre échanges** : 1) le client diffuse une demande (*Discover*) ; 2) le serveur propose une adresse (*Offer*) ; 3) le client accepte (*Request*) ; 4) le serveur confirme (*Acknowledge*). À la moitié du bail, le client demande à le renouveler.\n\n**Statique ou dynamique ?** En adressage **statique**, l'administrateur saisit l'adresse à la main (serveurs, imprimantes, routeurs) ; en adressage **dynamique**, le DHCP l'attribue (postes de travail, téléphones). Une adresse statique se place hors de la plage DHCP pour éviter les doublons.\n\n**Adressage APIPA.** *Automatic Private IP Addressing* : quand un poste Windows configuré en DHCP ne trouve aucun serveur, il s'attribue une adresse de la forme **169.254.x.x** avec le masque **255.255.0.0**, sans passerelle ni DNS. Cette adresse permet seulement de dialoguer avec les autres postes du même réseau local qui sont aussi en APIPA : plus d'accès à Internet.\n\n**Panne du serveur DHCP.** Les postes qui ont encore un bail valide gardent leur configuration jusqu'à son expiration ; les nouveaux postes ou ceux dont le bail est expiré ne reçoivent plus d'adresse et passent en APIPA.\n\n**Sigles à connaître** : DHCP (attribution de la configuration IP), DNS (*Domain Name System*, noms de domaine vers adresses IP), TCP/IP (suite de protocoles d'Internet), IP (*Internet Protocol*), MAC (adresse physique de la carte réseau).",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Calculer la durée d'un bail",
+          "quand_utiliser": "Quand la capture donne « Bail obtenu » et « Bail expirant ».",
+          "contenu_markdown": "Soustrais l'instant d'obtention à l'instant d'expiration en tenant compte du changement de jour. Exemple : obtenu le jeudi 4 février 2016 à 13:27:37, expirant le vendredi 5 février à 13:27:36. Il y a 24 h moins 1 seconde, soit 23 h 59 min 59 s : on retient un bail de 24 heures (la seconde d'écart vient de l'affichage)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une capture de la commande ipconfig /all indique : DHCP activé : Oui ; Adresse IPv4 : 172.16.1.100 ; Masque de sous-réseau : 255.255.0.0 ; Passerelle par défaut : 172.16.0.254 ; Serveur DHCP : 172.16.0.254 ; Serveurs DNS : 195.24.192.33 et 8.8.8.8. 1) Identifier deux informations obtenues du serveur DHCP. 2) Déterminer une conséquence qui surviendrait si le serveur DHCP ne fonctionnait pas.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Confirmer l'origine automatique",
+          "justification": "La rubrique « DHCP activé : Oui » indique que la configuration vient d'une attribution automatique.",
+          "resultat_markdown": "Les valeurs de configuration proviennent du serveur DHCP."
+        },
+        {
+          "numero": 2,
+          "action": "Relever deux informations du bail",
+          "justification": "Le serveur distribue adresse, masque, passerelle et DNS.",
+          "resultat_markdown": "L'adresse IPv4 172.16.1.100 et le masque 255.255.0.0."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter ce qui ne vient pas du DHCP",
+          "justification": "L'adresse physique (MAC) est inscrite dans la carte par le fabricant.",
+          "resultat_markdown": "Ne cite pas l'adresse physique."
+        },
+        {
+          "numero": 4,
+          "action": "Raisonner sur la panne",
+          "justification": "Sans serveur, un poste qui démarre ne peut plus demander de configuration.",
+          "resultat_markdown": "Les postes ne reçoivent plus d'adresse valide : ils passent en APIPA (169.254.x.x) et n'ont plus accès à Internet."
+        },
+        {
+          "numero": 5,
+          "action": "Nuancer",
+          "justification": "Les postes déjà configurés gardent leur bail jusqu'à son expiration.",
+          "resultat_markdown": "La panne se voit d'abord sur les postes qui démarrent ou dont le bail expire."
+        }
+      ],
+      "conclusion_markdown": "Le serveur DHCP a fourni l'adresse 172.16.1.100 et le masque 255.255.0.0. S'il tombe en panne, les nouveaux postes ne reçoivent plus d'adresse valide et se rabattent sur une adresse APIPA, sans accès à Internet."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer l'adresse MAC parmi les informations données par le DHCP.",
+          "pourquoi_faux": "L'adresse MAC est gravée dans la carte réseau ; le serveur DHCP ne l'attribue pas.",
+          "correction_markdown": "Cite l'adresse IP, le masque, la passerelle ou les DNS."
+        },
+        {
+          "erreur_markdown": "Écrire que, sans serveur DHCP, le réseau est coupé pour tout le monde immédiatement.",
+          "pourquoi_faux": "Les postes dont le bail est encore valide continuent à fonctionner jusqu'à son expiration.",
+          "correction_markdown": "Distingue les postes déjà configurés et les nouveaux postes."
+        },
+        {
+          "erreur_markdown": "Croire qu'une adresse APIPA donne accès à Internet.",
+          "pourquoi_faux": "Elle n'a ni passerelle ni DNS : elle ne permet que de joindre le réseau local.",
+          "correction_markdown": "Retiens 169.254.x.x : réseau local seulement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Parmi ces adresses, lesquelles sont de type APIPA : 169.254.12.7 ; 192.168.1.5 ; 169.245.1.1 ; 169.254.200.9 ?",
+          "solution_markdown": "Une adresse APIPA commence par **169.254**. Ce sont donc **169.254.12.7** et **169.254.200.9**. Attention au piège : 169.245.1.1 a les deux nombres inversés, ce n'est pas une adresse APIPA."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un serveur DHCP distribue les adresses de 10.0.0.50 à 10.0.0.99 inclus. 60 postes se connectent. Combien d'adresses sont disponibles ? Que se passe-t-il pour les postes en trop ?",
+          "solution_markdown": "On compte les deux extrémités : 99 − 50 + 1 = **50 adresses**. Il y a 60 postes pour 50 adresses : **10 postes** ne reçoivent pas d'adresse du DHCP et passent en APIPA (169.254.x.x), sans accès à Internet. Solutions : agrandir la plage (par exemple jusqu'à .149) ou réduire la durée du bail pour libérer plus vite les adresses."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un poste obtient un bail de 8 heures à 08:00. À quelle heure demande-t-il le renouvellement (à la moitié du bail) ? À quelle heure le bail expire-t-il ? Pourquoi donne-t-on une adresse statique au serveur de fichiers ?",
+          "solution_markdown": "La moitié de 8 h est 4 h : le renouvellement est demandé à **12:00**. Le bail expire à 08:00 + 8 h = **16:00**.\n\nLe serveur de fichiers reçoit une adresse **statique** (placée hors de la plage DHCP) pour que son adresse ne change jamais : tous les postes peuvent le retrouver, et aucun doublon n'est possible."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DHCP : protocole qui attribue automatiquement adresse, masque, passerelle et DNS, pour une durée appelée bail.",
+        "Le serveur DHCP (souvent le routeur) répond en quatre échanges : Discover, Offer, Request, Acknowledge.",
+        "Statique : manuel, pour serveurs et imprimantes. Dynamique : DHCP, pour les postes.",
+        "APIPA : adresse 169.254.x.x, masque 255.255.0.0, réseau local seulement ; elle apparaît quand le serveur DHCP est introuvable.",
+        "Les sigles s'écrivent développés : DHCP, DNS, TCP/IP, IP ; l'adresse MAC ne vient pas du DHCP."
+      ]
+    }
+  ]
+}

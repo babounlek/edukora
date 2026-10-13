@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-choisir-la-cle-primaire-d-une-table-tle-a-abi-2024",
+  "meta": {
+    "titre": "Choisir la clé primaire d'une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Modèle relationnel",
+    "duree_estimee_min": 25,
+    "tags": [
+      "clé primaire",
+      "table",
+      "enregistrement",
+      "base de données",
+      "identifiant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat A et ABI, session 2024 (Cameroun, reproduction Camerecole)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex5-q2b-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2024-officiel-cameroun-ex5"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Si deux employés s'appellent tous les deux Ferdo Bourda, comment un logiciel sait-il lequel payer ? Il faut un champ qui ne soit jamais le même pour deux lignes : la clé primaire. La choisir correctement est ce qui rend une base de données fiable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table, un champ et un enregistrement",
+        "Savoir lire un tableau de données et repérer les valeurs qui se répètent"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois critères d'une clé primaire",
+      "contenu_markdown": "La **clé primaire** d'une table est un champ (ou un groupe de champs) qui identifie chaque enregistrement de manière unique.\n\nUn champ peut jouer ce rôle s'il respecte trois critères :\n\n1. **Unicité** : deux enregistrements n'ont jamais la même valeur.\n2. **Obligation** : la valeur est toujours renseignée, jamais vide.\n3. **Stabilité** : la valeur ne change pas dans le temps.\n\nUn code, un numéro ou un matricule, créé pour identifier, remplit ces critères. Un nom, un prénom, un sexe ou un âge les remplit rarement.\n\n**Méthode** : on parcourt les champs un par un, on élimine ceux dont les valeurs se répètent ou peuvent changer, puis on justifie le champ retenu avec les critères."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la table EMPLOYE (Matricule, Nom, Prenom, Sexe, Age), identifier la clé primaire (Partie III, exercice 2, question 2b).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter les champs qui se répètent",
+          "justification": "Le champ Sexe contient M trois fois : deux employés différents ont la même valeur.",
+          "resultat_markdown": "Sexe écarté"
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les champs qui peuvent changer ou se répéter",
+          "justification": "Nom, Prenom et Age peuvent être partagés par deux employés ; l'âge change chaque année.",
+          "resultat_markdown": "Nom, Prenom, Age écartés"
+        },
+        {
+          "numero": 3,
+          "action": "Tester le matricule",
+          "justification": "Les quatre valeurs 0021-T, 4422-T, 2201-G, 1123-F sont différentes ; un matricule est attribué à chaque employé pour l'identifier.",
+          "resultat_markdown": "Unique, toujours renseigné, stable"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure et justifier",
+          "justification": "Le matricule remplit les trois critères.",
+          "resultat_markdown": "Clé primaire : Matricule"
+        }
+      ],
+      "conclusion_markdown": "Le champ Matricule est la clé primaire de la table EMPLOYE, car il identifie chaque employé sans ambiguïté."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir Age parce que les quatre valeurs de l'extrait sont différentes.",
+          "pourquoi_faux": "Deux employés peuvent avoir le même âge dès la ligne suivante, et l'âge change chaque année : il n'est ni unique de façon sûre, ni stable.",
+          "correction_markdown": "Raisonne sur la nature du champ, pas seulement sur les lignes visibles."
+        },
+        {
+          "erreur_markdown": "Choisir le nom comme clé primaire.",
+          "pourquoi_faux": "Deux personnes peuvent porter le même nom : la clé n'identifierait plus de façon unique.",
+          "correction_markdown": "Prends un code ou un numéro attribué à chaque enregistrement."
+        },
+        {
+          "erreur_markdown": "Donner le champ sans justifier.",
+          "pourquoi_faux": "La question demande de justifier : sans les critères, tu perds le point de justification.",
+          "correction_markdown": "Écris le champ puis la raison : unique, jamais vide, stable."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans la table ELEVE (Matricule, Nom, Classe) : (E01, MBARGA, 2nde A), (E02, MBARGA, 2nde A), (E03, NGONO, 1ère A), quel champ est la clé primaire ?",
+          "solution_markdown": "**Nom** : MBARGA apparaît deux fois, donc écarté. **Classe** : 2nde A apparaît deux fois, donc écarté. **Matricule** : E01, E02, E03 sont distincts et attribués à chaque élève.\n\nLa clé primaire est **Matricule** : unique, toujours renseigné, stable."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans la table CLIENT (Nom, Prenom, Telephone, Ville), aucun champ n'est évidemment unique. Que faire pour définir une clé primaire ?",
+          "solution_markdown": "**Nom, Prenom et Ville** : deux clients peuvent les partager. **Telephone** : il est unique aujourd'hui, mais un client peut changer de numéro ou ne pas en avoir, ce qui viole la stabilité et l'obligation.\n\n**Solution** : ajouter un champ créé exprès pour identifier, par exemple **Code_client** (C001, C002...), qui sera la clé primaire. C'est la pratique courante quand aucun champ naturel ne convient."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans la table NOTE (Matricule, Code_matiere, Valeur), un élève a une note par matière. Ni Matricule seul ni Code_matiere seul ne sont uniques. Quelle est la clé primaire ?",
+          "solution_markdown": "**Matricule seul** : un même élève apparaît sur plusieurs lignes, une par matière : non unique.\n\n**Code_matiere seul** : une même matière apparaît sur autant de lignes qu'il y a d'élèves : non unique.\n\n**Le couple (Matricule, Code_matiere)** est unique : un élève a une seule note par matière. La clé primaire est donc la **clé composée** formée de ces deux champs ensemble."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une clé primaire identifie chaque enregistrement de façon unique.",
+        "Elle respecte trois critères : unique, jamais vide, stable.",
+        "On la cherche parmi les codes, numéros ou matricules, rarement parmi les noms, âges ou sexes.",
+        "Si aucun champ ne convient, on en crée un, ou on associe plusieurs champs en clé composée.",
+        "Au BAC série A, « identifier la clé primaire » rapporte un point : nomme le champ et donne la raison."
+      ]
+    }
+  ]
+}

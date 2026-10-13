@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-verifier-quune-adresse-ip-peut-appartenir-a-un-reseau-donne-tle-ti",
+  "meta": {
+    "titre": "Vérifier qu'une adresse IP appartient à un réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "adressage IP",
+      "adresse réseau",
+      "adresse valide",
+      "conflit d'adresse",
+      "routeur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q8-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu branches un nouvel ordinateur sur le réseau de l'école et tu lui donnes une adresse au hasard. Il refuse de communiquer, ou il bloque un autre poste. Une adresse IP ne s'attribue pas à la légère : trois contrôles, toujours les mêmes, permettent de savoir en moins d'une minute si elle convient."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer l'adresse d'un réseau avec le masque",
+        "Savoir qu'une adresse IPv4 a quatre octets compris entre 0 et 255"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois contrôles avant d'attribuer une adresse",
+      "contenu_markdown": "Pour savoir si une machine peut fonctionner dans un réseau, dans l'ordre :\n\n1. **L'adresse est-elle valide ?** Quatre nombres entiers de 0 à 255 séparés par trois points.\n2. **Est-elle dans le bon réseau ?** On calcule son adresse réseau avec le masque du réseau (ET logique) et on la compare à l'adresse du réseau visé. Si elles diffèrent, la machine est dans un autre réseau : elle ne communique avec le premier qu'à travers un routeur.\n3. **Est-elle attribuable ?** Elle ne doit être ni l'adresse du réseau, ni l'adresse de diffusion, ni déjà utilisée par un autre équipement (un conflit d'adresse perturbe les deux machines).\n\nOn conclut en une phrase : « peut fonctionner » ou « ne peut pas fonctionner », avec la raison du contrôle qui a échoué.",
+      "formule_principale": "\\text{valide} \\;\\wedge\\; (\\text{adresse} \\; \\mathrm{ET} \\; \\text{masque} = \\text{réseau}) \\;\\wedge\\; \\text{non utilisée}",
+      "variantes": [
+        {
+          "nom": "Adresse mal imprimée ou mal saisie",
+          "quand_utiliser": "Quand l'adresse donnée n'a pas la forme de quatre octets",
+          "contenu_markdown": "On signale qu'elle est invalide telle quelle (nombre dépassant 255, points manquants). Si le contexte permet une lecture plausible, on la rétablit explicitement avant le raisonnement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le réseau 172.10.0.0 de masque 255.255.0.0, dont les adresses 172.10.0.1 à 172.10.0.6 sont déjà prises, peut-on utiliser 172.10.0.12 et 10.10.0.7 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Valider les deux adresses",
+          "justification": "Contrôle de forme",
+          "resultat_markdown": "Quatre octets entre 0 et 255 dans les deux cas."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'adresse réseau de la première",
+          "justification": "ET avec 255.255.0.0",
+          "resultat_markdown": "172.10.0.12 ET 255.255.0.0 = 172.10.0.0 : même réseau."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la première est attribuable",
+          "justification": "Ni réseau, ni diffusion, ni déjà prise",
+          "resultat_markdown": "172.10.0.12 n'est ni 172.10.0.0 ni 172.10.255.255, et n'est pas parmi les adresses 1 à 6."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'adresse réseau de la seconde",
+          "justification": "ET avec 255.255.0.0",
+          "resultat_markdown": "10.10.0.7 ET 255.255.0.0 = 10.10.0.0, différent de 172.10.0.0."
+        },
+        {
+          "numero": 5,
+          "action": "Conclure pour chaque machine",
+          "justification": "La conclusion reprend les contrôles",
+          "resultat_markdown": "172.10.0.12 peut fonctionner ; 10.10.0.7 appartient à un autre réseau et ne peut pas communiquer directement."
+        }
+      ],
+      "conclusion_markdown": "La première machine peut fonctionner dans le réseau ; la seconde, située dans le réseau 10.10.0.0, ne le peut pas sans routeur ni changement d'adresse."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure à la ressemblance : « 10.10.0.7 ressemble à 172.10.0.x donc c'est le même réseau ».",
+          "pourquoi_faux": "Seul le résultat du ET avec le masque décide. Deux adresses qui partagent certains chiffres peuvent être dans des réseaux différents.",
+          "correction_markdown": "Calcule toujours l'adresse réseau des deux adresses avant de comparer."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que l'adresse est libre.",
+          "pourquoi_faux": "Deux machines avec la même adresse dans un réseau provoquent un conflit d'adresse : l'une des deux perd la connexion.",
+          "correction_markdown": "Compare avec la liste des adresses déjà attribuées avant de conclure."
+        },
+        {
+          "erreur_markdown": "Accepter une adresse dont un octet dépasse 255.",
+          "pourquoi_faux": "Un octet tient sur 8 bits et ne peut pas dépasser 255. L'adresse n'est tout simplement pas valide.",
+          "correction_markdown": "Vérifie d'abord la forme de l'adresse, puis seulement le réseau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réseau 192.168.1.0, masque 255.255.255.0. L'adresse 192.168.1.50 convient-elle ? Et 192.168.2.50 ?",
+          "solution_markdown": "**192.168.1.50** : valide, 192.168.1.50 ET 255.255.255.0 = 192.168.1.0 : même réseau, ni réseau ni diffusion. Elle convient (si elle est libre).\n\n**192.168.2.50** : valide, mais 192.168.2.50 ET 255.255.255.0 = 192.168.2.0, différent de 192.168.1.0. Elle appartient à un autre réseau : elle ne convient pas."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Même réseau 192.168.1.0/24. Pour chacune des adresses suivantes, dis si elle peut être attribuée à une machine : 192.168.1.0 ; 192.168.1.255 ; 192.168.1.256 ; 192.168.1.100.",
+          "solution_markdown": "- **192.168.1.0** : c'est l'adresse du réseau, non attribuable.\n- **192.168.1.255** : c'est l'adresse de diffusion, non attribuable.\n- **192.168.1.256** : invalide, car 256 dépasse 255.\n- **192.168.1.100** : valide, dans le réseau, ni réseau ni diffusion : attribuable si elle est libre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le réseau est 172.10.0.0 de masque 255.255.0.0 ; les adresses 172.10.0.1 à 172.10.0.6 sont prises. Étudie 172.10.255.255, 172.11.0.5 et 172.10.0.3.",
+          "solution_markdown": "- **172.10.255.255** : tous les bits de la partie machine (deux derniers octets) sont à 1. C'est l'adresse de diffusion : non attribuable.\n- **172.11.0.5** : 172.11.0.5 ET 255.255.0.0 = 172.11.0.0, différent de 172.10.0.0. Autre réseau : elle ne convient pas.\n- **172.10.0.3** : dans le bon réseau, mais déjà attribuée à un autre équipement : elle provoquerait un conflit d'adresse. Il faut en choisir une libre, par exemple 172.10.0.12."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois contrôles dans l'ordre : forme de l'adresse, réseau d'appartenance, attribuabilité.",
+        "L'appartenance se décide par le ET avec le masque, jamais par la ressemblance des chiffres.",
+        "Ni l'adresse du réseau, ni celle de diffusion, ni une adresse déjà prise ne peuvent être attribuées.",
+        "Une machine d'un autre réseau ne communique qu'à travers un routeur.",
+        "Au BAC TI, la question vaut environ 0,5 point : une phrase de conclusion appuyée sur le calcul suffit."
+      ]
+    }
+  ]
+}

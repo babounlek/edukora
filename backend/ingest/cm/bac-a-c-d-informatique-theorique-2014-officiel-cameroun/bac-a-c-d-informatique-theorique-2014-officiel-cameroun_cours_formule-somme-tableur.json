@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-formule-somme-tableur-bac-acd-2014",
+  "meta": {
+    "titre": "Calculer un total avec la fonction SOMME d'un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Tableur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "fonction SOMME",
+      "plage de cellules",
+      "formule",
+      "référence de cellule"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-2014-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat, Épreuve théorique d'Informatique, Séries A, C, D, session 2014",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-2014-officiel-cameroun-ex3-qIII.3.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ton professeur a un tableau avec les effectifs de chaque classe et doit connaître l'effectif total du lycée. Additionner à la main marche, mais si un effectif change, il faut tout refaire. Un tableur, lui, recalcule seul, à condition d'avoir écrit une formule avec les références de cellules. Ce cours t'apprend à écrire la formule de somme, la plus utilisée au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que les cellules d'un tableur se repèrent par une lettre (colonne) et un numéro (ligne)",
+        "Savoir additionner des nombres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écrire une formule avec la fonction SOMME",
+      "contenu_markdown": "Une formule de tableur commence toujours par le signe `=`.\n\nPour additionner des cellules contiguës, on utilise la fonction **SOMME** avec une plage : `=SOMME(première cellule:dernière cellule)`. Le signe deux-points signifie « de... à ». Ainsi `=SOMME(B2:B5)` additionne B2, B3, B4 et B5.\n\nPour additionner des cellules non contiguës, on les sépare par un point-virgule : `=SOMME(B2;B4;B6)`.\n\nLa plage ne contient jamais la cellule qui reçoit le résultat, sinon le tableur signale une référence circulaire.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Addition terme à terme",
+          "quand_utiliser": "Quand il n'y a que deux ou trois cellules à additionner",
+          "contenu_markdown": "On peut écrire `=B2+B3+B4+B5`, qui donne le même résultat. Dès que les cellules sont nombreuses, la fonction SOMME est plus courte et moins risquée."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le tableau donne l'effectif de chaque niveau dans les cellules B2 (500), B3 (400), B4 (480) et B5 (360). Donner la formule à saisir en B6 pour calculer le nombre total d'élèves.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les cellules à additionner",
+          "justification": "Les effectifs sont dans la colonne B, aux lignes 2 à 5.",
+          "resultat_markdown": "Cellules B2, B3, B4, B5."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la fonction",
+          "justification": "On additionne des valeurs contiguës : la fonction SOMME convient.",
+          "resultat_markdown": "Fonction SOMME."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la plage",
+          "justification": "Première cellule : B2. Dernière cellule : B5. On les joint par deux-points.",
+          "resultat_markdown": "B2:B5"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la formule complète en commençant par =",
+          "justification": "Sans le signe égal, le tableur lirait du texte.",
+          "resultat_markdown": "`=SOMME(B2:B5)`"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler le résultat",
+          "justification": "500 + 400 = 900 ; 900 + 480 = 1380 ; 1380 + 360 = 1740.",
+          "resultat_markdown": "B6 affiche 1740."
+        }
+      ],
+      "conclusion_markdown": "La formule `=SOMME(B2:B5)` placée en B6 donne un total de 1740 élèves."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe = au début.",
+          "pourquoi_faux": "Sans lui, le tableur lit `SOMME(B2:B5)` comme du texte et affiche la formule telle quelle au lieu du résultat.",
+          "correction_markdown": "Commence toujours par le signe égal."
+        },
+        {
+          "erreur_markdown": "Inclure la cellule du résultat dans la plage, par exemple `=SOMME(B2:B6)` placée en B6.",
+          "pourquoi_faux": "La cellule B6 s'additionnerait elle-même : c'est une référence circulaire, le tableur refuse de calculer.",
+          "correction_markdown": "La plage s'arrête à la dernière valeur à additionner."
+        },
+        {
+          "erreur_markdown": "Écrire les nombres à la main, `=500+400+480+360`.",
+          "pourquoi_faux": "La formule marche aujourd'hui mais ne se met pas à jour si un effectif change ; on perd l'intérêt du tableur.",
+          "correction_markdown": "Utilise les références de cellules, jamais les valeurs recopiées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la formule qui additionne les cellules C2, C3, C4 et C5.",
+          "solution_markdown": "La formule est `=SOMME(C2:C5)`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les montants sont en D2, D3, D4, D5 et D6. Donne la formule du total placée en D7, puis calcule-la avec D2 = 150, D3 = 200, D4 = 75, D5 = 300 et D6 = 25.",
+          "solution_markdown": "Formule : `=SOMME(D2:D6)`.\nCalcul : 150 + 200 = 350 ; 350 + 75 = 425 ; 425 + 300 = 725 ; 725 + 25 = 750. D7 affiche 750."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans le tableau des élèves, quelle formule placée en C6 donne le nombre total d'élèves ayant la moyenne, avec C2 = 440, C3 = 360, C4 = 400 et C5 = 300 ? Que donnerait la formule `=SOMME(B2:B5)` recopiée vers la droite en C6 ?",
+          "solution_markdown": "Étape 1 : la formule en C6 est `=SOMME(C2:C5)`.\nÉtape 2 : 440 + 360 = 800 ; 800 + 400 = 1200 ; 1200 + 300 = 1500. C6 affiche 1500.\nÉtape 3 : en recopiant `=SOMME(B2:B5)` d'une colonne vers la droite, les références se décalent d'une colonne : on obtient `=SOMME(C2:C5)`, le même résultat, 1500. C'est la recopie incrémentée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une formule de tableur commence toujours par le signe égal.",
+        "`=SOMME(B2:B5)` additionne toutes les cellules de B2 à B5.",
+        "La plage ne contient jamais la cellule du résultat.",
+        "Utilise des références de cellules, pas des nombres recopiés : le résultat se met à jour tout seul.",
+        "Au BAC, la formule de somme est une question presque certaine dans la partie tableur, notée sur 2 points."
+      ]
+    }
+  ]
+}

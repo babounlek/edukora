@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-l-architecture-client-serveur-le-serveur-web-et-le-cycle-requete-reponse-gap24",
+  "meta": {
+    "titre": "L'architecture client/serveur, le serveur web et le cycle requête-réponse",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Réseaux informatiques et web",
+    "duree_estimee_min": 30,
+    "tags": [
+      "architecture client/serveur",
+      "cycle requête-réponse",
+      "serveur central",
+      "imprimante réseau",
+      "protocoles d'application",
+      "sécurité des données",
+      "vocabulaire du web",
+      "hypertexte",
+      "hébergement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q3-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2018-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu ouvres une page web, deux machines dialoguent : la tienne, qui demande, et une autre, quelque part, qui répond. Dans un lycée, les notes des élèves sont stockées sur un seul ordinateur et tous les postes viennent les consulter. Ces deux situations obéissent à la même idée, l'architecture client/serveur. Ce cours t'apprend à la reconnaître, à citer ses avantages et son inconvénient, et à décrire le cycle requête-réponse du web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un réseau local",
+        "Connaître la notion de protocole (règles d'échange entre machines)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Client, serveur et échange requête-réponse",
+      "contenu_markdown": "**Architecture client/serveur.** Des machines dédiées, les **serveurs**, fournissent des services et des données centralisées à des machines **clientes** qui les sollicitent. Dans un réseau **poste à poste**, au contraire, chaque machine joue indifféremment les deux rôles, sans serveur central.\n\nExemples de serveurs : serveur de fichiers, **serveur central** d'un établissement (applications de notes, comptabilité, messagerie), serveur d'impression (le poste qui partage une **imprimante réseau**), serveur web, serveur DHCP, serveur DNS.\n\n**Avantages** : données centralisées et protégées (droits d'accès par utilisateur, une seule sauvegarde : c'est la **sécurité des données**) ; applications installées et mises à jour une seule fois ; ressources partagées. **Inconvénient majeur** : le réseau dépend du serveur, qui est un point unique de défaillance ; s'il tombe en panne, les clients perdent l'accès. S'ajoutent le coût et l'administration.\n\n**Ne confonds pas** architecture (client/serveur ou poste à poste : répartition des rôles) et topologie (étoile, bus, anneau : disposition des câbles).\n\n**Le web, exemple de client/serveur.** Le client est le **navigateur**, le serveur est le **serveur web**.\n\n- Un **site web** est un ensemble de pages web liées entre elles par des liens **hypertextes**, placées sous un même nom de domaine ; une **page web** est un document consultable dans un navigateur ; l'**hébergement** est le service qui stocke le site sur un serveur connecté en permanence ; l'**URL** est l'adresse d'une page (protocole, nom de domaine, chemin).\n- **Cycle requête-réponse** : 1) l'utilisateur saisit l'URL ou clique sur un lien ; 2) le navigateur obtient l'adresse IP du serveur grâce au DNS ; 3) il envoie une **requête HTTP** ; 4) le serveur trouve la ressource, ou l'exécute si c'est un script ; 5) il renvoie une **réponse HTTP** avec un code d'état (200 : réussite, 404 : page introuvable, 500 : erreur du serveur) et le contenu HTML ; 6) le navigateur affiche la page.\n\n**Protocoles d'application courants**\n\n| Sigle | Développé | Rôle |\n|---|---|---|\n| HTTP | HyperText Transfer Protocol | transférer les pages web (HTTPS : version sécurisée) |\n| FTP | File Transfer Protocol | transférer des fichiers, par exemple publier un site |\n| DNS | Domain Name System | convertir un nom de domaine en adresse IP |\n| DHCP | Dynamic Host Configuration Protocol | donner automatiquement la configuration IP |\n| SMTP | Simple Mail Transfer Protocol | envoyer du courrier électronique |",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Justifier le choix de l'architecture",
+          "quand_utiliser": "Quand la question dit « justifier la réponse ».",
+          "contenu_markdown": "Cite l'indice du texte ou du schéma : un serveur central héberge les applications et les données, des postes les consultent. Un indice du type « serveur DHCP » ou « serveur DNS » dans une capture suffit aussi."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un complexe scolaire, le concepteur du réseau a installé sur le serveur central une application de gestion comptable, une application de gestion des notes et un logiciel de messagerie. Toutes les données numériques du complexe sont stockées sur ce serveur ; les postes PC2, PC3 et PC4 s'y connectent. Quelle est l'architecture utilisée ? Justifier. Donner deux avantages et l'inconvénient majeur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever les indices",
+          "justification": "Un serveur central offre des services, des postes les utilisent.",
+          "resultat_markdown": "Serveur central avec applications et données ; postes qui le sollicitent."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer l'architecture",
+          "justification": "Répartition des rôles en serveur et clients.",
+          "resultat_markdown": "Architecture client/serveur."
+        },
+        {
+          "numero": 3,
+          "action": "Citer deux avantages",
+          "justification": "Chaque avantage est lié au serveur centralisé.",
+          "resultat_markdown": "Données centralisées et sécurisées (droits d'accès, sauvegarde unique) ; applications installées et mises à jour une seule fois, ressources partagées."
+        },
+        {
+          "numero": 4,
+          "action": "Donner l'inconvénient majeur",
+          "justification": "Toute la dépendance repose sur une seule machine.",
+          "resultat_markdown": "Si le serveur tombe en panne, plus personne n'accède aux applications ni aux données."
+        }
+      ],
+      "conclusion_markdown": "L'architecture est de type client/serveur : le serveur central fournit applications et données aux postes clients. Son inconvénient majeur est la dépendance au serveur, point unique de défaillance."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « en étoile » à la question sur l'architecture.",
+          "pourquoi_faux": "L'étoile est une topologie (disposition des câbles). L'architecture décrit les rôles : client/serveur ou poste à poste.",
+          "correction_markdown": "Distingue les deux questions : topologie pour les câbles, architecture pour les rôles."
+        },
+        {
+          "erreur_markdown": "Écrire que le serveur web est le navigateur.",
+          "pourquoi_faux": "Le navigateur est le client qui envoie la requête ; le serveur web est la machine ou le logiciel qui répond.",
+          "correction_markdown": "Navigateur = client ; serveur web = serveur."
+        },
+        {
+          "erreur_markdown": "Oublier le DNS dans le cycle requête-réponse.",
+          "pourquoi_faux": "Le navigateur doit d'abord traduire le nom de domaine en adresse IP avant d'envoyer la requête HTTP.",
+          "correction_markdown": "Place le DNS à l'étape 2, avant la requête HTTP."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une salle, l'imprimante est branchée sur le poste PC4 et partagée avec les autres postes. Quel est le nom du rôle de PC4 ?",
+          "solution_markdown": "PC4 joue le rôle de **serveur d'impression**. Les autres postes sont ses clients : leurs demandes d'impression passent par le réseau jusqu'à PC4, qui les met en file d'attente et les envoie à l'imprimante."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décrire en cinq étapes ce qui se passe quand un élève saisit www.exemple.cm dans son navigateur.",
+          "solution_markdown": "1. Le navigateur demande au **DNS** l'adresse IP associée au nom www.exemple.cm.\n2. Il envoie une **requête HTTP** à cette adresse.\n3. Le **serveur web** reçoit la requête et cherche la ressource demandée (ou exécute un script).\n4. Il renvoie une **réponse HTTP** : un code d'état (200 si tout va bien) et le contenu HTML.\n5. Le navigateur **affiche** la page, et chaque lien hypertexte peut déclencher un nouveau cycle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un établissement hésite entre un réseau poste à poste et un réseau client/serveur pour 80 postes. Argumenter en faveur du client/serveur et nommer une précaution pour limiter son inconvénient majeur.",
+          "solution_markdown": "Avec 80 postes, le client/serveur apporte : des **comptes et des droits d'accès centralisés**, une **sauvegarde unique** des données, l'installation et la mise à jour des applications en un seul endroit, et un meilleur contrôle de la sécurité. En poste à poste, chaque machine devrait être administrée séparément.\n\nL'inconvénient majeur est la dépendance au serveur. Précautions possibles : **sauvegardes régulières**, un **onduleur**, un serveur de secours ou la redondance des disques."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Client/serveur : des serveurs fournissent services et données à des clients ; poste à poste : chaque machine est à la fois client et serveur.",
+        "Avantages : données centralisées et sécurisées, administration unique, ressources partagées. Inconvénient : dépendance au serveur.",
+        "Architecture (rôles) et topologie (câbles) sont deux notions différentes.",
+        "Cycle web : URL, DNS, requête HTTP, traitement par le serveur, réponse HTTP avec code d'état, affichage par le navigateur.",
+        "Protocoles d'application : HTTP (pages web), FTP (fichiers), DNS (noms vers adresses), DHCP (configuration IP), SMTP (envoi de courrier)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-determiner-la-classe-d-une-adresse-ipv4-tle-a-abi-2024",
+  "meta": {
+    "titre": "Déterminer la classe d'une adresse IPv4",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "adresse IP",
+      "classe d'adresses",
+      "IPv4",
+      "masque de sous-réseau",
+      "premier octet"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat A et ABI, session 2024 (Cameroun, reproduction Camerecole)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2024-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque machine d'un réseau possède une adresse IP, comme une maison possède une adresse postale. Les premières classes d'adresses ont été conçues pour réserver de grands réseaux aux grandes organisations et de petits réseaux aux petites. Pour trouver la classe, un seul nombre compte : le premier de l'adresse."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 s'écrit avec quatre nombres de 0 à 255 séparés par des points",
+        "Savoir convertir un nombre en binaire pour la vérification",
+        "Savoir ce qu'est un réseau local"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire le premier octet",
+      "contenu_markdown": "Une adresse IPv4 se note **a.b.c.d**. La classe ne dépend que de **a**, le premier octet :\n\n| Classe | Premier octet | Bits de tête | Masque par défaut | Hôtes par réseau |\n|---|---|---|---|---|\n| A | 1 à 126 | 0 | 255.0.0.0 | 16 777 214 |\n| B | 128 à 191 | 10 | 255.255.0.0 | 65 534 |\n| C | 192 à 223 | 110 | 255.255.255.0 | 254 |\n| D | 224 à 239 | 1110 | sans objet | diffusion multiple |\n| E | 240 à 255 | 1111 | sans objet | réservée |\n\nLe premier octet 127 est réservé au bouclage local (la machine se parle à elle-même).\n\n**Méthode** : isoler le premier octet, le situer dans le tableau, conclure la classe. Pour vérifier, écrire cet octet en binaire et lire ses bits de tête."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la classe de l'adresse de l'imprimante, 128.100.200 sur le schéma (Partie II, exercice 2, question 3).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier octet",
+          "justification": "Le premier nombre avant le point décide de la classe, pas le dernier.",
+          "resultat_markdown": "Premier octet : 128"
+        },
+        {
+          "numero": 2,
+          "action": "Situer dans le tableau",
+          "justification": "128 est la borne basse de la plage de la classe B (128 à 191).",
+          "resultat_markdown": "128 est compris entre 128 et 191"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier en binaire",
+          "justification": "128 = 2 puissance 7, donc un seul bit à 1 en tête : 10000000. Les bits de tête sont 10, ce qui correspond à la classe B.",
+          "resultat_markdown": "128 = 10000000, bits de tête 10"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure et compléter",
+          "justification": "La classe B a le masque 255.255.0.0 : deux octets pour le réseau, deux pour la machine.",
+          "resultat_markdown": "Classe B ; réseau 128.100, masque 255.255.0.0"
+        }
+      ],
+      "conclusion_markdown": "L'adresse de l'imprimante est de classe B."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire le dernier octet (200) et conclure classe C.",
+          "pourquoi_faux": "Seul le premier octet décide de la classe. 200 est le numéro de la machine dans son réseau, pas un indicateur de classe.",
+          "correction_markdown": "Souligne le premier nombre de l'adresse avant de consulter le tableau."
+        },
+        {
+          "erreur_markdown": "Oublier la plage de la classe C et la ranger en B parce que « 192 est proche de 191 ».",
+          "pourquoi_faux": "Les bornes sont strictes : 191 est le dernier octet de la classe B, 192 est le premier de la classe C.",
+          "correction_markdown": "Retiens les trois bornes 126, 191 et 223."
+        },
+        {
+          "erreur_markdown": "Classer 127.0.0.1 en classe A.",
+          "pourquoi_faux": "Le 127 est réservé au bouclage local ; ce n'est pas une adresse de réseau de classe A utilisable.",
+          "correction_markdown": "Quand tu vois 127, réponds « adresse de bouclage, réservée »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner la classe et le masque par défaut de l'adresse 192.168.1.20.",
+          "solution_markdown": "**Premier octet** : 192. **Plage** : 192 à 223, donc classe **C**. **Vérification binaire** : 192 = 128 + 64 = 11000000, bits de tête 110 : classe C confirmée. **Masque par défaut** : 255.255.255.0, soit trois octets pour le réseau (192.168.1) et un pour la machine (20)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner la classe des adresses 10.0.0.5, 172.16.4.2 et 224.0.0.5.",
+          "solution_markdown": "- 10.0.0.5 : premier octet 10, compris entre 1 et 126, classe **A**.\n- 172.16.4.2 : premier octet 172, compris entre 128 et 191, classe **B**.\n- 224.0.0.5 : premier octet 224, compris entre 224 et 239, classe **D** (adresses de diffusion multiple, non attribuées à une machine)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise veut installer 1 000 machines sur un seul réseau. Quelle classe choisir ? Justifie avec le nombre d'hôtes par réseau.",
+          "solution_markdown": "**Nombre d'hôtes** : pour n bits réservés aux machines, on a 2 puissance n moins 2 adresses (on retire l'adresse du réseau et celle de diffusion).\n\n- Classe C : 8 bits, 2 puissance 8 = 256, donc 256 - 2 = 254 hôtes. C'est trop peu pour 1 000 machines.\n- Classe B : 16 bits, 2 puissance 16 = 65 536, donc 65 536 - 2 = 65 534 hôtes. C'est suffisant.\n- Classe A : 24 bits, 2 puissance 24 = 16 777 216, donc 16 777 214 hôtes : possible, mais très largement surdimensionné.\n\n**Conclusion** : la classe **B** est la plus adaptée, car 1 000 est inférieur à 65 534 mais supérieur à 254."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Seul le premier octet donne la classe d'une adresse IPv4.",
+        "Les bornes à retenir : A de 1 à 126, B de 128 à 191, C de 192 à 223.",
+        "Le 127 est réservé au bouclage ; 224 à 239 servent à la diffusion multiple.",
+        "Un binaire commençant par 0 donne la classe A, par 10 la classe B, par 110 la classe C.",
+        "Au BAC série A, la question « déterminer la classe de cette adresse IP » est un classique de l'exercice sur les réseaux : trois lignes suffisent (octet, plage, classe)."
+      ]
+    }
+  ]
+}

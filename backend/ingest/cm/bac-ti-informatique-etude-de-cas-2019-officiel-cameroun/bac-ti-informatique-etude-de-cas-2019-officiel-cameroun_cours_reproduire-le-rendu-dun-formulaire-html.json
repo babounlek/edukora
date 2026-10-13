@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-reproduire-le-rendu-dun-formulaire-html-tle-ti-2019",
+  "meta": {
+    "titre": "Reproduire le rendu d'un formulaire HTML",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Formulaires HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "balise input",
+      "formulaire",
+      "rendu HTML",
+      "bouton submit"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Lire du code, c'est bien ; savoir dessiner ce qu'il affichera est ce que demande l'examen. Le navigateur transforme chaque balise en un élément visible, mais certaines balises, comme `form`, restent invisibles. Ce cours t'apprend à passer du code au dessin sans te tromper sur ce qu'on voit réellement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une balise ouvrante, une balise fermante et ses attributs",
+        "Avoir déjà rempli un formulaire sur un site"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du code au rendu",
+      "contenu_markdown": "Chaque balise a un effet visible ou non :\n\n| Balise | Rendu |\n|---|---|\n| `<form ...>` ... `</form>` | rien : elle délimite le formulaire |\n| texte entre les balises | affiché tel quel |\n| `<input type=\"text\" name=\"x\"/>` | champ de saisie sur une ligne, vide au départ |\n| `<input type=\"submit\" value=\"OK\"/>` | bouton portant le libellé `OK` |\n| `<input type=\"password\"/>` | champ dont la saisie est masquée |\n| `<br/>` | passage à la ligne |\n\nL'attribut `name` n'est jamais visible : il sert à PHP. Le libellé d'un bouton est la valeur de `value`.\n\nSans `<br/>` ni balise de bloc (`<p>`, `<div>`), les éléments s'alignent sur la même ligne, dans l'ordre où ils apparaissent dans le code.",
+      "formule_principale": "\\text{rendu} = \\text{texte} + \\text{éléments input dans l'ordre du code, sur une même ligne sans saut de ligne}",
+      "variantes": [
+        {
+          "nom": "Rendu avec sauts de ligne",
+          "quand_utiliser": "Quand le code contient `<br/>` ou des balises `<p>`",
+          "contenu_markdown": "Chaque `<br/>` ou chaque paragraphe commence une nouvelle ligne : on dessine alors un champ ou un bouton par ligne."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reproduire le formulaire dont le code est donné aux lignes 13 à 16 de l'épreuve : `<form method=\"POST\" action=\"fonction.php\">`, `Entrez votre nombre<input type=\"text\" name=\"num\"/>`, `<input type=\"submit\" name=\"valider\" value=\"OK\"/>`, `</form>`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter les éléments invisibles",
+          "justification": "La balise `form` et ses attributs ne s'affichent pas",
+          "resultat_markdown": "On ne dessine rien pour les lignes 13 et 16."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le texte brut",
+          "justification": "Le texte entre balises est affiché tel quel, ici « Entrez votre nombre »",
+          "resultat_markdown": "Le texte vient en premier, à gauche."
+        },
+        {
+          "numero": 3,
+          "action": "Dessiner le champ",
+          "justification": "`type=\"text\"` donne un champ d'une ligne, vide au départ",
+          "resultat_markdown": "Un rectangle vide collé au texte."
+        },
+        {
+          "numero": 4,
+          "action": "Dessiner le bouton",
+          "justification": "`type=\"submit\"` donne un bouton dont le libellé est `value`",
+          "resultat_markdown": "Un bouton rectangulaire marqué OK, à droite du champ, car aucun saut de ligne ne les sépare."
+        }
+      ],
+      "conclusion_markdown": "Le rendu est : le texte « Entrez votre nombre », un champ de saisie vide, puis un bouton OK, tous sur la même ligne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner un bouton « valider » au lieu de « OK ».",
+          "pourquoi_faux": "`valider` est la valeur de `name`, jamais affichée ; le libellé du bouton est la valeur de `value`, c'est-à-dire OK.",
+          "correction_markdown": "Lire le libellé dans `value`."
+        },
+        {
+          "erreur_markdown": "Mettre le texte « Entrez votre nombre » dans le champ.",
+          "pourquoi_faux": "Le texte est en dehors de la balise `input` : il s'affiche à côté du champ. Pour un texte dans le champ, il faudrait l'attribut `placeholder` ou `value`.",
+          "correction_markdown": "Écrire le texte à gauche et laisser le champ vide."
+        },
+        {
+          "erreur_markdown": "Mettre le champ et le bouton sur deux lignes.",
+          "pourquoi_faux": "Sans `<br/>` ni balise de bloc, rien n'impose de passer à la ligne : les éléments restent alignés.",
+          "correction_markdown": "Aligner tous les éléments sur la même ligne, sauf si une balise de saut de ligne apparaît."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dessiner le rendu de `Nom : <input type=\"text\" name=\"nom\"/> <input type=\"submit\" value=\"Envoyer\"/>`.",
+          "solution_markdown": "1. Le texte `Nom :` est affiché tel quel.\n2. `type=\"text\"` donne un champ vide à droite du texte.\n3. `type=\"submit\"` donne un bouton marqué Envoyer.\n4. Aucun saut de ligne : tout est sur une ligne. Rendu : `Nom : [          ] [Envoyer]`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dessiner le rendu de `Login : <input type=\"text\" name=\"l\"/><br/>Mot de passe : <input type=\"password\" name=\"p\"/><br/><input type=\"submit\" value=\"Connexion\"/>` et expliquer ce qui différencie les deux champs.",
+          "solution_markdown": "1. Première ligne : `Login :` suivi d'un champ vide ; la balise `<br/>` termine la ligne.\n2. Deuxième ligne : `Mot de passe :` suivi d'un champ vide ; `<br/>` termine la ligne.\n3. Troisième ligne : un bouton Connexion.\n4. Différence : dans le champ `password`, les caractères tapés sont remplacés par des points ; dans le champ `text`, ils restent lisibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire le code HTML d'un formulaire en méthode POST envoyé à `calcul.php`, qui affiche sur deux lignes « Premier nombre » avec un champ `a`, « Second nombre » avec un champ `b`, puis un bouton Calculer, et dessiner son rendu.",
+          "solution_markdown": "```html\n<form method=\"POST\" action=\"calcul.php\">\n  Premier nombre <input type=\"text\" name=\"a\"/><br/>\n  Second nombre <input type=\"text\" name=\"b\"/><br/>\n  <input type=\"submit\" name=\"valider\" value=\"Calculer\"/>\n</form>\n```\nRendu : ligne 1, `Premier nombre [   ]` ; ligne 2, `Second nombre [   ]` ; ligne 3, le bouton `[Calculer]`. Les `<br/>` créent les trois lignes, et l'attribut `name` des champs (`a`, `b`) est invisible mais donnera `$_POST['a']` et `$_POST['b']`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La balise `form` et l'attribut `name` sont invisibles : on ne dessine que le texte et les éléments `input`.",
+        "Le libellé d'un bouton est la valeur de son attribut `value`.",
+        "Sans saut de ligne dans le code, tout reste sur la même ligne.",
+        "Un champ `text` est vide au départ ; un champ `password` masque la saisie.",
+        "Au baccalauréat, un dessin propre du rendu rapporte les points : ne recopie pas le code."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-les-bases-du-langage-php-script-commentaires-fonctions-et-superglobales-gap24",
+  "meta": {
+    "titre": "Les bases du langage PHP : script, commentaires, fonctions et superglobales",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web en PHP",
+    "duree_estimee_min": 35,
+    "tags": [
+      "langage PHP",
+      "commentaires PHP",
+      "fonction isset",
+      "variable superglobale",
+      "exécution d'un script",
+      "exécution d'un script PHP",
+      "définition de fonction",
+      "paramètre et valeur de retour",
+      "acronymes informatiques",
+      "choix technologique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.5-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2020-officiel-cameroun.pdf"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'épreuve de TI commence toujours par le même exercice : un morceau de script PHP, et une série de petites questions. Quel est le nom du fichier ? Que fait la ligne 18 ? Quelle ligne est un commentaire ? Que s'affiche-t-il si l'utilisateur saisit 109 ? Ces questions rapportent des points faciles à qui connaît cinq notions : le rôle de PHP, les commentaires, les fonctions, la fonction isset et les variables superglobales. Les voici, avec la méthode pour exécuter un script à la main."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises HTML de base et savoir ce qu'est un formulaire",
+        "Savoir ce qu'est un serveur web et un navigateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ce qu'il faut savoir lire dans un script PHP",
+      "contenu_markdown": "**Les sigles.** **PHP** : *PHP: Hypertext Preprocessor*, langage de script exécuté **côté serveur** : il produit du HTML envoyé au navigateur. **HTML** : *HyperText Markup Language*, langage de balisage qui décrit la structure d'une page (ce n'est pas un langage de programmation : ni variable, ni condition, ni boucle).\n\n**Pourquoi PHP ? (choix technologique)** Il est gratuit et libre, simple à apprendre, s'insère directement dans le HTML, dialogue naturellement avec MySQL, fonctionne sous Windows et sous Linux et est proposé par presque tous les hébergeurs.\n\n**Un script PHP.** Le code PHP se place entre les balises `<?php` et `?>` dans un fichier d'extension `.php`. Chaque instruction se termine par un point-virgule. `echo` affiche du texte. Le nom d'une variable est précédé d'un symbole dollar et une variable se crée en lui donnant une valeur.\n\n**Les commentaires** sont ignorés par PHP et n'apparaissent jamais dans la page reçue : `//` ou `#` pour une ligne (jusqu'à la fin de la ligne), `/* ... */` pour plusieurs lignes. Le commentaire HTML `<!-- ... -->`, lui, reste visible dans le code source de la page.\n\n**Définition et appel d'une fonction.** On définit avec le mot-clé `function`, le nom, des parenthèses et un bloc entre accolades. Les **paramètres** sont les noms placés entre les parenthèses (chacun précédé du symbole dollar) ; `return` renvoie la **valeur de retour**. La définition ne s'exécute pas toute seule : elle s'exécute à l'**appel**, c'est-à-dire le nom suivi de parenthèses contenant les arguments.\n\n```php\nfunction salut() {\n    return 'Bonjour';\n}\necho salut();\n```\n\nCe code affiche : Bonjour.\n\n**Les variables superglobales** sont des tableaux prédéfinis, disponibles partout dans le script : les noms POST, GET, SERVER, SESSION et COOKIE, écrits en majuscules, précédés d'un tiret bas et du symbole dollar. L'élément de POST dont la clé est l'attribut `name` d'un champ contient la valeur envoyée par un formulaire de méthode POST.\n\n**La fonction `isset`.** Elle renvoie vrai si la variable existe et n'est pas NULL. Appliquée à l'élément de POST qui porte le nom du bouton submit, elle sert à savoir si le formulaire a été envoyé avant de lire les données. Elle ne vérifie jamais la validité du contenu.\n\n**Exécuter un script à la main.** Lis dans l'ordre ; les définitions de fonctions sont lues mais non exécutées ; note la valeur de chaque variable. L'opérateur `%` donne le reste de la division entière : un entier est pair si ce reste vaut 0.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Parité avec l'opérateur modulo",
+          "quand_utiliser": "Quand le script teste si un nombre est pair ou impair.",
+          "contenu_markdown": "109 % 2 vaut 1 (impair) et 208 % 2 vaut 0 (pair). Un nombre à virgule comme 80.4 est converti en entier (80) avant le calcul, donc 80.4 % 2 vaut 0 ; les versions récentes de PHP ajoutent un avertissement de dépréciation. Le script n'est pas pour autant un contrôle de saisie."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit le script numéroté ci-dessous. Identifier la ligne qui contient un commentaire mono-ligne, la ou les lignes d'un commentaire multi-lignes, et dire ce qui s'affiche.\n\n```php\n1  <?php\n2  // affichage du message de bienvenue\n3  echo 'Bienvenue';\n4  /* le calcul ci-dessous\n5     donne 14 */\n6  echo 2 * 7; # résultat\n7  ?>\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher les marqueurs de commentaire",
+          "justification": "Un commentaire commence par //, # ou /*.",
+          "resultat_markdown": "La ligne 2 commence par //, la ligne 4 par /*, la ligne 6 contient un # en fin de ligne."
+        },
+        {
+          "numero": 2,
+          "action": "Distinguer mono-ligne et multi-lignes",
+          "justification": "Un commentaire mono-ligne s'arrête à la fin de la ligne ; /* ... */ peut s'étendre sur plusieurs lignes.",
+          "resultat_markdown": "Mono-ligne : ligne 2 (et la fin de la ligne 6). Multi-lignes : lignes 4 et 5."
+        },
+        {
+          "numero": 3,
+          "action": "Exécuter les instructions",
+          "justification": "Les commentaires sont ignorés ; seuls les deux echo s'exécutent.",
+          "resultat_markdown": "Ligne 3 : Bienvenue. Ligne 6 : 2 × 7 = 14."
+        }
+      ],
+      "conclusion_markdown": "Le commentaire mono-ligne est à la ligne 2 ; le commentaire multi-lignes occupe les lignes 4 et 5. Le script affiche Bienvenue14 : aucun commentaire n'apparaît dans la page."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Présenter HTML comme un langage de programmation.",
+          "pourquoi_faux": "HTML décrit la structure d'une page avec des balises ; il ne contient ni variable, ni condition, ni boucle.",
+          "correction_markdown": "Dis : HTML est un langage de balisage ; PHP est un langage de script exécuté côté serveur."
+        },
+        {
+          "erreur_markdown": "Dire que isset vérifie que la valeur saisie est correcte.",
+          "pourquoi_faux": "isset teste seulement l'existence de la variable et le fait qu'elle ne soit pas NULL, jamais son contenu.",
+          "correction_markdown": "Écris : isset sur le bouton submit permet de savoir si le formulaire a été envoyé."
+        },
+        {
+          "erreur_markdown": "Confondre la définition et l'appel d'une fonction.",
+          "pourquoi_faux": "La ligne qui commence par le mot function est la définition. Un appel est le nom de la fonction suivi de parenthèses, sans le mot function.",
+          "correction_markdown": "Cite le numéro de la ligne et recopie l'instruction d'appel en entier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Parmi ces marques, lesquelles introduisent un commentaire PHP : `//`, `#`, `/* ... */`, `<!-- ... -->` ?",
+          "solution_markdown": "**`//`**, **`#`** (une ligne) et **`/* ... */`** (plusieurs lignes) sont des commentaires PHP, ignorés à l'exécution. `<!-- ... -->` est un commentaire HTML : il n'est pas interprété par PHP et reste visible dans le code source de la page envoyée au navigateur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Exécuter le script suivant et donner l'affichage.\n\n```php\n<?php\nfunction parite() {\n    return (208 % 2 == 0) ? 'OUI' : 'NON';\n}\necho 'Cette expression est ' . parite() . ' .';\n?>\n```",
+          "solution_markdown": "La définition de `parite` (lignes 2 à 4) n'affiche rien. À l'appel `parite()`, on calcule 208 % 2 : 208 = 2 × 104 + 0, reste 0. Le test `== 0` est vrai, donc la fonction renvoie `'OUI'`. Le point (opérateur de concaténation) colle les morceaux : l'affichage est **Cette expression est OUI .**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une page qui contient un formulaire (méthode POST, champ de nom num, bouton submit de nom valider) et son traitement, expliquer le rôle d'un test isset sur l'élément valider de POST. Que se passe-t-il à la première ouverture de la page s'il est absent ? Que donne 109 % 2 ?",
+          "solution_markdown": "Le navigateur n'envoie la paire (valider, OK) que si l'utilisateur clique sur le bouton. Le test isset sur cet élément de POST est vrai uniquement après l'envoi du formulaire : il protège le bloc de traitement.\n\nSans ce test, à la première ouverture, POST est vide : le script chercherait l'élément num inexistant, ce qui provoque un avertissement (clé non définie) et un affichage sans objet.\n\n109 % 2 : 109 = 2 × 54 + 1, le reste est **1** : le nombre est impair."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "PHP : langage de script exécuté côté serveur, qui produit du HTML. HTML : langage de balisage, pas de programmation.",
+        "Commentaires PHP : `//` ou `#` (une ligne), `/* ... */` (plusieurs lignes) ; ils ne sont jamais envoyés au navigateur.",
+        "Une fonction se définit avec function, avec des paramètres et un return ; elle s'exécute seulement à l'appel.",
+        "Les superglobales (POST, GET, SERVER, SESSION) sont des tableaux prédéfinis ; isset sur le bouton submit détecte l'envoi d'un formulaire.",
+        "Pour exécuter un script à la main : ordre réel, valeur des variables à chaque affectation ; modulo 2 égal à 0 signifie nombre pair."
+      ]
+    }
+  ]
+}

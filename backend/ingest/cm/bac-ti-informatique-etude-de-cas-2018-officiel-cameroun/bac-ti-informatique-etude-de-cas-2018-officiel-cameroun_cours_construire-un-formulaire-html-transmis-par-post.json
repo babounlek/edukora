@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-construire-un-formulaire-html-transmis-par-post-tle-ti",
+  "meta": {
+    "titre": "Construire un formulaire HTML transmis par POST",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Formulaires HTML et transmission des données",
+    "duree_estimee_min": 35,
+    "tags": [
+      "formulaire HTML",
+      "POST",
+      "balise form",
+      "input",
+      "script PHP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q9.b-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu te connectes à un site ou que tu remplis une fiche en ligne, tu utilises un formulaire. Sa construction est une question classique, parce qu'elle réunit en quelques lignes la structure du HTML, le lien avec un script PHP et la notion de confidentialité des données. Une fois les cinq éléments du formulaire en tête, tu peux en écrire un les yeux fermés."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une page HTML (`html`, `head`, `body`)",
+        "Savoir qu'un script PHP reçoit les données du formulaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les cinq éléments d'un formulaire",
+      "contenu_markdown": "Un formulaire HTML s'écrit avec la balise `<form>` et ses champs. Cinq éléments à ne pas oublier :\n\n1. la balise **`<form>`** avec l'attribut `action` (le script qui traite les données) ;\n2. l'attribut **`method`** : `post` ou `get` ;\n3. des champs de saisie `<input type=\"text\" name=\"...\">`, chacun avec un attribut `name` ;\n4. des libellés `<label>` qui décrivent les champs ;\n5. un bouton **`<input type=\"submit\" value=\"Envoyer\">`**.\n\n| | GET | POST |\n|---|---|---|\n| Où voyagent les données | Dans l'adresse (URL) | Dans le corps de la requête |\n| Visibilité | Visibles par tous | Non affichées dans l'URL |\n| Usage | Recherches, liens partageables | Données personnelles, mots de passe |\n| Lecture en PHP | `$_GET['nom']` | `$_POST['nom']` |\n\nQuand l'énoncé parle de données transmises « de façon confidentielle », il faut choisir `method=\"post\"`.",
+      "formule_principale": "\\text{form : method = post, action = script.php}",
+      "variantes": [
+        {
+          "nom": "Champ de mot de passe",
+          "quand_utiliser": "Quand la saisie ne doit pas s'afficher à l'écran",
+          "contenu_markdown": "On utilise `<input type=\"password\" name=\"mdp\">` : les caractères saisis sont remplacés par des points. Le champ doit toujours être transmis en POST."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code HTML d'une page intitulée « Ma page de test » comportant les champs « Votre nom » et « Votre fonction » et un bouton « Envoyer » qui exécute `script1.php` en transmettant les données de façon confidentielle.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la méthode d'après la consigne",
+          "justification": "Les données doivent être confidentielles",
+          "resultat_markdown": "`method=\"post\"`."
+        },
+        {
+          "numero": 2,
+          "action": "Désigner le script de traitement",
+          "justification": "Le bouton déclenche `script1.php`",
+          "resultat_markdown": "`action=\"script1.php\"`."
+        },
+        {
+          "numero": 3,
+          "action": "Ouvrir le formulaire",
+          "justification": "Tous les champs et le bouton doivent être à l'intérieur",
+          "resultat_markdown": "`<form method=\"post\" action=\"script1.php\">`."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire les deux champs avec leurs libellés",
+          "justification": "Chaque champ porte un `name` pour être transmis",
+          "resultat_markdown": "`<label for=\"nom\">Votre nom :</label> <input type=\"text\" id=\"nom\" name=\"nom\">` et de même pour `fonction`."
+        },
+        {
+          "numero": 5,
+          "action": "Ajouter le bouton d'envoi puis fermer le formulaire",
+          "justification": "Le type `submit` déclenche l'envoi",
+          "resultat_markdown": "`<input type=\"submit\" value=\"Envoyer\">` suivi de `</form>`."
+        },
+        {
+          "numero": 6,
+          "action": "Placer le titre dans l'en-tête",
+          "justification": "Le nom de la page est donné dans l'énoncé",
+          "resultat_markdown": "`<title>Ma page de test</title>` dans `<head>`."
+        }
+      ],
+      "conclusion_markdown": "La page comporte un formulaire `post` dont l'action est `script1.php`, deux champs nommés `nom` et `fonction`, et un bouton `submit` « Envoyer »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'attribut `name` sur les champs.",
+          "pourquoi_faux": "Le navigateur n'envoie que les champs qui ont un `name` : le script ne reçoit rien pour les autres.",
+          "correction_markdown": "Donne un `name` à chaque champ : `name=\"nom\"`, `name=\"fonction\"`."
+        },
+        {
+          "erreur_markdown": "Écrire `method=\"get\"` pour des données confidentielles.",
+          "pourquoi_faux": "Avec GET, les valeurs apparaissent dans l'URL (`script1.php?nom=Ali&fonction=Admin`), visibles et conservées dans l'historique.",
+          "correction_markdown": "Écris `method=\"post\"` dès que la confidentialité est demandée."
+        },
+        {
+          "erreur_markdown": "Placer le bouton ou un champ en dehors de la balise `<form>`.",
+          "pourquoi_faux": "Seuls les champs situés entre `<form>` et `</form>` sont envoyés avec le formulaire.",
+          "correction_markdown": "Ferme `</form>` seulement après le bouton `submit`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris un formulaire avec un champ « Votre ville » envoyé en POST au script `ville.php`.",
+          "solution_markdown": "```html\n<form method=\"post\" action=\"ville.php\">\n<label for=\"ville\">Votre ville :</label>\n<input type=\"text\" id=\"ville\" name=\"ville\">\n<input type=\"submit\" value=\"Envoyer\">\n</form>\n```\n\nLe formulaire comporte `method=\"post\"`, l'action `ville.php`, un champ nommé `ville` et un bouton `submit`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris un formulaire de connexion avec un identifiant et un mot de passe, transmis en POST à `connexion.php`. Justifie le choix de la méthode et du type du champ mot de passe.",
+          "solution_markdown": "```html\n<form method=\"post\" action=\"connexion.php\">\n<label for=\"login\">Identifiant :</label>\n<input type=\"text\" id=\"login\" name=\"login\">\n<label for=\"mdp\">Mot de passe :</label>\n<input type=\"password\" id=\"mdp\" name=\"mdp\">\n<input type=\"submit\" value=\"Se connecter\">\n</form>\n```\n\n**Méthode** : POST, car le mot de passe ne doit jamais apparaître dans l'URL. **Type `password`** : les caractères saisis sont masqués à l'écran, ce qui empêche qu'une personne proche les lise."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Complète le formulaire de la page de test par le script `script1.php` qui affiche « Bonjour [nom], fonction : [fonction] ». Explique comment les données arrivent dans le script.",
+          "solution_markdown": "Le script `script1.php` lit les données dans le tableau `$_POST`, dont les clés sont les valeurs des attributs `name` :\n\n```php\n<?php\n$nom = htmlspecialchars($_POST['nom']);\n$fonction = htmlspecialchars($_POST['fonction']);\necho \"Bonjour $nom, fonction : $fonction\";\n?>\n```\n\nLe navigateur envoie les valeurs saisies dans le corps de la requête POST ; le serveur web les transmet à PHP, qui les range dans `$_POST['nom']` et `$_POST['fonction']`. La fonction `htmlspecialchars` neutralise les caractères spéciaux saisis par l'utilisateur et évite qu'un texte comme `<script>` soit interprété comme du code dans la page."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire comporte une balise `<form>` avec `action` et `method`, des champs avec `name`, et un bouton `submit`.",
+        "« Données confidentielles » veut dire `method=\"post\"` : les valeurs ne sont pas dans l'URL.",
+        "Chaque champ doit avoir un `name`, qui devient la clé dans `$_POST` côté PHP.",
+        "Tout ce qui doit être envoyé se place entre `<form>` et `</form>`.",
+        "Au BAC TI, « écrire le code HTML de la page » vaut 1 à 2 points : le trio form, champs nommés, bouton submit assure l'essentiel du barème."
+      ]
+    }
+  ]
+}

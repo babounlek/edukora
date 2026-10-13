@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-variables-denvironnement-windows-temp-prompt-et-path-tle-ti",
+  "meta": {
+    "titre": "Les variables d'environnement Windows : TEMP, PROMPT et PATH",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance des systèmes d'exploitation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "variables d'environnement",
+      "TEMP",
+      "PROMPT",
+      "PATH",
+      "invite de commandes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex3-q4.a-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu tapes `notepad` dans la console, Windows trouve le programme sans que tu lui dises où il est. Il sait aussi où ranger ses fichiers provisoires et comment afficher l'invite. Ces informations sont rangées dans des variables d'environnement, que les techniciens consultent et modifient chaque jour."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ouvrir l'invite de commandes",
+        "Savoir ce qu'est un chemin d'accès (par exemple `C:\\Windows`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un nom, une valeur, des signes pourcentage",
+      "contenu_markdown": "Une **variable d'environnement** est un nom associé à une valeur, lue par Windows et par les programmes pour se configurer. On l'affiche avec `echo` en entourant son nom de signes `%` :\n\n```\necho %TEMP%\n```\n\n| Variable | Contenu | Exemple |\n|---|---|---|\n| TEMP | Chemin du dossier des fichiers temporaires | `C:\\Users\\Nom\\AppData\\Local\\Temp` |\n| PROMPT | Format du texte de l'invite de commandes | `$P$G` (chemin courant suivi de `>`) |\n| PATH | Liste des dossiers, séparés par `;`, où Windows cherche les exécutables | `C:\\Windows\\system32;C:\\Windows` |\n\nD'autres variables courantes : `USERNAME` (nom de l'utilisateur), `COMPUTERNAME` (nom de la machine), `SystemRoot` (dossier de Windows).\n\nCommandes utiles : `set` seul liste toutes les variables ; `set NOM=valeur` modifie une variable pour la session en cours ; `setx NOM valeur` la rend permanente.",
+      "formule_principale": "\\texttt{echo \\%NOM\\%} \\Rightarrow \\text{valeur de la variable NOM}",
+      "variantes": [
+        {
+          "nom": "Modification permanente par l'interface",
+          "quand_utiliser": "Quand le changement doit survivre à la fermeture de la console",
+          "contenu_markdown": "Dans les propriétés système, bouton « Variables d'environnement », on modifie la variable de l'utilisateur ou du système. Les nouvelles consoles tiennent compte du changement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Que contient chacune des variables d'environnement Windows TEMP, PROMPT et PATH ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter TEMP",
+          "justification": "Son nom indique le contenu",
+          "resultat_markdown": "Le chemin du dossier des fichiers temporaires, par exemple `C:\\Users\\Nom\\AppData\\Local\\Temp`."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter PROMPT",
+          "justification": "Le nom indique l'invite",
+          "resultat_markdown": "Le format de l'invite de commandes : par défaut `$P$G`, soit le chemin du dossier courant suivi de `>`."
+        },
+        {
+          "numero": 3,
+          "action": "Traiter PATH",
+          "justification": "Le nom indique les chemins de recherche",
+          "resultat_markdown": "La liste des dossiers, séparés par des points-virgules, où Windows cherche les programmes exécutables."
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter la manière de vérifier",
+          "justification": "On peut afficher chaque valeur",
+          "resultat_markdown": "`echo %TEMP%`, `echo %PROMPT%`, `echo %PATH%`."
+        }
+      ],
+      "conclusion_markdown": "TEMP donne le dossier des fichiers temporaires, PROMPT le format de l'invite, PATH la liste des dossiers de recherche des exécutables."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `echo TEMP` au lieu de `echo %TEMP%`.",
+          "pourquoi_faux": "Sans les signes `%`, `echo` affiche simplement le mot TEMP au lieu de la valeur de la variable.",
+          "correction_markdown": "Entoure toujours le nom de la variable par des signes `%`."
+        },
+        {
+          "erreur_markdown": "Confondre PROMPT et PATH.",
+          "pourquoi_faux": "PROMPT définit l'aspect de l'invite, PATH la liste des dossiers où chercher les programmes. Leurs rôles n'ont rien en commun.",
+          "correction_markdown": "Associe PROMPT à ce que tu vois avant de taper, PATH à ce que Windows cherche après."
+        },
+        {
+          "erreur_markdown": "Croire que `set PATH=C:\\Outils` ajoute un dossier.",
+          "pourquoi_faux": "Cette commande remplace tout le contenu de PATH par un seul dossier : les autres commandes ne sont plus trouvées.",
+          "correction_markdown": "Pour ajouter, conserve l'ancienne valeur : `set PATH=%PATH%;C:\\Outils`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris les commandes qui affichent le dossier temporaire et le nom de l'utilisateur.",
+          "solution_markdown": "```\necho %TEMP%\necho %USERNAME%\n```\n\nChaque commande affiche la valeur de la variable dont le nom est entouré de signes `%`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Modifie l'invite pour qu'elle affiche `Ecole>` pendant la session, puis rétablis l'invite par défaut.",
+          "solution_markdown": "```\nprompt Ecole$G\nprompt\n```\n\nDans la chaîne de la commande `prompt`, `$G` est remplacé par le signe `>`. L'invite devient `Ecole>`. La commande `prompt` seule rétablit la valeur par défaut `$P$G`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un programme est installé dans `C:\\Outils` mais la commande `monoutil` répond « n'est pas reconnu en tant que commande interne ou externe ». Explique la cause et donne deux solutions.",
+          "solution_markdown": "**Cause** : le dossier `C:\\Outils` ne figure pas dans PATH, donc Windows ne cherche pas le programme à cet endroit.\n\n**Solution 1** : lancer la commande avec son chemin complet : `C:\\Outils\\monoutil`.\n\n**Solution 2** : ajouter le dossier à PATH. Pour la session en cours : `set PATH=%PATH%;C:\\Outils`. De façon permanente : par la fenêtre « Variables d'environnement » des propriétés système (plus sûr que `setx` avec une valeur longue).\n\nOn conserve toujours l'ancienne valeur (`%PATH%;`) pour ne pas perdre les autres dossiers."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable d'environnement est un nom associé à une valeur lue par Windows et les programmes.",
+        "On l'affiche avec `echo %NOM%`, on les liste toutes avec `set`.",
+        "TEMP : dossier des fichiers temporaires. PROMPT : format de l'invite. PATH : dossiers de recherche des exécutables.",
+        "Pour ajouter un dossier à PATH, on garde l'ancienne valeur en tête : `%PATH%;nouveau`.",
+        "Au BAC TI, la question demande le contenu de trois variables pour 1,5 point : un rôle précis par variable."
+      ]
+    }
+  ]
+}

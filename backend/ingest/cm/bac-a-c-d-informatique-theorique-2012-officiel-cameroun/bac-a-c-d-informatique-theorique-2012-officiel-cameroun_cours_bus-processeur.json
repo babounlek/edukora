@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-bus-processeur-tle-a-c-d-2012",
+  "meta": {
+    "titre": "Les bus d'un ordinateur : données, adresses et commande",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D",
+    "sous_theme": "Architecture matérielle",
+    "duree_estimee_min": 20,
+    "tags": [
+      "bus",
+      "bus de données",
+      "bus d'adresses",
+      "bus de commande",
+      "processeur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-2012-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique au baccalauréat A, C et D 2012",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-2012-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu appuies sur une touche, l'information doit voyager du clavier jusqu'au processeur, puis vers la mémoire, puis vers l'écran. À l'intérieur de la machine, ces voyages empruntent de véritables routes électriques, et il en existe plusieurs sortes selon ce qu'elles transportent. Ces routes s'appellent des bus. Les connaître te permet de répondre aux questions de matériel du BAC et de comprendre pourquoi un processeur « 64 bits » est plus puissant qu'un processeur « 32 bits »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un ordinateur est formé d'un processeur, d'une mémoire centrale et de périphériques",
+        "Savoir qu'une information est codée sous forme de bits (0 ou 1)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Qu'est-ce qu'un bus, et quels sont ses trois types ?",
+      "contenu_markdown": "Un **bus** est un ensemble de fils conducteurs placés en parallèle, qui transporte des signaux électriques entre plusieurs composants. Chaque fil transporte un bit à la fois, donc un bus de $n$ fils transporte $n$ bits simultanément ; $n$ s'appelle la **largeur** du bus.\n\nSelon ce qu'il transporte, on distingue trois bus :\n\n- le **bus de données** transporte les informations (instructions, opérandes, résultats) ; il est bidirectionnel ;\n- le **bus d'adresses** transporte l'adresse de la case mémoire ou du périphérique concerné ; il est unidirectionnel, du processeur vers la mémoire ;\n- le **bus de commande** transporte les signaux de contrôle (lecture, écriture, horloge).\n\nSelon sa position, on parle de **bus interne** pour les liaisons à l'intérieur du processeur (entre l'unité de commande, l'unité arithmétique et logique et les registres) et de **bus externe** pour les liaisons entre le processeur, la mémoire centrale et les périphériques.\n\nUn bus d'adresses de $n$ bits permet d'adresser $2^n$ cases mémoire.",
+      "formule_principale": "\\text{nombre de cases adressables} = 2^{n}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Quel nom donne-t-on aux connexions électriques qui relient entre elles les différentes parties du processeur ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer ce que décrit la question",
+          "justification": "La question parle de « connexions électriques » qui « relient des parties » d'un même composant : il s'agit d'une voie de communication interne.",
+          "resultat_markdown": "Voie de communication électrique à l'intérieur du processeur."
+        },
+        {
+          "numero": 2,
+          "action": "Associer cette description au vocabulaire du cours",
+          "justification": "Un ensemble de fils conducteurs en parallèle qui transporte des signaux électriques entre composants est un bus.",
+          "resultat_markdown": "Le terme cherché est « bus »."
+        },
+        {
+          "numero": 3,
+          "action": "Préciser sa position",
+          "justification": "Les parties reliées (unité de commande, unité arithmétique et logique, registres) sont toutes à l'intérieur du processeur.",
+          "resultat_markdown": "Il s'agit de bus internes."
+        },
+        {
+          "numero": 4,
+          "action": "Compléter par les trois types",
+          "justification": "Une réponse complète nomme aussi les trois familles de bus selon leur contenu.",
+          "resultat_markdown": "Bus de données, bus d'adresses, bus de commande."
+        }
+      ],
+      "conclusion_markdown": "Les connexions électriques qui relient les parties du processeur sont les bus internes, et le critère qui permet de les reconnaître est celui d'un ensemble de fils parallèles transportant des signaux entre composants."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « les câbles » ou « la carte mère »",
+          "pourquoi_faux": "Un câble relie deux appareils (écran, imprimante) et la carte mère est le circuit imprimé qui porte les composants : aucun des deux ne désigne la voie de communication interne du processeur.",
+          "correction_markdown": "Utilise le mot « bus » et précise s'il est interne ou externe."
+        },
+        {
+          "erreur_markdown": "Penser qu'un seul bus transporte tout (données, adresses et signaux de contrôle)",
+          "pourquoi_faux": "Les trois informations n'ont pas la même nature : l'adresse dit où aller, la donnée dit quoi transporter, la commande dit quelle opération faire. Elles circulent sur trois bus distincts.",
+          "correction_markdown": "Associe chaque bus à une question : où (adresses), quoi (données), comment (commande)."
+        },
+        {
+          "erreur_markdown": "Croire que la largeur d'un bus se mesure en mètres",
+          "pourquoi_faux": "La largeur d'un bus est le nombre de fils, donc le nombre de bits transportés en même temps, et pas une longueur physique.",
+          "correction_markdown": "Une largeur de 8 bits veut dire 8 fils en parallèle, soit 8 bits par transfert."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": "1",
+          "difficulte": "facile",
+          "enonce_markdown": "Nomme les trois types de bus d'un ordinateur et indique ce que chacun transporte.",
+          "solution_markdown": "Le bus de données transporte les informations elles-mêmes (instructions et données à traiter).\n\nLe bus d'adresses transporte l'adresse de la case mémoire ou du périphérique que le processeur veut atteindre.\n\nLe bus de commande transporte les signaux de contrôle qui indiquent l'opération à réaliser (lecture, écriture) et assurent la synchronisation."
+        },
+        {
+          "numero": "2",
+          "difficulte": "moyen",
+          "enonce_markdown": "Un processeur possède un bus d'adresses de 16 bits. Combien de cases mémoire peut-il adresser ?",
+          "solution_markdown": "Un bus d'adresses de $n$ bits peut former $2^n$ adresses différentes, car chaque fil prend la valeur 0 ou 1.\n\nIci $n = 16$, donc le nombre de cases adressables est $2^{16}$.\n\nOn calcule : $2^{10} = 1024$ et $2^6 = 64$, donc $2^{16} = 2^{10} \\times 2^6 = 1024 \\times 64 = 65\\,536$.\n\nLe processeur peut donc adresser 65 536 cases mémoire."
+        },
+        {
+          "numero": "3",
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un fichier de 1 048 576 octets doit être transféré sur un bus de données. Combien de transferts faut-il avec un bus de 8 bits, puis avec un bus de 32 bits ? Quel est le rapport entre les deux ?",
+          "solution_markdown": "Un bus de 8 bits transporte 8 bits, soit 1 octet, par transfert. Pour 1 048 576 octets, il faut donc $1\\,048\\,576 \\div 1 = 1\\,048\\,576$ transferts.\n\nUn bus de 32 bits transporte 32 bits, soit $32 \\div 8 = 4$ octets, par transfert. Il faut donc $1\\,048\\,576 \\div 4 = 262\\,144$ transferts.\n\nLe rapport est $1\\,048\\,576 \\div 262\\,144 = 4$.\n\nÀ fréquence égale, un bus quatre fois plus large transfère le même fichier en quatre fois moins de transferts : c'est l'une des raisons pour lesquelles les processeurs récents sont plus rapides."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un bus est un ensemble de fils parallèles : une largeur de $n$ bits veut dire $n$ bits transportés en même temps.",
+        "Trois bus, trois questions : les adresses disent où, les données disent quoi, la commande dit quelle opération.",
+        "Un bus d'adresses de $n$ bits permet d'adresser $2^n$ cases mémoire.",
+        "À l'intérieur du processeur, on parle de bus internes ; vers la mémoire et les périphériques, de bus externes.",
+        "Au BAC, la question tombe sous la forme « comment s'appellent les connexions électriques qui relient... » : la réponse attendue est « bus », avec ses trois types."
+      ]
+    }
+  ]
+}

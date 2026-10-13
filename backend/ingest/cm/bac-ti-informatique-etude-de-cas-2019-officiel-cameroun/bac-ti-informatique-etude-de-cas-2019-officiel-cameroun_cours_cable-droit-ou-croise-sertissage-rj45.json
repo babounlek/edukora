@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-cable-droit-ou-croise-sertissage-rj45-tle-ti-2019",
+  "meta": {
+    "titre": "Câble droit ou croisé : sertissage RJ45",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Câblage et connectique",
+    "duree_estimee_min": 26,
+    "tags": [
+      "câble droit",
+      "câble croisé",
+      "T568A",
+      "T568B",
+      "RJ45"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour sertir un câble réseau, il faut d'abord se demander à quoi chaque bout sera branché. Un ordinateur sur un commutateur ne demande pas le même câble que deux ordinateurs reliés entre eux. Cette règle simple repose sur la façon dont les équipements émettent et reçoivent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un connecteur RJ45 et un câble à 4 paires",
+        "Connaître les équipements d'un réseau local (ordinateur, commutateur, routeur)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Même nature, croisé ; nature différente, droit",
+      "contenu_markdown": "Un connecteur RJ45 a 8 broches numérotées de 1 à 8. Deux normes fixent l'ordre des fils :\n\n| Broche | T568A | T568B |\n|---|---|---|\n| 1 | blanc-vert | blanc-orange |\n| 2 | vert | orange |\n| 3 | blanc-orange | blanc-vert |\n| 4 | bleu | bleu |\n| 5 | blanc-bleu | blanc-bleu |\n| 6 | orange | vert |\n| 7 | blanc-marron | blanc-marron |\n| 8 | marron | marron |\n\nUn **ordinateur** et un **routeur** émettent sur les broches 1 et 2 et reçoivent sur 3 et 6. Un **commutateur** ou un **concentrateur** fait l'inverse. Donc :\n\n- **Câble droit** (même norme aux deux extrémités, en général T568B) : pour relier deux équipements de natures différentes, par exemple ordinateur et commutateur, commutateur et routeur.\n- **Câble croisé** (T568A à une extrémité, T568B à l'autre) : pour relier deux équipements de même nature, par exemple ordinateur et ordinateur, commutateur et commutateur.\n\nLes équipements récents détectent automatiquement le type de câble (fonction Auto-MDIX) et acceptent l'un ou l'autre.",
+      "formule_principale": "\\text{natures différentes} \\Rightarrow \\text{câble droit} \\qquad ; \\qquad \\text{même nature} \\Rightarrow \\text{câble croisé}",
+      "variantes": [
+        {
+          "nom": "Câble console",
+          "quand_utiliser": "Quand on configure un commutateur ou un routeur par son port console",
+          "contenu_markdown": "Un câble spécial (rollover) inverse complètement l'ordre des broches (1 vers 8, 2 vers 7, etc.) ; il ne relie pas deux équipements en Ethernet."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le réseau de l'épreuve, l'ordinateur PC1 est relié à l'élément central (commutateur 2950-24). Quel type de sertissage utilise-t-on ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature des deux équipements",
+          "justification": "Un ordinateur et un commutateur n'ont pas la même nature",
+          "resultat_markdown": "PC1 est un terminal, l'élément central est un équipement d'interconnexion."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la règle",
+          "justification": "Natures différentes : câble droit",
+          "resultat_markdown": "Les deux extrémités sont serties selon la même norme."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir la norme",
+          "justification": "T568B est la plus répandue",
+          "resultat_markdown": "T568B aux deux extrémités."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire l'ordre des fils",
+          "justification": "De la broche 1 à la broche 8",
+          "resultat_markdown": "Blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron."
+        }
+      ],
+      "conclusion_markdown": "PC1 est relié au commutateur par un câble droit serti en T568B aux deux extrémités."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser un câble croisé pour relier un ordinateur à un commutateur.",
+          "pourquoi_faux": "Un ordinateur et un commutateur sont de natures différentes : leurs broches d'émission et de réception sont déjà inversées. Croiser les ferait émettre sur les mêmes paires.",
+          "correction_markdown": "Utiliser un câble droit pour des natures différentes, croisé pour des natures identiques."
+        },
+        {
+          "erreur_markdown": "Mélanger l'ordre des couleurs au sertissage.",
+          "pourquoi_faux": "Une inversion de deux fils, même si les deux bouts semblent identiques, désapparie les paires torsadées et fait chuter le débit ou coupe la liaison.",
+          "correction_markdown": "Suivre strictement l'ordre de la norme choisie, de la broche 1 à la broche 8."
+        },
+        {
+          "erreur_markdown": "Croire qu'un câble droit signifie « un seul fil par broche ».",
+          "pourquoi_faux": "Le mot « droit » désigne seulement l'identité d'ordre aux deux extrémités.",
+          "correction_markdown": "Contrôler que les deux extrémités portent la même norme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner le type de câble pour relier : (a) ordinateur - commutateur, (b) ordinateur - ordinateur, (c) commutateur - commutateur.",
+          "solution_markdown": "1. (a) Natures différentes : câble droit.\n2. (b) Même nature : câble croisé.\n3. (c) Même nature : câble croisé (sans Auto-MDIX)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire, de la broche 1 à 8, les couleurs des deux extrémités d'un câble droit T568B puis d'un câble croisé (T568A d'un côté, T568B de l'autre).",
+          "solution_markdown": "1. Câble droit T568B : des deux côtés, blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron.\n2. Câble croisé : un côté en T568A (blanc-vert, vert, blanc-orange, bleu, blanc-bleu, orange, blanc-marron, marron), l'autre en T568B (blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Vérifier que le câble croisé T568A - T568B relie bien l'émission (broches 1 et 2) d'un côté à la réception (broches 3 et 6) de l'autre.",
+          "solution_markdown": "1. Côté A (T568A) : broche 1 blanc-vert, broche 2 vert, broche 3 blanc-orange, broche 6 orange.\n2. Côté B (T568B) : broche 1 blanc-orange, broche 2 orange, broche 3 blanc-vert, broche 6 vert.\n3. Le fil blanc-vert est sur la broche 1 côté A et sur la broche 3 côté B ; le fil vert est sur la broche 2 côté A et sur la broche 6 côté B.\n4. Ainsi l'émission (1 et 2) de A arrive sur 3 et 6 de B ; de même, blanc-orange (3 côté A, 1 côté B) et orange (6 côté A, 2 côté B) relient l'émission de B à la réception de A. Le croisement est réalisé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Câble droit : mêmes normes aux deux extrémités ; câble croisé : T568A d'un côté, T568B de l'autre.",
+        "Natures différentes, câble droit ; natures identiques, câble croisé.",
+        "T568B : blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron.",
+        "L'Auto-MDIX des équipements récents rend le choix moins critique, mais le cours reste exigible.",
+        "À l'examen, justifie par la nature des deux équipements : c'est ce que le correcteur attend."
+      ]
+    }
+  ]
+}

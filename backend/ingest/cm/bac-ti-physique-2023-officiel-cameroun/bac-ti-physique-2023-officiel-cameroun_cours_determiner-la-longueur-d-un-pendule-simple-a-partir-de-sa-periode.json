@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-longueur-pendule-simple-periode-tle-ti",
+  "meta": {
+    "titre": "Déterminer la longueur d'un pendule simple à partir de sa période",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Pendule simple",
+    "duree_estimee_min": 25,
+    "tags": [
+      "pendule simple",
+      "période propre",
+      "longueur",
+      "pesanteur",
+      "petites oscillations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-PHYSIQUE-2023-CM",
+    "epreuve_titre": "Épreuve de physique au baccalauréat TI 2023 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-physique-2023-officiel-cameroun-ex2-q1.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Galilée aurait découvert l'isochronisme des oscillations en regardant une lampe se balancer dans la cathédrale de Pise. Pour un pendule, la période ne dépend ni de la masse ni (pour de petits angles) de l'amplitude : elle ne dépend que de la longueur du fil et de la pesanteur. Mesurer une période revient donc à mesurer une longueur, ou l'inverse."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Période, fréquence, pulsation",
+        "Résolution d'équations avec racine carrée",
+        "Unités du Système international (m, s, $\\text{m}\\cdot\\text{s}^{-2}$)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Période propre du pendule simple",
+      "contenu_markdown": "Pour un pendule simple de longueur $\\ell$ (fil inextensible de masse négligeable portant une petite masse) oscillant avec de faibles amplitudes (en pratique $\\theta_m \\lesssim 15°$) en un lieu où la pesanteur vaut $g$, la période est $T = 2\\pi\\sqrt{\\dfrac{\\ell}{g}}$. Elle est indépendante de la masse. On isole $\\ell$ en élevant au carré : $\\ell = \\dfrac{g\\,T^2}{4\\pi^2}$. On travaille toujours en mètres, secondes et $\\text{m}\\cdot\\text{s}^{-2}$.",
+      "formule_principale": "T = 2\\pi\\sqrt{\\frac{\\ell}{g}} \\quad\\Longleftrightarrow\\quad \\ell = \\frac{g\\,T^2}{4\\pi^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un pendule simple oscille avec une amplitude de $0{,}10\\ \\text{rad}$ et une période $T = 1{,}0\\ \\text{s}$. Déterminer sa longueur. On donne $g = 9{,}8\\ \\text{m}\\cdot\\text{s}^{-2}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier le domaine de validité",
+          "justification": "La formule suppose de petits angles.",
+          "resultat_markdown": "$0{,}10\\ \\text{rad} \\approx 5{,}7°$ est faible : la formule s'applique."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la période",
+          "justification": "C'est la relation du cours.",
+          "resultat_markdown": "$T = 2\\pi\\sqrt{\\dfrac{\\ell}{g}}$."
+        },
+        {
+          "numero": 3,
+          "action": "Isoler la longueur",
+          "justification": "On élève au carré puis on multiplie par $g$ et on divise par $4\\pi^2$.",
+          "resultat_markdown": "$T^2 = 4\\pi^2\\dfrac{\\ell}{g}$ donc $\\ell = \\dfrac{g\\,T^2}{4\\pi^2}$."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler l'homogénéité",
+          "justification": "$[g\\,T^2] = L\\,T^{-2} \\times T^2 = L$.",
+          "resultat_markdown": "Le second membre est bien une longueur."
+        },
+        {
+          "numero": 5,
+          "action": "Faire l'application numérique",
+          "justification": "$4\\pi^2 = 39{,}478$.",
+          "resultat_markdown": "$\\ell = \\dfrac{9{,}8\\times1{,}0^2}{39{,}478} = 0{,}248\\ \\text{m} \\approx 0{,}25\\ \\text{m}$."
+        }
+      ],
+      "conclusion_markdown": "Le pendule étudié mesure environ $0{,}25\\ \\text{m}$, soit $25\\ \\text{cm}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'élever $T$ au carré dans $\\ell = g\\,T^2/(4\\pi^2)$",
+          "pourquoi_faux": "En écrivant $\\ell = g\\,T/(4\\pi^2)$ on obtiendrait une quantité qui n'est pas une longueur ; l'homogénéité l'aurait révélé : $[g\\,T] = L\\,T^{-1}$.",
+          "correction_markdown": "Contrôle toujours l'homogénéité après avoir isolé la grandeur."
+        },
+        {
+          "erreur_markdown": "Utiliser $T = 2\\pi\\sqrt{g/\\ell}$",
+          "pourquoi_faux": "La longueur est au numérateur : un pendule plus long oscille plus lentement. Avec $g/\\ell$ au contraire, la période diminuerait quand $\\ell$ augmente.",
+          "correction_markdown": "Raisonne sur le sens de variation : plus long, donc plus lent, donc $T$ augmente avec $\\ell$."
+        },
+        {
+          "erreur_markdown": "Mélanger les unités (centimètres avec $g$ en $\\text{m}\\cdot\\text{s}^{-2}$)",
+          "pourquoi_faux": "$g = 9{,}8\\ \\text{m}\\cdot\\text{s}^{-2}$ impose une longueur en mètres.",
+          "correction_markdown": "Convertis tout en unités du Système international avant de calculer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la longueur d'un pendule simple de période $T = 2{,}0\\ \\text{s}$ ($g = 9{,}8\\ \\text{m}\\cdot\\text{s}^{-2}$).",
+          "solution_markdown": "$$\\ell = \\frac{g\\,T^2}{4\\pi^2} = \\frac{9{,}8\\times(2{,}0)^2}{39{,}478} = \\frac{39{,}2}{39{,}478} = 0{,}99\\ \\text{m}$$\n\nC'est le « pendule qui bat la seconde » : environ un mètre pour une période de deux secondes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la période d'un pendule simple de longueur $\\ell = 0{,}50\\ \\text{m}$ ($g = 9{,}8\\ \\text{m}\\cdot\\text{s}^{-2}$).",
+          "solution_markdown": "$$T = 2\\pi\\sqrt{\\frac{\\ell}{g}} = 2\\pi\\sqrt{\\frac{0{,}50}{9{,}8}} = 2\\pi\\sqrt{0{,}0510} = 2\\pi\\times0{,}2259 = 1{,}4\\ \\text{s}$$\n\nVérification de cohérence : $\\ell = 0{,}50\\ \\text{m}$ est environ la moitié de $0{,}99\\ \\text{m}$ ; la période doit donc être divisée par $\\sqrt{2} \\approx 1{,}41$ : $2{,}0/1{,}41 = 1{,}4\\ \\text{s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève chronomètre $20$ oscillations complètes d'un pendule simple et trouve $36{,}0\\ \\text{s}$. (a) En déduire la période puis la longueur. (b) Pourquoi mesure-t-on plusieurs oscillations plutôt qu'une seule ?",
+          "solution_markdown": "**(a)** $T = \\dfrac{36{,}0}{20} = 1{,}80\\ \\text{s}$. Puis :\n\n$$\\ell = \\frac{g\\,T^2}{4\\pi^2} = \\frac{9{,}8\\times(1{,}80)^2}{39{,}478} = \\frac{9{,}8\\times3{,}24}{39{,}478} = \\frac{31{,}75}{39{,}478} = 0{,}80\\ \\text{m}$$\n\n**(b)** L'incertitude de déclenchement du chronomètre (de l'ordre du dixième de seconde) est la même quelle que soit la durée mesurée. Répartie sur $20$ oscillations, elle est divisée par $20$ sur la valeur de $T$ : l'erreur relative sur $T$ devient très inférieure à celle d'une mesure sur une seule oscillation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La période propre d'un pendule simple est $T = 2\\pi\\sqrt{\\ell/g}$, valable pour de petites oscillations.",
+        "Elle ne dépend ni de la masse ni de l'amplitude (aux petits angles), mais seulement de $\\ell$ et de $g$.",
+        "Pour isoler $\\ell$, élève au carré : $\\ell = g\\,T^2/(4\\pi^2)$, et contrôle l'homogénéité.",
+        "Repère d'ordre de grandeur : $T = 2\\ \\text{s}$ pour environ $1\\ \\text{m}$, donc $T = 1\\ \\text{s}$ pour environ $25\\ \\text{cm}$.",
+        "Au BAC, cette question suit la lecture graphique de la période ; tu dois présenter la formule littérale, l'application numérique et le résultat avec son unité."
+      ]
+    }
+  ]
+}

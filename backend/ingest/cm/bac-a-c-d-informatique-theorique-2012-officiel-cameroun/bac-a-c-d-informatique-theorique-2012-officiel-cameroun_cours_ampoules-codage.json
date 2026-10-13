@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-ampoules-codage-tle-a-c-d-2012",
+  "meta": {
+    "titre": "Déterminer combien d'éléments à deux états sont nécessaires",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D",
+    "sous_theme": "Codage de l'information",
+    "duree_estimee_min": 20,
+    "tags": [
+      "codage",
+      "puissances de 2",
+      "capacité",
+      "ampoules",
+      "bit"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-2012-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique au baccalauréat A, C et D 2012",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-2012-officiel-cameroun-ex2-q2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un panneau de signalisation doit pouvoir afficher 20 messages différents avec des voyants qui sont soit allumés, soit éteints. Combien de voyants le constructeur doit-il prévoir ? Trop peu, et certains messages n'auront pas de code ; trop, et il gaspille de l'argent. La réponse tient à une propriété simple de la puissance de 2 que tu vas maîtriser dans ce cours."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'avec $n$ éléments à deux états on forme $2^n$ codes",
+        "Connaître les puissances de 2 jusqu'à $2^6$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le plus petit n tel que 2 puissance n est au moins N",
+      "contenu_markdown": "Pour coder **N informations** avec des éléments à deux états, il faut que le nombre de codes disponibles $2^n$ soit au moins égal à $N$. On retient le **plus petit** entier $n$ qui convient.\n\n**Méthode.** On construit le tableau des puissances de 2 et on s'arrête dès que $2^n \\geq N$.\n\n| $n$ | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |\n|---|---|---|---|---|---|---|---|---|\n| $2^n$ | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 |\n\nQuand $N$ n'est pas une puissance de 2, on prend la puissance de 2 immédiatement supérieure : certains codes restent alors inutilisés.\n\nAjouter **un seul** élément double la capacité : de $2^n$ à $2^{n+1}$ codes.",
+      "formule_principale": "n = \\min\\{\\, k \\in \\mathbb{N} : 2^{k} \\geq N \\,\\}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour coder 16 informations à l'aide d'ampoules qui peuvent être allumées ou éteintes, combien d'ampoules faut-il ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la condition",
+          "justification": "Il faut au moins autant de codes que d'informations.",
+          "resultat_markdown": "$2^n \\geq 16$."
+        },
+        {
+          "numero": 2,
+          "action": "Dresser les premières puissances de 2",
+          "justification": "On cherche à quel moment la valeur 16 est atteinte.",
+          "resultat_markdown": "$2^1 = 2$, $2^2 = 4$, $2^3 = 8$, $2^4 = 16$."
+        },
+        {
+          "numero": 3,
+          "action": "Tester 3 ampoules",
+          "justification": "$2^3 = 8$, ce qui est inférieur à 16.",
+          "resultat_markdown": "Trois ampoules sont insuffisantes."
+        },
+        {
+          "numero": 4,
+          "action": "Tester 4 ampoules",
+          "justification": "$2^4 = 16$, ce qui est exactement le nombre d'informations.",
+          "resultat_markdown": "Quatre ampoules suffisent."
+        }
+      ],
+      "conclusion_markdown": "Il faut 4 ampoules, puisque 4 est le plus petit entier $n$ pour lequel $2^n \\geq 16$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Raisonner de façon proportionnelle : 2 ampoules pour 4 informations, donc 8 ampoules pour 16",
+          "pourquoi_faux": "Le nombre de codes n'est pas proportionnel au nombre d'ampoules : il double à chaque ampoule ajoutée. Quatre ampoules donnent déjà 16 codes, il n'en faut pas huit.",
+          "correction_markdown": "Passe par le tableau des puissances de 2."
+        },
+        {
+          "erreur_markdown": "Choisir une puissance de 2 inférieure à N",
+          "pourquoi_faux": "Pour $N = 20$, $2^4 = 16 < 20$ ne suffit pas : 4 ampoules laisseraient quatre informations sans code. Il faut $2^5 = 32$.",
+          "correction_markdown": "Prends toujours la première puissance de 2 supérieure ou égale à $N$."
+        },
+        {
+          "erreur_markdown": "Oublier que N peut ne pas être une puissance de 2",
+          "pourquoi_faux": "Dans ce cas la formule du logarithme donne un nombre non entier, qu'il faut arrondir au supérieur.",
+          "correction_markdown": "Reste sur le tableau des puissances de 2 pour éviter l'arrondi."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": "1",
+          "difficulte": "facile",
+          "enonce_markdown": "Combien d'ampoules faut-il pour coder 8 informations ?",
+          "solution_markdown": "On cherche le plus petit $n$ tel que $2^n \\geq 8$.\n\n$2^1 = 2$, $2^2 = 4$, $2^3 = 8$.\n\n$2^2 = 4 < 8$ ne suffit pas, $2^3 = 8$ convient.\n\nIl faut 3 ampoules."
+        },
+        {
+          "numero": "2",
+          "difficulte": "moyen",
+          "enonce_markdown": "Combien de voyants (allumé ou éteint) faut-il pour afficher 20 messages différents ? Combien de codes resteront inutilisés ?",
+          "solution_markdown": "On cherche le plus petit $n$ tel que $2^n \\geq 20$.\n\n$2^4 = 16 < 20$ ne suffit pas, $2^5 = 32 \\geq 20$ convient.\n\nIl faut donc 5 voyants.\n\nIl reste $32 - 20 = 12$ codes inutilisés."
+        },
+        {
+          "numero": "3",
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un tableau de bord possède 5 voyants. Combien de codes peut-il afficher ? Si l'on ajoute 2 voyants, par combien la capacité est-elle multipliée ? Combien de codes obtient-on alors ?",
+          "solution_markdown": "Avec 5 voyants à deux états : $2^5 = 32$ codes.\n\nOn ajoute 2 voyants, soit 7 voyants au total : $2^7 = 128$ codes.\n\nLe facteur multiplicatif est $128 \\div 32 = 4$. On retrouve que chaque voyant ajouté double la capacité, et que deux voyants la multiplient par $2 \\times 2 = 4$, ce que l'on écrit $2^{5+2} = 2^5 \\times 2^2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour $N$ informations, cherche le plus petit $n$ tel que $2^n \\geq N$.",
+        "Chaque élément supplémentaire double la capacité : la croissance est exponentielle, pas proportionnelle.",
+        "Si $N$ n'est pas une puissance de 2, prends la puissance de 2 supérieure ; des codes restent inutilisés.",
+        "Le tableau des puissances de 2 (2, 4, 8, 16, 32, 64, 128, 256) règle presque tous les cas.",
+        "Au BAC, cette question suit souvent « former les codes » : elle vaut 1 point et se traite en trois lignes."
+      ]
+    }
+  ]
+}

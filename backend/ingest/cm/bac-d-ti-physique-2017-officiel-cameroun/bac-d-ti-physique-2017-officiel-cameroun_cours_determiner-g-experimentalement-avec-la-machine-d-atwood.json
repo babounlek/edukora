@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-determiner-g-experimentalement-avec-la-machine-d-atwood-tle-d-ti",
+  "meta": {
+    "titre": "Déterminer g expérimentalement avec la machine d'Atwood",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Mesure de l'accélération de la pesanteur",
+    "duree_estimee_min": 35,
+    "tags": [
+      "machine d'Atwood",
+      "accélération de la pesanteur",
+      "exploitation graphique",
+      "mouvement rectiligne uniformément accéléré",
+      "mesure de g"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-TI-PHYSIQUE-2017-OFFICIEL-CM",
+    "epreuve_titre": "Baccalauréat Physique Séries D et TI - Session 2017 (Cameroun), sujet officiel reproduit par Camerecole",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-d-ti-physique-2017-officiel-cameroun-ex4-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Mesurer $g$ en laissant tomber une bille est difficile : elle tombe trop vite pour un chronomètre à main. Avec deux masses presque égales reliées par un fil sur une poulie, le mouvement est ralenti et la durée de chute devient mesurable. Le prix à payer est un facteur de correction qui dépend du rapport des masses, qu'il faut intégrer au calcul de $g$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Mouvement rectiligne uniformément accéléré partant du repos : $h = \\tfrac{1}{2}at^2$",
+        "Expression de l'accélération dans la machine d'Atwood",
+        "Tracé et pente d'une droite"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux méthodes pour trouver $g$",
+      "contenu_markdown": "Avec $a = g\\,\\dfrac{m_1 - m_2}{m_1 + m_2}$ et $h = \\tfrac{1}{2}a\\,t^2$ pour un départ du repos, on pose $k = \\dfrac{m_1 + m_2}{m_1 - m_2}$ et $g = k\\,a$.\n\n**Méthode 1.** Pour chaque mesure $(h, t)$, calculer $a = \\dfrac{2h}{t^2}$, puis $g = k\\,a$, et faire la moyenne des valeurs obtenues.\n\n**Méthode 2.** Tracer $h = f(t^2)$, droite passant par l'origine de pente $p = a/2$, puis $g = 2p\\,k$.",
+      "formule_principale": "g = \\frac{2h}{t^2}\\cdot\\frac{m_1 + m_2}{m_1 - m_2}",
+      "variantes": [
+        {
+          "nom": "Graphe de la vitesse en fonction du temps",
+          "quand_utiliser": "Quand on dispose de vitesses mesurées ou calculées",
+          "contenu_markdown": "La droite $v = f(t)$ passe par l'origine et sa pente est $a$ ; on en déduit $g = k\\,a$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $m_1 = 576\\ \\text{g}$ et $m_2 = 390\\ \\text{g}$, la masse $m_1$ chute de $h = 1{,}00\\ \\text{m}$ en $t = 1{,}03\\ \\text{s}$. Calculer $g$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le facteur $k$",
+          "justification": "Les masses sont dans la même unité : $k$ est un nombre sans unité.",
+          "resultat_markdown": "$k = \\dfrac{576 + 390}{576 - 390} = \\dfrac{966}{186} = 5{,}194$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la loi de chute",
+          "justification": "Départ du repos, accélération constante.",
+          "resultat_markdown": "$h = \\tfrac{1}{2}a\\,t^2$ donc $a = \\dfrac{2h}{t^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'accélération",
+          "justification": "On remplace par les valeurs mesurées.",
+          "resultat_markdown": "$a = \\dfrac{2 \\times 1{,}00}{1{,}03^2} = \\dfrac{2{,}00}{1{,}0609} = 1{,}885\\ \\text{m/s}^2$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire $g$",
+          "justification": "$g = k\\,a$.",
+          "resultat_markdown": "$g = 5{,}194 \\times 1{,}885 = 9{,}79\\ \\text{m/s}^2$"
+        }
+      ],
+      "conclusion_markdown": "Cette mesure donne $g \\approx 9{,}79\\ \\text{m/s}^2$, proche de la valeur usuelle $9{,}8\\ \\text{m/s}^2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer $h = \\tfrac{1}{2}g\\,t^2$ comme pour une chute libre.",
+          "pourquoi_faux": "La masse $m_1$ n'est pas en chute libre : son accélération est $a = g/k$, soit environ $g/5$. On trouverait $g \\approx 1{,}9\\ \\text{m/s}^2$.",
+          "correction_markdown": "Passer par $a$ puis multiplier par $k$."
+        },
+        {
+          "erreur_markdown": "Inverser le facteur : utiliser $\\dfrac{m_1 - m_2}{m_1 + m_2}$ au lieu de son inverse.",
+          "pourquoi_faux": "L'accélération $a$ est plus petite que $g$ ; pour retrouver $g$ il faut multiplier $a$ par un nombre plus grand que 1.",
+          "correction_markdown": "Vérifier que $g > a$ avant de conclure."
+        },
+        {
+          "erreur_markdown": "Oublier de mettre $t$ au carré.",
+          "pourquoi_faux": "$h = \\tfrac{1}{2}a\\,t^2$ fait intervenir $t^2$ : sans le carré, le résultat est faux d'un facteur $t$.",
+          "correction_markdown": "Écrire explicitement $t^2$ au dénominateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Même dispositif ($m_1 = 576\\ \\text{g}$, $m_2 = 390\\ \\text{g}$) : $h = 0{,}80\\ \\text{m}$ et $t = 0{,}92\\ \\text{s}$. Calculer $g$.",
+          "solution_markdown": "$a = \\dfrac{2 \\times 0{,}80}{0{,}92^2} = \\dfrac{1{,}60}{0{,}8464} = 1{,}890\\ \\text{m/s}^2$ et $g = 5{,}194 \\times 1{,}890 = 9{,}82\\ \\text{m/s}^2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec $m_1 = 300\\ \\text{g}$ et $m_2 = 200\\ \\text{g}$, calculer l'accélération théorique ($g = 9{,}8\\ \\text{m/s}^2$) puis la durée de chute de $1{,}0\\ \\text{m}$.",
+          "solution_markdown": "$a = g\\,\\dfrac{300 - 200}{300 + 200} = 9{,}8 \\times 0{,}2 = 1{,}96\\ \\text{m/s}^2$. Durée : $t = \\sqrt{\\dfrac{2h}{a}} = \\sqrt{\\dfrac{2{,}0}{1{,}96}} = 1{,}01\\ \\text{s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec $m_1 = 576\\ \\text{g}$ et $m_2 = 390\\ \\text{g}$, le graphe $h = f(t^2)$ a une pente de $0{,}95\\ \\text{m/s}^2$. Calculer $a$ puis $g$ et comparer à $9{,}8\\ \\text{m/s}^2$.",
+          "solution_markdown": "La pente vaut $a/2$, donc $a = 2 \\times 0{,}95 = 1{,}90\\ \\text{m/s}^2$. Puis $g = 5{,}194 \\times 1{,}90 = 9{,}87\\ \\text{m/s}^2$. L'écart avec $9{,}8$ est de $\\dfrac{9{,}87 - 9{,}8}{9{,}8} = 0{,}7\\ \\%$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Machine d'Atwood : $a = g\\,\\dfrac{m_1 - m_2}{m_1 + m_2}$, donc $g = a\\,\\dfrac{m_1 + m_2}{m_1 - m_2}$.",
+        "Départ du repos : $h = \\tfrac{1}{2}a\\,t^2$, soit $a = 2h/t^2$.",
+        "Deux méthodes : calcul pour chaque mesure puis moyenne, ou graphe $h = f(t^2)$ dont la pente vaut $a/2$.",
+        "La masse $m_1$ ne tombe pas en chute libre : n'écris pas $h = \\tfrac{1}{2}g\\,t^2$.",
+        "Au BAC, cette question de méthodologie expérimentale demande d'indiquer deux méthodes avec les formules."
+      ]
+    }
+  ]
+}

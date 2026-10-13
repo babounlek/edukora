@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-identifier-un-equipement-dinterconnexion-sur-un-schema-tle-ti-2019",
+  "meta": {
+    "titre": "Identifier un équipement d'interconnexion sur un schéma",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Équipements réseau",
+    "duree_estimee_min": 20,
+    "tags": [
+      "commutateur",
+      "concentrateur",
+      "routeur",
+      "schéma réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.4.a-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un schéma de réseau, une boîte au centre relie tous les ordinateurs. Est-ce un hub, un switch, un routeur ? Les trois se ressemblent mais se comportent très différemment. Les sujets d'examen te demandent de les distinguer à partir d'indices du schéma."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un réseau local",
+        "Connaître les mots port, câble et adresse"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois indices : l'étiquette, la place, le rôle",
+      "contenu_markdown": "| Équipement | Rôle | Apparence | Remarque |\n|---|---|---|---|\n| **Concentrateur** (hub) | répète tout signal sur tous les ports | boîtier à ports RJ45, rudimentaire | un seul domaine de collision, obsolète |\n| **Commutateur** (switch) | oriente chaque trame vers le seul port du destinataire | boîtier plat à plusieurs ports, souvent 8, 24 ou 48 | cœur du réseau local en étoile |\n| **Routeur** | relie des réseaux différents (par exemple LAN et Internet) | quelques ports, souvent avec antennes Wi-Fi | choisit le chemin d'après les adresses IP |\n| **Modem** | adapte le signal à la ligne (téléphone, fibre) | boîtier à un port de ligne | sert à accéder à l'opérateur |\n| **Point d'accès Wi-Fi** | relie des appareils sans fil au réseau câblé | boîtier avec antennes | |\n\nIndices à exploiter dans l'ordre : (1) l'**étiquette** du schéma (par exemple « SWITCH ») ; (2) la **position** (l'équipement central d'une étoile) ; (3) le **rôle** déduit des liaisons.",
+      "formule_principale": "\\text{étiquette} > \\text{position} > \\text{apparence}",
+      "variantes": [
+        {
+          "nom": "Étiquettes de Packet Tracer",
+          "quand_utiliser": "Quand le schéma vient de Cisco Packet Tracer",
+          "contenu_markdown": "Les icônes portent des étiquettes comme « PC-PT » (ordinateur), « Printer-PT » (imprimante), « 2950-24 Switch » (commutateur Cisco Catalyst 2950 à 24 ports) ; le suffixe PT veut dire Packet Tracer."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur le schéma de l'épreuve, identifier le nom de l'élément central relié à PC1, PC2, PC3 et PC4 et portant l'étiquette « 2950-24 SWITCH ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire l'étiquette",
+          "justification": "C'est l'indice le plus sûr",
+          "resultat_markdown": "« SWITCH » désigne un commutateur."
+        },
+        {
+          "numero": 2,
+          "action": "Observer la position",
+          "justification": "L'équipement central d'une étoile relie tous les postes",
+          "resultat_markdown": "PC1 à PC4 y sont reliés chacun par un câble."
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler l'apparence",
+          "justification": "Un commutateur est un boîtier plat à une rangée de ports",
+          "resultat_markdown": "L'icône est un boîtier plat à plusieurs ports."
+        },
+        {
+          "numero": 4,
+          "action": "Écarter les autres équipements",
+          "justification": "Un routeur relierait des réseaux différents ; un hub est étiqueté HUB",
+          "resultat_markdown": "Aucun indice de routeur ni de hub."
+        }
+      ],
+      "conclusion_markdown": "L'élément central est un commutateur (switch)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « hub » ou « concentrateur ».",
+          "pourquoi_faux": "L'étiquette du schéma dit SWITCH. Un hub répète le signal sans intelligence, alors qu'un switch oriente les trames.",
+          "correction_markdown": "Lire l'étiquette avant de se fier à l'apparence."
+        },
+        {
+          "erreur_markdown": "Répondre « routeur » parce que l'équipement est au centre.",
+          "pourquoi_faux": "Un routeur relie des réseaux différents ; ici tous les postes sont dans le même réseau local, relié par un commutateur.",
+          "correction_markdown": "Chercher si le schéma montre plusieurs réseaux ou une sortie vers Internet."
+        },
+        {
+          "erreur_markdown": "Confondre modem et commutateur.",
+          "pourquoi_faux": "Le modem relie le réseau à la ligne de l'opérateur ; il ne comporte pas une rangée de ports pour des ordinateurs.",
+          "correction_markdown": "Associer le modem à l'accès Internet et le commutateur à la distribution locale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associer chaque équipement à son rôle : hub, switch, routeur.",
+          "solution_markdown": "1. Hub : répète le signal reçu sur tous ses ports.\n2. Switch : envoie chaque trame au seul port du destinataire d'après les adresses MAC.\n3. Routeur : relie des réseaux différents d'après les adresses IP."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un schéma montre une box reliée à Internet, un équipement à 8 ports relié à la box et à 5 ordinateurs, et une imprimante réseau reliée à l'équipement. Nomme chaque équipement et justifie.",
+          "solution_markdown": "1. La box relie le réseau local à Internet : c'est le routeur (avec modem).\n2. L'équipement à 8 ports relié aux ordinateurs est un commutateur : il distribue le réseau local.\n3. Les ordinateurs et l'imprimante réseau sont les terminaux.\n4. Les justifications viennent de la position et du rôle de chaque boîtier dans les liaisons."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Explique pourquoi remplacer le commutateur de l'épreuve par un hub dégraderait les performances du réseau de quatre ordinateurs.",
+          "solution_markdown": "1. Un hub répète chaque trame sur tous ses ports : chaque ordinateur reçoit tout le trafic, même celui qui ne le concerne pas.\n2. Les ordinateurs partagent un même domaine de collision : deux émissions simultanées entrent en collision et sont reprises.\n3. Le commutateur, lui, n'envoie la trame qu'au port du destinataire et permet plusieurs conversations simultanées.\n4. Le débit utile par machine chute donc avec un hub dès que plusieurs machines émettent."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour identifier un équipement, lis l'étiquette, regarde sa position, déduis son rôle.",
+        "Le commutateur est l'équipement central d'un réseau local en étoile.",
+        "Le routeur relie des réseaux différents ; le hub répète sans discernement.",
+        "Les étiquettes Packet Tracer (PC-PT, Printer-PT, 2950-24) donnent des indices directs.",
+        "À l'examen, une réponse = le nom de l'équipement et un indice qui le justifie."
+      ]
+    }
+  ]
+}

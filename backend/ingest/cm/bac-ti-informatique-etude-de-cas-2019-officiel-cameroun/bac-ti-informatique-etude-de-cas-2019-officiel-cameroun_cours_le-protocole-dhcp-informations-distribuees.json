@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-le-protocole-dhcp-informations-distribuees-tle-ti-2019",
+  "meta": {
+    "titre": "Le protocole DHCP : informations distribuées",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Services réseau",
+    "duree_estimee_min": 24,
+    "tags": [
+      "DHCP",
+      "bail",
+      "passerelle",
+      "serveur DNS"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu branches ton ordinateur ou connectes ton téléphone au Wi-Fi, tu n'as rien à configurer : l'adresse IP arrive toute seule. Ce miracle quotidien s'appelle le DHCP, et il fournit bien plus qu'une adresse. Savoir ce qu'il distribue et comment, c'est comprendre la capture d'une configuration réseau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP et un masque de sous-réseau",
+        "Connaître les rôles de la passerelle et du DNS"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ce que le serveur DHCP distribue",
+      "contenu_markdown": "Un **serveur DHCP** (*Dynamic Host Configuration Protocol*) attribue automatiquement à chaque client un **bail**, c'est-à-dire une configuration valable pour une durée limitée. Le bail comprend au minimum :\n\n- une **adresse IP** ;\n- un **masque de sous-réseau** ;\n- une **passerelle par défaut** (le routeur de sortie) ;\n- les adresses des **serveurs DNS** ;\n- la **durée du bail** (dates d'obtention et d'expiration).\n\nL'échange se fait en quatre messages, dits **DORA** : *Discover* (le client cherche un serveur), *Offer* (le serveur propose une adresse), *Request* (le client la demande), *Acknowledge* (le serveur confirme). À la moitié de la durée du bail, le client tente de le renouveler.\n\nNe vient **pas** du DHCP : l'adresse physique (MAC), inscrite dans la carte réseau par son fabricant.",
+      "formule_principale": "\\text{bail DHCP} = \\text{adresse IP} + \\text{masque} + \\text{passerelle} + \\text{DNS} + \\text{durée}",
+      "variantes": [
+        {
+          "nom": "Adresse fixe ou adresse dynamique",
+          "quand_utiliser": "Quand on compare l'attribution manuelle et automatique",
+          "contenu_markdown": "Une imprimante réseau ou un serveur reçoit souvent une adresse fixe, saisie à la main ou réservée dans le DHCP ; un ordinateur portable reçoit une adresse dynamique. Dans `ipconfig /all`, « DHCP activé : Oui » indique l'attribution automatique."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la capture de l'épreuve, identifier deux informations que l'ordinateur a obtenues du serveur DHCP.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que le DHCP est actif",
+          "justification": "La rubrique « DHCP activé » le confirme",
+          "resultat_markdown": "« DHCP activé : Oui » : la configuration est automatique."
+        },
+        {
+          "numero": 2,
+          "action": "Lister ce que fournit un serveur DHCP",
+          "justification": "Adresse, masque, passerelle, DNS, bail",
+          "resultat_markdown": "Ces informations figurent toutes dans la capture."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir deux informations et relever leur valeur",
+          "justification": "Il faut des valeurs de la capture",
+          "resultat_markdown": "Adresse IPv4 `172.16.1.100` et masque `255.255.0.0`."
+        },
+        {
+          "numero": 4,
+          "action": "Écarter l'adresse physique",
+          "justification": "Elle vient de la carte réseau, pas du DHCP",
+          "resultat_markdown": "`00-16-D4-9F-82-61` n'est pas une réponse."
+        }
+      ],
+      "conclusion_markdown": "Le serveur DHCP a fourni l'adresse IPv4 172.16.1.100 et le masque 255.255.0.0 (ainsi que la passerelle, les DNS et le bail)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer l'adresse physique comme information du DHCP.",
+          "pourquoi_faux": "L'adresse MAC est inscrite dans la carte réseau en usine ; le client l'utilise pour demander une adresse au DHCP, elle n'est pas fournie par lui.",
+          "correction_markdown": "Citer l'adresse IP, le masque, la passerelle, le DNS ou le bail."
+        },
+        {
+          "erreur_markdown": "Croire que le DHCP donne un nom de domaine.",
+          "pourquoi_faux": "Un nom de domaine s'obtient auprès d'un bureau d'enregistrement ; le DHCP peut transmettre le suffixe DNS de la connexion, pas un nom de domaine propre.",
+          "correction_markdown": "Distinguer DHCP (configuration IP) et DNS (noms)."
+        },
+        {
+          "erreur_markdown": "Confondre le « Serveur DHCP » et la « Passerelle par défaut ».",
+          "pourquoi_faux": "Ce sont deux rôles différents, qui peuvent coïncider dans un même équipement (une box) comme dans la capture : 172.16.0.254 est à la fois la passerelle et le serveur DHCP.",
+          "correction_markdown": "Lire chaque rubrique séparément et ne pas déduire qu'elles sont toujours identiques."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer les quatre messages de l'échange DHCP et leur rôle.",
+          "solution_markdown": "1. Discover : le client diffuse un appel pour trouver un serveur DHCP.\n2. Offer : un serveur propose une adresse et une configuration.\n3. Request : le client demande officiellement l'adresse proposée.\n4. Acknowledge : le serveur confirme le bail."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur affiche « DHCP activé : Non » et une adresse IP de la plage de son réseau. Que peut-on dire sur la façon dont il a reçu son adresse ? Où la modifier ?",
+          "solution_markdown": "1. « DHCP activé : Non » signifie que l'adresse est statique : elle a été saisie manuellement.\n2. Pour la modifier : propriétés de la carte réseau, protocole Internet version 4, saisie de l'adresse, du masque, de la passerelle et du DNS, ou activation de « Obtenir une adresse IP automatiquement »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un réseau de 50 ordinateurs, le serveur DHCP dispose d'une plage de 30 adresses. Que se passe-t-il quand le 31e ordinateur se connecte ? Propose deux remèdes.",
+          "solution_markdown": "1. Le 31e ordinateur ne reçoit pas d'adresse du serveur : la plage est épuisée, il se retrouve sans configuration valide (adresse APIPA 169.254.x.x sous Windows).\n2. Remède 1 : élargir la plage d'adresses du serveur DHCP.\n3. Remède 2 : raccourcir la durée du bail pour que les adresses des machines éteintes soient plus vite libérées.\n4. Les adresses fixes à exclure de la plage (serveurs, imprimantes) doivent rester hors de la plage dynamique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le DHCP attribue automatiquement adresse IP, masque, passerelle, DNS et durée du bail.",
+        "L'échange se fait en quatre messages : Discover, Offer, Request, Acknowledge.",
+        "L'adresse physique ne vient pas du DHCP, elle vient de la carte réseau.",
+        "« DHCP activé : Oui » dans `ipconfig /all` indique une configuration automatique.",
+        "À l'examen, cite deux informations avec leur valeur lue dans la capture."
+      ]
+    }
+  ]
+}

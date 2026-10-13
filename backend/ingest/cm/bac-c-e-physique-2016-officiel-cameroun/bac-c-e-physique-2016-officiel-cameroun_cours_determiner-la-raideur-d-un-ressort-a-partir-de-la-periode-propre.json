@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-determiner-la-raideur-d-un-ressort-a-partir-de-la-periode-propre-tle-c-e-2016",
+  "meta": {
+    "titre": "Déterminer la raideur d'un ressort à partir de la période propre",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillateur mécanique et lecture graphique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "raideur d'un ressort",
+      "période propre",
+      "oscillateur élastique",
+      "application numérique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex2-q2.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment mesurer la raideur d'un ressort sans le casser ni le tendre à fond ? On le fait osciller avec une masse connue et on chronomètre la période. Cette méthode dynamique est plus précise que la mesure d'un allongement, et elle donne la formule que l'on retrouve dans tous les exercices d'oscillateurs élastiques."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Période propre $T_0 = 2\\pi\\sqrt{\\dfrac{m}{k}}$ d'un oscillateur élastique",
+        "Conversion des grammes en kilogrammes",
+        "Résolution d'une équation en isolant une inconnue sous une racine"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Raideur déduite de la période propre",
+      "contenu_markdown": "La période propre d'un oscillateur élastique (ressort de raideur $k$ et solide de masse $m$, sans amortissement) est :\n\n$$T_0 = 2\\pi\\sqrt{\\dfrac{m}{k}}$$\n\nOn élève au carré pour isoler $k$ :\n\n$$k = \\dfrac{4\\pi^2\\,m}{T_0^2}$$\n\navec $m$ en kilogrammes, $T_0$ en secondes, $k$ en N/m. Un énoncé qui impose $\\pi^2 = 10$ simplifie $4\\pi^2$ en $40$.",
+      "formule_principale": "k = \\dfrac{4\\pi^2\\,m}{T_0^2}",
+      "variantes": [
+        {
+          "nom": "À partir de la pulsation propre",
+          "quand_utiliser": "Quand l'énoncé donne $\\omega_0$ plutôt que $T_0$",
+          "contenu_markdown": "$\\omega_0 = \\sqrt{\\dfrac{k}{m}}$ donc $k = m\\,\\omega_0^2$ ; les deux formules sont équivalentes puisque $\\omega_0 = \\dfrac{2\\pi}{T_0}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un oscillateur non amorti est constitué d'un ressort lié à un solide de masse $m = 205{,}9$ g. La période propre lue sur l'enregistrement est $T_0 = 1{,}33$ s. Déterminer la constante de raideur $k$ du ressort ($\\pi^2 = 10$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la période propre",
+          "justification": "Formule du cours",
+          "resultat_markdown": "$T_0 = 2\\pi\\sqrt{\\dfrac{m}{k}}$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler $k$",
+          "justification": "On élève au carré puis on inverse",
+          "resultat_markdown": "$T_0^2 = \\dfrac{4\\pi^2\\,m}{k}$ donc $k = \\dfrac{4\\pi^2\\,m}{T_0^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Convertir les données",
+          "justification": "Les formules exigent des unités SI",
+          "resultat_markdown": "$m = 205{,}9\\ \\text{g} = 0{,}2059$ kg ; $4\\pi^2 = 40$ ; $T_0^2 = 1{,}7689$ s²"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer",
+          "justification": "Application numérique",
+          "resultat_markdown": "$k = \\dfrac{40\\times 0{,}2059}{1{,}7689} = 4{,}656$ N/m"
+        }
+      ],
+      "conclusion_markdown": "La raideur du ressort est $k \\approx 4{,}66$ N/m (incertitude relative d'environ $5\\,\\%$, venant de la lecture de $T_0$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de convertir la masse de grammes en kilogrammes",
+          "pourquoi_faux": "Avec $m = 205{,}9$ au lieu de $0{,}2059$, $k$ est multiplié par $1\\,000$ : on obtient $4\\,656$ N/m, valeur absurde pour un ressort de laboratoire.",
+          "correction_markdown": "Écris la conversion en toutes lettres avant l'application numérique."
+        },
+        {
+          "erreur_markdown": "Utiliser $k = \\dfrac{m}{4\\pi^2\\,T_0^2}$ en inversant la formule",
+          "pourquoi_faux": "Quand $T_0$ augmente, le ressort est plus mou ($k$ plus petit) : $k$ varie en $\\dfrac{1}{T_0^2}$, pas en $T_0^2$.",
+          "correction_markdown": "Vérifie le sens de variation : une période longue signifie une raideur faible."
+        },
+        {
+          "erreur_markdown": "Oublier de mettre $T_0$ au carré",
+          "pourquoi_faux": "Le carré de la période est indispensable : $T_0 = 2\\pi\\sqrt{m/k}$ devient $T_0^2 = 4\\pi^2\\,m/k$. Sans lui, $k$ est faux.",
+          "correction_markdown": "Écris $T_0^2$ à chaque ligne de calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un solide de masse $0{,}100$ kg oscille au bout d'un ressort avec la période $T_0 = 0{,}63$ s. Calculer la raideur du ressort ($\\pi^2 = 10$).",
+          "solution_markdown": "$k = \\dfrac{4\\pi^2\\,m}{T_0^2} = \\dfrac{40\\times 0{,}100}{0{,}63^2} = \\dfrac{4{,}0}{0{,}3969} = 10{,}08$ N/m.\n\nLa raideur est d'environ $10{,}1$ N/m."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ressort de raideur $k = 20$ N/m porte un solide de masse $m = 0{,}50$ kg. Calculer la période propre et la fréquence propre ($\\pi^2 = 10$).",
+          "solution_markdown": "$T_0 = 2\\pi\\sqrt{\\dfrac{m}{k}} = 2\\pi\\sqrt{\\dfrac{0{,}50}{20}} = 2\\pi\\sqrt{0{,}025}$. Comme $\\pi^2 = 10$, $\\pi = \\sqrt{10}$ et $2\\pi\\sqrt{0{,}025} = 2\\sqrt{10\\times 0{,}025} = 2\\sqrt{0{,}25} = 2\\times 0{,}5 = 1{,}0$ s.\n\n$f_0 = \\dfrac{1}{T_0} = 1{,}0$ Hz."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un solide de masse $0{,}20$ kg oscille avec la période $0{,}50$ s au bout d'un ressort. On ajoute une masse supplémentaire et la période devient $0{,}70$ s. Calculer $k$ puis la masse ajoutée ($\\pi^2 = 10$).",
+          "solution_markdown": "**Raideur.** $k = \\dfrac{4\\pi^2\\,m_1}{T_1^2} = \\dfrac{40\\times 0{,}20}{0{,}50^2} = \\dfrac{8{,}0}{0{,}25} = 32$ N/m.\n\n**Nouvelle masse.** $m_2 = \\dfrac{k\\,T_2^2}{4\\pi^2} = \\dfrac{32\\times 0{,}70^2}{40} = \\dfrac{32\\times 0{,}49}{40} = 0{,}392$ kg.\n\n**Masse ajoutée.** $m_2 - m_1 = 0{,}392 - 0{,}200 = 0{,}192$ kg, soit $192$ g."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La période propre d'un oscillateur élastique est $T_0 = 2\\pi\\sqrt{\\dfrac{m}{k}}$ ; on en tire $k = \\dfrac{4\\pi^2\\,m}{T_0^2}$.",
+        "Convertis toujours la masse en kilogrammes ; la raideur s'exprime en N/m.",
+        "Une période longue signifie un ressort mou : $k$ varie comme $\\dfrac{1}{T_0^2}$.",
+        "Une erreur de $3\\,\\%$ sur $T_0$ donne environ $6\\,\\%$ d'erreur sur $k$ : annonce la précision de ta lecture.",
+        "Au BAC, cette formule sert à trouver $k$, $m$ ou $T_0$ dans la quasi-totalité des exercices d'oscillateur élastique."
+      ]
+    }
+  ]
+}

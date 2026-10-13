@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-remonter-d-un-symptome-a-la-piece-defaillante-tle-a-abi-2023",
+  "meta": {
+    "titre": "Remonter d'un symptôme à la pièce défaillante",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Maintenance informatique de premier niveau",
+    "duree_estimee_min": 25,
+    "tags": [
+      "diagnostic de panne",
+      "bloc d'alimentation",
+      "maintenance",
+      "symptôme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat séries A et ABI, session 2023",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-bac-a-abi-informatique-2023-officiel-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ton ordinateur ne s'allume plus : tu peux le porter chez un technicien et payer, ou raisonner comme lui en trois minutes. Le technicien ne devine pas : il part du symptôme et remonte le chemin du courant. Ce cours t'apprend ce chemin, qui répond aussi aux questions « quel composant soupçonner ? » de l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les composants de l'unité centrale : alimentation, carte mère, processeur, mémoire, disque dur",
+        "Savoir qu'un ordinateur de bureau est alimenté par le secteur électrique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La chaîne de diagnostic : symptôme, énergie, distribution, traitement",
+      "contenu_markdown": "On ne soupçonne pas un composant au hasard. On suit l'ordre de fonctionnement : **1.** la source d'énergie (prise, câble, multiprise) ; **2.** le composant qui la transforme et la distribue (bloc d'alimentation) ; **3.** les composants qui traitent et stockent (carte mère, mémoire, processeur, disque dur). Le premier composant à soupçonner est celui qui est **indispensable au démarrage** et **directement exposé à la cause** décrite : coupures et surtensions visent d'abord le bloc d'alimentation.",
+      "formule_principale": "\\text{symptôme} \\rightarrow \\text{énergie} \\rightarrow \\text{distribution} \\rightarrow \\text{traitement}",
+      "variantes": [
+        {
+          "nom": "Symptôme partiel : l'ordinateur démarre mais affiche mal ou lentement",
+          "quand_utiliser": "Quand le courant arrive (ventilateurs, voyants) : l'alimentation fonctionne et la chaîne de diagnostic commence plus loin.",
+          "contenu_markdown": "Un écran noir avec ventilateurs en marche fait soupçonner le câble vidéo ou la carte graphique ; un ordinateur lent avec cliquetis fait soupçonner le disque dur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Après des coupures et des fluctuations de tension, l'ordinateur ne s'allume plus. Quel équipement soupçonner en premier ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le symptôme",
+          "justification": "Le texte dit « ne s'allume plus » : aucun signe de vie, donc le démarrage n'a même pas commencé.",
+          "resultat_markdown": "Symptôme : absence totale de réaction."
+        },
+        {
+          "numero": 2,
+          "action": "Lire la cause",
+          "justification": "Coupures et fluctuations sont des perturbations du courant électrique.",
+          "resultat_markdown": "Cause : perturbation électrique venant du secteur."
+        },
+        {
+          "numero": 3,
+          "action": "Suivre le chemin du courant",
+          "justification": "Le courant arrive du secteur, passe par la prise puis entre dans l'unité centrale par un seul composant.",
+          "resultat_markdown": "Secteur, puis bloc d'alimentation, puis carte mère et autres composants."
+        },
+        {
+          "numero": 4,
+          "action": "Chercher le premier maillon exposé et indispensable",
+          "justification": "C'est le premier composant touché par une surtension, et sans lui aucun autre ne reçoit de courant.",
+          "resultat_markdown": "Le bloc d'alimentation."
+        },
+        {
+          "numero": 5,
+          "action": "Prévoir la vérification",
+          "justification": "Un diagnostic se confirme par un test simple avant de changer d'autres pièces.",
+          "resultat_markdown": "Essayer un autre bloc d'alimentation ou un testeur ; ne passer à la carte mère qu'en cas d'échec."
+        }
+      ],
+      "conclusion_markdown": "L'équipement soupçonné en premier est le bloc d'alimentation, premier maillon relié au secteur et indispensable au démarrage."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « le processeur ».",
+          "pourquoi_faux": "Le processeur est alimenté par le bloc d'alimentation : si l'alimentation est détruite, il ne reçoit rien et on ne sait même pas s'il est en bon état.",
+          "correction_markdown": "Soupçonne d'abord le composant qui précède dans la chaîne du courant."
+        },
+        {
+          "erreur_markdown": "Répondre « l'ordinateur » ou « l'unité centrale ».",
+          "pourquoi_faux": "La question demande un équipement précis : un ensemble n'est pas un diagnostic.",
+          "correction_markdown": "Nomme un composant : le bloc d'alimentation."
+        },
+        {
+          "erreur_markdown": "Changer plusieurs pièces à la fois.",
+          "pourquoi_faux": "On ne saurait plus laquelle était en cause, et on dépense inutilement.",
+          "correction_markdown": "Teste une hypothèse à la fois, dans l'ordre de la chaîne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un ordinateur s'allume (ventilateurs et voyants en marche) mais l'écran reste noir et affiche « pas de signal ». Que vérifier en premier ?",
+          "solution_markdown": "Le courant arrive : le bloc d'alimentation fonctionne, on passe à l'étape suivante.\n\nLe symptôme concerne l'affichage : on vérifie d'abord le câble vidéo (bien branché sur l'unité centrale et sur l'écran), puis le port utilisé ; si l'image ne revient pas, on soupçonne la carte graphique."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur démarre très lentement et on entend des cliquetis réguliers venant de l'unité centrale. Quel composant soupçonner et que faire ?",
+          "solution_markdown": "Le démarrage a lieu : alimentation et carte mère répondent. Le bruit de cliquetis vient d'une pièce mécanique : le **disque dur** à plateaux, probablement usé.\n\nOn sauvegarde immédiatement les données importantes sur un autre support, puis on remplace le disque."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur s'éteint tout seul après quelques minutes, son ventilateur est bruyant et le boîtier est brûlant. Raisonne dans l'ordre de la chaîne et conclus.",
+          "solution_markdown": "**Étape 1.** Le courant arrive (l'ordinateur démarre) : l'alimentation fonctionne.\n\n**Étape 2.** L'arrêt brutal après un temps de fonctionnement et la chaleur indiquent une surchauffe : le processeur déclenche une protection thermique et coupe la machine.\n\n**Étape 3.** Le composant en cause est le système de refroidissement (ventilateur, radiateur encrassé de poussière, pâte thermique sèche).\n\n**Conclusion.** On dépoussière le boîtier, on nettoie le ventilateur et on remplace la pâte thermique : c'est de la maintenance préventive."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pars toujours du symptôme, puis suis le chemin du courant : source, alimentation, carte mère, autres composants.",
+        "Soupçonne en premier le composant indispensable au démarrage et directement exposé à la cause du texte.",
+        "Coupures et surtensions : d'abord le bloc d'alimentation.",
+        "Un seul composant demandé : nomme-le et justifie en une phrase.",
+        "Au BAC A, les exercices de systèmes informatiques partent d'une panne racontée : ce raisonnement donne la bonne réponse et sa justification."
+      ]
+    }
+  ]
+}

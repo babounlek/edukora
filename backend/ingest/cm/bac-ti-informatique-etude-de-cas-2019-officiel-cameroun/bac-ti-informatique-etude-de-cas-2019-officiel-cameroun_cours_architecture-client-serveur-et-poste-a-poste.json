@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-architecture-client-serveur-et-poste-a-poste-tle-ti-2019",
+  "meta": {
+    "titre": "Architecture client/serveur et poste à poste",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Architectures de réseaux",
+    "duree_estimee_min": 20,
+    "tags": [
+      "client/serveur",
+      "poste à poste",
+      "serveur",
+      "architecture réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une salle informatique de lycée, certains ordinateurs partagent leurs fichiers entre eux, alors que dans une entreprise un ordinateur central distribue tout. Ces deux façons d'organiser un réseau s'appellent des architectures, et il faut savoir les reconnaître à des indices précis. Une capture de configuration en contient souvent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un réseau local",
+        "Connaître la notion de service réseau (adressage, noms, fichiers, impression)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Client/serveur ou poste à poste",
+      "contenu_markdown": "Dans une architecture **client/serveur**, des machines dédiées, les **serveurs**, fournissent des services (adressage DHCP, noms DNS, fichiers, impression, messagerie) à des postes **clients** qui les demandent. L'administration est centralisée, l'annuaire des utilisateurs est unique ; en contrepartie, le serveur est un point névralgique à protéger et à sauvegarder.\n\nDans une architecture **poste à poste** (pair à pair, *peer to peer*), chaque machine peut être à la fois cliente et serveur : il n'y a pas de serveur central, chaque poste gère ses propres partages. Elle convient à un petit réseau de quelques machines, mais la sécurité et la sauvegarde sont dispersées.\n\nIndices à chercher : présence d'un serveur DHCP, de serveurs DNS, d'un contrôleur de domaine, de partages centralisés.",
+      "formule_principale": "\\text{serveur dédié qui fournit un service} \\Rightarrow \\text{architecture client/serveur}",
+      "variantes": [
+        {
+          "nom": "Réseau mixte",
+          "quand_utiliser": "Quand un petit réseau combine les deux",
+          "contenu_markdown": "Un réseau domestique peut avoir un routeur-box qui joue le rôle de serveur DHCP (client/serveur pour l'adressage) tout en laissant les ordinateurs partager leurs fichiers entre eux (poste à poste)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier l'architecture du réseau décrit par la capture `ipconfig /all` de l'épreuve (serveur DHCP 172.16.0.254, serveurs DNS 195.24.192.33 et 8.8.8.8).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher des services fournis par des serveurs",
+          "justification": "Un serveur est une machine qui fournit un service à d'autres",
+          "resultat_markdown": "Un serveur DHCP attribue la configuration IP ; des serveurs DNS résolvent les noms."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le rôle du poste de la capture",
+          "justification": "Il demande ces services",
+          "resultat_markdown": "Il est client DHCP et client DNS."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter le poste à poste",
+          "justification": "Dans un réseau poste à poste, il n'y a pas de serveur central d'adressage",
+          "resultat_markdown": "L'attribution centralisée de l'adresse prouve l'existence d'un serveur."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "Des machines dédiées fournissent des services à des clients",
+          "resultat_markdown": "Architecture client/serveur."
+        }
+      ],
+      "conclusion_markdown": "Le réseau est de type client/serveur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « en étoile » ou « Ethernet ».",
+          "pourquoi_faux": "Ces mots désignent une topologie ou une technologie, pas une architecture : la question demande client/serveur ou poste à poste.",
+          "correction_markdown": "Distinguer topologie (forme du réseau), technologie (Ethernet) et architecture (répartition des rôles)."
+        },
+        {
+          "erreur_markdown": "Croire qu'un seul serveur suffit à tout.",
+          "pourquoi_faux": "Un serveur peut cumuler plusieurs services, mais l'architecture est définie par la répartition des rôles, pas par le nombre de machines.",
+          "correction_markdown": "Chercher les services fournis et ceux qui les demandent."
+        },
+        {
+          "erreur_markdown": "Dire qu'un poste à poste n'a pas de réseau.",
+          "pourquoi_faux": "Un réseau poste à poste est un vrai réseau : chaque machine y partage ses ressources sans serveur central.",
+          "correction_markdown": "Définir le poste à poste par l'absence de serveur dédié."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classer en client ou serveur : un navigateur web, Apache, un ordinateur de bureau qui imprime, un serveur DNS.",
+          "solution_markdown": "1. Navigateur web : client (demande des pages).\n2. Apache : serveur (fournit des pages).\n3. Ordinateur de bureau qui imprime : client du service d'impression.\n4. Serveur DNS : serveur (fournit la résolution de noms)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Trois amis relient leurs ordinateurs par un commutateur et partagent chacun un dossier. Quelle architecture ? Donne un avantage et un inconvénient.",
+          "solution_markdown": "1. Aucun serveur central, chacun partage ses fichiers : architecture poste à poste.\n2. Avantage : coût faible, installation simple, pas de serveur à administrer.\n3. Inconvénient : sécurité et sauvegarde dispersées sur chaque poste, difficiles à gérer quand le réseau grandit."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une PME de 40 postes hésite entre les deux architectures. Argumente en faveur du client/serveur en trois critères.",
+          "solution_markdown": "1. Administration : comptes, droits et mises à jour centralisés sur le serveur au lieu de 40 postes à gérer un par un.\n2. Sécurité et sauvegarde : les données de l'entreprise sont regroupées et sauvegardées au même endroit.\n3. Services partagés : DHCP, DNS, serveur de fichiers et d'impression sont fournis de façon fiable à tous.\n4. Contrepartie : le serveur coûte plus cher et sa panne bloque le service, d'où l'intérêt de sauvegardes et de redondance."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Client/serveur : des machines dédiées fournissent des services aux postes clients.",
+        "Poste à poste : chaque machine est à la fois cliente et serveur, sans serveur central.",
+        "Un serveur DHCP ou DNS dans une capture est un indice clair de client/serveur.",
+        "Topologie, technologie et architecture sont trois notions différentes.",
+        "À l'examen, justifie par un indice de la capture ou du schéma, pas seulement par le nom de l'architecture."
+      ]
+    }
+  ]
+}

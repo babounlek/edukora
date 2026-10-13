@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-processeur-ual-architectures-cisc-et-risc-gap24",
+  "meta": {
+    "titre": "Processeur : unité arithmétique et logique, architectures CISC et RISC",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Architecture matérielle",
+    "duree_estimee_min": 25,
+    "tags": [
+      "unité arithmétique et logique",
+      "architecture CISC",
+      "architecture RISC"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.2-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ton téléphone et l'ordinateur portable de ton grand frère font à peu près les mêmes choses, et pourtant leurs processeurs ne sont pas construits de la même façon. L'un privilégie des instructions simples et très rapides, l'autre des instructions plus riches. À l'intérieur de chaque processeur, une petite zone s'occupe des calculs : l'unité arithmétique et logique. Ce cours t'explique ce que fait cette unité et comment on distingue les deux grandes familles de processeurs, CISC et RISC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un processeur exécute des instructions écrites en binaire",
+        "Connaître la notion de cycle d'horloge (un tic de l'horloge du processeur)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'UAL, l'unité de commande et les deux familles d'architecture",
+      "contenu_markdown": "**Le processeur** (microprocesseur, CPU) comprend :\n\n- l'**unité de commande (UC)** : elle lit chaque instruction en mémoire, la décode puis envoie des signaux de commande aux autres éléments ;\n- l'**unité arithmétique et logique (UAL)**, aussi appelée unité de traitement : elle exécute les **opérations arithmétiques** (addition, soustraction, multiplication, division) et les **opérations logiques** (ET, OU, NON, comparaisons) ;\n- les **registres** : petites mémoires internes très rapides qui contiennent les opérandes et les résultats ;\n- l'**horloge**, qui cadence le travail, et souvent de la mémoire cache.\n\nL'UAL reçoit deux opérandes et un code d'opération, puis fournit un résultat et des indicateurs (résultat nul, retenue, résultat négatif).\n\nUne instruction passe par trois étapes : **chercher** l'instruction, la **décoder** (rôle de l'UC), puis l'**exécuter** (rôle de l'UAL si un calcul est nécessaire).\n\n**Deux architectures de processeur**\n\n| Critère | CISC | RISC |\n|---|---|---|\n| Sigle | Complex Instruction Set Computer | Reduced Instruction Set Computer |\n| Traduction | ordinateur à jeu d'instructions complexe | ordinateur à jeu d'instructions réduit |\n| Nombre d'instructions | élevé | faible |\n| Longueur des instructions | variable | fixe |\n| Durée d'exécution | souvent plusieurs cycles | en général un cycle |\n| Programme obtenu | court (peu d'instructions) | plus long (beaucoup d'instructions simples) |\n| Circuit du processeur | plus complexe | plus simple |\n| Exemples | famille x86 (Intel, AMD) des ordinateurs de bureau | ARM des téléphones, MIPS |\n\nLe **jeu d'instructions** est la liste de toutes les instructions qu'un processeur sait exécuter.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Une même opération dans les deux architectures",
+          "quand_utiliser": "Pour illustrer la différence entre instruction complexe et instructions simples.",
+          "contenu_markdown": "Multiplier deux nombres rangés en mémoire. **CISC** : une seule instruction du type MUL A, B lit les deux nombres, les multiplie et range le résultat (elle demande plusieurs cycles). **RISC** : quatre instructions simples, une par cycle : charger A dans un registre, charger B dans un registre, multiplier les deux registres, ranger le résultat en mémoire. Le programme RISC est plus long, mais chaque instruction est très rapide et le circuit est plus simple. (Exemple simplifié : les noms d'instructions varient selon les processeurs.)"
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Les microprocesseurs utilisent les architectures de types RISC et CISC. Donner la signification des acronymes RISC et CISC.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer chaque lettre en anglais",
+          "justification": "Un sigle se définit d'abord dans sa langue d'origine.",
+          "resultat_markdown": "RISC : Reduced Instruction Set Computer. CISC : Complex Instruction Set Computer."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire en français",
+          "justification": "Le correcteur attend le sens, pas seulement les mots anglais.",
+          "resultat_markdown": "RISC : ordinateur à jeu d'instructions réduit. CISC : ordinateur à jeu d'instructions complexe."
+        },
+        {
+          "numero": 3,
+          "action": "Opposer les deux familles",
+          "justification": "Une phrase de rôle complète la définition.",
+          "resultat_markdown": "RISC : peu d'instructions, simples et rapides. CISC : beaucoup d'instructions, certaines très élaborées."
+        },
+        {
+          "numero": 4,
+          "action": "Donner un exemple",
+          "justification": "Un exemple montre que la notion est comprise.",
+          "resultat_markdown": "RISC : processeurs ARM des téléphones. CISC : famille x86 d'Intel et d'AMD."
+        }
+      ],
+      "conclusion_markdown": "RISC signifie « ordinateur à jeu d'instructions réduit » et CISC « ordinateur à jeu d'instructions complexe »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Traduire RISC par « risque ».",
+          "pourquoi_faux": "Le R vient de Reduced (réduit), le C de CISC vient de Complex (complexe) : ce sont des sigles anglais.",
+          "correction_markdown": "Développe toujours chaque lettre : Reduced, Instruction, Set, Computer."
+        },
+        {
+          "erreur_markdown": "Croire que l'UAL décode les instructions.",
+          "pourquoi_faux": "Le décodage est le rôle de l'unité de commande. L'UAL ne fait que les calculs et les comparaisons.",
+          "correction_markdown": "UC : lit, décode, commande. UAL : calcule et compare."
+        },
+        {
+          "erreur_markdown": "Penser que RISC signifie un processeur moins puissant.",
+          "pourquoi_faux": "Réduit désigne le jeu d'instructions, pas la puissance : un processeur RISC exécute très vite ses instructions simples.",
+          "correction_markdown": "Dis : moins d'instructions, mais plus simples et plus rapides."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dire si chaque tâche relève de l'unité de commande (UC) ou de l'unité arithmétique et logique (UAL) : a) décoder une instruction ; b) comparer 5 et 3 ; c) additionner deux nombres ; d) envoyer un signal de commande à la mémoire.",
+          "solution_markdown": "a) **UC** (décodage). b) **UAL** (opération logique de comparaison). c) **UAL** (opération arithmétique). d) **UC** (elle envoie les signaux de commande)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'UAL additionne les nombres binaires 1011 et 0110. Donner le résultat en binaire puis en décimal.",
+          "solution_markdown": "On additionne bit par bit en partant de la droite : 1 + 0 = 1 ; 1 + 1 = 10 (on pose 0, retenue 1) ; 0 + 1 + retenue 1 = 10 (on pose 0, retenue 1) ; 1 + 0 + retenue 1 = 10 (on pose 0, retenue 1) ; la dernière retenue donne un 1 devant.\n\nRésultat : **10001**. Vérification en décimal : 1011 vaut 11, 0110 vaut 6, et 11 + 6 = 17. Or 10001 = 16 + 1 = 17. Le résultat tient sur 5 bits : l'UAL signale cette retenue par un indicateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un constructeur veut un processeur peu coûteux, qui chauffe peu, pour un téléphone alimenté par batterie. Quelle architecture est la mieux adaptée ? Justifier en deux arguments.",
+          "solution_markdown": "L'architecture **RISC** (par exemple les processeurs ARM). Arguments : 1) le jeu d'instructions réduit donne un **circuit plus simple**, donc moins coûteux à produire ; 2) les instructions simples, exécutées en un cycle, consomment peu d'énergie, donc la batterie dure plus longtemps et le processeur chauffe moins. Le prix à payer est un programme plus long en nombre d'instructions."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le processeur contient l'unité de commande (décode et commande), l'unité arithmétique et logique (calcule et compare), des registres et une horloge.",
+        "L'UAL exécute les opérations arithmétiques (+, −, ×, ÷) et logiques (ET, OU, NON, comparaisons).",
+        "CISC : jeu d'instructions complexe, nombreux, de longueur variable ; exemple x86.",
+        "RISC : jeu d'instructions réduit, simple, en général un cycle par instruction ; exemple ARM.",
+        "À l'examen : développe le sigle en anglais, traduis, puis oppose les deux familles en une phrase."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-convertir-une-boucle-for-en-boucle-while-en-php-tle-ti",
+  "meta": {
+    "titre": "Convertir une boucle for en boucle while",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures répétitives en PHP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "boucle for",
+      "boucle while",
+      "conversion",
+      "initialisation",
+      "incrément"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q8-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un sujet te demande de réécrire un programme avec une autre boucle, et tu hésites : où va l'initialisation, où va l'incrément ? Les deux boucles décrivent le même mécanisme, mais le `for` range ses trois éléments dans une seule ligne alors que le `while` les éparpille. Une fois la correspondance comprise, la conversion devient mécanique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une boucle `for` : initialisation, condition, incrément",
+        "Savoir écrire une condition entre parenthèses et un bloc entre accolades"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois éléments d'une boucle",
+      "contenu_markdown": "Toute boucle de comptage comporte trois éléments : une **initialisation** (valeur de départ), une **condition** de poursuite, un **incrément** (changement à chaque tour). Le `for` les écrit ensemble dans l'en-tête, le `while` les répartit :\n\n```php\nfor (initialisation; condition; incrément) {\n    corps\n}\n```\n\ndevient\n\n```php\ninitialisation;\nwhile (condition) {\n    corps\n    incrément;\n}\n```\n\nAvec des boucles imbriquées, l'initialisation de la boucle interne se place **dans le corps de la boucle externe**, juste avant la boucle interne : elle doit être refaite à chaque tour de l'externe.",
+      "formule_principale": "\\text{for}(a;\\,b;\\,c)\\{\\,x\\,\\} \\;\\Longleftrightarrow\\; a;\\ \\text{while}(b)\\{\\,x;\\ c;\\,\\}",
+      "variantes": [
+        {
+          "nom": "Boucle do...while",
+          "quand_utiliser": "Quand le corps doit s'exécuter au moins une fois avant le test de la condition",
+          "contenu_markdown": "La condition est testée après le corps : `do { corps; incrément; } while (condition);`. La conversion depuis un `for` n'est exacte que si la condition est vraie au départ."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire avec `while` la première boucle du code du sujet : `for ($c=0;$c<6;$c++) { echo \"<TH>$c</TH>\"; }`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler l'initialisation",
+          "justification": "Elle s'exécute une seule fois, avant la boucle",
+          "resultat_markdown": "`$c=0;` est écrite avant le `while`."
+        },
+        {
+          "numero": 2,
+          "action": "Reporter la condition",
+          "justification": "Elle devient la condition du `while`",
+          "resultat_markdown": "`while ($c<6)`."
+        },
+        {
+          "numero": 3,
+          "action": "Recopier le corps",
+          "justification": "Le corps ne change pas",
+          "resultat_markdown": "`echo \"<TH>$c</TH>\";`."
+        },
+        {
+          "numero": 4,
+          "action": "Placer l'incrément en dernière ligne du corps",
+          "justification": "Il doit s'exécuter à chaque tour, après le corps",
+          "resultat_markdown": "`$c++;` avant l'accolade fermante."
+        },
+        {
+          "numero": 5,
+          "action": "Assembler",
+          "justification": "On relit le résultat avec les trois éléments repérés",
+          "resultat_markdown": "`$c=0; while ($c<6) { echo \"<TH>$c</TH>\"; $c++; }`"
+        }
+      ],
+      "conclusion_markdown": "La boucle équivalente est `$c=0; while ($c<6) { echo \"<TH>$c</TH>\"; $c++; }` : elle écrit les en-têtes 0 à 5 comme le `for` d'origine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'incrément dans le `while`.",
+          "pourquoi_faux": "La variable ne change jamais, la condition reste vraie et la boucle ne s'arrête pas : le script tourne sans fin.",
+          "correction_markdown": "Écris l'incrément en dernière instruction du corps, tout de suite après avoir écrit la condition."
+        },
+        {
+          "erreur_markdown": "Mettre l'initialisation dans la boucle : `while ($c<6) { $c=0; ... }`.",
+          "pourquoi_faux": "La variable est remise à zéro à chaque tour : la condition reste vraie à jamais.",
+          "correction_markdown": "L'initialisation se place avant la boucle."
+        },
+        {
+          "erreur_markdown": "Ne pas réinitialiser la variable de la boucle interne dans une boucle imbriquée.",
+          "pourquoi_faux": "Après le premier tour de la boucle externe, la variable interne garde sa valeur finale (6) : la boucle interne ne s'exécute plus.",
+          "correction_markdown": "Écris `$c=0;` dans le corps de la boucle externe, juste avant le `while` interne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réécris avec `while` : `for ($k=1; $k<=5; $k++) { echo $k; }`.",
+          "solution_markdown": "L'initialisation est `$k=1`, la condition `$k<=5`, l'incrément `$k++`.\n\n```php\n$k=1;\nwhile ($k<=5) {\n    echo $k;\n    $k++;\n}\n```\n\nLe programme écrit `12345`, comme le `for` d'origine."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécris avec `while` : `for ($n=10; $n>0; $n-=3) { echo $n.\" \"; }` et donne l'affichage.",
+          "solution_markdown": "Initialisation : `$n=10`. Condition : `$n>0`. Incrément : `$n-=3`.\n\n```php\n$n=10;\nwhile ($n>0) {\n    echo $n.\" \";\n    $n-=3;\n}\n```\n\nSuivi de `$n` : 10, 7, 4, 1 sont affichés ; ensuite `$n` vaut -2, la condition `$n>0` est fausse et la boucle s'arrête. Affichage : `10 7 4 1`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Réécris les deux boucles imbriquées avec `while` et explique pourquoi `$j=1;` ne peut pas être placé avant la boucle externe.\n\n```php\nfor ($i=1; $i<=3; $i++) {\n  for ($j=1; $j<=3; $j++) {\n    echo $i*$j.\" \";\n  }\n  echo \"|\";\n}\n```",
+          "solution_markdown": "```php\n$i=1;\nwhile ($i<=3) {\n    $j=1;\n    while ($j<=3) {\n        echo $i*$j.\" \";\n        $j++;\n    }\n    echo \"|\";\n    $i++;\n}\n```\n\nSi `$j=1;` était placé avant la boucle externe, il ne serait exécuté qu'une fois. Au premier tour, `$j` irait de 1 à 4 (la condition `$j<=3` devient fausse pour 4) ; au deuxième tour, `$j` vaudrait déjà 4 et la boucle interne ne s'exécuterait plus. L'initialisation de la boucle interne doit donc être refaite à chaque tour de la boucle externe.\n\nL'affichage est identique à celui du `for` : `1 2 3 |2 4 6 |3 6 9 |`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une boucle de comptage a trois éléments : initialisation, condition, incrément.",
+        "Dans le `while`, l'initialisation est avant, la condition entre parenthèses, l'incrément en fin de corps.",
+        "Un incrément oublié donne une boucle infinie : relis toujours ta boucle pour vérifier qu'il est présent.",
+        "Dans des boucles imbriquées, la variable de la boucle interne est réinitialisée dans le corps de l'externe.",
+        "Au BAC TI, « réécrire avec une autre boucle » vaut environ 1 point et suppose de conserver exactement le même affichage."
+      ]
+    }
+  ]
+}

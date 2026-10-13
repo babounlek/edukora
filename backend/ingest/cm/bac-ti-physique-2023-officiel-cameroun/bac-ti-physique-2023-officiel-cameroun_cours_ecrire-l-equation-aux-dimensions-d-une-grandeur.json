@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-ecrire-equation-aux-dimensions-tle-ti",
+  "meta": {
+    "titre": "Écrire l'équation aux dimensions d'une grandeur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Analyse dimensionnelle",
+    "duree_estimee_min": 20,
+    "tags": [
+      "équation aux dimensions",
+      "dimension",
+      "unité",
+      "grandeur physique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-PHYSIQUE-2023-CM",
+    "epreuve_titre": "Épreuve de physique au baccalauréat TI 2023 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-physique-2023-officiel-cameroun-ex1-q5.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de te lancer dans un calcul long, il existe un test de cohérence qui prend trente secondes : regarder si les dimensions des grandeurs s'accordent. L'équation aux dimensions est l'outil de ce test, et elle est demandée telle quelle dans les questions de cours de physique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dimensions fondamentales $L$, $M$, $T$",
+        "Définitions de la vitesse, de l'accélération et de la force",
+        "Règles sur les puissances"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La dimension d'une grandeur",
+      "contenu_markdown": "La dimension d'une grandeur $G$, notée $[G]$, est son expression à l'aide des dimensions fondamentales : longueur $L$, masse $M$, temps $T$ (et intensité $I$, température $\\Theta$, ...). Pour la trouver : (1) écris une formule qui définit $G$ ; (2) remplace chaque grandeur par sa dimension ; (3) regroupe les puissances. Un nombre pur, un angle en radians ou une constante numérique ($2\\pi$, $\\frac{1}{2}$) ont pour dimension $1$. Les dimensions se multiplient et se divisent comme des puissances, mais ne s'additionnent jamais.",
+      "formule_principale": "[G] = L^{a}\\,M^{b}\\,T^{c}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La vitesse $v$ s'exprime en $\\text{m}\\cdot\\text{s}^{-1}$ ; son équation aux dimensions est-elle $[v] = L\\,T^{-1}$ ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la définition de la grandeur",
+          "justification": "La vitesse moyenne est le rapport d'une distance à une durée.",
+          "resultat_markdown": "$v = \\dfrac{d}{t}$."
+        },
+        {
+          "numero": 2,
+          "action": "Remplacer par les dimensions",
+          "justification": "Une distance a la dimension $L$, une durée la dimension $T$.",
+          "resultat_markdown": "$[d] = L$ et $[t] = T$."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer les règles du quotient",
+          "justification": "La dimension d'un quotient est le quotient des dimensions.",
+          "resultat_markdown": "$[v] = \\dfrac{L}{T} = L\\,T^{-1}$."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler avec l'unité",
+          "justification": "On remplace $L$ par le mètre et $T$ par la seconde.",
+          "resultat_markdown": "On retrouve $\\text{m}\\cdot\\text{s}^{-1}$."
+        }
+      ],
+      "conclusion_markdown": "L'affirmation est vraie : $[v] = L\\,T^{-1}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $[v] = \\text{m/s}$",
+          "pourquoi_faux": "Le mètre et la seconde sont des unités, choix de convention ; $L$ et $T$ sont des dimensions, propriété de la grandeur. La dimension d'une vitesse est la même quel que soit le système d'unités.",
+          "correction_markdown": "Écris toujours les lettres $L$, $M$, $T$ dans une équation aux dimensions."
+        },
+        {
+          "erreur_markdown": "Oublier l'exposant négatif",
+          "pourquoi_faux": "$[v] = L\\,T$ voudrait dire qu'une vitesse est le produit d'une longueur par une durée : c'est la dimension d'une quantité sans rapport avec la vitesse.",
+          "correction_markdown": "Un « par seconde » s'écrit $T^{-1}$."
+        },
+        {
+          "erreur_markdown": "Attribuer une dimension à un nombre pur",
+          "pourquoi_faux": "Un angle en radians ou le facteur $2\\pi$ n'ont pas de dimension : $[\\theta] = 1$.",
+          "correction_markdown": "Ne tiens compte des dimensions que des grandeurs mesurées avec une unité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer l'équation aux dimensions d'une accélération $a$ (définie par $a = \\Delta v / \\Delta t$).",
+          "solution_markdown": "$$[a] = \\frac{[\\Delta v]}{[\\Delta t]} = \\frac{L\\,T^{-1}}{T} = L\\,T^{-2}$$\n\nL'unité correspondante est le $\\text{m}\\cdot\\text{s}^{-2}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer les équations aux dimensions d'une force $F$ (avec $F = m\\,a$) et d'un travail $W$ (avec $W = F\\,d$).",
+          "solution_markdown": "**Force.** $[F] = [m]\\,[a] = M \\times L\\,T^{-2} = M\\,L\\,T^{-2}$ (unité : newton, $\\text{kg}\\cdot\\text{m}\\cdot\\text{s}^{-2}$).\n\n**Travail.** $[W] = [F]\\,[d] = M\\,L\\,T^{-2} \\times L = M\\,L^2\\,T^{-2}$ (unité : joule, $\\text{kg}\\cdot\\text{m}^2\\cdot\\text{s}^{-2}$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'énergie d'un photon s'écrit $E = h\\,N$, où $N$ est une fréquence. Déterminer l'équation aux dimensions de la constante de Planck $h$ et en déduire son unité du Système international.",
+          "solution_markdown": "**Étape 1.** Une fréquence est l'inverse d'une durée : $[N] = T^{-1}$. L'énergie a la dimension d'un travail : $[E] = M\\,L^2\\,T^{-2}$.\n\n**Étape 2.** De $E = h\\,N$ on tire $h = \\dfrac{E}{N}$ :\n\n$$[h] = \\frac{[E]}{[N]} = \\frac{M\\,L^2\\,T^{-2}}{T^{-1}} = M\\,L^2\\,T^{-1}$$\n\n**Étape 3.** Unité : $\\text{kg}\\cdot\\text{m}^2\\cdot\\text{s}^{-1}$, c'est-à-dire $\\text{J}\\cdot\\text{s}$, puisque $1\\ \\text{J} = 1\\ \\text{kg}\\cdot\\text{m}^2\\cdot\\text{s}^{-2}$. Ce résultat est cohérent avec la valeur $h = 6{,}62\\times10^{-34}\\ \\text{J}\\cdot\\text{s}$ donnée dans les exercices."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une dimension est une propriété de la grandeur, une unité est un choix de mesure : n'écris jamais $[v] = \\text{m/s}$.",
+        "Pour trouver $[G]$, pars d'une formule de définition et remplace chaque grandeur par sa dimension.",
+        "Les dimensions se multiplient et se divisent comme des puissances ; $[\\text{nombre pur}] = 1$.",
+        "$[v] = L\\,T^{-1}$, $[a] = L\\,T^{-2}$, $[F] = M\\,L\\,T^{-2}$, $[W] = M\\,L^2\\,T^{-2}$ : à connaître par cœur.",
+        "Au Probatoire et au BAC, la question « Vrai ou Faux » sur les dimensions rapporte des points faciles à qui retrouve la dimension à partir de la définition."
+      ]
+    }
+  ]
+}

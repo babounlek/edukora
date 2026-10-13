@@ -1,0 +1,228 @@
+{
+  "epreuve_source": "bac-ti-SI-2023-officiel-cameroun.html",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2023,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "8",
+  "groupes": [
+    "PARTIE II : Bases de données (8 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-SI-2023-officiel-cameroun_exercice_3_fig_1.png",
+      "page_source": null,
+      "type": "tableau",
+      "legende": "Dictionnaire de données (identifiant, type, taille, nature) des neuf attributs, puis table Fournisseur de six lignes (CodeF, NomF, Domiciliation, CA, Sexe)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**PARTIE II : Bases de données (8 points)**\n\n**Exercice 3 (8 points)**\n\nOn considère une base de données nommée COMMANDE qui contient les deux tables suivantes (les clés étrangères sont précédées de #) :\n\n- Fournisseur (CodeF, NomF, Domiciliation, CA, Sexe)\n- Produit (CodeBarre, Désignation, Qte, PU, #CodeF)\n\nEn vous servant de vos connaissances, répondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Donner la signification du sigle SGBD. *[1 pt]*",
+      "corrige_markdown": "**SGBD** signifie **Système de Gestion de Bases de Données**.\n\nC'est le logiciel qui permet de créer une base de données, d'y stocker des données, de les interroger, de les modifier et de contrôler leur sécurité et leur cohérence. Exemples : MySQL, PostgreSQL, Oracle, SQL Server, SQLite.\n\n### Piège à éviter\nNe confonds pas SGBD et base de données : la base contient les données, le SGBD est le logiciel qui les gère. On écrit « Gestion » et non « Gérance » ni « Gestionnaire ».\n\n### Conseil\nDonne le sigle développé mot à mot, puis une demi-phrase sur le rôle et un exemple de logiciel : c'est la réponse complète en deux lignes.",
+      "themes": [
+        "SGBD",
+        "base de données",
+        "définition"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Identifier dans ce schéma relationnel l'attribut qui permet de lier les deux tables. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDeux tables d'un schéma relationnel sont liées par une clé étrangère : un attribut précédé de # dans la table fille, qui reprend la valeur de la clé primaire de la table mère ; on repère le # puis on retrouve la table où cet attribut est clé primaire.\n\nL'attribut qui lie les deux tables est **CodeF**.\n\nDans Produit (CodeBarre, Désignation, Qte, PU, **#CodeF**), le dièse indique que CodeF est une **clé étrangère**. Elle reprend la valeur de la clé primaire CodeF de la table Fournisseur (CodeF, NomF, Domiciliation, CA, Sexe).\n\nSens du lien : un fournisseur peut fournir plusieurs produits, un produit est fourni par un seul fournisseur. La clé étrangère se place donc du côté « plusieurs », dans Produit.\n\n### Piège à éviter\nNe réponds pas « CodeBarre » ni « NomF » : un attribut de liaison apparaît dans les deux tables. Le seul nom commun aux deux schémas est CodeF.\n\n### Conseil\nQuand tu vois un schéma relationnel, cherche d'abord le # : il te donne la clé étrangère immédiatement, et la table d'arrivée est celle où ce même nom n'est pas précédé de #.",
+      "themes": [
+        "clé étrangère",
+        "schéma relationnel",
+        "clé primaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q2-1",
+          "competence": "Identifier la clé étrangère liant deux tables",
+          "contenu_markdown": "Deux tables d'un schéma relationnel sont liées par une clé étrangère : un attribut précédé de # dans la table fille, qui reprend la valeur de la clé primaire de la table mère ; on repère le # puis on retrouve la table où cet attribut est clé primaire.",
+          "cours_genere": true,
+          "cours_id": "cours-cle-etrangere-liaison-tables-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Citer deux opérations de définition et deux opérations de manipulation de données dans cette base de données. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour classer des opérations SQL, détermine si la commande agit sur la structure des objets de la base ou sur les données qu'ils contiennent, puis cite deux commandes de chaque famille.\n\nLes commandes SQL se classent par rôle : le langage de définition de données (CREATE, ALTER, DROP) agit sur la structure des objets de la base, le langage de manipulation de données (INSERT, UPDATE, DELETE, SELECT) agit sur les données que ces objets contiennent.\n\n**Opérations de définition (LDD)**, qui agissent sur la structure :\n\n- **CREATE TABLE** : créer une table, par exemple `CREATE TABLE Fournisseur (...)`.\n- **ALTER TABLE** : modifier une table, par exemple `ALTER TABLE Produit ADD Marque VARCHAR(20)`.\n\n**Opérations de manipulation (LMD)**, qui agissent sur les données :\n\n- **INSERT** : ajouter une ligne, par exemple `INSERT INTO Fournisseur VALUES (...)`.\n- **UPDATE** : modifier des valeurs, par exemple `UPDATE Produit SET PU = 1200 WHERE CodeBarre = '...'`.\n\nAutres réponses acceptées : DROP (définition) ; DELETE et SELECT (manipulation, SELECT étant parfois classé à part comme langage d'interrogation).\n\nBarème : 0,25 pt par opération correctement classée.\n\n### Piège à éviter\nNe range pas DROP dans la manipulation sous prétexte qu'il « supprime » : il supprime une structure, donc il appartient à la définition. DELETE supprime des lignes, donc il appartient à la manipulation.\n\n### Conseil\nRetiens la règle : les verbes CREATE, ALTER, DROP touchent le contenant (la table), INSERT, UPDATE, DELETE touchent le contenu (les lignes).",
+      "themes": [
+        "SQL",
+        "langage de définition de données",
+        "langage de manipulation de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q3-1",
+          "competence": "Classer les commandes SQL en définition et en manipulation",
+          "contenu_markdown": "Pour classer des opérations SQL, détermine si la commande agit sur la structure des objets de la base ou sur les données qu'ils contiennent, puis cite deux commandes de chaque famille.",
+          "cours_genere": true,
+          "cours_id": "cours-ldd-lmd-commandes-sql-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Donner la différence qui existe entre la commande DROP et la commande DELETE. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDROP et DELETE n'agissent pas au même niveau : DROP, commande de définition, supprime un objet entier avec sa structure et son contenu, alors que DELETE, commande de manipulation, supprime seulement des lignes, laisse la structure en place et accepte une clause WHERE pour cibler les lignes.\n\n| | DROP | DELETE |\n|---|---|---|\n| Langage | définition (LDD) | manipulation (LMD) |\n| Cible | l'objet entier (table, base) | des lignes de la table |\n| Structure | disparaît avec les données | conservée, la table reste vide |\n| Clause WHERE | non | oui, pour choisir les lignes |\n\nIllustration sur la table Produit :\n\n```sql\nDELETE FROM Produit WHERE PU < 500;   -- supprime seulement les produits peu chers\nDELETE FROM Produit;                  -- vide la table, qui existe toujours\nDROP TABLE Produit;                   -- supprime la table elle-même\n```\n\nContrôle réalisé : après `DELETE FROM Produit`, la requête `SELECT COUNT(*) FROM Produit` renvoie 0 ; après `DROP TABLE Produit`, la même requête échoue avec « table inexistante ».\n\n### Piège à éviter\nNe dis pas « DROP supprime tout et DELETE supprime un peu » : la vraie différence est la structure. DELETE sans WHERE supprime aussi toutes les lignes, mais la table subsiste.\n\n### Conseil\nDonne la phrase en deux temps : « DELETE supprime des enregistrements, DROP supprime la table elle-même avec sa structure ». Elle rapporte le point entier.",
+      "themes": [
+        "SQL",
+        "DROP",
+        "DELETE",
+        "langage de définition de données"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q4-1",
+          "competence": "Distinguer DROP et DELETE",
+          "contenu_markdown": "DROP et DELETE n'agissent pas au même niveau : DROP, commande de définition, supprime un objet entier avec sa structure et son contenu, alors que DELETE, commande de manipulation, supprime seulement des lignes, laisse la structure en place et accepte une clause WHERE pour cibler les lignes.",
+          "cours_genere": true,
+          "cours_id": "cours-drop-delete-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** En se basant sur le dictionnaire de données ci-dessous, écrire les requêtes SQL qui permettent de créer ces deux tables. *[2 pts]*\n\n![fig-1](bac-ti-SI-2023-officiel-cameroun_exercice_3_fig_1.png)",
+      "corrige_markdown": "### Rappel de méthode\nPour traduire un dictionnaire de données en requêtes CREATE TABLE, chaque identifiant devient une colonne dont le type découle des colonnes Type et Taille (Texte de taille n : VARCHAR(n) ou CHAR(n), Numérique : INTEGER ou DECIMAL), la clé primaire se déclare par PRIMARY KEY, la clé étrangère par FOREIGN KEY ... REFERENCES, et la table mère se crée avant la table fille.\n\n**Étape 1 : lire le dictionnaire.** Les neuf identifiants se répartissent entre les deux tables du schéma : CodeF, NomF, Domiciliation, CA, Sexe pour Fournisseur ; CodeBarre, Designation, Qte, PU (et CodeF en clé étrangère) pour Produit.\n\n| Identifiant | Type | Taille | Type SQL retenu |\n|---|---|---|---|\n| CodeF | Texte | 6 | CHAR(6) |\n| NomF | Texte | 30 | VARCHAR(30) |\n| Domiciliation | Texte | 32 | VARCHAR(32) |\n| CA | Numérique | (non précisée) | DECIMAL(15,2) |\n| Sexe | Texte | 1 | CHAR(1) |\n| CodeBarre | Texte | 15 | CHAR(15) |\n| Designation | Texte | 30 | VARCHAR(30) |\n| Qte | Numérique | (non précisée) | INTEGER |\n| PU | Numérique | (non précisée) | DECIMAL(10,2) |\n\n**Étape 2 : choisir les clés.** CodeF identifie un fournisseur : clé primaire de Fournisseur. CodeBarre identifie un produit : clé primaire de Produit. Dans Produit, CodeF est la clé étrangère qui référence Fournisseur(CodeF).\n\n**Étape 3 : ordonner les créations.** La table Fournisseur doit exister avant Produit, sinon la clé étrangère référence une table inconnue.\n\n**Étape 4 : écrire les requêtes.**\n\n```sql\nCREATE TABLE Fournisseur (\n  CodeF CHAR(6) PRIMARY KEY,\n  NomF VARCHAR(30) NOT NULL,\n  Domiciliation VARCHAR(32),\n  CA DECIMAL(15,2),\n  Sexe CHAR(1)\n);\n\nCREATE TABLE Produit (\n  CodeBarre CHAR(15) PRIMARY KEY,\n  Designation VARCHAR(30) NOT NULL,\n  Qte INTEGER,\n  PU DECIMAL(10,2),\n  CodeF CHAR(6) NOT NULL,\n  FOREIGN KEY (CodeF) REFERENCES Fournisseur(CodeF)\n);\n```\n\nSi la base n'existe pas encore, on la crée d'abord par `CREATE DATABASE COMMANDE;` puis on la sélectionne par `USE COMMANDE;`.\n\nContrôle réalisé : ces deux requêtes s'exécutent sans erreur dans un SGBD, qui refuse ensuite l'insertion d'un produit dont le CodeF n'existe pas dans Fournisseur.\n\nBarème : 1 pt pour la table Fournisseur (types, taille, clé primaire), 1 pt pour la table Produit (types, clé primaire, clé étrangère).\n\n### Piège à éviter\nNe crée pas Produit avant Fournisseur et n'oublie pas la clé étrangère : sans elle, le lien du schéma relationnel (#CodeF) disparaît. N'écris pas non plus `Désignation` avec un accent dans un nom de colonne : certains SGBD le refusent.\n\n### Conseil\nLa colonne « Nature » du dictionnaire t'aide : « Permanent » désigne un identifiant stable (candidat à la clé), « Mouvement » une donnée qui évolue (CA, Qte, PU). Tu sais où mettre PRIMARY KEY avant de rédiger.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "dictionnaire de données",
+        "clé primaire",
+        "clé étrangère"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q5-1",
+          "competence": "Écrire les requêtes CREATE TABLE à partir d'un dictionnaire de données",
+          "contenu_markdown": "Pour traduire un dictionnaire de données en requêtes CREATE TABLE, chaque identifiant devient une colonne dont le type découle des colonnes Type et Taille (Texte de taille n : VARCHAR(n) ou CHAR(n), Numérique : INTEGER ou DECIMAL), la clé primaire se déclare par PRIMARY KEY, la clé étrangère par FOREIGN KEY ... REFERENCES, et la table mère se crée avant la table fille.",
+          "cours_genere": true,
+          "cours_id": "cours-create-table-dictionnaire-donnees-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "6.1",
+      "enonce_markdown": "**6.1.** On donne la table Fournisseur suivante.\n\n![fig-1](bac-ti-SI-2023-officiel-cameroun_exercice_3_fig_1.png)\n\nÉcrire la requête qui affiche le nom et le chiffre d'affaires des fournisseurs domiciliés à Yaoundé dont le chiffre d'affaires est supérieur à 40 000 000. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne requête de sélection suit l'ordre SELECT colonnes, FROM table, WHERE conditions : les colonnes demandées se placent après SELECT, plusieurs conditions simultanées se relient par AND, les valeurs de type texte se mettent entre apostrophes et les nombres s'écrivent sans espace.\n\n**Étape 1 : colonnes demandées.** « Le nom et le chiffre d'affaires » donne `NomF, CA`.\n\n**Étape 2 : table.** Les données sont dans `Fournisseur`.\n\n**Étape 3 : conditions.** Deux conditions simultanées : domicilié à Yaoundé (`Domiciliation = 'Yaoundé'`) et chiffre d'affaires strictement supérieur à 40 000 000 (`CA > 40000000`). Elles se relient par `AND`.\n\n```sql\nSELECT NomF, CA\nFROM Fournisseur\nWHERE Domiciliation = 'Yaoundé' AND CA > 40000000;\n```\n\n**Contrôle sur la table donnée :**\n\n| CodeF | NomF | Domiciliation | CA | Retenu ? |\n|---|---|---|---|---|\n| 100BA | MINTELE | Douala | 45 000 000 | non (Douala) |\n| 150BT | DENGUE | Yaoundé | 65 000 000 | oui |\n| 175BG | EBAMINA | Yaoundé | 50 000 000 | oui |\n| 200BK | MEBA | Douala | 70 000 000 | non (Douala) |\n| 250BT | NDEN | Bafoussam | 67 000 000 | non (Bafoussam) |\n| 300BH | AKOK | Yaoundé | 40 000 000 | non (40 000 000 n'est pas > 40 000 000) |\n\nRésultat affiché : DENGUE 65 000 000 et EBAMINA 50 000 000.\n\n### Piège à éviter\nAKOK est domicilié à Yaoundé avec exactement 40 000 000 : avec `>` il est exclu, avec `>=` il serait inclus. Lis bien « supérieur à » (strict) et choisis le bon opérateur.\n\n### Conseil\nÉcris les nombres sans espace ni séparateur (40000000) et les textes entre apostrophes : `40 000 000` provoque une erreur de syntaxe dans la plupart des SGBD.",
+      "themes": [
+        "SQL",
+        "SELECT",
+        "WHERE",
+        "opérateurs logiques"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q6.1-1",
+          "competence": "Écrire une requête SELECT avec conditions multiples",
+          "contenu_markdown": "Une requête de sélection suit l'ordre SELECT colonnes, FROM table, WHERE conditions : les colonnes demandées se placent après SELECT, plusieurs conditions simultanées se relient par AND, les valeurs de type texte se mettent entre apostrophes et les nombres s'écrivent sans espace.",
+          "cours_genere": true,
+          "cours_id": "cours-select-conditions-multiples-tle-ti-si2023"
+        }
+      ]
+    },
+    {
+      "numero": "6.2",
+      "enonce_markdown": "**6.2.** Le fournisseur de code 250BT n'est plus autorisé à passer des commandes. Écrire la requête qui supprime ce fournisseur de la table. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour supprimer des lignes précises, on utilise DELETE FROM table WHERE condition, de préférence sur la clé primaire ; sans clause WHERE toutes les lignes sont supprimées, et une clé étrangère qui référence la ligne peut bloquer la suppression.\n\n```sql\nDELETE FROM Fournisseur\nWHERE CodeF = '250BT';\n```\n\n**Explication.** La condition porte sur la clé primaire CodeF, donc elle désigne une seule ligne (NDEN, domicilié à Bafoussam). Les valeurs texte se placent entre apostrophes. Après exécution, la table contient 5 fournisseurs.\n\n**Cas de la clé étrangère.** Si des produits de la table Produit référencent encore 250BT, le SGBD refuse la suppression (erreur de contrainte de clé étrangère, vérifiée en test). Il faut alors supprimer d'abord ces produits :\n\n```sql\nDELETE FROM Produit WHERE CodeF = '250BT';\nDELETE FROM Fournisseur WHERE CodeF = '250BT';\n```\n\nou avoir déclaré la clé étrangère avec `ON DELETE CASCADE`, qui supprime automatiquement les produits liés.\n\n### Piège à éviter\nN'écris jamais `DELETE FROM Fournisseur;` sans WHERE : toutes les lignes disparaissent. Et n'utilise pas `DROP TABLE`, qui détruirait la table entière alors que seul un fournisseur est concerné.\n\n### Conseil\nAvant un DELETE, écris le même WHERE dans un SELECT pour vérifier les lignes visées. Une fois que le SELECT te renvoie la bonne ligne, remplace SELECT * par DELETE.",
+      "themes": [
+        "SQL",
+        "DELETE",
+        "WHERE",
+        "intégrité référentielle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q6.2-1",
+          "competence": "Supprimer des lignes avec DELETE et WHERE",
+          "contenu_markdown": "Pour supprimer des lignes précises, on utilise DELETE FROM table WHERE condition, de préférence sur la clé primaire ; sans clause WHERE toutes les lignes sont supprimées, et une clé étrangère qui référence la ligne peut bloquer la suppression.",
+          "cours_genere": true,
+          "cours_id": "cours-delete-where-tle-ti-si2023"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "SGBD",
+    "clé étrangère",
+    "LDD",
+    "LMD",
+    "DROP",
+    "DELETE",
+    "CREATE TABLE",
+    "dictionnaire de données",
+    "SELECT",
+    "Fournisseur",
+    "Produit",
+    "SQL"
+  ],
+  "incertitudes": [
+    "Source : reproduction du sujet sur une page du site Camerecole, sans en-tête officiel imprimé : durée et coefficient absents (null), origine « officiel » par reproduction, session 2023 donnée par les métadonnées de la page.",
+    "Série TI : cohérente entre les métadonnées, le titre de la page (« baccalauréat TI 2023 ») et le corps.",
+    "Aucun corrigé officiel n'accompagne la page : le corrigé est une proposition fondée sur le programme de Systèmes d'Information de la série TI.",
+    "Coquilles de la page rétablies : « l. » et « Il. » lus comme I. et II., « PARTIE Il » lu PARTIE II, « fa commande Drop » lu « la commande Drop », « PU. #CodeF » lu « PU, #CodeF », « n numéro » lu « un numéro », « Repartir » lu « Répartir ».",
+    "Image fournisseurs.jpg lue visuellement : dictionnaire (types Texte ou Numérique, tailles 6, 30, 32, 1, 15, 30, nature Permanent ou Mouvement) et six lignes de Fournisseur. Les tailles de CA, Qte et PU ne sont pas indiquées : types SQL DECIMAL(15,2), INTEGER et DECIMAL(10,2) choisis. Un petit artefact de scan (point après « Texte » en ligne 1, astérisque près de la taille 1) a été ignoré.",
+    "Résultat de 6.1 déduit de la table lue sur l'image : DENGUE (65 000 000) et EBAMINA (50 000 000). AKOK (40 000 000) est exclu par l'opérateur strict.",
+    "Le texte donne les clés par convention (CodeF, CodeBarre) car le soulignement n'apparaît pas dans la page : clés primaires déduites du schéma et du dictionnaire.",
+    "Barème de l'exercice 3 : 1 + 1 + 1 + 1 + 2 + 1 + 1 = 8 points."
+  ],
+  "statut": "brouillon"
+}

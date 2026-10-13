@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-le-langage-sql-le-sgbd-mysql-et-la-connexion-depuis-php-gap24",
+  "meta": {
+    "titre": "Le langage SQL, le SGBD MySQL et la connexion depuis PHP",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données",
+    "duree_estimee_min": 35,
+    "tags": [
+      "Langage SQL",
+      "Requête INSERT",
+      "SGBD MySQL",
+      "connexion à une base de données",
+      "fonction mysqli_connect"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-informatique-theorique-officiel-2015",
+    "epreuve_titre": "Baccalauréat ESG - Séries A, C, D, E - Informatique (Épreuve théorique) - Session 2015",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2015-ex2-q3-1-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-a-c-d-e-informatique-theorique-officiel-2015.pdf"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Les notes de tous les élèves d'un lycée ne tiennent pas dans un cahier : elles sont rangées dans une base de données, et on les interroge avec un langage universel, le SQL. Un site web en PHP dialogue avec cette base après s'être connecté à elle. Au BAC, on te demande d'écrire une requête INSERT, de lire le résultat d'un SELECT, de distinguer DROP TABLE de DELETE, ou d'écrire le code de connexion. Ce cours rassemble ces quatre savoir-faire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les mots table, champ (colonne) et enregistrement (ligne)",
+        "Savoir ce qu'est une clé primaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "SQL, MySQL et connexion à la base",
+      "contenu_markdown": "**SQL** (*Structured Query Language*, langage de requêtes structuré) est le langage qui permet de définir, remplir et interroger une base de données relationnelle. Un **SGBD** (système de gestion de bases de données) est le logiciel qui gère la base et exécute les requêtes ; **MySQL** (ou son dérivé MariaDB) est un SGBD libre, très utilisé avec PHP, souvent administré avec l'interface web phpMyAdmin.\n\n**Deux familles de commandes**\n\n| Famille | Rôle | Commandes |\n|---|---|---|\n| Définition des données (LDD) | créer ou supprimer la structure | `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE` |\n| Manipulation des données (LMD) | agir sur les enregistrements | `INSERT INTO`, `UPDATE`, `DELETE`, `SELECT` |\n\n`DROP TABLE` supprime la table entière (structure et contenu) ; `DELETE FROM` supprime seulement des enregistrements et garde la table.\n\n**La requête INSERT.** On donne la table, la liste des champs, puis les valeurs **dans le même ordre**. Les textes sont entre apostrophes, les nombres n'en ont pas, et on termine par un point-virgule.\n\n```sql\nINSERT INTO ELEVE (Matricule, Nom, Prenom, Classe, Moyenne)\nVALUES ('E004', 'ESSOMBA', 'Marc', 'Tle D', 13.75);\n```\n\n**Les autres requêtes** :\n\n```sql\nSELECT Nom, Moyenne FROM ELEVE WHERE Classe = 'Tle D';\nUPDATE ELEVE SET Moyenne = 12 WHERE Matricule = 'E002';\nDELETE FROM ELEVE WHERE Matricule = 'E003';\n```\n\nPour lire un SELECT, suis l'ordre FROM (quelle table), WHERE (quelles lignes), SELECT (quelles colonnes).\n\n**Se connecter à MySQL depuis PHP.** La fonction `mysqli_connect` ouvre la connexion avec quatre informations, **dans cet ordre** : l'hôte (la machine où tourne MySQL, souvent localhost), le nom d'utilisateur, le mot de passe et le nom de la base.\n\n```php\nmysqli_connect('localhost', 'root', '', 'ecole') or die('Connexion impossible');\n```\n\nSelon la version de PHP, un échec renvoie `false` (le test et `die` arrêtent alors le script avec un message) ou, à partir de PHP 8.1, lève une exception. En pratique, le programme range le résultat de `mysqli_connect` dans une variable (dont le nom est précédé d'un symbole dollar), teste cette variable pour gérer l'erreur, exécute ses requêtes, puis ferme la connexion avec `mysqli_close` appliquée à cette variable.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Résultat d'un SELECT sous forme de table",
+          "quand_utiliser": "Quand on demande le résultat d'une requête SELECT avec WHERE.",
+          "contenu_markdown": "Dessine un tableau avec seulement les colonnes demandées par SELECT (en-têtes compris) et seulement les lignes qui vérifient WHERE. Barre d'abord les lignes écartées."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Choisir la bonne réponse en considérant une session MySQL. La commande DROP TABLE permet : a) la suppression d'une table ; b) l'insertion d'un enregistrement ; c) la modification des valeurs d'un enregistrement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Associer chaque proposition à sa commande",
+          "justification": "Insérer un enregistrement se fait avec INSERT INTO, modifier des valeurs avec UPDATE.",
+          "resultat_markdown": "b) correspond à INSERT INTO ; c) correspond à UPDATE."
+        },
+        {
+          "numero": 2,
+          "action": "Éliminer b) et c)",
+          "justification": "Aucune des deux ne correspond à DROP TABLE.",
+          "resultat_markdown": "Il reste a)."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier a)",
+          "justification": "DROP signifie supprimer ; TABLE désigne l'objet visé, la table entière.",
+          "resultat_markdown": "DROP TABLE supprime la table, sa structure et toutes ses données."
+        }
+      ],
+      "conclusion_markdown": "Réponse : a) La suppression d'une table. DROP TABLE appartient aux commandes de définition des données."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre DROP TABLE et DELETE FROM.",
+          "pourquoi_faux": "DROP TABLE supprime la table entière, structure comprise ; DELETE FROM ne supprime que des enregistrements et laisse la table.",
+          "correction_markdown": "Table entière : DROP. Quelques lignes : DELETE avec WHERE."
+        },
+        {
+          "erreur_markdown": "Oublier les apostrophes autour d'un texte, ou en mettre autour d'un nombre.",
+          "pourquoi_faux": "Sans apostrophes, SQL lit le texte comme un nom de champ et déclenche une erreur ; avec des apostrophes, un nombre devient du texte.",
+          "correction_markdown": "Textes entre apostrophes, nombres sans apostrophes."
+        },
+        {
+          "erreur_markdown": "Écrire mysqli_connect avec l'utilisateur en premier.",
+          "pourquoi_faux": "La fonction attend l'hôte en premier. Une inversion fait échouer la connexion.",
+          "correction_markdown": "Retiens l'ordre : hôte, utilisateur, mot de passe, base."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui insère dans la table ELEVE (Matricule, Nom, Prenom, Classe, Moyenne) l'élève E005, KAMGA, Sylvie, de la classe Tle C, avec la moyenne 15.",
+          "solution_markdown": "```sql\nINSERT INTO ELEVE (Matricule, Nom, Prenom, Classe, Moyenne)\nVALUES ('E005', 'KAMGA', 'Sylvie', 'Tle C', 15);\n```\n\nLes quatre premiers champs sont du texte (apostrophes) ; la moyenne est un nombre (pas d'apostrophes). Il y a autant de valeurs que de champs, dans le même ordre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La table ELEVE contient : (E001, MBARGA, Julie, Tle D, 14.5), (E002, NKOLO, Paul, Tle D, 11.25), (E003, TCHOUA, Awa, Tle C, 16). Donner, sous forme de table, le résultat de : `SELECT Nom, Moyenne FROM ELEVE WHERE Classe = 'Tle D';`",
+          "solution_markdown": "FROM ELEVE : trois lignes. WHERE Classe = 'Tle D' : on garde E001 et E002 ; E003 (Tle C) est écartée. SELECT Nom, Moyenne : on n'affiche que ces deux colonnes.\n\n| Nom | Moyenne |\n|---|---|\n| MBARGA | 14.5 |\n| NKOLO | 11.25 |"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "a) Écrire la requête qui passe à 12 la moyenne de l'élève E002. b) Que se passerait-il si l'on oubliait la clause WHERE ? c) Écrire en PHP l'appel de connexion à la base ecole sur localhost avec l'utilisateur root et un mot de passe vide, et expliquer l'ordre des paramètres.",
+          "solution_markdown": "a) `UPDATE ELEVE SET Moyenne = 12 WHERE Matricule = 'E002';`\n\nb) Sans WHERE, la modification s'appliquerait à **toutes** les lignes : tous les élèves auraient la moyenne 12.\n\nc) `mysqli_connect('localhost', 'root', '', 'ecole') or die('Connexion impossible');` L'ordre est : **hôte** (localhost), **utilisateur** (root), **mot de passe** (vide), **base** (ecole)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SQL est le langage des bases de données ; MySQL est un SGBD libre souvent associé à PHP.",
+        "Définition : CREATE, ALTER, DROP TABLE. Manipulation : INSERT INTO, UPDATE, DELETE, SELECT.",
+        "INSERT INTO table (champs) VALUES (valeurs dans le même ordre) ; textes entre apostrophes, nombres sans.",
+        "SELECT se lit dans l'ordre FROM, WHERE, SELECT ; UPDATE et DELETE exigent un WHERE pour ne pas toucher toutes les lignes.",
+        "mysqli_connect : hôte, utilisateur, mot de passe, base ; on teste l'échec, puis on ferme avec mysqli_close."
+      ]
+    }
+  ]
+}

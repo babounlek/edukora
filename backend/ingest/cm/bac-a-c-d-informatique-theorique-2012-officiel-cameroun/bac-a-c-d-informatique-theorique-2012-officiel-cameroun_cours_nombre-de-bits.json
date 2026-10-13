@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-nombre-de-bits-tle-a-c-d-2012",
+  "meta": {
+    "titre": "Calculer le nombre de bits nécessaires pour coder des valeurs",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D",
+    "sous_theme": "Codage de l'information",
+    "duree_estimee_min": 25,
+    "tags": [
+      "bit",
+      "puissance de 2",
+      "couleurs",
+      "profondeur de couleur",
+      "codage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-2012-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique au baccalauréat A, C et D 2012",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-2012-officiel-cameroun-ex1-q4b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu veux attribuer un code binaire de même longueur à chacune des 26 lettres de l'alphabet : combien de bits faut-il réserver pour chaque lettre ? Trop peu et deux lettres auront le même code, trop et tu gaspilles de la mémoire. Le même raisonnement sert à savoir combien de bits sont nécessaires pour un pixel d'une photo de 256 couleurs. Ce cours t'apprend à trouver ce nombre à coup sûr."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les puissances de 2 jusqu'à $2^{10} = 1024$",
+        "Savoir qu'un bit vaut 0 ou 1"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le plus petit n tel que 2 puissance n dépasse N",
+      "contenu_markdown": "Avec $n$ bits, on peut former $2^n$ combinaisons différentes. Pour coder $N$ valeurs distinctes, il faut donc que $2^n \\geq N$, et on retient le **plus petit** entier $n$ qui convient.\n\n**Méthode.** On écrit les puissances de 2 successives ($2, 4, 8, 16, 32, 64, 128, 256...$) jusqu'à dépasser ou atteindre $N$, et on lit l'exposant.\n\nSi $N$ est exactement une puissance de 2 (16, 256, 1024...), alors $n = \\log_2 N$. Sinon, on arrondit à l'entier supérieur : pour $N = 100$, on prend $n = 7$ car $2^6 = 64 < 100 \\leq 128 = 2^7$.\n\n**Application aux images.** Pour une image dont chaque pixel peut prendre $N$ couleurs, le nombre de bits par pixel est le plus petit $n$ tel que $2^n \\geq N$ (c'est la profondeur de couleur). Une image de $L \\times H$ pixels occupe $L \\times H \\times n$ bits.",
+      "formule_principale": "2^{n} \\geq N \\;\\Longrightarrow\\; n = \\lceil \\log_2 N \\rceil",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Combien de bits faut-il pour afficher une image qui comporte 256 couleurs ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier N",
+          "justification": "Chaque pixel doit pouvoir prendre l'une des couleurs de la palette.",
+          "resultat_markdown": "$N = 256$."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition à satisfaire",
+          "justification": "Avec $n$ bits, on dispose de $2^n$ codes, il en faut au moins autant que de couleurs.",
+          "resultat_markdown": "$2^n \\geq 256$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les puissances de 2 successives",
+          "justification": "On monte jusqu'à atteindre 256.",
+          "resultat_markdown": "$2^6 = 64$, $2^7 = 128$, $2^8 = 256$."
+        },
+        {
+          "numero": 4,
+          "action": "Choisir le plus petit n qui convient",
+          "justification": "7 bits donnent 128 codes, insuffisant ; 8 bits donnent 256 codes, suffisant.",
+          "resultat_markdown": "$n = 8$."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier",
+          "justification": "8 bits donnent exactement $2^8 = 256$ combinaisons, une par couleur.",
+          "resultat_markdown": "Il faut 8 bits par pixel."
+        }
+      ],
+      "conclusion_markdown": "Une image de 256 couleurs se code sur 8 bits par pixel, c'est-à-dire un octet par pixel, parce que $2^8 = 256$ est le premier seuil qui atteint 256."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « 256 bits » en confondant le nombre de couleurs et le nombre de bits",
+          "pourquoi_faux": "Le nombre de bits est l'exposant $n$ dans $2^n$, pas le nombre de valeurs. 256 bits donneraient $2^{256}$ combinaisons, un nombre gigantesque.",
+          "correction_markdown": "Demande-toi « combien de bits pour obtenir au moins N combinaisons ? » et non « combien de valeurs ? »."
+        },
+        {
+          "erreur_markdown": "Arrondir à l'entier inférieur",
+          "pourquoi_faux": "Pour $N = 100$, $\\log_2 100 \\approx 6{,}64$ ; prendre 6 bits ne donne que 64 codes, ce qui est insuffisant. Il faut toujours arrondir au supérieur.",
+          "correction_markdown": "Choisis le plus petit $n$ tel que $2^n \\geq N$, jamais le plus grand tel que $2^n \\leq N$."
+        },
+        {
+          "erreur_markdown": "Diviser N par 2 ou par 8",
+          "pourquoi_faux": "Le nombre de codes double à chaque bit ajouté, il ne varie pas proportionnellement : ce n'est pas $N \\div 2$ qui donne le nombre de bits.",
+          "correction_markdown": "Passe par le tableau des puissances de 2."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": "1",
+          "difficulte": "facile",
+          "enonce_markdown": "Combien de bits faut-il pour coder une image en 16 couleurs ?",
+          "solution_markdown": "On cherche le plus petit $n$ tel que $2^n \\geq 16$.\n\n$2^1 = 2$, $2^2 = 4$, $2^3 = 8$, $2^4 = 16$.\n\n$2^3 = 8 < 16$ ne suffit pas, $2^4 = 16$ convient exactement.\n\nIl faut donc 4 bits par pixel."
+        },
+        {
+          "numero": "2",
+          "difficulte": "moyen",
+          "enonce_markdown": "On veut attribuer un code binaire de même longueur à chacun des 100 caractères d'un petit jeu de symboles. Quelle longueur minimale faut-il ?",
+          "solution_markdown": "On cherche le plus petit $n$ tel que $2^n \\geq 100$.\n\n$2^5 = 32$, $2^6 = 64$, $2^7 = 128$.\n\n$2^6 = 64 < 100$ ne suffit pas, $2^7 = 128 \\geq 100$ convient.\n\nIl faut donc 7 bits par caractère. Il restera $128 - 100 = 28$ codes inutilisés, ce qui est normal quand $N$ n'est pas une puissance de 2."
+        },
+        {
+          "numero": "3",
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une image fait 640 pixels de large sur 480 de haut et comporte 256 couleurs. Quelle est sa taille, en bits, en octets, puis en kibioctets (1 Kio = 1024 octets) ?",
+          "solution_markdown": "Le nombre de pixels est $640 \\times 480 = 307\\,200$.\n\nPour 256 couleurs, chaque pixel utilise $n = 8$ bits (car $2^8 = 256$).\n\nTaille en bits : $307\\,200 \\times 8 = 2\\,457\\,600$ bits.\n\nTaille en octets : $2\\,457\\,600 \\div 8 = 307\\,200$ octets, ce qui est logique puisque chaque pixel occupe un octet.\n\nTaille en kibioctets : $307\\,200 \\div 1024 = 300$ Kio.\n\nL'image occupe donc 300 Kio, sans compression."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avec $n$ bits, tu obtiens $2^n$ combinaisons : c'est la phrase à avoir en tête dès qu'une question parle de codage.",
+        "Pour coder $N$ valeurs, cherche le plus petit $n$ tel que $2^n \\geq N$ et arrondis toujours vers le haut.",
+        "256 couleurs demandent 8 bits par pixel, 16 couleurs demandent 4 bits.",
+        "La taille d'une image est (nombre de pixels) $\\times$ (bits par pixel).",
+        "Au BAC, ce type de question vaut 1 ou 2 points et se règle en quelques lignes avec le tableau des puissances de 2."
+      ]
+    }
+  ]
+}

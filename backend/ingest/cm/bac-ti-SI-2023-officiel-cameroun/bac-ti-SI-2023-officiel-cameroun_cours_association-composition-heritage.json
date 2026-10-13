@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-association-composition-heritage-tle-ti-si2023",
+  "meta": {
+    "titre": "Distinguer association, composition et héritage en UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes",
+    "duree_estimee_min": 25,
+    "tags": [
+      "association",
+      "composition",
+      "agrégation",
+      "héritage",
+      "UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex2-q2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un diagramme de classes, deux classes peuvent être reliées de trois façons très différentes : elles se connaissent (association), l'une est une partie vitale de l'autre (composition) ou l'une est un cas particulier de l'autre (héritage). Une phrase de l'énoncé suffit presque toujours à décider. Ce cours t'apprend à lire ces phrases."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Identifier les classes et leurs attributs",
+        "Notion de cycle de vie d'un objet (naissance, disparition)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois relations, trois indices dans le texte",
+      "contenu_markdown": "- **Association** : un verbe d'action relie deux objets indépendants (« un client réserve une suite »). Trait simple, étiqueté par le verbe.\n- **Agrégation** : un tout et ses parties, mais la partie survit à la disparition du tout. Losange **vide** côté tout.\n- **Composition** : un tout et ses parties dont la vie dépend du tout (« la création de A entraîne obligatoirement celle de B »). Losange **plein** côté tout.\n- **Héritage** : « il existe des types de... », la classe fille est un cas particulier de la classe mère. Triangle **creux** côté classe mère.",
+      "variantes": [
+        {
+          "nom": "Test du tout et de la partie",
+          "quand_utiliser": "Quand tu hésites entre composition, agrégation et association",
+          "contenu_markdown": "Si je supprime le tout, la partie a-t-elle encore un sens ? Non : composition. Oui : agrégation. Pas de notion de tout : association."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Règles MINTELE : un client réserve des suites ; une suite contient des douches, la création de la suite entraîne celle de la douche ; il existe des suites VIP et des suites A. Donner le type de chaque relation.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Client - Suite",
+          "justification": "« réserver » est un verbe d'action entre deux objets indépendants.",
+          "resultat_markdown": "Association « réserver »."
+        },
+        {
+          "numero": 2,
+          "action": "Suite - Douche",
+          "justification": "« la création de la suite entraîne celle de la douche » : cycle de vie lié.",
+          "resultat_markdown": "Composition, losange plein côté Suite."
+        },
+        {
+          "numero": 3,
+          "action": "Suite - SuiteVIP / SuiteA",
+          "justification": "« il existe des suites VIP et des suites A » : types de suite.",
+          "resultat_markdown": "Héritage, triangle creux côté Suite."
+        }
+      ],
+      "conclusion_markdown": "Une association, une composition et un héritage : chaque relation est justifiée par une expression du texte."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre « contient » pour une composition automatiquement",
+          "pourquoi_faux": "« Contient » peut aussi décrire une agrégation si la partie survit au tout. Seule la dépendance du cycle de vie impose la composition.",
+          "correction_markdown": "Chercher « entraîne la création » ou « disparaît avec »."
+        },
+        {
+          "erreur_markdown": "Placer le losange côté partie",
+          "pourquoi_faux": "Le losange désigne le tout, jamais la partie.",
+          "correction_markdown": "Placer le losange plein côté Suite."
+        },
+        {
+          "erreur_markdown": "Utiliser l'héritage pour une relation « possède »",
+          "pourquoi_faux": "Une suite possède des douches, elle n'est pas une douche. Héritage = « est un ».",
+          "correction_markdown": "Appliquer le test « est un ? » : SuiteVIP est une Suite, une Suite n'est pas une Douche."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une maison contient des pièces qui disparaissent avec elle. Quelle relation ?",
+          "solution_markdown": "1. Les pièces n'existent pas sans la maison : cycle de vie lié.\n2. C'est une composition, losange plein côté Maison."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une équipe compte des joueurs ; un joueur peut changer d'équipe et survit à la dissolution de l'équipe. Quelle relation ?",
+          "solution_markdown": "1. Le joueur survit à la disparition de l'équipe.\n2. Il y a un tout (équipe) et des parties, mais la partie est indépendante.\n3. C'est une agrégation, losange vide côté Équipe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un véhicule est caractérisé par une immatriculation. Il existe des camions et des motos. Un véhicule possède un moteur, supprimé avec le véhicule. Un propriétaire possède plusieurs véhicules. Donne les relations.",
+          "solution_markdown": "1. Véhicule - Camion, Véhicule - Moto : héritage (« il existe des... »).\n2. Véhicule - Moteur : composition (le moteur disparaît avec le véhicule).\n3. Propriétaire - Véhicule : association « posséder » (objets indépendants)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Association : verbe entre objets indépendants.",
+        "Composition : la partie disparaît avec le tout, losange plein côté tout.",
+        "Agrégation : la partie survit, losange vide.",
+        "Héritage : « est un », triangle creux côté mère.",
+        "Au BAC TI, chaque relation du diagramme est notée séparément (1,5 point pour l'ensemble)."
+      ]
+    }
+  ]
+}

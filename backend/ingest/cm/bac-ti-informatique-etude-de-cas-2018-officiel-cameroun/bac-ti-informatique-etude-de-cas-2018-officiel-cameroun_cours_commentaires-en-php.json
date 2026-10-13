@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-commentaires-en-php-tle-ti",
+  "meta": {
+    "titre": "Les commentaires en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Syntaxe de base du langage PHP",
+    "duree_estimee_min": 20,
+    "tags": [
+      "commentaire",
+      "PHP",
+      "syntaxe",
+      "documentation du code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme que tu relis six mois plus tard ressemble à une langue étrangère si personne n'y a laissé d'explications. Les commentaires servent à cela, et aussi à mettre une instruction de côté sans la supprimer. En PHP, il existe plusieurs façons de les écrire, et l'examen demande régulièrement d'en citer deux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un script PHP s'écrit entre `<?php` et `?>`",
+        "Savoir qu'une instruction PHP se termine par un point-virgule"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois syntaxes de commentaire",
+      "contenu_markdown": "Un commentaire PHP est du texte ignoré par l'interpréteur : il n'est pas exécuté et il n'est jamais envoyé au navigateur.\n\n| Syntaxe | Portée | Exemple |\n|---|---|---|\n| `//` | Jusqu'à la fin de la ligne | `// première ligne` |\n| `#` | Jusqu'à la fin de la ligne | `# première ligne` |\n| `/* ... */` | De `/*` à `*/`, sur une ou plusieurs lignes | `/* texte sur plusieurs lignes */` |\n\nÀ ne pas confondre avec le commentaire HTML `<!-- ... -->`, qui est envoyé au navigateur et reste visible dans le code source de la page.\n\nDeux règles d'emploi : les commentaires `/* ... */` ne s'imbriquent pas, et un commentaire de ligne s'arrête à la balise fermante `?>` si elle apparaît avant la fin de la ligne.",
+      "formule_principale": "\\texttt{// ligne} \\quad \\texttt{\\# ligne} \\quad \\texttt{/* bloc */}",
+      "variantes": [
+        {
+          "nom": "Désactiver provisoirement du code",
+          "quand_utiliser": "Quand tu veux tester un programme sans une ou plusieurs instructions",
+          "contenu_markdown": "On encadre les lignes concernées par `/*` et `*/`. Le code reste dans le fichier mais n'est plus exécuté ; il suffit de retirer les marques pour le réactiver."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code PHP de 22 lignes du sujet, repérer les commentaires et dire de quel type ils sont.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le code en cherchant les marques `//`, `#` et `/*`",
+          "justification": "Ce sont les seuls débuts possibles d'un commentaire PHP",
+          "resultat_markdown": "Les lignes 4, 10 et 12 commencent par `//`."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le texte commenté de chacune",
+          "justification": "Chaque commentaire va jusqu'à la fin de sa ligne",
+          "resultat_markdown": "Ligne 4 : `// 1ère ligne` ; ligne 10 : `// toutes les lignes` ; ligne 12 : `// 1 ligne`."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le type",
+          "justification": "Les trois utilisent la même syntaxe",
+          "resultat_markdown": "Ce sont trois commentaires de ligne introduits par `//`, ignorés à l'exécution."
+        }
+      ],
+      "conclusion_markdown": "Le code contient trois commentaires de ligne introduits par `//` (lignes 4, 10 et 12) ; ils n'apparaissent pas dans la page produite."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `<!-- ... -->` comme syntaxe de commentaire PHP.",
+          "pourquoi_faux": "C'est la syntaxe HTML. Le texte est envoyé au navigateur et reste visible dans le code source, ce qu'un commentaire PHP ne fait jamais.",
+          "correction_markdown": "Pour PHP, cite `//` (ou `#`) et `/* ... */`."
+        },
+        {
+          "erreur_markdown": "Imbriquer deux commentaires de bloc : `/* début /* interne */ suite */`.",
+          "pourquoi_faux": "Le premier `*/` ferme le commentaire. Le texte « suite */ » est alors lu comme du code et provoque une erreur.",
+          "correction_markdown": "N'ouvre jamais un `/*` à l'intérieur d'un autre : utilise `//` pour les commentaires internes."
+        },
+        {
+          "erreur_markdown": "Mettre `?>` dans un commentaire de ligne : `// fin ?>`.",
+          "pourquoi_faux": "La balise fermante met fin au mode PHP même à l'intérieur d'un commentaire de ligne : la suite de la ligne est envoyée comme du texte.",
+          "correction_markdown": "Évite d'écrire `?>` dans un commentaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris deux commentaires PHP de types différents.",
+          "solution_markdown": "```php\n// commentaire sur une ligne\n/* commentaire\n   sur plusieurs lignes */\n```\n\nLe premier utilise `//` et s'arrête à la fin de sa ligne, le second est encadré par `/*` et `*/` et peut occuper plusieurs lignes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Qu'affiche ce script ?\n\n```php\n<?php\n/* début\necho \"caché 1\";\necho \"caché 2\";\nfin */\necho \"visible\"; // fin de ligne\n# autre style\necho \"ok\";\n?>\n```",
+          "solution_markdown": "Le bloc entre `/*` et `*/` couvre les lignes qui contiennent les deux premiers `echo` : elles ne sont pas exécutées. Le `echo \"visible\";` est exécuté, et le texte qui suit `//` est ignoré. La ligne qui commence par `#` est un commentaire. Le dernier `echo \"ok\";` est exécuté.\n\nAffichage : `visibleok` (les deux `echo` ne produisent aucun saut de ligne dans la page)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un programme contient trois lignes `echo` et un test montre qu'une seule pose problème, sans que tu saches laquelle. Explique comment les commentaires t'aident à la trouver et pourquoi le commentaire de bloc est plus pratique ici.",
+          "solution_markdown": "On met en commentaire les `echo` suspects pour les neutraliser, puis on réactive les lignes une par une en relançant le test : la ligne qui fait réapparaître l'erreur est la coupable.\n\nLe commentaire de bloc `/* ... */` neutralise plusieurs lignes d'un coup avec deux marques seulement, alors que `//` oblige à écrire une marque devant chaque ligne. Pour réactiver, on retire simplement `/*` et `*/`. Il faut seulement veiller à ce que le bloc ne contienne pas déjà un `*/`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un commentaire PHP est ignoré de l'interpréteur et n'arrive jamais au navigateur.",
+        "Trois syntaxes : `//` et `#` pour une ligne, `/* ... */` pour un bloc.",
+        "`<!-- -->` est un commentaire HTML : il reste visible dans le code source de la page.",
+        "Les blocs `/* ... */` ne s'imbriquent pas ; un `?>` interrompt même un commentaire de ligne.",
+        "Au BAC TI, la question « décrire deux syntaxes de commentaires » vaut 0,5 point : cite `//` et `/* ... */` avec un exemple."
+      ]
+    }
+  ]
+}

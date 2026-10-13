@@ -1,0 +1,428 @@
+{
+  "epreuve_source": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun.html",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Réseaux, Internet et Sécurité Informatique",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2019,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "6",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": null,
+      "type": "document",
+      "legende": "Capture de console Windows : configuration de la carte Ethernet (description, adresse physique, DHCP activé, adresses IPv4 et IPv6, masque 255.255.0.0, bail obtenu et expirant, passerelle, serveur DHCP, DUID, serveurs DNS, NetBIOS)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_2_fig_2.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Schéma physique d'un réseau domestique : un commutateur 2950-24 relié en étoile à quatre ordinateurs PC1 à PC4 ; une imprimante Printer-PT est reliée à PC4",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2**\n\n**Deuxième partie : Réseaux informatiques (6 points)**",
+  "questions": [
+    {
+      "numero": "1.1",
+      "enonce_markdown": "**1.** La capture ci-dessous a été obtenue en exécutant une commande, à déterminer, sur un ordinateur connecté à Internet.\n\n![fig-1](bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_2_fig_1.png)\n\nTranscription du texte de la capture :\n\n```text\nCarte Ethernet Connexion au réseau local :\n\n   Suffixe DNS propre à la connexion. . . :\n   Description. . . . . . . . . . . . . . : Broadcom NetXtreme Gigabit Ethernet\n   Adresse physique . . . . . . . . . . . : 00-16-D4-9F-82-61\n   DHCP activé. . . . . . . . . . . . . . : Oui\n   Configuration automatique activée. . . : Oui\n   Adresse IPv6 de liaison locale. . . . .: fe80::10e0:a9db:e7b9:e5fe%11(préféré)\n   Adresse IPv4. . . . . . . . . . . . . .: 172.16.1.100(préféré)\n   Masque de sous-réseau. . . . . . . . . : 255.255.0.0\n   Bail obtenu. . . . . . . . . . . . . . : jeudi 4 février 2016 13:27:37\n   Bail expirant. . . . . . . . . . . . . : vendredi 5 février 2016 13:27:36\n   Passerelle par défaut. . . . . . . . . : 172.16.0.254\n   Serveur DHCP . . . . . . . . . . . . . : 172.16.0.254\n   IAID DHCPv6 . . . . . . . . . . . . . : 234886868\n   DUID de client DHCPv6. . . . . . . . . : 00-01-00-01-1D-42-85-9E-00-16-D4-9F-82-61\n   Serveurs DNS. . . . . . . . . . . . . . : 195.24.192.33\n                                            8.8.8.8\n   NetBIOS sur Tcpip. . . . . . . . . . . : Activé\n```\n\n**1.1.** Déterminer la commande qui a été utilisée pour afficher cette capture. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour retrouver une commande à partir de son résultat, observe la langue et la mise en forme (Windows ou Linux), puis les rubriques affichées : chaque commande réseau a un jeu de rubriques caractéristique, et l'option `/all` de `ipconfig` ajoute la description de la carte, l'adresse physique, l'état du DHCP, le bail et les serveurs DNS.\n\nLa commande utilisée est **`ipconfig /all`**, lancée dans l'invite de commandes de Windows.\n\n1. L'affichage est en français avec des points de suite (`. . . .`) et le titre « Carte Ethernet Connexion au réseau local » : c'est la présentation de `ipconfig` sous Windows. Sous Linux, `ip addr` ou `ifconfig` affichent un tout autre format.\n2. Plusieurs rubriques n'apparaissent qu'avec l'option `/all` : « Description » (modèle de la carte), « Adresse physique » (adresse MAC), « DHCP activé », « Bail obtenu » et « Bail expirant », « Serveur DHCP », « Serveurs DNS » et les identifiants DHCPv6. `ipconfig` seule se limiterait à l'adresse IP, au masque et à la passerelle.\n3. La commande est donc `ipconfig /all`.\n\n### Piège à éviter\nRépondre `ipconfig` tout court est incomplet : sans `/all`, la description, l'adresse physique et le bail ne s'affichent pas. Ne propose pas `ping` ni `netstat`, qui affichent des résultats d'une tout autre forme.\n\n### Conseil\nRelis les rubriques de la capture : la présence de « Bail obtenu » et de « Adresse physique » est le signe de l'option `/all`.",
+      "themes": [
+        "commande ipconfig",
+        "configuration réseau",
+        "invite de commandes Windows",
+        "carte réseau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.1-0",
+          "competence": "Identifier une commande réseau à partir de sa capture",
+          "contenu_markdown": "Pour retrouver une commande à partir de son résultat, observe la langue et la mise en forme (Windows ou Linux), puis les rubriques affichées : chaque commande réseau a un jeu de rubriques caractéristique, et l'option `/all` de `ipconfig` ajoute la description de la carte, l'adresse physique, l'état du DHCP, le bail et les serveurs DNS.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-une-commande-reseau-a-partir-de-sa-capture-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "1.2",
+      "enonce_markdown": "**1.2.** Identifier deux protocoles dont les noms sont présents dans cette capture. *[0,5 pt]*\n\n*NB : définir le sigle du protocole identifié.*",
+      "corrige_markdown": "### Rappel de méthode\nUn protocole est un ensemble de règles qui permet à des équipements de communiquer ; pour en citer un à partir d'une capture, relève un nom en majuscules (DHCP, DNS, TCP/IP, IPv4, IPv6) puis développe son sigle en anglais et indique son rôle en quelques mots.\n\nDeux protocoles présents dans la capture :\n\n1. **DHCP** (*Dynamic Host Configuration Protocol*, protocole de configuration dynamique des hôtes) : il attribue automatiquement une configuration IP à un ordinateur (rubriques « DHCP activé » et « Serveur DHCP »).\n2. **DNS** (*Domain Name System*, système de noms de domaine) : il traduit un nom de domaine en adresse IP (rubriques « Suffixe DNS » et « Serveurs DNS »).\n\nAutres réponses acceptables : **TCP/IP** (*Transmission Control Protocol / Internet Protocol*, rubrique « NetBIOS sur Tcpip »), **IPv4** et **IPv6** (*Internet Protocol version 4* et *version 6*, rubriques « Adresse IPv4 » et « Adresse IPv6 »).\n\n### Piège à éviter\nEthernet figure dans le titre de la capture, mais il désigne une technologie de réseau local (norme IEEE 802.3) plutôt qu'un protocole au sens des questions de cours : préfère DHCP et DNS. N'oublie jamais de développer le sigle, le sujet l'exige.\n\n### Conseil\nChoisis les deux protocoles que tu sais développer sans hésiter : DHCP et DNS sont les plus sûrs.",
+      "themes": [
+        "protocole réseau",
+        "DHCP",
+        "DNS",
+        "TCP/IP",
+        "sigles réseau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.2-0",
+          "competence": "Protocoles réseau courants et leurs sigles",
+          "contenu_markdown": "Un protocole est un ensemble de règles qui permet à des équipements de communiquer ; pour en citer un à partir d'une capture, relève un nom en majuscules (DHCP, DNS, TCP/IP, IPv4, IPv6) puis développe son sigle en anglais et indique son rôle en quelques mots.",
+          "cours_genere": true,
+          "cours_id": "cours-protocoles-reseau-courants-et-leurs-sigles-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "1.3",
+      "enonce_markdown": "**1.3.** Identifier l'architecture du réseau décrit par cette capture. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn réseau est de type client/serveur quand des machines dédiées (serveurs) fournissent des services (adressage DHCP, noms DNS, fichiers, impression) à des postes clients ; il est de type poste à poste quand chaque machine joue indifféremment le rôle de client et de serveur, sans serveur central.\n\nL'architecture est de type **client/serveur**.\n\n1. L'ordinateur de la capture obtient sa configuration (adresse, masque, passerelle) d'un **serveur DHCP** (`172.16.0.254`) : il se comporte en client DHCP.\n2. Il interroge des **serveurs DNS** (`195.24.192.33` et `8.8.8.8`) pour résoudre les noms : il est client de ces serveurs.\n3. Des machines distinctes fournissent donc des services à ce poste, ce qui est la définition de l'architecture client/serveur. Dans un réseau poste à poste, il n'y aurait pas de serveur DHCP centralisant l'adressage.\n\n### Piège à éviter\nNe réponds pas « en étoile » ni « Ethernet » : ce sont des topologies ou des technologies, alors que la question porte sur l'architecture (client/serveur ou poste à poste).\n\n### Conseil\nCherche dans la capture les mots « serveur » : la rubrique « Serveur DHCP » et les « Serveurs DNS » suffisent à justifier la réponse.",
+      "themes": [
+        "architecture client/serveur",
+        "poste à poste",
+        "serveur DHCP",
+        "serveur DNS"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.3-0",
+          "competence": "Architecture client/serveur et poste à poste",
+          "contenu_markdown": "Un réseau est de type client/serveur quand des machines dédiées (serveurs) fournissent des services (adressage DHCP, noms DNS, fichiers, impression) à des postes clients ; il est de type poste à poste quand chaque machine joue indifféremment le rôle de client et de serveur, sans serveur central.",
+          "cours_genere": true,
+          "cours_id": "cours-architecture-client-serveur-et-poste-a-poste-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "1.4",
+      "enonce_markdown": "**1.4.** Relever, dans cette capture, une adresse IP appartenant à la classe C. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa classe d'une adresse IPv4 se lit dans son premier octet : de 1 à 126 pour la classe A, de 128 à 191 pour la classe B, de 192 à 223 pour la classe C, de 224 à 239 pour la classe D (multidiffusion) et de 240 à 255 pour la classe E (réservée) ; 127 est réservé au bouclage.\n\nL'adresse de classe C présente dans la capture est **`195.24.192.33`** (premier serveur DNS).\n\nOn examine le premier octet de chaque adresse IPv4 de la capture :\n\n| Adresse | Premier octet | Intervalle | Classe |\n|---|---|---|---|\n| 172.16.1.100 | 172 | de 128 à 191 | B |\n| 172.16.0.254 | 172 | de 128 à 191 | B |\n| 195.24.192.33 | 195 | de 192 à 223 | **C** |\n| 8.8.8.8 | 8 | de 1 à 126 | A |\n\nVérification en binaire : 195 s'écrit 11000011, il commence par les bits 110, signature de la classe C. Le masque 255.255.0.0 de la machine est celui d'une classe B, cohérent avec 172.16.1.100.\n\n### Piège à éviter\nL'adresse de la machine (172.16.1.100) est de classe B, pas C, même si elle est privée : ne te laisse pas guider par la place de l'adresse dans la capture, regarde le premier octet.\n\n### Conseil\nApprends les trois bornes 126, 191 et 223 : elles séparent les classes A, B et C.",
+      "themes": [
+        "adresse IPv4",
+        "classe d'adresse IP",
+        "adressage IP",
+        "masque de sous-réseau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.4-0",
+          "competence": "Classes d'adresses IPv4",
+          "contenu_markdown": "La classe d'une adresse IPv4 se lit dans son premier octet : de 1 à 126 pour la classe A, de 128 à 191 pour la classe B, de 192 à 223 pour la classe C, de 224 à 239 pour la classe D (multidiffusion) et de 240 à 255 pour la classe E (réservée) ; 127 est réservé au bouclage.",
+          "cours_genere": true,
+          "cours_id": "cours-classes-dadresses-ipv4-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "1.5",
+      "enonce_markdown": "**1.5.** Identifier deux informations que cet ordinateur a obtenues du serveur DHCP. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn serveur DHCP attribue à chaque client un bail comprenant au minimum une adresse IP, un masque de sous-réseau, une passerelle par défaut et les adresses des serveurs DNS, ainsi que la durée de validité de cette configuration (dates d'obtention et d'expiration).\n\nDeux informations obtenues du serveur DHCP :\n\n1. **L'adresse IPv4** attribuée au poste : `172.16.1.100`.\n2. **Le masque de sous-réseau** : `255.255.0.0`.\n\nAutres informations de la même capture que le DHCP fournit habituellement : la passerelle par défaut `172.16.0.254`, les serveurs DNS (`195.24.192.33`, `8.8.8.8`), ainsi que la durée du bail (« Bail obtenu » et « Bail expirant »). La rubrique « DHCP activé : Oui » confirme que ces valeurs viennent d'une attribution automatique et non d'une saisie manuelle.\n\n### Piège à éviter\nL'adresse physique (adresse MAC) ne vient pas du DHCP : elle est inscrite dans la carte réseau par son fabricant. Ne la cite pas.\n\n### Conseil\nCite l'adresse IP et le masque, accompagnés de leur valeur lue dans la capture : c'est la réponse la plus attendue.",
+      "themes": [
+        "protocole DHCP",
+        "bail DHCP",
+        "configuration IP",
+        "passerelle par défaut"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.5-0",
+          "competence": "Le protocole DHCP : informations distribuées",
+          "contenu_markdown": "Un serveur DHCP attribue à chaque client un bail comprenant au minimum une adresse IP, un masque de sous-réseau, une passerelle par défaut et les adresses des serveurs DNS, ainsi que la durée de validité de cette configuration (dates d'obtention et d'expiration).",
+          "cours_genere": true,
+          "cours_id": "cours-le-protocole-dhcp-informations-distribuees-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "1.6",
+      "enonce_markdown": "**1.6.** Calculer la durée du bail obtenu par ce client. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour calculer une durée entre deux dates et heures, soustrais l'instant de début à l'instant de fin en ramenant le calcul à une même unité (secondes, ou jours, heures, minutes et secondes avec retenues), puis compare le résultat à une durée usuelle pour vérifier sa cohérence.\n\nLe bail est obtenu le jeudi 4 février 2016 à 13:27:37 et expire le vendredi 5 février 2016 à 13:27:36.\n\n1. Du jeudi 13:27:37 au vendredi 13:27:37, il s'écoule exactement 1 jour, soit 24 h = 24 × 3 600 = 86 400 s.\n2. L'expiration est affichée une seconde plus tôt que cette heure : 13:27:36 au lieu de 13:27:37.\n3. Durée = 86 400 s - 1 s = 86 399 s = 23 h 59 min 59 s.\n\nLa durée du bail est donc de 23 h 59 min 59 s, soit **24 heures (1 jour)** à une seconde près. La seconde d'écart tient à l'arrondi de l'affichage de Windows ; 24 h est la durée de bail courante par défaut.\n\n### Piège à éviter\nNe retiens pas « 1 seconde » ni « 0 jour » en soustrayant seulement les heures : il faut tenir compte du changement de jour (jeudi vers vendredi).\n\n### Conseil\nQuand l'écart est de la forme « même heure, un jour plus tard, moins une seconde », conclus par 24 h en signalant la seconde d'écart.",
+      "themes": [
+        "bail DHCP",
+        "calcul de durée",
+        "protocole DHCP",
+        "configuration IP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,25",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.6-0",
+          "competence": "Calculer la durée d'un bail DHCP",
+          "contenu_markdown": "Pour calculer une durée entre deux dates et heures, soustrais l'instant de début à l'instant de fin en ramenant le calcul à une même unité (secondes, ou jours, heures, minutes et secondes avec retenues), puis compare le résultat à une durée usuelle pour vérifier sa cohérence.",
+          "cours_genere": true,
+          "cours_id": "cours-calculer-la-duree-dun-bail-dhcp-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "1.7",
+      "enonce_markdown": "**1.7.** Déterminer une conséquence qui surviendrait si le serveur DHCP ne fonctionnait pas. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne panne d'un service d'infrastructure se raisonne en deux temps : ce que les machines déjà configurées conservent jusqu'à l'expiration de leur bail, et ce que les nouvelles machines n'obtiennent pas ; sans serveur DHCP, un poste Windows retombe sur une adresse APIPA en 169.254.0.0/16, qui ne permet que la communication locale.\n\nConséquence principale : **les ordinateurs ne reçoivent plus d'adresse IP valide** et ne peuvent plus communiquer normalement sur le réseau.\n\n1. Un poste qui démarre ou dont le bail a expiré ne peut plus demander de configuration (adresse, masque, passerelle, DNS).\n2. La capture indique « Configuration automatique activée : Oui » : Windows s'attribue alors lui-même une adresse APIPA de la forme `169.254.x.x` avec le masque 255.255.0.0. Cette adresse ne permet de joindre que les machines du même réseau local qui sont aussi en APIPA.\n3. Ces postes n'ont plus de passerelle valide ni de serveur DNS : plus d'accès à Internet. L'administrateur doit alors configurer les adresses à la main.\n\nLes postes déjà configurés continuent à fonctionner jusqu'à la fin de leur bail (24 h ici), puis tombent dans le même cas.\n\n### Piège à éviter\nNe réponds pas « le réseau est coupé pour tout le monde immédiatement » : les postes dont le bail est encore valide gardent leur configuration jusqu'à son expiration.\n\n### Conseil\nUne seule conséquence est demandée : formule-la en une phrase (« les postes n'obtiennent plus d'adresse IP, donc plus d'accès à Internet »), puis ajoute l'APIPA si tu le connais.",
+      "themes": [
+        "protocole DHCP",
+        "adressage APIPA",
+        "panne réseau",
+        "configuration IP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.7-0",
+          "competence": "Panne du serveur DHCP et adressage APIPA",
+          "contenu_markdown": "Une panne d'un service d'infrastructure se raisonne en deux temps : ce que les machines déjà configurées conservent jusqu'à l'expiration de leur bail, et ce que les nouvelles machines n'obtiennent pas ; sans serveur DHCP, un poste Windows retombe sur une adresse APIPA en 169.254.0.0/16, qui ne permet que la communication locale.",
+          "cours_genere": true,
+          "cours_id": "cours-panne-du-serveur-dhcp-et-adressage-apipa-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.1",
+      "enonce_markdown": "**2.** Après votre baccalauréat, un voisin vous demande d'installer un réseau informatique dans sa maison de 100 m². Il possède quatre ordinateurs et une imprimante. Vous retenez le schéma physique suivant.\n\n![fig-2](bac-ti-informatique-etude-de-cas-2019-officiel-cameroun_exercice_2_fig_2.png)\n\n**2.1.** Donner une raison justifiant que vous n'utiliserez pas la fibre optique dans ce réseau. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe choix d'un support de transmission se justifie par la distance à couvrir, le débit nécessaire, le coût et la difficulté de pose : la fibre optique est réservée aux longues distances, aux très hauts débits et aux environnements perturbés, alors que la paire torsadée convient aux réseaux locaux courts (100 m au maximum par segment).\n\nRaison principale : **le coût et la complexité de la fibre sont injustifiés pour un petit réseau domestique.**\n\n1. La fibre exige des cartes réseau et un commutateur à ports optiques, nettement plus chers que les équipements Ethernet en cuivre, ainsi qu'un outillage spécialisé (soudure ou connecteurs optiques) pour la poser.\n2. Le besoin ne l'exige pas : dans une maison de 100 m², les distances sont de quelques mètres à quelques dizaines de mètres, très inférieures aux 100 m que couvre un câble à paires torsadées.\n3. Le débit de 100 Mbit/s à 1 Gbit/s d'une liaison en cuivre dépasse largement l'usage de quatre ordinateurs et d'une imprimante.\n\nUne seule raison est demandée ; les deux plus solides sont le coût et le fait que la distance ne justifie pas la fibre.\n\n### Piège à éviter\nNe dis pas que la fibre est « moins performante » : elle est au contraire plus performante, c'est son rapport coût/utilité qui est défavorable ici.\n\n### Conseil\nCompare toujours le besoin (distance, débit) à la capacité du support : une raison fondée sur la distance ou le coût est toujours acceptée.",
+      "themes": [
+        "fibre optique",
+        "paire torsadée",
+        "support de transmission",
+        "câblage réseau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.1-0",
+          "competence": "Fibre optique ou paire torsadée : choisir un support",
+          "contenu_markdown": "Le choix d'un support de transmission se justifie par la distance à couvrir, le débit nécessaire, le coût et la difficulté de pose : la fibre optique est réservée aux longues distances, aux très hauts débits et aux environnements perturbés, alors que la paire torsadée convient aux réseaux locaux courts (100 m au maximum par segment).",
+          "cours_genere": true,
+          "cours_id": "cours-fibre-optique-ou-paire-torsadee-choisir-un-support-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.2",
+      "enonce_markdown": "**2.2.** Quel est le type de câble le plus adapté pour cette mise en réseau ? *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn réseau local, on relie les postes au commutateur par un câble à paires torsadées (UTP non blindé ou STP blindé) terminé par des connecteurs RJ45 ; la catégorie (5e, 6, 6a) fixe le débit et la fréquence supportés, et la longueur d'un segment est limitée à 100 m.\n\nLe câble le plus adapté est le **câble à paires torsadées non blindées (UTP) de catégorie 5e ou 6**, terminé par des connecteurs **RJ45**.\n\n1. Il comporte 4 paires de fils de cuivre torsadées, qui limitent les interférences entre les paires.\n2. La catégorie 5e supporte jusqu'à 1 Gbit/s sur 100 m, la catégorie 6 aussi avec une meilleure marge ; cela suffit pour le réseau.\n3. Il est peu coûteux, facile à poser et à sertir, et compatible avec les cartes réseau et le commutateur Ethernet du schéma.\n4. Les distances d'une maison sont très inférieures à la limite de 100 m par segment ; un blindage (STP) n'est pas nécessaire en l'absence de fortes perturbations électromagnétiques.\n\n### Piège à éviter\nLe câble coaxial et la fibre optique sont des réponses d'un autre âge ou d'un autre budget : le coaxial n'est plus utilisé en réseau local, la fibre est surdimensionnée ici.\n\n### Conseil\nRéponds avec le type précis : « paire torsadée UTP catégorie 5e, connecteur RJ45 ». Le mot « câble réseau » seul est trop vague.",
+      "themes": [
+        "câble à paires torsadées",
+        "câble UTP",
+        "connecteur RJ45",
+        "Ethernet"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.2-0",
+          "competence": "Câble Ethernet à paires torsadées : catégories et longueur",
+          "contenu_markdown": "En réseau local, on relie les postes au commutateur par un câble à paires torsadées (UTP non blindé ou STP blindé) terminé par des connecteurs RJ45 ; la catégorie (5e, 6, 6a) fixe le débit et la fréquence supportés, et la longueur d'un segment est limitée à 100 m.",
+          "cours_genere": true,
+          "cours_id": "cours-cable-ethernet-a-paires-torsadees-categories-et-longueur-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.3",
+      "enonce_markdown": "**2.3.** Quel type de sertissage relie l'ordinateur PC1 à l'élément central de ce réseau ? *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn câble droit (même ordre des fils aux deux extrémités, par exemple T568B des deux côtés) relie deux équipements de nature différente, comme un ordinateur et un commutateur ; un câble croisé (T568A d'un côté, T568B de l'autre) relie deux équipements de même nature en l'absence de détection automatique.\n\nPC1 est relié au commutateur par un **câble droit**.\n\n1. PC1 est un terminal (ordinateur) et l'élément central est un équipement d'interconnexion (commutateur) : les deux équipements sont de natures différentes.\n2. Un ordinateur émet sur les broches 1 et 2 et reçoit sur les broches 3 et 6 ; le commutateur fait l'inverse, il reçoit sur 1 et 2 et émet sur 3 et 6. Un fil qui relie la broche 1 à la broche 1, la 2 à la 2, etc., suffit donc : on sertit les **deux extrémités selon la même norme**, T568B (la plus répandue).\n3. Ordre des fils de la norme T568B, de la broche 1 à la broche 8 : blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron.\n\nLe câble croisé (T568A à un bout, T568B à l'autre) ne sert qu'entre deux équipements de même nature, par exemple deux ordinateurs ou deux commutateurs, et la plupart des équipements actuels détectent d'ailleurs seuls le type de câble.\n\n### Piège à éviter\nNe confonds pas « droit » avec « un seul fil par broche » : le terme désigne seulement l'identité de l'ordre des fils aux deux extrémités.\n\n### Conseil\nRègle de mémoire : appareils de natures différentes, câble droit ; appareils identiques, câble croisé.",
+      "themes": [
+        "sertissage RJ45",
+        "câble droit",
+        "câble croisé",
+        "norme T568B"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.3-0",
+          "competence": "Câble droit ou croisé : sertissage RJ45",
+          "contenu_markdown": "Un câble droit (même ordre des fils aux deux extrémités, par exemple T568B des deux côtés) relie deux équipements de nature différente, comme un ordinateur et un commutateur ; un câble croisé (T568A d'un côté, T568B de l'autre) relie deux équipements de même nature en l'absence de détection automatique.",
+          "cours_genere": true,
+          "cours_id": "cours-cable-droit-ou-croise-sertissage-rj45-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.4.a",
+      "enonce_markdown": "**2.4.** On s'intéresse à l'élément central de ce réseau.\n\n**a.** Identifier son nom. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour identifier un équipement sur un schéma réseau, lis d'abord son étiquette, puis sa position (l'équipement central auquel tous les postes sont reliés en étoile) et son apparence (boîtier plat avec une rangée de ports RJ45) avant de le distinguer d'un concentrateur ou d'un routeur.\n\nL'élément central est un **commutateur** (*switch* en anglais).\n\n1. L'étiquette du schéma indique « 2950-24 SWITCH » : « switch » est le mot anglais pour commutateur, et 2950-24 désigne un modèle de commutateur à 24 ports.\n2. Il est au centre d'une topologie en étoile : PC1, PC2, PC3 et PC4 y sont reliés chacun par un câble.\n3. Son apparence est celle d'un boîtier plat avec une rangée de ports côte à côte.\n\n### Piège à éviter\nNe réponds pas « hub » ou « concentrateur » : le hub ne comporte pas d'intelligence, alors que l'étiquette du schéma indique clairement un switch.\n\n### Conseil\nLis l'étiquette avant tout : elle donne la réponse la plus sûre.",
+      "themes": [
+        "commutateur",
+        "équipement réseau",
+        "schéma réseau",
+        "topologie en étoile"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,25",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.4.a-0",
+          "competence": "Identifier un équipement d'interconnexion sur un schéma",
+          "contenu_markdown": "Pour identifier un équipement sur un schéma réseau, lis d'abord son étiquette, puis sa position (l'équipement central auquel tous les postes sont reliés en étoile) et son apparence (boîtier plat avec une rangée de ports RJ45) avant de le distinguer d'un concentrateur ou d'un routeur.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-un-equipement-dinterconnexion-sur-un-schema-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.4.b",
+      "enonce_markdown": "**b.** Quel est son rôle ? *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn commutateur relie les équipements d'un réseau local et achemine chaque trame uniquement vers le port du destinataire, en s'appuyant sur une table d'adresses MAC qu'il construit en observant les adresses sources des trames reçues ; un concentrateur, lui, retransmet tout sur tous les ports.\n\nLe commutateur a pour rôle de **relier les ordinateurs et l'imprimante du réseau local et de transmettre chaque trame au seul port du destinataire**.\n\n1. Il connecte tous les équipements en étoile : ils forment un même réseau local et peuvent communiquer entre eux.\n2. Il apprend l'adresse MAC (adresse physique) de la machine branchée sur chaque port et la range dans sa table d'adresses.\n3. Quand une trame arrive, il lit l'adresse MAC de destination et ne l'envoie que sur le port correspondant, ce qui évite d'encombrer les autres liaisons et limite les collisions.\n\n### Piège à éviter\nNe dis pas qu'il « donne l'accès à Internet » : c'est le rôle du routeur (ou de la box). Le commutateur ne travaille qu'au sein du réseau local.\n\n### Conseil\nRetiens le mot-clé « adresse MAC » : il montre que tu sais comment le commutateur choisit le port de sortie.",
+      "themes": [
+        "commutateur",
+        "adresse MAC",
+        "réseau local",
+        "trame Ethernet"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,25",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.4.b-0",
+          "competence": "Rôle d'un commutateur et table d'adresses MAC",
+          "contenu_markdown": "Un commutateur relie les équipements d'un réseau local et achemine chaque trame uniquement vers le port du destinataire, en s'appuyant sur une table d'adresses MAC qu'il construit en observant les adresses sources des trames reçues ; un concentrateur, lui, retransmet tout sur tous les ports.",
+          "cours_genere": true,
+          "cours_id": "cours-role-dun-commutateur-et-table-dadresses-mac-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.4.c",
+      "enonce_markdown": "**c.** Comment appelle-t-on les ouvertures de cet équipement dans lesquelles les câbles sont enfichés ? *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLes points de connexion d'un équipement réseau où l'on enfiche les câbles s'appellent des ports (ou interfaces) ; sur un équipement Ethernet ce sont des ports RJ45, souvent numérotés, et leur nombre est parfois repris dans la référence de l'appareil.\n\nCes ouvertures s'appellent des **ports** (ports Ethernet, de type RJ45).\n\n1. Chaque câble issu d'un ordinateur ou de l'imprimante est enfiché dans un port du commutateur.\n2. Dans la référence « 2950-24 », le nombre 24 correspond au nombre de ports de l'appareil : un tel commutateur peut accueillir 24 équipements, alors que le réseau du voisin n'en utilise que 4 (plus l'imprimante, raccordée à PC4).\n3. On parle aussi d'interfaces réseau pour désigner ces connexions.\n\n### Piège à éviter\nNe les appelle pas « prises » ni « slots » : un slot désigne un emplacement d'extension dans un ordinateur.\n\n### Conseil\nRéponds simplement « ports », ou « ports RJ45 » pour être plus précis.",
+      "themes": [
+        "port Ethernet",
+        "commutateur",
+        "connecteur RJ45",
+        "vocabulaire réseau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,25",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.4.c-0",
+          "competence": "Ports et interfaces d'un équipement réseau",
+          "contenu_markdown": "Les points de connexion d'un équipement réseau où l'on enfiche les câbles s'appellent des ports (ou interfaces) ; sur un équipement Ethernet ce sont des ports RJ45, souvent numérotés, et leur nombre est parfois repris dans la référence de l'appareil.",
+          "cours_genere": true,
+          "cours_id": "cours-ports-et-interfaces-dun-equipement-reseau-tle-ti-2019"
+        }
+      ]
+    },
+    {
+      "numero": "2.5",
+      "enonce_markdown": "**2.5.** On souhaite que tous les ordinateurs du réseau puissent utiliser l'imprimante PRINTER-PT. Dans ce cas, quelle sera l'autre appellation de PC4 ? *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn poste qui partage une ressource locale (imprimante, dossier) avec les autres machines du réseau joue le rôle de serveur pour cette ressource : serveur d'impression pour une imprimante, serveur de fichiers pour des dossiers ; les autres postes en sont les clients.\n\nPC4 sera appelé **serveur d'impression**.\n\n1. Sur le schéma, l'imprimante PRINTER-PT est raccordée directement à PC4 ; PC1, PC2 et PC3 n'y sont pas reliés.\n2. Pour que tous les ordinateurs puissent imprimer, on active le partage de l'imprimante sur PC4 : les demandes d'impression de PC1, PC2 et PC3 passent par le commutateur jusqu'à PC4, qui les met en file d'attente et les envoie à l'imprimante.\n3. PC4 fournit un service aux autres postes : il joue le rôle de serveur pour cette ressource, et PC1, PC2, PC3 sont ses clients.\n\nAutre formulation acceptable : poste serveur ou serveur de ressources (pour l'imprimante).\n\n### Piège à éviter\nNe réponds pas « routeur » ni « passerelle » : PC4 ne relie pas deux réseaux, il partage seulement une ressource.\n\n### Conseil\nRetiens l'idée « qui fournit la ressource est le serveur ; qui l'utilise est le client ».",
+      "themes": [
+        "serveur d'impression",
+        "partage de ressources",
+        "imprimante réseau",
+        "architecture client/serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "points": "0,5",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.5-0",
+          "competence": "Partager une imprimante en réseau : serveur d'impression",
+          "contenu_markdown": "Un poste qui partage une ressource locale (imprimante, dossier) avec les autres machines du réseau joue le rôle de serveur pour cette ressource : serveur d'impression pour une imprimante, serveur de fichiers pour des dossiers ; les autres postes en sont les clients.",
+          "cours_genere": true,
+          "cours_id": "cours-partager-une-imprimante-en-reseau-serveur-dimpression-tle-ti-2019"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "réseau informatique",
+    "commande ipconfig",
+    "DHCP",
+    "adresse IP",
+    "classe d'adresse IP",
+    "câble réseau",
+    "commutateur",
+    "serveur d'impression"
+  ],
+  "incertitudes": [
+    "Capture d'écran d'une définition moyenne : l'adresse IPv6 (fe80::10e0:a9db:e7b9:e5fe%11) et l'identifiant DUID DHCPv6 sont lus sur la figure sans effet sur les réponses ; les valeurs utilisées dans les réponses (172.16.1.100, 255.255.0.0, 172.16.0.254, 195.24.192.33, 8.8.8.8 et les dates du bail) sont lisibles sans ambiguïté.",
+    "Question 1.2 : plusieurs protocoles sont présents dans la capture (DHCP, DNS, TCP/IP, IPv4, IPv6) ; le corrigé retient DHCP et DNS et cite les autres comme réponses recevables.",
+    "Question 2.5 : le schéma montre l'imprimante reliée à PC4 ; la réponse attendue « serveur d'impression » est déduite de ce schéma sans le corrigé officiel de la page.",
+    "Source : reproduction du site Camerecole d'un sujet officiel ; durée et coefficient non imprimés dans la page ; corrigé officiel (lien « Correction ») non consulté."
+  ],
+  "statut": "brouillon"
+}

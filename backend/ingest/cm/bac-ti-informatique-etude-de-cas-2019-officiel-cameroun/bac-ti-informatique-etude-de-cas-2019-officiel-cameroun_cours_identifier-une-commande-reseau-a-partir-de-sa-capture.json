@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-identifier-une-commande-reseau-a-partir-de-sa-capture-tle-ti-2019",
+  "meta": {
+    "titre": "Identifier une commande réseau à partir de sa capture",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Commandes réseau",
+    "duree_estimee_min": 22,
+    "tags": [
+      "ipconfig",
+      "ping",
+      "invite de commandes",
+      "diagnostic réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.1-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un technicien réseau n'a pas toujours la commande sous les yeux : il a parfois seulement une capture d'écran envoyée par un utilisateur. De la forme du texte et des rubriques affichées, il doit remonter à la commande qui l'a produite. Cette compétence de lecture est exactement celle qu'on teste quand on te montre une capture et qu'on te demande « quelle commande ? »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les notions d'adresse IP, de masque et de passerelle",
+        "Savoir ouvrir l'invite de commandes de Windows"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "À chaque commande, ses rubriques caractéristiques",
+      "contenu_markdown": "On identifie une commande en deux temps : la **plateforme** (Windows ou Linux), puis le **jeu de rubriques** affiché.\n\n| Commande | Ce qu'elle affiche |\n|---|---|\n| `ipconfig` | adresse IPv4, masque, passerelle de chaque interface |\n| `ipconfig /all` | en plus : description de la carte, adresse physique (MAC), DHCP activé, serveur DHCP, bail obtenu et expirant, serveurs DNS |\n| `ping adresse` | lignes « Réponse de ... octets=32 temps=... TTL=... » puis statistiques |\n| `tracert adresse` | liste numérotée des routeurs traversés avec leurs temps |\n| `nslookup nom` | adresse IP associée à un nom de domaine, serveur DNS interrogé |\n| `arp -a` | table de correspondance adresses IP et adresses physiques |\n| `netstat` | connexions et ports en cours |\n\nÉquivalents Linux : `ip addr` ou `ifconfig` pour la configuration, `ping`, `traceroute`, `dig` ou `nslookup`.",
+      "formule_principale": "\\text{rubriques affichées} \\Rightarrow \\text{commande} + \\text{option}",
+      "variantes": [
+        {
+          "nom": "Confusion entre ipconfig et ipconfig /all",
+          "quand_utiliser": "Quand la capture contient une adresse physique ou un bail",
+          "contenu_markdown": "Si la capture montre « Adresse physique », « DHCP activé » ou « Bail obtenu », ce n'est pas `ipconfig` seule mais `ipconfig /all`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La capture de l'épreuve montre « Carte Ethernet Connexion au réseau local », « Description », « Adresse physique », « DHCP activé », « Bail obtenu », « Bail expirant » et « Serveurs DNS ». Déterminer la commande utilisée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la plateforme",
+          "justification": "La mise en forme avec points de suite et le vocabulaire (« Carte Ethernet ») sont ceux de Windows",
+          "resultat_markdown": "Il s'agit de l'invite de commandes Windows."
+        },
+        {
+          "numero": 2,
+          "action": "Relever les rubriques",
+          "justification": "Chaque commande a un jeu de rubriques caractéristique",
+          "resultat_markdown": "Description, adresse physique, DHCP, bail et DNS."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter les commandes qui ne conviennent pas",
+          "justification": "`ping`, `tracert` ou `netstat` affichent un tout autre format",
+          "resultat_markdown": "Seul `ipconfig` affiche une configuration d'interface."
+        },
+        {
+          "numero": 4,
+          "action": "Choisir l'option",
+          "justification": "Les rubriques détaillées n'apparaissent qu'avec `/all`",
+          "resultat_markdown": "La commande est `ipconfig /all`."
+        }
+      ],
+      "conclusion_markdown": "La capture est le résultat de `ipconfig /all`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `ipconfig` sans option.",
+          "pourquoi_faux": "`ipconfig` seule n'affiche pas la description, l'adresse physique ni les informations de bail DHCP : ces rubriques exigent `/all`.",
+          "correction_markdown": "Observer les rubriques et ajouter l'option `/all` quand elles sont présentes."
+        },
+        {
+          "erreur_markdown": "Proposer `ping` parce que la capture montre des adresses.",
+          "pourquoi_faux": "`ping` affiche des lignes de réponses avec un temps et un TTL ; il ne décrit jamais une carte réseau.",
+          "correction_markdown": "Associer `ping` à des temps de réponse et `ipconfig` à une configuration."
+        },
+        {
+          "erreur_markdown": "Donner une commande Linux pour une capture Windows.",
+          "pourquoi_faux": "Le texte français avec points de suite et « Carte Ethernet » est propre à Windows ; `ifconfig` produit un format différent (`eth0: flags=...`).",
+          "correction_markdown": "Commencer par identifier le système avant de choisir la commande."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associer chaque commande à son rôle : `ping`, `ipconfig`, `tracert`, `nslookup`.",
+          "solution_markdown": "1. `ping` : teste si une machine répond et mesure le temps de réponse.\n2. `ipconfig` : affiche la configuration IP des interfaces.\n3. `tracert` : affiche les routeurs traversés pour atteindre une destination.\n4. `nslookup` : interroge le DNS pour obtenir l'adresse IP d'un nom de domaine."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une capture affiche quatre lignes « Réponse de 8.8.8.8 : octets=32 temps=45 ms TTL=117 » suivies de « Paquets : envoyés = 4, reçus = 4, perdus = 0 ». Quelle commande est utilisée et que conclure ?",
+          "solution_markdown": "1. Les lignes « Réponse de ... octets=32 temps=... TTL=... » avec des statistiques de paquets sont la sortie de `ping 8.8.8.8`.\n2. 4 paquets envoyés, 4 reçus, 0 perdu : la machine 8.8.8.8 est joignable et la liaison ne perd aucun paquet.\n3. Le temps de 45 ms donne une idée de la latence."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un utilisateur n'arrive plus à ouvrir de sites mais un `ping 8.8.8.8` réussit. Quelle commande lance-t-on ensuite pour tester le DNS, et que conclut-on si elle échoue ?",
+          "solution_markdown": "1. Le `ping` vers une adresse IP réussit : la connectivité IP et la passerelle fonctionnent.\n2. On teste la résolution de noms avec `nslookup www.exemple.com` (ou `ping www.exemple.com`).\n3. Si le nom n'est pas résolu alors que l'adresse IP répond, le problème vient du DNS : serveurs DNS mal configurés ou injoignables, ce que l'on vérifie avec `ipconfig /all` (rubrique Serveurs DNS)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour identifier une commande, observe d'abord la plateforme puis le jeu de rubriques affiché.",
+        "`ipconfig /all` ajoute la description de la carte, l'adresse physique, le DHCP, le bail et les serveurs DNS à `ipconfig`.",
+        "`ping` mesure la joignabilité, `tracert` donne le chemin, `nslookup` interroge le DNS.",
+        "Une option oubliée (`/all`) rend la réponse incomplète : écris la commande entière.",
+        "Au baccalauréat, une capture d'`ipconfig /all` revient souvent, avec des questions sur DHCP, DNS, classe d'adresse et bail."
+      ]
+    }
+  ]
+}

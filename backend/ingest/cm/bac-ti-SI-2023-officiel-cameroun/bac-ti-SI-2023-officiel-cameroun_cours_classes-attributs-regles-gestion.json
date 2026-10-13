@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-classes-attributs-regles-gestion-tle-ti-si2023",
+  "meta": {
+    "titre": "Identifier les classes et les attributs à partir de règles de gestion",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes",
+    "duree_estimee_min": 25,
+    "tags": [
+      "diagramme de classes",
+      "classe",
+      "attribut",
+      "règles de gestion",
+      "UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex2-q2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un énoncé de modélisation ressemble à un petit texte administratif : « un client est caractérisé par... une suite par... ». Dans ce texte se cachent les classes de ton diagramme. Ce cours t'apprend à les repérer sans en inventer ni en oublier, ce qui est la base de tout diagramme de classes réussi."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'objet et de classe",
+        "Types de données simples : chaîne, entier, réel, date"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du texte aux classes",
+      "contenu_markdown": "1. **Souligner les noms** qui désignent des objets du domaine ayant des propriétés propres : ce sont les **classes**.\n2. Les propriétés citées après « est caractérisé par » deviennent les **attributs**, avec leur type.\n3. Les opérations demandées au système (« le système doit donner... ») deviennent des **méthodes**, placées dans la classe la plus concernée.\n4. Les **variantes** d'un objet (« il existe des suites VIP et des suites A ») donnent des **classes filles**.\n5. Une propriété qui dépend de **deux** classes à la fois (une date de réservation) va dans une **classe d'association**.",
+      "variantes": [
+        {
+          "nom": "Ce qui n'est pas une classe",
+          "quand_utiliser": "Quand un nom du texte sans attribut tente de devenir une classe",
+          "contenu_markdown": "Un justificatif (carte d'identité), une qualité d'usage (autorités, mariés) ou un attribut déguisé n'est pas une classe. Une classe doit avoir au moins une propriété propre ou un comportement à porter."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Règles de gestion MINTELE : client (numéro d'enregistrement, nom, provenance), suite (code, niveau de standing, prix), douche (numéro, nom), suites VIP et suites A, nombre de clients à une date donnée. Identifier les classes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever les noms avec propriétés",
+          "justification": "Ce sont les candidats classes.",
+          "resultat_markdown": "Client, Suite, Douche."
+        },
+        {
+          "numero": 2,
+          "action": "Lister les attributs de chacune",
+          "justification": "Ils figurent après « est caractérisé par ».",
+          "resultat_markdown": "Client : numEnregistrement, nom, provenance ; Suite : code, niveauStanding, prix ; Douche : numero, nom."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer les variantes",
+          "justification": "« Il existe des suites VIP et des suites A » donne deux types.",
+          "resultat_markdown": "SuiteVIP et SuiteA, classes filles de Suite."
+        },
+        {
+          "numero": 4,
+          "action": "Traiter la date",
+          "justification": "La date dépend du couple client - suite : classe d'association.",
+          "resultat_markdown": "Réservation avec dateReservation et nombreClients(d : Date)."
+        },
+        {
+          "numero": 5,
+          "action": "Écarter les faux candidats",
+          "justification": "Pas de propriété propre, donc pas de classe.",
+          "resultat_markdown": "Carte d'identité, autorités, mariés."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme comporte cinq classes (Client, Suite, SuiteVIP, SuiteA, Douche) et une classe d'association Réservation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Créer une classe « Carte d'identité »",
+          "pourquoi_faux": "Elle ne sert qu'à vérifier un client et n'a aucun attribut utile au système.",
+          "correction_markdown": "Ne la modéliser que si l'énoncé en donne des attributs."
+        },
+        {
+          "erreur_markdown": "Mettre la date de réservation dans Client",
+          "pourquoi_faux": "Le client réserve plusieurs fois : la date appartient à chaque réservation, pas au client.",
+          "correction_markdown": "Placer la date dans la classe d'association."
+        },
+        {
+          "erreur_markdown": "Oublier de typer les attributs",
+          "pourquoi_faux": "Un attribut sans type est incomplet en UML.",
+          "correction_markdown": "Écrire nom : String, prix : Real, numero : Integer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Un enseignant est caractérisé par un matricule, un nom et une discipline. Un élève par un matricule, un nom et une classe. » Donne les classes et leurs attributs.",
+          "solution_markdown": "1. Noms avec propriétés : Enseignant et Élève.\n2. Enseignant : matricule : String, nom : String, discipline : String.\n3. Élève : matricule : String, nom : String, classe : String."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "« Une chambre est caractérisée par un numéro et un prix. Il existe des chambres simples et des chambres doubles. » Quelles classes ?",
+          "solution_markdown": "1. Classe mère : Chambre (numero : String, prix : Real).\n2. « Il existe des... » donne des variantes : ChambreSimple et ChambreDouble, classes filles.\n3. Aucun attribut propre n'est donné pour les filles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "« Un étudiant s'inscrit à des cours. Il est caractérisé par un matricule et un nom. Un cours par un code et un intitulé. À chaque inscription correspond une note. » Où mets-tu la note ?",
+          "solution_markdown": "1. Classes : Étudiant (matricule, nom) et Cours (code, intitulé).\n2. La note dépend à la fois de l'étudiant et du cours : ni l'un ni l'autre ne peut la porter seul.\n3. On crée une classe d'association Inscription (ou Note) qui porte l'attribut note : Real."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les classes sont les noms qui portent des propriétés propres.",
+        "Les attributs suivent « est caractérisé par », avec leur type.",
+        "Les variantes donnent des classes filles.",
+        "Une propriété qui dépend de deux classes va dans une classe d'association.",
+        "Au BAC TI, repérer les classes rapporte environ 1,5 point sur un diagramme de classes."
+      ]
+    }
+  ]
+}

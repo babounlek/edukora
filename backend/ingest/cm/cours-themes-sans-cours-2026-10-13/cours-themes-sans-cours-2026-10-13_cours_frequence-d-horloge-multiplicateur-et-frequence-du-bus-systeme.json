@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-frequence-d-horloge-multiplicateur-et-frequence-du-bus-systeme-gap24",
+  "meta": {
+    "titre": "Fréquence d'horloge, multiplicateur et fréquence du bus système",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Architecture matérielle",
+    "duree_estimee_min": 20,
+    "tags": [
+      "fréquence d'horloge",
+      "multiplicateur d'horloge",
+      "fréquence du bus système"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.3.a-0-gap24",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "bac-ti-informatique-etude-de-cas-2019-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur l'étiquette d'un ordinateur, tu lis « processeur 2,4 GHz ». Dans la fiche technique du processeur lui-même, il y a deux fréquences : une grande et une plus petite. Laquelle est « la vitesse » du processeur ? Laquelle correspond au bus qui le relie au reste de la carte mère ? Ce cours te donne la règle qui relie les deux, le multiplicateur, et la méthode pour ne plus les confondre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les préfixes kilo, méga, giga",
+        "Savoir qu'un processeur travaille au rythme d'une horloge"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois notions liées : horloge, bus système, multiplicateur",
+      "contenu_markdown": "**Fréquence d'horloge.** L'horloge du processeur envoie des impulsions régulières ; chaque impulsion est un **cycle**. La fréquence d'horloge est le nombre de cycles par seconde, exprimée en hertz (Hz) : 1 MHz = un million de cycles par seconde, 1 GHz = 1000 MHz = un milliard de cycles par seconde. Plus elle est élevée, plus le processeur peut exécuter d'opérations par seconde (à architecture comparable). La durée d'un cycle est la **période** : T = 1 divisé par f.\n\n**Fréquence du bus système.** Le bus système (en anglais *front side bus*, FSB) relie le processeur au reste de la carte mère, notamment à la mémoire centrale. Sa fréquence est beaucoup plus faible que celle du cœur du processeur, car les circuits de la carte mère ne peuvent pas aller aussi vite. C'est l'**horloge de référence** de la machine.\n\n**Multiplicateur d'horloge.** Le processeur multiplie la fréquence du bus pour obtenir sa propre fréquence interne :\n\n**fréquence interne = fréquence du bus système × multiplicateur**\n\nDonc : multiplicateur = fréquence interne ÷ fréquence du bus.\n\n**Lire une fiche technique de processeur.** Classe d'abord les valeurs par unité : les valeurs en MHz ou GHz sont des fréquences (la plus élevée est la fréquence interne, la plus basse celle du bus) ; les valeurs en Ko ou en Mo sont des tailles de mémoire cache ; « Socket » donne le support sur la carte mère.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Calculer la durée d'un cycle",
+          "quand_utiliser": "Pour passer d'une fréquence à une durée.",
+          "contenu_markdown": "T = 1 ÷ f. Pour 2 GHz (2 milliards de cycles par seconde), T = 1 ÷ 2 milliards = 0,5 milliardième de seconde, soit 0,5 ns. Pour 200 MHz, T = 5 ns : un cycle du bus dure donc douze fois plus longtemps qu'un cycle du cœur à 2 400 MHz."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le microprocesseur AMD Athlon 64 4000+ possède les caractéristiques suivantes : 2400 MHz - 200 MHz - 128 Ko - 1024 Ko - Socket 939. Identifier la fréquence du bus système (FSB) de ce microprocesseur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Classer les valeurs par unité",
+          "justification": "Chaque unité désigne une grandeur différente.",
+          "resultat_markdown": "2400 MHz et 200 MHz sont des fréquences ; 128 Ko et 1024 Ko sont des tailles de mémoire cache ; Socket 939 est le support sur la carte mère."
+        },
+        {
+          "numero": 2,
+          "action": "Départager les deux fréquences",
+          "justification": "La fréquence interne est plus élevée que celle du bus.",
+          "resultat_markdown": "2400 MHz : fréquence interne du processeur. 200 MHz : fréquence du bus système."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier avec le multiplicateur",
+          "justification": "Le rapport entre les deux fréquences doit être un nombre entier.",
+          "resultat_markdown": "2400 ÷ 200 = 12. Le multiplicateur vaut 12, ce qui est cohérent."
+        }
+      ],
+      "conclusion_markdown": "La fréquence du bus système (FSB) de l'Athlon 64 4000+ est de 200 MHz."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre 2400 MHz à la question sur la fréquence du bus système.",
+          "pourquoi_faux": "2400 MHz est la fréquence interne du processeur. Le bus est plus lent : c'est la plus petite des deux fréquences.",
+          "correction_markdown": "Repère les deux fréquences et prends la plus faible pour le bus."
+        },
+        {
+          "erreur_markdown": "Prendre 128 Ko ou 1024 Ko pour une fréquence.",
+          "pourquoi_faux": "Les octets mesurent une capacité de mémoire, pas un nombre de cycles par seconde.",
+          "correction_markdown": "Regarde l'unité : MHz et GHz pour les fréquences, Ko et Mo pour les tailles."
+        },
+        {
+          "erreur_markdown": "Mélanger MHz et GHz dans un calcul.",
+          "pourquoi_faux": "1 GHz vaut 1000 MHz. Diviser 2,4 par 200 donne un résultat sans signification.",
+          "correction_markdown": "Convertis d'abord : 2,4 GHz = 2400 MHz, puis divise."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir 2,4 GHz en MHz et 3 200 MHz en GHz.",
+          "solution_markdown": "1 GHz = 1000 MHz. Donc 2,4 GHz = 2,4 × 1000 = **2400 MHz**, et 3200 MHz = 3200 ÷ 1000 = **3,2 GHz**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un processeur a un bus système de 133 MHz et un multiplicateur de 15. Quelle est sa fréquence interne ?",
+          "solution_markdown": "fréquence interne = fréquence du bus × multiplicateur = 133 × 15.\n\n133 × 10 = 1330 ; 133 × 5 = 665 ; 1330 + 665 = 1995.\n\nLa fréquence interne est **1995 MHz**, soit environ 2 GHz."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un processeur à 3 GHz utilise un bus à 100 MHz. a) Quel est son multiplicateur ? b) Si l'on règle le multiplicateur à 32 avec le même bus, quelle fréquence obtient-on ? c) Combien de temps faut-il, à 3 GHz et à raison d'une instruction par cycle, pour exécuter 6 milliards d'instructions ?",
+          "solution_markdown": "a) 3 GHz = 3000 MHz et 3000 ÷ 100 = **30**.\n\nb) 100 × 32 = **3200 MHz**, soit 3,2 GHz.\n\nc) À 3 GHz, le processeur effectue 3 milliards de cycles par seconde, donc 3 milliards d'instructions par seconde à raison d'une instruction par cycle. Pour 6 milliards d'instructions : 6 ÷ 3 = **2 secondes**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La fréquence d'horloge est le nombre de cycles par seconde ; 1 GHz = 1000 MHz.",
+        "La fréquence du bus système (FSB) est la fréquence de référence entre le processeur et la carte mère ; elle est plus faible que celle du cœur.",
+        "Fréquence interne = fréquence du bus × multiplicateur.",
+        "Dans une fiche technique : MHz ou GHz pour les fréquences, Ko ou Mo pour le cache, Socket pour le support.",
+        "La durée d'un cycle est T = 1 ÷ f : plus la fréquence est élevée, plus le cycle est court."
+      ]
+    }
+  ]
+}

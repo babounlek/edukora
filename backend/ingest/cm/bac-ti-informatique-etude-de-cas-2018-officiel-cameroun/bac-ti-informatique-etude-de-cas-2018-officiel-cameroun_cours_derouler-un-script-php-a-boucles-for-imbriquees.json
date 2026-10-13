@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-derouler-un-script-php-a-boucles-for-imbriquees-tle-ti",
+  "meta": {
+    "titre": "Dérouler un script PHP à boucles imbriquées",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures répétitives en PHP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "boucle for",
+      "boucles imbriquées",
+      "trace d'exécution",
+      "tableau HTML",
+      "echo"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q7-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Exécuter ce code et dessiner ce qui s'affiche » : la question paraît simple et fait pourtant perdre des points à ceux qui devinent au lieu de dérouler. Avec deux boucles imbriquées, l'ordre d'exécution est le seul secret. Ce cours te donne la technique de la trace d'exécution, qui marche sur n'importe quel script de ce genre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une boucle `for(initialisation; condition; incrément)`",
+        "Connaître les balises HTML de tableau : `<TABLE>`, `<TR>`, `<TH>`, `<TD>`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La trace d'exécution",
+      "contenu_markdown": "Pour exécuter à la main un script à boucles imbriquées :\n\n1. **Repère ce que produit chaque instruction** `echo` : un texte, une balise, une valeur de variable.\n2. **Identifie la boucle externe et la boucle interne.** La boucle interne s'exécute en entier à chaque tour de la boucle externe, et repart de son initialisation.\n3. **Déroule la boucle externe valeur par valeur.** Pour chaque valeur, déroule la boucle interne et note ce qui s'écrit.\n4. **Traduis les balises HTML** en lignes et cellules : `<TR>` ouvre une ligne, `<TH>` et `<TD>` ouvrent une cellule d'en-tête ou de données.\n\nUne boucle `for ($i=0;$i<6;$i++)` s'exécute pour `$i` valant 0, 1, 2, 3, 4, 5 : six tours, car la condition `$i<6` devient fausse pour 6. Une boucle interne de même forme exécutée dans chacun de ces tours produit 6 × 6 = 36 passages au total.",
+      "formule_principale": "\\text{nombre de passages} = n_{externe} \\times n_{interne}",
+      "variantes": [
+        {
+          "nom": "Tableau de suivi des variables",
+          "quand_utiliser": "Quand le corps de la boucle contient des calculs (produit, somme, test)",
+          "contenu_markdown": "On dresse un tableau dont chaque ligne correspond à un passage et dont les colonnes sont les variables (`$i`, `$c`, `$r`). On le remplit passage par passage, sans en sauter."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le script du sujet, la boucle externe sur `$i` (de 0 à 5) contient une boucle interne sur `$c` (de 0 à 5) qui calcule `$r=$c*$i` et l'écrit dans une cellule. Déterminer ce qui s'affiche pour la ligne `$i = 2`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Fixer la valeur de la boucle externe",
+          "justification": "On traite la boucle externe valeur par valeur",
+          "resultat_markdown": "`$i` vaut 2 : la ligne du tableau commence par un en-tête contenant 2."
+        },
+        {
+          "numero": 2,
+          "action": "Faire repartir la boucle interne de zéro",
+          "justification": "La boucle interne est réinitialisée à chaque tour de l'externe",
+          "resultat_markdown": "`$c` prend les valeurs 0, 1, 2, 3, 4, 5."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer `$r` à chaque passage",
+          "justification": "L'instruction `$r=$c*$i;` s'applique avec `$i=2`",
+          "resultat_markdown": "`$r` vaut 0, 2, 4, 6, 8, 10."
+        },
+        {
+          "numero": 4,
+          "action": "Traduire en cellules",
+          "justification": "Chaque `echo` de la boucle interne écrit une cellule `<TD>` alignée à droite",
+          "resultat_markdown": "La ligne est : 2 | 0 | 2 | 4 | 6 | 8 | 10."
+        }
+      ],
+      "conclusion_markdown": "Pour `$i = 2`, la ligne du tableau affiche l'en-tête 2 suivi des produits 0, 2, 4, 6, 8, 10 (table de 2)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre la valeur de fin de la boucle pour une valeur parcourue : croire que `$i` va jusqu'à 6.",
+          "pourquoi_faux": "La condition `$i<6` est fausse pour 6 : la boucle s'arrête avant d'exécuter le corps avec 6. Les valeurs parcourues sont 0 à 5.",
+          "correction_markdown": "Écris les valeurs parcourues une à une : 0, 1, 2, 3, 4, 5."
+        },
+        {
+          "erreur_markdown": "Ne pas réinitialiser la boucle interne.",
+          "pourquoi_faux": "Chaque tour de la boucle externe relance la boucle interne depuis son initialisation (`$c=0`). Sans cela, on ne compterait que 6 passages au lieu de 36.",
+          "correction_markdown": "Lis l'initialisation `$c=0` dans la boucle interne : elle est exécutée à chaque tour de la boucle externe."
+        },
+        {
+          "erreur_markdown": "Oublier les en-têtes et dessiner un tableau 6 × 6.",
+          "pourquoi_faux": "Les instructions `echo` qui précèdent les boucles écrivent aussi des cellules (cellule vide, en-têtes de colonnes, en-têtes de lignes). Le tableau affiché compte 7 lignes et 7 colonnes.",
+          "correction_markdown": "Repère chaque `echo` du script, y compris ceux qui sont hors des boucles internes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Qu'affiche ce script ?\n\n```php\n<?php\nfor ($i=1; $i<=4; $i++) {\n  echo $i.\" \";\n}\n?>\n```",
+          "solution_markdown": "La boucle s'exécute pour `$i` valant 1, 2, 3, 4 (la condition `$i<=4` devient fausse pour 5). À chaque tour, `echo` écrit la valeur de `$i` suivie d'un espace.\n\nAffichage : `1 2 3 4`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Qu'affiche ce script ?\n\n```php\n<?php\nfor ($i=1; $i<=3; $i++) {\n  for ($j=1; $j<=3; $j++) {\n    echo $i*$j.\" \";\n  }\n  echo \"|\";\n}\n?>\n```",
+          "solution_markdown": "La boucle externe prend `$i` = 1, 2, 3. Pour chaque valeur, la boucle interne prend `$j` = 1, 2, 3 et écrit le produit, puis `echo \"|\"` écrit une barre.\n\n- `$i = 1` : produits 1, 2, 3, puis `|`.\n- `$i = 2` : produits 2, 4, 6, puis `|`.\n- `$i = 3` : produits 3, 6, 9, puis `|`.\n\nAffichage : `1 2 3 |2 4 6 |3 6 9 |`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Qu'affiche ce script, et combien de fois la condition `$i==$j` est-elle évaluée ?\n\n```php\n<?php\nfor ($i=1; $i<=3; $i++) {\n  for ($j=1; $j<=3; $j++) {\n    if ($i==$j) echo $i+$j.\" \"; else echo \"- \";\n  }\n  echo \"|\";\n}\n?>\n```",
+          "solution_markdown": "La condition est évaluée à chaque passage de la boucle interne : 3 × 3 = **9 fois**.\n\n- `$i = 1` : `$j = 1` vérifie `$i==$j`, on écrit 1+1 = 2 ; `$j = 2` et `$j = 3` écrivent `- `. Ligne : `2 - - |`.\n- `$i = 2` : seul `$j = 2` vérifie la condition, on écrit 2+2 = 4. Ligne : `- 4 - |`.\n- `$i = 3` : seul `$j = 3` vérifie la condition, on écrit 3+3 = 6. Ligne : `- - 6 |`.\n\nAffichage : `2 - - |- 4 - |- - 6 |`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Déroule toujours : la boucle externe valeur par valeur, la boucle interne en entier à chaque tour.",
+        "Une boucle `for ($i=0;$i<6;$i++)` parcourt 0 à 5 : six tours, pas sept.",
+        "Le nombre de passages est le produit des nombres de tours des deux boucles.",
+        "Lis chaque `echo`, y compris ceux qui sont hors des boucles : ils créent les en-têtes du tableau.",
+        "Au BAC TI, « exécuter ce code et représenter l'affichage » vaut environ 1 point : une trace soignée suffit pour l'obtenir."
+      ]
+    }
+  ]
+}

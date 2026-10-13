@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-ecrire-l-expression-sinusoidale-d-une-grandeur-a-partir-de-son-oscillogramme-tle-d-ti",
+  "meta": {
+    "titre": "Écrire l'expression sinusoïdale d'une grandeur à partir de son oscillogramme",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Oscillations mécaniques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "oscillateur harmonique",
+      "oscilloscope",
+      "pulsation",
+      "phase à l'origine",
+      "loi horaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-TI-PHYSIQUE-2017-OFFICIEL-CM",
+    "epreuve_titre": "Baccalauréat Physique Séries D et TI - Session 2017 (Cameroun), sujet officiel reproduit par Camerecole",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-d-ti-physique-2017-officiel-cameroun-ex2-qA2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Lire amplitude et période sur un écran est une première étape. La seconde consiste à écrire une fonction du temps qui reproduit la courbe vue sur l'écran : c'est l'expression sinusoïdale du mouvement. Elle permet ensuite de prévoir la valeur de la grandeur à n'importe quel instant."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture de l'amplitude et de la période sur un oscillogramme",
+        "Fonctions sinus et cosinus",
+        "Relation $\\omega = 2\\pi/T$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Expression d'une grandeur sinusoïdale",
+      "contenu_markdown": "Une grandeur qui oscille sinusoïdalement s'écrit :\n\n$$p(t) = p_m\\sin(\\omega t + \\varphi) \\qquad \\omega = \\frac{2\\pi}{T}$$\n\n$p_m$ et $T$ se lisent sur le graphe. La phase à l'origine $\\varphi$ se détermine à l'instant choisi comme origine des dates : on exprime $p(0) = p_m\\sin\\varphi$ et on regarde si la grandeur augmente ou diminue (signe de $\\cos\\varphi$). Plusieurs expressions sont équivalentes selon l'origine des dates choisie et selon l'emploi du sinus ou du cosinus.",
+      "formule_principale": "p(t) = p_m\\sin\\left(\\frac{2\\pi}{T}\\,t + \\varphi\\right)",
+      "variantes": [
+        {
+          "nom": "Forme cosinus",
+          "quand_utiliser": "Quand la grandeur est maximale à l'origine des dates",
+          "contenu_markdown": "Si $p(0) = p_m$, on écrit $p(t) = p_m\\cos(\\omega t)$, équivalente à $p_m\\sin(\\omega t + \\pi/2)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un signal d'amplitude $15{,}5$ et de période $22\\ \\text{ms}$ passe par zéro en croissant à l'origine des dates. Écrire son expression.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la pulsation",
+          "justification": "$\\omega = 2\\pi/T$ avec $T = 0{,}022\\ \\text{s}$.",
+          "resultat_markdown": "$\\omega = \\dfrac{2\\pi}{0{,}022} = 286\\ \\text{rad/s}$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la forme générale",
+          "justification": "On choisit la fonction sinus.",
+          "resultat_markdown": "$p(t) = 15{,}5\\sin(286\\,t + \\varphi)$"
+        },
+        {
+          "numero": 3,
+          "action": "Utiliser la valeur à l'origine",
+          "justification": "$p(0) = 0$ donc $\\sin\\varphi = 0$.",
+          "resultat_markdown": "$\\varphi = 0$ ou $\\varphi = \\pi$"
+        },
+        {
+          "numero": 4,
+          "action": "Utiliser le sens de variation",
+          "justification": "La grandeur croît à $t = 0$ : $\\dot{p}(0) = p_m\\omega\\cos\\varphi > 0$, donc $\\cos\\varphi > 0$.",
+          "resultat_markdown": "$\\varphi = 0$"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler",
+          "justification": "Le premier maximum doit avoir lieu à $t = T/4 = 5{,}5\\ \\text{ms}$.",
+          "resultat_markdown": "$p(0{,}0055) = 15{,}5\\sin(286 \\times 0{,}0055) = 15{,}5\\sin(1{,}57) \\approx 15{,}5$"
+        }
+      ],
+      "conclusion_markdown": "L'expression cohérente avec l'oscillogramme est $p(t) = 15{,}5\\sin(286\\,t)$ avec $t$ en secondes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $p_m\\sin(f\\,t)$ avec la fréquence au lieu de la pulsation.",
+          "pourquoi_faux": "Dans la fonction sinus, le coefficient de $t$ est $\\omega = 2\\pi f$, exprimé en rad/s. Mettre $f$ conduit à une période fausse.",
+          "correction_markdown": "Toujours calculer $\\omega = 2\\pi/T$ avant d'écrire la fonction."
+        },
+        {
+          "erreur_markdown": "Fixer $\\varphi = 0$ par habitude sans regarder la courbe à l'origine.",
+          "pourquoi_faux": "La phase dépend de la position et du sens de variation à $t = 0$. Elle n'est nulle que si la courbe part de zéro en croissant (pour un sinus).",
+          "correction_markdown": "Écrire $p(0)$ et le sens de variation avant de conclure."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier l'expression sur un point.",
+          "pourquoi_faux": "Une erreur de phase ou de pulsation passe inaperçue sans contrôle.",
+          "correction_markdown": "Tester la valeur de $p$ en $t = T/4$ ou en $t = T/2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un signal sinusoïdal d'amplitude $3$ et de période $0{,}1\\ \\text{s}$ part de zéro en croissant. Écrire son expression.",
+          "solution_markdown": "$\\omega = \\dfrac{2\\pi}{0{,}1} = 62{,}8\\ \\text{rad/s}$ et $\\varphi = 0$. Donc $p(t) = 3\\sin(62{,}8\\,t)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un signal d'amplitude $4$ et de période $20\\ \\text{ms}$ est maximal à l'origine des dates. Écrire son expression sous deux formes.",
+          "solution_markdown": "$\\omega = \\dfrac{2\\pi}{0{,}020} = 314\\ \\text{rad/s}$. Maximal à $t = 0$ : $p(t) = 4\\cos(314\\,t)$, ou de façon équivalente $p(t) = 4\\sin(314\\,t + \\pi/2)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un signal d'amplitude $6$ et de période $0{,}5\\ \\text{s}$ vaut $3$ à $t = 0$ en croissant. Déterminer la phase, écrire $p(t)$ et calculer la date du premier maximum.",
+          "solution_markdown": "$\\omega = \\dfrac{2\\pi}{0{,}5} = 4\\pi = 12{,}57\\ \\text{rad/s}$. Condition initiale : $p(0) = 6\\sin\\varphi = 3$, donc $\\sin\\varphi = \\tfrac{1}{2}$, soit $\\varphi = \\tfrac{\\pi}{6}$ ou $\\tfrac{5\\pi}{6}$. En croissant : $\\cos\\varphi > 0$, donc $\\varphi = \\tfrac{\\pi}{6}$. Alors $p(t) = 6\\sin\\left(4\\pi\\,t + \\tfrac{\\pi}{6}\\right)$. Maximum quand $4\\pi\\,t + \\tfrac{\\pi}{6} = \\tfrac{\\pi}{2}$, soit $t = \\dfrac{\\pi/3}{4\\pi} = \\dfrac{1}{12} = 0{,}083\\ \\text{s}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une grandeur sinusoïdale s'écrit $p_m\\sin(\\omega t + \\varphi)$ avec $\\omega = 2\\pi/T$.",
+        "Le coefficient de $t$ est une pulsation en rad/s, jamais une fréquence en Hz.",
+        "La phase se déduit de $p(0)$ et du sens de variation à l'origine des dates.",
+        "Plusieurs écritures sont équivalentes : l'énoncé demande une expression cohérente avec la courbe.",
+        "Au BAC, ce type de question vient juste après une lecture d'oscillogramme et se vérifie sur un point."
+      ]
+    }
+  ]
+}

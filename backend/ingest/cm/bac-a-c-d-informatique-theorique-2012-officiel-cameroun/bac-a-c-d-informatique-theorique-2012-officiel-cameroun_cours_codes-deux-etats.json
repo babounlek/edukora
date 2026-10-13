@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-codes-deux-etats-tle-a-c-d-2012",
+  "meta": {
+    "titre": "Construire tous les codes avec des éléments à deux états",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A, C, D",
+    "sous_theme": "Codage de l'information",
+    "duree_estimee_min": 20,
+    "tags": [
+      "codage",
+      "binaire",
+      "combinaisons",
+      "ampoules",
+      "énumération"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-2012-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique au baccalauréat A, C et D 2012",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-2012-officiel-cameroun-ex2-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux interrupteurs, deux ampoules : combien de messages différents peux-tu transmettre à un ami placé à l'autre bout de la cour ? Tout l'informatique repose sur cette idée simple : avec des éléments qui ne peuvent prendre que deux états, on construit un nombre rapidement croissant de codes. Ce cours t'apprend à les lister sans en oublier aucun."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un bit (deux états, 0 ou 1)",
+        "Connaître les puissances de 2 jusqu'à $2^4$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Énumérer les $2^n$ codes d'un système à deux états",
+      "contenu_markdown": "Si chaque élément (ampoule, interrupteur, bit) peut prendre **deux états**, alors $n$ éléments donnent $2^n$ codes différents : chaque élément ajouté **double** le nombre de codes.\n\n**Méthode d'énumération sans oubli.**\n\n1. On fixe l'état du premier élément (par exemple E).\n2. On fait varier les autres éléments dans toutes les combinaisons possibles.\n3. On recommence avec l'autre état du premier élément (A).\n4. On compte : il doit y avoir exactement $2^n$ codes.\n\nL'ordre des éléments compte : EA et AE sont deux codes différents. On peut associer E à 0 et A à 1 pour retrouver l'écriture binaire : EE = 00, EA = 01, AE = 10, AA = 11.",
+      "formule_principale": "\\text{nombre de codes} = 2^{n}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On dispose de deux ampoules munies chacune d'un interrupteur. Une ampoule allumée prend la forme A, une ampoule éteinte la forme E. On veut coder quatre informations. Former ces codes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les codes disponibles",
+          "justification": "Deux ampoules à deux états chacune donnent $2^2$ codes.",
+          "resultat_markdown": "$2^2 = 4$ codes, soit les quatre informations."
+        },
+        {
+          "numero": 2,
+          "action": "Fixer la première ampoule à E",
+          "justification": "On fait varier la seconde ampoule : éteinte puis allumée.",
+          "resultat_markdown": "EE et EA."
+        },
+        {
+          "numero": 3,
+          "action": "Fixer la première ampoule à A",
+          "justification": "On fait de nouveau varier la seconde.",
+          "resultat_markdown": "AE et AA."
+        },
+        {
+          "numero": 4,
+          "action": "Rassembler et contrôler",
+          "justification": "On compte les codes obtenus : il y en a bien quatre, tous différents.",
+          "resultat_markdown": "Codes : EE, EA, AE, AA."
+        },
+        {
+          "numero": 5,
+          "action": "Attribuer les codes aux informations",
+          "justification": "L'énoncé ne fixe pas de correspondance : tout choix qui associe un code différent à chaque information convient.",
+          "resultat_markdown": "Par exemple : info 1 = EE, info 2 = EA, info 3 = AE, info 4 = AA."
+        }
+      ],
+      "conclusion_markdown": "Les quatre codes possibles avec deux ampoules sont EE, EA, AE et AA, et on a vérifié qu'il y en a exactement $2^2 = 4$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier EA ou AE en pensant qu'ils sont identiques",
+          "pourquoi_faux": "Les ampoules sont distinctes : « première éteinte, seconde allumée » n'est pas la même situation que l'inverse. Ce sont deux codes différents.",
+          "correction_markdown": "Écris toujours les codes dans l'ordre des éléments (ampoule 1 puis ampoule 2)."
+        },
+        {
+          "erreur_markdown": "Lister les codes dans le désordre",
+          "pourquoi_faux": "Une énumération désordonnée conduit presque toujours à un oubli ou à un doublon que l'on ne voit pas.",
+          "correction_markdown": "Fixe le premier élément et fais varier les suivants, comme un compteur."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier le nombre de codes",
+          "pourquoi_faux": "Sans comptage, une omission passe inaperçue.",
+          "correction_markdown": "Compare toujours le nombre de codes écrits à $2^n$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": "1",
+          "difficulte": "facile",
+          "enonce_markdown": "Écris tous les codes que l'on peut former avec trois ampoules (A allumée, E éteinte).",
+          "solution_markdown": "Avec trois ampoules, il y a $2^3 = 8$ codes.\n\nOn fixe la première ampoule à E, puis on fait varier les deux autres : EEE, EEA, EAE, EAA.\n\nOn fixe la première ampoule à A : AEE, AEA, AAE, AAA.\n\nLes huit codes sont : EEE, EEA, EAE, EAA, AEE, AEA, AAE, AAA. Le compte est bon."
+        },
+        {
+          "numero": "2",
+          "difficulte": "moyen",
+          "enonce_markdown": "Combien de codes différents peut-on former avec quatre interrupteurs, chacun pouvant être ouvert ou fermé ?",
+          "solution_markdown": "Chaque interrupteur a deux états, et il y en a quatre, donc le nombre de codes est $2^4$.\n\n$2^4 = 2 \\times 2 \\times 2 \\times 2 = 16$.\n\nOn peut donc former 16 codes différents."
+        },
+        {
+          "numero": "3",
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Chaque ampoule d'une enseigne peut être éteinte (E), verte (V) ou rouge (R). Combien de codes forme-t-on avec deux ampoules ? Écris-les tous.",
+          "solution_markdown": "Ici chaque ampoule a **trois** états, et non deux. Le raisonnement reste le même : chaque élément multiplie le nombre de codes par le nombre d'états.\n\nLe nombre de codes est $3 \\times 3 = 3^2 = 9$.\n\nOn fixe la première ampoule et on fait varier la seconde : EE, EV, ER, VE, VV, VR, RE, RV, RR.\n\nOn compte bien 9 codes.\n\nLa formule générale est donc : avec $n$ éléments à $b$ états, on obtient $b^n$ codes, et le cas des éléments à deux états correspond à $b = 2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avec $n$ éléments à deux états, tu obtiens $2^n$ codes, et chaque élément ajouté double ce nombre.",
+        "L'ordre compte : EA et AE sont deux codes distincts.",
+        "Énumère comme un compteur : fixe le premier élément, fais varier les autres, puis change le premier.",
+        "Vérifie ton énumération en comptant : si tu n'obtiens pas $2^n$ codes, il en manque ou il y a un doublon.",
+        "Au BAC, la question « former ces codes » vaut 2 points : la liste complète est exigée, pas seulement le nombre de codes."
+      ]
+    }
+  ]
+}

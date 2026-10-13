@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-avantages-et-inconvenients-dune-topologie-reseau-tle-ti",
+  "meta": {
+    "titre": "Avantages et inconvénients des topologies de réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Typologie des réseaux informatiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "topologie en étoile",
+      "topologie en bus",
+      "topologie en anneau",
+      "point unique de défaillance",
+      "switch"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un réseau tombe en panne à la pire heure : en pleine saisie des notes, un lundi matin. Selon la façon dont les machines sont reliées, la panne frappe un seul poste ou tout le réseau d'un coup. Choisir une topologie, c'est donc arbitrer entre coût, simplicité et résistance aux pannes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les topologies en étoile, en bus et en anneau",
+        "Savoir ce qu'est un switch et ce qu'est un câble de réseau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le point faible vient du principe de liaison",
+      "contenu_markdown": "Chaque topologie a des atouts et un point faible qui découlent directement de la façon dont les machines sont reliées. Pour trouver l'inconvénient, demande-toi : **que se passe-t-il quand l'élément central ou commun tombe en panne ?**\n\n| Topologie | Avantages | Inconvénient majeur |\n|---|---|---|\n| Étoile | Ajout ou retrait d'un poste sans toucher aux autres ; la panne d'un poste isole ce poste seulement ; diagnostic facile | Panne de l'élément central (switch) : tout le réseau est paralysé ; plus de câbles |\n| Bus | Peu de câble, installation économique | Coupure du câble commun : réseau coupé ; collisions nombreuses ; diagnostic difficile |\n| Anneau | Accès équitable au réseau, peu de collisions | Rupture de l'anneau : trafic interrompu (sauf double anneau) |\n| Maillée | Très grande résistance aux pannes | Coût et complexité du câblage |\n\nOn formule toujours l'inconvénient par une conséquence sur l'ensemble : « si X tombe en panne, alors... ».",
+      "formule_principale": "\\text{inconvénient} = \\text{panne de l'élément central ou commun} \\Rightarrow \\text{conséquence sur tout le réseau}",
+      "variantes": [
+        {
+          "nom": "Réduire le point unique de défaillance",
+          "quand_utiliser": "Quand on te demande comment atténuer l'inconvénient d'une étoile",
+          "contenu_markdown": "On prévoit un matériel de secours (second switch), une alimentation protégée par un onduleur, ou une double liaison entre les équipements essentiels, comme le serveur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le réseau en étoile du complexe scolaire de Garoua, quel est l'inconvénient majeur de la topologie ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'élément central",
+          "justification": "L'inconvénient d'une étoile vient du centre",
+          "resultat_markdown": "Le switch relie toutes les machines."
+        },
+        {
+          "numero": 2,
+          "action": "Imaginer sa panne",
+          "justification": "On applique la question du cours",
+          "resultat_markdown": "Le switch s'arrête : aucune machine ne peut plus communiquer avec une autre."
+        },
+        {
+          "numero": 3,
+          "action": "Formuler la conséquence sur le réseau",
+          "justification": "La conséquence doit concerner tout le réseau",
+          "resultat_markdown": "Tout le réseau est paralysé, serveur compris."
+        },
+        {
+          "numero": 4,
+          "action": "Nommer la notion",
+          "justification": "Le switch est le seul élément dont dépendent toutes les liaisons",
+          "resultat_markdown": "C'est un point unique de défaillance."
+        }
+      ],
+      "conclusion_markdown": "L'inconvénient majeur de la topologie en étoile est la dépendance vis-à-vis du switch central : s'il tombe en panne, tout le réseau est hors service."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire « le switch est un point faible » sans conséquence.",
+          "pourquoi_faux": "La phrase ne dit pas ce qui se passe. Le barème attend la conséquence (le réseau entier est paralysé).",
+          "correction_markdown": "Écris toujours : « si le switch tombe en panne, tout le réseau est hors service »."
+        },
+        {
+          "erreur_markdown": "Attribuer à l'étoile l'inconvénient du bus : « la coupure du câble arrête le réseau ».",
+          "pourquoi_faux": "En étoile, un câble coupé n'isole que le poste concerné, car chaque poste a son propre câble.",
+          "correction_markdown": "Rattache l'inconvénient à l'élément qui est partagé par toutes les liaisons : le switch en étoile, le câble en bus."
+        },
+        {
+          "erreur_markdown": "Donner plusieurs inconvénients quand un seul est demandé.",
+          "pourquoi_faux": "Si l'un des inconvénients est faux, il peut annuler le point obtenu avec le bon.",
+          "correction_markdown": "Réponds par l'inconvénient majeur, pas par une liste."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel est l'inconvénient majeur de la topologie en bus ?",
+          "solution_markdown": "Tous les équipements partagent un câble unique : si ce câble est coupé ou défaillant, le réseau est interrompu. De plus, les équipements émettent sur le même câble, ce qui augmente les collisions quand le trafic croît, et rend le diagnostic d'une panne difficile."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une salle informatique de 20 postes doit être équipée. Compare l'étoile et le bus et recommande une topologie.",
+          "solution_markdown": "**Étoile** : chaque poste a son câble vers un switch ; ajout ou retrait d'un poste sans toucher aux autres ; la panne d'un poste n'affecte que lui ; diagnostic simple. Inconvénient : dépendance du switch et davantage de câble.\n\n**Bus** : peu de câble, donc économique, mais une coupure du câble commun interrompt toute la salle et les 20 postes se partagent le même câble.\n\n**Recommandation** : l'étoile. La salle est destinée à l'enseignement : on veut pouvoir isoler un poste en panne sans arrêter le cours, et ajouter des machines aisément. Le surcoût de câblage est modeste en regard de ces avantages."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le réseau en étoile d'un cabinet repose sur un seul switch. Propose deux mesures pour réduire le risque d'arrêt total et dis ce que chacune évite.",
+          "solution_markdown": "**Mesure 1 : un second switch de secours** (ou une double liaison pour le serveur et les postes essentiels). Si le premier tombe en panne, on bascule sur le second, et le réseau n'est pas arrêté longtemps.\n\n**Mesure 2 : un onduleur sur le switch et le serveur**. Il évite l'arrêt du réseau lors d'une coupure d'électricité, cause fréquente de panne.\n\nCes mesures ne suppriment pas la dépendance au point central, mais elles réduisent la probabilité et la durée de l'arrêt."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque topologie a un point faible qui découle de son principe de liaison.",
+        "Étoile : dépend du switch central. Bus : dépend du câble commun. Anneau : dépend de la continuité de la boucle.",
+        "Formule l'inconvénient avec sa conséquence : « si ... tombe en panne, alors tout le réseau... ».",
+        "Réponds par ce que la question demande : un seul inconvénient majeur, deux avantages si on te les demande.",
+        "Au BAC TI, cette question vaut de 0,5 à 1 point et suit presque toujours la question sur la topologie."
+      ]
+    }
+  ]
+}

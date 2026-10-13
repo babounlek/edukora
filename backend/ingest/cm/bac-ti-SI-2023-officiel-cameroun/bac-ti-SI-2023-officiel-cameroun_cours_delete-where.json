@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-delete-where-tle-ti-si2023",
+  "meta": {
+    "titre": "Supprimer des lignes avec DELETE et WHERE",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 18,
+    "tags": [
+      "DELETE",
+      "WHERE",
+      "intégrité référentielle",
+      "SQL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex3-q6.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Supprimer un fournisseur de la base paraît simple, mais un oubli de WHERE efface toute la table, et une clé étrangère peut bloquer l'opération. Deux détails à connaître : le premier fait perdre des données, le second fait perdre des points. Ce cours te montre la bonne rédaction et les pièges."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Différence entre DROP et DELETE",
+        "Notion de clé étrangère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "DELETE FROM table WHERE condition",
+      "contenu_markdown": "```sql\nDELETE FROM table\nWHERE condition;\n```\n\n- La condition porte de préférence sur la **clé primaire**, pour viser une seule ligne.\n- Sans `WHERE`, **toutes les lignes** sont supprimées.\n- Une **clé étrangère** qui référence la ligne bloque la suppression : il faut supprimer d'abord les lignes filles, ou déclarer `ON DELETE CASCADE`.",
+      "variantes": [
+        {
+          "nom": "ON DELETE CASCADE",
+          "quand_utiliser": "Quand on veut que la suppression d'une ligne mère supprime ses lignes filles",
+          "contenu_markdown": "`FOREIGN KEY (CodeF) REFERENCES Fournisseur(CodeF) ON DELETE CASCADE` supprime automatiquement les produits du fournisseur effacé."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le fournisseur de code 250BT n'est plus autorisé à passer des commandes : écrire la requête qui le supprime de la table.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la commande",
+          "justification": "Il s'agit de supprimer une ligne, pas la table.",
+          "resultat_markdown": "DELETE FROM."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer la table",
+          "justification": "Les fournisseurs sont dans Fournisseur.",
+          "resultat_markdown": "DELETE FROM Fournisseur."
+        },
+        {
+          "numero": 3,
+          "action": "Poser la condition sur la clé primaire",
+          "justification": "CodeF identifie un fournisseur ; le texte va entre apostrophes.",
+          "resultat_markdown": "WHERE CodeF = '250BT'."
+        },
+        {
+          "numero": 4,
+          "action": "Penser à la clé étrangère",
+          "justification": "Des produits peuvent référencer 250BT.",
+          "resultat_markdown": "Supprimer d'abord ces produits ou prévoir CASCADE."
+        }
+      ],
+      "conclusion_markdown": "DELETE FROM Fournisseur WHERE CodeF = '250BT';"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le WHERE",
+          "pourquoi_faux": "Toutes les lignes sont supprimées.",
+          "correction_markdown": "Toujours écrire la condition avant d'exécuter."
+        },
+        {
+          "erreur_markdown": "Utiliser DROP TABLE",
+          "pourquoi_faux": "DROP détruit la table entière.",
+          "correction_markdown": "Utiliser DELETE pour retirer une ligne."
+        },
+        {
+          "erreur_markdown": "Ignorer la clé étrangère",
+          "pourquoi_faux": "Le SGBD refuse la suppression si des lignes filles existent.",
+          "correction_markdown": "Supprimer d'abord les produits liés."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Supprime le client de numéro 'C12' de la table Client(NumClient, Nom).",
+          "solution_markdown": "1. Commande : DELETE.\n2. Condition sur la clé primaire.\n`DELETE FROM Client WHERE NumClient = 'C12';`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Supprime tous les produits dont la quantité est 0.",
+          "solution_markdown": "1. Plusieurs lignes peuvent correspondre : la condition porte sur Qte.\n`DELETE FROM Produit WHERE Qte = 0;`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Supprime le fournisseur '250BT' alors que Produit contient des lignes qui le référencent. Donne la séquence correcte.",
+          "solution_markdown": "1. D'abord les lignes filles : `DELETE FROM Produit WHERE CodeF = '250BT';`\n2. Ensuite la ligne mère : `DELETE FROM Fournisseur WHERE CodeF = '250BT';`\n3. Dans l'ordre inverse, le SGBD refuse la suppression de la ligne mère."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DELETE FROM table WHERE condition.",
+        "Sans WHERE, tout est supprimé.",
+        "Condition sur la clé primaire pour viser une ligne.",
+        "Clé étrangère : supprimer d'abord les lignes filles ou prévoir CASCADE.",
+        "Au BAC TI, cette question vaut 1 point."
+      ]
+    }
+  ]
+}

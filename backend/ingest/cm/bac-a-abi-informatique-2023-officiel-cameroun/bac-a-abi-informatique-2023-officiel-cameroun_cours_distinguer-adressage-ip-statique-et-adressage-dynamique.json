@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-distinguer-adressage-ip-statique-et-adressage-dynamique-tle-a-abi-2023",
+  "meta": {
+    "titre": "Distinguer adressage IP statique et adressage dynamique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Réseaux informatiques et adressage IP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "adressage IP",
+      "adresse statique",
+      "DHCP",
+      "réseau local"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2023-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat séries A et ABI, session 2023",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-bac-a-abi-informatique-2023-officiel-cameroun-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une salle de 40 ordinateurs, qui donne leur adresse à chaque machine ? Un administrateur qui tape 40 adresses à la main fera des erreurs, deux machines recevront la même adresse et le réseau plantera. L'adressage dynamique règle ce problème, et l'adressage statique reste nécessaire pour d'autres équipements. Ce cours te montre quand choisir l'un ou l'autre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IP identifie une machine dans un réseau",
+        "Connaître la notion de serveur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux modes d'attribution : manuel ou automatique",
+      "contenu_markdown": "**Adressage statique** : l'administrateur configure à la main, sur chaque machine, l'adresse IP, le masque de sous-réseau et la passerelle. L'adresse ne change jamais. **Adressage dynamique** : un serveur **DHCP** attribue automatiquement une adresse prise dans une plage prédéfinie à chaque machine qui se connecte. L'adresse peut changer d'une connexion à l'autre.\n\n| Critère | Statique | Dynamique (DHCP) |\n|---|---|---|\n| Configuration | Manuelle | Automatique |\n| Adresse | Fixe | Peut changer |\n| Risque principal | Erreur ou doublon de saisie | Adresse non fixe |\n| Équipements typiques | Serveurs, imprimantes réseau, routeurs | Postes de travail, téléphones |",
+      "formule_principale": "\\text{adressage} = \\text{statique (manuel)} \\; \\text{ou} \\; \\text{dynamique (DHCP)}",
+      "variantes": [
+        {
+          "nom": "Mode combiné",
+          "quand_utiliser": "Dans une entreprise réelle, où certains équipements doivent avoir une adresse fixe et d'autres non.",
+          "contenu_markdown": "Les serveurs et équipements d'interconnexion reçoivent une adresse statique placée hors de la plage DHCP ; les postes utilisent le DHCP."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer deux types d'adressage pour attribuer des adresses IP aux machines d'un réseau reliant trois sites.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Comprendre la question",
+          "justification": "On demande les modes d'attribution des adresses IP, pas les versions du protocole.",
+          "resultat_markdown": "Deux modes à nommer."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer le premier mode",
+          "justification": "Il se fait à la main.",
+          "resultat_markdown": "Adressage statique : l'administrateur saisit l'adresse sur chaque machine."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le second mode",
+          "justification": "Il se fait sans intervention de l'administrateur grâce à un service du réseau.",
+          "resultat_markdown": "Adressage dynamique : un serveur DHCP attribue automatiquement les adresses."
+        },
+        {
+          "numero": 4,
+          "action": "Associer chaque mode à un usage",
+          "justification": "Cela justifie la réponse et montre qu'on a compris la différence.",
+          "resultat_markdown": "Statique pour serveurs et imprimantes, dynamique pour les postes."
+        },
+        {
+          "numero": 5,
+          "action": "Rédiger",
+          "justification": "Une phrase par mode, en commençant par son nom.",
+          "resultat_markdown": "« Adressage statique (manuel) et adressage dynamique (automatique via DHCP). »"
+        }
+      ],
+      "conclusion_markdown": "Les deux types d'adressage sont l'adressage statique, manuel, et l'adressage dynamique, automatique via un serveur DHCP."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « IPv4 et IPv6 ».",
+          "pourquoi_faux": "Ce sont deux versions du protocole IP, c'est-à-dire deux formats d'adresse, pas deux manières de les attribuer.",
+          "correction_markdown": "Réponds statique et dynamique."
+        },
+        {
+          "erreur_markdown": "Affirmer qu'une adresse dynamique est « aléatoire ».",
+          "pourquoi_faux": "Le serveur DHCP la choisit dans une plage définie et la mémorise : ce n'est pas du hasard.",
+          "correction_markdown": "Écris « attribuée automatiquement dans une plage »."
+        },
+        {
+          "erreur_markdown": "Mettre un serveur en adressage dynamique.",
+          "pourquoi_faux": "Son adresse peut changer et les utilisateurs ne le trouveraient plus.",
+          "correction_markdown": "Donne une adresse statique aux serveurs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel mode d'adressage choisir pour une imprimante réseau partagée par toute une salle ?",
+          "solution_markdown": "L'imprimante doit toujours être joignable à la même adresse : on choisit l'**adressage statique**. Avec une adresse dynamique, elle pourrait changer et les ordinateurs ne la retrouveraient plus."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une salle informatique compte 50 postes que les élèves allument et éteignent chaque jour. Quel mode d'adressage choisir pour ces postes et pourquoi ?",
+          "solution_markdown": "On choisit l'**adressage dynamique (DHCP)**. Pourquoi : saisir 50 adresses à la main est long et expose aux doublons ; le serveur DHCP en attribue une automatiquement à chaque poste à l'allumage, et la libère à l'extinction. Les postes n'ont pas besoin d'une adresse fixe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un serveur DHCP distribue les adresses de 192.168.1.100 à 192.168.1.150 inclus. Combien d'adresses peut-il distribuer ? Pourquoi donner au serveur de fichiers l'adresse statique 192.168.1.10 plutôt qu'une adresse prise dans cette plage ?",
+          "solution_markdown": "**Nombre d'adresses.** Les adresses vont de .100 à .150 : on compte les deux extrémités. 150 − 100 + 1 = **51 adresses**.\n\n**Adresse du serveur.** 192.168.1.10 est hors de la plage 100 à 150 : le DHCP ne la distribuera jamais à un poste, il n'y a donc aucun risque de doublon. Elle est statique : elle ne change pas, et tous les postes peuvent configurer le serveur de fichiers une fois pour toutes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux modes pour attribuer les adresses IP : statique (manuel) et dynamique (automatique avec un serveur DHCP).",
+        "Statique pour les équipements qui doivent rester joignables : serveurs, imprimantes, routeurs.",
+        "Dynamique pour les postes : aucune configuration et pas de doublon.",
+        "IPv4 et IPv6 sont des versions du protocole, pas des modes d'attribution.",
+        "Au BAC A, la Partie II (humanités numériques) demande régulièrement l'adressage IP d'un réseau d'entreprise : nomme le mode puis son principe en une phrase."
+      ]
+    }
+  ]
+}

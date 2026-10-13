@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-classer-un-reseau-selon-son-etendue-et-identifier-sa-topologie-tle-ti",
+  "meta": {
+    "titre": "Étendue géographique et topologie d'un réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Typologie des réseaux informatiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "LAN",
+      "WAN",
+      "MAN",
+      "topologie en étoile",
+      "topologie en bus",
+      "réseau local"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une salle de classe, le réseau relie quelques ordinateurs ; entre deux villes, il relie des sites éloignés de centaines de kilomètres. Ces deux réseaux n'ont ni la même taille ni la même organisation. Deux questions suffisent à les décrire : jusqu'où s'étend le réseau, et comment les machines y sont-elles reliées entre elles ?"
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un réseau informatique et à quoi servent un câble et un switch",
+        "Savoir lire un schéma de réseau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Étendue d'un côté, forme de l'autre",
+      "contenu_markdown": "**Classement par étendue géographique** : on regarde la zone couverte.\n\n| Type | Zone couverte | Exemple |\n|---|---|---|\n| PAN | Quelques mètres autour d'une personne | Ordinateur et casque Bluetooth |\n| LAN (réseau local) | Un bâtiment ou un site | Réseau d'un lycée, d'un cybercafé |\n| MAN | Une ville ou une agglomération | Réseau reliant les sites d'une mairie |\n| WAN (réseau étendu) | Un pays ou plusieurs | Internet, réseau d'une banque nationale |\n\n**Topologie** : on regarde comment les équipements sont reliés sur le schéma.\n\n- **Étoile** : chaque équipement est relié par son propre câble à un élément central (switch ou hub).\n- **Bus** : tous les équipements sont reliés à un câble commun.\n- **Anneau** : les équipements sont reliés en boucle, chacun à ses deux voisins.\n- **Maillée** : chaque équipement est relié à plusieurs autres.",
+      "formule_principale": "\\text{étendue} \\rightarrow \\text{PAN, LAN, MAN, WAN} \\qquad \\text{liaison} \\rightarrow \\text{étoile, bus, anneau, maillée}",
+      "variantes": [
+        {
+          "nom": "Topologie physique et topologie logique",
+          "quand_utiliser": "Quand on te demande « la topologie » sans précision",
+          "contenu_markdown": "On répond par défaut avec la topologie physique, celle que l'on voit sur le schéma des câbles. La topologie logique décrit la circulation des données, qui peut différer (un réseau en étoile avec hub fonctionne logiquement comme un bus)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un complexe scolaire, un switch relie par des câbles séparés un serveur, trois ordinateurs, un scanner et une imprimante. Quel est le type de réseau (étendue) et quelle est la topologie ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la zone couverte",
+          "justification": "Le critère imposé est l'étendue géographique",
+          "resultat_markdown": "Tout est installé dans un seul complexe scolaire : un site restreint."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer le type",
+          "justification": "Un site restreint correspond à un réseau local",
+          "resultat_markdown": "Réseau local, LAN."
+        },
+        {
+          "numero": 3,
+          "action": "Observer le mode de liaison sur le schéma",
+          "justification": "La topologie se lit sur les câbles",
+          "resultat_markdown": "Chaque équipement a son propre câble vers le switch placé au centre."
+        },
+        {
+          "numero": 4,
+          "action": "Nommer la topologie",
+          "justification": "Un élément central avec un câble par équipement est la signature de l'étoile",
+          "resultat_markdown": "Topologie en étoile."
+        }
+      ],
+      "conclusion_markdown": "Le réseau est un LAN en topologie étoile, avec le switch comme élément central."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « réseau étendu » parce que le complexe est dans une grande ville.",
+          "pourquoi_faux": "La taille de la ville n'entre pas en compte : le critère est la zone couverte par le réseau lui-même, ici un seul site.",
+          "correction_markdown": "Cherche la distance entre les équipements les plus éloignés du réseau."
+        },
+        {
+          "erreur_markdown": "Confondre étoile et bus.",
+          "pourquoi_faux": "En étoile, chaque équipement a son propre câble vers le centre ; en bus, tous partagent un câble unique.",
+          "correction_markdown": "Compte les câbles : un par équipement vers le centre indique l'étoile."
+        },
+        {
+          "erreur_markdown": "Donner le nom de l'équipement central à la place de la topologie : « le switch ».",
+          "pourquoi_faux": "Le switch est un équipement ; la topologie est la forme du réseau. On répond par « étoile » et on cite le switch pour justifier.",
+          "correction_markdown": "Écris « topologie en étoile, organisée autour du switch »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classe selon l'étendue : (a) un ordinateur et son casque Bluetooth ; (b) le réseau d'un cybercafé ; (c) Internet.",
+          "solution_markdown": "(a) **PAN**, quelques mètres autour d'une personne. (b) **LAN**, un seul local. (c) **WAN**, réseau mondial reliant des réseaux de pays différents."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Cinq ordinateurs sont reliés à un câble unique sur lequel ils sont tous branchés. Quelle est la topologie ? Et si les cinq ordinateurs étaient chacun reliés à un switch ?",
+          "solution_markdown": "Câble commun où tous sont branchés : topologie en **bus**. Chacun relié par son propre câble à un switch central : topologie en **étoile**.\n\nLe critère est le nombre de câbles et leur point de rattachement : un seul câble partagé (bus) ou un câble par équipement vers un centre (étoile)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un lycée possède deux sites distants de 15 km, reliés par une liaison louée. Chaque site contient un réseau en étoile. Décris chaque réseau et l'ensemble.",
+          "solution_markdown": "**Chaque site** est un réseau local (LAN) en topologie étoile, organisé autour de son switch.\n\n**L'ensemble** relie deux sites distants de 15 km au sein d'une même ville ou agglomération : on parle de réseau métropolitain (MAN) ; au-delà d'une agglomération, ce serait un réseau étendu (WAN).\n\nOn répond donc en distinguant les niveaux : deux LAN en étoile, reliés pour former un MAN."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux critères distincts : l'étendue (PAN, LAN, MAN, WAN) et la topologie (étoile, bus, anneau, maillée).",
+        "Un seul site, un seul bâtiment : réseau local, LAN.",
+        "Un câble par équipement vers un élément central : topologie en étoile.",
+        "La topologie répond par une forme, pas par le nom d'un équipement.",
+        "Au BAC TI, la question « type de réseau et topologie » vaut environ 1 point et revient presque chaque année."
+      ]
+    }
+  ]
+}

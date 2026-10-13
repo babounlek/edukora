@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-detecter-la-soumission-dun-formulaire-avec-isset-tle-ti-2019",
+  "meta": {
+    "titre": "Détecter la soumission d'un formulaire avec isset",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Formulaires et traitement PHP",
+    "duree_estimee_min": 20,
+    "tags": [
+      "isset",
+      "soumission de formulaire",
+      "tableau POST",
+      "condition"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q2.4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page de formulaire est affichée deux fois : une fois vide, quand tu arrives, et une fois après que tu as cliqué sur le bouton. Le script doit savoir dans quel cas il se trouve pour ne pas traiter des données qui n'existent pas encore. La fonction `isset` répond à cette question en une ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un formulaire HTML et l'attribut `name`",
+        "Connaître la structure conditionnelle `if`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "isset et la soumission du formulaire",
+      "contenu_markdown": "`isset(variable)` renvoie `true` si la variable existe **et** n'est pas `NULL`, `false` sinon. Elle ne regarde jamais le contenu, seulement l'existence.\n\nQuand on clique sur un bouton `submit` portant `name=\"valider\"`, le navigateur envoie la paire `valider=OK` ; la clé `valider` apparaît alors dans `$_POST`. À la première ouverture de la page, `$_POST` est vide.\n\nLe schéma classique est donc :\n\n```php\nif (isset($_POST['valider'])) {\n    // le formulaire a été envoyé : on lit et on traite les données\n}\n```\n\nPour tester qu'un champ n'est pas vide, on ajoute `empty()` ou une comparaison avec la chaîne vide.",
+      "formule_principale": "\\text{isset sur la clé du bouton submit vrai} \\iff \\text{le formulaire a été soumis}",
+      "variantes": [
+        {
+          "nom": "Tester un champ texte plutôt que le bouton",
+          "quand_utiliser": "Quand le formulaire n'a pas de bouton nommé (envoi par la touche Entrée)",
+          "contenu_markdown": "On teste `isset($_POST['num'])`, ou mieux `!empty($_POST['num'])` pour exiger une saisie non vide. Un champ texte vide est envoyé comme chaîne vide : `isset` est alors vrai mais `empty` est vrai aussi."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'épreuve, la ligne 18 est `If(isset($_POST['valider'])){` et le bouton de la ligne 15 est `<input type=\"submit\" name=\"valider\" value=\"OK\"/>`. Expliquer le rôle de la ligne 18.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le nom du bouton",
+          "justification": "La clé testée doit être l'attribut `name` du bouton",
+          "resultat_markdown": "`name=\"valider\"` à la ligne 15."
+        },
+        {
+          "numero": 2,
+          "action": "Expliquer ce que le navigateur envoie",
+          "justification": "Un bouton submit n'est transmis que s'il sert à valider",
+          "resultat_markdown": "La paire `valider=OK` est envoyée seulement après un clic sur OK."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter le résultat de `isset`",
+          "justification": "Il est vrai uniquement si la clé existe dans `$_POST`",
+          "resultat_markdown": "Vrai après soumission, faux au premier affichage."
+        },
+        {
+          "numero": 4,
+          "action": "Décrire l'effet sur le bloc",
+          "justification": "L'accolade de la ligne 18 ouvre le bloc des lignes 19 à 21",
+          "resultat_markdown": "Lecture, appel de `parito` et affichage ne s'exécutent qu'après soumission."
+        }
+      ],
+      "conclusion_markdown": "La ligne 18 teste si le formulaire a été soumis, ce qui évite de traiter une saisie inexistante au premier chargement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que `isset` vérifie que la saisie est correcte.",
+          "pourquoi_faux": "`isset` teste seulement l'existence de la clé : une saisie absurde ou vide peut très bien exister.",
+          "correction_markdown": "Ajouter un contrôle de contenu (`empty`, `is_numeric`) pour vérifier la validité."
+        },
+        {
+          "erreur_markdown": "Tester une clé qui n'est pas l'attribut `name`.",
+          "pourquoi_faux": "`$_POST['OK']` n'existe pas : la clé est `valider`, la valeur est `OK`. Une clé inexistante rend le test toujours faux.",
+          "correction_markdown": "Recopier exactement l'attribut `name` du bouton ou du champ."
+        },
+        {
+          "erreur_markdown": "Lire `$_POST['num']` sans tester d'abord.",
+          "pourquoi_faux": "Au premier affichage de la page, la clé `num` n'existe pas : PHP signale un avertissement (clé inexistante).",
+          "correction_markdown": "Toujours encadrer la lecture par `if (isset(...))`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que renvoie `isset($x)` si `$x = 0;` ? Et si `$x = NULL;` ? Et si `$x` n'a jamais été définie ?",
+          "solution_markdown": "1. `$x = 0;` : la variable existe et n'est pas NULL, `isset` renvoie `true` (0 est une valeur).\n2. `$x = NULL;` : `isset` renvoie `false`.\n3. Variable jamais définie : `isset` renvoie `false` sans erreur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire contient un champ `name=\"prenom\"` et un bouton `name=\"ok\"`. Écrire le test qui n'affiche « Bonjour » que si le formulaire est envoyé avec un prénom non vide.",
+          "solution_markdown": "```php\nif (isset($_POST['ok']) && !empty($_POST['prenom'])) {\n    echo 'Bonjour ' . $_POST['prenom'];\n}\n```\n1. `isset($_POST['ok'])` vérifie l'envoi.\n2. `!empty($_POST['prenom'])` vérifie que le champ n'est pas vide.\n3. L'opérateur `&&` exige les deux conditions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi on peut avoir `isset($_POST['num'])` vrai alors que l'utilisateur n'a rien tapé, et corriger le test pour exiger un nombre entier.",
+          "solution_markdown": "1. Un champ texte laissé vide est tout de même envoyé, sous forme de chaîne vide : la clé `num` existe et vaut `''`, donc `isset` est vrai.\n2. Pour exiger un entier, on teste le contenu : `if (isset($_POST['num']) && ctype_digit($_POST['num']))` (vrai uniquement si la chaîne n'est composée que de chiffres, donc non vide).\n3. Dans le cas contraire, on affiche un message d'erreur invitant à saisir un nombre entier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`isset` teste l'existence d'une variable, jamais sa valeur ni sa validité.",
+        "Le bouton submit n'est envoyé que s'il a servi à valider : `isset($_POST['bouton'])` signifie « le formulaire a été soumis ».",
+        "Teste toujours la soumission avant de lire `$_POST`.",
+        "Pour contrôler le contenu, ajoute `empty`, `is_numeric` ou `ctype_digit`.",
+        "À l'examen, explique la ligne en deux temps : ce que `isset` teste et ce que cela évite au premier chargement de la page."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-panne-du-serveur-dhcp-et-adressage-apipa-tle-ti-2019",
+  "meta": {
+    "titre": "Panne du serveur DHCP et adressage APIPA",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Services réseau",
+    "duree_estimee_min": 22,
+    "tags": [
+      "DHCP",
+      "APIPA",
+      "169.254",
+      "dépannage réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q1.7-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un matin, personne ne peut plus se connecter au réseau de l'établissement : les ordinateurs affichent une adresse commençant par 169.254. Ce numéro n'est pas un hasard, c'est la signature d'une panne du serveur DHCP. Savoir lire ce signe et raisonner sur ses conséquences est une compétence d'administrateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce que fait un serveur DHCP",
+        "Savoir lire une adresse IPv4 et son masque"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux temps et une adresse de secours",
+      "contenu_markdown": "Quand le serveur DHCP est en panne, on raisonne en deux temps :\n\n1. **Les postes déjà configurés** gardent leur adresse jusqu'à la fin de leur bail ; ils fonctionnent encore, puis tombent dans le cas 2 à l'expiration.\n2. **Les postes qui démarrent ou dont le bail a expiré** n'obtiennent pas de configuration. Si la « configuration automatique » est activée (Windows), le poste s'attribue une adresse **APIPA** (*Automatic Private IP Addressing*) dans `169.254.0.0/16` avec le masque 255.255.0.0.\n\nConséquences de l'APIPA : communication possible uniquement avec les machines du même réseau local elles aussi en APIPA ; pas de passerelle, donc pas d'accès à Internet ni aux autres réseaux ; pas de DNS. Remèdes : relancer le service DHCP, attribuer des adresses fixes provisoires, puis `ipconfig /release` et `ipconfig /renew` sur les postes.",
+      "formule_principale": "\\text{pas de DHCP} \\Rightarrow \\text{adresse APIPA } 169.254.x.x \\Rightarrow \\text{communication locale seulement}",
+      "variantes": [
+        {
+          "nom": "Poste sans configuration automatique",
+          "quand_utiliser": "Quand la rubrique « Configuration automatique activée » est à Non",
+          "contenu_markdown": "Le poste reste alors sans adresse (`0.0.0.0`) ou avec la dernière adresse saisie manuellement : l'APIPA ne se déclenche pas."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer une conséquence de la panne du serveur DHCP dans le réseau de la capture de l'épreuve (rubrique « Configuration automatique activée : Oui »).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le rôle du DHCP",
+          "justification": "Il fournit adresse, masque, passerelle et DNS",
+          "resultat_markdown": "Sans lui, un poste n'obtient plus ces valeurs."
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser l'indice de la capture",
+          "justification": "« Configuration automatique activée : Oui » active l'APIPA sous Windows",
+          "resultat_markdown": "Le poste s'attribue une adresse `169.254.x.x` avec le masque 255.255.0.0."
+        },
+        {
+          "numero": 3,
+          "action": "Déduire la conséquence",
+          "justification": "Pas de passerelle, pas de DNS",
+          "resultat_markdown": "Plus d'accès à Internet ni aux autres réseaux ; communication locale possible seulement avec d'autres postes en APIPA."
+        },
+        {
+          "numero": 4,
+          "action": "Nuancer",
+          "justification": "Les baux déjà accordés restent valides jusqu'à leur expiration",
+          "resultat_markdown": "Les postes déjà configurés fonctionnent jusqu'à la fin des 24 h du bail."
+        }
+      ],
+      "conclusion_markdown": "Sans serveur DHCP, les postes qui ont besoin d'une adresse ne reçoivent plus de configuration valide et perdent l'accès à Internet."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que tout le réseau tombe immédiatement.",
+          "pourquoi_faux": "Les postes dont le bail est valide conservent leur configuration jusqu'à son expiration : la panne se propage progressivement.",
+          "correction_markdown": "Distinguer les postes déjà configurés des postes qui démarrent."
+        },
+        {
+          "erreur_markdown": "Prendre 169.254.x.x pour une adresse privée normale.",
+          "pourquoi_faux": "Cette plage est réservée à l'auto-configuration en l'absence de DHCP ; elle signale un problème d'attribution, pas une configuration choisie.",
+          "correction_markdown": "Associer toute adresse 169.254.x.x à une panne ou à une absence de DHCP."
+        },
+        {
+          "erreur_markdown": "Affirmer que les postes en APIPA peuvent aller sur Internet.",
+          "pourquoi_faux": "Une adresse APIPA n'a ni passerelle ni DNS : aucun paquet ne peut sortir du réseau local.",
+          "correction_markdown": "Conclure à une communication limitée au réseau local."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un poste affiche l'adresse 169.254.12.7 et le masque 255.255.0.0. Que signifie cette configuration ?",
+          "solution_markdown": "1. La plage 169.254.0.0/16 est celle de l'APIPA.\n2. Le poste n'a pas pu joindre de serveur DHCP et s'est attribué lui-même cette adresse.\n3. Il n'a ni passerelle ni DNS : aucun accès à Internet."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux ordinateurs en APIPA (169.254.1.10 et 169.254.200.20) sont branchés au même commutateur. Peuvent-ils s'échanger des fichiers ? Pourquoi ?",
+          "solution_markdown": "1. Les deux adresses sont dans le même réseau 169.254.0.0/16 (masque 255.255.0.0, les deux premiers octets sont identiques).\n2. Ils sont sur le même réseau local, reliés par un commutateur : ils peuvent communiquer.\n3. En revanche, ils ne peuvent joindre aucune machine d'un autre réseau, faute de passerelle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Après redémarrage du serveur DHCP, un poste garde 169.254.x.x. Quelles commandes saisis-tu pour obtenir une nouvelle configuration ? Quelle vérification fais-tu ensuite ?",
+          "solution_markdown": "1. `ipconfig /release` libère la configuration actuelle.\n2. `ipconfig /renew` relance la demande au serveur DHCP.\n3. `ipconfig /all` permet de vérifier : une adresse du réseau (par exemple 172.16.x.x) doit apparaître avec la passerelle et le DNS, et « Bail obtenu » doit afficher une date récente.\n4. Si l'adresse reste en 169.254.x.x, tester le câble, le port du commutateur puis la joignabilité du serveur DHCP."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sans DHCP, les postes ne reçoivent plus de configuration : c'est la conséquence à citer.",
+        "Les postes déjà configurés gardent leur adresse jusqu'à la fin du bail.",
+        "Sous Windows, l'absence de DHCP donne une adresse APIPA en 169.254.x.x, utilisable en local seulement.",
+        "Sans passerelle ni DNS, plus d'accès à Internet.",
+        "À l'examen, une phrase simple suffit pour une conséquence ; ajoute l'APIPA si tu veux montrer ta maîtrise."
+      ]
+    }
+  ]
+}

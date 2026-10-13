@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-expliquer-une-formule-de-tableur-avec-la-fonction-rang-tle-a-abi-2024",
+  "meta": {
+    "titre": "Expliquer une formule de tableur avec la fonction RANG",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Tableur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "fonction RANG",
+      "référence absolue",
+      "référence relative",
+      "formule"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat A et ABI, session 2024 (Cameroun, reproduction Camerecole)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2024-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un tableur, trier les candidats par moyenne déplacerait toutes les lignes. La fonction RANG fait mieux : elle ajoute à côté de chaque moyenne sa place dans le classement sans rien déplacer. Savoir lire une telle formule, et expliquer en trois lignes ce qu'elle fait, est une question de l'épreuve."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une cellule et comment on la désigne (colonne puis ligne, par exemple C3)",
+        "Savoir qu'une plage de cellules s'écrit avec deux points : C2:C8",
+        "Savoir qu'une formule commence par le signe égal"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire `RANG` argument par argument",
+      "contenu_markdown": "Syntaxe : `=RANG(valeur ; plage ; ordre)`\n\n- **valeur** : la cellule dont on cherche le rang ;\n- **plage** : les cellules avec lesquelles on la compare ;\n- **ordre** (facultatif) : 0 ou absent pour un classement décroissant (la plus grande valeur a le rang 1), 1 pour un classement croissant.\n\n**Références** : une référence relative (`C3`) se décale quand on recopie la formule vers le bas (elle devient `C4`, `C5`...). Une référence absolue (`$C$2`) reste figée, car les signes `$` bloquent la lettre et le numéro. On fige la plage pour que chaque ligne soit comparée aux mêmes cellules.\n\n**Méthode pour expliquer en trois lignes** : ligne 1, ce que renvoie la fonction ; ligne 2, le sens de l'ordre ; ligne 3, le rôle des signes `$`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer en trois lignes la formule `=RANG(C3;$C$2:$C$8)`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Nommer la fonction",
+          "justification": "RANG est la fonction de classement ; elle renvoie un nombre.",
+          "resultat_markdown": "RANG renvoie la position d'une valeur parmi d'autres."
+        },
+        {
+          "numero": 2,
+          "action": "Lire le premier argument",
+          "justification": "`C3` est une référence relative : c'est la valeur testée.",
+          "resultat_markdown": "On cherche le rang de la valeur contenue en C3."
+        },
+        {
+          "numero": 3,
+          "action": "Lire le deuxième argument",
+          "justification": "`$C$2:$C$8` désigne sept cellules, de C2 à C8 ; les signes `$` la rendent absolue.",
+          "resultat_markdown": "La comparaison se fait avec les cellules C2 à C8, plage figée."
+        },
+        {
+          "numero": 4,
+          "action": "Lire l'ordre",
+          "justification": "Il n'est pas écrit, donc il vaut 0 par défaut.",
+          "resultat_markdown": "Classement décroissant : la plus grande valeur obtient le rang 1."
+        },
+        {
+          "numero": 5,
+          "action": "Rédiger en trois lignes",
+          "justification": "Une ligne par idée : fonction, ordre, références.",
+          "resultat_markdown": "Cette formule calcule le rang de la valeur de C3 parmi celles de C2:C8. Le rang 1 revient à la plus grande valeur. Les signes `$` figent la plage lors de la recopie vers le bas."
+        }
+      ],
+      "conclusion_markdown": "La formule classe la valeur de C3 dans la plage C2:C8, sans déplacer aucune donnée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que la formule « trie » les cellules.",
+          "pourquoi_faux": "Le tri déplace les lignes ; RANG laisse les données à leur place et renvoie seulement un nombre dans la cellule où elle est écrite.",
+          "correction_markdown": "Écris : « calcule le rang », « renvoie la position »."
+        },
+        {
+          "erreur_markdown": "Oublier les signes `$` dans la plage et recopier la formule vers le bas.",
+          "pourquoi_faux": "La plage devient C3:C9 puis C4:C10 : chaque ligne est comparée à des cellules différentes et le classement est faux, sans message d'erreur.",
+          "correction_markdown": "Fige la plage avec `$C$2:$C$8` avant de recopier."
+        },
+        {
+          "erreur_markdown": "Croire que le rang 1 est la plus petite valeur.",
+          "pourquoi_faux": "Sans l'argument ordre, ou avec 0, le classement est décroissant : le rang 1 est la plus grande valeur.",
+          "correction_markdown": "Retiens : ordre absent ou 0 donne 1 à la plus grande valeur ; ordre égal à 1 donne 1 à la plus petite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Expliquer la formule `=RANG(B2;$B$2:$B$5)`. Les valeurs de B2 à B5 sont 12, 15, 9, 15. Quel est le résultat de la formule écrite en C2 ?",
+          "solution_markdown": "**Lecture** : la fonction RANG cherche le rang de B2 (12) parmi B2:B5 (12, 15, 9, 15), plage figée par les signes `$`, classement décroissant.\n\n**Calcul** : on classe du plus grand au plus petit : 15, 15, 12, 9. Les deux valeurs 15 sont ex æquo au rang 1 ; le rang 2 n'est donné à personne ; 12 occupe la troisième position.\n\nAutre façon de compter : le rang vaut 1 plus le nombre de valeurs strictement supérieures. Il y a deux valeurs supérieures à 12 (les deux 15), donc 1 + 2 = 3.\n\n**Résultat** : la formule renvoie 3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les moyennes de cinq élèves sont dans E2:E6 : 14, 17, 11, 17, 9. Écrire la formule du rang en F2, puis donner les rangs obtenus de F2 à F6.",
+          "solution_markdown": "**Formule en F2** : `=RANG(E2;$E$2:$E$6;0)`. L'argument 0 impose un classement décroissant. Pour les lignes suivantes, on recopie vers le bas : F3 devient `=RANG(E3;$E$2:$E$6;0)`, et ainsi de suite.\n\n**Calcul des rangs** (rang = 1 + nombre de valeurs strictement supérieures) :\n\n- E2 = 14 : deux valeurs supérieures (17 et 17), rang 1 + 2 = 3 ;\n- E3 = 17 : aucune valeur supérieure, rang 1 ;\n- E4 = 11 : trois valeurs supérieures (14, 17, 17), rang 1 + 3 = 4 ;\n- E5 = 17 : rang 1 ;\n- E6 = 9 : quatre valeurs supérieures, rang 1 + 4 = 5.\n\n**Résultat** : F2 à F6 valent 3, 1, 4, 1, 5."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève écrit `=RANG(E2;E2:E6)` en F2 puis recopie la formule jusqu'en F6 (mêmes moyennes qu'à l'exercice précédent, la colonne E ne contient rien sous E6). Écris les formules obtenues en F3 et F4, calcule les résultats de F2 à F6 et explique l'erreur.",
+          "solution_markdown": "**Formules recopiées** : aucune référence n'est figée, donc la plage glisse d'une ligne à chaque recopie. F3 contient `=RANG(E3;E3:E7)`, F4 contient `=RANG(E4;E4:E8)`, F5 contient `=RANG(E5;E5:E9)`, F6 contient `=RANG(E6;E6:E10)`.\n\n**Résultats** (les cellules vides sont ignorées) :\n\n- F2 : E2 = 14 dans E2:E6 (14, 17, 11, 17, 9) : deux valeurs supérieures, rang 3 ;\n- F3 : 17 dans E3:E7 (17, 11, 17, 9, vide) : aucune valeur supérieure, rang 1 ;\n- F4 : 11 dans E4:E8 (11, 17, 9, vide, vide) : une valeur supérieure (17), rang 2 ;\n- F5 : 17 dans E5:E9 (17, 9, vides) : rang 1 ;\n- F6 : 9 dans E6:E10 (9 seul) : rang 1.\n\n**Résultat** : 3, 1, 2, 1, 1, alors que les vrais rangs sont 3, 1, 4, 1, 5.\n\n**Explication** : la plage n'est pas absolue. À chaque ligne, elle perd les moyennes situées au-dessus et se compare à des cellules vides, donc les rangs sont trop petits. Correction : écrire `$E$2:$E$6` en F2."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`RANG(valeur ; plage ; ordre)` : la fonction renvoie un nombre et ne déplace aucune ligne.",
+        "Ordre absent ou égal à 0 : la plus grande valeur reçoit le rang 1.",
+        "Les signes `$` figent la plage ; sans eux, la recopie vers le bas fausse tous les rangs sans alerte.",
+        "Des valeurs ex æquo partagent le même rang et le rang suivant est sauté.",
+        "Au BAC série A, la question « expliquer ce que fait la formule » se retrouve presque chaque année : réponds en trois lignes, une pour la fonction, une pour l'ordre, une pour les références."
+      ]
+    }
+  ]
+}

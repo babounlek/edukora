@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-formule-taux-tableur-bac-acd-2014",
+  "meta": {
+    "titre": "Calculer un taux ou un pourcentage avec une formule de tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Tableur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "taux",
+      "pourcentage",
+      "référence relative",
+      "recopie incrémentée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-2014-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat, Épreuve théorique d'Informatique, Séries A, C, D, session 2014",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-2014-officiel-cameroun-ex3-qIII.3.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un taux de réussite de 88 % parle davantage qu'une phrase comme « 440 élèves sur 500 ont réussi ». Les établissements calculent ce genre de taux pour chaque classe, et un tableur sait le faire en une formule qu'on recopie ensuite sur toutes les lignes. Ce cours te montre comment écrire cette formule sans te tromper de sens."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer un pourcentage à la main (partie divisée par total)",
+        "Savoir écrire une formule simple dans un tableur avec des références de cellules"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Taux = partie divisée par total",
+      "contenu_markdown": "Un **taux** est le rapport entre une partie et un total. En tableur, on traduit la définition par une division de références de cellules, précédée du signe `=`.\n\nPour obtenir un pourcentage, on a deux possibilités :\n\n- écrire `=partie/total` puis appliquer le **format Pourcentage** à la cellule ;\n- écrire `=partie/total*100`, le résultat étant directement exprimé en %.\n\nLes références sont dites **relatives** : en recopiant la formule vers le bas, les numéros de ligne s'adaptent d'eux-mêmes.",
+      "formule_principale": "\\text{Taux} = \\dfrac{\\text{effectif ayant réussi}}{\\text{effectif total}}",
+      "variantes": [
+        {
+          "nom": "Fixer une cellule de référence",
+          "quand_utiliser": "Quand tous les taux se calculent par rapport à un même total",
+          "contenu_markdown": "Si le dénominateur est toujours la même cellule, on la fige avec le symbole dollar placé devant la lettre et le numéro, de sorte qu'elle ne bouge pas à la recopie. Ce n'est pas nécessaire dans cet exercice, où chaque ligne a son propre dénominateur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le tableau, B2 contient l'effectif de la 6ème (500) et C2 le nombre d'élèves ayant une moyenne supérieure à 10 (440). Donner la formule de la cellule D2 pour calculer le taux de réussite.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire la définition en division",
+          "justification": "Le taux de réussite est le nombre d'élèves ayant la moyenne divisé par l'effectif de la classe.",
+          "resultat_markdown": "Taux = ayant la moyenne / effectif."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les cellules",
+          "justification": "Le numérateur est en C2 et le dénominateur en B2.",
+          "resultat_markdown": "Numérateur C2, dénominateur B2."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la formule",
+          "justification": "On commence par =, puis numérateur, barre de fraction, dénominateur.",
+          "resultat_markdown": "`=C2/B2`"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer",
+          "justification": "440 / 500 donne 0,88.",
+          "resultat_markdown": "D2 vaut 0,88."
+        },
+        {
+          "numero": 5,
+          "action": "Mettre en forme",
+          "justification": "Le format Pourcentage multiplie par 100 à l'affichage.",
+          "resultat_markdown": "D2 affiche 88 %."
+        }
+      ],
+      "conclusion_markdown": "La formule `=C2/B2` donne un taux de réussite de 0,88, soit 88 %, pour la 6ème."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser numérateur et dénominateur, `=B2/C2`.",
+          "pourquoi_faux": "On obtiendrait 500/440, soit 1,136 : un taux de réussite supérieur à 100 % est impossible.",
+          "correction_markdown": "Le total est toujours le dénominateur ; vérifie que ton taux est entre 0 et 1."
+        },
+        {
+          "erreur_markdown": "Écrire `=440/500` avec les nombres recopiés.",
+          "pourquoi_faux": "Le résultat est juste pour cette ligne, mais la formule ne se recopie pas et ne suit pas les modifications du tableau.",
+          "correction_markdown": "Utilise les références de cellules."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir en pourcentage et écrire 0,88 là où l'on attend 88 %.",
+          "pourquoi_faux": "Selon la consigne, le taux peut devoir s'exprimer en pourcentage ; sans format ou sans le facteur 100, la présentation n'est pas conforme.",
+          "correction_markdown": "Applique le format Pourcentage, ou multiplie par 100."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la formule du taux de réussite de la 5ème en D3, avec B3 = 400 et C3 = 360, puis calcule-le.",
+          "solution_markdown": "Formule : `=C3/B3`.\nCalcul : 360 / 400 = 0,9, soit 90 %."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la formule en D4 pour la 4ème (B4 = 480, C4 = 400), puis donne le résultat en pourcentage arrondi au dixième.",
+          "solution_markdown": "Formule : `=C4/B4`.\nCalcul : 400 / 480 = 5/6 = 0,83333...\nEn pourcentage : 83,333... %, soit 83,3 % arrondi au dixième."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris la formule du taux de réussite global du lycée en D6, sachant que C6 contient le total des élèves ayant la moyenne (1500) et B6 le total des élèves (1740). Le taux global est-il la moyenne des quatre taux ?",
+          "solution_markdown": "Étape 1 : formule en D6 : `=C6/B6`.\nÉtape 2 : 1500 / 1740 = 0,8620..., soit 86,2 %.\nÉtape 3 : moyenne simple des quatre taux : (0,88 + 0,9 + 0,8333 + 0,8333) / 4 = 3,4466 / 4 = 0,8617, soit 86,2 %. Les deux valeurs sont proches mais pas identiques en général, car les classes n'ont pas le même effectif : le taux global se calcule avec les totaux, pas en moyennant les taux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Taux = partie / total : la partie est au numérateur, le total au dénominateur.",
+        "Écris la formule avec des références de cellules, jamais avec des nombres recopiés.",
+        "`=C2/B2` donne un nombre entre 0 et 1 ; le format Pourcentage l'affiche en %.",
+        "Un taux de réussite supérieur à 100 % signale une division à l'envers.",
+        "Au BAC, cette question suit presque toujours la formule de somme, avec une note de 2 points."
+      ]
+    }
+  ]
+}

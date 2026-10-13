@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-identifier-le-titre-dune-page-web-balise-title-tle-ti",
+  "meta": {
+    "titre": "Le titre d'une page web : la balise title",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structure d'une page HTML",
+    "duree_estimee_min": 15,
+    "tags": [
+      "HTML",
+      "balise title",
+      "en-tête head",
+      "titre de page",
+      "onglet"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1-q9.a-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Regarde l'onglet de ton navigateur : il porte un petit texte qui n'apparaît nulle part dans la page elle-même. Ce texte est le nom de la page, et un sujet peut te demander de l'identifier ou de le reproduire. Mieux vaut ne pas le confondre avec le titre affiché dans la page ni avec le nom du fichier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'un document HTML : `html`, `head`, `body`",
+        "Savoir lire l'onglet d'un navigateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise title dans l'en-tête",
+      "contenu_markdown": "Un document HTML se compose de deux zones : l'en-tête `<head>`, qui contient les informations sur la page, et le corps `<body>`, qui contient ce que l'on voit. Le **nom de la page** est le texte de la balise `<title>` placée dans l'en-tête :\n\n```html\n<html>\n<head>\n<title>Ma page de test</title>\n</head>\n<body>\n...\n</body>\n</html>\n```\n\nLe navigateur affiche ce texte dans l'onglet et dans la barre de titre de la fenêtre. Trois choses à distinguer :\n\n- le **titre de la page** (balise `<title>`), visible dans l'onglet ;\n- le **titre dans la page** (balises `<h1>` à `<h6>`), visible dans le corps ;\n- le **nom du fichier** (`index.html`, `script1.php`), visible dans la barre d'adresse.",
+      "formule_principale": "\\text{nom de la page} = \\text{texte de } \\texttt{<title>} \\text{ (dans l'onglet)}",
+      "variantes": [
+        {
+          "nom": "Page sans balise title",
+          "quand_utiliser": "Quand le document n'a pas de balise title",
+          "contenu_markdown": "Le navigateur affiche à la place le nom ou l'adresse du fichier dans l'onglet. C'est pourquoi on écrit toujours un titre explicite."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur la capture d'une page affichée par un navigateur, l'onglet porte le texte « Ma page de test ». Identifier le nom de la page et dire quelle balise le définit.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Regarder l'onglet",
+          "justification": "Le titre de la page est affiché dans l'onglet du navigateur",
+          "resultat_markdown": "L'onglet affiche « Ma page de test »."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter la barre d'adresse",
+          "justification": "Elle montre l'emplacement du fichier, pas le nom de la page",
+          "resultat_markdown": "Le chemin `file:///C:/Users/...` est un chemin local, coupé sur la capture."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter les titres du corps",
+          "justification": "Le corps de la page ne contient que des libellés de champs et un bouton, aucun titre",
+          "resultat_markdown": "Aucun `<h1>` visible."
+        },
+        {
+          "numero": 4,
+          "action": "Nommer la balise",
+          "justification": "Le texte de l'onglet vient de la balise title de l'en-tête",
+          "resultat_markdown": "`<title>Ma page de test</title>`."
+        }
+      ],
+      "conclusion_markdown": "Le nom de la page est « Ma page de test », défini par la balise `<title>` de l'en-tête du document."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre le nom du fichier pour le nom de la page.",
+          "pourquoi_faux": "Le nom du fichier est dans la barre d'adresse ; le nom de la page est le texte de l'onglet. Les deux peuvent être très différents.",
+          "correction_markdown": "Lis l'onglet, pas la barre d'adresse."
+        },
+        {
+          "erreur_markdown": "Confondre `<title>` et `<h1>`.",
+          "pourquoi_faux": "`<title>` vit dans l'en-tête et s'affiche dans l'onglet ; `<h1>` vit dans le corps et s'affiche dans la page.",
+          "correction_markdown": "Si le texte est dans l'onglet, c'est le title."
+        },
+        {
+          "erreur_markdown": "Mettre la balise `<title>` dans le corps du document.",
+          "pourquoi_faux": "La balise est valable seulement dans l'en-tête `<head>`. Placée ailleurs, elle peut être ignorée ou mal interprétée.",
+          "correction_markdown": "Écris `<title>` entre `<head>` et `</head>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris l'en-tête d'une page dont l'onglet doit afficher « Accueil ».",
+          "solution_markdown": "```html\n<head>\n<title>Accueil</title>\n</head>\n```\n\nLa balise `<title>` est placée dans `<head>`, et son texte s'affiche dans l'onglet."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève constate que l'onglet de sa page affiche `essai.html` au lieu d'un titre. Explique pourquoi et comment corriger.",
+          "solution_markdown": "Le document ne contient pas de balise `<title>` : le navigateur affiche à la place le nom du fichier.\n\nPour corriger, on ajoute dans l'en-tête `<title>Mon titre</title>`, avec le texte voulu pour l'onglet."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour une page de bienvenue d'une école, écris le code d'une page dont l'onglet affiche « École de Garoua » et dont le corps affiche le grand titre « Bienvenue ». Précise lequel est le titre de la page.",
+          "solution_markdown": "```html\n<html>\n<head>\n<title>École de Garoua</title>\n</head>\n<body>\n<h1>Bienvenue</h1>\n</body>\n</html>\n```\n\nLe **titre de la page** est « École de Garoua » (balise `<title>`, visible dans l'onglet). « Bienvenue » est un titre de contenu (balise `<h1>`, visible dans la page)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le nom d'une page est le texte de la balise `<title>`, placée dans `<head>`.",
+        "Il s'affiche dans l'onglet et la barre de titre, jamais dans le corps de la page.",
+        "Ne le confonds pas avec le `<h1>` (dans la page) ni avec le nom du fichier (dans l'adresse).",
+        "Quand on te demande de reproduire une page, recopie son titre exactement dans `<title>`.",
+        "Au BAC TI, c'est une question d'observation à 0,5 point : regarde l'onglet."
+      ]
+    }
+  ]
+}

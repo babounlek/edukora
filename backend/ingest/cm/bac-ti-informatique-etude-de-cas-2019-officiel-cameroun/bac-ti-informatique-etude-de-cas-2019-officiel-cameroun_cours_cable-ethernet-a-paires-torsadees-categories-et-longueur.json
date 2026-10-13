@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-cable-ethernet-a-paires-torsadees-categories-et-longueur-tle-ti-2019",
+  "meta": {
+    "titre": "Câble Ethernet à paires torsadées : catégories et longueur",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Supports de transmission",
+    "duree_estimee_min": 22,
+    "tags": [
+      "UTP",
+      "STP",
+      "catégorie 5e",
+      "RJ45"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une boutique d'informatique, les câbles réseau portent des mentions comme « Cat 5e » ou « Cat 6 » qui paraissent mystérieuses. Elles disent pourtant le débit et la fréquence que le câble supporte. Savoir lire ces mentions te permet de choisir le bon câble pour un réseau domestique ou une salle de classe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un câble réseau",
+        "Connaître la notion de débit en Mbit/s et en Gbit/s"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Type, catégorie et longueur",
+      "contenu_markdown": "Un câble Ethernet courant contient **4 paires de fils de cuivre torsadées** et se termine par des connecteurs **RJ45**. Le torsadage limite les interférences entre paires.\n\n**Blindage** : UTP (*Unshielded Twisted Pair*, non blindé), le plus courant en réseau domestique ; FTP et STP (blindés) pour les environnements perturbés.\n\n| Catégorie | Débit usuel | Fréquence |\n|---|---|---|\n| 5 | 100 Mbit/s | 100 MHz |\n| 5e | 1 Gbit/s | 100 MHz |\n| 6 | 1 Gbit/s (10 Gbit/s jusqu'à 55 m) | 250 MHz |\n| 6a | 10 Gbit/s | 500 MHz |\n\n**Longueur** : un segment est limité à **100 m** (90 m de câblage fixe plus 10 m de cordons). Au-delà, le signal est trop atténué : il faut un commutateur intermédiaire ou une fibre optique.",
+      "formule_principale": "\\text{longueur d'un segment} \\le 100\\ \\text{m}",
+      "variantes": [
+        {
+          "nom": "Câble blindé",
+          "quand_utiliser": "Quand l'environnement est fortement perturbé (moteurs, forte densité de câbles électriques)",
+          "contenu_markdown": "On choisit un câble blindé (FTP ou STP), relié à la terre à une extrémité, qui protège mieux des perturbations ; il est plus cher et plus rigide."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Choisir le type de câble le plus adapté pour relier quatre ordinateurs et une imprimante dans une maison de 100 m² à un commutateur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la famille de câble",
+          "justification": "Réseau local domestique, courtes distances",
+          "resultat_markdown": "Paire torsadée, terminée par des connecteurs RJ45."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir le blindage",
+          "justification": "Peu de perturbations électromagnétiques dans une maison",
+          "resultat_markdown": "UTP, non blindé, moins cher et plus souple."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir la catégorie",
+          "justification": "Le besoin de 1 Gbit/s est couvert par la catégorie 5e",
+          "resultat_markdown": "Catégorie 5e (ou 6 pour garder de la marge)."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la longueur",
+          "justification": "Chaque segment est limité à 100 m",
+          "resultat_markdown": "Dans une maison, les liaisons font quelques mètres à quelques dizaines de mètres : la limite n'est pas atteinte."
+        }
+      ],
+      "conclusion_markdown": "Le câble le plus adapté est le câble UTP de catégorie 5e ou 6 à connecteurs RJ45."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Proposer un câble coaxial.",
+          "pourquoi_faux": "Le câble coaxial servait aux anciens réseaux Ethernet en bus (10BASE2) ; il n'est plus utilisé en réseau local actuel.",
+          "correction_markdown": "Proposer la paire torsadée à connecteurs RJ45."
+        },
+        {
+          "erreur_markdown": "Ignorer la limite des 100 m.",
+          "pourquoi_faux": "Au-delà, le signal est atténué et les erreurs se multiplient ; la limite fait partie de la norme.",
+          "correction_markdown": "Vérifier la longueur de chaque segment avant de choisir le câble."
+        },
+        {
+          "erreur_markdown": "Croire que « Cat 6 » est toujours 10 fois plus rapide que « Cat 5e ».",
+          "pourquoi_faux": "En pratique, les deux atteignent 1 Gbit/s sur 100 m ; la catégorie 6 offre surtout une meilleure marge et le 10 Gbit/s sur de courtes distances.",
+          "correction_markdown": "Lire les débits précis dans la norme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner le nom complet du sigle UTP et le type de connecteur d'un câble Ethernet.",
+          "solution_markdown": "1. UTP : *Unshielded Twisted Pair*, paire torsadée non blindée.\n2. Le connecteur est le RJ45 (8 broches)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un technicien doit relier un poste à un commutateur distant de 130 m dans un bâtiment. Le câble UTP convient-il ? Propose deux solutions.",
+          "solution_markdown": "1. Non : 130 m dépasse la limite de 100 m par segment.\n2. Solution 1 : placer un commutateur intermédiaire à mi-chemin, ce qui découpe le trajet en deux segments de 65 m.\n3. Solution 2 : utiliser une fibre optique pour cette liaison, qui couvre cette distance sans difficulté."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une salle de 20 postes subit des perturbations de gros moteurs voisins. Quel câble choisir et pourquoi ? Quel débit peut-on garantir ?",
+          "solution_markdown": "1. Les perturbations électromagnétiques parasitent les paires non blindées : on choisit un câble blindé (FTP ou STP) de catégorie 6, avec des connecteurs et prises blindés reliés à la terre.\n2. Le blindage réduit l'influence des moteurs, en complément du torsadage.\n3. Le débit garanti est de 1 Gbit/s par poste sur au plus 100 m ; si la perturbation reste trop forte, la fibre optique, insensible aux perturbations électromagnétiques, devient la solution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un câble Ethernet courant a 4 paires torsadées et un connecteur RJ45.",
+        "UTP signifie paire torsadée non blindée ; FTP et STP sont blindés.",
+        "Catégorie 5e : 1 Gbit/s ; catégorie 6 : 1 Gbit/s avec plus de marge ; catégorie 6a : 10 Gbit/s.",
+        "Un segment ne dépasse pas 100 m.",
+        "À l'examen, réponds précisément : « paire torsadée UTP catégorie 5e ou 6, connecteur RJ45 »."
+      ]
+    }
+  ]
+}

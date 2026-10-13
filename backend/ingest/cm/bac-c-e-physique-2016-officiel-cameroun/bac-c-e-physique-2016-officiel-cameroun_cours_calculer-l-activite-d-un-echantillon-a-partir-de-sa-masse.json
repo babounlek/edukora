@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-calculer-l-activite-d-un-echantillon-a-partir-de-sa-masse-tle-c-e-2016",
+  "meta": {
+    "titre": "Calculer l'activité d'un échantillon à partir de sa masse",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Radioactivité : activité",
+    "duree_estimee_min": 25,
+    "tags": [
+      "activité d'un échantillon radioactif",
+      "quantité de matière",
+      "constante d'Avogadro",
+      "becquerel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2016-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat C, E - Physique 2016 (Cameroun, officiel)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-e-physique-2016-officiel-cameroun-ex3-q1.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un milligramme de matière paraît inoffensif. Pourtant, s'il est radioactif, il peut émettre des millions de milliards de désintégrations par seconde. Pour calculer cette activité à partir de la masse, il faut enchaîner quatre formules du programme : masse, quantité de matière, nombre de noyaux, activité. Une chaîne simple, à condition de surveiller les unités."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Quantité de matière $n = \\dfrac{m}{M}$",
+        "Constante d'Avogadro $N_A$ : nombre d'entités par mole",
+        "Loi de décroissance et constante radioactive $\\lambda$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Activité d'un échantillon",
+      "contenu_markdown": "L'activité $A$ d'un échantillon est le nombre moyen de désintégrations par seconde (en becquerels, Bq) :\n\n$$A = \\lambda\\,N = -\\dfrac{dN}{dt}$$\n\nLe nombre de noyaux se déduit de la masse : $N = n\\,N_A = \\dfrac{m}{M}\\,N_A$. La chaîne de calcul est donc $m \\to n \\to N \\to A$, avec $m$ en grammes quand $M$ est en g/mol, et $\\lambda$ en s$^{-1}$ pour obtenir des Bq.",
+      "formule_principale": "A = \\lambda\\,N = \\lambda\\,\\dfrac{m}{M}\\,N_A",
+      "variantes": [
+        {
+          "nom": "Activité à une date quelconque",
+          "quand_utiliser": "Quand on connaît l'activité initiale",
+          "contenu_markdown": "$A(t) = A_0\\,e^{-\\lambda t}$ : l'activité décroît comme le nombre de noyaux."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un échantillon contient $m = 1$ mg de bismuth 212 ($M = 212$ g/mol, $\\lambda = 1{,}906\\times10^{-4}$ s$^{-1}$, $N_A = 6{,}02\\times10^{23}$ mol$^{-1}$). Déterminer son activité.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la masse",
+          "justification": "$M$ est en g/mol : la masse doit être en grammes",
+          "resultat_markdown": "$m = 1\\ \\text{mg} = 1\\times10^{-3}$ g"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la quantité de matière",
+          "justification": "$n = \\dfrac{m}{M}$",
+          "resultat_markdown": "$n = \\dfrac{1\\times10^{-3}}{212} = 4{,}717\\times10^{-6}$ mol"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le nombre de noyaux",
+          "justification": "$N = n\\,N_A$",
+          "resultat_markdown": "$N = 4{,}717\\times10^{-6}\\times 6{,}02\\times10^{23} = 2{,}84\\times10^{18}$ noyaux"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'activité",
+          "justification": "$A = \\lambda\\,N$",
+          "resultat_markdown": "$A = 1{,}906\\times10^{-4}\\times 2{,}84\\times10^{18} = 5{,}41\\times10^{14}$ Bq"
+        }
+      ],
+      "conclusion_markdown": "L'activité de l'échantillon est $A \\approx 5{,}4\\times10^{14}$ Bq : plus de cinq cent mille milliards de désintégrations par seconde."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mélanger grammes et kilogrammes",
+          "pourquoi_faux": "La masse molaire est en g/mol : avec $m$ en kg, on obtient un nombre de noyaux $1\\,000$ fois trop grand.",
+          "correction_markdown": "Écris la conversion $1$ mg $= 10^{-3}$ g avant de diviser par $M$."
+        },
+        {
+          "erreur_markdown": "Utiliser $\\lambda$ en heures$^{-1}$ ou en an$^{-1}$ et conclure en Bq",
+          "pourquoi_faux": "Le becquerel est une désintégration par seconde : $\\lambda$ doit être en s$^{-1}$, sinon l'activité n'est pas en Bq.",
+          "correction_markdown": "Contrôle l'homogénéité : s$^{-1}\\times$ (nombre pur) = Bq."
+        },
+        {
+          "erreur_markdown": "Confondre l'activité $A$ et le nombre de noyaux $N$",
+          "pourquoi_faux": "$N$ est un nombre de noyaux (sans unité) ; $A$ est un taux de désintégration (en Bq). Leur rapport est $\\lambda$.",
+          "correction_markdown": "Écris l'unité à côté de chaque résultat intermédiaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon contient $N = 1{,}0\\times10^{20}$ noyaux d'un radioélément de constante radioactive $\\lambda = 2{,}0\\times10^{-5}$ s$^{-1}$. Calculer son activité.",
+          "solution_markdown": "$A = \\lambda\\,N = 2{,}0\\times10^{-5}\\times 1{,}0\\times10^{20} = 2{,}0\\times10^{15}$ Bq."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une source contient $2{,}0$ g de cobalt 60 ($M = 60$ g/mol, période $T = 5{,}27$ ans). Calculer l'activité de cette source. On prendra $1$ an $= 3{,}15\\times10^{7}$ s.",
+          "solution_markdown": "**Nombre de noyaux.** $N = \\dfrac{m}{M}\\,N_A = \\dfrac{2{,}0}{60}\\times 6{,}02\\times10^{23} = 2{,}01\\times10^{22}$.\n\n**Constante radioactive.** $T = 5{,}27\\times 3{,}15\\times10^{7} = 1{,}66\\times10^{8}$ s, donc $\\lambda = \\dfrac{\\ln 2}{T} = \\dfrac{0{,}693}{1{,}66\\times10^{8}} = 4{,}18\\times10^{-9}$ s$^{-1}$.\n\n**Activité.** $A = \\lambda\\,N = 4{,}18\\times10^{-9}\\times 2{,}01\\times10^{22} = 8{,}4\\times10^{13}$ Bq."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quelle masse de bismuth 212 faut-il pour obtenir une activité de $1{,}0$ MBq ($\\lambda = 1{,}906\\times10^{-4}$ s$^{-1}$, $M = 212$ g/mol, $N_A = 6{,}02\\times10^{23}$ mol$^{-1}$) ?",
+          "solution_markdown": "On remonte la chaîne : $N = \\dfrac{A}{\\lambda} = \\dfrac{1{,}0\\times10^{6}}{1{,}906\\times10^{-4}} = 5{,}25\\times10^{9}$ noyaux.\n\n$m = \\dfrac{N\\,M}{N_A} = \\dfrac{5{,}25\\times10^{9}\\times 212}{6{,}02\\times10^{23}} = 1{,}85\\times10^{-12}$ g.\n\nIl suffit de moins de deux picogrammes : un bon exemple de la puissance de l'activité des radioéléments de courte période."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'activité est $A = \\lambda\\,N$, en becquerels (désintégrations par seconde).",
+        "Le nombre de noyaux se calcule avec $N = \\dfrac{m}{M}\\,N_A$ : chaîne masse, quantité de matière, nombre de noyaux, activité.",
+        "Les unités commandent : $m$ en g avec $M$ en g/mol, $\\lambda$ en s$^{-1}$ pour des Bq.",
+        "Un radioélément de courte période est très actif pour une masse minuscule.",
+        "Au BAC, le calcul d'une activité à partir d'une masse revient chaque année : retiens la chaîne en quatre formules."
+      ]
+    }
+  ]
+}

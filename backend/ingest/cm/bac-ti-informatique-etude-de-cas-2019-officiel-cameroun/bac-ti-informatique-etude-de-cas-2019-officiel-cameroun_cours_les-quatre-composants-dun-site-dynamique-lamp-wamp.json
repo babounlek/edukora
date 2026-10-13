@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-les-quatre-composants-dun-site-dynamique-lamp-wamp-tle-ti-2019",
+  "meta": {
+    "titre": "Les quatre composants d'un site dynamique (LAMP, WAMP)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Architecture d'un site web dynamique",
+    "duree_estimee_min": 22,
+    "tags": [
+      "LAMP",
+      "WAMP",
+      "Apache",
+      "MySQL",
+      "architecture web"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu commandes sur un site, ta demande traverse plusieurs logiciels avant de revenir sous forme de page. Chacun a un rôle précis et ils forment une pile que les informaticiens désignent par un sigle de quatre lettres. Retenir ce sigle, c'est retenir les quatre noms que le sujet demande."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir distinguer client et serveur",
+        "Connaître le rôle d'un système d'exploitation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La pile logicielle d'un site dynamique",
+      "contenu_markdown": "Un site dynamique génère ses pages à la demande à partir de données. Il repose sur quatre composants installés sur le serveur :\n\n| Lettre | Composant | Rôle |\n|---|---|---|\n| L ou W (ou M) | **Système d'exploitation** : Linux, Windows (ou macOS) | fait fonctionner la machine et héberge les autres logiciels |\n| A | **Serveur web Apache** | reçoit les requêtes HTTP et renvoie les réponses |\n| M | **SGBD MySQL** (ou MariaDB) | stocke les données et répond aux requêtes SQL |\n| P | **Interpréteur PHP** | exécute les scripts et produit le HTML |\n\nUne requête suit le chemin : navigateur, Apache, PHP, MySQL ; la réponse revient dans l'ordre inverse. Les sigles **LAMP** (Linux), **WAMP** (Windows) et **MAMP** (macOS) désignent la même pile selon le système.",
+      "formule_principale": "\\text{LAMP} = \\text{Linux} + \\text{Apache} + \\text{MySQL} + \\text{PHP} \\qquad \\text{WAMP} = \\text{Windows} + \\text{Apache} + \\text{MySQL} + \\text{PHP}",
+      "variantes": [
+        {
+          "nom": "Variantes de la pile",
+          "quand_utiliser": "Quand l'énoncé cite d'autres produits",
+          "contenu_markdown": "Nginx peut remplacer Apache ; MariaDB ou PostgreSQL peuvent remplacer MySQL ; Python ou Node.js peuvent remplacer PHP. Le rôle de chaque brique reste le même."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire les quatre composants nécessaires au fonctionnement d'un site web dynamique développé en PHP, en donnant leur nom (question 4 de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le sigle de la pile",
+          "justification": "Le sigle WAMP ou LAMP contient les quatre noms",
+          "resultat_markdown": "W/L, A, M, P."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer et décrire le système",
+          "justification": "Il héberge les logiciels",
+          "resultat_markdown": "Windows ou Linux."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer et décrire le serveur web",
+          "justification": "Il reçoit les requêtes HTTP",
+          "resultat_markdown": "Apache."
+        },
+        {
+          "numero": 4,
+          "action": "Nommer et décrire l'interpréteur",
+          "justification": "Il exécute les scripts `.php`",
+          "resultat_markdown": "PHP."
+        },
+        {
+          "numero": 5,
+          "action": "Nommer et décrire le SGBD",
+          "justification": "Il stocke les données du site",
+          "resultat_markdown": "MySQL ou MariaDB."
+        }
+      ],
+      "conclusion_markdown": "Les quatre composants sont le système d'exploitation, Apache, PHP et MySQL, soit la pile WAMP ou LAMP."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter le navigateur parmi les quatre composants.",
+          "pourquoi_faux": "Le navigateur est côté client ; la question porte sur ce qui est installé côté serveur pour que le site fonctionne.",
+          "correction_markdown": "Citer le système, Apache, PHP et MySQL, et signaler à part le navigateur comme client."
+        },
+        {
+          "erreur_markdown": "Confondre phpMyAdmin et MySQL.",
+          "pourquoi_faux": "phpMyAdmin est une application web qui administre MySQL ; MySQL est le SGBD qui stocke les données.",
+          "correction_markdown": "Citer MySQL comme composant et phpMyAdmin comme outil complémentaire."
+        },
+        {
+          "erreur_markdown": "Oublier le système d'exploitation.",
+          "pourquoi_faux": "Le sigle commence par W ou L : le système est bien l'un des quatre composants, indispensable à l'ensemble.",
+          "correction_markdown": "Lire les quatre lettres du sigle une à une."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Développer le sigle LAMP et dire à quoi correspond chaque lettre.",
+          "solution_markdown": "1. L : Linux, système d'exploitation.\n2. A : Apache, serveur web.\n3. M : MySQL, système de gestion de bases de données.\n4. P : PHP (ou Perl, Python), langage de programmation côté serveur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un visiteur demande la page `produits.php`. Décrire, en cinq étapes, le trajet de la requête et de la réponse dans la pile.",
+          "solution_markdown": "1. Le navigateur envoie une requête HTTP au serveur Apache.\n2. Apache reconnaît l'extension `.php` et confie le fichier à l'interpréteur PHP.\n3. PHP exécute le script, qui envoie une requête SQL à MySQL.\n4. MySQL renvoie les données à PHP, qui construit une page HTML.\n5. Apache renvoie cette page HTML au navigateur, qui l'affiche."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un site tombe en panne. Dans chacun des trois cas suivants, quel composant est en cause : (a) la page demandée est introuvable, (b) le code PHP s'affiche sans être exécuté, (c) la page s'affiche mais sans produits, avec une erreur de base de données.",
+          "solution_markdown": "1. (a) Page introuvable : Apache, qui n'a pas trouvé le fichier dans son dossier racine ou n'est pas démarré.\n2. (b) PHP affiché tel quel : l'interpréteur n'est pas associé au serveur web (module PHP non chargé).\n3. (c) Page sans produits avec erreur de base : MySQL, arrêté, ou identifiants de connexion incorrects.\n4. Chaque symptôme pointe l'étage de la pile qui ne remplit pas son rôle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un site dynamique repose sur quatre composants : système, serveur web, interpréteur, SGBD.",
+        "Les noms attendus sont Windows ou Linux, Apache, PHP et MySQL (ou MariaDB).",
+        "Le sigle WAMP (Windows) ou LAMP (Linux) contient la liste des quatre composants.",
+        "La requête traverse Apache, PHP, MySQL, puis la réponse revient en sens inverse.",
+        "À l'examen, nomme chaque composant et donne son rôle en une phrase : « les noms seront évalués »."
+      ]
+    }
+  ]
+}

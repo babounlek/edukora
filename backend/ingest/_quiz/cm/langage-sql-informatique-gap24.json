@@ -1,0 +1,168 @@
+[
+  {
+    "external_id": "cqc-langage-sql-informatique-faible-0",
+    "theme": "Langage SQL",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "A"
+      }
+    ],
+    "enonce_markdown": "Quelle instruction SQL permet d'ajouter une nouvelle ligne dans une table ?",
+    "corrige_markdown": "### Rappel de méthode\nPour choisir une instruction SQL, associe l'action voulue à son mot-clé : lire avec SELECT, ajouter une ligne avec INSERT INTO, modifier des valeurs avec UPDATE, supprimer des lignes avec DELETE.\n\n### Corrigé\n**Réponse : B.** `INSERT INTO` ajoute une ligne dans une table, par exemple `INSERT INTO ARTICLE VALUES ('A07', 'Regle 30 cm', 'Geometrie', 300, 50);`.\n\n- A) `SELECT` sert à lire et afficher des données.\n- C) `UPDATE` modifie des valeurs dans des lignes qui existent déjà.\n- D) `DELETE` supprime des lignes.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`SELECT`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`INSERT INTO`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`UPDATE`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`DELETE`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      12486,
+      12500
+    ]
+  },
+  {
+    "external_id": "cqc-langage-sql-informatique-faible-1",
+    "theme": "Langage SQL",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "A"
+      }
+    ],
+    "enonce_markdown": "Voici le contenu de la table ARTICLE :\n\n| Code | Libelle | Categorie | Prix | Stock |\n|---|---|---|---|---|\n| A01 | Cahier 100 pages | Papeterie | 500 | 40 |\n| A02 | Calculatrice | Calcul | 4500 | 6 |\n| A03 | Crayon HB | Papeterie | 100 | 0 |\n| A04 | Cartable | Sac | 8000 | 12 |\n| A05 | Compas | Geometrie | 1500 | 25 |\n| A06 | Classeur | Papeterie | 1200 | 8 |\n\nDonne, sous forme de tableau, le résultat de la requête :\n\n```sql\nSELECT Libelle, Prix FROM ARTICLE WHERE Prix > 1000;\n```",
+    "corrige_markdown": "### Rappel de méthode\nPour prévoir le résultat d'une requête SELECT, lis-la dans l'ordre FROM (quelle table), WHERE (quelles lignes sont gardées), puis SELECT (quelles colonnes sont affichées), et dessine un tableau avec ces seules colonnes et ces seules lignes.\n\n### Corrigé\n1. `FROM ARTICLE` : on travaille sur la table ARTICLE, qui compte 6 lignes.\n2. `WHERE Prix > 1000` : on garde les lignes dont le prix est strictement supérieur à 1000, soit A02 (4500), A04 (8000), A05 (1500) et A06 (1200). A01 (500) et A03 (100) sont éliminées.\n3. `SELECT Libelle, Prix` : on n'affiche que ces deux colonnes.\n\n| Libelle | Prix |\n|---|---|\n| Calculatrice | 4500 |\n| Cartable | 8000 |\n| Compas | 1500 |\n| Classeur | 1200 |\n\n### Piège à éviter\nLe code de l'article (A02, A04...) ne fait pas partie du résultat, car il n'est pas cité après SELECT.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12486,
+      12500
+    ]
+  },
+  {
+    "external_id": "cqc-langage-sql-informatique-moyenne-0",
+    "theme": "Langage SQL",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "A"
+      }
+    ],
+    "enonce_markdown": "On utilise la table ARTICLE (colonnes Code, Libelle, Categorie, Prix, Stock). Quelle requête affiche les libellés des articles dont le stock est inférieur à 10, du plus cher au moins cher ?",
+    "corrige_markdown": "### Rappel de méthode\nPour écrire une requête avec filtre et tri, respecte l'ordre des clauses SELECT, FROM, WHERE puis ORDER BY, et choisis DESC pour un tri du plus grand au plus petit, ASC pour l'inverse.\n\n### Corrigé\n**Réponse : A.** `WHERE Stock < 10` garde les articles dont le stock est inférieur à 10 et `ORDER BY Prix DESC` les trie du plus cher au moins cher. Sur la table ARTICLE à six lignes (Cahier 100 pages, Calculatrice, Crayon HB, Cartable, Compas, Classeur), le résultat est : Calculatrice (4500), Classeur (1200), Crayon HB (100).\n\n- B) `ORDER BY` placé avant `WHERE` : la requête est syntaxiquement incorrecte.\n- C) `ASC` trie du moins cher au plus cher, ce qui est l'inverse de ce qui est demandé.\n- D) `Stock > 10` garde les articles bien approvisionnés, pas ceux dont le stock est inférieur à 10.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`SELECT Libelle FROM ARTICLE WHERE Stock < 10 ORDER BY Prix DESC;`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`SELECT Libelle FROM ARTICLE ORDER BY Prix DESC WHERE Stock < 10;`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`SELECT Libelle FROM ARTICLE WHERE Stock < 10 ORDER BY Prix ASC;`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`SELECT Libelle FROM ARTICLE WHERE Stock > 10 ORDER BY Prix DESC;`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      12486,
+      12500
+    ]
+  },
+  {
+    "external_id": "cqc-langage-sql-informatique-moyenne-1",
+    "theme": "Langage SQL",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "A"
+      }
+    ],
+    "enonce_markdown": "Voici le contenu de la table ARTICLE :\n\n| Code | Libelle | Categorie | Prix | Stock |\n|---|---|---|---|---|\n| A01 | Cahier 100 pages | Papeterie | 500 | 40 |\n| A02 | Calculatrice | Calcul | 4500 | 6 |\n| A03 | Crayon HB | Papeterie | 100 | 0 |\n| A04 | Cartable | Sac | 8000 | 12 |\n| A05 | Compas | Geometrie | 1500 | 25 |\n| A06 | Classeur | Papeterie | 1200 | 8 |\n\na) Écris la requête qui diminue de 5 le stock de l'article de code A02.\n\nb) Quel est alors le stock de A02 ?\n\nc) Écris la requête qui supprime les articles dont le stock est nul.\n\nd) Combien de lignes la table contient-elle ensuite ?",
+    "corrige_markdown": "### Rappel de méthode\nPour modifier ou supprimer des lignes, écris UPDATE table SET colonne = nouvelle valeur ou DELETE FROM table, et ajoute toujours une clause WHERE pour viser seulement les lignes concernées, sinon toutes les lignes sont touchées.\n\n### Corrigé\na) `UPDATE ARTICLE SET Stock = Stock - 5 WHERE Code = 'A02';`\n\nb) Le stock de A02 était de 6 : il devient 6 - 5 = **1**.\n\nc) `DELETE FROM ARTICLE WHERE Stock = 0;`\n\nd) Seul A03 (Crayon HB) a un stock nul : une ligne est supprimée, il en reste 6 - 1 = **5**.\n\n### Piège à éviter\nOublier `WHERE` dans `UPDATE` ou `DELETE` modifie ou supprime toutes les lignes de la table. Les textes se mettent entre apostrophes (`'A02'`), les nombres sans apostrophes.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12486,
+      12500
+    ]
+  },
+  {
+    "external_id": "cqc-langage-sql-informatique-moyenne-2",
+    "theme": "Langage SQL",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "A"
+      }
+    ],
+    "enonce_markdown": "Voici le contenu de la table ARTICLE :\n\n| Code | Libelle | Categorie | Prix | Stock |\n|---|---|---|---|---|\n| A01 | Cahier 100 pages | Papeterie | 500 | 40 |\n| A02 | Calculatrice | Calcul | 4500 | 6 |\n| A03 | Crayon HB | Papeterie | 100 | 0 |\n| A04 | Cartable | Sac | 8000 | 12 |\n| A05 | Compas | Geometrie | 1500 | 25 |\n| A06 | Classeur | Papeterie | 1200 | 8 |\n\nDonne le résultat de chacune des requêtes :\n\na) `SELECT COUNT(*) FROM ARTICLE WHERE Stock > 20;`\n\nb) `SELECT MAX(Prix) FROM ARTICLE;`\n\nc) `SELECT SUM(Stock) FROM ARTICLE;`",
+    "corrige_markdown": "### Rappel de méthode\nPour évaluer une requête avec une fonction d'agrégation, applique d'abord le filtre WHERE s'il y en a un, puis la fonction (COUNT compte les lignes, MAX donne la plus grande valeur, SUM additionne) sur les lignes restantes.\n\n### Corrigé\na) Les stocks supérieurs à 20 sont ceux de A01 (40) et A05 (25) : `COUNT(*)` vaut **2**.\n\nb) Le prix le plus élevé est celui du cartable : **8000**.\n\nc) Somme des stocks : 40 + 6 + 0 + 12 + 25 + 8 = **91**.\n\n### Piège à éviter\n`COUNT(*)` compte des lignes, pas des valeurs : en a), il faut d'abord appliquer le `WHERE`, sinon on compterait les 6 articles.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12486,
+      12500
+    ]
+  },
+  {
+    "external_id": "cqc-langage-sql-informatique-elevee-0",
+    "theme": "Langage SQL",
+    "savoir_officiel": null,
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "A"
+      }
+    ],
+    "enonce_markdown": "Voici le contenu de la table ARTICLE :\n\n| Code | Libelle | Categorie | Prix | Stock |\n|---|---|---|---|---|\n| A01 | Cahier 100 pages | Papeterie | 500 | 40 |\n| A02 | Calculatrice | Calcul | 4500 | 6 |\n| A03 | Crayon HB | Papeterie | 100 | 0 |\n| A04 | Cartable | Sac | 8000 | 12 |\n| A05 | Compas | Geometrie | 1500 | 25 |\n| A06 | Classeur | Papeterie | 1200 | 8 |\n\nÉcris les requêtes SQL permettant d'obtenir :\n\na) les libellés des articles de la catégorie `Papeterie` dont le libellé commence par la lettre C ;\n\nb) le prix moyen des articles de chaque catégorie ;\n\nc) les catégories qui contiennent au moins 2 articles, avec leur nombre d'articles.\n\nDonne aussi le résultat de chaque requête.",
+    "corrige_markdown": "### Rappel de méthode\nPour regrouper des lignes, utilise GROUP BY sur la colonne de regroupement et une fonction d'agrégation (AVG, COUNT...) dans SELECT ; pour filtrer sur le résultat d'une agrégation, utilise HAVING après GROUP BY, alors que WHERE filtre les lignes avant le regroupement.\n\n### Corrigé\na) `SELECT Libelle FROM ARTICLE WHERE Categorie = 'Papeterie' AND Libelle LIKE 'C%';`\n\nRésultat : Cahier 100 pages, Crayon HB, Classeur. Le symbole `%` remplace n'importe quelle suite de caractères.\n\nb) `SELECT Categorie, AVG(Prix) FROM ARTICLE GROUP BY Categorie;`\n\nRésultat : Calcul 4500, Geometrie 1500, Papeterie 600 (moyenne de 500, 100 et 1200), Sac 8000.\n\nc) `SELECT Categorie, COUNT(*) FROM ARTICLE GROUP BY Categorie HAVING COUNT(*) >= 2;`\n\nRésultat : Papeterie, 3. Les autres catégories n'ont qu'un seul article.\n\n### Piège à éviter\nOn ne peut pas écrire `WHERE COUNT(*) >= 2` : `WHERE` agit avant le regroupement, donc avant que le comptage existe. La condition sur un résultat d'agrégation s'écrit dans `HAVING`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      12486,
+      12500
+    ]
+  }
+]

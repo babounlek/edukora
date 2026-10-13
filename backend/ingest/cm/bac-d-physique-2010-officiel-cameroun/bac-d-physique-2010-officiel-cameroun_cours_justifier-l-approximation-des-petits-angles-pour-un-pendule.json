@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-justifier-l-approximation-des-petits-angles-pour-un-pendule-tle-d-2010",
+  "meta": {
+    "titre": "Justifier l'approximation des petits angles pour un pendule",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Oscillations de faible amplitude",
+    "duree_estimee_min": 25,
+    "tags": [
+      "approximation des petits angles",
+      "mouvement sinusoïdal",
+      "linéarisation",
+      "erreur relative"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-PHYSIQUE-2010-CM",
+    "epreuve_titre": "Baccalauréat Physique, série D, session 2010 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-d-physique-2010-officiel-cameroun-ex2-q2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'équation du pendule contient un sinus, ce qui la rend difficile à résoudre. Mais pour un petit balancement, $\\sin\\theta$ et $\\theta$ sont presque identiques. Jusqu'où peut-on écarter le pendule pour que cette simplification reste honnête ? Répondre, c'est savoir quand un mouvement est sinusoïdal."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation différentielle $\\ddot\\theta + \\dfrac{g}{\\ell}\\sin\\theta = 0$ du pendule simple",
+        "Conversion degrés et radians",
+        "Notion d'erreur relative"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Approximation des petits angles",
+      "contenu_markdown": "Un mouvement est sinusoïdal si l'élongation vérifie une équation de la forme $\\ddot x + \\omega_0^2\\,x = 0$. Pour le pendule, il faut donc remplacer $\\sin\\theta$ par $\\theta$ ($\\theta$ en radians).\n\nLe développement $\\sin\\theta = \\theta - \\dfrac{\\theta^3}{6} + \\dots$ donne l'erreur relative de cette approximation :\n\n$$\\varepsilon = \\dfrac{\\theta - \\sin\\theta}{\\theta} \\approx \\dfrac{\\theta^2}{6}$$\n\n- Sans frottement et sans vitesse initiale, l'angle reste compris entre $-\\theta_0$ et $+\\theta_0$ : l'erreur maximale est $\\varepsilon_{max} \\approx \\theta_0^2/6$.\n- Pour une erreur acceptée $\\varepsilon_a$, la condition est $\\theta_0 < \\sqrt{6\\,\\varepsilon_a}$ (en radians).\n- Pour $\\varepsilon_a = 1\\ \\%$, on obtient $\\theta_0 < 0{,}245\\ \\text{rad}$, soit environ $14^\\circ$.\n- Alors $\\ddot\\theta + \\dfrac{g}{\\ell}\\,\\theta = 0$ : oscillateur harmonique, de période $T_0 = 2\\pi\\sqrt{\\ell/g}$ indépendante de l'amplitude (isochronisme).",
+      "formule_principale": "\\varepsilon \\approx \\dfrac{\\theta_0^2}{6} \\quad ;\\quad \\theta_0 < \\sqrt{6\\,\\varepsilon_a}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le pendule de l'exercice est abandonné sans vitesse à l'angle $\\theta_0$. À quelle condition sur $\\theta_0$ peut-on considérer que son mouvement est sinusoïdal ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'obstacle",
+          "justification": "L'équation $\\ddot\\theta + \\dfrac{g}{\\ell}\\sin\\theta = 0$ n'est pas de la forme $\\ddot\\theta + \\omega_0^2\\theta = 0$.",
+          "resultat_markdown": "Le terme $\\sin\\theta$ empêche le mouvement d'être sinusoïdal."
+        },
+        {
+          "numero": 2,
+          "action": "Chiffrer l'erreur de l'approximation",
+          "justification": "On utilise le développement limité du sinus pour les petits angles.",
+          "resultat_markdown": "$\\varepsilon = \\dfrac{\\theta - \\sin\\theta}{\\theta} \\approx \\dfrac{\\theta^2}{6}$"
+        },
+        {
+          "numero": 3,
+          "action": "Prendre le cas le plus défavorable",
+          "justification": "L'angle reste compris entre $-\\theta_0$ et $+\\theta_0$ : l'erreur est maximale pour $\\theta = \\theta_0$.",
+          "resultat_markdown": "$\\varepsilon_{max} \\approx \\dfrac{\\theta_0^2}{6}$"
+        },
+        {
+          "numero": 4,
+          "action": "Imposer une erreur acceptable",
+          "justification": "On fixe par exemple $1\\ \\%$.",
+          "resultat_markdown": "$\\dfrac{\\theta_0^2}{6} < 0{,}01 \\Rightarrow \\theta_0 < \\sqrt{0{,}06} = 0{,}245\\ \\text{rad} \\approx 14^\\circ$"
+        },
+        {
+          "numero": 5,
+          "action": "Écrire l'équation linéarisée",
+          "justification": "Pour $\\theta_0$ faible, $\\sin\\theta \\approx \\theta$.",
+          "resultat_markdown": "$\\ddot\\theta + \\dfrac{g}{\\ell}\\,\\theta = 0$ : mouvement sinusoïdal."
+        }
+      ],
+      "conclusion_markdown": "Le mouvement est sinusoïdal pour de faibles amplitudes, $\\theta_0$ au plus de l'ordre de $0{,}2\\ \\text{rad}$ (une dizaine de degrés) ; avec $\\theta_0 = 0{,}05\\ \\text{rad}$, l'erreur relative n'est que de $0{,}04\\ \\%$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que $\\sin\\theta = \\theta$ sans condition.",
+          "pourquoi_faux": "L'égalité n'est qu'approchée, et seulement pour de petits angles exprimés en radians.",
+          "correction_markdown": "Écris $\\sin\\theta \\approx \\theta$ et donne la condition sur $\\theta_0$."
+        },
+        {
+          "erreur_markdown": "Appliquer l'approximation avec des degrés.",
+          "pourquoi_faux": "Le développement $\\sin\\theta \\approx \\theta$ n'est valable que si $\\theta$ est en radians : $\\sin 10^\\circ = 0{,}174$ alors que $10$ ne ressemble pas à $0{,}174$.",
+          "correction_markdown": "Convertis en radians : $10^\\circ = 0{,}1745\\ \\text{rad}$."
+        },
+        {
+          "erreur_markdown": "Ne donner aucune valeur numérique à la condition.",
+          "pourquoi_faux": "« Les angles doivent être petits » n'est pas une condition vérifiable. Un barème attend une limite chiffrée, liée à l'erreur acceptée.",
+          "correction_markdown": "Écris $\\theta_0 < \\sqrt{6\\,\\varepsilon_a}$ et applique-la."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calcule l'erreur relative faite en remplaçant $\\sin\\theta$ par $\\theta$ pour $\\theta = 0{,}10\\ \\text{rad}$, avec la valeur exacte $\\sin 0{,}10 = 0{,}099833$. Compare avec $\\theta^2/6$.",
+          "solution_markdown": "$\\varepsilon = \\dfrac{0{,}10 - 0{,}099833}{0{,}10} = \\dfrac{0{,}000167}{0{,}10} = 1{,}67\\times10^{-3}$, soit $0{,}17\\ \\%$. L'estimation $\\dfrac{\\theta^2}{6} = \\dfrac{0{,}010}{6} = 1{,}67\\times10^{-3}$ donne la même valeur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On accepte une erreur relative de $5\\ \\%$. Quelle amplitude maximale $\\theta_0$ (en radians et en degrés) autorise-t-on ?",
+          "solution_markdown": "La condition est $\\dfrac{\\theta_0^2}{6} < 0{,}05$, soit $\\theta_0^2 < 0{,}30$ et $\\theta_0 < \\sqrt{0{,}30} = 0{,}548\\ \\text{rad}$. En degrés : $0{,}548\\times\\dfrac{180}{\\pi} = 31{,}4^\\circ$. L'erreur exacte pour cet angle est $\\dfrac{0{,}5477 - \\sin 0{,}5477}{0{,}5477} = 4{,}9\\ \\%$, cohérente avec la limite de $5\\ \\%$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un pendule est abandonné à $\\theta_0 = 20^\\circ$. (a) Son mouvement est-il sinusoïdal à $1\\ \\%$ près ? (b) Quelle est alors l'erreur relative maximale ?",
+          "solution_markdown": "On convertit : $20^\\circ = 20\\times\\dfrac{\\pi}{180} = 0{,}349\\ \\text{rad}$. (b) L'erreur maximale vaut $\\varepsilon_{max} \\approx \\dfrac{0{,}349^2}{6} = \\dfrac{0{,}1218}{6} = 0{,}0203$, soit $2{,}0\\ \\%$ (l'erreur exacte est $\\dfrac{0{,}3491 - \\sin 0{,}3491}{0{,}3491} = 2{,}0\\ \\%$). (a) Cette erreur dépasse $1\\ \\%$ : la limite à $1\\ \\%$ est $0{,}245\\ \\text{rad} = 14^\\circ$, que $20^\\circ$ dépasse. Le mouvement n'est donc pas sinusoïdal à $1\\ \\%$ près, mais il le serait à $5\\ \\%$ près."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un mouvement est sinusoïdal quand l'équation est de la forme $\\ddot x + \\omega_0^2 x = 0$.",
+        "Pour le pendule, il faut remplacer $\\sin\\theta$ par $\\theta$ : c'est l'approximation des petits angles, avec $\\theta$ en radians.",
+        "L'erreur relative est de l'ordre de $\\theta_0^2/6$ : pour $1\\ \\%$, $\\theta_0 < 0{,}245\\ \\text{rad} \\approx 14^\\circ$.",
+        "Dans le domaine linéaire, la période $T_0 = 2\\pi\\sqrt{\\ell/g}$ ne dépend pas de l'amplitude.",
+        "Au BAC, donne une valeur numérique de la limite et précise l'erreur acceptée ; l'énoncé ne fixe pas toujours le seuil, indique le tien."
+      ]
+    }
+  ]
+}

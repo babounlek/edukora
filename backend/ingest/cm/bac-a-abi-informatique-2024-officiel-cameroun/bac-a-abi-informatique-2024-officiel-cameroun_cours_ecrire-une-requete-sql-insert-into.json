@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-insert-into-tle-a-abi-2024",
+  "meta": {
+    "titre": "Écrire une requête SQL INSERT INTO",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "INSERT INTO",
+      "VALUES",
+      "base de données",
+      "enregistrement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat A et ABI, session 2024 (Cameroun, reproduction Camerecole)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex5-q3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2024-officiel-cameroun-ex5"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une base de données qui ne reçoit jamais de nouvelles lignes ne sert à rien. En SQL, l'ajout d'un enregistrement se fait avec une seule instruction, INSERT INTO. Elle se construit comme une phrase à trous : où ajouter, dans quels champs, avec quelles valeurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une table : champs, enregistrements",
+        "Distinguer un texte, un nombre et une date"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Syntaxe de INSERT INTO",
+      "contenu_markdown": "```sql\nINSERT INTO nom_table (champ1, champ2, ...)\nVALUES (valeur1, valeur2, ...);\n```\n\n**Règles** :\n\n1. Autant de valeurs que de champs, **dans le même ordre**.\n2. Les **textes** (et les dates) sont entre **apostrophes** ; les **nombres** n'en ont pas.\n3. Une apostrophe à l'intérieur d'un texte se double : `'N''GONO'`.\n4. L'instruction se termine par un **point-virgule**.\n\n**Forme abrégée** : `INSERT INTO nom_table VALUES (...)` est possible si l'on fournit toutes les valeurs, dans l'ordre exact des champs de la table.\n\n**Méthode** : lister les champs dans l'ordre, repérer le type de chaque valeur, placer les apostrophes, vérifier le point-virgule."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête qui insère la dernière ligne (1123-F, GADJI, RAPHA, M, 48) de la table EMPLOYE (Matricule, Nom, Prenom, Sexe, Age).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les champs dans l'ordre",
+          "justification": "La requête nomme les champs pour éviter toute erreur d'ordre.",
+          "resultat_markdown": "(Matricule, Nom, Prenom, Sexe, Age)"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le type de chaque valeur",
+          "justification": "1123-F contient un tiret et une lettre : c'est un texte. GADJI, RAPHA, M sont des textes. 48 est un nombre.",
+          "resultat_markdown": "Textes : 4 valeurs ; nombre : 1 valeur"
+        },
+        {
+          "numero": 3,
+          "action": "Placer les apostrophes",
+          "justification": "Les textes s'écrivent entre apostrophes, le nombre sans.",
+          "resultat_markdown": "'1123-F', 'GADJI', 'RAPHA', 'M', 48"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler et fermer",
+          "justification": "On écrit INSERT INTO, la table, les champs, VALUES, les valeurs, puis le point-virgule.",
+          "resultat_markdown": "`INSERT INTO EMPLOYE (Matricule, Nom, Prenom, Sexe, Age) VALUES ('1123-F', 'GADJI', 'RAPHA', 'M', 48);`"
+        }
+      ],
+      "conclusion_markdown": "La requête insère l'enregistrement de GADJI RAPHA dans la table EMPLOYE."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire 1123-F sans apostrophes.",
+          "pourquoi_faux": "SQL lit alors 1123 moins F, qui n'a aucun sens : la requête est refusée.",
+          "correction_markdown": "Tout ce qui contient une lettre ou un tiret est un texte, donc entre apostrophes."
+        },
+        {
+          "erreur_markdown": "Mettre des apostrophes autour de l'âge.",
+          "pourquoi_faux": "48 est un nombre ; entre apostrophes, il devient un texte et ne se range plus correctement dans un champ numérique.",
+          "correction_markdown": "Pas d'apostrophes autour des nombres."
+        },
+        {
+          "erreur_markdown": "Écrire les valeurs dans un ordre différent de celui des champs.",
+          "pourquoi_faux": "SQL range les valeurs dans l'ordre des champs : un prénom pourrait aller dans la colonne du nom.",
+          "correction_markdown": "Recopie la liste des champs puis les valeurs dans le même ordre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Table ELEVE (Matricule, Nom, Classe). Insérer l'élève (E04, ESSOMBA, Tle A).",
+          "solution_markdown": "Les trois valeurs sont des textes.\n\n`INSERT INTO ELEVE (Matricule, Nom, Classe) VALUES ('E04', 'ESSOMBA', 'Tle A');`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Table PRODUIT (Code, Designation, Prix, Stock). Insérer le produit P10, « Cahier 200 pages », au prix de 600, sans renseigner le stock.",
+          "solution_markdown": "On ne fournit que trois valeurs : il faut donc nommer les champs concernés. Code et Designation sont des textes, Prix est un nombre.\n\n`INSERT INTO PRODUIT (Code, Designation, Prix) VALUES ('P10', 'Cahier 200 pages', 600);`\n\nLe champ Stock, non cité, prend sa valeur par défaut (NULL si aucune valeur par défaut n'est définie)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Corriger la requête : `INSERT INTO EMPLOYE VALUES (1123-F, N'GONO, RAPHA, M, '48')`.",
+          "solution_markdown": "**Erreurs** :\n\n1. `1123-F`, `RAPHA` et `M` sont des textes sans apostrophes.\n2. `N'GONO` contient une apostrophe interne qui doit être doublée, et le texte doit être entouré d'apostrophes.\n3. `'48'` est un nombre écrit comme un texte.\n4. Le point-virgule final manque.\n\n**Version corrigée** :\n\n`INSERT INTO EMPLOYE VALUES ('1123-F', 'N''GONO', 'RAPHA', 'M', 48);`"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "INSERT INTO table (champs) VALUES (valeurs) ajoute un enregistrement.",
+        "Autant de valeurs que de champs, dans le même ordre.",
+        "Textes entre apostrophes, nombres sans apostrophes ; une apostrophe interne se double.",
+        "N'oublie pas le point-virgule final.",
+        "Au BAC série A, la question « écrire la requête SQL d'insertion » vaut 1 à 1,5 point : un oubli d'apostrophe suffit à en perdre la moitié."
+      ]
+    }
+  ]
+}

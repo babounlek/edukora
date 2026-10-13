@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-frequence-des-echanges-processeur-cache-l1-tle-ti-2019",
+  "meta": {
+    "titre": "Fréquence des échanges entre processeur et cache L1",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Caractéristiques des composants",
+    "duree_estimee_min": 22,
+    "tags": [
+      "cache L1",
+      "fréquence interne",
+      "hiérarchie mémoire",
+      "période d'horloge"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3-q1.3.b-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi le processeur n'attend-il jamais quand il lit une donnée dans son cache de premier niveau, alors qu'il attend longtemps la mémoire vive ? Parce que ce cache est une partie du processeur lui-même, cadencée à sa vitesse. Comprendre cela donne la réponse à la question sur la fréquence des échanges."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est la fréquence d'horloge et sa période",
+        "Connaître la différence entre cache et mémoire vive"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Plus près du cœur, plus rapide",
+      "contenu_markdown": "La mémoire d'un ordinateur est organisée en **hiérarchie** : registres, cache L1, cache L2 (et L3), mémoire vive, disque. Plus on s'éloigne du cœur, plus la capacité augmente et plus la vitesse diminue.\n\nLe **cache L1** est intégré au cœur du processeur : les échanges avec lui s'effectuent à la **fréquence interne** du processeur. Le cache L2 est souvent à la même fréquence sur les processeurs modernes, ou à une fréquence inférieure. La **mémoire vive** est atteinte par le bus système, à une fréquence nettement plus faible.\n\nLa période d'horloge est l'inverse de la fréquence :\n\n$$T = \\frac{1}{f}$$\n\nPar exemple, à 2400 MHz, $T = \\frac{1}{2400 \\times 10^{6}} \\approx 0{,}417$ ns.",
+      "formule_principale": "T = \\frac{1}{f}",
+      "variantes": [
+        {
+          "nom": "Caches L2 et L3",
+          "quand_utiliser": "Quand le sujet porte sur les autres niveaux",
+          "contenu_markdown": "Sur beaucoup de processeurs récents, L1 et L2 sont propres à chaque cœur et cadencés comme lui ; le cache L3, partagé entre les cœurs, peut avoir une fréquence plus basse."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour l'Athlon 64 4000+ (2400 MHz - 200 MHz - 128 Ko - 1024 Ko - Socket 939), donner la fréquence des échanges entre le microprocesseur et la mémoire cache de niveau 1.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Situer le cache L1",
+          "justification": "Il est intégré à la puce du processeur",
+          "resultat_markdown": "Il appartient au cœur : il suit l'horloge interne."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la fréquence concernée",
+          "justification": "L'horloge interne est la plus élevée des deux fréquences de la fiche",
+          "resultat_markdown": "2400 MHz."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter l'autre fréquence",
+          "justification": "200 MHz est celle du bus vers l'extérieur du processeur",
+          "resultat_markdown": "Elle concerne les échanges avec la mémoire vive, pas le cache L1."
+        },
+        {
+          "numero": 4,
+          "action": "Convertir",
+          "justification": "2400 MHz = 2,4 GHz",
+          "resultat_markdown": "Échanges à 2,4 GHz."
+        }
+      ],
+      "conclusion_markdown": "Les échanges avec le cache L1 se font à 2400 MHz (2,4 GHz)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre 200 MHz.",
+          "pourquoi_faux": "C'est la fréquence du bus système, qui sert à sortir du processeur ; le cache L1 est à l'intérieur de la puce.",
+          "correction_markdown": "Associer cache L1 et fréquence interne."
+        },
+        {
+          "erreur_markdown": "Croire que tous les niveaux de mémoire ont la même fréquence.",
+          "pourquoi_faux": "La mémoire vive, le disque et même certains caches ont des fréquences ou des temps d'accès différents, d'autant plus lents qu'ils sont loin du cœur.",
+          "correction_markdown": "Raisonner par niveaux de la hiérarchie."
+        },
+        {
+          "erreur_markdown": "Oublier l'unité dans la réponse.",
+          "pourquoi_faux": "« 2400 » seul n'a pas de sens : il faut l'unité (MHz ou GHz).",
+          "correction_markdown": "Écrire 2400 MHz, soit 2,4 GHz."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la période d'horloge d'un processeur à 2 GHz.",
+          "solution_markdown": "1. $f = 2\\text{ GHz} = 2 \\times 10^{9}$ Hz.\n2. $T = \\frac{1}{f} = \\frac{1}{2 \\times 10^{9}} = 0{,}5 \\times 10^{-9}$ s.\n3. $T = 0{,}5$ ns."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un processeur de 3 GHz a un cache L1 à sa fréquence interne et un bus mémoire à 400 MHz. Calcule la période de chaque horloge et le rapport entre les deux.",
+          "solution_markdown": "1. Cache L1 : $T_1 = \\frac{1}{3 \\times 10^{9}} \\approx 0{,}333$ ns.\n2. Bus : $T_2 = \\frac{1}{400 \\times 10^{6}} = 2{,}5$ ns.\n3. Rapport : $\\frac{T_2}{T_1} = \\frac{2{,}5}{0{,}333} = 7{,}5$ : un cycle du bus dure 7,5 fois plus longtemps qu'un cycle du processeur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Explique pourquoi un processeur à 2400 MHz ne peut pas lire la mémoire vive à cette fréquence, et pourquoi le cache améliore ce point.",
+          "solution_markdown": "1. La mémoire vive est à l'extérieur du processeur, reliée par le bus système, plus lent (ici 200 MHz) ; la distance électrique et la technologie limitent la vitesse.\n2. Sans cache, le processeur attendrait plusieurs cycles à chaque lecture, soit des dizaines de cycles perdus.\n3. Le cache L1, à la fréquence interne, conserve les données récemment utilisées : en cas de succès, la lecture se fait sans attente.\n4. Grâce au cache, la vitesse moyenne d'accès se rapproche de celle du cache plutôt que de celle de la mémoire vive."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le cache L1 est intégré au cœur et fonctionne à la fréquence interne du processeur.",
+        "La mémoire vive est atteinte par le bus système, à une fréquence nettement plus faible.",
+        "Plus une mémoire est proche du cœur, plus elle est rapide et petite.",
+        "La période d'horloge est l'inverse de la fréquence : $T = 1/f$.",
+        "À l'examen, réponds avec l'unité et justifie : « le cache L1 est dans le processeur »."
+      ]
+    }
+  ]
+}

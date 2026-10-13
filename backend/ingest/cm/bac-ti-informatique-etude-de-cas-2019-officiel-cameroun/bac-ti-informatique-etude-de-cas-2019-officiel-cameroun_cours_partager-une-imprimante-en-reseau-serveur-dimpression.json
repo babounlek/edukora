@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-partager-une-imprimante-en-reseau-serveur-dimpression-tle-ti-2019",
+  "meta": {
+    "titre": "Partager une imprimante en réseau : serveur d'impression",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Partage de ressources",
+    "duree_estimee_min": 22,
+    "tags": [
+      "serveur d'impression",
+      "partage d'imprimante",
+      "client",
+      "file d'impression"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2-q2.5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une seule imprimante pour toute une famille ou toute une salle : comment chacun peut-il y envoyer ses documents sans brancher le câble de l'imprimante sur son propre ordinateur ? En faisant d'un ordinateur le gardien de l'imprimante, qui reçoit les demandes des autres. Cet ordinateur prend alors un nom particulier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce que sont un client et un serveur",
+        "Savoir lire un schéma de réseau local"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Celui qui fournit la ressource est le serveur",
+      "contenu_markdown": "Quand une imprimante est reliée directement à un ordinateur et partagée avec les autres, cet ordinateur devient un **serveur d'impression** :\n\n1. Il reçoit les travaux envoyés par les autres postes (les clients) à travers le réseau.\n2. Il les place dans une **file d'attente** (spouleur d'impression) et les envoie à l'imprimante dans l'ordre.\n3. Les clients utilisent l'imprimante comme si elle était locale, en l'ajoutant par son nom réseau (par exemple `\\\\PC4\\Imprimante`).\n\nSous Windows, on partage une imprimante par : Périphériques et imprimantes, clic droit sur l'imprimante, Propriétés, onglet Partage, « Partager cette imprimante ». Le principe est général : **qui fournit la ressource est le serveur, qui l'utilise est le client**, qu'il s'agisse d'imprimante (serveur d'impression) ou de dossiers (serveur de fichiers).\n\nAutre possibilité : une imprimante équipée d'une carte réseau, branchée directement au commutateur avec sa propre adresse IP, que tous les postes utilisent sans passer par un ordinateur.",
+      "formule_principale": "\\text{poste qui partage une imprimante} = \\text{serveur d'impression}",
+      "variantes": [
+        {
+          "nom": "Imprimante réseau autonome",
+          "quand_utiliser": "Quand l'imprimante est branchée directement au commutateur",
+          "contenu_markdown": "L'imprimante possède sa propre adresse IP et sert de serveur à elle-même : aucun ordinateur ne joue le rôle de serveur d'impression et tous les postes sont clients."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur le schéma de l'épreuve, l'imprimante PRINTER-PT est reliée à PC4. Pour que tous les ordinateurs puissent l'utiliser, quelle autre appellation donne-t-on à PC4 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la liaison de l'imprimante",
+          "justification": "Elle ne passe pas par le commutateur",
+          "resultat_markdown": "Elle est branchée directement sur PC4."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire le partage",
+          "justification": "Les autres postes doivent passer par PC4 pour imprimer",
+          "resultat_markdown": "On active le partage de l'imprimante sur PC4 ; PC1, PC2 et PC3 envoient leurs travaux à PC4."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le rôle de PC4",
+          "justification": "Il fournit un service d'impression aux autres postes",
+          "resultat_markdown": "PC4 reçoit, met en file d'attente et transmet à l'imprimante."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "Qui fournit la ressource est le serveur",
+          "resultat_markdown": "PC4 est un serveur d'impression ; PC1, PC2 et PC3 sont ses clients."
+        }
+      ],
+      "conclusion_markdown": "PC4 devient le serveur d'impression du réseau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « routeur » ou « passerelle ».",
+          "pourquoi_faux": "Un routeur relie deux réseaux ; PC4 ne relie rien, il partage une ressource locale dans le même réseau.",
+          "correction_markdown": "Parler de serveur d'impression."
+        },
+        {
+          "erreur_markdown": "Croire que l'imprimante doit être branchée à tous les ordinateurs.",
+          "pourquoi_faux": "Le partage en réseau permet à tous les postes d'utiliser l'imprimante branchée sur un seul.",
+          "correction_markdown": "Activer le partage sur le poste qui porte l'imprimante."
+        },
+        {
+          "erreur_markdown": "Oublier qu'il faut que PC4 soit allumé.",
+          "pourquoi_faux": "Dans cette configuration, si PC4 est éteint, l'imprimante n'est plus accessible aux autres postes.",
+          "correction_markdown": "Ne pas oublier cette dépendance, ou utiliser une imprimante dotée de sa propre carte réseau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un réseau, un ordinateur partage un dossier avec les autres. Comment appelle-t-on cet ordinateur, et les autres ?",
+          "solution_markdown": "1. L'ordinateur qui fournit le dossier est un serveur de fichiers.\n2. Les ordinateurs qui y accèdent sont ses clients."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Décris, en quatre étapes, ce qui se passe quand PC1 imprime sur l'imprimante branchée à PC4.",
+          "solution_markdown": "1. PC1 envoie le document à PC4 par le réseau, à l'adresse de l'imprimante partagée.\n2. Le commutateur transmet les données à PC4.\n3. PC4 place le travail dans sa file d'impression.\n4. PC4 envoie le travail à l'imprimante qui l'imprime."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Compare deux solutions : imprimante branchée à PC4 et partagée, ou imprimante équipée d'une carte réseau branchée au commutateur. Donne deux avantages de la seconde.",
+          "solution_markdown": "1. Avantage 1 : elle ne dépend plus de PC4 : les postes impriment même si PC4 est éteint.\n2. Avantage 2 : elle ne consomme pas les ressources de PC4 (traitement de la file d'impression) et n'impose pas un poste allumé en permanence.\n3. Contrepartie : une imprimante avec carte réseau coûte plus cher, et il faut lui attribuer une adresse IP (fixe ou réservée en DHCP)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un poste qui partage sa ressource avec les autres est un serveur pour cette ressource.",
+        "Une imprimante partagée par un poste fait de ce poste un serveur d'impression.",
+        "Le serveur reçoit les travaux, les met en file d'attente et les envoie à l'imprimante.",
+        "Qui fournit est serveur, qui utilise est client.",
+        "À l'examen, nomme le rôle (serveur d'impression) et justifie par la liaison de l'imprimante au poste."
+      ]
+    }
+  ]
+}

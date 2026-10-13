@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-inclusion-cas-utilisation-tle-ti-si2023",
+  "meta": {
+    "titre": "Identifier une relation d'inclusion entre cas d'utilisation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation",
+    "duree_estimee_min": 18,
+    "tags": [
+      "include",
+      "inclusion",
+      "cas d'utilisation",
+      "UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-SI-2023-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat TI - Systèmes d'Information - 2023 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-SI-2023-officiel-cameroun-ex1-q4.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un hôtel, on ne peut pas répartir les clients dans les chambres sans avoir vérifié d'où ils viennent. Cette obligation entre deux fonctions se traduit en UML par une relation d'inclusion. Savoir la repérer dans un texte te fait gagner des points à la fois sur la question dédiée et sur le diagramme de cas d'utilisation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'acteur et de cas d'utilisation",
+        "Lecture attentive d'un énoncé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La relation d'inclusion «include»",
+      "contenu_markdown": "Un cas d'utilisation A **inclut** un cas B lorsque B est une **partie obligatoire** de A : A ne peut pas se dérouler complètement sans exécuter B.\n\n- Indices dans le texte : « obligatoirement », « doit », « nécessite », « après avoir ».\n- Notation : flèche **pointillée** étiquetée «include», qui part du cas de base A et pointe vers le cas inclus B.\n- Le cas inclus peut être réutilisé par plusieurs cas de base.",
+      "variantes": [
+        {
+          "nom": "Inclusion ou extension",
+          "quand_utiliser": "Quand une phrase décrit un enchaînement entre deux cas",
+          "contenu_markdown": "Test : « A est-il possible sans B ? ». Non : inclusion (B obligatoire). Oui, mais B s'ajoute parfois : extension (B facultatif)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "« La répartition des clients dans les chambres se fera obligatoirement après la vérification de leur provenance. » Identifier deux cas d'utilisation en relation d'inclusion.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les deux cas cités dans la phrase",
+          "justification": "La phrase met en relation deux fonctions de l'énoncé.",
+          "resultat_markdown": "Répartir les clients et Vérifier la provenance."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher le mot d'obligation",
+          "justification": "Le mot « obligatoirement » signale une étape imposée.",
+          "resultat_markdown": "« obligatoirement après la vérification »."
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer le cas de base et le cas inclus",
+          "justification": "Le cas qui a besoin de l'autre est le cas de base.",
+          "resultat_markdown": "Répartir les clients est le cas de base, Vérifier la provenance est le cas inclus."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la relation",
+          "justification": "On oriente la flèche du cas de base vers le cas inclus.",
+          "resultat_markdown": "Répartir les clients ---«include»---> Vérifier la provenance."
+        }
+      ],
+      "conclusion_markdown": "Répartir les clients inclut Vérifier la provenance, car cette vérification est une étape obligatoire de la répartition."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Orienter la flèche vers le cas de base",
+          "pourquoi_faux": "L'inclusion pointe vers le cas obligatoire (inclus) et non vers celui qui l'utilise.",
+          "correction_markdown": "Faire partir la flèche de Répartir et la faire pointer vers Vérifier."
+        },
+        {
+          "erreur_markdown": "Prendre une action facultative pour une inclusion",
+          "pourquoi_faux": "Si le cas peut être omis, ce n'est pas une inclusion mais une extension.",
+          "correction_markdown": "Appliquer le test « A est-il possible sans B ? »."
+        },
+        {
+          "erreur_markdown": "Oublier le stéréotype «include»",
+          "pourquoi_faux": "Une flèche pointillée sans étiquette ne dit pas si c'est include ou extend.",
+          "correction_markdown": "Toujours écrire «include» sur la flèche."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Pour retirer de l'argent, le client doit obligatoirement s'authentifier. » Quel cas inclut quel cas ?",
+          "solution_markdown": "1. Cas cités : Retirer de l'argent et S'authentifier.\n2. Le mot « obligatoirement » indique une étape imposée.\n3. Retirer de l'argent est le cas de base, S'authentifier le cas inclus.\n4. Notation : Retirer de l'argent ---«include»---> S'authentifier."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une bibliothèque : « Emprunter un livre nécessite de vérifier l'abonnement de l'adhérent. Le lecteur peut aussi réserver un livre à l'avance. » Quelle phrase donne une inclusion ?",
+          "solution_markdown": "1. Première phrase : « nécessite » signale une étape obligatoire, donc inclusion de Vérifier l'abonnement dans Emprunter un livre.\n2. Seconde phrase : « peut aussi » est facultatif, donc ce n'est pas une inclusion.\n3. Réponse : Emprunter un livre ---«include»---> Vérifier l'abonnement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour une pharmacie : « Vendre un médicament sur ordonnance exige de contrôler l'ordonnance. Vendre un médicament en vente libre n'exige aucun contrôle. Les deux ventes exigent d'encaisser. » Identifie les inclusions.",
+          "solution_markdown": "1. Vendre sur ordonnance exige Contrôler l'ordonnance : inclusion.\n2. Vendre sur ordonnance et Vendre en vente libre exigent tous deux Encaisser : deux inclusions vers le même cas inclus.\n3. Aucun contrôle n'est exigé en vente libre : pas d'inclusion de Contrôler l'ordonnance dans ce cas.\n4. Encaisser est donc un cas inclus réutilisé par deux cas de base."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Inclusion : le cas inclus est une étape obligatoire du cas de base.",
+        "Cherche « obligatoirement », « doit », « nécessite » dans l'énoncé.",
+        "La flèche pointillée «include» va du cas de base vers le cas inclus.",
+        "Le test « A est-il possible sans B ? » départage inclusion et extension.",
+        "Au BAC TI, la question sur les relations entre cas vaut 0,5 à 1 point et se retrouve ensuite dans le diagramme."
+      ]
+    }
+  ]
+}

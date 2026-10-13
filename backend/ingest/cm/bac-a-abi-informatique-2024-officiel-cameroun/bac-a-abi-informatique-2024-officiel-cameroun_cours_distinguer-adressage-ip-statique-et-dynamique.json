@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-distinguer-adressage-ip-statique-et-dynamique-tle-a-abi-2024",
+  "meta": {
+    "titre": "Distinguer adressage IP statique et dynamique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "adressage statique",
+      "adressage dynamique",
+      "DHCP",
+      "adresse IP",
+      "réseau local"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat A et ABI, session 2024 (Cameroun, reproduction Camerecole)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex3-q4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2024-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un établissement, l'imprimante du bureau doit toujours se trouver à la même adresse, sinon personne ne peut imprimer. Les téléphones des élèves, eux, se connectent au Wi-Fi sans qu'on leur règle quoi que ce soit. Ces deux situations illustrent deux façons d'attribuer une adresse IP : la statique et la dynamique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP",
+        "Connaître les rôles d'un routeur et d'un serveur",
+        "Savoir ce qu'est un réseau local"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux modes d'attribution d'une adresse IP",
+      "contenu_markdown": "L'**adressage statique** consiste à saisir à la main l'adresse IP sur chaque équipement ; elle ne change jamais.\n\nL'**adressage dynamique** consiste à laisser un **serveur DHCP** (*Dynamic Host Configuration Protocol*, souvent intégré au routeur) attribuer automatiquement une adresse à chaque équipement qui se connecte, pour une durée limitée appelée **bail**.\n\n**Comment comparer** : on oppose les deux modes sur les mêmes critères, en tableau.\n\n| Critère | Statique | Dynamique |\n|---|---|---|\n| Qui attribue | L'administrateur, à la main | Le serveur DHCP, automatiquement |\n| Stabilité | Fixe | Peut changer à chaque connexion |\n| Risque | Doublon ou erreur de saisie | Adresse imprévisible pour un équipement à retrouver |\n| Usage typique | Serveurs, imprimantes, routeurs | Ordinateurs et téléphones des utilisateurs |"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Établir la différence entre l'adressage statique et l'adressage dynamique (Partie II, exercice 2, question 4).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Définir le statique",
+          "justification": "On commence par la première notion avec sa caractéristique principale.",
+          "resultat_markdown": "Statique : adresse saisie à la main, fixe"
+        },
+        {
+          "numero": 2,
+          "action": "Définir le dynamique",
+          "justification": "Puis la seconde, avec qui l'attribue.",
+          "resultat_markdown": "Dynamique : adresse attribuée automatiquement par un serveur DHCP, pour un bail limité"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir des critères communs",
+          "justification": "Pour opposer, il faut comparer sur les mêmes points : attribution, stabilité, usage.",
+          "resultat_markdown": "Critères : attribution, stabilité, configuration, usage"
+        },
+        {
+          "numero": 4,
+          "action": "Remplir le tableau",
+          "justification": "Chaque ligne oppose une case statique et une case dynamique.",
+          "resultat_markdown": "Voir le tableau de la règle"
+        },
+        {
+          "numero": 5,
+          "action": "Relier au schéma",
+          "justification": "L'imprimante du schéma doit rester joignable, donc statique ; les ordinateurs peuvent être dynamiques.",
+          "resultat_markdown": "Imprimante : statique ; Port 1 à Port 3 : dynamique via le routeur"
+        }
+      ],
+      "conclusion_markdown": "L'adressage statique fixe l'adresse à la main ; le dynamique la fait attribuer automatiquement par un serveur DHCP."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire que l'adressage dynamique « n'a pas d'adresse ».",
+          "pourquoi_faux": "La machine possède bien une adresse ; elle est simplement attribuée par un serveur et peut changer à l'expiration du bail.",
+          "correction_markdown": "Écris : « adresse attribuée automatiquement pour une durée limitée »."
+        },
+        {
+          "erreur_markdown": "Confondre DHCP et DNS.",
+          "pourquoi_faux": "DHCP attribue des adresses IP aux machines ; DNS traduit les noms de sites (par exemple un nom de domaine) en adresses IP.",
+          "correction_markdown": "DHCP = donner une adresse ; DNS = retrouver une adresse à partir d'un nom."
+        },
+        {
+          "erreur_markdown": "Décrire les deux notions séparément sans jamais les opposer.",
+          "pourquoi_faux": "L'énoncé demande la différence : sans critère commun, le correcteur ne voit pas la comparaison.",
+          "correction_markdown": "Utilise un tableau avec au moins trois critères."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel équipement ou quel service attribue automatiquement les adresses dans l'adressage dynamique ?",
+          "solution_markdown": "C'est le **serveur DHCP**, très souvent intégré au routeur du réseau local. Il prête à chaque équipement une adresse pour une durée limitée (le bail) et la reprend ensuite."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un établissement possède 3 serveurs, 1 imprimante réseau et 40 ordinateurs pour élèves. Indique le mode d'adressage adapté à chaque catégorie et justifie.",
+          "solution_markdown": "**Serveurs** : adressage **statique**. Les autres machines doivent les retrouver toujours à la même adresse.\n\n**Imprimante réseau** : adressage **statique**, pour que les ordinateurs gardent toujours la bonne adresse d'impression.\n\n**40 ordinateurs d'élèves** : adressage **dynamique**. Les configurer à la main serait long et source d'erreurs ; le serveur DHCP le fait seul à chaque connexion."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un administrateur saisit à la main la même adresse statique 128.100.0.20 sur deux ordinateurs. Quelle est la conséquence ? Comment l'éviter ?",
+          "solution_markdown": "**Conséquence** : deux machines du même réseau portent la même adresse, c'est un **conflit d'adresse IP**. Le réseau ne sait plus à quelle machine livrer les données : les connexions deviennent instables et le système affiche souvent un message de conflit.\n\n**Comment l'éviter** : tenir un tableau de toutes les adresses statiques attribuées, ou garder le mode dynamique pour les postes d'utilisateurs et réserver au serveur DHCP les adresses statiques de quelques équipements (réservation d'adresse). On choisit enfin les adresses statiques en dehors de la plage distribuée par le serveur DHCP."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Statique : adresse saisie à la main, qui ne change jamais ; dynamique : adresse attribuée par un serveur DHCP pour un bail limité.",
+        "Les équipements que l'on doit toujours retrouver (serveurs, imprimantes, routeurs) reçoivent une adresse statique.",
+        "Les postes des utilisateurs reçoivent une adresse dynamique : gain de temps et pas de doublon.",
+        "Pour « établir la différence », oppose les deux modes sur des critères communs, en tableau.",
+        "Au BAC série A, cette question suit souvent la détermination d'une classe d'adresse IP, dans l'exercice sur le réseau."
+      ]
+    }
+  ]
+}

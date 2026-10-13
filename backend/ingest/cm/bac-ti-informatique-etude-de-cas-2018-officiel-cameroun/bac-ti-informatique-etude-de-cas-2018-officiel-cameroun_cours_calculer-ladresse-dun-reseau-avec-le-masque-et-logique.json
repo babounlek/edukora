@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-calculer-ladresse-dun-reseau-avec-le-masque-et-logique-tle-ti",
+  "meta": {
+    "titre": "Calculer l'adresse d'un réseau par le ET logique",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "adresse réseau",
+      "ET logique",
+      "masque de sous-réseau",
+      "adresse de diffusion",
+      "binaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2018",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2-q7-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2018-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment un ordinateur sait-il si la machine à qui il veut parler est sur son réseau ou ailleurs ? Il ne devine pas : il fait un calcul binaire entre l'adresse et le masque. Ce calcul, le ET logique, permet aussi à toi de retrouver l'adresse d'un réseau et de la distinguer de celle d'une machine."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir convertir un nombre de 0 à 255 en binaire sur 8 bits",
+        "Connaître le masque par défaut de chaque classe d'adresses"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le ET logique, bit à bit",
+      "contenu_markdown": "L'**adresse du réseau** s'obtient en appliquant un **ET logique** (AND) bit à bit entre une adresse IP du réseau et son masque. Le ET vaut 1 seulement si les deux bits valent 1 :\n\n| Bit adresse | Bit masque | Résultat |\n|---|---|---|\n| 0 | 0 | 0 |\n| 0 | 1 | 0 |\n| 1 | 0 | 0 |\n| 1 | 1 | 1 |\n\nLes bits à 1 du masque recopient l'adresse (partie réseau), les bits à 0 la mettent à zéro (partie machine).\n\n**Raccourci pour les masques entiers** : octet par octet, un masque de 255 recopie l'octet de l'adresse, un masque de 0 donne 0. Pour un octet de masque intermédiaire (192, 224, 240...), on passe en binaire.\n\nL'**adresse de diffusion** s'obtient en mettant à 1 tous les bits de la partie machine. Les machines utilisables vont de l'adresse du réseau + 1 à l'adresse de diffusion - 1.",
+      "formule_principale": "\\text{adresse réseau} = \\text{adresse IP} \\; \\mathrm{ET} \\; \\text{masque}",
+      "variantes": [
+        {
+          "nom": "Masque non entier (sous-réseaux)",
+          "quand_utiliser": "Quand un octet du masque n'est ni 0 ni 255",
+          "contenu_markdown": "On convertit l'octet de l'adresse et celui du masque en binaire et on applique le ET bit à bit. Exemple : 130 ET 192 : 10000010 ET 11000000 = 10000000 = 128."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer l'adresse du réseau de la machine 172.10.0.1 avec le masque 255.255.0.0.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'adresse et le masque en binaire",
+          "justification": "Le ET se fait bit à bit",
+          "resultat_markdown": "172 = 10101100 ; 10 = 00001010 ; 0 = 00000000 ; 1 = 00000001. Masque : 255 = 11111111 pour les deux premiers octets, 0 = 00000000 pour les deux derniers."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le ET au premier octet",
+          "justification": "Masque 255 : tous les bits à 1 recopient l'adresse",
+          "resultat_markdown": "10101100 ET 11111111 = 10101100 = 172."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le ET au deuxième octet",
+          "justification": "Même raisonnement",
+          "resultat_markdown": "00001010 ET 11111111 = 00001010 = 10."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le ET aux deux derniers octets",
+          "justification": "Masque 0 : tous les bits à 0 mettent le résultat à zéro",
+          "resultat_markdown": "0 ET 0 = 0 et 1 ET 0 = 0, donc 0 et 0."
+        },
+        {
+          "numero": 5,
+          "action": "Assembler",
+          "justification": "On regroupe les quatre octets",
+          "resultat_markdown": "172.10.0.0."
+        }
+      ],
+      "conclusion_markdown": "L'adresse du réseau est 172.10.0.0 ; son adresse de diffusion est 172.10.255.255."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner l'adresse d'une machine à la place de celle du réseau (« 172.10.0.1 »).",
+          "pourquoi_faux": "L'adresse du réseau a tous les bits de la partie machine à 0. Elle n'est attribuée à aucune machine.",
+          "correction_markdown": "Vérifie que les octets de la partie machine valent 0 dans ta réponse."
+        },
+        {
+          "erreur_markdown": "Confondre adresse du réseau et adresse de diffusion.",
+          "pourquoi_faux": "L'une a tous les bits machine à 0, l'autre à 1. Avec 255.255.0.0 : 172.10.0.0 (réseau) et 172.10.255.255 (diffusion).",
+          "correction_markdown": "Mets les bits machine à 0 pour le réseau, à 1 pour la diffusion."
+        },
+        {
+          "erreur_markdown": "Appliquer un OU au lieu d'un ET.",
+          "pourquoi_faux": "Le OU mettrait à 1 les bits de la partie machine et donnerait l'adresse de diffusion, pas celle du réseau.",
+          "correction_markdown": "Retiens que le ET « efface » ce que le masque n'autorise pas."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calcule l'adresse du réseau de 192.168.1.37 avec le masque 255.255.255.0.",
+          "solution_markdown": "Le masque vaut 255 pour les trois premiers octets : ils sont recopiés (192, 168, 1). Le dernier octet est à 0 dans le masque : il devient 0.\n\nAdresse du réseau : **192.168.1.0**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calcule l'adresse du réseau et l'adresse de diffusion de 10.200.3.4 avec le masque 255.0.0.0.",
+          "solution_markdown": "Le premier octet du masque vaut 255 : on recopie 10. Les trois autres sont à 0 : ils deviennent 0. Réseau : **10.0.0.0**.\n\nPour la diffusion, on met à 1 les bits de la partie machine, soit les trois derniers octets : **10.255.255.255**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calcule l'adresse du réseau, l'adresse de diffusion et la plage des machines utilisables pour 192.168.10.130 avec le masque 255.255.255.192.",
+          "solution_markdown": "Les trois premiers octets du masque valent 255 : on recopie 192.168.10. Il reste à traiter le dernier octet : 130 ET 192.\n\n130 = 10000010 ; 192 = 11000000 ; ET bit à bit : 10000000 = 128.\n\n**Réseau** : 192.168.10.128.\n\nLe masque garde 2 bits de réseau dans le dernier octet, donc 6 bits machine : 2^6 = 64 adresses par réseau. Diffusion = 128 + 64 - 1 = 191 : **192.168.10.191**.\n\n**Machines utilisables** : de 192.168.10.129 à 192.168.10.190 (62 machines)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'adresse du réseau se calcule par un ET logique bit à bit entre l'adresse et le masque.",
+        "Masque 255 : on recopie l'octet. Masque 0 : on met 0. Masque intermédiaire : on passe en binaire.",
+        "L'adresse du réseau a tous ses bits machine à 0, celle de diffusion à 1.",
+        "Aucune de ces deux adresses n'est attribuable à une machine.",
+        "Au BAC TI, cette question vaut 0,5 à 1 point et suit la question sur le masque et la classe."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-installer-un-environnement-php-en-local-tle-ti-2019",
+  "meta": {
+    "titre": "Installer un environnement PHP en local",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Environnement de développement web",
+    "duree_estimee_min": 22,
+    "tags": [
+      "WampServer",
+      "XAMPP",
+      "Apache",
+      "localhost"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour tester un site PHP, pas besoin d'un hébergement payant : ton ordinateur peut devenir un petit serveur web. En quelques minutes, tu obtiens chez toi le même environnement que celui d'un hébergeur. C'est la première compétence d'un développeur web et une question classique de l'épreuve."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir installer un logiciel sous Windows ou Linux",
+        "Savoir ce qu'est un serveur web"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un serveur web local qui interprète PHP",
+      "contenu_markdown": "PHP s'exécute sur un **serveur web**. Pour travailler en local, on installe donc au minimum trois briques : un serveur (Apache), l'interpréteur PHP et un SGBD (MySQL ou MariaDB), souvent avec phpMyAdmin pour l'administration de la base.\n\n**Windows** : un pack tout-en-un (WampServer, XAMPP, EasyPHP) installe et configure ces briques d'un seul coup. On démarre le pack, on place les fichiers dans le dossier `www` (WampServer) ou `htdocs` (XAMPP) et on ouvre `http://localhost/`.\n\n**Linux** : on installe les paquets avec le gestionnaire de paquets, puis on place les fichiers dans `/var/www/html/` :\n\n```bash\nsudo apt update\nsudo apt install apache2 php libapache2-mod-php mysql-server php-mysql\nsudo systemctl restart apache2\n```\n\n**Test** : un fichier `info.php` contenant `<?php phpinfo(); ?>` affiche la configuration de PHP si tout fonctionne. L'adresse `localhost` (ou `127.0.0.1`) désigne la machine elle-même.",
+      "formule_principale": "\\text{serveur web} + \\text{interpréteur PHP} + \\text{SGBD} = \\text{environnement PHP local}",
+      "variantes": [
+        {
+          "nom": "Serveur intégré de PHP",
+          "quand_utiliser": "Quand on veut tester rapidement sans installer Apache",
+          "contenu_markdown": "Depuis la ligne de commande, `php -S localhost:8000` lance un serveur de développement dans le dossier courant. Il convient aux tests, pas à la production."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire une manière simple d'installer PHP sous Windows puis sous Linux (question 3 de la première partie de l'épreuve).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la voie sous Windows",
+          "justification": "Un pack tout-en-un évite de configurer chaque logiciel",
+          "resultat_markdown": "On télécharge WampServer ou XAMPP sur le site officiel."
+        },
+        {
+          "numero": 2,
+          "action": "Installer et démarrer",
+          "justification": "Les services Apache, MySQL et PHP doivent tourner",
+          "resultat_markdown": "On lance l'installateur puis le pack, et on vérifie que les services sont démarrés."
+        },
+        {
+          "numero": 3,
+          "action": "Placer et tester les pages",
+          "justification": "Le serveur ne sert que les fichiers de son dossier racine",
+          "resultat_markdown": "Fichiers dans `www` ou `htdocs`, test avec `http://localhost/`."
+        },
+        {
+          "numero": 4,
+          "action": "Choisir la voie sous Linux",
+          "justification": "Le gestionnaire de paquets installe et configure les dépendances",
+          "resultat_markdown": "`sudo apt install apache2 php libapache2-mod-php mysql-server php-mysql`."
+        },
+        {
+          "numero": 5,
+          "action": "Placer et tester sous Linux",
+          "justification": "Le dossier racine par défaut d'Apache est `/var/www/html/`",
+          "resultat_markdown": "Un `info.php` appelé par `http://localhost/info.php` confirme que PHP est interprété."
+        }
+      ],
+      "conclusion_markdown": "Windows : un pack tout-en-un ; Linux : les paquets Apache, PHP et MySQL ; dans les deux cas, les pages se placent dans le dossier racine du serveur et s'appellent par `localhost`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Installer seulement PHP et ouvrir les fichiers par double-clic.",
+          "pourquoi_faux": "Sans serveur web, le navigateur lit le fichier comme du texte et n'exécute pas le PHP.",
+          "correction_markdown": "Installer un serveur (Apache) ou un pack tout-en-un et appeler les pages par `http://localhost/`."
+        },
+        {
+          "erreur_markdown": "Placer les fichiers n'importe où sur le disque.",
+          "pourquoi_faux": "Le serveur ne publie que son dossier racine (`www`, `htdocs`, `/var/www/html`) ; les autres dossiers sont invisibles pour lui.",
+          "correction_markdown": "Copier les fichiers du site dans le dossier racine du serveur."
+        },
+        {
+          "erreur_markdown": "Oublier de démarrer les services.",
+          "pourquoi_faux": "L'installation seule ne lance pas toujours Apache et MySQL : sans eux, `localhost` ne répond pas.",
+          "correction_markdown": "Démarrer le pack ou `sudo systemctl start apache2`, puis vérifier l'état des services."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner trois noms de packs qui installent Apache, PHP et MySQL sous Windows.",
+          "solution_markdown": "1. WampServer (Windows, Apache, MySQL, PHP).\n2. XAMPP (multiplateforme : Apache, MariaDB, PHP, Perl).\n3. EasyPHP.\n4. Ils s'utilisent de la même façon : démarrer le pack et placer les fichiers dans le dossier `www` ou `htdocs`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Après installation de XAMPP, tu crées `C:\\xampp\\htdocs\\test\\salut.php`. Quelle adresse tapes-tu dans le navigateur ? Pourquoi un double-clic sur le fichier ne marche-t-il pas ?",
+          "solution_markdown": "1. Le dossier `htdocs` est la racine du serveur, le fichier est dans le sous-dossier `test` : l'adresse est `http://localhost/test/salut.php`.\n2. Un double-clic ouvre le fichier avec `file://`, sans serveur : PHP n'est pas exécuté et le navigateur n'affiche que le texte du fichier."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sous Ubuntu, la commande `php info.php` en terminal affiche du texte mais la page `http://localhost/info.php` ne s'ouvre pas. Donne trois causes possibles et la vérification de chacune.",
+          "solution_markdown": "1. Apache n'est pas installé ou pas démarré : `systemctl status apache2` doit indiquer `active (running)`.\n2. Le module PHP n'est pas chargé dans Apache : installer `libapache2-mod-php` puis redémarrer Apache.\n3. Le fichier n'est pas dans `/var/www/html/` : `ls /var/www/html` doit le lister.\n4. Le terminal exécute PHP en ligne de commande, qui ne passe pas par Apache : cela prouve que l'interpréteur est installé, pas que le serveur web est configuré."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un site PHP a besoin d'un serveur web : l'interpréteur seul ne suffit pas.",
+        "Windows : un pack tout-en-un (WampServer, XAMPP) ; Linux : `apt install apache2 php libapache2-mod-php mysql-server php-mysql`.",
+        "Les pages se placent dans `www`, `htdocs` ou `/var/www/html` et s'appellent par `http://localhost/`.",
+        "Un fichier `phpinfo()` sert de test d'installation.",
+        "À l'examen, cite des noms précis de produits ou de commandes : les noms sont évalués."
+      ]
+    }
+  ]
+}

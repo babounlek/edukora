@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-html-et-php-sigles-et-roles-tle-ti-2019",
+  "meta": {
+    "titre": "HTML et PHP : sigles et rôles",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langages du web",
+    "duree_estimee_min": 18,
+    "tags": [
+      "HTML",
+      "PHP",
+      "langage côté serveur",
+      "langage de balisage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2019",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1-q1-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2019-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu ouvres le site d'une boutique en ligne, tu vois une page, mais deux langages ont travaillé : l'un a décrit la page, l'autre l'a fabriquée à la demande. Savoir lequel s'exécute chez toi et lequel s'exécute sur le serveur est la clé pour comprendre ce qui rend un site dynamique. Ce cours te donne les deux sigles à savoir par cœur et surtout la frontière entre le navigateur et le serveur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un navigateur web et ce qu'est un serveur web",
+        "Avoir déjà vu une page web et son adresse"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux langages, deux rôles",
+      "contenu_markdown": "**HTML** (*HyperText Markup Language*, langage de balisage hypertexte) décrit la structure et le contenu d'une page : titres, paragraphes, liens, formulaires. Il est lu et interprété par le **navigateur** du visiteur.\n\n**PHP** (*PHP: Hypertext Preprocessor*, acronyme récursif ; au départ *Personal Home Page*) est un langage de script exécuté par le **serveur** avant l'envoi de la page. Il peut calculer, tester des conditions, lire une base de données, et il produit en sortie du HTML.\n\n| | HTML | PHP |\n|---|---|---|\n| Nature | langage de balisage | langage de programmation (script) |\n| Exécuté par | le navigateur | le serveur |\n| Le visiteur voit-il le code ? | oui, dans le code source de la page | non, seul le résultat arrive |\n| Contient variables et conditions | non | oui |",
+      "formule_principale": "\\text{requête du navigateur} \\to \\text{PHP exécuté sur le serveur} \\to \\text{HTML reçu et affiché par le navigateur}",
+      "variantes": [
+        {
+          "nom": "Autres sigles du même domaine",
+          "quand_utiliser": "Quand le sujet demande aussi CSS, SQL ou HTTP",
+          "contenu_markdown": "**CSS** : *Cascading Style Sheets*, feuilles de style en cascade, qui règlent la mise en forme (couleurs, polices, mise en page). **SQL** : *Structured Query Language*, langage de requêtes pour interroger une base de données. **HTTP** : *HyperText Transfer Protocol*, protocole qui transporte les pages entre le serveur et le navigateur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Développer les sigles PHP et HTML, puis dire, dans le script de la page `fonction.php` de l'épreuve (23 lignes), quelles lignes relèvent du HTML et lesquelles du PHP.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer le sigle HTML",
+          "justification": "Le sigle est anglais : on le développe mot à mot puis on le traduit",
+          "resultat_markdown": "*HyperText Markup Language* : langage de balisage hypertexte."
+        },
+        {
+          "numero": 2,
+          "action": "Développer le sigle PHP",
+          "justification": "L'acronyme actuel est récursif : le P du début est celui du sigle lui-même",
+          "resultat_markdown": "*PHP: Hypertext Preprocessor*, langage de script côté serveur."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer les zones PHP du script",
+          "justification": "Le PHP est toujours placé entre `<?php` et `?>`",
+          "resultat_markdown": "Lignes 2 à 12 (définition de la fonction `parito`) et lignes 17 à 23 jusqu'à `?>` (traitement du formulaire)."
+        },
+        {
+          "numero": 4,
+          "action": "Repérer les zones HTML",
+          "justification": "Tout ce qui est hors de ces balises est envoyé tel quel au navigateur",
+          "resultat_markdown": "Ligne 1 (`<html>`, `<head>`, `<title>`, `<body>`), lignes 13 à 16 (formulaire) et la fin de la ligne 23 (`</body></html>`)."
+        }
+      ],
+      "conclusion_markdown": "HTML décrit la page et la partie formulaire, PHP calcule et décide ; les deux cohabitent dans le même fichier `.php`, mais seul le HTML arrive au navigateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « PHP : Personal Home Page » comme seule définition.",
+          "pourquoi_faux": "C'est le sens d'origine, abandonné depuis la version 3 du langage ; l'acronyme actuel et officiel est *PHP: Hypertext Preprocessor*.",
+          "correction_markdown": "Écrire la forme actuelle et, au besoin, mentionner l'ancienne entre parenthèses."
+        },
+        {
+          "erreur_markdown": "Dire que le navigateur exécute le PHP.",
+          "pourquoi_faux": "Le navigateur ne reçoit jamais de PHP : le serveur l'exécute avant d'envoyer la réponse. Si tu affiches le code source d'une page dynamique, tu n'y trouves aucune balise `<?php`.",
+          "correction_markdown": "Retenir que le PHP s'exécute côté serveur et que seul le résultat, en HTML, voyage jusqu'au navigateur."
+        },
+        {
+          "erreur_markdown": "Présenter HTML comme un langage de programmation.",
+          "pourquoi_faux": "HTML décrit un contenu avec des balises ; il n'a ni variable, ni condition, ni boucle, donc il ne « calcule » rien.",
+          "correction_markdown": "Parler de langage de balisage pour HTML et de langage de programmation (de script) pour PHP."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Développer les sigles CSS, SQL et HTTP et donner le rôle de chacun en une phrase.",
+          "solution_markdown": "1. CSS : *Cascading Style Sheets*, feuilles de style en cascade ; il règle la mise en forme d'une page (couleurs, polices, disposition).\n2. SQL : *Structured Query Language*, langage de requêtes structurées ; il interroge et modifie une base de données.\n3. HTTP : *HyperText Transfer Protocol*, protocole de transfert hypertexte ; il transporte les pages entre le serveur et le navigateur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La page `bonjour.php` contient `<h1>Bonjour</h1><?php echo 'Il est 10h'; ?>`. Quel texte HTML le navigateur reçoit-il ? Qui exécute quelle partie ?",
+          "solution_markdown": "1. Le serveur lit le fichier. La partie `<h1>Bonjour</h1>` est du HTML : il la laisse intacte.\n2. La partie entre `<?php` et `?>` est du PHP : le serveur l'exécute. L'instruction `echo` écrit le texte `Il est 10h` à cet endroit.\n3. Le navigateur reçoit donc `<h1>Bonjour</h1>Il est 10h`, sans aucune trace de PHP. Il interprète le HTML et affiche un titre « Bonjour » suivi du texte."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève enregistre le fichier `page.html` qui contient des instructions PHP, puis l'ouvre par un double-clic. Il voit le code PHP au lieu du résultat. Explique pourquoi et donne les trois actions qui corrigent le problème.",
+          "solution_markdown": "1. Un double-clic ouvre le fichier directement dans le navigateur, sans passer par un serveur : aucun interpréteur PHP n'intervient. Le navigateur ne connaît que le HTML, il traite le PHP comme du texte (ou l'ignore).\n2. Pour que le PHP soit exécuté, il faut : (a) renommer le fichier en `page.php`, l'extension demandant au serveur de le confier à PHP ; (b) le placer dans le dossier racine du serveur (`www` ou `htdocs`, ou `/var/www/html` sous Linux) ; (c) l'appeler avec une adresse du serveur, `http://localhost/page.php`.\n3. Le serveur exécute alors le PHP et n'envoie que le HTML produit."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "HTML décrit la page et s'exécute dans le navigateur ; PHP calcule et s'exécute sur le serveur.",
+        "Développe toujours les sigles en anglais : HyperText Markup Language et PHP: Hypertext Preprocessor.",
+        "Le navigateur ne voit jamais de PHP : il reçoit seulement le HTML produit par le serveur.",
+        "Un fichier qui contient du PHP porte l'extension `.php` et s'appelle par une adresse de serveur, pas par un double-clic.",
+        "À l'examen, la question « développer les sigles » rapporte des points faciles : réponds avec le sigle en anglais, sa traduction et le rôle en une phrase."
+      ]
+    }
+  ]
+}

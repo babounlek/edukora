@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-prevoir-le-resultat-d-une-requete-select-avec-where-tle-a-abi-2024",
+  "meta": {
+    "titre": "Prévoir le résultat d'une requête SELECT avec WHERE",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "projection",
+      "sélection de lignes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-abi-informatique-2024-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Baccalauréat A et ABI, session 2024 (Cameroun, reproduction Camerecole)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-a-abi-informatique-2024-officiel-cameroun-ex5-q4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-a-abi-informatique-2024-officiel-cameroun-ex5"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une requête SELECT pose deux questions à la base : quelles lignes veux-tu, et quelles colonnes veux-tu voir ? Savoir prévoir son résultat sur un petit extrait, c'est comprendre comment SQL filtre l'information. C'est ce que l'épreuve vérifie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une table : lignes, colonnes, en-têtes",
+        "Connaître les opérateurs de comparaison (=, <, >) et les mots AND et OR"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une requête dans l'ordre FROM, WHERE, SELECT",
+      "contenu_markdown": "```sql\nSELECT colonnes\nFROM table\nWHERE condition;\n```\n\n**Ordre de lecture** (différent de l'ordre d'écriture) :\n\n1. **FROM** : quelle table est interrogée.\n2. **WHERE** : quelles **lignes** sont gardées (celles où la condition est vraie).\n3. **SELECT** : quelles **colonnes** sont affichées.\n\nLe résultat est un tableau avec uniquement les colonnes du SELECT, les lignes retenues par le WHERE, dans l'ordre de la table. Les textes de la condition sont entre apostrophes.\n\n`AND` exige les deux conditions ; `OR` en exige au moins une."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le résultat de `SELECT Nom, Age FROM EMPLOYE WHERE Sexe = 'F';` sur la table EMPLOYE de l'épreuve.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire FROM",
+          "justification": "La table interrogée est EMPLOYE : quatre lignes (BOURDA, DJANGUI, KOULMA, GADJI).",
+          "resultat_markdown": "Quatre lignes candidates"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer WHERE",
+          "justification": "On garde les lignes dont Sexe vaut F : BOURDA M, KOULMA M, GADJI M sont écartées.",
+          "resultat_markdown": "Ligne gardée : 4422-T DJANGUI JEANETTE F 40"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer SELECT",
+          "justification": "On n'affiche que Nom et Age.",
+          "resultat_markdown": "Colonnes : Nom, Age"
+        },
+        {
+          "numero": 4,
+          "action": "Dessiner le tableau",
+          "justification": "On écrit l'en-tête puis la ligne retenue.",
+          "resultat_markdown": "| Nom | Age |\n|---|---|\n| DJANGUI | 40 |"
+        }
+      ],
+      "conclusion_markdown": "Le résultat est une table d'une seule ligne : DJANGUI, 40."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Afficher toutes les colonnes de la ligne retenue.",
+          "pourquoi_faux": "SELECT ne garde que les colonnes citées : Matricule, Prenom et Sexe ne doivent pas apparaître.",
+          "correction_markdown": "Barre toutes les colonnes qui ne sont pas dans le SELECT."
+        },
+        {
+          "erreur_markdown": "Oublier la ligne d'en-têtes du tableau résultat.",
+          "pourquoi_faux": "Le résultat est une table : elle porte les noms de ses colonnes.",
+          "correction_markdown": "Écris toujours les en-têtes, tirés du SELECT."
+        },
+        {
+          "erreur_markdown": "Garder une ligne qui ne vérifie pas la condition.",
+          "pourquoi_faux": "WHERE élimine toute ligne pour laquelle la condition est fausse.",
+          "correction_markdown": "Teste chaque ligne une par une, et barre celles qui échouent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur la table EMPLOYE (0021-T BOURDA FERDO M 35 ; 4422-T DJANGUI JEANETTE F 40 ; 2201-G KOULMA PIERRE M 28 ; 1123-F GADJI RAPHA M 48), donner le résultat de `SELECT Nom FROM EMPLOYE WHERE Age > 30;`",
+          "solution_markdown": "**WHERE** : Age supérieur à 30 : BOURDA (35) oui, DJANGUI (40) oui, KOULMA (28) non, GADJI (48) oui.\n\n**SELECT** : colonne Nom seule.\n\n| Nom |\n|---|\n| BOURDA |\n| DJANGUI |\n| GADJI |"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Même table. Donner le résultat de `SELECT Prenom, Sexe FROM EMPLOYE WHERE Sexe = 'M' AND Age < 40;`",
+          "solution_markdown": "**WHERE** : il faut Sexe égal à M **et** Age inférieur à 40. BOURDA : M et 35, oui. DJANGUI : F, non. KOULMA : M et 28, oui. GADJI : M mais 48, non.\n\n**SELECT** : colonnes Prenom et Sexe.\n\n| Prenom | Sexe |\n|---|---|\n| FERDO | M |\n| PIERRE | M |"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Même table. Écrire la requête qui affiche le matricule et le nom des employés de moins de 30 ans ou de sexe F, puis donner son résultat.",
+          "solution_markdown": "**Requête** : `SELECT Matricule, Nom FROM EMPLOYE WHERE Age < 30 OR Sexe = 'F';`\n\n**WHERE** avec OR : une seule condition suffit. BOURDA : 35 ans et M, aucune condition, non. DJANGUI : F, oui. KOULMA : 28 ans, oui. GADJI : 48 ans et M, non.\n\n| Matricule | Nom |\n|---|---|\n| 4422-T | DJANGUI |\n| 2201-G | KOULMA |"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une requête SELECT se lit dans l'ordre FROM, WHERE, SELECT.",
+        "WHERE choisit les lignes ; SELECT choisit les colonnes.",
+        "Le résultat est une table avec ses en-têtes, uniquement les colonnes du SELECT.",
+        "AND demande les deux conditions, OR en demande une seule.",
+        "Au BAC série A, la question « donner le résultat de la requête » rapporte 1 point : la ligne d'en-têtes et la bonne ligne suffisent."
+      ]
+    }
+  ]
+}
