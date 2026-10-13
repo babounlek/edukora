@@ -36,7 +36,7 @@ import re
 import subprocess
 import sys
 import unicodedata
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import lru_cache
 from io import BytesIO
 from pathlib import Path
@@ -74,7 +74,8 @@ from .reparations_auto import (
     proposer_themes,
     vider_journal,
 )
-from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, FiliereSerieA, Lesson, LessonType, NatureEpreuve, Origine, OrigineFigure, PartieEpreuveFrancais, Question, RappelDeMethode, Series, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, TypeReponse, VarianteSujet, _join_fr, institution_officielle
+from .choix import valider_regles_choix
+from .models import EXAMENS_GCE, SERIE_GCE_TECHNIQUE, Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, FiliereSerieA, Lesson, LessonType, NatureEpreuve, Origine, OrigineFigure, PartieEpreuveFrancais, Question, RappelDeMethode, Series, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, TypeReponse, VarianteSujet, _join_fr, institution_officielle
 from programme.models import Module, Savoir
 
 
@@ -229,6 +230,30 @@ MATIERE_MAP = {
     "dessin": "DESSIN",
 }
 
+# Matières du GCE (sous-système anglophone, contenu en anglais) - décision utilisateur du
+# 2026-10-13. Fusionnées dans MATIERE_MAP plutôt que résolues par examen : _resolve_subject
+# ne reçoit pas l'examen, et aucun de ces libellés anglais n'existe en français, donc aucune
+# collision possible avec les clés ci-dessus. Les codes GCE_* sont distincts des matières
+# francophones (voir la migration 0063). Liste de départ, à compléter avec les syllabus.
+MATIERE_MAP.update({
+    "english language": "GCE_ENGLISH", "english": "GCE_ENGLISH",
+    "literature in english": "GCE_LITERATURE", "literature": "GCE_LITERATURE",
+    "french": "GCE_FRENCH", "french language": "GCE_FRENCH",
+    "mathematics": "GCE_MATHS",
+    "additional mathematics": "GCE_ADD_MATHS", "additional maths": "GCE_ADD_MATHS",
+    "pure mathematics": "GCE_PURE_MATHS", "pure maths": "GCE_PURE_MATHS",
+    "pure mathematics with mechanics": "GCE_PURE_MATHS", "pure mathematics with statistics": "GCE_PURE_MATHS",
+    "further mathematics": "GCE_FURTHER_MATHS", "further maths": "GCE_FURTHER_MATHS",
+    "physics": "GCE_PHYSICS", "chemistry": "GCE_CHEMISTRY", "biology": "GCE_BIOLOGY",
+    "geography": "GCE_GEOGRAPHY", "history": "GCE_HISTORY", "economics": "GCE_ECONOMICS",
+    "computer science": "GCE_COMPUTER_SCI", "ict": "GCE_ICT",
+    "information and communication technology": "GCE_ICT",
+    "philosophy": "GCE_PHILOSOPHY", "logic": "GCE_LOGIC",
+    "religious studies": "GCE_RELIGION", "citizenship education": "GCE_CITIZENSHIP",
+    "food and nutrition": "GCE_FOOD_NUTRITION", "accounting": "GCE_ACCOUNTING",
+    "commerce": "GCE_COMMERCE", "technical drawing": "GCE_TECH_DRAWING",
+})
+
 # Tolère l'ancienne nomenclature (A/C/D/F, "F" pour "TI") ET la nomenclature actuelle.
 # "B" et "G" ne sont plus tolérés (SES et COM supprimées, voir docstring en tête de
 # module) - une épreuve avec ces codes fait échouer l'ingestion explicitement plutôt
@@ -269,6 +294,14 @@ EXAMEN_MAP = {
     # compétence, pas une ambiguïté réelle du référentiel.
     "bac_blanc": Examen.BAC,
     "bac blanc": Examen.BAC,
+    # GCE (sous-système anglophone) : deux diplômes distincts, jamais un code « gce » seul -
+    # voir _resolve_cursus_list, qui refuse « gce » sans niveau plutôt que de deviner.
+    "gce_ol": Examen.GCE_OL, "gce ol": Examen.GCE_OL, "gce o level": Examen.GCE_OL,
+    "gce ordinary level": Examen.GCE_OL, "gce o-level": Examen.GCE_OL, "gce o/l": Examen.GCE_OL,
+    "o level": Examen.GCE_OL, "o-level": Examen.GCE_OL, "ordinary level": Examen.GCE_OL,
+    "gce_al": Examen.GCE_AL, "gce al": Examen.GCE_AL, "gce a level": Examen.GCE_AL,
+    "gce advanced level": Examen.GCE_AL, "gce a-level": Examen.GCE_AL, "gce a/l": Examen.GCE_AL,
+    "a level": Examen.GCE_AL, "a-level": Examen.GCE_AL, "advanced level": Examen.GCE_AL,
     "autre": Examen.AUTRE,
     # ATTENTION : aucun Cursus n'existe (ni n'est jamais seedé par seed_country) pour
     # Examen.AUTRE - un examen dont la valeur résout ici échouera toujours la résolution
@@ -450,6 +483,35 @@ def _subject_family_codes(code):
     return {combined, *members} if members else {code}
 
 
+# Valeurs de `serie` qui désignent la branche technique du GCE (Technical O/L et A/L), et celles
+# qui désignent la branche générale. Le GCE n'a pas de série : on passe des matières. Vide = général.
+_GCE_SERIE_TECHNIQUE = {"technical", "gce technical", "gce_technical", "technique", "technical gce"}
+_GCE_SERIE_GENERALE = {"", "general", "generale", "general education", "gce general", "gce_general"}
+
+
+def _resolve_cursus_gce(examen, serie_raw, country):
+    """
+    Cursus d'un sujet du GCE. Pas de série comme au BAC : la branche générale est le Cursus sans
+    série (comme le BEPC), la branche technique le Cursus rattaché à la Series GCE_TECHNICAL.
+    Une valeur de `serie` qu'on ne reconnaît pas est refusée plutôt que rangée au hasard dans
+    la branche générale.
+    """
+    serie = _normalize(serie_raw)
+    if serie in _GCE_SERIE_GENERALE:
+        filtre = {"series__isnull": True}
+    elif serie in _GCE_SERIE_TECHNIQUE:
+        filtre = {"series__code": SERIE_GCE_TECHNIQUE}
+    else:
+        raise IngestionError(
+            f"Série {serie_raw!r} inconnue pour le GCE : laisser vide ou « general » (branche générale), "
+            "ou « technical » (branche technique).",
+        )
+    try:
+        return Cursus.objects.get(country=country, examen=examen, **filtre)
+    except Cursus.DoesNotExist:
+        raise IngestionError(f"Cursus {examen} ({serie_raw or 'general'}) introuvable en base pour {country}.")
+
+
 @lru_cache(maxsize=None)
 def _resolve_cursus_list(examen_raw, serie_raw, country):
     """
@@ -466,7 +528,16 @@ def _resolve_cursus_list(examen_raw, serie_raw, country):
     """
     examen = EXAMEN_MAP.get(_normalize(examen_raw))
     if not examen:
-        raise IngestionError(f"Examen inconnu : {examen_raw!r}. Attendu BEPC/Probatoire/BAC/Autre.")
+        if _normalize(examen_raw) == "gce":
+            raise IngestionError(
+                "Examen « GCE » sans niveau : préciser « GCE_OL » (Ordinary Level) ou « GCE_AL » (Advanced Level).",
+            )
+        raise IngestionError(
+            f"Examen inconnu : {examen_raw!r}. Attendu BEPC/Probatoire/BAC/GCE_OL/GCE_AL/Autre.",
+        )
+
+    if examen in EXAMENS_GCE:
+        return (_resolve_cursus_gce(examen, serie_raw, country),)
 
     if examen == Examen.BEPC:
         try:
@@ -496,7 +567,7 @@ def _resolve_cursus_list(examen_raw, serie_raw, country):
 
 def build_lesson_title(
     subject, cursus_list, year, origine, etablissement,
-    nature_epreuve="", partie_epreuve_francais="", variante_sujet="", filiere_serie_a="",
+    nature_epreuve="", partie_epreuve_francais="", variante_sujet="", filiere_serie_a="", numero_paper=None,
 ):
     """
     Titre affiché d'une épreuve, construit depuis ses champs structurés.
@@ -567,6 +638,10 @@ def build_lesson_title(
         # seule la filière ABI est annotée - la Série A classique reste la forme "par
         # défaut", très largement majoritaire dans le corpus.
         title = f"{title} - {FiliereSerieA(filiere_serie_a).label}"
+    if numero_paper:
+        # GCE : Paper 1 (QCM) et Paper 2 (questions rédigées) de la même matière et de la même
+        # année sont deux épreuves distinctes, sinon indiscernables dans le catalogue.
+        title = f"{title} - Paper {numero_paper}"
     return title
 
 
@@ -692,6 +767,49 @@ def _resolve_variante_sujet(variante_raw):
     if not variante:
         raise IngestionError(f"Variante de sujet inconnue : {variante_raw!r}. Attendu sujet 1/sujet 2 (ou absent).")
     return variante
+
+
+def _resolve_numero_paper(paper_raw):
+    """
+    Champ optionnel (voir Lesson.numero_paper) : absent -> None. Accepte 2, "2" ou "Paper 2" ;
+    tout le reste est refusé plutôt que deviné.
+    """
+    if paper_raw in (None, ""):
+        return None
+    if isinstance(paper_raw, bool):
+        raise IngestionError(f"numero_paper invalide : {paper_raw!r}.")
+    texte = _normalize(paper_raw)
+    if texte.startswith("paper"):
+        texte = texte[len("paper"):].strip()
+    if not texte.isdigit() or not 1 <= int(texte) <= 9:
+        raise IngestionError(f"numero_paper invalide : {paper_raw!r} (attendu un entier de 1 à 9, ou « Paper 2 »).")
+    return int(texte)
+
+
+def _resolve_code_matiere(code_raw):
+    """Code de matière du jury (voir Lesson.code_matiere_officiel), recopié tel qu'imprimé."""
+    code = str(code_raw or "").strip()
+    if len(code) > 10:
+        raise IngestionError(f"code_matiere trop long : {code!r} (10 caractères au plus).")
+    return code
+
+
+def _resolve_regles_choix(regles_raw):
+    try:
+        return valider_regles_choix(regles_raw)
+    except ValueError as erreur:
+        raise IngestionError(str(erreur)) from erreur
+
+
+def _resolve_points_question(points_raw):
+    """Points imprimés pour une question (voir Question.points) : un entier, ou None s'il n'y en a pas.
+    Tolère « 3 », 3 et « 3 marks » ; une valeur qu'on ne sait pas lire reste vide plutôt que fausse."""
+    if points_raw in (None, "") or isinstance(points_raw, bool):
+        return None
+    if isinstance(points_raw, int):
+        return points_raw if points_raw >= 0 else None
+    correspondance = re.match(r"\s*(\d+)", str(points_raw))
+    return int(correspondance.group(1)) if correspondance else None
 
 
 def _resolve_filiere_serie_a(filiere_raw, serie_raw):
@@ -1330,14 +1448,14 @@ def _attach_figures(exercise, figures_data, source_dir):
         replacement = f"![{alt_text}]({figure.image.url})"
 
         for question in questions:
-            enonce = placeholder_re.sub(replacement, question.enonce_markdown).replace(filename, figure.image.url)
-            corrige = placeholder_re.sub(replacement, question.corrige_markdown).replace(filename, figure.image.url)
+            enonce = placeholder_re.sub(lambda _m: replacement, question.enonce_markdown).replace(filename, figure.image.url)
+            corrige = placeholder_re.sub(lambda _m: replacement, question.corrige_markdown).replace(filename, figure.image.url)
             if enonce != question.enonce_markdown or corrige != question.corrige_markdown:
                 question.enonce_markdown = enonce
                 question.corrige_markdown = corrige
                 question.save(update_fields=["enonce_markdown", "corrige_markdown", "updated_at"])
 
-        intro = placeholder_re.sub(replacement, exercise.enonce_intro_markdown).replace(filename, figure.image.url)
+        intro = placeholder_re.sub(lambda _m: replacement, exercise.enonce_intro_markdown).replace(filename, figure.image.url)
         if intro != exercise.enonce_intro_markdown:
             exercise.enonce_intro_markdown = intro
             exercise.save(update_fields=["enonce_intro_markdown", "updated_at"])
@@ -1460,6 +1578,9 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
     partie_epreuve_francais = _resolve_partie_epreuve_francais(data.get("matiere"), data.get("partie_epreuve_francais"))
     variante_sujet = _resolve_variante_sujet(data.get("variante_sujet"))
     filiere_serie_a = _resolve_filiere_serie_a(data.get("filiere_serie_a"), data.get("serie"))
+    numero_paper = _resolve_numero_paper(data.get("numero_paper"))
+    code_matiere = _resolve_code_matiere(data.get("code_matiere"))
+    regles_choix = _resolve_regles_choix(data.get("regles_choix"))
 
     # Condition de non-conflit pour la recherche du Lesson ci-dessous : un Lesson est
     # rejoignable tant que sa variante n'est pas renseignée ET différente de celle de
@@ -1502,6 +1623,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
             lesson__year=year,
             lesson__lesson_type=LessonType.CORR,
             lesson__cursus__country=country,
+            **({"lesson__numero_paper": numero_paper} if numero_paper else {}),
         ).first()
         if existing:
             return existing, False
@@ -1550,6 +1672,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
             variante_sujet_match,
             epreuve_source=epreuve_source, subject__code__in=family_codes, subject__country=country,
             year=year, lesson_type=LessonType.CORR, cursus__country=country,
+            **({"numero_paper": numero_paper} if numero_paper else {}),
         ).distinct().first()
         if lesson is not None and lesson.subject_id != subject.id and len(family_codes) > 1:
             # Promotion, jamais de retour en arrière : une fois qu'une épreuve s'avère
@@ -1567,7 +1690,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
             etablissement = str(data.get("etablissement") or "")
             title = build_lesson_title(
                 subject, cursus_list, year, origine, etablissement,
-                nature_epreuve, partie_epreuve_francais, variante_sujet, filiere_serie_a,
+                nature_epreuve, partie_epreuve_francais, variante_sujet, filiere_serie_a, numero_paper,
             )
 
             lesson = Lesson.objects.create(
@@ -1583,6 +1706,9 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
                 partie_epreuve_francais=partie_epreuve_francais,
                 variante_sujet=variante_sujet,
                 filiere_serie_a=filiere_serie_a,
+                numero_paper=numero_paper,
+                code_matiere_officiel=code_matiere,
+                regles_choix=regles_choix,
             )
         for cursus in cursus_list:
             lesson.cursus.add(cursus)
@@ -1621,6 +1747,15 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
         if not lesson.filiere_serie_a and filiere_serie_a:
             lesson.filiere_serie_a = filiere_serie_a
             update_fields.append("filiere_serie_a")
+        if not lesson.numero_paper and numero_paper:
+            lesson.numero_paper = numero_paper
+            update_fields.append("numero_paper")
+        if not lesson.code_matiere_officiel and code_matiere:
+            lesson.code_matiere_officiel = code_matiere
+            update_fields.append("code_matiere_officiel")
+        if not lesson.regles_choix and regles_choix:
+            lesson.regles_choix = regles_choix
+            update_fields.append("regles_choix")
         if not lesson.institution:
             institution = _resolve_institution(
                 data, lesson.origine, lesson.etablissement, country, cursus_list,
@@ -1722,6 +1857,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
                 type_reponse=type_reponse,
                 choix=choix,
                 reponse_correcte=reponse_correcte,
+                points=_resolve_points_question(q_data.get("points")),
                 # Rattachement direct, sans perte : c'est la seule voie qui conserve la
                 # précision par sous-question (voir Question.savoir_officiel).
                 savoir_officiel=savoir_officiel,
@@ -2223,15 +2359,63 @@ def read_ingestion_report(path=INGESTION_REPORT_PATH):
             report[key] = datetime.fromisoformat(report[key])
         except (KeyError, TypeError, ValueError):
             pass
+
+    # Un run "running" dont le processus n'existe plus (redémarrage du conteneur, Docker
+    # Desktop relancé, kill) ne se terminera jamais : sans cette détection, la page
+    # affichait « en cours » indéfiniment et le bouton restait grisé - l'ingestion
+    # semblait ne plus jamais fonctionner. Le rapport lu passe en "error" (le fichier
+    # n'est pas réécrit ici : lecture seule), ce qui libère aussi le bouton.
+    if report.get("status") == "running" and _run_interrompu(report):
+        report["status"] = "error"
+        report["detail"] = (
+            "Le processus d'ingestion s'est arrêté avant la fin (redémarrage du serveur ou "
+            "du conteneur ?). Relancez l'ingestion : les contenus déjà en base sont ignorés."
+        )
     return report
 
 
-def queue_ingestion(path, report_path=INGESTION_REPORT_PATH):
+def _processus_vivant(pid):
+    """Vrai si `pid` est un processus en cours (un zombie compte comme terminé)."""
+    try:
+        pid = int(pid)
+    except (TypeError, ValueError):
+        return True  # pid inconnu : on ne conclut rien
+    try:
+        stat = Path(f"/proc/{pid}/stat").read_text()
+        # Format : "pid (comm) état ..." - le nom peut contenir des espaces/parenthèses.
+        return stat.rsplit(")", 1)[1].split()[0] != "Z"
+    except (OSError, IndexError):
+        pass
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except OSError:
+        return True
+    return True
+
+
+# Au-delà, un run "running" sans pid connu (rapport antérieur à l'enregistrement du pid)
+# est considéré mort : le plus long passage complet observé dure ~15 minutes.
+RUN_INGESTION_DUREE_MAX = timedelta(hours=3)
+
+
+def _run_interrompu(report):
+    pid = report.get("pid")
+    if pid is not None:
+        return not _processus_vivant(pid)
+    started = report.get("started_at")
+    return isinstance(started, datetime) and timezone.now() - started > RUN_INGESTION_DUREE_MAX
+
+
+def queue_ingestion(path, report_path=INGESTION_REPORT_PATH, commande="ingest_corrections",
+                    log_name="ingestion.log"):
     """
-    Lance `manage.py ingest_corrections <path>` dans un processus détaché, complètement
-    en dehors du process serveur - voir le commentaire ci-dessus sur INGESTION_REPORT_PATH.
+    Lance `manage.py <commande> <path>` (par défaut ingest_corrections ; la page des lots de
+    quiz y passe ingest_quiz_content) dans un processus détaché, complètement en dehors du
+    process serveur - voir le commentaire ci-dessus sur INGESTION_REPORT_PATH.
     La commande écrit elle-même le rapport dans report_path en fin de traitement (option
-    --report-json), et enchaîne sur la génération des PDF de sujet manquants.
+    --report-json), et ingest_corrections enchaîne sur la génération des PDF de sujet manquants.
 
     Le rapport "running" est écrit ici, avant le lancement, pour qu'une actualisation
     immédiate de la page admin montre déjà le run en cours plutôt que le rapport
@@ -2243,7 +2427,7 @@ def queue_ingestion(path, report_path=INGESTION_REPORT_PATH):
 
     manage_py = Path(settings.BASE_DIR) / "manage.py"
     args = [
-        sys.executable, str(manage_py), "ingest_corrections", str(path),
+        sys.executable, str(manage_py), commande, str(path),
         "--report-json", str(report_path),
     ]
 
@@ -2251,7 +2435,7 @@ def queue_ingestion(path, report_path=INGESTION_REPORT_PATH):
     # raisons, que catalog.sujet_pdf.queue_sujet_pdf_generation - voir ses commentaires.
     logs_dir = Path(settings.BASE_DIR) / "logs"
     logs_dir.mkdir(exist_ok=True)
-    log_f = open(logs_dir / "ingestion.log", "ab")
+    log_f = open(logs_dir / log_name, "ab")
     env = {**os.environ, "PYTHONUTF8": "1"}
 
     kwargs = {}
@@ -2259,7 +2443,7 @@ def queue_ingestion(path, report_path=INGESTION_REPORT_PATH):
         kwargs["start_new_session"] = True
 
     try:
-        subprocess.Popen(
+        process = subprocess.Popen(
             args, cwd=settings.BASE_DIR, env=env,
             stdin=subprocess.DEVNULL, stdout=log_f, stderr=log_f,
             **kwargs,
@@ -2271,3 +2455,18 @@ def queue_ingestion(path, report_path=INGESTION_REPORT_PATH):
             {"status": "error", "started_at": timezone.now().isoformat(), "detail": str(exc)}, report_path,
         )
         raise
+
+    # Le pid permet à read_ingestion_report de reconnaître un run mort (conteneur
+    # redémarré en cours de route) au lieu de l'afficher « en cours » pour toujours.
+    # (Seulement si le rapport est encore « running » : un run vide ou instantané a pu
+    # déjà écrire son résultat.)
+    try:
+        encore_en_cours = json.loads(Path(report_path).read_text(encoding="utf-8")).get("status") == "running"
+    except (OSError, json.JSONDecodeError):
+        encore_en_cours = False
+    if encore_en_cours:
+        write_ingestion_report(
+            {"status": "running", "started_at": timezone.now().isoformat(), "path": str(path),
+             "pid": process.pid},
+            report_path,
+        )

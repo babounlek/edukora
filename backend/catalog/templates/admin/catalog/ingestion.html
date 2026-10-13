@@ -87,11 +87,15 @@
   {% endif %}
 
   <div class="module" style="padding: 12px 16px; margin-bottom: 20px;">
-    <h2>Fichiers présents dans le dossier</h2>
+    <h2>Contenu présent dans le dossier</h2>
     {% if files %}
-      <p>{{ files|length }} fichier{{ files|length|pluralize }} .json prêt{{ files|length|pluralize }} à être traité{{ files|length|pluralize }}.</p>
+      <p>
+        {{ files|length }} dossier{{ files|length|pluralize }} d'épreuve (ou fichier{{ files|length|pluralize }} .json) à parcourir.
+        Les contenus déjà en base sont simplement ignorés : un passage complet prend
+        plusieurs minutes (le nombre exact de fichiers est donné dans le rapport du run).
+      </p>
     {% else %}
-      <p>Aucun fichier .json dans le dossier.</p>
+      <p>Aucun dossier ni fichier .json à traiter.</p>
     {% endif %}
   </div>
 

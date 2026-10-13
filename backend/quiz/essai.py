@@ -14,7 +14,7 @@ principe que quiz.views.start_session pour un connecté non abonné.
 """
 import random
 
-from django.db.models import Count
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import permissions
@@ -25,6 +25,7 @@ from rest_framework.throttling import SimpleRateThrottle
 from catalog.models import Cursus, StatutContenu, Subject, Tag, TypeReponse
 
 from .models import CompetenceItem, ModeQuiz, ResultatDeclare
+from .gratuits import themes_gratuits_par_matiere
 from .services import _items_eligibles, perimetre_est_vitrine
 from .views import _competence_item_corrige, _cursus_display
 
@@ -69,13 +70,18 @@ def _payload_item(item, ordre, cursus_id, reponse=None):
 
 
 def _item_gratuit(request, source):
-    """L'item demandé, à condition qu'il soit publié, gratuit et dans le cursus annoncé d'un pays
-    actif - 404 sinon, sans distinguer « n'existe pas » de « n'est pas gratuit »."""
-    return get_object_or_404(
+    """L'item demandé, à condition qu'il soit publié, dans le cursus annoncé d'un pays actif ET du
+    quiz gratuit retenu pour sa matière dans ce cursus (un seul par matière et par cursus, voir
+    quiz.gratuits) - 404 sinon, sans distinguer « n'existe pas » de « n'est pas gratuit »."""
+    item = get_object_or_404(
         CompetenceItem.objects.select_related("theme", "subject"),
         pk=source.get("item"), cursus=source.get("cursus"), cursus__country__actif=True,
         statut=StatutContenu.VALIDE, est_vitrine=True,
     )
+    retenus = {(g["subject"], g["theme"]) for g in themes_gratuits_par_matiere([_entier(source.get("cursus"))])}
+    if (item.subject_id, item.theme_id) not in retenus:
+        raise Http404
+    return item
 
 
 def _entier(valeur):
@@ -90,22 +96,12 @@ def _entier(valeur):
 @throttle_classes([EssaiThrottle])
 def liste_essais(request):
     """
-    GET /quiz/essais/ - les essais gratuits proposables : un par (cursus, matière, thème) dont TOUS
-    les items publiés sont vitrine (le même critère que perimetre_est_vitrine, appliqué en deux
-    requêtes groupées plutôt qu'une par thème).
+    GET /quiz/essais/ - les essais gratuits proposables : UN thème par (cursus, matière), le plus
+    fréquent aux épreuves du cursus (voir quiz.gratuits.themes_gratuits_par_matiere - sans ce tri,
+    les items partagés entre cursus empilaient plusieurs thèmes de la même matière).
     """
-    base = CompetenceItem.objects.filter(statut=StatutContenu.VALIDE, cursus__country__actif=True)
-    cle = ("cursus", "subject", "theme")
-    gratuits = {
-        (r["cursus"], r["subject"], r["theme"]): r["n"]
-        for r in base.filter(est_vitrine=True).values(*cle).annotate(n=Count("id", distinct=True)).order_by()
-    }
-    totaux = {
-        (r["cursus"], r["subject"], r["theme"]): r["n"]
-        for r in base.values(*cle).annotate(n=Count("id", distinct=True)).order_by()
-        if (r["cursus"], r["subject"], r["theme"]) in gratuits
-    }
-    complets = [c for c, n in gratuits.items() if totaux.get(c) == n]
+    actifs = list(Cursus.objects.filter(country__actif=True).values_list("id", flat=True))
+    complets = [(g["cursus"], g["subject"], g["theme"], g["nb_questions"]) for g in themes_gratuits_par_matiere(actifs)]
 
     cursus = {c.id: c for c in Cursus.objects.filter(id__in={c[0] for c in complets}).select_related("country", "series")}
     matieres = {s.id: s for s in Subject.objects.filter(id__in={c[1] for c in complets})}
@@ -115,9 +111,9 @@ def liste_essais(request):
         {
             "cursus": c, "cursus_display": _cursus_display(cursus[c]),
             "subject": s, "subject_label": matieres[s].label, "subject_code": matieres[s].code,
-            "theme": t, "theme_name": themes[t].name, "nb_questions": gratuits[(c, s, t)],
+            "theme": t, "theme_name": themes[t].name, "nb_questions": n,
         }
-        for c, s, t in complets
+        for c, s, t, n in complets
     ]
     # L'ordre des cursus est celui du référentiel (examen puis série), pas celui des ids.
     rang = {c.id: i for i, c in enumerate(sorted(cursus.values(), key=lambda x: (x.examen, x.series.code if x.series else "")))}

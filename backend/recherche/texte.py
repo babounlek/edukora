@@ -45,7 +45,7 @@ MOTS_VIDES = frozenset({
 # Mots qui, à eux seuls, désignent un niveau ou une série et non une notion (voir
 # moteur._theme_generique) : un thème intitulé « Terminale C » n'est pas un thème de révision.
 MOTS_DE_NIVEAU = frozenset({
-    "bac", "bepc", "cap", "gce", "probatoire", "terminale", "tle", "premiere", "1ere", "seconde", "2nde",
+    "bac", "bepc", "cap", "gce", "ordinary", "advanced", "level", "olevel", "alevel", "probatoire", "terminale", "tle", "premiere", "1ere", "seconde", "2nde",
     "troisieme", "3eme", "quatrieme", "4eme", "cinquieme", "5eme", "sixieme", "6eme", "serie", "series",
     "classe", "examen", "a", "c", "d", "e", "ti", "abi", "a4", "b", "f", "g",
 })
@@ -57,7 +57,8 @@ SYNONYMES_EXAMEN = {
     "BEPC": "brevet bfem troisieme 3eme",
     "PROBATOIRE": "probatoire premiere 1ere",
     "CAP": "certificat aptitude professionnelle",
-    "GCE": "general certificate education advanced ordinary level",
+    "GCE_OL": "gce o level ordinary level general certificate education form 5",
+    "GCE_AL": "gce a level advanced level general certificate education upper sixth lower sixth",
 }
 
 

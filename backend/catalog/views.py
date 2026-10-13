@@ -77,7 +77,9 @@ EXAMEN_RANG = {
     Examen.BEPC: 0,
     Examen.CAP: 0,
     Examen.PROBATOIRE: 1,
+    Examen.GCE_OL: 1,
     Examen.BAC: 2,
+    Examen.GCE_AL: 2,
     Examen.AUTRE: 3,
 }
 EXAMEN_RANG_INCONNU = 3

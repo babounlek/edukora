@@ -26,7 +26,7 @@ from quiz.models import CompetenceItem
 from subscriptions.models import DureeMode, Subscription
 from users.models import User
 
-from .admin import ExerciseAdmin
+from .admin import ExerciseAdmin, lister_entrees_ingest
 from .ingestion import (
     IngestionError, _compress_figure_image, _country_code_from_path, ingest_cours, ingest_exercise,
     queue_ingestion, read_ingestion_report, run_ingestion, write_ingestion_report,
@@ -7255,6 +7255,54 @@ class IngestionAdminBackgroundRunTests(TestCase):
 
         self.assertEqual(report["status"], "error")
         self.assertIn("disque", report["detail"])
+
+    def test_page_lists_exam_folders_without_walking_every_file(self):
+        """Régression : la page parcourait ~20 000 fichiers (rglob) à chaque affichage,
+        plus de 30 s sur le bind mount Docker, et gunicorn tuait le worker (WORKER TIMEOUT)
+        - la page d'ingestion « ne fonctionnait plus » alors que le run, lui, tournait."""
+        with tempfile.TemporaryDirectory() as tmp:
+            racine = Path(tmp)
+            (racine / "cm" / "bac-maths-2024").mkdir(parents=True)
+            (racine / "cm" / "bac-maths-2024" / "exercice_1.json").write_text("{}", encoding="utf-8")
+            (racine / "cm" / "bepc-maths-2023").mkdir()
+            (racine / "_quiz" / "cm").mkdir(parents=True)  # outillage : ignoré
+            (racine / "cm" / "_audit").mkdir()  # idem
+            (racine / "lot.json").write_text("{}", encoding="utf-8")
+
+            self.assertEqual(
+                lister_entrees_ingest(racine), ["cm/bac-maths-2024", "cm/bepc-maths-2023", "lot.json"],
+            )
+            with patch("catalog.admin.INGEST_DIR", racine), \
+                    patch("pathlib.Path.rglob", side_effect=AssertionError("rglob interdit")):
+                response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "3 dossiers")
+
+    def test_a_running_report_whose_process_is_dead_is_shown_as_interrupted(self):
+        """Régression : après un redémarrage du conteneur en plein run, le rapport restait
+        « running » pour toujours (page « en cours » et bouton grisé indéfiniment)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "ingestion_report.json"
+            write_ingestion_report(
+                {"status": "running", "started_at": timezone.now().isoformat(), "pid": 999999},
+                report_path,
+            )
+            with patch("catalog.ingestion._processus_vivant", return_value=False):
+                report = read_ingestion_report(report_path)
+            self.assertEqual(report["status"], "error")
+            self.assertIn("s'est arrêté", report["detail"])
+
+            # Processus vivant : le run reste « en cours ».
+            with patch("catalog.ingestion._processus_vivant", return_value=True):
+                self.assertEqual(read_ingestion_report(report_path)["status"], "running")
+
+            # Rapport ancien sans pid connu (antérieur à l'enregistrement du pid).
+            write_ingestion_report(
+                {"status": "running", "started_at": (timezone.now() - timedelta(hours=5)).isoformat()},
+                report_path,
+            )
+            self.assertEqual(read_ingestion_report(report_path)["status"], "error")
 
 
 class EspagnolSubjectIngestionTests(TestCase):

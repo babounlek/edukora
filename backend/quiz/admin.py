@@ -3,12 +3,13 @@ from pathlib import Path
 
 from django.conf import settings
 from django.contrib import admin, messages
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import path
 
+from catalog.ingestion import queue_ingestion, read_ingestion_report
 from catalog.models import Country, StatutContenu
 
-from .ingestion import SELECTION_FLOOR, SELECTION_LIMIT, run_ingestion, select_quiz_batch
+from .ingestion import SELECTION_FLOOR, SELECTION_LIMIT, select_quiz_batch
 from .models import CompetenceItem, CompetenceItemFigure, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
 
 # Sous-dossier de catalog.admin.INGEST_DIR réservé aux lots CompetenceItem du skill
@@ -16,6 +17,8 @@ from .models import CompetenceItem, CompetenceItemFigure, QuizAnswer, QuizQuesti
 # raison de cette convention (réutilise le bind mount Docker existant de `ingest/`
 # plutôt que d'en exiger un nouveau).
 QUIZ_INGEST_DIR = Path(settings.BASE_DIR) / "ingest" / "_quiz"
+# Rapport du dernier run lancé depuis la page d'ingestion (voir ingestion_view).
+QUIZ_INGESTION_REPORT_PATH = Path(settings.BASE_DIR) / "logs" / "quiz_ingestion_report.json"
 
 
 class QuizQuestionInline(admin.TabularInline):
@@ -186,9 +189,30 @@ class CompetenceItemAdmin(admin.ModelAdmin):
         quiz.ingestion.ingest_competence_item) - voir l'avertissement affiché sur la
         page elle-même avant de cliquer.
         """
-        report = None
+        # Même schéma que catalog.admin.ingestion_view : un passage complet de ingest/_quiz
+        # (plusieurs milliers de fichiers, des dizaines de milliers d'items) dépasse le
+        # `--timeout 30` de gunicorn quand il tourne dans le thread de requête - le worker
+        # était tué en plein run. Le run part donc dans un processus détaché et le rapport
+        # est relu sur disque.
+        report = read_ingestion_report(QUIZ_INGESTION_REPORT_PATH)
         if request.method == "POST":
-            report = run_ingestion(QUIZ_INGEST_DIR)
+            if report and report.get("status") == "running":
+                messages.warning(
+                    request,
+                    "Une ingestion de quiz est déjà en cours - actualisez cette page pour "
+                    "suivre son état avant d'en relancer une.",
+                )
+            else:
+                queue_ingestion(
+                    QUIZ_INGEST_DIR, QUIZ_INGESTION_REPORT_PATH,
+                    commande="ingest_quiz_content", log_name="quiz_ingestion.log",
+                )
+                messages.info(
+                    request,
+                    "Ingestion des quiz lancée en arrière-plan. Actualisez cette page : le "
+                    "rapport s'affichera ici une fois le run terminé.",
+                )
+            return redirect(request.path)
 
         files = (
             sorted(f.relative_to(QUIZ_INGEST_DIR).as_posix() for f in QUIZ_INGEST_DIR.rglob("*.json") if f.parent.name.lower() != "_quiz")

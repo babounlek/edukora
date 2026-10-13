@@ -13,6 +13,9 @@ from catalog.models import (
 )
 from programme.models import Module, Savoir
 
+from .gratuits import themes_gratuits_par_matiere
+from .matieres import restreindre_items, restreindre_matieres
+
 # Miroir volontaire de lib/maitrise.ts SEUIL_MAITRISE (frontend) - resume_parcours a
 # besoin de classer chaque savoir pour produire un histogramme (voir sa docstring), ce
 # que construire_parcours ne fait jamais (il ne renvoie que des taux bruts, le
@@ -279,14 +282,19 @@ def _items_eligibles(cursus, subject=None, theme=None, savoir=None):
 def perimetre_est_vitrine(cursus, subject=None, theme=None, savoir=None):
     """
     True si le périmètre demandé (mêmes critères que _items_eligibles) est non vide et
-    entièrement composé d'items CompetenceItem.est_vitrine=True - seul cas où
-    quiz.views.start_session accepte une session sans abonnement actif. Un périmètre
-    trop large (ex. un subject entier dont un seul thème est vitrine) échoue
+    entièrement composé du quiz gratuit retenu pour sa matière dans ce cursus - seul cas où
+    quiz.views.start_session accepte une session sans abonnement actif. Un seul thème est gratuit
+    par (cursus, matière) : voir quiz.gratuits.themes_gratuits_par_matiere, qui le désigne. Un
+    thème gratuit mais non retenu (un item vitrine partagé avec un autre cursus) ne se joue pas.
+    Un périmètre trop large (ex. un subject entier dont un seul thème est gratuit) échoue
     intentionnellement : la vitrine ne doit jamais laisser filtrer du contenu payant
     mélangé à du contenu gratuit dans la même session.
     """
     items = _items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir)
-    return bool(items) and all(item.est_vitrine for item in items)
+    if not items:
+        return False
+    retenus = {(g["subject"], g["theme"]) for g in themes_gratuits_par_matiere([cursus.id])}
+    return all((item.subject_id, item.theme_id) in retenus for item in items)
 
 
 def _selection_stratifiee_par_difficulte(items, n):
@@ -456,7 +464,7 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
         if subject or theme or savoir:
             selection = _selection_stratifiee_par_difficulte(items, n)
         else:
-            selection = _selection_diagnostic_par_matiere(items, n, cursus)
+            selection = _selection_diagnostic_par_matiere(restreindre_items(profil, items), n, cursus)
     else:
         poids_par_theme = _poids_par_theme(profil, cursus)
         selection = _selection_ponderee_par_theme(items, poids_par_theme, n)
@@ -1057,6 +1065,7 @@ def resume_parcours(profil, cursus):
         .distinct()
         .order_by("label")
     )
+    subjects = restreindre_matieres(profil, subjects)
 
     coefficients = _coefficient_par_subject(cursus)
     resume = []
@@ -1316,14 +1325,16 @@ def objectif_matiere_actif(profil, cursus, date=None):
     )
 
 
-def matieres_pour_objectif(cursus):
+def matieres_pour_objectif(cursus, profil=None):
     """Matières qu'on peut choisir : celles qui ont de quoi faire une séance, c'est-à-dire
-    une banque de quiz (voir _contient_quiz) sur ce cursus."""
-    return list(
+    une banque de quiz (voir _contient_quiz) sur ce cursus - et, quand un `profil` est donné, parmi
+    celles qu'il déclare passer (voir quiz.matieres)."""
+    matieres = list(
         Subject.objects.filter(competence_items__statut=StatutContenu.VALIDE, competence_items__cursus=cursus)
         .distinct()
         .order_by("label"),
     )
+    return restreindre_matieres(profil, matieres)
 
 
 def definir_objectif_matiere(profil, cursus, subject, date=None):
@@ -2033,7 +2044,8 @@ def _subjects_par_priorite(profil, cursus):
         poids = coefficients.get(subject.id, COEFFICIENT_PAR_DEFAUT)
         return poids * (1 - maitrise.get(subject.id, 0.0))
 
-    return sorted(subjects, key=lambda s: (-score(s), s.label))
+    # Un profil qui a déclaré ses matières (GCE : pas de séries) ne reçoit un plan que sur elles.
+    return restreindre_matieres(profil, sorted(subjects, key=lambda s: (-score(s), s.label)))
 
 
 def seance_supplementaire(profil, cursus, date=None):

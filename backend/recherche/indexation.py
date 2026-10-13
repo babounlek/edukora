@@ -50,7 +50,9 @@ THEME_MIN_CONTENUS = 2
 VALIDE = StatutContenu.VALIDE
 
 # Rang d'un examen (même échelle que catalog.views.EXAMEN_RANG : le BEPC avant le Probatoire avant le BAC).
-RANG_EXAMEN = {Examen.BEPC: 0, Examen.CAP: 0, Examen.PROBATOIRE: 1, Examen.GCE: 1, Examen.BAC: 2}
+RANG_EXAMEN = {
+    Examen.BEPC: 0, Examen.CAP: 0, Examen.PROBATOIRE: 1, Examen.GCE_OL: 1, Examen.BAC: 2, Examen.GCE_AL: 2,
+}
 RANG_EXAMEN_AUTRE = 3
 
 

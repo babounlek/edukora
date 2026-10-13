@@ -11,6 +11,7 @@ Jamais de pourcentage affiché sur un si petit échantillon : la restitution par
 from catalog.models import ExamSession, StatutContenu, Subject
 
 from .models import ModeQuiz, QuizAnswer, QuizSession
+from .matieres import restreindre_matieres
 from .services import COEFFICIENT_PAR_DEFAUT, _coefficient_par_subject
 
 # Poids, en réponses, de l'a priori "50 %" : avec 3 réponses la moyenne bouge d'environ
@@ -34,7 +35,8 @@ def _niveau(reussies, total):
 
 
 def priorites_examen(profil, cursus):
-    subjects = list(
+    subjects = restreindre_matieres(
+        profil,
         Subject.objects.filter(lessons__statut=StatutContenu.VALIDE, lessons__cursus=cursus).distinct(),
     )
     coefficients = _coefficient_par_subject(cursus)

@@ -93,7 +93,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "id", "phone_number", "email", "email_verified", "full_name", "pseudo",
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
-            "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours",
+            "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours", "langue",
             "a_un_abonnement_actif", "rappels_actifs", "rappels_invite_refusee", "bilan_parent_actif",
             "profil_actif", "pin_parent_actif", "session_restreinte",
         ]
@@ -205,7 +205,7 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            "full_name", "pseudo", "cursus_prepare", "rappels_actifs", "rappels_invite_refusee", "bilan_parent_actif",
+            "full_name", "pseudo", "cursus_prepare", "langue", "rappels_actifs", "rappels_invite_refusee", "bilan_parent_actif",
         ]
 
     def validate_rappels_actifs(self, value):

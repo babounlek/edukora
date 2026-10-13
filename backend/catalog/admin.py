@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 from django.conf import settings
@@ -19,6 +20,38 @@ PURGE_CONFIRMATION_PHRASE = "SUPPRIMER TOUT"
 # Dossier surveillé par la tâche planifiée qui dépose les JSON produits par la
 # compétence correction-experte - voir catalog.ingestion.run_ingestion.
 INGEST_DIR = Path(settings.BASE_DIR) / "ingest"
+
+
+def lister_entrees_ingest(racine=None):
+    """
+    Entrées à traiter sous `ingest/` : un dossier d'épreuve (`<pays>/<epreuve>`) ou un
+    fichier .json posé à la racine ou au premier niveau - sans descendre dans les dossiers.
+
+    Un `rglob("*.json")` complet parcourait ~20 000 fichiers : ~15 s à froid sur le bind
+    mount Docker, plus de 30 s dès qu'une ingestion tournait en parallèle - la page
+    d'ingestion de l'admin était alors tuée par le `--timeout 30` de gunicorn
+    (« WORKER TIMEOUT ») au moment même où l'on la rouvrait pour suivre son run. Deux
+    niveaux de scandir prennent quelques centièmes de seconde. Les dossiers préfixés par
+    « _ » (outillage, lots de quiz) sont ignorés comme dans run_ingestion.
+    """
+    racine = Path(racine or INGEST_DIR)
+    if not racine.exists():
+        return []
+    entrees = []
+    with os.scandir(racine) as niveau1:
+        for e1 in niveau1:
+            if e1.name.startswith("_"):
+                continue
+            if e1.is_dir():
+                with os.scandir(e1.path) as niveau2:
+                    for e2 in niveau2:
+                        if e2.name.startswith("_"):
+                            continue
+                        if e2.is_dir() or e2.name.endswith(".json"):
+                            entrees.append(f"{e1.name}/{e2.name}")
+            elif e1.name.endswith(".json"):
+                entrees.append(e1.name)
+    return sorted(entrees)
 
 
 @admin.register(Country)
@@ -154,17 +187,10 @@ class LessonAdmin(admin.ModelAdmin):
             # en cours reproposerait d'en lancer un second.
             return redirect(request.path)
 
-        # rglob (récursif), pas glob : doit lister exactement ce que run_ingestion()
-        # va traiter (voir catalog.ingestion.run_ingestion, qui parcourt aussi les
-        # sous-répertoires) - un fichier posé dans un sous-dossier (convention actuelle :
-        # un sous-dossier par épreuve, pour regrouper le JSON et ses PNG de figures)
-        # doit apparaître ici, pas seulement être traité en silence au clic. Chemin
-        # relatif (pas juste .name) pour qu'un fichier dans un sous-dossier reste
-        # distinguable d'un fichier du même nom ailleurs.
-        files = (
-            sorted(f.relative_to(INGEST_DIR).as_posix() for f in INGEST_DIR.rglob("*.json"))
-            if INGEST_DIR.exists() else []
-        )
+        # Dossiers d'épreuve présents (deux niveaux, pas de rglob de tous les fichiers :
+        # voir lister_entrees_ingest). La page n'a besoin que de savoir s'il y a quelque
+        # chose à traiter et combien d'épreuves - run_ingestion, lui, parcourt tout.
+        files = lister_entrees_ingest()
         context = {
             **self.admin_site.each_context(request),
             "title": "Ingestion des contenus",

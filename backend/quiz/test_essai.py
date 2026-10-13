@@ -8,7 +8,8 @@ from rest_framework.test import APIClient
 from catalog.models import Cursus, Examen, Subject, Tag, TypeReponse
 
 from .models import CompetenceItem, QuizAnswer, QuizQuestion, QuizSession
-from .tests import _make_competence_item
+from .gratuits import themes_gratuits_par_matiere
+from .tests import _make_competence_item, _make_lesson_avec_themes
 
 
 class EssaiGratuitTests(TestCase):
@@ -197,3 +198,88 @@ class EssaiGratuitTests(TestCase):
         # Garde-fou global : la base ne doit contenir aucun item gratuit créé par ces appels.
         self._demarrer()
         self.assertEqual(CompetenceItem.objects.filter(est_vitrine=True).count(), 3)
+
+
+class UnThemeParMatiereTests(TestCase):
+    """Les items sont partagés entre cursus : sans tri, un thème coché pour un cursus devenait
+    gratuit dans tous les autres et la liste empilait plusieurs thèmes de la même matière."""
+
+    def setUp(self):
+        self.maths = Subject.objects.get(country__code="CM", code="MATHS")
+        self.anglais = Subject.objects.get(country__code="CM", code="ANGLAIS")
+        self.bac_c = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.bac_d = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
+        self.client = APIClient()
+
+    def _theme_gratuit(self, sujet, cursus, nom, numero):
+        theme = Tag.objects.create(name=nom)
+        for i in range(2):
+            _make_competence_item(sujet, cursus, theme=theme, numero=f"{numero}{i}", est_vitrine=True)
+        return theme
+
+    def test_garde_le_theme_le_plus_frequent_du_cursus(self):
+        rare = self._theme_gratuit(self.maths, self.bac_c, "theme-rare", "r")
+        frequent = self._theme_gratuit(self.maths, self.bac_c, "theme-frequent", "f")
+        _make_lesson_avec_themes(self.maths, self.bac_c, "Épreuve 1", [[frequent], [rare]])
+        _make_lesson_avec_themes(self.maths, self.bac_c, "Épreuve 2", [[frequent]])
+        _make_lesson_avec_themes(self.maths, self.bac_c, "Épreuve 3", [[frequent]])
+
+        essais = [e for e in self.client.get("/quiz/essais/").json() if e["cursus"] == self.bac_c.id]
+
+        self.assertEqual([e["theme"] for e in essais if e["subject_code"] == "MATHS"], [frequent.id])
+
+    def test_un_theme_partage_entre_deux_cursus_ne_double_pas_une_matiere(self):
+        # Même item dans C et D : un second thème de Maths coché pour D n'empile pas deux thèmes en D.
+        partage = Tag.objects.create(name="theme-partage")
+        for i in range(2):
+            _make_competence_item(
+                self.maths, [self.bac_c, self.bac_d], theme=partage, numero=f"p{i}", est_vitrine=True,
+            )
+        propre_a_d = self._theme_gratuit(self.maths, self.bac_d, "theme-propre-d", "d")
+        _make_lesson_avec_themes(self.maths, self.bac_d, "Épreuve D", [[propre_a_d]])
+
+        en_d = [
+            e for e in self.client.get("/quiz/essais/").json()
+            if e["cursus"] == self.bac_d.id and e["subject_code"] == "MATHS"
+        ]
+
+        self.assertEqual(len(en_d), 1)
+        self.assertEqual(en_d[0]["theme"], propre_a_d.id)
+
+    def test_deux_matieres_gardent_chacune_leur_theme(self):
+        maths = self._theme_gratuit(self.maths, self.bac_c, "theme-maths", "m")
+        anglais = self._theme_gratuit(self.anglais, self.bac_c, "theme-anglais", "a")
+
+        essais = {e["subject_code"]: e["theme"] for e in self.client.get("/quiz/essais/").json() if e["cursus"] == self.bac_c.id}
+
+        self.assertEqual(essais, {"MATHS": maths.id, "ANGLAIS": anglais.id})
+
+    def test_themes_gratuits_par_matiere_ignore_un_theme_a_moitie_gratuit(self):
+        theme = Tag.objects.create(name="theme-mitige")
+        _make_competence_item(self.maths, self.bac_c, theme=theme, numero="g1", est_vitrine=True)
+        _make_competence_item(self.maths, self.bac_c, theme=theme, numero="g2")  # payant
+
+        self.assertEqual(themes_gratuits_par_matiere([self.bac_c.id]), [])
+
+    def test_un_theme_gratuit_non_retenu_ne_se_joue_pas(self):
+        # Deux thèmes entièrement gratuits pour (BAC C, Maths) : seul le plus fréquent est le quiz
+        # gratuit de la matière. L'autre reste coché (un item partagé), mais il n'est ni proposé ni jouable.
+        rare = self._theme_gratuit(self.maths, self.bac_c, "theme-rare-2", "x")
+        frequent = self._theme_gratuit(self.maths, self.bac_c, "theme-frequent-2", "y")
+        _make_lesson_avec_themes(self.maths, self.bac_c, "Épreuve A", [[frequent]])
+        _make_lesson_avec_themes(self.maths, self.bac_c, "Épreuve B", [[frequent], [rare]])
+        item_rare = CompetenceItem.objects.filter(theme=rare).first()
+        base = {"cursus": self.bac_c.id, "subject": self.maths.id}
+
+        retenu = self.client.post("/quiz/essais/demarrer/", {**base, "theme": frequent.id}, format="json")
+        ecarte = self.client.post("/quiz/essais/demarrer/", {**base, "theme": rare.id}, format="json")
+        reponse = self.client.post(
+            "/quiz/essais/repondre/",
+            {"cursus": self.bac_c.id, "item": item_rare.id, "resultat_declare": "REUSSI"}, format="json",
+        )
+        corrige = self.client.get(f"/quiz/essais/corrige/?cursus={self.bac_c.id}&item={item_rare.id}")
+
+        self.assertEqual(retenu.status_code, 201)
+        self.assertEqual(ecarte.status_code, 403)
+        self.assertEqual(reponse.status_code, 404)
+        self.assertEqual(corrige.status_code, 404)

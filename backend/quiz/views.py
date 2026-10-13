@@ -19,12 +19,14 @@ from programme.models import Savoir
 from subscriptions.models import Subscription
 from users.profils import profil_actif
 
+from .matieres import matieres_disponibles
 from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
     StatutFichePdf, StatutSeance,
 )
 from . import accueil, xp
 from .classement import classement_hebdo
+from .gratuits import themes_gratuits_par_matiere
 from .pdf import queue_quiz_fiche_pdf_generation
 from .serie import serie_de_jours
 from .services import (
@@ -714,15 +716,10 @@ def list_quiz_subjects(request):
     # Thème vitrine de chaque matière (voir CompetenceItem.est_vitrine), pour que le
     # frontend puisse proposer un essai gratuit en entier plutôt qu'un simple "abonne-
     # toi" - un attribut Python posé après coup (pas une annotation SQL, la relation
-    # theme_id n'a pas d'agrégat naturel), premier thème trouvé si plusieurs par
-    # matière (la curation vise un thème par cursus, jamais davantage en pratique).
-    vitrine_par_matiere = {}
-    for subject_id, theme_id in (
-        CompetenceItem.objects.filter(
-            cursus=cursus, est_vitrine=True, subject_id__in=[s.id for s in subjects],
-        ).values_list("subject_id", "theme_id").distinct()
-    ):
-        vitrine_par_matiere.setdefault(subject_id, theme_id)
+    # theme_id n'a pas d'agrégat naturel). Un seul par matière, le plus fréquent aux épreuves du
+    # cursus, et seulement s'il est ENTIÈREMENT gratuit (sinon start_session le refuserait) : voir
+    # quiz.gratuits.themes_gratuits_par_matiere, partagé avec l'essai sans compte.
+    vitrine_par_matiere = {g["subject"]: g["theme"] for g in themes_gratuits_par_matiere([cursus.id])}
     for s in subjects:
         s.vitrine_theme_id = vitrine_par_matiere.get(s.id)
 
@@ -918,7 +915,7 @@ def _charge_utile_plan(profil, cursus, seance, compte):
         "serie": serie_de_jours(profil),
         "xp": xp.etat_du_jour(profil),
         "objectif_matiere": _serialiser_objectif(objectif_matiere_actif(profil, cursus)),
-        "matieres_objectif": [{"id": m.id, "label": m.label} for m in matieres_pour_objectif(cursus)],
+        "matieres_objectif": [{"id": m.id, "label": m.label} for m in matieres_pour_objectif(cursus, profil)],
     }
     if seance is None:
         return {**base, "etat": "rien_a_proposer", "seance": None}
@@ -1080,6 +1077,38 @@ def objectif_xp_view(request):
         return Response({"error": f"objectif invalide. Attendu {list(xp.OBJECTIFS_POSSIBLES)}."}, status=400)
     _tracer(EventName.OBJECTIF_XP_CHOISI, request.user, profil_id=profil.id, objectif=valeur)
     return Response(etat)
+
+
+@api_view(["GET", "PUT"])
+def matieres_view(request):
+    """
+    Les matières que passe le profil actif (voir quiz.matieres) : GET renvoie le choix et les matières
+    qu'on peut déclarer sur son cursus ; PUT {"matieres": [ids]} remplace le choix (liste vide = toutes
+    les matières du cursus, le cas normal hors GCE). Pas réservé au mode parent : c'est un réglage
+    d'étude, comme l'objectif quotidien, que l'élève fait lui-même - y compris sur une session enfant.
+    """
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"error": "Aucun cursus déclaré."}, status=400)
+    profil = profil_actif(request)
+    disponibles = matieres_disponibles(cursus)
+    ids_disponibles = {m.id for m in disponibles}
+
+    if request.method == "PUT":
+        ids = request.data.get("matieres")
+        if not isinstance(ids, list) or any(isinstance(i, bool) or not isinstance(i, int) for i in ids):
+            return Response({"error": "« matieres » doit être une liste d'identifiants."}, status=400)
+        if set(ids) - ids_disponibles:
+            return Response({"error": "Une de ces matières n'est pas disponible pour ce cursus."}, status=400)
+        # Remplace le choix de CE cursus seulement : celui d'un autre examen déjà préparé reste intact.
+        profil.matieres_passees.remove(*ids_disponibles)
+        profil.matieres_passees.add(*ids)
+
+    choisies = set(profil.matieres_passees.values_list("id", flat=True)) & ids_disponibles
+    return Response({
+        "choisies": sorted(choisies),
+        "disponibles": [{"id": m.id, "code": m.code, "label": m.label} for m in disponibles],
+    })
 
 
 @api_view(["POST", "DELETE"])

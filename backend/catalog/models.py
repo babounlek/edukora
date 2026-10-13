@@ -34,8 +34,40 @@ class Examen(models.TextChoices):
     # Système anglophone (General Certificate of Education), Cameroun - décision
     # utilisateur du 2026-09-28. Organisme distinct du BEPC/Probatoire/BAC
     # francophones, voir INSTITUTIONS_OFFICIELLES.
-    GCE = "GCE", "GCE"
+    #
+    # Deux niveaux, pas un (décision utilisateur du 2026-10-13, remplace l'ancien code
+    # unique "GCE") : l'Ordinary Level (fin de Form 5, niveau Probatoire) et l'Advanced
+    # Level (fin d'Upper Sixth, niveau BAC) sont deux diplômes distincts, avec leurs
+    # propres matières, tarifs et sessions. Le GCE ne connaît pas de "séries" : on passe
+    # des matières. Branche générale = Cursus sans série (comme le BEPC) ; branche
+    # technique = Cursus avec la Series technique GCE_TECHNICAL - voir
+    # EXAMENS_GCE / SERIE_GCE_TECHNIQUE et la migration 0063.
+    GCE_OL = "GCE_OL", "GCE Ordinary Level"
+    GCE_AL = "GCE_AL", "GCE Advanced Level"
     AUTRE = "AUTRE", "Devoir surveillé / Autre"
+
+
+# Examens du sous-système anglophone : contenu en anglais, matières à part (Subject.langue),
+# pas de série (sauf la branche technique). Un seul endroit pour répondre à « cet examen
+# est-il un GCE ? », au lieu de comparer deux codes partout.
+EXAMENS_GCE = frozenset({Examen.GCE_OL, Examen.GCE_AL})
+
+# Code de la Series qui porte la branche technique du GCE (Technical O/L et A/L). Une seule
+# pour l'instant : la liste officielle des spécialités n'est pas confirmée, et en ajouter
+# plus tard ne demande aucune migration de schéma (une Series de plus, un Cursus par niveau).
+SERIE_GCE_TECHNIQUE = "GCE_TECHNICAL"
+
+
+class Langue(models.TextChoices):
+    """Langue d'enseignement d'une matière (et donc du contenu qui s'y rattache)."""
+
+    FR = "fr", "Français"
+    EN = "en", "English"
+
+
+def langue_examen(examen):
+    """Langue du contenu d'un examen : l'anglais pour le GCE, le français pour tout le reste."""
+    return Langue.EN if examen in EXAMENS_GCE else Langue.FR
 
 
 class Origine(models.TextChoices):
@@ -70,7 +102,8 @@ INSTITUTIONS_OFFICIELLES = {
     ("CM", "BAC"): "Office du Baccalauréat du Cameroun",
     ("CM", "PROBATOIRE"): "Office du Baccalauréat du Cameroun",
     ("CM", "BEPC"): "MINESEC",
-    ("CM", "GCE"): "Cameroon GCE Board",
+    ("CM", "GCE_OL"): "Cameroon GCE Board",
+    ("CM", "GCE_AL"): "Cameroon GCE Board",
 }
 
 
@@ -175,6 +208,15 @@ class Subject(models.Model):
     country = models.ForeignKey("Country", on_delete=models.PROTECT, related_name="subjects")
     code = models.CharField(max_length=20)
     label = models.CharField(max_length=100)
+    langue = models.CharField(
+        max_length=2, choices=Langue.choices, default=Langue.FR,
+        help_text=(
+            "Langue d'enseignement. Les matières du GCE (anglophone) portent un code "
+            "distinct de leur équivalent francophone (préfixe GCE_) pour ne pas partager "
+            "leurs thèmes, programmes et quiz avec lui - la langue sert aux filtres et à "
+            "l'affichage."
+        ),
+    )
 
     class Meta:
         ordering = ["label"]
@@ -409,6 +451,11 @@ class Cursus(models.Model):
 
     def display_examen(self):
         return resolve_examen_label(self.country, self.examen)
+
+    @property
+    def langue(self):
+        """Langue du contenu de ce cursus - dérivée de l'examen, jamais stockée (voir langue_examen)."""
+        return langue_examen(self.examen)
 
     def clean(self):
         """
@@ -675,6 +722,34 @@ class Lesson(models.Model):
             "(toute matière), distinct de partie_epreuve_francais (voir VarianteSujet)."
         ),
     )
+    numero_paper = models.PositiveSmallIntegerField(
+        null=True, blank=True,
+        help_text=(
+            "Numéro du « paper » quand une matière se passe en plusieurs épreuves distinctes "
+            "d'une même session (GCE : Paper 1 = QCM, Paper 2 = questions rédigées, Paper 3 = "
+            "pratique). Vide pour toute épreuve qui n'a qu'une copie (BEPC/Probatoire/BAC). "
+            "Chaque paper est sa propre Lesson : durée, sections et barème diffèrent."
+        ),
+    )
+    code_matiere_officiel = models.CharField(
+        max_length=10, blank=True,
+        help_text=(
+            "Code de matière du jury quand l'épreuve source le porte (GCE : 0570 Mathematics, "
+            "0580 Physics, 0515 Chemistry, 0510 Biology...). Reproduit tel qu'imprimé sur le sujet, "
+            "jamais déduit. Vide pour les examens francophones."
+        ),
+    )
+    regles_choix = models.JSONField(
+        default=list, blank=True,
+        help_text=(
+            "Règles « traiter n questions sur m » de l'épreuve, sous forme structurée (le texte de "
+            "la consigne reste dans introduction_markdown). Deux formes, voir catalog.choix : "
+            "{\"type\": \"parmi\", \"portee\": \"SECTION A\", \"repondre\": 4, \"sur\": 5} (n exercices "
+            "du groupe) et {\"type\": \"ou\", \"portee\": \"SECTION II\", \"options\": [[\"a\",\"b\",\"c\"],"
+            "[\"d\",\"e\",\"f\"]]} (dans chaque exercice du groupe, un seul des deux jeux de sous-questions). "
+            "Vide quand toutes les questions sont obligatoires."
+        ),
+    )
     filiere_serie_a = models.CharField(
         max_length=10, choices=FiliereSerieA.choices, blank=True,
         help_text=(
@@ -789,6 +864,9 @@ class Lesson(models.Model):
             "annee": self.year,
             "duree": self.duree_epreuve or None,
             "coefficient": self.coefficient or None,
+            "paper": self.numero_paper,
+            "code_matiere": self.code_matiere_officiel or None,
+            "regles_choix": self.regles_choix or [],
             "origine": self.get_origine_display() if self.origine != Origine.OFFICIEL else None,
             "etablissement": self.etablissement or None,
             "institution": self.institution or None,
@@ -992,6 +1070,15 @@ class Question(models.Model):
         ),
     )
     difficulte_estimee = models.CharField(max_length=10, choices=Difficulte.choices, blank=True)
+    points = models.PositiveSmallIntegerField(
+        null=True, blank=True,
+        help_text=(
+            "Points imprimés sur le sujet pour cette question (GCE : « (3 marks) » en marge de "
+            "chaque bloc de sous-questions), tels quels. Vide quand le sujet n'en donne pas "
+            "(épreuves francophones, QCM où toutes les questions valent autant). Jamais recalculé "
+            "ni vérifié contre le total de l'exercice : les sujets réels ne tombent pas toujours juste."
+        ),
+    )
 
     type_reponse = models.CharField(max_length=10, choices=TypeReponse.choices, default=TypeReponse.OUVERTE)
     choix = models.JSONField(

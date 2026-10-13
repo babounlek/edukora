@@ -33,19 +33,35 @@
 
   {% if report %}
     <div class="module" style="padding: 12px 16px; margin: 20px 0;">
-      <h2>Résultat</h2>
-      <p>
-        {{ report.files_found }} fichier{{ report.files_found|pluralize }} .json trouvé{{ report.files_found|pluralize }},
-        {{ report.created }} item{{ report.created|pluralize }} créé{{ report.created|pluralize }} (statut validé),
-        {{ report.skipped }} déjà existant{{ report.skipped|pluralize }} (ignoré{{ report.skipped|pluralize }}).
-      </p>
-      {% if report.errors %}
-        <p style="color: var(--error-fg, #ba2121);"><strong>{{ report.errors|length }} erreur{{ report.errors|length|pluralize }} :</strong></p>
-        <ul>
-          {% for error in report.errors %}
-            <li style="color: var(--error-fg, #ba2121);">{{ error }}</li>
-          {% endfor %}
-        </ul>
+      {% if report.status == "running" %}
+        <h2>Ingestion en cours</h2>
+        <p>
+          Lancée le {{ report.started_at|date:"d/m/Y à H:i:s" }} en arrière-plan. Actualisez
+          cette page pour voir le rapport dès qu'elle sera terminée ; le détail en direct est
+          dans <code>logs/quiz_ingestion.log</code>.
+        </p>
+      {% elif report.status == "error" %}
+        <h2>Dernier run : échec</h2>
+        <p style="color: var(--error-fg, #ba2121);">
+          L'ingestion s'est arrêtée en cours de route : {{ report.detail }}
+          (voir <code>logs/quiz_ingestion.log</code>).
+        </p>
+      {% else %}
+        <h2>Résultat du dernier run</h2>
+        <p>
+          Terminé le {{ report.finished_at|date:"d/m/Y à H:i:s" }} :
+          {{ report.files_found }} fichier{{ report.files_found|pluralize }} .json trouvé{{ report.files_found|pluralize }},
+          {{ report.created }} item{{ report.created|pluralize }} créé{{ report.created|pluralize }} (statut validé),
+          {{ report.skipped }} déjà existant{{ report.skipped|pluralize }} (ignoré{{ report.skipped|pluralize }}).
+        </p>
+        {% if report.errors %}
+          <p style="color: var(--error-fg, #ba2121);"><strong>{{ report.errors|length }} erreur{{ report.errors|length|pluralize }} :</strong></p>
+          <ul>
+            {% for error in report.errors %}
+              <li style="color: var(--error-fg, #ba2121);">{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       {% endif %}
     </div>
   {% endif %}
@@ -65,7 +81,7 @@
 
   <form method="post">
     {% csrf_token %}
-    <input type="submit" class="default" value="Lancer l'ingestion"{% if not files %} disabled{% endif %}>
+    <input type="submit" class="default" value="Lancer l'ingestion"{% if not files or report.status == "running" %} disabled{% endif %}>
   </form>
 
 </div>

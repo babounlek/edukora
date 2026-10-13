@@ -11,11 +11,18 @@ def joindre_fr(items):
     return f"{', '.join(items[:-1])} et {items[-1]}"
 
 
+# Séries du GCE : pas de « Série X » dans le sous-système anglophone, la branche technique
+# s'écrit « Technical » (« GCE Advanced Level - Technical »).
+LIBELLES_SERIES_GCE = {"GCE_TECHNICAL": "Technical"}
+
+
 def libelle_series(codes):
     """« Série C » ou « Séries C, D et E » - le mot s'accorde ; None s'il n'y a aucune série."""
     codes = list(codes)
     if not codes:
         return None
+    if all(c in LIBELLES_SERIES_GCE for c in codes):
+        return " / ".join(LIBELLES_SERIES_GCE[c] for c in codes)
     return f"{'Séries' if len(codes) > 1 else 'Série'} {joindre_fr(codes)}"
 
 

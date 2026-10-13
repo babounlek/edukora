@@ -189,7 +189,7 @@ class Command(BaseCommand):
             attendu = build_lesson_title(
                 lesson.subject, cursus_list, lesson.year, lesson.origine, lesson.etablissement,
                 lesson.nature_epreuve, lesson.partie_epreuve_francais, lesson.variante_sujet,
-                lesson.filiere_serie_a,
+                lesson.filiere_serie_a, lesson.numero_paper,
             )
             if attendu == lesson.title:
                 continue

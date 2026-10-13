@@ -258,7 +258,8 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
         model = Lesson
         fields = [
             "id", "kind", "slug", "title", "subject", "cursus", "lesson_type", "lesson_type_display",
-            "year", "duree_epreuve", "duree_minutes", "coefficient", "origine", "origine_display",
+            "year", "duree_epreuve", "duree_minutes", "coefficient", "numero_paper", "code_matiere_officiel",
+            "origine", "origine_display",
             "etablissement", "institution", "nature_epreuve", "nature_epreuve_display",
             "partie_epreuve_francais", "partie_epreuve_francais_display", "themes",
             "has_access", "is_read", "est_vitrine", "created_at",

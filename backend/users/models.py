@@ -7,6 +7,8 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 
+from catalog.models import Langue
+
 from .phone import to_e164
 
 _REFERRAL_CODE_ALPHABET = string.ascii_uppercase + string.digits
@@ -183,6 +185,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     être bloqué par des déclarations d'élèves, qui se redemandent en une question.
     """
 
+    langue = models.CharField(
+        max_length=2, choices=Langue.choices, default=Langue.FR,
+        help_text=(
+            "Langue de l'interface et des messages envoyés (e-mail, SMS, WhatsApp). Choisie par "
+            "l'élève avec le sélecteur de langue ; français par défaut. Les contenus (épreuves, "
+            "cours, quiz) ont leur propre langue - voir catalog.models.Subject.langue."
+        ),
+    )
     rappels_actifs = models.BooleanField(
         default=False,
         help_text=(
@@ -280,6 +290,14 @@ class Profil(models.Model):
         "catalog.Cursus", null=True, blank=True, on_delete=models.SET_NULL, related_name="profils_eleves",
         help_text="Cursus que CE profil prépare, déclaré par lui - voir la docstring "
                   "de la classe : une seule valeur, jamais un M2M.",
+    )
+    matieres_passees = models.ManyToManyField(
+        "catalog.Subject", blank=True, related_name="profils_eleves",
+        help_text="Matières que CE profil passe à l'examen. Vide = toutes celles du cursus (le "
+                  "cas des séries du BEPC, Probatoire et BAC, où la série fixe déjà les matières). "
+                  "Sert au GCE, qui n'a pas de séries : on y choisit ses matières, et le coach, le "
+                  "plan du jour, les priorités et la progression se limitent à elles. Voir "
+                  "quiz.matieres.",
     )
     rappels_actifs = models.BooleanField(
         default=False,

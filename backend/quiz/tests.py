@@ -31,7 +31,7 @@ from rest_framework.test import APIClient
 
 from access.models import LectureProgress
 from analytics.models import AnalyticsEvent, EventName
-from catalog.ingestion import IngestionError
+from catalog.ingestion import IngestionError, read_ingestion_report
 from catalog.models import (
     Cours, Country, Cursus, Difficulte, Examen, Exercise, Lesson, LessonType, Origine, Question, RappelDeMethode,
     Series, StatutContenu, Subject, Tag, TypeReponse,
@@ -721,20 +721,49 @@ class CompetenceItemAdminViewsTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "cm/batch.json")
 
-    def test_ingestion_view_post_ingests_and_reports(self):
+    def test_ingestion_view_post_spawns_a_detached_process(self):
+        """Le run part hors du thread de requête (un passage complet dépasse le
+        --timeout 30 de gunicorn) et le rapport est relu sur disque."""
         with tempfile.TemporaryDirectory() as tmp:
             quiz_dir = Path(tmp) / "_quiz"
             (quiz_dir / "cm").mkdir(parents=True)
             (quiz_dir / "cm" / "batch.json").write_text(
                 json.dumps([_item_payload(external_id="cqc-x")]), encoding="utf-8",
             )
+            report_path = Path(tmp) / "quiz_ingestion_report.json"
 
-            with patch("quiz.admin.QUIZ_INGEST_DIR", quiz_dir):
+            with patch("quiz.admin.QUIZ_INGEST_DIR", quiz_dir), \
+                    patch("quiz.admin.QUIZ_INGESTION_REPORT_PATH", report_path), \
+                    patch("catalog.ingestion.subprocess.Popen") as popen:
                 response = self.client.post(reverse("admin:quiz_competenceitem_ingestion"))
 
-        self.assertEqual(response.status_code, 200)
-        item = CompetenceItem.objects.get(external_id="cqc-x")
-        self.assertEqual(item.statut, StatutContenu.VALIDE)
+                self.assertEqual(response.status_code, 302)
+                args = popen.call_args[0][0]
+                self.assertIn("ingest_quiz_content", args)
+                self.assertIn(str(report_path), args)
+                # Rien n'est ingéré dans le thread de requête.
+                self.assertFalse(CompetenceItem.objects.filter(external_id="cqc-x").exists())
+                self.assertEqual(read_ingestion_report(report_path)["status"], "running")
+
+                # Un second clic pendant le run est refusé.
+                popen.reset_mock()
+                self.client.post(reverse("admin:quiz_competenceitem_ingestion"))
+                popen.assert_not_called()
+
+    def test_ingest_quiz_content_command_writes_the_report_the_page_reads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            quiz_dir = Path(tmp) / "_quiz"
+            (quiz_dir / "cm").mkdir(parents=True)
+            (quiz_dir / "cm" / "batch.json").write_text(
+                json.dumps([_item_payload(external_id="cqc-x")]), encoding="utf-8",
+            )
+            report_path = Path(tmp) / "quiz_ingestion_report.json"
+            call_command("ingest_quiz_content", str(quiz_dir), report_json=str(report_path))
+            report = read_ingestion_report(report_path)
+
+        self.assertEqual(report["status"], "done")
+        self.assertEqual(report["created"], 1)
+        self.assertEqual(CompetenceItem.objects.get(external_id="cqc-x").statut, StatutContenu.VALIDE)
 
 
 class GenererSessionTests(TestCase):

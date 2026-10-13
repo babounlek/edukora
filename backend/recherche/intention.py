@@ -23,11 +23,16 @@ from .models import TypeResultat
 # les clés ci-dessous sont passées par `_racine` au chargement, jamais écrites à la main au singulier.
 _racine = texte.racine
 
+# Chaque mot désigne un TUPLE de codes d'examen : « gce » seul vaut pour les deux niveaux du GCE,
+# « ordinary » / « advanced » (ou « olevel » / « alevel » écrits d'un bloc) pour un seul.
 MOTS_EXAMEN = {
-    _racine(mot): code
-    for mot, code in {
-        "bac": "BAC", "baccalaureat": "BAC", "bepc": "BEPC", "brevet": "BEPC", "probatoire": "PROBATOIRE",
-        "cap": "CAP", "gce": "GCE",
+    _racine(mot): codes
+    for mot, codes in {
+        "bac": ("BAC",), "baccalaureat": ("BAC",), "bepc": ("BEPC",), "brevet": ("BEPC",),
+        "probatoire": ("PROBATOIRE",), "cap": ("CAP",),
+        "gce": ("GCE_OL", "GCE_AL"),
+        "ordinary": ("GCE_OL",), "olevel": ("GCE_OL",),
+        "advanced": ("GCE_AL",), "alevel": ("GCE_AL",),
     }.items()
 }
 
@@ -130,9 +135,9 @@ def _cursus_et_series(jetons, pays, consommes):
     position = next((i for i, j in enumerate(jetons) if j in MOTS_EXAMEN), None)
     if position is None:
         return [], ""
-    code = MOTS_EXAMEN[jetons[position]]
+    codes = MOTS_EXAMEN[jetons[position]]
     cursus = [
-        c for c in Cursus.objects.filter(country=pays, examen=code).select_related("series", "country")
+        c for c in Cursus.objects.filter(country=pays, examen__in=codes).select_related("series", "country")
     ]
     if not cursus:
         return [], ""
@@ -145,7 +150,8 @@ def _cursus_et_series(jetons, pays, consommes):
         choisis.append(par_serie[jetons[suivant]])
         consommes.add(suivant)
         suivant += 1
-    examen = resolve_examen_label(pays, code)
+    # Un mot qui couvre deux niveaux (« gce ») ne peut pas prendre le libellé d'un seul des deux.
+    examen = resolve_examen_label(pays, codes[0]) if len(codes) == 1 else "GCE"
     if choisis:
         return [c.id for c in choisis], f"{examen} {', '.join(c.series.code for c in choisis)}"
     return [c.id for c in cursus], examen
