@@ -2,6 +2,7 @@ import type { ComparaisonCandidats, PertesParCause, TempsExercice } from "@/api/
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatPoints, libellePoints } from "@/lib/notation"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 /** « 42 min », « 1 h 05 » - un temps de travail, jamais des secondes brutes. */
 function formatMinutes(secondes: number): string {
@@ -16,14 +17,15 @@ function formatMinutes(secondes: number): string {
  * façon - c'est cette répartition, plus que le total, qui dit quoi travailler.
  */
 export function CartePertes({ pertes }: { pertes: PertesParCause }) {
+  useI18n()
   if (pertes.causes.length === 0) {
     return (
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="font-display text-lg">Où sont passés tes points</CardTitle>
+          <CardTitle className="font-display text-lg">{t("rf.pertes_titre")}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">Tu n'as perdu aucun point sur cette épreuve. Bravo.</p>
+          <p className="text-sm text-muted-foreground">{t("rf.aucune_perte")}</p>
         </CardContent>
       </Card>
     )
@@ -32,8 +34,8 @@ export function CartePertes({ pertes }: { pertes: PertesParCause }) {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="font-display text-lg">Où sont passés tes points</CardTitle>
-        <p className="text-xs text-muted-foreground">Tu as perdu {libellePoints(pertes.total_perdu)}, répartis ainsi.</p>
+        <CardTitle className="font-display text-lg">{t("rf.pertes_titre")}</CardTitle>
+        <p className="text-xs text-muted-foreground">{t("rf.perdu", { points: libellePoints(pertes.total_perdu) })}</p>
       </CardHeader>
       <CardContent>
         <ul className="flex flex-col gap-4">
@@ -42,7 +44,7 @@ export function CartePertes({ pertes }: { pertes: PertesParCause }) {
               <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
                 <span>{cause.libelle}</span>
                 <span className="shrink-0 tabular-nums text-muted-foreground">
-                  {formatPoints(cause.points)} pts · {cause.part} %
+                  {t("gn.pts_court", { p: formatPoints(cause.points) })} · {t("oujensuis.pct", { pct: cause.part })}
                 </span>
               </div>
               <div
@@ -60,8 +62,7 @@ export function CartePertes({ pertes }: { pertes: PertesParCause }) {
         </ul>
         {nonPrecisees && nonPrecisees.part >= 30 && (
           <p className="mt-4 text-xs text-muted-foreground">
-            Une bonne part de tes points perdus n'a pas de cause. En revoyant ta copie corrigée, précise pourquoi sous
-            chaque question : ce rapport devient alors beaucoup plus utile.
+            {t("rf.sans_cause")}
           </p>
         )}
       </CardContent>
@@ -74,12 +75,13 @@ export function CartePertes({ pertes }: { pertes: PertesParCause }) {
  * estimation (elle vient des moments où les questions ont été cochées), présentée comme telle.
  */
 export function CarteTemps({ temps, chronophage }: { temps: TempsExercice[]; chronophage: string | null }) {
+  useI18n()
   const pire = chronophage ? temps.find((t) => t.numero_exercice === chronophage) : null
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="font-display text-lg">Ton temps</CardTitle>
-        <p className="text-xs text-muted-foreground">Estimé d'après les moments où tu as coché tes questions.</p>
+        <CardTitle className="font-display text-lg">{t("rf.temps_titre")}</CardTitle>
+        <p className="text-xs text-muted-foreground">{t("rf.temps_estime")}</p>
       </CardHeader>
       <CardContent>
         <ul className="flex flex-col gap-4">
@@ -87,10 +89,10 @@ export function CarteTemps({ temps, chronophage }: { temps: TempsExercice[]; chr
             <li key={ligne.numero_exercice}>
               <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
                 <span className={cn(ligne.numero_exercice === chronophage && "font-semibold")}>
-                  Exercice {ligne.numero_exercice}
+                  {t("ed.exercice_n", { n: ligne.numero_exercice })}
                 </span>
                 <span className="shrink-0 tabular-nums text-muted-foreground">
-                  {formatMinutes(ligne.secondes)} · {ligne.part_du_temps} % du temps
+                  {t("rf.pct_temps", { d: formatMinutes(ligne.secondes), p: ligne.part_du_temps })}
                 </span>
               </div>
               {/* Deux barres superposées : le temps consommé, et - en repère - la part des points. */}
@@ -101,14 +103,13 @@ export function CarteTemps({ temps, chronophage }: { temps: TempsExercice[]; chr
                   style={{ left: `${Math.min(ligne.part_des_points, 99)}%` }}
                 />
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">Vaut {ligne.part_des_points} % des points</p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("rf.vaut", { p: ligne.part_des_points })}</p>
             </li>
           ))}
         </ul>
         {pire && (
           <p className="mt-4 rounded-lg bg-warning/10 px-3 py-2 text-sm">
-            L'exercice {pire.numero_exercice} a pris {pire.part_du_temps} % de ton temps pour {pire.part_des_points} % des
-            points. La prochaine fois, fixe-toi une limite de temps par exercice et passe au suivant.
+            {t("rf.chronophage", { n: pire.numero_exercice, t: pire.part_du_temps, p: pire.part_des_points })}
           </p>
         )}
       </CardContent>
@@ -118,19 +119,19 @@ export function CarteTemps({ temps, chronophage }: { temps: TempsExercice[]; chr
 
 /** « Ta position » : parmi les autres candidats de la même épreuve en conditions réelles. */
 export function CartePosition({ comparaison }: { comparaison: ComparaisonCandidats }) {
+  useI18n()
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="font-display text-lg">Ta position</CardTitle>
+        <CardTitle className="font-display text-lg">{t("rf.position_titre")}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="text-sm">
-          Tu fais mieux que <strong className="tabular-nums">{comparaison.percentile} %</strong> des candidats qui ont
-          passé cette épreuve en conditions réelles.
+          {t("rf.mieux_avant")} <strong className="tabular-nums">{t("oujensuis.pct", { pct: comparaison.percentile })}</strong>{" "}
+          {t("rf.mieux_apres")}
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          {comparaison.effectif} candidats · note moyenne {formatPoints(comparaison.moyenne)}. Comparaison anonyme, sur la
-          meilleure note de chacun.
+          {t("rf.effectif", { n: comparaison.effectif, moy: formatPoints(comparaison.moyenne) })}
         </p>
       </CardContent>
     </Card>

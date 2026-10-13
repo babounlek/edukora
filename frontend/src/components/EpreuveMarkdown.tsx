@@ -8,6 +8,8 @@ import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 import { ArrowRight } from "lucide-react"
 
+import { t } from "@/lib/i18n"
+
 import { Callout } from "@/components/Callout"
 import { SolutionToggle } from "@/components/SolutionToggle"
 import { extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
@@ -107,14 +109,14 @@ function MarkdownParagraph({ children }: { children?: ReactNode }) {
     const slugs = groupMatch[1].split(",")
     return (
       <div className="not-prose my-3 flex flex-col items-start gap-1.5 rounded-md border border-dashed border-border p-3">
-        <p className="text-sm font-medium text-muted-foreground">Cours liés à cet exercice</p>
+        <p className="text-sm font-medium text-muted-foreground">{t("ed.cours_lies")}</p>
         {slugs.map((slug) => (
           <Link
             key={slug}
             to={coursHref(slug)}
             className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
           >
-            Voir le cours complet
+            {t("ed.voir_cours")}
             <ArrowRight className="size-3.5" />
           </Link>
         ))}
@@ -130,7 +132,7 @@ function MarkdownParagraph({ children }: { children?: ReactNode }) {
           to={coursHref(match[1])}
           className="flex w-fit items-center gap-1 rounded-md border border-dashed border-border px-3 py-1.5 text-sm font-medium text-primary hover:underline"
         >
-          Voir le cours complet
+          {t("ed.voir_cours")}
           <ArrowRight className="size-3.5" />
         </Link>
       </p>
@@ -212,7 +214,7 @@ function MarkdownTableCell({ children, style }: { children?: ReactNode; style?: 
  */
 function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
   const resolvedSrc = src?.startsWith("/") ? `${API_BASE_URL}${src}` : src
-  return <img src={resolvedSrc} alt={alt?.trim() ? alt : "Figure de l'exercice"} loading="lazy" className="rounded-md border border-border" />
+  return <img src={resolvedSrc} alt={alt?.trim() ? alt : t("ed.figure")} loading="lazy" className="rounded-md border border-border" />
 }
 
 const MARKDOWN_COMPONENTS = {

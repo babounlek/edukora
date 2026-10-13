@@ -27,6 +27,7 @@ import { formatDuration } from "@/lib/duration"
 import { formatNote } from "@/lib/notation"
 import { choisirCursusPourAchat, lienAbonnement } from "@/lib/retourAchat"
 import { useSeo } from "@/lib/seo"
+import { t, tn, useI18n } from "@/lib/i18n"
 import { coursDetailPath, coursReaderPath, epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
 
 /** Fiche détail d'une épreuve inédite - miroir simplifié d'EpreuveDetailPage.tsx : pas
@@ -35,6 +36,7 @@ import { coursDetailPath, coursReaderPath, epreuveInediteDetailPath, epreuvesLis
  * est public, voir sa section plus bas. "Commencer" ouvre (ou reprend) une tentative
  * plutôt que de mener directement à un lecteur. */
 export function EpreuveInediteDetailPage() {
+  useI18n()
   const { country: countryParam, id } = useParams<{ country?: string; id: string }>()
   const navigate = useNavigate()
   const location = useLocation()
@@ -56,17 +58,15 @@ export function EpreuveInediteDetailPage() {
   const [actionsVisibles, setActionsVisibles] = useState(true)
 
   useSeo({
-    title: epreuve?.title ?? "Épreuve inédite",
-    description: epreuve
-      ? `${epreuve.subject.label} - épreuve inédite originale conçue par ${SITE_NAME}, jamais tirée des annales.`
-      : undefined,
+    title: epreuve?.title ?? t("ep.origine_INEDITE"),
+    description: epreuve ? t("ine.seo_description", { matiere: epreuve.subject.label, site: SITE_NAME }) : undefined,
   })
 
   useEffect(() => {
     if (!id) return
     getEpreuveInedite(id)
       .then(setEpreuve)
-      .catch((err) => setError(err instanceof ApiError ? err.message : "Impossible de charger cette épreuve."))
+      .catch((err) => setError(err instanceof ApiError ? err.message : t("ed.charger_erreur")))
   }, [id])
 
   useEffect(() => {
@@ -136,7 +136,7 @@ export function EpreuveInediteDetailPage() {
       setError(
         err instanceof ApiError
           ? err.message
-          : "Impossible de démarrer cette épreuve pour le moment. Réessaie plus tard.",
+          : t("ine.demarrer_erreur"),
       )
       setStarting(false)
       setConfirmerRecommencer(false)
@@ -168,7 +168,7 @@ export function EpreuveInediteDetailPage() {
       setError(
         err instanceof ApiError
           ? err.message
-          : "Impossible de démarrer cette épreuve pour le moment. Réessaie plus tard.",
+          : t("ine.demarrer_erreur"),
       )
       setStarting(false)
       setModeAConfirmer(null)
@@ -180,7 +180,7 @@ export function EpreuveInediteDetailPage() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour au catalogue
+          {t("ed.retour_catalogue")}
         </Link>
       </div>
     )
@@ -219,27 +219,27 @@ export function EpreuveInediteDetailPage() {
     enCours?.echeance ? Math.max(0, Math.round((new Date(enCours.echeance).getTime() - maintenantServeur()) / 1000)) : null
   const avancement = enCours
     ? resteSecondes !== null
-      ? `Chrono en cours : il te reste ${formatDuration(resteSecondes)}.`
-      : `${enCours.traitees} sur ${enCours.total} traitées : ta copie t'attend.`
+      ? t("ine.chrono_en_cours", { duree: formatDuration(resteSecondes) })
+      : t("ine.traitees", { n: enCours.traitees, total: enCours.total })
     : null
 
   // Ce que le visiteur gagne, dit avec des chiffres : la formule la moins chère qui ouvre
   // réellement les inédites, sa durée, et combien d'épreuves elle ouvre sur ce cursus.
   const libelleCursus = cursusAchat
-    ? `${cursusAchat.examen_display}${cursusAchat.series ? ` - Série ${cursusAchat.series.code}` : ""}`
-    : "ce cursus"
+    ? `${cursusAchat.examen_display}${cursusAchat.series ? ` - ${t("prix.serie", { code: cursusAchat.series.code })}` : ""}`
+    : t("ine.ce_cursus")
   const nbInedites = ineditesDuCursus?.count ?? null
   const validite = offre
     ? offre.duration_mode === "JUSQUA_EXAMEN"
-      ? "paiement unique, valable jusqu'à ton examen"
-      : `valable ${offre.effective_duration_days} jours`
+      ? t("ine.validite_unique")
+      : t("ine.validite_jours", { n: offre.effective_duration_days })
     : null
   const mes = epreuve.mes_tentatives ?? null
   const dejaRendue =
     mes && mes.nb_terminees > 0
-      ? `Déjà rendue ${mes.nb_terminees === 1 ? "une fois" : `${mes.nb_terminees} fois`}${
+      ? `${mes.nb_terminees === 1 ? t("ine.rendue_une") : t("ine.rendue_n", { n: mes.nb_terminees })}${
           mes.meilleure_note !== null && mes.bareme !== null
-            ? ` · meilleure note ${formatNote(mes.meilleure_note, mes.bareme)}`
+            ? t("ine.meilleure", { note: formatNote(mes.meilleure_note, mes.bareme) })
             : ""
         }.`
       : null
@@ -255,7 +255,7 @@ export function EpreuveInediteDetailPage() {
         <Button asChild size="lg" className={classe}>
           <Link to="/connexion" state={{ from: cheminFiche }}>
             <Gift />
-            Essayer gratuitement
+            {t("qd.essayer_gratuit")}
           </Link>
         </Button>
       )
@@ -263,7 +263,7 @@ export function EpreuveInediteDetailPage() {
     if (!epreuve.has_access) {
       return (
         <Button asChild size="lg" className={classe}>
-          <Link to={lienAchat}>Débloquer l'accès</Link>
+          <Link to={lienAchat}>{t("ine.debloquer")}</Link>
         </Button>
       )
     }
@@ -271,7 +271,7 @@ export function EpreuveInediteDetailPage() {
       return (
         <Button size="lg" className={classe} onClick={() => navigate(`/inedit/tentative/${enCours.id}`)}>
           <Sparkles />
-          Reprendre cette épreuve
+          {t("ine.reprendre")}
         </Button>
       )
     }
@@ -284,14 +284,14 @@ export function EpreuveInediteDetailPage() {
           onClick={() => actionsRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })}
         >
           <Sparkles />
-          Choisir comment la passer
+          {t("ine.choisir_mode")}
         </Button>
       )
     }
     return (
       <Button size="lg" className={classe} onClick={() => lancer("libre")} disabled={starting}>
         <Sparkles />
-        {starting ? "Préparation…" : "Commencer cette épreuve"}
+        {starting ? t("quiz.preparation") : t("ine.commencer")}
       </Button>
     )
   }
@@ -303,7 +303,7 @@ export function EpreuveInediteDetailPage() {
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
-        Retour au catalogue
+        {t("ed.retour_catalogue")}
       </Link>
 
       <div className="flex animate-fade-up flex-col gap-4">
@@ -313,12 +313,12 @@ export function EpreuveInediteDetailPage() {
             <CountryBadge code={epreuve.subject.country.code} label={epreuve.subject.country.label} />
             <Badge variant="gold" className="gap-1">
               <Crown className="size-3" />
-              Épreuve inédite
+              {t("ep.origine_INEDITE")}
             </Badge>
             {epreuve.est_vitrine && (
               <Badge variant="success" className="gap-1">
                 <Gift className="size-3" />
-                Gratuite
+                {t("ine.gratuite")}
               </Badge>
             )}
             <Badge variant="secondary">{epreuve.subject.label}</Badge>
@@ -328,27 +328,25 @@ export function EpreuveInediteDetailPage() {
             {epreuve.duree_minutes && (
               <Badge variant="outline">
                 <Clock className="mr-1 size-3" />
-                Durée indicative : {epreuve.duree_minutes} min
+                {t("ine.duree_indicative", { n: epreuve.duree_minutes })}
               </Badge>
             )}
             {epreuve.exercises_count > 0 && (
               <Badge variant="outline">
-                {epreuve.exercises_count} exercice{epreuve.exercises_count > 1 ? "s" : ""}
+                {tn("ep.exercices", epreuve.exercises_count)}
               </Badge>
             )}
           </div>
           <BoutonPartager
             chemin={cheminFiche}
-            texte={`Teste-toi sur « ${epreuve.title} » sur ${SITE_NAME} :`}
+            texte={t("ine.partage", { titre: epreuve.title, site: SITE_NAME })}
             type="inedite"
             className="mt-4"
           />
         </div>
 
         <p className="text-sm text-muted-foreground">
-          Une épreuve originale conçue par {SITE_NAME}, jamais tirée des annales - même niveau, même structure, même
-          barème que l'examen réel. Le seul moyen de te tester en conditions réelles sans déjà connaître les
-          réponses.
+          {t("ine.intro", { site: SITE_NAME })}
         </p>
 
         {/* Les actions AVANT l'aperçu : placées après lui, le bouton d'accès se trouvait à
@@ -367,7 +365,7 @@ export function EpreuveInediteDetailPage() {
                     {!chronoLance && (
                       <Button size="lg" variant="outline" disabled={starting} onClick={() => setConfirmerRecommencer(true)}>
                         <RotateCcw />
-                        Recommencer à zéro
+                        {t("ine.recommencer_zero")}
                       </Button>
                     )}
                   </div>
@@ -403,11 +401,11 @@ export function EpreuveInediteDetailPage() {
             <div className="flex w-full flex-col gap-3 rounded-lg border border-success/40 bg-success/5 p-4">
               <p className="flex items-center gap-1.5 text-sm font-medium">
                 <Gift className="size-4 shrink-0 text-success" />
-                Cette épreuve est offerte : passe-la en entier, gratuitement
+                {t("ine.offerte")}
               </p>
               <ul className="flex list-disc flex-col gap-1 pl-9 text-sm text-muted-foreground">
-                <li>Le chrono, la notation et le rapport de fin d'une vraie épreuve inédite</li>
-                <li>Un compte suffit (une minute) : pas d'abonnement, pas de paiement</li>
+                <li>{t("ine.offerte1")}</li>
+                <li>{t("ine.offerte2")}</li>
               </ul>
               <div className="flex flex-wrap items-center gap-3">
                 {boutonPrincipal("w-fit")}
@@ -416,19 +414,19 @@ export function EpreuveInediteDetailPage() {
                   className="text-sm font-medium text-primary underline-offset-2 hover:underline"
                 >
                   {nbInedites !== null && nbInedites > 1
-                    ? `Voir l'abonnement : les ${nbInedites} épreuves inédites`
-                    : "Voir l'abonnement"}
+                    ? t("ine.voir_abo_n", { n: nbInedites })
+                    : t("ine.voir_abo")}
                 </Link>
               </div>
               {!isAuthenticated && (
                 <p className="text-sm text-muted-foreground">
-                  Déjà un compte ?{" "}
+                  {t("ine.deja_compte")}{" "}
                   <Link
                     to="/connexion"
                     state={{ from: `${location.pathname}${location.search}` }}
                     className="font-medium text-primary underline-offset-2 hover:underline"
                   >
-                    Te connecter
+                    {t("ine.te_connecter")}
                   </Link>
                 </p>
               )}
@@ -437,15 +435,14 @@ export function EpreuveInediteDetailPage() {
             <div className="flex w-full flex-col gap-3 rounded-lg border border-dashed border-border bg-muted/40 p-4">
               <p className="flex items-center gap-1.5 text-sm font-medium">
                 <Lock className="size-4 shrink-0" />
-                Incluse dans l'abonnement {libelleCursus}
+                {t("ine.incluse", { cursus: libelleCursus })}
               </p>
               <ul className="flex list-disc flex-col gap-1 pl-9 text-sm text-muted-foreground">
                 <li>
-                  {nbInedites !== null && nbInedites > 1 ? `Les ${nbInedites} épreuves inédites` : "Les épreuves inédites"}{" "}
-                  de ce cursus, chronométrées, avec grille de notation et rapport de fin
+                  {nbInedites !== null && nbInedites > 1 ? t("ine.inclus1_n", { n: nbInedites }) : t("ine.inclus1")}
                 </li>
-                <li>Tous les corrigés d'annales et les cours de méthode</li>
-                <li>La séance du jour et les quiz, jusqu'à ton examen</li>
+                <li>{t("ine.inclus2")}</li>
+                <li>{t("ine.inclus3")}</li>
               </ul>
               <div className="flex flex-wrap items-center gap-3">
                 {boutonPrincipal("w-fit")}
@@ -460,13 +457,13 @@ export function EpreuveInediteDetailPage() {
                   son seul chemin visible était l'achat. */}
               {!isAuthenticated && (
                 <p className="text-sm text-muted-foreground">
-                  Déjà abonné ?{" "}
+                  {t("ine.deja_abonne")}{" "}
                   <Link
                     to="/connexion"
                     state={{ from: `${location.pathname}${location.search}` }}
                     className="font-medium text-primary underline-offset-2 hover:underline"
                   >
-                    Te connecter
+                    {t("ine.te_connecter")}
                   </Link>
                 </p>
               )}
@@ -480,22 +477,22 @@ export function EpreuveInediteDetailPage() {
             niveau sans dévoiler l'épreuve ni compromettre les conditions d'examen. */}
         {epreuve.apercu_enonce_markdown && (
           <div className="border-t border-border pt-5">
-            <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">Aperçu</h2>
+            <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">{t("accueil.apercu")}</h2>
             {epreuve.apercu_numero_exercice && !apercuDejaTitre && (
-              <p className="mb-2 text-sm font-medium">Exercice {epreuve.apercu_numero_exercice}</p>
+              <p className="mb-2 text-sm font-medium">{t("ed.exercice_n", { n: epreuve.apercu_numero_exercice })}</p>
             )}
             <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display">
               <EpreuveMarkdown markdown={epreuve.apercu_enonce_markdown} />
             </article>
             <p className="mt-3 text-xs text-muted-foreground">
-              Le reste de l'épreuve reste inédit jusqu'à ce que tu la commences.
+              {t("ine.reste_inedit")}
             </p>
           </div>
         )}
 
         {epreuve.related_cours.length > 0 && (
           <div className="mt-2 border-t border-border pt-5">
-            <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">Cours associés</h2>
+            <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">{t("ed.cours_associes")}</h2>
             <div className="flex flex-col gap-2">
               {epreuve.related_cours.map((cours) => (
                 <Link
@@ -520,7 +517,7 @@ export function EpreuveInediteDetailPage() {
 
         {error && <p className="text-sm text-destructive">{error}</p>}
 
-        <BackToTopBar links={[{ to: epreuvesListPath(country), label: "Retour au catalogue" }]} />
+        <BackToTopBar links={[{ to: epreuvesListPath(country), label: t("ed.retour_catalogue") }]} />
       </div>
 
       {/* Sur téléphone, l'action reste sous le pouce dès que son bloc d'origine a défilé hors
@@ -550,17 +547,16 @@ export function EpreuveInediteDetailPage() {
 
       <Dialog open={confirmerRecommencer} onOpenChange={setConfirmerRecommencer}>
         <DialogContent>
-          <DialogTitle>Recommencer à zéro ?</DialogTitle>
+          <DialogTitle>{t("ine.dialogue_titre")}</DialogTitle>
           <DialogDescription>
-            Tu repars d'une copie vierge. Celle que tu as entamée reste dans ton historique, avec ce que tu y avais
-            traité.
+            {t("ine.dialogue_texte")}
           </DialogDescription>
           <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             <Button variant="outline" onClick={() => setConfirmerRecommencer(false)}>
-              Garder ma copie
+              {t("ine.garder_copie")}
             </Button>
             <Button disabled={starting} onClick={() => handleStart({ nouvelle: true })}>
-              {starting ? "Préparation…" : "Recommencer"}
+              {starting ? t("quiz.preparation") : t("ine.recommencer")}
             </Button>
           </div>
         </DialogContent>

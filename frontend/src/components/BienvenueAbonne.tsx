@@ -8,6 +8,7 @@ import { ApiError } from "@/api/client"
 import { Button } from "@/components/ui/button"
 import { trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 // Un diagnostic d'accueil : trois questions sur chacune des cinq matières qui pèsent le
 // plus (voir quiz.services._selection_diagnostic_par_matiere).
@@ -36,6 +37,7 @@ export function BienvenueAbonne({
   // lui l'action principale - l'élève est venu pour CETTE épreuve, pas pour un diagnostic.
   retour?: string | null
 }) {
+  useI18n()
   const navigate = useNavigate()
   const [demarrage, setDemarrage] = useState(false)
   const [erreur, setErreur] = useState("")
@@ -64,7 +66,7 @@ export function BienvenueAbonne({
       setErreur(
         err instanceof ApiError
           ? err.message
-          : "Impossible de démarrer le diagnostic pour l'instant. Tu peux commencer depuis ton espace.",
+          : t("bv.erreur"),
       )
       setDemarrage(false)
     }
@@ -76,20 +78,20 @@ export function BienvenueAbonne({
         <Check className="size-7" strokeWidth={3} />
       </span>
       <h2 className="mt-5 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-        {renouvellement ? "Ton accès est prolongé" : "Bienvenue, ton accès est ouvert"}
+        {renouvellement ? t("bv.prolonge") : t("bv.bienvenue")}
       </h2>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">
         {renouvellement
-          ? "Ta progression est intacte : tu reprends exactement où tu t'étais arrêté."
-          : "Voici ce que tu viens de débloquer."}
+          ? t("bv.intacte")
+          : t("bv.debloque")}
       </p>
 
       {!renouvellement && (
         <ul className="mt-5 flex w-full flex-col gap-2 text-left">
-          <Debloque icone={BookOpen} texte="Tous les corrigés détaillés et les cours de méthode" />
-          <Debloque icone={CalendarCheck} texte="Une séance du jour, choisie pour toi selon l'examen" />
-          <Debloque icone={ListChecks} texte="Des quiz pour t'entraîner et suivre ta progression" />
-          {inclutInedit && <Debloque icone={Crown} texte="Les épreuves inédites, chronométrées" />}
+          <Debloque icone={BookOpen} texte={t("bv.corriges")} />
+          <Debloque icone={CalendarCheck} texte={t("bv.seance")} />
+          <Debloque icone={ListChecks} texte={t("bv.quiz")} />
+          {inclutInedit && <Debloque icone={Crown} texte={t("bv.inedites")} />}
         </ul>
       )}
 
@@ -97,7 +99,7 @@ export function BienvenueAbonne({
         {retour && (
           <Button asChild size="lg" className="h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25">
             <Link to={retour}>
-              Retourner à mon épreuve
+              {t("bv.retour")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -110,7 +112,7 @@ export function BienvenueAbonne({
             className={retour ? "h-12 rounded-full px-7 text-base" : "h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25"}
           >
             <Link to={`/${country}`}>
-              Reprendre ma séance
+              {t("bv.reprendre")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -126,18 +128,17 @@ export function BienvenueAbonne({
               onClick={situerMonNiveau}
               disabled={demarrage || isLoading}
             >
-              {demarrage ? "Je prépare tes questions…" : `Situer mon niveau · ${DUREE_DIAGNOSTIC_MIN} min`}
+              {demarrage ? t("bv.prepare") : t("bv.situer", { n: DUREE_DIAGNOSTIC_MIN })}
               {!demarrage && <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />}
             </Button>
             <p className="max-w-xs text-xs text-muted-foreground">
-              {N_DIAGNOSTIC} questions sur tes matières principales. Ce n'est pas une note : ça sert à te proposer les
-              bonnes séances.
+              {t("bv.diagnostic_texte", { n: N_DIAGNOSTIC })}
             </p>
             <Link
               to={`/${country}`}
               className="text-xs text-muted-foreground underline underline-offset-4 hover:text-primary"
             >
-              Plus tard, aller à mon espace
+              {t("bv.plus_tard")}
             </Link>
           </>
         )}

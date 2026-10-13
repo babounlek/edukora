@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { listCours } from "@/api/endpoints"
 import type { Cours } from "@/api/types"
 import { CoursCard } from "@/components/CoursCard"
+import { t, useI18n } from "@/lib/i18n"
 
 interface RelatedCoursProps {
   subjectCode: string
@@ -18,6 +19,7 @@ interface RelatedCoursProps {
 
 /** Même patron que RelatedEpreuves - même matière + même série que le cours consulté, en écartant ce qui a déjà été lu. */
 export function RelatedCours({ subjectCode, subjectLabel, countryCode, cursusId, excludeId, sousTheme }: RelatedCoursProps) {
+  useI18n()
   const [relatedCours, setRelatedCours] = useState<Cours[]>([])
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export function RelatedCours({ subjectCode, subjectLabel, countryCode, cursusId,
   return (
     <div className="mt-2 border-t border-border pt-5">
       <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">
-        Autres cours de {subjectLabel}
+        {t("co.autres_cours", { matiere: subjectLabel })}
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {relatedCours.map((c) => (

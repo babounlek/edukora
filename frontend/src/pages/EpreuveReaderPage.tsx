@@ -32,9 +32,11 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
+import { t, useI18n } from "@/lib/i18n"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
 export function EpreuveReaderPage() {
+  useI18n()
   const { country: countryParam, slug } = useParams<{ country?: string; slug: string }>()
   const navigate = useNavigate()
   const { isAuthenticated, isLoading } = useAuth()
@@ -46,7 +48,7 @@ export function EpreuveReaderPage() {
   const [error, setError] = useState<string | null>(null)
   const [accesRefuse, setAccesRefuse] = useState(false)
 
-  useSeo({ title: content?.title ?? "Corrigé" })
+  useSeo({ title: content?.title ?? t("ed.seo_corrige") })
 
   const articleRef = useRef<HTMLElement>(null)
   // Signets et notes par exercice - pas de "compris" ici : l'exercice a déjà sa validation
@@ -101,7 +103,7 @@ export function EpreuveReaderPage() {
           setAccesRefuse(true)
           return
         }
-        setError(err instanceof ApiError ? err.message : "Impossible de charger ce contenu.")
+        setError(err instanceof ApiError ? err.message : t("ed.contenu_erreur"))
       })
   }, [slug, isLoading, isAuthenticated, navigate, epreuve, epreuveFailed, countryParam, fallbackCountry])
 
@@ -140,8 +142,8 @@ export function EpreuveReaderPage() {
         retour={epreuveReaderPath(displayCountry, slug ?? "")}
         nature="épreuve"
         liens={[
-          { to: epreuveDetailPath(displayCountry, slug ?? ""), label: "Voir le sujet en libre accès" },
-          { to: epreuvesListPath(displayCountry), label: "Retour au catalogue" },
+          { to: epreuveDetailPath(displayCountry, slug ?? ""), label: t("ar.sujet_libre") },
+          { to: epreuvesListPath(displayCountry), label: t("ed.retour_catalogue") },
         ]}
       />
     )
@@ -152,7 +154,7 @@ export function EpreuveReaderPage() {
       <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
         <p className="text-destructive">{error}</p>
         <Link to={epreuvesListPath(displayCountry)} className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour au catalogue
+          {t("ed.retour_catalogue")}
         </Link>
       </div>
     )
@@ -195,7 +197,7 @@ export function EpreuveReaderPage() {
             <div className="mt-5">
               <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
                 <CheckCheck className="size-3.5" aria-hidden="true" />
-                Corrigé
+                {t("ep.type_CORR")}
               </p>
               <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
                 <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
@@ -227,18 +229,18 @@ export function EpreuveReaderPage() {
           className="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
         >
           <ArrowLeft className="size-4" />
-          Retour au catalogue
+          {t("ed.retour_catalogue")}
         </Link>
         <span aria-hidden="true">·</span>
         <Link to={epreuveDetailPath(displayCountry, slug ?? "")} className="transition-colors hover:text-primary">
-          Retour à la fiche de l'épreuve
+          {t("ed.retour_fiche")}
         </Link>
         {etude.disponible && (
           <>
             <span aria-hidden="true">·</span>
             <Link to="/carnet" className="inline-flex items-center gap-1.5 transition-colors hover:text-primary">
               <NotebookPen className="size-4" />
-              Mon carnet
+              {t("cpt.carnet")}
             </Link>
           </>
         )}
@@ -246,7 +248,7 @@ export function EpreuveReaderPage() {
           <span className="flex items-center gap-2 sm:ml-auto">
             <BoutonPartager
               chemin={epreuveDetailPath(displayCountry, slug)}
-              texte={`Regarde « ${content?.title ?? "ce corrigé"} » sur ${SITE_NAME} :`}
+              texte={t("ed.partage", { titre: content?.title ?? t("ed.partage_corrige"), site: SITE_NAME })}
               type="epreuve"
               variant="ghost"
             />
@@ -271,6 +273,8 @@ export function EpreuveReaderPage() {
                 exercices: exercises.length,
                 duree: content.header.duree,
                 coefficient: content.header.coefficient,
+                paper: content.header.paper,
+                codeMatiere: content.header.code_matiere,
               })}
               badges={
                 <>
@@ -278,7 +282,7 @@ export function EpreuveReaderPage() {
                   {epreuve?.est_vitrine && (
                     <Badge variant="success" className="gap-1">
                       <Sparkles className="size-3" />
-                      Corrigé en accès libre
+                      {t("ed.corrige_libre")}
                     </Badge>
                   )}
                   {content.header.nature && <Badge variant="outline">{content.header.nature}</Badge>}
@@ -292,7 +296,7 @@ export function EpreuveReaderPage() {
                 <Button asChild variant="outline" size="sm" className="rounded-full">
                   <a href={content.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
                     <FileDown />
-                    Télécharger l'épreuve
+                    {t("ed.telecharger")}
                   </a>
                 </Button>
               )}
@@ -325,8 +329,8 @@ export function EpreuveReaderPage() {
 
       <BackToTopBar
         links={[
-          { to: epreuvesListPath(displayCountry), label: "Retour au catalogue" },
-          { to: epreuveDetailPath(displayCountry, slug ?? ""), label: "Retour à la fiche de l'épreuve" },
+          { to: epreuvesListPath(displayCountry), label: t("ed.retour_catalogue") },
+          { to: epreuveDetailPath(displayCountry, slug ?? ""), label: t("ed.retour_fiche") },
         ]}
       />
     </div>
@@ -347,6 +351,7 @@ export function EpreuveReaderPage() {
  * précédente plutôt que de laisser croire à un enregistrement.
  */
 function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
+  useI18n()
   const [fait, setFait] = useState(exercise.fait)
   const [enCours, setEnCours] = useState(false)
   const queryClient = useQueryClient()
@@ -367,7 +372,7 @@ function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
       queryClient.invalidateQueries({ queryKey: ["exercice-lecture"] })
     } catch {
       setFait(!cible)
-      toast.error("Impossible d'enregistrer ce choix", { description: "Vérifie ta connexion, puis réessaie." })
+      toast.error(t("ed.valide_erreur"), { description: t("ed.valide_erreur_texte") })
     } finally {
       setEnCours(false)
     }
@@ -379,7 +384,7 @@ function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
         <>
           <span className="flex items-center gap-2 text-sm font-medium text-primary">
             <Check className="size-4 shrink-0" />
-            Exercice validé
+            {t("ed.exercice_valide")}
           </span>
           <button
             type="button"
@@ -387,15 +392,15 @@ function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
             disabled={enCours}
             className="text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
           >
-            Annuler
+            {t("seance.annuler")}
           </button>
         </>
       ) : (
         <>
-          <span className="text-sm text-muted-foreground">Tu as traité cet exercice ?</span>
+          <span className="text-sm text-muted-foreground">{t("ed.tu_as_traite")}</span>
           <Button size="sm" variant="outline" onClick={basculer} disabled={enCours}>
             <Check className="size-4" />
-            Je l'ai fait
+            {t("ed.je_lai_fait")}
           </Button>
         </>
       )}

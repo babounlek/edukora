@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { pourcent } from "@/lib/maitrise"
 import { STATUTS, type StatutProgression } from "@/lib/statutsProgression"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * Le langage visuel partagé par les écrans "coach" - séance du jour, Où j'en suis sur
@@ -51,7 +52,7 @@ export function AnneauProgression({ part, className }: { part: number; className
     <div
       className={cn("relative size-20 shrink-0 sm:size-24", className)}
       role="img"
-      aria-label={`${pourcent(part)} % maîtrisé`}
+      aria-label={t("progression.aria_anneau", { pct: pourcent(part) })}
     >
       <svg viewBox="0 0 72 72" className="size-full -rotate-90">
         <circle cx="36" cy="36" r={rayon} fill="none" strokeWidth="7" className="stroke-muted" />
@@ -94,10 +95,12 @@ export function BarreSegmentee({
     <div
       className={cn("flex h-2 gap-0.5 overflow-hidden rounded-full bg-muted", className)}
       role="img"
-      aria-label={
-        `${maitrises} maîtrisés, ${enRevision} en révision, ${enCours} en cours, `
-        + `${Math.max(0, exploitables - maitrises - enRevision - enCours)} à découvrir`
-      }
+      aria-label={t("progression.aria_barre", {
+        a: maitrises,
+        b: enRevision,
+        c: enCours,
+        d: Math.max(0, exploitables - maitrises - enRevision - enCours),
+      })}
     >
       <span className={cn("h-full rounded-full transition-all duration-700", STATUTS.maitrise.barre)} style={{ width: largeur(maitrises) }} />
       <span className={cn("h-full rounded-full transition-all duration-700", STATUTS.en_revision.barre)} style={{ width: largeur(enRevision) }} />
@@ -108,6 +111,7 @@ export function BarreSegmentee({
 
 /** Légende : chaque statut avec son icône ET sa couleur - jamais la couleur seule. */
 export function LegendeProgression() {
+  useI18n()
   const ordre: StatutProgression[] = ["maitrise", "en_revision", "en_cours", "a_decouvrir"]
   return (
     <p className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
@@ -132,6 +136,7 @@ export function LegendeProgression() {
 export function CompteurStatut({
   statut, valeur, libelle,
 }: { statut: StatutProgression; valeur: number; libelle?: string }) {
+  useI18n()
   const { libelle: libelleStatut, Icone, puce } = STATUTS[statut]
   return (
     <div className="rounded-2xl border border-border/70 bg-background/70 px-3 py-3 backdrop-blur-sm sm:px-4">

@@ -1,13 +1,14 @@
 import { cn } from "@/lib/utils"
+import { t, useI18n, type CleI18n } from "@/lib/i18n"
 
 export type CauseCode = "TEMPS" | "CONNAISSANCE" | "METHODE" | "CALCUL" | "INATTENTION"
 
-const CAUSES: { code: CauseCode; label: string }[] = [
-  { code: "CONNAISSANCE", label: "Notion à revoir" },
-  { code: "METHODE", label: "Erreur de méthode" },
-  { code: "CALCUL", label: "Erreur de calcul" },
-  { code: "INATTENTION", label: "Inattention à l'énoncé" },
-  { code: "TEMPS", label: "Manque de temps" },
+const CAUSES: { code: CauseCode; label: CleI18n }[] = [
+  { code: "CONNAISSANCE", label: "cp.connaissance" },
+  { code: "METHODE", label: "cp.methode" },
+  { code: "CALCUL", label: "cp.calcul" },
+  { code: "INATTENTION", label: "cp.inattention" },
+  { code: "TEMPS", label: "cp.temps" },
 ]
 
 // Une question laissée de côté ne relève que de deux causes : le temps, ou la notion.
@@ -27,11 +28,12 @@ interface CausePerteProps {
  * déjà choisie l'efface : on ne reste jamais coincé sur un clic malheureux.
  */
 export function CausePerte({ valeur, nonTraitee, onChoisir }: CausePerteProps) {
+  useI18n()
   const choix = nonTraitee ? CAUSES_NON_TRAITEE : CAUSES
   return (
     <fieldset className="rounded-xl border border-dashed border-border px-3 py-2.5">
       <legend className="px-1 text-xs font-medium text-muted-foreground">
-        {nonTraitee ? "Pourquoi ne l'as-tu pas traitée ? (facultatif)" : "Pourquoi as-tu perdu des points ? (facultatif)"}
+        {nonTraitee ? t("cp.pourquoi_non_traitee") : t("cp.pourquoi_perdu")}
       </legend>
       <div className="flex flex-wrap gap-1.5">
         {choix.map(({ code, label }) => (
@@ -45,7 +47,7 @@ export function CausePerte({ valeur, nonTraitee, onChoisir }: CausePerteProps) {
               valeur === code ? "border-primary bg-primary/10 font-medium" : "border-border hover:bg-accent/40",
             )}
           >
-            {label}
+            {t(label)}
           </button>
         ))}
       </div>

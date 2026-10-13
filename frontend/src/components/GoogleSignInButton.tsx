@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
+import { t, useI18n } from "@/lib/i18n"
+
 const GSI_SCRIPT_SRC = "https://accounts.google.com/gsi/client"
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined
 
@@ -77,6 +79,7 @@ interface GoogleSignInButtonProps {
  * façon 503 dans ce cas (voir users.google).
  */
 export function GoogleSignInButton({ onCredential, disabled, withSeparator }: GoogleSignInButtonProps) {
+  const { langue } = useI18n()
   const containerRef = useRef<HTMLDivElement>(null)
   const [indisponible, setIndisponible] = useState(false)
   // Référence plutôt qu'état : le callback est passé à Google une seule fois, à
@@ -100,13 +103,15 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
           callback: (response) => onCredentialRef.current(response.credential),
           cancel_on_tap_outside: true,
         })
+        // Re-rendu au changement de langue : on vide le conteneur plutôt que d'empiler deux boutons.
+        containerRef.current.replaceChildren()
         window.google.accounts.id.renderButton(containerRef.current, {
           type: "standard",
           theme: "outline",
           size: "large",
           text: "continue_with",
           shape: "pill",
-          locale: "fr",
+          locale: langue,
           width: containerRef.current.offsetWidth || undefined,
         })
       })
@@ -117,7 +122,7 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
     return () => {
       annule = true
     }
-  }, [])
+  }, [langue])
 
   // Le séparateur appartient au composant, pas à la page : sans ça, un « OU »
   // resterait affiché tout seul au-dessus du formulaire partout où la connexion
@@ -135,7 +140,7 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
       {withSeparator && (
         <div className="my-4 flex items-center gap-3">
           <span className="h-px flex-1 bg-border" />
-          <span className="text-xs uppercase tracking-wide text-muted-foreground">ou</span>
+          <span className="text-xs uppercase tracking-wide text-muted-foreground">{t("login.ou")}</span>
           <span className="h-px flex-1 bg-border" />
         </div>
       )}

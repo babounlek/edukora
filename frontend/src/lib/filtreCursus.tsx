@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 
 import { useAuth } from "@/context/AuthContext"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * Pré-filtre les listes du catalogue sur l'examen que l'élève a déclaré.
@@ -85,6 +86,7 @@ export function useFiltreCursusParDefaut() {
  * cette phrase, un catalogue soudain trois fois plus court se lit comme un contenu
  * manquant plutôt que comme une aide. */
 export function BandeauFiltreCursus() {
+  useI18n()
   const { applique, cursusPrepare, searchParams, setSearchParams } = useEtatFiltreCursus()
   if (!applique || !cursusPrepare) return null
 
@@ -95,14 +97,14 @@ export function BandeauFiltreCursus() {
   return (
     <p className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
       <span>
-        Filtré sur ton <span className="font-medium text-foreground">{libelle}</span>.
+        {t("ep.filtre_cursus_avant")} <span className="font-medium text-foreground">{libelle}</span>.
       </span>
       <button
         type="button"
         onClick={montrerTout}
         className="underline underline-offset-4 transition-colors hover:text-primary"
       >
-        Voir tout le catalogue
+        {t("ep.voir_catalogue")}
       </button>
     </p>
   )

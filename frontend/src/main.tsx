@@ -18,6 +18,7 @@ import App from './App.tsx'
 import { captureReferralCode } from '@/lib/referral'
 import { initialiserPwa } from '@/lib/pwa'
 import { initSentry } from '@/lib/sentry'
+import { initialiserLangue, t } from '@/lib/i18n'
 import { ApiError } from '@/api/client'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 
@@ -49,7 +50,7 @@ const queryClient = new QueryClient({
     onError: (error, _variables, _context, mutation) => {
       if (mutation.options.onError) return
       if (error instanceof DOMException && error.name === 'AbortError') return
-      toast.error("Ça n'a pas fonctionné", { description: error.message, id: 'erreur-action' })
+      toast.error(t("gl.action_echec"), { description: error.message, id: 'erreur-action' })
     },
   }),
   defaultOptions: {
@@ -61,7 +62,9 @@ const queryClient = new QueryClient({
   },
 })
 
-createRoot(document.getElementById('root')!).render(
+// La langue choisie (anglais) est chargée avant le premier rendu : sinon l'interface s'afficherait
+// un instant en français. Sans choix mémorisé (le cas général), la promesse est déjà résolue.
+void initialiserLangue().then(() => createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {/* Filet racine : celui d'App.tsx ne couvre que les routes, une erreur dans l'en-tête, le pied
         de page ou un fournisseur de contexte laissait sinon un écran blanc sans recours. */}
@@ -71,7 +74,7 @@ createRoot(document.getElementById('root')!).render(
       </QueryClientProvider>
     </ErrorBoundary>
   </StrictMode>,
-)
+))
 
 // Service worker (lecture hors connexion) : voir lib/pwa.ts, qui gère aussi le nettoyage
 // des anciens workers quand la PWA est coupée (VITE_DISABLE_PWA=1, mode économie de données).

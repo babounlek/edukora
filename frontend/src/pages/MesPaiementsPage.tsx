@@ -11,7 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { useSeo } from "@/lib/seo"
 import { cn, formatAmount } from "@/lib/utils"
-import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
+import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
 /**
  * Un statut = une icône ET un libellé, jamais la couleur seule. « En vérification » reste neutre :
@@ -19,9 +20,9 @@ import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiem
  * a une heure. Le rouge est réservé au refus, seul statut qui demande d'agir.
  */
 const STATUTS: Record<ManualPaymentStatus, { libelle: string; Icone: LucideIcon; puce: string; segment: string }> = {
-  PENDING: { libelle: "En vérification", Icone: Clock, puce: "text-warning-foreground dark:text-warning", segment: "bg-warning" },
-  APPROVED: { libelle: "Validé", Icone: CheckCircle2, puce: "text-success", segment: "bg-success" },
-  REJECTED: { libelle: "Refusé", Icone: XCircle, puce: "text-destructive", segment: "bg-destructive" },
+  PENDING: { get libelle() { return t("pm.statut_pending") }, Icone: Clock, puce: "text-warning-foreground dark:text-warning", segment: "bg-warning" },
+  APPROVED: { get libelle() { return t("pm.statut_approved") }, Icone: CheckCircle2, puce: "text-success", segment: "bg-success" },
+  REJECTED: { get libelle() { return t("pm.statut_rejected") }, Icone: XCircle, puce: "text-destructive", segment: "bg-destructive" },
 }
 
 // Couleurs des opérateurs (identité de marque, comme sur la page d'abonnement).
@@ -31,25 +32,26 @@ const OPERATEURS: Record<MobileMoneyOperator, { tuile: string; sigle: string }> 
 }
 
 function dateFr(iso: string): string {
-  return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+  return new Date(iso).toLocaleDateString(localeCourante(), { day: "numeric", month: "long", year: "numeric" })
 }
 
 /** « 1 validé · 1 en vérification » : le coup d'œil avant la liste. */
 function resume(payments: ManualPayment[]): string {
   const comptes = (statut: ManualPaymentStatus) => payments.filter((p) => p.status === statut).length
   const parties = [
-    [comptes("APPROVED"), "validé", "validés"],
-    [comptes("PENDING"), "en vérification", "en vérification"],
-    [comptes("REJECTED"), "refusé", "refusés"],
+    [comptes("APPROVED"), (n: number) => tn("pm.valides", n)],
+    [comptes("PENDING"), (n: number) => t("pm.verification", { n })],
+    [comptes("REJECTED"), (n: number) => tn("pm.refuses", n)],
   ] as const
   return parties
     .filter(([n]) => n > 0)
-    .map(([n, singulier, pluriel]) => `${n} ${n > 1 ? pluriel : singulier}`)
+    .map(([n, texte]) => texte(n))
     .join(" · ")
 }
 
 export function MesPaiementsPage() {
-  useSeo({ title: "Mes paiements" })
+  useI18n()
+  useSeo({ title: t("compte.paiements") })
 
   const { isAuthenticated, isLoading } = useAuth()
   const { country } = useCountry()
@@ -77,9 +79,9 @@ export function MesPaiementsPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <header className="mb-8">
-        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Mes paiements</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t("compte.paiements")}</h1>
         <p className="mt-2 max-w-xl text-muted-foreground">
-          Le suivi de tes transferts Orange Money et MTN MoMo, de la déclaration à l'activation de ton accès.
+          {t("pm.sous_titre")}
         </p>
         {payments !== null && payments.length > 0 && (
           <p className="mt-3 text-sm font-medium text-foreground/80">{resume(payments)}</p>
@@ -91,27 +93,27 @@ export function MesPaiementsPage() {
         // sans rien dire à quelqu'un qui vient vérifier qu'on a bien reçu son argent.
         <div role="alert" className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-card px-5 py-4">
           <p className="text-sm text-muted-foreground">
-            Ta connexion ou notre service a eu un raté, et la liste n'a pas pu s'afficher.
+            {t("pm.erreur")}
           </p>
           <Button onClick={charger} variant="outline" size="sm" className="shrink-0 rounded-full">
             <RefreshCw className="size-3.5" />
-            Réessayer
+            {t("erreur.reessayer")}
           </Button>
         </div>
       ) : payments === null ? (
-        <div className="flex flex-col gap-3" aria-busy="true" aria-label="Chargement des paiements">
+        <div className="flex flex-col gap-3" aria-busy="true" aria-label={t("pm.chargement")}>
           <Skeleton className="h-28 rounded-2xl" />
           <Skeleton className="h-28 rounded-2xl" />
         </div>
       ) : payments.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border px-6 py-12 text-center">
-          <p className="font-display text-lg font-semibold">Rien à suivre pour l'instant</p>
+          <p className="font-display text-lg font-semibold">{t("pm.vide")}</p>
           <p className="mx-auto mt-1.5 max-w-sm text-sm text-muted-foreground">
-            Quand tu paies par Orange Money ou MTN MoMo en déclarant toi-même ton transfert, le suivi apparaît ici.
+            {t("pm.vide_texte")}
           </p>
           <Button asChild className="mt-5 rounded-full">
             <Link to="/tarifs">
-              Voir les formules
+              {t("ar.formules")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -130,8 +132,7 @@ export function MesPaiementsPage() {
       )}
 
       <p className="mt-8 text-center text-xs leading-relaxed text-muted-foreground">
-        Les paiements automatiques (Campay) activent ton accès en quelques secondes et n'apparaissent pas ici : seuls les
-        transferts que tu déclares toi-même sont suivis.
+        {t("pm.note_campay")}
       </p>
     </div>
   )
@@ -160,7 +161,7 @@ function CartePaiement({
         <div className="min-w-0 flex-1">
           <p className="font-display text-base font-semibold leading-tight">
             {cursus.examen_display}
-            {cursus.series ? ` - Série ${cursus.series.code}` : ""}
+            {cursus.series ? ` - ${t("prix.serie", { code: cursus.series.code })}` : ""}
           </p>
           <p className="mt-0.5 text-sm text-muted-foreground">
             {payment.operator_display} · {dateFr(payment.created_at)}
@@ -182,19 +183,19 @@ function CartePaiement({
 
       {payment.status === "PENDING" && (
         <p className="mt-3 text-sm text-muted-foreground">
-          Notre équipe vérifie ton transfert, généralement sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}. Ton accès s'active dès la validation.
+          {t("pm.verifie", { delai: delaiVerificationPaiementAffiche() })}
         </p>
       )}
 
       {payment.status === "REJECTED" && (
         <div role="alert" className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-foreground">
-            Ce paiement n'a pas pu être validé
-            {payment.rejection_reason_display ? ` - ${payment.rejection_reason_display.toLowerCase()}.` : "."}
+            {t("pm.refuse")}
+            {payment.rejection_reason_display ? t("pm.refuse_motif", { motif: payment.rejection_reason_display.toLowerCase() }) : "."}
           </p>
           <Button asChild size="sm" variant="outline" className="rounded-full">
             <Link to={`/abonnement?cursus=${cursus.id}`}>
-              Refaire ma déclaration
+              {t("pm.refaire")}
               <ArrowRight className="size-3.5" />
             </Link>
           </Button>
@@ -203,21 +204,21 @@ function CartePaiement({
 
       {payment.status === "APPROVED" && (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-muted-foreground">Ton accès est activé.</p>
+          <p className="text-sm text-muted-foreground">{t("pm.active")}</p>
           <Link to={accueil} className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-            Commencer à réviser
+            {t("pm.commencer")}
             <ArrowRight className="size-3.5" />
           </Link>
         </div>
       )}
 
       <div className="mt-4 flex items-center gap-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
-        <span>Réf.</span>
+        <span>{t("pm.ref")}</span>
         <span className="font-mono text-foreground/80">{payment.transaction_reference}</span>
         <button
           type="button"
           onClick={copierReference}
-          aria-label="Copier la référence de transaction"
+          aria-label={t("pm.copier_aria")}
           className="flex size-6 items-center justify-center rounded-full transition-colors hover:bg-muted hover:text-foreground"
         >
           {copie ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
@@ -235,7 +236,7 @@ function Avancement({ statut }: { statut: ManualPaymentStatus }) {
   return (
     <div
       role="img"
-      aria-label={statut === "APPROVED" ? "Déclaré, vérifié, accès activé" : "Déclaré, vérification en cours"}
+      aria-label={statut === "APPROVED" ? t("pm.avancement_ok") : t("pm.avancement_cours")}
       className="mt-4 flex gap-1.5"
     >
       {[0, 1, 2].map((i) => (

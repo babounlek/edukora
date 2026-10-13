@@ -5,6 +5,7 @@ import { useCountry } from "@/context/CountryContext"
 import { coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import { ETAT_FOCUS_RECHERCHE } from "@/lib/recherche"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * Les surfaces de révision sous un seul chapeau : Épreuves, Cours, Thèmes, Quiz.
@@ -20,22 +21,23 @@ import { cn } from "@/lib/utils"
  * change.
  */
 export function ReviserTabs() {
+  useI18n()
   const { country } = useCountry()
   const { pathname } = useLocation()
   const surLaRecherche = pathname.startsWith(recherchePath(country))
 
   const onglets = [
-    { to: epreuvesListPath(country), label: "Épreuves", actif: pathname.startsWith(epreuvesListPath(country)) },
-    { to: coursListPath(country), label: "Cours", actif: pathname.startsWith(coursListPath(country)) },
-    { to: themesFrequentsPath(country), label: "Thèmes", actif: pathname.startsWith(themesFrequentsPath(country)) },
-    { to: "/quiz", label: "Quiz", actif: pathname.startsWith("/quiz") },
+    { to: epreuvesListPath(country), label: t("nav.epreuves"), actif: pathname.startsWith(epreuvesListPath(country)) },
+    { to: coursListPath(country), label: t("nav.cours"), actif: pathname.startsWith(coursListPath(country)) },
+    { to: themesFrequentsPath(country), label: t("qd.onglet_themes"), actif: pathname.startsWith(themesFrequentsPath(country)) },
+    { to: "/quiz", label: t("qd.onglet_quiz"), actif: pathname.startsWith("/quiz") },
   ]
 
   // Sans conteneur ni marge propres : rendu comme premier enfant du conteneur que
   // chaque page a déjà (`mx-auto max-w-5xl px-4`), pour ne pas empiler deux fois la
   // même largeur et la même gouttière.
   return (
-    <nav aria-label="Réviser" className="mb-6">
+    <nav aria-label={t("nav.reviser")} className="mb-6">
       <div className="flex items-end justify-between gap-3 border-b border-border">
         <div className="flex gap-1">
           {onglets.map((onglet) => (
@@ -64,12 +66,12 @@ export function ReviserTabs() {
           <Link
             to={recherchePath(country)}
             state={ETAT_FOCUS_RECHERCHE}
-            aria-label="Rechercher sur tout le site"
+            aria-label={t("qd.rechercher_site")}
             aria-keyshortcuts="/ Control+K Meta+K"
             className="mb-1 inline-flex h-8 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:w-56 sm:justify-start"
           >
             <Search className="size-4 shrink-0" aria-hidden="true" />
-            <span className="hidden sm:inline">Rechercher partout…</span>
+            <span className="hidden sm:inline">{t("qd.rechercher_partout")}</span>
             <kbd className="ml-auto hidden rounded border border-border px-1.5 text-[11px] leading-5 sm:inline" aria-hidden="true">/</kbd>
           </Link>
         )}

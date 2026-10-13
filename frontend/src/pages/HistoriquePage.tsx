@@ -13,6 +13,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { formatNote } from "@/lib/notation"
 import { useSeo } from "@/lib/seo"
 import { coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
+import { localeCourante, t, useI18n } from "@/lib/i18n"
+import { traduireLibelleSerie } from "@/lib/cursus"
 
 // Au-delà de ce nombre, une liste passe derrière un "voir plus" - contrairement à l'ancien widget
 // sur /compte (PREVIEW_COUNT=3), cette page est la destination dédiée à l'historique : on peut se
@@ -35,7 +37,7 @@ function ExpandableList<T>({
             onClick={() => setExpanded((e) => !e)}
             className="text-sm font-medium text-primary hover:underline"
           >
-            {expanded ? "Voir moins" : `Voir les ${items.length - PREVIEW_COUNT} autres`}
+            {expanded ? t("hi.voir_moins") : t("hi.voir_autres", { n: items.length - PREVIEW_COUNT })}
           </button>
         </li>
       )}
@@ -60,7 +62,7 @@ function ContenuTentatives({ tentatives }: { tentatives: TentativeInediteListIte
             <span className="flex min-w-0 flex-col">
               <span className="truncate font-medium">{tentative.epreuve_titre}</span>
               <span className="text-xs text-muted-foreground">
-                {tentative.cursus_display} · {new Date(tentative.started_at).toLocaleDateString("fr-FR")}
+                {traduireLibelleSerie(tentative.cursus_display)} · {new Date(tentative.started_at).toLocaleDateString(localeCourante())}
               </span>
             </span>
             {tentative.submitted_at ? (
@@ -70,7 +72,7 @@ function ContenuTentatives({ tentatives }: { tentatives: TentativeInediteListIte
                   : `${tentative.score_obtenu}%`}
               </Badge>
             ) : (
-              <Badge variant="outline">En cours</Badge>
+              <Badge variant="outline">{t("statut.en_cours")}</Badge>
             )}
           </Link>
         </li>
@@ -84,7 +86,7 @@ function ContenuLectures({ progression }: { progression: Progression }) {
     <div className="flex flex-col gap-4">
       {progression.lessons.length > 0 && (
         <div>
-          <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Épreuves</p>
+          <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("nav.epreuves")}</p>
           <ExpandableList
             items={progression.lessons}
             renderItem={(epreuve) => (
@@ -106,7 +108,7 @@ function ContenuLectures({ progression }: { progression: Progression }) {
 
       {progression.cours.length > 0 && (
         <div>
-          <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Cours</p>
+          <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("nav.cours")}</p>
           <ExpandableList
             items={progression.cours}
             renderItem={(cours) => (
@@ -128,7 +130,8 @@ function ContenuLectures({ progression }: { progression: Progression }) {
 }
 
 export function HistoriquePage() {
-  useSeo({ title: "Mon historique" })
+  useI18n()
+  useSeo({ title: t("compte.historique") })
 
   const { isAuthenticated, isLoading, user } = useAuth()
   const navigate = useNavigate()
@@ -171,14 +174,14 @@ export function HistoriquePage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:py-10 sm:px-6">
       <EnteteCompte
         icone={History}
-        titre="Mon historique"
-        sousTitre="Tes tentatives d'épreuves inédites et ce que tu as déjà lu."
+        titre={t("compte.historique")}
+        sousTitre={t("hi.sous_titre")}
       />
 
       {enErreur && !charge ? (
         // Sans ce cas, une requête en échec laissait « Chargement… » à l'écran pour toujours.
         <ErreurChargement
-          objet="ton historique"
+          objet={t("hi.objet")}
           compact
           onRetry={() => {
             if (progressionQuery.isError) progressionQuery.refetch()
@@ -186,22 +189,22 @@ export function HistoriquePage() {
           }}
         />
       ) : !charge ? (
-        <Section icone={History} titre="Activité">
-          <p className="text-sm text-muted-foreground">Chargement…</p>
+        <Section icone={History} titre={t("hi.activite")}>
+          <p className="text-sm text-muted-foreground">{t("matieres.chargement")}</p>
         </Section>
       ) : vide ? (
-        <Section icone={History} titre="Activité">
+        <Section icone={History} titre={t("hi.activite")}>
           <EtatVide
-            texte="Rien à afficher pour l'instant. Tes tentatives d'épreuves inédites et tes lectures apparaîtront ici au fil de tes révisions."
+            texte={t("hi.vide")}
             lien="/tarifs"
-            libelleLien="Voir les formules"
+            libelleLien={t("ar.formules")}
           />
         </Section>
       ) : tentatives.length > 0 && totalRead > 0 ? (
         <Tabs defaultValue="tentatives">
           <TabsList>
-            <TabsTrigger value="tentatives">Tentatives ({tentatives.length})</TabsTrigger>
-            <TabsTrigger value="lectures">Lectures ({totalRead})</TabsTrigger>
+            <TabsTrigger value="tentatives">{t("hi.tentatives_onglet", { n: tentatives.length })}</TabsTrigger>
+            <TabsTrigger value="lectures">{t("hi.lectures_onglet", { n: totalRead })}</TabsTrigger>
           </TabsList>
           <TabsContent value="tentatives">
             <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
@@ -215,11 +218,11 @@ export function HistoriquePage() {
           </TabsContent>
         </Tabs>
       ) : tentatives.length > 0 ? (
-        <Section icone={Crown} titre="Tentatives d'épreuves inédites">
+        <Section icone={Crown} titre={t("hi.tentatives_titre")}>
           <ContenuTentatives tentatives={tentatives} />
         </Section>
       ) : (
-        <Section icone={BookOpen} titre="Ce que j'ai lu">
+        <Section icone={BookOpen} titre={t("hi.lu")}>
           <ContenuLectures progression={progression} />
         </Section>
       )}

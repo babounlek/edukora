@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Surbrillance } from "@/components/recherche/Surbrillance"
 import { actionsTheme, cibleResultat, LIBELLES_TYPE } from "@/lib/recherche"
 import { couleurMatiere } from "@/lib/matiereCouleur"
+import { t, tn, useI18n } from "@/lib/i18n"
+import { libelleType } from "@/lib/libellesEpreuve"
 import { cn } from "@/lib/utils"
 
 const ICONES: Record<TypeResultatRecherche, ComponentType<{ className?: string }>> = {
@@ -27,17 +29,20 @@ export function IconeType({ type, className }: { type: TypeResultatRecherche; cl
 /** Ce que fait le lien d'un résultat, dit en un verbe - une carte qui dit « Lire le cours » invite plus
  * à cliquer qu'un titre seul. */
 const VERBE: Record<TypeResultatRecherche, string> = {
-  THEME: "Explorer ce thème",
-  COURS: "Lire le cours",
-  EPREUVE: "Voir l'épreuve",
-  INEDITE: "Découvrir l'épreuve",
-  EXERCICE: "Voir l'exercice",
-  QUIZ: "S'entraîner",
+  get THEME() { return t("rc.verbe_theme") },
+  get COURS() { return t("rc.verbe_cours") },
+  get EPREUVE() { return t("rc.verbe_epreuve") },
+  get INEDITE() { return t("rc.verbe_inedite") },
+  get EXERCICE() { return t("rc.verbe_exercice") },
+  get QUIZ() { return t("rc.verbe_quiz") },
 }
+
+// Le serveur nomme le type d'une épreuve en français (« Sujet », « Corrigé »...) : on le retrouve par son code.
+const CODE_TYPE_EPREUVE: Record<string, string> = { Fiche: "FICHE", "Corrigé": "CORR", Sujet: "SUJET" }
 
 /** « BAC C · BAC E +2 », « Tous les examens » - les examens auxquels le résultat est proposé. */
 function libelleExamens(resultat: Resultat): string {
-  if (resultat.cursus.length === 0) return resultat.tous_cursus ? "Tous les examens" : ""
+  if (resultat.cursus.length === 0) return resultat.tous_cursus ? t("ft.tous_examens") : ""
   const visibles = resultat.cursus.slice(0, 3).map((c) => c.label).join(" · ")
   const reste = resultat.cursus_total - Math.min(resultat.cursus.length, 3)
   return reste > 0 ? `${visibles} +${reste}` : visibles
@@ -46,7 +51,9 @@ function libelleExamens(resultat: Resultat): string {
 /** Ce qu'on dit d'un résultat en une ligne : « Cours · Mathématiques · BAC C · 2019 ». */
 function ligneMeta(resultat: Resultat): string {
   const parties = [
-    resultat.type === "EPREUVE" && resultat.details.type_libelle ? resultat.details.type_libelle : LIBELLES_TYPE[resultat.type].singulier,
+    resultat.type === "EPREUVE" && resultat.details.type_libelle
+      ? libelleType(CODE_TYPE_EPREUVE[resultat.details.type_libelle], resultat.details.type_libelle)
+      : LIBELLES_TYPE[resultat.type].singulier,
     resultat.matiere.label,
     libelleExamens(resultat),
   ]
@@ -56,12 +63,13 @@ function ligneMeta(resultat: Resultat): string {
 /** L'indice d'accès, en mots : « Gratuit », « Inclus » (ce visiteur y a droit) ou « Abonnés ». Un simple
  * indice - c'est la page du contenu qui applique la vraie règle. */
 export function IndiceAcces({ resultat, compact = false }: { resultat: Resultat; compact?: boolean }) {
-  if (resultat.acces === "libre") return <Badge variant="success">Gratuit</Badge>
+  useI18n()
+  if (resultat.acces === "libre") return <Badge variant="success">{t("rc.gratuit")}</Badge>
   if (resultat.acces === "ouvert") {
     return compact ? null : (
       <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary">
         <Check className="size-3.5" aria-hidden="true" />
-        Inclus
+        {t("rc.inclus")}
       </span>
     )
   }
@@ -69,10 +77,10 @@ export function IndiceAcces({ resultat, compact = false }: { resultat: Resultat;
     return (
       <span
         className="inline-flex shrink-0 items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground"
-        title="Réservé aux abonnés"
+        title={t("te.reserve")}
       >
         <Lock className="size-3" aria-hidden="true" />
-        {compact ? <span className="sr-only">Réservé aux abonnés</span> : "Abonnés"}
+        {compact ? <span className="sr-only">{t("te.reserve")}</span> : t("rc.abonnes")}
       </span>
     )
   }
@@ -83,9 +91,9 @@ export function IndiceAcces({ resultat, compact = false }: { resultat: Resultat;
 function resumeTheme(resultat: Resultat): string {
   const { nb_cours = 0, nb_quiz = 0, nb_exercices = 0 } = resultat.details
   return [
-    nb_cours > 0 && `${nb_cours} cours`,
-    nb_exercices > 0 && `${nb_exercices} exercice${nb_exercices > 1 ? "s" : ""}`,
-    nb_quiz > 0 && `${nb_quiz} question${nb_quiz > 1 ? "s" : ""}`,
+    nb_cours > 0 && tn("rc.n_cours", nb_cours),
+    nb_exercices > 0 && tn("rc.n_exercices", nb_exercices),
+    nb_quiz > 0 && tn("rc.n_questions", nb_quiz),
   ]
     .filter(Boolean)
     .join(" · ")
@@ -103,6 +111,7 @@ interface Props {
 export function ResultatCompact({
   resultat, jetons, country, onChoisir, id, actif,
 }: Props & { id: string; actif: boolean }) {
+  useI18n()
   const sousTitre = resultat.type === "THEME" ? [resultat.matiere.label, resumeTheme(resultat)].filter(Boolean).join(" · ") : ligneMeta(resultat)
   return (
     <Link
@@ -137,6 +146,7 @@ export function ResultatCompact({
  * restent des liens à part, posés AU-DESSUS du lien étendu.
  */
 export function ResultatCarte({ resultat, jetons, country, onChoisir }: Props) {
+  useI18n()
   const actions = resultat.type === "THEME" ? actionsTheme(country, resultat) : []
   const couleur = couleurMatiere(resultat.matiere.code)
   const meta = ligneMeta(resultat)
@@ -164,7 +174,7 @@ export function ResultatCarte({ resultat, jetons, country, onChoisir }: Props) {
           </p>
           {resultat.type === "QUIZ" && resultat.nb !== null && resultat.nb > 0 && (
             <p className="mt-1 text-xs font-medium text-foreground/80">
-              {resultat.nb} question{resultat.nb > 1 ? "s" : ""} correspondent
+              {tn("rc.quiz_correspondent", resultat.nb)}
             </p>
           )}
           {resultat.apercu ? (
@@ -172,7 +182,7 @@ export function ResultatCarte({ resultat, jetons, country, onChoisir }: Props) {
               <Surbrillance texte={resultat.apercu} jetons={jetons} />
             </p>
           ) : resultat.type === "QUIZ" && resultat.acces === "verrouille" ? (
-            <p className="mt-2 text-sm text-muted-foreground">Questions réservées aux abonnés.</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t("rc.quiz_verrouille")}</p>
           ) : null}
           {actions.length > 0 && (
             <ul className="relative z-10 mt-3 flex flex-wrap gap-2">

@@ -5,6 +5,7 @@ import { ArrowLeft, Mail, MessageCircle, type LucideIcon } from "lucide-react"
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, CONTACT_WHATSAPP_AFFICHAGE } from "@/lib/site"
+import { t, useI18n } from "@/lib/i18n"
 
 
 export interface SectionLegale {
@@ -57,6 +58,7 @@ export function PageLegale({
   sections: SectionLegale[]
   voirAussi: { to: string; libelle: string }
 }) {
+  useI18n()
   const { country } = useCountry()
 
   return (
@@ -66,7 +68,7 @@ export function PageLegale({
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
-        Retour au catalogue
+        {t("lg.retour")}
       </Link>
 
       <div className="relative mb-10 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-6 sm:p-10">
@@ -82,16 +84,16 @@ export function PageLegale({
           <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Icone className="size-5" />
           </div>
-          <p className="mb-1 font-display text-sm italic text-primary">Informations légales</p>
+          <p className="mb-1 font-display text-sm italic text-primary">{t("lg.eyebrow")}</p>
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">{titre}</h1>
           <p className="mt-2 text-muted-foreground">{introduction}</p>
           <div className="mt-5 flex flex-wrap gap-2">{puces}</div>
-          <p className="mt-5 text-xs text-muted-foreground">Dernière mise à jour : {miseAJour}</p>
+          <p className="mt-5 text-xs text-muted-foreground">{t("lg.maj", { date: miseAJour })}</p>
         </div>
       </div>
 
       <div className="grid gap-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-14">
-        <nav aria-label="Sommaire" className="hidden lg:block">
+        <nav aria-label={t("lg.sommaire")} className="hidden lg:block">
           <ol className="sticky top-24 flex flex-col gap-1 border-l border-border text-sm">
             {sections.map((section, index) => (
               <li key={section.id}>
@@ -127,7 +129,7 @@ export function PageLegale({
             <div>
               <h2 className="font-display text-lg font-semibold">BABOUNLEK Serge Guyguy</h2>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Éditeur de la plateforme - Yaoundé, Cameroun - +237 698 19 29 91
+                {t("lg.editeur")}
               </p>
               <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
                 <a
@@ -148,7 +150,7 @@ export function PageLegale({
                 </a>
               </div>
               <p className="mt-4 border-t border-border pt-3 text-sm text-muted-foreground">
-                Voir aussi :{" "}
+                {t("lg.voir_aussi")}{" "}
                 <Link to={voirAussi.to} className="underline underline-offset-2 hover:text-foreground">
                   {voirAussi.libelle}
                 </Link>

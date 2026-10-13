@@ -47,12 +47,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
+import { traduireLibelleSerie } from "@/lib/cursus"
 
 const TOUTES_DIFFICULTES = "toutes"
 const DIFFICULTE_LABELS: Record<Difficulte, string> = {
-  FAIBLE: "Faible",
-  MOYENNE: "Moyenne",
-  ELEVEE: "Élevée",
+  get FAIBLE() { return t("fi.diff_FAIBLE") },
+  get MOYENNE() { return t("fi.diff_MOYENNE") },
+  get ELEVEE() { return t("fi.diff_ELEVEE") },
 }
 const DIFFICULTE_OPTIONS = [TOUTES_DIFFICULTES, "FAIBLE", "MOYENNE", "ELEVEE"] as const
 type DifficulteChoix = (typeof DIFFICULTE_OPTIONS)[number]
@@ -75,12 +77,12 @@ const POLL_INTERVAL_MS = 2500
 
 function defaultTitre(subject: Subject | undefined): string {
   if (!subject) return ""
-  const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long" })
-  return `Fiche ${subject.label} - ${date}`
+  const date = new Date().toLocaleDateString(localeCourante(), { day: "numeric", month: "long" })
+  return t("fi.titre_defaut", { matiere: subject.label, date })
 }
 
 function formatDateCourte(iso: string): string {
-  return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
+  return new Date(iso).toLocaleDateString(localeCourante(), { day: "numeric", month: "short" })
 }
 
 /** Nombre de questions réellement disponibles pour un jeu de thèmes à une difficulté donnée. */
@@ -92,9 +94,10 @@ function compterDisponibles(themes: FicheThemeEligible[], difficulte: Difficulte
 }
 
 export function FichesPage() {
+  useI18n()
   useSeo({
-    title: "Fiches pour répétiteurs",
-    description: "L'outil des répétiteurs et enseignants edukora : génère une fiche d'exercices personnalisée, prête à imprimer, pour tes élèves.",
+    title: t("fi.seo_titre"),
+    description: t("fi.seo_description"),
   })
 
   const { isAuthenticated, isLoading: authLoading } = useAuth()
@@ -220,7 +223,7 @@ export function FichesPage() {
     setSelectedSubject("")
     listQuizSubjects(cursusObj.id)
       .then(setSubjects)
-      .catch(() => toast.error("Impossible de charger les matières de ce cursus. Change de cursus ou réessaie."))
+      .catch(() => toast.error(t("fi.err_matieres")))
   }, [selectedCursus, cursusList, hasAccessForCursus])
 
   useEffect(() => {
@@ -243,7 +246,7 @@ export function FichesPage() {
         setSelectedThemeIds(new Set())
       })
       .catch(() => {
-        if (!annule) toast.error("Impossible de charger les compétences de cette matière. Réessaie.")
+        if (!annule) toast.error(t("fi.err_competences"))
       })
       .finally(() => {
         if (!annule) setThemesLoading(false)
@@ -332,7 +335,7 @@ export function FichesPage() {
           if (pollRef.current) window.clearInterval(pollRef.current)
           setFiche(updated)
           rafraichirMesFiches()
-          if (updated.statut === "PRETE") toast.success("Fiche prête", { description: updated.titre })
+          if (updated.statut === "PRETE") toast.success(t("fi.prete_toast"), { description: updated.titre })
         }
       } catch {
         // une erreur ponctuelle du réseau ne doit pas interrompre l'attente
@@ -357,7 +360,7 @@ export function FichesPage() {
       rafraichirMesFiches()
       pollFiche(created.id)
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Impossible de générer la fiche pour le moment.")
+      setError(err instanceof ApiError ? err.message : t("fi.err_generer"))
     } finally {
       setCreating(false)
     }
@@ -381,7 +384,7 @@ export function FichesPage() {
   if (!authLoading && isAuthenticated && erreurChargement) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-        <ErreurChargement objet="tes accès Fiches" onRetry={() => setEssai((n) => n + 1)} />
+        <ErreurChargement objet={t("fi.objet_acces")} onRetry={() => setEssai((n) => n + 1)} />
       </div>
     )
   }
@@ -421,32 +424,31 @@ export function FichesPage() {
             <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <GraduationCap className="size-5" />
             </div>
-            <Eyebrow>Pour les répétiteurs et les enseignants</Eyebrow>
-            <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Fiches</h1>
+            <Eyebrow>{t("fi.eyebrow")}</Eyebrow>
+            <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">{t("fi.h1")}</h1>
             <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
-              Une fiche d'exercices prête à imprimer, en quelques secondes.
+              {t("fi.accroche")}
             </p>
             <p className="mt-2 max-w-md text-muted-foreground">
-              Compose-la à partir de compétences déjà validées : un PDF énoncé à distribuer à tes élèves, un PDF
-              corrigé à ton nom.
+              {t("fi.hero_texte")}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2">
               <StatChip icon={<Printer className="size-3.5 text-primary" />}>
-                <span className="font-medium">2 PDF</span>
-                <span className="text-muted-foreground">énoncé + corrigé</span>
+                <span className="font-medium">{t("fi.chip_pdf")}</span>
+                <span className="text-muted-foreground">{t("fi.chip_pdf_detail")}</span>
               </StatChip>
               {mesFiches.length > 0 && (
                 <StatChip icon={<FileText className="size-3.5 text-gold-text" />}>
                   <span className="font-medium">{mesFiches.length}</span>
                   <span className="text-muted-foreground">
-                    fiche{mesFiches.length > 1 ? "s" : ""} générée{mesFiches.length > 1 ? "s" : ""}
+                    {tn("fi.generees", mesFiches.length)}
                   </span>
                 </StatChip>
               )}
               {inscriptionCourante && (
                 <StatChip icon={<CheckCircle2 className="size-3.5 text-success" />}>
-                  <span className="text-muted-foreground">Add-on actif jusqu'au</span>
+                  <span className="text-muted-foreground">{t("fi.addon_actif")}</span>
                   <span className="font-medium">{formatDateCourte(inscriptionCourante.expires_at)}</span>
                 </StatChip>
               )}
@@ -458,7 +460,7 @@ export function FichesPage() {
               un aperçu concret plutôt qu'une simple icône. */}
           <div aria-hidden className="relative mx-auto w-full max-w-[18rem] select-none lg:mx-0 lg:justify-self-end">
             <span className="absolute -top-3 right-6 z-10 rotate-2 rounded-md bg-gold px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-foreground shadow-md">
-              Prêt à imprimer
+              {t("fi.pret_imprimer")}
             </span>
             <div className="-rotate-2 rounded-lg border border-border bg-card p-6 shadow-xl transition-transform duration-300 hover:rotate-0">
               <div className="flex items-center gap-2.5">
@@ -466,7 +468,7 @@ export function FichesPage() {
                   <FileText className="size-4" />
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate font-display text-sm font-semibold">Fiche - Dérivées</p>
+                  <p className="truncate font-display text-sm font-semibold">{t("fi.carte_titre")}</p>
                   <p className="text-xs text-muted-foreground">Terminale C · 10 questions</p>
                 </div>
               </div>
@@ -480,7 +482,7 @@ export function FichesPage() {
               <div className="flex items-center justify-between text-xs">
                 <span className="flex items-center gap-1.5 font-medium text-success">
                   <CheckCircle2 className="size-3.5" />
-                  Corrigé inclus
+                  {t("fi.corrige_inclus")}
                 </span>
                 <span className="flex items-center gap-1.5 text-muted-foreground">
                   <Printer className="size-3.5" />
@@ -512,7 +514,7 @@ export function FichesPage() {
                     <div className="min-w-0">
                       <CardTitle className="font-display text-lg leading-tight">{fiche.titre}</CardTitle>
                       <p className="mt-1 truncate text-sm text-muted-foreground">
-                        {fiche.subject_label} - {fiche.cursus_display}
+                        {fiche.subject_label} - {traduireLibelleSerie(fiche.cursus_display)}
                       </p>
                     </div>
                   </div>
@@ -521,7 +523,7 @@ export function FichesPage() {
                     size="icon"
                     className="size-8 shrink-0 text-muted-foreground"
                     onClick={fermerResultat}
-                    aria-label="Fermer le résultat"
+                    aria-label={t("fi.fermer_resultat")}
                   >
                     <X className="size-4" />
                   </Button>
@@ -533,8 +535,7 @@ export function FichesPage() {
                         <div className="h-full w-1/3 rounded-full bg-primary animate-progress-indeterminate" />
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Mise en page des deux PDF en cours (une quinzaine de secondes). Tu peux rester sur cette page,
-                        le téléchargement apparaîtra ici.
+                        {t("fi.en_cours_texte")}
                       </p>
                     </div>
                   )}
@@ -544,10 +545,10 @@ export function FichesPage() {
                       <div className="flex flex-wrap items-center gap-2">
                         <Badge variant="success" className="gap-1">
                           <CheckCircle2 className="size-3" />
-                          Prête
+                          {t("fi.prete")}
                         </Badge>
                         <Badge variant="outline">
-                          {fiche.nombre_questions} question{fiche.nombre_questions > 1 ? "s" : ""}
+                          {tn("rc.n_questions", fiche.nombre_questions)}
                         </Badge>
                         {fiche.difficulte && <Badge variant="outline">{DIFFICULTE_LABELS[fiche.difficulte]}</Badge>}
                         {fiche.themes.slice(0, 2).map((theme) => (
@@ -560,16 +561,15 @@ export function FichesPage() {
                       <div className="grid gap-2 sm:grid-cols-2">
                         <Button onClick={() => downloadFicheSujetPdf(fiche.id)} size="lg">
                           <FileText className="size-4" />
-                          L'énoncé (élèves)
+                          {t("fi.enonce_eleves")}
                         </Button>
                         <Button onClick={() => downloadFicheCorrigePdf(fiche.id)} variant="outline" size="lg">
                           <Download className="size-4" />
-                          Le corrigé (toi)
+                          {t("fi.corrige_toi")}
                         </Button>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        Le corrigé porte ton nom et reste à ton usage personnel - seul l'énoncé est prévu pour être
-                        distribué.
+                        {t("fi.note_corrige")}
                       </p>
                     </>
                   )}
@@ -578,11 +578,11 @@ export function FichesPage() {
                     <div className="flex flex-col items-start gap-3">
                       <p className="flex items-start gap-1.5 text-sm text-destructive">
                         <AlertCircle className="mt-0.5 size-4 shrink-0" />
-                        La génération a échoué. Réessaie, ou contacte le support si ça se reproduit.
+                        {t("fi.echec_texte")}
                       </p>
                       <Button variant="outline" size="sm" onClick={handleSubmit} disabled={creating || !pretAGenerer}>
                         <RefreshCw className="size-3.5" />
-                        Réessayer
+                        {t("erreur.reessayer")}
                       </Button>
                     </div>
                   )}
@@ -603,7 +603,7 @@ export function FichesPage() {
                 </span>
                 <div>
                   <p className="font-display text-base font-semibold">
-                    {isAuthenticated ? "Débloque l'add-on Fiches" : "Comment marchent les Fiches"}
+                    {isAuthenticated ? t("fi.debloque_addon") : t("fi.comment")}
                   </p>
                   {/* Rien de plus quand la page est publique : le hero au-dessus porte déjà
                       la promesse (et son surtitre dit déjà à qui l'outil s'adresse). La
@@ -611,16 +611,15 @@ export function FichesPage() {
                       d'avancer. Les étapes ci-dessous disent le "comment", pas le "quoi". */}
                   {isAuthenticated && (
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Réservé aux répétiteurs et enseignants, sur un cursus donné - fiches illimitées pendant toute la
-                      durée de l'add-on.
+                      {t("fi.reserve_texte")}
                     </p>
                   )}
                 </div>
                 <EtapesPresentation
                   etapes={[
-                    "Tu choisis un cursus et une matière, puis tu coches les compétences à travailler.",
-                    "Tu règles la difficulté et le nombre d'exercices.",
-                    "Les deux PDF se composent en quelques secondes, prêts à imprimer.",
+                    t("fi.etape1"),
+                    t("fi.etape2"),
+                    t("fi.etape3"),
                   ]}
                 />
                 {/* Déconnecté, la connexion passe devant les tarifs : le répétiteur qui
@@ -633,7 +632,7 @@ export function FichesPage() {
                 {isAuthenticated ? (
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <Link to="/tarifs">
-                      Voir les prix
+                      {t("ft.voir_prix")}
                       <ArrowRight className="size-4" />
                     </Link>
                   </Button>
@@ -642,14 +641,14 @@ export function FichesPage() {
                     <Button asChild size="lg" className="w-full sm:w-auto">
                       <Link
                         to="/connexion"
-                        state={{ from: loginFrom, intent: "Connecte-toi pour générer ta fiche." }}
+                        state={{ from: loginFrom, intent: t("fi.intent") }}
                       >
-                        Se connecter pour commencer
+                        {t("fi.se_connecter")}
                         <ArrowRight className="size-4" />
                       </Link>
                     </Button>
                     <Link to="/tarifs" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-                      Pas encore l'add-on ? Voir les prix
+                      {t("fi.pas_addon")}
                     </Link>
                   </div>
                 )}
@@ -658,22 +657,22 @@ export function FichesPage() {
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle className="font-display text-lg">Composer une fiche</CardTitle>
+                <CardTitle className="font-display text-lg">{t("fi.composer")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ol className="flex flex-col">
-                  <Etape numero={1} titre="Cursus et matière" fait={Boolean(selectedCursus && selectedSubject)}>
+                  <Etape numero={1} titre={t("fi.etape_cursus")} fait={Boolean(selectedCursus && selectedSubject)}>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="fiche-cursus"
                           className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
                         >
-                          Cursus
+                          {t("fi.cursus")}
                         </label>
                         <Select value={selectedCursus} onValueChange={setSelectedCursus}>
                           <SelectTrigger id="fiche-cursus">
-                            <SelectValue placeholder="Choisis le cursus" />
+                            <SelectValue placeholder={t("fi.choisis_cursus")} />
                           </SelectTrigger>
                           <SelectContent>
                             {cursusList.map((c) => {
@@ -682,7 +681,7 @@ export function FichesPage() {
                                 <SelectItem key={c.id} value={String(c.id)}>
                                   <span className="flex items-center gap-2">
                                     {c.examen_display}
-                                    {c.series ? ` - Série ${c.series.code}` : ""}
+                                    {c.series ? t("fi.serie", { code: c.series.code }) : ""}
                                     {!accessible && <Lock className="size-3 text-muted-foreground" />}
                                   </span>
                                 </SelectItem>
@@ -697,7 +696,7 @@ export function FichesPage() {
                           htmlFor="fiche-matiere"
                           className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
                         >
-                          Matière
+                          {t("fi.matiere")}
                         </label>
                         <Select
                           value={selectedSubject}
@@ -705,7 +704,7 @@ export function FichesPage() {
                           disabled={!selectedCursus || !hasAccessForCursus || subjects.length === 0}
                         >
                           <SelectTrigger id="fiche-matiere">
-                            <SelectValue placeholder="Choisis la matière" />
+                            <SelectValue placeholder={t("fi.choisis_matiere")} />
                           </SelectTrigger>
                           <SelectContent>
                             {subjects.map((subject) => (
@@ -719,7 +718,7 @@ export function FichesPage() {
                             elle est vide, le sélecteur désactivé ne dit pas pourquoi. */}
                         {selectedCursus && hasAccessForCursus && subjects.length === 0 && (
                           <p className="text-xs text-muted-foreground">
-                            Aucune matière n'a encore de questions sur ce cursus.
+                            {t("fi.aucune_matiere")}
                           </p>
                         )}
                       </div>
@@ -729,14 +728,13 @@ export function FichesPage() {
                       <div className="flex flex-col items-start gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4">
                         <p className="flex items-start gap-2 text-sm text-muted-foreground">
                           <Lock className="mt-0.5 size-4 shrink-0 text-primary" />
-                          L'add-on Fiches n'est pas actif pour ce cursus - débloque-le pour générer des fiches
-                          illimitées pendant sa durée.
+                          {t("fi.addon_inactif")}
                         </p>
                         <Button
                           size="sm"
                           onClick={() => navigate(`/abonnement?cursus=${selectedCursus}&require=repetiteur`)}
                         >
-                          Débloquer l'add-on Fiches
+                          {t("fi.debloquer")}
                           <ArrowRight className="size-3.5" />
                         </Button>
                       </div>
@@ -745,13 +743,13 @@ export function FichesPage() {
 
                   <Etape
                     numero={2}
-                    titre="Compétences à travailler"
-                    aide="Les questions sont tirées au hasard parmi les compétences cochées."
+                    titre={t("fi.etape_competences")}
+                    aide={t("fi.aide_competences")}
                     fait={selectedThemeIds.size > 0}
                     inactif={!selectedSubject}
                   >
                     {!selectedSubject ? (
-                      <p className="text-sm text-muted-foreground">Choisis d'abord une matière.</p>
+                      <p className="text-sm text-muted-foreground">{t("fi.choisis_matiere_dabord")}</p>
                     ) : themesLoading ? (
                       <div className="flex flex-col gap-2">
                         <Skeleton className="h-11 w-full rounded-xl" />
@@ -760,16 +758,14 @@ export function FichesPage() {
                       </div>
                     ) : eligibleThemes.length === 0 ? (
                       <p className="rounded-xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
-                        Aucune question disponible pour cette matière pour l'instant. Essaie une autre matière - la
-                        banque s'étoffe au fil des corrigés publiés.
+                        {t("fi.aucune_question")}
                       </p>
                     ) : (
                       <>
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <p className="text-sm text-muted-foreground">
-                            <span className="font-medium text-foreground">{selectedThemeIds.size}</span> sur{" "}
-                            {themesSelectionnables.length} sélectionnée
-                            {themesSelectionnables.length > 1 ? "s" : ""}
+                            <span className="font-medium text-foreground">{selectedThemeIds.size}</span>
+                            {tn("fi.sur_selection", themesSelectionnables.length)}
                           </p>
                           <div className="flex gap-1">
                             <Button
@@ -779,7 +775,7 @@ export function FichesPage() {
                               onClick={() => setSelectedThemeIds(new Set(themesSelectionnables.map((t) => t.theme_id)))}
                               disabled={selectedThemeIds.size === themesSelectionnables.length}
                             >
-                              Tout sélectionner
+                              {t("fi.tout_selectionner")}
                             </Button>
                             <Button
                               variant="ghost"
@@ -788,7 +784,7 @@ export function FichesPage() {
                               onClick={() => setSelectedThemeIds(new Set())}
                               disabled={selectedThemeIds.size === 0}
                             >
-                              Effacer
+                              {t("fi.effacer")}
                             </Button>
                           </div>
                         </div>
@@ -799,9 +795,9 @@ export function FichesPage() {
                             <Input
                               value={themeQuery}
                               onChange={(e) => setThemeQuery(e.target.value)}
-                              placeholder="Filtrer les compétences…"
+                              placeholder={t("fi.filtrer")}
                               className="pl-9"
-                              aria-label="Filtrer les compétences"
+                              aria-label={t("fi.filtrer_aria")}
                             />
                           </div>
                         )}
@@ -814,7 +810,7 @@ export function FichesPage() {
                         <div className="flex flex-col gap-2">
                           {themesFiltres.length === 0 ? (
                             <p className="py-4 text-center text-sm text-muted-foreground">
-                              Aucune compétence ne correspond à « {themeQuery} ».
+                              {t("fi.aucune_competence", { q: themeQuery })}
                             </p>
                           ) : (
                             themesFiltres.map((theme) => {
@@ -875,14 +871,14 @@ export function FichesPage() {
 
                   <Etape
                     numero={3}
-                    titre="Réglages"
+                    titre={t("fi.etape_reglages")}
                     fait={selectedThemeIds.size > 0 && maxN > 0}
                     inactif={!selectedSubject || eligibleThemes.length === 0}
                     dernier
                   >
                     <div className="flex flex-col gap-1.5">
                       <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                        Difficulté
+                        {t("fi.difficulte")}
                       </span>
                       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                         {DIFFICULTE_OPTIONS.map((option) => {
@@ -903,12 +899,12 @@ export function FichesPage() {
                               )}
                             >
                               <span className="text-sm font-medium">
-                                {option === TOUTES_DIFFICULTES ? "Toutes" : DIFFICULTE_LABELS[option]}
+                                {option === TOUTES_DIFFICULTES ? t("fi.toutes") : DIFFICULTE_LABELS[option]}
                               </span>
                               <span className="text-xs tabular-nums text-muted-foreground">
                                 {baseComptage.length === 0
                                   ? "-"
-                                  : `${disponible} question${disponible > 1 ? "s" : ""}`}
+                                  : tn("rc.n_questions", disponible)}
                               </span>
                             </button>
                           )
@@ -921,7 +917,7 @@ export function FichesPage() {
                         htmlFor="fiche-n"
                         className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
                       >
-                        Nombre de questions{maxN > 0 ? ` (max ${maxN})` : ""}
+                        {t("fi.nombre_questions")}{maxN > 0 ? t("fi.max_entre_parentheses", { n: maxN }) : ""}
                       </label>
                       <div className="flex flex-wrap items-center gap-2">
                         <div className="flex items-center gap-1">
@@ -932,7 +928,7 @@ export function FichesPage() {
                             className="size-10 shrink-0"
                             onClick={() => setN((v) => Math.max(1, v - 1))}
                             disabled={maxN === 0 || n <= 1}
-                            aria-label="Une question de moins"
+                            aria-label={t("fi.moins")}
                           >
                             <Minus className="size-4" />
                           </Button>
@@ -953,7 +949,7 @@ export function FichesPage() {
                             className="size-10 shrink-0"
                             onClick={() => setN((v) => Math.min(maxN, v + 1))}
                             disabled={maxN === 0 || n >= maxN}
-                            aria-label="Une question de plus"
+                            aria-label={t("fi.plus")}
                           >
                             <Plus className="size-4" />
                           </Button>
@@ -971,7 +967,7 @@ export function FichesPage() {
                                   : "border-border text-muted-foreground hover:border-primary/40 hover:bg-accent/40",
                               )}
                             >
-                              {valeur === maxN && maxN > 5 ? `Max (${valeur})` : valeur}
+                              {valeur === maxN && maxN > 5 ? t("fi.max_valeur", { n: valeur }) : valeur}
                             </button>
                           ))}
                         </div>
@@ -983,7 +979,7 @@ export function FichesPage() {
                         htmlFor="fiche-titre"
                         className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
                       >
-                        Titre de la fiche
+                        {t("fi.titre_fiche")}
                       </label>
                       <Input
                         id="fiche-titre"
@@ -992,9 +988,9 @@ export function FichesPage() {
                           setTitre(e.target.value)
                           setTitreEdited(true)
                         }}
-                        placeholder="Titre de la fiche"
+                        placeholder={t("fi.titre_fiche")}
                       />
-                      <p className="text-xs text-muted-foreground">Il apparaît en haut des deux PDF.</p>
+                      <p className="text-xs text-muted-foreground">{t("fi.titre_aide")}</p>
                     </div>
                   </Etape>
                 </ol>
@@ -1019,12 +1015,12 @@ export function FichesPage() {
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 font-display text-base">
                     <Sparkles className="size-4 text-primary" />
-                    Récapitulatif
+                    {t("fi.recap")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-3">
                   <div className="flex flex-col gap-2.5">
-                    <LigneRecap label="Cursus">
+                    <LigneRecap label={t("fi.cursus")}>
                       {cursusChoisi ? (
                         <>
                           {cursusChoisi.examen_display}
@@ -1034,16 +1030,16 @@ export function FichesPage() {
                         <RecapVide />
                       )}
                     </LigneRecap>
-                    <LigneRecap label="Matière">
+                    <LigneRecap label={t("fi.matiere")}>
                       {subjectChoisi?.label ?? <RecapVide />}
                     </LigneRecap>
-                    <LigneRecap label="Compétences">
+                    <LigneRecap label={t("fi.competences")}>
                       {selectedThemes.length > 0 ? selectedThemes.length : <RecapVide />}
                     </LigneRecap>
-                    <LigneRecap label="Difficulté">
-                      {difficulte === TOUTES_DIFFICULTES ? "Toutes" : DIFFICULTE_LABELS[difficulte]}
+                    <LigneRecap label={t("fi.difficulte")}>
+                      {difficulte === TOUTES_DIFFICULTES ? t("fi.toutes") : DIFFICULTE_LABELS[difficulte]}
                     </LigneRecap>
-                    <LigneRecap label="Questions">
+                    <LigneRecap label={t("fi.questions")}>
                       {maxN > 0 ? <span className="tabular-nums">{n}</span> : <RecapVide />}
                     </LigneRecap>
                   </div>
@@ -1074,10 +1070,10 @@ export function FichesPage() {
 
                   <Button onClick={handleSubmit} disabled={creating || !pretAGenerer} size="lg" className="w-full">
                     {creating ? (
-                      "Préparation…"
+                      t("pc.preparation")
                     ) : (
                       <>
-                        {fiche ? "Générer une nouvelle fiche" : "Générer la fiche"}
+                        {fiche ? t("fi.generer_nouvelle") : t("fi.generer")}
                         <ArrowRight className="size-4" />
                       </>
                     )}
@@ -1085,12 +1081,12 @@ export function FichesPage() {
                   {!pretAGenerer && (
                     <p className="text-center text-xs text-muted-foreground">
                       {!selectedCursus
-                        ? "Choisis un cursus pour commencer."
+                        ? t("fi.indice_cursus")
                         : !hasAccessForCursus
-                          ? "Add-on Fiches requis pour ce cursus."
+                          ? t("fi.indice_addon")
                           : !selectedSubject
-                            ? "Choisis une matière."
-                            : "Coche au moins une compétence."}
+                            ? t("fi.indice_matiere")
+                            : t("fi.indice_competence")}
                     </p>
                   )}
                 </CardContent>
@@ -1102,7 +1098,7 @@ export function FichesPage() {
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 font-display text-base">
                     <History className="size-4 text-primary" />
-                    Mes fiches
+                    {t("fi.mes_fiches")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-2">
@@ -1114,7 +1110,7 @@ export function FichesPage() {
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium">{item.titre}</p>
                         <p className="truncate text-xs text-muted-foreground">
-                          {item.subject_label} - {item.nombre_questions} question{item.nombre_questions > 1 ? "s" : ""} -{" "}
+                          {item.subject_label} - {tn("rc.n_questions", item.nombre_questions)} -{" "}
                           {formatDateCourte(item.created_at)}
                         </p>
                       </div>
@@ -1126,8 +1122,8 @@ export function FichesPage() {
                             className="size-8"
                             onClick={() => downloadFicheSujetPdf(item.id)}
                             disabled={!item.sujet_pdf_disponible}
-                            title="Ouvrir l'énoncé"
-                            aria-label={`Ouvrir l'énoncé de ${item.titre}`}
+                            title={t("fi.ouvrir_enonce")}
+                            aria-label={t("fi.ouvrir_enonce_de", { titre: item.titre })}
                           >
                             <FileText className="size-4" />
                           </Button>
@@ -1137,15 +1133,15 @@ export function FichesPage() {
                             className="size-8"
                             onClick={() => downloadFicheCorrigePdf(item.id)}
                             disabled={!item.corrige_pdf_disponible}
-                            title="Ouvrir le corrigé"
-                            aria-label={`Ouvrir le corrigé de ${item.titre}`}
+                            title={t("fi.ouvrir_corrige")}
+                            aria-label={t("fi.ouvrir_corrige_de", { titre: item.titre })}
                           >
                             <Download className="size-4" />
                           </Button>
                         </div>
                       ) : (
                         <Badge variant={item.statut === "ECHEC" ? "outline" : "secondary"} className="shrink-0">
-                          {item.statut === "ECHEC" ? "Échec" : "En cours"}
+                          {item.statut === "ECHEC" ? t("fi.echec") : t("fi.en_cours")}
                         </Badge>
                       )}
                     </div>
@@ -1157,7 +1153,7 @@ export function FichesPage() {
                       className="w-full"
                       onClick={() => setToutesFichesVisibles((v) => !v)}
                     >
-                      {toutesFichesVisibles ? "Réduire" : `Tout afficher (${mesFiches.length})`}
+                      {toutesFichesVisibles ? t("fi.reduire") : t("fi.tout_afficher", { n: mesFiches.length })}
                     </Button>
                   )}
                 </CardContent>

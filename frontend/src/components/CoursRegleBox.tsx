@@ -2,6 +2,7 @@ import { BookMarked } from "lucide-react"
 
 import type { CoursSectionRegle } from "@/api/types"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { t } from "@/lib/i18n"
 
 type CoursRegleBoxProps = Omit<CoursSectionRegle, "type">
 
@@ -48,7 +49,7 @@ export function CoursRegleBox({ titre, body_markdown, formule_markdown, variante
                   </div>}
                 {variante.quand_utiliser && (
                   <div className="text-sm italic text-muted-foreground [&_p]:m-0">
-                    <EpreuveMarkdown markdown={`Quand l'utiliser : ${variante.quand_utiliser}`} />
+                    <EpreuveMarkdown markdown={t("co.quand", { x: variante.quand_utiliser })} />
                   </div>
                 )}
                 {/* prose-sm : une variante est un aparté, son corps doit rester à la même taille

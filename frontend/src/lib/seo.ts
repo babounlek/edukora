@@ -1,13 +1,13 @@
 import { useEffect } from "react"
 
 import { SITE_NAME } from "@/lib/site"
+import { t } from "@/lib/i18n"
 
 // Générique, sans nom de pays : cette valeur par défaut sert des pages qui ne sont pas
 // spécifiques à un pays (compte, connexion, lecture...) - un pays en dur induirait en
 // erreur un visiteur d'un autre pays (voir CataloguePage/CoursListPage pour la
 // description propre à chaque pays affichée sur les pages qui, elles, en dépendent).
-const DEFAULT_DESCRIPTION =
-  "Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire et le BAC, avec des corrigés d'annales et des quiz rédigés par des enseignants."
+const defaultDescription = () => t("gl.seo_defaut")
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
   let tag = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`)
@@ -32,7 +32,7 @@ interface SeoOptions {
  * d'épreuve, de cours et d'épreuve inédite, Caddy leur sert à la place des balises propres au
  * contenu (backend/catalog/apercu_partage.py) ; les autres pages gardent celles d'index.html.
  */
-export function useSeo({ title, description = DEFAULT_DESCRIPTION, noindex = false }: SeoOptions) {
+export function useSeo({ title, description = defaultDescription(), noindex = false }: SeoOptions) {
   useEffect(() => {
     const fullTitle = `${title} | ${SITE_NAME}`
     document.title = fullTitle

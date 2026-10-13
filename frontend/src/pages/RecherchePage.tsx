@@ -37,16 +37,19 @@ import {
   tracerRechercheLancee,
   tracerResultatClique,
   veutFocusRecherche,
+  libelleGroupe,
 } from "@/lib/recherche"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 // Par groupe dans la vue d'ensemble ; une fois un type choisi, on pagine par PAGE_TYPE.
 const PAR_GROUPE = 6
 const PAGE_TYPE = 20
 
 export function RecherchePage() {
+  useI18n()
   const { country = "" } = useParams<{ country: string }>()
   const { user } = useAuth()
   const { countries } = useCountry()
@@ -76,8 +79,8 @@ export function RecherchePage() {
   const sans = useMemo(() => sansBrut.split(",").filter(Boolean), [sansBrut])
 
   useSeo({
-    title: q ? `Recherche : ${q}` : "Recherche",
-    description: "Cherche un thème, un cours, une épreuve ou un exercice.",
+    title: q ? t("rc.seo_titre_q", { q }) : t("rc.seo_titre"),
+    description: t("rc.seo_desc"),
     // Une page de résultats n'a rien à faire dans un moteur de recherche : l'infinité de requêtes
     // possibles y ferait des milliers de pages quasi vides.
     noindex: true,
@@ -265,14 +268,13 @@ export function RecherchePage() {
         <Search aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
           <p className="mb-2 font-display text-sm italic text-primary">
-            Recherche{countryLabel ? ` - ${countryLabel}` : ""}
+            {t("rc.eyebrow")}{countryLabel ? ` - ${countryLabel}` : ""}
           </p>
           <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-            Un mot, et on te dit <span className="text-primary">par où commencer</span>.
+            {t("rc.h1_avant")}<span className="text-primary">{t("rc.h1_accent")}</span>{t("rc.h1_apres")}
           </h1>
           <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-            Thèmes, cours, épreuves, exercices et quiz : tape une notion, une épreuve ou une année, on trouve ce
-            qu'il te faut pour ton examen.
+            {t("rc.hero_texte")}
           </p>
         </div>
       </div>
@@ -305,8 +307,8 @@ export function RecherchePage() {
               }}
               onKeyDown={surTouche}
               onBlur={() => setCompletionOuverte(false)}
-              placeholder="Un thème, une notion, une épreuve, une année…"
-              aria-label="Rechercher"
+              placeholder={t("rc.placeholder")}
+              aria-label={t("nav.rechercher")}
               aria-expanded={propositions.length > 0}
               aria-controls="completions-recherche"
               aria-autocomplete="list"
@@ -324,7 +326,7 @@ export function RecherchePage() {
                   setCompletionOuverte(false)
                   majParams({ q: null, exact: null, sans: null })
                 }}
-                aria-label="Effacer la recherche"
+                aria-label={t("rc.effacer_recherche")}
                 className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <X className="size-4" />
@@ -337,7 +339,7 @@ export function RecherchePage() {
               <ul
                 id="completions-recherche"
                 role="listbox"
-                aria-label="Suggestions"
+                aria-label={t("rc.suggestions")}
                 className="absolute left-0 right-0 top-full z-30 mt-1 overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg"
               >
                 {propositions.map((c, i) => (
@@ -372,7 +374,7 @@ export function RecherchePage() {
         {(compris.length > 0 || intention?.ignoree) && (
           <div className="mt-3 flex flex-wrap items-center gap-2 text-sm" aria-live="polite">
             {compris.length > 0 && (
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Compris</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("rc.compris")}</span>
             )}
             {compris.map((pastille) => (
               <span
@@ -383,7 +385,7 @@ export function RecherchePage() {
                 <button
                   type="button"
                   onClick={() => retirer(pastille.cle)}
-                  aria-label={`Retirer ${pastille.libelle}`}
+                  aria-label={t("rc.retirer", { x: pastille.libelle })}
                   className="flex size-5 items-center justify-center rounded-full hover:bg-primary/20"
                 >
                   <X className="size-3" aria-hidden="true" />
@@ -392,7 +394,7 @@ export function RecherchePage() {
             ))}
             {intention?.ignoree && (
               <span className="text-muted-foreground">
-                Rien avec les filtres que j'avais compris : je cherche tes mots tels quels.
+                {t("rc.ignoree")}
               </span>
             )}
           </div>
@@ -401,12 +403,12 @@ export function RecherchePage() {
         {/* Périmètre : l'examen de l'élève par défaut, jamais caché - c'est ce qui explique pourquoi un
             résultat attendu manque, et un clic suffit pour l'élargir. */}
         {cursusLabel && (
-          <FiltreLigne titre="Examen">
+          <FiltreLigne titre={t("quiz.examen")}>
             <PastilleFiltre actif={!elargir} onClick={() => majParams({ elargir: null })}>
-              Mon examen · {cursusLabel}
+              {t("rc.mon_examen", { cursus: cursusLabel })}
             </PastilleFiltre>
             <PastilleFiltre actif={elargir} onClick={() => majParams({ elargir: "1" })}>
-              Tous les examens
+              {t("ft.tous_examens")}
             </PastilleFiltre>
           </FiltreLigne>
         )}
@@ -415,9 +417,9 @@ export function RecherchePage() {
             combien de résultats chacune apporte et filtrent d'un clic - la liste reste complète quand l'une
             est choisie, pour en changer sans repartir de zéro. */}
         {filtrable && data.matieres.length > 1 && (
-          <FiltreLigne titre="Matière">
+          <FiltreLigne titre={t("quiz.matiere")}>
             <PastilleFiltre actif={!matiere} onClick={() => majParams({ matiere: null })}>
-              Toutes les matières <span className="opacity-75">{data.matieres.reduce((somme, m) => somme + m.total, 0)}</span>
+              {t("rc.toutes_matieres")} <span className="opacity-75">{data.matieres.reduce((somme, m) => somme + m.total, 0)}</span>
             </PastilleFiltre>
             {data.matieres.map((m) => (
               <PastilleFiltre key={m.code} actif={matiere === m.code} onClick={() => majParams({ matiere: m.code })}>
@@ -437,7 +439,7 @@ export function RecherchePage() {
               recherche semblait cassée. */}
           {termes.length > 0 && (
             <p role="status" className="mb-4 text-sm text-muted-foreground">
-              {LONGUEUR_MIN_RECHERCHE} lettres minimum pour lancer la recherche.
+              {t("rc.min_lettres", { n: LONGUEUR_MIN_RECHERCHE })}
             </p>
           )}
           <PageVide
@@ -457,28 +459,28 @@ export function RecherchePage() {
         <Chargement />
       ) : ensemble.isError ? (
         <ErreurChargement
-          message="La recherche est momentanément indisponible. Vérifie ta connexion, puis réessaie."
+          message={t("rc.indispo")}
           compact
           className="mt-8"
           onRetry={() => ensemble.refetch()}
         />
       ) : data && !data.indexe ? (
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          La recherche est en cours de préparation. Réessaie dans quelques minutes.
+          {t("rc.preparation")}
         </p>
       ) : data ? (
         <div aria-busy={ensemble.isFetching}>
           {data.total > 0 && (
             <p className="mt-5 text-sm text-muted-foreground" aria-live="polite">
               <strong className="font-display text-base font-semibold text-foreground">{data.total}</strong>{" "}
-              résultat{data.total > 1 ? "s" : ""} pour « {termes} »
+              {tn("rc.resultats_pour", data.total, { q: termes })}
             </p>
           )}
           {data.corrige && (
             <p className="mt-5 text-sm text-muted-foreground">
-              Résultats pour « <strong className="font-medium text-foreground">{data.corrige}</strong> ».{" "}
+              {t("rc.corrige_avant")}<strong className="font-medium text-foreground">{data.corrige}</strong>{t("rc.corrige_apres")}{" "}
               <button type="button" onClick={() => majParams({ exact: "1" })} className="font-medium text-primary hover:underline">
-                Chercher plutôt « {termes} »
+                {t("rc.chercher_plutot", { q: termes })}
               </button>
             </p>
           )}
@@ -495,9 +497,9 @@ export function RecherchePage() {
             <>
               {data.autres_cursus > 0 && !elargir && (
                 <p className="mt-5 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm">
-                  {data.autres_cursus} autre{data.autres_cursus > 1 ? "s" : ""} résultat{data.autres_cursus > 1 ? "s" : ""} dans d'autres examens.{" "}
+                  {tn("rc.autres_cursus", data.autres_cursus)}{" "}
                   <button type="button" onClick={() => majParams({ elargir: "1" })} className="font-medium text-primary hover:underline">
-                    Les voir
+                    {t("rc.les_voir")}
                   </button>
                 </p>
               )}
@@ -509,7 +511,7 @@ export function RecherchePage() {
 
                   {associees.length > 0 && (
                     <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
-                      <span className="text-muted-foreground">À explorer aussi :</span>
+                      <span className="text-muted-foreground">{t("rc.a_explorer")}</span>
                       {associees.map((theme) => (
                         <button
                           key={theme.id}
@@ -542,7 +544,7 @@ export function RecherchePage() {
                               <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
                                 <IconeType type={groupe.type} className="size-4" />
                               </span>
-                              {groupe.libelle} <span className="text-sm font-normal text-muted-foreground">({groupe.total})</span>
+                              {libelleGroupe(groupe.type, groupe.libelle)} <span className="text-sm font-normal text-muted-foreground">({groupe.total})</span>
                             </h2>
                             {groupe.total > groupe.resultats.length && (
                               <button
@@ -550,7 +552,7 @@ export function RecherchePage() {
                                 onClick={() => majParams({ type: familleDe(groupe.type).cle })}
                                 className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-sm font-medium text-primary transition-colors hover:border-primary"
                               >
-                                Voir les {groupe.total}
+                                {t("rc.voir_les", { n: groupe.total })}
                                 <ArrowRight className="size-3.5" aria-hidden="true" />
                               </button>
                             )}
@@ -610,6 +612,7 @@ function Onglets({
   famille: FamilleRecherche | undefined
   onChoisir: (famille: FamilleRecherche | undefined) => void
 }) {
+  useI18n()
   // Mêmes mots et même ordre que les onglets « Réviser » (voir FAMILLES_RECHERCHE), et la même rangée de
   // pastilles que les filtres de /epreuves et /cours. Les compteurs viennent de la vue d'ensemble :
   // toujours à jour, que l'onglet choisi pagine ou non. Un type sans résultat n'est pas proposé (sauf
@@ -619,9 +622,9 @@ function Onglets({
     total: groupes.filter((g) => f.types.includes(g.type)).reduce((somme, g) => somme + g.total, 0),
   })).filter((f) => f.total > 0 || f.cle === famille?.cle)
   return (
-    <FiltreLigne titre="Type">
+    <FiltreLigne titre={t("rc.type")}>
       <PastilleFiltre actif={famille === undefined} onClick={() => onChoisir(undefined)}>
-        Tout <span className="opacity-75">{total}</span>
+        {t("rc.tout")} <span className="opacity-75">{total}</span>
       </PastilleFiltre>
       {onglets.map((f) => (
         <PastilleFiltre key={f.cle} actif={famille?.cle === f.cle} onClick={() => onChoisir(f)}>
@@ -645,6 +648,7 @@ function SectionPaginee({
   country: string
   ouvrir: (resultat: ResultatRecherche, rang: number) => () => void
 }) {
+  useI18n()
   const liste = useInfiniteQuery({
     queryKey: cle,
     queryFn: ({ pageParam, signal }) => chercher(pageParam, signal),
@@ -657,13 +661,13 @@ function SectionPaginee({
   })
   const resultats = liste.data?.pages.flatMap((p) => p.groupes[0]?.resultats ?? []) ?? []
   return (
-    <section aria-labelledby={avecTitre ? `groupe-${groupe.type}` : undefined} aria-label={avecTitre ? undefined : groupe.libelle}>
+    <section aria-labelledby={avecTitre ? `groupe-${groupe.type}` : undefined} aria-label={avecTitre ? undefined : libelleGroupe(groupe.type, groupe.libelle)}>
       {avecTitre && (
         <h2 id={`groupe-${groupe.type}`} className="mb-3 flex items-center gap-2 font-display text-lg font-semibold">
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <IconeType type={groupe.type} className="size-4" />
           </span>
-          {groupe.libelle} <span className="text-sm font-normal text-muted-foreground">({groupe.total})</span>
+          {libelleGroupe(groupe.type, groupe.libelle)} <span className="text-sm font-normal text-muted-foreground">({groupe.total})</span>
         </h2>
       )}
       {liste.isLoading ? (
@@ -671,7 +675,7 @@ function SectionPaginee({
       ) : liste.isError && resultats.length === 0 ? (
         // Sans ce cas, une panne sur cet onglet affichait une section vide, sans un mot.
         <ErreurChargement
-          objet={groupe.libelle.toLowerCase()}
+          objet={libelleGroupe(groupe.type, groupe.libelle).toLowerCase()}
           compact
           onRetry={() => liste.refetch()}
         />
@@ -686,12 +690,12 @@ function SectionPaginee({
             <div className="mt-5 flex flex-col items-center gap-2">
               {liste.isFetchNextPageError && !liste.isFetchingNextPage && (
                 <p role="alert" className="text-sm text-destructive">
-                  Impossible de charger la suite. Réessaie.
+                  {t("rc.suite_erreur")}
                 </p>
               )}
               <Button variant="outline" onClick={() => liste.fetchNextPage()} disabled={liste.isFetchingNextPage}>
                 {liste.isFetchingNextPage && <Loader2 className="animate-spin" />}
-                Afficher plus de résultats
+                {t("rc.afficher_plus")}
               </Button>
             </div>
           )}
@@ -702,8 +706,9 @@ function SectionPaginee({
 }
 
 function Chargement() {
+  useI18n()
   return (
-    <div className="mt-6 space-y-3" role="status" aria-label="Recherche en cours">
+    <div className="mt-6 space-y-3" role="status" aria-label={t("rc.chargement")}>
       {[0, 1, 2, 3].map((i) => (
         <Skeleton key={i} className="h-24 w-full rounded-xl" />
       ))}
@@ -725,6 +730,7 @@ function PageVide({
   cursusLabel: string
   onChercher: (requete: string) => void
 }) {
+  useI18n()
   const { isAuthenticated } = useAuth()
   const [recentes, setRecentes] = useState(lireRecentes)
 
@@ -757,7 +763,7 @@ function PageVide({
             <BookOpen className="size-5" aria-hidden="true" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">Reprendre ma lecture</span>
+            <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("rc.reprendre")}</span>
             <span className="block truncate font-display font-medium">{reprise.title}</span>
           </span>
           <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -768,7 +774,7 @@ function PageVide({
         <section aria-labelledby="recherches-recentes">
           <div className="mb-3 flex items-center justify-between gap-3">
             <h2 id="recherches-recentes" className="font-display text-lg font-semibold">
-              Tes dernières recherches
+              {t("rc.dernieres")}
             </h2>
             <button
               type="button"
@@ -778,7 +784,7 @@ function PageVide({
               }}
               className="text-sm text-muted-foreground hover:text-foreground"
             >
-              Effacer
+              {t("rc.effacer")}
             </button>
           </div>
           <ul className="flex flex-wrap gap-2">
@@ -798,14 +804,14 @@ function PageVide({
         <h2 id="themes-pour-commencer" className="mb-3 font-display text-lg font-semibold">
           {cursusLabel ? (
             <>
-              Des thèmes pour ton examen <span className="text-sm font-normal text-muted-foreground">· {cursusLabel}</span>
+              {t("rc.themes_examen")} <span className="text-sm font-normal text-muted-foreground">· {cursusLabel}</span>
             </>
           ) : (
-            "Des thèmes pour commencer"
+            t("rc.themes_commencer")
           )}
         </h2>
         {accueil.isLoading || cursusDeclare === undefined ? (
-          <div className="flex flex-wrap gap-2" role="status" aria-label="Chargement des thèmes">
+          <div className="flex flex-wrap gap-2" role="status" aria-label={t("rc.chargement_themes")}>
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <Skeleton key={i} className="h-9 w-32 rounded-full" />
             ))}
@@ -823,7 +829,7 @@ function PageVide({
           </ul>
         ) : null}
         <p className="mt-4 text-sm text-muted-foreground">
-          Tu peux aussi chercher une notion (« discriminant »), une épreuve ou une année (« BAC C maths 2019 »).
+          {t("rc.astuce")}
         </p>
       </section>
     </div>
@@ -839,24 +845,25 @@ function AucunResultat({
   onElargir?: () => void
   onRetenir: () => void
 }) {
+  useI18n()
   return (
     <div className="mt-10">
       <div className="flex flex-col items-center gap-2 text-center">
         <SearchX className="size-8 text-muted-foreground" aria-hidden="true" />
-        <h2 className="font-display text-lg font-semibold">Aucun résultat pour « {termes} »</h2>
+        <h2 className="font-display text-lg font-semibold">{t("rc.aucun", { q: termes })}</h2>
         <p className="max-w-md text-sm text-muted-foreground">
-          Essaie un mot plus court, une autre façon de nommer la notion, ou retire un filtre.
+          {t("rc.aucun_texte")}
         </p>
         {onElargir && (
           <Button variant="outline" size="sm" onClick={onElargir} className="mt-1">
-            Chercher dans tous les examens
+            {t("rc.chercher_tous")}
           </Button>
         )}
       </div>
       {data.suggestions.length > 0 && (
         <section className="mt-8" aria-labelledby="suggestions-themes">
           <h3 id="suggestions-themes" className="mb-3 font-display text-base font-semibold">
-            Des thèmes pour commencer
+            {t("rc.themes_commencer")}
           </h3>
           <ul className="flex flex-wrap gap-2">
             {data.suggestions.map((theme) => (

@@ -1,5 +1,6 @@
 import type { ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { trackEvent } from "@/lib/analytics"
+import { langueCourante, t, tn, type CleI18n } from "@/lib/i18n"
 import {
   coursDetailPath,
   coursListPath,
@@ -13,13 +14,24 @@ import {
  * quiz en dernier. Le même que celui du serveur (recherche.moteur.ORDRE_GROUPES). */
 export const TYPES_RECHERCHE: TypeResultatRecherche[] = ["THEME", "COURS", "EPREUVE", "INEDITE", "EXERCICE", "QUIZ"]
 
+// Accesseurs : le libellé se lit au moment de l'affichage, dans la langue courante.
+const libellesDuType = (singulier: CleI18n, pluriel: CleI18n) => ({
+  get singulier() { return t(singulier) },
+  get pluriel() { return t(pluriel) },
+})
+
 export const LIBELLES_TYPE: Record<TypeResultatRecherche, { singulier: string; pluriel: string }> = {
-  THEME: { singulier: "Thème", pluriel: "Thèmes" },
-  COURS: { singulier: "Cours", pluriel: "Cours" },
-  EPREUVE: { singulier: "Épreuve", pluriel: "Épreuves" },
-  INEDITE: { singulier: "Épreuve inédite", pluriel: "Épreuves inédites" },
-  EXERCICE: { singulier: "Exercice", pluriel: "Exercices" },
-  QUIZ: { singulier: "Quiz", pluriel: "Questions de quiz" },
+  THEME: libellesDuType("rc.theme_s", "rc.theme_p"),
+  COURS: libellesDuType("rc.cours_s", "rc.cours_p"),
+  EPREUVE: libellesDuType("rc.epreuve_s", "rc.epreuve_p"),
+  INEDITE: libellesDuType("rc.inedite_s", "rc.inedite_p"),
+  EXERCICE: libellesDuType("rc.exercice_s", "rc.exercice_p"),
+  QUIZ: libellesDuType("rc.quiz_s", "rc.quiz_p"),
+}
+
+/** Titre d'un groupe de résultats : en français celui du serveur (source de vérité), sinon le libellé du type. */
+export function libelleGroupe(type: TypeResultatRecherche, libelleServeur: string): string {
+  return langueCourante() === "fr" ? libelleServeur : LIBELLES_TYPE[type].pluriel
 }
 
 /** En dessous, la saisie n'est pas envoyée : un ou deux caractères ne désignent rien. */
@@ -111,7 +123,7 @@ export function actionsTheme(country: string, resultat: ResultatRecherche): Acti
   if (nb_cours > 0) {
     actions.push({
       cle: "cours",
-      libelle: nb_cours > 1 ? `${nb_cours} cours` : "1 cours",
+      libelle: tn("rc.n_cours", nb_cours),
       nb: nb_cours,
       to: `${coursListPath(country)}${parametres({ theme: tag_id, subject: subject_code, cursus })}`,
     })
@@ -120,7 +132,7 @@ export function actionsTheme(country: string, resultat: ResultatRecherche): Acti
   if (nb_exercices > 0 && cursus !== null) {
     actions.push({
       cle: "exercices",
-      libelle: nb_exercices > 1 ? `${nb_exercices} exercices` : "1 exercice",
+      libelle: tn("rc.n_exercices", nb_exercices),
       nb: nb_exercices,
       to: `${themeExercicesPath(country, tag_id)}${parametres({ subject: subject_code, cursus })}`,
     })
@@ -128,7 +140,7 @@ export function actionsTheme(country: string, resultat: ResultatRecherche): Acti
   if (nb_quiz > 0) {
     actions.push({
       cle: "quiz",
-      libelle: nb_quiz > 1 ? `Quiz · ${nb_quiz} questions` : "Quiz · 1 question",
+      libelle: tn("rc.act_quiz", nb_quiz),
       nb: nb_quiz,
       to: cheminQuiz(resultat),
     })
@@ -215,18 +227,18 @@ export function tracerRechercheLancee(source: SourceRecherche, via?: "completion
 /** Les mots d'intention retirés de la requête (« corrigés », « sujets »...), tels qu'on les montre dans la
  * pastille « Compris ». Clés : le mot ramené au singulier, comme le fait le serveur. */
 export const LIBELLES_MOT_TYPE: Record<string, string> = {
-  corrige: "Corrigés",
-  sujet: "Sujets",
-  epreuve: "Épreuves",
-  annale: "Annales",
-  exercice: "Exercices",
-  cour: "Cours",
-  lecon: "Leçons",
-  fiche: "Fiches",
-  quiz: "Quiz",
-  qcm: "QCM",
-  question: "Questions",
-  theme: "Thèmes",
+  get corrige() { return t("rc.mot_corrige") },
+  get sujet() { return t("rc.mot_sujet") },
+  get epreuve() { return t("rc.mot_epreuve") },
+  get annale() { return t("rc.mot_annale") },
+  get exercice() { return t("rc.mot_exercice") },
+  get cour() { return t("rc.mot_cour") },
+  get lecon() { return t("rc.mot_lecon") },
+  get fiche() { return t("rc.mot_fiche") },
+  get quiz() { return t("rc.mot_quiz") },
+  get qcm() { return t("rc.mot_qcm") },
+  get question() { return t("rc.mot_question") },
+  get theme() { return t("rc.mot_theme") },
 }
 
 /** Un résultat ouvert : son type et son rang (1 = premier de son groupe) disent si le classement
@@ -251,10 +263,10 @@ export interface FamilleRecherche {
 }
 
 export const FAMILLES_RECHERCHE: FamilleRecherche[] = [
-  { cle: "EPREUVE", libelle: "Épreuves", types: ["EPREUVE", "INEDITE", "EXERCICE"] },
-  { cle: "COURS", libelle: "Cours", types: ["COURS"] },
-  { cle: "THEME", libelle: "Thèmes", types: ["THEME"] },
-  { cle: "QUIZ", libelle: "Quiz", types: ["QUIZ"] },
+  { cle: "EPREUVE", get libelle() { return t("nav.epreuves") }, types: ["EPREUVE", "INEDITE", "EXERCICE"] },
+  { cle: "COURS", get libelle() { return t("nav.cours") }, types: ["COURS"] },
+  { cle: "THEME", get libelle() { return t("qd.onglet_themes") }, types: ["THEME"] },
+  { cle: "QUIZ", get libelle() { return t("qd.onglet_quiz") }, types: ["QUIZ"] },
 ]
 
 /** L'onglet d'un type de résultat (un lien ancien `?type=EXERCICE` mène à l'onglet Épreuves). */

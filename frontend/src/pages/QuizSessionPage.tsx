@@ -12,6 +12,7 @@ import {
 import { ApiError } from "@/api/client"
 import type { QuizCorrige, QuizSession } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
+import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
@@ -26,8 +27,10 @@ import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { libellePoints } from "@/lib/notation"
 import { memoriserQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
-import { avecQuestionCorrigee, lireEssai, memoriserEssai } from "@/lib/quizEssai"
+import { avecQuestionCorrigee, cheminEssai, lireEssai, memoriserEssai, texteDePartageEssai } from "@/lib/quizEssai"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
+import { traduireLibelleSerie } from "@/lib/cursus"
 
 /** Rendu inline (pas de <p> bloc) pour le texte d'un choix QCM, qui peut contenir du LaTeX. */
 function ChoixText({ texte }: { texte: string }) {
@@ -42,21 +45,17 @@ function ChoixText({ texte }: { texte: string }) {
   )
 }
 
-const RESULTAT_OPTIONS: { value: "REUSSI" | "PARTIEL" | "ECHEC"; label: string }[] = [
-  { value: "REUSSI", label: "Réussi" },
-  { value: "PARTIEL", label: "Partiel" },
-  { value: "ECHEC", label: "Échec" },
+const RESULTAT_OPTIONS: { value: "REUSSI" | "PARTIEL" | "ECHEC"; label: CleI18n }[] = [
+  { value: "REUSSI", label: "qs.reussi" },
+  { value: "PARTIEL", label: "qs.partiel" },
+  { value: "ECHEC", label: "qs.echec" },
 ]
 
-const MESSAGES_BONNE = ["Bravo !", "Excellent !", "Exactement !", "Bien vu !", "Tu maîtrises !"]
-const MESSAGES_MAUVAISE = [
-  "Pas tout à fait, mais c'est comme ça qu'on retient.",
-  "Pas cette fois : lis la correction, elle vaut de l'or.",
-  "Une erreur comprise, c'est un point gagné pour l'examen.",
-]
+const MESSAGES_BONNE: CleI18n[] = ["qs.bonne1", "qs.bonne2", "qs.bonne3", "qs.bonne4", "qs.bonne5"]
+const MESSAGES_MAUVAISE: CleI18n[] = ["qs.mauvaise1", "qs.mauvaise2", "qs.mauvaise3"]
 
-function pick(messages: string[], seed: number) {
-  return messages[seed % messages.length]
+function pick(messages: CleI18n[], seed: number) {
+  return t(messages[seed % messages.length])
 }
 
 /** Couleur du segment de progression d'une question, selon ce que l'élève en a fait. */
@@ -75,7 +74,8 @@ function segmentClass(q: QuizSession["questions"][number], isCurrent: boolean) {
  * corrigée par les routes publiques /quiz/essais/*, sans XP, série ni PDF (rien n'est enregistré).
  */
 export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
-  useSeo({ title: essai ? "Essai gratuit du quiz" : "Quiz" })
+  useI18n()
+  useSeo({ title: essai ? t("qs.seo_essai") : t("qs.seo") })
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -129,7 +129,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         setCurrentIndex(firstUnanswered === -1 ? Math.max(0, data.questions.length - 1) : firstUnanswered)
       })
       .catch((err) => {
-        setError(err instanceof ApiError ? err.message : "Impossible de charger ce quiz.")
+        setError(err instanceof ApiError ? err.message : t("qs.charger_erreur"))
       })
   }, [id, navigate, essai])
 
@@ -146,7 +146,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       <div className="mx-auto max-w-5xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link to="/quiz" className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour au quiz
+          {t("qs.retour")}
         </Link>
       </div>
     )
@@ -198,7 +198,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         : await answerQuizQuestion(session!.id, question.id, params)
       updateQuestion(updated)
     } catch {
-      setActionError("Impossible d'enregistrer ta réponse. Réessaie.")
+      setActionError(t("qs.reponse_erreur"))
     } finally {
       setSubmitting(false)
       setChoixEnCours(null)
@@ -215,7 +215,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         : await revealQuizCorrige(session!.id, question.id)
       setRevealed((prev) => ({ ...prev, [question.id]: corrige }))
     } catch {
-      setActionError("Impossible de charger la correction. Réessaie.")
+      setActionError(t("qs.correction_erreur"))
     } finally {
       setSubmitting(false)
     }
@@ -232,7 +232,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         : await answerQuizQuestion(session!.id, question.id, params)
       updateQuestion(updated)
     } catch {
-      setActionError("Impossible d'enregistrer ta réponse. Réessaie.")
+      setActionError(t("qs.reponse_erreur"))
     } finally {
       setSubmitting(false)
     }
@@ -259,7 +259,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       trackEvent("quiz_completed", { cursus_id: session!.cursus, mode: session!.mode })
       navigate(`/quiz/session/${session!.id}/resultat`)
     } catch {
-      setActionError("Impossible de terminer le quiz. Réessaie.")
+      setActionError(t("qs.terminer_erreur"))
       setSubmitting(false)
     }
   }
@@ -318,9 +318,16 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
         >
           <ArrowLeft className="size-4" />
-          Quitter le quiz
+          {t("qs.quitter")}
         </Link>
-        {!essai && <QuizFichePdfButtons sessionId={session.id} />}
+        {essai ? (
+          // Le quiz gratuit se partage : le lien relance CE quiz chez l'ami, sans compte ni liste à parcourir.
+          cheminEssai(session) && (
+            <BoutonPartager chemin={cheminEssai(session)!} texte={texteDePartageEssai(session)} type="quiz" libelle={t("qs.partager")} />
+          )
+        ) : (
+          <QuizFichePdfButtons sessionId={session.id} />
+        )}
       </div>
 
       {/* Progression : un segment par question, coloré selon le résultat - on voit d'un
@@ -336,8 +343,8 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
               setCurrentIndex(i)
               window.scrollTo({ top: 0 })
             }}
-            aria-label={`Question ${i + 1}`}
-            title={accessible(i) ? `Question ${i + 1}` : undefined}
+            aria-label={t("qs.question_n", { n: i + 1 })}
+            title={accessible(i) ? t("qs.question_n", { n: i + 1 }) : undefined}
             className={cn(
               "relative h-2.5 flex-1 rounded-full transition-all duration-500 after:absolute after:-inset-y-3 after:inset-x-0 after:content-[''] enabled:cursor-pointer enabled:hover:scale-y-150 disabled:cursor-default",
               segmentClass(q, i === currentIndex),
@@ -348,18 +355,18 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       </div>
       <div className="mb-5 flex items-center justify-between text-sm">
         <p className="font-medium text-muted-foreground">
-          Question {currentIndex + 1} sur {total}
+          {t("qs.question_sur", { n: currentIndex + 1, total })}
         </p>
         <div className="flex items-center gap-3">
           {session.xp_jour && <ObjectifXp etat={session.xp_jour} compact />}
           {streak >= 2 && (
             <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2.5 py-0.5 font-semibold">
               <Flame className="animate-quiz-flame size-4 text-warning" />
-              {streak} d'affilée
+              {t("qs.daffilee", { n: streak })}
             </span>
           )}
           <span className="font-semibold tabular-nums text-foreground">
-            {score} <span className="font-normal text-muted-foreground">/ {answeredCount} juste{score > 1 ? "s" : ""}</span>
+            {score} <span className="font-normal text-muted-foreground">/ {answeredCount} {tn("qs.justes", score)}</span>
           </span>
         </div>
       </div>
@@ -373,7 +380,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             </span>
             {question.subject_label}
           </span>
-          <Badge variant="secondary">{session.cursus_display}</Badge>
+          <Badge variant="secondary">{traduireLibelleSerie(session.cursus_display)}</Badge>
           {question.theme && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-xs font-semibold text-gold-text">
               <Target className="size-3" />
@@ -392,7 +399,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             className="mb-4 flex w-fit items-center gap-1.5 rounded-md border border-dashed border-border px-3 py-1.5 text-sm font-medium text-primary hover:underline"
           >
             <BookOpenText className="size-3.5" />
-            Voir l'épreuve d'origine
+            {t("qs.voir_epreuve")}
           </a>
         )}
 
@@ -450,7 +457,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             })}
             {!answered && (
               <p className="mt-1 hidden text-xs text-muted-foreground sm:block">
-                Astuce : appuie sur {question.choix.map((c) => c.lettre.toUpperCase()).join(", ")} au clavier pour répondre.
+                {t("qs.astuce", { lettres: question.choix.map((c) => c.lettre.toUpperCase()).join(", ") })}
               </p>
             )}
           </div>
@@ -460,11 +467,11 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
               <div className="flex flex-col gap-3 rounded-2xl border border-dashed border-primary/30 bg-primary/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
                 <p className="flex items-start gap-2 text-sm text-muted-foreground">
                   <Lightbulb className="mt-0.5 size-4 shrink-0 text-gold-text" />
-                  Essaie d'abord sur ton brouillon, puis compare avec la correction.
+                  {t("qs.brouillon")}
                 </p>
                 <Button size="lg" onClick={handleReveal} disabled={submitting} className="shrink-0">
                   <Sparkles />
-                  Voir la correction
+                  {t("qs.voir_correction")}
                 </Button>
               </div>
             )}
@@ -477,7 +484,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
 
             {questionCorrige && !answered && (
               <div className="flex flex-col gap-2">
-                <p className="text-sm font-medium">Sois honnête avec toi-même : as-tu réussi cette question ?</p>
+                <p className="text-sm font-medium">{t("qs.honnete")}</p>
                 <div className="grid grid-cols-3 gap-2">
                   {RESULTAT_OPTIONS.map((option) => (
                     <Button
@@ -491,7 +498,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
                         option.value === "ECHEC" && "hover:border-destructive hover:bg-destructive/10",
                       )}
                     >
-                      {option.label}
+                      {t(option.label)}
                     </Button>
                   ))}
                 </div>
@@ -521,18 +528,18 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
                 {correct
                   ? pick(MESSAGES_BONNE, question.id)
                   : question.reponse?.resultat_declare === "PARTIEL"
-                    ? "Presque ! Il t'a manqué peu de chose."
+                    ? t("qs.presque")
                     : pick(MESSAGES_MAUVAISE, question.id)}
               </p>
               {correct && streak >= 3 && (
-                <p className="text-muted-foreground">{streak} bonnes réponses d'affilée, tu es en feu.</p>
+                <p className="text-muted-foreground">{t("qs.en_feu", { n: streak })}</p>
               )}
               {question.objectif_atteint_maintenant && (
-                <p className="font-semibold text-success">Objectif du jour atteint.</p>
+                <p className="font-semibold text-success">{t("qs.objectif_atteint")}</p>
               )}
               {isQcm && !correct && question.reponse_correcte && (
                 <p className="text-muted-foreground">
-                  La bonne réponse était <strong>{question.reponse_correcte.toUpperCase()}</strong>.
+                  {t("qs.bonne_reponse")} <strong>{question.reponse_correcte.toUpperCase()}</strong>.
                 </p>
               )}
             </div>
@@ -551,7 +558,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
 
         {isQcm && answered && question.corrige_markdown && (
           <details className="mt-4 rounded-xl border bg-muted/30 px-4 py-3" open={!correct}>
-            <summary className="cursor-pointer text-sm font-medium">Comprendre la correction</summary>
+            <summary className="cursor-pointer text-sm font-medium">{t("qs.comprendre")}</summary>
             <article className="prose prose-neutral mt-3 max-w-none dark:prose-invert">
               <EpreuveMarkdown markdown={question.corrige_markdown} />
             </article>
@@ -571,9 +578,9 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
               <FileText className="size-4" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block font-medium">Exercices corrigés sur ce thème</span>
+              <span className="block font-medium">{t("essai.exercices_theme")}</span>
               <span className="block text-muted-foreground">
-                Des sujets d'examen réels sur « {capitaliserTheme(question.theme ?? "")} ».
+                {t("qs.sujets_reels", { theme: capitaliserTheme(question.theme ?? "") })}
               </span>
             </span>
             <ArrowRight className="size-4 shrink-0 text-primary" />
@@ -591,7 +598,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       {answered && (
         <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:static sm:mt-5 sm:flex sm:justify-end sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
           <Button onClick={handleNext} disabled={submitting} className="animate-fade-up w-full sm:w-auto" size="lg">
-            {isLast ? "Voir mon résultat" : "Question suivante"}
+            {isLast ? t("qs.voir_resultat") : t("qs.suivante")}
             <ArrowRight />
           </Button>
         </div>

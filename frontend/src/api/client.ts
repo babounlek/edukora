@@ -1,5 +1,6 @@
 import { enregistrerDateServeur } from "@/lib/horlogeServeur"
 import { effacerMarqueAnonyme } from "@/lib/sessionAnonyme"
+import { t } from "@/lib/i18n"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001"
 
@@ -95,10 +96,10 @@ class ApiError extends Error {
   code: string | null
 
   constructor(status: number, body: unknown) {
-    let message = extraireMessage(body) ?? `Erreur API (${status})`
+    let message = extraireMessage(body) ?? t("gl.erreur_api", { status })
     // Le message de limitation de débit de DRF est en anglais ("Request was throttled...").
     if (status === 429 && /throttled/i.test(message)) {
-      message = "Trop de demandes en peu de temps. Patiente un instant, puis réessaie."
+      message = t("gl.throttle")
     }
     super(message)
     this.status = status
@@ -122,8 +123,8 @@ class NetworkError extends Error {
   constructor(timedOut: boolean) {
     super(
       timedOut
-        ? "Le serveur met trop de temps à répondre. Vérifie ta connexion, puis réessaie."
-        : "Connexion instable : impossible de joindre le serveur. Réessaie dans un instant.",
+        ? t("gl.reseau_lent")
+        : t("gl.reseau_instable"),
     )
     this.name = "NetworkError"
     this.timedOut = timedOut

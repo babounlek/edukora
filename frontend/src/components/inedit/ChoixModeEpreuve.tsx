@@ -1,9 +1,10 @@
 import { BookOpen, FileText, Info, Timer } from "lucide-react"
 
 import { formatDureeMinutes } from "@/lib/duration"
-import { formatPoints } from "@/lib/notation"
+import { libellePoints } from "@/lib/notation"
+import { t, tn, useI18n } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
-import { mots, type Unite } from "@/lib/vocabulaire"
+import { libellesUnite, type Unite } from "@/lib/vocabulaire"
 
 interface ChoixModeEpreuveProps {
   titre: string
@@ -64,14 +65,15 @@ export function ChoixModeEpreuve({
   titre, dureeMinutes, dureeEstimee, bareme, nbExercices, nbQuestions, papierDisponible, unite = "question",
   entete = true, onExamen, onPapier, onLibre,
 }: ChoixModeEpreuveProps) {
-  const m = mots(unite)
+  useI18n()
+  const m = libellesUnite(unite)
   const faits = [
     dureeMinutes ? `${dureeEstimee ? "≈ " : ""}${formatDureeMinutes(dureeMinutes)}` : null,
-    bareme ? `${formatPoints(bareme)} points` : null,
+    bareme ? libellePoints(bareme) : null,
     // Pour une annale, les exercices SONT les unités : on ne les compte pas deux fois.
     ...(unite === "exercice"
-      ? [mots("exercice").compte(nbExercices)]
-      : [`${nbExercices} exercice${nbExercices > 1 ? "s" : ""}`, m.compte(nbQuestions)]),
+      ? [tn("ep.exercices", nbExercices)]
+      : [tn("ep.exercices", nbExercices), tn("quiz.n_questions", nbQuestions)]),
   ].filter(Boolean)
 
   return (
@@ -88,46 +90,45 @@ export function ChoixModeEpreuve({
           {dureeMinutes && dureeEstimee && (
             <p className="mt-1 flex items-start gap-1.5 text-xs text-muted-foreground">
               <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-              Durée estimée : cette annale n'annonce pas sa durée, {formatDureeMinutes(dureeMinutes)} est celle des autres
-              sessions de cette épreuve.
+              {t("cm.duree_estimee", { duree: formatDureeMinutes(dureeMinutes) })}
             </p>
           )}
         </>
       )}
       <h2 id={entete ? undefined : "choix-mode"} className={cn("text-sm font-semibold", entete && "mt-5")}>
-        Comment veux-tu la passer ?
+        {t("cm.comment")}
       </h2>
       <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {dureeMinutes && (
           <Option
             principale
             icone={Timer}
-            titre="Conditions réelles"
+            titre={t("cm.reelles")}
             onClick={onExamen}
             points={[
-              `Chrono de ${formatDureeMinutes(dureeMinutes)}, sans pause`,
-              "Corrigé masqué jusqu'à la fin",
-              "Copie rendue toute seule à zéro",
+              t("cm.reelles1", { duree: formatDureeMinutes(dureeMinutes) }),
+              t("cm.reelles2"),
+              t("cm.reelles3"),
             ]}
           />
         )}
         {dureeMinutes && papierDisponible && (
           <Option
             icone={FileText}
-            titre="Sur papier"
+            titre={t("cm.papier")}
             onClick={onPapier}
             points={[
-              "Tu imprimes le sujet et tu composes à la main",
-              "Même chrono, même corrigé masqué",
-              `À l'écran : le chrono et ta liste d'${m.pluriel}`,
+              t("cm.papier1"),
+              t("cm.papier2"),
+              t("cm.papier3", { unites: m.pluriel }),
             ]}
           />
         )}
         <Option
           icone={BookOpen}
-          titre="Entraînement libre"
+          titre={t("cm.libre")}
           onClick={onLibre}
-          points={["Sans chrono, à ton rythme", "Corrigé accessible à tout moment", "Ta note est marquée « entraînement »"]}
+          points={[t("cm.libre1"), t("cm.libre2"), t("cm.libre3")]}
         />
       </div>
     </section>

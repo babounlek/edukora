@@ -14,7 +14,9 @@ import {
   readEpreuve,
 } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
-import { examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
+import { examLevelsFor, joinExamLevelsProse } from "@/lib/cursus"
+import { t, tn, useI18n } from "@/lib/i18n"
+import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import {
@@ -81,6 +83,8 @@ function EtapeExplication({ numero, titre, description }: { numero: string; titr
  * fichier) : plus aucun argumentaire, seulement ses affaires.
  */
 function CatalogueVitrine() {
+  // S'abonne au changement de langue : les `t(...)` ci-dessous se relisent à chaque bascule.
+  useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
@@ -202,18 +206,20 @@ function CatalogueVitrine() {
   // cursusList n'a pas encore chargé, pour éviter un flash vide au premier rendu.
   const examLevels = examLevelsFor(cursusList)
   const examLevelsHero = examLevels.length > 0 ? examLevels.join(" · ") : "BEPC · Probatoire · BAC"
-  const examLevelsProse = examLevels.length > 0 ? joinExamLevelsFr(examLevels) : "le BEPC, le Probatoire et le BAC"
+  const examLevelsProse = examLevels.length > 0 ? joinExamLevelsProse(examLevels) : t("accueil.examens_repli")
 
   useSeo({
     // Le titre porte ce que les élèves tapent dans Google ("corrigés BAC Cameroun"),
     // jamais la promesse du produit - personne ne cherche "quoi réviser". C'est la
     // description, affichée sous le titre dans les résultats, qui porte la promesse.
     // "{examens} - {pays}" plutôt que "... au {pays}" : même raison que ci-dessous.
-    title: `Corrigés ${examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC"}${countryLabel ? ` - ${countryLabel}` : ""}`,
+    title: countryLabel
+      ? t("accueil.seo_titre_pays", { examens: examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC", pays: countryLabel })
+      : t("accueil.seo_titre", { examens: examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC" }),
     // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
     // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
     description: countryLabel
-      ? `${countryLabel} : chaque jour, on te dit quoi réviser pour ${examLevelsProse}. Les thèmes qui tombent vraiment, avec corrigés d'annales, cours et quiz.`
+      ? t("accueil.seo_description", { pays: countryLabel, examens: examLevelsProse })
       : undefined,
   })
 
@@ -249,7 +255,7 @@ function CatalogueVitrine() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Reprendre ma lecture
+                {t("accueil.reprendre_lecture")}
               </span>
               <span className="block truncate font-display font-medium">{progression.lessons[0].title}</span>
             </span>
@@ -284,13 +290,11 @@ function CatalogueVitrine() {
                 Le volume reste, mais comme PREUVE et non comme argument : il rassure
                 sur le sérieux du corpus, il ne dit pas quoi en faire. */}
             <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
-              Chaque jour, on te dit{" "}
-              <span className="text-primary">quoi réviser</span>.
+              {t("accueil.hero_titre_debut")}{" "}
+              <span className="text-primary">{t("accueil.hero_titre_accent")}</span>.
             </h1>
             <p className="mt-4 max-w-lg text-muted-foreground">
-              Une séance de 25 minutes sur un thème qui tombe vraiment à ton examen : le cours
-              pour la méthode, un exercice réellement posé, un quiz pour vérifier. Tu dis ce que
-              tu prépares, on s'occupe du reste - et on retient ce que tu rates.
+              {t("accueil.hero_texte")}
             </p>
             {/* Le premier bouton sert la promesse : sans savoir quel examen l'élève
                 prépare, il n'y a pas de séance possible, donc c'est la première chose
@@ -306,7 +310,7 @@ function CatalogueVitrine() {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Button size="lg" asChild>
                 <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
-                  Lire un corrigé gratuitement
+                  {t("accueil.cta_corrige_gratuit")}
                   <ArrowRight />
                 </Link>
               </Button>
@@ -317,7 +321,7 @@ function CatalogueVitrine() {
               <Button variant="outline" size="lg" asChild className="border-primary/40 text-primary hover:text-primary">
                 <Link to="/quiz">
                   <Target />
-                  {isAuthenticated ? "Faire un quiz gratuit" : "Quiz gratuit, sans compte"}
+                  {isAuthenticated ? t("accueil.cta_quiz_connecte") : t("accueil.cta_quiz_anonyme")}
                 </Link>
               </Button>
             </div>
@@ -332,13 +336,13 @@ function CatalogueVitrine() {
               className="mt-3 flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
             >
               <TrendingUp className="size-3.5 text-primary" />
-              Les thèmes qui tombent le plus à ton examen
+              {t("accueil.themes_frequents")}
               <ArrowRight className="size-3" />
             </Link>
           </div>
           <img
             src={heroStudent}
-            alt="Élève souriante prenant des notes, ordinateur portable ouvert sur son bureau"
+            alt={t("accueil.hero_alt")}
             // Image du premier écran (probablement l'élément le plus grand = LCP) : priorité de
             // téléchargement, et dimensions réservées pour que le texte ne saute pas à son arrivée.
             fetchPriority="high"
@@ -362,21 +366,21 @@ function CatalogueVitrine() {
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}
                 valeur={formatAmount(epreuvesTotal)}
-                libelle={epreuvesTotal > 1 ? "épreuves corrigées" : "épreuve corrigée"}
+                libelle={tn("accueil.stat_epreuves", epreuvesTotal > 1 ? 2 : 1)}
               />
             )}
             {coursData && (
               <StatChip
                 icon={<GraduationCap className="size-3.5 text-gold-text" />}
                 valeur={formatAmount(coursData.count)}
-                libelle="cours structurés"
+                libelle={t("accueil.stat_cours")}
               />
             )}
             {subjects.length > 0 && (
               <StatChip
                 icon={<Layers className="size-3.5 text-success" />}
                 valeur={String(subjects.length)}
-                libelle={subjects.length > 1 ? "matières couvertes" : "matière couverte"}
+                libelle={tn("accueil.stat_matieres", subjects.length > 1 ? 2 : 1)}
               />
             )}
           </div>
@@ -391,14 +395,13 @@ function CatalogueVitrine() {
       {exempleExercice && exempleCorrigeQ1 && (
         <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6">
           <div className="max-w-2xl">
-            <h2 className="font-display text-xl font-semibold">Un exemple, plutôt qu'une promesse</h2>
+            <h2 className="font-display text-xl font-semibold">{t("accueil.exemple_titre")}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {/* exempleContent est forcément défini ici : la section entière est
                   gardée par `exempleExercice && exempleCorrigeQ1`, tous deux dérivés de
                   exempleContent. Le titre ("Mathématiques BEPC 2026") suffit à situer
                   l'examen sans dupliquer matière/niveau/année séparément. */}
-              Extrait réel d'un corrigé de {exempleContent?.title} - la méthode expliquée à chaque étape, pas
-              seulement le résultat final.
+              {t("accueil.exemple_texte", { titre: exempleContent?.title ?? "" })}
             </p>
           </div>
           <div className="mt-5 rounded-2xl border border-border bg-card p-5 sm:p-8">
@@ -409,7 +412,7 @@ function CatalogueVitrine() {
                 <EpreuveMarkdownLazy markdown={exempleExercice.enonce_intro_markdown} />
               </div>
             )}
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">Corrigé pas à pas</p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">{t("accueil.corrige_pas_a_pas")}</p>
             {/* Corrigé complet de la question 1 (voir exempleCorrigeQ1), jamais tronqué :
                 il commence déjà par l'énoncé de la question 1 lui-même, donc pas de
                 section "Énoncé" séparée qui le répéterait. */}
@@ -419,7 +422,7 @@ function CatalogueVitrine() {
             <div className="mt-4 flex justify-center border-t border-border pt-4">
               <Button asChild variant="outline">
                 <Link to={epreuveReaderPath(country ?? "", EXEMPLE_CORRIGE_SLUG)}>
-                  Lire le corrigé complet
+                  {t("accueil.lire_corrige_complet")}
                   <ArrowRight />
                 </Link>
               </Button>
@@ -448,22 +451,22 @@ function CatalogueVitrine() {
             contredisait aussi la navigation, réduite depuis à trois entrées.
             Les quatre destinations restent atteignables : "Réviser" dans le menu, et
             le bandeau Épreuves Inédites juste en dessous pour le produit payant. */}
-        <h2 className="font-display text-xl font-semibold">Comment ça marche</h2>
+        <h2 className="font-display text-xl font-semibold">{t("accueil.comment_titre")}</h2>
         <div className="mt-4 grid gap-5 sm:grid-cols-3">
           <EtapeExplication
             numero="1"
-            titre="Tu dis ce que tu prépares"
-            description="Ton examen et ta série, une fois. Le compte à rebours jusqu'au jour J démarre, et tout ce que tu vois ensuite ne concerne plus que toi."
+            titre={t("accueil.etape1_titre")}
+            description={t("accueil.etape1_texte")}
           />
           <EtapeExplication
             numero="2"
-            titre="On te donne une séance par jour"
-            description="Un thème qui tombe vraiment - on te dit dans combien des dernières épreuves. Le cours pour la méthode, un exercice réellement posé, un quiz pour vérifier. 25 minutes."
+            titre={t("accueil.etape2_titre")}
+            description={t("accueil.etape2_texte")}
           />
           <EtapeExplication
             numero="3"
-            titre="On retient ce que tu rates"
-            description="Un thème raté revient demain, puis dans trois jours, puis dans une semaine - jusqu'à ce qu'il soit acquis. Tu n'as rien à noter, rien à planifier."
+            titre={t("accueil.etape3_titre")}
+            description={t("accueil.etape3_texte")}
           />
         </div>
         {inediteRecenteData && inediteRecenteData.count > 0 && (
@@ -476,17 +479,17 @@ function CatalogueVitrine() {
             </span>
             <div className="flex-1">
               <h3 className="flex flex-wrap items-center gap-2 font-display text-lg font-semibold">
-                Épreuves Inédites
+                {t("accueil.inedites_titre")}
                 <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-bold tracking-wide text-gold-text uppercase">
-                  Exclusif
+                  {t("accueil.inedites_exclusif")}
                 </span>
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Un sujet original conçu par {SITE_NAME}, jamais tiré des annales - même niveau, même barème que l'épreuve réelle, dans les conditions du jour J.
+                {t("accueil.inedites_texte", { site: SITE_NAME })}
               </p>
             </div>
             <span className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-gold-text">
-              Explorer
+              {t("accueil.explorer")}
               <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
             </span>
           </Link>
@@ -500,45 +503,45 @@ function CatalogueVitrine() {
           page (quiz, corrigés pas à pas, thèmes fréquents, inédites) plutôt que des
           promesses nouvelles - jamais un argument que le reste de la page ne prouve pas. */}
       <section className="mx-auto max-w-5xl px-4 pb-10 sm:px-6">
-        <h2 className="font-display text-xl font-semibold">Pourquoi {SITE_NAME} ?</h2>
+        <h2 className="font-display text-xl font-semibold">{t("accueil.pourquoi_titre", { site: SITE_NAME })}</h2>
         <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-          Les annales et leurs corrigés existent déjà gratuitement sur Internet. Voici ce qu'{SITE_NAME} fait en plus.
+          {t("accueil.pourquoi_texte", { site: SITE_NAME })}
         </p>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-2xl border border-border bg-card p-5">
             <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <Target className="size-5" />
             </span>
-            <h3 className="mt-3 font-display text-base font-semibold">Tu sais quoi réviser</h3>
+            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage1_titre")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Le quiz repère tes lacunes et te fait réviser exactement ce qu'il faut, au bon moment.
+              {t("accueil.avantage1_texte")}
             </p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
             <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <GraduationCap className="size-5" />
             </span>
-            <h3 className="mt-3 font-display text-base font-semibold">Tu comprends, pas seulement tu mémorises</h3>
+            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage2_titre")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Des cours structurés et des corrigés expliqués étape par étape, pas juste le résultat final.
+              {t("accueil.avantage2_texte")}
             </p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
             <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <TrendingUp className="size-5" />
             </span>
-            <h3 className="mt-3 font-display text-base font-semibold">Tu vises ce qui tombe vraiment</h3>
+            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage3_titre")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Le classement des thèmes les plus posés à ton examen, calculé sur les vraies annales.
+              {t("accueil.avantage3_texte")}
             </p>
           </div>
           <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5">
             <span className="flex size-10 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
               <Crown className="size-5" />
             </span>
-            <h3 className="mt-3 font-display text-base font-semibold">Tu te testes sur l'inconnu</h3>
+            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage4_titre")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Des épreuves inédites, jamais tirées des annales, pour vérifier que tu maîtrises vraiment le programme.
+              {t("accueil.avantage4_texte")}
             </p>
           </div>
         </div>
@@ -561,22 +564,21 @@ function CatalogueVitrine() {
             <div className="flex flex-wrap items-center gap-2">
               <span className="flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-semibold text-gold-text">
                 <Crown className="size-3.5" />
-                Épreuve inédite
+                {t("accueil.vedette_badge")}
               </span>
               {inediteVedette.duree_minutes && (
                 <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <Clock className="size-3.5" />
-                  Chronométrée - {inediteVedette.duree_minutes} min
+                  {t("accueil.vedette_chrono", { n: inediteVedette.duree_minutes })}
                 </span>
               )}
             </div>
             <h2 className="mt-3 font-display text-xl font-semibold">{inediteVedette.title}</h2>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              Une épreuve originale conçue par {SITE_NAME}, jamais tirée des annales - même niveau, même barème que
-              l'examen réel. Voici la première question, en accès libre.
+              {t("accueil.vedette_texte", { site: SITE_NAME })}
             </p>
             <div className="mt-5 rounded-xl border border-border bg-card p-5 sm:p-6">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold-text">Aperçu</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold-text">{t("accueil.apercu")}</p>
               <div className="prose prose-neutral max-w-none text-sm dark:prose-invert prose-headings:font-display">
                 <EpreuveMarkdownLazy markdown={inediteVedette.apercu_enonce_markdown} />
               </div>
@@ -584,7 +586,7 @@ function CatalogueVitrine() {
             <div className="mt-4 flex flex-wrap justify-center gap-3">
               <Button asChild>
                 <Link to={epreuveInediteDetailPath(country ?? "", inediteVedette.slug ?? inediteVedette.id)}>
-                  Découvrir cette épreuve
+                  {t("accueil.vedette_decouvrir")}
                   <ArrowRight />
                 </Link>
               </Button>
@@ -594,8 +596,8 @@ function CatalogueVitrine() {
               <Button asChild variant="outline">
                 <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}>
                   {inediteRecenteData && inediteRecenteData.count > 1
-                    ? `Voir les ${inediteRecenteData.count} épreuves inédites`
-                    : "Voir toutes les épreuves inédites"}
+                    ? t("accueil.vedette_voir_n", { n: inediteRecenteData.count })
+                    : t("accueil.vedette_voir_toutes")}
                 </Link>
               </Button>
             </div>
@@ -619,14 +621,14 @@ function CatalogueVitrine() {
                 <Crown className="size-5" />
               </span>
               <div className="flex-1">
-                <h2 className="font-display text-base font-semibold">Des épreuves inédites t'attendent</h2>
+                <h2 className="font-display text-base font-semibold">{t("accueil.repli_titre")}</h2>
                 <p className="mt-0.5 text-sm text-muted-foreground">
-                  Des sujets originaux conçus par {SITE_NAME}, dans les conditions du jour J.
+                  {t("accueil.repli_texte", { site: SITE_NAME })}
                 </p>
               </div>
               <Button asChild>
                 <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}>
-                  Voir les épreuves inédites
+                  {t("accueil.repli_bouton")}
                   <ArrowRight />
                 </Link>
               </Button>
@@ -660,15 +662,17 @@ function CatalogueVitrine() {
             }}
           />
           <div className="relative">
-            <h2 className="font-display text-2xl font-semibold">Prêt à commencer ?</h2>
+            <h2 className="font-display text-2xl font-semibold">{t("accueil.pret_titre")}</h2>
             <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-              Un seul abonnement, valable jusqu'à ton examen : 15 000 FCFA par enfant, puis 12 000 FCFA pour chaque enfant supplémentaire de la même famille. Paiement par Mobile
-              Money, sans engagement.
+              {t("accueil.pret_texte", {
+                prix: formatAmount(PRIX_ABONNEMENT_FCFA),
+                prix_sup: formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA),
+              })}
             </p>
             <div className="mt-5 flex justify-center">
               <Button size="lg" asChild>
                 <Link to="/tarifs">
-                  Voir les prix
+                  {t("accueil.voir_prix")}
                   <ArrowRight />
                 </Link>
               </Button>

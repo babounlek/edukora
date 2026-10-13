@@ -5,6 +5,7 @@ import { getCursusContenu } from "@/api/endpoints"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { formatAmount } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 interface ContenuDebloqueProps {
   cursusId: number
@@ -27,6 +28,7 @@ interface Ligne {
  * page où l'on paie.
  */
 export function ContenuDebloque({ cursusId, inclutInedit }: ContenuDebloqueProps) {
+  useI18n()
   const { data } = useQuery({
     queryKey: ["cursus-contenu", cursusId],
     queryFn: ({ signal }) => getCursusContenu(cursusId, signal),
@@ -36,13 +38,13 @@ export function ContenuDebloque({ cursusId, inclutInedit }: ContenuDebloqueProps
   if (!data) return null
 
   const lignes: Ligne[] = [
-    { icone: FileCheck2, valeur: data.corriges, libelle: data.corriges > 1 ? "épreuves corrigées pas à pas" : "épreuve corrigée pas à pas" },
-    { icone: BookOpen, valeur: data.cours, libelle: data.cours > 1 ? "cours et fiches de méthode" : "cours ou fiche de méthode" },
-    { icone: BrainCircuit, valeur: data.questions_quiz, libelle: data.questions_quiz > 1 ? "questions de quiz pour t'entraîner" : "question de quiz pour t'entraîner" },
+    { icone: FileCheck2, valeur: data.corriges, libelle: tn("cd.corriges", data.corriges) },
+    { icone: BookOpen, valeur: data.cours, libelle: tn("cd.cours", data.cours) },
+    { icone: BrainCircuit, valeur: data.questions_quiz, libelle: tn("cd.quiz", data.questions_quiz) },
     ...(inclutInedit
-      ? [{ icone: Sparkles, valeur: data.epreuves_inedites, libelle: data.epreuves_inedites > 1 ? "épreuves inédites, hors annales" : "épreuve inédite, hors annales" }]
+      ? [{ icone: Sparkles, valeur: data.epreuves_inedites, libelle: tn("cd.inedites", data.epreuves_inedites) }]
       : []),
-    { icone: Layers, valeur: data.matieres, libelle: data.matieres > 1 ? "matières couvertes" : "matière couverte" },
+    { icone: Layers, valeur: data.matieres, libelle: tn("accueil.stat_matieres", data.matieres) },
   ].filter((ligne) => ligne.valeur > 0)
 
   if (lignes.length === 0) return null
@@ -50,7 +52,7 @@ export function ContenuDebloque({ cursusId, inclutInedit }: ContenuDebloqueProps
   return (
     <Card className="animate-fade-up overflow-hidden">
       <CardContent className="flex flex-col gap-3 p-6">
-        <Label className="text-sm font-semibold">Ce que tu débloques</Label>
+        <Label className="text-sm font-semibold">{t("cd.titre")}</Label>
         <ul className="flex flex-col gap-3">
           {lignes.map(({ icone: Icone, valeur, libelle }) => (
             <li key={libelle} className="flex items-center gap-3">

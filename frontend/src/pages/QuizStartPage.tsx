@@ -39,6 +39,7 @@ import { subjectShortLabel } from "@/lib/subjectLabel"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn, formatAmount } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 // Nombres de questions proposés. Le maximum n'est pas connu du client (contrairement à
 // /fiches, aucun endpoint d'éligibilité ici) : le backend sert simplement moins de
@@ -72,7 +73,7 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
       trackEvent("quiz_started", { cursus_id: cursusId, mode: "PRATIQUE", source: "vitrine" })
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Impossible de démarrer cet essai. Réessaie plus tard.")
+      setError(err instanceof ApiError ? err.message : t("qd.essai_erreur"))
       setStarting(null)
     }
   }
@@ -86,10 +87,10 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
           </span>
           <div>
             <p className="font-display text-lg font-semibold">
-              <span className="tabular-nums">{formatAmount(total)}</span> question{total > 1 ? "s" : ""} sur ton programme
+              <span className="tabular-nums">{formatAmount(total)}</span> {tn("qd.sur_programme", total)}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Abonne-toi pour lancer une séance - voici déjà tout ce qu'il y a à réviser.
+              {t("qd.abonne_toi")}
             </p>
           </div>
         </div>
@@ -106,7 +107,7 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
                   <span className="text-xs tabular-nums text-muted-foreground">
-                    {subject.nb_questions ?? 0} question{(subject.nb_questions ?? 0) > 1 ? "s" : ""}
+                    {tn("quiz.n_questions", subject.nb_questions ?? 0)}
                   </span>
                   {subject.vitrine_theme_id != null && (
                     <Button
@@ -116,7 +117,7 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
                       onClick={() => essayerGratuitement(subject)}
                       className="h-7 rounded-full px-2.5 text-xs"
                     >
-                      {starting === subject.id ? "Préparation..." : "Essayer gratuitement"}
+                      {starting === subject.id ? t("quiz.preparation") : t("qd.essayer_gratuit")}
                     </Button>
                   )}
                 </span>
@@ -127,7 +128,7 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
         {error && <p className="text-sm text-destructive">{error}</p>}
         <Button asChild size="lg" className="w-full sm:w-auto">
           <Link to="/tarifs">
-            Voir les prix
+            {t("accueil.voir_prix")}
             <ArrowRight className="size-4" />
           </Link>
         </Button>
@@ -206,7 +207,7 @@ function CarteThemeCible({
           </span>
           <p className="mt-2 font-display text-base font-semibold leading-snug">{capitaliserTheme(theme.tag)}</p>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            {theme.nb_epreuves} sessions sur {total}
+            {t("qd.sessions_sur", { n: theme.nb_epreuves, total })}
           </p>
         </div>
         <AnneauFrequence pct={theme.frequence_pct} dore={premier} />
@@ -217,15 +218,15 @@ function CarteThemeCible({
           className="h-8 flex-1 text-xs"
           onClick={onLancer}
           disabled={!theme.quiz_disponible || desactive}
-          title={theme.quiz_disponible ? undefined : "Pas encore de question de quiz sur ce thème précis"}
+          title={theme.quiz_disponible ? undefined : t("qd.pas_de_quiz_theme")}
         >
           <ListChecks className="size-3.5" />
-          {lancement ? "Préparation..." : "Quiz sur ce thème"}
+          {lancement ? t("quiz.preparation") : t("qd.quiz_theme")}
         </Button>
         <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
           <Link to={lienExercices}>
             <FileText className="size-3.5" />
-            Exercices
+            {t("qd.exercices")}
           </Link>
         </Button>
       </div>
@@ -234,9 +235,10 @@ function CarteThemeCible({
 }
 
 export function QuizStartPage() {
+  useI18n()
   useSeo({
-    title: "Quiz",
-    description: "Entraîne-toi ou évalue ton niveau avec des questions tirées des corrigés de ton cursus.",
+    title: t("qd.onglet_quiz"),
+    description: t("qd.seo_description"),
   })
 
   const { isAuthenticated, isLoading: authLoading, user } = useAuth()
@@ -434,7 +436,7 @@ export function QuizStartPage() {
       setError(
         err instanceof ApiError
           ? err.message
-          : "Impossible de démarrer le quiz pour le moment. Réessaie plus tard.",
+          : t("qd.demarrage_erreur"),
       )
       setStarting(false)
       setStartingThemeId(null)
@@ -459,7 +461,7 @@ export function QuizStartPage() {
   if (!authLoading && isAuthenticated && erreurAbonnements && !subscriptionsLoaded) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
-        <ErreurChargement objet="ton quiz" onRetry={() => setEssaiAbonnements((n) => n + 1)} />
+        <ErreurChargement objet={t("qd.objet_quiz")} onRetry={() => setEssaiAbonnements((n) => n + 1)} />
       </div>
     )
   }
@@ -497,23 +499,22 @@ export function QuizStartPage() {
         />
         <Target aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
-          <p className="mb-2 font-display text-sm italic text-primary">Entraînement personnalisé</p>
+          <p className="mb-2 font-display text-sm italic text-primary">{t("qd.surtitre")}</p>
           <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-            Un quiz qui <span className="text-primary">cible tes lacunes</span>, thème par thème.
+            {t("qd.titre_debut")} <span className="text-primary">{t("qd.titre_accent")}</span>{t("qd.titre_fin")}
           </h1>
           <p className="mt-2 max-w-xl text-muted-foreground">
-            Entraîne-toi librement, vise un thème qui tombe souvent, ou fais le point avec un test de niveau. Les
-            thèmes fragiles reviennent d'eux-mêmes, jusqu'à être acquis.
+            {t("qd.hero_texte")}
           </p>
           {nbQuestionsBanque > 0 && (
             <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
               <StatChip icon={<ListChecks className="size-3.5 text-primary" />}>
                 <span className="font-medium tabular-nums">{formatAmount(nbQuestionsBanque)}</span>
-                <span className="text-muted-foreground">questions corrigées</span>
+                <span className="text-muted-foreground">{t("qd.stat_questions")}</span>
               </StatChip>
               <StatChip icon={<Layers className="size-3.5 text-primary" />}>
                 <span className="font-medium tabular-nums">{nbMatieres}</span>
-                <span className="text-muted-foreground">matière{nbMatieres > 1 ? "s" : ""}</span>
+                <span className="text-muted-foreground">{tn("qd.stat_matieres", nbMatieres)}</span>
               </StatChip>
             </div>
           )}
@@ -543,20 +544,19 @@ export function QuizStartPage() {
                 </span>
                 <div>
                   <p className="font-display text-lg font-semibold">
-                    {isAuthenticated ? "Débloque le Quiz" : "Comment marche le Quiz"}
+                    {isAuthenticated ? t("qd.debloque") : t("qd.comment")}
                   </p>
                   {isAuthenticated && (
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Réservé aux cursus avec un abonnement actif - repère tes lacunes et révise exactement ce qu'il
-                      faut, au bon moment.
+                      {t("qd.reserve_abonnes")}
                     </p>
                   )}
                 </div>
                 <EtapesPresentation
                   etapes={[
-                    "Tu choisis ta matière, ou un thème qui tombe souvent.",
-                    "Tu réponds ; chaque réponse est rattachée à un thème précis de ton programme.",
-                    "Les thèmes fragiles reviennent d'eux-mêmes les jours suivants, jusqu'à être acquis.",
+                    t("qd.etape1"),
+                    t("qd.etape2"),
+                    t("qd.etape3"),
                   ]}
                 />
                 {/* Déconnecté, la connexion passe devant les tarifs : un abonnement déjà
@@ -566,20 +566,20 @@ export function QuizStartPage() {
                 {isAuthenticated ? (
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <Link to="/tarifs">
-                      Voir les prix
+                      {t("accueil.voir_prix")}
                       <ArrowRight className="size-4" />
                     </Link>
                   </Button>
                 ) : (
                   <div className="flex w-full flex-col items-start gap-2">
                     <Button asChild size="lg" className="w-full sm:w-auto">
-                      <Link to="/connexion" state={{ from: "/quiz", intent: "Connecte-toi pour lancer ton quiz." }}>
-                        Se connecter pour commencer
+                      <Link to="/connexion" state={{ from: "/quiz", intent: t("quiz.connexion_pour_lancer") }}>
+                        {t("qd.se_connecter")}
                         <ArrowRight className="size-4" />
                       </Link>
                     </Button>
                     <Link to="/tarifs" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-                      Pas encore d'abonnement ? Voir les prix
+                      {t("qd.pas_dabonnement")}
                     </Link>
                   </div>
                 )}
@@ -594,10 +594,10 @@ export function QuizStartPage() {
                 lienConnexion={
                   <Link
                     to={isAuthenticated ? "/tarifs" : "/connexion"}
-                    state={isAuthenticated ? undefined : { from: "/quiz", intent: "Connecte-toi pour lancer ton quiz." }}
+                    state={isAuthenticated ? undefined : { from: "/quiz", intent: t("quiz.connexion_pour_lancer") }}
                     className="text-sm font-medium text-primary underline-offset-4 hover:underline"
                   >
-                    Lancer une vraie séance
+                    {t("qd.vraie_seance")}
                   </Link>
                 }
               />
@@ -609,10 +609,10 @@ export function QuizStartPage() {
           {/* Configuration : la même carte surélevée et les mêmes pastilles que
               /epreuves et /themes-frequents, lancement au pied de la carte. */}
           <div className="mb-8 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
-            <p className="font-display text-lg font-semibold">Ta séance</p>
-            <p className="text-sm text-muted-foreground">Tout est prêt : ajuste si tu veux, puis lance.</p>
+            <p className="font-display text-lg font-semibold">{t("qd.ta_seance")}</p>
+            <p className="text-sm text-muted-foreground">{t("qd.tout_pret")}</p>
 
-            <FiltreLigne titre="Examen">
+            <FiltreLigne titre={t("quiz.examen")}>
               {subscriptions.map((sub) => (
                 <PastilleFiltre
                   key={sub.id}
@@ -625,22 +625,22 @@ export function QuizStartPage() {
               ))}
             </FiltreLigne>
 
-            <FiltreLigne titre="Matière">
+            <FiltreLigne titre={t("quiz.matiere")}>
               {!subjectsLoaded ? (
                 [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-9 w-24 shrink-0 rounded-full" />)
               ) : erreurMatieres ? (
                 <p role="alert" className="flex flex-wrap items-center gap-x-2 py-1.5 text-sm text-muted-foreground">
-                  Les matières n'ont pas pu être chargées.
+                  {t("qd.matieres_erreur")}
                   <button
                     type="button"
                     onClick={() => setEssaiMatieres((n) => n + 1)}
                     className="font-medium text-primary underline-offset-4 hover:underline"
                   >
-                    Réessayer
+                    {t("erreur.reessayer")}
                   </button>
                 </p>
               ) : subjects.length === 0 ? (
-                <p className="py-1.5 text-sm text-muted-foreground">Aucune matière n'a encore de questions sur ce cursus.</p>
+                <p className="py-1.5 text-sm text-muted-foreground">{t("qd.aucune_matiere")}</p>
               ) : (
                 subjects.map((subject) => {
                   const Icon = subjectIcon(subject.code)
@@ -659,27 +659,27 @@ export function QuizStartPage() {
             </FiltreLigne>
 
             <div className="mt-4">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Mode</p>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("qd.mode")}</p>
               <div className="grid gap-2 sm:grid-cols-2">
                 <CarteMode
                   actif={mode === "PRATIQUE"}
                   onClick={() => setMode("PRATIQUE")}
                   icon={<Sparkles className="size-4" />}
-                  titre="Pratique libre"
-                  texte="Cible davantage les thèmes où tu échoues, au fil de tes séances."
+                  titre={t("qd.mode_pratique")}
+                  texte={t("qd.mode_pratique_texte")}
                 />
                 <CarteMode
                   actif={mode === "DIAGNOSTIC"}
                   onClick={() => setMode("DIAGNOSTIC")}
                   icon={<ListChecks className="size-4" />}
-                  titre="Test de niveau"
-                  texte="Difficultés variées, pour situer ton niveau."
+                  titre={t("quiz_en_cours.test_niveau")}
+                  texte={t("qd.mode_diagnostic_texte")}
                 />
               </div>
             </div>
 
             {!(Number.isInteger(nParam) && nParam > 0) && (
-              <FiltreLigne titre="Nombre de questions">
+              <FiltreLigne titre={t("qd.nombre_questions")}>
                 {N_PRESETS.map((valeur) => (
                   <PastilleFiltre key={valeur} actif={n === valeur} onClick={() => setN(valeur)}>
                     <span className="tabular-nums">{valeur}</span>
@@ -696,12 +696,14 @@ export function QuizStartPage() {
                 </span>
                 <div className="min-w-0">
                   <p className="truncate font-medium">
-                    {subjectChoisi ? subjectChoisi.label : "Choisis une matière"}
+                    {subjectChoisi ? subjectChoisi.label : t("qd.choisis_matiere")}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    <span className="tabular-nums">{nEffectif}</span> questions ·{" "}
-                    {mode === "PRATIQUE" ? "Pratique libre" : "Test de niveau"} · environ{" "}
-                    <span className="tabular-nums">{Math.max(1, Math.round(nEffectif * 0.75))}</span> min
+                    {t("qd.recap", {
+                      n: nEffectif,
+                      mode: mode === "PRATIQUE" ? t("qd.mode_pratique") : t("quiz_en_cours.test_niveau"),
+                      m: Math.max(1, Math.round(nEffectif * 0.75)),
+                    })}
                   </p>
                 </div>
               </div>
@@ -712,10 +714,10 @@ export function QuizStartPage() {
                 className="shrink-0"
               >
                 {starting ? (
-                  "Préparation..."
+                  t("quiz.preparation")
                 ) : (
                   <>
-                    Lancer mon quiz
+                    {t("qd.lancer")}
                     <ArrowRight className="size-4" />
                   </>
                 )}
@@ -731,18 +733,17 @@ export function QuizStartPage() {
                 <div>
                   <h2 id="themes-cibles-titre" className="flex items-center gap-2 font-display text-xl font-semibold">
                     <TrendingUp className="size-5 text-primary" />
-                    Vise ce qui tombe le plus
+                    {t("qd.vise_titre")}
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    Les thèmes les plus fréquents en {subjectChoisi.label}, sur{" "}
-                    <span className="tabular-nums">{classement.nb_sessions_disponibles}</span> sessions officielles.
+                    {t("qd.vise_texte", { matiere: subjectChoisi.label, n: classement.nb_sessions_disponibles })}
                   </p>
                 </div>
                 <Link
                   to={`${themesFrequentsPath(country)}?subject=${subjectChoisi.code}&cursus=${selectedCursus}`}
                   className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                 >
-                  Tout le classement
+                  {t("qd.tout_classement")}
                   <ArrowRight className="size-3.5" />
                 </Link>
               </div>
@@ -772,11 +773,11 @@ export function QuizStartPage() {
                       <Lock className="size-4" />
                     </span>
                     <p className="font-display text-base font-semibold">
-                      +{classement.nb_themes_verrouilles} thèmes classés
+                      {t("qd.themes_classes", { n: classement.nb_themes_verrouilles })}
                     </p>
-                    <p className="text-xs text-muted-foreground">Avec l'abonnement Jusqu'à l'Examen</p>
+                    <p className="text-xs text-muted-foreground">{t("qd.avec_abonnement")}</p>
                     <span className="inline-flex items-center gap-1 text-sm font-medium text-gold-text group-hover:underline">
-                      Débloquer
+                      {t("qd.debloquer")}
                       <ArrowRight className="size-3.5" />
                     </span>
                   </Link>

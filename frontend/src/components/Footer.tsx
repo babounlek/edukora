@@ -9,7 +9,8 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
-import { cn, formatAmount } from "@/lib/utils"
+import { cn } from "@/lib/utils"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
 
 // Ordre de lecture d'un élève : du premier examen au dernier.
@@ -33,9 +34,9 @@ function phraseCompteARebours(user: User) {
   if (!cr || cr.jours_restants < 0) return null
   if (cr.estimee) {
     const mois = Math.max(1, Math.round(cr.jours_restants / 30))
-    return `${cr.session_label} dans environ ${mois} mois`
+    return tn("ft.mois", mois, { session: cr.session_label })
   }
-  return `${cr.session_label} dans ${cr.jours_restants} jour${cr.jours_restants > 1 ? "s" : ""}`
+  return tn("ft.jours", cr.jours_restants, { session: cr.session_label })
 }
 
 /**
@@ -49,13 +50,13 @@ function invitationPour(user: User | null, country: string): Invitation {
     return {
       message: (
         <>
-          Corrigés détaillés, quiz et thèmes qui tombent vraiment :{" "}
-          <span className="text-primary">commence gratuitement.</span>
+          {t("ft.anon_debut")}{" "}
+          <span className="text-primary">{t("ft.anon_fin")}</span>
         </>
       ),
-      bouton: "Créer mon compte",
+      bouton: t("ft.creer_compte"),
       lien: "/connexion",
-      secondaire: { label: "Voir les prix", lien: "/tarifs" },
+      secondaire: { label: t("ft.voir_prix"), lien: "/tarifs" },
     }
   }
   const compteARebours = phraseCompteARebours(user)
@@ -65,11 +66,11 @@ function invitationPour(user: User | null, country: string): Invitation {
       message: (
         <>
           {compteARebours ? `${compteARebours}. ` : ""}
-          Débloque tous les corrigés{cursus ? ` de ton ${cursus}` : ""}{" "}
-          <span className="text-primary">et révise ce qui tombe vraiment.</span>
+          {cursus ? t("ft.debloque_cursus", { cursus }) : t("ft.debloque")}{" "}
+          <span className="text-primary">{t("ft.debloque_fin")}</span>
         </>
       ),
-      bouton: "Voir les prix",
+      bouton: t("ft.voir_prix"),
       lien: "/tarifs",
     }
   }
@@ -77,10 +78,10 @@ function invitationPour(user: User | null, country: string): Invitation {
     message: (
       <>
         {compteARebours ? `${compteARebours} · ` : ""}
-        <span className="text-primary">{compteARebours ? "ta" : "Ta"} séance du jour est prête.</span>
+        <span className="text-primary">{t(compteARebours ? "ft.seance_prete_suite" : "ft.seance_prete")}</span>
       </>
     ),
-    bouton: "Faire ma séance",
+    bouton: t("ft.faire_seance"),
     lien: catalogueHomePath(country),
   }
 }
@@ -89,6 +90,7 @@ function invitationPour(user: User | null, country: string): Invitation {
  * ~700 px), toujours dépliée dès `sm`. Deux rendus plutôt qu'un <details> forcé ouvert :
  * l'état ouvert d'un <details> ne se pilote pas en CSS. */
 function Colonne({ titre, children }: { titre: string; children: ReactNode }) {
+  useI18n()
   const entete = "text-xs font-semibold uppercase tracking-[0.14em] text-foreground/70"
   return (
     <>
@@ -97,11 +99,11 @@ function Colonne({ titre, children }: { titre: string; children: ReactNode }) {
           {titre}
           <ChevronDown className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
         </summary>
-        <nav aria-label={`Pied de page : ${titre.toLowerCase()}`} className="flex flex-col gap-3 pb-4">
+        <nav aria-label={t("ft.aria_nav", { titre: titre.toLowerCase() })} className="flex flex-col gap-3 pb-4">
           {children}
         </nav>
       </details>
-      <nav aria-label={`Pied de page : ${titre.toLowerCase()}`} className="hidden flex-col gap-2.5 sm:flex">
+      <nav aria-label={t("ft.aria_nav", { titre: titre.toLowerCase() })} className="hidden flex-col gap-2.5 sm:flex">
         <span className={cn(entete, "mb-1")}>{titre}</span>
         {children}
       </nav>
@@ -124,6 +126,7 @@ function Lien({ to, children, vedette }: { to: string; children: ReactNode; vede
 }
 
 export function Footer() {
+  useI18n()
   const year = new Date().getFullYear()
   const { country } = useCountry()
   const { user, isAuthenticated } = useAuth()
@@ -207,46 +210,46 @@ export function Footer() {
         <div className="mb-6 sm:col-span-3 sm:mb-0 lg:col-span-1">
           <Link to={catalogueHomePath(country)} className="flex items-baseline gap-2">
             <span className="font-display text-xl font-semibold tracking-tight text-primary">{SITE_NAME}</span>
-            <span className="font-display text-xs italic text-muted-foreground">réussis ton examen</span>
+            <span className="font-display text-xs italic text-muted-foreground">{t("ft.slogan")}</span>
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            Chaque jour, ce qu'il faut réviser pour ton examen - et on retient ce que tu rates.
+            {t("ft.accroche")}
           </p>
           {stats && (
             <div className="mt-5 flex gap-6">
               <div>
                 <p className="font-display text-2xl font-semibold tabular-nums text-foreground">
-                  {formatAmount(stats.corriges_disponibles)}
+                  {new Intl.NumberFormat(localeCourante()).format(stats.corriges_disponibles)}
                 </p>
-                <p className="text-xs text-muted-foreground">épreuves corrigées</p>
+                <p className="text-xs text-muted-foreground">{t("ft.stat_epreuves")}</p>
               </div>
               <div>
                 <p className="font-display text-2xl font-semibold tabular-nums text-foreground">
-                  {formatAmount(stats.cours_disponibles)}
+                  {new Intl.NumberFormat(localeCourante()).format(stats.cours_disponibles)}
                 </p>
-                <p className="text-xs text-muted-foreground">cours et fiches</p>
+                <p className="text-xs text-muted-foreground">{t("ft.stat_cours")}</p>
               </div>
             </div>
           )}
         </div>
 
-        <Colonne titre="Réviser">
-          <Lien to={epreuvesListPath(country)}>Épreuves corrigées</Lien>
-          <Lien to={coursListPath(country)}>Cours</Lien>
+        <Colonne titre={t("ft.col_reviser")}>
+          <Lien to={epreuvesListPath(country)}>{t("ft.epreuves")}</Lien>
+          <Lien to={coursListPath(country)}>{t("ft.cours")}</Lien>
           <Lien to={themesFrequentsPath(country)} vedette>
-            Thèmes qui tombent
+            {t("ft.themes")}
             <span className="rounded-full bg-gold/20 px-1.5 py-px text-[0.65rem] font-semibold uppercase tracking-wide text-gold-text">
-              Top
+              {t("ft.top")}
             </span>
           </Lien>
-          <Lien to="/quiz">Quiz</Lien>
-          <Lien to="/fiches">Fiches</Lien>
-          <Lien to={`${epreuvesListPath(country)}?origine=INEDITE`}>Épreuves inédites</Lien>
+          <Lien to="/quiz">{t("ft.quiz")}</Lien>
+          <Lien to="/fiches">{t("ft.fiches")}</Lien>
+          <Lien to={`${epreuvesListPath(country)}?origine=INEDITE`}>{t("ft.inedites")}</Lien>
         </Colonne>
 
-        <Colonne titre="Par examen">
+        <Colonne titre={t("ft.col_examen")}>
           {examens.length === 0 ? (
-            <Lien to={epreuvesListPath(country)}>Tous les examens</Lien>
+            <Lien to={epreuvesListPath(country)}>{t("ft.tous_examens")}</Lien>
           ) : (
             examens.map(({ examen, cursus }) => (
               <div key={examen} className="text-sm">
@@ -272,18 +275,18 @@ export function Footer() {
           )}
         </Colonne>
 
-        <Colonne titre="Aide">
-          <Lien to="/tarifs">Prix</Lien>
-          <Lien to="/a-propos">À propos</Lien>
+        <Colonne titre={t("ft.col_aide")}>
+          <Lien to="/tarifs">{t("ft.prix")}</Lien>
+          <Lien to="/a-propos">{t("ft.a_propos")}</Lien>
           <a
             href={CONTACT_WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            title="Écris-nous sur WhatsApp"
+            title={t("ft.whatsapp_titre")}
             className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full bg-[#25D366]/10 px-3 py-1.5 text-sm font-medium text-[#128C7E] ring-1 ring-[#25D366]/30 transition-colors hover:bg-[#25D366]/20 dark:text-[#25D366]"
           >
             <MessageCircle className="size-4" />
-            Écris-nous
+            {t("ft.whatsapp")}
           </a>
           <a
             href={`mailto:${CONTACT_EMAIL}`}
@@ -301,7 +304,7 @@ export function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="flex items-center gap-1.5 font-medium text-foreground/70">
               <ShieldCheck className="size-3.5 shrink-0 text-primary" />
-              Paiement sécurisé
+              {t("ft.paiement_securise")}
             </span>
             <span className="rounded-md bg-[#FF7900] px-2 py-0.5 text-[0.7rem] font-bold text-white">Orange Money</span>
             <span className="rounded-md bg-[#FFCB05] px-2 py-0.5 text-[0.7rem] font-bold text-[#1a1a1a]">MTN MoMo</span>
@@ -309,9 +312,9 @@ export function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
             <span>© {year} {SITE_NAME}</span>
             <span aria-hidden>·</span>
-            <Link to="/cgu" className="hover:text-primary">Conditions d'utilisation</Link>
+            <Link to="/cgu" className="hover:text-primary">{t("ft.cgu")}</Link>
             <span aria-hidden>·</span>
-            <Link to="/confidentialite" className="hover:text-primary">Confidentialité</Link>
+            <Link to="/confidentialite" className="hover:text-primary">{t("ft.confidentialite")}</Link>
           </div>
         </div>
       </div>

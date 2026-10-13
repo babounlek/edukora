@@ -16,6 +16,7 @@ import { useCountry } from "@/context/CountryContext"
 import { coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 /** "regle" → "La règle", "exercice-3" → "Exercice 3" : le nom de la section, pas son ancre. */
 function libelleSection(entree: CarnetEntree): string {
@@ -24,7 +25,7 @@ function libelleSection(entree: CarnetEntree): string {
     if (label) return label.full
   }
   const exercice = /^exercice-(.+)$/.exec(entree.cle)
-  if (exercice) return `Exercice ${exercice[1].toUpperCase()}`
+  if (exercice) return t("ed.exercice_n", { n: exercice[1].toUpperCase() })
   return capitaliserTheme(entree.cle.replace(/-/g, " "))
 }
 
@@ -42,7 +43,8 @@ function lienSection(entree: CarnetEntree): string {
  * révision que l'élève s'est écrite lui-même.
  */
 export function CarnetPage() {
-  useSeo({ title: "Mon carnet" })
+  useI18n()
+  useSeo({ title: t("cpt.carnet") })
   const queryClient = useQueryClient()
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const { country } = useCountry()
@@ -61,7 +63,7 @@ export function CarnetPage() {
         { signet: false, note: "" },
       ),
     onError: () => {
-      toast.error("Impossible de retirer cette entrée du carnet. Réessaie.")
+      toast.error(t("ca.erreur_retrait"))
     },
     onSuccess: (_reponse, entree) => {
       setAConfirmer(null)
@@ -89,11 +91,11 @@ export function CarnetPage() {
     <div className="mx-auto max-w-3xl animate-fade-up px-4 py-10 sm:px-6">
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
         <NotebookPen className="size-3.5" />
-        Mon carnet
+        {t("cpt.carnet")}
       </p>
-      <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">Ce que tu as gardé</h1>
+      <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t("ca.titre")}</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        Tes signets et tes notes, tous cours et épreuves confondus. Chaque entrée te ramène à l'endroit exact.
+        {t("ca.texte")}
       </p>
 
       {isLoading || authLoading ? (
@@ -104,8 +106,8 @@ export function CarnetPage() {
       ) : isError ? (
         // Une panne n'est pas un carnet vide : sans ce cas, l'élève croyait avoir perdu ses notes.
         <ErreurChargement
-          objet="ton carnet"
-          message="Tes signets et tes notes sont bien là : vérifie ta connexion, puis réessaie."
+          objet={t("ca.objet")}
+          message={t("ca.message_erreur")}
           onRetry={() => refetch()}
           className="mt-8"
         />
@@ -114,13 +116,13 @@ export function CarnetPage() {
           <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <Bookmark className="size-6" />
           </span>
-          <p className="mt-4 font-display text-lg font-semibold">Ton carnet est vide pour l'instant</p>
+          <p className="mt-4 font-display text-lg font-semibold">{t("ca.vide")}</p>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-            En lisant un cours ou un corrigé, garde une section pour plus tard ou écris-toi une note : tu la retrouveras ici.
+            {t("ca.vide_texte")}
           </p>
           <Button asChild className="mt-5 rounded-full">
             <Link to={`/${country}`}>
-              Aller réviser
+              {t("ca.aller_reviser")}
               <ArrowRight />
             </Link>
           </Button>
@@ -138,13 +140,13 @@ export function CarnetPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs text-muted-foreground">
-                    {entree.type === "cours" ? "Cours" : "Corrigé"} · {entree.matiere}
+                    {entree.type === "cours" ? t("ca.type_cours") : t("ca.type_corrige")} · {entree.matiere}
                   </p>
                   <Link to={lienSection(entree)} className="mt-0.5 block font-display text-base font-semibold leading-snug hover:text-primary">
                     {entree.titre}
                   </Link>
                   <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
-                    {entree.signet && <Bookmark className="size-3.5 shrink-0 fill-current text-gold-text" aria-label="Gardé" />}
+                    {entree.signet && <Bookmark className="size-3.5 shrink-0 fill-current text-gold-text" aria-label={t("ca.garde")} />}
                     {libelleSection(entree)}
                   </p>
                 </div>
@@ -153,7 +155,7 @@ export function CarnetPage() {
                   size="icon"
                   variant="ghost"
                   className="shrink-0 text-muted-foreground hover:text-destructive"
-                  aria-label="Retirer du carnet"
+                  aria-label={t("ca.retirer_aria")}
                   disabled={retirer.isPending}
                   onClick={() => demanderRetrait(entree)}
                 >
@@ -169,7 +171,7 @@ export function CarnetPage() {
                 to={lienSection(entree)}
                 className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
               >
-                Rouvrir la section
+                {t("ca.rouvrir")}
                 <ArrowRight className="size-3" />
               </Link>
             </li>
@@ -179,20 +181,20 @@ export function CarnetPage() {
 
       <Dialog open={aConfirmer !== null} onOpenChange={(ouvert) => !ouvert && setAConfirmer(null)}>
         <DialogContent>
-          <DialogTitle>Retirer cette note du carnet ?</DialogTitle>
+          <DialogTitle>{t("ca.dialogue_titre")}</DialogTitle>
           <DialogDescription>
-            Le signet et la note de cette section seront supprimés. Tu ne pourras pas récupérer ce que tu as écrit.
+            {t("ca.dialogue_texte")}
           </DialogDescription>
           <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             <Button variant="outline" onClick={() => setAConfirmer(null)}>
-              Garder
+              {t("ca.garder")}
             </Button>
             <Button
               variant="destructive"
               disabled={retirer.isPending}
               onClick={() => aConfirmer && retirer.mutate(aConfirmer)}
             >
-              {retirer.isPending ? "Suppression…" : "Retirer"}
+              {retirer.isPending ? t("ca.suppression") : t("ca.retirer")}
             </Button>
           </div>
         </DialogContent>

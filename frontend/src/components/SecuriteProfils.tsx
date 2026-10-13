@@ -16,6 +16,7 @@ import { useAuth } from "@/context/AuthContext"
 import { ChampPin } from "@/components/PinDialogs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { t, useI18n } from "@/lib/i18n"
 
 function messageErreur(err: unknown, defaut: string): string {
   return err instanceof ApiError ? err.message : defaut
@@ -46,7 +47,7 @@ function FormulairePin({
     try {
       await soumettre(pin, avecActuel ? actuel : undefined)
     } catch (err) {
-      setErreur(messageErreur(err, "Enregistrement impossible."))
+      setErreur(messageErreur(err, t("sp.enregistrement_erreur")))
       setEnvoi(false)
     }
   }
@@ -54,16 +55,16 @@ function FormulairePin({
   return (
     <form onSubmit={valider} className="mt-2 flex flex-col gap-2.5 rounded-lg border border-border bg-muted/30 p-3">
       <p className="text-xs font-medium text-muted-foreground">{titre}</p>
-      {avecActuel && <ChampPin id="pin-actuel" label="Code actuel" value={actuel} onChange={setActuel} />}
-      <ChampPin id="pin-nouveau" label="Nouveau code" value={pin} onChange={setPin} autoFocus={!avecActuel} />
-      {avecActuel && <p className="text-xs text-muted-foreground">Code actuel en haut, nouveau code en bas.</p>}
+      {avecActuel && <ChampPin id="pin-actuel" label={t("sp.code_actuel")} value={actuel} onChange={setActuel} />}
+      <ChampPin id="pin-nouveau" label={t("sp.nouveau_code")} value={pin} onChange={setPin} autoFocus={!avecActuel} />
+      {avecActuel && <p className="text-xs text-muted-foreground">{t("sp.actuel_haut")}</p>}
       {erreur && <p role="alert" className="text-xs text-destructive">{erreur}</p>}
       <div className="flex gap-2">
         <Button type="button" variant="outline" size="sm" onClick={annuler}>
-          Annuler
+          {t("seance.annuler")}
         </Button>
         <Button type="submit" size="sm" disabled={envoi || pin.length !== 4 || (avecActuel && actuel.length !== 4)}>
-          {envoi ? <Loader2 className="size-4 animate-spin" /> : "Enregistrer"}
+          {envoi ? <Loader2 className="size-4 animate-spin" /> : t("matieres.enregistrer")}
         </Button>
       </div>
     </form>
@@ -84,22 +85,22 @@ function RetraitPinParent({ soumettre, annuler }: { soumettre: (actuel: string) 
     try {
       await soumettre(actuel)
     } catch (err) {
-      setErreur(messageErreur(err, "Retrait impossible."))
+      setErreur(messageErreur(err, t("sp.retrait_erreur")))
       setEnvoi(false)
     }
   }
 
   return (
     <form onSubmit={valider} className="mt-2 flex flex-col gap-2.5 rounded-lg border border-border bg-muted/30 p-3">
-      <p className="text-xs font-medium text-muted-foreground">Saisis le code parent actuel pour le retirer.</p>
-      <ChampPin id="pin-retrait" label="Code parent actuel" value={actuel} onChange={setActuel} autoFocus />
+      <p className="text-xs font-medium text-muted-foreground">{t("sp.retrait_texte")}</p>
+      <ChampPin id="pin-retrait" label={t("sp.code_parent_actuel")} value={actuel} onChange={setActuel} autoFocus />
       {erreur && <p role="alert" className="text-xs text-destructive">{erreur}</p>}
       <div className="flex gap-2">
         <Button type="button" variant="outline" size="sm" onClick={annuler}>
-          Annuler
+          {t("seance.annuler")}
         </Button>
         <Button type="submit" size="sm" disabled={envoi || actuel.length !== 4}>
-          {envoi ? <Loader2 className="size-4 animate-spin" /> : "Retirer le code"}
+          {envoi ? <Loader2 className="size-4 animate-spin" /> : t("sp.retirer_code")}
         </Button>
       </div>
     </form>
@@ -125,7 +126,7 @@ function FormulaireConnexionEnfant({
   async function envoyer(e: FormEvent) {
     e.preventDefault()
     if (!/^6\d{8}$/.test(numero)) {
-      setErreur("Entre un numéro valide (9 chiffres, commence par 6).")
+      setErreur(t("sp.numero_invalide"))
       return
     }
     setEnvoi(true)
@@ -134,7 +135,7 @@ function FormulaireConnexionEnfant({
       await demanderConnexionProfil(profil.id, numero)
       setEtape("code")
     } catch (err) {
-      setErreur(messageErreur(err, "Envoi impossible."))
+      setErreur(messageErreur(err, t("sp.envoi_erreur")))
     } finally {
       setEnvoi(false)
     }
@@ -148,7 +149,7 @@ function FormulaireConnexionEnfant({
     try {
       onDone(await confirmerConnexionProfil(profil.id, numero, code))
     } catch (err) {
-      setErreur(messageErreur(err, "Code invalide."))
+      setErreur(messageErreur(err, t("sp.code_invalide")))
       setEnvoi(false)
     }
   }
@@ -158,11 +159,10 @@ function FormulaireConnexionEnfant({
       {etape === "numero" ? (
         <form onSubmit={envoyer} className="flex flex-col gap-2.5">
           <p className="text-xs text-muted-foreground">
-            Numéro de téléphone de {profil.prenom || "l'enfant"}. Un code de vérification lui est envoyé par SMS ; avec
-            ce numéro, il pourra se connecter lui-même, sur son profil uniquement.
+            {t("sp.numero_texte", { nom: profil.prenom || t("sp.l_enfant") })}
           </p>
           <Input
-            aria-label="Numéro de l'enfant"
+            aria-label={t("sp.numero_aria")}
             inputMode="numeric"
             placeholder="677123456"
             maxLength={9}
@@ -173,18 +173,18 @@ function FormulaireConnexionEnfant({
           {erreur && <p role="alert" className="text-xs text-destructive">{erreur}</p>}
           <div className="flex gap-2">
             <Button type="button" variant="outline" size="sm" onClick={annuler}>
-              Annuler
+              {t("seance.annuler")}
             </Button>
             <Button type="submit" size="sm" disabled={envoi || numero.length !== 9}>
-              {envoi ? <Loader2 className="size-4 animate-spin" /> : "Envoyer le code"}
+              {envoi ? <Loader2 className="size-4 animate-spin" /> : t("secu.envoyer_code")}
             </Button>
           </div>
         </form>
       ) : (
         <form onSubmit={confirmer} className="flex flex-col gap-2.5">
-          <p className="text-xs text-muted-foreground">Saisis le code à 6 chiffres reçu par SMS sur le numéro de l'enfant.</p>
+          <p className="text-xs text-muted-foreground">{t("sp.code_sms_texte")}</p>
           <Input
-            aria-label="Code reçu par SMS"
+            aria-label={t("login.code_sms")}
             inputMode="numeric"
             autoComplete="one-time-code"
             placeholder="123456"
@@ -196,10 +196,10 @@ function FormulaireConnexionEnfant({
           {erreur && <p role="alert" className="text-xs text-destructive">{erreur}</p>}
           <div className="flex gap-2">
             <Button type="button" variant="outline" size="sm" onClick={annuler}>
-              Annuler
+              {t("seance.annuler")}
             </Button>
             <Button type="submit" size="sm" disabled={envoi || code.length !== 6}>
-              {envoi ? <Loader2 className="size-4 animate-spin" /> : "Confirmer"}
+              {envoi ? <Loader2 className="size-4 animate-spin" /> : t("secu.confirmer")}
             </Button>
           </div>
         </form>
@@ -229,6 +229,7 @@ export function SecuriteProfils({
   profils: Profil[]
   onProfilChange: (profil: Profil) => void
 }) {
+  useI18n()
   const { user, updateUser } = useAuth()
   const [ouverte, setOuverte] = useState<ActionOuverte>(null)
   const [erreur, setErreur] = useState<string | null>(null)
@@ -245,7 +246,7 @@ export function SecuriteProfils({
       await fn()
       setOuverte(null)
     } catch (err) {
-      setErreur(messageErreur(err, "Action impossible."))
+      setErreur(messageErreur(err, t("sp.action_erreur")))
     }
   }
 
@@ -255,9 +256,7 @@ export function SecuriteProfils({
         <div className="flex items-start gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-3 text-sm">
           <ShieldAlert className="mt-0.5 size-4 shrink-0 text-gold-text" />
           <p>
-            Aujourd'hui, n'importe qui sur cet appareil peut ouvrir le profil d'un autre enfant. Pour protéger chaque
-            profil, ajoute un code à 4 chiffres (facultatif) - tu peux aussi définir un code parent pour réserver
-            paiements et gestion des enfants.
+            {t("sp.avertissement")}
           </p>
         </div>
       )}
@@ -267,12 +266,11 @@ export function SecuriteProfils({
       <div className="rounded-xl border border-border p-3.5">
         <div className="flex items-center gap-2">
           <ShieldCheck className="size-4 shrink-0 text-primary" />
-          <p className="flex-1 font-display text-sm font-semibold">Code parent</p>
-          <span className="text-xs text-muted-foreground">{parentActif ? "Activé" : "Non défini"}</span>
+          <p className="flex-1 font-display text-sm font-semibold">{t("sp.code_parent")}</p>
+          <span className="text-xs text-muted-foreground">{parentActif ? t("sp.active") : t("sp.non_defini")}</span>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Réserve au parent les paiements, l'ajout d'enfants et la gestion des codes. Il ouvre aussi n'importe quel
-          profil si un code enfant est oublié.
+          {t("sp.parent_texte")}
         </p>
         <div className="mt-2 flex flex-wrap gap-2">
           <Button
@@ -281,7 +279,7 @@ export function SecuriteProfils({
             className="h-8 rounded-full text-xs"
             onClick={() => setOuverte({ type: "pin-parent" })}
           >
-            {parentActif ? "Modifier le code" : "Définir un code parent"}
+            {parentActif ? t("sp.modifier_code") : t("sp.definir_code")}
           </Button>
           {parentActif && (
             <Button
@@ -290,13 +288,13 @@ export function SecuriteProfils({
               className="h-8 rounded-full text-xs"
               onClick={() => setOuverte({ type: "retrait-pin-parent" })}
             >
-              Retirer
+              {t("sp.retirer")}
             </Button>
           )}
         </div>
         {ouverte?.type === "pin-parent" && (
           <FormulairePin
-            titre={parentActif ? "Choisis un nouveau code parent à 4 chiffres." : "Choisis un code parent à 4 chiffres."}
+            titre={parentActif ? t("sp.choisis_nouveau_parent") : t("sp.choisis_parent")}
             avecActuel={parentActif}
             annuler={() => setOuverte(null)}
             soumettre={(pin, actuel) =>
@@ -314,19 +312,19 @@ export function SecuriteProfils({
 
       {profils.map((profil) => (
         <div key={profil.id} className="rounded-xl border border-border p-3.5">
-          <p className="font-display text-sm font-semibold">{profil.prenom || "Profil sans nom"}</p>
+          <p className="font-display text-sm font-semibold">{profil.prenom || t("compte.profil_sans_nom")}</p>
 
           <div className="mt-2 flex items-center gap-2">
             <KeyRound className="size-4 shrink-0 text-muted-foreground" />
-            <p className="flex-1 text-sm">Code du profil</p>
-            <span className="text-xs text-muted-foreground">{profil.pin_actif ? "Activé" : "Aucun"}</span>
+            <p className="flex-1 text-sm">{t("sp.code_profil")}</p>
+            <span className="text-xs text-muted-foreground">{profil.pin_actif ? t("sp.active") : t("sp.aucun")}</span>
             <Button
               size="sm"
               variant="outline"
               className="h-8 rounded-full text-xs"
               onClick={() => setOuverte({ type: "pin-profil", id: profil.id })}
             >
-              {profil.pin_actif ? "Modifier" : "Ajouter"}
+              {profil.pin_actif ? t("sp.modifier") : t("sp.ajouter")}
             </Button>
             {profil.pin_actif && (
               <Button
@@ -335,13 +333,13 @@ export function SecuriteProfils({
                 className="h-8 rounded-full text-xs"
                 onClick={() => action(async () => onProfilChange(await retirerPinProfil(profil.id)))}
               >
-                Retirer
+                {t("sp.retirer")}
               </Button>
             )}
           </div>
           {ouverte?.type === "pin-profil" && ouverte.id === profil.id && (
             <FormulairePin
-              titre={`Choisis un code à 4 chiffres pour ${profil.prenom || "ce profil"}.`}
+              titre={t("sp.choisis_code", { nom: profil.prenom || t("sp.ce_profil") })}
               annuler={() => setOuverte(null)}
               soumettre={(pin) => action(async () => onProfilChange(await definirPinProfil(profil.id, pin)))}
             />
@@ -349,8 +347,8 @@ export function SecuriteProfils({
 
           <div className="mt-2 flex items-center gap-2">
             <Smartphone className="size-4 shrink-0 text-muted-foreground" />
-            <p className="flex-1 text-sm">Connexion avec son propre téléphone</p>
-            <span className="text-xs text-muted-foreground">{profil.connexion_active ? "Activée" : "Aucune"}</span>
+            <p className="flex-1 text-sm">{t("sp.tel_propre")}</p>
+            <span className="text-xs text-muted-foreground">{profil.connexion_active ? t("sp.activee") : t("sp.aucun")}</span>
             {profil.connexion_active ? (
               <Button
                 size="sm"
@@ -358,7 +356,7 @@ export function SecuriteProfils({
                 className="h-8 rounded-full text-xs"
                 onClick={() => action(async () => onProfilChange(await supprimerConnexionProfil(profil.id)))}
               >
-                Retirer
+                {t("sp.retirer")}
               </Button>
             ) : (
               <Button
@@ -367,7 +365,7 @@ export function SecuriteProfils({
                 className="h-8 rounded-full text-xs"
                 onClick={() => setOuverte({ type: "connexion", id: profil.id })}
               >
-                Ajouter
+                {t("sp.ajouter")}
               </Button>
             )}
           </div>
@@ -384,8 +382,7 @@ export function SecuriteProfils({
           {profil.connexion_active && (
             <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
               <Lock className="size-3 shrink-0" />
-              Depuis sa propre connexion, l'enfant ne voit que son profil : pas de changement d'enfant, ni de
-              paiement.
+              {t("sp.info_enfant")}
             </p>
           )}
         </div>

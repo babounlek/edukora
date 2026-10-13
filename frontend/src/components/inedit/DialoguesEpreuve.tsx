@@ -3,7 +3,8 @@ import { Flag, Timer } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { formatDureeMinutes } from "@/lib/duration"
-import { mots, type Unite } from "@/lib/vocabulaire"
+import { libellesUnite, compteUnite, tnu, type Unite } from "@/lib/vocabulaire"
+import { t, useI18n } from "@/lib/i18n"
 
 export interface QuestionRepere {
   id: number
@@ -48,7 +49,7 @@ function Reperes({ reperes, onAller }: { reperes: QuestionRepere[]; onAller: (id
 export function DialogueTerminer({
   open, onOpenChange, enExamen, total, traitees, nonTraitees, aRevoir, enCours, unite = "question", onAller, onConfirmer,
 }: DialogueTerminerProps) {
-  const m = mots(unite)
+  useI18n()
   const vaut = nonTraitees.length
   const aller = (id: number) => {
     onOpenChange(false)
@@ -58,16 +59,17 @@ export function DialogueTerminer({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogTitle>Terminer l'épreuve ?</DialogTitle>
+        <DialogTitle>{t("dt.titre")}</DialogTitle>
         <DialogDescription>
-          Tu as traité <strong className="text-foreground tabular-nums">{m.compte(traitees)} sur {total}</strong>.
-          {enExamen && " Le corrigé s'ouvre dès que tu rends ta copie, et le chrono s'arrête."}
+          {t("dt.desc_avant")}{" "}
+          <strong className="text-foreground tabular-nums">{t("dt.desc_compte", { compte: compteUnite(unite, traitees), total })}</strong>.
+          {enExamen && t("dt.desc_examen")}
         </DialogDescription>
 
         {vaut > 0 && (
           <div className="mt-4 rounded-xl border border-warning/40 bg-warning/10 px-3.5 py-3">
             <p className="text-sm font-medium">
-              {vaut === 1 ? `1 ${m.singulier} ${m.nonTraite} vaut` : `${vaut} ${m.pluriel} ${m.nonTraites} valent`} 0 point.
+              {tnu("dt.vaut", unite, vaut)}
             </p>
             <Reperes reperes={nonTraitees} onAller={aller} />
           </div>
@@ -77,7 +79,7 @@ export function DialogueTerminer({
           <div className="mt-3 rounded-xl border border-border px-3.5 py-3">
             <p className="flex items-center gap-1.5 text-sm font-medium">
               <Flag className="size-3.5 text-gold-text" />
-              {aRevoir.length === 1 ? `1 ${m.singulier} ${m.marque} à revoir` : `${aRevoir.length} ${m.pluriel} ${m.marques} à revoir`}
+              {tnu("dt.revoir", unite, aRevoir.length)}
             </p>
             <Reperes reperes={aRevoir} onAller={aller} />
           </div>
@@ -85,10 +87,10 @@ export function DialogueTerminer({
 
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Continuer l'épreuve
+            {t("dt.continuer")}
           </Button>
           <Button disabled={enCours} onClick={onConfirmer}>
-            {enCours ? "Envoi…" : "Terminer et voir le corrigé"}
+            {enCours ? t("login.envoi") : t("dt.terminer_voir")}
           </Button>
         </div>
       </DialogContent>
@@ -115,33 +117,33 @@ interface DialogueModeExamenProps {
 export function DialogueModeExamen({
   open, onOpenChange, dureeMinutes, dureeEstimee, papier, enCours, unite = "question", onConfirmer,
 }: DialogueModeExamenProps) {
-  const m = mots(unite)
+  useI18n()
+  const m = libellesUnite(unite)
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogTitle>{papier ? "Composer l'épreuve sur papier ?" : "Passer l'épreuve en conditions réelles ?"}</DialogTitle>
+        <DialogTitle>{papier ? t("cm.dialogue_papier") : t("cm.dialogue_reel")}</DialogTitle>
         <DialogDescription>
-          Le chrono de <strong className="text-foreground">{formatDureeMinutes(dureeMinutes)}</strong> démarre tout de suite et ne
-          s'arrête pas.
-          {dureeEstimee && " Cette annale n'annonce pas sa durée : estimée d'après ses autres sessions."}
+          {t("cm.chrono_avant")} <strong className="text-foreground">{formatDureeMinutes(dureeMinutes)}</strong> {t("cm.chrono_apres")}
+          {dureeEstimee && t("cm.duree_estimee_courte")}
         </DialogDescription>
         <ul className="mt-4 flex list-disc flex-col gap-1.5 pl-5 text-sm">
-          <li>Le corrigé reste masqué jusqu'à la fin de l'épreuve.</li>
-          <li>À la dernière seconde, ta copie est rendue automatiquement.</li>
+          <li>{t("cm.regle1")}</li>
+          <li>{t("cm.regle2")}</li>
           <li>
             {papier
-              ? `Le sujet PDF s'ouvre : imprime-le avant de lancer le chrono, ou garde-le ouvert. À l'écran, tu coches chaque ${m.singulier} que tu as ${m.traite}.`
-              : `Compose sur brouillon ou sur papier, puis coche chaque ${m.singulier} ${m.traite}.`}
+              ? t("cm.regle3_papier", { unite: m.singulier, traite: m.traite })
+              : t("cm.regle3_ecran", { unite: m.singulier, traite: m.traite })}
           </li>
-          <li>Tu ne pourras plus changer de mode une fois commencé.</li>
+          <li>{t("cm.regle4")}</li>
         </ul>
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Pas maintenant
+            {t("cm.pas_maintenant")}
           </Button>
           <Button disabled={enCours} onClick={onConfirmer}>
             <Timer className="size-4" />
-            {enCours ? "Démarrage…" : "Lancer le chrono"}
+            {enCours ? t("cm.demarrage") : t("cm.lancer_chrono")}
           </Button>
         </div>
       </DialogContent>
@@ -158,19 +160,19 @@ interface DialogueQuitterProps {
 /** Quitter une épreuve chronométrée n'arrête pas le chrono : mieux vaut le savoir avant de
  * fermer la page que le découvrir en revenant. Tout ce qui est déjà coché est conservé. */
 export function DialogueQuitter({ open, onOpenChange, onConfirmer }: DialogueQuitterProps) {
+  useI18n()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogTitle>Quitter l'épreuve ?</DialogTitle>
+        <DialogTitle>{t("dt.quitter_titre")}</DialogTitle>
         <DialogDescription>
-          Le chrono continue de tourner même si tu quittes cette page. Tout ce que tu as coché est conservé, et tu
-          peux reprendre depuis ton compte tant que le temps n'est pas écoulé.
+          {t("dt.quitter_texte")}
         </DialogDescription>
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button variant="outline" onClick={onConfirmer}>
-            Quitter quand même
+            {t("dt.quitter_quand_meme")}
           </Button>
-          <Button onClick={() => onOpenChange(false)}>Rester dans l'épreuve</Button>
+          <Button onClick={() => onOpenChange(false)}>{t("dt.rester")}</Button>
         </div>
       </DialogContent>
     </Dialog>

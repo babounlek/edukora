@@ -7,6 +7,7 @@ import { startSimulation } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { Button } from "@/components/ui/button"
 import { trackEvent } from "@/lib/analytics"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * « Passer cette épreuve en conditions d'examen » : ouvre une simulation de l'annale - chrono,
@@ -14,6 +15,7 @@ import { trackEvent } from "@/lib/analytics"
  * (conditions réelles, papier, entraînement libre) se fait sur l'écran de briefing qui suit.
  */
 export function BoutonSimulation({ epreuveId }: { epreuveId: number }) {
+  useI18n()
   const navigate = useNavigate()
   const [enCours, setEnCours] = useState(false)
 
@@ -24,7 +26,7 @@ export function BoutonSimulation({ epreuveId }: { epreuveId: number }) {
       trackEvent("simulation_demarree", { epreuve_id: epreuveId })
       navigate(`/simulation/${simulation.id}`)
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Impossible de lancer la simulation. Réessaie.")
+      toast.error(err instanceof ApiError ? err.message : t("simulation.erreur"))
       setEnCours(false)
     }
   }
@@ -32,7 +34,7 @@ export function BoutonSimulation({ epreuveId }: { epreuveId: number }) {
   return (
     <Button variant="outline" size="lg" className="h-12 rounded-full" disabled={enCours} onClick={lancer}>
       {enCours ? <Loader2 className="animate-spin" /> : <Timer />}
-      Passer en conditions d'examen
+      {t("simulation.bouton")}
     </Button>
   )
 }

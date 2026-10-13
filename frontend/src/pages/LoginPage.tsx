@@ -22,6 +22,7 @@ import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { chiffresNumeroLocal } from "@/lib/telephone"
+import { t, useI18n } from "@/lib/i18n"
 
 type Step = "identifiant" | "code"
 
@@ -57,7 +58,8 @@ const OTP_RESEND_COOLDOWN_SECONDS = 60
 const OTP_CODE_VALIDITY_MINUTES = 5
 
 export function LoginPage() {
-  useSeo({ title: "Connexion" })
+  useI18n()
+  useSeo({ title: t("login.seo") })
 
   const { country: browsingCountry, countries } = useCountry()
   const [step, setStep] = useState<Step>("identifiant")
@@ -144,10 +146,10 @@ export function LoginPage() {
   /** Contrôle local de l'identifiant saisi ; renvoie le message d'erreur, ou null. */
   function erreurIdentifiant(): string | null {
     if (methode === "phone" && !/^6\d{8}$/.test(phoneNumber)) {
-      return "Entre un numéro camerounais valide (9 chiffres, commence par 6)."
+      return t("login.erreur_telephone")
     }
     if (methode === "email" && !/^\S+@\S+\.\S+$/.test(email)) {
-      return "Entre une adresse e-mail valide."
+      return t("login.erreur_email")
     }
     return null
   }
@@ -183,7 +185,7 @@ export function LoginPage() {
       setCodeDejaRecu(false)
       setStep("code")
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
+      setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
       setIsSubmitting(false)
     }
@@ -198,7 +200,7 @@ export function LoginPage() {
       // Le 429 du cooldown serveur (voir OTP_RESEND_COOLDOWN_SECONDS) ne devrait
       // normalement jamais arriver ici tant que le bouton reste grisé pendant le
       // décompte - gardé quand même en filet pour une horloge client désynchronisée.
-      setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
+      setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
       setIsResending(false)
     }
@@ -217,7 +219,7 @@ export function LoginPage() {
       login(response.access, response.user)
       await naviguerApresConnexion(response.user.session_restreinte)
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
+      setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
       setIsSubmitting(false)
     }
@@ -232,7 +234,7 @@ export function LoginPage() {
       login(response.access, response.user)
       await naviguerApresConnexion()
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
+      setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
       setIsSubmitting(false)
     }
@@ -247,7 +249,7 @@ export function LoginPage() {
     <div className="flex min-h-[80vh] items-center justify-center px-4">
       <Card className="w-full max-w-sm animate-fade-up shadow-lg shadow-primary/5">
         <CardHeader>
-          <h1 className="font-display text-2xl font-semibold leading-none tracking-tight">Connexion</h1>
+          <h1 className="font-display text-2xl font-semibold leading-none tracking-tight">{t("login.titre")}</h1>
           {/* Ne nomme plus la méthode : cette page ne peut pas savoir si le bouton
               Google s'est affiché (il disparaît de lui-même quand VITE_GOOGLE_CLIENT_ID
               n'est pas configuré), donc toute phrase citant une méthode serait fausse
@@ -256,11 +258,11 @@ export function LoginPage() {
           <CardDescription>
             {step === "identifiant"
               ? intent
-                ? `${intent} Connecte-toi en quelques secondes.`
-                : "Connecte-toi en quelques secondes."
+                ? t("login.description_intent", { intent })
+                : t("login.description")
               : codeDejaRecu
-                ? `Entre le code reçu pour ${destination}.`
-                : `Code envoyé ${methode === "phone" ? "au" : "à"} ${destination}.`}
+                ? t("login.code_recu_pour", { destination })
+                : t(methode === "phone" ? "login.code_envoye_tel" : "login.code_envoye_email", { destination })}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -283,7 +285,7 @@ export function LoginPage() {
             <form onSubmit={handleRequestCode} className="flex flex-col gap-4">
               {methode === "phone" ? (
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="phone">Numéro de téléphone</Label>
+                  <Label htmlFor="phone">{t("login.numero")}</Label>
                   <div className="flex gap-2">
                     {countries.length > 0 && (
                       <Select value={dialCountry} onValueChange={setDialCountry}>
@@ -330,12 +332,12 @@ export function LoginPage() {
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="email">Adresse e-mail</Label>
+                  <Label htmlFor="email">{t("login.email")}</Label>
                   <Input
                     id="email"
                     type="email"
                     inputMode="email"
-                    placeholder="prenom@exemple.com"
+                    placeholder={t("login.email_placeholder")}
                     // Le seul champ de cette page où l'autocomplétion du navigateur aide
                     // vraiment : une adresse se retape mal sur un clavier de téléphone,
                     // et une faute de frappe ici envoie le code dans le vide sans que
@@ -348,9 +350,8 @@ export function LoginPage() {
               )}
               {methode === "phone" && !isSupported ? (
                 <p className="text-sm text-muted-foreground">
-                  L'inscription par téléphone est disponible uniquement pour les numéros
-                  camerounais pour l'instant.
-                  {selectedCountry ? ` ${selectedCountry.label} arrive bientôt.` : ""}
+                  {t("login.tel_cameroun_seulement")}
+                  {selectedCountry ? t("login.pays_bientot", { pays: selectedCountry.label }) : ""}
                 </p>
               ) : (
                 error && <p className="text-sm text-destructive">{error}</p>
@@ -361,16 +362,16 @@ export function LoginPage() {
                 className="w-full"
                 size="lg"
               >
-                {isSubmitting ? "Envoi…" : "Recevoir le code"}
+                {isSubmitting ? t("login.envoi") : t("login.recevoir_code")}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
-                En continuant, tu acceptes les{" "}
+                {t("login.cgu_avant")}{" "}
                 <Link to="/cgu" className="underline underline-offset-4 hover:text-primary">
-                  Conditions d'utilisation
+                  {t("login.cgu_lien")}
                 </Link>{" "}
-                et la{" "}
+                {t("login.cgu_et")}{" "}
                 <Link to="/confidentialite" className="underline underline-offset-4 hover:text-primary">
-                  Politique de confidentialité
+                  {t("login.confidentialite_lien")}
                 </Link>
                 .
               </p>
@@ -382,7 +383,7 @@ export function LoginPage() {
                 disabled={isSubmitting || (methode === "phone" && !isSupported)}
                 onClick={passerAvecCodeExistant}
               >
-                J'ai déjà un code
+                {t("login.deja_code")}
               </Button>
             </form>
           ) : null}
@@ -400,15 +401,15 @@ export function LoginPage() {
               onClick={basculerMethode}
             >
               {methode === "phone"
-                ? "Utiliser plutôt une adresse e-mail"
-                : "Utiliser plutôt mon numéro de téléphone"}
+                ? t("login.utiliser_email")
+                : t("login.utiliser_tel")}
             </Button>
           )}
           {step === "code" ? (
             <form onSubmit={handleVerifyCode} className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="code">
-                  {methode === "phone" ? "Code reçu par SMS" : "Code reçu par e-mail"}
+                  {methode === "phone" ? t("login.code_sms") : t("login.code_email")}
                 </Label>
                 <Input
                   id="code"
@@ -421,14 +422,14 @@ export function LoginPage() {
                   autoFocus
                 />
                 <p className="text-xs text-muted-foreground">
-                  Ce code est valable {OTP_CODE_VALIDITY_MINUTES} minutes.
+                  {t("login.code_validite", { n: OTP_CODE_VALIDITY_MINUTES })}
                 </p>
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
               {/* Désactivé tant que le code est incomplet : un envoi à 3 chiffres ne pouvait
                   que revenir en erreur (le code fait toujours 6 chiffres). */}
               <Button type="submit" disabled={isSubmitting || code.length < 6} className="w-full" size="lg">
-                {isSubmitting ? "Vérification…" : "Valider"}
+                {isSubmitting ? t("login.verification") : t("login.valider")}
               </Button>
               <Button
                 type="button"
@@ -437,10 +438,10 @@ export function LoginPage() {
                 onClick={handleResendCode}
               >
                 {resendSecondsLeft > 0
-                  ? `Renvoyer le code (${resendSecondsLeft}s)`
+                  ? t("login.renvoyer_attente", { s: resendSecondsLeft })
                   : isResending
-                    ? "Envoi…"
-                    : "Renvoyer le code"}
+                    ? t("login.envoi")
+                    : t("login.renvoyer")}
               </Button>
               <Button
                 type="button"
@@ -452,7 +453,7 @@ export function LoginPage() {
                   setResendCooldownEndsAt(null)
                 }}
               >
-                {methode === "phone" ? "Changer de numéro" : "Changer d'adresse"}
+                {methode === "phone" ? t("login.changer_numero") : t("login.changer_adresse")}
               </Button>
             </form>
           ) : null}

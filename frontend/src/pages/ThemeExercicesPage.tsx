@@ -18,16 +18,17 @@ import { ReviserTabs } from "@/components/ReviserTabs"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 
 type FiltreOrigine = "tous" | "officiels" | "autres"
 
-const ORIGINES: Record<string, { libelle: string; classe: string }> = {
-  OFFICIEL: { libelle: "Sujet officiel", classe: "border-gold/40 bg-gold/10 text-gold-text" },
-  BLANC: { libelle: "Examen blanc", classe: "border-border bg-muted text-muted-foreground" },
-  ETABLISSEMENT: { libelle: "Établissement", classe: "border-border bg-muted text-muted-foreground" },
-  SUJET_ZERO: { libelle: "Sujet zéro", classe: "border-primary/30 bg-primary/10 text-primary" },
-  INEDITE: { libelle: "Inédite", classe: "border-primary/30 bg-primary/10 text-primary" },
-  AUTRE: { libelle: "Autre", classe: "border-border bg-muted text-muted-foreground" },
+const ORIGINES: Record<string, { cle: CleI18n; classe: string }> = {
+  OFFICIEL: { cle: "te.origine_OFFICIEL", classe: "border-gold/40 bg-gold/10 text-gold-text" },
+  BLANC: { cle: "te.origine_BLANC", classe: "border-border bg-muted text-muted-foreground" },
+  ETABLISSEMENT: { cle: "te.origine_ETABLISSEMENT", classe: "border-border bg-muted text-muted-foreground" },
+  SUJET_ZERO: { cle: "te.origine_SUJET_ZERO", classe: "border-primary/30 bg-primary/10 text-primary" },
+  INEDITE: { cle: "te.origine_INEDITE", classe: "border-primary/30 bg-primary/10 text-primary" },
+  AUTRE: { cle: "te.origine_AUTRE", classe: "border-border bg-muted text-muted-foreground" },
 }
 
 function libelleCursus(c: Pick<Cursus, "examen_display" | "series">) {
@@ -42,6 +43,7 @@ function libelleCursus(c: Pick<Cursus, "examen_display" | "series">) {
  * laisser l'élève rechercher lui-même dans un corrigé entier.
  */
 export function ThemeExercicesPage() {
+  useI18n()
   const { country = "", tagId } = useParams<{ country: string; tagId: string }>()
   const [searchParams, setSearchParams] = useSearchParams()
   const subjectCode = searchParams.get("subject") ?? ""
@@ -86,8 +88,8 @@ export function ThemeExercicesPage() {
       : undefined
 
   useSeo({
-    title: data ? `Exercices sur « ${capitaliserTheme(data.tag)} »` : "Exercices par thème",
-    description: data ? `Tous les exercices corrigés qui traitent "${capitaliserTheme(data.tag)}".` : undefined,
+    title: data ? t("te.seo_titre", { theme: capitaliserTheme(data.tag) }) : t("te.seo_defaut"),
+    description: data ? t("te.seo_description", { theme: capitaliserTheme(data.tag) }) : undefined,
   })
 
   function changerSelection(cursus: string, subject: string) {
@@ -103,8 +105,8 @@ export function ThemeExercicesPage() {
     .filter((c) => parCursus.has(c.id))
     .sort(
       (x, y) =>
-        x.examen_display.localeCompare(y.examen_display, "fr") ||
-        (x.series?.code ?? "").localeCompare(y.series?.code ?? "", "fr"),
+        x.examen_display.localeCompare(y.examen_display, localeCourante()) ||
+        (x.series?.code ?? "").localeCompare(y.series?.code ?? "", localeCourante()),
     )
   const matieres = contextes.filter((c) => String(c.cursus_id) === cursusId)
   const cursusCourant = cursusList.find((c) => String(c.id) === cursusId)
@@ -132,7 +134,7 @@ export function ThemeExercicesPage() {
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-3.5" />
-        Retour au classement
+        {t("te.retour_classement")}
       </Link>
 
       {/* Hero : même gabarit que /epreuves et /themes-frequents, avec la fréquence du
@@ -149,7 +151,7 @@ export function ThemeExercicesPage() {
         <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <p className="mb-2 font-display text-sm italic text-primary">
-              Exercices par thème
+              {t("te.eyebrow")}
               {matiereCourante ? ` · ${matiereCourante.subject_label}` : ""}
               {cursusCourant ? ` · ${libelleCursus(cursusCourant)}` : ""}
             </p>
@@ -157,21 +159,20 @@ export function ThemeExercicesPage() {
               {data ? capitaliserTheme(data.tag) : <Skeleton className="h-10 w-72" />}
             </h1>
             <p className="mt-2 max-w-xl text-muted-foreground">
-              Tous les exercices corrigés qui traitent ce thème. Chacun t'emmène directement au bon passage du
-              corrigé.
+              {t("te.hero_texte")}
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
               {data && (
                 <StatChip icon={<FileText className="size-3.5 text-primary" />}>
                   <span className="font-medium tabular-nums">{data.total}</span>
-                  <span className="text-muted-foreground">exercice{data.total > 1 ? "s" : ""} corrigé{data.total > 1 ? "s" : ""}</span>
+                  <span className="text-muted-foreground">{tn("te.stat_corriges", data.total)}</span>
                 </StatChip>
               )}
               {rang && (
                 <StatChip icon={<Crown className="size-3.5 text-gold-text" />}>
-                  <span className="font-medium">N°{rang}</span>
-                  <span className="text-muted-foreground">du classement</span>
+                  <span className="font-medium">{t("te.rang", { rang })}</span>
+                  <span className="text-muted-foreground">{t("te.du_classement")}</span>
                 </StatChip>
               )}
             </div>
@@ -181,10 +182,10 @@ export function ThemeExercicesPage() {
             <div className="flex shrink-0 items-center gap-4 rounded-2xl border border-gold/30 bg-card/80 p-4 shadow-sm sm:flex-col sm:gap-2 sm:px-6 sm:text-center">
               <AnneauFrequence pct={frequence.pct} dore grand />
               <div>
-                <p className="text-sm font-medium">des sessions officielles</p>
+                <p className="text-sm font-medium">{t("te.des_sessions")}</p>
                 {frequence.nb && frequence.total && (
                   <p className="text-xs tabular-nums text-muted-foreground">
-                    {frequence.nb} sur {frequence.total}
+                    {t("te.sur", { n: frequence.nb, total: frequence.total })}
                   </p>
                 )}
               </div>
@@ -197,9 +198,9 @@ export function ThemeExercicesPage() {
           examens et matières où ce thème est réellement traité. */}
       {examens.length > 1 || matieres.length > 1 ? (
         <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
-          <p className="font-display text-lg font-semibold">Ton examen, ta matière</p>
-          <p className="text-sm text-muted-foreground">Ce thème est aussi traité ailleurs : change de sélection.</p>
-          <FiltreLigne titre="Examen">
+          <p className="font-display text-lg font-semibold">{t("te.ton_examen")}</p>
+          <p className="text-sm text-muted-foreground">{t("te.aussi_ailleurs")}</p>
+          <FiltreLigne titre={t("quiz.examen")}>
             {examens.map((c) => {
               const actif = String(c.id) === cursusId
               // Garde la matière en cours si elle existe dans cet examen, sinon la plus fournie.
@@ -214,7 +215,7 @@ export function ThemeExercicesPage() {
               )
             })}
           </FiltreLigne>
-          <FiltreLigne titre="Matière">
+          <FiltreLigne titre={t("quiz.matiere")}>
             {matieres.map((m) => {
               const Icon = subjectIcon(m.subject_code)
               const actif = m.subject_code === subjectCode
@@ -241,13 +242,13 @@ export function ThemeExercicesPage() {
         </div>
       ) : isError && !data ? (
         // Une panne n'est pas « aucun exercice » : sans ce cas, l'élève croyait son thème vide.
-        <ErreurChargement objet="les exercices de ce thème" onRetry={() => refetch()} />
+        <ErreurChargement objet={t("te.objet")} onRetry={() => refetch()} />
       ) : !data || data.exercices.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border px-6 py-14 text-center">
           <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
             <FileText className="size-5" />
           </span>
-          <p className="text-muted-foreground">Aucun exercice trouvé pour ce thème dans cette sélection.</p>
+          <p className="text-muted-foreground">{t("te.aucun")}</p>
         </div>
       ) : (
         <>
@@ -262,17 +263,17 @@ export function ThemeExercicesPage() {
                 <div>
                   <p className="font-display text-base font-semibold">
                     {nbVerrouilles === data.total
-                      ? `Les ${data.total} corrigés de ce thème t'attendent`
-                      : `${nbVerrouilles} corrigé${nbVerrouilles > 1 ? "s" : ""} sur ${data.total} réservé${nbVerrouilles > 1 ? "s" : ""} aux abonnés`}
+                      ? t("te.verrou_tous", { n: data.total })
+                      : tn("te.verrou_n", nbVerrouilles, { total: data.total })}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Débloque-les tous avec Jusqu'à l'Examen, et suis ta progression exercice par exercice.
+                    {t("te.verrou_texte")}
                   </p>
                 </div>
               </div>
               <Button asChild className="shrink-0">
                 <Link to={`/abonnement?cursus=${cursusId}`}>
-                  Débloquer
+                  {t("qd.debloquer")}
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
@@ -284,20 +285,20 @@ export function ThemeExercicesPage() {
               <span className={cn("flex size-8 items-center justify-center rounded-lg", couleurMatiere(subjectCode).puce)}>
                 <MatiereIcon className="size-4" aria-hidden="true" />
               </span>
-              Les exercices
+              {t("te.les_exercices")}
             </h2>
             {nbOfficiels > 0 && nbAutres > 0 && (
-              <div role="group" aria-label="Filtrer par origine" className="flex flex-wrap gap-1.5">
+              <div role="group" aria-label={t("te.filtre_origine")} className="flex flex-wrap gap-1.5">
                 <PastilleFiltre actif={filtreOrigine === "tous"} onClick={() => setFiltreOrigine("tous")}>
-                  Tous
+                  {t("ep.tous")}
                   <CompteurPastille actif={filtreOrigine === "tous"}>{exercices.length}</CompteurPastille>
                 </PastilleFiltre>
                 <PastilleFiltre actif={filtreOrigine === "officiels"} onClick={() => setFiltreOrigine("officiels")}>
-                  Sujets officiels
+                  {t("te.officiels")}
                   <CompteurPastille actif={filtreOrigine === "officiels"}>{nbOfficiels}</CompteurPastille>
                 </PastilleFiltre>
                 <PastilleFiltre actif={filtreOrigine === "autres"} onClick={() => setFiltreOrigine("autres")}>
-                  Blancs et autres
+                  {t("te.autres")}
                   <CompteurPastille actif={filtreOrigine === "autres"}>{nbAutres}</CompteurPastille>
                 </PastilleFiltre>
               </div>
@@ -346,10 +347,10 @@ function LigneExercice({ exercice, lien }: { exercice: ThemeExercice; lien: stri
       <div className="min-w-0 flex-1">
         <p className={cn("line-clamp-2 font-medium leading-snug sm:line-clamp-1", exercice.fait && "text-muted-foreground")}>{exercice.lesson_title}</p>
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-          <span>Exercice {exercice.numero_exercice}</span>
+          <span>{t("ed.exercice_n", { n: exercice.numero_exercice })}</span>
           {exercice.lesson_year && <span className="sm:hidden">· {exercice.lesson_year}</span>}
           <span className={cn("rounded-full border px-2 py-0.5 text-[0.7rem] font-medium", origine.classe)}>
-            {origine.libelle}
+            {t(origine.cle)}
           </span>
         </div>
       </div>
@@ -357,13 +358,13 @@ function LigneExercice({ exercice, lien }: { exercice: ThemeExercice; lien: stri
         <Link to={lien}>
           {exercice.has_access ? (
             <>
-              {exercice.fait ? "Revoir" : "Lire"}
+              {exercice.fait ? t("te.revoir") : t("te.lire")}
               <ArrowRight className="size-3.5" />
             </>
           ) : (
             <>
               <Lock className="size-3.5" />
-              Aperçu
+              {t("accueil.apercu")}
             </>
           )}
         </Link>
@@ -408,24 +409,24 @@ function AvancementFile({
           </span>
           <div className="min-w-0">
             <p className="font-display text-lg font-semibold">
-              {termine ? "Thème bouclé" : (
+              {termine ? t("te.boucle") : (
                 <>
-                  <span className="tabular-nums">{faits}</span> exercice{faits > 1 ? "s" : ""} traité{faits > 1 ? "s" : ""} sur{" "}
+                  <span className="tabular-nums">{faits}</span> {tn("te.traites", faits)}{" "}
                   <span className="tabular-nums">{total}</span>
                 </>
               )}
             </p>
             <p className="mt-0.5 text-sm text-muted-foreground">
               {termine
-                ? "Tu as traité tous les exercices de ce thème. Il reviendra en révision au bon moment."
-                : "Chaque exercice se valide à la fin de son corrigé, une fois que tu l'as lu."}
+                ? t("te.boucle_texte")
+                : t("te.valide_a_la_fin")}
             </p>
           </div>
         </div>
         {suivant && (
           <Button asChild size="lg" className="shrink-0">
             <Link to={lien(suivant)}>
-              {faits > 0 ? "Continuer" : "Commencer"}
+              {faits > 0 ? t("bs.continuer") : t("seance.commencer")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -441,7 +442,7 @@ function AvancementFile({
           aria-valuenow={faits}
           aria-valuemin={0}
           aria-valuemax={total}
-          aria-label="Exercices traités"
+          aria-label={t("te.traites_aria")}
         />
       </div>
     </div>
@@ -466,8 +467,8 @@ function EtatFait({ exercice }: { exercice: ThemeExercice }) {
     return (
       <span
         role="img"
-        aria-label="Réservé aux abonnés"
-        title="Réservé aux abonnés"
+        aria-label={t("te.reserve")}
+        title={t("te.reserve")}
         className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
       >
         <Lock className="size-3.5" />
@@ -477,8 +478,8 @@ function EtatFait({ exercice }: { exercice: ThemeExercice }) {
   return (
     <span
       role="img"
-      aria-label={exercice.fait ? "Exercice validé" : "Exercice pas encore traité"}
-      title={exercice.fait ? "Validé" : "Pas encore traité"}
+      aria-label={exercice.fait ? t("ed.exercice_valide") : t("te.pas_traite_aria")}
+      title={exercice.fait ? t("te.valide") : t("te.pas_traite")}
       className={cn(
         "flex size-8 shrink-0 items-center justify-center rounded-full border",
         exercice.fait

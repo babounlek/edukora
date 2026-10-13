@@ -7,12 +7,9 @@ import { ParrainageHint } from "@/components/ParrainageHint"
 import { lienAbonnement } from "@/lib/retourAchat"
 import { PRIX_ABONNEMENT_FCFA } from "@/lib/tarifs"
 import { formatAmount } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
-const AVANTAGES = [
-  "Corrigés détaillés, pas à pas",
-  "Cours et rappels de méthode liés",
-  "Quiz et suivi de ta progression",
-]
+const AVANTAGES = ["ar.avantage1", "ed.avantage2", "ed.avantage3"] as const
 
 /**
  * Ce que voit un élève sans abonnement devant un contenu verrouillé (lecteur d'une épreuve ou
@@ -34,6 +31,7 @@ export function AccesRefuse({
   nature: "épreuve" | "cours"
   liens: { to: string; label: string }[]
 }) {
+  useI18n()
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-16">
       <section className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/[0.08] via-primary/[0.03] to-gold/[0.06] p-6 text-center shadow-lg shadow-primary/5 sm:p-9">
@@ -46,18 +44,17 @@ export function AccesRefuse({
             <Lock className="size-7" aria-hidden="true" />
           </span>
           <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-            Ce {nature === "cours" ? "cours" : "corrigé"} est réservé aux abonnés
+            {nature === "cours" ? t("ar.titre_cours") : t("ar.titre_corrige")}
           </h1>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            Un seul abonnement, valable jusqu'à ton examen, et tout s'ouvre : tu peux commencer à lire dès la
-            confirmation du paiement.
+            {t("ar.texte")}
           </p>
 
           <ul className="mx-auto mt-6 grid max-w-md gap-2 text-left">
             {AVANTAGES.map((avantage) => (
               <li key={avantage} className="flex items-start gap-2 rounded-xl bg-background/70 px-3 py-2.5 text-sm">
                 <Check className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={3} aria-hidden="true" />
-                {avantage}
+                {t(avantage)}
               </li>
             ))}
           </ul>
@@ -67,7 +64,9 @@ export function AccesRefuse({
               cursus.map((c) => (
                 <Button key={c.id} asChild size="lg" className="h-12 rounded-full px-6 shadow-lg shadow-primary/25">
                   <Link to={lienAbonnement(c.id, retour)}>
-                    S'abonner{cursus.length > 1 ? ` (${c.series ? c.series.code : c.examen_display})` : ""}
+                    {cursus.length > 1
+                      ? t("ed.sabonner_cursus", { cursus: c.series ? c.series.code : c.examen_display })
+                      : t("prix.sabonner")}
                     <ArrowRight />
                   </Link>
                 </Button>
@@ -75,7 +74,7 @@ export function AccesRefuse({
             ) : (
               <Button asChild size="lg" className="h-12 rounded-full px-6 shadow-lg shadow-primary/25">
                 <Link to="/tarifs">
-                  Voir les formules
+                  {t("ar.formules")}
                   <ArrowRight />
                 </Link>
               </Button>
@@ -86,7 +85,7 @@ export function AccesRefuse({
               demande déjà un numéro de téléphone. Aucun Plan n'est chargé ici (seulement des
               Cursus) : la valeur vient de la constante partagée, pas d'un nombre recopié. */}
           <p className="mt-3 text-sm text-muted-foreground">
-            {formatAmount(PRIX_ABONNEMENT_FCFA)} FCFA, une seule fois, jusqu'à l'examen · Mobile Money
+            {t("ar.prix", { prix: formatAmount(PRIX_ABONNEMENT_FCFA) })}
           </p>
 
           <div className="mt-4 flex justify-center">

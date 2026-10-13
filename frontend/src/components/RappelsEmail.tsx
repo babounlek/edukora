@@ -8,9 +8,11 @@ import { ApiError } from "@/api/client"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 /** Active ou coupe les rappels quotidiens par e-mail. Renvoie false si l'appel échoue. */
 function useRappelsEmail() {
+  useI18n()
   const { user, updateUser } = useAuth()
   const [enCours, setEnCours] = useState(false)
 
@@ -21,7 +23,7 @@ function useRappelsEmail() {
       if (succes) toast.success(succes)
       return true
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Impossible d'enregistrer ce réglage. Réessaie.")
+      toast.error(err instanceof ApiError ? err.message : t("rappels.erreur"))
       return false
     } finally {
       setEnCours(false)
@@ -47,17 +49,16 @@ export function InterrupteurRappelsEmail() {
       <div className="min-w-0">
         <p className="flex items-center gap-2 font-medium">
           <Mail className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          Ta séance du jour par e-mail
+          {t("rappels.seance_titre")}
         </p>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          Un e-mail par jour, seulement si tu n'as pas encore fait ta séance. Un clic dans le message suffit pour
-          l'arrêter.
+          {t("rappels.seance_texte")}
         </p>
         {!peutActiver && (
           <p className="mt-1 text-sm">
-            Ajoute et confirme d'abord ton e-mail dans{" "}
+            {t("rappels.ajoute_email")}{" "}
             <Link to="/compte" className="text-primary underline underline-offset-2">
-              Connexion
+              {t("rappels.lien_connexion")}
             </Link>
             .
           </p>
@@ -67,7 +68,7 @@ export function InterrupteurRappelsEmail() {
         type="button"
         role="switch"
         aria-checked={actif}
-        aria-label="Ta séance du jour par e-mail"
+        aria-label={t("rappels.seance_titre")}
         disabled={enCours || (!peutActiver && !actif)}
         onClick={() => modifier({ rappels_actifs: !actif })}
         className={cn(
@@ -104,17 +105,16 @@ export function InterrupteurBilanParent() {
       <div className="min-w-0">
         <p className="flex items-center gap-2 font-medium">
           <CalendarCheck className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          Le bilan de la semaine, par e-mail
+          {t("rappels.bilan_titre")}
         </p>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          Chaque dimanche soir : les jours de révision, les séances et les thèmes consolidés de chaque enfant du
-          compte. Rien que des faits, un clic dans le message suffit pour l'arrêter.
+          {t("rappels.bilan_texte")}
         </p>
         {!peutActiver && (
           <p className="mt-1 text-sm">
-            Ajoute et confirme d'abord ton e-mail dans{" "}
+            {t("rappels.ajoute_email")}{" "}
             <Link to="/compte" className="text-primary underline underline-offset-2">
-              Connexion
+              {t("rappels.lien_connexion")}
             </Link>
             .
           </p>
@@ -124,7 +124,7 @@ export function InterrupteurBilanParent() {
         type="button"
         role="switch"
         aria-checked={actif}
-        aria-label="Le bilan de la semaine, par e-mail"
+        aria-label={t("rappels.bilan_titre")}
         disabled={enCours || (!peutActiver && !actif)}
         onClick={() => modifier({ bilan_parent_actif: !actif })}
         className={cn(
@@ -154,28 +154,27 @@ export function InviteRappels() {
   if (!user || user.rappels_actifs || user.rappels_invite_refusee) return null
 
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label="Rappel quotidien">
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("rappels.invite_aria")}>
       <div className="rounded-2xl border border-border bg-card px-5 py-4">
         <p className="flex items-center gap-2 font-display font-medium">
           <BellRing className="size-4 shrink-0 text-primary" aria-hidden="true" />
-          Un rappel chaque jour ?
+          {t("rappels.invite_titre")}
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          On t'envoie ta séance du jour par e-mail, avec le compte à rebours de ton examen, et rien d'autre. Tu peux
-          l'arrêter en un clic.
+          {t("rappels.invite_texte")}
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {user.email_verified ? (
             <Button
               size="sm"
               disabled={enCours}
-              onClick={() => modifier({ rappels_actifs: true }, "Rappel quotidien activé")}
+              onClick={() => modifier({ rappels_actifs: true }, t("rappels.active"))}
             >
-              Activer le rappel
+              {t("rappels.activer")}
             </Button>
           ) : (
             <Button asChild size="sm">
-              <Link to="/compte">Ajouter mon e-mail</Link>
+              <Link to="/compte">{t("rappels.ajouter_email")}</Link>
             </Button>
           )}
           <Button
@@ -184,7 +183,7 @@ export function InviteRappels() {
             disabled={enCours}
             onClick={() => modifier({ rappels_invite_refusee: true })}
           >
-            Non merci
+            {t("rappels.non_merci")}
           </Button>
         </div>
       </div>

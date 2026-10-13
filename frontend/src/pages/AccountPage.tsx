@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import {
-  Check, Copy, Crown, FileText, GraduationCap,
+  BookOpen, Check, Copy, Crown, FileText, GraduationCap,
   MessageCircle, NotebookPen, Pencil, RefreshCw, Settings2, Share2, Sparkles, TrendingUp, Zap, type LucideIcon,
 } from "lucide-react"
 
@@ -16,6 +16,8 @@ import { ConnexionMethodsCard } from "@/components/ConnexionMethodsCard"
 import { InterrupteurBilanParent, InterrupteurRappelsEmail } from "@/components/RappelsEmail"
 import { ChoixRythme, InterrupteurPush, InterrupteurRetours } from "@/components/ReglagesSeance"
 import { Section } from "@/components/CompteSection"
+import { ChoixMatieres, useAfficherChoixMatieres } from "@/components/ChoixMatieres"
+import { langueCourante, useI18n } from "@/lib/i18n"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -25,10 +27,11 @@ import { epreuvesListPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
 
 export function AccountPage() {
-  useSeo({ title: "Mon compte" })
-
   const { user, isAuthenticated, isLoading, updateUser } = useAuth()
   const { country } = useCountry()
+  const { t, tn } = useI18n()
+  useSeo({ title: t("compte.mon_compte") })
+  const afficherMatieres = useAfficherChoixMatieres()
   const navigate = useNavigate()
   const [copied, setCopied] = useState(false)
   const [whatsappOptedIn, setWhatsappOptedIn] = useState<boolean | null>(null)
@@ -65,7 +68,7 @@ export function AccountPage() {
       setWhatsappOptedIn(status.opted_in)
     } catch (err) {
       // L'interrupteur reste sur son état d'avant : sans message, on croyait le réglage changé.
-      toast.error(err instanceof ApiError ? err.message : "Impossible de modifier ce réglage pour le moment.")
+      toast.error(err instanceof ApiError ? err.message : t("cpt.reglage_erreur"))
     } finally {
       setWhatsappLoading(false)
     }
@@ -87,7 +90,7 @@ export function AccountPage() {
       updateUser(updated)
       setIsEditingProfile(false)
     } catch (err) {
-      setProfileError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
+      setProfileError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
       setIsSavingProfile(false)
     }
@@ -96,7 +99,7 @@ export function AccountPage() {
   if (isLoading || !user) return null
 
   const referralLink = `${window.location.origin}/?ref=${user.referral_code}`
-  const whatsappMessage = `Salut ! Je révise sur ${SITE_NAME} (corrigés BEPC/Probatoire/BAC) - viens jeter un œil : ${referralLink}`
+  const whatsappMessage = t("cpt.whatsapp_message", { site: SITE_NAME, lien: referralLink })
 
   function handleCopyLink() {
     // navigator.clipboard est absent hors contexte sécurisé et refusé dans certains navigateurs
@@ -107,15 +110,15 @@ export function AccountPage() {
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
       })
-      .catch(() => toast.error("Impossible de copier le lien. Utilise le bouton WhatsApp ou copie-le à la main."))
+      .catch(() => toast.error(t("cpt.copie_erreur")))
   }
 
-  const nom = user.full_name || user.pseudo || user.phone_number || user.email || "Mon compte"
+  const nom = user.full_name || user.pseudo || user.phone_number || user.email || t("compte.mon_compte")
   const initiales = (user.full_name || user.pseudo || "?")
     .trim()
     .split(/\s+/)
     .slice(0, 2)
-    .map((mot) => mot.charAt(0).toLocaleUpperCase("fr"))
+    .map((mot) => mot.charAt(0).toLocaleUpperCase(langueCourante()))
     .join("")
   const compte = user.compte_a_rebours ? formatCompteARebours(user.compte_a_rebours) : ""
 
@@ -125,33 +128,33 @@ export function AccountPage() {
           atteignables en un coup d'œil, sans hero pleine largeur ni tableau de chiffres. */}
       {isEditingProfile ? (
         <section className="mb-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
-          <h1 className="font-display text-xl font-semibold">Modifier mon profil</h1>
+          <h1 className="font-display text-xl font-semibold">{t("cpt.modifier_profil")}</h1>
           <form onSubmit={handleSaveProfile} className="mt-4 flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="full_name">Nom complet</Label>
+              <Label htmlFor="full_name">{t("cpt.nom_complet")}</Label>
               <Input
                 id="full_name"
                 value={fullNameDraft}
                 onChange={(e) => setFullNameDraft(e.target.value)}
                 maxLength={150}
-                placeholder="Ton nom"
+                placeholder={t("cpt.ton_nom")}
                 autoFocus
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="pseudo">Pseudo (facultatif)</Label>
+              <Label htmlFor="pseudo">{t("cpt.pseudo")}</Label>
               <Input
                 id="pseudo"
                 value={pseudoDraft}
                 onChange={(e) => setPseudoDraft(e.target.value)}
                 maxLength={20}
-                placeholder="3 à 20 caractères : lettres, chiffres, _"
+                placeholder={t("cpt.pseudo_aide")}
               />
             </div>
             {profileError && <p role="alert" className="text-sm text-destructive">{profileError}</p>}
             <div className="flex gap-2">
               <Button type="submit" disabled={isSavingProfile} className="rounded-full">
-                {isSavingProfile ? "Enregistrement…" : "Enregistrer"}
+                {isSavingProfile ? t("cpt.enregistrement") : t("matieres.enregistrer")}
               </Button>
               <Button
                 type="button"
@@ -160,7 +163,7 @@ export function AccountPage() {
                 disabled={isSavingProfile}
                 className="rounded-full"
               >
-                Annuler
+                {t("seance.annuler")}
               </Button>
             </div>
           </form>
@@ -190,7 +193,7 @@ export function AccountPage() {
             variant="ghost"
             size="icon"
             onClick={startEditingProfile}
-            aria-label="Modifier le profil"
+            aria-label={t("cpt.modifier_aria")}
             className="shrink-0 text-muted-foreground"
           >
             <Pencil className="size-4" />
@@ -206,12 +209,12 @@ export function AccountPage() {
             dupliquer ici. "Mes accès" vit aussi dans le menu du header (voir Header.tsx), comme
             "Mon historique" et "Mes paiements" - présent ici en plus parce que c'est l'information
             la plus naturellement attendue en arrivant sur /compte. */}
-        <nav aria-label="Raccourcis" className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3">
-          <Raccourci to="/mes-acces" icone={Sparkles} libelle="Mes accès" />
-          <Raccourci to="/carnet" icone={NotebookPen} libelle="Mon carnet" />
-          <Raccourci to="/parcours" icone={TrendingUp} libelle="Ma progression" />
-          <Raccourci to="/fiches" icone={FileText} libelle="Fiches" />
-          <Raccourci to={`${epreuvesListPath(country)}?origine=INEDITE`} icone={Crown} libelle="Inédites" />
+        <nav aria-label={t("cpt.raccourcis")} className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3">
+          <Raccourci to="/mes-acces" icone={Sparkles} libelle={t("compte.mes_acces")} />
+          <Raccourci to="/carnet" icone={NotebookPen} libelle={t("cpt.carnet")} />
+          <Raccourci to="/parcours" icone={TrendingUp} libelle={t("nav.progression")} />
+          <Raccourci to="/fiches" icone={FileText} libelle={t("cpt.fiches")} />
+          <Raccourci to={`${epreuvesListPath(country)}?origine=INEDITE`} icone={Crown} libelle={t("cpt.inedites")} />
         </nav>
 
         {/* Parrainage : simple partage de lien avec des amis (décision du 2026-09-28, voir
@@ -222,15 +225,15 @@ export function AccountPage() {
             <Share2 className="size-4.5" aria-hidden="true" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold">Partage avec tes amis</p>
+            <p className="text-sm font-semibold">{t("cpt.partage_titre")}</p>
             <p className="text-xs text-muted-foreground">
               {user.filleuls_count > 0
-                ? `${user.filleuls_count} ami${user.filleuls_count > 1 ? "s" : ""} déjà invité${user.filleuls_count > 1 ? "s" : ""}.`
-                : "Invite tes amis à découvrir tes cours et corrigés."}
+                ? tn("cpt.amis", user.filleuls_count)
+                : t("cpt.inviter")}
             </p>
           </div>
           <div className="flex shrink-0 gap-1.5">
-            <Button onClick={handleCopyLink} variant="outline" size="icon" className="rounded-full" aria-label="Copier mon lien de parrainage">
+            <Button onClick={handleCopyLink} variant="outline" size="icon" className="rounded-full" aria-label={t("cpt.copier_aria")}>
               {copied ? <Check className="size-4 text-success" /> : <Copy className="size-4" />}
             </Button>
             <Button asChild size="icon" className="rounded-full">
@@ -238,7 +241,7 @@ export function AccountPage() {
                 href={`https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Partager mon lien sur WhatsApp"
+                aria-label={t("cpt.whatsapp_aria")}
               >
                 <MessageCircle className="size-4" />
               </a>
@@ -246,7 +249,13 @@ export function AccountPage() {
           </div>
         </section>
 
-        <Section icone={Zap} titre="Ma séance">
+        {afficherMatieres && (
+          <Section icone={BookOpen} titre={t("matieres.titre")}>
+            <ChoixMatieres />
+          </Section>
+        )}
+
+        <Section icone={Zap} titre={t("cpt.ma_seance")}>
           <ChoixRythme />
           <div className="mt-4 border-t border-border pt-4">
             <InterrupteurRetours />
@@ -255,33 +264,33 @@ export function AccountPage() {
           <InterrupteurPush />
         </Section>
 
-        <Section icone={Settings2} titre="Réglages">
+        <Section icone={Settings2} titre={t("cpt.reglages")}>
           {whatsappErreur ? (
             <div role="alert" className="flex items-center justify-between gap-4">
-              <p className="text-sm text-muted-foreground">Impossible de lire ton réglage WhatsApp pour le moment.</p>
+              <p className="text-sm text-muted-foreground">{t("cpt.whatsapp_lecture_erreur")}</p>
               <Button onClick={chargerWhatsApp} variant="outline" size="sm" className="min-h-11 shrink-0 rounded-full">
                 <RefreshCw className="size-3.5" />
-                Réessayer
+                {t("erreur.reessayer")}
               </Button>
             </div>
           ) : whatsappOptedIn === null ? (
-            <p className="text-sm text-muted-foreground">Chargement…</p>
+            <p className="text-sm text-muted-foreground">{t("matieres.chargement")}</p>
           ) : (
             <div className="flex items-center justify-between gap-4">
               <div className="min-w-0">
                 <p className="flex items-center gap-2 text-sm font-medium">
                   <MessageCircle className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-                  Rappels par WhatsApp
+                  {t("cpt.whatsapp_titre")}
                 </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Un message par jour quand des thèmes t'attendent en révision.
+                  {t("cpt.whatsapp_texte")}
                 </p>
               </div>
               <button
                 type="button"
                 role="switch"
                 aria-checked={whatsappOptedIn}
-                aria-label="Rappels de révision par WhatsApp"
+                aria-label={t("cpt.whatsapp_aria_rappels")}
                 onClick={handleToggleWhatsApp}
                 disabled={whatsappLoading}
                 className={cn(

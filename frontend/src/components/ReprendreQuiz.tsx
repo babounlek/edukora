@@ -6,12 +6,15 @@ import { Play, X } from "lucide-react"
 import { getQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { lireQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
+import { t, useI18n } from "@/lib/i18n"
+import { traduireLibelleSerie } from "@/lib/cursus"
 
 /**
  * « Reprendre mon quiz » : la séance commencée et pas terminée passe avant d'en lancer une autre.
  * Rien ne s'affiche s'il n'y en a pas, si elle est déjà rendue, ou si le serveur ne la connaît plus.
  */
 export function ReprendreQuiz({ className, enveloppe = false }: { className?: string; enveloppe?: boolean }) {
+  useI18n()
   const cle = useCleQuizEnCours()
   // Relit le stockage quand l'élève abandonne (le stockage seul ne déclenche aucun rendu).
   const [, setVersion] = useState(0)
@@ -37,7 +40,7 @@ export function ReprendreQuiz({ className, enveloppe = false }: { className?: st
   const total = session.total_questions || session.questions.length
   const repondues = session.questions.filter((q) => q.reponse).length
   const aTerminer = repondues >= total
-  const nom = session.mode === "DIAGNOSTIC" ? "Test de niveau" : "Quiz"
+  const nom = session.mode === "DIAGNOSTIC" ? t("quiz_en_cours.test_niveau") : t("quiz_en_cours.quiz")
 
   const carte = (
     <div
@@ -55,11 +58,11 @@ export function ReprendreQuiz({ className, enveloppe = false }: { className?: st
         </span>
         <span className="min-w-0 flex-1">
           <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {nom} en cours · {repondues} / {total} répondues
+            {t("quiz_en_cours.titre", { nom, repondues, total })}
           </span>
-          <span className="block truncate text-sm font-medium">{session.cursus_display}</span>
+          <span className="block truncate text-sm font-medium">{traduireLibelleSerie(session.cursus_display)}</span>
         </span>
-        <span className="shrink-0 text-sm font-medium text-primary">{aTerminer ? "Terminer" : "Reprendre"}</span>
+        <span className="shrink-0 text-sm font-medium text-primary">{aTerminer ? t("quiz_en_cours.terminer") : t("seance.reprendre")}</span>
       </Link>
       <button
         type="button"
@@ -67,8 +70,8 @@ export function ReprendreQuiz({ className, enveloppe = false }: { className?: st
           oublierQuizEnCours(cle)
           setVersion((v) => v + 1)
         }}
-        aria-label="Ne plus proposer de reprendre ce quiz"
-        title="Ne plus proposer"
+        aria-label={t("quiz_en_cours.oublier_aria")}
+        title={t("quiz_en_cours.oublier_titre")}
         className="flex size-11 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
       >
         <X className="size-4" aria-hidden="true" />

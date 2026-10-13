@@ -21,6 +21,7 @@ import { RouteFallback } from "@/components/RouteFallback"
 import { ScrollToTop } from "@/components/ScrollToTop"
 import { BalisesDeRoute } from "@/components/BalisesDeRoute"
 import { COUNTRY_STORAGE_KEY, DEFAULT_COUNTRY_CODE } from "@/lib/countryPath"
+import { t, useI18n } from "@/lib/i18n"
 
 // Chargées à la demande (une par route) plutôt qu'au démarrage : les pages de
 // lecture (Épreuve/Cours détail + lire) embarquent à elles seules react-markdown +
@@ -52,6 +53,7 @@ const AboutPage = lazy(() => import("@/pages/AboutPage").then((m) => ({ default:
 const QuizStartPage = lazy(() => import("@/pages/QuizStartPage").then((m) => ({ default: m.QuizStartPage })))
 const QuizSessionPage = lazy(() => import("@/pages/QuizSessionPage").then((m) => ({ default: m.QuizSessionPage })))
 const QuizResultPage = lazy(() => import("@/pages/QuizResultPage").then((m) => ({ default: m.QuizResultPage })))
+const QuizEssaiLancementPage = lazy(() => import("@/pages/QuizEssaiLancementPage").then((m) => ({ default: m.QuizEssaiLancementPage })))
 const QuizEssaiResultPage = lazy(() => import("@/pages/QuizEssaiResultPage").then((m) => ({ default: m.QuizEssaiResultPage })))
 const ParcoursPage = lazy(() => import("@/pages/ParcoursPage").then((m) => ({ default: m.ParcoursPage })))
 const ParcoursSubjectPage = lazy(() => import("@/pages/ParcoursSubjectPage").then((m) => ({ default: m.ParcoursSubjectPage })))
@@ -105,6 +107,7 @@ function AppToaster() {
 }
 
 function App() {
+  useI18n()
   const enExamen = useModeExamen()
   return (
     <ThemeProvider defaultTheme="light" storageKey="edukamer-theme">
@@ -121,7 +124,7 @@ function App() {
                 href="#contenu"
                 className="sr-only rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100]"
               >
-                Aller au contenu
+                {t("gl.aller_contenu")}
               </a>
               {/* Salle d'examen : tant qu'une épreuve chronométrée tourne, seul le bandeau hors connexion
                   reste (il sert l'élève) - voir lib/modeExamen.ts. */}
@@ -167,6 +170,7 @@ function App() {
                       <Route path="/quiz" element={<QuizStartPage />} />
                       <Route path="/quiz/essai" element={<QuizSessionPage essai />} />
                       <Route path="/quiz/essai/resultat" element={<QuizEssaiResultPage />} />
+                      <Route path="/quiz/essai/:cursus/:subject/:theme" element={<QuizEssaiLancementPage />} />
                       <Route path="/quiz/session/:id" element={<QuizSessionPage />} />
                       <Route path="/quiz/session/:id/resultat" element={<QuizResultPage />} />
                       {/* /parcours a absorbé "à réviser" (badge par savoir) - une ancienne

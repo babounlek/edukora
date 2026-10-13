@@ -5,6 +5,7 @@ import { getBilanPeriode } from "@/api/endpoints"
 import type { BilanMatiere, BilanPeriode } from "@/api/types"
 import { Ecrin } from "@/components/Progression"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
 /**
  * "Ton bilan" : ce que l'élève a réellement fait sur les 30 derniers jours de son
@@ -17,6 +18,7 @@ import { capitaliserTheme, cn } from "@/lib/utils"
  * affichée en négatif : on montre le chiffre, sans le commenter.
  */
 export function BilanDePeriode({ cursusId, className }: { cursusId: number; className?: string }) {
+  useI18n()
   const { data: bilan } = useQuery({
     queryKey: ["bilan-periode", cursusId],
     queryFn: ({ signal }) => getBilanPeriode(cursusId, signal),
@@ -33,41 +35,40 @@ export function BilanDePeriode({ cursusId, className }: { cursusId: number; clas
       <Ecrin variante="sobre" className="sm:p-6">
         <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
           <TrendingUp className="size-3.5" />
-          Ton bilan
+          {t("bilan.titre")}
         </p>
         <h2 className="mt-2 font-display text-2xl font-semibold leading-tight tracking-tight text-balance sm:text-3xl">
           {titre(bilan)}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Du {jourMois(bilan.debut)} au {jourMois(bilan.fin)}
-          {!bilan.abonnement_actif && " · ta progression est conservée"}
+          {t("bilan.periode", { debut: jourMois(bilan.debut), fin: jourMois(bilan.fin) })}
+          {!bilan.abonnement_actif && t("bilan.conservee")}
         </p>
 
         <dl className="mt-5 grid grid-cols-2 gap-3 @xl:grid-cols-4">
-          <Chiffre icone={CalendarCheck} valeur={bilan.seances} unite={bilan.seances > 1 ? "séances" : "séance"} />
+          <Chiffre icone={CalendarCheck} valeur={bilan.seances} unite={tn("bilan.seances", bilan.seances)} />
           <Chiffre
             icone={Target}
             valeur={bilan.questions}
-            unite={bilan.questions > 1 ? "questions" : "question"}
+            unite={tn("bilan.questions", bilan.questions)}
           />
           <Chiffre
             icone={Sparkles}
-            valeur={bilan.taux_reussite === null ? "–" : `${bilan.taux_reussite} %`}
-            unite="de réussite"
-            note={gain !== null ? `+${gain} point${gain > 1 ? "s" : ""}` : undefined}
+            valeur={bilan.taux_reussite === null ? "–" : t("oujensuis.pct", { pct: bilan.taux_reussite })}
+            unite={t("bilan.reussite")}
+            note={gain !== null ? tn("bilan.gain", gain) : undefined}
           />
           {bilan.meilleure_serie >= 2 ? (
-            <Chiffre icone={Flame} valeur={bilan.meilleure_serie} unite="bonnes réponses d'affilée" />
+            <Chiffre icone={Flame} valeur={bilan.meilleure_serie} unite={t("bilan.serie")} />
           ) : (
-            <Chiffre icone={CalendarCheck} valeur={bilan.jours_actifs} unite={bilan.jours_actifs > 1 ? "jours actifs" : "jour actif"} />
+            <Chiffre icone={CalendarCheck} valeur={bilan.jours_actifs} unite={tn("bilan.jours", bilan.jours_actifs)} />
           )}
         </dl>
 
         {bilan.themes_consolides_total > 0 && (
           <div className="mt-6">
             <h3 className="text-sm font-semibold">
-              {bilan.themes_consolides_total} thème{bilan.themes_consolides_total > 1 ? "s" : ""} consolidé
-              {bilan.themes_consolides_total > 1 ? "s" : ""}
+              {tn("bilan.consolides", bilan.themes_consolides_total)}
             </h3>
             <ul className="mt-2 flex flex-wrap gap-2">
               {bilan.themes_consolides.map((theme) => (
@@ -81,8 +82,7 @@ export function BilanDePeriode({ cursusId, className }: { cursusId: number; clas
               ))}
               {bilan.themes_consolides_total > bilan.themes_consolides.length && (
                 <li className="px-1 py-1 text-xs text-muted-foreground">
-                  et {bilan.themes_consolides_total - bilan.themes_consolides.length} autre
-                  {bilan.themes_consolides_total - bilan.themes_consolides.length > 1 ? "s" : ""}
+                  {tn("depuis.autres", bilan.themes_consolides_total - bilan.themes_consolides.length)}
                 </li>
               )}
             </ul>
@@ -91,7 +91,7 @@ export function BilanDePeriode({ cursusId, className }: { cursusId: number; clas
 
         {bilan.matieres.length > 0 && (
           <div className="mt-6">
-            <h3 className="text-sm font-semibold">Par matière</h3>
+            <h3 className="text-sm font-semibold">{t("bilan.par_matiere")}</h3>
             <ul className="mt-2 flex flex-col divide-y divide-border/60">
               {bilan.matieres.map((matiere) => (
                 <LigneMatiere key={matiere.subject_id} matiere={matiere} />
@@ -117,10 +117,10 @@ function gainDeTaux(bilan: BilanPeriode): number | null {
 function titre(bilan: BilanPeriode): string {
   if (bilan.themes_consolides_total > 0) {
     const n = bilan.themes_consolides_total
-    return `${n} thème${n > 1 ? "s" : ""} de plus sous contrôle`
+    return tn("bilan.titre_themes", n)
   }
-  if (bilan.seances > 0) return `${bilan.seances} séance${bilan.seances > 1 ? "s" : ""} de révision à ton actif`
-  return `${bilan.questions} question${bilan.questions > 1 ? "s" : ""} travaillée${bilan.questions > 1 ? "s" : ""}`
+  if (bilan.seances > 0) return tn("bilan.titre_seances", bilan.seances)
+  return tn("bilan.titre_questions", bilan.questions)
 }
 
 function Chiffre({
@@ -148,18 +148,18 @@ function LigneMatiere({ matiere }: { matiere: BilanMatiere }) {
       <span className="min-w-0">
         <span className="block truncate font-medium">{matiere.subject_label}</span>
         <span className="text-xs text-muted-foreground">
-          {matiere.questions} question{matiere.questions > 1 ? "s" : ""}
+          {tn("quiz.n_questions", matiere.questions)}
         </span>
       </span>
       {periode !== null && (
         <span className="flex shrink-0 items-center gap-1.5 font-display font-semibold tabular-nums">
           {enHausse && (
             <>
-              <span className="text-xs font-normal text-muted-foreground">{avant} %</span>
+              <span className="text-xs font-normal text-muted-foreground">{t("oujensuis.pct", { pct: avant })}</span>
               <ArrowRight className="size-3.5 text-success" />
             </>
           )}
-          <span className={enHausse ? "text-success" : undefined}>{periode} %</span>
+          <span className={enHausse ? "text-success" : undefined}>{t("oujensuis.pct", { pct: periode })}</span>
         </span>
       )}
     </li>
@@ -169,5 +169,5 @@ function LigneMatiere({ matiere }: { matiere: BilanMatiere }) {
 /** "27 août" à partir de la date AAAA-MM-JJ de l'API, sans passer par un fuseau. */
 function jourMois(dateIso: string): string {
   const [annee, mois, jour] = dateIso.split("-").map(Number)
-  return new Date(annee, mois - 1, jour).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })
+  return new Date(annee, mois - 1, jour).toLocaleDateString(localeCourante(), { day: "numeric", month: "long" })
 }

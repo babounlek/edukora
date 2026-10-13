@@ -8,6 +8,7 @@ import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 interface ThemesFrequentsProps {
   country: string
@@ -38,6 +39,7 @@ const PREVIEW_LIMIT = 4
  * que le rail "Corrigés populaires" sous son propre seuil (voir EpreuvesListPage).
  */
 export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFrequentsProps) {
+  useI18n()
   const { data } = useQuery({
     queryKey: ["themes-frequents", cursusId, subjectCode],
     queryFn: ({ signal }) => getThemesFrequents(cursusId, subjectCode, signal),
@@ -52,10 +54,10 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
       <CardContent className="flex flex-col gap-3 p-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="size-4 shrink-0 text-primary" />
-          <h2 className="font-display text-sm font-semibold">Les thèmes qui reviennent le plus</h2>
+          <h2 className="font-display text-sm font-semibold">{t("prix.inclus5_titre")}</h2>
         </div>
         <p className="-mt-1.5 text-xs text-muted-foreground">
-          Sur les {data.nb_sessions_disponibles} sessions officielles disponibles dans notre base.
+          {t("ep.themes_sessions", { n: data.nb_sessions_disponibles })}
         </p>
 
         <div className="flex flex-col gap-2">
@@ -108,14 +110,14 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
                 <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs">
                   <Link to={lienExercicesTheme(country, theme, subjectCode, cursusId, data.nb_sessions_disponibles)}>
                     <FileText className="size-3.5" />
-                    Exercices
+                    {t("qd.exercices")}
                   </Link>
                 </Button>
                 {theme.quiz_disponible ? (
                   <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs">
                     <Link to={`/quiz?cursus=${cursusId}&theme=${theme.id}`}>
                       <ListChecks className="size-3.5" />
-                      Quiz
+                      {t("qd.onglet_quiz")}
                     </Link>
                   </Button>
                 ) : (
@@ -123,11 +125,11 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
                     size="sm"
                     variant="outline"
                     disabled
-                    title="Pas encore de question de quiz sur ce thème précis"
+                    title={t("qd.pas_de_quiz_theme")}
                     className="h-7 px-2.5 text-xs"
                   >
                     <ListChecks className="size-3.5" />
-                    Quiz
+                    {t("qd.onglet_quiz")}
                   </Button>
                 )}
               </div>
@@ -140,7 +142,7 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
           to={`${themesFrequentsPath(country)}?subject=${subjectCode}&cursus=${cursusId}`}
           className="flex items-center gap-1 self-start text-xs font-medium text-primary hover:underline"
         >
-          Voir le classement complet
+          {t("ep.classement_complet")}
           <ArrowRight className="size-3.5" />
         </Link>
       </CardContent>

@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { catalogueHomePath, epreuvesListPath, recherchePath, themesFrequentsPath, coursListPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
+import { useI18n } from "@/lib/i18n"
 
 /**
  * Les trois entrées de l'élève, en bas de l'écran, atteignables au pouce.
@@ -25,6 +26,7 @@ export function BottomTabBar() {
   const { isAuthenticated, user } = useAuth()
   const { country } = useCountry()
   const { pathname } = useLocation()
+  const { t } = useI18n()
   const barRef = useRef<HTMLElement>(null)
   const visible = isAuthenticated && Boolean(user?.cursus_prepare)
 
@@ -59,15 +61,15 @@ export function BottomTabBar() {
     pathname.startsWith("/quiz")
 
   const onglets = [
-    { to: accueil, label: "Aujourd'hui", icon: CalendarCheck, actif: estAccueil },
-    { to: epreuvesListPath(country), label: "Réviser", icon: BookOpen, actif: estReviser },
-    { to: "/parcours", label: "Ma progression", icon: TrendingUp, actif: pathname.startsWith("/parcours") },
+    { to: accueil, label: t("nav.aujourdhui"), icon: CalendarCheck, actif: estAccueil },
+    { to: epreuvesListPath(country), label: t("nav.reviser"), icon: BookOpen, actif: estReviser },
+    { to: "/parcours", label: t("nav.progression"), icon: TrendingUp, actif: pathname.startsWith("/parcours") },
   ]
 
   return (
     <nav
       ref={barRef}
-      aria-label="Navigation principale"
+      aria-label={t("nav.principale")}
       // `pb-[env(safe-area-inset-bottom)]` : sur un téléphone à barre gestuelle, la
       // dernière rangée de pixels n'est pas cliquable - sans cette marge, le libellé
       // est lisible mais la cible ne réagit pas, ce qui se lit comme un bug.

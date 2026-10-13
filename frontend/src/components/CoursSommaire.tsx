@@ -1,6 +1,7 @@
 import type { CoursSectionData } from "@/api/types"
 import { COURS_SECTION_LABELS } from "@/components/CoursSection"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
+import { t, useI18n } from "@/lib/i18n"
 
 interface CoursSommaireProps {
   sections: CoursSectionData[]
@@ -16,10 +17,11 @@ interface CoursSommaireProps {
  * libellés longs ("Ce qu'il faut retenir") y passeraient à la ligne.
  */
 export function CoursSommaire({ sections }: CoursSommaireProps) {
+  useI18n()
   const entries: SommaireEntry[] = sections.flatMap((section) => {
     const label = COURS_SECTION_LABELS[section.type]
     return label ? [{ id: section.type, short: label.short, long: label.short }] : []
   })
 
-  return <SommaireNav entries={entries} ariaLabel="Sommaire du cours" />
+  return <SommaireNav entries={entries} ariaLabel={t("co.sommaire_aria")} />
 }

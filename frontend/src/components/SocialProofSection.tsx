@@ -3,6 +3,7 @@ import { Quote, Star } from "lucide-react"
 
 import { listTemoignages } from "@/api/endpoints"
 import type { Temoignage } from "@/api/types"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * Preuve sociale publique (page d'accueil catalogue) - voir l'audit UX, reco 8.3.
@@ -10,6 +11,7 @@ import type { Temoignage } from "@/api/types"
  * (jamais générés ni fabriqués - voir catalog.models.Temoignage).
  */
 export function SocialProofSection() {
+  useI18n()
   const [temoignages, setTemoignages] = useState<Temoignage[]>([])
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export function SocialProofSection() {
                 )}
               </p>
               {temoignage.note !== null && (
-                <div className="flex shrink-0 items-center gap-0.5" role="img" aria-label={`Note : ${temoignage.note} sur 5`}>
+                <div className="flex shrink-0 items-center gap-0.5" role="img" aria-label={t("temoignage.note", { n: temoignage.note })}>
                   {Array.from({ length: temoignage.note }).map((_, index) => (
                     <Star key={index} aria-hidden="true" className="size-3.5 fill-gold text-gold-text" />
                   ))}

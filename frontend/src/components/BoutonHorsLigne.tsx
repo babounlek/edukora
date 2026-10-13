@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import {
   estDisponibleHorsLigne, telechargerPourLireHorsLigne, useEnLigne, type TypeContenu,
 } from "@/lib/pwa"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * « Lire sans réseau » : indique si ce document est déjà lisible hors connexion et permet
@@ -14,6 +15,7 @@ import {
  * seconde fois ce qu'on lit déjà.
  */
 export function BoutonHorsLigne({ type, slug }: { type: TypeContenu; slug: string }) {
+  useI18n()
   const enLigne = useEnLigne()
   const [disponible, setDisponible] = useState<boolean | null>(null)
   const [enCours, setEnCours] = useState(false)
@@ -38,10 +40,10 @@ export function BoutonHorsLigne({ type, slug }: { type: TypeContenu; slug: strin
       await new Promise((resolve) => setTimeout(resolve, 300))
       const ok = await estDisponibleHorsLigne(type, slug)
       setDisponible(ok)
-      if (ok) toast.success("Disponible hors connexion")
-      else toast.error("Impossible de le garder hors connexion sur cet appareil.")
+      if (ok) toast.success(t("ed.hors_ligne"))
+      else toast.error(t("ed.hors_ligne_erreur"))
     } catch {
-      toast.error("Téléchargement impossible pour le moment. Réessaie avec du réseau.")
+      toast.error(t("ed.telechargement_erreur"))
     } finally {
       setEnCours(false)
     }
@@ -51,7 +53,7 @@ export function BoutonHorsLigne({ type, slug }: { type: TypeContenu; slug: strin
     return (
       <span className="inline-flex items-center gap-1.5 text-sm text-success">
         <CheckCircle2 className="size-4" aria-hidden="true" />
-        Disponible hors connexion
+        {t("ed.hors_ligne")}
       </span>
     )
   }
@@ -60,7 +62,7 @@ export function BoutonHorsLigne({ type, slug }: { type: TypeContenu; slug: strin
   return (
     <Button variant="outline" size="sm" className="rounded-full" disabled={enCours} onClick={telecharger}>
       {enCours ? <Loader2 className="animate-spin" /> : <Download />}
-      {enCours ? "Téléchargement…" : "Lire sans réseau"}
+      {enCours ? t("ed.telechargement") : t("ed.lire_sans_reseau")}
     </Button>
   )
 }

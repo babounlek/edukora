@@ -4,20 +4,23 @@ import { ArrowRight, FileText, Lock, RotateCcw, Sparkles } from "lucide-react"
 
 import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
+import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
-import { lireEssai, memoriserEssai, oublierEssai, scoreEssai } from "@/lib/quizEssai"
+import { cheminEssai, lireEssai, memoriserEssai, oublierEssai, scoreEssai, texteDePartageEssai } from "@/lib/quizEssai"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
+import { traduireLibelleSerie } from "@/lib/cursus"
 
 function message(pourcentage: number) {
-  if (pourcentage >= 90) return { titre: "Sans faute, ou presque !", texte: "Tu maîtrises ce thème." }
-  if (pourcentage >= 70) return { titre: "Très beau score !", texte: "Encore un petit effort sur les points ratés." }
-  if (pourcentage >= 40) return { titre: "Bon début !", texte: "Relis les corrections des questions ratées : c'est là que tu progresses." }
-  return { titre: "Chaque quiz te rapproche de l'examen", texte: "Relis les corrections puis refais l'essai : tu verras la différence." }
+  if (pourcentage >= 90) return { titre: t("essai.msg1_titre"), texte: t("essai.msg1_texte") }
+  if (pourcentage >= 70) return { titre: t("essai.msg2_titre"), texte: t("essai.msg2_texte") }
+  if (pourcentage >= 40) return { titre: t("essai.msg3_titre"), texte: t("essai.msg3_texte") }
+  return { titre: t("essai.msg4_titre"), texte: t("essai.msg4_texte") }
 }
 
 /**
@@ -27,7 +30,8 @@ function message(pourcentage: number) {
  * (pas de « ton score est sauvegardé » : il ne l'est pas).
  */
 export function QuizEssaiResultPage() {
-  useSeo({ title: "Résultat de l'essai gratuit" })
+  useI18n()
+  useSeo({ title: t("essai.seo_resultat") })
   const navigate = useNavigate()
   const { country } = useCountry()
   const { isAuthenticated } = useAuth()
@@ -61,14 +65,14 @@ export function QuizEssaiResultPage() {
       trackEvent("quiz_started", { cursus_id: session!.cursus, mode: "PRATIQUE", source: "essai_anonyme" })
       navigate("/quiz/essai")
     } catch (err) {
-      setErreur(err instanceof ApiError ? err.message : "Impossible de relancer l'essai.")
+      setErreur(err instanceof ApiError ? err.message : t("essai.relance_erreur"))
       setRelance(false)
     }
   }
 
   return (
     <div className="mx-auto max-w-3xl animate-fade-up px-4 pb-12 pt-6 sm:px-6 sm:pt-10">
-      <p className="mb-2 font-display text-sm italic text-primary">Essai gratuit · {session.cursus_display}</p>
+      <p className="mb-2 font-display text-sm italic text-primary">{t("essai.surtitre", { cursus: traduireLibelleSerie(session.cursus_display) })}</p>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{titre}</h1>
       <p className="mt-2 text-muted-foreground">{texte}</p>
 
@@ -78,8 +82,8 @@ export function QuizEssaiResultPage() {
           <span className="text-2xl font-normal text-muted-foreground"> / {score.total}</span>
         </div>
         <p className="text-sm text-muted-foreground">
-          bonne{score.reussies > 1 ? "s" : ""} réponse{score.reussies > 1 ? "s" : ""}
-          {score.repondues < score.total && ` sur ${score.repondues} question${score.repondues > 1 ? "s" : ""} répondue${score.repondues > 1 ? "s" : ""}`}
+          {tn("essai.bonnes", score.reussies)}
+          {score.repondues < score.total && tn("essai.sur_repondues", score.repondues)}
         </p>
       </div>
 
@@ -111,13 +115,19 @@ export function QuizEssaiResultPage() {
       <div className="mt-4 flex flex-wrap gap-2">
         <Button variant="outline" onClick={refaire} disabled={relance || !subjectId || !themeId} className="rounded-full">
           <RotateCcw />
-          {relance ? "Préparation..." : "Refaire cet essai"}
+          {relance ? t("quiz.preparation") : t("essai.refaire")}
         </Button>
+        {cheminEssai(session) && (
+          <BoutonPartager
+            chemin={cheminEssai(session)!} texte={texteDePartageEssai(session)} type="quiz"
+            libelle={t("essai.defier")} size="default" className="rounded-full"
+          />
+        )}
         {themeId && subjectCode && (
           <Button asChild variant="outline" className="rounded-full">
             <Link to={`${themeExercicesPath(country, themeId)}?subject=${subjectCode}&cursus=${session.cursus}`}>
               <FileText />
-              Exercices corrigés sur ce thème
+              {t("essai.exercices_theme")}
             </Link>
           </Button>
         )}
@@ -132,30 +142,29 @@ export function QuizEssaiResultPage() {
       <section className="mt-8 rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent p-5 sm:p-6">
         <p className="flex items-center gap-2 font-display text-lg font-semibold">
           <Sparkles className="size-5 text-gold-text" aria-hidden="true" />
-          Ce n'était qu'un thème
+          {t("essai.un_theme")}
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          Avec un abonnement, le quiz couvre tout ton programme : les thèmes que tu rates reviennent d'eux-mêmes
-          les jours suivants, jusqu'à être acquis.
+          {t("essai.un_theme_texte")}
         </p>
         <div className="mt-4 flex flex-col gap-2 sm:flex-row">
           <Button asChild size="lg" className="w-full sm:w-auto">
             <Link to="/tarifs">
-              Voir les abonnements
+              {t("essai.voir_abonnements")}
               <ArrowRight />
             </Link>
           </Button>
           {!isAuthenticated && (
             <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-              <Link to="/connexion" state={{ from: "/quiz", intent: "Crée ton compte pour continuer à t'entraîner." }}>
-                Créer mon compte
+              <Link to="/connexion" state={{ from: "/quiz", intent: t("essai.intent_compte") }}>
+                {t("essai.creer_compte")}
               </Link>
             </Button>
           )}
         </div>
         <p className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
           <Lock className="size-3.5" aria-hidden="true" />
-          Ton score de cet essai n'est pas enregistré : il disparaît quand tu fermes l'onglet.
+          {t("essai.non_enregistre")}
         </p>
       </section>
 
@@ -165,7 +174,7 @@ export function QuizEssaiResultPage() {
           onClick={oublierEssai}
           className="text-sm font-medium text-primary underline-offset-4 hover:underline"
         >
-          Essayer un autre thème gratuit
+          {t("essai.autre_theme")}
         </Link>
       </div>
     </div>

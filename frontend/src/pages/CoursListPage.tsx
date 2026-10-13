@@ -37,6 +37,7 @@ import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
 type ViewMode = "cards" | "list"
 
@@ -74,7 +75,7 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
       onClick={onRemove}
       // Le libellé seul (« BAC D ») ne dit pas que le bouton retire le filtre : sans cela, un
       // lecteur d'écran annonce juste le nom de la puce. min-h-9 : cible tactile utilisable.
-      aria-label={`Retirer le filtre ${label}`}
+      aria-label={t("ep.retirer_filtre", { label })}
       className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
     >
       {label}
@@ -95,6 +96,7 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
 }
 
 export function CoursListPage() {
+  useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
@@ -122,10 +124,8 @@ export function CoursListPage() {
   const savoirLabel = searchParams.get("savoir_label") ?? ""
 
   useSeo({
-    title: "Cours de révision",
-    description: countryLabel
-      ? `${countryLabel} : cours structurés (méthode, exemple résolu, erreurs classiques, exercices) pour le BEPC, le Probatoire et le BAC.`
-      : undefined,
+    title: t("co.seo_liste"),
+    description: countryLabel ? t("co.seo_description_pays", { pays: countryLabel }) : undefined,
   })
 
   // "Reprendre ma lecture" - même logique que CataloguePage : silencieusement absent
@@ -165,7 +165,7 @@ export function CoursListPage() {
   const subjectsTries = useMemo(
     () =>
       [...subjects].sort(
-        (a, b) => (b.cours_count ?? 0) - (a.cours_count ?? 0) || a.label.localeCompare(b.label, "fr"),
+        (a, b) => (b.cours_count ?? 0) - (a.cours_count ?? 0) || a.label.localeCompare(b.label, localeCourante()),
       ),
     [subjects],
   )
@@ -351,28 +351,28 @@ export function CoursListPage() {
       key: "cursus",
       label: (() => {
         const c = cursusList.find((c) => String(c.id) === cursusFilter)
-        return c ? `${c.examen_display}${c.series ? ` - Série ${c.series.code}` : ""}` : cursusFilter
+        return c ? `${c.examen_display}${c.series ? ` - ${t("prix.serie", { code: c.series.code })}` : ""}` : cursusFilter
       })(),
       clear: () => updateFilter("cursus", ""),
     },
     nonLusFilter && {
       key: "nonlus",
-      label: "Non lus uniquement",
+      label: t("co.non_lus"),
       clear: () => updateFilter("nonlus", ""),
     },
     frequentFilter && {
       key: "frequent",
-      label: "Tombe souvent à l'examen",
+      label: t("co.tombe_souvent"),
       clear: () => updateFilter("frequent", ""),
     },
     savoirFilter && {
       key: "savoir",
-      label: savoirLabel ? `Savoir : ${capitaliserTheme(savoirLabel)}` : "Savoir filtré",
+      label: savoirLabel ? t("co.savoir", { x: capitaliserTheme(savoirLabel) }) : t("co.savoir_filtre"),
       clear: clearSavoirFilter,
     },
     themeFilter && {
       key: "theme",
-      label: savoirLabel ? `Thème : ${capitaliserTheme(savoirLabel)}` : "Thème filtré",
+      label: savoirLabel ? t("co.theme_filtre_x", { x: capitaliserTheme(savoirLabel) }) : t("co.theme_filtre"),
       clear: clearSavoirFilter,
     },
   ].filter((chip): chip is { key: string; label: string; clear: () => void } => Boolean(chip))
@@ -384,8 +384,8 @@ export function CoursListPage() {
   // dans une liste déroulante, triées pour que les séries d'un même examen se suivent.
   const cursusTries = [...cursusList].sort(
     (x, y) =>
-      x.examen_display.localeCompare(y.examen_display, "fr") ||
-      (x.series?.code ?? "").localeCompare(y.series?.code ?? "", "fr"),
+      x.examen_display.localeCompare(y.examen_display, localeCourante()) ||
+      (x.series?.code ?? "").localeCompare(y.series?.code ?? "", localeCourante()),
   )
   const coursEnCours = progression?.cours?.[0]
   // `undefined` tant que rien n'est chargé - la puce du hero ne s'affiche pas plutôt
@@ -410,14 +410,13 @@ export function CoursListPage() {
         <GraduationCap aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
           <p className="mb-2 font-display text-sm italic text-primary">
-            Cours structurés{countryLabel ? ` - ${countryLabel}` : ""}
+            {t("co.eyebrow")}{countryLabel ? ` - ${countryLabel}` : ""}
           </p>
           <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-            Maîtrise la <span className="text-primary">méthode</span>, pas juste l'exercice du jour.
+            {t("co.titre_debut")} <span className="text-primary">{t("co.titre_accent")}</span>{t("co.titre_fin")}
           </h1>
           <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-            Chaque notion clé du programme en un cours complet : la règle, un exemple résolu pas à pas, les erreurs
-            classiques à éviter et des exercices gradués.
+            {t("co.hero_texte")}
           </p>
 
           <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
@@ -425,14 +424,14 @@ export function CoursListPage() {
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}
                 valeur={formatAmount(totalCours)}
-                libelle={totalCours > 1 ? "cours publiés" : "cours publié"}
+                libelle={tn("co.stat_publies", totalCours > 1 ? 2 : 1)}
               />
             )}
             {subjects.length > 0 && (
               <StatChip
                 icon={<Layers className="size-3.5 text-primary" />}
                 valeur={String(subjects.length)}
-                libelle={subjects.length > 1 ? "matières couvertes" : "matière couverte"}
+                libelle={tn("accueil.stat_matieres", subjects.length > 1 ? 2 : 1)}
               />
             )}
             {examLevels.length > 0 && (
@@ -458,7 +457,7 @@ export function CoursListPage() {
           </span>
           <span className="min-w-0 flex-1">
             <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Reprendre ma lecture
+              {t("accueil.reprendre_lecture")}
             </span>
             <span className="block truncate font-display font-medium">{coursEnCours.titre}</span>
           </span>
@@ -477,8 +476,8 @@ export function CoursListPage() {
             type="search"
             inputMode="search"
             enterKeyHint="search"
-            aria-label="Rechercher un cours"
-            placeholder="Rechercher un cours…"
+            aria-label={t("co.rechercher")}
+            placeholder={t("co.rechercher_placeholder")}
             value={search}
             onChange={(e) => updateFilter("search", e.target.value)}
             className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
@@ -487,7 +486,7 @@ export function CoursListPage() {
             <button
               type="button"
               onClick={() => updateFilter("search", "")}
-              aria-label="Effacer la recherche"
+              aria-label={t("ep.effacer")}
               className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="size-4" />
@@ -496,9 +495,9 @@ export function CoursListPage() {
         </div>
 
         {cursusTries.length > 0 && (
-          <FiltreLigne titre="Examen">
+          <FiltreLigne titre={t("quiz.examen")}>
             <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
-              Tous
+              {t("ep.tous")}
             </PastilleFiltre>
             {cursusTries.map((c) => (
               <PastilleFiltre
@@ -514,9 +513,9 @@ export function CoursListPage() {
         )}
 
         {subjectsTries.length > 0 && (
-          <FiltreLigne titre="Matière">
+          <FiltreLigne titre={t("quiz.matiere")}>
             <PastilleFiltre actif={!subjectFilter} onClick={() => updateFilter("subject", "")}>
-              Toutes
+              {t("ep.toutes")}
             </PastilleFiltre>
             {subjectsTries.map((subject) => {
               const SubjectIcon = subjectIcon(subject.code)
@@ -559,7 +558,7 @@ export function CoursListPage() {
             )}
           >
             <Star className="size-4" fill={frequentFilter ? "currentColor" : "none"} />
-            Tombe souvent à l'examen
+            {t("co.tombe_souvent")}
           </button>
           {/* Réservé aux connectés : le backend n'a aucun historique de lecture à exclure pour un
               visiteur anonyme (voir CoursListView.exclude_read), le bouton n'y filtrerait rien. */}
@@ -576,14 +575,14 @@ export function CoursListPage() {
               )}
             >
               <CheckCircle2 className="size-4" />
-              Masquer les cours déjà lus
+              {t("co.masquer_lus")}
             </button>
           )}
         </div>
 
         {activeFilterChips.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3.5">
-            <span className="text-sm text-muted-foreground">Filtres :</span>
+            <span className="text-sm text-muted-foreground">{t("ep.filtres_actifs")}</span>
             {activeFilterChips.map((chip) => (
               <FilterChip key={chip.key} label={chip.label} onRemove={chip.clear} />
             ))}
@@ -593,7 +592,7 @@ export function CoursListPage() {
                 onClick={resetFilters}
                 className="text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
               >
-                Tout effacer
+                {t("ep.tout_effacer")}
               </button>
             )}
           </div>
@@ -601,7 +600,7 @@ export function CoursListPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Chargement des cours">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label={t("co.chargement")}>
           {Array.from({ length: 6 }).map((_, i) => (
             <CoursCardSkeleton key={i} />
           ))}
@@ -610,8 +609,8 @@ export function CoursListPage() {
         // Une panne n'est pas "aucun résultat" : sans ce cas, une coupure réseau se lisait comme
         // un catalogue vide et l'élève cherchait l'erreur dans ses filtres.
         <ErreurChargement
-          objet="les cours"
-          message="Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer."
+          objet={t("co.objet")}
+          message={t("ep.erreur_message")}
           onRetry={() => coursQuery.refetch()}
         />
       ) : coursList.length === 0 ? (
@@ -619,15 +618,15 @@ export function CoursListPage() {
           <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <SearchX className="size-6" />
           </span>
-          <p className="font-display text-lg font-semibold">Aucun cours ne correspond</p>
+          <p className="font-display text-lg font-semibold">{t("co.aucun")}</p>
           <p className="max-w-sm text-sm text-muted-foreground">
             {search
-              ? `Rien pour « ${search} » avec ces filtres. Essaie un mot plus court, ou élargis la recherche.`
-              : "Élargis un filtre pour voir plus de cours."}
+              ? t("ep.aucune_recherche", { search })
+              : t("co.aucun_filtre")}
           </p>
           {(activeFilterChips.length > 0 || search) && (
             <Button variant="outline" onClick={resetFilters} className="mt-1 rounded-full">
-              Tout réinitialiser
+              {t("ep.reinitialiser")}
             </Button>
           )}
         </div>
@@ -642,15 +641,14 @@ export function CoursListPage() {
               les deux barres, top-16 ferait passer celle-ci sous le header. */}
           <div className="sticky top-[72px] z-10 -mx-4 mb-4 flex items-center justify-between gap-3 border-b border-border bg-background/85 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6">
             <p className="text-sm text-muted-foreground" aria-live="polite">
-              <span className="font-medium tabular-nums text-foreground">{formatAmount(count)}</span> cours
-              trouvé{count > 1 ? "s" : ""}
+              <span className="font-medium tabular-nums text-foreground">{formatAmount(count)}</span> {tn("co.trouves", count)}
             </p>
             <div className="flex shrink-0 gap-1 rounded-md border border-border p-0.5">
               <Button
                 variant={viewMode === "cards" ? "secondary" : "ghost"}
                 size="icon"
                 className="size-7 tap-target-44"
-                aria-label="Affichage en cartes"
+                aria-label={t("ep.vue_cartes")}
                 aria-pressed={viewMode === "cards"}
                 onClick={() => setViewMode("cards")}
               >
@@ -660,7 +658,7 @@ export function CoursListPage() {
                 variant={viewMode === "list" ? "secondary" : "ghost"}
                 size="icon"
                 className="size-7 tap-target-44"
-                aria-label="Affichage en liste"
+                aria-label={t("ep.vue_liste")}
                 aria-pressed={viewMode === "list"}
                 onClick={() => setViewMode("list")}
               >
@@ -698,17 +696,17 @@ export function CoursListPage() {
             <div ref={sentinelRef} className="mt-8 flex flex-col items-center gap-2">
               <Button variant="outline" onClick={() => coursQuery.fetchNextPage()} disabled={isLoadingMore}>
                 {isLoadingMore && <Loader2 className="size-4 animate-spin" />}
-                Charger plus
+                {t("ep.charger_plus")}
               </Button>
               {erreurPageSuivante && !isLoadingMore && (
                 <p role="alert" className="text-sm text-destructive">
-                  Impossible de charger la suite des cours. Réessaie.
+                  {t("co.suite_erreur")}
                 </p>
               )}
               {/* Repère de progression dans la liste : sans lui, "Charger plus" sur
                   3 700 résultats ne dit jamais où on en est ni combien il reste. */}
               <p className="text-xs tabular-nums text-muted-foreground">
-                {formatAmount(coursList.length)} sur {formatAmount(count)}
+                {t("ep.sur", { a: formatAmount(coursList.length), b: formatAmount(count) })}
               </p>
             </div>
           )}

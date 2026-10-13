@@ -1,4 +1,5 @@
 import type { QuizQuestion, QuizSession } from "@/api/types"
+import { t } from "@/lib/i18n"
 
 // L'essai gratuit n'a pas de session côté serveur (voir quiz.essai) : le quiz en cours vit ici, dans
 // sessionStorage - il survit à un rechargement de la page, pas à la fermeture de l'onglet, ce qui
@@ -59,4 +60,18 @@ export function scoreEssai(session: QuizSession) {
     parTheme.set(nom, ligne)
   }
   return { total: session.questions.length, repondues: repondues.length, reussies, parTheme: [...parTheme.values()] }
+}
+
+/** Page qui relance cet essai précis : le lien qu'on partage (voir QuizEssaiLancementPage). */
+export function cheminEssai(session: QuizSession): string | null {
+  const theme = session.questions[0]?.theme_id
+  if (!session.essai || session.subject == null || theme == null) return null
+  return `/quiz/essai/${session.cursus}/${session.subject}/${theme}`
+}
+
+/** L'accroche du message de partage, sans le lien. */
+export function texteDePartageEssai(session: QuizSession): string {
+  const q = session.questions[0]
+  const theme = q?.theme ? t("essai.partage_theme", { theme: q.theme }) : ""
+  return t("essai.partage", { theme, matiere: q?.subject_label ?? t("essai.partage_quiz"), cursus: session.cursus_display })
 }

@@ -10,6 +10,7 @@ import { useCountry } from "@/context/CountryContext"
 import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
 import { Button } from "@/components/ui/button"
+import { t, useI18n } from "@/lib/i18n"
 
 const FERME_KEY = "edukamer_bandeau_cursus_ferme"
 
@@ -39,6 +40,7 @@ function lireFerme(): boolean {
  * à sa première connexion (voir cursusPrepare.ts).
  */
 export function BandeauCursus() {
+  useI18n()
   const { pathname } = useLocation()
   const { isAuthenticated, user } = useAuth()
   const { country } = useCountry()
@@ -66,8 +68,8 @@ export function BandeauCursus() {
     // vedette "épreuve inédite" du catalogue, hors champ de vision) - un visiteur qui
     // ne la remarque pas a l'impression que son choix n'a rien fait. Une confirmation
     // immédiate, à l'endroit même du clic, ne dépend d'aucun autre composant.
-    toast.success(`Noté : ${cursus.examen_display}${cursus.series ? ` ${cursus.series.code}` : ""}`, {
-      description: "Connecte-toi pour recevoir ta séance du jour.",
+    toast.success(t("bandeau.note", { cursus: `${cursus.examen_display}${cursus.series ? ` ${cursus.series.code}` : ""}` }), {
+      description: t("bandeau.connecte_toi"),
     })
   }
 
@@ -83,10 +85,10 @@ export function BandeauCursus() {
   if (!visible || cursusList.length === 0) return null
 
   return (
-    <div role="region" aria-label="Choisir ton examen" className="border-b border-primary/20 bg-primary/5">
+    <div role="region" aria-label={t("bandeau.aria")} className="border-b border-primary/20 bg-primary/5">
       <div className="mx-auto flex max-w-5xl items-start gap-3 px-4 py-2.5 sm:px-6">
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium">Choisis ton examen pour recevoir ta séance du jour</p>
+          <p className="text-sm font-medium">{t("bandeau.titre")}</p>
           <div className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
             {cursusList.map((cursus) => (
               <Button
@@ -106,7 +108,7 @@ export function BandeauCursus() {
         <button
           type="button"
           onClick={fermer}
-          aria-label="Fermer"
+          aria-label={t("moments.fermer")}
           className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
         >
           <X className="size-4" />

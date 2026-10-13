@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { listEpreuves } from "@/api/endpoints"
 import type { Epreuve } from "@/api/types"
 import { EpreuveCard } from "@/components/EpreuveCard"
+import { t, useI18n } from "@/lib/i18n"
 
 interface RelatedEpreuvesProps {
   subjectCode: string
@@ -13,6 +14,7 @@ interface RelatedEpreuvesProps {
 }
 
 export function RelatedEpreuves({ subjectCode, subjectLabel, countryCode, cursusId, excludeId }: RelatedEpreuvesProps) {
+  useI18n()
   const [relatedEpreuves, setRelatedEpreuves] = useState<Epreuve[]>([])
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function RelatedEpreuves({ subjectCode, subjectLabel, countryCode, cursus
   return (
     <div className="mt-2 border-t border-border pt-5">
       <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">
-        Autres épreuves de {subjectLabel}
+        {t("ed.autres_epreuves", { matiere: subjectLabel })}
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {relatedEpreuves.map((e) => (

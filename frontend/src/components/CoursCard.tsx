@@ -11,6 +11,7 @@ import { capitaliserTheme, cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { Card, CardContent } from "@/components/ui/card"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 interface CoursCardProps {
   cours: Cours
@@ -23,6 +24,7 @@ interface CoursCardProps {
 }
 
 export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCardProps) {
+  useI18n()
   const Titre = niveauTitre === 2 ? "h2" : "h3"
   const SubjectIcon = subjectIcon(cours.subject.code)
   const couleur = couleurMatiere(cours.subject.code)
@@ -55,7 +57,7 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
             {cours.is_read && (
               <span className="flex shrink-0 items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success">
                 <CheckCircle2 className="size-3" />
-                Lu
+                {t("ep.lu")}
               </span>
             )}
           </div>
@@ -65,7 +67,7 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
             {cours.est_vitrine && (
               <Badge variant="success" className="gap-1">
                 <Sparkles className="size-3" />
-                Gratuit
+                {t("ep.gratuit")}
               </Badge>
             )}
             {cours.cursus.length > 0 ? (
@@ -75,7 +77,7 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
                 </Badge>
               ))
             ) : (
-              <Badge variant="secondary">Toutes séries</Badge>
+              <Badge variant="secondary">{t("co.toutes_series")}</Badge>
             )}
           </div>
 
@@ -93,13 +95,13 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
               {cours.apercu_contenu.has_exemple_resolu && (
                 <span className="inline-flex items-center gap-1">
                   <BookOpenCheck className="size-3.5" aria-hidden="true" />
-                  Exemple résolu
+                  {t("cs.exemple_resolu")}
                 </span>
               )}
               {cours.apercu_contenu.exercices_count > 0 && (
                 <span className="inline-flex items-center gap-1">
                   <ListChecks className="size-3.5" aria-hidden="true" />
-                  {cours.apercu_contenu.exercices_count} exercice{cours.apercu_contenu.exercices_count > 1 ? "s" : ""}
+                  {tn("ep.exercices", cours.apercu_contenu.exercices_count)}
                 </span>
               )}
             </p>
@@ -113,12 +115,12 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
               {accessible ? (
                 <>
                   <Unlock className="size-4 shrink-0 text-success" aria-hidden="true" />
-                  <span className="truncate">{cours.est_vitrine && !cours.has_access ? "Lire - accès libre" : "Lire le cours"}</span>
+                  <span className="truncate">{cours.est_vitrine && !cours.has_access ? t("ep.lire_libre") : t("co.lire")}</span>
                 </>
               ) : (
                 <>
                   <Eye className="size-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span className="truncate">Voir l'aperçu</span>
+                  <span className="truncate">{t("ep.voir_apercu")}</span>
                 </>
               )}
             </span>

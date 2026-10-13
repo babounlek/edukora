@@ -3,6 +3,8 @@
 // ces élèves : sur un téléphone qui sait partager un fichier (Web Share), la carte part avec le
 // message ; sinon un lien wa.me avec le texte seul - toujours un chemin qui marche.
 
+import { t } from "@/lib/i18n"
+
 export interface DonneesPartage {
   score: number
   total: number
@@ -13,12 +15,8 @@ export interface DonneesPartage {
 }
 
 export function textePartage({ score, total, xp, serie, nomSite, lien }: DonneesPartage): string {
-  const details = [xp > 0 ? `+${xp} points` : "", serie >= 2 ? `${serie} jours de suite` : ""].filter(Boolean)
-  return (
-    `J'ai eu ${score}/${total} à mon quiz sur ${nomSite}` +
-    (details.length ? ` (${details.join(", ")})` : "") +
-    `. Tu fais mieux ? ${lien}`
-  )
+  const details = [xp > 0 ? t("gl.partage_points", { n: xp }) : "", serie >= 2 ? t("gl.partage_jours", { n: serie }) : ""].filter(Boolean)
+  return t("gl.partage_texte", { score, total, site: nomSite, details: details.length ? ` (${details.join(", ")})` : "", lien })
 }
 
 const TAILLE = 1080
@@ -42,7 +40,7 @@ export async function carteEnImage(donnees: DonneesPartage): Promise<Blob | null
   ctx.textAlign = "center"
   ctx.fillStyle = "#ffffff"
   ctx.font = "500 52px system-ui, sans-serif"
-  ctx.fillText("Mon quiz du jour", TAILLE / 2, 250)
+  ctx.fillText(t("gl.partage_carte"), TAILLE / 2, 250)
 
   ctx.font = "700 340px Georgia, serif"
   // La barre oblique descend sous la ligne de base : on remonte le score et on descend les lignes
@@ -51,7 +49,7 @@ export async function carteEnImage(donnees: DonneesPartage): Promise<Blob | null
 
   ctx.font = "600 64px system-ui, sans-serif"
   ctx.fillStyle = "#f5c84b"
-  const lignes = [donnees.xp > 0 ? `+${donnees.xp} points` : "", donnees.serie >= 2 ? `Série de ${donnees.serie} jours` : ""].filter(Boolean)
+  const lignes = [donnees.xp > 0 ? t("gl.partage_points", { n: donnees.xp }) : "", donnees.serie >= 2 ? t("gl.sem_serie", { n: donnees.serie }) : ""].filter(Boolean)
   lignes.forEach((ligne, i) => ctx.fillText(ligne, TAILLE / 2, 745 + i * 78))
 
   ctx.fillStyle = "#ffffff"
@@ -59,7 +57,7 @@ export async function carteEnImage(donnees: DonneesPartage): Promise<Blob | null
   ctx.fillText(donnees.nomSite, TAILLE / 2, 960)
   ctx.font = "400 40px system-ui, sans-serif"
   ctx.fillStyle = "rgba(255,255,255,0.8)"
-  ctx.fillText("Révise ton examen, un jour après l'autre", TAILLE / 2, 1020)
+  ctx.fillText(t("gl.partage_tagline"), TAILLE / 2, 1020)
 
   return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), "image/png"))
 }

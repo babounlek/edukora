@@ -2,6 +2,7 @@ import { Check, Zap } from "lucide-react"
 
 import type { EtatXp } from "@/api/types"
 import { cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 /**
  * Où en est l'objectif d'XP du jour : une barre qui se remplit, "12 / 20 XP", et une coche
@@ -12,6 +13,7 @@ import { cn } from "@/lib/utils"
 const POINTS_PAR_BONNE_REPONSE = 10
 
 export function ObjectifXp({ etat, compact = false, className }: { etat: EtatXp; compact?: boolean; className?: string }) {
+  useI18n()
   const part = etat.objectif > 0 ? Math.min(100, Math.round((100 * etat.xp) / etat.objectif)) : 0
   const reponsesRestantes = Math.max(1, Math.ceil((etat.objectif - etat.xp) / POINTS_PAR_BONNE_REPONSE))
 
@@ -20,16 +22,16 @@ export function ObjectifXp({ etat, compact = false, className }: { etat: EtatXp;
       <div className={cn("flex items-center justify-between gap-2 text-sm", compact && "shrink-0")}>
         <span className="flex items-center gap-1.5 font-semibold">
           {etat.atteint ? <Check className="size-4 text-success" aria-hidden="true" /> : <Zap className="size-4 text-gold-text" aria-hidden="true" />}
-          {compact ? "" : "Objectif du jour"}
+          {compact ? "" : t("gl.xp_objectif")}
         </span>
         <span className={cn("tabular-nums", etat.atteint ? "font-semibold text-success" : "text-muted-foreground")}>
-          {etat.xp} / {etat.objectif} points
+          {t("gl.xp_points", { xp: etat.xp, objectif: etat.objectif })}
         </span>
       </div>
       <div
         className={cn("h-2 overflow-hidden rounded-full bg-secondary", compact ? "w-16 sm:w-24" : "mt-2")}
         role="progressbar"
-        aria-label="Objectif de points du jour"
+        aria-label={t("gl.xp_aria")}
         aria-valuemin={0}
         aria-valuemax={etat.objectif}
         aria-valuenow={Math.min(etat.xp, etat.objectif)}
@@ -44,8 +46,7 @@ export function ObjectifXp({ etat, compact = false, className }: { etat: EtatXp;
           questions ouvertes rapportent moins), d'où « environ ». Pas dans l'en-tête d'un quiz. */}
       {!compact && !etat.atteint && etat.objectif > etat.xp && (
         <p className="mt-1.5 text-xs text-muted-foreground">
-          Encore environ {reponsesRestantes} bonne{reponsesRestantes > 1 ? "s" : ""} réponse
-          {reponsesRestantes > 1 ? "s" : ""} pour atteindre ton objectif.
+          {tn("gl.xp_reste", reponsesRestantes)}
         </p>
       )}
     </div>

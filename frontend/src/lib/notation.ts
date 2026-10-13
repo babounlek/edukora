@@ -1,10 +1,11 @@
 import type { TentativeInediteQuestion } from "@/api/types"
-
-const nombre = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 })
+import { localeCourante, tn } from "@/lib/i18n"
 
 /** « 12,5 », « 4 », « 1,25 » : virgule française, jamais de zéros inutiles. */
 export function formatPoints(valeur: number | null | undefined): string {
-  return valeur === null || valeur === undefined ? "—" : nombre.format(valeur)
+  return valeur === null || valeur === undefined
+    ? "—"
+    : new Intl.NumberFormat(localeCourante(), { maximumFractionDigits: 2 }).format(valeur)
 }
 
 /** « 12,5 / 20 » - la note sur son barème réel. */
@@ -15,7 +16,7 @@ export function formatNote(note: number | null, bareme: number | null): string {
 
 /** « 1 point », « 2,5 points » - le pluriel français commence à 2 (1,5 reste singulier). */
 export function libellePoints(valeur: number): string {
-  return `${formatPoints(valeur)} ${valeur >= 2 ? "points" : "point"}`
+  return tn("notation.points", valeur, { valeur: formatPoints(valeur) })
 }
 
 /** Arrondit au quart de point : les sauts des boutons +/- restent des valeurs lisibles. */

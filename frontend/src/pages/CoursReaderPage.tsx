@@ -27,8 +27,10 @@ import { useSeo } from "@/lib/seo"
 import { AccesRefuse } from "@/components/AccesRefuse"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
 import { capitaliserTheme } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 export function CoursReaderPage() {
+  useI18n()
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const { isAuthenticated, isLoading } = useAuth()
@@ -45,7 +47,7 @@ export function CoursReaderPage() {
   const [cours, setCours] = useState<Cours | null>(null)
   const [coursFailed, setCoursFailed] = useState(false)
 
-  useSeo({ title: content?.title ?? "Cours" })
+  useSeo({ title: content?.title ?? t("co.seo_cours") })
 
   const articleRef = useRef<HTMLElement>(null)
   // Outils d'étude : réservés à un élève connecté (un visiteur sur un cours vitrine n'a nulle
@@ -85,7 +87,7 @@ export function CoursReaderPage() {
           setAccesRefuse(true)
           return
         }
-        setError(err instanceof ApiError ? err.message : "Impossible de charger ce contenu.")
+        setError(err instanceof ApiError ? err.message : t("ed.contenu_erreur"))
       })
   }, [slug, isLoading, isAuthenticated, navigate, cours, coursFailed])
 
@@ -124,8 +126,8 @@ export function CoursReaderPage() {
         retour={coursReaderPath(slug ?? "")}
         nature="cours"
         liens={[
-          { to: coursDetailPath(slug ?? ""), label: "Voir l'aperçu du cours" },
-          { to: coursListPath(country), label: "Retour aux cours" },
+          { to: coursDetailPath(slug ?? ""), label: t("co.voir_apercu") },
+          { to: coursListPath(country), label: t("co.retour") },
         ]}
       />
     )
@@ -136,7 +138,7 @@ export function CoursReaderPage() {
       <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
         <p className="text-destructive">{error}</p>
         <Link to={coursListPath(country)} className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour aux cours
+          {t("co.retour")}
         </Link>
       </div>
     )
@@ -166,7 +168,7 @@ export function CoursReaderPage() {
           className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
         >
           <ArrowLeft className="size-4" />
-          Retour aux cours
+          {t("co.retour")}
         </Link>
         {etude.disponible && (
           <Link
@@ -174,14 +176,14 @@ export function CoursReaderPage() {
             className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
           >
             <NotebookPen className="size-4" />
-            Mon carnet
+            {t("cpt.carnet")}
           </Link>
         )}
         {slug && (
           <span className="flex items-center gap-2 sm:ml-auto">
             <BoutonPartager
               chemin={coursDetailPath(slug)}
-              texte={`Regarde ce cours : « ${content?.title ?? "cours"} » sur ${SITE_NAME} :`}
+              texte={t("co.partage", { titre: content?.title ?? t("co.partage_defaut"), site: SITE_NAME })}
               type="cours"
               variant="ghost"
             />
@@ -197,7 +199,7 @@ export function CoursReaderPage() {
           {cours?.est_vitrine && (
             <Badge variant="success">
               <Unlock className="mr-1 size-3" />
-              Cours en accès libre
+              {t("co.acces_libre")}
             </Badge>
           )}
           {cours?.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
@@ -214,8 +216,8 @@ export function CoursReaderPage() {
             <span className="flex items-center gap-1.5">
               {toutComprisCours && <Check className="size-3.5 text-success" />}
               {toutComprisCours
-                ? "Tu as tout compris de ce cours - vérifie-le avec un quiz."
-                : `${etude.nbComprises} section${etude.nbComprises > 1 ? "s" : ""} comprise${etude.nbComprises > 1 ? "s" : ""} sur ${sectionsAComprendre.length}`}
+                ? t("co.tout_compris")
+                : tn("co.sections_comprises", etude.nbComprises, { total: sectionsAComprendre.length })}
             </span>
           </div>
           <div className="flex h-1.5 gap-1">

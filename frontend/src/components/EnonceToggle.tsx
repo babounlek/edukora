@@ -1,6 +1,8 @@
 import { useId, useState, type ReactNode } from "react"
 import { ChevronDown, ChevronRight } from "lucide-react"
 
+import { t, useI18n } from "@/lib/i18n"
+
 interface EnonceToggleProps {
   children?: ReactNode
 }
@@ -19,6 +21,7 @@ interface EnonceToggleProps {
  * lecteur d'épreuve.
  */
 export function EnonceToggle({ children }: EnonceToggleProps) {
+  useI18n()
   const [open, setOpen] = useState(false)
   const idContenu = useId()
 
@@ -34,7 +37,7 @@ export function EnonceToggle({ children }: EnonceToggleProps) {
         className="flex min-h-11 w-full items-center gap-1.5 px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         {open ? <ChevronDown className="size-3.5 shrink-0" aria-hidden="true" /> : <ChevronRight className="size-3.5 shrink-0" aria-hidden="true" />}
-        {open ? "Masquer l'énoncé" : "Voir l'énoncé"}
+        {open ? t("ed.masquer_enonce") : t("ed.voir_enonce")}
       </button>
       {open && (
         <div id={idContenu} className="prose prose-neutral max-w-none border-t border-border px-3.5 py-3 text-justify dark:prose-invert">

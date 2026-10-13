@@ -3,6 +3,7 @@ import { AlertTriangle, RefreshCw } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Sentry } from "@/lib/sentry"
+import { t } from "@/lib/i18n"
 
 // Messages observés selon le navigateur quand un chunk lazy (voir App.tsx, React.lazy)
 // ne charge plus après un déploiement : l'onglet reste ouvert avec l'ancien
@@ -98,16 +99,16 @@ export class ErrorBoundary extends Component<Props, State> {
       <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center gap-3 px-4 text-center">
         <AlertTriangle className="size-8 text-warning" />
         <p className="font-display text-lg font-medium">
-          {isStillChunkFailure ? "Une nouvelle version de l'app est disponible" : "Une erreur inattendue est survenue"}
+          {isStillChunkFailure ? t("gl.eb_nouvelle") : t("gl.eb_erreur")}
         </p>
         <p className="text-sm text-muted-foreground">
           {isStillChunkFailure
-            ? "Le rechargement automatique n'a pas suffi - réessaie manuellement."
-            : "Recharge la page pour continuer. Si le problème persiste, réessaie un peu plus tard."}
+            ? t("gl.eb_echec_reload")
+            : t("gl.eb_reload_texte")}
         </p>
         <Button onClick={this.handleReload} size="lg">
           <RefreshCw />
-          Recharger la page
+          {t("gl.eb_bouton")}
         </Button>
       </div>
     )

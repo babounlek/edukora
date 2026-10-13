@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 interface ThemeIllustratif {
   id: number
@@ -41,11 +42,13 @@ interface ThemeIllustratif {
 // Aperçu illustratif tant qu'aucune sélection n'a renvoyé de vraies données - même
 // procédé que la carte "Fiche - Dérivées" figée sur /fiches : un mockup plausible,
 // remplacé dès que la sélection courante renvoie un classement réel.
-const CLASSEMENT_ILLUSTRATIF: ThemeIllustratif[] = [
-  { id: -1, tag: "Suites numériques", frequence_pct: 68 },
-  { id: -2, tag: "Probabilités", frequence_pct: 55 },
-  { id: -3, tag: "Trigonométrie", frequence_pct: 47 },
-]
+function classementIllustratif(): ThemeIllustratif[] {
+  return [
+    { id: -1, tag: t("tf.ill_suites"), frequence_pct: 68 },
+    { id: -2, tag: t("tf.ill_proba"), frequence_pct: 55 },
+    { id: -3, tag: t("tf.ill_trigo"), frequence_pct: 47 },
+  ]
+}
 
 // Lignes fantômes affichées sous le teaser d'un non-abonné : de quoi montrer la
 // profondeur du classement sans jamais en révéler le contenu (le serveur ne l'envoie pas).
@@ -71,7 +74,8 @@ function libelleCursus(c: Pick<Cursus, "examen_display" | "series">) {
  * fiche annotée de /fiches - un accessoire concret plutôt qu'une simple icône, adossé
  * aux vraies données dès qu'elles existent. */
 function MiniClassement({ themes }: { themes: ThemeIllustratif[] }) {
-  const items = themes.length > 0 ? themes.slice(0, 3) : CLASSEMENT_ILLUSTRATIF
+  useI18n()
+  const items = themes.length > 0 ? themes.slice(0, 3) : classementIllustratif()
   return (
     <div className="flex flex-col gap-3">
       {items.map((theme, index) => (
@@ -115,19 +119,20 @@ interface ActionsThemeProps {
  * s'entraîner sur des items autonomes, le bon choix dépend de l'élève (voir
  * ThemesFrequents.tsx). */
 function ActionsTheme({ country, theme, subjectCode, cursusId, total, mis_en_avant }: ActionsThemeProps) {
+  useI18n()
   return (
     <div className="flex shrink-0 gap-1.5">
       <Button asChild size="sm" variant={mis_en_avant ? "default" : "outline"} className="h-8 px-3 text-xs">
         <Link to={lienExercicesTheme(country, theme, subjectCode, cursusId, total)}>
           <FileText className="size-3.5" />
-          Exercices
+          {t("qd.exercices")}
         </Link>
       </Button>
       {theme.quiz_disponible ? (
         <Button asChild size="sm" variant="outline" className="h-8 px-3 text-xs">
           <Link to={`/quiz?cursus=${cursusId}&theme=${theme.id}`}>
             <ListChecks className="size-3.5" />
-            Quiz
+            {t("qd.onglet_quiz")}
           </Link>
         </Button>
       ) : (
@@ -135,11 +140,11 @@ function ActionsTheme({ country, theme, subjectCode, cursusId, total, mis_en_ava
           size="sm"
           variant="outline"
           disabled
-          title="Pas encore de question de quiz sur ce thème précis"
+          title={t("qd.pas_de_quiz_theme")}
           className="h-8 px-3 text-xs"
         >
           <ListChecks className="size-3.5" />
-          Quiz
+          {t("qd.onglet_quiz")}
         </Button>
       )}
     </div>
@@ -149,6 +154,7 @@ function ActionsTheme({ country, theme, subjectCode, cursusId, total, mis_en_ava
 /** Une marche du podium (rangs 1 à 3). Le n°1 est doré et, dès `sm`, placé au centre et
  * surélevé, comme un vrai podium. */
 function CartePodium(props: Omit<ActionsThemeProps, "mis_en_avant"> & { rang: number }) {
+  useI18n()
   const { rang, theme, total } = props
   const premier = rang === 1
   return (
@@ -170,15 +176,14 @@ function CartePodium(props: Omit<ActionsThemeProps, "mis_en_avant"> & { rang: nu
           )}
         >
           {premier && <Crown className="size-3.5" />}
-          N°{rang}
+          {t("te.rang", { rang })}
         </span>
         <AnneauFrequence pct={theme.frequence_pct} dore={premier} />
       </div>
       <div className="min-w-0 flex-1">
         <h3 className="font-display text-lg font-semibold leading-snug text-balance">{capitaliserTheme(theme.tag)}</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Présent dans <span className="font-medium tabular-nums text-foreground">{theme.nb_epreuves}</span> sessions
-          sur <span className="tabular-nums">{total}</span>
+          {t("tf.present_avant")}<span className="font-medium tabular-nums text-foreground">{theme.nb_epreuves}</span>{t("tf.present_milieu")}<span className="tabular-nums">{total}</span>{t("tf.present_apres")}
         </p>
       </div>
       <ActionsTheme {...props} mis_en_avant={premier} />
@@ -189,6 +194,7 @@ function CartePodium(props: Omit<ActionsThemeProps, "mis_en_avant"> & { rang: nu
 /** Troisième marche verrouillée pour un non-abonné : le podium reste complet à l'œil,
  * le contenu n'est jamais envoyé par le serveur. */
 function CartePodiumVerrouillee({ cursusId }: { cursusId: number }) {
+  useI18n()
   return (
     <Link
       to={`/abonnement?cursus=${cursusId}`}
@@ -198,11 +204,11 @@ function CartePodiumVerrouillee({ cursusId }: { cursusId: number }) {
         <Lock className="size-5" />
       </span>
       <div>
-        <p className="font-display text-lg font-semibold">N°3 et suivants</p>
-        <p className="mt-1 text-sm text-muted-foreground">Réservés à l'abonnement Jusqu'à l'Examen</p>
+        <p className="font-display text-lg font-semibold">{t("tf.n3_suivants")}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{t("tf.reserve_abo")}</p>
       </div>
       <span className="inline-flex items-center gap-1 text-sm font-medium text-gold-text group-hover:underline">
-        Débloquer
+        {t("tf.debloquer")}
         <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
       </span>
     </Link>
@@ -247,6 +253,7 @@ function LigneClassement(props: Omit<ActionsThemeProps, "mis_en_avant"> & { rang
 function SuiteVerrouillee({
   nbVerrouilles, premierRang, dernierPct, cursusId, matiereLabel,
 }: { nbVerrouilles: number; premierRang: number; dernierPct: number; cursusId: number; matiereLabel?: string }) {
+  useI18n()
   const nbLignes = Math.min(nbVerrouilles, MAX_LIGNES_FANTOMES)
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
@@ -274,16 +281,16 @@ function SuiteVerrouillee({
             <Crown className="size-5" />
           </span>
           <p className="font-display text-xl font-semibold">
-            Encore {nbVerrouilles} thème{nbVerrouilles > 1 ? "s" : ""} classé{nbVerrouilles > 1 ? "s" : ""}
-            {matiereLabel ? ` en ${matiereLabel}` : ""}
+            {matiereLabel
+              ? tn("tf.encore_matiere", nbVerrouilles, { matiere: matiereLabel })
+              : tn("tf.encore", nbVerrouilles)}
           </p>
           <p className="text-sm text-muted-foreground">
-            Le classement complet, avec les exercices corrigés et les quiz de chaque thème, est inclus dans
-            l'abonnement Jusqu'à l'Examen.
+            {t("tf.suite_texte")}
           </p>
           <Button asChild className="mt-1">
             <Link to={`/abonnement?cursus=${cursusId}`}>
-              Débloquer le classement complet
+              {t("tf.debloquer_complet")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -309,27 +316,28 @@ function ClassementSquelette() {
 /** Les trois garanties de méthode, dites une fois sous le classement : c'est ce qui en
  * fait une statistique et pas une intuition de professeur. */
 function Methode() {
+  useI18n()
   const points = [
     {
       icon: BadgeCheck,
-      titre: "Épreuves officielles uniquement",
-      texte: "Les examens blancs et les sujets d'établissement ne comptent pas.",
+      titre: t("tf.methode_officielles_titre"),
+      texte: t("tf.methode_officielles_texte"),
     },
     {
       icon: Repeat,
-      titre: "Une fois par session",
-      texte: "Un thème traité dans trois exercices d'un même sujet ne compte qu'une fois.",
+      titre: t("tf.methode_session_titre"),
+      texte: t("tf.methode_session_texte"),
     },
     {
       icon: RefreshCw,
-      titre: "Toujours à jour",
-      texte: "Le classement est recalculé à chaque nouvelle épreuve ajoutée.",
+      titre: t("tf.methode_jour_titre"),
+      texte: t("tf.methode_jour_texte"),
     },
   ]
   return (
     <section aria-labelledby="methode-titre" className="mt-10 rounded-2xl border border-border bg-muted/30 p-5 sm:p-6">
       <h2 id="methode-titre" className="font-display text-base font-semibold">
-        Comment on établit ce classement
+        {t("tf.methode_titre")}
       </h2>
       <ul className="mt-4 grid gap-4 sm:grid-cols-3">
         {points.map(({ icon: Icon, titre, texte }) => (
@@ -355,6 +363,7 @@ function Methode() {
  * hérités d'une autre page.
  */
 export function ThemesFrequentsPage() {
+  useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
@@ -369,10 +378,8 @@ export function ThemesFrequentsPage() {
   const cursusId = cursusFilter ? Number(cursusFilter) : undefined
 
   useSeo({
-    title: "Les thèmes qui reviennent le plus",
-    description: countryLabel
-      ? `${countryLabel} : le classement des thèmes les plus fréquents aux épreuves officielles, matière par matière et cursus par cursus.`
-      : undefined,
+    title: t("tf.seo_titre"),
+    description: countryLabel ? t("tf.seo_description", { pays: countryLabel }) : undefined,
   })
 
   const {
@@ -477,14 +484,13 @@ export function ThemesFrequentsPage() {
         <div className="relative grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-center lg:gap-12">
           <div>
             <p className="mb-2 font-display text-sm italic text-primary">
-              Statistiques{countryLabel ? ` - ${countryLabel}` : ""}
+              {t("tf.eyebrow")}{countryLabel ? ` - ${countryLabel}` : ""}
             </p>
             <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-              Les thèmes qui <span className="text-primary">reviennent le plus</span> à l'examen.
+              {t("tf.h1_avant")}<span className="text-primary">{t("tf.h1_accent")}</span>{t("tf.h1_apres")}
             </h1>
             <p className="mt-2 max-w-xl text-muted-foreground">
-              On a passé au crible toutes les épreuves officielles en base pour repérer ce qui tombe vraiment. Révise
-              d'abord ce qui compte.
+              {t("tf.hero_texte")}
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
@@ -492,11 +498,11 @@ export function ThemesFrequentsPage() {
                 <>
                   <StatChip icon={<TrendingUp className="size-3.5 text-primary" />}>
                     <span className="font-medium tabular-nums">{total}</span>
-                    <span className="text-muted-foreground">sessions officielles analysées</span>
+                    <span className="text-muted-foreground">{t("tf.sessions_analysees")}</span>
                   </StatChip>
                   {topTheme && (
                     <StatChip icon={<Crown className="size-3.5 text-gold-text" />}>
-                      <span className="text-muted-foreground">N°1 :</span>
+                      <span className="text-muted-foreground">{t("tf.n1")}</span>
                       <span className="max-w-[12rem] truncate font-medium">{capitaliserTheme(topTheme.tag)}</span>
                     </StatChip>
                   )}
@@ -505,12 +511,12 @@ export function ThemesFrequentsPage() {
                 <>
                   <StatChip icon={<TrendingUp className="size-3.5 text-primary" />}>
                     <span className="font-medium">Top 20</span>
-                    <span className="text-muted-foreground">des thèmes par matière</span>
+                    <span className="text-muted-foreground">{t("tf.top20_suite")}</span>
                   </StatChip>
                   {cursusList.length > 0 && (
                     <StatChip icon={<Layers className="size-3.5 text-primary" />}>
                       <span className="font-medium tabular-nums">{cursusList.length}</span>
-                      <span className="text-muted-foreground">examens couverts</span>
+                      <span className="text-muted-foreground">{t("tf.examens_couverts")}</span>
                     </StatChip>
                   )}
                 </>
@@ -520,7 +526,7 @@ export function ThemesFrequentsPage() {
 
           <div aria-hidden className="relative mx-auto hidden w-full max-w-[17rem] select-none sm:block lg:mx-0 lg:justify-self-end">
             <span className="absolute -top-3 right-6 z-10 -rotate-2 rounded-md bg-gold px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-foreground shadow-md">
-              Classement en direct
+              {t("tf.en_direct")}
             </span>
             <div className="rotate-2 rounded-xl border border-border bg-card p-5 shadow-xl transition-transform duration-300 hover:rotate-0">
               <MiniClassement themes={themes} />
@@ -532,11 +538,11 @@ export function ThemesFrequentsPage() {
       {/* Sélection : la même carte surélevée et les mêmes pastilles que /epreuves, pour
           que les trois onglets de "Réviser" se pilotent de la même façon. */}
       <div className="mb-8 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
-        <p className="font-display text-lg font-semibold">Ton examen, ta matière</p>
-        <p className="text-sm text-muted-foreground">Le classement se met à jour dès que tu changes de sélection.</p>
+        <p className="font-display text-lg font-semibold">{t("te.ton_examen")}</p>
+        <p className="text-sm text-muted-foreground">{t("tf.maj")}</p>
 
         {cursusTries.length > 0 ? (
-          <FiltreLigne titre="Examen">
+          <FiltreLigne titre={t("quiz.examen")}>
             {cursusTries.map((c) => (
               <PastilleFiltre
                 key={c.id}
@@ -549,19 +555,19 @@ export function ThemesFrequentsPage() {
           </FiltreLigne>
         ) : cursusEnErreur ? (
           // Sans ce cas, un échec laissait le squelette à l'écran pour toujours.
-          <ErreurChargement objet="les examens" compact className="mt-4" onRetry={() => recharger()} />
+          <ErreurChargement objet={t("tf.objet_examens")} compact className="mt-4" onRetry={() => recharger()} />
         ) : (
           <Skeleton className="mt-4 h-16 rounded-xl" />
         )}
 
-        <FiltreLigne titre="Matière">
+        <FiltreLigne titre={t("quiz.matiere")}>
           {!cursusId ? (
-            <p className="py-1.5 text-sm text-muted-foreground">Choisis d'abord ton examen.</p>
+            <p className="py-1.5 text-sm text-muted-foreground">{t("tf.choisis_examen_matiere")}</p>
           ) : matieresEnChargement ? (
             [0, 1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-9 w-24 shrink-0 rounded-full" />)
           ) : matieresEnErreur ? (
             // Une panne n'est pas « pas d'épreuve en base » : le détail et le bouton sont plus bas.
-            <p className="py-1.5 text-sm text-muted-foreground">Les matières n'ont pas pu être chargées.</p>
+            <p className="py-1.5 text-sm text-muted-foreground">{t("tf.matieres_erreur")}</p>
           ) : matieres && matieres.length > 0 ? (
             matieres.map((m) => {
               const Icon = subjectIcon(m.code)
@@ -573,8 +579,8 @@ export function ThemesFrequentsPage() {
                   disabled={!m.disponible}
                   title={
                     m.disponible
-                      ? `${m.nb_sessions} sessions officielles analysées`
-                      : `Seulement ${m.nb_sessions} session${m.nb_sessions > 1 ? "s" : ""} en base pour l'instant : pas assez pour un classement fiable`
+                      ? t("tf.sessions_analysees_n", { n: m.nb_sessions })
+                      : tn("tf.peu_sessions", m.nb_sessions)
                   }
                   onClick={() => updateFilter("subject", m.code)}
                 >
@@ -595,7 +601,7 @@ export function ThemesFrequentsPage() {
             })
           ) : (
             <p className="py-1.5 text-sm text-muted-foreground">
-              Pas encore d'épreuve officielle en base pour cet examen.
+              {t("tf.aucune_epreuve")}
             </p>
           )}
         </FiltreLigne>
@@ -608,23 +614,23 @@ export function ThemesFrequentsPage() {
               <TrendingUp className="size-5" />
             </span>
             <div>
-              <p className="font-display text-lg font-semibold">Choisis ton examen pour voir ton classement</p>
+              <p className="font-display text-lg font-semibold">{t("tf.choisis_examen_titre")}</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                En un clic, tu sais quels thèmes réviser en priorité.
+                {t("tf.choisis_examen_texte")}
               </p>
             </div>
             <EtapesPresentation
               etapes={[
-                "Tu choisis ton examen et ta matière.",
-                "On analyse toutes les épreuves officielles déjà en base.",
-                "Tu vois exactement quels thèmes réviser en priorité.",
+                t("tf.etape1"),
+                t("tf.etape2"),
+                t("tf.etape3"),
               ]}
             />
           </div>
         </div>
       ) : matieresEnErreur || themesEnErreur ? (
         <ErreurChargement
-          objet="le classement"
+          objet={t("tf.objet_classement")}
           onRetry={() => {
             if (matieresEnErreur) rechargerMatieres()
             if (themesEnErreur) rechargerThemes()
@@ -633,7 +639,7 @@ export function ThemesFrequentsPage() {
       ) : !subjectFilter || themesEnChargement || matieresEnChargement ? (
         matieres && matieres.length > 0 && !matieres.some((m) => m.disponible) ? (
           <div className="rounded-2xl border border-dashed border-border px-6 py-14 text-center text-muted-foreground">
-            Pas encore assez d'épreuves officielles en base pour classer les thèmes de cet examen.
+            {t("tf.pas_assez_examen")}
           </div>
         ) : (
           <ClassementSquelette />
@@ -644,8 +650,7 @@ export function ThemesFrequentsPage() {
             <TrendingUp className="size-5" />
           </span>
           <p className="max-w-md text-muted-foreground">
-            Pas encore assez d'épreuves officielles en base pour cette matière et cet examen (
-            {themesData.nb_sessions_disponibles}/{themesData.seuil_minimum} sessions requises).
+            {t("tf.pas_assez_matiere", { n: themesData.nb_sessions_disponibles, min: themesData.seuil_minimum })}
           </p>
         </div>
       ) : (
@@ -665,14 +670,13 @@ export function ThemesFrequentsPage() {
                 </span>
                 <div>
                   <h2 id="classement-titre" className="font-display text-xl font-semibold sm:text-2xl">
-                    {matiereLabel ?? "Classement"}
+                    {matiereLabel ?? t("tf.classement")}
                     {cursusCourant && (
                       <span className="text-muted-foreground"> · {libelleCursus(cursusCourant)}</span>
                     )}
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    Établi sur <span className="font-medium tabular-nums text-foreground">{total}</span> sessions
-                    officielles.
+                    {t("tf.etabli_avant")}<span className="font-medium tabular-nums text-foreground">{total}</span>{t("tf.etabli_apres")}
                   </p>
                 </div>
               </div>
@@ -712,7 +716,7 @@ export function ThemesFrequentsPage() {
             {chargerPlusVisible && (
               <div className="mt-6 flex justify-center">
                 <Button variant="outline" onClick={() => setNbAffiches((n) => n + THEMES_CHARGES_PAR_CLIC)}>
-                  Charger {THEMES_CHARGES_PAR_CLIC} thèmes de plus
+                  {t("tf.charger_plus", { n: THEMES_CHARGES_PAR_CLIC })}
                 </Button>
               </div>
             )}

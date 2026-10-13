@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useSeo } from "@/lib/seo"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { useCountry } from "@/context/CountryContext"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * "Qui étudie ?" - affiché une seule fois, juste après la connexion, pour un compte
@@ -23,7 +24,8 @@ import { useCountry } from "@/context/CountryContext"
  * refresh - jamais besoin de le redemander avant la prochaine connexion.
  */
 export function QuiEtudiePage() {
-  useSeo({ title: "Qui étudie ?" })
+  useI18n()
+  useSeo({ title: t("qe.seo") })
 
   const { isAuthenticated, isLoading, login } = useAuth()
   const { country } = useCountry()
@@ -64,7 +66,7 @@ export function QuiEtudiePage() {
       setActivatingId(null)
       // Annuler la saisie du code PIN est un choix de l'élève, pas une panne : pas de message.
       if (err instanceof PinAnnule) return
-      toast.error(err instanceof ApiError ? err.message : "Impossible de choisir ce profil pour le moment. Réessaie.")
+      toast.error(err instanceof ApiError ? err.message : t("qe.erreur"))
     }
   }
 
@@ -79,9 +81,9 @@ export function QuiEtudiePage() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-4 py-12">
       <div className="mb-6 text-center">
-        <h1 className="font-display text-2xl font-semibold tracking-tight">Qui étudie ?</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight">{t("qe.seo")}</h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
-          Choisis le profil avec lequel continuer - tu pourras en changer à tout moment depuis le menu du compte.
+          {t("qe.texte")}
         </p>
       </div>
       <div className="flex flex-col gap-2.5">
@@ -98,7 +100,7 @@ export function QuiEtudiePage() {
                   <UserCircle className="size-5" />
                 </span>
                 <span className="flex-1 font-display text-base font-medium">
-                  {profil.prenom || "Profil sans nom"}
+                  {profil.prenom || t("compte.profil_sans_nom")}
                 </span>
                 {activatingId === profil.id && <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" />}
               </button>

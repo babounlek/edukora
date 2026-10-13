@@ -25,6 +25,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 type SavoirEnrichi = ParcoursSavoir & { moduleTitre: string }
 
@@ -128,21 +129,22 @@ function libelleCursus(cursus: Cursus): string {
  * révision" est le statut le plus urgent à repérer en balayant la liste - il ne doit jamais
  * être aussi discret que "Contenu à venir". */
 function BadgeSavoir({ savoir }: { savoir: ParcoursSavoir }) {
+  useI18n()
   const base = "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
   const bucket = bucketDeSavoir(savoir)
   if (bucket === "sans_contenu") {
-    return <span className={cn(base, "border border-dashed border-border/80 text-muted-foreground")}>Contenu à venir</span>
+    return <span className={cn(base, "border border-dashed border-border/80 text-muted-foreground")}>{t("pc.contenu_a_venir")}</span>
   }
   const { Icone, puce, libelle } = STATUTS[bucket]
   // Le libellé précise le statut par ce que l'élève sait déjà : un taux pour "en cours", "Cours lu"
   // quand il a lu sans être encore quizzé - distinct de "à découvrir" (jamais ouvert du tout).
   const texte =
     bucket === "en_cours" && savoir.taux !== null
-      ? `${savoir.taux}% de réussite`
+      ? t("pc.taux", { taux: savoir.taux })
       : bucket === "a_decouvrir" && savoir.a_lu_le_cours
-        ? "Cours lu"
+        ? t("pc.cours_lu")
         : bucket === "en_revision"
-          ? "À réviser"
+          ? t("pc.a_reviser_court")
           : libelle
   return (
     <span className={cn(base, puce)}>
@@ -159,13 +161,14 @@ function BadgeSavoir({ savoir }: { savoir: ParcoursSavoir }) {
  * thème suivant. Une mini-jauge en plus du chiffre : l'écart entre deux thèmes se
  * voit alors d'un simple balayage de la liste. */
 function Frequence({ savoir }: { savoir: ParcoursSavoir }) {
+  useI18n()
   if (savoir.nb_epreuves == null) return null
   return (
     <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
       <span className="h-1 w-12 overflow-hidden rounded-full bg-gold/15" aria-hidden>
         <span className="block h-full rounded-full bg-gold" style={{ width: `${Math.min(100, savoir.frequence_pct ?? 0)}%` }} />
       </span>
-      Vu dans {savoir.nb_epreuves} épreuve{savoir.nb_epreuves > 1 ? "s" : ""} ({savoir.frequence_pct}%)
+      {tn("pc.vu_dans", savoir.nb_epreuves, { pct: savoir.frequence_pct ?? 0 })}
     </span>
   )
 }
@@ -175,10 +178,11 @@ function Frequence({ savoir }: { savoir: ParcoursSavoir }) {
  * ne montre alors qu'un bouton de quiz seul, ce qui se lit comme un oubli plutôt que
  * comme une absence de contenu assumée. */
 function SansCoursIndice({ savoir }: { savoir: ParcoursSavoir }) {
+  useI18n()
   if (savoir.cours.length > 0 || !savoir.has_quiz) return null
   return (
     <p className="mt-1.5 text-xs text-muted-foreground">
-      Pas encore de cours sur ce point - tu peux tester tes connaissances directement.
+      {t("pc.sans_cours")}
     </p>
   )
 }
@@ -207,6 +211,7 @@ function ActionsSavoir({
   arrow?: boolean
   className?: string
 }) {
+  useI18n()
   const premierCours = savoir.cours[0]
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
@@ -215,7 +220,7 @@ function ActionsSavoir({
           <Button asChild size={size} variant="outline" className="rounded-full">
             <Link to="/tarifs">
               <Lock className="size-3.5" />
-              Réservé aux abonnés
+              {t("te.reserve")}
             </Link>
           </Button>
         ) : (
@@ -227,7 +232,7 @@ function ActionsSavoir({
             onClick={() => onQuiz()}
             className={cn("group rounded-full", arrow && "shadow-md shadow-primary/20")}
           >
-            {starting ? "Préparation…" : "Tester mes connaissances"}
+            {starting ? t("pc.preparation") : t("pc.tester")}
             {arrow && <ArrowRight className="transition-transform group-hover:translate-x-0.5" />}
           </Button>
         )
@@ -237,7 +242,7 @@ function ActionsSavoir({
           <Link to={coursDetailPath(premierCours.slug)}>
             <BookOpenText />
             <span className="truncate">
-              {premierCours.sous_theme ? capitaliserTheme(premierCours.sous_theme) : "Lire le cours"}
+              {premierCours.sous_theme ? capitaliserTheme(premierCours.sous_theme) : t("pc.lire_cours")}
             </span>
           </Link>
         </Button>
@@ -266,6 +271,7 @@ function LigneSavoir({
   /** Le thème tombe souvent à l'examen (mode Parcours par fréquence) : l'étoile dorée. */
   dore: boolean
 }) {
+  useI18n()
   const bucket = bucketDeSavoir(savoir)
   const inactif = bucket === "sans_contenu"
   return (
@@ -308,10 +314,10 @@ function LigneSavoir({
               {capitaliserTheme(savoir.intitule)}
               {prochain && (
                 <span className="ml-2 inline-block rounded-full bg-primary px-2.5 py-0.5 align-middle text-[0.7rem] font-semibold text-primary-foreground">
-                  Commence ici
+                  {t("pc.commence_ici")}
                 </span>
               )}
-              {dore && <span className="sr-only"> (tombe souvent à l'examen)</span>}
+              {dore && <span className="sr-only">{t("pc.tombe_souvent")}</span>}
             </p>
             <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <BadgeSavoir savoir={savoir} />
@@ -345,6 +351,7 @@ function Squelette() {
 }
 
 export function ParcoursSubjectPage() {
+  const { langue } = useI18n()
   const { subjectId } = useParams<{ subjectId: string }>()
   const { isAuthenticated, isLoading: authLoading, user } = useAuth()
   const navigate = useNavigate()
@@ -448,8 +455,8 @@ export function ParcoursSubjectPage() {
   const subjectCode = depuisResume?.subject_code ?? depuisReferentiel?.code ?? ""
 
   useSeo({
-    title: subjectLabel ? `Parcours ${subjectLabel}` : "Ton parcours",
-    description: "Ce qu'il te reste à travailler pour ta matière, dans l'ordre le plus utile pour progresser.",
+    title: subjectLabel ? t("pc.seo_matiere", { matiere: subjectLabel }) : t("seance.ton_parcours"),
+    description: t("pc.seo_description"),
   })
 
   // numero vide = pseudo-module du mode Parcours par fréquence (voir
@@ -482,10 +489,10 @@ export function ParcoursSubjectPage() {
       .map((m) => ({
         id: `module-${m.numero || "unique"}`,
         short: m.numero ? `M${m.numero}` : m.titre,
-        long: m.numero ? `Module ${m.numero}` : m.titre,
+        long: m.numero ? t("pc.module", { n: m.numero }) : m.titre,
         title: m.titre,
       }))
-  }, [modules, afficherTout, recherche])
+  }, [modules, afficherTout, recherche, langue])
 
   // Décide si le champ de recherche mérite sa place - inutile sur un petit programme
   // que l'œil parcourt déjà d'un coup (voir SAVOIRS_PAGE_SIZE, même palier que la
@@ -530,13 +537,13 @@ export function ParcoursSubjectPage() {
       }
     } catch (err) {
       nouvelOnglet?.close()
-      setError(err instanceof ApiError ? err.message : "Impossible de démarrer ce quiz. Réessaie plus tard.")
+      setError(err instanceof ApiError ? err.message : t("pc.quiz_erreur"))
       setStarting(false)
     }
   }
 
   if (erreurAbonnements) {
-    return <p className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive sm:px-6">Impossible de charger tes abonnements.</p>
+    return <p className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive sm:px-6">{t("pc.abos_erreur")}</p>
   }
   // La page s'affiche dès que le parcours est là, même si la liste des abonnements
   // n'est pas encore arrivée (voir parDefaut).
@@ -552,13 +559,12 @@ export function ParcoursSubjectPage() {
           <span className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
             <Compass className="size-5" />
           </span>
-          <p className="font-display text-xl font-semibold">Quel examen prépares-tu ?</p>
+          <p className="font-display text-xl font-semibold">{t("pc.examen_titre")}</p>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-            Dis-nous ce que tu prépares pour voir ce programme, matière par matière - c'est gratuit, aucun
-            abonnement requis pour ça.
+            {t("pc.examen_texte_matiere")}
           </p>
           <Button asChild className="mt-5 rounded-full px-6">
-            <Link to="/compte">Choisir mon cursus</Link>
+            <Link to="/compte">{t("pc.choisir_cursus")}</Link>
           </Button>
         </Ecrin>
       </div>
@@ -571,7 +577,7 @@ export function ParcoursSubjectPage() {
     ?? (user?.cursus_prepare && String(user.cursus_prepare.id) === selectedCursus ? user.cursus_prepare : undefined)
   const abonneAuCursus = actifs.some((sub) => String(sub.cursus.id) === selectedCursus)
   const erreurChargement = error || (erreurParcours
-    ? erreurParcours instanceof ApiError ? erreurParcours.message : "Impossible de charger ton parcours."
+    ? erreurParcours instanceof ApiError ? erreurParcours.message : t("pc.parcours_erreur")
     : "")
 
   return (
@@ -581,7 +587,7 @@ export function ParcoursSubjectPage() {
         className="group mb-5 inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card px-3 py-1 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
       >
         <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-0.5" />
-        Toutes mes matières
+        {t("pc.toutes_matieres")}
       </Link>
 
       <Ecrin>
@@ -591,15 +597,15 @@ export function ParcoursSubjectPage() {
               <span className={cn("flex size-11 shrink-0 items-center justify-center rounded-2xl text-white shadow-md", couleurMatiere(subjectCode).barre)}>
                 <SubjectIcon className="size-5" />
               </span>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Ton parcours</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{t("seance.ton_parcours")}</p>
             </div>
             <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
               {subjectLabel || <span className="inline-block h-11 w-64 max-w-full animate-pulse rounded-xl bg-muted align-middle" />}
             </h1>
             <p className="mt-3 max-w-lg text-base leading-snug text-muted-foreground sm:text-lg">
               {isModeFrequence
-                ? "Les thèmes qui reviennent le plus à l'examen, du plus fréquent au moins fréquent."
-                : "Le programme officiel, dans l'ordre - avec ce qu'il te reste à découvrir, réviser ou maîtriser."}
+                ? t("pc.sous_titre_frequence")
+                : t("pc.sous_titre_programme")}
             </p>
           </div>
           {totalAvecContenu > 0 && (
@@ -615,7 +621,7 @@ export function ParcoursSubjectPage() {
               visibles ; un seul : le cursus en pastille, pour savoir de quel
               programme on parle. */}
           {actifs.length > 1 ? (
-            <div role="group" aria-label="Cursus" className="inline-flex flex-wrap rounded-full border border-border/80 bg-muted/60 p-1">
+            <div role="group" aria-label={t("pc.cursus")} className="inline-flex flex-wrap rounded-full border border-border/80 bg-muted/60 p-1">
               {actifs.map((sub) => (
                 <button
                   key={sub.id}
@@ -647,13 +653,13 @@ export function ParcoursSubjectPage() {
           {!abonneAuCursus && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-muted-foreground">
               <Lock className="size-3.5" />
-              Programme complet - abonne-toi pour suivre ta progression
+              {t("pc.programme_complet_court")}
             </span>
           )}
           {isModeFrequence && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium">
               <Target className="size-3.5" />
-              Classé par fréquence à l'examen
+              {t("pc.classe_frequence")}
             </span>
           )}
         </div>
@@ -665,13 +671,13 @@ export function ParcoursSubjectPage() {
             <div className="mt-6 flex items-center gap-4 sm:hidden">
               <AnneauProgression part={buckets.maitrises / totalAvecContenu} />
               <p className="text-sm text-muted-foreground">
-                <span className="font-semibold tabular-nums text-foreground">{buckets.maitrises}</span> sur{" "}
-                <span className="tabular-nums">{totalAvecContenu}</span> maîtrisé{buckets.maitrises > 1 ? "s" : ""}
+                <span className="font-semibold tabular-nums text-foreground">{buckets.maitrises}</span> {t("pc.sur")}{" "}
+                <span className="tabular-nums">{totalAvecContenu}</span>{tn("pc.maitrise_suffixe", buckets.maitrises)}
               </p>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-              <CompteurStatut statut="maitrise" valeur={buckets.maitrises} libelle="Maîtrisés" />
-              <CompteurStatut statut="en_revision" valeur={buckets.en_revision} libelle="À réviser" />
+              <CompteurStatut statut="maitrise" valeur={buckets.maitrises} libelle={t("pc.maitrises")} />
+              <CompteurStatut statut="en_revision" valeur={buckets.en_revision} libelle={t("pc.a_reviser_court")} />
               <CompteurStatut statut="en_cours" valeur={buckets.en_cours} />
               <CompteurStatut statut="a_decouvrir" valeur={buckets.a_decouvrir} />
             </div>
@@ -684,7 +690,7 @@ export function ParcoursSubjectPage() {
             />
             {buckets.sans_contenu > 0 && (
               <p className="mt-2 text-xs text-muted-foreground">
-                + {buckets.sans_contenu} savoir{buckets.sans_contenu > 1 ? "s" : ""} dont le contenu arrive bientôt.
+                {tn("pc.contenu_bientot", buckets.sans_contenu)}
               </p>
             )}
           </>
@@ -704,16 +710,16 @@ export function ParcoursSubjectPage() {
             <section className="animate-fade-up rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-card to-card p-5 sm:p-7">
               <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 <Sparkles className="size-3.5" />
-                {etapes === "diagnostic" || etapes.length === 1 ? "Prochaine étape recommandée" : "À faire maintenant"}
+                {etapes === "diagnostic" || etapes.length === 1 ? t("pc.prochaine_etape") : t("pc.a_faire")}
               </p>
               {etapes === "diagnostic" ? (
                 <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="max-w-lg">
-                    <p className="font-display text-2xl font-semibold tracking-tight">Commence par te situer</p>
+                    <p className="font-display text-2xl font-semibold tracking-tight">{t("pc.situer_titre")}</p>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {abonneAuCursus
-                        ? "Tu n'as encore rien tenté sur ce cursus - un test de positionnement de 20 questions dit d'où partir, sur tout le programme d'un coup."
-                        : "Abonne-toi pour faire un test de positionnement de 20 questions sur tout le programme d'un coup."}
+                        ? t("pc.situer_abonne")
+                        : t("pc.situer_non_abonne")}
                     </p>
                   </div>
                   {abonneAuCursus ? (
@@ -724,13 +730,13 @@ export function ParcoursSubjectPage() {
                       onClick={() => lancerQuiz({ mode: "DIAGNOSTIC" })}
                     >
                       <Target className="size-4" />
-                      {starting ? "Préparation…" : "Faire le test de positionnement"}
+                      {starting ? t("pc.preparation") : t("pc.test_positionnement")}
                     </Button>
                   ) : (
                     <Button asChild size="lg" variant="outline" className="h-12 shrink-0 rounded-full px-7 text-base">
                       <Link to="/tarifs">
                         <Lock className="size-4" />
-                        Voir les prix
+                        {t("ft.voir_prix")}
                       </Link>
                     </Button>
                   )}
@@ -780,7 +786,7 @@ export function ParcoursSubjectPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <h2 className="font-display text-2xl font-semibold tracking-tight">
-                {isModeFrequence ? "Tous les thèmes" : "Le programme"}
+                {isModeFrequence ? t("pc.tous_themes") : t("pc.le_programme")}
               </h2>
               {buckets.maitrises + buckets.sans_contenu > 0 && (
                 <button
@@ -791,8 +797,8 @@ export function ParcoursSubjectPage() {
                 >
                   {afficherTout ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
                   {afficherTout
-                    ? "Masquer maîtrisés et sans contenu"
-                    : `Afficher aussi maîtrisés et sans contenu (${buckets.maitrises + buckets.sans_contenu})`}
+                    ? t("pc.masquer")
+                    : t("pc.afficher_aussi", { n: buckets.maitrises + buckets.sans_contenu })}
                 </button>
               )}
             </div>
@@ -802,9 +808,9 @@ export function ParcoursSubjectPage() {
                 <Input
                   value={recherche}
                   onChange={(e) => setRecherche(e.target.value)}
-                  placeholder="Filtrer les thèmes…"
+                  placeholder={t("pc.filtrer")}
                   className="rounded-full pl-10"
-                  aria-label="Filtrer les thèmes"
+                  aria-label={t("pc.filtrer_aria")}
                 />
               </div>
             )}
@@ -815,8 +821,8 @@ export function ParcoursSubjectPage() {
               <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 ring-4 ring-primary/10">
                 <CheckCircle2 className="size-6" />
               </span>
-              <p className="mt-3 font-display text-lg font-semibold">Tout est maîtrisé ou sans contenu pour l'instant</p>
-              <p className="text-sm text-muted-foreground">Reviens plus tard, ou affiche le détail avec le bouton ci-dessus.</p>
+              <p className="mt-3 font-display text-lg font-semibold">{t("pc.tout_maitrise_titre")}</p>
+              <p className="text-sm text-muted-foreground">{t("pc.tout_maitrise_texte")}</p>
             </Ecrin>
           )}
 
@@ -873,7 +879,7 @@ export function ParcoursSubjectPage() {
                       <div className="min-w-0">
                         {module.numero && (
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                            Module {module.numero}
+                            {t("pc.module", { n: module.numero })}
                           </p>
                         )}
                         <p className="font-display text-lg font-semibold leading-snug">{module.titre}</p>
@@ -921,7 +927,7 @@ export function ParcoursSubjectPage() {
                           }))
                         }
                       >
-                        Afficher plus ({resteAAfficher} restant{resteAAfficher > 1 ? "s" : ""})
+                        {tn("pc.afficher_plus", resteAAfficher)}
                       </Button>
                     )}
                   </div>
@@ -933,8 +939,8 @@ export function ParcoursSubjectPage() {
               return (
                 <Ecrin variante="sobre" className="text-center">
                   <Search className="mx-auto size-6 text-muted-foreground" />
-                  <p className="mt-2 font-display text-lg font-semibold">Aucun thème ne correspond à « {recherche.trim()} »</p>
-                  <p className="text-sm text-muted-foreground">Essaie un autre mot, ou efface la recherche.</p>
+                  <p className="mt-2 font-display text-lg font-semibold">{t("pc.aucun_theme", { q: recherche.trim() })}</p>
+                  <p className="text-sm text-muted-foreground">{t("pc.autre_mot")}</p>
                 </Ecrin>
               )
             }
@@ -945,7 +951,7 @@ export function ParcoursSubjectPage() {
             if (sommaireEntries.length > 1) {
               return (
                 <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-10">
-                  <SommaireNav entries={sommaireEntries} ariaLabel="Sommaire des modules" />
+                  <SommaireNav entries={sommaireEntries} ariaLabel={t("pc.sommaire_aria")} />
                   <div className="flex min-w-0 flex-col gap-6">{cartes}</div>
                 </div>
               )

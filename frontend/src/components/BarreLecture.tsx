@@ -1,5 +1,7 @@
 import { useEffect, useState, type RefObject } from "react"
 
+import { t, tn, useI18n } from "@/lib/i18n"
+
 // Vitesse de lecture d'un contenu scolaire - formules, exemples à suivre au crayon : bien
 // en dessous des 230 mots/min d'un texte courant. Un temps annoncé trop court serait
 // pire que pas de temps du tout : l'élève se croirait lent.
@@ -23,6 +25,7 @@ const MOTS_MIN_POUR_AFFICHER_LE_TEMPS = 350
 export function BarreLecture({
   cibleRef, contenuKey,
 }: { cibleRef: RefObject<HTMLElement | null>; contenuKey?: unknown }) {
+  useI18n()
   const [progression, setProgression] = useState(0)
   const [mots, setMots] = useState(0)
 
@@ -68,7 +71,7 @@ export function BarreLecture({
     <>
       <div
         role="progressbar"
-        aria-label="Progression de la lecture"
+        aria-label={t("ed.lecture_aria")}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={pourcent}
@@ -84,7 +87,7 @@ export function BarreLecture({
           aria-hidden="true"
           className="pointer-events-none fixed bottom-28 right-4 z-40 rounded-full border border-border bg-background/90 px-3 py-1.5 text-xs font-medium tabular-nums text-muted-foreground shadow-md backdrop-blur-sm lg:bottom-6"
         >
-          ≈ {minutes} min restante{minutes > 1 ? "s" : ""} · {pourcent} %
+          {tn("ed.restantes", minutes, { p: pourcent })}
         </p>
       )}
     </>

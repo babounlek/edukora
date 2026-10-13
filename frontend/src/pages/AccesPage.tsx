@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
+import { localeCourante, t, useI18n } from "@/lib/i18n"
 
 // En dessous, la fin de l'abonnement se voit : la jauge passe à l'orange et "Prolonger" devient
 // l'action principale de la ligne. Assez tôt pour renouveler sans coupure, assez tard pour ne pas
@@ -33,11 +34,11 @@ function joursRestants(expiresAt: string): number {
 }
 
 function dateFr(iso: string): string {
-  return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+  return new Date(iso).toLocaleDateString(localeCourante(), { day: "numeric", month: "long", year: "numeric" })
 }
 
 function libelleCursus(cursus: Subscription["cursus"]): string {
-  return `${cursus.examen_display}${cursus.series ? ` - Série ${cursus.series.code}` : ""}`
+  return `${cursus.examen_display}${cursus.series ? ` - ${t("prix.serie", { code: cursus.series.code })}` : ""}`
 }
 
 /**
@@ -69,17 +70,17 @@ function LigneAcces({
           {inclutInedit && (
             <p className="mt-0.5 flex items-center gap-1 text-xs font-medium text-gold-text">
               <Sparkles className="size-3" />
-              Épreuves inédites incluses
+              {t("ac.inedites_incluses")}
             </p>
           )}
         </div>
         {actif ? (
           <Badge variant="success" className="shrink-0 gap-1">
             <Check className="size-3" strokeWidth={3} />
-            Actif
+            {t("ac.actif")}
           </Badge>
         ) : (
-          <Badge variant="outline" className="shrink-0">Expiré</Badge>
+          <Badge variant="outline" className="shrink-0">{t("ac.expire")}</Badge>
         )}
       </div>
 
@@ -87,12 +88,12 @@ function LigneAcces({
         <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-xs">
           <span className={cn("inline-flex items-center gap-1.5 whitespace-nowrap", bientot ? "font-medium text-warning-foreground dark:text-warning" : "text-muted-foreground")}>
             <CalendarClock className="size-3.5" aria-hidden="true" />
-            {jours > 1 ? `${jours} jours restants` : jours === 1 ? "Dernier jour" : "Expire aujourd'hui"}
+            {jours > 1 ? t("ac.jours_restants", { n: jours }) : jours === 1 ? t("ac.dernier_jour") : t("ac.expire_aujourdhui")}
           </span>
-          <span className="text-muted-foreground">jusqu'au {dateFr(expiresAt)}</span>
+          <span className="text-muted-foreground">{t("ac.jusqua", { date: dateFr(expiresAt) })}</span>
         </div>
       ) : (
-        <p className="mt-2 text-xs text-muted-foreground">Expiré le {dateFr(expiresAt)}.</p>
+        <p className="mt-2 text-xs text-muted-foreground">{t("ac.expire_le", { date: dateFr(expiresAt) })}</p>
       )}
 
       {renouvelable && (!actif || bientot) && (
@@ -101,7 +102,7 @@ function LigneAcces({
               retomberait sur le profil par défaut du compte (voir
               payments.views._resoudre_profil), pas nécessairement le bon enfant. */}
           <Link to={`/abonnement?cursus=${cursusId}&profil=${profilId}`}>
-            {actif ? "Prolonger" : "Se réabonner"}
+            {actif ? t("ac.prolonger") : t("ac.reabonner")}
             <ArrowRight className="size-3.5" />
           </Link>
         </Button>
@@ -134,7 +135,7 @@ function NomProfilEditable({ profil, onRenamed }: { profil: Profil; onRenamed: (
     } catch (err) {
       setValeur(profil.prenom)
       // Sans message, le prénom reprenait simplement son ancienne valeur : on croyait avoir renommé.
-      toast.error(err instanceof ApiError ? err.message : "Impossible de renommer ce profil pour le moment.")
+      toast.error(err instanceof ApiError ? err.message : t("ac.renommer_erreur"))
     } finally {
       setSaving(false)
       setEditing(false)
@@ -168,11 +169,11 @@ function NomProfilEditable({ profil, onRenamed }: { profil: Profil; onRenamed: (
     <button
       type="button"
       onClick={() => setEditing(true)}
-      aria-label={`Renommer le profil ${profil.prenom || "sans nom"}`}
+      aria-label={t("ac.renommer_aria", { nom: profil.prenom || t("ac.sans_nom_min") })}
       className="group flex min-h-11 items-center gap-1.5 text-left"
     >
       <h3 className="font-display text-base font-semibold">
-        {profil.prenom || "Sans nom"}
+        {profil.prenom || t("ac.sans_nom")}
       </h3>
       {/* Visible en permanence : sur tactile il n'y a pas de survol qui révèle le crayon, la
           possibilité de renommer restait invisible. Discret au repos, renforcé au survol. */}
@@ -199,7 +200,7 @@ function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
       onCreated(profil)
       navigate(`/tarifs?profil=${profil.id}`)
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Impossible de créer ce profil.")
+      setError(err instanceof ApiError ? err.message : t("ac.creer_erreur"))
       setSaving(false)
     }
   }
@@ -212,7 +213,7 @@ function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
         className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border px-4 py-3.5 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
       >
         <UserPlus className="size-4" />
-        Ajouter un enfant
+        {t("ac.ajouter_enfant")}
       </button>
     )
   }
@@ -220,7 +221,7 @@ function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 rounded-xl border border-dashed border-primary/40 bg-primary/[0.03] p-3.5">
       <label htmlFor="nouveau-prenom" className="text-xs font-medium text-muted-foreground">
-        Prénom de l'enfant
+        {t("ac.prenom_enfant")}
       </label>
       <div className="flex items-center gap-2">
         <Input
@@ -235,7 +236,7 @@ function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
         />
         <Button type="submit" size="sm" disabled={saving || !prenom.trim()} className="h-9 shrink-0 rounded-full">
           {saving ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />}
-          Continuer
+          {t("bs.continuer")}
         </Button>
       </div>
       {error && <p className="text-xs text-destructive">{error}</p>}
@@ -244,7 +245,8 @@ function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
 }
 
 export function AccesPage() {
-  useSeo({ title: "Mes accès" })
+  useI18n()
+  useSeo({ title: t("compte.mes_acces") })
 
   const { isAuthenticated, isLoading, user } = useAuth()
   const navigate = useNavigate()
@@ -302,7 +304,7 @@ export function AccesPage() {
     ...(subscriptions ?? []).map((sub) => ({
       key: `sub-${sub.id}`,
       titre: libelleCursus(sub.cursus),
-      sous_titre: sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? "Jusqu'à l'Examen" : "Mensuel"),
+      sous_titre: sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? t("prix.formule") : t("ac.mensuel")),
       expiresAt: sub.expires_at,
       actif: sub.is_active,
       cursusId: sub.cursus.id,
@@ -315,7 +317,7 @@ export function AccesPage() {
     ...(inscriptionsRepetiteur ?? []).map((i) => ({
       key: `repet-${i.id}`,
       titre: libelleCursus(i.cursus),
-      sous_titre: "Add-on Fiches",
+      sous_titre: t("ac.addon_fiches"),
       expiresAt: i.expires_at,
       actif: i.is_active,
       cursusId: i.cursus.id,
@@ -345,22 +347,22 @@ export function AccesPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:py-10 sm:px-6">
       <EnteteCompte
         icone={Sparkles}
-        titre="Mes accès"
-        sousTitre="Ce que ton compte débloque aujourd'hui, examen par examen."
+        titre={t("compte.mes_acces")}
+        sousTitre={t("ac.sous_titre")}
       />
 
-      <Section icone={Sparkles} titre="Abonnements et accès">
+      <Section icone={Sparkles} titre={t("ac.section")}>
         {erreur ? (
           // Une panne n'est pas « aucun accès » : l'élève qui a payé doit voir qu'on n'a pas pu
           // lire son compte, pas qu'il n'a rien.
-          <ErreurChargement compact objet="tes accès" onRetry={charger} />
+          <ErreurChargement compact objet={t("ac.objet")} onRetry={charger} />
         ) : !charge ? (
-          <p className="text-sm text-muted-foreground">Chargement…</p>
+          <p className="text-sm text-muted-foreground">{t("matieres.chargement")}</p>
         ) : acces.length === 0 ? (
           <EtatVide
-            texte="Aucun accès actif pour le moment. Choisis ton examen pour débloquer les corrigés, les cours et ta séance du jour."
+            texte={t("ac.aucun_acces")}
             lien="/tarifs"
-            libelleLien="Voir les formules"
+            libelleLien={t("ar.formules")}
           />
         ) : (
           <div className="flex flex-col gap-5">
@@ -374,7 +376,7 @@ export function AccesPage() {
                 ) : (
                   <Button asChild size="sm" variant="outline" className="h-11 w-fit rounded-full text-xs sm:h-8">
                     <Link to={`/tarifs?profil=${profil.id}`}>
-                      Choisir un abonnement
+                      {t("ac.choisir_abonnement")}
                       <ArrowRight className="size-3.5" />
                     </Link>
                   </Button>
@@ -392,7 +394,7 @@ export function AccesPage() {
       </Section>
 
       {charge && profils && !user?.session_restreinte && (
-        <Section icone={ShieldCheck} titre="Sécurité des profils">
+        <Section icone={ShieldCheck} titre={t("ac.securite")}>
           <SecuriteProfils
             profils={profils}
             onProfilChange={(maj) => setProfils((prev) => (prev ?? []).map((p) => (p.id === maj.id ? maj : p)))}

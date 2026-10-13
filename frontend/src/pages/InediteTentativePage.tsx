@@ -31,7 +31,9 @@ import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { apiPour, cheminResultat, cheminRetour, type SourceEpreuve } from "@/lib/apiEpreuve"
-import { mots, uniteDe } from "@/lib/vocabulaire"
+import { libellesUnite, tu, uniteDe } from "@/lib/vocabulaire"
+import { t, tn, useI18n } from "@/lib/i18n"
+import { traduireLibelleSerie } from "@/lib/cursus"
 
 /** Rendu inline (pas de <p> bloc) pour le texte d'un choix QCM, qui peut contenir du LaTeX. */
 function ChoixText({ texte }: { texte: string }) {
@@ -78,7 +80,7 @@ function flattenQuestions(tentative: TentativeInedite): FlatQuestion[] {
 function repere(question: FlatQuestion, unite: "question" | "exercice") {
   return {
     id: question.id,
-    label: unite === "exercice" ? `Exercice ${question.numero_exercice}` : `Ex. ${question.numero_exercice} · Q${question.numero}`,
+    label: unite === "exercice" ? t("ed.exercice_n", { n: question.numero_exercice }) : t("ct.repere_question", { n: question.numero_exercice, q: question.numero }),
   }
 }
 
@@ -102,6 +104,7 @@ function etatPastille(question: FlatQuestion, rendue: boolean): EtatPastille {
 }
 
 export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpreuve }) {
+  useI18n()
   const api = apiPour(source)
 
   const { id } = useParams<{ id: string }>()
@@ -109,10 +112,10 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
 
   const [tentative, setTentative] = useState<TentativeInedite | null>(null)
   // Le titre de l'onglet nomme l'épreuve : avec plusieurs onglets ouverts, « Épreuve inédite » seul ne dit rien.
-  useSeo({ title: tentative?.epreuve_titre ?? (source === "officielle" ? "Simulation d'épreuve" : "Épreuve inédite") })
+  useSeo({ title: tentative?.epreuve_titre ?? (source === "officielle" ? t("ct.seo_simulation") : t("ep.origine_INEDITE")) })
   // Ce que la page compte et note d'un bloc : des questions, ou des exercices pour une annale.
   const unite = uniteDe(tentative?.granularite)
-  const m = mots(unite)
+  const m = libellesUnite(unite)
   const [questions, setQuestions] = useState<FlatQuestion[]>([])
   const [notation, setNotation] = useState<NotationResume | null>(null)
   const [loadError, setLoadError] = useState("")
@@ -180,7 +183,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         }
       })
       .catch((err) => {
-        setLoadError(err instanceof ApiError ? err.message : "Impossible de charger cette épreuve.")
+        setLoadError(err instanceof ApiError ? err.message : t("ed.charger_erreur"))
       })
   }, [id, charger])
 
@@ -273,7 +276,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
     repriseSignalee.current = true
     const debut = tentative?.exam_mode_started_at ? new Date(tentative.exam_mode_started_at).getTime() : maintenantServeur()
     if (chargementInitial.current && maintenantServeur() - debut > 30_000) {
-      toast("Reprise de l'épreuve", { description: `Il te reste ${formatDuration(remainingSeconds)}.` })
+      toast(t("ct.reprise_titre"), { description: t("ct.reprise_texte", { duree: formatDuration(remainingSeconds) }) })
     }
   }, [remainingSeconds, tentative?.exam_mode_started_at])
 
@@ -306,7 +309,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
             if (!fileHorsLigne.current.has(questionId)) fileHorsLigne.current.set(questionId, corps)
             setEnAttente(fileHorsLigne.current.size)
           } else {
-            toast.error("Une de tes réponses n'a pas pu être enregistrée.")
+            toast.error(t("ct.reponse_perdue"))
           }
         }
       }
@@ -375,7 +378,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           to={tentative ? cheminRetour(source, tentative.country) : "/"}
           className="mt-3 inline-block text-sm text-primary hover:underline"
         >
-          Retour au catalogue
+          {t("ed.retour_catalogue")}
         </Link>
       </div>
     )
@@ -402,7 +405,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   const briefingVisible = !rendue && tentative.exam_mode_started_at === null && !libreChoisi && traiteesCount === 0
   const groupesPalette: GroupePalette[] = []
   for (const q of questions) {
-    const titre = unite === "exercice" ? "Exercices" : `Exercice ${q.numero_exercice}`
+    const titre = unite === "exercice" ? t("ct.palette_exercices") : t("ed.exercice_n", { n: q.numero_exercice })
     let groupe = groupesPalette[groupesPalette.length - 1]
     if (!groupe || groupe.titre !== titre) {
       groupe = { titre, pastilles: [] }
@@ -467,7 +470,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         fileHorsLigne.current.set(question.id, { type: "noter", corps })
         setEnAttente(fileHorsLigne.current.size)
         if (fileHorsLigne.current.size === 1) {
-          toast("Hors connexion", { description: "Tes changements sont gardés et partiront au retour du réseau." })
+          toast(t("ct.hors_ligne_titre"), { description: t("ct.hors_ligne_texte") })
         }
         return
       }
@@ -487,7 +490,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       question,
       { traitee },
       (q) => ({ ...q, traitee, reponse: traitee ? (q.reponse ?? REPONSE_VIDE) : undefined }),
-      "Impossible d'enregistrer cette question. Réessaie.",
+      t("ct.erreur_question"),
     )
   }
 
@@ -501,7 +504,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         traitee: true,
         reponse: { ...(q.reponse ?? REPONSE_VIDE), notee: true, criteres_valides: indices, points_obtenus: total },
       }),
-      "Impossible d'enregistrer ta note. Réessaie.",
+      t("ct.erreur_note"),
     )
   }
 
@@ -510,7 +513,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       question,
       { points_obtenus: points },
       (q) => ({ ...q, traitee: true, reponse: { ...(q.reponse ?? REPONSE_VIDE), notee: true, points_obtenus: points } }),
-      "Impossible d'enregistrer ta note. Réessaie.",
+      t("ct.erreur_note"),
     )
   }
 
@@ -519,7 +522,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       question,
       { cause_perte: cause },
       (q) => ({ ...q, reponse: { ...(q.reponse ?? REPONSE_VIDE), cause_perte: cause } }),
-      "Impossible d'enregistrer cette précision. Réessaie.",
+      t("ct.erreur_precision"),
     )
   }
 
@@ -545,7 +548,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         fileHorsLigne.current.set(question.id, { type: "qcm", lettre })
         setEnAttente(fileHorsLigne.current.size)
         if (fileHorsLigne.current.size === 1) {
-          toast("Hors connexion", { description: "Tes changements sont gardés et partiront au retour du réseau." })
+          toast(t("ct.hors_ligne_titre"), { description: t("ct.hors_ligne_texte") })
         }
         return
       }
@@ -553,7 +556,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       if (err.status === 409) {
         await refetchAfterLock(true)
       } else {
-        toast.error("Impossible d'enregistrer ta réponse. Réessaie.")
+        toast.error(t("qs.reponse_erreur"))
       }
     }
   }
@@ -563,7 +566,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       const result = await api.marquer(tentative!.id, question.id)
       setFlaggedIds(new Set(result.questions_marquees))
     } catch {
-      toast.error("Impossible de marquer cette question. Réessaie.")
+      toast.error(t("ct.erreur_marquer"))
     }
   }
 
@@ -577,7 +580,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       window.scrollTo({ top: 0 })
     } catch (err) {
       setModeAConfirmer(null)
-      toast.error(err instanceof ApiError ? err.message : "Impossible d'activer le mode examen.")
+      toast.error(err instanceof ApiError ? err.message : t("ct.erreur_mode"))
     } finally {
       setStartingExam(false)
     }
@@ -590,7 +593,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       if (source === "officielle") window.open(tentative.sujet_pdf_url ?? "", "_blank", "noopener,noreferrer")
       else await downloadSujetPdf(tentative.epreuve)
     } catch {
-      toast.error("Impossible d'ouvrir l'épreuve pour le moment. Réessaie.")
+      toast.error(t("ct.erreur_ouvrir"))
     } finally {
       setDownloadingSujet(false)
     }
@@ -603,8 +606,8 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       // on les envoie d'abord, et on n'abandonne l'épreuve que si tout est parti.
       await envoyerLaFile()
       if (fileHorsLigne.current.size > 0) {
-        toast.error("Tes derniers changements ne sont pas encore partis", {
-          description: "La connexion est instable. Réessaie dans un instant : rien n'est perdu.",
+        toast.error(t("ct.file_titre"), {
+          description: t("ct.file_texte"),
         })
         return
       }
@@ -612,7 +615,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       setTerminerOuvert(false)
       await refetchAfterLock(false)
     } catch {
-      toast.error("Impossible de terminer l'épreuve. Réessaie.")
+      toast.error(t("ct.erreur_terminer"))
     } finally {
       setFinishing(false)
     }
@@ -649,7 +652,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
       >
         <ArrowLeft className="size-4" />
-        Quitter l'épreuve
+        {t("ct.quitter")}
       </Link>
 
       {/* Le briefing porte déjà le titre (son h1) ; ensuite plus rien ne le disait : en plein examen, le site
@@ -659,7 +662,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           <h1 className="font-display text-xl font-semibold leading-tight sm:text-2xl">{tentative.epreuve_titre}</h1>
           {/* Le titre d'une inédite dit déjà son public ("… BAC C, D, E et TI – Épreuve inédite n°1") :
               le répéter dessous, puis dans la barre, faisait quatre fois la série à l'écran. */}
-          {source !== "inedit" && <p className="mt-0.5 text-sm text-muted-foreground">{tentative.cursus_display}</p>}
+          {source !== "inedit" && <p className="mt-0.5 text-sm text-muted-foreground">{traduireLibelleSerie(tentative.cursus_display)}</p>}
         </div>
       )}
 
@@ -701,7 +704,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           <div className="flex min-w-0 items-center gap-1 sm:gap-2">
             {source !== "inedit" && (
               <Badge variant="secondary" className="hidden max-w-[16rem] truncate md:inline-flex">
-                {tentative.cursus_display}
+                {traduireLibelleSerie(tentative.cursus_display)}
               </Badge>
             )}
             {/* Inédite : pas avant d'avoir choisi son mode - le briefing promet un sujet inédit
@@ -713,11 +716,11 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                 variant="ghost"
                 disabled={downloadingSujet}
                 onClick={handleDownloadSujet}
-                title="Ouvrir l'épreuve en PDF"
-                aria-label="Ouvrir l'épreuve en PDF"
+                title={t("ct.pdf_ouvrir")}
+                aria-label={t("ct.pdf_ouvrir")}
               >
                 <FileDown className="size-3.5" />
-                <span className="hidden sm:inline">{downloadingSujet ? "Ouverture…" : "PDF"}</span>
+                <span className="hidden sm:inline">{downloadingSujet ? t("ct.ouverture") : t("ct.pdf")}</span>
               </Button>
             )}
             {tentative.correction_disponible && (
@@ -726,11 +729,11 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                 variant="ghost"
                 aria-pressed={showCorrection}
                 onClick={() => setShowCorrection((v) => !v)}
-                title={showCorrection ? "Masquer la correction" : "Afficher la correction"}
+                title={showCorrection ? t("ct.masquer_correction") : t("ct.afficher_correction")}
               >
                 {showCorrection ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
-                <span className="hidden sm:inline">{showCorrection ? "Masquer la correction" : "Afficher la correction"}</span>
-                <span className="sm:hidden">Correction</span>
+                <span className="hidden sm:inline">{showCorrection ? t("ct.masquer_correction") : t("ct.afficher_correction")}</span>
+                <span className="sm:hidden">{t("ct.correction")}</span>
               </Button>
             )}
           </div>
@@ -742,18 +745,18 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                 variant="outline"
                 disabled={traiteesCount > 0}
                 onClick={() => setModeAConfirmer("examen")}
-                title={traiteesCount > 0 ? "Disponible avant ta première réponse" : "Passer l'épreuve en conditions réelles"}
+                title={traiteesCount > 0 ? t("ct.dispo_avant") : t("ct.conditions_reelles")}
               >
                 <Timer className="size-3.5" />
-                <span className="hidden sm:inline">Mode examen ({tentative.duree_minutes} min)</span>
-                <span className="sm:hidden">Examen</span>
+                <span className="hidden sm:inline">{t("ct.mode_examen", { n: tentative.duree_minutes })}</span>
+                <span className="sm:hidden">{t("ct.examen")}</span>
               </Button>
             )}
 
             {remainingSeconds !== null && (
               <Badge
                 role="timer"
-                aria-label="Temps restant"
+                aria-label={t("ct.temps_restant")}
                 variant={remainingSeconds <= 300 ? "warning" : "outline"}
                 className={cn(
                   "flex items-center gap-1 text-sm tabular-nums",
@@ -767,11 +770,11 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
 
             {!rendue ? (
               <Button size="sm" disabled={finishing} onClick={handleTerminerClick}>
-                Terminer<span className="hidden sm:inline">&nbsp;l'épreuve</span>
+                {t("ct.terminer")}<span className="hidden sm:inline">{t("ct.terminer_suite")}</span>
               </Button>
             ) : (
               <Button asChild size="sm">
-                <Link to={cheminResultat(source, tentative.id)}>Voir mon résultat</Link>
+                <Link to={cheminResultat(source, tentative.id)}>{t("qs.voir_resultat")}</Link>
               </Button>
             )}
           </div>
@@ -780,7 +783,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         <div className="mt-3 flex items-center gap-2.5">
           <div
             role="progressbar"
-            aria-label={`${m.pluriel[0].toUpperCase()}${m.pluriel.slice(1)} ${m.traites}`}
+            aria-label={tu("ct.label_traitees", unite)}
             aria-valuemin={0}
             aria-valuemax={questions.length}
             aria-valuenow={traiteesCount}
@@ -789,15 +792,15 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
             <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${pourcentageTraitees}%` }} />
           </div>
           <span className="shrink-0 text-xs font-medium tabular-nums text-muted-foreground">
-            {traiteesCount} / {questions.length} {m.traites}
+            {tu("ct.compte_traitees", unite, { n: traiteesCount, total: questions.length })}
           </span>
           {notation && (
             <span
               aria-live="polite"
-              title={notation.definitive ? "Note définitive" : "Note provisoire : elle évolue à mesure que tu notes tes questions"}
+              title={notation.definitive ? t("ct.note_definitive") : t("ct.note_provisoire_aide")}
               className="shrink-0 rounded-md bg-secondary px-2 py-0.5 text-xs font-semibold tabular-nums"
             >
-              {notation.definitive ? "Note" : "Provisoire"} {formatNote(notation.note, notation.bareme)}
+              {notation.definitive ? t("ct.note") : t("ct.provisoire")} {formatNote(notation.note, notation.bareme)}
             </span>
           )}
         </div>
@@ -805,8 +808,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         {enAttente > 0 && (
           <p role="status" className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
             <CloudOff className="size-3.5 shrink-0" aria-hidden="true" />
-            {enAttente} changement{enAttente > 1 ? "s" : ""} en attente : envoyé{enAttente > 1 ? "s" : ""} dès que le
-            réseau revient.
+            {tn("ct.en_attente", enAttente)}
           </p>
         )}
 
@@ -837,9 +839,8 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         <p className="mb-6 flex items-start gap-2 text-xs text-muted-foreground">
           <Info className="mt-0.5 size-3.5 shrink-0" />
           {unite === "exercice"
-            ? "Barème estimé : les points de cette épreuve n'étant pas tous indiqués, chaque exercice pèse autant."
-            : "Barème estimé : les points de chaque exercice sont répartis à parts égales entre ses questions"}
-          {unite === "exercice" ? "" : ` (total : ${formatPoints(tentative.bareme)} points).`}
+            ? t("ct.bareme_estime_exercice")
+            : t("ct.bareme_estime_question", { points: formatPoints(tentative.bareme) })}
         </p>
       )}
 
@@ -848,14 +849,13 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           <p className="flex items-start gap-2 text-sm">
             <FileText className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
             <span>
-              <strong>Tu composes sur papier.</strong> Les énoncés sont dans ton sujet imprimé. Ici, coche chaque question
-              au moment où tu l'as {m.traite} : c'est ce qui compte pour ta note.
+              <strong>{t("ct.papier_titre")}</strong> {t("ct.papier_texte", { traite: m.traite })}
             </span>
           </p>
           {tentative.sujet_pdf_disponible && (
             <Button className="mt-3" size="sm" disabled={downloadingSujet} onClick={handleDownloadSujet}>
               <FileDown />
-              {downloadingSujet ? "Ouverture…" : "Ouvrir le sujet (PDF)"}
+              {downloadingSujet ? t("ct.ouverture") : t("ct.ouvrir_sujet")}
             </Button>
           )}
         </div>
@@ -892,7 +892,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                       </p>
                     )}
                     <div className={cn("mb-3 flex items-center gap-1.5", index > 0 && "mt-8 border-t border-border pt-6", index > 0 && question.groupes.length > 0 && "mt-3 border-t-0 pt-0")}>
-                      <Badge variant="outline">Exercice {question.numero_exercice}</Badge>
+                      <Badge variant="outline">{t("ed.exercice_n", { n: question.numero_exercice })}</Badge>
                       {question.points_exercice && <Badge variant="outline">{question.points_exercice} pts</Badge>}
                     </div>
                     {/* Support commun aux questions de l'exercice - rendu une seule fois,
@@ -920,17 +920,17 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
                     <span className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {unite === "exercice" ? "" : `Question ${question.numero}`}
+                      {unite === "exercice" ? "" : t("qs.question_n", { n: question.numero })}
                       {/* Un exercice porte déjà ses points dans son en-tête : le répéter serait du bruit,
                           sauf quand ils sont estimés (l'en-tête n'en montre alors aucun). */}
                       {(unite !== "exercice" || question.bareme_estime) && (
                         <span
                           className="rounded bg-secondary px-1.5 py-0.5 font-medium normal-case tracking-normal tabular-nums"
-                          title={question.bareme_estime ? "Barème estimé" : undefined}
+                          title={question.bareme_estime ? t("ct.bareme_estime_titre") : undefined}
                         >
                           {question.bareme_estime ? "≈ " : ""}
-                          {formatPoints(question.points)} pt{question.points >= 2 ? "s" : ""}
-                          {unite === "exercice" ? " pour cet exercice" : ""}
+                          {tn("ct.pt", question.points, { p: formatPoints(question.points) })}
+                          {unite === "exercice" ? t("ct.pour_exercice") : ""}
                         </span>
                       )}
                     </span>
@@ -938,7 +938,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                       // L'énoncé est sur la feuille imprimée : ici il ne reste qu'un accès de secours.
                       <details className="text-sm">
                         <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
-                          Voir l'énoncé à l'écran
+                          {t("ct.enonce_ecran")}
                         </summary>
                         <article className="prose prose-neutral mt-2 max-w-none dark:prose-invert">
                           <EpreuveMarkdown markdown={question.enonce_markdown} />
@@ -954,8 +954,8 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                     type="button"
                     onClick={() => handleToggleFlag(question)}
                     aria-pressed={isFlagged}
-                    aria-label="Marquer à revoir"
-                    title="Marquer cette question pour y revenir plus tard"
+                    aria-label={t("ct.flag_aria")}
+                    title={t("ct.flag_titre")}
                     className={cn(
                       "relative mt-1 shrink-0 rounded-md p-2 transition-colors after:absolute after:-inset-1.5 after:content-[''] focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
                       isFlagged ? "text-gold-text" : "text-muted-foreground hover:text-foreground",
@@ -1009,7 +1009,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                       />
                       {corrigeVisible && !question.traitee && (
                         <span className="text-sm text-muted-foreground">
-                          {unite === "exercice" ? "Non traité" : "Non traitée"} : {m.cet} {m.singulier} vaut 0 point.
+                          {tu("ct.non_traite", unite)}
                         </span>
                       )}
                     </div>
@@ -1054,7 +1054,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
             précède dans le flux sur mobile : voir BoutonPalette). */}
         <aside className="hidden lg:block">
           <div className={cn("sticky", enExamen ? "top-40" : "top-60")}>
-            <h2 className="mb-3 text-sm font-semibold">{`${m.pluriel[0].toUpperCase()}${m.pluriel.slice(1)}`}</h2>
+            <h2 className="mb-3 text-sm font-semibold">{tu("ct.palette_titre", unite)}</h2>
             <PaletteQuestions
               groupes={groupesPalette}
               courante={courante}

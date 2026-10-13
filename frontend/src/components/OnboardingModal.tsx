@@ -9,7 +9,8 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
-import { examCodesFor } from "@/lib/cursus"
+import { codeSerieAffiche, examCodesFor } from "@/lib/cursus"
+import { useI18n } from "@/lib/i18n"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -65,6 +66,7 @@ export function OnboardingModal() {
   const navigate = useNavigate()
   const { country, countries, setCountry } = useCountry()
   const { isAuthenticated, updateUser, user } = useAuth()
+  const { t } = useI18n()
 
   // Écarté PENDANT cette visite seulement. La décision durable est portée par
   // `questionReglee` ci-dessous : le compte pour un connecté, le drapeau local pour un
@@ -191,6 +193,12 @@ export function OnboardingModal() {
     setSelectedExamen(code)
     const matches = cursusList.filter((c) => c.examen === code)
     const withSerie = matches.filter((c) => c.series)
+    // GCE : la branche générale n'a pas de série, la technique en a une - il faut donc choisir la
+    // branche, y compris la générale, que le simple filtre « avec série » laisserait de côté.
+    if (withSerie.length > 0 && matches.length > withSerie.length) {
+      setStep("serie")
+      return
+    }
     if (withSerie.length === 0) {
       // Pas de série pour ce diplôme (ex. BEPC/BFEM) - un seul cursus possible, donc
       // pas de choix à faire, mais on ne termine pas sur un simple clic : ici finish()
@@ -213,7 +221,13 @@ export function OnboardingModal() {
   if (!shouldShow) return null
 
   const examOptions = examCodesFor(cursusList)
-  const serieOptions = selectedExamen ? cursusList.filter((c) => c.examen === selectedExamen && c.series) : []
+  const serieOptions = selectedExamen
+    ? cursusList.filter((c) => {
+        if (c.examen !== selectedExamen) return false
+        // Une branche sans série n'est proposée que si l'examen en a aussi avec série (GCE).
+        return c.series || cursusList.some((autre) => autre.examen === selectedExamen && autre.series)
+      })
+    : []
 
   /**
    * L'étape pays n'a de sens qu'avec au moins deux pays ouverts. Tant qu'un seul l'est
@@ -251,7 +265,7 @@ export function OnboardingModal() {
               className="-ml-1 mb-1 flex min-h-11 items-center gap-1 self-start text-sm text-muted-foreground transition-colors hover:text-primary"
             >
               <ChevronLeft aria-hidden="true" className="size-4" />
-              Retour
+              {t("onboarding.retour")}
             </button>
           )}
           <div className="mb-2 flex gap-1.5">
@@ -263,13 +277,14 @@ export function OnboardingModal() {
             ))}
           </div>
           <CardTitle id={titreId} className="font-display text-xl font-semibold">
-            {stepEffectif === "pays" && "Dans quel pays prépares-tu ton examen ?"}
-            {stepEffectif === "examen" && "Quel examen prépares-tu ?"}
-            {stepEffectif === "serie" && "Quelle est ta série ?"}
-            {stepEffectif === "confirmer" && `Tu prépares le ${cursusConfirme?.examen_display ?? "diplôme choisi"} ?`}
+            {stepEffectif === "pays" && t("onboarding.titre_pays")}
+            {stepEffectif === "examen" && t("onboarding.titre_examen")}
+            {stepEffectif === "serie" && t("onboarding.titre_serie")}
+            {stepEffectif === "confirmer" &&
+              t("onboarding.titre_confirmer", { examen: cursusConfirme?.examen_display ?? t("onboarding.diplome_choisi") })}
           </CardTitle>
           <CardDescription>
-            La méthode la plus efficace et motivante pour réussir tes examens. Une séance par jour, faite pour le tien.
+            {t("onboarding.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
@@ -292,21 +307,21 @@ export function OnboardingModal() {
               cursusErreur ? (
                 <div role="alert" className="flex flex-col items-center gap-2 py-2 text-center">
                   <p className="text-sm text-muted-foreground">
-                    La liste des examens n'a pas pu se charger. Vérifie ta connexion, puis réessaie.
+                    {t("onboarding.erreur_examens")}
                   </p>
                   <div className="flex flex-wrap justify-center gap-2">
                     <Button size="sm" className="min-h-11 rounded-full" onClick={() => setTentative((n) => n + 1)}>
-                      Réessayer
+                      {t("erreur.reessayer")}
                     </Button>
                     {/* Sans markOnboardingDone : c'est la panne qui empêche de répondre, pas un
                         refus - la question doit revenir à la prochaine visite. */}
                     <Button size="sm" variant="ghost" className="min-h-11 rounded-full" onClick={() => setDismissed(true)}>
-                      Passer
+                      {t("onboarding.passer")}
                     </Button>
                   </div>
                 </div>
               ) : (
-                <p className="py-4 text-center text-sm text-muted-foreground">Chargement...</p>
+                <p className="py-4 text-center text-sm text-muted-foreground">{t("onboarding.chargement")}</p>
               )
             ) : (
               examOptions.map((e, i) => (
@@ -331,7 +346,7 @@ export function OnboardingModal() {
                 onClick={() => finish(c)}
                 className="rounded-md border border-border px-3.5 py-2.5 text-left text-sm font-medium transition-colors hover:border-primary/50 hover:bg-accent/40"
               >
-                Série {c.series!.code}
+                {c.series ? (c.series.code.startsWith("GCE_") ? codeSerieAffiche(c.series) : t("prix.serie", { code: c.series.code })) : t("onboarding.branche_generale")}
               </button>
             ))}
 
@@ -342,7 +357,7 @@ export function OnboardingModal() {
               onClick={() => finish(cursusConfirme)}
               className="rounded-md border border-primary bg-primary px-3.5 py-2.5 text-left text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              Oui, c'est mon examen
+              {t("onboarding.confirmer")}
             </button>
           )}
 
@@ -353,7 +368,7 @@ export function OnboardingModal() {
               onClick={close}
               className="mt-1 min-h-11 self-center px-3 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
             >
-              Plus tard
+              {t("onboarding.plus_tard")}
             </button>
           )}
         </CardContent>

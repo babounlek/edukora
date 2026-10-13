@@ -17,6 +17,7 @@ import { trackEvent } from "@/lib/analytics"
 import type { Cursus, Plan } from "@/api/types"
 import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
+import { codeSerieAffiche } from "@/lib/cursus"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { usePaymentConfig } from "@/lib/paymentConfig"
@@ -25,21 +26,23 @@ import { SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { SocialProofSection } from "@/components/SocialProofSection"
-import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
+import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
 
 function formatDateDansNJours(jours: number): string {
   const cible = new Date(Date.now() + jours * 24 * 60 * 60 * 1000)
-  return cible.toLocaleDateString("fr-FR", { day: "numeric", month: "long" })
+  return cible.toLocaleDateString(localeCourante(), { day: "numeric", month: "long" })
 }
 
 function cursusLabel(cursus: Cursus): string {
-  return `${cursus.examen_display}${cursus.series ? ` - Série ${cursus.series.code}` : ""}`
+  if (cursus.series?.code.startsWith("GCE_")) return `${cursus.examen_display} - ${codeSerieAffiche(cursus.series)}`
+  return `${cursus.examen_display}${cursus.series ? ` - ${t("prix.serie", { code: cursus.series.code })}` : ""}`
 }
 
 // Ordre de lecture attendu par un élève (du plus jeune au plus avancé), et non
 // l'ordre de création en base (qui entrelace Probatoire et BAC série par série).
-const ORDRE_EXAMENS = ["BEPC", "PROBATOIRE", "BAC", "AUTRE"]
+const ORDRE_EXAMENS = ["BEPC", "PROBATOIRE", "BAC", "GCE_OL", "GCE_AL", "AUTRE"]
 
 function trierCursus(a: Cursus, b: Cursus): number {
   const rang = ORDRE_EXAMENS.indexOf(a.examen) - ORDRE_EXAMENS.indexOf(b.examen)
@@ -133,7 +136,7 @@ function CursusChips({
             {groupe.cursus.map((c) => (
               <ChipCursus
                 key={c.id}
-                texte={c.series?.code ?? cursusLabel(c)}
+                texte={c.series ? codeSerieAffiche(c.series) : cursusLabel(c)}
                 selected={selected === String(c.id)}
                 onClick={() => onSelect(String(c.id))}
               />
@@ -183,13 +186,12 @@ function TarifFamille({ plan }: { plan: Plan }) {
   return (
     <div className="rounded-xl border border-primary/15 bg-primary/[0.03] p-4">
       <p className="text-xs font-medium text-muted-foreground">
-        Plusieurs enfants ? {formatAmount(supplementaire)} FCFA pour chaque enfant supplémentaire de la même famille
-        (20 % de réduction)
+        {t("prix.famille_intro", { prix: formatAmount(supplementaire) })}
       </p>
       <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
         {[1, 2, 3, 4].map((n) => (
           <div key={n} className="contents">
-            <dt className="text-muted-foreground">{n === 1 ? "1 enfant" : `${n} enfants`}</dt>
+            <dt className="text-muted-foreground">{tn("prix.enfants", n)}</dt>
             <dd className="text-right font-medium tabular-nums">{formatAmount(total(n))} FCFA</dd>
           </div>
         ))}
@@ -210,13 +212,13 @@ function CalloutExclusifsJusquaExamen() {
       <div>
         <p className="flex items-center gap-1 font-display text-xs font-semibold uppercase tracking-wide text-gold-text">
           <Sparkles className="size-3" />
-          Exclusif {SITE_NAME}
+          {t("prix.exclusif", { site: SITE_NAME })}
         </p>
         <p className="mt-0.5 text-sm text-foreground">
-          Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.
+          {t("prix.exclusif_inedites")}
         </p>
         <p className="mt-1 text-sm text-foreground">
-          Tu sauras ce que tu dois réviser en priorité : « les thèmes qui reviennent le plus », le classement des notions les plus posées à ton examen, calculé sur les vraies annales.
+          {t("prix.exclusif_themes")}
         </p>
       </div>
     </div>
@@ -224,9 +226,11 @@ function CalloutExclusifsJusquaExamen() {
 }
 
 export function PricingPage() {
+  // S'abonne au changement de langue : les `t(...)` de la page se relisent à chaque bascule.
+  useI18n()
   useSeo({
-    title: "Prix",
-    description: `Abonnement ${SITE_NAME} par Mobile Money, jusqu'à ton examen, pour accéder à tous les corrigés et cours de ton cursus.`,
+    title: t("nav.prix"),
+    description: t("prix.seo_description", { site: SITE_NAME }),
   })
 
   const navigate = useNavigate()
@@ -352,17 +356,20 @@ export function PricingPage() {
           aria-hidden
         />
         <div className="relative max-w-2xl">
-          <p className="mb-1 font-display text-sm italic text-primary">Prix</p>
+          <p className="mb-1 font-display text-sm italic text-primary">{t("nav.prix")}</p>
           {/* Tutoiement de bout en bout (décision du 2026-09-05) : un brouillon non
               commité vouvoyait cette page ("acheteur adulte" payeur), rompant avec le
               reste du site (accueil, quiz, corrigés) qui tutoie l'élève partout - jamais
               mergé, donc sans effet sur la version publiée, mais présent dans l'arbre de
               travail. Écarté au profit de la cohérence de ton déjà en place ailleurs. */}
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
-            Un seul prix, <span className="text-primary">jusqu'à ton examen</span>.
+            {t("prix.titre_debut")} <span className="text-primary">{t("prix.titre_accent")}</span>.
           </h1>
           <p className="mt-2 text-muted-foreground">
-            {formatAmount(PRIX_ABONNEMENT_FCFA)} FCFA par enfant, puis {formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA)} FCFA pour chaque enfant supplémentaire de la même famille.
+            {t("prix.sous_titre", {
+              prix: formatAmount(PRIX_ABONNEMENT_FCFA),
+              prix_sup: formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA),
+            })}
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -370,13 +377,13 @@ export function PricingPage() {
               Mobile Money (MTN, Orange)
             </ChipReassurance>
             <ChipReassurance icon={<ShieldCheck className="size-3.5 text-success" />}>
-              Aucun prélèvement automatique
+              {t("prix.puce_aucun_prelevement")}
             </ChipReassurance>
             <ChipReassurance icon={<Zap className="size-3.5 text-gold-text" />}>
               {/* Même condition que la FAQ plus bas : Campay coupé, l'accès n'est activé qu'après la vérification manuelle. */}
               {campayActif
-                ? "Accès activé dès le paiement"
-                : `Activé après vérification (≈ ${DELAI_VERIFICATION_PAIEMENT_MANUEL})`}
+                ? t("prix.puce_acces_immediat")
+                : t("prix.puce_acces_verifie", { delai: delaiVerificationPaiementAffiche() })}
             </ChipReassurance>
           </div>
         </div>
@@ -410,12 +417,12 @@ export function PricingPage() {
                   cursusManquant && "ring-2 ring-inset ring-primary/40",
                 )}
               >
-                <p className="mb-2.5 font-display font-semibold">Ton cursus</p>
+                <p className="mb-2.5 font-display font-semibold">{t("prix.ton_cursus")}</p>
                 <CursusChips
                   liste={cursusEleve}
                   selected={selectedCursus}
                   onSelect={setSelectedCursus}
-                  label="Ton cursus"
+                  label={t("prix.ton_cursus")}
                   describedBy="cursus-eleve-aide"
                 />
                 <p
@@ -424,8 +431,8 @@ export function PricingPage() {
                   className={cn("mt-2 text-xs", cursusManquant ? "text-primary" : "text-muted-foreground")}
                 >
                   {cursusManquant
-                    ? "Choisis d'abord ton cursus, puis reprends ton abonnement."
-                    : "Rien n'est engagé avant le paiement - change de cursus ici autant que tu veux."}
+                    ? t("prix.cursus_manquant")
+                    : t("prix.cursus_aide")}
                 </p>
 
                 {/* Rapatrié depuis sa propre boîte sous le panneau (retouche du
@@ -437,50 +444,50 @@ export function PricingPage() {
                     grille sm:grid-cols-3 de l'ancienne boîte pleine largeur : cette
                     colonne fait environ la moitié de cette largeur. */}
                 <div className="mt-6 border-t border-border pt-5">
-                  <p className="font-display text-sm font-semibold">Tout ce dont tu as besoin pour préparer ton examen</p>
+                  <p className="font-display text-sm font-semibold">{t("prix.tout_besoin")}</p>
                   <ul className="mt-3 flex flex-col gap-2.5 text-sm">
                     <li className="flex items-start gap-2">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
                       <span>
-                        Corrigés complets en illimité
+                        {t("prix.inclus1_titre")}
                         <span className="block text-xs text-muted-foreground">
-                          Annales et sujets, rédigés pas à pas.
+                          {t("prix.inclus1_texte")}
                         </span>
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
                       <span>
-                        Cours et exercices d'application
+                        {t("prix.inclus2_titre")}
                         <span className="block text-xs text-muted-foreground">
-                          Méthode, exemple résolu, erreurs classiques.
+                          {t("prix.inclus2_texte")}
                         </span>
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
                       <span>
-                        Le quiz qui cible tes révisions
+                        {t("prix.inclus3_titre")}
                         <span className="block text-xs text-muted-foreground">
-                          Il repère tes lacunes et te les repropose au bon moment.
+                          {t("prix.inclus3_texte")}
                         </span>
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
                       <span>
-                        Épreuves inédites {SITE_NAME}
+                        {t("prix.inclus4_titre", { site: SITE_NAME })}
                         <span className="block text-xs text-muted-foreground">
-                          Des sujets originaux, jamais vus ailleurs, au format de ton examen.
+                          {t("prix.inclus4_texte")}
                         </span>
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
                       <span>
-                        Les thèmes qui reviennent le plus
+                        {t("prix.inclus5_titre")}
                         <span className="block text-xs text-muted-foreground">
-                          Le classement des notions les plus posées, calculé sur les vraies annales.
+                          {t("prix.inclus5_texte")}
                         </span>
                       </span>
                     </li>
@@ -497,11 +504,11 @@ export function PricingPage() {
                     <div className="h-28 w-full animate-pulse rounded bg-muted" />
                   </div>
                 ) : erreurPlans && allPlans.length === 0 ? (
-                  <ErreurChargement compact objet="les tarifs" onRetry={reessayerPlans} className="h-full justify-center" />
+                  <ErreurChargement compact objet={t("prix.objet_tarifs")} onRetry={reessayerPlans} className="h-full justify-center" />
                 ) : (
                   <>
-                    <p className="font-display font-semibold">Jusqu'à l'Examen</p>
-                    <p className="text-sm text-muted-foreground">Toute l'année scolaire, jusqu'au jour de l'examen</p>
+                    <p className="font-display font-semibold">{t("prix.formule")}</p>
+                    <p className="text-sm text-muted-foreground">{t("prix.formule_texte")}</p>
                     {/* Tarif unique (2026-10-02) : le même prix quel que soit le cursus et
                         le moment de l'année, donc affiché d'emblée, avant même le choix du
                         cursus - `jusquaExamen` sert surtout à la durée et à la date
@@ -517,13 +524,15 @@ export function PricingPage() {
                           </p>
                         )}
                         <p className="mt-0.5 text-xs text-muted-foreground">
-                          par enfant, jusqu'à l'examen
+                          {t("prix.par_enfant")}
                           {jusquaExamen && (
                             <>
                               {" - "}
-                              {jusquaExamen.effective_duration_days} jours avant ton{" "}
-                              {jusquaExamen.cursus.examen_display}, qui commence le{" "}
-                              {formatDateDansNJours(jusquaExamen.effective_duration_days)}
+                              {t("prix.compte_a_rebours", {
+                                n: jusquaExamen.effective_duration_days,
+                                examen: jusquaExamen.cursus.examen_display,
+                                date: formatDateDansNJours(jusquaExamen.effective_duration_days),
+                              })}
                             </>
                           )}
                         </p>
@@ -533,7 +542,7 @@ export function PricingPage() {
                       {jusquaExamen ? (
                         <>
                           <Button onClick={choisirFormule} size="lg" className="w-full">
-                            S'abonner
+                            {t("prix.sabonner")}
                           </Button>
                         </>
                       ) : (
@@ -544,7 +553,7 @@ export function PricingPage() {
                         // Cliquable, jamais disabled - un bouton mort ne donne aucun
                         // feedback au clic et peut passer pour une page cassée.
                         <Button onClick={choisirFormule} variant="outline" size="lg" className="w-full">
-                          Choisir ton cursus
+                          {t("prix.choisir_cursus")}
                         </Button>
                       )}
                     </div>
@@ -591,18 +600,18 @@ export function PricingPage() {
           et le prix figé au jour de l'achat (Plan.effective_price/effective_duration_days
           n'est lu qu'une fois, à l'activation - voir subscriptions/models.py). */}
       <section className="mt-12 border-t border-border pt-10">
-        <h2 className="font-display text-xl font-semibold">Avant de payer</h2>
+        <h2 className="font-display text-xl font-semibold">{t("prix.avant_payer")}</h2>
         <ul role="list" className="mt-5 grid gap-5 sm:grid-cols-2">
           <li className="flex items-start gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Smartphone className="size-4" />
             </span>
             <div>
-              <p className="font-medium">Comment je paie ?</p>
+              <p className="font-medium">{t("prix.faq1_q")}</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 {campayActif
-                  ? "Par Mobile Money, MTN ou Orange. Avec Campay, la demande de paiement arrive directement sur ton téléphone pour une activation instantanée ; tu peux aussi transférer toi-même et déclarer ta transaction."
-                  : "Par Mobile Money, MTN ou Orange : tu transfères toi-même le montant, puis tu déclares ta transaction. Notre équipe la vérifie avant d'activer ton accès."}
+                  ? t("prix.faq1_r_campay")
+                  : t("prix.faq1_r_manuel")}
               </p>
             </div>
           </li>
@@ -611,10 +620,9 @@ export function PricingPage() {
               <ShieldCheck className="size-4" />
             </span>
             <div>
-              <p className="font-medium">Est-ce que je serai prélevé une deuxième fois ?</p>
+              <p className="font-medium">{t("prix.faq2_q")}</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Non. Chaque paiement est unique et volontaire - aucune carte enregistrée, aucun renouvellement
-                automatique. Rien ne se redéclenche sans que tu repasses toi-même par Mobile Money.
+                {t("prix.faq2_r")}
               </p>
             </div>
           </li>
@@ -623,10 +631,12 @@ export function PricingPage() {
               <Lock className="size-4" />
             </span>
             <div>
-              <p className="font-medium">Le prix change-t-il selon la date d'achat ?</p>
+              <p className="font-medium">{t("prix.faq3_q")}</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Non. Le prix est de {formatAmount(PRIX_ABONNEMENT_FCFA)} FCFA par enfant, quel que soit le moment où tu t'abonnes, et couvre
-                l'accès jusqu'à ton examen. Pour chaque enfant supplémentaire de la même famille, c'est {formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA)} FCFA.
+                {t("prix.faq3_r", {
+                  prix: formatAmount(PRIX_ABONNEMENT_FCFA),
+                  prix_sup: formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA),
+                })}
               </p>
             </div>
           </li>
@@ -636,12 +646,12 @@ export function PricingPage() {
             </span>
             <div>
               <p className="font-medium">
-                {campayActif ? "Et si le paiement Mobile Money échoue ?" : "Quand mon accès est-il activé ?"}
+                {campayActif ? t("prix.faq4_q_campay") : t("prix.faq4_q_manuel")}
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 {campayActif
-                  ? "Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection - un transfert direct, vérifié avant activation."
-                  : `Dès que ton transfert est vérifié par notre équipe, généralement sous ${DELAI_VERIFICATION_PAIEMENT_MANUEL}. Tu reçois un SMS de confirmation et ton accès s'active tout seul.`}
+                  ? t("prix.faq4_r_campay")
+                  : t("prix.faq4_r_manuel", { delai: delaiVerificationPaiementAffiche() })}
               </p>
             </div>
           </li>
@@ -654,7 +664,7 @@ export function PricingPage() {
           to={coursListPath(country)}
           className="group mt-8 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
         >
-          Découvrir un cours avant de t'abonner
+          {t("prix.decouvrir_cours")}
           <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </section>

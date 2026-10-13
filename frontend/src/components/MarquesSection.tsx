@@ -4,6 +4,7 @@ import { Bookmark, Check, PenLine } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Etude } from "@/lib/useEtude"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 const NOTE_MAX = 2000
 
@@ -21,6 +22,7 @@ const NOTE_MAX = 2000
 export function MarquesSection({
   etude, cle, avecCompris = true, className,
 }: { etude: Etude; cle: string; avecCompris?: boolean; className?: string }) {
+  useI18n()
   const marque = etude.marques[cle]
   const [ouvert, setOuvert] = useState(false)
   const [brouillon, setBrouillon] = useState("")
@@ -52,7 +54,7 @@ export function MarquesSection({
             className="rounded-full"
           >
             <Check className="size-4" />
-            {marque?.compris ? "Compris" : "J'ai compris"}
+            {marque?.compris ? t("ed.compris") : t("ed.jai_compris")}
           </Button>
         )}
         <Button
@@ -64,7 +66,7 @@ export function MarquesSection({
           className={cn("rounded-full", marque?.signet ? "text-gold-foreground dark:text-gold-text" : "text-muted-foreground")}
         >
           <Bookmark className={cn("size-4", marque?.signet && "fill-current")} />
-          {marque?.signet ? "Gardé pour plus tard" : "Garder pour plus tard"}
+          {marque?.signet ? t("ed.garde") : t("ed.garder")}
         </Button>
         {!ouvert && (
           <Button
@@ -75,7 +77,7 @@ export function MarquesSection({
             className="rounded-full text-muted-foreground"
           >
             <PenLine className="size-4" />
-            {note ? "Modifier ma note" : "Ajouter une note"}
+            {note ? t("ed.modifier_note") : t("ed.ajouter_note")}
           </Button>
         )}
       </div>
@@ -89,7 +91,7 @@ export function MarquesSection({
       {ouvert && (
         <div className="mt-3 flex flex-col gap-2">
           <label htmlFor={`note-${cle}`} className="sr-only">
-            Ma note sur cette section
+            {t("ed.note_label")}
           </label>
           <textarea
             id={`note-${cle}`}
@@ -98,15 +100,15 @@ export function MarquesSection({
             maxLength={NOTE_MAX}
             rows={4}
             autoFocus
-            placeholder="Ce que tu veux retenir, un piège à éviter, une question à poser…"
+            placeholder={t("ed.note_placeholder")}
             className="w-full resize-y rounded-xl border border-input bg-background px-3.5 py-2.5 text-sm leading-relaxed outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/40"
           />
           <div className="flex flex-wrap items-center gap-2">
             <Button type="button" size="sm" onClick={enregistrerNote} className="rounded-full">
-              Enregistrer
+              {t("matieres.enregistrer")}
             </Button>
             <Button type="button" size="sm" variant="ghost" onClick={() => setOuvert(false)} className="rounded-full">
-              Annuler
+              {t("seance.annuler")}
             </Button>
             {note && (
               <Button
@@ -119,7 +121,7 @@ export function MarquesSection({
                 }}
                 className="rounded-full text-destructive"
               >
-                Supprimer la note
+                {t("ed.supprimer_note")}
               </Button>
             )}
             <span className="ml-auto text-xs tabular-nums text-muted-foreground">

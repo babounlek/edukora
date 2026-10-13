@@ -1,4 +1,5 @@
 import type { Cursus } from "@/api/types"
+import { langueCourante } from "@/lib/i18n"
 
 /** Joint des éléments à la française : "C", "C et E", "C, D et E". */
 function joinFr(items: string[]): string {
@@ -9,7 +10,19 @@ function joinFr(items: string[]): string {
 
 // Ordre pédagogique (collège -> intermédiaire -> lycée), pas alphabétique : le champ
 // `examen` trie autrement ("BAC" < "BEPC" < "PROBATOIRE").
-export const EXAMEN_ORDER = ["BEPC", "PROBATOIRE", "BAC", "AUTRE"]
+// Le GCE (sous-système anglophone) suit les trois diplômes francophones : un code absent de
+// cette liste (indexOf = -1) passerait sinon en tête.
+export const EXAMEN_ORDER = ["BEPC", "PROBATOIRE", "BAC", "GCE_OL", "GCE_AL", "AUTRE"]
+
+/** Le cursus relève-t-il du GCE (sous-système anglophone) ? Pas de séries : on y choisit ses matières. */
+export function estGce(cursus: { examen: string } | null | undefined): boolean {
+  return cursus?.examen === "GCE_OL" || cursus?.examen === "GCE_AL"
+}
+
+/** Les séries du GCE (branche technique) s'écrivent par leur libellé court (« Technical »), pas par leur code interne. */
+export function codeSerieAffiche(series: { code: string; label: string }): string {
+  return series.code.startsWith("GCE_") ? series.label : series.code
+}
 
 /**
  * Diplômes réellement présents dans cette liste de cursus, dédupliqués par code
@@ -30,7 +43,14 @@ export function examCodesFor(cursus: Cursus[]): { code: string; label: string }[
 /** « Série C » / « Séries C, D et E » pour l'en-tête d'une épreuve ou d'un cours : le libellé accordé
  * par l'API, ou à défaut `Série` + la liste brute (réponse d'un backend plus ancien). */
 export function libelleSerieEntete(header: { serie: string | null; serie_libelle?: string | null }): string | null {
-  return header.serie_libelle ?? (header.serie ? `Série ${header.serie}` : null)
+  return traduireLibelleSerie(header.serie_libelle ?? (header.serie ? `Série ${header.serie}` : null))
+}
+
+/** « BAC - Série A », « Séries C, D et E » : libellés de série rédigés en français par l'API,
+ * traduits ici hors français (seuls les mots « Série(s) » et « et » changent). */
+export function traduireLibelleSerie<T extends string | null | undefined>(libelle: T): T {
+  if (!libelle || langueCourante() === "fr") return libelle
+  return libelle.replace(/\bSéries\b/g, "Series").replace(/\bSérie\b/g, "Series").replace(/ et (?=[A-Z]{1,2}\b)/g, " and ") as T
 }
 
 /** Mêmes niveaux que `examCodesFor`, sans le code interne (ex: badges d'affichage). */
@@ -43,6 +63,12 @@ export function joinExamLevelsFr(levels: string[]): string {
   return joinFr(levels.map((level) => `le ${level}`))
 }
 
+/** Comme `joinExamLevelsFr`, dans la langue courante : "the BEPC, the Probatoire and the BAC" en anglais. */
+export function joinExamLevelsProse(levels: string[]): string {
+  if (langueCourante() !== "en") return joinExamLevelsFr(levels)
+  return new Intl.ListFormat("en-GB", { style: "long", type: "conjunction" }).format(levels.map((level) => `the ${level}`))
+}
+
 /**
  * Regroupe les cursus par examen pour ne pas répéter le diplôme quand une épreuve
  * concerne plusieurs séries : "BAC C et E" plutôt que deux badges "BAC C" / "BAC E".
@@ -52,7 +78,7 @@ export function formatCursusGroups(cursus: Cursus[]): { key: string; label: stri
 
   for (const c of cursus) {
     if (!groups.has(c.examen)) groups.set(c.examen, { examenDisplay: c.examen_display, series: [] })
-    if (c.series) groups.get(c.examen)!.series.push(c.series.code)
+    if (c.series) groups.get(c.examen)!.series.push(codeSerieAffiche(c.series))
   }
 
   return Array.from(groups.entries()).map(([examen, { examenDisplay, series }]) => ({

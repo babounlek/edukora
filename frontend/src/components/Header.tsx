@@ -17,6 +17,8 @@ import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { ineditesNouvelles, marquerIneditesVues, useIneditesVues } from "@/lib/ineditesVues"
 import { SITE_NAME } from "@/lib/site"
+import { useI18n } from "@/lib/i18n"
+import { SelecteurLangue, useSynchroLangueCompte } from "@/components/SelecteurLangue"
 import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import {
   Select,
@@ -49,6 +51,7 @@ function AccountMenu() {
   const cursusAbonnes = useCursusAbonnes()
   const profils = useProfils()
   const changerProfil = useChangerProfilActif()
+  const { t } = useI18n()
 
   function handleLogout() {
     logout()
@@ -80,7 +83,7 @@ function AccountMenu() {
             basculer, profil_actif retombe silencieusement sur l'unique profil. */}
         {profils.length > 1 && !user?.session_restreinte && (
           <>
-            <DropdownMenuLabel>Changer d'enfant</DropdownMenuLabel>
+            <DropdownMenuLabel>{t("compte.changer_enfant")}</DropdownMenuLabel>
             {profils.map((profil) => {
               const actif = profil.id === user?.profil_actif?.id
               return (
@@ -92,7 +95,7 @@ function AccountMenu() {
                   }}
                 >
                   {actif ? <Check className="text-primary" /> : <User />}
-                  {profil.prenom || "Profil sans nom"}
+                  {profil.prenom || t("compte.profil_sans_nom")}
                 </DropdownMenuItem>
               )
             })}
@@ -109,7 +112,7 @@ function AccountMenu() {
             signalée : "un enfant avec un cursus qui n'est pas le sien"). */}
         {cursusAbonnes.length > 1 && !user?.session_restreinte && (
           <>
-            <DropdownMenuLabel>Examen préparé</DropdownMenuLabel>
+            <DropdownMenuLabel>{t("compte.examen_prepare")}</DropdownMenuLabel>
             {cursusAbonnes.map((sub) => {
               const actif = sub.cursus.id === user?.cursus_prepare?.id && sub.profil.id === user?.profil_actif?.id
               return (
@@ -131,31 +134,31 @@ function AccountMenu() {
         <DropdownMenuItem asChild>
           <Link to="/compte">
             <UserCircle />
-            Mon compte
+            {t("compte.mon_compte")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/mes-acces">
             <Sparkles />
-            Mes accès
+            {t("compte.mes_acces")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/historique">
             <History />
-            Mon historique
+            {t("compte.historique")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/mes-paiements">
             <Receipt />
-            Mes paiements
+            {t("compte.paiements")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={handleLogout} className="text-destructive focus:text-destructive [&_svg]:text-destructive">
           <LogOut />
-          Déconnexion
+          {t("compte.deconnexion")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -173,6 +176,7 @@ function AccountMenu() {
 function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () => void; dansLeMenu?: boolean }) {
   const { country, countries, setCountry } = useCountry()
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   // Un Country peut exister en base avant que du contenu réel n'y soit ingéré (voir
   // CountrySerializer.has_lessons côté backend) - ne proposer à la navigation que les
@@ -200,7 +204,7 @@ function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () =
   return (
     <Select value={country} onValueChange={handleChange}>
       <SelectTrigger
-        aria-label="Changer de pays"
+        aria-label={t("pays.changer")}
         className={cn(
           "shrink-0 gap-1",
           dansLeMenu
@@ -241,6 +245,8 @@ export function Header() {
   // uniquement pour savoir si la baseline doit lui laisser la place (voir plus bas).
   const aUnCompteARebours = Boolean(user?.compte_a_rebours && user.cursus_prepare)
   const { country } = useCountry()
+  const { t } = useI18n()
+  useSynchroLangueCompte()
   const { pathname, search } = useLocation()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   // « / » et Ctrl/⌘+K mènent à la page de recherche, champ sélectionné (voir RecherchePage).
@@ -314,17 +320,17 @@ export function Header() {
   const suitUnPlan = isAuthenticated && Boolean(user?.cursus_prepare)
   const navLinks = suitUnPlan
     ? [
-        { to: catalogueHomePath(country), label: "Aujourd'hui", active: isAccueil, badge: false },
-        { to: epreuvesListPath(country), label: "Réviser", active: isReviserSection, badge: nouvellesInedites },
-        { to: "/parcours", label: "Ma progression", active: isParcoursSection, badge: false },
+        { to: catalogueHomePath(country), label: t("nav.aujourdhui"), active: isAccueil, badge: false },
+        { to: epreuvesListPath(country), label: t("nav.reviser"), active: isReviserSection, badge: nouvellesInedites },
+        { to: "/parcours", label: t("nav.progression"), active: isParcoursSection, badge: false },
         ...(user?.a_un_abonnement_actif
           ? []
-          : [{ to: "/tarifs", label: "Prix", active: isTarifsSection, badge: false }]),
+          : [{ to: "/tarifs", label: t("nav.prix"), active: isTarifsSection, badge: false }]),
       ]
     : [
-        { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: nouvellesInedites },
-        { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
-        { to: "/tarifs", label: "Prix", active: isTarifsSection, badge: false },
+        { to: epreuvesListPath(country), label: t("nav.epreuves"), active: isEpreuvesSection, badge: nouvellesInedites },
+        { to: coursListPath(country), label: t("nav.cours"), active: isCoursSection, badge: false },
+        { to: "/tarifs", label: t("nav.prix"), active: isTarifsSection, badge: false },
       ]
 
   return (
@@ -342,7 +348,7 @@ export function Header() {
                 gris côte à côte ne feraient que se diluer. */}
             {!aUnCompteARebours && (
               <span className="hidden whitespace-nowrap font-display text-xs italic text-muted-foreground sm:inline">
-                réussis ton examen
+                {t("site.baseline")}
               </span>
             )}
           </Link>
@@ -355,24 +361,24 @@ export function Header() {
               manque le plus. Mène à la page de recherche (thèmes, cours, épreuves,
               exercices, quiz - voir RecherchePage) avec le champ prêt à écrire ; aussi
               atteignable au clavier par « / » et Ctrl/⌘+K. */}
-          <Button asChild variant="ghost" size="icon" aria-label="Rechercher">
+          <Button asChild variant="ghost" size="icon" aria-label={t("nav.rechercher")}>
             <Link to={recherchePath(country)} state={ETAT_FOCUS_RECHERCHE} aria-keyshortcuts="/ Control+K Meta+K">
               <Search className="size-4.5" />
             </Link>
           </Button>
           <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Ouvrir le menu">
+              <Button variant="ghost" size="icon" className="lg:hidden" aria-label={t("nav.ouvrir_menu")}>
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
             <SheetContent>
-              <SheetTitle>Menu</SheetTitle>
-              <SheetDescription>Navigation principale d'{SITE_NAME}</SheetDescription>
+              <SheetTitle>{t("nav.menu")}</SheetTitle>
+              <SheetDescription>{t("nav.menu_description", { site: SITE_NAME })}</SheetDescription>
               {/* Même raison que le pays et le thème plus bas : retiré de la barre
                   sous `sm` faute de place, jamais retiré du mobile. */}
               <CompteAReboursBadge className="mt-3 block sm:hidden" />
-              <nav aria-label="Menu" className="mt-3 flex flex-col gap-1">
+              <nav aria-label={t("nav.menu")} className="mt-3 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
                     key={link.to}
@@ -390,7 +396,7 @@ export function Header() {
                     {link.badge && (
                       <>
                         <span className="size-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
-                        <span className="sr-only"> - nouvelles épreuves inédites</span>
+                        <span className="sr-only"> - {t("nav.nouvelles_inedites")}</span>
                       </>
                     )}
                   </Link>
@@ -399,9 +405,12 @@ export function Header() {
               {/* Pays et thème, retirés de la barre sous `sm` faute de place (voir
                   le commentaire sur leur conteneur `hidden sm:flex`) - ils restent à
                   une tape d'ici, jamais supprimés du mobile. */}
-              <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-4 sm:hidden">
-                <CountrySwitcher dansLeMenu onNavigate={() => setMobileNavOpen(false)} />
-                <ThemeToggle />
+              <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4 sm:hidden">
+                <SelecteurLangue className="self-start" />
+                <div className="flex items-center justify-between gap-3">
+                  <CountrySwitcher dansLeMenu onNavigate={() => setMobileNavOpen(false)} />
+                  <ThemeToggle />
+                </div>
               </div>
             </SheetContent>
           </Sheet>
@@ -412,9 +421,9 @@ export function Header() {
           {navLinks.map((link) => (
             <span key={link.to} className="relative hidden lg:inline-flex">
               <Button asChild variant={link.active ? "secondary" : "ghost"} size="sm">
-                <Link to={link.to} title={link.badge ? "Nouvelles épreuves inédites" : undefined}>
+                <Link to={link.to} title={link.badge ? t("nav.nouvelles_inedites") : undefined}>
                   {link.label}
-                  {link.badge && <span className="sr-only"> - nouvelles épreuves inédites</span>}
+                  {link.badge && <span className="sr-only"> - {t("nav.nouvelles_inedites")}</span>}
                 </Link>
               </Button>
               {link.badge && (
@@ -432,6 +441,7 @@ export function Header() {
               basculement est à `sm` et non à `lg` : entre les deux, les liens de nav
               desktop sont encore repliés dans le menu, la place ne manque pas. */}
           <div className="hidden items-center gap-2 sm:flex">
+            <SelecteurLangue />
             <CountrySwitcher />
             <ThemeToggle />
           </div>
@@ -447,7 +457,7 @@ export function Header() {
             <AccountMenu />
           ) : (
             <Button asChild size="sm">
-              <Link to="/connexion">Connexion</Link>
+              <Link to="/connexion">{t("nav.connexion")}</Link>
             </Button>
           )}
         </div>

@@ -25,9 +25,12 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
+import { t, useI18n } from "@/lib/i18n"
+import { libelleNature, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
 import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
 export function EpreuveDetailPage() {
+  useI18n()
   const { country, slug } = useParams<{ country?: string; slug: string }>()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -38,9 +41,13 @@ export function EpreuveDetailPage() {
   const [error, setError] = useState("")
 
   useSeo({
-    title: epreuve?.title ?? "Corrigé",
+    title: epreuve?.title ?? t("ed.seo_corrige"),
     description: epreuve
-      ? `${epreuve.lesson_type_display} de ${epreuve.subject.label}${epreuve.year ? ` (${epreuve.year})` : ""} - sujet en accès libre, corrigé détaillé par abonnement.`
+      ? t("ed.seo_description", {
+          type: libelleType(epreuve.lesson_type, epreuve.lesson_type_display),
+          matiere: epreuve.subject.label,
+          annee: epreuve.year ? ` (${epreuve.year})` : "",
+        })
       : undefined,
   })
 
@@ -50,9 +57,9 @@ export function EpreuveDetailPage() {
       .then(setEpreuve)
       .catch((err) => {
         if (err instanceof ApiError && err.status === 404) {
-          setError("Cette épreuve n'existe pas ou n'est plus disponible.")
+          setError(t("ed.introuvable"))
         } else {
-          setError(err instanceof ApiError ? err.message : "Impossible de charger cette épreuve.")
+          setError(err instanceof ApiError ? err.message : t("ed.charger_erreur"))
         }
       })
   }, [slug])
@@ -117,7 +124,7 @@ export function EpreuveDetailPage() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour au catalogue
+          {t("ed.retour_catalogue")}
         </Link>
       </div>
     )
@@ -147,7 +154,7 @@ export function EpreuveDetailPage() {
         className="mb-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
-        Retour au catalogue
+        {t("ed.retour_catalogue")}
       </Link>
 
       <div className="flex animate-fade-up flex-col gap-6">
@@ -161,6 +168,8 @@ export function EpreuveDetailPage() {
             exercices: epreuve.exercises_count,
             duree: epreuve.duree_epreuve,
             coefficient: epreuve.coefficient,
+            paper: epreuve.numero_paper,
+            codeMatiere: epreuve.code_matiere_officiel,
           })}
           badges={
             <>
@@ -168,14 +177,16 @@ export function EpreuveDetailPage() {
               {epreuve.est_vitrine && (
                 <Badge variant="success" className="gap-1">
                   <Sparkles className="size-3" />
-                  Corrigé en accès libre
+                  {t("ed.corrige_libre")}
                 </Badge>
               )}
-              <Badge variant="outline">{epreuve.lesson_type_display}</Badge>
-              {epreuve.nature_epreuve_display && <Badge variant="outline">{epreuve.nature_epreuve_display}</Badge>}
+              <Badge variant="outline">{libelleType(epreuve.lesson_type, epreuve.lesson_type_display)}</Badge>
+              {epreuve.nature_epreuve_display && (
+                <Badge variant="outline">{libelleNature(epreuve.nature_epreuve, epreuve.nature_epreuve_display)}</Badge>
+              )}
               {epreuve.origine !== "OFFICIEL" && (
                 <Badge variant="outline">
-                  {epreuve.origine_display}
+                  {libelleOrigine(epreuve.origine, epreuve.origine_display)}
                   {epreuve.etablissement ? ` - ${epreuve.etablissement}` : ""}
                 </Badge>
               )}
@@ -193,12 +204,12 @@ export function EpreuveDetailPage() {
                 {epreuve.lesson_type === "FICHE" ? (
                   <>
                     <Zap />
-                    Réviser cette fiche
+                    {t("ed.reviser_fiche")}
                   </>
                 ) : (
                   <>
                     <BookOpenText />
-                    Lire le corrigé
+                    {t("ep.lire_corrige")}
                   </>
                 )}
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />
@@ -213,14 +224,14 @@ export function EpreuveDetailPage() {
             <Button asChild variant="outline" size="lg" className="h-12 rounded-full">
               <a href={epreuve.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
                 <FileDown />
-                Télécharger l'épreuve
+                {t("ed.telecharger")}
               </a>
             </Button>
           )}
           {/* Le sujet est public : n'importe quel élève peut l'envoyer à un camarade. */}
           <BoutonPartager
             chemin={epreuveDetailPath(countryCode, epreuve.slug as string)}
-            texte={`Regarde « ${epreuve.title} » sur ${SITE_NAME} :`}
+            texte={t("ed.partage", { titre: epreuve.title, site: SITE_NAME })}
             type="epreuve"
             size="lg"
             className="h-12 rounded-full"
@@ -237,22 +248,17 @@ export function EpreuveDetailPage() {
                 <Lock className="size-6" aria-hidden="true" />
               </span>
               <div className="min-w-0">
-                <h2 className="font-display text-xl font-semibold sm:text-2xl">Débloque le corrigé complet</h2>
+                <h2 className="font-display text-xl font-semibold sm:text-2xl">{t("ed.debloque")}</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Le sujet ci-dessous est en libre accès. La correction détaillée est réservée aux abonnés
-                  {epreuve.cursus.length > 1 ? " (l'un des cursus suivants suffit)" : ""}.
+                  {epreuve.cursus.length > 1 ? t("ed.bloc_texte_multi") : t("ed.bloc_texte")}
                 </p>
               </div>
             </div>
             <ul className="mt-5 grid gap-2 sm:grid-cols-3">
-              {[
-                "Correction pas à pas, exercice par exercice",
-                "Cours et rappels de méthode liés",
-                "Quiz et suivi de ta progression",
-              ].map((avantage) => (
+              {(["ed.avantage1", "ed.avantage2", "ed.avantage3"] as const).map((avantage) => (
                 <li key={avantage} className="flex items-start gap-2 rounded-xl bg-background/70 px-3 py-2.5 text-sm">
                   <Check className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={3} aria-hidden="true" />
-                  {avantage}
+                  {t(avantage)}
                 </li>
               ))}
             </ul>
@@ -260,7 +266,9 @@ export function EpreuveDetailPage() {
               {epreuve.cursus.map((c) => (
                 <Button key={c.id} asChild size="lg" className="h-12 rounded-full px-6 shadow-lg shadow-primary/25">
                   <Link to={`/abonnement?cursus=${c.id}`}>
-                    S'abonner{epreuve.cursus.length > 1 ? ` (${c.series ? c.series.code : c.examen_display})` : ""}
+                    {epreuve.cursus.length > 1
+                      ? t("ed.sabonner_cursus", { cursus: c.series ? c.series.code : c.examen_display })
+                      : t("prix.sabonner")}
                     <ArrowRight />
                   </Link>
                 </Button>
@@ -269,7 +277,7 @@ export function EpreuveDetailPage() {
             <div className="mt-4">
               <ParrainageHint
                 chemin={epreuveDetailPath(countryCode, epreuve.slug as string)}
-                texte={`Regarde « ${epreuve.title} » sur ${SITE_NAME} :`}
+                texte={t("ed.partage", { titre: epreuve.title, site: SITE_NAME })}
                 type="epreuve"
               />
             </div>
@@ -281,7 +289,7 @@ export function EpreuveDetailPage() {
         {exercices.length > 1 && (
           <section aria-labelledby="au-programme">
             <h2 id="au-programme" className="mb-3 font-display text-xl font-semibold">
-              Au programme
+              {t("ed.au_programme")}
             </h2>
             <ol className="grid gap-2.5 sm:grid-cols-2">
               {exercices.map((exercise, index) => (
@@ -315,7 +323,7 @@ export function EpreuveDetailPage() {
         {preview && (
           <section aria-labelledby="le-sujet">
             <h2 id="le-sujet" className="mb-3 font-display text-xl font-semibold">
-              Le sujet
+              {t("ed.le_sujet")}
             </h2>
             {preview.introduction_markdown && (
               // Consigne d'épreuve entière - voir EpreuveReaderPage, même contenu que côté lecture
@@ -357,7 +365,7 @@ export function EpreuveDetailPage() {
                         className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
                       >
                         <BookOpenText className="size-4" />
-                        Lire le corrigé de cet exercice
+                        {t("ed.lire_corrige_exercice")}
                         <ArrowRight className="size-3.5" />
                       </Link>
                     )}
@@ -375,7 +383,7 @@ export function EpreuveDetailPage() {
         {epreuve.related_cours.length > 0 && (
           <section aria-labelledby="cours-associes">
             <h2 id="cours-associes" className="mb-3 font-display text-xl font-semibold">
-              Cours associés
+              {t("ed.cours_associes")}
             </h2>
             <div className="grid gap-2.5 sm:grid-cols-2">
               {epreuve.related_cours.map((cours) => {
@@ -391,9 +399,9 @@ export function EpreuveDetailPage() {
                     </span>
                     <span className="min-w-0 flex-1 font-medium leading-snug">{cours.titre}</span>
                     {cours.has_access ? (
-                      <Unlock className="size-4 shrink-0 text-success" aria-label="Inclus" />
+                      <Unlock className="size-4 shrink-0 text-success" aria-label={t("ed.inclus")} />
                     ) : (
-                      <Lock className="size-4 shrink-0 text-muted-foreground" aria-label="Abonnement requis" />
+                      <Lock className="size-4 shrink-0 text-muted-foreground" aria-label={t("ed.abonnement_requis")} />
                     )}
                   </Link>
                 )
@@ -411,8 +419,8 @@ export function EpreuveDetailPage() {
               <Crown className="size-5" />
             </span>
             <span>
-              <span className="block font-medium">Envie d'aller plus loin ?</span>
-              <span className="text-muted-foreground">Teste-toi sur une épreuve jamais vue, en conditions réelles.</span>
+              <span className="block font-medium">{t("ed.plus_loin")}</span>
+              <span className="text-muted-foreground">{t("ed.plus_loin_texte")}</span>
             </span>
           </span>
           <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" />
@@ -426,7 +434,7 @@ export function EpreuveDetailPage() {
           excludeId={epreuve.id}
         />
 
-        <BackToTopBar links={[{ to: epreuvesListPath(countryCode), label: "Retour au catalogue" }]} />
+        <BackToTopBar links={[{ to: epreuvesListPath(countryCode), label: t("ed.retour_catalogue") }]} />
       </div>
     </div>
   )

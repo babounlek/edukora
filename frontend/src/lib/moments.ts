@@ -2,6 +2,7 @@ import { Flame, Sparkles, Trophy } from "lucide-react"
 
 import type { Accueil } from "@/api/types"
 import { jalonsAtteints } from "@/lib/jalons"
+import { langueCourante, t, tn } from "@/lib/i18n"
 
 /**
  * Les moments candidats de l'accueil (voir components/Moments) : un palier de travail
@@ -25,7 +26,7 @@ export function momentsCandidats(accueil: Accueil): Moment[] {
       moments.push({
         cle: `jalon-${jalon.genre}-${jalon.palier}`,
         icone: Trophy,
-        surtitre: "Palier franchi",
+        surtitre: t("moments.palier"),
         texte: jalon.libelle,
       })
     }
@@ -35,8 +36,8 @@ export function momentsCandidats(accueil: Accueil): Moment[] {
     moments.push({
       cle: `serie-${serie.jours}`,
       icone: Flame,
-      surtitre: `${serie.jours} jours de suite`,
-      texte: serie.jours >= 30 ? "Ce n'est plus une habitude, c'est une méthode." : "Ça devient une habitude.",
+      surtitre: t("serie.jours_de_suite", { n: serie.jours }),
+      texte: serie.jours >= 30 ? t("moments.serie_methode") : t("moments.serie_habitude"),
     })
   }
   const depuis = accueil.depuis
@@ -45,11 +46,11 @@ export function momentsCandidats(accueil: Accueil): Moment[] {
     moments.push({
       cle: `solide-${depuis.depuis}-${premier.theme}`,
       icone: Sparkles,
-      surtitre: depuis.themes_consolides_total > 1 ? "Nouveaux thèmes solides" : "Nouveau thème solide",
+      surtitre: tn("moments.solide", depuis.themes_consolides_total > 1 ? 2 : 1),
       texte:
         depuis.themes_consolides_total > 1
-          ? `${majuscule(premier.theme)} et ${depuis.themes_consolides_total - 1} autre${depuis.themes_consolides_total > 2 ? "s" : ""}`
-          : `${majuscule(premier.theme)} (${premier.subject_label})`,
+          ? tn("moments.et_autres", depuis.themes_consolides_total - 1, { theme: majuscule(premier.theme) })
+          : t("moments.theme_matiere", { theme: majuscule(premier.theme), matiere: premier.subject_label }),
     })
   }
   return moments
@@ -57,5 +58,5 @@ export function momentsCandidats(accueil: Accueil): Moment[] {
 
 
 function majuscule(texte: string): string {
-  return texte.charAt(0).toLocaleUpperCase("fr") + texte.slice(1)
+  return texte.charAt(0).toLocaleUpperCase(langueCourante()) + texte.slice(1)
 }

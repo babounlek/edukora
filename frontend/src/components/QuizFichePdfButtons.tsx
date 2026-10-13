@@ -5,6 +5,7 @@ import { downloadQuizCorrigePdf, downloadQuizSujetPdf, getQuizFichePdfStatus, re
 import { ApiError } from "@/api/client"
 import type { QuizFichePdfStatus } from "@/api/types"
 import { Button } from "@/components/ui/button"
+import { t, useI18n } from "@/lib/i18n"
 
 // Même intervalle que FichesPage.tsx (POLL_INTERVAL_MS), même raison : la génération
 // tourne hors ligne (voir quiz.pdf, jamais dans le thread de la requête HTTP), il faut
@@ -21,6 +22,7 @@ const FICHE_PDF_POLL_INTERVAL_MS = 2500
  * quiz obligerait à recliquer "Télécharger" pour rien.
  */
 export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
+  useI18n()
   const [statut, setStatut] = useState<QuizFichePdfStatus["statut"] | null>(null)
   const [error, setError] = useState("")
   const pollRef = useRef<number | null>(null)
@@ -63,7 +65,7 @@ export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
       if (status.statut === "EN_COURS") poll()
     } catch (err) {
       setStatut(null)
-      setError(err instanceof ApiError ? err.message : "Impossible de générer la fiche pour le moment.")
+      setError(err instanceof ApiError ? err.message : t("gl.qpdf_generer"))
     }
   }
 
@@ -71,7 +73,7 @@ export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
     try {
       await downloadQuizSujetPdf(sessionId)
     } catch {
-      setError("Impossible d'ouvrir la fiche pour le moment.")
+      setError(t("gl.pdf_fiche"))
     }
   }
 
@@ -79,7 +81,7 @@ export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
     try {
       await downloadQuizCorrigePdf(sessionId)
     } catch {
-      setError("Impossible d'ouvrir la correction pour le moment.")
+      setError(t("gl.pdf_correction"))
     }
   }
 
@@ -89,11 +91,11 @@ export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button variant="outline" size="sm" onClick={handleTelechargerSujet}>
             <Download className="mr-2 size-4" />
-            1. Fiche
+            {t("gl.qpdf_fiche")}
           </Button>
           <Button variant="outline" size="sm" onClick={handleTelechargerCorrige}>
             <Download className="mr-2 size-4" />
-            2. Correction
+            {t("gl.qpdf_correction")}
           </Button>
         </div>
       ) : (
@@ -101,17 +103,17 @@ export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
           {statut === "EN_COURS" ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
-              Préparation des fiches...
+              {t("gl.qpdf_preparation")}
             </>
           ) : (
             <>
               <Download className="mr-2 size-4" />
-              Télécharger la fiche PDF
+              {t("gl.qpdf_telecharger")}
             </>
           )}
         </Button>
       )}
-      {statut === "ECHEC" && <p className="text-sm text-destructive">La génération a échoué, réessaie dans un instant.</p>}
+      {statut === "ECHEC" && <p className="text-sm text-destructive">{t("gl.qpdf_echec")}</p>}
       {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
   )

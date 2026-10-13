@@ -21,6 +21,7 @@ import {
 import { listCursus, listEpreuves, listSubjects } from "@/api/endpoints"
 import type { NatureEpreuve, Origine } from "@/api/types"
 import { examLevelsFor } from "@/lib/cursus"
+import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -64,24 +65,24 @@ const FILTERS_SESSION_KEY = "edukamer_epreuves_derniers_filtres"
 // navigation suivante et le bouton "Voir tout le catalogue" semble sans effet.
 const FILTER_KEYS = ["subject", "cursus", "origine", "nature", "gratuit", "search", "ordering", "tout"]
 
-const ORIGINE_LABELS: Record<Origine, string> = {
-  OFFICIEL: "Épreuve officielle",
-  BLANC: "Examen blanc",
-  ETABLISSEMENT: "Sujet d'établissement",
-  AUTRE: "Autre",
-  INEDITE: "Épreuve inédite",
+const ORIGINE_LABELS: Record<Origine, CleI18n> = {
+  OFFICIEL: "ep.origine_OFFICIEL",
+  BLANC: "ep.origine_BLANC",
+  ETABLISSEMENT: "ep.origine_ETABLISSEMENT",
+  AUTRE: "ep.origine_AUTRE",
+  INEDITE: "ep.origine_INEDITE",
 }
 
-const NATURE_LABELS: Record<NatureEpreuve, string> = {
-  THEORIQUE: "Théorique",
-  PRATIQUE: "Pratique",
+const NATURE_LABELS: Record<NatureEpreuve, CleI18n> = {
+  THEORIQUE: "ep.nature_THEORIQUE",
+  PRATIQUE: "ep.nature_PRATIQUE",
 }
 
 const ORDERING_LABELS = {
-  year: "Année (plus récente)",
-  recent: "Ajoutées récemment",
-  popular: "Les plus consultées",
-} as const
+  year: "ep.tri_year",
+  recent: "ep.tri_recent",
+  popular: "ep.tri_popular",
+} as const satisfies Record<string, CleI18n>
 
 function EpreuveCardSkeleton() {
   return (
@@ -115,7 +116,7 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
       onClick={onRemove}
       // Le libellé seul (« BAC D ») ne dit pas que le bouton retire le filtre : sans cela, un
       // lecteur d'écran annonce juste le nom de la puce. min-h-9 : cible tactile utilisable.
-      aria-label={`Retirer le filtre ${label}`}
+      aria-label={t("ep.retirer_filtre", { label })}
       className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
     >
       {label}
@@ -136,6 +137,7 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
 }
 
 export function EpreuvesListPage() {
+  useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
@@ -180,11 +182,13 @@ export function EpreuvesListPage() {
   const pageInedites = origineFilter === "INEDITE"
 
   useSeo({
-    title: pageInedites ? "Épreuves inédites" : "Épreuves et corrigés",
+    title: pageInedites ? t("ep.seo_inedites") : t("ep.seo_liste"),
     description: pageInedites
-      ? `${countryLabel ? `${countryLabel} : ` : ""}épreuves originales conçues par ${SITE_NAME}, jamais tirées des annales, au niveau et au barème de l'examen réel.`
+      ? countryLabel
+        ? t("ep.seo_desc_inedites_pays", { pays: countryLabel, site: SITE_NAME })
+        : t("ep.seo_desc_inedites", { site: SITE_NAME })
       : countryLabel
-        ? `${countryLabel} : sujets et corrigés d'annales, examens blancs et épreuves inédites, classés par matière, cursus et série.`
+        ? t("ep.seo_desc_liste_pays", { pays: countryLabel })
         : undefined,
   })
 
@@ -225,7 +229,7 @@ export function EpreuvesListPage() {
     () =>
       [...subjects]
         .filter((s) => !couvertureInedites || couvertureInedites.matieres.has(s.code) || s.code === subjectFilter)
-        .sort((a, b) => a.label.localeCompare(b.label, "fr")),
+        .sort((a, b) => a.label.localeCompare(b.label, localeCourante())),
     [subjects, couvertureInedites, subjectFilter],
   )
 
@@ -398,23 +402,23 @@ export function EpreuvesListPage() {
       key: "cursus",
       label: (() => {
         const c = cursusList.find((c) => String(c.id) === cursusFilter)
-        return c ? `${c.examen_display}${c.series ? ` - Série ${c.series.code}` : ""}` : cursusFilter
+        return c ? `${c.examen_display}${c.series ? ` - ${t("prix.serie", { code: c.series.code })}` : ""}` : cursusFilter
       })(),
       clear: () => updateFilter("cursus", ""),
     },
     origineFilter && {
       key: "origine",
-      label: ORIGINE_LABELS[origineFilter],
+      label: t(ORIGINE_LABELS[origineFilter]),
       clear: () => updateFilter("origine", ""),
     },
     natureFilter && {
       key: "nature",
-      label: NATURE_LABELS[natureFilter],
+      label: t(NATURE_LABELS[natureFilter]),
       clear: () => updateFilter("nature", ""),
     },
     gratuitFilter && {
       key: "gratuit",
-      label: "Gratuites uniquement",
+      label: t("ep.gratuites_seules"),
       clear: () => updateFilter("gratuit", ""),
     },
   ].filter((chip): chip is { key: string; label: string; clear: () => void } => Boolean(chip))
@@ -431,8 +435,8 @@ export function EpreuvesListPage() {
     .filter((c) => !couvertureInedites || couvertureInedites.cursus.has(c.id) || String(c.id) === cursusFilter)
     .sort(
     (x, y) =>
-      x.examen_display.localeCompare(y.examen_display, "fr") ||
-      (x.series?.code ?? "").localeCompare(y.series?.code ?? "", "fr"),
+      x.examen_display.localeCompare(y.examen_display, localeCourante()) ||
+      (x.series?.code ?? "").localeCompare(y.series?.code ?? "", localeCourante()),
   )
   const totalEpreuves = pageInedites
     ? epreuvesQuery.data ? count : undefined
@@ -462,27 +466,25 @@ export function EpreuvesListPage() {
         <BookOpen aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
           <p className="mb-2 font-display text-sm italic text-primary">
-            {pageInedites ? "Épreuves inédites" : "Épreuves et corrigés"}
+            {pageInedites ? t("ep.seo_inedites") : t("ep.seo_liste")}
             {countryLabel ? ` - ${countryLabel}` : ""}
           </p>
           {pageInedites ? (
             <>
               <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-3xl">
-                Des sujets que tu n'as jamais vus, <span className="text-primary">dans les conditions du jour J</span>.
+                {t("ep.titre_inedites")} <span className="text-primary">{t("ep.titre_inedites_accent")}</span>.
               </h1>
               <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-                Conçues par {SITE_NAME}, jamais tirées des annales : même niveau et même barème que l'examen réel, avec
-                chrono, notation guidée et rapport de fin.
+                {t("ep.texte_inedites", { site: SITE_NAME })}
               </p>
             </>
           ) : (
             <>
               <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-                Toutes les <span className="text-primary">annales corrigées</span>, cursus par cursus.
+                {t("ep.titre_liste")} <span className="text-primary">{t("ep.titre_liste_accent")}</span>{t("ep.titre_liste_fin")}
               </h1>
               <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-                Sujets officiels, examens blancs et épreuves inédites : choisis ton examen, ta matière, et lis le
-                corrigé détaillé.
+                {t("ep.texte_liste")}
               </p>
             </>
           )}
@@ -494,18 +496,14 @@ export function EpreuvesListPage() {
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}
                 valeur={formatAmount(totalEpreuves)}
-                libelle={
-                  pageInedites
-                    ? totalEpreuves > 1 ? "épreuves inédites" : "épreuve inédite"
-                    : totalEpreuves > 1 ? "épreuves publiées" : "épreuve publiée"
-                }
+                libelle={tn(pageInedites ? "ep.stat_inedites" : "ep.stat_publiees", totalEpreuves > 1 ? 2 : 1)}
               />
             )}
             {subjectsTries.length > 0 && (
               <StatChip
                 icon={<Layers className="size-3.5 text-primary" />}
                 valeur={String(subjectsTries.length)}
-                libelle={subjectsTries.length > 1 ? "matières" : "matière"}
+                libelle={tn("qd.stat_matieres", subjectsTries.length > 1 ? 2 : 1)}
               />
             )}
             {examLevels.length > 0 && (
@@ -529,8 +527,8 @@ export function EpreuvesListPage() {
             type="search"
             inputMode="search"
             enterKeyHint="search"
-            aria-label="Rechercher une épreuve"
-            placeholder="Rechercher une épreuve…"
+            aria-label={t("ep.rechercher")}
+            placeholder={t("ep.rechercher_placeholder")}
             value={search}
             onChange={(e) => updateFilter("search", e.target.value)}
             className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
@@ -539,7 +537,7 @@ export function EpreuvesListPage() {
             <button
               type="button"
               onClick={() => updateFilter("search", "")}
-              aria-label="Effacer la recherche"
+              aria-label={t("ep.effacer")}
               className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="size-4" />
@@ -548,9 +546,9 @@ export function EpreuvesListPage() {
         </div>
 
         {cursusTries.length > 0 && (
-          <FiltreLigne titre="Examen">
+          <FiltreLigne titre={t("quiz.examen")}>
             <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
-              Tous
+              {t("ep.tous")}
             </PastilleFiltre>
             {cursusTries.map((c) => (
               <PastilleFiltre
@@ -566,9 +564,9 @@ export function EpreuvesListPage() {
         )}
 
         {subjectsTries.length > 0 && (
-          <FiltreLigne titre="Matière">
+          <FiltreLigne titre={t("quiz.matiere")}>
             <PastilleFiltre actif={!subjectFilter} onClick={() => updateFilter("subject", "")}>
-              Toutes
+              {t("ep.toutes")}
             </PastilleFiltre>
             {subjectsTries.map((subject) => {
               const SubjectIcon = subjectIcon(subject.code)
@@ -606,7 +604,7 @@ export function EpreuvesListPage() {
             )}
           >
             <Gift className="size-4" />
-            Gratuites
+            {t("ep.gratuites")}
           </button>
           <button
             type="button"
@@ -620,7 +618,7 @@ export function EpreuvesListPage() {
             )}
           >
             <Crown className="size-4" />
-            Inédites
+            {t("cpt.inedites")}
           </button>
           <button
             type="button"
@@ -629,8 +627,8 @@ export function EpreuvesListPage() {
             className="ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             <SlidersHorizontal className="size-4" />
-            <span className="sm:hidden">Filtres</span>
-            <span className="hidden sm:inline">Plus de filtres</span>
+            <span className="sm:hidden">{t("ep.filtres")}</span>
+            <span className="hidden sm:inline">{t("ep.plus_filtres")}</span>
             {nbFiltresSecondaires > 0 && (
               <span className="flex size-5 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                 {nbFiltresSecondaires}
@@ -646,28 +644,28 @@ export function EpreuvesListPage() {
               value={origineFilter || "all"}
               onValueChange={(v) => updateFilter("origine", v === "all" ? "" : v)}
             >
-              <SelectTrigger className="w-full bg-background sm:w-52" aria-label="Origine">
-                <SelectValue placeholder="Toute origine" />
+              <SelectTrigger className="w-full bg-background sm:w-52" aria-label={t("ep.origine")}>
+                <SelectValue placeholder={t("ep.toute_origine")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Toute origine</SelectItem>
+                <SelectItem value="all">{t("ep.toute_origine")}</SelectItem>
                 {(Object.keys(ORIGINE_LABELS) as Origine[]).map((code) => (
                   <SelectItem key={code} value={code}>
-                    {ORIGINE_LABELS[code]}
+                    {t(ORIGINE_LABELS[code])}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
             <Select value={natureFilter || "all"} onValueChange={(v) => updateFilter("nature", v === "all" ? "" : v)}>
-              <SelectTrigger className="w-full bg-background sm:w-48" aria-label="Théorique ou pratique">
-                <SelectValue placeholder="Théorique/Pratique" />
+              <SelectTrigger className="w-full bg-background sm:w-48" aria-label={t("ep.theorique_pratique_aria")}>
+                <SelectValue placeholder={t("ep.theorique_pratique")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Théorique/Pratique</SelectItem>
+                <SelectItem value="all">{t("ep.theorique_pratique")}</SelectItem>
                 {(Object.keys(NATURE_LABELS) as NatureEpreuve[]).map((code) => (
                   <SelectItem key={code} value={code}>
-                    {NATURE_LABELS[code]}
+                    {t(NATURE_LABELS[code])}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -677,7 +675,7 @@ export function EpreuvesListPage() {
 
         {activeFilterChips.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3.5">
-            <span className="text-sm text-muted-foreground">Filtres :</span>
+            <span className="text-sm text-muted-foreground">{t("ep.filtres_actifs")}</span>
             {activeFilterChips.map((chip) => (
               <FilterChip key={chip.key} label={chip.label} onRemove={chip.clear} />
             ))}
@@ -687,7 +685,7 @@ export function EpreuvesListPage() {
                 onClick={resetFilters}
                 className="text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
               >
-                Tout effacer
+                {t("ep.tout_effacer")}
               </button>
             )}
           </div>
@@ -703,7 +701,7 @@ export function EpreuvesListPage() {
       )}
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Chargement des épreuves">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label={t("ep.chargement")}>
           {Array.from({ length: 6 }).map((_, i) => (
             <EpreuveCardSkeleton key={i} />
           ))}
@@ -712,8 +710,8 @@ export function EpreuvesListPage() {
         // Une panne n'est pas "aucun résultat" : sans ce cas, une coupure réseau se lisait
         // comme un catalogue vide et l'élève cherchait l'erreur dans ses filtres.
         <ErreurChargement
-          objet="les épreuves"
-          message="Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer."
+          objet={t("ep.objet")}
+          message={t("ep.erreur_message")}
           onRetry={() => epreuvesQuery.refetch()}
         />
       ) : epreuvesList.length === 0 ? (
@@ -721,22 +719,22 @@ export function EpreuvesListPage() {
           <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <SearchX className="size-6" />
           </span>
-          <p className="font-display text-lg font-semibold">Aucune épreuve ne correspond</p>
+          <p className="font-display text-lg font-semibold">{t("ep.aucune")}</p>
           <p className="max-w-sm text-sm text-muted-foreground">
             {search
-              ? `Rien pour « ${search} » avec ces filtres. Essaie un mot plus court, ou élargis la recherche.`
-              : "Élargis un filtre pour voir plus d'épreuves."}
+              ? t("ep.aucune_recherche", { search })
+              : t("ep.aucune_filtre")}
           </p>
           <div className="mt-1 flex flex-wrap justify-center gap-2">
             {(activeFilterChips.length > 0 || search) && (
               <Button variant="outline" onClick={resetFilters} className="rounded-full">
-                Tout réinitialiser
+                {t("ep.reinitialiser")}
               </Button>
             )}
             {!gratuitFilter && (
               <Button variant="ghost" onClick={() => updateFilter("gratuit", "true")} className="rounded-full">
                 <Gift />
-                Voir les épreuves gratuites
+                {t("ep.voir_gratuites")}
               </Button>
             )}
           </div>
@@ -747,19 +745,18 @@ export function EpreuvesListPage() {
               /cours - voir CoursListPage pour l'explication de cette valeur exacte. */}
           <div className="sticky top-[72px] z-10 -mx-4 mb-4 flex items-center justify-between gap-3 border-b border-border bg-background/85 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6">
             <p className="text-sm text-muted-foreground" aria-live="polite">
-              <span className="font-medium tabular-nums text-foreground">{formatAmount(count)}</span> épreuve
-              {count > 1 ? "s" : ""} trouvée{count > 1 ? "s" : ""}
+              <span className="font-medium tabular-nums text-foreground">{formatAmount(count)}</span> {tn("ep.trouvees", count)}
             </p>
             <div className="flex shrink-0 items-center gap-2">
             <Select value={ordering || "default"} onValueChange={(v) => updateFilter("ordering", v === "default" ? "" : v)}>
-              <SelectTrigger className="h-8 w-36 text-sm sm:w-48" aria-label="Trier les épreuves">
-                <SelectValue placeholder="Tri par défaut" />
+              <SelectTrigger className="h-8 w-36 text-sm sm:w-48" aria-label={t("ep.trier")}>
+                <SelectValue placeholder={t("ep.tri_defaut")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="default">Tri par défaut</SelectItem>
+                <SelectItem value="default">{t("ep.tri_defaut")}</SelectItem>
                 {(Object.keys(ORDERING_LABELS) as (keyof typeof ORDERING_LABELS)[]).map((key) => (
                   <SelectItem key={key} value={key}>
-                    {ORDERING_LABELS[key]}
+                    {t(ORDERING_LABELS[key])}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -769,7 +766,7 @@ export function EpreuvesListPage() {
                 variant={viewMode === "cards" ? "secondary" : "ghost"}
                 size="icon"
                 className="size-7 tap-target-44"
-                aria-label="Affichage en cartes"
+                aria-label={t("ep.vue_cartes")}
                 aria-pressed={viewMode === "cards"}
                 onClick={() => setViewMode("cards")}
               >
@@ -779,7 +776,7 @@ export function EpreuvesListPage() {
                 variant={viewMode === "list" ? "secondary" : "ghost"}
                 size="icon"
                 className="size-7 tap-target-44"
-                aria-label="Affichage en liste"
+                aria-label={t("ep.vue_liste")}
                 aria-pressed={viewMode === "list"}
                 onClick={() => setViewMode("list")}
               >
@@ -819,15 +816,15 @@ export function EpreuvesListPage() {
               {isLoadingMore && <Loader2 className="size-5 animate-spin text-muted-foreground" />}
               {erreurPageSuivante && !isLoadingMore && (
                 <div role="alert" className="flex flex-col items-center gap-2 text-center">
-                  <p className="text-sm text-destructive">Impossible de charger la suite des épreuves.</p>
+                  <p className="text-sm text-destructive">{t("ep.suite_erreur")}</p>
                   <Button variant="outline" onClick={() => epreuvesQuery.fetchNextPage()} className="min-h-11">
                     <RefreshCw />
-                    Charger plus
+                    {t("ep.charger_plus")}
                   </Button>
                 </div>
               )}
               <p className="text-xs tabular-nums text-muted-foreground">
-                {formatAmount(epreuvesList.length)} sur {formatAmount(count)}
+                {t("ep.sur", { a: formatAmount(epreuvesList.length), b: formatAmount(count) })}
               </p>
             </div>
           )}

@@ -1,6 +1,8 @@
 import { useId, useState, type ReactNode } from "react"
 import { Eye, EyeOff } from "lucide-react"
 
+import { t, useI18n } from "@/lib/i18n"
+
 interface SolutionToggleProps {
   children?: ReactNode
 }
@@ -18,6 +20,7 @@ interface SolutionToggleProps {
  * `svg` (mesuré), le bouton garde donc son style intact même sous un article `prose`.
  */
 export function SolutionToggle({ children }: SolutionToggleProps) {
+  useI18n()
   const [open, setOpen] = useState(false)
   const idContenu = useId()
 
@@ -33,7 +36,7 @@ export function SolutionToggle({ children }: SolutionToggleProps) {
         className="flex min-h-10 items-center gap-1.5 rounded-md border border-border px-3.5 py-2 text-sm font-medium text-primary transition-colors hover:bg-accent"
       >
         {open ? <EyeOff className="size-3.5" aria-hidden="true" /> : <Eye className="size-3.5" aria-hidden="true" />}
-        {open ? "Masquer la solution" : "Voir la solution"}
+        {open ? t("co.masquer_solution") : t("co.voir_solution")}
       </button>
       {open && (
         <div id={idContenu} className="prose prose-neutral mt-3 max-w-none text-justify border-l-2 border-border pl-4 dark:prose-invert">

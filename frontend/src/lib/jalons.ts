@@ -1,4 +1,5 @@
 import type { BilanPeriode } from "@/api/types"
+import { t } from "@/lib/i18n"
 
 /**
  * Les jalons : des paliers de travail réel (séances terminées, questions traitées, thèmes
@@ -35,9 +36,9 @@ export interface ProchainJalon {
 }
 
 export function libelleJalon(genre: GenreJalon, palier: number): string {
-  if (genre === "seances") return palier === 1 ? "Première séance terminée" : `${palier} séances terminées`
-  if (genre === "questions") return `${palier} questions travaillées`
-  return palier === 1 ? "Premier thème solide" : `${palier} thèmes solides`
+  if (genre === "seances") return palier === 1 ? t("jalon.premiere_seance") : t("jalon.seances", { n: palier })
+  if (genre === "questions") return t("jalon.questions", { n: palier })
+  return palier === 1 ? t("jalon.premier_solide") : t("jalon.solides", { n: palier })
 }
 
 function compteurs(bilan: BilanPeriode): Record<GenreJalon, { avant: number; total: number }> {

@@ -17,6 +17,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { pourcent } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 /** Savoirs qui ont du contenu : les seuls qui comptent dans un pourcentage. Un savoir
  * sans contenu n'est pas un échec de l'élève - l'inclure ferait mentir la barre, et
@@ -39,6 +40,7 @@ function libelleCursus(cursus: Cursus): string {
 function CarteMatiere({
   matiere, cursusId, verrouille, className, style,
 }: { matiere: ResumeMatiere; cursusId: number; verrouille: boolean; className?: string; style?: CSSProperties }) {
+  useI18n()
   const utiles = exploitables(matiere)
   const sansContenu = utiles === 0
   const SubjectIcon = subjectIcon(matiere.subject_code)
@@ -73,7 +75,7 @@ function CarteMatiere({
           <Lock className="size-4 text-muted-foreground" aria-hidden="true" />
         ) : sansContenu ? (
           <span className="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-            Contenu à venir
+            {t("pc.contenu_a_venir")}
           </span>
         ) : (
           <span className="font-display text-2xl font-semibold leading-none tabular-nums">
@@ -90,7 +92,7 @@ function CarteMatiere({
       {verrouille ? (
         !sansContenu && (
           <p className="mt-auto pt-4 text-xs text-muted-foreground">
-            {utiles} savoir{utiles > 1 ? "s" : ""} au programme - abonne-toi pour suivre ta progression.
+            {tn("pc.savoirs_programme", utiles)}
           </p>
         )
       ) : (
@@ -104,13 +106,13 @@ function CarteMatiere({
             />
             <div className="mt-3 flex items-center justify-between gap-2 text-xs text-muted-foreground">
               <span className="tabular-nums">
-                {matiere.maitrises}/{utiles} savoir{utiles > 1 ? "s" : ""} maîtrisé{matiere.maitrises > 1 ? "s" : ""}
+                {tn("pc.maitrises_sur", matiere.maitrises, { total: utiles })}
               </span>
               <span className="flex items-center gap-1.5">
                 {matiere.en_revision > 0 && (
                   <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium", STATUTS.en_revision.puce)}>
                     <RotateCcw className="size-3" />
-                    {matiere.en_revision} à réviser
+                    {t("pc.a_reviser", { n: matiere.en_revision })}
                   </span>
                 )}
                 <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
@@ -137,9 +139,10 @@ function Squelette() {
 }
 
 export function ParcoursPage() {
+  useI18n()
   useSeo({
-    title: "Ma progression",
-    description: "Toutes tes matières, avec ce qu'il te reste à découvrir, réviser ou maîtriser.",
+    title: t("nav.progression"),
+    description: t("pc.sous_titre"),
   })
 
   const { isAuthenticated, isLoading: authLoading, user } = useAuth()
@@ -198,7 +201,7 @@ export function ParcoursPage() {
 
   if (authLoading || !subscriptions) {
     if (erreurAbonnements) {
-      return <p className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive sm:px-6">Impossible de charger tes abonnements.</p>
+      return <p className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive sm:px-6">{t("pc.abos_erreur")}</p>
     }
     return <Squelette />
   }
@@ -213,13 +216,12 @@ export function ParcoursPage() {
           <span className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
             <Compass className="size-5" />
           </span>
-          <p className="font-display text-xl font-semibold">Quel examen prépares-tu ?</p>
+          <p className="font-display text-xl font-semibold">{t("pc.examen_titre")}</p>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-            Dis-nous ce que tu prépares pour voir ton programme officiel, matière par matière -
-            c'est gratuit, aucun abonnement requis pour ça.
+            {t("pc.examen_texte")}
           </p>
           <Button asChild className="mt-5 rounded-full px-6">
-            <Link to="/compte">Choisir mon cursus</Link>
+            <Link to="/compte">{t("pc.choisir_cursus")}</Link>
           </Button>
         </Ecrin>
       </div>
@@ -247,13 +249,13 @@ export function ParcoursPage() {
           <div className="min-w-0">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
               <Compass className="size-3.5" />
-              Programme officiel, dans l'ordre
+              {t("pc.eyebrow")}
             </p>
             <h1 className="mt-2 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
-              Ma progression
+              {t("nav.progression")}
             </h1>
             <p className="mt-3 max-w-md text-base leading-snug text-muted-foreground sm:text-lg">
-              Toutes tes matières, avec ce qu'il te reste à découvrir, réviser ou maîtriser.
+              {t("pc.sous_titre")}
             </p>
           </div>
           {totalExploitables > 0 && (
@@ -269,7 +271,7 @@ export function ParcoursPage() {
             cursus en pastille, pour que l'élève sache de quel programme on parle. */}
         <div className="mt-5 flex flex-wrap items-center gap-2">
           {actifs.length > 1 ? (
-            <div role="group" aria-label="Cursus" className="inline-flex flex-wrap rounded-full border border-border/80 bg-muted/60 p-1">
+            <div role="group" aria-label={t("pc.cursus")} className="inline-flex flex-wrap rounded-full border border-border/80 bg-muted/60 p-1">
               {actifs.map((sub) => (
                 <button
                   key={sub.id}
@@ -300,10 +302,10 @@ export function ParcoursPage() {
         {!abonneAuCursus && (
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
             <p className="text-sm text-muted-foreground">
-              Voici le programme complet de ce cursus - abonne-toi pour suivre ta vraie progression, matière par matière.
+              {t("pc.programme_complet")}
             </p>
             <Button asChild size="sm" className="shrink-0 rounded-full px-4">
-              <Link to="/tarifs">Voir les prix</Link>
+              <Link to="/tarifs">{t("ft.voir_prix")}</Link>
             </Button>
           </div>
         )}
@@ -313,13 +315,13 @@ export function ParcoursPage() {
             <div className="mt-6 flex items-center gap-4 sm:hidden">
               <AnneauProgression part={totalMaitrises / totalExploitables} />
               <p className="text-sm text-muted-foreground">
-                <span className="font-semibold tabular-nums text-foreground">{totalMaitrises}</span> savoir
-                {totalMaitrises > 1 ? "s" : ""} maîtrisé{totalMaitrises > 1 ? "s" : ""} sur{" "}
+                <span className="font-semibold tabular-nums text-foreground">{totalMaitrises}</span>
+                {tn("pc.maitrises_mobile", totalMaitrises)}
                 <span className="tabular-nums">{totalExploitables}</span>
               </p>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-              <CompteurStatut statut="maitrise" valeur={totalMaitrises} libelle="Maîtrisés" />
+              <CompteurStatut statut="maitrise" valeur={totalMaitrises} libelle={t("pc.maitrises")} />
               <CompteurStatut statut="en_revision" valeur={totalARevoir} />
               <CompteurStatut statut="en_cours" valeur={totalEnCours} />
               <CompteurStatut statut="a_decouvrir" valeur={totalADecouvrir} />
@@ -337,8 +339,8 @@ export function ParcoursPage() {
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl font-semibold tracking-tight">Tes matières</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Ouvre une matière pour voir ses savoirs, un par un.</p>
+          <h2 className="font-display text-2xl font-semibold tracking-tight">{t("pc.tes_matieres")}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t("pc.ouvre_matiere")}</p>
         </div>
         <LegendeProgression />
       </div>
@@ -353,7 +355,7 @@ export function ParcoursPage() {
         )
       ) : matieres.length === 0 ? (
         <p className="mt-5 text-sm text-muted-foreground">
-          Le programme officiel de ce cursus n'est pas encore disponible.
+          {t("pc.programme_indispo")}
         </p>
       ) : (
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -372,7 +374,7 @@ export function ParcoursPage() {
 
       {erreurResume && (
         <p className="mt-4 text-sm text-destructive">
-          {erreurResume instanceof ApiError ? erreurResume.message : "Impossible de charger tes matières."}
+          {erreurResume instanceof ApiError ? erreurResume.message : t("pc.matieres_erreur")}
         </p>
       )}
 
@@ -385,14 +387,14 @@ export function ParcoursPage() {
             <SlidersHorizontal className="size-5" aria-hidden="true" />
           </span>
           <div className="flex-1">
-            <p className="font-display text-lg font-semibold">Entraînement libre</p>
+            <p className="font-display text-lg font-semibold">{t("pc.libre_titre")}</p>
             <p className="mt-0.5 text-sm text-muted-foreground">
-              Choisis toi-même la matière, le mode et le nombre de questions, sans suivre le parcours.
+              {t("pc.libre_texte")}
             </p>
           </div>
           <Button asChild className="group w-full shrink-0 rounded-full px-6 shadow-md shadow-primary/20 sm:w-auto">
             <Link to="/quiz">
-              Configurer une séance
+              {t("pc.configurer")}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>

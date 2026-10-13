@@ -10,6 +10,7 @@ import { pourcent } from "@/lib/maitrise"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
 /**
  * "Où j'en suis" : l'anneau pondéré, la trajectoire, et les deux matières où il y a le
@@ -28,6 +29,7 @@ import { cn } from "@/lib/utils"
 export function OuJenSuis({
   accueil, cursusId, country,
 }: { accueil: Accueil; cursusId: number; country: string }) {
+  useI18n()
   const { preparation, trajectoire, resume, phase } = accueil
   if (!preparation) return null
 
@@ -37,28 +39,28 @@ export function OuJenSuis({
     // volume restant décroissant, puis l'alphabet pour rester stable d'une visite à l'autre.
     .sort(
       (a, b) =>
-        partMaitrisee(a) - partMaitrisee(b) || restant(b) - restant(a) || a.subject_label.localeCompare(b.subject_label, "fr"),
+        partMaitrisee(a) - partMaitrisee(b) || restant(b) - restant(a) || a.subject_label.localeCompare(b.subject_label, localeCourante()),
     )
     .slice(0, 2)
 
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label="Où j'en suis">
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("oujensuis.aria")}>
       <Ecrin variante="sobre">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
             <h2 className="font-display">
               <span className="flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 <TrendingUp className="size-3.5" />
-                Ta progression
+                {t("oujensuis.surtitre")}
               </span>
               <span className="mt-2 block text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
-                Où j'en suis
+                {t("oujensuis.titre")}
               </span>
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              <span className="font-semibold tabular-nums text-foreground">{pourcent(preparation.ponderee)} %</span> de ce qui
-              tombe vraiment à l'examen ·{" "}
-              <span className="tabular-nums">{preparation.maitrises}</span> savoir{preparation.maitrises > 1 ? "s" : ""} sur{" "}
+              <span className="font-semibold tabular-nums text-foreground">{t("oujensuis.pct", { pct: pourcent(preparation.ponderee) })}</span>{" "}
+              {t("oujensuis.part_examen")}{" "}
+              <span className="tabular-nums">{preparation.maitrises}</span> {tn("oujensuis.savoirs_sur", preparation.maitrises)}{" "}
               <span className="tabular-nums">{preparation.exploitables}</span>
             </p>
           </div>
@@ -78,7 +80,7 @@ export function OuJenSuis({
           <LegendeProgression />
           <Button asChild variant="outline" size="sm" className="group rounded-full">
             <Link to="/parcours">
-              Voir toute ma progression
+              {t("oujensuis.voir_tout")}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>
@@ -103,15 +105,16 @@ function BlocTrajectoire({
     <div className="mt-5 rounded-2xl border border-border/70 bg-background/70 p-4">
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         <Compass className="size-3.5 text-primary" />
-        D'ici le jour J
+        {t("oujensuis.jour_j")}
       </p>
       <p className="mt-2 text-sm leading-snug">{phraseTrajectoire(trajectoire, phase)}</p>
       {!trajectoire.atteignable && trajectoire.couverture_projetee !== null && (
         <p className="mt-1 text-sm text-muted-foreground">
+          {t("oujensuis.themes_avant")}
           <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
-            Les thèmes qui tombent le plus
+            {t("oujensuis.themes_lien")}
           </Link>
-          , d'abord.
+          {t("oujensuis.themes_apres")}
         </p>
       )}
       <div
@@ -119,8 +122,8 @@ function BlocTrajectoire({
         role="img"
         aria-label={
           projetee === null
-            ? `${actuelle} % acquis, repère à ${cible} %`
-            : `${actuelle} % acquis, ${projetee} % projetés le jour J, repère à ${cible} %`
+            ? t("oujensuis.aria_barre", { a: actuelle, c: cible })
+            : t("oujensuis.aria_barre_projetee", { a: actuelle, p: projetee, c: cible })
         }
       >
         {projetee !== null && (
@@ -136,9 +139,9 @@ function BlocTrajectoire({
         <div aria-hidden className="absolute -top-1 bottom-[-0.25rem] w-0.5 rounded bg-gold" style={{ left: `${cible}%` }} />
       </div>
       <div className="relative mt-1.5 h-4 text-[0.65rem] text-muted-foreground">
-        <span className="absolute left-0">aujourd'hui {actuelle} %</span>
+        <span className="absolute left-0">{t("oujensuis.aujourdhui", { a: actuelle })}</span>
         <span className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${cible}%` }}>
-          l'essentiel
+          {t("oujensuis.essentiel")}
         </span>
       </div>
     </div>
@@ -190,8 +193,8 @@ function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId:
       />
       <div className="mt-2.5 flex items-center justify-between gap-2 text-xs text-muted-foreground">
         <span className="tabular-nums">
-          {matiere.maitrises}/{exploitables} maîtrisés
-          {matiere.en_revision > 0 && <> · {matiere.en_revision} en révision</>}
+          {t("oujensuis.maitrises", { m: matiere.maitrises, e: exploitables })}
+          {matiere.en_revision > 0 && <> · {t("oujensuis.en_revision", { n: matiere.en_revision })}</>}
         </span>
         <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
       </div>

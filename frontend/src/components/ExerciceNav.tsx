@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight, ArrowUp } from "lucide-react"
 
 import { exerciceAnchorId, libelleCourtExercice, type ExerciceLabelSource } from "@/components/EpreuveSommaire"
+import { t, useI18n } from "@/lib/i18n"
 
 interface ExerciceNavProps {
   exercises: ExerciceLabelSource[]
@@ -17,6 +18,7 @@ interface ExerciceNavProps {
  * sommaire - donc le même comportement de défilement, et une URL partageable.
  */
 export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
+  useI18n()
   const precedent = exercises[index - 1]
   const suivant = exercises[index + 1]
 
@@ -41,7 +43,7 @@ export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
         className="inline-flex min-h-11 items-center gap-1.5 px-1 transition-colors hover:text-primary"
       >
         <ArrowUp className="size-4" />
-        Haut de page
+        {t("ed.haut_de_page")}
       </button>
 
       {suivant ? (

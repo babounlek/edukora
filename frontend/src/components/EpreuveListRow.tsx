@@ -9,6 +9,8 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
 import { actionInedite, libelleFaite } from "@/lib/statutInedite"
+import { t, useI18n } from "@/lib/i18n"
+import { libelleNature, libelleType } from "@/lib/libellesEpreuve"
 
 interface EpreuveListRowProps {
   epreuve: Epreuve
@@ -19,6 +21,7 @@ interface EpreuveListRowProps {
 /** Variante compacte d'EpreuveCard - une ligne par épreuve, pour scanner plus de
  * résultats à l'écran sans dérouler autant que la grille de cartes. */
 export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProps) {
+  useI18n()
   const country = epreuve.subject.country.code.toLowerCase()
   // Toujours la fiche détail, jamais le lecteur en direct - voir le même commentaire sur
   // EpreuveCard.tsx : c'est là, et seulement là, qu'un abonné découvre "Passer en conditions
@@ -51,19 +54,19 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
         {epreuve.year && <span className="shrink-0 text-xs text-muted-foreground">{epreuve.year}</span>}
       </div>
       <div className="flex shrink-0 items-center gap-1.5">
-        {epreuve.est_vitrine && <Badge variant="success">Gratuit</Badge>}
+        {epreuve.est_vitrine && <Badge variant="success">{t("ep.gratuit")}</Badge>}
         <Badge variant="secondary" className="hidden sm:inline-flex">{epreuve.subject.label}</Badge>
         {epreuve.nature_epreuve_display && (
-          <Badge variant="outline" className="hidden sm:inline-flex">{epreuve.nature_epreuve_display}</Badge>
+          <Badge variant="outline" className="hidden sm:inline-flex">{libelleNature(epreuve.nature_epreuve, epreuve.nature_epreuve_display)}</Badge>
         )}
         {epreuve.kind === "inedite" ? (
           <Badge variant="gold" className="hidden items-center gap-1 sm:inline-flex">
             <Crown className="size-3" />
-            Épreuve inédite
+            {t("ep.origine_INEDITE")}
           </Badge>
         ) : (
           <Badge variant={epreuve.lesson_type === "SUJET" ? "gold" : "outline"} className="hidden sm:inline-flex">
-            {epreuve.lesson_type_display}
+            {libelleType(epreuve.lesson_type, epreuve.lesson_type_display)}
           </Badge>
         )}
         {epreuve.has_access ? (
@@ -71,7 +74,7 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
         ) : (
           <Lock className="size-3.5 shrink-0 text-muted-foreground" />
         )}
-        {reprise && <Badge variant="outline">En cours</Badge>}
+        {reprise && <Badge variant="outline">{t("statut.en_cours")}</Badge>}
         {inedite && faite ? (
           <span className="inline-flex shrink-0 items-center gap-1 text-xs text-success">
             <CheckCircle2 className="size-3.5" aria-hidden="true" />

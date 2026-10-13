@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom"
 import { ArrowUp } from "lucide-react"
 
+import { t, useI18n } from "@/lib/i18n"
+
 interface BackToTopBarProps {
   links: { to: string; label: string }[]
 }
@@ -11,6 +13,7 @@ interface BackToTopBarProps {
  * à tout redéfiler - on répète ici, en pied de page, les liens déjà présents en tête.
  */
 export function BackToTopBar({ links }: BackToTopBarProps) {
+  useI18n()
   return (
     <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5 text-sm text-muted-foreground">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -29,7 +32,7 @@ export function BackToTopBar({ links }: BackToTopBarProps) {
         className="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
       >
         <ArrowUp className="size-4" />
-        Retour en haut
+        {t("ed.retour_haut")}
       </button>
     </div>
   )

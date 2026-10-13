@@ -12,6 +12,7 @@ import { setGestionnairePinProfil, type DemandePinProfil } from "@/lib/pinPrompt
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { t, useI18n } from "@/lib/i18n"
 
 /** Champ de saisie d'un code à 4 chiffres (masqué, clavier numérique). */
 export function ChampPin({
@@ -56,6 +57,7 @@ type EtatParent = { resoudre: (ok: boolean) => void } | null
  *   SMS ou e-mail le réinitialise.
  */
 export function PinDialogs() {
+  useI18n()
   const { updateUser } = useAuth()
   const [profil, setProfil] = useState<EtatProfil>(null)
   const [parent, setParent] = useState<EtatParent>(null)
@@ -118,13 +120,13 @@ function FenetrePinProfil({ etat, fermer }: { etat: EtatProfil; fermer: () => vo
               <KeyRound className="size-5" />
             </span>
             <DialogTitle className="font-display text-lg font-semibold">
-              Code de {etat?.prenom ?? "ce profil"}
+              {t("pin.code_de", { nom: etat?.prenom ?? t("sp.ce_profil") })}
             </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground">
-              Ce profil est protégé. Saisis son code à 4 chiffres pour l'ouvrir.
+              {t("pin.protege")}
             </DialogDescription>
           </div>
-          <ChampPin id="pin-profil" label="Code du profil" value={pin} onChange={setPin} autoFocus />
+          <ChampPin id="pin-profil" label={t("sp.code_profil")} value={pin} onChange={setPin} autoFocus />
           {etat?.erreur && (
             <p role="alert" className="text-center text-sm text-destructive">
               {etat.erreur}
@@ -132,10 +134,10 @@ function FenetrePinProfil({ etat, fermer }: { etat: EtatProfil; fermer: () => vo
           )}
           <div className="flex gap-2">
             <Button type="button" variant="outline" className="flex-1" onClick={annuler}>
-              Annuler
+              {t("seance.annuler")}
             </Button>
             <Button type="submit" className="flex-1" disabled={pin.length !== 4}>
-              Ouvrir
+              {t("pin.ouvrir")}
             </Button>
           </div>
         </form>
@@ -184,7 +186,7 @@ function FenetreModeParent({
       setParentToken(jeton, expire_dans)
       terminer(true)
     } catch (err) {
-      setErreur(err instanceof ApiError ? err.message : "Vérification impossible.")
+      setErreur(err instanceof ApiError ? err.message : t("pin.verification_erreur"))
       setPin("")
       setEnvoi(false)
     }
@@ -197,7 +199,7 @@ function FenetreModeParent({
       await demanderReinitialisationPinParent()
       setEtape("code")
     } catch (err) {
-      setErreur(err instanceof ApiError ? err.message : "Envoi impossible.")
+      setErreur(err instanceof ApiError ? err.message : t("sp.envoi_erreur"))
     } finally {
       setEnvoi(false)
     }
@@ -214,7 +216,7 @@ function FenetreModeParent({
       // Le code parent est retiré : plus rien à saisir, l'action en attente peut repartir.
       terminer(true)
     } catch (err) {
-      setErreur(err instanceof ApiError ? err.message : "Code invalide.")
+      setErreur(err instanceof ApiError ? err.message : t("sp.code_invalide"))
       setEnvoi(false)
     }
   }
@@ -226,17 +228,17 @@ function FenetreModeParent({
           <span className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
             <ShieldCheck className="size-5" />
           </span>
-          <DialogTitle className="font-display text-lg font-semibold">Code parent</DialogTitle>
+          <DialogTitle className="font-display text-lg font-semibold">{t("sp.code_parent")}</DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground">
-            {etape === "pin" && "Cette action est réservée au parent. Saisis le code parent à 4 chiffres."}
-            {etape === "oublie" && "Pour réinitialiser le code parent, nous t'envoyons un code de vérification."}
-            {etape === "code" && "Saisis le code à 6 chiffres reçu. Le code parent sera alors supprimé : tu pourras en définir un nouveau."}
+            {etape === "pin" && t("pin.reserve_parent")}
+            {etape === "oublie" && t("pin.oublie_texte")}
+            {etape === "code" && t("pin.code_texte")}
           </DialogDescription>
         </div>
 
         {etape === "pin" && (
           <form onSubmit={valider} className="mt-4 flex flex-col gap-4">
-            <ChampPin id="pin-parent" label="Code parent" value={pin} onChange={setPin} autoFocus />
+            <ChampPin id="pin-parent" label={t("sp.code_parent")} value={pin} onChange={setPin} autoFocus />
             {erreur && (
               <p role="alert" className="text-center text-sm text-destructive">
                 {erreur}
@@ -244,10 +246,10 @@ function FenetreModeParent({
             )}
             <div className="flex gap-2">
               <Button type="button" variant="outline" className="flex-1" onClick={() => terminer(false)}>
-                Annuler
+                {t("seance.annuler")}
               </Button>
               <Button type="submit" className="flex-1" disabled={pin.length !== 4 || envoi}>
-                {envoi ? <Loader2 className="size-4 animate-spin" /> : "Valider"}
+                {envoi ? <Loader2 className="size-4 animate-spin" /> : t("login.valider")}
               </Button>
             </div>
             <button
@@ -258,7 +260,7 @@ function FenetreModeParent({
               }}
               className="text-center text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
             >
-              Code oublié ?
+              {t("pin.oublie")}
             </button>
           </form>
         )}
@@ -271,10 +273,10 @@ function FenetreModeParent({
               </p>
             )}
             <Button onClick={demanderCode} disabled={envoi}>
-              {envoi ? <Loader2 className="size-4 animate-spin" /> : "Envoyer le code de vérification"}
+              {envoi ? <Loader2 className="size-4 animate-spin" /> : t("pin.envoyer_verification")}
             </Button>
             <Button variant="outline" onClick={() => setEtape("pin")}>
-              Retour
+              {t("onboarding.retour")}
             </Button>
           </div>
         )}
@@ -282,7 +284,7 @@ function FenetreModeParent({
         {etape === "code" && (
           <form onSubmit={confirmerCode} className="mt-4 flex flex-col gap-4">
             <Input
-              aria-label="Code de vérification"
+              aria-label={t("pin.verification_aria")}
               inputMode="numeric"
               autoComplete="one-time-code"
               autoFocus
@@ -298,10 +300,10 @@ function FenetreModeParent({
               </p>
             )}
             <Button type="submit" disabled={!/^\d{6}$/.test(code) || envoi}>
-              {envoi ? <Loader2 className="size-4 animate-spin" /> : "Réinitialiser le code parent"}
+              {envoi ? <Loader2 className="size-4 animate-spin" /> : t("pin.reinitialiser")}
             </Button>
             <Button type="button" variant="outline" onClick={() => terminer(false)}>
-              Annuler
+              {t("seance.annuler")}
             </Button>
           </form>
         )}

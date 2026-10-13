@@ -1,4 +1,5 @@
 import { API_BASE_URL, apiRequest, getAccessToken } from "./client"
+import { t } from "@/lib/i18n"
 import type {
   Accueil,
   CompletionRecherche,
@@ -32,6 +33,7 @@ import type {
   Plan,
   ReponseRecherche,
   TypeResultatRecherche,
+  MatieresChoix,
   PlanDuJour,
   Priorites,
   Profil,
@@ -152,6 +154,8 @@ export interface UpdateProfileParams {
   // Id du Cursus préparé, ou null pour effacer la déclaration - voir
   // users.serializers.UserProfileUpdateSerializer.
   cursus_prepare?: number | null
+  // Langue de l'interface et des messages ("fr" | "en").
+  langue?: "fr" | "en"
   // Voir users.serializers.UserProfileUpdateSerializer : exige un e-mail confirmé pour true.
   rappels_actifs?: boolean
   // true = l'élève écarte l'invitation à activer les rappels, false = il la rouvre.
@@ -635,14 +639,14 @@ export function getQuizFichePdfStatus(sessionId: number) {
 export function downloadQuizSujetPdf(sessionId: number) {
   return openPdfInNewTab(
     `${API_BASE_URL}/quiz/sessions/${sessionId}/sujet.pdf`,
-    "Impossible d'ouvrir la fiche pour le moment.",
+    t("gl.pdf_fiche"),
   )
 }
 
 export function downloadQuizCorrigePdf(sessionId: number) {
   return openPdfInNewTab(
     `${API_BASE_URL}/quiz/sessions/${sessionId}/corrige.pdf`,
-    "Impossible d'ouvrir la correction pour le moment.",
+    t("gl.pdf_correction"),
   )
 }
 
@@ -818,7 +822,7 @@ async function openPdfInNewTab(url: string, errorMessage: string) {
 export function downloadSujetPdf(epreuveId: number) {
   return openPdfInNewTab(
     `${API_BASE_URL}/inedit/epreuves/${epreuveId}/sujet.pdf`,
-    "Impossible d'ouvrir le sujet pour le moment.",
+    t("gl.pdf_sujet"),
   )
 }
 
@@ -852,11 +856,11 @@ export function getFiche(id: number) {
 }
 
 export function downloadFicheSujetPdf(id: number) {
-  return openPdfInNewTab(`${API_BASE_URL}/fiches/${id}/sujet.pdf`, "Impossible d'ouvrir l'énoncé pour le moment.")
+  return openPdfInNewTab(`${API_BASE_URL}/fiches/${id}/sujet.pdf`, t("gl.pdf_enonce"))
 }
 
 export function downloadFicheCorrigePdf(id: number) {
-  return openPdfInNewTab(`${API_BASE_URL}/fiches/${id}/corrige.pdf`, "Impossible d'ouvrir le corrigé pour le moment.")
+  return openPdfInNewTab(`${API_BASE_URL}/fiches/${id}/corrige.pdf`, t("gl.pdf_corrige"))
 }
 
 export function getWhatsAppStatus() {
@@ -885,6 +889,16 @@ export function continuerSeanceDuJour() {
  * sur un thème différent (voir quiz.views.autre_chose_view). Même charge utile que
  * getPlanDuJour, avec "rien_a_proposer" quand il n'y a plus d'alternative.
  */
+/** Les matières que passe le profil actif, et celles qu'il peut déclarer sur son cursus. */
+export function getMatieres(signal?: AbortSignal) {
+  return apiRequest<MatieresChoix>("/quiz/matieres/", { signal })
+}
+
+/** Remplace le choix de matières (liste vide = toutes) - voir quiz.views.matieres_view. */
+export function definirMatieres(matieres: number[]) {
+  return apiRequest<MatieresChoix>("/quiz/matieres/", { method: "PUT", body: { matieres } })
+}
+
 export function proposerAutreChose() {
   return apiRequest<PlanDuJour>("/quiz/plan-du-jour/autre-chose/", { method: "POST" })
 }

@@ -3,6 +3,7 @@ import { Minus, Plus } from "lucide-react"
 import type { TentativeInediteQuestion } from "@/api/types"
 import { arrondiQuart, formatPoints, libellePoints, pointsDuNiveau } from "@/lib/notation"
 import { cn } from "@/lib/utils"
+import { t, useI18n, type CleI18n } from "@/lib/i18n"
 
 interface GrilleNotationProps {
   question: TentativeInediteQuestion
@@ -11,10 +12,10 @@ interface GrilleNotationProps {
 }
 
 const NIVEAUX = [
-  { cle: "echec", label: "Échec" },
-  { cle: "partiel", label: "Partiel" },
-  { cle: "reussi", label: "Réussi" },
-] as const
+  { cle: "echec", label: "qs.echec" },
+  { cle: "partiel", label: "qs.partiel" },
+  { cle: "reussi", label: "qs.reussi" },
+] as const satisfies readonly { cle: string; label: CleI18n }[]
 
 /**
  * Auto-notation d'une question ouverte, affichée sous le corrigé une fois la question
@@ -27,12 +28,13 @@ const NIVEAUX = [
  * Composant contrôlé : l'état vit dans la question (mise à jour optimiste par la page).
  */
 export function GrilleNotation({ question, onCriteres, onPoints }: GrilleNotationProps) {
+  useI18n()
   const criteres = question.criteres_notation ?? []
   const notee = question.reponse?.notee === true
   const obtenus = question.reponse?.points_obtenus ?? 0
   const legende = (
     <legend className="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-      Note ta réponse
+      {t("gn.legende")}
     </legend>
   )
 
@@ -64,18 +66,20 @@ export function GrilleNotation({ question, onCriteres, onPoints }: GrilleNotatio
         </ul>
         <div className="mt-1 flex items-center justify-between gap-3 border-t border-border px-2 pt-2.5">
           {notee ? (
-            <span className="text-sm font-semibold">Total</span>
+            <span className="text-sm font-semibold">{t("gn.total")}</span>
           ) : (
             <button
               type="button"
               onClick={() => onCriteres([])}
               className="min-h-9 rounded-md text-sm text-primary underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
             >
-              Je n'ai validé aucun critère
+              {t("gn.aucun_critere")}
             </button>
           )}
           <span aria-live="polite" className="text-sm font-semibold tabular-nums">
-            {notee ? `${formatPoints(obtenus)} / ${formatPoints(question.points)} pts` : `? / ${formatPoints(question.points)} pts`}
+            {notee
+              ? t("gn.pts", { a: formatPoints(obtenus), b: formatPoints(question.points) })
+              : t("gn.pts_inconnu", { b: formatPoints(question.points) })}
           </span>
         </div>
       </fieldset>
@@ -109,9 +113,9 @@ export function GrilleNotation({ question, onCriteres, onPoints }: GrilleNotatio
                   : "border-border hover:bg-accent/40",
               )}
             >
-              <span className="font-medium">{label}</span>
+              <span className="font-medium">{t(label)}</span>
               <span className="text-xs tabular-nums text-muted-foreground">
-                {cle === "echec" ? "0 pt" : libellePoints(points)}
+                {cle === "echec" ? t("gn.zero_pt") : libellePoints(points)}
               </span>
             </button>
           )
@@ -119,12 +123,12 @@ export function GrilleNotation({ question, onCriteres, onPoints }: GrilleNotatio
       </div>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
         <span className="text-xs text-muted-foreground">
-          {notee ? "Ajuster au quart de point" : "Choisis un niveau, puis ajuste si besoin"}
+          {notee ? t("gn.ajuster") : t("gn.choisis_niveau")}
         </span>
-        <div className="flex items-center gap-1" role="group" aria-label="Points obtenus">
+        <div className="flex items-center gap-1" role="group" aria-label={t("gn.points_obtenus")}>
           <button
             type="button"
-            aria-label="Retirer un quart de point"
+            aria-label={t("gn.moins")}
             disabled={!notee || obtenus <= 0}
             onClick={() => regler(obtenus - pas)}
             className="grid size-11 place-items-center rounded-lg border border-border transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none disabled:opacity-40"
@@ -132,11 +136,13 @@ export function GrilleNotation({ question, onCriteres, onPoints }: GrilleNotatio
             <Minus className="size-4" />
           </button>
           <span aria-live="polite" className="min-w-24 text-center text-sm font-semibold tabular-nums">
-            {notee ? `${formatPoints(obtenus)} / ${formatPoints(question.points)} pts` : `— / ${formatPoints(question.points)} pts`}
+            {notee
+              ? t("gn.pts", { a: formatPoints(obtenus), b: formatPoints(question.points) })
+              : t("gn.pts_tiret", { b: formatPoints(question.points) })}
           </span>
           <button
             type="button"
-            aria-label="Ajouter un quart de point"
+            aria-label={t("gn.plus")}
             disabled={!notee || obtenus >= question.points}
             onClick={() => regler(obtenus + pas)}
             className="grid size-11 place-items-center rounded-lg border border-border transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none disabled:opacity-40"

@@ -4,6 +4,7 @@ import { X } from "lucide-react"
 import type { Accueil } from "@/api/types"
 import { momentsCandidats } from "@/lib/moments"
 import { cn } from "@/lib/utils"
+import { useI18n, t } from "@/lib/i18n"
 
 /**
  * Un moment - et un seul - quand quelque chose vaut d'être marqué : un palier de
@@ -17,6 +18,7 @@ import { cn } from "@/lib/utils"
  * thème), et le reste attend simplement la prochaine visite.
  */
 export function Moments({ accueil, userId }: { accueil: Accueil; userId: number | undefined }) {
+  useI18n()
   const cle = `edukora:moments:${userId ?? "anonyme"}`
   const [vus, setVus] = useState<string[]>(() => lire(cle))
   const moment = momentsCandidats(accueil).find((m) => !vus.includes(m.cle))
@@ -50,7 +52,7 @@ export function Moments({ accueil, userId }: { accueil: Accueil; userId: number 
         <button
           type="button"
           onClick={fermer}
-          aria-label="Fermer"
+          aria-label={t("moments.fermer")}
           className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-gold/15 hover:text-foreground"
         >
           <X className="size-4" />

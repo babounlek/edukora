@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { t, useI18n } from "@/lib/i18n"
 
 interface FicheReaderProps {
   title: string
@@ -45,12 +46,13 @@ function CardQuestion({ texte }: { texte: string }) {
  * découpant par titre de niveau 2 (voir lib/ficheCards.ts).
  */
 export function FicheReader({ title, header, markdown }: FicheReaderProps) {
+  useI18n()
   const [cards] = useState(() => parseFicheCards(markdown))
   const [index, setIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
 
   if (cards.length === 0) {
-    return <p className="text-sm text-muted-foreground">Cette fiche est vide pour le moment.</p>
+    return <p className="text-sm text-muted-foreground">{t("ed.fiche_vide")}</p>
   }
 
   const card = cards[index]
@@ -73,7 +75,7 @@ export function FicheReader({ title, header, markdown }: FicheReaderProps) {
 
       <div className="mt-6 mb-3 flex items-center justify-between">
         <p className="text-sm font-medium text-muted-foreground">
-          Carte {index + 1} / {cards.length}
+          {t("ed.carte_n", { n: index + 1, total: cards.length })}
         </p>
         <div className="h-1.5 w-32 overflow-hidden rounded-full bg-secondary">
           <div
@@ -96,7 +98,7 @@ export function FicheReader({ title, header, markdown }: FicheReaderProps) {
           ) : (
             <Button variant="outline" onClick={() => setRevealed(true)} className="w-fit">
               <Eye />
-              Voir la réponse
+              {t("ed.voir_reponse")}
             </Button>
           )}
         </CardContent>
@@ -105,16 +107,16 @@ export function FicheReader({ title, header, markdown }: FicheReaderProps) {
       <div className="mt-5 flex items-center justify-between gap-2">
         <Button variant="ghost" disabled={isFirst} onClick={() => goTo(index - 1)}>
           <ArrowLeft />
-          Précédente
+          {t("ed.precedente")}
         </Button>
         {isLast ? (
           <Button variant="outline" onClick={() => goTo(0)}>
             <RotateCcw />
-            Recommencer
+            {t("ed.recommencer")}
           </Button>
         ) : (
           <Button onClick={() => goTo(index + 1)}>
-            Suivante
+            {t("ed.suivante")}
             <ArrowRight />
           </Button>
         )}

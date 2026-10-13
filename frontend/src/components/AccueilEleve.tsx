@@ -11,6 +11,7 @@ import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
 import { ReprendreQuiz } from "@/components/ReprendreQuiz"
 import { InviteRappels } from "@/components/RappelsEmail"
+import { InvitationMatieres } from "@/components/ChoixMatieres"
 import { TeteAccueil } from "@/components/TeteAccueil"
 import { ecrireAccueilEnCache, lireAccueilEnCache } from "@/lib/accueilCache"
 import { marquerAffichageAccueil } from "@/lib/accueilChrono"
@@ -18,6 +19,7 @@ import { epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
 import { formatDuration } from "@/lib/duration"
 import { maintenantServeur } from "@/lib/horlogeServeur"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 /**
  * L'accueil d'un élève ABONNÉ, en trois zones et pas plus :
@@ -39,6 +41,7 @@ import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccu
  * ce que voient les robots d'indexation.
  */
 export function AccueilEleve({ country }: { country: string }) {
+  useI18n()
   const { user } = useAuth()
   const queryClient = useQueryClient()
   const cursusId = user?.cursus_prepare?.id
@@ -103,6 +106,8 @@ export function AccueilEleve({ country }: { country: string }) {
   return (
     <div className="pb-4">
       <TeteAccueil accueil={data} country={country} />
+      {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
+      <InvitationMatieres />
       <Moments accueil={data} userId={userId} />
       {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa
           première séance. */}
@@ -135,11 +140,11 @@ function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
         </span>
         <span className="min-w-0 flex-1">
           <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {reste !== null ? `Chrono en cours · il te reste ${formatDuration(reste)}` : "Épreuve inédite en cours"}
+            {reste !== null ? t("abonne.chrono_en_cours", { duree: formatDuration(reste) }) : t("abonne.inedite_en_cours")}
           </span>
           <span className="block truncate text-sm font-medium">{tentative.epreuve_titre}</span>
         </span>
-        <span className="shrink-0 text-sm font-medium text-primary">Reprendre</span>
+        <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>
         <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
       </Link>
     </section>
@@ -165,7 +170,7 @@ function LigneInedites({
   // ligne qui remontait l'épreuve déjà passée n'invitait à rien. Elle mène droit à sa fiche.
   const suivante = inedites.results.find((e) => e.has_access && !e.is_read)
   const fiche = suivante ? epreuveInediteDetailPath(country, suivante.slug ?? suivante.id) : null
-  const intitule = suivante?.title ?? inedites.results[0]?.title ?? "Des sujets originaux, chronométrés"
+  const intitule = suivante?.title ?? inedites.results[0]?.title ?? t("abonne.inedites_generique")
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
       <div className="flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60">
@@ -175,7 +180,7 @@ function LigneInedites({
           </span>
           <span className="min-w-0 flex-1">
             <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {fiche ? "Prochaine épreuve inédite" : `${inedites.count} épreuve${inedites.count > 1 ? "s" : ""} inédite${inedites.count > 1 ? "s" : ""}`}
+              {fiche ? t("abonne.prochaine_inedite") : tn("abonne.inedites_nombre", inedites.count)}
             </span>
             <span className="block truncate text-sm font-medium">{intitule}</span>
           </span>
@@ -184,7 +189,7 @@ function LigneInedites({
         </Link>
         {fiche && (
           <Link to={liste} className="shrink-0 text-xs font-medium text-gold-text underline-offset-2 hover:underline">
-            Les {inedites.count}
+            {t("abonne.inedites_toutes", { n: inedites.count })}
           </Link>
         )}
       </div>
@@ -199,7 +204,7 @@ function LigneInedites({
  */
 export function SqueletteAccueil() {
   return (
-    <div className="pb-4" aria-busy="true" aria-label="Chargement de ton accueil">
+    <div className="pb-4" aria-busy="true" aria-label={t("abonne.chargement")}>
       <div className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6">
         <div className="overflow-hidden rounded-3xl border border-border/70 bg-card">
           <div className="h-44 bg-primary/10 sm:h-40" />
@@ -228,9 +233,9 @@ function ErreurAccueil() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <p className="text-sm text-muted-foreground">
-        Impossible de charger ton accueil pour le moment. Vérifie ta connexion, puis{" "}
+        {t("abonne.erreur_avant")}{" "}
         <button type="button" onClick={() => window.location.reload()} className="underline underline-offset-4 hover:text-primary">
-          réessaie
+          {t("abonne.erreur_lien")}
         </button>
         .
       </p>

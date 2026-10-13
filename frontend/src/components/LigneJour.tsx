@@ -2,8 +2,7 @@ import { Check, Flame, Zap } from "lucide-react"
 
 import type { EtatXp, SerieDeJours } from "@/api/types"
 import { cn } from "@/lib/utils"
-
-const INITIALES = ["L", "M", "M", "J", "V", "S", "D"]
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * L'objectif d'XP du jour, la série et la semaine sur UNE ligne fine : de quoi se situer d'un
@@ -13,6 +12,8 @@ const INITIALES = ["L", "M", "M", "J", "V", "S", "D"]
  * Objectif atteint : « Objectif atteint » plutôt que « 35 / 20 XP », qui ressemble à une erreur.
  */
 export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }) {
+  useI18n()
+  const initiales = t("ligne.initiales").split(",")
   const semaine = serie.semaine
   const part = etat.objectif > 0 ? Math.min(100, Math.round((100 * etat.xp) / etat.objectif)) : 0
 
@@ -25,12 +26,12 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
           <Zap className="size-4 text-gold-text" aria-hidden="true" />
         )}
         <span className={cn("font-semibold", etat.atteint && "text-success")}>
-          {etat.atteint ? "Objectif atteint" : `${etat.xp} / ${etat.objectif} points`}
+          {etat.atteint ? t("ligne.objectif_atteint") : t("ligne.points", { xp: etat.xp, objectif: etat.objectif })}
         </span>
         <div
           className="h-1.5 w-16 overflow-hidden rounded-full bg-secondary sm:w-24"
           role="progressbar"
-          aria-label="Objectif de points du jour"
+          aria-label={t("ligne.objectif_aria")}
           aria-valuemin={0}
           aria-valuemax={etat.objectif}
           aria-valuenow={Math.min(etat.xp, etat.objectif)}
@@ -48,26 +49,26 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
         {serie.jours >= 2 && (
           <span
             className="flex items-center gap-1 whitespace-nowrap text-sm font-semibold"
-            title={serie.repos_pris ? "Un jour de repos a été pardonné cette semaine" : undefined}
+            title={serie.repos_pris ? t("ligne.repos_pardonne") : undefined}
           >
             <Flame className="size-4 text-warning" aria-hidden="true" />
-            {serie.jours} jours de suite
+            {t("serie.jours_de_suite", { n: serie.jours })}
           </span>
         )}
         {semaine && semaine.length === 7 && (
-          <ol className="flex gap-1" aria-label="Jours travaillés cette semaine">
+          <ol className="flex gap-1" aria-label={t("ligne.semaine_aria")}>
             {semaine.map((jour, i) => (
               <li
                 key={jour.date}
                 role="img"
-                aria-label={jour.fait ? "Travaillé" : jour.aujourdhui ? "Aujourd'hui, pas encore" : "Non travaillé"}
+                aria-label={jour.fait ? t("ligne.travaille") : jour.aujourdhui ? t("ligne.aujourdhui_pas_encore") : t("ligne.non_travaille")}
                 className={cn(
                   "flex size-5 items-center justify-center rounded-full border text-[0.6rem] font-semibold",
                   jour.fait ? "border-gold/50 bg-gold/20 text-gold-text" : "border-border bg-card text-muted-foreground",
                   jour.aujourdhui && !jour.fait && "border-dashed border-primary/60",
                 )}
               >
-                {jour.fait ? <Check className="size-3" aria-hidden="true" /> : INITIALES[i]}
+                {jour.fait ? <Check className="size-3" aria-hidden="true" /> : initiales[i]}
               </li>
             ))}
           </ol>

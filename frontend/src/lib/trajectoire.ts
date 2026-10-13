@@ -1,5 +1,6 @@
 import type { PhaseExamen, Trajectoire } from "@/api/types"
 import { pourcent } from "@/lib/maitrise"
+import { langueCourante, t as tr, tn } from "@/lib/i18n"
 
 /**
  * La phrase de trajectoire (voir OuJenSuis et quiz.accueil.trajectoire) : où mène le
@@ -9,29 +10,28 @@ import { pourcent } from "@/lib/maitrise"
 export function phraseTrajectoire(t: Trajectoire, phase: PhaseExamen): string {
   if (t.couverture_projetee === null) {
     const manque = Math.max(0, 3 - t.seances_fenetre)
-    return manque > 0
-      ? `Pas encore de rythme mesurable : ${manque} séance${manque > 1 ? "s" : ""} de plus et on te dit où tu vas.`
-      : "Pas encore de rythme mesurable."
+    return manque > 0 ? tn("traj.pas_de_rythme_manque", manque) : tr("traj.pas_de_rythme")
   }
   const projetee = pourcent(t.couverture_projetee)
   const rythme = t.seances_par_semaine === null ? "" : ` (${formatRythme(t.seances_par_semaine)})`
+  const variables = { rythme, pct: projetee }
   if (t.suffisant) {
     if (phase === "derniere_ligne_droite" || phase === "simulation") {
-      return `À ce rythme${rythme}, tu arrives le jour J avec ${projetee} % de l'essentiel. Tiens bon.`
+      return tr("traj.final", variables)
     }
-    return `À ce rythme${rythme}, tu couvres ${projetee} % de l'essentiel le jour J. Continue comme ça.`
+    return tr("traj.continue", variables)
   }
   if (t.seances_de_plus_par_semaine !== null) {
     const n = t.seances_de_plus_par_semaine
-    return `À ce rythme${rythme}, tu couvres ${projetee} % de l'essentiel le jour J. ${n === 1 ? "Une séance" : `${n} séances`} de plus par semaine et tu y es.`
+    return tn("traj.plus", n, variables)
   }
-  return `À ce rythme${rythme}, tu couvres ${projetee} % de l'essentiel le jour J. Le temps manque pour tout : vise ce qui tombe le plus.`
+  return tr("traj.temps_manque", variables)
 }
 
 function formatRythme(parSemaine: number): string {
   const arrondi = Math.round(parSemaine * 10) / 10
-  const texte = Number.isInteger(arrondi) ? String(arrondi) : String(arrondi).replace(".", ",")
-  // Le pluriel commence à deux : "1,5 séance", "2 séances".
-  return `${texte} séance${arrondi >= 2 ? "s" : ""} par semaine`
+  const texte = Number.isInteger(arrondi) || langueCourante() === "en" ? String(arrondi) : String(arrondi).replace(".", ",")
+  // Le pluriel commence à deux en français ("1,5 séance", "2 séances") ; en anglais "1.5 sessions".
+  return tn("traj.rythme", arrondi, { texte })
 }
 

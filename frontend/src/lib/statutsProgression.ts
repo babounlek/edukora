@@ -1,5 +1,7 @@
 import { Check, CircleDashed, CircleDot, RotateCcw, type LucideIcon } from "lucide-react"
 
+import { t } from "@/lib/i18n"
+
 /**
  * La langue de la progression : quatre statuts, chacun avec UNE couleur et UNE icône, partagées
  * par les barres, les compteurs, la légende, les badges et la frise des savoirs.
@@ -26,25 +28,33 @@ export interface StyleStatut {
 
 export const STATUTS: Record<StatutProgression, StyleStatut> = {
   maitrise: {
-    libelle: "Maîtrisé",
+    get libelle() {
+      return t("statut.maitrise")
+    },
     Icone: Check,
     puce: "bg-primary/10 text-primary",
     barre: "bg-primary",
   },
   en_revision: {
-    libelle: "En révision",
+    get libelle() {
+      return t("statut.en_revision")
+    },
     Icone: RotateCcw,
     puce: "bg-warning/15 text-warning-foreground dark:text-warning",
     barre: "bg-warning",
   },
   en_cours: {
-    libelle: "En cours",
+    get libelle() {
+      return t("statut.en_cours")
+    },
     Icone: CircleDot,
     puce: "bg-info/15 text-info",
     barre: "bg-info",
   },
   a_decouvrir: {
-    libelle: "À découvrir",
+    get libelle() {
+      return t("statut.a_decouvrir")
+    },
     Icone: CircleDashed,
     puce: "bg-muted text-muted-foreground",
     barre: "bg-muted ring-1 ring-border",

@@ -7,6 +7,7 @@ import { Surbrillance } from "@/components/recherche/Surbrillance"
 import { Button } from "@/components/ui/button"
 import { actionsTheme, type ActionTheme } from "@/lib/recherche"
 import { couleurMatiere } from "@/lib/matiereCouleur"
+import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 const ICONES: Record<ActionTheme["cle"], ComponentType<{ className?: string }>> = {
@@ -17,17 +18,17 @@ const ICONES: Record<ActionTheme["cle"], ComponentType<{ className?: string }>> 
 
 /** « cours », « exercice(s) », « question(s) de quiz » - accordé avec le nombre. */
 function unite(action: ActionTheme): string {
-  if (action.cle === "cours") return "cours"
-  if (action.cle === "exercices") return action.nb > 1 ? "exercices" : "exercice"
-  return action.nb > 1 ? "questions de quiz" : "question de quiz"
+  if (action.cle === "cours") return tn("rc.u_cours", action.nb)
+  if (action.cle === "exercices") return tn("rc.u_exercices", action.nb)
+  return tn("rc.u_quiz", action.nb)
 }
 
 /** « 65 cours, 57 exercices et 12 questions de quiz t'attendent sur ce thème. » */
 function phrase(actions: ActionTheme[]): string {
   const morceaux = actions.map((a) => `${a.nb} ${unite(a)}`)
   if (morceaux.length === 0) return ""
-  const liste = morceaux.length === 1 ? morceaux[0] : `${morceaux.slice(0, -1).join(", ")} et ${morceaux[morceaux.length - 1]}`
-  return `${liste} t'attendent sur ce thème.`
+  const liste = new Intl.ListFormat(localeCourante(), { style: "long", type: "conjunction" }).format(morceaux)
+  return tn("rc.phrase_vedette", actions.reduce((somme, a) => somme + a.nb, 0), { liste })
 }
 
 /**
@@ -44,6 +45,7 @@ export function ResultatVedette({
   country: string
   onChoisir?: () => void
 }) {
+  useI18n()
   const actions = actionsTheme(country, resultat)
   const couleur = couleurMatiere(resultat.matiere.code)
   const principale = actions.find((a) => a.cle === "quiz") ?? actions[0]
@@ -56,7 +58,7 @@ export function ResultatVedette({
       <span className={cn("absolute inset-y-0 left-0 w-1.5", couleur.barre)} aria-hidden="true" />
       <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
         <Sparkles className="size-3.5" aria-hidden="true" />
-        Commence par ici
+        {t("rc.vedette_eyebrow")}
       </p>
       <h2 id="vedette-titre" className="mt-2 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
         <Surbrillance texte={resultat.titre} jetons={jetons} />
@@ -93,7 +95,7 @@ export function ResultatVedette({
       {principale && (
         <Button asChild size="lg" className="mt-4 w-full sm:w-auto">
           <Link to={principale.to} onClick={onChoisir}>
-            {principale.cle === "quiz" ? "Tester mes connaissances" : principale.cle === "cours" ? "Ouvrir les cours" : "Faire des exercices"}
+            {principale.cle === "quiz" ? t("pc.tester") : principale.cle === "cours" ? t("rc.btn_cours") : t("rc.btn_exercices")}
             <ArrowRight />
           </Link>
         </Button>

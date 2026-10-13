@@ -2,8 +2,7 @@ import { Check, Flame } from "lucide-react"
 
 import type { SerieDeJours } from "@/api/types"
 import { cn } from "@/lib/utils"
-
-const INITIALES = ["L", "M", "M", "J", "V", "S", "D"]
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * La semaine en cours, lundi à dimanche : une case par jour, cochée si l'élève a travaillé
@@ -11,6 +10,8 @@ const INITIALES = ["L", "M", "M", "J", "V", "S", "D"]
  * d'œil sans la transformer en compteur qui punit : un jour sans case n'efface rien.
  */
 export function SemaineDeSerie({ serie, className }: { serie: SerieDeJours; className?: string }) {
+  useI18n()
+  const initiales = t("gl.sem_initiales").split(",")
   const semaine = serie.semaine
   if (!semaine || semaine.length !== 7) return null
 
@@ -18,20 +19,20 @@ export function SemaineDeSerie({ serie, className }: { serie: SerieDeJours; clas
     <div className={cn("w-full", className)}>
       <p
         className="flex flex-wrap items-center gap-x-1.5 text-sm font-semibold"
-        title={serie.repos_pris ? "Un jour de repos a été pardonné cette semaine" : undefined}
+        title={serie.repos_pris ? t("gl.sem_pardonne") : undefined}
       >
         <Flame className="size-4 shrink-0 text-warning" aria-hidden="true" />
         {/* La série ne s'affiche qu'à partir de deux jours (un seul n'est pas encore une
             habitude) et ne culpabilise jamais. */}
-        {serie.jours >= 2 ? `Série de ${serie.jours} jours` : "Ta semaine"}
+        {serie.jours >= 2 ? t("gl.sem_serie", { n: serie.jours }) : t("gl.sem_ta_semaine")}
         {serie.jours >= 2 && !serie.actif_aujourdhui && (
-          <span className="text-xs font-normal text-muted-foreground">· ton objectif du jour la prolonge</span>
+          <span className="text-xs font-normal text-muted-foreground">{t("gl.sem_prolonge")}</span>
         )}
       </p>
-      <ol className="mt-2 grid grid-cols-7 gap-1.5" aria-label="Jours travaillés cette semaine">
+      <ol className="mt-2 grid grid-cols-7 gap-1.5" aria-label={t("gl.sem_aria")}>
         {semaine.map((jour, i) => (
           <li key={jour.date} className="flex flex-col items-center gap-1 text-[0.7rem] text-muted-foreground">
-            <span className={cn(jour.aujourdhui && "font-semibold text-foreground")}>{INITIALES[i]}</span>
+            <span className={cn(jour.aujourdhui && "font-semibold text-foreground")}>{initiales[i]}</span>
             <span
               className={cn(
                 "flex size-8 items-center justify-center rounded-full border",
@@ -39,7 +40,7 @@ export function SemaineDeSerie({ serie, className }: { serie: SerieDeJours; clas
                 jour.aujourdhui && !jour.fait && "border-dashed border-primary/60",
               )}
               role="img"
-              aria-label={`${jour.fait ? "Travaillé" : jour.aujourdhui ? "Aujourd'hui, pas encore" : "Non travaillé"}`}
+              aria-label={jour.fait ? t("gl.sem_travaille") : jour.aujourdhui ? t("gl.sem_aujourdhui") : t("gl.sem_non")}
             >
               {jour.fait && <Check className="size-4" aria-hidden="true" />}
             </span>

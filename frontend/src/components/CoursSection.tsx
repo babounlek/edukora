@@ -8,22 +8,24 @@ import { CoursRegleBox } from "@/components/CoursRegleBox"
 import { CoursExempleResoluSteps } from "@/components/CoursExempleResoluSteps"
 import { CoursErreurCard } from "@/components/CoursErreurCard"
 import { Badge } from "@/components/ui/badge"
+import { t } from "@/lib/i18n"
 
 /** Libellés partagés entre le sommaire (CoursSommaire) et les titres de section ci-dessous - "short" pour une pastille compacte, "full" pour le titre en page. Jamais d'entrée pour "accroche" : ce n'est pas une section navigable, juste le texte d'ouverture. */
 export const COURS_SECTION_LABELS: Partial<Record<CoursSectionData["type"], { short: string; full: string }>> = {
-  prerequis: { short: "Prérequis", full: "Prérequis" },
-  regle: { short: "La règle", full: "La règle" },
-  exemple_resolu: { short: "Exemple résolu", full: "Exemple résolu" },
-  erreurs_classiques: { short: "Erreurs classiques", full: "Erreurs classiques" },
-  exercices_application: { short: "Exercices", full: "Exercices d'application" },
-  synthese: { short: "À retenir", full: "Ce qu'il faut retenir" },
+  // Des accesseurs plutôt que des chaînes : le libellé suit la langue au moment où il est lu.
+  prerequis: { get short() { return t("cs.prerequis") }, get full() { return t("cs.prerequis") } },
+  regle: { get short() { return t("cs.regle") }, get full() { return t("cs.regle") } },
+  exemple_resolu: { get short() { return t("cs.exemple_resolu") }, get full() { return t("cs.exemple_resolu") } },
+  erreurs_classiques: { get short() { return t("cs.erreurs_classiques") }, get full() { return t("cs.erreurs_classiques") } },
+  exercices_application: { get short() { return t("cs.exercices_court") }, get full() { return t("cs.exercices_long") } },
+  synthese: { get short() { return t("cs.synthese_court") }, get full() { return t("cs.synthese_long") } },
 }
 
 function CoursExerciceApplicationItem({ item, index }: { item: CoursSectionExerciceItem; index: number }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
-        <p className="font-medium">Exercice {item.numero ?? index + 1}</p>
+        <p className="font-medium">{t("ed.exercice_n", { n: item.numero ?? index + 1 })}</p>
         {item.difficulte && <Badge variant="outline" className="capitalize">{item.difficulte}</Badge>}
       </div>
       <div className="prose prose-neutral max-w-none text-justify dark:prose-invert">

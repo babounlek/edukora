@@ -20,8 +20,10 @@ import { BoutonPartager } from "@/components/BoutonPartager"
 import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { SITE_NAME } from "@/lib/site"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
+import { t, useI18n } from "@/lib/i18n"
 
 export function CoursDetailPage() {
+  useI18n()
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const { isAuthenticated, isLoading: authLoading } = useAuth()
@@ -31,9 +33,12 @@ export function CoursDetailPage() {
   const [error, setError] = useState("")
 
   useSeo({
-    title: cours?.titre ?? "Cours",
+    title: cours?.titre ?? t("co.seo_cours"),
     description: cours
-      ? `Cours de ${cours.subject.label}${cours.sous_theme ? ` - ${capitaliserTheme(cours.sous_theme)}` : ""} : méthode, exemple résolu, erreurs classiques et exercices d'appropriation.`
+      ? t("co.seo_description", {
+          matiere: cours.subject.label,
+          sous_theme: cours.sous_theme ? ` - ${capitaliserTheme(cours.sous_theme)}` : "",
+        })
       : undefined,
   })
 
@@ -43,9 +48,9 @@ export function CoursDetailPage() {
       .then(setCours)
       .catch((err) => {
         if (err instanceof ApiError && err.status === 404) {
-          setError("Ce cours n'existe pas ou n'est plus disponible.")
+          setError(t("co.introuvable"))
         } else {
-          setError(err instanceof ApiError ? err.message : "Impossible de charger ce cours.")
+          setError(err instanceof ApiError ? err.message : t("co.charger_erreur"))
         }
       })
   }, [slug])
@@ -82,7 +87,7 @@ export function CoursDetailPage() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour au catalogue
+          {t("ed.retour_catalogue")}
         </Link>
       </div>
     )
@@ -107,7 +112,7 @@ export function CoursDetailPage() {
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
-        Retour aux cours
+        {t("co.retour")}
       </Link>
 
       <div className="flex animate-fade-up flex-col gap-4">
@@ -122,14 +127,14 @@ export function CoursDetailPage() {
                 <Badge key={group.key} variant="outline">{group.label}</Badge>
               ))
             ) : (
-              <Badge variant="outline">Toutes séries</Badge>
+              <Badge variant="outline">{t("co.toutes_series")}</Badge>
             )}
             {cours.sous_theme && <Badge variant="outline">{capitaliserTheme(cours.sous_theme)}</Badge>}
             {cours.duree_estimee_min && <Badge variant="outline">{cours.duree_estimee_min} min</Badge>}
           </div>
           <BoutonPartager
             chemin={coursDetailPath(cours.slug)}
-            texte={`Regarde ce cours : « ${cours.titre} » sur ${SITE_NAME} :`}
+            texte={t("co.partage", { titre: cours.titre, site: SITE_NAME })}
             type="cours"
             className="mt-4"
           />
@@ -151,7 +156,7 @@ export function CoursDetailPage() {
               <>
                 <div className="flex items-center gap-1.5 rounded-md border border-dashed border-border bg-muted/40 px-3 py-2 text-xs font-medium text-muted-foreground">
                   <Lock className="size-3.5 shrink-0" />
-                  Aperçu - la méthode seulement
+                  {t("co.apercu_methode")}
                 </div>
                 {preview.sections.length > 0 ? (
                   <div className="flex flex-col gap-6">
@@ -170,20 +175,22 @@ export function CoursDetailPage() {
             <div className="flex flex-col gap-3 rounded-lg border border-dashed border-border bg-muted/40 p-4">
               <p className="flex items-center gap-1.5 text-sm font-medium">
                 <Lock className="size-4 shrink-0" />
-                Abonne-toi pour accéder à l'exemple résolu, aux erreurs classiques et aux exercices d'application.
+                {t("co.abonne_toi")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {cours.cursus.length > 0 ? (
                   cours.cursus.map((c) => (
                     <Button key={c.id} asChild size="lg">
                       <Link to={`/abonnement?cursus=${c.id}`}>
-                        S'abonner{cours.cursus.length > 1 ? ` (${c.series ? c.series.code : c.examen_display})` : ""}
+                        {cours.cursus.length > 1
+                          ? t("ed.sabonner_cursus", { cursus: c.series ? c.series.code : c.examen_display })
+                          : t("prix.sabonner")}
                       </Link>
                     </Button>
                   ))
                 ) : (
                   <Button asChild size="lg">
-                    <Link to="/abonnement">S'abonner</Link>
+                    <Link to="/abonnement">{t("prix.sabonner")}</Link>
                   </Button>
                 )}
               </div>

@@ -2,6 +2,8 @@ import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
 
+import { t, useI18n } from "@/lib/i18n"
+
 type CalloutVariant = "piege" | "conseil" | "rappel"
 
 interface CalloutProps {
@@ -11,9 +13,9 @@ interface CalloutProps {
 }
 
 const STYLES: Record<CalloutVariant, { icon: string; title: string; className: string }> = {
-  piege: { icon: "⚠️", title: "Piège à éviter", className: "border-warning bg-warning/10" },
-  conseil: { icon: "💡", title: "Conseil", className: "border-primary bg-accent" },
-  rappel: { icon: "📖", title: "Rappel de méthode", className: "border-info bg-info/10" },
+  piege: { icon: "⚠️", get title() { return t("gl.callout_piege") }, className: "border-warning bg-warning/10" },
+  conseil: { icon: "💡", get title() { return t("gl.callout_conseil") }, className: "border-primary bg-accent" },
+  rappel: { icon: "📖", get title() { return t("gl.callout_rappel") }, className: "border-info bg-info/10" },
 }
 
 /**
@@ -31,6 +33,7 @@ const STYLES: Record<CalloutVariant, { icon: string; title: string; className: s
  * `hover:underline`.
  */
 export function Callout({ variant, children, coursHrefs }: CalloutProps) {
+  useI18n()
   const { icon, title, className } = STYLES[variant]
 
   return (
@@ -50,7 +53,7 @@ export function Callout({ variant, children, coursHrefs }: CalloutProps) {
         <div className="not-prose mt-2 flex flex-col items-start gap-1">
           {coursHrefs.map((href) => (
             <Link key={href} to={href} className="flex items-center gap-1 font-medium text-primary hover:underline">
-              Voir le cours complet
+              {t("gl.callout_cours")}
               <ArrowRight className="size-3.5" />
             </Link>
           ))}

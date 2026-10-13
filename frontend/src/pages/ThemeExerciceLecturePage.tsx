@@ -38,14 +38,15 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 
-const ORIGINES: Record<string, string> = {
-  OFFICIEL: "Sujet officiel",
-  BLANC: "Examen blanc",
-  ETABLISSEMENT: "Établissement",
-  SUJET_ZERO: "Sujet zéro",
-  INEDITE: "Inédite",
-  AUTRE: "Autre",
+const ORIGINES: Record<string, CleI18n> = {
+  OFFICIEL: "te.origine_OFFICIEL",
+  BLANC: "te.origine_BLANC",
+  ETABLISSEMENT: "te.origine_ETABLISSEMENT",
+  SUJET_ZERO: "te.origine_SUJET_ZERO",
+  INEDITE: "te.origine_INEDITE",
+  AUTRE: "te.origine_AUTRE",
 }
 
 // Préférence "Essaie d'abord" mémorisée d'une visite à l'autre - simple confort
@@ -84,6 +85,7 @@ const PROSE = "prose prose-neutral max-w-none text-justify dark:prose-invert pro
  * - la navigation suit la file du thème (précédent/suivant), jamais l'épreuve.
  */
 export function ThemeExerciceLecturePage() {
+  useI18n()
   const { country = "", tagId = "", exerciseId = "" } = useParams<{
     country: string
     tagId: string
@@ -111,8 +113,8 @@ export function ThemeExerciceLecturePage() {
 
   useSeo({
     title: data
-      ? `${data.exercise.titre || `Exercice ${data.exercise.numero_exercice}`} - ${capitaliserTheme(data.theme.name)}`
-      : "Exercice",
+      ? `${data.exercise.titre || t("ed.exercice_n", { n: data.exercise.numero_exercice })} - ${capitaliserTheme(data.theme.name)}`
+      : t("tl.seo_defaut"),
   })
 
   useEffect(() => {
@@ -137,18 +139,18 @@ export function ThemeExerciceLecturePage() {
     if (!(error instanceof ApiError && error.status === 404)) {
       return (
         <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-          <ErreurChargement objet="cet exercice" onRetry={() => refetch()} />
+          <ErreurChargement objet={t("tl.objet")} onRetry={() => refetch()} />
           <Link to={retourListe} className="mt-4 block text-center text-sm text-primary hover:underline">
-            Retour aux exercices du thème
+            {t("tl.retour")}
           </Link>
         </div>
       )
     }
     return (
       <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6">
-        <p className="text-muted-foreground">Cet exercice est introuvable.</p>
+        <p className="text-muted-foreground">{t("tl.introuvable")}</p>
         <Link to={retourListe} className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour aux exercices du thème
+          {t("tl.retour")}
         </Link>
       </div>
     )
@@ -163,17 +165,17 @@ export function ThemeExerciceLecturePage() {
           className="inline-flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
         >
           <ArrowLeft className="size-3.5 shrink-0" />
-          <span className="truncate">{data ? capitaliserTheme(data.theme.name) : "Exercices du thème"}</span>
+          <span className="truncate">{data ? capitaliserTheme(data.theme.name) : t("tl.exercices_theme")}</span>
         </Link>
         {index >= 0 && (
           <div className="flex shrink-0 items-center gap-1.5">
             <span className="mr-1 text-sm tabular-nums text-muted-foreground">
               <span className="font-medium text-foreground">{index + 1}</span> / {exercices.length}
             </span>
-            <BoutonFile to={precedent && lien(precedent)} label="Exercice précédent">
+            <BoutonFile to={precedent && lien(precedent)} label={t("tl.precedent_aria")}>
               <ChevronLeft className="size-4" />
             </BoutonFile>
-            <BoutonFile to={suivantDansListe && lien(suivantDansListe)} label="Exercice suivant">
+            <BoutonFile to={suivantDansListe && lien(suivantDansListe)} label={t("tl.suivant_aria")}>
               <ChevronRight className="size-4" />
             </BoutonFile>
           </div>
@@ -212,18 +214,18 @@ export function ThemeExerciceLecturePage() {
               <Button asChild variant="outline" size="lg" className="flex-1">
                 <Link to={lien(precedent)}>
                   <ChevronLeft className="size-4" />
-                  Précédent
+                  {t("ed.precedente")}
                 </Link>
               </Button>
             ) : (
               <Button variant="outline" size="lg" disabled className="flex-1">
                 <ChevronLeft className="size-4" />
-                Précédent
+                {t("ed.precedente")}
               </Button>
             )}
             <Button asChild size="lg" className="flex-1">
               <Link to={suivant ? lien(suivant) : retourListe}>
-                {suivant ? "Suivant" : "Terminer"}
+                {suivant ? t("ed.suivante") : t("ct.terminer")}
                 <ChevronRight className="size-4" />
               </Link>
             </Button>
@@ -262,6 +264,7 @@ interface LectureProps {
 }
 
 function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, dernier }: LectureProps) {
+  useI18n()
   const { exercise, lesson, theme, has_access: acces } = data
   const questions = data.questions ?? []
   const nbSurTheme = questions.filter((q) => q.sur_le_theme).length
@@ -307,10 +310,10 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
               </span>
               {lesson.subject_label}
               {lesson.year ? ` · ${lesson.year}` : ""}
-              {` · ${ORIGINES[lesson.origine] ?? ORIGINES.AUTRE}`}
+              {` · ${t(ORIGINES[lesson.origine] ?? ORIGINES.AUTRE)}`}
             </p>
             <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">
-              {exercise.titre || `Exercice ${exercise.numero_exercice}`}
+              {exercise.titre || t("ed.exercice_n", { n: exercise.numero_exercice })}
               {exercise.points && (
                 <span className="ml-3 inline-block translate-y-[-0.2em] rounded-full bg-card px-2.5 py-0.5 align-middle font-sans text-sm font-medium tabular-nums text-muted-foreground shadow-xs">
                   {exercise.points.replace(/\.0+$/, "")} pts
@@ -321,7 +324,7 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
           </div>
           <Button asChild variant="outline" size="sm" className="shrink-0 self-start bg-card">
             <Link to={lienEpreuve}>
-              Voir l'épreuve complète
+              {t("tl.voir_epreuve")}
               <ArrowRight className="size-3.5" />
             </Link>
           </Button>
@@ -338,29 +341,28 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
             <span>
               <span className="font-medium">
                 {nbSurTheme === questions.length
-                  ? "Tout l'exercice porte"
-                  : `${nbSurTheme} question${nbSurTheme > 1 ? "s" : ""} sur ${questions.length} porte${nbSurTheme > 1 ? "nt" : ""}`}{" "}
-                sur « {capitaliserTheme(theme.name)} »
+                  ? t("tl.tout_porte", { theme: capitaliserTheme(theme.name) })
+                  : tn("tl.n_portent", nbSurTheme, { total: questions.length, theme: capitaliserTheme(theme.name) })}
               </span>
               {nbSurTheme < questions.length && (
-                <span className="text-muted-foreground"> - surlignée{nbSurTheme > 1 ? "s" : ""} ci-dessous.</span>
+                <span className="text-muted-foreground">{tn("tl.surlignees", nbSurTheme)}</span>
               )}
             </span>
           </p>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Exercice sur « <span className="font-medium text-foreground">{capitaliserTheme(theme.name)}</span> ».
+            {t("tl.exercice_sur_avant")}<span className="font-medium text-foreground">{capitaliserTheme(theme.name)}</span>{t("tl.exercice_sur_apres")}
           </p>
         )}
         {acces && (
-          <div role="group" aria-label="Mode de lecture" className="flex shrink-0 rounded-full border border-border bg-muted/50 p-1">
+          <div role="group" aria-label={t("tl.mode_aria")} className="flex shrink-0 rounded-full border border-border bg-muted/50 p-1">
             <ModeBouton actif={essai} onClick={() => basculerEssai(true)}>
               <Lightbulb className="size-3.5" />
-              Essaie d'abord
+              {t("tl.essaie")}
             </ModeBouton>
             <ModeBouton actif={!essai} onClick={() => basculerEssai(false)}>
               <Eye className="size-3.5" />
-              Tout afficher
+              {t("tl.tout_afficher")}
             </ModeBouton>
           </div>
         )}
@@ -369,7 +371,7 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
       {lesson.introduction_markdown && (
         <details className="group mb-5 rounded-2xl border border-border bg-card">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium sm:px-5">
-            Consignes de l'épreuve
+            {t("tl.consignes")}
             <ChevronDown className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>
           <div className={cn(PROSE, "border-t border-border px-4 py-4 sm:px-5")}>
@@ -387,7 +389,7 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
       {essai && acces && !toutOuvert && (
         <p className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
           <Lightbulb className="size-4 shrink-0 text-gold-text" />
-          Cherche chaque question sur ton brouillon, puis dévoile sa correction.
+          {t("tl.cherche")}
         </p>
       )}
 
@@ -435,15 +437,15 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
               <Crown className="size-5" />
             </span>
             <div>
-              <p className="font-display text-base font-semibold">Le corrigé détaillé de chaque question t'attend</p>
+              <p className="font-display text-base font-semibold">{t("tl.corrige_attend")}</p>
               <p className="text-sm text-muted-foreground">
-                Rappels de méthode, pièges à éviter et correction pas à pas : tout est inclus dans Jusqu'à l'Examen.
+                {t("tl.corrige_inclus")}
               </p>
             </div>
           </div>
           <Button asChild className="shrink-0">
             <Link to={`/abonnement${cursusId ? `?cursus=${cursusId}` : ""}`}>
-              Débloquer
+              {t("qd.debloquer")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -478,7 +480,7 @@ function CarteQuestion({
   onOuvrir: () => void
   surligner: boolean
 }) {
-  const libelle = question.numero === "*" ? "la correction" : `la correction de la question ${question.numero}`
+  const libelle = question.numero === "*" ? t("tl.voir_correction") : t("tl.voir_correction_q", { n: question.numero })
   return (
     <section
       className={cn(
@@ -493,7 +495,7 @@ function CarteQuestion({
           <span aria-hidden className="absolute inset-y-0 left-0 w-1 bg-gold" />
           <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-gold px-2.5 py-0.5 text-xs font-semibold text-gold-foreground">
             <Target className="size-3" />
-            Sur ton thème
+            {t("tl.sur_ton_theme")}
           </span>
         </>
       )}
@@ -505,7 +507,7 @@ function CarteQuestion({
         {!acces ? (
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
             <Lock className="size-3.5" />
-            Correction réservée aux abonnés
+            {t("tl.correction_reservee")}
           </p>
         ) : masque ? (
           <button
@@ -515,13 +517,13 @@ function CarteQuestion({
           >
             <EyeOff className="size-4 group-hover:hidden" />
             <Eye className="hidden size-4 group-hover:block" />
-            Voir {libelle}
+            {libelle}
           </button>
         ) : (
           <div className="animate-fade-up">
             <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
               <CheckCheck className="size-3.5" aria-hidden="true" />
-              Corrigé
+              {t("ep.type_CORR")}
             </p>
             <div className={cn(PROSE, "prose-hr:my-8")}>
               <EpreuveMarkdown markdown={question.corrige_markdown ?? ""} directCoursLinks />
@@ -570,7 +572,7 @@ function FinExercice({
       // Revenir en arrière sans rien dire laissait croire que le clic n'avait pas été pris en compte.
       setFait(!cible)
       toast.error(
-        cible ? "Impossible de valider cet exercice. Réessaie." : "Impossible d'annuler la validation. Réessaie.",
+        cible ? t("tl.valider_erreur") : t("tl.annuler_erreur"),
       )
     } finally {
       setEnCours(false)
@@ -587,34 +589,34 @@ function FinExercice({
                 <Check className="size-5" />
               </span>
               <div>
-                <p className="font-display text-base font-semibold">Exercice validé</p>
+                <p className="font-display text-base font-semibold">{t("ed.exercice_valide")}</p>
                 <button
                   type="button"
                   onClick={basculer}
                   disabled={enCours}
                   className="text-xs text-muted-foreground underline underline-offset-4 hover:text-primary disabled:opacity-60"
                 >
-                  Annuler
+                  {t("seance.annuler")}
                 </button>
               </div>
             </div>
           ) : (
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-sm text-muted-foreground">Tu as traité cet exercice ?</span>
+              <span className="text-sm text-muted-foreground">{t("ed.tu_as_traite")}</span>
               <Button variant="outline" onClick={basculer} disabled={enCours}>
                 <Check className="size-4" />
-                Je l'ai fait
+                {t("ed.je_lai_fait")}
               </Button>
             </div>
           )
         ) : (
-          <p className="text-sm text-muted-foreground">Connecte-toi pour suivre ta progression sur ce thème.</p>
+          <p className="text-sm text-muted-foreground">{t("tl.connecte_toi")}</p>
         )}
 
         {lienSuivant && suivant ? (
           <Button asChild size="lg" variant={fait ? "default" : "outline"} className="shrink-0">
             <Link to={lienSuivant}>
-              Exercice suivant du thème
+              {t("tl.suivant_theme")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -622,7 +624,7 @@ function FinExercice({
           <Button asChild size="lg" className="shrink-0">
             <Link to={retourListe}>
               <PartyPopper className="size-4" />
-              Fin de la liste : retour au thème
+              {t("tl.fin")}
             </Link>
           </Button>
         ) : null}

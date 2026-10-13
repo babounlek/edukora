@@ -1,4 +1,5 @@
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * Le strict nécessaire pour étiqueter un exercice - satisfait aussi bien par
@@ -40,7 +41,7 @@ const LONGUEUR_MAX_SIDEBAR = 48
 /** "Ex. 3" pour un repère numérique, le repère tel quel sinon ("Problème", "Section III"). */
 export function libelleCourtExercice(exercise: ExerciceLabelSource) {
   return NUMERIQUE_RE.test(exercise.numero_exercice.trim())
-    ? `Ex. ${exercise.numero_exercice.trim()}`
+    ? t("ed.ex_n", { n: exercise.numero_exercice.trim() })
     : exercise.numero_exercice.trim()
 }
 
@@ -52,7 +53,7 @@ export function libelleCourtExercice(exercise: ExerciceLabelSource) {
  * partie de l'épreuve. Le titre entier reste accessible en infobulle (voir SommaireNav).
  */
 export function libelleLong(exercise: ExerciceLabelSource) {
-  const titre = exercise.titre.trim() || `Exercice ${exercise.numero_exercice.trim()}`
+  const titre = exercise.titre.trim() || t("ed.exercice_n", { n: exercise.numero_exercice.trim() })
   if (titre.length <= LONGUEUR_MAX_SIDEBAR) return titre
   const segments = titre.split(" - ")
   return segments[segments.length - 1].trim()
@@ -138,7 +139,7 @@ function entreesGroupees(exercises: ExerciceLabelSource[]): SommaireEntry[] {
     entries.push({
       id: exerciceAnchorId(exercise.numero_exercice),
       short: `${jetonCourtGroupe(groupes[groupes.length - 1])} ${n}`,
-      long: `Exercice ${n}`,
+      long: t("ed.exercice_n", { n }),
       title: exercise.titre.trim(),
       groupPath: groupes,
     })
@@ -159,6 +160,7 @@ function entreesGroupees(exercises: ExerciceLabelSource[]): SommaireEntry[] {
  * distinctes bascule sur entreesGroupees, qui hiérarchise ET renumérote localement.
  */
 export function EpreuveSommaire({ exercises }: { exercises: ExerciceLabelSource[] }) {
+  useI18n()
   const estGroupee = exercises.some((exercise) => exercise.groupes.length > 0)
 
   const entries: SommaireEntry[] = estGroupee
@@ -170,5 +172,5 @@ export function EpreuveSommaire({ exercises }: { exercises: ExerciceLabelSource[
         title: exercise.titre.trim() || undefined,
       }))
 
-  return <SommaireNav entries={entries} ariaLabel="Sommaire des exercices" />
+  return <SommaireNav entries={entries} ariaLabel={t("ed.sommaire_aria")} />
 }

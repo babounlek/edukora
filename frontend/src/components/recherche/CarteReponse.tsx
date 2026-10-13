@@ -7,6 +7,7 @@ import { IndiceAcces } from "@/components/recherche/ResultatRecherche"
 import { Skeleton } from "@/components/ui/skeleton"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { cibleResultat } from "@/lib/recherche"
+import { t, useI18n } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 // Le rendu Markdown + KaTeX est lourd : il ne se charge que quand une carte s'affiche.
@@ -24,6 +25,7 @@ export function CarteReponse({
   country: string
   onChoisir?: () => void
 }) {
+  useI18n()
   const couleur = couleurMatiere(carte.matiere.code)
   return (
     <section
@@ -33,7 +35,7 @@ export function CarteReponse({
       <span className={cn("absolute inset-y-0 left-0 w-1.5", couleur.barre)} aria-hidden="true" />
       <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
         <Lightbulb className="size-3.5" aria-hidden="true" />
-        La réponse en bref
+        {t("rc.reponse_bref")}
       </p>
       <h2 id="carte-reponse-titre" className="mt-2 font-display text-xl font-semibold leading-snug sm:text-2xl">
         {carte.titre}
@@ -52,7 +54,7 @@ export function CarteReponse({
           onClick={onChoisir}
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
         >
-          Lire le cours en entier
+          {t("rc.lire_cours_entier")}
           <ArrowRight className="size-4" aria-hidden="true" />
         </Link>
         <IndiceAcces resultat={carte} />

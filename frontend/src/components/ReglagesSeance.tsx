@@ -10,11 +10,12 @@ import { trackEvent } from "@/lib/analytics"
 import { activerPush, desactiverPush, etatPush } from "@/lib/push"
 import { definirRetoursActifs, jouerRetour, retoursActifs } from "@/lib/retours"
 import { cn } from "@/lib/utils"
+import { t, useI18n, type CleI18n } from "@/lib/i18n"
 
-const LIBELLES: Record<number, { nom: string; detail: string }> = {
-  10: { nom: "Tranquille", detail: "10 points : environ 1 bonne réponse" },
-  20: { nom: "Régulier", detail: "20 points : environ 2 bonnes réponses" },
-  30: { nom: "Intense", detail: "30 points : environ 3 bonnes réponses" },
+const LIBELLES: Record<number, { nom: CleI18n; detail: CleI18n }> = {
+  10: { nom: "rythme.tranquille", detail: "rythme.detail_10" },
+  20: { nom: "rythme.regulier", detail: "rythme.detail_20" },
+  30: { nom: "rythme.intense", detail: "rythme.detail_30" },
 }
 
 /**
@@ -23,6 +24,7 @@ const LIBELLES: Record<number, { nom: string; detail: string }> = {
  * choisit - jamais une exigence posée d'en haut - et il peut le changer à tout moment.
  */
 export function ChoixRythme() {
+  useI18n()
   const queryClient = useQueryClient()
   const [enCours, setEnCours] = useState(false)
   const { data: etat } = useQuery({
@@ -42,7 +44,7 @@ export function ChoixRythme() {
       queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] })
       trackEvent("objectif_xp_choisi", { objectif: valeur })
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Impossible d'enregistrer ton rythme. Réessaie.")
+      toast.error(err instanceof ApiError ? err.message : t("rythme.erreur"))
     } finally {
       setEnCours(false)
     }
@@ -52,13 +54,12 @@ export function ChoixRythme() {
     <div>
       <p className="flex items-center gap-2 font-medium">
         <Zap className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-        Ton rythme de chaque jour
+        {t("rythme.titre")}
       </p>
       <p className="mt-0.5 text-sm text-muted-foreground">
-        Atteindre ton objectif de points compte pour ta série, même sans séance du jour. Les points se gagnent sur les
-        bonnes réponses, surtout sur les thèmes à revoir.
+        {t("rythme.texte")}
       </p>
-      <div role="radiogroup" aria-label="Objectif de points par jour" className="mt-3 grid grid-cols-3 gap-2">
+      <div role="radiogroup" aria-label={t("ligne.objectif_aria")} className="mt-3 grid grid-cols-3 gap-2">
         {etat.objectifs_possibles.map((valeur) => {
           const choisi = valeur === etat.objectif
           return (
@@ -68,15 +69,15 @@ export function ChoixRythme() {
               role="radio"
               aria-checked={choisi}
               disabled={enCours}
-              title={LIBELLES[valeur]?.detail}
+              title={LIBELLES[valeur] ? t(LIBELLES[valeur].detail) : undefined}
               onClick={() => choisir(valeur)}
               className={cn(
                 "rounded-xl border-2 px-2 py-2.5 text-center transition-colors disabled:opacity-60",
                 choisi ? "border-primary bg-primary/10" : "border-border hover:border-primary/40",
               )}
             >
-              <span className="block text-sm font-semibold">{LIBELLES[valeur]?.nom ?? `${valeur} points`}</span>
-              <span className="block text-xs tabular-nums text-muted-foreground">{valeur} points</span>
+              <span className="block text-sm font-semibold">{LIBELLES[valeur] ? t(LIBELLES[valeur].nom) : t("rythme.points", { n: valeur })}</span>
+              <span className="block text-xs tabular-nums text-muted-foreground">{t("rythme.points", { n: valeur })}</span>
             </button>
           )
         })}
@@ -94,6 +95,7 @@ function etatPushQuery() {
 /** Active ou coupe les notifications de CET appareil. Masqué quand elles ne peuvent pas exister
  * (voir lib/push : navigateur sans push, push non configuré sur le serveur). */
 export function InterrupteurPush() {
+  useI18n()
   const queryClient = useQueryClient()
   const [enCours, setEnCours] = useState(false)
   const { data: etat } = useQuery(etatPushQuery())
@@ -107,10 +109,10 @@ export function InterrupteurPush() {
       const suivant = actif ? (await desactiverPush(), "inactif" as const) : await activerPush()
       queryClient.setQueryData(["etat-push"], suivant)
       if (suivant === "refuse") {
-        toast.error("Les notifications sont bloquées dans ton navigateur. Autorise-les dans ses réglages pour les activer.")
+        toast.error(t("push.bloque"))
       }
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Impossible de modifier les notifications. Réessaie.")
+      toast.error(err instanceof ApiError ? err.message : t("push.erreur"))
     } finally {
       setEnCours(false)
     }
@@ -121,20 +123,20 @@ export function InterrupteurPush() {
       <div className="min-w-0">
         <p className="flex items-center gap-2 font-medium">
           <Bell className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          Un rappel sur cet appareil
+          {t("push.titre")}
         </p>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          Une notification par jour, à l'heure où tu révises d'habitude, seulement si tu n'as pas encore fait ta séance.
+          {t("push.texte")}
         </p>
         {etat === "refuse" && (
-          <p className="mt-1 text-sm">Les notifications sont bloquées dans ton navigateur : autorise-les dans ses réglages.</p>
+          <p className="mt-1 text-sm">{t("push.bloque_court")}</p>
         )}
       </div>
       <button
         type="button"
         role="switch"
         aria-checked={actif}
-        aria-label="Un rappel sur cet appareil"
+        aria-label={t("push.titre")}
         disabled={enCours || etat === "refuse"}
         onClick={basculer}
         className={cn(
@@ -160,6 +162,7 @@ export function InterrupteurPush() {
  * Jamais affichée à qui a déjà bloqué les notifications ou ne peut pas en recevoir.
  */
 export function InvitePush({ className }: { className?: string }) {
+  useI18n()
   const queryClient = useQueryClient()
   const [ecartee, setEcartee] = useState(() => {
     try {
@@ -186,10 +189,10 @@ export function InvitePush({ className }: { className?: string }) {
     try {
       const suivant = await activerPush()
       queryClient.setQueryData(["etat-push"], suivant)
-      if (suivant === "actif") toast.success("C'est fait : on te rappellera à ton heure habituelle.")
+      if (suivant === "actif") toast.success(t("push.fait"))
       if (suivant !== "inactif") ecarter()
     } catch {
-      toast.error("Impossible d'activer les notifications. Réessaie plus tard.")
+      toast.error(t("push.activer_erreur"))
     } finally {
       setEnCours(false)
     }
@@ -199,17 +202,17 @@ export function InvitePush({ className }: { className?: string }) {
     <div className={cn("flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 sm:flex-row sm:items-center", className)}>
       <Bell className="size-6 shrink-0 text-gold-text" aria-hidden="true" />
       <div className="min-w-0 flex-1">
-        <p className="font-display font-semibold">Un rappel à ton heure habituelle ?</p>
+        <p className="font-display font-semibold">{t("push.invite_titre")}</p>
         <p className="text-sm text-muted-foreground">
-          Une notification par jour, seulement si ta séance n'est pas encore faite. Tu peux l'arrêter à tout moment.
+          {t("push.invite_texte")}
         </p>
       </div>
       <div className="flex shrink-0 gap-2">
         <Button variant="ghost" size="sm" onClick={ecarter} disabled={enCours}>
-          Non merci
+          {t("rappels.non_merci")}
         </Button>
         <Button size="sm" onClick={activer} disabled={enCours}>
-          Activer
+          {t("push.activer")}
         </Button>
       </div>
     </div>
@@ -218,6 +221,7 @@ export function InvitePush({ className }: { className?: string }) {
 
 /** Sons et vibrations de la séance : activés par défaut, propres à cet appareil. */
 export function InterrupteurRetours() {
+  useI18n()
   const [actif, setActif] = useState(retoursActifs)
 
   function basculer() {
@@ -233,17 +237,17 @@ export function InterrupteurRetours() {
       <div className="min-w-0">
         <p className="flex items-center gap-2 font-medium">
           <Volume2 className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          Sons et vibrations
+          {t("retours.titre")}
         </p>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          Un petit son et une vibration à chaque réponse. Ce réglage ne vaut que pour cet appareil.
+          {t("retours.texte")}
         </p>
       </div>
       <button
         type="button"
         role="switch"
         aria-checked={actif}
-        aria-label="Sons et vibrations"
+        aria-label={t("retours.titre")}
         onClick={basculer}
         className={cn(
           "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors after:absolute after:-inset-2 after:content-['']",

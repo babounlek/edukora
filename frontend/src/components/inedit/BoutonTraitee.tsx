@@ -1,7 +1,8 @@
 import { Check, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { mots, type Unite } from "@/lib/vocabulaire"
+import { tu, type Unite } from "@/lib/vocabulaire"
+import { useI18n } from "@/lib/i18n"
 
 interface BoutonTraiteeProps {
   traitee: boolean
@@ -18,12 +19,12 @@ interface BoutonTraiteeProps {
  * compose sur brouillon ou papier, puis le déclare. Seules les questions traitées sont
  * ensuite à noter ; les autres valent zéro sans rien demander à l'élève. */
 export function BoutonTraitee({ traitee, rendue, disabled, unite = "question", onToggle }: BoutonTraiteeProps) {
-  const m = mots(unite)
+  useI18n()
   if (traitee && rendue) {
     return (
       <span className="inline-flex min-h-9 items-center gap-1.5 text-sm font-medium text-success">
         <Check className="size-4" />
-        {unite === "exercice" ? "Traité" : "Traitée"}
+        {tu("bt.rendu", unite)}
       </span>
     )
   }
@@ -43,11 +44,7 @@ export function BoutonTraitee({ traitee, rendue, disabled, unite = "question", o
       )}
     >
       {traitee ? <Check className="size-4 text-success" /> : <Circle className="size-4" />}
-      {traitee
-        ? `${unite === "exercice" ? "Exercice traité" : "Question traitée"}`
-        : rendue
-          ? `Je l'avais ${unite === "exercice" ? "fait" : "faite"} sur papier`
-          : `J'ai traité ${m.cet} ${m.singulier}`}
+      {traitee ? tu("bt.traitee", unite) : rendue ? tu("bt.papier", unite) : tu("bt.jai", unite)}
     </button>
   )
 }

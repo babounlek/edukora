@@ -8,6 +8,7 @@ import { activerProfilProtege, useProfils } from "@/lib/changerProfilActif"
 import { PinAnnule } from "@/lib/pinPrompts"
 import { useModeExamen } from "@/lib/modeExamen"
 import { Button } from "@/components/ui/button"
+import { t, useI18n } from "@/lib/i18n"
 
 // Au-delà, on repasse par « Qui étudie ? » : l'appareil est sans doute passé à quelqu'un
 // d'autre. Assez long pour ne jamais gêner une séance, assez court pour protéger un profil
@@ -40,6 +41,7 @@ function noterActivite() {
  * pour rien. Pas pour une session ouverte par l'enfant (un seul profil, le sien).
  */
 export function VerrouInactivite() {
+  useI18n()
   const { user, isAuthenticated, login, logout } = useAuth()
   const profils = useProfils()
   const [verrouille, setVerrouille] = useState(false)
@@ -111,7 +113,7 @@ export function VerrouInactivite() {
       }
     } catch (err) {
       if (!(err instanceof PinAnnule)) {
-        setErreur(err instanceof ApiError ? err.message : "Impossible d'ouvrir ce profil.")
+        setErreur(err instanceof ApiError ? err.message : t("gl.vi_err_profil"))
       }
     } finally {
       setChargement(null)
@@ -124,7 +126,7 @@ export function VerrouInactivite() {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Qui étudie ?"
+      aria-label={t("qe.seo")}
       // z-40 : sous les fenêtres de saisie du code (z-50, voir ui/dialog), qui doivent s'afficher par-dessus.
       className="fixed inset-0 z-40 flex items-center justify-center overflow-y-auto bg-background px-4 py-10"
     >
@@ -133,9 +135,9 @@ export function VerrouInactivite() {
           <span className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Lock className="size-5" />
           </span>
-          <h1 className="font-display text-2xl font-semibold tracking-tight">Qui étudie ?</h1>
+          <h1 className="font-display text-2xl font-semibold tracking-tight">{t("qe.seo")}</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            Après un moment d'inactivité, on vérifie qui est là. Choisis ton profil pour continuer.
+            {t("gl.vi_texte")}
           </p>
         </div>
         <div className="flex flex-col gap-2.5">
@@ -150,8 +152,8 @@ export function VerrouInactivite() {
               <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <UserCircle className="size-5" />
               </span>
-              <span className="flex-1 font-display text-base font-medium">{profil.prenom || "Profil sans nom"}</span>
-              {profil.pin_actif && <Lock className="size-4 shrink-0 text-muted-foreground" aria-label="Protégé par un code" />}
+              <span className="flex-1 font-display text-base font-medium">{profil.prenom || t("compte.profil_sans_nom")}</span>
+              {profil.pin_actif && <Lock className="size-4 shrink-0 text-muted-foreground" aria-label={t("gl.vi_protege")} />}
               {chargement === profil.id && <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" />}
             </button>
           ))}
@@ -163,7 +165,7 @@ export function VerrouInactivite() {
         )}
         <div className="mt-5 text-center">
           <Button variant="ghost" size="sm" onClick={logout}>
-            Se déconnecter
+            {t("gl.deconnecter")}
           </Button>
         </div>
       </div>

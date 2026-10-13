@@ -6,6 +6,7 @@ import { ApiError, clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPI
 import type { User } from "@/api/types"
 import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { viderCacheHorsLigne } from "@/lib/pwa"
+import { t } from "@/lib/i18n"
 import { oublierPushLocal } from "@/lib/push"
 import { estVisiteurAnonymeConnu, marquerVisiteurAnonyme } from "@/lib/sessionAnonyme"
 
@@ -59,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     function handleSessionExpired() {
       setUser(null)
-      toast.error("Session expirée", { description: "Reconnecte-toi pour continuer." })
+      toast.error(t("gl.session_expiree"), { description: t("gl.session_expiree_desc") })
     }
     window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired)
     return () => window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired)

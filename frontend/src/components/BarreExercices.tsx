@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import type { EpreuveExercise } from "@/api/types"
 import { exerciceAnchorId, libelleCourtExercice } from "@/components/EpreuveSommaire"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 /**
  * La barre de navigation d'une épreuve lue en ligne : une pastille par exercice, collée sous
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils"
  * là où l'œil est posé - pas celui dont le haut vient d'apparaître en bas.
  */
 export function BarreExercices({ exercises }: { exercises: EpreuveExercise[] }) {
+  useI18n()
   const [actif, setActif] = useState<string | null>(null)
   const listeRef = useRef<HTMLOListElement>(null)
 
@@ -47,7 +49,7 @@ export function BarreExercices({ exercises }: { exercises: EpreuveExercise[] }) 
 
   return (
     <nav
-      aria-label="Exercices de l'épreuve"
+      aria-label={t("ed.exercices_aria")}
       className="sticky top-[72px] z-20 -mx-4 mb-5 mt-5 border-b border-border bg-background/90 px-4 py-2 backdrop-blur sm:-mx-6 sm:px-6"
     >
       <ol ref={listeRef} className="flex gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

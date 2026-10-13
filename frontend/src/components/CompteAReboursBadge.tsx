@@ -1,6 +1,7 @@
 import { useAuth } from "@/context/AuthContext"
 import type { CompteARebours, Cursus } from "@/api/types"
 import { cn } from "@/lib/utils"
+import { localeCourante, t, useI18n } from "@/lib/i18n"
 
 /**
  * "BAC D · J-244" - le compte à rebours jusqu'à l'examen préparé.
@@ -22,6 +23,8 @@ export function CompteAReboursBadge({
   variant?: "texte" | "pilule"
 }) {
   const { user } = useAuth()
+  // Abonne le badge au changement de langue : formatCompteARebours lit la langue courante.
+  useI18n()
   if (!user?.compte_a_rebours || !user.cursus_prepare) return null
 
   const texte = formatCompteARebours(user.compte_a_rebours)
@@ -60,10 +63,10 @@ export function formatCursus(cursus: Cursus): string {
  */
 export function formatCompteARebours(compte: CompteARebours): string {
   if (compte.jours_restants < 0) return ""
-  if (compte.estimee) return `vers ${formatMois(compte.date_examen)}`
-  if (compte.jours_restants === 0) return "c'est aujourd'hui"
-  if (compte.jours_restants === 1) return "demain"
-  return `J-${compte.jours_restants}`
+  if (compte.estimee) return t("compte_a_rebours.vers", { mois: formatMois(compte.date_examen) })
+  if (compte.jours_restants === 0) return t("compte_a_rebours.aujourdhui")
+  if (compte.jours_restants === 1) return t("compte_a_rebours.demain")
+  return t("compte_a_rebours.jours", { n: compte.jours_restants })
 }
 
 /** "mai 2028" - à partir de la date AAAA-MM-JJ renvoyée par l'API. */
@@ -71,15 +74,14 @@ function formatMois(dateIso: string): string {
   const [annee, mois] = dateIso.split("-").map(Number)
   // `Date` construit en UTC puis formaté en local décalerait d'un mois une date du 1er :
   // on formate à partir des composants, sans jamais passer par un fuseau.
-  const nomMois = new Intl.DateTimeFormat("fr-FR", { month: "long" }).format(new Date(annee, mois - 1, 15))
+  const nomMois = new Intl.DateTimeFormat(localeCourante(), { month: "long" }).format(new Date(annee, mois - 1, 15))
   return `${nomMois} ${annee}`
 }
 
 function titreDetaille(cursus: Cursus, compte: CompteARebours): string {
-  if (compte.estimee) {
-    return `${formatCursus(cursus)} - la date officielle de la prochaine session n'est pas encore publiée, ${compte.session_label} est une estimation.`
-  }
-  return `${formatCursus(cursus)} - ${compte.session_label}, à partir du ${formatDateComplete(compte.date_examen)}.`
+  const variables = { cursus: formatCursus(cursus), session: compte.session_label }
+  if (compte.estimee) return t("compte_a_rebours.titre_estime", variables)
+  return t("compte_a_rebours.titre_exact", { ...variables, date: formatDateComplete(compte.date_examen) })
 }
 
 /** "24/05/2027". */

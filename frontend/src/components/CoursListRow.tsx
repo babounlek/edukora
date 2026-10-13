@@ -8,6 +8,7 @@ import { capitaliserTheme, cn } from "@/lib/utils"
 import { coursDetailPath, coursReaderPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
+import { t, useI18n } from "@/lib/i18n"
 
 interface CoursListRowProps {
   cours: Cours
@@ -18,6 +19,7 @@ interface CoursListRowProps {
 /** Variante compacte de CoursCard - une ligne par cours, pour scanner plus de
  * résultats à l'écran sans dérouler autant que la grille de cartes. */
 export function CoursListRow({ cours, className, style }: CoursListRowProps) {
+  useI18n()
   const SubjectIcon = subjectIcon(cours.subject.code)
 
   return (
@@ -44,7 +46,7 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
                 className="size-3.5 shrink-0 text-gold-text"
                 fill="currentColor"
                 role="img"
-                aria-label={`Tombé dans ${cours.tombe_souvent.nb_epreuves} épreuves sur ${cours.tombe_souvent.nb_sessions}`}
+                aria-label={t("seance.frequence", { n: cours.tombe_souvent.nb_epreuves, total: cours.tombe_souvent.nb_sessions })}
               />
             )}
           </h2>
@@ -63,7 +65,7 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
         {cours.is_read && (
           <span className="hidden items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success sm:inline-flex">
             <CheckCircle2 className="size-3" />
-            Lu
+            {t("ep.lu")}
           </span>
         )}
         <Badge variant="secondary" className="hidden sm:inline-flex">
@@ -76,13 +78,13 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
           </span>
         )}
         {cours.has_access ? (
-          <Unlock className="size-3.5 shrink-0 text-success" aria-label="Accès inclus dans ton abonnement" />
+          <Unlock className="size-3.5 shrink-0 text-success" aria-label={t("co.acces_inclus")} />
         ) : (
-          <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-label="Abonnement requis" />
+          <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-label={t("ed.abonnement_requis")} />
         )}
         {/* Repli mobile du badge "Lu" masqué ci-dessus : la coche seule tient dans la
             largeur d'un téléphone, le badge texte non. */}
-        {cours.is_read && <CheckCircle2 className="size-3.5 shrink-0 text-success sm:hidden" aria-label="Déjà lu" />}
+        {cours.is_read && <CheckCircle2 className="size-3.5 shrink-0 text-success sm:hidden" aria-label={t("co.deja_lu")} />}
       </div>
     </Link>
   )

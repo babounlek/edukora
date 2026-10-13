@@ -20,6 +20,7 @@ import { trackEvent } from "@/lib/analytics"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
+import { langueCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { Ecrin } from "@/components/Progression"
 
 /**
@@ -80,6 +81,7 @@ export function SeanceCorps({
   phraseDuCoach?: string
   apresDuree?: ReactNode
 }) {
+  useI18n()
   const queryClient = useQueryClient()
   const data = plan
 
@@ -228,9 +230,9 @@ export function SeanceCorps({
 
 /** Ce que fait l'étape, au verbe : le bouton principal dit où il mène plutôt que « la séance ». */
 function actionDeLEtape(etape: EtapeSeance): string {
-  if (etape.type === "cours") return "relire la méthode"
-  if (etape.type === "exercice") return "faire un exercice"
-  return "faire le quiz"
+  if (etape.type === "cours") return t("seance.action_cours")
+  if (etape.type === "exercice") return t("seance.action_exercice")
+  return t("seance.action_quiz")
 }
 
 /** XP maximale d'un quiz : chaque question rapporte au mieux XP_QCM_JUSTE (voir quiz.xp). Un
@@ -297,7 +299,7 @@ function SeanceAFaire({
         <h2 className="font-display">
           <span className="flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             <Sparkles className="size-3.5" />
-            Aujourd'hui
+            {t("seance.aujourdhui")}
           </span>
           <span className="mt-2 block text-3xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-4xl">
             {majuscule(titreDeLaSeance(seance))}
@@ -359,7 +361,7 @@ function SeanceAFaire({
             >
               <Link to="/tarifs" onClick={() => trackEvent("plan_verrouille_clic")}>
                 <Lock className="size-4" />
-                Débloquer ma séance
+                {t("seance.debloquer")}
               </Link>
             </Button>
           </div>
@@ -385,7 +387,10 @@ function SeanceAFaire({
                     onOuvrirEtape(prochaine)
                   }}
                 >
-                  {dejaCommencee ? "Reprendre" : "Commencer"} : {actionDeLEtape(prochaine)}
+                  {t("seance.bouton_etape", {
+                    verbe: dejaCommencee ? t("seance.reprendre") : t("seance.commencer"),
+                    action: actionDeLEtape(prochaine),
+                  })}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -411,9 +416,9 @@ function SeanceAFaire({
                   }}
                 >
                   <Zap className="size-4" aria-hidden="true" />
-                  Quiz express
+                  {t("seance.quiz_express")}
                   <span className="text-xs font-normal">
-                    {quizExpress.n} questions · jusqu'à {quizExpress.n * XP_MAX_PAR_QUESTION} points
+                    {t("seance.quiz_express_detail", { n: quizExpress.n, points: quizExpress.n * XP_MAX_PAR_QUESTION })}
                   </span>
                 </Link>
               </Button>
@@ -433,14 +438,14 @@ function SeanceAFaire({
                 disabled={terminaisonEnCours}
               >
                 <Check className="size-4" />
-                J'ai fini
+                {t("seance.jai_fini")}
               </Button>
             )}
             {/* Ce qui valide la séance, dit une fois près de l'action : sans ça, un
                 élève qui lit le cours se croit quitte et la séance reste "à faire". */}
             {avecQuiz && (
               <p className="basis-full text-xs text-muted-foreground">
-                La séance est validée quand tu termines le quiz.
+                {t("seance.validee_par_quiz")}
               </p>
             )}
           </div>
@@ -504,21 +509,21 @@ function SortieDeSecours({
     <div>
       <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
         <Shuffle className="size-3 shrink-0" />
-        Ce n'est pas ce que tu veux réviser ?
+        {t("seance.pas_ca")}
         <button
           type="button"
           onClick={onAutreChose}
           disabled={remplacementEnCours || verrouillee}
           className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
         >
-          {remplacementEnCours ? "Je cherche…" : "Propose-moi autre chose"}
+          {remplacementEnCours ? t("seance.je_cherche") : t("seance.autre_chose")}
         </button>
       </p>
       {plusRienAProposer && (
         <p className="mt-1 text-xs text-muted-foreground">
-          On ne trouve pas mieux pour aujourd'hui.{" "}
+          {t("seance.pas_mieux")}{" "}
           <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
-            Choisir un thème toi-même
+            {t("seance.choisir_theme")}
           </Link>
         </p>
       )}
@@ -555,8 +560,8 @@ function ObjectifMatiereControle({
       <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
         <Target className="size-3 shrink-0 text-primary" />
         <span>
-          Tu te concentres sur <strong className="font-semibold text-foreground">{choisi.label}</strong> jusqu'au{" "}
-          {formaterJourMois(choisi.jusqu_au)}.
+          {t("seance.concentre_avant")} <strong className="font-semibold text-foreground">{choisi.label}</strong>{" "}
+          {t("seance.concentre_apres", { date: formaterJourMois(choisi.jusqu_au) })}
         </span>
         <button
           type="button"
@@ -564,14 +569,14 @@ function ObjectifMatiereControle({
           disabled={enCours}
           className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
         >
-          Revenir au choix automatique
+          {t("seance.retour_auto")}
         </button>
         <button
           type="button"
           onClick={() => setOuvert(true)}
           className="underline underline-offset-4 transition-colors hover:text-primary"
         >
-          Changer
+          {t("seance.changer")}
         </button>
       </p>
     )
@@ -581,13 +586,13 @@ function ObjectifMatiereControle({
     return (
       <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
         <Target className="size-3 shrink-0" />
-        Un devoir bientôt ?
+        {t("seance.devoir_bientot")}
         <button
           type="button"
           onClick={() => setOuvert(true)}
           className="underline underline-offset-4 transition-colors hover:text-primary"
         >
-          Me concentrer sur une matière cette semaine
+          {t("seance.me_concentrer")}
         </button>
       </p>
     )
@@ -595,7 +600,7 @@ function ObjectifMatiereControle({
 
   return (
     <div>
-      <p className="text-xs text-muted-foreground">Je me concentre sur… (pendant 7 jours, puis on reprend le choix automatique)</p>
+      <p className="text-xs text-muted-foreground">{t("seance.je_me_concentre")}</p>
       <div className="mt-2 flex flex-wrap gap-2">
         {matieres.map((matiere) => (
           <button
@@ -621,7 +626,7 @@ function ObjectifMatiereControle({
           onClick={() => setOuvert(false)}
           className="px-2 py-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-primary"
         >
-          Annuler
+          {t("seance.annuler")}
         </button>
       </div>
     </div>
@@ -658,7 +663,7 @@ function Pastille({ icone: Icone, children }: { icone: LucideIcon; children: Rea
 /** "concentration molaire" → "Concentration molaire" : les thèmes sont stockés en
  * minuscules, ce qui passait inaperçu après "Aujourd'hui :" mais pas en titre seul. */
 function majuscule(texte: string): string {
-  return texte.charAt(0).toLocaleUpperCase("fr") + texte.slice(1)
+  return texte.charAt(0).toLocaleUpperCase(langueCourante()) + texte.slice(1)
 }
 
 function SeanceFaite({
@@ -671,6 +676,7 @@ function SeanceFaite({
   plusRienAProposer: boolean
   phraseDuCoach?: string
 }) {
+  useI18n()
   const seance = plan.seance as Seance
   return (
     <>
@@ -678,7 +684,7 @@ function SeanceFaite({
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 ring-4 ring-primary/10">
           <Check className="size-5" strokeWidth={3} />
         </span>
-        Séance faite
+        {t("seance.faite")}
       </h2>
       <p className="mt-3 text-sm text-muted-foreground">
         {majuscule(titreDeLaSeance(seance))}
@@ -689,7 +695,7 @@ function SeanceFaite({
             une journée manquée ne remet rien à zéro (voir
             seances_terminees_cette_semaine). */}
         {typeof plan.seances_cette_semaine === "number" && (
-          <> · {plan.seances_cette_semaine} séance{plan.seances_cette_semaine > 1 ? "s" : ""} cette semaine</>
+          <> · {tn("seance.cette_semaine", plan.seances_cette_semaine)}</>
         )}
       </p>
       {/* Ce qui ferme la boucle : l'élève sait que ce qu'il vient de rater lui
@@ -700,7 +706,7 @@ function SeanceFaite({
       {seance.prochaine_revision && (
         <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
           <RotateCcw className="size-3.5 shrink-0 text-primary" />
-          On te le repropose {formatEcheance(seance.prochaine_revision)}.
+          {t("seance.repropose", { quand: formatEcheance(seance.prochaine_revision) })}
         </p>
       )}
 
@@ -711,9 +717,9 @@ function SeanceFaite({
       <div className="mt-5 flex flex-wrap items-center gap-3">
         {/* La phrase du coach, juste au-dessus, dit déjà « Demain, on continue » : la
             redire ici ferait trois fois la même chose avec le titre « Séance faite ». */}
-        {!phraseDuCoach && <span className="text-sm text-muted-foreground">Prochaine séance demain.</span>}
+        {!phraseDuCoach && <span className="text-sm text-muted-foreground">{t("seance.prochaine_demain")}</span>}
         <Button variant="outline" size="sm" className="rounded-full" onClick={onContinuer} disabled={continuationEnCours}>
-          {continuationEnCours ? "Je cherche…" : "Continuer maintenant"}
+          {continuationEnCours ? t("seance.je_cherche") : t("seance.continuer")}
           <ArrowRight className="size-4" />
         </Button>
       </div>
@@ -721,9 +727,9 @@ function SeanceFaite({
           qui ne fait rien. */}
       {plusRienAProposer && (
         <p className="mt-2 text-xs text-muted-foreground">
-          Tu as fait le tour de ce qu'on peut te proposer aujourd'hui.{" "}
+          {t("seance.tour_fait")}{" "}
           <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
-            Choisir un thème toi-même
+            {t("seance.choisir_theme")}
           </Link>
         </p>
       )}
@@ -757,11 +763,12 @@ function PastilleFrequence({
   ouvert?: boolean
   onBascule: () => void
 }) {
+  useI18n()
   const classes = "inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-medium text-gold-foreground dark:text-gold-text"
   const contenu = (
     <>
       <Target className="size-3.5 shrink-0" />
-      Tombé dans {frequence.occurrences} épreuves sur {frequence.epreuves_total}
+      {t("seance.frequence", { n: frequence.occurrences, total: frequence.epreuves_total })}
     </>
   )
   if (ouvert === undefined) return <span className={classes}>{contenu}</span>
@@ -835,7 +842,7 @@ function IconeEtape({ type, ouverte }: { type: EtapeSeance["type"] | EtapeSeance
 function titreDeLaSeance(seance: Seance): string {
   if (seance.theme) return seance.theme.name
   if (seance.savoir) return seance.savoir.intitule
-  if (seance.origine === "DIAGNOSTIC") return "on situe ton niveau"
+  if (seance.origine === "DIAGNOSTIC") return t("seance.diagnostic")
   return seance.origine_display
 }
 
@@ -854,9 +861,9 @@ function formatEcheance(dueAt: string): string {
   const maintenant = new Date()
   const aujourdhui = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate())
   const jours = Math.round((echeance.getTime() - aujourdhui.getTime()) / 86400000)
-  if (jours <= 0) return "dès aujourd'hui"
-  if (jours === 1) return "demain"
-  return `dans ${jours} jours`
+  if (jours <= 0) return t("seance.echeance_aujourdhui")
+  if (jours === 1) return t("seance.echeance_demain")
+  return t("seance.echeance_jours", { n: jours })
 }
 
 /**
@@ -881,12 +888,13 @@ function ChoixDuree({
   // budget de temps ne sert à rien tant qu'on ne peut rien ouvrir.
   desactive?: boolean
 }) {
+  useI18n()
   // Un calibrage a une longueur fixe (quinze questions) : proposer 10 ou 45 minutes
   // n'aurait aucun effet, ou le dénaturerait (voir ajuster_duree_seance).
   if (seance.origine === "DIAGNOSTIC" || seance.budgets_possibles.length < 2) return null
   return (
     <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
-      <span className="text-xs text-muted-foreground">Combien de temps as-tu ?</span>
+      <span className="text-xs text-muted-foreground">{t("seance.combien_temps")}</span>
       <div role="group" className="inline-flex rounded-full border border-border/80 bg-muted/60 p-1">
         {seance.budgets_possibles.map((minutes) => (
           <button
@@ -936,10 +944,10 @@ function ChoixDuree({
  * par la disparition de la grille sert enfin à quelque chose.
  */
 const PHASES = [
-  { cle: "cours", titre: "Comprendre" },
-  { cle: "exercice", titre: "S'entraîner" },
-  { cle: "quiz", titre: "Vérifier" },
-] as const
+  { cle: "cours", titre: "seance.phase_cours" },
+  { cle: "exercice", titre: "seance.phase_exercice" },
+  { cle: "quiz", titre: "seance.phase_quiz" },
+] as const satisfies readonly { cle: string; titre: CleI18n }[]
 
 function EtapesParPhase({
   seance, country, plan, onOuvrirEtape, verrouillee,
@@ -952,6 +960,7 @@ function EtapesParPhase({
   // décide si ses lignes ouvrent vraiment quelque chose ou n'en montrent que la forme.
   verrouillee: boolean
 }) {
+  useI18n()
   // La page des exercices d'un thème exige la matière ET le cursus (voir
   // ThemeExercicesView) : sans eux le lien mène à une erreur 400, donc on ne l'affiche
   // pas plutôt que de proposer une impasse. Absente aussi verrouillée : c'est déjà du
@@ -974,15 +983,15 @@ function EtapesParPhase({
   if (pliable && !detailOuvert) {
     return (
       <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm">
-        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ton parcours</span>
+        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("seance.ton_parcours")}</span>
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
           {groupes.map((phase, index) => {
             const faite = (phase.etapes as EtapeSeance[]).every((etape) => etape.ouverte)
             return (
               <li key={phase.cle} className="flex items-center gap-2">
                 <span className={cn("inline-flex items-center gap-1 font-medium", faite && "text-primary")}>
-                  {faite && <Check className="size-3.5" strokeWidth={3} aria-label="fait" />}
-                  {phase.titre}
+                  {faite && <Check className="size-3.5" strokeWidth={3} aria-label={t("seance.fait")} />}
+                  {t(phase.titre)}
                 </span>
                 {index < groupes.length - 1 && <ArrowRight className="size-3 text-muted-foreground" aria-hidden="true" />}
               </li>
@@ -996,7 +1005,7 @@ function EtapesParPhase({
           onClick={() => setDetailOuvert(true)}
           className="ml-auto text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
         >
-          Voir le détail
+          {t("seance.voir_detail")}
         </button>
       </div>
     )
@@ -1005,7 +1014,7 @@ function EtapesParPhase({
   return (
     <div className="mt-6 rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
       <p className="flex items-baseline justify-between gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        Ton parcours
+        {t("seance.ton_parcours")}
         <span className="flex items-baseline gap-3 font-sans normal-case tracking-normal">
           <span className="tabular-nums">{seance.duree_estimee_min} min</span>
           {pliable && (
@@ -1015,7 +1024,7 @@ function EtapesParPhase({
               onClick={() => setDetailOuvert(false)}
               className="underline underline-offset-4 transition-colors hover:text-primary"
             >
-              Réduire
+              {t("seance.reduire")}
             </button>
           )}
         </span>
@@ -1047,9 +1056,9 @@ function EtapesParPhase({
                 <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[0.65rem] font-semibold text-primary-foreground shadow-sm shadow-primary/30">
                   {index + 1}
                 </span>
-                {phase.titre}
+                {t(phase.titre)}
                 {phase.cle === "quiz" && (
-                  <span className="font-medium normal-case tracking-normal text-primary">· valide la séance</span>
+                  <span className="font-medium normal-case tracking-normal text-primary">{t("seance.valide_la_seance")}</span>
                 )}
               </p>
             )}
@@ -1078,7 +1087,7 @@ function EtapesParPhase({
                         {etape.type === "quiz" && (
                           <span className="mt-0.5 flex items-center gap-1 text-xs font-medium text-gold-foreground dark:text-gold-text">
                             <Zap className="size-3" aria-hidden="true" />
-                            jusqu'à {etape.n * XP_MAX_PAR_QUESTION} points
+                            {t("seance.jusqua_points", { points: etape.n * XP_MAX_PAR_QUESTION })}
                           </span>
                         )}
                       </span>
@@ -1094,7 +1103,7 @@ function EtapesParPhase({
                   to={lienExercices}
                   className="flex items-center gap-1.5 px-1.5 pt-0.5 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
                 >
-                  Les {seance.exercices_total} exercices sur ce thème
+                  {t("seance.tous_exercices", { n: seance.exercices_total })}
                   <ArrowRight className="size-3" />
                 </Link>
               )}

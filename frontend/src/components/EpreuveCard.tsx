@@ -8,7 +8,9 @@ import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
 import { useIsTruncated } from "@/lib/useIsTruncated"
-import { actionInedite, LIBELLE_ACTION, libelleFaite } from "@/lib/statutInedite"
+import { actionInedite, libelleAction, libelleFaite } from "@/lib/statutInedite"
+import { t, tn, useI18n } from "@/lib/i18n"
+import { libelleDuree, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -33,12 +35,13 @@ interface EpreuveCardProps {
 /** "3 h" pour un classique (texte saisi à la transcription), "90 min" pour une inédite
  * (Blueprint.duree_minutes) - jamais les deux, jamais une durée inventée. */
 function dureeAffichee(epreuve: Epreuve): string | null {
-  if (epreuve.duree_epreuve) return epreuve.duree_epreuve
+  if (epreuve.duree_epreuve) return libelleDuree(epreuve.duree_epreuve)
   if (epreuve.duree_minutes) return `${epreuve.duree_minutes} min`
   return null
 }
 
 export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, niveauTitre = 3 }: EpreuveCardProps) {
+  useI18n()
   const Titre = niveauTitre === 2 ? "h2" : "h3"
   const [titleRef, isTitleTruncated] = useIsTruncated<HTMLHeadingElement>()
   const country = epreuve.subject.country.code.toLowerCase()
@@ -67,17 +70,17 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
    */
   const faits: { icone: typeof Clock; texte: string }[] = []
   if (epreuve.year && (isTitleTruncated || !epreuve.title.includes(String(epreuve.year)))) {
-    faits.push({ icone: Clock, texte: `Session ${epreuve.year}` })
+    faits.push({ icone: Clock, texte: t("ep.session", { year: epreuve.year }) })
   }
   if (epreuve.exercises_count > 0) {
     faits.push({
       icone: FileText,
-      texte: `${epreuve.exercises_count} exercice${epreuve.exercises_count > 1 ? "s" : ""}`,
+      texte: tn("ep.exercices", epreuve.exercises_count),
     })
   }
   if (duree) faits.push({ icone: Clock, texte: duree })
   if (/^\d+([.,]\d+)?$/.test(epreuve.coefficient.trim())) {
-    faits.push({ icone: Sparkles, texte: `Coef. ${epreuve.coefficient.trim()}` })
+    faits.push({ icone: Sparkles, texte: t("ep.coef", { coef: epreuve.coefficient.trim() }) })
   }
 
   // origine_display vaut aussi "Épreuve inédite" pour une inédite - déjà porté par le
@@ -85,8 +88,8 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
   const provenance =
     !inedite && epreuve.origine !== "OFFICIEL"
       ? epreuve.etablissement
-        ? `${epreuve.origine_display} - ${epreuve.etablissement}`
-        : epreuve.origine_display
+        ? `${libelleOrigine(epreuve.origine, epreuve.origine_display)} - ${epreuve.etablissement}`
+        : libelleOrigine(epreuve.origine, epreuve.origine_display)
       : null
 
   return (
@@ -128,17 +131,17 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
               (inedite ? (
                 <Badge variant="gold" className="gap-1">
                   <Crown className="size-3" />
-                  Épreuve inédite
+                  {t("ep.origine_INEDITE")}
                 </Badge>
               ) : (
                 <Badge variant={epreuve.lesson_type === "SUJET" ? "gold" : "outline"}>
-                  {epreuve.lesson_type_display}
+                  {libelleType(epreuve.lesson_type, epreuve.lesson_type_display)}
                 </Badge>
               ))}
             {epreuve.est_vitrine && (
               <Badge variant="success" className="gap-1">
                 <Sparkles className="size-3" />
-                Gratuit
+                {t("ep.gratuit")}
               </Badge>
             )}
             {formatCursusGroups(epreuve.cursus).map((group) => (
@@ -173,21 +176,21 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
                   <span className="truncate font-medium text-foreground">
                     {inedite
                       ? epreuve.has_access
-                        ? LIBELLE_ACTION[actionInedite(epreuve.mes_tentatives)]
-                        : "Essayer gratuitement"
-                      : epreuve.est_vitrine ? "Lire - accès libre" : "Lire le corrigé"}
+                        ? libelleAction(actionInedite(epreuve.mes_tentatives))
+                        : t("qd.essayer_gratuit")
+                      : epreuve.est_vitrine ? t("ep.lire_libre") : t("ep.lire_corrige")}
                   </span>
                 </>
               ) : (
                 <>
                   <Eye className="size-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span className="truncate font-medium text-foreground">Voir l'aperçu</span>
+                  <span className="truncate font-medium text-foreground">{t("ep.voir_apercu")}</span>
                 </>
               )}
               {(inedite ? faite : epreuve.is_read) && (
                 <span className="inline-flex shrink-0 items-center gap-1 text-success">
                   <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                  {inedite ? faite : "Lu"}
+                  {inedite ? faite : t("ep.lu")}
                 </span>
               )}
             </span>

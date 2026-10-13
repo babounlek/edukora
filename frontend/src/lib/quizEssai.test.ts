@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest"
 
 import type { QuizQuestion, QuizSession } from "@/api/types"
-import { avecQuestionCorrigee, lireEssai, memoriserEssai, oublierEssai, scoreEssai } from "./quizEssai"
+import { avecQuestionCorrigee, cheminEssai, lireEssai, memoriserEssai, oublierEssai, scoreEssai, texteDePartageEssai } from "./quizEssai"
 
 function question(id: number, theme: string, reponse?: boolean): QuizQuestion {
   return {
@@ -51,5 +51,17 @@ describe("quizEssai", () => {
       { theme: "limites", total: 2, reussies: 1 },
       { theme: "dérivée", total: 1, reussies: 1 },
     ])
+  })
+
+  it("donne le lien qui relance l'essai, et son accroche de partage", () => {
+    const q = { ...question(1, "limites"), theme_id: 77, subject_label: "Mathématiques" } as QuizQuestion
+    const session = essai([q])
+    expect(cheminEssai(session)).toBe("/quiz/essai/1/2/77")
+    expect(texteDePartageEssai(session)).toBe("Teste-toi sur « limites » (Mathématiques, BEPC) : un quiz gratuit, sans compte.")
+  })
+
+  it("ne propose aucun lien pour une session qui n'est pas un essai", () => {
+    expect(cheminEssai({ ...essai([question(1, "x")]), essai: false })).toBeNull()
+    expect(cheminEssai({ ...essai([question(1, "x")]), subject: null })).toBeNull()
   })
 })

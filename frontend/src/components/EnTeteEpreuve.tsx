@@ -4,6 +4,8 @@ import { Clock, FileText, Sparkles, type LucideIcon } from "lucide-react"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
+import { libelleDuree } from "@/lib/libellesEpreuve"
 
 export interface FaitEpreuve {
   icone: LucideIcon
@@ -14,13 +16,22 @@ export interface FaitEpreuve {
  * un texte libre : on ne l'affiche que quand c'est un nombre simple ("4", "1,5"), jamais une valeur
  * composite ("C,D : 1,5 ; E : 2") qui déborderait. */
 export function faitsEpreuve({
-  exercices, duree, coefficient,
-}: { exercices?: number; duree?: string | null; coefficient?: string | null }): FaitEpreuve[] {
+  exercices, duree, coefficient, paper, codeMatiere,
+}: {
+  exercices?: number
+  duree?: string | null
+  coefficient?: string | null
+  /** GCE : numéro du paper (1 = QCM, 2 = questions rédigées...) et code de matière du jury. */
+  paper?: number | null
+  codeMatiere?: string | null
+}): FaitEpreuve[] {
   const faits: FaitEpreuve[] = []
-  if (exercices && exercices > 0) faits.push({ icone: FileText, texte: `${exercices} exercice${exercices > 1 ? "s" : ""}` })
-  if (duree) faits.push({ icone: Clock, texte: duree })
+  if (paper) faits.push({ icone: FileText, texte: t("ed.paper", { n: paper }) })
+  if (exercices && exercices > 0) faits.push({ icone: FileText, texte: tn("ep.exercices", exercices) })
+  if (duree) faits.push({ icone: Clock, texte: libelleDuree(duree) })
+  if (codeMatiere) faits.push({ icone: Sparkles, texte: t("ed.code", { code: codeMatiere }) })
   if (coefficient && /^\d+([.,]\d+)?$/.test(coefficient.trim())) {
-    faits.push({ icone: Sparkles, texte: `Coefficient ${coefficient.trim()}` })
+    faits.push({ icone: Sparkles, texte: t("ed.coefficient", { coef: coefficient.trim() }) })
   }
   return faits
 }
@@ -51,6 +62,7 @@ interface EnTeteEpreuveProps {
 export function EnTeteEpreuve({
   titre, matiereCode, matiere, cursus, session, badges, faits = [], variante = "detail", children,
 }: EnTeteEpreuveProps) {
+  useI18n()
   const Icone = subjectIcon(matiereCode ?? "")
   const couleur = couleurMatiere(matiereCode)
   const grand = variante === "detail"
@@ -79,7 +91,7 @@ export function EnTeteEpreuve({
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               {matiere}
               {cursus && ` · ${cursus}`}
-              {session ? ` · Session ${session}` : ""}
+              {session ? ` · ${t("ep.session", { year: session })}` : ""}
             </p>
             <h1
               className={cn(

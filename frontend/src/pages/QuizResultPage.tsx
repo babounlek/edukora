@@ -22,6 +22,7 @@ import { SITE_NAME } from "@/lib/site"
 import { useCompteur } from "@/lib/useCompteur"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 const CONFETTI_COULEURS = ["bg-gold", "bg-primary", "bg-success", "bg-info", "bg-warning"]
 
@@ -61,6 +62,7 @@ function BilanXp({
   score: number
   total: number
 }) {
+  useI18n()
   const gagne = useCompteur(xp.session.total)
   const { user } = useAuth()
   const [partage, setPartage] = useState(false)
@@ -83,20 +85,20 @@ function BilanXp({
 
   return (
     <section
-      aria-label="Points gagnés et objectif du jour"
+      aria-label={t("qr.aria_bilan")}
       className="mb-6 grid gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm sm:grid-cols-[auto_1fr_1fr] sm:items-center sm:gap-8"
     >
       <div className="text-center sm:text-left">
-        <p className="text-sm text-muted-foreground">Gagné dans ce quiz</p>
+        <p className="text-sm text-muted-foreground">{t("qr.gagne")}</p>
         <p className="flex items-center justify-center gap-1.5 font-display text-4xl font-semibold tabular-nums text-gold-text sm:justify-start">
           <Zap className="size-7" aria-hidden="true" />
-          +{gagne} points
+          {t("gl.partage_points", { n: gagne })}
         </p>
         {xp.session.seance > 0 && (
-          <p className="text-xs text-muted-foreground">dont {xp.session.seance} pour la séance du jour</p>
+          <p className="text-xs text-muted-foreground">{t("qr.dont_seance", { n: xp.session.seance })}</p>
         )}
         {xp.session.total === 0 && (
-          <p className="text-xs text-muted-foreground">Les points se gagnent sur les bonnes réponses.</p>
+          <p className="text-xs text-muted-foreground">{t("qr.points_bonnes")}</p>
         )}
       </div>
       <ObjectifXp etat={xp.jour} />
@@ -108,14 +110,14 @@ function BilanXp({
         <p className="flex items-center gap-2 rounded-xl bg-gold/10 px-3 py-2 text-sm font-medium sm:col-span-3">
           <Trophy className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
           {classement.bande === "quart"
-            ? "Cette semaine, tu fais partie du quart des candidats de ton examen qui ont le plus travaillé."
-            : "Cette semaine, tu as plus travaillé que la moitié des candidats de ton examen."}
+            ? t("qr.classement_quart")
+            : t("qr.classement_moitie")}
         </p>
       )}
       <div className="sm:col-span-3">
         <Button variant="outline" size="sm" onClick={partager} disabled={partage || !user} className="rounded-full">
           <Share2 />
-          Partager mon score
+          {t("qr.partager")}
         </Button>
       </div>
     </section>
@@ -126,8 +128,8 @@ function BilanXp({
 function AnneauScore({ pourcentage, score, total }: { pourcentage: number; score: number; total: number }) {
   const [rempli, setRempli] = useState(false)
   useEffect(() => {
-    const t = setTimeout(() => setRempli(true), 100)
-    return () => clearTimeout(t)
+    const minuteur = setTimeout(() => setRempli(true), 100)
+    return () => clearTimeout(minuteur)
   }, [])
   const rayon = 52
   const circonference = 2 * Math.PI * rayon
@@ -172,6 +174,7 @@ function LigneTheme({
   onQuiz: () => void
   lancement: boolean
 }) {
+  useI18n()
   const taux = theme.total > 0 ? Math.round((100 * theme.reussies) / theme.total) : 0
   const tonalite = taux >= 70 ? "bg-success" : taux >= 40 ? "bg-gold" : "bg-destructive/70"
   return (
@@ -193,7 +196,7 @@ function LigneTheme({
           <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
             <Link to={`${themeExercicesPath(country, theme.theme_id)}?subject=${theme.subject_code}&cursus=${cursusId}`}>
               <FileText className="size-3.5" />
-              Exercices
+              {t("qd.exercices")}
             </Link>
           </Button>
         )}
@@ -201,14 +204,14 @@ function LigneTheme({
           <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
             <Link to={`/cours/${theme.cours.slug}`}>
               <BookOpen className="size-3.5" />
-              Cours
+              {t("nav.cours")}
             </Link>
           </Button>
         )}
         {theme.subject_code && (
           <Button size="sm" variant={taux < 70 ? "default" : "outline"} className="h-8 px-2.5 text-xs" onClick={onQuiz} disabled={lancement}>
             <ListChecks className="size-3.5" />
-            {lancement ? "Préparation..." : "Quiz ciblé"}
+            {lancement ? t("pc.preparation") : t("qr.quiz_cible")}
           </Button>
         )}
       </div>
@@ -219,16 +222,17 @@ function LigneTheme({
 function messageDeFin(pourcentage: number, diagnostic: boolean) {
   // Un diagnostic n'est pas une note : un 30 % n'y est pas un échec, c'est un point
   // de départ. Le message ne doit ni féliciter ni consoler.
-  if (diagnostic) return { titre: "Voilà ton point de départ", texte: "Ce n'est pas une note : c'est ce qui permet de te proposer les bonnes séances." }
-  if (pourcentage >= 90) return { titre: "Sans faute, ou presque !", texte: "Tu maîtrises ce sujet. Continue sur cette lancée." }
-  if (pourcentage >= 70) return { titre: "Très beau score !", texte: "Encore un petit effort sur les points ratés et ce sera parfait." }
-  if (pourcentage >= 40) return { titre: "Bon travail, tu progresses !", texte: "Les cours à revoir ci-dessous te feront gagner des points au prochain essai." }
-  return { titre: "Chaque quiz te rapproche de l'examen", texte: "Relis les cours proposés puis refais un quiz : tu verras la différence." }
+  if (diagnostic) return { titre: t("qr.diag_titre"), texte: t("qr.diag_texte") }
+  if (pourcentage >= 90) return { titre: t("qr.fin90_titre"), texte: t("qr.fin90_texte") }
+  if (pourcentage >= 70) return { titre: t("qr.fin70_titre"), texte: t("qr.fin70_texte") }
+  if (pourcentage >= 40) return { titre: t("qr.fin40_titre"), texte: t("qr.fin40_texte") }
+  return { titre: t("qr.fin0_titre"), texte: t("qr.fin0_texte") }
 }
 
 export function QuizResultPage() {
+  useI18n()
   const queryClient = useQueryClient()
-  useSeo({ title: "Résultat du quiz" })
+  useSeo({ title: t("qr.seo") })
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -248,7 +252,7 @@ export function QuizResultPage() {
       const session = await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 10 })
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
-      setErreurQuizCible(err instanceof ApiError ? err.message : "Impossible de lancer ce quiz.")
+      setErreurQuizCible(err instanceof ApiError ? err.message : t("qr.err_lancer"))
       setThemeEnLancement(null)
     }
   }
@@ -261,7 +265,7 @@ export function QuizResultPage() {
       const session = await refaireLesRatees(Number(id))
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
-      setErreurRefaire(err instanceof ApiError ? err.message : "Impossible de relancer ces questions.")
+      setErreurRefaire(err instanceof ApiError ? err.message : t("qr.err_relancer"))
       setRefaisant(false)
     }
   }
@@ -289,7 +293,7 @@ export function QuizResultPage() {
         }
       })
       .catch((err) => {
-        setError(err instanceof ApiError ? err.message : "Impossible de charger ce résultat.")
+        setError(err instanceof ApiError ? err.message : t("qr.err_charger"))
       })
   }, [id, queryClient])
 
@@ -298,7 +302,7 @@ export function QuizResultPage() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link to="/quiz" className="mt-3 inline-block text-sm text-primary hover:underline">
-          Retour au quiz
+          {t("qr.retour_quiz")}
         </Link>
       </div>
     )
@@ -341,7 +345,7 @@ export function QuizResultPage() {
           </div>
           <div className="min-w-0">
             <p className="mb-2 font-display text-sm italic text-primary">
-              {diagnostic ? "Test de niveau terminé" : "Quiz terminé"}
+              {diagnostic ? t("qr.diag_fini") : t("qr.quiz_fini")}
             </p>
             <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">{message.titre}</h1>
             <p className="mt-2 max-w-md text-muted-foreground">{message.texte}</p>
@@ -351,14 +355,14 @@ export function QuizResultPage() {
                   <Flame className="size-4 text-warning" />
                   <span className="font-medium tabular-nums">{result.meilleure_serie}</span>
                   <span className="text-muted-foreground">
-                    {result.meilleure_serie > 1 ? "bonnes réponses d'affilée" : "meilleure série"}
+                    {tn("qr.serie", result.meilleure_serie)}
                   </span>
                 </span>
                 <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
                   <CalendarCheck className="size-4 text-primary" />
                   <span className="font-medium tabular-nums">{result.seances_cette_semaine}</span>
                   <span className="text-muted-foreground">
-                    séance{result.seances_cette_semaine > 1 ? "s" : ""} cette semaine
+                    {tn("qr.seances", result.seances_cette_semaine)}
                   </span>
                 </span>
               </div>
@@ -384,12 +388,12 @@ export function QuizResultPage() {
         <div className="mb-6 flex flex-col gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4 sm:flex-row sm:items-center">
           <CheckCircle2 className="size-6 shrink-0 text-primary" />
           <div className="min-w-0 flex-1">
-            <p className="font-display font-semibold">Séance du jour validée</p>
-            <p className="text-sm text-muted-foreground">Bien joué : tu as fait ce qu'il fallait pour aujourd'hui.</p>
+            <p className="font-display font-semibold">{t("qr.seance_validee")}</p>
+            <p className="text-sm text-muted-foreground">{t("qr.seance_validee_texte")}</p>
           </div>
           <Button asChild>
             <Link to={`/${country}`}>
-              Revenir à Aujourd'hui
+              {t("qr.revenir")}
               <ArrowRight />
             </Link>
           </Button>
@@ -400,8 +404,8 @@ export function QuizResultPage() {
       {result.par_theme.length > 0 && (
         <section aria-labelledby="par-theme-titre" className="mb-6">
           <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-            <h2 id="par-theme-titre" className="font-display text-xl font-semibold">Résultat par thème</h2>
-            <p className="text-sm text-muted-foreground">Du plus fragile au plus solide</p>
+            <h2 id="par-theme-titre" className="font-display text-xl font-semibold">{t("qr.par_theme")}</h2>
+            <p className="text-sm text-muted-foreground">{t("qr.fragile_solide")}</p>
           </div>
           <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             {[...result.par_theme]
@@ -431,7 +435,7 @@ export function QuizResultPage() {
           première séance (voir PrioritesExamen). */}
       {!diagnostic && (aRevoir || result.nb_ratees > 0) && (
         <section className="mb-6 rounded-2xl border border-primary/25 bg-primary/[0.04] p-4 sm:p-5">
-          <h2 className="font-display text-lg font-semibold">Pour progresser</h2>
+          <h2 className="font-display text-lg font-semibold">{t("qr.progresser")}</h2>
           <ol className="mt-3 flex flex-col gap-2.5">
             {aRevoir?.cours && (
               <li>
@@ -441,7 +445,7 @@ export function QuizResultPage() {
                 >
                   <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground">1</span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold">Revoir le cours</span>
+                    <span className="block text-sm font-semibold">{t("qr.revoir_cours")}</span>
                     <span className="block truncate text-sm text-muted-foreground">{aRevoir.cours.titre}</span>
                   </span>
                   <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
@@ -461,9 +465,9 @@ export function QuizResultPage() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-sm font-semibold">
-                      {refaisant ? "Je prépare tes questions…" : `Refaire ${result.nb_ratees === 1 ? "la question ratée" : `les ${result.nb_ratees} questions ratées`}`}
+                      {refaisant ? t("qr.prepare") : tn("qr.refaire", result.nb_ratees)}
                     </span>
-                    <span className="block text-sm text-muted-foreground">Seulement celles-là, pour vérifier que c'est acquis.</span>
+                    <span className="block text-sm text-muted-foreground">{t("qr.refaire_texte")}</span>
                   </span>
                   <RotateCcw className="size-4 shrink-0 text-primary" />
                 </button>
@@ -481,15 +485,15 @@ export function QuizResultPage() {
           size="lg"
           variant={!diagnostic && (aRevoir || result.nb_ratees > 0) ? "outline" : "default"}
         >
-          {!diagnostic && (aRevoir || result.nb_ratees > 0) ? "Un autre quiz" : "Refaire un quiz"}
+          {!diagnostic && (aRevoir || result.nb_ratees > 0) ? t("qr.autre_quiz") : t("qr.refaire_quiz")}
         </Button>
         {result.subject && (
           <Button asChild variant="outline" className="flex-1" size="lg">
-            <Link to={`/parcours/${result.subject}?cursus=${result.cursus}`}>Retour au parcours</Link>
+            <Link to={`/parcours/${result.subject}?cursus=${result.cursus}`}>{t("qr.retour_parcours")}</Link>
           </Button>
         )}
         <Button asChild variant="outline" className="flex-1" size="lg">
-          <Link to="/compte">Mon compte</Link>
+          <Link to="/compte">{t("qr.mon_compte")}</Link>
         </Button>
       </div>
     </div>

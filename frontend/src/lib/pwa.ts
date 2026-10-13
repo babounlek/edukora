@@ -3,6 +3,7 @@ import { toast } from "sonner"
 
 import { API_BASE_URL } from "@/api/client"
 import { getCours, getEpreuve, readCours, readEpreuve } from "@/api/endpoints"
+import { t } from "@/lib/i18n"
 
 /** Cache Workbox des réponses d'API de lecture - même nom que dans vite.config.ts. */
 export const CACHE_LECTURE = "lecture-hors-ligne"
@@ -47,17 +48,17 @@ export function initialiserPwa() {
       onNeedRefresh() {
         // Une action, pas un rechargement automatique : la mise à jour ne doit jamais
         // couper un examen chronométré ou une lecture en cours.
-        toast("Nouvelle version disponible", {
+        toast(t("gl.pwa_nouvelle"), {
           id: "maj-app",
-          description: "Mets à jour quand tu n'es pas en pleine épreuve.",
+          description: t("gl.pwa_nouvelle_desc"),
           duration: Infinity,
-          action: { label: "Mettre à jour", onClick: () => mettreAJour(true) },
+          action: { label: t("gl.pwa_maj"), onClick: () => mettreAJour(true) },
         })
       },
       onOfflineReady() {
-        toast.success("Prêt pour la lecture hors connexion", {
+        toast.success(t("gl.pwa_pret"), {
           id: "hors-ligne-pret",
-          description: "Les épreuves et cours que tu as lus restent disponibles sans réseau.",
+          description: t("gl.pwa_pret_desc"),
         })
       },
     })

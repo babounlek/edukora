@@ -2,6 +2,7 @@ import { RefreshCw } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 interface ErreurChargementProps {
   /** Ce qui n'a pas pu être chargé, ex. « tes accès » - sert à la phrase par défaut. */
@@ -19,6 +20,7 @@ interface ErreurChargementProps {
  * catalogue, un carnet ou une liste d'accès vide, et l'élève cherche l'erreur ailleurs.
  */
 export function ErreurChargement({ objet, message, onRetry, compact = false, className }: ErreurChargementProps) {
+  useI18n()
   return (
     <div
       role="alert"
@@ -32,15 +34,15 @@ export function ErreurChargement({ objet, message, onRetry, compact = false, cla
         <RefreshCw className="size-6" aria-hidden="true" />
       </span>
       <p className="font-display text-lg font-semibold">
-        {objet ? `Impossible de charger ${objet}` : "Impossible de charger cette page"}
+        {objet ? t("erreur.charger_objet", { objet }) : t("erreur.charger_page")}
       </p>
       <p className="max-w-sm text-sm text-muted-foreground">
-        {message ?? "Vérifie ta connexion, puis réessaie : rien n'a été perdu."}
+        {message ?? t("erreur.message")}
       </p>
       {onRetry && (
         <Button onClick={onRetry} className="min-h-11 rounded-full">
           <RefreshCw />
-          Réessayer
+          {t("erreur.reessayer")}
         </Button>
       )}
     </div>

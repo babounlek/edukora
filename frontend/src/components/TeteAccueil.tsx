@@ -24,6 +24,7 @@ import { trackEvent } from "@/lib/analytics"
 import { themesFrequentsPath } from "@/lib/countryPath"
 import { pourcent } from "@/lib/maitrise"
 import { cn } from "@/lib/utils"
+import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 
 // Part de préparation (0-1) sous laquelle l'anneau n'est pas montré dans le bandeau.
 const SEUIL_ANNEAU_VISIBLE = 0.1
@@ -45,6 +46,7 @@ const SEUIL_ANNEAU_VISIBLE = 0.1
  * une question - comment ça s'est passé ?
  */
 export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: string }) {
+  useI18n()
   const { user } = useAuth()
   // La séance vit sous la clé "plan-du-jour" comme partout (voir SeanceCorps : ses
   // mutations y écrivent). L'accueil agrégé l'y a déposée (voir AccueilEleve) ; ici on
@@ -87,7 +89,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
   const salutationSeule = phraseSousLeTitre && accueil.premiers_pas && joursExacts
 
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6" aria-label="Aujourd'hui">
+    <section className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6" aria-label={t("seance.aujourdhui")}>
       <div className="animate-fade-up relative overflow-hidden rounded-3xl border border-primary/20 bg-card shadow-xl shadow-primary/[0.07]">
         {bandeFine && <BandeFine prenom={prenom} cursus={cursus} phase={accueil.phase} compte={compte} />}
         {/* La bande du coach : fond de marque, texte clair. Le dégradé reste au-dessus
@@ -115,7 +117,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
                 )}
               >
                 <span>
-                  {prenom ? `Bonjour ${prenom}` : "Bonjour"}
+                  {prenom ? t("tete.bonjour_prenom", { prenom }) : t("tete.bonjour")}
                   {cursus && <CursusPreparePuce cursus={cursus} />}
                 </span>
                 <BadgePhase phase={accueil.phase} />
@@ -198,9 +200,9 @@ function Corps({
   if (plan.etat === "rien_a_proposer") {
     return (
       <p className="text-sm text-muted-foreground">
-        On n'a rien à te proposer aujourd'hui.{" "}
+        {t("tete.rien_a_proposer")}{" "}
         <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
-          Choisir un thème toi-même
+          {t("seance.choisir_theme")}
         </Link>
       </p>
     )
@@ -272,9 +274,9 @@ function CursusPreparePuce({ cursus, clair = false }: { cursus: Cursus; clair?: 
 /** Un mot sur la phase quand elle change quelque chose à la page - jamais en temps normal. */
 function BadgePhase({ phase, clair = false }: { phase: PhaseExamen; clair?: boolean }) {
   const libelle =
-    phase === "simulation" ? "Mois des annales"
-    : phase === "derniere_ligne_droite" ? "Dernière ligne droite"
-    : phase === "veille" ? "C'est demain"
+    phase === "simulation" ? t("tete.phase_simulation")
+    : phase === "derniere_ligne_droite" ? t("tete.phase_derniere_ligne_droite")
+    : phase === "veille" ? t("tete.phase_veille")
     : null
   if (!libelle) return null
   return (
@@ -292,7 +294,7 @@ function BadgePhase({ phase, clair = false }: { phase: PhaseExamen; clair?: bool
 /** « mai 2027 » : le mois d'une date d'examen seulement estimée (voir Decompte). */
 function moisEstime(compte: CompteARebours): string {
   const [annee, mois] = compte.date_examen.split("-").map(Number)
-  const nomMois = new Intl.DateTimeFormat("fr-FR", { month: "long" }).format(new Date(annee, mois - 1, 15))
+  const nomMois = new Intl.DateTimeFormat(localeCourante(), { month: "long" }).format(new Date(annee, mois - 1, 15))
   return `${nomMois} ${annee}`
 }
 
@@ -312,14 +314,14 @@ function BandeFine({
     <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-primary/10 bg-primary/[0.06] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary sm:px-8">
       <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <span>
-          {prenom ? `Bonjour ${prenom}` : "Bonjour"}
+          {prenom ? t("tete.bonjour_prenom", { prenom }) : t("tete.bonjour")}
           {cursus && <CursusPreparePuce cursus={cursus} clair />}
         </span>
         <BadgePhase phase={phase} clair />
       </p>
       {dateEstimee && (
         <span className="font-medium normal-case tracking-normal text-muted-foreground sm:hidden">
-          Examen vers {dateEstimee}
+          {t("tete.examen_vers", { mois: dateEstimee })}
         </span>
       )}
     </div>
@@ -340,28 +342,28 @@ function Decompte({ compte, premiersPas }: { compte: CompteARebours | null; prem
   if (!compte || compte.jours_restants < 0) return null
   if (compte.estimee) {
     const [annee, mois] = compte.date_examen.split("-").map(Number)
-    const nomMois = new Intl.DateTimeFormat("fr-FR", { month: "long" }).format(new Date(annee, mois - 1, 15))
+    const nomMois = new Intl.DateTimeFormat(localeCourante(), { month: "long" }).format(new Date(annee, mois - 1, 15))
     return (
       // Plus petit sur téléphone : une date seulement estimée n'appelle aucune action, elle
       // ne doit pas dominer la bande, ni passer devant le thème du jour.
       <p className="mt-1.5 font-display text-lg font-semibold leading-tight sm:text-2xl">
-        Examen vers {nomMois} {annee}
+        {t("tete.examen_vers", { mois: `${nomMois} ${annee}` })}
       </p>
     )
   }
   if (compte.jours_restants === 0) {
-    return <p className="mt-1.5 font-display text-2xl font-semibold leading-tight sm:text-3xl">C'est aujourd'hui</p>
+    return <p className="mt-1.5 font-display text-2xl font-semibold leading-tight sm:text-3xl">{t("tete.cest_aujourdhui")}</p>
   }
   if (premiersPas) return null
   const [annee, mois, jour] = compte.date_examen.split("-").map(Number)
-  const date = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long" }).format(new Date(annee, mois - 1, jour))
+  const date = new Intl.DateTimeFormat(localeCourante(), { day: "numeric", month: "long" }).format(new Date(annee, mois - 1, jour))
   return (
     <p className="mt-1.5 flex flex-wrap items-baseline gap-x-2 font-display leading-none">
       <span className="text-4xl font-semibold tabular-nums sm:text-5xl">{compte.jours_restants}</span>
       <span className="text-base font-medium text-primary-foreground/85 sm:text-lg">
-        jour{compte.jours_restants > 1 ? "s" : ""} avant l'examen
+        {tn("tete.jours_avant_examen", compte.jours_restants)}
       </span>
-      <span className="text-sm text-primary-foreground/70">· {compte.session_label}, le {date}</span>
+      <span className="text-sm text-primary-foreground/70">{t("tete.session_date", { session: compte.session_label, date })}</span>
     </p>
   )
 }
@@ -377,7 +379,7 @@ function Decompte({ compte, premiersPas }: { compte: CompteARebours | null; prem
  * vide découragerait sans rien mesurer - seul le chiffre, honnête sur ce qu'il dit.
  */
 function RepereJoursRestants({ compte, compact = false }: { compte: CompteARebours; compact?: boolean }) {
-  const unite = `jour${compte.jours_restants > 1 ? "s" : ""} avant l'examen`
+  const unite = tn("tete.jours_avant_examen", compte.jours_restants)
   if (compact) {
     // Sans boîte de taille fixe : c'est elle qui rendait la bande aussi haute que l'anneau.
     // Sur téléphone le libellé passe sous le nombre, dès `sm` tout tient sur une ligne.
@@ -392,7 +394,7 @@ function RepereJoursRestants({ compte, compact = false }: { compte: CompteARebou
     <div className="flex size-20 shrink-0 flex-col items-center justify-center text-center leading-tight sm:size-28">
       <span className="font-display text-3xl font-semibold tabular-nums sm:text-4xl">{compte.jours_restants}</span>
       <span className="mt-1 text-[0.65rem] text-primary-foreground/80 sm:text-xs">
-        jour{compte.jours_restants > 1 ? "s" : ""} avant l'examen
+        {unite}
       </span>
     </div>
   )
@@ -425,7 +427,7 @@ function AnneauPreparation({ part }: { part: number }) {
     <div
       className="relative size-20 shrink-0 sm:size-28"
       role="img"
-      aria-label={`${pourcent(part)} % de ce qui tombe à l'examen est maîtrisé`}
+      aria-label={t("tete.anneau_aria", { pct: pourcent(part) })}
     >
       <svg viewBox="0 0 72 72" className="size-full -rotate-90">
         <circle cx="36" cy="36" r={rayon} fill="none" strokeWidth="6" className="stroke-primary-foreground/20" />
@@ -441,7 +443,7 @@ function AnneauPreparation({ part }: { part: number }) {
         <span className="font-display text-xl font-semibold tabular-nums sm:text-3xl">
           {pourcent(part)}<span className="text-sm">%</span>
         </span>
-        <span className="text-[0.6rem] text-primary-foreground/80 sm:text-[0.65rem]">de l'essentiel</span>
+        <span className="text-[0.6rem] text-primary-foreground/80 sm:text-[0.65rem]">{t("tete.anneau_essentiel")}</span>
       </span>
     </div>
   )
@@ -458,19 +460,22 @@ function SimulationSuggeree({ suggestion }: { suggestion: NonNullable<Accueil["s
     <>
       <BoutonSimulation epreuveId={suggestion.id} />
       <p className="basis-full text-xs text-muted-foreground">
-        Annale suggérée : {suggestion.subject_label}{suggestion.year ? ` ${suggestion.year}` : ""} · {suggestion.title}
+        {t("tete.annale_suggeree", {
+          annale: `${suggestion.subject_label}${suggestion.year ? ` ${suggestion.year}` : ""}`,
+          titre: suggestion.title,
+        })}
       </p>
     </>
   )
 }
 
 const CHECKLIST_VEILLE = [
-  "Convocation et pièce d'identité dans le sac",
-  "Stylos, règle, et la calculatrice si elle est autorisée",
-  "Une montre : le téléphone reste dehors",
-  "Le trajet et l'heure d'arrivée vérifiés",
-  "Coucher tôt : une nuit complète vaut plus qu'une dernière relecture",
-]
+  "tete.veille1",
+  "tete.veille2",
+  "tete.veille3",
+  "tete.veille4",
+  "tete.veille5",
+] as const satisfies readonly CleI18n[]
 
 /**
  * La veille : rien à apprendre, une liste à cocher, et une relecture courte pour qui
@@ -504,7 +509,7 @@ function Veille({ plan, country }: { plan: Accueil["plan"] | undefined; country:
     <div>
       <h2 className="flex items-center gap-2 font-display text-2xl font-semibold sm:text-3xl">
         <Moon className="size-5 shrink-0 text-primary" aria-hidden="true" />
-        Ce soir, on prépare le sac
+        {t("tete.veille_titre")}
       </h2>
       <ul className="mt-4 flex flex-col gap-2">
         {CHECKLIST_VEILLE.map((item, index) => (
@@ -528,7 +533,7 @@ function Veille({ plan, country }: { plan: Accueil["plan"] | undefined; country:
               >
                 {coches[index] && <Check className="size-3.5" strokeWidth={3} />}
               </span>
-              {item}
+              {t(item)}
             </button>
           </li>
         ))}
@@ -541,7 +546,7 @@ function Veille({ plan, country }: { plan: Accueil["plan"] | undefined; country:
             </div>
           ) : (
             <Button variant="ghost" size="sm" className="rounded-full text-muted-foreground" onClick={() => setRelire(true)}>
-              Relire dix minutes quand même
+              {t("tete.relire_dix")}
             </Button>
           )}
         </div>
@@ -556,22 +561,22 @@ function JourJ() {
     <div>
       <h2 className="flex items-center gap-2 font-display text-2xl font-semibold sm:text-3xl">
         <Sun className="size-5 shrink-0 text-gold-text" aria-hidden="true" />
-        Bonne chance
+        {t("tete.jour_j_titre")}
       </h2>
       <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-foreground">
-        <li className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-primary" />Lis chaque consigne deux fois avant d'écrire.</li>
-        <li className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-primary" />Commence par ce que tu sais faire : les points faciles d'abord.</li>
-        <li className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-primary" />Garde cinq minutes à la fin pour relire.</li>
+        <li className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-primary" />{t("tete.jour_j1")}</li>
+        <li className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-primary" />{t("tete.jour_j2")}</li>
+        <li className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-primary" />{t("tete.jour_j3")}</li>
       </ul>
     </div>
   )
 }
 
 const RESSENTIS = [
-  { code: "bien", libelle: "Plutôt bien" },
-  { code: "moyen", libelle: "Mitigé" },
-  { code: "difficile", libelle: "Difficile" },
-] as const
+  { code: "bien", libelle: "tete.ressenti_bien" },
+  { code: "moyen", libelle: "tete.ressenti_moyen" },
+  { code: "difficile", libelle: "tete.ressenti_difficile" },
+] as const satisfies readonly { code: string; libelle: CleI18n }[]
 
 /**
  * Après l'examen : on arrête tout et on demande. La réponse part en analytics (voir
@@ -602,20 +607,20 @@ function ApresExamen() {
     <div>
       <h2 className="flex items-center gap-2 font-display text-2xl font-semibold sm:text-3xl">
         <Sparkles className="size-5 shrink-0 text-primary" aria-hidden="true" />
-        {repondu ? "Merci" : "Comment ça s'est passé ?"}
+        {repondu ? t("tete.apres_merci") : t("tete.apres_titre")}
       </h2>
       {repondu ? (
         <p className="mt-3 text-sm text-muted-foreground">
-          Tes corrigés, cours et quiz restent ouverts jusqu'à la fin de ton accès. Si tu prépares un autre examen,{" "}
-          <Link to="/compte" className="underline underline-offset-4 hover:text-primary">dis-le nous</Link>.
+          {t("tete.apres_merci_texte")}{" "}
+          <Link to="/compte" className="underline underline-offset-4 hover:text-primary">{t("tete.apres_merci_lien")}</Link>.
         </p>
       ) : (
         <>
-          <p className="mt-3 text-sm text-muted-foreground">Un mot suffit. Ça nous aide à mieux préparer les suivants.</p>
+          <p className="mt-3 text-sm text-muted-foreground">{t("tete.apres_question")}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {RESSENTIS.map((r) => (
               <Button key={r.code} variant="outline" className="rounded-full" onClick={() => repondre(r.code)}>
-                {r.libelle}
+                {t(r.libelle)}
               </Button>
             ))}
           </div>

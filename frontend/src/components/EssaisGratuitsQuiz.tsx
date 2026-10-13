@@ -13,6 +13,8 @@ import { memoriserEssai } from "@/lib/quizEssai"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { t, tn, useI18n } from "@/lib/i18n"
+import { traduireLibelleSerie } from "@/lib/cursus"
 
 /**
  * Les quiz gratuits, jouables SANS compte (voir quiz.essai côté backend) : un thème entier par
@@ -21,6 +23,7 @@ import { capitaliserTheme, cn } from "@/lib/utils"
  * QuizEssaiResultPage). Rien n'est affiché si aucun essai n'est ouvert.
  */
 export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number | null }) {
+  useI18n()
   const navigate = useNavigate()
   const { data: essais } = useQuery({
     queryKey: ["quiz", "essais"],
@@ -33,7 +36,7 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
 
   const cursus = useMemo(() => {
     const vus = new Map<number, string>()
-    for (const e of essais ?? []) if (!vus.has(e.cursus)) vus.set(e.cursus, e.cursus_display)
+    for (const e of essais ?? []) if (!vus.has(e.cursus)) vus.set(e.cursus, traduireLibelleSerie(e.cursus_display))
     return [...vus.entries()].map(([id, libelle]) => ({ id, libelle }))
   }, [essais])
 
@@ -53,7 +56,7 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
       trackEvent("quiz_started", { cursus_id: essai.cursus, mode: "PRATIQUE", source: "essai_anonyme" })
       navigate("/quiz/essai")
     } catch (err) {
-      setErreur(err instanceof ApiError ? err.message : "Impossible de lancer cet essai. Réessaie dans un instant.")
+      setErreur(err instanceof ApiError ? err.message : t("essais.erreur"))
       setEnCours(null)
     }
   }
@@ -65,14 +68,14 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
     >
       <p id="essais-gratuits-titre" className="flex items-center gap-2 font-display text-lg font-semibold">
         <Gift className="size-5 text-gold-text" aria-hidden="true" />
-        Essaie gratuitement, sans compte
+        {t("essais.titre")}
       </p>
       <p className="text-sm text-muted-foreground">
-        Un thème complet par matière, avec la correction de chaque question. Choisis ton examen, puis lance.
+        {t("essais.texte")}
       </p>
 
       {cursus.length > 1 && (
-        <FiltreLigne titre="Examen">
+        <FiltreLigne titre={t("quiz.examen")}>
           {cursus.map((c) => (
             <PastilleFiltre key={c.id} actif={actif === c.id} onClick={() => setChoisi(c.id)}>
               {c.libelle}
@@ -94,12 +97,12 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
                 <span className="min-w-0">
                   <span className="block truncate text-sm font-medium">{essai.subject_label}</span>
                   <span className="block truncate text-xs text-muted-foreground">
-                    {capitaliserTheme(essai.theme_name)} · {essai.nb_questions} question{essai.nb_questions > 1 ? "s" : ""}
+                    {capitaliserTheme(essai.theme_name)} · {tn("quiz.n_questions", essai.nb_questions)}
                   </span>
                 </span>
               </span>
               <Button size="sm" disabled={enCours !== null} onClick={() => lancer(essai)} className="shrink-0 rounded-full">
-                {enCours === cle ? "Préparation..." : "Essayer"}
+                {enCours === cle ? t("quiz.preparation") : t("essais.essayer")}
                 {enCours !== cle && <ArrowRight />}
               </Button>
             </li>

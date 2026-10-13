@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom"
 
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { SITE_NAME } from "@/lib/site"
+import { t, useI18n } from "@/lib/i18n"
 
 type TypeContenu = "epreuve" | "cours" | "inedite"
 
@@ -15,6 +16,7 @@ type TypeContenu = "epreuve" | "cours" | "inedite"
  * cas des écrans qui ne connaissent pas leur contenu (voir AccesRefuse).
  */
 export function ParrainageHint({ chemin, texte, type }: { chemin?: string; texte?: string; type?: TypeContenu }) {
+  useI18n()
   const { pathname } = useLocation()
   const cheminPartage = chemin ?? pathname.replace(/\/lire$/, "")
   const genre: TypeContenu = type ?? (cheminPartage.startsWith("/cours/") ? "cours" : "epreuve")
@@ -23,11 +25,11 @@ export function ParrainageHint({ chemin, texte, type }: { chemin?: string; texte
   return (
     <BoutonPartager
       chemin={cheminPartage}
-      texte={texte ?? (titre ? `Regarde « ${titre} » sur ${SITE_NAME} :` : `Regarde ça sur ${SITE_NAME} :`)}
+      texte={texte ?? (titre ? t("ed.partage", { titre, site: SITE_NAME }) : t("ed.partage_defaut", { site: SITE_NAME }))}
       type={genre}
       variant="ghost"
       className="h-auto w-fit gap-1.5 px-0 text-xs font-normal text-muted-foreground hover:bg-transparent hover:text-primary hover:underline"
-      libelle="Ou partage-le avec un ami"
+      libelle={t("ed.ami")}
     />
   )
 }

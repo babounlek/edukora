@@ -4,6 +4,9 @@
  * épreuve déjà avancée n'est jamais bombardé des repères qu'il a déjà passés : seul le plus
  * urgent est dit, les autres sont considérés comme annoncés.
  */
+import { t } from "@/lib/i18n"
+import { tu, tnu } from "@/lib/vocabulaire"
+
 export type CleAlerte = "mi-parcours" | "quinze-minutes" | "cinq-minutes" | "une-minute"
 
 interface Repere {
@@ -35,17 +38,14 @@ export interface ContexteAlerte {
 }
 
 export function messageAlerte(cle: CleAlerte, { traitees, total, unite = "question" }: ContexteAlerte): string {
-  const exercice = unite === "exercice"
   switch (cle) {
     case "mi-parcours":
-      return `Mi-parcours : ${traitees} ${exercice ? "exercice" : "question"}${traitees > 1 ? "s" : ""} ${exercice ? "traité" : "traitée"}${traitees > 1 ? "s" : ""} sur ${total}.`
+      return tnu("al.mi_parcours", unite, traitees, { total })
     case "quinze-minutes":
-      return "Il reste 15 minutes."
+      return t("al.quinze")
     case "cinq-minutes":
-      return exercice
-        ? "Il reste 5 minutes : pense à cocher les exercices que tu as traités."
-        : "Il reste 5 minutes : pense à cocher les questions que tu as traitées."
+      return tu("al.cinq", unite)
     case "une-minute":
-      return "Dernière minute."
+      return t("al.une")
   }
 }

@@ -7,6 +7,7 @@ import { getPaiementAReprendre } from "@/api/endpoints"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
 import { formatAmount } from "@/lib/utils"
+import { t, useI18n } from "@/lib/i18n"
 
 const FERME_KEY = "edukamer_bandeau_paiement_ferme"
 
@@ -31,6 +32,7 @@ function lireFerme(): boolean {
  * la personne voulait faire.
  */
 export function BandeauReprisePaiement() {
+  useI18n()
   const { pathname } = useLocation()
   const { isAuthenticated } = useAuth()
   const [ferme, setFerme] = useState(lireFerme)
@@ -56,18 +58,18 @@ export function BandeauReprisePaiement() {
   }
 
   return (
-    <div role="region" aria-label="Paiement à reprendre" className="border-b border-border bg-accent/60">
+    <div role="region" aria-label={t("br.aria")} className="border-b border-border bg-accent/60">
       <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2 sm:px-6">
         <p className="min-w-0 flex-1 text-sm">
-          Ton paiement de {formatAmount(data.montant ?? 0)} FCFA {data.statut === "FAILED" ? "n'a pas abouti" : "n'a pas été confirmé"}.
+          {t(data.statut === "FAILED" ? "br.echec" : "br.non_confirme", { montant: formatAmount(data.montant ?? 0) })}
         </p>
         <Button asChild size="sm" className="shrink-0">
-          <Link to={`/abonnement?cursus=${data.cursus_id}`}>Reprendre</Link>
+          <Link to={`/abonnement?cursus=${data.cursus_id}`}>{t("seance.reprendre")}</Link>
         </Button>
         <button
           type="button"
           onClick={fermer}
-          aria-label="Masquer ce message"
+          aria-label={t("br.masquer")}
           className="shrink-0 rounded-md p-1.5 text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
           <X className="size-4" />

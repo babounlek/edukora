@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { lienEtape, ouvrirEtapeDeSeance } from "@/lib/seance"
 import { Button } from "@/components/ui/button"
+import { t, useI18n } from "@/lib/i18n"
 
 interface PositionDansLaSeance {
   numero: number
@@ -67,16 +68,17 @@ export function usePositionDansLaSeance(): PositionDansLaSeance | null {
  * et où elle continue, sans repasser par l'accueil.
  */
 export function BarreSeance() {
+  useI18n()
   const position = usePositionDansLaSeance()
   if (!position) return null
 
   return (
-    <div role="region" aria-label="Séance du jour" className="border-b border-primary/20 bg-primary/5">
+    <div role="region" aria-label={t("bs.aria")} className="border-b border-primary/20 bg-primary/5">
       <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2 sm:px-6">
         <ListChecks className="size-4 shrink-0 text-primary" />
         <p className="min-w-0 flex-1 truncate text-sm">
-          <span className="font-semibold">Séance du jour</span>
-          <span className="text-muted-foreground"> · étape {position.numero}/{position.total}</span>
+          <span className="font-semibold">{t("bs.aria")}</span>
+          <span className="text-muted-foreground">{t("bs.etape", { n: position.numero, total: position.total })}</span>
         </p>
         {position.suivante && position.lienSuivante && (
           <Link
@@ -84,7 +86,7 @@ export function BarreSeance() {
             onClick={position.ouvrirSuivante}
             className="flex shrink-0 items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline"
           >
-            Continuer
+            {t("bs.continuer")}
             <ArrowRight className="size-3.5" />
           </Link>
         )}
@@ -99,6 +101,7 @@ export function BarreSeance() {
  * l'accueil pour la suite.
  */
 export function EtapeSuivante() {
+  useI18n()
   const position = usePositionDansLaSeance()
   if (!position?.suivante || !position.lienSuivante) return null
   const { suivante } = position
@@ -106,13 +109,13 @@ export function EtapeSuivante() {
   return (
     <section className="mx-auto mt-10 max-w-3xl rounded-2xl border border-primary/30 bg-primary/5 p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-        Séance du jour · étape {position.numero}/{position.total} terminée
+        {t("bs.terminee", { n: position.numero, total: position.total })}
       </p>
-      <p className="mt-1 font-display text-lg font-semibold">Étape suivante : {suivante.libelle}</p>
+      <p className="mt-1 font-display text-lg font-semibold">{t("bs.suivante", { libelle: suivante.libelle })}</p>
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <Button asChild size="lg" className="rounded-full">
           <Link to={position.lienSuivante} onClick={position.ouvrirSuivante}>
-            {suivante.type === "quiz" ? "Passer au quiz" : "Continuer"}
+            {suivante.type === "quiz" ? t("bs.passer_quiz") : t("bs.continuer")}
             <ArrowRight />
           </Link>
         </Button>

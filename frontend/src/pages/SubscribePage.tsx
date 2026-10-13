@@ -26,7 +26,8 @@ import { BienvenueAbonne } from "@/components/BienvenueAbonne"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { ContenuDebloque } from "@/components/ContenuDebloque"
 import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
-import { DELAI_VERIFICATION_PAIEMENT_MANUEL } from "@/lib/delaiVerificationPaiement"
+import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
+import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { chiffresNumeroLocal } from "@/lib/telephone"
 
 type PaymentPhase = "form" | "pending" | "success" | "failed" | "timeout" | "manual_submitted"
@@ -78,6 +79,12 @@ const MANUAL_METHODS: PaymentMethodOption[] = [
   },
 ]
 
+/** Le nom d'un plan : en français celui du serveur ; ailleurs, la formule unique « Jusqu'à l'Examen » est traduite. */
+function nomPlan(plan: Plan): string {
+  if (langueCourante() !== "fr" && plan.product_type === "ABONNEMENT" && plan.duration_mode === "JUSQUA_EXAMEN") return t("prix.formule")
+  return plan.name
+}
+
 function StepLabel({ n, children }: { n: number; children: ReactNode }) {
   return (
     <div className="flex items-center gap-2">
@@ -90,7 +97,8 @@ function StepLabel({ n, children }: { n: number; children: ReactNode }) {
 }
 
 export function SubscribePage() {
-  useSeo({ title: "Abonnement" })
+  useI18n()
+  useSeo({ title: t("sb.seo") })
 
   const [searchParams] = useSearchParams()
   const cursusId = searchParams.get("cursus")
@@ -163,7 +171,7 @@ export function SubscribePage() {
       navigate("/connexion", {
         state: {
           from: `/abonnement?${searchParams.toString()}`,
-          intent: "Connecte-toi pour finaliser ton abonnement.",
+          intent: t("sb.intent"),
         },
       })
     }
@@ -314,7 +322,7 @@ export function SubscribePage() {
 
     setError(null)
     if (!/^6\d{8}$/.test(phoneNumber)) {
-      setError("Entre un numéro Mobile Money valide (9 chiffres, commence par 6).")
+      setError(t("sb.erreur_numero"))
       return
     }
 
@@ -339,7 +347,7 @@ export function SubscribePage() {
       pollTransaction(response.transaction_id)
     } catch (err) {
       setPhase("failed")
-      setError(err instanceof ApiError ? err.message : "Le paiement n'a pas pu être initié.")
+      setError(err instanceof ApiError ? err.message : t("sb.erreur_initie"))
       trackEvent("payment_failed", properties)
       // Contrairement à response.status === "FAILED" ci-dessus (échec métier déjà
       // remonté côté backend, voir payments/views.py._report_campay_error) : un rejet
@@ -381,22 +389,22 @@ export function SubscribePage() {
       <div key={plan.id} className="flex items-center justify-between gap-3 rounded-xl border-2 border-primary bg-accent px-4 py-3.5 text-sm ring-1 ring-primary">
         <span className="flex flex-col gap-1">
           <span className="font-display font-medium">
-            {profilPrenom ? `${plan.name} pour ${profilPrenom}` : plan.name}
+            {profilPrenom ? t("sb.plan_pour", { plan: nomPlan(plan), prenom: profilPrenom }) : nomPlan(plan)}
           </span>
           {plan.duration_mode === "JUSQUA_EXAMEN" && (
             <span className="text-xs font-normal text-muted-foreground">
-              Accès jusqu'à son examen - {plan.effective_duration_days} jour{plan.effective_duration_days > 1 ? "s" : ""} restant{plan.effective_duration_days > 1 ? "s" : ""}
+              {tn("sb.acces_jusqua", plan.effective_duration_days)}
             </span>
           )}
           {plan.inclut_inedit && (
             <span className="flex items-center gap-1 text-xs font-medium text-gold-text">
               <Sparkles className="size-3" />
-              Épreuves inédites incluses
+              {t("ac.inedites_incluses")}
             </span>
           )}
           {plan.duration_mode === "JUSQUA_EXAMEN" && plan.effective_price < plan.price && (
             <span className="text-xs font-medium text-success">
-              Prix enfant supplémentaire (−20 %) : {formatAmount(plan.price)} → {formatAmount(plan.effective_price)} FCFA
+              {t("sb.prix_enfant", { a: formatAmount(plan.price), b: formatAmount(plan.effective_price) })}
             </span>
           )}
         </span>
@@ -422,16 +430,16 @@ export function SubscribePage() {
             className="accent-primary"
           />
           <span className="flex flex-col gap-1">
-            <span className="font-display font-medium">{plan.name}</span>
+            <span className="font-display font-medium">{nomPlan(plan)}</span>
             {plan.duration_mode === "JUSQUA_EXAMEN" && (
               <span className="text-xs font-normal text-muted-foreground">
-                Accès jusqu'à son examen - {plan.effective_duration_days} jour{plan.effective_duration_days > 1 ? "s" : ""} restant{plan.effective_duration_days > 1 ? "s" : ""}
+                {tn("sb.acces_jusqua", plan.effective_duration_days)}
               </span>
             )}
             {plan.inclut_inedit && (
               <span className="flex items-center gap-1 text-xs font-medium text-gold-text">
                 <Sparkles className="size-3" />
-                Épreuves inédites incluses
+                {t("ac.inedites_incluses")}
               </span>
             )}
           </span>
@@ -466,17 +474,17 @@ export function SubscribePage() {
             <Sparkles className="size-5" />
           </div>
           <p className="mb-1 font-display text-sm italic text-primary">
-            {profilPrenom ? `Abonnement pour ${profilPrenom}` : "Abonnement"}
+            {profilPrenom ? t("sb.abonnement_pour", { prenom: profilPrenom }) : t("sb.seo")}
           </p>
           <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
             {cursus
-              ? `${cursus.examen_display}${cursus.series ? ` - Série ${cursus.series.code}` : ""}`
-              : "S'abonner"}
+              ? `${cursus.examen_display}${cursus.series ? ` - ${t("prix.serie", { code: cursus.series.code })}` : ""}`
+              : t("prix.sabonner")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             {requireRepetiteur
-              ? "Seul l'add-on Fiches (répétiteurs) pour ce cursus est proposé ici - il ne débloque pas les corrigés classiques."
-              : "Corrigés, cours, quiz et épreuves inédites - un seul abonnement, valable jusqu'à ton examen."}
+              ? t("sb.sous_titre_fiches")
+              : t("sb.sous_titre")}
           </p>
         </div>
       </div>
@@ -495,21 +503,21 @@ export function SubscribePage() {
           <Card className="animate-fade-up overflow-hidden shadow-lg shadow-primary/5">
             <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
             <CardContent className="flex flex-col gap-2.5 p-6">
-              <Label className="text-sm font-semibold">Ton offre</Label>
+              <Label className="text-sm font-semibold">{t("sb.ton_offre")}</Label>
               {!plansPrets ? (
-                <div className="flex flex-col gap-2" aria-busy="true" aria-label="Chargement de l'offre">
+                <div className="flex flex-col gap-2" aria-busy="true" aria-label={t("sb.chargement_offre")}>
                   <div className="h-16 w-full animate-pulse rounded-xl bg-muted" />
                 </div>
               ) : plansErreur ? (
-                <ErreurChargement compact objet="l'offre" onRetry={reessayerPlans} />
+                <ErreurChargement compact objet={t("sb.objet_offre")} onRetry={reessayerPlans} />
               ) : (
                 <div className="flex flex-col gap-2">
                   {plans.length === 1 ? renderPlanRecap(plans[0]) : plans.map(renderPlanOption)}
                   {plans.length === 0 && (
                     <p className="text-sm text-muted-foreground">
                       {requireRepetiteur
-                        ? "L'add-on Fiches n'est pas encore disponible à l'achat pour ce cursus - reviens bientôt."
-                        : "Aucune offre disponible pour ce cursus actuellement."}
+                        ? t("sb.fiches_indisponible")
+                        : t("sb.aucune_offre")}
                     </p>
                   )}
                 </div>
@@ -539,18 +547,18 @@ export function SubscribePage() {
                 <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">
                   <Gift className="size-4 shrink-0 text-gold-text" />
                   <span>
-                    Tu as <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong> de
-                    crédit parrainage - appliqué automatiquement pour un paiement Campay.
+                    {t("sb.credit_avant")} <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong>{" "}
+                    {t("sb.credit_apres")}
                   </span>
                 </div>
               )}
 
               {!configPrete ? (
-                <Loader2 className="mx-auto size-6 animate-spin text-primary" aria-label="Chargement des moyens de paiement" />
+                <Loader2 className="mx-auto size-6 animate-spin text-primary" aria-label={t("sb.chargement_moyens")} />
               ) : (
                 <>
                   <div className="flex flex-col gap-2.5">
-                    <StepLabel n={1}>Moyen de paiement</StepLabel>
+                    <StepLabel n={1}>{t("sb.moyen")}</StepLabel>
 
                     {campayActif && (
                       <label
@@ -578,12 +586,11 @@ export function SubscribePage() {
                           <span className="flex items-center gap-1.5">
                             <span className="text-sm font-semibold">{CAMPAY_METHOD.label}</span>
                             <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-success">
-                              Recommandé
+                              {t("sb.recommande")}
                             </span>
                           </span>
                           <span className="text-xs text-muted-foreground">
-                            Paiement Mobile Money automatique - confirmation en quelques secondes, accès débloqué
-                            immédiatement.
+                            {t("sb.campay_texte")}
                           </span>
                         </span>
                       </label>
@@ -595,14 +602,13 @@ export function SubscribePage() {
                         onClick={() => setShowManualOptions(true)}
                         className="min-h-11 self-start text-left text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
                       >
-                        Des difficultés avec Campay ? Payer manuellement via Orange Money ou MTN MoMo
+                        {t("sb.difficultes")}
                       </button>
                     ) : (
                       <div className="flex flex-col gap-2.5 rounded-lg border border-dashed border-input p-3">
                         <p className="text-xs text-muted-foreground">
-                          {!campayActif && "Le paiement automatique est momentanément indisponible. "}
-                          Paiement manuel : tu effectues toi-même le transfert, puis tu déclares ta transaction.
-                          Vérifiée par notre équipe sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}.
+                          {!campayActif && t("sb.auto_indisponible")}
+                          {t("sb.manuel_info", { delai: delaiVerificationPaiementAffiche() })}
                         </p>
                         <div className="grid grid-cols-2 gap-2">
                           {MANUAL_METHODS.map((method) => (
@@ -634,12 +640,12 @@ export function SubscribePage() {
                   </div>
 
                   <div className="flex flex-col gap-2.5">
-                    <StepLabel n={2}>Paiement</StepLabel>
+                    <StepLabel n={2}>{t("sb.paiement")}</StepLabel>
 
                     {methode === "CAMPAY" ? (
                       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
-                          <Label htmlFor="momo-phone">Numéro Mobile Money</Label>
+                          <Label htmlFor="momo-phone">{t("sb.numero_momo")}</Label>
                           <Input
                             id="momo-phone"
                             inputMode="numeric"
@@ -657,12 +663,11 @@ export function SubscribePage() {
 
                         {selectedPlan && creditAppliqueSelection > 0 && (
                           <p className="text-xs text-muted-foreground">
-                            {formatAmount(selectedPlan.effective_price)} FCFA − {formatAmount(creditAppliqueSelection)} FCFA
-                            de crédit parrainage
+                            {t("sb.credit_ligne", { prix: formatAmount(selectedPlan.effective_price), credit: formatAmount(creditAppliqueSelection) })}
                           </p>
                         )}
                         <Button type="submit" disabled={!selectedPlan} size="lg" className="w-full">
-                          Payer {selectedPlan ? `${formatAmount(netAPayerSelection)} FCFA` : ""}
+                          {selectedPlan ? t("sb.payer_montant", { montant: formatAmount(netAPayerSelection) }) : t("sb.payer")}
                         </Button>
                       </form>
                     ) : (
@@ -696,18 +701,16 @@ export function SubscribePage() {
           {phase === "manual_submitted" && declaredPayment && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <CheckCircle2 className="size-10 text-success" />
-              <p className="font-display font-medium">Ta déclaration a bien été enregistrée</p>
+              <p className="font-display font-medium">{t("sb.declaration_titre")}</p>
               <p className="text-sm text-muted-foreground">
-                Notre équipe la vérifie, généralement sous {DELAI_VERIFICATION_PAIEMENT_MANUEL}. Tu recevras un SMS dès qu'elle est validée,
-                et ton accès s'active alors tout seul : rien d'autre à faire, tu peux fermer cette page.
-                Numéro de demande : #{declaredPayment.id}.
+                {t("sb.declaration_texte", { delai: delaiVerificationPaiementAffiche(), id: declaredPayment.id })}
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 <Button asChild>
-                  <Link to="/mes-paiements">Suivre mes paiements</Link>
+                  <Link to="/mes-paiements">{t("sb.suivre")}</Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link to={epreuvesListPath(country)}>Retour au catalogue</Link>
+                  <Link to={epreuvesListPath(country)}>{t("ed.retour_catalogue")}</Link>
                 </Button>
               </div>
             </div>
@@ -716,9 +719,9 @@ export function SubscribePage() {
           {phase === "pending" && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <Loader2 className="size-8 animate-spin text-primary" />
-              <p className="font-display font-medium">Confirme le paiement sur ton téléphone</p>
+              <p className="font-display font-medium">{t("sb.confirme")}</p>
               <p className="text-sm text-muted-foreground">
-                Une demande Mobile Money a été envoyée au {phoneNumber}. Cette page se met à jour automatiquement.
+                {t("sb.confirme_texte", { phone: phoneNumber })}
               </p>
               {/* Pas « Annuler » : ce bouton n'annule rien côté opérateur, il arrête seulement
                   de sonder le statut sur cette page. Le dire évite qu'on croie sa demande
@@ -728,10 +731,10 @@ export function SubscribePage() {
                 onClick={cancelPending}
                 className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
               >
-                Revenir au formulaire
+                {t("sb.revenir_formulaire")}
               </button>
               <p className="text-xs text-muted-foreground">
-                Si tu as déjà validé le paiement, ton accès s'activera quand même.
+                {t("sb.deja_valide")}
               </p>
             </div>
           )}
@@ -739,13 +742,12 @@ export function SubscribePage() {
           {phase === "timeout" && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <AlertCircle className="size-10 text-warning" />
-              <p className="font-display font-medium">La confirmation prend plus de temps que prévu</p>
+              <p className="font-display font-medium">{t("sb.timeout_titre")}</p>
               <p className="text-sm text-muted-foreground">
-                As-tu validé la demande sur ton téléphone ? Si le paiement passe malgré tout, ton
-                abonnement s'activera automatiquement dès la confirmation de l'opérateur.
+                {t("sb.timeout_texte")}
               </p>
               <Button variant="outline" onClick={() => setPhase("form")}>
-                Réessayer
+                {t("erreur.reessayer")}
               </Button>
               {campayActif && (
                 <button
@@ -753,7 +755,7 @@ export function SubscribePage() {
                   onClick={passerAuPaiementManuel}
                   className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
                 >
-                  Payer manuellement via Orange Money ou MTN MoMo
+                  {t("sb.payer_manuel")}
                 </button>
               )}
             </div>
@@ -773,13 +775,13 @@ export function SubscribePage() {
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <CheckCircle2 className="size-10 text-success" />
               <p className="font-display font-medium">
-                {requireRepetiteur ? "Add-on Fiches activé !" : "Abonnement activé !"}
+                {requireRepetiteur ? t("sb.fiches_active") : t("sb.abonnement_active")}
               </p>
               <Button asChild>
                 {requireRepetiteur ? (
-                  <Link to="/fiches">Générer une fiche</Link>
+                  <Link to="/fiches">{t("sb.generer_fiche")}</Link>
                 ) : (
-                  <Link to={epreuvesListPath(country)}>Retour au catalogue</Link>
+                  <Link to={epreuvesListPath(country)}>{t("ed.retour_catalogue")}</Link>
                 )}
               </Button>
             </div>
@@ -788,10 +790,10 @@ export function SubscribePage() {
           {phase === "failed" && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <XCircle className="size-10 text-destructive" />
-              <p className="font-display font-medium">Le paiement a échoué</p>
+              <p className="font-display font-medium">{t("sb.echec")}</p>
               {error && <p className="text-sm text-muted-foreground">{error}</p>}
               <Button variant="outline" onClick={() => setPhase("form")}>
-                Réessayer
+                {t("erreur.reessayer")}
               </Button>
               {campayActif && (
                 <button
@@ -799,7 +801,7 @@ export function SubscribePage() {
                   onClick={passerAuPaiementManuel}
                   className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
                 >
-                  Payer manuellement via Orange Money ou MTN MoMo
+                  {t("sb.payer_manuel")}
                 </button>
               )}
             </div>
@@ -810,7 +812,7 @@ export function SubscribePage() {
 
       <p className="mt-6 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <ShieldCheck className="size-3.5 shrink-0" />
-        Paiement sécurisé - ton abonnement s'active dès la confirmation du paiement.
+        {t("sb.securise")}
       </p>
     </div>
   )

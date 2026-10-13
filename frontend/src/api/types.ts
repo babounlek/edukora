@@ -24,6 +24,8 @@ export interface User {
   // Ce que l'utilisateur déclare préparer (voir users.models.User.cursus_prepare) -
   // indépendant de ses abonnements : un visiteur non abonné en a un dès qu'il l'a dit.
   cursus_prepare: Cursus | null
+  // Langue de l'interface et des messages - voir users.models.User.langue.
+  langue: "fr" | "en"
   // null tant qu'aucun cursus n'est déclaré, ou qu'aucune session d'examen n'est
   // saisie pour ce (pays, examen) - voir ExamSession.compte_a_rebours_pour.
   compte_a_rebours: CompteARebours | null
@@ -236,6 +238,13 @@ export interface Tag {
   name: string
 }
 
+/** Matières que passe le profil actif (GCE : pas de séries) - voir quiz.views.matieres_view. */
+export interface MatieresChoix {
+  /** Ids choisis ; vide = toutes les matières du cursus. */
+  choisies: number[]
+  disponibles: { id: number; code: string; label: string }[]
+}
+
 export interface Temoignage {
   id: number
   auteur_nom: string
@@ -295,6 +304,9 @@ export interface Epreuve {
   // champ classique, reste toujours vide pour elle).
   duree_minutes: number | null
   coefficient: string
+  // GCE : « Paper 2 » et code de matière du jury (« 0570 ») - absents des épreuves francophones.
+  numero_paper?: number | null
+  code_matiere_officiel?: string
   origine: Origine
   origine_display: string
   etablissement: string
@@ -366,6 +378,8 @@ export interface EpreuveHeader {
   annee: number | null
   duree: string | null
   coefficient: string | null
+  paper?: number | null
+  code_matiere?: string | null
   origine: string | null
   etablissement: string | null
   // Organisme organisateur - null quand il n'est pas connu (examen blanc sans

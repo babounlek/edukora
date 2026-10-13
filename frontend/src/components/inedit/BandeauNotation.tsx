@@ -4,7 +4,8 @@ import { CheckCircle2, ClipboardCheck } from "lucide-react"
 import type { NotationResume } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { formatNote } from "@/lib/notation"
-import { mots, type Unite } from "@/lib/vocabulaire"
+import { tu, type Unite } from "@/lib/vocabulaire"
+import { t, useI18n } from "@/lib/i18n"
 
 interface BandeauNotationProps {
   notation: NotationResume
@@ -21,10 +22,10 @@ interface BandeauNotationProps {
 export function BandeauNotation({
   notation, tentativeId, rendueAutomatiquement, onProchaine, unite = "question", resultatPath,
 }: BandeauNotationProps & { resultatPath?: string }) {
-  const m = mots(unite)
+  useI18n()
   const traitees = notation.questions_traitees
   const notees = traitees - notation.questions_a_noter
-  const introduction = rendueAutomatiquement ? "Le temps est écoulé, ton épreuve a été rendue. " : ""
+  const introduction = rendueAutomatiquement ? t("bn.intro_rendue") : ""
 
   if (notation.questions_a_noter === 0) {
     return (
@@ -34,13 +35,13 @@ export function BandeauNotation({
           <span>
             {introduction}
             {traitees === 0
-              ? `${unite === "exercice" ? "Aucun exercice traité" : "Aucune question traitée"} · ta note :`
-              : "Notation terminée · ta note :"}{" "}
+              ? tu("bn.aucun", unite)
+              : t("bn.terminee")}{" "}
             <strong className="tabular-nums">{formatNote(notation.note, notation.bareme)}</strong>
           </span>
         </p>
         <Button asChild size="sm">
-          <Link to={resultatPath ?? `/inedit/tentative/${tentativeId}/resultat`}>Voir mon résultat</Link>
+          <Link to={resultatPath ?? `/inedit/tentative/${tentativeId}/resultat`}>{t("qs.voir_resultat")}</Link>
         </Button>
       </div>
     )
@@ -53,20 +54,18 @@ export function BandeauNotation({
           <ClipboardCheck className="mt-0.5 size-5 shrink-0 text-primary" />
           <span>
             {introduction}
-            <strong>Le corrigé est ouvert.</strong>{" "}
-            {traitees === 1
-              ? `Note ton ${m.singulier} ${m.traite} pour obtenir ta note définitive.`
-              : `Note ${unite === "exercice" ? "chacun" : "chacune"} de tes ${traitees} ${m.pluriel} ${m.traites} pour obtenir ta note définitive.`}
+            <strong>{t("bn.corrige_ouvert")}</strong>{" "}
+            {traitees === 1 ? tu("bn.une", unite) : tu("bn.plusieurs", unite, { n: traitees })}
           </span>
         </p>
         <Button size="sm" onClick={onProchaine}>
-          {unite === "exercice" ? "Exercice suivant" : "Question suivante"} à noter
+          {tu("bn.suivante", unite)}
         </Button>
       </div>
       <div className="mt-3 flex items-center gap-2.5">
         <div
           role="progressbar"
-          aria-label={`${m.pluriel[0].toUpperCase()}${m.pluriel.slice(1)} ${unite === "exercice" ? "notés" : "notées"}`}
+          aria-label={tu("bn.label", unite)}
           aria-valuemin={0}
           aria-valuemax={traitees}
           aria-valuenow={notees}
@@ -78,7 +77,7 @@ export function BandeauNotation({
           />
         </div>
         <span className="shrink-0 text-xs font-medium tabular-nums text-muted-foreground">
-          {notees} / {traitees} notées
+          {t("bn.compte", { n: notees, total: traitees })}
         </span>
       </div>
     </div>
