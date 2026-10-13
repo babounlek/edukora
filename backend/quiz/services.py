@@ -31,14 +31,20 @@ PARCOURS_COURS_PAR_SAVOIR_MAX = 3
 # Les seuls champs d'un Cours lus par construire_parcours (voir sa requête groupée).
 _CoursCandidat = namedtuple("_CoursCandidat", "id slug titre sous_theme")
 
-# construire_parcours : matières où le classement des thèmes réels par fréquence
-# d'examen remplace le Module→Savoir officiel (voir
-# project_parcours_par_frequence_conception_2026_09_14) - décision arrêtée par
-# pilotage concret sur le corpus, pas un choix arbitraire : Français/Philo/
-# Histoire-Géo testent une méthodologie sur des sujets renouvelés, pas un
-# stock fixe de notions récurrentes (BEPC Français : 94 tags, fréquence max 4,
-# aucun thème n'atteindrait SEUIL_MINIMUM_THEMES_PARCOURS). PHYSIQUE_CHIMIE et
-# PHYSIQUE_CHIMIE_TECH sont la même matière (4e/3e) sous deux codes historiques.
+# Depuis le 2026-10-12, TOUS les parcours sont classés par thème (voir parcours_par_theme) : le
+# Module→Savoir n'est plus qu'un repli pour une matière sans aucun thème. Les ensembles
+# ci-dessous (SUBJECTS_PARCOURS_PAR_FREQUENCE, SUBJECTS_CORPUS_MINCE_PARCOURS,
+# SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS) ne décident donc plus de QUOI classer mais des
+# matières déjà validées une à une sur le corpus : elles restent la liste des matières qui
+# portent le repère « Tombe souvent » du catalogue de cours (catalog.frequences_cours),
+# où une fréquence sur 2 ou 3 épreuves sonnerait comme une fausse promesse.
+#
+# Historique : le classement des thèmes réels par fréquence d'examen remplaçait le Module→Savoir
+# officiel matière par matière (voir project_parcours_par_frequence_conception_2026_09_14), par
+# pilotage concret sur le corpus : Français/Philo/Histoire-Géo testaient une méthodologie sur des
+# sujets renouvelés (BEPC Français : 94 tags, fréquence max 4 en septembre 2026, avant les
+# ingestions d'octobre). PHYSIQUE_CHIMIE et PHYSIQUE_CHIMIE_TECH sont la même matière (4e/3e) sous
+# deux codes historiques.
 SUBJECTS_PARCOURS_PAR_FREQUENCE = {
     "MATHS", "PHYSIQUE", "CHIMIE", "SVT", "PHYSIQUE_CHIMIE", "PHYSIQUE_CHIMIE_TECH",
     # Filière technique (TI) : signal de fréquence traité comme pour les sciences.
@@ -659,7 +665,7 @@ def plancher_occurrences(groupes, mince, nb_sessions):
     return plancher
 
 
-def groupes_par_frequence(cursus, subject):
+def groupes_par_frequence(cursus, subject, force_mince=False):
     """
     Première moitié de construire_parcours_par_frequence, SANS rien qui dépende d'un élève :
     les thèmes (catalog.Tag, regroupés par alias) d'un (cursus, subject) avec le nombre
@@ -671,8 +677,12 @@ def groupes_par_frequence(cursus, subject):
     (SEUIL_MINIMUM_THEMES_PARCOURS), sinon (mince, lessons, nb_sessions, groupes, tous_tag_ids) -
     `groupes` est vide quand aucun thème n'est tombé. Chaque groupe porte nom, tag_ids et
     nb_epreuves.
+
+    `force_mince` impose le régime « corpus mince » (tous les sujets comptent, aucun seuil ni
+    plancher) à une matière qui ne l'est pas d'office : c'est le repli de parcours_par_theme quand
+    les épreuves officielles ne passent pas SEUIL_MINIMUM_THEMES_PARCOURS.
     """
-    mince = _corpus_mince(subject, cursus)
+    mince = _corpus_mince(subject, cursus) or force_mince
     lessons = Lesson.objects.filter(statut=StatutContenu.VALIDE, subject=subject, cursus=cursus)
     if not mince:
         # Corpus mince (TI) : les blancs/établissements comptent, sinon le Probatoire n'a aucune épreuve officielle.
@@ -720,7 +730,7 @@ def groupes_par_frequence(cursus, subject):
     return mince, lessons, nb_sessions, groupes, tous_tag_ids
 
 
-def construire_parcours_par_frequence(profil, cursus, subject):
+def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False):
     """
     Variante de construire_parcours pour SUBJECTS_PARCOURS_PAR_FREQUENCE : au lieu du
     programme officiel (Module→Savoir), classe les thèmes réels (catalog.Tag) par
@@ -750,7 +760,7 @@ def construire_parcours_par_frequence(profil, cursus, subject):
     thèmes candidats d'un coup, puis les résultats sont recombinés en Python par
     groupe d'alias.
     """
-    contexte = groupes_par_frequence(cursus, subject)
+    contexte = groupes_par_frequence(cursus, subject, force_mince=force_mince)
     if contexte is None:
         return None
     mince, lessons, nb_sessions, groupes, tous_tag_ids = contexte
@@ -874,6 +884,26 @@ def construire_parcours_par_frequence(profil, cursus, subject):
     return resultat
 
 
+def parcours_par_theme(profil, cursus, subject):
+    """
+    Les thèmes classés d'un (cursus, matière), quelle que soit la matière : le parcours de
+    TOUTES les matières est par thème, le Module→Savoir n'étant plus qu'un repli.
+
+    Régime normal (épreuves officielles seules, seuil SEUIL_MINIMUM_THEMES_PARCOURS, plancher
+    d'occurrences) tant que le corpus l'autorise ; en dessous, régime « corpus mince » (tous les
+    sujets comptent, aucun plancher) plutôt qu'un retour au programme, qui n'existe pas pour
+    la plupart de ces matières (Histoire, Littérature, Allemand, Espagnol au BAC...). Les thèmes
+    sans quiz ni cours restent dans la liste : c'est au frontend de les masquer par défaut.
+
+    Renvoie None quand aucun thème n'est tombé (matière sans question étiquetée : EPS, dessin) -
+    l'appelant retombe alors sur le programme.
+    """
+    themes = construire_parcours_par_frequence(profil, cursus, subject)
+    if themes is None:
+        themes = construire_parcours_par_frequence(profil, cursus, subject, force_mince=True)
+    return themes or None
+
+
 def construire_parcours(profil, cursus, subject):
     """
     Vue séquencée du programme officiel (voir programme.Module/Savoir) pour un
@@ -890,21 +920,19 @@ def construire_parcours(profil, cursus, subject):
     aujourd'hui), pas seulement les savoirs déjà couverts. C'est au frontend de
     griser une étape sans contenu, jamais à cette fonction de la faire disparaître.
 
-    Pour SUBJECTS_PARCOURS_PAR_FREQUENCE, remplace entièrement cette vue par un
-    classement des thèmes réels par fréquence d'examen (voir
-    construire_parcours_par_frequence) - repris dans un unique pseudo-module pour
-    que resume_parcours (qui ne lit que module["savoirs"]) continue de fonctionner
-    sans changement. Retombe sur le Module→Savoir habituel si le corpus est encore
-    trop mince pour un classement fiable.
+    Remplace entièrement cette vue, pour toutes les matières, par un classement des thèmes
+    réels par fréquence d'examen (voir parcours_par_theme) - repris dans un unique
+    pseudo-module pour que resume_parcours (qui ne lit que module["savoirs"]) continue de
+    fonctionner sans changement. Ne retombe sur le Module→Savoir que si aucun thème n'est
+    tombé pour ce cursus (matière sans question étiquetée).
     """
-    if subject.code in SUBJECTS_PARCOURS_PAR_FREQUENCE or _classee_par_theme_pour_cet_examen(subject, cursus):
-        themes = construire_parcours_par_frequence(profil, cursus, subject)
-        if themes is not None:
-            return [{
-                "numero": "",
-                "titre": "Les thèmes qui reviennent le plus à l'examen",
-                "savoirs": themes,
-            }]
+    themes = parcours_par_theme(profil, cursus, subject)
+    if themes is not None:
+        return [{
+            "numero": "",
+            "titre": "Les thèmes qui reviennent le plus à l'examen",
+            "savoirs": themes,
+        }]
 
     taux_par_savoir = maitrise_par_savoir(profil, cursus=cursus)
     savoir_ids_en_revision = set(
@@ -1013,15 +1041,18 @@ def resume_parcours(profil, cursus):
     == `total`) - même principe que construire_parcours pour un savoir isolé : la
     structure du programme reste visible, c'est au frontend de l'afficher en retrait.
 
-    Exception : une matière classée par thème qui n'a aucun programme officiel
-    (SUBJECTS_PARCOURS_SANS_PROGRAMME : Éducation civique, aucun référentiel) figure aussi
-    dans le résumé, mais seulement quand son classement existe - sans programme, ce
+    Exception : une matière qui n'a aucun programme officiel pour ce cursus (Éducation civique,
+    Histoire ou Littérature au BAC...) figure aussi dans le résumé dès qu'elle a des épreuves
+    sur ce cursus, mais seulement quand son classement par thème existe - sans programme, ce
     classement est son seul parcours, et une matière sans lui n'aurait aucune ligne à montrer.
     """
     avec_programme = set(Subject.objects.filter(modules_officiels__cursus=cursus).values_list("pk", flat=True))
+    avec_epreuves = Lesson.objects.filter(statut=StatutContenu.VALIDE, cursus=cursus).values("subject_id")
     subjects = (
         Subject.objects.filter(
-            Q(pk__in=avec_programme) | Q(country=cursus.country, code__in=SUBJECTS_PARCOURS_SANS_PROGRAMME)
+            Q(pk__in=avec_programme)
+            | Q(pk__in=avec_epreuves)
+            | Q(country=cursus.country, code__in=SUBJECTS_PARCOURS_SANS_PROGRAMME)
         )
         .distinct()
         .order_by("label")
@@ -1456,11 +1487,10 @@ def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=f
 
     Le classement se fait sur le POURCENTAGE d'épreuves touchées, pas sur le nombre
     brut : un thème tombé 9 fois sur 10 en SVT pèse plus qu'un thème tombé 11 fois sur
-    41 en anglais, alors que le compte brut dirait l'inverse. Les matières dont le
-    parcours suit le programme officiel plutôt que la fréquence (français, philo,
-    histoire-géo - voir SUBJECTS_PARCOURS_PAR_FREQUENCE) n'ont aucune fréquence à
-    annoncer : elles passent après, jamais devant, plutôt que de se voir attribuer un
-    chiffre inventé.
+    41 en anglais, alors que le compte brut dirait l'inverse. Une matière qui n'a aucun
+    thème classé (aucune question étiquetée) retombe sur le programme officiel : elle
+    n'a aucune fréquence à annoncer, elle passe après, jamais devant, plutôt que de se
+    voir attribuer un chiffre inventé.
 
     Cette recherche balaie toutes les matières au lieu de s'arrêter à la première, et
     c'est délibérément plus coûteux : jusqu'à une douzaine d'appels à
@@ -1485,7 +1515,7 @@ def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=f
         if subject.id in matieres_exclues or subject.id not in avec_quiz:
             continue
 
-        par_frequence = construire_parcours_par_frequence(profil, cursus, subject)
+        par_frequence = parcours_par_theme(profil, cursus, subject)
         if par_frequence is not None:
             etapes_parcours, cle_theme, cle_savoir = par_frequence, "theme_id", None
         else:

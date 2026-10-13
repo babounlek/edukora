@@ -49,7 +49,7 @@ from .services import (
     BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX,
     PARCOURS_FREQUENCE_OCCURRENCES_MIN, SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE,
     SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS, SUBJECTS_PARCOURS_PAR_THEME_EXAMENS, TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PAR_MATIERE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
-    construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
+    construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, parcours_par_theme,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
     REFUS_MAX_PAR_JOUR, _contient_quiz, ajuster_duree_seance, remplacer_seance, revisions_dues, seance_du_jour,
     seance_supplementaire, DUREE_OBJECTIF_MATIERE_JOURS, objectif_matiere_actif, raisons_de_la_seance,
@@ -2347,14 +2347,15 @@ class ParcoursInformatiqueParThemeTests(TestCase):
         self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "algorithmique-test")
         self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
 
-    def test_a_cursus_with_few_exams_falls_back_to_module_savoir(self):
+    def test_a_cursus_with_few_exams_uses_the_thin_corpus_regime_not_the_programme(self):
         tag = Tag.objects.create(name="algorithmique-test")
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
             _make_lesson_avec_themes(self.subject, self.bepc, f"Informatique BEPC {i}", [[tag]])
 
         parcours = construire_parcours(self.profil, self.bepc, self.subject)
 
-        self.assertEqual(parcours[0]["titre"], "M")
+        self.assertEqual(parcours[0]["numero"], "")
+        self.assertEqual([s["intitule"] for s in parcours[0]["savoirs"]], ["algorithmique-test"])
 
 
 class ParcoursEducationCiviqueParThemeTests(TestCase):
@@ -2382,11 +2383,16 @@ class ParcoursEducationCiviqueParThemeTests(TestCase):
         self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "symboles nationaux-test")
         self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
 
-    def test_a_thin_corpus_without_programme_stays_empty(self):
+    def test_a_thin_corpus_without_programme_still_shows_its_themes(self):
         tag = Tag.objects.create(name="symboles nationaux-test")
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
             _make_lesson_avec_themes(self.subject, self.bepc, f"Éducation civique BEPC {i}", [[tag]])
 
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+
+        self.assertEqual([s["intitule"] for s in parcours[0]["savoirs"]], ["symboles nationaux-test"])
+
+    def test_without_any_lesson_there_is_nothing_to_show(self):
         self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject), [])
 
 
@@ -2425,7 +2431,7 @@ class ParcoursLanguesVivantesParThemeTests(TestCase):
                 self.assertEqual(parcours[0]["savoirs"][0]["intitule"], f"theme-{code}-test")
                 self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
 
-    def test_a_thin_corpus_keeps_the_programme_parcours(self):
+    def test_a_thin_corpus_uses_the_thin_regime_instead_of_the_programme(self):
         for code in ("ANGLAIS", "ESPAGNOL"):
             with self.subTest(code=code):
                 subject = Subject.objects.get(country__code="CM", code=code)
@@ -2434,7 +2440,10 @@ class ParcoursLanguesVivantesParThemeTests(TestCase):
                 for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
                     _make_lesson_avec_themes(subject, self.bepc, f"{code} BEPC {i}", [[tag]])
 
-                self.assertEqual(construire_parcours(self.profil, self.bepc, subject)[0]["titre"], "M")
+                parcours = construire_parcours(self.profil, self.bepc, subject)
+
+                self.assertEqual(parcours[0]["numero"], "")
+                self.assertEqual([s["intitule"] for s in parcours[0]["savoirs"]], [f"theme-{code}-test"])
 
 
 class ParcoursGeographieParThemeTests(TestCase):
@@ -2489,15 +2498,17 @@ class ParcoursGeographieParThemeTests(TestCase):
 
         self.assertEqual([s["intitule"] for s in savoirs], ["hydrographie-test"])
 
-    def test_a_thin_corpus_keeps_the_programme_parcours(self):
+    def test_a_thin_corpus_uses_the_thin_regime_instead_of_the_programme(self):
         tag = Tag.objects.create(name="hydrographie-test")
         for i in range(3):
             _make_lesson_avec_themes(self.subject, self.bepc, f"Géographie BEPC {i}", [[tag]])
         for i in range(3):
             _make_lesson_avec_themes(self.subject, self.bac_c, f"Géographie BAC {i}", [[tag]])
 
-        self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject)[0]["titre"], "M")
-        self.assertEqual(construire_parcours(self.profil, self.bac_c, self.subject)[0]["titre"], "M")
+        for cursus in (self.bepc, self.bac_c):
+            parcours = construire_parcours(self.profil, cursus, self.subject)
+            self.assertEqual(parcours[0]["numero"], "")
+            self.assertEqual([s["intitule"] for s in parcours[0]["savoirs"]], ["hydrographie-test"])
 
     def test_bepc_without_any_lesson_falls_back_to_the_programme(self):
         parcours = construire_parcours(self.profil, self.bepc, self.subject)
@@ -2536,13 +2547,16 @@ class ParcoursHistoireBepcParThemeTests(TestCase):
         self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "décolonisation-test")
         self.assertEqual(parcours[0]["savoirs"][0]["frequence_pct"], 100)
 
-    def test_bepc_keeps_the_normal_regime_without_the_thin_corpus_shortcuts(self):
-        # Sous le seuil d'épreuves officielles, un sujet zéro ou blanc ne rattrape pas le compte.
+    def test_bepc_below_the_threshold_falls_back_to_the_thin_regime(self):
+        # Sous le seuil d'épreuves officielles, le régime normal est refusé : c'est le régime
+        # « corpus mince » qui prend le relais, pas le programme.
         tag = Tag.objects.create(name="décolonisation-test")
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS - 1):
             _make_lesson_avec_themes(self.subject, self.bepc, f"Histoire BEPC {i}", [[tag]])
 
-        self.assertEqual(construire_parcours(self.profil, self.bepc, self.subject)[0]["titre"], "M")
+        self.assertIsNone(construire_parcours_par_frequence(self.profil, self.bepc, self.subject))
+        parcours = construire_parcours(self.profil, self.bepc, self.subject)
+        self.assertEqual([s["intitule"] for s in parcours[0]["savoirs"]], ["décolonisation-test"])
 
     def test_method_themes_are_left_out_of_the_history_ranking_only(self):
         tag = Tag.objects.create(name="décolonisation-test")
@@ -2567,12 +2581,15 @@ class ParcoursHistoireBepcParThemeTests(TestCase):
 
         self.assertEqual([(s["intitule"], s["frequence_pct"]) for s in savoirs], [("Deuxième Guerre mondiale", 100)])
 
-    def test_bac_keeps_the_programme_parcours_even_with_many_exams(self):
+    def test_bac_is_classified_by_theme_too(self):
         tag = Tag.objects.create(name="décolonisation-test")
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.bac_c, f"Histoire BAC {i}", [[tag]])
 
-        self.assertEqual(construire_parcours(self.profil, self.bac_c, self.subject)[0]["titre"], "M")
+        parcours = construire_parcours(self.profil, self.bac_c, self.subject)
+
+        self.assertEqual(parcours[0]["numero"], "")
+        self.assertEqual([s["intitule"] for s in parcours[0]["savoirs"]], ["décolonisation-test"])
 
 
 class ParcoursFrancaisBepcParThemeTests(TestCase):
@@ -2626,12 +2643,70 @@ class ParcoursFrancaisBepcParThemeTests(TestCase):
 
         self.assertEqual([s["intitule"] for s in savoirs], ["dérivation"])
 
-    def test_bac_keeps_the_programme_parcours(self):
+    def test_bac_is_classified_by_theme_too(self):
         tag = Tag.objects.create(name="passé simple-test")
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.bac_c, f"Français BAC {i}", [[tag]])
 
-        self.assertEqual(construire_parcours(self.profil, self.bac_c, self.subject)[0]["titre"], "M")
+        parcours = construire_parcours(self.profil, self.bac_c, self.subject)
+
+        self.assertEqual(parcours[0]["numero"], "")
+        self.assertEqual([s["intitule"] for s in parcours[0]["savoirs"]], ["passé simple-test"])
+
+
+class ParcoursTousParThemeTests(TestCase):
+    """Depuis le 2026-10-12, TOUTES les matières sont classées par thème (parcours_par_theme) :
+    régime normal avec assez d'épreuves officielles, régime « corpus mince » sinon, programme
+    seulement quand aucun thème n'est tombé."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200037", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="ALLEMAND")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="A")
+
+    def test_a_subject_outside_the_historical_sets_is_classified(self):
+        self.assertNotIn("ALLEMAND", SUBJECTS_PARCOURS_PAR_FREQUENCE)
+        tag = Tag.objects.create(name="datif-test")
+        for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            _make_lesson_avec_themes(self.subject, self.cursus, f"Allemand BAC {i}", [[tag]])
+
+        themes = parcours_par_theme(self.profil, self.cursus, self.subject)
+
+        self.assertEqual([t["intitule"] for t in themes], ["datif-test"])
+
+    def test_a_single_exam_is_enough_in_the_thin_regime(self):
+        tag = Tag.objects.create(name="datif-test")
+        _make_lesson_avec_themes(self.subject, self.cursus, "Allemand BAC 0", [[tag]])
+
+        themes = parcours_par_theme(self.profil, self.cursus, self.subject)
+
+        self.assertEqual([(t["intitule"], t["frequence_pct"]) for t in themes], [("datif-test", 100)])
+
+    def test_the_thin_regime_keeps_the_themes_seen_only_once(self):
+        # Le plancher d'occurrences du régime normal (2) ne s'applique pas au corpus mince.
+        seul = Tag.objects.create(name="vu-une-fois")
+        commun = Tag.objects.create(name="vu-deux-fois")
+        _make_lesson_avec_themes(self.subject, self.cursus, "Allemand BAC 0", [[seul, commun]])
+        _make_lesson_avec_themes(self.subject, self.cursus, "Allemand BAC 1", [[commun]])
+
+        noms = [t["intitule"] for t in parcours_par_theme(self.profil, self.cursus, self.subject)]
+
+        self.assertEqual(noms, ["vu-deux-fois", "vu-une-fois"])
+
+    def test_the_strict_ranking_still_refuses_a_thin_corpus(self):
+        tag = Tag.objects.create(name="datif-test")
+        _make_lesson_avec_themes(self.subject, self.cursus, "Allemand BAC 0", [[tag]])
+
+        self.assertIsNone(construire_parcours_par_frequence(self.profil, self.cursus, self.subject))
+
+    def test_no_theme_at_all_returns_none_so_the_programme_takes_over(self):
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="A", numero="1", titre="M")
+        module.cursus.add(self.cursus)
+        Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
+
+        self.assertIsNone(parcours_par_theme(self.profil, self.cursus, self.subject))
+        self.assertEqual(construire_parcours(self.profil, self.cursus, self.subject)[0]["titre"], "M")
 
 
 class ParcoursApiTests(TestCase):
@@ -2702,7 +2777,7 @@ class ResumeParcoursTests(TestCase):
         self.assertEqual(entree["total"], 1)
         self.assertEqual(entree["a_decouvrir"] + entree["sans_contenu"], 1)
 
-    def test_theme_ranked_subject_without_programme_and_without_ranking_stays_hidden(self):
+    def test_subject_without_programme_appears_through_its_theme_ranking(self):
         bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
         civique = Subject.objects.get(country__code="CM", code="EDUCATION_CIVIQUE")
         tag = Tag.objects.create(name="symboles nationaux-test")
@@ -2711,7 +2786,16 @@ class ResumeParcoursTests(TestCase):
 
         resume = resume_parcours(self.profil, bepc)
 
-        self.assertNotIn("EDUCATION_CIVIQUE", [r["subject_code"] for r in resume])
+        self.assertIn("EDUCATION_CIVIQUE", [r["subject_code"] for r in resume])
+
+    def test_subject_without_programme_and_without_any_theme_stays_hidden(self):
+        bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        eps = Subject.objects.get(country__code="CM", code="EPS")
+        _make_lesson_avec_themes(eps, bepc, "EPS BEPC 0", [[]])
+
+        resume = resume_parcours(self.profil, bepc)
+
+        self.assertNotIn("EPS", [r["subject_code"] for r in resume])
 
     def test_subject_without_any_content_is_entirely_sans_contenu(self):
         self._module_savoir(self.maths)
