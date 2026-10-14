@@ -453,6 +453,7 @@ export function RecherchePage() {
             identite={identite}
             cursusDeclare={cursusDeclare}
             cursusLabel={cursusLabel}
+            langue={langue}
             onChercher={(requete) => {
               setSaisie(requete)
               majParams({ q: requete, exact: null })
@@ -746,10 +747,13 @@ function Chargement() {
  * rien taper : reprendre sa lecture, relancer une recherche récente, ou partir d'un thème de son examen.
  */
 function PageVide({
-  country, identite, cursusDeclare, cursusLabel, onChercher,
+  country, identite, cursusDeclare, cursusLabel, langue, onChercher,
 }: {
   country: string
   identite: number
+  /** Langue de la recherche (celle de l'interface, ou indéfinie pour « toutes les langues ») : les thèmes proposés
+   * sont ceux de cette langue, comme les résultats d'une recherche. */
+  langue: string | undefined
   cursusDeclare: number | null | undefined
   cursusLabel: string
   onChercher: (requete: string) => void
@@ -759,8 +763,8 @@ function PageVide({
   const [recentes, setRecentes] = useState(lireRecentes)
 
   const accueil = useQuery({
-    queryKey: ["recherche", "accueil", country, identite, cursusDeclare ?? null],
-    queryFn: ({ signal }) => rechercher({ q: "", pays: country, cursus: cursusDeclare, rapide: true }, signal),
+    queryKey: ["recherche", "accueil", country, identite, cursusDeclare ?? null, langue ?? "toutes"],
+    queryFn: ({ signal }) => rechercher({ q: "", pays: country, cursus: cursusDeclare, rapide: true, langue }, signal),
     enabled: cursusDeclare !== undefined,
   })
   const progression = useQuery({

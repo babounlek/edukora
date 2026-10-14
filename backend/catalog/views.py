@@ -42,6 +42,7 @@ from .models import (
     Tag,
     Temoignage,
     TypeReponse,
+    langue_examen,
     q_cours_du_cursus,
 )
 from .rendering import exercise_questions_breakdown
@@ -432,6 +433,11 @@ class CoursListView(generics.ListAPIView):
                 _a_le_cursus_demande=Exists(cursus_demande),
                 _a_un_cursus=Exists(cursus_quelconque),
             ).filter(Q(_a_le_cursus_demande=True) | Q(_a_un_cursus=False))
+            # Un examen fixe la langue de la liste. Sans cela, les notions communes (7 580 cours français sans
+            # examen rattaché) entraient dans la liste d'un examen du GCE : 7 699 « cours » pour 119 publiés.
+            examen = Cursus.objects.filter(pk=cursus_id).values_list("examen", flat=True).first()
+            if examen:
+                qs = qs.filter(subject__langue=langue_examen(examen))
         if not params.get("cursus"):
             # Sans examen choisi, la langue de l'interface limite la liste (voir _filtre_langue).
             qs = qs.filter(**_filtre_langue(self.request, "subject__langue"))

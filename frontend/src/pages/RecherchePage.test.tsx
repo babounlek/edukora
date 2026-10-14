@@ -250,7 +250,7 @@ describe("page de recherche avant toute requête", () => {
     rechercher.mockResolvedValue(vide())
     monter("/cm/recherche")
     expect(await screen.findByRole("button", { name: /limites/ })).toBeInTheDocument()
-    expect(rechercher).toHaveBeenCalledWith({ q: "", pays: "cm", cursus: null, rapide: true }, expect.anything())
+    expect(rechercher).toHaveBeenCalledWith({ q: "", pays: "cm", cursus: null, rapide: true, langue: "fr" }, expect.anything())
     expect(screen.getByRole("heading", { name: "Des thèmes pour commencer" })).toBeInTheDocument()
   })
 
@@ -544,6 +544,19 @@ describe("RecherchePage : langue de l'interface", () => {
     monter()
     await waitFor(() => expect(rechercher).toHaveBeenCalled())
     expect(derniereRequete().langue).toBe("fr")
+  })
+
+  it("la page avant toute requête propose des thèmes de la langue de l'interface, pas de toutes les langues", async () => {
+    rechercher.mockResolvedValue(reponse({ q: "", total: 0, groupes: [], matieres: [] }))
+    monter("/cm/recherche")
+    await waitFor(() => expect(rechercher).toHaveBeenCalled())
+    expect(rechercher.mock.calls[0][0]).toMatchObject({ q: "", langue: "fr" })
+
+    rechercher.mockClear()
+    monter("/cm/recherche?langues=toutes")
+    await waitFor(() => expect(rechercher).toHaveBeenCalled())
+    expect(rechercher.mock.calls[0][0].q).toBe("")
+    expect(rechercher.mock.calls[0][0].langue).toBeUndefined()
   })
 
   it("« toutes les langues » (?langues=toutes) lève le filtre et propose d'y revenir", async () => {

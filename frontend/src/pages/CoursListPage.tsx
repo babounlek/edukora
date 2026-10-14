@@ -180,7 +180,7 @@ export function CoursListPage() {
 
   // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; l'examen
   // déjà choisi et l'examen déclaré restent proposés quelle que soit leur langue (voir lib/cursusLangue).
-  const { data: cursusList } = useCursusListe(country, {
+  const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, {
     langue: langueDeListe("", toutesLangues),
     garder: [cursusFilter, cursusPrepare?.id],
   })
@@ -195,7 +195,10 @@ export function CoursListPage() {
   // hero annonce quand même le catalogue complet.
   // Dans la langue de l'interface (sauf « Toutes les langues ») : le total d'un filtre actif ne doit pas
   // compter les cours de l'autre langue, que la liste n'affiche pas.
-  const { data: totalData } = useTotalCours(country, langueDeListe("", toutesLangues), filtresActifs)
+  // Un examen choisi fixe la langue du total, comme celle de la liste : sans cela, un lien vers un examen d'une
+  // autre langue que l'interface annonçait le total de la langue de l'interface à côté d'une liste de l'examen.
+  const cursusChoisi = tousLesCursus.find((c) => String(c.id) === cursusFilter)
+  const { data: totalData } = useTotalCours(country, cursusChoisi?.langue ?? langueDeListe("", toutesLangues), filtresActifs)
 
   // Débounce la clé de query, pas le champ affiché : le champ reste réactif à chaque
   // frappe (il est contrôlé par `search` directement), seule la requête réseau attend

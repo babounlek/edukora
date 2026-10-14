@@ -246,7 +246,7 @@ export function EpreuvesListPage() {
 
   // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; l'examen
   // déjà choisi et l'examen déclaré restent proposés quelle que soit leur langue (voir lib/cursusLangue).
-  const { data: cursusList } = useCursusListe(country, {
+  const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, {
     langue: langueDeListe("", toutesLangues),
     garder: [cursusFilter, cursusPrepare?.id],
   })
@@ -263,7 +263,10 @@ export function EpreuvesListPage() {
   // CataloguePage, donc un aller-retour entre les deux pages ne repaie pas la requête.
   // Dans la langue de l'interface (sauf « Toutes les langues ») : sans cela, un filtre actif faisait
   // afficher le total des deux langues à côté d'une liste d'une seule.
-  const { data: totalData } = useTotalEpreuves(country, langueDeListe("", toutesLangues), filtresActifs)
+  // Un examen choisi fixe la langue du total, comme celle de la liste : sans cela, un lien vers un examen d'une
+  // autre langue que l'interface annonçait le total de la langue de l'interface à côté d'une liste de l'examen.
+  const cursusChoisi = tousLesCursus.find((c) => String(c.id) === cursusFilter)
+  const { data: totalData } = useTotalEpreuves(country, cursusChoisi?.langue ?? langueDeListe("", toutesLangues), filtresActifs)
 
   const debouncedSearch = useDebouncedValue(search, 300)
 

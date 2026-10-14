@@ -158,6 +158,39 @@ class EquivalentsGceTests(TestCase):
             stats = self.client.get(reverse("catalog:platform-stats"), params).json()
             self.assertEqual((stats["corriges_disponibles"], stats["cours_disponibles"]), (corriges, cours), langue)
 
+    def test_un_examen_choisi_fixe_la_langue_des_cours_meme_pour_les_notions_communes(self):
+        """Régression : sans cursus rattaché, un cours est une « notion commune à tous les examens » et entrait dans la
+        liste de n'importe quel examen - 7 699 cours dans la liste du GCE O Level pour 119 publiés (7 580 cours
+        français sans examen)."""
+        commun_fr = Cours.objects.create(
+            external_id="commun-fr", titre="Notion commune FR", subject=self.maths_fr, statut=StatutContenu.VALIDE,
+        )
+        commun_en = Cours.objects.create(
+            external_id="commun-en", titre="Common idea EN", subject=self.maths_gce, statut=StatutContenu.VALIDE,
+        )
+        du_gce = Cours.objects.create(
+            external_id="gce-propre", titre="GCE own lesson", subject=self.maths_gce, statut=StatutContenu.VALIDE,
+        )
+        du_gce.cursus.add(self.gce)
+        du_bac = Cours.objects.create(
+            external_id="bac-propre", titre="Cours propre au BAC", subject=self.maths_fr, statut=StatutContenu.VALIDE,
+        )
+        du_bac.cursus.add(self.bac)
+
+        def cours(**params):
+            reponse = self.client.get(reverse("catalog:cours-list"), {"country": "cm", **params})
+            self.assertEqual(reponse.status_code, 200)
+            donnees = reponse.json()
+            self.assertEqual(donnees["count"], len(donnees["results"]))
+            return {c["titre"] for c in donnees["results"]}
+
+        # Examen du GCE : ses cours et les notions communes ANGLAISES, jamais le français.
+        self.assertEqual(cours(cursus=self.gce.id), {"GCE own lesson", "Common idea EN"})
+        # Examen français : ses cours et les notions communes FRANÇAISES, jamais l'anglais.
+        self.assertEqual(cours(cursus=self.bac.id), {"Cours propre au BAC", "Notion commune FR"})
+        # L'examen prime sur ?langue= : demander l'anglais avec un examen français reste français.
+        self.assertEqual(cours(cursus=self.bac.id, langue="en"), {"Cours propre au BAC", "Notion commune FR"})
+
     def test_epreuves_un_examen_choisi_prime_sur_la_langue(self):
         self.assertEqual(self._titres_epreuves(cursus=self.gce.id, langue="fr"), {"Mathematics GCE test"})
 
