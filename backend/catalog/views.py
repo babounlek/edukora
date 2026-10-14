@@ -416,29 +416,20 @@ class CoursListView(generics.ListAPIView):
         params = self.request.query_params
         if subject := params.get("subject"):
             qs = qs.filter(subject__code=subject)
-        if cursus_id := params.get("cursus"):
-            # cursus vide = notion commune à toutes les séries (voir Cours.cursus) :
-            # un filtre strict `cursus__id=` les écartait TOUTES, soit 5 597 cours sur
-            # 8 314 mesurés sur le corpus camerounais - filtrer sur BAC D ne laissait
-            # que 384 cours au lieu de 5 981. Exactement le piège que le filtre
-            # `country` juste en dessous documente et évite depuis toujours ; celui-ci
-            # l'avait manqué, et amputait donc silencieusement les deux tiers de la
-            # bibliothèque dès qu'un cursus était choisi.
-            #
-            # Exists() plutôt qu'un JOIN M2M, pour la raison de performance détaillée
-            # sur le filtre `country`.
-            cursus_demande = Cursus.objects.filter(cours=OuterRef("pk"), id=cursus_id)
-            cursus_quelconque = Cursus.objects.filter(cours=OuterRef("pk"))
-            qs = qs.annotate(
-                _a_le_cursus_demande=Exists(cursus_demande),
-                _a_un_cursus=Exists(cursus_quelconque),
-            ).filter(Q(_a_le_cursus_demande=True) | Q(_a_un_cursus=False))
+        if (cursus_id := params.get("cursus")) and cursus_id.isdigit():
+            # Les cours de CET examen : ses cours directs, ses cours recommandés et, pour la grande majorité qui n'a
+            # aucun examen rattaché, ceux dont une épreuve source est de cet examen (voir q_cours_du_cursus). Un
+            # filtre strict `cursus__id=` écartait les deux tiers de la bibliothèque (le BEPC n'a AUCUN cours
+            # rattaché directement) ; garder TOUS les cours sans examen la gonflait à l'inverse : 7 580 « cours »
+            # pour le BEPC, dont des leçons de niveau BAC, alors que la recherche, l'accès et les parcours en
+            # comptent 2 301 par la lignée.
+            qs = qs.filter(q_cours_du_cursus([cursus_id]))
             # Un examen fixe la langue de la liste. Sans cela, les notions communes (7 580 cours français sans
             # examen rattaché) entraient dans la liste d'un examen du GCE : 7 699 « cours » pour 119 publiés.
             examen = Cursus.objects.filter(pk=cursus_id).values_list("examen", flat=True).first()
             if examen:
                 qs = qs.filter(subject__langue=langue_examen(examen))
-        if not params.get("cursus"):
+        if not (cursus_id and cursus_id.isdigit()):
             # Sans examen choisi, la langue de l'interface limite la liste (voir _filtre_langue).
             qs = qs.filter(**_filtre_langue(self.request, "subject__langue"))
         if savoir_id := params.get("savoir"):
@@ -602,7 +593,9 @@ class SubjectListView(generics.ListAPIView):
         # fusionnée des épreuves : annales, cours et inédites.
         cursus_id = self.request.query_params.get("cursus")
         if cursus_id and cursus_id.isdigit():
-            cours_publies = cours_publies.filter(cursus__id=cursus_id)
+            # Même règle que la liste /cours (voir CoursListView) : les cours de l'examen par leur lignée, sans quoi
+            # la pastille d'une matière et la liste qu'elle ouvre ne compteraient pas la même chose.
+            cours_publies = cours_publies.filter(q_cours_du_cursus([cursus_id]))
             lessons_publiees = lessons_publiees.filter(cursus__id=cursus_id)
             inedites_publiees = inedites_publiees.filter(cursus__id=cursus_id)
         else:
@@ -651,6 +644,13 @@ class SubjectListView(generics.ListAPIView):
         # examen est choisi - son cursus fixe déjà la langue - ; ?langue=all ou une valeur inconnue ne filtre pas.
         if not (cursus_id and cursus_id.isdigit()):
             qs = qs.filter(**_filtre_langue(self.request, "langue"))
+        else:
+            # Un examen fixe la langue des matières proposées. Sans cela, les cours français sans épreuve source
+            # (proposés à tout examen, voir q_cours_du_cursus) faisaient remonter des matières françaises sous un
+            # examen du GCE : 558 « cours » dans les pastilles pour 119 dans la liste.
+            examen = Cursus.objects.filter(pk=cursus_id).values_list("examen", flat=True).first()
+            if examen:
+                qs = qs.filter(langue=langue_examen(examen))
         return qs
 
 
