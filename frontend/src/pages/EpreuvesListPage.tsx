@@ -78,10 +78,13 @@ const NATURE_LABELS: Record<NatureEpreuve, CleI18n> = {
   PRATIQUE: "ep.nature_PRATIQUE",
 }
 
+// Deux tris seulement. « Plus récentes (année) » est le tri par défaut du backend (année décroissante,
+// niveau par niveau) : il n'a donc pas de valeur dans l'URL. L'ancien ?ordering=year trie en réalité
+// par année CROISSANTE (1984 d'abord) alors que son libellé disait « plus récente », et
+// ?ordering=popular ne renvoie rien tant qu'aucune épreuve n'a 3 lecteurs distincts : tous deux
+// sont retirés du menu, et un ancien lien qui les porte retombe sur le défaut.
 const ORDERING_LABELS = {
-  year: "ep.tri_year",
   recent: "ep.tri_recent",
-  popular: "ep.tri_popular",
 } as const satisfies Record<string, CleI18n>
 
 function EpreuveCardSkeleton() {
@@ -174,7 +177,7 @@ export function EpreuvesListPage() {
   const natureFilter = (searchParams.get("nature") ?? "") as NatureEpreuve | ""
   const gratuitFilter = searchParams.get("gratuit") === "true"
   const search = searchParams.get("search") ?? ""
-  const ordering = (searchParams.get("ordering") ?? "") as keyof typeof ORDERING_LABELS | ""
+  const ordering: keyof typeof ORDERING_LABELS | "" = searchParams.get("ordering") === "recent" ? "recent" : ""
 
   // Arrivé par « Inédites » (menu, accueil, fiche) : la page parle d'inédites, pas d'annales. Le
   // titre « Toutes les annales corrigées » au-dessus d'une liste d'épreuves jamais tirées des
@@ -750,10 +753,10 @@ export function EpreuvesListPage() {
             <div className="flex shrink-0 items-center gap-2">
             <Select value={ordering || "default"} onValueChange={(v) => updateFilter("ordering", v === "default" ? "" : v)}>
               <SelectTrigger className="h-8 w-36 text-sm sm:w-48" aria-label={t("ep.trier")}>
-                <SelectValue placeholder={t("ep.tri_defaut")} />
+                <SelectValue placeholder={t("ep.tri_annee")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="default">{t("ep.tri_defaut")}</SelectItem>
+                <SelectItem value="default">{t("ep.tri_annee")}</SelectItem>
                 {(Object.keys(ORDERING_LABELS) as (keyof typeof ORDERING_LABELS)[]).map((key) => (
                   <SelectItem key={key} value={key}>
                     {t(ORDERING_LABELS[key])}
