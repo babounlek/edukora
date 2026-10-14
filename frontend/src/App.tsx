@@ -106,14 +106,19 @@ function AppToaster() {
   return <Toaster theme={theme} richColors closeButton />
 }
 
-function App() {
+/**
+ * `basename` : le préfixe de langue de l'URL (`/en`, ou rien pour le français), fixé au chargement
+ * par initialiserLangue. Avec lui, toutes les routes ci-dessous valent pour les deux langues et tout
+ * lien interne reste dans la langue de la page.
+ */
+function App({ basename = "" }: { basename?: string }) {
   useI18n()
   const enExamen = useModeExamen()
   return (
     <ThemeProvider defaultTheme="light" storageKey="edukamer-theme">
       <AppToaster />
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <ScrollToTop />
           <BalisesDeRoute />
           <CountryProvider>

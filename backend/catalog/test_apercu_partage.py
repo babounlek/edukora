@@ -66,3 +66,69 @@ class ApercuPartageTests(TestCase):
         self.assertEqual(self.client.get(f"/partage-image/epreuves/{self.brouillon.slug}.png").status_code, 404)
         self.assertEqual(self.client.get("/partage-image/epreuves/n-existe-pas.png").status_code, 404)
         self.assertEqual(self.client.get("/partage-image/inconnu/x.png").status_code, 404)
+
+
+class ApercuPartageAnglaisTests(TestCase):
+    """Chaque page existe sous `/en` : l'aperçu suit le préfixe (textes, locale, canonical, image)."""
+
+    @classmethod
+    def setUpTestData(cls):
+        pays = Country.objects.create(code="cm", label="Cameroun", dial_code="+237", currency="XAF")
+        cls.matiere = Subject.objects.create(country=pays, code="GCE_MATHS", label="Mathematics", langue="en")
+        cls.lesson = Lesson.objects.create(
+            title="Maths O Level 2023", subject=cls.matiere, lesson_type=LessonType.CORR, year=2023, statut=StatutContenu.VALIDE,
+        )
+        cls.cours = Cours.objects.create(
+            external_id="cours-algebra", titre="Solving equations", subject=cls.matiere,
+            sous_theme="Algebra", statut=StatutContenu.VALIDE,
+        )
+
+    def test_la_page_d_epreuve_anglaise_est_en_anglais_et_canonique_sous_en(self):
+        html = self.client.get(f"/partage-apercu/en/cm/epreuves/{self.lesson.slug}").content.decode()
+        self.assertIn('<html lang="en">', html)
+        self.assertIn('og:locale" content="en_GB"', html)
+        self.assertIn('og:title" content="Maths O Level 2023 |', html)
+        self.assertIn("Past paper with correction - Mathematics (2023)", html)
+        self.assertIn(f'<link rel="canonical" href="http://localhost/en/cm/epreuves/{self.lesson.slug}">'.replace("http://localhost", self._site()), html)
+        self.assertIn(f"/partage-image/epreuves/{self.lesson.slug}.png?lang=en", html)
+
+    def test_la_version_francaise_ne_change_pas(self):
+        html = self.client.get(f"/partage-apercu/cm/epreuves/{self.lesson.slug}").content.decode()
+        self.assertIn('<html lang="fr">', html)
+        self.assertIn('og:locale" content="fr_FR"', html)
+        self.assertIn("sujet en accès libre", html)
+        self.assertNotIn("lang=en", html)
+        self.assertNotIn("/en/", html)
+
+    def test_cours_anglais_sans_pays_dans_le_chemin(self):
+        html = self.client.get(f"/partage-apercu/en/cours/{self.cours.slug}").content.decode()
+        self.assertIn("Mathematics lesson - Algebra: method, worked example", html)
+        self.assertIn(f"/en/cours/{self.cours.slug}", html)
+
+    def test_le_lecteur_anglais_pointe_vers_la_fiche_anglaise(self):
+        infos = infos_page(f"en/cours/{self.cours.slug}/lire")
+        self.assertEqual(infos["chemin"], f"en/cours/{self.cours.slug}")
+
+    def test_accueil_anglais_donne_l_apercu_generique_anglais(self):
+        for chemin in ("en", "en/", "en/cm"):
+            html = self.client.get(f"/partage-apercu/{chemin}").content.decode()
+            self.assertIn('<html lang="en">', html, chemin)
+            self.assertIn('og:locale" content="en_GB"', html, chemin)
+            self.assertIn("GCE O Level and A Level past papers", html, chemin)
+            self.assertIn("/partage-image/defaut.png?lang=en", html, chemin)
+
+    def test_image_anglaise_et_par_defaut(self):
+        from io import BytesIO
+
+        from PIL import Image
+
+        for url in (f"/partage-image/epreuves/{self.lesson.slug}.png?lang=en", "/partage-image/defaut.png?lang=en"):
+            reponse = self.client.get(url)
+            self.assertEqual(reponse.status_code, 200, url)
+            self.assertEqual(Image.open(BytesIO(reponse.content)).size, (LARGEUR, HAUTEUR))
+
+    @staticmethod
+    def _site():
+        from django.conf import settings
+
+        return settings.FRONTEND_URL

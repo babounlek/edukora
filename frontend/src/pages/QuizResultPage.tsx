@@ -23,6 +23,7 @@ import { useCompteur } from "@/lib/useCompteur"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
+import { lienDeParrainage } from "@/lib/referral"
 
 const CONFETTI_COULEURS = ["bg-gold", "bg-primary", "bg-success", "bg-info", "bg-warning"]
 
@@ -76,7 +77,7 @@ function BilanXp({
     try {
       await partagerScore({
         score, total, xp: xp.session.total, serie: serie?.jours ?? 0, nomSite: SITE_NAME,
-        lien: `${window.location.origin}/?ref=${user.referral_code}`,
+        lien: lienDeParrainage(user.referral_code),
       })
     } finally {
       setPartage(false)

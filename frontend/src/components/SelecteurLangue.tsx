@@ -2,13 +2,24 @@ import { useEffect, useRef } from "react"
 
 import { updateMe } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
-import { definirLangue, langueStockee, LANGUES, useI18n, type Langue } from "@/lib/i18n"
+import {
+  langueCourante,
+  langueDuChemin,
+  langueStockee,
+  LANGUES,
+  memoriserLangue,
+  ouvrirDansLangue,
+  useI18n,
+  type Langue,
+} from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 /**
  * Accorde la langue de l'interface et celle du compte, une fois par connexion :
  *  - un choix fait sur CE navigateur (avant ou sans connexion) est le plus récent, il part sur le compte ;
- *  - sans choix local, on prend la langue du compte (un élève qui change d'appareil la retrouve).
+ *  - sans choix local, on prend la langue du compte (un élève qui change d'appareil la retrouve) :
+ *    l'anglais ouvre la version `/en` de la page, sauf si l'URL a déjà un préfixe de langue - une page
+ *    ouverte par un lien `/en/...` reste telle quelle, et ne touche ni au compte ni au choix local.
  * Silencieux en cas d'échec réseau : la langue locale reste, rien ne bloque l'élève.
  */
 export function useSynchroLangueCompte() {
@@ -21,8 +32,9 @@ export function useSynchroLangueCompte() {
     const locale = langueStockee()
     if (locale) {
       if (locale !== user.langue) updateMe({ langue: locale }).then(updateUser).catch(() => {})
-    } else if (user.langue !== "fr") {
-      definirLangue(user.langue).catch(() => {})
+    } else if (user.langue === "en" && langueCourante() === "fr" && !langueDuChemin(window.location.pathname)) {
+      memoriserLangue("en")
+      ouvrirDansLangue("en")
     }
   }, [user, updateUser])
 }
@@ -35,13 +47,20 @@ export function SelecteurLangue({ className }: { className?: string }) {
   const { t, langue } = useI18n()
   const { user, updateUser } = useAuth()
 
-  function choisir(cible: Langue) {
+  // Le préfixe d'URL est la base du routeur, fixée au chargement : changer de langue recharge la page
+  // sur l'URL de l'autre langue (même page, même requête). Le compte est mis à jour AVANT, sinon le
+  // rechargement couperait la requête.
+  async function choisir(cible: Langue) {
     if (cible === langue) return
-    definirLangue(cible)
-      .then(() => {
-        if (user && user.langue !== cible) return updateMe({ langue: cible }).then(updateUser)
-      })
-      .catch(() => {})
+    memoriserLangue(cible)
+    if (user && user.langue !== cible) {
+      try {
+        updateUser(await updateMe({ langue: cible }))
+      } catch {
+        /* réseau : le choix local suffit, il repartira sur le compte à la prochaine connexion */
+      }
+    }
+    ouvrirDansLangue(cible)
   }
 
   return (

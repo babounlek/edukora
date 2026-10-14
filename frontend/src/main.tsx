@@ -62,15 +62,16 @@ const queryClient = new QueryClient({
   },
 })
 
-// La langue choisie (anglais) est chargée avant le premier rendu : sinon l'interface s'afficherait
-// un instant en français. Sans choix mémorisé (le cas général), la promesse est déjà résolue.
-void initialiserLangue().then(() => createRoot(document.getElementById('root')!).render(
+// La langue de l'URL (`/en/...`) ou, à défaut, la langue choisie (anglais) est chargée avant le premier
+// rendu : sinon l'interface s'afficherait un instant en français. Sans anglais (le cas général), la
+// promesse est déjà résolue. Elle donne aussi la base du routeur, `/en` ou rien.
+void initialiserLangue().then((basename) => createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {/* Filet racine : celui d'App.tsx ne couvre que les routes, une erreur dans l'en-tête, le pied
         de page ou un fournisseur de contexte laissait sinon un écran blanc sans recours. */}
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <App basename={basename} />
       </QueryClientProvider>
     </ErrorBoundary>
   </StrictMode>,

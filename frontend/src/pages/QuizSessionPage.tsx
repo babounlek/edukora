@@ -29,7 +29,7 @@ import { libellePoints } from "@/lib/notation"
 import { memoriserQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
 import { avecQuestionCorrigee, cheminEssai, lireEssai, memoriserEssai, texteDePartageEssai } from "@/lib/quizEssai"
 import { capitaliserTheme, cn } from "@/lib/utils"
-import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
+import { cheminDansLangue, langueCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { traduireLibelleSerie } from "@/lib/cursus"
 
 /** Rendu inline (pas de <p> bloc) pour le texte d'un choix QCM, qui peut contenir du LaTeX. */
@@ -393,7 +393,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             aucune épreuve/leçon d'origine vers laquelle renvoyer (voir QuizQuestion ci-dessus). */}
         {question.lesson_id && (
           <a
-            href={`/epreuves/${question.lesson_id}`}
+            href={cheminDansLangue(`/epreuves/${question.lesson_id}`, langueCourante())}
             target="_blank"
             rel="noopener noreferrer"
             className="mb-4 flex w-fit items-center gap-1.5 rounded-md border border-dashed border-border px-3 py-1.5 text-sm font-medium text-primary hover:underline"

@@ -8,6 +8,9 @@ User-Agent et leur envoie la page ici, qui ne contient que des balises <meta> (v
 docker/caddy/Caddyfile). Les visiteurs, eux, ne passent jamais par cette vue.
 
 L'image est dessinée à la demande avec Pillow (1200x630, le format attendu par les messageries).
+
+Chaque page existe en français (`/cm/epreuves/x`) et en anglais (`/en/cm/epreuves/x`) : l'aperçu suit le
+préfixe de l'URL - textes, `og:locale`, `<html lang>`, lien canonique et image (`?lang=en`).
 """
 import re
 from functools import lru_cache
@@ -25,112 +28,156 @@ from .models import Cours, Lesson, StatutContenu
 LARGEUR, HAUTEUR = 1200, 630
 
 _CHEMIN_RE = re.compile(
-    r"^(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites)/(?P<ident>[^/]+)(?:/lire)?$"
+    r"^(?:(?P<langue>en)/)?(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites)/(?P<ident>[^/]+)(?:/lire)?$"
 )
 
-DESCRIPTION_DEFAUT = (
-    "Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire et le BAC : "
-    "corrigés d'annales et quiz rédigés par des enseignants."
-)
+# Textes de l'aperçu par langue. Les titres viennent du contenu lui-même (déjà dans sa langue) ;
+# seul le texte du gabarit est traduit.
+TEXTES = {
+    "fr": {
+        "defaut_description": (
+            "Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire et le BAC : "
+            "corrigés d'annales et quiz rédigés par des enseignants."
+        ),
+        "defaut_titre_page": "Corrigés BEPC, Probatoire et BAC",
+        "defaut_titre_image": "Chaque jour, on te dit quoi réviser",
+        "defaut_etiquette": "BEPC · Probatoire · BAC",
+        "epreuve_description": "{type} de {matiere}{annee} - sujet en accès libre, corrigé détaillé par abonnement.",
+        "cours_description": "Cours de {matiere}{theme} : méthode, exemple résolu, erreurs classiques et exercices d'appropriation.",
+        "inedite_description": "{matiere} - épreuve inédite originale conçue par {site}, jamais tirée des annales.",
+        "cours_etiquette": "Cours · {matiere}",
+        "inedite_etiquette": "Épreuve inédite · {matiere}",
+        "types": {},
+    },
+    "en": {
+        "defaut_description": (
+            "Every day, we tell you what to revise for your exam: GCE O Level and A Level past papers "
+            "with detailed corrections, and quizzes written by teachers."
+        ),
+        "defaut_titre_page": "GCE, BEPC, Probatoire and BAC corrections",
+        "defaut_titre_image": "Know what to revise, every day",
+        "defaut_etiquette": "GCE O Level · A Level",
+        "epreuve_description": "{type} - {matiere}{annee} - free access to the paper, detailed correction with a subscription.",
+        "cours_description": "{matiere} lesson{theme}: method, worked example, classic mistakes and practice exercises.",
+        "inedite_description": "{matiere} - original practice paper written by {site}, never taken from past papers.",
+        "cours_etiquette": "Lesson · {matiere}",
+        "inedite_etiquette": "Original paper · {matiere}",
+        "types": {"FICHE": "Revision sheet", "CORR": "Past paper with correction", "SUJET": "Original paper"},
+    },
+}
+
+LOCALES_OG = {"fr": "fr_FR", "en": "en_GB"}
 
 
-def _image_url(genre, ident):
-    return f"{settings.FRONTEND_URL}/partage-image/{genre}/{ident}.png"
+def _image_url(genre, ident, langue="fr"):
+    suffixe = "?lang=en" if langue == "en" else ""
+    return f"{settings.FRONTEND_URL}/partage-image/{genre}/{ident}.png{suffixe}"
 
 
-def _infos_epreuve(ident):
+def _infos_epreuve(ident, langue="fr"):
     lesson = (
         Lesson.objects.visibles().par_slug_ou_id(ident)
         .select_related("subject").prefetch_related("cursus__series").first()
     )
     if not lesson:
         return None
+    textes = TEXTES[langue]
     public = libelle_cursus(lesson.cursus.all())
     annee = f" ({lesson.year})" if lesson.year else ""
+    type_affiche = textes["types"].get(lesson.lesson_type) or lesson.get_lesson_type_display()
     return {
         "titre": lesson.title,
-        "description": (
-            f"{lesson.get_lesson_type_display()} de {lesson.subject.label}{annee} - "
-            "sujet en accès libre, corrigé détaillé par abonnement."
-        ),
-        "etiquette": f"{lesson.get_lesson_type_display()} · {lesson.subject.label}" + (f" · {lesson.year}" if lesson.year else ""),
+        "description": textes["epreuve_description"].format(type=type_affiche, matiere=lesson.subject.label, annee=annee),
+        "etiquette": f"{type_affiche} · {lesson.subject.label}" + (f" · {lesson.year}" if lesson.year else ""),
         "public": public,
         "chemin": f"epreuves/{lesson.slug}",
-        "image": _image_url("epreuves", lesson.slug),
+        "image": _image_url("epreuves", lesson.slug, langue),
     }
 
 
-def _infos_cours(ident):
+def _infos_cours(ident, langue="fr"):
     cours = Cours.objects.visibles().par_slug_ou_id(ident).select_related("subject").first()
     if not cours:
         return None
+    textes = TEXTES[langue]
     theme = f" - {cours.sous_theme}" if cours.sous_theme else ""
     return {
         "titre": cours.titre,
-        "description": (
-            f"Cours de {cours.subject.label}{theme} : méthode, exemple résolu, "
-            "erreurs classiques et exercices d'appropriation."
-        ),
-        "etiquette": f"Cours · {cours.subject.label}",
+        "description": textes["cours_description"].format(matiere=cours.subject.label, theme=theme),
+        "etiquette": textes["cours_etiquette"].format(matiere=cours.subject.label),
         "public": "",
         "chemin": f"cours/{cours.slug}",
-        "image": _image_url("cours", cours.slug),
+        "image": _image_url("cours", cours.slug, langue),
     }
 
 
-def _infos_inedite(ident):
+def _infos_inedite(ident, langue="fr"):
     qs = EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, cursus__country__actif=True)
     qs = qs.filter(pk=ident) if ident.isdigit() else qs.filter(slug=ident)
     epreuve = qs.select_related("subject").prefetch_related("cursus__series", "cursus__country").distinct().first()
     if not epreuve:
         return None
+    textes = TEXTES[langue]
     pays = epreuve.cursus.first().country.code.lower()
     return {
         "titre": epreuve.titre,
-        "description": f"{epreuve.subject.label} - épreuve inédite originale conçue par {settings.SITE_NAME}, jamais tirée des annales.",
-        "etiquette": f"Épreuve inédite · {epreuve.subject.label}",
+        "description": textes["inedite_description"].format(matiere=epreuve.subject.label, site=settings.SITE_NAME),
+        "etiquette": textes["inedite_etiquette"].format(matiere=epreuve.subject.label),
         "public": libelle_cursus(epreuve.cursus.all()),
         "chemin": f"{pays}/epreuves-inedites/{epreuve.slug}",
-        "image": _image_url("inedites", epreuve.slug),
+        "image": _image_url("inedites", epreuve.slug, langue),
     }
 
 
 _RESOLVEURS = {"epreuves": _infos_epreuve, "cours": _infos_cours, "epreuves-inedites": _infos_inedite}
 
 
+def langue_du_chemin(chemin):
+    """« en » pour un chemin sous le préfixe /en, « fr » sinon."""
+    return "en" if re.match(r"^en(/|$)", chemin.strip("/")) else "fr"
+
+
 def infos_page(chemin):
-    """Les informations d'aperçu pour un chemin de page du frontend (sans « / » initial), ou None."""
+    """Les informations d'aperçu pour un chemin de page du frontend (sans « / » initial), ou None.
+
+    Un chemin sous `en/` donne l'aperçu anglais : textes du gabarit, image `?lang=en` et chemin
+    canonique préfixé (`en/cm/epreuves/x`)."""
     m = _CHEMIN_RE.match(chemin.strip("/"))
     if not m:
         return None
-    infos = _RESOLVEURS[m.group("genre")](m.group("ident"))
+    langue = "en" if m.group("langue") else "fr"
+    infos = _RESOLVEURS[m.group("genre")](m.group("ident"), langue)
     if infos and m.group("pays") and m.group("genre") == "epreuves":
         infos["chemin"] = f"{m.group('pays')}/{infos['chemin']}"
+    if infos and langue == "en":
+        infos["chemin"] = f"en/{infos['chemin']}"
     return infos
 
 
 def apercu_partage(request, chemin=""):
     infos = infos_page(chemin)
     site = settings.SITE_NAME
+    langue = langue_du_chemin(chemin)
+    textes = TEXTES[langue]
     if infos:
         titre = f"{infos['titre']} | {site}"
         description = infos["description"]
         url = f"{settings.FRONTEND_URL}/{infos['chemin']}"
         image = infos["image"]
     else:
-        titre = f"{site} - Corrigés BEPC, Probatoire et BAC"
-        description = DESCRIPTION_DEFAUT
+        titre = f"{site} - {textes['defaut_titre_page']}"
+        description = textes["defaut_description"]
         url = f"{settings.FRONTEND_URL}/{chemin.strip('/')}".rstrip("/")
-        image = f"{settings.FRONTEND_URL}/partage-image/defaut.png"
+        image = f"{settings.FRONTEND_URL}/partage-image/defaut.png" + ("?lang=en" if langue == "en" else "")
 
     t, d, u, i = escape(titre), escape(description), escape(url), escape(image)
     html = (
-        '<!doctype html><html lang="fr"><head><meta charset="utf-8">'
+        f'<!doctype html><html lang="{langue}"><head><meta charset="utf-8">'
         f"<title>{t}</title>"
         f'<meta name="description" content="{d}">'
         f'<link rel="canonical" href="{u}">'
         f'<meta property="og:site_name" content="{escape(site)}">'
-        '<meta property="og:type" content="website"><meta property="og:locale" content="fr_FR">'
+        f'<meta property="og:type" content="website"><meta property="og:locale" content="{LOCALES_OG[langue]}">'
         f'<meta property="og:url" content="{u}">'
         f'<meta property="og:title" content="{t}">'
         f'<meta property="og:description" content="{d}">'
@@ -229,11 +276,13 @@ def dessiner_carte(titre, etiquette="", public=""):
 
 
 def image_partage(request, genre, ident):
+    langue = "en" if request.GET.get("lang") == "en" else "fr"
     if genre == "defaut":
-        infos = {"titre": "Chaque jour, on te dit quoi réviser", "etiquette": "BEPC · Probatoire · BAC", "public": ""}
+        textes = TEXTES[langue]
+        infos = {"titre": textes["defaut_titre_image"], "etiquette": textes["defaut_etiquette"], "public": ""}
     else:
         resolveur = {"epreuves": _infos_epreuve, "cours": _infos_cours, "inedites": _infos_inedite}.get(genre)
-        infos = resolveur(ident) if resolveur else None
+        infos = resolveur(ident, langue) if resolveur else None
     if not infos:
         raise Http404("Aperçu introuvable.")
     png = dessiner_carte(infos["titre"], infos["etiquette"], infos["public"])

@@ -1,3 +1,5 @@
+import { cheminDansLangue, langueCourante } from "@/lib/i18n"
+
 // Partager une page (épreuve, cours, épreuve inédite...) avec un camarade. Même logique que
 // partageScore.ts, sans la carte image : l'aperçu du lien (titre, image) est fourni par le serveur
 // aux robots de WhatsApp et consorts, voir backend/catalog/apercu_partage.py.
@@ -16,7 +18,9 @@ export type CanalPartage = "natif" | "whatsapp" | "copie"
 
 /** Lien absolu de la page, avec le code de parrainage quand l'élève en a un. */
 export function lienDePartage({ chemin, codeParrainage }: Pick<DonneesPartageLien, "chemin" | "codeParrainage">): string {
-  const url = new URL(chemin, window.location.origin)
+  // Dans la langue de l'interface : le lien d'une page anglaise s'ouvre en anglais chez l'ami
+  // (préfixe /en, voir lib/i18n/prefixe.ts).
+  const url = new URL(cheminDansLangue(chemin, langueCourante()), window.location.origin)
   if (codeParrainage) url.searchParams.set("ref", codeParrainage)
   return url.toString()
 }

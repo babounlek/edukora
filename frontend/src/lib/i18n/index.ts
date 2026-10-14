@@ -14,10 +14,18 @@
  * La langue est choisie par l'élève (sélecteur), gardée dans localStorage et, connecté, sur son
  * compte (User.langue). Un visiteur anonyme est en français tant qu'il n'a pas choisi : pas de
  * détection par le navigateur - décision du 2026-10-13.
+ *
+ * Depuis le 2026-10-14, la langue est aussi dans l'URL (voir prefixe.ts) : `/en/...` est la version
+ * anglaise, sans préfixe la française. Le préfixe l'emporte sur le choix mémorisé - c'est ce qui rend
+ * un lien anglais partageable - mais ne le modifie pas : seul le sélecteur écrit le choix. Sans
+ * préfixe, un choix mémorisé « anglais » renvoie vers la version `/en` de la même page.
  */
 import { useSyncExternalStore } from "react"
 
 import { fr, type CleAvecPluriel, type CleI18n } from "./fr"
+import { basenameDeLangue, cheminDansLangue, langueDuChemin } from "./prefixe"
+
+export { basenameDeLangue, cheminDansLangue, langueDuChemin, PREFIXE_EN, retirerPrefixeLangue } from "./prefixe"
 
 export type { CleI18n, CleAvecPluriel } from "./fr"
 
@@ -53,10 +61,22 @@ async function chargerSurcharge(cible: Langue): Promise<Dictionnaire> {
   return cible === "en" ? (await import("./en")).en : {}
 }
 
+/** Garde le choix de langue de CE navigateur (les erreurs de stockage sont sans conséquence). */
+export function memoriserLangue(cible: Langue): void {
+  try {
+    localStorage.setItem(LANGUE_STORAGE_KEY, cible)
+  } catch {
+    /* stockage indisponible (navigation privée...) : le choix vaut pour cette session */
+  }
+}
+
 /**
  * Bascule la langue. Le dictionnaire est chargé AVANT de basculer : l'interface passe d'une langue
  * à l'autre d'un coup, sans trou en français entre les deux. Rejette si le chargement échoue (réseau) ;
  * la langue précédente reste alors en place.
+ *
+ * Ne touche pas à l'URL : pour un changement voulu par l'élève, c'est `ouvrirDansLangue` qu'il faut,
+ * qui recharge la page sur l'URL de l'autre langue.
  */
 export async function definirLangue(cible: Langue, options: { persister?: boolean } = {}): Promise<void> {
   if (!estLangue(cible)) return
@@ -64,26 +84,46 @@ export async function definirLangue(cible: Langue, options: { persister?: boolea
   langue = cible
   surcharge = dictionnaire
   version += 1
-  if (options.persister ?? true) {
-    try {
-      localStorage.setItem(LANGUE_STORAGE_KEY, cible)
-    } catch {
-      /* stockage indisponible (navigation privée...) : le choix vaut pour cette session */
-    }
-  }
+  if (options.persister ?? true) memoriserLangue(cible)
   if (typeof document !== "undefined") document.documentElement.lang = cible
   abonnes.forEach((notifier) => notifier())
 }
 
-/** À appeler avant le premier rendu : applique la langue gardée, sans flash de français. */
-export async function initialiserLangue(): Promise<void> {
-  const gardee = langueStockee()
-  if (!gardee || gardee === "fr") return
-  try {
-    await definirLangue(gardee, { persister: false })
-  } catch {
-    /* anglais injoignable : on reste en français plutôt que de bloquer l'app */
+/** L'URL de la page courante dans une autre langue (même page, même requête, même ancre). */
+export function urlDansLangue(
+  cible: Langue,
+  emplacement: Pick<Location, "pathname" | "search" | "hash"> = window.location,
+): string {
+  return `${cheminDansLangue(emplacement.pathname, cible)}${emplacement.search}${emplacement.hash}`
+}
+
+/** Recharge la page courante dans l'autre langue : le préfixe est la base du routeur, fixée au chargement. */
+export function ouvrirDansLangue(cible: Langue): void {
+  window.location.assign(urlDansLangue(cible))
+}
+
+/**
+ * À appeler avant le premier rendu : applique la langue de l'URL (préfixe `/en`), à défaut celle
+ * gardée par ce navigateur, sans flash de français. Retourne la `basename` du routeur, qui est
+ * toujours celle de l'URL - même si le dictionnaire anglais n'a pas pu être chargé, sans quoi
+ * `/en/cm` serait lu comme un pays « en ».
+ */
+export async function initialiserLangue(): Promise<string> {
+  const { pathname, search, hash } = window.location
+  const duChemin = langueDuChemin(pathname)
+  let cible: Langue = duChemin ?? "fr"
+  if (!duChemin && langueStockee() === "en") {
+    cible = "en"
+    window.history.replaceState(window.history.state, "", `${cheminDansLangue(pathname, "en")}${search}${hash}`)
   }
+  if (cible === "en") {
+    try {
+      await definirLangue("en", { persister: false })
+    } catch {
+      /* anglais injoignable : on garde le français plutôt que de bloquer l'app */
+    }
+  }
+  return basenameDeLangue(cible)
 }
 
 export function langueCourante(): Langue {

@@ -1,3 +1,5 @@
+import { cheminDansLangue, langueCourante } from "@/lib/i18n"
+
 const STORAGE_KEY = "edukamer-referral-code"
 
 /**
@@ -17,4 +19,13 @@ export function consumeReferralCode(): string {
 
 export function clearReferralCode() {
   localStorage.removeItem(STORAGE_KEY)
+}
+
+/**
+ * Lien de parrainage vers l'accueil, dans la langue de l'interface : un élève qui parraine depuis la
+ * version anglaise envoie un lien anglais à son ami (voir lib/i18n/prefixe.ts).
+ */
+export function lienDeParrainage(code: string): string {
+  const accueil = cheminDansLangue("/", langueCourante())
+  return `${window.location.origin}${accueil === "/" ? "/" : `${accueil}/`}?ref=${code}`
 }

@@ -72,9 +72,21 @@
     # propres au contenu (voir backend/catalog/apercu_partage.py). Les visiteurs n'y passent jamais.
     @robots_apercu {
         header_regexp User-Agent (?i)(whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|skypeuripreview|pinterest)
-        path_regexp ^/([a-z]{2}/)?(epreuves|cours|epreuves-inedites)/[^/]+(/lire)?/?$
+        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|cours|epreuves-inedites)/[^/]+(/lire)?/?$
     }
     handle @robots_apercu {
+        rewrite * /partage-apercu{path}
+        reverse_proxy backend:8000
+    }
+
+    # Accueil de la version anglaise (/en, /en/cm) : pas de contenu propre, mais l'aperçu générique
+    # doit être en anglais (og:locale, description) - sans cette règle, ces robots recevraient les
+    # balises françaises d'index.html.
+    @robots_apercu_en {
+        header_regexp User-Agent (?i)(whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|skypeuripreview|pinterest)
+        path_regexp ^/en(/[a-z]{2})?/?$
+    }
+    handle @robots_apercu_en {
         rewrite * /partage-apercu{path}
         reverse_proxy backend:8000
     }

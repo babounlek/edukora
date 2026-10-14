@@ -4,7 +4,19 @@ import { formatCompteARebours } from "@/components/CompteAReboursBadge"
 import type { CompteARebours } from "@/api/types"
 import { en } from "./en"
 import { fr } from "./fr"
-import { definirLangue, initialiserLangue, langueCourante, langueStockee, LANGUE_STORAGE_KEY, t, tn } from "./index"
+import {
+  cheminDansLangue,
+  definirLangue,
+  initialiserLangue,
+  langueCourante,
+  langueDuChemin,
+  langueStockee,
+  LANGUE_STORAGE_KEY,
+  retirerPrefixeLangue,
+  t,
+  tn,
+  urlDansLangue,
+} from "./index"
 
 const compte = (surcharges: Partial<CompteARebours>): CompteARebours => ({
   date_examen: "2027-05-24",
@@ -16,6 +28,7 @@ const compte = (surcharges: Partial<CompteARebours>): CompteARebours => ({
 
 afterEach(async () => {
   localStorage.clear()
+  window.history.replaceState(null, "", "/")
   await definirLangue("fr", { persister: false })
 })
 
@@ -91,22 +104,67 @@ describe("t / tn", () => {
 })
 
 describe("persistance", () => {
-  it("garde le choix et le retrouve au démarrage", async () => {
+  it("garde le choix et, sans préfixe, renvoie vers la version anglaise de la même page", async () => {
     await definirLangue("en")
     expect(localStorage.getItem(LANGUE_STORAGE_KEY)).toBe("en")
     expect(langueStockee()).toBe("en")
     await definirLangue("fr", { persister: false })
-    await initialiserLangue()
+    window.history.replaceState(null, "", "/cm/epreuves?cursus=3#haut")
+    expect(await initialiserLangue()).toBe("/en")
     expect(langueCourante()).toBe("en")
+    expect(window.location.pathname + window.location.search + window.location.hash).toBe("/en/cm/epreuves?cursus=3#haut")
   })
 
   it("sans choix mémorisé ou avec une valeur invalide, reste en français", async () => {
-    await initialiserLangue()
+    expect(await initialiserLangue()).toBe("")
     expect(langueCourante()).toBe("fr")
     localStorage.setItem(LANGUE_STORAGE_KEY, "klingon")
     expect(langueStockee()).toBeNull()
-    await initialiserLangue()
+    expect(await initialiserLangue()).toBe("")
     expect(langueCourante()).toBe("fr")
+    expect(window.location.pathname).toBe("/")
+  })
+})
+
+describe("langue dans l'URL", () => {
+  it("un préfixe /en donne l'anglais, même si le navigateur a choisi le français, sans toucher au choix", async () => {
+    localStorage.setItem(LANGUE_STORAGE_KEY, "fr")
+    window.history.replaceState(null, "", "/en/cm/cours")
+    expect(await initialiserLangue()).toBe("/en")
+    expect(langueCourante()).toBe("en")
+    expect(langueStockee()).toBe("fr")
+    expect(window.location.pathname).toBe("/en/cm/cours")
+  })
+
+  it("une URL sans préfixe reste en français quand rien n'est choisi", async () => {
+    window.history.replaceState(null, "", "/cm/cours")
+    expect(await initialiserLangue()).toBe("")
+    expect(langueCourante()).toBe("fr")
+  })
+
+  it("lit et retire le préfixe sans confondre un segment voisin", () => {
+    expect(langueDuChemin("/en")).toBe("en")
+    expect(langueDuChemin("/en/cm")).toBe("en")
+    expect(langueDuChemin("/cm/en")).toBeNull()
+    expect(langueDuChemin("/english")).toBeNull()
+    expect(retirerPrefixeLangue("/en/cm/cours")).toBe("/cm/cours")
+    expect(retirerPrefixeLangue("/en")).toBe("/")
+    expect(retirerPrefixeLangue("/cm/cours")).toBe("/cm/cours")
+  })
+
+  it("place un chemin dans une langue, sans doubler le préfixe", () => {
+    expect(cheminDansLangue("/cm/cours", "en")).toBe("/en/cm/cours")
+    expect(cheminDansLangue("/en/cm/cours", "en")).toBe("/en/cm/cours")
+    expect(cheminDansLangue("/", "en")).toBe("/en")
+    expect(cheminDansLangue("/en/cm/cours", "fr")).toBe("/cm/cours")
+    expect(cheminDansLangue("/en", "fr")).toBe("/")
+    expect(cheminDansLangue("/cm/cours", "fr")).toBe("/cm/cours")
+  })
+
+  it("l'URL de l'autre langue garde la requête et l'ancre", () => {
+    const ici = { pathname: "/cm/epreuves/maths", search: "?q=2", hash: "#corrige" }
+    expect(urlDansLangue("en", ici)).toBe("/en/cm/epreuves/maths?q=2#corrige")
+    expect(urlDansLangue("fr", { ...ici, pathname: "/en/cm/epreuves/maths" })).toBe("/cm/epreuves/maths?q=2#corrige")
   })
 })
 

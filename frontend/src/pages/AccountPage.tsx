@@ -18,6 +18,7 @@ import { ChoixRythme, InterrupteurPush, InterrupteurRetours } from "@/components
 import { Section } from "@/components/CompteSection"
 import { ChoixMatieres, useAfficherChoixMatieres } from "@/components/ChoixMatieres"
 import { langueCourante, useI18n } from "@/lib/i18n"
+import { lienDeParrainage } from "@/lib/referral"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -98,7 +99,7 @@ export function AccountPage() {
 
   if (isLoading || !user) return null
 
-  const referralLink = `${window.location.origin}/?ref=${user.referral_code}`
+  const referralLink = lienDeParrainage(user.referral_code)
   const whatsappMessage = t("cpt.whatsapp_message", { site: SITE_NAME, lien: referralLink })
 
   function handleCopyLink() {

@@ -7595,3 +7595,45 @@ class CoursVideTests(TestCase):
         )
 
         self.assertNotIn("COURS_LINK", self.lesson.exercises_breakdown()[0]["corrige_markdown"])
+
+
+class SitemapAnglaisTests(TestCase):
+    """Chaque page existe sous `/en` (voir frontend/src/lib/i18n/prefixe.ts). Le sitemap annonce la version
+    anglaise des pages d'ensemble et des contenus rédigés en anglais (le GCE), avec hreflang des deux côtés ;
+    un contenu français n'a qu'une URL."""
+
+    def setUp(self):
+        self.base = __import__("django.conf", fromlist=["settings"]).settings.FRONTEND_URL
+        cm = Country.objects.get(code__iexact="cm")
+        self.gce = Subject.objects.create(country=cm, code="GCE_MATHS_T", label="Mathematics", langue="en")
+        self.fr = Subject.objects.get(country__code="CM", code="MATHS")
+        self.lesson_en = Lesson.objects.create(title="O Level", subject=self.gce, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE)
+        self.lesson_fr = Lesson.objects.create(title="BAC C", subject=self.fr, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE)
+        self.cours_en = Cours.objects.create(external_id="c-en", titre="Algebra", subject=self.gce, statut=StatutContenu.VALIDE)
+        self.cours_fr = Cours.objects.create(external_id="c-fr", titre="Dérivées", subject=self.fr, statut=StatutContenu.VALIDE)
+        self.xml = self.client.get(reverse("sitemap-chunk", args=[1])).content.decode()
+
+    def test_declare_le_namespace_xhtml(self):
+        self.assertIn('xmlns:xhtml="http://www.w3.org/1999/xhtml"', self.xml)
+
+    def test_pages_d_ensemble_dans_les_deux_langues_avec_hreflang(self):
+        b = self.base
+        for chemin in ("/cm", "/cm/epreuves", "/cm/cours", "/tarifs", "/cgu"):
+            self.assertIn(f"<loc>{b}{chemin}</loc>", self.xml, chemin)
+            self.assertIn(f"<loc>{b}/en{chemin}</loc>", self.xml, chemin)
+            for langue, url in (("fr", f"{b}{chemin}"), ("en", f"{b}/en{chemin}"), ("x-default", f"{b}{chemin}")):
+                self.assertIn(f'<xhtml:link rel="alternate" hreflang="{langue}" href="{url}"/>', self.xml)
+
+    def test_contenu_gce_dans_les_deux_langues(self):
+        b = self.base
+        self.assertIn(f"<loc>{b}/cm/epreuves/{self.lesson_en.slug}</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/en/cm/epreuves/{self.lesson_en.slug}</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/cours/{self.cours_en.slug}</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/en/cours/{self.cours_en.slug}</loc>", self.xml)
+
+    def test_contenu_francais_une_seule_url(self):
+        b = self.base
+        self.assertIn(f"<loc>{b}/cm/epreuves/{self.lesson_fr.slug}</loc>", self.xml)
+        self.assertNotIn(f"/en/cm/epreuves/{self.lesson_fr.slug}", self.xml)
+        self.assertIn(f"<loc>{b}/cours/{self.cours_fr.slug}</loc>", self.xml)
+        self.assertNotIn(f"/en/cours/{self.cours_fr.slug}", self.xml)

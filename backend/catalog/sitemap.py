@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponse
 
 from inedit.models import EpreuveInedite
 
-from .models import Cours, Country, Lesson, StatutContenu
+from .models import Cours, Country, Langue, Lesson, StatutContenu
 
 # django.contrib.sitemaps résout le domaine via request.get_host() ou le framework
 # Sites - les deux donneraient le domaine de CETTE API, pas celui du frontend où les
@@ -37,33 +37,55 @@ _PER_COUNTRY_PAGES = [
 ]
 
 
-def _url_entry(loc, lastmod=None, priority="0.5", changefreq="weekly"):
+def _url_entry(loc, lastmod=None, priority="0.5", changefreq="weekly", alternates=None):
     lastmod_tag = f"<lastmod>{lastmod.date().isoformat()}</lastmod>" if lastmod else ""
+    alternates_tags = "".join(
+        f'<xhtml:link rel="alternate" hreflang="{langue}" href="{href}"/>' for langue, href in (alternates or {}).items()
+    )
     return (
         f"<url><loc>{loc}</loc>{lastmod_tag}"
-        f"<changefreq>{changefreq}</changefreq><priority>{priority}</priority></url>"
+        f"<changefreq>{changefreq}</changefreq><priority>{priority}</priority>{alternates_tags}</url>"
     )
+
+
+def _entries(base, path, bilingue, **kwargs):
+    """Les entrées d'une page : la française (sans préfixe) et, si `bilingue`, l'anglaise (`/en`), chacune
+    déclarant l'autre en hreflang (le français est aussi la version par défaut).
+
+    Toutes les pages ont une version anglaise, mais le sitemap ne propose à l'indexation anglaise que
+    celles qui ont de quoi s'y lire : les pages d'ensemble (accueil, listes, tarifs, mentions) et les
+    contenus rédigés en anglais (le GCE). Un corrigé de BEPC sous `/en/` ne serait que du français habillé
+    d'une interface anglaise - il reste joignable, mais n'est pas annoncé aux moteurs de recherche."""
+    fr = f"{base}{path}"
+    if not bilingue:
+        return [_url_entry(fr, **kwargs)]
+    en = f"{base}/en{path}"
+    alternates = {"fr": fr, "en": en, "x-default": fr}
+    return [_url_entry(fr, alternates=alternates, **kwargs), _url_entry(en, alternates=alternates, **kwargs)]
 
 
 def _all_entries():
     """Reconstruite à chaque appel depuis la base VALIDE - jamais de cache, jamais de
     fichier à régénérer manuellement : le sitemap est donc toujours à jour."""
     base = settings.FRONTEND_URL
-    entries = [
-        _url_entry(f"{base}{path}", priority=priority, changefreq=changefreq)
-        for path, priority, changefreq in _STATIC_PAGES
-    ]
+    entries = []
+    for path, priority, changefreq in _STATIC_PAGES:
+        entries.extend(_entries(base, path, True, priority=priority, changefreq=changefreq))
 
     for country_code in Country.objects.filter(actif=True).values_list("code", flat=True):
         code = country_code.lower()
-        entries.extend(
-            _url_entry(f"{base}/{code}{path}", priority=priority, changefreq=changefreq)
-            for path, priority, changefreq in _PER_COUNTRY_PAGES
-        )
+        for path, priority, changefreq in _PER_COUNTRY_PAGES:
+            entries.extend(_entries(base, f"/{code}{path}", True, priority=priority, changefreq=changefreq))
 
-    for lesson in Lesson.objects.visibles().select_related("subject__country").only("slug", "updated_at", "subject__country__code"):
+    lessons = Lesson.objects.visibles().select_related("subject__country").only(
+        "slug", "updated_at", "subject__country__code", "subject__langue",
+    )
+    for lesson in lessons:
         country_code = lesson.subject.country.code.lower()
-        entries.append(_url_entry(f"{base}/{country_code}/epreuves/{lesson.slug}", lastmod=lesson.updated_at, priority="0.7"))
+        entries.extend(_entries(
+            base, f"/{country_code}/epreuves/{lesson.slug}", lesson.subject.langue == Langue.EN,
+            lastmod=lesson.updated_at, priority="0.7",
+        ))
 
     # cursus__country__actif (pas subject__country__actif comme pour Lesson ci-dessus) :
     # même filtre que catalog.inedit_bridge.build_inedit_queryset - EpreuveInedite.cursus
@@ -75,18 +97,22 @@ def _all_entries():
     # (même correctif que catalog.inedit_bridge.build_inedit_queryset).
     epreuves_inedites = (
         EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, cursus__country__actif=True)
+        .select_related("subject")
         .prefetch_related("cursus__country")
-        .only("slug", "updated_at")
+        .only("slug", "updated_at", "subject__langue")
         .distinct()
     )
     for epreuve in epreuves_inedites:
         country_code = epreuve.cursus.first().country.code.lower()
-        entries.append(
-            _url_entry(f"{base}/{country_code}/epreuves-inedites/{epreuve.slug}", lastmod=epreuve.updated_at, priority="0.7"),
-        )
+        entries.extend(_entries(
+            base, f"/{country_code}/epreuves-inedites/{epreuve.slug}", epreuve.subject.langue == Langue.EN,
+            lastmod=epreuve.updated_at, priority="0.7",
+        ))
 
-    for cours in Cours.objects.visibles().only("slug", "updated_at"):
-        entries.append(_url_entry(f"{base}/cours/{cours.slug}", lastmod=cours.updated_at, priority="0.7"))
+    for cours in Cours.objects.visibles().select_related("subject").only("slug", "updated_at", "subject__langue"):
+        entries.extend(_entries(
+            base, f"/cours/{cours.slug}", cours.subject.langue == Langue.EN, lastmod=cours.updated_at, priority="0.7",
+        ))
 
     return entries
 
@@ -116,7 +142,7 @@ def sitemap_chunk(request, page):
         raise Http404("Sitemap introuvable.")
     xml = (
         '<?xml version="1.0" encoding="UTF-8"?>'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
         + "".join(chunks[index])
         + "</urlset>"
     )
