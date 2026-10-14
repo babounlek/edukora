@@ -1,6 +1,6 @@
 import type { ResultatRecherche, TypeResultatRecherche } from "@/api/types"
 import { trackEvent } from "@/lib/analytics"
-import { langueCourante, t, tn, type CleI18n } from "@/lib/i18n"
+import { langueCourante, t, tn, type CleI18n, type Langue } from "@/lib/i18n"
 import {
   coursDetailPath,
   coursListPath,
@@ -184,22 +184,50 @@ export function cibleResultat(country: string, resultat: ResultatRecherche): str
 const CLE_RECENTES = "edukamer_recherches_recentes"
 const MAX_RECENTES = 5
 
-export function lireRecentes(): string[] {
+/** Une recherche validée et la langue de l'interface dans laquelle elle a été faite. */
+interface RechercheRecente {
+  q: string
+  langue: Langue
+}
+
+// Les recherches sont retenues AVEC leur langue : « organic chemistry » tapé en anglais n'a rien à faire dans les
+// dernières recherches d'une interface française. Une ancienne entrée (une simple chaîne, sans langue) n'est ni
+// montrée ni conservée : on ne sait pas dans quelle langue elle a été faite.
+function lireToutesRecentes(): RechercheRecente[] {
   try {
     const brut = JSON.parse(localStorage.getItem(CLE_RECENTES) ?? "[]")
-    return Array.isArray(brut) ? brut.filter((v): v is string => typeof v === "string").slice(0, MAX_RECENTES) : []
+    if (!Array.isArray(brut)) return []
+    return brut.filter(
+      (v): v is RechercheRecente =>
+        typeof v === "object" && v !== null && typeof v.q === "string" && (v.langue === "fr" || v.langue === "en"),
+    )
   } catch {
     return []
   }
 }
 
-/** Garde les dernières recherches VALIDÉES (Entrée, ou clic sur un résultat), la plus récente d'abord. */
-export function memoriserRecente(requete: string) {
+/** Les dernières recherches de la langue de l'interface (ou de toutes les langues avec "toutes"), la plus récente d'abord. */
+export function lireRecentes(langue: Langue | "toutes" = langueCourante()): string[] {
+  const gardees = lireToutesRecentes().filter((r) => langue === "toutes" || r.langue === langue)
+  const vues = new Set<string>()
+  return gardees
+    .map((r) => r.q)
+    .filter((q) => !vues.has(q.toLowerCase()) && vues.add(q.toLowerCase()))
+    .slice(0, MAX_RECENTES)
+}
+
+/** Garde les dernières recherches VALIDÉES (Entrée, ou clic sur un résultat), la plus récente d'abord - cinq par langue. */
+export function memoriserRecente(requete: string, langue: Langue = langueCourante()) {
   const propre = requete.trim()
   if (propre.length < LONGUEUR_MIN_RECHERCHE) return
   try {
-    const autres = lireRecentes().filter((r) => r.toLowerCase() !== propre.toLowerCase())
-    localStorage.setItem(CLE_RECENTES, JSON.stringify([propre, ...autres].slice(0, MAX_RECENTES)))
+    const autres = lireToutesRecentes().filter((r) => !(r.langue === langue && r.q.toLowerCase() === propre.toLowerCase()))
+    const compte: Record<string, number> = {}
+    const gardees = [{ q: propre, langue }, ...autres].filter((r) => {
+      compte[r.langue] = (compte[r.langue] ?? 0) + 1
+      return compte[r.langue] <= MAX_RECENTES
+    })
+    localStorage.setItem(CLE_RECENTES, JSON.stringify(gardees))
   } catch {
     // stockage indisponible (navigation privée) : l'historique ne persistera pas, sans autre conséquence
   }

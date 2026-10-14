@@ -154,6 +154,9 @@ describe("actionsTheme", () => {
 
 describe("recherches récentes", () => {
   beforeEach(() => localStorage.clear())
+  afterEach(async () => {
+    await definirLangue("fr", { persister: false })
+  })
 
   it("garde les cinq dernières, la plus récente d'abord, sans doublon", () => {
     for (const requete of ["a1", "thales", "discriminant", "mendel", "limites", "suites", "Thalès"]) {
@@ -165,6 +168,58 @@ describe("recherches récentes", () => {
   it("ignore une saisie trop courte", () => {
     memoriserRecente(" a ")
     expect(lireRecentes()).toEqual([])
+  })
+
+  it("sépare les recherches par langue : le français ne voit pas ce qui a été tapé en anglais", async () => {
+    memoriserRecente("thales", "fr")
+    memoriserRecente("organic chemistry", "en")
+    memoriserRecente("light and reflection", "en")
+
+    expect(lireRecentes("fr")).toEqual(["thales"])
+    expect(lireRecentes("en")).toEqual(["light and reflection", "organic chemistry"])
+    expect(lireRecentes("toutes")).toEqual(["light and reflection", "organic chemistry", "thales"])
+    // Par défaut : la langue de l'interface.
+    expect(lireRecentes()).toEqual(["thales"])
+    await definirLangue("en", { persister: false })
+    expect(lireRecentes()).toEqual(["light and reflection", "organic chemistry"])
+    memoriserRecente("acids")
+    expect(lireRecentes("en")[0]).toBe("acids")
+    expect(lireRecentes("fr")).toEqual(["thales"])
+  })
+
+  it("garde cinq recherches PAR langue, pas cinq en tout", () => {
+    for (const q of ["un1", "deux", "trois", "quatre", "cinq", "six"]) memoriserRecente(q, "fr")
+    for (const q of ["one1", "two2", "three"]) memoriserRecente(q, "en")
+
+    expect(lireRecentes("fr")).toEqual(["six", "cinq", "quatre", "trois", "deux"])
+    expect(lireRecentes("en")).toEqual(["three", "two2", "one1"])
+  })
+
+  it("une même requête dans deux langues reste deux entrées, sans doublon à l'affichage « toutes »", () => {
+    memoriserRecente("limit", "fr")
+    memoriserRecente("limit", "en")
+
+    expect(lireRecentes("fr")).toEqual(["limit"])
+    expect(lireRecentes("en")).toEqual(["limit"])
+    expect(lireRecentes("toutes")).toEqual(["limit"])
+  })
+
+  it("une ancienne entrée sans langue (simple chaîne) n'est ni montrée ni conservée", () => {
+    localStorage.setItem("edukamer_recherches_recentes", JSON.stringify(["organic chemistry", "thales"]))
+    expect(lireRecentes("fr")).toEqual([])
+    expect(lireRecentes("toutes")).toEqual([])
+
+    memoriserRecente("suites", "fr")
+
+    expect(JSON.parse(localStorage.getItem("edukamer_recherches_recentes") ?? "[]")).toEqual([{ q: "suites", langue: "fr" }])
+  })
+
+  it("ignore les entrées mal formées d'un stockage modifié", () => {
+    localStorage.setItem(
+      "edukamer_recherches_recentes",
+      JSON.stringify([{ q: "ok", langue: "fr" }, { q: 3, langue: "fr" }, { q: "x", langue: "de" }, null, { langue: "fr" }]),
+    )
+    expect(lireRecentes("toutes")).toEqual(["ok"])
   })
 
   it("oublie tout, et supporte un stockage corrompu", () => {

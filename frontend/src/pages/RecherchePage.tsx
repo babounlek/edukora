@@ -44,7 +44,7 @@ import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { cn } from "@/lib/utils"
 import { PARAM_TOUTES_LANGUES } from "@/lib/discipline"
-import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
+import { langueCourante, t, tn, useI18n, type Langue } from "@/lib/i18n"
 
 // Par groupe dans la vue d'ensemble ; une fois un type choisi, on pagine par PAGE_TYPE.
 const PAR_GROUPE = 6
@@ -753,14 +753,17 @@ function PageVide({
   identite: number
   /** Langue de la recherche (celle de l'interface, ou indéfinie pour « toutes les langues ») : les thèmes proposés
    * sont ceux de cette langue, comme les résultats d'une recherche. */
-  langue: string | undefined
+  langue: Langue | undefined
   cursusDeclare: number | null | undefined
   cursusLabel: string
   onChercher: (requete: string) => void
 }) {
   useI18n()
   const { isAuthenticated } = useAuth()
-  const [recentes, setRecentes] = useState(lireRecentes)
+  // Les recherches de la langue de l'interface (toutes avec « toutes les langues ») : relues quand la langue change.
+  const [versionRecentes, setVersionRecentes] = useState(0)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const recentes = useMemo(() => lireRecentes(langue ?? "toutes"), [langue, versionRecentes])
 
   const accueil = useQuery({
     queryKey: ["recherche", "accueil", country, identite, cursusDeclare ?? null, langue ?? "toutes"],
@@ -808,7 +811,7 @@ function PageVide({
               type="button"
               onClick={() => {
                 oublierRecentes()
-                setRecentes([])
+                setVersionRecentes((v) => v + 1)
               }}
               className="text-sm text-muted-foreground hover:text-foreground"
             >

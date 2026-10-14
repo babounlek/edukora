@@ -264,7 +264,10 @@ describe("page de recherche avant toute requête", () => {
   })
 
   it("propose les recherches récentes, les relance, et les efface", async () => {
-    localStorage.setItem("edukamer_recherches_recentes", JSON.stringify(["thalès", "mendel"]))
+    localStorage.setItem(
+      "edukamer_recherches_recentes",
+      JSON.stringify([{ q: "thalès", langue: "fr" }, { q: "mendel", langue: "fr" }]),
+    )
     rechercher.mockResolvedValue(vide())
     monter("/cm/recherche")
     const section = await screen.findByRole("region", { name: "Tes dernières recherches" })
@@ -557,6 +560,39 @@ describe("RecherchePage : langue de l'interface", () => {
     await waitFor(() => expect(rechercher).toHaveBeenCalled())
     expect(rechercher.mock.calls[0][0].q).toBe("")
     expect(rechercher.mock.calls[0][0].langue).toBeUndefined()
+  })
+
+  it("les dernières recherches sont celles de la langue de l'interface", async () => {
+    localStorage.setItem(
+      "edukamer_recherches_recentes",
+      JSON.stringify([{ q: "organic chemistry", langue: "en" }, { q: "thales", langue: "fr" }, "ancienne entree"]),
+    )
+    rechercher.mockResolvedValue(reponse({ q: "", total: 0, groupes: [], matieres: [] }))
+    monter("/cm/recherche")
+    const section = await screen.findByRole("region", { name: "Tes dernières recherches" })
+    expect(within(section).getByRole("button", { name: /thales/ })).toBeInTheDocument()
+    expect(within(section).queryByRole("button", { name: /organic chemistry/ })).not.toBeInTheDocument()
+    expect(within(section).queryByRole("button", { name: /ancienne entree/ })).not.toBeInTheDocument()
+  })
+
+  it("avec « toutes les langues », les dernières recherches des deux langues sont proposées", async () => {
+    localStorage.setItem(
+      "edukamer_recherches_recentes",
+      JSON.stringify([{ q: "organic chemistry", langue: "en" }, { q: "thales", langue: "fr" }]),
+    )
+    rechercher.mockResolvedValue(reponse({ q: "", total: 0, groupes: [], matieres: [] }))
+    monter("/cm/recherche?langues=toutes")
+    const section = await screen.findByRole("region", { name: "Tes dernières recherches" })
+    expect(within(section).getByRole("button", { name: /thales/ })).toBeInTheDocument()
+    expect(within(section).getByRole("button", { name: /organic chemistry/ })).toBeInTheDocument()
+  })
+
+  it("« Effacer » vide la liste affichée", async () => {
+    localStorage.setItem("edukamer_recherches_recentes", JSON.stringify([{ q: "thales", langue: "fr" }]))
+    rechercher.mockResolvedValue(reponse({ q: "", total: 0, groupes: [], matieres: [] }))
+    monter("/cm/recherche")
+    await userEvent.click(await screen.findByRole("button", { name: "Effacer" }))
+    await waitFor(() => expect(screen.queryByRole("region", { name: "Tes dernières recherches" })).not.toBeInTheDocument())
   })
 
   it("« toutes les langues » (?langues=toutes) lève le filtre et propose d'y revenir", async () => {
