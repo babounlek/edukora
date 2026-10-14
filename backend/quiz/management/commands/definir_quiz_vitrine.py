@@ -140,6 +140,17 @@ SELECTION = [
     ("CM", "PROBATOIRE", "TI", "GEOGRAPHIE", "gaz à effet de serre"),
     ("CM", "PROBATOIRE", "TI", "INFORMATIQUE", "processeur"),
     ("CM", "PROBATOIRE", "TI", "PHYSIQUE", "relation de conjugaison"),
+    # GCE Ordinary Level (branche générale, sans série). Pas de Biologie : aucun quiz GCE n'existe pour
+    # cette matière (un seul sujet ingéré). Thèmes centraux du programme, tombés à 6-9 épreuves.
+    ("CM", "GCE_OL", None, "GCE_MATHS", "statistics"),
+    ("CM", "GCE_OL", None, "GCE_CHEMISTRY", "mole concept"),
+    ("CM", "GCE_OL", None, "GCE_PHYSICS", "work energy and power"),
+    # GCE Advanced Level (2026-10-15) : un thème par matière, le plus souvent tombé aux papers A Level
+    # (10 à 21 papers), 6 items chacun, exclusifs à l'A Level (aucun item partagé avec le O Level).
+    ("CM", "GCE_AL", None, "GCE_BIOLOGY", "genetics and inheritance"),
+    ("CM", "GCE_AL", None, "GCE_CHEMISTRY", "chemical kinetics"),
+    ("CM", "GCE_AL", None, "GCE_FURTHER_MATHS", "polar coordinates"),
+    ("CM", "GCE_AL", None, "GCE_PHYSICS", "capacitors"),
 ]
 
 
