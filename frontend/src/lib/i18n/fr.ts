@@ -13,6 +13,7 @@
  */
 export const fr = {
   "langue.changer": "Changer de langue",
+  "langue.toutes": "Toutes les langues",
   "langue.fr": "Français",
   "langue.en": "English",
 

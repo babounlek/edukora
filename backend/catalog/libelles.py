@@ -12,7 +12,7 @@ def joindre_fr(items):
 
 
 # Séries du GCE : pas de « Série X » dans le sous-système anglophone, la branche technique
-# s'écrit « Technical » (« GCE Advanced Level - Technical »).
+# s'écrit « Technical » (« GCE A Level - Technical »).
 LIBELLES_SERIES_GCE = {"GCE_TECHNICAL": "Technical"}
 
 

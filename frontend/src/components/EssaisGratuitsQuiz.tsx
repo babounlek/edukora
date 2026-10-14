@@ -36,7 +36,8 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
 
   const cursus = useMemo(() => {
     const vus = new Map<number, string>()
-    for (const e of essais ?? []) if (!vus.has(e.cursus)) vus.set(e.cursus, traduireLibelleSerie(e.cursus_display))
+    // Pastilles courtes : « BAC - A » suffit, le mot « Série(s) » n'apporte rien dans un filtre d'examen.
+    for (const e of essais ?? []) if (!vus.has(e.cursus)) vus.set(e.cursus, traduireLibelleSerie(e.cursus_display.replace(/\bSéries?\s+/, "")))
     return [...vus.entries()].map(([id, libelle]) => ({ id, libelle }))
   }, [essais])
 

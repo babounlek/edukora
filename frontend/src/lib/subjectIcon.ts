@@ -1,3 +1,4 @@
+import { codeVisuel } from "@/lib/discipline"
 import {
   Atom,
   Beaker,
@@ -58,5 +59,5 @@ const SUBJECT_ICONS: Record<string, LucideIcon> = {
 }
 
 export function subjectIcon(code: string): LucideIcon {
-  return SUBJECT_ICONS[code] ?? GraduationCap
+  return SUBJECT_ICONS[codeVisuel(code)] ?? GraduationCap
 }

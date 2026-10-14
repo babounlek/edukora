@@ -8,6 +8,7 @@ import type { CleI18n } from "./fr"
  */
 export const en: Partial<Record<CleI18n, string>> = {
   "langue.changer": "Change language",
+  "langue.toutes": "All languages",
   "langue.fr": "Français",
   "langue.en": "English",
 

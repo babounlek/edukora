@@ -38,6 +38,7 @@ import { ReviserTabs } from "@/components/ReviserTabs"
 import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
+import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
 
 type ViewMode = "cards" | "list"
 
@@ -111,6 +112,9 @@ export function CoursListPage() {
   const { cursusPrepare } = useFiltreCursusParDefaut()
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
+  // Sans examen choisi, la liste suit la langue de l'interface ; « Toutes les langues » lève ce filtre.
+  const toutesLangues = searchParams.get(PARAM_TOUTES_LANGUES) === "toutes"
+  const langueFiltre = langueDeListe(cursusFilter, toutesLangues)
   const nonLusFilter = searchParams.get("nonlus") === "true"
   const frequentFilter = searchParams.get("frequent") === "true"
   const search = searchParams.get("search") ?? ""
@@ -143,8 +147,8 @@ export function CoursListPage() {
   // Un examen choisi → seules les matières de cet examen, jamais des pastilles qui mènent à une
   // liste vide. Sans examen, toutes les matières du pays.
   const { data: subjects = [], isSuccess: subjectsChargees, isPlaceholderData: subjectsPlaceholder } = useQuery({
-    queryKey: ["subjects", country, cursusFilter],
-    queryFn: ({ signal }) => listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined),
+    queryKey: ["subjects", country, cursusFilter, langueFiltre],
+    queryFn: ({ signal }) => listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined, langueFiltre),
     placeholderData: keepPreviousData,
   })
 
@@ -198,12 +202,13 @@ export function CoursListPage() {
   const debouncedSearch = useDebouncedValue(search, 300)
 
   const coursQuery = useInfiniteQuery({
-    queryKey: ["cours", country, subjectFilter, cursusFilter, nonLusFilter, frequentFilter, debouncedSearch, savoirFilter, themeFilter],
+    queryKey: ["cours", country, subjectFilter, cursusFilter, langueFiltre, nonLusFilter, frequentFilter, debouncedSearch, savoirFilter, themeFilter],
     queryFn: ({ pageParam, signal }) =>
       listCours(
         {
           subject: subjectFilter || undefined,
           cursus: cursusFilter ? Number(cursusFilter) : undefined,
+          langue: langueFiltre,
           country,
           search: debouncedSearch || undefined,
           // Jamais `false` : le backend ne teste que la valeur "true", mais envoyer
@@ -539,6 +544,15 @@ export function CoursListPage() {
                 </PastilleFiltre>
               )
             })}
+            {/* Seulement sans examen choisi : un examen fixe déjà la langue. */}
+            {!cursusFilter && (
+              <PastilleFiltre
+                actif={toutesLangues}
+                onClick={() => updateFilter(PARAM_TOUTES_LANGUES, toutesLangues ? "" : "toutes")}
+              >
+                {t("langue.toutes")}
+              </PastilleFiltre>
+            )}
           </FiltreLigne>
         )}
 

@@ -64,7 +64,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subject
-        fields = ["id", "code", "label", "country"]
+        fields = ["id", "code", "label", "country", "langue", "equivalent_code"]
 
 
 class SubjectListSerializer(SubjectSerializer):

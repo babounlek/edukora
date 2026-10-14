@@ -15,7 +15,7 @@ from .tests import _make_competence_item
 
 
 class _Base(TestCase):
-    """Un élève du GCE Advanced Level (pas de séries) devant plusieurs matières."""
+    """Un élève du GCE A Level (pas de séries) devant plusieurs matières."""
 
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.GCE_AL, series__isnull=True)

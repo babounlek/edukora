@@ -1,5 +1,5 @@
 // Génère les JSON du pilote GCE (voir test_gce_papers.py). Les textes sont ceux des sujets du
-// Cameroon GCE Board (O/L, juin 2019) ; corrigés rédigés pour l'essai, à relire avant toute publication.
+// Cameroon GCE Board (O Level, juin 2019) ; corrigés rédigés pour l'essai, à relire avant toute publication.
 // Usage : node _generer.js
 const fs = require("fs");
 

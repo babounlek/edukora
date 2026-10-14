@@ -2,7 +2,7 @@ from django.db import migrations
 
 # Référentiel GCE (Cameroun) - décision utilisateur du 2026-10-13. POINT DE DÉPART : la liste
 # des matières est celle du tronc commun du GCE camerounais, à valider/compléter avec les
-# syllabus du Cameroon GCE Board (matières O/L et A/L à distinguer) et à ajuster ensuite
+# syllabus du Cameroon GCE Board (matières O Level et A Level à distinguer) et à ajuster ensuite
 # depuis l'admin. Codes préfixés GCE_ : ils ne doivent jamais entrer en collision avec les
 # matières francophones (Subject est unique par (pays, code) et "MATHS" y est déjà pris),
 # et gardent thèmes, programmes et quiz du GCE séparés de ceux du BEPC/Probatoire/BAC.
@@ -34,7 +34,7 @@ SUBJECTS_GCE = [
 ]
 
 NIVEAUX = ["GCE_OL", "GCE_AL"]
-# Libellé court : il s'affiche derrière le nom de l'examen (« GCE Advanced Level Technical »).
+# Libellé court : il s'affiche derrière le nom de l'examen (« GCE A Level Technical »).
 SERIE_TECHNIQUE = ("GCE_TECHNICAL", "Technical")
 
 

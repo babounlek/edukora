@@ -22,6 +22,7 @@ import { listCursus, listEpreuves, listSubjects } from "@/api/endpoints"
 import type { NatureEpreuve, Origine } from "@/api/types"
 import { examLevelsFor } from "@/lib/cursus"
 import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
+import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -173,6 +174,9 @@ export function EpreuvesListPage() {
 
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
+  // Sans examen choisi, la liste suit la langue de l'interface (le GCE a ses propres matières) ; « Toutes les langues » lève ce filtre.
+  const toutesLangues = searchParams.get(PARAM_TOUTES_LANGUES) === "toutes"
+  const langueFiltre = langueDeListe(cursusFilter, toutesLangues)
   const origineFilter = (searchParams.get("origine") ?? "") as Origine | ""
   const natureFilter = (searchParams.get("nature") ?? "") as NatureEpreuve | ""
   const gratuitFilter = searchParams.get("gratuit") === "true"
@@ -198,8 +202,8 @@ export function EpreuvesListPage() {
   // Un examen choisi → seules les matières de cet examen (« Allemand » sous BEPC menait à une
   // liste vide). Sans examen, toutes les matières du pays.
   const { data: subjects = [], isSuccess: subjectsChargees, isPlaceholderData: subjectsPlaceholder } = useQuery({
-    queryKey: ["subjects", country, cursusFilter],
-    queryFn: ({ signal }) => listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined),
+    queryKey: ["subjects", country, cursusFilter, langueFiltre],
+    queryFn: ({ signal }) => listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined, langueFiltre),
     placeholderData: keepPreviousData,
   })
 
@@ -251,9 +255,12 @@ export function EpreuvesListPage() {
 
   // Volumétrie totale du pays, affichée dans le hero - même clé de cache que sur
   // CataloguePage, donc un aller-retour entre les deux pages ne repaie pas la requête.
+  // Dans la langue de l'interface (sauf « Toutes les langues ») : sans cela, un filtre actif faisait
+  // afficher le total des deux langues à côté d'une liste d'une seule.
+  const langueTotal = langueDeListe("", toutesLangues)
   const { data: totalData } = useQuery({
-    queryKey: ["epreuves-total", country],
-    queryFn: ({ signal }) => listEpreuves({ country }, signal),
+    queryKey: ["epreuves-total", country, langueTotal],
+    queryFn: ({ signal }) => listEpreuves({ country, langue: langueTotal }, signal),
     enabled: Boolean(country) && filtresActifs,
   })
 
@@ -265,6 +272,7 @@ export function EpreuvesListPage() {
       country,
       subjectFilter,
       cursusFilter,
+      langueFiltre,
       origineFilter,
       natureFilter,
       gratuitFilter,
@@ -276,6 +284,7 @@ export function EpreuvesListPage() {
         {
           subject: subjectFilter || undefined,
           cursus: cursusFilter ? Number(cursusFilter) : undefined,
+          langue: langueFiltre,
           country,
           origine: origineFilter || undefined,
           nature: natureFilter || undefined,
@@ -587,6 +596,15 @@ export function EpreuvesListPage() {
                 </PastilleFiltre>
               )
             })}
+            {/* Seulement sans examen choisi : un examen fixe déjà la langue. */}
+            {!cursusFilter && (
+              <PastilleFiltre
+                actif={toutesLangues}
+                onClick={() => updateFilter(PARAM_TOUTES_LANGUES, toutesLangues ? "" : "toutes")}
+              >
+                {t("langue.toutes")}
+              </PastilleFiltre>
+            )}
           </FiltreLigne>
         )}
 

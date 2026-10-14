@@ -42,8 +42,8 @@ class Examen(models.TextChoices):
     # des matières. Branche générale = Cursus sans série (comme le BEPC) ; branche
     # technique = Cursus avec la Series technique GCE_TECHNICAL - voir
     # EXAMENS_GCE / SERIE_GCE_TECHNIQUE et la migration 0063.
-    GCE_OL = "GCE_OL", "GCE Ordinary Level"
-    GCE_AL = "GCE_AL", "GCE Advanced Level"
+    GCE_OL = "GCE_OL", "GCE O Level"
+    GCE_AL = "GCE_AL", "GCE A Level"
     AUTRE = "AUTRE", "Devoir surveillé / Autre"
 
 
@@ -52,7 +52,7 @@ class Examen(models.TextChoices):
 # est-il un GCE ? », au lieu de comparer deux codes partout.
 EXAMENS_GCE = frozenset({Examen.GCE_OL, Examen.GCE_AL})
 
-# Code de la Series qui porte la branche technique du GCE (Technical O/L et A/L). Une seule
+# Code de la Series qui porte la branche technique du GCE (Technical O Level et A Level). Une seule
 # pour l'instant : la liste officielle des spécialités n'est pas confirmée, et en ajouter
 # plus tard ne demande aucune migration de schéma (une Series de plus, un Cursus par niveau).
 SERIE_GCE_TECHNIQUE = "GCE_TECHNICAL"
@@ -63,6 +63,22 @@ class Langue(models.TextChoices):
 
     FR = "fr", "Français"
     EN = "en", "English"
+
+
+# Matière GCE -> matière francophone « jumelle », pour l'affichage seulement (Subject.equivalent_code). Le GCE a ses
+# propres programmes : « Biology » n'est pas la SVT, « French » n'est pas le Français, « English Language » n'est pas
+# l'Anglais langue étrangère - la jumelle dit seulement « même famille visuelle ». Copie côté frontend :
+# lib/discipline.ts (à tenir identique ; catalog/test_equivalents_gce.py vérifie la base contre cette table).
+EQUIVALENTS_GCE = {
+    "GCE_MATHS": "MATHS", "GCE_ADD_MATHS": "MATHS", "GCE_PURE_MATHS": "MATHS", "GCE_FURTHER_MATHS": "MATHS",
+    "GCE_PHYSICS": "PHYSIQUE", "GCE_CHEMISTRY": "CHIMIE", "GCE_BIOLOGY": "SVT",
+    "GCE_HISTORY": "HISTOIRE", "GCE_GEOGRAPHY": "GEOGRAPHIE", "GCE_ECONOMICS": "ECONOMIE",
+    "GCE_PHILOSOPHY": "PHILOSOPHIE", "GCE_LOGIC": "PHILOSOPHIE", "GCE_LITERATURE": "LITTERATURE",
+    "GCE_ENGLISH": "ANGLAIS", "GCE_FRENCH": "FRANCAIS",
+    "GCE_COMPUTER_SCI": "INFORMATIQUE", "GCE_ICT": "INFORMATIQUE",
+    "GCE_CITIZENSHIP": "EDUCATION_CIVIQUE", "GCE_ACCOUNTING": "ECONOMIE", "GCE_COMMERCE": "ECONOMIE",
+    "GCE_TECH_DRAWING": "DESSIN",
+}
 
 
 def langue_examen(examen):
@@ -208,6 +224,15 @@ class Subject(models.Model):
     country = models.ForeignKey("Country", on_delete=models.PROTECT, related_name="subjects")
     code = models.CharField(max_length=20)
     label = models.CharField(max_length=100)
+    equivalent_code = models.CharField(
+        max_length=20, blank=True,
+        help_text=(
+            "Code de la matière qui lui correspond dans l'autre sous-système (ex. GCE_MATHS -> MATHS, "
+            "GCE_PHYSICS -> PHYSIQUE). Sert à l'AFFICHAGE seulement : icône, couleur et libellé court "
+            "partagés, repérage des matières jumelles. Ce n'est PAS une équivalence de programme, de "
+            "thèmes ni de quiz : ils restent distincts (voir EQUIVALENTS_GCE). Vide = aucune jumelle."
+        ),
+    )
     langue = models.CharField(
         max_length=2, choices=Langue.choices, default=Langue.FR,
         help_text=(

@@ -11,9 +11,9 @@ function cursus(examen: string, display: string, series: Cursus["series"] = null
 describe("cursus GCE", () => {
   it("place le GCE après les diplômes francophones, jamais en tête", () => {
     const liste = [
-      cursus("GCE_AL", "GCE Advanced Level"),
+      cursus("GCE_AL", "GCE A Level"),
       cursus("BAC", "BAC", { id: 1, code: "C", label: "Maths" }),
-      cursus("GCE_OL", "GCE Ordinary Level"),
+      cursus("GCE_OL", "GCE O Level"),
       cursus("BEPC", "BEPC"),
     ]
     expect(examCodesFor(liste).map((e) => e.code)).toEqual(["BEPC", "BAC", "GCE_OL", "GCE_AL"])
@@ -24,8 +24,8 @@ describe("cursus GCE", () => {
     const technique = { id: 9, code: "GCE_TECHNICAL", label: "Technical" }
     expect(codeSerieAffiche(technique)).toBe("Technical")
     expect(codeSerieAffiche({ code: "C", label: "Maths" })).toBe("C")
-    expect(formatCursusGroups([cursus("GCE_AL", "GCE Advanced Level", technique)])).toEqual([
-      { key: "GCE_AL", label: "GCE Advanced Level Technical" },
+    expect(formatCursusGroups([cursus("GCE_AL", "GCE A Level", technique)])).toEqual([
+      { key: "GCE_AL", label: "GCE A Level Technical" },
     ])
   })
 

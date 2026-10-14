@@ -31,6 +31,7 @@ from .models import (
     Examen,
     Exercise,
     FrequenceCours,
+    Langue,
     Lesson,
     LessonType,
     Origine,
@@ -168,6 +169,8 @@ class LessonListView(generics.ListAPIView):
             qs = qs.filter(subject__code__in=family)
         if cursus_id := params.get("cursus"):
             qs = qs.filter(cursus__id=cursus_id)
+        else:
+            qs = qs.filter(**_filtre_langue(self.request, "subject__langue"))
         if country := params.get("country"):
             qs = qs.filter(cursus__country__code__iexact=country)
         if lesson_type := params.get("lesson_type"):
@@ -428,6 +431,9 @@ class CoursListView(generics.ListAPIView):
                 _a_le_cursus_demande=Exists(cursus_demande),
                 _a_un_cursus=Exists(cursus_quelconque),
             ).filter(Q(_a_le_cursus_demande=True) | Q(_a_un_cursus=False))
+        if not params.get("cursus"):
+            # Sans examen choisi, la langue de l'interface limite la liste (voir _filtre_langue).
+            qs = qs.filter(**_filtre_langue(self.request, "subject__langue"))
         if savoir_id := params.get("savoir"):
             # Même relation que quiz.services.construire_parcours (Cours.tags ->
             # Tag.savoir_officiel) - permet à /parcours de proposer "voir tous les
@@ -567,6 +573,12 @@ class CoursDetailView(generics.RetrieveAPIView):
         return context
 
 
+def _filtre_langue(request, champ):
+    """`{champ: langue}` d'après ?langue=fr|en, ou {} (toutes les langues) pour all/vide/inconnu."""
+    langue = (request.query_params.get("langue") or "").lower()
+    return {champ: langue} if langue in Langue.values else {}
+
+
 class SubjectListView(generics.ListAPIView):
     serializer_class = SubjectListSerializer
     permission_classes = [permissions.AllowAny]
@@ -627,6 +639,11 @@ class SubjectListView(generics.ListAPIView):
         )
         if country := self.request.query_params.get("country"):
             qs = qs.filter(country__code__iexact=country)
+        # ?langue=fr|en : sans examen choisi, ne propose que les matières de la langue de l'interface (le GCE
+        # a ses propres « Mathematics », « Physics »... à côté des matières francophones). Ignoré quand un
+        # examen est choisi - son cursus fixe déjà la langue - ; ?langue=all ou une valeur inconnue ne filtre pas.
+        if not (cursus_id and cursus_id.isdigit()):
+            qs = qs.filter(**_filtre_langue(self.request, "langue"))
         return qs
 
 

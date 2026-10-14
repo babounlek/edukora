@@ -206,6 +206,10 @@ export interface Subject {
   code: string
   label: string
   country: Country
+  /** Langue d'enseignement de la matière (le GCE est en anglais). */
+  langue?: "fr" | "en"
+  /** Code de la matière jumelle de l'autre sous-système (affichage seulement, voir lib/discipline.ts). */
+  equivalent_code?: string
   /** Nombre de cours publiés dans cette matière. Servi par /catalog/subjects/ seul
    * (voir SubjectListSerializer côté backend) - absent des Subject imbriqués dans un
    * Cours ou une Épreuve, d'où l'optionnalité. */

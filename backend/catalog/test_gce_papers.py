@@ -1,5 +1,5 @@
 """
-Essai d'ingestion de vrais sujets du GCE (O/L, juin 2019) : fixtures_gce/*.json.
+Essai d'ingestion de vrais sujets du GCE (O Level, juin 2019) : fixtures_gce/*.json.
 
 Ce que ces sujets imposent au modèle - et que les épreuves francophones n'avaient jamais exigé :
 plusieurs « papers » par matière et par année (QCM, questions rédigées), un code de matière du
@@ -42,8 +42,8 @@ class PapersDistinctsTests(_Base):
         p2, _ = _ingerer("gce_ol_maths_2019_p2_a1.json")
 
         self.assertNotEqual(p1.lesson_id, p2.lesson_id)
-        self.assertEqual(p1.lesson.title, "Mathematics GCE Ordinary Level 2019 - Paper 1")
-        self.assertEqual(p2.lesson.title, "Mathematics GCE Ordinary Level 2019 - Paper 2")
+        self.assertEqual(p1.lesson.title, "Mathematics GCE O Level 2019 - Paper 1")
+        self.assertEqual(p2.lesson.title, "Mathematics GCE O Level 2019 - Paper 2")
         self.assertEqual((p1.lesson.numero_paper, p2.lesson.numero_paper), (1, 2))
         self.assertEqual({p1.lesson.code_matiere_officiel, p2.lesson.code_matiere_officiel}, {"0570"})
 
@@ -156,7 +156,7 @@ class ReglesDeChoixTests(_Base):
         self.assertEqual(entete["code_matiere"], "0515")
         self.assertEqual(entete["regles_choix"][0]["repondre"], 4)
         self.assertEqual(entete["institution"], "Cameroon GCE Board")
-        self.assertEqual(entete["examen"], "GCE Ordinary Level")
+        self.assertEqual(entete["examen"], "GCE O Level")
 
     def test_une_regle_invalide_refuse_l_exercice_avant_toute_ecriture(self):
         avant = Lesson.objects.count()
@@ -245,6 +245,39 @@ class ApiExposePaperTests(_Base):
         reponse = self.client.get("/catalog/lessons/", {"country": "cm", "subject": "GCE_MATHS"})
         self.assertEqual(reponse.status_code, 200)
         lignes = {ligne["title"]: ligne for ligne in reponse.json()["results"]}
-        self.assertEqual(lignes["Mathematics GCE Ordinary Level 2019 - Paper 1"]["numero_paper"], 1)
-        self.assertEqual(lignes["Mathematics GCE Ordinary Level 2019 - Paper 2"]["numero_paper"], 2)
-        self.assertEqual(lignes["Mathematics GCE Ordinary Level 2019 - Paper 2"]["code_matiere_officiel"], "0570")
+        self.assertEqual(lignes["Mathematics GCE O Level 2019 - Paper 1"]["numero_paper"], 1)
+        self.assertEqual(lignes["Mathematics GCE O Level 2019 - Paper 2"]["numero_paper"], 2)
+        self.assertEqual(lignes["Mathematics GCE O Level 2019 - Paper 2"]["code_matiere_officiel"], "0570")
+
+
+class FigureLegendeAvecAntislashTests(_Base):
+    """Une légende de figure contenant une commande LaTeX (« $4\Omega$ ») faisait planter l'ingestion de
+    l'exercice entier : le texte de remplacement passait par re.sub, qui lit les antislashs comme des
+    échappements (« bad escape \O »)."""
+
+    def test_legende_latex_n_interrompt_pas_l_ingestion(self):
+        import tempfile
+
+        from django.test import override_settings
+        from PIL import Image
+
+        with tempfile.TemporaryDirectory() as media, tempfile.TemporaryDirectory() as tmp:
+            dossier = Path(tmp) / "ingest" / "cm" / "gce-ol-physics-2019-p2-test-legende"
+            dossier.mkdir(parents=True)
+            Image.new("RGB", (30, 20), "white").save(dossier / "fig.png")
+            data = _charger("gce_ol_physique_2019_p2_ii7.json")
+            data["epreuve_source"] = "gce-ol-physics-2019-p2-test-legende.pdf"
+            data["figures"] = [{
+                "id": "fig-1", "fichier": "fig.png", "type": "circuit", "indispensable": True,
+                "legende": "Circuit with a $4\Omega$ resistor and $\mathrm{R_1}$", "lisibilite": "bonne",
+                "origine_figure": "enonce",
+            }]
+            data["questions"][0]["enonce_markdown"] += "\n\n![fig-1](fig.png)"
+
+            with override_settings(MEDIA_ROOT=media):
+                exercice, cree = ingest_exercise(data, source_dir=dossier)
+
+            self.assertTrue(cree)
+            premiere = exercice.questions.order_by("ordre").first()
+            self.assertIn("![Circuit with a $4\Omega$ resistor and $\mathrm{R_1}$](", premiere.enonce_markdown)
+            self.assertNotIn("fig.png", premiere.enonce_markdown)

@@ -13,7 +13,7 @@ from access.services import has_access_inedite
 from users.profils import profil_actif
 from inedit.models import EpreuveInedite, ExerciceInedite, RappelDeMethodeInedite
 
-from .models import Cours, StatutContenu, SUBJECT_FAMILIES
+from .models import Cours, Langue, StatutContenu, SUBJECT_FAMILIES
 from .serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer, TagSerializer
 
 
@@ -46,6 +46,12 @@ def build_inedit_queryset(params, *, min_popular_readers):
         qs = qs.filter(subject__code__in=family)
     if cursus_id := params.get("cursus"):
         qs = qs.filter(cursus__id=cursus_id)
+    else:
+        # Même règle que LessonListView (voir _filtre_langue) : sans examen choisi, la langue de
+        # l'interface limite la liste. Sans cela, les inédites françaises gonflaient le total anglais.
+        langue = (params.get("langue") or "").lower()
+        if langue in Langue.values:
+            qs = qs.filter(subject__langue=langue)
     if country := params.get("country"):
         qs = qs.filter(cursus__country__code__iexact=country)
     if search := params.get("search"):

@@ -483,7 +483,7 @@ def _subject_family_codes(code):
     return {combined, *members} if members else {code}
 
 
-# Valeurs de `serie` qui désignent la branche technique du GCE (Technical O/L et A/L), et celles
+# Valeurs de `serie` qui désignent la branche technique du GCE (Technical O Level et A Level), et celles
 # qui désignent la branche générale. Le GCE n'a pas de série : on passe des matières. Vide = général.
 _GCE_SERIE_TECHNIQUE = {"technical", "gce technical", "gce_technical", "technique", "technical gce"}
 _GCE_SERIE_GENERALE = {"", "general", "generale", "general education", "gce general", "gce_general"}

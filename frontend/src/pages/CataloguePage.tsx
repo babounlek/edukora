@@ -15,7 +15,7 @@ import {
 } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
 import { examLevelsFor, joinExamLevelsProse } from "@/lib/cursus"
-import { t, tn, useI18n } from "@/lib/i18n"
+import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -124,8 +124,9 @@ function CatalogueVitrine() {
   const progression = isAuthenticated ? progressionData : undefined
 
   const { data: subjects = [] } = useQuery({
-    queryKey: ["subjects", country],
-    queryFn: ({ signal }) => listSubjects(country, signal),
+    // Le catalogue d'accueil montre les matières de la langue de l'interface (voir lib/discipline.langueDeListe).
+    queryKey: ["subjects", country, langueCourante()],
+    queryFn: ({ signal }) => listSubjects(country, signal, undefined, langueCourante()),
   })
 
   const { data: cursusList = [] } = useQuery({
@@ -172,8 +173,8 @@ function CatalogueVitrine() {
   // /epreuves (voir EpreuvesListPage), donc un aller-retour entre les deux pages ne
   // repaie pas la requête.
   const { data: epreuvesTotalData } = useQuery({
-    queryKey: ["epreuves-total", country],
-    queryFn: ({ signal }) => listEpreuves({ country }, signal),
+    queryKey: ["epreuves-total", country, langueCourante()],
+    queryFn: ({ signal }) => listEpreuves({ country, langue: langueCourante() }, signal),
     enabled: Boolean(country) && !hasLegacyFilters,
   })
   const epreuvesTotal = epreuvesTotalData?.count

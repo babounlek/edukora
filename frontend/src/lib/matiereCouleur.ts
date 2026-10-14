@@ -10,6 +10,8 @@
  * rouge de "juste/faux" restent réservés au retour de quiz. La SVT prend donc le lime et
  * non l'émeraude, trop proche du vert de marque.
  */
+import { codeVisuel } from "@/lib/discipline"
+
 export interface CouleurMatiere {
   /** Fond doux + texte : la pastille d'icône. */
   puce: string
@@ -56,5 +58,5 @@ const COULEURS: Record<string, CouleurMatiere> = {
 
 /** Couleur d'une matière par son code ; la couleur de marque pour un code inconnu. */
 export function couleurMatiere(code: string | null | undefined): CouleurMatiere {
-  return (code && COULEURS[code]) || NEUTRE
+  return (code && COULEURS[codeVisuel(code)]) || NEUTRE
 }

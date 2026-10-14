@@ -278,6 +278,8 @@ export interface EpreuveFilters {
   subject?: string
   cursus?: number
   country?: string
+  // fr | en : sans examen choisi, limite la liste aux matières de cette langue (voir catalog.views._filtre_langue).
+  langue?: string
   lesson_type?: string
   origine?: string
   // Théorique/Pratique - voir NatureEpreuve. Distinct de `subject` : filtre orthogonal
@@ -332,6 +334,8 @@ export interface CoursFilters {
   subject?: string
   cursus?: number
   country?: string
+  // fr | en : voir EpreuveFilters.langue.
+  langue?: string
   search?: string
   page?: number
   exclude_read?: boolean
@@ -384,10 +388,12 @@ export function previewCours(slug: string) {
 
 /** `cursus` : ne garde que les matières ayant du contenu publié pour ce cursus (filtre
  * Examen choisi → pastilles Matière limitées à cet examen). */
-export function listSubjects(country?: string, signal?: AbortSignal, cursus?: number) {
+export function listSubjects(country?: string, signal?: AbortSignal, cursus?: number, langue?: string) {
   const params = new URLSearchParams()
   if (country) params.set("country", country)
   if (cursus) params.set("cursus", String(cursus))
+  // Sans examen choisi : limite aux matières de cette langue (fr | en) - voir SubjectListView.
+  if (langue && !cursus) params.set("langue", langue)
   const query = params.size ? `?${params}` : ""
   return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: false, signal })
 }

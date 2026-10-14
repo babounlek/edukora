@@ -63,9 +63,9 @@ class CountryAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ["code", "label", "country"]
-    list_filter = ["country"]
-    search_fields = ["code", "label"]
+    list_display = ["code", "label", "langue", "equivalent_code", "country"]
+    list_filter = ["country", "langue"]
+    search_fields = ["code", "label", "equivalent_code"]
 
 
 @admin.register(Filiere)

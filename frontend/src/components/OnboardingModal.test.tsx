@@ -29,8 +29,8 @@ const CURSUS = [
   { id: 1, country: pays, examen: "BEPC", examen_display: "BEPC", series: null },
   { id: 2, country: pays, examen: "BAC", examen_display: "BAC", series: serie(1, "C", "Maths") },
   { id: 3, country: pays, examen: "BAC", examen_display: "BAC", series: serie(2, "D", "Sciences") },
-  { id: 4, country: pays, examen: "GCE_AL", examen_display: "GCE Advanced Level", series: null },
-  { id: 5, country: pays, examen: "GCE_AL", examen_display: "GCE Advanced Level", series: serie(9, "GCE_TECHNICAL", "Technical") },
+  { id: 4, country: pays, examen: "GCE_AL", examen_display: "GCE A Level", series: null },
+  { id: 5, country: pays, examen: "GCE_AL", examen_display: "GCE A Level", series: serie(9, "GCE_TECHNICAL", "Technical") },
 ]
 
 function afficher() {
@@ -51,7 +51,7 @@ beforeEach(() => {
 describe("OnboardingModal", () => {
   it("GCE : propose la branche générale ET technique, sans mot « Série »", async () => {
     afficher()
-    fireEvent.click(await screen.findByRole("button", { name: "GCE Advanced Level" }))
+    fireEvent.click(await screen.findByRole("button", { name: "GCE A Level" }))
     expect(screen.getByText("Quelle est ta série ?")).toBeInTheDocument()
     expect(screen.getByRole("button", { name: "Général" })).toBeInTheDocument()
     expect(screen.getByRole("button", { name: "Technical" })).toBeInTheDocument()
@@ -61,7 +61,7 @@ describe("OnboardingModal", () => {
 
   it("GCE technique : déclare le cursus technique", async () => {
     afficher()
-    fireEvent.click(await screen.findByRole("button", { name: "GCE Advanced Level" }))
+    fireEvent.click(await screen.findByRole("button", { name: "GCE A Level" }))
     fireEvent.click(screen.getByRole("button", { name: "Technical" }))
     await waitFor(() => expect(memoriser).toHaveBeenCalledWith(5))
   })

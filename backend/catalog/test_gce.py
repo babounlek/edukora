@@ -24,8 +24,8 @@ from .views import EXAMEN_RANG
 
 class GceEnumTests(SimpleTestCase):
     def test_deux_niveaux_et_plus_de_code_unique(self):
-        self.assertEqual(Examen.GCE_OL.label, "GCE Ordinary Level")
-        self.assertEqual(Examen.GCE_AL.label, "GCE Advanced Level")
+        self.assertEqual(Examen.GCE_OL.label, "GCE O Level")
+        self.assertEqual(Examen.GCE_AL.label, "GCE A Level")
         self.assertNotIn("GCE", Examen.values)
         self.assertEqual(EXAMENS_GCE, {Examen.GCE_OL, Examen.GCE_AL})
 
@@ -36,7 +36,7 @@ class GceEnumTests(SimpleTestCase):
             self.assertEqual(langue_examen(francophone), Langue.FR)
 
     def test_rangs_alignes_sur_le_niveau_scolaire(self):
-        # O/L = niveau Probatoire, A/L = niveau BAC.
+        # O Level = niveau Probatoire, A Level = niveau BAC.
         self.assertEqual(EXAMEN_RANG[Examen.GCE_OL], EXAMEN_RANG[Examen.PROBATOIRE])
         self.assertEqual(EXAMEN_RANG[Examen.GCE_AL], EXAMEN_RANG[Examen.BAC])
         self.assertEqual(indexation.RANG_EXAMEN[Examen.GCE_OL], indexation.RANG_EXAMEN[Examen.PROBATOIRE])
@@ -113,8 +113,8 @@ class GceReferentielTests(TestCase):
         general = Cursus.objects.select_related("series", "country").get(
             country=self.cm, examen=Examen.GCE_AL, series__isnull=True,
         )
-        self.assertEqual(libelle_cursus([technique]), "GCE Advanced Level - Technical")
-        self.assertEqual(libelle_cursus([general]), "GCE Advanced Level")
+        self.assertEqual(libelle_cursus([technique]), "GCE A Level - Technical")
+        self.assertEqual(libelle_cursus([general]), "GCE A Level")
 
 
 class GceIngestionTests(TestCase):
@@ -186,7 +186,7 @@ class GceRechercheTests(TestCase):
         ids, libelle = intention._cursus_et_series(["advanced", "level"], self.cm, set())
         cursus = Cursus.objects.filter(id__in=ids)
         self.assertEqual({c.examen for c in cursus}, {Examen.GCE_AL})
-        self.assertEqual(libelle, "GCE Advanced Level")
+        self.assertEqual(libelle, "GCE A Level")
 
     def test_examens_francophones_inchanges(self):
         ids, libelle = intention._cursus_et_series(["bac", "c"], self.cm, set())
