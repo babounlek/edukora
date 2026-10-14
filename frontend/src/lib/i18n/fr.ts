@@ -13,6 +13,9 @@
  */
 export const fr = {
   "langue.changer": "Changer de langue",
+  "bandeau_langue.aria": "Langue de la page",
+  "bandeau_langue.texte": "Cette page est affichée en anglais, mais ton examen se prépare en français.",
+  "bandeau_langue.bouton": "Voir en français",
   "langue.toutes": "Toutes les langues",
   "langue.fr": "Français",
   "langue.en": "English",

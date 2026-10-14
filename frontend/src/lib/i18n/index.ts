@@ -42,6 +42,9 @@ let surcharge: Dictionnaire = {}
 // Incrémenté à chaque changement : l'instantané que lit useSyncExternalStore.
 let version = 0
 const abonnes = new Set<() => void>()
+// Vrai quand la page a été renvoyée vers `/en` par le choix mémorisé du navigateur, et non ouverte sur un
+// lien `/en` : la différence compte pour un élève dont le cursus est français (voir langueProfil.ts).
+let renvoyeeParChoixMemorise = false
 
 export function estLangue(valeur: unknown): valeur is Langue {
   return valeur === "fr" || valeur === "en"
@@ -111,9 +114,11 @@ export function ouvrirDansLangue(cible: Langue): void {
 export async function initialiserLangue(): Promise<string> {
   const { pathname, search, hash } = window.location
   const duChemin = langueDuChemin(pathname)
+  renvoyeeParChoixMemorise = false
   let cible: Langue = duChemin ?? "fr"
   if (!duChemin && langueStockee() === "en") {
     cible = "en"
+    renvoyeeParChoixMemorise = true
     window.history.replaceState(window.history.state, "", `${cheminDansLangue(pathname, "en")}${search}${hash}`)
   }
   if (cible === "en") {
@@ -124,6 +129,14 @@ export async function initialiserLangue(): Promise<string> {
     }
   }
   return basenameDeLangue(cible)
+}
+
+/**
+ * La page est-elle en anglais parce que l'URL le dit (lien `/en/...` partagé, favori), et non parce que
+ * le navigateur avait mémorisé l'anglais ? Seul le premier cas est un choix explicite à respecter.
+ */
+export function urlAnglaiseExplicite(): boolean {
+  return !renvoyeeParChoixMemorise && langueDuChemin(window.location.pathname) === "en"
 }
 
 export function langueCourante(): Langue {

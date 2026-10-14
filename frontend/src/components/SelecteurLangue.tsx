@@ -9,13 +9,22 @@ import {
   LANGUES,
   memoriserLangue,
   ouvrirDansLangue,
+  urlAnglaiseExplicite,
   useI18n,
   type Langue,
 } from "@/lib/i18n"
+import { langueACharger, langueImposee } from "@/lib/langueProfil"
 import { cn } from "@/lib/utils"
 
 /**
- * Accorde la langue de l'interface et celle du compte, une fois par connexion :
+ * Accorde la langue de l'interface à l'élève connecté.
+ *
+ * Avec un cursus préparé, la langue est CELLE DU CURSUS du profil actif (voir langueProfil.ts) : elle ne
+ * se choisit pas, elle change avec le profil. La page est rechargée dans cette langue quand elle ne
+ * correspond pas ; le choix mémorisé du navigateur la suit, sans quoi le prochain chargement partirait
+ * dans l'autre langue. Le compte n'est PAS modifié : sa langue reste celle du parent (messages).
+ *
+ * Sans cursus préparé, une seule fois par connexion :
  *  - un choix fait sur CE navigateur (avant ou sans connexion) est le plus récent, il part sur le compte ;
  *  - sans choix local, on prend la langue du compte (un élève qui change d'appareil la retrouve) :
  *    l'anglais ouvre la version `/en` de la page, sauf si l'URL a déjà un préfixe de langue - une page
@@ -25,9 +34,30 @@ import { cn } from "@/lib/utils"
 export function useSynchroLangueCompte() {
   const { user, updateUser } = useAuth()
   const dejaFait = useRef<number | null>(null)
+  // Langue imposée vue à l'exécution précédente : undefined tant qu'aucun utilisateur n'a été vu. Sert à
+  // reconnaître un CHANGEMENT en cours de session (nouveau cursus, autre profil) plutôt qu'une arrivée.
+  const imposeePrecedente = useRef<Langue | null | undefined>(undefined)
 
   useEffect(() => {
-    if (!user || dejaFait.current === user.id) return
+    if (!user) {
+      imposeePrecedente.current = undefined
+      return
+    }
+    const imposee = langueImposee(user)
+    const precedente = imposeePrecedente.current
+    imposeePrecedente.current = imposee
+    if (imposee) {
+      memoriserLangue(imposee)
+      const cible = langueACharger({
+        imposee,
+        courante: langueCourante(),
+        urlExplicite: urlAnglaiseExplicite(),
+        changement: precedente !== undefined && precedente !== imposee,
+      })
+      if (cible) ouvrirDansLangue(cible)
+      return
+    }
+    if (dejaFait.current === user.id) return
     dejaFait.current = user.id
     const locale = langueStockee()
     if (locale) {
@@ -42,10 +72,14 @@ export function useSynchroLangueCompte() {
 /**
  * Bascule français / anglais. Visible partout (barre du haut, menu mobile) : un élève du GCE qui
  * arrive sur une interface en français doit pouvoir en sortir sans la chercher.
+ *
+ * Absent dès qu'un cursus est préparé : la langue est alors celle du cursus (voir langueProfil.ts), et
+ * un parent change de langue en changeant de profil, pas avec ce bouton.
  */
 export function SelecteurLangue({ className }: { className?: string }) {
   const { t, langue } = useI18n()
   const { user, updateUser } = useAuth()
+  if (langueImposee(user)) return null
 
   // Le préfixe d'URL est la base du routeur, fixée au chargement : changer de langue recharge la page
   // sur l'URL de l'autre langue (même page, même requête). Le compte est mis à jour AVANT, sinon le

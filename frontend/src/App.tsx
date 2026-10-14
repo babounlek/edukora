@@ -14,6 +14,7 @@ import { OnboardingModal } from "@/components/OnboardingModal"
 import { PinDialogs } from "@/components/PinDialogs"
 import { VerrouInactivite } from "@/components/VerrouInactivite"
 import { BandeauCursus } from "@/components/BandeauCursus"
+import { BandeauLangueCursus } from "@/components/BandeauLangueCursus"
 import { BarreSeance } from "@/components/BarreSeance"
 import { BottomTabBar } from "@/components/BottomTabBar"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
@@ -136,6 +137,7 @@ function App({ basename = "" }: { basename?: string }) {
               {!enExamen && <Header />}
               <BandeauHorsLigne />
               {!enExamen && <BandeauCursus />}
+              {!enExamen && <BandeauLangueCursus />}
               {!enExamen && <BandeauReprisePaiement />}
               {!enExamen && <BarreSeance />}
               <main id="contenu" tabIndex={-1} className="flex-1 outline-none">
