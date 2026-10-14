@@ -40,6 +40,10 @@ MOTS_VIDES = frozenset({
     "sur", "dans", "par", "pour", "avec", "sans", "est", "que", "qui", "quoi", "ce",
     "se", "sa", "son", "ses", "ma", "mon", "mes", "ta", "ton", "tes", "il", "elle",
     "on", "ne", "pas", "comment", "quel", "quelle", "quels", "quelles",
+    # Anglais (GCE) : « how to balance equations », « lesson on acids ». Absents exprès : « are » (l'unité d'aire),
+    # « or » (le métal), « an » (l'année), « as », « at », « do » - des mots français qui se cherchent.
+    "the", "of", "in", "to", "how", "what", "is", "and", "for", "with", "from", "by", "about", "into",
+    "this", "that", "does", "can", "my", "which", "why", "when", "where", "who",
 })
 
 # Mots qui, à eux seuls, désignent un niveau ou une série et non une notion (voir
@@ -72,6 +76,36 @@ def normaliser(texte):
     texte = texte.replace("œ", "oe").replace("æ", "ae").replace("ß", "ss")
     texte = re.sub(r"[^a-z0-9]+", " ", texte)
     return texte.strip()
+
+
+# « **Exercice 3 (7 points)** » : l'en-tête que la transcription met en tête d'un exercice. Les épreuves du GCE l'ont
+# reçu en français ; à l'affichage on le réécrit en anglais (même règle que `libelleEnteteExercice` côté frontend).
+_ENTETE_EXERCICE = re.compile(r"^(\s*)\*\*Exercice\s+([^\s()*]+)\s*(?:\((\d+(?:[.,]\d+)?)\s*points?\))?\*\*")
+
+
+def traduire_entete_exercice(markdown, langue):
+    """`markdown` dont l'en-tête « **Exercice 3 (7 points)** » (ou « **Exercice 3** », sans barème) devient
+    « **Exercise 3 (7 marks)** » quand le contenu est anglais (`langue` : fr | en). Seul l'en-tête en début de texte
+    change, jamais la consigne qui suit. Les données répètent parfois l'en-tête au début de l'énoncé : on traduit
+    donc aussi celui-là (voir indexation et moteur._extraits)."""
+    if langue != "en" or not markdown:
+        return markdown
+
+    def remplacer(trouve):
+        if trouve.group(3) is None:
+            return f"{trouve.group(1)}**Exercise {trouve.group(2)}**"
+        points = trouve.group(3).replace(",", ".")
+        mot = "mark" if points in ("1", "1.0") else "marks"
+        return f"{trouve.group(1)}**Exercise {trouve.group(2)} ({points} {mot})**"
+
+    return _ENTETE_EXERCICE.sub(remplacer, str(markdown), count=1)
+
+
+def enonce_public(intro, enonce, langue):
+    """Le texte public d'un exercice (préambule puis énoncé), en-têtes traduits pour un contenu anglais. Un seul
+    endroit pour l'index (indexation) et pour les extraits relus à la requête (moteur._extraits) : ils doivent
+    parler pareil."""
+    return f"{traduire_entete_exercice(intro, langue) or ''}\n{traduire_entete_exercice(enonce, langue) or ''}"
 
 
 def nettoyer(markdown, limite=None):
@@ -154,6 +188,40 @@ def racine(jeton):
     if jeton in MOTS_SANS_RACINE:
         return jeton
     if len(jeton) >= 4 and jeton[-1] in "sx" and not jeton.isdigit():
+        return jeton[:-1]
+    return jeton
+
+
+# Terminaisons anglaises ramenées à un radical qui reste un DÉBUT du mot du catalogue (la correspondance se fait par
+# début de mot) : « neutralisation » / « neutralise » -> « neutralis », « neutralization » / « neutralize » ->
+# « neutraliz » (synonymes.alternatives relie les deux orthographes), « heating » -> « heat ». Du plus long au plus court.
+_TERMINAISONS_IS_IZ = (
+    ("izations", "iz"), ("isations", "is"), ("ization", "iz"), ("isation", "is"),
+    ("izing", "iz"), ("ising", "is"), ("ized", "iz"), ("ised", "is"), ("izes", "iz"), ("ises", "is"),
+    ("ize", "iz"), ("ise", "is"),
+)
+# Mots anglais dont la fin n'est pas une terminaison (« series » n'est pas le pluriel de « sery »).
+MOTS_SANS_RACINE_EN = MOTS_SANS_RACINE | {"series", "species", "analysis", "basis", "axis", "gas", "class", "mass"}
+
+
+def racine_en(jeton):
+    """Radical approximatif d'un jeton de REQUÊTE en anglais (« acids » -> « acid », « balancing » -> « balanc »,
+    « properties » -> « property », « reached » -> « reach »). Même rôle que `racine`, qui ne connaît que les
+    pluriels français ; appliquée seulement quand la recherche se fait en anglais (voir moteur.chercher), car
+    ses règles (« -ing », « -ed ») abîmeraient des mots français. Jamais un radical de moins de trois lettres."""
+    if jeton in MOTS_SANS_RACINE_EN or jeton.isdigit():
+        return jeton
+    for terminaison, remplacement in _TERMINAISONS_IS_IZ:
+        if jeton.endswith(terminaison) and len(jeton) - len(terminaison) >= 3:
+            return jeton[: -len(terminaison)] + remplacement
+    for terminaison in ("ing", "ed"):
+        if jeton.endswith(terminaison) and len(jeton) - len(terminaison) >= 4:
+            return jeton[: -len(terminaison)]
+    if jeton.endswith("ies") and len(jeton) >= 6:
+        return jeton[:-3] + "y"
+    if len(jeton) >= 5 and (jeton.endswith(("sses", "xes", "zes", "ches", "shes", "ses")) and not jeton.endswith("uses")):
+        return jeton[:-2]
+    if len(jeton) >= 4 and jeton.endswith("s") and not jeton.endswith("ss"):
         return jeton[:-1]
     return jeton
 

@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query"
 import { listCursus, listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
+import { estDeLangue } from "@/lib/cursusLangue"
+import { langueCourante } from "@/lib/i18n"
 
 /**
  * L'id du cursus que la personne a déclaré préparer, tel quel (non vérifié contre un pays) :
@@ -40,7 +42,9 @@ export function useCursusAccueil(country: string): number | null | undefined {
   // Liste indisponible : on retombe sur tout le pays plutôt que de ne rien montrer.
   if (isError) return null
   if (!cursusList) return undefined
-  return cursusList.some((c) => c.id === declare) ? declare : null
+  // Un examen déclaré dans l'autre langue que l'interface ne restreint pas l'accueil (voir lib/cursusLangue).
+  const examen = cursusList.find((c) => c.id === declare)
+  return examen && estDeLangue(examen, langueCourante()) ? declare : null
 }
 
 /**
@@ -52,12 +56,15 @@ export function useCursusAccueil(country: string): number | null | undefined {
  * Header (qui ne s'en sert que pour savoir s'il en existe au moins une).
  */
 export function useInedites(country: string, cursusId: number | null | undefined, enabled = true) {
+  // Sans examen choisi, dans la langue de l'interface (l'API l'ignore dès qu'un examen est donné) : en anglais, il
+  // n'y a pas encore d'inédite, donc ni vedette ni entrée de menu vers une liste vide.
+  const langue = langueCourante()
   return useQuery({
     queryKey: cursusId == null
-      ? ["epreuves-inedites-recente", country]
+      ? ["epreuves-inedites-recente", country, langue]
       : ["epreuves-inedites-recente", country, cursusId],
     queryFn: ({ signal }) =>
-      listEpreuves({ country, origine: "INEDITE", ordering: "recent", cursus: cursusId ?? undefined }, signal),
+      listEpreuves({ country, origine: "INEDITE", ordering: "recent", cursus: cursusId ?? undefined, langue }, signal),
     enabled: Boolean(country) && enabled && cursusId !== undefined,
   })
 }

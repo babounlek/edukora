@@ -16,8 +16,9 @@ import {
   X,
 } from "lucide-react"
 
-import { getMyProgression, listCours, listCursus, listSubjects } from "@/api/endpoints"
+import { getMyProgression, listCours, listSubjects } from "@/api/endpoints"
 import { examLevelsFor } from "@/lib/cursus"
+import { nomPays } from "@/lib/pays"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -39,6 +40,8 @@ import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut }
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
+import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
+import { useTotalCours } from "@/lib/totauxCatalogue"
 
 type ViewMode = "cards" | "list"
 
@@ -100,7 +103,7 @@ export function CoursListPage() {
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
-  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+  const countryLabel = nomPays(countries, country)
   const { isAuthenticated } = useAuth()
 
   // La query string est la source de vérité des filtres (pas un useState en plus) :
@@ -110,6 +113,7 @@ export function CoursListPage() {
   // Pré-filtrage sur l'examen déclaré - voir useFiltreCursusParDefaut : un défaut
   // annoncé et réversible, jamais un masquage.
   const { cursusPrepare } = useFiltreCursusParDefaut()
+  useAbandonCursusHorsLangue(country)
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
   // Sans examen choisi, la liste suit la langue de l'interface ; « Toutes les langues » lève ce filtre.
@@ -174,9 +178,11 @@ export function CoursListPage() {
     [subjects],
   )
 
-  const { data: cursusList = [] } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
+  // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; l'examen
+  // déjà choisi et l'examen déclaré restent proposés quelle que soit leur langue (voir lib/cursusLangue).
+  const { data: cursusList } = useCursusListe(country, {
+    langue: langueDeListe("", toutesLangues),
+    garder: [cursusFilter, cursusPrepare?.id],
   })
 
   const filtresActifs = Boolean(subjectFilter || cursusFilter || nonLusFilter || frequentFilter || search || savoirFilter || themeFilter)
@@ -187,11 +193,9 @@ export function CoursListPage() {
   // cas courant (arrivée sur la page nue) ne paie aucune requête supplémentaire, et
   // seule une arrivée déjà filtrée - un lien partagé - en déclenche une, pour que le
   // hero annonce quand même le catalogue complet.
-  const { data: totalData } = useQuery({
-    queryKey: ["cours-total", country],
-    queryFn: ({ signal }) => listCours({ country }, signal),
-    enabled: Boolean(country) && filtresActifs,
-  })
+  // Dans la langue de l'interface (sauf « Toutes les langues ») : le total d'un filtre actif ne doit pas
+  // compter les cours de l'autre langue, que la liste n'affiche pas.
+  const { data: totalData } = useTotalCours(country, langueDeListe("", toutesLangues), filtresActifs)
 
   // Débounce la clé de query, pas le champ affiché : le champ reste réactif à chaque
   // frappe (il est contrôlé par `search` directement), seule la requête réseau attend

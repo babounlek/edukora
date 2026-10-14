@@ -46,6 +46,7 @@ import type {
   QuizSession,
   CursusContenu,
   PlatformStats,
+  QuestionExemple,
   ResumeMatiere,
   RevisionDue,
   Subject,
@@ -398,6 +399,13 @@ export function listSubjects(country?: string, signal?: AbortSignal, cursus?: nu
   return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: false, signal })
 }
 
+/** Une question QCM d'une épreuve gratuite de cette langue (voir catalog.views.question_exemple_gratuite) ; 404 s'il n'y en a pas. */
+export function getQuestionExemple(langue: string, country?: string, signal?: AbortSignal) {
+  const params = new URLSearchParams({ langue })
+  if (country) params.set("country", country)
+  return apiRequest<QuestionExemple>(`/catalog/question-exemple/?${params}`, { auth: false, signal })
+}
+
 export function listCursus(country?: string, signal?: AbortSignal) {
   const query = country ? `?country=${country}` : ""
   return apiRequest<Cursus[]>(`/catalog/cursus/${query}`, { auth: false, signal })
@@ -449,8 +457,9 @@ export function getCursusContenu(cursusId: number, signal?: AbortSignal) {
   return apiRequest<CursusContenu>(`/catalog/cursus/${cursusId}/contenu/`, { auth: false, signal })
 }
 
-export function getPlatformStats() {
-  return apiRequest<PlatformStats>("/catalog/stats/", { auth: false })
+/** `langue` (fr | en) : compte le contenu de cette langue, comme les listes vers lesquelles les chiffres mènent. */
+export function getPlatformStats(langue?: string) {
+  return apiRequest<PlatformStats>(`/catalog/stats/${langue ? `?langue=${langue}` : ""}`, { auth: false })
 }
 
 /** `authentifie` : à vrai (page d'abonnement), le prix renvoyé tient compte de la famille
@@ -1023,6 +1032,9 @@ export interface FiltresRecherche {
   sans?: string[]
   /** Saisie en direct : jamais comptée dans le journal des recherches sans résultat. */
   rapide?: boolean
+  /** fr | en : sans examen visé, limite la recherche aux contenus de cette langue (voir recherche.moteur.chercher).
+   * Indéfinie : toutes les langues. */
+  langue?: string
 }
 
 /** Recherche globale (thèmes, cours, épreuves, exercices, quiz). Ouverte aux visiteurs : ne renvoie
@@ -1041,13 +1053,18 @@ export function rechercher(filtres: FiltresRecherche, signal?: AbortSignal) {
   if (filtres.exact) params.set("exact", "true")
   if (filtres.sans?.length) params.set("sans", filtres.sans.join(","))
   if (filtres.rapide) params.set("rapide", "true")
+  if (filtres.langue) params.set("langue", filtres.langue)
   return apiRequest<ReponseRecherche>(`/recherche/?${params.toString()}`, { auth: "optional", signal })
 }
 
 /** Ce que l'élève est peut-être en train d'écrire (intitulés de thèmes), pendant la frappe. */
-export function completerRecherche(filtres: { q: string; pays: string; cursus?: number | null }, signal?: AbortSignal) {
+export function completerRecherche(
+  filtres: { q: string; pays: string; cursus?: number | null; langue?: string },
+  signal?: AbortSignal,
+) {
   const params = new URLSearchParams({ q: filtres.q, pays: filtres.pays })
   if (filtres.cursus) params.set("cursus", String(filtres.cursus))
+  if (filtres.langue) params.set("langue", filtres.langue)
   return apiRequest<{ completions: CompletionRecherche[] }>(`/recherche/completer/?${params.toString()}`, {
     auth: false,
     signal,

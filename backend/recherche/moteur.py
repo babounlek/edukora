@@ -22,7 +22,9 @@ from django.db.models.functions import Length
 from django.utils import timezone
 
 from access.services import bulk_active_inedite_cursus_ids, bulk_active_subscription_cursus_ids
-from catalog.models import Cours, Cursus, Exercise, Lesson, StatutContenu, Subject, resolve_examen_label
+from catalog.models import (
+    Cours, Cursus, Exercise, Langue, Lesson, StatutContenu, Subject, langue_examen, resolve_examen_label,
+)
 from quiz.services import COEFFICIENT_PAR_DEFAUT, _coefficient_par_subject
 
 from . import intention as comprendre
@@ -44,6 +46,8 @@ MAX_JETONS = 8
 LONGUEUR_MAX_REQUETE = 100
 # Sous ce nombre de résultats dans le cursus de l'élève, on lui dit combien il en reste ailleurs.
 SEUIL_AUTRES_CURSUS = 10
+# Sous ce nombre de résultats dans la langue de l'interface, on dit combien il y en aurait dans l'autre.
+SEUIL_AUTRE_LANGUE = 10
 NB_SUGGESTIONS = 6
 # Page de recherche sans requête : quelques thèmes de plus à proposer pour commencer.
 NB_SUGGESTIONS_ACCUEIL = 8
@@ -55,9 +59,11 @@ JOURNAL_MAX_CHIFFRES = 5
 JOURNAL_MAX_LIGNES = 5000
 
 
-def _analyser(requete):
-    """Jetons utiles d'une requête, au singulier approximatif, sans doublon."""
-    jetons = [texte.racine(j) for j in texte.jetons(str(requete)[:LONGUEUR_MAX_REQUETE])]
+def _analyser(requete, langue=None):
+    """Jetons utiles d'une requête, au singulier approximatif, sans doublon. `langue` : en anglais, le radical suit
+    les règles anglaises (« acids », « neutralising »...) ; sinon celles du français."""
+    racine = texte.racine_en if langue == "en" else texte.racine
+    jetons = [racine(j) for j in texte.jetons(str(requete)[:LONGUEUR_MAX_REQUETE])]
     return list(dict.fromkeys(jetons))[:MAX_JETONS]
 
 
@@ -82,11 +88,14 @@ def _termes(jetons):
 
 
 def _queryset(
-    pays, termes, *, cursus_ids=None, matiere=None, matieres=None, annees=None, type_=None,
+    pays, termes, *, cursus_ids=None, matiere=None, matieres=None, annees=None, type_=None, langue=None,
 ):
     """`matiere` : un code (le filtre choisi dans l'interface) ; `matieres` : des codes (ce que la requête
-    nomme, voir intention) ; `annees` : les années nommées ; `cursus_ids` : les examens visés."""
+    nomme, voir intention) ; `annees` : les années nommées ; `cursus_ids` : les examens visés ; `langue` : fr | en,
+    la langue du contenu (celle de sa matière)."""
     queryset = EntreeRecherche.objects.filter(pays=pays)
+    if langue:
+        queryset = queryset.filter(matiere__langue=langue)
     if matiere:
         queryset = queryset.filter(matiere__code=matiere)
     if matieres:
@@ -441,15 +450,17 @@ def _extraits(tranches, entrees, jetons):
         for exercice in Exercise.objects.filter(id__in=voulus[TypeResultat.EXERCICE.value]).only(
             "id", "enonce_intro_markdown", "enonce_markdown",
         ):
-            sources[voulus[TypeResultat.EXERCICE.value][exercice.id]] = (
-                f"{exercice.enonce_intro_markdown}\n{exercice.enonce_markdown}"
+            entree_id = voulus[TypeResultat.EXERCICE.value][exercice.id]
+            sources[entree_id] = texte.enonce_public(
+                exercice.enonce_intro_markdown, exercice.enonce_markdown, entrees[entree_id].matiere.langue,
             )
     if voulus[TypeResultat.EPREUVE.value]:
         par_epreuve = defaultdict(list)
         for lesson_id, intro, enonce in Exercise.objects.filter(
             lesson_id__in=voulus[TypeResultat.EPREUVE.value], statut=StatutContenu.VALIDE,
         ).order_by("numero_exercice").values_list("lesson_id", "enonce_intro_markdown", "enonce_markdown"):
-            par_epreuve[lesson_id].append(f"{intro}\n{enonce}")
+            langue_epreuve = entrees[voulus[TypeResultat.EPREUVE.value][lesson_id]].matiere.langue
+            par_epreuve[lesson_id].append(texte.enonce_public(intro, enonce, langue_epreuve))
         for lesson_id, entree_id in voulus[TypeResultat.EPREUVE.value].items():
             sources[entree_id] = "\n\n".join(par_epreuve.get(lesson_id, ()))
     extraits = {}
@@ -475,7 +486,10 @@ def _extraits(tranches, entrees, jetons):
             if any(f" {j}" in normalise for j in requis) and nom not in correspondants[objet_id]:
                 correspondants[objet_id].append(nom)
         for objet_id, noms in correspondants.items():
-            extraits[sans_passage[objet_id]] = "Thème : " + " · ".join(noms[:3])
+            entree_id = sans_passage[objet_id]
+            # Le mot suit la langue du contenu, comme les titres (voir indexation._libelle_exercice).
+            mot = "Topic: " if entrees[entree_id].matiere.langue == Langue.EN else "Thème : "
+            extraits[entree_id] = mot + " · ".join(noms[:3])
     return extraits
 
 
@@ -517,7 +531,7 @@ def _theme_generique(titre_norm):
     return not mots or all(mot in texte.MOTS_DE_NIVEAU for mot in mots)
 
 
-def _suggestions(pays, cursus_id, acces, nombre=NB_SUGGESTIONS):
+def _suggestions(pays, cursus_id, acces, nombre=NB_SUGGESTIONS, langue=None):
     """Thèmes les plus riches du pays (et du cursus), proposés quand rien ne correspond. Les étiquettes de
     niveau (« Terminale C », « BEPC ») sont écartées : elles dominent le classement par volume sans rien
     proposer à étudier."""
@@ -525,6 +539,8 @@ def _suggestions(pays, cursus_id, acces, nombre=NB_SUGGESTIONS):
     if cursus_id:
         lien = EntreeRecherche.cursus.through.objects.filter(entreerecherche_id=OuterRef("pk"), cursus_id=cursus_id)
         queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
+    elif langue:
+        queryset = queryset.filter(matiere__langue=langue)
     # Une marge : quelques-uns des premiers seront écartés.
     candidats = queryset.order_by("-poids", "id").values_list("id", "titre_norm")[: nombre * 6]
     ids = [i for i, titre_norm in candidats if not _theme_generique(titre_norm)][:nombre]
@@ -546,17 +562,24 @@ def _repartition_matieres(classement, matiere_de):
     ]
 
 
-def _requete_corrigee(requete, corrections):
+def _requete_corrigee(requete, corrections, langue=None):
     """La requête de l'élève dont seuls les mots fautifs sont remplacés (les autres gardent leur
     graphie et leurs accents) - c'est ce qu'on lui montre : « Résultats pour équation du second degré »."""
+    racine = texte.racine_en if langue == "en" else texte.racine
     mots = []
     for mot in str(requete).split():
-        normalise = texte.racine(texte.normaliser(mot))
+        normalise = racine(texte.normaliser(mot))
         mots.append(corrections.get(normalise, mot))
     return " ".join(mots)
 
 
-def _recherche(pays, jetons, intention, *, cursus, matiere, type_, corriger_auto, requete):
+def _langue_des_examens(cursus_ids):
+    """fr | en quand tous ces examens sont de la même langue (voir catalog.models.langue_examen), sinon None."""
+    langues = {langue_examen(examen) for examen in Cursus.objects.filter(pk__in=cursus_ids).values_list("examen", flat=True)}
+    return langues.pop().value if len(langues) == 1 else None
+
+
+def _recherche(pays, jetons, intention, *, cursus, matiere, type_, corriger_auto, requete, langue=None):
     """Une recherche complète avec UNE interprétation de la requête. Renvoie (lignes, termes, corrige) :
     `corrige` est la requête corrigée à montrer à l'élève, ou None."""
     termes = _termes(intention.restants)
@@ -564,6 +587,9 @@ def _recherche(pays, jetons, intention, *, cursus, matiere, type_, corriger_auto
     filtres = {
         "cursus_ids": cursus_ids, "matiere": matiere, "matieres": intention.matiere_codes or None,
         "annees": intention.annees or None, "type_": type_,
+        # Un examen visé (choisi, ou nommé dans la requête) fixe la langue : celle de cet examen. Sans cela, les
+        # contenus « de tous les examens » (une notion commune, en français) entreraient dans une recherche GCE.
+        "langue": _langue_des_examens(cursus_ids) if cursus_ids else langue,
     }
     if not any(t.requis for t in termes) and not intention.filtres():
         return [], termes, None
@@ -577,13 +603,13 @@ def _recherche(pays, jetons, intention, *, cursus, matiere, type_, corriger_auto
             lignes_corrigees = _lignes(pays, termes_corriges, **filtres)
             if lignes_corrigees:
                 lignes, termes = lignes_corrigees, termes_corriges
-                corrige = _requete_corrigee(requete, corrections)
+                corrige = _requete_corrigee(requete, corrections, langue)
     return lignes, termes, corrige
 
 
 def chercher(
     requete, *, pays, utilisateur=None, profil=None, cursus=None, matiere=None, type_=None,
-    limite=LIMITE_DEFAUT, decalage=0, elargir=False, corriger_auto=True, sans=(),
+    limite=LIMITE_DEFAUT, decalage=0, elargir=False, corriger_auto=True, sans=(), langue=None,
 ):
     """
     Cherche `requete` dans l'index du `pays` (instance de catalog.Country).
@@ -596,8 +622,14 @@ def chercher(
 
     `sans` : parties de l'intention à ne pas interpréter (voir intention.PARTIES) - l'élève a retiré la
     pastille « BAC C » ou « 2019 », ces mots redeviennent des mots à chercher.
+
+    `langue` (fr | en) : la langue de l'interface. Sans examen visé (ni choisi ni nommé dans la requête), seuls les
+    contenus de cette langue sont cherchés, comme dans les listes du catalogue ; un examen visé fixe déjà la langue.
+    `autre_langue` dit alors combien de résultats l'autre langue aurait, pour que le filtre ne cache jamais un
+    contenu qui existe. `langue` indéfinie ou inconnue : toutes les langues.
     """
     limite = max(1, min(int(limite), LIMITE_MAX))
+    langue = langue if langue in Langue.values else None
     decalage = max(0, int(decalage))
     if type_ and type_ not in ORDRE_GROUPES:
         type_ = None
@@ -613,19 +645,25 @@ def chercher(
         "total": 0,
         "groupes": [],
         "autres_cursus": 0,
+        # Langue réellement appliquée (None : toutes, ou un examen visé) et ce que l'autre langue aurait.
+        "langue": None,
+        "autre_langue": 0,
         "matieres": [],
         "suggestions": [],
         "intention": None,
         "reponse": None,
     }
-    jetons = _analyser(requete)
-    intention = comprendre.analyser(jetons, pays, sans)
+    # La langue de la recherche règle aussi la manière de lire la requête (radicaux, mots de type, matières
+    # nommées en anglais) : sans filtre de langue, la lecture reste celle du français.
+    jetons = _analyser(requete, langue)
+    intention = comprendre.analyser(jetons, pays, sans, langue)
     if not any(synonymes.est_requis(j) for j in intention.restants) and not intention.filtres():
         reponse["trop_court"] = bool(jetons or reponse["q"])
         if not reponse["q"]:
             # Aucune requête (la page de recherche vient de s'ouvrir) : les thèmes de l'examen de l'élève, de
             # quoi commencer sans rien taper.
-            reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces, NB_SUGGESTIONS_ACCUEIL)
+            reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces, NB_SUGGESTIONS_ACCUEIL, langue)
+            reponse["langue"] = None if filtre_cursus else langue
         return reponse
 
     # La matière choisie dans l'interface ne filtre PAS en SQL : la répartition par matière doit rester
@@ -633,19 +671,22 @@ def chercher(
     # changer d'un clic.
     lignes, termes, corrige = _recherche(
         pays, jetons, intention, cursus=filtre_cursus, matiere=None, type_=type_,
-        corriger_auto=corriger_auto, requete=requete,
+        corriger_auto=corriger_auto, requete=requete, langue=langue,
     )
     ignoree = False
     if not lignes and (intention.filtres() or intention.types):
         # Une interprétation qui ne donne rien est abandonnée : mieux vaut chercher les mots tels quels que
         # répondre « aucun résultat » à une requête dont on a mal deviné le sens.
-        intention = comprendre.analyser(jetons, pays, frozenset(comprendre.PARTIES))
+        intention = comprendre.analyser(jetons, pays, frozenset(comprendre.PARTIES), langue)
         ignoree = True
         lignes, termes, corrige = _recherche(
             pays, jetons, intention, cursus=filtre_cursus, matiere=None, type_=type_,
-            corriger_auto=corriger_auto, requete=requete,
+            corriger_auto=corriger_auto, requete=requete, langue=langue,
         )
     reponse["corrige"] = corrige
+    # Le filtre de langue ne vaut que sans examen visé - voir _recherche.
+    langue_filtree = None if (filtre_cursus or intention.cursus_ids) else langue
+    reponse["langue"] = langue_filtree
 
     # L'examen « de l'élève » pour le classement : celui qu'il a déclaré, sinon celui que sa requête nomme.
     cursus_eleve = cursus or (intention.cursus_ids[0] if intention.cursus_ids else None)
@@ -674,10 +715,29 @@ def chercher(
         filtres = {"type_": type_, "matieres": intention.matiere_codes or None, "annees": intention.annees or None}
         if matiere:
             filtres["matiere"] = matiere
+        # Les autres examens restent dans la langue de celui qui est choisi : un examen fixe la langue.
+        cursus_choisi = Cursus.objects.filter(pk=filtre_cursus).first()
+        filtres["langue"] = cursus_choisi.langue.value if cursus_choisi else None
         ailleurs = _queryset(pays, termes, **filtres).count()
         reponse["autres_cursus"] = max(0, ailleurs - len(lignes))
+    # Le filtre de langue cache-t-il quelque chose ? Seulement quand il reste peu de résultats, et seulement pour des
+    # mots à chercher (une requête qui n'est qu'un filtre d'intention compterait tout l'index de l'autre langue).
+    if langue_filtree and reponse["total"] < SEUIL_AUTRE_LANGUE and any(t.requis for t in termes):
+        autre = Langue.EN if langue_filtree == Langue.FR else Langue.FR
+        # Le même parcours que la recherche réelle, dans l'autre langue : le nombre annoncé est celui que l'élève
+        # verra en changeant de langue (mêmes groupes, mêmes doublons écartés), jamais un nombre de lignes brutes.
+        # La requête est relue dans l'autre langue (radicaux, mots de type, matières) comme le ferait l'élève qui
+        # y bascule.
+        jetons_autre = _analyser(requete, autre.value)
+        intention_autre = comprendre.analyser(jetons_autre, pays, sans, autre.value)
+        lignes_autre, termes_autre, _ = _recherche(
+            pays, jetons_autre, intention_autre, cursus=None, matiere=None, type_=type_,
+            corriger_auto=False, requete=requete, langue=autre.value,
+        )
+        classement_autre = _classer(lignes_autre, termes_autre, _signaux(None))
+        reponse["autre_langue"] = sum(len(liste) for liste in classement_autre.values())
     if reponse["total"] == 0:
-        reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces)
+        reponse["suggestions"] = _suggestions(pays, filtre_cursus, acces, langue=langue_filtree)
     return reponse
 
 
@@ -743,7 +803,7 @@ def _carte_reponse(classement, termes, intention, acces, cursus_prefere):
 NB_COMPLETIONS = 8
 
 
-def completer(requete, *, pays, cursus=None, limite=NB_COMPLETIONS):
+def completer(requete, *, pays, cursus=None, limite=NB_COMPLETIONS, langue=None):
     """
     Ce que l'élève est PEUT-ÊTRE en train d'écrire : des intitulés de thèmes qui contiennent tous les mots
     tapés, le dernier comme début de mot (« theoreme tha » -> « théorème de Thalès »). Les plus riches d'abord,
@@ -757,6 +817,9 @@ def completer(requete, *, pays, cursus=None, limite=NB_COMPLETIONS):
     if cursus:
         lien = EntreeRecherche.cursus.through.objects.filter(entreerecherche_id=OuterRef("pk"), cursus_id=cursus)
         queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
+    elif langue in Langue.values:
+        # Sans examen, les compléments suivent la langue de l'interface (voir chercher).
+        queryset = queryset.filter(matiere__langue=langue)
     for jeton in jetons:
         queryset = queryset.filter(Q(titre_norm__startswith=jeton) | Q(titre_norm__contains=f" {jeton}"))
     vus, resultat = set(), []

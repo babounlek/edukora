@@ -14,9 +14,10 @@ import {
   TrendingUp,
 } from "lucide-react"
 
-import { getThemesFrequents, getThemesFrequentsMatieres, listCursus } from "@/api/endpoints"
+import { getThemesFrequents, getThemesFrequentsMatieres } from "@/api/endpoints"
 import type { Cursus, ThemeFrequent, ThemesFrequentsMatiere } from "@/api/types"
 import { useSeo } from "@/lib/seo"
+import { nomPays } from "@/lib/pays"
 import { useCountry } from "@/context/CountryContext"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -31,6 +32,8 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
+import { langueDeListe } from "@/lib/discipline"
 import { t, tn, useI18n } from "@/lib/i18n"
 
 interface ThemeIllustratif {
@@ -366,13 +369,14 @@ export function ThemesFrequentsPage() {
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
-  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+  const countryLabel = nomPays(countries, country)
 
   const [searchParams, setSearchParams] = useSearchParams()
   // Pré-sélection de l'examen déclaré : une étape de moins avant le classement. Pas de
   // bandeau "Voir tout le catalogue" ici (voir BandeauFiltreCursus) : sans cursus, cette
   // page n'a rien à montrer.
   useFiltreCursusParDefaut()
+  useAbandonCursusHorsLangue(country)
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
   const cursusId = cursusFilter ? Number(cursusFilter) : undefined
@@ -382,14 +386,12 @@ export function ThemesFrequentsPage() {
     description: countryLabel ? t("tf.seo_description", { pays: countryLabel }) : undefined,
   })
 
+  // Examens de la langue de l'interface ; celui déjà choisi reste proposé (voir lib/cursusLangue).
   const {
-    data: cursusList = [],
+    data: cursusList,
     isError: cursusEnErreur,
     refetch: recharger,
-  } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
-  })
+  } = useCursusListe(country, { langue: langueDeListe("", false), garder: [cursusFilter] })
   // Même tri que /epreuves : les séries d'un même examen se suivent.
   const cursusTries = [...cursusList].sort(
     (x, y) =>

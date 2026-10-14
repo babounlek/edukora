@@ -10,6 +10,7 @@ import { ResultatCompact } from "@/components/recherche/ResultatRecherche"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusAccueil } from "@/lib/cursusAccueil"
+import { langueCourante } from "@/lib/i18n"
 import {
   cibleResultat,
   jetonsDeSurbrillance,
@@ -66,8 +67,10 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
   const { data, isFetching, isError } = useQuery({
     // L'identité fait partie de la clé : un résultat « verrouillé » mis en cache pour un visiteur ne
     // doit pas rester affiché une fois l'élève connecté.
-    queryKey: ["recherche", "rapide", country, user?.id ?? 0, cursus ?? null, termes],
-    queryFn: ({ signal }) => rechercher({ q: termes, pays: country, cursus, limite: PAR_GROUPE, rapide: true }, signal),
+    // La langue de l'interface limite la recherche rapide, comme la page complète (voir RecherchePage).
+    queryKey: ["recherche", "rapide", country, user?.id ?? 0, cursus ?? null, termes, langueCourante()],
+    queryFn: ({ signal }) =>
+      rechercher({ q: termes, pays: country, cursus, limite: PAR_GROUPE, rapide: true, langue: langueCourante() }, signal),
     enabled: interroger,
     placeholderData: keepPreviousData,
   })

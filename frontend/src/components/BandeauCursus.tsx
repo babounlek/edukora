@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { useLocation } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
 import { X } from "lucide-react"
 import { toast } from "sonner"
-import { listCursus } from "@/api/endpoints"
 import type { Cursus } from "@/api/types"
+import { useCursusListe } from "@/lib/cursusLangue"
+import { langueDeListe } from "@/lib/discipline"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
@@ -50,11 +50,8 @@ export function BandeauCursus() {
   const aDeclare = isAuthenticated ? Boolean(user?.cursus_prepare) : enAttente !== null
   const visible = !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && Boolean(country)
 
-  const { data: cursusList = [] } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
-    enabled: visible,
-  })
+  // Seulement les examens de la langue de l'interface (voir lib/cursusLangue).
+  const { data: cursusList } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
 
   const declarer = useChangerCursusPrepare()
 

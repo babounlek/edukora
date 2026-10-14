@@ -18,11 +18,14 @@ import {
   X,
 } from "lucide-react"
 
-import { listCursus, listEpreuves, listSubjects } from "@/api/endpoints"
+import { listEpreuves, listSubjects } from "@/api/endpoints"
 import type { NatureEpreuve, Origine } from "@/api/types"
 import { examLevelsFor } from "@/lib/cursus"
+import { nomPays } from "@/lib/pays"
 import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
+import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
+import { useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -144,7 +147,7 @@ export function EpreuvesListPage() {
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
-  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+  const countryLabel = nomPays(countries, country)
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -171,6 +174,7 @@ export function EpreuvesListPage() {
   // ci-dessus : l'ordre des deux effets compte, sans quoi une recherche sauvegardée
   // serait ignorée (voir useFiltreCursusParDefaut).
   const { cursusPrepare } = useFiltreCursusParDefaut()
+  useAbandonCursusHorsLangue(country)
 
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
@@ -240,9 +244,11 @@ export function EpreuvesListPage() {
     [subjects, couvertureInedites, subjectFilter],
   )
 
-  const { data: cursusList = [] } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
+  // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; l'examen
+  // déjà choisi et l'examen déclaré restent proposés quelle que soit leur langue (voir lib/cursusLangue).
+  const { data: cursusList } = useCursusListe(country, {
+    langue: langueDeListe("", toutesLangues),
+    garder: [cursusFilter, cursusPrepare?.id],
   })
 
   // Origine et nature sont des filtres de second rang : repliés tant qu'ils ne servent pas, mais
@@ -257,12 +263,7 @@ export function EpreuvesListPage() {
   // CataloguePage, donc un aller-retour entre les deux pages ne repaie pas la requête.
   // Dans la langue de l'interface (sauf « Toutes les langues ») : sans cela, un filtre actif faisait
   // afficher le total des deux langues à côté d'une liste d'une seule.
-  const langueTotal = langueDeListe("", toutesLangues)
-  const { data: totalData } = useQuery({
-    queryKey: ["epreuves-total", country, langueTotal],
-    queryFn: ({ signal }) => listEpreuves({ country, langue: langueTotal }, signal),
-    enabled: Boolean(country) && filtresActifs,
-  })
+  const { data: totalData } = useTotalEpreuves(country, langueDeListe("", toutesLangues), filtresActifs)
 
   const debouncedSearch = useDebouncedValue(search, 300)
 

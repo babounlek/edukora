@@ -19,6 +19,7 @@ import {
 
 import { getPlatformStats, listCursus, listSubjects } from "@/api/endpoints"
 import { useSeo } from "@/lib/seo"
+import { nomPays } from "@/lib/pays"
 import { SITE_NAME, CONTACT_EMAIL, CONTACT_WHATSAPP_URL, CONTACT_WHATSAPP_AFFICHAGE } from "@/lib/site"
 import { useCountry } from "@/context/CountryContext"
 import { catalogueHomePath, epreuvesListPath } from "@/lib/countryPath"
@@ -109,11 +110,12 @@ export function AboutPage() {
     description: t("ab.seo_description", { site: SITE_NAME }),
   })
   const { country, countries } = useCountry()
-  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+  const countryLabel = nomPays(countries, country)
 
   // Chiffres réels, jamais codés en dur : ils ont dérivé plus d'une fois de la
   // réalité du catalogue. Mêmes clés de cache que le pied de page et l'accueil.
-  const { data: stats } = useQuery({ queryKey: ["platform-stats"], queryFn: getPlatformStats })
+  // Toutes langues confondues : la page présente la plateforme entière, matières et parcours compris.
+  const { data: stats } = useQuery({ queryKey: ["platform-stats"], queryFn: () => getPlatformStats() })
   const { data: subjects } = useQuery({
     queryKey: ["subjects", country],
     queryFn: ({ signal }) => listSubjects(country, signal),

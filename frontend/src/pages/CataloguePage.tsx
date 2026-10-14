@@ -7,15 +7,18 @@ import heroStudent from "@/assets/hero-student.jpg"
 import {
   getEpreuveInedite,
   getMyProgression,
-  listCours,
-  listCursus,
-  listEpreuves,
   listSubjects,
   readEpreuve,
 } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
+import { nomPays } from "@/lib/pays"
 import { examLevelsFor, joinExamLevelsProse } from "@/lib/cursus"
+import { langueDeListe } from "@/lib/discipline"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
+import { useCursusListe } from "@/lib/cursusLangue"
+import { EXEMPLES_CORRIGE, extraireExempleCorrige } from "@/lib/exempleCorrige"
+import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
+import { useTotalCours, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -34,12 +37,6 @@ import { SocialProofSection } from "@/components/SocialProofSection"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
 import { AccueilEleve } from "@/components/AccueilEleve"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
-
-// Épreuve gratuite dont le premier exercice sert d'exemple de "corrigé pas à pas"
-// dans le hero (voir plus bas) - un vrai extrait de la base, pas un mock. Un seul
-// pays ouvert au lancement (voir OnboardingModal.tsx) : le jour où un deuxième pays
-// a du contenu, cette section devra choisir un slug par pays plutôt qu'un seul fixe.
-const EXEMPLE_CORRIGE_SLUG = "mathematiques-bepc-2026"
 
 // Clés de filtre reconnues par /epreuves (voir EpreuvesListPage) - un lien déjà en
 // circulation qui les porte encore sur cette URL (recherche sauvegardée en session,
@@ -87,7 +84,7 @@ function CatalogueVitrine() {
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
-  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+  const countryLabel = nomPays(countries, country)
   const { isAuthenticated } = useAuth()
   const [searchParams] = useSearchParams()
 
@@ -125,62 +122,47 @@ function CatalogueVitrine() {
 
   const { data: subjects = [] } = useQuery({
     // Le catalogue d'accueil montre les matières de la langue de l'interface (voir lib/discipline.langueDeListe).
-    queryKey: ["subjects", country, langueCourante()],
-    queryFn: ({ signal }) => listSubjects(country, signal, undefined, langueCourante()),
+    queryKey: ["subjects", country, langueDeListe("", false)],
+    queryFn: ({ signal }) => listSubjects(country, signal, undefined, langueDeListe("", false)),
   })
 
-  const { data: cursusList = [] } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
-  })
+  // Les examens annoncés suivent la langue de l'interface (voir lib/cursusLangue) : « BEPC · Probatoire · BAC »
+  // en français, « GCE O Level · GCE A Level » en anglais.
+  const { data: cursusList } = useCursusListe(country, { langue: langueDeListe("", false) })
 
   // Extrait réel d'un corrigé, pour la section "preuve" du hero (voir plus bas) - la
   // promesse du H1 ("la méthode qui t'apprend à réussir") doit se montrer, pas
   // seulement s'affirmer. `retry: false` : un 404 (slug renommé/retiré) doit faire
   // disparaître la section silencieusement, pas insister avec des tentatives inutiles.
+  // L'épreuve d'exemple suit la langue de l'interface (voir lib/exempleCorrige) : un BEPC en français,
+  // un GCE en anglais. Le slug fait partie de la clé de cache, donc un changement de langue recharge.
+  const exemple = EXEMPLES_CORRIGE[langueCourante()]
   const { data: exempleContent } = useQuery({
-    queryKey: ["epreuve-exemple-corrige", EXEMPLE_CORRIGE_SLUG],
-    queryFn: () => readEpreuve(EXEMPLE_CORRIGE_SLUG),
+    queryKey: ["epreuve-exemple-corrige", exemple.slug],
+    queryFn: () => readEpreuve(exemple.slug),
     enabled: !hasLegacyFilters,
     retry: false,
   })
-  const exempleExercice = exempleContent?.exercises[0]
-  // Corrigé de la seule question 1, jamais l'exercice entier : corrige_markdown
-  // concatène toutes les sous-questions sans séparateur explicite, et il commence
-  // déjà par l'énoncé de la question 1 lui-même - une section "Énoncé" séparée le
-  // répéterait. On coupe juste avant l'énoncé de la question 2, retrouvé verbatim
-  // dans le corrigé (même technique de correspondance par chaîne exacte que
-  // catalog.rendering.annotate_cours_links côté backend pour les liens vers les
-  // cours) - repli sur le corrigé entier si l'exercice n'a qu'une question, ou si ce
-  // texte ne s'y retrouve pas tel quel.
-  const exempleSecondeSousQuestion = exempleExercice?.enonce_markdown.split("\n\n")[1]
-  const exempleCorrigeQ1 = exempleExercice && (() => {
-    if (!exempleSecondeSousQuestion) return exempleExercice.corrige_markdown
-    const coupure = exempleExercice.corrige_markdown.indexOf(exempleSecondeSousQuestion)
-    return coupure > 0 ? exempleExercice.corrige_markdown.slice(0, coupure).trim() : exempleExercice.corrige_markdown
-  })()
+  // Le corrigé à montrer (question 1 seule ou exercice entier, selon l'exemple) : voir extraireExempleCorrige.
+  const extrait = extraireExempleCorrige(exempleContent, exemple)
+  const exempleExercice = extrait?.exercice
+  const exempleCorrigeQ1 = extrait?.corrigeMarkdown
 
   // Volume de cours du pays, pour la puce du hero et la carte "Cours" - même clé de
   // cache que /cours (voir CoursListPage), donc un aller-retour entre les deux pages
   // ne repaie pas la requête.
-  const { data: coursData } = useQuery({
-    queryKey: ["cours-total", country],
-    queryFn: ({ signal }) => listCours({ country }, signal),
-    enabled: Boolean(country) && !hasLegacyFilters,
-  })
+  // Dans la langue de l'interface, comme les matières et les épreuves : la puce annonce ce que /cours affichera.
+  const langueAccueil = langueDeListe("", false)
+  const { data: coursData } = useTotalCours(country, langueAccueil, !hasLegacyFilters)
 
   // Volumétrie totale d'épreuves annoncée par le hero - même clé de cache que sur
   // /epreuves (voir EpreuvesListPage), donc un aller-retour entre les deux pages ne
   // repaie pas la requête.
-  const { data: epreuvesTotalData } = useQuery({
-    queryKey: ["epreuves-total", country, langueCourante()],
-    queryFn: ({ signal }) => listEpreuves({ country, langue: langueCourante() }, signal),
-    enabled: Boolean(country) && !hasLegacyFilters,
-  })
+  const { data: epreuvesTotalData } = useTotalEpreuves(country, langueAccueil, !hasLegacyFilters)
   const epreuvesTotal = epreuvesTotalData?.count
 
   // Épreuve inédite mise en avant, pour la section "preuve" dédiée plus bas - jamais un
-  // slug codé en dur (contrairement à EXEMPLE_CORRIGE_SLUG) : la plus récente pour ce
+  // slug codé en dur (contrairement à EXEMPLES_CORRIGE) : la plus récente pour ce
   // pays, redécouverte à chaque chargement, donc jamais périmée si le contenu change.
   // Restreinte au cursus déclaré (compte ou onboarding) quand il y en a un : voir
   // useInedites.
@@ -206,7 +188,7 @@ function CatalogueVitrine() {
   // texte fixe : la plupart des pays n'ont pas de Probatoire. Repli générique tant que
   // cursusList n'a pas encore chargé, pour éviter un flash vide au premier rendu.
   const examLevels = examLevelsFor(cursusList)
-  const examLevelsHero = examLevels.length > 0 ? examLevels.join(" · ") : "BEPC · Probatoire · BAC"
+  const examLevelsHero = examLevels.length > 0 ? examLevels.join(" · ") : langueDeListe("", false) === "en" ? "GCE O Level · GCE A Level" : "BEPC · Probatoire · BAC"
   const examLevelsProse = examLevels.length > 0 ? joinExamLevelsProse(examLevels) : t("accueil.examens_repli")
 
   useSeo({
@@ -389,7 +371,7 @@ function CatalogueVitrine() {
       </section>
 
       {/* La promesse du H1 ("la méthode qui t'apprend à réussir") était affirmée,
-          jamais montrée. Extrait réel d'un corrigé publié (voir EXEMPLE_CORRIGE_SLUG),
+          jamais montrée. Extrait réel d'un corrigé publié (voir EXEMPLES_CORRIGE),
           rendu par le même composant que la lecture complète (EpreuveMarkdown) - donc
           le même KaTeX, pas une capture d'écran ni un mock. Disparaît silencieusement
           si le slug ne charge pas (même patron que SocialProofSection/EpreuveRail). */}
@@ -410,7 +392,7 @@ function CatalogueVitrine() {
                 un vrai exercice noté, pas une phrase retouchée pour la démonstration. */}
             {exempleExercice.enonce_intro_markdown && (
               <div className="mb-4 text-sm font-semibold text-primary">
-                <EpreuveMarkdownLazy markdown={exempleExercice.enonce_intro_markdown} />
+                <EpreuveMarkdownLazy markdown={libelleEnteteExercice(exempleExercice.enonce_intro_markdown)} />
               </div>
             )}
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">{t("accueil.corrige_pas_a_pas")}</p>
@@ -422,7 +404,7 @@ function CatalogueVitrine() {
             </div>
             <div className="mt-4 flex justify-center border-t border-border pt-4">
               <Button asChild variant="outline">
-                <Link to={epreuveReaderPath(country ?? "", EXEMPLE_CORRIGE_SLUG)}>
+                <Link to={epreuveReaderPath(country ?? "", exemple.slug)}>
                   {t("accueil.lire_corrige_complet")}
                   <ArrowRight />
                 </Link>

@@ -124,6 +124,40 @@ class EquivalentsGceTests(TestCase):
         # Un examen choisi prime sur la langue, inédites comprises.
         self.assertEqual(liste(cursus=self.bac.id, langue="en")[0], 2)
 
+    def test_chaque_examen_expose_sa_langue(self):
+        """Le frontend ne propose que les examens de la langue de l'interface : GCE -> en, tout le reste -> fr."""
+        reponse = self.client.get(reverse("catalog:cursus-list"), {"country": "cm"})
+        self.assertEqual(reponse.status_code, 200)
+        par_examen = {c["examen"]: c["langue"] for c in reponse.json()}
+        self.assertEqual(par_examen[Examen.GCE_OL], "en")
+        self.assertEqual(par_examen[Examen.BAC], "fr")
+        for examen, langue in par_examen.items():
+            self.assertEqual(langue, "en" if examen in (Examen.GCE_OL, Examen.GCE_AL) else "fr", examen)
+
+    def test_le_total_annonce_par_une_puce_egale_les_lignes_de_la_liste(self):
+        """Une puce « N épreuves / N cours » d'accueil appelle la liste avec la langue de l'interface :
+        son `count` doit être exactement ce que la page de liste affichera, dans chaque langue."""
+        for subject, cursus, slug in ((self.maths_gce, self.gce, "gce"), (self.maths_fr, self.bac, "bac")):
+            for i in range(2):
+                cours = Cours.objects.create(
+                    titre=f"Cours {slug} {i}", subject=subject, statut=StatutContenu.VALIDE,
+                    external_id=f"coherence-{slug}-{i}",
+                )
+                cours.cursus.add(cursus)
+
+        for nom, langue, attendu in (("lesson-list", "en", 1), ("lesson-list", "fr", 1), ("cours-list", "en", 2), ("cours-list", "fr", 2)):
+            donnees = self.client.get(reverse(f"catalog:{nom}"), {"country": "cm", "langue": langue}).json()
+            self.assertEqual(donnees["count"], len(donnees["results"]), (nom, langue))
+            self.assertEqual(donnees["count"], attendu, (nom, langue))
+            codes = {ligne["subject"]["code"] for ligne in donnees["results"]}
+            self.assertEqual(codes, {"GCE_MATHS"} if langue == "en" else {"MATHS"}, (nom, langue))
+
+        # Le bas de page (/catalog/stats/) annonce les mêmes totaux que ces listes, dans chaque langue.
+        for langue, corriges, cours in (("en", 1, 2), ("fr", 1, 2), (None, 2, 4)):
+            params = {"langue": langue} if langue else {}
+            stats = self.client.get(reverse("catalog:platform-stats"), params).json()
+            self.assertEqual((stats["corriges_disponibles"], stats["cours_disponibles"]), (corriges, cours), langue)
+
     def test_epreuves_un_examen_choisi_prime_sur_la_langue(self):
         self.assertEqual(self._titres_epreuves(cursus=self.gce.id, langue="fr"), {"Mathematics GCE test"})
 

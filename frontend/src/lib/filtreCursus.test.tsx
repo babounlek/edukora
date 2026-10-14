@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest"
 
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
-  user: { cursus_prepare: { id: 20, examen_display: "BAC", series: { code: "C" } } },
+  user: { cursus_prepare: { id: 20, examen_display: "BAC", series: { code: "C" } as { code: string }, langue: undefined as string | undefined } },
 }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 
@@ -44,6 +44,16 @@ describe("useFiltreCursusParDefaut", () => {
   it("applique le cursus par défaut à une arrivée sans paramètres", () => {
     const { result } = monter("/cm/epreuves")
     expect(result.current.params.get("cursus")).toBe("20")
+  })
+
+  it("ne pré-filtre pas sur un examen déclaré dans l'autre langue que l'interface", async () => {
+    auth.user.cursus_prepare.langue = "en"
+    try {
+      const { result } = monter("/cm/epreuves")
+      expect(result.current.params.get("cursus")).toBeNull()
+    } finally {
+      delete (auth.user.cursus_prepare as { langue?: string }).langue
+    }
   })
 
   it("ne remet pas le cursus une fois retiré avec desactiverFiltreCursus", () => {

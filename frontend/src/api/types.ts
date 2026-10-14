@@ -235,6 +235,8 @@ export interface Cursus {
   examen: string
   examen_display: string
   series: Series | null
+  // Langue du contenu de l'examen (GCE : en, tout le reste : fr) - voir lib/cursusLangue.ts.
+  langue: "fr" | "en"
 }
 
 export interface Tag {
@@ -261,6 +263,15 @@ export interface PlatformStats {
   corriges_disponibles: number
   cours_disponibles: number
   pays_actifs: number
+}
+
+/** Une vraie question QCM d'une épreuve en accès libre, pour la carte « Exemple de question » de /quiz. Texte brut. */
+export interface QuestionExemple {
+  question: string
+  choix: { lettre: string; texte: string }[]
+  reponse_correcte: string
+  numero: string
+  epreuve: { slug: string; title: string }
 }
 
 export interface CursusContenu {
@@ -898,6 +909,8 @@ export interface QuizSession {
 export interface QuizEssai {
   cursus: number
   cursus_display: string
+  // Langue de l'examen (GCE : en, tout le reste : fr) - voir lib/cursusLangue.ts.
+  langue: "fr" | "en"
   subject: number
   subject_label: string
   subject_code: string
@@ -1546,6 +1559,11 @@ export interface ReponseRecherche {
   groupes: GroupeRecherche[]
   /** Résultats cachés par le filtre d'examen (renseigné quand il y en a peu dans l'examen choisi). */
   autres_cursus: number
+  /** Langue réellement appliquée (null : toutes les langues, ou un examen visé qui fixe déjà la langue). */
+  langue: "fr" | "en" | null
+  /** Résultats que l'autre langue donnerait, renseigné quand il y en a peu dans la langue de l'interface :
+   * le filtre de langue ne cache jamais un contenu qui existe. */
+  autre_langue: number
   /** Matières présentes dans les résultats, la plus fournie d'abord - reste complète quand une matière
    * est choisie, pour pouvoir en changer d'un clic (« tangente » : maths, physique, chimie). */
   matieres: { code: string; label: string; total: number }[]

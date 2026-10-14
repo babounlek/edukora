@@ -46,7 +46,7 @@ const THEME_CHIMIE = resultat({
 
 function reponse(surcharge: Partial<ReponseRecherche> = {}): ReponseRecherche {
   return {
-    q: "tange", corrige: null, indexe: true, trop_court: false, total: 30, autres_cursus: 0, suggestions: [], intention: null, reponse: null,
+    q: "tange", corrige: null, indexe: true, trop_court: false, total: 30, autres_cursus: 0, langue: null, autre_langue: 0, suggestions: [], intention: null, reponse: null,
     matieres: [{ code: "MATHS", label: "Mathématiques", total: 20 }, { code: "CHIMIE", label: "Chimie", total: 10 }],
     groupes: [
       { type: "THEME", libelle: "Thèmes", total: 3, resultats: [THEME_VIDE, THEME_MATHS, THEME_CHIMIE] },
@@ -434,7 +434,7 @@ describe("complétion pendant la frappe", () => {
       "théorème de ThalèsMathématiques",
       "ThalèsMathématiques",
     ])
-    expect(completerRecherche).toHaveBeenCalledWith({ q: "thal", pays: "cm", cursus: null }, expect.anything())
+    expect(completerRecherche).toHaveBeenCalledWith({ q: "thal", pays: "cm", cursus: null, langue: "fr" }, expect.anything())
     // Une seule requête malgré quatre frappes : la pause déclenche, pas chaque lettre.
     expect(completerRecherche).toHaveBeenCalledTimes(1)
   })
@@ -533,5 +533,56 @@ describe("la réponse en bref", () => {
     monter("/cm/recherche?q=loi+d%27ohm")
     await userEvent.click(await screen.findByRole("link", { name: /Lire le cours en entier/ }))
     expect(trackEvent).toHaveBeenCalledWith("recherche_resultat_clique", expect.objectContaining({ type: "COURS" }))
+  })
+})
+
+describe("RecherchePage : langue de l'interface", () => {
+  const derniereRequete = () => rechercher.mock.calls.at(-1)?.[0] as { langue?: string }
+
+  it("envoie la langue de l'interface, et seulement elle", async () => {
+    rechercher.mockResolvedValue(reponse())
+    monter()
+    await waitFor(() => expect(rechercher).toHaveBeenCalled())
+    expect(derniereRequete().langue).toBe("fr")
+  })
+
+  it("« toutes les langues » (?langues=toutes) lève le filtre et propose d'y revenir", async () => {
+    rechercher.mockResolvedValue(reponse())
+    monter("/cm/recherche?q=tange&langues=toutes")
+    await screen.findByText("Résultats dans toutes les langues.")
+    expect(derniereRequete().langue).toBeUndefined()
+    await userEvent.click(screen.getByRole("button", { name: "Revenir au Français seulement" }))
+    await waitFor(() => expect(derniereRequete().langue).toBe("fr"))
+    expect(screen.getByTestId("lieu").textContent).not.toContain("langues=")
+  })
+
+  it("quelques résultats seulement : dit ce que l'autre langue donnerait et la montre d'un clic", async () => {
+    rechercher.mockResolvedValue(reponse({ autre_langue: 4, langue: "fr" }))
+    monter()
+    await screen.findByText("4 résultats dans l'autre langue.")
+    await userEvent.click(screen.getByRole("button", { name: "Les voir" }))
+    await waitFor(() => expect(screen.getByTestId("lieu").textContent).toContain("langues=toutes"))
+    await waitFor(() => expect(derniereRequete().langue).toBeUndefined())
+  })
+
+  it("aucun résultat mais l'autre langue en a : le zéro n'est pas présenté comme un manque du catalogue", async () => {
+    rechercher.mockResolvedValue(reponse({ total: 0, groupes: [], matieres: [], autre_langue: 1, langue: "fr" }))
+    monter("/cm/recherche?q=similar")
+    await screen.findByText("1 résultat dans l'autre langue.")
+    await userEvent.click(screen.getByRole("button", { name: "Les voir" }))
+    await waitFor(() => expect(screen.getByTestId("lieu").textContent).toContain("langues=toutes"))
+  })
+
+  it("aucun indice quand l'autre langue n'a rien, ou quand toutes les langues sont déjà cherchées", async () => {
+    rechercher.mockResolvedValue(reponse({ autre_langue: 0 }))
+    monter()
+    await screen.findByText("tangente", { exact: false }).catch(() => undefined)
+    await waitFor(() => expect(rechercher).toHaveBeenCalled())
+    expect(screen.queryByText(/dans l'autre langue/)).not.toBeInTheDocument()
+
+    rechercher.mockResolvedValue(reponse({ autre_langue: 3 }))
+    monter("/cm/recherche?q=tange&langues=toutes")
+    await screen.findAllByText("Résultats dans toutes les langues.")
+    expect(screen.queryByText("3 résultats dans l'autre langue.")).not.toBeInTheDocument()
   })
 })

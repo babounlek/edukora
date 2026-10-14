@@ -109,7 +109,9 @@ def liste_essais(request):
 
     essais = [
         {
-            "cursus": c, "cursus_display": _cursus_display(cursus[c]),
+            # `langue` (fr | en, dérivée de l'examen) : le frontend ne propose que les essais de la langue de
+            # l'interface (voir lib/cursusLangue.ts) - un visiteur en anglais n'a pas à voir « BAC - A » d'abord.
+            "cursus": c, "cursus_display": _cursus_display(cursus[c]), "langue": cursus[c].langue,
             "subject": s, "subject_label": matieres[s].label, "subject_code": matieres[s].code,
             "theme": t, "theme_name": themes[t].name, "nb_questions": n,
         }

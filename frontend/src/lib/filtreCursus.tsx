@@ -2,7 +2,8 @@ import { useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 
 import { useAuth } from "@/context/AuthContext"
-import { t, useI18n } from "@/lib/i18n"
+import { estDeLangue } from "@/lib/cursusLangue"
+import { langueCourante, t, useI18n } from "@/lib/i18n"
 
 /**
  * Pré-filtre les listes du catalogue sur l'examen que l'élève a déclaré.
@@ -72,12 +73,16 @@ export function useFiltreCursusParDefaut() {
 
   useEffect(() => {
     if (!cursusPrepare || cursusDansUrl || voirTout) return
+    // Un examen déclaré dans l'autre langue ne pré-filtre pas : l'élève qui lit l'interface en anglais verrait
+    // d'office une liste française. Il reste proposé parmi les pastilles (voir lib/cursusLangue).
+    if (!estDeLangue(cursusPrepare, langueCourante())) return
     const suivant = new URLSearchParams(searchParams)
     suivant.set("cursus", String(cursusPrepare.id))
     // `replace` : le pré-filtrage n'est pas une navigation que l'élève a demandée,
     // il ne doit pas s'intercaler dans son historique ni piéger le bouton "retour".
     setSearchParams(suivant, { replace: true })
-  }, [cursusPrepare, cursusDansUrl, voirTout, searchParams, setSearchParams])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cursusPrepare, cursusDansUrl, voirTout, searchParams, setSearchParams, langueCourante()])
 
   return etat
 }

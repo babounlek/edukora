@@ -73,7 +73,8 @@ class Command(BaseCommand):
         cas = json.loads(Path(options["fichier"]).read_text(encoding="utf-8"))
         echecs = 0
         for un_cas in cas:
-            reponse = moteur.chercher(un_cas["q"], pays=pays, limite=TETE)
+            # `langue` (fr | en) : la langue de l'interface pour laquelle le cas vaut ; absente, toutes les langues.
+            reponse = moteur.chercher(un_cas["q"], pays=pays, limite=TETE, langue=un_cas.get("langue"))
             ecarts = verifier(un_cas, reponse)
             if ecarts:
                 echecs += 1

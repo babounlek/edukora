@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useSeo } from "@/lib/seo"
+import { libellePays } from "@/lib/pays"
 import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { countryFlagClassName } from "@/lib/countryFlag"
@@ -305,7 +306,7 @@ export function LoginPage() {
                             <SelectItem key={c.id} value={c.code.toLowerCase()}>
                               <span className="flex items-center gap-1.5">
                                 <span aria-hidden className={countryFlagClassName(c.code)} />
-                                +{c.dial_code || "?"} · {c.label}
+                                +{c.dial_code || "?"} · {libellePays(c.code, c.label)}
                               </span>
                             </SelectItem>
                           ))}
@@ -351,7 +352,7 @@ export function LoginPage() {
               {methode === "phone" && !isSupported ? (
                 <p className="text-sm text-muted-foreground">
                   {t("login.tel_cameroun_seulement")}
-                  {selectedCountry ? t("login.pays_bientot", { pays: selectedCountry.label }) : ""}
+                  {selectedCountry ? t("login.pays_bientot", { pays: libellePays(selectedCountry.code, selectedCountry.label) }) : ""}
                 </p>
               ) : (
                 error && <p className="text-sm text-destructive">{error}</p>

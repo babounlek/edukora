@@ -17,7 +17,7 @@ from django.db import transaction
 from django.db.models import Count, Prefetch
 
 from catalog.models import (
-    Cours, Cursus, Examen, Exercise, Lesson, LessonType, Origine, Question, RappelDeMethode, StatutContenu,
+    Cours, Cursus, Examen, Exercise, Langue, Lesson, LessonType, Origine, Question, RappelDeMethode, StatutContenu,
     Subject, Tag,
     resolve_examen_label,
 )
@@ -327,7 +327,8 @@ def _entrees_epreuves(ctx):
         # Le sujet est public (seul le corrigé est payant) : on indexe les énoncés. Une fiche ou
         # un sujet inédit sans Exercise n'a pas de séparation énoncé/corrigé et se lit tel quel.
         if exercices:
-            public = "\n\n".join(e.enonce_intro_markdown + "\n" + e.enonce_markdown for e in exercices)
+            langue = lesson.subject.langue
+            public = "\n\n".join(texte.enonce_public(e.enonce_intro_markdown, e.enonce_markdown, langue) for e in exercices)
         else:
             public = lesson.content_markdown
         origine = "" if lesson.origine == Origine.OFFICIEL else lesson.get_origine_display()
@@ -347,9 +348,13 @@ def _entrees_epreuves(ctx):
         )
 
 
-def _libelle_exercice(numero):
+def _libelle_exercice(numero, langue=Langue.FR):
+    """« Exercice 3 » / « Exercise 3 » : le mot est celui de la langue du contenu (celle de sa matière), pas celle
+    de l'interface - une épreuve du GCE s'intitule « Exercise 3 » quelle que soit la langue de qui la cherche. Un
+    repère qui n'est pas un nombre (« B1 », « Problème ») est gardé tel quel."""
     numero = str(numero or "").strip()
-    return f"Exercice {numero}" if numero.isdigit() else (numero or "Exercice")
+    mot = "Exercise" if langue == Langue.EN else "Exercice"
+    return f"{mot} {numero}" if numero.isdigit() else (numero or mot)
 
 
 def _entrees_exercices(ctx):
@@ -359,11 +364,11 @@ def _entrees_exercices(ctx):
     )
     for exercice in _lots(queryset):
         lesson = exercice.lesson
-        public = f"{exercice.enonce_intro_markdown}\n{exercice.enonce_markdown}".strip()
+        public = texte.enonce_public(exercice.enonce_intro_markdown, exercice.enonce_markdown, lesson.subject.langue).strip()
         if not public:
             continue
         cursus_ids = [c.id for c in lesson.cursus.all()]
-        libelle = _libelle_exercice(exercice.numero_exercice)
+        libelle = _libelle_exercice(exercice.numero_exercice, lesson.subject.langue)
         yield _entree(
             TypeResultat.EXERCICE, exercice.id, matiere=lesson.subject, titre=f"{libelle} · {lesson.title}",
             cles=_cles(

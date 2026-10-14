@@ -33,6 +33,7 @@ import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
 import { t, useI18n } from "@/lib/i18n"
+import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
 export function EpreuveReaderPage() {
@@ -186,7 +187,7 @@ export function EpreuveReaderPage() {
             </div>
             {exercise.enonce_intro_markdown && (
               <div className="prose prose-neutral max-w-none text-justify dark:prose-invert">
-                <EpreuveMarkdown markdown={exercise.enonce_intro_markdown} />
+                <EpreuveMarkdown markdown={libelleEnteteExercice(exercise.enonce_intro_markdown)} />
               </div>
             )}
             <EnonceToggle>

@@ -5,7 +5,7 @@ import { codeSerieAffiche, EXAMEN_ORDER, examCodesFor, formatCursusGroups } from
 const pays = { id: 1, code: "CM", label: "Cameroun" } as Cursus["country"]
 
 function cursus(examen: string, display: string, series: Cursus["series"] = null): Cursus {
-  return { id: 1, country: pays, examen, examen_display: display, series }
+  return { id: 1, country: pays, examen, examen_display: display, series, langue: examen.startsWith("GCE") ? "en" : "fr" }
 }
 
 describe("cursus GCE", () => {

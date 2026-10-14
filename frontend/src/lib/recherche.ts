@@ -239,6 +239,17 @@ export const LIBELLES_MOT_TYPE: Record<string, string> = {
   get qcm() { return t("rc.mot_qcm") },
   get question() { return t("rc.mot_question") },
   get theme() { return t("rc.mot_theme") },
+  // Mots d'une recherche en anglais (voir recherche.intention.MOTS_TYPE_EN), qui reprennent les mêmes libellés.
+  get solution() { return t("rc.mot_corrige") },
+  get past() { return t("rc.mot_annale") },
+  get paper() { return t("rc.mot_epreuve") },
+  get exam() { return t("rc.mot_epreuve") },
+  get mock() { return t("rc.mot_epreuve") },
+  get lesson() { return t("rc.mot_lecon") },
+  get course() { return t("rc.mot_cour") },
+  get exercise() { return t("rc.mot_exercice") },
+  get mcq() { return t("rc.mot_qcm") },
+  get topic() { return t("rc.mot_theme") },
 }
 
 /** Un résultat ouvert : son type et son rang (1 = premier de son groupe) disent si le classement

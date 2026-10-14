@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { ETAT_FOCUS_RECHERCHE } from "@/lib/recherche"
+import { libellePays, nomPays } from "@/lib/pays"
 import { useRaccourciRecherche } from "@/lib/useRaccourciRecherche"
 import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
 import { useCursusAbonnes } from "@/lib/changerCursusPrepare"
@@ -17,7 +18,7 @@ import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { ineditesNouvelles, marquerIneditesVues, useIneditesVues } from "@/lib/ineditesVues"
 import { SITE_NAME } from "@/lib/site"
-import { useI18n } from "@/lib/i18n"
+import { langueCourante, useI18n } from "@/lib/i18n"
 import { SelecteurLangue, useSynchroLangueCompte } from "@/components/SelecteurLangue"
 import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import {
@@ -199,7 +200,7 @@ function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () =
     )
   }
 
-  const currentLabel = browsableCountries.find((c) => c.code.toLowerCase() === country)?.label
+  const currentLabel = nomPays(browsableCountries, country)
 
   return (
     <Select value={country} onValueChange={handleChange}>
@@ -231,7 +232,7 @@ function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () =
       <SelectContent>
         {browsableCountries.map((c) => (
           <SelectItem key={c.id} value={c.code.toLowerCase()}>
-            {c.label}
+            {libellePays(c.code, c.label)}
           </SelectItem>
         ))}
       </SelectContent>
@@ -281,8 +282,8 @@ export function Header() {
   // dans la fenêtre de staleTime (60 s, voir main.tsx). Sert uniquement à savoir s'il
   // existe au moins une inédite pour ce pays - jamais le contenu de la réponse.
   const { data: inediteRecenteData } = useQuery({
-    queryKey: ["epreuves-inedites-recente", country],
-    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE", ordering: "recent" }, signal),
+    queryKey: ["epreuves-inedites-recente", country, langueCourante()],
+    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE", ordering: "recent", langue: langueCourante() }, signal),
     enabled: Boolean(country),
   })
   const hasInedites = Boolean(inediteRecenteData && inediteRecenteData.count > 0)

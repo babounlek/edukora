@@ -125,10 +125,13 @@ class CursusSerializer(serializers.ModelSerializer):
     # différent du libellé générique selon le pays (ex: BFEM au Sénégal) - voir
     # ExamenLabel dans catalog.models.
     examen_display = serializers.SerializerMethodField()
+    # fr | en, dérivée de l'examen (Cursus.langue) : le frontend s'en sert pour ne proposer que les examens de la
+    # langue de l'interface (voir lib/cursusLangue.ts).
+    langue = serializers.CharField(read_only=True)
 
     class Meta:
         model = Cursus
-        fields = ["id", "country", "examen", "examen_display", "series"]
+        fields = ["id", "country", "examen", "examen_display", "series", "langue"]
 
     def get_examen_display(self, obj):
         # Mémoïsé par (pays, examen) sur le contexte de sérialisation (même patron que

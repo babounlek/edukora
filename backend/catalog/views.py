@@ -41,6 +41,7 @@ from .models import (
     SUBJECT_FAMILIES,
     Tag,
     Temoignage,
+    TypeReponse,
     q_cours_du_cursus,
 )
 from .rendering import exercise_questions_breakdown
@@ -673,16 +674,96 @@ class PlatformStatsView(APIView):
 
     def get(self, request):
         contenu_valide = Q(statut=StatutContenu.VALIDE, subject__country__actif=True)
+        # ?langue=fr|en : la langue de l'interface limite les comptes, comme les listes vers lesquelles ils
+        # mènent (voir _filtre_langue) ; sans elle, un élève en anglais lisait le total des deux langues.
+        langue = _filtre_langue(request, "subject__langue")
         # Annales corrigées + épreuves inédites publiées : le même total que le hero du
         # catalogue (liste fusionnée /catalog/lessons/), sinon deux chiffres différents
         # pour la même mention "épreuves corrigées" sur une même page.
-        nb_corriges = Lesson.objects.filter(contenu_valide, lesson_type=LessonType.CORR).count()
-        nb_inedites = build_inedit_queryset({}, min_popular_readers=0).count()
+        nb_corriges = Lesson.objects.filter(contenu_valide, lesson_type=LessonType.CORR, **langue).count()
+        nb_inedites = build_inedit_queryset(
+            {"langue": request.query_params.get("langue") or ""}, min_popular_readers=0,
+        ).count()
         return Response({
             "corriges_disponibles": nb_corriges + nb_inedites,
-            "cours_disponibles": Cours.objects.filter(contenu_valide).count(),
+            "cours_disponibles": Cours.objects.filter(contenu_valide, **langue).count(),
             "pays_actifs": Country.objects.filter(actif=True).count(),
         })
+
+
+# Une question d'exemple s'affiche en texte brut (pas de Markdown ni de LaTeX côté carte) : on écarte tout ce qui
+# ne se lirait pas tel quel, et les énoncés trop longs pour une carte.
+_MARQUEURS_NON_BRUTS = ("$", "![", "\\", "<", "|", "\n", "`", "*", "_")
+_LONGUEUR_MAX_QUESTION_EXEMPLE = 200
+_LONGUEUR_MAX_CHOIX_EXEMPLE = 90
+
+
+def _texte_brut(texte, longueur_max):
+    return bool(texte) and len(texte) <= longueur_max and not any(m in texte for m in _MARQUEURS_NON_BRUTS)
+
+
+def question_exemple_gratuite(langue, country=None):
+    """
+    Une question QCM d'une épreuve en accès libre (Lesson.est_vitrine), pour la carte « Exemple de question » de /quiz :
+    la preuve vient d'une vraie épreuve que le visiteur peut ouvrir, jamais d'un texte recopié à la main qui
+    finirait par ne plus correspondre à rien. Choix STABLE (la première question qui convient, dans l'ordre des
+    épreuves puis des questions) : la carte ne change pas d'une visite à l'autre. None si aucune ne convient.
+
+    Convient : épreuve publiée d'un pays actif, dans la langue demandée ; QCM à quatre choix a-d dont la bonne réponse
+    est connue ; énoncé qui se pose comme une question (se termine par « ? ») ; texte brut et court.
+    """
+    questions = (
+        Question.objects.filter(
+            exercise__lesson__est_vitrine=True,
+            exercise__lesson__statut=StatutContenu.VALIDE,
+            exercise__lesson__subject__country__actif=True,
+            type_reponse=TypeReponse.QCM,
+        )
+        .exclude(reponse_correcte="")
+        .select_related("exercise__lesson")
+        .order_by("exercise__lesson_id", "exercise__numero_exercice", "ordre")
+    )
+    if langue in Langue.values:
+        questions = questions.filter(exercise__lesson__subject__langue=langue)
+    if country:
+        questions = questions.filter(exercise__lesson__subject__country__code__iexact=country)
+
+    for question in questions:
+        enonce = (question.enonce_markdown or "").strip()
+        choix = question.choix if isinstance(question.choix, list) else []
+        lettres = [c.get("lettre") for c in choix if isinstance(c, dict)]
+        if (
+            not enonce.endswith("?")
+            or not _texte_brut(enonce, _LONGUEUR_MAX_QUESTION_EXEMPLE)
+            or lettres != ["a", "b", "c", "d"]
+            or question.reponse_correcte not in lettres
+            or not all(_texte_brut(c.get("texte"), _LONGUEUR_MAX_CHOIX_EXEMPLE) for c in choix)
+        ):
+            continue
+        lesson = question.exercise.lesson
+        return {
+            "question": enonce,
+            "choix": [{"lettre": c["lettre"], "texte": c["texte"]} for c in choix],
+            "reponse_correcte": question.reponse_correcte,
+            "numero": question.numero,
+            "epreuve": {"slug": lesson.slug, "title": lesson.title},
+        }
+    return None
+
+
+class QuestionExempleView(APIView):
+    """GET /catalog/question-exemple/?langue=en&country=cm - voir question_exemple_gratuite. 404 s'il n'y en a aucune
+    (le frontend garde alors sa question de démonstration)."""
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        exemple = question_exemple_gratuite(
+            (request.query_params.get("langue") or "").lower(), request.query_params.get("country"),
+        )
+        if exemple is None:
+            return Response({"detail": "Aucune question d'exemple disponible."}, status=404)
+        return Response(exemple)
 
 
 class CursusContenuView(APIView):

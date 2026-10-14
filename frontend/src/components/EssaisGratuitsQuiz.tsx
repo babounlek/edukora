@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, Gift } from "lucide-react"
@@ -8,6 +8,8 @@ import { ApiError } from "@/api/client"
 import type { QuizEssai } from "@/api/types"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { Button } from "@/components/ui/button"
+import { estDeLangue } from "@/lib/cursusLangue"
+import { langueDeListe } from "@/lib/discipline"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { memoriserEssai } from "@/lib/quizEssai"
 import { subjectIcon } from "@/lib/subjectIcon"
@@ -34,17 +36,31 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
   const [enCours, setEnCours] = useState<string | null>(null)
   const [erreur, setErreur] = useState("")
 
+  // Les essais proposés suivent la langue de l'interface, comme les listes (voir lib/cursusLangue) : en anglais le
+  // GCE, en français BEPC, Probatoire et BAC. L'examen déclaré reste proposé en pastille, sans devenir le choix par
+  // défaut s'il est de l'autre langue. Changer de langue abandonne l'examen choisi à la main.
+  const langue = langueDeListe("", false)
+  useEffect(() => setChoisi(null), [langue])
+
+  const proposes = useMemo(
+    () => (essais ?? []).filter((e) => estDeLangue(e, langue) || e.cursus === cursusInitial),
+    [essais, langue, cursusInitial],
+  )
   const cursus = useMemo(() => {
     const vus = new Map<number, string>()
     // Pastilles courtes : « BAC - A » suffit, le mot « Série(s) » n'apporte rien dans un filtre d'examen.
-    for (const e of essais ?? []) if (!vus.has(e.cursus)) vus.set(e.cursus, traduireLibelleSerie(e.cursus_display.replace(/\bSéries?\s+/, "")))
+    for (const e of proposes) if (!vus.has(e.cursus)) vus.set(e.cursus, traduireLibelleSerie(e.cursus_display.replace(/\bSéries?\s+/, "")))
     return [...vus.entries()].map(([id, libelle]) => ({ id, libelle }))
-  }, [essais])
+  }, [proposes])
 
-  if (!essais || essais.length === 0) return null
+  // Rien à offrir dans cette langue (le GCE n'a pas encore tous ses essais) : pas de section vide.
+  const cursusDeLaLangue = new Set(proposes.filter((e) => estDeLangue(e, langue)).map((e) => e.cursus))
+  if (!essais || cursusDeLaLangue.size === 0) return null
 
-  const actif = [choisi, cursusInitial].find((id) => id != null && cursus.some((c) => c.id === id)) ?? cursus[0].id
-  const lignes = essais.filter((e) => e.cursus === actif)
+  const actif =
+    [choisi, cursusInitial].find((id) => id != null && cursusDeLaLangue.has(id)) ??
+    cursus.find((c) => cursusDeLaLangue.has(c.id))!.id
+  const lignes = proposes.filter((e) => e.cursus === actif)
 
   async function lancer(essai: QuizEssai) {
     const cle = `${essai.cursus}-${essai.subject}-${essai.theme}`

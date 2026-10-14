@@ -42,6 +42,19 @@ class EssaiGratuitTests(TestCase):
         self.assertEqual(essai["nb_questions"], 3)
         self.assertEqual(essai["subject_code"], "MATHS")
 
+    def test_chaque_essai_expose_la_langue_de_son_examen(self):
+        """Le frontend filtre les essais sur la langue de l'interface : GCE -> en, BAC -> fr."""
+        maths_gce = Subject.objects.get(country__code="CM", code="GCE_MATHS")
+        gce = Cursus.objects.get(country__code="CM", examen=Examen.GCE_OL, series__isnull=True)
+        theme_gce = Tag.objects.create(name="theme-essai-gce")
+        for i in range(3):
+            _make_competence_item(maths_gce, gce, theme=theme_gce, numero=f"g{i}", est_vitrine=True)
+
+        par_cursus = {e["cursus"]: e["langue"] for e in self.client.get("/quiz/essais/").json()}
+
+        self.assertEqual(par_cursus[self.cursus.id], "fr")
+        self.assertEqual(par_cursus[gce.id], "en")
+
     def test_liste_ecarte_un_theme_dont_un_seul_item_est_payant(self):
         _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="intrus")  # non vitrine
 

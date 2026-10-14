@@ -19,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { couleurMatiere } from "@/lib/matiereCouleur"
+import { nomPays } from "@/lib/pays"
 import { useCursusAccueil } from "@/lib/cursusAccueil"
 import { epreuveReaderPath } from "@/lib/countryPath"
 import {
@@ -42,7 +43,8 @@ import {
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { cn } from "@/lib/utils"
-import { t, tn, useI18n } from "@/lib/i18n"
+import { PARAM_TOUTES_LANGUES } from "@/lib/discipline"
+import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 
 // Par groupe dans la vue d'ensemble ; une fois un type choisi, on pagine par PAGE_TYPE.
 const PAR_GROUPE = 6
@@ -53,7 +55,7 @@ export function RecherchePage() {
   const { country = "" } = useParams<{ country: string }>()
   const { user } = useAuth()
   const { countries } = useCountry()
-  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+  const countryLabel = nomPays(countries, country)
   const [searchParams, setSearchParams] = useSearchParams()
 
   // Arrivé par la loupe, le bouton des onglets ou un raccourci clavier (voir ETAT_FOCUS_RECHERCHE) : le
@@ -73,6 +75,10 @@ export function RecherchePage() {
   // `type` de l URL : un type de résultat, ramené à son onglet (voir FAMILLES_RECHERCHE).
   const famille = (TYPES_RECHERCHE as string[]).includes(typeBrut) ? familleDe(typeBrut as TypeResultatRecherche) : undefined
   const elargir = searchParams.get("elargir") === "1"
+  // Sans examen visé, la recherche suit la langue de l'interface (voir recherche.moteur.chercher) ; « toutes les
+  // langues » lève ce filtre. L'examen déclaré, lui, fixe déjà la langue côté serveur.
+  const toutesLangues = searchParams.get(PARAM_TOUTES_LANGUES) === "toutes"
+  const langue = toutesLangues ? undefined : langueCourante()
   const exact = searchParams.get("exact") === "1"
   // Parties de l'intention que l'élève a retirées (pastilles « Compris » : cursus, matiere, annee, type).
   const sansBrut = searchParams.get("sans") ?? ""
@@ -149,10 +155,10 @@ export function RecherchePage() {
 
   // Vue d'ensemble : tous les groupes, quelques résultats chacun - et les compteurs des onglets.
   const ensemble = useQuery({
-    queryKey: ["recherche", "page", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, sansBrut],
+    queryKey: ["recherche", "page", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, sansBrut, langue ?? "toutes"],
     queryFn: ({ signal }) =>
       rechercher(
-        { q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact, sans, limite: PAR_GROUPE },
+        { q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact, sans, limite: PAR_GROUPE, langue },
         signal,
       ),
     enabled: interroger,
@@ -203,8 +209,8 @@ export function RecherchePage() {
   const [completionActive, setCompletionActive] = useState(-1)
   const saisieCompletion = useDebouncedValue(saisie.trim(), 150)
   const completions = useQuery({
-    queryKey: ["recherche", "completer", country, cursusDeclare ?? null, saisieCompletion],
-    queryFn: ({ signal }) => completerRecherche({ q: saisieCompletion, pays: country, cursus: cursusDeclare }, signal),
+    queryKey: ["recherche", "completer", country, cursusDeclare ?? null, saisieCompletion, langue ?? "toutes"],
+    queryFn: ({ signal }) => completerRecherche({ q: saisieCompletion, pays: country, cursus: cursusDeclare, langue }, signal),
     enabled: completionOuverte && saisieCompletion.length >= LONGUEUR_MIN_RECHERCHE && cursusDeclare !== undefined,
     staleTime: 5 * 60_000,
     placeholderData: keepPreviousData,
@@ -485,16 +491,34 @@ export function RecherchePage() {
             </p>
           )}
 
+          {toutesLangues && (
+            <p className="mt-5 text-sm text-muted-foreground">
+              {t("rc.toutes_langues_actif")}{" "}
+              <button type="button" onClick={() => majParams({ [PARAM_TOUTES_LANGUES]: null })} className="font-medium text-primary hover:underline">
+                {t("rc.revenir_langue", { langue: t(langueCourante() === "en" ? "langue.en" : "langue.fr") })}
+              </button>
+            </p>
+          )}
+
           {data.total === 0 ? (
             <AucunResultat
               termes={termes}
               country={country}
               data={data}
               onElargir={cursusLabel && !elargir ? () => majParams({ elargir: "1" }) : undefined}
+              onToutesLangues={data.autre_langue > 0 && !toutesLangues ? () => majParams({ [PARAM_TOUTES_LANGUES]: "toutes" }) : undefined}
               onRetenir={retenir}
             />
           ) : (
             <>
+              {data.autre_langue > 0 && !toutesLangues && (
+                <p className="mt-5 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm">
+                  {tn("rc.autre_langue", data.autre_langue)}{" "}
+                  <button type="button" onClick={() => majParams({ [PARAM_TOUTES_LANGUES]: "toutes" })} className="font-medium text-primary hover:underline">
+                    {t("rc.les_voir")}
+                  </button>
+                </p>
+              )}
               {data.autres_cursus > 0 && !elargir && (
                 <p className="mt-5 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm">
                   {tn("rc.autres_cursus", data.autres_cursus)}{" "}
@@ -579,12 +603,12 @@ export function RecherchePage() {
                         key={groupe.type}
                         groupe={groupe}
                         avecTitre={famille.types.length > 1}
-                        cle={["recherche", "type", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, sansBrut, groupe.type]}
+                        cle={["recherche", "type", country, identite, termes, matiere, cursusDeclare ?? null, elargir, exact, sansBrut, langue ?? "toutes", groupe.type]}
                         chercher={(decalage, signal) =>
                           rechercher(
                             {
                               q: termes, pays: country, cursus: cursusDeclare, matiere: matiere || undefined, elargir, exact, sans,
-                              type: groupe.type, limite: PAGE_TYPE, decalage,
+                              type: groupe.type, limite: PAGE_TYPE, decalage, langue,
                             },
                             signal,
                           )
@@ -837,12 +861,14 @@ function PageVide({
 }
 
 function AucunResultat({
-  termes, country, data, onElargir, onRetenir,
+  termes, country, data, onElargir, onToutesLangues, onRetenir,
 }: {
   termes: string
   country: string
   data: ReponseRecherche
   onElargir?: () => void
+  /** Présent quand l'autre langue a des résultats : le zéro vient du filtre de langue, pas du catalogue. */
+  onToutesLangues?: () => void
   onRetenir: () => void
 }) {
   useI18n()
@@ -854,6 +880,14 @@ function AucunResultat({
         <p className="max-w-md text-sm text-muted-foreground">
           {t("rc.aucun_texte")}
         </p>
+        {onToutesLangues && (
+          <p className="text-sm">
+            {tn("rc.autre_langue", data.autre_langue)}{" "}
+            <button type="button" onClick={onToutesLangues} className="font-medium text-primary hover:underline">
+              {t("rc.les_voir")}
+            </button>
+          </p>
+        )}
         {onElargir && (
           <Button variant="outline" size="sm" onClick={onElargir} className="mt-1">
             {t("rc.chercher_tous")}

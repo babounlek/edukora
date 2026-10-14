@@ -16,6 +16,8 @@ Deux sortes d'équivalences :
     pas « tp » - une abréviation courte élargirait sinon la recherche à tout mot qui commence pareil.
 """
 
+import re
+
 from . import texte
 
 GROUPES = (
@@ -40,6 +42,17 @@ GROUPES = (
     ("electri*",),
     ("magnet*",),
     ("refraction", "snell"),
+    # Orthographe britannique / américaine (le GCE écrit « sulphur », les manuels américains « sulfur »). Les
+    # terminaisons -ise / -ize sont reliées par _variantes_orthographe. Écartés : « litre / liter » et
+    # « labour / labor », dont la forme américaine commence « literature » et « laboratory ».
+    ("colour", "color"),
+    ("sulphur", "sulfur"),
+    ("aluminium", "aluminum"),
+    ("metre", "meter"),
+    ("centre", "center"),
+    ("grey", "gray"),
+    ("fibre", "fiber"),
+    ("behaviour", "behavior"),
 )
 
 ABREVIATIONS = {
@@ -82,6 +95,21 @@ def _correspond(jeton, membre):
     return jeton == membre
 
 
+_IS_IZ = re.compile(r"i([sz])(e|es|ed|ing|ation|ations|er|ers)?$")
+
+
+def _variantes_orthographe(jeton):
+    """L'autre orthographe anglaise d'un mot en -ise / -ize (« neutralise » / « neutralize », « organisation » /
+    « organization »), ou d'un radical qui s'y termine (« neutralis » / « neutraliz », voir texte.racine_en)."""
+    if len(jeton) < 6:
+        return []
+    trouve = _IS_IZ.search(jeton)
+    if not trouve:
+        return []
+    autre = "z" if trouve.group(1) == "s" else "s"
+    return [jeton[: trouve.start(1)] + autre + jeton[trouve.end(1):]]
+
+
 def alternatives(jeton):
     """Formes de recherche équivalentes à `jeton` (déjà ramené au singulier approximatif), sans lui-même ni
     doublon - vide quand le mot n'a pas d'équivalent connu. Un jeton d'une seule lettre n'en a jamais :
@@ -99,6 +127,8 @@ def alternatives(jeton):
             for membre in groupe:
                 ajouter(membre.rstrip("*"))
     for forme in ABREVIATIONS.get(jeton, ()):
+        ajouter(forme)
+    for forme in _variantes_orthographe(jeton):
         ajouter(forme)
     return trouvees
 

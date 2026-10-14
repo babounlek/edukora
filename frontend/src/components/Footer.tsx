@@ -3,18 +3,21 @@ import { Link, useLocation } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, ChevronDown, MessageCircle, ShieldCheck, Sparkles } from "lucide-react"
 
-import { getPlatformStats, listCursus } from "@/api/endpoints"
+import { getPlatformStats } from "@/api/endpoints"
 import type { Cursus, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
+import { useCursusListe } from "@/lib/cursusLangue"
+import { langueDeListe } from "@/lib/discipline"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
 
 // Ordre de lecture d'un élève : du premier examen au dernier.
 const ORDRE_EXAMENS = ["BEPC", "Probatoire", "BAC"]
+const ORDRE_EXAMENS_EN = ["GCE O Level", "GCE A Level"]
 
 interface Invitation {
   message: ReactNode
@@ -134,16 +137,17 @@ export function Footer() {
 
   // Chiffres réels, jamais codés en dur (voir project_about_page_hardcoded_stats) : un
   // compteur figé finit toujours par mentir.
+  // Dans la langue de l'interface, comme les puces du hero (voir lib/totauxCatalogue) : le pied de page est
+  // sur toutes les pages, et un total des deux langues y contredisait la page. (« À propos » reste global.)
+  const langueStats = langueDeListe("", false)
   const { data: stats } = useQuery({
-    queryKey: ["platform-stats"],
-    queryFn: getPlatformStats,
+    queryKey: ["platform-stats", langueStats],
+    queryFn: () => getPlatformStats(langueStats),
     staleTime: 60 * 60 * 1000,
   })
   // Même clé que /epreuves et /themes-frequents : déjà en cache la plupart du temps.
-  const { data: cursusList = [] } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
-  })
+  // Examens de la langue de l'interface (voir lib/cursusLangue) : BEPC, Probatoire, BAC en français, GCE en anglais.
+  const { data: cursusList } = useCursusListe(country, { langue: langueStats })
 
   const invitation = invitationPour(isAuthenticated ? user : null, country)
   // Pas d'invitation vers la page où l'on est déjà (les tarifs sur /tarifs, la séance
@@ -151,7 +155,7 @@ export function Footer() {
   const cible = invitation.lien.split("?")[0]
   const afficherInvitation = pathname !== cible
 
-  const examens = ORDRE_EXAMENS.map((examen) => ({
+  const examens = (langueStats === "en" ? ORDRE_EXAMENS_EN : ORDRE_EXAMENS).map((examen) => ({
     examen,
     cursus: cursusList
       .filter((c) => c.examen_display === examen)

@@ -3,7 +3,9 @@ import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowLeft, ArrowRight, Check, Crown, FileText, Lock, TrendingUp } from "lucide-react"
 
-import { getThemeExercices, getThemesFrequents, listCursus } from "@/api/endpoints"
+import { getThemeExercices, getThemesFrequents } from "@/api/endpoints"
+import { useCursusListe } from "@/lib/cursusLangue"
+import { langueDeListe } from "@/lib/discipline"
 import type { Cursus, ThemeExercice } from "@/api/types"
 import { useSeo } from "@/lib/seo"
 import { themeExerciceLecturePath, themesFrequentsPath } from "@/lib/countryPath"
@@ -59,10 +61,8 @@ export function ThemeExercicesPage() {
     placeholderData: (precedent) => precedent,
   })
 
-  const { data: cursusList = [] } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
-  })
+  // Examens de la langue de l'interface ; celui du lien reste proposé (voir lib/cursusLangue).
+  const { data: cursusList } = useCursusListe(country, { langue: langueDeListe("", false), garder: [cursusId] })
 
   // Fréquence du thème pour la sélection COURANTE, lue dans le classement (même clé de
   // cache que ThemesFrequentsPage : aucun appel de plus en venant de là). Les params

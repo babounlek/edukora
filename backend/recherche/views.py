@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes, throttle_cla
 from rest_framework.response import Response
 from rest_framework.throttling import SimpleRateThrottle
 
-from catalog.models import Country
+from catalog.models import Country, Langue
 
 from . import moteur
 from users.profils import profil_actif
@@ -25,6 +25,12 @@ class RechercheThrottle(SimpleRateThrottle):
         return self.cache_format % {"scope": self.scope, "ident": ident}
 
 
+def _langue(valeur):
+    """?langue=fr|en, ou None (toutes les langues) pour tout autre valeur - même règle que catalog.views._filtre_langue."""
+    valeur = (valeur or "").lower()
+    return valeur if valeur in Langue.values else None
+
+
 def _entier(valeur):
     try:
         return int(valeur)
@@ -38,7 +44,7 @@ def _entier(valeur):
 def rechercher(request):
     """
     GET /recherche/?q=...&pays=cm[&cursus=<id>][&matiere=<code>][&type=COURS][&limite=][&decalage=]
-                          [&elargir=true][&exact=true][&sans=cursus,annee][&rapide=true]
+                          [&elargir=true][&exact=true][&sans=cursus,annee][&rapide=true][&langue=fr|en]
 
     Ouverte aux visiteurs anonymes (la recherche sert aussi à décider de s'abonner) : elle ne
     renvoie que de l'identité de contenu (titre, matière, examen, année), jamais un corrigé - voir
@@ -57,7 +63,7 @@ def rechercher(request):
         params.get("q", ""), pays=pays, utilisateur=request.user, profil=profil_actif(request), cursus=_entier(params.get("cursus")),
         matiere=matiere, type_=type_, limite=_entier(params.get("limite")) or moteur.LIMITE_DEFAUT,
         decalage=decalage, elargir=params.get("elargir") == "true", corriger_auto=params.get("exact") != "true",
-        sans=[p for p in params.get("sans", "").split(",") if p],
+        sans=[p for p in params.get("sans", "").split(",") if p], langue=_langue(params.get("langue")),
     )
 
     # Un zéro n'est un manque du catalogue que s'il ne vient pas d'un filtre : ni type ni matière
@@ -65,6 +71,8 @@ def rechercher(request):
     manque_du_catalogue = (
         reponse["total"] == 0 and reponse["indexe"] and not reponse["trop_court"] and reponse["q"]
         and not type_ and not matiere and not decalage and reponse["autres_cursus"] == 0
+        # Un zéro que l'autre langue comble n'est pas un manque du catalogue.
+        and reponse["autre_langue"] == 0
     )
     if manque_du_catalogue and params.get("rapide") != "true":
         moteur.journaliser_vide(reponse["q"], pays.code)
@@ -76,7 +84,7 @@ def rechercher(request):
 @throttle_classes([RechercheThrottle])
 def completer(request):
     """
-    GET /recherche/completer/?q=...&pays=cm[&cursus=<id>]
+    GET /recherche/completer/?q=...&pays=cm[&cursus=<id>][&langue=fr|en]
 
     Ce que l'élève est peut-être en train d'écrire (voir recherche.moteur.completer) : une poignée
     d'intitulés de thèmes, appelée à chaque pause de frappe. Même plafond d'appels que la recherche.
@@ -86,5 +94,6 @@ def completer(request):
         return Response({"error": "Pays inconnu ou indisponible."}, status=400)
     completions = moteur.completer(
         request.query_params.get("q", ""), pays=pays, cursus=_entier(request.query_params.get("cursus")),
+        langue=_langue(request.query_params.get("langue")),
     )
     return Response({"completions": completions})

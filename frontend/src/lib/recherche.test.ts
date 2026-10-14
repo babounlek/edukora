@@ -1,11 +1,13 @@
-import { beforeEach, describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it } from "vitest"
 
 import type { ResultatRecherche } from "@/api/types"
+import { definirLangue } from "@/lib/i18n"
 import {
   actionsTheme,
   cibleResultat,
   decouperSurbrillance,
   jetonsDeSurbrillance,
+  LIBELLES_MOT_TYPE,
   lireRecentes,
   memoriserRecente,
   oublierRecentes,
@@ -185,5 +187,27 @@ describe("familles d'onglets", () => {
     expect(familleDe("EXERCICE").cle).toBe("EPREUVE")
     expect(familleDe("INEDITE").cle).toBe("EPREUVE")
     expect(familleDe("QUIZ").cle).toBe("QUIZ")
+  })
+})
+
+describe("LIBELLES_MOT_TYPE : mots d'une recherche en anglais", () => {
+  afterEach(async () => {
+    await definirLangue("fr", { persister: false })
+  })
+
+  it("chaque mot de type que le serveur renvoie en anglais a son libellé", async () => {
+    await definirLangue("en", { persister: false })
+    const attendus: Record<string, string> = {
+      solution: "Solutions", past: "Past papers", paper: "Papers", exam: "Papers", mock: "Papers",
+      lesson: "Lessons", course: "Lessons", exercise: "Exercises", mcq: "MCQ", topic: "Topics",
+    }
+    for (const [mot, libelle] of Object.entries(attendus)) {
+      expect(LIBELLES_MOT_TYPE[mot], mot).toBe(libelle)
+    }
+  })
+
+  it("les mots français gardent leur libellé", () => {
+    expect(LIBELLES_MOT_TYPE.corrige).toBe("Corrigés")
+    expect(LIBELLES_MOT_TYPE.cour).toBe("Cours")
   })
 })

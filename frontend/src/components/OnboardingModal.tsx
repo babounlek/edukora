@@ -4,12 +4,15 @@ import { ChevronLeft } from "lucide-react"
 
 import { listCursus, updateMe } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
+import { libellePays } from "@/lib/pays"
 import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { codeSerieAffiche, examCodesFor } from "@/lib/cursus"
+import { cursusDeLangue } from "@/lib/cursusLangue"
+import { langueDeListe } from "@/lib/discipline"
 import { useI18n } from "@/lib/i18n"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { Button } from "@/components/ui/button"
@@ -67,6 +70,7 @@ export function OnboardingModal() {
   const { country, countries, setCountry } = useCountry()
   const { isAuthenticated, updateUser, user } = useAuth()
   const { t } = useI18n()
+  const langue = langueDeListe("", false)
 
   // Écarté PENDANT cette visite seulement. La décision durable est portée par
   // `questionReglee` ci-dessous : le compte pour un connecté, le drapeau local pour un
@@ -115,8 +119,11 @@ export function OnboardingModal() {
     let annule = false
     setCursusErreur(false)
     listCursus(selectedCountry)
-      .then((data) => {
+      .then((toutes) => {
         if (annule) return
+        // Les examens de la langue de l'interface seulement (voir lib/cursusLangue) : en anglais le GCE, en
+        // français BEPC, Probatoire et BAC. Le visiteur change de langue depuis l'en-tête s'il prépare l'autre.
+        const data = cursusDeLangue(toutes, langue)
         setCursusList(data)
         if (data.length === 0) setCursusErreur(true)
       })
@@ -128,7 +135,7 @@ export function OnboardingModal() {
     return () => {
       annule = true
     }
-  }, [shouldShow, selectedCountry, tentative])
+  }, [shouldShow, selectedCountry, tentative, langue])
 
   useEffect(() => {
     if (!shouldShow) return
@@ -298,7 +305,7 @@ export function OnboardingModal() {
                 className="flex items-center gap-2.5 rounded-md border border-border px-3.5 py-2.5 text-left text-sm font-medium transition-colors hover:border-primary/50 hover:bg-accent/40"
               >
                 <span aria-hidden="true" className={countryFlagClassName(c.code)} />
-                {c.label}
+                {libellePays(c.code, c.label)}
               </button>
             ))}
 

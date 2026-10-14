@@ -50,7 +50,7 @@ function reponse(surcharge: Partial<ReponseRecherche> = {}): ReponseRecherche {
     { type: "COURS" as const, libelle: "Cours", total: 1, resultats: [resultat({})] },
   ]
   return {
-    q: "thales", corrige: null, indexe: true, trop_court: false, total: 2, groupes, autres_cursus: 0, matieres: [], suggestions: [], intention: null, reponse: null,
+    q: "thales", corrige: null, indexe: true, trop_court: false, total: 2, groupes, autres_cursus: 0, langue: null, autre_langue: 0, matieres: [], suggestions: [], intention: null, reponse: null,
     ...surcharge,
   }
 }
@@ -104,7 +104,7 @@ describe("RechercheGlobale", () => {
     // Une seule requête malgré six frappes : c'est la pause qui déclenche, pas chaque lettre.
     expect(rechercher).toHaveBeenCalledTimes(1)
     expect(rechercher).toHaveBeenCalledWith(
-      { q: "thales", pays: "cm", cursus: 5, limite: 3, rapide: true },
+      { q: "thales", pays: "cm", cursus: 5, limite: 3, rapide: true, langue: "fr" },
       expect.anything(),
     )
     // Le résumé d'un thème dit ce qu'on y trouve.

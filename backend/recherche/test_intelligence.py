@@ -71,7 +71,11 @@ class IntentionTests(_CorpusMixin, TestCase):
         i = self.analyser("bac c maths 2019")
         self.assertEqual(i.cursus_ids, [self.bac_c.id])
         self.assertEqual(i.cursus_libelle, "BAC C")
-        self.assertEqual(i.matiere_codes, ["MATHS"])
+        # La matière française d'abord, puis ses jumelles GCE (voir catalog.models.EQUIVALENTS_GCE) : le filtre de
+        # langue du moteur dit lesquelles on voit.
+        self.assertEqual(i.matiere_codes[0], "MATHS")
+        self.assertIn("GCE_MATHS", i.matiere_codes)
+        self.assertEqual(i.matiere_libelle, "Mathématiques")
         self.assertEqual(i.annees, [2019])
         self.assertEqual(i.restants, [])
 
@@ -114,7 +118,7 @@ class IntentionTests(_CorpusMixin, TestCase):
         i = self.analyser("bac c maths 2019", sans={"cursus", "annee"})
         self.assertEqual(i.cursus_ids, [])
         self.assertEqual(i.annees, [])
-        self.assertEqual(i.matiere_codes, ["MATHS"])
+        self.assertEqual(i.matiere_codes[0], "MATHS")
         self.assertEqual(sorted(i.restants), ["2019", "bac", "c"])
 
     def test_la_matiere_la_plus_longue_gagne(self):
