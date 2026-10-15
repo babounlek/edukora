@@ -1285,7 +1285,6 @@ export const fr = {
   "onboarding.passer": "Passer",
   "onboarding.chargement": "Chargement...",
   "onboarding.confirmer": "Oui, c'est mon examen",
-  "onboarding.plus_tard": "Plus tard",
 
   "quiz.preparation": "Préparation...",
   "quiz.examen": "Examen",

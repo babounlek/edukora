@@ -150,7 +150,7 @@ export function OnboardingModal() {
     return () => window.removeEventListener("keydown", handleKey)
   }, [shouldShow])
 
-  // Sert à Échap et au lien « Plus tard » : on ne redemande pas dans la visite en cours. Pour la
+  // Sert à Échap et au lien « Passer » : on ne redemande pas dans la visite en cours. Pour la
   // suite, tout dépend de `questionReglee` : un visiteur anonyme a posé le drapeau local et ne
   // revoit plus l'écran ; un élève connecté sans cursus déclaré le reverra à sa prochaine visite
   // (le drapeau local ne compte pas pour lui, voir plus haut) - reporter ne lui ferme donc jamais
@@ -384,7 +384,7 @@ export function OnboardingModal() {
               onClick={close}
               className="mt-1 min-h-11 self-center px-3 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
             >
-              {t("onboarding.plus_tard")}
+              {t("onboarding.passer")}
             </button>
           )}
         </CardContent>

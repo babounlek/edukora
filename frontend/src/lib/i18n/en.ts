@@ -1277,7 +1277,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "onboarding.passer": "Skip",
   "onboarding.chargement": "Loading...",
   "onboarding.confirmer": "Yes, this is my exam",
-  "onboarding.plus_tard": "Later",
 
   "quiz.preparation": "Preparing...",
   "quiz.examen": "Exam",
