@@ -600,15 +600,6 @@ export function EpreuvesListPage() {
                 </PastilleFiltre>
               )
             })}
-            {/* Seulement sans examen choisi : un examen fixe déjà la langue. */}
-            {!cursusFilter && (
-              <PastilleFiltre
-                actif={toutesLangues}
-                onClick={() => updateFilter(PARAM_TOUTES_LANGUES, toutesLangues ? "" : "toutes")}
-              >
-                {t("langue.toutes")}
-              </PastilleFiltre>
-            )}
           </FiltreLigne>
         )}
 
