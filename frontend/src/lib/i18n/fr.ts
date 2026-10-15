@@ -1743,7 +1743,7 @@ export const fr = {
   "lg.eyebrow": "Informations légales",
   "lg.maj": "Dernière mise à jour : {date}",
   "lg.sommaire": "Sommaire",
-  "lg.editeur": "Éditeur de la plateforme - Yaoundé, Cameroun - +237 698 19 29 91",
+  "lg.editeur": "Éditeur de la plateforme - Yaoundé, Cameroun",
   "lg.voir_aussi": "Voir aussi :",
   "cgu.titre": "Conditions générales d'utilisation et de vente",
   "cgu.description": "Fonctionnement de l'abonnement {site}, prix, paiement, remboursement et propriété intellectuelle.",
@@ -1752,6 +1752,9 @@ export const fr = {
   "cgu.chip2": "Pas de reconduction automatique",
   "cgu.chip3": "Paiement Mobile Money",
   "cgu.voir_aussi": "Politique de confidentialité",
+  "cgu.editeur_titre": "Éditeur",
+  "cgu.editeur":
+    "{site} est édité par {editeur}, société à responsabilité limitée établie à Yaoundé (Cameroun). Les présentes conditions sont conclues avec {editeur}, que tu peux joindre à {email} ou au {telephone}.",
   "cgu.objet_titre": "Objet",
   "cgu.objet": "{site} aide les élèves à préparer le BEPC, le Probatoire et le BAC au Cameroun : corrigés d'annales et de sujets, cours de révision, quiz d'auto-évaluation, parcours par matière, épreuves inédites et séance de révision quotidienne. L'accès à ces contenus est réservé aux comptes titulaires d'un abonnement actif pour l'examen concerné, à l'exception de ceux proposés en libre accès (voir « Contenu gratuit et contenu payant »).",
   "cgu.compte_titre": "Compte et profils",
@@ -1812,6 +1815,9 @@ export const fr = {
   "conf.partage_fin": "Nous ne vendons ni ne partageons tes données avec des tiers à des fins publicitaires.",
   "conf.conservation_titre": "Durée de conservation",
   "conf.conservation": "Tes données sont conservées tant que ton compte est actif. Tu peux demander la suppression de ton compte et de tes données à tout moment (voir les coordonnées ci-dessous). Les données de transaction peuvent être conservées plus longtemps lorsque la comptabilité ou la lutte contre la fraude l'exigent.",
+  "conf.responsable_titre": "Responsable du traitement",
+  "conf.responsable":
+    "Le responsable du traitement de tes données est {editeur}, société à responsabilité limitée établie à Yaoundé (Cameroun). Pour toute question, ou pour exercer tes droits : {email} ou {telephone}.",
   "conf.droits_titre": "Tes droits",
   "conf.droits": "Depuis ton compte, tu peux rattacher ou détacher une méthode de connexion (la dernière ne peut pas être détachée, pour éviter de te retrouver sans accès), gérer les codes et la connexion de tes enfants, et activer ou couper les rappels. Pour tout le reste - accès, rectification ou suppression de tes données personnelles - contacte-nous à tout moment.",
   "conf.stockage_titre": "Cookies et stockage local",

@@ -1733,7 +1733,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "lg.eyebrow": "Legal information",
   "lg.maj": "Last updated: {date}",
   "lg.sommaire": "Contents",
-  "lg.editeur": "Publisher of the platform - Yaoundé, Cameroon - +237 698 19 29 91",
+  "lg.editeur": "Publisher of the platform - Yaoundé, Cameroon",
   "lg.voir_aussi": "See also:",
   "cgu.titre": "General terms of use and sale",
   "cgu.description": "How the {site} subscription works: prices, payment, refunds and intellectual property.",
@@ -1742,6 +1742,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "cgu.chip2": "No automatic renewal",
   "cgu.chip3": "Mobile Money payment",
   "cgu.voir_aussi": "Privacy policy",
+  "cgu.editeur_titre": "Publisher",
+  "cgu.editeur":
+    "{site} is published by {editeur}, a limited liability company based in Yaoundé (Cameroon). These terms are an agreement with {editeur}, which you can reach at {email} or on {telephone}.",
   "cgu.objet_titre": "Purpose",
   "cgu.objet": "{site} helps students prepare for the BEPC, the Probatoire and the BAC in Cameroon: solutions to past papers and exercises, revision lessons, self-assessment quizzes, subject paths, original papers and a daily revision session. Access to this content is reserved for accounts with an active subscription for the exam concerned, except for content offered free of charge (see “Free and paid content”).",
   "cgu.compte_titre": "Account and profiles",
@@ -1802,6 +1805,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "conf.partage_fin": "We never sell or share your data with third parties for advertising purposes.",
   "conf.conservation_titre": "How long we keep it",
   "conf.conservation": "Your data is kept as long as your account is active. You can ask for your account and your data to be deleted at any time (see the contact details below). Transaction data may be kept longer where accounting or fraud prevention requires it.",
+  "conf.responsable_titre": "Data controller",
+  "conf.responsable":
+    "The controller of your data is {editeur}, a limited liability company based in Yaoundé (Cameroon). For any question, or to exercise your rights: {email} or {telephone}.",
   "conf.droits_titre": "Your rights",
   "conf.droits": "From your account, you can link or unlink a login method (the last one cannot be unlinked, so you never end up without access), manage your children’s codes and login, and turn reminders on or off. For everything else - access to, correction or deletion of your personal data - contact us at any time.",
   "conf.stockage_titre": "Cookies and local storage",

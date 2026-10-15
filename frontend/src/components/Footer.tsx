@@ -7,7 +7,7 @@ import { getPlatformStats } from "@/api/endpoints"
 import type { Cursus, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, SITE_NAME } from "@/lib/site"
+import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
 import { useCursusListe } from "@/lib/cursusLangue"
@@ -314,7 +314,7 @@ export function Footer() {
             <span className="rounded-md bg-[#FFCB05] px-2 py-0.5 text-[0.7rem] font-bold text-[#1a1a1a]">MTN MoMo</span>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-            <span>© {year} {SITE_NAME}</span>
+            <span>© {year} {SITE_NAME} - {EDITEUR_NOM}</span>
             <span aria-hidden>·</span>
             <Link to="/cgu" className="hover:text-primary">{t("ft.cgu")}</Link>
             <span aria-hidden>·</span>

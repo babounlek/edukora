@@ -2,7 +2,7 @@ import { Check, ScrollText, ShieldCheck, Smartphone } from "lucide-react"
 
 import { ChipLegale, ListeLegale, PageLegale, PuceLegale, type SectionLegale } from "@/components/PageLegale"
 import { useSeo } from "@/lib/seo"
-import { SITE_NAME } from "@/lib/site"
+import { CONTACT_EMAIL, CONTACT_TELEPHONE_AFFICHAGE, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
 import { dateLegale } from "@/lib/dateLegale"
 import { t, useI18n } from "@/lib/i18n"
@@ -10,12 +10,23 @@ import { texteRiche } from "@/lib/texteRiche"
 
 // Date de la dernière révision de fond de ces conditions - jamais « aujourd'hui » : une date
 // qui change toute seule laisserait croire à une mise à jour qui n'a pas eu lieu.
-const MISE_A_JOUR = "2026-10-03"
+const MISE_A_JOUR = "2026-10-15"
 
 // Construites au rendu (et non au chargement du module) pour suivre la langue courante.
 function sections(): SectionLegale[] {
   const site = SITE_NAME
   return [
+    {
+      id: "editeur",
+      titre: t("cgu.editeur_titre"),
+      contenu: (
+        <p>
+          {t("cgu.editeur", {
+            site, editeur: EDITEUR_NOM, email: CONTACT_EMAIL, telephone: CONTACT_TELEPHONE_AFFICHAGE,
+          })}
+        </p>
+      ),
+    },
     {
       id: "objet",
       titre: t("cgu.objet_titre"),

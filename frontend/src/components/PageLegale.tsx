@@ -1,10 +1,13 @@
 import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
-import { ArrowLeft, Mail, MessageCircle, type LucideIcon } from "lucide-react"
+import { ArrowLeft, Mail, MessageCircle, Phone, type LucideIcon } from "lucide-react"
 
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
-import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, CONTACT_WHATSAPP_AFFICHAGE } from "@/lib/site"
+import {
+  CONTACT_EMAIL, CONTACT_TELEPHONE_AFFICHAGE, CONTACT_TELEPHONE_URL, CONTACT_WHATSAPP_AFFICHAGE, CONTACT_WHATSAPP_URL,
+  EDITEUR_NOM,
+} from "@/lib/site"
 import { t, useI18n } from "@/lib/i18n"
 
 
@@ -124,10 +127,10 @@ export function PageLegale({
 
           <div className="mt-14 flex max-w-[44rem] flex-col gap-5 rounded-2xl border border-border bg-card p-6 shadow-sm sm:flex-row sm:items-start">
             <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary font-display text-lg font-semibold text-primary-foreground ring-2 ring-gold/50 ring-offset-2 ring-offset-card">
-              BSG
+              KS
             </span>
             <div>
-              <h2 className="font-display text-lg font-semibold">BABOUNLEK Serge Guyguy</h2>
+              <h2 className="font-display text-lg font-semibold">{EDITEUR_NOM}</h2>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 {t("lg.editeur")}
               </p>
@@ -138,6 +141,13 @@ export function PageLegale({
                 >
                   <Mail className="size-4" />
                   {CONTACT_EMAIL}
+                </a>
+                <a
+                  href={CONTACT_TELEPHONE_URL}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                >
+                  <Phone className="size-4" />
+                  {CONTACT_TELEPHONE_AFFICHAGE}
                 </a>
                 <a
                   href={CONTACT_WHATSAPP_URL}

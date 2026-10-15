@@ -2,14 +2,14 @@ import { EyeOff, KeyRound, Lock, ShieldCheck } from "lucide-react"
 
 import { ChipLegale, ListeLegale, PageLegale, PuceLegale, type SectionLegale } from "@/components/PageLegale"
 import { useSeo } from "@/lib/seo"
-import { SITE_NAME } from "@/lib/site"
+import { CONTACT_EMAIL, CONTACT_TELEPHONE_AFFICHAGE, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { dateLegale } from "@/lib/dateLegale"
 import { t, useI18n } from "@/lib/i18n"
 import { texteRiche } from "@/lib/texteRiche"
 
 // Date de la dernière révision de fond de cette politique - jamais « aujourd'hui » : une date
 // qui change toute seule laisserait croire à une mise à jour qui n'a pas eu lieu.
-const MISE_A_JOUR = "2026-10-03"
+const MISE_A_JOUR = "2026-10-15"
 
 // Construites au rendu (et non au chargement du module) pour suivre la langue courante.
 function sections(): SectionLegale[] {
@@ -18,6 +18,15 @@ function sections(): SectionLegale[] {
       <PuceLegale key={i}>{texteRiche(t(`${prefixe}${i + 1}` as Parameters<typeof t>[0]))}</PuceLegale>
     ))
   return [
+    {
+      id: "responsable",
+      titre: t("conf.responsable_titre"),
+      contenu: (
+        <p>
+          {t("conf.responsable", { editeur: EDITEUR_NOM, email: CONTACT_EMAIL, telephone: CONTACT_TELEPHONE_AFFICHAGE })}
+        </p>
+      ),
+    },
     {
       id: "donnees",
       titre: t("conf.donnees_titre"),
