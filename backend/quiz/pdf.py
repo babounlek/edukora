@@ -30,6 +30,8 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 
+from catalog.libelles import libelle_cursus
+from catalog.pdf_textes import adapter_markdown, langue_du_contenu, textes_pdf
 from catalog.sujet_pdf import (
     _footer_template,
     _italicize_quotes,
@@ -48,7 +50,15 @@ _KATEX_DIR = Path(settings.BASE_DIR) / "catalog" / "static" / "katex"
 
 
 def _cursus_display(cursus):
-    return f"{cursus.display_examen()} - Série {cursus.series.code}" if cursus.series else cursus.display_examen()
+    # libelle_cursus connaît les séries du GCE (« Technical », jamais « Série GCE_TECHNICAL »).
+    return libelle_cursus([cursus])
+
+
+def _textes(session):
+    """Les textes du PDF dans la langue du CONTENU de la session (voir catalog.pdf_textes) : un quiz du
+    GCE sort en anglais de bout en bout."""
+    langue = langue_du_contenu(subject=session.subject if session.subject_id else None, cursus=session.cursus)
+    return textes_pdf(langue, site=settings.SITE_NAME)
 
 
 # _competence_item_corrige (quiz.views) injecte un marqueur "[COURS_LINK:slug]" isolé -
@@ -60,10 +70,10 @@ def _cursus_display(cursus):
 _COURS_LINK_RE = re.compile(r"^\[COURS_LINK:([a-zA-Z0-9_-]+)\]$", re.MULTILINE)
 
 
-def _resolve_cours_links(markdown_text):
+def _resolve_cours_links(markdown_text, libelle="Voir le cours complet →"):
     # settings.PDF_SITE_URL, pas FRONTEND_URL - voir catalog.sujet_pdf._lesson_deep_link.
     return _COURS_LINK_RE.sub(
-        lambda m: f"[Voir le cours complet →]({settings.PDF_SITE_URL}/cours/{m.group(1)})", markdown_text,
+        lambda m: f"[{libelle}]({settings.PDF_SITE_URL}/cours/{m.group(1)})", markdown_text,
     )
 
 
@@ -81,7 +91,7 @@ def _corrige_deep_link(session):
     return f"{settings.PDF_SITE_URL}/{country_code}?ref=pdf_quiz_correction"
 
 
-def _bloc_question(quiz_question, *, avec_corrige):
+def _bloc_question(quiz_question, *, avec_corrige, titre_corrige="Corrigé"):
     """
     Un bloc "Question N" du PDF - énoncé seul si avec_corrige=False (le PDF "Fiche"),
     énoncé puis corrigé sinon (le PDF "Correction") ; jamais la réponse donnée par
@@ -110,23 +120,32 @@ def _bloc_question(quiz_question, *, avec_corrige):
         # solution se toucheraient sans démarcation visible (même logique que
         # fiches.pdf._bloc_question).
         if not corrige.startswith("#"):
-            corrige = f"### Corrigé\n\n{corrige}"
+            corrige = f"### {titre_corrige}\n\n{corrige}"
         blocs.append(corrige)
 
     return "\n\n".join(blocs)
 
 
 def _combined_markdown(session, *, avec_corrige):
+    tx = _textes(session)
     quiz_questions = (
         session.quiz_questions
         .select_related("question__exercise__lesson__subject", "competence_item__theme", "competence_item__subject")
         .order_by("ordre")
     )
-    return "\n\n".join(_bloc_question(qq, avec_corrige=avec_corrige) for qq in quiz_questions)
+    return adapter_markdown(
+        "\n\n".join(
+            _bloc_question(qq, avec_corrige=avec_corrige, titre_corrige=tx["titre_corrige"]) for qq in quiz_questions
+        ),
+        tx["langue"],
+    )
 
 
 def _render_html(session, *, avec_corrige, template_name, deep_link):
-    markdown_text = _resolve_cours_links(_resolve_media_paths(_combined_markdown(session, avec_corrige=avec_corrige)))
+    tx = _textes(session)
+    markdown_text = _resolve_cours_links(
+        _resolve_media_paths(_combined_markdown(session, avec_corrige=avec_corrige)), tx["voir_cours"],
+    )
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
     content_html = markdown.markdown(protected_markdown, extensions=["tables", "fenced_code", "nl2br"])
@@ -134,6 +153,7 @@ def _render_html(session, *, avec_corrige, template_name, deep_link):
 
     return render_to_string(template_name, {
         "session": session,
+        "tx": tx,
         "subject_label": session.subject.label if session.subject_id else "",
         "cursus_display": _cursus_display(session.cursus),
         "total_questions": session.quiz_questions.count(),

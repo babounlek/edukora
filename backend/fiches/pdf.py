@@ -25,6 +25,8 @@ from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 from django.utils.text import slugify
 
+from catalog.libelles import libelle_cursus
+from catalog.pdf_textes import adapter_markdown, langue_du_contenu, textes_pdf
 from catalog.sujet_pdf import (
     _footer_template,
     _italicize_quotes,
@@ -43,11 +45,17 @@ _KATEX_DIR = Path(settings.BASE_DIR) / "catalog" / "static" / "katex"
 
 
 def _cursus_display(cursus):
-    return f"{cursus.display_examen()} - Série {cursus.series.code}" if cursus.series else cursus.display_examen()
+    # libelle_cursus connaît les séries du GCE (« Technical », jamais « Série GCE_TECHNICAL »).
+    return libelle_cursus([cursus])
 
 
-def _prepared_by(fiche):
-    return fiche.owner.pseudo or fiche.owner.full_name or "un répétiteur"
+def _textes(fiche):
+    """Les textes du PDF dans la langue du CONTENU de la fiche (voir catalog.pdf_textes) : une fiche du
+    GCE sort en anglais de bout en bout. `prepared_by` : le répétiteur, ou « un répétiteur »."""
+    langue = langue_du_contenu(subject=fiche.subject, cursus=fiche.cursus)
+    base = textes_pdf(langue, site=settings.SITE_NAME)
+    prepared_by = fiche.owner.pseudo or fiche.owner.full_name or base["un_repetiteur"]
+    return textes_pdf(langue, site=settings.SITE_NAME, prepared_by=prepared_by), prepared_by
 
 
 # ?ref=pdf_fiche_sujet / ?ref=pdf_fiche_corrige distinguent la provenance de chaque
@@ -69,7 +77,7 @@ def _corrige_deep_link(fiche):
     return f"{settings.PDF_SITE_URL}/fiches?ref=pdf_fiche_corrige"
 
 
-def _bloc_question(item, *, avec_corrige):
+def _bloc_question(item, *, avec_corrige, titre_corrige="Corrigé"):
     """
     Un bloc "Question N" du PDF. Le corrigé reprend l'énoncé AVANT la solution : le
     répétiteur travaille sur le seul document qu'il garde (voir _corrige_deep_link), il
@@ -85,14 +93,18 @@ def _bloc_question(item, *, avec_corrige):
         # aucun - sans ce repli, l'énoncé et sa solution se toucheraient sans démarcation
         # visible, exactement ce que l'ordre voulu ci-dessus cherche à éviter.
         if not corrige.startswith("#"):
-            corrige = f"### Corrigé\n\n{corrige}"
+            corrige = f"### {titre_corrige}\n\n{corrige}"
         blocs.append(corrige)
     return "\n\n".join(blocs)
 
 
 def _combined_markdown(fiche, *, avec_corrige):
     items = fiche.items.select_related("competence_item").order_by("ordre")
-    return "\n\n".join(_bloc_question(item, avec_corrige=avec_corrige) for item in items)
+    tx, _ = _textes(fiche)
+    return adapter_markdown(
+        "\n\n".join(_bloc_question(item, avec_corrige=avec_corrige, titre_corrige=tx["titre_corrige"]) for item in items),
+        tx["langue"],
+    )
 
 
 def _render_html(fiche, *, avec_corrige, template_name, deep_link):
@@ -102,10 +114,12 @@ def _render_html(fiche, *, avec_corrige, template_name, deep_link):
     content_html = markdown.markdown(protected_markdown, extensions=["tables", "fenced_code", "nl2br"])
     content_html = _restore_math(content_html, math_spans)
 
+    tx, prepared_by = _textes(fiche)
     return render_to_string(template_name, {
         "fiche": fiche,
+        "tx": tx,
         "cursus_display": _cursus_display(fiche.cursus),
-        "prepared_by": _prepared_by(fiche),
+        "prepared_by": prepared_by,
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
         "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),

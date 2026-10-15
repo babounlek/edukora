@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ tx.langue }}">
 <head>
 <meta charset="UTF-8">
 <title>{{ epreuve.titre }}</title>
@@ -159,7 +159,7 @@
 <body>
     <div class="brand-header">
         <div class="brand-row">
-            <p class="brand">{{ site_name }} - Sujet - Épreuve inédite</p>
+            <p class="brand">{{ site_name }} - {{ tx.inedite_brand }}</p>
             <span class="pays-line">{% if flag_url %}<img src="{{ flag_url }}" alt="" class="flag-icon">{% endif %}{{ header.pays_label }}</span>
         </div>
         <h1>{{ epreuve.titre }}</h1>
@@ -173,15 +173,15 @@
     {{ content_html|safe }}
 
     <div class="reserve-note">
-        Document réservé aux abonnés Épreuves Inédites de {{ site_name }} - le partage de ce document est une violation des conditions d'utilisation.
+        {{ tx.inedite_reserve }}
     </div>
     <div class="continue-cta">
         <div>
-            <p class="title">Prêt(e) à passer l'épreuve ?</p>
-            <p class="body">Lance ta tentative chronométrée et accède à la correction directement sur {{ site_name }}.</p>
+            <p class="title">{{ tx.inedite_cta_titre }}</p>
+            <p class="body">{{ tx.inedite_cta_corps }}</p>
         </div>
         {% if qr_code_data_uri %}
-        <img src="{{ qr_code_data_uri }}" alt="QR code vers l'épreuve" class="qr-image">
+        <img src="{{ qr_code_data_uri }}" alt="{{ tx.inedite_qr_alt }}" class="qr-image">
         {% endif %}
     </div>
     <p class="footer-note"><a href="{{ epreuve_url }}">{{ site_url_display }}</a></p>

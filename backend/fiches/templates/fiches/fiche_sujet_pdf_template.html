@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ tx.langue }}">
 <head>
 <meta charset="UTF-8">
 <title>{{ fiche.titre }}</title>
@@ -134,7 +134,7 @@
 </head>
 <body>
     <div class="brand-header">
-        <p class="brand">{{ site_name }} - Fiche d'exercices</p>
+        <p class="brand">{{ site_name }} - {{ tx.fiche_brand }}</p>
         <h1>{{ fiche.titre }}</h1>
         <div class="meta-row">
             <span>{{ fiche.subject.label }}</span>
@@ -147,14 +147,14 @@
 
     <div class="continue-cta">
         <div>
-            <p class="title">Envie de plus d'exercices comme ceux-ci ?</p>
-            <p class="body">Cours, corrigés d'annales et quiz pour le BEPC, le Probatoire et le BAC - sur {{ site_name }}.</p>
+            <p class="title">{{ tx.fiche_cta_titre }}</p>
+            <p class="body">{{ tx.fiche_cta_corps }}</p>
         </div>
         {% if qr_code_data_uri %}
-        <img src="{{ qr_code_data_uri }}" alt="QR code vers {{ site_name }}" class="qr-image">
+        <img src="{{ qr_code_data_uri }}" alt="{{ tx.fiche_qr_alt_site }}" class="qr-image">
         {% endif %}
     </div>
-    <p class="footer-note">Fiche préparée par {{ prepared_by }} - <a href="{{ deep_link }}">{{ site_url_display }}</a></p>
+    <p class="footer-note">{{ tx.fiche_note_pied }} - <a href="{{ deep_link }}">{{ site_url_display }}</a></p>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

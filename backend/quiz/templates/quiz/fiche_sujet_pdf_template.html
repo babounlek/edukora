@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ tx.langue }}">
 <head>
 <meta charset="UTF-8">
-<title>Fiche quiz - {{ subject_label }}</title>
+<title>{{ tx.quiz_brand }} - {{ subject_label }}</title>
 <link rel="stylesheet" href="{{ katex_css_url }}">
 <script src="{{ katex_js_url }}"></script>
 <script src="{{ katex_auto_render_url }}"></script>
@@ -134,7 +134,7 @@
 </head>
 <body>
     <div class="brand-header">
-        <p class="brand">{{ site_name }} - Fiche de quiz</p>
+        <p class="brand">{{ site_name }} - {{ tx.quiz_brand }}</p>
         <h1>{{ subject_label }}</h1>
         <div class="meta-row">
             <span>{{ cursus_display }}</span>
@@ -146,11 +146,11 @@
 
     <div class="continue-cta">
         <div>
-            <p class="title">Continue à t'entraîner</p>
-            <p class="body">Refais un quiz en quelques secondes sur {{ site_name }}.</p>
+            <p class="title">{{ tx.quiz_cta_titre }}</p>
+            <p class="body">{{ tx.quiz_cta_corps }}</p>
         </div>
         {% if qr_code_data_uri %}
-        <img src="{{ qr_code_data_uri }}" alt="QR code vers le quiz" class="qr-image">
+        <img src="{{ qr_code_data_uri }}" alt="{{ tx.quiz_qr_alt }}" class="qr-image">
         {% endif %}
     </div>
     <p class="footer-note"><a href="{{ deep_link }}">{{ site_url_display }}</a></p>

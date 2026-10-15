@@ -22,6 +22,7 @@ from django.template.loader import render_to_string
 from django.utils.text import slugify
 
 from catalog.libelles import matiere_dans_titre, public_dans_titre
+from catalog.pdf_textes import adapter_markdown, langue_du_contenu, nom_pays, textes_pdf
 
 # PLAYWRIGHT_BROWSERS_PATH=0 : installe/résout les navigateurs sous
 # venv/Lib/site-packages/playwright/.../.local-browsers (dans le projet) plutôt que
@@ -145,7 +146,7 @@ def _qr_code_data_uri(url):
     return f"data:image/png;base64,{encoded}"
 
 
-def _meta_entete(lesson, header):
+def _meta_entete(lesson, header, tx):
     """La ligne sous le titre : seulement ce que le titre ne dit pas déjà (« Mathématiques BAC C et E
     2002 » porte matière, examen, séries et session) - sinon l'en-tête répète tout deux fois."""
     titre = lesson.title
@@ -155,20 +156,23 @@ def _meta_entete(lesson, header):
     if not public_dans_titre(titre, lesson.cursus.select_related("series", "country")):
         meta += [x for x in (header["serie_libelle"], header["examen"]) if x]
     if header["annee"] and str(header["annee"]) not in titre:
-        meta.append(f"Session {header['annee']}")
+        meta.append(tx["meta_session"].format(annee=header["annee"]))
     if header["duree"]:
-        meta.append(f"Durée : {header['duree']}")
+        meta.append(tx["meta_duree"].format(valeur=header["duree"]))
     if header["coefficient"]:
-        meta.append(f"Coefficient : {header['coefficient']}")
+        meta.append(tx["meta_coefficient"].format(valeur=header["coefficient"]))
     if header["origine"]:
-        meta.append(f"{header['origine']} - {header['etablissement']}" if header["etablissement"] else header["origine"])
+        origine = tx["origines"].get(lesson.origine, header["origine"])
+        meta.append(f"{origine} - {header['etablissement']}" if header["etablissement"] else origine)
     if header["institution"] and header["institution"] != header["etablissement"]:
         meta.append(header["institution"])
     return meta
 
 
 def _render_html(lesson):
-    markdown_text = _resolve_media_paths(lesson.preview_markdown())
+    # La langue du PDF est celle du CONTENU : un sujet du GCE est en anglais de bout en bout.
+    tx = textes_pdf(langue_du_contenu(subject=lesson.subject), site=settings.SITE_NAME)
+    markdown_text = _resolve_media_paths(adapter_markdown(lesson.preview_markdown(), tx["langue"]))
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
     content_html = markdown.markdown(
@@ -177,12 +181,14 @@ def _render_html(lesson):
     )
     content_html = _restore_math(content_html, math_spans)
     header = lesson.header_info()
+    header["pays"]["label"] = nom_pays(header["pays"]["code"], header["pays"]["label"], tx["langue"])
     flag_path = _FLAGS_DIR / f"{header['pays']['code'].lower()}.svg"
     lesson_url = _lesson_deep_link(lesson, header)
     return render_to_string("catalog/sujet_pdf_template.html", {
         "lesson": lesson,
         "header": header,
-        "meta": _meta_entete(lesson, header),
+        "tx": tx,
+        "meta": _meta_entete(lesson, header, tx),
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
         "site_url": settings.PDF_SITE_URL,

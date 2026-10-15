@@ -30,6 +30,7 @@ from django.template.loader import render_to_string
 from django.utils.text import slugify
 
 from catalog.libelles import libelle_cursus, matiere_dans_titre, public_dans_titre
+from catalog.pdf_textes import adapter_markdown, langue_du_contenu, nom_pays, textes_pdf
 from catalog.sujet_pdf import (
     _FLAGS_DIR,
     _footer_template,
@@ -63,7 +64,9 @@ def _epreuve_deep_link(epreuve):
 
 
 def _render_html(epreuve):
-    markdown_text = _resolve_media_paths(epreuve.enonce_markdown)
+    langue = langue_du_contenu(subject=epreuve.subject, cursus=epreuve.cursus.first())
+    tx = textes_pdf(langue, site=settings.SITE_NAME)
+    markdown_text = _resolve_media_paths(adapter_markdown(epreuve.enonce_markdown, langue))
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
     content_html = markdown.markdown(protected_markdown, extensions=["tables", "fenced_code", "nl2br"])
@@ -82,13 +85,14 @@ def _render_html(epreuve):
     if not public_dans_titre(epreuve.titre, epreuve.cursus.select_related("series", "country")):
         meta.append(_cursus_display(epreuve.cursus.all()))
     if blueprint.duree_minutes:
-        meta.append(f"Durée : {blueprint.duree_minutes} min")
+        meta.append(tx["meta_duree_min"].format(valeur=blueprint.duree_minutes))
     if blueprint.bareme_total:
-        meta.append(f"Barème : {blueprint.bareme_total} points")
+        meta.append(tx["meta_bareme"].format(valeur=blueprint.bareme_total))
 
     return render_to_string("inedit/sujet_pdf_template.html", {
         "epreuve": epreuve,
-        "header": {"pays_label": country.label},
+        "tx": tx,
+        "header": {"pays_label": nom_pays(country.code, country.label, langue)},
         "meta": meta,
         "content_html": content_html,
         "site_name": settings.SITE_NAME,

@@ -17,6 +17,13 @@ class Command(BaseCommand):
             help="Ne traiter que ces leçons (un ou plusieurs id), sinon toutes les leçons éligibles.",
         )
         parser.add_argument(
+            "--langue", choices=["fr", "en"], default=None,
+            help=(
+                "Ne traiter que les leçons dont la matière est de cette langue (en : le GCE). Avec --force, "
+                "régénère les PDF existants d'un sous-système, par exemple après une correction de leur gabarit."
+            ),
+        )
+        parser.add_argument(
             "--force", action="store_true",
             help="Régénérer même les leçons qui ont déjà un PDF de sujet.",
         )
@@ -25,6 +32,8 @@ class Command(BaseCommand):
         qs = Lesson.objects.filter(statut=StatutContenu.VALIDE)
         if options["lesson"]:
             qs = qs.filter(pk__in=options["lesson"])
+        if options["langue"]:
+            qs = qs.filter(subject__langue=options["langue"])
         if not options["force"]:
             qs = qs.filter(sujet_pdf="")
 

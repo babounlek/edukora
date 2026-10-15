@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ tx.langue }}">
 <head>
 <meta charset="UTF-8">
-<title>{{ fiche.titre }} - Corrigé</title>
+<title>{{ fiche.titre }} - {{ tx.titre_corrige }}</title>
 <link rel="stylesheet" href="{{ katex_css_url }}">
 <script src="{{ katex_js_url }}"></script>
 <script src="{{ katex_auto_render_url }}"></script>
@@ -152,7 +152,7 @@
 </head>
 <body>
     <div class="brand-header">
-        <p class="brand">{{ site_name }} - Corrigé (usage répétiteur)</p>
+        <p class="brand">{{ site_name }} - {{ tx.fiche_brand_corrige }}</p>
         <h1>{{ fiche.titre }}</h1>
         <div class="meta-row">
             <span>{{ fiche.subject.label }}</span>
@@ -164,15 +164,15 @@
     {{ content_html|safe }}
 
     <div class="reserve-note">
-        Corrigé réservé à l'usage personnel de {{ prepared_by }} - à ne pas distribuer aux élèves.
+        {{ tx.fiche_reserve }}
     </div>
     <div class="continue-cta">
         <div>
-            <p class="title">Prêt(e) pour la prochaine fiche ?</p>
-            <p class="body">Génère une nouvelle fiche d'exercices en quelques secondes sur {{ site_name }}.</p>
+            <p class="title">{{ tx.fiche_suite_titre }}</p>
+            <p class="body">{{ tx.fiche_suite_corps }}</p>
         </div>
         {% if qr_code_data_uri %}
-        <img src="{{ qr_code_data_uri }}" alt="QR code vers l'outil Fiches" class="qr-image">
+        <img src="{{ qr_code_data_uri }}" alt="{{ tx.fiche_qr_alt_outil }}" class="qr-image">
         {% endif %}
     </div>
     <p class="footer-note"><a href="{{ deep_link }}">{{ site_url_display }}</a></p>
