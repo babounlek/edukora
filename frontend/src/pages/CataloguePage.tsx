@@ -36,6 +36,7 @@ import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
 import { AccueilEleve } from "@/components/AccueilEleve"
+import { InviteAutreSousSystemeDuPays } from "@/components/InviteAutreSousSysteme"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 
 // Clés de filtre reconnues par /epreuves (voir EpreuvesListPage) - un lien déjà en
@@ -322,6 +323,9 @@ function CatalogueVitrine() {
               {t("accueil.themes_frequents")}
               <ArrowRight className="size-3" />
             </Link>
+            {/* Pour qui prépare l'autre sous-système (le GCE sur la version française, le BAC sur
+                l'anglaise) : la page ne propose que les examens de sa langue. */}
+            <InviteAutreSousSystemeDuPays className="mt-3" />
           </div>
           <img
             src={heroStudent}

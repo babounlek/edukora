@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
+import { InviteAutreSousSysteme } from "@/components/InviteAutreSousSysteme"
 import { Button } from "@/components/ui/button"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -18,6 +19,9 @@ const FERME_KEY = "edukamer_bandeau_cursus_ferme"
 // quiz en cours, paiement, connexion. Ailleurs il reste visible, y compris quand
 // l'élève arrive directement sur un cours ou une épreuve depuis un PDF ou une recherche.
 const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/inedit\/tentative|^\/simulation|^\/abonnement|^\/login|^\/tarifs/
+
+// L'accueil d'un pays (/cm, /sn...) : même motif que celui de l'onboarding (OnboardingModal).
+const ACCUEIL_PAYS_RE = /^\/[a-z]{2}\/?$/i
 
 function lireFerme(): boolean {
   try {
@@ -51,7 +55,7 @@ export function BandeauCursus() {
   const visible = !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && Boolean(country)
 
   // Seulement les examens de la langue de l'interface (voir lib/cursusLangue).
-  const { data: cursusList } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
+  const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
 
   const declarer = useChangerCursusPrepare()
 
@@ -101,6 +105,12 @@ export function BandeauCursus() {
               </Button>
             ))}
           </div>
+          {/* Pas sur l'accueil d'un pays : le hero y porte déjà la même invitation, et la montrer deux fois
+              sur le même écran serait du bruit. */}
+          <InviteAutreSousSysteme
+            disponible={!ACCUEIL_PAYS_RE.test(pathname) && tousLesCursus.some((c) => c.langue && c.langue !== langueDeListe("", false))}
+            className="mt-1.5"
+          />
         </div>
         <button
           type="button"

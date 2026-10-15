@@ -70,21 +70,15 @@ export function useSynchroLangueCompte() {
 }
 
 /**
- * Bascule français / anglais. Visible partout (barre du haut, menu mobile) : un élève du GCE qui
- * arrive sur une interface en français doit pouvoir en sortir sans la chercher.
- *
- * Absent dès qu'un cursus est préparé : la langue est alors celle du cursus (voir langueProfil.ts), et
- * un parent change de langue en changeant de profil, pas avec ce bouton.
+ * Le geste de l'élève qui change de langue (sélecteur, invitation à passer dans l'autre sous-système).
+ * Le préfixe d'URL est la base du routeur, fixée au chargement : changer de langue recharge la page sur
+ * l'URL de l'autre langue (même page, même requête). Le compte est mis à jour AVANT, sinon le
+ * rechargement couperait la requête.
  */
-export function SelecteurLangue({ className }: { className?: string }) {
-  const { t, langue } = useI18n()
+export function useChangerLangue() {
+  const { langue } = useI18n()
   const { user, updateUser } = useAuth()
-  if (langueImposee(user)) return null
-
-  // Le préfixe d'URL est la base du routeur, fixée au chargement : changer de langue recharge la page
-  // sur l'URL de l'autre langue (même page, même requête). Le compte est mis à jour AVANT, sinon le
-  // rechargement couperait la requête.
-  async function choisir(cible: Langue) {
+  return async function changerLangue(cible: Langue) {
     if (cible === langue) return
     memoriserLangue(cible)
     if (user && user.langue !== cible) {
@@ -96,6 +90,20 @@ export function SelecteurLangue({ className }: { className?: string }) {
     }
     ouvrirDansLangue(cible)
   }
+}
+
+/**
+ * Bascule français / anglais. Visible partout (barre du haut, menu mobile) : un élève du GCE qui
+ * arrive sur une interface en français doit pouvoir en sortir sans la chercher.
+ *
+ * Absent dès qu'un cursus est préparé : la langue est alors celle du cursus (voir langueProfil.ts), et
+ * un parent change de langue en changeant de profil, pas avec ce bouton.
+ */
+export function SelecteurLangue({ className }: { className?: string }) {
+  const { t, langue } = useI18n()
+  const { user } = useAuth()
+  const choisir = useChangerLangue()
+  if (langueImposee(user)) return null
 
   return (
     <div

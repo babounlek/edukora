@@ -101,4 +101,26 @@ describe("OnboardingModal", () => {
     fireEvent.click(await screen.findByRole("button", { name: "BEPC" }))
     expect(screen.getByRole("button", { name: "Oui, c'est mon examen" })).toBeInTheDocument()
   })
+
+  it("invite à passer dans l'autre sous-système, au choix de l'examen", async () => {
+    afficher()
+    // Version française : seuls BEPC, Probatoire et BAC sont listés, l'élève du GCE est invité à passer en anglais.
+    await screen.findByRole("button", { name: "BEPC" })
+    expect(screen.getByText(/Tu prépares le GCE/)).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Switch to English" })).toBeInTheDocument()
+  })
+
+  it("version anglaise : invite vers le BEPC, le Probatoire et le BAC", async () => {
+    await definirLangue("en", { persister: false })
+    afficher()
+    await screen.findByRole("button", { name: "GCE A Level" })
+    expect(screen.getByRole("button", { name: "Passer en français" })).toBeInTheDocument()
+  })
+
+  it("pas d'invitation quand le pays n'a aucun examen de l'autre langue", async () => {
+    listCursus.mockResolvedValue(CURSUS.filter((c) => c.langue === "fr"))
+    afficher()
+    await screen.findByRole("button", { name: "BEPC" })
+    expect(screen.queryByRole("button", { name: "Switch to English" })).not.toBeInTheDocument()
+  })
 })

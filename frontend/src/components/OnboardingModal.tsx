@@ -15,6 +15,7 @@ import { cursusDeLangue } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { useI18n } from "@/lib/i18n"
 import { countryFlagClassName } from "@/lib/countryFlag"
+import { InviteAutreSousSysteme } from "@/components/InviteAutreSousSysteme"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -80,6 +81,8 @@ export function OnboardingModal() {
   const [step, setStep] = useState<Step>("pays")
   const [selectedCountry, setSelectedCountry] = useState(country)
   const [cursusList, setCursusList] = useState<Cursus[]>([])
+  // Le pays a-t-il des examens dans l'autre langue ? Conditionne l'invitation à changer de sous-système.
+  const [autreSousSysteme, setAutreSousSysteme] = useState(false)
   const [selectedExamen, setSelectedExamen] = useState<string | null>(null)
   // Liste des examens introuvable (panne ou réponse vide) : sans ce signal, l'étape « examen »
   // restait sur « Chargement... » sans issue. `tentative` relance l'effet de chargement.
@@ -125,6 +128,7 @@ export function OnboardingModal() {
         // français BEPC, Probatoire et BAC. Le visiteur change de langue depuis l'en-tête s'il prépare l'autre.
         const data = cursusDeLangue(toutes, langue)
         setCursusList(data)
+        setAutreSousSysteme(toutes.some((c) => c.langue && c.langue !== langue))
         if (data.length === 0) setCursusErreur(true)
       })
       .catch(() => {
@@ -343,6 +347,11 @@ export function OnboardingModal() {
                 </button>
               ))
             ))}
+
+          {/* Un élève de l'autre sous-système ne voit pas son examen dans cette liste : l'invitation le
+              lui dit, au lieu de le laisser chercher le sélecteur de langue. Sans effet sur la déclaration :
+              la page est rechargée dans l'autre langue et cette fenêtre y revient. */}
+          {stepEffectif === "examen" && <InviteAutreSousSysteme disponible={autreSousSysteme} variante="bloc" />}
 
           {stepEffectif === "serie" &&
             serieOptions.map((c, i) => (
