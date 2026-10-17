@@ -10,11 +10,12 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
-import { codeSerieAffiche, examCodesFor } from "@/lib/cursus"
+import { codeSerieAffiche, estGce, examCodesFor } from "@/lib/cursus"
 import { cursusDeLangue } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { useI18n } from "@/lib/i18n"
 import { countryFlagClassName } from "@/lib/countryFlag"
+import { ChoixMatieres } from "@/components/ChoixMatieres"
 import { InviteAutreSousSysteme } from "@/components/InviteAutreSousSysteme"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,7 +35,7 @@ const ONBOARDING_DONE_KEY = "edukamer_onboarding_done"
 // atterrir tel quel sans être interrompu par un écran de configuration.
 const CATALOGUE_HOME_RE = /^\/[a-z]{2}\/?$/i
 
-type Step = "pays" | "examen" | "serie" | "confirmer"
+type Step = "pays" | "examen" | "serie" | "confirmer" | "matieres"
 
 function hasCompletedOnboarding(): boolean {
   try {
@@ -88,6 +89,10 @@ export function OnboardingModal() {
   // restait sur « Chargement... » sans issue. `tentative` relance l'effet de chargement.
   const [cursusErreur, setCursusErreur] = useState(false)
   const [tentative, setTentative] = useState(0)
+  // GCE général, élève CONNECTÉ : une fois son cursus déclaré, on lui demande ses matières avant de le laisser
+  // partir (voir finish). Tant que cet état est posé, la fenêtre reste ouverte même si le compte porte déjà un
+  // cursus - c'est ce qui la fermerait sinon (questionReglee).
+  const [matieresEnCours, setMatieresEnCours] = useState<Cursus | null>(null)
   const titreId = useId()
 
   // Comme le sélecteur de pays de l'en-tête (voir Header.tsx) : un Country peut
@@ -113,8 +118,7 @@ export function OnboardingModal() {
   const shouldShow =
     ONBOARDING_ENABLED
     && !dismissed
-    && !questionReglee
-    && CATALOGUE_HOME_RE.test(pathname)
+    && (matieresEnCours !== null || (!questionReglee && CATALOGUE_HOME_RE.test(pathname)))
     && browsableCountries.length > 0
 
   useEffect(() => {
@@ -157,14 +161,38 @@ export function OnboardingModal() {
   // le chemin pour déclarer son examen.
   function close() {
     markOnboardingDone()
+    // Pendant le choix des matières, « Passer » / Échap veut dire « plus tard » : le cursus est déjà déclaré.
+    if (matieresEnCours) {
+      terminer(matieresEnCours)
+      return
+    }
     setDismissed(true)
+  }
+
+  /** Fin de l'écran : on ferme et on emmène l'élève sur la liste d'épreuves de son examen. */
+  function terminer(cursus: Cursus) {
+    setMatieresEnCours(null)
+    setDismissed(true)
+    navigate(`${epreuvesListPath(selectedCountry)}?cursus=${cursus.id}`, { replace: true })
   }
 
   function finish(cursus: Cursus) {
     trackEvent("onboarding_termine", { cursus_id: cursus.id })
     markOnboardingDone()
-    setDismissed(true)
     setCountry(selectedCountry)
+    // Élève connecté de la branche générale du GCE : pas de série qui fixe ses matières, il les choisit. L'API a
+    // besoin de son cursus déclaré, donc on le déclare d'abord ; l'élève anonyme ne peut pas encore choisir (le choix
+    // se fait après connexion, voir InvitationMatieres sur l'accueil).
+    if (isAuthenticated && estGce(cursus) && cursus.series === null) {
+      setMatieresEnCours(cursus)
+      setStep("matieres")
+      updateMe({ cursus_prepare: cursus.id })
+        .then(updateUser)
+        // Jamais bloquant : si la déclaration échoue, l'élève voit ses épreuves, comme avant.
+        .catch(() => terminer(cursus))
+      return
+    }
+    setDismissed(true)
     declarerCursusPrepare(cursus)
     navigate(`${epreuvesListPath(selectedCountry)}?cursus=${cursus.id}`, { replace: true })
   }
@@ -254,8 +282,14 @@ export function OnboardingModal() {
   const stepEffectif: Step = step === "pays" && browsableCountries.length <= 1 ? "examen" : step
   // La dernière étape est la série, ou la confirmation pour un diplôme qui n'en a pas.
   const derniereEtape: Step = stepEffectif === "confirmer" ? "confirmer" : "serie"
-  const etapes: Step[] =
-    browsableCountries.length > 1 ? ["pays", "examen", derniereEtape] : ["examen", derniereEtape]
+  // Un élève connecté du GCE a une étape de plus : ses matières (voir finish).
+  const avecMatieres = stepEffectif === "matieres" || (isAuthenticated && estGce(selectedExamen ? { examen: selectedExamen } : null))
+  const etapes: Step[] = [
+    ...(browsableCountries.length > 1 ? (["pays"] as Step[]) : []),
+    "examen",
+    derniereEtape,
+    ...(avecMatieres ? (["matieres"] as Step[]) : []),
+  ]
   const stepIndex = etapes.indexOf(stepEffectif)
   const etapePrecedente = stepIndex > 0 ? etapes[stepIndex - 1] : null
   const cursusConfirme = selectedExamen ? cursusList.find((c) => c.examen === selectedExamen) : undefined
@@ -291,6 +325,7 @@ export function OnboardingModal() {
             {stepEffectif === "pays" && t("onboarding.titre_pays")}
             {stepEffectif === "examen" && t("onboarding.titre_examen")}
             {stepEffectif === "serie" && t("onboarding.titre_serie")}
+            {stepEffectif === "matieres" && t("onboarding.titre_matieres")}
             {stepEffectif === "confirmer" &&
               t("onboarding.titre_confirmer", { examen: cursusConfirme?.examen_display ?? t("onboarding.diplome_choisi") })}
           </CardTitle>
@@ -375,6 +410,20 @@ export function OnboardingModal() {
             >
               {t("onboarding.confirmer")}
             </button>
+          )}
+
+          {stepEffectif === "matieres" && matieresEnCours && (
+            // Le cursus vient d'être déclaré : tant que le compte ne le porte pas, ChoixMatieres n'a rien à interroger.
+            user?.cursus_prepare?.id === matieresEnCours.id ? (
+              <>
+                <ChoixMatieres onEnregistre={() => terminer(matieresEnCours)} />
+                <Button className="min-h-11 rounded-full" onClick={() => terminer(matieresEnCours)}>
+                  {t("onboarding.continuer")}
+                </Button>
+              </>
+            ) : (
+              <p className="py-4 text-center text-sm text-muted-foreground">{t("onboarding.chargement")}</p>
+            )
           )}
 
           {/* Pas pendant l'erreur de chargement : « Passer » y fait déjà la même chose. */}

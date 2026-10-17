@@ -1283,6 +1283,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "onboarding.titre_pays": "Which country are you preparing your exam in?",
   "onboarding.titre_examen": "Which exam are you preparing?",
   "onboarding.titre_serie": "Which series are you in?",
+  "onboarding.titre_matieres": "Which subjects are you sitting?",
+  "onboarding.continuer": "Continue",
   "onboarding.titre_confirmer": "Are you preparing the {examen}?",
   "onboarding.diplome_choisi": "exam you chose",
   "onboarding.description":

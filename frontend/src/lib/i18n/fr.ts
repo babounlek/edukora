@@ -1291,6 +1291,8 @@ export const fr = {
   "onboarding.titre_pays": "Dans quel pays prépares-tu ton examen ?",
   "onboarding.titre_examen": "Quel examen prépares-tu ?",
   "onboarding.titre_serie": "Quelle est ta série ?",
+  "onboarding.titre_matieres": "Quelles matières passes-tu ?",
+  "onboarding.continuer": "Continuer",
   "onboarding.titre_confirmer": "Tu prépares le {examen} ?",
   "onboarding.diplome_choisi": "diplôme choisi",
   "onboarding.description":
