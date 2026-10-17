@@ -130,6 +130,9 @@ def valider(dossier, attendu_questions, paper, code, examen="gce_ol"):
                 erreurs.append(f"{nom}: figure sans « fichier »")
             elif not (dossier / f["fichier"]).is_file():
                 erreurs.append(f"{nom}: figure introuvable : {f['fichier']}")
+            # Figure.type_figure est un varchar(30) : au-delà, l'ingestion échoue sur tout l'exercice.
+            if len(str(f.get("type") or "")) > 30:
+                erreurs.append(f"{nom}: figure « type » trop long ({len(str(f['type']))} > 30 caractères) : {f['type']!r}")
         references = set()
 
         def verifier_texte(etiquette, texte):
