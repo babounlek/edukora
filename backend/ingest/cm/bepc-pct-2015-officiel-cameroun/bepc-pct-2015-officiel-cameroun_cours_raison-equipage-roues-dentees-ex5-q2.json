@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-raison-equipage-roues-dentees-bepc-pct-2015",
+  "meta": {
+    "titre": "Calculer la raison d'un équipage de roues dentées",
+    "matiere": "PCT",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Technologie : transmission de mouvement",
+    "duree_estimee_min": 30,
+    "tags": [
+      "rapport de transmission",
+      "roue menante",
+      "roue menée",
+      "nombre de dents",
+      "engrenage"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": "",
+      "module_numero": "4",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-pct-2015-officiel-cameroun",
+    "epreuve_titre": "BEPC PCT 2015 (Cameroun, officiel)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bepc-pct-2015-officiel-cameroun-ex5-q2",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-pct-2015-officiel-cameroun-ex5"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une montre, une boîte de vitesses ou un treuil, des roues dentées s'engrènent pour ralentir ou accélérer un mouvement. Plusieurs roues à la suite multiplient leurs effets. La raison de l'équipage dit en un seul nombre de combien la rotation est ralentie ou accélérée entre l'entrée et la sortie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une roue dentée a un nombre de dents $Z$.",
+        "Savoir que deux roues engrenées ont des dents de même module.",
+        "Savoir multiplier et simplifier des fractions."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Raison d'un équipage",
+      "contenu_markdown": "Une chaîne cinématique s'écrit avec deux symboles : la flèche $\\to$ indique un **engrènement** (la roue de gauche mène celle de droite) et le signe $\\times$ indique deux roues **solidaires du même arbre** (même vitesse de rotation).\n\nPour un engrènement : $\\dfrac{n_{menée}}{n_{menante}} = \\dfrac{Z_{menante}}{Z_{menée}}$.\n\nPour un équipage de plusieurs engrènements, on multiplie les rapports partiels, les vitesses des roues d'un même arbre s'annulant : c'est la relation encadrée, où le produit porte sur les nombres de dents.\n\n- $r < 1$ : réducteur de vitesse ;\n- $r > 1$ : multiplicateur de vitesse ;\n- chaque engrènement extérieur inverse le sens de rotation : avec un nombre pair d'engrènements, l'entrée et la sortie tournent dans le même sens.",
+      "formule_principale": "r = \\frac{n_{\\text{sortie}}}{n_{\\text{entrée}}} = \\frac{\\prod Z_{\\text{menantes}}}{\\prod Z_{\\text{menées}}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La chaîne cinématique est $M \\to N \\times P \\to Q$ : donner la raison de l'équipage en fonction de $Z_M$, $Z_N$, $Z_P$, $Z_Q$ (BEPC PCT 2015, exercice 5, question 2).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire la chaîne",
+          "justification": "$M \\to N$ : $M$ mène $N$ ; $N \\times P$ : mêmes tours ; $P \\to Q$ : $P$ mène $Q$.",
+          "resultat_markdown": "Deux engrènements, un arbre commun"
+        },
+        {
+          "numero": 2,
+          "action": "Rapport du premier engrènement",
+          "justification": "Menante $M$, menée $N$.",
+          "resultat_markdown": "$\\dfrac{n_N}{n_M} = \\dfrac{Z_M}{Z_N}$"
+        },
+        {
+          "numero": 3,
+          "action": "Rapport du second engrènement",
+          "justification": "Menante $P$, menée $Q$, avec $n_P = n_N$.",
+          "resultat_markdown": "$\\dfrac{n_Q}{n_P} = \\dfrac{Z_P}{Z_Q}$"
+        },
+        {
+          "numero": 4,
+          "action": "Multiplier",
+          "justification": "Comme $n_P = n_N$, les vitesses intermédiaires se simplifient.",
+          "resultat_markdown": "$r = \\dfrac{n_Q}{n_M} = \\dfrac{Z_M\\times Z_P}{Z_N\\times Z_Q}$"
+        }
+      ],
+      "conclusion_markdown": "La raison est $r = \\dfrac{Z_M\\times Z_P}{Z_N\\times Z_Q}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mettre les roues menées au numérateur.",
+          "pourquoi_faux": "La raison est vitesse de sortie sur vitesse d'entrée ; une roue menée plus grande que la menante ralentit, donc le rapport doit être inférieur à 1.",
+          "correction_markdown": "Menantes au numérateur, menées au dénominateur."
+        },
+        {
+          "erreur_markdown": "Oublier que deux roues sur le même arbre tournent à la même vitesse.",
+          "pourquoi_faux": "On additionne alors des rapports qui ne se simplifient pas.",
+          "correction_markdown": "Écrire $n_P = n_N$ et simplifier."
+        },
+        {
+          "erreur_markdown": "Compter $Z_N$ et $Z_P$ tous les deux comme menées.",
+          "pourquoi_faux": "$P$ est solidaire de $N$ mais mène $Q$ : c'est une roue menante.",
+          "correction_markdown": "Menantes : $M$ et $P$. Menées : $N$ et $Q$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une roue $M$ de $20$ dents mène une roue $N$ de $40$ dents, qui tourne à... quand $M$ tourne à $1200\\ \\mathrm{tr/min}$ ?",
+          "solution_markdown": "$r = \\dfrac{Z_M}{Z_N} = \\dfrac{20}{40} = 0{,}5$.\n\n$n_N = r\\times n_M = 0{,}5\\times 1200 = 600\\ \\mathrm{tr/min}$ (réducteur)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour la chaîne $M \\to N \\times P \\to Q$ avec $Z_M = 20$, $Z_N = 60$, $Z_P = 15$, $Z_Q = 45$, calculer la raison et la vitesse de $Q$ si $M$ tourne à $900\\ \\mathrm{tr/min}$.",
+          "solution_markdown": "$r = \\dfrac{Z_M\\times Z_P}{Z_N\\times Z_Q} = \\dfrac{20\\times 15}{60\\times 45} = \\dfrac{300}{2700} = \\dfrac{1}{9}$.\n\n$n_Q = r\\times n_M = \\dfrac{900}{9} = 100\\ \\mathrm{tr/min}$ : le montage est un réducteur. Deux engrènements : $Q$ tourne dans le même sens que $M$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec $Z_M = 18$, $Z_N = 54$ et $Z_P = 20$, quel nombre de dents $Z_Q$ donne la raison $r = \\dfrac{1}{12}$ ?",
+          "solution_markdown": "On écrit $\\dfrac{18\\times 20}{54\\times Z_Q} = \\dfrac{1}{12}$, soit $\\dfrac{360}{54\\,Z_Q} = \\dfrac{1}{12}$.\n\nProduit en croix : $360\\times 12 = 54\\,Z_Q$, donc $Z_Q = \\dfrac{4320}{54} = 80$.\n\nVérification : $\\dfrac{18\\times 20}{54\\times 80} = \\dfrac{360}{4320} = \\dfrac{1}{12}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\to$ signifie engrènement, $\\times$ signifie même arbre.",
+        "La raison est le produit des dents des roues menantes sur le produit des dents des roues menées.",
+        "$r < 1$ : réducteur ; $r > 1$ : multiplicateur.",
+        "Un nombre pair d'engrènements extérieurs conserve le sens de rotation.",
+        "Au BEPC, la raison d'un équipage est demandée en formule littérale, parfois avec application numérique."
+      ]
+    }
+  ]
+}

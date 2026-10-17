@@ -1,0 +1,136 @@
+{
+  "cours_id": "cours-demarrage-ordinateur-bios-post-codes-sonores-fr23",
+  "meta": {
+    "titre": "Démarrage d'un ordinateur : BIOS, POST et codes sonores",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : séquence de démarrage et codes sonores du BIOS",
+    "duree_estimee_min": 30,
+    "tags": [
+      "BIOS"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_source": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun.html",
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex3-q2-1-fr23",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu appuies sur le bouton de démarrage : l'écran reste noir, mais le boîtier émet une série de bips. Beaucoup d'élèves pensent que la machine est « morte ». En réalité, elle te parle : avant même que l'écran soit prêt, la carte mère teste le matériel et utilise un petit haut-parleur pour signaler ce qu'elle a trouvé. Savoir lire ces signaux sonores est une compétence de base du technicien de maintenance, et une question classique du Probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les éléments d'un poste : unité centrale, carte mère, mémoire vive (RAM), carte graphique, clavier, écran",
+        "Savoir qu'un système d'exploitation (Windows, Linux) se charge après la mise sous tension",
+        "Distinguer un problème matériel (pièce) d'un problème logiciel (programme)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du bouton de démarrage au système d'exploitation",
+      "contenu_markdown": "Le **BIOS** (*Basic Input/Output System*, « système de base d'entrée-sortie ») est un petit programme enregistré dans une puce de la carte mère. C'est lui qui s'exécute en premier, dès la mise sous tension. Ses réglages (heure, ordre de démarrage) sont conservés grâce à une petite pile ronde de la carte mère, la pile du CMOS.\n\nLa séquence de démarrage se déroule ainsi :\n\n1. **Mise sous tension** : le bloc d'alimentation fournit le courant à la carte mère.\n2. **POST** (*Power-On Self-Test*, auto-test à la mise sous tension) : le BIOS vérifie le processeur, la mémoire vive, la carte graphique et le clavier.\n3. **Recherche d'un périphérique de démarrage** : disque dur, clé USB ou lecteur optique, selon l'ordre réglé dans le BIOS.\n4. **Chargement du système d'exploitation** : l'écran affiche le logo de Windows, puis le bureau.\n\nSi le POST détecte une erreur, il la signale de deux façons :\n\n- **par un message à l'écran** quand la carte graphique fonctionne (par exemple une erreur de clavier ou une erreur de pile CMOS) ;\n- **par des bips** émis par le haut-parleur interne (le **buzzer**) de la carte mère quand l'écran n'est pas encore utilisable.\n\n| Signal sonore | Sens habituel | Que faire |\n|---|---|---|\n| Un seul bip court | POST réussi, le démarrage continue | Rien : tout va bien |\n| Bip long continu | Touche de clavier bloquée, ou problème de mémoire ou d'alimentation | Dégager le clavier, puis réenfoncer la mémoire |\n| Bips courts répétés | Alimentation ou mémoire vive défaillante | Contrôler l'alimentation, réenfoncer les barrettes de RAM |\n| Un bip long suivi de deux ou trois bips courts (BIOS Award) | Erreur de la carte graphique | Réenfoncer la carte, vérifier le câble vidéo |\n| Aucun bip, écran noir | Alimentation, carte mère, processeur, ou absence de buzzer | Vérifier les câbles, puis tester les composants un à un |",
+      "variantes": [
+        {
+          "nom": "Fabricants de BIOS",
+          "quand_utiliser": "Quand on te demande la signification exacte d'un schéma de bips.",
+          "contenu_markdown": "Les codes ne sont **pas universels**. Les principaux fabricants de BIOS sont **AMI**, **Award** et **Phoenix**, et chacun a sa propre table. Un même nombre de bips peut donc avoir deux sens selon la machine. La seule source sûre est le manuel de la carte mère. À l'examen, on attend le principe : un bip long ou continu pointe un composant (clavier, mémoire), et on justifie par le test du POST."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un technicien allume un ordinateur de bureau. L'écran reste noir et la machine émet des bips courts répétés. Quelle est la cause la plus probable ? Quelle démarche doit-il suivre ? (Situation inspirée de l'exercice 3 du Probatoire A, ABI, C, D, E, 2017.)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer à quel moment le signal est émis",
+          "justification": "Un bip avec écran noir signifie que le POST a détecté une anomalie avant que la carte graphique puisse afficher un message.",
+          "resultat_markdown": "Le signal vient du BIOS, donc d'un problème matériel et non du système d'exploitation."
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter le schéma des bips",
+          "justification": "Des bips courts répétés correspondent, selon les BIOS, à un défaut de mémoire vive ou d'alimentation.",
+          "resultat_markdown": "Les suspects sont la mémoire vive et le bloc d'alimentation."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir le test le plus simple d'abord",
+          "justification": "Réenfoncer une barrette ne coûte rien et suffit souvent, car une barrette peut se déloger lors d'un transport.",
+          "resultat_markdown": "Éteindre, débrancher le cordon d'alimentation, retirer puis réinsérer les barrettes de RAM jusqu'au clic."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le résultat, puis élargir si besoin",
+          "justification": "On teste un élément à la fois pour savoir lequel est en cause.",
+          "resultat_markdown": "Si les bips persistent, essayer chaque barrette seule, puis contrôler l'alimentation."
+        }
+      ],
+      "conclusion_markdown": "Le BIOS signale un défaut matériel par des bips ; des bips courts répétés orientent vers la **mémoire vive** ou l'**alimentation**, et la démarche procède **par élimination**, du test le plus simple au plus lourd."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que les bips au démarrage viennent d'un virus.",
+          "pourquoi_faux": "Les bips sont émis par le BIOS avant le chargement du système d'exploitation, alors qu'un virus est un programme qui agit après le démarrage du système.",
+          "correction_markdown": "Rattacher un bip au matériel testé par le POST : processeur, mémoire, carte graphique, clavier."
+        },
+        {
+          "erreur_markdown": "Appliquer partout la même table de bips.",
+          "pourquoi_faux": "Les codes dépendent du fabricant du BIOS (AMI, Award, Phoenix) et un même schéma peut avoir deux sens.",
+          "correction_markdown": "Identifier le fabricant ou consulter le manuel de la carte mère avant de conclure."
+        },
+        {
+          "erreur_markdown": "Confondre BIOS et système d'exploitation, ou dire que le POST est le système d'exploitation.",
+          "pourquoi_faux": "Le BIOS et son auto-test s'exécutent avant et indépendamment de Windows : ils sont stockés sur la carte mère, pas sur le disque dur.",
+          "correction_markdown": "Retenir l'ordre : BIOS et POST, puis recherche du disque de démarrage, puis chargement du système d'exploitation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie le sigle POST ? À quoi sert ce programme ?",
+          "solution_markdown": "**POST** signifie *Power-On Self-Test* : auto-test à la mise sous tension. Ce programme du BIOS vérifie, juste après l'allumage, que les éléments essentiels (processeur, mémoire vive, carte graphique, clavier) fonctionnent avant de lancer le système d'exploitation."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur démarre normalement et affiche son bureau, après avoir émis un seul bip court. Le technicien s'inquiète. A-t-il raison ?",
+          "solution_markdown": "Non. Sur la plupart des machines, un seul bip court est le signal d'un **POST réussi**. Il confirme que le matériel de base a été reconnu, et le chargement du système d'exploitation peut commencer. Seule la machine qui émet un schéma inhabituel (bip long, bips répétés) ou aucun démarrage doit inquiéter."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur émet un bip long continu et reste sur écran noir. Propose une démarche de diagnostic en quatre étapes, du plus simple au plus lourd.",
+          "solution_markdown": "1. **Éteindre** et débrancher le cordon d'alimentation.\n2. **Débrancher le clavier**, puis rallumer : si le bip disparaît, une touche était bloquée ou le clavier est défectueux.\n3. Si le bip persiste, **retirer puis réenfoncer** les barrettes de mémoire vive, une à une.\n4. Si rien ne change, **tester une autre mémoire**, puis le bloc d'alimentation.\n\nOn procède par élimination, en changeant un seul élément à la fois pour connaître la cause exacte."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le BIOS est le premier programme exécuté à la mise sous tension ; il est stocké sur la carte mère.",
+        "Le POST teste le processeur, la mémoire vive, la carte graphique et le clavier avant le chargement du système d'exploitation.",
+        "Un seul bip court signale en général un POST réussi ; un bip long ou répété signale une erreur matérielle.",
+        "Les codes sonores varient selon le fabricant du BIOS (AMI, Award, Phoenix) : le manuel de la carte mère fait foi.",
+        "À l'examen, relie le signal sonore à un composant précis (clavier, mémoire, carte graphique, alimentation) et propose un remède par élimination."
+      ]
+    }
+  ]
+}

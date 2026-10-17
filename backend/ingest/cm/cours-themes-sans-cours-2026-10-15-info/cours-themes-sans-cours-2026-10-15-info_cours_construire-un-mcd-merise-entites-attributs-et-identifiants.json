@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-mcd-merise-entites-attributs-identifiants-fr15",
+  "meta": {
+    "titre": "Construire un MCD Merise : entités, attributs et identifiants à partir d'un énoncé",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Modélisation des données avec Merise",
+    "duree_estimee_min": 24,
+    "tags": [
+      "entités et attributs",
+      "méthodes d'analyse et de conception"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q7-1-fr15",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "probatoire-ti-si-2017-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire la moindre ligne de code, un informaticien doit comprendre les informations d'une organisation : un lycée garde des élèves, des classes, des notes ; un hôtel garde des clients, des chambres, des réservations. Pour décrire ces informations sans ambiguïté, il construit un schéma que tout le monde sait lire : le **MCD** de la méthode Merise. Au probatoire, la question classique est : « Identifie les entités du système, avec leurs attributs et leur identifiant »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un énoncé de gestion et en souligner les informations à conserver",
+        "Connaître la notion de donnée (nom, date, montant) en informatique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Merise, UML et les éléments d'un MCD : entité, attribut, identifiant",
+      "contenu_markdown": "Une **méthode d'analyse et de conception** est une démarche organisée pour étudier une organisation et concevoir son système d'information. Deux méthodes sont à connaître :\n\n- **MERISE** (Méthode d'Étude et de Réalisation Informatique pour les Systèmes d'Entreprise) : méthode française qui sépare les **données** (modélisées par le MCD, modèle conceptuel des données) et les **traitements** (modélisés par le MCT, modèle conceptuel des traitements) ;\n- **UML** (Unified Modeling Language) : langage de modélisation orienté objet, qui représente le système par des diagrammes (cas d'utilisation, classes, séquence).\n\nDans un **MCD** :\n\n- une **entité** est un objet ou une personne du domaine étudié, dont on veut conserver des informations (client, chambre, hôtel). Elle se dessine comme un rectangle portant son nom en majuscule ;\n- un **attribut** est une information élémentaire qui décrit l'entité (nom, prénom, date de naissance). Il est listé dans le rectangle ;\n- un **identifiant** est l'attribut (ou le groupe d'attributs) dont la valeur est **unique** pour chaque exemplaire de l'entité ; on le souligne sur le schéma.\n\nUn bon attribut est **élémentaire** (on sépare nom et prénom) et **non calculé** (on ne stocke pas l'âge, qui se déduit de la date de naissance).\n\n**Étapes de réalisation d'un MCD :** 1) lire les règles de gestion ; 2) établir le dictionnaire des données ; 3) regrouper les données en entités ; 4) choisir un identifiant pour chaque entité ; 5) repérer les associations entre entités ; 6) placer les cardinalités.",
+      "variantes": [
+        {
+          "nom": "Dictionnaire des données",
+          "quand_utiliser": "Pour lister toutes les informations d'un énoncé avant de dessiner",
+          "contenu_markdown": "C'est un tableau qui donne, pour chaque donnée, un code, une désignation, un type (texte, nombre, date) et une taille. Exemple fictif : `nom_client`, nom du client, texte, 30 caractères."
+        },
+        {
+          "nom": "Attribut porté par une association",
+          "quand_utiliser": "Quand une information dépend de deux entités à la fois",
+          "contenu_markdown": "La date d'emprunt d'un livre par un élève dépend du couple élève-livre : elle ne se range ni dans ÉLÈVE ni dans LIVRE, mais dans l'association EMPRUNTER qui les relie."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Énoncé : « La bibliothèque d'un lycée enregistre ses élèves et ses livres. Un élève est caractérisé par un matricule, un nom, un prénom, sa date de naissance et son âge. Un livre est caractérisé par un code, un titre et un auteur. Un élève emprunte des livres, à une date donnée. »\n\nIdentifie les entités avec leurs attributs et leur identifiant.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les objets dont on garde des informations",
+          "justification": "Ils sont caractérisés par plusieurs informations dans l'énoncé",
+          "resultat_markdown": "Deux entités : ÉLÈVE et LIVRE"
+        },
+        {
+          "numero": 2,
+          "action": "Lister les attributs de chaque entité",
+          "justification": "Un attribut est une information élémentaire qui caractérise l'entité",
+          "resultat_markdown": "ÉLÈVE : matricule, nom, prénom, date de naissance, âge ; LIVRE : code, titre, auteur"
+        },
+        {
+          "numero": 3,
+          "action": "Éliminer les données calculées",
+          "justification": "L'âge se déduit de la date de naissance : le stocker créerait des incohérences",
+          "resultat_markdown": "L'attribut âge est retiré d'ÉLÈVE"
+        },
+        {
+          "numero": 4,
+          "action": "Choisir les identifiants",
+          "justification": "Il faut une valeur unique par élève et par livre",
+          "resultat_markdown": "Matricule pour ÉLÈVE, code pour LIVRE (deux élèves peuvent avoir le même nom)"
+        },
+        {
+          "numero": 5,
+          "action": "Placer l'information qui dépend des deux entités",
+          "justification": "La date dépend de l'élève et du livre à la fois",
+          "resultat_markdown": "Date d'emprunt : attribut de l'association EMPRUNTER"
+        }
+      ],
+      "conclusion_markdown": "ÉLÈVE : matricule (identifiant), nom, prénom, date de naissance ; LIVRE : code (identifiant), titre, auteur ; association EMPRUNTER (date d'emprunt) entre les deux. Sur un schéma, l'identifiant se souligne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre le nom comme identifiant d'une entité",
+          "pourquoi_faux": "Deux élèves ou deux clients peuvent porter le même nom : la valeur n'est pas unique, donc elle ne permet pas d'identifier sans ambiguïté.",
+          "correction_markdown": "Choisis un numéro ou un code unique (matricule, numéro de carte d'identité, numéro de chambre dans un hôtel)."
+        },
+        {
+          "erreur_markdown": "Garder un attribut calculé comme l'âge ou le montant total",
+          "pourquoi_faux": "Ce qui se déduit d'autres données doit être calculé, pas conservé : sinon la valeur devient fausse dès que la donnée de départ change.",
+          "correction_markdown": "Conserve la date de naissance et calcule l'âge quand tu en as besoin."
+        },
+        {
+          "erreur_markdown": "Confondre entité et attribut, par exemple faire de « ville » une entité sans informations propres",
+          "pourquoi_faux": "Une entité est un objet dont on conserve plusieurs informations ; une simple information élémentaire est un attribut.",
+          "correction_markdown": "Si l'énoncé ne donne rien de plus sur la ville qu'un nom, c'est un attribut."
+        },
+        {
+          "erreur_markdown": "Confondre MERISE (méthode) et MCD (modèle)",
+          "pourquoi_faux": "Merise est la méthode complète ; le MCD n'est que l'un de ses modèles, celui des données.",
+          "correction_markdown": "Dis « Merise est une méthode d'analyse et de conception » et « le MCD est son modèle conceptuel des données »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définis les mots entité, attribut et identifiant, et cite deux méthodes d'analyse et de conception.",
+          "solution_markdown": "- **Entité** : objet ou personne du domaine étudié dont on conserve des informations.\n- **Attribut** : information élémentaire qui caractérise une entité.\n- **Identifiant** : attribut dont la valeur est unique pour chaque exemplaire de l'entité.\n\nDeux méthodes : MERISE et UML."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Énoncé : « Un enseignant est caractérisé par un matricule, un nom et sa matière. Une classe est caractérisée par un code, un libellé et une salle. » Donne les entités avec attributs et identifiants.",
+          "solution_markdown": "Deux entités.\n\n- ENSEIGNANT : matricule (identifiant), nom, matière.\n- CLASSE : code (identifiant), libellé, salle.\n\nLe matricule identifie un enseignant car deux enseignants peuvent avoir le même nom ; le code identifie une classe car son libellé peut se répéter d'une année à l'autre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un client d'une agence est décrit par : nom, prénom, date de naissance, âge, numéro de téléphone et numéro de carte nationale d'identité (CNI). Quels attributs gardes-tu dans l'entité CLIENT ? Quel identifiant proposes-tu ? Donne deux lignes du dictionnaire des données (taille fictive).",
+          "solution_markdown": "On retire **âge**, qui est calculé à partir de la date de naissance.\n\nCLIENT : numéro de CNI (identifiant), nom, prénom, date de naissance, téléphone.\n\nL'identifiant est le **numéro de CNI**, unique pour chaque personne ; le nom ne convient pas, et un téléphone peut être partagé ou changer.\n\nExtrait du dictionnaire des données (valeurs fictives) :\n\n| Code | Désignation | Type | Taille |\n|---|---|---|---|\n| cni_client | numéro de CNI du client | texte | 12 |\n| nom_client | nom du client | texte | 30 |"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Merise et UML sont deux méthodes d'analyse et de conception : Merise sépare les données (MCD) et les traitements (MCT), UML est orienté objet.",
+        "Une entité regroupe des attributs ; un attribut est une information élémentaire ; l'identifiant est unique et se souligne sur le schéma.",
+        "Un bon attribut est élémentaire et non calculé : on garde la date de naissance, pas l'âge.",
+        "Une information qui dépend de deux entités à la fois appartient à l'association qui les relie.",
+        "Étapes d'un MCD : règles de gestion, dictionnaire des données, entités, identifiants, associations, cardinalités."
+      ]
+    }
+  ]
+}

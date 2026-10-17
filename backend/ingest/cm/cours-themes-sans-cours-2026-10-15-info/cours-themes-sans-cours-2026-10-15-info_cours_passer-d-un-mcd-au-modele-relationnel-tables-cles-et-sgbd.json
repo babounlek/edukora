@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-mcd-vers-modele-relationnel-sgbd-fr15",
+  "meta": {
+    "titre": "Passer d'un MCD au modèle relationnel : tables, clés primaires, clés étrangères et SGBD",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données relationnelles",
+    "duree_estimee_min": 24,
+    "tags": [
+      "base de données relationnelle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex4-q12b-1-fr15",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "probatoire-ti-si-2017-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un MCD est un dessin : aucun ordinateur ne sait le lire. Pour que les informations d'un lycée ou d'un hôtel soient réellement stockées, il faut les transformer en **tables**, comme celles d'un tableur, gérées par un logiciel spécialisé. Ce passage du schéma conceptuel à la base de données relationnelle suit des règles précises, et c'est une question de cours très fréquente au probatoire TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un MCD : entités, attributs, identifiant, associations et cardinalités",
+        "Connaître la notion de table, de ligne et de colonne"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Base de données relationnelle, SGBD et règles de passage du MCD aux tables",
+      "contenu_markdown": "Une **base de données relationnelle** organise les informations en **tables** (appelées aussi relations). Chaque table a des **colonnes** (les attributs) et des **lignes** (les enregistrements, ou n-uplets). Un **SGBD** (système de gestion de bases de données) est le logiciel qui permet de créer, d'interroger (avec le langage SQL), de modifier et de protéger la base. Exemples de SGBD relationnels : MySQL, PostgreSQL, Oracle, SQL Server, SQLite.\n\n**Deux clés à connaître.** La **clé primaire** est la colonne (ou le groupe de colonnes) qui identifie de façon unique chaque ligne : elle provient de l'identifiant de l'entité. La **clé étrangère** est une colonne qui reprend la clé primaire d'une autre table pour établir le lien entre les deux.\n\n**Règles de passage du MCD au modèle relationnel :**\n\n1. Chaque **entité** devient une **table** : ses attributs deviennent des colonnes et son identifiant devient la clé primaire.\n2. Une **association de type un-à-plusieurs** (cardinalité maximale 1 d'un côté, n de l'autre) ne crée pas de table : la clé primaire de l'entité côté 1 est ajoutée, comme clé étrangère, à la table de l'entité côté n.\n3. Une **association de type plusieurs-à-plusieurs** (n des deux côtés) devient une **table à part**, dont la clé primaire est formée des deux clés étrangères, et qui reçoit les attributs propres à l'association.\n\nNotation utilisée ici : `[PK]` désigne une clé primaire, et le signe `#` une clé étrangère.",
+      "variantes": [
+        {
+          "nom": "Association un-à-plusieurs",
+          "quand_utiliser": "Quand chaque ligne d'une table dépend d'une seule ligne de l'autre (un élève dans une seule classe)",
+          "contenu_markdown": "La clé étrangère se place du côté « plusieurs » : `ELEVE (matricule [PK], nom, #code_classe)`."
+        },
+        {
+          "nom": "Association plusieurs-à-plusieurs",
+          "quand_utiliser": "Quand chaque ligne de l'une peut se lier à plusieurs de l'autre, et inversement",
+          "contenu_markdown": "Il faut une table intermédiaire : `INSCRIPTION (#matricule, #code_club, date_inscription)`, de clé primaire composée (matricule, code_club)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un MCD comporte deux entités : CLASSE (code_classe, libellé) et ELEVE (matricule, nom, prénom). L'association APPARTENIR relie un élève à une seule classe, et une classe à plusieurs élèves. Déduis le modèle relationnel.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Transformer chaque entité en table",
+          "justification": "C'est la première règle de passage",
+          "resultat_markdown": "Tables CLASSE et ELEVE, avec une colonne par attribut"
+        },
+        {
+          "numero": 2,
+          "action": "Désigner les clés primaires",
+          "justification": "L'identifiant de chaque entité devient sa clé primaire",
+          "resultat_markdown": "`code_classe` pour CLASSE ; `matricule` pour ELEVE"
+        },
+        {
+          "numero": 3,
+          "action": "Analyser l'association",
+          "justification": "Un élève appartient à une seule classe : le côté 1 est CLASSE, le côté plusieurs est ELEVE",
+          "resultat_markdown": "Association un-à-plusieurs : pas de nouvelle table"
+        },
+        {
+          "numero": 4,
+          "action": "Faire migrer la clé du côté 1 vers le côté plusieurs",
+          "justification": "Chaque ligne de ELEVE doit indiquer sa classe",
+          "resultat_markdown": "`code_classe` est ajoutée à ELEVE comme clé étrangère"
+        }
+      ],
+      "conclusion_markdown": "Modèle relationnel : `CLASSE (code_classe [PK], libelle)` et `ELEVE (matricule [PK], nom, prenom, #code_classe)`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer la clé étrangère du mauvais côté, par exemple matricule dans CLASSE",
+          "pourquoi_faux": "Une classe a plusieurs élèves : il faudrait stocker plusieurs matricules dans une seule ligne, ce qu'une table ne permet pas.",
+          "correction_markdown": "La clé étrangère va toujours dans la table du côté « plusieurs »."
+        },
+        {
+          "erreur_markdown": "Créer une table pour chaque association, même un-à-plusieurs",
+          "pourquoi_faux": "Seule l'association plusieurs-à-plusieurs exige une table à part ; les autres se traduisent par une clé étrangère.",
+          "correction_markdown": "Regarde les cardinalités maximales : n des deux côtés donne une table, sinon une clé étrangère."
+        },
+        {
+          "erreur_markdown": "Oublier la clé primaire d'une table",
+          "pourquoi_faux": "Sans clé primaire, on ne peut pas distinguer deux lignes et le lien par clé étrangère est impossible.",
+          "correction_markdown": "L'identifiant de chaque entité devient la clé primaire de sa table."
+        },
+        {
+          "erreur_markdown": "Confondre SGBD et base de données",
+          "pourquoi_faux": "La base de données est l'ensemble des données stockées ; le SGBD est le logiciel qui les gère. MySQL est un SGBD, pas une base.",
+          "correction_markdown": "Cite MySQL, PostgreSQL ou Oracle quand on te demande des exemples de SGBD."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définis un SGBD et donne deux exemples de SGBD relationnels.",
+          "solution_markdown": "Un **SGBD** est le logiciel qui permet de créer, d'interroger, de modifier et de sécuriser une base de données.\n\nDeux exemples : **MySQL** et **PostgreSQL** (on peut aussi citer Oracle, SQL Server ou SQLite)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "MCD : DEPARTEMENT (code_dep, intitulé) et ENSEIGNANT (matricule, nom). Un enseignant est rattaché à un seul département ; un département regroupe plusieurs enseignants. Déduis les tables.",
+          "solution_markdown": "L'association est de type un-à-plusieurs : le côté 1 est DEPARTEMENT, le côté plusieurs est ENSEIGNANT. La clé primaire du département migre dans la table ENSEIGNANT.\n\n- `DEPARTEMENT (code_dep [PK], intitule)`\n- `ENSEIGNANT (matricule [PK], nom, #code_dep)`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "MCD : ELEVE (matricule, nom) et CLUB (code_club, nom_club). Un élève peut s'inscrire à plusieurs clubs et un club accueille plusieurs élèves ; la date d'inscription est une propriété de l'association INSCRIRE. Déduis les tables, explique pourquoi on ne peut pas ajouter code_club dans ELEVE, et écris la création de la table de l'association en SQL.",
+          "solution_markdown": "L'association est de type plusieurs-à-plusieurs : elle devient une table.\n\n- `ELEVE (matricule [PK], nom)`\n- `CLUB (code_club [PK], nom_club)`\n- `INSCRIPTION (#matricule, #code_club, date_inscription)` avec la clé primaire composée (matricule, code_club)\n\nOn ne peut pas ajouter `code_club` dans ELEVE : un élève inscrit à trois clubs devrait avoir trois valeurs dans une seule case. De plus, la date d'inscription dépend du couple élève-club, pas de l'élève seul.\n\n```sql\nCREATE TABLE INSCRIPTION (\n  matricule VARCHAR(10),\n  code_club VARCHAR(5),\n  date_inscription DATE,\n  PRIMARY KEY (matricule, code_club),\n  FOREIGN KEY (matricule) REFERENCES ELEVE(matricule),\n  FOREIGN KEY (code_club) REFERENCES CLUB(code_club)\n);\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une base de données relationnelle est un ensemble de tables liées ; un SGBD est le logiciel qui la gère (MySQL, PostgreSQL, Oracle).",
+        "Chaque entité devient une table ; son identifiant devient la clé primaire.",
+        "Association un-à-plusieurs : la clé primaire du côté 1 migre comme clé étrangère dans la table du côté plusieurs.",
+        "Association plusieurs-à-plusieurs : une table à part, dont la clé primaire regroupe les deux clés étrangères, et qui porte les attributs de l'association.",
+        "Au probatoire, la question « déduire le modèle relationnel » se traite table par table, en nommant clés primaires et clés étrangères."
+      ]
+    }
+  ]
+}

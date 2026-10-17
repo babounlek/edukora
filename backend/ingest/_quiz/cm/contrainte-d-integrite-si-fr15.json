@@ -1,0 +1,196 @@
+[
+  {
+    "external_id": "cqc-contrainte-d-integrite-si-fr15-faible-0",
+    "theme": "contrainte d'intégrité",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans le cours de base de données, ton professeur explique qu'on impose des contraintes d'intégrité aux tables d'une base de gestion scolaire. Que désigne-t-on par contrainte d'intégrité ?",
+    "corrige_markdown": "### Rappel de méthode\nPour reconnaître une contrainte d'intégrité, cherche une règle qui limite les valeurs ou les liens acceptés dans la base afin que les données restent cohérentes ; ce n'est ni une sauvegarde, ni une protection d'accès, ni un schéma.\n\n### Corrigé\nUne contrainte d'intégrité est une règle (par exemple « une note est comprise entre 0 et 20 ») que le système de gestion de base de données vérifie à chaque insertion, modification ou suppression, afin de refuser toute donnée incohérente.\n\n- **A** est faux : une copie de sauvegarde protège contre la perte de données, mais elle ne contrôle pas leur validité.\n- **B** est faux : un mot de passe relève de la sécurité des accès, pas de la cohérence des valeurs enregistrées.\n- **C** est faux : un schéma de liaison entre tables est un modèle (MCD ou modèle logique) ; il décrit la structure sans contrôler les données.\n\nRéponse **D**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Une copie de sauvegarde de la table, conservée sur un autre disque"
+      },
+      {
+        "lettre": "B",
+        "texte": "Un mot de passe qui limite l'accès à la table"
+      },
+      {
+        "lettre": "C",
+        "texte": "Un schéma qui montre les liens entre les tables"
+      },
+      {
+        "lettre": "D",
+        "texte": "Une règle que les données doivent toujours respecter pour rester cohérentes et valides"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      13432
+    ]
+  },
+  {
+    "external_id": "cqc-contrainte-d-integrite-si-fr15-faible-1",
+    "theme": "contrainte d'intégrité",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Voici deux tables d'une base de gestion scolaire :\n\nCLASSE (codeClasse, libelle)\n\nELEVE (matricule, nom, codeClasse), où codeClasse est une clé étrangère qui référence CLASSE.\n\nLaquelle de ces règles illustre la contrainte d'intégrité référentielle ?",
+    "corrige_markdown": "### Rappel de méthode\nPour reconnaître une contrainte d'intégrité référentielle, cherche une règle qui oblige la valeur d'une clé étrangère à exister déjà comme clé primaire dans la table qu'elle référence.\n\n### Corrigé\nLa contrainte référentielle relie deux tables : on ne peut pas affecter un élève à une classe qui n'existe pas dans CLASSE. Elle porte sur la clé étrangère codeClasse.\n\n- **A** est faux : c'est la contrainte d'entité : la clé primaire est unique (et non vide) dans sa propre table.\n- **B** est faux : c'est une contrainte de domaine : elle limite les valeurs permises pour un seul champ.\n- **D** est faux : c'est aussi une contrainte de domaine (type et taille) ; elle ne concerne qu'un champ de la table ELEVE.\n\nRéponse **C**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Deux élèves ne peuvent pas avoir le même matricule"
+      },
+      {
+        "lettre": "B",
+        "texte": "Une note est comprise entre 0 et 20"
+      },
+      {
+        "lettre": "C",
+        "texte": "Le codeClasse de chaque élève doit exister dans la table CLASSE"
+      },
+      {
+        "lettre": "D",
+        "texte": "Le nom d'un élève ne dépasse pas 30 caractères"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      13432
+    ]
+  },
+  {
+    "external_id": "cqc-contrainte-d-integrite-si-fr15-moyenne-2",
+    "theme": "contrainte d'intégrité",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une base de gestion scolaire contient les deux tables suivantes.\n\nCLASSE (clé primaire : codeClasse)\n\n| codeClasse | libelle |\n|---|---|\n| 6A | Sixième A |\n| 5B | Cinquième B |\n| 4C | Quatrième C |\n\nELEVE (clé primaire : matricule ; clé étrangère : codeClasse, qui référence CLASSE)\n\n| matricule | nom | codeClasse |\n|---|---|---|\n| E101 | Ngono | 6A |\n| E102 | Tchinda | 5B |\n| E103 | Mvondo | 6A |\n\nOn exécute la commande suivante :\n\n```sql\nINSERT INTO ELEVE VALUES ('E105', 'Mbarga', '3E');\n```\n\nQue se passe-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\nLorsque tu insères une ligne qui contient une clé étrangère, vérifie que cette valeur existe dans la table référencée : si elle n'y figure pas, le système de gestion de base de données refuse l'insertion.\n\n### Corrigé\nLa table CLASSE ne contient que 6A, 5B et 4C. La valeur 3E de la clé étrangère codeClasse ne référence aucune classe existante : le système refuse la ligne et signale une violation de la contrainte d'intégrité référentielle.\n\n- **A** est faux : un système de gestion de base de données ne crée jamais de ligne dans la table référencée de sa propre initiative.\n- **C** est faux : le système ne corrige pas une valeur invalide en la remplaçant par NULL ; il rejette l'insertion.\n- **D** est faux : ELEVE ne contient que E101, E102 et E103 : le matricule E105 est libre. Le refus vient de la clé étrangère, pas de la clé primaire.\n\nRéponse **B**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "L'insertion est acceptée, et la classe 3E est créée automatiquement dans CLASSE"
+      },
+      {
+        "lettre": "B",
+        "texte": "L'insertion est refusée : la valeur 3E n'existe pas dans CLASSE, ce qui viole l'intégrité référentielle"
+      },
+      {
+        "lettre": "C",
+        "texte": "L'insertion est acceptée, mais la valeur 3E est remplacée par NULL"
+      },
+      {
+        "lettre": "D",
+        "texte": "L'insertion est refusée parce que le matricule E105 existe déjà dans ELEVE"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      13432
+    ]
+  },
+  {
+    "external_id": "cqc-contrainte-d-integrite-si-fr15-moyenne-3",
+    "theme": "contrainte d'intégrité",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une papeterie de Yaoundé, la table PRODUIT a pour clé primaire le champ code. Elle contient actuellement :\n\n| code | designation | prix |\n|---|---|---|\n| P01 | Cahier | 500 |\n| P02 | Stylo | 150 |\n| P03 | Règle | 300 |\n\nSeul le champ code est déclaré clé primaire. Laquelle de ces insertions viole une contrainte d'intégrité ?",
+    "corrige_markdown": "### Rappel de méthode\nPour savoir si une insertion respecte la contrainte d'entité, compare la valeur proposée pour la clé primaire avec celles qui existent déjà : elle doit être non vide et différente de toutes les autres ; les autres champs ne sont pas concernés tant qu'aucune contrainte ne les vise.\n\n### Corrigé\nLe code P02 existe déjà (le stylo). Deux lignes ne peuvent pas avoir la même clé primaire : l'insertion de (P02, Gomme, 100) viole la contrainte d'entité.\n\n- **B** est faux : le code P04 est nouveau. La désignation Stylo et le prix 150 existent déjà, mais ces champs ne sont pas des clés primaires : les répéter est permis.\n- **C** est faux : le code P05 est nouveau et aucune autre contrainte n'est violée.\n- **D** est faux : le code P06 est nouveau et aucune autre contrainte n'est violée.\n\nRéponse **A**.\n\n### Piège à éviter\nNe confonds pas une valeur déjà présente dans un champ ordinaire (la désignation Stylo) avec une clé primaire dupliquée : seule la clé primaire doit rester unique.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "(P02, Gomme, 100)"
+      },
+      {
+        "lettre": "B",
+        "texte": "(P04, Stylo, 150)"
+      },
+      {
+        "lettre": "C",
+        "texte": "(P05, Crayon, 100)"
+      },
+      {
+        "lettre": "D",
+        "texte": "(P06, Colle, 200)"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      13432
+    ]
+  },
+  {
+    "external_id": "cqc-contrainte-d-integrite-si-fr15-moyenne-4",
+    "theme": "contrainte d'intégrité",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un lycée gère ses notes avec les tables suivantes.\n\nELEVE (clé primaire : matricule) contient E01, E02 et E03.\n\nMATIERE (clé primaire : codeMat) contient MA, PH et FR.\n\nNOTE (clé primaire : le couple matricule + codeMat ; matricule est une clé étrangère vers ELEVE ; codeMat est une clé étrangère vers MATIERE ; valeur est comprise entre 0 et 20) contient pour l'instant :\n\n| matricule | codeMat | valeur |\n|---|---|---|\n| E01 | MA | 14 |\n| E02 | MA | 11 |\n\nPour chacune des quatre insertions suivantes dans NOTE, dire si elle est acceptée ou refusée, et nommer la contrainte concernée :\n\na) (E03, PH, 16)\nb) (E01, MA, 17)\nc) (E04, FR, 12)\nd) (E02, PH, 23)",
+    "corrige_markdown": "### Rappel de méthode\nPour contrôler une insertion, passe les contraintes en revue dans l'ordre : clé primaire (unique et non vide), clés étrangères (valeurs existantes dans les tables référencées), domaine (valeurs permises pour chaque champ).\n\n### Corrigé\n| Insertion | Résultat | Contrainte |\n|---|---|---|\n| a) (E03, PH, 16) | Acceptée | Aucune violation : le couple (E03, PH) est nouveau, E03 et PH existent, 16 est entre 0 et 20 |\n| b) (E01, MA, 17) | Refusée | Contrainte d'entité : le couple (E01, MA) existe déjà, la clé primaire serait en double |\n| c) (E04, FR, 12) | Refusée | Contrainte d'intégrité référentielle : E04 n'existe pas dans ELEVE |\n| d) (E02, PH, 23) | Refusée | Contrainte de domaine : 23 dépasse la valeur maximale 20 |\n\nPour b), le matricule E01 et le code MA existent chacun ailleurs dans la table, ce qui est permis ; c'est le **couple** qui est en double.\n\n### Piège à éviter\nQuand la clé primaire est un couple, la répétition d'une seule des deux valeurs est permise ; seul le même couple, répété à l'identique, est interdit.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      13432
+    ]
+  },
+  {
+    "external_id": "cqc-contrainte-d-integrite-si-fr15-elevee-5",
+    "theme": "contrainte d'intégrité",
+    "savoir_officiel": null,
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un lycée de Ngaoundéré possède les deux tables suivantes, liées par la clé étrangère codeClasse.\n\nCLASSE (clé primaire : codeClasse)\n\n| codeClasse | libelle |\n|---|---|\n| 6A | Sixième A |\n| 5B | Cinquième B |\n\nELEVE (clé primaire : matricule ; clé étrangère : codeClasse vers CLASSE)\n\n| matricule | nom | codeClasse |\n|---|---|---|\n| E01 | Fouda | 6A |\n| E02 | Amougou | 6A |\n| E03 | Ndzana | 5B |\n\nL'administration veut supprimer la classe 6A de la table CLASSE.\n\n1. Que se passe-t-il si le système applique simplement la contrainte d'intégrité référentielle, sans option particulière ? Justifier.\n2. Que contiendrait la table ELEVE si la clé étrangère était déclarée avec une suppression en cascade ? Quel risque cela présente-t-il ?\n3. Quelle démarche permet de supprimer la classe 6A sans perdre d'élèves ?",
+    "corrige_markdown": "### Rappel de méthode\nQuand tu supprimes une ligne d'une table référencée, repère d'abord les lignes des autres tables qui la référencent : le système soit refuse la suppression, soit supprime aussi les lignes liées (cascade), selon la déclaration de la clé étrangère.\n\n### Corrigé\n**Question 1.** La suppression est refusée. Les élèves E01 et E02 référencent la classe 6A par leur clé étrangère ; supprimer 6A laisserait deux élèves rattachés à une classe qui n'existe plus, ce que la contrainte d'intégrité référentielle interdit.\n\n**Question 2.** Avec une suppression en cascade, la classe 6A est supprimée **et** les lignes d'ELEVE qui la référencent aussi. La table ELEVE ne contiendrait plus que :\n\n| matricule | nom | codeClasse |\n|---|---|---|\n| E03 | Ndzana | 5B |\n\nLe risque est de perdre sans le vouloir les dossiers de deux élèves en supprimant simplement une classe.\n\n**Question 3.** Il faut d'abord rattacher E01 et E02 à une classe existante (par exemple en modifiant leur codeClasse), puis supprimer la classe 6A, devenue sans élève : la suppression est alors acceptée et aucune donnée n'est perdue.\n\n### Piège à éviter\nNe conclus pas que la contrainte est un obstacle : elle protège la base. Le refus de supprimer 6A signale qu'il reste des lignes à traiter avant de le faire.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      13432
+    ]
+  }
+]

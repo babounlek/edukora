@@ -1,0 +1,155 @@
+{
+  "cours_id": "cours-lire-afficher-printf-scanf-initialisation-c-fr15",
+  "meta": {
+    "titre": "Lire et afficher des données en langage C : printf, scanf et initialisation des variables",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Langage C : entrées-sorties",
+    "duree_estimee_min": 20,
+    "tags": [
+      "printf et scanf",
+      "lecture et écriture",
+      "initialisation de variable",
+      "directive include"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.1-0-fr15",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "probatoire-ti-algorithmique-2020-zero-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme qui ne reçoit rien et n'affiche rien ne sert à personne. Pour demander un nombre à l'utilisateur puis lui montrer le résultat, le langage C fournit deux fonctions prédéfinies : `scanf` pour lire et `printf` pour écrire. Dans un algorithme, tu écris `Lire (N)` et `Ecrire (F)` ; en C, ces deux instructions se traduisent par `scanf` et `printf`. Au probatoire, on te demande souvent de les reconnaître dans un programme, avec l'initialisation des variables qui les accompagne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une variable en C avec son type (int, float, double, char)",
+        "Connaître la structure d'un programme C : #include, fonction main, accolades",
+        "Connaître les instructions Lire et Ecrire d'un algorithme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "printf écrit, scanf lit, et une variable doit recevoir une première valeur",
+      "contenu_markdown": "**Écriture : `printf`.** `printf(\"texte et formats\", valeurs)` affiche du texte à l'écran. Chaque **code de format** commençant par `%` est remplacé par la valeur correspondante. La séquence `\\n` provoque un retour à la ligne.\n\n**Lecture : `scanf`.** `scanf(\"formats\", adresses)` lit ce que l'utilisateur tape au clavier et le range dans des variables. Devant chaque variable numérique ou caractère, on écrit l'opérateur d'adresse `&`, car `scanf` doit savoir **où** ranger la valeur lue.\n\n| Type de la variable | Format dans printf | Format dans scanf |\n|---|---|---|\n| `int` | `%d` | `%d` |\n| `float` | `%f` | `%f` |\n| `double` | `%f` (ou `%lf`) | `%lf` |\n| `char` | `%c` | `%c` |\n| chaîne de caractères | `%s` | `%s` (sans `&`) |\n\nCes deux fonctions sont déclarées dans la bibliothèque `stdio.h` (Standard Input Output) : tout programme qui les utilise commence par la directive `#include <stdio.h>`.\n\n**Initialisation.** Initialiser une variable, c'est lui donner sa première valeur : soit à la déclaration (`int i = 1;`), soit par une affectation avant tout usage (`i = 1;`). Une variable locale déclarée sans valeur contient une valeur imprévisible.",
+      "variantes": [
+        {
+          "nom": "Écriture avec printf",
+          "quand_utiliser": "Pour afficher un message ou le résultat d'un calcul",
+          "contenu_markdown": "`printf(\"Somme = %d\\n\", s);` affiche le texte `Somme = ` suivi de la valeur de `s`, puis passe à la ligne. Aucun `&` dans `printf`."
+        },
+        {
+          "nom": "Lecture avec scanf",
+          "quand_utiliser": "Pour demander une donnée à l'utilisateur",
+          "contenu_markdown": "`scanf(\"%d\", &n);` lit un entier et le range dans `n`. Le format décrit exactement ce que l'utilisateur doit taper : avec `scanf(\"%lf,%d\", &X, &n)`, il doit saisir une virgule entre les deux valeurs, par exemple `2.5,3`."
+        },
+        {
+          "nom": "Initialisation d'une variable",
+          "quand_utiliser": "Pour un compteur, une somme ou un produit qui évolue dans une boucle",
+          "contenu_markdown": "Un compteur démarre à `1` ou `0`, une somme à `0`, un produit à `1`. Exemple : `somme = 0;` est une instruction d'initialisation, alors que `int somme;` seule est une simple déclaration."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On donne le programme C suivant :\n\n```c\n#include <stdio.h>\nint main(void) {\n    int n, i, somme;\n    printf(\"Combien d'entiers ? \");\n    scanf(\"%d\", &n);\n    somme = 0;\n    for (i = 1; i <= n; i++) {\n        somme = somme + i;\n    }\n    printf(\"La somme vaut %d\\n\", somme);\n    return 0;\n}\n```\n\nIdentifie le nom de la bibliothèque, les deux fonctions prédéfinies et l'instruction d'initialisation. Que s'affiche-t-il si l'utilisateur tape 4 ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la directive d'inclusion",
+          "justification": "Une bibliothèque s'inclut par #include en tête de programme",
+          "resultat_markdown": "`#include <stdio.h>` : la bibliothèque est `stdio.h`"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les appels de fonctions prédéfinies",
+          "justification": "Une fonction prédéfinie est appelée sans avoir été écrite dans le programme",
+          "resultat_markdown": "`printf` (lignes d'affichage) et `scanf` (ligne de lecture)"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer l'initialisation",
+          "justification": "C'est l'instruction qui donne la première valeur à la variable avant la boucle",
+          "resultat_markdown": "`somme = 0;`"
+        },
+        {
+          "numero": 4,
+          "action": "Exécuter avec n = 4",
+          "justification": "La boucle ajoute successivement i = 1, 2, 3, 4 à la somme",
+          "resultat_markdown": "somme = 0 + 1 + 2 + 3 + 4 = 10"
+        }
+      ],
+      "conclusion_markdown": "Bibliothèque : `stdio.h` ; fonctions prédéfinies : `printf` et `scanf` ; initialisation : `somme = 0;`. Avec 4, le programme affiche `La somme vaut 10`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le `&` devant la variable dans `scanf`, par exemple `scanf(\"%d\", n);`",
+          "pourquoi_faux": "scanf attend l'adresse de la variable pour y ranger la valeur lue. Sans `&`, le programme transmet la valeur de `n` à la place de son adresse : le comportement est indéterminé et peut faire planter le programme.",
+          "correction_markdown": "Écris `scanf(\"%d\", &n);`. L'exception est la chaîne de caractères, dont le nom est déjà une adresse."
+        },
+        {
+          "erreur_markdown": "Mettre un `&` dans `printf`, par exemple `printf(\"%d\", &n);`",
+          "pourquoi_faux": "printf affiche une valeur, pas une adresse : avec `&n`, elle présente l'adresse de la variable au lieu de son contenu.",
+          "correction_markdown": "Écris `printf(\"%d\", n);`."
+        },
+        {
+          "erreur_markdown": "Utiliser un format qui ne correspond pas au type, par exemple `%d` pour un `double`",
+          "pourquoi_faux": "Le format indique à la fonction comment interpréter la valeur : un mauvais format donne un affichage absurde ou une lecture faussée.",
+          "correction_markdown": "Associe `%d` à `int`, `%f` à `float`, `%lf` à `double` dans scanf, `%c` à `char`."
+        },
+        {
+          "erreur_markdown": "Confondre déclaration et initialisation, ou utiliser une somme sans la remettre à zéro",
+          "pourquoi_faux": "`int somme;` réserve une case mémoire sans lui donner de valeur : elle contient alors un reste imprévisible, et `somme = somme + i` donne un résultat faux.",
+          "correction_markdown": "Initialise toujours un accumulateur avant la boucle : `somme = 0;` pour une somme, `produit = 1;` pour un produit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduis en langage C, pour une variable entière `age` : `Lire (age)` puis `Ecrire (age)`.",
+          "solution_markdown": "Lecture : `scanf(\"%d\", &age);`\n\nÉcriture : `printf(\"%d\", age);`\n\nLe format `%d` correspond au type `int`, et le `&` n'apparaît que dans `scanf`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Relève les trois erreurs de ces deux lignes puis corrige-les, sachant que `prix` est déclarée `float prix;` :\n\n```c\nscanf(\"%d\", prix);\nprintf(\"Prix : %f\", &prix);\n```",
+          "solution_markdown": "1. Le format `%d` est celui d'un entier : pour un `float`, on utilise `%f`.\n2. Il manque le `&` devant `prix` dans `scanf`.\n3. Il y a un `&` en trop dans `printf`.\n\nVersion correcte :\n\n```c\nscanf(\"%f\", &prix);\nprintf(\"Prix : %f\\n\", prix);\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le programme suivant calcule X puissance n.\n\n```c\n#include <stdio.h>\nint main(void) {\n    double X, Y;\n    int n, i;\n    scanf(\"%lf,%d\", &X, &n);\n    Y = 1.0;\n    i = 1;\n    while (i <= n) {\n        Y = Y * X;\n        i = i + 1;\n    }\n    printf(\"%lf puissance %d vaut %lf\\n\", X, n, Y);\n    return 0;\n}\n```\n\na) Quelles sont les deux instructions d'initialisation ? b) Qu'affiche le programme si l'utilisateur tape `2.5,3` ? c) Que se passe-t-il s'il tape `2.5 3` (avec un espace) ?",
+          "solution_markdown": "a) `Y = 1.0;` et `i = 1;`. Y démarre à 1 car c'est l'élément neutre du produit, et i démarre à 1 pour compter les tours.\n\nb) Avec `2.5,3`, on a X = 2.5 et n = 3. La boucle fait trois tours : Y = 1 × 2.5 = 2.5, puis 6.25, puis 15.625. Le programme affiche `2.500000 puissance 3 vaut 15.625000` : le format `%lf` affiche six chiffres après la virgule.\n\nc) Le format `%lf,%d` exige une virgule juste après le premier nombre. Avec un espace à la place, la lecture s'arrête après X : n n'est pas modifié et garde une valeur imprévisible, ce qui fausse le calcul. Le format de `scanf` doit être reproduit à la lettre par l'utilisateur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`printf` écrit à l'écran et `scanf` lit au clavier ; elles correspondent à Ecrire et Lire en algorithmique.",
+        "Les deux fonctions viennent de `stdio.h`, inclus par `#include <stdio.h>`.",
+        "Formats à retenir : `%d` pour int, `%f` pour float, `%lf` pour double dans scanf, `%c` pour char.",
+        "Dans `scanf`, chaque variable numérique ou caractère est précédée de `&` ; dans `printf`, jamais.",
+        "Initialiser, c'est donner une première valeur : `somme = 0;`, `Y = 1.0;`, `i = 1;`.",
+        "Au probatoire, on demande d'identifier `printf` et `scanf` comme fonctions prédéfinies et une affectation initiale comme instruction d'initialisation."
+      ]
+    }
+  ]
+}

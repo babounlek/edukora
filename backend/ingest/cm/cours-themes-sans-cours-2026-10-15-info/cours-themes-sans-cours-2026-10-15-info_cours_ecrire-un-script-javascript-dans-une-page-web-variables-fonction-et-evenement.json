@@ -1,0 +1,156 @@
+{
+  "cours_id": "cours-script-javascript-variables-fonction-evenement-fr15",
+  "meta": {
+    "titre": "Écrire un script JavaScript dans une page web : variables, fonction et événement onclick",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : JavaScript côté navigateur",
+    "duree_estimee_min": 22,
+    "tags": [
+      "Script"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q5.1.a-0-fr15",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "probatoire-ti-algorithmique-2020-zero-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page HTML seule est comme une affiche : elle montre, mais elle ne réagit pas. Pour qu'un clic sur le bouton « Convertir » transforme des euros en francs CFA, il faut un petit programme glissé dans la page : un **script**. Au probatoire, on te donne un script de quelques lignes et on te demande d'y repérer des variables, une fonction et un événement. Ce cours t'apprend à les reconnaître sans hésiter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une page HTML avec un formulaire (balises form et input)",
+        "Connaître les notions de variable, de condition (if) et de fonction en algorithmique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un script JavaScript : variables, fonctions, événements",
+      "contenu_markdown": "Un **script** est une suite d'instructions placée dans la balise `<script> ... </script>` d'une page web. Le langage le plus courant est **JavaScript** : un langage **interprété**, exécuté par le navigateur de l'internaute (côté client), sans compilation préalable.\n\nUn script repose sur trois éléments à savoir repérer :\n\n- une **variable** est un nom qui désigne une valeur gardée en mémoire ; elle se déclare avec `var` (ou `let`) ;\n- une **fonction** est un bloc d'instructions nommé, déclaré avec le mot-clé `function`, qui ne s'exécute que lorsqu'on l'appelle ;\n- un **événement** est une action de l'internaute détectée par le navigateur (clic, saisie, envoi d'un formulaire, chargement de la page). On l'associe à une balise par un attribut commençant par `on` : `onclick`, `onchange`, `onsubmit`, `onload`.\n\nPour lire ou écrire dans un champ de formulaire, on le désigne par son identifiant : `document.getElementById(\"euro\").value`. Cette valeur est toujours du **texte** : on la convertit en nombre avec `parseFloat(...)`, et `isNaN(...)` teste si le résultat n'est pas un nombre. La fonction `alert(\"message\")` ouvre une boîte de dialogue qui avertit l'utilisateur.",
+      "variantes": [
+        {
+          "nom": "Variable",
+          "quand_utiliser": "Pour repérer une valeur mémorisée dans le script",
+          "contenu_markdown": "Les variables se repèrent à `var` : dans `var fcfa = euro * 656;`, `fcfa` est une variable ; le nom `euro` en est une autre si elle est déclarée par `var euro = ...;`."
+        },
+        {
+          "nom": "Fonction",
+          "quand_utiliser": "Pour nommer un traitement qu'on pourra appeler plusieurs fois",
+          "contenu_markdown": "Une fonction déclarée commence par `function nom(paramètres) { ... }`. Son nom est le mot qui suit `function`."
+        },
+        {
+          "nom": "Événement",
+          "quand_utiliser": "Pour relier une action de l'utilisateur à une fonction",
+          "contenu_markdown": "Dans `<input type=\"button\" onclick=\"convertir()\">`, l'événement est le clic (`onclick`) et la fonction appelée est `convertir`. Les parenthèses de l'appel sont obligatoires."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Voici une page qui convertit des euros en FCFA avec un taux arrondi fictif de 656 FCFA pour 1 euro (le taux officiel exact est 655,957).\n\n```html\n<html>\n<body>\n<form>\n  Euros : <input type=\"text\" id=\"euro\">\n  FCFA : <input type=\"text\" id=\"fcfa\">\n  <input type=\"button\" value=\"Convertir\" onclick=\"convertir()\">\n</form>\n<script>\nfunction convertir() {\n    var euro = parseFloat(document.getElementById(\"euro\").value);\n    if (isNaN(euro)) {\n        alert(\"Saisis un nombre !\");\n        return;\n    }\n    var fcfa = euro * 656;\n    document.getElementById(\"fcfa\").value = fcfa;\n}\n</script>\n</body>\n</html>\n```\n\nIdentifie deux variables, le nom de la fonction, un événement, et donne le rôle de `alert`. Que devient le champ FCFA si l'utilisateur tape 100 ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les variables",
+          "justification": "Elles sont déclarées par le mot-clé var",
+          "resultat_markdown": "`euro` et `fcfa`"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la fonction déclarée",
+          "justification": "Elle commence par le mot-clé function",
+          "resultat_markdown": "`convertir`"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer l'événement",
+          "justification": "Un événement s'écrit sous la forme d'un attribut commençant par on, placé sur une balise",
+          "resultat_markdown": "`onclick` sur le bouton « Convertir » : le clic déclenche `convertir()`"
+        },
+        {
+          "numero": 4,
+          "action": "Expliquer alert",
+          "justification": "Elle est dans le bloc if exécuté seulement quand isNaN(euro) est vrai, c'est-à-dire quand la saisie n'est pas un nombre",
+          "resultat_markdown": "Elle avertit l'utilisateur d'une saisie invalide, et le return arrête la fonction"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer pour 100 euros",
+          "justification": "fcfa = euro * 656",
+          "resultat_markdown": "100 × 656 = 65 600 : le champ FCFA affiche 65600"
+        }
+      ],
+      "conclusion_markdown": "Variables : `euro` et `fcfa` ; fonction : `convertir` ; événement : `onclick` ; `alert` signale une saisie qui n'est pas un nombre ; pour 100 euros, le champ FCFA affiche 65600."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre JavaScript et Java",
+          "pourquoi_faux": "Ce sont deux langages différents : JavaScript est un langage de script interprété par le navigateur, Java est un langage compilé d'usage plus général.",
+          "correction_markdown": "Pour une page web dynamique côté navigateur, parle de JavaScript."
+        },
+        {
+          "erreur_markdown": "Écrire onclick=\"convertir\" sans les parenthèses",
+          "pourquoi_faux": "Sans parenthèses, la fonction n'est pas appelée au clic : il n'y a pas d'appel d'instruction.",
+          "correction_markdown": "Écris onclick=\"convertir()\"."
+        },
+        {
+          "erreur_markdown": "Additionner deux valeurs lues dans des champs sans les convertir",
+          "pourquoi_faux": "La propriété value renvoie du texte : avec les saisies \"12\" et \"8\", le signe + les concatène et donne \"128\", pas 20.",
+          "correction_markdown": "Convertis avant de calculer : parseFloat(a) + parseFloat(b) donne 20."
+        },
+        {
+          "erreur_markdown": "Citer comme variable le nom de la fonction ou celui d'un champ du formulaire",
+          "pourquoi_faux": "Une variable est introduite par var (ou let) dans le script ; le nom d'une fonction suit le mot function, et un identifiant de champ (id) est un attribut HTML.",
+          "correction_markdown": "Cherche var pour les variables et function pour les fonctions."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le script suivant, identifie une variable et une fonction :\n\n```javascript\nvar prix = 500;\nfunction doubler(x) {\n    return x * 2;\n}\n```",
+          "solution_markdown": "La variable est `prix` (déclarée avec `var`) ; la fonction est `doubler` (déclarée avec `function`). Le `x` entre parenthèses est un paramètre de la fonction."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le bouton et la fonction JavaScript qui, au clic, ouvrent une boîte de dialogue affichant le double de 21.",
+          "solution_markdown": "```html\n<input type=\"button\" value=\"Doubler\" onclick=\"afficher()\">\n<script>\nfunction afficher() {\n    alert(21 * 2);\n}\n</script>\n```\n\nAu clic, la boîte affiche 42 : l'événement `onclick` appelle la fonction `afficher`, dont l'instruction `alert` produit la boîte de dialogue."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire contient deux champs d'identifiants a et b, où l'utilisateur tape 12 et 8. Le script écrit `var s = document.getElementById(\"a\").value + document.getElementById(\"b\").value;`. Que vaut s ? Corrige le script pour obtenir la somme.",
+          "solution_markdown": "La propriété `value` renvoie du texte : s vaut la chaîne `128` (concaténation de `12` et `8`).\n\nVersion corrigée :\n\n```javascript\nvar s = parseFloat(document.getElementById(\"a\").value) + parseFloat(document.getElementById(\"b\").value);\n```\n\nCette fois, s vaut le nombre 20."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un script est un programme placé dans la balise `<script>` d'une page web ; JavaScript est interprété par le navigateur.",
+        "Variable : repérée par `var` (ou `let`) ; fonction : repérée par `function` ; événement : attribut commençant par `on`.",
+        "Un événement relie une action de l'utilisateur (clic, saisie) à l'appel d'une fonction, avec les parenthèses : `onclick=\"convertir()\"`.",
+        "La valeur d'un champ de formulaire est du texte : on la convertit avec `parseFloat` avant de calculer, et `isNaN` teste la saisie.",
+        "`alert` ouvre une boîte de dialogue : dans un script de validation, elle prévient l'utilisateur d'une erreur de saisie."
+      ]
+    }
+  ]
+}

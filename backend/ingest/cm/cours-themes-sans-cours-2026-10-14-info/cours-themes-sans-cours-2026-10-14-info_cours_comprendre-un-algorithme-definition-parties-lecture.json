@@ -1,0 +1,148 @@
+{
+  "cours_id": "cours-comprendre-un-algorithme-definition-parties-lecture-fr23",
+  "meta": {
+    "titre": "Comprendre un algorithme : définition, parties et lecture d'un exemple",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : notion d'algorithme et lecture d'un algorithme",
+    "duree_estimee_min": 30,
+    "tags": [
+      "Notion d'algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_source": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun.html",
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q1.2-1-fr23",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une recette de cuisine, un mode d'emploi de distributeur de billets, la marche à suivre pour retirer de l'argent sur Orange Money : tous ces textes décrivent des actions à faire dans un ordre précis pour atteindre un résultat. En informatique, une telle description s'appelle un algorithme. Avant d'écrire la moindre ligne de programme, le programmeur raisonne en algorithme. Au Probatoire, on te demande de le définir, d'en citer les parties, de dire ce qu'un algorithme donné calcule et de lui trouver un nom."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une opération et sa priorité (multiplication avant addition)",
+        "Connaître la notion de pourcentage (7 % = 0,07)",
+        "Savoir qu'un programme est écrit dans un langage compris par l'ordinateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définition, qualités et parties d'un algorithme",
+      "contenu_markdown": "**Définition.** Un **algorithme** est une suite **finie** et **ordonnée** d'instructions **non ambiguës** qui, à partir de données initiales (les **entrées**), permet de résoudre un problème et de produire un résultat (les **sorties**).\n\n**Les qualités attendues.**\n\n- **Fini** : il s'arrête après un nombre limité d'étapes.\n- **Précis** : chaque instruction n'a qu'un seul sens possible.\n- **Ordonné** : l'ordre des instructions compte, les inverser change le résultat.\n- **Général** : il résout une famille de problèmes, pas un seul cas.\n\n**Algorithme et programme.** L'algorithme est écrit en **pseudo-code** (ou dessiné sous forme d'organigramme), indépendamment de tout langage. Le **programme** est sa traduction dans un langage de programmation que l'ordinateur comprend. L'algorithmique est la discipline qui étudie la construction des algorithmes.\n\n**Les parties d'un algorithme.**\n\n1. **L'en-tête** : le mot-clé `Algorithme` suivi du nom choisi.\n2. **La partie déclarative** : on déclare les variables (et les constantes) avec leur type, introduites par `Var` ou `Variables`.\n3. **Le corps** : les instructions placées entre `Début` et `Fin`.\n\n**Lire un algorithme.** Pour dire ce qu'il fait, repère trois choses : ce qui est **lu** (les entrées), la **formule** de calcul (le traitement) et ce qui est **affiché** (la sortie). Résume ensuite en une phrase qui commence par un verbe : « calcule... », « affiche... ».\n\n**Nommer un algorithme.** Le nom résume le résultat obtenu : sans espace ni accent (le tiret bas remplace l'espace), il commence par une lettre et ne reprend pas un mot réservé. Exemple : `Calcul_Surface`.",
+      "variantes": [
+        {
+          "nom": "Exécuter un algorithme à la main",
+          "quand_utiliser": "Quand l'énoncé donne des valeurs numériques pour les entrées.",
+          "contenu_markdown": "On remplace chaque variable par sa valeur, instruction après instruction. Respecte la priorité des opérations : parenthèses, puis multiplication et division, puis addition et soustraction. Un pourcentage s'écrit sous forme décimale dans une formule : 7 % devient 0,07."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère l'algorithme suivant.\n\n```\nAlgorithme\nVar nb, pht, ttva, pttc : Numérique ;\nDébut\n  Écrire (\"Entrez le prix hors taxes :\") ;\n  Lire (pht) ;\n  Écrire (\"Entrez le nombre d'articles :\") ;\n  Lire (nb) ;\n  Écrire (\"Entrez le taux de TVA :\") ;\n  Lire (ttva) ;\n  pttc ← nb * pht * (1 + ttva) ;\n  Écrire (\"Le prix toutes taxes confondues est : \", pttc) ;\nFin\n```\n\n1) Que vaut pttc pour nb = 5, pht = 7 500 FCFA et ttva = 7 % ? 2) Que fait cet algorithme ? 3) Propose un nom. (Probatoire A, ABI, C, D, E, 2017.)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir le pourcentage",
+          "justification": "Dans la formule, ttva doit être un nombre décimal.",
+          "resultat_markdown": "7 % = 7 ÷ 100 = 0,07."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le facteur entre parenthèses",
+          "justification": "Les parenthèses ont la priorité.",
+          "resultat_markdown": "1 + 0,07 = 1,07."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le prix hors taxes de tous les articles",
+          "justification": "nb * pht donne le total hors taxes.",
+          "resultat_markdown": "5 × 7 500 = 37 500 FCFA."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le facteur TVA",
+          "justification": "pttc = nb * pht * (1 + ttva).",
+          "resultat_markdown": "37 500 × 1,07 = 40 125 FCFA, donc pttc = 40 125."
+        },
+        {
+          "numero": 5,
+          "action": "Décrire le rôle de l'algorithme",
+          "justification": "Entrées : pht, nb, ttva. Traitement : ajout de la TVA au prix hors taxes. Sortie : pttc.",
+          "resultat_markdown": "Il calcule et affiche le prix toutes taxes comprises d'un achat de plusieurs articles."
+        },
+        {
+          "numero": 6,
+          "action": "Choisir un nom",
+          "justification": "Le nom résume le résultat, sans espace ni accent.",
+          "resultat_markdown": "Calcul_Prix_TTC."
+        }
+      ],
+      "conclusion_markdown": "pttc = **40 125 FCFA** ; l'algorithme **calcule le prix toutes taxes comprises** ; nom proposé : **Calcul_Prix_TTC**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Définir un algorithme comme « un programme informatique ».",
+          "pourquoi_faux": "Un programme est écrit dans un langage précis, exécutable par une machine. L'algorithme est une méthode de résolution indépendante du langage.",
+          "correction_markdown": "Dire : suite finie et ordonnée d'instructions non ambiguës qui résout un problème."
+        },
+        {
+          "erreur_markdown": "Calculer avec 7 au lieu de 0,07 : 5 × 7 500 × (1 + 7).",
+          "pourquoi_faux": "Un pourcentage doit être converti en décimal avant d'être utilisé : on trouverait 300 000 FCFA, absurde pour une taxe de 7 %.",
+          "correction_markdown": "Convertir 7 % en 0,07, puis calculer."
+        },
+        {
+          "erreur_markdown": "Citer les parties d'un algorithme dans le désordre, ou oublier la partie déclarative.",
+          "pourquoi_faux": "Une variable doit être déclarée avec son type avant d'être utilisée dans le corps.",
+          "correction_markdown": "Suivre l'ordre de la feuille : en-tête, déclarations, corps entre Début et Fin."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite les trois parties d'un algorithme et donne le rôle de chacune.",
+          "solution_markdown": "1. **L'en-tête** : le mot `Algorithme` suivi du nom.\n2. **La partie déclarative** : les variables et constantes avec leur type.\n3. **Le corps** : les instructions entre `Début` et `Fin` (lecture, calcul, affichage)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprends l'algorithme de l'exemple avec nb = 3, pht = 12 000 FCFA et ttva = 0,05. Que vaut pttc ?",
+          "solution_markdown": "- facteur : 1 + 0,05 = 1,05 ;\n- total hors taxes : 3 × 12 000 = 36 000 FCFA ;\n- pttc = 36 000 × 1,05 = **37 800 FCFA**.\n\nIci ttva est déjà donné sous forme décimale (0,05 correspond à 5 %)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut un algorithme qui lit le prix d'un article et une remise en pourcentage, puis affiche le prix après remise. Écris-le, puis vérifie-le avec un prix de 8 000 FCFA et une remise de 10 %.",
+          "solution_markdown": "```\nAlgorithme Prix_Apres_Remise\nVar prix, remise, net : Numérique ;\nDébut\n  Écrire (\"Entrez le prix :\") ;\n  Lire (prix) ;\n  Écrire (\"Entrez la remise (en pourcentage) :\") ;\n  Lire (remise) ;\n  net ← prix * (1 - remise / 100) ;\n  Écrire (\"Prix après remise : \", net) ;\nFin\n```\n\nVérification : remise / 100 = 0,10 ; 1 - 0,10 = 0,90 ; net = 8 000 × 0,90 = **7 200 FCFA**. Les trois parties sont présentes et la variable intermédiaire est évitée par une seule formule."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un algorithme est une suite finie, ordonnée et non ambiguë d'instructions qui résout un problème : il ne dépend d'aucun langage.",
+        "Un algorithme comporte un en-tête (nom), une partie déclarative (variables et types) et un corps entre Début et Fin.",
+        "Pour dire ce qu'un algorithme fait, identifie les entrées, le traitement (la formule) et la sortie, puis rédige une phrase commençant par un verbe.",
+        "Avant de calculer, convertis le pourcentage en nombre décimal et respecte la priorité des opérations.",
+        "Un nom d'algorithme résume le résultat, sans espace ni accent : Calcul_Prix_TTC."
+      ]
+    }
+  ]
+}

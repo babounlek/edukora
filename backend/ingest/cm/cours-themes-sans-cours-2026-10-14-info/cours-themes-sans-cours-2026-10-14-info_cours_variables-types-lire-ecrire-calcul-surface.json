@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-variables-types-lire-ecrire-calcul-surface-fr23",
+  "meta": {
+    "titre": "Variables, types de données et instructions Lire et Écrire",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : déclarer, lire, calculer et afficher",
+    "duree_estimee_min": 30,
+    "tags": [
+      "variable",
+      "instruction de lecture et d'écriture",
+      "Calcul de surface"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_source": "probatoire-a-c-d-e-informatique-2016-officiel-cameroun.html",
+    "epreuve_id": "probatoire-a-c-d-e-informatique-2016-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C, D et E, session 2016 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-c-d-e-informatique-2016-officiel-cameroun-ex2-q1-1-fr23",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu envoies une recharge de crédit, le téléphone te demande un numéro, un montant, puis affiche une confirmation. Derrière cet échange, le programme garde ton numéro et ton montant dans des « cases » de la mémoire, les variables, lit ce que tu tapes, calcule, puis affiche le résultat. Tout algorithme repose sur ces trois gestes : déclarer des variables, lire des données et écrire des résultats. C'est le schéma de l'exercice classique « calculer la surface d'un rectangle »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la formule de la surface d'un rectangle : longueur multipliée par largeur",
+        "Savoir ce qu'est un algorithme et ses trois parties",
+        "Distinguer nombre entier, nombre décimal et texte"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Variables, types, lecture et écriture",
+      "contenu_markdown": "**Variable.** Une variable est une **case de la mémoire** repérée par un **nom** (identifiant) et qui contient **une seule valeur à la fois**. Elle est déclarée avec un **type** qui fixe les valeurs permises et les opérations autorisées. Un identifiant commence par une lettre, ne contient ni espace ni accent (on utilise le tiret bas) et n'est pas un mot réservé du langage.\n\n**Constante.** Une constante garde la même valeur pendant tout l'algorithme (par exemple la valeur de pi).\n\n| Type | Valeurs | Exemples |\n|---|---|---|\n| Entier | nombres sans partie décimale | 12 ; 0 ; -5 |\n| Réel | nombres avec partie décimale | 3,14 ; -0,5 ; 2,5 |\n| Caractère | un seul symbole | 'A' ; '7' |\n| Chaîne de caractères | un texte | \"Douala\" ; \"Bonjour\" |\n| Booléen | une valeur logique | Vrai ; Faux |\n\n**Déclaration.** Elle se place avant le corps :\n\n```\nVariables L, l, S : réel\n```\n\n**Lecture.** `Lire(x)` arrête l'algorithme, attend que l'utilisateur tape une valeur au clavier et la range dans la variable x. Il faut avoir déclaré x avant.\n\n**Écriture.** `Écrire(\"texte\", x)` affiche à l'écran le texte entre guillemets tel quel et la valeur de la variable x. Le texte entre guillemets n'est jamais interprété : `Écrire(\"S\")` affiche la lettre S, tandis que `Écrire(S)` affiche la valeur de S.\n\n**Affectation.** `S ← L * l` calcule le produit avec les valeurs actuelles de L et l, puis range le résultat dans S. La flèche va de droite à gauche.\n\n**Plan type d'un algorithme de calcul :** déclarer, lire les données, calculer par affectation, afficher le résultat. Choisis le type réel dès qu'une donnée peut être décimale ou qu'un résultat peut l'être (une moyenne par exemple).",
+      "variantes": [
+        {
+          "nom": "Choisir le type d'une variable",
+          "quand_utiliser": "Quand la question demande de déclarer les variables d'un algorithme.",
+          "contenu_markdown": "Compte, âge, nombre d'élèves : type **entier**. Longueur, prix, moyenne : type **réel**. Nom, ville : **chaîne**. Réponse oui/non : **booléen**. Un numéro de téléphone n'est pas un nombre de calcul : on le range en chaîne."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écris l'algorithme qui lit la longueur L et la largeur l d'un rectangle, puis affiche sa surface S = L × l. Vérifie-le avec L = 8 et l = 2,5. (Probatoire A, C, D, E, 2016.)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser le problème",
+          "justification": "On identifie ce qui est lu, la formule et ce qui est affiché.",
+          "resultat_markdown": "Entrées : L et l. Traitement : S = L × l. Sortie : S."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir les types",
+          "justification": "Une dimension peut être décimale (2,5) et le produit aussi.",
+          "resultat_markdown": "L, l et S sont de type réel."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'algorithme",
+          "justification": "Ordre à respecter : déclaration, lecture, calcul, affichage.",
+          "resultat_markdown": "```\nAlgorithme Surface_Rectangle\nVariables L, l, S : réel\nDébut\n  Écrire(\"Entrer la longueur L : \")\n  Lire(L)\n  Écrire(\"Entrer la largeur l : \")\n  Lire(l)\n  S ← L * l\n  Écrire(\"La surface est : \", S)\nFin\n```"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier avec les valeurs données",
+          "justification": "Chaque Lire range la valeur tapée dans la variable.",
+          "resultat_markdown": "L = 8, l = 2,5 ; S = 8 × 2,5 = 20 ; l'écran affiche : La surface est : 20."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme respecte le schéma **déclarer, lire, calculer, écrire** et donne **S = 20** pour L = 8 et l = 2,5."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer S sans avoir lu L et l, ou écrire S ← L * l avant les Lire.",
+          "pourquoi_faux": "Tant que L et l n'ont pas reçu de valeur, elles sont indéfinies : le calcul n'a aucun sens.",
+          "correction_markdown": "Toujours lire les données avant de les utiliser."
+        },
+        {
+          "erreur_markdown": "Écrire Écrire(\"S\") pour afficher la surface.",
+          "pourquoi_faux": "Les guillemets affichent la lettre S et non la valeur de la variable.",
+          "correction_markdown": "Écrire(\"La surface est : \", S) : le texte entre guillemets, la variable sans guillemets."
+        },
+        {
+          "erreur_markdown": "Déclarer toutes les variables de type entier, y compris la moyenne ou la longueur.",
+          "pourquoi_faux": "Une variable entière ne peut pas stocker 2,5 : l'information décimale serait perdue ou refusée.",
+          "correction_markdown": "Choisir réel dès que la valeur peut avoir une partie décimale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne le type le plus adapté pour chaque donnée : le nom d'un élève, son âge, sa moyenne générale, et la réponse à « Est-il admis ? ».",
+          "solution_markdown": "- nom : **chaîne de caractères** ;\n- âge : **entier** ;\n- moyenne générale : **réel** (par exemple 12,75) ;\n- admis ou non : **booléen** (Vrai ou Faux)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris un algorithme qui lit deux notes entières et affiche leur moyenne. Que vaut la moyenne de 7 et 12 ? Quel type donner à la moyenne ?",
+          "solution_markdown": "```\nAlgorithme Moyenne_Deux_Notes\nVariables n1, n2 : entier\n           moy : réel\nDébut\n  Écrire(\"Première note : \")\n  Lire(n1)\n  Écrire(\"Deuxième note : \")\n  Lire(n2)\n  moy ← (n1 + n2) / 2\n  Écrire(\"Moyenne : \", moy)\nFin\n```\n\nPour 7 et 12 : (7 + 12) ÷ 2 = 19 ÷ 2 = **9,5**. La moyenne est de type **réel**, car 9,5 n'est pas un entier. Les parenthèses sont indispensables : sans elles, n2 / 2 serait calculé avant l'addition."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un algorithme lit le rayon R d'un cercle et doit afficher son périmètre 2 × pi × R. Propose la déclaration et le corps, puis calcule le résultat pour R = 10, avec pi pris égal à 3,14.",
+          "solution_markdown": "```\nAlgorithme Perimetre_Cercle\nConstante PI = 3,14\nVariables R, P : réel\nDébut\n  Écrire(\"Entrer le rayon R : \")\n  Lire(R)\n  P ← 2 * PI * R\n  Écrire(\"Le périmètre est : \", P)\nFin\n```\n\nPour R = 10 : P = 2 × 3,14 × 10 = **62,8**. La valeur de pi est déclarée comme constante, car elle ne change pas pendant l'exécution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable est une case mémoire nommée, de type fixé, qui contient une seule valeur à la fois.",
+        "Les types usuels sont entier, réel, caractère, chaîne de caractères et booléen : choisis le réel dès qu'une valeur peut être décimale.",
+        "Lire(x) range dans x la valeur tapée au clavier ; Écrire(\"texte\", x) affiche le texte tel quel et la valeur de x.",
+        "Un algorithme de calcul suit l'ordre : déclarer, lire, calculer par affectation, afficher.",
+        "Pour la surface d'un rectangle : S ← L * l, avec L, l et S de type réel (exemple : 8 et 2,5 donnent 20)."
+      ]
+    }
+  ]
+}

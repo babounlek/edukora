@@ -1,0 +1,196 @@
+[
+  {
+    "external_id": "cqc-fonctions-predefinies-prog-fr15-faible-0",
+    "theme": "Fonctions prédéfinies",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans le programme C suivant, laquelle de ces fonctions est une fonction prédéfinie (fournie par une bibliothèque) ?\n\n```c\n#include <stdio.h>\n\nint carre(int x) {\n    return x * x;\n}\n\nint main() {\n    printf(\"%d\", carre(5));\n    return 0;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nPour reconnaître une fonction prédéfinie, on cherche celle dont le corps n'est pas écrit dans le programme et qui provient d'une bibliothèque déclarée par une ligne #include.\n\n### Corrigé\n\nLe corps de `carre` et celui de `main` sont écrits dans le programme : ce sont des fonctions définies par le programmeur. `printf` n'est pas écrite dans le programme ; elle vient de la bibliothèque `stdio.h` déclarée par la ligne `#include <stdio.h>`. C'est la fonction prédéfinie.\n\nRéponse **C**.\n\n- A : `carre` est écrite par le programmeur.\n- B : `main` est la fonction principale du programme, écrite par le programmeur.\n- D : `x` est un paramètre de la fonction `carre`, pas une fonction.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`carre`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`main`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`printf`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`x`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      13710
+    ]
+  },
+  {
+    "external_id": "cqc-fonctions-predefinies-prog-fr15-faible-1",
+    "theme": "Fonctions prédéfinies",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Pour utiliser la fonction prédéfinie `sqrt` (racine carrée) dans un programme C, quelle bibliothèque faut-il inclure ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour utiliser une fonction prédéfinie, on inclut avec #include le fichier d'en-tête de la bibliothèque qui la contient : stdio.h pour les entrées-sorties, math.h pour les fonctions mathématiques, string.h pour les chaînes.\n\n### Corrigé\n\nLa fonction `sqrt` calcule la racine carrée d'un nombre. Elle appartient aux fonctions mathématiques de la bibliothèque `math.h` : on écrit `#include <math.h>` en tête du programme.\n\nRéponse **B**.\n\n- A : `stdio.h` contient les fonctions d'entrée-sortie comme `printf` et `scanf`.\n- C : `string.h` contient les fonctions sur les chaînes de caractères, comme `strlen`.\n- D : `stdlib.h` contient des fonctions générales comme `abs` ou `rand`, mais pas `sqrt`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`stdio.h`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`math.h`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`string.h`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`stdlib.h`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      13710
+    ]
+  },
+  {
+    "external_id": "cqc-fonctions-predefinies-prog-fr15-moyenne-2",
+    "theme": "Fonctions prédéfinies",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant :\n\n```c\n#include <stdio.h>\n#include <math.h>\n\nint main() {\n    printf(\"%d\", (int) pow(2, 5) + (int) sqrt(49));\n    return 0;\n}\n```\n\n(`pow(a, b)` retourne a élevé à la puissance b, et `sqrt(x)` retourne la racine carrée de x.) Que ce programme affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour évaluer une expression qui contient des appels de fonctions prédéfinies, on calcule d'abord chaque appel selon la définition de la fonction, puis on combine les valeurs obtenues.\n\n### Corrigé\n\n`pow(2, 5)` vaut 2^5 = 32 et `sqrt(49)` vaut 7 ; les conversions (int) ne changent pas ces valeurs entières. La somme est 32 + 7 = **39**.\n\nRéponse **A**.\n\n- B (`17`) : calcule 2 * 5 = 10 au lieu de 2^5, puis ajoute 7.\n- C (`32`) : oublie d'ajouter la racine carrée de 49.\n- D (`14`) : additionne 2 + 5 + 7 en prenant pow pour une somme.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`39`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`17`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`32`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`14`"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      13710
+    ]
+  },
+  {
+    "external_id": "cqc-fonctions-predefinies-prog-fr15-moyenne-3",
+    "theme": "Fonctions prédéfinies",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant :\n\n```c\n#include <stdio.h>\n#include <string.h>\n\nint main() {\n    char ville[] = \"Yaounde\";\n    printf(\"%d\", (int) strlen(ville) + 1);\n    return 0;\n}\n```\n\n(`strlen` retourne le nombre de caractères d'une chaîne, sans compter le caractère de fin de chaîne.) Que ce programme affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour utiliser strlen, on compte les caractères visibles de la chaîne, sans le caractère nul de fin de chaîne, puis on applique l'opération demandée sur cette longueur.\n\n### Corrigé\n\nLa chaîne \"Yaounde\" contient 7 caractères : Y, a, o, u, n, d, e. Donc `strlen(ville)` retourne 7, et l'expression vaut 7 + 1 = **8**.\n\nRéponse **D**.\n\n- A (`6`) : oublie une lettre dans le décompte.\n- B (`7`) : oublie d'ajouter 1 à la longueur.\n- C (`9`) : compte déjà le caractère de fin de chaîne dans strlen, puis ajoute encore 1.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`6`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`7`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`9`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`8`"
+      }
+    ],
+    "reponse_correcte": "D",
+    "source_exercises": [
+      13710
+    ]
+  },
+  {
+    "external_id": "cqc-fonctions-predefinies-prog-fr15-moyenne-4",
+    "theme": "Fonctions prédéfinies",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant :\n\n```c\n#include <stdio.h>\n#include <math.h>\n#include <stdlib.h>\n\nint aire(int c) {\n    return c * c;\n}\n\nint main() {\n    int a;\n    scanf(\"%d\", &a);\n    int d = abs(a);\n    printf(\"%d %.0f %d\", aire(d), sqrt(aire(d)), d);\n    return 0;\n}\n```\n\n1. Relever les fonctions prédéfinies utilisées et la bibliothèque de chacune. Quelles sont les fonctions écrites par le programmeur ?\n2. Donner l'affichage exact lorsque l'utilisateur saisit -6.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour repérer les fonctions prédéfinies d'un programme, on relève chaque appel dont le corps n'est pas écrit dans le programme et on retrouve sa bibliothèque grâce aux lignes #include.\n\n### Corrigé\n\n1. Fonctions prédéfinies :\n\n| Fonction | Rôle | Bibliothèque |\n|---|---|---|\n| `scanf` | lit une valeur au clavier | `stdio.h` |\n| `printf` | affiche à l'écran | `stdio.h` |\n| `abs` | valeur absolue d'un entier | `stdlib.h` |\n| `sqrt` | racine carrée | `math.h` |\n\nLes fonctions écrites par le programmeur sont `aire` et `main`.\n\n2. Avec a = -6 : d = abs(-6) = 6. Puis `aire(d)` vaut 36 ; `sqrt(36)` vaut 6 (affiché 6 avec le format `%.0f`, sans décimales) ; d vaut 6. L'affichage est **36 6 6**.\n\n### Piège à éviter\n\nsqrt retourne un nombre réel (double) : on l'affiche avec un format réel comme %f ou %.0f, et non avec %d.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      13710
+    ]
+  },
+  {
+    "external_id": "cqc-fonctions-predefinies-prog-fr15-elevee-5",
+    "theme": "Fonctions prédéfinies",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant :\n\n```c\n#include <stdio.h>\n#include <math.h>\n#include <stdlib.h>\n#include <string.h>\n\nint main() {\n    double x = 7.6;\n    printf(\"%d \", (int) floor(x));\n    printf(\"%d \", (int) ceil(x));\n    printf(\"%d \", (int) (x + 0.5));\n    printf(\"%d \", abs(-9) % 4);\n    printf(\"%d\", (int) strlen(\"Bonjour\") - 3);\n    return 0;\n}\n```\n\n(`floor(x)` retourne le plus grand entier inférieur ou égal à x, `ceil(x)` le plus petit entier supérieur ou égal à x.)\n\n1. Donner la valeur de chacune des cinq expressions affichées et l'affichage exact du programme.\n2. Citer les fonctions prédéfinies utilisées avec leur bibliothèque. Le mot `(int)` est-il une fonction ?\n3. Que se passerait-il si la ligne `#include <math.h>` était supprimée ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour évaluer plusieurs appels de fonctions prédéfinies, on traite chaque printf séparément, on applique la définition de chaque fonction à son argument, puis on assemble les valeurs avec leurs séparateurs dans l'ordre d'affichage.\n\n### Corrigé\n\n1. Valeurs, dans l'ordre :\n\n| Expression | Calcul | Valeur |\n|---|---|---|\n| `(int) floor(x)` | plus grand entier inférieur ou égal à 7,6 | 7 |\n| `(int) ceil(x)` | plus petit entier supérieur ou égal à 7,6 | 8 |\n| `(int) (x + 0.5)` | 7,6 + 0,5 = 8,1, partie entière | 8 |\n| `abs(-9) % 4` | 9 % 4 = reste de 9 par 4 | 1 |\n| `(int) strlen(\"Bonjour\") - 3` | 7 - 3 | 4 |\n\nChaque printf, sauf le dernier, termine son format par un espace. L'affichage exact est : **7 8 8 1 4**.\n\n2. Fonctions prédéfinies : `printf` (stdio.h), `floor` et `ceil` (math.h), `abs` (stdlib.h) et `strlen` (string.h). Le mot `(int)` n'est **pas** une fonction : c'est l'opérateur de conversion de type (cast), qui convertit un réel en entier en supprimant sa partie décimale.\n\n3. Sans `#include <math.h>`, le compilateur ne connaît plus les fonctions `floor` et `ceil` : selon le compilateur, il signale une erreur ou un avertissement de déclaration implicite, et le résultat risque d'être faux car la fonction est alors supposée retourner un entier.\n\n### Piège à éviter\n\nNe confonds pas la conversion (int) avec un arrondi : (int) 8.1 donne 8 par suppression de la partie décimale, comme (int) 8.9 qui donnerait aussi 8.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      13710
+    ]
+  }
+]

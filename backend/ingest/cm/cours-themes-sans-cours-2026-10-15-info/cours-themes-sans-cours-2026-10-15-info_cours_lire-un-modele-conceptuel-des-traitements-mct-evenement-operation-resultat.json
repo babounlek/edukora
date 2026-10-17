@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-mct-evenement-operation-resultat-synchronisation-fr15",
+  "meta": {
+    "titre": "Lire un modèle conceptuel des traitements (MCT) : événement, opération, résultat et synchronisation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Modélisation des traitements avec Merise",
+    "duree_estimee_min": 22,
+    "tags": [
+      "modèle conceptuel des traitements",
+      "MCD et MCT"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex3-q11a-1-fr15",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "probatoire-ti-si-2017-officiel-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le MCD de la méthode Merise te dit quelles informations une organisation garde : des clients, des chambres, des réservations. Mais il ne dit pas ce qui se passe quand un client arrive à la réception : qui vérifie quoi, dans quel ordre, avec quel résultat. Ce « comment ça se déroule » est décrit par un autre schéma, le **MCT**. Au probatoire, on te montre un schéma de traitements et on te demande son nom, puis d'en nommer les éléments."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la méthode Merise et le MCD (entités, attributs, associations)",
+        "Savoir distinguer une information mémorisée d'une action effectuée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le MCT et ses quatre éléments, face au MCD",
+      "contenu_markdown": "Le **MCT** (modèle conceptuel des traitements) décrit, au niveau conceptuel de Merise, **ce que fait** le système d'information en réaction aux événements, sans dire qui le fait ni avec quel matériel.\n\nIl se lit avec quatre éléments :\n\n- un **événement** est un fait qui déclenche un traitement : un message reçu de l'extérieur (arrivée d'une commande) ou un résultat produit par une autre opération ;\n- une **synchronisation** est la condition logique qui précise quels événements doivent être présents pour lancer l'opération : **ET** (tous les événements sont nécessaires) ou **OU** (au moins un suffit) ;\n- une **opération** est un ensemble d'actions exécutées de manière continue en réponse aux événements ; elle porte un nom et la liste de ses actions ;\n- un **résultat** est ce que l'opération produit : un message, une information, un nouvel événement. Une **règle d'émission** précise la condition dans laquelle chaque résultat est émis.\n\n**Donnée et traitement.** Une **donnée** est une information mémorisée et décrite dans le MCD (le nom d'un client, un montant). Un **traitement** est une action réalisée sur ces données (calculer un total, enregistrer une réservation) et décrite dans le MCT. Le MCD répond à « quelles informations garde-t-on ? », le MCT à « que fait-on avec elles ? » : les deux modèles se complètent.",
+      "variantes": [
+        {
+          "nom": "Synchronisation ET",
+          "quand_utiliser": "Quand l'opération a besoin de plusieurs événements à la fois",
+          "contenu_markdown": "« Dossier reçu ET paiement reçu » : tant que l'un des deux manque, l'opération n'est pas déclenchée."
+        },
+        {
+          "nom": "Synchronisation OU",
+          "quand_utiliser": "Quand un seul événement parmi plusieurs suffit",
+          "contenu_markdown": "« Commande reçue par téléphone OU commande reçue par courrier » : l'opération démarre dès qu'une des deux arrive."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un lycée décrit ainsi l'inscription d'un élève :\n\n- Événements : « Dossier d'inscription déposé » et « Frais de scolarité payés ».\n- Condition : l'opération ne démarre que si les deux événements sont présents.\n- Opération « Inscrire l'élève » : vérifier le dossier, enregistrer l'élève, éditer le reçu.\n- Règle d'émission : si le dossier est complet, le résultat est « Élève inscrit » ; sinon, c'est « Dossier rejeté ».\n\nNomme ce type de représentation, puis identifie la synchronisation, l'opération et les résultats.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Nommer la représentation",
+          "justification": "Elle décrit des événements, des opérations et des résultats, donc des traitements",
+          "resultat_markdown": "C'est un MCT : modèle conceptuel des traitements de Merise"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la synchronisation",
+          "justification": "Les deux événements sont tous deux nécessaires",
+          "resultat_markdown": "Synchronisation de type ET : « dossier déposé ET frais payés »"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier l'opération",
+          "justification": "C'est le bloc nommé qui regroupe les actions exécutées en continu",
+          "resultat_markdown": "Opération « Inscrire l'élève », avec ses trois actions"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier les résultats et la règle d'émission",
+          "justification": "Chaque résultat n'est émis que dans une condition précise",
+          "resultat_markdown": "« Élève inscrit » si dossier complet ; « Dossier rejeté » sinon"
+        }
+      ],
+      "conclusion_markdown": "Le schéma est un MCT. Il comporte deux événements, une synchronisation ET, une opération et deux résultats soumis à une règle d'émission. Il décrit des traitements, pas des données : les données (élève, classe) relèvent du MCD."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « MCD » quand le schéma montre des événements et des opérations",
+          "pourquoi_faux": "Le MCD représente des entités, des attributs et des associations. Dès qu'on voit des événements, des opérations et des résultats, il s'agit du MCT.",
+          "correction_markdown": "Repère les mots clés : événement, opération, résultat, synchronisation donnent MCT."
+        },
+        {
+          "erreur_markdown": "Confondre événement et résultat",
+          "pourquoi_faux": "L'événement est ce qui déclenche l'opération ; le résultat est ce qu'elle produit. Un résultat peut devenir l'événement d'une opération suivante.",
+          "correction_markdown": "Place l'élément avant l'opération (événement) ou après (résultat)."
+        },
+        {
+          "erreur_markdown": "Donner pour « traitement » une information comme « nom du client »",
+          "pourquoi_faux": "Le nom du client est une donnée mémorisée. Un traitement est une action sur les données.",
+          "correction_markdown": "Un traitement s'exprime avec un verbe d'action : calculer, enregistrer, vérifier, éditer."
+        },
+        {
+          "erreur_markdown": "Confondre la synchronisation ET avec la synchronisation OU",
+          "pourquoi_faux": "Avec ET, l'opération attend tous les événements ; avec OU, un seul suffit. Les confondre change le déclenchement de l'opération.",
+          "correction_markdown": "Relis la condition : si elle contient « et », tout est requis."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie MCT ? Donne la différence entre une donnée et un traitement avec un exemple de chacun.",
+          "solution_markdown": "MCT : modèle conceptuel des traitements.\n\nUne **donnée** est une information mémorisée, décrite dans le MCD : par exemple le montant d'une facture. Un **traitement** est une action réalisée sur les données, décrite dans le MCT : par exemple calculer le montant de la facture."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Classe chaque élément parmi événement, synchronisation, action d'une opération et résultat : a) « bon de commande reçu » ; b) « bon de commande reçu ET client solvable » ; c) « calculer le total de la facture » ; d) « facture émise ».",
+          "solution_markdown": "a) **Événement** : un fait extérieur qui déclenche un traitement.\n\nb) **Synchronisation** : une condition logique ET entre deux événements.\n\nc) **Action d'une opération** : un traitement exécuté à l'intérieur de l'opération.\n\nd) **Résultat** : ce que l'opération produit."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Décris en MCT le retrait d'argent à un distributeur : événements « Carte insérée » et « Code saisi ». L'opération « Vérifier et servir » contrôle le code puis le solde. Précise la synchronisation, la règle d'émission et les résultats.",
+          "solution_markdown": "- **Événements** : « Carte insérée » et « Code saisi ».\n- **Synchronisation** : ET, car le distributeur a besoin de la carte et du code.\n- **Opération** « Vérifier et servir » : contrôler le code, contrôler le solde, mettre à jour le compte.\n- **Règle d'émission** : si le code est correct et si le solde est suffisant, le résultat est « Billets remis » ; sinon, le résultat est « Retrait refusé ».\n\nLe résultat « Billets remis » peut devenir l'événement qui déclenche une opération suivante, par exemple l'édition du reçu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le MCT (modèle conceptuel des traitements) est le modèle de Merise qui décrit ce que fait le système d'information.",
+        "Ses éléments : événement, synchronisation (ET ou OU), opération, résultat, avec une règle d'émission pour les résultats.",
+        "Un résultat peut devenir l'événement d'une opération suivante.",
+        "Donnée : information mémorisée (MCD). Traitement : action sur les données (MCT).",
+        "Au probatoire, repère les mots événement, opération et résultat pour nommer un schéma MCT, puis nomme trois éléments."
+      ]
+    }
+  ]
+}

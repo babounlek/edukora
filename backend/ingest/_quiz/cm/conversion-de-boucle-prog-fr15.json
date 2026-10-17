@@ -1,0 +1,202 @@
+[
+  {
+    "external_id": "cqc-conversion-de-boucle-prog-fr15-faible-0",
+    "theme": "conversion de boucle",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On veut remplacer la boucle `Pour i de 1 à 5 Faire ... FinPour` par une boucle Tant que équivalente. Quelle transformation est correcte ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour convertir une boucle Pour en Tant que, on déplace trois éléments : l'initialisation du compteur avant la boucle, la condition de poursuite dans l'en-tête, et l'incrémentation à la fin du corps.\n\n### Corrigé\n\nLa boucle Pour parcourt 1, 2, 3, 4, 5. Le Tant que équivalent s'écrit :\n\n```\ni ← 1\nTant que i <= 5 Faire\n    ...\n    i ← i + 1\nFinTantQue\n```\n\nRéponse **A**.\n\n- B : la condition i < 5 s'arrête à 4 et exclut le dernier tour.\n- C : incrémenter en première ligne décale toutes les valeurs de i utilisées dans le corps (2 au lieu de 1 au premier tour).\n- D : une boucle Tant que ne gère pas son compteur ; sans initialisation ni incrémentation, la boucle serait fausse ou infinie.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`i ← 1` avant la boucle, condition `i <= 5`, et `i ← i + 1` en dernière ligne du corps"
+      },
+      {
+        "lettre": "B",
+        "texte": "`i ← 1` avant la boucle, condition `i < 5`, et `i ← i + 1` en dernière ligne du corps"
+      },
+      {
+        "lettre": "C",
+        "texte": "`i ← 1` avant la boucle, condition `i <= 5`, et `i ← i + 1` en première ligne du corps"
+      },
+      {
+        "lettre": "D",
+        "texte": "Aucune initialisation, car Tant que gère le compteur tout seul"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      13710,
+      13711
+    ]
+  },
+  {
+    "external_id": "cqc-conversion-de-boucle-prog-fr15-faible-1",
+    "theme": "conversion de boucle",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit la boucle C suivante :\n\n```c\nfor (i = 2; i <= 10; i = i + 2)\n    printf(\"%d \", i);\n```\n\nQuelle est la condition de la boucle while équivalente ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour lire une boucle for, on distingue ses trois parties séparées par des points-virgules : initialisation, condition de poursuite, puis mise à jour exécutée après chaque tour.\n\n### Corrigé\n\nDans `for (i = 2; i <= 10; i = i + 2)`, la deuxième partie est la condition de poursuite : `i <= 10`. C'est elle qui devient la condition du `while`. Le while équivalent est :\n\n```c\ni = 2;\nwhile (i <= 10) {\n    printf(\"%d \", i);\n    i = i + 2;\n}\n```\n\nRéponse **C**.\n\n- A : la condition i < 10 exclurait la valeur 10, qui est pourtant affichée par le for.\n- B : `i = 2` est l'initialisation, qui se place avant le while.\n- D : `i = i + 2` est la mise à jour, qui se place à la fin du corps.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`i < 10`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`i = 2`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`i <= 10`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`i = i + 2`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      13710,
+      13711
+    ]
+  },
+  {
+    "external_id": "cqc-conversion-de-boucle-prog-fr15-moyenne-2",
+    "theme": "conversion de boucle",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant :\n\n```c\nint i = 10, s = 0;\nwhile (i > 0) {\n    s = s + i;\n    i = i - 3;\n}\nprintf(\"%d\", s);\n```\n\nQuelle boucle for, placée à la place du while (avec `s = 0` avant elle et `s = s + i;` pour corps), donne exactement le même résultat ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour convertir un while en for, on place l'initialisation d'avant la boucle et l'incrémentation de fin de corps dans l'en-tête du for, en gardant la condition inchangée.\n\n### Corrigé\n\nLe while initialise i à 10 (avant la boucle), teste i > 0, et diminue i de 3 à la fin du corps. Les trois parties se rangent dans le for : `for (i = 10; i > 0; i = i - 3)`, avec pour corps `s = s + i;`.\n\nValeurs de i parcourues : 10, 7, 4, 1 (puis -2, qui arrête la boucle). La somme vaut 10 + 7 + 4 + 1 = **22**.\n\nRéponse **B**.\n\n- A : la condition i > 3 arrête la boucle avant i = 1, la somme vaudrait 21.\n- C : l'initialisation i = 0 rend la condition i > 0 fausse dès le premier test, la somme vaudrait 0.\n- D : le pas 2 au lieu de 3 parcourt 10, 8, 6, 4, 2, la somme vaudrait 30.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`for (i = 10; i > 3; i = i - 3)`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`for (i = 10; i > 0; i = i - 3)`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`for (i = 0; i > 0; i = i - 3)`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`for (i = 10; i > 0; i = i - 2)`"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      13710,
+      13711
+    ]
+  },
+  {
+    "external_id": "cqc-conversion-de-boucle-prog-fr15-moyenne-3",
+    "theme": "conversion de boucle",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère l'algorithme suivant :\n\n```\nn ← 4\nRépéter\n    Afficher(n)\n    n ← n - 2\nJusqu'à n < 0\n```\n\nQuelle boucle Tant que, placée après `n ← 4`, produit exactement le même affichage (4, 2, 0) ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour passer d'un Répéter ... Jusqu'à à un Tant que, on inverse la condition (Jusqu'à c devient Tant que non c), en vérifiant que le corps s'exécute bien au moins une fois comme dans l'original.\n\n### Corrigé\n\nLa boucle Répéter s'arrête quand n < 0. La condition de poursuite est donc la négation : **non (n < 0)**, soit `n >= 0`. Avec n = 4, le Tant que s'exécute bien au moins une fois, comme le Répéter. Suivi : n = 4 (affiche 4), n = 2 (affiche 2), n = 0 (affiche 0, puis n devient -2), puis n = -2 : le test n >= 0 est faux, la boucle s'arrête.\n\nRéponse **C**.\n\n- A : n < 0 est la condition d'arrêt du Répéter, pas celle de poursuite ; le corps ne s'exécuterait jamais.\n- B : n > 0 est faux pour n = 0, donc le 0 ne serait pas affiché (affichage 4, 2).\n- D : n <= 0 est faux dès le départ pour n = 4, le corps ne s'exécuterait jamais.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "`Tant que n < 0 Faire ...`"
+      },
+      {
+        "lettre": "B",
+        "texte": "`Tant que n > 0 Faire ...`"
+      },
+      {
+        "lettre": "C",
+        "texte": "`Tant que n >= 0 Faire ...`"
+      },
+      {
+        "lettre": "D",
+        "texte": "`Tant que n <= 0 Faire ...`"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      13710,
+      13711
+    ]
+  },
+  {
+    "external_id": "cqc-conversion-de-boucle-prog-fr15-moyenne-4",
+    "theme": "conversion de boucle",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On donne l'algorithme suivant :\n\n```\ns ← 0\nPour k de 1 à 4 Faire\n    s ← s + k * k\nFinPour\nAfficher(s)\n```\n\n1. Donner la valeur affichée.\n2. Réécrire cet algorithme avec la structure Tant que.\n3. Écrire en C la boucle for qui correspond à l'algorithme (`s` et `k` étant des variables de type `int`).",
+    "corrige_markdown": "### Rappel de méthode\n\nPour réécrire une boucle Pour avec un Tant que, on sépare l'initialisation, la condition et l'incrémentation du compteur, puis on vérifie la conversion en refaisant le calcul avec les mêmes valeurs.\n\n### Corrigé\n\n1. La boucle parcourt k = 1, 2, 3, 4 et ajoute à chaque fois le carré de k : s = 1 + 4 + 9 + 16 = **30**.\n\n2. Version Tant que :\n\n```\ns ← 0\nk ← 1\nTant que k <= 4 Faire\n    s ← s + k * k\n    k ← k + 1\nFinTantQue\nAfficher(s)\n```\n\nMême résultat : les carrés de 1, 2, 3, 4 sont additionnés et l'algorithme affiche 30.\n\n3. Version C :\n\n```c\ns = 0;\nfor (k = 1; k <= 4; k++) {\n    s = s + k * k;\n}\nprintf(\"%d\", s);\n```\n\nLa mise à jour `k++` remplace `k ← k + 1`.\n\n### Piège à éviter\n\nSi tu oublies d'incrémenter k dans le Tant que, la condition k <= 4 reste vraie et la boucle ne s'arrête jamais.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      13710,
+      13711
+    ]
+  },
+  {
+    "external_id": "cqc-conversion-de-boucle-prog-fr15-elevee-5",
+    "theme": "conversion de boucle",
+    "savoir_officiel": null,
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Soit le programme C suivant :\n\n```c\n#include <stdio.h>\n\nint main() {\n    int i, s = 0;\n    for (i = 1; i <= 6; i++) {\n        if (i % 3 == 0)\n            continue;\n        s = s + i;\n    }\n    printf(\"%d\", s);\n    return 0;\n}\n```\n\n(L'instruction `continue` saute le reste du corps et passe directement au tour suivant ; dans un for, la mise à jour `i++` est alors exécutée.)\n\n1. Donner la valeur affichée.\n2. Un élève remplace le for par ce while :\n\n```c\ni = 1;\nwhile (i <= 6) {\n    if (i % 3 == 0)\n        continue;\n    s = s + i;\n    i++;\n}\n```\n\nQue se passe-t-il à l'exécution ? Justifier.\n3. Proposer une conversion en while correcte (deux solutions possibles : donner-en une).",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand on convertit un for en while, on vérifie l'effet des instructions continue : dans un for la mise à jour est exécutée après un continue, alors que dans un while elle ne l'est que si elle est placée avant le continue ou en dehors du chemin sauté.\n\n### Corrigé\n\n1. Les valeurs de i sont 1, 2, 3, 4, 5, 6. Le multiple de 3 est sauté pour i = 3 et i = 6. On additionne donc 1 + 2 + 4 + 5 = **12**. Le programme affiche 12.\n\n2. Le programme ne se termine pas. Au tour où i vaut 3, la condition i % 3 == 0 est vraie et `continue` renvoie directement au test du while. L'instruction `i++`, placée après le continue, n'est pas exécutée : i reste à 3, le test est de nouveau vrai, et la boucle recommence indéfiniment. C'est une **boucle infinie**, alors que le for incrémentait toujours i après le continue.\n\n3. Première solution : traiter la condition sans continue.\n\n```c\ni = 1;\nwhile (i <= 6) {\n    if (i % 3 != 0)\n        s = s + i;\n    i++;\n}\n```\n\nSeconde solution : incrémenter avant le continue.\n\n```c\ni = 1;\nwhile (i <= 6) {\n    if (i % 3 == 0) {\n        i++;\n        continue;\n    }\n    s = s + i;\n    i++;\n}\n```\n\nLes deux versions affichent 12.\n\n### Piège à éviter\n\nNe recopie pas mécaniquement l'incrémentation à la fin du corps : un continue placé avant elle la fait sauter.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      13710,
+      13711
+    ]
+  }
+]

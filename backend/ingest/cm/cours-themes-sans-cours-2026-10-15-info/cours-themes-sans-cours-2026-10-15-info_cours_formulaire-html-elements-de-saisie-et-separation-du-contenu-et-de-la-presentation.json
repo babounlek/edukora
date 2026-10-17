@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-formulaire-html-elements-css-separation-fr15",
+  "meta": {
+    "titre": "Formulaire HTML : éléments de saisie et séparation du contenu et de la présentation avec CSS",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : HTML et CSS",
+    "duree_estimee_min": 22,
+    "tags": [
+      "éléments de formulaire",
+      "séparation contenu et présentation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q3-0-fr15",
+    "rappels_lies": [],
+    "correction_id": null,
+    "epreuve_source": "probatoire-ti-algorithmique-2020-zero-cameroun.html"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu t'inscris sur un site, tu remplis des zones de texte, tu coches des cases, tu choisis dans une liste, puis tu cliques sur un bouton : tout cela est un **formulaire HTML**. Et si le propriétaire du site veut changer la couleur de tous les titres de ses trente pages, il ne modifie qu'une seule ligne, grâce aux feuilles de style. Ce cours réunit ces deux idées, très présentes dans la partie « programmation web » du probatoire TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une page HTML (html, head, body)",
+        "Savoir ce qu'est une balise et un attribut"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les éléments d'un formulaire, et la séparation du contenu et de la présentation",
+      "contenu_markdown": "Un **formulaire** se délimite par `<form> ... </form>` ; il permet à l'internaute de saisir des données envoyées à un programme du serveur (attributs `action` et `method`). Ses éléments se rattachent à une balise :\n\n| Élément | Balise |\n|---|---|\n| zone de texte | `<input type=\"text\">` |\n| mot de passe (caractères masqués) | `<input type=\"password\">` |\n| case à cocher | `<input type=\"checkbox\">` |\n| bouton radio (un seul choix) | `<input type=\"radio\">` |\n| liste déroulante | `<select>` avec des `<option>` |\n| zone de texte sur plusieurs lignes | `<textarea>` |\n| bouton d'envoi / de remise à zéro | `<input type=\"submit\">` / `<input type=\"reset\">` |\n| étiquette associée à un champ | `<label>` |\n\nChaque champ porte un attribut `name` : c'est son nom qui permet au serveur de retrouver la valeur saisie.\n\n**Séparer le contenu et la présentation.** Le HTML décrit le **contenu** et sa structure (titres, paragraphes, champs). Le **CSS** (Cascading Style Sheets) décrit la **présentation** (couleurs, polices, marges, positions). Une règle CSS s'écrit `sélecteur { propriété: valeur; }`, par exemple `h1 { color: green; }`.",
+      "variantes": [
+        {
+          "nom": "Feuille de style externe",
+          "quand_utiliser": "Pour un site de plusieurs pages (cas recommandé)",
+          "contenu_markdown": "Les règles sont écrites dans un fichier `style.css`, relié à chaque page par `<link rel=\"stylesheet\" href=\"style.css\">` dans l'en-tête. Changer le fichier change toutes les pages."
+        },
+        {
+          "nom": "Style interne",
+          "quand_utiliser": "Pour une page unique",
+          "contenu_markdown": "Les règles sont écrites entre les balises `<style> ... </style>` de l'en-tête de la page."
+        },
+        {
+          "nom": "Style en ligne",
+          "quand_utiliser": "À éviter, sauf pour un cas isolé",
+          "contenu_markdown": "L'attribut `style` s'écrit directement dans la balise, par exemple `<h1 style=\"color: red;\">`. Il mélange contenu et présentation, ce qui est justement ce qu'on veut éviter."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Voici un formulaire d'inscription à un club :\n\n```html\n<form action=\"inscription.php\" method=\"post\">\n  Nom : <input type=\"text\" name=\"nom\"><br>\n  Mot de passe : <input type=\"password\" name=\"mdp\"><br>\n  Classe : <select name=\"classe\"><option>Seconde</option><option>Première</option></select><br>\n  <input type=\"checkbox\" name=\"reglement\"> J'accepte le règlement<br>\n  <input type=\"submit\" value=\"S'inscrire\">\n</form>\n```\n\na) Identifie les types d'éléments distincts. b) Le propriétaire veut que tous les titres h1 du site (30 pages) deviennent verts : que doit-il faire avec une feuille de style externe ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Parcourir le formulaire élément par élément",
+          "justification": "Chaque champ est reconnu à sa balise et, pour input, à son attribut type",
+          "resultat_markdown": "`text`, `password`, `select`, `checkbox`, `submit`"
+        },
+        {
+          "numero": 2,
+          "action": "Nommer chaque type",
+          "justification": "On associe l'aspect à sa balise",
+          "resultat_markdown": "Zone de texte (nom), champ de mot de passe, liste déroulante (classe), case à cocher (règlement), bouton d'envoi (S'inscrire)"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la règle CSS commune à tous les titres",
+          "justification": "Une règle sur le sélecteur h1 s'applique à toutes les balises h1 des pages qui lient le fichier",
+          "resultat_markdown": "Dans `style.css` : `h1 { color: green; }`"
+        },
+        {
+          "numero": 4,
+          "action": "Relier le fichier à chaque page",
+          "justification": "Chaque page doit déclarer sa feuille de style dans son en-tête",
+          "resultat_markdown": "`<link rel=\"stylesheet\" href=\"style.css\">` (écrit une seule fois par page)"
+        }
+      ],
+      "conclusion_markdown": "Le formulaire contient cinq types d'éléments : zone de texte, mot de passe, liste déroulante, case à cocher et bouton d'envoi. Pour rendre tous les titres verts, il suffit de modifier une seule règle dans `style.css` : c'est l'intérêt de séparer la présentation du contenu."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter deux types distincts avec deux champs de texte (par exemple « Nom » et « Adresse »)",
+          "pourquoi_faux": "Ces deux champs sont des zones de texte : ils appartiennent au même type, donc ils ne comptent que pour un.",
+          "correction_markdown": "Pour deux types distincts, cite par exemple une zone de texte et un bouton d'envoi."
+        },
+        {
+          "erreur_markdown": "Oublier l'attribut name sur un champ",
+          "pourquoi_faux": "Un champ sans nom n'est pas transmis au serveur à l'envoi : la valeur saisie est perdue.",
+          "correction_markdown": "Donne toujours un attribut name à chaque champ qui doit être envoyé."
+        },
+        {
+          "erreur_markdown": "Mettre les couleurs et les polices dans chaque balise avec l'attribut style",
+          "pourquoi_faux": "Le contenu et la présentation restent mélangés : pour changer l'aspect du site, il faut retoucher chaque balise de chaque page.",
+          "correction_markdown": "Écris les règles une fois dans un fichier .css lié aux pages."
+        },
+        {
+          "erreur_markdown": "Dire que le CSS est un langage de programmation",
+          "pourquoi_faux": "Le CSS décrit seulement l'apparence des éléments : il ne contient ni calculs, ni boucles, ni tests.",
+          "correction_markdown": "Dis que HTML structure le contenu, que CSS le met en forme, et que JavaScript le fait réagir."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle balise utilise-t-on pour une liste déroulante, pour une zone de texte de plusieurs lignes et pour une case à cocher ?",
+          "solution_markdown": "- Liste déroulante : `<select>` contenant des `<option>`.\n- Zone de texte de plusieurs lignes : `<textarea>`.\n- Case à cocher : `<input type=\"checkbox\">`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la règle CSS qui met tous les titres h1 en rouge et les centre, puis la ligne qui relie la feuille `style.css` à une page.",
+          "solution_markdown": "Dans le fichier `style.css` :\n\n```css\nh1 {\n    color: red;\n    text-align: center;\n}\n```\n\nDans l'en-tête de la page :\n\n```html\n<link rel=\"stylesheet\" href=\"style.css\">\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un site compte 30 pages, chacune avec 4 titres h1. Compare le nombre de modifications nécessaires pour changer la couleur de tous les titres si les couleurs sont écrites avec l'attribut style dans chaque balise, puis avec une feuille de style externe. Donne deux avantages des feuilles de style.",
+          "solution_markdown": "Avec l'attribut `style` : 30 pages × 4 titres = **120 balises** à modifier.\n\nAvec une feuille de style externe : **1 règle** à modifier dans `style.css`.\n\nDeux avantages :\n\n1. **Maintenance facile** : un seul fichier à retoucher pour changer l'aspect de tout le site.\n2. **Uniformité** : toutes les pages partagent les mêmes règles, donc les mêmes couleurs et polices.\n\nOn peut aussi citer un code HTML plus léger et plus lisible, puisqu'il ne contient plus que le contenu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire (`<form>`) regroupe des éléments : zone de texte, mot de passe, case à cocher, bouton radio, liste déroulante (`select`), zone multiligne (`textarea`) et boutons.",
+        "Deux champs de même balise et de même type comptent pour un seul type d'élément.",
+        "Chaque champ à transmettre porte un attribut `name`.",
+        "HTML porte le contenu et la structure ; CSS porte la présentation : c'est la séparation du contenu et de la présentation.",
+        "Une feuille de style externe, liée par `<link rel=\"stylesheet\" href=\"style.css\">`, permet de modifier tout un site en un seul endroit.",
+        "Avantages à citer au probatoire : uniformité du site et maintenance facile."
+      ]
+    }
+  ]
+}

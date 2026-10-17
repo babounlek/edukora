@@ -68,8 +68,12 @@ le sujet imprime des points par bloc. Ne corrige JAMAIS les points du sujet, mê
 
 ## Figures
 
-Seulement quand la question en dépend. Rendre la page : `"/c/Release-24.08.0-0/poppler-24.08.0/Library/bin/pdftoppm" -r 150 -f N -l N -png <pdf> <prefixe>`,
-puis recadrer avec `D:\edukora\venv\Scripts\python.exe` (Pillow : `Image.open(...).crop((x0,y0,x1,y1)).save(...)`). Ouvre le PNG
+Seulement quand la question en dépend. **Les figures ne doivent porter AUCUN filigrane** (gcerevision.com, Kawlo, concourscameroon.com) :
+ne les produis pas avec `pdftoppm`, qui rend aussi les calques de filigrane. Utilise le skill `reproduire-figure-sans-filigrane`
+(copie versionnée : `scripts/figures/reproduire-figure-sans-filigrane/`, outils avec `C:\ProgramData\Anaconda3\python.exe`) :
+`scripts/page_propre.py <pdf> <page> <page.png>` (page sans filigrane, résolution native), `scripts/recadrer.py reperer` puis
+`recadrer` (grille + recadrage), `scripts/controler.py <fig.png>` (OCR : doit afficher OK). Figure trop dégradée : la redessiner
+(voir le skill). Ouvre le PNG
 recadré avec Read pour vérifier qu'il est net, complet, sans texte voisin. Largeur finale <= 900 px. Dans l'énoncé :
 `![fig-1](<DOSSIER>_exercice_<n>_fig_1.png)` ; l'entrée correspondante va dans `figures`. Supprime les PNG de pages entières
 et tout fichier temporaire du dossier à la fin. Une figure à TRACER par l'élève : décris le tracé et ses points clés

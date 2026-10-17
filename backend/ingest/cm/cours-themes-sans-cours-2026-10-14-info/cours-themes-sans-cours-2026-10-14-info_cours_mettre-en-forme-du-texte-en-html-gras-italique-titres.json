@@ -1,0 +1,142 @@
+{
+  "cours_id": "cours-mettre-en-forme-du-texte-en-html-gras-italique-titres-fr23",
+  "meta": {
+    "titre": "Mettre en forme du texte en HTML : gras, italique, souligné, titres et sauts de ligne",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique : balises de mise en forme du texte",
+    "duree_estimee_min": 30,
+    "tags": [
+      "mise en forme du texte"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_source": "probatoire-a-c-d-informatique-2014-officiel-cameroun.html",
+    "epreuve_id": "probatoire-a-c-d-informatique-2014-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2014 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2014-officiel-cameroun-ex1-q3-1-fr23",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une affiche, tu mets le titre en gros caractères, les mots importants en gras et le prix en couleur. Sur une page web, on obtient le même effet avec des balises. Le plus étonnant : si tu appuies sur la touche Entrée dans ton fichier HTML, la page ne saute pas de ligne ! Le navigateur ne lit que les balises. Ce cours t'apprend à donner à un texte la forme voulue, et à répondre à la question classique : « Quelle est la fonction de ces balises ? »"
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'un document HTML (html, head, body)",
+        "Savoir qu'une balise s'écrit entre chevrons et se ferme avec une barre oblique",
+        "Savoir enregistrer un fichier en .html et l'ouvrir dans un navigateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les balises de mise en forme du texte",
+      "contenu_markdown": "Une balise de mise en forme agit sur le texte placé **entre sa balise ouvrante et sa balise fermante**. Le nom des balises peut s'écrire en majuscules ou en minuscules.\n\n| Balise | Effet | Origine du nom |\n|---|---|---|\n| `<b>...</b>` | texte en **gras** | *Bold* |\n| `<i>...</i>` | texte en *italique* | *Italic* |\n| `<u>...</u>` | texte souligné | *Underline* |\n| `<strong>...</strong>` | texte important, en gras par défaut | *strong* |\n| `<em>...</em>` | texte mis en valeur, en italique par défaut | *emphasis* |\n| `<sup>...</sup>` et `<sub>...</sub>` | exposant et indice | *superscript*, *subscript* |\n| `<h1>...</h1>` à `<h6>...</h6>` | titres, de h1 (le plus grand) à h6 (le plus petit) | *heading* |\n| `<p>...</p>` | paragraphe, avec un espace avant et après | *paragraph* |\n| `<br>` | saut de ligne, sans balise fermante | *break* |\n| `<hr>` | trait horizontal de séparation | *horizontal rule* |\n\n**Règles à retenir.**\n\n- Les balises se **referment dans l'ordre inverse** de leur ouverture : `<b><i>texte</i></b>` est correct, `<b><i>texte</b></i>` ne l'est pas.\n- Les retours à la ligne et les espaces multiples du fichier source sont **ignorés** : pour sauter une ligne, utilise `<br>` ou un nouveau `<p>`.\n- On peut aussi donner une couleur par l'attribut `style` : `<p style=\"color: red\">Alerte</p>` écrit le paragraphe en rouge.\n- L'ancienne balise `<font>` est abandonnée en HTML5 : la couleur et la taille se règlent avec le style (CSS).",
+      "variantes": [
+        {
+          "nom": "Combiner plusieurs effets",
+          "quand_utiliser": "Quand un mot doit être à la fois en gras et souligné par exemple.",
+          "contenu_markdown": "On imbrique les balises sans les croiser : `<b><u>Important</u></b>` affiche le mot en gras et souligné. Chaque balise fermante vient dans l'ordre inverse des balises ouvrantes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "1) Quelle est la fonction des balises `<B> ... </B>` et `<U> ... </U>` ? 2) Écris le code HTML qui affiche sur deux lignes : « Prix : 500 FCFA » avec le mot Prix en gras et FCFA souligné, puis « Livraison offerte ». (Probatoire A, C, D, 2014, question 3.)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Donner la fonction de `<B>`",
+          "justification": "B vient de *Bold*, gras en anglais.",
+          "resultat_markdown": "`<B>...</B>` met en gras le texte placé entre les deux balises."
+        },
+        {
+          "numero": 2,
+          "action": "Donner la fonction de `<U>`",
+          "justification": "U vient de *Underline*, souligné en anglais.",
+          "resultat_markdown": "`<U>...</U>` souligne le texte placé entre les deux balises."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la première ligne",
+          "justification": "Chaque effet entoure uniquement le mot concerné.",
+          "resultat_markdown": "`<B>Prix</B> : 500 <U>FCFA</U>`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter le saut de ligne",
+          "justification": "La touche Entrée n'est pas lue par le navigateur ; il faut une balise br.",
+          "resultat_markdown": "`<br>` à la fin de la première ligne."
+        },
+        {
+          "numero": 5,
+          "action": "Assembler dans un paragraphe",
+          "justification": "Le contenu visible est dans body.",
+          "resultat_markdown": "```\n<p>\n  <B>Prix</B> : 500 <U>FCFA</U><br>\n  Livraison offerte\n</p>\n```"
+        }
+      ],
+      "conclusion_markdown": "`<B>` met en **gras**, `<U>` **souligne**, et `<br>` force le **saut de ligne** que le navigateur ne déduit pas du fichier source."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appuyer sur Entrée dans le fichier pour sauter une ligne.",
+          "pourquoi_faux": "Le navigateur ignore les retours à la ligne du code source : tout le texte reste sur la même ligne.",
+          "correction_markdown": "Utiliser `<br>` pour un saut de ligne ou `<p>` pour un nouveau paragraphe."
+        },
+        {
+          "erreur_markdown": "Croiser les balises : `<b><i>mot</b></i>`.",
+          "pourquoi_faux": "Les balises doivent être imbriquées proprement ; le navigateur peut mal interpréter un croisement.",
+          "correction_markdown": "Fermer d'abord la dernière balise ouverte : `<b><i>mot</i></b>`."
+        },
+        {
+          "erreur_markdown": "Croire que h6 donne le plus grand titre.",
+          "pourquoi_faux": "Les niveaux de titre vont de h1 (le plus important, le plus grand) à h6 (le plus petit).",
+          "correction_markdown": "Utiliser h1 pour le titre principal, h2 pour les sous-titres, et ainsi de suite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel est l'effet des balises `<I>texte</I>` et `<hr>` ?",
+          "solution_markdown": "`<I>texte</I>` met le texte en **italique** (I pour *Italic*). `<hr>` trace un **trait horizontal** qui sépare deux parties de la page ; elle n'a pas de balise fermante."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le code d'une page qui affiche un titre principal « Mon quartier » et, en dessous, le paragraphe « Douala est une ville portuaire » dont le mot Douala est en gras.",
+          "solution_markdown": "```\n<html>\n  <head>\n    <title>Mon quartier</title>\n  </head>\n  <body>\n    <h1>Mon quartier</h1>\n    <p><b>Douala</b> est une ville portuaire</p>\n  </body>\n</html>\n```\n\nLe titre est en h1 (le plus grand niveau) et le mot Douala est entouré de `<b>` et `</b>`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Corrige ce code pour obtenir « Eau : H2O » avec Eau en gras et le chiffre 2 en indice : `<b>Eau</b> : H<sub>2</b>O</sub>`",
+          "solution_markdown": "Le gras est déjà refermé après Eau, donc la balise `</b>` placée après le 2 est en trop et croise la balise `<sub>` ; de plus `</sub>` arrive trop tard, alors que l'indice doit se refermer juste après le 2.\n\nCode corrigé : `<b>Eau</b> : H<sub>2</sub>O`\n\nLe mot Eau est en gras, le chiffre 2 est en indice (*subscript*), et chaque balise est refermée au bon endroit."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "B met en gras (Bold), I en italique (Italic), U souligne (Underline) ; strong et em ajoutent du sens (importance, mise en valeur).",
+        "Les titres vont de h1 (le plus grand) à h6 (le plus petit) ; p crée un paragraphe.",
+        "Les retours à la ligne du fichier source sont ignorés : utilise br pour un saut de ligne, qui n'a pas de balise fermante.",
+        "Les balises se referment dans l'ordre inverse de leur ouverture : jamais de croisement.",
+        "À l'examen, donne pour chaque balise son effet sur le texte, l'abréviation anglaise et un court exemple de code."
+      ]
+    }
+  ]
+}
