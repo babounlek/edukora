@@ -208,6 +208,15 @@ TAGS_ALIAS_PAR_MATIERE = {
         # dérivées : alias neutre qui l'empêche d'être absorbé par l'alias global des Maths.
         "dérivation": "dérivation",
     },
+    # Physique GCE O Level : les lots d'annales ont nommé la même notion de plusieurs façons, chacune vue dans
+    # une seule épreuve donc sous le plancher d'occurrences. Variantes d'une MÊME notion seulement ; les
+    # sous-thèmes (« pulleys », « pressure in fluids », « speed of sound »...) restent séparés de leur parent.
+    "GCE_PHYSICS": {
+        "temperature scales": "thermometers and temperature scales",
+        "temperature measurement": "thermometers and temperature scales",
+        "moments of forces": "moments and equilibrium",
+        "turning effect of forces": "moments and equilibrium",
+    },
 }
 
 # Un thème qui n'est jamais retombé qu'une seule fois n'est justement pas un thème
