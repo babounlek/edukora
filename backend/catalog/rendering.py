@@ -477,14 +477,130 @@ def _clean_exercise_corrige(exercise):
     exercise.corrige_markdown lui-même : recalculé à chaque lecture, pour qu'un
     changement de cette logique de nettoyage s'applique sans ré-ingérer le contenu.
     """
+    # Exercice GCE : le corrigé est recomposé question par question (séparées par _QUESTION_SPLIT)
+    # pour pouvoir poser, sous chacune, le lien vers le cours de son thème - voir
+    # _ajouter_liens_cours_par_theme. None pour tout autre examen : chemin historique inchangé.
+    questions_gce = _questions_si_gce(exercise)
+    if questions_gce is not None:
+        numbered = len(questions_gce) > 1
+        source = f"\n\n{_QUESTION_SPLIT}\n\n".join(_render_question_corrige(q, numbered) for q in questions_gce)
+    else:
+        source = exercise.corrige_markdown
     # Si l'IA a quand même inclus une fiche d'identité par exercice (ancien format
     # bloc de code, ou nouveau format tableau - oubli de consigne dans les deux cas),
     # on la retire : ces informations vivent uniquement dans Lesson.header_info().
-    corrige = _FICHE_IDENTITE_RE.sub("", exercise.corrige_markdown, count=1).lstrip()
+    corrige = _FICHE_IDENTITE_RE.sub("", source, count=1).lstrip()
     corrige = _FICHE_IDENTITE_TABLE_RE.sub("", corrige, count=1).lstrip()
     corrige = _EXERCICE_HEADING_RE.sub("### Corrigé\n\n", corrige, count=1)
     corrige = _RAPPEL_ORPHELIN_RE.sub("", corrige)
-    return annotate_cours_links(corrige, exercise.rappels_de_methode.select_related("cours").all())
+    corrige = annotate_cours_links(corrige, exercise.rappels_de_methode.select_related("cours").all())
+    if questions_gce is None:
+        return corrige
+    pieces = [c.strip() for c in corrige.split(_QUESTION_SPLIT)]
+    if len(pieces) != len(questions_gce):
+        return "\n\n".join(p for p in pieces if p)
+    return "\n\n".join(_ajouter_liens_cours_par_theme(exercise, questions_gce, pieces))
+
+
+# Nombre maximal de cours proposés sous une même question GCE (une question porte 1 à 3 thèmes) : au-delà,
+# la pile de boutons « Voir le cours complet » noierait le corrigé lui-même.
+_MAX_COURS_PAR_QUESTION = 2
+
+
+def _questions_si_gce(exercise):
+    """
+    Les Question de `exercise` quand il appartient à une épreuve GCE ET que ses Question recomposent
+    exactement son corrigé stocké ; None sinon (autre examen, ou corrigé retouché après compilation :
+    on ne recompose pas un texte qui ne vient plus des Question).
+    """
+    from .models import EXAMENS_GCE
+
+    if not any(c.examen in EXAMENS_GCE for c in exercise.lesson.cursus.all()):
+        return None
+    questions = list(exercise.questions.prefetch_related("themes").order_by("ordre"))
+    if not questions:
+        return None
+    numbered = len(questions) > 1
+    if "\n\n".join(_render_question_corrige(q, numbered) for q in questions) != exercise.corrige_markdown:
+        return None
+    return questions
+
+
+def cours_publies_par_theme(lesson, theme_ids):
+    """
+    {pk du Tag-thème: Cours} pour une épreuve : le cours VALIDE, non vide, de la même matière, rattaché à
+    un cursus de l'épreuve et étiqueté de ce Tag. À égalité (deux cours d'un même thème), le premier par
+    titre - jamais un ordre qui dépende du SGBD. Partagé par le lecteur (liens sous les questions GCE) et
+    par la commande ajouter_rappels_gce, pour qu'ils désignent toujours le même cours.
+    """
+    if not theme_ids:
+        return {}
+    cours = (
+        Cours.objects.filter(
+            statut=StatutContenu.VALIDE, subject_id=lesson.subject_id, tags__pk__in=theme_ids,
+            cursus__in=list(lesson.cursus.all()),
+        ).exclude(content_markdown="").distinct().prefetch_related("tags").order_by("titre")
+    )
+    par_theme = {}
+    for c in cours:
+        for tag in c.tags.all():
+            if tag.pk in theme_ids:
+                par_theme.setdefault(tag.pk, c)
+    return par_theme
+
+
+def themes_par_specificite(lesson, questions):
+    """
+    (cours_du_theme, ordre) pour les questions d'une épreuve GCE : `cours_du_theme` = cours_publies_par_theme,
+    `ordre[i]` = les thèmes de la question i qui ont un cours, du plus SPÉCIFIQUE au plus général.
+
+    Une question porte souvent un thème large (« arithmetic ») et un thème précis (« consumer arithmetic »).
+    Le cours du thème large traite d'autre chose que la question (HCF/LCM pour une question de facture) :
+    on classe donc par rareté, le thème le moins fréquent parmi les questions de la matière passant en tête
+    (à égalité, le plus ancien Tag). Partagé par le lecteur (liens sous les questions) et la commande
+    ajouter_rappels_gce (thème du rappel), pour qu'ils choisissent toujours le même.
+    """
+    from django.db.models import Count
+
+    from .models import Question
+
+    theme_ids = {t.pk for q in questions for t in q.themes.all()}
+    cours_du_theme = cours_publies_par_theme(lesson, theme_ids)
+    if not cours_du_theme:
+        return {}, [[] for _ in questions]
+    rarete = {
+        r["themes"]: r["n"]
+        for r in Question.objects.filter(themes__in=list(cours_du_theme), exercise__lesson__subject_id=lesson.subject_id)
+        .values("themes").annotate(n=Count("id", distinct=True)).order_by()
+    }
+    ordre = [
+        [t.pk for t in sorted(q.themes.all(), key=lambda t: (rarete.get(t.pk, 0), t.pk)) if t.pk in cours_du_theme]
+        for q in questions
+    ]
+    return cours_du_theme, ordre
+
+
+def _ajouter_liens_cours_par_theme(exercise, questions, pieces):
+    """
+    GCE : ajoute sous le corrigé de chaque question le marqueur `[COURS_LINK:<slug>]` du cours publié
+    de son thème le plus spécifique (voir themes_par_specificite) : 1 pour un QCM, 2 au plus pour une
+    question rédigée. Les corrigés GCE n'avaient aucun RappelDeMethode : rien d'autre ne reliait
+    l'épreuve aux cours ; le frontend rend un marqueur isolé comme un bouton « Voir le cours complet »
+    (voir groupBareCoursLinks). Une question que son propre rappel relie déjà à un cours (marqueur déjà
+    injecté par annotate_cours_links) n'en reçoit pas un second.
+    """
+    cours_du_theme, ordre = themes_par_specificite(exercise.lesson, questions)
+    if not cours_du_theme:
+        return pieces
+
+    resultat = []
+    for question, piece, themes in zip(questions, pieces, ordre):
+        if "[COURS_LINK:" not in piece and themes:
+            plafond = 1 if question.type_reponse == TypeReponse.QCM else _MAX_COURS_PAR_QUESTION
+            slugs = list(dict.fromkeys(cours_du_theme[pk].slug for pk in themes))[:plafond]
+            piece = piece + "\n\n" + "\n\n".join(f"[COURS_LINK:{s}]" for s in slugs)
+        resultat.append(piece)
+    return resultat
 
 
 def _render_exercise_block(exercise, nb_labels_a_retirer=None):
@@ -1137,6 +1253,8 @@ def exercise_questions_breakdown(exercise):
     corriges = [c.strip() for c in corrige.split(_QUESTION_SPLIT)]
     if len(corriges) != len(questions):
         return None
+    if _questions_si_gce(exercise) is not None:
+        corriges = _ajouter_liens_cours_par_theme(exercise, questions, corriges)
 
     return [
         {

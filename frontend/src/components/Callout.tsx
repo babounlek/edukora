@@ -1,7 +1,5 @@
 import type { ReactNode } from "react"
-import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
-
+import { LienCours } from "@/components/LienCours"
 import { t, useI18n } from "@/lib/i18n"
 
 type CalloutVariant = "piege" | "conseil" | "rappel"
@@ -10,6 +8,8 @@ interface CalloutProps {
   variant: CalloutVariant
   children?: ReactNode
   coursHrefs?: string[]
+  /** Slugs des cours, dans le même ordre que `coursHrefs` : sert à nommer chaque lien par le titre de son cours. */
+  coursSlugs?: string[]
 }
 
 const STYLES: Record<CalloutVariant, { icon: string; title: string; className: string }> = {
@@ -32,7 +32,7 @@ const STYLES: Record<CalloutVariant, { icon: string; title: string; className: s
  * les liens d'un `text-decoration: underline` permanent, là où le style voulu est
  * `hover:underline`.
  */
-export function Callout({ variant, children, coursHrefs }: CalloutProps) {
+export function Callout({ variant, children, coursHrefs, coursSlugs }: CalloutProps) {
   useI18n()
   const { icon, title, className } = STYLES[variant]
 
@@ -51,11 +51,14 @@ export function Callout({ variant, children, coursHrefs }: CalloutProps) {
       <div className="prose prose-sm prose-neutral max-w-none dark:prose-invert">{children}</div>
       {coursHrefs && coursHrefs.length > 0 && (
         <div className="not-prose mt-2 flex flex-col items-start gap-1">
-          {coursHrefs.map((href) => (
-            <Link key={href} to={href} className="flex items-center gap-1 font-medium text-primary hover:underline">
-              {t("gl.callout_cours")}
-              <ArrowRight className="size-3.5" />
-            </Link>
+          {coursHrefs.map((href, i) => (
+            <LienCours
+              key={href}
+              slug={coursSlugs?.[i] ?? ""}
+              to={href}
+              label={t("gl.callout_cours")}
+              className="flex items-center gap-1 font-medium text-primary hover:underline"
+            />
           ))}
         </div>
       )}

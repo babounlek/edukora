@@ -374,6 +374,15 @@ export function getCours(slug: string) {
   return apiRequest<Cours>(`/catalog/cours/${slug}/`, { auth: "optional" })
 }
 
+/** Titres de plusieurs cours en une requête ({slug: titre}) ; un cours inconnu ou non publié est absent. */
+export async function getCoursTitres(slugs: string[], signal?: AbortSignal) {
+  const { titres } = await apiRequest<{ titres: Record<string, string> }>(
+    `/catalog/cours/titres/?slugs=${slugs.map(encodeURIComponent).join(",")}`,
+    { auth: "optional", signal },
+  )
+  return titres
+}
+
 export function readCours(slug: string) {
   // "optional" (pas le défaut strict) : un Cours vitrine (voir Cours.est_vitrine,
   // dérivé de sa/ses épreuve(s) source(s)) se lit sans connexion - un visiteur anonyme

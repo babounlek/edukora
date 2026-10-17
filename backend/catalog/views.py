@@ -549,6 +549,25 @@ class CoursListView(generics.ListAPIView):
         return Response(serializer.data)
 
 
+class CoursTitresView(APIView):
+    """
+    Titres de plusieurs cours en une requête : `?slugs=a,b,c` -> {"titres": {slug: titre}}.
+
+    Les marqueurs `[COURS_LINK:<slug>]` d'un corrigé ne portent que le slug : sans le titre, deux boutons
+    « Voir le cours complet » côte à côte sont indiscernables. Le lecteur demande donc d'un coup les titres
+    des cours de la page. Public comme la liste des cours (le titre d'un cours payant y figure déjà) ;
+    un cours non publié ou inconnu est simplement absent. Borné aux MAX_SLUGS premiers slugs.
+    """
+
+    permission_classes = [permissions.AllowAny]
+    MAX_SLUGS = 60
+
+    def get(self, request):
+        slugs = [s for s in request.query_params.get("slugs", "").split(",") if s.strip()][: self.MAX_SLUGS]
+        titres = dict(Cours.objects.visibles().filter(slug__in=slugs).values_list("slug", "titre"))
+        return Response({"titres": titres})
+
+
 class CoursDetailView(generics.RetrieveAPIView):
     serializer_class = CoursSerializer
     permission_classes = [permissions.AllowAny]

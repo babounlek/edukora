@@ -6,11 +6,11 @@ import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
-import { ArrowRight } from "lucide-react"
 
 import { t } from "@/lib/i18n"
 
 import { Callout } from "@/components/Callout"
+import { LienCours } from "@/components/LienCours"
 import { SolutionToggle } from "@/components/SolutionToggle"
 import { extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
 import { API_BASE_URL } from "@/api/client"
@@ -77,7 +77,7 @@ function MarkdownBlockquote({ children }: { children?: ReactNode }) {
   if (calloutMarker) {
     const { coursSlugs, rest } = extractCoursLinks(items.slice(1))
     return (
-      <Callout variant={calloutMarker[1] as CalloutVariant} coursHrefs={coursSlugs.map(coursHref)}>
+      <Callout variant={calloutMarker[1] as CalloutVariant} coursHrefs={coursSlugs.map(coursHref)} coursSlugs={coursSlugs}>
         {rest}
       </Callout>
     )
@@ -111,14 +111,14 @@ function MarkdownParagraph({ children }: { children?: ReactNode }) {
       <div className="not-prose my-3 flex flex-col items-start gap-1.5 rounded-md border border-dashed border-border p-3">
         <p className="text-sm font-medium text-muted-foreground">{t("ed.cours_lies")}</p>
         {slugs.map((slug) => (
-          <Link
+          <LienCours
             key={slug}
+            slug={slug}
             to={coursHref(slug)}
+            label={t("ed.voir_cours")}
+            titreSeul
             className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-          >
-            {t("ed.voir_cours")}
-            <ArrowRight className="size-3.5" />
-          </Link>
+          />
         ))}
       </div>
     )
@@ -128,13 +128,12 @@ function MarkdownParagraph({ children }: { children?: ReactNode }) {
   if (match) {
     return (
       <p className="not-prose my-3">
-        <Link
+        <LienCours
+          slug={match[1]}
           to={coursHref(match[1])}
+          label={t("ed.voir_cours")}
           className="flex w-fit items-center gap-1 rounded-md border border-dashed border-border px-3 py-1.5 text-sm font-medium text-primary hover:underline"
-        >
-          {t("ed.voir_cours")}
-          <ArrowRight className="size-3.5" />
-        </Link>
+        />
       </p>
     )
   }
