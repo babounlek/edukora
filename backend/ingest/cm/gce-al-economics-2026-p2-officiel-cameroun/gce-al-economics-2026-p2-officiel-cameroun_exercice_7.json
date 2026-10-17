@@ -1,0 +1,75 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Economics",
+ "epreuve_source": "gce-al-economics-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "7",
+ "numero_paper": 2,
+ "code_matiere": "0725",
+ "duree_epreuve": "3h",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Economics 2 (0725), ADVANCED LEVEL, June 2026. Duration: three hours.**\n\nAnswer FIVE questions, choosing AT LEAST TWO from each section. All questions carry equal marks.\n\nYou are reminded of the necessity for good English and orderly presentation in your answers.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "SECTION A",
+   "repondre": 2,
+   "sur": 4
+  },
+  {
+   "type": "parmi",
+   "portee": "SECTION B",
+   "repondre": 2,
+   "sur": 4
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "SECTION B"
+ ],
+ "points": "",
+ "figures": [],
+ "incertitudes": [
+  "Règle de choix : le sujet impose « Answer FIVE questions, choosing AT LEAST TWO from each section » (5 en tout, au moins 2 par section). `regles_choix` ne sait exprimer que « n parmi m » : chaque section porte la règle minimale (2 sur 4) ; la règle « 5 en tout » n'est pas exprimable et figure dans `introduction_markdown`.",
+  "Points : le sujet imprime les points de chaque partie (a) et (b), jamais le total de la question ; `points` de l'exercice est donc laissé vide. Les parties totalisent 20 pour chaque question (10+10, 10+10, 10+10, 10+10, 12+8, 12+8, 12+8, 8+12), conformément à « All questions carry equal marks ». Aucun écart constaté.",
+  "Sujet scanné (filigrane gcerevision.com en travers de la page ; sur la page de garde, le texte du verso apparaît en transparence, en miroir) : l'ensemble reste lisible. Titre, niveau (ADVANCED LEVEL), code 0725, session JUNE 2026 et durée (trois heures) vérifiés sur la page de garde. Le sujet ne compte que deux pages : page de garde, puis les huit questions (Section A : 1 à 4 ; Section B : 5 à 8) sur une seule page.",
+  "Défaut d'impression : à la question 5(b) la lettre « (b) » est maculée (« (ḅ) ») ; lue comme (b) d'après la séquence (a), (b). Le numéro « 2 » en en-tête de page de garde est imprimé de façon approximative (« Economics 2 »).",
+  "Aucun corrigé officiel : les corrigés sont rédigés (niveau Advanced). Les exemples chiffrés (TVA au taux hypothétique de 20 %, chaîne cacao 100 000 / 160 000 / 250 000 / 320 000 FCFA, élasticité de -0,5) sont hypothétiques et recalculés avec Python ; le taux de 20 % n'est pas le taux légal camerounais. Aucune statistique réelle n'est avancée.",
+  "Figures : trois schémas produits avec matplotlib (Q2 fig-1 prix agricoles à demande inélastique, Q2 fig-2 stock régulateur, Q6 fig-1 encaisses d'activité et de spéculation). Ils illustrent les corrigés ; le sujet n'imprime aucune figure. Les courbes sont schématiques, sans échelle chiffrée.",
+  "Question 6(a) : « diagram(s) » demandé par le sujet ; le diagramme est décrit dans le corrigé et fourni en figure (Keynes : L1 fonction du revenu, L2 fonction du taux d'intérêt, trappe à liquidité)."
+ ],
+ "questions": [
+  {
+   "numero": "a",
+   "enonce_markdown": "With the use of a numerical example, explain how value added tax is calculated. (12 marks)",
+   "corrige_markdown": "**Introduction.** **Value added tax (VAT)** is a tax on the **value added** at each stage of production and distribution of a good or service. It is an **indirect tax** collected by firms (registered traders) on behalf of the government, but it is paid in the end by the **final consumer**. At each stage, the firm charges VAT on its sales (**output tax**) and deducts the VAT it has paid on its purchases (**input tax**), paying only the difference to the tax authority:\n\n$$\\text{VAT payable} = \\text{output tax} - \\text{input tax} = \\text{rate} \\times (\\text{sales} - \\text{purchases}) = \\text{rate} \\times \\text{value added}$$\n\n**Numerical example.** Suppose the VAT rate is **20 per cent** (a hypothetical rate chosen for easy arithmetic) and that all firms in the chain are registered (for simplicity, even the farmer). A cocoa product passes through four stages. The figures below are values **before VAT**, in FCFA.\n\n| Stage | Sales (excl. VAT) | Purchases (excl. VAT) | Value added | Output tax (20% of sales) | Input tax (20% of purchases) | VAT paid to government |\n|---|---|---|---|---|---|---|\n| Farmer | 100,000 | 0 | 100,000 | 20,000 | 0 | 20,000 |\n| Processor | 160,000 | 100,000 | 60,000 | 32,000 | 20,000 | 12,000 |\n| Manufacturer | 250,000 | 160,000 | 90,000 | 50,000 | 32,000 | 18,000 |\n| Retailer | 320,000 | 250,000 | 70,000 | 64,000 | 50,000 | 14,000 |\n| **Total** | | | **320,000** | | | **64,000** |\n\n**Explanation of the calculation**\n\n1. **Farmer.** Sells for 100,000 FCFA and adds 20 per cent VAT: 20,000 FCFA. He has no purchases, so he pays the whole 20,000 FCFA to the government.\n2. **Processor.** Buys for 100,000 + 20,000 = 120,000 FCFA (including 20,000 FCFA input tax). Sells for 160,000 FCFA + 32,000 FCFA VAT. Pays $32{,}000 - 20{,}000 = 12{,}000$ FCFA, which is also 20 per cent of the value added of 60,000 FCFA.\n3. **Manufacturer.** Pays $50{,}000 - 32{,}000 = 18{,}000$ FCFA, i.e. 20 per cent of 90,000 FCFA.\n4. **Retailer.** Sells to the consumer at 320,000 FCFA + 64,000 FCFA VAT = **384,000 FCFA**. Pays $64{,}000 - 50{,}000 = 14{,}000$ FCFA, i.e. 20 per cent of 70,000 FCFA.\n\n**Check.** The total VAT collected by the government is $20{,}000 + 12{,}000 + 18{,}000 + 14{,}000 = 64{,}000$ FCFA, which equals 20 per cent of the final price before tax ($0.20 \\times 320{,}000 = 64{,}000$). The consumer bears the whole tax, because each firm recovers the VAT it paid by deducting it from the amount due.\n\n**Other points.** Different rates may apply (a standard rate, a reduced rate for basic necessities, and a zero rate for exports); **exempt** goods carry no output tax, but the firm cannot reclaim input tax; traders below a turnover threshold may not need to register. Firms keep invoices as proof of the VAT paid on their purchases, and file regular returns with the tax authority.\n\n**Conclusion.** VAT is calculated by applying the rate to the value of sales and deducting the tax already paid on inputs, so that each firm pays tax on the value it adds, and the total collected equals the rate multiplied by the final selling price (excluding tax).",
+   "themes": [
+    "public finance",
+    "tax systems"
+   ],
+   "difficulte_estimee": "elevee",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 12
+  },
+  {
+   "numero": "b",
+   "enonce_markdown": "What is the importance of value added tax to the economy of Cameroon? (8 marks)",
+   "corrige_markdown": "**Introduction.** VAT is one of the main taxes of the Cameroonian tax system. In Cameroon, as in the other member states of CEMAC, it is applied in place of older turnover taxes, and its importance is as follows.\n\n1. **A major source of government revenue.** Because it applies to a very wide range of goods and services, VAT yields a large and fairly stable revenue. The government uses it to finance education, health, roads and other infrastructure, and to pay civil servants.\n2. **Reduced dependence on trade taxes and on oil revenue.** VAT broadens the tax base and gives the government a source of income that is less affected by changes in world prices of oil and primary commodities, so that the budget is more stable.\n3. **Neutral and non-cascading.** Since each firm deducts the tax paid on inputs, the tax is not charged on tax, and the tax burden does not depend on the number of stages of production. It does not distort the choice between firms or between methods of production, in contrast to the older turnover tax.\n4. **Encourages exports and competitiveness.** Exports are zero-rated: exporters do not pay VAT on their sales abroad and can claim back the VAT on their inputs. This helps Cameroonian exporters (of cocoa, timber, cotton and other goods) to compete on world markets. Imports, on the other hand, pay VAT, which puts them on the same level as local products.\n5. **Self-policing and less evasion.** Each firm has an interest in obtaining invoices for its purchases to claim the credit, so that sales are recorded at each stage; this makes evasion more difficult than with a single-stage sales tax, and encourages businesses to keep records.\n6. **Encourages formalisation and good accounting.** Registered traders keep accounts and invoices, which helps to bring part of the informal sector into the tax net.\n7. **Flexibility and social protection.** The government can use different rates and exemptions (lower or zero rates for basic foods, medicines and education) to protect the poor, and can raise the rate if it needs more revenue.\n8. **Harmonisation within CEMAC.** Common rules about VAT help to reduce distortions in trade between member countries and support regional integration.\n9. **Low administrative cost.** Since the tax is collected from a small number of registered firms, rather than from every consumer, the cost of collection is low compared with the revenue.\n10. **Can be used as a tool of economic policy.** VAT can be used to control demand (a rise in the rate reduces consumption) or to encourage some activities by exemption.\n\n**Limitations.** VAT is **regressive**, since the poor spend a larger share of their income on taxed goods; it raises prices and may fuel inflation; the large informal sector escapes registration; refunds to exporters are often delayed, which strains their cash flow; and compliance is costly for small firms.\n\n**Conclusion.** VAT is important in Cameroon because it raises large and stable revenue, is neutral and efficient to collect, encourages exports and record keeping, and supports regional harmonisation, although the government has to guard against its regressive effects.",
+   "themes": [
+    "public finance",
+    "tax systems"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 8
+  }
+ ]
+}
