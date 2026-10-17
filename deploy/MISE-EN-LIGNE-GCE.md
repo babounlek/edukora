@@ -59,6 +59,8 @@ est idempotente ; sans `--appliquer`, elle simule.
 docker compose exec backend python manage.py definir_papers_vitrine            # simulation : 15 papers attendus
 docker compose exec backend python manage.py definir_papers_vitrine --appliquer
 docker compose exec backend python manage.py definir_quiz_vitrine --appliquer
+docker compose exec backend python manage.py completer_points_gce             # simulation : 424 exercices attendus
+docker compose exec backend python manage.py completer_points_gce --appliquer
 docker compose exec backend python manage.py ajouter_rappels_gce               # simulation
 docker compose exec backend python manage.py ajouter_rappels_gce --appliquer
 docker compose exec backend python manage.py indexer_recherche
@@ -78,8 +80,10 @@ docker compose exec backend python manage.py indexer_recherche
   `docker compose exec backend python manage.py shell -c "from subscriptions.models import Plan; Plan.objects.filter(cursus__examen__in=['GCE_OL','GCE_AL']).update(is_active=True)"`.
   Avant : relire la page Tarifs (elle promet inédites, cours, quiz et thèmes fréquents que le GCE n'a pas
   tous) et le libellé « jours avant ton examen » (le compte va jusqu'à la date de fin).
-- **Barème estimé** sur les épreuves dont certains exercices n'ont pas de points lisibles (≈ 430 exercices
-  de Paper 2 et 3) : la simulation donne alors le même poids à chaque exercice. Sujet de la suite.
+- **Barème exact des Paper 2 et 3** : `completer_points_gce` écrit le total des exercices (somme de
+  `Question.points`) là où il manquait ; sans lui, 56 épreuves étaient notées à poids égal entre exercices.
+  6 exercices (2 épreuves) restent sans total faute de points sur toutes leurs questions : leur épreuve
+  garde un barème estimé ; les 9 exercices « à relire » du rapport sont à vérifier sur le sujet.
 
 ## 5. Vérifier depuis l'extérieur
 
