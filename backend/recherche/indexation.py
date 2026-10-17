@@ -21,6 +21,7 @@ from catalog.models import (
     Subject, Tag,
     resolve_examen_label,
 )
+from catalog.rendering import SECTIONS_PAYANTES_COURS
 from access.models import LectureProgress
 from inedit.models import EpreuveInedite, RappelDeMethodeInedite
 from quiz.models import CompetenceItem
@@ -223,34 +224,34 @@ def _cursus_cours():
     return effectifs, acces, vitrine
 
 
+def _chaines(valeur):
+    """Toutes les chaînes d'une section (clé « type » exclue : c'est un nom de section, pas du texte), dans l'ordre."""
+    if isinstance(valeur, str):
+        yield valeur
+    elif isinstance(valeur, dict):
+        for cle, sous_valeur in valeur.items():
+            if cle != "type":
+                yield from _chaines(sous_valeur)
+    elif isinstance(valeur, list):
+        for sous_valeur in valeur:
+            yield from _chaines(sous_valeur)
+
+
 def texte_public_cours(sections):
     """
-    Texte de l'aperçu PUBLIC d'un cours : accroche, prérequis, règle - mêmes sections que
-    catalog.rendering.cours_preview_markdown (à garder alignées : indexer une section payante
-    la ferait retrouver par ses mots). Lu directement dans `sections_raw` plutôt que via
-    `Cours.preview_markdown()` : cette méthode résout chaque prérequis vers un autre cours par
-    une requête SQL, soit ~25 ms par cours - 4 minutes pour les 10 000 cours du catalogue.
+    Texte LIBRE d'un cours : toutes ses sections sauf les payantes (catalog.rendering.SECTIONS_PAYANTES_COURS :
+    les exercices d'application) - la même frontière que catalog.rendering.cours_libre_markdown. Indexer une
+    section payante la ferait retrouver par ses mots, et son extrait en dévoilerait le texte. Lu directement
+    dans `sections_raw` plutôt que via `Cours.libre_markdown()` : cette méthode résout chaque prérequis vers un
+    autre cours par une requête SQL, soit ~25 ms par cours - 4 minutes pour les 10 000 cours du catalogue.
     """
     if not isinstance(sections, list):
         return ""
     morceaux = []
     for section in sections:
-        if not isinstance(section, dict):
-            continue
-        genre = section.get("type")
-        if genre == "accroche":
-            morceaux.append(section.get("contenu_markdown") or "")
-        elif genre == "prerequis":
-            items = section.get("items") or section.get("items_markdown") or []
-            morceaux.extend(item for item in items if isinstance(item, str))
-        elif genre == "regle":
-            morceaux.append(section.get("titre") or "")
-            morceaux.append(section.get("contenu_markdown") or "")
-            for variante in section.get("variantes") or []:
-                if isinstance(variante, dict):
-                    morceaux.append(variante.get("nom") or "")
-                    morceaux.append(variante.get("contenu_markdown") or "")
-    return "\n\n".join(m for m in morceaux if isinstance(m, str) and m)
+        if isinstance(section, dict) and section.get("type") not in SECTIONS_PAYANTES_COURS:
+            morceaux.extend(_chaines(section))
+    return "\n\n".join(m for m in morceaux if m)
 
 
 # La règle d'un cours, montrée telle quelle en carte-réponse : assez courte pour se lire d'un coup d'œil.
@@ -300,7 +301,7 @@ def _entrees_cours(ctx, effectifs, acces, vitrine):
             TypeResultat.COURS, cours.id, matiere=cours.subject, titre=cours.titre,
             cles=_cles(cours.titre, cours.sous_theme, ctx.mots_matiere[cours.subject_id], *tags, ctx.cursus_mots(cursus_ids)),
             cursus_ids=cursus_ids, tous_cursus=effectifs.get(cours.id) is None, markdown=apercu_public,
-            apercu_source=apercu_public, gratuit=cours.id in vitrine,
+            apercu_source=apercu_public, gratuit=True,  # un cours est libre en lecture (ses exercices seuls sont payants)
             frequence=ctx.frequence_max([t.id for t in cours.tags.all()], cours.subject_id),
             popularite=ctx.lectures_cours.get(cours.id, 0), niveau=ctx.niveau(cursus_ids),
             meta={

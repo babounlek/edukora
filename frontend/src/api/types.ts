@@ -593,6 +593,13 @@ export interface CoursSectionExerciceItem {
 export interface CoursSectionExercicesApplication {
   type: "exercices_application"
   items: CoursSectionExerciceItem[]
+  /**
+   * true pour un lecteur sans abonnement : le serveur a REMPLACÉ la section par ce marqueur (jamais le texte des
+   * exercices) - tout cours est libre en lecture, ses exercices d'application seuls sont payants.
+   */
+  verrouille?: boolean
+  nb_exercices?: number
+  difficultes?: string[]
 }
 
 export interface CoursSectionSynthese {
@@ -614,6 +621,8 @@ export interface CoursContent {
   title: string
   content_markdown: string
   sections: CoursSectionData[]
+  /** Les exercices d'application sont-ils lisibles par ce lecteur (abonnement actif sur le cursus du cours) ? */
+  exercices_acces?: boolean
   header: CoursHeader
 }
 

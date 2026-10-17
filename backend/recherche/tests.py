@@ -31,6 +31,8 @@ VALIDE = StatutContenu.VALIDE
 # Mots-témoins : présents UNIQUEMENT dans un contenu payant - s'ils remontent, l'index fuit.
 SECRET_CORRIGE = "corrigesecretalpha"
 SECRET_SECTION = "sectionsecretbeta"
+# Section de cours LIBRE (exemple résolu) : indexée, depuis que tout cours est libre sauf ses exercices.
+LIBRE_SECTION = "sectionlibregamma"
 
 
 class TexteTests(SimpleTestCase):
@@ -118,7 +120,11 @@ class _CorpusMixin:
             external_id="c1", titre="Le théorème de Thalès dans un triangle", subject=cls.maths, statut=VALIDE,
             sections_raw=[
                 {"type": "accroche", "contenu_markdown": "Deux triangles emboîtés et des parallèles."},
-                {"type": "exemple_resolu", "enonce_markdown": f"Exemple {SECRET_SECTION}", "etapes": []},
+                {"type": "exemple_resolu", "enonce_markdown": f"Exemple {LIBRE_SECTION}", "etapes": []},
+                {"type": "exercices_application", "items": [
+                    {"numero": 1, "difficulte": "facile", "enonce_markdown": f"Exercice {SECRET_SECTION}",
+                     "solution_markdown": f"Solution {SECRET_SECTION}"},
+                ]},
             ],
         )
         cls.cours_lie.tags.add(cls.thales)
@@ -201,6 +207,15 @@ class IndexationTests(_CorpusMixin, TestCase):
         self.assertIn(" pythagore ", epreuve.texte_norm)
         cours = EntreeRecherche.objects.get(type=TypeResultat.COURS, objet_id=self.cours_lie.pk)
         self.assertIn(" emboites ", cours.texte_norm)
+
+    def test_tout_le_cours_est_indexe_sauf_ses_exercices_d_application(self):
+        cours = EntreeRecherche.objects.get(type=TypeResultat.COURS, objet_id=self.cours_lie.pk)
+        self.assertIn(LIBRE_SECTION, cours.texte_norm)  # l'exemple résolu est libre : on le retrouve par ses mots
+        self.assertNotIn(SECRET_SECTION, cours.texte_norm)
+
+    def test_un_cours_est_libre_pour_tous(self):
+        for cours in EntreeRecherche.objects.filter(type=TypeResultat.COURS):
+            self.assertTrue(cours.est_gratuit, cours.titre)
 
     def test_la_reconstruction_est_idempotente(self):
         avant = EntreeRecherche.objects.count()
@@ -389,12 +404,13 @@ class MoteurTests(_CorpusMixin, TestCase):
 
     def test_acces_visiteur_anonyme_et_abonne(self):
         anonyme = self.chercher("thales")
-        self.assertEqual(self.resultat(anonyme, "COURS", "Le théorème de Thalès dans un triangle")["acces"], "verrouille")
+        # Un cours est libre pour tous (seuls ses exercices d'application sont payants) ; le corrigé d'une épreuve, non.
+        self.assertEqual(self.resultat(anonyme, "COURS", "Le théorème de Thalès dans un triangle")["acces"], "libre")
         self.assertEqual(self.resultat(anonyme, "EPREUVE", "Mathématiques BAC C 2019")["acces"], "verrouille")
         self.assertIsNone(self.resultat(anonyme, "THEME", "théorème de Thalès")["acces"])
 
         abonne = self.chercher("thales", utilisateur=self.abonne)
-        self.assertEqual(self.resultat(abonne, "COURS", "Le théorème de Thalès dans un triangle")["acces"], "ouvert")
+        self.assertEqual(self.resultat(abonne, "COURS", "Le théorème de Thalès dans un triangle")["acces"], "libre")
         self.assertEqual(self.resultat(abonne, "EPREUVE", "Mathématiques BAC C 2019")["acces"], "ouvert")
 
     def test_une_epreuve_vitrine_est_libre_pour_tous(self):
@@ -550,7 +566,7 @@ class VueRechercheTests(_CorpusMixin, TestCase):
 
     def test_utilisateur_connecte_voit_son_acces(self):
         self.client.force_authenticate(user=self.abonne)
-        donnees = self.get(q="thales", type="COURS").json()
+        donnees = self.get(q="thales", type="EPREUVE").json()  # un cours est « libre » pour tous : on teste une épreuve
         self.assertEqual(donnees["groupes"][0]["resultats"][0]["acces"], "ouvert")
 
     def test_une_recherche_validee_sans_resultat_est_journalisee(self):

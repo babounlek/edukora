@@ -1310,16 +1310,29 @@ class Cours(models.Model):
 
         return rendering.cours_preview_markdown(self)
 
-    def sections_breakdown(self, allowed_types=None):
+    def sections_breakdown(self, allowed_types=None, verrouiller_payantes=False):
         """Sections individuellement typées, pour la lecture en ligne - voir catalog.rendering.cours_sections_breakdown."""
         from . import rendering
 
-        return rendering.cours_sections_breakdown(self, allowed_types=allowed_types)
+        return rendering.cours_sections_breakdown(
+            self, allowed_types=allowed_types, verrouiller_payantes=verrouiller_payantes,
+        )
+
+    def libre_markdown(self):
+        """Le cours sans ses exercices d'application (payants) - voir catalog.rendering.cours_libre_markdown."""
+        from . import rendering
+
+        return rendering.cours_libre_markdown(self)
 
     @property
     def est_vitrine(self):
         """
-        Gratuit dès qu'au moins un de ses rappels de méthode source vient d'une
+        N'ouvre plus rien depuis le 2026-10-14 : tout cours est libre en lecture (voir
+        access.services.has_access) et ses exercices d'application restent payants même pour un cours
+        cité par une épreuve gratuite (access.services.a_acces_exercices_cours). Conservée comme simple
+        information (« cité par une épreuve gratuite »).
+
+        Historique : gratuit dès qu'au moins un de ses rappels de méthode source vient d'une
         épreuve vitrine (voir Lesson.est_vitrine) - jamais stocké : un même Cours
         peut être partagé entre plusieurs épreuves (RappelDeMethode.cours, voir sa
         docstring, "Deux épreuves distinctes couvrant la même compétence produisent

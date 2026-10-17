@@ -74,11 +74,20 @@ class EtudeApiTests(_Base):
         self.assertIn(response.status_code, (401, 403))
 
     def test_denied_without_access_to_the_document(self):
+        # Un corrigé d'épreuve reste payant : pas de note sur ce qu'on ne peut pas lire.
         response = self.client.put(
-            "/access/etude/", {"cours": self.cours.slug, "cle": "regle", "signet": True}, format="json",
+            "/access/etude/", {"lesson": self.lesson.slug, "cle": "exercice-1", "signet": True}, format="json",
         )
         self.assertEqual(response.status_code, 403)
         self.assertFalse(MarqueEtude.objects.exists())
+
+    def test_a_course_can_be_annotated_without_subscription(self):
+        # Un cours est libre en lecture (2026-10-14) : on peut y poser un signet sans abonnement.
+        response = self.client.put(
+            "/access/etude/", {"cours": self.cours.slug, "cle": "regle", "signet": True}, format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(MarqueEtude.objects.filter(cours=self.cours, cle="regle", signet=True).exists())
 
     def test_400_without_a_target(self):
         self._abonner()

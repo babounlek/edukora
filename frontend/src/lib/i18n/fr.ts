@@ -223,8 +223,8 @@ export const fr = {
   "prix.tout_besoin": "Tout ce dont tu as besoin pour préparer ton examen",
   "prix.inclus1_titre": "Corrigés complets en illimité",
   "prix.inclus1_texte": "Annales et sujets, rédigés pas à pas.",
-  "prix.inclus2_titre": "Cours et exercices d'application",
-  "prix.inclus2_texte": "Méthode, exemple résolu, erreurs classiques.",
+  "prix.inclus2_titre": "Exercices d'application corrigés",
+  "prix.inclus2_texte": "Après chaque cours (gratuit), des exercices progressifs avec leurs solutions pas à pas.",
   "prix.inclus3_titre": "Le quiz qui cible tes révisions",
   "prix.inclus3_texte": "Il repère tes lacunes et te les repropose au bon moment.",
   "prix.inclus4_titre": "Épreuves inédites {site}",
@@ -256,7 +256,7 @@ export const fr = {
     "Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection - un transfert direct, vérifié avant activation.",
   "prix.faq4_r_manuel":
     "Dès que ton transfert est vérifié par notre équipe, généralement sous {delai}. Tu reçois un SMS de confirmation et ton accès s'active tout seul.",
-  "prix.decouvrir_cours": "Découvrir un cours avant de t'abonner",
+  "prix.decouvrir_cours": "Lire un cours gratuit",
 
   "tete.bonjour": "Bonjour",
   "tete.bonjour_prenom": "Bonjour {prenom}",
@@ -1763,7 +1763,7 @@ export const fr = {
   "cgu.compte_pin": "Un **code PIN à 4 chiffres** peut protéger chaque profil, et un **code parent** peut réserver au titulaire les paiements et la gestion des profils. Ces codes sont facultatifs ; il appartient au titulaire de les définir et de les garder confidentiels.",
   "cgu.compte_enfant": "Un enfant qui a son propre téléphone peut se connecter lui-même, avec son numéro vérifié par le titulaire : sa session est alors limitée à son profil, sans changement d'enfant ni paiement.",
   "cgu.contenu_titre": "Contenu gratuit et contenu payant",
-  "cgu.contenu": "Une sélection de contenus est en libre accès, sans abonnement : certains sujets et corrigés présentés en vitrine, ainsi que le PDF de l'énoncé d'un sujet, que tu peux partager librement. Le reste - corrigés détaillés, cours, quiz, parcours, épreuves inédites et séance du jour - est réservé aux abonnés actifs sur l'examen concerné.",
+  "cgu.contenu": "Une sélection de contenus est en libre accès, sans abonnement : certains sujets et corrigés présentés en vitrine, ainsi que le PDF de l'énoncé d'un sujet, que tu peux partager librement. Le reste - corrigés détaillés, exercices d'application des cours, quiz, parcours, épreuves inédites et séance du jour - est réservé aux abonnés actifs sur l'examen concerné. Tous les cours sont en libre accès ; seuls leurs exercices d'application corrigés sont réservés.",
   "cgu.abo_titre": "Abonnement et prix",
   "cgu.abo1": "Il n'existe qu'une seule formule, **Jusqu'à l'examen** : l'accès est valable pour un enfant et un examen donnés, de la date du paiement jusqu'à la fin de la session d'examen visée. Les épreuves inédites y sont incluses.",
   "cgu.abo_prix1": "**15 000 FCFA** par enfant, quelle que soit la date d'achat dans l'année scolaire.",

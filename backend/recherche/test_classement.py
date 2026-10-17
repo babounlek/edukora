@@ -23,7 +23,9 @@ class _CorpusAvecRegle(_CorpusMixin):
             sections_raw=[
                 {"type": "accroche", "contenu_markdown": "Un triangle, un angle droit."},
                 {"type": "regle", "contenu_markdown": REGLE, "formule_principale": "BC^2 = AB^2 + AC^2"},
-                {"type": "exemple_resolu", "enonce_markdown": f"Exemple {SECRET_SECTION}", "etapes": []},
+                {"type": "exercices_application", "items": [
+                    {"numero": 1, "enonce_markdown": f"Exercice {SECRET_SECTION}", "solution_markdown": "Solution."},
+                ]},
             ],
         )
         cls.cours_pyth.tags.add(cls.pythagore)

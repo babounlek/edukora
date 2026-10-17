@@ -217,8 +217,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.tout_besoin": "Everything you need to prepare for your exam",
   "prix.inclus1_titre": "Unlimited full solutions",
   "prix.inclus1_texte": "Past papers and exam questions, worked step by step.",
-  "prix.inclus2_titre": "Lessons and practice exercises",
-  "prix.inclus2_texte": "Method, worked example, common mistakes.",
+  "prix.inclus2_titre": "Worked practice exercises",
+  "prix.inclus2_texte": "After every lesson (free), graded exercises with step-by-step solutions.",
   "prix.inclus3_titre": "The quiz that targets your revision",
   "prix.inclus3_texte": "It spots your gaps and brings them back at the right time.",
   "prix.inclus4_titre": "{site} Original Papers",
@@ -250,7 +250,7 @@ export const en: Partial<Record<CleI18n, string>> = {
     "You can switch to manual payment (Orange Money or MTN MoMo) without losing your selection - a direct transfer, checked before activation.",
   "prix.faq4_r_manuel":
     "As soon as our team has verified your transfer, usually within {delai}. You receive a confirmation SMS and your access activates by itself.",
-  "prix.decouvrir_cours": "Try a lesson before you subscribe",
+  "prix.decouvrir_cours": "Read a free lesson",
 
   "tete.bonjour": "Hello",
   "tete.bonjour_prenom": "Hello {prenom}",
@@ -1753,7 +1753,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "cgu.compte_pin": "A **4-digit PIN** can protect each profile, and a **parent code** can reserve payments and profile management for the account holder. These codes are optional; it is up to the account holder to set them and keep them confidential.",
   "cgu.compte_enfant": "A child who has their own phone can log in themselves, with their number verified by the account holder: their session is then limited to their profile, with no switching between children and no payments.",
   "cgu.contenu_titre": "Free and paid content",
-  "cgu.contenu": "A selection of content is free to access, without a subscription: some papers and solutions shown on the showcase, as well as the PDF of a paper’s questions, which you can share freely. The rest - detailed solutions, lessons, quizzes, paths, original papers and the daily session - is reserved for active subscribers on the exam concerned.",
+  "cgu.contenu": "A selection of content is free to access, without a subscription: some papers and solutions shown on the showcase, as well as the PDF of a paper’s questions, which you can share freely. The rest - detailed solutions, the practice exercises of the lessons, quizzes, paths, original papers and the daily session - is reserved for active subscribers on the exam concerned. Every lesson is free to read; only their worked practice exercises are reserved.",
   "cgu.abo_titre": "Subscription and prices",
   "cgu.abo1": "There is only one plan, **Until the Exam**: access is valid for one child and one given exam, from the date of payment until the end of the targeted exam session. Original papers are included.",
   "cgu.abo_prix1": "**15,000 FCFA** per child, whatever the purchase date in the school year.",

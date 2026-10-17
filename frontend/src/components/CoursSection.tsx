@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
+import { Lock } from "lucide-react"
 
 import type { CoursSectionData, CoursSectionExerciceItem } from "@/api/types"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
@@ -8,7 +9,9 @@ import { CoursRegleBox } from "@/components/CoursRegleBox"
 import { CoursExempleResoluSteps } from "@/components/CoursExempleResoluSteps"
 import { CoursErreurCard } from "@/components/CoursErreurCard"
 import { Badge } from "@/components/ui/badge"
-import { t } from "@/lib/i18n"
+import { Button } from "@/components/ui/button"
+import { t, tn } from "@/lib/i18n"
+import { libelleNiveauExercice } from "@/lib/libellesEpreuve"
 
 /** Libellés partagés entre le sommaire (CoursSommaire) et les titres de section ci-dessous - "short" pour une pastille compacte, "full" pour le titre en page. Jamais d'entrée pour "accroche" : ce n'est pas une section navigable, juste le texte d'ouverture. */
 export const COURS_SECTION_LABELS: Partial<Record<CoursSectionData["type"], { short: string; full: string }>> = {
@@ -21,12 +24,38 @@ export const COURS_SECTION_LABELS: Partial<Record<CoursSectionData["type"], { sh
   synthese: { get short() { return t("cs.synthese_court") }, get full() { return t("cs.synthese_long") } },
 }
 
+/**
+ * Section « exercices d'application » d'un lecteur sans abonnement : le serveur ne l'a pas envoyée, il l'a remplacée par
+ * un marqueur (nombre d'exercices et niveaux). La carte dit ce qui attend l'abonné sans en montrer une ligne.
+ */
+function ExercicesVerrouilles({ nb, difficultes, lienAbonnement }: { nb: number; difficultes: string[]; lienAbonnement: string }) {
+  return (
+    <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-border bg-muted/40 p-4">
+      <p className="flex items-center gap-2 font-medium">
+        <Lock className="size-4 text-muted-foreground" aria-hidden="true" />
+        {tn("cs.verrou", nb)}
+      </p>
+      {difficultes.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {difficultes.map((difficulte, index) => (
+            <Badge key={`${difficulte}-${index}`} variant="outline" className="capitalize">{libelleNiveauExercice(difficulte)}</Badge>
+          ))}
+        </div>
+      )}
+      <p className="text-sm text-muted-foreground">{t("cs.verrou_texte")}</p>
+      <Button asChild size="sm">
+        <Link to={lienAbonnement}>{t("prix.sabonner")}</Link>
+      </Button>
+    </div>
+  )
+}
+
 function CoursExerciceApplicationItem({ item, index }: { item: CoursSectionExerciceItem; index: number }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
         <p className="font-medium">{t("ed.exercice_n", { n: item.numero ?? index + 1 })}</p>
-        {item.difficulte && <Badge variant="outline" className="capitalize">{item.difficulte}</Badge>}
+        {item.difficulte && <Badge variant="outline" className="capitalize">{libelleNiveauExercice(item.difficulte)}</Badge>}
       </div>
       <div className="prose prose-neutral max-w-none text-justify dark:prose-invert">
         <EpreuveMarkdown markdown={item.enonce_markdown} />
@@ -47,10 +76,13 @@ function CoursExerciceApplicationItem({ item, index }: { item: CoursSectionExerc
  * poids visuel qu'un paragraphe. `id={section.type}` sert d'ancre au sommaire
  * (CoursSommaire) - un Cours ne porte jamais deux sections du même type.
  *
+ * `lienAbonnement` : où mène le bouton de la carte « exercices d'application verrouillés » (voir
+ * ExercicesVerrouilles) - le lecteur y met le lien d'abonnement du cursus du cours.
+ *
  * `pied` : ce que le lecteur ajoute en bas de section (outils d'étude : compris, signet,
  * note) - jamais rendu pour l'accroche, qui n'est pas une section navigable.
  */
-export function CoursSection({ section, pied }: { section: CoursSectionData; pied?: ReactNode }) {
+export function CoursSection({ section, pied, lienAbonnement = "/tarifs" }: { section: CoursSectionData; pied?: ReactNode; lienAbonnement?: string }) {
   if (section.type === "accroche") {
     return (
       <div className="font-display text-xl italic leading-relaxed text-justify text-foreground">
@@ -95,7 +127,11 @@ export function CoursSection({ section, pied }: { section: CoursSectionData; pie
         </div>
       )}
 
-      {section.type === "exercices_application" && (
+      {section.type === "exercices_application" && section.verrouille && (
+        <ExercicesVerrouilles nb={section.nb_exercices ?? 0} difficultes={section.difficultes ?? []} lienAbonnement={lienAbonnement} />
+      )}
+
+      {section.type === "exercices_application" && !section.verrouille && (
         <div className="flex flex-col gap-6">
           {section.items.map((item, index) => (
             <CoursExerciceApplicationItem key={index} item={item} index={index} />

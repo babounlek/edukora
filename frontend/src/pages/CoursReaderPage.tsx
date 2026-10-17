@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { ArrowLeft, Check, NotebookPen, Unlock } from "lucide-react"
+import { ArrowLeft, Check, NotebookPen } from "lucide-react"
 
 import { getCours, readCours } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -22,6 +22,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
 import { libelleSerieEntete } from "@/lib/cursus"
+import { lienAbonnement } from "@/lib/retourAchat"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
 import { AccesRefuse } from "@/components/AccesRefuse"
@@ -148,16 +149,21 @@ export function CoursReaderPage() {
   const hasSections = (content?.sections.length ?? 0) > 0
   // Les sections dont on peut déclarer la compréhension : ni l'accroche (un texte d'ouverture)
   // ni les prérequis (une liste de renvois).
+  // La section « exercices d'application » verrouillée (lecteur sans abonnement) n'a rien à comprendre : elle
+  // n'entre ni dans la progression ni dans les marques d'étude.
+  const estVerrouillee = (section: CoursSectionData) => section.type === "exercices_application" && Boolean(section.verrouille)
   const sectionsAComprendre = (content?.sections ?? []).filter(
-    (section) => section.type !== "accroche" && section.type !== "prerequis",
+    (section) => section.type !== "accroche" && section.type !== "prerequis" && !estVerrouillee(section),
   )
   const toutComprisCours =
     sectionsAComprendre.length > 0 && sectionsAComprendre.every((section) => etude.marques[section.type]?.compris)
   const pied = (section: CoursSectionData) =>
-    section.type === "accroche" ? undefined : (
+    section.type === "accroche" || estVerrouillee(section) ? undefined : (
       <MarquesSection etude={etude} cle={section.type} avecCompris={section.type !== "prerequis"} />
     )
   const hasSommaire = content?.sections.some((section) => section.type !== "accroche") ?? false
+  // Où mène le bouton de la carte « exercices d'application » : l'abonnement du cursus du cours (retour ici), sinon les tarifs.
+  const lienCarteVerrou = cours?.cursus[0] ? lienAbonnement(cours.cursus[0].id, coursReaderPath(slug ?? "")) : "/tarifs"
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
@@ -196,12 +202,6 @@ export function CoursReaderPage() {
       {content?.header && (
         <div className="mb-6 mt-3 flex flex-wrap gap-1.5">
           <CountryBadge code={content.header.pays.code} label={content.header.pays.label} />
-          {cours?.est_vitrine && (
-            <Badge variant="success">
-              <Unlock className="mr-1 size-3" />
-              {t("co.acces_libre")}
-            </Badge>
-          )}
           {cours?.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
           <Badge variant="secondary">{content.header.matiere}</Badge>
           {libelleSerieEntete(content.header) && <Badge variant="outline">{libelleSerieEntete(content.header)}</Badge>}
@@ -237,14 +237,14 @@ export function CoursReaderPage() {
             <CoursSommaire sections={content.sections} />
             <article ref={articleRef} className="flex min-w-0 flex-col gap-8">
               {content.sections.map((section) => (
-                <CoursSection key={section.type} section={section} pied={pied(section)} />
+                <CoursSection key={section.type} section={section} pied={pied(section)} lienAbonnement={lienCarteVerrou} />
               ))}
             </article>
           </div>
         ) : (
           <article ref={articleRef} className="mx-auto flex max-w-3xl flex-col gap-8">
             {content.sections.map((section) => (
-              <CoursSection key={section.type} section={section} pied={pied(section)} />
+              <CoursSection key={section.type} section={section} pied={pied(section)} lienAbonnement={lienCarteVerrou} />
             ))}
           </article>
         )

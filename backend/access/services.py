@@ -15,27 +15,47 @@ def _du_profil(profil):
     return {} if profil is None else {"profil": profil}
 
 
-def has_access(user, obj, profil=None):
+def _abonnement_actif_pour(user, obj, profil=None):
     """
-    Vrai si l'utilisateur a un abonnement actif donnant droit à ce contenu (Lesson ou
-    Cours, tous deux exposent un `.cursus` M2M). Si `obj.cursus` est vide (Cours "toutes
-    séries"), la notion est commune à tout cursus : n'importe quel abonnement actif suffit.
-
-    Une Lesson "vitrine" (voir Lesson.est_vitrine) court-circuite tout ça : accès libre
-    pour n'importe qui, y compris un visiteur anonyme - jamais évalué contre Subscription
-    en dessous, qui ne sait rien faire d'un utilisateur non authentifié.
+    Vrai si `user` a, pour ce PROFIL, un abonnement actif sur l'un des cursus de `obj` (Lesson ou Cours,
+    tous deux exposent un `.cursus` M2M). Si `obj.cursus` est vide (Cours « toutes séries »), la notion est
+    commune à tout cursus : n'importe quel abonnement actif suffit.
     """
-    if getattr(obj, "est_vitrine", False):
-        return True
     if not user.is_authenticated:
         return False
-
     cursus_qs = obj.cursus.all()
     if not cursus_qs.exists():
         return Subscription.objects.filter(user=user, expires_at__gt=timezone.now(), **_du_profil(profil)).exists()
     return Subscription.objects.filter(
         user=user, cursus__in=cursus_qs, expires_at__gt=timezone.now(), **_du_profil(profil),
     ).exists()
+
+
+def has_access(user, obj, profil=None):
+    """
+    Vrai si l'utilisateur peut LIRE ce contenu.
+
+    Un COURS est toujours lisible, y compris par un visiteur anonyme (décision du 2026-10-14, valable pour
+    toute la plateforme) : seule sa section « exercices d'application » est payante, voir
+    a_acces_exercices_cours. Pour une Lesson : un abonnement actif donnant droit à son cursus
+    (_abonnement_actif_pour), sauf une Lesson « vitrine » (voir Lesson.est_vitrine) qui court-circuite tout :
+    accès libre pour n'importe qui, y compris un visiteur anonyme.
+    """
+    from catalog.models import Cours
+
+    if isinstance(obj, Cours) or getattr(obj, "est_vitrine", False):
+        return True
+    return _abonnement_actif_pour(user, obj, profil)
+
+
+def a_acces_exercices_cours(user, cours, profil=None):
+    """
+    Vrai si l'utilisateur peut lire les EXERCICES D'APPLICATION de ce cours (énoncés et solutions) : mêmes
+    conditions que l'ancien accès au cours entier - un abonnement actif sur son cursus (n'importe lequel si le
+    cours n'en a pas). Une épreuve gratuite qui cite le cours ne les ouvre pas : seule la lecture du cours
+    est libre.
+    """
+    return _abonnement_actif_pour(user, cours, profil)
 
 
 def has_access_inedite(user, obj, profil=None):

@@ -1471,19 +1471,28 @@ def compile_cours_from_sections(cours):
     cours.save(update_fields=["content_markdown", "updated_at"])
 
 
-def cours_preview_markdown(cours):
+# Sections d'un cours qui restent PAYANTES : tout le reste d'un cours est libre en lecture (décision du
+# 2026-10-14, toute la plateforme). Un seul endroit où la liste vit : l'accès (access.services), la recherche
+# (recherche.indexation.texte_public_cours) et les rendus ci-dessous la lisent d'ici.
+SECTIONS_PAYANTES_COURS = frozenset({"exercices_application"})
+
+
+def cours_libre_markdown(cours):
     """
-    Aperçu public (non-abonné) : accroche + prérequis + règle seulement - assez pour
-    comprendre la méthode, jamais l'exemple résolu, les erreurs classiques, les
-    exercices ni la synthèse, qui restent le contenu vendu. Dérivé directement de
-    sections_raw (pas d'un découpage de content_markdown déjà compilé).
+    Le cours SANS ses sections payantes (exercices d'application), en Markdown : ce que lit un visiteur ou un
+    connecté sans abonnement. Dérivé directement de sections_raw (pas d'un découpage de content_markdown déjà
+    compilé), donc le texte des exercices n'y figure jamais.
     """
-    allowed_types = {"accroche", "prerequis", "regle"}
     blocs = [
         _render_cours_section(cours, section) for section in cours.sections_raw
-        if section.get("type") in allowed_types
+        if section.get("type") not in SECTIONS_PAYANTES_COURS
     ]
     return "\n\n---\n\n".join(bloc for bloc in blocs if bloc)
+
+
+def cours_preview_markdown(cours):
+    """Aperçu public d'un cours : son contenu libre (voir cours_libre_markdown) - tout sauf les exercices d'application."""
+    return cours_libre_markdown(cours)
 
 
 # --- Découpage structuré des sections (lecture en ligne) -------------------------
@@ -1610,17 +1619,35 @@ def _build_cours_section_data(cours, section):
     return None
 
 
-def cours_sections_breakdown(cours, allowed_types=None):
+def _section_verrouillee(section):
+    """
+    Remplace une section payante par un marqueur sans contenu : le lecteur sait qu'elle existe, combien
+    d'exercices elle compte et leur niveau, jamais leur texte. Garde sa place dans l'ordre du cours.
+    """
+    items = [item for item in section.get("items") or [] if item]
+    difficultes = [item.get("difficulte") for item in items if isinstance(item, dict) and item.get("difficulte")]
+    return {
+        "type": section.get("type"), "verrouille": True, "nb_exercices": len(items),
+        "difficultes": difficultes, "items": [],
+    }
+
+
+def cours_sections_breakdown(cours, allowed_types=None, verrouiller_payantes=False):
     """
     Sections de cours.sections_raw individuellement typées (dicts structurés, pas de
     Markdown concaténé) pour la lecture en ligne - voir Cours.sections_breakdown().
 
-    `allowed_types` restreint les sections retournées avant construction (même filtre
-    que cours_preview_markdown, ex. {"accroche", "prerequis", "regle"} pour un aperçu
-    non-abonné).
+    `allowed_types` restreint les sections retournées avant construction (ex. un sous-ensemble
+    pour un aperçu). `verrouiller_payantes` : un lecteur sans abonnement - chaque section payante
+    (SECTIONS_PAYANTES_COURS) est remplacée par son marqueur (_section_verrouillee), jamais rendue.
     """
     sections = cours.sections_raw
     if allowed_types is not None:
         sections = [s for s in sections if s.get("type") in allowed_types]
-    built = [_build_cours_section_data(cours, section) for section in sections]
+    built = []
+    for section in sections:
+        if verrouiller_payantes and section.get("type") in SECTIONS_PAYANTES_COURS:
+            built.append(_section_verrouillee(section))
+        else:
+            built.append(_build_cours_section_data(cours, section))
     return [section for section in built if section]

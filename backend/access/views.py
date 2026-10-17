@@ -11,7 +11,7 @@ from users.profils import profil_actif
 
 from .etude import MarqueInvalide, enregistrer_marque, marques_du_document
 from .models import ExerciceFait, LectureProgress, MarqueEtude
-from .services import has_access
+from .services import a_acces_exercices_cours, has_access
 
 
 class _LessonProgressionSerializer(serializers.ModelSerializer):
@@ -119,29 +119,29 @@ def preview_lesson(request, lesson_slug):
 @permission_classes([AllowAny])
 def read_cours(request, cours_id):
     """
-    Contenu pour lecture en ligne (Markdown) - réservé aux abonnés, sauf un Cours
-    "vitrine" (voir Cours.est_vitrine, dérivé de sa/ses épreuve(s) source(s)), lisible
-    par un visiteur anonyme : AllowAny ici, has_access() ci-dessous fait le vrai tri
-    au cas par cas - même patron que read_lesson.
+    Contenu pour lecture en ligne (Markdown) - libre pour tout le monde, visiteur anonyme compris (décision du
+    2026-10-14, toute la plateforme) : seule la section « exercices d'application » est payante. Sans abonnement
+    sur le cursus du cours (a_acces_exercices_cours), elle est REMPLACÉE côté serveur par un marqueur verrouillé
+    (nombre d'exercices et niveaux, jamais leur texte) et le Markdown compilé est reconstruit sans elle : un
+    simple masquage à l'écran laisserait les solutions dans la réponse.
     """
     qs = Cours.objects.visibles().select_related("subject__country").par_slug_ou_id(cours_id)
     cours = get_object_or_404(qs)
 
-    if not has_access(request.user, cours, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour lire ce contenu."}, status=403)
-
     if request.user.is_authenticated:
         LectureProgress.objects.update_or_create(profil=profil_actif(request), cours=cours)
 
+    exercices_acces = a_acces_exercices_cours(request.user, cours, profil_actif(request) if request.user.is_authenticated else None)
     return Response({
         "id": cours.id,
         "title": cours.titre,
-        "content_markdown": cours.content_markdown,
+        "content_markdown": cours.content_markdown if exercices_acces else cours.libre_markdown(),
         # Sections individuellement typées, pour un rendu distinguant visuellement
         # chaque type - voir Cours.sections_breakdown(). Liste vide (cas déjà couvert
         # par le fallback frontend, même convention que EpreuveContent.exercises) si
         # sections_raw est vide : le frontend retombe alors sur content_markdown.
-        "sections": cours.sections_breakdown(),
+        "sections": cours.sections_breakdown(verrouiller_payantes=not exercices_acces),
+        "exercices_acces": exercices_acces,
         "header": cours.header_info(),
     })
 
@@ -149,7 +149,7 @@ def read_cours(request, cours_id):
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def preview_cours(request, cours_id):
-    """Aperçu public (non-abonné) : accroche + prérequis + règle seulement."""
+    """Aperçu public : le cours libre (tout sauf les exercices d'application), avec leur marqueur verrouillé."""
     qs = Cours.objects.visibles().select_related("subject__country").par_slug_ou_id(cours_id)
     cours = get_object_or_404(qs)
 
@@ -157,7 +157,7 @@ def preview_cours(request, cours_id):
         "id": cours.id,
         "title": cours.titre,
         "preview_markdown": cours.preview_markdown(),
-        "sections": cours.sections_breakdown(allowed_types={"accroche", "prerequis", "regle"}),
+        "sections": cours.sections_breakdown(verrouiller_payantes=True),
         "header": cours.header_info(),
     })
 

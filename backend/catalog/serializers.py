@@ -155,6 +155,10 @@ class _HasAccessMixin:
         return user if user and user.is_authenticated else None
 
     def get_has_access(self, obj):
+        # Un COURS est libre en lecture pour tout le monde (voir access.services.has_access) : seule sa
+        # section « exercices d'application » est payante, et c'est la lecture qui la verrouille.
+        if isinstance(obj, Cours):
+            return True
         # Une Lesson vitrine (voir has_access) est lisible par un visiteur anonyme -
         # court-circuite _current_user() ici même, qui renvoie toujours None pour lui
         # et masquerait sinon ce cas particulier.
