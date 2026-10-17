@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-further-maths-second-order-differential-equations",
+  "meta": {
+    "titre": "Second Order Differential Equations: Complementary Functions, Particular Integrals and Oscillations",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Linear equations with constant coefficients",
+    "duree_estimee_min": 40,
+    "tags": [
+      "second order differential equations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2022-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2022-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-second-order-differential-equations-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "When a minibus from Douala goes over a bump, its body bounces up and down on the springs, and the shock absorbers remove the bouncing after a moment or two. A swing in a school yard in Bamenda, a loaded spring in a laboratory balance and a guitar string at a cultural festival all move in the same way: the acceleration depends on the position and on the velocity. These motions are modelled by second order linear differential equations with constant coefficients. The method is a fixed routine, and it can be learned in an afternoon, but each step has a trap. GCE questions ask you to set up the equation, solve it with given conditions, and say in words what the motion looks like."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A quadratic equation $am^{2}+bm+c=0$ has two distinct real roots, one repeated root or two complex conjugate roots, according as $b^{2}-4ac$ is positive, zero or negative.",
+        "If $m=p\\pm iq$, then $e^{(p+iq)x}=e^{px}(\\cos qx+i\\sin qx)$.",
+        "The derivatives of $e^{mx}$, $\\cos qx$ and $\\sin qx$, and the product rule for combinations such as $x\\,e^{mx}$.",
+        "Velocity $\\dot x$ and acceleration $\\ddot x$ are the first and second derivatives of displacement with respect to time."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Solving ay'' + by' + cy = f(x), and what the solutions mean for oscillating motion",
+      "contenu_markdown": "A linear second order equation with constant coefficients has the form\n\n$$\na\\frac{d^{2}y}{dx^{2}}+b\\frac{dy}{dx}+c\\,y=f(x) \\tag{1}\n$$\n\nIts **general solution** is $y=\\text{CF}+\\text{PI}$. The **complementary function** (CF) is the general solution of the equation with $f(x)=0$ and contains two arbitrary constants. The **particular integral** (PI) is any one solution of the full equation.\n\n**Complementary function.** Try $y=e^{mx}$. This gives the auxiliary equation\n\n$$\nam^{2}+bm+c=0 \\tag{2}\n$$\n\n| Roots of (2) | CF |\n|---|---|\n| real and distinct, $m_1\\ne m_2$ | $Ae^{m_1x}+Be^{m_2x}$ |\n| real and repeated, $m$ | $(A+Bx)\\,e^{mx}$ |\n| complex, $p\\pm iq$ | $e^{px}\\left(A\\cos qx+B\\sin qx\\right)$ |\n\n**Particular integral.** Choose a trial form with the same type as $f(x)$, with every coefficient unknown, substitute, and equate coefficients:\n\n| $f(x)$ | Trial PI |\n|---|---|\n| constant | $\\lambda$ |\n| polynomial of degree $n$ | polynomial of degree $n$, all coefficients unknown |\n| $e^{kx}$ | $\\lambda e^{kx}$ |\n| $\\cos px$ or $\\sin px$ or a mixture | $\\lambda\\cos px+\\mu\\sin px$ (both terms, always) |\n\nIf a term of the trial form is already in the CF, multiply the trial by $x$ (and by $x^{2}$ if the CF has the repeated root).\n\n**Conditions last.** Write $y=\\text{CF}+\\text{PI}$ first, then use the two given conditions on the *whole* expression to find $A$ and $B$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "When the trial particular integral is already in the CF",
+          "quand_utiliser": "When the right-hand side repeats a term of the complementary function, for example e^{kx} with k a root of the auxiliary equation.",
+          "contenu_markdown": "A trial form that solves the homogeneous equation makes the left side zero, so it can never match a non-zero right side. Multiply by $x$ (single root) or $x^{2}$ (repeated root). Example: $y''-3y'+2y=e^{x}$. The auxiliary equation $m^{2}-3m+2=0$ gives $m=1,2$, so $\\text{CF}=Ae^{x}+Be^{2x}$ already contains $e^{x}$. Try $y=\\lambda xe^{x}$: $y'=\\lambda(1+x)e^{x}$, $y''=\\lambda(2+x)e^{x}$, and the left side is $\\lambda e^{x}\\bigl[(2+x)-3(1+x)+2x\\bigr]=-\\lambda e^{x}$. So $\\lambda=-1$ and $\\text{PI}=-xe^{x}$."
+        },
+        {
+          "nom": "Damped and undamped oscillations",
+          "quand_utiliser": "When a particle moves under a restoring force proportional to displacement, with or without a resistance proportional to velocity: the equation is x'' + 2k x' + n^2 x = 0.",
+          "contenu_markdown": "$$\n\\ddot x+2k\\dot x+n^{2}x=0\\quad(k\\ge0,\\ n>0),\\qquad m=-k\\pm\\sqrt{k^{2}-n^{2}} \\tag{3}\n$$\n\n| Case | Roots | Motion |\n|---|---|---|\n| $k=0$ | $\\pm in$ | simple harmonic motion, $x=A\\cos nt+B\\sin nt$, period $\\dfrac{2\\pi}{n}$ |\n| $0<k<n$ (light damping) | $-k\\pm i\\sqrt{n^{2}-k^{2}}$ | oscillations of angular frequency $\\sqrt{n^{2}-k^{2}}$ with amplitude decaying like $e^{-kt}$ |\n| $k=n$ (critical damping) | repeated $-k$ | $x=(A+Bt)e^{-kt}$: returns to equilibrium without oscillating |\n| $k>n$ (heavy damping) | two negative real roots | slow decay, no oscillation |\n\nIn every case with $k>0$, the displacement tends to $0$ as $t\\to\\infty$."
+        },
+        {
+          "nom": "Forced oscillations and the steady state",
+          "quand_utiliser": "When an external periodic force acts, as in x'' + 2k x' + n^2 x = F cos(wt), and the long-term motion is asked for.",
+          "contenu_markdown": "The CF decays when $k>0$ (the **transient**), so after a time only the PI remains (the **steady state**). Use the trial $P\\cos\\omega t+Q\\sin\\omega t$. Example: $y''+2y'+5y=10\\cos t$. With $y=P\\cos t+Q\\sin t$ the left side is $(4P+2Q)\\cos t+(4Q-2P)\\sin t$. Equating coefficients: $4P+2Q=10$ and $4Q-2P=0$, so $P=2Q$, then $10Q=10$, $Q=1$, $P=2$. The steady state is $2\\cos t+\\sin t$, of amplitude $\\sqrt5$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Solve $\\dfrac{d^{2}y}{dx^{2}}-4\\dfrac{dy}{dx}+4y=8e^{2x}$, given that $y=1$ and $\\dfrac{dy}{dx}=0$ when $x=0$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write and solve the auxiliary equation.",
+          "justification": "Substituting $y=e^{mx}$ into the homogeneous equation gives (2).",
+          "resultat_markdown": "$m^{2}-4m+4=0\\Rightarrow(m-2)^{2}=0$, so $m=2$ is a repeated root and $\\text{CF}=(A+Bx)e^{2x}$."
+        },
+        {
+          "numero": 2,
+          "action": "Choose the trial particular integral.",
+          "justification": "The right side $8e^{2x}$ suggests $\\lambda e^{2x}$, but both $e^{2x}$ and $xe^{2x}$ are in the CF, so the trial must be multiplied by $x^{2}$.",
+          "resultat_markdown": "Try $y=\\lambda x^{2}e^{2x}$."
+        },
+        {
+          "numero": 3,
+          "action": "Substitute to find $\\lambda$.",
+          "justification": "Differentiate twice with the product rule, then collect terms.",
+          "resultat_markdown": "$y'=\\lambda(2x+2x^{2})e^{2x}$ and $y''=\\lambda(2+8x+4x^{2})e^{2x}$. Then $y''-4y'+4y=\\lambda e^{2x}\\bigl[(2+8x+4x^{2})-4(2x+2x^{2})+4x^{2}\\bigr]=2\\lambda e^{2x}$. So $2\\lambda=8$ and $\\lambda=4$."
+        },
+        {
+          "numero": 4,
+          "action": "Write the general solution.",
+          "justification": "General solution is CF plus PI, and only now do we apply the conditions.",
+          "resultat_markdown": "$y=(A+Bx)e^{2x}+4x^{2}e^{2x}$."
+        },
+        {
+          "numero": 5,
+          "action": "Apply $y(0)=1$ and $y'(0)=0$ to the whole expression.",
+          "justification": "Differentiate the general solution: $y'=\\bigl[B+2(A+Bx)\\bigr]e^{2x}+(8x+8x^{2})e^{2x}$.",
+          "resultat_markdown": "$y(0)=A=1$. $y'(0)=B+2A=0$, so $B=-2$."
+        }
+      ],
+      "conclusion_markdown": "The solution is $y=\\left(1-2x+4x^{2}\\right)e^{2x}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For $y''+3y'+2y=4$ with $y(0)=0$ and $y'(0)=0$, applying the conditions to $\\text{CF}=Ae^{-x}+Be^{-2x}$ alone, which gives $A=B=0$.",
+          "pourquoi_faux": "The conditions apply to the general solution $\\text{CF}+\\text{PI}$, not to the CF. Here $A=B=0$ would give $y=0$, which does not even satisfy $y''+3y'+2y=4$.",
+          "correction_markdown": "The PI is $\\lambda=2$, so $y=Ae^{-x}+Be^{-2x}+2$. Then $A+B+2=0$ and $-A-2B=0$, giving $B=2$, $A=-4$: $y=-4e^{-x}+2e^{-2x}+2$."
+        },
+        {
+          "erreur_markdown": "For the auxiliary equation $m^{2}-4m+4=0$, writing the complementary function as $Ae^{2x}+Be^{2x}$.",
+          "pourquoi_faux": "The two terms are the same function, so they combine into a single constant $(A+B)e^{2x}$. The CF then has one arbitrary constant and cannot satisfy two initial conditions.",
+          "correction_markdown": "For a repeated root $m$ the CF is $(A+Bx)e^{mx}$, so here it is $(A+Bx)e^{2x}$."
+        },
+        {
+          "erreur_markdown": "For the roots $m=-1\\pm2i$, writing the CF as $e^{2x}\\left(A\\cos x+B\\sin x\\right)$.",
+          "pourquoi_faux": "The real part $p=-1$ controls the exponential factor and the imaginary part $q=2$ controls the frequency. Here they are swapped, which wrongly gives growth instead of decay.",
+          "correction_markdown": "With $p=-1$ and $q=2$: $\\text{CF}=e^{-x}\\left(A\\cos2x+B\\sin2x\\right)$."
+        },
+        {
+          "erreur_markdown": "For $y''-4y'+4y=8e^{2x}$, trying $y=\\lambda e^{2x}$ for the particular integral.",
+          "pourquoi_faux": "$e^{2x}$ solves the homogeneous equation, so the left side becomes $0$ for every $\\lambda$ and the equation $0=8e^{2x}$ is impossible.",
+          "correction_markdown": "Because $2$ is a repeated root, the trial must be $\\lambda x^{2}e^{2x}$, which gives $\\lambda=4$."
+        },
+        {
+          "erreur_markdown": "For $y''+2y'+5y=10\\cos t$, trying only $y=\\lambda\\cos t$.",
+          "pourquoi_faux": "The derivative of $\\cos t$ is $-\\sin t$, so the term $2y'$ creates a sine term. With the trial $\\lambda\\cos t$ the left side is $4\\lambda\\cos t-2\\lambda\\sin t$, and no choice of $\\lambda$ removes the sine term.",
+          "correction_markdown": "Use both $P\\cos t+Q\\sin t$. Equating coefficients gives $P=2$, $Q=1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Solve $y''-5y'+6y=0$, given that $y=0$ and $y'=1$ when $x=0$.",
+          "solution_markdown": "Auxiliary equation: $m^{2}-5m+6=(m-2)(m-3)=0$, so $m=2$ or $3$ and $y=Ae^{2x}+Be^{3x}$. Then $y(0)=A+B=0$ and $y'(0)=2A+3B=1$. From the first, $A=-B$, so $-2B+3B=1$, $B=1$, $A=-1$. Hence **$y=e^{3x}-e^{2x}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Find the general solution of $y''+2y'+5y=10x+2$. (b) Find the solution for which $y=0$ and $y'=1$ when $x=0$.",
+          "solution_markdown": "(a) Auxiliary equation: $m^{2}+2m+5=0$, $m=-1\\pm2i$, so $\\text{CF}=e^{-x}(A\\cos2x+B\\sin2x)$. For the PI try $y=px+q$: $y'=p$, $y''=0$, and $2p+5px+5q=10x+2$. So $5p=10$, $p=2$, and $2p+5q=2$ gives $q=-\\dfrac25$. The general solution is **$y=e^{-x}(A\\cos2x+B\\sin2x)+2x-\\dfrac25$**.\n\n(b) $y(0)=A-\\dfrac25=0$, so $A=\\dfrac25$. Differentiating, $y'=e^{-x}\\bigl[(-A+2B)\\cos2x+(-2A-B)\\sin2x\\bigr]+2$, so $y'(0)=-A+2B+2=1$, giving $2B=A-1=-\\dfrac35$ and $B=-\\dfrac{3}{10}$. Hence **$y=e^{-x}\\left(\\dfrac25\\cos2x-\\dfrac3{10}\\sin2x\\right)+2x-\\dfrac25$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A particle moves on a straight line so that its displacement $x$ metres from the origin at time $t$ seconds satisfies $\\ddot x+2k\\dot x+16x=0$, where $k\\ge0$ is a constant. The particle is released from rest at $x=1$. For each of $k=5$, $k=4$ and $k=2$, state the type of damping, find $x$ in terms of $t$, and say whether the particle passes through the origin.",
+          "solution_markdown": "Here $n=4$ and the roots of $m^{2}+2km+16=0$ are $m=-k\\pm\\sqrt{k^{2}-16}$. The conditions are $x(0)=1$ and $\\dot x(0)=0$.\n\n**$k=5$** (heavy damping, $k>4$): $m=-5\\pm3=-2,-8$. $x=Ae^{-2t}+Be^{-8t}$ with $A+B=1$ and $-2A-8B=0$, so $A=-4B$, $B=-\\dfrac13$, $A=\\dfrac43$. **$x=\\dfrac{1}{3}\\left(4e^{-2t}-e^{-8t}\\right)$**. Since $4e^{-2t}>e^{-8t}$ for $t\\ge0$, $x>0$ always: the particle never reaches the origin.\n\n**$k=4$** (critical damping): $m=-4$ twice, $x=(A+Bt)e^{-4t}$. $x(0)=A=1$ and $\\dot x(0)=B-4A=0$, so $B=4$. **$x=(1+4t)e^{-4t}$**, which is positive for all $t\\ge0$: the particle approaches the origin but never passes through it.\n\n**$k=2$** (light damping, $k<4$): $m=-2\\pm\\sqrt{4-16}=-2\\pm2\\sqrt3\\,i$. $x=e^{-2t}\\left(A\\cos2\\sqrt3t+B\\sin2\\sqrt3t\\right)$, $A=1$, and $\\dot x(0)=-2A+2\\sqrt3B=0$, so $B=\\dfrac{1}{\\sqrt3}$. **$x=e^{-2t}\\left(\\cos2\\sqrt3\\,t+\\dfrac{1}{\\sqrt3}\\sin2\\sqrt3\\,t\\right)$**. The particle oscillates through the origin repeatedly, with period $\\dfrac{2\\pi}{2\\sqrt3}=\\dfrac{\\pi}{\\sqrt3}$ and amplitude decaying like $e^{-2t}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "General solution $=\\text{CF}+\\text{PI}$. The auxiliary equation $am^2+bm+c=0$ gives the CF: $Ae^{m_1x}+Be^{m_2x}$, $(A+Bx)e^{mx}$ or $e^{px}(A\\cos qx+B\\sin qx)$ for $m=p\\pm iq$.",
+        "Trial PI: constant, polynomial of the same degree, $\\lambda e^{kx}$, or $\\lambda\\cos px+\\mu\\sin px$ (both terms). If the trial already lies in the CF, multiply by $x$ (by $x^{2}$ for a repeated root).",
+        "Apply the two conditions to the full solution $\\text{CF}+\\text{PI}$, never to the CF alone.",
+        "For $\\ddot x+2k\\dot x+n^{2}x=0$: $k=0$ is SHM with period $2\\pi/n$; $k<n$ gives decaying oscillations; $k=n$ is critical damping; $k>n$ is heavy damping with no oscillation.",
+        "With a periodic forcing term and $k>0$, the CF dies away (transient) and the PI is the steady state."
+      ]
+    }
+  ]
+}

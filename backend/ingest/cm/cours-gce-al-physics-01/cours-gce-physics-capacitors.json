@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-physics-capacitors",
+  "meta": {
+    "titre": "Capacitors: charge, energy and exponential discharge",
+    "matiere": "Physics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Capacitance and discharge",
+    "duree_estimee_min": 35,
+    "tags": [
+      "capacitors"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-physics-2020-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Physics past paper (Cameroon)",
+    "epreuve_source": "gce-al-physics-2020-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-physics-capacitors-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A phone repairer in Bamenda switches off a charger and, a few seconds later, still gets a small shock from a large component on the circuit board: it is a capacitor that kept its charge. The flash of a smartphone camera in Douala works the same way, storing energy slowly and releasing it in a few thousandths of a second. Capacitors also decide how quickly a timing circuit responds and which radio station a receiver picks up. At Advanced Level they come up every year, as calculations of charge and energy, as exponential discharge, and as graphs from which a time constant must be found."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Current is the rate of flow of charge, $I = Q/t$, and charge is measured in coulombs (C).",
+        "Potential difference is the energy transferred per unit charge, $V = W/Q$, and $V = IR$ for a resistor.",
+        "The natural logarithm is the inverse of the exponential: $\\ln e^{x} = x$ and $\\ln(ab) = \\ln a + \\ln b$.",
+        "A graph of $y$ against $x$ that is a straight line has the form $y = mx + c$, with gradient $m$ and intercept $c$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Capacitance, stored energy and discharge through a resistor",
+      "variantes": [
+        {
+          "nom": "Capacitors in series and in parallel",
+          "quand_utiliser": "When a circuit has several capacitors and you need an equivalent capacitance, or the charge or p.d. on one of them.",
+          "contenu_markdown": "**Parallel:** every capacitor has the same p.d. $V$, and the charges add, $Q = Q_1 + Q_2 + \\dots$, so\n$$C = C_1 + C_2 + \\dots$$\n**Series:** every capacitor carries the same charge $Q$, and the p.d.s add, $V = V_1 + V_2 + \\dots$. Dividing by $Q$ gives\n$$\\frac{1}{C} = \\frac{1}{C_1} + \\frac{1}{C_2} + \\dots$$\nThe series total is always smaller than the smallest capacitor. In series the p.d. divides in inverse proportion to capacitance ($V_1 : V_2 = C_2 : C_1$), and the smaller capacitor takes the larger p.d."
+        },
+        {
+          "nom": "Linearising the exponential for a graph",
+          "quand_utiliser": "When you are told to plot a graph to find the time constant, $I_0$ or a decay constant from experimental readings.",
+          "contenu_markdown": "For a discharge $I = I_0 e^{-t/RC}$, take natural logarithms of both sides:\n$$\\ln I = \\ln I_0 - \\frac{t}{RC}$$\nPlot $\\ln I$ on the $y$-axis against $t$ on the $x$-axis: the graph is a straight line with **gradient** $-1/RC$ and **intercept** $\\ln I_0$ on the $y$-axis. If the law is written $I = I_0 e^{-\\beta t}$, the same graph has gradient $-\\beta$. If $\\log_{10}$ is used instead, the gradient is $-\\beta\\log_{10}e = -0.434\\,\\beta$. Draw the best-fit line, take the gradient from two points far apart on the line (not from data points), and keep the units of the quantity in the label, for example $\\ln(I/\\mathrm{mA})$."
+        },
+        {
+          "nom": "Capacitor and inductor in an a.c. circuit",
+          "quand_utiliser": "When a capacitor is connected to an alternating supply, or in series with an inductor and a resistor (tuning, resonance).",
+          "contenu_markdown": "A capacitor blocks steady current but passes alternating current, with a **reactance** $X_C = \\dfrac{1}{2\\pi f C}$ which falls as the frequency $f$ rises. An inductor has $X_L = 2\\pi f L$. In a series circuit of $R$, $L$ and $C$ the impedance is\n$$Z = \\sqrt{R^{2} + (X_L - X_C)^{2}}$$\n**Resonance** happens when $X_L = X_C$, that is at\n$$f_0 = \\frac{1}{2\\pi\\sqrt{LC}}$$\nAt this frequency $Z = R$ is a minimum, so the r.m.s. current $I = V/R$ is a maximum. For example, with $L = 50\\ \\mu\\mathrm{H}$ the capacitor needed for resonance at $0.80\\ \\mathrm{MHz}$ is $C = \\dfrac{1}{(2\\pi f_0)^2 L} = 792\\ \\mathrm{pF}$, and then $X_L = X_C = 251\\ \\Omega$. Varying $C$ to maximise the current is how a radio is tuned."
+        }
+      ],
+      "contenu_markdown": "**Capacitance.** A capacitor is two conductors separated by an insulator (a dielectric). When a p.d. $V$ is applied, one plate holds charge $+Q$ and the other $-Q$, so the capacitor as a whole is neutral. Its **capacitance** is the charge stored on one plate per unit p.d. across the capacitor:\n\n$$C = \\frac{Q}{V}$$\n\nThe unit is the farad: $1\\ \\mathrm{F} = 1\\ \\mathrm{C\\,V^{-1}}$. Practical values are in $\\mu\\mathrm{F}$, $\\mathrm{nF}$ and $\\mathrm{pF}$. For two parallel plates of area $A$ a distance $d$ apart, $C = \\varepsilon_0 A / d$ in air, where $\\varepsilon_0 = 8.85\\times10^{-12}\\ \\mathrm{F\\,m^{-1}}$. A dielectric of relative permittivity $\\varepsilon_r$ multiplies the capacitance by $\\varepsilon_r$.\n\n**Energy stored.** While charge is moved onto the plates the p.d. rises from $0$ to $V$. The graph of $V$ against $Q$ is a straight line through the origin and the work done is the area under it, a triangle:\n\n$$W = \\tfrac{1}{2}QV = \\tfrac{1}{2}CV^{2} = \\frac{Q^{2}}{2C}$$\n\nThe energy is **not** $QV$, because the p.d. is not constant during charging.\n\n**Discharge through a resistor.** When a charged capacitor is connected across a resistor $R$, the charge, p.d. and current all decay exponentially:\n\n$$Q = Q_0 e^{-t/RC}, \\qquad V = V_0 e^{-t/RC}, \\qquad I = I_0 e^{-t/RC}$$\n\nThe **time constant** $\\tau = RC$ (unit: seconds) is the time for the quantity to fall to $1/e \\approx 37\\%$ of its initial value. The time for it to fall to half is $t_{1/2} = RC\\ln 2 = 0.693\\,RC$. During charging through a resistor towards a final charge $Q_0 = CV_0$, $Q = Q_0\\left(1 - e^{-t/RC}\\right)$, while the charging current decays as $I = I_0 e^{-t/RC}$. The larger $RC$, the slower the change.",
+      "formule_principale": null
+    },
+    {
+      "type": "exemple_resolu",
+      "etapes": [
+        {
+          "action": "Find the initial charge and energy.",
+          "numero": 1,
+          "justification": "Use $Q = CV$ and $W = \\frac{1}{2}CV^2$ with the initial p.d. of $12\\ \\mathrm{V}$.",
+          "resultat_markdown": "$Q_0 = 470\\times10^{-6}\\times12 = 5.64\\times10^{-3}\\ \\mathrm{C}$ and $W_0 = \\frac{1}{2}\\times470\\times10^{-6}\\times12^2 = 0.03384\\ \\mathrm{J}$."
+        },
+        {
+          "action": "Find the time constant.",
+          "numero": 2,
+          "justification": "For discharge through a resistor, $\\tau = RC$ with $R$ in ohms and $C$ in farads.",
+          "resultat_markdown": "$\\tau = 22\\times10^{3}\\times470\\times10^{-6} = 10.34\\ \\mathrm{s}$."
+        },
+        {
+          "action": "Find the p.d. after $10.0\\ \\mathrm{s}$.",
+          "numero": 3,
+          "justification": "The p.d. decays as $V = V_0e^{-t/\\tau}$.",
+          "resultat_markdown": "$V = 12\\,e^{-10.0/10.34} = 4.56\\ \\mathrm{V}$."
+        },
+        {
+          "action": "Find the time for the p.d. to fall to $3.0\\ \\mathrm{V}$.",
+          "numero": 4,
+          "justification": "Rearrange $V = V_0 e^{-t/\\tau}$ by taking natural logarithms: $t = \\tau\\ln(V_0/V)$.",
+          "resultat_markdown": "$t = 10.34\\times\\ln(12/3.0) = 10.34\\times1.386 = 14.3\\ \\mathrm{s}$."
+        },
+        {
+          "action": "Find the fraction of the energy remaining.",
+          "numero": 5,
+          "justification": "Energy is proportional to $V^2$ for a fixed capacitance, so compare $\\frac{1}{2}CV^2$ at $3.0\\ \\mathrm{V}$ with its initial value.",
+          "resultat_markdown": "$W = \\frac{1}{2}\\times470\\times10^{-6}\\times3.0^2 = 2.115\\times10^{-3}\\ \\mathrm{J}$, so the fraction is $\\dfrac{2.115\\times10^{-3}}{0.03384} = 0.0625$, which is $(3.0/12)^2 = \\frac{1}{16}$."
+        }
+      ],
+      "epreuve_source": false,
+      "enonce_markdown": "A $470\\ \\mu\\mathrm{F}$ capacitor is charged to $12\\ \\mathrm{V}$ and then discharged through a fixed resistor of resistance $22\\ \\mathrm{k\\Omega}$. Calculate (a) the initial charge and the energy stored, (b) the time constant, (c) the p.d. across the capacitor $10.0\\ \\mathrm{s}$ after the discharge begins, (d) the time taken for the p.d. to fall to $3.0\\ \\mathrm{V}$, and (e) the fraction of the initial energy still stored at that moment.",
+      "conclusion_markdown": "The capacitor starts with $5.64\\times10^{-3}\\ \\mathrm{C}$ and $0.0338\\ \\mathrm{J}$, the time constant is $10.34\\ \\mathrm{s}$, the p.d. is $4.56\\ \\mathrm{V}$ after $10.0\\ \\mathrm{s}$, it takes $14.3\\ \\mathrm{s}$ to reach $3.0\\ \\mathrm{V}$, and only $\\frac{1}{16}$ of the energy remains by then because the p.d. has fallen to a quarter."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "pourquoi_faux": "Capacitances add in parallel, not in series. Series capacitors share the p.d., so the combination stores less charge per volt than either one alone.",
+          "erreur_markdown": "Two capacitors of $6.0\\ \\mu\\mathrm{F}$ and $3.0\\ \\mu\\mathrm{F}$ in series: $C = 6.0 + 3.0 = 9.0\\ \\mu\\mathrm{F}$.",
+          "correction_markdown": "In series use $\\dfrac{1}{C} = \\dfrac{1}{6.0} + \\dfrac{1}{3.0}$, giving $C = 2.0\\ \\mu\\mathrm{F}$, smaller than both."
+        },
+        {
+          "pourquoi_faux": "$QV$ would be the work done if the whole charge crossed a constant p.d. $V$. During charging the p.d. rises from zero to $V$, so the average is only $V/2$.",
+          "erreur_markdown": "The energy stored in a capacitor charged to $V$ is $W = QV$.",
+          "correction_markdown": "Use $W = \\frac{1}{2}QV = \\frac{1}{2}CV^2 = Q^2/2C$."
+        },
+        {
+          "pourquoi_faux": "An exponential never reaches zero. After $t = RC$ the quantity has fallen to $1/e \\approx 37\\%$ of its initial value.",
+          "erreur_markdown": "After one time constant $RC$ the capacitor is fully discharged.",
+          "correction_markdown": "Use $Q = Q_0e^{-t/RC}$; after $5RC$ about $0.7\\%$ remains, which is why a capacitor is taken as discharged after several time constants."
+        },
+        {
+          "pourquoi_faux": "$V$ against $t$ is a curve. Only the logarithm of an exponential decay is linear in $t$.",
+          "erreur_markdown": "A graph of the p.d. $V$ against $t$ for a discharge is a straight line whose gradient gives $RC$.",
+          "correction_markdown": "Plot $\\ln V$ against $t$; the gradient is $-1/RC$ and the intercept is $\\ln V_0$."
+        },
+        {
+          "pourquoi_faux": "One plate has $+Q$ and the other $-Q$, so the net charge is zero. $Q$ is the magnitude of the charge on either plate.",
+          "erreur_markdown": "A charged capacitor has a net charge of $Q$.",
+          "correction_markdown": "Say 'charge stored' means the charge on one plate, and use that $Q$ in $C = Q/V$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A $6.0\\ \\mu\\mathrm{F}$ capacitor and a $3.0\\ \\mu\\mathrm{F}$ capacitor are available. (a) Calculate their equivalent capacitance when they are joined in series and when they are joined in parallel. (b) The series combination is connected across a $12\\ \\mathrm{V}$ d.c. supply. Find the charge on each capacitor and the p.d. across each. (c) Find the total energy stored.",
+          "solution_markdown": "(a) **Parallel:** $C = 6.0 + 3.0 = 9.0\\ \\mu\\mathrm{F}$. **Series:** $\\dfrac{1}{C} = \\dfrac{1}{6.0} + \\dfrac{1}{3.0} = \\dfrac{1}{2.0}$, so $C = $ **$2.0\\ \\mu\\mathrm{F}$**.\n\n(b) The equivalent capacitance of the series pair is $2.0\\ \\mu\\mathrm{F}$, so $Q = CV = 2.0\\times10^{-6}\\times12 = 24\\times10^{-6}\\ \\mathrm{C}$. Capacitors in series carry the same charge, so **each carries $24\\ \\mu\\mathrm{C}$**. Then $V_1 = Q/C_1 = 24/6.0 = 4.0\\ \\mathrm{V}$ and $V_2 = 24/3.0 = 8.0\\ \\mathrm{V}$: **$4.0\\ \\mathrm{V}$ across the $6.0\\ \\mu\\mathrm{F}$ and $8.0\\ \\mathrm{V}$ across the $3.0\\ \\mu\\mathrm{F}$** (they add to $12\\ \\mathrm{V}$).\n\n(c) $W = \\frac{1}{2}CV^2 = \\frac{1}{2}\\times2.0\\times10^{-6}\\times12^2 = $ **$1.44\\times10^{-4}\\ \\mathrm{J}$**. Check: $\\frac{1}{2}(6.0\\times10^{-6})(4.0)^2 + \\frac{1}{2}(3.0\\times10^{-6})(8.0)^2 = 4.8\\times10^{-5} + 9.6\\times10^{-5} = 1.44\\times10^{-4}\\ \\mathrm{J}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A $1000\\ \\mu\\mathrm{F}$ capacitor is charged to $9.0\\ \\mathrm{V}$ and is then connected across a $6.8\\ \\mathrm{k\\Omega}$ resistor. Calculate (a) the initial current, (b) the time constant, (c) the time taken for the current to fall to half its initial value, and (d) the charge on the capacitor and the current $10.0\\ \\mathrm{s}$ after the connection is made.",
+          "solution_markdown": "(a) At the start the whole p.d. is across the resistor: $I_0 = V_0/R = 9.0/(6.8\\times10^{3}) = $ **$1.32\\ \\mathrm{mA}$**.\n\n(b) $\\tau = RC = 6.8\\times10^{3}\\times1000\\times10^{-6} = $ **$6.8\\ \\mathrm{s}$**.\n\n(c) Half-life: $t_{1/2} = \\tau\\ln2 = 6.8\\times0.693 = $ **$4.71\\ \\mathrm{s}$**.\n\n(d) $Q_0 = CV_0 = 1000\\times10^{-6}\\times9.0 = 9.0\\times10^{-3}\\ \\mathrm{C}$. After $10.0\\ \\mathrm{s}$: $Q = Q_0e^{-t/\\tau} = 9.0\\times10^{-3}\\times e^{-10.0/6.8} = $ **$2.07\\times10^{-3}\\ \\mathrm{C}$**. The current falls by the same factor ($e^{-10.0/6.8} = 0.230$): $I = 1.32\\times0.230 = $ **$0.304\\ \\mathrm{mA}$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A student discharges a capacitor of unknown capacitance through a $150\\ \\mathrm{k\\Omega}$ resistor and records the p.d. $V$ across the capacitor at four times $t$ after the discharge begins:\n\n| $t$ / s | 15 | 30 | 45 | 60 |\n|---|---|---|---|---|\n| $V$ / V | 6.35 | 4.03 | 2.56 | 1.62 |\n\n(a) Explain which quantity should be plotted against $t$ to obtain a straight line, and what the gradient and intercept represent. (b) Calculate that quantity for the four readings. (c) Use the first and last readings to find the gradient, and hence the time constant and the capacitance. (d) Find the initial p.d. $V_0$ and the energy initially stored.",
+          "solution_markdown": "(a) Since $V = V_0e^{-t/RC}$, then $\\ln V = \\ln V_0 - t/RC$. Plot **$\\ln V$ against $t$**: the **gradient is $-1/RC$** and the **intercept on the $\\ln V$ axis is $\\ln V_0$**.\n\n(b) $\\ln V$ values: $1.848$, $1.394$, $0.940$, $0.482$ (for the readings at 15, 30, 45 and 60 s).\n\n(c) Gradient $= \\dfrac{0.482 - 1.848}{60 - 15} = -0.0304\\ \\mathrm{s^{-1}}$. Then $RC = -1/\\text{gradient} = $ **$32.9\\ \\mathrm{s}$**, so $C = \\dfrac{RC}{R} = \\dfrac{32.9}{150\\times10^{3}} = $ **$2.2\\times10^{-4}\\ \\mathrm{F}$**, about $2.2\\times10^{2}\\ \\mu\\mathrm{F}$.\n\n(d) Extrapolating the line back to $t = 0$: $\\ln V_0 = 1.848 - (-0.0304)\\times15 = 2.304$, so $V_0 = e^{2.304} = $ **$10.0\\ \\mathrm{V}$**, about $10\\ \\mathrm{V}$. Energy: $W = \\frac{1}{2}CV_0^2 = \\frac{1}{2}\\times2.2\\times10^{-4}\\times10^2 = $ **$0.011\\ \\mathrm{J}$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$C = Q/V$: capacitance is the charge on one plate per unit p.d.; the unit is the farad, $1\\ \\mathrm{F} = 1\\ \\mathrm{C\\,V^{-1}}$.",
+        "Energy stored: $W = \\frac{1}{2}QV = \\frac{1}{2}CV^2 = Q^2/2C$ (the area under the $V$-$Q$ graph, never $QV$).",
+        "Parallel: $C = C_1 + C_2$. Series: $1/C = 1/C_1 + 1/C_2$, with the same charge on each and the p.d. shared.",
+        "Discharge: $Q$, $V$ and $I$ all fall as $e^{-t/RC}$; $\\tau = RC$ gives $37\\%$ remaining and $t_{1/2} = 0.693\\,RC$.",
+        "Plot $\\ln I$ (or $\\ln V$) against $t$: gradient $-1/RC$, intercept $\\ln I_0$.",
+        "In an a.c. circuit $X_C = 1/(2\\pi fC)$; a series $LCR$ circuit resonates at $f_0 = 1/(2\\pi\\sqrt{LC})$ with $Z = R$."
+      ]
+    }
+  ]
+}

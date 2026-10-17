@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-further-maths-numerical-solution-of-differential-equations",
+  "meta": {
+    "titre": "Numerical Solution of Differential Equations: Euler, improved Euler and central differences",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "step-by-step approximation of ordinary differential equations",
+    "duree_estimee_min": 35,
+    "tags": [
+      "numerical solution of differential equations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2020-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2020-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-numerical-solution-of-differential-equations-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A hydrologist in Maroua wants to predict the level of a reservoir, but the equation describing how the level changes has no formula that can be written down. A computer cannot solve it exactly, so it builds the answer one small step at a time. Numerical methods turn a differential equation into a repeated calculation that any calculator can follow. Further Mathematics papers ask you to carry out such steps accurately, to quote results to a stated number of decimal places, and to derive the recurrence that a given approximation produces."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A first-order equation $\\dfrac{dy}{dx}=f(x,y)$ gives the gradient of the solution curve at every point $(x,y)$.",
+        "Near a point, a curve is close to its tangent line, so $y(x+h)\\approx y(x)+h\\,y'(x)$ for small $h$.",
+        "The derivative is the limit of a difference quotient, so a difference quotient with small $h$ approximates it."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Euler's method, the improved Euler method and central differences",
+      "contenu_markdown": "We want to approximate the solution of $\\dfrac{dy}{dx}=f(x,y)$ with $y(x_0)=y_0$. Choose a **step length** $h$ and write $x_n=x_0+nh$. Let $y_n$ be the approximation to $y(x_n)$.\n\n**Euler's method** moves along the tangent at each step:\n$$\ny_{n+1}=y_n+h\\,f(x_n,y_n) \\tag{1}\n$$\nTo reach $x=x_0+Nh$ you need $N=(x_{\\text{end}}-x_0)/h$ steps. Each new value uses the previous **approximation** $y_n$, not the starting value $y_0$.\n\nGeometrically, each step replaces the solution curve over an interval of length $h$ by its tangent line at the start of that interval, so errors build up when the curve bends away from the tangent. The method is first-order accurate: the error is roughly proportional to $h$, so halving $h$ roughly halves the error, at the cost of doubling the number of steps. Always keep at least two more decimal places in the working than the answer requires, and round only at the end. A table with columns $n$, $x_n$, $y_n$ and $f(x_n,y_n)$ keeps the arithmetic organised.\n\nFor a second-order equation, the derivatives are replaced by **central differences** of step $h$:\n$$\ny'(x_n)\\approx\\frac{y_{n+1}-y_{n-1}}{2h} \\tag{2}\n$$$$\ny''(x_n)\\approx\\frac{y_{n+1}-2y_n+y_{n-1}}{h^{2}} \\tag{3}\n$$\nSubstituting these into the differential equation at $x=x_n$ produces a recurrence that gives $y_{n+1}$ from $y_n$ and $y_{n-1}$.",
+      "variantes": [
+        {
+          "nom": "Improved Euler method",
+          "quand_utiliser": "The question asks for a more accurate step that averages two gradients, or names the improved (modified) Euler method.",
+          "contenu_markdown": "At each step compute the gradient at the start, a predicted value, and the gradient at the predicted point:\n$$k_1=f(x_n,y_n),\\qquad y^{*}_{n+1}=y_n+h\\,k_1,\\qquad k_2=f(x_{n+1},y^{*}_{n+1}),$$\n$$\ny_{n+1}=y_n+\\frac{h}{2}\\,(k_1+k_2). \\tag{4}\n$$\nThe new gradient $k_2$ must be evaluated at $x_{n+1}$ and at the predicted value $y^{*}_{n+1}$. Averaging two gradients makes the method second-order accurate, so the error falls roughly like $h^{2}$."
+        },
+        {
+          "nom": "Central differences for a second-order equation",
+          "quand_utiliser": "The equation involves $y''$ (and possibly $y'$) and you must derive a recurrence relation.",
+          "contenu_markdown": "Replace $y''$ and $y'$ in the equation at $x_n$ by (3) and (2), then solve for $y_{n+1}$. At the start, the formula for $y_1$ involves $y_{-1}$, a value at $x_0-h$ outside the interval. Eliminate it using the given slope: formula (2) at $n=0$ gives\n$$y_1-y_{-1}=2h\\,y'(x_0).$$\nCombine this with the recurrence at $n=0$ to find $y_1$ and $y_{-1}$, then continue with the recurrence for $n=1,2,\\dots$"
+        },
+        {
+          "nom": "Presenting and checking results",
+          "quand_utiliser": "A question asks for a value to a stated number of decimal places or for a comparison with the exact solution.",
+          "contenu_markdown": "Lay out the work in a table with columns $n$, $x_n$, $y_n$ and the gradient. Compare with an exact solution when one is known: the error is exact value minus approximation. If two different step lengths are used, the smaller step should give the more accurate value. State the result with the decimal places requested and keep extra places inside the calculation."
+        }
+      ],
+      "formule_principale": null
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "The function $y(x)$ satisfies $\\dfrac{dy}{dx}=x-y$ with $y(0)=1$. Take $h=0.2$.\n\n(a) Use Euler's method to estimate $y(0.4)$.\n\n(b) Use the improved Euler method to estimate $y(0.4)$.\n\n(c) The exact solution is $y=x-1+2e^{-x}$. Find the error in each estimate to $4$ decimal places.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the Euler formula for this equation.",
+          "justification": "Here $f(x,y)=x-y$, so each step is $y_{n+1}=y_n+h(x_n-y_n)$.",
+          "resultat_markdown": "$y_{n+1}=y_n+0.2\\,(x_n-y_n)$ with $x_0=0$, $y_0=1$."
+        },
+        {
+          "numero": 2,
+          "action": "Carry out the two Euler steps.",
+          "justification": "Use each new value in the next step.",
+          "resultat_markdown": "$y_1=1+0.2(0-1)=0.8$, and then $y_2=0.8+0.2(0.2-0.8)=0.8-0.12=0.68$. Euler estimate: $y(0.4)\\approx 0.68$."
+        },
+        {
+          "numero": 3,
+          "action": "First improved Euler step, from $x_0=0$.",
+          "justification": "Compute $k_1$, the predicted value, then $k_2$ at $x_1=0.2$.",
+          "resultat_markdown": "$k_1=0-1=-1$, $\\ y^{*}_1=1+0.2(-1)=0.8$, $\\ k_2=0.2-0.8=-0.6$, so $y_1=1+0.1(-1-0.6)=0.84$."
+        },
+        {
+          "numero": 4,
+          "action": "Second improved Euler step, from $x_1=0.2$.",
+          "justification": "Repeat with $y_1=0.84$.",
+          "resultat_markdown": "$k_1=0.2-0.84=-0.64$, $\\ y^{*}_2=0.84+0.2(-0.64)=0.712$, $\\ k_2=0.4-0.712=-0.312$, so $y_2=0.84+0.1(-0.64-0.312)=0.7448$."
+        },
+        {
+          "numero": 5,
+          "action": "Compare with the exact value.",
+          "justification": "The exact value is $y(0.4)=0.4-1+2e^{-0.4}$.",
+          "resultat_markdown": "$y(0.4)=-0.6+2e^{-0.4}=0.7406$ (to $4$ d.p.). Euler error: $0.7406-0.68=0.0606$. Improved Euler error: $0.7406-0.7448=-0.0042$."
+        }
+      ],
+      "conclusion_markdown": "Euler gives $y(0.4)\\approx 0.68$ with error $0.0606$, whereas the improved Euler method gives $0.7448$ with error about $-0.0042$, much closer to the exact value $0.7406$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For $\\dfrac{dy}{dx}=x-y$, $y(0)=1$, $h=0.2$, a student writes $y_1=1+0.2\\,(0.2-1)=0.84$.",
+          "pourquoi_faux": "Euler's formula uses the gradient at the start of the step, $(x_0,y_0)=(0,1)$. The student used $x_1=0.2$ instead of $x_0=0$.",
+          "correction_markdown": "$y_1=1+0.2(0-1)=0.8$."
+        },
+        {
+          "erreur_markdown": "For the same equation, a student computes the second step as $y_2=0.8+0.2\\,(0.2-1)=0.64$.",
+          "pourquoi_faux": "The gradient must use the latest approximation $y_1=0.8$, not the initial value $y_0=1$.",
+          "correction_markdown": "$y_2=0.8+0.2(0.2-0.8)=0.68$."
+        },
+        {
+          "erreur_markdown": "In the improved Euler method a student evaluates the second gradient at the old value: $y_1=1+0.1\\big(f(0,1)+f(0.2,1)\\big)=0.82$.",
+          "pourquoi_faux": "The second gradient must be evaluated at the predicted point $(x_1,y^{*}_1)=(0.2,0.8)$, not at the old $y$ value.",
+          "correction_markdown": "$y_1=1+0.1\\big(-1+f(0.2,0.8)\\big)=1+0.1(-1.6)=0.84$."
+        },
+        {
+          "erreur_markdown": "A student starts at $x=0$ with $h=0.2$ and uses $6$ steps to reach $x=0.6$.",
+          "pourquoi_faux": "The number of steps is $(x_{\\text{end}}-x_0)/h$, which is $0.6/0.2=3$. Extra steps carry the solution beyond the required point.",
+          "correction_markdown": "Three steps: $x_1=0.2$, $x_2=0.4$, $x_3=0.6$."
+        },
+        {
+          "erreur_markdown": "A student writes the central difference for $y''$ as $\\dfrac{y_{n+1}-2y_n+y_{n-1}}{h}$.",
+          "pourquoi_faux": "A second derivative has dimension $\\text{(unit of }y)/\\text{(unit of }x)^2$, so the denominator must be $h^2$. With $h=0.1$ the wrong denominator makes the approximation of $y''$ ten times too small.",
+          "correction_markdown": "$y''(x_n)\\approx\\dfrac{y_{n+1}-2y_n+y_{n-1}}{h^{2}}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Given $\\dfrac{dy}{dx}=x+y$ with $y(0)=1$, use Euler's method with step length $h=0.1$ to estimate $y(0.2)$.",
+          "solution_markdown": "Here $y_{n+1}=y_n+0.1\\,(x_n+y_n)$ with $x_0=0$, $y_0=1$.\n\n$y_1=1+0.1(0+1)=1.1$.\n\n$y_2=1.1+0.1(0.1+1.1)=1.1+0.12=1.22$.\n\nSo **$y(0.2)\\approx 1.22$**. (The exact value is $2e^{0.2}-1.2=1.2428$, so Euler underestimates here.)"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The function $y(x)$ satisfies $\\dfrac{dy}{dx}=xy$ with $y(1)=1$. Use one step of the improved Euler method with $h=0.1$ to estimate $y(1.1)$. The exact solution is $y=e^{(x^2-1)/2}$; find the error to $5$ decimal places.",
+          "solution_markdown": "Here $x_0=1$, $y_0=1$, $f(x,y)=xy$.\n\n$k_1=f(1,1)=1$.\n\n$y^{*}_1=1+0.1(1)=1.1$.\n\n$k_2=f(1.1,1.1)=1.21$.\n\n$y_1=1+\\dfrac{0.1}{2}(1+1.21)=1+0.05\\times2.21=1.1105$.\n\nSo **$y(1.1)\\approx1.1105$**.\n\nExact value: $e^{(1.21-1)/2}=e^{0.105}=1.11071$ (to $5$ d.p.). **Error $=1.11071-1.1105=0.00021$**, positive, so the estimate is slightly below the exact value."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The function $y(x)$ satisfies $\\dfrac{d^2y}{dx^2}+y=0$ with $y(0)=0$ and $y'(0)=1$. Take step length $h=0.1$ and write $x_n=0.1n$.\n\n(a) Use central differences to show that $y_{n+1}\\approx1.99\\,y_n-y_{n-1}$.\n\n(b) Use the condition on $y'(0)$ to find $y_{-1}$ and $y_1$.\n\n(c) Hence find an estimate of $y(0.3)$ correct to $4$ decimal places.",
+          "solution_markdown": "**(a)** At $x_n$ the equation is $y''+y=0$. Replacing $y''$ by $\\dfrac{y_{n+1}-2y_n+y_{n-1}}{h^2}$ gives\n$$\\frac{y_{n+1}-2y_n+y_{n-1}}{0.01}+y_n=0,$$\nso $y_{n+1}-2y_n+y_{n-1}+0.01y_n=0$, that is $y_{n+1}=1.99\\,y_n-y_{n-1}$.\n\n**(b)** The central difference for the first derivative at $n=0$ gives $\\dfrac{y_1-y_{-1}}{0.2}=y'(0)=1$, so $y_1-y_{-1}=0.2$. The recurrence at $n=0$ with $y_0=0$ gives $y_1=1.99(0)-y_{-1}=-y_{-1}$. Therefore $2y_1=0.2$ and **$y_1=0.1$, $y_{-1}=-0.1$**.\n\n**(c)** $y_2=1.99(0.1)-0=0.199$.\n\n$y_3=1.99(0.199)-0.1=0.39601-0.1=0.29601$.\n\nSo **$y(0.3)\\approx0.2960$** to $4$ d.p. (The exact solution is $\\sin 0.3=0.2955$, to $4$ d.p.)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Euler: $y_{n+1}=y_n+h\\,f(x_n,y_n)$; the gradient is taken at the start of the step and each step uses the latest approximation.",
+        "Improved Euler: $y_{n+1}=y_n+\\tfrac{h}{2}(k_1+k_2)$ with $k_2$ evaluated at $(x_{n+1},y_n+hk_1)$; it is more accurate than Euler.",
+        "Central differences: $y'\\approx\\dfrac{y_{n+1}-y_{n-1}}{2h}$ and $y''\\approx\\dfrac{y_{n+1}-2y_n+y_{n-1}}{h^2}$; substituting them in a second-order equation gives a recurrence.",
+        "A starting slope $y'(x_0)$ gives $y_1-y_{-1}=2h\\,y'(x_0)$, which removes the unknown $y_{-1}$.",
+        "The number of steps is $(x_{\\text{end}}-x_0)/h$; keep extra decimal places during the working and round only the final answer."
+      ]
+    }
+  ]
+}

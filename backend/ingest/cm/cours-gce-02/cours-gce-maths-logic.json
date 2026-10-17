@@ -1,0 +1,152 @@
+{
+ "cours_id": "cours-gce-maths-logic",
+ "meta": {
+  "titre": "Logic: Statements, Negation, Compound Statements and Truth Tables",
+  "matiere": "Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Propositions, connectives and truth tables",
+  "duree_estimee_min": 25,
+  "tags": [
+   "logic"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-maths-2023-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-maths-2023-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-maths-logic-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A teacher in Buea tells her class: \"If you finish the exercise, you may go out for break.\" Is the teacher telling the truth if a pupil finishes and is not allowed out? Is she lying if a pupil does not finish and goes out anyway? Mathematical logic gives clear answers to such questions by looking only at whether each statement is true or false. At the GCE you are asked to write compound statements with symbols, to find their negations and to complete truth tables, and the questions are short and predictable once you know the five basic rules."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A statement is a sentence that is either true or false, but not both.",
+    "The word \"not\" reverses the meaning of a sentence.",
+    "A table is read row by row, with each row showing one possible situation."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Statements, connectives and truth tables",
+   "contenu_markdown": "A **statement** (or proposition) is a sentence that is either **true (T)** or **false (F)**. We name statements with letters such as $p$ and $q$. Questions, orders and opinions are not statements.\n\n| Symbol | Name | Reads as | True when |\n|---|---|---|---|\n| $\\sim p$ | negation | not $p$ | $p$ is false |\n| $p \\wedge q$ | conjunction | $p$ **and** $q$ | both $p$ and $q$ are true |\n| $p \\vee q$ | disjunction | $p$ **or** $q$ | at least one of $p$, $q$ is true |\n| $p \\Rightarrow q$ | implication | if $p$ then $q$ | it is false only when $p$ is true and $q$ is false |\n\n**Truth table for two statements.** There are $2 \\times 2 = 4$ rows. Always list them in the same order:\n\n| $p$ | $q$ | $\\sim p$ | $p \\wedge q$ | $p \\vee q$ | $p \\Rightarrow q$ |\n|---|---|---|---|---|---|\n| T | T | F | T | T | T |\n| T | F | F | F | T | F |\n| F | T | T | F | T | T |\n| F | F | T | F | F | T |\n\n**Negation of a statement.** The negation of \"He is short\" is \"He is **not** short\", not \"He is tall\". Negating a statement always reverses its truth value.\n\n**Building a table for a compound statement.** Add one column for each piece (for example $\\sim q$, then $p \\wedge \\sim q$), and work from the inside outwards.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "De Morgan's laws",
+     "quand_utiliser": "When you must negate a compound statement such as $\\sim(p \\wedge q)$.",
+     "contenu_markdown": "$\\sim(p \\wedge q)$ has the same truth table as $\\sim p \\vee \\sim q$, and $\\sim(p \\vee q)$ has the same truth table as $\\sim p \\wedge \\sim q$. In words: the negation of \"$p$ and $q$\" is \"not $p$ or not $q$\". The connective changes and each statement is negated."
+    },
+    {
+     "nom": "Converse and contrapositive",
+     "quand_utiliser": "When a question gives an implication $p \\Rightarrow q$ and asks for a related statement.",
+     "contenu_markdown": "The **converse** is $q \\Rightarrow p$ and the **contrapositive** is $\\sim q \\Rightarrow \\sim p$. The contrapositive always has the same truth table as the original implication, but the converse does not. Example: for \"If it is a cat then it is an animal\", the converse \"If it is an animal then it is a cat\" is false."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Let $p$: \"Fon lives in Bamenda\" and $q$: \"Fon is a teacher\".\n\n(a) Write in symbols: \"Fon lives in Bamenda and is not a teacher\".\n\n(b) Complete the truth table for the statement in (a).\n\n(c) State the only case in which the statement is true.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Translate the sentence into symbols.",
+     "justification": "\"Lives in Bamenda\" is $p$, \"is not a teacher\" is $\\sim q$, and \"and\" is $\\wedge$.",
+     "resultat_markdown": "$p \\wedge \\sim q$."
+    },
+    {
+     "numero": 2,
+     "action": "Write the four rows for $p$ and $q$.",
+     "justification": "Two statements give $2^2 = 4$ rows, listed in the standard order.",
+     "resultat_markdown": "TT, TF, FT, FF."
+    },
+    {
+     "numero": 3,
+     "action": "Add a column for $\\sim q$.",
+     "justification": "Negation reverses each value in the column of $q$.",
+     "resultat_markdown": "$\\sim q$: F, T, F, T."
+    },
+    {
+     "numero": 4,
+     "action": "Combine $p$ and $\\sim q$ with \"and\".",
+     "justification": "A conjunction is true only when both parts are true in the same row.",
+     "resultat_markdown": "$p \\wedge \\sim q$: F, T, F, F."
+    }
+   ],
+   "conclusion_markdown": "| $p$ | $q$ | $\\sim q$ | $p \\wedge \\sim q$ |\n|---|---|---|---|\n| T | T | F | F |\n| T | F | T | T |\n| F | T | F | F |\n| F | F | T | F |\n\nThe statement $p \\wedge \\sim q$ is true only in the second row, when Fon lives in Bamenda ($p$ is true) and is not a teacher ($q$ is false)."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "The negation of \"He is short\" is \"He is tall\".",
+     "pourquoi_faux": "A person who is not short is not necessarily tall; he may be of medium height. A negation only says \"not\".",
+     "correction_markdown": "The negation is \"He is not short\", written $\\sim p$."
+    },
+    {
+     "erreur_markdown": "$\\sim(p \\wedge q)$ is the same as $\\sim p \\wedge \\sim q$.",
+     "pourquoi_faux": "By De Morgan's law the connective changes when you negate: the negation of \"and\" gives \"or\".",
+     "correction_markdown": "$\\sim(p \\wedge q) \\equiv \\sim p \\vee \\sim q$; its truth table is F, T, T, T."
+    },
+    {
+     "erreur_markdown": "$p \\vee q$ is false when $p$ and $q$ are both true, because \"or\" means one or the other.",
+     "pourquoi_faux": "In mathematics, \"or\" is inclusive: $p \\vee q$ is true if at least one of them is true, including when both are.",
+     "correction_markdown": "$p \\vee q$ is false only in the row where both $p$ and $q$ are false."
+    },
+    {
+     "erreur_markdown": "$p \\Rightarrow q$ is true only when both $p$ and $q$ are true.",
+     "pourquoi_faux": "An implication is false only when the \"if\" part is true and the \"then\" part is false. When $p$ is false, the implication is true.",
+     "correction_markdown": "The column of $p \\Rightarrow q$ is T, F, T, T."
+    },
+    {
+     "erreur_markdown": "Writing the rows of a truth table in a random order and leaving one out.",
+     "pourquoi_faux": "Two statements need exactly four rows; a missing or repeated row loses marks.",
+     "correction_markdown": "Always write TT, TF, FT, FF."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Let $p$: \"The number is even\" and $q$: \"The number is greater than 10\".\n\n(a) Write in words: (i) $p \\wedge q$, (ii) $\\sim p$, (iii) $p \\vee q$.\n\n(b) For the number $8$, state whether $p$ and $q$ are true, and then whether $p \\wedge q$ and $p \\vee q$ are true.",
+     "solution_markdown": "(a) (i) The number is even **and** greater than 10. (ii) The number is **not** even. (iii) The number is even **or** greater than 10.\n\n(b) $8$ is even, so $p$ is **true**; $8$ is not greater than $10$, so $q$ is **false**. Therefore $p \\wedge q$ is **false** (both are needed) and $p \\vee q$ is **true** (one is enough)."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Draw a truth table for the compound statement $p \\vee \\sim q$.",
+     "solution_markdown": "Columns: $p$, $q$, $\\sim q$, $p \\vee \\sim q$.\n\n| $p$ | $q$ | $\\sim q$ | $p \\vee \\sim q$ |\n|---|---|---|---|\n| T | T | F | T |\n| T | F | T | T |\n| F | T | F | F |\n| F | F | T | T |\n\nIn row 3, $p$ is false and $\\sim q$ is false, so the \"or\" statement is false. The last column is **T, T, F, T**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "(a) Complete a truth table with columns $p$, $q$, $\\sim(p \\vee q)$ and $\\sim p \\wedge \\sim q$. What do you notice?\n\n(b) The teacher says: \"If you finish the exercise ($p$), you may go out ($q$)\". Using $p \\Rightarrow q$, state in which row the teacher has broken her promise, and explain.",
+     "solution_markdown": "(a) $p \\vee q$ is T, T, T, F, so $\\sim(p \\vee q)$ is **F, F, F, T**. $\\sim p$ is F, F, T, T and $\\sim q$ is F, T, F, T, so $\\sim p \\wedge \\sim q$ is **F, F, F, T**. The two columns are identical: $\\sim(p \\vee q)$ and $\\sim p \\wedge \\sim q$ are equivalent (De Morgan's law).\n\n(b) $p \\Rightarrow q$ is false only when $p$ is true and $q$ is false: the pupil **finished the exercise but was not allowed out** (row TF). In the other rows the promise is not broken, including when the pupil did not finish ($p$ false)."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "A statement is true or false; its negation $\\sim p$ reverses the truth value and is written with the word \"not\", not with the opposite word.",
+    "$p \\wedge q$ is true only when both are true; $p \\vee q$ is false only when both are false; $p \\Rightarrow q$ is false only when $p$ is true and $q$ is false.",
+    "A truth table for two statements has four rows in the order TT, TF, FT, FF; add one column for each part of the compound statement.",
+    "De Morgan: $\\sim(p \\wedge q) \\equiv \\sim p \\vee \\sim q$ and $\\sim(p \\vee q) \\equiv \\sim p \\wedge \\sim q$.",
+    "The contrapositive $\\sim q \\Rightarrow \\sim p$ is equivalent to $p \\Rightarrow q$; the converse $q \\Rightarrow p$ is not."
+   ]
+  }
+ ]
+}

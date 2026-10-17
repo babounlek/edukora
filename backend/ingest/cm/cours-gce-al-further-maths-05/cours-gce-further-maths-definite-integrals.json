@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-further-maths-definite-integrals",
+  "meta": {
+    "titre": "Definite Integrals: limits, symmetry, substitution and mean values",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Exact evaluation of definite integrals",
+    "duree_estimee_min": 40,
+    "tags": [
+      "definite integrals"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2024-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2024-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-definite-integrals-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A surveyor in Buea marks out a plot of land bounded by a straight road and a curved stream, and needs its area before the owner can price it in FCFA. A weather station in Bamenda records a temperature that follows a formula through the day, and the director wants the average temperature. An electrician wants the root mean square value of a varying current. All three questions are answered by a **definite integral**.\n\nAt GCE Advanced Level Further Mathematics, definite integrals appear in Paper 1 as short exact-value questions and again in other papers as part of mean values, areas, volumes and centres of mass. Speed and accuracy with limits, substitutions and special cases decide many marks."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "If $F'(x) = f(x)$ then $F$ is an antiderivative of $f$, and the standard integrals include $\\int x^n\\,dx$, $\\int e^x\\,dx$ and $\\int\\dfrac1x\\,dx = \\ln|x| + c$.",
+        "The chain rule: $\\dfrac{d}{dx}F(g(x)) = F'(g(x))\\,g'(x)$, which is reversed when integrating by substitution.",
+        "$\\dfrac{d}{dx}\\sin^{-1}\\dfrac xa = \\dfrac1{\\sqrt{a^2 - x^2}}$ and $\\dfrac{d}{dx}\\tan^{-1}\\dfrac xa = \\dfrac a{a^2 + x^2}$ for $a > 0$.",
+        "An even function satisfies $f(-x) = f(x)$ and an odd function satisfies $f(-x) = -f(x)$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Evaluating definite integrals exactly",
+      "contenu_markdown": "The **fundamental theorem of calculus** evaluates a definite integral from an antiderivative $F$:\n$$\n\\int_a^b f(x)\\,dx = \\Big[F(x)\\Big]_a^b = F(b) - F(a) \\tag{1}\n$$\nThe value is a **signed area**: regions where $f < 0$ count negatively. The main properties are linearity, $\\int_a^b f\\,dx = -\\int_b^a f\\,dx$, and additivity, $\\int_a^b f\\,dx = \\int_a^c f\\,dx + \\int_c^b f\\,dx$. If $f$ is even, $\\int_{-a}^{a} f\\,dx = 2\\int_0^a f\\,dx$. If $f$ is odd, $\\int_{-a}^{a} f\\,dx = 0$. To integrate $|f(x)|$, split the interval at every point where $f$ changes sign and integrate $-f$ where $f < 0$.\n\nThree forms occur constantly in exact-value questions: $\\int\\dfrac{f'(x)}{f(x)}\\,dx = \\ln|f(x)|$, $\\int\\dfrac{dx}{a^2 + x^2} = \\dfrac1a\\tan^{-1}\\dfrac xa$ and $\\int\\dfrac{dx}{\\sqrt{a^2 - x^2}} = \\sin^{-1}\\dfrac xa$.\n\n**Substitution.** With $u = g(x)$, the **limits change as well** as the integrand:\n$$\n\\int_a^b f\\big(g(x)\\big)\\,g'(x)\\,dx = \\int_{g(a)}^{g(b)} f(u)\\,du \\tag{2}\n$$\n**Integration by parts:** $\\displaystyle\\int_a^b u\\,\\dfrac{dv}{dx}\\,dx = \\Big[uv\\Big]_a^b - \\int_a^b v\\,\\dfrac{du}{dx}\\,dx$.\n\n**Mean value and root mean square.** For a function on $[a, b]$:\n$$\n\\bar f = \\frac{1}{b-a}\\int_a^b f(x)\\,dx, \\qquad f_{\\mathrm{rms}} = \\sqrt{\\frac{1}{b-a}\\int_a^b \\big[f(x)\\big]^2\\,dx} \\tag{3}\n$$\nAlways give the **exact value first**, in terms of $\\pi$, $\\ln$ or surds, and then a decimal approximation only if the question asks for one.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Substitution and the new limits",
+          "quand_utiliser": "The integrand contains a function and (a multiple of) its derivative, or a root or a quadratic that a substitution simplifies.",
+          "contenu_markdown": "To find $\\int_0^1 2x(x^2 + 1)^3\\,dx$, put $u = x^2 + 1$, so $du = 2x\\,dx$. When $x = 0$, $u = 1$, and when $x = 1$, $u = 2$. Then the integral is $\\int_1^2 u^3\\,du = \\left[\\dfrac{u^4}{4}\\right]_1^2 = \\dfrac{16 - 1}{4} = \\dfrac{15}{4}$. No return to $x$ is needed.\n\nFor $\\sqrt{a^2 - x^2}$ use $x = a\\sin\\theta$. For example, $\\int_0^1\\sqrt{1 - x^2}\\,dx$ becomes $\\int_0^{\\pi/2}\\cos^2\\theta\\,d\\theta = \\int_0^{\\pi/2}\\dfrac{1 + \\cos2\\theta}{2}\\,d\\theta = \\dfrac\\pi4$, the area of a quarter circle of radius $1$."
+        },
+        {
+          "nom": "Symmetry and the modulus",
+          "quand_utiliser": "The limits are symmetric about $0$, or the integrand contains $|f(x)|$ or a function that changes sign.",
+          "contenu_markdown": "Split the integrand into even and odd parts. For $\\int_{-3}^{3}(x^3 + 2x^2)\\,dx$, the term $x^3$ is odd and contributes $0$, while $2x^2$ is even, so the value is $2\\int_0^3 2x^2\\,dx = 2\\times 18 = 36$.\n\nFor a modulus, find where the expression inside changes sign. For $\\int_0^2|x - 1|\\,dx$ the sign changes at $x = 1$: $\\int_0^1(1 - x)\\,dx + \\int_1^2(x - 1)\\,dx = \\dfrac12 + \\dfrac12 = 1$."
+        },
+        {
+          "nom": "Mean value and root mean square value",
+          "quand_utiliser": "The question asks for an average value over an interval, or an r.m.s. value, which is the square root of the mean of the square.",
+          "contenu_markdown": "For $f(x) = \\sin x$ on $[0, \\pi]$: the mean value is $\\dfrac1\\pi\\int_0^\\pi\\sin x\\,dx = \\dfrac2\\pi$. The mean of the square is $\\dfrac1\\pi\\int_0^\\pi\\sin^2x\\,dx = \\dfrac1\\pi\\cdot\\dfrac\\pi2 = \\dfrac12$, so the r.m.s. value is $\\dfrac1{\\sqrt2}$. The r.m.s. value is not the mean value: square first, then average, then take the root."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Find the exact value of $\\displaystyle\\int_0^3\\dfrac{x}{\\sqrt{x + 1}}\\,dx$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choose a substitution that removes the square root.",
+          "justification": "Put $u = \\sqrt{x + 1}$, so $x = u^2 - 1$ and $dx = 2u\\,du$.",
+          "resultat_markdown": "$x = u^2 - 1$ and $dx = 2u\\,du$."
+        },
+        {
+          "numero": 2,
+          "action": "Change the limits.",
+          "justification": "The new limits are the values of $u$ that correspond to the old limits.",
+          "resultat_markdown": "$x = 0$ gives $u = 1$ and $x = 3$ gives $u = 2$."
+        },
+        {
+          "numero": 3,
+          "action": "Rewrite the integrand in terms of $u$ only.",
+          "justification": "Replace $x$, $\\sqrt{x + 1}$ and $dx$, and cancel the factor $u$.",
+          "resultat_markdown": "$\\dfrac{x}{\\sqrt{x+1}}\\,dx = \\dfrac{u^2 - 1}{u}\\cdot 2u\\,du = 2(u^2 - 1)\\,du$."
+        },
+        {
+          "numero": 4,
+          "action": "Integrate with respect to $u$.",
+          "justification": "Each term is a power of $u$.",
+          "resultat_markdown": "$\\displaystyle\\int_1^2 2(u^2 - 1)\\,du = \\left[\\dfrac{2u^3}{3} - 2u\\right]_1^2$."
+        },
+        {
+          "numero": 5,
+          "action": "Substitute the limits.",
+          "justification": "Evaluate the antiderivative at the top limit and subtract its value at the bottom limit.",
+          "resultat_markdown": "$\\left(\\dfrac{16}{3} - 4\\right) - \\left(\\dfrac23 - 2\\right) = \\dfrac43 + \\dfrac43 = \\dfrac83$."
+        }
+      ],
+      "conclusion_markdown": "The exact value is $\\dfrac83$. As a check, the integrand rises from $0$ at $x = 0$ to $\\dfrac32$ at $x = 3$, so an average height below $1$ over an interval of length $3$ is plausible, and $\\dfrac83 \\approx 2.67$ agrees."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "In the example, writing the integral as $\\displaystyle\\int_0^3 2(u^2 - 1)\\,du$, keeping the limits $0$ and $3$, and obtaining $12$.",
+          "pourquoi_faux": "The limits $0$ and $3$ are values of $x$, not of $u$. After the substitution they must be replaced by the matching values of $u$.",
+          "correction_markdown": "Use $u = 1$ and $u = 2$, which give $\\dfrac83$. Alternatively, return to $x$ before substituting the original limits."
+        },
+        {
+          "erreur_markdown": "Computing $\\displaystyle\\int_0^2|x - 1|\\,dx$ as $\\Big[\\tfrac{x^2}{2} - x\\Big]_0^2 = 0$.",
+          "pourquoi_faux": "That integrates $x - 1$, not $|x - 1|$. The positive and negative parts cancel, but the modulus makes both parts positive.",
+          "correction_markdown": "Split at $x = 1$: $\\int_0^1(1 - x)\\,dx + \\int_1^2(x - 1)\\,dx = \\dfrac12 + \\dfrac12 = 1$."
+        },
+        {
+          "erreur_markdown": "Stating that the area enclosed between $y = \\sin x$ and the $x$-axis for $0 \\le x \\le 2\\pi$ is $\\displaystyle\\int_0^{2\\pi}\\sin x\\,dx = 0$.",
+          "pourquoi_faux": "A definite integral is a **signed** area. The area above the axis and the area below cancel, but the question asks for the physical area, which is positive.",
+          "correction_markdown": "Area $= 2\\int_0^\\pi\\sin x\\,dx = 4$."
+        },
+        {
+          "erreur_markdown": "Giving the r.m.s. value of $f(x) = x$ on $[0, 2]$ as the mean value, $1$.",
+          "pourquoi_faux": "The r.m.s. value is the square root of the mean of $f^2$. The mean value is the mean of $f$. They are generally different.",
+          "correction_markdown": "$f_{\\mathrm{rms}} = \\sqrt{\\dfrac12\\int_0^2x^2\\,dx} = \\sqrt{\\dfrac43} \\approx 1.155$."
+        },
+        {
+          "erreur_markdown": "Evaluating $\\displaystyle\\int_{-3}^{-1}\\dfrac{dx}{x}$ as $\\ln(-1) - \\ln(-3)$ and saying the integral does not exist.",
+          "pourquoi_faux": "The antiderivative of $\\dfrac1x$ is $\\ln|x|$. On a negative interval the modulus signs are essential, and the integrand is continuous there.",
+          "correction_markdown": "$\\Big[\\ln|x|\\Big]_{-3}^{-1} = \\ln1 - \\ln3 = -\\ln3$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Find the exact values of (a) $\\displaystyle\\int_0^2\\dfrac{dx}{x^2 + 4}$ and (b) $\\displaystyle\\int_0^3\\dfrac{2x}{x^2 + 1}\\,dx$.",
+          "solution_markdown": "**(a)** Use $\\int\\dfrac{dx}{a^2 + x^2} = \\dfrac1a\\tan^{-1}\\dfrac xa$ with $a = 2$: $\\left[\\dfrac12\\tan^{-1}\\dfrac x2\\right]_0^2 = \\dfrac12\\tan^{-1}1 - 0 = \\dfrac12\\cdot\\dfrac\\pi4 = $ **$\\dfrac\\pi8$**.\n\n**(b)** The numerator is the derivative of the denominator, so $\\left[\\ln(x^2 + 1)\\right]_0^3 = \\ln10 - \\ln1 = $ **$\\ln10$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Use the substitution $u = e^x + 1$ to find the exact value of $\\displaystyle\\int_0^{\\ln3}\\dfrac{e^{2x}}{e^x + 1}\\,dx$.",
+          "solution_markdown": "**Substitution.** $u = e^x + 1$ gives $du = e^x\\,dx$ and $e^{2x} = e^x\\cdot e^x = (u - 1)$ times $e^x$. So $e^{2x}\\,dx = (u - 1)\\,du$.\n\n**Limits.** $x = 0$ gives $u = 2$ and $x = \\ln3$ gives $u = 3 + 1 = 4$.\n\n**Integrate.** $\\displaystyle\\int_2^4\\dfrac{u - 1}{u}\\,du = \\int_2^4\\left(1 - \\dfrac1u\\right)du = \\Big[u - \\ln u\\Big]_2^4 = (4 - \\ln4) - (2 - \\ln2) = 2 - \\ln4 + \\ln2$.\n\nSince $\\ln4 = 2\\ln2$, the value is **$2 - \\ln2$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Find the exact value of $\\displaystyle\\int_{-1}^{3}\\left|x^2 - 2x\\right|dx$. (b) Find the mean value and the root mean square value of $\\dfrac{1}{1 + x^2}$ over the interval $0 \\le x \\le 1$, giving exact answers. (For the second, use the substitution $x = \\tan\\theta$.)",
+          "solution_markdown": "**(a)** $x^2 - 2x = x(x - 2)$ is positive for $x < 0$ and $x > 2$, and negative for $0 < x < 2$. With antiderivative $G(x) = \\dfrac{x^3}{3} - x^2$ we have $G(-1) = -\\dfrac43$, $G(0) = 0$, $G(2) = -\\dfrac43$ and $G(3) = 0$. Then\n$\\displaystyle\\int_{-1}^{0}(x^2 - 2x)\\,dx = G(0) - G(-1) = \\dfrac43$, $\\displaystyle\\int_0^2-(x^2 - 2x)\\,dx = -\\left(G(2) - G(0)\\right) = \\dfrac43$, $\\displaystyle\\int_2^3(x^2 - 2x)\\,dx = G(3) - G(2) = \\dfrac43$.\nThe total is **$4$**.\n\n**(b) Mean value.** The interval has length $1$, so $\\bar f = \\displaystyle\\int_0^1\\dfrac{dx}{1 + x^2} = \\Big[\\tan^{-1}x\\Big]_0^1 = $ **$\\dfrac\\pi4$**.\n\n**Mean square.** With $x = \\tan\\theta$, $dx = \\sec^2\\theta\\,d\\theta$ and $1 + x^2 = \\sec^2\\theta$. The limits become $\\theta = 0$ and $\\theta = \\dfrac\\pi4$. So $\\displaystyle\\int_0^1\\dfrac{dx}{(1 + x^2)^2} = \\int_0^{\\pi/4}\\cos^2\\theta\\,d\\theta = \\left[\\dfrac\\theta2 + \\dfrac{\\sin2\\theta}{4}\\right]_0^{\\pi/4} = \\dfrac\\pi8 + \\dfrac14$.\n\n**R.m.s. value** $= $ **$\\sqrt{\\dfrac\\pi8 + \\dfrac14} \\approx 0.802$**, which is larger than the mean value $\\dfrac\\pi4 \\approx 0.785$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A definite integral is $F(b) - F(a)$ for an antiderivative $F$; it is a signed area, and areas below the axis count negatively.",
+        "In a substitution, **change the limits** with the variable, and never mix old limits with the new variable.",
+        "For $|f(x)|$, split the interval where $f$ changes sign. For symmetric limits, an even integrand doubles and an odd integrand gives $0$.",
+        "Learn the exact-value forms $\\ln|f|$ for $f'/f$, $\\dfrac1a\\tan^{-1}\\dfrac xa$ and $\\sin^{-1}\\dfrac xa$.",
+        "The mean value is $\\dfrac{1}{b-a}\\int_a^bf\\,dx$ and the r.m.s. value is $\\sqrt{\\dfrac{1}{b-a}\\int_a^bf^2\\,dx}$; they are different quantities.",
+        "Give exact answers (in terms of $\\pi$, $\\ln$, surds) before any decimal approximation."
+      ]
+    }
+  ]
+}

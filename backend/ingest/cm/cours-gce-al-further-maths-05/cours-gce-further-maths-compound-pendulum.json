@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-further-maths-compound-pendulum",
+  "meta": {
+    "titre": "Compound Pendulum: oscillations of a rigid body about a fixed axis",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Rigid body rotation about a fixed horizontal axis",
+    "duree_estimee_min": 40,
+    "tags": [
+      "compound pendulum"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2020-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2020-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-compound-pendulum-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A metal signboard hangs from a single nail on a kiosk in Mokolo market, and when a lorry passes it swings to and fro in a steady rhythm. Church bells, the pendulum of an old wall clock in a Yaounde sitting room and a child's swing in a Buea compound all behave in the same way: a **rigid body** turns about a fixed horizontal axis under gravity.\n\nGCE Advanced Level Further Mathematics asks you to derive the equation of motion of such a body, to find the period of small oscillations, and sometimes to find the force exerted by the axis. Everything rests on one idea: the moment of inertia about the axis."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The moment of inertia of a body about an axis is $I = \\sum m r^2$, and for a uniform rod of mass $M$ and length $l$ about its centre it is $\\tfrac1{12}Ml^2$.",
+        "The parallel axes theorem states that $I_A = I_G + Md^2$, where $G$ is the centre of mass and $d$ is the distance between the two parallel axes.",
+        "For rotation about a fixed axis, the moment of the external forces about the axis equals $I\\ddot\\theta$.",
+        "Simple harmonic motion $\\ddot x = -\\omega^2 x$ has period $T = 2\\pi/\\omega$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Equation of motion and period of a compound pendulum",
+      "contenu_markdown": "A rigid body of mass $M$ is free to rotate about a smooth fixed horizontal axis through a point $O$. Its centre of mass $G$ is at distance $h$ from $O$, and $\\theta$ is the angle between $OG$ and the downward vertical. The weight $Mg$ acts at $G$ and has moment $Mgh\\sin\\theta$ about the axis, tending to reduce $\\theta$. The force at the axis has no moment about $O$. Writing the moment equation about the axis with $I$ the moment of inertia of the body about the axis:\n$$\nI\\,\\frac{d^2\\theta}{dt^2} = -Mgh\\sin\\theta \\tag{1}\n$$\nThis is not simple harmonic motion, but for **small** oscillations $\\sin\\theta \\approx \\theta$ and\n$$\n\\frac{d^2\\theta}{dt^2} = -\\frac{Mgh}{I}\\,\\theta, \\qquad T = 2\\pi\\sqrt{\\frac{I}{Mgh}} \\tag{2}\n$$\nTo use this, find $I$ by the **parallel axes theorem**, $I = I_G + Mh^2$. If $I_G = Mk^2$, where $k$ is the radius of gyration about $G$, then\n$$\nT = 2\\pi\\sqrt{\\frac{k^2 + h^2}{g\\,h}} \\tag{3}\n$$\nThe **equivalent simple pendulum** has the same period as the body and length $L = \\dfrac{I}{Mh} = \\dfrac{k^2 + h^2}{h}$, since a simple pendulum of length $L$ has $T = 2\\pi\\sqrt{L/g}$. In a question that says *show that*, always state the model: smooth axis, small angles so that $\\sin\\theta \\approx \\theta$, and the quantities $I$ and $h$ that you have calculated.\n\nStandard values to remember are, for a uniform body of mass $M$: rod of length $2a$ about its centre, $\\tfrac13Ma^2$; disc of radius $a$ about the perpendicular axis through its centre, $\\tfrac12Ma^2$; hoop of radius $a$, $Ma^2$; solid sphere about a diameter, $\\tfrac25Ma^2$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Composite bodies",
+          "quand_utiliser": "A rod carries a particle, or two bodies are fixed together, and the pivot is not at the centre of mass.",
+          "contenu_markdown": "Add the moments of inertia of the parts about the **pivot**, using the parallel axes theorem for each part that is not pivoted through its own centre, and treat a particle of mass $m$ at distance $r$ as contributing $mr^2$. For $h$, use the centre of mass of the combined body: $Mh = \\sum m_i x_i$. The moment of the weights about the axis is then $(\\text{total mass})\\,g\\,h\\sin\\theta = \\sum m_i g\\,x_i \\sin\\theta$, so you may also add the moments of the individual weights."
+        },
+        {
+          "nom": "Equivalent length and the least period",
+          "quand_utiliser": "The question moves the pivot along a body, or asks which suspension point gives the shortest period or the same period.",
+          "contenu_markdown": "Write $T = 2\\pi\\sqrt{L/g}$ with $L = \\dfrac{k^2}{h} + h$. As a function of $h$, $L$ has a minimum where $\\dfrac{dL}{dh} = -\\dfrac{k^2}{h^2} + 1 = 0$, that is $h = k$, and the least value of $L$ is $2k$. Two different pivot distances $h_1 \\ne h_2$ give the same period when $\\dfrac{k^2}{h_1} + h_1 = \\dfrac{k^2}{h_2} + h_2$, which simplifies to $h_1h_2 = k^2$."
+        },
+        {
+          "nom": "Force exerted by the axis",
+          "quand_utiliser": "The question asks for the components of the reaction at the pivot at a given angle.",
+          "contenu_markdown": "Apply Newton's second law to the centre of mass $G$, which moves on a circle of radius $h$ about $O$. Let $R$ be the component of the axis force along $GO$ and $S$ the component perpendicular to $OG$ in the direction of increasing $\\theta$:\n\n$R - Mg\\cos\\theta = Mh\\dot\\theta^2$ and $S - Mg\\sin\\theta = Mh\\ddot\\theta$.\n\nUse the energy equation to find $\\dot\\theta^2$, and the moment equation $\\ddot\\theta = -\\dfrac{Mgh\\sin\\theta}{I}$ to find $\\ddot\\theta$. Then $S = Mg\\sin\\theta\\left(1 - \\dfrac{Mh^2}{I}\\right)$. For a uniform rod pivoted at one end, $\\dfrac{Mh^2}{I} = \\dfrac34$, so $S = \\tfrac14Mg\\sin\\theta$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A uniform circular disc, of mass $M$ and radius $a$, can swing in a vertical plane about a smooth horizontal axis perpendicular to the disc and passing through a point $P$ on its rim. Show that for small oscillations the motion is simple harmonic, find the period in terms of $a$ and $g$, and find its value for $a = 0.20\\ \\mathrm{m}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the moment of inertia of the disc about the axis through the point $P$ on its rim.",
+          "justification": "The standard result about the centre $G$ is $\\tfrac12Ma^2$, and the axis through $P$ is parallel to it at distance $a$.",
+          "resultat_markdown": "$I = \\tfrac12Ma^2 + Ma^2 = \\tfrac32Ma^2$."
+        },
+        {
+          "numero": 2,
+          "action": "Write the moment equation about the axis.",
+          "justification": "The weight acts at $G$, where $PG = a$, and has moment $Mga\\sin\\theta$ tending to reduce $\\theta$.",
+          "resultat_markdown": "$\\tfrac32Ma^2\\,\\ddot\\theta = -Mga\\sin\\theta$, so $\\ddot\\theta = -\\dfrac{2g}{3a}\\sin\\theta$."
+        },
+        {
+          "numero": 3,
+          "action": "Approximate for small oscillations.",
+          "justification": "For small $\\theta$ in radians, $\\sin\\theta \\approx \\theta$, which turns the equation into the form $\\ddot\\theta = -\\omega^2\\theta$.",
+          "resultat_markdown": "$\\ddot\\theta = -\\dfrac{2g}{3a}\\theta$, simple harmonic motion with $\\omega^2 = \\dfrac{2g}{3a}$."
+        },
+        {
+          "numero": 4,
+          "action": "Find the period in terms of $a$ and $g$.",
+          "justification": "The period of simple harmonic motion is $2\\pi/\\omega$.",
+          "resultat_markdown": "$T = 2\\pi\\sqrt{\\dfrac{3a}{2g}}$, and the equivalent simple pendulum has length $\\dfrac{3a}{2}$."
+        },
+        {
+          "numero": 5,
+          "action": "Substitute $a = 0.20\\ \\mathrm{m}$ and $g = 9.8\\ \\mathrm{m\\,s^{-2}}$.",
+          "justification": "Keep the exact form until the last line, then evaluate once.",
+          "resultat_markdown": "$T = 2\\pi\\sqrt{\\dfrac{3(0.20)}{2(9.8)}} \\approx 1.10\\ \\mathrm{s}$."
+        }
+      ],
+      "conclusion_markdown": "The motion is simple harmonic with period $T = 2\\pi\\sqrt{3a/(2g)}$, about $1.10$ seconds for a disc of radius $20\\ \\mathrm{cm}$. The mass $M$ cancels, so the period does not depend on it."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Using $I = \\tfrac12Ma^2$ for a disc pivoted at its rim, because the formula was learnt as the moment of inertia of a disc.",
+          "pourquoi_faux": "The standard result applies to the axis through the centre. The axis at the rim is parallel to it at distance $a$, so the parallel axes theorem must be used.",
+          "correction_markdown": "$I = \\tfrac12Ma^2 + Ma^2 = \\tfrac32Ma^2$."
+        },
+        {
+          "erreur_markdown": "Writing the period as $T = 2\\pi\\sqrt{I/(Mg)}$, or using the length of the body in place of $h$.",
+          "pourquoi_faux": "The restoring moment is $Mgh\\sin\\theta$, where $h$ is the distance from the pivot to the **centre of mass**, so $h$ must appear in the denominator.",
+          "correction_markdown": "$T = 2\\pi\\sqrt{I/(Mgh)}$ with $h = OG$."
+        },
+        {
+          "erreur_markdown": "For a rod of mass $M$ with a particle of mass $m$ attached, taking the centre of mass of the rod alone for $h$ in the restoring moment.",
+          "pourquoi_faux": "Both weights contribute to the moment about the axis, and so does the particle's moment of inertia $mr^2$. Using only the rod misses both.",
+          "correction_markdown": "Take $h$ for the combined body, $(M + m)h = M x_{\\text{rod}} + m x_{\\text{particle}}$, and add $mr^2$ to $I$."
+        },
+        {
+          "erreur_markdown": "Keeping $\\sin\\theta$ in the equation and stating that the motion is simple harmonic for any amplitude.",
+          "pourquoi_faux": "The equation $\\ddot\\theta = -\\dfrac{Mgh}{I}\\sin\\theta$ is not of the form $\\ddot\\theta = -\\omega^2\\theta$. Simple harmonic motion holds only when the oscillations are small, so that $\\sin\\theta \\approx \\theta$.",
+          "correction_markdown": "State that $\\theta$ is small and replace $\\sin\\theta$ by $\\theta$ before quoting the period."
+        },
+        {
+          "erreur_markdown": "Taking the perpendicular component of the axis force as $Mg\\sin\\theta$ for a uniform rod.",
+          "pourquoi_faux": "This would hold only if the centre of mass had no acceleration perpendicular to $OG$. The rod is swinging, so $S - Mg\\sin\\theta = Mh\\ddot\\theta$ must be used.",
+          "correction_markdown": "With $\\ddot\\theta = -\\dfrac{3g}{2l}\\sin\\theta$ and $h = \\dfrac l2$ this gives $S = \\tfrac14Mg\\sin\\theta$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A uniform rod of mass $0.6\\ \\mathrm{kg}$ and length $1.2\\ \\mathrm{m}$ is free to swing in a vertical plane about a smooth horizontal axis through one end. Find the moment of inertia of the rod about this axis, the period of small oscillations, and the length of the equivalent simple pendulum. Take $g = 9.8\\ \\mathrm{m\\,s^{-2}}$.",
+          "solution_markdown": "**Moment of inertia.** For a rod about its end, $I = \\tfrac13Ml^2 = \\tfrac13(0.6)(1.2)^2 = 0.288\\ \\mathrm{kg\\,m^2}$.\n\n**Period.** The centre of mass is at $h = 0.6\\ \\mathrm{m}$ from the pivot, so $T = 2\\pi\\sqrt{\\dfrac{I}{Mgh}} = 2\\pi\\sqrt{\\dfrac{0.288}{(0.6)(9.8)(0.6)}} = 2\\pi\\sqrt{\\dfrac{4}{49}} = \\dfrac{4\\pi}{7}\\approx 1.80\\ \\mathrm{s}$.\n\n**Equivalent length.** $L = \\dfrac{I}{Mh} = \\dfrac{0.288}{(0.6)(0.6)} = 0.8\\ \\mathrm{m}$, which is $\\tfrac23$ of the length of the rod.\n\nSo $I = $ **$0.288\\ \\mathrm{kg\\,m^2}$**, $T \\approx$ **$1.80\\ \\mathrm{s}$** and $L = $ **$0.8\\ \\mathrm{m}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A uniform rod $AB$ of mass $M$ and length $2a$ carries a particle of mass $2M$ fixed at the end $B$. The rod can swing in a vertical plane about a smooth horizontal axis through $A$, perpendicular to the rod. Show that for small oscillations the period is $2\\pi\\sqrt{\\dfrac{28a}{15g}}$, and find its value for $a = 0.5\\ \\mathrm{m}$ and $g = 9.8\\ \\mathrm{m\\,s^{-2}}$.",
+          "solution_markdown": "**Moment of inertia about $A$.** Rod: $\\tfrac13M(2a)^2 = \\tfrac43Ma^2$. Particle: $2M(2a)^2 = 8Ma^2$. Total $I = \\tfrac43Ma^2 + 8Ma^2 = \\tfrac{28}{3}Ma^2$.\n\n**Moment of the weights.** With $\\theta$ the angle of the rod with the downward vertical, the weight of the rod acts at distance $a$ and the weight of the particle at distance $2a$ from $A$, so the moment is $(Mg\\,a + 2Mg\\,2a)\\sin\\theta = 5Mga\\sin\\theta$.\n\n**Equation of motion.** $\\tfrac{28}{3}Ma^2\\,\\ddot\\theta = -5Mga\\sin\\theta$. For small $\\theta$, $\\ddot\\theta = -\\dfrac{15g}{28a}\\theta$, simple harmonic with $\\omega^2 = \\dfrac{15g}{28a}$.\n\n**Period.** $T = \\dfrac{2\\pi}{\\omega} = 2\\pi\\sqrt{\\dfrac{28a}{15g}}$, as required.\n\n**Numerical value.** $\\dfrac{28(0.5)}{15(9.8)} = \\dfrac{2}{21}$, so $T = 2\\pi\\sqrt{\\dfrac2{21}} \\approx$ **$1.94\\ \\mathrm{s}$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A uniform circular disc of mass $M$ and radius $a$ can oscillate in a vertical plane about a smooth horizontal axis perpendicular to its plane, passing through a point $P$ at distance $d$ from the centre, where $0 < d \\le a$. (a) Show that the period of small oscillations is $2\\pi\\sqrt{\\dfrac{a^2 + 2d^2}{2gd}}$. (b) Show that the period is least when $d = \\dfrac{a}{\\sqrt2}$ and find the least period when $a = 0.20\\ \\mathrm{m}$. (c) For $d = a$ there is another value of $d$ that gives the same period. Find it.",
+          "solution_markdown": "**(a)** $I = \\tfrac12Ma^2 + Md^2$ and $h = d$. The equation $I\\ddot\\theta = -Mgd\\sin\\theta$ gives, for small angles, $T = 2\\pi\\sqrt{\\dfrac{I}{Mgd}} = 2\\pi\\sqrt{\\dfrac{\\tfrac12a^2 + d^2}{gd}} = 2\\pi\\sqrt{\\dfrac{a^2 + 2d^2}{2gd}}$.\n\n**(b)** Write $T = 2\\pi\\sqrt{f(d)/g}$ with $f(d) = \\dfrac{a^2}{2d} + d$. Then $f'(d) = -\\dfrac{a^2}{2d^2} + 1 = 0$ gives $d^2 = \\dfrac{a^2}{2}$, so $d = \\dfrac{a}{\\sqrt2}$, which lies in $0 < d \\le a$. Since $f''(d) = \\dfrac{a^2}{d^3} > 0$, this is a minimum. Then $f = \\dfrac{a}{\\sqrt2} + \\dfrac{a}{\\sqrt2} = \\sqrt2\\,a$, so $T_{\\min} = 2\\pi\\sqrt{\\dfrac{\\sqrt2\\,a}{g}}$. For $a = 0.20\\ \\mathrm{m}$, $T_{\\min} = 2\\pi\\sqrt{\\dfrac{\\sqrt2(0.20)}{9.8}} \\approx$ **$1.07\\ \\mathrm{s}$**.\n\n**(c)** For $d = a$, $f(a) = \\dfrac{a}{2} + a = \\dfrac{3a}{2}$. The same period needs $\\dfrac{a^2}{2d} + d = \\dfrac{3a}{2}$, which gives $2d^2 - 3ad + a^2 = 0$, that is $(2d - a)(d - a) = 0$. The other value is **$d = \\dfrac{a}{2}$**, and $d_1d_2 = \\dfrac{a^2}{2} = k^2$ as predicted by the general result."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "The equation of motion about a smooth fixed axis is $I\\ddot\\theta = -Mgh\\sin\\theta$, where $h$ is the distance from the axis to the centre of mass.",
+        "For small oscillations replace $\\sin\\theta$ by $\\theta$: the motion is simple harmonic with $T = 2\\pi\\sqrt{I/(Mgh)}$.",
+        "Find $I$ about the pivot with the parallel axes theorem, and add the contributions of all parts of a composite body.",
+        "The equivalent simple pendulum has length $L = \\dfrac{I}{Mh} = \\dfrac{k^2 + h^2}{h}$; the period is least when $h = k$, and two pivots with $h_1h_2 = k^2$ give equal periods.",
+        "For the force at the axis, apply Newton's second law to the centre of mass along and perpendicular to $OG$: $S = Mg\\sin\\theta\\,(1 - Mh^2/I)$.",
+        "In a *show that* question, state that the angles are small and that the axis is smooth."
+      ]
+    }
+  ]
+}

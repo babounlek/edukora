@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-gce-further-maths-recurrence-relations",
+  "meta": {
+    "titre": "Recurrence Relations: from the rule to the closed form",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Linear recurrences and closed forms",
+    "duree_estimee_min": 40,
+    "tags": [
+      "recurrence relations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2020-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2020-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-recurrence-relations-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A njangi group in Bamenda keeps its savings in a microfinance account that adds 2% interest at the end of every month, and each member then pays in a further 20 000 FCFA. To know the balance after 18 months, you could repeat the same step 18 times, but a closed formula gives the answer at once. This is exactly what a recurrence relation allows: each term is built from the previous ones, and with the right method the whole sequence can be written in terms of its position. Recurrence relations appear in nearly every Further Mathematics paper, either as a request to find a closed form, as a proof by induction, or as a sequence that must be transformed into a geometric one."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The $n$th term of a geometric sequence with first term $u_0$ and common ratio $r$ is $u_0 r^n$.",
+        "A quadratic equation $m^2 + bm + c = 0$ has roots given by the quadratic formula, and its discriminant decides whether they are real and distinct, repeated or complex.",
+        "A statement $P(n)$ is proved for all $n \\ge n_0$ by induction: prove $P(n_0)$, assume $P(k)$ and show $P(k+1)$.",
+        "$\\ln(ab) = \\ln a + \\ln b$ and $\\ln(a^m) = m\\ln a$ for $a, b > 0$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Solving linear recurrence relations",
+      "contenu_markdown": "A **recurrence relation** gives each term of a sequence in terms of earlier terms. Together with the starting value(s) it defines the sequence completely. A **closed form** expresses $u_n$ directly in terms of $n$. Advanced Level questions ask you to find a closed form, to prove one by induction, or to turn a given recurrence into a geometric sequence.\n\n**First order linear recurrence.** For $u_{n+1} = a u_n + b$ with $a \\ne 1$, the **fixed point** $L$ satisfies $L = aL + b$, so $L = \\dfrac{b}{1-a}$. Subtracting $L = aL + b$ from the recurrence gives $u_{n+1} - L = a(u_n - L)$, so $u_n - L$ is geometric with ratio $a$:\n\n$$\n\\displaystyle u_n = L + a^n (u_0 - L) \\tag{1}\n$$\n\nIf $a = 1$ the sequence is arithmetic and $u_n = u_0 + nb$.\n\n**Second order linear recurrence with constant coefficients.** For $u_{n+2} = p\\,u_{n+1} + q\\,u_n$ with $q \\ne 0$, the trial solution $u_n = m^n$ gives the **auxiliary equation**\n\n$$\nm^2 = pm + q \\tag{2}\n$$\n\nIf it has two distinct real roots $\\alpha$ and $\\beta$, then\n\n$$\n\\displaystyle u_n = A\\alpha^n + B\\beta^n \\tag{3}\n$$\n\nwhere $A$ and $B$ are constants fixed by the two starting values $u_0$ and $u_1$ (two simultaneous equations).\n\n**Proving a closed form by induction.** First order: check $n = 0$, assume the formula for $n = k$, and use the recurrence to obtain $n = k+1$. Second order: check $n = 0$ and $n = 1$, assume the formula for $n = k$ and $n = k+1$, and obtain $n = k+2$. A conclusion sentence (\"true for all $n \\ge 0$ by induction\") is required.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Repeated and complex roots",
+          "quand_utiliser": "When the auxiliary equation of a second order recurrence has a repeated root or non-real roots.",
+          "contenu_markdown": "**Repeated root** $\\alpha$ (discriminant zero): $u_n = (A + Bn)\\alpha^n$. For example $u_{n+2} = 4u_{n+1} - 4u_n$ has auxiliary equation $m^2 - 4m + 4 = 0$, so $m = 2$ twice and $u_n = (A + Bn)2^n$.\n\n**Complex roots** $m = r(\\cos\\theta \\pm i\\sin\\theta)$: $u_n = r^n\\left(A\\cos n\\theta + B\\sin n\\theta\\right)$. For example $u_{n+2} = 2u_{n+1} - 2u_n$ gives $m^2 - 2m + 2 = 0$, so $m = 1 \\pm i = \\sqrt2\\left(\\cos\\frac{\\pi}{4} \\pm i\\sin\\frac{\\pi}{4}\\right)$ and $u_n = 2^{n/2}\\left(A\\cos\\frac{n\\pi}{4} + B\\sin\\frac{n\\pi}{4}\\right)$."
+        },
+        {
+          "nom": "Non-homogeneous recurrences",
+          "quand_utiliser": "When the recurrence has an extra term, such as $u_{n+2} = p\\,u_{n+1} + q\\,u_n + f(n)$.",
+          "contenu_markdown": "The general solution is **complementary function + particular solution**. The complementary function solves the equation without $f(n)$ (use the auxiliary equation). The particular solution is found by substituting a trial form with the same shape as $f(n)$:\n\n| $f(n)$ | Trial particular solution |\n|---|---|\n| constant | $c$ |\n| $kn + l$ | $pn + q$ |\n| $k\\lambda^n$ | $c\\lambda^n$ |\n\nIf the trial form already belongs to the complementary function (for example $\\lambda$ is a root of the auxiliary equation), multiply it by $n$. Only after adding the particular solution do you use $u_0$ and $u_1$ to find $A$ and $B$."
+        },
+        {
+          "nom": "Reduction by substitution",
+          "quand_utiliser": "When the recurrence is not linear but a change of variable makes it linear, as in a quotient or a power of $u_n$.",
+          "contenu_markdown": "For $u_{n+1} = \\dfrac{p\\,u_n}{q\\,u_n + r}$ with $u_n \\ne 0$, put $v_n = \\dfrac{1}{u_n}$. Then $v_{n+1} = \\dfrac{q}{p} + \\dfrac{r}{p}\\,v_n$, a first order linear recurrence. For $u_{n+1} = k\\,u_n^{\\,m}$ with $u_n > 0$, put $w_n = \\ln u_n$: then $w_{n+1} = m\\,w_n + \\ln k$. Solve for $v_n$ or $w_n$ with equation (1), then return to $u_n$. State clearly why the new sequence is defined (for example $u_n > 0$ for all $n$)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A sequence satisfies $u_{n+2} = 3u_{n+1} + 4u_n + 12$ for $n \\ge 0$, with $u_0 = 1$ and $u_1 = 0$. Find a closed form for $u_n$ and use it to find $u_3$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Solve the homogeneous recurrence $u_{n+2} = 3u_{n+1} + 4u_n$ to find the complementary function.",
+          "justification": "The auxiliary equation comes from the trial solution $u_n = m^n$.",
+          "resultat_markdown": "$m^2 - 3m - 4 = 0$, so $(m - 4)(m + 1) = 0$ and $m = 4$ or $m = -1$. The complementary function is $A\\cdot 4^n + B(-1)^n$."
+        },
+        {
+          "numero": 2,
+          "action": "Find a particular solution of the full recurrence.",
+          "justification": "The extra term $12$ is constant, so try $u_n = k$ for all $n$.",
+          "resultat_markdown": "$k = 3k + 4k + 12$ gives $-6k = 12$, so $k = -2$."
+        },
+        {
+          "numero": 3,
+          "action": "Write the general solution.",
+          "justification": "General solution = complementary function + particular solution.",
+          "resultat_markdown": "$u_n = A\\cdot 4^n + B(-1)^n - 2$."
+        },
+        {
+          "numero": 4,
+          "action": "Use $u_0 = 1$ and $u_1 = 0$ on the general solution (not on the complementary function alone).",
+          "justification": "Two starting values give two equations for $A$ and $B$.",
+          "resultat_markdown": "$n = 0$: $A + B - 2 = 1$, so $A + B = 3$. $n = 1$: $4A - B - 2 = 0$, so $4A - B = 2$. Adding: $5A = 5$, so $A = 1$ and $B = 2$."
+        },
+        {
+          "numero": 5,
+          "action": "State the closed form and compute $u_3$, checking against the recurrence.",
+          "justification": "The recurrence gives $u_2 = 3(0) + 4(1) + 12 = 16$ and then $u_3$ directly, which must match the formula.",
+          "resultat_markdown": "$u_n = 4^n + 2(-1)^n - 2$. Formula: $u_3 = 64 - 2 - 2 = 60$. Recurrence: $u_3 = 3(16) + 4(0) + 12 = 60$. They agree."
+        }
+      ],
+      "conclusion_markdown": "The closed form is $u_n = 4^n + 2(-1)^n - 2$, and $u_3 = \\mathbf{60}$.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For $u_{n+2} = 5u_{n+1} - 6u_n$ a student writes the auxiliary equation $m^2 + 5m - 6 = 0$.",
+          "pourquoi_faux": "The terms on the right were not moved to the left with a change of sign. The recurrence is $u_{n+2} - 5u_{n+1} + 6u_n = 0$.",
+          "correction_markdown": "Write $m^2 = 5m - 6$, so $m^2 - 5m + 6 = 0$ and $(m-2)(m-3) = 0$. Then $u_n = A\\cdot 2^n + B\\cdot 3^n$."
+        },
+        {
+          "erreur_markdown": "For a repeated root $\\alpha = 2$, a student writes $u_n = A\\cdot 2^n + B\\cdot 2^n$.",
+          "pourquoi_faux": "$A\\cdot 2^n + B\\cdot 2^n = (A+B)2^n$ contains only one arbitrary constant, so it cannot satisfy two independent starting values.",
+          "correction_markdown": "For a repeated root the second solution is $n\\alpha^n$. The general solution is $u_n = (A + Bn)2^n$."
+        },
+        {
+          "erreur_markdown": "For $u_{n+2} = 3u_{n+1} + 4u_n + 12$ a student finds $A$ and $B$ from $u_0$ and $u_1$ using only $A\\cdot 4^n + B(-1)^n$, then adds the particular solution $-2$ at the end.",
+          "pourquoi_faux": "The starting values must be satisfied by the whole general solution, particular part included. Adding $-2$ afterwards makes $u_0$ and $u_1$ come out wrong.",
+          "correction_markdown": "Form $u_n = A\\cdot 4^n + B(-1)^n - 2$ first, then impose $u_0$ and $u_1$. This gives $A + B = 3$ and $4A - B = 2$."
+        },
+        {
+          "erreur_markdown": "For $u_{n+1} = 3u_n - 4$ with $u_0 = 5$, a student takes the fixed point as $L = \\dfrac{b}{a-1}$ (that is, $L = \\dfrac{-4}{2} = -2$) and writes $u_n = -2 + 3^n(7)$.",
+          "pourquoi_faux": "The fixed point satisfies $L = aL + b$, so $L = \\dfrac{b}{1-a}$. A check with $n = 1$ exposes the error: the formula gives $-2 + 21 = 19$, but $u_1 = 3(5) - 4 = 11$.",
+          "correction_markdown": "$L = \\dfrac{-4}{1-3} = 2$, so $u_n = 2 + 3^n(5 - 2) = 2 + 3^{n+1}$, and $u_1 = 11$ as required."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A sequence is defined by $u_0 = 5$ and $u_{n+1} = 3u_n - 4$. Find the fixed point, give a closed form for $u_n$, and calculate $u_4$.",
+          "solution_markdown": "Fixed point: $L = 3L - 4$, so $2L = 4$ and $L = 2$. Then $u_{n+1} - 2 = 3(u_n - 2)$, so $u_n - 2 = 3^n(u_0 - 2) = 3\\cdot 3^n$.\n\n**$u_n = 2 + 3^{n+1}$.** Hence $u_4 = 2 + 3^5 = 2 + 243 = \\mathbf{245}$. Check by iteration: $5, 11, 29, 83, 245$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A sequence satisfies $u_{n+2} = 6u_{n+1} - 9u_n$ with $u_0 = 2$ and $u_1 = 9$. Solve the auxiliary equation, find $u_n$, and calculate $u_5$.",
+          "solution_markdown": "Auxiliary equation: $m^2 - 6m + 9 = 0$, so $(m - 3)^2 = 0$ and $m = 3$ is repeated. The general solution is $u_n = (A + Bn)3^n$.\n\n$u_0 = 2$ gives $A = 2$. $u_1 = 9$ gives $3(A + B) = 9$, so $A + B = 3$ and $B = 1$.\n\n**$u_n = (n + 2)\\,3^n$.** Hence $u_5 = 7 \\times 243 = \\mathbf{1701}$. Check by iteration: $u_2 = 6(9) - 9(2) = 36$, $u_3 = 135$, $u_4 = 486$, $u_5 = 6(486) - 9(135) = 1701$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A sequence is defined by $u_0 = 2$ and $u_{n+1} = \\dfrac{4u_n}{u_n + 3}$.\n\n(a) Prove by induction that $u_n > 0$ for all $n \\ge 0$.\n\n(b) Let $v_n = \\dfrac{1}{u_n}$. Show that $v_{n+1} = \\dfrac14 + \\dfrac34 v_n$.\n\n(c) Find $v_n$ and hence a closed form for $u_n$.\n\n(d) Deduce the limit of $u_n$ as $n \\to \\infty$.",
+          "solution_markdown": "(a) $u_0 = 2 > 0$. If $u_k > 0$, then $u_{k+1} = \\dfrac{4u_k}{u_k + 3}$ has a positive numerator and denominator, so $u_{k+1} > 0$. By induction $u_n > 0$ for all $n \\ge 0$.\n\n(b) Since $u_n > 0$, $v_n$ is defined and $v_{n+1} = \\dfrac{u_n + 3}{4u_n} = \\dfrac14 + \\dfrac34\\cdot\\dfrac{1}{u_n} = \\dfrac14 + \\dfrac34 v_n$.\n\n(c) The fixed point of $v \\mapsto \\frac14 + \\frac34 v$ is $L = \\dfrac{1/4}{1 - 3/4} = 1$. So $v_n - 1 = \\left(\\dfrac34\\right)^n (v_0 - 1)$ with $v_0 = \\dfrac12$, giving $v_n = 1 - \\dfrac12\\left(\\dfrac34\\right)^n = \\dfrac{2\\cdot 4^n - 3^n}{2\\cdot 4^n}$.\n\n**$u_n = \\dfrac{2\\cdot 4^n}{2\\cdot 4^n - 3^n}$.** Check: $u_1 = \\dfrac{8}{5}$, and the recurrence gives $\\dfrac{4(2)}{2+3} = \\dfrac85$.\n\n(d) Dividing top and bottom by $4^n$: $u_n = \\dfrac{2}{2 - (3/4)^n}$. Since $(3/4)^n \\to 0$, **$u_n \\to 1$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "For $u_{n+1} = au_n + b$ with $a \\ne 1$, find the fixed point $L = \\dfrac{b}{1-a}$; then $u_n = L + a^n(u_0 - L)$.",
+        "For $u_{n+2} = pu_{n+1} + qu_n$, solve $m^2 = pm + q$: distinct real roots give $A\\alpha^n + B\\beta^n$, a repeated root gives $(A + Bn)\\alpha^n$, complex roots $r(\\cos\\theta \\pm i\\sin\\theta)$ give $r^n(A\\cos n\\theta + B\\sin n\\theta)$.",
+        "With an extra term $f(n)$: general solution = complementary function + particular solution, and the starting values are applied to the whole sum.",
+        "To prove a closed form by induction, check the starting case(s), assume the formula for $k$ (and $k+1$), derive the next case from the recurrence, and write a conclusion.",
+        "A substitution such as $v_n = 1/u_n$ or $w_n = \\ln u_n$ can turn a non-linear recurrence into a linear one; always check the new sequence is defined.",
+        "Check any closed form against the first two or three terms generated by the recurrence."
+      ]
+    }
+  ]
+}

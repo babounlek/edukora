@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-further-maths-motion-in-a-resisting-medium",
+  "meta": {
+    "titre": "Motion in a Resisting Medium: terminal speed and equations of motion",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Linear and quadratic resistance",
+    "duree_estimee_min": 40,
+    "tags": [
+      "motion in a resisting medium"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2021-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2021-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-motion-in-a-resisting-medium-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Drop a stone into a deep drum of palm oil at a mill near Mbanga and watch it: it speeds up at first, then sinks at an almost constant pace, because the oil pushes back harder the faster the stone moves. A parachutist over Douala, a ball bearing in a tank of engine oil and a cyclist coasting to a stop on the road to Bafoussam all follow the same pattern: a **resistance that depends on speed**.\n\nGCE Advanced Level Further Mathematics questions on this theme ask you to write the equation of motion, integrate it to get the speed in terms of time or distance, find the terminal speed, and calculate a greatest height or a time. The method is always the same, and this lesson shows how to choose the right form of the acceleration."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Newton's second law for a particle of constant mass $m$ is $F = ma$, where $F$ is the resultant force in the direction of motion.",
+        "Acceleration can be written $a = \\dfrac{dv}{dt}$ or $a = v\\dfrac{dv}{dx}$, and the second form follows from the chain rule.",
+        "Separable differential equations $\\dfrac{dv}{dt} = f(v)$ are solved by integrating $\\int\\dfrac{dv}{f(v)} = \\int dt$.",
+        "$\\displaystyle\\int\\dfrac{dv}{a^2+v^2} = \\dfrac1a\\tan^{-1}\\dfrac va + c$ and $\\displaystyle\\int\\dfrac{dv}{a^2-v^2} = \\dfrac1{2a}\\ln\\left|\\dfrac{a+v}{a-v}\\right| + c$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Equation of motion with a speed-dependent resistance",
+      "contenu_markdown": "A particle of mass $m$ moves along a line through a medium that resists its motion with a force $mkv$ (**linear** resistance) or $mkv^2$ (**quadratic** resistance), where $k > 0$ is a constant and $v$ is the speed. The resistance always acts **against the velocity**, so its sign changes with the direction of motion. This is the most common source of mistakes.\n\n**Method.** (1) Draw the forces and choose the positive direction. (2) Write $m\\times(\\text{acceleration}) = $ resultant force. (3) Choose the form of acceleration: use $\\dfrac{dv}{dt}$ when the question involves time, and $v\\dfrac{dv}{dx}$ when it involves distance or height. (4) Separate the variables and integrate between limits, using the initial conditions. (5) The **terminal speed** is the speed at which the acceleration is zero.\n\nFor a particle falling from rest with resistance $mkv$ the equation is\n$$\n\\frac{dv}{dt} = g - kv \\quad\\Longrightarrow\\quad v = \\frac gk\\left(1 - e^{-kt}\\right) \\tag{1}\n$$\nand the terminal speed is $\\dfrac gk$, approached but never reached in finite time. Integrating $v$ gives the distance fallen $x = \\dfrac gk\\,t - \\dfrac{g}{k^2}\\left(1 - e^{-kt}\\right)$. For quadratic resistance, put $U^2 = \\dfrac gk$, so that $U$ is the terminal speed, and\n$$\nv\\,\\frac{dv}{dx} = g - kv^2 \\quad\\Longrightarrow\\quad v^2 = U^2\\left(1 - e^{-2gx/U^2}\\right) \\tag{2}\n$$\nCheck the form of a result at the extremes: as $t \\to \\infty$ or $x \\to \\infty$, $v \\to$ terminal speed.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Linear resistance on a rising particle",
+          "quand_utiliser": "A particle is projected upwards against gravity and resistance $mkv$, and you need the time or height to the highest point.",
+          "contenu_markdown": "Taking upward as positive, both gravity and resistance act downwards: $\\dfrac{dv}{dt} = -(g + kv)$. Separating variables with initial speed $u$ gives $v = \\left(u + \\dfrac gk\\right)e^{-kt} - \\dfrac gk$. The particle comes to rest at $t = \\dfrac1k\\ln\\left(1 + \\dfrac{ku}{g}\\right)$, and using $v\\dfrac{dv}{dx} = -(g + kv)$ the greatest height is $H = \\dfrac uk - \\dfrac{g}{k^2}\\ln\\left(1 + \\dfrac{ku}{g}\\right)$."
+        },
+        {
+          "nom": "Quadratic resistance, up and down",
+          "quand_utiliser": "The resistance is proportional to $v^2$: questions on a particle projected upwards or falling through air.",
+          "contenu_markdown": "With $U^2 = g/k$, upward motion obeys $\\dfrac{dv}{dt} = -\\dfrac{g}{U^2}\\left(U^2 + v^2\\right)$. Separating variables gives the time and height to the highest point for projection speed $u$:\n\n$t = \\dfrac Ug\\tan^{-1}\\dfrac uU$ and $H = \\dfrac{U^2}{2g}\\ln\\left(1 + \\dfrac{u^2}{U^2}\\right)$.\n\nOn the way down, $v^2 = U^2\\left(1 - e^{-2gx/U^2}\\right)$ after falling a distance $x$ from rest, and the time to reach speed $v$ is $t = \\dfrac{U}{2g}\\ln\\dfrac{U + v}{U - v}$ for $v < U$. The return speed is always less than the speed of projection."
+        },
+        {
+          "nom": "Horizontal motion with resistance only",
+          "quand_utiliser": "A boat, a sliding block or a cyclist slows down with no driving force, and you need the distance or time to reach a given speed.",
+          "contenu_markdown": "With resistance $mkv$ alone, $\\dfrac{dv}{dt} = -kv$ gives $v = ue^{-kt}$, and $v\\dfrac{dv}{dx} = -kv$ gives $v = u - kx$. The total distance to rest is $\\dfrac uk$, finite even though the time to stop is infinite. The distance when the speed falls to $v$ is $\\dfrac{u - v}{k}$ and the time is $\\dfrac1k\\ln\\dfrac uv$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A particle of mass $m$ is released from rest in a deep tank of oil and sinks vertically. The oil exerts a resistance of magnitude $0.7\\,mv$ (in newtons, with $v$ in $\\mathrm{m\\,s^{-1}}$) and $g = 9.8\\ \\mathrm{m\\,s^{-2}}$. Find the terminal speed, the time taken to reach a speed of $10\\ \\mathrm{m\\,s^{-1}}$, and the distance fallen in that time.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the equation of motion with downward as the positive direction.",
+          "justification": "Gravity acts downwards and the resistance $mkv$ with $k = 0.7$ acts upwards against the motion.",
+          "resultat_markdown": "$m\\dfrac{dv}{dt} = mg - 0.7\\,mv$, so $\\dfrac{dv}{dt} = 9.8 - 0.7v$."
+        },
+        {
+          "numero": 2,
+          "action": "Find the terminal speed.",
+          "justification": "The acceleration is zero at terminal speed.",
+          "resultat_markdown": "$9.8 - 0.7v = 0$ gives $v = \\dfrac{9.8}{0.7} = 14\\ \\mathrm{m\\,s^{-1}}$."
+        },
+        {
+          "numero": 3,
+          "action": "Solve for $v$ in terms of $t$.",
+          "justification": "Separate variables: $\\displaystyle\\int_0^v\\dfrac{dv}{9.8 - 0.7v} = \\int_0^t dt$, and use $v = 0$ at $t = 0$.",
+          "resultat_markdown": "$-\\dfrac{1}{0.7}\\ln\\dfrac{9.8 - 0.7v}{9.8} = t$, so $v = 14\\left(1 - e^{-0.7t}\\right)$."
+        },
+        {
+          "numero": 4,
+          "action": "Find the time to reach $10\\ \\mathrm{m\\,s^{-1}}$.",
+          "justification": "Set $v = 10$: $1 - e^{-0.7t} = \\dfrac{10}{14}$, so $e^{-0.7t} = \\dfrac27$.",
+          "resultat_markdown": "$t = \\dfrac{1}{0.7}\\ln\\dfrac72 \\approx 1.79\\ \\mathrm{s}$."
+        },
+        {
+          "numero": 5,
+          "action": "Find the distance fallen in that time.",
+          "justification": "Integrate $v$ with respect to $t$ from $0$ to $t_1$, or use $v\\dfrac{dv}{dx} = 9.8 - 0.7v$ from $v = 0$ to $v = 10$.",
+          "resultat_markdown": "$x = 14t_1 - 20\\left(1 - \\dfrac27\\right) = 14t_1 - \\dfrac{100}{7} \\approx 10.8\\ \\mathrm{m}$."
+        }
+      ],
+      "conclusion_markdown": "The terminal speed is $14\\ \\mathrm{m\\,s^{-1}}$. The particle takes about $1.79$ seconds to reach $10\\ \\mathrm{m\\,s^{-1}}$ and has then fallen about $10.8$ metres. A second method, integrating $\\dfrac{v}{9.8 - 0.7v}$ with respect to $v$ from $0$ to $10$, gives the same distance."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Writing $m\\dfrac{dv}{dt} = mg + mkv$ for a particle falling downwards, adding the resistance to the weight.",
+          "pourquoi_faux": "The resistance opposes the motion. For downward motion taken as positive, it acts upwards and carries a negative sign.",
+          "correction_markdown": "$m\\dfrac{dv}{dt} = mg - mkv$. For upward motion taken as positive, both forces are negative: $\\dfrac{dv}{dt} = -(g + kv)$."
+        },
+        {
+          "erreur_markdown": "Using the equation for the downward journey, $\\dfrac{dv}{dt} = g - kv^2$, for the upward journey as well.",
+          "pourquoi_faux": "On the way up the resistance acts downwards in the same direction as gravity, so the two forces add together. Using the downward equation leaves out that second force.",
+          "correction_markdown": "For upward motion with upward positive, $\\dfrac{dv}{dt} = -(g + kv^2)$, giving a larger deceleration."
+        },
+        {
+          "erreur_markdown": "Using $a = \\dfrac{dv}{dt}$ to find the greatest height of a particle projected upwards, then integrating with respect to $t$.",
+          "pourquoi_faux": "Integrating $\\dfrac{dv}{dt}$ with respect to $t$ gives the time needed to reach a given speed. The distance does not appear in that equation, so the height cannot be read from it.",
+          "correction_markdown": "Use $v\\dfrac{dv}{dx}$, integrate with respect to $x$ from $x = 0$ with $v = u$ to the highest point where $v = 0$."
+        },
+        {
+          "erreur_markdown": "Finding the terminal speed by setting $v = 0$ in the equation of motion.",
+          "pourquoi_faux": "At terminal speed the **acceleration** is zero, not the speed. Setting $v = 0$ describes the instant of release or of the highest point.",
+          "correction_markdown": "Set $\\dfrac{dv}{dt} = 0$: $g - kv = 0$ gives $v = \\dfrac gk$, or $g - kv^2 = 0$ gives $v = \\sqrt{g/k}$."
+        },
+        {
+          "erreur_markdown": "Forgetting the constant of integration or using the wrong limits, so that $v = \\dfrac gk\\left(1 - e^{-kt}\\right)$ is replaced by $v = \\dfrac gk\\,e^{-kt}$.",
+          "pourquoi_faux": "The second expression gives $v = \\dfrac gk$ at $t = 0$, but the particle starts from rest. The initial condition fixes the constant.",
+          "correction_markdown": "Use $v = 0$ at $t = 0$. The correct solution tends to $\\dfrac gk$ from below as $t$ increases."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A particle of mass $m$ falls vertically from rest through air that exerts a resistance of magnitude $0.05\\,mv^2$ (with $v$ in $\\mathrm{m\\,s^{-1}}$). Take $g = 9.8\\ \\mathrm{m\\,s^{-2}}$. Find the terminal speed, and the speed of the particle after it has fallen $20\\ \\mathrm{m}$.",
+          "solution_markdown": "**Terminal speed.** The acceleration is zero when $g - 0.05v^2 = 0$, so $v^2 = \\dfrac{9.8}{0.05} = 196$ and $U = $ **$14\\ \\mathrm{m\\,s^{-1}}$**.\n\n**Speed after $20\\ \\mathrm{m}$.** Use $v\\dfrac{dv}{dx} = g - 0.05v^2$ and separate variables: $\\displaystyle\\int_0^v\\dfrac{v\\,dv}{9.8 - 0.05v^2} = \\int_0^{20}dx$, so $-\\dfrac{1}{0.1}\\ln\\dfrac{9.8 - 0.05v^2}{9.8} = 20$. Hence $1 - \\dfrac{v^2}{196} = e^{-2}$ and $v^2 = 196\\left(1 - e^{-2}\\right)$.\n\nTherefore $v = 14\\sqrt{1 - e^{-2}} \\approx$ **$13.02\\ \\mathrm{m\\,s^{-1}}$**, just below the terminal speed."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A block of mass $2\\ \\mathrm{kg}$ slides on a horizontal surface with initial speed $12\\ \\mathrm{m\\,s^{-1}}$. The only horizontal force on it is a resistance of magnitude $0.8v$ newtons, where $v$ is its speed in $\\mathrm{m\\,s^{-1}}$. Find the distance travelled when its speed has fallen to $3\\ \\mathrm{m\\,s^{-1}}$, the time taken, and the total distance travelled before it stops.",
+          "solution_markdown": "**Equation of motion.** $2\\dfrac{dv}{dt} = -0.8v$, so $\\dfrac{dv}{dt} = -0.4v$ with $k = 0.4$.\n\n**Distance.** Use $v\\dfrac{dv}{dx} = -0.4v$, so $\\dfrac{dv}{dx} = -0.4$ and $v = 12 - 0.4x$. For $v = 3$: $x = \\dfrac{12 - 3}{0.4} = $ **$22.5\\ \\mathrm{m}$**.\n\n**Time.** $\\dfrac{dv}{v} = -0.4\\,dt$ gives $v = 12e^{-0.4t}$. For $v = 3$: $e^{-0.4t} = \\dfrac14$, so $t = \\dfrac{\\ln 4}{0.4} \\approx$ **$3.47\\ \\mathrm{s}$**.\n\n**Total distance.** Put $v = 0$ in $v = 12 - 0.4x$: $x = \\dfrac{12}{0.4} = $ **$30\\ \\mathrm{m}$**. The block stops after a finite distance although, with $v = 12e^{-0.4t}$, the speed never reaches zero in finite time."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A particle of mass $m$ is projected vertically upwards with speed $14\\sqrt3\\ \\mathrm{m\\,s^{-1}}$ through air that exerts a resistance of magnitude $0.05\\,mv^2$. Take $g = 9.8\\ \\mathrm{m\\,s^{-2}}$. Show that the greatest height is $10\\ln4$ metres, find the time taken to reach it, and find the speed with which the particle returns to the point of projection.",
+          "solution_markdown": "**Greatest height.** Upward is positive: $v\\dfrac{dv}{dx} = -(9.8 + 0.05v^2) = -0.05\\left(196 + v^2\\right)$. Then $\\displaystyle\\int_{14\\sqrt3}^{0}\\dfrac{v\\,dv}{196 + v^2} = -0.05\\int_0^H dx$, so $\\left[\\tfrac12\\ln(196 + v^2)\\right]_{14\\sqrt3}^{0} = -0.05H$. This gives $0.05H = \\tfrac12\\ln\\dfrac{196 + 588}{196} = \\tfrac12\\ln4$, so **$H = 10\\ln4 \\approx 13.86\\ \\mathrm{m}$**.\n\n**Time to the top.** $\\dfrac{dv}{dt} = -0.05\\left(196 + v^2\\right)$, so $t = \\displaystyle\\int_0^{14\\sqrt3}\\dfrac{dv}{0.05(196 + v^2)} = \\dfrac{1}{0.05}\\cdot\\dfrac1{14}\\tan^{-1}\\sqrt3 = \\dfrac{10}{7}\\cdot\\dfrac\\pi3$. So **$t = \\dfrac{10\\pi}{21} \\approx 1.50\\ \\mathrm{s}$**.\n\n**Return speed.** Falling a distance $H$ from rest, $v^2 = 196\\left(1 - e^{-2gH/196}\\right)$ with $\\dfrac{2gH}{196} = \\dfrac{19.6 \\times 10\\ln4}{196} = \\ln4$. So $v^2 = 196\\left(1 - \\tfrac14\\right) = 147$ and the particle returns with speed **$7\\sqrt3 \\approx 12.12\\ \\mathrm{m\\,s^{-1}}$**, less than the speed of projection $14\\sqrt3 \\approx 24.25\\ \\mathrm{m\\,s^{-1}}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Resistance always opposes the velocity: choose a positive direction first, and give the resistance the opposite sign to the velocity.",
+        "Use $\\dfrac{dv}{dt}$ when time is involved and $v\\dfrac{dv}{dx}$ when distance or height is involved; separate the variables and use the initial conditions.",
+        "Terminal speed is found by setting the acceleration to zero: $\\dfrac gk$ for resistance $mkv$ and $\\sqrt{g/k}$ for resistance $mkv^2$.",
+        "Going up, gravity and resistance add together: $\\dfrac{dv}{dt} = -(g + kv)$ or $-(g + kv^2)$. Going down they subtract.",
+        "With $U^2 = g/k$: $H = \\dfrac{U^2}{2g}\\ln\\left(1 + \\dfrac{u^2}{U^2}\\right)$ and $t = \\dfrac Ug\\tan^{-1}\\dfrac uU$ for upward projection with quadratic resistance.",
+        "With linear resistance and no driving force, $v = u - kx$ and the total distance to rest is $\\dfrac uk$."
+      ]
+    }
+  ]
+}

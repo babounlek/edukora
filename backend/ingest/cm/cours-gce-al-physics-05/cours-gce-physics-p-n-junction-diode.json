@@ -1,0 +1,154 @@
+{
+  "cours_id": "cours-gce-physics-p-n-junction-diode",
+  "meta": {
+    "titre": "P-n junction diode: bias, rectification and the exponential characteristic",
+    "matiere": "Physics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Semiconductor devices",
+    "duree_estimee_min": 35,
+    "tags": [
+      "p-n junction diode"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-physics-2019-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Physics past paper (Cameroon)",
+    "epreuve_source": "gce-al-physics-2019-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-physics-p-n-junction-diode-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "The phone charger that powers your handset in Douala takes 230 V alternating current from the socket and delivers a few volts of steady direct current. The part that makes this possible is a set of small semiconductor diodes working with a capacitor. Each time you plug in a charger, a radio or a solar-powered lamp bought at the market, a p-n junction is deciding which way charge may flow. The GCE examiners return to this topic often: they ask you to explain how the junction behaves, to analyse rectifier circuits and to extract constants from a current-voltage characteristic."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Electric current is the rate of flow of charge, and conventional current flows from the positive to the negative terminal of a source.",
+        "An alternating supply has a peak value $V_0$ and a period $T = 1/f$.",
+        "A capacitor of capacitance $C$ stores charge $Q = CV$, and a current $I$ removes charge at the rate $\\Delta Q/\\Delta t = I$.",
+        "Natural logarithms satisfy $\\ln(e^x) = x$ and $\\ln(ab) = \\ln a + \\ln b$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "How a p-n junction behaves and how it is used",
+      "contenu_markdown": "A **p-n junction** is made by joining p-type semiconductor (majority carriers are holes) to n-type semiconductor (majority carriers are electrons). Electrons diffuse across the boundary into the p side and holes diffuse into the n side, where they recombine. This leaves a **depletion layer**: a thin region with no free charge carriers, containing fixed ionised atoms (positive on the n side, negative on the p side). The fixed charges create an electric field across the junction and therefore a **barrier potential** of about $0.6\\ \\mathrm{V}$ to $0.7\\ \\mathrm{V}$ for silicon, which stops further net diffusion.\n\n**Forward bias** (p side connected to the positive terminal): the external p.d. opposes the barrier potential, the depletion layer narrows, and once the applied p.d. approaches the barrier value a large current flows. **Reverse bias** (p side to the negative terminal): the external p.d. adds to the barrier, the depletion layer widens, and only a very small leakage current (due to minority carriers) flows until breakdown. The diode therefore conducts in one direction only. The arrow in the circuit symbol points in the direction of conventional current in forward bias.\n\nFor a forward-biased silicon diode the current is described by $I = I_0\\,e^{\\beta V}$, where $I_0$ and $\\beta$ are constants of the diode (the unit of $\\beta$ is $\\mathrm{V^{-1}}$, typically between $20$ and $40\\ \\mathrm{V^{-1}}$ at room temperature). Taking natural logarithms gives a straight line:\n\n$$\\ln I = \\ln I_0 + \\beta V$$\n\nA graph of $\\ln I$ (vertical) against $V$ (horizontal) has gradient $\\beta$ and vertical intercept $\\ln I_0$. A logarithm needs a pure number, so state the unit of $I$ used in the plot (for example $\\ln(I/\\mathrm{mA})$); $I_0$ is then in that same unit.\n\n**Diode and capacitor compared.** A diode is a non-linear component that lets current pass in one direction only; it is used for **rectification** (converting a.c. to d.c.). A capacitor stores charge, blocks steady direct current and allows alternating current to pass; it is used for **smoothing** the rectified output and for storing energy. Both are often used together in a power supply.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Rectifier circuits",
+          "quand_utiliser": "Whenever a question asks about converting an a.c. supply to d.c. and the size of the output.",
+          "contenu_markdown": "**Half-wave rectifier:** one diode in series with the load conducts on one half-cycle only, so the output peak is $V_0 - 0.7\\ \\mathrm{V}$ and the output has the same frequency $f$ as the supply. **Full-wave (bridge) rectifier:** four diodes; on every half-cycle two diodes conduct in series with the load, so the output peak is $V_0 - 1.4\\ \\mathrm{V}$ and the ripple frequency is $2f$. A **smoothing capacitor** in parallel with the load charges at the peaks and discharges through the load between peaks. If the load current is $I$ and the time between charging peaks is $t$, the ripple (fall in voltage) is approximately\n\n$$\\Delta V = \\frac{I\\,t}{C}$$\n\nwith $t = 1/f$ for half-wave and $t = 1/(2f)$ for full-wave rectification. A larger $C$ or a higher ripple frequency gives smoother output."
+        },
+        {
+          "nom": "Reading the characteristic",
+          "quand_utiliser": "When a question gives a table of forward current and voltage and asks for constants.",
+          "contenu_markdown": "Convert each current into $\\ln I$ using one consistent unit, plot $\\ln I$ against $V$ and draw the best-fit straight line. Choose two points far apart **on the line** (not necessarily data points) to find the gradient $\\beta = \\dfrac{\\ln I_2 - \\ln I_1}{V_2 - V_1}$. Read the intercept at $V = 0$ (or compute it from one point on the line: $\\ln I_0 = \\ln I_1 - \\beta V_1$) and then $I_0 = e^{\\ln I_0}$. If the horizontal axis does not start at zero, do not read the intercept from where the line meets the left edge of the graph; calculate it instead."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A silicon diode is forward biased. At $V = 0.40\\ \\mathrm{V}$ it carries a current of $14.9\\ \\mu\\mathrm{A}$ and at $V = 0.50\\ \\mathrm{V}$ it carries $110\\ \\mu\\mathrm{A}$. Assuming $I = I_0\\,e^{\\beta V}$, determine $\\beta$ and $I_0$, and then predict the current at $0.55\\ \\mathrm{V}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the model in straight-line form",
+          "justification": "Taking natural logarithms of an exponential relation turns it into a linear one, so two readings give the gradient directly.",
+          "resultat_markdown": "$\\ln I = \\ln I_0 + \\beta V$"
+        },
+        {
+          "numero": 2,
+          "action": "Find the gradient from the two readings",
+          "justification": "The gradient of $\\ln I$ against $V$ is $\\beta$, so subtract the two logarithmic equations.",
+          "resultat_markdown": "$\\beta = \\dfrac{\\ln(110) - \\ln(14.9)}{0.50 - 0.40} = \\dfrac{\\ln(7.38)}{0.10} = \\dfrac{1.999}{0.10} \\approx 20.0\\ \\mathrm{V^{-1}}$ (both currents are in $\\mu\\mathrm{A}$, and the units cancel in the ratio)"
+        },
+        {
+          "numero": 3,
+          "action": "Find $I_0$",
+          "justification": "Use one reading in $I = I_0 e^{\\beta V}$ and rearrange for $I_0$.",
+          "resultat_markdown": "$I_0 = \\dfrac{14.9\\ \\mu\\mathrm{A}}{e^{20.0 \\times 0.40}} = \\dfrac{14.9\\ \\mu\\mathrm{A}}{e^{8.0}} = \\dfrac{14.9\\ \\mu\\mathrm{A}}{2981} = 5.00\\times10^{-3}\\ \\mu\\mathrm{A} = 5.00\\times10^{-9}\\ \\mathrm{A}$"
+        },
+        {
+          "numero": 4,
+          "action": "Predict the current at $0.55\\ \\mathrm{V}$",
+          "justification": "Substitute the constants into the model; the exponent is $20.0 \\times 0.55 = 11.0$.",
+          "resultat_markdown": "$I = 5.00\\times10^{-9}\\ \\mathrm{A} \\times e^{11.0} = 5.00\\times10^{-9} \\times 5.99\\times10^{4}\\ \\mathrm{A} \\approx 3.0\\times10^{-4}\\ \\mathrm{A} = 300\\ \\mu\\mathrm{A}$ (to 2 s.f.)"
+        }
+      ],
+      "conclusion_markdown": "The diode has $\\beta \\approx 20.0\\ \\mathrm{V^{-1}}$ and $I_0 \\approx 5.00\\times10^{-9}\\ \\mathrm{A}$. Each extra $0.10\\ \\mathrm{V}$ multiplies the current by $e^{2.0} \\approx 7.4$, which is why the forward characteristic rises so steeply."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A diode in reverse bias carries no current at all, because the depletion layer is an insulator.",
+          "pourquoi_faux": "A very small leakage current of minority carriers does flow in reverse bias, and the current rises sharply at breakdown.",
+          "correction_markdown": "State that the reverse current is very small (nanoamperes to microamperes for silicon) and almost independent of the reverse voltage until breakdown."
+        },
+        {
+          "erreur_markdown": "The diode starts conducting as soon as the forward voltage is greater than zero.",
+          "pourquoi_faux": "The applied p.d. must first approach the barrier potential; at low voltages the forward current is tiny and it only becomes appreciable (of the order of milliamperes) near the barrier value.",
+          "correction_markdown": "Say that appreciable forward current flows only when the p.d. approaches about $0.6$ to $0.7\\ \\mathrm{V}$ for silicon."
+        },
+        {
+          "erreur_markdown": "In a bridge rectifier the output peak is $V_0 - 0.7\\ \\mathrm{V}$.",
+          "pourquoi_faux": "Two diodes are always conducting in series with the load in a bridge, so two forward drops are lost.",
+          "correction_markdown": "The output peak is $V_0 - 1.4\\ \\mathrm{V}$ for four silicon diodes in a bridge."
+        },
+        {
+          "erreur_markdown": "Plotting $I$ against $V$ gives a straight line whose gradient is $\\beta$.",
+          "pourquoi_faux": "The relation is exponential, so $I$ against $V$ is a curve; only $\\ln I$ against $V$ is linear.",
+          "correction_markdown": "Plot $\\ln I$ against $V$; the gradient is $\\beta$ and the intercept is $\\ln I_0$, not $I_0$."
+        },
+        {
+          "erreur_markdown": "The capacitor in a power supply rectifies the current.",
+          "pourquoi_faux": "A capacitor stores and releases charge; it cannot make current flow in one direction only.",
+          "correction_markdown": "The diode rectifies; the capacitor smooths by supplying the load while the rectified voltage is falling."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A half-wave rectifier consists of a silicon diode (forward drop $0.7\\ \\mathrm{V}$) in series with a $220\\ \\Omega$ load resistor, connected to an a.c. source of peak voltage $12.0\\ \\mathrm{V}$. Calculate the peak voltage across the load, the peak current, and the greatest reverse p.d. across the diode.",
+          "solution_markdown": "The peak load voltage is the supply peak minus the forward drop: $V = 12.0 - 0.7 = 11.3\\ \\mathrm{V}$. The peak current is $I = V/R = 11.3/220 = 0.0514\\ \\mathrm{A}$, so **$I \\approx 51\\ \\mathrm{mA}$**. When the diode is reverse biased no current flows, so the whole supply voltage appears across the diode: the greatest reverse p.d. is **$12.0\\ \\mathrm{V}$**. Peak load voltage: **$11.3\\ \\mathrm{V}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A rectified supply delivers a steady load current of $20\\ \\mathrm{mA}$ through a smoothing capacitor of $1000\\ \\mu\\mathrm{F}$. The supply frequency is $50\\ \\mathrm{Hz}$. Assuming the capacitor discharges at constant current for the whole time between charging peaks, find the ripple voltage for (a) half-wave and (b) full-wave rectification.",
+          "solution_markdown": "The period is $T = 1/50 = 0.020\\ \\mathrm{s}$ and $C = 1000\\times10^{-6}\\ \\mathrm{F} = 1.0\\times10^{-3}\\ \\mathrm{F}$. (a) For half-wave rectification the capacitor discharges for $t = 0.020\\ \\mathrm{s}$: $\\Delta V = \\dfrac{It}{C} = \\dfrac{0.020 \\times 0.020}{1.0\\times10^{-3}} = $ **$0.40\\ \\mathrm{V}$**. (b) For full-wave rectification charging peaks occur every $0.010\\ \\mathrm{s}$: $\\Delta V = \\dfrac{0.020 \\times 0.010}{1.0\\times10^{-3}} = $ **$0.20\\ \\mathrm{V}$**. Full-wave rectification halves the ripple for the same capacitor."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A diode obeys $I = I_0\\,e^{\\beta V}$ with $I_0 = 2.0\\times10^{-10}\\ \\mathrm{A}$ and $\\beta = 22.0\\ \\mathrm{V^{-1}}$ in forward bias. Calculate (a) the current at $0.45\\ \\mathrm{V}$, (b) the forward voltage needed for a current of $5.0\\ \\mathrm{mA}$, and (c) the factor by which the current increases when the voltage is raised by $0.050\\ \\mathrm{V}$.",
+          "solution_markdown": "(a) $I = 2.0\\times10^{-10} \\times e^{22.0 \\times 0.45} = 2.0\\times10^{-10} \\times e^{9.9} = 2.0\\times10^{-10} \\times 1.99\\times10^{4} = 3.99\\times10^{-6}\\ \\mathrm{A}$, so **$I \\approx 4.0\\ \\mu\\mathrm{A}$**. (b) Rearranging, $V = \\dfrac{1}{\\beta}\\ln\\dfrac{I}{I_0} = \\dfrac{1}{22.0}\\ln\\dfrac{5.0\\times10^{-3}}{2.0\\times10^{-10}} = \\dfrac{\\ln(2.5\\times10^{7})}{22.0} = \\dfrac{17.03}{22.0} = $ **$0.77\\ \\mathrm{V}$**. (c) The new current divided by the old one is $e^{\\beta\\,\\Delta V} = e^{22.0 \\times 0.050} = e^{1.10} = $ **$3.0$**, whatever the starting voltage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "The depletion layer has no free charge carriers; its fixed ions create the barrier potential (about $0.6$ to $0.7\\ \\mathrm{V}$ for silicon).",
+        "Forward bias narrows the depletion layer and gives a large current; reverse bias widens it and gives only a tiny leakage current.",
+        "Forward characteristic: $I = I_0 e^{\\beta V}$, so $\\ln I$ against $V$ is a straight line with gradient $\\beta$ and intercept $\\ln I_0$.",
+        "A half-wave rectifier gives output peak $V_0 - 0.7\\ \\mathrm{V}$; a bridge gives $V_0 - 1.4\\ \\mathrm{V}$ with ripple frequency $2f$.",
+        "A diode rectifies; a capacitor smooths, with ripple $\\Delta V \\approx It/C$.",
+        "A capacitor blocks steady d.c. and passes a.c.; a diode passes current in one direction only."
+      ]
+    }
+  ]
+}

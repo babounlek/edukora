@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-further-maths-complex-numbers",
+  "meta": {
+    "titre": "Complex Numbers: polar form, De Moivre and loci",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "De Moivre, roots and loci",
+    "duree_estimee_min": 40,
+    "tags": [
+      "complex numbers"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2024-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2024-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-complex-numbers-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Engineers at ENEO who study the alternating current supplied to a neighbourhood of Douala describe each signal by two numbers: its size and its phase, that is how far it is shifted in time. A single complex number carries both, and multiplying two signals becomes simple geometry: sizes are multiplied and angles are added. The same idea lets you solve equations such as finding all the numbers whose fourth power is a given number, and describe sets of points in a plane by a short equation. Complex numbers appear in every Further Mathematics paper, usually through De Moivre's theorem, roots of equations, loci and transformations."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A complex number $z = x + iy$ is plotted as the point $(x, y)$ on an Argand diagram, and $i^2 = -1$.",
+        "The exact values $\\cos\\frac{\\pi}{4} = \\sin\\frac{\\pi}{4} = \\frac{\\sqrt2}{2}$, $\\cos\\frac{\\pi}{3} = \\frac12$ and $\\sin\\frac{\\pi}{3} = \\frac{\\sqrt3}{2}$.",
+        "The quadratic formula gives complex roots when the discriminant is negative."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Polar form, De Moivre's theorem and roots",
+      "contenu_markdown": "**Forms of a complex number.** For $z = x + iy$ the **modulus** is $r = |z| = \\sqrt{x^2 + y^2}$ and the **argument** $\\theta = \\arg z$ is the angle from the positive real axis, taken here in $(-\\pi, \\pi]$. Then $z = r(\\cos\\theta + i\\sin\\theta) = re^{i\\theta}$. Always draw or locate the quadrant before choosing $\\theta$: $\\arctan(y/x)$ alone is wrong when $x < 0$.\n\n**Conjugate.** $\\bar z = x - iy$, with $z\\bar z = |z|^2$, $z + \\bar z = 2x$ and $z - \\bar z = 2iy$. For products and quotients, $|z_1z_2| = |z_1||z_2|$ and $\\arg(z_1z_2) = \\arg z_1 + \\arg z_2$ (adjusted by a multiple of $2\\pi$), so multiplying by $re^{i\\theta}$ is an enlargement by $r$ with a rotation by $\\theta$.\n\n**De Moivre's theorem.** For any integer $n$,\n\n$$\n(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta \\tag{1}\n$$\n\nso $z^n = r^n(\\cos n\\theta + i\\sin n\\theta)$.\n\n**The $n$th roots.** To solve $z^n = w$ with $w = R(\\cos\\varphi + i\\sin\\varphi)$, the argument of $w$ is only defined up to $2\\pi k$, which gives $n$ different roots:\n\n$$\nz_k = R^{1/n}\\left[\\cos\\frac{\\varphi + 2\\pi k}{n} + i\\sin\\frac{\\varphi + 2\\pi k}{n}\\right], \\qquad k = 0, 1, \\dots, n-1 \\tag{2}\n$$\n\nThe roots lie on a circle of radius $R^{1/n}$ centred at the origin and are equally spaced by an angle $\\frac{2\\pi}{n}$; when $w$ is real, the non-real roots come in conjugate pairs.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Loci in the Argand diagram",
+          "quand_utiliser": "When a condition on $|z - a|$ or $\\arg(z - a)$ must be turned into a geometric description or a Cartesian equation.",
+          "contenu_markdown": "$|z - a| = r$ is the circle with centre $a$ and radius $r$. $|z - a| = |z - b|$ is the perpendicular bisector of the segment joining $a$ and $b$. $\\arg(z - a) = \\alpha$ is a half-line starting at $a$ (excluding $a$) making angle $\\alpha$ with the real axis. $|z - a| = k|z - b|$ with $k > 0$, $k \\ne 1$, is a circle. For a computed answer, put $z = x + iy$, square both sides, and use $|u + iv|^2 = u^2 + v^2$ or, equivalently, $|w|^2 = w\\bar w$. Never write $|w|^2 = w^2$."
+        },
+        {
+          "nom": "Transformations and invariant points",
+          "quand_utiliser": "When a map $T : z \\to w$ such as $w = \\dfrac{az + b}{cz + d}$ is given and fixed points or images of a line or circle are required.",
+          "contenu_markdown": "An **invariant point** satisfies $w = z$. For $w = \\dfrac{az + b}{cz + d}$ this means $z(cz + d) = az + b$, that is $cz^2 + (d - a)z - b = 0$, which is solved by the quadratic formula (the roots may be complex). Reject any root that makes the denominator zero. To find the image of a line or circle, solve for $z$ in terms of $w$, substitute into the condition on $z$, and simplify."
+        },
+        {
+          "nom": "Trigonometric identities with De Moivre",
+          "quand_utiliser": "When $\\cos n\\theta$ or $\\sin n\\theta$ must be expressed through powers of $\\cos\\theta$ and $\\sin\\theta$, or the reverse.",
+          "contenu_markdown": "Expand $(\\cos\\theta + i\\sin\\theta)^n$ with the binomial theorem and equate real and imaginary parts with $\\cos n\\theta + i\\sin n\\theta$. For the reverse direction, put $z = \\cos\\theta + i\\sin\\theta$, so that $z + \\dfrac1z = 2\\cos\\theta$ and $z^n + \\dfrac{1}{z^n} = 2\\cos n\\theta$. Example: $\\cos 3\\theta = \\cos^3\\theta - 3\\cos\\theta\\sin^2\\theta = 4\\cos^3\\theta - 3\\cos\\theta$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Solve $z^4 = -16$, giving the roots in the form $a + ib$ with exact values of $a$ and $b$. Describe how the roots are arranged on the Argand diagram.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write $-16$ in modulus-argument form.",
+          "justification": "The number lies on the negative real axis, so its argument is $\\pi$, and its modulus is $16$.",
+          "resultat_markdown": "$-16 = 16(\\cos\\pi + i\\sin\\pi)$."
+        },
+        {
+          "numero": 2,
+          "action": "Apply the formula for the $n$th roots with $n = 4$.",
+          "justification": "Add $2\\pi k$ to the argument before dividing by $4$, and take the fourth root of the modulus (not divide it by $4$).",
+          "resultat_markdown": "$z_k = 16^{1/4}\\left[\\cos\\dfrac{\\pi + 2\\pi k}{4} + i\\sin\\dfrac{\\pi + 2\\pi k}{4}\\right]$ with $16^{1/4} = 2$ and $k = 0, 1, 2, 3$."
+        },
+        {
+          "numero": 3,
+          "action": "List the four arguments.",
+          "justification": "Taking $k = 0, 1, 2, 3$ gives four distinct directions.",
+          "resultat_markdown": "The arguments are $\\dfrac{\\pi}{4},\\ \\dfrac{3\\pi}{4},\\ \\dfrac{5\\pi}{4},\\ \\dfrac{7\\pi}{4}$ (the last two are $-\\dfrac{3\\pi}{4}$ and $-\\dfrac{\\pi}{4}$ in the principal range)."
+        },
+        {
+          "numero": 4,
+          "action": "Convert each root to Cartesian form with exact values.",
+          "justification": "Use $\\cos\\frac{\\pi}{4} = \\frac{\\sqrt2}{2}$ and the signs of cosine and sine in each quadrant.",
+          "resultat_markdown": "$z_0 = 2\\left(\\frac{\\sqrt2}{2} + i\\frac{\\sqrt2}{2}\\right) = \\sqrt2 + i\\sqrt2$, $z_1 = -\\sqrt2 + i\\sqrt2$, $z_2 = -\\sqrt2 - i\\sqrt2$, $z_3 = \\sqrt2 - i\\sqrt2$."
+        },
+        {
+          "numero": 5,
+          "action": "Check one root directly.",
+          "justification": "Squaring is easier than raising to the power $4$.",
+          "resultat_markdown": "$(\\sqrt2 + i\\sqrt2)^2 = 2(1+i)^2 = 2(2i) = 4i$, and $(4i)^2 = -16$. The root is correct."
+        }
+      ],
+      "conclusion_markdown": "The roots are $z = \\pm\\sqrt2 \\pm i\\sqrt2$ (all four sign combinations). They lie on the circle $|z| = 2$ and are the vertices of a square, each root separated from the next by an angle of $\\dfrac{\\pi}{2}$.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A student writes $\\arg(-1 - i) = \\arctan\\left(\\dfrac{-1}{-1}\\right) = \\dfrac{\\pi}{4}$.",
+          "pourquoi_faux": "The point $(-1, -1)$ is in the third quadrant. $\\arctan(y/x)$ cannot tell it apart from $(1, 1)$.",
+          "correction_markdown": "Draw the point. The reference angle is $\\frac{\\pi}{4}$ and the point is in the third quadrant, so in $(-\\pi, \\pi]$ the argument is $-\\dfrac{3\\pi}{4}$."
+        },
+        {
+          "erreur_markdown": "To solve $z^3 = 8$ a student writes $z = 2$ and stops.",
+          "pourquoi_faux": "A polynomial equation of degree $3$ has three roots in $\\mathbb{C}$. Writing $8 = 8e^{i0}$ loses the others, because $8 = 8e^{2\\pi i k}$ for every integer $k$.",
+          "correction_markdown": "$z_k = 2\\,e^{2\\pi i k/3}$ for $k = 0, 1, 2$, giving $2$, $-1 + i\\sqrt3$ and $-1 - i\\sqrt3$."
+        },
+        {
+          "erreur_markdown": "For $z^4 = -16$ a student writes that the roots have modulus $\\dfrac{16}{4} = 4$.",
+          "pourquoi_faux": "De Moivre's theorem divides the argument by $n$, but the modulus is raised to the power $\\frac1n$, because $|z^n| = |z|^n$.",
+          "correction_markdown": "$|z|^4 = 16$, so $|z| = 16^{1/4} = 2$."
+        },
+        {
+          "erreur_markdown": "From $|z - 3i| = |z - i|$ a student writes $(z - 3i)^2 = (z - i)^2$.",
+          "pourquoi_faux": "$|w|^2 = w\\bar w$, not $w^2$. The square of a complex number is not equal to the square of its modulus unless the number is real.",
+          "correction_markdown": "Write $(z - 3i)(\\bar z + 3i) = (z - i)(\\bar z + i)$, or put $z = x + iy$ and use $x^2 + (y-3)^2 = x^2 + (y-1)^2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Write $z = -1 + i\\sqrt3$ in the form $r(\\cos\\theta + i\\sin\\theta)$ with $-\\pi < \\theta \\le \\pi$, and use De Moivre's theorem to find $z^6$.",
+          "solution_markdown": "$|z| = \\sqrt{1 + 3} = 2$. The point $(-1, \\sqrt3)$ is in the second quadrant with reference angle $\\frac{\\pi}{3}$, so $\\theta = \\pi - \\frac{\\pi}{3} = \\dfrac{2\\pi}{3}$.\n\n$z = 2\\left(\\cos\\dfrac{2\\pi}{3} + i\\sin\\dfrac{2\\pi}{3}\\right)$.\n\n$z^6 = 2^6\\left(\\cos 4\\pi + i\\sin 4\\pi\\right) = 64(1 + 0i)$. **$z^6 = 64$.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A transformation $T : z \\to w$ is given by $w = \\dfrac{5z - 4}{z + 2}$, $z \\ne -2$. Find the invariant points of $T$, giving them in the form $a + ib$.",
+          "solution_markdown": "An invariant point satisfies $z = \\dfrac{5z - 4}{z + 2}$, so $z(z + 2) = 5z - 4$, that is $z^2 - 3z + 4 = 0$.\n\nThe discriminant is $9 - 16 = -7$, so $z = \\dfrac{3 \\pm i\\sqrt7}{2}$. Neither value equals $-2$, so both are admissible.\n\n**The invariant points are $z = \\dfrac32 + \\dfrac{\\sqrt7}{2}i$ and $z = \\dfrac32 - \\dfrac{\\sqrt7}{2}i$.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The complex number $z$ satisfies $|z - 1| = 2|z + 2|$.\n\n(a) Show that the locus of $z$ is a circle, and give its centre and radius.\n\n(b) Find the greatest and the least value of $|z|$ on this locus.",
+          "solution_markdown": "(a) Put $z = x + iy$. Squaring gives $(x - 1)^2 + y^2 = 4\\left[(x + 2)^2 + y^2\\right]$, so $x^2 - 2x + 1 + y^2 = 4x^2 + 16x + 16 + 4y^2$, which simplifies to $3x^2 + 18x + 15 + 3y^2 = 0$, that is $x^2 + 6x + 5 + y^2 = 0$.\n\nCompleting the square: $(x + 3)^2 + y^2 = 4$. **The locus is a circle with centre $-3$ (the point $(-3, 0)$) and radius $2$.**\n\n(b) $|z|$ is the distance from the origin. The origin is on the real axis, $3$ units from the centre, so the greatest distance is $3 + 2 = $ **$5$** (at $z = -5$) and the least is $3 - 2 = $ **$1$** (at $z = -1$). Check: $|-5 - 1| = 6 = 2|-5 + 2|$ and $|-1 - 1| = 2 = 2|-1 + 2|$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Find $\\arg z$ with a sketch of the quadrant: $\\arctan(y/x)$ alone is not enough. Principal argument lies in $(-\\pi, \\pi]$.",
+        "De Moivre: $(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta$, so $z^n = r^n(\\cos n\\theta + i\\sin n\\theta)$.",
+        "For $z^n = w$ there are exactly $n$ roots: take $R^{1/n}$ for the modulus and $\\frac{\\varphi + 2\\pi k}{n}$, $k = 0, \\dots, n-1$, for the arguments.",
+        "Use $|w|^2 = w\\bar w$ (never $w^2$) and $z = x + iy$ to turn a locus condition into a Cartesian equation: circle, perpendicular bisector or half-line.",
+        "Invariant points of $w = \\dfrac{az + b}{cz + d}$ solve $cz^2 + (d - a)z - b = 0$."
+      ]
+    }
+  ]
+}

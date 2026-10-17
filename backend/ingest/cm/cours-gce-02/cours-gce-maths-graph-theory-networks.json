@@ -1,0 +1,147 @@
+{
+ "cours_id": "cours-gce-maths-graph-theory-networks",
+ "meta": {
+  "titre": "Graph Theory (Networks): Vertices, Arcs, Regions and Traversable Routes",
+  "matiere": "Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Networks: vertices, arcs, regions and order of a vertex",
+  "duree_estimee_min": 25,
+  "tags": [
+   "graph theory (networks)"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-maths-2023-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-maths-2023-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-maths-graph-theory-networks-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A delivery rider in Douala has to pass through several markets and bring a parcel to each one, using the roads that join them. Before leaving, he draws the markets as dots and the roads as lines, so that he can see whether one trip can use every road exactly once. Such a drawing is called a network. At the GCE you are asked to count its vertices, arcs and regions, to find the order of each vertex and to decide whether the network is traversable. These are quick marks once you know the three facts in this lesson."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A point where lines meet is a dot, and a line joining two dots is a segment.",
+    "Even numbers are divisible by 2 and odd numbers are not.",
+    "A closed shape drawn on paper encloses an area, and the area outside it is the rest of the page."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Vertices, arcs, regions and the order of a vertex",
+   "contenu_markdown": "A **network** is a diagram made of points joined by lines.\n\n- A **vertex** (plural **vertices**, also called a node) is a point where lines meet or end.\n- An **arc** (also called an edge) is a line joining two vertices.\n- A **region** is a part of the plane cut off by the arcs. The **outside** of the network is also a region, and it must always be counted.\n- The **order** of a vertex (also called its degree) is the number of arcs that meet at that vertex.\n- A **path** is a route that follows arcs from one vertex to another.\n\n**Euler's formula** connects the three counts for a network drawn on a flat sheet with no arcs crossing:\n\n$$V + R = A + 2$$\n\nwhere $V$ is the number of vertices, $R$ the number of regions and $A$ the number of arcs. Rearranged, it gives $R = A + 2 - V$, $A = V + R - 2$ and $V = A + 2 - R$.\n\n**Sum of orders.** Every arc has two ends, so it is counted twice when you add the orders of all vertices:\n\n$$\\text{sum of the orders} = 2 \\times A$$\n\nBecause of this, the number of vertices of odd order is always even.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Traversable networks",
+     "quand_utiliser": "When the question asks whether a network can be drawn (or travelled) without lifting the pencil and without repeating an arc.",
+     "contenu_markdown": "Count the vertices of **odd** order.\n\n- **All vertices even:** the network is traversable, and you can start at any vertex and return to it.\n- **Exactly two vertices odd:** the network is traversable, but you must start at one odd vertex and finish at the other.\n- **More than two vertices odd** (four, six, and so on): the network is **not** traversable.\n\nA network with exactly one odd vertex cannot exist, because odd vertices always come in pairs."
+    },
+    {
+     "nom": "Finding a missing count",
+     "quand_utiliser": "When the question gives two of the numbers $V$, $R$, $A$ and asks for the third, or asks you to draw a network with given counts.",
+     "contenu_markdown": "Substitute into $V + R = A + 2$ and solve like any linear equation. For example, a network with $V = 6$ and $R = 4$ has $A = 6 + 4 - 2 = 8$ arcs. To draw a network with given counts, first find the missing number, then place the vertices, join them with the required number of arcs without letting arcs cross, and finally count the regions again, including the outside, to check your drawing."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "The roads joining five markets $A$, $B$, $C$, $D$ and $E$ in a town are shown as a network. The arcs are $AB$, $AC$, $BC$, $BD$, $CD$ and $DE$.\n\n(a) Write down the order of each vertex.\n\n(b) Verify that the sum of the orders is twice the number of arcs.\n\n(c) Find the number of regions, if the network is drawn with no crossing arcs.\n\n(d) Is the network traversable? Give a reason.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "List, for each vertex, the arcs that touch it.",
+     "justification": "The order of a vertex is the number of arcs meeting there.",
+     "resultat_markdown": "$A$: $AB, AC$ so order $2$. $B$: $AB, BC, BD$ so order $3$. $C$: $AC, BC, CD$ so order $3$. $D$: $BD, CD, DE$ so order $3$. $E$: $DE$ so order $1$."
+    },
+    {
+     "numero": 2,
+     "action": "Add the orders and compare with the number of arcs.",
+     "justification": "Each arc has two ends, so the sum of orders equals $2A$.",
+     "resultat_markdown": "$2 + 3 + 3 + 3 + 1 = 12$ and $2 \\times 6 = 12$. The two values agree."
+    },
+    {
+     "numero": 3,
+     "action": "Apply Euler's formula with $V = 5$ and $A = 6$.",
+     "justification": "The formula $V + R = A + 2$ counts the outside region as well.",
+     "resultat_markdown": "$5 + R = 6 + 2$, so $R = 8 - 5 = 3$."
+    },
+    {
+     "numero": 4,
+     "action": "Count the vertices of odd order.",
+     "justification": "A network is traversable only if it has none or exactly two odd vertices.",
+     "resultat_markdown": "$B$, $C$, $D$ and $E$ are odd, which makes $4$ odd vertices."
+    }
+   ],
+   "conclusion_markdown": "(a) Orders: $A = 2$, $B = 3$, $C = 3$, $D = 3$, $E = 1$. (b) The sum is $12 = 2 \\times 6$. (c) There are $3$ regions. (d) The network is **not traversable**, because it has four vertices of odd order, which is more than two."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "There are 2 regions because there are 2 closed shapes inside the network.",
+     "pourquoi_faux": "The outside of the network is also a region, so counting only the enclosed shapes gives an answer that is too small by one.",
+     "correction_markdown": "Count the enclosed shapes and then add $1$ for the outside. Check the answer with $R = A + 2 - V$."
+    },
+    {
+     "erreur_markdown": "The order of a vertex is the total number of vertices in the network.",
+     "pourquoi_faux": "Order is a property of one vertex: it is the number of arcs that meet at that vertex only.",
+     "correction_markdown": "Place a finger on the vertex and count the arcs touching it. A vertex at the end of a single arc has order $1$."
+    },
+    {
+     "erreur_markdown": "A network is traversable only when every vertex has even order.",
+     "pourquoi_faux": "A network with exactly two odd vertices is also traversable; the route just has to start at one odd vertex and end at the other.",
+     "correction_markdown": "Count the odd vertices: $0$ or $2$ means traversable, more than $2$ means not traversable."
+    },
+    {
+     "erreur_markdown": "A network with $V = 5$, $R = 3$ has $A = 5 + 3 + 2 = 10$ arcs.",
+     "pourquoi_faux": "Euler's formula is $V + R = A + 2$, so the $2$ has to be moved to the other side with a change of sign.",
+     "correction_markdown": "$A = V + R - 2 = 5 + 3 - 2 = 6$ arcs."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "A network has $7$ vertices and $10$ arcs. Find the number of regions.",
+     "solution_markdown": "Use $R = A + 2 - V$. Then $R = 10 + 2 - 7 = 5$. The network has **5 regions** (including the outside)."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Four villages $W$, $X$, $Y$ and $Z$ are joined by five roads: $WX$, $WY$, $XY$, $XZ$ and $YZ$.\n\n(a) Find the order of each village.\n\n(b) Is the network traversable? If so, state where a route must start and finish.\n\n(c) Write down a route that uses every road exactly once.",
+     "solution_markdown": "(a) $W$: $WX, WY$ so $2$. $X$: $WX, XY, XZ$ so $3$. $Y$: $WY, XY, YZ$ so $3$. $Z$: $XZ, YZ$ so $2$. The sum is $2 + 3 + 3 + 2 = 10 = 2 \\times 5$, which agrees with the five roads.\n\n(b) Exactly two vertices are odd ($X$ and $Y$), so the network **is traversable**, and a route must start at $X$ and finish at $Y$ (or start at $Y$ and finish at $X$).\n\n(c) One route is $X \\to W \\to Y \\to X \\to Z \\to Y$. It uses $WX$, $WY$, $XY$, $XZ$ and $YZ$, once each. **$XWYXZY$**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "A network has $8$ arcs and $6$ vertices. Five of the vertices have orders $4$, $3$, $3$, $2$ and $2$.\n\n(a) Find the order of the sixth vertex.\n\n(b) Find the number of regions.\n\n(c) Is the network traversable? Explain.\n\n(d) A student claims that a network can have exactly five vertices of odd order. Explain why this is impossible.",
+     "solution_markdown": "(a) The sum of the orders is $2 \\times 8 = 16$. The five known orders add up to $4 + 3 + 3 + 2 + 2 = 14$, so the sixth order is $16 - 14 = 2$. **Order $2$.**\n\n(b) $V + R = A + 2$ gives $6 + R = 10$, so **$R = 4$ regions**.\n\n(c) The orders are $4, 3, 3, 2, 2, 2$, so exactly two vertices are odd. The network **is traversable**; a route must start at one vertex of order $3$ and end at the other.\n\n(d) The sum of all orders equals $2A$, which is even. Even orders contribute an even amount, so the odd orders must also add to an even number. Five odd numbers add to an odd number, so exactly five odd vertices cannot happen."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "A network is made of **vertices** (points), **arcs** (lines joining them) and **regions** (areas, with the outside counted).",
+    "The **order** of a vertex is the number of arcs meeting at it, and the sum of all the orders equals $2 \\times$ the number of arcs.",
+    "Euler's formula: $V + R = A + 2$, so $R = A + 2 - V$.",
+    "A network is **traversable** if it has $0$ or $2$ vertices of odd order; with $2$ odd vertices the route starts at one and ends at the other.",
+    "Always count the outside region, and check your counts with the sum-of-orders and Euler's formulas."
+   ]
+  }
+ ]
+}

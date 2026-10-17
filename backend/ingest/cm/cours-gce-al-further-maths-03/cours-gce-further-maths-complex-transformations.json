@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-further-maths-complex-transformations",
+  "meta": {
+    "titre": "Complex Transformations: Invariant points, inverses and images of loci",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Mobius transformations of the Argand plane",
+    "duree_estimee_min": 35,
+    "tags": [
+      "complex transformations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-complex-transformations-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A mobile money agent in Yaounde draws a map of her market stalls on a sheet of paper, then pins a transparent copy on a rotating board and stretches it to fit a larger poster. Every point of the map has been moved by a fixed rule, yet streets still look like streets and circular roundabouts still look like circles. Complex transformations do exactly this to the plane of complex numbers. In the Cameroon GCE Further Mathematics paper you are expected to find which points stay fixed, to reverse the rule, and to describe where a line or circle ends up."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A complex number $z=x+iy$ has modulus $|z|=\\sqrt{x^{2}+y^{2}}$ and satisfies $|z|^{2}=z\\bar z$.",
+        "$|z-\\alpha|$ is the distance between the points representing $z$ and $\\alpha$ in the Argand diagram.",
+        "A circle with centre $(a,b)$ and radius $r$ has equation $(u-a)^{2}+(v-b)^{2}=r^{2}$.",
+        "Complex numbers can be added, multiplied and divided, and rearranging an equation such as $w(cz+d)=az+b$ for $z$ is algebra with the usual rules."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Mobius transformations: fixed points, inverse and images",
+      "contenu_markdown": "A **Mobius (bilinear) transformation** maps the $z$-plane to the $w$-plane by\n\n$$\nw=\\frac{az+b}{cz+d},\\qquad ad-bc\\neq0,\\ z\\neq-\\frac dc\\tag{1}\n$$\n\n(if $ad-bc=0$ the map would be constant). Four facts are used constantly.\n\n1. **Inverse.** Rearranging $w(cz+d)=az+b$ gives\n$$\nz=\\frac{dw-b}{a-cw},\\qquad w\\neq\\frac ac\\tag{2}\n$$\nwhich is again of the same form. The value $w=\\dfrac ac$ is never reached, and $z=-\\dfrac dc$ is the point sent to infinity.\n2. **Invariant points** satisfy $T(z)=z$. Multiplying out gives a quadratic with at most two roots:\n$$\ncz^{2}+(d-a)z-b=0\\tag{3}\n$$\nAlways check that a root is not the excluded value $-d/c$.\n3. **Images of lines and circles** (for $c\\neq0$). The image of a line or circle is a circle or a line. A line or circle that passes through $z=-d/c$ maps to a **line**; any other line or circle maps to a **circle**. The image of a line not through $-d/c$ is a circle passing through $w=a/c$ (the point that is never attained).\n4. **Method for an image.** Express $z$ in terms of $w$ using (2), substitute into the equation of the locus, then write $w=u+iv$ and simplify. For $|z-\\alpha|=k|z-\\beta|$ square both sides and use $|p+iq|^{2}=p^{2}+q^{2}$. A circle is recognised when the result has the form $u^{2}+v^{2}+\\dots=0$, and you complete the square to read off the centre and radius.\n\nTo decide whether a region maps to the inside or the outside of the image circle, test one convenient point.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Elementary map $w=az+b$",
+          "quand_utiliser": "When the transformation is a rotation, enlargement or translation.",
+          "contenu_markdown": "Writing $a=|a|e^{i\\varphi}$, the map $w=az+b$ is a rotation through $\\varphi$ and an enlargement of scale factor $|a|$, both about the origin, followed by a translation by $b$. Circles map to circles and lines to lines, with no exceptions."
+        },
+        {
+          "nom": "Inversion $w=1/z$",
+          "quand_utiliser": "When the map is $w=1/z$ or reduces to it.",
+          "contenu_markdown": "Here $|w|=1/|z|$ and $\\arg w=-\\arg z$. A line through the origin maps to a line through the origin. A circle through the origin maps to a line not through the origin. For example, the circle $|z-1|=1$ passes through the origin and its image is the line $\\mathrm{Re}\\,w=\\dfrac12$."
+        },
+        {
+          "nom": "Locus $|z-\\alpha|=k|z-\\beta|$",
+          "quand_utiliser": "When the locus is given by a ratio of distances.",
+          "contenu_markdown": "If $k=1$ the locus is the perpendicular bisector of the points $\\alpha$ and $\\beta$, a line. If $k\\neq1$ it is a circle (the circle of Apollonius). After substituting $z$ in terms of $w$ you will again obtain a ratio of moduli, and squaring removes the square roots."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The transformation $T$ from the $z$-plane to the $w$-plane is given by\n$$\nw=\\frac{z+2}{z-1},\\qquad z\\neq1.\n$$\n\n(a) Find the invariant points of $T$.\n\n(b) Express $z$ in terms of $w$.\n\n(c) Show that the image of the circle $|z|=2$ is a circle and find its centre and radius.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the invariant points.",
+          "justification": "Solve $z=\\dfrac{z+2}{z-1}$ and reject $z=1$ if it appears.",
+          "resultat_markdown": "$z(z-1)=z+2$ gives $z^{2}-2z-2=0$, so $z=\\dfrac{2\\pm\\sqrt{12}}{2}=1\\pm\\sqrt3$. Neither root is $1$, so both are invariant points."
+        },
+        {
+          "numero": 2,
+          "action": "Make $z$ the subject.",
+          "justification": "Multiply out and collect the terms in $z$ on one side.",
+          "resultat_markdown": "$w(z-1)=z+2\\Rightarrow z(w-1)=w+2\\Rightarrow z=\\dfrac{w+2}{w-1}$, with $w\\neq1$."
+        },
+        {
+          "numero": 3,
+          "action": "Substitute into the locus $|z|=2$.",
+          "justification": "Replace $z$ by its expression in $w$ and use $|p/q|=|p|/|q|$.",
+          "resultat_markdown": "$\\dfrac{|w+2|}{|w-1|}=2$, that is $|w+2|=2|w-1|$."
+        },
+        {
+          "numero": 4,
+          "action": "Square both sides and write $w=u+iv$.",
+          "justification": "Squaring removes the moduli; $|p+iq|^{2}=p^{2}+q^{2}$.",
+          "resultat_markdown": "$(u+2)^{2}+v^{2}=4\\left[(u-1)^{2}+v^{2}\\right]$, so $u^{2}+4u+4+v^{2}=4u^{2}-8u+4+4v^{2}$, giving $3u^{2}+3v^{2}-12u=0$."
+        },
+        {
+          "numero": 5,
+          "action": "Complete the square.",
+          "justification": "Divide by $3$ and group the terms in $u$.",
+          "resultat_markdown": "$u^{2}-4u+v^{2}=0\\Rightarrow(u-2)^{2}+v^{2}=4$."
+        }
+      ],
+      "conclusion_markdown": "The invariant points are $1+\\sqrt3$ and $1-\\sqrt3$, and $z=\\dfrac{w+2}{w-1}$. The image of $|z|=2$ is the circle $(u-2)^{2}+v^{2}=4$, with centre $2$ (the point $2+0i$) and radius $2$. The circle $|z|=2$ does not pass through the excluded point $z=1$, so its whole image is this circle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For $w=\\dfrac{z+2}{z-1}$ a student states that $z=1$ is an invariant point because \"the denominator is zero\".",
+          "pourquoi_faux": "$z=1$ is not in the domain of $T$ at all. Invariant points are solutions of $T(z)=z$, found from the quadratic, and they must differ from the excluded value.",
+          "correction_markdown": "Solve $z^{2}-2z-2=0$ to get $z=1\\pm\\sqrt3$."
+        },
+        {
+          "erreur_markdown": "A student concludes that the image of the circle $|z-1|=1$ under $w=\\dfrac1z$ is a circle.",
+          "pourquoi_faux": "The circle passes through $z=0$, which is sent to infinity by $w=1/z$. A circle through that point has a line as its image.",
+          "correction_markdown": "With $z=1+e^{it}$, $\\mathrm{Re}\\,\\dfrac1z=\\dfrac12$, so the image is the line $\\mathrm{Re}\\,w=\\dfrac12$."
+        },
+        {
+          "erreur_markdown": "While expanding $|w+2|^{2}=4|w-1|^{2}$ with $w=u+iv$ a student writes $|w+2|^{2}=(u+2)^{2}+v$ and $|w-1|^{2}=(u-1)^{2}+v$.",
+          "pourquoi_faux": "The modulus squared of $(u+2)+iv$ is $(u+2)^{2}+v^{2}$: the imaginary part is squared as well.",
+          "correction_markdown": "$(u+2)^{2}+v^{2}=4\\left[(u-1)^{2}+v^{2}\\right]$."
+        },
+        {
+          "erreur_markdown": "Rearranging $w=\\dfrac{az+b}{cz+d}$, a student writes $z=\\dfrac{b-dw}{a-cw}$.",
+          "pourquoi_faux": "From $w(cz+d)=az+b$ we get $z(cw-a)=b-dw$, so $z=\\dfrac{b-dw}{cw-a}=\\dfrac{dw-b}{a-cw}$. The student changed the sign of the denominator only, which turns $z$ into $-z$.",
+          "correction_markdown": "Check with a known case: for $w=\\dfrac{z+2}{z-1}$ the correct inverse is $z=\\dfrac{w+2}{w-1}$, whereas the student's formula would give $-\\dfrac{w+2}{w-1}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "The transformation $T$ is given by $w=\\dfrac{3}{z+2}$, $z\\neq-2$.\n\n(a) Find the invariant points of $T$.\n\n(b) Express $z$ in terms of $w$.\n\n(c) Find the image of the point $z=1+i$, giving $w$ in the form $p+iq$.",
+          "solution_markdown": "(a) $z(z+2)=3$ gives $z^{2}+2z-3=0$, so $(z+3)(z-1)=0$ and the invariant points are **$z=1$ and $z=-3$**.\n\n(b) $w(z+2)=3$, so $z+2=\\dfrac3w$ and **$z=\\dfrac{3-2w}{w}$**, $w\\neq0$.\n\n(c) $w=\\dfrac{3}{3+i}=\\dfrac{3(3-i)}{(3+i)(3-i)}=\\dfrac{9-3i}{10}$, that is **$w=0.9-0.3i$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The transformation $T$ is given by $w=\\dfrac{1}{z+1}$, $z\\neq-1$. Show that the image of the line $\\mathrm{Re}\\,z=1$ is a circle, and find its centre and radius. State which point of this circle is not an image of any point of the line.",
+          "solution_markdown": "From $w=\\dfrac1{z+1}$ we get $z=\\dfrac1w-1$. Using $\\dfrac1w=\\dfrac{\\bar w}{|w|^{2}}=\\dfrac{u-iv}{u^{2}+v^{2}}$,\n\n$\\mathrm{Re}\\,z=\\dfrac{u}{u^{2}+v^{2}}-1=1$, so $u=2(u^{2}+v^{2})$, that is $u^{2}+v^{2}-\\dfrac u2=0$.\n\nCompleting the square: $\\left(u-\\dfrac14\\right)^{2}+v^{2}=\\dfrac1{16}$.\n\nThe image is a circle with **centre $\\dfrac14$ and radius $\\dfrac14$**. The point **$w=0$** (the origin) is on the circle but is not attained, because $w=0$ would need $z$ to be infinite."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The transformation $T$ is given by $w=\\dfrac{z}{z-4}$, $z\\neq4$.\n\n(a) Show that $z=\\dfrac{4w}{w-1}$.\n\n(b) Show that the image of the circle $|z|=2$ is a circle and find its centre and radius.\n\n(c) Determine whether the region $|z|<2$ is mapped to the inside or to the outside of this image circle.",
+          "solution_markdown": "(a) $w(z-4)=z\\Rightarrow wz-z=4w\\Rightarrow z(w-1)=4w$, so **$z=\\dfrac{4w}{w-1}$**, $w\\neq1$.\n\n(b) $|z|=2$ gives $\\dfrac{4|w|}{|w-1|}=2$, so $2|w|=|w-1|$. With $w=u+iv$: $4(u^{2}+v^{2})=(u-1)^{2}+v^{2}$, hence $3u^{2}+3v^{2}+2u-1=0$, that is $\\left(u+\\dfrac13\\right)^{2}+v^{2}=\\dfrac49$. The image is a circle with **centre $-\\dfrac13$ and radius $\\dfrac23$**.\n\n(c) The point $z=0$ lies inside $|z|<2$ and maps to $w=0$. Since $\\left|0+\\dfrac13\\right|=\\dfrac13<\\dfrac23$, $w=0$ is **inside** the image circle. The disc $|z|<2$ does not contain the excluded point $z=4$, so the whole region maps to the **inside** of the circle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A Mobius map $w=\\dfrac{az+b}{cz+d}$ has the inverse $z=\\dfrac{dw-b}{a-cw}$, and the points $z=-d/c$ and $w=a/c$ are excluded.",
+        "Invariant points solve $cz^{2}+(d-a)z-b=0$; reject any root equal to the excluded value.",
+        "To find an image: write $z$ in terms of $w$, substitute into the locus, set $w=u+iv$ and simplify.",
+        "Lines and circles map to lines or circles; a locus through the point sent to infinity maps to a line.",
+        "Test one point to decide whether a region maps to the inside or the outside of an image circle."
+      ]
+    }
+  ]
+}

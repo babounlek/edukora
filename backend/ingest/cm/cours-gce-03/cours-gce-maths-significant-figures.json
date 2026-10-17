@@ -1,0 +1,158 @@
+{
+ "cours_id": "cours-gce-maths-significant-figures",
+ "meta": {
+  "titre": "Significant figures: counting, rounding and keeping accuracy",
+  "matiere": "Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Rounding to significant figures",
+  "duree_estimee_min": 25,
+  "tags": [
+   "significant figures"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-maths-2020-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-maths-2020-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-maths-significant-figures-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A calculator in a Douala shop shows 160.18217 when a student works out the cost of a delivery, but the exam asks for the answer 'correct to 3 significant figures'. Which digits should stay and which should go? Significant figures tell us how many digits of a number are meaningful, and they are used to give answers of a sensible accuracy. The GCE O/L asks for rounding to a given number of significant figures in nearly every paper, in calculations as well as in short questions."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "The place values of digits are units, tens, hundreds, then tenths, hundredths, thousandths, and so on.",
+    "Rounding to the nearest ten or nearest hundred looks at the next digit to the right.",
+    "A decimal such as $0.04$ can be written with different numbers of zeros after the point."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Counting and rounding significant figures",
+   "contenu_markdown": "**Which digits are significant?**\n\n- All non-zero digits are significant: $4\\,729$ has 4 significant figures.\n- Zeros **between** non-zero digits are significant: $3\\,007$ has 4.\n- **Leading zeros** (before the first non-zero digit) are never significant: $0.00450$ has 3 significant figures (4, 5 and the last 0).\n- Zeros at the end of a decimal are significant: $2.50$ has 3.\n\nThe **first significant figure** is the first non-zero digit from the left.\n\n**Rounding to $n$ significant figures:**\n\n1. Count $n$ digits from the first significant figure.\n2. Look at the next digit. If it is $5$ or more, add 1 to the last digit kept; if it is $4$ or less, leave it.\n3. In a whole number, replace the dropped digits by **zeros** to keep the size of the number. In a decimal, just drop them.\n4. Keep trailing zeros in a decimal if they are significant: $2.996$ to 3 s.f. is $3.00$.\n\nIn a calculation with several steps, **do not round in the middle**: keep all the digits on the calculator and round once at the end.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Large numbers and placeholder zeros",
+     "quand_utiliser": "The number to round has more digits than you keep before the decimal point.",
+     "contenu_markdown": "Round $38\\,462$: to 4 s.f. it is $38\\,460$; to 3 s.f. it is $38\\,500$; to 2 s.f. it is $38\\,000$. The zeros are placeholders, they keep the size of the number. (Never write $38$ for $38\\,462$ to 2 s.f.: that changes the size by a factor of 1000.)"
+    },
+    {
+     "nom": "Significant figures and decimal places",
+     "quand_utiliser": "A question says 'correct to 3 s.f.' and another says 'correct to 3 decimal places'.",
+     "contenu_markdown": "Decimal places are counted **after the decimal point**, significant figures from the **first non-zero digit**. For $3.0472$: 3 s.f. gives $3.05$ but 3 d.p. gives $3.047$. For $0.0070468$: 3 s.f. gives $0.00705$ but 3 d.p. gives $0.007$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "(a) Calculate $\\dfrac{4.86 \\times 2.35}{0.0713}$ and give the answer correct to 3 significant figures. (b) Write $0.0070468$ correct to 3 significant figures.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Work out the numerator.",
+     "justification": "Multiplication first, without rounding.",
+     "resultat_markdown": "$4.86 \\times 2.35 = 11.421$."
+    },
+    {
+     "numero": 2,
+     "action": "Divide and keep the calculator display.",
+     "justification": "Rounding in the middle would introduce errors, so only round at the end.",
+     "resultat_markdown": "$11.421 \\div 0.0713 = 160.1822\\ldots$"
+    },
+    {
+     "numero": 3,
+     "action": "Round to 3 s.f.",
+     "justification": "The first three digits are 1, 6, 0 and the next digit is 1, which is less than 5, so the third digit stays.",
+     "resultat_markdown": "$160.1822\\ldots \\approx 160$ (the 0 is a significant figure)."
+    },
+    {
+     "numero": 4,
+     "action": "For (b), find the first significant figure.",
+     "justification": "The zeros before the 7 are leading zeros and do not count.",
+     "resultat_markdown": "Digits counted: $7,\\ 0,\\ 4$. The next digit is 6."
+    },
+    {
+     "numero": 5,
+     "action": "Round up and write the answer.",
+     "justification": "6 is 5 or more, so the last kept digit 4 becomes 5.",
+     "resultat_markdown": "$0.0070468 \\approx 0.00705$."
+    }
+   ],
+   "conclusion_markdown": "(a) **160** (3 s.f.); (b) **0.00705** (3 s.f.)."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Rounding $0.00450$ to 2 s.f. and writing $0.00$.",
+     "pourquoi_faux": "Leading zeros are not significant. The first significant figure is the 4.",
+     "correction_markdown": "Count from the 4: the two significant figures are 4 and 5, so the answer is $0.0045$."
+    },
+    {
+     "erreur_markdown": "Rounding $38\\,462$ to 2 s.f. and writing $38$.",
+     "pourquoi_faux": "The digits dropped from a whole number must be replaced by zeros to keep the size.",
+     "correction_markdown": "$38\\,462 \\approx 38\\,000$ (2 s.f.)."
+    },
+    {
+     "erreur_markdown": "Giving $3.047$ when asked for $3.0472$ to 3 s.f.",
+     "pourquoi_faux": "Three decimal places were used instead of three significant figures.",
+     "correction_markdown": "The first significant figure is the 3, so keep 3, 0, 4 and round up with the next digit 7: $3.05$."
+    },
+    {
+     "erreur_markdown": "Writing $2.996$ to 3 s.f. as $3$.",
+     "pourquoi_faux": "Rounding up gives $3.00$ and the zeros are significant. Writing $3$ shows only 1 s.f.",
+     "correction_markdown": "$2.996 \\approx 3.00$ (3 s.f.)."
+    },
+    {
+     "erreur_markdown": "Rounding each number to 1 s.f. first, then multiplying: $2.46 \\times 3.18 \\approx 2.5 \\times 3.2 = 8.0$ and answering $8.0$ to 2 s.f.",
+     "pourquoi_faux": "Early rounding builds errors into the result. The exact product is $7.8228$, which is $7.8$ to 2 s.f.",
+     "correction_markdown": "Multiply the full numbers first, then round the final answer: $7.8228 \\approx 7.8$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Write (a) $3.14159$ to 3 s.f.; (b) $52\\,764$ to 2 s.f.; (c) $0.04048$ to 2 s.f.",
+     "solution_markdown": "(a) The first three digits are 3, 1, 4 and the next digit is 1, so **3.14**.\n\n(b) The first two digits are 5, 2 and the next digit is 7, so round up to 53 and add placeholders: **53 000**.\n\n(c) Leading zeros do not count. The first two significant figures are 4, 0 and the next digit is 4, so **0.040**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "A rectangular field in Kumba measures 12.7 m by 8.46 m. Calculate (a) its area, (b) its perimeter, each correct to 3 significant figures, and (c) its area correct to 2 significant figures.",
+     "solution_markdown": "(a) Area $= 12.7 \\times 8.46 = 107.442$ m², which is **107 m²** (3 s.f.), since the digit after 107 is 4.\n\n(b) Perimeter $= 2(12.7 + 8.46) = 2 \\times 21.16 = 42.32$ m, which is **42.3 m** (3 s.f.).\n\n(c) $107.442$ to 2 s.f.: digits 1, 0 and the next digit is 7, so round up to 11 and add a zero: **110 m²**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "(a) Calculate $\\sqrt{\\dfrac{9.81 \\times 0.0456}{3.2}}$ correct to 3 significant figures. (b) A student first rounds each number to 1 significant figure, then calculates. Find his answer to 3 s.f. and say why it is not accurate.",
+     "solution_markdown": "(a) $9.81 \\times 0.0456 = 0.447336$. Dividing by $3.2$ gives $0.139793\\ldots$ and the square root is $0.37389\\ldots$ so **0.374** (3 s.f.).\n\n(b) With $10$, $0.05$ and $3$: $\\sqrt{\\dfrac{10 \\times 0.05}{3}} = \\sqrt{0.1667} = 0.408\\ldots$ so **0.408**.\n\nThis differs from the correct 0.374 because rounding the data to 1 s.f. made each number up to 10% wrong, and the errors combined. Only the final answer should be rounded."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Significant figures start at the first non-zero digit; leading zeros never count, zeros between digits always count.",
+    "Look at the digit after the last one you keep: 5 or more rounds up, 4 or less leaves it.",
+    "In whole numbers, replace dropped digits by zeros ($38\\,462 \\approx 38\\,000$ to 2 s.f.).",
+    "Do not mix up decimal places and significant figures.",
+    "Do not round in the middle of a calculation; round the final answer only."
+   ]
+  }
+ ]
+}

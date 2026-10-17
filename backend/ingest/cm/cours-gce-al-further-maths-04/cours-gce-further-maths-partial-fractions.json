@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-further-maths-partial-fractions",
+  "meta": {
+    "titre": "Partial Fractions: splitting rational functions for integration and series",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "decomposition of rational functions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "partial fractions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-partial-fractions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A mathematics teacher in Garoua wants to add the fractions $\\frac{1}{r}$ and $\\frac{1}{r+2}$ for $r=1,2,3,\\dots$ and finds that most terms cancel. The cancellation only appears once a complicated single fraction is split into simple ones. Partial fractions let you undo the work of adding fractions over a common denominator. At Advanced Level they are the key step in integrating rational functions, expanding them as series and summing series by the method of differences, so they feature in many Further Mathematics papers."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A polynomial has degree equal to its highest power, and a quadratic $ax^2+bx+c$ is irreducible over the reals when $b^2-4ac<0$.",
+        "Two polynomials are identical for all $x$ only if their coefficients match power by power.",
+        "Algebraic long division writes a polynomial as divisor $\\times$ quotient $+$ remainder.",
+        "$\\displaystyle\\int\\frac{1}{x-a}\\,dx=\\ln|x-a|+c$ and $\\displaystyle\\int\\frac{1}{x^2+a^2}\\,dx=\\frac1a\\arctan\\frac xa+c$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Splitting a rational function into partial fractions",
+      "contenu_markdown": "A rational function $\\dfrac{N(x)}{D(x)}$ is **proper** when $\\deg N<\\deg D$ and **improper** otherwise. A proper fraction is split according to the factors of the denominator:\n\n| Factor in $D(x)$ | Partial fractions |\n|---|---|\n| $(ax+b)$ | $\\dfrac{A}{ax+b}$ |\n| $(ax+b)^2$ | $\\dfrac{A}{ax+b}+\\dfrac{B}{(ax+b)^2}$ |\n| $(ax^2+bx+c)$, irreducible | $\\dfrac{Ax+B}{ax^2+bx+c}$ |\n\nWrite the identity with the unknown constants, multiply both sides by $D(x)$, and find the constants in either of two ways: substitute convenient values of $x$ (the roots of the factors), or equate coefficients of powers of $x$. For two distinct linear factors,\n$$\n\\frac{N(x)}{(x-a)(x-b)}\\equiv\\frac{A}{x-a}+\\frac{B}{x-b} \\tag{1}\n$$\nmultiplying by $(x-a)$ and putting $x=a$ gives the **cover-up rule**\n$$\nA=\\frac{N(a)}{a-b} \\tag{2}\n$$\nFinish by checking at a value of $x$ that was not used. The number of unknown constants always equals the degree of $D(x)$.\n\nWhen some constants remain after substituting the roots, expand the right-hand side and compare coefficients of $x^2$, $x$ and the constant term. The result is then used in three standard ways: to integrate (each partial fraction has a simple integral), to expand in ascending powers of $x$ with the binomial series, and to sum a series whose general term is a difference of two fractions.",
+      "variantes": [
+        {
+          "nom": "Repeated linear factor",
+          "quand_utiliser": "The denominator contains a factor such as $(x-2)^2$.",
+          "contenu_markdown": "A factor $(x-a)^2$ needs both $\\dfrac{B}{x-a}$ and $\\dfrac{C}{(x-a)^2}$. For example $\\dfrac{1}{x(x+1)^2}\\equiv\\dfrac{A}{x}+\\dfrac{B}{x+1}+\\dfrac{C}{(x+1)^2}$. Substitute the roots to find $A$ and $C$ quickly, then use a third value of $x$ (or compare coefficients) to find $B$. The cover-up rule only works for the highest power of the repeated factor."
+        },
+        {
+          "nom": "Irreducible quadratic factor",
+          "quand_utiliser": "The denominator has a factor such as $x^2+4$ that cannot be factorised over the reals.",
+          "contenu_markdown": "Its numerator must be linear, $Bx+C$, because the factor has degree $2$. Use the cover-up rule for the linear factors, then compare coefficients of $x^2$, $x$ and the constant term for the rest. When integrating, split $\\dfrac{Bx+C}{x^2+k^2}$ into $\\dfrac{B}{2}\\cdot\\dfrac{2x}{x^2+k^2}$ (a logarithm) and $\\dfrac{C}{x^2+k^2}$ (an arctangent)."
+        },
+        {
+          "nom": "Improper fraction",
+          "quand_utiliser": "The degree of the numerator is at least the degree of the denominator.",
+          "contenu_markdown": "Divide first, so that $\\dfrac{N}{D}=Q(x)+\\dfrac{R(x)}{D(x)}$ with $\\deg R<\\deg D$. Then split $\\dfrac{R}{D}$ into partial fractions. Skipping the division leaves an identity that no constants can satisfy."
+        }
+      ],
+      "formule_principale": null
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "Express $\\dfrac{3x^2+2x+5}{(x-1)(x^2+4)}$ in partial fractions, check your answer, and hence find $\\displaystyle\\int\\frac{3x^2+2x+5}{(x-1)(x^2+4)}\\,dx$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choose the form of the partial fractions.",
+          "justification": "$(x-1)$ is linear and $(x^2+4)$ is irreducible, so the second numerator is linear.",
+          "resultat_markdown": "$$\n\\frac{3x^2+2x+5}{(x-1)(x^2+4)}\\equiv\\frac{A}{x-1}+\\frac{Bx+C}{x^2+4}\n$$"
+        },
+        {
+          "numero": 2,
+          "action": "Clear the denominators.",
+          "justification": "Multiply both sides by $(x-1)(x^2+4)$.",
+          "resultat_markdown": "$$\n3x^2+2x+5\\equiv A(x^2+4)+(Bx+C)(x-1) \\tag{1}\n$$"
+        },
+        {
+          "numero": 3,
+          "action": "Find $A$ by substituting $x=1$.",
+          "justification": "The term in $(Bx+C)$ vanishes at $x=1$.",
+          "resultat_markdown": "$3+2+5=A(1+4)$, so $10=5A$ and $A=2$."
+        },
+        {
+          "numero": 4,
+          "action": "Find $B$ and $C$ by comparing coefficients in (1).",
+          "justification": "Coefficients of $x^2$ and of the constant term give two equations.",
+          "resultat_markdown": "$x^2$: $3=A+B$, so $B=1$. Constant: $5=4A-C$, so $C=8-5=3$. Check the coefficient of $x$: $2=-B+C=-1+3$, which holds."
+        },
+        {
+          "numero": 5,
+          "action": "State the result and check at $x=0$.",
+          "justification": "Substitute a value that was not used to find the constants.",
+          "resultat_markdown": "$\\dfrac{3x^2+2x+5}{(x-1)(x^2+4)}\\equiv\\dfrac{2}{x-1}+\\dfrac{x+3}{x^2+4}$. At $x=0$ the left side is $\\dfrac{5}{-4}=-1.25$ and the right side is $-2+\\dfrac34=-1.25$."
+        },
+        {
+          "numero": 6,
+          "action": "Integrate term by term.",
+          "justification": "Split $\\dfrac{x+3}{x^2+4}$ into a logarithmic part and an arctangent part.",
+          "resultat_markdown": "$$\n\\int\\!\\left(\\frac{2}{x-1}+\\frac{x}{x^2+4}+\\frac{3}{x^2+4}\\right)dx=2\\ln|x-1|+\\tfrac12\\ln(x^2+4)+\\tfrac32\\arctan\\frac{x}{2}+c\n$$"
+        }
+      ],
+      "conclusion_markdown": "The partial fractions are $\\dfrac{2}{x-1}+\\dfrac{x+3}{x^2+4}$, and the integral is $2\\ln|x-1|+\\tfrac12\\ln(x^2+4)+\\tfrac32\\arctan\\dfrac x2+c$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A student writes $\\dfrac{x^2+1}{(x-1)(x+2)}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+2}$.",
+          "pourquoi_faux": "The fraction is improper (numerator and denominator both have degree $2$). The right side tends to $0$ as $x\\to\\infty$ but the left side tends to $1$, so no constants work.",
+          "correction_markdown": "Divide first: $\\dfrac{x^2+1}{(x-1)(x+2)}=1+\\dfrac{3-x}{(x-1)(x+2)}\\equiv1+\\dfrac{2/3}{x-1}-\\dfrac{5/3}{x+2}$."
+        },
+        {
+          "erreur_markdown": "A student splits $\\dfrac{1}{x(x+1)^2}$ as $\\dfrac{A}{x}+\\dfrac{B}{x+1}$.",
+          "pourquoi_faux": "A repeated factor $(x+1)^2$ needs a term for each power, from $1$ up to $2$. Two constants cannot match a denominator of degree $3$.",
+          "correction_markdown": "$\\dfrac{1}{x(x+1)^2}\\equiv\\dfrac{1}{x}-\\dfrac{1}{x+1}-\\dfrac{1}{(x+1)^2}$."
+        },
+        {
+          "erreur_markdown": "A student writes $\\dfrac{5}{(x+2)(x^2+1)}\\equiv\\dfrac{A}{x+2}+\\dfrac{B}{x^2+1}$ with constant numerators.",
+          "pourquoi_faux": "The irreducible quadratic needs a linear numerator $Bx+C$; a constant has too little freedom, and the resulting equations have no solution.",
+          "correction_markdown": "$\\dfrac{5}{(x+2)(x^2+1)}\\equiv\\dfrac{1}{x+2}+\\dfrac{2-x}{x^2+1}$."
+        },
+        {
+          "erreur_markdown": "For $\\dfrac{2x+5}{(x+1)(x+4)}$ a student finds $A$ by substituting $x=1$ and gets $A=\\dfrac75$.",
+          "pourquoi_faux": "The value to substitute is the root of the factor, $x=-1$ for $(x+1)$. Putting $x=1$ does not remove the other term.",
+          "correction_markdown": "At $x=-1$: $A=\\dfrac{-2+5}{-1+4}=1$. At $x=-4$: $B=\\dfrac{-8+5}{-4+1}=1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Express $\\dfrac{x+7}{(x+1)(x+3)}$ in partial fractions.",
+          "solution_markdown": "Write $\\dfrac{x+7}{(x+1)(x+3)}\\equiv\\dfrac{A}{x+1}+\\dfrac{B}{x+3}$, so $x+7\\equiv A(x+3)+B(x+1)$.\n\nPut $x=-1$: $6=2A$, so $A=3$. Put $x=-3$: $4=-2B$, so $B=-2$.\n\nCheck with $x=0$: left side $\\dfrac{7}{3}$; right side $3-\\dfrac23=\\dfrac73$.\n\n**$\\dfrac{x+7}{(x+1)(x+3)}\\equiv\\dfrac{3}{x+1}-\\dfrac{2}{x+3}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Express $\\dfrac{3x^2-5x+4}{x(x-2)^2}$ in partial fractions.",
+          "solution_markdown": "Write $\\dfrac{3x^2-5x+4}{x(x-2)^2}\\equiv\\dfrac{A}{x}+\\dfrac{B}{x-2}+\\dfrac{C}{(x-2)^2}$, so\n$$3x^2-5x+4\\equiv A(x-2)^2+Bx(x-2)+Cx.$$\nPut $x=0$: $4=4A$, so $A=1$. Put $x=2$: $12-10+4=2C$, so $C=3$. Put $x=1$: $2=A-B+C=1-B+3$, so $B=2$.\n\nCheck with the coefficient of $x^2$: $3=A+B=1+2$.\n\n**$\\dfrac{3x^2-5x+4}{x(x-2)^2}\\equiv\\dfrac1x+\\dfrac{2}{x-2}+\\dfrac{3}{(x-2)^2}$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Express $\\dfrac{1}{r(r+2)}$ in partial fractions. (b) Hence show that\n$$\\sum_{r=1}^{n}\\frac{1}{r(r+2)}=\\frac34-\\frac{2n+3}{2(n+1)(n+2)}.$$\n(c) Deduce the sum to infinity of the series.",
+          "solution_markdown": "**(a)** $\\dfrac{1}{r(r+2)}\\equiv\\dfrac Ar+\\dfrac B{r+2}$ gives $1\\equiv A(r+2)+Br$. Put $r=0$: $A=\\tfrac12$. Put $r=-2$: $B=-\\tfrac12$. So $\\dfrac{1}{r(r+2)}=\\dfrac12\\left(\\dfrac1r-\\dfrac1{r+2}\\right)$.\n\n**(b)** Write out the terms of $\\tfrac12\\sum\\left(\\dfrac1r-\\dfrac1{r+2}\\right)$:\n$$\\tfrac12\\Big[\\big(1-\\tfrac13\\big)+\\big(\\tfrac12-\\tfrac14\\big)+\\big(\\tfrac13-\\tfrac15\\big)+\\cdots+\\big(\\tfrac1{n-1}-\\tfrac1{n+1}\\big)+\\big(\\tfrac1n-\\tfrac1{n+2}\\big)\\Big].$$\nAll terms cancel except $1$, $\\tfrac12$, $-\\tfrac1{n+1}$ and $-\\tfrac1{n+2}$:\n$$\\sum_{r=1}^{n}\\frac{1}{r(r+2)}=\\frac12\\left(\\frac32-\\frac1{n+1}-\\frac1{n+2}\\right)=\\frac34-\\frac{2n+3}{2(n+1)(n+2)},$$\nbecause $\\dfrac1{n+1}+\\dfrac1{n+2}=\\dfrac{2n+3}{(n+1)(n+2)}$.\n\n**(c)** As $n\\to\\infty$, $\\dfrac{2n+3}{2(n+1)(n+2)}\\to0$, so the series converges and **the sum to infinity is $\\dfrac34$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Check first that the fraction is proper; if not, divide to obtain a polynomial plus a proper fraction.",
+        "Linear factor $\\to\\dfrac{A}{ax+b}$; repeated factor $\\to$ one term for every power; irreducible quadratic $\\to\\dfrac{Ax+B}{ax^2+bx+c}$.",
+        "Find constants by substituting the roots of the factors (cover-up rule) and by comparing coefficients; always check at an unused value of $x$.",
+        "For integration, a term $\\dfrac{Bx+C}{x^2+k^2}$ gives a logarithm and an arctangent.",
+        "Splitting a general term as a difference of two fractions makes a series telescope (method of differences)."
+      ]
+    }
+  ]
+}

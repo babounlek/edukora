@@ -1,0 +1,158 @@
+{
+ "cours_id": "cours-gce-maths-probability",
+ "meta": {
+  "titre": "Probability: Single Events, Mutually Exclusive Events and Events in Succession",
+  "matiere": "Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Basic probability, addition rule and two successive events",
+  "duree_estimee_min": 30,
+  "tags": [
+   "probability"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-maths-2023-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-maths-2023-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-maths-probability-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Before the football final in Limbe, a supporter says that his team has a 70 percent chance of winning. Another says the chance of rain at kick-off is one in four. Probability puts numbers on such chances so that they can be compared and combined. The GCE asks short probability questions in Paper 1 and longer ones in Paper 2, such as picking two items from a bag or deciding whether two events can happen at the same time. Every question can be answered with a handful of rules, which you will learn here."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A fraction such as $\\dfrac{3}{10}$ can be written as the decimal $0.3$ or as $30\\%$.",
+    "To multiply fractions, multiply the numerators and multiply the denominators.",
+    "The word \"or\" means that at least one of two things happens."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Probability, the addition rule and independent events",
+   "contenu_markdown": "The **probability** of an event $A$ is\n\n$$P(A) = \\frac{\\text{number of favourable outcomes}}{\\text{total number of equally likely outcomes}}$$\n\nIt is always between $0$ (impossible) and $1$ (certain), and it may be given as a fraction, a decimal or a percentage. It is **never** negative or greater than $1$.\n\n- **Complement:** the probability that $A$ does **not** happen is $P(A') = 1 - P(A)$.\n- **Sum of all outcomes:** the probabilities of all possible outcomes add up to $1$.\n- **Mutually exclusive events** cannot happen at the same time, so $P(A \\cap B) = 0$ and\n\n$$P(A \\cup B) = P(A) + P(B).$$\n\n- **Any two events** (not necessarily mutually exclusive): $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$. The intersection $A \\cap B$ is subtracted because it was counted twice.\n- **Independent events** (one does not affect the other): $P(A \\text{ and } B) = P(A) \\times P(B)$.\n\nIn words, \"and\" usually means **multiply** and \"or\" usually means **add** (after checking for overlap).",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Two events in succession",
+     "quand_utiliser": "When two items are picked one after the other from a bag, or an experiment is repeated.",
+     "contenu_markdown": "Multiply the probabilities along the path. If the first item is **replaced**, the second probability is the same as the first. If it is **not replaced**, both the numerator (for the colour just taken) and the denominator reduce by $1$. To get the probability of different routes (for example red then white, or white then red), calculate each route and **add** them."
+    },
+    {
+     "nom": "Sample space and tables",
+     "quand_utiliser": "When two experiments are combined, such as a coin and a die, or two dice.",
+     "contenu_markdown": "List all the equally likely outcomes in a table or as ordered pairs: a coin and a die give $2 \\times 6 = 12$ outcomes. Count the outcomes that satisfy the condition and divide by the total. The shortcut for the opposite event is $1 - P(\\text{event})$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "A basket contains $4$ ripe mangoes and $6$ unripe mangoes. Two mangoes are picked at random, one after the other, **without replacement**. Find the probability that:\n\n(a) both are ripe;\n\n(b) one is ripe and one is unripe;\n\n(c) at least one is ripe.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Write the probabilities for the first and second picks.",
+     "justification": "There are $10$ mangoes at first; after one is removed, $9$ remain, and the counts of the colour picked reduce by $1$.",
+     "resultat_markdown": "First pick: $P(\\text{ripe}) = \\dfrac{4}{10}$, $P(\\text{unripe}) = \\dfrac{6}{10}$. If a ripe one was taken, $P(\\text{ripe}) = \\dfrac{3}{9}$ next."
+    },
+    {
+     "numero": 2,
+     "action": "Find the probability that both are ripe.",
+     "justification": "\"And\" means multiply along the path ripe then ripe.",
+     "resultat_markdown": "$P(RR) = \\dfrac{4}{10} \\times \\dfrac{3}{9} = \\dfrac{12}{90} = \\dfrac{2}{15}$."
+    },
+    {
+     "numero": 3,
+     "action": "Find the probability of one ripe and one unripe.",
+     "justification": "This can happen in two ways, ripe then unripe or unripe then ripe; multiply along each path and add.",
+     "resultat_markdown": "$P = \\dfrac{4}{10} \\times \\dfrac{6}{9} + \\dfrac{6}{10} \\times \\dfrac{4}{9} = \\dfrac{24}{90} + \\dfrac{24}{90} = \\dfrac{48}{90} = \\dfrac{8}{15}$."
+    },
+    {
+     "numero": 4,
+     "action": "Find the probability that both are unripe.",
+     "justification": "\"At least one ripe\" is the opposite of \"no ripe mango\", so first find the probability that both are unripe.",
+     "resultat_markdown": "$P(UU) = \\dfrac{6}{10} \\times \\dfrac{5}{9} = \\dfrac{30}{90} = \\dfrac{1}{3}$."
+    },
+    {
+     "numero": 5,
+     "action": "Use the complement for \"at least one ripe\".",
+     "justification": "$P(\\text{at least one ripe}) = 1 - P(\\text{both unripe})$.",
+     "resultat_markdown": "$1 - \\dfrac{1}{3} = \\dfrac{2}{3}$."
+    }
+   ],
+   "conclusion_markdown": "(a) $\\dfrac{2}{15}$. (b) $\\dfrac{8}{15}$. (c) $\\dfrac{2}{3}$. Check: $\\dfrac{2}{15} + \\dfrac{8}{15} + \\dfrac{1}{3} = \\dfrac{2 + 8 + 5}{15} = 1$, because these three cases cover every possibility."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "The probability that it rains is $\\dfrac{3}{2}$, and the probability that it does not rain is $-\\dfrac{1}{2}$.",
+     "pourquoi_faux": "A probability must lie between $0$ and $1$; a value above $1$ or below $0$ cannot be a probability.",
+     "correction_markdown": "Check that $0 \\le P \\le 1$. For example $P(\\text{rain}) = 0.35$ gives $P(\\text{no rain}) = 1 - 0.35 = 0.65$."
+    },
+    {
+     "erreur_markdown": "Picking two balls without replacement: $P(\\text{both red}) = \\dfrac{4}{10} \\times \\dfrac{4}{10}$.",
+     "pourquoi_faux": "After a red ball is removed, there are only $3$ red balls among $9$ left; the second probability changes.",
+     "correction_markdown": "$P = \\dfrac{4}{10} \\times \\dfrac{3}{9} = \\dfrac{2}{15}$."
+    },
+    {
+     "erreur_markdown": "$P(A \\cup B) = P(A) + P(B)$ for any two events.",
+     "pourquoi_faux": "That formula works only for mutually exclusive events. If they can both happen, the overlap is counted twice.",
+     "correction_markdown": "$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$."
+    },
+    {
+     "erreur_markdown": "Mutually exclusive means that the events do not affect each other.",
+     "pourquoi_faux": "That is the meaning of independent. Mutually exclusive events cannot happen together, so they affect each other strongly.",
+     "correction_markdown": "Mutually exclusive: $P(A \\cap B) = 0$. Independent: $P(A \\cap B) = P(A) \\times P(B)$."
+    },
+    {
+     "erreur_markdown": "Adding the probabilities for \"head **and** a six\" instead of multiplying.",
+     "pourquoi_faux": "Both events must happen together, so the chances are multiplied, not added.",
+     "correction_markdown": "$P(\\text{head and six}) = \\dfrac{1}{2} \\times \\dfrac{1}{6} = \\dfrac{1}{12}$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "(a) The probability that it rains on a given day is $0.35$. Find the probability that it does not rain.\n\n(b) A class has $18$ girls and $12$ boys. One pupil is chosen at random. Find the probability that it is a girl, in its simplest form.",
+     "solution_markdown": "(a) $P(\\text{no rain}) = 1 - 0.35 = $ **0.65**.\n\n(b) The class has $18 + 12 = 30$ pupils, so $P(\\text{girl}) = \\dfrac{18}{30} = $ **$\\dfrac{3}{5}$**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "(a) $A$ and $B$ are mutually exclusive events with $P(A) = \\dfrac{2}{5}$ and $P(B) = \\dfrac{1}{3}$. Find $P(A \\cup B)$.\n\n(b) $C$ and $D$ are events with $P(C) = 0.5$, $P(D) = 0.4$ and $P(C \\cap D) = 0.2$. Find $P(C \\cup D)$ and the probability that neither $C$ nor $D$ happens.",
+     "solution_markdown": "(a) For mutually exclusive events, $P(A \\cup B) = \\dfrac{2}{5} + \\dfrac{1}{3} = \\dfrac{6}{15} + \\dfrac{5}{15} = $ **$\\dfrac{11}{15}$**.\n\n(b) $P(C \\cup D) = 0.5 + 0.4 - 0.2 = $ **0.7**. The probability that neither happens is $1 - 0.7 = $ **0.3**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "A fair coin is tossed and a fair six-sided die is rolled. Find the probability of getting:\n\n(a) a head and a six;\n\n(b) a tail and an odd number;\n\n(c) a head or an even number (or both).",
+     "solution_markdown": "There are $2 \\times 6 = 12$ equally likely outcomes.\n\n(a) The events are independent: $\\dfrac{1}{2} \\times \\dfrac{1}{6} = $ **$\\dfrac{1}{12}$**.\n\n(b) Odd numbers are $1, 3, 5$, so $P(\\text{odd}) = \\dfrac{3}{6} = \\dfrac{1}{2}$. Then $\\dfrac{1}{2} \\times \\dfrac{1}{2} = $ **$\\dfrac{1}{4}$**.\n\n(c) The opposite of \"a head or an even number\" is \"a tail and an odd number\", which has probability $\\dfrac{1}{4}$ from (b). So the required probability is $1 - \\dfrac{1}{4} = $ **$\\dfrac{3}{4}$**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$P(A) = \\dfrac{\\text{favourable outcomes}}{\\text{all equally likely outcomes}}$, and every probability lies between $0$ and $1$.",
+    "The probability that an event does not happen is $1 - P(A)$; use it for \"at least one\" questions.",
+    "Mutually exclusive events cannot occur together: $P(A \\cup B) = P(A) + P(B)$. In general subtract $P(A \\cap B)$.",
+    "Independent events: multiply, $P(A \\text{ and } B) = P(A) \\times P(B)$.",
+    "Without replacement, reduce both the count of the item taken and the total for the second pick; add the probabilities of different routes."
+   ]
+  }
+ ]
+}

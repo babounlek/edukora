@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-further-maths-modular-arithmetic",
+  "meta": {
+    "titre": "Modular Arithmetic: Remainders, power cycles and unit digits",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Congruences and remainders",
+    "duree_estimee_min": 30,
+    "tags": [
+      "modular arithmetic"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-modular-arithmetic-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Every evening a trader in Limbe counts her unsold mangoes and packs them into crates of the same size: what matters is how many are left over, not how many there are. Remainders also decide which weekday a date falls on, how the check digit of a barcode is computed. Modular arithmetic is the algebra of remainders. In the Cameroon GCE Further Mathematics Paper 1 it gives short, high-value questions on unit digits and remainders of huge powers that are impossible by direct calculation but easy with congruences."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Division with remainder: any integer $a$ can be written $a=nq+r$ with $n>0$ and $0\\le r<n$.",
+        "An integer $d$ divides $m$ when $m=dk$ for some integer $k$.",
+        "Index laws: $(a^{p})^{q}=a^{pq}$ and $a^{p+q}=a^{p}a^{q}$.",
+        "The unit digit of a positive integer is its remainder on division by $10$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Congruences, power cycles and Fermat's little theorem",
+      "contenu_markdown": "Two integers $a$ and $b$ are **congruent modulo $n$**, written $a\\equiv b\\pmod n$, when $n$ divides $a-b$. Equivalently, they leave the same remainder on division by $n$. The remainder of $a$ on division by $n$ is the unique $r$ with $0\\le r<n$ and $a\\equiv r\\pmod n$. For a negative number the remainder is still non-negative: since $-17=5\\times(-4)+3$, the remainder of $-17$ on division by $5$ is $3$.\n\nIf $a\\equiv b$ and $c\\equiv d\\pmod n$ then\n\n$$\na+c\\equiv b+d,\\qquad a-c\\equiv b-d,\\qquad ac\\equiv bd,\\qquad a^{k}\\equiv b^{k}\\pmod n\\tag{1}\n$$\n\nso you may replace any number by a smaller one with the same remainder before calculating. Division is not allowed in general.\n\n**Power cycles.** The remainders of $a^{1},a^{2},a^{3},\\dots$ modulo $n$ repeat. Suppose the cycle (starting from $a^{1}$) has length $p$. Write the exponent as $k=pq+j$ with $1\\le j\\le p$; then\n\n$$\na^{k}\\equiv a^{j}\\pmod n\\tag{2}\n$$\n\nso you reduce the **exponent modulo the cycle length**, and an exponent that is a multiple of $p$ gives the **last** member of the cycle ($j=p$). For example, modulo $10$ we have $7^{4}\\equiv1$ and $2^{4}\\equiv6$. For unit digits (modulo $10$):\n\n| Last digit of base | Cycle of last digits | Length |\n|---|---|---|\n| 0, 1, 5, 6 | constant (0, 1, 5, 6) | 1 |\n| 4 | 4, 6 | 2 |\n| 9 | 9, 1 | 2 |\n| 2 | 2, 4, 8, 6 | 4 |\n| 3 | 3, 9, 7, 1 | 4 |\n| 7 | 7, 9, 3, 1 | 4 |\n| 8 | 8, 4, 2, 6 | 4 |\n\nTo find the unit digit of a sum, find the unit digit of each term and add them, reducing modulo $10$ at the end.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Fermat's little theorem",
+          "quand_utiliser": "When the modulus is a prime $p$ and the base is not a multiple of $p$.",
+          "contenu_markdown": "If $p$ is prime and $p\\nmid a$ then\n$$\na^{p-1}\\equiv1\\pmod p\\tag{3}\n$$\nso exponents can be reduced modulo $p-1$. For example, modulo $7$ the exponent of $a$ can be reduced modulo $6$."
+        },
+        {
+          "nom": "Linear congruences $ax\\equiv b$",
+          "quand_utiliser": "When you must solve for $x$ in a congruence.",
+          "contenu_markdown": "If $\\gcd(a,n)=1$ there is an inverse $a'$ with $aa'\\equiv1\\pmod n$ (found by trial or by Euclid's algorithm). Multiply both sides by $a'$ to get $x\\equiv a'b\\pmod n$, a single solution modulo $n$. If $ka\\equiv kb\\pmod n$ and $g=\\gcd(k,n)$, you may cancel $k$ only if you also divide the modulus: $a\\equiv b\\pmod{n/g}$."
+        },
+        {
+          "nom": "Using a negative representative",
+          "quand_utiliser": "When the base is just below a multiple of the modulus.",
+          "contenu_markdown": "If the base is $\\equiv-1\\pmod n$ then $a^{k}\\equiv(-1)^{k}$, which is $1$ for even $k$ and $-1\\equiv n-1$ for odd $k$. For example $6\\equiv-1\\pmod7$, so $6^{85}\\equiv-1\\equiv6\\pmod7$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Find the unit digit of $N=7^{2025}+13^{2026}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Work modulo $10$ and reduce the bases.",
+          "justification": "The unit digit of a positive integer is its remainder on division by $10$; replace $13$ by a smaller congruent number.",
+          "resultat_markdown": "$13\\equiv3\\pmod{10}$, so $13^{2026}\\equiv3^{2026}\\pmod{10}$."
+        },
+        {
+          "numero": 2,
+          "action": "Find the cycle of powers of $7$.",
+          "justification": "List the remainders of $7^{k}$ until $1$ appears.",
+          "resultat_markdown": "$7^{1}\\equiv7,\\ 7^{2}\\equiv9,\\ 7^{3}\\equiv3,\\ 7^{4}\\equiv1$. The cycle has length $4$."
+        },
+        {
+          "numero": 3,
+          "action": "Reduce the exponent $2025$.",
+          "justification": "Divide the exponent by the cycle length: $2025=4\\times506+1$.",
+          "resultat_markdown": "$7^{2025}=\\left(7^{4}\\right)^{506}\\times7\\equiv1^{506}\\times7\\equiv7\\pmod{10}$."
+        },
+        {
+          "numero": 4,
+          "action": "Do the same for $3^{2026}$.",
+          "justification": "The cycle of $3$ is $3,9,7,1$ and $2026=4\\times506+2$.",
+          "resultat_markdown": "$3^{2026}\\equiv\\left(3^{4}\\right)^{506}\\times3^{2}\\equiv9\\pmod{10}$."
+        },
+        {
+          "numero": 5,
+          "action": "Add and reduce.",
+          "justification": "Congruences can be added.",
+          "resultat_markdown": "$N\\equiv7+9=16\\equiv6\\pmod{10}$."
+        }
+      ],
+      "conclusion_markdown": "The unit digit of $7^{2025}+13^{2026}$ is $6$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A student finds the remainder of $-17$ on division by $5$ as $-2$ because $-17=5\\times(-3)-2$.",
+          "pourquoi_faux": "A remainder must satisfy $0\\le r<n$. The value $-2$ is congruent to the correct remainder but is not itself the remainder.",
+          "correction_markdown": "$-17=5\\times(-4)+3$, so the remainder is $3$ (and $-2\\equiv3\\pmod5$)."
+        },
+        {
+          "erreur_markdown": "To find $3^{100}$ modulo $7$ a student writes $3^{100}\\equiv3^{100\\bmod7}=3^{2}=9\\equiv2$.",
+          "pourquoi_faux": "The exponent must be reduced modulo the length of the cycle of powers, not modulo $7$. The powers of $3$ modulo $7$ are $3,2,6,4,5,1$, a cycle of length $6$ (Fermat: $3^{6}\\equiv1$).",
+          "correction_markdown": "$100=6\\times16+4$, so $3^{100}\\equiv3^{4}=81\\equiv4\\pmod7$."
+        },
+        {
+          "erreur_markdown": "A student sees $6\\times4\\equiv6\\times1\\pmod9$ and cancels the $6$ to conclude $4\\equiv1\\pmod9$.",
+          "pourquoi_faux": "Cancellation is allowed only when the factor has no common divisor with the modulus. Here $\\gcd(6,9)=3$, so the modulus must be divided by $3$.",
+          "correction_markdown": "$4\\equiv1\\pmod3$, which is true. Modulo $9$ the statement $4\\equiv1$ is false."
+        },
+        {
+          "erreur_markdown": "A student says the unit digit of $7^{2024}$ is $7$, because \"$2024$ is a multiple of $4$, so we start the cycle again\".",
+          "pourquoi_faux": "When the exponent is a multiple of the cycle length $4$, the power is $\\left(7^{4}\\right)^{506}\\equiv1$, the last member of the cycle, not the first.",
+          "correction_markdown": "$7^{2024}\\equiv1\\pmod{10}$, so the unit digit is $1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Find the remainder when $-59$ is divided by $8$.\n\n(b) Find the remainder when $345\\times678$ is divided by $11$, without multiplying the two numbers.",
+          "solution_markdown": "(a) $-59=8\\times(-8)+5$, so the remainder is **$5$**.\n\n(b) $345=11\\times31+4$, so $345\\equiv4$, and $678=11\\times61+7$, so $678\\equiv7\\pmod{11}$. Therefore $345\\times678\\equiv4\\times7=28\\equiv$ **$6$** $\\pmod{11}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Find the unit digit of $14^{2027}+9^{2027}+8^{2027}$.",
+          "solution_markdown": "Work modulo $10$.\n\n$14\\equiv4$ and the powers of $4$ alternate $4,6$; the exponent $2027$ is odd, so $14^{2027}\\equiv4$.\n\nThe powers of $9$ alternate $9,1$; the exponent is odd, so $9^{2027}\\equiv9$.\n\nThe powers of $8$ cycle $8,4,2,6$. Since $2027=4\\times506+3$, $8^{2027}\\equiv8^{3}\\equiv2$.\n\nSum $\\equiv4+9+2=15\\equiv5$. The unit digit is **$5$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Solve the congruence $7x\\equiv4\\pmod{11}$, giving the solution with $0\\le x<11$.\n\n(b) Use Fermat's little theorem to find the remainder when $6^{100}$ is divided by $13$.",
+          "solution_markdown": "(a) $7\\times8=56=5\\times11+1$, so $8$ is the inverse of $7$ modulo $11$. Multiplying by $8$: $x\\equiv8\\times4=32\\equiv$ **$10$** $\\pmod{11}$. Check: $7\\times10=70=6\\times11+4$.\n\n(b) $13$ is prime and does not divide $6$, so $6^{12}\\equiv1\\pmod{13}$. Since $100=12\\times8+4$, $6^{100}\\equiv6^{4}=1296$. Now $1296=13\\times99+9$, so the remainder is **$9$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$a\\equiv b\\pmod n$ means $n\\mid(a-b)$, i.e. the same remainder; remainders are always in $0,1,\\dots,n-1$, even for negative numbers.",
+        "Congruences can be added, subtracted, multiplied and raised to powers, so replace big numbers by small congruent ones.",
+        "For powers, find the cycle of remainders and reduce the exponent modulo the cycle length; a multiple of the length gives the last member of the cycle.",
+        "Unit digit means modulus $10$; for a sum, find each unit digit and add them.",
+        "Fermat: $a^{p-1}\\equiv1\\pmod p$ for prime $p$ not dividing $a$. Cancel a common factor only after dividing the modulus by its gcd with that factor."
+      ]
+    }
+  ]
+}

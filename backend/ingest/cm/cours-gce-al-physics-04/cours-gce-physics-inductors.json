@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-physics-inductors",
+  "meta": {
+    "titre": "Inductors: Back EMF, Stored Energy and AC Behaviour",
+    "matiere": "Physics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "self-inductance and back emf",
+    "duree_estimee_min": 35,
+    "tags": [
+      "inductors"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-physics-2025-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Physics past paper (Cameroon)",
+    "epreuve_source": "gce-al-physics-2025-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-physics-inductors-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "When a mechanic in Bafoussam pulls the lead off a spark plug and a blue spark jumps across the gap, or when a fluorescent tube in a Yaounde shop flickers on, a coil of wire is releasing energy that it stored in its magnetic field. The ignition coil in every petrol engine turns twelve volts from the battery into thousands of volts at the plug, using nothing more than the way a coil resists a change in its current. The GCE Advanced Level paper tests this resistance to change, called back emf, together with the energy a coil stores and the way it behaves in a.c. circuits, including series resonance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Faraday's law: the induced emf equals the rate of change of magnetic flux linkage, and Lenz's law says that its direction opposes the change that causes it.",
+        "The magnetic flux density inside a long solenoid of $N$ turns and length $l$ carrying current $I$ is $B=\\mu_0 NI/l$, with $\\mu_0=4\\pi\\times10^{-7}\\ \\mathrm{H\\,m^{-1}}$.",
+        "The reactance of a capacitor is $X_C=\\dfrac{1}{2\\pi fC}$ and the exponential function obeys $\\ln e^{x}=x$.",
+        "For a resistor, $V=IR$, and the root-mean-square values of current and voltage are used in a.c. circuits."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Self-inductance, back emf and energy stored",
+      "contenu_markdown": "**Self-inductance.** A current $I$ in a coil produces a magnetic flux $\\Phi$ through each of its $N$ turns. The flux linkage $N\\Phi$ is proportional to the current, and the constant of proportionality is the **self-inductance**\n$$L=\\frac{N\\Phi}{I}$$\nmeasured in henry (H), where $1\\ \\mathrm{H}=1\\ \\mathrm{V\\,s\\,A^{-1}}$. For a long air-cored solenoid, $L=\\dfrac{\\mu_0N^{2}A}{l}$.\n\n**Back emf.** The back emf in a coil is generated because a changing current changes the magnetic flux linked with the coil itself (self-induction). If the current changes, the flux linkage changes, and by Faraday's law an emf is induced in the same coil:\n$$\\varepsilon=-L\\frac{\\mathrm{d}I}{\\mathrm{d}t}\\qquad\\text{so}\\qquad|\\varepsilon|=L\\frac{\\Delta I}{\\Delta t}\\ \\text{for a steady rate of change}$$\nBy Lenz's law this emf opposes the **change** in current, not the current itself. When the current is rising it acts against the supply and slows the rise; when the current is falling it acts in the same sense as the current and slows the fall. This is why a coil resists sudden changes of current.\n\n**Energy stored.** Work is done against the back emf as the current grows from $0$ to $I$, and it is stored in the magnetic field:\n$$W=\\tfrac{1}{2}LI^{2}$$\n\n**Direct current.** When the current has stopped changing there is no back emf, so a steady current in an ideal inductor is limited only by the resistance of the circuit: $I=V/R$.\n\n**Alternating current.** A pure inductor has **reactance** $X_L=\\omega L=2\\pi fL$ in ohms, which increases with frequency; the voltage across it leads the current by $90^{\\circ}$. In a series $L$-$C$-$R$ circuit the impedance is\n$$Z=\\sqrt{R^{2}+(X_L-X_C)^{2}}$$\nand at **resonance** $X_L=X_C$, so $f_0=\\dfrac{1}{2\\pi\\sqrt{LC}}$, the impedance has its minimum value $Z=R$ and the current is largest.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Growth and decay of current in an LR circuit",
+          "quand_utiliser": "When a coil in series with a resistor is switched on to, or disconnected from, a d.c. supply.",
+          "contenu_markdown": "The **time constant** is $\\tau=L/R$, in seconds. After switch-on at emf $V$, the current grows as $I=I_0\\left(1-e^{-t/\\tau}\\right)$ with final value $I_0=V/R$; at $t=0$ the rate of rise is $V/L$ because there is no voltage drop across $R$ yet. When the supply is replaced by a short circuit the current decays as $I=I_0e^{-t/\\tau}$. After one time constant the growing current has reached about $63\\%$ of its final value. At any instant the back emf is $V-IR$ while the current grows."
+        },
+        {
+          "nom": "Switching off and the spark",
+          "quand_utiliser": "When asked why sparks appear at a switch controlling an inductive circuit, or how an ignition coil works.",
+          "contenu_markdown": "If a current is interrupted very quickly, $\\Delta t$ is tiny and the back emf $L\\,\\Delta I/\\Delta t$ can be much larger than the supply emf. The large emf can break down the air at the contacts and produce a spark. An ignition coil exploits this: the primary current is cut off suddenly, and the rapidly collapsing flux induces thousands of volts in the secondary coil, which has many more turns."
+        },
+        {
+          "nom": "Series resonance",
+          "quand_utiliser": "When the amplitude of the current is asked for at, or away from, the resonant frequency of an $L$-$C$-$R$ circuit.",
+          "contenu_markdown": "Find $X_L=2\\pi fL$ and $X_C=1/(2\\pi fC)$ at the frequency used, then $Z$, then $I=V/Z$. Below $f_0$ the capacitive reactance dominates and the current leads the supply voltage; above $f_0$ the inductive reactance dominates and the current lags. At resonance the p.d.s across $L$ and $C$ are equal in size and opposite in phase, so they cancel in the sum, yet each can be much larger than the supply voltage when $R$ is small."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A long air-cored solenoid has $2000$ turns, a length of $0.50\\ \\mathrm{m}$ and a cross-sectional area of $5.0\\times10^{-4}\\ \\mathrm{m^{2}}$. Take $\\mu_0=4\\pi\\times10^{-7}\\ \\mathrm{H\\,m^{-1}}$. (a) Show that its self-inductance is given by $L=\\mu_0N^{2}A/l$ and calculate it. (b) A steady current of $3.0\\ \\mathrm{A}$ is switched off and falls uniformly to zero in $20\\ \\mathrm{ms}$. Calculate the magnitude of the back emf. (c) Calculate the energy stored in the solenoid before the current is switched off.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the flux linkage in terms of the current.",
+          "justification": "The definition is $L=N\\Phi/I$, and the flux through each turn is $\\Phi=BA$ with $B=\\mu_0NI/l$ inside a long solenoid.",
+          "resultat_markdown": "$N\\Phi=N\\times\\dfrac{\\mu_0NI}{l}\\times A=\\dfrac{\\mu_0N^{2}A}{l}\\,I$, so $L=\\dfrac{N\\Phi}{I}=\\dfrac{\\mu_0N^{2}A}{l}$."
+        },
+        {
+          "numero": 2,
+          "action": "Substitute the values to find $L$.",
+          "justification": "All quantities are in SI units, so the answer is in henry.",
+          "resultat_markdown": "$L=\\dfrac{4\\pi\\times10^{-7}\\times2000^{2}\\times5.0\\times10^{-4}}{0.50}=0.00503\\ \\mathrm{H}$, about $5.03\\ \\mathrm{mH}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculate the back emf during switch-off.",
+          "justification": "The current falls at a steady rate $\\Delta I/\\Delta t$, so the magnitude of the emf is $L\\,\\Delta I/\\Delta t$.",
+          "resultat_markdown": "$|\\varepsilon|=L\\dfrac{\\Delta I}{\\Delta t}=0.00503\\times\\dfrac{3.0}{0.020}=0.754\\ \\mathrm{V}$"
+        },
+        {
+          "numero": 4,
+          "action": "State the direction of the back emf.",
+          "justification": "By Lenz's law the emf opposes the change in the current. The current is falling, so the emf acts in the same direction as the current and tries to keep it flowing.",
+          "resultat_markdown": "The back emf acts in the **same** direction as the original current."
+        },
+        {
+          "numero": 5,
+          "action": "Calculate the energy stored before switch-off.",
+          "justification": "Energy in the magnetic field of an inductor carrying current $I$ is $\\tfrac{1}{2}LI^{2}$.",
+          "resultat_markdown": "$W=\\tfrac{1}{2}LI^{2}=0.5\\times0.00503\\times3.0^{2}=0.0226\\ \\mathrm{J}$"
+        }
+      ],
+      "conclusion_markdown": "The solenoid has $L=5.03\\ \\mathrm{mH}$; while its current falls uniformly to zero it develops a back emf of $0.754\\ \\mathrm{V}$ in the direction of the original current; and the energy of $0.0226\\ \\mathrm{J}$ stored in its magnetic field is released as the current dies away."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "The back emf in a coil opposes the current, so the current in an inductor is always zero.",
+          "pourquoi_faux": "The induced emf opposes the **change** in current. Once the current is steady, $\\mathrm{d}I/\\mathrm{d}t=0$ and there is no back emf.",
+          "correction_markdown": "In a d.c. circuit the current in an inductor rises to $V/R$ over a few time constants and then stays steady, limited only by the resistance."
+        },
+        {
+          "erreur_markdown": "The back emf is $\\varepsilon=LI/t$.",
+          "pourquoi_faux": "The emf depends on the **rate of change** of the current. A large steady current produces no emf.",
+          "correction_markdown": "$|\\varepsilon|=L\\,\\Delta I/\\Delta t$, where $\\Delta I$ is the change in current in the time $\\Delta t$."
+        },
+        {
+          "erreur_markdown": "The energy stored in an inductor is $LI^{2}$.",
+          "pourquoi_faux": "Energy is the integral of $\\varepsilon I$ over time while the current grows from zero, and this gives a factor $\\tfrac{1}{2}$, as for the energy of a capacitor $\\tfrac{1}{2}CV^{2}$.",
+          "correction_markdown": "$W=\\tfrac{1}{2}LI^{2}$."
+        },
+        {
+          "erreur_markdown": "At resonance the impedance of a series $L$-$C$-$R$ circuit is zero, so the current is infinite.",
+          "pourquoi_faux": "Only the **reactances** cancel. The resistance remains and limits the current.",
+          "correction_markdown": "At resonance $X_L=X_C$, so $Z=R$, which is the minimum, and the rms current is $V/R$."
+        },
+        {
+          "erreur_markdown": "The reactance of an inductor decreases when the frequency increases, like that of a capacitor.",
+          "pourquoi_faux": "A faster alternation produces a larger $\\mathrm{d}I/\\mathrm{d}t$, hence a larger back emf, so the inductor opposes the current more.",
+          "correction_markdown": "$X_L=2\\pi fL$ increases with $f$, while $X_C=1/(2\\pi fC)$ decreases with $f$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "The current in a coil is increased uniformly from $0.5\\ \\mathrm{A}$ to $2.5\\ \\mathrm{A}$ in $0.040\\ \\mathrm{s}$, and a back emf of $6.0\\ \\mathrm{V}$ is observed throughout. (a) Calculate the self-inductance of the coil. (b) Calculate the energy stored in the coil when the current is $2.5\\ \\mathrm{A}$.",
+          "solution_markdown": "(a) The current changes uniformly by $\\Delta I=2.5-0.5=2.0\\ \\mathrm{A}$ in $0.040\\ \\mathrm{s}$, so $|\\varepsilon|=L\\dfrac{\\Delta I}{\\Delta t}$ gives\n$L=\\dfrac{|\\varepsilon|\\,\\Delta t}{\\Delta I}=\\dfrac{6.0\\times0.040}{2.0}=0.12\\ \\mathrm{H}$.\n\n(b) At $2.5\\ \\mathrm{A}$: $W=\\tfrac{1}{2}LI^{2}=0.5\\times0.12\\times2.5^{2}=0.375\\ \\mathrm{J}$.\n\n**$L=0.12\\ \\mathrm{H}$; stored energy $=0.375\\ \\mathrm{J}$.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A coil of inductance $0.60\\ \\mathrm{H}$ and negligible resistance is connected in series with a $40\\ \\Omega$ resistor, a switch and a $12\\ \\mathrm{V}$ battery of negligible internal resistance. The switch is closed at $t=0$. Calculate (a) the time constant, (b) the final current and the initial rate of rise of current, (c) the time taken for the current to reach $0.20\\ \\mathrm{A}$, and (d) the back emf at that instant.",
+          "solution_markdown": "(a) Time constant: $\\tau=\\dfrac{L}{R}=\\dfrac{0.60}{40}=0.0150\\ \\mathrm{s}$.\n\n(b) Final current: $I_0=\\dfrac{V}{R}=\\dfrac{12}{40}=0.30\\ \\mathrm{A}$. Initial rate of rise (no voltage across $R$ yet): $\\dfrac{\\mathrm{d}I}{\\mathrm{d}t}=\\dfrac{V}{L}=\\dfrac{12}{0.60}=20\\ \\mathrm{A\\,s^{-1}}$.\n\n(c) $I=I_0\\left(1-e^{-t/\\tau}\\right)$ gives $0.20=0.30\\left(1-e^{-t/\\tau}\\right)$, so $e^{-t/\\tau}=\\dfrac{1}{3}$ and $t=\\tau\\ln3=0.0150\\times1.0986=0.0165\\ \\mathrm{s}$.\n\n(d) At that instant the p.d. across the resistor is $IR=0.20\\times40=8.0\\ \\mathrm{V}$, so the back emf is $12-8.0=4.0\\ \\mathrm{V}$. Check: the rate of rise is $\\dfrac{V}{L}e^{-t/\\tau}=20\\times\\dfrac{1}{3}=6.67\\ \\mathrm{A\\,s^{-1}}$ and $L\\,\\dfrac{\\mathrm{d}I}{\\mathrm{d}t}=0.60\\times6.67=4.0\\ \\mathrm{V}$.\n\n**$\\tau=0.0150\\ \\mathrm{s}$; $I_0=0.30\\ \\mathrm{A}$; initial rate $20\\ \\mathrm{A\\,s^{-1}}$; $t=0.0165\\ \\mathrm{s}$; back emf $4.0\\ \\mathrm{V}$.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A $30\\ \\Omega$ resistor, a coil of inductance $0.20\\ \\mathrm{H}$ and negligible resistance, and a $5.0\\ \\mu\\mathrm{F}$ capacitor are connected in series to a variable-frequency supply of rms voltage $100\\ \\mathrm{V}$. (a) Calculate the resonant frequency. (b) At resonance, calculate the rms current and the rms p.d. across the inductor, and comment on the result. (c) Calculate the rms current when the supply frequency is $100\\ \\mathrm{Hz}$ and say whether the current leads or lags the supply voltage.",
+          "solution_markdown": "(a) $f_0=\\dfrac{1}{2\\pi\\sqrt{LC}}=\\dfrac{1}{2\\pi\\sqrt{0.20\\times5.0\\times10^{-6}}}=\\dfrac{1}{2\\pi\\times1.0\\times10^{-3}}=159\\ \\mathrm{Hz}$.\n\n(b) At resonance $X_L=2\\pi f_0L=200\\ \\mathrm{\\Omega}$ and $X_C=\\dfrac{1}{2\\pi f_0C}=200\\ \\mathrm{\\Omega}$, so $Z=R=30\\ \\mathrm{\\Omega}$ and $I_{rms}=\\dfrac{100}{30}=3.33\\ \\mathrm{A}$. The rms p.d. across the inductor is $I_{rms}X_L=3.33\\times200=667\\ \\mathrm{V}$, far larger than the $100\\ \\mathrm{V}$ supply. The p.d.s across $L$ and $C$ are in opposite phase, so they cancel in the sum.\n\n(c) At $100\\ \\mathrm{Hz}$: $X_L=2\\pi\\times100\\times0.20=125.7\\ \\mathrm{\\Omega}$ and $X_C=\\dfrac{1}{2\\pi\\times100\\times5.0\\times10^{-6}}=318.3\\ \\mathrm{\\Omega}$. Then $Z=\\sqrt{30^{2}+(125.7-318.3)^{2}}=195.0\\ \\mathrm{\\Omega}$ and $I_{rms}=\\dfrac{100}{195.0}=0.513\\ \\mathrm{A}$. Since $X_C>X_L$, the circuit is capacitive and the current leads the supply voltage.\n\n**$f_0=159\\ \\mathrm{Hz}$; $I_{rms}=3.33\\ \\mathrm{A}$ and $V_L=667\\ \\mathrm{V}$ at resonance; $I_{rms}=0.513\\ \\mathrm{A}$ at $100\\ \\mathrm{Hz}$.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Self-inductance is $L=N\\Phi/I$ (henry); for an air-cored solenoid $L=\\mu_0N^{2}A/l$.",
+        "The back emf $|\\varepsilon|=L\\,\\Delta I/\\Delta t$ opposes the **change** in current, not the current itself; a steady current produces no back emf.",
+        "Energy stored in an inductor is $\\tfrac{1}{2}LI^{2}$; a rapid switch-off gives a large back emf and may cause a spark.",
+        "In an LR circuit $\\tau=L/R$, the current grows as $I_0(1-e^{-t/\\tau})$ to $V/R$ and decays as $I_0e^{-t/\\tau}$.",
+        "Inductive reactance is $X_L=2\\pi fL$, and in a series LCR circuit $Z=\\sqrt{R^{2}+(X_L-X_C)^{2}}$; at resonance $f_0=1/(2\\pi\\sqrt{LC})$, $Z=R$ and the current is a maximum."
+      ]
+    }
+  ]
+}

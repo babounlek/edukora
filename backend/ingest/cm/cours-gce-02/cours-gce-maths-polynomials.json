@@ -1,0 +1,158 @@
+{
+ "cours_id": "cours-gce-maths-polynomials",
+ "meta": {
+  "titre": "Polynomials: Expanding, Factorising, the Remainder Theorem and the Factor Theorem",
+  "matiere": "Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Operations on polynomials, factorisation, remainder and factor theorems",
+  "duree_estimee_min": 40,
+  "tags": [
+   "polynomials"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-maths-2021-p2-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-maths-2021-p2-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-maths-polynomials-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A carpenter in Bafoussam builds a box whose sides are x, x + 2 and x + 3 centimetres long. Multiplying the three lengths gives its volume as an expression with powers of x, which is a polynomial. At the GCE, polynomials appear mainly in Paper 2, where you must expand and factorise them, and then use the factor theorem to find unknown coefficients. These questions are routine once you know the two theorems in this lesson, and they carry many marks because they have several parts."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A bracket is expanded by multiplying every term in the first bracket by every term in the second.",
+    "$(x + a)(x + b) = x^2 + (a + b)x + ab$.",
+    "Substituting a number for $x$ means replacing every $x$ by that number and calculating."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Polynomials, factorising, and the remainder and factor theorems",
+   "contenu_markdown": "A **polynomial** in $x$ is an expression such as $f(x) = x^3 - 2x^2 - 5x + 6$ made of terms $ax^n$ with whole-number powers. The **degree** is the highest power ($3$ here), the **coefficients** are the numbers in front of the powers ($1, -2, -5$) and $6$ is the **constant term**.\n\n**Factorising.** Look for factors in this order:\n\n1. **Common factor:** $6x^2 + 9x = 3x(2x + 3)$.\n2. **Difference of two squares:** $a^2 - b^2 = (a - b)(a + b)$, so $x^2 - 49 = (x - 7)(x + 7)$.\n3. **Quadratic trinomial** $x^2 + bx + c$: find two numbers with sum $b$ and product $c$. For $x^2 - 5x - 14$ the numbers are $-7$ and $2$, so $(x - 7)(x + 2)$.\n\n**Remainder theorem.** When a polynomial $f(x)$ is divided by $(x - k)$, the remainder is $f(k)$. For a divisor $(x + k)$ the remainder is $f(-k)$.\n\n**Factor theorem.** $(x - k)$ is a factor of $f(x)$ **if and only if** $f(k) = 0$. Note the sign: for the factor $(x + 3)$, test $f(-3)$.\n\n**Factorising completely** means breaking the polynomial into factors that cannot be factorised any further.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Finding unknown coefficients",
+     "quand_utiliser": "When a polynomial contains letters such as $a$ and $b$ and you are told that a linear expression is a factor or that there is a given remainder.",
+     "contenu_markdown": "Use the theorems to form equations. A condition \"$(x - k)$ is a factor\" gives $f(k) = 0$. A condition \"the remainder is $r$ when divided by $(x - k)$\" gives $f(k) = r$. Each condition gives one equation, so two unknowns need two conditions. Solve the equations simultaneously."
+    },
+    {
+     "nom": "Factorising a cubic",
+     "quand_utiliser": "When a cubic polynomial must be factorised completely and you know (or can find) one factor.",
+     "contenu_markdown": "Test small integer values such as $\\pm 1$, $\\pm 2$, $\\pm 3$ in $f(x)$ until you find $f(k) = 0$. Then divide $f(x)$ by $(x - k)$ using long division or by inspection to obtain a quadratic, and factorise the quadratic. The three factors give the solutions of $f(x) = 0$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "The polynomial $g(x) = x^3 + ax^2 + bx + 6$ has $(x - 1)$ as a factor. When $g(x)$ is divided by $(x + 1)$ the remainder is $8$.\n\n(a) Find the values of $a$ and $b$.\n\n(b) Factorise $g(x)$ completely.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Use the factor theorem for $(x - 1)$.",
+     "justification": "If $(x - 1)$ is a factor, then $g(1) = 0$.",
+     "resultat_markdown": "$1 + a + b + 6 = 0$, so $a + b = -7$. (Equation 1)"
+    },
+    {
+     "numero": 2,
+     "action": "Use the remainder theorem for $(x + 1)$.",
+     "justification": "Dividing by $(x + 1)$ gives the remainder $g(-1)$, which is $8$.",
+     "resultat_markdown": "$-1 + a - b + 6 = 8$, so $a - b = 3$. (Equation 2)"
+    },
+    {
+     "numero": 3,
+     "action": "Solve the two equations.",
+     "justification": "Adding the equations eliminates $b$; subtracting them eliminates $a$.",
+     "resultat_markdown": "$2a = -4$, so $a = -2$. Then $b = -7 - (-2) = -5$."
+    },
+    {
+     "numero": 4,
+     "action": "Divide $g(x) = x^3 - 2x^2 - 5x + 6$ by $(x - 1)$.",
+     "justification": "A known factor gives a quadratic quotient: $x^3 - 2x^2 - 5x + 6 = (x - 1)(x^2 - x - 6)$.",
+     "resultat_markdown": "Quotient: $x^2 - x - 6$ (check: $(x - 1)(x^2 - x - 6) = x^3 - x^2 - 6x - x^2 + x + 6 = x^3 - 2x^2 - 5x + 6$)."
+    },
+    {
+     "numero": 5,
+     "action": "Factorise the quadratic.",
+     "justification": "Two numbers with product $-6$ and sum $-1$ are $-3$ and $2$.",
+     "resultat_markdown": "$x^2 - x - 6 = (x - 3)(x + 2)$."
+    }
+   ],
+   "conclusion_markdown": "(a) $a = -2$ and $b = -5$. (b) $g(x) = (x - 1)(x - 3)(x + 2)$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "$(x + 3)$ is a factor of $f(x)$ if $f(3) = 0$.",
+     "pourquoi_faux": "$(x + 3)$ is $(x - (-3))$, so it is the value $-3$ that must be tested.",
+     "correction_markdown": "$(x + 3)$ is a factor if $f(-3) = 0$."
+    },
+    {
+     "erreur_markdown": "$(x + 2)(x + 3) = x^2 + 6$.",
+     "pourquoi_faux": "The two middle terms $3x$ and $2x$ were forgotten; every term must be multiplied by every term.",
+     "correction_markdown": "$(x + 2)(x + 3) = x^2 + 3x + 2x + 6 = x^2 + 5x + 6$."
+    },
+    {
+     "erreur_markdown": "$x^2 - 25 = (x - 5)^2$.",
+     "pourquoi_faux": "$(x - 5)^2 = x^2 - 10x + 25$, which has a middle term. A difference of two squares factorises into two **different** brackets.",
+     "correction_markdown": "$x^2 - 25 = (x - 5)(x + 5)$."
+    },
+    {
+     "erreur_markdown": "Factorising $2x^2 - 8$ as $2(x^2 - 4)$ and stopping there.",
+     "pourquoi_faux": "The bracket $x^2 - 4$ is itself a difference of two squares, so the factorisation is not complete.",
+     "correction_markdown": "$2x^2 - 8 = 2(x^2 - 4) = 2(x - 2)(x + 2)$."
+    },
+    {
+     "erreur_markdown": "The remainder when $f(x)$ is divided by $(x - 3)$ is $f(-3)$.",
+     "pourquoi_faux": "The divisor $x - 3$ is zero when $x = 3$, so the remainder is $f(3)$.",
+     "correction_markdown": "Remainder on division by $(x - 3)$ is $f(3)$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "(a) Expand and simplify $(2x + 3)(x - 4)$.\n\n(b) Factorise $x^2 - 49$.\n\n(c) Factorise $6x^2 + 9x$.",
+     "solution_markdown": "(a) $(2x + 3)(x - 4) = 2x^2 - 8x + 3x - 12 = $ **$2x^2 - 5x - 12$**.\n\n(b) Difference of two squares: **$(x - 7)(x + 7)$**.\n\n(c) The common factor is $3x$: **$3x(2x + 3)$**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Given $f(x) = x^3 - 4x^2 + 2x + 5$:\n\n(a) find the remainder when $f(x)$ is divided by $(x - 3)$;\n\n(b) show that $(x + 1)$ is not a factor of $f(x)$;\n\n(c) factorise $x^2 - 5x - 14$.",
+     "solution_markdown": "(a) The remainder is $f(3) = 27 - 36 + 6 + 5 = $ **2**.\n\n(b) $f(-1) = -1 - 4 - 2 + 5 = -2$. Since $f(-1) \\ne 0$, $(x + 1)$ is **not** a factor.\n\n(c) Two numbers with product $-14$ and sum $-5$ are $-7$ and $2$, so **$(x - 7)(x + 2)$**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "The polynomial $f(x) = x^3 + px^2 + qx - 12$ has $(x - 2)$ and $(x + 3)$ as factors.\n\n(a) Find the values of $p$ and $q$.\n\n(b) Find the third linear factor and solve $f(x) = 0$.",
+     "solution_markdown": "(a) $f(2) = 0$: $8 + 4p + 2q - 12 = 0$, so $4p + 2q = 4$, that is $2p + q = 2$. (1)\n\n$f(-3) = 0$: $-27 + 9p - 3q - 12 = 0$, so $9p - 3q = 39$, that is $3p - q = 13$. (2)\n\nAdd (1) and (2): $5p = 15$, so **$p = 3$**. From (1), $q = 2 - 6 = $ **$-4$**.\n\n(b) $f(x) = x^3 + 3x^2 - 4x - 12$. The product $(x - 2)(x + 3) = x^2 + x - 6$. Dividing, $x^3 + 3x^2 - 4x - 12 = (x^2 + x - 6)(x + 2)$ (check: $x^3 + x^2 - 6x + 2x^2 + 2x - 12 = x^3 + 3x^2 - 4x - 12$). The third factor is **$(x + 2)$**, so $f(x) = (x - 2)(x + 3)(x + 2)$ and $f(x) = 0$ when **$x = 2$, $x = -3$ or $x = -2$**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Expand brackets by multiplying every term by every term; factorise in the order common factor, difference of two squares, trinomial.",
+    "Remainder theorem: the remainder on dividing $f(x)$ by $(x - k)$ is $f(k)$.",
+    "Factor theorem: $(x - k)$ is a factor of $f(x)$ exactly when $f(k) = 0$; for $(x + k)$ test $f(-k)$.",
+    "Unknown coefficients: each condition (a factor or a remainder) gives one equation; solve them simultaneously.",
+    "Factorise completely: keep going until no bracket can be factorised further, then check by expanding."
+   ]
+  }
+ ]
+}

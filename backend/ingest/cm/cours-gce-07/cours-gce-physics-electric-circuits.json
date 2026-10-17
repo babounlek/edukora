@@ -1,0 +1,169 @@
+{
+ "cours_id": "cours-gce-physics-electric-circuits",
+ "meta": {
+  "titre": "Electric circuits: series, parallel and combined resistors",
+  "matiere": "Physics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Series and parallel circuits and equivalent resistance",
+  "duree_estimee_min": 35,
+  "tags": [
+   "electric circuits"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-physics-2023-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Physics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-physics-2023-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-physics-electric-circuits-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "String lights at a Christmas market in Bamenda are sometimes wired so that when one bulb fails, the whole string goes dark; in a house, one lamp can fail and the others keep shining. The difference is the way the lamps are connected: in series or in parallel. At the GCE you are asked to find the total resistance of a group of resistors, then the current in each branch and the potential difference across each resistor. This is a very frequent calculation, and a systematic method makes it easy."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Ohm's law: $V = IR$ links potential difference, current and resistance.",
+    "An ammeter is connected in series and a voltmeter in parallel with the component being measured.",
+    "Current is the rate of flow of charge, and charge is not used up in a circuit."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Resistors in series and in parallel",
+   "contenu_markdown": "**Series connection** (one path, components one after the other):\n- the current is the same through every component: $I = I_1 = I_2 = \\dots$\n- the potential differences add up to the supply: $V = V_1 + V_2 + \\dots$\n- the total resistance is the sum: $R = R_1 + R_2 + \\dots$\n\n**Parallel connection** (several paths between the same two points):\n- the potential difference is the same across every branch: $V = V_1 = V_2 = \\dots$\n- the currents in the branches add up to the total current: $I = I_1 + I_2 + \\dots$\n- the reciprocals of the resistances add up:\n\n$$\\frac{1}{R} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\dots \\qquad \\text{for two resistors: } R = \\frac{R_1R_2}{R_1 + R_2}$$\n\nThe total resistance of a parallel group is always **smaller than the smallest** resistance in the group, because the extra branches offer more paths to the current.\n\n**General method for a combined circuit.** (1) Replace each parallel group by one equivalent resistor. (2) Add the series resistances to get the total $R$. (3) Find the total current $I = V/R$. (4) Work back: the p.d. across each part is $V = IR$, then use $V = IR$ again in each branch of a parallel group.\n\nCells in series add their e.m.f.s (for cells connected the same way round). Lamps in parallel at the same supply each receive the full voltage.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Series circuits",
+     "quand_utiliser": "when the same current must pass through every resistor, for example a string of lamps with one switch",
+     "contenu_markdown": "Add the resistances. The current is the same everywhere, and the larger resistance takes the larger share of the supply voltage: $V_1 : V_2 = R_1 : R_2$. If one component fails (an open circuit), the current stops in the whole loop. For a series group, the current is found once and used for all the resistors."
+    },
+    {
+     "nom": "Parallel circuits",
+     "quand_utiliser": "when each component must work independently, as for the lamps in a house",
+     "contenu_markdown": "Each branch has the same p.d. across it, so $I_1 = V/R_1$ and $I_2 = V/R_2$. The branch with the smaller resistance carries the larger current. If one branch fails, the others continue to work. Check your result with $I = I_1 + I_2$."
+    },
+    {
+     "nom": "Combined (series-parallel) circuits",
+     "quand_utiliser": "when a parallel group is in series with another resistor",
+     "contenu_markdown": "Replace the parallel group by its equivalent resistance first. The p.d. across the parallel group is the same across each of its branches, and the p.d. across the series resistor plus the p.d. across the group must add up to the supply. A short table of $R$, $I$ and $V$ for each part keeps the working clear."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "A battery of e.m.f. $12\\,\\mathrm{V}$ and negligible internal resistance is connected to three resistors. A $4.0\\,\\Omega$ resistor and a $12\\,\\Omega$ resistor are connected in parallel with each other, and this pair is connected in series with a $2.0\\,\\Omega$ resistor. Calculate (a) the total resistance, (b) the current from the battery, (c) the p.d. across the parallel pair, and (d) the current in each resistor of the pair.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Find the equivalent resistance of the parallel pair.",
+     "justification": "Use $R = R_1R_2/(R_1 + R_2)$ for two resistors in parallel.",
+     "resultat_markdown": "$R_p = \\dfrac{4.0 \\times 12}{4.0 + 12} = \\dfrac{48}{16} = 3.0\\,\\Omega$"
+    },
+    {
+     "numero": 2,
+     "action": "Add the series resistor to find the total resistance.",
+     "justification": "The pair acts as a $3.0\\,\\Omega$ resistor in series with $2.0\\,\\Omega$.",
+     "resultat_markdown": "$R = 3.0 + 2.0 = 5.0\\,\\Omega$"
+    },
+    {
+     "numero": 3,
+     "action": "Find the current from the battery.",
+     "justification": "Use $I = V/R$ with the total resistance.",
+     "resultat_markdown": "$I = \\dfrac{12}{5.0} = 2.4\\,\\mathrm{A}$"
+    },
+    {
+     "numero": 4,
+     "action": "Find the p.d. across the parallel pair.",
+     "justification": "This current passes through the equivalent resistance $R_p$.",
+     "resultat_markdown": "$V_p = IR_p = 2.4 \\times 3.0 = 7.2\\,\\mathrm{V}$"
+    },
+    {
+     "numero": 5,
+     "action": "Find the current in each resistor of the pair.",
+     "justification": "The same p.d. is across both branches, so $I = V_p/R$ for each.",
+     "resultat_markdown": "$I_{4} = \\dfrac{7.2}{4.0} = 1.8\\,\\mathrm{A}$ and $I_{12} = \\dfrac{7.2}{12} = 0.60\\,\\mathrm{A}$"
+    },
+    {
+     "numero": 6,
+     "action": "Check the results.",
+     "justification": "The branch currents must add to the total current, and the p.d.s must add to $12\\,\\mathrm{V}$.",
+     "resultat_markdown": "$1.8 + 0.60 = 2.4\\,\\mathrm{A}$; p.d. across $2.0\\,\\Omega$ is $2.4 \\times 2.0 = 4.8\\,\\mathrm{V}$ and $7.2 + 4.8 = 12\\,\\mathrm{V}$."
+    }
+   ],
+   "conclusion_markdown": "Total resistance $5.0\\,\\Omega$; battery current $2.4\\,\\mathrm{A}$; p.d. across the pair $7.2\\,\\mathrm{V}$; currents $1.8\\,\\mathrm{A}$ and $0.60\\,\\mathrm{A}$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "For two resistors in parallel, $R = \\dfrac{1}{R_1} + \\dfrac{1}{R_2}$.",
+     "pourquoi_faux": "The sum of the reciprocals gives $1/R$, not $R$. The final step, taking the reciprocal, is forgotten.",
+     "correction_markdown": "$\\dfrac{1}{R} = \\dfrac{1}{4} + \\dfrac{1}{12} = \\dfrac{1}{3}$, so $R = 3\\,\\Omega$. A quick check: $R$ must be smaller than $4\\,\\Omega$."
+    },
+    {
+     "erreur_markdown": "The total resistance of $6\\,\\Omega$ and $3\\,\\Omega$ in parallel is $9\\,\\Omega$.",
+     "pourquoi_faux": "That is the series result. Parallel branches give extra paths, so the total is smaller than the smallest resistance.",
+     "correction_markdown": "$R = \\dfrac{6 \\times 3}{6 + 3} = 2\\,\\Omega$."
+    },
+    {
+     "erreur_markdown": "In a parallel circuit the current divides equally between the branches.",
+     "pourquoi_faux": "The current divides according to the resistances: the smaller resistance takes the larger current. It divides equally only if the resistances are equal.",
+     "correction_markdown": "Calculate each branch current with $I = V/R$, using the same p.d. across all branches."
+    },
+    {
+     "erreur_markdown": "Adding the p.d. of each parallel branch to get the p.d. across the group.",
+     "pourquoi_faux": "The p.d. across parallel branches is the same, not additive. Only p.d.s in series add.",
+     "correction_markdown": "The p.d. across the group is the p.d. across any one branch."
+    },
+    {
+     "erreur_markdown": "A voltmeter is connected in series with a lamp to measure the p.d. across it.",
+     "pourquoi_faux": "A voltmeter has a very high resistance. In series it would nearly stop the current in the lamp.",
+     "correction_markdown": "Connect the voltmeter in parallel with the lamp."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Three resistors of $10\\,\\Omega$, $20\\,\\Omega$ and $30\\,\\Omega$ are connected in series to a $12\\,\\mathrm{V}$ battery. Calculate the total resistance, the current and the p.d. across the $30\\,\\Omega$ resistor.",
+     "solution_markdown": "Total resistance: $R = 10 + 20 + 30$, so **$R = 60\\,\\Omega$**.\n\nCurrent: $I = \\dfrac{V}{R} = \\dfrac{12}{60}$, so **$I = 0.20\\,\\mathrm{A}$**.\n\nP.d. across the $30\\,\\Omega$ resistor: $V = IR = 0.20 \\times 30$, so **$V = 6.0\\,\\mathrm{V}$**. (The three p.d.s are $2.0\\,\\mathrm{V}$, $4.0\\,\\mathrm{V}$ and $6.0\\,\\mathrm{V}$, which add up to $12\\,\\mathrm{V}$.)"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "A $6.0\\,\\Omega$ resistor and a $3.0\\,\\Omega$ resistor are connected in parallel across a $9.0\\,\\mathrm{V}$ supply. Calculate (a) the equivalent resistance, (b) the current in each resistor, and (c) the total current from the supply.",
+     "solution_markdown": "(a) $R = \\dfrac{6.0 \\times 3.0}{6.0 + 3.0} = \\dfrac{18}{9}$, so **$R = 2.0\\,\\Omega$**.\n\n(b) The p.d. across each is $9.0\\,\\mathrm{V}$. $I_6 = \\dfrac{9.0}{6.0}$, so **$1.5\\,\\mathrm{A}$**; $I_3 = \\dfrac{9.0}{3.0}$, so **$3.0\\,\\mathrm{A}$**.\n\n(c) $I = 1.5 + 3.0$, so **$I = 4.5\\,\\mathrm{A}$**. Check: $\\dfrac{9.0}{2.0} = 4.5\\,\\mathrm{A}$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "A $24\\,\\mathrm{V}$ battery of negligible internal resistance is connected to an $8.0\\,\\Omega$ resistor in series with a parallel pair made of a $20\\,\\Omega$ resistor and a $5.0\\,\\Omega$ resistor. Calculate (a) the total resistance, (b) the current from the battery, (c) the p.d. across the $8.0\\,\\Omega$ resistor and across the pair, (d) the current in the $20\\,\\Omega$ resistor and in the $5.0\\,\\Omega$ resistor, and (e) the power supplied by the battery.",
+     "solution_markdown": "(a) Parallel pair: $R_p = \\dfrac{20 \\times 5.0}{25} = 4.0\\,\\Omega$. Total: $R = 8.0 + 4.0$, so **$R = 12\\,\\Omega$**.\n\n(b) $I = \\dfrac{24}{12}$, so **$I = 2.0\\,\\mathrm{A}$**.\n\n(c) $V_8 = 2.0 \\times 8.0$, so **$16\\,\\mathrm{V}$**. $V_p = 2.0 \\times 4.0$, so **$8.0\\,\\mathrm{V}$**. Check: $16 + 8.0 = 24\\,\\mathrm{V}$.\n\n(d) $I_{20} = \\dfrac{8.0}{20}$, so **$0.40\\,\\mathrm{A}$**; $I_5 = \\dfrac{8.0}{5.0}$, so **$1.6\\,\\mathrm{A}$**. Check: $0.40 + 1.6 = 2.0\\,\\mathrm{A}$.\n\n(e) $P = IV = 2.0 \\times 24$, so **$P = 48\\,\\mathrm{W}$**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "**Series:** same current, p.d.s add, $R = R_1 + R_2 + \\dots$",
+    "**Parallel:** same p.d. across each branch, currents add, $\\dfrac{1}{R} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\dots$; the total is smaller than the smallest resistor.",
+    "For combined circuits: replace each parallel group by one resistor, add the series resistors, find $I = V/R$, then work back to each part.",
+    "The smaller resistance in a parallel group carries the larger current.",
+    "Check by confirming that branch currents add to the total current and that the p.d.s around the loop add to the supply."
+   ]
+  }
+ ]
+}

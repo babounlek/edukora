@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-further-maths-probability-distributions",
+  "meta": {
+    "titre": "Probability Distributions: mass functions, expectation, binomial, Poisson and density models",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "discrete and continuous random variables",
+    "duree_estimee_min": 40,
+    "tags": [
+      "probability distributions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2022-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2022-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-probability-distributions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "An insurance clerk in Limbe records how many claims reach the office each hour, and a bus company on the Douala road counts the late arrivals per day. In both cases the counts are not fixed in advance: they are values of a random variable with a known pattern of probabilities. Probability distributions give that pattern a formula, so that you can compute averages, spreads and the chance of an event. At the Advanced Level, Further Mathematics papers test the mass function, the mean and variance, the binomial and Poisson models and continuous density functions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Probabilities lie between $0$ and $1$, and the probabilities of all outcomes of an experiment add up to $1$.",
+        "$\\binom nr=\\dfrac{n!}{r!\\,(n-r)!}$ counts the ways of choosing $r$ items from $n$.",
+        "Definite integrals give the area under a curve between two limits."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Mass functions, expectation and variance of a random variable",
+      "contenu_markdown": "A **discrete random variable** $X$ has a **probability mass function** $p(x)=P(X=x)$ with $p(x)\\ge0$ and $\\sum p(x)=1$. The **cumulative distribution function** is $F(x)=P(X\\le x)$.\n\nThe **expectation** and **variance** are\n$$\nE(X)=\\sum x\\,p(x),\\qquad \\operatorname{Var}(X)=E(X^2)-\\big[E(X)\\big]^2 \\tag{1}\n$$\nwhere $E(X^2)=\\sum x^2p(x)$. The **standard deviation** is $\\sqrt{\\operatorname{Var}(X)}$. For constants $a$ and $b$,\n$$\nE(aX+b)=a\\,E(X)+b,\\qquad \\operatorname{Var}(aX+b)=a^2\\operatorname{Var}(X) \\tag{2}\n$$\nAdding the constant $b$ shifts the distribution but does not change its spread.\n\nFor a discrete variable $F$ is a step function that increases to $1$, and $P(a<X\\le b)=F(b)-F(a)$. The **mode** is the value with the greatest probability.\n\nThe **median** $m$ of a discrete variable is the value at which $F$ first reaches or passes $\\tfrac12$: if $F(m-1)<\\tfrac12\\le F(m)$ then $m$ is the median. For every distribution, probabilities of events are found by adding the relevant values of $p(x)$, and \"at least\" and \"more than\" events are most easily handled with the complement rule $P(X\\ge r)=1-P(X\\le r-1)$.",
+      "variantes": [
+        {
+          "nom": "Binomial distribution",
+          "quand_utiliser": "There is a fixed number $n$ of independent trials, each with two outcomes and the same success probability $p$.",
+          "contenu_markdown": "Write $X\\sim B(n,p)$. Then\n$$\nP(X=r)=\\binom nr p^r(1-p)^{n-r},\\quad r=0,1,\\dots,n,\\qquad E(X)=np,\\quad \\operatorname{Var}(X)=np(1-p). \\tag{3}\n$$\nState the conditions (fixed $n$, independence, constant $p$) when you justify the model."
+        },
+        {
+          "nom": "Poisson distribution",
+          "quand_utiliser": "Events occur singly, independently and at a constant average rate in time or space, and you count the events in an interval.",
+          "contenu_markdown": "Write $X\\sim\\mathrm{Po}(\\lambda)$, where $\\lambda$ is the mean number of events in the interval considered. Then\n$$\nP(X=r)=\\frac{e^{-\\lambda}\\lambda^r}{r!},\\quad r=0,1,2,\\dots,\\qquad E(X)=\\operatorname{Var}(X)=\\lambda. \\tag{4}\n$$\nThe mean scales with the interval: if events occur at rate $\\mu$ per unit time, the count in $t$ units is $\\mathrm{Po}(\\mu t)$. The sum of independent Poisson variables with means $\\lambda_1$ and $\\lambda_2$ is Poisson with mean $\\lambda_1+\\lambda_2$."
+        },
+        {
+          "nom": "Continuous random variable",
+          "quand_utiliser": "The variable takes any value in an interval and is described by a probability density function $f(x)$.",
+          "contenu_markdown": "The density satisfies $f(x)\\ge0$ and $\\displaystyle\\int_{-\\infty}^{\\infty}f(x)\\,dx=1$. Then $P(a<X<b)=\\displaystyle\\int_a^bf(x)\\,dx$, the cumulative function is $F(x)=\\displaystyle\\int_{-\\infty}^{x}f(t)\\,dt$, and the median $m$ solves $F(m)=\\tfrac12$. Moreover\n$$\nE(X)=\\int x\\,f(x)\\,dx,\\qquad \\operatorname{Var}(X)=\\int x^2f(x)\\,dx-\\big[E(X)\\big]^2. \\tag{5}\n$$\nSingle values have probability $0$, so $P(X<a)=P(X\\le a)$."
+        }
+      ],
+      "formule_principale": null
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "The random variable $X$ takes only the values $0,1,2,3$, with $P(X=x)=k(x+2)$ for each of these values, where $k$ is a constant.\n\n(a) Find the value of $k$ and the median of $X$.\n\n(b) Find $E(X)$ and $\\operatorname{Var}(X)$.\n\n(c) The variable $Y=3X-2$. Find $E(Y)$ and $\\operatorname{Var}(Y)$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find $k$ using the total probability.",
+          "justification": "The probabilities must add to $1$.",
+          "resultat_markdown": "$2k+3k+4k+5k=14k=1$, so $k=\\dfrac1{14}$."
+        },
+        {
+          "numero": 2,
+          "action": "Tabulate the mass function and the cumulative function, then find the median.",
+          "justification": "The median is where $F$ first reaches or passes $\\tfrac12$.",
+          "resultat_markdown": "\n\n| $x$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|\n| $P(X=x)$ | $\\frac{1}{7}$ | $\\frac{3}{14}$ | $\\frac{2}{7}$ | $\\frac{5}{14}$ |\n| $F(x)$ | $\\frac{1}{7}$ | $\\frac{5}{14}$ | $\\frac{9}{14}$ | $1$ |\n\n$F(1)=\\tfrac5{14}<\\tfrac12$ and $F(2)=\\tfrac9{14}\\ge\\tfrac12$, so the median is $2$."
+        },
+        {
+          "numero": 3,
+          "action": "Compute $E(X)$.",
+          "justification": "Use $E(X)=\\sum x\\,p(x)$.",
+          "resultat_markdown": "$E(X)=0\\cdot\\tfrac{2}{14}+1\\cdot\\tfrac{3}{14}+2\\cdot\\tfrac{4}{14}+3\\cdot\\tfrac{5}{14}=\\dfrac{26}{14}=\\dfrac{13}{7}$."
+        },
+        {
+          "numero": 4,
+          "action": "Compute $\\operatorname{Var}(X)$.",
+          "justification": "Use $\\operatorname{Var}(X)=E(X^2)-[E(X)]^2$.",
+          "resultat_markdown": "$E(X^2)=0+\\tfrac{3}{14}+4\\cdot\\tfrac{4}{14}+9\\cdot\\tfrac{5}{14}=\\dfrac{64}{14}=\\dfrac{32}{7}$. Then $\\operatorname{Var}(X)=\\dfrac{32}{7}-\\dfrac{169}{49}=\\dfrac{224-169}{49}=\\dfrac{55}{49}\\approx1.122$."
+        },
+        {
+          "numero": 5,
+          "action": "Apply the rules for a linear transformation.",
+          "justification": "$E(aX+b)=aE(X)+b$ and $\\operatorname{Var}(aX+b)=a^2\\operatorname{Var}(X)$.",
+          "resultat_markdown": "$E(Y)=3\\cdot\\dfrac{13}{7}-2=\\dfrac{25}{7}$ and $\\operatorname{Var}(Y)=3^2\\cdot\\dfrac{55}{49}=\\dfrac{495}{49}\\approx10.10$."
+        }
+      ],
+      "conclusion_markdown": "$k=\\tfrac1{14}$, the median is $2$, $E(X)=\\tfrac{13}{7}$, $\\operatorname{Var}(X)=\\tfrac{55}{49}$, $E(Y)=\\tfrac{25}{7}$ and $\\operatorname{Var}(Y)=\\tfrac{495}{49}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For a variable with $E(X)=\\dfrac{13}{7}$ and $E(X^2)=\\dfrac{32}{7}$, a student computes $\\operatorname{Var}(X)=E(X^2)-E(X)=\\dfrac{32}{7}-\\dfrac{13}{7}=\\dfrac{19}{7}$.",
+          "pourquoi_faux": "The formula subtracts the **square** of the mean, $[E(X)]^2$, not the mean itself. The two quantities even have different units.",
+          "correction_markdown": "$\\operatorname{Var}(X)=\\dfrac{32}{7}-\\left(\\dfrac{13}{7}\\right)^2=\\dfrac{55}{49}$."
+        },
+        {
+          "erreur_markdown": "A student states $\\operatorname{Var}(3X-2)=3\\operatorname{Var}(X)-2$.",
+          "pourquoi_faux": "Variance measures squared spread: multiplying by $3$ multiplies the variance by $9$, and subtracting a constant does not change spread at all.",
+          "correction_markdown": "$\\operatorname{Var}(3X-2)=3^2\\operatorname{Var}(X)=9\\operatorname{Var}(X)$."
+        },
+        {
+          "erreur_markdown": "For $X\\sim B(5,0.4)$ a student writes $P(X\\ge2)=1-P(X\\le2)=0.3174$.",
+          "pourquoi_faux": "The complement of $X\\ge2$ is $X\\le1$, so the term $P(X=2)$ was removed twice.",
+          "correction_markdown": "$P(X\\ge2)=1-P(X\\le1)=1-(0.07776+0.2592)=0.6630$ (to $4$ d.p.)."
+        },
+        {
+          "erreur_markdown": "Calls arrive at a mean rate of $3$ per hour. To find the probability of no call in $20$ minutes a student computes $e^{-3}=0.0498$.",
+          "pourquoi_faux": "The Poisson mean must match the interval. In $20$ minutes, which is one third of an hour, the mean is $1$, not $3$.",
+          "correction_markdown": "With $\\lambda=1$: $P(\\text{no calls})=e^{-1}=0.3679$ (to $4$ d.p.)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Bolts from a workshop in Bafoussam are each defective with probability $0.2$, independently of each other. A box holds $10$ bolts. Let $X$ be the number of defective bolts in a box. Find (a) $P(X=3)$, (b) $P(X\\ge1)$, (c) $E(X)$ and the standard deviation of $X$.",
+          "solution_markdown": "$X\\sim B(10,0.2)$.\n\n**(a)** $P(X=3)=\\binom{10}{3}(0.2)^3(0.8)^7=120\\times0.008\\times0.2097152=$ **$0.2013$** (to $4$ d.p.).\n\n**(b)** $P(X\\ge1)=1-P(X=0)=1-0.8^{10}=1-0.1074=$ **$0.8926$**.\n\n**(c)** $E(X)=np=10\\times0.2=$ **$2$**. $\\operatorname{Var}(X)=np(1-p)=10\\times0.2\\times0.8=1.6$, so the standard deviation is $\\sqrt{1.6}=$ **$1.2649$** (to $4$ d.p.)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A continuous random variable $X$ has probability density function $f(x)=kx(3-x)$ for $0\\le x\\le3$ and $f(x)=0$ otherwise. Find (a) the value of $k$, (b) $P(X>2)$, (c) $E(X)$ and $\\operatorname{Var}(X)$.",
+          "solution_markdown": "**(a)** $\\displaystyle\\int_0^3kx(3-x)\\,dx=k\\left[\\tfrac32x^2-\\tfrac13x^3\\right]_0^3=k\\left(\\tfrac{27}{2}-9\\right)=\\tfrac92k=1$, so **$k=\\tfrac29$**.\n\n**(b)** $P(X>2)=\\tfrac29\\left[\\tfrac32x^2-\\tfrac13x^3\\right]_2^3=\\tfrac29\\left(\\tfrac92-\\left(6-\\tfrac83\\right)\\right)=\\tfrac29\\times\\tfrac76=$ **$\\tfrac{7}{27}$**.\n\n**(c)** $E(X)=\\tfrac29\\displaystyle\\int_0^3(3x^2-x^3)\\,dx=\\tfrac29\\left[x^3-\\tfrac14x^4\\right]_0^3=\\tfrac29\\times\\tfrac{27}{4}=$ **$\\tfrac32$**.\n\n$E(X^2)=\\tfrac29\\displaystyle\\int_0^3(3x^3-x^4)\\,dx=\\tfrac29\\left[\\tfrac34x^4-\\tfrac15x^5\\right]_0^3=\\tfrac29\\times\\tfrac{243}{20}=\\tfrac{27}{10}$.\n\n$\\operatorname{Var}(X)=\\tfrac{27}{10}-\\tfrac94=$ **$\\tfrac{9}{20}$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Cars pass a checkpoint near Kumba as a Poisson process with a mean of $1.5$ per minute. Find (a) the probability that no car passes in a given $2$-minute period, (b) the probability that at least $2$ cars pass in a given minute, (c) the probability that, in $5$ separate one-minute periods, exactly $2$ of them have at least $2$ cars. Give answers to $4$ decimal places.",
+          "solution_markdown": "**(a)** In $2$ minutes the mean is $\\lambda=3$, so $P(\\text{no cars})=e^{-3}=$ **$0.0498$**.\n\n**(b)** In one minute $X\\sim\\mathrm{Po}(1.5)$. $P(X\\ge2)=1-P(X=0)-P(X=1)=1-e^{-1.5}(1+1.5)=1-0.223130\\times2.5=1-0.557825=0.442175$, which is **$0.4422$** to $4$ d.p.\n\n**(c)** Each minute independently has probability $p=0.442175$ of having at least $2$ cars, so the number of such minutes is $B(5,p)$:\n$$P=\\binom52p^2(1-p)^3=10\\times0.442175^2\\times0.557825^3\\approx0.3394.$$\nSo the probability is **0.3394** to $4$ d.p."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A mass function satisfies $p(x)\\ge0$ and $\\sum p(x)=1$; use the total to find unknown constants.",
+        "$E(X)=\\sum xp(x)$, and $\\operatorname{Var}(X)=E(X^2)-[E(X)]^2$. Subtract the square of the mean.",
+        "$E(aX+b)=aE(X)+b$ but $\\operatorname{Var}(aX+b)=a^2\\operatorname{Var}(X)$.",
+        "$B(n,p)$ has mean $np$ and variance $np(1-p)$; $\\mathrm{Po}(\\lambda)$ has mean and variance both equal to $\\lambda$, with $\\lambda$ scaled to the interval.",
+        "For a continuous variable, $\\int f=1$, probabilities are integrals of $f$, and the median satisfies $F(m)=\\tfrac12$."
+      ]
+    }
+  ]
+}

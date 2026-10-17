@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-further-maths-moments-of-inertia",
+  "meta": {
+    "titre": "Moments of Inertia: integration, parallel axes and swinging bodies",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Rigid body rotation about a fixed axis",
+    "duree_estimee_min": 40,
+    "tags": [
+      "moments of inertia"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2022-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2022-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-moments-of-inertia-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A maize mill in Bafoussam is driven by a heavy iron wheel that is difficult to set in motion and just as difficult to stop. The reason is not only its mass but how that mass is spread: metal far from the axis resists a change of rotation much more than metal near the centre. This resistance is measured by the moment of inertia, the rotational counterpart of mass. At Advanced Level you must be able to calculate it by integration for a rod or a disc, move it to another axis, and then use it with energy or torque to find how fast a swinging body turns."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Integration of powers of $x$: $\\displaystyle\\int x^n\\,dx = \\dfrac{x^{n+1}}{n+1} + C$ for $n \\ne -1$.",
+        "Angular speed $\\omega = \\dfrac{d\\theta}{dt}$ in rad s$^{-1}$, and the speed of a point at distance $r$ from the axis is $v = r\\omega$.",
+        "Kinetic energy is $\\frac12mv^2$, gravitational potential energy changes by $mg\\,\\Delta h$, and energy is conserved when only gravity does work.",
+        "For a uniform body, mass per unit length or per unit area is constant, equal to total mass divided by length or area."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moments of inertia and rotational motion",
+      "contenu_markdown": "The **moment of inertia** of a body about an axis is the sum of $m r^2$ over all its particles, where $r$ is the perpendicular distance from the axis. For a continuous body, the sum becomes an integral:\n\n$$\nI = \\sum m_i r_i^2 \\;\\longrightarrow\\; I = \\int r^2\\,dm \\tag{1}\n$$\n\nIts unit is kg m$^2$. Standard results for **uniform** bodies, with total mass $M$:\n\n| Body | Axis | $I$ |\n|---|---|---|\n| Rod, length $2a$ | perpendicular, through centre | $\\dfrac13Ma^2$ |\n| Hoop (ring), radius $a$ | perpendicular to plane, through centre | $Ma^2$ |\n| Disc, radius $a$ | perpendicular to plane, through centre | $\\dfrac12Ma^2$ |\n| Solid sphere, radius $a$ | any diameter | $\\dfrac25Ma^2$ |\n\n**Parallel axes theorem.** If $G$ is the centre of mass and a second axis is parallel to the first at distance $d$,\n\n$$\nI_A = I_G + Md^2 \\tag{2}\n$$\n\nAmong all parallel axes, the one through $G$ has the smallest moment of inertia. **Composite bodies:** add the moments of inertia of the parts about the same axis.\n\n**Rotation about a fixed horizontal axis.** The kinetic energy is $\\frac12I\\omega^2$ with $\\omega = \\dot\\theta$, so for a body released from rest\n\n$$\n\\tfrac12 I\\omega^2 = Mg\\,h \\tag{3}\n$$\n\nwhere $h$ is the vertical drop of the **centre of mass**. The equation of motion is $I\\ddot\\theta = $ (moment of the external forces about the axis).",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Finding I by integration",
+          "quand_utiliser": "When the question says \"show by integration\" for a rod, disc or lamina.",
+          "contenu_markdown": "Choose an element whose points are all at the same distance $x$ from the axis, write its mass $dm$ using the constant density, then evaluate $\\int x^2\\,dm$.\n\n**Rod** of mass $M$ and length $2a$, axis through the centre perpendicular to the rod: an element of length $dx$ has mass $\\dfrac{M}{2a}dx$, so $I = \\displaystyle\\int_{-a}^{a}x^2\\,\\dfrac{M}{2a}\\,dx = \\dfrac{M}{2a}\\cdot\\dfrac{2a^3}{3} = \\dfrac{Ma^2}{3}$.\n\n**Disc** of mass $M$ and radius $a$: use a thin ring of radius $x$ and width $dx$. Its area is $2\\pi x\\,dx$ and the mass per unit area is $\\dfrac{M}{\\pi a^2}$, so $dm = \\dfrac{2Mx}{a^2}dx$ and $I = \\displaystyle\\int_0^a x^2\\,\\dfrac{2Mx}{a^2}\\,dx = \\dfrac{2M}{a^2}\\cdot\\dfrac{a^4}{4} = \\dfrac{Ma^2}{2}$."
+        },
+        {
+          "nom": "Changing axis and combining bodies",
+          "quand_utiliser": "When the axis is not through the centre of mass, or the body is made of several parts.",
+          "contenu_markdown": "Use the parallel axes theorem from the centre of mass, never between two axes that both avoid it. For example, a disc of mass $M$ and radius $a$ about a perpendicular axis through a point on its rim: $I = \\dfrac12Ma^2 + Ma^2 = \\dfrac32Ma^2$. For a lamina, the **perpendicular axes theorem** states $I_z = I_x + I_y$ for two perpendicular axes $x$ and $y$ in the plane of the lamina and the axis $z$ perpendicular to the plane through their intersection. A rod with a particle of mass $m$ at distance $d$ from the axis has $I = I_{\\text{rod}} + md^2$."
+        },
+        {
+          "nom": "Dynamics of a swinging body",
+          "quand_utiliser": "When a body rotates in a vertical plane about a smooth horizontal axis and you need $\\omega$, $\\ddot\\theta$ or a period.",
+          "contenu_markdown": "Method: (1) find $I$ about the axis; (2) write the energy equation (3) with the drop of $G$ in terms of $\\theta$ and solve for $\\dot\\theta^2$; (3) differentiate with respect to $t$, using $\\dfrac{d}{dt}\\left(\\dot\\theta^2\\right) = 2\\dot\\theta\\,\\ddot\\theta$, to obtain $\\ddot\\theta$, or take moments about the axis. For small oscillations of a body of mass $M$ whose centre of mass is a distance $h$ below the axis, $I\\ddot\\theta \\approx -Mgh\\,\\theta$, so the period is $T = 2\\pi\\sqrt{\\dfrac{I}{Mgh}}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A uniform rod $AB$ of mass $m$ and length $2a$ swings freely in a vertical plane on a frictionless horizontal pin through the end $A$, perpendicular to the rod. The rod is released from rest in the horizontal position. When it has turned through an angle $\\theta$ below the horizontal, its angular speed is $\\omega$. Find $\\omega^2$ in terms of $g$, $a$ and $\\theta$, the value of $\\omega^2$ when the rod is vertical, and the angular acceleration at the instant of release.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the moment of inertia of the rod about the axis through $A$.",
+          "justification": "The standard result about the centre $G$ is $\\frac13ma^2$, and the axis through $A$ is parallel at distance $a$.",
+          "resultat_markdown": "$I_A = \\dfrac13ma^2 + ma^2 = \\dfrac43ma^2$."
+        },
+        {
+          "numero": 2,
+          "action": "Write the energy equation.",
+          "justification": "The centre of mass $G$ is the midpoint of the rod, at distance $a$ from $A$, so it falls a vertical distance $a\\sin\\theta$.",
+          "resultat_markdown": "$\\dfrac12I_A\\omega^2 = mg\\,a\\sin\\theta$."
+        },
+        {
+          "numero": 3,
+          "action": "Solve for $\\omega^2$.",
+          "justification": "Substitute $I_A$ and cancel $m$ and $a$.",
+          "resultat_markdown": "$\\dfrac12\\cdot\\dfrac43ma^2\\omega^2 = mga\\sin\\theta$ gives $\\dfrac23a\\omega^2 = g\\sin\\theta$, so $\\omega^2 = \\dfrac{3g\\sin\\theta}{2a}$."
+        },
+        {
+          "numero": 4,
+          "action": "Find $\\omega^2$ in the vertical position.",
+          "justification": "The rod is vertical when $\\theta = \\dfrac{\\pi}{2}$ and $\\sin\\theta = 1$.",
+          "resultat_markdown": "$\\omega^2 = \\dfrac{3g}{2a}$."
+        },
+        {
+          "numero": 5,
+          "action": "Find the angular acceleration at release by differentiating.",
+          "justification": "Differentiate $\\omega^2 = \\dot\\theta^2$ with respect to $t$: $2\\dot\\theta\\ddot\\theta = \\dfrac{3g\\cos\\theta}{2a}\\dot\\theta$, then cancel $\\dot\\theta$ (valid once the rod is moving) and set $\\theta = 0$.",
+          "resultat_markdown": "$\\ddot\\theta = \\dfrac{3g\\cos\\theta}{4a}$, so at release $\\ddot\\theta = \\dfrac{3g}{4a}$. Check by moments about $A$: $mga = \\dfrac43ma^2\\ddot\\theta$ gives the same value."
+        }
+      ],
+      "conclusion_markdown": "$\\omega^2 = \\dfrac{3g\\sin\\theta}{2a}$, equal to $\\dfrac{3g}{2a}$ when the rod is vertical, and the angular acceleration at release is $\\dfrac{3g}{4a}$.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For a rod of mass $m$ and length $2a$ pivoted at one end, a student uses $I = \\dfrac13ma^2$ in the energy equation.",
+          "pourquoi_faux": "$\\frac13ma^2$ is the moment of inertia about the axis through the centre, not through the end $A$ where the rod actually rotates.",
+          "correction_markdown": "Use the parallel axes theorem: $I_A = \\dfrac13ma^2 + ma^2 = \\dfrac43ma^2$."
+        },
+        {
+          "erreur_markdown": "A student writes $I_A = I_G + Md$ for a rod with $d = a$, missing the square on $d$.",
+          "pourquoi_faux": "A moment of inertia has units kg m$^2$. The term $Md$ has units kg m, so the theorem cannot be written like this.",
+          "correction_markdown": "$I_A = I_G + Md^2$. With $d = a$, the added term is $Ma^2$."
+        },
+        {
+          "erreur_markdown": "When the rod has turned through $\\theta$, a student takes the loss of potential energy as $mg(2a\\sin\\theta)$, the drop of the end $B$.",
+          "pourquoi_faux": "In an energy equation for a rigid body the potential energy is that of the centre of mass. The end $B$ is not where the weight acts.",
+          "correction_markdown": "The centre of mass is at distance $a$ from $A$, so the drop is $a\\sin\\theta$ and the loss of potential energy is $mga\\sin\\theta$."
+        },
+        {
+          "erreur_markdown": "For a rod of total length $2a$ a student uses the formula $\\dfrac{1}{12}ML^2$ with $L = a$, obtaining $\\dfrac{1}{12}Ma^2$.",
+          "pourquoi_faux": "The formula $\\frac{1}{12}ML^2$ needs the **full** length $L = 2a$. The student used the half-length.",
+          "correction_markdown": "$\\dfrac{1}{12}M(2a)^2 = \\dfrac13Ma^2$, the standard result for a rod of length $2a$."
+        },
+        {
+          "erreur_markdown": "To find the moment of inertia of a disc by integration a student writes $I = \\displaystyle\\int_0^a x^2\\,(2\\pi x)\\,dx$, taking the area of the ring as its mass.",
+          "pourquoi_faux": "The mass of the ring is the mass per unit area multiplied by its area. Without the factor $\\dfrac{M}{\\pi a^2}$ the result has no mass in it and the wrong units.",
+          "correction_markdown": "$dm = \\dfrac{M}{\\pi a^2}\\cdot 2\\pi x\\,dx = \\dfrac{2Mx}{a^2}dx$, which gives $I = \\dfrac{2M}{a^2}\\displaystyle\\int_0^a x^3\\,dx = \\dfrac12Ma^2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A uniform solid disc has mass $6\\ \\text{kg}$ and radius $0.5\\ \\text{m}$. Find its moment of inertia about (a) the axis through its centre perpendicular to its plane, and (b) the axis perpendicular to its plane through a point on its rim.",
+          "solution_markdown": "(a) $I_G = \\dfrac12Ma^2 = \\dfrac12(6)(0.5)^2 = $ **$0.75\\ \\text{kg m}^2$**.\n\n(b) The rim axis is parallel to the central axis at distance $d = a = 0.5\\ \\text{m}$. $I = I_G + Md^2 = 0.75 + 6(0.5)^2 = 0.75 + 1.5 = $ **$2.25\\ \\text{kg m}^2$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A uniform rod $AB$ of mass $3m$ and length $2a$ carries a particle of mass $m$ fixed at $B$. The system swings freely in a vertical plane on a frictionless horizontal pin through $A$, perpendicular to the rod. It is released from rest with the rod horizontal.\n\n(a) Show that the moment of inertia of the system about the axis is $8ma^2$.\n\n(b) Find the angular acceleration at the instant of release.\n\n(c) Find the angular speed when the rod is vertical.",
+          "solution_markdown": "(a) Rod: $\\dfrac13(3m)a^2 + (3m)a^2 = 4ma^2$. Particle: $m(2a)^2 = 4ma^2$. Total: **$8ma^2$**.\n\n(b) At release the weights act at horizontal distances $a$ (rod) and $2a$ (particle) from the axis. Moment $= 3mg\\cdot a + mg\\cdot 2a = 5mga$. $8ma^2\\ddot\\theta = 5mga$, so **$\\ddot\\theta = \\dfrac{5g}{8a}$**.\n\n(c) The centre of mass of the rod falls $a$ and the particle falls $2a$. Energy: $\\dfrac12(8ma^2)\\omega^2 = 3mga + mg(2a) = 5mga$, so $\\omega^2 = \\dfrac{5g}{4a}$ and **$\\omega = \\sqrt{\\dfrac{5g}{4a}}$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A uniform thin annular lamina of mass $M$ has inner radius $a$ and outer radius $2a$.\n\n(a) Show by integration that its moment of inertia about the axis through its centre perpendicular to its plane is $\\dfrac52Ma^2$.\n\n(b) Find its moment of inertia about the parallel axis through a point on its outer rim.",
+          "solution_markdown": "(a) The area is $\\pi(2a)^2 - \\pi a^2 = 3\\pi a^2$, so the mass per unit area is $\\sigma = \\dfrac{M}{3\\pi a^2}$. A thin ring of radius $x$ and width $dx$ has mass $dm = \\sigma\\cdot 2\\pi x\\,dx$. $I = \\displaystyle\\int_a^{2a}x^2\\,\\sigma\\,2\\pi x\\,dx = 2\\pi\\sigma\\left[\\dfrac{x^4}{4}\\right]_a^{2a} = 2\\pi\\sigma\\cdot\\dfrac{16a^4 - a^4}{4} = \\dfrac{15\\pi\\sigma a^4}{2}$. Substituting $\\sigma$: $I = \\dfrac{15\\pi a^4}{2}\\cdot\\dfrac{M}{3\\pi a^2} = $ **$\\dfrac52Ma^2$**.\n\n(b) The centre of mass of the lamina is its centre, and the rim point is at distance $2a$ from it. $I = \\dfrac52Ma^2 + M(2a)^2 = $ **$\\dfrac{13}{2}Ma^2$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$I = \\sum mr^2 = \\int r^2\\,dm$, in kg m$^2$: mass far from the axis counts much more than mass near it.",
+        "Know the standard results: rod (length $2a$) $\\frac13Ma^2$, hoop $Ma^2$, disc $\\frac12Ma^2$, solid sphere $\\frac25Ma^2$, all about the axis through the centre.",
+        "Parallel axes theorem: $I_A = I_G + Md^2$, with $d$ squared and the first axis through the centre of mass.",
+        "To integrate: choose an element at a single distance $x$, express $dm$ with the density ($\\frac{M}{\\text{length}}$ or $\\frac{M}{\\text{area}}$), then compute $\\int x^2\\,dm$.",
+        "For a swinging body: energy $\\frac12I\\omega^2 = Mg\\times(\\text{drop of the centre of mass})$; differentiate or take moments to get $\\ddot\\theta$."
+      ]
+    }
+  ]
+}

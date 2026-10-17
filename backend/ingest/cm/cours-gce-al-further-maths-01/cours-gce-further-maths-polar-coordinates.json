@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-further-maths-polar-coordinates",
+  "meta": {
+    "titre": "Polar Coordinates: Curves, Areas and Motion in Radial and Transverse Components",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Polar curves and polar kinematics",
+    "duree_estimee_min": 40,
+    "tags": [
+      "polar coordinates"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2025-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2025-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-polar-coordinates-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A radar operator at Douala airport locates an aircraft by its distance from the antenna and the bearing of the line of sight, not by east-west and north-south distances. The rotating sprinkler on a rice field in Ndop and the spiral of a mosquito coil are described the same way. Polar coordinates suit every situation where the distance from a fixed point and the direction around it matter more than a square grid. In GCE Further Mathematics you must convert between the two systems, recognise the standard curves, find areas, and split the motion of a particle into radial and transverse parts."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "In a right-angled triangle, $\\cos\\theta$ is adjacent over hypotenuse and $\\sin\\theta$ is opposite over hypotenuse.",
+        "The identities $\\cos^2\\theta=\\tfrac12(1+\\cos2\\theta)$ and $\\sin^2\\theta=\\tfrac12(1-\\cos2\\theta)$ hold for every angle.",
+        "Angles in calculus are measured in radians, and a definite integral gives an accumulated area.",
+        "The chain rule gives $\\dfrac{dr}{dt}=\\dfrac{dr}{d\\theta}\\,\\dfrac{d\\theta}{dt}$ for a function $r(\\theta)$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "From (x, y) to (r, theta): conversion, standard curves, area and motion",
+      "contenu_markdown": "A point $P$ is fixed by $(r,\\theta)$: $r$ is its distance from the **pole** $O$, and $\\theta$ is the angle from the **initial line** (the positive $x$-axis) measured anticlockwise to $OP$. The two systems are linked by\n\n$$\nx=r\\cos\\theta,\\qquad y=r\\sin\\theta \\tag{1}\n$$\n\n$$\nr^2=x^2+y^2,\\qquad \\tan\\theta=\\frac{y}{x} \\tag{2}\n$$\n\nIn (2) the calculator returns an angle in the first or fourth quadrant only, so always decide the quadrant of $\\theta$ from the signs of $x$ and $y$.\n\n| Polar equation | Curve |\n|---|---|\n| $r=a$ | circle, centre $O$, radius $a$ |\n| $\\theta=\\alpha$ | straight line through $O$ |\n| $r=2a\\cos\\theta$ | circle through $O$, centre $(a,0)$, radius $a$ |\n| $r=2a\\sin\\theta$ | circle through $O$, centre $(0,a)$, radius $a$ |\n| $r=a(1+\\cos\\theta)$ | cardioid, symmetric about the initial line |\n| $r^2=a^2\\cos2\\theta$ | lemniscate (figure of eight), loops along the initial line |\n\nTo sketch a curve, test symmetry (replacing $\\theta$ by $-\\theta$ gives symmetry in the initial line), find where $r=0$ (the tangent at the pole is then the line $\\theta=\\theta_0$, where $\\theta_0$ is that angle), find the greatest $r$, and remember that a point with $r<0$ is plotted on the opposite side of the pole, in the direction $\\theta+\\pi$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Converting equations between the two systems",
+          "quand_utiliser": "When a curve is given in one system and the question or a calculation is easier in the other.",
+          "contenu_markdown": "To go from Cartesian to polar, replace $x$ and $y$ using (1), simplify, and divide by $r$ only if the pole is still on the curve. For example $x^2+y^2=6x$ becomes $r^2=6r\\cos\\theta$, so $r=6\\cos\\theta$ (the pole is on this curve at $\\theta=\\tfrac{\\pi}{2}$, so nothing is lost). To go from polar to Cartesian, multiply by $r$ so that the pieces $r\\cos\\theta=x$, $r\\sin\\theta=y$ and $r^2=x^2+y^2$ appear. For example $r=6\\sin\\theta$ gives $r^2=6r\\sin\\theta$, that is $x^2+y^2=6y$. Remember $\\sin\\theta=\\dfrac{y}{r}$ and $\\cos\\theta=\\dfrac{x}{r}$."
+        },
+        {
+          "nom": "Area enclosed by a polar curve",
+          "quand_utiliser": "When the area of a region bounded by a polar curve and two radial lines, or between two polar curves, is required.",
+          "contenu_markdown": "The area swept by the radius from $\\theta=\\alpha$ to $\\theta=\\beta$ is\n\n$$\nA=\\frac12\\int_{\\alpha}^{\\beta} r^{2}\\,d\\theta \\tag{3}\n$$\n\nprovided $r\\ge0$ and the curve is traced once as $\\theta$ goes from $\\alpha$ to $\\beta$. Use symmetry to halve the work. For a region between an inner curve $r_1$ and an outer curve $r_2$ the area is $\\tfrac12\\int(r_2^{2}-r_1^{2})\\,d\\theta$. When two curves cross, find the intersection angles by equating the two values of $r$, then decide for each range of $\\theta$ which curve is nearer the pole."
+        },
+        {
+          "nom": "Radial and transverse components of velocity and acceleration",
+          "quand_utiliser": "When a particle moves on a curve given in polar form and the question asks for the radial or transverse part of its velocity or acceleration.",
+          "contenu_markdown": "Write $\\dot r=\\dfrac{dr}{dt}$ and $\\dot\\theta=\\dfrac{d\\theta}{dt}$. Along the radius and perpendicular to it (the direction of increasing $\\theta$):\n\n$$\nv_r=\\dot r,\\qquad v_\\theta=r\\dot\\theta \\tag{4}\n$$\n\n$$\na_r=\\ddot r-r\\dot\\theta^{2},\\qquad a_\\theta=r\\ddot\\theta+2\\dot r\\dot\\theta=\\frac1r\\frac{d}{dt}\\bigl(r^{2}\\dot\\theta\\bigr) \\tag{5}\n$$\n\nThe speed satisfies $v^2=\\dot r^{2}+r^{2}\\dot\\theta^{2}$. When $\\dot\\theta=\\omega$ is constant, $\\ddot\\theta=0$, so $a_\\theta=2\\dot r\\omega$, and $\\dot r=\\dfrac{dr}{d\\theta}\\,\\omega$ by the chain rule."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The circle $C_1$ has polar equation $r=4\\cos\\theta$ and the circle $C_2$ has polar equation $r=2$. Find the exact area of the region lying inside both circles.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the two curves.",
+          "justification": "Converting $C_1$ to Cartesian form shows its centre and radius, which tells us which angles the region occupies.",
+          "resultat_markdown": "Multiplying by $r$: $r^2=4r\\cos\\theta$, so $x^2+y^2=4x$, that is $(x-2)^2+y^2=4$. $C_1$ has centre $(2,0)$ and radius $2$; $C_2$ has centre $O$ and radius $2$. $C_1$ lies in the half-plane $x\\ge0$, so only $-\\tfrac{\\pi}{2}\\le\\theta\\le\\tfrac{\\pi}{2}$ is needed."
+        },
+        {
+          "numero": 2,
+          "action": "Find the intersection points.",
+          "justification": "Equating the two values of $r$ gives the angles at which the boundary changes from one curve to the other.",
+          "resultat_markdown": "$4\\cos\\theta=2\\Rightarrow\\cos\\theta=\\tfrac12\\Rightarrow\\theta=\\pm\\dfrac{\\pi}{3}$."
+        },
+        {
+          "numero": 3,
+          "action": "Decide which curve bounds the region for each range of $\\theta$.",
+          "justification": "A ray from the pole leaves the common region at the nearer of the two curves, that is at the smaller value of $r$.",
+          "resultat_markdown": "For $-\\tfrac{\\pi}{3}\\le\\theta\\le\\tfrac{\\pi}{3}$, $4\\cos\\theta\\ge2$, so the boundary is $r=2$. For $\\tfrac{\\pi}{3}\\le\\theta\\le\\tfrac{\\pi}{2}$, $4\\cos\\theta\\le2$, so the boundary is $r=4\\cos\\theta$. The region is symmetric about the initial line."
+        },
+        {
+          "numero": 4,
+          "action": "Write the area with formula (3) and use symmetry.",
+          "justification": "Double the upper half, splitting it at $\\theta=\\tfrac{\\pi}{3}$.",
+          "resultat_markdown": "$A=2\\left[\\dfrac12\\displaystyle\\int_0^{\\pi/3}2^2\\,d\\theta+\\dfrac12\\displaystyle\\int_{\\pi/3}^{\\pi/2}16\\cos^2\\theta\\,d\\theta\\right]$."
+        },
+        {
+          "numero": 5,
+          "action": "Evaluate, using $\\cos^2\\theta=\\tfrac12(1+\\cos2\\theta)$ in the second integral.",
+          "justification": "The first integral is a constant; the second needs the double-angle form.",
+          "resultat_markdown": "First: $\\dfrac12\\cdot4\\cdot\\dfrac{\\pi}{3}=\\dfrac{2\\pi}{3}$. Second: $8\\displaystyle\\int_{\\pi/3}^{\\pi/2}\\cos^2\\theta\\,d\\theta=8\\left[\\dfrac{\\theta}{2}+\\dfrac{\\sin2\\theta}{4}\\right]_{\\pi/3}^{\\pi/2}=8\\left(\\dfrac{\\pi}{4}-\\dfrac{\\pi}{6}-\\dfrac{\\sqrt3}{8}\\right)=\\dfrac{2\\pi}{3}-\\sqrt3$. So $A=2\\left(\\dfrac{2\\pi}{3}+\\dfrac{2\\pi}{3}-\\sqrt3\\right)$."
+        }
+      ],
+      "conclusion_markdown": "The area is $\\dfrac{8\\pi}{3}-2\\sqrt3\\approx4.91$ square units. This is sensible: it is smaller than the area $4\\pi\\approx12.6$ of either circle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Converting the point $(-3,3)$ to polar form as $r=3\\sqrt2$, $\\theta=\\arctan(-1)=-\\dfrac{\\pi}{4}$.",
+          "pourquoi_faux": "The calculator gives an angle in the fourth quadrant, but $(-3,3)$ is in the second quadrant ($x<0$, $y>0$). The point $(3\\sqrt2,-\\tfrac{\\pi}{4})$ is $(3,-3)$.",
+          "correction_markdown": "Decide the quadrant first: $\\theta=\\pi-\\dfrac{\\pi}{4}=\\dfrac{3\\pi}{4}$. Check: $3\\sqrt2\\cos\\dfrac{3\\pi}{4}=-3$ and $3\\sqrt2\\sin\\dfrac{3\\pi}{4}=3$."
+        },
+        {
+          "erreur_markdown": "Finding the area of the circle $r=2\\cos\\theta$ as $\\displaystyle\\int_{-\\pi/2}^{\\pi/2}(2\\cos\\theta)^2\\,d\\theta=2\\pi$.",
+          "pourquoi_faux": "The factor $\\tfrac12$ in $A=\\tfrac12\\int r^2\\,d\\theta$ was forgotten. The circle has radius $1$, so its area cannot be $2\\pi$.",
+          "correction_markdown": "$A=\\tfrac12\\displaystyle\\int_{-\\pi/2}^{\\pi/2}4\\cos^2\\theta\\,d\\theta=\\tfrac12\\cdot2\\pi=\\pi$."
+        },
+        {
+          "erreur_markdown": "Integrating $\\tfrac12\\int r^2\\,d\\theta$ for the circle $r=2\\cos\\theta$ from $\\theta=0$ to $\\theta=2\\pi$ because a full turn is $2\\pi$.",
+          "pourquoi_faux": "The circle $r=2\\cos\\theta$ is traced once while $\\theta$ runs through an interval of length $\\pi$, from $-\\tfrac{\\pi}{2}$ to $\\tfrac{\\pi}{2}$. Over $0$ to $2\\pi$ it is traced twice, so the area is doubled and the result is $2\\pi$.",
+          "correction_markdown": "Integrate over one tracing only, for example $-\\tfrac{\\pi}{2}\\le\\theta\\le\\tfrac{\\pi}{2}$, to get $\\pi$."
+        },
+        {
+          "erreur_markdown": "Stating that the radial acceleration of a particle moving on the circle $r=3$ with constant angular speed $\\omega=2$ is $\\ddot r=0$.",
+          "pourquoi_faux": "The unit vector along the radius itself turns with the particle. This produces the extra term $-r\\dot\\theta^{2}$, which is the acceleration directed towards the pole.",
+          "correction_markdown": "$a_r=\\ddot r-r\\dot\\theta^{2}=0-3(2)^2=-12$, a magnitude of $12$ directed towards the pole."
+        },
+        {
+          "erreur_markdown": "Converting $r=6\\sin\\theta$ to Cartesian form by writing $\\sin\\theta=\\dfrac{y}{x}$.",
+          "pourquoi_faux": "The ratio $\\dfrac{y}{x}$ is $\\tan\\theta$. In the right-angled triangle with hypotenuse $r$, $\\sin\\theta=\\dfrac{y}{r}$.",
+          "correction_markdown": "$r=6\\cdot\\dfrac{y}{r}\\Rightarrow r^2=6y\\Rightarrow x^2+y^2=6y$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Express the point with Cartesian coordinates $(-2,-2\\sqrt3)$ in polar form $(r,\\theta)$ with $r>0$ and $-\\pi<\\theta\\le\\pi$. (b) Find a Cartesian equation of the curve $r=8\\cos\\theta$ and state its centre and radius.",
+          "solution_markdown": "(a) $r=\\sqrt{4+12}=4$. The point is in the third quadrant, and $\\tan\\theta=\\dfrac{-2\\sqrt3}{-2}=\\sqrt3$, whose first-quadrant angle is $\\dfrac{\\pi}{3}$. In the third quadrant, with $-\\pi<\\theta\\le\\pi$, $\\theta=\\dfrac{\\pi}{3}-\\pi=-\\dfrac{2\\pi}{3}$. The polar form is **$\\left(4,-\\dfrac{2\\pi}{3}\\right)$**. Check: $4\\cos(-\\tfrac{2\\pi}{3})=-2$ and $4\\sin(-\\tfrac{2\\pi}{3})=-2\\sqrt3$.\n\n(b) Multiply by $r$: $r^2=8r\\cos\\theta$, so $x^2+y^2=8x$, that is **$(x-4)^2+y^2=16$**: a circle with centre $(4,0)$ and radius $4$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The curve $L$ has Cartesian equation $(x^2+y^2)^2=9(x^2-y^2)$. (a) Show that its polar equation can be written $r^2=9\\cos2\\theta$. (b) Find the area enclosed by the loop of $L$ that lies along the positive $x$-axis.",
+          "solution_markdown": "(a) Substitute $x^2+y^2=r^2$ and $x^2-y^2=r^2\\cos^2\\theta-r^2\\sin^2\\theta=r^2\\cos2\\theta$: $r^4=9r^2\\cos2\\theta$. Dividing by $r^2$ is allowed because the pole lies on $r^2=9\\cos2\\theta$ (take $\\theta=\\tfrac{\\pi}{4}$), so **$r^2=9\\cos2\\theta$**.\n\n(b) For the right-hand loop $r$ is real when $\\cos2\\theta\\ge0$, that is $-\\tfrac{\\pi}{4}\\le\\theta\\le\\tfrac{\\pi}{4}$. Then $A=\\tfrac12\\displaystyle\\int_{-\\pi/4}^{\\pi/4}9\\cos2\\theta\\,d\\theta=\\tfrac92\\left[\\dfrac{\\sin2\\theta}{2}\\right]_{-\\pi/4}^{\\pi/4}=\\tfrac92\\left(\\tfrac12+\\tfrac12\\right)=$ **$\\dfrac92$ square units**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A particle $P$ moves on the circle with polar equation $r=2a\\cos\\theta$ ($a>0$) so that $\\dot\\theta=\\omega$, a constant. (a) Find the radial and transverse components of the velocity of $P$ and show that its speed is constant. (b) Find the radial and transverse components of its acceleration and show that the magnitude of the acceleration is $4a\\omega^2$.",
+          "solution_markdown": "With $\\dot\\theta=\\omega$ and $\\ddot\\theta=0$: $\\dot r=\\dfrac{dr}{d\\theta}\\omega=-2a\\omega\\sin\\theta$ and $\\ddot r=-2a\\omega\\cdot\\omega\\cos\\theta=-2a\\omega^2\\cos\\theta$.\n\n(a) $v_r=\\dot r=$ **$-2a\\omega\\sin\\theta$** and $v_\\theta=r\\dot\\theta=$ **$2a\\omega\\cos\\theta$**. Speed: $v^2=4a^2\\omega^2\\sin^2\\theta+4a^2\\omega^2\\cos^2\\theta=4a^2\\omega^2$, so $v=2a\\omega$, a constant.\n\n(b) $a_r=\\ddot r-r\\dot\\theta^2=-2a\\omega^2\\cos\\theta-2a\\cos\\theta\\,\\omega^2=$ **$-4a\\omega^2\\cos\\theta$**, and $a_\\theta=2\\dot r\\omega=$ **$-4a\\omega^2\\sin\\theta$** (since $\\ddot\\theta=0$). The magnitude is $\\sqrt{16a^2\\omega^4\\cos^2\\theta+16a^2\\omega^4\\sin^2\\theta}=4a\\omega^2$. This agrees with motion on a circle of radius $a$ at speed $2a\\omega$, where $\\dfrac{v^2}{a}=4a\\omega^2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$x=r\\cos\\theta$, $y=r\\sin\\theta$, $r^2=x^2+y^2$, $\\tan\\theta=y/x$; choose the quadrant of $\\theta$ from the signs of $x$ and $y$.",
+        "To convert an equation, multiply or divide by $r$ so that $r\\cos\\theta$, $r\\sin\\theta$ and $r^2$ appear, and remember $\\sin\\theta=y/r$.",
+        "Standard curves: $r=a$ (circle), $\\theta=\\alpha$ (line through the pole), $r=2a\\cos\\theta$ (circle through the pole), $r=a(1+\\cos\\theta)$ (cardioid), $r^2=a^2\\cos2\\theta$ (lemniscate).",
+        "Area: $A=\\tfrac12\\int_\\alpha^\\beta r^2\\,d\\theta$. Integrate over one tracing of the curve and use symmetry; for two curves, compare $r$ in each range of $\\theta$.",
+        "Velocity: $v_r=\\dot r$, $v_\\theta=r\\dot\\theta$. Acceleration: $a_r=\\ddot r-r\\dot\\theta^2$, $a_\\theta=r\\ddot\\theta+2\\dot r\\dot\\theta$."
+      ]
+    }
+  ]
+}

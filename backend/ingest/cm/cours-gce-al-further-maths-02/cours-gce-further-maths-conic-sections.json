@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-further-maths-conic-sections",
+  "meta": {
+    "titre": "Conic Sections: tangents, normals and polar forms",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Parabola, ellipse and hyperbola",
+    "duree_estimee_min": 40,
+    "tags": [
+      "conic sections"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2020-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2020-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-conic-sections-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "The dish of a satellite receiver on a rooftop in Yaounde is a paraboloid: signals arriving parallel to its axis are all reflected to a single point, the focus. The orbits of planets are ellipses, and the cooling towers of power plants are built from hyperbolas. All these curves are conic sections, defined by one idea: the distance to a fixed point compared with the distance to a fixed line. Further Mathematics papers ask you to move between Cartesian, parametric and polar descriptions of a conic, and to find tangents, normals and points of intersection by algebra."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Implicit and parametric differentiation: $\\dfrac{dy}{dx} = \\dfrac{dy/dt}{dx/dt}$.",
+        "The equation of a line through $(x_1, y_1)$ with gradient $m$ is $y - y_1 = m(x - x_1)$, and a normal has gradient $-\\dfrac1m$.",
+        "Polar coordinates: $x = r\\cos\\theta$, $y = r\\sin\\theta$ and $r^2 = x^2 + y^2$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Parabola, ellipse and hyperbola",
+      "contenu_markdown": "A **conic** is the set of points $P$ whose distance to a fixed point $S$ (the **focus**) is $e$ times its distance to a fixed line (the **directrix**):\n\n$$\nPS = e \\cdot PM \\tag{1}\n$$\n\nwhere $M$ is the foot of the perpendicular from $P$ to the directrix and $e$ is the **eccentricity**: $e = 1$ parabola, $0 < e < 1$ ellipse, $e > 1$ hyperbola.\n\n| Conic | Equation | Focus and directrix | Parametric form |\n|---|---|---|---|\n| Parabola | $y^2 = 4ax$ | $S(a, 0)$, $x = -a$ | $(at^2,\\ 2at)$ |\n| Ellipse ($a > b$) | $\\dfrac{x^2}{a^2} + \\dfrac{y^2}{b^2} = 1$, $b^2 = a^2(1 - e^2)$ | $(\\pm ae, 0)$, $x = \\pm\\dfrac{a}{e}$ | $(a\\cos\\theta,\\ b\\sin\\theta)$ |\n| Hyperbola | $\\dfrac{x^2}{a^2} - \\dfrac{y^2}{b^2} = 1$, $b^2 = a^2(e^2 - 1)$ | $(\\pm ae, 0)$, $x = \\pm\\dfrac{a}{e}$ | $(a\\sec\\theta,\\ b\\tan\\theta)$ |\n\nThe hyperbola has asymptotes $y = \\pm\\dfrac{b}{a}x$.\n\n**Tangent and normal at a point.** Differentiate (implicitly, or use $\\frac{dy}{dx} = \\frac{dy/dt}{dx/dt}$) to get the gradient $m$ of the tangent at $(x_1, y_1)$. The tangent is $y - y_1 = m(x - x_1)$ and the normal is $y - y_1 = -\\dfrac1m(x - x_1)$.\n\n**Intersection with a line.** Substitute the line into the conic to get a quadratic. If the line already passes through a known point $P$ of the curve, one root of this quadratic belongs to $P$; the other root gives the second intersection point.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Rectangular hyperbola",
+          "quand_utiliser": "For curves $xy = c^2$, whose asymptotes are the coordinate axes and whose points are written $\\left(ct, \\dfrac{c}{t}\\right)$.",
+          "contenu_markdown": "Write $y = \\dfrac{c^2}{x}$, so $\\dfrac{dy}{dx} = -\\dfrac{c^2}{x^2} = -\\dfrac{1}{t^2}$ at $\\left(ct, \\dfrac ct\\right)$. The tangent is $x + t^2y = 2ct$. The gradient of the normal is $t^2$, so the normal is $y - \\dfrac ct = t^2(x - ct)$, which you can expand and tidy into the form $Ax + By + C = 0$. To find where the normal meets the curve again, substitute $y = \\dfrac{c^2}{x}$ and use the fact that $x = ct$ is already a root."
+        },
+        {
+          "nom": "Polar equations",
+          "quand_utiliser": "When a curve is given as $r = f(\\theta)$ and a Cartesian equation (or a conic type) is required.",
+          "contenu_markdown": "Replace $r\\cos\\theta$ by $x$, $r\\sin\\theta$ by $y$ and $r^2$ by $x^2 + y^2$. Rearrange first so that the polar form contains these combinations: for instance multiply by $r$, or clear the denominator. A conic with a focus at the pole has the polar equation\n\n$$\nr = \\frac{l}{1 + e\\cos\\theta} \\tag{2}\n$$\n\nso $r(1 + e\\cos\\theta) = l$, that is $r + ex = l$. Isolate $r$, then square to remove the root in $r = \\sqrt{x^2 + y^2}$ and compare with the standard forms."
+        },
+        {
+          "nom": "Parabola parameters",
+          "quand_utiliser": "For tangents, normals and chords of $y^2 = 4ax$ when the point is given by its parameter $t$.",
+          "contenu_markdown": "At $P(at^2, 2at)$: $\\dfrac{dy}{dx} = \\dfrac1t$, the tangent is $ty = x + at^2$ and the normal is $y + tx = 2at + at^3$. Putting $(as^2, 2as)$ in the normal gives $ts^2 + 2s - 2t - t^3 = 0$, which factorises as $(s - t)(ts + t^2 + 2) = 0$. So the normal at $t$ meets the parabola again at the parameter $s = -t - \\dfrac2t$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The point $P(2, 4)$ lies on the parabola $y^2 = 8x$. Find the equation of the normal at $P$. This normal meets the parabola again at $Q$: find the coordinates of $Q$ and the length $PQ$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Check that $P$ is on the curve and identify $a$.",
+          "justification": "Compare $y^2 = 8x$ with $y^2 = 4ax$.",
+          "resultat_markdown": "$4^2 = 16 = 8(2)$, so $P$ is on the parabola. $4a = 8$, so $a = 2$ and the focus is $(2, 0)$."
+        },
+        {
+          "numero": 2,
+          "action": "Find the gradient of the tangent at $P$.",
+          "justification": "Differentiate implicitly: $2y\\dfrac{dy}{dx} = 8$.",
+          "resultat_markdown": "$\\dfrac{dy}{dx} = \\dfrac4y$, which equals $1$ at $P$. The normal therefore has gradient $-1$."
+        },
+        {
+          "numero": 3,
+          "action": "Write the equation of the normal.",
+          "justification": "Use $y - y_1 = m(x - x_1)$ with $m = -1$ and $(x_1, y_1) = (2, 4)$.",
+          "resultat_markdown": "$y - 4 = -(x - 2)$, so **$x + y = 6$**."
+        },
+        {
+          "numero": 4,
+          "action": "Find where the normal meets the parabola.",
+          "justification": "Substitute $y = 6 - x$ in $y^2 = 8x$ to get a quadratic in $x$.",
+          "resultat_markdown": "$(6 - x)^2 = 8x$ gives $x^2 - 20x + 36 = 0$, so $(x - 2)(x - 18) = 0$. The root $x = 2$ is the point $P$ itself, so $x = 18$ and $y = 6 - 18 = -12$."
+        },
+        {
+          "numero": 5,
+          "action": "Calculate the length $PQ$.",
+          "justification": "Use the distance formula with $P(2, 4)$ and $Q(18, -12)$.",
+          "resultat_markdown": "$PQ^2 = 16^2 + (-16)^2 = 512$, so $PQ = 16\\sqrt2$. Check with the parameter: $t = 1$ gives $s = -1 - 2 = -3$ and $(as^2, 2as) = (18, -12)$."
+        }
+      ],
+      "conclusion_markdown": "The normal is $x + y = 6$, it meets the parabola again at $Q(18, -12)$, and $PQ = 16\\sqrt2 \\approx 22.6$.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "At $P(2, 4)$ on $y^2 = 8x$ a student finds $\\dfrac{dy}{dx} = 1$ and writes the normal as $y - 4 = 1(x - 2)$.",
+          "pourquoi_faux": "The value $\\frac{dy}{dx}$ is the gradient of the tangent. The gradient of the normal is its negative reciprocal.",
+          "correction_markdown": "The normal gradient is $-1$, so the normal is $y - 4 = -(x - 2)$, that is $x + y = 6$."
+        },
+        {
+          "erreur_markdown": "For an ellipse $\\dfrac{x^2}{25} + \\dfrac{y^2}{9} = 1$ a student uses $b^2 = a^2(e^2 - 1)$ and obtains $e^2 = \\dfrac{34}{25}$.",
+          "pourquoi_faux": "That relation is for the hyperbola. An ellipse has $e < 1$, so $e^2 = \\frac{34}{25} > 1$ is impossible.",
+          "correction_markdown": "For the ellipse $b^2 = a^2(1 - e^2)$: $9 = 25(1 - e^2)$, so $e^2 = \\dfrac{16}{25}$ and $e = \\dfrac45$."
+        },
+        {
+          "erreur_markdown": "To convert $r(2 + \\cos\\theta) = 6$ a student writes $x(2 + \\cos\\theta) = 6$, replacing $r$ by $x$.",
+          "pourquoi_faux": "$r$ is the distance $\\sqrt{x^2 + y^2}$. Only the product $r\\cos\\theta$ equals $x$.",
+          "correction_markdown": "Expand: $2r + r\\cos\\theta = 6$, so $2r + x = 6$. Then $2r = 6 - x$ and, squaring, $4(x^2 + y^2) = (6 - x)^2$."
+        },
+        {
+          "erreur_markdown": "Solving $(6 - x)^2 = 8x$ for the second intersection, a student obtains $x = 2$ and $x = 18$ and gives $Q = (2, 4)$.",
+          "pourquoi_faux": "The root $x = 2$ is the known point $P$, which lies on both the normal and the curve. The question asks for the other point.",
+          "correction_markdown": "Take the other root, $x = 18$, and then $y = 6 - 18 = -12$, so $Q = (18, -12)$."
+        },
+        {
+          "erreur_markdown": "A student states that the focus of $y^2 = 8x$ is $(8, 0)$.",
+          "pourquoi_faux": "The standard form is $y^2 = 4ax$, so the number in front of $x$ is $4a$, not $a$.",
+          "correction_markdown": "$4a = 8$ gives $a = 2$, so the focus is $(2, 0)$ and the directrix is $x = -2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "For the ellipse $\\dfrac{x^2}{25} + \\dfrac{y^2}{9} = 1$, find the eccentricity, the coordinates of the foci and the equations of the directrices.",
+          "solution_markdown": "Here $a^2 = 25$ and $b^2 = 9$. From $b^2 = a^2(1 - e^2)$: $9 = 25(1 - e^2)$, so $e^2 = \\dfrac{16}{25}$ and **$e = \\dfrac45$**.\n\nFoci: $(\\pm ae, 0) = (\\pm 4, 0)$. Directrices: $x = \\pm\\dfrac{a}{e} = \\pm\\dfrac{5}{4/5}$, that is **$x = \\pm\\dfrac{25}{4}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A curve has the polar equation $r = \\dfrac{6}{2 + \\cos\\theta}$. Find its Cartesian equation, in the form $\\dfrac{(x - p)^2}{A} + \\dfrac{y^2}{B} = 1$, and state the eccentricity.",
+          "solution_markdown": "Multiply out: $2r + r\\cos\\theta = 6$, so $2r + x = 6$ and $2r = 6 - x$. Squaring, $4(x^2 + y^2) = 36 - 12x + x^2$, so $3x^2 + 12x + 4y^2 = 36$.\n\nComplete the square: $3(x + 2)^2 - 12 + 4y^2 = 36$, so $3(x + 2)^2 + 4y^2 = 48$. Divide by $48$: **$\\dfrac{(x + 2)^2}{16} + \\dfrac{y^2}{12} = 1$**, an ellipse centred at $(-2, 0)$.\n\nEccentricity: write $r = \\dfrac{3}{1 + \\frac12\\cos\\theta}$, so **$e = \\dfrac12$**. Check: $12 = 16\\left(1 - \\dfrac14\\right)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The point $P\\left(3p, \\dfrac3p\\right)$, $p \\ne 0$, lies on the rectangular hyperbola $xy = 9$. The tangent at $P$ meets the $x$-axis at $A$ and the $y$-axis at $B$.\n\n(a) Show that the tangent at $P$ has equation $x + p^2y = 6p$.\n\n(b) Prove that the area of triangle $OAB$, where $O$ is the origin, does not depend on $p$, and that $P$ is the midpoint of $AB$.",
+          "solution_markdown": "(a) $y = \\dfrac9x$, so $\\dfrac{dy}{dx} = -\\dfrac{9}{x^2}$, which is $-\\dfrac{9}{9p^2} = -\\dfrac{1}{p^2}$ at $P$. The tangent is $y - \\dfrac3p = -\\dfrac{1}{p^2}(x - 3p)$. Multiply by $p^2$: $p^2y - 3p = -x + 3p$, so **$x + p^2y = 6p$**.\n\n(b) Put $y = 0$: $A = (6p, 0)$. Put $x = 0$: $p^2y = 6p$, so $B = \\left(0, \\dfrac6p\\right)$. Area $= \\dfrac12 \\times |6p| \\times \\left|\\dfrac6p\\right| = \\dfrac12 \\times 36 = $ **$18$**, whatever the value of $p$.\n\nMidpoint of $AB$: $\\left(\\dfrac{6p + 0}{2}, \\dfrac{0 + 6/p}{2}\\right) = \\left(3p, \\dfrac3p\\right) = P$. **So $P$ is the midpoint of $AB$.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A conic satisfies $PS = e\\cdot PM$: $e = 1$ parabola, $e < 1$ ellipse, $e > 1$ hyperbola.",
+        "Ellipse: $b^2 = a^2(1 - e^2)$, foci $(\\pm ae, 0)$, directrices $x = \\pm a/e$. Hyperbola: $b^2 = a^2(e^2 - 1)$, same foci and directrices, asymptotes $y = \\pm\\frac{b}{a}x$. Parabola $y^2 = 4ax$: focus $(a, 0)$, directrix $x = -a$.",
+        "Tangent: differentiate to get the gradient $m$. Normal: gradient $-1/m$. Always rewrite the final line as asked.",
+        "Second intersection of a line through a known point of the conic: substitute, get a quadratic, discard the root that belongs to the known point.",
+        "Polar to Cartesian: use $r\\cos\\theta = x$, $r\\sin\\theta = y$, $r^2 = x^2 + y^2$; never replace $r$ by $x$."
+      ]
+    }
+  ]
+}

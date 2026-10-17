@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-further-maths-hyperbolic-functions",
+  "meta": {
+    "titre": "Hyperbolic Functions: Identities, Inverses and Integrals",
+    "matiere": "Further Mathematics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Hyperbolic functions and their inverses",
+    "duree_estimee_min": 35,
+    "tags": [
+      "hyperbolic functions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-further-maths-2022-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Further Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-al-further-maths-2022-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-further-maths-hyperbolic-functions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "The electric cables stretched between poles along the road to Bafoussam, and the cables of a suspension footbridge over a river in the West Region, hang in a curve that looks like a parabola but is not one. The true shape is called a catenary, and it is described by the hyperbolic cosine. Hyperbolic functions are built from the exponential function, behave like trigonometric functions with a few changed signs, and give clean answers to integrals that otherwise need awkward substitutions. At GCE Advanced Level they appear in identities, equations, logarithmic forms of the inverse functions, derivatives and integrals, usually in questions that look short and reward exact method."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Laws of indices: $e^{a}e^{b}=e^{a+b}$, and in particular $e^{x}e^{-x}=1$.",
+        "The derivative of $e^{kx}$ is $k\\,e^{kx}$.",
+        "A quadratic equation $at^{2}+bt+c=0$ is solved by factorising or by the quadratic formula, and the discriminant $b^2-4ac$ counts the real roots.",
+        "The trigonometric identities $\\cos^{2}x+\\sin^{2}x=1$, $\\sin2x=2\\sin x\\cos x$ and $\\cos2x=\\cos^2x-\\sin^2x$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Definitions, identities, calculus and logarithmic forms of the hyperbolic functions",
+      "contenu_markdown": "The hyperbolic functions are defined from $e^{x}$:\n\n$$\n\\sinh x=\\frac{e^{x}-e^{-x}}{2},\\qquad \\cosh x=\\frac{e^{x}+e^{-x}}{2},\\qquad \\tanh x=\\frac{\\sinh x}{\\cosh x}=\\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}} \\tag{1}\n$$\n\n**Shape.** $\\sinh$ is odd and increasing, and takes every real value. $\\cosh$ is even with minimum value $1$ at $x=0$, so $\\cosh x\\ge1$. $\\tanh$ is odd and increasing, with $-1<\\tanh x<1$ and horizontal asymptotes $y=\\pm1$.\n\n**Identities.** Each one follows from (1) by direct expansion:\n\n$$\n\\cosh^{2}x-\\sinh^{2}x=1 \\tag{2}\n$$\n\n$$\n\\sinh2x=2\\sinh x\\cosh x,\\qquad \\cosh2x=\\cosh^{2}x+\\sinh^{2}x=2\\cosh^{2}x-1=1+2\\sinh^{2}x \\tag{3}\n$$\n\n**Osborn's rule** gives hyperbolic identities from trigonometric ones: replace each trigonometric function by its hyperbolic partner and change the sign of every term that contains a product of two sines (including $\\sin^2$, and $\\tan^2$ since $\\tan^2=\\sin^2/\\cos^2$). Thus $\\cos^2x+\\sin^2x=1$ becomes (2), and $1+\\tan^2x=\\sec^2x$ becomes $1-\\tanh^2x=\\operatorname{sech}^2x$. The identity $\\sin2x=2\\sin x\\cos x$ has no product of two sines, so it keeps its sign.\n\n**Derivatives.** There is no minus sign for $\\cosh$:\n\n| $f(x)$ | $\\sinh x$ | $\\cosh x$ | $\\tanh x$ |\n|---|---|---|---|\n| $f'(x)$ | $\\cosh x$ | $\\sinh x$ | $\\operatorname{sech}^{2}x$ |\n\nConsequently $\\int\\cosh x\\,dx=\\sinh x+C$, $\\int\\sinh x\\,dx=\\cosh x+C$ and $\\int\\operatorname{sech}^{2}x\\,dx=\\tanh x+C$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Equations solved through exponentials",
+          "quand_utiliser": "When sinh and cosh with the same argument appear in a linear combination such as a cosh x + b sinh x = c, and an exact answer is wanted.",
+          "contenu_markdown": "Replace $\\sinh x$ and $\\cosh x$ by their exponential forms, put $t=e^{x}$ (so $t>0$ and $e^{-x}=1/t$), multiply by $t$ to clear fractions, and solve the quadratic in $t$. Reject any root with $t\\le0$, because $e^{x}$ is always positive, then use $x=\\ln t$. Check each answer in the original equation."
+        },
+        {
+          "nom": "Inverse hyperbolic functions in logarithmic form",
+          "quand_utiliser": "When an exact value of an inverse hyperbolic function is required, or an answer must be given as a logarithm.",
+          "contenu_markdown": "$$\n\\sinh^{-1}x=\\ln\\left(x+\\sqrt{x^{2}+1}\\right),\\quad \\cosh^{-1}x=\\ln\\left(x+\\sqrt{x^{2}-1}\\right)\\ (x\\ge1),\\quad \\tanh^{-1}x=\\tfrac12\\ln\\frac{1+x}{1-x}\\ (\\lvert x\\rvert<1) \\tag{4}\n$$\n\nTo derive the first, put $y=\\sinh^{-1}x$, so $x=\\dfrac{e^{y}-e^{-y}}{2}$. Then $e^{2y}-2x\\,e^{y}-1=0$, a quadratic in $e^{y}$, with positive root $e^{y}=x+\\sqrt{x^{2}+1}$. Note the domain of $\\cosh^{-1}$: only $x\\ge1$, taking the positive branch $y\\ge0$."
+        },
+        {
+          "nom": "Integrals and derivatives leading to inverse hyperbolic functions",
+          "quand_utiliser": "When an integrand is of the form 1/sqrt(x^2 + a^2), 1/sqrt(x^2 - a^2) or 1/(a^2 - x^2).",
+          "contenu_markdown": "$$\n\\int\\frac{dx}{\\sqrt{x^{2}+a^{2}}}=\\sinh^{-1}\\frac xa+C,\\qquad \\int\\frac{dx}{\\sqrt{x^{2}-a^{2}}}=\\cosh^{-1}\\frac xa+C\\ (x>a) \\tag{5}\n$$\n\n$$\n\\int\\frac{dx}{a^{2}-x^{2}}=\\frac1a\\tanh^{-1}\\frac xa+C=\\frac{1}{2a}\\ln\\frac{a+x}{a-x}+C\\quad(\\lvert x\\rvert<a) \\tag{6}\n$$\n\nEach is the reverse of the derivative $\\dfrac{d}{dx}\\sinh^{-1}\\dfrac xa=\\dfrac{1}{\\sqrt{x^2+a^2}}$ and similar. After integrating, convert the answer to a logarithm with (4) when an exact value is required."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Solve the equation $5\\cosh x+4\\sinh x=5$, giving exact values of $x$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the left side in exponentials.",
+          "justification": "Both functions have the same argument, so substitute their definitions in (1) and collect the terms in $e^{x}$ and $e^{-x}$.",
+          "resultat_markdown": "$\\dfrac52\\left(e^{x}+e^{-x}\\right)+\\dfrac42\\left(e^{x}-e^{-x}\\right)=\\dfrac92e^{x}+\\dfrac12e^{-x}$."
+        },
+        {
+          "numero": 2,
+          "action": "Form a quadratic in $t=e^{x}$.",
+          "justification": "Since $e^{x}>0$, put $t=e^{x}$ and $e^{-x}=\\dfrac1t$, then multiply the equation by $2t$ to remove the fraction.",
+          "resultat_markdown": "$\\dfrac92t+\\dfrac{1}{2t}=5\\Rightarrow9t^{2}+1=10t\\Rightarrow9t^{2}-10t+1=0$."
+        },
+        {
+          "numero": 3,
+          "action": "Solve the quadratic.",
+          "justification": "The discriminant is $100-36=64$, a perfect square, so the quadratic factorises.",
+          "resultat_markdown": "$(9t-1)(t-1)=0$, so $t=\\dfrac19$ or $t=1$. Both are positive, so both are admissible."
+        },
+        {
+          "numero": 4,
+          "action": "Return to $x$.",
+          "justification": "Use $x=\\ln t$, and simplify $\\ln\\dfrac19$ with the law of logarithms.",
+          "resultat_markdown": "$x=\\ln1=0$ or $x=\\ln\\dfrac19=-\\ln9=-2\\ln3$."
+        },
+        {
+          "numero": 5,
+          "action": "Check both solutions in the original equation.",
+          "justification": "Exponential equations can hide a slip in the algebra. For $x=-2\\ln3$: $e^{x}=\\dfrac19$ and $e^{-x}=9$.",
+          "resultat_markdown": "$\\cosh x=\\dfrac{1/9+9}{2}=\\dfrac{41}{9}$, $\\sinh x=\\dfrac{1/9-9}{2}=-\\dfrac{40}{9}$, so $5\\cdot\\dfrac{41}{9}-4\\cdot\\dfrac{40}{9}=\\dfrac{45}{9}=5$. For $x=0$: $5(1)+4(0)=5$."
+        }
+      ],
+      "conclusion_markdown": "The solutions are $x=0$ and $x=-2\\ln3$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Given $\\sinh x=\\dfrac34$, writing $\\cosh^{2}x=1-\\sinh^{2}x=\\dfrac{7}{16}$.",
+          "pourquoi_faux": "The identity is $\\cosh^{2}x-\\sinh^{2}x=1$, with a minus sign between the squares (unlike $\\cos^2+\\sin^2=1$). The wrong result would make $\\cosh x<1$, which is impossible since $\\cosh x\\ge1$.",
+          "correction_markdown": "$\\cosh^{2}x=1+\\sinh^{2}x=1+\\dfrac{9}{16}=\\dfrac{25}{16}$, so $\\cosh x=\\dfrac54$ (positive, as always)."
+        },
+        {
+          "erreur_markdown": "Differentiating $\\cosh x$ to get $-\\sinh x$ by analogy with $\\cos x$.",
+          "pourquoi_faux": "The analogy fails. Directly, $\\dfrac{d}{dx}\\dfrac{e^{x}+e^{-x}}{2}=\\dfrac{e^{x}-e^{-x}}{2}$, with a plus sign in front.",
+          "correction_markdown": "$\\dfrac{d}{dx}\\cosh x=\\sinh x$ and $\\dfrac{d}{dx}\\sinh x=\\cosh x$."
+        },
+        {
+          "erreur_markdown": "Writing $\\cosh2x=2\\cosh^{2}x+1$.",
+          "pourquoi_faux": "The correct identity has $-1$. Test with $x=0$: the left side is $\\cosh0=1$, but the wrong right side is $2(1)+1=3$.",
+          "correction_markdown": "$\\cosh2x=2\\cosh^{2}x-1$ (also $=1+2\\sinh^{2}x$). At $x=0$ this gives $2-1=1$."
+        },
+        {
+          "erreur_markdown": "Quoting $\\cosh^{-1}x=\\ln\\left(x+\\sqrt{x^{2}+1}\\right)$.",
+          "pourquoi_faux": "This is the formula for $\\sinh^{-1}x$. For $\\cosh^{-1}$ the root is $\\sqrt{x^2-1}$, which requires $x\\ge1$. Test: $\\cosh^{-1}1$ must be $0$, but $\\ln\\left(1+\\sqrt2\\right)\\ne0$.",
+          "correction_markdown": "$\\cosh^{-1}x=\\ln\\left(x+\\sqrt{x^{2}-1}\\right)$ for $x\\ge1$; then $\\cosh^{-1}1=\\ln1=0$."
+        },
+        {
+          "erreur_markdown": "Evaluating $\\displaystyle\\int_0^1\\frac{dx}{4-x^{2}}$ as $\\left[\\sinh^{-1}\\dfrac x2\\right]_0^1$.",
+          "pourquoi_faux": "The derivative of $\\sinh^{-1}\\dfrac x2$ is $\\dfrac{1}{\\sqrt{x^{2}+4}}$, not $\\dfrac{1}{4-x^{2}}$. A denominator of the form $a^2-x^2$ leads to $\\tanh^{-1}$ (or a logarithm).",
+          "correction_markdown": "$\\displaystyle\\int_0^1\\frac{dx}{4-x^{2}}=\\left[\\frac12\\tanh^{-1}\\frac x2\\right]_0^1=\\frac12\\tanh^{-1}\\frac12=\\frac14\\ln3$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Given that $\\sinh x=\\dfrac34$, find (a) $\\cosh x$, (b) $\\tanh x$, (c) $x$ in the form $\\ln k$, (d) $\\cosh2x$.",
+          "solution_markdown": "(a) $\\cosh^{2}x=1+\\dfrac{9}{16}=\\dfrac{25}{16}$, and $\\cosh x>0$, so **$\\cosh x=\\dfrac54$**.\n\n(b) $\\tanh x=\\dfrac{3/4}{5/4}=$ **$\\dfrac35$**.\n\n(c) $e^{x}=\\cosh x+\\sinh x=\\dfrac54+\\dfrac34=2$, so **$x=\\ln2$**.\n\n(d) $\\cosh2x=1+2\\sinh^{2}x=1+2\\cdot\\dfrac{9}{16}=$ **$\\dfrac{17}{8}$**. Check: $\\cosh(2\\ln2)=\\dfrac{4+1/4}{2}=\\dfrac{17}{8}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Find the exact value of (a) $\\displaystyle\\int_0^4\\frac{dx}{\\sqrt{x^{2}+9}}$ and (b) $\\displaystyle\\int_0^{6/5}\\frac{dx}{4-x^{2}}$, each as a single logarithm.",
+          "solution_markdown": "(a) By (5) with $a=3$: $\\left[\\sinh^{-1}\\dfrac x3\\right]_0^4=\\sinh^{-1}\\dfrac43=\\ln\\left(\\dfrac43+\\sqrt{\\dfrac{16}{9}+1}\\right)=\\ln\\left(\\dfrac43+\\dfrac53\\right)=$ **$\\ln3$**.\n\n(b) By (6) with $a=2$: $\\left[\\dfrac12\\tanh^{-1}\\dfrac x2\\right]_0^{6/5}=\\dfrac12\\tanh^{-1}\\dfrac35$. Now $\\tanh^{-1}\\dfrac35=\\dfrac12\\ln\\dfrac{1+3/5}{1-3/5}=\\dfrac12\\ln4=\\ln2$. So the integral is **$\\dfrac12\\ln2$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Let $f(x)=5\\cosh x-3\\sinh x$. (a) Find the value of $x$ at which $f'(x)=0$, and the corresponding value of $f$, and show that this is a minimum. (b) Show that $f(x)=k$ has two distinct real solutions if and only if $k>4$.",
+          "solution_markdown": "(a) $f'(x)=5\\sinh x-3\\cosh x=0\\Rightarrow\\tanh x=\\dfrac35$, so $x=\\dfrac12\\ln\\dfrac{1+3/5}{1-3/5}=\\dfrac12\\ln4=$ **$\\ln2$**. Then $\\cosh(\\ln2)=\\dfrac54$ and $\\sinh(\\ln2)=\\dfrac34$, so $f(\\ln2)=5\\cdot\\dfrac54-3\\cdot\\dfrac34=$ **$4$**. Since $f''(x)=5\\cosh x-3\\sinh x=f(x)$ and $f(x)=e^{x}+4e^{-x}>0$ for all $x$, $f''>0$ and the stationary point is a **minimum**.\n\n(b) In exponentials, $f(x)=\\left(\\tfrac52-\\tfrac32\\right)e^{x}+\\left(\\tfrac52+\\tfrac32\\right)e^{-x}=e^{x}+4e^{-x}$. Put $t=e^{x}>0$: $t+\\dfrac4t=k\\Rightarrow t^{2}-kt+4=0$. The discriminant is $k^{2}-16$, which is positive when $\\lvert k\\rvert>4$. The sum of the roots is $k$ and the product is $4>0$, so two real roots are both positive exactly when $k>0$. Hence two distinct values of $t>0$, and so of $x=\\ln t$, occur if and only if **$k>4$**. For $k=5$ the roots are $t=4$ and $t=1$, giving $x=\\ln4$ and $x=0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\sinh x=\\dfrac{e^{x}-e^{-x}}{2}$, $\\cosh x=\\dfrac{e^{x}+e^{-x}}{2}$, $\\tanh x=\\dfrac{\\sinh x}{\\cosh x}$; $\\cosh x\\ge1$ and $-1<\\tanh x<1$.",
+        "$\\cosh^{2}x-\\sinh^{2}x=1$ and $\\cosh2x=2\\cosh^2x-1=1+2\\sinh^2x$; use Osborn's rule to convert trigonometric identities, flipping the sign of terms with two sines.",
+        "$\\dfrac{d}{dx}\\sinh x=\\cosh x$, $\\dfrac{d}{dx}\\cosh x=\\sinh x$ (no minus sign), $\\dfrac{d}{dx}\\tanh x=\\operatorname{sech}^2x$.",
+        "Inverse functions: $\\sinh^{-1}x=\\ln\\left(x+\\sqrt{x^2+1}\\right)$, $\\cosh^{-1}x=\\ln\\left(x+\\sqrt{x^2-1}\\right)$ for $x\\ge1$, $\\tanh^{-1}x=\\tfrac12\\ln\\dfrac{1+x}{1-x}$ for $\\lvert x\\rvert<1$.",
+        "Integrals: $\\dfrac{1}{\\sqrt{x^2+a^2}}\\to\\sinh^{-1}\\dfrac xa$, $\\dfrac{1}{\\sqrt{x^2-a^2}}\\to\\cosh^{-1}\\dfrac xa$, $\\dfrac{1}{a^2-x^2}\\to\\dfrac1a\\tanh^{-1}\\dfrac xa$; to solve equations, put $t=e^{x}>0$ and reject $t\\le0$."
+      ]
+    }
+  ]
+}

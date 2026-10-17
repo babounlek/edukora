@@ -1,0 +1,155 @@
+{
+  "cours_id": "cours-gce-physics-bipolar-junction-transistor",
+  "meta": {
+    "titre": "Bipolar junction transistor: current gain, switching and the common-emitter circuit",
+    "matiere": "Physics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Electronics",
+    "duree_estimee_min": 35,
+    "tags": [
+      "bipolar junction transistor"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-physics-2025-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Physics past paper (Cameroon)",
+    "epreuve_source": "gce-al-physics-2025-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-physics-bipolar-junction-transistor-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "The security light at the gate of a house in Yaounde comes on by itself at dusk, and the tiny current from a light sensor is enough to switch a lamp that draws hundreds of times more. A bipolar junction transistor does that job: a small current into one terminal controls a much larger current through the other two. The GCE examiners expect you to apply the current relations to a simple circuit, to find an output voltage and to explain how the same device works as a switch or as an amplifier. The calculations are short, but they depend on following a clear order of steps."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Ohm's law: the p.d. across a resistor is $V = IR$.",
+        "Kirchhoff's first law: the total current into a junction equals the total current out of it.",
+        "A silicon p-n junction conducts when forward biased with a p.d. of about $0.7\\ \\mathrm{V}$.",
+        "Resistors connected in series share the supply p.d., so the p.d. across the lower one is the supply p.d. minus the p.d. across the upper one."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Current relations, regions of operation and the common-emitter circuit",
+      "variantes": [
+        {
+          "nom": "The transistor as a switch",
+          "quand_utiliser": "When a question asks how a transistor turns a lamp, relay or LED on and off.",
+          "contenu_markdown": "If $V_{in}$ is below about $0.7\\ \\mathrm{V}$ there is no base current, so $I_C = 0$ and the transistor is **off** (cut-off): $V_{out} \\approx V_{CC}$. If $V_{in}$ is large enough to give $I_B \\ge I_{C(sat)}/h_{FE}$, the transistor is driven into saturation and is **on**: $V_{out} \\approx 0$ and the full current flows through the load placed in the collector circuit. A small input current therefore switches a large load current. A relay coil in the collector circuit needs a reverse-biased diode across it to protect the transistor from the large e.m.f. induced when the coil current is switched off. A common circuit combines a sensor (for example a light-dependent resistor in a potential divider) with the transistor so that the sensor output switches the load."
+        },
+        {
+          "nom": "The transistor as an amplifier",
+          "quand_utiliser": "When asked for another use of a transistor or for a gain.",
+          "contenu_markdown": "Biased in the active region, a change $\\Delta I_B$ gives $\\Delta I_C = h_{FE}\\,\\Delta I_B$, so the transistor gives current gain, and through $R_C$ also voltage gain: $\\Delta V_{out} = -R_C\\,\\Delta I_C$ (an increase of input produces a decrease of output voltage). Transistors are also the building blocks of logic gates and memory cells in integrated circuits."
+        }
+      ],
+      "contenu_markdown": "A **bipolar junction transistor** has three terminals: **base** (B), **collector** (C) and **emitter** (E). In an **npn** transistor a thin p-type base lies between an n-type collector and an n-type emitter. In normal operation the base-emitter junction is forward biased and the base-collector junction is reverse biased. The currents obey\n\n$$I_E = I_B + I_C$$\n\nwhere $I_B$ is the small base current. In the **active region** the collector current is proportional to the base current:\n\n$$I_C = h_{FE}\\,I_B$$\n\nwhere $h_{FE}$ (the d.c. current gain, also written $h_{fe}$) is typically $50$ to $300$ and has no unit. Since $I_B$ is small, $I_E \\approx I_C$. A small change in the base current therefore produces a much larger change in the collector current, which is the basis of **amplification**.\n\n**Common-emitter circuit.** The emitter is joined to the $0\\ \\mathrm{V}$ rail. The input is connected through a base resistor $R_B$ to the base; the collector is joined to the supply $V_{CC}$ through a collector resistor $R_C$; the output voltage $V_{out}$ is taken between collector and emitter. With a silicon transistor the base-emitter p.d. is fixed at $V_{BE} \\approx 0.7\\ \\mathrm{V}$ once the transistor conducts. Work in this order:\n\n1. $I_B = \\dfrac{V_{in} - V_{BE}}{R_B}$\n2. $I_C = h_{FE}\\,I_B$\n3. $V_{out} = V_{CC} - I_C R_C$\n\n**Check the answer is possible.** The collector voltage cannot fall below a small value (about $0.1$ to $0.2\\ \\mathrm{V}$, taken as $0$ in simple work). The largest possible collector current is $I_{C(sat)} \\approx V_{CC}/R_C$; if the formula $h_{FE}I_B$ gives a larger value, the transistor is **saturated**, $I_C = I_{C(sat)}$ and $V_{out} \\approx 0$.",
+      "formule_principale": null
+    },
+    {
+      "type": "exemple_resolu",
+      "etapes": [
+        {
+          "action": "Find the base current",
+          "numero": 1,
+          "justification": "The resistor $R_B$ carries the base current and has across it the input voltage minus the fixed $V_{BE}$.",
+          "resultat_markdown": "$I_B = \\dfrac{4.7 - 0.70}{47\\times10^{3}} = \\dfrac{4.0}{47\\times10^{3}} = 8.51\\times10^{-5}\\ \\mathrm{A} = 85.1\\ \\mu\\mathrm{A}$"
+        },
+        {
+          "action": "Find the collector current",
+          "numero": 2,
+          "justification": "In the active region the collector current is $h_{FE}$ times the base current.",
+          "resultat_markdown": "$I_C = 80 \\times 85.1\\ \\mu\\mathrm{A} = 6.81\\times10^{-3}\\ \\mathrm{A} = 6.81\\ \\mathrm{mA}$"
+        },
+        {
+          "action": "Find the emitter current",
+          "numero": 3,
+          "justification": "The emitter current is the sum of the base and collector currents (Kirchhoff's first law).",
+          "resultat_markdown": "$I_E = I_B + I_C = 0.085 + 6.81 = 6.89\\ \\mathrm{mA}$"
+        },
+        {
+          "action": "Find the output voltage",
+          "numero": 4,
+          "justification": "The p.d. across $R_C$ is $I_C R_C$; the output is what is left of the supply.",
+          "resultat_markdown": "$V_{out} = 12.0 - (6.81\\times10^{-3})(1500) = 12.0 - 10.2 = 1.8\\ \\mathrm{V}$"
+        },
+        {
+          "action": "Check for saturation",
+          "numero": 5,
+          "justification": "The formula is valid only if $I_C$ is below the maximum the circuit can supply, $V_{CC}/R_C$.",
+          "resultat_markdown": "$I_{C(sat)} = \\dfrac{12.0}{1500} = 8.0\\ \\mathrm{mA}$, which is greater than $6.81\\ \\mathrm{mA}$, so the transistor is in the active region."
+        }
+      ],
+      "epreuve_source": false,
+      "enonce_markdown": "In a common-emitter circuit with an npn silicon transistor ($V_{BE} = 0.70\\ \\mathrm{V}$, $h_{FE} = 80$) the supply is $V_{CC} = 12.0\\ \\mathrm{V}$, the collector resistor is $1.5\\ \\mathrm{k\\Omega}$, the base resistor is $47\\ \\mathrm{k\\Omega}$ and the input voltage is $4.7\\ \\mathrm{V}$. Find the base current, the collector current, the emitter current and the output voltage, and show that the transistor is not saturated.",
+      "conclusion_markdown": "$I_B = 85.1\\ \\mu\\mathrm{A}$, $I_C = 6.81\\ \\mathrm{mA}$, $I_E = 6.89\\ \\mathrm{mA}$ and $V_{out} \\approx 1.8\\ \\mathrm{V}$. The transistor is not saturated because $6.81\\ \\mathrm{mA} < 8.0\\ \\mathrm{mA}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "pourquoi_faux": "The base-emitter junction drops about $0.7\\ \\mathrm{V}$, so only $V_{in} - V_{BE}$ appears across the base resistor.",
+          "erreur_markdown": "Taking the base current as $V_{in}/R_B$.",
+          "correction_markdown": "Use $I_B = (V_{in} - V_{BE})/R_B$."
+        },
+        {
+          "pourquoi_faux": "The collector current is much larger: $I_C = h_{FE}I_B$. The base current is only a small fraction of the emitter current.",
+          "erreur_markdown": "Writing $I_C = I_B$ (or $I_E = I_B$).",
+          "correction_markdown": "Use $I_C = h_{FE}I_B$ and $I_E = I_B + I_C$."
+        },
+        {
+          "pourquoi_faux": "No base current flows until the base-emitter p.d. reaches about $0.7\\ \\mathrm{V}$, so the transistor is off for smaller inputs.",
+          "erreur_markdown": "Saying the transistor is on whenever the input voltage is above zero.",
+          "correction_markdown": "For $V_{in} < 0.7\\ \\mathrm{V}$ take $I_B = 0$, $I_C = 0$ and $V_{out} = V_{CC}$."
+        },
+        {
+          "pourquoi_faux": "The formula only works in the active region; a negative output voltage is impossible with a positive supply.",
+          "erreur_markdown": "Applying $I_C = h_{FE}I_B$ in saturation and getting $V_{out}$ negative.",
+          "correction_markdown": "Compare $h_{FE}I_B$ with $V_{CC}/R_C$; if the first is larger, take $I_C = V_{CC}/R_C$ and $V_{out} \\approx 0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A transistor has a collector current of $3.2\\ \\mathrm{mA}$ when the base current is $40\\ \\mu\\mathrm{A}$. Calculate the current gain $h_{FE}$ and the emitter current.",
+          "solution_markdown": "$h_{FE} = \\dfrac{I_C}{I_B} = \\dfrac{3.2\\times10^{-3}}{40\\times10^{-6}} = $ **$80$**. The emitter current is $I_E = I_B + I_C = 0.040 + 3.2 = $ **$3.24\\ \\mathrm{mA}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A $6.0\\ \\mathrm{V}$ lamp of resistance $12\\ \\Omega$ is placed in the collector circuit of a transistor (supplied from $6.0\\ \\mathrm{V}$) so that the transistor is a switch. The smallest current gain of the transistor is $100$, and the base resistor is joined to a $5.0\\ \\mathrm{V}$ source ($V_{BE} = 0.70\\ \\mathrm{V}$). Taking the p.d. across the transistor as zero when on, calculate the largest value of the base resistor that still switches the lamp fully on.",
+          "solution_markdown": "With the transistor fully on, the lamp current is $I_C = \\dfrac{6.0}{12} = 0.50\\ \\mathrm{A}$. The base current required is $I_B = \\dfrac{I_C}{h_{FE}} = \\dfrac{0.50}{100} = 5.0\\times10^{-3}\\ \\mathrm{A}$. The p.d. across the base resistor is $5.0 - 0.70 = 4.3\\ \\mathrm{V}$, so $R_B = \\dfrac{4.3}{5.0\\times10^{-3}} = $ **$860\\ \\Omega$**. In practice a smaller value is chosen so that the base current is comfortably larger than the minimum, since $h_{FE}$ varies between transistors."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A common-emitter circuit has $V_{CC} = 9.0\\ \\mathrm{V}$, $R_C = 1.2\\ \\mathrm{k\\Omega}$, $R_B = 100\\ \\mathrm{k\\Omega}$, $h_{FE} = 150$ and $V_{BE} = 0.70\\ \\mathrm{V}$. Find (a) the input voltage at which the transistor just saturates (take the saturated $V_{out}$ as $0$), (b) the output voltage when $V_{in} = 3.2\\ \\mathrm{V}$, and (c) the output voltage when $V_{in} = 8.0\\ \\mathrm{V}$.",
+          "solution_markdown": "(a) $I_{C(sat)} = \\dfrac{9.0}{1200} = 7.5\\ \\mathrm{mA}$, so $I_B = \\dfrac{7.5\\times10^{-3}}{150} = 50\\ \\mu\\mathrm{A}$ and $V_{in} = V_{BE} + I_BR_B = 0.70 + (50\\times10^{-6})(1.0\\times10^{5}) = $ **$5.7\\ \\mathrm{V}$**. (b) $I_B = \\dfrac{3.2 - 0.70}{1.0\\times10^{5}} = 25\\ \\mu\\mathrm{A}$, $I_C = 150 \\times 25\\ \\mu\\mathrm{A} = 3.75\\ \\mathrm{mA}$, and $V_{out} = 9.0 - (3.75\\times10^{-3})(1200) = $ **$4.5\\ \\mathrm{V}$** (active region, since $3.75 < 7.5\\ \\mathrm{mA}$). (c) The formula would give $I_B = 73\\ \\mu\\mathrm{A}$ and $I_C = 10.95\\ \\mathrm{mA}$, which exceeds $7.5\\ \\mathrm{mA}$; so the transistor is saturated and **$V_{out} \\approx 0\\ \\mathrm{V}$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Currents: $I_E = I_B + I_C$ and, in the active region, $I_C = h_{FE}I_B$; the base current is small and controls the large collector current.",
+        "For a silicon transistor the base-emitter p.d. is about $0.7\\ \\mathrm{V}$ once it conducts, so $I_B = (V_{in} - 0.7)/R_B$.",
+        "Common-emitter order of working: $I_B$, then $I_C = h_{FE}I_B$, then $V_{out} = V_{CC} - I_CR_C$.",
+        "Switch: below about $0.7\\ \\mathrm{V}$ input the transistor is off ($V_{out} \\approx V_{CC}$); with enough base current it saturates ($V_{out} \\approx 0$) and the load is fully on.",
+        "Saturation check: $I_C$ cannot exceed about $V_{CC}/R_C$, so compare it with $h_{FE}I_B$ before accepting an answer.",
+        "Other uses: amplification of small signals, and building logic gates in integrated circuits."
+      ]
+    }
+  ]
+}
