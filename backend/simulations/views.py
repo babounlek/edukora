@@ -90,6 +90,26 @@ def _resume(simulation, bilan):
     return resume
 
 
+THEMES_REVISION_PAPER = 5
+
+
+def _revision_paper(simulation, bilan, exercices):
+    """Révision d'un Paper 1, une seule fois à la remise : 50 questions touchent une vingtaine de
+    thèmes, et tout faire revenir demain noierait la séance du jour. Seuls les THEMES_REVISION_PAPER
+    thèmes les plus perdus (points perdus, QCM faux ou laissés de côté) reviennent ; un thème sans
+    aucune perte compte comme réussi."""
+    themes = {t.name: t for e in exercices for q in e.questions.all() for t in q.themes.all()}
+    pertes = {
+        nom: s["points_possibles"] - s["points_obtenus"] for nom, s in bilan["par_theme"].items() if nom in themes
+    }
+    perdus = sorted((n for n, p in pertes.items() if p > 0), key=lambda n: (-pertes[n], n))[:THEMES_REVISION_PAPER]
+    for nom in perdus:
+        _alimenter_revision_themes(simulation, [themes[nom]], False)
+    for nom, perte in pertes.items():
+        if perte <= 0:
+            _alimenter_revision_themes(simulation, [themes[nom]], True)
+
+
 def _complete(simulation):
     if simulation.submitted_at:
         return _resultat_payload(simulation)
@@ -100,10 +120,7 @@ def _complete(simulation):
     # Exercices laissés de côté : leur thème est une faiblesse comme un exercice raté.
     reponses = {r.question_id: r for r in simulation.reponses.all()}
     if simulation_a_la_question(simulation.lesson):
-        for exercice in exercices:
-            for question in exercice.questions.all():
-                if not notation.est_traitee(question, reponses.get(question.pk)):
-                    _alimenter_revision_themes(simulation, question.themes.all(), False)
+        _revision_paper(simulation, bilan, exercices)
         return _resultat_payload(simulation, bilan, exercices)
     for exercice in exercices:
         if exercice.id in bilan["non_comptes"]:
@@ -564,7 +581,7 @@ def noter_exercice(request, simulation_id, exercice_id):
     reponse.points_obtenus = obtenus
     reponse.resultat_declare = notation.resultat_declare_depuis_points(obtenus, points)
     reponse.save()
-    if premiere_notation:
+    if premiere_notation and (simulation.submitted_at is not None or not simulation_a_la_question(simulation.lesson)):
         _alimenter_revision_themes(simulation, question.themes.all(), reponse.est_correcte)
     return Response(_question_payload_avec_notation(simulation, exercice_id, reponse))
 
@@ -599,7 +616,6 @@ def repondre_question(request, simulation_id, question_id):
             "traitee_at": timezone.now(),
         },
     )
-    _alimenter_revision_themes(simulation, question.themes.all(), correcte)
     return Response(_question_payload_avec_notation(simulation, question.pk, reponse))
 
 

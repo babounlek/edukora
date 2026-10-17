@@ -510,7 +510,7 @@ class ReglesChoixTests(SimulationTestCase):
         self.assertIsNotNone(self.client.post(self.url("completer")).data["note_sur_20"])
 
 
-class PaperQcmTests(SimulationTestCase):
+class PaperQcmBase(SimulationTestCase):
     """Paper 1 du GCE : 3 QCM d'un point corrigés automatiquement + 1 question ouverte."""
 
     def setUp(self):
@@ -539,6 +539,8 @@ class PaperQcmTests(SimulationTestCase):
             f"/simulations/{self.simulation.pk}/questions/{question.pk}/repondre/", {"reponse_choisie": lettre}, format="json",
         )
 
+
+class PaperQcmTests(PaperQcmBase):
     def test_la_simulation_se_fait_question_par_question_a_un_point_chacune(self):
         data = self.demarrer()
         self.assertEqual(data["granularite"], "question")
@@ -617,3 +619,41 @@ class PaperQcmTests(SimulationTestCase):
     def test_un_exercice_hors_paper_1_reste_a_l_exercice(self):
         Lesson.objects.filter(pk=self.lesson.pk).update(numero_paper=2)
         self.assertEqual(self.demarrer()["granularite"], "exercice")
+
+
+class RevisionPaperTests(PaperQcmBase):
+    """Un Paper 1 ne fait revenir demain que ses thèmes les plus perdus, une seule fois, à la remise."""
+
+    def planifies(self):
+        return set(RevisionSchedule.objects.filter(profil=self.profil).values_list("theme__name", flat=True))
+
+    def test_rien_n_est_planifie_avant_la_remise(self):
+        self.demarrer()
+        self.repondre(self.qcm[0], "b")  # faux
+        self.repondre(self.qcm[0], "c")  # faux encore
+        self.assertEqual(self.planifies(), set())
+
+    def test_seuls_les_cinq_themes_les_plus_perdus_reviennent(self):
+        # 7 thèmes de plus, de 1 à 7 questions chacun : tous laissés de côté, donc tous perdus.
+        for poids in range(1, 8):
+            theme = Tag.objects.create(name=f"Theme lourd {poids}")
+            for i in range(poids):
+                q = Question.objects.create(
+                    exercise=self.exo, numero=f"x{poids}-{i}", ordre=100 + poids * 10 + i,
+                    enonce_markdown="Q", type_reponse="QCM", choix=[{"lettre": "a", "texte": "A"}], reponse_correcte="a",
+                )
+                q.themes.set([theme])
+        self.demarrer()
+        self.client.post(self.url("completer"))
+
+        attendus = {f"Theme lourd {p}" for p in (7, 6, 5, 4)} | {"Suites"}  # Suites : 3 questions
+        self.assertEqual(len(self.planifies()), 5)
+        self.assertEqual(self.planifies(), attendus)
+
+    def test_un_theme_sans_perte_ne_cree_aucun_rappel(self):
+        self.demarrer()
+        for q, lettre in zip(self.qcm, ["a", "b", "c"]):
+            self.repondre(q, lettre)
+        self.client.post(self.url("noter", self.ouverte), {"points_obtenus": 1}, format="json")
+        self.client.post(self.url("completer"))
+        self.assertEqual(self.planifies(), set())
