@@ -1,4 +1,4 @@
-"""Papers gratuits de l'A Level (voir catalog.management.commands.definir_papers_vitrine) : la commande ne touche
+"""Papers gratuits du GCE (voir catalog.management.commands.definir_papers_vitrine) : la commande ne touche
 que sa sélection, ne casse jamais un paper gratuit posé à la main, et refuse une sélection périmée."""
 from io import StringIO
 
@@ -18,15 +18,15 @@ class PapersVitrineTests(TestCase):
         cls.cursus_ol = Cursus.objects.get_or_create(country=cm, examen=Examen.GCE_OL, series=None)[0]
         cls.matiere = Subject.objects.create(country=cm, code="GCE_PHYSICS_T", label="Physics", langue="en")
         cls.papiers = {}
-        for _, _, titre in SELECTION:
+        for _, examen, titre in SELECTION:
             lesson = Lesson.objects.create(
                 title=titre, subject=cls.matiere, lesson_type=LessonType.CORR, year=2023, statut=StatutContenu.VALIDE,
             )
-            lesson.cursus.add(cls.cursus_al)
+            lesson.cursus.add(cls.cursus_al if examen == "GCE_AL" else cls.cursus_ol)
             cls.papiers[titre] = lesson
-        # Un paper gratuit posé à la main (O Level), et un paper A Level hors sélection.
+        # Un paper gratuit posé à la main (hors sélection), et un paper A Level hors sélection.
         cls.gratuit_a_la_main = Lesson.objects.create(
-            title="Physics GCE O Level 2023 - Paper 1", subject=cls.matiere, lesson_type=LessonType.CORR,
+            title="Physics GCE O Level 2021 - Paper 1", subject=cls.matiere, lesson_type=LessonType.CORR,
             statut=StatutContenu.VALIDE, est_vitrine=True,
         )
         cls.gratuit_a_la_main.cursus.add(cls.cursus_ol)
@@ -45,11 +45,14 @@ class PapersVitrineTests(TestCase):
         call_command("definir_papers_vitrine", *args, stdout=sortie)
         return sortie.getvalue()
 
-    def test_la_selection_a_un_paper_par_matiere_a_level(self):
-        self.assertEqual(len(SELECTION), 4)
-        self.assertEqual({examen for _, examen, _ in SELECTION}, {"GCE_AL"})
-        self.assertEqual({titre.split(" GCE")[0] for _, _, titre in SELECTION},
-                         {"Biology", "Chemistry", "Further Mathematics", "Physics"})
+    def test_la_selection_a_un_paper_par_matiere_a_level_et_quatre_en_o_level(self):
+        a_level = [titre for _, examen, titre in SELECTION if examen == "GCE_AL"]
+        o_level = [titre for _, examen, titre in SELECTION if examen == "GCE_OL"]
+        self.assertEqual((len(a_level), len(o_level)), (11, 4))
+        self.assertEqual(len(SELECTION), len({titre for _, _, titre in SELECTION}))
+        matieres_al = [t.split(" GCE")[0] for t in a_level]
+        self.assertEqual(len(matieres_al), len(set(matieres_al)))
+        self.assertEqual({t.split(" GCE")[0] for t in o_level}, {"Biology", "Chemistry", "Mathematics", "Physics"})
 
     def test_simulation_n_ecrit_rien(self):
         sortie = self._lancer()

@@ -27,8 +27,21 @@ from catalog.models import Lesson, StatutContenu
 SELECTION = [
     ("CM", "GCE_AL", "Biology GCE A Level 2023 - Paper 2"),
     ("CM", "GCE_AL", "Chemistry GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Computer Science GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Economics GCE A Level 2023 - Paper 2"),
     ("CM", "GCE_AL", "Further Mathematics GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Geography GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "History GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "ICT GCE A Level 2023 - Paper 2"),
     ("CM", "GCE_AL", "Physics GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Pure Mathematics with Mechanics GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Pure Mathematics with Statistics GCE A Level 2023 - Paper 2"),
+    # O Level : les quatre échantillons posés à la main en base locale le 2026-10-14, ajoutés ici le
+    # 2026-10-17 pour qu'ils existent aussi en production.
+    ("CM", "GCE_OL", "Biology GCE O Level 2019 - Paper 2"),
+    ("CM", "GCE_OL", "Chemistry GCE O Level 2020 - Paper 1"),
+    ("CM", "GCE_OL", "Mathematics GCE O Level 2019 - Paper 2"),
+    ("CM", "GCE_OL", "Physics GCE O Level 2023 - Paper 1"),
 ]
 
 
