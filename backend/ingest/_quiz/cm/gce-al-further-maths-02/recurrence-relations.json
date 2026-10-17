@@ -1,0 +1,198 @@
+[
+  {
+    "external_id": "cqc-recurrence-relations-faible-0",
+    "theme": "recurrence relations",
+    "matiere": "Further Mathematics",
+    "cursus": [
+      {
+        "examen": "gce_al",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "A sequence is defined by $u_1 = 4$ and $u_{n+1} = 3u_n - 4$ for $n \\ge 1$. The value of $u_5$ is",
+    "corrige_markdown": "### Method reminder\n\nA recurrence relation is evaluated one step at a time: substitute the current term into the rule to obtain the next one. Going from $u_1$ to $u_5$ takes exactly four applications of the rule.\n\n### Solution\n\n$u_2 = 3(4) - 4 = 8$, $u_3 = 3(8) - 4 = 20$, $u_4 = 3(20) - 4 = 56$, $u_5 = 3(56) - 4 = 164$.\n\nThe value $56$ is $u_4$ (one step too early), $168 = 3(56)$ forgets to subtract $4$ in the last step, and $488$ is $u_6$ (one step too far). **Answer: b.**",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      12972
+    ],
+    "figures": [],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "a",
+        "texte": "$56$"
+      },
+      {
+        "lettre": "b",
+        "texte": "$164$"
+      },
+      {
+        "lettre": "c",
+        "texte": "$168$"
+      },
+      {
+        "lettre": "d",
+        "texte": "$488$"
+      }
+    ],
+    "reponse_correcte": "b"
+  },
+  {
+    "external_id": "cqc-recurrence-relations-faible-1",
+    "theme": "recurrence relations",
+    "matiere": "Further Mathematics",
+    "cursus": [
+      {
+        "examen": "gce_al",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "The terms of a sequence satisfy $a_1 = 6$ and $a_{n+1} = a_n + 5$ for $n \\ge 1$. The value of $a_{30}$ is",
+    "corrige_markdown": "### Method reminder\n\nA recurrence $a_{n+1} = a_n + d$ defines an arithmetic sequence, whose general term is $a_n = a_1 + (n-1)d$. The first term counts, and there are $n-1$ steps of size $d$ up to $a_n$.\n\n### Solution\n\nHere $a_{30} = 6 + (30 - 1)\\times 5 = 6 + 145 = 151$ (equivalently $a_n = 5n + 1$).\n\nThe value $145$ forgets the first term $6$, $146$ starts from $1$ instead of $6$, and $150 = 5\\times 30$ ignores the shift by $1$. **Answer: d.**",
+    "difficulte_estimee": "FAIBLE",
+    "source_exercises": [
+      12972,
+      12963
+    ],
+    "figures": [],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "a",
+        "texte": "$145$"
+      },
+      {
+        "lettre": "b",
+        "texte": "$146$"
+      },
+      {
+        "lettre": "c",
+        "texte": "$150$"
+      },
+      {
+        "lettre": "d",
+        "texte": "$151$"
+      }
+    ],
+    "reponse_correcte": "d"
+  },
+  {
+    "external_id": "cqc-recurrence-relations-moyenne-2",
+    "theme": "recurrence relations",
+    "matiere": "Further Mathematics",
+    "cursus": [
+      {
+        "examen": "gce_al",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "A sequence is defined by $u_0 = 2$ and $u_{n+1} = 3u_n + 4$ for $n \\ge 0$.\n\n(a) Find the constant $k$ such that $v_n = u_n + k$ is a geometric sequence, and state its common ratio.\n\n(b) Hence find a formula for $u_n$ in terms of $n$.\n\n(c) Find $u_5$, and check it by computing the terms $u_1, u_2, \\dots, u_5$ directly.",
+    "corrige_markdown": "### Method reminder\n\nFor $u_{n+1} = pu_n + q$ with $p \\ne 1$, find the fixed point $L = pL + q$. Then $u_n - L$ satisfies $w_{n+1} = p\\,w_n$: it is geometric with ratio $p$, so $u_n = L + (u_0 - L)p^n$.\n\n### Solution\n\n**(a)** Fixed point: $L = 3L + 4$ gives $L = -2$, so take $k = 2$. Then\n$$v_{n+1} = u_{n+1} + 2 = 3u_n + 6 = 3(u_n + 2) = 3v_n,$$\nso $(v_n)$ is geometric with common ratio $3$ and first term $v_0 = u_0 + 2 = 4$.\n\n**(b)** $v_n = 4\\cdot 3^n$, hence $u_n = v_n - 2 = 4\\cdot 3^{n} - 2$.\n\n**(c)** $u_5 = 4\\cdot 3^5 - 2 = 4(243) - 2 = 970$.\n\nDirect check: $u_1 = 3(2)+4 = 10$, $u_2 = 34$, $u_3 = 106$, $u_4 = 322$, $u_5 = 3(322) + 4 = 970$. Both methods agree.",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      12992
+    ],
+    "figures": [],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  },
+  {
+    "external_id": "cqc-recurrence-relations-moyenne-3",
+    "theme": "recurrence relations",
+    "matiere": "Further Mathematics",
+    "cursus": [
+      {
+        "examen": "gce_al",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "A sequence satisfies $u_{n+2} = 5u_{n+1} - 6u_n$ for $n \\ge 0$, with $u_0 = 1$ and $u_1 = 4$. A formula for $u_n$ is",
+    "corrige_markdown": "### Method reminder\n\nFor $u_{n+2} = pu_{n+1} + qu_n$, try $u_n = r^n$: the auxiliary equation is $r^2 = pr + q$. With distinct roots $r_1, r_2$, $u_n = A r_1^n + B r_2^n$, and $A, B$ are fixed by the two initial values.\n\n### Solution\n\nThe auxiliary equation $r^2 - 5r + 6 = 0$ gives $(r-2)(r-3) = 0$, so $u_n = A\\,2^n + B\\,3^n$.\n\n$u_0 = A + B = 1$ and $u_1 = 2A + 3B = 4$. Subtracting twice the first from the second: $B = 2$, hence $A = -1$.\n\n$$u_n = 2\\cdot 3^n - 2^n.$$\n\nCheck: $u_2 = 5(4) - 6(1) = 14 = 18 - 4$ and $u_3 = 5(14) - 6(4) = 46 = 54 - 8$.\n\nThe other forms come from taking $A = B = 1$ (which gives $u_0 = 2$), or from attaching the coefficients to the wrong roots (the second gives $u_1 = 1$, the last gives $u_1 = 0$). **Answer: c.**",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      12954
+    ],
+    "figures": [],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "a",
+        "texte": "$3^n + 2^n$"
+      },
+      {
+        "lettre": "b",
+        "texte": "$2^{n+1} - 3^n$"
+      },
+      {
+        "lettre": "c",
+        "texte": "$2\\cdot 3^n - 2^n$"
+      },
+      {
+        "lettre": "d",
+        "texte": "$3\\cdot 2^n - 2\\cdot 3^n$"
+      }
+    ],
+    "reponse_correcte": "c"
+  },
+  {
+    "external_id": "cqc-recurrence-relations-moyenne-4",
+    "theme": "recurrence relations",
+    "matiere": "Further Mathematics",
+    "cursus": [
+      {
+        "examen": "gce_al",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "A sequence has $u_1 = 5$ and $u_{n+1} = u_n + 3\\cdot 2^{n}$ for $n \\ge 1$. The value of $u_8$ is",
+    "corrige_markdown": "### Method reminder\n\nWhen $u_{n+1} - u_n = g(n)$, add the differences: $u_n = u_1 + \\sum_{k=1}^{n-1} g(k)$. A geometric sum $\\sum_{k=1}^{m} 2^k = 2^{m+1} - 2$ then gives a closed form.\n\n### Solution\n\n$$u_n = 5 + 3\\sum_{k=1}^{n-1} 2^k = 5 + 3\\left(2^{n} - 2\\right) = 3\\cdot 2^{n} - 1.$$\n\nCheck: $u_2 = 5 + 6 = 11 = 3(4) - 1$ and $u_3 = 11 + 12 = 23 = 3(8) - 1$.\n\nSo $u_8 = 3(256) - 1 = 767$.\n\nThe value $383$ is $u_7$ and $1535$ is $u_9$ (wrong number of terms in the sum), while $768 = 3\\cdot 2^8$ forgets the constant $-1$. **Answer: b.**",
+    "difficulte_estimee": "MOYENNE",
+    "source_exercises": [
+      12954,
+      12963
+    ],
+    "figures": [],
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "a",
+        "texte": "$383$"
+      },
+      {
+        "lettre": "b",
+        "texte": "$767$"
+      },
+      {
+        "lettre": "c",
+        "texte": "$768$"
+      },
+      {
+        "lettre": "d",
+        "texte": "$1535$"
+      }
+    ],
+    "reponse_correcte": "b"
+  },
+  {
+    "external_id": "cqc-recurrence-relations-elevee-5",
+    "theme": "recurrence relations",
+    "matiere": "Further Mathematics",
+    "cursus": [
+      {
+        "examen": "gce_al",
+        "serie": ""
+      }
+    ],
+    "enonce_markdown": "A sequence satisfies\n$$u_{n+2} = 3u_{n+1} - 2u_n + 4, \\qquad u_0 = 1,\\ u_1 = 2.$$\n(a) Write down the complementary function, that is the general solution of $u_{n+2} = 3u_{n+1} - 2u_n$.\n\n(b) Explain why a constant cannot be a particular solution of the full relation, and find the constant $p$ for which $u_n = pn$ is one.\n\n(c) Find the solution satisfying the initial values, and evaluate $u_{10}$.",
+    "corrige_markdown": "### Method reminder\n\nThe general solution of a linear recurrence with forcing term is the complementary function plus any particular solution. If the trial form already solves the homogeneous relation (resonance), multiply it by $n$.\n\n### Solution\n\n**(a)** Auxiliary equation $r^2 - 3r + 2 = 0$, so $r = 1$ or $r = 2$ and the complementary function is $A + B\\cdot 2^n$.\n\n**(b)** A constant $c$ is already a solution of the homogeneous relation ($r = 1$ is a root), so substituting it gives $c = 3c - 2c + 4$, i.e. $0 = 4$: impossible. Try $u_n = pn$:\n$$p(n+2) = 3p(n+1) - 2pn + 4 \\;\\Rightarrow\\; pn + 2p = pn + 3p + 4 \\;\\Rightarrow\\; p = -4.$$\n\n**(c)** General solution $u_n = A + B\\cdot 2^n - 4n$. From $u_0 = A + B = 1$ and $u_1 = A + 2B - 4 = 2$, i.e. $A + 2B = 6$: $B = 5$, $A = -4$.\n$$u_n = 5\\cdot 2^n - 4n - 4.$$\nCheck: $u_2 = 3(2) - 2(1) + 4 = 8 = 20 - 8 - 4$ and $u_3 = 3(8) - 2(2) + 4 = 24 = 40 - 12 - 4$.\n\n$u_{10} = 5(1024) - 40 - 4 = 5076$.",
+    "difficulte_estimee": "ELEVEE",
+    "source_exercises": [
+      12954
+    ],
+    "figures": [],
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": ""
+  }
+]
