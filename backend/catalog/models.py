@@ -70,14 +70,50 @@ class Langue(models.TextChoices):
 # l'Anglais langue étrangère - la jumelle dit seulement « même famille visuelle ». Copie côté frontend :
 # lib/discipline.ts (à tenir identique ; catalog/test_equivalents_gce.py vérifie la base contre cette table).
 EQUIVALENTS_GCE = {
-    "GCE_MATHS": "MATHS", "GCE_ADD_MATHS": "MATHS", "GCE_PURE_MATHS": "MATHS", "GCE_FURTHER_MATHS": "MATHS",
-    "GCE_PHYSICS": "PHYSIQUE", "GCE_CHEMISTRY": "CHIMIE", "GCE_BIOLOGY": "SVT",
+    "GCE_MATHS": "MATHS", "GCE_ADD_MATHS": "MATHS", "GCE_PM_MECHANICS": "MATHS", "GCE_PM_STATISTICS": "MATHS",
+    "GCE_FURTHER_MATHS": "MATHS",
+    "GCE_PHYSICS": "PHYSIQUE", "GCE_CHEMISTRY": "CHIMIE", "GCE_BIOLOGY": "SVT", "GCE_HUMAN_BIOLOGY": "SVT",
+    "GCE_GEOLOGY": "SVT",
     "GCE_HISTORY": "HISTOIRE", "GCE_GEOGRAPHY": "GEOGRAPHIE", "GCE_ECONOMICS": "ECONOMIE",
     "GCE_PHILOSOPHY": "PHILOSOPHIE", "GCE_LOGIC": "PHILOSOPHIE", "GCE_LITERATURE": "LITTERATURE",
-    "GCE_ENGLISH": "ANGLAIS", "GCE_FRENCH": "FRANCAIS",
+    "GCE_ENGLISH": "ANGLAIS", "GCE_FRENCH": "FRANCAIS", "GCE_SBE_FRENCH": "FRANCAIS",
     "GCE_COMPUTER_SCI": "INFORMATIQUE", "GCE_ICT": "INFORMATIQUE",
     "GCE_CITIZENSHIP": "EDUCATION_CIVIQUE", "GCE_ACCOUNTING": "ECONOMIE", "GCE_COMMERCE": "ECONOMIE",
     "GCE_TECH_DRAWING": "DESSIN",
+}
+
+# Codes de matière du GCE Board par niveau (pages « GCE Ordinary Level » et « GCE Advanced Level » de camgceb.org,
+# relevées le 2026-10-15). Subject.codes_officiels les recopie. Une matière absente d'un niveau n'y est pas offerte :
+# Mathematics, Additional Mathematics, Logic, Commerce, Citizenship Education et Human Biology n'existent qu'au
+# O Level ; Pure Mathematics (Mechanics / Statistics), Further Mathematics, Philosophy et ICT qu'à l'A Level.
+# GCE_TECH_DRAWING n'est dans aucune des deux listes : la branche technique relève du TVE (autre examen du Board).
+CODES_OFFICIELS_GCE = {
+    "GCE_ACCOUNTING": {"GCE_OL": "0505", "GCE_AL": "0705"},
+    "GCE_BIOLOGY": {"GCE_OL": "0510", "GCE_AL": "0710"},
+    "GCE_CHEMISTRY": {"GCE_OL": "0515", "GCE_AL": "0715"},
+    "GCE_COMMERCE": {"GCE_OL": "0520"},
+    "GCE_ECONOMICS": {"GCE_OL": "0525", "GCE_AL": "0725"},
+    "GCE_ENGLISH": {"GCE_OL": "0530", "GCE_AL": "0730"},
+    "GCE_LITERATURE": {"GCE_OL": "0535", "GCE_AL": "0735"},
+    "GCE_FOOD_NUTRITION": {"GCE_OL": "0540", "GCE_AL": "0740"},
+    "GCE_FRENCH": {"GCE_OL": "0545", "GCE_AL": "0745"},
+    "GCE_SBE_FRENCH": {"GCE_OL": "0546", "GCE_AL": "0746"},
+    "GCE_GEOGRAPHY": {"GCE_OL": "0550", "GCE_AL": "0750"},
+    "GCE_GEOLOGY": {"GCE_OL": "0555", "GCE_AL": "0755"},
+    "GCE_HISTORY": {"GCE_OL": "0560", "GCE_AL": "0760"},
+    "GCE_CITIZENSHIP": {"GCE_OL": "0562"},
+    "GCE_HUMAN_BIOLOGY": {"GCE_OL": "0565"},
+    "GCE_MATHS": {"GCE_OL": "0570"},
+    "GCE_ADD_MATHS": {"GCE_OL": "0575"},
+    "GCE_PHYSICS": {"GCE_OL": "0580", "GCE_AL": "0780"},
+    "GCE_RELIGION": {"GCE_OL": "0585", "GCE_AL": "0785"},
+    "GCE_LOGIC": {"GCE_OL": "0590"},
+    "GCE_COMPUTER_SCI": {"GCE_OL": "0595", "GCE_AL": "0795"},
+    "GCE_PM_MECHANICS": {"GCE_AL": "0765"},
+    "GCE_PM_STATISTICS": {"GCE_AL": "0770"},
+    "GCE_FURTHER_MATHS": {"GCE_AL": "0775"},
+    "GCE_PHILOSOPHY": {"GCE_AL": "0790"},
+    "GCE_ICT": {"GCE_AL": "0796"},
 }
 
 
@@ -231,6 +267,14 @@ class Subject(models.Model):
             "GCE_PHYSICS -> PHYSIQUE). Sert à l'AFFICHAGE seulement : icône, couleur et libellé court "
             "partagés, repérage des matières jumelles. Ce n'est PAS une équivalence de programme, de "
             "thèmes ni de quiz : ils restent distincts (voir EQUIVALENTS_GCE). Vide = aucune jumelle."
+        ),
+    )
+    codes_officiels = models.JSONField(
+        default=dict, blank=True,
+        help_text=(
+            "Codes de matière du GCE Board par niveau, ex. {\"GCE_OL\": \"0510\", \"GCE_AL\": \"0710\"}. "
+            "Une clé présente = la matière est offerte à ce niveau. Vide pour les matières francophones "
+            "et pour une matière que le Board ne propose pas (voir CODES_OFFICIELS_GCE)."
         ),
     )
     langue = models.CharField(

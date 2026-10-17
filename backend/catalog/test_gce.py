@@ -7,6 +7,7 @@ from recherche import indexation, intention
 from .ingestion import IngestionError, MATIERE_MAP, _resolve_cursus_list, _resolve_subject
 from .libelles import libelle_cursus, libelle_series
 from .models import (
+    CODES_OFFICIELS_GCE,
     EXAMENS_GCE,
     SERIE_GCE_TECHNIQUE,
     Country,
@@ -170,6 +171,68 @@ class GceIngestionTests(TestCase):
         codes = {code for code in MATIERE_MAP.values() if code.startswith("GCE_")}
         existants = set(Subject.objects.filter(country=self.cm, code__in=codes).values_list("code", flat=True))
         self.assertEqual(codes, existants)
+
+
+class GceMatieresOfficiellesTests(TestCase):
+    """Référentiel des matières aligné sur les listes du GCE Board (camgceb.org, 2026-10-15)."""
+
+    def setUp(self):
+        self.cm = Country.objects.get(code="CM")
+
+    def test_matieres_manquantes_ajoutees_avec_leurs_codes(self):
+        attendus = {
+            "GCE_PM_MECHANICS": ("Pure Mathematics with Mechanics", {"GCE_AL": "0765"}),
+            "GCE_PM_STATISTICS": ("Pure Mathematics with Statistics", {"GCE_AL": "0770"}),
+            "GCE_HUMAN_BIOLOGY": ("Human Biology", {"GCE_OL": "0565"}),
+            "GCE_GEOLOGY": ("Geology", {"GCE_OL": "0555", "GCE_AL": "0755"}),
+            "GCE_SBE_FRENCH": ("Special Bilingual Education French", {"GCE_OL": "0546", "GCE_AL": "0746"}),
+        }
+        for code, (libelle, codes) in attendus.items():
+            matiere = Subject.objects.get(country=self.cm, code=code)
+            self.assertEqual((matiere.label, matiere.codes_officiels, matiere.langue), (libelle, codes, Langue.EN), code)
+
+    def test_pure_maths_est_scindee(self):
+        self.assertFalse(Subject.objects.filter(country=self.cm, code="GCE_PURE_MATHS").exists())
+        self.assertNotIn("GCE_PURE_MATHS", MATIERE_MAP.values())
+        self.assertEqual(_resolve_subject("Pure Mathematics with Mechanics", self.cm).code, "GCE_PM_MECHANICS")
+        self.assertEqual(_resolve_subject("Pure Mathematics with Statistics", self.cm).code, "GCE_PM_STATISTICS")
+
+    def test_pure_maths_seule_est_refusee(self):
+        # Ni Mechanics (0765) ni Statistics (0770) : l'ingestion ne devine pas.
+        for libelle in ("Pure Mathematics", "Pure Maths"):
+            with self.assertRaises(IngestionError, msg=libelle):
+                _resolve_subject(libelle, self.cm)
+
+    def test_libelles_du_board_resolus(self):
+        for libelle, code in (
+            ("Human Biology", "GCE_HUMAN_BIOLOGY"), ("Geology", "GCE_GEOLOGY"),
+            ("Special Bilingual Education French", "GCE_SBE_FRENCH"),
+            ("Food Science and Nutrition", "GCE_FOOD_NUTRITION"),
+        ):
+            self.assertEqual(_resolve_subject(libelle, self.cm).code, code)
+
+    def test_la_base_suit_la_table_des_codes_officiels(self):
+        for code, codes in CODES_OFFICIELS_GCE.items():
+            self.assertEqual(Subject.objects.get(country=self.cm, code=code).codes_officiels, codes, code)
+
+    def test_codes_du_board_bien_formes(self):
+        # 4 chiffres ; 05xx au O Level, 07xx à l'A Level ; un code n'est attribué qu'à une seule matière par niveau.
+        vus = {}
+        for code, codes in CODES_OFFICIELS_GCE.items():
+            for niveau, numero in codes.items():
+                self.assertRegex(numero, r"^0(5|7)\d\d$", f"{code} {niveau}")
+                self.assertEqual(numero[:2], "05" if niveau == "GCE_OL" else "07", f"{code} {niveau}")
+                self.assertNotIn((niveau, numero), vus, f"{code} partage {numero} avec {vus.get((niveau, numero))}")
+                vus[(niveau, numero)] = code
+
+    def test_chaque_matiere_gce_a_ses_codes_sauf_dessin_technique(self):
+        sans_codes = set(
+            Subject.objects.filter(country=self.cm, code__startswith="GCE_", codes_officiels={}).values_list("code", flat=True)
+        )
+        self.assertEqual(sans_codes, {"GCE_TECH_DRAWING"})
+
+    def test_matieres_francophones_sans_codes_officiels(self):
+        self.assertEqual(Subject.objects.filter(langue=Langue.FR).exclude(codes_officiels={}).count(), 0)
 
 
 class GceRechercheTests(TestCase):

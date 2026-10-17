@@ -241,16 +241,20 @@ MATIERE_MAP.update({
     "french": "GCE_FRENCH", "french language": "GCE_FRENCH",
     "mathematics": "GCE_MATHS",
     "additional mathematics": "GCE_ADD_MATHS", "additional maths": "GCE_ADD_MATHS",
-    "pure mathematics": "GCE_PURE_MATHS", "pure maths": "GCE_PURE_MATHS",
-    "pure mathematics with mechanics": "GCE_PURE_MATHS", "pure mathematics with statistics": "GCE_PURE_MATHS",
+    # « Pure Mathematics » seul n'est pas une matière du Board (0765 Mechanics et 0770 Statistics sont deux matières
+    # distinctes) : aucune entrée, l'ingestion refuse plutôt que de deviner laquelle.
+    "pure mathematics with mechanics": "GCE_PM_MECHANICS", "pure maths with mechanics": "GCE_PM_MECHANICS",
+    "pure mathematics with statistics": "GCE_PM_STATISTICS", "pure maths with statistics": "GCE_PM_STATISTICS",
     "further mathematics": "GCE_FURTHER_MATHS", "further maths": "GCE_FURTHER_MATHS",
     "physics": "GCE_PHYSICS", "chemistry": "GCE_CHEMISTRY", "biology": "GCE_BIOLOGY",
+    "human biology": "GCE_HUMAN_BIOLOGY", "geology": "GCE_GEOLOGY",
+    "special bilingual education french": "GCE_SBE_FRENCH", "special bilingual french": "GCE_SBE_FRENCH",
     "geography": "GCE_GEOGRAPHY", "history": "GCE_HISTORY", "economics": "GCE_ECONOMICS",
     "computer science": "GCE_COMPUTER_SCI", "ict": "GCE_ICT",
     "information and communication technology": "GCE_ICT",
     "philosophy": "GCE_PHILOSOPHY", "logic": "GCE_LOGIC",
     "religious studies": "GCE_RELIGION", "citizenship education": "GCE_CITIZENSHIP",
-    "food and nutrition": "GCE_FOOD_NUTRITION", "accounting": "GCE_ACCOUNTING",
+    "food and nutrition": "GCE_FOOD_NUTRITION", "food science and nutrition": "GCE_FOOD_NUTRITION", "accounting": "GCE_ACCOUNTING",
     "commerce": "GCE_COMMERCE", "technical drawing": "GCE_TECH_DRAWING",
 })
 

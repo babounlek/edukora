@@ -63,7 +63,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ["code", "label", "langue", "equivalent_code", "country"]
+    list_display = ["code", "label", "langue", "equivalent_code", "codes_officiels", "country"]
     list_filter = ["country", "langue"]
     search_fields = ["code", "label", "equivalent_code"]
 
