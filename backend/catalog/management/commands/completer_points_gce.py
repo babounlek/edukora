@@ -10,6 +10,8 @@ est la somme. Cette commande l'écrit, jamais plus que ça :
   - seulement si TOUTES les questions de l'exercice portent leurs points (sinon on n'invente pas un
     total tronqué : l'exercice est listé comme ignoré) ;
   - seulement les Paper 2 et 3 (le Paper 1 est noté question par question, à 1 point).
+  - dans un groupe à règle « ou » (un seul jeu de sous-questions à traiter), le total est celui du jeu le
+    plus rémunérateur, pas la somme des deux ; l'exercice est alors listé « à relire ».
 
 Le rapport donne le total de chaque épreuve touchée. Une colonne « à relire » signale les exercices où la
 somme des marques lues dans les énoncés (« (3 marks) », « [3 marks] ») ne retombe pas sur la somme des
@@ -40,6 +42,33 @@ def _texte(total):
 
 def _marques_lues(questions):
     return sum((Decimal(m.replace(",", ".")) for q in questions for m in _MARQUES.findall(q.enonce_markdown or "")), Decimal(0))
+
+
+def _repere(texte):
+    return " ".join(str(texte).split()).casefold()
+
+
+def _total(exercice, questions, lesson):
+    """(total, jeux). Total = somme des points des questions ; sauf dans un groupe à règle « ou »
+    (l'élève ne traite QU'UN des jeux de sous-questions, ex. a-b-c ou d-e-f) : la somme compterait les
+    deux jeux, le total est celui du jeu qui rapporte le plus, plus les questions communes. `jeux` :
+    les totaux de chaque jeu (vide hors règle « ou »)."""
+    groupes = {_repere(g) for g in exercice.groupes or []}
+    for regle in lesson.regles_choix or []:
+        if regle.get("type") != "ou" or _repere(regle.get("portee", "")) not in groupes:
+            continue
+        appartenance = {_repere(s): i for i, jeu in enumerate(regle["options"]) for s in jeu}
+        communs = Decimal(0)
+        par_jeu = [Decimal(0) for _ in regle["options"]]
+        for question in questions:
+            i = appartenance.get(_repere(question.numero))
+            if i is None:
+                communs += question.points
+            else:
+                par_jeu[i] += question.points
+        jeux = [communs + p for p in par_jeu]
+        return max(jeux), jeux
+    return Decimal(sum(q.points for q in questions)), []
 
 
 class Command(BaseCommand):
@@ -73,11 +102,13 @@ class Command(BaseCommand):
                 if not questions or any(q.points is None for q in questions):
                     laisses.append(exercice.numero_exercice)
                     continue
-                somme = Decimal(sum(q.points for q in questions))
+                somme, jeux = _total(exercice, questions, lesson)
                 total += somme
                 faits.append(exercice.numero_exercice)
                 lues = _marques_lues(questions)
-                if lues > 0 and lues != somme:
+                if jeux and len(set(jeux)) > 1:
+                    a_relire.append(f"{exercice.numero_exercice} (règle « ou » : jeux de {', '.join(map(str, jeux))} points, {somme} retenus)")
+                elif not jeux and lues > 0 and lues != somme:
                     a_relire.append(f"{exercice.numero_exercice} ({somme} points, {lues} lus)")
                 if appliquer:
                     exercice.points = _texte(somme)

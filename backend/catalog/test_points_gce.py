@@ -86,3 +86,34 @@ class CompleterPointsGceTests(TestCase):
         sortie = self._lancer("--appliquer")
         self.assertEqual(self._points(self.complet), "5")
         self.assertTrue(sortie.splitlines()[-1].startswith("0 exercice(s) complété(s)"))
+
+
+class CompleterPointsGceOuTests(TestCase):
+    """Règle « ou » : l'élève ne traite qu'un jeu de sous-questions, le total n'est pas la somme des deux."""
+
+    def test_le_total_est_celui_du_jeu_le_plus_remunerateur(self):
+        cm = Country.objects.get_or_create(code="CM", defaults={"label": "Cameroun"})[0]
+        cursus = Cursus.objects.get_or_create(country=cm, examen=Examen.GCE_AL, series=None)[0]
+        matiere = Subject.objects.create(country=cm, code="GCE_PHYS_T", label="Physics", langue="en")
+        lesson = Lesson.objects.create(
+            title="Physics GCE A Level 2025 - Paper 2", subject=matiere, lesson_type=LessonType.CORR, year=2025,
+            statut=StatutContenu.VALIDE, numero_paper=2,
+            regles_choix=[{"type": "ou", "portee": "SECTION  II", "options": [["a", "b", "c"], ["d", "e", "f"]]}],
+        )
+        lesson.cursus.add(cursus)
+        exercice = Exercise.objects.create(
+            lesson=lesson, numero_exercice="6", points="", statut=StatutContenu.VALIDE, groupes=["Section II"],
+        )
+        for ordre, (lettre, pts) in enumerate(zip("abcdef", [10, 4, 6, 8, 5, 3]), start=1):
+            Question.objects.create(exercise=exercice, numero=lettre, ordre=ordre, enonce_markdown="Q", points=pts)
+        commun = Exercise.objects.create(lesson=lesson, numero_exercice="7", points="", statut=StatutContenu.VALIDE)
+        Question.objects.create(exercise=commun, numero="a", ordre=1, enonce_markdown="Q", points=4)
+
+        sortie = StringIO()
+        call_command("completer_points_gce", "--appliquer", stdout=sortie)
+
+        exercice.refresh_from_db()
+        commun.refresh_from_db()
+        self.assertEqual(exercice.points, "20")  # a-b-c = 20, d-e-f = 16 : pas 36
+        self.assertEqual(commun.points, "4")
+        self.assertIn("règle « ou » : jeux de 20, 16 points, 20 retenus", sortie.getvalue())
