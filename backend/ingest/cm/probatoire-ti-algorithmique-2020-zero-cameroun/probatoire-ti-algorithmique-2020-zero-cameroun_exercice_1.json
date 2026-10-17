@@ -1,0 +1,484 @@
+{
+  "epreuve_source": "probatoire-ti-algorithmique-2020-zero-cameroun.html",
+  "numero_exercice": "1",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "sujet zero",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2020,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": "Aucun document en dehors de ceux remis aux candidats par les examinateurs n'est autorisé. L'épreuve comporte deux parties de 10 points chacune : la Partie I (algorithmique et langage C) et la Partie II (programmation web).",
+  "points": "10",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-ti-algorithmique-2020-zero-cameroun_exercice_1_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Algorigramme de l'algorithme test (factorielle) : ovales Début et Fin, parallélogrammes d'entrée-sortie, rectangles d'affectation, losange i ≤ N avec sorties Oui et Non et retour de boucle",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1 : algorithmique et langage C (Partie I, 10 points)**\n\nOn souhaite informatiser la gestion des élèves d'un établissement. Un élève est décrit par son nom, son prénom, son âge et son sexe, et l'établissement ne peut pas accueillir plus de 10000 élèves. Les données sont déclarées ainsi :\n\n```\nType personne : enregistrement\n    nom : chaine ;\n    prenom : chaine ;\n    age : entier ;\n    sexe : chaine ;\nFinEnregistrement\nConst MAX = 10000 ;\nVar eleve : Tableau [1..MAX] de personne ;\n```\n\nLes questions 1 à 4 relèvent de l'algorithmique, la question 5 du langage C.",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "**1.a)** Dans ces déclarations, identifier deux structures de données. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne structure de données est une organisation de la mémoire qui regroupe plusieurs valeurs sous un seul nom : l'enregistrement rassemble des champs de types éventuellement différents, le tableau rassemble des éléments de même type repérés par un indice, et il existe aussi des structures dynamiques comme la liste, la pile ou la file. Dans un texte de déclarations, on les repère à leurs mots-clés (`Type ... enregistrement ... FinEnregistrement`, `Tableau [...] de ...`) et non à leurs types simples ni à leurs constantes.\n\nLes déclarations contiennent deux structures de données.\n\n1. L'**enregistrement `personne`**, délimité par `Type personne : enregistrement` et `FinEnregistrement`. Il regroupe sous un seul nom quatre informations (`nom`, `prenom`, `age`, `sexe`) dont les types ne sont pas tous identiques : trois chaînes et un entier.\n2. Le **tableau `eleve`**, déclaré par `Var eleve : Tableau [1..MAX] de personne`. Il comporte `MAX` = 10000 cases numérotées de 1 à 10000, et chaque case contient un enregistrement de type `personne`. C'est un tableau d'enregistrements : tous ses éléments ont le même type, ce qui le distingue de l'enregistrement.\n\nLa ligne `Const MAX = 10000` déclare une constante : elle fixe la taille du tableau mais ne regroupe aucune valeur, ce n'est donc pas une structure de données.\n\n### Piège à éviter\nNe cite pas `MAX` (une constante), ni `entier` ou `chaine` (des types simples qui ne regroupent rien) comme structures de données. Retiens la règle : si ça contient plusieurs valeurs sous un seul nom, c'est une structure ; sinon non.\n\n### Conseil\nDonne à chaque fois le nom de la structure et la ligne qui la déclare : le correcteur voit tout de suite que tu l'as lue dans le texte au lieu de la deviner.",
+      "themes": [
+        "structure de données",
+        "enregistrement",
+        "tableau",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q1.a-0",
+          "competence": "Reconnaître les structures de données dans des déclarations algorithmiques (enregistrement, tableau)",
+          "contenu_markdown": "Une structure de données est une organisation de la mémoire qui regroupe plusieurs valeurs sous un seul nom : l'enregistrement rassemble des champs de types éventuellement différents, le tableau rassemble des éléments de même type repérés par un indice, et il existe aussi des structures dynamiques comme la liste, la pile ou la file. Dans un texte de déclarations, on les repère à leurs mots-clés (`Type ... enregistrement ... FinEnregistrement`, `Tableau [...] de ...`) et non à leurs types simples ni à leurs constantes.",
+          "cours_genere": true,
+          "cours_id": "cours-reconnaitre-les-structures-de-donnees-dans-des-declarations-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "**1.b)** Identifier deux champs de valeurs. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn champ est un composant nommé d'un enregistrement : sa déclaration s'écrit `nom : type` et se trouve entre le mot-clé d'ouverture et `FinEnregistrement`. Pour répondre, on recopie le nom du champ avec son type, et on n'oublie pas qu'un champ se distingue du type enregistrement lui-même et de la variable qui porte ce type.\n\nL'enregistrement `personne` possède quatre champs : `nom : chaine`, `prenom : chaine`, `age : entier` et `sexe : chaine`.\n\nDeux champs de valeurs au choix :\n\n- le champ `nom`, de type `chaine`, qui contient le nom de famille de l'élève ;\n- le champ `age`, de type `entier`, qui contient son âge.\n\nOn y accède par la notation pointée : `eleve[15].nom` désigne le nom du 15ᵉ élève, `eleve[15].age` son âge.\n\n### Piège à éviter\nNe réponds pas `eleve` ni `personne` : `personne` est le nom du type enregistrement et `eleve` celui de la variable tableau. Un champ est une ligne située entre `enregistrement` et `FinEnregistrement`.\n\n### Conseil\nÉcris chaque champ avec son type (`age : entier`) : c'est la forme exacte de la déclaration, et elle montre que tu distingues champ et type.",
+      "themes": [
+        "enregistrement",
+        "champ",
+        "type de données",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q1.b-0",
+          "competence": "Identifier les champs d'un enregistrement et leurs types",
+          "contenu_markdown": "Un champ est un composant nommé d'un enregistrement : sa déclaration s'écrit `nom : type` et se trouve entre le mot-clé d'ouverture et `FinEnregistrement`. Pour répondre, on recopie le nom du champ avec son type, et on n'oublie pas qu'un champ se distingue du type enregistrement lui-même et de la variable qui porte ce type.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-champs-d-un-enregistrement-et-leurs-types-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Le 15ᵉ élève de l'établissement a pour informations : nom TIGUINGUI, prénom « Samuel », âge « 14 », sexe M. Affecter ces valeurs à la variable `eleve[15]`. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour affecter des valeurs aux champs d'un enregistrement rangé dans un tableau, on désigne d'abord la case par son indice entre crochets, puis le champ par la notation pointée : `tableau[indice].champ ← valeur`. On écrit une instruction par champ, et chaque valeur respecte le type déclaré : texte entre apostrophes pour une chaîne, nombre sans apostrophes pour un entier.\n\nLe tableau est déclaré `[1..MAX]` : la première case porte l'indice 1, donc le 15ᵉ élève est bien à l'indice 15. L'enregistrement a quatre champs, d'où quatre affectations :\n\n```\neleve[15].nom    ← 'TIGUINGUI' ;\neleve[15].prenom ← 'Samuel' ;\neleve[15].age    ← 14 ;\neleve[15].sexe   ← 'M' ;\n```\n\nLe champ `age` est déclaré `entier` : on affecte donc le nombre 14, sans apostrophes, même si le sujet l'imprime entre guillemets. Les champs `nom`, `prenom` et `sexe` sont des chaînes : leurs valeurs s'écrivent entre apostrophes.\n\n### Piège à éviter\nÉcrire `age ← '14'` revient à ranger une chaîne dans un entier : c'est une erreur de type. Autres fautes fréquentes : `eleve.nom[15]` (l'indice se place juste après le nom du tableau) et l'oubli de l'indice 15.\n\n### Conseil\nEn langage C, un tableau commence à l'indice 0 : le même élève serait `eleve[14]`, et la chaîne se copierait avec `strcpy(eleve[14].nom, \"TIGUINGUI\");`. Ici, en pseudo-code avec `[1..MAX]`, c'est bien l'indice 15.",
+      "themes": [
+        "enregistrement",
+        "tableau",
+        "affectation",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q2-0",
+          "competence": "Affecter des valeurs aux champs d'un enregistrement rangé dans un tableau",
+          "contenu_markdown": "Pour affecter des valeurs aux champs d'un enregistrement rangé dans un tableau, on désigne d'abord la case par son indice entre crochets, puis le champ par la notation pointée : `tableau[indice].champ ← valeur`. On écrit une instruction par champ, et chaque valeur respecte le type déclaré : texte entre apostrophes pour une chaîne, nombre sans apostrophes pour un entier.",
+          "cours_genere": true,
+          "cours_id": "cours-affecter-des-valeurs-aux-champs-d-un-enregistrement-range-dans-un-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Citer deux noms d'algorithmes standards de tri. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour citer des algorithmes de tri, rappelle d'abord le but d'un tri (ordonner les éléments d'un tableau), puis donne les noms exacts des méthodes vues au programme, sans décrire leur fonctionnement.\n\nUn algorithme de tri range les éléments d'un tableau dans un ordre croissant ou décroissant. Les algorithmes standards du programme sont le tri par sélection du minimum, le tri par insertion et le tri à bulles (échange de voisins) ; pour répondre, on donne le nom exact de l'algorithme et, en une phrase, son principe.\n\nDeux algorithmes standards de tri, au choix :\n\n1. Le **tri par sélection** : à chaque étape, on cherche le plus petit élément de la partie non triée du tableau et on l'échange avec le premier élément de cette partie. Après $k$ étapes, les $k$ plus petits éléments sont à leur place.\n2. Le **tri à bulles** : on parcourt le tableau en comparant deux éléments voisins, qu'on échange s'ils sont dans le mauvais ordre, et on recommence tant qu'au moins un échange a eu lieu. Exemple de passe sur `5, 2, 4` : `(5, 2)` sont échangés, ce qui donne `2, 5, 4`, puis `(5, 4)` sont échangés, ce qui donne `2, 4, 5`.\n\nOn peut aussi citer le tri par insertion, le tri rapide (quicksort) ou le tri fusion.\n\n### Piège à éviter\n« Tri croissant » ou « tri alphabétique » décrivent un ordre, pas un algorithme. La recherche séquentielle et la recherche dichotomique sont des algorithmes de recherche, pas de tri.\n\n### Conseil\nRetiens deux noms sûrs, le tri par sélection et le tri à bulles, avec leur principe en une phrase chacun : ce sont les plus faciles à justifier et ils rapportent le point sans risque.",
+      "themes": [
+        "tri",
+        "tri par sélection",
+        "tri à bulles",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q3-0",
+          "competence": "Citer les algorithmes standards de tri d'un tableau",
+          "contenu_markdown": "Pour citer des algorithmes de tri, rappelle d'abord le but d'un tri (ordonner les éléments d'un tableau), puis donne les noms exacts des méthodes vues au programme, sans décrire leur fonctionnement.",
+          "cours_genere": true,
+          "cours_id": "cours-citer-les-algorithmes-standards-de-tri-d-un-tableau-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "4.1",
+      "enonce_markdown": "**4.** On considère l'algorithme suivant :\n\n```\nAlgorithme test\nVar N, F, i : Entier ;\nDébut\n    Ecrire (\"Entrer un nombre entier positif s'il vous plaît\") ;\n    Lire (N) ;\n    F ← 1 ;\n    Pour i Allant de 1 à N Faire\n        F ← F × i ;\n    FinPour\n    Ecrire (F) ;\nFin\n```\n\n**4.1.** Identifier dans cet algorithme trois instructions simples de types différents. *[0,75 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne instruction simple est une action élémentaire exécutée en une seule étape : l'affectation (`variable ← expression`), la lecture (saisie d'une valeur au clavier) et l'écriture (affichage). Les structures de contrôle (`Si`, `Pour`, `Tant que`) ne sont pas des instructions simples, car elles contiennent d'autres instructions.\n\nTrois instructions simples de types différents :\n\n- une instruction de **lecture** : `Lire (N)`, qui range dans `N` la valeur saisie au clavier ;\n- une instruction d'**affectation** : `F ← 1`, qui donne la valeur 1 à la variable `F` ;\n- une instruction d'**écriture** : `Ecrire (F)`, qui affiche le contenu de `F` (l'instruction `Ecrire (\"Entrer un nombre ...\")` est de même type, elle affiche un message).\n\nLa boucle `Pour i Allant de 1 à N Faire ... FinPour` n'est pas une instruction simple : c'est une structure itérative qui contient une autre instruction, `F ← F × i`.\n\n### Piège à éviter\nNe compte pas `Pour ... FinPour`, ni `Début` et `Fin`, ni la ligne `Var N, F, i : Entier` (une déclaration) parmi les instructions simples. Respecte aussi l'exigence « types différents » : citer deux affectations (`F ← 1` et `F ← F × i`) ne ferait qu'un seul type.\n\n### Conseil\nPense au trio lecture, affectation, écriture : l'énoncé demande exactement trois types différents, et ce trio est présent dans cet algorithme.",
+      "themes": [
+        "instruction simple",
+        "affectation",
+        "lecture et écriture",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.1-0",
+          "competence": "Distinguer les instructions simples d'un algorithme (lecture, écriture, affectation)",
+          "contenu_markdown": "Une instruction simple est une action élémentaire exécutée en une seule étape : l'affectation (`variable ← expression`), la lecture (saisie d'une valeur au clavier) et l'écriture (affichage). Les structures de contrôle (`Si`, `Pour`, `Tant que`) ne sont pas des instructions simples, car elles contiennent d'autres instructions.",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-les-instructions-simples-d-un-algorithme-lecture-ecriture-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "4.2",
+      "enonce_markdown": "**4.2.** Exécuter pas à pas cet algorithme pour N = 5, sur la feuille de composition. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter un algorithme pas à pas consiste à tenir un tableau de suivi avec une colonne par variable et une ligne par action ou par tour de boucle, en recopiant les valeurs exactes après chaque instruction. On part des valeurs lues ou initialisées, on applique les instructions dans l'ordre, et on s'arrête quand la condition de poursuite de la boucle n'est plus vérifiée.\n\nOn suit les variables `N`, `i` et `F`. Le signe `?` indique une variable qui n'a pas encore de valeur.\n\n| Instruction exécutée | N | i | F | Affichage |\n|---|---|---|---|---|\n| `Ecrire` du message | ? | ? | ? | Entrer un nombre entier positif s'il vous plaît |\n| `Lire (N)`, saisie de 5 | 5 | ? | ? | |\n| `F ← 1` | 5 | ? | 1 | |\n| Tour 1 : i = 1, `F ← 1 × 1` | 5 | 1 | 1 | |\n| Tour 2 : i = 2, `F ← 1 × 2` | 5 | 2 | 2 | |\n| Tour 3 : i = 3, `F ← 2 × 3` | 5 | 3 | 6 | |\n| Tour 4 : i = 4, `F ← 6 × 4` | 5 | 4 | 24 | |\n| Tour 5 : i = 5, `F ← 24 × 5` | 5 | 5 | 120 | |\n| Fin de boucle, `Ecrire (F)` | 5 | 5 ou 6 | 120 | 120 |\n\nLa boucle `Pour` fait exactement $5 - 1 + 1 = 5$ tours, car `i` prend successivement les valeurs 1, 2, 3, 4 et 5. Après le cinquième tour, la boucle se termine : la valeur de `i` n'est plus à utiliser (selon les langages elle vaut 5 ou 6). L'algorithme affiche **120**.\n\n### Piège à éviter\nNe saute pas l'initialisation `F ← 1` : si tu pars de `F = 0`, tu obtiens 0 à chaque tour. Écris aussi une ligne par tour de boucle, sans regrouper deux tours, sinon tu perds les points du suivi.\n\n### Conseil\nPrépare le tableau avant de lire l'algorithme : une colonne par variable, plus une colonne pour l'affichage. Le jour de l'examen, le correcteur compare ligne à ligne avec son propre tableau.",
+      "themes": [
+        "trace d'exécution",
+        "boucle pour",
+        "tableau de suivi",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.2-0",
+          "competence": "Exécuter pas à pas un algorithme à boucle Pour avec un tableau de suivi",
+          "contenu_markdown": "Exécuter un algorithme pas à pas consiste à tenir un tableau de suivi avec une colonne par variable et une ligne par action ou par tour de boucle, en recopiant les valeurs exactes après chaque instruction. On part des valeurs lues ou initialisées, on applique les instructions dans l'ordre, et on s'arrête quand la condition de poursuite de la boucle n'est plus vérifiée.",
+          "cours_genere": true,
+          "cours_id": "cours-executer-pas-a-pas-un-algorithme-a-boucle-pour-avec-un-tableau-de-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "4.3",
+      "enonce_markdown": "**4.3.** En déduire ce que fait exactement cet algorithme (trace d'exécution). *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour dire ce que fait un algorithme, on repère le rôle de chaque variable (compteur, accumulateur), puis on compare les valeurs successives de la trace à des suites connues (sommes, produits, puissances, factorielles) avant de formuler le résultat par une expression générale en fonction de la donnée lue.\n\nLa variable `i` est le compteur, la variable `F` est un accumulateur multiplicatif initialisé à 1. Les valeurs de `F` dans la trace valent 1 au départ, puis 1, 2, 6, 24, 120 après chaque tour : ce sont les factorielles $0!, 1!, 2!, 3!, 4!, 5!$.\n\nÀ chaque tour, `F` est multiplié par le compteur `i`, donc à la sortie :\n\n$$F = 1 \\times 2 \\times 3 \\times \\dots \\times N = N!$$\n\nL'algorithme **calcule et affiche la factorielle de l'entier `N`** saisi. Pour N = 5, il affiche $5! = 120$. Si N = 0, la boucle ne s'exécute pas et `F` reste égal à 1, ce qui correspond bien à la convention $0! = 1$.\n\n### Piège à éviter\nNe dis pas « il calcule 5 fois 5 » ni « la somme de 1 à N » : la trace montre des produits qui grandissent vite (1, 2, 6, 24, 120), pas des sommes. Pour une somme, `F` serait initialisé à 0 et on ajouterait `i`.\n\n### Conseil\nRéponds toujours par une formule en `N` (ici $N!$), puis donne la valeur obtenue pour la donnée de l'exercice (ici 120) : la formule montre que tu as compris, la valeur montre que tu as vérifié.",
+      "themes": [
+        "factorielle",
+        "trace d'exécution",
+        "accumulateur",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.3-0",
+          "competence": "Déduire le rôle d'un algorithme à partir de sa trace d'exécution (factorielle)",
+          "contenu_markdown": "Pour dire ce que fait un algorithme, on repère le rôle de chaque variable (compteur, accumulateur), puis on compare les valeurs successives de la trace à des suites connues (sommes, produits, puissances, factorielles) avant de formuler le résultat par une expression générale en fonction de la donnée lue.",
+          "cours_genere": true,
+          "cours_id": "cours-deduire-le-role-d-un-algorithme-a-partir-de-sa-trace-d-execution-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "4.4",
+      "enonce_markdown": "**4.4.** Représenter l'algorigramme correspondant à cet algorithme. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn algorigramme (ou ordinogramme) représente un algorithme par des symboles normalisés reliés par des flèches : ovale pour le début et la fin, parallélogramme pour les entrées et sorties, rectangle pour les traitements (affectations), losange pour les tests. Une boucle `Pour` se dessine en quatre temps : initialisation du compteur, losange qui teste la borne, corps de la boucle, puis incrémentation du compteur avec retour vers le losange.\n\nOn traduit les instructions dans l'ordre, avec le symbole qui convient à chacune :\n\n| Instruction | Symbole |\n|---|---|\n| `Début`, `Fin` | ovale |\n| `Ecrire` (message), `Lire (N)`, `Ecrire (F)` | parallélogramme |\n| `F ← 1`, `i ← 1`, `F ← F × i`, `i ← i + 1` | rectangle |\n| test de poursuite de la boucle `i ≤ N` | losange à deux sorties, Oui et Non |\n\nConstruction pas à pas :\n\n1. Ovale **Début**, puis parallélogramme du message, parallélogramme `Lire (N)`.\n2. Rectangles d'initialisation `F ← 1` puis `i ← 1` : le compteur reçoit sa première valeur avant le test, comme le fait implicitement `Pour i Allant de 1 à ...`.\n3. Losange `i ≤ N ?` : la sortie **Oui** conduit au corps de la boucle, la sortie **Non** à la suite.\n4. Sur la branche Oui : rectangle `F ← F × i`, puis rectangle `i ← i + 1`, puis une flèche qui revient au losange (c'est elle qui forme la boucle).\n5. Sur la branche Non : parallélogramme `Ecrire (F)` et ovale **Fin**.\n\n![fig-1](probatoire-ti-algorithmique-2020-zero-cameroun_exercice_1_fig_1.png)\n\nContrôle avec N = 5 : le losange est vrai pour i = 1, 2, 3, 4, 5 (5 passages par la branche Oui), faux pour i = 6, et l'algorigramme affiche alors 120.\n\n### Piège à éviter\nLes deux fautes classiques : oublier la flèche de retour vers le losange (le dessin ne boucle plus) et mettre l'incrémentation `i ← i + 1` avant `F ← F × i`, ce qui calculerait $2 \\times 3 \\times \\dots \\times (N+1)$ au lieu de $N!$.\n\n### Conseil\nDessine les symboles à la règle et écris « Oui » et « Non » sur les deux sorties du losange : un losange dont les sorties ne sont pas étiquetées fait perdre des points.",
+      "themes": [
+        "algorigramme",
+        "boucle pour",
+        "organigramme",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.4-0",
+          "competence": "Représenter un algorithme à boucle Pour par un algorigramme",
+          "contenu_markdown": "Un algorigramme (ou ordinogramme) représente un algorithme par des symboles normalisés reliés par des flèches : ovale pour le début et la fin, parallélogramme pour les entrées et sorties, rectangle pour les traitements (affectations), losange pour les tests. Une boucle `Pour` se dessine en quatre temps : initialisation du compteur, losange qui teste la borne, corps de la boucle, puis incrémentation du compteur avec retour vers le losange.",
+          "cours_genere": true,
+          "cours_id": "cours-representer-un-algorithme-a-boucle-pour-par-un-algorigramme-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "4.5",
+      "enonce_markdown": "**4.5.** Réécrire cet algorithme en utilisant la boucle Tant que. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne boucle `Pour` se transforme en `Tant que` en trois gestes : on initialise le compteur avant la boucle, on écrit la condition de poursuite (compteur ≤ borne) après `Tant que`, et on incrémente le compteur à la dernière ligne du corps de la boucle, ce que `Pour` faisait automatiquement.\n\nLe compteur `i`, géré tout seul par `Pour`, doit maintenant être géré à la main : initialisation `i ← 1` avant la boucle, condition `i ≤ N`, incrémentation `i ← i + 1` à la fin du corps.\n\n```\nAlgorithme test\nVar N, F, i : Entier ;\nDébut\n    Ecrire (\"Entrer un nombre entier positif s'il vous plaît\") ;\n    Lire (N) ;\n    F ← 1 ;\n    i ← 1 ;\n    Tant que i ≤ N Faire\n        F ← F × i ;\n        i ← i + 1 ;\n    FinTantQue\n    Ecrire (F) ;\nFin\n```\n\nVérification pour N = 5 : `i` vaut 1, 2, 3, 4, 5 pendant les cinq tours, `F` prend les valeurs 1, 2, 6, 24, 120, puis `i` vaut 6, la condition `6 ≤ 5` est fausse et la boucle s'arrête. L'affichage est 120, comme avec `Pour`. Les deux versions donnent le même résultat pour toute valeur de N de 0 à 12 (contrôle fait par programme), et pour N = 0 la boucle ne s'exécute pas et `F` vaut 1.\n\n### Piège à éviter\nOublier `i ← i + 1` produit une boucle infinie : `i` reste à 1 et la condition `i ≤ N` reste vraie. Oublier `i ← 1` laisse `i` sans valeur au premier test. Écrire `i < N` au lieu de `i ≤ N` fait un tour de moins et calcule $(N-1)!$.\n\n### Conseil\nAprès avoir réécrit une boucle, refais mentalement le dernier tour et le test qui suit : si `i` atteint bien `N + 1`, la boucle s'arrête au bon moment.",
+      "themes": [
+        "boucle tant que",
+        "boucle pour",
+        "structure itérative",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.5-0",
+          "competence": "Transformer une boucle Pour en boucle Tant que en pseudo-code",
+          "contenu_markdown": "Une boucle `Pour` se transforme en `Tant que` en trois gestes : on initialise le compteur avant la boucle, on écrit la condition de poursuite (compteur ≤ borne) après `Tant que`, et on incrémente le compteur à la dernière ligne du corps de la boucle, ce que `Pour` faisait automatiquement.",
+          "cours_genere": true,
+          "cours_id": "cours-transformer-une-boucle-pour-en-boucle-tant-que-en-pseudo-code-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.1.a",
+      "enonce_markdown": "**5.** On donne le programme C ci-dessous (la numérotation des lignes fait partie du sujet) :\n\n```c\n1  #include <stdio.h>\n2  int main (void) {\n3  double X,Y;\n4  int n , i ;\n5  printf(\" tapez les valeurs de X et n \\n\") ;\n6  scanf(\"%lf,%d\",&X, &n) ;\n7  Y=1.0 ;\n8  i=1;\n9  while (i <= n) {\n10 Y = Y * X;\n11 i=i+1;\n12 }\n13 printf(\" %lf puissance %d vaut %lf \\n \", X ,n , Y ) ;\n14 }\n```\n\n**5.1.a)** Citer un exemple de langage de programmation interprété. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir un type de langage selon son mode de traduction, précise l'outil qui traduit le code source, le moment de la traduction par rapport à l'exécution, puis la conséquence sur l'apparition des erreurs.\n\nUn langage interprété est exécuté instruction par instruction par un interpréteur qui lit le code source à chaque exécution, sans produire au préalable de fichier exécutable : les erreurs apparaissent donc au moment où l'instruction fautive est atteinte. JavaScript, Python, PHP ou Ruby sont des exemples classiques, à ne pas confondre avec les langages compilés.\n\n**JavaScript** est un langage interprété : le navigateur lit le script et exécute ses instructions l'une après l'autre, sans étape de compilation préalable. C'est d'ailleurs le langage du script étudié dans la partie II de cette épreuve.\n\nAutres exemples acceptés : Python, PHP, Ruby, Perl, BASIC.\n\n### Piège à éviter\nHTML et CSS ne sont pas des langages de programmation : l'un décrit la structure d'une page, l'autre sa présentation. Évite aussi de citer C, C++ ou Pascal, qui sont des langages compilés (c'est la question suivante).\n\n### Conseil\nChoisis un langage que tu connais vraiment et ajoute une demi-phrase pour justifier (« exécuté ligne par ligne par un interpréteur ») : une réponse justifiée est plus sûre qu'un simple nom.",
+      "themes": [
+        "langage interprété",
+        "langage de programmation",
+        "JavaScript",
+        "programmation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.1.a-0",
+          "competence": "Reconnaître un langage de programmation interprété",
+          "contenu_markdown": "Pour définir un type de langage selon son mode de traduction, précise l'outil qui traduit le code source, le moment de la traduction par rapport à l'exécution, puis la conséquence sur l'apparition des erreurs.",
+          "cours_genere": true,
+          "cours_id": "cours-reconnaitre-un-langage-de-programmation-interprete-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.1.b",
+      "enonce_markdown": "**5.1.b)** Citer un exemple de langage de programmation compilé. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour citer un exemple de langage selon son mode de traduction, rappelle quel outil traduit le code avant l'exécution, puis donne le nom exact d'un langage qui fonctionne ainsi, sans nom de logiciel ni de format de fichier.\n\nUn langage compilé est traduit en une seule fois, avant l'exécution, en code machine par un compilateur : le programme source donne un fichier exécutable que l'ordinateur lance directement, et les erreurs de syntaxe sont détectées avant tout lancement. Le C, le C++, le Pascal et le Fortran sont des exemples classiques.\n\nLe **langage C**, celui du programme de l'énoncé, est un langage compilé. Un compilateur comme GCC traduit le fichier source `.c` en fichier objet, puis l'éditeur de liens produit un exécutable que l'on lance sans avoir besoin du compilateur. Autres exemples : C++, Pascal, Fortran, Ada.\n\n### Piège à éviter\nNe cite pas Java sans précaution : il est compilé en bytecode puis interprété par une machine virtuelle, ce qui prête à discussion. Reste sur un langage au statut sans ambiguïté, comme le C ou le Pascal.\n\n### Conseil\nRetiens le critère : s'il faut produire un fichier exécutable avant de lancer le programme (`.exe`), le langage est compilé.",
+      "themes": [
+        "langage compilé",
+        "compilation",
+        "langage C",
+        "programmation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.1.b-0",
+          "competence": "Reconnaître un langage de programmation compilé",
+          "contenu_markdown": "Pour citer un exemple de langage selon son mode de traduction, rappelle quel outil traduit le code avant l'exécution, puis donne le nom exact d'un langage qui fonctionne ainsi, sans nom de logiciel ni de format de fichier.",
+          "cours_genere": true,
+          "cours_id": "cours-reconnaitre-un-langage-de-programmation-compile-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.2.a",
+      "enonce_markdown": "**5.2.a)** Identifier dans ce programme deux types de base du langage C. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLes types de base du langage C sont `int` (entiers), `float` et `double` (réels), et `char` (caractères). On les repère au début des lignes de déclaration de variables, de la forme `type nom1, nom2 ;`, et non dans les appels de fonctions ni dans les chaînes de caractères.\n\nLes lignes de déclaration du programme sont les lignes 3 et 4 :\n\n- ligne 3 : `double X,Y;` déclare deux réels en double précision, `X` et `Y` ;\n- ligne 4 : `int n , i ;` déclare deux entiers, `n` et `i`.\n\nLes deux types de base utilisés sont donc **`double`** et **`int`**.\n\n### Piège à éviter\nNe cite pas `void` (dans `main (void)`) : il indique que la fonction ne reçoit aucun paramètre, ce n'est pas un type de base de données. N'écris pas non plus `%lf` ou `%d`, qui sont des codes de format de `scanf` et `printf`.\n\n### Conseil\nMentionne le numéro de la ligne où chaque type apparaît : c'est la preuve que tu as lu le programme.",
+      "themes": [
+        "types de base",
+        "déclaration de variables",
+        "langage C",
+        "programmation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.a-0",
+          "competence": "Identifier les types de base du langage C dans un programme",
+          "contenu_markdown": "Les types de base du langage C sont `int` (entiers), `float` et `double` (réels), et `char` (caractères). On les repère au début des lignes de déclaration de variables, de la forme `type nom1, nom2 ;`, et non dans les appels de fonctions ni dans les chaînes de caractères.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-types-de-base-du-langage-c-dans-un-programme-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.2.b",
+      "enonce_markdown": "**5.2.b)** Identifier dans ce programme une instruction d'initialisation de variable. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nInitialiser une variable, c'est lui donner sa première valeur par une affectation (`variable = valeur ;`) avant de l'utiliser dans un calcul. Une simple déclaration réserve de la place mais ne fixe aucune valeur : une variable locale non initialisée contient une valeur indéterminée, et une valeur saisie par `scanf` n'est pas une initialisation écrite dans le code.\n\nDeux instructions du programme initialisent une variable :\n\n- `Y=1.0 ;` à la ligne 7, qui donne à `Y` la valeur 1,0 ;\n- `i=1;` à la ligne 8, qui donne au compteur `i` la valeur 1.\n\nIl suffit d'en citer une. L'initialisation de `Y` à 1,0 est indispensable : `Y` est lu à la ligne 10 (`Y = Y * X`), et 1 est l'élément neutre de la multiplication. Sans elle, `Y` contiendrait une valeur imprévisible et le résultat serait faux.\n\n### Piège à éviter\nNe cite pas les lignes 3 et 4 : ce sont des déclarations, qui ne donnent aucune valeur. Les lignes 10 et 11 sont des mises à jour, pas des initialisations, puisque `Y` et `i` ont déjà reçu une valeur.\n\n### Conseil\nPour reconnaître une initialisation, cherche la première ligne où la variable apparaît à gauche d'un signe `=` avec une valeur constante.",
+      "themes": [
+        "initialisation de variable",
+        "affectation",
+        "langage C",
+        "programmation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.b-0",
+          "competence": "Repérer l'initialisation d'une variable dans un programme C",
+          "contenu_markdown": "Initialiser une variable, c'est lui donner sa première valeur par une affectation (`variable = valeur ;`) avant de l'utiliser dans un calcul. Une simple déclaration réserve de la place mais ne fixe aucune valeur : une variable locale non initialisée contient une valeur indéterminée, et une valeur saisie par `scanf` n'est pas une initialisation écrite dans le code.",
+          "cours_genere": true,
+          "cours_id": "cours-reperer-l-initialisation-d-une-variable-dans-un-programme-c-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.2.c",
+      "enonce_markdown": "**5.2.c)** Identifier dans ce programme le nom d'une bibliothèque. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne bibliothèque du langage C est un ensemble de fonctions prédéfinies regroupées dans un fichier d'en-tête de suffixe `.h`, que le programme inclut au début par la directive `#include <nom.h>` : le nom de la bibliothèque est le nom de ce fichier, écrit entre chevrons.\n\nLa ligne 1 est `#include <stdio.h>` : la bibliothèque incluse est **`stdio.h`** (Standard Input Output, entrées-sorties standard). Elle déclare les fonctions d'affichage et de saisie utilisées plus bas, `printf` et `scanf`.\n\n### Piège à éviter\n`#include` est la directive d'inclusion, pas le nom de la bibliothèque. Écris bien `stdio.h`, avec son suffixe `.h`.\n\n### Conseil\nAssocie toujours une bibliothèque aux fonctions qu'elle fournit : `stdio.h` pour `printf` et `scanf`, `math.h` pour `sqrt` et `pow`, `string.h` pour `strcpy`.",
+      "themes": [
+        "bibliothèque",
+        "directive include",
+        "langage C",
+        "programmation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.c-0",
+          "competence": "Identifier la bibliothèque incluse par un programme C (directive include)",
+          "contenu_markdown": "Une bibliothèque du langage C est un ensemble de fonctions prédéfinies regroupées dans un fichier d'en-tête de suffixe `.h`, que le programme inclut au début par la directive `#include <nom.h>` : le nom de la bibliothèque est le nom de ce fichier, écrit entre chevrons.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-la-bibliotheque-incluse-par-un-programme-c-directive-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.2.d",
+      "enonce_markdown": "**5.2.d)** Identifier dans ce programme deux fonctions prédéfinies. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne fonction prédéfinie est fournie par une bibliothèque : on l'appelle sans l'écrire, en donnant son nom suivi de ses arguments entre parenthèses. On la distingue d'une fonction écrite par le programmeur, comme `main`, dont le corps figure dans le programme lui-même.\n\nLe programme appelle deux fonctions de la bibliothèque `stdio.h` :\n\n- **`printf`**, aux lignes 5 et 13, qui affiche un texte et des valeurs à l'écran ;\n- **`scanf`**, à la ligne 6, qui lit au clavier les valeurs de `X` et de `n`.\n\nLa fonction `main` (ligne 2) n'est pas prédéfinie : c'est le programmeur qui l'écrit, et son corps se trouve dans le programme.\n\n### Piège à éviter\nNe cite pas `main` : elle est définie dans le programme, pas fournie par une bibliothèque. Ne cite pas non plus `while`, qui est une instruction du langage et non une fonction.\n\n### Conseil\nPrécise la bibliothèque d'où vient chaque fonction (`stdio.h`) pour montrer que tu relies les deux réponses 5.2.c et 5.2.d.",
+      "themes": [
+        "fonction prédéfinie",
+        "printf et scanf",
+        "langage C",
+        "programmation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.d-0",
+          "competence": "Reconnaître les fonctions prédéfinies d'un programme C (printf, scanf)",
+          "contenu_markdown": "Une fonction prédéfinie est fournie par une bibliothèque : on l'appelle sans l'écrire, en donnant son nom suivi de ses arguments entre parenthèses. On la distingue d'une fonction écrite par le programmeur, comme `main`, dont le corps figure dans le programme lui-même.",
+          "cours_genere": true,
+          "cours_id": "cours-reconnaitre-les-fonctions-predefinies-d-un-programme-c-printf-scanf-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.3",
+      "enonce_markdown": "**5.3.** Donner un exemple d'IDE qui permettra de tester ce programme. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn IDE (environnement de développement intégré) réunit dans un seul logiciel un éditeur de code, un compilateur, un débogueur et un lanceur de programme. Pour tester un programme C avec un IDE, on crée un projet de type application console, on saisit ou colle le code, on compile puis on exécute, et on corrige les erreurs signalées.\n\n**Code::Blocks**, associé au compilateur GCC (MinGW), permet de tester ce programme. Autres exemples : Dev-C++, CodeLite, Eclipse avec CDT, Visual Studio Code avec l'extension C/C++ et un compilateur GCC installé.\n\nPour tester le programme dans Code::Blocks :\n\n1. créer un projet « Console application » en langage C ;\n2. remplacer le contenu de `main.c` par le code de l'énoncé ;\n3. lancer la commande « Build and run » (touche F9) ;\n4. à l'invite `tapez les valeurs de X et n`, saisir par exemple `2,10` : le programme affiche `2.000000 puissance 10 vaut 1024.000000` (ce résultat a été vérifié par exécution du programme).\n\nLa virgule entre les deux valeurs est obligatoire, parce que le format `\"%lf,%d\"` de `scanf` impose une virgule entre `X` et `n`.\n\n### Piège à éviter\nUn simple éditeur de texte (Bloc-notes) ou le compilateur seul (GCC en ligne de commande) n'est pas un IDE : il faut un seul logiciel qui regroupe l'édition, la compilation et l'exécution. Évite aussi de citer un navigateur ou WampServer, qui ne compilent pas le C.\n\n### Conseil\nCite l'IDE avec son compilateur (« Code::Blocks avec GCC ») : tu montres que tu sais qu'un IDE a besoin d'un compilateur pour produire l'exécutable.",
+      "themes": [
+        "IDE",
+        "compilation",
+        "langage C",
+        "programmation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.3-0",
+          "competence": "Choisir un environnement de développement intégré (IDE) pour tester un programme C",
+          "contenu_markdown": "Un IDE (environnement de développement intégré) réunit dans un seul logiciel un éditeur de code, un compilateur, un débogueur et un lanceur de programme. Pour tester un programme C avec un IDE, on crée un projet de type application console, on saisit ou colle le code, on compile puis on exécute, et on corrige les erreurs signalées.",
+          "cours_genere": true,
+          "cours_id": "cours-choisir-un-environnement-de-developpement-integre-ide-pour-tester-un-ti-algo-2020-zero"
+        }
+      ]
+    },
+    {
+      "numero": "5.4",
+      "enonce_markdown": "**5.4.** Réécrire ce programme en utilisant la structure `for ( )`. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa boucle `for (initialisation ; condition ; pas)` rassemble sur une seule ligne les trois éléments d'une boucle à compteur : initialisation avant le premier tour, condition de poursuite testée avant chaque tour, mise à jour après chaque tour. Pour convertir un `while`, on retire l'initialisation placée avant la boucle et l'incrémentation placée à la fin du corps, et on les range dans l'en-tête du `for`.\n\nDans le programme d'origine, le compteur est initialisé ligne 8 (`i=1;`), testé ligne 9 (`i <= n`) et incrémenté ligne 11 (`i=i+1;`). On déplace ces trois éléments dans l'en-tête du `for`, et le corps ne garde que `Y = Y * X;` :\n\n```c\n#include <stdio.h>\nint main (void) {\n    double X, Y;\n    int n, i;\n    printf(\" tapez les valeurs de X et n \\n\");\n    scanf(\"%lf,%d\", &X, &n);\n    Y = 1.0;\n    for (i = 1; i <= n; i++) {\n        Y = Y * X;\n    }\n    printf(\" %lf puissance %d vaut %lf \\n \", X, n, Y);\n    return 0;\n}\n```\n\nLe programme calcule $Y = X^n$ par multiplications successives. Les deux versions ont été compilées avec GCC et comparées :\n\n| Saisie | Affichage des deux versions |\n|---|---|\n| `2,10` | 2.000000 puissance 10 vaut 1024.000000 |\n| `3,0` | 3.000000 puissance 0 vaut 1.000000 |\n| `1.5,3` | 1.500000 puissance 3 vaut 3.375000 |\n| `2.5,4` | 2.500000 puissance 4 vaut 39.062500 |\n\nPour n = 0 la boucle ne s'exécute pas et `Y` reste à 1,0, ce qui correspond à $X^0 = 1$. L'ajout de `return 0;` est facultatif en C99 (la fonction `main` retourne 0 en atteignant son accolade finale), mais il est conseillé.\n\n### Piège à éviter\nNe garde pas `i=i+1;` dans le corps en plus de `i++` dans l'en-tête : le compteur avancerait de 2 à chaque tour et le calcul serait faux. Garde aussi la virgule du format de `scanf` et saisis-la : avec la saisie `2 10`, `scanf` ne lit que `X`, et `n` garde une valeur indéterminée.\n\n### Conseil\nÉcris l'en-tête du `for` en lisant les lignes du `while` de haut en bas : initialisation, condition, mise à jour. Le jour de l'examen, vérifie que la variable `i` n'est plus modifiée dans le corps.",
+      "themes": [
+        "boucle for",
+        "boucle while",
+        "langage C",
+        "conversion de boucle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.4-0",
+          "competence": "Convertir une boucle while en boucle for en langage C",
+          "contenu_markdown": "La boucle `for (initialisation ; condition ; pas)` rassemble sur une seule ligne les trois éléments d'une boucle à compteur : initialisation avant le premier tour, condition de poursuite testée avant chaque tour, mise à jour après chaque tour. Pour convertir un `while`, on retire l'initialisation placée avant la boucle et l'incrémentation placée à la fin du corps, et on les range dans l'en-tête du `for`.",
+          "cours_genere": true,
+          "cours_id": "cours-convertir-une-boucle-while-en-boucle-for-en-langage-c-ti-algo-2020-zero"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "algorithmique",
+    "enregistrement",
+    "tableau",
+    "factorielle",
+    "boucle Pour",
+    "boucle Tant que",
+    "algorigramme",
+    "langage C",
+    "printf scanf",
+    "boucle for",
+    "IDE",
+    "probatoire TI sujet zéro 2020"
+  ],
+  "incertitudes": [
+    "Pas de corrigé officiel sur la page : toutes les réponses sont des modèles rédigés ; le sujet n'imprime que les points par question, sans barème de correction détaillé.",
+    "Sujet zéro officiel : la page n'indique ni la durée ni le coefficient (duree_epreuve et coefficient laissés à null).",
+    "Série TI retenue d'après le titre de la page (« épreuve zéro d'algorithmique et programmation au probatoire TI 2020 ») ; les images sont rangées dans un dossier nommé probatoire_A mais le texte ne mentionne pas la série A.",
+    "Coquilles de l'énoncé de la Partie I : « cette bibliothèque » (il s'agit d'un établissement scolaire) ; âge imprimé « 14 » entre apostrophes alors que le champ age est un entier (corrigé : age ← 14) ; nom TIGUINGUI imprimé sans apostrophes.",
+    "Question 4.3 : l'intitulé « trace d'exécution de ce que fait exactement cet algorithme » est lu comme « dire ce que calcule l'algorithme » (la factorielle de N).",
+    "Questions 1.a, 3, 5.1, 5.2.b, 5.2.d et 5.3 : plusieurs réponses sont acceptables, le corrigé en propose une ou deux et signale les autres."
+  ],
+  "statut": "brouillon"
+}

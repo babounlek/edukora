@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-derouler-un-algorithme-avec-un-tableau-de-suivi-probatoire-acd-2015",
+  "meta": {
+    "titre": "Dérouler un algorithme avec un tableau de suivi",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : exécution d'un algorithme",
+    "duree_estimee_min": 30,
+    "tags": [
+      "algorithme",
+      "affectation",
+      "tableau de suivi",
+      "trace d'exécution",
+      "priorité des opérations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2015-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2015 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire des algorithmes, il faut savoir en lire un comme le ferait l'ordinateur : une instruction après l'autre, sans rien deviner. Ce qu'on te demande souvent à l'examen n'est pas de créer, mais de dire ce que vaut chaque variable à la fin. Le tableau de suivi est l'outil qui rend cet exercice sûr."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et son type",
+        "Connaître l'affectation notée ←",
+        "Connaître la priorité de la multiplication sur l'addition"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Exécuter un algorithme à la main",
+      "contenu_markdown": "Une variable est une case mémoire qui porte un nom et contient **une seule valeur à la fois**.\n\nL'**affectation** `X ← expression` s'exécute en deux temps :\n\n1. on calcule l'expression avec les valeurs **actuelles** des variables ;\n2. on range le résultat dans X, ce qui **efface** l'ancienne valeur de X.\n\nSeule la variable de gauche change.\n\n**Priorités des opérateurs :** les parenthèses, puis `*` et `/`, puis `+` et `-`.\n\n**Méthode du tableau de suivi :**\n\n1. une colonne par variable, une ligne par instruction ;\n2. on écrit `?` pour une variable non initialisée ;\n3. à chaque ligne, on recopie les valeurs de la ligne précédente et on ne modifie que la variable affectée ;\n4. la dernière ligne donne le contenu final.",
+      "variantes": [
+        {
+          "nom": "Boucle Pour",
+          "quand_utiliser": "Quand l'algorithme répète une instruction un nombre connu de fois.",
+          "contenu_markdown": "On ajoute une colonne pour le compteur et on écrit une ligne par passage dans la boucle : `Pour I de 1 à 4` donne quatre lignes, avec I = 1, 2, 3, 4."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Quels seront les contenus des variables A, B, C et D après exécution de l'algorithme `A ← 3 ; C ← 4 ; B ← A + 2 * 5 ; D ← A * B + C ; A ← D` ? (Probatoire A, C, D, 2015)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Construire le tableau",
+          "justification": "Quatre variables, donc quatre colonnes ; cinq instructions, donc cinq lignes.",
+          "resultat_markdown": "Colonnes A, B, C, D ; état initial `?` partout."
+        },
+        {
+          "numero": 2,
+          "action": "`A ← 3` puis `C ← 4`",
+          "justification": "Ce sont des affectations de constantes.",
+          "resultat_markdown": "A = 3 ; C = 4 ; B et D toujours `?`."
+        },
+        {
+          "numero": 3,
+          "action": "`B ← A + 2 * 5`",
+          "justification": "On calcule avec la valeur actuelle de A, la multiplication d'abord.",
+          "resultat_markdown": "2 * 5 = 10 ; 3 + 10 = 13 ; B = 13."
+        },
+        {
+          "numero": 4,
+          "action": "`D ← A * B + C`",
+          "justification": "Multiplication d'abord, puis addition, avec les valeurs actuelles.",
+          "resultat_markdown": "3 * 13 = 39 ; 39 + 4 = 43 ; D = 43."
+        },
+        {
+          "numero": 5,
+          "action": "`A ← D`",
+          "justification": "On recopie la valeur de D dans A, ce qui écrase l'ancienne valeur 3.",
+          "resultat_markdown": "A = 43 ; D reste 43."
+        },
+        {
+          "numero": 6,
+          "action": "Lire la dernière ligne",
+          "justification": "La dernière ligne du tableau donne les contenus finaux.",
+          "resultat_markdown": "A = 43, B = 13, C = 4, D = 43."
+        }
+      ],
+      "conclusion_markdown": "Après exécution : A = 43, B = 13, C = 4, D = 43."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer `A + 2 * 5` de gauche à droite : (3 + 2) * 5 = 25.",
+          "pourquoi_faux": "La multiplication a priorité sur l'addition : 2 * 5 se calcule avant d'ajouter A. On aurait trouvé B = 25 et D = 79, résultats faux.",
+          "correction_markdown": "Entourer mentalement `2 * 5`, calculer 10, puis ajouter A."
+        },
+        {
+          "erreur_markdown": "Penser que A vaut toujours 3 à la fin.",
+          "pourquoi_faux": "L'instruction `A ← D` affecte une nouvelle valeur à A : l'ancienne est perdue.",
+          "correction_markdown": "Toujours terminer par la dernière ligne du tableau."
+        },
+        {
+          "erreur_markdown": "Lire `A ← D` comme « D reçoit la valeur de A ».",
+          "pourquoi_faux": "La flèche va de droite à gauche : la valeur de l'expression de droite est rangée dans la variable de gauche. D n'est pas modifié.",
+          "correction_markdown": "Se dire : « A reçoit D ». Le côté gauche seul change."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne les valeurs finales de X et Y : `X ← 5 ; Y ← X * 2 + 1 ; X ← Y - 3`.",
+          "solution_markdown": "| Instruction | X | Y |\n|---|---|---|\n| départ | ? | ? |\n| `X ← 5` | 5 | ? |\n| `Y ← X * 2 + 1` | 5 | 11 |\n| `X ← Y - 3` | 8 | 11 |\n\nDétail : 5 * 2 = 10, 10 + 1 = 11 ; puis 11 - 3 = 8. Résultat : X = 8, Y = 11."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Échanger A et B. Départ : `A ← 7 ; B ← 2`. Comparer `T ← A ; A ← B ; B ← T` avec `A ← B ; B ← A`.",
+          "solution_markdown": "Avec la variable temporaire T :\n\n| Instruction | A | B | T |\n|---|---|---|---|\n| `A ← 7` ; `B ← 2` | 7 | 2 | ? |\n| `T ← A` | 7 | 2 | 7 |\n| `A ← B` | 2 | 2 | 7 |\n| `B ← T` | 2 | 7 | 7 |\n\nA et B sont bien échangés (A = 2, B = 7).\n\nSans variable temporaire : `A ← B` donne A = 2 et B = 2 ; `B ← A` recopie 2 dans B, qui vaut déjà 2. L'ancienne valeur de A (7) est perdue : A = 2, B = 2. D'où le rôle de T, qui sauvegarde la valeur avant qu'elle soit écrasée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que vaut S à la fin ? `S ← 0 ; Pour I de 1 à 4 faire S ← S + I * I ; FinPour`.",
+          "solution_markdown": "Colonne supplémentaire pour le compteur I :\n\n| Passage | I | Calcul | S |\n|---|---|---|---|\n| départ | ? | `S ← 0` | 0 |\n| 1 | 1 | 0 + 1 * 1 = 1 | 1 |\n| 2 | 2 | 1 + 2 * 2 = 5 | 5 |\n| 3 | 3 | 5 + 3 * 3 = 14 | 14 |\n| 4 | 4 | 14 + 4 * 4 = 30 | 30 |\n\nS vaut 30 : c'est la somme des carrés 1 + 4 + 9 + 16."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une affectation calcule à droite avec les valeurs du moment, puis écrase la variable de gauche.",
+        "La multiplication passe avant l'addition : écris le calcul partiel avant de le conclure.",
+        "Le tableau de suivi : une colonne par variable, une ligne par instruction, `?` pour une variable non initialisée.",
+        "Seule la variable affectée change de ligne en ligne.",
+        "Le tableau de suivi s'applique à toute question « que contiennent les variables après exécution ? », fréquente au Probatoire en informatique théorique."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-executer-pas-a-pas-un-algorithme-a-boucle-pour-avec-un-tableau-de-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Exécuter pas à pas un algorithme à boucle Pour avec un tableau de suivi",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Exécution d'un algorithme",
+    "duree_estimee_min": 24,
+    "tags": [
+      "trace d'exécution",
+      "tableau de suivi",
+      "boucle Pour",
+      "variables"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as sous les yeux un algorithme dont tu ne connais pas le résultat. Pour le découvrir sans ordinateur, tu fais ce que ferait la machine : exécuter chaque ligne dans l'ordre et noter ce que devient chaque variable. Cette technique s'appelle l'exécution pas à pas, ou trace d'exécution. Elle sert à tester un algorithme, à comprendre ce qu'il calcule et à trouver ses erreurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire les instructions simples (lecture, écriture, affectation)",
+        "Connaître le fonctionnement de la boucle `Pour` : compteur, bornes, nombre de tours",
+        "Savoir calculer mentalement des produits et des sommes simples"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le tableau de suivi",
+      "contenu_markdown": "Exécuter pas à pas un algorithme, c'est remplir un **tableau de suivi** :\n\n1. une **colonne par variable** (et une colonne « Affichage » pour les `Ecrire`) ;\n2. une **ligne par instruction exécutée**, et une ligne par tour de boucle ;\n3. recopier la valeur de **chaque** variable à chaque ligne, même celles qui ne changent pas ;\n4. marquer `?` une variable qui n'a pas encore de valeur.\n\nPour une boucle `Pour i Allant de a à b Faire`, le nombre de tours est :\n\n$$\\text{nombre de tours} = b - a + 1 \\quad (\\text{si } b \\geq a), \\qquad 0 \\text{ sinon}$$\n\nLa boucle s'arrête quand le compteur dépasse la borne : le corps de la boucle n'est alors plus exécuté. On exécute ensuite les instructions situées après `FinPour`.",
+      "formule_principale": "\\text{nombre de tours} = b - a + 1"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Exécuter pas à pas l'algorithme `test` pour N = 5 : `Lire (N) ; F ← 1 ; Pour i Allant de 1 à N Faire F ← F × i FinPour ; Ecrire (F)`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Créer le tableau de suivi",
+          "justification": "Les variables sont `N`, `i` et `F`, plus une colonne d'affichage",
+          "resultat_markdown": "Colonnes : N, i, F, Affichage"
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter la lecture et l'initialisation",
+          "justification": "`Lire (N)` range 5 dans `N`, puis `F ← 1`",
+          "resultat_markdown": "N = 5, F = 1, i pas encore défini"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le nombre de tours",
+          "justification": "i va de 1 à 5 : $5 - 1 + 1 = 5$ tours",
+          "resultat_markdown": "5 lignes à écrire pour la boucle"
+        },
+        {
+          "numero": 4,
+          "action": "Dérouler les tours de boucle",
+          "justification": "À chaque tour, `i` prend la valeur suivante et `F ← F × i`",
+          "resultat_markdown": "i = 1 : F = 1 ; i = 2 : F = 2 ; i = 3 : F = 6 ; i = 4 : F = 24 ; i = 5 : F = 120"
+        },
+        {
+          "numero": 5,
+          "action": "Sortir de la boucle et afficher",
+          "justification": "Après le tour 5, la boucle se termine, puis `Ecrire (F)` est exécuté",
+          "resultat_markdown": "Affichage : 120"
+        }
+      ],
+      "conclusion_markdown": "Pour N = 5, l'algorithme affiche 120, valeur obtenue en cinq tours de boucle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la ligne d'initialisation `F ← 1`",
+          "pourquoi_faux": "Sans elle, la première multiplication utilise une valeur inconnue ; en partant de 0, on obtiendrait 0 à chaque tour.",
+          "correction_markdown": "Écris une ligne pour chaque instruction, y compris les initialisations avant la boucle."
+        },
+        {
+          "erreur_markdown": "Se tromper de nombre de tours (4 ou 6 au lieu de 5)",
+          "pourquoi_faux": "Un `Pour` de 1 à N exécute exactement N tours ; confondre le nombre de tours et la dernière valeur de `i` décale tout le tableau.",
+          "correction_markdown": "Compte les tours avec $b - a + 1$ et vérifie que ton tableau a autant de lignes."
+        },
+        {
+          "erreur_markdown": "Ne recopier que la variable qui change",
+          "pourquoi_faux": "Le correcteur attend toutes les colonnes remplies à chaque ligne : une variable oubliée fait perdre la lisibilité et des points.",
+          "correction_markdown": "Recopie toutes les valeurs à chaque ligne, même inchangées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Exécuter pas à pas : `S ← 0 ; Pour i Allant de 1 à 4 Faire S ← S + i FinPour ; Ecrire (S)`.",
+          "solution_markdown": "La boucle fait $4 - 1 + 1 = 4$ tours.\n\n| Instruction | i | S | Affichage |\n|---|---|---|---|\n| `S ← 0` | ? | 0 | |\n| Tour 1 : `S ← 0 + 1` | 1 | 1 | |\n| Tour 2 : `S ← 1 + 2` | 2 | 3 | |\n| Tour 3 : `S ← 3 + 3` | 3 | 6 | |\n| Tour 4 : `S ← 6 + 4` | 4 | 10 | |\n| `Ecrire (S)` | | 10 | 10 |\n\nL'algorithme affiche **10**, somme des entiers de 1 à 4."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Exécuter pas à pas pour N = 6 : `Lire (N) ; P ← 1 ; Pour i Allant de 1 à N Faire Si i mod 2 = 0 Alors P ← P × i FinSi FinPour ; Ecrire (P)`, où `i mod 2` est le reste de la division de `i` par 2.",
+          "solution_markdown": "La boucle fait 6 tours. Dans chaque tour, le test `i mod 2 = 0` n'est vrai que pour les valeurs paires de `i`.\n\n| Tour | i | i mod 2 | Test vrai ? | P |\n|---|---|---|---|---|\n| départ | ? | ? | | 1 |\n| 1 | 1 | 1 | non | 1 |\n| 2 | 2 | 0 | oui, `P ← 1 × 2` | 2 |\n| 3 | 3 | 1 | non | 2 |\n| 4 | 4 | 0 | oui, `P ← 2 × 4` | 8 |\n| 5 | 5 | 1 | non | 8 |\n| 6 | 6 | 0 | oui, `P ← 8 × 6` | 48 |\n\nL'algorithme affiche **48**, produit des nombres pairs de 2 à 6 : $2 \\times 4 \\times 6 = 48$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère `Lire (N) ; u ← 1 ; Pour i Allant de 1 à N Faire u ← 2 × u + 1 FinPour ; Ecrire (u)`. Exécuter pour N = 5, puis donner l'affichage pour N = 0, et conjecturer puis démontrer une formule en fonction de N.",
+          "solution_markdown": "**N = 5.** La boucle fait 5 tours :\n\n| Tour | i | u |\n|---|---|---|\n| départ | ? | 1 |\n| 1 | 1 | $2 \\times 1 + 1 = 3$ |\n| 2 | 2 | $2 \\times 3 + 1 = 7$ |\n| 3 | 3 | $2 \\times 7 + 1 = 15$ |\n| 4 | 4 | $2 \\times 15 + 1 = 31$ |\n| 5 | 5 | $2 \\times 31 + 1 = 63$ |\n\nL'algorithme affiche 63.\n\n**N = 0.** La borne 0 est inférieure à la borne de départ 1 : la boucle fait $0$ tour, `u` garde la valeur 1 et l'algorithme affiche 1.\n\n**Conjecture.** Les valeurs 1, 3, 7, 15, 31, 63 sont les puissances de 2 diminuées de 1 : $2^1 - 1, 2^2 - 1, 2^3 - 1, \\dots$, donc après $N$ tours $u = 2^{N+1} - 1$. Pour N = 0 : $2^1 - 1 = 1$ (correct) ; pour N = 5 : $2^6 - 1 = 63$ (correct).\n\n**Démonstration.** Notons $u_n$ la valeur de `u` après $n$ tours : $u_0 = 1$ et $u_{n+1} = 2u_n + 1$. En ajoutant 1 aux deux membres : $u_{n+1} + 1 = 2u_n + 2 = 2(u_n + 1)$. La suite $(u_n + 1)$ est géométrique de raison 2 et de premier terme $u_0 + 1 = 2$, donc $u_n + 1 = 2 \\times 2^n = 2^{n+1}$ et $u_n = 2^{n+1} - 1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une exécution pas à pas se fait dans un tableau : une colonne par variable, une ligne par instruction ou par tour.",
+        "Une boucle `Pour` de $a$ à $b$ fait $b - a + 1$ tours, et aucun si $b < a$.",
+        "N'oublie jamais les initialisations avant la boucle : elles ont leur ligne dans le tableau.",
+        "Recopie toutes les variables à chaque ligne, même celles qui ne changent pas.",
+        "Au probatoire, cette question vaut souvent 1 point : le tableau juste et lisible suffit à le gagner en entier."
+      ]
+    }
+  ]
+}

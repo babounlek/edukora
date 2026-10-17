@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-reperer-les-associations-entre-entites-ti-si-2017",
+  "meta": {
+    "titre": "Repérer les associations d'un MCD à partir des verbes de l'énoncé",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "association",
+      "verbe",
+      "MCD",
+      "propriété d'association"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q9-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Les clients effectuent des réservations », « une réservation concerne des chambres » : dans un cahier des charges, ce sont les verbes qui tissent les liens entre les objets. Repérer ces verbes, c'est repérer les associations du MCD."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les entités d'un énoncé",
+        "Savoir ce qu'est un attribut"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'association : un verbe qui relie des entités",
+      "contenu_markdown": "Une **association** traduit un **verbe** qui relie deux entités (ou plus) dans les règles de gestion.\n\n- **Nom** : un verbe à l'infinitif (EFFECTUER, CONCERNER, APPARTENIR).\n- **Entités reliées** : les deux (ou trois) entités du verbe.\n- **Propriétés** : une caractéristique qui dépend de l'association tout entière (et pas d'une seule entité) se place dans l'association : une quantité commandée dépend à la fois de la commande et du produit.\n- **Pas de lien redondant** : si deux entités sont déjà reliées par un chemin, on n'ajoute pas de lien direct.\n\n**Méthode** : 1) souligner les verbes ; 2) pour chaque verbe, noter les deux entités ; 3) vérifier que l'association n'est pas déjà couverte par un chemin ; 4) chercher les propriétés portées."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier les associations du système de gestion hôtelière et les entités qu'elles relient (question 9 du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Souligner les verbes",
+          "justification": "Le sujet contient : « effectuent », « concerne », « appartiennent », « est caractérisé par ... un ou plusieurs numéros ».",
+          "resultat_markdown": "effectuer, concerner, appartenir, posséder"
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque verbe à ses entités",
+          "justification": "Les clients effectuent des réservations ; une réservation concerne des chambres ; une chambre appartient à un hôtel ; un hôtel possède des numéros.",
+          "resultat_markdown": "EFFECTUER (CLIENT, RESERVATION), CONCERNER (RESERVATION, CHAMBRE), APPARTENIR (CHAMBRE, HOTEL), POSSEDER (HOTEL, TELEPHONE_HOTEL)"
+        },
+        {
+          "numero": 3,
+          "action": "Chercher les liens redondants",
+          "justification": "Un client est lié à une chambre par la réservation : un lien direct CLIENT-CHAMBRE serait redondant.",
+          "resultat_markdown": "aucun lien direct à ajouter"
+        },
+        {
+          "numero": 4,
+          "action": "Chercher les propriétés portées",
+          "justification": "Les dates et le montant dépendent de la réservation elle-même, pas du lien entre réservation et chambre.",
+          "resultat_markdown": "aucune propriété portée par les associations"
+        }
+      ],
+      "conclusion_markdown": "Le système comporte quatre associations binaires : POSSEDER, APPARTENIR, EFFECTUER et CONCERNER, sans propriété propre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter une association CLIENT-CHAMBRE",
+          "pourquoi_faux": "Le client est déjà relié à la chambre par la réservation : le lien direct est redondant et ferait perdre les dates.",
+          "correction_markdown": "Faire passer le lien par l'entité RESERVATION."
+        },
+        {
+          "erreur_markdown": "Placer une propriété dans la mauvaise entité",
+          "pourquoi_faux": "La quantité commandée n'appartient ni à la commande ni au produit seul : elle dépend de leur couple.",
+          "correction_markdown": "La placer dans l'association."
+        },
+        {
+          "erreur_markdown": "Nommer l'association par un nom",
+          "pourquoi_faux": "Un nom ne se lit pas comme une phrase avec les deux entités.",
+          "correction_markdown": "Choisir un verbe à l'infinitif."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Un enseignant enseigne une matière. » Donne l'association et les entités.",
+          "solution_markdown": "1. Verbe : enseigner.\n2. Association : ENSEIGNER.\n3. Entités reliées : ENSEIGNANT et MATIERE."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "« Un client passe des commandes. Une commande contient des produits avec une quantité. Un produit est fourni par un fournisseur. » Donne les associations et l'éventuelle propriété.",
+          "solution_markdown": "1. PASSER relie CLIENT et COMMANDE.\n2. CONTENIR relie COMMANDE et PRODUIT.\n3. FOURNIR relie FOURNISSEUR et PRODUIT.\n4. La quantité dépend de la commande et du produit : propriété de CONTENIR."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans l'énoncé précédent, faut-il ajouter une association entre CLIENT et PRODUIT ? Justifie.",
+          "solution_markdown": "1. Un client est lié à un produit par la commande : CLIENT - COMMANDE - PRODUIT.\n2. Un lien direct dupliquerait cette information.\n3. Il ferait perdre la date de commande et la quantité.\n4. On n'ajoute donc aucune association CLIENT-PRODUIT."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une association traduit un verbe qui relie des entités.",
+        "On la nomme par un verbe à l'infinitif.",
+        "Une propriété qui dépend du couple d'entités se place dans l'association.",
+        "On évite les liens redondants.",
+        "Au probatoire TI, la question « identifier les relations » est directe : relève chaque verbe et donne les deux entités reliées."
+      ]
+    }
+  ]
+}

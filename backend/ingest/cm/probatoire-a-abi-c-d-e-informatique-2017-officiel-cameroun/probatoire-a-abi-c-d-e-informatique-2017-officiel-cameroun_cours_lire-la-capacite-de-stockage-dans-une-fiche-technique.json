@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-lire-la-capacite-de-stockage-dans-une-fiche-technique-probatoire-acde-2017",
+  "meta": {
+    "titre": "Lire la capacité de stockage dans une fiche technique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : capacité de stockage",
+    "duree_estimee_min": 25,
+    "tags": [
+      "disque dur",
+      "capacité de stockage",
+      "mémoire vive",
+      "gigaoctet",
+      "conversion d'unités"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex3-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux chiffres se ressemblent sur toutes les fiches techniques : 4 Go d'un côté, 500 Go de l'autre. Les confondre fait acheter un ordinateur qui ne contient presque rien ou, à l'inverse, croire qu'un disque de 4 Go suffit pour des films. La différence est simple : l'un est la mémoire de travail, l'autre la place de rangement. Une fois cette distinction acquise, la lecture d'une fiche ne pose plus de difficulté."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'octet et ses multiples (Ko, Mo, Go, To)",
+        "Distinguer mémoire vive et disque dur",
+        "Savoir multiplier et diviser par 1 000"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Mémoire vive ou stockage : un mot-clé à repérer",
+      "contenu_markdown": "| Mot-clé dans la fiche | Composant | Rôle | Ordre de grandeur |\n|---|---|---|---|\n| Mémoire, RAM | Mémoire vive | Travail en cours, s'efface à l'extinction | 2 à 32 Go |\n| Stockage, disque dur, HDD, SSD | Disque | Rangement durable des fichiers | 250 Go à plusieurs To |\n\n**Conversions** (convention décimale des constructeurs) :\n\n$$1\\ \\text{Ko} = 10^{3}\\ \\text{octets} \\qquad 1\\ \\text{Mo} = 10^{6} \\qquad 1\\ \\text{Go} = 10^{9} \\qquad 1\\ \\text{To} = 10^{12}\\ \\text{octets}$$\n\nWindows compte en puissances de 2 : $1\\ \\text{Gio} = 2^{30} = 1\\,073\\,741\\,824$ octets. Un disque de 500 Go est donc affiché environ 465,7 Gio, sans que le disque soit défectueux.\n\nLa capacité se recopie **avec son unité** : un nombre sans unité n'a pas de sens."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La fiche de l'ordinateur indique « Mémoire 4Go » et « Stockage 500Go ». Quelle est la capacité du disque dur ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les lignes de la fiche qui contiennent une capacité",
+          "justification": "Deux lignes donnent une capacité en Go.",
+          "resultat_markdown": "« Mémoire 4Go » et « Stockage 500Go »."
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque mot-clé à son composant",
+          "justification": "« Mémoire » désigne la mémoire vive ; « Stockage » désigne le disque.",
+          "resultat_markdown": "4 Go : mémoire vive ; 500 Go : disque dur."
+        },
+        {
+          "numero": 3,
+          "action": "Recopier la valeur du disque avec son unité",
+          "justification": "La question porte sur le disque, donc sur la ligne « Stockage ».",
+          "resultat_markdown": "500 Go."
+        },
+        {
+          "numero": 4,
+          "action": "Convertir pour vérifier l'ordre de grandeur",
+          "justification": "$1\\ \\text{Go} = 10^{9}$ octets, donc $500 \\times 10^{9} = 5 \\times 10^{11}$ octets ; en gibioctets, $5 \\times 10^{11} \\div 2^{30} \\approx 465{,}7$ Gio.",
+          "resultat_markdown": "500 Go correspond à environ 465,7 Gio affichés par Windows."
+        }
+      ],
+      "conclusion_markdown": "La capacité du disque dur est de **500 Go**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « 4 Go ».",
+          "pourquoi_faux": "4 Go est la mémoire vive : elle sert au travail en cours et se vide à l'extinction. Le disque conserve les fichiers.",
+          "correction_markdown": "Chercher la ligne « Stockage » ou « disque dur »."
+        },
+        {
+          "erreur_markdown": "Écrire « 500 » sans unité.",
+          "pourquoi_faux": "Un nombre seul n'indique pas s'il s'agit de Mo, de Go ou de To : l'écart est de mille fois d'une unité à l'autre.",
+          "correction_markdown": "Toujours écrire « 500 Go »."
+        },
+        {
+          "erreur_markdown": "Penser que le disque est abîmé parce que Windows affiche 465 Go au lieu de 500.",
+          "pourquoi_faux": "Les constructeurs comptent en puissances de 10 (1 Go = $10^9$ octets), Windows en puissances de 2 (1 Gio = $2^{30}$ octets). L'écart est normal.",
+          "correction_markdown": "Convertir : $500 \\times 10^9 \\div 2^{30} \\approx 465{,}7$ Gio."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une fiche indique « RAM 8 Go » et « Disque dur 1 To ». Donner la capacité du disque et la convertir en Go.",
+          "solution_markdown": "La capacité du disque dur est **1 To**. Comme $1\\ \\text{To} = 1\\,000\\ \\text{Go}$, elle vaut **1 000 Go**. Les 8 Go de RAM correspondent à la mémoire vive."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir 500 Go en octets, puis en gibioctets (1 Gio $= 2^{30}$ octets, arrondi au dixième).",
+          "solution_markdown": "En octets : $500 \\times 10^{9} = 5 \\times 10^{11}$ octets.\n\nEn gibioctets : $\\dfrac{5 \\times 10^{11}}{2^{30}} = \\dfrac{500\\,000\\,000\\,000}{1\\,073\\,741\\,824} \\approx 465{,}66$, soit **465,7 Gio** au dixième près."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une photo pèse en moyenne 2,5 Mo. Combien de photos peut-on enregistrer sur un disque de 500 Go (convention décimale) ? Même question pour la mémoire vive de 4 Go si elle servait de stockage, et dire pourquoi elle ne convient pas.",
+          "solution_markdown": "Disque : $500\\ \\text{Go} = 500 \\times 1\\,000 = 500\\,000$ Mo. Nombre de photos : $\\dfrac{500\\,000}{2{,}5} = 200\\,000$ photos.\n\nMémoire vive : $4\\ \\text{Go} = 4\\,000$ Mo, soit $\\dfrac{4\\,000}{2{,}5} = 1\\,600$ photos, 125 fois moins.\n\nLa mémoire vive ne convient pas au rangement : elle **se vide à l'extinction** de l'ordinateur et sert seulement au travail en cours."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Mémoire (RAM) et stockage (disque) sont deux lignes différentes de la fiche, avec des rôles différents.",
+        "La capacité du disque se lit sur la ligne « stockage », « disque dur », « HDD » ou « SSD ».",
+        "Écris toujours l'unité : Go ou To.",
+        "$1\\ \\text{To} = 1\\,000\\ \\text{Go}$ ; un disque de 500 Go s'affiche environ 465,7 Gio sous Windows, c'est normal.",
+        "Au Probatoire, « quelle est la capacité du disque dur ? » se répond en lisant la fiche : valeur et unité suffisent pour le point."
+      ]
+    }
+  ]
+}

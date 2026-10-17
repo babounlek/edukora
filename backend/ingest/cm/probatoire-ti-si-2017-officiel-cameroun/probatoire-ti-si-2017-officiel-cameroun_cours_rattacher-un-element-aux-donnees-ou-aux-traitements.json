@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-rattacher-un-element-aux-donnees-ou-aux-traitements-ti-si-2017",
+  "meta": {
+    "titre": "Classer les éléments d'un schéma MERISE : données ou traitements",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Fondamentaux de MERISE",
+    "duree_estimee_min": 25,
+    "tags": [
+      "donnée",
+      "traitement",
+      "MCD",
+      "MCT",
+      "cohérence des modèles"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex3-q11c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un système d'information, tout élément est soit quelque chose qu'on mémorise, soit quelque chose qu'on fait. Face à un schéma, savoir classer chaque élément dans la bonne famille, c'est déjà savoir quel modèle il appartient et lequel dessiner ensuite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la différence entre donnée et traitement",
+        "Connaître MCD et MCT"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Critère de classement : mémorisé ou exécuté",
+      "contenu_markdown": "Pour classer un élément d'un schéma :\n\n- **Mémorisé, exprimé par un nom** (client, prix, facture) : **donnée**, portée par le MCD, le MLD, le MPD.\n- **Exécuté, exprimé par un verbe d'action** (facturer, encaisser, déstocker) : **traitement**, porté par le MCT, le MOT, le MPT.\n- **Événements et résultats** d'un MCT : ce sont des **messages** qui transportent des données, ils appartiennent au monde des traitements.\n- **Cohérence** : un traitement lit et écrit des données du MCD ; chaque donnée lue par un traitement doit exister dans le MCD."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "En t'appuyant sur le schéma de la question 11, expliquer la différence entre une donnée et un traitement (question 11.c du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les traitements du schéma",
+          "justification": "Les rectangles à deux compartiments sont des actions.",
+          "resultat_markdown": "Article destocké (déstocker), opération (encaisser et remettre)"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les données sous-jacentes",
+          "justification": "Chaque traitement lit ou produit des informations mémorisées.",
+          "resultat_markdown": "article, quantité en stock, facture, montant payé"
+        },
+        {
+          "numero": 3,
+          "action": "Classer événements et résultats",
+          "justification": "Ce sont des messages qui portent des données.",
+          "resultat_markdown": "demande d'achat, Paiement, Facturation : messages du MCT"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur la complémentarité",
+          "justification": "Les traitements agissent sur des données, qui sont décrites dans le MCD.",
+          "resultat_markdown": "MCT et MCD se complètent"
+        }
+      ],
+      "conclusion_markdown": "Sur ce schéma, les opérations sont des traitements, les informations qu'elles lisent et produisent (article, facture, montant) sont des données décrites dans le MCD."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Classer « Facturation » parmi les données",
+          "pourquoi_faux": "Sur un MCT c'est un résultat, message émis par une opération.",
+          "correction_markdown": "La donnée mémorisée est la facture, pas l'acte de facturer."
+        },
+        {
+          "erreur_markdown": "Classer une entité parmi les traitements",
+          "pourquoi_faux": "Une entité est un objet du monde dont on mémorise les caractéristiques.",
+          "correction_markdown": "Entités et associations sont du MCD."
+        },
+        {
+          "erreur_markdown": "Répéter la même définition sans l'appuyer sur le schéma",
+          "pourquoi_faux": "La question demande de s'appuyer sur le document.",
+          "correction_markdown": "Citer deux éléments du schéma."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classe : NomClient, Facturer, la réservation (entité), Annuler une réservation.",
+          "solution_markdown": "1. NomClient : donnée.\n2. Facturer : traitement.\n3. La réservation (entité) : donnée, décrite dans le MCD.\n4. Annuler une réservation : traitement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel modèle porte chacune de ces phrases ? (a) Un client peut effectuer plusieurs réservations. (b) Après paiement, on enregistre l'encaissement. (c) Une chambre appartient à un seul hôtel.",
+          "solution_markdown": "1. (a) Cardinalité entre CLIENT et RESERVATION : MCD.\n2. (b) Enchaînement événement, opération : MCT.\n3. (c) Cardinalité entre CHAMBRE et HOTEL : MCD."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le traitement « Facturer » calcule le montant de la facture d'un séjour avec les données PrixChambre, DateDebut et DateFin. Une chambre à 25 000 FCFA la nuit est occupée du 1er au 4 mars. Calcule le montant, puis dis quelles données le MCD doit contenir.",
+          "solution_markdown": "1. Nombre de nuits = 4 - 1 = 3.\n2. Montant = 25 000 x 3 = 75 000 FCFA.\n3. Pour deux chambres à 25 000 et 30 000 FCFA, le prix par nuit est 55 000, donc le montant est 55 000 x 3 = 165 000 FCFA.\n4. Le MCD doit contenir PrixChambre (entité CHAMBRE) ainsi que DateDebut et DateFin (entité RESERVATION) : toute donnée lue par le traitement doit exister dans le MCD."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Mémorisé et exprimé par un nom : donnée. Exécuté et exprimé par un verbe : traitement.",
+        "Les événements et les résultats d'un MCT sont des messages qui transportent des données.",
+        "Entités et associations sont du MCD.",
+        "Un traitement ne peut lire que des données présentes dans le MCD.",
+        "Au probatoire TI, appuie toujours ta réponse sur un exemple tiré du schéma fourni."
+      ]
+    }
+  ]
+}

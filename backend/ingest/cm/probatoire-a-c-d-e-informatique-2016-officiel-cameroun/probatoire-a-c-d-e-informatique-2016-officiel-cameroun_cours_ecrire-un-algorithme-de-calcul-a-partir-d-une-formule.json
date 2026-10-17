@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-ecrire-un-algorithme-de-calcul-a-partir-d-une-formule-probatoire-acde-2016",
+  "meta": {
+    "titre": "Écrire un algorithme de calcul à partir d'une formule",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : algorithmes de calcul simples",
+    "duree_estimee_min": 35,
+    "tags": [
+      "algorithme",
+      "variable",
+      "lecture",
+      "affectation",
+      "formule",
+      "surface",
+      "trace d'exécution"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-e-informatique-2016-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C, D et E, session 2016 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-c-d-e-informatique-2016-officiel-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Surface d'un rectangle, prix toutes taxes comprises, conversion de températures : à l'examen comme dans la vie, ces problèmes ont la même forme. Si tu maîtrises une méthode en quatre temps, tu écris l'algorithme en quelques minutes et tu peux le vérifier toi-même par une trace d'exécution."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les trois parties d'un algorithme",
+        "Savoir ce qu'est une variable et choisir son type (entier, réel)",
+        "Connaître les instructions `Lire`, `Écrire` et l'affectation `←`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode en quatre temps",
+      "contenu_markdown": "1. **Analyser** : relever les données (ce qu'il faut lire), la formule (ce qu'il faut calculer) et le résultat (ce qu'il faut afficher).\n2. **Déclarer** : une variable par donnée et par résultat, avec un nom parlant et un type adapté. Le type réel convient dès qu'une valeur peut être décimale, l'entier sinon.\n3. **Écrire le corps dans l'ordre** : lecture des données, calcul par affectation (`←`), affichage du résultat.\n4. **Tester par une trace d'exécution** : dérouler l'algorithme instruction par instruction avec des valeurs simples, dans un tableau qui montre l'état des variables après chaque instruction.\n\nLa multiplication se note `*` et l'affectation `←` : `S ← L * l` se lit « S reçoit L fois l ».",
+      "variantes": [
+        {
+          "nom": "Valeur fixe dans la formule",
+          "quand_utiliser": "Quand la formule contient une constante comme π ou un taux de TVA.",
+          "contenu_markdown": "On la déclare dans la rubrique `Constantes` (par exemple `PI = 3.14`) au lieu de l'écrire en dur dans le calcul. Si la valeur change un jour, une seule ligne est à modifier."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soient L la longueur, l la largeur et S la surface d'un rectangle. Écrire l'algorithme qui lit L et l et affiche la surface S (S = L × l). (Probatoire 2016, exercice 2, 3 points)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser le problème",
+          "justification": "On identifie la donnée, la formule et le résultat avant d'écrire.",
+          "resultat_markdown": "Données : L et l. Formule : S = L × l. Résultat : S."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir les types",
+          "justification": "Une dimension peut être décimale (2,5 m) : le type réel est le plus sûr.",
+          "resultat_markdown": "`L, l, S : réel`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'en-tête et les déclarations",
+          "justification": "Ce sont les deux premières parties de l'algorithme.",
+          "resultat_markdown": "`Algorithme surface_rectangle` puis `Variables L, l, S : réel`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire le corps dans l'ordre",
+          "justification": "Il faut lire avant de calculer, et calculer avant d'afficher.",
+          "resultat_markdown": "`Lire(L)` ; `Lire(l)` ; `S ← L * l` ; `Écrire(\"La surface est : \", S)`"
+        },
+        {
+          "numero": 5,
+          "action": "Tester par une trace d'exécution",
+          "justification": "Avec L = 8 et l = 2,5, on suit les variables : après `Lire(L)`, L = 8 ; après `Lire(l)`, l = 2,5 ; après `S ← L * l`, S = 8 × 2,5 = 20.",
+          "resultat_markdown": "L'affichage est « La surface est : 20 », résultat attendu."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme complet est :\n\n```\nAlgorithme surface_rectangle\nVariables\n  L, l, S : réel\nDébut\n  Lire(L)\n  Lire(l)\n  S ← L * l\n  Écrire(\"La surface est : \", S)\nFin\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer avant de lire : placer `S ← L * l` avant `Lire(L)`.",
+          "pourquoi_faux": "À ce moment, L et l n'ont aucune valeur : le calcul est impossible ou donne un résultat faux. Un algorithme s'exécute de haut en bas.",
+          "correction_markdown": "Respecter l'ordre lecture, calcul, affichage."
+        },
+        {
+          "erreur_markdown": "Écrire `S = L * l` ou `S ← L x l`.",
+          "pourquoi_faux": "Le signe `=` exprime une égalité ou une comparaison, pas une affectation. Le `x` n'est pas l'opérateur de multiplication.",
+          "correction_markdown": "Utiliser `←` pour l'affectation et `*` pour la multiplication."
+        },
+        {
+          "erreur_markdown": "Oublier de déclarer une variable utilisée dans le corps, ou la déclarer en entier alors qu'elle est décimale.",
+          "pourquoi_faux": "Une variable non déclarée n'a ni type ni emplacement en mémoire. Un entier perdrait la partie décimale de 2,5.",
+          "correction_markdown": "Après avoir écrit le corps, relire chaque nom de variable et vérifier qu'il figure dans les déclarations avec le bon type."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris l'algorithme qui lit la base `b` et la hauteur `h` d'un triangle et affiche son aire. Teste-le avec b = 6 et h = 5.",
+          "solution_markdown": "Analyse : données `b` et `h`, formule aire = b × h / 2, résultat `aire`, types réels.\n\n```\nAlgorithme aire_triangle\nVariables\n  b, h, aire : réel\nDébut\n  Lire(b)\n  Lire(h)\n  aire ← b * h / 2\n  Écrire(\"Aire du triangle : \", aire)\nFin\n```\n\nTrace avec b = 6 et h = 5 :\n\n| Instruction | b | h | aire |\n|---|---|---|---|\n| `Lire(b)` | 6 | ? | ? |\n| `Lire(h)` | 6 | 5 | ? |\n| `aire ← b * h / 2` | 6 | 5 | 15 |\n\nOn obtient $6 \\times 5 / 2 = 30 / 2 = 15$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris l'algorithme qui lit une température en degrés Celsius `c` et affiche la température en degrés Fahrenheit, avec F = c × 9 / 5 + 32. Teste avec c = 100 puis c = 37.",
+          "solution_markdown": "Analyse : donnée `c`, formule `f ← c * 9 / 5 + 32`, résultat `f`, types réels.\n\n```\nAlgorithme celsius_fahrenheit\nVariables\n  c, f : réel\nDébut\n  Lire(c)\n  f ← c * 9 / 5 + 32\n  Écrire(\"Température en Fahrenheit : \", f)\nFin\n```\n\nTest 1 : c = 100, donc f = 100 × 9 / 5 + 32 = 900 / 5 + 32 = 180 + 32 = 212.\n\nTest 2 : c = 37, donc f = 37 × 9 / 5 + 32 = 333 / 5 + 32 = 66,6 + 32 = 98,6.\n\nLa multiplication et la division sont prioritaires sur l'addition : aucune parenthèse n'est nécessaire ici."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour carreler une pièce rectangulaire, on lit la longueur `L`, la largeur `l` (en mètres) et le prix du mètre carré `prix` (en francs CFA). Écris l'algorithme qui affiche la surface et le coût total, puis exécute-le à la main avec L = 5, l = 4 et prix = 7 500.",
+          "solution_markdown": "Analyse : données `L`, `l`, `prix` ; formules `surface ← L * l` et `cout ← surface * prix` (le coût utilise le résultat précédent, donc l'ordre compte) ; résultats `surface` et `cout`.\n\n```\nAlgorithme carrelage\nVariables\n  L, l, prix, surface, cout : réel\nDébut\n  Lire(L)\n  Lire(l)\n  Lire(prix)\n  surface ← L * l\n  cout ← surface * prix\n  Écrire(\"Surface : \", surface)\n  Écrire(\"Coût : \", cout)\nFin\n```\n\nTrace avec L = 5, l = 4, prix = 7 500 :\n\n| Instruction | L | l | prix | surface | cout |\n|---|---|---|---|---|---|\n| `Lire(L)` | 5 | ? | ? | ? | ? |\n| `Lire(l)` | 5 | 4 | ? | ? | ? |\n| `Lire(prix)` | 5 | 4 | 7500 | ? | ? |\n| `surface ← L * l` | 5 | 4 | 7500 | 20 | ? |\n| `cout ← surface * prix` | 5 | 4 | 7500 | 20 | 150000 |\n\nOn affiche une surface de 20 m² et un coût de $20 \\times 7\\,500 = 150\\,000$ francs CFA."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'écrire, identifie la donnée, la formule et le résultat : c'est la moitié du travail.",
+        "Une variable par donnée et par résultat, avec un type adapté : réel si la valeur peut être décimale.",
+        "Dans le corps, l'ordre est toujours lecture, calcul, affichage.",
+        "L'affectation se note `←`, la multiplication `*`, jamais `=` ni `x`.",
+        "Teste ton algorithme par une trace d'exécution avec des valeurs simples : au Probatoire, ce réflexe évite les erreurs de formule et rassure le correcteur."
+      ]
+    }
+  ]
+}

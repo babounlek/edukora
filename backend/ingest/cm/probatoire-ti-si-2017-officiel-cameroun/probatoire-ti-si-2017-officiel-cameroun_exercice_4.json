@@ -1,0 +1,110 @@
+{
+  "epreuve_source": "probatoire-ti-si-2017-officiel-cameroun.html",
+  "numero_exercice": "4",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2017,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "2,5",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-ti-si-2017-officiel-cameroun_exercice_4_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Esquisse de MCD de l'énoncé : COMMANDE (N°Cde souligné, DateCde), association CONCERNER (QtéCdée) de cardinalités 1,N de chaque côté, PRODUIT (RéfProd souligné, Désignation, PrixVente)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "probatoire-ti-si-2017-officiel-cameroun_exercice_4_fig_2.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Modèle relationnel (MLD) déduit du MCD : tables COMMANDE, CONCERNER et PRODUIT, clés primaires soulignées et clés étrangères de CONCERNER fléchées",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 4**\n\nOn donne l'esquisse de MCD ci-dessous (question 12 du sujet).\n\n![fig-1](probatoire-ti-si-2017-officiel-cameroun_exercice_4_fig_1.png)",
+  "questions": [
+    {
+      "numero": "12a",
+      "enonce_markdown": "**12.a)** Déduire le modèle relationnel associé à ce MCD. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour passer du MCD au modèle relationnel, chaque entité devient une table dont la clé primaire est son identifiant ; une association dont les deux cardinalités maximales valent N devient une table dont la clé primaire concatène les identifiants des entités reliées (chacun étant clé étrangère) et qui reprend les propriétés de l'association ; une association de cardinalité maximale 1 d'un côté se traduit par une clé étrangère placée dans la table de l'entité qui porte ce 1.\n\n**Étape 1 : lire le MCD.** Deux entités : COMMANDE (identifiant N°Cde, attribut DateCde) et PRODUIT (identifiant RéfProd, attributs Désignation et PrixVente). Une association CONCERNER portant la propriété QtéCdée. Cardinalités : (1,N) du côté COMMANDE (une commande concerne au moins un produit, plusieurs possibles) et (1,N) du côté PRODUIT (un produit peut figurer dans plusieurs commandes).\n\n**Étape 2 : traduire les entités.** Chaque entité devient une table : COMMANDE avec la clé primaire N°Cde, PRODUIT avec la clé primaire RéfProd.\n\n**Étape 3 : traduire l'association.** Les deux cardinalités maximales valent N : l'association est de type plusieurs à plusieurs. Aucune des deux tables ne peut recevoir une clé étrangère simple (une commande a plusieurs produits, un produit figure dans plusieurs commandes). On crée donc une table CONCERNER dont la clé primaire est la concaténation de N°Cde et RéfProd, chacun étant aussi clé étrangère, et qui reprend la propriété QtéCdée.\n\n**Modèle relationnel (clés primaires en gras, clés étrangères précédées de #) :**\n\n- COMMANDE (**N°Cde**, DateCde)\n- PRODUIT (**RéfProd**, Désignation, PrixVente)\n- CONCERNER (**#N°Cde, #RéfProd**, QtéCdée)\n\n![fig-2](probatoire-ti-si-2017-officiel-cameroun_exercice_4_fig_2.png)\n\n**Écriture SQL.** Dans le code, N°Cde devient NumCde, RéfProd devient RefProd, QtéCdée devient QteCdee et Désignation devient Designation, car les caractères spéciaux et les accents sont à éviter dans les noms de colonnes :\n\n```sql\nCREATE TABLE COMMANDE (\n    NumCde  INTEGER PRIMARY KEY,\n    DateCde DATE NOT NULL\n);\n\nCREATE TABLE PRODUIT (\n    RefProd     VARCHAR(10) PRIMARY KEY,\n    Designation VARCHAR(60) NOT NULL,\n    PrixVente   INTEGER NOT NULL CHECK (PrixVente >= 0)\n);\n\nCREATE TABLE CONCERNER (\n    NumCde  INTEGER NOT NULL REFERENCES COMMANDE(NumCde),\n    RefProd VARCHAR(10) NOT NULL REFERENCES PRODUIT(RefProd),\n    QteCdee INTEGER NOT NULL CHECK (QteCdee > 0),\n    PRIMARY KEY (NumCde, RefProd)\n);\n```\n\nJeu d'essai : deux commandes (1 et 2), trois produits (P01 cahier à 500 FCFA, P02 stylo à 150 FCFA, P03 ramette à 3 500 FCFA) et trois lignes de CONCERNER : (1, P01, 10), (1, P02, 20), (2, P01, 5). Le montant de la commande 1 vaut 10 x 500 + 20 x 150 = 5 000 + 3 000 = 8 000 FCFA et celui de la commande 2 vaut 5 x 500 = 2 500 FCFA ; la requête suivante renvoie ces deux montants :\n\n```sql\nSELECT C.NumCde, SUM(K.QteCdee * P.PrixVente) AS Montant\nFROM COMMANDE C\nJOIN CONCERNER K ON K.NumCde = C.NumCde\nJOIN PRODUIT P ON P.RefProd = K.RefProd\nGROUP BY C.NumCde;\n```\n\nElle donne (1, 8000) et (2, 2500). Une seconde insertion de (1, P01, 3) est refusée par la clé primaire (NumCde, RefProd) : une commande ne peut contenir deux fois le même produit, on en modifie la quantité.\n\n### Piège à éviter\nN'oublie pas la table CONCERNER : si tu mets QtéCdée dans COMMANDE ou dans PRODUIT, tu perds l'information (une quantité dépend à la fois de la commande et du produit). Ne mets pas non plus de clé primaire sur N°Cde seul dans CONCERNER : une commande a plusieurs lignes.\n\n### Conseil\nCompte les N de la patte opposée : (1,N) des deux côtés veut dire table de liaison, c'est le cas le plus fréquent aux examens. Écris les clés étrangères avec un dièse (#) devant et souligne ou mets en gras les clés primaires.",
+      "themes": [
+        "modèle relationnel",
+        "clé primaire",
+        "clé étrangère",
+        "passage MCD vers MLD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex4-q12a-1",
+          "competence": "Déduire le modèle relationnel d'un MCD",
+          "contenu_markdown": "Pour passer du MCD au modèle relationnel, chaque entité devient une table dont la clé primaire est son identifiant ; une association dont les deux cardinalités maximales valent N devient une table dont la clé primaire concatène les identifiants des entités reliées (chacun étant clé étrangère) et qui reprend les propriétés de l'association ; une association de cardinalité maximale 1 d'un côté se traduit par une clé étrangère placée dans la table de l'entité qui porte ce 1.",
+          "cours_genere": true,
+          "cours_id": "cours-deduire-le-modele-relationnel-d-un-mcd-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "12b",
+      "enonce_markdown": "**12.b)** Donner deux exemples de SGBD. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour citer des exemples d'une catégorie de logiciels, donne des noms de produits réels et reconnus, jamais des sigles génériques ni des langages, avec le type de SGBD (relationnel pour la plupart) et, si utile, l'éditeur ou la licence.\n\nDeux exemples de SGBD relationnels :\n\n1. **MySQL** : SGBD relationnel libre (édité par Oracle), très répandu dans les applications web avec PHP.\n2. **PostgreSQL** : SGBD relationnel libre, réputé pour sa conformité au standard SQL et sa robustesse.\n\nAutres réponses acceptables : Oracle Database, Microsoft SQL Server, Microsoft Access, MariaDB, SQLite. Chaque exemple exact vaut 0,5 pt.\n\n### Piège à éviter\nN'écris pas « SQL » : c'est le langage d'interrogation que les SGBD relationnels comprennent, pas un SGBD. De même, Excel est un tableur, pas un SGBD, et PHP est un langage de programmation.\n\n### Conseil\nRetiens MySQL et PostgreSQL, ou Oracle et Access : quatre noms sûrs, tous au programme, qui te mettent à l'abri d'une confusion avec un langage.",
+      "themes": [
+        "SGBD",
+        "base de données relationnelle",
+        "MySQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex4-q12b-1",
+          "competence": "Citer des exemples de SGBD",
+          "contenu_markdown": "Pour citer des exemples d'une catégorie de logiciels, donne des noms de produits réels et reconnus, jamais des sigles génériques ni des langages, avec le type de SGBD (relationnel pour la plupart) et, si utile, l'éditeur ou la licence.",
+          "cours_genere": true,
+          "cours_id": "cours-citer-des-exemples-de-sgbd-ti-si-2017"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "MCD",
+    "modèle relationnel",
+    "MLD",
+    "clé primaire",
+    "clé étrangère",
+    "SGBD",
+    "MySQL",
+    "PostgreSQL"
+  ],
+  "incertitudes": [
+    "Aucun corrigé officiel n'est publié avec le sujet : toutes les réponses sont des modèles rédigés d'après les règles de gestion de l'étude de cas.",
+    "Le sujet n'est pas découpé en exercices : le découpage en quatre exercices (questions 1 à 6, 7 à 10, 11, 12) est éditorial, la numérotation des questions du sujet est conservée."
+  ],
+  "statut": "brouillon"
+}

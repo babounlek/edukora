@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-identifier-une-fonction-declaree-dans-un-script-javascript-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Identifier une fonction déclarée dans un script JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript : fonctions",
+    "duree_estimee_min": 22,
+    "tags": [
+      "fonction JavaScript",
+      "déclaration de fonction",
+      "paramètres",
+      "return"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q5.1.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction est un petit programme à qui l'on donne un nom pour le réutiliser autant de fois qu'on veut. Dans un script, certaines fonctions sont fournies par JavaScript (`alert`), d'autres sont écrites par le programmeur. Distinguer la déclaration d'une fonction de son appel est la clé pour lire correctement un script."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un script JavaScript simple",
+        "Connaître la notion de paramètre et de valeur de retour"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déclarer et appeler une fonction",
+      "contenu_markdown": "**Déclaration** (on écrit le code de la fonction) :\n\n```javascript\nfunction nomDeLaFonction(parametre1, parametre2) {\n    instructions\n    return resultat;\n}\n```\n\n**Appel** (on utilise la fonction) : `nomDeLaFonction(valeur1, valeur2)`.\n\n| | Déclaration | Appel |\n|---|---|---|\n| Repère | mot-clé `function` suivi du nom | nom suivi d'arguments, sans `function` |\n| Corps `{ ... }` | oui | non |\n| Exemple | `function isANumber(number, message) {...}` | `isANumber(this.form.CFA.value, 'Cameroun')` |\n\n- Les **paramètres** sont les noms que la fonction donne à ses entrées ; les **arguments** sont les valeurs fournies à l'appel.\n- `return` renvoie le résultat à l'appelant et termine la fonction.\n- Une fonction **prédéfinie** (`alert`, `parseFloat`) est seulement appelée : elle n'est pas déclarée dans le script."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le script qui commence par `function isANumber(number, message)` et qui contient les appels `parseFloat(number)`, `alert(...)` et `number.charAt(i)`, identifier le nom d'une fonction déclarée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher le mot-clé `function`",
+          "justification": "Une fonction est déclarée là où l'on rencontre `function`",
+          "resultat_markdown": "Ligne 4 : `function isANumber(number, message)`"
+        },
+        {
+          "numero": 2,
+          "action": "Lire son nom",
+          "justification": "Le nom suit le mot `function`",
+          "resultat_markdown": "`isANumber`"
+        },
+        {
+          "numero": 3,
+          "action": "Écarter les fonctions seulement appelées",
+          "justification": "`parseFloat`, `alert`, `charAt` n'ont pas de corps dans le script",
+          "resultat_markdown": "Ce sont des fonctions et méthodes prédéfinies"
+        }
+      ],
+      "conclusion_markdown": "La fonction déclarée dans le script est `isANumber`, qui reçoit deux paramètres et renvoie 1 ou 0."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `alert` ou `parseFloat`",
+          "pourquoi_faux": "Ces fonctions sont fournies par JavaScript : le script les appelle, il ne les déclare pas.",
+          "correction_markdown": "Cherche le mot `function`."
+        },
+        {
+          "erreur_markdown": "Confondre paramètre et argument",
+          "pourquoi_faux": "Dans `function f(a)`, `a` est un paramètre ; dans `f(5)`, 5 est l'argument.",
+          "correction_markdown": "Paramètre : dans la déclaration ; argument : dans l'appel."
+        },
+        {
+          "erreur_markdown": "Croire que la fonction s'exécute à sa déclaration",
+          "pourquoi_faux": "Déclarer ne fait rien : le corps s'exécute seulement quand la fonction est appelée, ici au clic sur le bouton.",
+          "correction_markdown": "Cherche aussi l'appel pour comprendre quand elle s'exécute."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `function carre(x) { return x * x; } var r = carre(4); alert(r);`, relever la fonction déclarée et les fonctions appelées. Quelle valeur `alert` affiche-t-elle ?",
+          "solution_markdown": "- fonction **déclarée** : `carre` (précédée de `function`) ;\n- fonctions **appelées** : `carre(4)` (l'appel de la fonction déclarée) et `alert(r)` (fonction prédéfinie).\n\nDéroulement : `x` vaut 4, la fonction renvoie $4 \\times 4 = 16$, `r` vaut 16 et `alert(r)` affiche 16 (la valeur de retour a été vérifiée sous Node.js)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire une fonction `somme` qui reçoit deux nombres et renvoie leur somme, puis un appel qui calcule la somme de 3 et de 4.",
+          "solution_markdown": "```javascript\nfunction somme(a, b) {\n    return a + b;\n}\nvar resultat = somme(3, 4);\n```\n\n`a` et `b` sont les paramètres ; 3 et 4 sont les arguments de l'appel. La fonction renvoie 7, rangé dans `resultat` (vérifié sous Node.js)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une fonction `estPair(n)` qui renvoie `true` si `n` est pair et `false` sinon, puis l'utiliser pour afficher « pair » ou « impair » avec `alert` pour n = 7.",
+          "solution_markdown": "Un entier est pair si le reste de sa division par 2 est nul : l'opérateur `%` donne ce reste.\n\n```javascript\nfunction estPair(n) {\n    return n % 2 == 0;\n}\n\nif (estPair(7)) {\n    alert(\"pair\");\n} else {\n    alert(\"impair\");\n}\n```\n\n`estPair(4)` renvoie `true` et `estPair(7)` renvoie `false` (vérifié sous Node.js). Pour n = 7, le test est faux : `alert` affiche « impair ». L'expression `n % 2 == 0` est déjà un booléen : on la renvoie directement, sans écrire `if ... return true`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction se déclare avec `function nom(paramètres) { ... }` et s'appelle par son nom suivi d'arguments.",
+        "`alert` et `parseFloat` sont prédéfinies : elles ne sont jamais déclarées dans le script.",
+        "Paramètres dans la déclaration, arguments dans l'appel.",
+        "`return` renvoie un résultat et termine la fonction.",
+        "Au probatoire, la réponse est le nom qui suit le mot `function`."
+      ]
+    }
+  ]
+}

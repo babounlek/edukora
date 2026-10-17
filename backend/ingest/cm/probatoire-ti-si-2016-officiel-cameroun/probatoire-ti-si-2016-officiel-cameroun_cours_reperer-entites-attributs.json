@@ -1,0 +1,138 @@
+{
+ "cours_id": "cours-reperer-entites-attributs-ti-si-2016",
+ "meta": {
+  "titre": "Repérer les entités et leurs attributs dans un énoncé de gestion",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Modèle conceptuel des données",
+  "duree_estimee_min": 28,
+  "tags": [
+   "MCD",
+   "entité",
+   "attribut",
+   "règle de gestion",
+   "MERISE"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q6-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Un énoncé de gestion se lit comme un récit : « le client signe un contrat », « le véhicule est caractérisé par sa marque ». Derrière ce récit se cachent les entités, qui deviendront les rectangles du MCD, et leurs attributs, qui rempliront ces rectangles. Ce cours te donne un geste de lecture simple pour ne rien oublier."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Notion de règle de gestion",
+    "Notion de donnée (valeur d'une propriété)"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Distinguer entité, attribut et association",
+   "contenu_markdown": "- **Entité** : type d'objets ou de personnes du domaine, qui possède des propriétés et existe en **plusieurs exemplaires** (CLIENT, VEHICULE).\n- **Attribut** : propriété élémentaire d'une entité, qui ne se décompose plus (nom, marque, date).\n- **Association** : lien entre entités, qui se repère à un verbe (SIGNER, APPARTENIR).\n\n**Méthode de lecture.** (1) Souligne les noms communs importants. (2) Pour chacun, demande : existe-t-il en plusieurs exemplaires et a-t-il des propriétés ? Si oui, c'est une entité. (3) Les mots qui suivent « est caractérisé par », « comporte », « possède » sont ses attributs. (4) Écarte l'entreprise elle-même (un seul exemplaire) et les attributs calculables (âge, total).\n\nUn attribut doit être **élémentaire** (non décomposable), **non calculable**, et **appartenir à une seule entité**.",
+   "variantes": [
+    {
+     "nom": "Attribut ou entité ?",
+     "quand_utiliser": "Quand un nom hésite entre les deux",
+     "contenu_markdown": "Si l'objet a lui-même des propriétés ou plusieurs liens avec d'autres entités, c'est une entité (ex. la catégorie d'un livre avec son libellé et son rayon). S'il se réduit à une valeur, c'est un attribut."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Relever les entités et leurs attributs de CAR_INSURANCE : « Un nouveau client communique son nom et son prénom. Un véhicule est caractérisé par son numéro, sa marque, son modèle et son année de mise en circulation. Un contrat est caractérisé par un numéro, le type d'assurance et la date de signature. Les accidents sont numérotés et comportent une description. »",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Souligner les noms importants",
+     "justification": "Ils sont les candidats entités.",
+     "resultat_markdown": "client, véhicule, contrat, accident (et compagnie)."
+    },
+    {
+     "numero": 2,
+     "action": "Tester chaque candidat",
+     "justification": "Une entité a plusieurs exemplaires et des propriétés ; la compagnie n'a qu'un exemplaire et n'est pas gérée comme donnée.",
+     "resultat_markdown": "Quatre entités : CLIENT, VEHICULE, CONTRAT, ACCIDENT ; compagnie écartée."
+    },
+    {
+     "numero": 3,
+     "action": "Relever les attributs",
+     "justification": "Ils suivent les expressions « communique », « caractérisé par », « comportent ».",
+     "resultat_markdown": "CLIENT : nom, prénom. VEHICULE : numéro, marque, modèle, année. CONTRAT : numéro, type, date de signature. ACCIDENT : numéro, description."
+    },
+    {
+     "numero": 4,
+     "action": "Contrôler les attributs",
+     "justification": "Chacun doit être élémentaire et rattaché à une seule entité.",
+     "resultat_markdown": "Aucun doublon, aucun attribut calculé."
+    }
+   ],
+   "conclusion_markdown": "Le MCD de CAR_INSURANCE comporte quatre entités : CLIENT (nom, prénom), VEHICULE (numéro, marque, modèle, année), CONTRAT (numéro, type d'assurance, date de signature), ACCIDENT (numéro, description)."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Faire de l'entreprise une entité (« COMPAGNIE »)",
+     "pourquoi_faux": "Une entité doit exister en plusieurs exemplaires. L'entreprise étudiée est unique et son fonctionnement est ce que l'on modélise.",
+     "correction_markdown": "Écarter l'entreprise, sauf si le système gère plusieurs entreprises ou agences."
+    },
+    {
+     "erreur_markdown": "Prendre une valeur pour une entité (« Toyota », « REMY »)",
+     "pourquoi_faux": "Une valeur est une occurrence ou la valeur d'un attribut, pas un type d'objets.",
+     "correction_markdown": "Chercher le type : Toyota est la valeur de l'attribut marque, REMY une occurrence de CLIENT."
+    },
+    {
+     "erreur_markdown": "Garder un attribut calculable comme l'âge d'un élève",
+     "pourquoi_faux": "L'âge se déduit de la date de naissance ; le mémoriser crée un risque d'incohérence.",
+     "correction_markdown": "Mémoriser la date de naissance et calculer l'âge au besoin."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une bibliothèque prête des livres à ses adhérents. Un livre a un titre, un auteur et une catégorie. Un adhérent a un nom et une adresse. Relever les entités et leurs attributs.",
+     "solution_markdown": "1. Noms importants : livre, adhérent (bibliothèque écartée, elle est unique).\n2. LIVRE : titre, auteur, catégorie.\n3. ADHERENT : nom, adresse.\n4. Le prêt est un verbe entre ADHERENT et LIVRE : il sera une association (EMPRUNTER), pas une entité.\n5. Les identifiants (numéro de livre, numéro d'adhérent) seront ajoutés ensuite."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Dans une pharmacie, un médicament a une dénomination, un prix unitaire et une quantité en stock. Un fournisseur a un nom et un téléphone. Le fournisseur livre des médicaments. Quelles sont les entités, les attributs et l'association ?",
+     "solution_markdown": "1. Entités : MEDICAMENT (dénomination, prix unitaire, quantité en stock) et FOURNISSEUR (nom, téléphone).\n2. Association : LIVRER (le fournisseur livre des médicaments), verbe entre les deux entités.\n3. Aucun attribut n'est calculé : la quantité en stock est une donnée mémorisée et mise à jour.\n4. Chaque attribut appartient à une seule entité."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un élève a un nom, une date de naissance, un âge, une adresse « Quartier Bonanjo, Douala » et le nom de sa classe. Critiquer cette liste d'attributs.",
+     "solution_markdown": "1. L'âge se calcule à partir de la date de naissance : attribut calculable, à supprimer.\n2. L'adresse « Quartier Bonanjo, Douala » est décomposable (quartier, ville) : on la scinde en deux attributs élémentaires si l'on veut les exploiter séparément.\n3. Le nom de la classe est une information sur la classe : la classe a ses propres propriétés (niveau, effectif) et plusieurs élèves, c'est une entité CLASSE reliée à ELEVE par une association.\n4. Liste corrigée : ELEVE (nom, date de naissance, quartier, ville) et CLASSE (nom de classe), reliées par une association."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Entité : type d'objets en plusieurs exemplaires, avec des propriétés.",
+    "Attribut : propriété élémentaire, non calculable, rattachée à une seule entité.",
+    "L'entreprise étudiée n'est généralement pas une entité.",
+    "Les mots « caractérisé par » et « comporte » annoncent les attributs.",
+    "Au Probatoire TI, repérer correctement les entités et les attributs vaut 2 points sur 20 dans un sujet de MCD."
+   ]
+  }
+ ]
+}

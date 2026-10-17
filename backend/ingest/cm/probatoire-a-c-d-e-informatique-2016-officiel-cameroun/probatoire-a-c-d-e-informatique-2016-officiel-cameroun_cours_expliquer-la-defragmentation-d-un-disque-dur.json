@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-expliquer-la-defragmentation-d-un-disque-dur-probatoire-acde-2016",
+  "meta": {
+    "titre": "Expliquer la défragmentation d'un disque dur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : optimisation du disque dur",
+    "duree_estimee_min": 30,
+    "tags": [
+      "défragmentation",
+      "fragmentation",
+      "disque dur",
+      "secteurs",
+      "optimisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-e-informatique-2016-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C, D et E, session 2016 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-a-c-d-e-informatique-2016-officiel-cameroun-ex4-q12.a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ton ordinateur est devenu lent à ouvrir les fichiers, alors que le disque n'est pas plein. Une cause fréquente est la fragmentation : les fichiers sont découpés en morceaux dispersés sur le disque. Défragmenter, c'est remettre de l'ordre. Ce cours explique le mécanisme avec un schéma chiffré."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un disque dur est découpé en blocs (secteurs ou clusters)",
+        "Distinguer formatage, partitionnement et défragmentation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Fragmenter, défragmenter",
+      "contenu_markdown": "Un disque stocke un fichier dans des blocs. Quand on crée et supprime beaucoup de fichiers, les blocs libres sont dispersés et un nouveau fichier est enregistré en **morceaux (fragments)** à des endroits non contigus : c'est la **fragmentation**. La tête de lecture doit alors sauter d'un endroit à l'autre, ce qui ralentit l'accès.\n\n**Défragmenter** un disque, c'est **réorganiser les blocs pour regrouper les fragments de chaque fichier dans des zones contiguës** (et regrouper l'espace libre), afin d'**accélérer l'accès aux fichiers**. Aucune donnée n'est supprimée.\n\n| Opération | Effet | Données |\n|---|---|---|\n| Formatage | crée un système de fichiers | effacées |\n| Partitionnement | découpe le disque en partitions | conservées ou effacées selon le cas |\n| **Défragmentation** | **regroupe les fragments des fichiers** | **conservées** |\n\nSous Windows : « Défragmenter et optimiser les lecteurs ». Cette opération concerne les disques durs mécaniques ; sur un SSD, elle est inutile et on utilise plutôt l'optimisation (TRIM).",
+      "variantes": [
+        {
+          "nom": "Méthode du QCM sur la défragmentation",
+          "quand_utiliser": "Quand les propositions décrivent d'autres opérations.",
+          "contenu_markdown": "Cherche les mots regrouper, réorganiser, contigu, accélérer l'accès. Écarte la proposition qui parle de formater, d'activer le disque ou de partitionner. Si aucune proposition n'est rigoureuse, retiens celle qui est la plus proche de la définition."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Défragmenter un disque dur est une opération qui : (a) permet de le formater pour l'activer ; (b) permet de faire des parts égales pour le stockage des données dans des dossiers ; (c) consiste à regrouper les fichiers par catégories sur le disque pour un accès rapide. (Probatoire 2016, question 12.a, 1 point)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la définition",
+          "justification": "Défragmenter = regrouper les morceaux des fichiers pour accélérer l'accès.",
+          "resultat_markdown": "Mots-clés : regrouper, accès rapide."
+        },
+        {
+          "numero": 2,
+          "action": "Examiner la proposition (a)",
+          "justification": "« Formater pour l'activer et le rendre utilisable » décrit le formatage, qui efface les données.",
+          "resultat_markdown": "Proposition (a) écartée."
+        },
+        {
+          "numero": 3,
+          "action": "Examiner la proposition (b)",
+          "justification": "« Parts égales pour le stockage dans des dossiers » ne correspond à aucune opération de maintenance ; le partitionnement découpe le disque, pas les dossiers.",
+          "resultat_markdown": "Proposition (b) écartée."
+        },
+        {
+          "numero": 4,
+          "action": "Examiner la proposition (c)",
+          "justification": "Elle parle de regrouper pour un accès rapide : c'est l'idée de la défragmentation, même si elle parle de catégories alors que ce sont les fragments d'un même fichier qu'on regroupe.",
+          "resultat_markdown": "Proposition (c) la plus proche."
+        },
+        {
+          "numero": 5,
+          "action": "Conclure",
+          "justification": "En QCM, on retient la proposition la plus juste quand aucune n'est parfaite.",
+          "resultat_markdown": "(c) retenue."
+        }
+      ],
+      "conclusion_markdown": "La bonne réponse est (c) : défragmenter consiste à regrouper les éléments du disque pour accélérer l'accès, même si la formulation est imparfaite."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre défragmentation et formatage.",
+          "pourquoi_faux": "Le formatage efface les données ; la défragmentation n'en supprime aucune.",
+          "correction_markdown": "Retenir : défragmenter = ranger, formater = effacer."
+        },
+        {
+          "erreur_markdown": "Défragmenter un SSD.",
+          "pourquoi_faux": "Un SSD n'a pas de tête de lecture mécanique : la fragmentation n'y ralentit pas l'accès, et des réécritures inutiles usent la mémoire.",
+          "correction_markdown": "Réserver la défragmentation aux disques durs mécaniques."
+        },
+        {
+          "erreur_markdown": "Penser que défragmenter libère de la place.",
+          "pourquoi_faux": "La défragmentation réorganise l'espace sans créer d'espace libre supplémentaire.",
+          "correction_markdown": "Pour libérer de la place, supprimer des fichiers ou nettoyer le disque."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne en une phrase la définition de la défragmentation et son intérêt.",
+          "solution_markdown": "La défragmentation réorganise le disque pour regrouper les fragments de chaque fichier dans des zones contiguës ; elle accélère l'accès aux fichiers et améliore les performances."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un disque de 8 blocs contient, dans l'ordre, les blocs suivants : `A A B C B C A B` (chaque lettre désigne le fichier auquel appartient le bloc). Compte les fragments de chaque fichier, puis reconstitue le disque après défragmentation en rangeant les fichiers par ordre alphabétique.",
+          "solution_markdown": "**Avant.** Les blocs sont numérotés de 1 à 8 : A occupe les blocs 1, 2 et 7, B les blocs 3, 5 et 8, C les blocs 4 et 6.\n\n- A : deux fragments (blocs 1-2, puis bloc 7).\n- B : trois fragments (blocs 3, 5 et 8).\n- C : deux fragments (blocs 4, puis 6).\n\nSoit 7 fragments pour 3 fichiers.\n\n**Après défragmentation.** Chaque fichier devient contigu : `A A A B B B C C`. Il reste 3 fragments, un par fichier. La tête de lecture lit chaque fichier d'un seul trait au lieu de sauter d'une zone à l'autre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Explique pourquoi la défragmentation est utile sur un disque dur mécanique mais inutile sur un SSD, puis indique deux précautions avant de lancer une défragmentation.",
+          "solution_markdown": "**Disque dur mécanique.** La lecture exige de déplacer une tête sur un plateau en rotation : plus un fichier est dispersé, plus la tête se déplace, donc plus l'accès est lent. Regrouper les fragments réduit ces déplacements.\n\n**SSD.** Il n'a aucune pièce mobile et accède à n'importe quel bloc en un temps quasi identique : la dispersion ne le ralentit pas. Les réécritures inutiles consomment au contraire sa durée de vie.\n\n**Précautions.** (1) Sauvegarder les données importantes avant l'opération. (2) Fermer les autres programmes et ne pas éteindre l'ordinateur pendant l'opération. On peut aussi vérifier d'abord le taux de fragmentation dans l'outil d'analyse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Fragmentation : fichiers enregistrés en morceaux dispersés. Défragmentation : regroupement de ces morceaux.",
+        "Elle accélère l'accès aux fichiers et ne supprime aucune donnée.",
+        "Ne la confonds ni avec le formatage (efface), ni avec le partitionnement (découpe en partitions).",
+        "Elle concerne les disques durs mécaniques, pas les SSD.",
+        "Au Probatoire, la défragmentation tombe en QCM ou en question de définition en deux lignes, souvent dans la partie maintenance."
+      ]
+    }
+  ]
+}

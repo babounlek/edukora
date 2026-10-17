@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-dessiner-le-rendu-d-une-page-web-a-partir-de-son-code-html-tableau-et-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Dessiner le rendu d'une page web à partir de son code HTML (tableau et formulaire)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "HTML : rendu d'une page",
+    "duree_estimee_min": 24,
+    "tags": [
+      "rendu HTML",
+      "tableau HTML",
+      "formulaire HTML",
+      "colspan"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q5.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Savoir écrire du code, c'est bien ; savoir prévoir ce qu'il affichera, c'est mieux. Un développeur lit une page HTML et voit mentalement le résultat avant d'ouvrir le navigateur. L'épreuve te demande exactement cela : dessiner le rendu d'un formulaire à partir de son code. Il faut lire le code balise par balise et dessiner ce qu'il produit, pas ce qu'il contient."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises `table`, `tr`, `td`, `b`, `br`, `input`",
+        "Connaître les attributs `border`, `colspan`, `align`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire le code et dessiner le rendu",
+      "contenu_markdown": "Méthode :\n\n1. **Repérer le contenu affiché** : ce qui est dans `body` (rien de ce qui est dans `head` ou `script` ne s'affiche).\n2. **Dessiner la grille** d'un tableau : une ligne par `tr`, une case par `td`, en tenant compte de `colspan` (cellules fusionnées).\n3. **Appliquer la mise en forme** : `<b>` met en gras, `align=\"center\"` centre, `border=0` supprime les traits, `border=1` les dessine.\n4. **Dessiner les éléments** : un `input type=\"text\"` est un rectangle de saisie, un `input type=\"submit\"` est un bouton portant le texte de `value`, du texte placé après un champ s'affiche à sa droite.\n5. **Ne dessiner que le rendu**, jamais le code.\n\n| Code | Rendu |\n|---|---|\n| `<b>Nom :</b>` | « Nom : » en gras |\n| `<br>` | retour à la ligne |\n| `<td colspan=\"2\">` | cellule qui occupe deux colonnes |\n| `border=0` | tableau sans traits visibles |\n| `<input type=\"submit\" value=\"Convertir\">` | bouton « Convertir » |"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dessiner le rendu du formulaire de conversion de devises de l'épreuve : un tableau `border=0` de quatre lignes (Cameroun avec FCFA, France avec €, Etats Unis avec `$`, puis un bouton « Convertir » dans une cellule `colspan=2 align=\"center\"`).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ignorer le script de l'en-tête",
+          "justification": "Le contenu de `head` et de `script` ne s'affiche pas",
+          "resultat_markdown": "Le rendu part de la balise `Body`"
+        },
+        {
+          "numero": 2,
+          "action": "Dessiner la grille sans traits",
+          "justification": "`border=0` : aucun trait, mais la grille existe : 4 lignes, 2 colonnes",
+          "resultat_markdown": "Quadrillage invisible"
+        },
+        {
+          "numero": 3,
+          "action": "Remplir les trois premières lignes",
+          "justification": "Étiquette en gras dans la colonne 1, champ de texte suivi de l'unité dans la colonne 2",
+          "resultat_markdown": "Cameroun : [champ] FCFA ; France : [champ] € ; Etats Unis : [champ] `$`"
+        },
+        {
+          "numero": 4,
+          "action": "Dessiner la quatrième ligne",
+          "justification": "La cellule fusionne les deux colonnes et centre son contenu",
+          "resultat_markdown": "Bouton « Convertir » centré sous la grille"
+        }
+      ],
+      "conclusion_markdown": "Le rendu montre trois lignes de champs avec leurs unités, sans bordure, et un bouton « Convertir » centré en dessous."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner des traits autour du tableau",
+          "pourquoi_faux": "`border=0` supprime les traits ; le tableau reste invisible, seul son contenu s'affiche.",
+          "correction_markdown": "Pas de trait sans `border=1` ou plus."
+        },
+        {
+          "erreur_markdown": "Oublier les unités après les champs",
+          "pourquoi_faux": "Les textes FCFA, € et `$` font partie du rendu : ils sont placés après chaque champ de saisie.",
+          "correction_markdown": "Dessine le texte qui suit chaque champ."
+        },
+        {
+          "erreur_markdown": "Mettre le bouton dans la première colonne",
+          "pourquoi_faux": "`colspan=2` fait occuper les deux colonnes au bouton et `align=\"center\"` le centre ; sans eux, il serait dans la première colonne, aligné à gauche (vérifié par un test dans un navigateur).",
+          "correction_markdown": "Lis les attributs `colspan` et `align`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dessiner le rendu de `<table border=\"1\"><tr><td>A</td><td>B</td></tr><tr><td colspan=\"2\">C</td></tr></table>`.",
+          "solution_markdown": "`border=\"1\"` : les traits sont visibles. Le tableau a deux lignes.\n\n- ligne 1 : deux cases côte à côte, contenant A et B ;\n- ligne 2 : une seule case, qui s'étend sous les deux cases précédentes (`colspan=\"2\"`), contenant C.\n\n```\n+---+---+\n| A | B |\n+---+---+\n|   C   |\n+-------+\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dessiner le rendu de `<form><b>Nom :</b> <input type=\"text\" name=\"n\"><br><input type=\"checkbox\" name=\"c\"> J'accepte<br><input type=\"submit\" value=\"OK\"></form>`.",
+          "solution_markdown": "Les `<br>` séparent trois lignes.\n\n1. « **Nom :** » en gras, suivi d'un rectangle de saisie ;\n2. une case à cocher, suivie du texte « J'accepte » ;\n3. un bouton portant le texte « OK ».\n\n```\nNom : [______________]\n[ ] J'accepte\n[ OK ]\n```\n\nLes crochets représentent le champ de saisie, la case et le bouton. Aucun trait de tableau, puisque le code n'en contient pas."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans le formulaire de l'épreuve, on remplace `border=0` par `border=1`, puis on supprime `colspan=2 align=\"center\"`. Décrire l'effet de chaque modification sur le rendu.",
+          "solution_markdown": "**`border=0` devient `border=1`.** Les traits du tableau apparaissent : chaque cellule est entourée d'un contour d'un pixel. Le contenu ne change pas, mais le tableau devient visible, avec 4 lignes et 2 colonnes.\n\n**Suppression de `colspan=2 align=\"center\"`.** La cellule du bouton n'occupe plus qu'une colonne : le bouton se place dans la première colonne, sous les étiquettes, et aligné à gauche. La quatrième ligne n'a alors qu'une cellule, alors que les trois autres en ont deux.\n\nCes deux effets ont été vérifiés en affichant les deux variantes dans un navigateur : avec `border=1`, le tableau a des traits d'un pixel et le bouton reste centré ; sans `colspan`, la quatrième ligne ne contient qu'une cellule et le bouton se place dans la colonne de gauche."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour dessiner un rendu, lis le contenu de `body` balise par balise.",
+        "`border=0` supprime les traits mais la grille de colonnes reste en place.",
+        "`colspan` fusionne des colonnes ; `align=\"center\"` centre le contenu.",
+        "Dessine le texte qui accompagne les champs (unités, étiquettes en gras).",
+        "Au probatoire, la question vaut 0,5 point : un dessin propre et complet suffit, sans code."
+      ]
+    }
+  ]
+}

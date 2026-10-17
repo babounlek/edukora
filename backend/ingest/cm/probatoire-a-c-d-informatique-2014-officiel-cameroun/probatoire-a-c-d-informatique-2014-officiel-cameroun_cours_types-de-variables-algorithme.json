@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-types-de-variables-algorithme-probatoire-acd-2014",
+  "meta": {
+    "titre": "Citer les types de variables d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : variables et types",
+    "duree_estimee_min": 25,
+    "tags": [
+      "variable",
+      "type",
+      "entier",
+      "réel",
+      "caractère",
+      "booléen",
+      "déclaration"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2014-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2014 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2014-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu écris un algorithme, l'ordinateur doit réserver de la place en mémoire pour chaque donnée, et il doit savoir si cette donnée est un nombre, un mot ou un oui/non. Le type de la variable lui donne cette information. Sans lui, impossible de savoir si « 3 + 4 » est un calcul ou un collage de deux caractères."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un algorithme",
+        "Connaître la différence entre un nombre entier et un nombre décimal"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les types de base et la déclaration",
+      "contenu_markdown": "Une **variable** est une case mémoire désignée par un nom, qui contient une valeur pouvant changer pendant l'exécution. Son **type** détermine les valeurs qu'elle peut contenir et les opérations autorisées.\n\n| Type | Valeurs | Opérations usuelles |\n|---|---|---|\n| entier | nombres relatifs sans virgule | +, -, ×, div (quotient entier), mod (reste) |\n| réel | nombres à virgule | +, -, ×, / |\n| caractère | un seul symbole | comparaison |\n| chaîne | suite de caractères | concaténation, comparaison |\n| booléen | Vrai ou Faux | et, ou, non |\n\n**Syntaxe de déclaration :**\n\n```\nVar nom_variable : type ;\n```\n\nToutes les variables sont déclarées avant le mot-clé `Début`.",
+      "variantes": [
+        {
+          "nom": "Types structurés",
+          "quand_utiliser": "Quand on doit manipuler plusieurs valeurs de même type.",
+          "contenu_markdown": "Le **tableau** regroupe plusieurs valeurs d'un même type sous un seul nom. Ce n'est pas un type simple : à l'examen, cite d'abord les types simples."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déclarer les variables d'un algorithme qui lit le nom d'un élève, son âge, sa moyenne et indique s'il est admis.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les données",
+          "justification": "Chaque donnée à mémoriser devient une variable.",
+          "resultat_markdown": "nom, âge, moyenne, admis"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir le type de « nom »",
+          "justification": "Un nom est une suite de lettres : plusieurs caractères.",
+          "resultat_markdown": "nom : chaîne"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir le type de « âge »",
+          "justification": "Un âge est un nombre sans virgule.",
+          "resultat_markdown": "age : entier"
+        },
+        {
+          "numero": 4,
+          "action": "Choisir le type de « moyenne »",
+          "justification": "Une moyenne peut valoir 12,75 : il lui faut une partie décimale.",
+          "resultat_markdown": "moyenne : réel"
+        },
+        {
+          "numero": 5,
+          "action": "Choisir le type de « admis »",
+          "justification": "Il n'y a que deux réponses possibles : oui ou non.",
+          "resultat_markdown": "admis : booléen"
+        },
+        {
+          "numero": 6,
+          "action": "Écrire la déclaration",
+          "justification": "Elle précède le mot-clé Début.",
+          "resultat_markdown": "Var nom : chaîne ; age : entier ; moyenne : réel ; admis : booléen ;"
+        }
+      ],
+      "conclusion_markdown": "On a quatre variables, de quatre types différents, chacun choisi d'après la nature de la donnée à mémoriser."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Déclarer l'âge comme réel « par prudence »",
+          "pourquoi_faux": "Un réel occupe plus de place et autorise des valeurs sans sens pour un âge. Le type doit refléter la nature de la donnée, pas la prudence du programmeur.",
+          "correction_markdown": "Utilise entier pour tout ce qui se compte sans fraction."
+        },
+        {
+          "erreur_markdown": "Confondre le caractère 'A' et la chaîne \"AB\"",
+          "pourquoi_faux": "Le caractère est un seul symbole ; dès qu'il y en a plusieurs, c'est une chaîne.",
+          "correction_markdown": "Compte les symboles : un seul, caractère ; plusieurs, chaîne."
+        },
+        {
+          "erreur_markdown": "Écrire « 7 » entre guillemets et croire qu'il s'agit d'un nombre",
+          "pourquoi_faux": "Entre guillemets, 7 est un texte : on ne peut pas faire d'addition dessus.",
+          "correction_markdown": "Reconnais un nombre à l'absence de guillemets."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne le type le plus adapté pour chacune des variables : quantite (nombre de cahiers), prix (en francs avec centimes), lettre (la note A, B ou C), estMajeur.",
+          "solution_markdown": "**quantite** : un nombre de cahiers se compte sans fraction, donc **entier**.\n\n**prix** : il peut avoir une partie décimale, donc **réel**.\n\n**lettre** : un seul symbole, donc **caractère**.\n\n**estMajeur** : deux états possibles, donc **booléen**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel est le type de chacune des valeurs suivantes : 7 ; 7,0 ; '7' ; \"7\" ; Vrai ?",
+          "solution_markdown": "**7** : nombre sans virgule, **entier**.\n\n**7,0** : écrit avec une partie décimale, **réel**.\n\n**'7'** : un seul symbole entre apostrophes, **caractère** (ce n'est pas un nombre).\n\n**\"7\"** : suite de symboles entre guillemets, **chaîne**.\n\n**Vrai** : valeur logique, **booléen**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit a et b deux entiers, avec a = 7 et b = 2. Donne les valeurs de a div b, a mod b et a / b (avec a, b convertis en réels), puis explique pourquoi la variable qui reçoit a / b doit être un réel.",
+          "solution_markdown": "**Calcul de a div b.** Le quotient entier de 7 par 2 est le plus grand entier q tel que 2 × q ≤ 7. On a 2 × 3 = 6 ≤ 7 et 2 × 4 = 8 > 7, donc a div b = **3**.\n\n**Calcul de a mod b.** Le reste est 7 - 2 × 3 = 7 - 6 = **1**.\n\n**Calcul de a / b.** La division décimale donne 7 / 2 = **3,5**.\n\n**Explication.** Le résultat 3,5 possède une partie décimale : une variable entière ne peut pas le contenir (elle perdrait la partie 0,5). Il faut donc déclarer la variable de résultat de type réel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable a un nom, un type et une valeur ; le type est déclaré avant l'utilisation, avant le mot-clé Début.",
+        "Les cinq types de base à connaître : entier, réel, caractère, chaîne de caractères, booléen.",
+        "Le type se choisit d'après la nature de la donnée : on compte (entier), on mesure (réel), on nomme (chaîne), on décide (booléen).",
+        "Entre apostrophes, un symbole est un caractère ; entre guillemets, une suite de symboles est une chaîne.",
+        "À l'examen, la question « Citer quatre types » rapporte 0,5 point par type correct : donne le nom exact et un exemple de valeur."
+      ]
+    }
+  ]
+}

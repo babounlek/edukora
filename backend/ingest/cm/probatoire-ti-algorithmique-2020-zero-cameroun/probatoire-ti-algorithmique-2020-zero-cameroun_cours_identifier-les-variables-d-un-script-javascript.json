@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-identifier-les-variables-d-un-script-javascript-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Identifier les variables d'un script JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript : variables",
+    "duree_estimee_min": 22,
+    "tags": [
+      "variable",
+      "JavaScript",
+      "var",
+      "portée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q5.1.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un script, tout ce que le programme retient d'un instant à l'autre vit dans des variables : le résultat d'un test, un compteur, une valeur saisie. Retrouver les variables dans un code que l'on n'a pas écrit est une question de lecture simple, mais qui demande de ne pas les confondre avec les fonctions et les propriétés."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable en algorithmique",
+        "Savoir lire une fonction JavaScript"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Variables et paramètres en JavaScript",
+      "contenu_markdown": "Une **variable** est un nom qui désigne une zone de mémoire contenant une valeur. En JavaScript :\n\n- on la **déclare** avec `var` (ou `let`) : `var i = 0;` ;\n- on peut aussi l'**affecter** sans la déclarer : `answer = 1;` crée une variable **globale** (accessible partout) ;\n- une variable déclarée avec `var` dans une fonction est **locale** à cette fonction ;\n- les **paramètres** d'une fonction (`function f(number, message)`) se comportent comme des variables locales.\n\nComment ne pas les confondre :\n\n| Élément | Exemple | Nature |\n|---|---|---|\n| variable | `answer`, `i` | nom à gauche d'une affectation |\n| fonction déclarée | `isANumber` | précédée du mot `function` |\n| fonction prédéfinie | `alert`, `parseFloat` | appelée, jamais déclarée |\n| propriété | `number.length` | suit un point derrière un objet |\n\nMéthode : chercher les noms situés à gauche d'un signe `=` ou après `var`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le script de la fonction `isANumber(number, message)` : `answer = 1;`, `if (!parseFloat(number)) { answer = 0; ... }`, `for (var i=0; i<number.length; i++) { ... }`, `return answer;`, identifier deux variables.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher les noms à gauche d'un `=`",
+          "justification": "Une affectation donne une valeur à une variable",
+          "resultat_markdown": "`answer = 1`, `answer = 0`, `i=0`"
+        },
+        {
+          "numero": 2,
+          "action": "Chercher les déclarations avec `var`",
+          "justification": "`var` déclare explicitement une variable",
+          "resultat_markdown": "`var i=0`"
+        },
+        {
+          "numero": 3,
+          "action": "Écarter les noms qui ne sont pas des variables",
+          "justification": "`alert`, `parseFloat`, `charAt` sont des fonctions ; `length` est une propriété",
+          "resultat_markdown": "Ils sont exclus"
+        }
+      ],
+      "conclusion_markdown": "Les variables du script sont `answer` (globale, sans `var`) et `i` (compteur de la boucle), auxquelles s'ajoutent les paramètres `number` et `message`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `alert` ou `parseFloat`",
+          "pourquoi_faux": "Ce sont des fonctions prédéfinies, que le script appelle seulement.",
+          "correction_markdown": "Les noms suivis d'arguments entre parenthèses sont des fonctions."
+        },
+        {
+          "erreur_markdown": "Citer `length` comme variable",
+          "pourquoi_faux": "`length` est une propriété de la chaîne `number` : elle se lit derrière un point.",
+          "correction_markdown": "Une variable se rencontre seule, à gauche d'un `=`."
+        },
+        {
+          "erreur_markdown": "Oublier que `answer` est globale",
+          "pourquoi_faux": "Sans `var`, l'affectation `answer = 1;` crée une variable globale : elle reste accessible après l'appel de la fonction et peut gêner d'autres scripts.",
+          "correction_markdown": "Déclare toujours tes variables avec `var` ou `let`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Relever les variables et les paramètres de : `function total(prix, quantite) { var montant = prix * quantite; taux = 0.25; return montant * (1 + taux); }`.",
+          "solution_markdown": "- paramètres : `prix` et `quantite` (variables locales, qui reçoivent les valeurs de l'appel) ;\n- `montant` : variable locale, déclarée avec `var` ;\n- `taux` : variable **globale**, car affectée sans `var`.\n\n`total` est le nom de la fonction, pas une variable."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour la fonction `total` précédente, que renvoie `total(1000, 2)` ? Que valent `typeof montant` et `taux` après l'appel ?",
+          "solution_markdown": "Appel `total(1000, 2)` : `prix` vaut 1000 et `quantite` vaut 2.\n\n1. `montant = 1000 × 2 = 2000` ;\n2. `taux = 0.25` ;\n3. retour : $2000 \\times (1 + 0{,}25) = 2000 \\times 1{,}25 = 2500$.\n\nLa fonction renvoie **2500** (vérifié sous Node.js).\n\nAprès l'appel, `montant` n'existe plus en dehors de la fonction : `typeof montant` donne `undefined`. `taux`, globale, reste accessible et vaut 0.25. C'est la différence entre variable locale et variable globale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit `function compterZeros(chaine) { var c = 0; for (var i = 0; i < chaine.length; i++) { if (chaine.charAt(i) == \"0\") { c++; } } return c; }`. Lister les variables avec leur rôle, puis donner la valeur de `compterZeros(\"10500\")` en faisant la trace.",
+          "solution_markdown": "**Variables.**\n\n- `chaine` : paramètre, la chaîne à examiner ;\n- `c` : accumulateur (compteur de zéros), initialisé à 0 ;\n- `i` : compteur de boucle, qui parcourt les positions 0 à `chaine.length - 1`.\n\n**Trace pour `\"10500\"`** (5 caractères) :\n\n| i | chaine.charAt(i) | égal à \"0\" ? | c |\n|---|---|---|---|\n| départ | | | 0 |\n| 0 | 1 | non | 0 |\n| 1 | 0 | oui | 1 |\n| 2 | 5 | non | 1 |\n| 3 | 0 | oui | 2 |\n| 4 | 0 | oui | 3 |\n\nLa fonction renvoie **3** (vérifié sous Node.js)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable est un nom associé à une valeur : on la repère à gauche d'un `=` ou après `var`.",
+        "Les paramètres d'une fonction sont des variables locales.",
+        "`alert`, `parseFloat`, `charAt` sont des fonctions ; `length` est une propriété.",
+        "Sans `var`, une affectation crée une variable globale.",
+        "Au probatoire, cite deux variables avec leur numéro de ligne : `answer` (ligne 5) et `i` (ligne 9)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-identifier-les-types-d-elements-d-un-formulaire-html-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Identifier les types d'éléments d'un formulaire HTML",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Formulaires HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "formulaire HTML",
+      "balise input",
+      "champ de saisie",
+      "bouton"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu t'inscris sur un site, que tu te connectes ou que tu envoies un message, tu remplis un formulaire. Il est fait de pièces différentes : des champs, des cases, des listes, des boutons. Savoir nommer ces pièces et les reconnaître sur une capture d'écran est la première compétence en programmation web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une balise HTML et ses attributs",
+        "Avoir déjà rempli un formulaire sur un site web"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les éléments d'un formulaire HTML",
+      "contenu_markdown": "Un formulaire HTML s'écrit entre `<form>` et `</form>`. Il contient des éléments de natures différentes.\n\n| Élément | Balise | Apparence |\n|---|---|---|\n| Zone de texte | `<input type=\"text\">` | rectangle de saisie d'une ligne |\n| Mot de passe | `<input type=\"password\">` | zone dont les caractères sont masqués |\n| Case à cocher | `<input type=\"checkbox\">` | petit carré, plusieurs choix possibles |\n| Bouton radio | `<input type=\"radio\">` | petit rond, un seul choix du groupe |\n| Liste déroulante | `<select>` avec `<option>` | liste de choix |\n| Zone de texte multiligne | `<textarea>` | grande zone de saisie |\n| Bouton d'envoi | `<input type=\"submit\">` | envoie les données |\n| Bouton d'effacement | `<input type=\"reset\">` | remet les champs à zéro |\n\nAutour des champs : un **titre** (`<h1>`) et des **étiquettes** de texte (« Nom : »).\n\nMéthode : regarder la figure élément par élément, nommer son **type** (zone de texte, bouton, case...) et pas seulement son étiquette."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur la figure d'un formulaire contenant un titre « Formulaire de collecte des données. », les étiquettes « Nom : » et « Adresse : » suivies chacune d'un rectangle de saisie, et un bouton « Valider », identifier deux types d'éléments distincts.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les éléments de la figure",
+          "justification": "On parcourt la figure de haut en bas",
+          "resultat_markdown": "Titre, deux étiquettes, deux rectangles de saisie, un bouton"
+        },
+        {
+          "numero": 2,
+          "action": "Regrouper par nature",
+          "justification": "Deux éléments de même nature comptent pour un seul type",
+          "resultat_markdown": "Les deux rectangles sont des zones de saisie de texte ; le bouton est un bouton"
+        },
+        {
+          "numero": 3,
+          "action": "Nommer deux types distincts avec leur balise",
+          "justification": "Le sujet demande des types différents",
+          "resultat_markdown": "Zone de saisie de texte (`input` de type `text`) ; bouton de validation (`input` de type `submit`)"
+        }
+      ],
+      "conclusion_markdown": "Deux types d'éléments distincts du formulaire sont la zone de saisie de texte et le bouton de validation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer « Nom » et « Adresse » comme deux types",
+          "pourquoi_faux": "Ce sont deux champs du même type, des zones de texte : ils comptent pour un seul type.",
+          "correction_markdown": "Des types distincts ont des balises ou des attributs `type` différents."
+        },
+        {
+          "erreur_markdown": "Citer les étiquettes comme des champs",
+          "pourquoi_faux": "« Nom : » est un simple texte à côté du champ, pas un élément de saisie.",
+          "correction_markdown": "Le champ est le rectangle dans lequel on écrit."
+        },
+        {
+          "erreur_markdown": "Confondre bouton d'envoi et bouton simple",
+          "pourquoi_faux": "`type=\"submit\"` envoie le formulaire ; `type=\"button\"` ne fait rien tant qu'un script n'est pas associé.",
+          "correction_markdown": "Sur une figure qui montre « Valider », pense d'abord à `submit`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le code suivant, relever les types d'éléments distincts : `<input type=\"text\" name=\"nom\">`, `<input type=\"password\" name=\"mdp\">`, `<input type=\"checkbox\" name=\"souvenir\">`, `<select name=\"ville\">...</select>`, `<input type=\"submit\" value=\"Envoyer\">`.",
+          "solution_markdown": "On lit l'attribut `type` ou le nom de la balise de chaque élément.\n\n1. `type=\"text\"` : zone de saisie de texte ;\n2. `type=\"password\"` : champ de mot de passe, dont les caractères sont masqués ;\n3. `type=\"checkbox\"` : case à cocher ;\n4. `<select>` : liste déroulante ;\n5. `type=\"submit\"` : bouton d'envoi.\n\nCinq types d'éléments distincts."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle différence y a-t-il entre `type=\"submit\"` et `type=\"reset\"` ? Quel élément choisir pour le sexe (un seul choix) et pour les langues parlées (plusieurs choix possibles) ?",
+          "solution_markdown": "**submit et reset.** Le bouton `submit` envoie les données saisies au script indiqué par l'attribut `action` du formulaire ; le bouton `reset` efface les champs et leur redonne leur valeur initiale, sans rien envoyer.\n\n**Le sexe** : un seul choix possible, donc des **boutons radio** portant le même attribut `name`, par exemple `<input type=\"radio\" name=\"sexe\" value=\"M\">` et `<input type=\"radio\" name=\"sexe\" value=\"F\">`. Le même `name` regroupe les boutons : cocher l'un décoche l'autre.\n\n**Les langues parlées** : plusieurs choix possibles, donc des **cases à cocher** (`type=\"checkbox\"`), chacune avec son propre `name`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut un formulaire d'inscription avec : le nom, le sexe, le pays (choisi parmi Cameroun et Gabon), un commentaire de plusieurs lignes, et les boutons Envoyer et Effacer. Choisir l'élément de chaque champ et écrire le code HTML.",
+          "solution_markdown": "On associe chaque information à l'élément adapté : nom, `text` ; sexe, `radio` ; pays, `select` ; commentaire, `textarea` ; boutons, `submit` et `reset`.\n\n```html\n<form action=\"inscription.php\" method=\"post\">\n  Nom : <input type=\"text\" name=\"nom\"><br>\n  Sexe :\n  <input type=\"radio\" name=\"sexe\" value=\"M\"> Masculin\n  <input type=\"radio\" name=\"sexe\" value=\"F\"> Féminin<br>\n  Pays :\n  <select name=\"pays\">\n    <option>Cameroun</option>\n    <option>Gabon</option>\n  </select><br>\n  Commentaire :<br>\n  <textarea name=\"com\" rows=\"3\" cols=\"30\"></textarea><br>\n  <input type=\"submit\" value=\"Envoyer\">\n  <input type=\"reset\" value=\"Effacer\">\n</form>\n```\n\nChaque champ porte un attribut `name` : il identifie la valeur transmise au script. Le `<br>` passe à la ligne. On obtient cinq types d'éléments de saisie (`text`, `radio`, `select`, `textarea`, boutons)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire est fait de zones de texte, de cases, de boutons radio, de listes, de zones multilignes et de boutons.",
+        "Deux éléments de même nature (Nom et Adresse) ne comptent que pour un type.",
+        "Un bouton `submit` envoie le formulaire, un bouton `reset` l'efface.",
+        "Radio : un seul choix ; checkbox : plusieurs choix.",
+        "Au probatoire, cite le type de l'élément et sa balise (`input` de type `text`) : la question rapporte 1 point."
+      ]
+    }
+  ]
+}

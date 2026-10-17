@@ -1,0 +1,139 @@
+{
+ "cours_id": "cours-calcul-taille-donnees-bits-ti-si-2016",
+ "meta": {
+  "titre": "Calculer la taille maximale des données stockées en bits",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Représentation et stockage des données",
+  "duree_estimee_min": 20,
+  "tags": [
+   "taille des données",
+   "bit",
+   "octet",
+   "dictionnaire de données",
+   "codage des caractères"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q14-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Combien d'espace disque faut-il pour mémoriser les fiches de 10 000 clients ? Avant d'acheter un disque, on estime la taille des données. Le calcul ne demande que le dictionnaire de données et une multiplication, mais il piège ceux qui oublient l'unité. Ce cours te montre le raisonnement et les conversions."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Dictionnaire de données",
+    "Un caractère occupe un octet de 8 bits dans le codage ASCII étendu"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Nombre de données, taille, nombre de bits",
+   "contenu_markdown": "**Formule** : taille maximale = nombre de données × taille maximale d'une donnée (en caractères) × bits par caractère.\n\n- 1 caractère = 1 octet = **8 bits** (ASCII étendu) ; 16 bits en UTF-16.\n- 1 octet = 8 bits ; 1 Ko = 1 024 octets ; 1 Mo = 1 024 Ko.\n- On compte les données du **dictionnaire**, une fois chacune, sauf si le sujet précise un nombre d'occurrences.\n\nÉcris toujours la formule littérale, puis l'application numérique, puis le résultat avec son **unité**.",
+   "formule_principale": "T = n \\times t \\times b",
+   "variantes": [
+    {
+     "nom": "Avec les tailles réelles du dictionnaire",
+     "quand_utiliser": "Quand on demande la taille réelle et non le majorant",
+     "contenu_markdown": "Remplacer n × t par la somme des tailles déclarées de chaque donnée, puis multiplier par 8."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Le dictionnaire de CAR_INSURANCE comporte 12 données, chacune codée sur 45 caractères au maximum. Calculer la taille maximale des données en bits.",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Relever les trois paramètres",
+     "justification": "La formule en demande trois.",
+     "resultat_markdown": "n = 12 données ; t = 45 caractères ; b = 8 bits par caractère."
+    },
+    {
+     "numero": 2,
+     "action": "Écrire la formule littérale",
+     "justification": "On garde la démarche visible.",
+     "resultat_markdown": "T = n × t × b."
+    },
+    {
+     "numero": 3,
+     "action": "Calculer le nombre de caractères",
+     "justification": "12 données de 45 caractères.",
+     "resultat_markdown": "12 × 45 = 540 caractères."
+    },
+    {
+     "numero": 4,
+     "action": "Convertir en bits",
+     "justification": "Chaque caractère vaut 8 bits.",
+     "resultat_markdown": "540 × 8 = 4 320 bits, soit 540 octets."
+    }
+   ],
+   "conclusion_markdown": "La taille maximale est de 4 320 bits (540 octets)."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Donner 540 comme résultat final",
+     "pourquoi_faux": "540 est un nombre de caractères. Une taille en bits demande la multiplication par 8.",
+     "correction_markdown": "Convertir caractères en octets puis en bits."
+    },
+    {
+     "erreur_markdown": "Oublier de compter une donnée du dictionnaire",
+     "pourquoi_faux": "Le résultat est faussé de 45 × 8 = 360 bits par donnée manquante.",
+     "correction_markdown": "Compter les lignes du dictionnaire avant de calculer."
+    },
+    {
+     "erreur_markdown": "Mélanger bits et octets dans la conversion en Ko",
+     "pourquoi_faux": "1 Ko vaut 1 024 octets, pas 1 024 bits.",
+     "correction_markdown": "Passer d'abord en octets (diviser les bits par 8), puis en Ko (diviser par 1 024)."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une entité a 10 données, chacune de 20 caractères au maximum. Calculer sa taille maximale en bits et en octets.",
+     "solution_markdown": "1. n = 10, t = 20, b = 8.\n2. Caractères : 10 × 20 = 200.\n3. Bits : 200 × 8 = 1 600 bits.\n4. Octets : 1 600 / 8 = 200 octets."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Convertir 4 320 bits en octets puis en kilo-octets (1 Ko = 1 024 octets).",
+     "solution_markdown": "1. Octets : 4 320 / 8 = 540 octets.\n2. Kilo-octets : 540 / 1 024 ≈ 0,527 Ko.\n3. Résultat : 540 octets, soit environ 0,53 Ko."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un client est décrit par NumCli (6 caractères), Nom (30) et Prenom (30). Calculer l'espace maximal pour 500 clients, en bits, en octets et en Ko (arrondi au centième).",
+     "solution_markdown": "1. Taille d'un client : 6 + 30 + 30 = 66 caractères.\n2. 500 clients : 500 × 66 = 33 000 caractères.\n3. Octets : 33 000 octets.\n4. Bits : 33 000 × 8 = 264 000 bits.\n5. Ko : 33 000 / 1 024 ≈ 32,23 Ko."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Taille = nombre de données × taille de chaque donnée × 8 bits.",
+    "Un caractère vaut un octet, soit 8 bits.",
+    "Écris la formule, le calcul et l'unité à chaque ligne.",
+    "Bits divisés par 8 donnent des octets ; octets divisés par 1 024 donnent des Ko.",
+    "Au Probatoire TI, ce calcul vaut 0,5 point : le facteur 8 est l'étape que l'on oublie le plus souvent."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-identifier-un-evenement-javascript-associe-a-une-balise-onclick-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Identifier un événement JavaScript associé à une balise (onClick)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript : événements",
+    "duree_estimee_min": 22,
+    "tags": [
+      "événement",
+      "onClick",
+      "gestionnaire d'événement",
+      "JavaScript"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q5.1.c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web ne fait rien tant qu'il ne se passe rien : tout part d'un clic, d'une saisie, d'un survol. Ces actions de l'utilisateur s'appellent des événements, et JavaScript permet d'y réagir. Reconnaître un événement dans un code, c'est repérer le moment où le programme se réveille."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un attribut dans une balise HTML",
+        "Connaître la notion de fonction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Événements et gestionnaires",
+      "contenu_markdown": "Un **événement** est une action de l'utilisateur ou du navigateur. On le détecte avec un **attribut de gestionnaire** de la balise, dont le nom commence par `on` ; sa valeur est le code exécuté quand l'événement se produit :\n\n```html\n<input type=\"button\" value=\"Dire bonjour\" onclick=\"alert('Bonjour')\">\n```\n\n| Attribut | Événement | Balise typique |\n|---|---|---|\n| `onclick` | clic de souris | bouton, lien, image |\n| `onchange` | valeur modifiée | champ, liste |\n| `onmouseover` | survol par la souris | image, lien |\n| `onload` | chargement de la page | `body` |\n| `onsubmit` | envoi du formulaire | `form` |\n| `onfocus`, `onblur` | entrée dans le champ, sortie du champ | champ |\n| `onkeyup` | touche relâchée | champ |\n\nHTML ne distingue pas majuscules et minuscules dans les noms d'attributs : `onClick` et `onclick` sont équivalents. Dans le code d'un gestionnaire, `this` désigne l'élément concerné et `this.form` son formulaire."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la balise `<INPUT TYPE=\"submit\" value=\"Convertir\" onClick=\"if(this.form.CFA.value) {...}\">`, identifier un événement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher les attributs commençant par `on`",
+          "justification": "Les gestionnaires d'événements ont toujours un nom de la forme `onXxx`",
+          "resultat_markdown": "`onClick`, à la ligne 23"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier l'action de l'utilisateur",
+          "justification": "`click` désigne un clic de souris sur la balise qui porte l'attribut",
+          "resultat_markdown": "Clic sur le bouton « Convertir »"
+        },
+        {
+          "numero": 3,
+          "action": "Lire le code associé",
+          "justification": "La valeur de l'attribut est exécutée au clic",
+          "resultat_markdown": "Appel de `isANumber`, puis conversions en euros et en dollars"
+        }
+      ],
+      "conclusion_markdown": "L'événement du code est `onClick`, déclenché par un clic sur le bouton « Convertir »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `submit` comme événement",
+          "pourquoi_faux": "`submit` est le type du bouton dans `type=\"submit\"` ; l'événement lié à l'envoi d'un formulaire s'appelle `onsubmit`, et c'est ici `onClick` qui est utilisé.",
+          "correction_markdown": "Un événement est un attribut qui commence par `on`."
+        },
+        {
+          "erreur_markdown": "Citer la fonction appelée au lieu de l'événement",
+          "pourquoi_faux": "`isANumber` est ce que le clic déclenche, pas le clic lui-même.",
+          "correction_markdown": "L'événement est la cause (le clic) ; la fonction est la réaction."
+        },
+        {
+          "erreur_markdown": "Penser que le code du gestionnaire s'exécute au chargement de la page",
+          "pourquoi_faux": "Il ne s'exécute qu'au moment de l'événement, ici le clic.",
+          "correction_markdown": "Un gestionnaire attend l'action de l'utilisateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associer chaque action à l'attribut de gestionnaire : clic sur un bouton ; chargement de la page ; envoi d'un formulaire ; survol d'une image par la souris.",
+          "solution_markdown": "- clic sur un bouton : `onclick` ;\n- chargement de la page : `onload`, placé sur la balise `body` ;\n- envoi d'un formulaire : `onsubmit`, placé sur la balise `form` ;\n- survol d'une image : `onmouseover`, placé sur la balise `img`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un bouton intitulé « Dire bonjour » qui affiche une boîte de dialogue « Bonjour » quand on clique dessus.",
+          "solution_markdown": "On place l'attribut `onclick` sur la balise du bouton, avec le code à exécuter :\n\n```html\n<input type=\"button\" value=\"Dire bonjour\" onclick=\"alert('Bonjour')\">\n```\n\nLe code du gestionnaire est entouré de guillemets doubles : à l'intérieur, on utilise des apostrophes pour le texte. Ce bouton a été testé dans un navigateur : le clic ouvre la boîte « Bonjour »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire a un champ `nom`. On veut empêcher l'envoi si le champ est vide, avec le message « Nom obligatoire ». Écrire la fonction et la balise `form`. Pourquoi faut-il écrire `return verifier()` et pas seulement `verifier()` ?",
+          "solution_markdown": "```html\n<script>\nfunction verifier() {\n    if (document.forms[0].nom.value == \"\") {\n        alert(\"Nom obligatoire\");\n        return false;\n    }\n    return true;\n}\n</script>\n<form action=\"traitement.php\" method=\"post\" onsubmit=\"return verifier()\">\n    <input type=\"text\" name=\"nom\">\n    <input type=\"submit\" value=\"Envoyer\">\n</form>\n```\n\nL'événement `onsubmit` se produit juste avant l'envoi. Si le gestionnaire renvoie `false`, le navigateur **annule** l'envoi ; s'il renvoie `true`, l'envoi a lieu.\n\nAvec `onsubmit=\"verifier()\"` sans `return`, la valeur renvoyée par la fonction est ignorée : l'alerte s'affiche, puis le formulaire est quand même envoyé. Il faut donc `return verifier()` pour transmettre la décision au navigateur.\n\nTest fait dans un navigateur : avec le champ vide, la boîte « Nom obligatoire » s'affiche et la page ne change pas ; avec le nom `Paul`, le formulaire est envoyé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un événement est une action (clic, survol, chargement, envoi) détectée par un attribut `onXxx` dans une balise.",
+        "`onClick` réagit au clic ; `onsubmit` à l'envoi d'un formulaire ; `onload` au chargement.",
+        "La valeur de l'attribut est le code exécuté quand l'événement se produit.",
+        "Pour annuler un envoi, le gestionnaire doit renvoyer `false` : `onsubmit=\"return verifier()\"`.",
+        "Au probatoire, cite l'attribut (`onClick`, ligne 23) et l'action qui le déclenche."
+      ]
+    }
+  ]
+}

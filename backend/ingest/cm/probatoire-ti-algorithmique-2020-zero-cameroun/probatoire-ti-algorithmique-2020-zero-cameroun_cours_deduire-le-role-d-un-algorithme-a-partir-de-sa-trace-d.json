@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-deduire-le-role-d-un-algorithme-a-partir-de-sa-trace-d-execution-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Déduire le rôle d'un algorithme à partir de sa trace d'exécution (factorielle)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Exécution d'un algorithme",
+    "duree_estimee_min": 22,
+    "tags": [
+      "factorielle",
+      "accumulateur",
+      "trace d'exécution",
+      "rôle d'un algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Après avoir exécuté un algorithme, une question toute simple tombe : que fait-il exactement ? C'est la question la plus importante de l'algorithmique, parce qu'elle donne un sens au code. Pour y répondre, on s'appuie sur la trace d'exécution et on compare les valeurs obtenues à des suites que l'on connaît : sommes, produits, puissances, factorielles."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir faire la trace d'exécution d'un algorithme",
+        "Connaître les notions de somme, de produit, de puissance et de factorielle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître le rôle d'un algorithme à partir de sa trace",
+      "contenu_markdown": "Pour dire ce que fait un algorithme :\n\n1. identifier le **compteur** (la variable de la boucle) et l'**accumulateur** (la variable qui évolue à chaque tour) ;\n2. regarder l'**initialisation** de l'accumulateur et l'**opération** répétée ;\n3. comparer les valeurs successives de la trace avec des suites connues ;\n4. formuler le résultat par une **expression générale** en fonction de la donnée lue.\n\n| Initialisation | Opération à chaque tour | Rôle |\n|---|---|---|\n| `S ← 0` | `S ← S + i` | somme $1 + 2 + \\dots + N = \\dfrac{N(N+1)}{2}$ |\n| `P ← 1` | `P ← P × i` | factorielle $N! = 1 \\times 2 \\times \\dots \\times N$ |\n| `P ← 1` | `P ← P × x` | puissance $x^N$ |\n| `c ← 0` | `c ← c + 1` sous condition | comptage des éléments qui vérifient la condition |\n\nL'élément neutre de l'opération donne l'initialisation : 0 pour l'addition, 1 pour la multiplication.",
+      "formule_principale": "N! = 1 \\times 2 \\times \\dots \\times N"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Après l'exécution pas à pas de l'algorithme `test` pour N = 5, qui a donné les valeurs de `F` : 1, 1, 2, 6, 24, 120, dire ce que fait exactement cet algorithme.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier compteur et accumulateur",
+          "justification": "`i` change de 1 à N à chaque tour (compteur) ; `F` est modifié à chaque tour (accumulateur)",
+          "resultat_markdown": "Compteur `i`, accumulateur `F`"
+        },
+        {
+          "numero": 2,
+          "action": "Lire l'initialisation et l'opération",
+          "justification": "`F ← 1` puis `F ← F × i`",
+          "resultat_markdown": "Initialisation 1, opération multiplicative : on calcule un produit"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer avec les suites connues",
+          "justification": "1, 1, 2, 6, 24, 120 sont $0!, 1!, 2!, 3!, 4!, 5!$",
+          "resultat_markdown": "Les valeurs de `F` sont les factorielles successives"
+        },
+        {
+          "numero": 4,
+          "action": "Formuler l'expression générale",
+          "justification": "Après N tours, `F` est le produit de tous les entiers de 1 à N",
+          "resultat_markdown": "$F = 1 \\times 2 \\times \\dots \\times N = N!$"
+        }
+      ],
+      "conclusion_markdown": "L'algorithme calcule et affiche la factorielle de N ; pour N = 5, il affiche 120."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire « il calcule la somme de 1 à N »",
+          "pourquoi_faux": "Une somme s'initialise à 0 et on y ajoute `i`. Ici la variable est initialisée à 1 et multipliée par `i`, et les valeurs croissent beaucoup plus vite qu'une somme.",
+          "correction_markdown": "Regarde l'initialisation et l'opération : 1 et × veut dire produit."
+        },
+        {
+          "erreur_markdown": "Décrire seulement le cas de l'exemple (« il affiche 120 »)",
+          "pourquoi_faux": "La question demande ce que fait l'algorithme en général : pour N = 6 il afficherait 720, pas 120.",
+          "correction_markdown": "Réponds par une formule en N, puis donne la valeur de l'exemple."
+        },
+        {
+          "erreur_markdown": "Oublier le cas N = 0",
+          "pourquoi_faux": "La boucle ne s'exécute pas et `F` reste à 1, ce qui correspond à $0! = 1$ ; ce n'est pas une erreur.",
+          "correction_markdown": "Teste ta formule sur la valeur la plus petite possible."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour N = 4, l'algorithme `S ← 0 ; Pour i Allant de 1 à N Faire S ← S + i FinPour` donne pour `S`, après chaque tour : 1, 3, 6, 10. Que calcule-t-il en général ?",
+          "solution_markdown": "L'accumulateur `S` est initialisé à 0 et on y ajoute le compteur `i` à chaque tour : c'est une **somme**.\n\nLes valeurs 1, 3, 6, 10 sont $1$, $1+2$, $1+2+3$, $1+2+3+4$. Après N tours :\n\n$$S = 1 + 2 + 3 + \\dots + N = \\frac{N(N+1)}{2}$$\n\nVérification pour N = 4 : $\\dfrac{4 \\times 5}{2} = 10$, valeur affichée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On donne `P ← 1 ; Pour i Allant de 1 à n Faire P ← P × x FinPour`. Pour x = 2 et n = 5, `P` prend les valeurs 2, 4, 8, 16, 32. Que fait cet algorithme ?",
+          "solution_markdown": "L'initialisation est 1 et l'opération est une multiplication par la **même** valeur `x` à chaque tour (et non par le compteur `i`). Après n tours, `x` a été multiplié n fois par lui-même :\n\n$$P = \\underbrace{x \\times x \\times \\dots \\times x}_{n \\text{ facteurs}} = x^n$$\n\nL'algorithme calcule la **puissance** $x^n$. Vérification pour x = 2 et n = 5 : $2^5 = 32$, dernière valeur de la trace. Pour n = 0, la boucle ne s'exécute pas et `P` vaut 1, ce qui correspond à $x^0 = 1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne `c ← 0 ; Pour i Allant de 1 à N Faire Lire (x) ; Si x > 0 Alors c ← c + 1 FinSi FinPour ; Ecrire (c)`. Pour N = 5 et les valeurs saisies 3, -1, 4, 0, -2, faire la trace puis dire ce que calcule l'algorithme.",
+          "solution_markdown": "**Trace.**\n\n| Tour | x saisi | x > 0 ? | c |\n|---|---|---|---|\n| départ | | | 0 |\n| 1 | 3 | oui | 1 |\n| 2 | -1 | non | 1 |\n| 3 | 4 | oui | 2 |\n| 4 | 0 | non | 2 |\n| 5 | -2 | non | 2 |\n\nL'algorithme affiche 2.\n\n**Rôle.** `c` est un compteur initialisé à 0, incrémenté de 1 seulement quand la condition `x > 0` est vraie. L'algorithme lit N valeurs et **compte combien d'entre elles sont strictement positives**. Le 0 n'est pas compté, car 0 > 0 est faux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour dire ce que fait un algorithme, repère l'initialisation de l'accumulateur et l'opération répétée.",
+        "Initialisation à 0 avec une addition : somme. Initialisation à 1 avec une multiplication : produit (factorielle ou puissance).",
+        "Réponds par une formule en N, puis donne la valeur numérique de l'exemple.",
+        "Teste ta formule sur le plus petit cas (N = 0 ou N = 1) pour la confirmer.",
+        "Au probatoire, cette question suit la trace d'exécution et rapporte un quart de point ou un demi-point : réponse courte, mais exacte et générale."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-affecter-des-valeurs-aux-champs-d-un-enregistrement-range-dans-un-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Affecter des valeurs aux champs d'un enregistrement rangé dans un tableau",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures de données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "affectation",
+      "enregistrement",
+      "tableau",
+      "notation pointée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois la structure déclarée, il faut la remplir : ranger les informations d'un élève précis dans la bonne case, au bon champ. Une seule ligne par champ, avec la bonne écriture. Cette écriture, `tableau[indice].champ ← valeur`, est le geste de base pour manipuler des données réelles, et un oubli de détail suffit à faire perdre le point."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire la déclaration d'un tableau d'enregistrements",
+        "Connaître l'affectation `variable ← valeur`",
+        "Connaître la différence entre une chaîne (apostrophes) et un nombre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Affecter un champ d'une case de tableau",
+      "contenu_markdown": "Pour affecter une valeur à un champ d'un enregistrement rangé dans un tableau :\n\n$$\\text{tableau[indice].champ} \\leftarrow \\text{valeur}$$\n\nProcédure :\n\n1. relever dans la déclaration les **bornes du tableau** (`[1..MAX]` : la première case porte l'indice 1) pour trouver le bon indice ;\n2. relever la **liste des champs** et leur type ;\n3. écrire **une affectation par champ**, en respectant le type : texte entre apostrophes pour une chaîne, nombre sans apostrophes pour un entier ou un réel.\n\nOn peut aussi copier un enregistrement entier d'une case à l'autre : `tableau[8] ← tableau[7]`.\n\nEn langage C, un tableau commence à l'indice 0 : la case numéro 15 d'un tableau `[1..MAX]` en pseudo-code devient `eleve[14]`, et une chaîne se copie avec `strcpy`.",
+      "formule_principale": "\\text{tableau[indice].champ} \\leftarrow \\text{valeur}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le 15ᵉ élève a pour informations : nom TIGUINGUI, prénom Samuel, âge 14, sexe M. Avec `Var eleve : Tableau [1..MAX] de personne ;` (champs `nom`, `prenom`, `age`, `sexe`), affecter ces valeurs à `eleve[15]`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Trouver l'indice",
+          "justification": "Le tableau commence à 1 : le 15ᵉ élève est à l'indice 15",
+          "resultat_markdown": "Case visée : `eleve[15]`"
+        },
+        {
+          "numero": 2,
+          "action": "Lister les champs et leur type",
+          "justification": "Il faut une instruction par champ, dans le bon type",
+          "resultat_markdown": "`nom` chaîne, `prenom` chaîne, `age` entier, `sexe` chaîne"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire les affectations des trois chaînes",
+          "justification": "Une chaîne s'écrit entre apostrophes",
+          "resultat_markdown": "`eleve[15].nom ← 'TIGUINGUI' ;` `eleve[15].prenom ← 'Samuel' ;` `eleve[15].sexe ← 'M' ;`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire l'affectation de l'entier",
+          "justification": "Un entier s'écrit sans apostrophes, même si l'énoncé imprime « 14 » entre guillemets",
+          "resultat_markdown": "`eleve[15].age ← 14 ;`"
+        }
+      ],
+      "conclusion_markdown": "Quatre affectations, une par champ, rangent les informations de TIGUINGUI Samuel dans la case 15 du tableau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `eleve.nom[15] ← 'TIGUINGUI'`",
+          "pourquoi_faux": "L'indice se place juste après le nom du tableau, avant le point : `eleve` est un tableau et non un enregistrement.",
+          "correction_markdown": "Ordre correct : tableau, indice entre crochets, point, champ."
+        },
+        {
+          "erreur_markdown": "Écrire `age ← '14'`",
+          "pourquoi_faux": "On range une chaîne dans un champ entier : le type n'est pas respecté.",
+          "correction_markdown": "Un entier s'écrit sans apostrophes : `age ← 14`."
+        },
+        {
+          "erreur_markdown": "Oublier un champ ou affecter l'enregistrement entier d'un coup avec des valeurs",
+          "pourquoi_faux": "Une instruction `eleve[15] ← ('TIGUINGUI', 'Samuel', 14, 'M')` n'existe pas en pseudo-code classique.",
+          "correction_markdown": "Une instruction par champ."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec `Type livre : enregistrement titre : chaine ; pages : entier ; FinEnregistrement` et `Var bib : Tableau [1..100] de livre ;`, affecter à la 7ᵉ case le livre « Algèbre » de 320 pages.",
+          "solution_markdown": "La 7ᵉ case est `bib[7]` (le tableau commence à 1). Deux champs, donc deux affectations :\n\n```\nbib[7].titre ← 'Algèbre' ;\nbib[7].pages ← 320 ;\n```\n\nLe titre est une chaîne (apostrophes), le nombre de pages est un entier (sans apostrophes)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Même déclaration. Copier le livre de la case 7 dans la case 8, puis changer à 410 le nombre de pages de la case 8 sans modifier la case 7.",
+          "solution_markdown": "On copie l'enregistrement entier, puis on modifie un seul champ de la copie :\n\n```\nbib[8] ← bib[7] ;\nbib[8].pages ← 410 ;\n```\n\nAprès la première instruction, `bib[8].titre` vaut « Algèbre » et `bib[8].pages` vaut 320. Après la seconde, `bib[8].pages` vaut 410, tandis que `bib[7].pages` reste à 320 : la copie est indépendante de l'original."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire la partie d'algorithme qui saisit au clavier les titres et nombres de pages de `n` livres (avec $n \\leq 100$) et les range dans `bib`, en commençant à la case 1.",
+          "solution_markdown": "On répète la saisie `n` fois avec une boucle `Pour` dont le compteur `i` sert d'indice.\n\n```\nPour i Allant de 1 à n Faire\n    Ecrire (\"Titre du livre \", i, \" :\") ;\n    Lire (bib[i].titre) ;\n    Ecrire (\"Nombre de pages :\") ;\n    Lire (bib[i].pages) ;\nFinPour\n```\n\nLa lecture `Lire (bib[i].titre)` range directement la valeur saisie dans le champ désigné. Le compteur `i` prend les valeurs 1, 2, ..., `n` : la première case remplie est `bib[1]`, la dernière `bib[n]`. Il faut que `n` ne dépasse pas la borne 100 du tableau."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Forme à retenir : `tableau[indice].champ ← valeur`, une instruction par champ.",
+        "Vérifie les bornes du tableau : avec `[1..MAX]`, le 15ᵉ élève est à l'indice 15 ; en C, ce serait l'indice 14.",
+        "Respecte les types : apostrophes pour une chaîne, aucun guillemet pour un nombre.",
+        "Une affectation entre cases (`bib[8] ← bib[7]`) copie tous les champs d'un coup.",
+        "Au probatoire, cette question est notée sur la syntaxe complète : indice, point et champ comptent chacun."
+      ]
+    }
+  ]
+}

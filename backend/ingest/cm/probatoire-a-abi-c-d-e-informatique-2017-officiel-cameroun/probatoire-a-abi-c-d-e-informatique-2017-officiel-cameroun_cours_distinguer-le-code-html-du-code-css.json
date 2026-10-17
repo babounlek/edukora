@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-distinguer-le-code-html-du-code-css-probatoire-acde-2017",
+  "meta": {
+    "titre": "Distinguer le code HTML du code CSS",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique : HTML et CSS",
+    "duree_estimee_min": 30,
+    "tags": [
+      "HTML",
+      "CSS",
+      "balises",
+      "attribut style",
+      "balise link"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web est faite de deux langages qui se croisent : le HTML décide de ce qui s'affiche, le CSS décide de l'allure. Les mélanger fait perdre des points au Probatoire, car l'épreuve propose des lignes de code où les deux se côtoient, parfois dans la même balise. Un coup d'œil exercé à la forme du code suffit pour trancher."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une balise HTML (chevrons, balise ouvrante et fermante)",
+        "Savoir ce qu'est une feuille de style",
+        "Connaître quelques balises : `<p>`, `<i>`, `<br>`, `<tr>`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître un langage à la forme de son code",
+      "contenu_markdown": "| | HTML | CSS |\n|---|---|---|\n| Rôle | Structure et contenu de la page | Apparence : couleurs, polices, positions |\n| Forme | Balises entre chevrons : `<p>`, `<br>`, `<tr>` | Couples **propriété : valeur;** : `color: blue;` |\n| Regroupement | Balise ouvrante et fermante | Règle entre accolades : `p { color: blue; }` |\n\nTrois cas qui prêtent à confusion :\n\n- L'attribut `style` d'une balise HTML contient du **CSS** : `<p style=\"color: blue\">` est une balise HTML qui porte une déclaration CSS. La déclaration `color: blue` est du CSS.\n- La balise `<style>` est une balise **HTML** : ce qu'elle contient est du CSS.\n- La balise `<link rel=\"stylesheet\" href=\"...\">` est une balise **HTML** : elle ne contient aucune règle, elle désigne seulement le fichier `.css`.\n\n**Critère décisif** : un couple propriété : valeur est du CSS ; tout ce qui est écrit avec des chevrons est du HTML."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Cocher HTML ou CSS pour chaque ligne : `<p style=\"color: blue\">`, `<marquee>...</marquee>`, `<i>...</i>`, `<br>`, `<tr></tr>` et `<link rel=\"stylesheet\" href=\"probatoire.css\" type=\"text/css\">`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher un couple propriété : valeur",
+          "justification": "C'est le signal du CSS.",
+          "resultat_markdown": "Seule la première ligne en contient un : `color: blue`."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter la première ligne",
+          "justification": "L'attribut `style` est le moyen d'écrire du CSS dans une balise HTML ; la déclaration à l'intérieur décrit un style.",
+          "resultat_markdown": "On coche CSS pour `<p style=\"color: blue\">`."
+        },
+        {
+          "numero": 3,
+          "action": "Traiter les balises de contenu",
+          "justification": "`<marquee>` fait défiler un texte, `<i>` met en italique, `<br>` saute une ligne, `<tr>` délimite une ligne de tableau : ce sont des balises qui structurent ou affichent le contenu.",
+          "resultat_markdown": "On coche HTML pour ces quatre lignes."
+        },
+        {
+          "numero": 4,
+          "action": "Traiter la balise link",
+          "justification": "La balise `<link>` est écrite avec des chevrons et ne contient aucune règle de style : elle indique le fichier à charger.",
+          "resultat_markdown": "On coche HTML pour `<link ...>`."
+        }
+      ],
+      "conclusion_markdown": "Une seule ligne relève du CSS (`color: blue`) ; les cinq autres sont des balises HTML."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Cocher CSS pour `<link rel=\"stylesheet\" href=\"probatoire.css\">` à cause des mots « stylesheet » et « .css ».",
+          "pourquoi_faux": "Le critère est la forme du code : la ligne est une balise avec chevrons, donc du HTML. Elle ne décrit aucun aspect, elle appelle seulement la feuille de style.",
+          "correction_markdown": "Chercher un couple propriété : valeur ; à défaut, la ligne est du HTML."
+        },
+        {
+          "erreur_markdown": "Cocher HTML pour `<p style=\"color: blue\">` sans réfléchir, parce qu'elle commence par `<p`.",
+          "pourquoi_faux": "La balise `<p>` est du HTML, mais ce que la ligne apporte ici est la déclaration `color: blue`, qui est du CSS. L'énoncé demande de cocher la case correspondant à ce code.",
+          "correction_markdown": "Repérer `color: blue` et cocher CSS, en mentionnant que l'attribut `style` est le véhicule du CSS dans la balise."
+        },
+        {
+          "erreur_markdown": "Penser que `<style>` est du CSS.",
+          "pourquoi_faux": "`<style>` est une balise HTML. Seul le texte qu'elle contient (par exemple `p { color: red; }`) est du CSS.",
+          "correction_markdown": "Distinguer la balise (HTML) de son contenu (CSS)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classer en HTML ou CSS : `<b>...</b>`, `color: red;`, `<table>...</table>`.",
+          "solution_markdown": "- `<b>...</b>` : **HTML**, balise qui met un texte en gras.\n- `color: red;` : **CSS**, couple propriété : valeur (couleur du texte en rouge).\n- `<table>...</table>` : **HTML**, balises qui délimitent un tableau."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Classer en HTML ou CSS : `<style>`, `font-size: 14px;`, `<link rel=\"stylesheet\" href=\"a.css\">`, `h1 { color: blue; }`. Justifier.",
+          "solution_markdown": "- `<style>` : **HTML**, c'est une balise (chevrons) qui contient des règles CSS.\n- `font-size: 14px;` : **CSS**, couple propriété : valeur (taille de police de 14 pixels).\n- `<link rel=\"stylesheet\" href=\"a.css\">` : **HTML**, balise qui désigne le fichier `a.css`, sans règle de style.\n- `h1 { color: blue; }` : **CSS**, règle complète (sélecteur `h1` et déclaration entre accolades)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans le code ci-dessous, indiquer les parties HTML et les parties CSS.\n\n```html\n<html>\n<head>\n<style>p { color: green; }</style>\n</head>\n<body>\n<p style=\"font-size: 20px\">Bonjour</p>\n</body>\n</html>\n```\nDe quelle couleur et de quelle taille le texte « Bonjour » s'affiche-t-il ?",
+          "solution_markdown": "**HTML** : toutes les balises `<html>`, `<head>`, `<style>`, `<body>` et `<p>` (structure de la page).\n\n**CSS** : la règle `p { color: green; }` (placée dans la balise `<style>`) et la déclaration `font-size: 20px` (placée dans l'attribut `style` de la balise `<p>`).\n\nLes deux règles s'appliquent au même paragraphe : « Bonjour » s'affiche en **vert** (règle interne) et en **taille 20 pixels** (règle en ligne). Elles portent sur deux propriétés différentes (`color` et `font-size`), donc elles ne s'excluent pas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un couple propriété : valeur (`color: blue`) est du CSS ; une balise entre chevrons est du HTML.",
+        "L'attribut `style` est une balise HTML qui transporte du CSS : on coche CSS pour la déclaration.",
+        "`<style>` et `<link>` sont des balises HTML ; seul le contenu de `<style>` et le fichier désigné par `<link>` sont du CSS.",
+        "Ne te laisse pas guider par les mots « stylesheet » ou « .css » : regarde la forme du code.",
+        "Au Probatoire, le tableau HTML ou CSS est un classique du programme de programmation web : chaque ligne vaut 0,5 point."
+      ]
+    }
+  ]
+}

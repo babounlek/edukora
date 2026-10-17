@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-reconnaitre-les-structures-de-donnees-dans-des-declarations-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Reconnaître les structures de données dans des déclarations algorithmiques (enregistrement, tableau)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures de données",
+    "duree_estimee_min": 22,
+    "tags": [
+      "structure de données",
+      "enregistrement",
+      "tableau",
+      "déclaration"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q1.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un registre d'état civil, un carnet de notes, un stock de magasin : partout, on range beaucoup d'informations liées entre elles. En algorithmique, on ne crée pas une variable par information : on les regroupe dans des structures de données. Ce cours t'apprend à reconnaître ces structures dans un texte de déclarations, ce qui vaut des points dès les premières questions d'une épreuve d'algorithmique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les types simples : entier, réel, chaîne de caractères, booléen",
+        "Savoir déclarer une variable avec `Var nom : type`",
+        "Savoir ce qu'est une constante (`Const`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Enregistrement et tableau : deux structures, deux usages",
+      "contenu_markdown": "Une **structure de données** regroupe plusieurs valeurs sous un seul nom. Deux structures sont au programme.\n\n| Structure | Contenu | Repère dans la déclaration | Accès à une valeur |\n|---|---|---|---|\n| Enregistrement | champs de types éventuellement différents, chacun avec son nom | `Type nom : enregistrement ... FinEnregistrement` | `variable.champ` |\n| Tableau | éléments de même type, repérés par un indice | `Tableau [borne1..borne2] de type` | `tableau[indice]` |\n\nOn les combine : un **tableau d'enregistrements** contient des enregistrements du même type, et on écrit `tableau[indice].champ`. Les structures dynamiques (liste, pile, file) existent aussi, mais ne se déclarent pas avec ces mots-clés.\n\nNe sont pas des structures de données : une constante (`Const MAX = 10000`), une variable simple (`Var total : Entier`) et un type simple comme `entier` ou `chaine`.\n\nMéthode de repérage : lire les déclarations de haut en bas, entourer les mots `enregistrement` et `Tableau`, puis écrire pour chacun son nom et ce qu'il regroupe."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On donne les déclarations d'une gestion d'élèves : `Type personne : enregistrement nom : chaine ; prenom : chaine ; age : entier ; sexe : chaine ; FinEnregistrement`, `Const MAX = 10000 ;` et `Var eleve : Tableau [1..MAX] de personne ;`. Identifier deux structures de données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Parcourir les déclarations en cherchant les mots-clés de structure",
+          "justification": "Les seules structures déclarées contiennent le mot `enregistrement` ou le mot `Tableau`",
+          "resultat_markdown": "Deux repères : `Type personne : enregistrement` et `Tableau [1..MAX] de personne`"
+        },
+        {
+          "numero": 2,
+          "action": "Analyser le premier repère",
+          "justification": "L'enregistrement `personne` regroupe quatre champs sous un seul nom",
+          "resultat_markdown": "Structure 1 : l'enregistrement `personne` (nom, prenom, age, sexe)"
+        },
+        {
+          "numero": 3,
+          "action": "Analyser le second repère",
+          "justification": "`eleve` contient MAX cases numérotées de 1 à MAX, toutes du même type `personne`",
+          "resultat_markdown": "Structure 2 : le tableau `eleve`, tableau d'enregistrements de 10000 cases"
+        },
+        {
+          "numero": 4,
+          "action": "Écarter ce qui n'est pas une structure",
+          "justification": "`MAX` donne une valeur fixe, `entier` et `chaine` sont des types simples : aucun ne regroupe plusieurs valeurs",
+          "resultat_markdown": "`MAX`, `entier` et `chaine` sont exclus de la réponse"
+        }
+      ],
+      "conclusion_markdown": "Les deux structures de données de ces déclarations sont l'enregistrement `personne` et le tableau `eleve`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer la constante `MAX` comme structure de données",
+          "pourquoi_faux": "`MAX` ne contient qu'une seule valeur, 10000. Elle sert à dimensionner le tableau, mais ne regroupe rien.",
+          "correction_markdown": "Une structure regroupe plusieurs valeurs sous un nom : ni constante, ni variable simple."
+        },
+        {
+          "erreur_markdown": "Confondre le type `personne` et la variable `eleve`",
+          "pourquoi_faux": "`personne` décrit le modèle d'un élève (l'enregistrement) ; `eleve` est la variable qui range 10000 élèves (le tableau). Ce sont deux structures différentes.",
+          "correction_markdown": "Nomme séparément l'enregistrement (`personne`) et le tableau (`eleve`) en précisant ce que chacun contient."
+        },
+        {
+          "erreur_markdown": "Dire qu'un tableau peut contenir des valeurs de types différents",
+          "pourquoi_faux": "C'est la propriété de l'enregistrement. Un tableau impose un seul type pour tous ses éléments.",
+          "correction_markdown": "Types différents : enregistrement. Même type et indice : tableau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On donne : `Type etudiant : enregistrement matricule : chaine ; moyenne : reel ; FinEnregistrement`, `Const NB = 120 ;`, `Var promo : Tableau [1..NB] de etudiant ;` et `Var compteur : Entier ;`. Citer les structures de données de ces déclarations.",
+          "solution_markdown": "On parcourt les déclarations en cherchant `enregistrement` et `Tableau`.\n\n1. `Type etudiant : enregistrement` : l'enregistrement `etudiant`, qui regroupe les champs `matricule` et `moyenne`.\n2. `Tableau [1..NB] de etudiant` : le tableau `promo`, de 120 cases contenant chacune un `etudiant`.\n\n`NB` est une constante et `compteur` une variable simple de type entier : ce ne sont pas des structures de données.\n\n**Réponse : l'enregistrement `etudiant` et le tableau `promo`.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire les déclarations permettant de gérer au plus 50 livres. Un livre est décrit par son titre (chaîne), son auteur (chaîne), son année de parution (entier) et sa disponibilité (booléen).",
+          "solution_markdown": "On procède en deux temps : d'abord le modèle d'un livre (enregistrement), puis la collection de 50 livres (tableau).\n\n```\nType livre : enregistrement\n    titre : chaine ;\n    auteur : chaine ;\n    annee : entier ;\n    disponible : booleen ;\nFinEnregistrement\nConst NBLIVRES = 50 ;\nVar bibliotheque : Tableau [1..NBLIVRES] de livre ;\n```\n\nLe champ `disponible` est booléen (vrai ou faux). La constante `NBLIVRES` évite d'écrire 50 à plusieurs endroits. On a bien deux structures : l'enregistrement `livre` et le tableau `bibliotheque`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne : `Type eleve : enregistrement nom : chaine ; notes : Tableau [1..5] de reel ; FinEnregistrement` et `Var classe : Tableau [1..40] de eleve ;`. Combien de structures de données sont imbriquées ? Combien de réels sont mémorisés au total ? Comment désigner la 3ᵉ note du 12ᵉ élève ?",
+          "solution_markdown": "**Structures imbriquées.** `classe` est un tableau de 40 enregistrements `eleve`, et le champ `notes` de chaque enregistrement est lui-même un tableau de 5 réels. Il y a donc trois structures : le tableau `classe`, l'enregistrement `eleve` et le tableau `notes` à l'intérieur de l'enregistrement.\n\n**Nombre de réels.** Chaque élève a 5 notes et il y a 40 élèves : $40 \\times 5 = 200$ réels.\n\n**Accès à la 3ᵉ note du 12ᵉ élève.** On désigne d'abord l'élève, puis son champ, puis la note : `classe[12].notes[3]`. Chaque niveau de structure ajoute un niveau d'accès : un indice pour le tableau, un point pour le champ, un indice pour le sous-tableau."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une structure de données regroupe plusieurs valeurs sous un seul nom : enregistrement (types variés, champs nommés) ou tableau (même type, indice).",
+        "Pour les repérer, cherche les mots `enregistrement` et `Tableau` dans les déclarations.",
+        "Une constante, une variable simple et un type simple ne sont jamais des structures de données.",
+        "Un tableau d'enregistrements s'accède par `tableau[indice].champ`.",
+        "Au probatoire TI, une question de ce type ouvre souvent l'épreuve d'algorithmique, sur un petit barème que l'on peut gagner entièrement avec un peu de méthode."
+      ]
+    }
+  ]
+}

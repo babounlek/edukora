@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-justifier-le-partitionnement-d-un-disque-dur-probatoire-acd-2015",
+  "meta": {
+    "titre": "Justifier le partitionnement d'un disque dur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : stockage",
+    "duree_estimee_min": 30,
+    "tags": [
+      "partitionnement",
+      "disque dur",
+      "partition",
+      "formatage",
+      "système de fichiers"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2015-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2015 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ton ordinateur plante et le technicien annonce qu'il faut réinstaller Windows. Si tout est sur un seul volume, tes photos et tes documents partent avec le système. Si le disque avait été découpé en deux parties, tu aurais réinstallé la première et gardé la seconde intacte. C'est tout l'intérêt du partitionnement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un disque dur",
+        "Savoir ce que veut dire formater"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Partitionner un disque dur",
+      "contenu_markdown": "**Partitionner** un disque dur, c'est le diviser en zones indépendantes, les **partitions**, vues par le système comme des lecteurs distincts (`C:`, `D:`...). Chaque partition reçoit un **système de fichiers** (NTFS, FAT32, ext4) lors du **formatage**.\n\n| Opération | Ce qu'elle fait |\n|---|---|\n| Partitionnement | découpe le disque en zones |\n| Formatage | prépare une partition à recevoir des fichiers (efface son contenu) |\n\n**Avantages :**\n\n1. Séparer le système et les données : on réinstalle le système sans perdre les fichiers.\n2. Installer plusieurs systèmes d'exploitation sur le même disque.\n3. Organiser les fichiers et simplifier les sauvegardes.\n4. Limiter la propagation d'un virus à la partition infectée.\n\n**Limites :** la capacité totale ne change pas ; les partitions ne protègent pas d'une panne physique du disque. Sur un disque MBR, on dispose au plus de quatre partitions primaires, ou de trois primaires et une étendue qui contient des lecteurs logiques.",
+      "variantes": [
+        {
+          "nom": "Outils de partitionnement",
+          "quand_utiliser": "Quand le sujet demande comment partitionner.",
+          "contenu_markdown": "Sous Windows, l'outil « Gestion des disques » ; sous Linux, GParted ; à l'installation du système, l'assistant propose de créer les partitions."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner deux avantages que l'on a en partitionnant un disque dur (Probatoire A, C, D, 2015).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler ce qu'est une partition",
+          "justification": "Cela situe les avantages dans leur contexte.",
+          "resultat_markdown": "Zone indépendante du disque, vue comme un lecteur (`C:`, `D:`)."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher ce que la séparation permet",
+          "justification": "Un avantage est une conséquence concrète.",
+          "resultat_markdown": "La séparation permet de toucher à une zone sans affecter l'autre."
+        },
+        {
+          "numero": 3,
+          "action": "Premier avantage",
+          "justification": "Le plus classique : système et données séparés.",
+          "resultat_markdown": "Réinstaller Windows sur `C:` sans perdre les fichiers de `D:`."
+        },
+        {
+          "numero": 4,
+          "action": "Deuxième avantage",
+          "justification": "Autre usage courant.",
+          "resultat_markdown": "Installer deux systèmes d'exploitation (Windows et Linux) sur le même disque."
+        },
+        {
+          "numero": 5,
+          "action": "Éviter les formulations vagues",
+          "justification": "« Mieux » ou « plus pratique » ne valent aucun point.",
+          "resultat_markdown": "Chaque avantage est rédigé avec « on peut... sans... »."
+        }
+      ],
+      "conclusion_markdown": "Deux avantages : séparer le système des données pour réinstaller sans rien perdre, et installer plusieurs systèmes d'exploitation sur un seul disque."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre partitionner et formater.",
+          "pourquoi_faux": "Formater efface le contenu d'une partition et la prépare ; partitionner découpe le disque. On formate après avoir partitionné.",
+          "correction_markdown": "Dire : partitionner d'abord, formater ensuite."
+        },
+        {
+          "erreur_markdown": "Croire que le partitionnement augmente la capacité.",
+          "pourquoi_faux": "Un disque de 500 Go reste de 500 Go, que l'on crée une ou quatre partitions.",
+          "correction_markdown": "Parler d'organisation, pas de capacité."
+        },
+        {
+          "erreur_markdown": "Penser qu'une partition protège contre une panne du disque.",
+          "pourquoi_faux": "Toutes les partitions se trouvent sur le même disque physique : s'il tombe en panne, toutes les données sont perdues.",
+          "correction_markdown": "Compléter par une sauvegarde sur un support externe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est la différence entre partitionner et formater un disque ?",
+          "solution_markdown": "Partitionner découpe le disque en zones (partitions). Formater prépare une partition à recevoir des fichiers en créant son système de fichiers, et efface son contenu."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un disque de 500 Go est destiné à un élève. Propose un partitionnement avec justification.",
+          "solution_markdown": "Une partition `C:` de 80 Go pour Windows et les logiciels, une partition `D:` de 300 Go pour les documents personnels, une partition `E:` de 120 Go pour les sauvegardes et les images système. Total : 80 + 300 + 120 = 500 Go. Si le système plante, on réinstalle `C:` sans toucher à `D:`. Remarque : Windows affiche environ 465,7 Gio pour un disque de 500 Go, car $500 \\times 10^{9} / 2^{30} \\approx 465{,}7$ ; il y a donc un petit écart avec les valeurs commerciales."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un disque MBR doit contenir six volumes. Est-ce possible ? Pourquoi une sauvegarde sur une autre partition reste-t-elle insuffisante ?",
+          "solution_markdown": "Oui : un disque MBR admet au plus quatre partitions primaires, mais on peut créer trois partitions primaires et une partition étendue contenant trois lecteurs logiques : 3 + 3 = 6 volumes. Une sauvegarde placée sur une autre partition du même disque disparaît avec lui en cas de panne physique, de vol ou d'incendie : il faut un second support (disque externe, clé, nuage)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Partitionner = diviser le disque en zones indépendantes.",
+        "Avantage numéro un : séparer le système des données.",
+        "Avantage numéro deux : plusieurs systèmes d'exploitation sur le même disque.",
+        "Partitionner n'est pas formater, et ne protège pas d'une panne physique.",
+        "La question « avantages du partitionnement » est classique en maintenance au Probatoire."
+      ]
+    }
+  ]
+}

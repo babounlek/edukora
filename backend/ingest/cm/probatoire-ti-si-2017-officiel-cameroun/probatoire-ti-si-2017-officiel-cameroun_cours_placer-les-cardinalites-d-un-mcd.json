@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-placer-les-cardinalites-d-un-mcd-ti-si-2017",
+  "meta": {
+    "titre": "Placer les cardinalités d'un MCD à partir des règles de gestion",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des données",
+    "duree_estimee_min": 30,
+    "tags": [
+      "cardinalité",
+      "MCD",
+      "règles de gestion",
+      "association"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q10c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une cardinalité répond à une question simple : combien de fois ? Un client peut-il n'avoir aucune réservation ? Un hôtel peut-il avoir 200 chambres ? Les réponses sont dans le texte du sujet, et chacune se traduit en deux chiffres."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir dessiner entités et associations",
+        "Savoir lire des règles de gestion"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une cardinalité (min,max)",
+      "contenu_markdown": "Une **cardinalité** s'écrit **(min,max)** sur chaque patte d'association et se lit **depuis l'entité** : « une occurrence de cette entité est reliée à combien d'occurrences de l'autre ? ».\n\n- **min** : 0 si l'entité peut ne participer à aucune occurrence de l'association (participation facultative), 1 si elle participe toujours.\n- **max** : 1 si une occurrence participe au plus une fois, **N** (ou la valeur imposée, par exemple 80) si elle peut participer plusieurs fois.\n- Cardinalités possibles : (0,1), (1,1), (0,N), (1,N).\n\n**Méthode** : 1) pour chaque patte, poser la question depuis l'entité ; 2) chercher dans l'énoncé les mots qui fixent le minimum (« au moins », « toujours ») et le maximum (« un seul », « plusieurs », « 80 au maximum ») ; 3) écrire (min,max) près de l'entité."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Faire ressortir les cardinalités de l'association CONCERNER entre RESERVATION et CHAMBRE (« une réservation concerne une ou plusieurs chambres », question 10.c du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Se placer sur RESERVATION",
+          "justification": "On demande : une réservation concerne combien de chambres ?",
+          "resultat_markdown": "« une ou plusieurs » : minimum 1, maximum N"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la cardinalité côté RESERVATION",
+          "justification": "min = 1 (toujours au moins une chambre), max = N.",
+          "resultat_markdown": "(1,N)"
+        },
+        {
+          "numero": 3,
+          "action": "Se placer sur CHAMBRE",
+          "justification": "Une chambre est concernée par combien de réservations ? Elle peut n'avoir jamais été réservée, ou l'avoir été plusieurs fois.",
+          "resultat_markdown": "minimum 0, maximum N"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la cardinalité côté CHAMBRE",
+          "justification": "min = 0, max = N.",
+          "resultat_markdown": "(0,N)"
+        }
+      ],
+      "conclusion_markdown": "Pour CONCERNER, la cardinalité est (1,N) du côté RESERVATION et (0,N) du côté CHAMBRE."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mettre (1,N) partout",
+          "pourquoi_faux": "Un client sans réservation existe, il est (0,N) ; la cardinalité se lit à chaque patte.",
+          "correction_markdown": "Lire la règle de gestion pour chaque patte."
+        },
+        {
+          "erreur_markdown": "Lire la cardinalité depuis la mauvaise entité",
+          "pourquoi_faux": "La cardinalité placée près d'une entité décrit ce que cette entité fait de l'autre côté.",
+          "correction_markdown": "Se placer sur l'entité en question."
+        },
+        {
+          "erreur_markdown": "Ignorer un maximum chiffré",
+          "pourquoi_faux": "« 80 chambres au maximum » est un renseignement du sujet : un hôtel est (1,80).",
+          "correction_markdown": "Écrire la valeur chiffrée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Un élève appartient à une classe ; une classe contient des élèves. » Donne les cardinalités de APPARTENIR.",
+          "solution_markdown": "1. Un élève appartient à une seule classe : (1,1).\n2. Une classe contient au moins un élève, plusieurs possibles : (1,N)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "« Un enseignant enseigne une ou plusieurs matières ; une matière peut ne pas être enseignée cette année. » Donne les cardinalités.",
+          "solution_markdown": "1. Un enseignant enseigne au moins une matière, plusieurs possibles : (1,N).\n2. Une matière peut ne pas être enseignée, ou l'être par plusieurs enseignants : (0,N)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "« Un employé travaille dans un service. Un service est dirigé par un seul employé, qui est son chef. Un employé dirige au plus un service. » Donne les cardinalités de TRAVAILLER et de DIRIGER.",
+          "solution_markdown": "1. TRAVAILLER : un employé travaille dans un seul service (1,1) ; un service emploie au moins un employé, plusieurs possibles (1,N).\n2. DIRIGER : un service est dirigé par un seul chef (1,1) ; un employé dirige au plus un service, donc (0,1).\n3. DIRIGER est de type un à un côté chef : le modèle relationnel placera une clé étrangère ChefMatricule dans la table SERVICE."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une cardinalité (min,max) se lit depuis l'entité.",
+        "min vaut 0 ou 1, max vaut 1 ou N (ou une valeur imposée).",
+        "Cherche « au moins », « un seul », « plusieurs » et les nombres dans l'énoncé.",
+        "Écris un maximum chiffré quand le sujet le donne.",
+        "Au probatoire TI, les cardinalités valent 1,5 pt : chaque patte juste rapporte, chaque patte oubliée coûte."
+      ]
+    }
+  ]
+}

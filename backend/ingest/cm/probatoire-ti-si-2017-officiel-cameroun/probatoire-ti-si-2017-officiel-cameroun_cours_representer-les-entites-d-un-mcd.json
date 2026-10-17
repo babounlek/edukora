@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-representer-les-entites-d-un-mcd-ti-si-2017",
+  "meta": {
+    "titre": "Dessiner les entités d'un MCD avec leurs attributs",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des données",
+    "duree_estimee_min": 20,
+    "tags": [
+      "entité",
+      "MCD",
+      "formalisme",
+      "identifiant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q10a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le jour de l'examen, le correcteur regarde ta feuille avant de lire ton texte. Des entités bien dessinées, aérées, avec les identifiants soulignés, donnent tout de suite confiance. Voici comment les tracer sans te tromper."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les entités et attributs d'un énoncé",
+        "Savoir choisir un identifiant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Représentation d'une entité",
+      "contenu_markdown": "Une entité est un **rectangle à deux compartiments** :\n\n- en haut, le **nom** de l'entité, au singulier et en majuscules (CLIENT) ;\n- en bas, la **liste des attributs**, l'identifiant en premier et **souligné** ;\n- aucune clé étrangère (ce n'est pas une notion du MCD) ;\n- aucun attribut calculable.\n\n**Méthode de tracé** : 1) trace tous les rectangles en laissant de la place pour les associations ; 2) écris le nom ; 3) écris l'identifiant et souligne-le ; 4) écris les autres attributs."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Représenter l'entité CLIENT : un client est caractérisé par son numéro de carte nationale d'identité, son nom, son prénom, sa ville de résidence et son numéro de téléphone (question 10.a du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tracer le rectangle et le nom",
+          "justification": "Le nom est au singulier et en majuscules.",
+          "resultat_markdown": "rectangle CLIENT"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir et souligner l'identifiant",
+          "justification": "Le numéro de CNI est unique et stable.",
+          "resultat_markdown": "NumCNI souligné, placé en premier"
+        },
+        {
+          "numero": 3,
+          "action": "Lister les autres attributs",
+          "justification": "Nom, prénom, ville de résidence, téléphone.",
+          "resultat_markdown": "NomClient, PrenomClient, VilleResidence, TelClient"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier l'absence de clé étrangère et de donnée calculée",
+          "justification": "Aucun attribut n'est une clé d'une autre entité ni un calcul.",
+          "resultat_markdown": "entité conforme"
+        }
+      ],
+      "conclusion_markdown": "L'entité CLIENT est un rectangle contenant NumCNI (souligné), NomClient, PrenomClient, VilleResidence et TelClient."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire une clé étrangère dans l'entité",
+          "pourquoi_faux": "CodeHotel dans CHAMBRE exprimerait un lien : en MCD, un lien est une association.",
+          "correction_markdown": "Laisser les liens aux associations."
+        },
+        {
+          "erreur_markdown": "Oublier de souligner l'identifiant",
+          "pourquoi_faux": "Le correcteur ne voit plus quel attribut identifie l'entité.",
+          "correction_markdown": "Souligner l'identifiant et le placer en premier."
+        },
+        {
+          "erreur_markdown": "Mettre le nom au pluriel",
+          "pourquoi_faux": "L'entité représente un objet type, pas une collection.",
+          "correction_markdown": "Écrire CLIENT et non CLIENTS."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Représente l'entité CLASSE : code de la classe, libellé.",
+          "solution_markdown": "1. Rectangle CLASSE.\n2. Identifiant souligné : CodeClasse.\n3. Autre attribut : LibelleClasse."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On te donne ELEVES (matricule, nom, #CodeClasse, âge). Corrige l'entité.",
+          "solution_markdown": "1. Nom au singulier : ELEVE.\n2. #CodeClasse est une clé étrangère : elle disparaît du MCD, le lien se fait par une association.\n3. L'âge est calculable : remplacé par DateNaissance.\n4. Résultat : ELEVE (Matricule souligné, NomEleve, DateNaissance)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un produit est caractérisé par un code, une désignation, un prix hors taxe, un prix TTC et une quantité en stock. Représente l'entité PRODUIT.",
+          "solution_markdown": "1. Le prix TTC se calcule à partir du prix hors taxe et du taux de TVA : donnée calculable, supprimée.\n2. Identifiant : CodeProduit, souligné.\n3. Entité PRODUIT : CodeProduit, Designation, PrixHT, QuantiteStock.\n4. Le TTC sera calculé par un traitement au moment de la facturation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une entité est un rectangle à deux compartiments.",
+        "Le nom est au singulier et en majuscules, l'identifiant est souligné.",
+        "Pas de clé étrangère ni de donnée calculable dans une entité.",
+        "Trace les entités d'abord, avec de la place entre elles.",
+        "Au probatoire TI, les entités sont notées séparément (2 pts) : un MCD aéré et soigné se note mieux."
+      ]
+    }
+  ]
+}

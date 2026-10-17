@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-diagramme-des-echanges-d-energie-d-un-circuit-contenant-un-generateur-d-2009",
+  "meta": {
+    "titre": "Diagramme des échanges d'énergie d'un circuit contenant un générateur et un récepteur actif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Aspects énergétiques des circuits électriques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "diagramme énergétique",
+      "bilan énergétique",
+      "effet Joule"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D-TI",
+      "module_numero": "4",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-PHYSIQUE-2009-CM",
+    "epreuve_titre": "Probatoire Physique, série D, session 2009 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-physique-2009-officiel-cameroun-ex2-q2.1.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu branches un ventilateur sur une batterie, l'énergie chimique de la batterie se retrouve en mouvement de l'air, mais aussi en chaleur dans la batterie et dans le moteur. Un diagramme des échanges d'énergie montre d'un coup d'œil où va chaque joule. Il rend visibles les pertes, et c'est ce qui permet ensuite de parler de rendement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "L'effet Joule : $W = RI^2t$",
+        "La loi d'Ohm pour un générateur ($U = E - rI$) et pour un récepteur actif ($U = E' + r'I$)",
+        "L'énergie électrique $W = UIt$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écrire les bilans d'énergie d'un circuit série",
+      "contenu_markdown": "Pour un courant d'intensité $I$ pendant la durée $t$ :\n\n- **Générateur** (f.é.m. $E$, résistance $r$) : énergie convertie $EIt$ = chaleur $rI^2t$ + énergie électrique fournie $UIt$.\n- **Récepteur actif** (f.c.é.m. $E'$, résistance $r'$) : énergie reçue $UIt$ = énergie utile $E'It$ + chaleur $r'I^2t$.\n- **Bilan global** : $EIt = E'It + (r + r')I^2t$.\n\nEn divisant par $t$, on obtient les puissances (en watts) : $EI$, $UI$, $E'I$, $rI^2$, $r'I^2$.",
+      "formule_principale": "EIt = E'It + (r + r')I^2t",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une pile ($E = 9$ V, $r = 1\\ \\Omega$) alimente un moteur ($E' = 7{,}5$ V, $r' = 3\\ \\Omega$). Construire le diagramme des échanges d'énergie.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Classer les éléments",
+          "justification": "Pile : générateur. Moteur : récepteur actif.",
+          "resultat_markdown": "Deux cases reliées par le circuit électrique"
+        },
+        {
+          "numero": 2,
+          "action": "Bilan de la pile",
+          "justification": "Énergie chimique convertie, pertes par effet Joule, énergie fournie.",
+          "resultat_markdown": "$EIt = rI^2t + UIt$"
+        },
+        {
+          "numero": 3,
+          "action": "Bilan du moteur",
+          "justification": "Énergie reçue, énergie mécanique utile, pertes.",
+          "resultat_markdown": "$UIt = E'It + r'I^2t$"
+        },
+        {
+          "numero": 4,
+          "action": "Bilan global",
+          "justification": "On additionne en éliminant $UIt$.",
+          "resultat_markdown": "$EIt = E'It + (r + r')I^2t$"
+        },
+        {
+          "numero": 5,
+          "action": "Chiffrer avec $I = 0{,}375$ A",
+          "justification": "Puissances en watts, $I$ venant de la loi de Pouillet.",
+          "resultat_markdown": "$3{,}375 = 0{,}1406 + 0{,}4219 + 2{,}8125$ (W)"
+        }
+      ],
+      "conclusion_markdown": "Sur $3{,}375$ W convertis par la pile, $2{,}8125$ W deviennent de la puissance mécanique utile et $0{,}5625$ W sont perdus en chaleur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire que le moteur convertit toute l'énergie reçue en énergie mécanique.",
+          "pourquoi_faux": "Les bobinages du moteur ont une résistance $r'$ : une partie de l'énergie reçue est dissipée en chaleur.",
+          "correction_markdown": "Sépare toujours $E'It$ (utile) et $r'I^2t$ (perdue)."
+        },
+        {
+          "erreur_markdown": "Oublier la chaleur dissipée dans la pile.",
+          "pourquoi_faux": "Le générateur réel a une résistance interne $r$ qui dissipe $rI^2t$.",
+          "correction_markdown": "Dans la case pile, écris deux flèches sortantes : chaleur et énergie électrique fournie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une pile ($E = 12$ V, $r = 2\\ \\Omega$) alimente un résistor de $R = 10\\ \\Omega$. Calculer $I$ puis les puissances mises en jeu.",
+          "solution_markdown": "$I = \\dfrac{E}{r + R} = \\dfrac{12}{12} = 1$ A.\n\nPuissance chimique $EI = 12$ W ; perte dans la pile $rI^2 = 2$ W ; puissance fournie au circuit $UI = (12 - 2) \\times 1 = 10$ W, entièrement dissipée dans $R$ : $RI^2 = 10$ W. Bilan : $12 = 2 + 10$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une pile ($E = 6$ V, $r = 0{,}5\\ \\Omega$) alimente un moteur ($E' = 4{,}5$ V, $r' = 1\\ \\Omega$) pendant $2$ min. Donner toutes les énergies échangées.",
+          "solution_markdown": "$I = \\dfrac{6 - 4{,}5}{0{,}5 + 1} = 1{,}0$ A ; $t = 120$ s ; $U = E' + r'I = 5{,}5$ V.\n\n- Énergie chimique : $EIt = 6 \\times 1 \\times 120 = 720$ J.\n- Chaleur dans la pile : $rI^2t = 0{,}5 \\times 120 = 60$ J.\n- Énergie reçue par le moteur : $UIt = 5{,}5 \\times 120 = 660$ J.\n- Énergie mécanique : $E'It = 4{,}5 \\times 120 = 540$ J.\n- Chaleur dans le moteur : $r'I^2t = 1 \\times 120 = 120$ J.\n\nContrôles : $720 = 60 + 660$ et $660 = 540 + 120$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le moteur ($E' = 7{,}5$ V avant blocage, $r' = 3\\ \\Omega$) est bloqué : le rotor ne tourne plus. Avec la pile ($E = 9$ V, $r = 1\\ \\Omega$), calculer $I$, puis la répartition des puissances. Que peut-on dire du rendement ?",
+          "solution_markdown": "Rotor bloqué : plus de rotation, donc $E' = 0$. Le moteur n'est plus qu'une résistance $r' = 3\\ \\Omega$.\n\n$I = \\dfrac{E}{r + r'} = \\dfrac{9}{4} = 2{,}25$ A.\n\nPuissances : $EI = 20{,}25$ W ; $rI^2 = 5{,}06$ W ; $r'I^2 = 15{,}19$ W ; $E'I = 0$. Toute la puissance est dissipée en chaleur, le rendement du moteur est nul. Un moteur bloqué consomme beaucoup (ici six fois plus que lorsqu'il tourne) et chauffe : c'est pourquoi il peut griller."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Générateur : $EIt = rI^2t + UIt$. Récepteur actif : $UIt = E'It + r'I^2t$.",
+        "La partie utile du moteur est $E'It$ ; $r'I^2t$ est une perte par effet Joule.",
+        "Le bilan global se lit $EIt = E'It + (r + r')I^2t$.",
+        "Un diagramme est juste lorsque, pour chaque case, entrées et sorties sont égales.",
+        "Au probatoire, on demande ce diagramme puis le calcul des puissances ou du rendement."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+ "cours_id": "cours-determiner-associations-regles-gestion-ti-si-2016",
+ "meta": {
+  "titre": "Déterminer les associations entre entités à partir des règles de gestion",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Modèle conceptuel des données",
+  "duree_estimee_min": 25,
+  "tags": [
+   "MCD",
+   "association",
+   "règle de gestion",
+   "verbe",
+   "MERISE"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q8-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Les entités sont des îles ; les associations sont les ponts. Pour savoir où construire ces ponts, on relit les règles de gestion en cherchant un verbe entre deux noms. Ce cours te donne une grille de lecture qui garantit de trouver toutes les associations, sans en inventer."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Notion d'entité",
+    "Notion de règle de gestion"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Lire les verbes entre deux entités",
+   "contenu_markdown": "Une **association** relie deux entités (association binaire) ou plus. Pour la trouver :\n\n1. Relis chaque règle de gestion et repère les **deux noms** (entités) et le **verbe** qui les unit.\n2. Nomme l'association par ce verbe, à l'infinitif (SIGNER, EMPRUNTER).\n3. Vérifie qu'elle n'est pas **déjà portée** par une autre association (pas de doublon).\n4. Une propriété qui dépend de **toutes** les entités reliées (date d'emprunt, quantité commandée) se place sur l'association ; une propriété qui ne concerne qu'une entité reste dans cette entité.\n\nTableau de travail : règle de gestion, verbe, entités reliées.",
+   "variantes": [
+    {
+     "nom": "Association de dimension supérieure",
+     "quand_utiliser": "Quand un verbe relie trois entités",
+     "contenu_markdown": "Exemple : un enseignant enseigne une matière dans une classe : association ternaire ENSEIGNER entre ENSEIGNANT, MATIERE et CLASSE."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Déterminer les associations de CAR_INSURANCE : « La compagnie signe des contrats avec des clients. Un contrat couvre le client et un véhicule du client. Un véhicule assuré appartient à un seul client. En cas d'accident, on veut connaître les véhicules concernés. »",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Relever le verbe de la première règle",
+     "justification": "« Signe » unit le client et le contrat.",
+     "resultat_markdown": "SIGNER : CLIENT - CONTRAT."
+    },
+    {
+     "numero": 2,
+     "action": "Relever le verbe de la deuxième règle",
+     "justification": "« Couvre » unit le contrat et le véhicule ; « couvre le client » répète SIGNER (le client couvert est celui qui signe).",
+     "resultat_markdown": "COUVRIR : CONTRAT - VEHICULE ; pas d'association supplémentaire pour le client."
+    },
+    {
+     "numero": 3,
+     "action": "Relever les verbes des deux dernières règles",
+     "justification": "« Appartient » unit véhicule et client ; « concerne » unit accident et véhicule.",
+     "resultat_markdown": "APPARTENIR : VEHICULE - CLIENT ; CONCERNER : ACCIDENT - VEHICULE."
+    },
+    {
+     "numero": 4,
+     "action": "Vérifier les propriétés",
+     "justification": "La date de signature appartient au contrat, la description à l'accident.",
+     "resultat_markdown": "Aucune association ne porte de propriété."
+    }
+   ],
+   "conclusion_markdown": "Le MCD comporte quatre associations : SIGNER, COUVRIR, APPARTENIR et CONCERNER."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Créer une association pour chaque phrase, même redondante",
+     "pourquoi_faux": "« Un contrat couvre le client » répète SIGNER. Deux associations qui disent la même chose créent des incohérences possibles.",
+     "correction_markdown": "Avant de créer une association, vérifier qu'aucune existante ne porte déjà l'information."
+    },
+    {
+     "erreur_markdown": "Nommer une association par un nom (« CONTRAT-CLIENT »)",
+     "pourquoi_faux": "Une association exprime une action ou un état : un verbe permet de lire le MCD comme une phrase.",
+     "correction_markdown": "Utiliser un verbe à l'infinitif."
+    },
+    {
+     "erreur_markdown": "Placer une propriété d'association dans une entité",
+     "pourquoi_faux": "La date d'un emprunt dépend à la fois de l'adhérent et du livre ; la mettre dans LIVRE perd le lien avec l'adhérent.",
+     "correction_markdown": "Placer sur l'association toute propriété qui dépend de toutes les entités reliées."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Dans une école, un élève est inscrit dans une classe ; un enseignant enseigne une matière. Déterminer les associations binaires.",
+     "solution_markdown": "1. « Un élève est inscrit dans une classe » : association INSCRIRE entre ELEVE et CLASSE.\n2. « Un enseignant enseigne une matière » : association ENSEIGNER entre ENSEIGNANT et MATIERE.\n3. Aucune propriété sur ces associations dans cet énoncé."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Une boutique : un client passe des commandes ; une commande contient des produits avec une quantité. Déterminer les associations et placer la quantité.",
+     "solution_markdown": "1. « Un client passe des commandes » : PASSER entre CLIENT et COMMANDE.\n2. « Une commande contient des produits » : CONTENIR entre COMMANDE et PRODUIT.\n3. La quantité commandée dépend à la fois de la commande et du produit : elle se place sur l'association CONTENIR.\n4. Si on la mettait dans PRODUIT, elle serait identique pour toutes les commandes, ce qui est faux."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un MCD contient : ELEVE-INSCRIRE-CLASSE, CLASSE-APPARTENIR-ETABLISSEMENT et ELEVE-FREQUENTER-ETABLISSEMENT. Une association est-elle superflue ?",
+     "solution_markdown": "1. Chaque élève est dans une seule classe et chaque classe dans un seul établissement.\n2. L'établissement d'un élève se retrouve par le chemin ELEVE, CLASSE, ETABLISSEMENT.\n3. FREQUENTER répète l'information : association redondante (transitivité).\n4. On la supprime, ou on la garde avec une contrainte de cohérence si elle est utile."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Une association se repère par un verbe entre deux entités.",
+    "Nomme-la par un verbe à l'infinitif.",
+    "Vérifie qu'elle n'est pas déjà portée par un autre chemin du schéma.",
+    "Une propriété qui dépend de toutes les entités reliées va sur l'association.",
+    "Au Probatoire TI, le tableau « règle, verbe, entités » est la façon la plus sûre d'obtenir le point de la question sur les associations."
+   ]
+  }
+ ]
+}

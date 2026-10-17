@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-transformer-une-boucle-pour-en-boucle-tant-que-en-pseudo-code-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Transformer une boucle Pour en boucle Tant que en pseudo-code",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures itératives",
+    "duree_estimee_min": 24,
+    "tags": [
+      "boucle Tant que",
+      "boucle Pour",
+      "structure itérative",
+      "conversion"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une répétition peut s'écrire de plusieurs manières : `Pour` quand on connaît le nombre de tours, `Tant que` quand on répète jusqu'à ce qu'une condition cesse d'être vraie. Savoir passer de l'une à l'autre montre que tu comprends ce que fait réellement une boucle. Cette transformation est une question classique, et elle tourne autour de trois gestes à ne pas oublier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la boucle `Pour` et la boucle `Tant que`",
+        "Savoir exécuter une boucle pas à pas",
+        "Connaître la notion de condition de poursuite"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De Pour à Tant que : trois gestes",
+      "contenu_markdown": "Une boucle `Pour` gère automatiquement trois choses : l'initialisation du compteur, le test de la borne et l'incrémentation. Avec `Tant que`, il faut les écrire soi-même.\n\n```\nPour i Allant de a à b Faire        i ← a\n    corps                           Tant que i ≤ b Faire\nFinPour                                 corps\n                                        i ← i + 1\n                                    FinTantQue\n```\n\n1. **Initialiser** le compteur juste avant la boucle : `i ← a`.\n2. Écrire la **condition de poursuite** : `i ≤ b` (la boucle continue tant qu'elle est vraie).\n3. **Incrémenter** le compteur à la dernière ligne du corps : `i ← i + 1`.\n\nLes deux boucles font le même nombre de tours quand $b \\geq a$ : $b - a + 1$. La transformation inverse, de `Tant que` en `Pour`, n'est possible que si le nombre de tours est connu avant de commencer."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire avec la boucle `Tant que` : `F ← 1 ; Pour i Allant de 1 à N Faire F ← F × i FinPour`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer l'initialisation du compteur avant la boucle",
+          "justification": "`Pour` partait de i = 1",
+          "resultat_markdown": "`i ← 1 ;` juste après `F ← 1 ;`"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition de poursuite",
+          "justification": "`Pour` allait jusqu'à N inclus : tant que i ≤ N",
+          "resultat_markdown": "`Tant que i ≤ N Faire`"
+        },
+        {
+          "numero": 3,
+          "action": "Garder le corps tel quel",
+          "justification": "Le corps est identique dans les deux boucles",
+          "resultat_markdown": "`F ← F × i ;`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter l'incrémentation à la fin du corps",
+          "justification": "`Pour` augmentait i de 1 à chaque tour, `Tant que` ne le fait pas",
+          "resultat_markdown": "`i ← i + 1 ;` puis `FinTantQue`"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier pour N = 5",
+          "justification": "i vaut 1 à 5 pendant les tours, puis 6 : la condition 6 ≤ 5 est fausse",
+          "resultat_markdown": "F prend 1, 2, 6, 24, 120 : même résultat qu'avec `Pour`"
+        }
+      ],
+      "conclusion_markdown": "La version `Tant que` ajoute `i ← 1` avant la boucle et `i ← i + 1` à la fin du corps, et donne le même résultat que la version `Pour`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier `i ← i + 1`",
+          "pourquoi_faux": "`i` reste égal à 1, la condition `i ≤ N` reste toujours vraie et la boucle ne s'arrête jamais (boucle infinie).",
+          "correction_markdown": "Dernière ligne du corps : l'incrémentation."
+        },
+        {
+          "erreur_markdown": "Oublier `i ← 1` avant la boucle",
+          "pourquoi_faux": "`i` n'a pas de valeur au premier test : le comportement est imprévisible.",
+          "correction_markdown": "Avant `Tant que`, initialise toujours le compteur."
+        },
+        {
+          "erreur_markdown": "Écrire `i < N` au lieu de `i ≤ N`",
+          "pourquoi_faux": "On exécute un tour de moins : la boucle s'arrête à i = N sans traiter la valeur N. Le calcul donnerait $(N-1)!$.",
+          "correction_markdown": "`Pour` de 1 à N inclut N : la condition est `i ≤ N`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réécrire avec `Tant que` : `Pour i Allant de 1 à 5 Faire Ecrire (i × i) FinPour`.",
+          "solution_markdown": "On applique les trois gestes :\n\n```\ni ← 1 ;\nTant que i ≤ 5 Faire\n    Ecrire (i × i) ;\n    i ← i + 1 ;\nFinTantQue\n```\n\nL'algorithme affiche 1, 4, 9, 16, 25 : les carrés des entiers de 1 à 5. La boucle fait $5 - 1 + 1 = 5$ tours."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire avec `Pour` : `S ← 0 ; i ← 1 ; Tant que i ≤ N Faire S ← S + i ; i ← i + 1 FinTantQue`.",
+          "solution_markdown": "On retire l'initialisation, l'incrémentation et le test, qui sont pris en charge par `Pour` :\n\n```\nS ← 0 ;\nPour i Allant de 1 à N Faire\n    S ← S + i ;\nFinPour\n```\n\nLe compteur part de 1 (valeur initiale du `Tant que`), va jusqu'à N inclus (condition `i ≤ N`) et augmente de 1 à chaque tour (incrémentation supprimée du corps). Les deux versions calculent $1 + 2 + \\dots + N$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Peut-on réécrire avec `Pour` l'algorithme `S ← 0 ; Lire (x) ; Tant que x ≠ 0 Faire S ← S + x ; Lire (x) FinTantQue ; Ecrire (S)` ? Faire la trace avec les saisies 4, 7, 0.",
+          "solution_markdown": "**Trace** avec les saisies 4, 7 puis 0 :\n\n| Étape | x | x ≠ 0 ? | S |\n|---|---|---|---|\n| `S ← 0`, `Lire (x)` | 4 | | 0 |\n| test | 4 | oui | 0 |\n| `S ← S + x`, `Lire (x)` | 7 | | 4 |\n| test | 7 | oui | 4 |\n| `S ← S + x`, `Lire (x)` | 0 | | 11 |\n| test | 0 | non | 11 |\n\nL'algorithme affiche 11, somme des valeurs saisies avant le 0.\n\n**Réponse.** Non : on ne peut pas utiliser `Pour`, car le nombre de tours n'est **pas connu à l'avance**. Il dépend de la saisie de l'utilisateur, qui décide quand taper 0. `Pour` exige des bornes connues au moment d'entrer dans la boucle. `Tant que` est la structure adaptée quand la répétition dépend d'une condition qui évolue pendant l'exécution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour → Tant que : initialise le compteur avant, écris la condition de poursuite, incrémente à la fin du corps.",
+        "`Pour i de 1 à N` correspond à la condition `i ≤ N`, bornes incluses.",
+        "Oublier l'incrémentation donne une boucle infinie.",
+        "Tant que → Pour n'est possible que si le nombre de tours est connu à l'avance.",
+        "Au probatoire, cette question vaut environ 1 point : les trois gestes sont tous notés."
+      ]
+    }
+  ]
+}

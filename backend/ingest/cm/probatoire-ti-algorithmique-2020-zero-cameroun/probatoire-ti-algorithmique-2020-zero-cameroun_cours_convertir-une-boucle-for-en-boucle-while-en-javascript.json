@@ -1,0 +1,136 @@
+{
+  "cours_id": "cours-convertir-une-boucle-for-en-boucle-while-en-javascript-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Convertir une boucle for en boucle while en JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript : structures itératives",
+    "duree_estimee_min": 24,
+    "tags": [
+      "boucle while",
+      "boucle for",
+      "JavaScript",
+      "conversion de boucle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q5.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La boucle `for` de JavaScript rassemble sur une ligne tout ce qui concerne son compteur, comme en C. La boucle `while` répartit les mêmes éléments avant, pendant et à la fin. Passer de l'une à l'autre est une transformation mécanique, à condition d'avoir bien compris où va chaque morceau, et de faire attention à `break` et `return`."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la boucle `for` et la boucle `while`",
+        "Connaître `i++` et `break`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De for à while en JavaScript",
+      "contenu_markdown": "```javascript\nfor (var i = 0; i < n; i++) {         var i = 0;\n    corps                              while (i < n) {\n}                                          corps\n                                           i++;\n                                       }\n```\n\n1. L'**initialisation** (`var i = 0`) passe **avant** la boucle.\n2. La **condition** reste dans les parenthèses du `while`.\n3. Le **pas** (`i++`) passe à la **fin du corps**.\n\nPoints de vigilance :\n\n- `break` sort de la boucle dans les deux écritures, et `return` termine la fonction : leur effet est le même ;\n- un `continue` dans un `for` exécute quand même le pas `i++`, alors que dans un `while` il le saute : il faudrait incrémenter avant le `continue` ;\n- ne pas déclarer `var i = 0` à l'intérieur du corps, sinon `i` repart de 0 à chaque tour."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la fonction `isANumber`, remplacer `for (var i=0; i<number.length; i++) { ... }` par une boucle `while`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer l'initialisation avant la boucle",
+          "justification": "`var i=0` ne doit s'exécuter qu'une fois",
+          "resultat_markdown": "`var i = 0;` juste avant le `while`"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition",
+          "justification": "Elle est copiée telle quelle",
+          "resultat_markdown": "`while (i < number.length)`"
+        },
+        {
+          "numero": 3,
+          "action": "Garder le corps",
+          "justification": "Le test `if` et son `break` ne changent pas",
+          "resultat_markdown": "Le corps est identique"
+        },
+        {
+          "numero": 4,
+          "action": "Placer le pas à la fin du corps",
+          "justification": "L'incrémentation doit être exécutée à chaque tour qui continue",
+          "resultat_markdown": "`i++;` après le `if`"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier le `break`",
+          "justification": "Il sort de la boucle dès le premier caractère invalide ; il n'y a pas de `continue`",
+          "resultat_markdown": "Comportement identique à la version `for`"
+        }
+      ],
+      "conclusion_markdown": "La boucle devient `var i = 0; while (i < number.length) { if (...) { ... break; } i++; }`, équivalente à la version `for`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier `i++` dans le `while`",
+          "pourquoi_faux": "La condition `i < number.length` reste vraie : la boucle ne s'arrête jamais si la saisie ne contient que des chiffres valides, et le navigateur se fige.",
+          "correction_markdown": "Le pas passe à la fin du corps."
+        },
+        {
+          "erreur_markdown": "Mettre `var i = 0` dans le corps du `while`",
+          "pourquoi_faux": "`i` est remis à 0 à chaque tour : le même caractère est testé indéfiniment.",
+          "correction_markdown": "Initialise avant la boucle."
+        },
+        {
+          "erreur_markdown": "Recopier toute la page au lieu du script",
+          "pourquoi_faux": "Le sujet demande uniquement le script ; recopier le formulaire fait perdre du temps sans rapporter de point.",
+          "correction_markdown": "De `<script>` à `</script>` seulement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réécrire avec `while` : `for (var i = 0; i < 3; i++) { alert(i); }`. Quelles valeurs sont affichées ?",
+          "solution_markdown": "```javascript\nvar i = 0;\nwhile (i < 3) {\n    alert(i);\n    i++;\n}\n```\n\nLes valeurs affichées sont 0, 1, 2 (vérifié sous Node.js avec un affichage dans la console). À la sortie, `i` vaut 3 : la condition `3 < 3` est fausse."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire avec `for` : `var s = 0; var j = 1; while (j <= 5) { s = s + j; j++; }`. Que vaut `s` ?",
+          "solution_markdown": "L'initialisation `var j = 1`, la condition `j <= 5` et le pas `j++` passent dans l'en-tête :\n\n```javascript\nvar s = 0;\nfor (var j = 1; j <= 5; j++) {\n    s = s + j;\n}\n```\n\n`s` vaut $1 + 2 + 3 + 4 + 5 = 15$ : les deux versions donnent 15 (vérifié sous Node.js)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne `function premierZero(ch) { for (var i = 0; i < ch.length; i++) { if (ch.charAt(i) == \"0\") { return i; } } return -1; }`. Réécrire la fonction avec `while` et donner les valeurs de `premierZero(\"1205\")` et `premierZero(\"125\")`.",
+          "solution_markdown": "```javascript\nfunction premierZero(ch) {\n    var i = 0;\n    while (i < ch.length) {\n        if (ch.charAt(i) == \"0\") {\n            return i;\n        }\n        i++;\n    }\n    return -1;\n}\n```\n\nLe `return` à l'intérieur de la boucle termine la fonction, comme dans la version `for` : `i++` n'est alors plus exécuté.\n\n- `premierZero(\"1205\")` : les caractères sont 1, 2, 0, 5. Le premier 0 est à la position 2 : la fonction renvoie **2**.\n- `premierZero(\"125\")` : aucun caractère n'est 0, la boucle se termine quand `i` vaut 3 et la fonction renvoie **-1**.\n\nLes deux versions ont été exécutées sous Node.js et renvoient 2 et -1."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "for vers while : initialisation avant la boucle, condition dans le `while`, pas à la fin du corps.",
+        "`break` et `return` gardent le même effet dans les deux écritures.",
+        "Oublier `i++` donne une boucle infinie.",
+        "Ne déclare pas le compteur à l'intérieur du corps de la boucle.",
+        "Au probatoire, recopie seulement le script : le sujet précise « uniquement le script »."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-structure-de-base-d-un-document-html-probatoire-acd-2015",
+  "meta": {
+    "titre": "Écrire la structure de base d'un document HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique : HTML",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "structure d'un document",
+      "head",
+      "body",
+      "balises"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2015-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2015 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web que tu vois dans le navigateur est écrite dans un fichier texte que n'importe quel éditeur ouvre. Pour que le navigateur la comprenne, ce fichier doit suivre un plan précis : sans ce plan, rien ne s'affiche correctement. Ce cours te donne le squelette que tu réécriras de mémoire à chaque épreuve et pour chaque page de ton futur site."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un fichier texte et un éditeur (Bloc-notes)",
+        "Savoir qu'une balise s'écrit entre chevrons et se ferme avec une barre oblique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le squelette d'une page HTML",
+      "contenu_markdown": "Un document HTML est un arbre de balises emboîtées. La balise `html` est la racine ; elle contient exactement deux enfants, `head` puis `body`.\n\n```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Titre de la page</title>\n  </head>\n  <body>\n    Contenu visible\n  </body>\n</html>\n```\n\n- `<!DOCTYPE html>` : déclaration du type de document (HTML5), toujours en première ligne.\n- `<head>` : en-tête, informations sur la page (titre, codage des caractères, lien vers une feuille de style). Rien de ce bloc ne s'affiche dans la page, sauf le titre dans l'onglet.\n- `<body>` : corps, tout ce que l'internaute voit.\n\nRègle d'or de l'imbrication : la dernière balise ouverte est la première refermée.",
+      "variantes": [
+        {
+          "nom": "Squelette minimal accepté en épreuve",
+          "quand_utiliser": "Quand le sujet demande « la structure minimale » sans insister sur HTML5.",
+          "contenu_markdown": "Les balises `html`, `head` avec `title`, et `body` suffisent : `<html><head><title>...</title></head><body>...</body></html>`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la structure de base d'un document HTML (Probatoire A, C, D, 2015).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir la racine",
+          "justification": "Tout le document doit être contenu dans une seule balise.",
+          "resultat_markdown": "`<!DOCTYPE html>` puis `<html>`"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'en-tête",
+          "justification": "Les informations sur la page passent avant le contenu et sont regroupées dans `head`.",
+          "resultat_markdown": "`<head>` avec `<meta charset=\"utf-8\">` et `<title>Titre de la page</title>`, puis `</head>`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le corps",
+          "justification": "Le contenu affiché est regroupé dans `body`, après `head`.",
+          "resultat_markdown": "`<body>` contenu `</body>`"
+        },
+        {
+          "numero": 4,
+          "action": "Fermer la racine",
+          "justification": "La dernière balise ouverte (`html`) est la dernière refermée.",
+          "resultat_markdown": "`</html>`"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler l'imbrication",
+          "justification": "Chaque balise ouvrante a sa fermante et `head`, `body` sont dans `html`, côte à côte.",
+          "resultat_markdown": "Ouvertures : html, head, title ; fermetures : title, head ; ouvertures : body ; fermetures : body, html. Tout est refermé."
+        }
+      ],
+      "conclusion_markdown": "La structure est : `html` qui contient `head` (avec `title`) puis `body`, chaque balise étant refermée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer `<title>` dans le `body`.",
+          "pourquoi_faux": "Le titre appartient aux informations sur la page, donc à l'en-tête. Dans le corps, il n'a plus ce rôle et le navigateur peut l'ignorer.",
+          "correction_markdown": "Écrire `<title>` toujours à l'intérieur de `<head>`."
+        },
+        {
+          "erreur_markdown": "Écrire le texte de la page entre `</head>` et `<body>`.",
+          "pourquoi_faux": "Tout ce qui est contenu doit se trouver dans `body`. Entre les deux blocs, le texte est mal interprété.",
+          "correction_markdown": "Insérer le texte après `<body>`."
+        },
+        {
+          "erreur_markdown": "Oublier `</body>` ou `</html>`.",
+          "pourquoi_faux": "Une balise non refermée rend la structure ambiguë : le navigateur devine, parfois mal.",
+          "correction_markdown": "Après chaque ouverture, écrire tout de suite la fermeture, puis remplir entre les deux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le code complet d'une page intitulée « Ma classe » qui affiche un titre `h1` « Première C » et un paragraphe « Bienvenue ».",
+          "solution_markdown": "```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Ma classe</title>\n  </head>\n  <body>\n    <h1>Première C</h1>\n    <p>Bienvenue</p>\n  </body>\n</html>\n```\nLe texte « Ma classe » est dans `title` (onglet), « Première C » et « Bienvenue » dans `body` (page)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le code ci-dessous est faux. Repère les erreurs et corrige-le.\n\n```html\n<html>\n  <body>\n    <title>Accueil</title>\n    <p>Bonjour\n  </body>\n</html>\n```",
+          "solution_markdown": "Erreurs : (1) il manque `head` : le titre doit y être placé ; (2) `<title>` est dans `body` ; (3) `<p>` n'est pas refermée.\n\n```html\n<html>\n  <head>\n    <title>Accueil</title>\n  </head>\n  <body>\n    <p>Bonjour</p>\n  </body>\n</html>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut une page « Contact » qui affiche un titre `h1`, une image `logo.png` (texte de remplacement « Logo ») et un lien vers `index.html`. Écris la page complète et indique, pour chaque balise du `body`, si elle est à fermer.",
+          "solution_markdown": "```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Contact</title>\n  </head>\n  <body>\n    <h1>Contact</h1>\n    <img src=\"logo.png\" alt=\"Logo\">\n    <a href=\"index.html\">Retour à l'accueil</a>\n  </body>\n</html>\n```\n`h1` et `a` sont des balises doubles : ouvrante et fermante. `img` est une balise orpheline : elle n'a pas de contenu et ne se ferme pas. `meta` est aussi orpheline."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un document HTML = `html` qui contient `head` (infos) puis `body` (contenu).",
+        "`title` va dans `head` et s'affiche dans l'onglet, pas dans la page.",
+        "Dernière balise ouverte, première refermée : c'est la règle qui évite presque toutes les fautes d'imbrication.",
+        "Ajoute `<!DOCTYPE html>` et `<meta charset=\"utf-8\">` pour une page moderne.",
+        "Aux examens de première, la structure du document HTML est une question de cours récurrente, notée sur l'emboîtement correct des balises."
+      ]
+    }
+  ]
+}

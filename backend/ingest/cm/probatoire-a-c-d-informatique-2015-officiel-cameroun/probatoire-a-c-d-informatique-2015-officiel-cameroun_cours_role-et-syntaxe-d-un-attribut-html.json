@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-role-et-syntaxe-d-un-attribut-html-probatoire-acd-2015",
+  "meta": {
+    "titre": "Rôle et syntaxe d'un attribut HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique : HTML",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "attribut",
+      "balise ouvrante",
+      "href",
+      "src"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2015-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2015 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une balise `a` seule dit « ceci est un lien », mais elle ne dit pas vers où il mène. Une balise `img` dit « ceci est une image », mais pas laquelle. Il manque une information, et c'est l'attribut qui la fournit. Sans lui, la plupart des balises ne servent à rien."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une balise (ouvrante, contenu, fermante)",
+        "Connaître quelques balises : `a`, `img`, `table`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Attribut : rôle et syntaxe",
+      "contenu_markdown": "Un **attribut** est une information complémentaire placée dans la balise ouvrante pour préciser ou modifier son comportement ou son aspect.\n\n```html\n<balise nom_attribut=\"valeur\">contenu</balise>\n```\n\nTrois règles de syntaxe :\n\n1. L'attribut s'écrit dans la balise **ouvrante**, jamais dans la fermante.\n2. Il est séparé du nom de la balise par un espace, et prend la forme `nom=\"valeur\"`.\n3. Plusieurs attributs se séparent par des espaces, dans n'importe quel ordre.\n\nAttributs courants :\n\n| Attribut | Balise | Rôle |\n|---|---|---|\n| `href` | `a` | adresse de la page cible |\n| `src` | `img` | fichier de l'image |\n| `alt` | `img` | texte de remplacement |\n| `width`, `height` | `img` | dimensions en pixels |\n| `border` | `table` | épaisseur de la bordure |\n| `colspan` | `td`, `th` | nombre de colonnes occupées |\n| `style` | toutes | règle de style en ligne |",
+      "variantes": [
+        {
+          "nom": "Attributs sans valeur (booléens)",
+          "quand_utiliser": "Pour quelques attributs de formulaire.",
+          "contenu_markdown": "Certains attributs s'écrivent seuls, par exemple `disabled` dans `<input disabled>`. La forme `nom=\"valeur\"` reste la règle à connaître pour l'examen."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Énoncer en deux lignes le rôle d'un attribut dans une balise HTML et donner sa syntaxe minimale (Probatoire A, C, D, 2015).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dire le rôle",
+          "justification": "La question demande d'abord à quoi sert l'attribut.",
+          "resultat_markdown": "Un attribut apporte une information complémentaire à la balise et précise ou modifie son comportement ou son aspect."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la syntaxe générale",
+          "justification": "La syntaxe minimale se donne avec des noms génériques.",
+          "resultat_markdown": "`<balise attribut=\"valeur\">contenu</balise>`"
+        },
+        {
+          "numero": 3,
+          "action": "Nommer les trois parties",
+          "justification": "Le correcteur veut voir que tu distingues le nom de l'attribut, le signe égal et la valeur entre guillemets.",
+          "resultat_markdown": "Nom : `attribut` ; signe `=` ; valeur : `\"valeur\"`, entre guillemets."
+        },
+        {
+          "numero": 4,
+          "action": "Illustrer par un exemple réel",
+          "justification": "Un exemple concret prouve que la syntaxe est comprise.",
+          "resultat_markdown": "`<a href=\"contact.html\">Contact</a>` : balise `a`, attribut `href`, valeur `contact.html`."
+        }
+      ],
+      "conclusion_markdown": "Un attribut s'écrit dans la balise ouvrante sous la forme `nom=\"valeur\"` et précise ou modifie la balise ; par exemple `href` indique la cible d'un lien."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire l'attribut dans la balise fermante : `</a href=\"x.html\">`.",
+          "pourquoi_faux": "La balise fermante ne sert qu'à marquer la fin de l'élément, elle ne porte aucune information.",
+          "correction_markdown": "Placer l'attribut dans `<a href=\"x.html\">` uniquement."
+        },
+        {
+          "erreur_markdown": "Oublier les guillemets ou le signe égal : `<img src photo.jpg>`.",
+          "pourquoi_faux": "Sans `=` ni guillemets, le navigateur ne sépare plus le nom de la valeur.",
+          "correction_markdown": "Écrire `<img src=\"photo.jpg\">`."
+        },
+        {
+          "erreur_markdown": "Confondre attribut et balise : dire que `href` est une balise.",
+          "pourquoi_faux": "Une balise délimite un élément, l'attribut en règle une propriété. `href` n'existe qu'à l'intérieur d'une balise.",
+          "correction_markdown": "Nommer séparément : balise `a`, attribut `href`, valeur `contact.html`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `<img src=\"photo.jpg\" width=\"200\" height=\"100\" alt=\"Photo de classe\">`, donne le nom de la balise, des attributs et de leurs valeurs.",
+          "solution_markdown": "Balise : `img`. Attributs et valeurs : `src` = `photo.jpg` ; `width` = `200` ; `height` = `100` ; `alt` = `Photo de classe`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le code d'un lien qui affiche « Contact », mène à la page `contact.html` et s'ouvre dans un nouvel onglet (attribut `target` de valeur `_blank`).",
+          "solution_markdown": "```html\n<a href=\"contact.html\" target=\"_blank\">Contact</a>\n```\n`href` désigne la page cible, `target=\"_blank\"` demande un nouvel onglet. Les deux attributs sont séparés par un espace."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Corrige : `<a href=contact.html target=_blank>Contact</a>` et `<table border=1><tr><td colspan=2>Total</td></tr></table>`. Explique le rôle de `colspan`.",
+          "solution_markdown": "Les valeurs doivent être entre guillemets :\n\n```html\n<a href=\"contact.html\" target=\"_blank\">Contact</a>\n<table border=\"1\"><tr><td colspan=\"2\">Total</td></tr></table>\n```\n`colspan=\"2\"` fait occuper deux colonnes à la cellule « Total ». Les navigateurs tolèrent souvent l'absence de guillemets sur une valeur simple, mais pas l'examen."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'attribut vit dans la balise ouvrante, sous la forme `nom=\"valeur\"`.",
+        "Son rôle : apporter l'information qui manque à la balise (où, quoi, combien, comment).",
+        "Plusieurs attributs, un espace entre chacun, ordre libre.",
+        "Donne toujours un exemple avec les trois éléments nommés : balise, attribut, valeur.",
+        "La définition de l'attribut et sa syntaxe sont des questions de cours classiques en première, qui sont notées sur la syntaxe exacte."
+      ]
+    }
+  ]
+}

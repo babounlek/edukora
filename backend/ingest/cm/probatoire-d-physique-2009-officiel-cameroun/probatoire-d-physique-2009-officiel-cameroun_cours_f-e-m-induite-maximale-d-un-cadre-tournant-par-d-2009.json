@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-f-e-m-induite-maximale-d-un-cadre-tournant-par-derivation-du-flux-d-2009",
+  "meta": {
+    "titre": "F.é.m. induite maximale d'un cadre tournant par dérivation du flux",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "loi de Faraday",
+      "f.é.m. induite",
+      "courant alternatif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-PHYSIQUE-2009-CM",
+    "epreuve_titre": "Probatoire Physique, série D, session 2009 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-physique-2009-officiel-cameroun-ex2-q2.2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La tension du secteur oscille cinquante fois par seconde, parce que la bobine de l'alternateur à la centrale tourne dans un champ magnétique. Le lien entre la rotation et la tension, c'est la dérivée du flux. Un seul calcul, la dérivée d'un cosinus, fait naître une tension sinusoïdale."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "L'expression du flux $\\Phi = NBS\\cos\\omega t$",
+        "La dérivée de $\\cos(\\omega t)$",
+        "La relation $\\omega = 2\\pi f$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de Faraday et f.é.m. d'un cadre tournant",
+      "contenu_markdown": "**Loi de Faraday** : $e = -\\dfrac{d\\Phi}{dt}$.\n\nPour $\\Phi = \\Phi_{max}\\cos(\\omega t)$ avec $\\Phi_{max} = NBS$ :\n$$e(t) = \\omega\\Phi_{max}\\sin(\\omega t) = E_{max}\\sin(\\omega t),\\qquad E_{max} = NBS\\omega .$$\nFréquence : $f = \\dfrac{\\omega}{2\\pi}$ ; période $T = \\dfrac{2\\pi}{\\omega}$.",
+      "formule_principale": "E_{max} = \\omega\\,\\Phi_{max} = NBS\\omega",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le flux à travers le cadre est $\\Phi(t) = 1{,}2\\cos(6{,}28\\,t)$ (Wb). Déterminer la f.é.m. induite et sa valeur maximale.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer la loi de Faraday",
+          "justification": "$e = -d\\Phi/dt$.",
+          "resultat_markdown": "$e = -\\dfrac{d}{dt}\\left[1{,}2\\cos(6{,}28\\,t)\\right]$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver",
+          "justification": "$(a\\cos\\omega t)' = -a\\omega\\sin\\omega t$ avec $a = 1{,}2$.",
+          "resultat_markdown": "$\\dfrac{d\\Phi}{dt} = -1{,}2 \\times 6{,}28\\sin(6{,}28\\,t)$"
+        },
+        {
+          "numero": 3,
+          "action": "Changer de signe",
+          "justification": "Le moins de Faraday compense celui de la dérivée.",
+          "resultat_markdown": "$e(t) = 7{,}536\\sin(6{,}28\\,t)$"
+        },
+        {
+          "numero": 4,
+          "action": "Amplitude",
+          "justification": "Le sinus vaut au maximum 1.",
+          "resultat_markdown": "$E_{max} = 7{,}54$ V"
+        }
+      ],
+      "conclusion_markdown": "La f.é.m. induite est sinusoïdale d'amplitude $E_{max} = 7{,}5$ V et de fréquence $1$ Hz."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Garder le signe moins : $e = -\\omega\\Phi_{max}\\sin\\omega t$.",
+          "pourquoi_faux": "La dérivée du cosinus apporte déjà un signe moins ; avec celui de la loi de Faraday les deux s'annulent.",
+          "correction_markdown": "Calcule la dérivée en entier, puis applique $e = -d\\Phi/dt$."
+        },
+        {
+          "erreur_markdown": "Utiliser $f$ à la place de $\\omega$.",
+          "pourquoi_faux": "La dérivée fait sortir la pulsation en rad/s, pas la fréquence en Hz.",
+          "correction_markdown": "$\\omega = 2\\pi f$."
+        },
+        {
+          "erreur_markdown": "Dire que $e$ est maximale quand $\\Phi$ est maximal.",
+          "pourquoi_faux": "Quand $\\Phi$ est extrémal sa dérivée est nulle : $e = 0$.",
+          "correction_markdown": "$e$ est maximale quand $\\Phi = 0$ (cadre parallèle au champ)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le flux dans une bobine vaut $\\Phi_{max} = 0{,}20$ Wb à la fréquence $50$ Hz. Calculer l'amplitude de la f.é.m.",
+          "solution_markdown": "$\\omega = 2\\pi f = 2\\pi \\times 50 = 314{,}2$ rad/s ; $E_{max} = \\omega\\Phi_{max} = 314{,}2 \\times 0{,}20 = 62{,}8$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un alternateur : $N = 250$ spires, $S = 0{,}03$ m², $B = 0{,}2$ T, vitesse de rotation $1500$ tr/min. Calculer $E_{max}$ et la valeur efficace $E_{eff} = E_{max}/\\sqrt{2}$.",
+          "solution_markdown": "$\\omega = 1500 \\times \\dfrac{2\\pi}{60} = 157{,}08$ rad/s ; $\\Phi_{max} = 250 \\times 0{,}2 \\times 0{,}03 = 1{,}5$ Wb.\n\n$E_{max} = 157{,}08 \\times 1{,}5 = 235{,}6$ V $\\approx 236$ V ; $E_{eff} = \\dfrac{235{,}6}{\\sqrt{2}} = 166{,}6$ V."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "À $t = 0$ le cadre de l'exercice a sa normale perpendiculaire au champ ($\\alpha_0 = 90°$). Écrire $\\Phi(t)$ et $e(t)$ avec $NBS = 1{,}2$ Wb et $\\omega = 6{,}28$ rad/s. Que vaut $e(0)$ ?",
+          "solution_markdown": "$\\alpha = \\omega t + \\dfrac{\\pi}{2}$, donc $\\Phi(t) = 1{,}2\\cos\\left(6{,}28\\,t + \\dfrac{\\pi}{2}\\right) = -1{,}2\\sin(6{,}28\\,t)$.\n\n$\\dfrac{d\\Phi}{dt} = -1{,}2 \\times 6{,}28\\cos(6{,}28\\,t)$, donc $e(t) = 7{,}54\\cos(6{,}28\\,t)$ (V).\n\nÀ $t = 0$, $\\Phi = 0$ et $e(0) = 7{,}54$ V : la f.é.m. est maximale au moment où le flux s'annule."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$e = -\\dfrac{d\\Phi}{dt}$ : la f.é.m. vient de la variation du flux.",
+        "Pour $\\Phi = \\Phi_{max}\\cos\\omega t$, $e = \\omega\\Phi_{max}\\sin\\omega t$ et $E_{max} = \\omega\\Phi_{max} = NBS\\omega$.",
+        "Flux et f.é.m. sont en quadrature : quand l'un est maximal, l'autre est nul.",
+        "Utilise $\\omega$ en rad/s ; $\\omega = 2\\pi f$.",
+        "Au probatoire, la dérivée d'un cosinus est donnée en rappel : il faut l'appliquer proprement et conclure avec l'unité (volt)."
+      ]
+    }
+  ]
+}

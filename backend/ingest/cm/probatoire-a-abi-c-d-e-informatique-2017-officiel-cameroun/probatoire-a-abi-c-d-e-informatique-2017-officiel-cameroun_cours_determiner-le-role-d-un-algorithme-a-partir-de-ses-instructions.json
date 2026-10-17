@@ -1,0 +1,150 @@
+{
+  "cours_id": "cours-determiner-le-role-d-un-algorithme-a-partir-de-ses-instructions-probatoire-acde-2017",
+  "meta": {
+    "titre": "Déterminer le rôle d'un algorithme à partir de ses instructions",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : lecture d'un algorithme",
+    "duree_estimee_min": 25,
+    "tags": [
+      "rôle d'un algorithme",
+      "entrées",
+      "traitement",
+      "sortie",
+      "pseudo-code"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q1.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu reçois un petit programme écrit par quelqu'un d'autre et on te demande « à quoi sert-il ? ». Comprendre un algorithme sans l'avoir écrit est une compétence de tous les jours pour un technicien : réparer, modifier ou reprendre un programme commence toujours par savoir ce qu'il fait. La bonne nouvelle : tout algorithme simple a la même ossature, que l'on repère en trois coups d'œil."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître les instructions Lire, Ecrire et l'affectation",
+        "Savoir lire une formule de calcul",
+        "Connaître le vocabulaire : entrée, traitement, sortie"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Entrées, traitement, sortie : trois repères pour un rôle",
+      "contenu_markdown": "Tout algorithme simple se lit en trois blocs :\n\n| Bloc | Où le trouver | Question à se poser |\n|---|---|---|\n| Entrées | Instructions `Lire` | Quelles données l'utilisateur fournit-il ? |\n| Traitement | Affectations (←), tests, boucles | Quel calcul ou quelle décision est effectué ? |\n| Sortie | Instructions `Ecrire` | Quel résultat est affiché, avec quel message ? |\n\nLe rôle se rédige en **une phrase** qui commence par un verbe d'action : « Cet algorithme *demande* ... puis *calcule* et *affiche* ... ». Les noms des variables (`pttc`, `moy`, `peri`) et les messages affichés donnent des indices précieux sur la grandeur calculée.",
+      "variantes": [
+        {
+          "nom": "Test par valeurs simples",
+          "quand_utiliser": "Quand le rôle n'est pas évident à la lecture de la formule.",
+          "contenu_markdown": "On exécute l'algorithme avec des valeurs faciles (1, 0, 100) et on observe le résultat. Si une formule rend toujours le nombre d'entrée quand le taux vaut 0, elle ajoute une taxe ou une majoration."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Que fait l'algorithme de l'épreuve (variables `nb`, `pht`, `ttva`, `pttc` ; instruction `pttc ← nb * pht * (1 + ttva)`) ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les entrées",
+          "justification": "Les instructions `Lire` donnent les données saisies.",
+          "resultat_markdown": "`Lire (pht)`, `Lire (nb)`, `Lire (ttva)` : prix hors taxes, nombre d'articles, taux de TVA."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser le traitement",
+          "justification": "Une seule affectation calcule `pttc`. Le produit `nb * pht` est le prix hors taxes de tous les articles ; le facteur `(1 + ttva)` y ajoute la taxe, car $HT \\times (1 + t) = HT + HT \\times t$.",
+          "resultat_markdown": "`pttc` = prix hors taxes total augmenté de la TVA."
+        },
+        {
+          "numero": 3,
+          "action": "Lire la sortie",
+          "justification": "Le dernier `Ecrire` affiche un message et la valeur de `pttc`.",
+          "resultat_markdown": "Message : « Le prix toutes taxes confondues est : »."
+        },
+        {
+          "numero": 4,
+          "action": "Tester avec des valeurs simples",
+          "justification": "Pour `nb = 1`, `pht = 100` et `ttva = 0` : $1 \\times 100 \\times (1 + 0) = 100$. Sans taxe, le prix ne change pas.",
+          "resultat_markdown": "Le test confirme que la formule ajoute une taxe au prix."
+        },
+        {
+          "numero": 5,
+          "action": "Rédiger la phrase du rôle",
+          "justification": "On commence par un verbe d'action et on nomme la grandeur calculée.",
+          "resultat_markdown": "Cet algorithme demande le prix unitaire hors taxes, le nombre d'articles et le taux de TVA, puis calcule et affiche le prix toutes taxes comprises de l'ensemble des articles."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme calcule et affiche le **prix toutes taxes comprises (TTC)** d'un lot d'articles."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire l'algorithme ligne à ligne : « il lit pht, puis il lit nb, puis il lit ttva... ».",
+          "pourquoi_faux": "Une question « que fait cet algorithme ? » demande son rôle global, non une paraphrase du code. La paraphrase ne dit pas à quoi sert le résultat.",
+          "correction_markdown": "Regrouper en trois temps (entrées, traitement, sortie) et conclure par une phrase de rôle."
+        },
+        {
+          "erreur_markdown": "Répondre « il calcule la TVA ».",
+          "pourquoi_faux": "La TVA seule serait $nb \\times pht \\times ttva$. Ici, le facteur $(1 + ttva)$ ajoute la taxe au prix : la grandeur obtenue est le prix TTC.",
+          "correction_markdown": "Vérifier la formule : un facteur « 1 + taux » donne un prix augmenté, un facteur « taux » seul donne le montant de la taxe."
+        },
+        {
+          "erreur_markdown": "Oublier de nommer les entrées (« il calcule un prix »).",
+          "pourquoi_faux": "Sans les données utilisées, la phrase est trop vague pour être notée en entier.",
+          "correction_markdown": "Citer au moins les données lues et la grandeur affichée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que fait cet algorithme ?\n\n```\nAlgorithme Mystere1\nVar L, l, peri : Numérique ;\nDébut\n  Lire (L) ;\n  Lire (l) ;\n  peri ← 2 * (L + l) ;\n  Ecrire (\"Résultat : \", peri) ;\nFin\n```",
+          "solution_markdown": "1. Entrées : la longueur `L` et la largeur `l`.\n2. Traitement : `peri ← 2 * (L + l)`, c'est la formule du périmètre d'un rectangle $P = 2 \\times (L + l)$.\n3. Sortie : l'affichage de `peri`.\n\nRôle : cet algorithme demande la longueur et la largeur d'un rectangle, puis calcule et affiche son **périmètre**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que fait cet algorithme ?\n\n```\nAlgorithme Mystere2\nVar n1, n2, n3, moy : Numérique ;\nDébut\n  Lire (n1, n2, n3) ;\n  moy ← (n1 + n2 + n3) / 3 ;\n  Ecrire (\"Votre moyenne est : \", moy) ;\nFin\n```\nDonner la valeur affichée pour `n1 = 12`, `n2 = 9` et `n3 = 15`.",
+          "solution_markdown": "1. Entrées : trois notes `n1`, `n2`, `n3`.\n2. Traitement : on additionne les trois notes et on divise par 3 : c'est la moyenne arithmétique.\n3. Sortie : le message « Votre moyenne est : » suivi de `moy`.\n\nRôle : cet algorithme lit trois notes puis calcule et affiche leur **moyenne**.\n\nApplication : $moy = \\dfrac{12 + 9 + 15}{3} = \\dfrac{36}{3} = 12$. L'algorithme affiche « Votre moyenne est : 12 »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que fait cet algorithme ? Quelle est la sortie pour `age = 17`, puis pour `age = 18` ?\n\n```\nAlgorithme Mystere3\nVar age : Numérique ;\nDébut\n  Lire (age) ;\n  Si age >= 18 Alors\n    Ecrire (\"Majeur\") ;\n  Sinon\n    Ecrire (\"Mineur\") ;\n  FinSi\nFin\n```",
+          "solution_markdown": "1. Entrée : l'âge `age`.\n2. Traitement : un test `age >= 18` sépare deux cas (structure alternative `Si ... Sinon`).\n3. Sortie : « Majeur » si le test est vrai, « Mineur » sinon.\n\nRôle : cet algorithme lit un âge et **indique si la personne est majeure ou mineure**.\n\nSorties : pour `age = 17`, le test $17 \\geq 18$ est faux, donc l'algorithme affiche « Mineur ». Pour `age = 18`, le test $18 \\geq 18$ est vrai (l'égalité compte avec le signe $\\geq$), donc il affiche « Majeur »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un algorithme se lit en trois blocs : ce qu'on lui donne (Lire), ce qu'il fait (affectations, tests), ce qu'il affiche (Ecrire).",
+        "Le rôle s'écrit en une phrase qui commence par un verbe d'action et qui nomme la grandeur calculée.",
+        "Les noms de variables et les messages affichés sont des indices : utilise-les.",
+        "Un facteur « 1 + taux » ajoute une taxe ; un facteur « taux » seul donne le montant de la taxe.",
+        "Au Probatoire, la question « Que fait cet algorithme ? » suit presque toujours une question de calcul ; la réponse se rédige en une phrase et vaut un point entier."
+      ]
+    }
+  ]
+}

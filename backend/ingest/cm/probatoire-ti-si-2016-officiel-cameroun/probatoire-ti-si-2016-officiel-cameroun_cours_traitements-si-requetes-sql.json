@@ -1,0 +1,138 @@
+{
+ "cours_id": "cours-traitements-si-requetes-sql-ti-si-2016",
+ "meta": {
+  "titre": "Traitements d'un système d'information : requêtes SQL de consultation et de contrôle",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Langage SQL",
+  "duree_estimee_min": 40,
+  "tags": [
+   "requête SQL",
+   "jointure",
+   "traitement",
+   "GROUP BY",
+   "modèle physique"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q15.c-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Un système d'information ne se contente pas de stocker des données : il répond à des questions. Quels livres ne sont jamais sortis ? Combien d'accidents par véhicule ? Chaque question est un traitement, et chaque traitement s'écrit en SQL. Ce cours te donne les patrons de requêtes à connaître et le raisonnement pour les construire."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Modèle relationnel : tables, clés primaires et étrangères",
+    "Syntaxe de SELECT, FROM, WHERE"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Les patrons de requêtes de consultation",
+   "contenu_markdown": "**Démarche en quatre questions.** (1) Quelles tables contiennent l'information ? (2) Comment les relie-t-on (clé étrangère égale clé primaire) ? (3) Quelle ligne garde-t-on (WHERE) ? (4) Que calcule-t-on (COUNT, GROUP BY) ?\n\n| Besoin | Patron |\n|---|---|\n| Informations liées | `JOIN ... ON cle_etrangere = cle_primaire` |\n| Filtrer | `WHERE condition` |\n| Compter par groupe | `GROUP BY ...` avec `COUNT(...)` |\n| Garder les groupes à 0 | `LEFT JOIN` |\n| Ceux qui n'ont jamais... | `NOT EXISTS (sous-requête)` ou `LEFT JOIN ... IS NULL` |\n| Filtrer sur le résultat d'un groupe | `HAVING` |\n| Contrôler une règle | requête qui doit renvoyer **zéro ligne** |\n\nTables utilisées dans ce cours :\n\n```sql\nCREATE TABLE LIVRE (NumLivre INTEGER PRIMARY KEY, Titre VARCHAR(40) NOT NULL, Categorie VARCHAR(20) NOT NULL);\nCREATE TABLE ADHERENT (NumAdh INTEGER PRIMARY KEY, Nom VARCHAR(30) NOT NULL);\nCREATE TABLE EMPRUNTER (NumAdh INTEGER NOT NULL REFERENCES ADHERENT(NumAdh), NumLivre INTEGER NOT NULL REFERENCES LIVRE(NumLivre), DateEmprunt DATE NOT NULL, PRIMARY KEY (NumAdh, NumLivre, DateEmprunt));\n```\n\nJeu d'essai :\n\n```sql\nINSERT INTO LIVRE VALUES (1,'Sous l''orage','Roman'),(2,'Mathématiques 1ère','Scolaire'),(3,'Une vie de boy','Roman'),(4,'Atlas du Cameroun','Documentaire');\nINSERT INTO ADHERENT VALUES (1,'ABENA'),(2,'BELLA'),(3,'CHIMI');\nINSERT INTO EMPRUNTER VALUES (1,1,'2026-09-10'),(1,2,'2026-09-12'),(2,1,'2026-09-20'),(2,3,'2026-09-21'),(1,3,'2026-10-01');\n```",
+   "variantes": [
+    {
+     "nom": "INNER JOIN ou LEFT JOIN ?",
+     "quand_utiliser": "Quand on compte",
+     "contenu_markdown": "INNER JOIN supprime les lignes sans correspondance (les adhérents sans emprunt disparaissent). LEFT JOIN les conserve avec un compte de 0."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Dans la bibliothèque (jeu d'essai : adhérents ABENA, BELLA, CHIMI ; 4 livres ; 5 emprunts), lister les titres empruntés par ABENA avec les dates, par ordre chronologique.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Repérer les tables",
+     "justification": "L'information est répartie entre ADHERENT (nom), EMPRUNTER (date) et LIVRE (titre).",
+     "resultat_markdown": "Trois tables."
+    },
+    {
+     "numero": 2,
+     "action": "Écrire les jointures",
+     "justification": "EMPRUNTER porte les clés étrangères NumAdh et NumLivre.",
+     "resultat_markdown": "`EMPRUNTER E JOIN LIVRE L ON L.NumLivre = E.NumLivre JOIN ADHERENT A ON A.NumAdh = E.NumAdh`"
+    },
+    {
+     "numero": 3,
+     "action": "Filtrer et trier",
+     "justification": "On garde l'adhérent ABENA et on trie par date.",
+     "resultat_markdown": "`WHERE A.Nom = 'ABENA' ORDER BY E.DateEmprunt`"
+    },
+    {
+     "numero": 4,
+     "action": "Exécuter la requête (testée sous SQLite)",
+     "justification": "On vérifie le résultat sur le jeu d'essai.",
+     "resultat_markdown": "\n\n```sql\nSELECT L.Titre, E.DateEmprunt\nFROM EMPRUNTER E JOIN LIVRE L ON L.NumLivre = E.NumLivre\nJOIN ADHERENT A ON A.NumAdh = E.NumAdh\nWHERE A.Nom = 'ABENA'\nORDER BY E.DateEmprunt;\n```\n\n| Titre | DateEmprunt |\n|---|---|\n| Sous l'orage | 2026-09-10 |\n| Mathématiques 1ère | 2026-09-12 |\n| Une vie de boy | 2026-10-01 |"
+    }
+   ],
+   "conclusion_markdown": "ABENA a emprunté trois livres : Sous l'orage (10/09/2026), Mathématiques 1ère (12/09/2026) et Une vie de boy (01/10/2026)."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Compter avec un JOIN simple et perdre les valeurs à zéro",
+     "pourquoi_faux": "Un JOIN interne supprime les adhérents sans emprunt : CHIMI disparaîtrait d'une liste « nombre d'emprunts par adhérent ».",
+     "correction_markdown": "Utiliser LEFT JOIN quand les zéros comptent."
+    },
+    {
+     "erreur_markdown": "Oublier GROUP BY avec COUNT",
+     "pourquoi_faux": "Sans GROUP BY, COUNT compte toutes les lignes en un seul résultat.",
+     "correction_markdown": "Lister dans GROUP BY toutes les colonnes non agrégées du SELECT."
+    },
+    {
+     "erreur_markdown": "Écrire la condition de jointure à l'envers ou l'oublier",
+     "pourquoi_faux": "Sans condition, chaque ligne d'une table est associée à chaque ligne de l'autre : produit cartésien et résultat faux.",
+     "correction_markdown": "Toujours écrire ON clé étrangère = clé primaire."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Quels livres n'ont jamais été empruntés ?",
+     "solution_markdown": "1. Besoin « ceux qui n'ont jamais » : patron NOT EXISTS.\n2. Requête :\n\n```sql\nSELECT L.NumLivre, L.Titre\nFROM LIVRE L\nWHERE NOT EXISTS (SELECT 1 FROM EMPRUNTER E WHERE E.NumLivre = L.NumLivre);\n```\n\n3. Résultat obtenu :\n\n| NumLivre | Titre |\n|---|---|\n| 4 | Atlas du Cameroun |\n\n4. Seul le livre n° 4 (Atlas du Cameroun) n'a jamais été emprunté."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Donner le nombre d'emprunts de chaque adhérent, y compris ceux qui n'ont rien emprunté.",
+     "solution_markdown": "1. Il faut garder les adhérents à zéro : LEFT JOIN.\n2. On compte une colonne de EMPRUNTER (les valeurs vides ne sont pas comptées).\n3. Requête :\n\n```sql\nSELECT A.Nom, COUNT(E.NumLivre) AS NbEmprunts\nFROM ADHERENT A LEFT JOIN EMPRUNTER E ON E.NumAdh = A.NumAdh\nGROUP BY A.NumAdh, A.Nom\nORDER BY NbEmprunts DESC, A.Nom;\n```\n\n4. Résultat obtenu :\n\n| Nom | NbEmprunts |\n|---|---|\n| ABENA | 3 |\n| BELLA | 2 |\n| CHIMI | 0 |\n\n5. CHIMI apparaît avec 0 grâce au LEFT JOIN."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Donner, pour chaque adhérent, le nombre de romans empruntés, en gardant ceux qui n'en ont emprunté aucun. Expliquer pourquoi la condition sur la catégorie se place dans le ON et non dans le WHERE.",
+     "solution_markdown": "1. Le LEFT JOIN doit garder CHIMI et tout adhérent sans roman : le filtre ne peut pas supprimer de ligne.\n2. Si on écrivait `WHERE L.Categorie = 'Roman'`, les lignes sans roman (catégorie vide ou autre) seraient éliminées, donc CHIMI disparaîtrait.\n3. On place donc la condition dans la jointure :\n\n```sql\nSELECT A.Nom, COUNT(L.NumLivre) AS NbRomans\nFROM ADHERENT A\nLEFT JOIN EMPRUNTER E ON E.NumAdh = A.NumAdh\nLEFT JOIN LIVRE L ON L.NumLivre = E.NumLivre AND L.Categorie = 'Roman'\nGROUP BY A.NumAdh, A.Nom\nORDER BY A.Nom;\n```\n\n4. Résultat obtenu :\n\n| Nom | NbRomans |\n|---|---|\n| ABENA | 2 |\n| BELLA | 2 |\n| CHIMI | 0 |\n\n5. À titre de comparaison, la version avec JOIN et WHERE ne renvoie que ABENA (2) et BELLA (2) : CHIMI est perdu."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Un traitement est un besoin de l'organisation traduit en requête.",
+    "Jointure : clé étrangère égale clé primaire.",
+    "Compter les zéros : LEFT JOIN. « Ceux qui n'ont jamais » : NOT EXISTS.",
+    "Un contrôle de règle de gestion est une requête qui doit renvoyer zéro ligne.",
+    "Au Probatoire TI, on demande souvent de formuler le traitement en français puis de l'écrire en SQL."
+   ]
+  }
+ ]
+}

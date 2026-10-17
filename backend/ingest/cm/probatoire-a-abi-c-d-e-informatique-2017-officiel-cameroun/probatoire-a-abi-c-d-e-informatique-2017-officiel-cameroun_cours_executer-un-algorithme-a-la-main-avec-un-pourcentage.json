@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-executer-un-algorithme-a-la-main-avec-un-pourcentage-probatoire-acde-2017",
+  "meta": {
+    "titre": "Exécuter un algorithme à la main avec un taux en pourcentage",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : exécution d'un algorithme",
+    "duree_estimee_min": 25,
+    "tags": [
+      "trace d'exécution",
+      "affectation",
+      "pourcentage",
+      "TVA",
+      "priorité des opérations"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q1.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un commerçant de Douala saisit ses prix dans un petit programme de facturation et obtient un total dix fois trop grand : il a tapé 18 au lieu de 0,18 pour le taux de TVA. Le programme n'a pas fait d'erreur, il a exécuté exactement ce qu'on lui a donné. Savoir dérouler un algorithme à la main, c'est savoir prédire ce résultat avant de lancer quoi que ce soit, et repérer le piège du pourcentage que les examinateurs aiment placer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et une affectation (le signe ←)",
+        "Connaître les instructions Lire et Ecrire",
+        "Passer d'un pourcentage à un nombre décimal",
+        "Respecter la priorité des opérations (parenthèses, puis multiplication)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérouler un algorithme en quatre temps",
+      "contenu_markdown": "1. **Lister les entrées** (les variables lues avec `Lire`) et leurs valeurs, en convertissant tout pourcentage en nombre décimal : $x\\,\\% = \\dfrac{x}{100}$.\n2. **Dérouler les instructions dans l'ordre**, une ligne du tableau de trace par instruction qui modifie une variable.\n3. **Calculer** l'expression de droite d'une affectation en respectant la priorité : parenthèses, puis multiplications et divisions, puis additions et soustractions. Le résultat est rangé dans la variable de gauche.\n4. **Contrôler** la vraisemblance du résultat (ordre de grandeur, signe, unité).\n\nPour un prix toutes taxes comprises (TTC) à partir du prix hors taxes (HT) et du taux $t$ :\n\n$$TTC = HT \\times (1 + t)$$",
+      "formule_principale": "TTC = HT \\times (1 + t)",
+      "variantes": [
+        {
+          "nom": "Calcul en deux temps",
+          "quand_utiliser": "Quand la formule est longue ou que l'on veut isoler le montant de la taxe.",
+          "contenu_markdown": "On calcule d'abord la taxe : $TVA = HT \\times t$. Puis on l'ajoute : $TTC = HT + TVA$. Les deux méthodes donnent le même résultat puisque $HT \\times (1 + t) = HT + HT \\times t$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère l'algorithme de calcul du prix toutes taxes confondues de l'épreuve (`pttc ← nb * pht * (1 + ttva)`). Que vaut `pttc` pour `nb = 5`, `pht = 7500` FCFA et `ttva = 7 %` ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les entrées et convertir le pourcentage",
+          "justification": "Le taux de 7 % doit entrer dans la formule sous forme décimale, sinon la parenthèse $1 + ttva$ n'aurait aucun sens.",
+          "resultat_markdown": "$nb = 5$ ; $pht = 7\\,500$ ; $ttva = \\dfrac{7}{100} = 0{,}07$"
+        },
+        {
+          "numero": 2,
+          "action": "Recopier la formule de l'affectation",
+          "justification": "On part toujours de l'expression littérale avant de remplacer les variables.",
+          "resultat_markdown": "$pttc = nb \\times pht \\times (1 + ttva)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la parenthèse",
+          "justification": "Les parenthèses sont prioritaires.",
+          "resultat_markdown": "$1 + ttva = 1 + 0{,}07 = 1{,}07$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le prix hors taxes de l'ensemble des articles",
+          "justification": "Le produit $nb \\times pht$ ne dépend pas de la parenthèse.",
+          "resultat_markdown": "$nb \\times pht = 5 \\times 7\\,500 = 37\\,500$"
+        },
+        {
+          "numero": 5,
+          "action": "Multiplier par la parenthèse",
+          "justification": "On développe : $37\\,500 \\times 1{,}07 = 37\\,500 \\times 1 + 37\\,500 \\times 0{,}07$, avec $37\\,500 \\times 0{,}07 = 2\\,625$ (car $37\\,500 \\times 7 = 262\\,500$, puis division par 100).",
+          "resultat_markdown": "$pttc = 37\\,500 + 2\\,625 = 40\\,125$"
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler la vraisemblance",
+          "justification": "Avec 7 % de TVA, le TTC dépasse le HT d'environ 7 % ($37\\,500$ devient un peu plus de $40\\,000$).",
+          "resultat_markdown": "Le résultat 40 125 est cohérent."
+        }
+      ],
+      "conclusion_markdown": "`pttc` vaut **40 125 FCFA**, dont 2 625 FCFA de TVA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Remplacer `ttva` par 7 et calculer $5 \\times 7\\,500 \\times (1 + 7) = 300\\,000$.",
+          "pourquoi_faux": "Un taux de 7 % se note 0,07. Avec 7, la formule multiplie le prix par 8, ce qui revient à une taxe de 700 %.",
+          "correction_markdown": "Convertir d'abord : $7\\,\\% = 0{,}07$, donc $1 + ttva = 1{,}07$."
+        },
+        {
+          "erreur_markdown": "Calculer $nb \\times pht \\times 1 + ttva$ en supprimant les parenthèses.",
+          "pourquoi_faux": "Sans parenthèses, la multiplication passe avant l'addition : on obtient $37\\,500 + 0{,}07 = 37\\,500{,}07$, ce qui n'ajoute presque rien.",
+          "correction_markdown": "Garder les parenthèses de l'énoncé et les calculer en premier."
+        },
+        {
+          "erreur_markdown": "Répondre « 2 625 FCFA » ou oublier l'unité.",
+          "pourquoi_faux": "2 625 FCFA est le montant de la TVA seule. La variable `pttc` contient le prix toutes taxes comprises, TVA incluse.",
+          "correction_markdown": "Lire le nom de la variable affichée (`pttc` = prix TTC) et écrire le résultat avec son unité, FCFA."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec le même algorithme, que vaut `pttc` pour `nb = 3`, `pht = 2000` FCFA et `ttva = 0,10` ?",
+          "solution_markdown": "1. Parenthèse : $1 + ttva = 1 + 0{,}10 = 1{,}10$.\n2. Prix hors taxes : $nb \\times pht = 3 \\times 2\\,000 = 6\\,000$.\n3. Prix TTC : $6\\,000 \\times 1{,}10 = 6\\,000 + 600 = 6\\,600$.\n\n`pttc` vaut **6 600 FCFA**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Au Cameroun, la TVA est de 19,25 %. Que vaut `pttc` pour `nb = 4` et `pht = 12500` FCFA ? Détaille la conversion du taux.",
+          "solution_markdown": "1. Conversion : $ttva = \\dfrac{19{,}25}{100} = 0{,}1925$.\n2. Parenthèse : $1 + 0{,}1925 = 1{,}1925$.\n3. Prix hors taxes : $4 \\times 12\\,500 = 50\\,000$.\n4. Taxe : $50\\,000 \\times 0{,}1925 = 9\\,625$ (car $50\\,000 \\times 0{,}19 = 9\\,500$ et $50\\,000 \\times 0{,}0025 = 125$).\n5. Prix TTC : $50\\,000 + 9\\,625 = 59\\,625$.\n\n`pttc` vaut **59 625 FCFA**. Contrôle : $50\\,000 \\times 1{,}1925 = 59\\,625$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On modifie l'algorithme : `pttc ← nb * pht * (1 + ttva) * (1 - rem)`, où `rem` est une remise (par exemple 0,10 pour 10 %).\na) Calculer `pttc` pour `nb = 10`, `pht = 5000`, `ttva = 0,1925` et `rem = 0,10`.\nb) Un client a payé 59 625 FCFA pour 5 articles avec une TVA de 19,25 % et sans remise. Retrouver le prix hors taxes d'un article.",
+          "solution_markdown": "**a)** 1. $1 + ttva = 1{,}1925$ et $1 - rem = 0{,}90$.\n2. $nb \\times pht = 10 \\times 5\\,000 = 50\\,000$.\n3. $50\\,000 \\times 1{,}1925 = 59\\,625$ (calcul de l'exercice précédent).\n4. $59\\,625 \\times 0{,}90 = 59\\,625 - 5\\,962{,}5 = 53\\,662{,}5$.\n\n`pttc` vaut **53 662,5 FCFA**.\n\n**b)** On inverse la formule : $pht = \\dfrac{pttc}{nb \\times (1 + ttva)}$.\n1. $nb \\times (1 + ttva) = 5 \\times 1{,}1925 = 5{,}9625$.\n2. $pht = \\dfrac{59\\,625}{5{,}9625} = 10\\,000$.\n\nLe prix hors taxes d'un article est de **10 000 FCFA**. Vérification : $5 \\times 10\\,000 \\times 1{,}1925 = 59\\,625$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant tout calcul, convertis le pourcentage : 7 % devient 0,07, et c'est le nombre décimal qui entre dans la formule.",
+        "Une affectation se lit de droite à gauche : on évalue l'expression, puis on range le résultat dans la variable de gauche.",
+        "Les parenthèses se calculent en premier ; les supprimer change le résultat.",
+        "Un tableau de trace (une ligne par instruction) évite les oublis et rapporte des points de démarche.",
+        "Contrôle toujours l'ordre de grandeur : un prix TTC doit dépasser le HT d'environ le taux de TVA.",
+        "Au Probatoire, l'exécution à la main d'un petit algorithme (calcul commercial, périmètre, moyenne) tombe presque chaque année dans l'exercice d'algorithmique."
+      ]
+    }
+  ]
+}

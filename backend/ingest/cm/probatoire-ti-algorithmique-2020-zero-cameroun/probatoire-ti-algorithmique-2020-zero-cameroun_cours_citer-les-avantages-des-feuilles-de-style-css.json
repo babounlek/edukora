@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-citer-les-avantages-des-feuilles-de-style-css-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Citer les avantages des feuilles de style CSS",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Feuilles de style CSS",
+    "duree_estimee_min": 20,
+    "tags": [
+      "CSS",
+      "feuille de style",
+      "séparation du contenu et de la présentation",
+      "maintenance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Imagine un site de cinquante pages dont le client demande de changer la couleur des titres. Sans feuille de style, tu ouvres cinquante fichiers. Avec une feuille de style, tu changes une seule ligne. Les feuilles de style CSS sont nées de cette idée : séparer ce qu'on dit (HTML) de la façon dont on le montre (CSS)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises HTML de base (`h1`, `p`, `table`)",
+        "Savoir ce qu'est un fichier externe"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe et syntaxe des feuilles de style",
+      "contenu_markdown": "Une **feuille de style** (CSS, *Cascading Style Sheets*) regroupe des règles de présentation. Une règle a la forme :\n\n```css\nsélecteur {\n    propriété: valeur;\n    propriété: valeur;\n}\n```\n\nExemple : `h1 { color: green; font-family: serif; }` met tous les titres de niveau 1 en vert.\n\nTrois façons de l'utiliser :\n\n| Mode | Écriture | Portée |\n|---|---|---|\n| Feuille externe | fichier `style.css` lié par `<link rel=\"stylesheet\" href=\"style.css\">` | tout le site |\n| Feuille interne | balise `<style>` dans l'en-tête `head` | une page |\n| Style en ligne | attribut `style=\"color: green\"` | une balise |\n\n**Avantages** : séparation du contenu et de la présentation ; uniformité de l'aspect de toutes les pages ; maintenance facile (un seul endroit à modifier) ; code HTML plus léger et plus lisible ; mise en forme plus riche que les seules balises."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner deux avantages de l'usage des feuilles de style.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler le principe",
+          "justification": "CSS sépare la présentation du contenu HTML",
+          "resultat_markdown": "Les règles de présentation sont dans un fichier à part"
+        },
+        {
+          "numero": 2,
+          "action": "Déduire un premier avantage",
+          "justification": "Une feuille liée à toutes les pages applique les mêmes règles partout",
+          "resultat_markdown": "Avantage 1 : uniformité de l'aspect du site"
+        },
+        {
+          "numero": 3,
+          "action": "Déduire un second avantage",
+          "justification": "Modifier une règle dans la feuille change toutes les pages d'un coup",
+          "resultat_markdown": "Avantage 2 : maintenance facile, un seul endroit à modifier"
+        }
+      ],
+      "conclusion_markdown": "Deux avantages des feuilles de style sont l'uniformité du site et la facilité de maintenance."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que CSS sert à calculer ou à enregistrer des données",
+          "pourquoi_faux": "CSS ne traite aucune donnée : c'est un langage de mise en forme.",
+          "correction_markdown": "Les avantages concernent l'aspect et l'organisation du code."
+        },
+        {
+          "erreur_markdown": "Dire que CSS remplace HTML",
+          "pourquoi_faux": "CSS n'affiche rien sans HTML : il met en forme des éléments que HTML décrit.",
+          "correction_markdown": "HTML dit ce qu'est le contenu, CSS dit son aspect."
+        },
+        {
+          "erreur_markdown": "Ne donner que la définition sans avantage",
+          "pourquoi_faux": "La question demande des avantages, pas ce qu'est une feuille de style.",
+          "correction_markdown": "Écris deux avantages, chacun avec sa conséquence concrète."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire une règle CSS qui met tous les paragraphes en bleu, et dire comment la lier à une page.",
+          "solution_markdown": "La règle utilise le sélecteur `p` :\n\n```css\np { color: blue; }\n```\n\nOn l'enregistre dans un fichier `style.css`, que l'on lie dans l'en-tête de la page :\n\n```html\n<head>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n```\n\nTous les paragraphes `<p>` de la page deviennent bleus."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un site contient 50 pages, avec 4 titres `<h1>` chacune. Le client veut changer la couleur des titres. Combien de modifications faut-il si la couleur est écrite dans chaque balise ? Et avec une feuille externe ?",
+          "solution_markdown": "**Couleur écrite dans chaque balise.** Il y a $50 \\times 4 = 200$ titres : il faut modifier 200 balises, dans 50 fichiers, avec le risque d'en oublier.\n\n**Avec une feuille externe.** Les 50 pages sont liées à `style.css`, où figure la règle `h1 { color: green; }`. Il suffit de changer cette seule ligne : 1 modification.\n\nC'est l'avantage de maintenance de CSS : le coût d'un changement d'aspect ne dépend plus du nombre de pages."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un style en ligne `style=\"color: red\"` est placé sur un titre, alors que la feuille externe dit `h1 { color: green; }`. De quelle couleur s'affiche le titre ? Que montre cet exemple de la « cascade » ?",
+          "solution_markdown": "Le titre s'affiche en **rouge**. Quand deux règles s'appliquent au même élément, la plus **précise** l'emporte : le style en ligne (sur la balise elle-même) est prioritaire sur la feuille externe, qui s'applique à tous les titres.\n\nC'est le principe de la cascade : on écrit des règles générales dans la feuille externe, et on les complète au besoin par des règles plus précises (feuille interne, puis style en ligne). Ordre de priorité croissant : feuille externe, feuille interne, style en ligne. Utiliser trop de styles en ligne fait perdre l'avantage de la maintenance."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une feuille de style CSS regroupe les règles de présentation, séparées du contenu HTML.",
+        "Avantages : uniformité, maintenance facile, code allégé, mise en forme riche.",
+        "Une règle s'écrit `sélecteur { propriété: valeur; }`.",
+        "On lie une feuille externe par `<link rel=\"stylesheet\" href=\"style.css\">` dans le `head`.",
+        "Au probatoire, donne deux avantages avec leur conséquence : la question vaut 0,5 point et se gagne sans risque."
+      ]
+    }
+  ]
+}

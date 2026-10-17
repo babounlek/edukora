@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-interpreter-un-signal-sonore-emis-au-demarrage-probatoire-acde-2017",
+  "meta": {
+    "titre": "Interpréter un signal sonore émis par l'ordinateur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : codes sonores du BIOS",
+    "duree_estimee_min": 30,
+    "tags": [
+      "bip",
+      "BIOS",
+      "POST",
+      "clavier",
+      "buzzer"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu poses un dictionnaire sur le clavier d'un ordinateur et un long sifflement s'élève : ce n'est pas une panne mystérieuse, c'est la machine qui parle. Quand l'écran n'est pas encore là pour afficher un message, la carte mère dispose d'un petit haut-parleur, le buzzer, et d'un code fait de bips pour signaler ce qui ne va pas. Savoir l'interpréter fait gagner un temps précieux au technicien."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce que sont le BIOS et le POST",
+        "Connaître les éléments d'un poste : clavier, unité centrale, écran",
+        "Avoir lu le cours sur le diagnostic d'une panne de démarrage"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le BIOS signale ses erreurs par des bips",
+      "contenu_markdown": "Au démarrage, le **POST** (auto-test à la mise sous tension) teste le matériel. Le **buzzer** de la carte mère émet :\n\n- **un seul bip court** : l'auto-test est réussi, le système peut démarrer ;\n- **un schéma de bips** (longs, courts, continus) : une erreur a été détectée avant même l'affichage.\n\n| Signal | Cause fréquente | Action |\n|---|---|---|\n| Bip long continu | Touche de clavier enfoncée ou clavier défectueux ; alimentation instable ; mémoire mal enfichée | Dégager les touches, débrancher le clavier, réenfoncer la mémoire |\n| Bips courts répétés | Mémoire vive défectueuse ou mal enfichée | Retirer puis réinsérer les barrettes de RAM |\n| Un bip long et deux ou trois bips courts (BIOS Award) | Carte graphique | Réenfoncer la carte, contrôler le connecteur vidéo |\n\n**Attention** : les schémas varient selon le fabricant du BIOS (AMI, Award, Phoenix). Le manuel de la carte mère donne la table exacte de la machine concernée."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dictionnaire tombe sur l'élément 1 (le clavier) d'un ordinateur déjà démarré et provoque un long sifflement. Quelle en est l'origine ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'élément touché",
+          "justification": "Sur la figure, le chiffre 1 est posé sur le clavier.",
+          "resultat_markdown": "L'élément 1 est le clavier."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer l'effet du choc",
+          "justification": "Le poids du dictionnaire enfonce une ou plusieurs touches et les maintient enfoncées.",
+          "resultat_markdown": "Des touches sont bloquées en position enfoncée."
+        },
+        {
+          "numero": 3,
+          "action": "Suivre la conséquence pour la machine",
+          "justification": "Le contrôleur du clavier envoie sans arrêt le code de la touche : le tampon du clavier se sature et le BIOS signale une erreur de clavier.",
+          "resultat_markdown": "Le buzzer de la carte mère émet un bip long continu."
+        },
+        {
+          "numero": 4,
+          "action": "Proposer le remède",
+          "justification": "On supprime la cause : on retire le poids et on libère les touches.",
+          "resultat_markdown": "Retirer le dictionnaire, redémarrer ; si le bip persiste, changer le clavier."
+        }
+      ],
+      "conclusion_markdown": "Le sifflement est le **signal d'erreur du BIOS** provoqué par des touches du clavier maintenues enfoncées par le dictionnaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Attribuer le sifflement au disque dur ou au ventilateur.",
+          "pourquoi_faux": "Ces composants se trouvent dans l'unité centrale (élément 2), alors que l'énoncé désigne l'élément 1. Un disque dur abîmé fait des cliquetis, non un signal continu.",
+          "correction_markdown": "Lire la figure pour savoir quel élément est concerné, puis chercher l'effet du choc sur cet élément."
+        },
+        {
+          "erreur_markdown": "Croire qu'un bip signale forcément un virus.",
+          "pourquoi_faux": "Les bips viennent du BIOS, avant le chargement du système : un virus agit une fois le système lancé.",
+          "correction_markdown": "Relier un bip au matériel testé par le POST (clavier, mémoire, carte graphique)."
+        },
+        {
+          "erreur_markdown": "Appliquer la table de bips d'un fabricant à un autre.",
+          "pourquoi_faux": "Les codes varient d'un BIOS à l'autre : un même schéma peut avoir deux sens.",
+          "correction_markdown": "Repérer le fabricant du BIOS ou consulter le manuel de la carte mère."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un ordinateur émet un seul bip court au démarrage, puis affiche son bureau. Que signifie ce bip ?",
+          "solution_markdown": "Un seul bip court signale que le **POST s'est terminé sans erreur** : le processeur, la mémoire, la carte graphique et le clavier ont été reconnus. Le système d'exploitation peut alors se charger, ce qui explique l'affichage du bureau."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Après avoir remplacé une barrette de mémoire vive, un ordinateur émet des bips courts répétés et n'affiche rien. Quelle est la cause la plus probable et que faire ?",
+          "solution_markdown": "Des bips courts répétés signalent en général un problème de **mémoire vive** : barrette mal enfichée ou incompatible. Éteindre et débrancher le cordon, retirer la barrette, la réinsérer en l'enfonçant jusqu'au clic des deux ergots, puis redémarrer. Si le bip persiste, tester l'ancienne barrette : si la machine démarre, la nouvelle est incompatible ou défectueuse."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur émet un bip long continu dès la mise sous tension. Proposer une démarche de test qui permet de distinguer une touche de clavier bloquée d'un défaut de mémoire.",
+          "solution_markdown": "1. Éteindre la machine et débrancher le cordon d'alimentation.\n2. **Débrancher le clavier**, rallumer. Si le bip disparaît, la cause est le clavier (touche bloquée ou clavier défectueux) : on le nettoie ou on le remplace.\n3. Si le bip persiste sans clavier, éteindre et débrancher à nouveau, puis **retirer les barrettes de mémoire** et les réinsérer une à une.\n4. Si le bip persiste encore, tester une autre mémoire, puis l'alimentation.\n\nLa démarche procède par élimination : on isole un élément à la fois, du plus simple (clavier) au plus lourd (mémoire, alimentation)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le buzzer de la carte mère signale les erreurs du POST par des bips avant même l'affichage.",
+        "Un bip court unique veut dire « tout va bien » ; un bip continu ou répété signale une erreur.",
+        "Un bip long continu s'explique souvent par une touche de clavier enfoncée.",
+        "Les codes varient selon le fabricant du BIOS : le manuel de la carte mère fait foi.",
+        "Au Probatoire, la question sur un signal sonore demande de relier un élément de la figure à la cause du bruit : cite l'élément, l'effet du choc, puis le signal du BIOS."
+      ]
+    }
+  ]
+}

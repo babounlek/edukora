@@ -1,0 +1,540 @@
+{
+ "epreuve_source": "probatoire-ti-si-2016-officiel-cameroun.html",
+ "numero_exercice": "1",
+ "pays": "cm",
+ "matiere": "Systèmes d'Information",
+ "nature_epreuve": null,
+ "partie_epreuve_francais": null,
+ "variante_sujet": null,
+ "serie": "TI",
+ "filiere_serie_a": null,
+ "examen": "probatoire",
+ "origine": "officiel",
+ "etablissement": null,
+ "institution": null,
+ "annee": 2016,
+ "duree_epreuve": null,
+ "coefficient": null,
+ "introduction_markdown": "Aucun document en dehors de ceux remis aux candidats par les examinateurs n'est autorisé. Le candidat répond au questionnaire à partir de ses compétences en modélisation des systèmes d'information des entreprises.",
+ "points": null,
+ "groupes": [],
+ "figures": [
+  {
+   "id": "fig-1",
+   "fichier": "probatoire-ti-si-2016-officiel-cameroun_exercice_1_fig_1.png",
+   "page_source": null,
+   "type": "schema",
+   "legende": "MCD de la compagnie CAR_INSURANCE : entités CLIENT, CONTRAT, VEHICULE, ACCIDENT, associations SIGNER, COUVRIR, APPARTENIR, CONCERNER avec leurs cardinalités",
+   "indispensable": false,
+   "lisibilite": "bonne",
+   "origine_figure": "corrige"
+  },
+  {
+   "id": "fig-2",
+   "fichier": "probatoire-ti-si-2016-officiel-cameroun_exercice_1_fig_2.png",
+   "page_source": null,
+   "type": "schema",
+   "legende": "Même MCD avec le cycle CLIENT - CONTRAT - VEHICULE (transitivité) mis en évidence en orange",
+   "indispensable": false,
+   "lisibilite": "bonne",
+   "origine_figure": "corrige"
+  }
+ ],
+ "enonce_intro_markdown": "**Exercice 1 : Compagnie d'assurance CAR_INSURANCE**\n\nCAR_INSURANCE est une compagnie spécialisée dans l'assurance automobile : elle accorde des contrats d'assurance portant sur des véhicules et sur des clients. Son directeur général souhaite mettre en place un système d'information pour faciliter la gestion des clients. L'analyse du fonctionnement de la compagnie a fourni les informations suivantes :\n\n- La compagnie signe des contrats d'assurance avec des clients.\n- Un contrat couvre le client et un véhicule du client. Certains clients signent des contrats d'assurance maladie.\n- Un véhicule assuré appartient à un seul client.\n- En cas d'accident, on veut connaître les véhicules concernés. Un accident concerne au moins un véhicule ; certains chauffeurs prudents ne font aucun accident.\n- Un nouveau client doit communiquer son nom et son prénom.\n- Un véhicule est caractérisé par son numéro, sa marque, son modèle et son année de mise en circulation.\n- Un contrat d'assurance est caractérisé par un numéro, le type d'assurance et la date de signature.\n- Les accidents sont numérotés et chaque accident comporte une description.\n- REMY, père de famille et propriétaire d'un véhicule de marque Toyota Camry, a souscrit il y a deux jours une assurance maladie pour sa femme LYDIE et ses deux enfants MBASSA et MOUKON.\n\nCes phrases suffisent pour modéliser le système d'information de la compagnie.",
+ "questions": [
+  {
+   "numero": "1",
+   "enonce_markdown": "**1.** Identifier le secteur d'activité auquel appartient l'entreprise CAR_INSURANCE. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nPour situer une entreprise dans son secteur d'activité, repère la nature de son activité principale : extraire ou produire des ressources naturelles relève du secteur primaire, transformer des matières en biens du secteur secondaire, vendre des prestations immatérielles (commerce, transport, banque, assurance, santé) du secteur tertiaire ; justifie par ce que l'entreprise vend.\n\nCAR_INSURANCE ne cultive rien (primaire) et ne fabrique aucun objet (secondaire). Elle vend une **garantie contre un risque** : en échange d'une prime, elle s'engage à indemniser le client si un sinistre (accident, maladie) survient. Cette prestation est immatérielle, donc l'entreprise appartient au **secteur tertiaire** (secteur des services), plus précisément à la branche des **services financiers : les assurances** (assurance automobile, avec une activité annexe d'assurance maladie).\n\nAu Cameroun, ce type d'entreprise est agréé et contrôlé au titre du code des assurances de la zone CIMA, ce qui confirme son rattachement aux services financiers.\n\n### Piège à éviter\nNe réponds pas « secteur privé » ou « société anonyme » : le secteur d'activité dit ce que l'entreprise fait (primaire, secondaire, tertiaire), pas qui la possède ni sa forme juridique.\n\n### Conseil\nÉcris une phrase de justification (« elle vend un service, pas un bien matériel ») : l'étiquette « tertiaire » seule rapporte rarement le point entier.",
+   "themes": [
+    "secteur d'activité",
+    "secteur tertiaire",
+    "entreprise"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q1-1",
+     "competence": "Situer une entreprise dans son secteur d'activité",
+     "contenu_markdown": "Pour situer une entreprise dans son secteur d'activité, repère la nature de son activité principale : extraire ou produire des ressources naturelles relève du secteur primaire, transformer des matières en biens du secteur secondaire, vendre des prestations immatérielles (commerce, transport, banque, assurance, santé) du secteur tertiaire ; justifie par ce que l'entreprise vend.",
+     "cours_genere": true,
+     "cours_id": "cours-secteur-activite-entreprise-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "2",
+   "enonce_markdown": "**2.** Déterminer deux modes de financement de cette compagnie. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nUne entreprise se finance soit avec des ressources internes (autofinancement : bénéfices mis en réserve, amortissements), soit avec des ressources externes (apports des associés, emprunts bancaires, subventions) ; pour répondre, nomme le mode, classe-le comme interne ou externe et indique d'où vient l'argent.\n\nDeux modes adaptés à une compagnie d'assurance :\n\n1. **L'autofinancement (financement interne).** La compagnie met en réserve une partie de ses bénéfices au lieu de les distribuer ; ces réserves renforcent ses fonds propres et lui permettent d'investir (achat de matériel, de logiciels, ouverture d'agences) sans rien emprunter.\n2. **L'augmentation de capital (financement externe, par fonds propres).** Les actionnaires apportent de nouveaux fonds en échange de parts ou d'actions de la société.\n\nAutres réponses acceptables : un emprunt bancaire (financement externe par endettement) ou une subvention.\n\nLes primes encaissées auprès des clients ne comptent pas comme mode de financement : ce sont les produits de l'activité d'assurance, c'est-à-dire son chiffre d'affaires.\n\n### Piège à éviter\nNe cite pas les primes payées par les clients comme « financement » : ce sont les recettes d'exploitation de la compagnie, pas des capitaux apportés pour financer son développement.\n\n### Conseil\nDonne un mode interne et un mode externe : la correction attend souvent cette variété et elle montre que tu maîtrises la distinction.",
+   "themes": [
+    "financement",
+    "autofinancement",
+    "capital",
+    "entreprise"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q2-1",
+     "competence": "Distinguer financement interne et financement externe",
+     "contenu_markdown": "Une entreprise se finance soit avec des ressources internes (autofinancement : bénéfices mis en réserve, amortissements), soit avec des ressources externes (apports des associés, emprunts bancaires, subventions) ; pour répondre, nomme le mode, classe-le comme interne ou externe et indique d'où vient l'argent.",
+     "cours_genere": true,
+     "cours_id": "cours-modes-financement-entreprise-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "3.1",
+   "enonce_markdown": "**3.** Donner la définition ou une explication de chacune des expressions suivantes : **a)** système d'information automatisé.",
+   "corrige_markdown": "### Rappel de méthode\nPour définir un terme de cours, rédige une phrase autonome qui nomme le genre auquel il appartient, ses caractéristiques propres et son rôle, sans reprendre d'exemple de l'énoncé.\n\nUn **système d'information automatisé** (SIA, ou système d'information informatisé) est la partie du système d'information d'une organisation dont la collecte, la saisie, le stockage, le traitement et la diffusion de l'information sont réalisés par des **moyens informatiques** : ordinateurs, logiciels, bases de données et réseaux. Il s'oppose à la partie manuelle du système d'information (registres papier, fiches, classeurs).\n\nPour CAR_INSURANCE, le SIA est l'application et la base de données qui enregistrent les clients, les véhicules, les contrats et les accidents.\n\n### Piège à éviter\nNe réponds pas « un SIA est un ordinateur » : l'ordinateur n'est qu'un composant. Le SIA comprend aussi les logiciels, les données, les procédures et les utilisateurs.\n\n### Conseil\nStructure ta phrase en trois temps : « partie du SI » (genre), « traitée par des moyens informatiques » (caractéristique), « pour collecter, stocker, traiter, diffuser l'information » (rôle).",
+   "themes": [
+    "système d'information automatisé",
+    "définition",
+    "informatisation"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q3.1-1",
+     "competence": "Définir le système d'information automatisé",
+     "contenu_markdown": "Pour définir un terme de cours, rédige une phrase autonome qui nomme le genre auquel il appartient, ses caractéristiques propres et son rôle, sans reprendre d'exemple de l'énoncé.",
+     "cours_genere": true,
+     "cours_id": "cours-definir-systeme-information-automatise-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "3.2",
+   "enonce_markdown": "**b)** un modèle du système d'information.",
+   "corrige_markdown": "### Rappel de méthode\nPour expliquer le mot modèle, dis ce qu'il représente (la réalité d'une organisation), avec quel formalisme (schémas normalisés) et pour quoi faire (comprendre, communiquer, concevoir), en précisant qu'il ne retient que l'essentiel.\n\nUn **modèle du système d'information** est une représentation simplifiée, abstraite et rigoureuse de la réalité d'une organisation (ses données, ses traitements et ses acteurs), construite avec un formalisme précis. En MERISE, on utilise par exemple le modèle conceptuel des données (MCD) pour les données et le modèle conceptuel des traitements (MCT) pour les traitements.\n\nLe modèle ne reproduit pas toute la réalité : il retient seulement ce qui est utile au projet. Il sert à comprendre l'existant, à dialoguer avec les utilisateurs et à préparer la réalisation informatique.\n\n### Piège à éviter\nNe confonds pas le modèle (la représentation sur papier ou à l'écran) avec le système d'information lui-même (l'organisation réelle) ni avec le logiciel final.\n\n### Conseil\nCite un exemple de modèle (MCD de MERISE, diagramme de classes d'UML) : il prouve que tu connais l'outil derrière la définition.",
+   "themes": [
+    "modèle",
+    "MERISE",
+    "formalisme",
+    "définition"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q3.2-1",
+     "competence": "Définir un modèle de système d'information",
+     "contenu_markdown": "Pour expliquer le mot modèle, dis ce qu'il représente (la réalité d'une organisation), avec quel formalisme (schémas normalisés) et pour quoi faire (comprendre, communiquer, concevoir), en précisant qu'il ne retient que l'essentiel.",
+     "cours_genere": true,
+     "cours_id": "cours-definir-modele-systeme-information-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "4",
+   "enonce_markdown": "**4.** Un élève affirme à son professeur : « Je pense qu'une entreprise qui ne possède pas d'ordinateur ne peut pas posséder un système d'information automatisé. » Juger ce point de vue. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nPour juger un point de vue, énonce ton avis (d'accord, pas d'accord ou d'accord en partie), appuie-le sur la définition des termes employés, argumente avec un exemple ou un contre-exemple, puis conclus par une phrase nuancée.\n\n**Avis : le point de vue est juste dans son principe, mais il faut l'exprimer avec précision.**\n\n1. **Ce qui est exact.** Un système d'information *automatisé* repose sur des traitements réalisés par une machine programmable. Une entreprise qui n'aurait aucun équipement informatique (ni ordinateur, ni serveur, ni tablette, ni téléphone intelligent) ne pourrait donc pas disposer d'un SI automatisé : tout serait fait à la main.\n2. **Première nuance : posséder n'est pas utiliser.** Une entreprise peut utiliser un SI automatisé sans posséder de poste de travail classique : application hébergée chez un prestataire et consultée sur un téléphone, service en ligne, informatique partagée. Le mot « ordinateur » doit se lire au sens large d'équipement de traitement automatique de l'information.\n3. **Deuxième nuance : SI et SI automatisé sont deux notions différentes.** Une entreprise sans ordinateur possède quand même un système d'information, un SI *manuel* : cahiers, fiches clients, carnets de quittances. Le SI existe dès que l'organisation collecte, mémorise, traite et diffuse de l'information.\n\n**Conclusion.** L'élève a raison pour le SI automatisé (il faut au moins un équipement informatique, au sens large), mais il aurait tort d'en conclure que l'entreprise sans ordinateur n'a pas de système d'information.\n\n### Piège à éviter\nNe réponds pas simplement « faux, une entreprise peut avoir un SI sans ordinateur » : l'élève parle du SI automatisé, pas du SI en général. Réponds à la phrase posée, puis apporte la nuance.\n\n### Conseil\nAnnonce ton avis dès la première ligne, puis rédige deux arguments et une conclusion de deux phrases : un jugement argumenté tient en 6 à 8 lignes.",
+   "themes": [
+    "système d'information",
+    "système d'information automatisé",
+    "SI manuel"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q4-1",
+     "competence": "Distinguer système d'information et système d'information automatisé",
+     "contenu_markdown": "Pour juger un point de vue, énonce ton avis (d'accord, pas d'accord ou d'accord en partie), appuie-le sur la définition des termes employés, argumente avec un exemple ou un contre-exemple, puis conclus par une phrase nuancée.",
+     "cours_genere": true,
+     "cours_id": "cours-distinguer-si-et-si-automatise-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "5",
+   "enonce_markdown": "**5.** La méthode MERISE préconise de commencer par une analyse préalable du système. Expliquer en quoi consiste l'analyse préalable. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nL'analyse préalable (ou étude préalable) est la première phase de la démarche d'analyse : elle recueille et critique l'existant, formule les besoins et les objectifs, propose plusieurs solutions comparées en coût et en délai, et se termine par le choix de la direction et un cahier des charges ; pour l'expliquer, suis ces quatre temps.\n\nL'**analyse préalable** est l'étape qui décide si et comment on informatise, avant toute conception détaillée. Elle se déroule en quatre temps :\n\n1. **Étude de l'existant.** On observe comment la compagnie travaille aujourd'hui : entretiens avec le directeur général et les agents, examen des documents (contrats, déclarations d'accident), identification des acteurs et des flux d'information.\n2. **Diagnostic.** On relève les dysfonctionnements : recherche lente d'un dossier, doubles saisies, difficulté à retrouver les véhicules d'un accident.\n3. **Expression des besoins et des objectifs.** Ici : faciliter la gestion des clients, des véhicules, des contrats et des accidents.\n4. **Propositions de solutions et choix.** On élabore des scénarios (organisation manuelle améliorée, application sur mesure, progiciel) avec leur coût, leurs délais et leurs risques ; la direction en choisit un. Le résultat est un **cahier des charges** qui lance l'étude détaillée (modèles conceptuel, logique et physique), puis la réalisation et la mise en œuvre.\n\n### Piège à éviter\nNe présente pas l'analyse préalable comme la construction du MCD : le MCD appartient à la conception détaillée, qui vient après le choix de la solution.\n\n### Conseil\nRetiens la suite des mots-clés « existant, diagnostic, besoins, scénarios, choix » : elle te permet de rédiger en cinq lignes une réponse complète.",
+   "themes": [
+    "MERISE",
+    "analyse préalable",
+    "étude de l'existant",
+    "cahier des charges"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q5-1",
+     "competence": "Expliquer l'analyse préalable dans la démarche MERISE",
+     "contenu_markdown": "L'analyse préalable (ou étude préalable) est la première phase de la démarche d'analyse : elle recueille et critique l'existant, formule les besoins et les objectifs, propose plusieurs solutions comparées en coût et en délai, et se termine par le choix de la direction et un cahier des charges ; pour l'expliquer, suis ces quatre temps.",
+     "cours_genere": true,
+     "cours_id": "cours-analyse-prealable-merise-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "6",
+   "enonce_markdown": "**6.** Identifier les entités de ce système et donner, pour chacune, ses attributs. *[2 pts]*",
+   "corrige_markdown": "### Rappel de méthode\nPour repérer les entités d'un énoncé de gestion, relève les noms de personnes ou d'objets qui ont des caractéristiques propres et existent en plusieurs exemplaires, puis rattache à chacun les propriétés que l'énoncé lui attribue ; une propriété qui décrit un seul objet devient un attribut, une information qui relie deux objets devient une association.\n\nOn parcourt les règles de gestion en cherchant les noms qui ont des propriétés et plusieurs exemplaires. Quatre entités apparaissent :\n\n| Entité | Attributs | Phrase de l'énoncé qui les fonde |\n|---|---|---|\n| CLIENT | nom, prénom | « Un nouveau client doit communiquer son nom et son prénom » |\n| VEHICULE | numéro, marque, modèle, année de mise en circulation | « Un véhicule est caractérisé par son numéro, sa marque, son modèle et son année de mise en circulation » |\n| CONTRAT | numéro, type d'assurance, date de signature | « Un contrat est caractérisé par un numéro, le type d'assurance et la date de signature » |\n| ACCIDENT | numéro, description | « Les accidents sont numérotés et chaque accident comporte une description » |\n\nDeux remarques de méthode. La **compagnie** n'est pas une entité : elle est l'entreprise étudiée, elle n'a qu'un exemplaire et elle ne fait pas partie des données gérées. La **date de signature** est un attribut du contrat (et non d'une association), puisque le contrat est lui-même une entité.\n\nLes identifiants (numéros) sont choisis à la question 7 ; le client n'a pas de numéro dans l'énoncé, on lui en crée un (NumCli).\n\n### Piège à éviter\nNe fais pas de « COMPAGNIE » une entité : une entité a plusieurs occurrences. Ne mets pas non plus « Toyota » ou « REMY » comme entités : ce sont des valeurs (occurrences), pas des types.\n\n### Conseil\nSouligne dans l'énoncé chaque nom qui suit « caractérisé par » ou « comporte » : l'objet qui précède est l'entité, les mots qui suivent sont ses attributs.",
+   "themes": [
+    "MCD",
+    "entité",
+    "attribut",
+    "MERISE"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q6-1",
+     "competence": "Repérer les entités et leurs attributs dans un énoncé de gestion",
+     "contenu_markdown": "Pour repérer les entités d'un énoncé de gestion, relève les noms de personnes ou d'objets qui ont des caractéristiques propres et existent en plusieurs exemplaires, puis rattache à chacun les propriétés que l'énoncé lui attribue ; une propriété qui décrit un seul objet devient un attribut, une information qui relie deux objets devient une association.",
+     "cours_genere": true,
+     "cours_id": "cours-reperer-entites-attributs-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "7",
+   "enonce_markdown": "**7.** Pour chaque entité, déterminer en expliquant la démarche son identifiant. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nL'identifiant d'une entité est l'attribut (ou le groupe minimal d'attributs) dont la valeur est unique et jamais vide pour chaque occurrence et qui ne change pas dans le temps ; on teste chaque candidat avec ces trois critères, et si aucun attribut naturel ne convient, on crée un identifiant artificiel (code, numéro).\n\nPour chaque entité, on cherche un attribut qui distingue à coup sûr deux occurrences (unique), qui existe toujours (non vide) et qui ne varie pas (stable).\n\n| Entité | Candidat | Test | Identifiant retenu |\n|---|---|---|---|\n| VEHICULE | numéro | chaque véhicule a son propre numéro, attribué une fois pour toutes | **NumVeh** |\n| CONTRAT | numéro | chaque contrat reçoit un numéro à sa signature | **NumContrat** |\n| ACCIDENT | numéro | « les accidents sont numérotés » | **NumAcc** |\n| CLIENT | nom, prénom | deux clients peuvent être homonymes ; un nom peut changer (mariage) : le test échoue | **NumCli** (identifiant artificiel créé) |\n\nPour le client, ni le nom, ni le prénom, ni le couple (nom, prénom) ne garantit l'unicité. On ajoute donc un attribut **NumCli**, numéro de client attribué automatiquement à l'enregistrement, et on le déclare identifiant.\n\n### Piège à éviter\nNe prends pas le nom du client comme identifiant : deux personnes peuvent porter le même nom. Ne prends pas non plus la marque ou le modèle pour le véhicule : plusieurs véhicules peuvent être des Toyota Camry.\n\n### Conseil\nQuand l'énoncé ne donne pas de numéro pour une entité, crée-le et dis-le : « identifiant artificiel ajouté ». Le correcteur attend cette phrase.",
+   "themes": [
+    "MCD",
+    "identifiant",
+    "clé primaire",
+    "unicité"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q7-1",
+     "competence": "Choisir l'identifiant d'une entité : unicité et identifiant artificiel",
+     "contenu_markdown": "L'identifiant d'une entité est l'attribut (ou le groupe minimal d'attributs) dont la valeur est unique et jamais vide pour chaque occurrence et qui ne change pas dans le temps ; on teste chaque candidat avec ces trois critères, et si aucun attribut naturel ne convient, on crée un identifiant artificiel (code, numéro).",
+     "cours_genere": true,
+     "cours_id": "cours-choisir-identifiant-entite-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "8",
+   "enonce_markdown": "**8.** Déterminer les différentes relations (associations) entre les entités. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nUne association se repère dans un verbe de l'énoncé qui relie deux entités ; pour chaque règle de gestion, relève les deux noms et le verbe qui les unit, nomme l'association par un verbe à l'infinitif, puis vérifie qu'elle n'est pas déjà portée par une autre association.\n\nOn relit les règles de gestion en cherchant un verbe entre deux entités :\n\n| Règle de gestion | Association | Entités reliées |\n|---|---|---|\n| « La compagnie signe des contrats avec des clients » | **SIGNER** | CLIENT - CONTRAT |\n| « Un contrat couvre ... un véhicule du client » | **COUVRIR** | CONTRAT - VEHICULE |\n| « Un véhicule assuré appartient à un seul client » | **APPARTENIR** | VEHICULE - CLIENT |\n| « En cas d'accident, on veut savoir les véhicules concernés » | **CONCERNER** | ACCIDENT - VEHICULE |\n\nLa même phrase dit aussi qu'un contrat « couvre le client » : cette information est déjà portée par SIGNER (le client couvert est celui qui signe), on ne crée donc pas d'association supplémentaire CONTRAT - CLIENT. Il n'y a pas d'association ACCIDENT - CLIENT : le client se retrouve par le véhicule concerné.\n\nAucune de ces associations ne porte de propriété : la date de signature appartient au contrat, la description appartient à l'accident.\n\n### Piège à éviter\nNe crée pas une association ACCIDENT - CLIENT « pour être complet » : une information déjà déductible par un chemin existant (accident, véhicule, client) alourdit le schéma et peut introduire des incohérences.\n\n### Conseil\nFais un tableau « règle de gestion, verbe, entités » : chaque ligne justifie une association et te protège contre les oublis.",
+   "themes": [
+    "MCD",
+    "association",
+    "règle de gestion",
+    "MERISE"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q8-1",
+     "competence": "Déterminer les associations entre entités à partir des règles de gestion",
+     "contenu_markdown": "Une association se repère dans un verbe de l'énoncé qui relie deux entités ; pour chaque règle de gestion, relève les deux noms et le verbe qui les unit, nomme l'association par un verbe à l'infinitif, puis vérifie qu'elle n'est pas déjà portée par une autre association.",
+     "cours_genere": true,
+     "cours_id": "cours-determiner-associations-regles-gestion-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "9",
+   "enonce_markdown": "**9.** Construire le MCD du modèle étudié en faisant apparaître les différentes cardinalités. *[3 pts]*",
+   "corrige_markdown": "### Rappel de méthode\nPour construire un MCD, liste les entités avec leur identifiant, place les associations nommées par un verbe, fixe pour chaque patte une cardinalité minimale (0 ou 1) et maximale (1 ou N) en lisant la règle de gestion dans les deux sens (de l'entité vers l'association, puis dans l'autre sens), puis vérifie que chaque attribut est élémentaire et rattaché à une seule entité.\n\n**Étape 1 : entités et identifiants** (questions 6 et 7) : CLIENT, VEHICULE, CONTRAT, ACCIDENT.\n\n**Étape 2 : associations** (question 8) : SIGNER, COUVRIR, APPARTENIR, CONCERNER.\n\n**Étape 3 : cardinalités.** Pour chaque patte, on pose la question « une occurrence de cette entité est reliée à combien d'occurrences de l'autre ? » : le minimum répond à « au moins combien ? », le maximum à « au plus combien ? ».\n\n| Association | Patte | Cardinalité | Lecture et justification |\n|---|---|---|---|\n| SIGNER | CLIENT | (0,N) | un client signe zéro contrat (une personne simplement couverte) ou plusieurs contrats |\n| SIGNER | CONTRAT | (1,1) | un contrat est signé par un et un seul client |\n| COUVRIR | CONTRAT | (0,1) | un contrat couvre au plus un véhicule ; aucun pour une assurance maladie |\n| COUVRIR | VEHICULE | (0,N) | un véhicule est couvert par zéro, un ou plusieurs contrats (renouvellements successifs) ; l'énoncé n'impose pas de minimum 1 |\n| APPARTENIR | VEHICULE | (1,1) | « un véhicule appartient à un seul client » |\n| APPARTENIR | CLIENT | (0,N) | un client possède zéro, un ou plusieurs véhicules |\n| CONCERNER | ACCIDENT | (1,N) | « un accident concerne au moins un véhicule » |\n| CONCERNER | VEHICULE | (0,N) | un véhicule n'a aucun accident (chauffeur prudent) ou plusieurs |\n\n**Étape 4 : schéma.** Le MCD obtenu est le suivant (les identifiants sont soulignés et placés en tête de chaque entité).\n\n![fig-1](probatoire-ti-si-2016-officiel-cameroun_exercice_1_fig_1.png)\n\n**Étape 5 : contrôle.** Chaque attribut appartient à une seule entité et aucune association ne porte de propriété. Le schéma contient un cycle CLIENT - CONTRAT - VEHICULE, étudié à la question 10.\n\n**Pour la suite : passage au modèle logique (MLD).** Les règles de passage sont les suivantes : une entité devient une table dont la clé primaire est son identifiant ; une association de cardinalités (x,1) - (y,N) se traduit par une clé étrangère placée dans la table du côté (x,1) ; une association (N,N) devient une table de liaison dont la clé primaire est formée des deux clés étrangères.\n\n```\nCLIENT    (NumCli [PK], Nom, Prenom)\nVEHICULE  (NumVeh [PK], Marque, Modele, AnneeCirc, NumCli [FK])\nCONTRAT   (NumContrat [PK], TypeAssurance, DateSignature, NumCli [FK], NumVeh [FK, peut être vide])\nACCIDENT  (NumAcc [PK], DescAcc)\nCONCERNER (NumAcc [PK, FK], NumVeh [PK, FK])\n```\n\nSIGNER et APPARTENIR (patte (1,1) du côté contrat et véhicule) donnent les clés étrangères NumCli dans CONTRAT et VEHICULE. COUVRIR (CONTRAT (0,1)) donne NumVeh dans CONTRAT, **facultatif** pour les contrats d'assurance maladie. CONCERNER, de type (N,N), devient la table de liaison CONCERNER.\n\n**Remarque sur les bénéficiaires.** Le sujet ne demande pas de mémoriser quelles personnes un contrat d'assurance maladie protège (LYDIE, MBASSA, MOUKON). Si la compagnie le souhaitait, il suffirait d'ajouter une association BENEFICIER entre CONTRAT (1,N) et CLIENT (0,N).\n\n### Piège à éviter\nNe confonds pas le sens de lecture : la cardinalité écrite près d'une entité compte combien de fois une occurrence DE CETTE entité participe à l'association. Pour COUVRIR, le (0,1) est écrit près de CONTRAT, parce qu'un contrat couvre zéro ou un véhicule. Relis chaque patte avec une phrase complète pour t'en assurer.\n\n### Conseil\nSur la copie, trace d'abord les rectangles des entités, puis les associations, puis les cardinalités au crayon : tu peux les corriger sans tout redessiner. Les 3 points se répartissent entre entités, associations et cardinalités.",
+   "themes": [
+    "MCD",
+    "cardinalités",
+    "association",
+    "MLD",
+    "MERISE"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "élevée",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q9-1",
+     "competence": "Dessiner le MCD d'un cas de gestion et en déduire le modèle logique",
+     "contenu_markdown": "Pour construire un MCD, liste les entités avec leur identifiant, place les associations nommées par un verbe, fixe pour chaque patte une cardinalité minimale (0 ou 1) et maximale (1 ou N) en lisant la règle de gestion dans les deux sens (de l'entité vers l'association, puis dans l'autre sens), puis vérifie que chaque attribut est élémentaire et rattaché à une seule entité.",
+     "cours_genere": true,
+     "cours_id": "cours-dessiner-mcd-et-deduire-mld-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "10",
+   "enonce_markdown": "**10.** Le MCD présente-t-il des transitivités ? Si oui, identifier l'une d'elles. *[0,5 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nIl y a transitivité (ou redondance) dans un MCD quand une association peut se retrouver en composant d'autres associations, typiquement quand trois entités sont reliées en boucle et que le lien direct se déduit des deux autres ; on la repère en cherchant les cycles du schéma, puis on décide de la supprimer ou de la conserver en la protégeant par une contrainte d'intégrité.\n\n**Oui, le MCD présente une transitivité.** Les entités CLIENT, CONTRAT et VEHICULE forment un cycle (un triangle) : CLIENT - SIGNER - CONTRAT - COUVRIR - VEHICULE - APPARTENIR - CLIENT.\n\n![fig-2](probatoire-ti-si-2016-officiel-cameroun_exercice_1_fig_2.png)\n\n**Transitivité identifiée.** En partant d'un véhicule, on atteint un contrat par COUVRIR, puis le client qui a signé ce contrat par SIGNER. Ce chemin VEHICULE, CONTRAT, CLIENT donne le même renseignement que l'association directe APPARTENIR (le propriétaire du véhicule) : l'association APPARTENIR est donc déductible de SIGNER et COUVRIR. C'est la transitivité du MCD.\n\n**Faut-il supprimer APPARTENIR ?** Ici, on la conserve, pour deux raisons : un véhicule peut être connu sans contrat en cours (cardinalité (0,N) de COUVRIR), et son propriétaire doit alors rester identifié ; et la règle « un contrat couvre un véhicule du client » est une contrainte à contrôler. Elle s'exprime ainsi : pour tout contrat qui couvre un véhicule, le signataire du contrat est le propriétaire du véhicule.\n\n**Contrôle de la contrainte en SQL** (requête testée sur un jeu d'essai cohérent, puis sur un jeu où un contrat viole la règle) :\n\n```sql\nSELECT T.NumContrat, T.NumCli AS Signataire, V.NumCli AS Proprietaire\nFROM CONTRAT T JOIN VEHICULE V ON V.NumVeh = T.NumVeh\nWHERE T.NumCli <> V.NumCli;\n```\n\nSur le jeu d'essai cohérent, la requête renvoie : aucune ligne (ensemble vide). Si l'on ajoute un contrat n° 4 signé par le client 1 sur le véhicule CE-202-CD, qui appartient au client 5, la requête renvoie :\n\n| NumContrat | Signataire | Proprietaire |\n|---|---|---|\n| 4 | 1 | 5 |\n\nLe contrat n° 4 est signalé : il viole la contrainte de transitivité.\n\n### Piège à éviter\nNe réponds pas « non, il n'y a pas de transitivité » parce qu'aucune association n'est strictement identique à une autre. Cherche les cycles : toute boucle de trois associations entre trois entités est suspecte de redondance.\n\n### Conseil\nQuand tu repères un cycle, dis deux choses : quelle association se déduit des autres, et pourquoi tu la gardes ou la supprimes. Une réponse de deux lignes suffit pour 0,5 point.",
+   "themes": [
+    "MCD",
+    "transitivité",
+    "redondance",
+    "contrainte d'intégrité"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "élevée",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q10-1",
+     "competence": "Repérer une transitivité (association redondante) dans un MCD",
+     "contenu_markdown": "Il y a transitivité (ou redondance) dans un MCD quand une association peut se retrouver en composant d'autres associations, typiquement quand trois entités sont reliées en boucle et que le lien direct se déduit des deux autres ; on la repère en cherchant les cycles du schéma, puis on décide de la supprimer ou de la conserver en la protégeant par une contrainte d'intégrité.",
+     "cours_genere": true,
+     "cours_id": "cours-reperer-transitivite-mcd-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "11",
+   "enonce_markdown": "**11.** Identifier quatre occurrences d'entités. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nUne entité est un type d'objets, une occurrence est un exemplaire précis de cette entité, décrit par les valeurs réelles de ses attributs ; pour identifier une occurrence, nomme l'entité à laquelle elle appartient et donne les valeurs prises par ses attributs, relevées dans le texte.\n\nL'exemple de REMY fournit les occurrences suivantes :\n\n| Occurrence | Entité | Valeurs d'attributs connues |\n|---|---|---|\n| REMY | CLIENT | nom (ou prénom) : REMY ; NumCli attribué à l'enregistrement |\n| Toyota Camry de REMY | VEHICULE | marque : Toyota ; modèle : Camry ; numéro et année non précisés |\n| Assurance maladie souscrite par REMY | CONTRAT | type d'assurance : assurance maladie ; date de signature : il y a deux jours |\n| LYDIE (épouse de REMY) | CLIENT | nom (ou prénom) : LYDIE |\n\nLes deux enfants MBASSA et MOUKON sont deux autres occurrences de CLIENT, dès lors que la compagnie enregistre leur nom et leur prénom. Le sujet ne décrit aucun accident : aucune occurrence de ACCIDENT n'est donc relevée.\n\n### Piège à éviter\nNe réponds pas « CLIENT, VEHICULE, CONTRAT, ACCIDENT » : ce sont les entités (les types). Une occurrence est un exemplaire précis, comme « REMY » ou « la Toyota Camry ». Ne donne pas non plus « Toyota » seul : c'est la valeur de l'attribut marque.\n\n### Conseil\nPour chaque occurrence, écris l'entité entre parenthèses : « REMY (CLIENT) ». C'est la forme la plus nette et elle évite la confusion entité - occurrence.",
+   "themes": [
+    "MCD",
+    "occurrence",
+    "entité",
+    "attribut"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q11-1",
+     "competence": "Distinguer entité et occurrence d'entité",
+     "contenu_markdown": "Une entité est un type d'objets, une occurrence est un exemplaire précis de cette entité, décrit par les valeurs réelles de ses attributs ; pour identifier une occurrence, nomme l'entité à laquelle elle appartient et donne les valeurs prises par ses attributs, relevées dans le texte.",
+     "cours_genere": true,
+     "cours_id": "cours-entite-et-occurrence-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "12",
+   "enonce_markdown": "**12.** Donner l'objectif du MCD dans le processus d'analyse d'un système d'information. *[0,5 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nLe MCD est le modèle du niveau conceptuel de MERISE : il décrit les données du système d'information et leurs liens de façon formelle et indépendante des choix techniques et organisationnels ; pour répondre, dis ce qu'il représente, pourquoi il est indépendant de la technique et à quoi il sert ensuite.\n\nL'objectif du **modèle conceptuel des données** est de **représenter, de manière formelle et indépendante de toute technique, les données que le système d'information doit mémoriser et les liens entre ces données**, à partir des règles de gestion.\n\nIl répond à la question « quoi ? » (quelles informations ?) et non « comment ? » ou « avec quel logiciel ? ». Il sert ensuite de langage commun entre les utilisateurs, qui le valident, et les informaticiens, qui le transforment en modèle logique (tables) puis en modèle physique (base de données dans un SGBD).\n\n### Piège à éviter\nNe dis pas que le MCD sert à « créer la base de données » : c'est le rôle du modèle physique. Le MCD ne dépend ni d'un SGBD ni d'un matériel.\n\n### Conseil\nRetiens la formule « décrire les données, pas la technique » : elle résume à elle seule l'objectif du MCD et suffit pour le demi-point.",
+   "themes": [
+    "MCD",
+    "MERISE",
+    "niveau conceptuel"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q12-1",
+     "competence": "Rôle du MCD dans le processus d'analyse d'un système d'information",
+     "contenu_markdown": "Le MCD est le modèle du niveau conceptuel de MERISE : il décrit les données du système d'information et leurs liens de façon formelle et indépendante des choix techniques et organisationnels ; pour répondre, dis ce qu'il représente, pourquoi il est indépendant de la technique et à quoi il sert ensuite.",
+     "cours_genere": true,
+     "cours_id": "cours-role-mcd-analyse-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "13",
+   "enonce_markdown": "**13.** À partir du modèle précédent, construire le dictionnaire de données du système. Le tableau à compléter comporte les colonnes : Entité, Champs retenus, Désignation, Nature, Types de données, Taille.",
+   "corrige_markdown": "### Rappel de méthode\nUn dictionnaire de données recense chaque donnée du MCD avec son code, sa désignation, sa nature (élémentaire ou calculée), son type (alphabétique, numérique, alphanumérique, date) et sa taille ; on le construit en parcourant le MCD entité par entité, sans oublier l'identifiant et sans y inscrire les clés étrangères, qui n'apparaissent qu'au modèle logique.\n\nOn parcourt chaque entité du MCD et on décrit chacun de ses attributs. Légende : nature **E** = donnée élémentaire (saisie, non calculée) ; types **N** = numérique, **A** = alphabétique, **AN** = alphanumérique, **D** = date. Les tailles sont des choix raisonnables, à justifier par la forme des valeurs (nombre de chiffres, longueur d'un nom, format d'une date).\n\n| Entité | Champs retenus | Désignation | Nature | Type de données | Taille |\n|---|---|---|---|---|---|\n| CLIENT | NumCli | Numéro du client (identifiant) | E | N | 6 |\n| CLIENT | Nom | Nom du client | E | A | 30 |\n| CLIENT | Prenom | Prénom du client | E | A | 30 |\n| VEHICULE | NumVeh | Numéro du véhicule (identifiant) | E | AN | 12 |\n| VEHICULE | Marque | Marque du véhicule | E | A | 20 |\n| VEHICULE | Modele | Modèle du véhicule | E | AN | 25 |\n| VEHICULE | AnneeCirc | Année de mise en circulation | E | N | 4 |\n| CONTRAT | NumContrat | Numéro du contrat (identifiant) | E | N | 8 |\n| CONTRAT | TypeAssurance | Type d'assurance | E | A | 25 |\n| CONTRAT | DateSignature | Date de signature du contrat | E | D | 10 |\n| ACCIDENT | NumAcc | Numéro de l'accident (identifiant) | E | N | 8 |\n| ACCIDENT | DescAcc | Description de l'accident | E | AN | 45 |\n\nLe dictionnaire compte **12 données**, dont 4 identifiants. Les clés étrangères (NumCli dans VEHICULE et CONTRAT, NumVeh dans CONTRAT, NumAcc et NumVeh dans CONCERNER) n'y figurent pas : elles seront créées au passage au modèle logique.\n\n### Piège à éviter\nNe recopie pas dans le dictionnaire les attributs de liaison (clés étrangères) : ils n'existent pas au niveau conceptuel. Ne laisse pas non plus la date en alphanumérique libre : une date est de type D (format jj/mm/aaaa, 10 caractères).\n\n### Conseil\nRemplis le tableau entité par entité, dans l'ordre du MCD, en commençant par l'identifiant : tu n'oublies aucune donnée et tu peux compter les lignes (ici 12), ce qui sert à la question suivante.",
+   "themes": [
+    "dictionnaire de données",
+    "MCD",
+    "type de données",
+    "MERISE"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q13-1",
+     "competence": "Établir le dictionnaire des données à partir du MCD",
+     "contenu_markdown": "Un dictionnaire de données recense chaque donnée du MCD avec son code, sa désignation, sa nature (élémentaire ou calculée), son type (alphabétique, numérique, alphanumérique, date) et sa taille ; on le construit en parcourant le MCD entité par entité, sans oublier l'identifiant et sans y inscrire les clés étrangères, qui n'apparaissent qu'au modèle logique.",
+     "cours_genere": true,
+     "cours_id": "cours-etablir-dictionnaire-donnees-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "14",
+   "enonce_markdown": "**14.** Calculer, en bits, la taille maximale des données stockées sur le disque dur, sachant que chaque donnée est codée sur 45 caractères au maximum. *[0,5 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nLa taille maximale d'un ensemble de données se calcule en multipliant le nombre de données par la taille maximale de chacune (en caractères), puis par le nombre de bits d'un caractère (8 bits, soit un octet, en codage ASCII étendu) ; on compte les données du dictionnaire, une seule fois chacune.\n\nOn calcule la taille maximale occupée par **un enregistrement de chaque entité**, c'est-à-dire par l'ensemble des données du dictionnaire.\n\n- Nombre de données du dictionnaire (question 13) : $n = 3 + 4 + 3 + 2 = 12$.\n- Taille maximale d'une donnée : $t = 45$ caractères.\n- Taille d'un caractère : $b = 8$ bits (un octet, codage ASCII étendu).\n\n$$T = n \\times t \\times b = 12 \\times 45 \\times 8$$\n\n$$12 \\times 45 = 540 \\text{ caractères} \\qquad 540 \\times 8 = 4\\,320 \\text{ bits}$$\n\n**La taille maximale est donc de 4 320 bits**, soit 540 octets.\n\nVariantes utiles à connaître : si l'on comptait les 17 colonnes du modèle logique (clés étrangères comprises : 3 + 5 + 5 + 2 + 2), on obtiendrait $17 \\times 45 \\times 8 = 6\\,120$ bits ; avec un codage sur 16 bits par caractère, le résultat de base doublerait ($12 \\times 45 \\times 16 = 8\\,640$ bits). Enfin, avec les tailles réellement déclarées au dictionnaire (somme de 223 caractères), l'espace utile maximal serait $223 \\times 8 = 1\\,784$ bits : la valeur demandée est un majorant.\n\n### Piège à éviter\nNe multiplie pas seulement 12 par 45 : le résultat est alors en caractères, pas en bits. N'oublie pas non plus le facteur 8 (1 octet = 8 bits).\n\n### Conseil\nÉcris toujours la formule littérale avant l'application numérique et donne l'unité à chaque ligne : le barème récompense la démarche autant que le résultat.",
+   "themes": [
+    "taille des données",
+    "bit",
+    "octet",
+    "dictionnaire de données"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q14-1",
+     "competence": "Calculer la taille maximale des données stockées en bits",
+     "contenu_markdown": "La taille maximale d'un ensemble de données se calcule en multipliant le nombre de données par la taille maximale de chacune (en caractères), puis par le nombre de bits d'un caractère (8 bits, soit un octet, en codage ASCII étendu) ; on compte les données du dictionnaire, une seule fois chacune.",
+     "cours_genere": true,
+     "cours_id": "cours-calcul-taille-donnees-bits-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "15.a",
+   "enonce_markdown": "**15.** On vous sollicite pour mettre en place le système d'information de cette compagnie. **a)** Déterminer deux fonctionnalités de base de l'application qui gérera ce système d'information. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nLes fonctionnalités de base d'une application de gestion se déduisent des données à tenir à jour : pour chaque entité on prévoit au minimum l'ajout, la consultation, la modification et la suppression, complétés par les fonctions propres au métier que décrivent les règles de gestion.\n\nDeux fonctionnalités de base, tirées des règles de gestion de la compagnie :\n\n1. **Enregistrer un contrat d'assurance** : créer la fiche du client (nom, prénom, NumCli attribué automatiquement), enregistrer son véhicule s'il est nouveau, puis saisir le contrat (numéro, type d'assurance, date de signature) en le liant au client et, le cas échéant, au véhicule.\n2. **Déclarer un accident** : saisir le numéro et la description de l'accident, puis indiquer les véhicules concernés (au moins un).\n\nLes fonctions classiques de mise à jour s'y ajoutent pour chaque entité : consulter ou rechercher une fiche, la modifier, la supprimer.\n\n### Piège à éviter\nNe réponds pas par des généralités comme « sécuriser » ou « fonctionner vite » : ce sont des qualités, pas des fonctionnalités. Une fonctionnalité est une action que l'utilisateur peut faire avec l'application.\n\n### Conseil\nFormule chaque fonctionnalité par un verbe d'action suivi de l'objet géré (« enregistrer un contrat », « déclarer un accident ») : c'est exactement ce que le correcteur cherche.",
+   "themes": [
+    "fonctionnalités",
+    "application de gestion",
+    "mise à jour des données"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q15.a-1",
+     "competence": "Fonctionnalités de base d'une application de gestion",
+     "contenu_markdown": "Les fonctionnalités de base d'une application de gestion se déduisent des données à tenir à jour : pour chaque entité on prévoit au minimum l'ajout, la consultation, la modification et la suppression, complétés par les fonctions propres au métier que décrivent les règles de gestion.",
+     "cours_genere": true,
+     "cours_id": "cours-fonctionnalites-application-gestion-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "15.b",
+   "enonce_markdown": "**b)** Déterminer deux composants concrets qui entrent dans la mise en place de ce système d'information. *[points non imprimés par le sujet]*",
+   "corrige_markdown": "### Rappel de méthode\nUn système d'information informatisé se compose de ressources matérielles, logicielles, de données, de réseau et humaines ; pour répondre, cite des éléments tangibles appartenant à au moins deux catégories différentes et précise le rôle de chacun.\n\nDeux composants concrets, de catégories différentes :\n\n1. **Un serveur (ordinateur) hébergeant la base de données** et des postes de travail pour les agents : ce sont les composants matériels qui stockent et traitent les données de CAR_INSURANCE.\n2. **Un système de gestion de bases de données (SGBD) comme MySQL ou PostgreSQL**, avec l'application de gestion qui s'appuie dessus : ce sont les composants logiciels qui organisent les tables CLIENT, VEHICULE, CONTRAT, ACCIDENT et CONCERNER.\n\nOn peut aussi citer le réseau local qui relie les postes au serveur, une imprimante pour éditer les contrats et le personnel formé à l'outil.\n\n### Piège à éviter\nNe cite pas des notions abstraites (« les données », « l'information ») comme composants concrets sans les rattacher à un support réel, ni deux composants de la même catégorie : on t'en demande deux représentatifs.\n\n### Conseil\nChoisis un composant matériel et un composant logiciel : ils couvrent les deux grandes familles et tu n'as pas à hésiter sur la catégorie.",
+   "themes": [
+    "composants du système d'information",
+    "matériel",
+    "logiciel",
+    "SGBD"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q15.b-1",
+     "competence": "Composants concrets d'un système d'information informatisé",
+     "contenu_markdown": "Un système d'information informatisé se compose de ressources matérielles, logicielles, de données, de réseau et humaines ; pour répondre, cite des éléments tangibles appartenant à au moins deux catégories différentes et précise le rôle de chacun.",
+     "cours_genere": true,
+     "cours_id": "cours-composants-si-informatise-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "15.c",
+   "enonce_markdown": "**c)** Identifier deux actions concrètes de traitement. *[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nUne action de traitement est une opération du système d'information qui transforme les données mémorisées en information utile (recherche, calcul, tri, contrôle, édition) ; pour la formuler, pars d'un besoin de l'organisation, nomme les entités concernées et, si on te le demande, traduis-la en requête SQL.\n\nDeux actions concrètes de traitement, formulées à partir des besoins de la compagnie :\n\n1. **Lister les véhicules concernés par un accident donné** (besoin cité par l'énoncé : « en cas d'accident, on veut savoir les véhicules concernés »).\n2. **Compter les accidents de chaque véhicule** pour repérer les véhicules sans accident (les « chauffeurs prudents »).\n\nPour les exécuter, il faut d'abord créer la base. Le modèle physique correspond au MLD de la question 9 (script testé sous SQLite et valable, à la syntaxe près, sous MySQL) :\n\n```sql\nCREATE TABLE CLIENT (\n  NumCli   INTEGER PRIMARY KEY,\n  Nom      VARCHAR(30) NOT NULL,\n  Prenom   VARCHAR(30) NOT NULL\n);\nCREATE TABLE VEHICULE (\n  NumVeh     VARCHAR(12) PRIMARY KEY,\n  Marque     VARCHAR(20) NOT NULL,\n  Modele     VARCHAR(25) NOT NULL,\n  AnneeCirc  INTEGER NOT NULL,\n  NumCli     INTEGER NOT NULL,\n  FOREIGN KEY (NumCli) REFERENCES CLIENT(NumCli)\n);\nCREATE TABLE CONTRAT (\n  NumContrat     INTEGER PRIMARY KEY,\n  TypeAssurance  VARCHAR(25) NOT NULL,\n  DateSignature  DATE NOT NULL,\n  NumCli         INTEGER NOT NULL,\n  NumVeh         VARCHAR(12),\n  FOREIGN KEY (NumCli) REFERENCES CLIENT(NumCli),\n  FOREIGN KEY (NumVeh) REFERENCES VEHICULE(NumVeh)\n);\nCREATE TABLE ACCIDENT (\n  NumAcc   INTEGER PRIMARY KEY,\n  DescAcc  VARCHAR(45) NOT NULL\n);\nCREATE TABLE CONCERNER (\n  NumAcc  INTEGER NOT NULL,\n  NumVeh  VARCHAR(12) NOT NULL,\n  PRIMARY KEY (NumAcc, NumVeh),\n  FOREIGN KEY (NumAcc) REFERENCES ACCIDENT(NumAcc),\n  FOREIGN KEY (NumVeh) REFERENCES VEHICULE(NumVeh)\n);\n```\n\nJeu d'essai (les noms de famille et les données autres que REMY, LYDIE, MBASSA, MOUKON et la Toyota Camry sont fictifs) :\n\n```sql\nINSERT INTO CLIENT VALUES (1,'ETOA','REMY'),(2,'ETOA','LYDIE'),(3,'ETOA','MBASSA'),(4,'ETOA','MOUKON'),(5,'NGONO','Berthe');\nINSERT INTO VEHICULE VALUES ('LT-101-AB','Toyota','Camry',2012,1),('CE-202-CD','Honda','Civic',2015,5),('LT-303-EF','Nissan','Sunny',2009,5);\nINSERT INTO CONTRAT VALUES (1,'Assurance automobile','2024-03-05',1,'LT-101-AB'),(2,'Assurance maladie','2026-10-13',1,NULL),(3,'Assurance automobile','2025-01-20',5,'CE-202-CD');\nINSERT INTO ACCIDENT VALUES (1,'Collision au carrefour'),(2,'Sortie de route');\nINSERT INTO CONCERNER VALUES (1,'CE-202-CD'),(1,'LT-101-AB'),(2,'CE-202-CD');\n```\n\n**Traitement 1 : véhicules concernés par l'accident n° 1.** On joint la table de liaison CONCERNER à VEHICULE sur le numéro du véhicule, puis on filtre sur l'accident.\n\n```sql\nSELECT V.NumVeh, V.Marque, V.Modele\nFROM CONCERNER K JOIN VEHICULE V ON V.NumVeh = K.NumVeh\nWHERE K.NumAcc = 1\nORDER BY V.NumVeh;\n```\n\nRésultat obtenu :\n\n| NumVeh | Marque | Modele |\n|---|---|---|\n| CE-202-CD | Honda | Civic |\n| LT-101-AB | Toyota | Camry |\n\n**Traitement 2 : nombre d'accidents par véhicule.** La jointure externe (LEFT JOIN) conserve les véhicules sans accident, qui obtiennent le compte 0. Un COUNT sur la colonne NumAcc de CONCERNER ne compte pas les valeurs vides.\n\n```sql\nSELECT V.NumVeh, COUNT(K.NumAcc) AS NbAccidents\nFROM VEHICULE V LEFT JOIN CONCERNER K ON K.NumVeh = V.NumVeh\nGROUP BY V.NumVeh\nORDER BY NbAccidents DESC, V.NumVeh;\n```\n\nRésultat obtenu :\n\n| NumVeh | NbAccidents |\n|---|---|\n| CE-202-CD | 2 |\n| LT-101-AB | 1 |\n| LT-303-EF | 0 |\n\nLe véhicule LT-303-EF (Nissan Sunny) n'a aucun accident : son propriétaire est un chauffeur prudent. Les véhicules sans accident s'obtiennent aussi avec NOT EXISTS, requête qui renvoie ici une seule ligne, LT-303-EF.\n\n### Piège à éviter\nN'utilise pas un simple JOIN pour compter les accidents par véhicule : il éliminerait les véhicules sans accident, alors que ce sont justement ceux que l'on cherche. Passe par un LEFT JOIN.\n\n### Conseil\nUne action de traitement bien formulée contient un verbe (lister, calculer, vérifier, éditer) et l'objet traité : « lister les véhicules d'un accident » rapporte le point, « gérer les accidents » reste trop vague.",
+   "themes": [
+    "requête SQL",
+    "jointure",
+    "traitement",
+    "modèle physique"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "élevée",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q15.c-1",
+     "competence": "Traitements d'un système d'information : requêtes SQL de consultation et de contrôle",
+     "contenu_markdown": "Une action de traitement est une opération du système d'information qui transforme les données mémorisées en information utile (recherche, calcul, tri, contrôle, édition) ; pour la formuler, pars d'un besoin de l'organisation, nomme les entités concernées et, si on te le demande, traduis-la en requête SQL.",
+     "cours_genere": true,
+     "cours_id": "cours-traitements-si-requetes-sql-ti-si-2016"
+    }
+   ]
+  },
+  {
+   "numero": "15.d",
+   "enonce_markdown": "**d)** Identifier un utilisateur du système d'information à mettre en place. *[0,5 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nUn utilisateur du système d'information est la personne ou le service qui saisit, consulte ou exploite les données ; pour l'identifier, parcours l'organisation de l'entreprise, cherche qui alimente le système, qui l'interroge, et précise ce qu'il y fait.\n\nUn utilisateur du système d'information de CAR_INSURANCE est l'**agent d'assurance (ou gestionnaire de contrats)** : il saisit les fiches clients, les véhicules et les contrats, enregistre les déclarations d'accident et consulte les dossiers pour répondre aux clients.\n\nD'autres utilisateurs sont possibles : le directeur général, qui consulte des statistiques (nombre de contrats, d'accidents) pour piloter la compagnie, ou l'expert chargé des sinistres, qui consulte les véhicules concernés par un accident.\n\n### Piège à éviter\nNe cite pas le concepteur de la base de données ou l'administrateur système comme « utilisateur » : ils construisent et maintiennent le système, ils ne l'utilisent pas au quotidien pour le métier.\n\n### Conseil\nAssocie l'utilisateur à une action : « l'agent d'assurance, qui saisit les contrats ». Une fonction seule (« le DG ») sans usage précis laisse le correcteur sur sa faim.",
+   "themes": [
+    "utilisateur",
+    "acteurs du système d'information",
+    "organisation"
+   ],
+   "savoir_officiel": null,
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": null,
+   "reponse_correcte": null,
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q15.d-1",
+     "competence": "Identifier les utilisateurs d'un système d'information",
+     "contenu_markdown": "Un utilisateur du système d'information est la personne ou le service qui saisit, consulte ou exploite les données ; pour l'identifier, parcours l'organisation de l'entreprise, cherche qui alimente le système, qui l'interroge, et précise ce qu'il y fait.",
+     "cours_genere": true,
+     "cours_id": "cours-utilisateurs-systeme-information-ti-si-2016"
+    }
+   ]
+  }
+ ],
+ "mots_cles_recherche": [
+  "MERISE",
+  "MCD",
+  "modèle conceptuel de données",
+  "cardinalités",
+  "dictionnaire de données",
+  "transitivité",
+  "occurrence",
+  "SQL",
+  "assurance automobile",
+  "CAR_INSURANCE",
+  "système d'information automatisé"
+ ],
+ "incertitudes": [
+  "Aucun corrigé officiel sur la page : tout le corrigé (MCD, dictionnaire, calculs, requêtes SQL) est un modèle rédigé pour la plateforme.",
+  "Cardinalités minimales non imposées par le texte : retenu CLIENT (0,N) dans SIGNER (une personne couverte comme LYDIE peut n'avoir signé aucun contrat) et VEHICULE (0,N) dans COUVRIR (aucun minimum 1 n'est énoncé). Un corrigé officiel pourrait retenir (1,N) ; l'association APPARTENIR est conservée malgré la transitivité, avec contrainte d'intégrité.",
+  "Statut de LYDIE, MBASSA et MOUKON : l'énoncé dit seulement qu'ils sont couverts par l'assurance maladie souscrite par REMY. Le corrigé les traite comme des occurrences de CLIENT (la question 11 retient LYDIE) sans modéliser le lien de bénéfice, mentionné en variante à la question 9 ; REMY, LYDIE, MBASSA et MOUKON sont des noms ou prénoms non distingués par le sujet.",
+  "Question 4 ambiguë : l'élève parle du système d'information automatisé et non du système d'information. Le corrigé le juge exact dans son principe (équipement informatique au sens large requis) et trop restrictif dans les termes ; une correction officielle pourrait attendre un simple « faux » (un SI existe sans ordinateur).",
+  "Question 14 : lecture retenue = une occurrence de chaque entité, 12 données du dictionnaire (sans clés étrangères), 45 caractères au maximum, 8 bits par caractère, soit 4 320 bits ; variantes données dans le corrigé (17 colonnes du MLD : 6 120 bits ; 16 bits par caractère : 8 640 bits).",
+  "Question 13 : la colonne « Nature » du canevas est lue comme E (élémentaire) ou C (calculée) ; types et tailles du dictionnaire choisis par le rédacteur (le sujet n'en impose aucun, sauf le maximum de 45 caractères de la question 14).",
+  "Barème : aucun point imprimé pour la question 3 (a et b), la question 13 et la question 15 b) ; les points imprimés totalisent 16 sur 20. Le sujet ne numérote pas d'exercice : un seul problème (étude de cas CAR_INSURANCE), repère « Exercice 1 » ajouté, points de l'exercice laissés à null.",
+  "Coquilles du sujet corrigées : « CARJNSURANCE » (question 1) lu CAR_INSURANCE, « LYDlE » lu LYDIE."
+ ],
+ "statut": "brouillon"
+}

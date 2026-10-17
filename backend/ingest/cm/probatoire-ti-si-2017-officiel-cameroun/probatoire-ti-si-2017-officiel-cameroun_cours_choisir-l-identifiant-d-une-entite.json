@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-choisir-l-identifiant-d-une-entite-ti-si-2017",
+  "meta": {
+    "titre": "Choisir l'identifiant d'une entité : naturel, artificiel ou relatif",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "identifiant",
+      "clé primaire",
+      "identifiant relatif",
+      "MCD"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q8-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans l'état civil, chaque citoyen a un numéro unique, sinon on confondrait deux Paul Mbarga. Une entité d'un MCD a le même besoin : un identifiant, qui permet de la désigner sans ambiguïté. Savoir le choisir évite des erreurs qui se payent jusqu'au modèle relationnel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une entité et un attribut",
+        "Connaître la notion de clé primaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'identifiant : trois cas à connaître",
+      "contenu_markdown": "Un **identifiant** est un attribut (ou un groupe d'attributs) dont la valeur désigne **une seule occurrence** de l'entité et **ne change jamais**. Il se souligne dans l'entité et se place en premier.\n\n| Cas | Quand | Exemple |\n|---|---|---|\n| **Naturel** | un attribut déjà présent est unique et stable | NumCNI d'un client |\n| **Artificiel** | aucun attribut ne convient : on crée un code | CodeHotel, NumReservation |\n| **Relatif** | la valeur n'est unique qu'à l'intérieur d'une autre entité | NumChambre relatif à HOTEL (noté (R)) |\n\n**Test** : « puis-je trouver deux occurrences différentes ayant cette valeur ? ». Si oui, l'attribut n'est pas un identifiant."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour chaque entité du système de gestion hôtelière (CLIENT, HOTEL, CHAMBRE, RESERVATION), préciser l'identifiant (question 8 du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer le test à CLIENT",
+          "justification": "Le numéro de carte nationale d'identité est unique par personne et stable.",
+          "resultat_markdown": "identifiant naturel : NumCNI"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le test à HOTEL",
+          "justification": "Le nom ne garantit pas l'unicité : deux hôtels peuvent avoir le même nom.",
+          "resultat_markdown": "identifiant artificiel : CodeHotel"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le test à CHAMBRE",
+          "justification": "Le numéro 101 existe dans chaque hôtel : il n'est unique qu'à l'intérieur d'un hôtel.",
+          "resultat_markdown": "identifiant relatif : NumChambre relatif à HOTEL"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le test à RESERVATION",
+          "justification": "Un client peut faire deux réservations le même jour : aucune date ne convient.",
+          "resultat_markdown": "identifiant artificiel : NumReservation"
+        }
+      ],
+      "conclusion_markdown": "Les identifiants sont NumCNI (CLIENT), CodeHotel (HOTEL), NumChambre relatif à HOTEL (CHAMBRE) et NumReservation (RESERVATION)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre le nom comme identifiant",
+          "pourquoi_faux": "Deux personnes ou deux hôtels peuvent avoir le même nom.",
+          "correction_markdown": "Créer un code ou choisir un numéro officiel."
+        },
+        {
+          "erreur_markdown": "Prendre NumChambre comme identifiant absolu",
+          "pourquoi_faux": "Chaque hôtel a une chambre 101 : l'identifiant doit être relatif à l'hôtel.",
+          "correction_markdown": "Noter (R) et le relier à l'entité de référence."
+        },
+        {
+          "erreur_markdown": "Choisir un attribut qui peut changer (adresse, téléphone)",
+          "pourquoi_faux": "Un identifiant doit rester stable toute la vie de l'occurrence.",
+          "correction_markdown": "Choisir une valeur qui ne varie jamais."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel est l'identifiant naturel d'une entité ELEVE caractérisée par un matricule, un nom et une date de naissance ?",
+          "solution_markdown": "1. Le nom peut se répéter : refusé.\n2. La date de naissance peut se répéter : refusée.\n3. Le matricule est unique par élève : c'est l'identifiant."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un lycée, chaque bâtiment a des salles numérotées 1, 2, 3... Quel identifiant pour l'entité SALLE ?",
+          "solution_markdown": "1. Le numéro 1 existe dans chaque bâtiment : il n'est pas unique seul.\n2. Le numéro n'a de sens qu'à l'intérieur d'un bâtiment : identifiant relatif.\n3. SALLE a pour identifiant NumSalle, relatif à BATIMENT."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une compagnie aérienne a un vol CM201 qui part chaque jour. Propose un identifiant pour l'entité VOL réellement effectué.",
+          "solution_markdown": "1. Le numéro CM201 se répète chaque jour : il n'est pas unique.\n2. Solution 1 : identifiant composé (NumVol, DateVol).\n3. Solution 2 : identifiant artificiel IdVol.\n4. Les deux conviennent ; la première garde le sens métier, la seconde simplifie les liens avec d'autres entités."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un identifiant désigne une seule occurrence et ne change jamais.",
+        "Trois cas : naturel, artificiel, relatif.",
+        "Le numéro de chambre est relatif à l'hôtel, la chambre 101 existe partout.",
+        "Teste toujours : « deux occurrences peuvent-elles partager cette valeur ? ».",
+        "Au probatoire TI, une erreur d'identifiant contamine le modèle relationnel : prends le temps de le justifier."
+      ]
+    }
+  ]
+}

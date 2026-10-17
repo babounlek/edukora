@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-structure-minimale-html-probatoire-acd-2014",
+  "meta": {
+    "titre": "Écrire la structure minimale d'un document HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : squelette d'une page HTML",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "html",
+      "head",
+      "title",
+      "body",
+      "structure",
+      "DOCTYPE"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2014-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2014 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2014-officiel-cameroun-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toute maison commence par des fondations et des murs, avant la peinture. Une page web aussi : avant le texte et les images, il faut le squelette qui indique au navigateur où se trouve le titre et où se trouve le contenu. Ce squelette tient en quelques lignes et revient dans presque tous les exercices de programmation web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une balise ouvrante et fermante",
+        "Savoir enregistrer un fichier avec l'extension .html"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le squelette d'un document HTML",
+      "contenu_markdown": "Un document HTML est un arbre de balises emboîtées :\n\n```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <title>...</title>\n  </head>\n  <body>\n    ...\n  </body>\n</html>\n```\n\n| Élément | Rôle |\n|---|---|\n| `<!DOCTYPE html>` | déclare la version HTML5 (première ligne) |\n| `<html>` | racine : contient tout le document |\n| `<head>` | en-tête : titre, encodage, styles, métadonnées (non affichés) |\n| `<title>` | titre dans l'onglet du navigateur |\n| `<body>` | corps : contenu visible |\n\n**Règle d'emboîtement :** `title` est dans `head`, `head` et `body` sont dans `html`, et `head` précède `body`.",
+      "variantes": [
+        {
+          "nom": "Version HTML5 enrichie",
+          "quand_utiliser": "Pour une page prête à publier.",
+          "contenu_markdown": "On ajoute `lang=\"fr\"` dans `<html>` et `<meta charset=\"UTF-8\">` dans `<head>` pour que les accents s'affichent correctement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code d'une page dont le titre d'onglet est « Mon lycée » et qui affiche la phrase « Bienvenue au lycée ».",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la racine",
+          "justification": "Tout le document doit être contenu dans `html`.",
+          "resultat_markdown": "`<html>` ... `</html>`"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter l'en-tête",
+          "justification": "Le titre d'onglet n'est pas un contenu affiché, il va dans `head`.",
+          "resultat_markdown": "`<head>` ... `</head>` placé juste après `<html>`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le titre",
+          "justification": "La balise `title` donne le texte de l'onglet.",
+          "resultat_markdown": "`<title>Mon lycée</title>` dans `head`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter le corps",
+          "justification": "La phrase est du contenu visible.",
+          "resultat_markdown": "`<body>Bienvenue au lycée</body>` après `</head>`"
+        },
+        {
+          "numero": 5,
+          "action": "Assembler",
+          "justification": "On respecte l'emboîtement et on referme dans l'ordre inverse.",
+          "resultat_markdown": "Code ci-dessous"
+        }
+      ],
+      "conclusion_markdown": "```html\n<html>\n  <head>\n    <title>Mon lycée</title>\n  </head>\n  <body>\n    Bienvenue au lycée\n  </body>\n</html>\n```\n\nL'onglet affiche « Mon lycée » et la fenêtre affiche la phrase."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire le texte à afficher dans `<head>`",
+          "pourquoi_faux": "Le contenu de `head` n'est pas affiché dans la fenêtre : la phrase resterait invisible.",
+          "correction_markdown": "Place le texte visible dans `<body>`."
+        },
+        {
+          "erreur_markdown": "Oublier `</html>` ou `</body>`",
+          "pourquoi_faux": "Le navigateur est souvent tolérant et corrige seul, mais le code est faux et un correcteur le comptera comme tel.",
+          "correction_markdown": "Compte les balises : chaque ouvrante a sa fermante."
+        },
+        {
+          "erreur_markdown": "Inverser `head` et `body`",
+          "pourquoi_faux": "L'en-tête doit précéder le corps ; l'inverser casse la structure du document.",
+          "correction_markdown": "Retiens l'ordre naturel : tête d'abord, corps ensuite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Complète le squelette : `<html> <...> <title>Accueil</title> </...> <...> Bonjour </...> </html>`.",
+          "solution_markdown": "**Étape 1.** Le titre est dans l'en-tête : la balise manquante autour de `title` est `head`.\n\n**Étape 2.** Le mot « Bonjour » est du contenu visible : la balise manquante est `body`.\n\n```html\n<html>\n  <head>\n    <title>Accueil</title>\n  </head>\n  <body>\n    Bonjour\n  </body>\n</html>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Trouve les erreurs du code suivant et corrige-le :\n\n```html\n<html>\n  <body>\n    <title>Ma page</title>\n    Salut\n  </body>\n  <head>\n  </head>\n</html>\n```",
+          "solution_markdown": "**Erreur 1.** Le `body` est placé avant le `head` : l'ordre est inversé.\n\n**Erreur 2.** `title` est dans le `body` alors qu'il doit être dans `head`.\n\n**Correction.**\n\n```html\n<html>\n  <head>\n    <title>Ma page</title>\n  </head>\n  <body>\n    Salut\n  </body>\n</html>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris une page HTML5 complète en français : titre d'onglet « Club informatique », encodage UTF-8, langue française, un titre de niveau 1 « Bienvenue » et un paragraphe « Rendez-vous le mercredi ». Explique le rôle de chaque ajout par rapport à la structure minimale.",
+          "solution_markdown": "**Étape 1.** On part de la structure minimale : `html`, `head`, `title`, `body`.\n\n**Étape 2.** On ajoute `<!DOCTYPE html>` en première ligne : il indique au navigateur qu'il s'agit de HTML5 et évite le mode d'affichage ancien.\n\n**Étape 3.** On ajoute `lang=\"fr\"` à `<html>` : il précise la langue du document (utile pour les moteurs de recherche et la lecture vocale).\n\n**Étape 4.** On ajoute `<meta charset=\"UTF-8\">` dans `head` : il indique l'encodage des caractères et garantit l'affichage des accents.\n\n**Étape 5.** On met le titre dans `<h1>` et la phrase dans `<p>`, à l'intérieur de `body`.\n\n```html\n<!DOCTYPE html>\n<html lang=\"fr\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <title>Club informatique</title>\n  </head>\n  <body>\n    <h1>Bienvenue</h1>\n    <p>Rendez-vous le mercredi</p>\n  </body>\n</html>\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une page HTML minimale contient html, head, title et body, emboîtés dans cet ordre.",
+        "Le titre de l'onglet est dans title, lui-même dans head ; le contenu visible est dans body.",
+        "Chaque balise ouvrante est refermée, dans l'ordre inverse de son ouverture.",
+        "En HTML5, on ajoute DOCTYPE, lang et meta charset pour une page prête à publier.",
+        "Au Probatoire, cette question rapporte 1 point et revient presque chaque année : apprends l'ossature par cœur."
+      ]
+    }
+  ]
+}

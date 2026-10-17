@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-volume-gaz-masse-volumique-rendement-c-d-2017",
+  "meta": {
+    "titre": "Du volume de liquide au volume de gaz : masse volumique et rendement",
+    "matiere": "Chimie",
+    "pays": "cm",
+    "serie": "C, D",
+    "sous_theme": "Calculs stœchiométriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "rendement",
+      "masse volumique",
+      "volume molaire",
+      "quantité de matière",
+      "stœchiométrie"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C-D",
+      "module_numero": "1",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-chimie-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire Chimie - Séries C et D - Session 2017 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-chimie-2017-officiel-cameroun-ex1-q2-2-3-2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un technicien prélève $10\\ mL$ d'un liquide, le transforme en gaz, et veut savoir quel volume de gaz il va recueillir. Entre le liquide du départ et le gaz de l'arrivée, il passe par la masse, la quantité de matière, le rendement : c'est une chaîne de calcul qu'il faut dérouler sans sauter d'étape. Elle tombe presque chaque année au probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Utiliser la relation $n = m/M$",
+        "Connaître le volume molaire $V_m$ d'un gaz",
+        "Lire les coefficients d'une équation-bilan"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La chaîne de calcul en cinq maillons",
+      "contenu_markdown": "1. **Masse du liquide** : $m = \\rho\\times V$ (attention aux unités : $1\\ kg/m^3 = 10^{-3}\\ g/cm^3$).\n2. **Quantité de matière du réactif** : $n = \\dfrac{m}{M}$.\n3. **Quantité théorique de produit** : on lit le rapport des coefficients de l'équation-bilan.\n4. **Rendement** : $\\eta = \\dfrac{n_{réel}}{n_{th}}$, donc $n_{réel} = \\eta\\times n_{th}$.\n5. **Volume de gaz** : $V = n_{réel}\\times V_m$ (avec le $V_m$ donné par l'énoncé).",
+      "formule_principale": "V = \\eta \\times \\dfrac{\\rho\\,V_{liq}}{M}\\times\\dfrac{\\nu_{produit}}{\\nu_{réactif}}\\times V_m"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Quel volume d'éthène obtient-on à partir de $10\\ cm^3$ d'éthanol ($\\rho = 800\\ kg/m^3$) avec un rendement de $85\\ \\%$, sachant que $V_m = 24\\ L/mol$ ? (question 2.2.3 de l'exercice 1 du probatoire 2017)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la masse d'éthanol",
+          "justification": "$\\rho = 800\\ kg/m^3 = 0{,}800\\ g/cm^3$ puis $m = \\rho V$.",
+          "resultat_markdown": "$m = 0{,}800\\times 10 = 8{,}0\\ g$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la quantité de matière",
+          "justification": "$M(C_2H_5OH) = 2\\times 12 + 6\\times 1 + 16 = 46\\ g/mol$.",
+          "resultat_markdown": "$n = 8{,}0/46 = 0{,}1739\\ mol$"
+        },
+        {
+          "numero": 3,
+          "action": "Lire les coefficients",
+          "justification": "$C_2H_5OH \\to C_2H_4 + H_2O$ : rapport 1 pour 1.",
+          "resultat_markdown": "$n_{th}(C_2H_4) = 0{,}1739\\ mol$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le rendement",
+          "justification": "$n_{réel} = \\eta\\times n_{th}$.",
+          "resultat_markdown": "$n_{réel} = 0{,}85\\times 0{,}1739 = 0{,}1478\\ mol$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le volume",
+          "justification": "$V = n_{réel}\\times V_m$.",
+          "resultat_markdown": "$V = 0{,}1478\\times 24 = 3{,}55\\ L$"
+        }
+      ],
+      "conclusion_markdown": "On obtient environ $3{,}5\\ L$ d'éthène, inférieur au volume théorique de $4{,}17\\ L$ comme il se doit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\rho = 800\\ g/cm^3$ en oubliant de convertir.",
+          "pourquoi_faux": "$800\\ kg/m^3$ vaut $0{,}800\\ g/cm^3$ : l'erreur d'un facteur 1000 donnerait 8 kg d'éthanol pour 10 cm3, ce qui est absurde.",
+          "correction_markdown": "$1\\ kg/m^3 = 1\\ g/L = 10^{-3}\\ g/cm^3$ : 800 kg/m3 = 0,8 g/cm3."
+        },
+        {
+          "erreur_markdown": "Diviser par le rendement au lieu de multiplier : $n_{réel} = n_{th}/0{,}85$.",
+          "pourquoi_faux": "Le rendement est inférieur à 1 : on obtient MOINS de produit que le calcul théorique, jamais plus. Le volume réel doit être inférieur au volume théorique.",
+          "correction_markdown": "Vérifie que $V_{réel} < V_{th}$ : sinon tu as inversé le rendement."
+        },
+        {
+          "erreur_markdown": "Prendre $V_m = 22{,}4\\ L/mol$ alors que l'énoncé donne $24\\ L/mol$.",
+          "pourquoi_faux": "La donnée de l'énoncé prime : le sujet impose $24\\ L/mol$ (conditions proches de $20\\ °C$). Avec 22,4 le résultat serait 3,31 L, jugé faux.",
+          "correction_markdown": "Utilise toujours le $V_m$ imprimé dans le sujet."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On déshydrate $23\\ g$ d'éthanol ($M = 46\\ g/mol$) avec un rendement de $100\\ \\%$. Quel volume d'éthène obtient-on ($V_m = 24\\ L/mol$) ?",
+          "solution_markdown": "$n(C_2H_5OH) = \\dfrac{23}{46} = 0{,}50\\ mol$. Les coefficients sont égaux à 1, donc $n(C_2H_4) = 0{,}50\\ mol$.\n\n$V = n\\times V_m = 0{,}50\\times 24 = 12\\ L$. **Volume d'éthène : 12 L.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On utilise $20\\ mL$ d'éthanol ($\\rho = 0{,}8\\ g/mL$, $M = 46\\ g/mol$) avec un rendement de $75\\ \\%$. Quel volume d'éthène recueille-t-on ($V_m = 24\\ L/mol$) ?",
+          "solution_markdown": "**Masse :** $m = 0{,}8\\times 20 = 16\\ g$.\n\n**Quantité de matière :** $n = \\dfrac{16}{46} = 0{,}3478\\ mol$.\n\n**Rendement :** $n_{réel} = 0{,}75\\times 0{,}3478 = 0{,}2609\\ mol$.\n\n**Volume :** $V = 0{,}2609\\times 24 = 6{,}26\\ L$. **Volume recueilli : environ 6,3 L.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut recueillir $6{,}0\\ L$ d'éthène ($V_m = 24\\ L/mol$) avec un rendement de $85\\ \\%$. Quel volume d'éthanol ($\\rho = 0{,}8\\ g/mL$, $M = 46\\ g/mol$) faut-il mettre en jeu ?",
+          "solution_markdown": "On remonte la chaîne de calcul à l'envers.\n\n**Quantité de gaz voulue :** $n_{réel} = \\dfrac{6{,}0}{24} = 0{,}25\\ mol$.\n\n**Quantité théorique :** $n_{th} = \\dfrac{n_{réel}}{\\eta} = \\dfrac{0{,}25}{0{,}85} = 0{,}2941\\ mol$ (ici on divise, car on cherche ce qu'il faut engager pour obtenir 0,25 mol réelles).\n\n**Masse d'éthanol :** $m = 0{,}2941\\times 46 = 13{,}53\\ g$.\n\n**Volume d'éthanol :** $V = \\dfrac{m}{\\rho} = \\dfrac{13{,}53}{0{,}8} = 16{,}9\\ mL$. **Il faut environ 17 mL d'éthanol.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaîne de calcul : $m = \\rho V$, puis $n = m/M$, puis coefficients, puis rendement, puis $V = nV_m$.",
+        "Convertis les unités de $\\rho$ avant de calculer : $1\\ kg/m^3 = 10^{-3}\\ g/cm^3$.",
+        "Le rendement multiplie la quantité théorique pour trouver la quantité réelle : le volume réel est inférieur au volume théorique.",
+        "Utilise le $V_m$ donné par l'énoncé, quelle que soit la valeur que tu connais.",
+        "Au probatoire, ce type de calcul (liquide, gaz, rendement) revient presque chaque année dans l'exercice de chimie organique."
+      ]
+    }
+  ]
+}

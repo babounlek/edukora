@@ -1,0 +1,137 @@
+{
+ "cours_id": "cours-fonctionnalites-application-gestion-ti-si-2016",
+ "meta": {
+  "titre": "Fonctionnalités de base d'une application de gestion (ajout, consultation, modification, suppression)",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Mise en place d'un système d'information",
+  "duree_estimee_min": 20,
+  "tags": [
+   "fonctionnalités",
+   "application de gestion",
+   "mise à jour des données",
+   "CRUD"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q15.a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une application de gestion n'est pas un gadget : elle doit permettre aux agents de faire leur travail sans cahier. Que doit-elle savoir faire ? Pour le déterminer, on part des données à gérer et des règles du métier. Ce cours te donne une liste de contrôle qui s'applique à toute entreprise."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "MCD et entités",
+    "Notion de règle de gestion"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Les quatre opérations de base et les fonctions métier",
+   "contenu_markdown": "Pour **chaque entité** du MCD, une application de gestion offre au minimum :\n\n1. **Ajouter** (créer une fiche) ;\n2. **Consulter / rechercher** (afficher une fiche ou une liste) ;\n3. **Modifier** (corriger ou mettre à jour) ;\n4. **Supprimer** (retirer, avec contrôle des liens).\n\nCes quatre opérations s'appellent **CRUD** en anglais (Create, Read, Update, Delete).\n\nÀ cela s'ajoutent les **fonctions métier**, déduites des règles de gestion (enregistrer un contrat, déclarer un accident, éditer une facture) et les **éditions** (listes, statistiques). Une fonctionnalité se formule par un **verbe d'action + objet géré**.",
+   "variantes": [
+    {
+     "nom": "Fonctionnalité ou qualité ?",
+     "quand_utiliser": "Pour trier une liste de réponses",
+     "contenu_markdown": "« Enregistrer un contrat » est une fonctionnalité. « Être rapide » ou « être sécurisé » sont des qualités (exigences non fonctionnelles)."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Déterminer deux fonctionnalités de base de l'application de CAR_INSURANCE.",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Partir des entités",
+     "justification": "Chaque entité demande ajout, consultation, modification et suppression.",
+     "resultat_markdown": "Clients, véhicules, contrats, accidents."
+    },
+    {
+     "numero": 2,
+     "action": "Chercher les fonctions métier dans les règles",
+     "justification": "« La compagnie signe des contrats avec des clients » et « en cas d'accident, on veut savoir les véhicules concernés ».",
+     "resultat_markdown": "Enregistrer un contrat ; déclarer un accident."
+    },
+    {
+     "numero": 3,
+     "action": "Formuler par verbe et objet",
+     "justification": "C'est la forme attendue.",
+     "resultat_markdown": "« Enregistrer un contrat d'assurance » ; « déclarer un accident et lier les véhicules concernés »."
+    },
+    {
+     "numero": 4,
+     "action": "Détailler brièvement",
+     "justification": "Une phrase par fonctionnalité précise son contenu.",
+     "resultat_markdown": "Contrat : client, véhicule, type, date. Accident : numéro, description, véhicules concernés (au moins un)."
+    }
+   ],
+   "conclusion_markdown": "Deux fonctionnalités de base : enregistrer un contrat d'assurance, et déclarer un accident avec ses véhicules concernés."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Répondre par des qualités (« rapide », « sécurisée »)",
+     "pourquoi_faux": "Ce ne sont pas des actions faisables par l'utilisateur.",
+     "correction_markdown": "Formuler des verbes d'action suivis de l'objet géré."
+    },
+    {
+     "erreur_markdown": "Oublier la suppression ou la modification",
+     "pourquoi_faux": "Une base sans correction ni nettoyage se dégrade vite.",
+     "correction_markdown": "Penser aux quatre opérations CRUD pour chaque entité."
+    },
+    {
+     "erreur_markdown": "Citer une fonctionnalité sans lien avec les règles de gestion",
+     "pourquoi_faux": "La fonctionnalité doit répondre à un besoin de l'organisation.",
+     "correction_markdown": "Relire les règles de gestion et en tirer les fonctions."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Citer les quatre opérations de base applicables à l'entité CLIENT et donner un exemple pour chacune.",
+     "solution_markdown": "1. Ajouter : enregistrer un nouveau client avec son nom et son prénom.\n2. Consulter : rechercher un client par son nom.\n3. Modifier : corriger l'orthographe d'un nom.\n4. Supprimer : retirer un client enregistré par erreur, uniquement s'il n'a aucun contrat."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Une bibliothèque gère adhérents, livres et emprunts. Déterminer trois fonctionnalités métier.",
+     "solution_markdown": "1. Enregistrer l'emprunt d'un livre par un adhérent (avec la date).\n2. Enregistrer le retour d'un livre.\n3. Éditer la liste des livres empruntés par un adhérent.\n4. Elles s'ajoutent aux opérations de base sur adhérents et livres."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Trier les propositions en fonctionnalités ou en qualités pour l'application de CAR_INSURANCE : (a) éditer la liste des contrats d'un client ; (b) afficher les écrans en moins de deux secondes ; (c) calculer le nombre d'accidents par véhicule ; (d) être protégée par un mot de passe.",
+     "solution_markdown": "1. (a) Éditer la liste des contrats : action sur des données, **fonctionnalité**.\n2. (b) Afficher en moins de deux secondes : performance, **qualité**.\n3. (c) Calculer le nombre d'accidents : traitement, **fonctionnalité**.\n4. (d) Mot de passe : sécurité, **qualité** (exigence non fonctionnelle), même si la gestion des utilisateurs relève d'une fonctionnalité d'authentification.\n5. Une fonctionnalité répond à « que peut faire l'utilisateur ? », une qualité à « avec quelle exigence ? »."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Pour chaque entité : ajouter, consulter, modifier, supprimer.",
+    "Les fonctions métier viennent des règles de gestion.",
+    "Une fonctionnalité = verbe d'action + objet géré.",
+    "« Rapide » ou « sécurisé » sont des qualités, pas des fonctionnalités.",
+    "Au Probatoire TI, les fonctionnalités sont attendues sous forme de verbes d'action liés au métier de l'entreprise."
+   ]
+  }
+ ]
+}

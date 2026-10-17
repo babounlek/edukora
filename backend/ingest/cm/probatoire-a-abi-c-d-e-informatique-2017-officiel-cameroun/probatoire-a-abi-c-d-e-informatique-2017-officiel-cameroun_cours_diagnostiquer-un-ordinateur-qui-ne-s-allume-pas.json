@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-diagnostiquer-un-ordinateur-qui-ne-s-allume-pas-probatoire-acde-2017",
+  "meta": {
+    "titre": "Diagnostiquer un ordinateur qui ne s'allume pas",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : diagnostic de panne",
+    "duree_estimee_min": 30,
+    "tags": [
+      "panne",
+      "alimentation électrique",
+      "cordon secteur",
+      "diagnostic",
+      "maintenance corrective"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex3-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un matin, ton ordinateur de bureau reste muet : pas de voyant, pas de bruit de ventilateur, rien. Beaucoup de gens appellent un dépanneur ou croient la machine perdue, alors que la cause est souvent un simple câble. Le technicien, lui, ne devine pas : il observe le symptôme et remonte la chaîne qui va de la prise murale à la carte mère, en commençant par le plus simple."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les éléments d'un poste de bureau : unité centrale, écran, clavier, souris",
+        "Savoir ce qu'est le bloc d'alimentation d'un ordinateur",
+        "Distinguer un ordinateur éteint d'un ordinateur allumé avec écran noir"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du symptôme à la cause : suivre la chaîne d'alimentation",
+      "contenu_markdown": "On observe d'abord le **symptôme** (voyants, ventilateurs, bruits, image), puis on teste les causes **du plus simple au plus lourd**.\n\n| Symptôme observé | Cause la plus probable | Premier test |\n|---|---|---|\n| Aucun voyant, aucun bruit | Pas de courant : prise, multiprise, interrupteur, **cordon d'alimentation** débranché, bloc d'alimentation en panne | Vérifier la prise avec un autre appareil ; revisser le cordon ; essayer un autre cordon |\n| Ventilateurs qui tournent, écran noir | Câble vidéo (VGA, HDMI) débranché, écran éteint, mémoire mal enfichée | Contrôler le câble vidéo et le voyant de l'écran |\n| Bips au démarrage | Erreur détectée par le POST (mémoire, clavier, carte graphique) | Interpréter le schéma de bips |\n| Démarre puis s'éteint | Surchauffe, bloc d'alimentation faible | Nettoyer les ventilateurs, tester une autre alimentation |\n\nOrdre des vérifications pour une machine muette : 1) la prise et la multiprise ; 2) l'interrupteur à l'arrière du bloc d'alimentation ; 3) le cordon d'alimentation ; 4) le bloc d'alimentation lui-même ; 5) la carte mère."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un matin, l'ordinateur de bureau ne s'allume pas. En examinant l'élément 2 (l'unité centrale), on découvre qu'un câble s'est déconnecté. De quel câble s'agit-il ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'élément 2",
+          "justification": "Sur la figure, le chiffre 2 est posé sur le boîtier tour.",
+          "resultat_markdown": "L'élément 2 est l'unité centrale."
+        },
+        {
+          "numero": 2,
+          "action": "Relever le symptôme",
+          "justification": "L'énoncé dit que l'ordinateur ne s'allume pas du tout : aucun signe de vie.",
+          "resultat_markdown": "Symptôme : machine muette, sans courant."
+        },
+        {
+          "numero": 3,
+          "action": "Remonter la chaîne d'alimentation",
+          "justification": "Une machine sans courant a un défaut entre la prise murale et le bloc d'alimentation de l'unité centrale.",
+          "resultat_markdown": "Le câble qui relie le secteur au bloc d'alimentation est le cordon d'alimentation."
+        },
+        {
+          "numero": 4,
+          "action": "Écarter les autres câbles",
+          "justification": "Le câble VGA ou HDMI n'empêche pas le démarrage (écran noir seulement) ; les câbles USB du clavier et de la souris non plus ; le câble Ethernet ne concerne que le réseau.",
+          "resultat_markdown": "Seul le cordon d'alimentation explique une machine totalement éteinte."
+        }
+      ],
+      "conclusion_markdown": "Le câble déconnecté est le **câble d'alimentation** (cordon secteur) de l'unité centrale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « le câble VGA » parce qu'on ne voit rien à l'écran.",
+          "pourquoi_faux": "Avec un câble vidéo débranché, l'unité centrale démarre : ses ventilateurs tournent et ses voyants s'allument. L'énoncé dit que l'ordinateur ne s'allume pas.",
+          "correction_markdown": "Distinguer machine muette (alimentation) et écran noir avec machine qui tourne (câble vidéo)."
+        },
+        {
+          "erreur_markdown": "Changer une pièce (carte mère, mémoire) sans avoir testé la prise.",
+          "pourquoi_faux": "On remplace des composants coûteux alors que le défaut vient souvent d'une multiprise éteinte ou d'un cordon mal enfoncé.",
+          "correction_markdown": "Tester dans l'ordre, du plus simple au plus lourd : prise, interrupteur, cordon, bloc d'alimentation."
+        },
+        {
+          "erreur_markdown": "Réparer sans débrancher le cordon avant d'ouvrir le boîtier.",
+          "pourquoi_faux": "Le bloc d'alimentation reste sous tension tant qu'il est relié au secteur : il y a un risque d'électrocution et de court-circuit.",
+          "correction_markdown": "Toujours débrancher le cordon d'alimentation avant toute intervention à l'intérieur de l'unité centrale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un ordinateur ne donne aucun signe de vie à l'appui sur le bouton Power. Citer, dans l'ordre, trois vérifications à faire.",
+          "solution_markdown": "1. Vérifier que la prise murale ou la multiprise est alimentée et allumée (brancher une lampe pour tester).\n2. Vérifier l'interrupteur à l'arrière du bloc d'alimentation (position I) et le cordon bien enfoncé dans l'unité centrale.\n3. Essayer un autre cordon d'alimentation. Si rien ne change, le bloc d'alimentation est probablement en panne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Au démarrage, les ventilateurs tournent et les voyants de l'unité centrale s'allument, mais l'écran reste noir. Quels câbles et quel appareil vérifier ? En quoi ce symptôme diffère-t-il de celui d'une machine muette ?",
+          "solution_markdown": "Vérifier : 1) le voyant de l'écran (alimentation de l'écran, bouton Power) ; 2) le câble vidéo (VGA ou HDMI), bien enfoncé aux deux extrémités ; 3) le câble d'alimentation de l'écran.\n\nLa différence : ici l'unité centrale reçoit du courant et démarre (ventilateurs, voyants) ; la panne se situe sur la chaîne d'affichage. Une machine muette n'a aucun courant : la panne se situe sur la chaîne d'alimentation."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une salle, quatre ordinateurs sont branchés sur la même multiprise. Trois s'allument, le quatrième reste muet. Proposer une démarche en quatre tests pour trouver la cause et conclure selon les résultats.",
+          "solution_markdown": "La multiprise alimente les trois autres machines : elle n'est donc pas en cause. La panne est **locale** au quatrième poste.\n\n1. **Échanger le cordon** du quatrième poste avec celui d'un poste qui fonctionne. Si le poste s'allume, le cordon était défectueux.\n2. **Brancher le quatrième poste sur une autre prise** de la multiprise : on écarte un contact défaillant.\n3. **Vérifier l'interrupteur** à l'arrière du bloc d'alimentation du quatrième poste.\n4. **Tester le bloc d'alimentation** (ou en essayer un autre) si les trois tests précédents n'ont rien changé.\n\nConclusion : si le cordon échangé fait démarrer la machine, on remplace le cordon ; si rien ne change après les tests 1 à 3, le bloc d'alimentation (ou, plus rarement, la carte mère) est en panne et doit être remplacé ou réparé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une panne, commence par observer le symptôme : voyants, ventilateurs, bips, image.",
+        "Une machine totalement muette signale un défaut d'alimentation : prise, interrupteur, cordon, bloc d'alimentation.",
+        "Un écran noir avec une machine qui tourne signale plutôt la chaîne d'affichage (câble vidéo, écran).",
+        "Teste toujours du plus simple au plus lourd, et débranche le cordon avant d'ouvrir le boîtier.",
+        "Au Probatoire, la partie « Maintenance informatique » présente un scénario de panne et demande la cause, le câble ou la solution : un diagnostic précis vaut la totalité du point."
+      ]
+    }
+  ]
+}

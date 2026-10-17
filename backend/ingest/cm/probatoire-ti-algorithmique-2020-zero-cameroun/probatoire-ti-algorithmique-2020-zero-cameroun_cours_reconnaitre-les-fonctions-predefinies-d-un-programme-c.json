@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-reconnaitre-les-fonctions-predefinies-d-un-programme-c-printf-scanf-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Reconnaître les fonctions prédéfinies d'un programme C (printf, scanf)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C : fonctions",
+    "duree_estimee_min": 22,
+    "tags": [
+      "fonction prédéfinie",
+      "printf",
+      "scanf",
+      "main"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un programme C, certaines fonctions sont fournies toutes faites et d'autres sont écrites par le programmeur. `main` est écrite par toi, `printf` ne l'est pas. Savoir les distinguer évite une erreur classique : citer `main` comme fonction prédéfinie. Cette distinction se lit directement dans le code, à condition de savoir quoi chercher."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une fonction et un appel de fonction",
+        "Connaître la directive `#include`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Fonction prédéfinie ou fonction du programmeur",
+      "contenu_markdown": "Une **fonction prédéfinie** est fournie par une bibliothèque : on l'**appelle** sans l'écrire. Une **fonction définie par le programmeur** est écrite dans le programme, avec son corps entre accolades.\n\n| | Fonction prédéfinie | Fonction du programmeur |\n|---|---|---|\n| Où est son code ? | dans une bibliothèque | dans le programme |\n| Comment la reconnaître ? | seulement appelée : `nom(arguments);` | définie : `type nom(paramètres) { ... }` |\n| Exemples | `printf`, `scanf`, `sqrt`, `strlen` | `main`, `carre` |\n\nLes deux fonctions les plus courantes de `stdio.h` :\n\n- `printf(\"format\", valeurs)` : affiche ; le format contient des codes comme `%d` (entier), `%f` (réel), `%c` (caractère) ;\n- `scanf(\"format\", &variable)` : lit au clavier ; le `&` donne l'adresse de la variable à remplir.\n\nLes instructions du langage (`while`, `for`, `if`, `return`) ne sont pas des fonctions, même si elles se ressemblent à l'oeil."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le programme étudié (lignes 5, 6 et 13 : `printf(...)`, `scanf(...)`, `printf(...)`), identifier deux fonctions prédéfinies.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les appels de fonctions",
+          "justification": "Un appel s'écrit : nom, parenthèses, arguments",
+          "resultat_markdown": "`main`, `printf`, `scanf`"
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les fonctions définies dans le programme",
+          "justification": "`main` (ligne 2) a son corps dans le programme : le programmeur l'écrit",
+          "resultat_markdown": "`main` est exclue"
+        },
+        {
+          "numero": 3,
+          "action": "Retenir les fonctions fournies par `stdio.h`",
+          "justification": "`printf` et `scanf` n'ont pas de corps dans le programme",
+          "resultat_markdown": "`printf` (lignes 5 et 13) et `scanf` (ligne 6)"
+        }
+      ],
+      "conclusion_markdown": "Les fonctions prédéfinies du programme sont `printf` et `scanf`, de la bibliothèque `stdio.h`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `main`",
+          "pourquoi_faux": "`main` est écrite dans le programme : son corps est entre les accolades des lignes 2 et 14. Elle n'est fournie par aucune bibliothèque.",
+          "correction_markdown": "Une fonction prédéfinie est appelée, jamais définie dans le programme."
+        },
+        {
+          "erreur_markdown": "Citer `while` ou `for`",
+          "pourquoi_faux": "Ce sont des instructions de structure du langage, pas des fonctions : elles n'ont pas de parenthèses d'appel avec arguments.",
+          "correction_markdown": "Une fonction se reconnaît à son nom suivi d'arguments entre parenthèses et d'un point-virgule."
+        },
+        {
+          "erreur_markdown": "Oublier le `&` dans `scanf`",
+          "pourquoi_faux": "`scanf(\"%d\", n)` donne la valeur de `n` au lieu de son adresse : le programme écrit à un endroit imprévisible de la mémoire.",
+          "correction_markdown": "Pour un nombre ou un caractère, écrire `&n`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le programme `int carre(int x) { return x * x; }` suivi de `int main(void) { printf(\"%d %.1f\\n\", carre(5), sqrt(16.0)); return 0; }`, classer `main`, `printf`, `carre` et `sqrt`.",
+          "solution_markdown": "On cherche si le corps de chaque fonction est écrit dans le programme.\n\n- `carre` : définie par le programmeur (elle a un corps, `return x * x;`) ;\n- `main` : définie par le programmeur ;\n- `printf` : prédéfinie, de `stdio.h` ;\n- `sqrt` : prédéfinie, de `math.h`.\n\nCompilé avec `-lm` et exécuté, le programme complet (avec `#include <stdio.h>` et `#include <math.h>`) affiche `25 4.0` : $5^2 = 25$ et $\\sqrt{16} = 4$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Expliquer chaque élément de `scanf(\"%lf,%d\", &X, &n);` et dire ce qu'il faut taper au clavier pour X = 2,5 et n = 4.",
+          "solution_markdown": "- `scanf` : fonction de `stdio.h` qui lit au clavier ;\n- `\"%lf,%d\"` : le format. `%lf` lit un réel de type `double`, la virgule est un caractère **attendu littéralement** dans la saisie, `%d` lit un entier ;\n- `&X` et `&n` : les adresses des variables à remplir, dans l'ordre des codes de format.\n\nPour X = 2,5 et n = 4, on tape `2.5,4` : le point décimal (notation anglo-saxonne), puis la virgule, puis 4. En tapant `2 4` (avec un espace), `scanf` lit X puis ne trouve pas la virgule attendue : il s'arrête, et `n` garde une valeur indéterminée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Prévoir l'affichage de `printf(\"%d %f %c\\n\", 5, 2.5, 'A');` et expliquer le rôle de chaque code de format.",
+          "solution_markdown": "Chaque code de format est remplacé, dans l'ordre, par l'argument correspondant :\n\n- `%d` affiche l'entier 5 ;\n- `%f` affiche le réel 2.5 avec 6 chiffres après la virgule, soit `2.500000` ;\n- `%c` affiche le caractère `A`.\n\nL'affichage est `5 2.500000 A` (vérifié à l'exécution). Le `\\n` final provoque un retour à la ligne. Si le nombre de codes de format ne correspond pas au nombre d'arguments, ou si le type d'un argument ne correspond pas à son code, le résultat est faux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction prédéfinie est fournie par une bibliothèque et seulement appelée dans le programme.",
+        "`printf` et `scanf` viennent de `stdio.h` ; `main` est écrite par le programmeur.",
+        "`while`, `for` et `if` sont des instructions, pas des fonctions.",
+        "`scanf` demande l'adresse des variables : `&n`.",
+        "Au probatoire, la bonne réponse type est « `printf` et `scanf` », avec le numéro des lignes."
+      ]
+    }
+  ]
+}

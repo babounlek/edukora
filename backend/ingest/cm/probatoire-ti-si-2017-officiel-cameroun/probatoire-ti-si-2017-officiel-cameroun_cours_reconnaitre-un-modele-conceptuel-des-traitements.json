@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-reconnaitre-un-modele-conceptuel-des-traitements-ti-si-2017",
+  "meta": {
+    "titre": "Reconnaître un modèle conceptuel des traitements (MCT)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des traitements",
+    "duree_estimee_min": 20,
+    "tags": [
+      "MCT",
+      "MERISE",
+      "traitement",
+      "niveaux d'abstraction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex3-q11a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu reçois un schéma avec des cercles, des pentagones et des rectangles à deux compartiments. Pas d'attributs, pas de cardinalités. De quoi s'agit-il ? Un coup d'oeil sur les symboles suffit à nommer un schéma MERISE si tu connais le code."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la différence entre donnée et traitement",
+        "Connaître les trois niveaux MERISE"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les modèles de traitements MERISE",
+      "contenu_markdown": "MERISE propose trois modèles de **traitements**, un par niveau :\n\n- **MCT** (Modèle Conceptuel des Traitements) : QUE fait l'organisation ? Symboles : événements, synchronisations, opérations, résultats.\n- **MOT** (Modèle Organisationnel des Traitements) : QUI le fait, OÙ, QUAND (postes, lieux, délais).\n- **MPT** (Modèle Physique des Traitements) : COMMENT (programmes et matériel).\n\n**Test rapide** : des entités, des attributs, des cardinalités : MCD. Des cercles, des flèches, des rectangles à deux compartiments : MCT."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Examiner le schéma de l'énoncé (cercles « demande d'achat », « Facturation », « Paiement », rectangles « Article destocké » et « opération ») et donner le nom de cette représentation (question 11.a du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les symboles",
+          "justification": "On regarde les formes : cercles, pentagones, rectangles à deux compartiments, flèches.",
+          "resultat_markdown": "événements/résultats, synchronisations, opérations"
+        },
+        {
+          "numero": 2,
+          "action": "Chercher des symboles de données",
+          "justification": "Aucune entité, aucun attribut, aucune cardinalité n'apparaît.",
+          "resultat_markdown": "ce n'est pas un MCD"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le modèle de traitements",
+          "justification": "Des événements qui déclenchent des opérations qui émettent des résultats : c'est la description du MCT.",
+          "resultat_markdown": "modèle de traitements"
+        },
+        {
+          "numero": 4,
+          "action": "Préciser le niveau",
+          "justification": "Le schéma décrit ce que fait l'organisation sans dire qui, où, quand ni comment.",
+          "resultat_markdown": "niveau conceptuel"
+        }
+      ],
+      "conclusion_markdown": "Cette représentation est un MCT, Modèle Conceptuel des Traitements."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « MCD »",
+          "pourquoi_faux": "Le MCD décrit les données (entités, associations, cardinalités), pas les actions.",
+          "correction_markdown": "Chercher les symboles : événements et opérations signalent un MCT."
+        },
+        {
+          "erreur_markdown": "Répondre « organigramme »",
+          "pourquoi_faux": "Un organigramme représente la hiérarchie des postes, pas l'enchaînement des opérations.",
+          "correction_markdown": "Retenir le vocabulaire MERISE."
+        },
+        {
+          "erreur_markdown": "Oublier le niveau",
+          "pourquoi_faux": "« Modèle de traitements » est incomplet : MCT, MOT et MPT existent.",
+          "correction_markdown": "Préciser conceptuel."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quels symboles caractérisent un MCT ?",
+          "solution_markdown": "1. Événements (cercles).\n2. Synchronisations (pentagones).\n3. Opérations (rectangles à deux compartiments).\n4. Résultats (cercles)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Schéma A : des rectangles avec des attributs reliés par des ellipses portant 0,N et 1,1. Schéma B : des cercles, des pentagones, des rectangles à deux compartiments. Nomme chaque schéma.",
+          "solution_markdown": "1. Schéma A : entités, associations et cardinalités : MCD.\n2. Schéma B : événements, synchronisations, opérations : MCT."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le MCT de la vente d'articles devient un MOT. Quelles informations ajoutes-tu ?",
+          "solution_markdown": "1. Le poste de travail qui exécute chaque opération (caissier, magasinier).\n2. Le lieu (caisse, magasin).\n3. Le moment et le délai (à l'ouverture, dans l'heure).\n4. Le mode (manuel ou automatique).\n5. Le MOT répond donc à qui, où, quand ; le MCT ne répondait qu'à quoi."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le MCT est le modèle conceptuel des traitements : il décrit ce qui est fait.",
+        "Événements, synchronisations, opérations et résultats sont ses symboles.",
+        "Pas d'entité ni de cardinalité dans un MCT.",
+        "MOT : qui, où, quand. MPT : comment.",
+        "Au probatoire TI, nommer le schéma vaut 0,5 pt : un nom exact et une justification suffisent."
+      ]
+    }
+  ]
+}

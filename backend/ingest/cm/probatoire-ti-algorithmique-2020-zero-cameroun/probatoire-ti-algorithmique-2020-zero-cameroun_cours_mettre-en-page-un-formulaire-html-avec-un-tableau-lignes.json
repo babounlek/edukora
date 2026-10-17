@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-mettre-en-page-un-formulaire-html-avec-un-tableau-lignes-colonnes-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Mettre en page un formulaire HTML avec un tableau (lignes, colonnes, colspan)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Formulaires et tableaux HTML",
+    "duree_estimee_min": 30,
+    "tags": [
+      "tableau HTML",
+      "formulaire HTML",
+      "colspan",
+      "balise form"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire bien présenté aligne ses étiquettes et ses champs en colonnes. En HTML, la façon la plus simple d'obtenir cet alignement est de placer le formulaire dans un tableau. C'est ce que l'épreuve te demande : lire une figure, compter les lignes et les colonnes, et écrire le code. Cette compétence vaut beaucoup de points, parce qu'elle mobilise tout ce que tu sais des balises."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises `table`, `tr`, `td`",
+        "Connaître les éléments d'un formulaire (`input`, `form`)",
+        "Savoir ouvrir et fermer correctement les balises"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un formulaire dans un tableau",
+      "contenu_markdown": "Structure générale :\n\n```html\n<form action=\"script\" method=\"post\">\n  <table border=\"0\">\n    <tr> <td>étiquette</td> <td><input type=\"text\" name=\"champ\"></td> </tr>\n    ...\n  </table>\n</form>\n```\n\n| Balise ou attribut | Rôle |\n|---|---|\n| `form` | regroupe les champs ; `action` = script qui reçoit les données, `method` = `get` ou `post` |\n| `table` | le tableau ; `border=\"0\"` supprime les traits |\n| `tr` | une ligne |\n| `td` | une cellule |\n| `colspan=\"2\"` | la cellule occupe deux colonnes (titre, bouton) |\n| `name` (sur chaque champ) | identifiant de la valeur transmise |\n\n**Méthode.** (1) Compter les lignes de la figure, une par rangée. (2) Pour chaque ligne, placer l'étiquette dans la première cellule et le champ dans la seconde. (3) Pour un élément qui occupe toute la largeur, utiliser `colspan`. (4) Donner un `name` à chaque champ. (5) Vérifier que chaque `<tr>` et chaque `<td>` est fermé."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code HTML d'un formulaire dont la figure comporte un titre « Formulaire de collecte des données. », un champ Nom, un champ Adresse et un bouton Valider, en utilisant un tableau de 4 lignes et 2 colonnes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les lignes de la figure",
+          "justification": "Titre, Nom, Adresse, bouton : quatre rangées",
+          "resultat_markdown": "4 lignes `tr`"
+        },
+        {
+          "numero": 2,
+          "action": "Prévoir la ligne du titre",
+          "justification": "Le titre occupe toute la largeur du tableau",
+          "resultat_markdown": "`<td colspan=\"2\"><h1>...</h1></td>`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire les lignes Nom et Adresse",
+          "justification": "Étiquette dans la première cellule, champ dans la seconde",
+          "resultat_markdown": "`<td>Nom :</td><td><input type=\"text\" name=\"nom\"></td>`, de même pour l'adresse"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la ligne du bouton",
+          "justification": "Le bouton occupe les deux colonnes",
+          "resultat_markdown": "`<td colspan=\"2\"><input type=\"submit\" value=\"Valider\"></td>`"
+        },
+        {
+          "numero": 5,
+          "action": "Envelopper le tout dans un formulaire et une page",
+          "justification": "Les champs doivent être dans `form` pour être transmis",
+          "resultat_markdown": "`<form action=\"traitement.php\" method=\"post\">` autour du tableau, dans `body`"
+        }
+      ],
+      "conclusion_markdown": "Le code complet comporte les balises `html`, `head`, `body`, un `form` et un `table` de 4 lignes et 2 colonnes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'attribut `name` des champs",
+          "pourquoi_faux": "Sans `name`, la valeur saisie n'est pas transmise au script de traitement.",
+          "correction_markdown": "Chaque champ porte un `name`."
+        },
+        {
+          "erreur_markdown": "Placer le tableau en dehors de la balise `form`",
+          "pourquoi_faux": "Les champs ne font alors partie d'aucun formulaire, et le bouton `submit` n'envoie rien.",
+          "correction_markdown": "`form` enveloppe le tableau (ou se place entre `table` et `td`, mais jamais à côté)."
+        },
+        {
+          "erreur_markdown": "Compter une ligne de moins ou de plus",
+          "pourquoi_faux": "Le sujet impose le nombre de lignes : le titre et le bouton comptent chacun pour une ligne.",
+          "correction_markdown": "Compte les rangées visibles sur la figure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le code d'un formulaire de connexion avec un tableau de 2 lignes et 2 colonnes : Identifiant (texte) et Mot de passe (masqué).",
+          "solution_markdown": "Deux lignes, chacune avec une étiquette et un champ :\n\n```html\n<form action=\"connexion.php\" method=\"post\">\n  <table border=\"0\">\n    <tr>\n      <td>Identifiant :</td>\n      <td><input type=\"text\" name=\"identifiant\"></td>\n    </tr>\n    <tr>\n      <td>Mot de passe :</td>\n      <td><input type=\"password\" name=\"mdp\"></td>\n    </tr>\n  </table>\n</form>\n```\n\nLe champ `type=\"password\"` masque les caractères saisis."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Ajouter au formulaire précédent une troisième ligne contenant un bouton « Se connecter » centré sur toute la largeur.",
+          "solution_markdown": "On ajoute une ligne dont l'unique cellule fusionne les deux colonnes avec `colspan=\"2\"` et dont le contenu est centré avec `align=\"center\"` :\n\n```html\n    <tr>\n      <td colspan=\"2\" align=\"center\">\n        <input type=\"submit\" value=\"Se connecter\">\n      </td>\n    </tr>\n```\n\nLe tableau comporte alors 3 lignes et 2 colonnes. Sans `colspan`, la cellule du bouton n'occuperait que la première colonne, et le bouton serait aligné à gauche : c'est ce que montre le rendu d'un test dans un navigateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire le code d'un formulaire d'inscription à 5 lignes et 2 colonnes : Nom (texte), Sexe (deux boutons radio), Pays (liste Cameroun, Gabon), Commentaire (zone de 3 lignes), puis une dernière ligne avec un bouton Envoyer dans la première cellule et un bouton Effacer dans la seconde.",
+          "solution_markdown": "```html\n<form action=\"inscription.php\" method=\"post\">\n  <table border=\"0\">\n    <tr>\n      <td>Nom :</td>\n      <td><input type=\"text\" name=\"nom\"></td>\n    </tr>\n    <tr>\n      <td>Sexe :</td>\n      <td>\n        <input type=\"radio\" name=\"sexe\" value=\"M\"> Masculin\n        <input type=\"radio\" name=\"sexe\" value=\"F\"> Féminin\n      </td>\n    </tr>\n    <tr>\n      <td>Pays :</td>\n      <td>\n        <select name=\"pays\">\n          <option>Cameroun</option>\n          <option>Gabon</option>\n        </select>\n      </td>\n    </tr>\n    <tr>\n      <td>Commentaire :</td>\n      <td><textarea name=\"com\" rows=\"3\" cols=\"30\"></textarea></td>\n    </tr>\n    <tr>\n      <td><input type=\"submit\" value=\"Envoyer\"></td>\n      <td><input type=\"reset\" value=\"Effacer\"></td>\n    </tr>\n  </table>\n</form>\n```\n\nCe code a été affiché dans un navigateur : le tableau comporte bien 5 lignes et le formulaire contient 2 boutons radio. Les deux boutons radio partagent le même `name`, ce qui les rend exclusifs. Aucune ligne n'utilise `colspan`, puisque la dernière ligne place un bouton dans chaque cellule."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour un formulaire en tableau : une ligne `tr` par rangée de la figure, étiquette puis champ dans deux `td`.",
+        "`colspan=\"2\"` fait occuper deux colonnes à un titre ou à un bouton.",
+        "Chaque champ porte un `name` et se trouve à l'intérieur de `form`.",
+        "`border=\"0\"` supprime les traits du tableau.",
+        "Au probatoire, cette question vaut 3 points : compte les lignes, ferme toutes les balises et n'oublie ni `form` ni `name`."
+      ]
+    }
+  ]
+}

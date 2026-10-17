@@ -1,0 +1,161 @@
+{
+  "epreuve_source": "probatoire-a-c-d-informatique-2015-officiel-cameroun.html",
+  "numero_exercice": "1",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "A, C, D",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2015,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": 7,
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 1 (7 points) : Algorithme et programmation**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Donner la structure de base d'un document HTML. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nUn document HTML est un fichier texte dont les balises s'emboîtent selon un squelette fixe : une balise racine qui contient deux blocs, l'en-tête (informations sur la page, non affichées) et le corps (contenu affiché dans le navigateur) ; pour décrire cette structure, écris les balises dans l'ordre d'imbrication, ferme chacune d'elles et dis ce que contient chaque bloc.\n\nUn document HTML (fichier d'extension `.html` ou `.htm`) a la structure suivante :\n\n```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Titre de la page</title>\n  </head>\n  <body>\n    Contenu affiché dans la fenêtre du navigateur\n  </body>\n</html>\n```\n\nRôle de chaque élément :\n\n| Élément | Rôle |\n|---|---|\n| `<!DOCTYPE html>` | Déclare au navigateur que le document est écrit en HTML5. |\n| `<html>` ... `</html>` | Balise racine : elle contient tout le document. |\n| `<head>` ... `</head>` | En-tête : informations sur la page (titre, codage des caractères, feuille de style), non affichées dans la page. |\n| `<title>` ... `</title>` | Titre de la page, affiché dans l'onglet du navigateur. |\n| `<body>` ... `</body>` | Corps : tout ce que l'internaute voit (textes, images, liens, tableaux). |\n\nLes blocs `head` et `body` sont frères : ils sont chacun à l'intérieur de `html`, l'un après l'autre, jamais l'un dans l'autre.\n\n### Piège à éviter\nNe place pas `<title>` dans le corps, ne laisse pas de texte entre `</head>` et `<body>`, et n'oublie aucune balise fermante : une balise ouverte et jamais refermée est l'erreur de structure la plus pénalisée. Ne confonds pas `<head>` (en-tête de la page) et `<h1>` (titre dans la page).\n\n### Conseil\nÉcris le squelette dans cet ordre : ouvre `html`, ouvre `head`, remplis-le, ferme-le, ouvre `body`, remplis-le, ferme-le, ferme `html`. Indente chaque niveau d'imbrication de deux espaces : le correcteur voit tout de suite que la structure est juste.",
+      "themes": [
+        "HTML",
+        "Structure d'un document HTML",
+        "Balises"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q1-1",
+          "competence": "Donner la structure de base d'un document HTML",
+          "contenu_markdown": "Un document HTML est un fichier texte dont les balises s'emboîtent selon un squelette fixe : une balise racine qui contient deux blocs, l'en-tête (informations sur la page, non affichées) et le corps (contenu affiché dans le navigateur) ; pour décrire cette structure, écris les balises dans l'ordre d'imbrication, ferme chacune d'elles et dis ce que contient chaque bloc.",
+          "cours_genere": true,
+          "cours_id": "cours-structure-de-base-d-un-document-html-probatoire-acd-2015"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Énoncer en deux lignes le rôle d'un attribut dans une balise HTML et donner sa syntaxe minimale. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir le rôle et la syntaxe d'un attribut HTML, énonce son rôle en une ou deux phrases, donne la syntaxe générale en nommant chaque partie, puis illustre-la par un exemple.\n\nUn attribut se place toujours dans la balise ouvrante, après le nom de la balise et séparé de lui par un espace, sous la forme nom=\"valeur\" ; il sert à préciser ou à modifier le comportement ou l'aspect de la balise ; pour répondre, énonce son rôle en une ou deux phrases, donne la syntaxe générale avec les parties nommées, puis illustre-la d'un exemple.\n\n**Rôle (deux lignes).** Un attribut est une information complémentaire écrite dans la balise ouvrante. Il précise ou modifie le comportement ou l'aspect de la balise (adresse d'une cible, source d'une image, taille, couleur, bordure).\n\n**Syntaxe minimale :**\n\n```html\n<balise attribut=\"valeur\">contenu</balise>\n```\n\nLe nom de l'attribut, le signe `=`, puis la valeur entre guillemets, le tout à l'intérieur de la balise ouvrante. Plusieurs attributs se séparent par des espaces.\n\n**Exemples :**\n\n```html\n<a href=\"contact.html\">Contact</a>\n<img src=\"photo.jpg\" width=\"200\" height=\"100\" alt=\"Photo de classe\">\n<table border=\"1\">...</table>\n```\n\nDans le premier exemple, `a` est la balise, `href` l'attribut et `contact.html` sa valeur : l'attribut indique la page cible du lien. Dans le deuxième, `src` donne le fichier de l'image, `width` et `height` ses dimensions en pixels, `alt` le texte de remplacement.\n\n### Piège à éviter\nNe place jamais un attribut dans la balise fermante (`</a href=\"...\">` est faux) et ne confonds pas l'attribut (`href`) avec la balise (`a`) ni avec sa valeur (`contact.html`). Oublier les guillemets ou le signe `=` rend la syntaxe incorrecte.\n\n### Conseil\nDonne toujours un exemple avec balise, attribut et valeur nommés : la syntaxe seule vaut un point, l'exemple commenté qui l'accompagne sécurise le second.",
+      "themes": [
+        "HTML",
+        "Attributs HTML",
+        "Balises"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q2-1",
+          "competence": "Décrire le rôle et la syntaxe d'un attribut HTML",
+          "contenu_markdown": "Pour définir le rôle et la syntaxe d'un attribut HTML, énonce son rôle en une ou deux phrases, donne la syntaxe générale en nommant chaque partie, puis illustre-la par un exemple.",
+          "cours_genere": true,
+          "cours_id": "cours-role-et-syntaxe-d-un-attribut-html-probatoire-acd-2015"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Donner le nom de l'application qui permet une présentation homogène des pages Web en faisant appel à une même définition de style. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour identifier un outil à partir de sa description, isole les mots-clés de la fonction décrite, rapproche-les du rôle de l'outil dans le cours, puis donne son nom officiel avec son sigle développé ; vérifie que le nom répond bien à la fonction et non à un outil voisin.\n\nL'outil demandé est **CSS** (*Cascading Style Sheets*, c'est-à-dire « feuilles de style en cascade »).\n\nUne feuille de style est un fichier (par exemple `style.css`) qui rassemble les règles de présentation (couleurs, polices, marges, alignements). Chaque page du site la relie dans son en-tête :\n\n```html\n<head>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n```\n\nToutes les pages qui appellent ce même fichier partagent donc la même définition de style : modifier une règle dans `style.css` change l'aspect de tout le site d'un seul coup.\n\n### Piège à éviter\nN'écris pas HTML : HTML décrit la structure et le contenu, pas la présentation commune. N'écris pas non plus un éditeur (Dreamweaver, Bloc-notes) : la question demande le langage de style, pas le logiciel qui sert à l'écrire. Strictement, CSS est un langage et non une application, mais c'est la réponse attendue.\n\n### Conseil\nDéveloppe le sigle : « CSS (Cascading Style Sheets, feuilles de style en cascade) ». Pour un seul point, la réponse tient en une ligne, inutile d'en dire davantage.",
+      "themes": [
+        "CSS",
+        "Feuilles de style",
+        "Programmation web statique"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "III"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q3-1",
+          "competence": "Identifier le rôle des feuilles de style CSS",
+          "contenu_markdown": "Pour identifier un outil à partir de sa description, isole les mots-clés de la fonction décrite, rapproche-les du rôle de l'outil dans le cours, puis donne son nom officiel avec son sigle développé ; vérifie que le nom répond bien à la fonction et non à un outil voisin.",
+          "cours_genere": true,
+          "cours_id": "cours-feuille-de-style-css-pour-une-presentation-homogene-probatoire-acd-2015"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** On considère le corps de l'algorithme suivant.\n\n```\nAlgorithme valeur\nVar A, B, C, D : réel ;\nDébut\n  A ← 3\n  C ← 4\n  B ← A + 2 * 5\n  D ← A * B + C\n  A ← D\nFin\n```\n\nQuels seront les contenus des variables A, B, C et D après exécution de cet algorithme ? *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer le contenu des variables après un algorithme, exécute les instructions une à une dans l'ordre en tenant un tableau de suivi dont chaque ligne donne l'état de toutes les variables ; une affectation calcule d'abord le membre de droite avec les valeurs actuelles, range ensuite le résultat dans la variable de gauche en écrasant l'ancienne valeur, et respecte la priorité de la multiplication sur l'addition.\n\n**Déroulement pas à pas** (le point d'interrogation désigne une variable déclarée mais non encore initialisée) :\n\n| Instruction | A | B | C | D |\n|---|---|---|---|---|\n| Après la déclaration | ? | ? | ? | ? |\n| `A ← 3` | 3 | ? | ? | ? |\n| `C ← 4` | 3 | ? | 4 | ? |\n| `B ← A + 2 * 5` | 3 | 13 | 4 | ? |\n| `D ← A * B + C` | 3 | 13 | 4 | 43 |\n| `A ← D` | 43 | 13 | 4 | 43 |\n\n**Détail des calculs :**\n\n- `B ← A + 2 * 5` : la multiplication passe avant l'addition. On calcule d'abord `2 * 5 = 10`, puis `A + 10 = 3 + 10 = 13`. Donc B vaut 13.\n- `D ← A * B + C` : on calcule d'abord `A * B = 3 * 13 = 39`, puis `39 + C = 39 + 4 = 43`. Donc D vaut 43. À cet instant A vaut encore 3.\n- `A ← D` : on recopie la valeur de D (43) dans A. L'ancienne valeur 3 de A est écrasée. D reste inchangé, car l'affectation ne modifie que la variable de gauche.\n\n**Résultat final :** A = 43, B = 13, C = 4, D = 43 (valeurs réelles, donc 43,0 ; 13,0 ; 4,0 ; 43,0 si l'on veut respecter le type `réel`).\n\n### Piège à éviter\nNe calcule pas `A + 2 * 5` de gauche à droite : `(3 + 2) * 5 = 25` donnerait B = 25, puis D = 3 * 25 + 4 = 79, résultats faux. Ne conclus pas non plus que A vaut encore 3 : la dernière ligne l'a écrasé. Enfin, `A ← D` ne change pas D.\n\n### Conseil\nDessine toujours le tableau de suivi, même pour un algorithme de six lignes : une ligne par instruction, une colonne par variable. Les points sont attribués à chaque variable finale correcte, et le tableau montre l'origine de chaque valeur si tu te trompes en route.",
+      "themes": [
+        "Algorithmique",
+        "Affectation",
+        "Trace d'exécution",
+        "Variables"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q4-1",
+          "competence": "Dérouler un algorithme avec un tableau de suivi",
+          "contenu_markdown": "Pour déterminer le contenu des variables après un algorithme, exécute les instructions une à une dans l'ordre en tenant un tableau de suivi dont chaque ligne donne l'état de toutes les variables ; une affectation calcule d'abord le membre de droite avec les valeurs actuelles, range ensuite le résultat dans la variable de gauche en écrasant l'ancienne valeur, et respecte la priorité de la multiplication sur l'addition.",
+          "cours_genere": true,
+          "cours_id": "cours-derouler-un-algorithme-avec-un-tableau-de-suivi-probatoire-acd-2015"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "HTML",
+    "structure d'un document HTML",
+    "attribut",
+    "CSS",
+    "feuille de style",
+    "algorithme",
+    "affectation",
+    "trace d'exécution",
+    "tableau de suivi"
+  ],
+  "incertitudes": [
+    "Pas de corrigé officiel : tout est modèle. Le barème détaillé de la sous-question 1 (2 pts) n'est pas imprimé : la structure html / head (avec title) / body est jugée suffisante, DOCTYPE et meta étant des compléments.",
+    "Question 3 : la réponse retenue est CSS (feuilles de style) ; d'autres corrigés pourraient accepter « feuille de style » ou « CSS » indifféremment. Strictement, CSS est un langage et non une application.",
+    "Question 4 : le texte de la page est dégradé par la reproduction (« var A. B, C, D » lu « Var A, B, C, D » ; flèches d'affectation imprimées sous la forme « <- » lues « ← ») ; le calcul ne dépend pas de ces lectures. La question ne demande pas d'afficher les valeurs : le résultat est donné en contenu final des variables.",
+    "Question 2 : le sujet dit « en deux lignes » ; le rôle est rédigé en deux phrases, la syntaxe et les exemples sont ajoutés en complément.",
+    "L'épreuve ne porte aucune figure (les images de la page sont des icônes du site, ignorées). Durée et coefficient non imprimés, laissés à null."
+  ],
+  "statut": "brouillon"
+}

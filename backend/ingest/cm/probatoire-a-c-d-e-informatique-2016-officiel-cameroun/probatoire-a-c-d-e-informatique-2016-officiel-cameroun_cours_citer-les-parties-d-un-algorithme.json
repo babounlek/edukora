@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-citer-les-parties-d-un-algorithme-probatoire-acde-2016",
+  "meta": {
+    "titre": "Citer les parties d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structure d'un algorithme",
+    "duree_estimee_min": 20,
+    "tags": [
+      "algorithme",
+      "en-tête",
+      "déclarations",
+      "corps",
+      "pseudo-code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-e-informatique-2016-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C, D et E, session 2016 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-e-informatique-2016-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant même de savoir écrire un algorithme, il faut savoir de quoi il est fait. Comme un devoir a une introduction, un développement et une conclusion, un algorithme a une forme fixe. Si tu la connais, tu ne te perds plus devant la feuille blanche."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir définir un algorithme",
+        "Connaître la notion de variable (un nom associé à une valeur en mémoire)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois parties, dans l'ordre d'écriture",
+      "contenu_markdown": "Un algorithme s'écrit de haut en bas en trois parties :\n\n1. **L'en-tête** : le mot `Algorithme` suivi du nom de l'algorithme.\n2. **La partie déclarative** : la liste des objets utilisés, avec leur type. On y trouve la rubrique `Constantes` (valeurs qui ne changent pas) et la rubrique `Variables` (valeurs qui changent).\n3. **Le corps** : les instructions à exécuter, entre `Début` et `Fin`.\n\n```\nAlgorithme nom\nConstantes\n  NOM = valeur\nVariables\n  nom : type\nDébut\n  instructions\nFin\n```\n\nRègle d'or : on déclare avant d'utiliser. Le corps ne peut employer que des objets déjà déclarés.",
+      "variantes": [
+        {
+          "nom": "Découpage en entrée, traitement, sortie",
+          "quand_utiliser": "Quand on analyse le problème avant d'écrire l'algorithme.",
+          "contenu_markdown": "Entrée, traitement et sortie ne sont pas les parties de l'algorithme : ce sont les trois étapes logiques de la résolution, qui se retrouvent à l'intérieur du corps (lecture, calcul, affichage). Si la question demande « les parties qui composent un algorithme », réponds en-tête, déclarations, corps."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer les différentes parties qui composent un algorithme. (Probatoire 2016, question 2, 1 point) On s'appuie sur l'algorithme de la surface d'un rectangle de l'exercice 2 pour repérer chaque partie.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la première ligne",
+          "justification": "L'en-tête est la ligne qui commence par le mot-clé `Algorithme`.",
+          "resultat_markdown": "`Algorithme surface_rectangle` : en-tête, elle donne le nom."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les déclarations",
+          "justification": "Tout ce qui précède `Début` et suit l'en-tête déclare les objets utilisés.",
+          "resultat_markdown": "`Variables L, l, S : réel` : partie déclarative, elle donne les noms et le type des objets."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer le corps",
+          "justification": "Le corps est encadré par `Début` et `Fin`.",
+          "resultat_markdown": "`Début ... Fin` contient les lectures, l'affectation `S ← L * l` et l'affichage."
+        },
+        {
+          "numero": 4,
+          "action": "Nommer et donner le rôle",
+          "justification": "Un correcteur attend le nom de chaque partie et son rôle en quelques mots.",
+          "resultat_markdown": "En-tête : nommer ; déclarations : réserver et typer les objets ; corps : décrire les actions."
+        }
+      ],
+      "conclusion_markdown": "Un algorithme comporte trois parties : l'en-tête, la partie déclarative et le corps."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « entrée, traitement, sortie ».",
+          "pourquoi_faux": "Ce sont les étapes de la résolution d'un problème, pas les parties de la structure d'un algorithme. La question porte sur la forme écrite.",
+          "correction_markdown": "Répondre en-tête, partie déclarative, corps ; les mots entrée, traitement, sortie peuvent servir à décrire le contenu du corps."
+        },
+        {
+          "erreur_markdown": "Compter `Début` et `Fin` comme deux parties.",
+          "pourquoi_faux": "Ces deux mots délimitent une seule zone, le corps ; ce ne sont pas des parties distinctes.",
+          "correction_markdown": "Citer `Début ... Fin` comme bornes du corps."
+        },
+        {
+          "erreur_markdown": "Placer les déclarations après `Début`.",
+          "pourquoi_faux": "Un algorithme déclare ses objets avant d'exécuter la moindre instruction. Une variable déclarée trop tard est inutilisable plus haut.",
+          "correction_markdown": "Toujours écrire dans l'ordre en-tête, déclarations, corps."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Indique, pour chaque ligne de l'algorithme suivant, la partie à laquelle elle appartient.\n\n```\nAlgorithme somme\nVariables\n  a, b, s : entier\nDébut\n  Lire(a)\n  Lire(b)\n  s ← a + b\n  Écrire(s)\nFin\n```",
+          "solution_markdown": "- Ligne 1 `Algorithme somme` : en-tête.\n- Lignes 2 et 3 `Variables a, b, s : entier` : partie déclarative.\n- Lignes 4 à 9, de `Début` à `Fin` : corps (deux lectures, une affectation, un affichage)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'algorithme suivant est mal construit. Repère l'erreur et réécris-le correctement.\n\n```\nAlgorithme double\nDébut\n  Variables n, d : entier\n  Lire(n)\n  d ← 2 * n\n  Écrire(d)\nFin\n```",
+          "solution_markdown": "L'erreur est que la partie déclarative est placée après `Début`, donc dans le corps. Les variables doivent être déclarées avant.\n\n```\nAlgorithme double\nVariables\n  n, d : entier\nDébut\n  Lire(n)\n  d ← 2 * n\n  Écrire(d)\nFin\n```\n\nTest : avec $n = 6$, on obtient $d = 2 \\times 6 = 12$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris l'algorithme complet qui lit le prix hors taxe `ht` d'un article et affiche son prix toutes taxes comprises, avec une TVA de 19,25 % déclarée comme constante. Indique les trois parties puis teste avec `ht` = 10 000.",
+          "solution_markdown": "La TVA ne change jamais : c'est une constante. Le prix TTC se calcule par $ttc = ht \\times (1 + TVA)$.\n\n```\nAlgorithme prix_ttc               <- en-tête\nConstantes                        <- partie déclarative\n  TVA = 0.1925\nVariables\n  ht, ttc : réel\nDébut                             <- corps\n  Lire(ht)\n  ttc ← ht * (1 + TVA)\n  Écrire(\"Prix TTC : \", ttc)\nFin\n```\n\nTest avec `ht` = 10 000 : $ttc = 10\\,000 \\times (1 + 0{,}1925) = 10\\,000 \\times 1{,}1925 = 11\\,925$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un algorithme a trois parties : l'en-tête, la partie déclarative, le corps.",
+        "On déclare avant d'utiliser : constantes et variables précèdent `Début`.",
+        "`Début` et `Fin` bornent le corps, ce ne sont pas deux parties.",
+        "Entrée, traitement, sortie décrivent le contenu du corps, pas la structure de l'algorithme.",
+        "Au Probatoire, cette question vaut un point et vient souvent juste après la définition de l'algorithme. Elle prépare aussi l'exercice d'écriture d'algorithme noté sur 3 points."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-flux-d-un-champ-magnetique-uniforme-a-travers-un-cadre-en-rotation-d-2009",
+  "meta": {
+    "titre": "Flux d'un champ magnétique uniforme à travers un cadre en rotation",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "flux magnétique",
+      "bobine tournante",
+      "champ magnétique uniforme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-PHYSIQUE-2009-CM",
+    "epreuve_titre": "Probatoire Physique, série D, session 2009 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-physique-2009-officiel-cameroun-ex2-q2.2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un alternateur de vélo, un aimant tourne près d'une bobine et allume la lampe. Ce que l'on voit, c'est un courant qui change de sens ; ce qu'il faut calculer, c'est le flux magnétique qui traverse la bobine à chaque instant. C'est la grandeur de départ de tout le chapitre sur l'induction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Le produit scalaire de deux vecteurs",
+        "La valeur d'un champ magnétique en teslas",
+        "La conversion des cm² en m²"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Expression du flux à travers une bobine plane",
+      "contenu_markdown": "Pour une bobine plane de $N$ spires, de surface $S$ chacune, dans un champ uniforme $\\vec B$ :\n$$\\Phi = N\\,\\vec B \\cdot \\vec n\\,S = NBS\\cos\\alpha ,\\qquad \\alpha = (\\vec B, \\vec n).$$\nLe flux est une grandeur algébrique : il change de signe quand la normale $\\vec n$ passe de l'autre côté de la perpendiculaire à $\\vec B$. Pour un cadre qui tourne à la vitesse angulaire constante $\\omega$ avec $\\alpha = 0$ à $t = 0$ : $\\alpha = \\omega t$ et $\\Phi = NBS\\cos(\\omega t)$. Unité : $1$ Wb $= 1$ T $\\cdot$ m$^2$.",
+      "formule_principale": "\\Phi = NBS\\cos\\alpha",
+      "variantes": [
+        {
+          "nom": "Angle mesuré entre B et le plan du cadre",
+          "quand_utiliser": "Si l'énoncé donne l'angle $\\beta$ entre le champ et le plan de la spire",
+          "contenu_markdown": "La normale est perpendiculaire au plan, donc $\\alpha = 90° - \\beta$ et $\\cos\\alpha = \\sin\\beta$ : $\\Phi = NBS\\sin\\beta$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cadre de $N = 1000$ spires ($L = 12$ cm, $\\ell = 10$ cm) tourne à $\\omega = 6{,}28$ rad/s dans un champ uniforme horizontal $B = 0{,}1$ T, avec $\\alpha = (\\vec B, \\vec n) = \\omega t$. Exprimer le flux.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Surface en m²",
+          "justification": "On convertit les centimètres en mètres.",
+          "resultat_markdown": "$S = 0{,}12 \\times 0{,}10 = 0{,}012\\ \\text{m}^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Formule générale",
+          "justification": "$N$ spires, angle entre $\\vec B$ et la normale.",
+          "resultat_markdown": "$\\Phi = NBS\\cos\\alpha$"
+        },
+        {
+          "numero": 3,
+          "action": "Introduire le mouvement",
+          "justification": "$\\alpha = \\omega t$.",
+          "resultat_markdown": "$\\Phi = NBS\\cos(\\omega t)$"
+        },
+        {
+          "numero": 4,
+          "action": "Application numérique",
+          "justification": "$NBS = 1000 \\times 0{,}1 \\times 0{,}012$.",
+          "resultat_markdown": "$\\Phi = 1{,}2\\cos(6{,}28\\,t)$ (Wb)"
+        }
+      ],
+      "conclusion_markdown": "Le flux est $\\Phi(t) = 1{,}2\\cos(6{,}28\\,t)$ en webers, sinusoïdal de période $1$ s."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le nombre de spires $N$.",
+          "pourquoi_faux": "Chacune des $N$ spires est traversée par le même flux : le flux total est $N$ fois plus grand.",
+          "correction_markdown": "$\\Phi = N\\,BS\\cos\\alpha$."
+        },
+        {
+          "erreur_markdown": "Garder $S$ en cm².",
+          "pourquoi_faux": "Le weber suppose $S$ en m² et $B$ en tesla.",
+          "correction_markdown": "$12 \\times 10$ cm² $= 120$ cm² $= 0{,}012$ m²."
+        },
+        {
+          "erreur_markdown": "Écrire $\\sin(\\omega t)$ par habitude.",
+          "pourquoi_faux": "Le choix dépend de la condition initiale et de l'angle choisi : ici $\\alpha = 0$ correspond à un flux maximal, donc un cosinus.",
+          "correction_markdown": "Teste la formule à $t = 0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une spire de $50$ cm² est placée dans un champ uniforme de $0{,}2$ T, la normale faisant $60°$ avec le champ. Calculer le flux ; puis le flux d'une bobine de $200$ spires identiques.",
+          "solution_markdown": "$S = 50 \\times 10^{-4} = 5 \\times 10^{-3}$ m².\n\nUne spire : $\\Phi_1 = BS\\cos 60° = 0{,}2 \\times 5 \\times 10^{-3} \\times 0{,}5 = 5 \\times 10^{-4}$ Wb.\n\nBobine : $\\Phi = 200 \\times 5 \\times 10^{-4} = 0{,}10$ Wb."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine de $500$ spires, de surface $0{,}02$ m² par spire, tourne à $\\omega = 314$ rad/s dans un champ uniforme de $0{,}05$ T avec $\\alpha = \\omega t$. Écrire $\\Phi(t)$ et calculer sa valeur à $t = 5{,}0$ ms.",
+          "solution_markdown": "$NBS = 500 \\times 0{,}05 \\times 0{,}02 = 0{,}50$ Wb, donc $\\Phi(t) = 0{,}50\\cos(314\\,t)$.\n\nÀ $t = 5{,}0 \\times 10^{-3}$ s : $\\omega t = 314 \\times 5{,}0 \\times 10^{-3} = 1{,}570$ rad, très proche de $\\pi/2$. Alors $\\cos(1{,}570) = 7{,}96 \\times 10^{-4}$ et $\\Phi \\approx 4 \\times 10^{-4}$ Wb, pratiquement nul : le cadre est parallèle aux lignes de champ."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un cadre carré de $8$ cm de côté, $100$ spires, est dans un champ uniforme $B = 0{,}15$ T. Son plan fait un angle de $30°$ avec les lignes de champ. Calculer le flux, en précisant l'angle $(\\vec B, \\vec n)$.",
+          "solution_markdown": "La normale est perpendiculaire au plan : $\\alpha = (\\vec B, \\vec n) = 90° - 30° = 60°$.\n\n$S = 0{,}08^2 = 6{,}4 \\times 10^{-3}$ m². $\\Phi = NBS\\cos 60° = 100 \\times 0{,}15 \\times 6{,}4 \\times 10^{-3} \\times 0{,}5 = 0{,}048$ Wb.\n\nOn aurait trouvé le même résultat avec $NBS\\sin 30°$, car $\\cos 60° = \\sin 30°$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\Phi = NBS\\cos\\alpha$ avec $\\alpha$ entre $\\vec B$ et la normale au cadre.",
+        "Convertis la surface en m² : le weber est un T$\\cdot$m².",
+        "Pour un cadre qui tourne à $\\omega$ constante, $\\alpha = \\omega t$ et $\\Phi = NBS\\cos\\omega t$.",
+        "Teste ta formule à $t = 0$ avec l'énoncé : flux maximal ou nul ?",
+        "Au probatoire, cette question ouvre toute l'étude de l'induction dans un cadre tournant."
+      ]
+    }
+  ]
+}

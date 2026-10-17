@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-distinguer-les-instructions-simples-d-un-algorithme-lecture-ecriture-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Distinguer les instructions simples d'un algorithme (lecture, écriture, affectation)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Instructions et structures de contrôle",
+    "duree_estimee_min": 20,
+    "tags": [
+      "instruction simple",
+      "affectation",
+      "lecture",
+      "écriture"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme est une suite d'ordres donnés à l'ordinateur. Certains ordres sont élémentaires (lire, afficher, calculer et ranger), d'autres organisent l'exécution (répéter, choisir). Savoir les distinguer, c'est lire un algorithme comme un professeur : en repérant ce qui se passe à chaque ligne. Cette distinction se retrouve dans presque toutes les épreuves."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme écrit en pseudo-code",
+        "Connaître la notion de variable",
+        "Connaître la différence entre déclaration et instruction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Instruction simple, structure de contrôle, déclaration",
+      "contenu_markdown": "On distingue trois sortes de lignes dans un algorithme.\n\n| Catégorie | Exemples | Remarque |\n|---|---|---|\n| Instruction simple | `Lire (N)`, `F ← 1`, `Ecrire (F)` | une seule action élémentaire |\n| Structure de contrôle | `Si ... Alors ... FinSi`, `Pour ... FinPour`, `Tant que ... FinTantQue` | contient d'autres instructions |\n| Déclaration | `Var N, F : Entier`, `Const MAX = 10` | ne s'exécute pas, décrit les données |\n\nLes trois **instructions simples** :\n\n- la **lecture** `Lire (variable)` : l'utilisateur saisit une valeur, rangée dans la variable ;\n- l'**écriture** `Ecrire (expression)` : affichage d'un texte ou d'une valeur ;\n- l'**affectation** `variable ← expression` : calcul de l'expression et rangement du résultat dans la variable.\n\n`Début` et `Fin` délimitent l'algorithme : ce sont des mots-clés, pas des instructions simples."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme `test` (lecture de `N`, `F ← 1`, boucle `Pour i Allant de 1 à N Faire F ← F × i FinPour`, puis `Ecrire (F)`), identifier trois instructions simples de types différents.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Classer chaque ligne",
+          "justification": "Chaque ligne est une déclaration, une instruction simple ou une structure de contrôle",
+          "resultat_markdown": "`Var ...` déclaration ; `Ecrire`, `Lire`, `F ← 1` simples ; `Pour ... FinPour` structure"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir un représentant de chaque type d'instruction simple",
+          "justification": "Il faut trois types différents : lecture, affectation, écriture",
+          "resultat_markdown": "`Lire (N)`, `F ← 1`, `Ecrire (F)`"
+        },
+        {
+          "numero": 3,
+          "action": "Écarter la boucle",
+          "justification": "`Pour ... FinPour` contient `F ← F × i` : ce n'est pas une action unique",
+          "resultat_markdown": "La boucle n'est pas citée"
+        }
+      ],
+      "conclusion_markdown": "Les trois instructions simples de types différents sont la lecture `Lire (N)`, l'affectation `F ← 1` et l'écriture `Ecrire (F)`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `Pour ... FinPour` comme instruction simple",
+          "pourquoi_faux": "La boucle contient d'autres instructions et se répète : c'est une structure de contrôle.",
+          "correction_markdown": "Une instruction simple se termine en une seule étape."
+        },
+        {
+          "erreur_markdown": "Citer la déclaration `Var N, F, i : Entier`",
+          "pourquoi_faux": "Une déclaration ne s'exécute pas, elle réserve des variables.",
+          "correction_markdown": "Les déclarations se placent avant `Début` ; les instructions sont entre `Début` et `Fin`."
+        },
+        {
+          "erreur_markdown": "Citer deux affectations pour avoir deux « types »",
+          "pourquoi_faux": "`F ← 1` et `F ← F × i` sont du même type : l'affectation.",
+          "correction_markdown": "Trois types différents : lecture, écriture, affectation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme suivant, relever les instructions simples et les classer par type : `Ecrire (\"Longueur ?\") ; Lire (L) ; Ecrire (\"Largeur ?\") ; Lire (l) ; A ← L × l ; Ecrire (A)`.",
+          "solution_markdown": "Chaque ligne est une instruction simple :\n\n- **écritures** : `Ecrire (\"Longueur ?\")`, `Ecrire (\"Largeur ?\")`, `Ecrire (A)` (3 instructions) ;\n- **lectures** : `Lire (L)`, `Lire (l)` (2 instructions) ;\n- **affectation** : `A ← L × l` (1 instruction).\n\nIl y a 6 instructions simples et aucune structure de contrôle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On ajoute à l'algorithme précédent, avant le dernier `Ecrire`, la structure `Si A > 100 Alors Ecrire (\"Grand\") FinSi`. Quelles sont les nouvelles lignes ? Combien d'instructions simples s'exécutent pour L = 5 et l = 4 ?",
+          "solution_markdown": "**Nouvelles lignes.** `Si A > 100 Alors ... FinSi` est une structure de contrôle (instruction conditionnelle) : elle contient l'écriture `Ecrire (\"Grand\")`, qui est une instruction simple.\n\n**Exécution pour L = 5 et l = 4.** On calcule $A = 5 \\times 4 = 20$. La condition $20 > 100$ est fausse, donc `Ecrire (\"Grand\")` n'est pas exécutée. Les instructions simples exécutées sont : 2 lectures, 1 affectation, 2 écritures de messages et l'écriture de `A`, soit **6** instructions simples (le test du `Si` est une structure de contrôle, il n'est pas compté)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une suite d'instructions simples qui échange les valeurs de deux variables `a` et `b`, après les avoir lues. Dérouler avec `a = 3` et `b = 8`. Pourquoi une variable auxiliaire est-elle nécessaire ?",
+          "solution_markdown": "```\nLire (a) ;\nLire (b) ;\ntmp ← a ;\na ← b ;\nb ← tmp ;\nEcrire (a, b) ;\n```\n\nDéroulement avec `a = 3` et `b = 8` :\n\n| Instruction | a | b | tmp |\n|---|---|---|---|\n| `Lire (a)`, `Lire (b)` | 3 | 8 | ? |\n| `tmp ← a` | 3 | 8 | 3 |\n| `a ← b` | 8 | 8 | 3 |\n| `b ← tmp` | 8 | 3 | 3 |\n\nÀ la fin, `a` vaut 8 et `b` vaut 3 : les valeurs sont échangées. Sans `tmp`, la ligne `a ← b` écraserait la valeur de `a` avant qu'elle ait pu être recopiée dans `b` : les deux variables vaudraient 8. L'échange utilise 2 lectures, 3 affectations et 1 écriture : trois types d'instructions simples."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les trois instructions simples sont la lecture, l'écriture et l'affectation.",
+        "`Pour`, `Si` et `Tant que` sont des structures de contrôle, jamais des instructions simples.",
+        "Les déclarations (`Var`, `Const`) ne s'exécutent pas : elles ne sont pas des instructions.",
+        "Trois types différents veut dire une lecture, une écriture et une affectation.",
+        "Au probatoire, la question « identifier des instructions simples » ouvre souvent le travail sur un algorithme qui sera ensuite exécuté et transformé."
+      ]
+    }
+  ]
+}

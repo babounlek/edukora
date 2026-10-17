@@ -1,0 +1,136 @@
+{
+  "cours_id": "cours-representer-un-algorithme-a-boucle-pour-par-un-algorigramme-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Représenter un algorithme à boucle Pour par un algorigramme",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Représentation des algorithmes",
+    "duree_estimee_min": 26,
+    "tags": [
+      "algorigramme",
+      "organigramme",
+      "symboles",
+      "boucle Pour"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q4.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme peut s'écrire en pseudo-code, mais aussi se dessiner. L'algorigramme, ou organigramme, montre le chemin suivi par l'exécution avec des formes et des flèches : on voit d'un coup d'oeil où l'on boucle et où l'on décide. L'épreuve te demande de passer du texte au dessin, et le dessin obéit à des conventions précises que ce cours résume."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme en pseudo-code",
+        "Connaître les structures conditionnelle et itérative (`Si`, `Pour`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Symboles normalisés et schéma de la boucle Pour",
+      "contenu_markdown": "| Symbole | Forme | Utilisation |\n|---|---|---|\n| Début, Fin | ovale | une seule entrée ou une seule sortie |\n| Entrée, sortie | parallélogramme | `Lire`, `Ecrire` |\n| Traitement | rectangle | affectation, calcul |\n| Test | losange | une entrée, deux sorties étiquetées Oui et Non |\n\nLes symboles sont reliés par des **flèches** qui donnent le sens de l'exécution.\n\n**Une boucle `Pour i Allant de a à b Faire (corps) FinPour`** se dessine en quatre temps :\n\n1. un rectangle `i ← a` (initialisation du compteur) ;\n2. un losange `i ≤ b ?` ;\n3. sur la sortie **Oui** : le corps, puis le rectangle `i ← i + 1`, puis une flèche qui revient **au losange** ;\n4. sur la sortie **Non** : la suite de l'algorithme.\n\n**Une conditionnelle `Si c Alors A Sinon B`** se dessine par un losange `c ?` dont les deux sorties mènent à A (Oui) et à B (Non), puis se rejoignent."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Représenter l'algorigramme de l'algorithme `test` : `Ecrire (message) ; Lire (N) ; F ← 1 ; Pour i Allant de 1 à N Faire F ← F × i FinPour ; Ecrire (F)`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir les symboles de début",
+          "justification": "L'algorithme commence par un ovale, puis les entrées-sorties en parallélogrammes",
+          "resultat_markdown": "(Début), /Ecrire (message)/, /Lire (N)/"
+        },
+        {
+          "numero": 2,
+          "action": "Dessiner les initialisations",
+          "justification": "Les affectations sont des traitements : rectangles",
+          "resultat_markdown": "[F ← 1], [i ← 1]"
+        },
+        {
+          "numero": 3,
+          "action": "Dessiner le test de la boucle",
+          "justification": "La boucle `Pour` de 1 à N continue tant que `i ≤ N`",
+          "resultat_markdown": "Losange `i ≤ N ?` avec deux sorties"
+        },
+        {
+          "numero": 4,
+          "action": "Dessiner le corps sur la sortie Oui",
+          "justification": "Le corps multiplie, puis le compteur augmente de 1, puis on retourne au test",
+          "resultat_markdown": "[F ← F × i], [i ← i + 1], flèche vers le losange"
+        },
+        {
+          "numero": 5,
+          "action": "Dessiner la sortie Non et la fin",
+          "justification": "Quand `i > N`, on affiche le résultat puis on termine",
+          "resultat_markdown": "/Ecrire (F)/, (Fin)"
+        }
+      ],
+      "conclusion_markdown": "L'algorigramme comporte 2 ovales, 3 parallélogrammes, 4 rectangles et 1 losange, avec une flèche de retour qui forme la boucle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la flèche de retour vers le losange",
+          "pourquoi_faux": "Sans elle, le dessin s'exécute une seule fois : ce n'est plus une boucle.",
+          "correction_markdown": "Le corps de la boucle se termine toujours par une flèche vers le test."
+        },
+        {
+          "erreur_markdown": "Placer `i ← i + 1` avant `F ← F × i`",
+          "pourquoi_faux": "Le premier tour multiplierait par 2 au lieu de 1 : le résultat serait faux, par exemple $2 \\times 3 \\times \\dots \\times (N+1)$ au lieu de $N!$.",
+          "correction_markdown": "Garde l'ordre du pseudo-code : corps, puis incrémentation."
+        },
+        {
+          "erreur_markdown": "Ne pas étiqueter les sorties du losange",
+          "pourquoi_faux": "On ne sait plus quelle flèche mène à la boucle et laquelle à la fin.",
+          "correction_markdown": "Écris Oui et Non sur les deux sorties."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Représenter l'algorigramme de : `Lire (a) ; Lire (b) ; S ← a + b ; Ecrire (S)`.",
+          "solution_markdown": "Algorithme sans test ni boucle : les symboles se suivent dans l'ordre.\n\n```\n   (Début)\n      |\n  /Lire (a)/\n      |\n  /Lire (b)/\n      |\n  [S ← a + b]\n      |\n  /Ecrire (S)/\n      |\n    (Fin)\n```\n\nLes parenthèses représentent les ovales, les barres obliques les parallélogrammes et les crochets le rectangle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Représenter l'algorigramme de : `Lire (n) ; Si n mod 2 = 0 Alors Ecrire (\"pair\") Sinon Ecrire (\"impair\") FinSi`.",
+          "solution_markdown": "Le `Si ... Sinon` donne un losange à deux sorties qui se rejoignent avant la fin.\n\n```\n        (Début)\n           |\n       /Lire (n)/\n           |\n      <n mod 2 = 0 ?>\n       Oui /     \\ Non\n /Ecrire (\"pair\")/ /Ecrire (\"impair\")/\n           \\     /\n            (Fin)\n```\n\nLes chevrons `< >` représentent le losange du test. Les deux branches affichent un message différent puis se rejoignent à l'ovale Fin."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Représenter l'algorigramme de : `Lire (N) ; S ← 0 ; Pour i Allant de 1 à N Faire S ← S + i FinPour ; Ecrire (S)`. Donner le nombre de passages par le losange pour N = 3.",
+          "solution_markdown": "On applique le schéma de la boucle `Pour` : initialisations, test, corps, incrémentation avec retour.\n\n```\n         (Début)\n            |\n        /Lire (N)/\n            |\n         [S ← 0]\n            |\n         [i ← 1]\n            |\n   +-----> <i ≤ N ?> --Non--> /Ecrire (S)/ --> (Fin)\n   |         |\n   |        Oui\n   |         |\n   |     [S ← S + i]\n   |         |\n   +---- [i ← i + 1]\n```\n\nLa flèche de retour part de `i ← i + 1` et rejoint l'entrée du losange.\n\n**Passages par le losange pour N = 3.** `i` vaut 1, 2, 3 : le test est vrai trois fois (trois tours), puis `i` vaut 4 et le test est faux. Le losange est donc traversé **4 fois**, soit $N + 1$ fois. `S` prend les valeurs 1, 3, 6 et l'algorithme affiche 6."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ovale pour Début et Fin, parallélogramme pour Lire et Ecrire, rectangle pour les affectations, losange pour les tests.",
+        "Une boucle `Pour` se dessine : initialisation, losange, corps, incrémentation, retour au losange.",
+        "Étiquette toujours les deux sorties du losange : Oui et Non.",
+        "Une boucle de N tours traverse le losange N + 1 fois.",
+        "Au probatoire, l'algorigramme vaut environ 1 point et se note sur les symboles, les flèches et le retour de boucle."
+      ]
+    }
+  ]
+}

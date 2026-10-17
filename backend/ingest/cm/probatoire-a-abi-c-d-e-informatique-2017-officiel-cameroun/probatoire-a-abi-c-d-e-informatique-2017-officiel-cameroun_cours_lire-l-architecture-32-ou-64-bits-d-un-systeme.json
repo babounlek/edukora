@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-lire-l-architecture-32-ou-64-bits-d-un-systeme-probatoire-acde-2017",
+  "meta": {
+    "titre": "Lire l'architecture 32 ou 64 bits d'un système d'exploitation",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : architecture et système d'exploitation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "32 bits",
+      "64 bits",
+      "système d'exploitation",
+      "longueur d'instruction",
+      "mémoire adressable"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex3-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Au moment de télécharger un logiciel, on te demande souvent : « version 32 bits ou 64 bits ? ». Ce choix n'est pas un détail : il dépend de ton système d'exploitation et détermine la mémoire que ta machine peut réellement utiliser. L'examen te demande de lire cette information dans une fiche technique, ce qui se fait en quelques secondes si l'on sait où regarder."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un bit et un octet",
+        "Savoir ce qu'est un système d'exploitation",
+        "Connaître les puissances de 2"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le nombre de bits donne la taille des mots traités",
+      "contenu_markdown": "Un système d'exploitation « 32 bits » ou « 64 bits » traite des mots (instructions, adresses) de 32 ou de 64 bits à la fois. La mention se lit **à côté du nom du système** : « Windows 8.1 64 bits » a une architecture de 64 bits ; 8.1 est sa version.\n\n| | 32 bits | 64 bits |\n|---|---|---|\n| Taille d'un mot | 32 bits | 64 bits |\n| Mémoire adressable | $2^{32}$ octets $= 4\\,294\\,967\\,296$ octets, soit 4 Gio | $2^{64}$ octets, soit 16 Eio en théorie |\n| Processeur requis | 32 ou 64 bits | 64 bits uniquement |\n\n$$\\text{mémoire adressable} = 2^{n}\\ \\text{octets pour des adresses de } n \\text{ bits}$$\n\nCompatibilité : un système 32 bits fonctionne sur un processeur 64 bits, mais un système 64 bits exige un processeur 64 bits. Un logiciel 64 bits ne s'installe pas sur un système 32 bits.",
+      "formule_principale": "\\text{mémoire adressable} = 2^{n}\\ \\text{octets pour des adresses de } n \\text{ bits}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Quelle est la longueur d'instruction du système d'exploitation de l'ordinateur dont la fiche indique « Windows 8.1 64 bits » ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne du système dans la fiche",
+          "justification": "Le système d'exploitation est la dernière ligne de la fiche.",
+          "resultat_markdown": "« Windows 8.1 64 bits »."
+        },
+        {
+          "numero": 2,
+          "action": "Isoler la mention de l'architecture",
+          "justification": "La mention en bits est celle qui suit le nom et la version du système.",
+          "resultat_markdown": "Le nombre accolé à « bits » est 64."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter le numéro de version",
+          "justification": "Le nombre 8.1 désigne la version de Windows, pas la taille des mots.",
+          "resultat_markdown": "8.1 n'est pas la réponse."
+        },
+        {
+          "numero": 4,
+          "action": "Donner le sens de la réponse",
+          "justification": "64 bits signifie des mots de 64 bits et une mémoire adressable très supérieure aux 4 Gio d'un système 32 bits.",
+          "resultat_markdown": "Le système traite des instructions de 64 bits."
+        }
+      ],
+      "conclusion_markdown": "La longueur d'instruction du système est de **64 bits**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « 8.1 ».",
+          "pourquoi_faux": "Le nombre 8.1 est le numéro de version de Windows ; l'architecture est le nombre suivi de « bits ».",
+          "correction_markdown": "Chercher le nombre accolé au mot « bits »."
+        },
+        {
+          "erreur_markdown": "Répondre « 4 Go » ou « 500 Go ».",
+          "pourquoi_faux": "Ces valeurs sont la mémoire vive et la capacité du disque, mesurées en octets. La longueur d'instruction se mesure en bits.",
+          "correction_markdown": "Vérifier l'unité : bits pour l'architecture."
+        },
+        {
+          "erreur_markdown": "Penser qu'un système 64 bits va deux fois plus vite qu'un système 32 bits.",
+          "pourquoi_faux": "Le nombre de bits donne la taille des mots et la mémoire adressable, pas la vitesse. Un système 64 bits est utile surtout quand la mémoire dépasse 4 Gio.",
+          "correction_markdown": "Associer 64 bits à une plus grande capacité d'adressage, non à une vitesse doublée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une fiche indique « Windows 10 32 bits ». Donner l'architecture du système et la version de Windows.",
+          "solution_markdown": "Architecture : **32 bits** (nombre accolé au mot « bits »). Version : **10**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur possède 8 Go de mémoire vive et un système d'exploitation 32 bits. Peut-il utiliser toute sa mémoire ? Justifier par un calcul.",
+          "solution_markdown": "Avec des adresses de 32 bits, le système adresse au plus $2^{32} = 4\\,294\\,967\\,296$ octets. En gibioctets : $2^{32} \\div 2^{30} = 2^{2} = 4$ Gio.\n\nLe système ne peut donc utiliser qu'environ **4 Gio** sur les 8 Go installés. Pour exploiter toute la mémoire, il faut installer un système 64 bits (si le processeur est 64 bits)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comparer la mémoire adressable en gibioctets d'un système 32 bits et d'un système 64 bits. Combien de fois la seconde dépasse-t-elle la première ?",
+          "solution_markdown": "32 bits : $2^{32}$ octets $= 2^{32} \\div 2^{30} = 2^{2} = 4$ Gio.\n\n64 bits : $2^{64}$ octets $= 2^{64} \\div 2^{30} = 2^{34}$ Gio $= 17\\,179\\,869\\,184$ Gio (soit 16 Eio).\n\nRapport : $\\dfrac{2^{64}}{2^{32}} = 2^{32} = 4\\,294\\,967\\,296$. L'espace d'adressage 64 bits est donc environ **4,3 milliards de fois** plus grand : il n'est jamais atteint dans la pratique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le nombre de bits d'un système (32 ou 64) donne la taille des mots qu'il traite.",
+        "Il se lit à côté du nom du système : « Windows 8.1 64 bits » est du 64 bits, 8.1 est la version.",
+        "Adresses de $n$ bits : $2^n$ octets de mémoire adressable ; 32 bits donne 4 Gio.",
+        "Un système 64 bits exige un processeur 64 bits ; l'inverse n'est pas vrai.",
+        "Au Probatoire, la question sur la longueur d'instruction ou l'architecture du système se répond en une valeur suivie de l'unité : 64 bits."
+      ]
+    }
+  ]
+}

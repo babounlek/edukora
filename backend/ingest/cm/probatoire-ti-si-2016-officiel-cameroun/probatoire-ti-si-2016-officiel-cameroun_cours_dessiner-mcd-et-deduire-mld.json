@@ -1,0 +1,150 @@
+{
+ "cours_id": "cours-dessiner-mcd-et-deduire-mld-ti-si-2016",
+ "meta": {
+  "titre": "Dessiner le MCD d'un cas de gestion et en déduire le modèle logique",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Modèle conceptuel des données",
+  "duree_estimee_min": 35,
+  "tags": [
+   "MCD",
+   "cardinalités",
+   "MLD",
+   "clé étrangère",
+   "MERISE"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q9-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Le MCD est le plan de la base de données. Une cardinalité mal placée, et c'est une règle de gestion qui change : un client doit-il avoir au moins un contrat ? un véhicule peut-il appartenir à deux personnes ? Ce cours te donne la méthode pour dessiner le MCD complet, puis le traduire en tables."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Entités, attributs et identifiants",
+    "Associations",
+    "Notion de table et de clé primaire"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Cardinalités et passage au modèle logique",
+   "contenu_markdown": "**Cardinalité** (min,max) d'une patte : nombre minimal et maximal de fois qu'une occurrence **de l'entité placée à côté** participe à l'association. Min : 0 (facultatif) ou 1 (obligatoire). Max : 1 ou N.\n\n**Lecture dans les deux sens** : pour chaque patte, pose la question « une occurrence de cette entité est reliée à combien d'occurrences de l'autre, au moins et au plus ? ».\n\n**Passage au MLD :**\n\n- chaque entité devient une table, l'identifiant devient clé primaire ;\n- association (x,1) - (y,N) : la **clé étrangère** va dans la table du côté (x,1) ;\n- association (N,N) : nouvelle **table de liaison**, clé primaire = les deux clés étrangères (plus les propriétés de l'association) ;\n- cardinalité minimale 0 du côté de la clé étrangère : cette clé peut être vide.",
+   "variantes": [
+    {
+     "nom": "Convention de lecture",
+     "quand_utiliser": "Pour ne pas inverser les cardinalités",
+     "contenu_markdown": "Dans MERISE, la cardinalité écrite près d'une entité compte les participations de cette entité. Dans UML, la multiplicité se lit du côté opposé : ne pas mélanger les deux conventions."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Une bibliothèque : un adhérent emprunte des livres à une date donnée ; un livre appartient à une catégorie (une catégorie regroupe plusieurs livres). Construire le MCD avec cardinalités et en déduire le MLD.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Entités et identifiants",
+     "justification": "Trois entités se détachent.",
+     "resultat_markdown": "ADHERENT (NumAdh, Nom), LIVRE (NumLivre, Titre), CATEGORIE (NumCat, Libelle)."
+    },
+    {
+     "numero": 2,
+     "action": "Associations",
+     "justification": "Deux verbes : emprunter, appartenir.",
+     "resultat_markdown": "EMPRUNTER : ADHERENT - LIVRE avec la propriété DateEmprunt ; APPARTENIR : LIVRE - CATEGORIE."
+    },
+    {
+     "numero": 3,
+     "action": "Cardinalités de EMPRUNTER",
+     "justification": "Un adhérent peut n'avoir rien emprunté ou plusieurs livres ; un livre peut n'avoir jamais été emprunté ou l'avoir été plusieurs fois.",
+     "resultat_markdown": "ADHERENT (0,N) ; LIVRE (0,N)."
+    },
+    {
+     "numero": 4,
+     "action": "Cardinalités de APPARTENIR",
+     "justification": "Un livre appartient à une seule catégorie ; une catégorie regroupe zéro ou plusieurs livres.",
+     "resultat_markdown": "LIVRE (1,1) ; CATEGORIE (0,N)."
+    },
+    {
+     "numero": 5,
+     "action": "Passage au MLD",
+     "justification": "(N,N) devient table de liaison ; (1,1) donne une clé étrangère du côté livre.",
+     "resultat_markdown": "CATEGORIE (NumCat, Libelle) ; LIVRE (NumLivre, Titre, #NumCat) ; ADHERENT (NumAdh, Nom) ; EMPRUNTER (#NumAdh, #NumLivre, DateEmprunt)."
+    }
+   ],
+   "conclusion_markdown": "Le MCD comporte trois entités et deux associations dont une (N,N) ; le MLD compte quatre tables, dont la table de liaison EMPRUNTER."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Inverser les cardinalités",
+     "pourquoi_faux": "La cardinalité près d'une entité décrit les participations de cette entité, pas celles de l'autre.",
+     "correction_markdown": "Relire chaque patte avec une phrase complète et le bon sujet."
+    },
+    {
+     "erreur_markdown": "Mettre une clé étrangère des deux côtés d'une association (1,N)",
+     "pourquoi_faux": "Une seule clé étrangère, placée du côté (x,1), suffit. Deux clés créeraient une redondance.",
+     "correction_markdown": "Placer la clé du côté « un »."
+    },
+    {
+     "erreur_markdown": "Oublier la table de liaison d'une association (N,N)",
+     "pourquoi_faux": "Une clé étrangère dans l'une des tables ne pourrait contenir qu'une seule valeur par ligne et perdrait des liens.",
+     "correction_markdown": "Créer la table de liaison avec la clé composée des deux identifiants."
+    },
+    {
+     "erreur_markdown": "Oublier la date de l'emprunt dans la table de liaison",
+     "pourquoi_faux": "La propriété de l'association disparaîtrait.",
+     "correction_markdown": "Placer toutes les propriétés de l'association dans la table de liaison."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une école : un élève appartient à une seule classe ; une classe compte plusieurs élèves, au moins un. Donner les cardinalités et le MLD.",
+     "solution_markdown": "1. ELEVE : (1,1) : un élève est dans exactement une classe.\n2. CLASSE : (1,N) : une classe compte au moins un élève.\n3. Association (1,1) - (1,N) : clé étrangère du côté élève.\n4. MLD : CLASSE (NumClasse, Libelle) ; ELEVE (NumEleve, Nom, #NumClasse)."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Un médecin reçoit des patients en consultation ; une consultation a une date et un diagnostic. Un patient peut consulter plusieurs médecins, un médecin reçoit plusieurs patients. Donner le MCD et le MLD.",
+     "solution_markdown": "1. Entités : MEDECIN (NumMed, Nom), PATIENT (NumPat, Nom).\n2. Association CONSULTER entre MEDECIN et PATIENT avec les propriétés DateConsult et Diagnostic.\n3. Cardinalités : MEDECIN (0,N) ; PATIENT (0,N).\n4. (N,N) : table de liaison.\n5. MLD : MEDECIN (NumMed, Nom) ; PATIENT (NumPat, Nom) ; CONSULTER (#NumMed, #NumPat, DateConsult, Diagnostic).\n6. Remarque : si un patient peut consulter le même médecin plusieurs fois, la date doit entrer dans la clé primaire : (#NumMed, #NumPat, DateConsult)."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un hôtel loue des chambres à des clients : un client réserve plusieurs chambres à des dates différentes, chaque réservation a une date d'arrivée et un nombre de nuits ; une chambre a un numéro et un nombre de lits. Donner le MCD, les cardinalités et le MLD, puis dire où apparaît la date d'arrivée.",
+     "solution_markdown": "1. Entités : CLIENT (NumCli, Nom), CHAMBRE (NumCh, NbLits).\n2. Association RESERVER (CLIENT, CHAMBRE) avec les propriétés DateArrivee et NbNuits.\n3. Cardinalités : CLIENT (0,N) ; CHAMBRE (0,N).\n4. Association (N,N) : table de liaison.\n5. MLD : CLIENT (NumCli, Nom) ; CHAMBRE (NumCh, NbLits) ; RESERVER (#NumCli, #NumCh, DateArrivee, NbNuits), clé primaire (NumCli, NumCh, DateArrivee) car une même chambre peut être réservée plusieurs fois par le même client.\n6. La date d'arrivée apparaît sur l'association, puis dans la table de liaison, jamais dans CLIENT ni CHAMBRE."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Cardinalité = (min,max) de participation de l'entité voisine à l'association.",
+    "Lis chaque patte dans les deux sens avec une phrase complète.",
+    "(x,1) - (y,N) : clé étrangère du côté (x,1). (N,N) : table de liaison.",
+    "Les propriétés d'une association (date, quantité) vont dans la table de liaison.",
+    "Au Probatoire TI, le MCD vaut 3 points : entités, associations et cardinalités sont notées séparément."
+   ]
+  }
+ ]
+}

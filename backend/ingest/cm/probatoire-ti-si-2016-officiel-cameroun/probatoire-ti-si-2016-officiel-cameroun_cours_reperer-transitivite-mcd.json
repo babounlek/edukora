@@ -1,0 +1,138 @@
+{
+ "cours_id": "cours-reperer-transitivite-mcd-ti-si-2016",
+ "meta": {
+  "titre": "Repérer une transitivité (association redondante) dans un MCD",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Modèle conceptuel des données",
+  "duree_estimee_min": 28,
+  "tags": [
+   "MCD",
+   "transitivité",
+   "redondance",
+   "contrainte d'intégrité",
+   "cycle"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q10-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Ce MCD a trois entités reliées en triangle. Une association dit exactement ce que les deux autres disent déjà. Si on la garde sans réfléchir, la base pourra se contredire : le véhicule appartient à X selon un chemin et à Y selon l'autre. Ce cours t'apprend à voir les triangles et à décider."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "MCD : entités, associations, cardinalités",
+    "Passage au modèle logique (clés étrangères)"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Repérer le cycle, puis décider",
+   "contenu_markdown": "Il y a **transitivité** (redondance) quand une association se déduit en **composant** d'autres associations. On la repère en cherchant les **cycles** : trois entités reliées en boucle.\n\n**Décision :**\n\n| Situation | Décision |\n|---|---|\n| Les cardinalités garantissent que le lien direct est toujours déductible (tous les liens (1,1)) | Supprimer l'association redondante |\n| Le lien direct porte une information que les autres ne garantissent pas (cardinalité minimale 0, lien facultatif) | Conserver l'association et ajouter une **contrainte d'intégrité** |\n\nLa contrainte s'exprime par une phrase (« le propriétaire d'un véhicule couvert est le signataire du contrat ») que l'on contrôle ensuite, par exemple avec une requête SQL qui ne doit renvoyer aucune ligne.",
+   "variantes": [
+    {
+     "nom": "Vérifier la déductibilité",
+     "quand_utiliser": "Pour décider de supprimer ou non",
+     "contenu_markdown": "Prendre un chemin A - B - C et demander : à partir de chaque occurrence de A, le chemin mène-t-il toujours à une seule occurrence de C ? Si oui sans exception (cardinalités (1,1)), l'association directe est supprimable."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Dans le MCD de CAR_INSURANCE, repérer la transitivité entre CLIENT, CONTRAT et VEHICULE et décider du sort de l'association APPARTENIR.",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Chercher les cycles",
+     "justification": "Trois entités sont reliées deux à deux : SIGNER, COUVRIR, APPARTENIR.",
+     "resultat_markdown": "Cycle CLIENT - CONTRAT - VEHICULE."
+    },
+    {
+     "numero": 2,
+     "action": "Écrire le chemin de composition",
+     "justification": "En partant du véhicule : COUVRIR donne le contrat, SIGNER donne son signataire.",
+     "resultat_markdown": "VEHICULE, CONTRAT, CLIENT : le signataire du contrat."
+    },
+    {
+     "numero": 3,
+     "action": "Comparer avec l'association directe",
+     "justification": "APPARTENIR donne le propriétaire du véhicule. Les deux renseignements coïncident si le contrat couvre un véhicule du signataire.",
+     "resultat_markdown": "APPARTENIR est déductible : transitivité."
+    },
+    {
+     "numero": 4,
+     "action": "Décider",
+     "justification": "COUVRIR est (0,N) côté véhicule : un véhicule peut être connu sans contrat et son propriétaire doit rester identifié.",
+     "resultat_markdown": "On conserve APPARTENIR et on pose la contrainte « signataire = propriétaire »."
+    }
+   ],
+   "conclusion_markdown": "Le MCD présente une transitivité : APPARTENIR se déduit de SIGNER et COUVRIR. Elle est conservée, avec la contrainte d'intégrité signataire = propriétaire."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Répondre « pas de transitivité » faute de doublon strict",
+     "pourquoi_faux": "Une transitivité n'est pas une copie conforme : c'est une association déductible d'un chemin. Il faut chercher les cycles.",
+     "correction_markdown": "Parcourir le schéma à la recherche de triangles."
+    },
+    {
+     "erreur_markdown": "Supprimer systématiquement l'association redondante",
+     "pourquoi_faux": "Si l'un des liens est facultatif, la suppression fait perdre de l'information dans certains cas (véhicule sans contrat).",
+     "correction_markdown": "Examiner les cardinalités minimales avant de supprimer."
+    },
+    {
+     "erreur_markdown": "Garder l'association sans contrôle",
+     "pourquoi_faux": "Sans contrainte, les deux chemins peuvent se contredire.",
+     "correction_markdown": "Écrire la contrainte et prévoir une requête de contrôle."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Dans un MCD, ELEVE (1,1) INSCRIRE CLASSE (1,N), CLASSE (1,1) APPARTENIR ETABLISSEMENT (1,N) et ELEVE (1,1) FREQUENTER ETABLISSEMENT (1,N). Y a-t-il une transitivité ? Que faire ?",
+     "solution_markdown": "1. Cycle : ELEVE - CLASSE - ETABLISSEMENT - ELEVE.\n2. Chemin ELEVE, CLASSE, ETABLISSEMENT : chaque élève est dans une seule classe et chaque classe dans un seul établissement, donc l'établissement est unique et toujours défini (liens (1,1)).\n3. FREQUENTER est donc entièrement déductible : transitivité.\n4. Décision : supprimer FREQUENTER."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Dans le cas d'un lycée, un enseignant enseigne dans des classes, un élève est dans une classe, et une association DIRIGER relie directement l'enseignant principal à ses élèves. Peut-on supprimer DIRIGER ?",
+     "solution_markdown": "1. Chemin ENSEIGNANT, CLASSE, ELEVE : donne tous les élèves des classes de l'enseignant, y compris ceux dont il n'est pas le principal.\n2. DIRIGER (enseignant principal) est plus précis que ce chemin : il n'est pas déductible.\n3. Conclusion : pas de transitivité ici, on conserve DIRIGER."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un schéma relationnel garde la clé étrangère redondante NumEtab dans ELEVE, en plus du chemin ELEVE, CLASSE, ETABLISSEMENT. Écrire une requête SQL qui détecte les élèves dont l'établissement diffère de celui de leur classe, et dire ce qu'elle renvoie sur le jeu d'essai suivant.\n\n```sql\nCREATE TABLE ETABLISSEMENT (NumEtab INTEGER PRIMARY KEY, NomEtab VARCHAR(30));\nCREATE TABLE CLASSE (NumClasse INTEGER PRIMARY KEY, Libelle VARCHAR(20), NumEtab INTEGER NOT NULL REFERENCES ETABLISSEMENT(NumEtab));\nCREATE TABLE ELEVE (NumEleve INTEGER PRIMARY KEY, Nom VARCHAR(30), NumClasse INTEGER NOT NULL REFERENCES CLASSE(NumClasse), NumEtab INTEGER NOT NULL REFERENCES ETABLISSEMENT(NumEtab));\nINSERT INTO ETABLISSEMENT VALUES (1,'Lycée de Bonabéri'),(2,'Lycée de Nylon');\nINSERT INTO CLASSE VALUES (10,'1ère TI',1),(20,'1ère C',2);\nINSERT INTO ELEVE VALUES (100,'MBARGA',10,1),(101,'TCHOUA',20,2),(102,'FOTSO',10,2);\n```",
+     "solution_markdown": "1. Condition de contrôle : l'établissement mémorisé dans ELEVE doit être celui de la classe.\n2. On joint ELEVE à CLASSE et on garde les lignes où les deux établissements diffèrent.\n\n```sql\nSELECT E.NumEleve, E.Nom, E.NumEtab AS EtabEleve, C.NumEtab AS EtabClasse\nFROM ELEVE E JOIN CLASSE C ON C.NumClasse = E.NumClasse\nWHERE E.NumEtab <> C.NumEtab;\n```\n\n3. Résultat obtenu sur le jeu d'essai :\n\n| NumEleve | Nom | EtabEleve | EtabClasse |\n|---|---|---|---|\n| 102 | FOTSO | 2 | 1 |\n\n4. L'élève 102 est dans une classe de l'établissement 1 mais déclare l'établissement 2 : la requête révèle l'incohérence créée par la redondance. Sur une base cohérente, elle ne renvoie aucune ligne."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Cherche les cycles : trois entités reliées en boucle signalent une transitivité possible.",
+    "Une association est redondante si elle se déduit toujours du chemin qui contourne.",
+    "Liens tous (1,1) : on supprime. Lien facultatif : on garde et on pose une contrainte.",
+    "La contrainte se contrôle avec une requête qui doit renvoyer zéro ligne.",
+    "Au Probatoire TI, la question sur les transitivités vaut 0,5 point : repérer le cycle et nommer l'association déductible suffit."
+   ]
+  }
+ ]
+}

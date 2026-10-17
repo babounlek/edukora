@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-citer-les-algorithmes-standards-de-tri-d-un-tableau-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Citer les algorithmes standards de tri d'un tableau",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorithmes de tri",
+    "duree_estimee_min": 30,
+    "tags": [
+      "tri par sélection",
+      "tri à bulles",
+      "tri par insertion",
+      "tableau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Classer les élèves par ordre alphabétique, les notes de la plus petite à la plus grande, les produits par prix : trier est l'une des opérations les plus courantes en informatique. Plusieurs algorithmes standards existent, avec leurs principes propres. Les connaître par leur nom et par leur idée rapporte des points faciles et prépare les questions où il faut dérouler l'un d'eux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir manipuler un tableau et ses indices",
+        "Connaître la boucle `Pour` et la condition `Si`",
+        "Savoir échanger le contenu de deux variables avec une variable auxiliaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois tris standards et leur principe",
+      "contenu_markdown": "Un **algorithme de tri** range les éléments d'un tableau $T[1..N]$ dans l'ordre croissant (ou décroissant). Trois algorithmes sont à connaître.\n\n| Algorithme | Principe | Nombre de comparaisons |\n|---|---|---|\n| Tri par sélection | à chaque étape $i$, chercher le minimum de $T[i..N]$ et l'échanger avec $T[i]$ | $\\dfrac{N(N-1)}{2}$ |\n| Tri à bulles | comparer les voisins $T[j]$ et $T[j+1]$ et les échanger s'ils sont mal rangés ; recommencer tant qu'il y a eu un échange | jusqu'à $\\dfrac{N(N-1)}{2}$ |\n| Tri par insertion | prendre chaque élément et l'insérer à sa place dans la partie déjà triée à gauche | variable |\n\nTri par sélection en pseudo-code :\n\n```\nPour i Allant de 1 à N - 1 Faire\n    imin ← i\n    Pour j Allant de i + 1 à N Faire\n        Si T[j] < T[imin] Alors\n            imin ← j\n        FinSi\n    FinPour\n    Si imin ≠ i Alors\n        tmp ← T[i] ; T[i] ← T[imin] ; T[imin] ← tmp\n    FinSi\nFinPour\n```\n\nLe tri rapide (quicksort) et le tri fusion sont des algorithmes plus rapides pour de grands tableaux. Pour répondre à une question de cours, donne le nom exact et le principe en une phrase.",
+      "formule_principale": "\\text{comparaisons du tri par sélection} = \\dfrac{N(N-1)}{2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer deux noms d'algorithmes standards de tri et donner le principe de chacun.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir deux algorithmes dont tu connais le principe",
+          "justification": "On répond sûrement avec les plus classiques",
+          "resultat_markdown": "Tri par sélection et tri à bulles"
+        },
+        {
+          "numero": 2,
+          "action": "Formuler le principe du tri par sélection",
+          "justification": "On cherche le minimum de la partie non triée puis on l'échange avec le premier élément de cette partie",
+          "resultat_markdown": "Après $k$ étapes, les $k$ plus petits éléments sont à leur place"
+        },
+        {
+          "numero": 3,
+          "action": "Formuler le principe du tri à bulles",
+          "justification": "On compare les voisins et on les échange s'ils sont mal rangés",
+          "resultat_markdown": "Sur `5, 2, 4` : `(5, 2)` échangés donne `2, 5, 4`, puis `(5, 4)` échangés donne `2, 4, 5`"
+        }
+      ],
+      "conclusion_markdown": "Le tri par sélection et le tri à bulles sont deux algorithmes standards de tri, chacun défini par son principe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « tri croissant » ou « tri alphabétique »",
+          "pourquoi_faux": "Ce sont des ordres de classement, pas des algorithmes : ils disent ce qu'on obtient, pas comment on l'obtient.",
+          "correction_markdown": "Donne un nom d'algorithme : sélection, bulles, insertion, rapide, fusion."
+        },
+        {
+          "erreur_markdown": "Citer la recherche dichotomique",
+          "pourquoi_faux": "La dichotomie cherche une valeur dans un tableau déjà trié, elle ne trie pas.",
+          "correction_markdown": "Un algorithme de tri modifie l'ordre des éléments ; un algorithme de recherche ne les déplace pas."
+        },
+        {
+          "erreur_markdown": "Confondre tri par sélection et tri à bulles",
+          "pourquoi_faux": "La sélection fait un seul échange par étape (le minimum trouvé), les bulles échangent des voisins à plusieurs reprises.",
+          "correction_markdown": "Retiens un mot par algorithme : sélection = minimum, bulles = voisins."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Appliquer le tri par sélection au tableau `T = [7, 3, 9, 1]` (ordre croissant) en indiquant le tableau après chaque étape.",
+          "solution_markdown": "On repère à chaque étape le minimum de la partie non triée et on l'échange avec la première case de cette partie.\n\n- Étape 1 ($i = 1$) : le minimum de `[7, 3, 9, 1]` est 1, en case 4. Échange des cases 1 et 4 : `[1, 3, 9, 7]`.\n- Étape 2 ($i = 2$) : le minimum de `[3, 9, 7]` est 3, déjà en case 2. Aucun échange : `[1, 3, 9, 7]`.\n- Étape 3 ($i = 3$) : le minimum de `[9, 7]` est 7, en case 4. Échange des cases 3 et 4 : `[1, 3, 7, 9]`.\n\nLe tableau trié est `[1, 3, 7, 9]` après $N - 1 = 3$ étapes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Appliquer le tri à bulles au tableau `T = [4, 1, 3, 2]` : donner le tableau après chaque passe complète et dire combien de passes sont nécessaires.",
+          "solution_markdown": "Une passe compare tous les couples de voisins, de gauche à droite.\n\n- Passe 1 : `(4, 1)` échangés donne `[1, 4, 3, 2]` ; `(4, 3)` échangés donne `[1, 3, 4, 2]` ; `(4, 2)` échangés donne `[1, 3, 2, 4]`.\n- Passe 2 : `(1, 3)` sont bien rangés ; `(3, 2)` échangés donne `[1, 2, 3, 4]` ; `(3, 4)` sont bien rangés.\n- Passe 3 : aucun échange, le tableau est trié : l'algorithme s'arrête.\n\nIl faut donc 3 passes, dont la dernière sert seulement à constater que tout est en ordre. Le grand élément 4 « remonte comme une bulle » vers la fin dès la première passe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Combien de comparaisons le tri par sélection effectue-t-il sur un tableau de $N$ éléments ? Calculer pour $N = 10$ puis pour $N = 10000$.",
+          "solution_markdown": "À l'étape $i$ (de 1 à $N-1$), la boucle intérieure compare $T[j]$ à $T[imin]$ pour $j$ allant de $i+1$ à $N$, soit $N - i$ comparaisons. Le total est :\n\n$$\\sum_{i=1}^{N-1} (N - i) = (N-1) + (N-2) + \\dots + 1 = \\frac{N(N-1)}{2}$$\n\n- Pour $N = 10$ : $\\dfrac{10 \\times 9}{2} = 45$ comparaisons.\n- Pour $N = 10000$ : $\\dfrac{10000 \\times 9999}{2} = 49\\,995\\,000$ comparaisons.\n\nCe nombre ne dépend pas du contenu du tableau : même trié, le tri par sélection fait toutes ses comparaisons. Multiplier $N$ par 1000 multiplie le travail par environ un million, d'où l'intérêt des tris plus rapides pour les grands tableaux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un algorithme de tri range un tableau dans l'ordre croissant ou décroissant ; les standards sont la sélection, les bulles et l'insertion.",
+        "Sélection : on cherche le minimum et on l'échange. Bulles : on échange les voisins mal rangés.",
+        "Un ordre (« croissant ») ou une recherche (« dichotomique ») n'est jamais un nom d'algorithme de tri.",
+        "Le tri par sélection fait $\\dfrac{N(N-1)}{2}$ comparaisons.",
+        "Au probatoire, la question de cours donne les points sûrs ; la question suivante demande souvent de dérouler l'algorithme sur un petit tableau."
+      ]
+    }
+  ]
+}

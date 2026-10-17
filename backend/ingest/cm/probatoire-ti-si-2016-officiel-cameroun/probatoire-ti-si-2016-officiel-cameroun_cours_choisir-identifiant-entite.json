@@ -1,0 +1,138 @@
+{
+ "cours_id": "cours-choisir-identifiant-entite-ti-si-2016",
+ "meta": {
+  "titre": "Choisir l'identifiant d'une entité : unicité et identifiant artificiel",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Modèle conceptuel des données",
+  "duree_estimee_min": 25,
+  "tags": [
+   "MCD",
+   "identifiant",
+   "clé primaire",
+   "unicité",
+   "identifiant artificiel"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q7-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Deux clients s'appellent « MBARGA Paul ». Comment la compagnie les distingue-t-elle dans sa base ? Chaque entité a besoin d'une étiquette que personne d'autre ne porte : son identifiant. Le bon choix évite les doublons, les confusions et les erreurs de paiement. Ce cours te donne trois tests pour décider."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Notion d'entité et d'attribut",
+    "Notion d'occurrence"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Les trois tests de l'identifiant",
+   "contenu_markdown": "L'**identifiant** d'une entité est un attribut (ou un groupe minimal d'attributs) qui désigne sans ambiguïté chaque occurrence. On le teste ainsi :\n\n1. **Unique** : deux occurrences n'ont jamais la même valeur.\n2. **Non vide** : toute occurrence en possède une.\n3. **Stable** : la valeur ne change pas dans le temps.\n\nSi aucun attribut naturel ne passe les trois tests, on crée un **identifiant artificiel** (numéro, code) attribué à l'enregistrement.\n\nL'identifiant est souligné dans le MCD et deviendra la **clé primaire** de la table au passage au modèle logique.",
+   "variantes": [
+    {
+     "nom": "Identifiant composé",
+     "quand_utiliser": "Quand aucun attribut seul ne suffit mais qu'un groupe convient",
+     "contenu_markdown": "Exemple : le couple (numéro de salle, bâtiment) quand les salles sont numérotées à partir de 1 dans chaque bâtiment. Le groupe doit être minimal : aucun de ses attributs ne doit être superflu."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Déterminer l'identifiant de chaque entité de CAR_INSURANCE : CLIENT (nom, prénom), VEHICULE (numéro, marque, modèle, année), CONTRAT (numéro, type, date), ACCIDENT (numéro, description).",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Chercher un candidat pour VEHICULE",
+     "justification": "L'énoncé donne un numéro, propre à chaque véhicule et attribué une fois pour toutes.",
+     "resultat_markdown": "NumVeh passe les trois tests."
+    },
+    {
+     "numero": 2,
+     "action": "Chercher un candidat pour CONTRAT et ACCIDENT",
+     "justification": "Les contrats ont un numéro, les accidents sont numérotés.",
+     "resultat_markdown": "NumContrat et NumAcc."
+    },
+    {
+     "numero": 3,
+     "action": "Tester nom et prénom pour CLIENT",
+     "justification": "Deux clients peuvent être homonymes (unicité) ; un nom peut changer à un mariage (stabilité).",
+     "resultat_markdown": "Ni nom, ni prénom, ni le couple ne convient."
+    },
+    {
+     "numero": 4,
+     "action": "Créer un identifiant artificiel",
+     "justification": "Le seul moyen sûr de distinguer deux clients est un numéro généré à l'enregistrement.",
+     "resultat_markdown": "NumCli, numéro de client."
+    }
+   ],
+   "conclusion_markdown": "Identifiants : NumVeh, NumContrat, NumAcc ; pour CLIENT, aucun attribut naturel ne convient, on ajoute l'identifiant artificiel NumCli."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Choisir le nom d'une personne comme identifiant",
+     "pourquoi_faux": "Les homonymes violent l'unicité et un changement de nom viole la stabilité.",
+     "correction_markdown": "Créer un numéro ou un code client."
+    },
+    {
+     "erreur_markdown": "Choisir un attribut qui change, comme le numéro de téléphone",
+     "pourquoi_faux": "Un identifiant modifié oblige à corriger toutes les références ailleurs dans la base.",
+     "correction_markdown": "Utiliser un identifiant que rien ne fait varier."
+    },
+    {
+     "erreur_markdown": "Prendre un identifiant composé trop large",
+     "pourquoi_faux": "Un groupe contenant un attribut superflu n'est pas minimal : l'identifiant doit être le plus court possible.",
+     "correction_markdown": "Retirer les attributs qui ne contribuent pas à l'unicité."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Déterminer l'identifiant de l'entité ELEVE (matricule, nom, prénom, date de naissance).",
+     "solution_markdown": "1. Nom, prénom, date de naissance : deux élèves peuvent avoir les trois valeurs identiques, donc pas unique.\n2. Matricule : attribué à l'inscription, unique pour chaque élève, jamais vide, qui ne change pas.\n3. Identifiant retenu : le matricule."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Dans un réseau de trois hôtels, les chambres sont numérotées de 1 à 20 dans chaque hôtel. L'entité CHAMBRE a pour attributs numéro de chambre, nom de l'hôtel, nombre de lits. Déterminer son identifiant.",
+     "solution_markdown": "1. Le numéro de chambre seul n'est pas unique : la chambre 5 existe dans chacun des trois hôtels.\n2. Le couple (nom de l'hôtel, numéro de chambre) est unique ; aucun des deux attributs ne peut être retiré sans perdre l'unicité : il est minimal.\n3. Identifiant composé : (nom de l'hôtel, numéro de chambre).\n4. Autre solution : créer un identifiant artificiel IdChambre (de 1 à 60) ou faire de l'hôtel une entité."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un garage enregistre des clients (nom, téléphone). Le responsable propose le téléphone comme identifiant. Discuter.",
+     "solution_markdown": "1. Unicité : deux clients d'une même famille peuvent partager un numéro, et un client peut en avoir plusieurs.\n2. Non vide : un client sans téléphone ne pourrait pas être enregistré.\n3. Stabilité : un client change de numéro, ce qui obligerait à modifier toutes ses références.\n4. Le téléphone échoue aux trois tests : proposer un identifiant artificiel NumClient."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "L'identifiant est unique, non vide et stable.",
+    "Si aucun attribut naturel ne convient, on crée un identifiant artificiel et on le dit.",
+    "Un nom de personne n'est jamais un bon identifiant.",
+    "L'identifiant devient la clé primaire au passage au modèle logique.",
+    "Au Probatoire TI, la question « déterminer l'identifiant en expliquant la démarche » attend les trois tests et la création d'un numéro quand il manque."
+   ]
+  }
+ ]
+}

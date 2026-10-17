@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-reconnaitre-un-langage-de-programmation-compile-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Reconnaître un langage de programmation compilé",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langages de programmation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "langage compilé",
+      "compilateur",
+      "GCC",
+      "exécutable"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.1.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu écris un programme en C, rien ne se passe tant que tu ne l'as pas compilé : le compilateur le traduit en un fichier que l'ordinateur sait exécuter. Cette étape explique pourquoi un programme C ne se lance pas s'il contient une erreur de syntaxe, et pourquoi on parle de langage compilé. C'est une notion de base que les épreuves de programmation vérifient régulièrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un code source",
+        "Avoir écrit au moins un petit programme en langage C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La chaîne de compilation d'un programme C",
+      "contenu_markdown": "Un **langage compilé** est traduit en code machine, en une seule fois, avant l'exécution. Pour un programme C, la chaîne comporte quatre étapes :\n\n1. **préprocesseur** : traite les lignes commençant par `#` (par exemple `#include <stdio.h>`) ;\n2. **compilation** : vérifie la syntaxe et traduit le source en langage assembleur ;\n3. **assemblage** : produit un fichier objet (`.o`) en code machine ;\n4. **édition de liens** : relie le fichier objet aux bibliothèques (comme celle qui fournit `printf`) et produit l'**exécutable**.\n\nAvec GCC, une seule commande fait tout :\n\n```\ngcc programme.c -o programme\n./programme\n```\n\nLa première ligne compile `programme.c` et nomme l'exécutable `programme` (option `-o`) ; la seconde lance l'exécutable. Sous Windows, l'exécutable porte l'extension `.exe`.\n\nUn programme qui ne compile pas ne produit aucun exécutable : le compilateur affiche les erreurs avec le numéro de ligne."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer un exemple de langage de programmation compilé.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler le critère d'un langage compilé",
+          "justification": "Il faut produire un exécutable avec un compilateur avant de lancer le programme",
+          "resultat_markdown": "Critère : étape de compilation préalable"
+        },
+        {
+          "numero": 2,
+          "action": "Chercher un langage qui vérifie le critère",
+          "justification": "Le programme de l'énoncé est écrit en C, qui se compile avec un compilateur comme GCC",
+          "resultat_markdown": "Le langage C convient"
+        },
+        {
+          "numero": 3,
+          "action": "Justifier",
+          "justification": "On précise la chaîne d'outils pour sécuriser la réponse",
+          "resultat_markdown": "Source `.c`, compilateur GCC, fichier exécutable"
+        }
+      ],
+      "conclusion_markdown": "Le langage C est un exemple de langage compilé, comme C++, Pascal ou Fortran."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer JavaScript, Python ou PHP",
+          "pourquoi_faux": "Ces langages sont exécutés par un interpréteur, sans exécutable produit au préalable.",
+          "correction_markdown": "Si aucun fichier exécutable n'est produit à l'avance, le langage est interprété."
+        },
+        {
+          "erreur_markdown": "Citer Java sans nuance",
+          "pourquoi_faux": "Java est compilé en bytecode puis exécuté par une machine virtuelle : le statut est discutable, ce qui expose à un désaccord avec le correcteur.",
+          "correction_markdown": "Choisis un langage au statut sans ambiguïté, comme C ou Pascal."
+        },
+        {
+          "erreur_markdown": "Croire que l'exécutable a besoin du compilateur pour tourner",
+          "pourquoi_faux": "Une fois produit, l'exécutable est indépendant : on peut le lancer sur une machine où le compilateur n'est pas installé (du même système).",
+          "correction_markdown": "Le compilateur sert à produire l'exécutable, pas à l'exécuter."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Expliquer chaque élément de la commande `gcc puissance.c -o puissance`.",
+          "solution_markdown": "- `gcc` : le compilateur utilisé ;\n- `puissance.c` : le fichier source à compiler ;\n- `-o puissance` : l'option `-o` (output) fixe le nom de l'exécutable produit, ici `puissance` (ou `puissance.exe` sous Windows).\n\nPour lancer le programme, on tape `./puissance` sous Linux, ou `puissance` sous Windows."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un étudiant compile ce programme et obtient un message d'erreur : `#include <stdio.h>`, `int main(void) {`, `int a = 5` (sans point-virgule), `printf(\"%d\\n\", a);`, `return 0;`, `}`. Obtient-il un exécutable ? Quelle ligne le compilateur signale-t-il ?",
+          "solution_markdown": "**Non, aucun exécutable n'est produit** : le compilateur s'arrête à la première erreur de syntaxe et ne génère pas de fichier exécutable.\n\nAvec GCC, le compilateur signale la ligne qui suit celle où il constate l'oubli, ici la ligne 4 : `error: expected ',' or ';' before 'printf'`. Le compilateur ne peut constater l'oubli d'un `;` qu'en lisant le début de la ligne suivante. Le texte exact du message dépend de la version du compilateur (ce message a été obtenu avec GCC 13). Il faut corriger la ligne 3 en écrivant `int a = 5;`, puis recompiler."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un programme C est compilé sous Windows. Peut-on envoyer l'exécutable à un ami qui utilise Linux ? Que lui envoyer pour qu'il puisse le lancer ?",
+          "solution_markdown": "**Non.** L'exécutable contient du code machine et un format de fichier propres à un système d'exploitation (le format `.exe` de Windows n'est pas celui de Linux). Il ne se lance donc pas directement sous Linux.\n\n**Que lui envoyer ?** Le **code source** `.c` : l'ami le compile avec son propre compilateur (GCC sous Linux) pour produire un exécutable adapté à sa machine. C'est la limite principale du compilé par rapport à l'interprété : l'exécutable n'est pas portable d'un système à l'autre, alors que le code source du C l'est largement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un langage compilé est traduit en code machine avant l'exécution, par un compilateur, en produisant un exécutable.",
+        "Le C, le C++ et le Pascal sont compilés ; la commande `gcc source.c -o programme` compile un programme C.",
+        "Une erreur de syntaxe empêche toute production d'exécutable.",
+        "Un exécutable est propre à un système d'exploitation : il n'est pas portable.",
+        "Au probatoire, la question se résout en citant un langage compilé et en le justifiant par la présence d'un compilateur."
+      ]
+    }
+  ]
+}

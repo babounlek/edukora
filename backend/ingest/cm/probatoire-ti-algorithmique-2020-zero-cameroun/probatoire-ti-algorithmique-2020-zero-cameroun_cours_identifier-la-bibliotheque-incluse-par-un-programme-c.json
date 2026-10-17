@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-identifier-la-bibliotheque-incluse-par-un-programme-c-directive-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Identifier la bibliothèque incluse par un programme C (directive include)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C : bases",
+    "duree_estimee_min": 18,
+    "tags": [
+      "bibliothèque",
+      "include",
+      "stdio.h",
+      "en-tête"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le langage C est volontairement petit : il ne sait même pas afficher un texte sans aide. Pour afficher, lire, calculer une racine ou traiter une chaîne, il faut inclure une bibliothèque, un fichier d'en-tête qui annonce les fonctions disponibles. La première ligne d'un programme C est presque toujours un `#include`, et la question « quelle bibliothèque ? » est un grand classique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un programme C",
+        "Savoir ce qu'est une fonction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La directive #include et les bibliothèques courantes",
+      "contenu_markdown": "Une **bibliothèque** du C est un ensemble de fonctions prédéfinies, déclarées dans un fichier d'en-tête de suffixe `.h`. On l'inclut en tête du programme :\n\n```c\n#include <nom.h>\n```\n\nLes chevrons `< >` désignent une bibliothèque standard du système ; des guillemets `\"nom.h\"` désignent un fichier d'en-tête écrit par le programmeur.\n\n| Bibliothèque | Contenu | Fonctions courantes |\n|---|---|---|\n| `stdio.h` | entrées-sorties standard | `printf`, `scanf`, `fopen` |\n| `math.h` | fonctions mathématiques | `sqrt`, `pow`, `sin` |\n| `string.h` | chaînes de caractères | `strlen`, `strcpy`, `strcmp` |\n| `stdlib.h` | utilitaires | `malloc`, `rand`, `atoi` |\n| `ctype.h` | tests sur les caractères | `toupper`, `isdigit` |\n\nLe **nom de la bibliothèque** est le nom du fichier, avec son suffixe : `stdio.h`. Avec GCC, les fonctions de `math.h` demandent en plus l'option `-lm` à l'édition de liens."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le programme dont la ligne 1 est `#include <stdio.h>`, identifier le nom d'une bibliothèque.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la directive d'inclusion",
+          "justification": "Une bibliothèque s'inclut avec `#include`, en tête de programme",
+          "resultat_markdown": "Ligne 1 : `#include <stdio.h>`"
+        },
+        {
+          "numero": 2,
+          "action": "Lire le nom entre chevrons",
+          "justification": "Le nom de la bibliothèque est celui du fichier d'en-tête",
+          "resultat_markdown": "`stdio.h`"
+        },
+        {
+          "numero": 3,
+          "action": "Relier aux fonctions utilisées",
+          "justification": "Le programme appelle `printf` et `scanf`, déclarées dans cet en-tête",
+          "resultat_markdown": "`stdio.h` = Standard Input Output"
+        }
+      ],
+      "conclusion_markdown": "La bibliothèque incluse par le programme est `stdio.h`, qui fournit `printf` et `scanf`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `#include`",
+          "pourquoi_faux": "`#include` est la directive qui demande l'inclusion, pas la bibliothèque elle-même.",
+          "correction_markdown": "La réponse est le nom entre chevrons : `stdio.h`."
+        },
+        {
+          "erreur_markdown": "Écrire `stdio` sans `.h`",
+          "pourquoi_faux": "Le fichier d'en-tête s'appelle `stdio.h` : l'oublier dans une réponse écrite est une imprécision.",
+          "correction_markdown": "Écris le nom avec son suffixe `.h`."
+        },
+        {
+          "erreur_markdown": "Utiliser une fonction sans inclure sa bibliothèque",
+          "pourquoi_faux": "Avec `sqrt` sans `#include <math.h>`, GCC 13 émet un avertissement (`implicit declaration of function 'sqrt'`) que les compilateurs récents transforment en erreur.",
+          "correction_markdown": "Inclus toujours la bibliothèque de chaque fonction utilisée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associer chaque fonction à sa bibliothèque : `sqrt`, `strlen`, `printf`, `rand`.",
+          "solution_markdown": "- `sqrt` (racine carrée) : `math.h` ;\n- `strlen` (longueur d'une chaîne) : `string.h` ;\n- `printf` (affichage) : `stdio.h` ;\n- `rand` (nombre aléatoire) : `stdlib.h`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme utilise `printf`, `sqrt` et `strlen`. Écrire les directives d'inclusion nécessaires, puis un programme qui affiche la racine carrée de 16 et la longueur du mot « Douala ».",
+          "solution_markdown": "Trois fonctions, trois bibliothèques : `stdio.h` pour `printf`, `math.h` pour `sqrt` et `string.h` pour `strlen`.\n\n```c\n#include <stdio.h>\n#include <math.h>\n#include <string.h>\nint main(void) {\n    printf(\"%.1f %d\\n\", sqrt(16.0), (int) strlen(\"Douala\"));\n    return 0;\n}\n```\n\nCompilé avec `gcc c1.c -o c1 -lm` et exécuté, le programme affiche `4.0 6` : la racine carrée de 16 est 4 et le mot « Douala » compte 6 lettres."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève compile un programme qui utilise `sqrt` mais a oublié `#include <math.h>`. Quel message GCC 13 affiche-t-il ? Pourquoi est-il dangereux d'ignorer ce message ?",
+          "solution_markdown": "GCC 13 affiche un avertissement de ce type :\n\n```\nwarning: implicit declaration of function 'sqrt'\nnote: include '<math.h>' or provide a declaration of 'sqrt'\n```\n\nLe compilateur ne connaît pas `sqrt` : il suppose qu'elle renvoie un `int`. Pour une fonction qui renvoie un `double`, cette supposition est fausse, et le programme peut afficher un résultat incorrect. Sur ce petit exemple, GCC reconnaît `sqrt` comme fonction interne et le résultat reste correct (4.0 vérifié à l'exécution), mais ce n'est pas garanti en général. Les compilateurs récents refusent même de compiler : l'avertissement est devenu une erreur.\n\n**Bon réflexe** : à chaque fonction utilisée, vérifier que sa bibliothèque est incluse, et ne jamais ignorer un avertissement de ce genre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une bibliothèque est un fichier d'en-tête `.h` inclus par `#include <nom.h>` en tête de programme.",
+        "`stdio.h` fournit `printf` et `scanf` ; `math.h` fournit `sqrt` ; `string.h` fournit `strlen`.",
+        "La réponse attendue est le nom du fichier avec son suffixe, pas le mot `#include`.",
+        "Les chevrons désignent une bibliothèque standard, les guillemets un en-tête du programmeur.",
+        "Au probatoire, `stdio.h` est la réponse type : elle est présente dans presque tous les programmes proposés."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "cours_id": "cours-balises-html-b-u-probatoire-acd-2014",
+  "meta": {
+    "titre": "Mettre en forme du texte avec les balises HTML B, U et I",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web : mise en forme du texte",
+    "duree_estimee_min": 20,
+    "tags": [
+      "HTML",
+      "balise",
+      "gras",
+      "souligné",
+      "italique",
+      "mise en forme"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2014-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2014 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2014-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une page Internet, un mot en gras attire l'œil, un titre souligné annonce une section, une expression en italique marque une citation. Ces effets ne viennent pas d'un bouton comme dans un traitement de texte : ils sont décrits dans le code HTML par des balises. Ce cours t'apprend à les écrire et à les lire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page web est écrite en HTML",
+        "Avoir déjà ouvert un fichier .html dans un navigateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Balises ouvrante et fermante",
+      "contenu_markdown": "Une balise est un mot-clé écrit entre chevrons `<` et `>`. La plupart des balises fonctionnent **par paire** :\n\n```html\n<balise>contenu concerné</balise>\n```\n\nLa balise ouvrante débute l'effet, la balise fermante (avec `/`) l'arrête. Le texte hors des balises n'est pas touché.\n\n| Balise | Origine | Effet |\n|---|---|---|\n| `<B>...</B>` | Bold | texte en gras |\n| `<U>...</U>` | Underline | texte souligné |\n| `<I>...</I>` | Italic | texte en italique |\n\nLes balises peuvent s'**imbriquer** : la dernière ouverte est la première fermée.",
+      "variantes": [
+        {
+          "nom": "Balises sémantiques et CSS",
+          "quand_utiliser": "En HTML5 moderne.",
+          "contenu_markdown": "`<strong>` et `<em>` marquent l'importance et l'accentuation, et la feuille de style CSS (`font-weight: bold;`, `text-decoration: underline;`) assure la présentation. Au Probatoire, les balises B, U et I restent la réponse attendue."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la fonction des balises `<B> ... </B>` et `<U> ... </U>` (Probatoire A, C, D, 2014, exercice 1, question 3).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le nom de la balise",
+          "justification": "La lettre entre chevrons est l'initiale d'un mot anglais.",
+          "resultat_markdown": "B : Bold ; U : Underline"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire",
+          "justification": "Le sens anglais donne l'effet.",
+          "resultat_markdown": "Bold = gras ; Underline = souligner"
+        },
+        {
+          "numero": 3,
+          "action": "Décrire le champ d'action",
+          "justification": "L'effet ne concerne que le texte compris entre les deux balises.",
+          "resultat_markdown": "Entre `<B>` et `</B>` : texte en gras. Entre `<U>` et `</U>` : texte souligné."
+        },
+        {
+          "numero": 4,
+          "action": "Illustrer par un exemple",
+          "justification": "Un exemple de code prouve la maîtrise de la syntaxe.",
+          "resultat_markdown": "`<B>Important</B> et <U>urgent</U>`"
+        },
+        {
+          "numero": 5,
+          "action": "Prévoir le rendu",
+          "justification": "On vérifie ce que verra l'utilisateur.",
+          "resultat_markdown": "« Important » en gras, « urgent » souligné ; « et » reste normal."
+        }
+      ],
+      "conclusion_markdown": "`<B>` met le texte en gras et `<U>` le souligne, chacune sur la portion délimitée par sa balise fermante."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la balise fermante : `<B>Bonjour tout le monde`",
+          "pourquoi_faux": "Sans `</B>`, le navigateur ne sait pas où arrêter l'effet : tout le reste de la page s'affiche en gras.",
+          "correction_markdown": "Écris `<B>Bonjour</B> tout le monde`."
+        },
+        {
+          "erreur_markdown": "Croiser les balises : `<B><U>Fin</B></U>`",
+          "pourquoi_faux": "On ferme `</B>` alors que la dernière balise ouverte est `<U>` : l'imbrication est incorrecte et le rendu peut varier.",
+          "correction_markdown": "Ferme dans l'ordre inverse de l'ouverture : `<B><U>Fin</U></B>`."
+        },
+        {
+          "erreur_markdown": "Dire que `<U>` met en italique",
+          "pourquoi_faux": "Italique se dit Italic, balise `<I>`. `<U>` est Underline : souligné.",
+          "correction_markdown": "Associe chaque lettre à son mot anglais."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris le code HTML qui affiche le mot « Note » en gras.",
+          "solution_markdown": "**Étape 1.** Choisir la balise : le gras correspond à Bold, donc `<B>`.\n\n**Étape 2.** Encadrer le mot : balise ouvrante, mot, balise fermante.\n\n```html\n<B>Note</B>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel est le rendu du code `<B><U>Fin</U></B> de l'épreuve` ? Le code `<B><U>Fin</B></U>` est-il correct ?",
+          "solution_markdown": "**Rendu.** Le mot « Fin » est à la fois en gras (balise B) et souligné (balise U) ; les mots « de l'épreuve » sont après `</B>`, donc en caractères normaux.\n\n**Second code.** Il est incorrect : `<U>` est la dernière balise ouverte, elle doit être refermée la première. La forme correcte est `<B><U>Fin</U></B>`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris la page HTML minimale qui affiche le titre « Bienvenue » en gras, suivi d'une phrase contenant le mot « gratuite » souligné et le mot « inscription » en italique.",
+          "solution_markdown": "**Étape 1 : la structure minimale.** Une page contient `<html>`, `<head>` avec `<title>`, puis `<body>`.\n\n**Étape 2 : le titre en gras.** `<B>Bienvenue</B>`.\n\n**Étape 3 : la phrase.** Le mot « gratuite » reçoit `<U>`, le mot « inscription » reçoit `<I>`.\n\n```html\n<html>\n  <head>\n    <title>Accueil</title>\n  </head>\n  <body>\n    <p><B>Bienvenue</B></p>\n    <p>L'<I>inscription</I> est <U>gratuite</U>.</p>\n  </body>\n</html>\n```\n\n**Étape 4 : vérification.** Chaque balise ouvrante a sa fermante, et aucune imbrication ne se croise."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une balise HTML s'écrit entre chevrons ; la fermante porte une barre oblique.",
+        "B pour Bold donne le gras, U pour Underline le soulignement, I pour Italic l'italique.",
+        "L'effet ne s'applique qu'au texte placé entre la balise ouvrante et la balise fermante.",
+        "On ferme les balises dans l'ordre inverse de leur ouverture.",
+        "Au Probatoire, la question « fonction de la balise » attend le nom anglais, l'effet et, idéalement, un mini-exemple de code."
+      ]
+    }
+  ]
+}

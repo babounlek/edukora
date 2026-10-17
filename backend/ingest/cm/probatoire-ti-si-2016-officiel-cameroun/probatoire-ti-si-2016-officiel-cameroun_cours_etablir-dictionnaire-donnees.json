@@ -1,0 +1,138 @@
+{
+ "cours_id": "cours-etablir-dictionnaire-donnees-ti-si-2016",
+ "meta": {
+  "titre": "Établir le dictionnaire des données à partir du MCD",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Modèle conceptuel des données",
+  "duree_estimee_min": 30,
+  "tags": [
+   "dictionnaire de données",
+   "MCD",
+   "type de données",
+   "taille",
+   "MERISE"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q13-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Avant de créer une base, on dresse l'inventaire de chaque donnée à mémoriser : comment elle s'appelle, de quel type elle est, combien de caractères elle occupe. Cet inventaire s'appelle le dictionnaire des données. C'est un tableau que le Probatoire demande presque chaque année."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "MCD : entités, attributs, identifiants",
+    "Types de données : numérique, texte, date"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Les colonnes du dictionnaire et la façon de le remplir",
+   "contenu_markdown": "| Colonne | Contenu |\n|---|---|\n| Entité | L'entité d'origine de la donnée |\n| Champ (code) | Nom court de la donnée, sans espace ni accent (NumCli) |\n| Désignation | Libellé complet, qui précise le sens |\n| Nature | **E** élémentaire (saisie) ou **C** calculée ; l'identifiant est signalé |\n| Type | **N** numérique, **A** alphabétique, **AN** alphanumérique, **D** date |\n| Taille | Nombre de caractères (ou de chiffres) maximal |\n\n**Méthode.** (1) Parcours le MCD **entité par entité**. (2) Commence par l'identifiant. (3) Une ligne par attribut. (4) N'ajoute **pas** les clés étrangères (elles n'existent qu'au MLD). (5) Choisis la taille d'après la forme des valeurs.\n\n**Choix du type** : numérique si l'on calcule avec la donnée (quantité, prix, année) ; alphanumérique si elle mêle chiffres et lettres (immatriculation) ; date pour une date (10 caractères jj/mm/aaaa).",
+   "variantes": [
+    {
+     "nom": "Données calculées",
+     "quand_utiliser": "Quand une donnée se déduit d'autres",
+     "contenu_markdown": "Une donnée calculée est de nature C : elle n'est pas mémorisée mais recalculée ; on évite de la placer dans le MCD."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Construire le dictionnaire des données de l'entité VEHICULE de CAR_INSURANCE (numéro, marque, modèle, année de mise en circulation).",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Parcourir l'entité",
+     "justification": "On liste chacun de ses attributs, l'identifiant en premier.",
+     "resultat_markdown": "NumVeh, Marque, Modele, AnneeCirc."
+    },
+    {
+     "numero": 2,
+     "action": "Choisir nature et type",
+     "justification": "Aucun n'est calculé ; le numéro mélange lettres et chiffres (immatriculation) ; l'année est un nombre.",
+     "resultat_markdown": "NumVeh : AN ; Marque : A ; Modele : AN ; AnneeCirc : N ; nature E pour tous."
+    },
+    {
+     "numero": 3,
+     "action": "Fixer les tailles",
+     "justification": "Immatriculation courte (12), marque (20), modèle avec chiffres possibles (25), année à 4 chiffres.",
+     "resultat_markdown": "12, 20, 25 et 4."
+    },
+    {
+     "numero": 4,
+     "action": "Écrire le tableau",
+     "justification": "Une ligne par donnée, sans clé étrangère.",
+     "resultat_markdown": "Voir tableau ci-dessous."
+    }
+   ],
+   "conclusion_markdown": "| Entité | Champ | Désignation | Nature | Type | Taille |\n|---|---|---|---|---|---|\n| VEHICULE | NumVeh | Numéro du véhicule (identifiant) | E | AN | 12 |\n| VEHICULE | Marque | Marque du véhicule | E | A | 20 |\n| VEHICULE | Modele | Modèle du véhicule | E | AN | 25 |\n| VEHICULE | AnneeCirc | Année de mise en circulation | E | N | 4 |"
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Ajouter les clés étrangères au dictionnaire",
+     "pourquoi_faux": "Elles résultent des associations et n'apparaissent qu'au niveau logique. Le dictionnaire s'établit à partir du MCD.",
+     "correction_markdown": "Se limiter aux attributs des entités (et des associations)."
+    },
+    {
+     "erreur_markdown": "Choisir « alphabétique » pour un numéro d'immatriculation",
+     "pourquoi_faux": "Il contient des chiffres : le type alphabétique les refuserait.",
+     "correction_markdown": "Choisir alphanumérique."
+    },
+    {
+     "erreur_markdown": "Mettre le type « numérique » pour un numéro de téléphone",
+     "pourquoi_faux": "On ne calcule pas avec un numéro de téléphone, et un 0 initial serait perdu.",
+     "correction_markdown": "Un numéro identifiant qui ne sert pas au calcul peut être alphanumérique."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Établir le dictionnaire de l'entité LIVRE : NumLivre, Titre, Auteur, AnneeEdition.",
+     "solution_markdown": "1. NumLivre : numéro (identifiant), N, taille 6.\n2. Titre : texte avec chiffres possibles, AN, taille 40.\n3. Auteur : nom, A, taille 30.\n4. AnneeEdition : année, N, taille 4.\n5. Nature E pour les quatre : aucune n'est calculée.\n\n| Entité | Champ | Désignation | Nature | Type | Taille |\n|---|---|---|---|---|---|\n| LIVRE | NumLivre | Numéro du livre (identifiant) | E | N | 6 |\n| LIVRE | Titre | Titre du livre | E | AN | 40 |\n| LIVRE | Auteur | Auteur du livre | E | A | 30 |\n| LIVRE | AnneeEdition | Année d'édition | E | N | 4 |"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Dans une boutique, la facture a un numéro, une date, un prix unitaire, une quantité et un montant (prix unitaire multiplié par quantité). Quel traitement réserver au montant dans le dictionnaire ?",
+     "solution_markdown": "1. Le montant se calcule : montant = prix unitaire × quantité.\n2. Nature : **C**, donnée calculée.\n3. On ne la mémorise pas dans la base (risque d'incohérence si le prix ou la quantité change) : on la recalcule dans les traitements.\n4. Dictionnaire : NumFact (E, N), DateFact (E, D, 10), PU (E, N), Qte (E, N), et Montant (C, calculé, non mémorisé)."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Calculer le nombre de caractères maximal d'un enregistrement de CLIENT avec le dictionnaire suivant : NumCli N 6, Nom A 30, Prenom A 30, Telephone AN 15, DateNaissance D 10. Combien de bits cela représente-t-il à 8 bits par caractère ?",
+     "solution_markdown": "1. Somme des tailles : 6 + 30 + 30 + 15 + 10 = 91 caractères.\n2. En bits : 91 × 8 = 728 bits.\n3. En octets : 728 / 8 = 91 octets.\n4. Cette valeur sert à estimer l'espace disque nécessaire pour un nombre donné de clients."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Le dictionnaire liste chaque donnée du MCD : champ, désignation, nature, type, taille.",
+    "Parcours le MCD entité par entité, l'identifiant d'abord.",
+    "Les clés étrangères n'y figurent pas.",
+    "Type N pour calculer, AN pour mêler lettres et chiffres, D pour une date.",
+    "Au Probatoire TI, le dictionnaire est noté sur l'exhaustivité (aucune donnée oubliée) et la cohérence des types et des tailles."
+   ]
+  }
+ ]
+}

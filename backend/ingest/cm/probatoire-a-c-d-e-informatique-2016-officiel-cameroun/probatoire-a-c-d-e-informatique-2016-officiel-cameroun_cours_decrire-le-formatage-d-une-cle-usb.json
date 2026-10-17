@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-decrire-le-formatage-d-une-cle-usb-probatoire-acde-2016",
+  "meta": {
+    "titre": "Décrire le formatage d'une clé USB",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : supports de stockage",
+    "duree_estimee_min": 25,
+    "tags": [
+      "formatage",
+      "clé USB",
+      "système de fichiers",
+      "FAT32",
+      "NTFS",
+      "maintenance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-e-informatique-2016-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C, D et E, session 2016 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-a-c-d-e-informatique-2016-officiel-cameroun-ex4-q9.a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ta clé USB n'est plus reconnue, elle est infectée, ou tu veux la remettre à neuf avant de la prêter. Dans tous ces cas, on la formate. Mais formater n'est pas supprimer des fichiers : c'est préparer le support à recevoir des données. Ce cours te donne la procédure, les choix à faire et les précautions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ouvrir l'Explorateur de fichiers",
+        "Connaître la notion de fichier et de dossier"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formater : créer un système de fichiers",
+      "contenu_markdown": "**Formater** un support de stockage, c'est créer sur lui un **système de fichiers** (FAT32, exFAT, NTFS) qui organise l'espace pour y ranger des fichiers. L'opération efface les données existantes.\n\n**Procédure sous Windows.**\n\n1. Sauvegarder les fichiers à conserver.\n2. Brancher la clé et ouvrir l'Explorateur de fichiers.\n3. Clic droit sur la clé, puis « Formater... ».\n4. Choisir le système de fichiers, donner un nom au volume, cocher « Formatage rapide ».\n5. Cliquer sur « Démarrer » et confirmer l'avertissement.\n\n**En invite de commandes** (à exécuter avec la bonne lettre de lecteur) : `format E: /FS:FAT32 /Q`.\n\n| Système de fichiers | Taille maxi d'un fichier | Usage |\n|---|---|---|\n| FAT32 | 4 Go moins un octet | très compatible (téléviseurs, appareils photo) |\n| exFAT | très grande | clés et cartes de grande capacité, Windows et Mac |\n| NTFS | très grande | disques internes Windows |\n\n**Réponse en deux lignes** : ligne 1, les actions dans l'ordre ; ligne 2, l'effet (efface tout).",
+      "variantes": [
+        {
+          "nom": "Formatage rapide ou complet",
+          "quand_utiliser": "Selon l'état de la clé et l'usage.",
+          "contenu_markdown": "Le formatage rapide réécrit seulement la structure du système de fichiers : il est quasi instantané mais les anciennes données restent récupérables. Le formatage complet vérifie en plus les secteurs et efface les données plus durablement : il est plus long. On choisit le complet avant de se séparer d'une clé contenant des données sensibles."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Énoncer en deux lignes maximum le processus : formater une clé USB. (Probatoire 2016, question 9.a, 1 point)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les actions dans l'ordre",
+          "justification": "Un processus se décrit chronologiquement : brancher, ouvrir le menu, choisir les options, lancer.",
+          "resultat_markdown": "Brancher, clic droit, Formater, système de fichiers, Formatage rapide, Démarrer, confirmer."
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter l'effet",
+          "justification": "Un formatage a toujours une conséquence : la perte des données.",
+          "resultat_markdown": "Efface toutes les données et crée un système de fichiers."
+        },
+        {
+          "numero": 3,
+          "action": "Respecter la limite de deux lignes",
+          "justification": "On regroupe les actions en une phrase et l'effet dans une seconde.",
+          "resultat_markdown": "Ligne 1 : actions. Ligne 2 : effet."
+        },
+        {
+          "numero": 4,
+          "action": "Relire",
+          "justification": "Les menus cités existent-ils vraiment ? Oui : « Ce PC », « Formater », « Formatage rapide », « Démarrer ».",
+          "resultat_markdown": "Réponse prête."
+        }
+      ],
+      "conclusion_markdown": "Brancher la clé, faire un clic droit dessus dans « Ce PC », choisir « Formater », sélectionner le système de fichiers et « Formatage rapide », cliquer sur « Démarrer » et confirmer ; le formatage crée un nouveau système de fichiers et efface toutes les données de la clé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Formater le mauvais lecteur (par exemple `C:` à la place de la clé).",
+          "pourquoi_faux": "`C:` contient le système d'exploitation : le formater le détruirait. Sur un ordinateur, la lettre de la clé change d'une machine à l'autre.",
+          "correction_markdown": "Vérifier le nom, la capacité et la lettre du lecteur avant de confirmer."
+        },
+        {
+          "erreur_markdown": "Penser que formater revient à supprimer les fichiers.",
+          "pourquoi_faux": "Supprimer retire des fichiers choisis ; formater recrée toute la structure du support et efface tout.",
+          "correction_markdown": "Dire dans la réponse que le formatage efface toutes les données."
+        },
+        {
+          "erreur_markdown": "Croire que le formatage rapide détruit définitivement les données.",
+          "pourquoi_faux": "Il réécrit seulement la table des fichiers : les données restent récupérables avec un logiciel spécialisé tant qu'elles ne sont pas écrasées.",
+          "correction_markdown": "Choisir le formatage complet avant de céder une clé contenant des données confidentielles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Énonce en deux lignes le processus « formater une carte mémoire d'appareil photo » en pensant au même principe.",
+          "solution_markdown": "Insérer la carte dans le lecteur de l'ordinateur (ou formater depuis le menu de l'appareil), faire un clic droit sur son icône, choisir « Formater », sélectionner FAT32 ou exFAT puis cliquer sur « Démarrer ». Le formatage efface toutes les photos et prépare la carte à en enregistrer de nouvelles."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une clé de 64 Go doit recevoir un fichier vidéo de 6 Go et être lue aussi bien par un ordinateur que par un téléviseur. Quel système de fichiers choisir : FAT32 ou exFAT ? Justifie.",
+          "solution_markdown": "FAT32 est le plus compatible mais limite la taille d'un fichier à 4 Go moins un octet ($4\\,294\\,967\\,295$ octets) : le fichier de 6 Go ne pourrait pas y être copié. On choisit donc **exFAT**, qui accepte des fichiers bien plus grands et est lu par Windows, macOS et la plupart des téléviseurs récents. Il faut vérifier la compatibilité du téléviseur avant de formater."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève doit remettre à un camarade une clé sur laquelle il a stocké des bulletins de notes. Explique la différence entre formatage rapide et formatage complet, puis dis ce qu'il doit faire pour que ses données ne puissent pas être récupérées.",
+          "solution_markdown": "**Différence.** Le formatage rapide réécrit seulement la structure du système de fichiers : les données restent présentes sur la clé et peuvent être retrouvées avec un logiciel de récupération. Le formatage complet vérifie aussi les secteurs et rend la récupération beaucoup plus difficile.\n\n**Procédure recommandée.** Sauvegarder d'abord ce qui doit être conservé ; formater la clé en décochant « Formatage rapide » ; vérifier ensuite que la clé est vide. Pour des données très sensibles, on peut aussi écraser l'espace libre avec un utilitaire d'effacement sécurisé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Formater, c'est créer un système de fichiers : cela efface toutes les données du support.",
+        "Procédure : sauvegarder, brancher, clic droit, Formater, choisir le système de fichiers, formatage rapide, Démarrer, confirmer.",
+        "Vérifie toujours la lettre du lecteur avant de confirmer : une erreur sur `C:` est irréversible.",
+        "FAT32 est limité à 4 Go par fichier ; exFAT et NTFS acceptent des fichiers plus gros.",
+        "Au Probatoire, « énoncer en deux lignes un processus » se note sur les actions dans l'ordre et sur l'effet du formatage."
+      ]
+    }
+  ]
+}

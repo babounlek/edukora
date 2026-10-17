@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-reperer-l-initialisation-d-une-variable-dans-un-programme-c-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Repérer l'initialisation d'une variable dans un programme C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C : bases",
+    "duree_estimee_min": 20,
+    "tags": [
+      "initialisation",
+      "affectation",
+      "variable",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Déclarer une variable, c'est lui réserver une place. Mais cette place contient au départ n'importe quoi : un reste de l'utilisation précédente de la mémoire. Initialiser, c'est y mettre une première valeur connue. Un oubli d'initialisation est l'une des erreurs de programmation les plus sournoises : le programme compile, tourne, et donne un résultat faux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une variable en C",
+        "Connaître l'affectation avec le signe `=`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déclaration, initialisation, mise à jour",
+      "contenu_markdown": "Trois opérations à ne pas confondre :\n\n| Opération | Exemple | Effet |\n|---|---|---|\n| Déclaration | `double Y;` | réserve de la place, valeur **indéterminée** |\n| Initialisation | `Y = 1.0;` ou `double Y = 1.0;` | première valeur donnée à la variable |\n| Mise à jour | `Y = Y * X;` | nouvelle valeur calculée à partir de l'ancienne |\n\nUne variable locale non initialisée contient une valeur imprévisible : l'utiliser dans un calcul donne un résultat faux et non reproductible.\n\nChoix de l'initialisation : on prend l'**élément neutre** de l'opération qui sera répétée.\n\n- somme : initialiser à 0 ;\n- produit ou puissance : initialiser à 1 ;\n- compteur : initialiser à 0 ou 1 selon le début du comptage ;\n- maximum : initialiser avec le premier élément.\n\nUne valeur lue au clavier par `scanf` n'est pas une initialisation écrite dans le code : elle est fournie à l'exécution."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le programme dont les lignes 7 et 8 sont `Y=1.0 ;` et `i=1;`, et dont la ligne 10 est `Y = Y * X;`, identifier une instruction d'initialisation de variable.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter les déclarations",
+          "justification": "Les lignes 3 et 4 déclarent les variables sans leur donner de valeur",
+          "resultat_markdown": "Lignes 3 et 4 : pas d'initialisation"
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les mises à jour",
+          "justification": "Les lignes 10 et 11 modifient des variables qui ont déjà une valeur",
+          "resultat_markdown": "Lignes 10 et 11 : mises à jour"
+        },
+        {
+          "numero": 3,
+          "action": "Retrouver la première affectation de chaque variable",
+          "justification": "`Y` est lue à la ligne 10 : sa première valeur est donnée ligne 7. `i` est donnée ligne 8",
+          "resultat_markdown": "`Y=1.0 ;` et `i=1;`"
+        },
+        {
+          "numero": 4,
+          "action": "Justifier le choix de 1.0 pour `Y`",
+          "justification": "`Y` accumule un produit : l'élément neutre de la multiplication est 1",
+          "resultat_markdown": "Sans initialisation, `Y` aurait une valeur imprévisible"
+        }
+      ],
+      "conclusion_markdown": "Les instructions `Y=1.0 ;` (ligne 7) et `i=1;` (ligne 8) initialisent les variables du programme : une seule suffit à répondre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer la ligne `double X,Y;` comme initialisation",
+          "pourquoi_faux": "Cette ligne est une déclaration : elle ne donne aucune valeur à `X` ni à `Y`.",
+          "correction_markdown": "Une initialisation contient le signe `=` suivi d'une valeur."
+        },
+        {
+          "erreur_markdown": "Citer `Y = Y * X;` comme initialisation",
+          "pourquoi_faux": "Cette ligne utilise la valeur précédente de `Y` : `Y` doit donc avoir déjà été initialisée. C'est une mise à jour.",
+          "correction_markdown": "Une initialisation ne dépend pas de la valeur précédente de la variable."
+        },
+        {
+          "erreur_markdown": "Initialiser un produit à 0",
+          "pourquoi_faux": "Avec `Y = 0`, tous les produits suivants valent 0 : `0 × X = 0`.",
+          "correction_markdown": "Produit : 1. Somme : 0."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classer chaque ligne en déclaration, initialisation ou mise à jour : `int n;`, `double Y = 1.0;`, `n = 5;`, `Y = Y * 2;`.",
+          "solution_markdown": "- `int n;` : **déclaration** seule, `n` a une valeur indéterminée ;\n- `double Y = 1.0;` : **déclaration avec initialisation**, `Y` reçoit 1.0 dès sa création ;\n- `n = 5;` : première affectation de `n`, donc **initialisation** de `n` ;\n- `Y = Y * 2;` : **mise à jour**, car elle utilise l'ancienne valeur de `Y` (1.0 devient 2.0)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Compléter pour que le programme affiche la somme des entiers de 1 à 4 : `int somme; int i; for (i = 1; i <= 4; i++) { somme = somme + i; } printf(\"%d\\n\", somme);`. Quelle est l'erreur ? Quelle valeur est affichée une fois corrigé ?",
+          "solution_markdown": "**Erreur.** `somme` est déclarée mais jamais initialisée : la première ligne du corps de la boucle, `somme = somme + i;`, utilise une valeur indéterminée. Le résultat est faux et peut changer d'une exécution à l'autre.\n\n**Correction.** Initialiser à 0, élément neutre de l'addition :\n\n```c\n#include <stdio.h>\nint main(void) {\n    int somme = 0;\n    int i;\n    for (i = 1; i <= 4; i++) {\n        somme = somme + i;\n    }\n    printf(\"%d\\n\", somme);\n    return 0;\n}\n```\n\nUne fois corrigé, le programme affiche **10** (vérifié à l'exécution) : $1 + 2 + 3 + 4 = 10$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut trouver le plus grand élément du tableau `t = {3, 9, 2}`. Pourquoi initialiser `max` à 0 est-il dangereux ? Quelle initialisation proposer ? Écrire le programme.",
+          "solution_markdown": "**Danger de `max = 0`.** Si tous les éléments du tableau sont négatifs, par exemple `{-5, -2, -9}`, la valeur 0 reste « plus grande » que tous les éléments et le programme répond 0, qui n'appartient pas au tableau.\n\n**Bonne initialisation.** On initialise `max` avec le premier élément `t[0]` : le maximum est alors toujours un élément du tableau, quel que soit son contenu.\n\n```c\n#include <stdio.h>\nint main(void) {\n    int t[3] = {3, 9, 2};\n    int max = t[0];\n    int i;\n    for (i = 1; i < 3; i++) {\n        if (t[i] > max) max = t[i];\n    }\n    printf(\"%d\\n\", max);\n    return 0;\n}\n```\n\nLe programme affiche **9** (vérifié à l'exécution). La boucle commence à `i = 1`, puisque `t[0]` est déjà dans `max`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Déclarer réserve de la place ; initialiser donne la première valeur ; mettre à jour modifie la valeur existante.",
+        "Une variable locale non initialisée a une valeur imprévisible : le résultat est faux.",
+        "Somme : initialise à 0. Produit : initialise à 1. Maximum : initialise avec le premier élément.",
+        "`scanf` donne une valeur à l'exécution, mais ce n'est pas une initialisation écrite dans le code.",
+        "Au probatoire, tu cites l'instruction et le numéro de ligne : `Y=1.0 ;` à la ligne 7 rapporte le quart de point."
+      ]
+    }
+  ]
+}

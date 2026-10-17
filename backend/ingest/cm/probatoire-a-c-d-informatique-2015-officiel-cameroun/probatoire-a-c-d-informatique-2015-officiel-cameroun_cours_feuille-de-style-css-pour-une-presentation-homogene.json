@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-feuille-de-style-css-pour-une-presentation-homogene-probatoire-acd-2015",
+  "meta": {
+    "titre": "La feuille de style CSS pour une présentation homogène",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique : CSS",
+    "duree_estimee_min": 25,
+    "tags": [
+      "CSS",
+      "feuille de style",
+      "link",
+      "sélecteur",
+      "cascade"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2015-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2015 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2015-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu construis un site de dix pages et tu veux que tous les titres soient en bleu. Modifier dix fichiers un par un serait pénible, et tu en oublierais un. La solution consiste à écrire la règle une seule fois dans un fichier, que les dix pages vont lire. Ce fichier s'appelle une feuille de style."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire la structure d'une page HTML",
+        "Connaître l'attribut d'une balise"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les feuilles de style CSS",
+      "contenu_markdown": "**CSS** (*Cascading Style Sheets*, feuilles de style en cascade) est le langage qui décrit la **présentation** d'une page (couleurs, polices, marges), alors que HTML décrit la **structure** et le contenu.\n\nUne règle CSS a cette forme :\n\n```css\nsélecteur {\n  propriété: valeur;\n}\n```\n\nExemple : `h1 { color: navy; font-size: 24px; }` met tous les titres `h1` en bleu marine, corps 24 pixels.\n\nTrois façons d'appliquer un style :\n\n| Méthode | Où | Portée |\n|---|---|---|\n| en ligne | attribut `style` d'une balise | cette balise seulement |\n| interne | balise `style` dans `head` | cette page |\n| externe | fichier `.css` relié par `link` | toutes les pages qui le relient |\n\nPour une **présentation homogène** du site, on utilise la feuille externe :\n\n```html\n<link rel=\"stylesheet\" href=\"style.css\">\n```\n\nplacée dans le `head` de chaque page.",
+      "variantes": [
+        {
+          "nom": "Style en ligne",
+          "quand_utiliser": "Pour un cas unique, jamais pour l'ensemble d'un site.",
+          "contenu_markdown": "`<p style=\"color:red\">Attention</p>` n'affecte que ce paragraphe : à éviter quand on cherche l'homogénéité."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le nom de l'application qui permet une présentation homogène des pages Web en faisant appel à une même définition de style (Probatoire A, C, D, 2015).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les mots-clés",
+          "justification": "Les expressions « présentation homogène » et « même définition de style » désignent un fichier de style partagé.",
+          "resultat_markdown": "Mots-clés : présentation, même définition de style, plusieurs pages."
+        },
+        {
+          "numero": 2,
+          "action": "Rapprocher du cours",
+          "justification": "Le langage qui décrit la présentation d'une page et qui peut être partagé est CSS.",
+          "resultat_markdown": "CSS, par la feuille externe."
+        },
+        {
+          "numero": 3,
+          "action": "Donner le nom officiel",
+          "justification": "Le correcteur attend le sigle développé.",
+          "resultat_markdown": "CSS (*Cascading Style Sheets*, feuilles de style en cascade)."
+        },
+        {
+          "numero": 4,
+          "action": "Montrer le lien avec les pages",
+          "justification": "Pour la cohérence, indiquer comment les pages utilisent le fichier.",
+          "resultat_markdown": "`<link rel=\"stylesheet\" href=\"style.css\">` dans le `head` de chaque page."
+        }
+      ],
+      "conclusion_markdown": "L'outil est CSS : une feuille de style externe, reliée à toutes les pages, donne à tout le site la même présentation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre HTML.",
+          "pourquoi_faux": "HTML sert à structurer le contenu (titres, paragraphes, tableaux). La présentation commune est le rôle de CSS.",
+          "correction_markdown": "Dire : HTML = structure, CSS = présentation."
+        },
+        {
+          "erreur_markdown": "Copier le style sur chaque balise avec `style=\"...\"` et appeler cela « même style ».",
+          "pourquoi_faux": "Il faut modifier chaque balise pour changer l'aspect : l'homogénéité n'est pas garantie et la maintenance est lourde.",
+          "correction_markdown": "Écrire la règle une fois dans `style.css` et la faire lire par chaque page."
+        },
+        {
+          "erreur_markdown": "Placer le `link` dans le `body`.",
+          "pourquoi_faux": "Ce lien est une information sur la page, comme `title` : sa place est dans `head`.",
+          "correction_markdown": "Écrire `<link rel=\"stylesheet\" href=\"style.css\">` entre `<head>` et `</head>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la règle CSS qui met en rouge tous les paragraphes `p` et fixe leur police à 16 pixels.",
+          "solution_markdown": "```css\np {\n  color: red;\n  font-size: 16px;\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un site a trois pages `accueil.html`, `cours.html` et `contact.html`. Écris le fichier `style.css` qui impose le fond blanc au `body` et la couleur bleue aux `h1`, puis la ligne à ajouter dans chaque page.",
+          "solution_markdown": "Fichier `style.css` :\n\n```css\nbody {\n  background-color: white;\n}\nh1 {\n  color: blue;\n}\n```\nLigne à ajouter dans le `head` de chacune des trois pages :\n\n```html\n<link rel=\"stylesheet\" href=\"style.css\">\n```\nLes trois pages lisent le même fichier : modifier `style.css` change les trois d'un coup."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une page relie `style.css` qui contient `p { color: blue; }`, puis contient dans son `head`, après le `link`, `<style>p { color: green; }</style>`, et un paragraphe `<p style=\"color: red;\">`. De quelle couleur s'affiche ce paragraphe ? Et un paragraphe sans attribut `style` ?",
+          "solution_markdown": "Les trois règles visent la même balise `p`. Le style en ligne l'emporte sur les deux autres : le paragraphe avec `style=\"color: red;\"` s'affiche en **rouge**.\n\nPour un paragraphe sans attribut `style`, restent la règle de la feuille externe (bleu) et celle de la balise `style` (vert). Les deux ont la même précision (sélecteur `p`), donc la dernière déclarée dans l'ordre de la page l'emporte : `<style>` est écrit après le `link`, le paragraphe est **vert**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CSS décrit la présentation, HTML la structure.",
+        "Une règle : `sélecteur { propriété: valeur; }`.",
+        "Pour tout un site, une feuille externe `style.css` reliée par `link` dans le `head` de chaque page.",
+        "Un style en ligne l'emporte sur le style interne et externe, mais ne se partage pas.",
+        "Aux examens, la question « quel outil permet une présentation homogène ? » appelle CSS (feuilles de style), avec le sigle développé."
+      ]
+    }
+  ]
+}

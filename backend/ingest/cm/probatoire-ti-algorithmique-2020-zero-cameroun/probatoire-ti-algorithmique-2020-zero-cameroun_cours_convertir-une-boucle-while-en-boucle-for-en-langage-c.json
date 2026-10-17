@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-convertir-une-boucle-while-en-boucle-for-en-langage-c-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Convertir une boucle while en boucle for en langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures itératives en C",
+    "duree_estimee_min": 24,
+    "tags": [
+      "boucle for",
+      "boucle while",
+      "langage C",
+      "conversion de boucle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "En C, `while` et `for` sont deux façons d'écrire la même répétition. Le `for` rassemble sur une seule ligne tout ce qui concerne le compteur : où il commence, quand on s'arrête, comment il avance. Ce rangement rend le code plus lisible et évite l'oubli de l'incrémentation. Convertir un `while` en `for`, et l'inverse, est une question typique du probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la boucle `while` en C",
+        "Savoir ce qu'est un compteur",
+        "Connaître `i++` (équivalent de `i = i + 1`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'équivalence entre while et for",
+      "contenu_markdown": "Les deux écritures ci-dessous sont équivalentes :\n\n```c\ninitialisation;                    for (initialisation; condition; pas) {\nwhile (condition) {                    corps\n    corps                          }\n    pas;\n}\n```\n\n| Élément | Dans le `while` | Dans le `for` |\n|---|---|---|\n| Initialisation | avant la boucle | 1ʳᵉ partie de l'en-tête |\n| Condition de poursuite | entre parenthèses du `while` | 2ᵉ partie de l'en-tête |\n| Pas (incrémentation) | dernière ligne du corps | 3ᵉ partie de l'en-tête |\n\n**Méthode de conversion `while` vers `for`** : (1) repérer l'initialisation juste avant le `while` ; (2) la déplacer en première partie de l'en-tête ; (3) recopier la condition en deuxième partie ; (4) déplacer l'incrémentation de la fin du corps vers la troisième partie ; (5) garder le reste du corps.\n\nOn peut écrire plusieurs initialisations avec la virgule : `for (i = 1, s = 0; i <= n; i++)`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire avec la structure `for` la boucle `i=1; while (i <= n) { Y = Y * X; i=i+1; }` du programme de l'épreuve.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'initialisation",
+          "justification": "Elle est juste avant le `while`",
+          "resultat_markdown": "`i=1;`"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la condition de poursuite",
+          "justification": "Elle est entre les parenthèses du `while`",
+          "resultat_markdown": "`i <= n`"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer l'incrémentation",
+          "justification": "C'est la dernière ligne du corps de la boucle",
+          "resultat_markdown": "`i=i+1;`, que l'on écrit `i++`"
+        },
+        {
+          "numero": 4,
+          "action": "Construire l'en-tête du `for`",
+          "justification": "On place les trois éléments dans l'ordre : initialisation, condition, pas",
+          "resultat_markdown": "`for (i = 1; i <= n; i++)`"
+        },
+        {
+          "numero": 5,
+          "action": "Ne garder que le reste du corps",
+          "justification": "L'incrémentation et l'initialisation ont quitté le corps",
+          "resultat_markdown": "`{ Y = Y * X; }`"
+        }
+      ],
+      "conclusion_markdown": "La boucle devient `for (i = 1; i <= n; i++) { Y = Y * X; }`, qui calcule $X^n$ comme la version `while`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Garder `i=i+1;` dans le corps en plus de `i++` dans l'en-tête",
+          "pourquoi_faux": "Le compteur augmente de 2 à chaque tour : la boucle fait deux fois moins de tours et le calcul est faux.",
+          "correction_markdown": "L'incrémentation ne figure qu'à un seul endroit."
+        },
+        {
+          "erreur_markdown": "Mettre un point-virgule après l'en-tête : `for (...);`",
+          "pourquoi_faux": "Le `;` est une instruction vide : la boucle tourne sans rien faire et le bloc suivant ne s'exécute qu'une seule fois, après la boucle. Avec `n = 5`, le compteur vaut 6 à la sortie (vérifié à l'exécution).",
+          "correction_markdown": "Pas de point-virgule après la parenthèse fermante du `for`."
+        },
+        {
+          "erreur_markdown": "Séparer l'en-tête par des virgules au lieu de points-virgules",
+          "pourquoi_faux": "`for (i = 1, i <= n, i++)` est une erreur de syntaxe : l'en-tête exige deux points-virgules.",
+          "correction_markdown": "Trois parties séparées par deux `;`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réécrire avec `for` : `i = 0; while (i < 5) { printf(\"%d \", i * i); i++; }`. Quel est l'affichage ?",
+          "solution_markdown": "Initialisation `i = 0`, condition `i < 5`, pas `i++` :\n\n```c\nfor (i = 0; i < 5; i++) {\n    printf(\"%d \", i * i);\n}\n```\n\nL'affichage, vérifié à l'exécution, est `0 1 4 9 16` : les carrés des entiers de 0 à 4, soit 5 tours."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire avec `while` : `for (i = 10; i > 0; i = i - 3) printf(\"%d \", i);`. Quel est l'affichage ?",
+          "solution_markdown": "On inverse la méthode : l'initialisation passe avant la boucle, la condition dans le `while`, le pas à la fin du corps.\n\n```c\ni = 10;\nwhile (i > 0) {\n    printf(\"%d \", i);\n    i = i - 3;\n}\n```\n\nDéroulement : i = 10 (affiché), puis 7, 4, 1 ; ensuite i = -2, la condition `i > 0` est fausse et la boucle s'arrête. L'affichage, vérifié à l'exécution, est `10 7 4 1` pour les deux versions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire avec un `for` à deux initialisations le calcul de la somme des entiers de 1 à n (avec n = 10). Que se passe-t-il si on écrit `for (i = 1; i <= n; i++);` suivi d'un bloc ?",
+          "solution_markdown": "**Somme avec deux initialisations.**\n\n```c\n#include <stdio.h>\nint main(void) {\n    int n = 10, s, i;\n    for (i = 1, s = 0; i <= n; i++) {\n        s += i;\n    }\n    printf(\"%d\\n\", s);\n    return 0;\n}\n```\n\nLa virgule permet d'initialiser le compteur `i` et la somme `s` dans la première partie de l'en-tête. Le programme affiche **55** (vérifié à l'exécution) : $\\dfrac{10 \\times 11}{2} = 55$.\n\n**Le point-virgule parasite.** Avec `for (i = 1; i <= n; i++);`, le point-virgule est l'instruction vide qui sert de corps. La boucle fait `n` tours sans rien faire, et le bloc qui suit ne s'exécute qu'une seule fois, avec `i = n + 1`. C'est une faute classique, qui ne produit aucun message d'erreur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un `for` rassemble en en-tête l'initialisation, la condition et le pas ; un `while` les répartit autour de la boucle.",
+        "Conversion `while` vers `for` : l'initialisation et l'incrémentation quittent le corps pour l'en-tête.",
+        "Ne pas laisser `i = i + 1` dans le corps en plus de `i++` : le compteur avancerait deux fois.",
+        "Pas de point-virgule après l'en-tête du `for`.",
+        "Au probatoire, cette question vaut 1,5 point : l'en-tête correct, le corps épuré et le programme complet sont les trois points attendus."
+      ]
+    }
+  ]
+}

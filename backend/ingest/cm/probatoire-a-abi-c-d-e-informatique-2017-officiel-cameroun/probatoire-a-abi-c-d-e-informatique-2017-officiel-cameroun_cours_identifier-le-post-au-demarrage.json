@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-identifier-le-post-au-demarrage-probatoire-acde-2017",
+  "meta": {
+    "titre": "Identifier le POST au démarrage",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Maintenance informatique : démarrage de l'ordinateur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "POST",
+      "BIOS",
+      "démarrage",
+      "amorçage",
+      "auto-test"
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCM203",
+      "savoir_numero": "IV"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Entre le moment où tu appuies sur le bouton Power et celui où le bureau apparaît, l'ordinateur enchaîne plusieurs étapes sans rien afficher. La première est un contrôle général : le processeur, la mémoire, la carte graphique et le clavier sont-ils présents et en état de marche ? Ce programme porte un nom précis que l'examen te demande régulièrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est le système d'exploitation",
+        "Connaître le rôle général de la carte mère",
+        "Distinguer matériel et logiciel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La séquence de démarrage et la place du POST",
+      "contenu_markdown": "| Étape | Qui agit | Ce qui se passe |\n|---|---|---|\n| 1. Mise sous tension | Bloc d'alimentation | Les composants reçoivent le courant |\n| 2. **Auto-test (POST)** | BIOS | Test du processeur, de la mémoire, de la carte graphique, du clavier |\n| 3. Recherche du support d'amorçage | BIOS | Le BIOS cherche le disque (ou la clé USB) contenant le système |\n| 4. Chargement du système | Chargeur d'amorçage | Le système d'exploitation est copié en mémoire |\n| 5. Interface | Système d'exploitation | Le bureau s'affiche |\n\n- Le **BIOS** (*Basic Input/Output System*) est le programme de base, stocké sur une puce de la carte mère, qui pilote les premières étapes.\n- Le **POST** (*Power-On Self-Test*) est le programme d'auto-test du BIOS : il vérifie l'état du matériel pendant la phase de démarrage.\n- L'**amorçage** (*boot*) vient après : c'est le chargement du système d'exploitation."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Comment appelle-t-on le programme qui vérifie l'état de l'ordinateur pendant la phase de démarrage ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Situer la question dans la séquence",
+          "justification": "Le programme agit pendant le démarrage, avant le système d'exploitation, et il vérifie le matériel.",
+          "resultat_markdown": "C'est l'étape 2 du tableau."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer le programme",
+          "justification": "L'étape 2 s'appelle auto-test à la mise sous tension.",
+          "resultat_markdown": "POST (*Power-On Self-Test*)."
+        },
+        {
+          "numero": 3,
+          "action": "Préciser qui l'exécute",
+          "justification": "Le POST est un programme du BIOS, stocké sur la carte mère.",
+          "resultat_markdown": "Le POST est exécuté par le BIOS."
+        },
+        {
+          "numero": 4,
+          "action": "Décrire ce qu'il teste",
+          "justification": "Le POST contrôle les composants indispensables au démarrage.",
+          "resultat_markdown": "Processeur, mémoire vive, carte graphique, clavier ; un bip unique et court indique que tout va bien."
+        }
+      ],
+      "conclusion_markdown": "Le programme de vérification au démarrage est le **POST**, auto-test exécuté par le BIOS."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « l'amorçage » (ou boot).",
+          "pourquoi_faux": "L'amorçage désigne le chargement du système d'exploitation, qui vient après la vérification du matériel.",
+          "correction_markdown": "Retenir l'ordre : POST d'abord, amorçage ensuite."
+        },
+        {
+          "erreur_markdown": "Répondre « l'antivirus » ou « Scandisk ».",
+          "pourquoi_faux": "Ces outils fonctionnent depuis le système d'exploitation, une fois le démarrage terminé. Ils ne vérifient pas le matériel avant le système.",
+          "correction_markdown": "Choisir le programme du BIOS : le POST."
+        },
+        {
+          "erreur_markdown": "Répondre seulement « le BIOS ».",
+          "pourquoi_faux": "Le BIOS est le programme de base qui contient le POST. Répondre « BIOS » est voisin, mais la question vise le programme de vérification lui-même.",
+          "correction_markdown": "Écrire « le POST (programme du BIOS) »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifient les sigles POST et BIOS ? Donner le rôle du POST en une phrase.",
+          "solution_markdown": "POST : *Power-On Self-Test* (auto-test à la mise sous tension). BIOS : *Basic Input/Output System* (système de base d'entrées-sorties). Le POST vérifie que les composants essentiels (processeur, mémoire, carte graphique, clavier) fonctionnent avant le chargement du système d'exploitation."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Remettre dans l'ordre les étapes suivantes : chargement du système d'exploitation ; mise sous tension ; affichage du bureau ; POST ; recherche du disque d'amorçage.",
+          "solution_markdown": "Ordre correct :\n1. mise sous tension ;\n2. POST ;\n3. recherche du disque d'amorçage ;\n4. chargement du système d'exploitation ;\n5. affichage du bureau.\n\nLe POST précède toujours l'amorçage, car il faut s'assurer que le matériel fonctionne avant d'y charger un système."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur reste sur un écran noir et émet une série de bips sans jamais afficher le logo du système. Dire ce que cela indique sur le déroulement du démarrage et pourquoi le système ne se charge pas.",
+          "solution_markdown": "La série de bips est émise par le BIOS : le **POST a détecté une erreur** matérielle (mémoire, carte graphique, clavier...). Le démarrage s'arrête à l'étape 2, avant la recherche du disque d'amorçage : le système d'exploitation n'est donc jamais chargé, d'où l'absence de logo.\n\nLa démarche de réparation consiste à interpréter le schéma de bips (manuel de la carte mère), puis à tester ou remplacer le composant désigné."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le POST est l'auto-test que le BIOS exécute à la mise sous tension pour vérifier le matériel.",
+        "Ordre du démarrage : mise sous tension, POST, recherche du support d'amorçage, chargement du système, bureau.",
+        "Le BIOS contient le POST ; l'amorçage vient après lui.",
+        "Un bip court unique signale un POST réussi ; une série de bips signale une erreur.",
+        "Au Probatoire, le nom du programme de vérification au démarrage (POST) est une question à 0,5 ou 1 point : réponds par le sigle et son développement."
+      ]
+    }
+  ]
+}

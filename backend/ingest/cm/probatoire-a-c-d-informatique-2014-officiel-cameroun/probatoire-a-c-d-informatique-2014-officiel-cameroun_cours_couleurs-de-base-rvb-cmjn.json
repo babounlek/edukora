@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-couleurs-de-base-rvb-cmjn-probatoire-acd-2014",
+  "meta": {
+    "titre": "Citer les couleurs de base de l'infographie : RVB et CMJN",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Infographie et multimédia : codage des couleurs",
+    "duree_estimee_min": 25,
+    "tags": [
+      "RVB",
+      "CMJN",
+      "synthèse additive",
+      "synthèse soustractive",
+      "couleur",
+      "codage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-c-d-informatique-2014-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, C et D, session 2014 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-c-d-informatique-2014-officiel-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un écran n'a pas de peinture : il fabrique toutes ses couleurs avec trois petites lumières. Une imprimante, elle, dépose de l'encre sur du papier. Ces deux techniques n'utilisent pas les mêmes couleurs de base, et la différence explique pourquoi une photo peut paraître plus terne une fois imprimée."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un pixel",
+        "Connaître les puissances de 2 (2⁸ = 256)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "RVB pour l'écran, CMJN pour l'impression",
+      "contenu_markdown": "**Synthèse additive (RVB)** : trois lumières primaires, le **R**ouge, le **V**ert et le **B**leu. On additionne des lumières.\n\n| Mélange | Résultat |\n|---|---|\n| Rouge + Vert | Jaune |\n| Vert + Bleu | Cyan |\n| Rouge + Bleu | Magenta |\n| Rouge + Vert + Bleu | Blanc |\n| aucune lumière | Noir |\n\n**Synthèse soustractive (CMJN)** : trois encres primaires, le **C**yan, le **M**agenta et le **J**aune, plus le **N**oir. On soustrait de la lumière en absorbant des couleurs.\n\n**Codage.** En 24 bits, chaque couleur primaire est codée sur 8 bits, donc 256 niveaux (0 à 255) ; le nombre de couleurs est 256³ = 16 777 216.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Quelle couleur est codée par (R, V, B) = (255, 255, 0) ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire les trois composantes",
+          "justification": "L'ordre est rouge, vert, bleu.",
+          "resultat_markdown": "Rouge = 255 (maximum), Vert = 255 (maximum), Bleu = 0 (éteint)."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la synthèse additive",
+          "justification": "Deux lumières à pleine intensité s'additionnent.",
+          "resultat_markdown": "Rouge + Vert = Jaune."
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler avec le bleu",
+          "justification": "Le bleu est éteint, il ne modifie pas le mélange.",
+          "resultat_markdown": "Pas de bleu : la couleur n'est pas blanche."
+        }
+      ],
+      "conclusion_markdown": "Le code (255, 255, 0) correspond au jaune."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer rouge, jaune et bleu",
+          "pourquoi_faux": "C'est le système des peintres. Sur un écran, le jaune est obtenu en mélangeant du rouge et du vert : ce n'est pas une couleur de base.",
+          "correction_markdown": "Cite rouge, vert, bleu."
+        },
+        {
+          "erreur_markdown": "Croire que mélanger toutes les lumières donne du noir",
+          "pourquoi_faux": "Avec la lumière, plus on ajoute, plus c'est clair : l'addition des trois primaires donne du blanc.",
+          "correction_markdown": "Retiens : lumière additionnée = blanc ; absence de lumière = noir."
+        },
+        {
+          "erreur_markdown": "Confondre RVB et CMJN",
+          "pourquoi_faux": "RVB s'utilise pour les écrans, CMJN pour l'impression. Une image conçue en RVB doit être convertie avant impression.",
+          "correction_markdown": "Associe écran à RVB, papier à CMJN."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne le code (R, V, B) du noir, du blanc et du rouge pur.",
+          "solution_markdown": "**Noir.** Aucune lumière : (0, 0, 0).\n\n**Blanc.** Les trois lumières au maximum : (255, 255, 255).\n\n**Rouge pur.** Seul le rouge est allumé : (255, 0, 0)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Combien de couleurs différentes peut-on coder avec 8 bits au total ? Avec 16 bits ? Avec 24 bits ?",
+          "solution_markdown": "**8 bits.** 2⁸ = 256 couleurs.\n\n**16 bits.** 2¹⁶ = 65 536 couleurs.\n\n**24 bits.** 2²⁴ = 16 777 216 couleurs (c'est aussi 256 × 256 × 256)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une image de 800 × 600 pixels est codée en 24 bits. Calcule sa taille non compressée en octets et en Mio (1 Mio = 1 048 576 octets).",
+          "solution_markdown": "**Étape 1 : pixels.** 800 × 600 = 480 000 pixels.\n\n**Étape 2 : octets par pixel.** 24 bits / 8 = 3 octets.\n\n**Étape 3 : taille en octets.** 480 000 × 3 = 1 440 000 octets.\n\n**Étape 4 : conversion.** 1 440 000 / 1 048 576 ≈ 1,373 Mio.\n\n**Conclusion.** L'image pèse environ 1,37 Mio avant compression."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les trois couleurs de base de l'écran sont le rouge, le vert et le bleu (RVB).",
+        "Rouge + vert = jaune ; vert + bleu = cyan ; rouge + bleu = magenta ; les trois = blanc.",
+        "L'impression utilise le cyan, le magenta, le jaune et le noir (CMJN).",
+        "En 24 bits, chaque primaire a 256 niveaux et l'on obtient 16 777 216 couleurs.",
+        "Au Probatoire, la réponse attendue est « rouge, vert, bleu » : ne la remplace pas par celle de la peinture."
+      ]
+    }
+  ]
+}

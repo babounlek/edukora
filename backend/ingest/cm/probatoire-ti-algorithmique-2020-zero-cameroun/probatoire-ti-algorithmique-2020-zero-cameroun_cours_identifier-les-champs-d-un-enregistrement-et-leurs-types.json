@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-identifier-les-champs-d-un-enregistrement-et-leurs-types-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Identifier les champs d'un enregistrement et leurs types",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures de données",
+    "duree_estimee_min": 18,
+    "tags": [
+      "enregistrement",
+      "champ",
+      "type",
+      "notation pointée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q1.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fiche d'élève comporte un nom, un âge, un sexe : chacune de ces informations est un champ. Savoir nommer les champs d'un enregistrement, avec leur type, est la base pour ensuite lire ou modifier une fiche. C'est une question de lecture attentive, mais les élèves perdent souvent le point en confondant champ, type et variable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion d'enregistrement",
+        "Connaître les types simples (entier, réel, chaîne, booléen)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le champ : un nom, un type, une place dans l'enregistrement",
+      "contenu_markdown": "Un **champ** est un composant nommé d'un enregistrement. Sa déclaration s'écrit :\n\n```\nnom_du_champ : type ;\n```\n\net se trouve entre le mot-clé d'ouverture (`Type nom : enregistrement`) et `FinEnregistrement`.\n\nTrois noms à ne pas confondre :\n\n| Élément | Exemple | Rôle |\n|---|---|---|\n| le type enregistrement | `personne` | le modèle, qui décrit la fiche |\n| la variable de ce type | `p` ou `eleve[15]` | une fiche réelle, qui contient des valeurs |\n| un champ | `age` | une information de la fiche |\n\nAccès à la valeur d'un champ : la **notation pointée**, `variable.champ`, par exemple `p.age`. Pour une case de tableau : `eleve[15].age`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans `Type personne : enregistrement nom : chaine ; prenom : chaine ; age : entier ; sexe : chaine ; FinEnregistrement`, identifier deux champs de valeurs.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les mots-clés qui délimitent l'enregistrement",
+          "justification": "Les champs sont entre `enregistrement` et `FinEnregistrement`",
+          "resultat_markdown": "Quatre lignes sont comprises entre les deux mots-clés"
+        },
+        {
+          "numero": 2,
+          "action": "Lire chaque ligne sous la forme `nom : type`",
+          "justification": "Chaque ligne déclare un champ avec son type",
+          "resultat_markdown": "`nom : chaine`, `prenom : chaine`, `age : entier`, `sexe : chaine`"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir deux champs et les écrire avec leur type",
+          "justification": "Le sujet n'en demande que deux",
+          "resultat_markdown": "`nom : chaine` et `age : entier`"
+        }
+      ],
+      "conclusion_markdown": "Deux champs de valeurs de l'enregistrement `personne` sont `nom` (de type chaîne) et `age` (de type entier)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `personne` ou `eleve`",
+          "pourquoi_faux": "`personne` est le nom du type et `eleve` le nom d'une variable tableau. Aucun des deux n'est une ligne située à l'intérieur de l'enregistrement.",
+          "correction_markdown": "Un champ se trouve entre `enregistrement` et `FinEnregistrement`."
+        },
+        {
+          "erreur_markdown": "Écrire seulement le nom du champ sans son type",
+          "pourquoi_faux": "La déclaration d'un champ est `nom : type` : sans le type, la réponse est incomplète et ne prouve pas que tu as lu la ligne.",
+          "correction_markdown": "Écris `age : entier` et non simplement `age`."
+        },
+        {
+          "erreur_markdown": "Confondre champ et valeur",
+          "pourquoi_faux": "`14` ou `'Samuel'` sont des valeurs rangées dans les champs, pas des champs.",
+          "correction_markdown": "Le champ est le nom de la case, la valeur est son contenu."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit `Type voiture : enregistrement marque : chaine ; annee : entier ; prix : reel ; FinEnregistrement`. Lister les champs de `voiture` avec leur type et donner leur nombre.",
+          "solution_markdown": "Les champs sont les lignes situées entre `enregistrement` et `FinEnregistrement` :\n\n- `marque : chaine` ;\n- `annee : entier` ;\n- `prix : reel`.\n\nL'enregistrement `voiture` possède donc **3 champs**, de trois types différents."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec `Var v : voiture ;`, écrire l'instruction qui affecte l'année 2019 au champ `annee` de `v` et l'instruction qui affiche son prix.",
+          "solution_markdown": "On utilise la notation pointée `variable.champ`.\n\n```\nv.annee ← 2019 ;\nEcrire (v.prix) ;\n```\n\nLa première instruction est une affectation à un champ de type entier, donc sans apostrophes. La seconde affiche la valeur contenue dans le champ `prix` de la variable `v`. On n'écrit jamais `voiture.annee`, car `voiture` est le type et non une variable."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On déclare `Type date : enregistrement jour : entier ; mois : entier ; annee : entier ; FinEnregistrement` puis `Type eleve : enregistrement nom : chaine ; naissance : date ; FinEnregistrement` et `Var e : eleve ;`. Combien de champs l'enregistrement `eleve` possède-t-il ? Écrire l'affectation du mois 3 dans la date de naissance de `e`.",
+          "solution_markdown": "**Nombre de champs.** `eleve` possède deux champs : `nom` (une chaîne) et `naissance` (un enregistrement de type `date`). Le champ `naissance` contient lui-même trois champs, `jour`, `mois` et `annee`. On parle de champs imbriqués.\n\n**Affectation du mois.** On descend d'un niveau à chaque point : d'abord le champ `naissance` de `e`, puis le champ `mois` de cette date.\n\n```\ne.naissance.mois ← 3 ;\n```\n\n`e.mois` serait faux, car `mois` n'est pas un champ de `eleve` : il appartient à l'enregistrement `date`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un champ se déclare `nom : type` entre les mots-clés `enregistrement` et `FinEnregistrement`.",
+        "Distingue le type (`personne`), la variable (`eleve[15]`) et le champ (`age`).",
+        "Donne toujours le champ avec son type dans la réponse.",
+        "La valeur d'un champ s'atteint avec la notation pointée `variable.champ`.",
+        "Cette question rapporte des points de lecture : au probatoire, elle accompagne presque toujours une déclaration d'enregistrement."
+      ]
+    }
+  ]
+}

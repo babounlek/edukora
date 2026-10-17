@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-identifier-les-elements-d-un-mct-ti-si-2017",
+  "meta": {
+    "titre": "Lire un MCT : événements, synchronisations, opérations et résultats",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des traitements",
+    "duree_estimee_min": 30,
+    "tags": [
+      "MCT",
+      "événement",
+      "opération",
+      "résultat",
+      "synchronisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex3-q11b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un MCT se lit comme une recette de cuisine : « quand telle chose arrive, on fait telle opération, et on obtient tel résultat ». Pour la lire, il suffit de reconnaître quatre sortes d'éléments et de comprendre ce que chacun fait dans l'histoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un MCT",
+        "Savoir lire un schéma avec des flèches"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre éléments d'un MCT",
+      "contenu_markdown": "| Élément | Symbole | Rôle |\n|---|---|---|\n| **Événement** | cercle | message qui **déclenche** un traitement (flèches sortantes seulement) |\n| **Synchronisation** | petit pentagone | **condition de déclenchement** d'une opération : ET (tous les événements), OU (au moins un) |\n| **Opération** | rectangle à deux compartiments | ensemble d'actions exécutées **sans interruption** : nom en haut, règles d'émission en bas |\n| **Résultat** | cercle | message **émis** par l'opération (flèches entrantes seulement) |\n\nUn résultat d'une opération peut devenir **événement** de l'opération suivante.\n\n**Méthode de lecture** : 1) trouver les cercles sans flèche entrante : événements déclencheurs ; 2) suivre chaque flèche jusqu'à la synchronisation puis l'opération ; 3) lire ce que l'opération émet ; 4) répéter jusqu'aux résultats finaux."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier, sur le schéma (« demande d'achat » → « Article destocké » → « Facturation » ; « Paiement » → « opération » → « Encassement » et « remise au client »), trois éléments différents en précisant leurs noms (question 11.b du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les déclencheurs",
+          "justification": "« demande d'achat » n'a qu'une flèche sortante.",
+          "resultat_markdown": "événement : demande d'achat"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les rectangles à deux compartiments",
+          "justification": "« Article destocké » est un rectangle dont le nom est en haut.",
+          "resultat_markdown": "opération : Article destocké"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer les messages émis",
+          "justification": "« Facturation » n'a qu'une flèche entrante venue d'une opération.",
+          "resultat_markdown": "résultat : Facturation"
+        },
+        {
+          "numero": 4,
+          "action": "Compléter par les synchronisations",
+          "justification": "Le pentagone avant chaque opération est la condition de déclenchement ; avant la seconde opération, deux flèches arrivent : ET.",
+          "resultat_markdown": "synchronisation avec condition ET avant la seconde opération"
+        }
+      ],
+      "conclusion_markdown": "Un événement (demande d'achat), une opération (Article destocké) et un résultat (Facturation) sont trois éléments de natures différentes du MCT ; la synchronisation en est un quatrième."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre événement et résultat",
+          "pourquoi_faux": "Les deux sont des cercles : seule la direction des flèches les distingue.",
+          "correction_markdown": "Flèche sortante : événement. Flèche entrante : résultat."
+        },
+        {
+          "erreur_markdown": "Oublier la synchronisation",
+          "pourquoi_faux": "Elle ne se dessine pas comme un traitement, mais elle fixe la condition de déclenchement.",
+          "correction_markdown": "Repérer le pentagone avant chaque opération."
+        },
+        {
+          "erreur_markdown": "Donner le type sans le nom, ou le nom sans le type",
+          "pourquoi_faux": "Il faut les deux pour obtenir les points.",
+          "correction_markdown": "Écrire par exemple « événement : demande d'achat »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur le schéma, quel événement déclenche « Article destocké » et quel résultat l'opération émet-elle vers l'extérieur ?",
+          "solution_markdown": "1. L'événement déclencheur est « demande d'achat ».\n2. Le résultat émis vers l'extérieur est « Facturation »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi la synchronisation avant la seconde opération est-elle de type ET ?",
+          "solution_markdown": "1. Deux flèches y arrivent : le résultat de l'opération « Article destocké » et l'événement « Paiement ».\n2. L'opération ne se déclenche que si les deux sont présents : condition ET."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Décris en texte le MCT de l'inscription d'un élève : l'événement « dossier déposé » déclenche « Vérifier le dossier », qui émet « dossier refusé » si le dossier est incomplet et sinon un message interne. Avec l'événement « frais payés », ce message déclenche « Enregistrer l'élève », qui émet « inscription validée ».",
+          "solution_markdown": "1. Événement 1 : dossier déposé. Synchronisation S1 (un seul événement).\n2. Opération 1 : Vérifier le dossier. Règles d'émission : si dossier incomplet, résultat « dossier refusé » ; sinon, résultat interne « dossier conforme ».\n3. Synchronisation S2 : « dossier conforme » ET « frais payés » (événement 2).\n4. Opération 2 : Enregistrer l'élève, qui émet le résultat « inscription validée ».\n5. Le résultat interne « dossier conforme » joue le rôle d'événement pour l'opération 2."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un événement déclenche, un résultat est émis : lis le sens des flèches.",
+        "La synchronisation fixe la condition de déclenchement : ET ou OU.",
+        "Une opération s'exécute sans interruption et émet des résultats selon ses règles d'émission.",
+        "Un résultat peut servir d'événement à l'opération suivante.",
+        "Au probatoire TI, donne toujours le type et le nom de l'élément identifié : 0,5 pt par élément."
+      ]
+    }
+  ]
+}

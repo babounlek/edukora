@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-rendement-moteur-electrique-fcem-resistance-interne-d-ti-2014",
+  "meta": {
+    "titre": "Rendement d'un moteur électrique à partir de sa force contre-électromotrice et de sa résistance interne",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Énergie électrique : récepteurs",
+    "duree_estimee_min": 30,
+    "tags": [
+      "rendement",
+      "moteur électrique",
+      "puissance utile",
+      "force contre-électromotrice",
+      "effet Joule"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2014-officiel-cameroun.html",
+    "epreuve_titre": "Probatoire Physique, séries D et TI, session 2014 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2014-officiel-cameroun.html-ex2-q2.2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur de ventilateur chauffe après quelques heures : une partie de l'énergie électrique reçue est perdue en chaleur. Le rendement mesure la part réellement convertie en travail mécanique. C'est la qualité d'un moteur, un chiffre qui décide de son choix dans un atelier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Puissance électrique $P = UI$",
+        "Effet Joule $P_J = RI^2$",
+        "Caractéristique d'un moteur $U_M = E' + r'I$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rendement d'un moteur",
+      "contenu_markdown": "**Bilan de puissance d'un moteur** traversé par un courant d'intensité $I$ sous la tension $U_M$ :\n\n- puissance électrique reçue : $P_e = U_M\\,I$ ;\n- puissance mécanique utile : $P_u = E'\\,I$ ;\n- puissance dissipée par effet Joule : $P_J = r'\\,I^2$ ;\n- conservation : $P_e = P_u + P_J$, car $U_M\\,I = E'\\,I + r'\\,I^2$.\n\n**Rendement.**\n\n$$\\rho = \\dfrac{P_u}{P_e} = \\dfrac{E'\\,I}{U_M\\,I} = \\dfrac{E'}{U_M} = \\dfrac{E'}{E' + r'\\,I} = 1 - \\dfrac{r'\\,I}{U_M}$$\n\nLe rendement est un nombre sans unité, inférieur à 1, souvent exprimé en pourcentage.",
+      "formule_principale": "\\rho = \\dfrac{E'}{E' + r'I}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un moteur ($E' = 4{,}5\\ \\text{V}$ ; $r' = 1\\ \\Omega$) est traversé par un courant $I = 0{,}50\\ \\text{A}$. Calculer son rendement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tension aux bornes du moteur",
+          "justification": "$U_M = E' + r'I$.",
+          "resultat_markdown": "$U_M = 4{,}5 + 1 \\times 0{,}50 = 5{,}0\\ \\text{V}$"
+        },
+        {
+          "numero": 2,
+          "action": "Puissance reçue",
+          "justification": "$P_e = U_M I$.",
+          "resultat_markdown": "$P_e = 5{,}0 \\times 0{,}50 = 2{,}5\\ \\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Puissance utile",
+          "justification": "$P_u = E' I$.",
+          "resultat_markdown": "$P_u = 4{,}5 \\times 0{,}50 = 2{,}25\\ \\text{W}$"
+        },
+        {
+          "numero": 4,
+          "action": "Rendement",
+          "justification": "Rapport utile sur reçue.",
+          "resultat_markdown": "$\\rho = \\dfrac{2{,}25}{2{,}5} = 0{,}90$"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôle",
+          "justification": "$P_e = P_u + P_J$ avec $P_J = r'I^2 = 0{,}25\\ \\text{W}$.",
+          "resultat_markdown": "$2{,}25 + 0{,}25 = 2{,}5\\ \\text{W}$ ; $\\rho = 90\\ \\%$"
+        }
+      ],
+      "conclusion_markdown": "Le moteur a un rendement de $90\\ \\%$ : 90 % de l'énergie électrique reçue est transformée en énergie mécanique, 10 % est perdue en chaleur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le rendement avec la puissance du générateur.",
+          "pourquoi_faux": "Le rendement d'un récepteur se calcule avec la puissance qu'il reçoit ($U_MI$), pas avec celle que fournit le générateur ($EI$), dont une partie est dissipée ailleurs.",
+          "correction_markdown": "Calcule d'abord $U_M$ aux bornes du moteur."
+        },
+        {
+          "erreur_markdown": "Oublier $r'$ dans $U_M$ et obtenir $\\rho = 1$.",
+          "pourquoi_faux": "Un moteur réel n'est jamais parfait : $r'$ dissipe de l'énergie. Si $\\rho = 1$, tu as oublié $r'I$.",
+          "correction_markdown": "$U_M = E' + r'I$ : jamais $U_M = E'$."
+        },
+        {
+          "erreur_markdown": "Confondre puissance utile et puissance dissipée.",
+          "pourquoi_faux": "La puissance utile est $E'I$ (sortie mécanique), la puissance dissipée est $r'I^2$ (chaleur).",
+          "correction_markdown": "Associe $E'$ à la mécanique et $r'$ à la chaleur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur reçoit $U_M = 12\\ \\text{V}$ sous $I = 2\\ \\text{A}$, avec $r' = 1\\ \\Omega$. Calculer $P_e$, $P_J$, $P_u$ et $\\rho$.",
+          "solution_markdown": "$P_e = U_M I = 12 \\times 2 = 24\\ \\text{W}$ ; $P_J = r'I^2 = 1 \\times 4 = 4\\ \\text{W}$ ; $P_u = P_e - P_J = 20\\ \\text{W}$.\n\n$\\rho = \\dfrac{20}{24} = 0{,}833 = 83{,}3\\ \\%$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur ($E' = 9\\ \\text{V}$ ; $r' = 0{,}5\\ \\Omega$) est parcouru par $I = 4\\ \\text{A}$. Calculer $U_M$ et $\\rho$.",
+          "solution_markdown": "$U_M = E' + r'I = 9 + 0{,}5 \\times 4 = 11\\ \\text{V}$.\n\n$\\rho = \\dfrac{E'}{U_M} = \\dfrac{9}{11} = 0{,}818 = 81{,}8\\ \\%$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un moteur ($r' = 2\\ \\Omega$, $E'$ variable) est branché en série avec un générateur ($E = 12\\ \\text{V}$) et des résistances dont la somme (internes comprises, moteur exclu) vaut $2\\ \\Omega$. Montrer que la puissance mécanique est maximale pour $E' = 6\\ \\text{V}$ et calculer alors le rendement.",
+          "solution_markdown": "$I = \\dfrac{E - E'}{2 + 2} = \\dfrac{12 - E'}{4}$ et $P_u = E'\\,I = \\dfrac{E'(12 - E')}{4}$.\n\n$P_u$ est un trinôme du second degré en $E'$ de coefficient dominant négatif ; il est maximal au milieu des deux racines $0$ et $12$ : $E' = 6\\ \\text{V}$.\n\nAlors $I = \\dfrac{12 - 6}{4} = 1{,}5\\ \\text{A}$ et $P_u = 6 \\times 1{,}5 = 9{,}0\\ \\text{W}$.\n\n$U_M = E' + r'I = 6 + 2 \\times 1{,}5 = 9\\ \\text{V}$, donc $\\rho = \\dfrac{6}{9} = 0{,}667 = 66{,}7\\ \\%$ : la puissance maximale est obtenue avec un rendement modeste."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le moteur reçoit $U_MI$, restitue $E'I$ en mécanique et dissipe $r'I^2$ en chaleur.",
+        "Le rendement vaut $\\rho = E'/U_M = E'/(E' + r'I)$, toujours inférieur à 1.",
+        "Calcule $U_M$ avec $r'$ avant de calculer $P_e$.",
+        "Vérifie la conservation : $P_e = P_u + P_J$.",
+        "Au probatoire, le rendement d'un moteur est une question classique, avec $E'$, $r'$ et $I$ obtenus à la question précédente."
+      ]
+    }
+  ]
+}

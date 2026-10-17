@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-derouler-les-etapes-de-construction-d-un-mcd-ti-si-2017",
+  "meta": {
+    "titre": "Les étapes de construction d'un MCD, de l'énoncé au schéma",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "MCD",
+      "étapes",
+      "dictionnaire des données",
+      "MERISE"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un MCD réussi ne naît pas d'un coup de crayon : il se construit étape par étape, comme un plan de maison. Celui qui suit l'ordre ne se perd jamais, celui qui dessine dès la première ligne recommence trois fois."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une entité et une association",
+        "Avoir lu un cahier des charges"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les sept étapes de la construction d'un MCD",
+      "contenu_markdown": "1. **Recueillir** : lire le cahier des charges et noter les règles de gestion.\n2. **Établir le dictionnaire des données** : lister toutes les propriétés (code, désignation, type, taille).\n3. **Épurer** : supprimer synonymes, polysèmes, données calculables et redondances.\n4. **Regrouper en entités** à partir des dépendances fonctionnelles, et choisir l'**identifiant** de chaque entité.\n5. **Identifier les associations** (les verbes des règles de gestion) et leurs propriétés propres.\n6. **Déterminer les cardinalités** de chaque patte.\n7. **Dessiner et contrôler** : formes normales, cohérence avec les règles de gestion."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Quelles sont les étapes de la réalisation d'un MCD ? (question 5 du probatoire TI 2017)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer les étapes de préparation",
+          "justification": "On ne dessine rien avant d'avoir compris et listé les informations.",
+          "resultat_markdown": "règles de gestion, dictionnaire des données, épuration"
+        },
+        {
+          "numero": 2,
+          "action": "Placer les étapes de structuration",
+          "justification": "On regroupe les propriétés en objets et on les identifie.",
+          "resultat_markdown": "entités et identifiants"
+        },
+        {
+          "numero": 3,
+          "action": "Placer les liens",
+          "justification": "Après les entités viennent les liens entre elles, puis leurs cardinalités.",
+          "resultat_markdown": "associations, puis cardinalités"
+        },
+        {
+          "numero": 4,
+          "action": "Terminer par le contrôle",
+          "justification": "Un MCD doit être vérifié avant d'être rendu.",
+          "resultat_markdown": "dessin, formes normales, cohérence avec les règles de gestion"
+        }
+      ],
+      "conclusion_markdown": "La construction d'un MCD suit sept étapes : recueillir, établir le dictionnaire, épurer, définir entités et identifiants, identifier les associations, déterminer les cardinalités, dessiner et contrôler."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner avant d'avoir fait le dictionnaire",
+          "pourquoi_faux": "Sans dictionnaire, on oublie des propriétés et on crée des doublons.",
+          "correction_markdown": "Établir le dictionnaire des données en premier."
+        },
+        {
+          "erreur_markdown": "Oublier l'épuration",
+          "pourquoi_faux": "Garder une donnée calculable (âge, prix TTC) crée des incohérences quand la donnée de base change.",
+          "correction_markdown": "Supprimer toute donnée qui se déduit d'une autre."
+        },
+        {
+          "erreur_markdown": "Placer les cardinalités avant les associations",
+          "pourquoi_faux": "Une cardinalité décrit une patte d'association : sans association, elle n'a pas de sens.",
+          "correction_markdown": "Respecter l'ordre : associations, puis cardinalités."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Remets dans l'ordre : cardinalités, dictionnaire des données, règles de gestion, dessin, identifiants des entités, associations.",
+          "solution_markdown": "1. Règles de gestion.\n2. Dictionnaire des données.\n3. Entités et identifiants.\n4. Associations.\n5. Cardinalités.\n6. Dessin et contrôle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un dictionnaire figurent : Nom, Prenom, NomComplet, DateNaissance, Age, PrixHT, PrixTTC. Quelles données supprimer à l'épuration ?",
+          "solution_markdown": "1. NomComplet se déduit de Nom et Prenom : redondance, à supprimer.\n2. Age se calcule à partir de DateNaissance : donnée calculable, à supprimer.\n3. PrixTTC se calcule à partir de PrixHT et du taux de TVA : à supprimer.\n4. On conserve Nom, Prenom, DateNaissance, PrixHT."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une école inscrit des élèves dans des classes. Un élève (matricule, nom) appartient à une seule classe ; une classe (code, libellé) accueille au moins un élève. Déroule les étapes 1 à 6.",
+          "solution_markdown": "1. Règles de gestion : un élève appartient à une classe ; une classe compte au moins un élève.\n2. Dictionnaire : Matricule, NomEleve, CodeClasse, LibelleClasse.\n3. Épuration : aucune donnée calculable ni redondante.\n4. Entités et identifiants : ELEVE (Matricule, NomEleve), CLASSE (CodeClasse, LibelleClasse).\n5. Association : APPARTENIR relie ELEVE à CLASSE.\n6. Cardinalités : ELEVE (1,1) car un élève a une seule classe ; CLASSE (1,N) car une classe compte au moins un élève, plusieurs possibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Règles de gestion d'abord, dessin en dernier.",
+        "Le dictionnaire des données est la base de tout MCD.",
+        "L'épuration supprime les données calculables et les doublons.",
+        "Les cardinalités viennent après les associations.",
+        "Au probatoire TI, la question « étapes du MCD » est un classique : cite les étapes dans l'ordre avec un verbe d'action chacune."
+      ]
+    }
+  ]
+}

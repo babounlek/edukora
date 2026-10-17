@@ -1,0 +1,212 @@
+{
+  "epreuve_source": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun.html",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "A, C, D, E",
+  "filiere_serie_a": "abi",
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2017,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "groupes": [],
+  "numero_exercice": "1",
+  "introduction_markdown": "Aucun document ou matériel en dehors de ceux remis aux candidats par les examinateurs n'est autorisé. L'épreuve comporte trois parties : I Algorithmique et programmation (8 points), II Infographie et multimédia (6 points), III Maintenance informatique (6 points).",
+  "points": 8,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 1 : Algorithmique et programmation (8 points)**\n\nOn considère l'algorithme suivant, écrit en pseudo-code.\n\n```\nAlgorithme\nVar nb, pht, ttva, pttc : Numérique ;\nDébut\n  Ecrire \"Entrez le prix hors taxes :\" ;\n  Lire (pht) ;\n  Ecrire (\"Entrez le nombre d'articles :\") ;\n  Lire (nb) ;\n  Ecrire (\"Entrez le taux de TVA :\") ;\n  Lire (ttva) ;\n  pttc ← nb * pht * (1 + ttva) ;\n  Ecrire (\"Le prix toutes taxes confondues est : \", pttc) ;\nFin\n```",
+  "questions": [
+    {
+      "numero": "1.1",
+      "enonce_markdown": "**1.1** Que vaut `pttc` lorsque `nb = 5`, `pht = 7500` FCFA et `ttva = 7 %` ? *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour exécuter un algorithme à la main, recopie la formule de calcul, remplace chaque variable par sa valeur en respectant l'ordre des opérations (parenthèses d'abord, puis multiplications), et convertis un pourcentage en nombre décimal avant de l'insérer dans une formule.\n\nLe taux de 7 % s'écrit $0{,}07$ dans une formule, car $7\\,\\% = \\dfrac{7}{100}$. La formule de l'algorithme est :\n\n$$pttc = nb \\times pht \\times (1 + ttva)$$\n\nTrace d'exécution, instruction par instruction :\n\n| Instruction | Variable modifiée | Valeur |\n|---|---|---|\n| `Lire (pht)` | `pht` | 7 500 |\n| `Lire (nb)` | `nb` | 5 |\n| `Lire (ttva)` | `ttva` | 0,07 |\n| `pttc ← nb * pht * (1 + ttva)` | `pttc` | à calculer ci-dessous |\n\nCalcul, étape par étape :\n\n1. Parenthèse : $1 + ttva = 1 + 0{,}07 = 1{,}07$.\n2. Prix hors taxes des cinq articles : $nb \\times pht = 5 \\times 7\\,500 = 37\\,500$.\n3. Prix toutes taxes comprises : $pttc = 37\\,500 \\times 1{,}07$. On développe : $37\\,500 \\times 1 = 37\\,500$ et $37\\,500 \\times 0{,}07 = 2\\,625$ (car $37\\,500 \\times 7 = 262\\,500$, puis on divise par 100). Donc $pttc = 37\\,500 + 2\\,625 = 40\\,125$.\n\n**Réponse : `pttc` = 40 125 FCFA** (dont 2 625 FCFA de TVA).\n\nRemarque : si l'utilisateur tapait `7` à la place de `0,07`, l'algorithme calculerait $37\\,500 \\times (1 + 7) = 300\\,000$ FCFA, un résultat absurde pour une TVA de 7 %. L'algorithme attend donc le taux sous forme décimale.\n\n### Piège à éviter\nRemplacer `ttva` par 7 dans la parenthèse et trouver $1 + 7 = 8$, donc 300 000 FCFA : tu multiplies alors le prix par 8 au lieu de l'augmenter de 7 %. Autre erreur fréquente : oublier le « 1 + » et ne calculer que la TVA (2 625 FCFA) au lieu du prix toutes taxes comprises.\n\n### Conseil\nFais toujours un contrôle de vraisemblance : un prix TTC avec 7 % de TVA est un peu plus grand que le prix hors taxes ($37\\,500$ donne environ $40\\,000$). Un résultat très éloigné trahit une erreur de conversion du pourcentage. Écris aussi l'unité (FCFA).",
+      "themes": [
+        "Algorithmique",
+        "Trace d'exécution",
+        "Variables"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q1.1-1",
+          "competence": "Exécuter un algorithme à la main avec un taux en pourcentage",
+          "contenu_markdown": "Pour exécuter un algorithme à la main, recopie la formule de calcul, remplace chaque variable par sa valeur en respectant l'ordre des opérations (parenthèses d'abord, puis multiplications), et convertis un pourcentage en nombre décimal avant de l'insérer dans une formule.",
+          "cours_genere": true,
+          "cours_id": "cours-executer-un-algorithme-a-la-main-avec-un-pourcentage-probatoire-acde-2017"
+        }
+      ]
+    },
+    {
+      "numero": "1.2",
+      "enonce_markdown": "**1.2** Que fait cet algorithme ? *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour dire ce que fait un algorithme, repère les données lues (entrées), la formule de calcul (traitement) et ce qui est affiché (sortie), puis résume ces trois éléments en une phrase qui commence par un verbe d'action et qui nomme précisément la grandeur calculée.\n\nLecture de l'algorithme en trois temps :\n\n- Entrées : l'utilisateur saisit le prix hors taxes d'un article (`pht`), le nombre d'articles (`nb`) et le taux de TVA (`ttva`).\n- Traitement : `pttc ← nb * pht * (1 + ttva)`. Le produit `nb * pht` donne le prix hors taxes de tous les articles ; le facteur `(1 + ttva)` y ajoute la TVA, puisque $HT \\times (1 + taux) = HT + HT \\times taux$.\n- Sortie : l'algorithme affiche le message « Le prix toutes taxes confondues est : » suivi de la valeur de `pttc`.\n\n**Réponse : cet algorithme demande le prix unitaire hors taxes, le nombre d'articles et le taux de TVA, puis calcule et affiche le prix toutes taxes comprises (TTC) de l'ensemble des articles.**\n\n### Piège à éviter\nNe réponds pas « il calcule la TVA » : la TVA seule serait `nb * pht * ttva`. L'algorithme calcule le prix TTC, c'est-à-dire le prix hors taxes plus la TVA. Évite aussi la réponse vague « il calcule un prix », qui ne dit ni quoi ni pour quoi.\n\n### Conseil\nTermine ta phrase par la grandeur affichée à la fin (`pttc`) : c'est elle qui donne le rôle de l'algorithme. Le message du dernier `Ecrire` te souffle souvent la réponse.",
+      "themes": [
+        "Algorithmique",
+        "Notion d'algorithme",
+        "Lecture d'algorithme"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q1.2-1",
+          "competence": "Déterminer le rôle d'un algorithme à partir de ses instructions",
+          "contenu_markdown": "Pour dire ce que fait un algorithme, repère les données lues (entrées), la formule de calcul (traitement) et ce qui est affiché (sortie), puis résume ces trois éléments en une phrase qui commence par un verbe d'action et qui nomme précisément la grandeur calculée.",
+          "cours_genere": true,
+          "cours_id": "cours-determiner-le-role-d-un-algorithme-a-partir-de-ses-instructions-probatoire-acde-2017"
+        }
+      ]
+    },
+    {
+      "numero": "1.3",
+      "enonce_markdown": "**1.3** Proposer un nom à cet algorithme. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn nom d'algorithme résume son résultat en un ou deux mots, sans espace ni accent, souvent sous la forme verbe plus objet ou nom de la grandeur calculée (par exemple Calcul_Surface), et il ne doit pas reprendre un mot réservé du langage.\n\nL'algorithme calcule le prix toutes taxes comprises. Un nom qui le résume est :\n\n**`Calcul_Prix_TTC`**\n\nLe nom respecte les règles d'un identifiant : pas d'espace (remplacé par le tiret bas), pas d'accent, pas de caractère spécial. Il commence par un nom de rôle (« Calcul ») et se termine par la grandeur obtenue (« Prix_TTC »). Les variantes `PrixTTC` ou `Calcul_TTC` sont aussi acceptables ; l'en-tête devient alors `Algorithme Calcul_Prix_TTC`.\n\n### Piège à éviter\nÉvite les noms vides de sens (`Algo1`, `Test`, `Exercice`) et les noms trop étroits : `TVA` laisserait croire que l'algorithme calcule la taxe seule, alors qu'il calcule le prix total. N'écris pas non plus d'espace dans le nom (`Calcul prix TTC`).\n\n### Conseil\nRelis ta réponse de la question 1.2 et transforme-la en nom : le verbe d'action devient le premier mot, la grandeur calculée le dernier. Ainsi les deux réponses restent cohérentes.",
+      "themes": [
+        "Algorithmique",
+        "Structure d'un algorithme",
+        "Notion d'algorithme"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q1.3-1",
+          "competence": "Choisir un nom explicite pour un algorithme",
+          "contenu_markdown": "Un nom d'algorithme résume son résultat en un ou deux mots, sans espace ni accent, souvent sous la forme verbe plus objet ou nom de la grandeur calculée (par exemple Calcul_Surface), et il ne doit pas reprendre un mot réservé du langage.",
+          "cours_genere": true,
+          "cours_id": "cours-choisir-un-nom-explicite-pour-un-algorithme-probatoire-acde-2017"
+        }
+      ]
+    },
+    {
+      "numero": "2.a",
+      "enonce_markdown": "**2.a)** Définir : feuille de style. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour définir un terme, donne d'abord sa nature (le genre : fichier, langage, matériel), puis ce qui le distingue des notions voisines (son rôle, sa particularité) et, si possible, un exemple ou une extension de fichier connue.\n\nUne **feuille de style** (en anglais *Cascading Style Sheets*, abrégé CSS) est un fichier texte, d'extension `.css`, qui rassemble les règles de mise en forme (couleurs, polices, tailles, marges, positions) à appliquer aux éléments d'une ou de plusieurs pages web écrites en HTML. Elle sépare ainsi la présentation du contenu des pages.\n\nExemple : le fichier `probatoire.css` est relié à une page par la balise suivante, placée dans l'en-tête.\n\n```html\n<link rel=\"stylesheet\" href=\"probatoire.css\" type=\"text/css\">\n```\n\n### Piège à éviter\nNe dis pas que le CSS est un langage de programmation : c'est un langage de description de la présentation, il ne contient ni variables ni boucles au sens de l'algorithmique. Ne le confonds pas non plus avec le HTML, qui décrit la structure et le contenu de la page.\n\n### Conseil\nConstruis ta définition en trois morceaux : « fichier (ou langage) », « qui contient les règles de mise en forme », « appliquées aux pages HTML ». Ajouter l'extension `.css` ou une propriété comme `color` montre que tu connais la notion en pratique.",
+      "themes": [
+        "CSS",
+        "Définitions informatiques",
+        "HTML et CSS"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "III"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q2.a-1",
+          "competence": "Définir une feuille de style CSS",
+          "contenu_markdown": "Pour définir un terme, donne d'abord sa nature (le genre : fichier, langage, matériel), puis ce qui le distingue des notions voisines (son rôle, sa particularité) et, si possible, un exemple ou une extension de fichier connue.",
+          "cours_genere": true,
+          "cours_id": "cours-definir-une-feuille-de-style-css-probatoire-acde-2017"
+        }
+      ]
+    },
+    {
+      "numero": "2.b",
+      "enonce_markdown": "**2.b)** Donner deux avantages de l'utilisation des feuilles de style. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour justifier l'intérêt d'une technologie, donne des avantages réellement différents (gain de temps, cohérence, maintenance, poids des pages), chacun dans une phrase complète qui précise ce qui est gagné et par qui.\n\nDeux avantages, bien distincts :\n\n1. **Modification centralisée** : la mise en forme d'un site entier se change à un seul endroit. Si l'on modifie la couleur des titres dans le fichier `.css`, toutes les pages qui le lient sont mises à jour, sans rouvrir chaque page HTML.\n2. **Cohérence visuelle** : les mêmes règles s'appliquent à toutes les pages, donc le site garde partout les mêmes polices, couleurs et marges, ce qui lui donne une identité uniforme.\n\nAutres avantages recevables : code HTML plus léger et plus lisible (le contenu est séparé de la présentation), chargement plus rapide (le fichier `.css` est téléchargé une fois puis conservé en mémoire cache par le navigateur), réutilisation de la même feuille pour plusieurs sites.\n\n### Piège à éviter\nNe cite pas deux fois la même idée sous deux formulations (« gain de temps » et « maintenance facile » reviennent au même) : le correcteur ne compte alors qu'un seul avantage. N'écris pas non plus « les pages sont plus jolies », trop vague pour valoir un point.\n\n### Conseil\nChoisis un avantage lié au travail du développeur (modifier une fois) et un avantage lié au résultat (uniformité du site). Tu es sûr d'avoir deux idées différentes.",
+      "themes": [
+        "CSS",
+        "HTML et CSS",
+        "Avantages de l'informatisation"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "III"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q2.b-1",
+          "competence": "Citer les avantages des feuilles de style",
+          "contenu_markdown": "Pour justifier l'intérêt d'une technologie, donne des avantages réellement différents (gain de temps, cohérence, maintenance, poids des pages), chacun dans une phrase complète qui précise ce qui est gagné et par qui.",
+          "cours_genere": true,
+          "cours_id": "cours-citer-les-avantages-des-feuilles-de-style-probatoire-acde-2017"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Reproduire le tableau ci-dessous et cocher la case correspondante (HTML ou CSS). *[3 pts]*\n\n| Code ou balise | HTML | CSS |\n|---|---|---|\n| `<p style=\"color: blue\">` | | |\n| `<marquee>...</marquee>` | | |\n| `<i>...</i>` | | |\n| `<br>` | | |\n| `<tr></tr>` | | |\n| `<link rel=\"stylesheet\" href=\"probatoire.css\" type=\"text/css\">` | | |",
+      "corrige_markdown": "### Rappel de méthode\nPour distinguer HTML et CSS, rappelle que le HTML décrit la structure et le contenu avec des balises entre chevrons (paragraphe, tableau, saut de ligne), alors que le CSS décrit l'apparence avec des déclarations de la forme propriété : valeur (par exemple color: red) ; une balise qui relie la page à une feuille de style reste une balise HTML.\n\n| Code ou balise | HTML | CSS |\n|---|---|---|\n| `<p style=\"color: blue\">` | | X |\n| `<marquee>...</marquee>` | X | |\n| `<i>...</i>` | X | |\n| `<br>` | X | |\n| `<tr></tr>` | X | |\n| `<link rel=\"stylesheet\" href=\"probatoire.css\" type=\"text/css\">` | X | |\n\nJustification, ligne par ligne (0,5 point chacune) :\n\n- `<p style=\"color: blue\">` : la déclaration `color: blue` est écrite en CSS (propriété `color`, valeur `blue`) ; l'attribut `style` est le moyen d'insérer du CSS directement dans une balise HTML. On coche CSS, car c'est le seul élément de la ligne qui décrit un style. La balise `<p>` qui la porte reste, elle, du HTML.\n- `<marquee>...</marquee>` : balise HTML qui fait défiler un texte (obsolète en HTML5, mais bien du HTML).\n- `<i>...</i>` : balise HTML qui met un texte en italique.\n- `<br>` : balise HTML orpheline (sans balise fermante) qui provoque un retour à la ligne.\n- `<tr></tr>` : balises HTML qui délimitent une ligne de tableau (*table row*).\n- `<link ...>` : balise HTML placée dans `<head>`. Elle ne contient aucune règle de style : elle indique seulement au navigateur où trouver le fichier `.css`. On coche HTML.\n\n### Piège à éviter\nNe coche pas CSS pour la balise `<link>` sous prétexte qu'elle contient « stylesheet » et « .css » : une balise écrite avec des chevrons est du HTML, le CSS se reconnaît à ses couples propriété : valeur. L'attribut `style=\"color: blue\"` est l'exemple inverse : une balise HTML qui porte une déclaration CSS.\n\n### Conseil\nPour chaque ligne, pose-toi une seule question : est-ce une balise qui structure la page (HTML) ou une règle qui décrit un aspect visuel (CSS) ? Le signe deux-points entre une propriété et une valeur est le signal CSS le plus fiable.",
+      "themes": [
+        "HTML",
+        "CSS",
+        "Balises HTML",
+        "HTML et CSS"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q3-1",
+          "competence": "Distinguer le code HTML du code CSS",
+          "contenu_markdown": "Pour distinguer HTML et CSS, rappelle que le HTML décrit la structure et le contenu avec des balises entre chevrons (paragraphe, tableau, saut de ligne), alors que le CSS décrit l'apparence avec des déclarations de la forme propriété : valeur (par exemple color: red) ; une balise qui relie la page à une feuille de style reste une balise HTML.",
+          "cours_genere": true,
+          "cours_id": "cours-distinguer-le-code-html-du-code-css-probatoire-acde-2017"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "algorithme prix TTC",
+    "TVA",
+    "feuille de style CSS",
+    "HTML ou CSS",
+    "trace d'exécution",
+    "probatoire informatique 2017"
+  ],
+  "incertitudes": [
+    "Pas de corrigé officiel : toutes les réponses sont des modèles.",
+    "Question 1.1 : « 7 % » est interprété comme le taux décimal 0,07 (formule 1 + ttva), d'où pttc = 40 125 FCFA ; si le taux était saisi tel quel (7), l'algorithme donnerait 300 000 FCFA, valeur signalée dans le corrigé comme résultat absurde.",
+    "Question 1.3 : le nom est libre (Calcul_Prix_TTC proposé) ; l'en-tête imprimé sur la page ne porte aucun nom d'algorithme.",
+    "Question 3 : l'attribut style de la première ligne mêle HTML (balise p) et CSS (déclaration color: blue), et la balise link relie la page à une feuille CSS : cases choisies CSS pour la première, HTML pour la seconde, avec justification ; un corrigé officiel pourrait cocher CSS pour la balise link (ligne la plus discutable).",
+    "Coquilles du site corrigées dans l'énoncé : chevrons ‹ › remplacés par < >, « stylsheet » lu stylesheet, guillemets manquants autour de probatoire.css, fermeture « ‹ marquee › » lue </marquee>, algorithme écrit avec des guillemets typographiques mélangés. Déclaration « Var nb, pht, ttva, pttc: Numérique » et corps de l'algorithme recopiés sans modification de sens.",
+    "Série : l'en-tête de la page annonce « Série : A, C & D » alors que le titre de la page et le slug portent A, C, D, E et ABI ; retenu serie « A, C, D, E » avec filiere_serie_a « abi » (dossiers voisins 2018 et 2019)."
+  ],
+  "statut": "brouillon"
+}

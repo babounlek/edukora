@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-deduire-le-modele-relationnel-d-un-mcd-ti-si-2017",
+  "meta": {
+    "titre": "Passer du MCD au modèle relationnel : les règles de transformation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modèle relationnel",
+    "duree_estimee_min": 35,
+    "tags": [
+      "modèle relationnel",
+      "clé primaire",
+      "clé étrangère",
+      "MLD",
+      "passage MCD vers MLD"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex4-q12a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le MCD dit ce que l'on mémorise ; le modèle relationnel dit comment le ranger en tables. Le passage de l'un à l'autre est mécanique : trois règles suffisent. Celui qui les connaît transforme n'importe quel MCD en cinq minutes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un MCD avec ses cardinalités",
+        "Connaître clé primaire et clé étrangère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les règles de passage du MCD au MLD",
+      "contenu_markdown": "- **Règle 1** : toute **entité** devient une **table** ; son identifiant devient la **clé primaire**.\n- **Règle 2** : une association de cardinalité maximale **1 d'un côté** (type un à plusieurs) : on ajoute dans la table de l'entité qui porte ce 1 une **clé étrangère** vers l'autre entité (avec ses propriétés éventuelles).\n- **Règle 3** : une association dont les **deux maximums sont N** (plusieurs à plusieurs) devient une **nouvelle table** dont la clé primaire est la **concaténation** des identifiants des entités reliées (chacun clé étrangère), et qui reprend les propriétés de l'association.\n- **Entité à identifiant relatif** : sa clé primaire contient l'identifiant de l'entité de référence.\n\n**Notation** : clé primaire en gras ou soulignée, clé étrangère précédée de #."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "COMMANDE (N°Cde, DateCde) est reliée à PRODUIT (RéfProd, Désignation, PrixVente) par l'association CONCERNER (QtéCdée), de cardinalités (1,N) des deux côtés. Déduire le modèle relationnel (question 12.a du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer la règle 1 à COMMANDE",
+          "justification": "Chaque entité devient une table, l'identifiant devient clé primaire.",
+          "resultat_markdown": "COMMANDE (N°Cde, DateCde)"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la règle 1 à PRODUIT",
+          "justification": "Même règle.",
+          "resultat_markdown": "PRODUIT (RéfProd, Désignation, PrixVente)"
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer le type de l'association",
+          "justification": "Les deux cardinalités maximales valent N : plusieurs à plusieurs, règle 3.",
+          "resultat_markdown": "nouvelle table CONCERNER"
+        },
+        {
+          "numero": 4,
+          "action": "Construire la table de liaison",
+          "justification": "Clé primaire = N°Cde + RéfProd, chacun étant clé étrangère ; la propriété QtéCdée est reprise.",
+          "resultat_markdown": "CONCERNER (#N°Cde, #RéfProd, QtéCdée)"
+        }
+      ],
+      "conclusion_markdown": "Le modèle relationnel comprend trois tables : COMMANDE (N°Cde, DateCde), PRODUIT (RéfProd, Désignation, PrixVente) et CONCERNER (#N°Cde, #RéfProd, QtéCdée)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la table de l'association plusieurs à plusieurs",
+          "pourquoi_faux": "Sans elle, la quantité n'a pas d'endroit où être stockée.",
+          "correction_markdown": "Appliquer la règle 3."
+        },
+        {
+          "erreur_markdown": "Mettre une clé primaire simple dans la table de liaison",
+          "pourquoi_faux": "Une commande a plusieurs produits : N°Cde seul se répéterait.",
+          "correction_markdown": "Utiliser la concaténation des deux identifiants."
+        },
+        {
+          "erreur_markdown": "Placer la clé étrangère du mauvais côté",
+          "pourquoi_faux": "Elle va dans la table de l'entité qui porte le maximum 1.",
+          "correction_markdown": "Lire la cardinalité maximale avant de placer la clé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "CLIENT (NumClient, Nom) et COMMANDE (NumCde, DateCde) sont reliés par PASSER : COMMANDE (1,1), CLIENT (0,N). Donne le modèle relationnel.",
+          "solution_markdown": "1. CLIENT (NumClient, Nom).\n2. COMMANDE porte le maximum 1 : on y ajoute la clé étrangère.\n3. COMMANDE (NumCde, DateCde, #NumClient)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "ELEVE (Matricule, Nom) et MATIERE (CodeMat, Libelle) sont reliés par NOTER avec la propriété Note, cardinalités (0,N) des deux côtés. Donne le modèle relationnel.",
+          "solution_markdown": "1. ELEVE (Matricule, Nom).\n2. MATIERE (CodeMat, Libelle).\n3. Deux maximums N : table de liaison NOTER dont la clé primaire est (Matricule, CodeMat) et qui reprend Note.\n4. NOTER (#Matricule, #CodeMat, Note)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans la gestion hôtelière, CHAMBRE est identifiée par NumChambre relatif à HOTEL. Donne la table CHAMBRE et explique pourquoi la table CONCERNER a trois colonnes de clé.",
+          "solution_markdown": "1. Identifiant relatif : la clé primaire de CHAMBRE contient celle de HOTEL.\n2. CHAMBRE (#CodeHotel, NumChambre, PrixChambre, TelChambre), clé primaire (CodeHotel, NumChambre).\n3. CONCERNER relie RESERVATION à CHAMBRE : pour désigner une chambre, il faut le couple (CodeHotel, NumChambre).\n4. CONCERNER (#NumReservation, #CodeHotel, #NumChambre), la paire (CodeHotel, NumChambre) étant clé étrangère vers CHAMBRE."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Entité : table. Identifiant : clé primaire.",
+        "Maximum 1 d'un côté : clé étrangère dans la table de ce côté.",
+        "Deux N : table de liaison dont la clé primaire concatène les deux identifiants.",
+        "Les propriétés d'une association plusieurs à plusieurs vont dans sa table.",
+        "Au probatoire TI, le passage au modèle relationnel est un classique : écris les clés étrangères avec un dièse et souligne les clés primaires."
+      ]
+    }
+  ]
+}

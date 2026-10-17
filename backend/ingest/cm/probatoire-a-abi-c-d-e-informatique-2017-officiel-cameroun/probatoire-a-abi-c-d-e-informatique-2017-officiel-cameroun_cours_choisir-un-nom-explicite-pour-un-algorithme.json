@@ -1,0 +1,135 @@
+{
+  "cours_id": "cours-choisir-un-nom-explicite-pour-un-algorithme-probatoire-acde-2017",
+  "meta": {
+    "titre": "Choisir un nom explicite pour un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structure d'un algorithme",
+    "duree_estimee_min": 20,
+    "tags": [
+      "nom d'un algorithme",
+      "identifiant",
+      "pseudo-code",
+      "convention de nommage"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun",
+    "epreuve_titre": "Épreuve théorique d'informatique, Probatoire A, ABI, C, D et E, session 2017 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-abi-c-d-e-informatique-2017-officiel-cameroun-ex1-q1.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un dossier d'ordinateur, un fichier nommé « essai2 » ne dit rien, alors que « facture_mars » se retrouve en cinq secondes. Il en va de même d'un algorithme : son nom est la première chose que lit la personne qui le reprend. Au Probatoire, la question « proposez un nom » rapporte un point à qui sait respecter deux ou trois règles simples."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'un algorithme (en-tête, déclarations, corps)",
+        "Savoir ce que fait l'algorithme à nommer"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un nom lisible, valide et fidèle au rôle",
+      "contenu_markdown": "Un nom d'algorithme (comme celui d'une variable) est un **identifiant**. Il doit être :\n\n1. **Valide** : lettres, chiffres et tiret bas uniquement, sans espace, sans accent, sans tiret simple (qui se lirait comme une soustraction), sans mot réservé du langage (`Lire`, `Ecrire`, `Début`, `Fin`, `Si`).\n2. **Explicite** : il résume le résultat de l'algorithme, souvent sous la forme *Verbe_Objet* ou *Calcul_Grandeur* (`Calcul_Surface`, `Moyenne_Eleves`).\n3. **Fidèle** : il ne dit ni plus ni moins que ce que l'algorithme fait.\n\nL'en-tête s'écrit `Algorithme <Nom>`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Proposer un nom pour l'algorithme de l'épreuve, qui lit un prix hors taxes, un nombre d'articles et un taux de TVA, puis affiche le prix toutes taxes comprises.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer le rôle de l'algorithme",
+          "justification": "Un nom fidèle repose sur ce que l'algorithme produit.",
+          "resultat_markdown": "Il calcule le prix toutes taxes comprises (TTC)."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la forme du nom",
+          "justification": "On associe un mot d'action (Calcul) à la grandeur obtenue (Prix TTC).",
+          "resultat_markdown": "Calcul + Prix + TTC"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer les règles de validité",
+          "justification": "Pas d'espace ni d'accent : on relie les mots par un tiret bas.",
+          "resultat_markdown": "`Calcul_Prix_TTC`"
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler la fidélité",
+          "justification": "Le nom ne laisse pas croire que l'algorithme calcule la taxe seule ou autre chose.",
+          "resultat_markdown": "Le nom correspond au rôle ; l'en-tête devient `Algorithme Calcul_Prix_TTC`."
+        }
+      ],
+      "conclusion_markdown": "Un nom convenable est `Calcul_Prix_TTC` ; `PrixTTC` ou `Calcul_TTC` sont acceptables."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `Algo1`, `Test` ou `Exercice`.",
+          "pourquoi_faux": "Ces noms ne disent rien du rôle : ils ne rapportent pas le point, car la question demande de proposer un nom explicite.",
+          "correction_markdown": "Résumer le résultat : `Calcul_Prix_TTC`."
+        },
+        {
+          "erreur_markdown": "Écrire `Calcul prix TTC` ou `Calcul-prix-TTC`.",
+          "pourquoi_faux": "L'espace sépare deux identifiants, et le tiret simple se lit comme une soustraction : le nom n'est plus un identifiant valide.",
+          "correction_markdown": "Utiliser le tiret bas : `Calcul_prix_TTC`."
+        },
+        {
+          "erreur_markdown": "Choisir `TVA` pour l'algorithme de l'épreuve.",
+          "pourquoi_faux": "Le nom promet le calcul de la taxe seule, alors que l'algorithme affiche le prix TTC : il n'est pas fidèle.",
+          "correction_markdown": "Nommer la grandeur réellement affichée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un algorithme lit le côté `c` d'un carré et affiche son périmètre. Proposer un nom.",
+          "solution_markdown": "Le rôle est le calcul du périmètre d'un carré. On associe « Calcul » ou « Perimetre » à « Carre » sans accent ni espace : **`Perimetre_Carre`** (ou `Calcul_Perimetre_Carre`). L'accent de « périmètre » est supprimé car un identifiant n'en porte pas."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un algorithme lit une somme en FCFA et l'affiche en euros (1 euro = 655,957 FCFA). Proposer un nom, puis donner l'affichage pour 1 311,914 FCFA.",
+          "solution_markdown": "Le rôle est la conversion de FCFA en euros. Nom : **`Conversion_FCFA_Euro`**.\n\nApplication : $\\dfrac{1\\,311{,}914}{655{,}957} = 2$, car $655{,}957 \\times 2 = 1\\,311{,}914$. L'algorithme affiche 2 euros."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Parmi les noms suivants, lesquels sont des identifiants valides et explicites pour un algorithme qui calcule la moyenne des élèves d'une classe ? Justifier chaque rejet : `Mon algo`, `Calcul-moyenne`, `Moyenne_Eleves`, `Fin`, `Moyenne2`.",
+          "solution_markdown": "- `Mon algo` : rejeté, il contient un espace et ne dit rien du rôle.\n- `Calcul-moyenne` : rejeté, le tiret simple se lit comme une soustraction (`Calcul` moins `moyenne`).\n- `Moyenne_Eleves` : **accepté**, valide (lettres et tiret bas) et fidèle au rôle.\n- `Fin` : rejeté, c'est un mot réservé qui ferme l'algorithme.\n- `Moyenne2` : valide mais peu explicite (que signifie le 2 ?). Il est tolérable, mais moins bon que `Moyenne_Eleves`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le nom d'un algorithme résume son résultat : Verbe_Objet ou Calcul_Grandeur.",
+        "Pas d'espace, pas d'accent, pas de tiret simple : le tiret bas relie les mots.",
+        "Un mot réservé (Lire, Ecrire, Fin) ne peut pas servir de nom.",
+        "Relis la réponse à « que fait cet algorithme ? » pour fabriquer le nom : le verbe et la grandeur sont déjà là.",
+        "Au Probatoire, la proposition d'un nom vaut un point facile : il suffit d'un nom explicite et valide."
+      ]
+    }
+  ]
+}

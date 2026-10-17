@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-pouillet-generalisee-intensite-circuit-serie-moteur-d-ti-2014",
+  "meta": {
+    "titre": "Loi de Pouillet généralisée : intensité d'un circuit série avec générateur, moteur et résistor",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Énergie électrique : circuits",
+    "duree_estimee_min": 30,
+    "tags": [
+      "loi de Pouillet",
+      "loi des mailles",
+      "force contre-électromotrice",
+      "circuit série",
+      "intensité du courant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2014-officiel-cameroun.html",
+    "epreuve_titre": "Probatoire Physique, séries D et TI, session 2014 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2014-officiel-cameroun.html-ex2-q2.2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un circuit à une seule boucle, une seule grandeur commande tout : l'intensité. Dès que tu la connais, tu peux calculer les tensions, les puissances et les énergies. La loi de Pouillet généralisée la donne en une ligne, à condition de ne pas confondre générateur et récepteur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm $U = RI$",
+        "Caractéristique d'un générateur $U = E - rI$ et d'un récepteur $U = E' + r'I$",
+        "Loi des mailles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de Pouillet généralisée",
+      "contenu_markdown": "**Énoncé.** Dans un circuit série à une seule maille, contenant des générateurs ($E_k, r_k$), des récepteurs actifs ($E'_j, r'_j$) et des résistors ($R_i$) :\n\n$$I = \\dfrac{\\sum E - \\sum E'}{\\sum r + \\sum r' + \\sum R}$$\n\n**Démonstration.** On applique la loi des mailles dans le sens du courant : $\\sum E - \\sum E' = \\left(\\sum r + \\sum r' + \\sum R\\right) I$.\n\n**Méthode.**\n1. Repérer les générateurs et les récepteurs actifs (moteur, électrolyseur, accumulateur en charge).\n2. Calculer $\\sum E - \\sum E'$.\n3. Additionner toutes les résistances, internes comprises.\n4. Diviser, puis vérifier avec les tensions.",
+      "formule_principale": "I = \\dfrac{\\sum E - \\sum E'}{\\sum R_{totale}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur ($E = 12\\ \\text{V}$ ; $r = 0{,}5\\ \\Omega$), un moteur ($E' = 4{,}5\\ \\text{V}$ ; $r' = 1\\ \\Omega$) et un résistor $R = 13{,}5\\ \\Omega$ sont en série. Calculer l'intensité.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Faire la liste des dipôles",
+          "justification": "Le moteur est un récepteur : sa fcem s'oppose à celle du générateur.",
+          "resultat_markdown": "Un générateur, un récepteur actif, un résistor"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $\\sum E - \\sum E'$",
+          "justification": "On soustrait la fcem du moteur.",
+          "resultat_markdown": "$12 - 4{,}5 = 7{,}5\\ \\text{V}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la résistance totale",
+          "justification": "On additionne résistances internes et résistor.",
+          "resultat_markdown": "$0{,}5 + 1 + 13{,}5 = 15\\ \\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser",
+          "justification": "Pouillet.",
+          "resultat_markdown": "$I = \\dfrac{7{,}5}{15} = 0{,}50\\ \\text{A}$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier",
+          "justification": "Tension du générateur égale à la somme des autres.",
+          "resultat_markdown": "$11{,}75 = 5{,}0 + 6{,}75$"
+        }
+      ],
+      "conclusion_markdown": "L'intensité dans le circuit est $I = 0{,}50\\ \\text{A}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les forces électromotrices ($12 + 4{,}5$).",
+          "pourquoi_faux": "Le moteur est un récepteur : sa fcem s'oppose au courant imposé par le générateur, on la soustrait.",
+          "correction_markdown": "Un récepteur actif se soustrait, un générateur s'ajoute."
+        },
+        {
+          "erreur_markdown": "Oublier les résistances internes $r$ et $r'$.",
+          "pourquoi_faux": "Elles sont traversées par le même courant et dissipent de l'énergie : elles font partie de la résistance totale.",
+          "correction_markdown": "Additionne toutes les résistances écrites dans l'énoncé."
+        },
+        {
+          "erreur_markdown": "Utiliser $U = RI$ avec $U = E$ pour tout le circuit.",
+          "pourquoi_faux": "$E$ n'est pas la tension aux bornes du circuit extérieur : il faut retrancher la chute $rI$ dans le générateur.",
+          "correction_markdown": "Pose la loi des mailles et vérifie les tensions."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur ($E = 6\\ \\text{V}$ ; $r = 1\\ \\Omega$) alimente un résistor $R = 5\\ \\Omega$. Calculer $I$.",
+          "solution_markdown": "$I = \\dfrac{E}{r + R} = \\dfrac{6}{1 + 5} = 1{,}0\\ \\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur ($E = 24\\ \\text{V}$ ; $r = 1\\ \\Omega$), un moteur ($E' = 10\\ \\text{V}$ ; $r' = 2\\ \\Omega$) et un résistor ($R = 7\\ \\Omega$) sont en série. Calculer $I$ et la tension aux bornes du moteur.",
+          "solution_markdown": "$I = \\dfrac{E - E'}{r + r' + R} = \\dfrac{24 - 10}{1 + 2 + 7} = \\dfrac{14}{10} = 1{,}4\\ \\text{A}$.\n\n$U_M = E' + r'I = 10 + 2 \\times 1{,}4 = 12{,}8\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour le circuit précédent, le moteur est bloqué (il ne tourne plus, donc $E' = 0$). Calculer la nouvelle intensité et comparer la puissance dissipée dans le moteur avec celle en fonctionnement normal.",
+          "solution_markdown": "Moteur bloqué : $E' = 0$, $I_b = \\dfrac{24}{1 + 2 + 7} = 2{,}4\\ \\text{A}$.\n\nPuissance dissipée dans le moteur par effet Joule :\n- fonctionnement normal : $r'I^2 = 2 \\times (1{,}4)^2 = 3{,}92\\ \\text{W}$ ;\n- moteur bloqué : $r'I_b^2 = 2 \\times (2{,}4)^2 = 11{,}52\\ \\text{W}$.\n\nLe blocage multiplie la puissance dissipée dans le moteur par $\\dfrac{11{,}52}{3{,}92} \\approx 2{,}9$ : l'intensité augmente car la fcem disparaît, et le moteur risque de surchauffer."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pouillet généralisée : $I = (\\sum E - \\sum E')/\\sum R$, avec toutes les résistances, internes comprises.",
+        "Un générateur s'ajoute, un récepteur actif (moteur) se soustrait.",
+        "Vérifie toujours le résultat avec la loi des mailles et les tensions.",
+        "Un moteur bloqué n'a plus de fcem : l'intensité augmente fortement.",
+        "Au probatoire, cette loi est la clé des exercices sur l'énergie électrique : l'intensité trouvée sert aux questions de rendement et d'énergie."
+      ]
+    }
+  ]
+}

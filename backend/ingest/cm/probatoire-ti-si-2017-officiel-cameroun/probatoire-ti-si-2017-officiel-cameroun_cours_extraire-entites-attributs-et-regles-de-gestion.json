@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-extraire-entites-attributs-et-regles-de-gestion-ti-si-2017",
+  "meta": {
+    "titre": "Extraire les entités, les attributs et les règles de gestion d'un énoncé",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Modélisation des données",
+    "duree_estimee_min": 30,
+    "tags": [
+      "entité",
+      "attribut",
+      "règles de gestion",
+      "dictionnaire des données",
+      "MCD"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-si-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q7-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un cahier des charges est un texte, un MCD est un schéma. Entre les deux, il y a une lecture méthodique : repérer les objets dont on parle, ce qui les décrit, et ce que le texte impose. Cette lecture est la compétence qui rapporte le plus de points dans une étude de cas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une entité et un attribut",
+        "Savoir lire un énoncé de gestion"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire un énoncé : entités, attributs, règles de gestion",
+      "contenu_markdown": "- **Entité** : objet du monde réel dont on mémorise des caractéristiques (client, hôtel, chambre). Dans l'énoncé, c'est le sujet des phrases « est caractérisé par ».\n- **Attribut** : caractéristique d'une entité (nom, prix). Il appartient à **une seule** entité.\n- **Règle de gestion** : contrainte imposée par l'énoncé (« 80 chambres au maximum », « une réservation concerne une ou plusieurs chambres »). Elle fixera plus tard les cardinalités.\n- **Propriété multivaluée** : une caractéristique qui peut prendre plusieurs valeurs pour un même objet (plusieurs numéros de téléphone) ne peut pas être un attribut simple : elle devient une **entité à part**.\n\n**Méthode** : 1) souligner les groupes nominaux ; 2) rattacher chaque caractéristique à un objet ; 3) isoler les propriétés multivaluées ; 4) écrire le dictionnaire des données (code, désignation, type, taille) ; 5) noter les règles de gestion en phrases numérotées."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un hôtel est caractérisé par un nom, une adresse, une classe, un code postal, une ville de localisation et un ou plusieurs numéros de téléphone. Un client est caractérisé par son nom, son prénom, un numéro de carte nationale d'identité, une ville de résidence et un numéro de téléphone. Identifier les entités et leurs attributs (question 7 du probatoire TI 2017).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les groupes nominaux",
+          "justification": "Les deux phrases décrivent « un hôtel » et « un client » : ce sont les objets.",
+          "resultat_markdown": "entités candidates : HOTEL, CLIENT"
+        },
+        {
+          "numero": 2,
+          "action": "Rattacher les caractéristiques",
+          "justification": "Chaque liste après « est caractérisé par » donne les attributs de l'entité sujet.",
+          "resultat_markdown": "HOTEL : nom, adresse, classe, code postal, ville ; CLIENT : nom, prénom, numéro de CNI, ville de résidence, téléphone"
+        },
+        {
+          "numero": 3,
+          "action": "Chercher une propriété multivaluée",
+          "justification": "« Un ou plusieurs numéros de téléphone » pour l'hôtel : plusieurs valeurs possibles pour un même hôtel.",
+          "resultat_markdown": "à isoler : numéros de téléphone de l'hôtel"
+        },
+        {
+          "numero": 4,
+          "action": "Créer l'entité à part",
+          "justification": "Un attribut ne peut pas contenir plusieurs valeurs : on crée TELEPHONE_HOTEL, liée à HOTEL.",
+          "resultat_markdown": "entités : HOTEL, TELEPHONE_HOTEL, CLIENT"
+        }
+      ],
+      "conclusion_markdown": "Les entités sont HOTEL (nom, adresse, classe, code postal, ville), TELEPHONE_HOTEL (numéro de téléphone) et CLIENT (nom, prénom, numéro de CNI, ville de résidence, téléphone)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Laisser « téléphone » comme attribut de HOTEL",
+          "pourquoi_faux": "L'énoncé dit « un ou plusieurs » : un seul attribut ne peut pas contenir plusieurs valeurs, et le modèle relationnel serait faux.",
+          "correction_markdown": "Créer une entité TELEPHONE_HOTEL."
+        },
+        {
+          "erreur_markdown": "Mettre un même attribut dans deux entités",
+          "pourquoi_faux": "VilleResidence du client et VilleHotel de l'hôtel sont deux données distinctes, chacune dans sa propre entité.",
+          "correction_markdown": "Rattacher chaque attribut à une seule entité."
+        },
+        {
+          "erreur_markdown": "Garder des données calculables (âge, total)",
+          "pourquoi_faux": "Elles se déduisent d'autres données et deviennent fausses quand celles-ci changent.",
+          "correction_markdown": "Les supprimer à l'épuration, sauf exigence d'historique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un élève est caractérisé par son matricule, son nom et sa date de naissance. Une classe est caractérisée par un code et un libellé. Donne les entités et leurs attributs.",
+          "solution_markdown": "1. Groupes nominaux : élève, classe.\n2. ELEVE : Matricule, NomEleve, DateNaissance.\n3. CLASSE : CodeClasse, LibelleClasse."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un fournisseur est caractérisé par un code, un nom et un ou plusieurs numéros de téléphone. Quelles entités obtiens-tu ?",
+          "solution_markdown": "1. FOURNISSEUR : CodeFournisseur, NomFournisseur.\n2. « Un ou plusieurs numéros » : propriété multivaluée, donc entité à part.\n3. TELEPHONE_FOURNISSEUR : NumTelFournisseur.\n4. Les deux entités seront reliées par une association."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une pharmacie vend des médicaments à des clients. Un médicament a un code, un nom et un prix unitaire. Un client a un nom, un âge et une adresse. Une vente a une date, une quantité vendue par médicament et un total. Établis les entités et épure.",
+          "solution_markdown": "1. Entités : MEDICAMENT (CodeMedicament, NomMedicament, PrixUnitaire), CLIENT (NumClient, NomClient, DateNaissance, Adresse), VENTE (NumVente, DateVente).\n2. Épuration : l'âge se calcule à partir de la date de naissance, on le remplace par DateNaissance ; le total se calcule (quantité multipliée par prix), on le supprime.\n3. La quantité vendue dépend à la fois d'une vente et d'un médicament : ce n'est pas un attribut d'une entité, elle sera portée par l'association entre VENTE et MEDICAMENT."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les entités sont les sujets des phrases « est caractérisé par ».",
+        "Un attribut appartient à une seule entité.",
+        "Plusieurs valeurs possibles pour un même objet : crée une entité à part.",
+        "Le dictionnaire des données et les règles de gestion précèdent le dessin.",
+        "Au probatoire TI, cette lecture d'énoncé ouvre toutes les études de cas MERISE : elle conditionne le reste du MCD."
+      ]
+    }
+  ]
+}

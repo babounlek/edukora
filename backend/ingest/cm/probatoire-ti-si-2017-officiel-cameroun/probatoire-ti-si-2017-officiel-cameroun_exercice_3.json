@@ -1,0 +1,138 @@
+{
+  "epreuve_source": "probatoire-ti-si-2017-officiel-cameroun.html",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2017,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": "2,5",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-ti-si-2017-officiel-cameroun_exercice_3_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Schéma MERISE de l'énoncé : deux événements (demande d'achat, Paiement), deux synchronisations, deux opérations (Article destocké, opération) et trois résultats (Facturation, Encassement, remise au client)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "probatoire-ti-si-2017-officiel-cameroun_exercice_3_fig_2.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Le même schéma annoté : types des éléments (événement, synchronisation, opération, résultat)",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 3**\n\nExamine attentivement la représentation ci-dessous (question 11 du sujet).\n\n![fig-1](probatoire-ti-si-2017-officiel-cameroun_exercice_3_fig_1.png)",
+  "questions": [
+    {
+      "numero": "11a",
+      "enonce_markdown": "**11.a)** Quel est le nom de cette représentation dans le formalisme MERISE ? *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour nommer un schéma MERISE, repère les symboles qu'il contient : des entités et des associations désignent un modèle de données (MCD), des événements, des opérations et des résultats désignent un modèle de traitements ; le niveau (conceptuel, organisationnel, physique) se lit dans la nature des informations représentées.\n\nCette représentation est un **MCT, Modèle Conceptuel des Traitements** (ou schéma conceptuel des traitements) du formalisme MERISE.\n\nJustification : on y voit des cercles (événements et résultats), des petits pentagones (synchronisations) et des rectangles à deux compartiments (opérations), reliés par des flèches. On n'y trouve ni entité, ni association, ni cardinalité : ce n'est donc pas un MCD. Elle décrit **ce que fait** l'organisation (déstocker, facturer, encaisser), indépendamment de qui le fait, où et avec quels moyens, ce qui correspond au niveau conceptuel.\n\n### Piège à éviter\nNe réponds pas « MCD » : le MCD décrit les données avec des entités, des associations et des cardinalités, alors qu'ici on enchaîne des actions déclenchées par des événements.\n\n### Conseil\nMémorise un réflexe : des rectangles à deux compartiments et des cercles avec des flèches, c'est un MCT ; des rectangles avec des attributs reliés par des ellipses, c'est un MCD.",
+      "themes": [
+        "MCT",
+        "MERISE",
+        "modèle conceptuel des traitements"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex3-q11a-1",
+          "competence": "Reconnaître un modèle conceptuel des traitements",
+          "contenu_markdown": "Pour nommer un schéma MERISE, repère les symboles qu'il contient : des entités et des associations désignent un modèle de données (MCD), des événements, des opérations et des résultats désignent un modèle de traitements ; le niveau (conceptuel, organisationnel, physique) se lit dans la nature des informations représentées.",
+          "cours_genere": true,
+          "cours_id": "cours-reconnaitre-un-modele-conceptuel-des-traitements-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "11b",
+      "enonce_markdown": "**11.b)** Identifier, sur cette représentation, trois éléments différents en précisant leurs noms. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDans un MCT, un événement (cercle) déclenche une opération, après passage par une synchronisation qui fixe les conditions de déclenchement ; l'opération (rectangle à deux compartiments) s'exécute sans interruption et émet des résultats (cercles) : pour identifier un élément, repère sa forme, puis son rôle par rapport aux flèches entrantes et sortantes.\n\n![fig-2](probatoire-ti-si-2017-officiel-cameroun_exercice_3_fig_2.png)\n\nTrois éléments de natures différentes (0,5 pt chacun : nom du type et exemple lu sur le schéma) :\n\n1. **Événement** : « demande d'achat ». C'est un cercle d'où part une flèche seulement : il déclenche le traitement. « Paiement » est le second événement du schéma.\n2. **Opération** : « Article destocké ». C'est un rectangle à deux compartiments (nom en haut, règles d'émission en bas) : un ensemble d'actions exécutées sans interruption une fois déclenché. La seconde opération n'est nommée que « opération » sur le schéma.\n3. **Résultat** : « Facturation ». C'est un cercle où aboutit une flèche : un message émis par l'opération. « Encassement » (écrit ainsi sur le schéma) et « remise au client » sont les deux résultats de la seconde opération.\n\nUn quatrième type d'élément est la **synchronisation** (le petit pentagone placé au-dessus de chaque opération) : elle exprime la condition de déclenchement. La première ne reçoit que « demande d'achat ». La seconde reçoit à la fois le résultat de la première opération et l'événement « Paiement » : l'opération ne se déclenche que lorsque les deux sont arrivés (condition ET).\n\nLecture d'ensemble : une demande d'achat déclenche le déstockage de l'article, qui émet une facturation ; une fois l'article destocké et le paiement reçu, la seconde opération s'exécute et émet l'encaissement et la remise au client.\n\n### Piège à éviter\nNe confonds pas événement et résultat : tous deux sont des cercles. L'événement n'a que des flèches sortantes (il déclenche), le résultat n'a que des flèches entrantes (il est émis).\n\n### Conseil\nPour une question « identifier trois éléments », donne le type et le nom lu sur le schéma pour chacun (par exemple : événement, « demande d'achat »). Un type sans nom, ou un nom sans type, ne rapporte que la moitié des points.",
+      "themes": [
+        "MCT",
+        "événement",
+        "opération",
+        "résultat",
+        "synchronisation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex3-q11b-1",
+          "competence": "Identifier les éléments d'un MCT",
+          "contenu_markdown": "Dans un MCT, un événement (cercle) déclenche une opération, après passage par une synchronisation qui fixe les conditions de déclenchement ; l'opération (rectangle à deux compartiments) s'exécute sans interruption et émet des résultats (cercles) : pour identifier un élément, repère sa forme, puis son rôle par rapport aux flèches entrantes et sortantes.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-elements-d-un-mct-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "11c",
+      "enonce_markdown": "**11.c)** Quelle est la différence entre une donnée et un traitement ? *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour classer un élément d'un schéma en donnée ou en traitement, demande-toi s'il désigne quelque chose que l'on mémorise (une donnée, exprimée par un nom) ou quelque chose que l'on fait (un traitement, exprimé par un verbe d'action), puis cite le modèle MERISE qui le porte.\n\nUne **donnée** est une information élémentaire mémorisée qui décrit un objet de l'organisation ; un **traitement** est une action exécutée sur les données pour les transformer ou produire un résultat.\n\nSur le schéma de la question 11 :\n\n- les **traitements** sont les deux opérations « Article destocké » (déstocker un article) et « opération » (encaisser et remettre l'article) : ce sont des actions, elles figurent dans le MCT ;\n- les **données** sont les informations que ces traitements lisent ou produisent : le contenu de la demande d'achat, l'article et sa quantité en stock, la facture, le montant payé. Elles sont mémorisées dans le modèle de données (MCD).\n\nLe MCT et le MCD sont complémentaires : le traitement « facturer » a besoin des données article, quantité et prix, et il produit la donnée facture. Les événements et les résultats du MCT sont des messages qui transportent des données.\n\nCette question reprend la question 6 du sujet : la réponse est la même, appuyée ici sur un schéma.\n\n### Piège à éviter\nNe place pas « Facturation » dans les données parce que c'est un nom : sur un MCT, c'est le résultat d'un traitement, le message émis. La donnée mémorisée serait la facture elle-même.\n\n### Conseil\nQuand la question se répète dans un sujet, réponds de façon cohérente avec ta première réponse, mais appuie-la cette fois sur le schéma fourni : le correcteur attend un exemple tiré du document.",
+      "themes": [
+        "donnée",
+        "traitement",
+        "MCT",
+        "MCD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex3-q11c-1",
+          "competence": "Rattacher les éléments d'un schéma MERISE aux données ou aux traitements",
+          "contenu_markdown": "Pour classer un élément d'un schéma en donnée ou en traitement, demande-toi s'il désigne quelque chose que l'on mémorise (une donnée, exprimée par un nom) ou quelque chose que l'on fait (un traitement, exprimé par un verbe d'action), puis cite le modèle MERISE qui le porte.",
+          "cours_genere": true,
+          "cours_id": "cours-rattacher-un-element-aux-donnees-ou-aux-traitements-ti-si-2017"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "MCT",
+    "modèle conceptuel des traitements",
+    "événement",
+    "opération",
+    "résultat",
+    "synchronisation",
+    "donnée et traitement",
+    "MERISE"
+  ],
+  "incertitudes": [
+    "Aucun corrigé officiel n'est publié avec le sujet : toutes les réponses sont des modèles rédigés d'après les règles de gestion de l'étude de cas.",
+    "Le sujet n'est pas découpé en exercices : le découpage en quatre exercices (questions 1 à 6, 7 à 10, 11, 12) est éditorial, la numérotation des questions du sujet est conservée.",
+    "Dans la question 11, le schéma de l'énoncé orthographie « Encassement » (pour encaissement), orthographe conservée dans le corrigé ; la seconde opération n'est nommée que « opération » et les règles d'émission (compartiment du bas des opérations) ne sont pas renseignées.",
+    "Les questions 6 et 11.c sont identiques dans le sujet (répétition) ; le terme « relations » de la question 9 est lu comme « associations ». Le dossier d'images du sujet s'intitule probatoire_D_TI alors que le titre de la page vise la série TI : série TI retenue."
+  ],
+  "statut": "brouillon"
+}

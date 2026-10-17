@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-expliquer-le-role-d-une-instruction-alert-dans-une-fonction-de-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Expliquer le rôle d'une instruction alert dans une fonction de validation JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript : validation de formulaire",
+    "duree_estimee_min": 24,
+    "tags": [
+      "alert",
+      "validation de formulaire",
+      "JavaScript",
+      "message d'erreur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex2-q5.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu saisis ton numéro de téléphone avec des lettres sur un site et qu'une fenêtre te dit « valeur incorrecte », c'est une instruction `alert` qui travaille. Expliquer le rôle d'une ligne de code, c'est une compétence que l'examen aime vérifier : il ne s'agit pas de recopier la ligne, mais de dire ce qu'elle fait et pourquoi elle est là."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une condition `if`",
+        "Connaître la concaténation de chaînes avec `+`",
+        "Connaître le rôle d'un paramètre de fonction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Expliquer une ligne de code : instruction, contexte, effet",
+      "contenu_markdown": "`alert(texte)` affiche une **boîte de dialogue** contenant `texte` et un bouton OK. L'exécution du script s'arrête jusqu'au clic sur OK.\n\nLe texte est souvent construit par **concaténation** : l'opérateur `+` colle une chaîne et une variable.\n\n```javascript\nalert(\"Veuillez entrer une valeur exacte pour le champ : \" + message);\n```\n\nPour expliquer une ligne de code :\n\n1. **l'instruction** : quelle fonction, quels arguments ;\n2. **le contexte** : dans quelle condition cette ligne est-elle exécutée ;\n3. **l'effet** : qu'est-ce que l'utilisateur voit ou que devient le programme.\n\nDans une fonction de validation, `alert` sert à **signaler une erreur de saisie** à l'utilisateur, généralement en même temps qu'une variable de résultat passe à 0 ou à `false`. Attention à l'ordre des opérations dans la concaténation : `\"Total : \" + 5 + 2` donne `Total : 52`, alors que `\"Total : \" + 5 * 2` donne `Total : 10`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la fonction `isANumber(number, message)`, la ligne 6 est `if (!parseFloat(number)) { answer = 0;` et la ligne 7 est `alert(\"Veuillez entrer une valeur monétaire exacte pour le champ:   \" + message );`. Donner le rôle de la ligne 7.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'instruction",
+          "justification": "C'est un appel de la fonction prédéfinie `alert`, avec un texte construit par concaténation",
+          "resultat_markdown": "`alert(texte fixe + message)`"
+        },
+        {
+          "numero": 2,
+          "action": "Préciser le contenu du message",
+          "justification": "`message` est le second paramètre : l'appel de la ligne 23 lui donne la valeur `'Cameroun'`",
+          "resultat_markdown": "« Veuillez entrer une valeur monétaire exacte pour le champ: Cameroun »"
+        },
+        {
+          "numero": 3,
+          "action": "Replacer la ligne dans son contexte",
+          "justification": "Elle est exécutée seulement si la condition de la ligne 6 est vraie : valeur saisie non convertible en nombre non nul",
+          "resultat_markdown": "Contexte : saisie invalide, `answer` vient de passer à 0"
+        },
+        {
+          "numero": 4,
+          "action": "Formuler l'effet",
+          "justification": "Une boîte d'alerte s'affiche à l'écran",
+          "resultat_markdown": "L'utilisateur est averti que sa saisie n'est pas valable"
+        }
+      ],
+      "conclusion_markdown": "La ligne 7 affiche un message d'erreur qui signale à l'utilisateur que la valeur saisie dans le champ n'est pas une valeur monétaire acceptable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que la ligne 7 vérifie si la valeur est un nombre",
+          "pourquoi_faux": "Le test se trouve à la ligne 6. La ligne 7 ne teste rien : elle réagit au résultat du test.",
+          "correction_markdown": "Distingue la ligne qui teste de la ligne qui prévient."
+        },
+        {
+          "erreur_markdown": "Se contenter de recopier le code",
+          "pourquoi_faux": "« Elle fait alert(...) » ne dit pas ce que fait l'instruction ni quand.",
+          "correction_markdown": "Dis ce qui s'affiche et dans quel cas."
+        },
+        {
+          "erreur_markdown": "Oublier le rôle du paramètre `message`",
+          "pourquoi_faux": "`message` permet à la même fonction de nommer le champ en erreur : ici « Cameroun ».",
+          "correction_markdown": "Mentionne que le nom du champ est ajouté au message."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Prévoir ce qu'affichent `alert(\"Total : \" + 5 * 2)` et `alert(\"Total : \" + 5 + 2)`.",
+          "solution_markdown": "Dans la première, la multiplication est prioritaire sur le `+` de concaténation : $5 \\times 2 = 10$, puis « Total : » et 10 sont collés. Affichage : `Total : 10`.\n\nDans la seconde, les deux `+` se lisent de gauche à droite : « Total : » + 5 donne la chaîne « Total : 5 », puis + 2 ajoute le caractère « 2 ». Affichage : `Total : 52`.\n\n(Ces deux résultats ont été vérifiés sous Node.js.) Pour obtenir 7 dans la seconde, il faudrait écrire `\"Total : \" + (5 + 2)`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans `if (age < 18) { alert(\"Accès refusé : \" + nom); }`, expliquer le rôle de la ligne `alert`. Quel message pour `nom = \"Paul\"` et `age = 15` ? et pour `age = 20` ?",
+          "solution_markdown": "**Rôle.** La ligne `alert` affiche une boîte de dialogue qui informe l'utilisateur que l'accès est refusé. Elle n'est exécutée que si la condition `age < 18` est vraie : elle réagit à une saisie qui ne convient pas.\n\n**Pour `age = 15` et `nom = \"Paul\"`.** La condition $15 < 18$ est vraie : la boîte affiche `Accès refusé : Paul`.\n\n**Pour `age = 20`.** La condition $20 < 18$ est fausse : l'instruction `alert` n'est pas exécutée, aucune boîte ne s'affiche."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut que la boîte de la ligne 7 mentionne aussi la valeur saisie, par exemple « La valeur 'abc' n'est pas valable pour le champ : Cameroun ». Réécrire la ligne et prévoir le message pour la saisie `abc`.",
+          "solution_markdown": "On ajoute la variable `number` à la concaténation :\n\n```javascript\nalert(\"La valeur '\" + number + \"' n'est pas valable pour le champ : \" + message);\n```\n\nPour `number = \"abc\"` et `message = \"Cameroun\"`, la concaténation assemble : « La valeur '», puis `abc`, puis « ' n'est pas valable pour le champ : », puis `Cameroun`. Le message affiché est :\n\n`La valeur 'abc' n'est pas valable pour le champ : Cameroun`\n\n(vérifié sous Node.js avec un affichage dans la console à la place de la boîte). Les apostrophes à l'intérieur du texte entre guillemets doubles ne posent pas de problème : elles font partie de la chaîne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`alert(texte)` affiche une boîte de dialogue et suspend le script jusqu'au clic sur OK.",
+        "Le texte se construit par concaténation avec `+` ; la multiplication reste prioritaire.",
+        "Expliquer une ligne : instruction, contexte, effet.",
+        "Dans une validation, `alert` signale l'erreur ; le test se trouve sur une autre ligne.",
+        "Au probatoire, la question vaut 1 point : une phrase pour l'effet et une pour la condition suffisent."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-identifier-les-types-de-base-du-langage-c-dans-un-programme-ti-algo-2020-zero",
+  "meta": {
+    "titre": "Identifier les types de base du langage C dans un programme",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C : bases",
+    "duree_estimee_min": 22,
+    "tags": [
+      "types de base",
+      "int",
+      "double",
+      "déclaration de variable"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-ti-algorithmique-2020-zero-cameroun",
+    "epreuve_titre": "Probatoire TI - Épreuve zéro d'algorithmique et programmation - Session 2020 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-ti-algorithmique-2020-zero-cameroun.html-ex1-q5.2.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de calculer quoi que ce soit en C, il faut dire à l'ordinateur quelle sorte de valeur chaque variable va contenir : un entier, un réel, un caractère. C'est le rôle des types de base. Reconnaître ces types dans un programme est une question de lecture qui rapporte des points rapides, à condition de savoir où regarder."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un programme C simple",
+        "Connaître la notion de variable et de type"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les types de base du langage C",
+      "contenu_markdown": "Les **types de base** (ou types simples) du C se déclarent au début d'une ligne :\n\n```c\ntype nom1, nom2;\n```\n\n| Type | Contenu | Code de format (`printf`) |\n|---|---|---|\n| `int` | nombre entier | `%d` |\n| `float` | réel en simple précision | `%f` |\n| `double` | réel en double précision | `%f` (`%lf` pour `scanf`) |\n| `char` | un caractère | `%c` |\n\nQuelques repères : `int` occupe 4 octets, `float` 4 octets, `double` 8 octets et `char` 1 octet sur les machines courantes (valeurs vérifiées avec `sizeof` sous GCC). Le C connaît aussi `short`, `long` et `unsigned`, variantes des types entiers.\n\nPour **repérer** les types de base dans un programme, il suffit de lire le premier mot de chaque ligne de déclaration. Le mot `void` de `int main (void)` signifie « aucun paramètre » ; il n'est pas le type d'une donnée."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le programme dont les lignes 3 et 4 sont `double X,Y;` et `int n , i ;`, identifier deux types de base du langage C.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les lignes de déclaration",
+          "justification": "Une déclaration commence par un nom de type",
+          "resultat_markdown": "Lignes 3 et 4"
+        },
+        {
+          "numero": 2,
+          "action": "Lire le type de la ligne 3",
+          "justification": "Le premier mot est `double` : réels en double précision, pour `X` et `Y`",
+          "resultat_markdown": "Type `double`"
+        },
+        {
+          "numero": 3,
+          "action": "Lire le type de la ligne 4",
+          "justification": "Le premier mot est `int` : entiers, pour `n` et `i`",
+          "resultat_markdown": "Type `int`"
+        }
+      ],
+      "conclusion_markdown": "Deux types de base du langage C présents dans le programme sont `double` et `int`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `void`",
+          "pourquoi_faux": "`void` dans `main (void)` indique l'absence de paramètre, il ne déclare aucune variable.",
+          "correction_markdown": "Un type de base se trouve au début d'une déclaration de variable."
+        },
+        {
+          "erreur_markdown": "Citer `%lf` ou `%d`",
+          "pourquoi_faux": "Ce sont des codes de format dans `scanf` et `printf`, qui indiquent comment lire ou afficher une valeur.",
+          "correction_markdown": "Les types sont `double` et `int` ; les formats sont leurs reflets dans les fonctions d'entrée-sortie."
+        },
+        {
+          "erreur_markdown": "Croire que la division de deux entiers donne un réel",
+          "pourquoi_faux": "Avec `int a = 7, b = 2;`, `a / b` vaut 3 (division entière) ; stocker le résultat dans un `double` donne 3.0, pas 3.5.",
+          "correction_markdown": "Pour obtenir 3.5, convertir un opérande : `(double) a / b`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `int age; float taux; char lettre; double pi;`, donner le type de chaque variable et dire ce qu'elle peut contenir.",
+          "solution_markdown": "On lit le premier mot de chaque déclaration.\n\n- `age` : type `int`, un nombre entier (par exemple 17) ;\n- `taux` : type `float`, un réel en simple précision (par exemple 0.15) ;\n- `lettre` : type `char`, un seul caractère (par exemple `'A'`) ;\n- `pi` : type `double`, un réel en double précision (par exemple 3.14159).\n\nLes quatre types de base du C sont ici représentés."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Choisir le type convenable pour : le nombre d'élèves d'une classe, la moyenne d'un élève, l'initiale de son prénom, le prix d'un article en FCFA (sans centimes). Écrire les déclarations.",
+          "solution_markdown": "On choisit le type d'après la nature de la valeur.\n\n- nombre d'élèves : entier, donc `int` ;\n- moyenne : réel (par exemple 13.75), donc `double` ;\n- initiale : un caractère, donc `char` ;\n- prix en FCFA sans centimes : entier, donc `int`.\n\n```c\nint effectif;\ndouble moyenne;\nchar initiale;\nint prix;\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit `int a = 7, b = 2;`. Écrire les instructions qui calculent le quotient entier, puis le quotient réel de a par b. Quelle est la valeur affichée dans chaque cas ? Pourquoi `double c = a / b;` donne-t-il 3.0 ?",
+          "solution_markdown": "```c\n#include <stdio.h>\nint main(void) {\n    int a = 7, b = 2;\n    double c = a / b;\n    double d = (double) a / b;\n    printf(\"%d %.1f %.1f\\n\", a / b, c, d);\n    return 0;\n}\n```\n\nCe programme a été compilé et exécuté avec GCC : il affiche `3 3.0 3.5`.\n\n- `a / b` avec deux entiers est une **division entière** : $7 = 2 \\times 3 + 1$, le quotient est 3.\n- `double c = a / b;` : la division entière est faite **avant** l'affectation, donc `c` reçoit 3, converti en 3.0. Le type de la variable qui reçoit le résultat ne change pas la façon dont la division est calculée.\n- `(double) a / b` convertit d'abord `a` en réel : la division devient une division réelle, et `d` vaut 3.5.\n\nPour obtenir un quotient réel, il faut qu'au moins un des deux opérandes soit un réel avant la division."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Types de base du C : `int` (entier), `float` et `double` (réels), `char` (caractère).",
+        "On les repère au premier mot des lignes de déclaration.",
+        "`void` et `%d` ne sont pas des types de base.",
+        "Division de deux entiers : division entière ; convertis un opérande en `double` pour obtenir un quotient réel.",
+        "Au probatoire, cite les types avec les variables qu'ils déclarent et le numéro de la ligne : la réponse est alors incontestable."
+      ]
+    }
+  ]
+}

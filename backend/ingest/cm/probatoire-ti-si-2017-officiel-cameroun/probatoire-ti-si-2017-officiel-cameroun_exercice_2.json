@@ -1,0 +1,224 @@
+{
+  "epreuve_source": "probatoire-ti-si-2017-officiel-cameroun.html",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2017,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "introduction_markdown": null,
+  "points": null,
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-ti-si-2017-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Question 10a : les cinq entités du MCD hôtelier (TELEPHONE_HOTEL, HOTEL, CHAMBRE, CLIENT, RESERVATION) avec leurs attributs et leurs identifiants soulignés",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "probatoire-ti-si-2017-officiel-cameroun_exercice_2_fig_2.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Question 10b : les quatre associations (POSSEDER, APPARTENIR, EFFECTUER, CONCERNER) reliant les entités, sans cardinalités",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    },
+    {
+      "id": "fig-3",
+      "fichier": "probatoire-ti-si-2017-officiel-cameroun_exercice_2_fig_3.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Question 10c : MCD complet de la gestion hôtelière avec les cardinalités et l'identifiant relatif (R) de CHAMBRE",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2**\n\n**GESTION HÔTELIÈRE**\n\nLe Ministère du Tourisme (MINTOUR) vous confie la réalisation d'un logiciel de gestion hôtelière. Ce logiciel doit permettre la gestion centralisée de 08 hôtels ayant chacun 80 chambres au maximum. Ces hôtels sont répartis en classes, de une étoile, 02 étoiles, jusqu'à 5 étoiles.\n\n- Les clients effectuent des réservations de chambres.\n- Une réservation concerne une ou plusieurs chambres qui appartiennent à un hôtel.\n- Un client est caractérisé par son nom, son prénom, un numéro de carte nationale d'identité, une ville de résidence et un numéro de téléphone.\n- Un hôtel est caractérisé par un nom, une adresse, une classe, un code postal, une ville de localisation et un ou plusieurs numéros de téléphone.\n- Une chambre est caractérisée par son prix, son numéro et un numéro de téléphone qui permet de joindre les clients de la chambre.\n- Une réservation doit permettre de retrouver la date de début du séjour, la date de fin, la date de paiement (date pour régler la facture) et le montant des dépenses.",
+  "questions": [
+    {
+      "numero": "7",
+      "enonce_markdown": "**7.** Identifier les entités du système de gestion hôtelière ci-dessus, en précisant leurs attributs. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nPour repérer les entités d'un énoncé, relève les groupes nominaux autour desquels l'énoncé accumule des caractéristiques (« est caractérisé par »), rattache chaque caractéristique à un seul de ces objets, et traite à part toute caractéristique qui peut prendre plusieurs valeurs pour un même objet.\n\n**Étape 1 : les règles de gestion tirées du sujet.**\n\n- RG1 : le logiciel gère 8 hôtels, chacun ayant 80 chambres au maximum.\n- RG2 : chaque hôtel appartient à une classe de 1 à 5 étoiles.\n- RG3 : un hôtel possède un ou plusieurs numéros de téléphone ; un numéro de téléphone d'hôtel n'appartient qu'à un seul hôtel.\n- RG4 : une chambre appartient à un seul hôtel ; son numéro n'a de sens qu'à l'intérieur de cet hôtel (chaque hôtel a une chambre 101).\n- RG5 : un client effectue des réservations ; une réservation est effectuée par un seul client.\n- RG6 : une réservation concerne une ou plusieurs chambres, toutes situées dans le même hôtel.\n- RG7 : une chambre peut être concernée par plusieurs réservations (à des périodes différentes) ou par aucune.\n- RG8 : une réservation conserve la date de début, la date de fin, la date de paiement et le montant des dépenses.\n- RG9 : la date de fin d'un séjour n'est pas antérieure à sa date de début.\n\n**Étape 2 : les entités.** Les objets autour desquels le sujet accumule des caractéristiques sont le client, l'hôtel, la chambre et la réservation. Un hôtel peut avoir **plusieurs** numéros de téléphone : une propriété à valeurs multiples ne peut pas être un attribut d'une entité, elle devient une entité à part, TELEPHONE_HOTEL. On obtient cinq entités :\n\n| Entité | Attributs tirés du sujet |\n|---|---|\n| CLIENT | NumCNI, NomClient, PrenomClient, VilleResidence, TelClient |\n| HOTEL | NomHotel, AdresseHotel, ClasseHotel, CodePostal, VilleHotel (et un code, voir question 8) |\n| TELEPHONE_HOTEL | NumTelHotel |\n| CHAMBRE | NumChambre, PrixChambre, TelChambre |\n| RESERVATION | DateDebut, DateFin, DatePaiement, MontantDepenses (et un numéro, voir question 8) |\n\n**Étape 3 : le dictionnaire des données** (toutes les propriétés, sans doublon ni donnée calculable).\n\n| Code | Désignation | Type | Taille | Entité |\n|---|---|---|---|---|\n| NumCNI | numéro de carte nationale d'identité | AN | 15 | CLIENT |\n| NomClient | nom du client | A | 40 | CLIENT |\n| PrenomClient | prénom du client | A | 40 | CLIENT |\n| VilleResidence | ville de résidence du client | A | 30 | CLIENT |\n| TelClient | numéro de téléphone du client | AN | 15 | CLIENT |\n| CodeHotel | code de l'hôtel (identifiant artificiel) | N | 3 | HOTEL |\n| NomHotel | nom de l'hôtel | A | 50 | HOTEL |\n| AdresseHotel | adresse de l'hôtel | AN | 100 | HOTEL |\n| ClasseHotel | classe de l'hôtel (1 à 5 étoiles) | N | 1 | HOTEL |\n| CodePostal | code postal | AN | 10 | HOTEL |\n| VilleHotel | ville de localisation de l'hôtel | A | 30 | HOTEL |\n| NumTelHotel | numéro de téléphone d'un hôtel | AN | 15 | TELEPHONE_HOTEL |\n| NumChambre | numéro de la chambre dans son hôtel | N | 3 | CHAMBRE |\n| PrixChambre | prix de la chambre (FCFA par nuit) | N | 7 | CHAMBRE |\n| TelChambre | numéro de téléphone de la chambre | AN | 15 | CHAMBRE |\n| NumReservation | numéro de la réservation (identifiant artificiel) | N | 8 | RESERVATION |\n| DateDebut | date de début du séjour | Date | 10 | RESERVATION |\n| DateFin | date de fin du séjour | Date | 10 | RESERVATION |\n| DatePaiement | date de paiement de la facture | Date | 10 | RESERVATION |\n| MontantDepenses | montant des dépenses (FCFA) | N | 9 | RESERVATION |\n\nLégende des types : A = alphabétique, N = numérique, AN = alphanumérique. Les tailles sont indicatives : le sujet n'en impose aucune.\n\nRemarque : le montant des dépenses reste un attribut de RESERVATION car le sujet demande de le retrouver, et il peut contenir des consommations autres que le prix des chambres.\n\n### Piège à éviter\nNe place pas « téléphone » comme attribut de HOTEL : le sujet dit « un ou plusieurs numéros », donc la propriété est multivaluée et doit devenir une entité. Ne fais pas non plus de « Classe » une entité sans raison : ici c'est une simple valeur de 1 à 5 attachée à l'hôtel.\n\n### Conseil\nSouligne dans le sujet chaque « est caractérisé par » : ce que l'énoncé énumère après cette formule donne les attributs, et le sujet de la phrase donne l'entité. Pense au dictionnaire des données, il rapporte des points et évite les oublis.",
+      "themes": [
+        "entités et attributs",
+        "dictionnaire des données",
+        "règles de gestion",
+        "MCD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q7-1",
+          "competence": "Extraire entités, attributs et règles de gestion d'un énoncé",
+          "contenu_markdown": "Pour repérer les entités d'un énoncé, relève les groupes nominaux autour desquels l'énoncé accumule des caractéristiques (« est caractérisé par »), rattache chaque caractéristique à un seul de ces objets, et traite à part toute caractéristique qui peut prendre plusieurs valeurs pour un même objet.",
+          "cours_genere": true,
+          "cours_id": "cours-extraire-entites-attributs-et-regles-de-gestion-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "**8.** Pour chaque entité, préciser l'identifiant.",
+      "corrige_markdown": "### Rappel de méthode\nUn identifiant est un attribut, ou un groupe d'attributs, dont la valeur désigne une seule occurrence de l'entité et ne change jamais ; choisis un attribut naturel s'il est unique et stable, sinon crée un code artificiel, et emploie un identifiant relatif lorsque la valeur n'est unique qu'à l'intérieur d'une autre entité.\n\n| Entité | Identifiant | Nature et justification |\n|---|---|---|\n| CLIENT | **NumCNI** | naturel : le numéro de carte nationale d'identité est unique pour chaque personne et ne change pas |\n| HOTEL | **CodeHotel** | artificiel, créé pour l'occasion : le nom ne garantit pas l'unicité (deux hôtels peuvent porter le même nom dans deux villes) |\n| TELEPHONE_HOTEL | **NumTelHotel** | naturel : un numéro de téléphone est unique |\n| CHAMBRE | **NumChambre**, identifiant **relatif** à HOTEL | le numéro 101 existe dans chaque hôtel : le numéro seul n'est pas unique, seul le couple (hôtel, numéro) l'est |\n| RESERVATION | **NumReservation** | artificiel : aucune combinaison de dates ne convient, car un client peut faire deux réservations le même jour |\n\n**Pourquoi pas les autres attributs ?** PrixChambre, DateDebut ou NomClient peuvent se répéter d'une occurrence à l'autre : ils ne désignent pas une occurrence unique.\n\n**Variante acceptée :** donner à CHAMBRE un identifiant artificiel (par exemple CodeChambre) à la place de l'identifiant relatif. Le MCD est alors plus simple, mais on perd l'information que le numéro de chambre dépend de l'hôtel.\n\n### Piège à éviter\nNe retiens pas NumChambre comme identifiant absolu de CHAMBRE : avec 8 hôtels, deux chambres auraient le même identifiant et le modèle relationnel serait faux.\n\n### Conseil\nTeste chaque identifiant avec la question : « puis-je trouver deux occurrences différentes ayant cette même valeur ? ». Si oui, ce n'est pas un identifiant.",
+      "themes": [
+        "identifiant",
+        "clé primaire",
+        "identifiant relatif",
+        "MCD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q8-1",
+          "competence": "Choisir l'identifiant d'une entité",
+          "contenu_markdown": "Un identifiant est un attribut, ou un groupe d'attributs, dont la valeur désigne une seule occurrence de l'entité et ne change jamais ; choisis un attribut naturel s'il est unique et stable, sinon crée un code artificiel, et emploie un identifiant relatif lorsque la valeur n'est unique qu'à l'intérieur d'une autre entité.",
+          "cours_genere": true,
+          "cours_id": "cours-choisir-l-identifiant-d-une-entite-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "**9.** Identifier les différentes relations (associations) du système et les entités qu'elles relient.",
+      "corrige_markdown": "### Rappel de méthode\nUne association traduit un verbe qui relie des entités dans les règles de gestion : relève chaque verbe d'action ou d'appartenance de l'énoncé, nomme l'association par ce verbe à l'infinitif, indique les entités reliées et les éventuelles propriétés qui dépendent de l'association tout entière.\n\nDans le sujet, le mot « relation » désigne les liens entre entités, appelés **associations** en MERISE (à ne pas confondre avec les « relations » du modèle relationnel, qui sont des tables).\n\n| Association | Entités reliées | Phrase du sujet qui la justifie |\n|---|---|---|\n| POSSEDER | HOTEL et TELEPHONE_HOTEL | un hôtel est caractérisé par un ou plusieurs numéros de téléphone |\n| APPARTENIR | CHAMBRE et HOTEL | une chambre appartient à un hôtel |\n| EFFECTUER | CLIENT et RESERVATION | les clients effectuent des réservations |\n| CONCERNER | RESERVATION et CHAMBRE | une réservation concerne une ou plusieurs chambres |\n\nAucune de ces associations ne porte de propriété : les dates et le montant dépendent de la réservation elle-même, ils sont donc attributs de RESERVATION. Les quatre associations sont binaires (elles relient deux entités).\n\n### Piège à éviter\nN'invente pas d'association entre CLIENT et CHAMBRE : un client est lié à une chambre par l'intermédiaire de la réservation, un lien direct serait redondant et ferait perdre les dates du séjour.\n\n### Conseil\nCherche les verbes dans le sujet (effectuer, concerner, appartenir, posséder) : chaque verbe entre deux entités donne une association. Vérifie ensuite qu'il n'y a pas de lien direct redondant.",
+      "themes": [
+        "associations",
+        "MCD",
+        "règles de gestion"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q9-1",
+          "competence": "Repérer les associations entre entités à partir des verbes d'un énoncé",
+          "contenu_markdown": "Une association traduit un verbe qui relie des entités dans les règles de gestion : relève chaque verbe d'action ou d'appartenance de l'énoncé, nomme l'association par ce verbe à l'infinitif, indique les entités reliées et les éventuelles propriétés qui dépendent de l'association tout entière.",
+          "cours_genere": true,
+          "cours_id": "cours-reperer-les-associations-entre-entites-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "10a",
+      "enonce_markdown": "**10.** Construire le MCD de ce système en faisant ressortir : **a)** les entités. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nUne entité se dessine par un rectangle à deux compartiments : le nom de l'entité, au singulier et en majuscules, dans le compartiment du haut, la liste de ses attributs dans celui du bas, l'identifiant étant placé en premier et souligné.\n\n**Méthode de tracé.** Pour chacune des cinq entités, trace un rectangle, écris son nom dans le compartiment du haut, puis liste ses attributs dans celui du bas en soulignant l'identifiant.\n\n![fig-1](probatoire-ti-si-2017-officiel-cameroun_exercice_2_fig_1.png)\n\nLecture de la figure :\n\n- CLIENT : NumCNI (souligné), NomClient, PrenomClient, VilleResidence, TelClient ;\n- HOTEL : CodeHotel (souligné), NomHotel, AdresseHotel, ClasseHotel, CodePostal, VilleHotel ;\n- TELEPHONE_HOTEL : NumTelHotel (souligné) ;\n- CHAMBRE : NumChambre (souligné, identifiant relatif à HOTEL), PrixChambre, TelChambre ;\n- RESERVATION : NumReservation (souligné), DateDebut, DateFin, DatePaiement, MontantDepenses.\n\nLe sujet ne donne que des attributs descriptifs : CodeHotel et NumReservation sont les deux identifiants artificiels ajoutés (voir question 8). À ce stade, aucun attribut de liaison n'est écrit : les liens entre entités seront représentés par les associations, jamais par des attributs.\n\n### Piège à éviter\nN'écris pas de clé étrangère (CodeHotel dans CHAMBRE, NumCNI dans RESERVATION) dans une entité du MCD : c'est une notion du modèle relationnel, le MCD exprime ces liens par des associations.\n\n### Conseil\nTrace d'abord toutes les entités avec leurs attributs, au crayon, en laissant de la place entre elles pour les associations. Le jour de l'examen, un MCD aéré est plus lisible et mieux noté.",
+      "themes": [
+        "MCD",
+        "entités et attributs",
+        "identifiant"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q10a-1",
+          "competence": "Représenter les entités d'un MCD",
+          "contenu_markdown": "Une entité se dessine par un rectangle à deux compartiments : le nom de l'entité, au singulier et en majuscules, dans le compartiment du haut, la liste de ses attributs dans celui du bas, l'identifiant étant placé en premier et souligné.",
+          "cours_genere": true,
+          "cours_id": "cours-representer-les-entites-d-un-mcd-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "10b",
+      "enonce_markdown": "**10.b)** Faire ressortir, sur le MCD, les associations. *[0,75 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne association se dessine par une ellipse ou un rectangle arrondi nommé par un verbe, relié par un trait à chacune des entités qu'elle associe ; ses propriétés propres, s'il y en a, se placent à l'intérieur de l'association.\n\n**Méthode de tracé.** Pour chaque association relevée à la question 9, dessine un rectangle arrondi portant le verbe, place-le entre les deux entités concernées et relie-le à chacune par un trait.\n\n![fig-2](probatoire-ti-si-2017-officiel-cameroun_exercice_2_fig_2.png)\n\n- POSSEDER relie HOTEL à TELEPHONE_HOTEL ;\n- APPARTENIR relie CHAMBRE à HOTEL ;\n- EFFECTUER relie CLIENT à RESERVATION ;\n- CONCERNER relie RESERVATION à CHAMBRE.\n\nAucune association ne porte de propriété, leur compartiment inférieur reste donc vide. Chaque trait relie une association à une entité, jamais deux entités directement : une entité n'est reliée qu'à travers une association.\n\n### Piège à éviter\nNe trace jamais un trait directement d'une entité à une autre : en MERISE, deux entités ne se relient que par l'intermédiaire d'une association.\n\n### Conseil\nNomme les associations par des verbes à l'infinitif (EFFECTUER, CONCERNER) : un nom d'association qui se lit comme une phrase avec les deux entités est un bon indice que le schéma est cohérent.",
+      "themes": [
+        "associations",
+        "MCD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q10b-1",
+          "competence": "Représenter les associations d'un MCD",
+          "contenu_markdown": "Une association se dessine par une ellipse ou un rectangle arrondi nommé par un verbe, relié par un trait à chacune des entités qu'elle associe ; ses propriétés propres, s'il y en a, se placent à l'intérieur de l'association.",
+          "cours_genere": true,
+          "cours_id": "cours-representer-les-associations-d-un-mcd-ti-si-2017"
+        }
+      ]
+    },
+    {
+      "numero": "10c",
+      "enonce_markdown": "**10.c)** Faire ressortir, sur le MCD, les cardinalités. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne cardinalité (min,max) se lit en se plaçant sur une entité : le minimum vaut 0 si l'entité peut ne participer à aucune occurrence de l'association et 1 sinon, le maximum vaut 1 si une occurrence participe au plus une fois et N (ou la valeur maximale imposée) sinon.\n\n**Méthode.** Pour chaque patte, on pose la question depuis l'entité : « une occurrence de cette entité est reliée à combien d'occurrences de l'autre entité, au minimum et au maximum ? ».\n\n| Association | Patte | Cardinalité | Lecture |\n|---|---|---|---|\n| POSSEDER | HOTEL | (1,N) | un hôtel possède au moins un numéro, et plusieurs sont possibles |\n| POSSEDER | TELEPHONE_HOTEL | (1,1) | un numéro est celui d'un seul hôtel, et toujours d'un hôtel |\n| APPARTENIR | CHAMBRE | (1,1) | une chambre appartient à un et un seul hôtel (identifiant relatif, noté (R)) |\n| APPARTENIR | HOTEL | (1,80) | un hôtel compte au moins une chambre et au plus 80 |\n| EFFECTUER | CLIENT | (0,N) | un client peut n'avoir encore effectué aucune réservation, ou en avoir plusieurs |\n| EFFECTUER | RESERVATION | (1,1) | une réservation est effectuée par un et un seul client |\n| CONCERNER | RESERVATION | (1,N) | une réservation concerne au moins une chambre, et plusieurs sont possibles |\n| CONCERNER | CHAMBRE | (0,N) | une chambre peut ne jamais avoir été réservée, ou l'avoir été plusieurs fois |\n\n**MCD complet :**\n\n![fig-3](probatoire-ti-si-2017-officiel-cameroun_exercice_2_fig_3.png)\n\n**Contraintes que le MCD ne peut pas exprimer** (à écrire à côté du schéma) : toutes les chambres d'une même réservation appartiennent au même hôtel ; la date de fin n'est pas antérieure à la date de début.\n\n**Contrôle du MCD par le modèle relationnel et le SQL** (non demandé, mais utile pour vérifier la cohérence). Règles de passage : toute association de cardinalité maximale 1 d'un côté donne une clé étrangère dans la table de l'entité qui porte ce 1 ; l'association CONCERNER, de type plusieurs à plusieurs, donne une table de liaison dont la clé primaire concatène les identifiants.\n\n- HOTEL (**CodeHotel**, NomHotel, AdresseHotel, ClasseHotel, CodePostal, VilleHotel)\n- TELEPHONE_HOTEL (**NumTelHotel**, #CodeHotel)\n- CHAMBRE (**#CodeHotel, NumChambre**, PrixChambre, TelChambre)\n- CLIENT (**NumCNI**, NomClient, PrenomClient, VilleResidence, TelClient)\n- RESERVATION (**NumReservation**, DateDebut, DateFin, DatePaiement, MontantDepenses, #NumCNI)\n- CONCERNER (**#NumReservation, #CodeHotel, #NumChambre**), la clé étrangère (CodeHotel, NumChambre) référençant CHAMBRE.\n\n```sql\nCREATE TABLE HOTEL (\n    CodeHotel    INTEGER PRIMARY KEY,\n    NomHotel     VARCHAR(50) NOT NULL,\n    AdresseHotel VARCHAR(100) NOT NULL,\n    ClasseHotel  INTEGER NOT NULL CHECK (ClasseHotel BETWEEN 1 AND 5),\n    CodePostal   VARCHAR(10),\n    VilleHotel   VARCHAR(30) NOT NULL\n);\n\nCREATE TABLE TELEPHONE_HOTEL (\n    NumTelHotel VARCHAR(15) PRIMARY KEY,\n    CodeHotel   INTEGER NOT NULL REFERENCES HOTEL(CodeHotel)\n);\n\nCREATE TABLE CHAMBRE (\n    CodeHotel   INTEGER NOT NULL REFERENCES HOTEL(CodeHotel),\n    NumChambre  INTEGER NOT NULL CHECK (NumChambre > 0),\n    PrixChambre INTEGER NOT NULL CHECK (PrixChambre > 0),\n    TelChambre  VARCHAR(15),\n    PRIMARY KEY (CodeHotel, NumChambre)\n);\n\nCREATE TABLE CLIENT (\n    NumCNI         VARCHAR(15) PRIMARY KEY,\n    NomClient      VARCHAR(40) NOT NULL,\n    PrenomClient   VARCHAR(40),\n    VilleResidence VARCHAR(30),\n    TelClient      VARCHAR(15)\n);\n\nCREATE TABLE RESERVATION (\n    NumReservation  INTEGER PRIMARY KEY,\n    DateDebut       DATE NOT NULL,\n    DateFin         DATE NOT NULL,\n    DatePaiement    DATE,\n    MontantDepenses INTEGER DEFAULT 0,\n    NumCNI          VARCHAR(15) NOT NULL REFERENCES CLIENT(NumCNI),\n    CHECK (DateFin >= DateDebut)\n);\n\nCREATE TABLE CONCERNER (\n    NumReservation INTEGER NOT NULL REFERENCES RESERVATION(NumReservation),\n    CodeHotel      INTEGER NOT NULL,\n    NumChambre     INTEGER NOT NULL,\n    PRIMARY KEY (NumReservation, CodeHotel, NumChambre),\n    FOREIGN KEY (CodeHotel, NumChambre) REFERENCES CHAMBRE(CodeHotel, NumChambre)\n);\n```\n\nJeu d'essai (2 hôtels, 3 chambres, 2 clients, 2 réservations) : la réservation 1 (client MBARGA) concerne les chambres 101 et 102 de l'hôtel 1, la réservation 2 (client TCHOUA) la chambre 101 de l'hôtel 2. La requête qui compte les chambres par hôtel donne 2 pour l'hôtel 1 et 1 pour l'hôtel 2 ; la somme des prix des chambres par réservation donne 55 000 FCFA pour la réservation 1 et 45 000 FCFA pour la réservation 2.\n\nContrôle de la règle « toutes les chambres d'une réservation sont dans le même hôtel » (le résultat doit être vide) :\n\n```sql\nSELECT NumReservation\nFROM CONCERNER\nGROUP BY NumReservation\nHAVING COUNT(DISTINCT CodeHotel) > 1;\n```\n\nSi l'on ajoute la ligne (2, 1, 101) dans CONCERNER, la réservation 2 porte alors sur deux hôtels et la requête renvoie 2 : la règle est violée et détectée. La limite de 80 chambres par hôtel se contrôle de la même façon (résultat vide attendu) :\n\n```sql\nSELECT CodeHotel, COUNT(*)\nFROM CHAMBRE\nGROUP BY CodeHotel\nHAVING COUNT(*) > 80;\n```\n\n### Piège à éviter\nN'écris pas (1,N) partout par réflexe : lis chaque règle de gestion. Ici, un client peut ne pas encore avoir réservé (0,N) alors qu'une réservation a toujours un client (1,1), et le sujet impose au plus 80 chambres par hôtel.\n\n### Conseil\nPlace d'abord les (1,1), qui se repèrent aux mots « un seul », puis traite les autres pattes. Si le sujet donne un maximum chiffré (80 chambres), écris-le : c'est la précision qui montre que tu as lu l'énoncé jusqu'au bout.",
+      "themes": [
+        "cardinalités",
+        "MCD",
+        "modèle relationnel",
+        "SQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": null,
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-ti-si-2017-officiel-cameroun-ex2-q10c-1",
+          "competence": "Placer les cardinalités d'un MCD",
+          "contenu_markdown": "Une cardinalité (min,max) se lit en se plaçant sur une entité : le minimum vaut 0 si l'entité peut ne participer à aucune occurrence de l'association et 1 sinon, le maximum vaut 1 si une occurrence participe au plus une fois et N (ou la valeur maximale imposée) sinon.",
+          "cours_genere": true,
+          "cours_id": "cours-placer-les-cardinalites-d-un-mcd-ti-si-2017"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "MCD",
+    "entités",
+    "attributs",
+    "identifiants",
+    "associations",
+    "cardinalités",
+    "gestion hôtelière",
+    "dictionnaire des données",
+    "règles de gestion",
+    "MLD"
+  ],
+  "incertitudes": [
+    "Aucun corrigé officiel n'est publié avec le sujet : toutes les réponses sont des modèles rédigés d'après les règles de gestion de l'étude de cas.",
+    "Le sujet n'est pas découpé en exercices : le découpage en quatre exercices (questions 1 à 6, 7 à 10, 11, 12) est éditorial, la numérotation des questions du sujet est conservée.",
+    "Barème : l'en-tête de la question 10 annonce 2 points alors que ses sous-parties valent 2 + 0,75 + 1,5 = 4,25 points ; les questions 8 et 9 n'ont aucun barème imprimé ; les points imprimés ne sont pas corrigés. Le total de l'exercice 2 n'est donc pas renseigné.",
+    "Le sujet ne fournit aucun identifiant : CodeHotel et NumReservation sont des identifiants artificiels ajoutés. Pour CHAMBRE, l'identifiant relatif (NumChambre relatif à HOTEL) est retenu ; un identifiant artificiel (CodeChambre) est une variante acceptable.",
+    "Choix de modélisation discutables : les numéros de téléphone multiples d'un hôtel deviennent l'entité TELEPHONE_HOTEL ; la classe reste un attribut de HOTEL (et non une entité CLASSE) ; la cardinalité côté CLIENT est (0,N) (elle serait (1,N) si les clients n'étaient enregistrés qu'à leur première réservation) ; la cardinalité côté HOTEL de l'association APPARTENIR est (1,80) d'après « 80 chambres au maximum » ; le prix de la chambre est lu comme un prix par nuit.",
+    "La dépendance fonctionnelle CodePostal vers VilleHotel pourrait conduire à une entité VILLE en troisième forme normale ; le sujet liste ces deux caractéristiques dans l'hôtel, elles restent attributs de HOTEL.",
+    "Les questions 6 et 11.c sont identiques dans le sujet (répétition) ; le terme « relations » de la question 9 est lu comme « associations ». Le dossier d'images du sujet s'intitule probatoire_D_TI alors que le titre de la page vise la série TI : série TI retenue."
+  ],
+  "statut": "brouillon"
+}

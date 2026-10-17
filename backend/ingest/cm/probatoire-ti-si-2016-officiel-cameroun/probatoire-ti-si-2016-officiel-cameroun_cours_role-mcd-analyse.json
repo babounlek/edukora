@@ -1,0 +1,138 @@
+{
+ "cours_id": "cours-role-mcd-analyse-ti-si-2016",
+ "meta": {
+  "titre": "Rôle du MCD dans le processus d'analyse d'un système d'information",
+  "matiere": "Systèmes d'Information",
+  "pays": "cm",
+  "serie": "TI",
+  "sous_theme": "Modèle conceptuel des données",
+  "duree_estimee_min": 18,
+  "tags": [
+   "MCD",
+   "MERISE",
+   "niveau conceptuel",
+   "MLD",
+   "MPD"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-ti-si-2016-officiel-cameroun",
+  "epreuve_titre": "Probatoire TI - Systèmes d'Information - 2016 - Cameroun",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-ti-si-2016-officiel-cameroun-ex1-q12-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Pourquoi dessiner un MCD avant d'ouvrir un SGBD ? Parce qu'on ne construit pas une base de données sans plan, et parce que ce plan doit pouvoir être lu et validé par les utilisateurs, qui ne connaissent pas l'informatique. Voilà le rôle du MCD : dire ce que contient le système, pas comment il fonctionne."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Notion de modèle",
+    "Les trois niveaux d'abstraction de MERISE"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "L'objectif du MCD et sa place dans la démarche",
+   "contenu_markdown": "Le **modèle conceptuel des données (MCD)** décrit, de façon **formelle** et **indépendante des choix techniques et organisationnels**, les **données** du système d'information et les **liens** entre elles, à partir des règles de gestion.\n\n| Niveau | Modèle | Question | Dépend de la technique ? |\n|---|---|---|---|\n| Conceptuel | MCD | Quoi ? Quelles données ? | Non |\n| Logique | MLD | Comment les organiser ? (tables) | Du type de base (relationnelle) |\n| Physique | MPD | Avec quel outil ? | Oui (SGBD précis) |\n\n**Rôles du MCD** : langage commun entre utilisateurs et informaticiens (il se valide avec les utilisateurs) ; base de la conception de la base de données (on en déduit le MLD puis le MPD) ; stabilité (il change peu quand la technique change).",
+   "variantes": [
+    {
+     "nom": "Réponse en une phrase",
+     "quand_utiliser": "En cas de question courte",
+     "contenu_markdown": "Le MCD représente les données du système d'information et leurs liens, indépendamment de toute technique."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Donner l'objectif du MCD dans le processus d'analyse d'un système d'information.",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Dire ce que le MCD représente",
+     "justification": "L'objet du modèle est la première information attendue.",
+     "resultat_markdown": "Les données du SI et leurs liens."
+    },
+    {
+     "numero": 2,
+     "action": "Préciser son indépendance",
+     "justification": "Le conceptuel ignore l'outil et l'organisation.",
+     "resultat_markdown": "Aucune référence à un SGBD ou à des tables."
+    },
+    {
+     "numero": 3,
+     "action": "Dire à quoi il sert ensuite",
+     "justification": "Il se transforme en modèle logique puis physique.",
+     "resultat_markdown": "MCD, puis MLD (tables), puis MPD (base)."
+    },
+    {
+     "numero": 4,
+     "action": "Citer l'intérêt de communication",
+     "justification": "Les utilisateurs peuvent le valider.",
+     "resultat_markdown": "Langage commun entre utilisateurs et informaticiens."
+    }
+   ],
+   "conclusion_markdown": "L'objectif du MCD est de représenter formellement, et indépendamment de toute technique, les données du système d'information et leurs liens, pour les valider avec les utilisateurs et préparer le modèle logique."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire que le MCD sert à « créer la base de données »",
+     "pourquoi_faux": "La base est créée au niveau physique avec un SGBD. Le MCD la prépare mais ne la crée pas.",
+     "correction_markdown": "Dire qu'il décrit les données et sert de point de départ au MLD."
+    },
+    {
+     "erreur_markdown": "Parler de tables, de clés étrangères ou de types dans le MCD",
+     "pourquoi_faux": "Ce vocabulaire appartient au modèle logique et physique.",
+     "correction_markdown": "Au niveau conceptuel : entités, associations, attributs, cardinalités."
+    },
+    {
+     "erreur_markdown": "Confondre le MCD avec le MCT",
+     "pourquoi_faux": "Le MCD décrit les données, le MCT les traitements (quoi faire, quand, dans quel ordre).",
+     "correction_markdown": "MCD : données ; MCT : traitements."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Associer chaque affirmation au modèle : (a) « le client doit avoir un numéro unique » ; (b) « la table CLIENT a la clé primaire NumCli » ; (c) « NumCli est de type INT AUTO_INCREMENT sous MySQL ».",
+     "solution_markdown": "1. (a) Règle de données indépendante de la technique : MCD.\n2. (b) Table et clé primaire : MLD.\n3. (c) Type et mécanisme propres à MySQL : MPD."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Expliquer à un chef d'entreprise pourquoi il doit valider le MCD avant la réalisation.",
+     "solution_markdown": "1. Le MCD est un schéma simple, lisible sans connaissance technique.\n2. Il fixe les données que le système gardera et les règles entre elles.\n3. Une erreur détectée au MCD coûte quelques heures de correction ; la même erreur détectée en base livrée coûte des semaines.\n4. La validation du chef d'entreprise garantit que le futur système correspond à son activité."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un étudiant écrit dans son MCD : « CLIENT (NumCli INT, Nom VARCHAR(30)), table clients dans MySQL ». Quelles corrections apporter ?",
+     "solution_markdown": "1. INT et VARCHAR(30) sont des types propres à un SGBD : ils relèvent du niveau physique, pas du MCD.\n2. « Table » appartient au niveau logique.\n3. Au niveau conceptuel on écrit : entité CLIENT, attributs NumCli (identifiant) et Nom.\n4. Les types et tailles se décrivent dans le dictionnaire de données, puis dans le MPD."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Le MCD représente les données et leurs liens, sans technique.",
+    "Il répond à « quoi ? ». Le MLD répond à « comment organiser ? », le MPD à « avec quoi ? ».",
+    "Il sert de langage commun avec les utilisateurs et prépare le MLD.",
+    "Pas de tables ni de types dans un MCD.",
+    "Au Probatoire TI, la question d'objectif du MCD rapporte 0,5 point avec la formule « décrire les données, pas la technique »."
+   ]
+  }
+ ]
+}
