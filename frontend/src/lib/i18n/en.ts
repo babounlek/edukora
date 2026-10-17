@@ -58,6 +58,20 @@ export const en: Partial<Record<CleI18n, string>> = {
   "matieres.invitation_titre": "Pick the subjects you are sitting",
   "matieres.invitation_texte": "Your daily plan will focus on them instead of the whole syllabus.",
   "matieres.invitation_bouton": "Choose my subjects",
+  "matieres.compteur_plage_one": "{n} subject chosen · the Board requires {min} to {max}",
+  "matieres.compteur_plage_other": "{n} subjects chosen · the Board requires {min} to {max}",
+  "matieres.compteur_max_one": "{n} subject chosen · {max} at most",
+  "matieres.compteur_max_other": "{n} subjects chosen · {max} at most",
+  "matieres.obligatoire": "compulsory",
+  "matieres.bientot": "coming soon",
+  "matieres.non_couverte_aide":
+    "Greyed-out subjects are on the Board's list but not in EduKora yet: you can declare them, they just will not get a study session.",
+  "matieres.av_minimum": "The Board requires at least {attendu} subjects: you have {actuel}.",
+  "matieres.av_maximum": "The Board allows {attendu} at most: you have {actuel}.",
+  "matieres.av_obligatoire": "{matiere} is compulsory at registration.",
+  "matieres.av_derniere": "When you sit {max}, the last one must be {matiere}.",
+  "matieres.regles_note":
+    "GCE Board registration rules (2026). They do not replace your official registration with your school.",
   "onboarding.branche_generale": "General",
 
   "compte_a_rebours.vers": "around {mois}",

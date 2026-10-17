@@ -249,6 +249,40 @@ export interface MatieresChoix {
   /** Ids choisis ; vide = toutes les matières du cursus. */
   choisies: number[]
   disponibles: { id: number; code: string; label: string }[]
+  /** Règles d'inscription du GCE Board pour ce niveau ; null hors branche générale du GCE (voir quiz.matieres). */
+  regles?: ReglesInscription | null
+  /** Toutes les matières du Board à ce niveau (couvertes ou non par EduKora) ; vide hors GCE général. */
+  officielles?: MatiereOfficielle[]
+  /** Écarts du choix enregistré aux règles : jamais un refus. */
+  avertissements?: AvertissementInscription[]
+}
+
+export interface ReglesInscription {
+  minimum: number | null
+  maximum: number | null
+  /** Codes des matières exigées à l'inscription. */
+  obligatoires: string[]
+  /** Code de la matière qui doit être la dernière quand on en passe le maximum (Religious Studies au O Level). */
+  derniere: string | null
+}
+
+export interface MatiereOfficielle {
+  id: number
+  code: string
+  label: string
+  /** Code du jury (ex. « 0510 »). */
+  code_officiel: string | null
+  /** EduKora a du contenu sur cette matière à ce niveau. */
+  couverte: boolean
+  obligatoire: boolean
+}
+
+export interface AvertissementInscription {
+  code: "minimum" | "maximum" | "obligatoire" | "derniere_matiere"
+  attendu?: number
+  actuel?: number
+  /** Code de la matière concernée (obligatoire, derniere_matiere). */
+  matiere?: string
 }
 
 export interface Temoignage {

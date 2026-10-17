@@ -6,8 +6,10 @@ import { toast } from "sonner"
 import { definirMatieres, getMatieres } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
+import type { AvertissementInscription, MatiereOfficielle } from "@/api/types"
 import { estGce } from "@/lib/cursus"
-import { useI18n } from "@/lib/i18n"
+import { tn, useI18n } from "@/lib/i18n"
+import { avertissementsInscription } from "@/lib/inscription"
 import { cn } from "@/lib/utils"
 
 /** Données qui dépendent des matières choisies : à relire après un changement. */
@@ -23,6 +25,19 @@ function useMatieres() {
     enabled: actif && Boolean(cursusId),
   })
   return { actif, cursusId, ...requete }
+}
+
+/** Phrase d'un avertissement d'inscription : toujours un conseil, jamais un blocage. */
+function texteAvertissement(
+  a: AvertissementInscription,
+  libelleDe: (code?: string) => string,
+  maximum: number | null,
+  t: (cle: "matieres.av_minimum" | "matieres.av_maximum" | "matieres.av_obligatoire" | "matieres.av_derniere", v?: Record<string, string | number>) => string,
+): string {
+  if (a.code === "minimum") return t("matieres.av_minimum", { attendu: a.attendu ?? "", actuel: a.actuel ?? "" })
+  if (a.code === "maximum") return t("matieres.av_maximum", { attendu: a.attendu ?? "", actuel: a.actuel ?? "" })
+  if (a.code === "obligatoire") return t("matieres.av_obligatoire", { matiere: libelleDe(a.matiere) })
+  return t("matieres.av_derniere", { max: maximum ?? "", matiere: libelleDe(a.matiere) })
 }
 
 /**
@@ -58,12 +73,36 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
     setBrouillon(choisies.includes(id) ? choisies.filter((i) => i !== id) : [...choisies, id])
   }
 
+  // Au GCE (branche générale) le serveur envoie toutes les matières du Board à ce niveau et leurs règles ; sinon (ou
+  // serveur plus ancien) on retombe sur la liste des matières qui ont du contenu, sans règles.
+  const officielles: MatiereOfficielle[] = data.officielles ?? []
+  const modeBoard = officielles.length > 0
+  const liste: MatiereOfficielle[] = modeBoard
+    ? officielles
+    : data.disponibles.map((m) => ({ ...m, code_officiel: null, couverte: true, obligatoire: false }))
+  const connues = [...liste, ...data.disponibles.filter((d) => !liste.some((m) => m.id === d.id))]
+  const regles = modeBoard ? data.regles : null
+  const avertissements = avertissementsInscription(
+    regles,
+    connues.filter((m) => choisies.includes(m.id)).map((m) => m.code),
+  )
+  const libelleDe = (code?: string) => connues.find((m) => m.code === code)?.label ?? code ?? ""
+  const aDesNonCouvertes = liste.some((m) => !m.couverte)
+
   const inchange = brouillon === null
   return (
     <div className="flex flex-col gap-3">
       <p className="text-sm text-muted-foreground">{t("matieres.aide")}</p>
+      {regles && choisies.length > 0 && (
+        <p className="text-sm font-medium" aria-live="polite">
+          {tn(regles.minimum !== null ? "matieres.compteur_plage" : "matieres.compteur_max", choisies.length, {
+            min: regles.minimum ?? "",
+            max: regles.maximum ?? "",
+          })}
+        </p>
+      )}
       <div className="flex flex-wrap gap-2" role="group" aria-label={t("matieres.titre")}>
-        {data.disponibles.map((matiere) => {
+        {liste.map((matiere) => {
           const actif = choisies.includes(matiere.id)
           return (
             <button
@@ -76,14 +115,30 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
                 actif
                   ? "border-primary bg-primary/10 text-primary"
                   : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground",
+                !matiere.couverte && !actif && "border-dashed opacity-60",
               )}
             >
               {actif && <Check className="size-3.5" aria-hidden="true" />}
               {matiere.label}
+              {matiere.obligatoire && <span className="text-xs font-normal">· {t("matieres.obligatoire")}</span>}
+              {!matiere.couverte && <span className="text-xs font-normal italic">· {t("matieres.bientot")}</span>}
             </button>
           )
         })}
       </div>
+      {avertissements.length > 0 && (
+        <ul role="status" className="flex list-disc flex-col gap-1 pl-5 text-sm text-amber-700 dark:text-amber-400">
+          {avertissements.map((a, i) => (
+            <li key={`${a.code}-${a.matiere ?? i}`}>{texteAvertissement(a, libelleDe, regles?.maximum ?? null, t)}</li>
+          ))}
+        </ul>
+      )}
+      {modeBoard && (
+        <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+          {aDesNonCouvertes && <p>{t("matieres.non_couverte_aide")}</p>}
+          <p>{t("matieres.regles_note")}</p>
+        </div>
+      )}
       <div className="flex flex-wrap items-center gap-2">
         <Button
           size="sm"
@@ -119,7 +174,8 @@ export function InvitationMatieres() {
   const { actif, data } = useMatieres()
   const [ouvert, setOuvert] = useState(false)
 
-  if (!actif || !data || data.choisies.length > 0 || data.disponibles.length < 2) return null
+  const nbChoix = data?.officielles?.length || data?.disponibles.length || 0
+  if (!actif || !data || data.choisies.length > 0 || nbChoix < 2) return null
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">

@@ -63,6 +63,20 @@ export const fr = {
   "matieres.invitation_titre": "Choisis les matières que tu passes",
   "matieres.invitation_texte": "Ton plan du jour se concentrera sur elles, pas sur tout le programme.",
   "matieres.invitation_bouton": "Choisir mes matières",
+  "matieres.compteur_plage_one": "{n} matière choisie · le Board en demande de {min} à {max}",
+  "matieres.compteur_plage_other": "{n} matières choisies · le Board en demande de {min} à {max}",
+  "matieres.compteur_max_one": "{n} matière choisie · {max} au plus",
+  "matieres.compteur_max_other": "{n} matières choisies · {max} au plus",
+  "matieres.obligatoire": "obligatoire",
+  "matieres.bientot": "bientôt",
+  "matieres.non_couverte_aide":
+    "Les matières grisées sont au programme du Board mais pas encore dans EduKora : tu peux les déclarer, elles n'auront simplement pas de séance.",
+  "matieres.av_minimum": "Le Board demande au moins {attendu} matières : tu en as {actuel}.",
+  "matieres.av_maximum": "Le Board en autorise {attendu} au plus : tu en as {actuel}.",
+  "matieres.av_obligatoire": "{matiere} est obligatoire à l'inscription.",
+  "matieres.av_derniere": "Quand on en passe {max}, la dernière doit être {matiere}.",
+  "matieres.regles_note":
+    "Règles d'inscription du GCE Board (2026). Elles ne remplacent pas ton inscription officielle auprès de ton établissement.",
   "onboarding.branche_generale": "Général",
 
   "compte_a_rebours.vers": "vers {mois}",
