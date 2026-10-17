@@ -1,0 +1,53 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2025. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "Given that\n\n$$f(x) = \\frac{4x}{(x-1)(x+1)(x^2+1)}, \\qquad x \\neq \\pm 1,$$",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 4 : le sujet ne numérote pas les deux demandes (« express f(x) in partial fractions » puis « Hence, show that ») ; elles sont codées a et b."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Express $f(x)$ in partial fractions. *[4 marks]*",
+      "corrige_markdown": "The denominator has two real linear factors and one irreducible quadratic factor, so we write\n\n$$\\frac{4x}{(x-1)(x+1)(x^2+1)} \\equiv \\frac{A}{x-1} + \\frac{B}{x+1} + \\frac{Cx + D}{x^2+1}.$$\n\nMultiply through by the denominator:\n\n$$4x \\equiv A(x+1)(x^2+1) + B(x-1)(x^2+1) + (Cx+D)(x^2-1).$$\n\n**Substitutions.** $x = 1$: $4 = A(2)(2)$, so $A = 1$. $x = -1$: $-4 = B(-2)(2)$, so $B = 1$.\n\n**Coefficients.** Coefficient of $x^3$: $0 = A + B + C$, so $C = -2$. Constant term: $0 = A - B - D$, so $D = 0$.\n\n*Check with the other coefficients.* Coefficient of $x^2$: $A - B + D = 1 - 1 + 0 = 0$, as required. Coefficient of $x$: $A + B - C = 1 + 1 + 2 = 4$, as required.\n\n$$\\boxed{f(x) = \\frac{1}{x-1} + \\frac{1}{x+1} - \\frac{2x}{x^2+1}}$$",
+      "themes": [
+        "partial fractions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Hence, show that\n\n$$\\int_2^3 f(x)\\,dx = \\ln\\!\\left(\\frac{4}{3}\\right).$$ *[4 marks]*",
+      "corrige_markdown": "Using the partial fractions of part (a), and noting that $x - 1$ and $x + 1$ are positive on $[2, 3]$:\n\n$$\\int_2^3 f(x)\\,dx = \\int_2^3\\left(\\frac{1}{x-1} + \\frac{1}{x+1} - \\frac{2x}{x^2+1}\\right)dx.$$\n\nThe last term is of the form $\\dfrac{g'(x)}{g(x)}$ with $g(x) = x^2 + 1$, so its integral is $\\ln(x^2+1)$. Therefore\n\n$$\\int_2^3 f(x)\\,dx = \\Big[\\ln(x-1) + \\ln(x+1) - \\ln(x^2+1)\\Big]_2^3 = \\left[\\ln\\frac{x^2-1}{x^2+1}\\right]_2^3.$$\n\nEvaluate the limits:\n\n- at $x = 3$: $\\ln\\dfrac{9-1}{9+1} = \\ln\\dfrac{8}{10} = \\ln\\dfrac45$;\n- at $x = 2$: $\\ln\\dfrac{4-1}{4+1} = \\ln\\dfrac35$.\n\n$$\\int_2^3 f(x)\\,dx = \\ln\\frac45 - \\ln\\frac35 = \\ln\\left(\\frac{4/5}{3/5}\\right) = \\ln\\frac43. \\qquad \\blacksquare$$\n\n(Numerically $\\ln\\frac43 \\approx 0.2877$.)",
+      "themes": [
+        "partial fractions",
+        "integration of rational functions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

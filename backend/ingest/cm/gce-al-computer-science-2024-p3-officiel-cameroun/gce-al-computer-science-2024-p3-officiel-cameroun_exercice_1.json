@@ -1,0 +1,116 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p3-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2024. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of the drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A (Database), Task 1, and Section B (Programming), Tasks 2 and 3.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION A (Database): Football association database**\n\nThe database of a certain football association is structured as shown by the tables below. The primary key of each relation is marked with an asterisk (\\*).\n\n`Player(PlayerID*, ClubID, Name, Position, MatchPlayed, Goals)`\n\n| Field | Datatype | Size |\n|---|---|---|\n| PlayerID (primary key) | Text | 6 (Example: 21A001) |\n| ClubID | Text | 10 (Example BARCA001) |\n| Name | Text | 30 |\n| Position | Number | Short integer |\n| MatchPlayed | Number | Long integer |\n| Goals | Number | Long integer |\n\n`Club(ClubID*, CoachID, Country, NoTitles, YearCreation)`\n\n| Field | Datatype | Size |\n|---|---|---|\n| ClubID (primary key) | Text | 10 (Example BARCA001) |\n| CoachID | Text | 10 (Example CHEL001) |\n| Country | Text | 30 |\n| NoTitles | Number | Short integer |\n| YearCreation | Date | Day/Month/Year |\n\n`Coach(CoachID*, ClubID, Name, Titles, Nationality, Age)`\n\n| Field | Datatype | Size |\n|---|---|---|\n| CoachID (primary key) | Text | 10 (Example CHEL001) |\n| ClubID | Text | 10 (Example BARCA001) |\n| Name | Text | 30 |\n| Titles | Number | Short integer |\n| Nationality | Text | 20 |\n| Age | Number | Short integer |\n\nIn a relational Database Management System (RDBMS) of your choice help the football association to implement its database through the following actions:",
+  "groupes": [
+    "SECTION A"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Aucun compilateur C ni Pascal n'est disponible : le code C et Pascal du corrigé n'a PAS été compilé. Sa logique a été vérifiée par une traduction fidèle en Python (drop_disc, display_grid, is_aligned, play_game) exécutée sur une partie gagnée par le joueur 1, des colonnes invalides ou pleines et une partie nulle de 25 coups ; les sorties recopiées dans le corrigé sont celles de cette simulation. Le SQL a été exécuté avec sqlite3 (CREATE TABLE, INSERT, requête, CREATE VIEW) ; les ALTER TABLE ... ADD CONSTRAINT cités en remarque ne sont pas testés (non pris en charge par SQLite).",
+    "Task 3, figure 2 (play_game) imprimée : la branche Else du bloc « If aligned = 1 AND disc = 'X' ... Else If aligned AND disc = 'O' ... Else Print(Error: Unknown Player type) » est atteinte à chaque coup SANS alignement, donc une conversion littérale afficherait « Error: Unknown Player type » après tous les coups ordinaires (démontré par la simulation). Le corrigé teste d'abord aligned = 1, puis distingue X et O, ce qui est l'intention évidente ; l'écart est signalé dans le corrigé. Les tests « aligned AND disc = 'O' » (sans « = 1 ») et les Print sans guillemets (Print(Game Over! Player1 wins.)) sont recopiés tels qu'imprimés.",
+    "Task 3, figure 2 : la condition d'arrêt imprimée « Until(stop = 1 OR placed_discs > 25) » ne peut jamais être vraie en cas d'égalité, car la grille 5x5 ne reçoit que 25 disques (placed_discs plafonne à 25) : la boucle redemanderait indéfiniment une colonne (« Chosen column is full! »), ce que la simulation confirme. Le corrigé utilise placed_discs >= ROWS * COLS (25). Le sujet n'est pas corrigé, l'écart est seulement signalé.",
+    "Les fichiers aligned.h et aligned.pas fournis par le jury (empty_grid, is_aligned, éventuellement la définition de TBoard) ne figurent pas dans le PDF : leur contenu exact est inconnu. Le corrigé fournit des versions de remplacement (empty_grid met ' ' dans chaque case, is_aligned renvoie 1 si quatre disques identiques sont alignés) pour que le programme soit complet, en indiquant de les remplacer par les fichiers du jury.",
+    "Les figures 1, 2 et 3 (pseudocode et liste de variables, page 7) sont des listings de texte : elles sont transcrites en blocs de code dans l'énoncé de la tâche 3 et non recadrées en PNG ; la page 7 est un scan penché et quelques indentations de la figure 2 ont été reconstituées d'après l'imbrication des If/EndIf.",
+    "Tâches 1 (questions 3, 4, 6) et 3 (f, g) : le sujet demande des actions sur ordinateur (saisir des lignes, imprimer, enregistrer sous namesofplayers, Printout2a, Printout2b, capture d'écran). Le corrigé décrit le résultat attendu et fournit les instructions SQL, les listings et une sortie d'exécution simulée. Les lignes de données de la question 3 sont des exemples inventés (le sujet n'en fournit pas) ; l'exemple « CHEL001 » du sujet est un CoachID, « BARCA001 » un ClubID.",
+    "Tâche 1, question 2 : le sujet ne donne pas les cardinalités ; le corrigé les déduit des attributs (Player.ClubID référence Club : 1-N ; Club.CoachID et Coach.ClubID se référencent mutuellement : 1-1). Les contraintes de clé étrangère circulaires (Club <-> Coach) imposent de les déclarer après l'insertion des données ; seules les clés primaires sont exigées par le sujet.",
+    "Points imprimés : Task 1 = 20 (6+3+3+1+5+2), Task 2 = 6 (2+2+2), Task 3 = 24 (1+4+9+4+3+1+2) ; les totaux sont cohérents, aucun point corrigé. « the game is draw » et « prompted to play » sont recopiés tels qu'imprimés."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Create the above tables using your RDBMS. Write the corresponding SQL code used for each table in the spaces provided below. *[6 marks]*\n\n(i) Player\n\n(ii) Club\n\n(iii) Coach",
+      "corrige_markdown": "Each table needs a `CREATE TABLE` statement that gives every field its name, a data type of the right kind and size, and declares the primary key (marked with an asterisk). Mapping used: Text of size n becomes `VARCHAR(n)`, \"Short integer\" becomes `SMALLINT`, \"Long integer\" becomes `INTEGER` and Date becomes `DATE` (the *Day/Month/Year* format is a display format chosen in the RDBMS, not part of the type).\n\n**(i) Player** *(2 marks)*\n\n```sql\nCREATE TABLE Player (\n    PlayerID    VARCHAR(6)  PRIMARY KEY,\n    ClubID      VARCHAR(10),\n    Name        VARCHAR(30),\n    Position    SMALLINT,\n    MatchPlayed INTEGER,\n    Goals       INTEGER\n);\n```\n\n**(ii) Club** *(2 marks)*\n\n```sql\nCREATE TABLE Club (\n    ClubID       VARCHAR(10) PRIMARY KEY,\n    CoachID      VARCHAR(10),\n    Country      VARCHAR(30),\n    NoTitles     SMALLINT,\n    YearCreation DATE\n);\n```\n\n**(iii) Coach** *(2 marks)*\n\n```sql\nCREATE TABLE Coach (\n    CoachID     VARCHAR(10) PRIMARY KEY,\n    ClubID      VARCHAR(10),\n    Name        VARCHAR(30),\n    Titles      SMALLINT,\n    Nationality VARCHAR(20),\n    Age         SMALLINT\n);\n```\n\n*Remarks.* (1) `PlayerID`, `ClubID` and `CoachID` are text keys because their examples (`21A001`, `BARCA001`, `CHEL001`) mix letters and digits. (2) `Player.ClubID` refers to `Club`, and `Club.CoachID` and `Coach.ClubID` refer to each other. Because of this circular dependency the foreign keys are added once the data are loaded, for example `ALTER TABLE Player ADD CONSTRAINT fk_player_club FOREIGN KEY (ClubID) REFERENCES Club (ClubID);` (syntax of MySQL, PostgreSQL and Oracle; SQLite has no `ADD CONSTRAINT`). The three statements above were run successfully with SQLite; in MS Access use `TEXT(10)`, `SHORT` and `LONG` for the same fields.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Draw an entity-relationship diagram involving the three tables stated above. *[3 marks]*",
+      "corrige_markdown": "An entity-relationship diagram shows each table as an entity (with its attributes and primary key) and joins the entities by relationships with their cardinalities. The foreign keys give the relationships:\n\n- `Player.ClubID` refers to `Club.ClubID`: a club has many players, a player belongs to one club, so **Club 1 - N Player**;\n- `Club.CoachID` and `Coach.ClubID` refer to each other: a club has one coach and a coach manages one club, so **Coach 1 - 1 Club**.\n\n```\n+--------------------+ 1       1 +--------------------+\n| COACH              |-----------| CLUB               |\n| CoachID (PK)       |  manages  | ClubID (PK)        |\n| ClubID (FK)        |           | CoachID (FK)       |\n| Name               |           | Country            |\n| Titles             |           | NoTitles           |\n| Nationality        |           | YearCreation       |\n| Age                |           +--------------------+\n+--------------------+                     | 1\n                                           | has\n                                           | N\n                                 +--------------------+\n                                 | PLAYER             |\n                                 | PlayerID (PK)      |\n                                 | ClubID (FK)        |\n                                 | Name               |\n                                 | Position           |\n                                 | MatchPlayed        |\n                                 | Goals              |\n                                 +--------------------+\n```\n\nMarking: three entities correctly labelled with their keys (1 mark), relationship Club-Player with the cardinality 1 to many (1 mark), relationship Coach-Club with the cardinality 1 to 1 (1 mark).",
+      "themes": [
+        "entity-relationship diagrams",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "For each table in your database add and save five rows of data consistent with their column entries. *[3 marks]*",
+      "corrige_markdown": "Five rows are inserted in each table (1 mark per table). The values must respect the types and sizes (a `PlayerID` of 6 characters, a `ClubID` of at most 10, a date in a valid format) and be consistent between the tables: every `Player.ClubID` exists in `Club`, every `Club.CoachID` exists in `Coach`, and `Coach.ClubID` points back to the club the coach manages. The data below are examples; they were inserted in SQLite and read back without error.\n\n```sql\n-- Club\nINSERT INTO Club VALUES ('BARCA001', 'BARC001', 'Spain',   27, '1899-11-29');\nINSERT INTO Club VALUES ('CHELS001', 'CHEL001', 'England',  6, '1905-03-10');\nINSERT INTO Club VALUES ('MANCU001', 'MANC001', 'England',  9, '1880-01-01');\nINSERT INTO Club VALUES ('JUVEN001', 'JUVE001', 'Italy',   36, '1897-11-01');\nINSERT INTO Club VALUES ('REALM001', 'REAL001', 'Spain',   36, '1902-03-06');\n\n-- Coach\nINSERT INTO Coach VALUES ('BARC001', 'BARCA001', 'Marco Silva',   8, 'Portuguese', 52);\nINSERT INTO Coach VALUES ('CHEL001', 'CHELS001', 'John Carter',   5, 'English',    48);\nINSERT INTO Coach VALUES ('MANC001', 'MANCU001', 'Pierre Dubois', 11, 'French',    55);\nINSERT INTO Coach VALUES ('JUVE001', 'JUVEN001', 'Luca Rossi',    7, 'Italian',    50);\nINSERT INTO Coach VALUES ('REAL001', 'REALM001', 'Carlos Ruiz',   10, 'Spanish',   58);\n\n-- Player\nINSERT INTO Player VALUES ('21A001', 'BARCA001', 'Diego Alvarez', 9,  75, 120);\nINSERT INTO Player VALUES ('21A002', 'CHELS001', 'Samuel Okoro',  7,  95, 110);\nINSERT INTO Player VALUES ('21B001', 'MANCU001', 'Tom Baker',     10, 60, 105);\nINSERT INTO Player VALUES ('21B002', 'JUVEN001', 'Paolo Neri',    4,  79, 100);\nINSERT INTO Player VALUES ('21C001', 'REALM001', 'Ahmed Said',    11, 50, 130);\n```\n\nThe rows are made permanent by saving the database (or by `COMMIT;` in a RDBMS that works inside transactions). Dates are entered in the format the RDBMS expects (`YYYY-MM-DD` here); they are displayed as Day/Month/Year if that display format is set on the `YearCreation` field.",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Print out a copy of the content of your tables. *[1 mark]*",
+      "corrige_markdown": "The content of each table is displayed with `SELECT * FROM <table>;` and printed (or exported to a file and printed). With the data of question 3 the three listings are:\n\n```sql\nSELECT * FROM Player;\n```\n\n| PlayerID | ClubID | Name | Position | MatchPlayed | Goals |\n|---|---|---|---|---|---|\n| 21A001 | BARCA001 | Diego Alvarez | 9 | 75 | 120 |\n| 21A002 | CHELS001 | Samuel Okoro | 7 | 95 | 110 |\n| 21B001 | MANCU001 | Tom Baker | 10 | 60 | 105 |\n| 21B002 | JUVEN001 | Paolo Neri | 4 | 79 | 100 |\n| 21C001 | REALM001 | Ahmed Said | 11 | 50 | 130 |\n\n```sql\nSELECT * FROM Club;\n```\n\n| ClubID | CoachID | Country | NoTitles | YearCreation |\n|---|---|---|---|---|\n| BARCA001 | BARC001 | Spain | 27 | 1899-11-29 |\n| CHELS001 | CHEL001 | England | 6 | 1905-03-10 |\n| MANCU001 | MANC001 | England | 9 | 1880-01-01 |\n| JUVEN001 | JUVE001 | Italy | 36 | 1897-11-01 |\n| REALM001 | REAL001 | Spain | 36 | 1902-03-06 |\n\n```sql\nSELECT * FROM Coach;\n```\n\n| CoachID | ClubID | Name | Titles | Nationality | Age |\n|---|---|---|---|---|---|\n| BARC001 | BARCA001 | Marco Silva | 8 | Portuguese | 52 |\n| CHEL001 | CHELS001 | John Carter | 5 | English | 48 |\n| MANC001 | MANCU001 | Pierre Dubois | 11 | French | 55 |\n| JUVE001 | JUVEN001 | Luca Rossi | 7 | Italian | 50 |\n| REAL001 | REALM001 | Carlos Ruiz | 10 | Spanish | 58 |\n\nThe mark is for a printout that shows all three tables with their five rows each.",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "In your RDBMS, create an SQL query that displays the names of players, and of their coaches, who scored above 100 goals and played less than 80 matches. Also write below the query statements used. *[5 marks]*",
+      "corrige_markdown": "The names of the players are in `Player`, those of the coaches are in `Coach`, so the two tables are joined. A player and the coach of the same club share the `ClubID` value, hence the join condition `Player.ClubID = Coach.ClubID`. Both tables have a `Name` field, so each name is qualified by its table and given an alias. The two conditions of the question are combined with `AND`: **above 100** is the strict inequality `Goals > 100` and **less than 80** is the strict inequality `MatchPlayed < 80`.\n\n```sql\nSELECT Player.Name AS PlayerName, Coach.Name AS CoachName\nFROM Player\nINNER JOIN Coach ON Player.ClubID = Coach.ClubID\nWHERE Player.Goals > 100\n  AND Player.MatchPlayed < 80;\n```\n\n*Marking:* `SELECT` of the two names (1), `FROM` with the join of Player and Coach (2), `Goals > 100` (1), `MatchPlayed < 80` combined by `AND` (1).\n\nWith the data of question 3 the query returns three rows. The player `Paolo Neri` (exactly 100 goals) is excluded by the strict inequality, and `Samuel Okoro` (110 goals but 95 matches) by the condition on matches:\n\n| PlayerName | CoachName |\n|---|---|\n| Diego Alvarez | Marco Silva |\n| Tom Baker | Pierre Dubois |\n| Ahmed Said | Carlos Ruiz |\n\nAn equivalent query goes through the `Club` table (also run and giving the same three rows):\n\n```sql\nSELECT Player.Name AS PlayerName, Coach.Name AS CoachName\nFROM Player, Club, Coach\nWHERE Player.ClubID = Club.ClubID\n  AND Club.CoachID = Coach.CoachID\n  AND Player.Goals > 100\n  AND Player.MatchPlayed < 80;\n```",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Save the query as the file namesofplayers and print a copy of the table it produced. *[2 marks]*",
+      "corrige_markdown": "In a graphical RDBMS (for example MS Access) the query is saved under the name `namesofplayers` (File - Save As). In a SQL environment the same effect is a stored query, that is a view:\n\n```sql\nCREATE VIEW namesofplayers AS\nSELECT Player.Name AS PlayerName, Coach.Name AS CoachName\nFROM Player\nINNER JOIN Coach ON Player.ClubID = Coach.ClubID\nWHERE Player.Goals > 100\n  AND Player.MatchPlayed < 80;\n```\n\nRunning `SELECT * FROM namesofplayers;` displays the result table, which is then printed (1 mark for saving under the exact name, 1 mark for the printed result):\n\n| PlayerName | CoachName |\n|---|---|\n| Diego Alvarez | Marco Silva |\n| Tom Baker | Pierre Dubois |\n| Ahmed Said | Carlos Ruiz |",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

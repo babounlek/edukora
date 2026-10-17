@@ -1,0 +1,53 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2021-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0775",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 3 (0775), ADVANCED LEVEL, June 2021. Duration: two and a half hours.**\n\nAnswer ALL questions. For your guidance, the approximate mark allocation for parts of each question is indicated in brackets. Mathematical formulae and tables, published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 (b) : aucune unité n'est imprimée pour l'amplitude 0,25 ; le corrigé la prend en mètres (comme le déplacement de (a)) et donne T = 4 s et v_max = pi/8 m/s, soit environ 0,393 m/s."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "A particle moves along $OX$ such that at time $t$ seconds, its displacement $x$ metres from $O$ satisfies the differential equation\n\n$$\\frac{d^2x}{dt^2} + 2\\beta\\frac{dx}{dt} + 3\\beta^2 x = 0,$$\n\nwhere $\\beta$ is a constant.\n\nDiscuss the motion of this particle when $\\beta > 0$. *[6 marks]*",
+      "corrige_markdown": "**Solving the equation.** The auxiliary equation is $m^2 + 2\\beta m + 3\\beta^2 = 0$, with discriminant $4\\beta^2 - 12\\beta^2 = -8\\beta^2 < 0$. The roots are complex:\n\n$$m = \\frac{-2\\beta \\pm \\sqrt{-8\\beta^2}}{2} = -\\beta \\pm i\\sqrt2\\,\\beta.$$\n\nThe general solution is\n\n$$x = e^{-\\beta t}\\left(A\\cos(\\sqrt2\\,\\beta t) + B\\sin(\\sqrt2\\,\\beta t)\\right) = C e^{-\\beta t}\\cos(\\sqrt2\\,\\beta t - \\varepsilon),$$\n\nwhere $A$, $B$ (or $C$, $\\varepsilon$) are constants fixed by the initial conditions.\n\n**Discussion of the motion.**\n\n* The motion is an **oscillation about $O$** (the roots are complex): the particle passes through $O$ again and again, with angular frequency $\\sqrt2\\,\\beta$, so the time between successive maxima is $T = \\dfrac{2\\pi}{\\sqrt2\\,\\beta} = \\dfrac{\\sqrt2\\,\\pi}{\\beta}$.\n* Because $\\beta > 0$, the factor $e^{-\\beta t}$ decreases: the oscillations are **damped**, the amplitude $Ce^{-\\beta t}$ decays exponentially, and $x \\to 0$ as $t \\to \\infty$. The motion eventually dies away and the particle comes to rest at $O$.\n* Successive maxima of $|x|$ taken at times $T$ apart are in the constant ratio $e^{-\\beta T} = e^{-\\sqrt2\\,\\pi} \\approx 0.0118$: each maximum is about $1.2\\%$ of the previous one, so the damping is strong enough for the motion to be visible only for a couple of swings.\n* In the standard form $\\ddot x + 2k\\dot x + n^2 x = 0$ we have $k = \\beta$ and $n = \\sqrt3\\,\\beta$, so $k < n$ (damping ratio $k/n = 1/\\sqrt3 < 1$): the system is **under-damped (light damping)**, not critically damped or over-damped.\n\n$$\\boxed{x = Ce^{-\\beta t}\\cos(\\sqrt2\\,\\beta t - \\varepsilon):\\ \\text{damped oscillation, period } \\tfrac{\\sqrt2\\pi}{\\beta},\\ \\text{amplitude decaying like } e^{-\\beta t}}$$",
+      "themes": [
+        "damped harmonic motion",
+        "second order differential equations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "A particle $P$ is performing simple harmonic motion with amplitude $0.25$ metres. During each complete oscillation, $P$ moves with a speed that is less than or equal to half of its maximum speed for $\\dfrac43$ seconds.\n\nFind the period of the motion and the maximum speed of $P$. *[7 marks]*",
+      "corrige_markdown": "Take the centre of the motion as $O$ and let the angular frequency be $\\omega$, the amplitude $a = 0.25\\ \\mathrm{m}$, and the period $T = \\dfrac{2\\pi}{\\omega}$. Then\n\n$$x = a\\sin\\omega t,\\qquad v = a\\omega\\cos\\omega t,\\qquad v_{\\max} = a\\omega.$$\n\n**Fraction of the period spent slowly.** The condition $|v| \\le \\tfrac12 v_{\\max}$ means $|\\cos\\omega t| \\le \\tfrac12$. In one period, $\\omega t$ runs over $[0, 2\\pi]$ and\n\n$$|\\cos\\omega t| \\le \\tfrac12 \\iff \\omega t \\in \\left[\\tfrac\\pi3, \\tfrac{2\\pi}3\\right] \\cup \\left[\\tfrac{4\\pi}3, \\tfrac{5\\pi}3\\right].$$\n\nThe total angle is $\\dfrac{2\\pi}{3}$, a third of $2\\pi$, so the time spent with $|v| \\le \\tfrac12 v_{\\max}$ in each oscillation is $\\dfrac{T}{3}$.\n\n(Check with the displacement: $v^2 = \\omega^2(a^2 - x^2) \\le \\tfrac14 a^2\\omega^2 \\iff |x| \\ge \\tfrac{\\sqrt3}{2}a$, that is $|\\sin\\omega t| \\ge \\tfrac{\\sqrt3}{2}$, giving the same two intervals.)\n\n**Period.** $\\dfrac{T}{3} = \\dfrac43$, so $T = 4$ seconds, and $\\omega = \\dfrac{2\\pi}{4} = \\dfrac{\\pi}{2}\\ \\mathrm{rad\\,s^{-1}}$.\n\n**Maximum speed.**\n\n$$v_{\\max} = a\\omega = 0.25 \\times \\frac{\\pi}{2} = \\frac{\\pi}{8} \\approx 0.393\\ \\mathrm{m\\,s^{-1}}.$$\n\n$$\\boxed{T = 4\\ \\mathrm{s},\\qquad v_{\\max} = \\frac{\\pi}{8} \\approx 0.393\\ \\mathrm{m\\,s^{-1}}}$$",
+      "themes": [
+        "simple harmonic motion of a particle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    }
+  ]
+}

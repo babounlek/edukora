@@ -1,0 +1,68 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigrane gcerevision.com ignoré) lu page par page en image ; 4 pages, 8 questions, aucune figure à recadrer. Points imprimés par sous-partie (total 17 pour chaque question, vérifié). Question 5 : points imprimés i(a) 4, i(b) 3, ii(a) 3, ii(b) 2, ii(c) 5 ; total 17.",
+    "5(i)(b) : j'ai répondu que la table EST en première forme normale (valeurs atomiques, pas de groupe répétitif, lignes distinctes) ; le sujet ne donne pas de clé primaire et ne fournit pas de barème, la réponse est un jugement.",
+    "5(ii) : dans le sujet, les champs soulignés (clés) sont StudentName et SubjectCode pour Student, et SubjectCode pour StudentSubject ; le soulignement est rendu en gras dans l'énoncé. Les deux relations proposées par « l'étudiant » n'ont plus StudentNumber, ce qui est cohérent avec la question (a).",
+    "5(ii)(b) : le sujet demande pourquoi la relation « Student » n'est pas en 3NF ; elle n'est pas même en 2NF (dépendance partielle DateOfBirth sur StudentName). La dépendance transitive (LecturerNumber vers LecturerName) concerne la relation StudentSubject ; elle est mentionnée entre parenthèses. Possible coquille du sujet (StudentSubject visée ?).",
+    "5(ii)(c) : « primary keys underlined » rendu en gras (le rendu Markdown du site ne garantit pas le soulignement). Les quatre tables 3NF et leur jointure (= table d'origine) ont été vérifiées avec sqlite3.",
+    "Aucun code C/Pascal dans ce paper (théorie) : rien n'a donc été compilé ; les calculs, tableaux et pseudocodes du corrigé ont été vérifiés par un script Python exécuté (et sqlite3 pour la base de données de la question 5)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A database is to be created to store data about students and the subjects they are studying. Some of the data to be stored in the database is given in the table below.\n\n| Student Number | Student Name | DateOf Birth | Subject Code | Subject Name | Lecturer Number | Lecturer Name |\n|---|---|---|---|---|---|---|\n| N343 | K Bakari | 02-04-85 | 765 | Maths | T1003 | G Dionda |\n| N343 | K Bakari | 02-04-85 | 795 | Comp. Science | T1001 | M Etame |\n| N343 | K Bakari | 02-04-85 | 780 | Physics | T1002 | S Marion |\n| U339 | H Jaika | 22-07-84 | 795 | Comp. Science | T1001 | M Etame |\n| U339 | H Jaika | 22-07-84 | 715 | Chemistry | T1005 | N Agbor |\n\n(a) Define the following terms used to describe the components in a database table using examples from this table.\n\n(1) Field\n\n(2) Record (4 marks)\n\n(b) Is this table in first normal form (1NF)? Justify your answer. (3 marks)",
+      "corrige_markdown": "**(a) Components of a database table (4 marks)**\n\n1. **Field**: one column of the table, a single item of data (an attribute) that is stored for every record, with a name and a data type. Example: `StudentName` (K Bakari, H Jaika); other fields are `SubjectCode`, `LecturerNumber`, `DateOfBirth`.\n2. **Record**: one row of the table, the complete set of related field values describing one occurrence (one entity or one fact). Example: the first row, N343 - K Bakari - 02-04-85 - 765 - Maths - T1003 - G Dionda, is one record (student N343 studying Maths with lecturer G Dionda). The table contains 5 records and 7 fields.\n\n**(b) First normal form (3 marks)**\n\n**Yes**, the table is in first normal form. A table is in 1NF when:\n\n- every field holds a single, atomic value: each cell contains one value only (one subject code, one lecturer name...), there are no lists of values in a cell and no repeating groups of columns;\n- every record is different from the others and can be identified, here by the combination (StudentNumber, SubjectCode), which is unique in the table (for example N343 + 795 appears only once).\n\nThe table does contain redundancy (the student's name and date of birth are repeated for each subject, the subject and lecturer details are repeated for each student), but that is a problem of 2NF and 3NF, not of 1NF.",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "A student tries to improve the database in 5(i) above by splitting the table into the following two relations (the key fields, underlined in the printed paper, are shown in bold).\n\nStudent(**StudentName**, DateOfBirth, **SubjectCode**)\n\nStudentSubject(**SubjectCode**, SubjectName, LecturerNumber, LecturerName)\n\n(a) Explain why the use of StudentName as key field is a potential problem. Suggest a suitable replacement. (3 marks)\n\n(b) Explain why the Student relation is not in third normal form (3NF). (2 marks)\n\n(c) Convert the design to third normal form (3NF). Show table designs in 3NF with primary keys underlined (5 marks)",
+      "corrige_markdown": "**(a) StudentName as a key field (3 marks)**\n\nA key field must identify each record uniquely and must never change. A student's name does not satisfy this: two different students can have the same name (two students called \"K Bakari\" are possible), a name can be spelt in different ways or change (marriage, correction of a spelling mistake), and a text key is slower to compare and takes more space. If two students shared a name, their records could not be told apart and their data would be mixed up.\n\n**Replacement**: use a unique student identifier, the field **StudentNumber** (N343, U339), which is already in the original table; it is assigned once to each student, is unique and does not change.\n\n**(b) Why the Student relation is not in 3NF (2 marks)**\n\nA relation is in 3NF only if it is in 2NF (no partial dependency on a composite key) and has no transitive dependency. In Student(StudentName, DateOfBirth, SubjectCode) the primary key is the composite (StudentName, SubjectCode), but DateOfBirth depends only on **StudentName**, which is **part** of the key (StudentName $\\rightarrow$ DateOfBirth). This partial dependency means that the relation is not even in 2NF, so it cannot be in 3NF; the date of birth is repeated for each subject taken by the same student (redundancy and update anomalies).\n\n(The second relation also fails 3NF: in StudentSubject, LecturerName depends on LecturerNumber, which is not the key, and LecturerNumber depends on SubjectCode: SubjectCode $\\rightarrow$ LecturerNumber $\\rightarrow$ LecturerName is a **transitive dependency**.)\n\n**(c) Design in 3NF (5 marks)**\n\nFunctional dependencies in the data (checked on the table):\n\n- StudentNumber $\\rightarrow$ StudentName, DateOfBirth\n- SubjectCode $\\rightarrow$ SubjectName, LecturerNumber\n- LecturerNumber $\\rightarrow$ LecturerName\n- the link between students and subjects (many-to-many) needs its own table, with the key (StudentNumber, SubjectCode).\n\nEach determinant becomes the primary key of a table of its own, so that every non-key attribute depends on the key, the whole key and nothing but the key. The 3NF tables are (primary keys in bold, standing for the underlined fields; foreign keys in italics):\n\n- Student(**StudentNumber**, StudentName, DateOfBirth)\n- Lecturer(**LecturerNumber**, LecturerName)\n- Subject(**SubjectCode**, SubjectName, *LecturerNumber*)\n- Enrolment(**StudentNumber**, **SubjectCode**), where both fields are also foreign keys (*StudentNumber* refers to Student, *SubjectCode* refers to Subject).\n\nContent of the tables (checked with SQLite: joining the four tables gives back exactly the five records of the original table):\n\n| StudentNumber | StudentName | DateOfBirth |\n|---|---|---|\n| N343 | K Bakari | 02-04-85 |\n| U339 | H Jaika | 22-07-84 |\n\n| LecturerNumber | LecturerName |\n|---|---|\n| T1001 | M Etame |\n| T1002 | S Marion |\n| T1003 | G Dionda |\n| T1005 | N Agbor |\n\n| SubjectCode | SubjectName | LecturerNumber |\n|---|---|---|\n| 715 | Chemistry | T1005 |\n| 765 | Maths | T1003 |\n| 780 | Physics | T1002 |\n| 795 | Comp. Science | T1001 |\n\n| StudentNumber | SubjectCode |\n|---|---|\n| N343 | 765 |\n| N343 | 780 |\n| N343 | 795 |\n| U339 | 715 |\n| U339 | 795 |",
+      "themes": [
+        "keys and relationships",
+        "database normal forms",
+        "database normalisation"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 10
+    }
+  ]
+}

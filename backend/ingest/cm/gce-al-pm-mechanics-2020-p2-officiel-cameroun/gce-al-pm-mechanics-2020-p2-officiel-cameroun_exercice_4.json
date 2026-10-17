@@ -1,0 +1,66 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2020",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Pure Mathematics with Mechanics",
+ "epreuve_source": "gce-al-pm-mechanics-2020-p2-officiel-cameroun.pdf",
+ "numero_exercice": "4",
+ "numero_paper": 2,
+ "code_matiere": "0765",
+ "duree_epreuve": "3h",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Mechanics Paper 2 (0765/2), ADVANCED LEVEL, June 2020. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical Formulae Booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+ "regles_choix": [],
+ "enonce_intro_markdown": "",
+ "groupes": [],
+ "points": "",
+ "figures": [],
+ "incertitudes": [
+  "Question 4 (i) : le texte imprime est tronque au bord (« Hence finc ») ; lu « Hence find $\\int f(x)\\,dx$ ». Constante d'integration notee $c$ dans les corriges."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "The function $f$ is given by $f(x) = \\dfrac{x+1}{(x-1)(x^2+1)}$.\n\nExpress $f(x)$ in partial fractions. Hence find $\\displaystyle\\int f(x)\\,dx$. (5 marks)",
+   "corrige_markdown": "**Partial fractions.** The denominator has a linear factor $(x-1)$ and an irreducible quadratic factor $(x^2+1)$, so write\n\n$$\\frac{x+1}{(x-1)(x^2+1)} = \\frac{A}{x-1} + \\frac{Bx + C}{x^2+1}.$$\n\nMultiply through by $(x-1)(x^2+1)$:\n\n$$x + 1 = A(x^2 + 1) + (Bx + C)(x - 1).$$\n\n- Put $x = 1$: $2 = 2A$, so $A = 1$.\n- Compare the coefficients of $x^2$: $0 = A + B$, so $B = -1$.\n- Compare the constant terms: $1 = A - C$, so $C = 0$.\n- Check on the coefficient of $x$: $1 = -B + C = 1 + 0$ (correct).\n\n$$\\boxed{f(x) = \\frac{1}{x-1} - \\frac{x}{x^2+1}}$$\n\n**Integration.**\n\n$$\\int f(x)\\,dx = \\int \\frac{dx}{x-1} - \\int \\frac{x\\,dx}{x^2+1}.$$\n\nThe first integral is $\\ln|x-1|$. For the second, $\\dfrac{d}{dx}(x^2+1) = 2x$, so $\\displaystyle\\int \\frac{x}{x^2+1}\\,dx = \\frac12\\ln(x^2+1)$ (no modulus needed since $x^2+1 > 0$). Therefore\n\n$$\\boxed{\\int f(x)\\,dx = \\ln|x-1| - \\frac12\\ln(x^2+1) + c}$$\n\nwhich can also be written $\\ln\\dfrac{|x-1|}{\\sqrt{x^2+1}} + c$.",
+   "themes": [
+    "partial fractions",
+    "integration of rational functions"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 5
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "By using the substitution $u = \\sin x$, find $\\displaystyle\\int \\frac{\\cos x}{1 + \\sin^2 x}\\,dx$. (3 marks)",
+   "corrige_markdown": "Let $u = \\sin x$. Then $\\dfrac{du}{dx} = \\cos x$, so $du = \\cos x\\,dx$. Also $\\sin^2 x = u^2$.\n\n$$\\int \\frac{\\cos x}{1 + \\sin^2 x}\\,dx = \\int \\frac{du}{1 + u^2} = \\tan^{-1}u + c.$$\n\nSubstitute back $u = \\sin x$:\n\n$$\\boxed{\\int \\frac{\\cos x}{1 + \\sin^2 x}\\,dx = \\tan^{-1}(\\sin x) + c}$$\n\n(Check: $\\dfrac{d}{dx}\\tan^{-1}(\\sin x) = \\dfrac{\\cos x}{1 + \\sin^2 x}$.)",
+   "themes": [
+    "integration by substitution"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 3
+  },
+  {
+   "numero": "iii",
+   "enonce_markdown": "Find $\\displaystyle\\int (x+2)e^{3x}\\,dx$. (3 marks)",
+   "corrige_markdown": "Use integration by parts, $\\displaystyle\\int u\\,dv = uv - \\int v\\,du$, with\n\n$$u = x + 2,\\quad dv = e^{3x}dx \\quad\\Longrightarrow\\quad du = dx,\\quad v = \\frac{e^{3x}}{3}.$$\n\nThen\n\n$$\\int (x+2)e^{3x}\\,dx = \\frac{(x+2)e^{3x}}{3} - \\int \\frac{e^{3x}}{3}\\,dx = \\frac{(x+2)e^{3x}}{3} - \\frac{e^{3x}}{9} + c.$$\n\nCombine over a common denominator: $\\dfrac{3(x+2) - 1}{9}e^{3x} = \\dfrac{3x+5}{9}e^{3x}$.\n\n$$\\boxed{\\int (x+2)e^{3x}\\,dx = \\frac{(3x+5)\\,e^{3x}}{9} + c}$$\n\n(Check: $\\dfrac{d}{dx}\\left[\\dfrac{(3x+5)e^{3x}}{9}\\right] = \\dfrac{3e^{3x} + 3(3x+5)e^{3x}}{9} = \\dfrac{(9x + 18)e^{3x}}{9} = (x+2)e^{3x}$.)",
+   "themes": [
+    "integration techniques"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 3
+  }
+ ]
+}

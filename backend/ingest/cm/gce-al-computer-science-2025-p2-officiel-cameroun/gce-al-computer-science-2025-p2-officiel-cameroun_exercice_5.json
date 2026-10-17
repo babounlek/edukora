@@ -1,0 +1,132 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-computer-science-2025-p2-officiel-cameroun_exercice_5_fig_1.png",
+      "page_source": 3,
+      "type": "schema",
+      "legende": "Network diagram: PC1 and PC2 attached to a switch S; S linked to a router R; R linked to a hub H; PC3 attached directly to R; PC4 and PC5 attached to the hub H.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "5(i)(b) : « network architecture » est interprété comme la topologie du réseau (étoile étendue), seule lecture compatible avec la figure ; si le jury entendait « client-serveur ou poste à poste », la réponse serait à adapter (aucun barème officiel disponible).",
+    "5(i)(c) : le sujet ne dit pas si le routeur isole les diffusions ; la réponse retenue (aucun autre ordinateur, car un routeur ne relaie pas les diffusions) suit le comportement réel d'un routeur ; le barème officiel peut attendre une autre réponse.",
+    "5(i) : la figure scannée porte le filigrane gcerevision.com, ignoré ; l'extrait recadré ne contient que le schéma."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "The figure below represents a network where **S**, **R**, and **H** represent a switch, a router, and a hub respectively. **PC1** to **PC5** are personal computers. Study the figure and answer the questions that follow.\n\nExplain the main difference between a switch and a hub.\n\n(3 marks)",
+      "corrige_markdown": "- A **hub** is a simple layer-1 device: it has no knowledge of the computers attached to it, so any signal arriving at one port is **repeated to all the other ports** (broadcast). All the computers share the same bandwidth and the same collision domain, which causes collisions and a lot of unnecessary traffic.\n- A **switch** is a layer-2 device that reads the **destination MAC address** of each frame and keeps a table of which MAC address is on which port. It forwards the frame **only to the port of the destination**, so each port is a separate collision domain, traffic is reduced, speed is better and data is more private.\n\n**Main difference:** a hub sends data to every connected device, a switch sends it only to the intended device.",
+      "themes": [
+        "network devices",
+        "computer networks"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "The figure below represents a network where **S**, **R**, and **H** represent a switch, a router, and a hub respectively. **PC1** to **PC5** are personal computers. Study the figure and answer the questions that follow.\n\n![fig-1](gce-al-computer-science-2025-p2-officiel-cameroun_exercice_5_fig_1.png)\n\nState and explain the most suitable network architecture that can be used in this network.\n\n(3 marks)",
+      "corrige_markdown": "**Architecture: a star (extended star / tree) topology.**\n\nExplanation: every computer is connected by its own cable to a central device (PC1 and PC2 to the switch, PC4 and PC5 to the hub, PC3 to the router), and these central devices are in turn linked through the router. Advantages: a cable break affects only one computer and not the whole network; computers can be added or removed without disturbing the others; faults are easy to locate and the central devices manage the traffic. The drawback is that the failure of a central device (S, H or R) cuts off the computers attached to it.",
+      "themes": [
+        "network topologies",
+        "computer networks"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "The figure below represents a network where **S**, **R**, and **H** represent a switch, a router, and a hub respectively. **PC1** to **PC5** are personal computers. Study the figure and answer the questions that follow.\n\n![fig-1](gce-al-computer-science-2025-p2-officiel-cameroun_exercice_5_fig_1.png)\n\nPC3 sends a simple broadcast message over the network. Which computers will receive the message sent by PC3? Explain why.\n\n(3 marks)",
+      "corrige_markdown": "**Answer: none of the other computers (PC1, PC2, PC4, PC5) will receive it.** The message only reaches the router R.\n\n**Reason.** PC3 is connected directly to the router, on its own network segment. A broadcast is delivered to all devices of the same network (the same **broadcast domain**), but a **router does not forward broadcast packets** to other networks: each of its interfaces is a separate broadcast domain. The switch S and the hub H are on other interfaces of the router, so PC1, PC2, PC4 and PC5 never see the broadcast. (Had the sender been PC1 or PC2, the switch would have flooded the broadcast to all the ports of its segment; had it been PC4, the hub would have repeated it to PC5.)",
+      "themes": [
+        "network devices",
+        "computer networks"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i(d)",
+      "enonce_markdown": "The figure below represents a network where **S**, **R**, and **H** represent a switch, a router, and a hub respectively. **PC1** to **PC5** are personal computers. Study the figure and answer the questions that follow.\n\n![fig-1](gce-al-computer-science-2025-p2-officiel-cameroun_exercice_5_fig_1.png)\n\nState the layer of the OSI/ISO reference model in which each of the devices *switch*, *router* and *hub* operates.\n\n(3 marks)",
+      "corrige_markdown": "| Device | OSI layer |\n|---|---|\n| Hub | Layer 1, the **Physical** layer (it only regenerates and repeats electrical signals/bits) |\n| Switch | Layer 2, the **Data Link** layer (it uses the MAC addresses of frames) |\n| Router | Layer 3, the **Network** layer (it uses IP addresses to route packets between networks) |",
+      "themes": [
+        "osi reference model",
+        "network devices"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "Consider the IPV4 address 192.168.8.5. Identify the class of this IP address and state its network identifier and host identifier.\n\n(3 marks)",
+      "corrige_markdown": "**Class.** The first octet is 192. Addresses whose first octet lies between 192 and 223 (first bits $110$) belong to **Class C**.\n\n**Identifiers.** A Class C address has a default mask $255.255.255.0$: the first three octets (24 bits) identify the network and the last octet (8 bits) identifies the host.\n\n- Network identifier: **192.168.8** (written 192.168.8.0 as a full address).\n- Host identifier: **5** (the last octet).",
+      "themes": [
+        "ip addressing",
+        "computer networks"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "Explain the difference between a MAC address and an IP address?\n\n(2 marks)",
+      "corrige_markdown": "- A **MAC (Media Access Control) address** is a 48-bit **physical (hardware) address**, usually written in hexadecimal (for example `00-1A-2B-3C-4D-5E`), burned into the network interface card by its manufacturer. It is unique to the card, normally does not change and works at the data link layer, to identify a device on its local network.\n- An **IP address** is a **logical address** (32 bits in IPv4) given to a device by the administrator or by DHCP. It has a network part and a host part, can change when the device moves to another network, and works at the network layer, to route packets between different networks.",
+      "themes": [
+        "ip addressing",
+        "network protocols"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

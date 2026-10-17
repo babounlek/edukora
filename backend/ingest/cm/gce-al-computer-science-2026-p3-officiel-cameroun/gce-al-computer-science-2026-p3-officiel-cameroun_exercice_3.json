@@ -1,0 +1,87 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2026. Duration: TWO HOURS.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A: Database (Nina's Shop), 20 marks, Tasks 1 to 3; Section B: Programming (Population Growth Program), 30 marks, Tasks 4 to 7.",
+  "points": "8",
+  "groupes": [
+    "SECTION A"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION A: DATABASE (Nina's Shop)** *(20 marks)*\n\nThe relation **R** below keeps records of customers and the items they buy from Nina's shop.\n\n| CustomerID | CustomerName | ItemCode | ItemName | UnitPrice | Quantity | TotalPrice | TDate |\n|---|---|---|---|---|---|---|---|\n| C001 | Ebai Paul | IT001 | Rice | 200 | 3 | 600 | 09/09/2021 |\n| C001 | Ebai Paul | IT002 | Beans | 250 | 2 | 500 | 09/09/2021 |\n| C001 | Ebai Paul | IT003 | Corn | 175 | 2 | 350 | 10/10/2021 |\n| C002 | Eyere Esther | IT003 | Corn | 175 | 5 | 875 | 11/12/2021 |\n\nRelation **R** has the following attributes with names of obvious meanings; the primary key field is underlined:\n\n`R(`<u>`CustomerID`</u>`, CustomerName, ItemCode, ItemName, UnitPrice, Quantity, TotalPrice, TDate)`",
+  "figures": [],
+  "incertitudes": [
+    "Points : Task 3 = 8 imprimé, avec 2 + 2 + 1 + 3 = 8 pour (i) à (iv) ; cohérent, rien corrigé.",
+    "SQL exécuté avec sqlite3 (module Python, SQLite 3.50.4) : INSERT (forme simple et forme multi-lignes), UPDATE, SELECT * sur les trois tables, jointure à trois tables et variante avec sous-requête ; les tableaux imprimés dans le corrigé sont les sorties réelles de cette exécution. Aucun SGBD MySQL ou PostgreSQL n'a été utilisé ; les formes citées pour eux sont de la syntaxe SQL standard non testée sur ces serveurs.",
+    "Le sujet demande des travaux d'impression sur machine (Print the tables, Print a copy of your result) : le corrigé donne le résultat attendu en texte, pas de capture d'écran. Le sujet ne dit pas quelles colonnes afficher pour (iv) au-delà de « quantity and total price » : le corrigé y ajoute le nom du client (« all customers who bought beans »).",
+    "Dates de R lues en jour/mois/année : 11/12/2021 = 11 décembre 2021 (hypothèse, voir Task 1). Les prix unitaires insérés sont ceux de R avant la hausse de (ii) ; l'ordre des tâches du sujet est suivi (renommage de Quantity en Qty avant l'insertion, donc Qty dans les instructions).",
+    "Page 3 du scan : du texte de la page suivante apparaît par transparence en haut de la page (non transcrit, sans effet sur les questions)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**Task 3: Database Manipulation** *(8 marks)*\n\n(i) Use the SQL Insert command to populate the three tables in `NinashopDB` with data from **R**. Write down the SQL statement(s) used to insert data into the table `Customer`. *[2 marks]*",
+      "corrige_markdown": "Each customer appears **once** in `Customer`, although he or she has several lines in R (that is the point of the decomposition). The two customers of R are therefore two rows:\n\n```sql\nINSERT INTO Customer (CustomerID, CustomerName) VALUES ('C001', 'Ebai Paul');\nINSERT INTO Customer (CustomerID, CustomerName) VALUES ('C002', 'Eyere Esther');\n```\n\nAn equivalent, shorter form inserts both rows with one statement (checked in SQLite; accepted by MySQL, MariaDB and PostgreSQL):\n\n```sql\nINSERT INTO Customer (CustomerID, CustomerName) VALUES ('C001', 'Ebai Paul'), ('C002', 'Eyere Esther');\n```\n\nFor the other two tables (the question asks to populate all three; the statement written down must be the one for `Customer`), `Item` is filled before `Customer_Item`, because the foreign keys of `Customer_Item` need their parent rows to exist. The unit prices are those of R **before** the price change of question (ii), and the dates are written in the `YYYY-MM-DD` format of the `DATE` type (09/09/2021 is 2021-09-09, 11/12/2021 is read 11 December 2021):\n\n```sql\nINSERT INTO Item (ItemCode, ItemName, UnitPrice) VALUES ('IT001', 'Rice', 200);\nINSERT INTO Item (ItemCode, ItemName, UnitPrice) VALUES ('IT002', 'Beans', 250);\nINSERT INTO Item (ItemCode, ItemName, UnitPrice) VALUES ('IT003', 'Corn', 175);\n\nINSERT INTO Customer_Item (CustomerID, ItemCode, Qty, TotalPrice, TDate) VALUES ('C001', 'IT001', 3, 600, '2021-09-09');\nINSERT INTO Customer_Item (CustomerID, ItemCode, Qty, TotalPrice, TDate) VALUES ('C001', 'IT002', 2, 500, '2021-09-09');\nINSERT INTO Customer_Item (CustomerID, ItemCode, Qty, TotalPrice, TDate) VALUES ('C001', 'IT003', 2, 350, '2021-10-10');\nINSERT INTO Customer_Item (CustomerID, ItemCode, Qty, TotalPrice, TDate) VALUES ('C002', 'IT003', 5, 875, '2021-12-11');\n```\n\nThe column `Qty` is used because of the renaming in Task 2(iii).\n\n**Check.** All these statements were executed in SQLite after the `CREATE TABLE` and `ALTER TABLE` of Task 2; no error, and joining the three tables gives back the four rows of R.\n\n**Marking:** `INSERT INTO Customer` with the correct columns and values (1); the two customers `C001 Ebai Paul` and `C002 Eyere Esther` each inserted once (1).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) The price of corn just increased to 200. Use the SQL Update command that effects this change in the database. Write down the SQL statement used. *[2 marks]*",
+      "corrige_markdown": "```sql\nUPDATE Item\nSET UnitPrice = 200\nWHERE ItemName = 'Corn';\n```\n\n`UPDATE ... SET ... WHERE` changes the rows that satisfy the condition. Corn is a single row of `Item` (code `IT003`), so one row is modified: SQLite reported **1 row changed**. `WHERE ItemCode = 'IT003'` is an equally good condition.\n\n**Pitfall.** Without the `WHERE` clause, `UPDATE Item SET UnitPrice = 200;` would set the price of **every** item to 200 (all 3 rows in the test), which is wrong.\n\n**Effect on the database.** Thanks to the normalisation, the price of corn is stored **once**, in `Item`; in R it would have had to be changed in two rows. The old purchases keep their `TotalPrice` (350 and 875) in `Customer_Item`, because that is the amount charged at the time; only the sales made from now on are priced at 200.\n\n**Marking:** `UPDATE Item` with `SET UnitPrice = 200` (1); the `WHERE` clause that selects only the corn (1).",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(iii) Print the tables `Customer`, `Item`, and `Customer_Item`. *[1 mark]*",
+      "corrige_markdown": "```sql\nSELECT * FROM Customer;\nSELECT * FROM Item;\nSELECT * FROM Customer_Item;\n```\n\n`SELECT *` lists every column of every row. Expected printout, after the price update of question (ii) (output of SQLite):\n\n```\n+------------+--------------+\n| CustomerID | CustomerName |\n+------------+--------------+\n| C001       | Ebai Paul    |\n| C002       | Eyere Esther |\n+------------+--------------+\n\n+----------+----------+-----------+\n| ItemCode | ItemName | UnitPrice |\n+----------+----------+-----------+\n| IT001    | Rice     | 200       |\n| IT002    | Beans    | 250       |\n| IT003    | Corn     | 200       |\n+----------+----------+-----------+\n\n+------------+----------+-----+------------+------------+\n| CustomerID | ItemCode | Qty | TotalPrice | TDate      |\n+------------+----------+-----+------------+------------+\n| C001       | IT001    | 3   | 600        | 2021-09-09 |\n| C001       | IT002    | 2   | 500        | 2021-09-09 |\n| C001       | IT003    | 2   | 350        | 2021-10-10 |\n| C002       | IT003    | 5   | 875        | 2021-12-11 |\n+------------+----------+-----+------------+------------+\n```\n\nThe price of corn is now 200 in `Item`, while the two corn purchases keep their TotalPrice of 350 and 875. In the booklet, the printed copy of the three tables is what earns the mark (print the result of each query, or export the tables).\n\n**Marking:** the three tables printed with the right rows and columns (1).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "(iv) Write down SQL statements to retrieve all customers who bought beans, showing the quantity and total price. Print a copy of your result. *[3 marks]*",
+      "corrige_markdown": "The customer's name is in `Customer`, the item's name in `Item`, and the quantity and total price in `Customer_Item`: three tables must be joined, and the rows kept are those whose item is Beans.\n\n```sql\nSELECT c.CustomerName, ci.Qty, ci.TotalPrice\nFROM Customer c\n     JOIN Customer_Item ci ON c.CustomerID = ci.CustomerID\n     JOIN Item i           ON i.ItemCode   = ci.ItemCode\nWHERE i.ItemName = 'Beans';\n```\n\nAn equivalent version with a sub-query (the code of the item is looked up first):\n\n```sql\nSELECT c.CustomerName, ci.Qty, ci.TotalPrice\nFROM Customer c, Customer_Item ci\nWHERE c.CustomerID = ci.CustomerID\n  AND ci.ItemCode = (SELECT ItemCode FROM Item WHERE ItemName = 'Beans');\n```\n\n**Result** (output of SQLite for the first query; the sub-query gives the same row):\n\n```\n+--------------+-----+------------+\n| CustomerName | Qty | TotalPrice |\n+--------------+-----+------------+\n| Ebai Paul    | 2   | 500        |\n+--------------+-----+------------+\n```\n\nOnly Ebai Paul (C001) bought beans: 2 packets for a total of 500 (2 x 250). Eyere Esther bought only corn. The column is called `Qty` since the renaming of Task 2(iii); `Quantity` would give an error. Add `c.CustomerID` to the `SELECT` list if the customer's code is also wanted.\n\n**Marking:** the join (or sub-query) correctly linking the three tables (1); the condition `ItemName = 'Beans'` (1); the columns customer, quantity and total price displayed, and the result printed (1).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

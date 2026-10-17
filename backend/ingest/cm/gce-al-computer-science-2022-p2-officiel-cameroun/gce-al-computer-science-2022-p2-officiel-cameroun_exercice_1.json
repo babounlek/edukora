@@ -1,0 +1,80 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigrane gcerevision.com ignoré) lu page par page en image ; 4 pages, 8 questions, aucune figure à recadrer. Points imprimés par sous-partie (total 17 pour chaque question, vérifié). Question 1 : points imprimés i(a) 3, i(b) 2, ii(a) 2, ii(b) 2, ii(c) 2, iii(a) 2, iii(b) 4 ; total 17.",
+    "1(iii)(b) : l'exemple numérique (PC = 100, instruction LDA 50) est inventé pour illustrer ; le sujet n'en donne pas.",
+    "1(ii)(c) : question ambiguë ; interprétée comme le nombre de lignes d'adresse propres à chaque puce (7), les 4 lignes restantes servant à la sélection de puce.",
+    "Aucun code C/Pascal dans ce paper (théorie) : rien n'a donc été compilé ; les calculs, tableaux et pseudocodes du corrigé ont été vérifiés par un script Python exécuté (et sqlite3 pour la base de données de la question 5)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) Describe each of the following CPU characteristics: *clock speed*, *word size*, and *core*. (3 marks)\n\n(b) Explain how the word size can affect the performance of the CPU. (2 marks)",
+      "corrige_markdown": "**(a) CPU characteristics (3 marks)**\n\n- **Clock speed**: the number of clock pulses (cycles) that the CPU's internal clock generates every second, measured in hertz (MHz or GHz). Each instruction needs a certain number of clock cycles, so a higher clock speed (for example 3.2 GHz) means that more instructions can be executed per second.\n- **Word size**: the number of bits that the CPU can process (or move) as one unit in a single operation, usually the width of its registers and of its data bus (for example 32 bits or 64 bits).\n- **Core**: an independent processing unit inside the CPU chip, with its own ALU, control unit and registers, which can fetch and execute instructions by itself. A multi-core CPU (dual-core, quad-core...) can run several instructions, processes or threads at the same time (in parallel).\n\n**(b) Effect of word size on performance (2 marks)**\n\n- A larger word size lets the CPU process more bits per instruction and per clock cycle. For example, a 64-bit CPU adds two 64-bit numbers in one operation, while a 32-bit CPU needs two operations; large numbers and instructions are therefore handled with fewer cycles and the CPU is faster.\n- A larger word size also means a wider data bus (more data transferred between CPU and memory at a time) and wider address registers, so a larger amount of main memory can be addressed (a 32-bit address reaches $2^{32}$ bytes = 4 GB, a 64-bit address far more). A CPU with a small word size is slower on big data and limited in the memory it can use.",
+      "themes": [
+        "computer architecture",
+        "processor performance factors"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) How many 128 by 8 RAM chips are required to provide a memory capacity of 2048 bytes? (2 marks)\n\n(b) How many lines of address bus must be used to access 2048 bytes of memory? (2 marks)\n\n(c) How many address lines will be common to each $128 \\times 8$ chip? (2 marks)",
+      "corrige_markdown": "**(a) Number of chips (2 marks)**\n\nA $128 \\times 8$ chip stores 128 words of 8 bits, that is 128 bytes.\n\n$$\\text{number of chips} = \\frac{2048}{128} = 16 \\text{ chips}$$\n\n**(b) Address lines for 2048 bytes (2 marks)**\n\n$2048 = 2^{11}$, so $11$ address lines (A0 to A10) are needed to give each byte a different address.\n\n**(c) Address lines common to each chip (2 marks)**\n\nInside one chip there are 128 locations, and $128 = 2^{7}$, so each chip has $7$ address lines (A0 to A6). These 7 lines of the address bus are connected in common (in parallel) to all 16 chips. The remaining $11 - 7 = 4$ lines (A7 to A10) are not wired to the chips directly: they go to a $4$-to-$16$ decoder ($2^4 = 16$) which produces the chip-select signal that enables only one of the 16 chips.",
+      "themes": [
+        "computer memory",
+        "memory organisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "In the fetch-execute cycle of a machine, a number of registers are used.\n\n(a) Briefly describe **two** special purpose registers used in the fetch-execute cycle. (2 marks)\n\n(b) With the use of registers and register contents describe the steps of the fetch phase of the fetch-execute cycle. (4 marks)",
+      "corrige_markdown": "**(a) Two special purpose registers (2 marks)**\n\n- **Program Counter (PC)**: holds the address of the next instruction to be fetched; it is increased after each fetch (or changed by a jump).\n- **Memory Address Register (MAR)**: holds the address of the memory location that is to be read from or written to.\n- (Also accepted: **Memory Data Register (MDR)**, which holds the data or instruction just read from memory or about to be written; **Current Instruction Register (CIR)**, which holds the instruction being decoded and executed; the **Accumulator**, which holds the results of ALU operations.)\n\nAny two, each with its role.\n\n**(b) The fetch phase (4 marks)**\n\nSuppose that PC contains 100 and that the instruction stored at address 100 is `LDA 50` (the example is only an illustration).\n\n1. The address in the PC is copied to the MAR: MAR $\\leftarrow$ PC, so MAR = 100.\n2. The PC is incremented to point to the next instruction: PC $\\leftarrow$ PC + 1, so PC = 101 (this is done while the memory is being read).\n3. The control unit sends a memory-read signal on the control bus; the contents of the memory location whose address is in the MAR travel along the data bus to the MDR: MDR $\\leftarrow$ [MAR], so MDR = `LDA 50`.\n4. The contents of the MDR are copied to the Current Instruction Register: CIR $\\leftarrow$ MDR, so CIR = `LDA 50`.\n\nThe instruction is now in the CIR, ready to be decoded by the control unit (decode phase) and then executed.",
+      "themes": [
+        "fetch-execute cycle",
+        "computer architecture"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

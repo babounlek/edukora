@@ -1,0 +1,91 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2026. Duration: TWO HOURS.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A: Database (Nina's Shop), 20 marks, Tasks 1 to 3; Section B: Programming (Population Growth Program), 30 marks, Tasks 4 to 7.",
+  "points": "15",
+  "groupes": [
+    "SECTION B"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION B: PROGRAMMING (Population Growth Program)** *(30 marks)*\n\nYou are to write a program that determines how long it takes for a population to reach a particular size.\n\nSuppose we have a population of *n* cows. Each year, *n/3* new cows are born, and *n/4* cows pass away. So, for example, if we have *n* = 1200 cows, then in the first year, 1200/3 = 400 new cows are born and 1200/4 = 300 cows pass away. Therefore, at the end of that year, we have 1200 + 400 - 300 = 1300 cows. Repeat the process with the new population size until the desired target population is reached.\n\nFractional cows in intermediate computations are discarded. So, for example, if there were 1001 cows initially, the number of new cows would be 1001/3 = 333.67 cows rounded down to 333 cows.",
+  "figures": [],
+  "incertitudes": [
+    "Aucun compilateur C ni Pascal n'est disponible sur la machine : le code C et Pascal du corrigé n'a PAS été compilé. Sa logique (les trois fonctions, les boucles avec divisions entières, le rejet des saisies invalides) a été vérifiée par une traduction fidèle en Python exécutée sur les saisies de la Task 7 (sorties « Years: 8 » et « Years: 20 »), sur les valeurs de la Task 4 et sur les cas limites (taille cible égale à la taille de départ : 0 an).",
+    "Points : Task 6 = 15 imprimé, avec (i) = 6, (ii) = 4, (iii) = 4, (iv) = 1 ; cohérent, rien corrigé. ",
+    "Points de la Section B : le sujet imprime « 30 marks » pour toute la Section B, mais les tâches imprimées totalisent 6 + 6 + 15 + 4 = 31 (Task 4 = 6, Task 5 = 6, Task 6 = 15, Task 7 = 4) ; écart du sujet, rien corrigé.",
+    "Le sujet écrit « InputStartSize() » et « CalculateYears(start_size, end_size) » : en Pascal une fonction sans paramètre s'appelle sans parenthèses ; le corrigé le dit. Noms avec tiret bas (start_size) recopiés tels qu'imprimés ; un compilateur strictement ISO 7185 ne les accepte pas, remarque faite dans le corrigé. Le libellé de sortie « Years: n. » est donné comme exemple par le sujet (« a suitable label ») : le corrigé affiche « Years: » suivi du nombre.",
+    "Le sujet demande des actions sur ordinateur (enregistrer population.c ou population.pas, imprimer une copie) : le corrigé donne les listings complets, sans capture d'écran. Le sujet est un scan : texte lisible, la mise en forme du « Task 6 » (Use either C or Pascal) a été transcrite sans écart."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**Task 6: Program Implementation** *(15 marks)*\n\n*In your favourite integrated development environment (IDE), carry out all the activities below. Use either C or Pascal programming language (PL).*\n\n(i) Convert the algorithms in Task 5 (i) and (ii) above to the PL functions `InputStartSize()` and `CalculateYears(start_size, end_size)` respectively. *[6 marks]*",
+      "corrige_markdown": "Both pseudocode functions become **functions** (they return a value). Conversion rules: `<-` becomes `=` (C) or `:=` (Pascal); `REPEAT ... UNTIL c` becomes `do { ... } while (!(c));` in C (the test is \"continue while the condition is false\") and `repeat ... until c` in Pascal; `DIV` becomes `/` on integers in C and `div` in Pascal; `OUTPUT` becomes `printf` or `write`; `INPUT` becomes `scanf(\"%d\", &size)` or `readln(size)`; `RETURN x` becomes `return x;` in C and the assignment `FunctionName := x` in Pascal.\n\n**C** (ANSI C, with `#include <stdio.h>` at the top of the file):\n\n```c\nint InputStartSize(void)\n{\n    int size;\n\n    do {\n        printf(\"Start size: \");\n        scanf(\"%d\", &size);\n    } while (size < 9);      /* ask again while the value is not valid */\n    return size;\n}\n\nint CalculateYears(int start_size, int end_size)\n{\n    int size  = start_size;\n    int years = 0;\n\n    while (size < end_size) {\n        size  = size + size / 3 - size / 4;   /* integer division: fractions discarded */\n        years = years + 1;\n    }\n    return years;\n}\n```\n\n**Pascal** (ISO Pascal; a function result is given by assigning to the function name):\n\n```pascal\nfunction InputStartSize: integer;\nvar\n  size: integer;\nbegin\n  repeat\n    write('Start size: ');\n    readln(size)\n  until size >= 9;\n  InputStartSize := size\nend;\n\nfunction CalculateYears(start_size, end_size: integer): integer;\nvar\n  size, years: integer;\nbegin\n  size := start_size;\n  years := 0;\n  while size < end_size do\n  begin\n    size := size + size div 3 - size div 4;\n    years := years + 1\n  end;\n  CalculateYears := years\nend;\n```\n\nRemarks. In C the loop `do { ... } while (size < 9);` repeats **while the value is invalid**, which is the opposite of the pseudocode condition `UNTIL size >= 9`; in Pascal the condition is kept as written (`until size >= 9`). In both languages `/` on two `int` (or `div` in Pascal) discards the fraction, which is the rounding down required by the statement, since the sizes are positive. The behaviour of the two functions was checked with a Python translation (same loops, same integer divisions): `InputStartSize` rejects -5 and 3 and accepts 9; `CalculateYears(1200, 1300)` is 1, `CalculateYears(27, 37)` is 4 and `CalculateYears(9, 18)` is 8. **The C and Pascal code itself was not compiled** (no compiler was available).\n\n**Marking:** `InputStartSize` correctly written in the chosen language (function header with its return type, loop, prompt, reading, return) (3); `CalculateYears` correctly written (two parameters, local variables, loop with integer division, return) (3).",
+      "themes": [
+        "programming in c",
+        "pascal programming",
+        "subprograms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Write a PL function called `InputEndSize(current_size)` that prompts the user for a target population size and returns the value input. A valid input is at least the current population size. Otherwise, the function repeatedly prompts for a valid input. *[4 marks]*",
+      "corrige_markdown": "The function is built like `InputStartSize`, but the valid input depends on a parameter: the target must be **at least the current size**, so the loop repeats while `size < current_size`.\n\n**C**\n\n```c\nint InputEndSize(int current_size)\n{\n    int size;\n\n    do {\n        printf(\"End size: \");\n        scanf(\"%d\", &size);\n    } while (size < current_size);   /* valid input: at least the current size */\n    return size;\n}\n```\n\n**Pascal**\n\n```pascal\nfunction InputEndSize(current_size: integer): integer;\nvar\n  size: integer;\nbegin\n  repeat\n    write('End size: ');\n    readln(size)\n  until size >= current_size;\n  InputEndSize := size\nend;\n```\n\nWith a current size of 9, the typed value 5 is refused and 18 is accepted (`size < current_size` is true for 5, false for 18). A value equal to the current size is accepted (the number of years is then 0). The function receives the current size as an argument, not as a global variable, so it can be reused for any population.\n\n**Marking:** header with the parameter `current_size` and an integer result (1); the prompt and the reading inside a loop (1); the correct validity test (at least the current size) (1); the value returned (1).",
+      "themes": [
+        "programming in c",
+        "pascal programming",
+        "subprograms"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(iii) Write a main program that appropriately calls the subprograms in (i) and (ii) above in order to calculate the number of years (`noOfYears`) it takes for a population of size `start_size` to reach the size `end_size`. Prefix *n*, the number of years calculated and output, with a suitable label. So, for example, one can have for *n* the labeled output: \"Years: n.\" *[4 marks]*",
+      "corrige_markdown": "The main program reads the two sizes through the functions, calls `CalculateYears` and displays the result with a label (here \"Years: \").\n\n**C**\n\n```c\nint main(void)\n{\n    int start_size, end_size, noOfYears;\n\n    start_size = InputStartSize();\n    end_size   = InputEndSize(start_size);\n    noOfYears  = CalculateYears(start_size, end_size);\n    printf(\"Years: %d\\n\", noOfYears);\n    return 0;\n}\n```\n\n**Pascal** (the variables are declared in the `var` part before the functions, as ISO Pascal requires; the main block is the last part of the program):\n\n```pascal\nvar\n  start_size, end_size, noOfYears: integer;\n\nbegin\n  start_size := InputStartSize;\n  end_size := InputEndSize(start_size);\n  noOfYears := CalculateYears(start_size, end_size);\n  writeln('Years: ', noOfYears:1)\nend.\n```\n\nThe order of the calls matters: `InputEndSize` needs the starting size as its argument, so `InputStartSize` is called first, and `CalculateYears` is called last, with the two validated sizes. In Pascal the call `InputStartSize` has no brackets (a parameterless function); the pseudocode notation `InputStartSize()` is only a notation. `noOfYears:1` in `writeln` prints the number with no leading spaces (ISO Pascal pads integers to an implementation-defined width otherwise).\n\n**Marking:** the three variables declared (1); the two input functions called in the correct order with the starting size passed to `InputEndSize` (1); `CalculateYears` called with `start_size` and `end_size` and its result kept in `noOfYears` (1); the result displayed with a suitable label (1).",
+      "themes": [
+        "programming in c",
+        "pascal programming",
+        "subprograms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "(iv) Save your program as *population.c* or *population.pas* based on your choice of PL and then print a copy. *[1 mark]*",
+      "corrige_markdown": "The program is saved in a file named **population.c** (C) or **population.pas** (Pascal) and a copy is printed (File, then Print in the IDE). Complete listings, assembled from the parts above (the functions come before `main` so that they are declared before use):\n\n**population.c**\n\n```c\n/* population.c - how long does a population take to reach a target size? */\n#include <stdio.h>\n\nint InputStartSize(void)\n{\n    int size;\n\n    do {\n        printf(\"Start size: \");\n        scanf(\"%d\", &size);\n    } while (size < 9);      /* ask again while the value is not valid */\n    return size;\n}\n\nint CalculateYears(int start_size, int end_size)\n{\n    int size  = start_size;\n    int years = 0;\n\n    while (size < end_size) {\n        size  = size + size / 3 - size / 4;   /* integer division: fractions discarded */\n        years = years + 1;\n    }\n    return years;\n}\n\nint InputEndSize(int current_size)\n{\n    int size;\n\n    do {\n        printf(\"End size: \");\n        scanf(\"%d\", &size);\n    } while (size < current_size);   /* valid input: at least the current size */\n    return size;\n}\n\nint main(void)\n{\n    int start_size, end_size, noOfYears;\n\n    start_size = InputStartSize();\n    end_size   = InputEndSize(start_size);\n    noOfYears  = CalculateYears(start_size, end_size);\n    printf(\"Years: %d\\n\", noOfYears);\n    return 0;\n}\n```\n\n**population.pas**\n\n```pascal\nprogram population(input, output);\n\nvar\n  start_size, end_size, noOfYears: integer;\n\nfunction InputStartSize: integer;\nvar\n  size: integer;\nbegin\n  repeat\n    write('Start size: ');\n    readln(size)\n  until size >= 9;\n  InputStartSize := size\nend;\n\nfunction CalculateYears(start_size, end_size: integer): integer;\nvar\n  size, years: integer;\nbegin\n  size := start_size;\n  years := 0;\n  while size < end_size do\n  begin\n    size := size + size div 3 - size div 4;\n    years := years + 1\n  end;\n  CalculateYears := years\nend;\n\nfunction InputEndSize(current_size: integer): integer;\nvar\n  size: integer;\nbegin\n  repeat\n    write('End size: ');\n    readln(size)\n  until size >= current_size;\n  InputEndSize := size\nend;\n\nbegin\n  start_size := InputStartSize;\n  end_size := InputEndSize(start_size);\n  noOfYears := CalculateYears(start_size, end_size);\n  writeln('Years: ', noOfYears:1)\nend.\n```\n\nRemarks. The structure is the same in both languages: three functions, then the main program. With the typed values of Task 7 the program writes the lines shown there. A robustness limit: if the user types a letter instead of a number, `scanf` reads nothing and the C program loops for ever (the variable keeps its old value and the letter stays in the input), while Pascal stops with a run-time error; the statement does not ask to handle this case. In strict ISO 7185 Pascal an identifier contains only letters and digits, so names with an underscore (`start_size`, as printed in the statement) are accepted by the usual compilers (Free Pascal, Delphi) but would be written `startsize` for a purely ISO compiler. **None of the code was compiled.**\n\n**Marking:** the file saved under the required name (`population.c` or `population.pas`) and a copy printed (1).",
+      "themes": [
+        "programming in c",
+        "pascal programming"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

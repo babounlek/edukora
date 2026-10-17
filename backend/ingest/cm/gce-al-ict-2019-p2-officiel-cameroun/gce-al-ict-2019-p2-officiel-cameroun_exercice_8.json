@@ -1,0 +1,77 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Information and Communication Technologies 2 (0796), ADVANCED LEVEL, June 2019. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You will be marked on your ability to use good English to organize information clearly and to use specialist vocabulary where appropriate. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 8 : points imprimés 2 + 2 (i) + 2 + 2 + 3 (ii) + 1 + 2 + 3 (iii) = 17, conforme à l'en-tête.",
+    "8(i) : sur le scan, la barre de complément est déplacée au-dessus de la ligne (a) (« the System ‾‾‾‾ ») et au-dessus du début de la ligne (b) ; elle a été interprétée comme le complément de toute l'expression de (b), soit $\\overline{\\overline{A} \\cdot \\overline{B} + A \\cdot B}$. Le tableau de vérité donne F et son complément pour couvrir les deux lectures de (a). Résultats recalculés par script.",
+    "8(iii)(c) : le nom des variables et la forme de l'algorithme sont libres (aucun barème officiel disponible)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A digital system is described by the equation $F = \\overline{A} \\cdot \\overline{B} + A \\cdot B$.\n\n(a) Construct the truth table of the system. (2 marks)\n\n(b) Use De Morgan's theorem to simplify $\\overline{\\overline{A} \\cdot \\overline{B} + A \\cdot B}$. (2 marks)",
+      "corrige_markdown": "**(a) Truth table (2 marks)**\n\nThe table gives the intermediate columns, the output $F = \\overline{A} \\cdot \\overline{B} + A \\cdot B$ and its complement $\\overline{F}$ (the bar printed above the system in the question is displaced, so both are given).\n\n| $A$ | $B$ | $\\overline{A}$ | $\\overline{B}$ | $\\overline{A} \\cdot \\overline{B}$ | $A \\cdot B$ | $F$ | $\\overline{F}$ |\n|---|---|---|---|---|---|---|---|\n| 0 | 0 | 1 | 1 | 1 | 0 | **1** | 0 |\n| 0 | 1 | 1 | 0 | 0 | 0 | **0** | 1 |\n| 1 | 0 | 0 | 1 | 0 | 0 | **0** | 1 |\n| 1 | 1 | 0 | 0 | 0 | 1 | **1** | 0 |\n\n$F = 1$ only when $A$ and $B$ are equal: the system is an **equivalence (XNOR) gate**, and its complement is the exclusive-OR (XOR).\n\n**(b) Simplification with De Morgan's theorem (2 marks)**\n\nDe Morgan's theorem: $\\overline{X + Y} = \\overline{X} \\cdot \\overline{Y}$ and $\\overline{X \\cdot Y} = \\overline{X} + \\overline{Y}$.\n\n$$\n\\overline{\\overline{A} \\cdot \\overline{B} + A \\cdot B}\n= \\overline{\\overline{A} \\cdot \\overline{B}} \\cdot \\overline{A \\cdot B}\n= (A + B) \\cdot (\\overline{A} + \\overline{B})\n$$\n\nExpanding the product:\n\n$$\n(A + B)(\\overline{A} + \\overline{B}) = A \\cdot \\overline{A} + A \\cdot \\overline{B} + B \\cdot \\overline{A} + B \\cdot \\overline{B}\n= 0 + A \\cdot \\overline{B} + \\overline{A} \\cdot B + 0\n$$\n\n$$\n\\overline{F} = A \\cdot \\overline{B} + \\overline{A} \\cdot B\n$$\n\nThis is the XOR function, which agrees with the column $\\overline{F}$ of the truth table (it is 1 for $A B = 01$ and $A B = 10$); this was checked by a script.",
+      "themes": [
+        "ict logic gates and truth tables"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "A company uses relational database for its business transactions.\n\n(a) Give TWO advantages of relational database over flat file system. (2 marks)\n\n(b) Give TWO criteria you will use to determine if a table is in the First Normal Form (1NF). (2 marks)\n\n(c) Give THREE functions of a Database Administrator to this company. (3 marks)",
+      "corrige_markdown": "**(a) Two advantages of a relational database over a flat file system (2 marks)**\n\n- **Less data redundancy and more consistency**: each fact is stored once in one table and the tables are linked by keys, so a change is made in one place only; in a flat file the same data are repeated in many records and can become inconsistent.\n- **Easier and more powerful queries and reports**: with SQL, data from several tables can be combined, searched and sorted easily. (Others: better security and access control for several users at the same time; less storage space; the structure is easier to extend.)\n\n**(b) Two criteria for the First Normal Form (2 marks)**\n\n- Every field contains a **single (atomic) value**: there are no multi-valued fields (for example two telephone numbers in one cell).\n- There are **no repeating groups of columns** (such as `phone1`, `phone2`, `phone3`), and each record is identified by a **primary key**, so no two rows are identical.\n\n**(c) Three functions of a Database Administrator (3 marks)**\n\n- **Designing and creating the database** (the tables, relationships and data types) and installing and updating the DBMS.\n- **Controlling access and security**: creating user accounts and giving each user the right to see or change only the data that he or she needs.\n- **Backup and recovery**: making regular backups and restoring the data after a failure.\n- (Others: monitoring and improving the performance; maintaining the integrity of the data; training and assisting the users.)",
+      "themes": [
+        "ict relational databases",
+        "ict database design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) What is an algorithm? (1 mark)\n\n(b) Describe ONE way to represent an algorithm. (2 marks)\n\n(c) Write an algorithm to calculate and display the sum of three numbers. (3 marks)",
+      "corrige_markdown": "**(a) Algorithm (1 mark)**\n\nAn algorithm is a **finite, ordered sequence of clear and unambiguous steps** (instructions) that solves a problem or carries out a task.\n\n**(b) One way to represent an algorithm (2 marks)**\n\n**Pseudocode**: the algorithm is written as numbered or structured statements in English that look like a programming language (INPUT, IF ... THEN ... ELSE, PRINT) but do not follow the strict syntax of any language, so it is easy to read and to translate into a program. (Another way is a **flowchart**, which draws the steps with standard symbols joined by arrows: an oval for start and stop, a parallelogram for input and output, a rectangle for a process and a diamond for a decision.)\n\n**(c) Algorithm for the sum of three numbers (3 marks)**\n\n```text\nStart\nStep 1: Input a, b, c\nStep 2: sum <- a + b + c\nStep 3: Print sum\nStop\n```\n\nExample (checked with a script): for $a = 4$, $b = 5$, $c = 6$ the algorithm displays $15$.",
+      "themes": [
+        "ict algorithms and flowcharts"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2026. Duration: TWO HOURS.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A: Database (Nina's Shop), 20 marks, Tasks 1 to 3; Section B: Programming (Population Growth Program), 30 marks, Tasks 4 to 7.",
+  "points": "6",
+  "groupes": [
+    "SECTION A"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION A: DATABASE (Nina's Shop)** *(20 marks)*\n\nThe relation **R** below keeps records of customers and the items they buy from Nina's shop.\n\n| CustomerID | CustomerName | ItemCode | ItemName | UnitPrice | Quantity | TotalPrice | TDate |\n|---|---|---|---|---|---|---|---|\n| C001 | Ebai Paul | IT001 | Rice | 200 | 3 | 600 | 09/09/2021 |\n| C001 | Ebai Paul | IT002 | Beans | 250 | 2 | 500 | 09/09/2021 |\n| C001 | Ebai Paul | IT003 | Corn | 175 | 2 | 350 | 10/10/2021 |\n| C002 | Eyere Esther | IT003 | Corn | 175 | 5 | 875 | 11/12/2021 |\n\nRelation **R** has the following attributes with names of obvious meanings; the primary key field is underlined:\n\n`R(`<u>`CustomerID`</u>`, CustomerName, ItemCode, ItemName, UnitPrice, Quantity, TotalPrice, TDate)`",
+  "figures": [],
+  "incertitudes": [
+    "Relation R : le sujet imprime « the primary key field is underlined » et ne souligne que CustomerID. Cet attribut ne peut pas être une clé, car C001 apparaît trois fois ; recopié tel quel, écart signalé dans le corrigé (la clé de R est (CustomerID, ItemCode, TDate)).",
+    "Points : Task 1 = 6 imprimé. Les barèmes imprimés dans (i) sont 1 + 1 + 2 = 4, donc points = 4 pour (i) ; aucun point n'est imprimé pour (ii) (les 2 points restants sont déduits, non imprimés) : points = null pour (ii). Aucun point corrigé.",
+    "Dates de R lues en jour/mois/année (convention du Cameroun) : « 11/12/2021 » est lu 11 décembre 2021, ce que le sujet ne précise pas ; 09/09/2021 et 10/10/2021 sont sans ambiguïté. Le corrigé stocke les dates au format AAAA-MM-JJ.",
+    "Aucun corrigé officiel : le corrigé est rédigé. Le choix de la clé de Customer_Item (CustomerID, ItemCode, TDate) et de garder TotalPrice comme montant facturé est un choix de conception, expliqué dans le corrigé, qui accepte aussi la clé minimale (CustomerID, ItemCode).",
+    "La décomposition a été vérifiée avec sqlite3 (module Python) : la jointure des trois relations redonne exactement les quatre lignes de R. Le schéma attendu en (ii) est un diagramme à compléter (trois cadres vides imprimés, aucune figure indispensable) : il est décrit dans le corrigé sous forme de diagramme en texte, sans PNG.",
+    "Le sujet est un scan avec des filigranes et des publicités (gcerevision.com, kawlo), ignorés. Cases à remplir en pointillés non transcrites (remplacées par des points de suspension)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**Task 1: Database Design** *(6 marks)*\n\n(i) In a fully normalised relational database the data in the relation **R** is stored in the relations: `Customer`, `Item`, and `Customer_Item`. `Customer_Item` holds details about items bought by customers. Complete each of these relations making sure that their primary key attribute(s) is /are underlined.\n\n`Customer(` ............................................ `)` *[1 mark]*\n\n`Item(` ............................................ `)` *[1 mark]*\n\n`Customer_Item(` ............................................ `)` *[2 marks]*",
+      "corrige_markdown": "**Step 1 - Find the dependencies in R.** Reading the data of R (and the meaning of the attributes):\n\n- `CustomerID -> CustomerName` (a customer has one name);\n- `ItemCode -> ItemName, UnitPrice` (an item has one name and one unit price);\n- `(CustomerID, ItemCode, TDate) -> Quantity, TotalPrice` (what was bought, how many, and the amount paid, on a given date), with `TotalPrice = UnitPrice x Quantity`.\n\n*Remark on the printed statement.* The booklet underlines only `CustomerID` as the primary key of R. That cannot be a key, because the value C001 appears in three rows; the real key of R is `(CustomerID, ItemCode, TDate)`. The printed key is not used below.\n\nR is not even in second normal form: `CustomerName` depends on a part of the key only (`CustomerID`), and `ItemName`, `UnitPrice` depend on a part only (`ItemCode`). The consequences are the usual anomalies: \"Ebai Paul\" is written three times and \"Corn, 175\" twice (update anomaly), a new item that nobody has bought yet cannot be stored (insertion anomaly), and deleting the only purchase of an item loses the item itself (deletion anomaly).\n\n**Step 2 - Split R so that every attribute depends on the key, the whole key and nothing but the key.** Primary keys are underlined.\n\n`Customer(`<u>`CustomerID`</u>`, CustomerName)` *(1 mark)*\n\n`Item(`<u>`ItemCode`</u>`, ItemName, UnitPrice)` *(1 mark)*\n\n`Customer_Item(`<u>`CustomerID`</u>`,` <u>`ItemCode`</u>`,` <u>`TDate`</u>`, Quantity, TotalPrice)` *(2 marks)*\n\nIn `Customer_Item`, `CustomerID` is also a **foreign key** referencing `Customer`, and `ItemCode` a foreign key referencing `Item`.\n\n**Step 3 - Justify the choices.**\n\n- `Customer` and `Item` have a single-attribute key and all other attributes depend on it alone: 2NF and 3NF.\n- `Customer_Item` records one purchase line, so its key must identify one line. `(CustomerID, ItemCode)` is enough for the four rows printed (and is the minimum answer that a marker will accept), but the same customer can buy the same item again on another day; adding `TDate` to the key makes the design valid for future data. `Quantity` and `TotalPrice` depend on the whole key; `TDate` is a key attribute, so there is no partial dependency.\n- `TotalPrice` is derivable (`UnitPrice x Quantity`), yet it is **kept in `Customer_Item` on purpose**: it is the amount charged at the time of the sale. If the unit price of an item changes later (Task 3(ii)), the old purchases must keep their old amount; recomputing them from the current `UnitPrice` would falsify the history. A purist 3NF design that always recomputes the total is also acceptable if the answer says so.\n\n**Check.** The three relations were created in SQLite and filled with the data of R; joining them back (`Customer_Item` with `Customer` and `Item`) gives exactly the four rows of R, so the decomposition loses no information and repeats no fact.\n\n**Marking:** `Customer` with its key underlined (1); `Item` with its key underlined (1); `Customer_Item` with the composite key underlined (1) and the remaining attributes `Quantity`, `TotalPrice`, `TDate` placed correctly (1).",
+      "themes": [
+        "database normalisation",
+        "keys and relationships",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Complete the entity-relationship diagram below for the entities `Customer`, `Item` and `Customer_Item`.\n\n*(The booklet prints three empty boxes: `Customer` at the top left, `Item` at the top right, and `Customer_Item` below them, in the middle.)*",
+      "corrige_markdown": "**Reading the relationships.** One customer can have many purchase lines, and each line belongs to one customer: **one-to-many** (1:N) from `Customer` to `Customer_Item`. One item can appear in many purchase lines, and each line concerns one item: **one-to-many** (1:N) from `Item` to `Customer_Item`. Together, `Customer` and `Item` are in a **many-to-many** relationship (a customer buys many items, an item is bought by many customers), which is resolved by the associative entity `Customer_Item`.\n\n**Completed diagram** (PK = primary key, to be underlined in the booklet; FK = foreign key; the \"1\" and \"N\" are the cardinalities written at the ends of each line):\n\n```\n +------------------+                         +------------------+\n | Customer         |                         | Item             |\n |------------------|                         |------------------|\n | CustomerID  (PK) |                         | ItemCode   (PK)  |\n | CustomerName     |                         | ItemName         |\n +------------------+                         | UnitPrice        |\n          | 1                                 +------------------+\n          |                                            | 1\n        buys                                       is sold in\n          |                                            |\n          | N                                          | N\n          |       +-------------------------+          |\n          +-------| Customer_Item           |----------+\n                  |-------------------------|\n                  | CustomerID  (PK, FK)    |\n                  | ItemCode    (PK, FK)    |\n                  | TDate       (PK)        |\n                  | Quantity                |\n                  | TotalPrice              |\n                  +-------------------------+\n```\n\nThe foreign keys `CustomerID` and `ItemCode` in `Customer_Item` are what the two lines represent in the relational schema.\n\n**Marking** (the booklet prints no mark for this part; the 2 marks left in Task 1 are assumed to belong to it): a line from `Customer` to `Customer_Item` and a line from `Item` to `Customer_Item`, with no line directly between `Customer` and `Item` (1); the 1:N cardinalities written on the correct sides, the \"many\" end at `Customer_Item` (1).",
+      "themes": [
+        "entity-relationship diagrams",
+        "keys and relationships"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Information and Communication Technologies, Paper 2 (0796), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You will be marked on your ability to use good English, to organize information clearly and to use specialist vocabulary where appropriate. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner) sans couche texte, lu en image ; filigranes (gcerevision) ignorés. Page de garde vérifiée : ADVANCED LEVEL, 0796, Information and Communication Technologies, Paper 2, juin 2022 (2h30, « Answer any SIX questions », 17 points chacune).",
+    "Aucun corrigé officiel : corrigés rédigés, plusieurs réponses admises pour les questions de cours (« any two », « any three ») ; le barème officiel peut accepter d'autres réponses.",
+    "Question 5 : points imprimés i = 2 + 2 + 1 = 5 ; ii = 2 + 2 + 2 = 6 ; iii = 1 + 1 + 2 + 2 = 6 ; total 17.",
+    "5(i)(a) : le schéma demandé est à produire par le candidat ; il est décrit sous forme de schéma textuel dans le corrigé. L'ordre exact des registres du cycle (PC, MAR, MDR, CIR) suit le modèle de Von Neumann des manuels classiques (aucun barème officiel).",
+    "5(iii)(d) : les infractions « courantes au Cameroun » retenues (fraude par Internet ou Mobile Money, piratage de logiciels) relèvent d'un jugement du rédacteur ; le barème officiel n'est pas disponible."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) With the aid of a diagram, showing all the components, describe the machine cycle. (2 marks)\n\n(b) Explain the influence of RAM on machine performance. (2 marks)\n\n(c) State one other component that can enhance machine performance. (1 mark)",
+      "corrige_markdown": "**(a) The machine cycle (2 marks).** The machine (fetch-decode-execute) cycle is the sequence of steps that the processor repeats for every instruction of a program stored in main memory.\n\n```text\n            +-------------------------- CPU ---------------------------+\n            |  CONTROL UNIT (decodes, sends control signals)            |\n            |        |                                                  |\n            |  Registers:  PC   CIR   MAR   MDR   ACC                   |\n            |        |                          |                       |\n            |  ARITHMETIC AND LOGIC UNIT (ALU)  |                       |\n            +----------+----------------------+------------------------+\n                       |  address bus (MAR ->)   ^  data bus (<-> MDR)\n                       v                         |\n            +----------------------- MAIN MEMORY (RAM) ----------------+\n            |   addresses:  0  1  2 ...   instructions and data        |\n            +-----------------------------------------------------------+\n            (control bus: read / write / clock signals;  I/O devices are connected to the same buses)\n```\n\n1. **Fetch.** The address held in the Program Counter (PC) is copied into the Memory Address Register (MAR) and sent on the address bus; the control unit sends a *read* signal; the instruction stored at that address comes back on the data bus into the Memory Data Register (MDR) and is copied into the Current Instruction Register (CIR). The PC is incremented so that it points to the next instruction.\n2. **Decode.** The control unit decodes the instruction in the CIR (operation code and operand).\n3. **Execute.** The instruction is carried out: the ALU calculates or compares (the result going to the accumulator), or data is moved to or from memory or an input/output device.\n\nThe cycle then starts again with the next instruction.\n\n**(b) Influence of RAM on performance (2 marks).** RAM holds the programs and the data that are being used. With **more RAM**, more programs and larger files can be kept in memory at the same time, so the computer can run several applications smoothly and does not need to use **virtual memory** (swapping parts of programs to the much slower hard disk). Too little RAM makes the computer slow, because the processor spends time waiting for data from the disk. A faster RAM also reduces the time the processor waits for data.\n\n**(c) Another component (1 mark).** Any one of: a **faster processor** (higher clock speed or more cores), **cache memory**, a **solid-state drive (SSD)**, a **graphics card**, a wider data bus.",
+      "themes": [
+        "computer hardware"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Give the functions of the following memory units, stating whether they are volatile or non-volatile.\n\n(a) EPROM. (2 marks)\n\n(b) Cache memory. (2 marks)\n\n(c) Registers. (2 marks)",
+      "corrige_markdown": "**(a) EPROM (2 marks).** *Erasable Programmable Read-Only Memory.* It stores permanent programs or data that the computer needs when it starts, such as the BIOS or the firmware of a device. Its content can be erased by exposing the chip to **ultraviolet light** and then reprogrammed. It is **non-volatile**: the content is kept when the power is switched off.\n\n**(b) Cache memory (2 marks).** A small, very fast memory placed between the processor and the RAM (or inside the processor). It stores the instructions and data that are used most often, so that the processor does not have to wait for the slower RAM, which speeds up processing. It is **volatile**: the content is lost when the power is switched off.\n\n**(c) Registers (2 marks).** Very small, extremely fast storage locations **inside the CPU** that hold the data, instructions and addresses being processed at the moment (for example the PC, MAR, MDR, CIR and the accumulator). They are **volatile**: they lose their content when the power is off.",
+      "themes": [
+        "computer hardware"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) What is computer ethics? (1 mark)\n\n(b) State one way to foster computer ethics in an institution. (1 mark)\n\n(c) Discuss TWO ethical obligations of users of an information system. (2 marks)\n\n(d) Describe TWO computer crimes that are common in Cameroon. (2 marks)",
+      "corrige_markdown": "**(a) Computer ethics (1 mark).** The set of moral principles and rules of conduct that tell people what is right and wrong in the use of computers, networks and information.\n\n**(b) One way to foster computer ethics (1 mark).** Draw up a **code of conduct (acceptable use policy)** which every user must read and sign, and **train and sensitise** the staff and the students on it, with sanctions for those who break it. (Others: teaching ethics as part of ICT courses, monitoring the use of the network.)\n\n**(c) Two ethical obligations of users (2 marks)** (any two):\n\n- **Respect the privacy and confidentiality of data:** a user must not read, copy or change other people's files or personal data without permission, and must protect his or her own password.\n- **Respect copyright and software licences:** a user must not copy, share or install pirated software, music or films, and must acknowledge the sources used.\n- **Do not harm the system or others:** a user must not spread viruses, hack into systems, or use the network to harass or deceive people; the information given must be honest and accurate.\n\n**(d) Two computer crimes common in Cameroon (2 marks).**\n\n- **Internet and Mobile Money fraud (phishing, scams):** criminals send false e-mails, messages or calls (for example pretending to be a bank, a mobile operator or a prize promoter) to make victims reveal their codes or send money, or they steal money by taking over accounts.\n- **Software piracy:** the illegal copying, selling or use of software, films and music without the owner's licence, which is widespread on the market and in cyber cafes, and which also exposes users to viruses.\n\n(Other accepted answers: hacking (unauthorised access), identity theft, cyber-bullying and defamation on social media.)",
+      "themes": [
+        "social and ethical issues",
+        "computer crime and malware"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

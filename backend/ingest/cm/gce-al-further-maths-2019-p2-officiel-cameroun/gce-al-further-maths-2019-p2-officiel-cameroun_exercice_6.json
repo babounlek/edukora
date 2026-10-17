@@ -1,0 +1,71 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2019. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné sans figure imprimée. Les points imprimés sont des totaux approximatifs par partie, entre crochets ; le sujet n'imprime aucun total par question, donc le champ points de l'exercice est vide.",
+    "Question 6 (b) i) : formulation imprécise. La série réelle de terme sin(2r theta)/4^r n'est pas une progression géométrique ; le corrigé établit que c'est la partie imaginaire d'une série géométrique convergente (raison z^2, de module 1/4). L'énoncé est recopié tel quel.",
+    "Question 6 (b) ii) : défaut d'impression. Le résultat imprimé, 4 sin 2theta / (17 - 16 cos 2theta), est faux ; la somme vaut 4 sin 2theta / (17 - 8 cos 2theta) (vérifié numériquement pour theta = pi/6 : 0,26647 contre 0,3849 pour la forme imprimée). Le corrigé démontre la vraie formule, signale l'écart et ne corrige pas l'énoncé.",
+    "Question 6 (b) : l'amorce « A complex number z is defined by ... » est imprimée une seule fois ; elle est recopiée dans b(i) et b(ii). Les sous-questions sont notées b(i) et b(ii) (imprimées i) et ii))."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "By the use of the Chinese Remainder Theorem, or otherwise, solve the system of congruences\n\n$$x \\equiv 3 \\pmod 4, \\qquad x \\equiv 4 \\pmod 7.$$",
+      "corrige_markdown": "The moduli $4$ and $7$ are coprime, so the Chinese Remainder Theorem gives a unique solution modulo $N = 4 \\times 7 = 28$.\n\n**Method 1 (formula).** Let $N_1 = N/4 = 7$ and $N_2 = N/7 = 4$.\n\n* Inverse of $N_1 = 7$ modulo $4$: $7 \\equiv 3 \\pmod 4$ and $3 \\times 3 = 9 \\equiv 1$, so $y_1 = 3$.\n* Inverse of $N_2 = 4$ modulo $7$: $4 \\times 2 = 8 \\equiv 1 \\pmod 7$, so $y_2 = 2$.\n\n$$x \\equiv 3 \\cdot 7 \\cdot 3 + 4 \\cdot 4 \\cdot 2 = 63 + 32 = 95 \\equiv 11 \\pmod{28}.$$\n\n**Method 2 (substitution).** From $x \\equiv 4 \\pmod 7$ write $x = 4 + 7k$. Then $4 + 7k \\equiv 3 \\pmod 4$ gives $3k \\equiv 3 \\pmod 4$, so $k \\equiv 1 \\pmod 4$, $k = 1 + 4m$ and $x = 11 + 28m$.\n\n**Check.** $11 = 2 \\cdot 4 + 3$ and $11 = 1 \\cdot 7 + 4$.\n\n$$\\boxed{x \\equiv 11 \\pmod{28}}$$\n\nthat is, $x = 11 + 28m$ for any integer $m$.",
+      "themes": [
+        "linear congruences",
+        "modular arithmetic"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b(i)",
+      "enonce_markdown": "A complex number $z$ is defined by $z = \\tfrac12(\\cos\\theta + i\\sin\\theta)$, such that\n\n$$z^n = \\frac{1}{2^n}(\\cos n\\theta + i\\sin n\\theta).$$\n\nUsing De Moivre's theorem, or otherwise, show that $\\displaystyle\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta$ is a convergent geometric progression.",
+      "corrige_markdown": "**Printed wording.** Taken literally, the real series $\\sum \\dfrac{\\sin 2r\\theta}{4^r}$ is not itself a geometric progression (its terms have no constant ratio); it is the **imaginary part of a convergent geometric series**, which is what the question intends and what is shown here.\n\nBy the formula for $z^n$ with $n = 2r$,\n\n$$(z^2)^r = z^{2r} = \\frac{1}{4^r}\\left(\\cos 2r\\theta + i\\sin 2r\\theta\\right).$$\n\nSo $\\displaystyle\\sum_{r=0}^{\\infty} z^{2r} = \\sum_{r=0}^{\\infty}(z^2)^r$ is a geometric series with first term $1$ and common ratio $q = z^2 = \\tfrac14(\\cos 2\\theta + i\\sin 2\\theta)$. Its modulus is $|q| = \\tfrac14 < 1$ for every real $\\theta$, so the series **converges**, with sum\n\n$$\\sum_{r=0}^{\\infty} q^r = \\frac{1}{1 - q}.$$\n\nTaking imaginary parts term by term, $\\displaystyle\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta = \\operatorname{Im}\\sum_{r=0}^{\\infty} q^r$ converges (it is also absolutely convergent, by comparison with $\\sum 4^{-r}$). $\\blacksquare$",
+      "themes": [
+        "de moivre theorem",
+        "geometric progressions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "b(ii)",
+      "enonce_markdown": "A complex number $z$ is defined by $z = \\tfrac12(\\cos\\theta + i\\sin\\theta)$, such that\n\n$$z^n = \\frac{1}{2^n}(\\cos n\\theta + i\\sin n\\theta).$$\n\nUsing De Moivre's theorem, or otherwise, show that\n\n$$\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta = \\frac{4\\sin 2\\theta}{17 - 16\\cos 2\\theta}.$$",
+      "corrige_markdown": "**Printed result not reproduced.** From (i), with $q = \\tfrac14 e^{2i\\theta}$ (that is $\\tfrac14(\\cos 2\\theta + i\\sin 2\\theta)$),\n\n$$\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta = \\operatorname{Im}\\frac{1}{1 - q}.$$\n\nMultiply numerator and denominator by the conjugate of $1 - q$, namely $1 - \\bar q$:\n\n$$\\frac{1}{1 - q} = \\frac{1 - \\bar q}{|1 - q|^2}.$$\n\n* $1 - \\bar q = 1 - \\tfrac14\\cos 2\\theta + \\tfrac14 i\\sin 2\\theta$, so $\\operatorname{Im}(1 - \\bar q) = \\tfrac14\\sin 2\\theta$.\n* $|1 - q|^2 = \\left(1 - \\tfrac14\\cos 2\\theta\\right)^2 + \\tfrac{1}{16}\\sin^2 2\\theta = 1 - \\tfrac12\\cos 2\\theta + \\tfrac{1}{16} = \\dfrac{17 - 8\\cos 2\\theta}{16}$.\n\nTherefore\n\n$$\\boxed{\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta = \\frac{\\tfrac14\\sin 2\\theta \\cdot 16}{17 - 8\\cos 2\\theta} = \\frac{4\\sin 2\\theta}{17 - 8\\cos 2\\theta}}$$\n\nThe numerator $4\\sin 2\\theta$ is the printed one, but the denominator is $17 - 8\\cos 2\\theta$, **not** $17 - 16\\cos 2\\theta$.\n\n**Numerical check.** For $\\theta = \\tfrac{\\pi}{6}$ ($2\\theta = \\tfrac{\\pi}{3}$): the series is $\\tfrac{\\sqrt3}{2}\\left(\\tfrac14 + \\tfrac1{16} - \\tfrac1{256} - \\tfrac1{1024} + \\cdots\\right) \\approx 0.26647$. The formula obtained gives $\\dfrac{4 \\cdot \\frac{\\sqrt3}{2}}{17 - 4} = \\dfrac{2\\sqrt3}{13} \\approx 0.26647$, whereas the printed denominator would give $\\dfrac{2\\sqrt3}{17 - 8} = \\dfrac{2\\sqrt3}{9} \\approx 0.3849$, which the series cannot reach. The printed denominator thus appears to be a misprint (the factor $16$ should be $8$).",
+      "themes": [
+        "de moivre theorem",
+        "series summation"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

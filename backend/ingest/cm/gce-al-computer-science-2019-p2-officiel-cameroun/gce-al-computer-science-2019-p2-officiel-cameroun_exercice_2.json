@@ -1,0 +1,78 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2019. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the appropriate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 2(ii) : l'énoncé imprimé dit « octal numbers » mais le point (b) 17F6 porte l'indice 16 (hexadécimal, le chiffre F n'existe pas en octal) : traité comme un nombre hexadécimal. La mention « (4 marks) » figure deux fois (après la consigne et après (b)) ; seule la première est comptée (i = 5, ii = 4, iii = 8, soit 17) ; le 4 imprimé après (b) est recopié dans l'énoncé.",
+    "Question 2(iii) : la colonne « Remainder » du sujet est la retenue (carry) d'un demi-additionneur ; « Remainder » est conservé tel quel."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Suppose X is a register whose current contents:\n\n| 1 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |\n|---|---|---|---|---|---|---|---|\n\nWhat is the denary equivalent of register X if:\n\n(a) It represents unsigned binary integer. (1 mark)\n\n(b) It is a Binary Coded Decimal. (2 marks)\n\n(c) It stores a two's complement binary integer. (2 marks)",
+      "corrige_markdown": "The register holds the 8 bits $10000111$.\n\n**(a) Unsigned binary integer (1 mark)**\n\n$$10000111_2 = 1\\times 2^7 + 0 + 0 + 0 + 0 + 1\\times 2^2 + 1\\times 2^1 + 1\\times 2^0 = 128 + 4 + 2 + 1 = 135$$\n\n**(b) Binary Coded Decimal (2 marks)**\n\nIn BCD each group of 4 bits (nibble) encodes one decimal digit. Split the register into two nibbles: $1000$ and $0111$.\n\n- $1000_2 = 8$\n- $0111_2 = 7$\n\nBoth nibbles are valid BCD digits (each is 9 or less), so the denary equivalent is **87**.\n\n**(c) Two's complement integer (2 marks)**\n\nThe most significant bit is 1, so the number is negative. Its value is the unsigned value minus $2^8$:\n\n$$135 - 256 = -121$$\n\nCheck: invert all the bits, $10000111 \\to 01111000$, then add 1: $01111001_2 = 64+32+16+8+1 = 121$, so the number is $-121$.\n\n**Answers: (a) 135 ; (b) 87 ; (c) $-121$.**",
+      "themes": [
+        "binary number representation",
+        "number systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Convert the following octal numbers to binary numbers: (4 marks)\n\n(a) 214$_8$\n\n(b) 17F6$_{16}$ (4 marks)",
+      "corrige_markdown": "**(a) $214_8$ to binary**\n\nEach octal digit is replaced by its 3-bit binary equivalent:\n\n| Octal digit | 2 | 1 | 4 |\n|---|---|---|---|\n| 3 bits | 010 | 001 | 100 |\n\n$$214_8 = 010\\,001\\,100_2 = 10001100_2$$\n\n(Check: $10001100_2 = 128 + 8 + 4 = 140$ and $214_8 = 2\\times 64 + 1\\times 8 + 4 = 140$.)\n\n**(b) $17F6_{16}$ to binary**\n\nThe number is written in base 16 (the digit F does not exist in octal), so each hexadecimal digit is replaced by its 4-bit binary equivalent:\n\n| Hex digit | 1 | 7 | F | 6 |\n|---|---|---|---|---|\n| 4 bits | 0001 | 0111 | 1111 | 0110 |\n\n$$17F6_{16} = 0001\\,0111\\,1111\\,0110_2 = 1011111110110_2$$\n\n(Check: $17F6_{16} = 1\\times 4096 + 7\\times 256 + 15\\times 16 + 6 = 6134$, and $1011111110110_2 = 6134$.)\n\n**Answers: (a) $10001100_2$ ; (b) $1011111110110_2$.**",
+      "themes": [
+        "number systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "From the truth table below:\n\n(a) Consider the corresponding logic gate. (4 marks)\n\n(b) Deduce the Boolean expressions for sum and remainder. (4 marks)\n\n| A | B | Sum | Remainder |\n|---|---|-----|-----------|\n| 0 | 0 | 0 | 0 |\n| 0 | 1 | 1 | 0 |\n| 1 | 0 | 1 | 0 |\n| 1 | 1 | 0 | 1 |",
+      "corrige_markdown": "**(a) The corresponding logic gates (4 marks)**\n\n- The **Sum** column is 1 only when the inputs A and B are different (rows 2 and 3): it is the output of an **exclusive-OR (XOR) gate**.\n- The **Remainder** column (the carry) is 1 only when both A and B are 1 (row 4): it is the output of an **AND gate**.\n\nThe truth table therefore describes a **half adder**: one XOR gate and one AND gate which receive the same two inputs A and B.\n\n```text\n          +---------+\nA ---+----| XOR     |---- Sum\n     |  +-| gate    |\nB -+-|--+ +---------+\n   | |\n   | |    +---------+\n   | +----| AND     |---- Remainder (carry)\n   +------| gate    |\n          +---------+\n```\n\n**(b) Boolean expressions (4 marks)**\n\n*Sum.* It is 1 in rows $(A,B) = (0,1)$ and $(1,0)$, so by the sum of products:\n\n$$\\text{Sum} = \\overline{A}\\cdot B + A\\cdot\\overline{B} = A \\oplus B$$\n\n*Remainder.* It is 1 only in row $(A,B) = (1,1)$:\n\n$$\\text{Remainder} = A\\cdot B$$\n\nCheck against the table:\n\n| A | B | $\\overline{A}B + A\\overline{B}$ | $A\\cdot B$ |\n|---|---|---|---|\n| 0 | 0 | 0 | 0 |\n| 0 | 1 | 1 | 0 |\n| 1 | 0 | 1 | 0 |\n| 1 | 1 | 0 | 1 |\n\nThe columns are the same as the Sum and Remainder columns of the question.",
+      "themes": [
+        "digital logic gates",
+        "binary adders",
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    }
+  ]
+}

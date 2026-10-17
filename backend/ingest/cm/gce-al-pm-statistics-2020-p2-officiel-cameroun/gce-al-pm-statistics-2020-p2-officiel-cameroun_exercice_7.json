@@ -1,0 +1,55 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2020. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points par partie sont recopiés tels qu'imprimés (leur somme est 102) et `points` de chaque exercice est laissé vide.",
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Scan de 3 pages (page de garde + 2 pages de questions) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Find the image of the line $2y = x$ under the transformation with matrix operator $\\begin{pmatrix} 0 & -1 \\\\ -1 & 0 \\end{pmatrix}$. (4 marks)",
+      "corrige_markdown": "Let $(x, y)$ be a point of the line $2y = x$ and $(x', y')$ its image:\n$$\\begin{pmatrix} x' \\\\ y' \\end{pmatrix} = \\begin{pmatrix} 0 & -1 \\\\ -1 & 0 \\end{pmatrix}\\begin{pmatrix} x \\\\ y \\end{pmatrix} = \\begin{pmatrix} -y \\\\ -x \\end{pmatrix}.$$\nSo $x' = -y$ and $y' = -x$, that is\n$$y = -x', \\qquad x = -y'.$$\n\nSubstitute into the condition $2y = x$:\n$$2(-x') = -y' \\;\\Longrightarrow\\; y' = 2x'.$$\n\nThe image points satisfy $y' = 2x'$, and conversely every point of this line is the image of a point of the original line (the matrix is its own inverse, so the map is a bijection of the plane). Dropping the dashes:\n$$\\boxed{\\text{The image of the line } 2y = x \\text{ is the line } y = 2x.}$$\n\n(Check: the point $(2, 1)$ lies on $2y = x$; its image is $(-1, -2)$, which satisfies $y = 2x$. The matrix is a reflection in the line $y = -x$, and the line $2y = x$ (gradient $\\tfrac12$) is reflected to gradient $2$.)",
+      "themes": [
+        "linear transformations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Find the inverse of the matrix $\\mathbf{A}$, where $\\mathbf{A} = \\begin{pmatrix} 1 & -1 & 1 \\\\ 2 & 1 & -3 \\\\ 1 & 1 & 1 \\end{pmatrix}$. Hence solve the equations $$x - y + z = 7, \\qquad 2x + y - 3z = -6, \\qquad x + y + z = 4.$$ (8 marks)",
+      "corrige_markdown": "**Determinant** (expand along the first row):\n$$\\det\\mathbf{A} = 1(1 \\cdot 1 - (-3)(1)) - (-1)(2 \\cdot 1 - (-3)(1)) + 1(2 \\cdot 1 - 1 \\cdot 1) = 1(4) + 1(5) + 1(1) = 10.$$\nIt is non-zero, so $\\mathbf{A}$ is invertible.\n\n**Cofactors** $C_{ij} = (-1)^{i+j}M_{ij}$:\n- $C_{11} = +\\begin{vmatrix} 1 & -3 \\\\ 1 & 1 \\end{vmatrix} = 4$, $C_{12} = -\\begin{vmatrix} 2 & -3 \\\\ 1 & 1 \\end{vmatrix} = -5$, $C_{13} = +\\begin{vmatrix} 2 & 1 \\\\ 1 & 1 \\end{vmatrix} = 1$;\n- $C_{21} = -\\begin{vmatrix} -1 & 1 \\\\ 1 & 1 \\end{vmatrix} = 2$, $C_{22} = +\\begin{vmatrix} 1 & 1 \\\\ 1 & 1 \\end{vmatrix} = 0$, $C_{23} = -\\begin{vmatrix} 1 & -1 \\\\ 1 & 1 \\end{vmatrix} = -2$;\n- $C_{31} = +\\begin{vmatrix} -1 & 1 \\\\ 1 & -3 \\end{vmatrix} = 2$, $C_{32} = -\\begin{vmatrix} 1 & 1 \\\\ 2 & -3 \\end{vmatrix} = 5$, $C_{33} = +\\begin{vmatrix} 1 & -1 \\\\ 2 & 1 \\end{vmatrix} = 3$.\n\nThe adjugate is the transpose of the cofactor matrix, and $\\mathbf{A}^{-1} = \\dfrac{1}{\\det\\mathbf{A}}\\operatorname{adj}\\mathbf{A}$:\n$$\\boxed{\\mathbf{A}^{-1} = \\frac{1}{10}\\begin{pmatrix} 4 & 2 & 2 \\\\ -5 & 0 & 5 \\\\ 1 & -2 & 3 \\end{pmatrix}}$$\n\n(Check: first row of $\\mathbf{A}$ times first column of the adjugate gives $4 + 5 + 1 = 10$; first row times second column gives $2 + 0 - 2 = 0$; the other entries of $\\mathbf{A}\\operatorname{adj}\\mathbf{A} = 10\\mathbf{I}$ are checked in the same way.)\n\n**Solve the system.** In matrix form $\\mathbf{A}\\begin{pmatrix} x \\\\ y \\\\ z \\end{pmatrix} = \\begin{pmatrix} 7 \\\\ -6 \\\\ 4 \\end{pmatrix}$, so\n$$\\begin{pmatrix} x \\\\ y \\\\ z \\end{pmatrix} = \\mathbf{A}^{-1}\\begin{pmatrix} 7 \\\\ -6 \\\\ 4 \\end{pmatrix} = \\frac{1}{10}\\begin{pmatrix} 28 - 12 + 8 \\\\ -35 + 0 + 20 \\\\ 7 + 12 + 12 \\end{pmatrix} = \\frac{1}{10}\\begin{pmatrix} 24 \\\\ -15 \\\\ 31 \\end{pmatrix}.$$\n\n$$\\boxed{x = 2.4 \\;\\left(=\\tfrac{12}{5}\\right), \\qquad y = -1.5 \\;\\left(=-\\tfrac32\\right), \\qquad z = 3.1 \\;\\left(=\\tfrac{31}{10}\\right)}$$\n\n**Check in the equations:** $2.4 + 1.5 + 3.1 = 7$; $4.8 - 1.5 - 9.3 = -6$; $2.4 - 1.5 + 3.1 = 4$.",
+      "themes": [
+        "determinants and inverses",
+        "matrix algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    }
+  ]
+}

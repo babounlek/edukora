@@ -1,0 +1,116 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 2, ADVANCED LEVEL, June 2023. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 7 (ii) : les fonctions f1 et f2 sont recopiées telles qu'imprimées (en-tête avec le signe « ≡ » imprimé, numéros de ligne conservés ; f1 n'a pas de ENDIF ni de THEN, seulement un END final). Elles sont recopiées dans chaque sous-question (a), (b), (c) pour l'autonomie.",
+    "Question 7 : les schémas demandés en (i)(b) (organigrammes) sont à produire par le candidat ; ils sont décrits dans le corrigé par des diagrammes en texte. Le code C cité en (i)(c) est donné en illustration, il n'a pas été compilé (aucun compilateur disponible) ; les fonctions f1 et f2 ont été vérifiées par une traduction Python (sorties 20 et 20)."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "What is a program control construct?",
+      "corrige_markdown": "A **program control construct** is a programming structure that **determines the order (flow of control) in which the statements of a program are executed**. Every algorithm can be built from three basic constructs:\n\n1. **Sequence**: statements executed one after another in the order written.\n2. **Selection** (decision): one of several paths is chosen according to a condition (`IF ... THEN ... ELSE`, `CASE`).\n3. **Iteration** (repetition, loop): a block of statements is repeated (`WHILE`, `REPEAT ... UNTIL`, `FOR`).",
+      "themes": [
+        "program control constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "With the help of flow diagrams, illustrate the difference between a pre-test loop and a post-test loop.",
+      "corrige_markdown": "In a **pre-test loop** the condition is tested **before** the body is executed; in a **post-test loop** the body is executed **first** and the condition is tested **afterwards**.\n\n**Pre-test loop** (e.g. `WHILE`):\n\n```text\n        +------------------+\n   +--->| Is condition true?|---- No ----> (leave the loop)\n   |    +------------------+\n   |             | Yes\n   |             v\n   |    +------------------+\n   +----|    Loop body     |\n        +------------------+\n```\n\n**Post-test loop** (e.g. `REPEAT ... UNTIL`, `do ... while`):\n\n```text\n   +--->+------------------+\n   |    |    Loop body     |\n   |    +------------------+\n   |             |\n   |             v\n   |    +------------------+\n   +-Yes| Repeat again?    |---- No ----> (leave the loop)\n        +------------------+\n```\n\n**Difference.** In the pre-test loop, if the condition is false at the start, the body is executed **zero times**. In the post-test loop the body is always executed **at least once**, whatever the condition.",
+      "themes": [
+        "program control constructs"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "Give one example each of pre-test loop and post-test loop.",
+      "corrige_markdown": "* **Pre-test loop** - `WHILE`:\n\n```text\nWHILE n > 0\n    sum <- sum + n\n    n <- n - 1\nENDWHILE\n```\n(in C: `while (n > 0) { sum += n; n--; }`). If `n` is 0 at the start, nothing is added.\n\n* **Post-test loop** - `REPEAT ... UNTIL`:\n\n```text\nREPEAT\n    INPUT age\nUNTIL age >= 0\n```\n(in C: `do { scanf(\"%d\", &age); } while (age < 0);`). The user is asked for the age at least once, then again while it is negative (input validation).",
+      "themes": [
+        "program control constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "Consider the functions f1 and f2 below that perform the same task.\n\n```text\n1. FUNCTION f1(m,n) ≡\n2.   IF(n=0)\n3.     return 0\n4.   ELSE\n5.     return m + f1(m,n-1)\n6. END\n```\n\n```text\n1. FUNCTION f2(m,n) ≡\n2.   f = 0\n3.   WHILE(n > 0)\n4.     f = f + m\n5.     n = n-1\n6.   ENDWHILE\n7.   return f\n8. END\n```\n\nFor m = 5 and n = 4, determine the output for any one of the above algorithms.",
+      "corrige_markdown": "Both functions compute $m \\times n$ by repeated addition, so the output is $5 \\times 4 = 20$.\n\n**Trace of f2** ($m = 5$, $n = 4$):\n\n| After pass | f | n |\n|---|---|---|\n| start | 0 | 4 |\n| 1 | 5 | 3 |\n| 2 | 10 | 2 |\n| 3 | 15 | 1 |\n| 4 | 20 | 0 |\n\n$n = 0$, the loop stops and `return f` gives **20**.\n\n**Trace of f1** (recursion, the calls are waiting on the stack):\n\n```text\nf1(5,4) = 5 + f1(5,3)\nf1(5,3) = 5 + f1(5,2)\nf1(5,2) = 5 + f1(5,1)\nf1(5,1) = 5 + f1(5,0)\nf1(5,0) = 0\n```\n\nUnwinding: $f1(5,1) = 5$, $f1(5,2) = 10$, $f1(5,3) = 15$, $f1(5,4) = 20$. A script with a Python translation of both functions gave 20 and 20.\n\n**Output: 20.**",
+      "themes": [
+        "recursion",
+        "program control constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "Consider the functions f1 and f2 below that perform the same task.\n\n```text\n1. FUNCTION f1(m,n) ≡\n2.   IF(n=0)\n3.     return 0\n4.   ELSE\n5.     return m + f1(m,n-1)\n6. END\n```\n\n```text\n1. FUNCTION f2(m,n) ≡\n2.   f = 0\n3.   WHILE(n > 0)\n4.     f = f + m\n5.     n = n-1\n6.   ENDWHILE\n7.   return f\n8. END\n```\n\nWhich of the above algorithms is more efficient? Explain.",
+      "corrige_markdown": "**f2 (the iterative version) is more efficient.**\n\n* Both perform $n$ additions, so both have time complexity $O(n)$ (the same number of additions).\n* **f1 is recursive**: each call to `f1(m, n-1)` creates a new stack frame (parameters, return address) that stays on the call stack until the base case $n = 0$ is reached. It therefore uses $O(n)$ extra memory, spends time on the $n$ function calls and returns, and for a very large $n$ it can cause a **stack overflow**.\n* **f2 uses a loop** and only three variables (`m`, `n`, `f`): $O(1)$ extra memory and no call overhead.\n\nSo f2 uses less memory and runs somewhat faster; f1 is shorter and closer to the mathematical definition $m \\times n = m + m \\times (n-1)$, but less efficient.",
+      "themes": [
+        "recursion",
+        "algorithm complexity"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "Consider the functions f1 and f2 below that perform the same task.\n\n```text\n1. FUNCTION f1(m,n) ≡\n2.   IF(n=0)\n3.     return 0\n4.   ELSE\n5.     return m + f1(m,n-1)\n6. END\n```\n\n```text\n1. FUNCTION f2(m,n) ≡\n2.   f = 0\n3.   WHILE(n > 0)\n4.     f = f + m\n5.     n = n-1\n6.   ENDWHILE\n7.   return f\n8. END\n```\n\nExplain the difference between an argument and a parameter.",
+      "corrige_markdown": "* A **parameter** is the **variable named in the definition** (header) of a function or procedure; it is a placeholder that receives a value when the function is called. In `FUNCTION f1(m,n)`, `m` and `n` are parameters.\n* An **argument** is the **actual value (or expression)** supplied to the function **when it is called**. In `f1(5,4)`, the values `5` and `4` are the arguments; `m` takes the value 5 and `n` the value 4.\n\nIn short, parameters appear in the function definition; arguments appear in the function call.",
+      "themes": [
+        "subprogram parameters"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

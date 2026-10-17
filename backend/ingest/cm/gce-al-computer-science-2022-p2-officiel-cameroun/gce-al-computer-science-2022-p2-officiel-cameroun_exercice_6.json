@@ -1,0 +1,67 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigrane gcerevision.com ignoré) lu page par page en image ; 4 pages, 8 questions, aucune figure à recadrer. Points imprimés par sous-partie (total 17 pour chaque question, vérifié). Question 6 : points imprimés i(a) 2, i(b) 2, ii(a) 4, ii(b) 2, ii(c) 4, ii(d) 3 ; total 17.",
+    "6(ii) : le tableau de trace imprimé est vide (4 lignes) ; le corrigé le remplit avec 4 lignes (valeurs initiales puis trois passages dans la boucle). La trace a été vérifiée par un script Python. Le sujet imprime l'algorithme avec le symbole ← et sans instruction d'affichage de Average (recopié tel quel).",
+    "6(ii)(b)-(c) : réponses de jugement (le sujet ne donne pas d'attendu) ; la division par zéro quand le premier nombre est négatif est le défaut latent de l'algorithme.",
+    "Aucun code C/Pascal dans ce paper (théorie) : rien n'a donc été compilé ; les calculs, tableaux et pseudocodes du corrigé ont été vérifiés par un script Python exécuté (et sqlite3 pour la base de données de la question 5)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "An important part of any software development project is testing. Three testing techniques are white box testing, black box testing and dry run testing.\n\n(a) You are asked to test a given software. You are not given a copy of the program code, only the systems objectives that outline the proposed functionality of the software. Which type of testing can you perform? Justify. (2 marks)\n\n(b) After writing a program, you use your test plan to check whether your program runs correctly. One test does not give the expected results. What would you do to locate the errors in your program code? (2 marks)",
+      "corrige_markdown": "**(a) Type of testing (2 marks)**\n\n**Black box testing.** In black box testing the tester treats the software as a closed box: the internal code and structure are not known or not used. Test data is chosen from the specification (the system objectives and the expected functionality), and the outputs obtained for given inputs are compared with the outputs the specification requires. Since only the objectives are available and not the source code, white box testing (which needs the code to follow every path and statement) and dry running (which needs the code) cannot be done.\n\n**(b) Locating the errors (2 marks)**\n\nDo a **dry run** (desk check, trace) of the program with the data of the failing test: step through the code by hand, one statement at a time, and write down the value of each variable after each statement in a **trace table**. The point where a value differs from what is expected shows the faulty statement (wrong condition, wrong formula, wrong loop limit...). The same can be done on the computer with a debugger: single-step through the program, set breakpoints and watch the variables (or insert temporary output statements). The error is then corrected and the failing test is run again.",
+      "themes": [
+        "software testing",
+        "debugging"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Study the algorithm below and answer the questions that follow.\n\n```\nCount ← 0\nTotal ← 0\nInput(Number)\nWhile Number >= 0 Do\n  Count ← Count + 1\n  Total ← Total + Number\n  Input(Number)\nEndWhile\nAverage ← Total/Count\n```\n\nTrace table\n\n| Count | Total | Number | Average |\n|---|---|---|---|\n|  |  |  |  |\n|  |  |  |  |\n|  |  |  |  |\n|  |  |  |  |\n\n(a) Dry-run the above algorithm and complete the trace table. Use the values 5, 7, 23 and -1 as input. (4 marks)\n\n(b) Does the dry run in (ii)(a) above show any error in the algorithm? Explain. (2 marks)\n\n(c) Describe **two** types of test data that can be used to do white-box testing of the above algorithm. (4 marks)\n\n(d) Explain the difference between a count-controlled loop and a condition-controlled loop, and state which of them has been used in the above algorithm. (3 marks)",
+      "corrige_markdown": "**(a) Trace table (4 marks)**\n\nInputs in order: 5, 7, 23, -1. A new row is written each time a value changes (the row for the initial values comes first).\n\n| Count | Total | Number | Average |\n|---|---|---|---|\n| 0 | 0 | 5 |  |\n| 1 | 5 | 7 |  |\n| 2 | 12 | 23 |  |\n| 3 | 35 | -1 | 11.67 |\n\nExplanation: `Count` and `Total` start at 0 and the first Number is 5. Since $5 \\ge 0$ the loop runs: Count = 1, Total = 5, next Number = 7. Again: Count = 2, Total = 12, Number = 23. Again: Count = 3, Total = 35, Number = -1. Now $-1 \\ge 0$ is false, so the loop stops and Average = $35 / 3 = 11.67$ (11.666... exactly), which equals $(5 + 7 + 23)/3$, the correct average of the three valid numbers.\n\n**(b) Any error shown by the dry run? (2 marks)**\n\nWith these data the dry run shows **no error**: the loop stops at the negative value -1, which is used only as a stopper (sentinel) and is not added to the total or counted, and the average 11.67 is correct. However, the algorithm has a weakness that these data do not reveal: if the **first** number entered is negative, the loop body never runs, Count stays 0 and the last statement computes $0/0$, a division by zero error (run-time error). The algorithm should check that Count is not 0 before dividing. (It also never outputs the average: an `Output(Average)` statement is missing.)\n\n**(c) Test data for white-box testing (4 marks)**\n\nWhite-box testing uses knowledge of the code: the data is chosen so that every statement, branch and path of the algorithm is executed at least once. Two types of data are:\n\n1. **Normal (typical) data** that makes the loop run several times, for example 5, 7, 23, -1 (average 11.67): it checks that Count and Total are updated correctly in the loop body and that the loop ends and the average is calculated.\n2. **Boundary (extreme) data** that tests the condition `Number >= 0` at its limit: the values 0 and -1. For example, the inputs 0, -1 make the loop run exactly once (Count = 1, Total = 0, Average = 0), which shows that 0 is accepted and that -1 stops the loop; they also check the zero-iteration path when the first value is -1 (Count = 0, which exposes the division by zero).\n\n(Erroneous data, such as letters instead of numbers, is a third type, but it tests the input checks rather than the paths of the algorithm.)\n\n**(d) Count-controlled and condition-controlled loops (3 marks)**\n\n- A **count-controlled loop** repeats its body a fixed number of times that is known before the loop starts, controlled by a counter (for example `For i ← 1 To 10 Do ... EndFor`).\n- A **condition-controlled loop** repeats while (or until) a condition is true; the number of repetitions is not known in advance and depends on the data or on what happens in the loop (`While ... Do ... EndWhile`, `Repeat ... Until`). The condition is tested at the start (While) or at the end (Repeat-Until).\n\nThe algorithm uses a **condition-controlled loop**: `While Number >= 0 Do ... EndWhile`. It repeats as long as the number entered is not negative, and stops when the user enters a negative number (a sentinel value); the number of values is not known beforehand.",
+      "themes": [
+        "algorithm tracing",
+        "flowcharts and trace tables",
+        "program control constructs"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 13
+    }
+  ]
+}

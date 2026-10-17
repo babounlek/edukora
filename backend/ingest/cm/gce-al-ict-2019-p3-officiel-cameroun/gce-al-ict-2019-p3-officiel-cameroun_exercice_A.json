@@ -1,0 +1,162 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2019-p3-officiel-cameroun.pdf",
+  "numero_exercice": "A",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Advanced Level Examination. Information & Communication Technologies, Subject code 0796, Paper 3. Examination date: June 2019. Duration: two hours (Day 2).**\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\n**Answer ALL TASKS.**\n\nThe paper has two tasks: Task A (Database, 24 marks) and Task B (Spreadsheet, 23 marks).",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**TASK A (DATABASE: 24 MARKS)**\n\nYou will be asked to create a database by importing tables from a workbook found in your candidate folder. After importing the tables, you will then proceed to carry out other database activities. The information is about sales recorded by an online supplier of goods to customers in some towns in Cameroon.\n\n*[The workbook OnlineSales (sheets Item, Customer, Sales and the General sheet) is supplied on the day in the candidate folder; it is not reproduced in the printed paper and is not reproduced here.]*",
+  "groupes": [],
+  "points": "24",
+  "figures": [],
+  "incertitudes": [
+    "Le classeur OnlineSales (feuilles Item, Customer, Sales, General) est fourni le jour de l'examen et ne figure pas dans le PDF (3 pages). Le contenu exact des tables et feuilles est donc inconnu. La structure a été DÉDUITE du sujet : requête GeneralSheet = SN, Name, Town (Customer), ItemCode, ItemName, UnitPrice (Item), Quantity (Sales), plus TotalPrice calculé ; tableau de la question 2 = 3 lignes pour la table Item ; formule indicative =IF(C2=\"S1\",D2*Item!C$2,...) qui implique General!C = code article, D = quantité, Item!C = prix unitaire ; ligne 22 = ligne des totaux, donc données en lignes 2 à 21 (20 lignes). Les corrigés sont des réponses génériques sur cette structure déduite, sans valeur numérique inventée (les seuls chiffres utilisés sont des données fictives de contrôle, signalées comme telles).",
+    "Aucune exécution Access ou Excel n'est possible ici : les requêtes ont été vérifiées avec sqlite3 (module Python) sur des données FICTIVES (création des 3 tables avec clés primaires et étrangères, vue GeneralSheet, filtre de MeanCustomers) ; la syntaxe propre à Microsoft Access (TotalPrice: [UnitPrice]*[Quantity], In (\"Limbe\",...), boutons du ruban) est donnée de mémoire, non testée. La formule SI imbriquée de la tâche B a été comparée en Python à un RECHERCHEV équivalent sur les mêmes données fictives (résultats identiques). Aucun code C ou Pascal n'est demandé dans ce paper : rien n'a donc été compilé.",
+    "Page 1 (Task A, activité 1) : l'en-tête de la troisième colonne est imprimé « Purchase », corrigé à la main en « Sales » (écriture manuscrite par-dessus). Le sujet appelle la table « Sales » partout ailleurs (procédure h). Transcrit « Sales (printed as Purchase, corrected by hand to Sales) ».",
+    "Task A, activité 9 : la consigne d'impression imprime « Customer, Broadsheet, MeanCustomers », avec « GeneralSheet » écrit à la main au-dessus de « Broadsheet ». « Broadsheet » est vraisemblablement une faute pour GeneralSheet (requête de l'activité 8) ; recopié tel quel avec la correction manuscrite. Les questions 3 à 6 sont imprimées très serrées (les barèmes se suivent) : l'attribution de chaque barème à sa question est lue d'après la disposition : 3 = 2 marks, 4 = 1 mark, 5 = 1 mark, 6 = 3 marks.",
+    "Points de la tâche A : 6 + 2 + 1 + 2 + 1 + 1 + 3 + 2 + 3 + 3 = 24, conforme au total imprimé (24 marks).",
+    "Activité 1 (tableau à compléter) : 4 lignes vierges sont imprimées sous chaque table, mais la structure déduite n'a que 3 champs par table (3 lignes de réponse pour Item à la question 2). Les attributs donnés (Customer : SN, Name, Town ; Item : ItemCode, ItemName, UnitPrice ; Sales : SN, ItemCode, Quantity) sont déduits, non lus ; la clé primaire de Sales (SN + ItemCode) est supposée, faute du fichier de données."
+  ],
+  "questions": [
+    {
+      "numero": "P",
+      "enonce_markdown": "**Procedure to import tables from a workbook into a database.**\n\n(a) Create a Database named **Marketing** and save it in your *candidate folder*.\n\n(b) Right click on the default table named *Table1* found on the left pane of your database window and select *Excel* through the *Import* option to browse to the Excel file named **OnlineSales** in the candidate folder and click *OK*.\n\n(c) Select the **Item** sheet in the *Show Worksheet* window and click *Next*.\n\n(d) In the next step, ensure that the box on *First Row* containing *Column Headings* is checked and click *Next*.\n\n(e) Skip the next step that demands modifying data type by clicking *Next*.\n\n(f) In the next window, select the *No primary key* option. This will be done after the import.\n\n(g) Click *Finish* to end the import.\nVerify that a table named **Item** is added in the table section of the database.\n\n(h) Follow the same procedure as above to import the **Customer** and **Sales** tables. *[6 marks]*",
+      "corrige_markdown": "This is a practical procedure in Microsoft Access (the wording *Table1*, *Show Worksheet* and *Import* is that of Access). The marks go to carrying out each step and to the three tables being present at the end. Expected sequence and result:\n\n1. **(a)** Start Access, choose *Blank database*, type the file name `Marketing` and save it in the *Candidate folder* (file `Marketing.accdb`). Access opens the new database with an empty default table, *Table1*.\n2. **(b)** Right-click *Table1* in the navigation pane and choose *Import* then *Excel* (or *External Data* > *New Data Source* > *From File* > *Excel*). Browse to `OnlineSales` in the candidate folder, choose to import the source data into a new table, and click *OK*.\n3. **(c)** In the *Show Worksheets* window select the sheet **Item** and click *Next*.\n4. **(d)** Tick *First Row Contains Column Headings*, so that the first row of the sheet (ItemCode, ItemName, UnitPrice) becomes the field names and not a record; click *Next*.\n5. **(e)** Do not change field names or data types in this step (Access guesses Short Text for text columns and Number for numeric columns); click *Next*.\n6. **(f)** Choose *No primary key*. The keys are defined afterwards, in design view (activity 5), once the tables are in the database.\n7. **(g)** Click *Finish* (the new table takes the name of the sheet, **Item**); close the import summary window. **Item** now appears in the *Tables* section of the navigation pane. Delete or ignore the unused default *Table1* if it is still empty.\n8. **(h)** Repeat steps (b) to (g) for the sheets **Customer** and **Sales**. At the end the database **Marketing** holds three tables: **Customer**, **Item** and **Sales**.\n\nMarking guide (6 marks): database created and saved with the right name (1), Excel file located through *Import* (1), correct sheet chosen with *First Row Contains Column Headings* ticked (1), no primary key chosen at import (1), table **Item** present (1), tables **Customer** and **Sales** imported the same way (1).",
+      "themes": [
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "1",
+      "enonce_markdown": "List all the attributes of the three tables.\n\n| Customer | Item | Sales (printed as *Purchase*, corrected by hand to *Sales*) |\n|---|---|---|\n| | | |\n| | | |\n| | | |\n| | | |\n\n*[2 marks]*",
+      "corrige_markdown": "The attributes (fields) are the column headings of each imported sheet. They can be read from the Access *Datasheet view* of each table, and they agree with the field list of the query asked in activity 8 (SN, Name, Town, ItemCode, ItemName, UnitPrice, Quantity):\n\n| Customer | Item | Sales |\n|---|---|---|\n| SN | ItemCode | SN |\n| Name | ItemName | ItemCode |\n| Town | UnitPrice | Quantity |\n\n**Reading of the structure.** The fields SN and ItemCode appear in two tables each: SN identifies the customer in **Customer** and tells which customer made each sale in **Sales**; ItemCode identifies the article in **Item** and tells which article was sold in **Sales**. They are the links between the tables. (The paper gives four blank lines per table, so one line may be left unused; the actual column headings must be copied from the workbook supplied on the day.)",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Complete the table below by stating the field names and data types of the **Item** table.\n\n| Field Name | Data type |\n|---|---|\n| | |\n| | |\n| | |\n\n*[1 mark]*",
+      "corrige_markdown": "The **Item** table has three fields (the table of the question has three rows):\n\n| Field Name | Data type |\n|---|---|\n| ItemCode | Short Text (Text) |\n| ItemName | Short Text (Text) |\n| UnitPrice | Number (Currency is also accepted) |\n\nItemCode (for example S1) and ItemName are strings of characters, so they are *Short Text*. UnitPrice is a quantity used in a multiplication (UnitPrice x Quantity), so it must be numeric, not text. The types are those seen in *Design view* after the import.",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Identify the primary keys of the **Item** and **Customer** tables.\n\nPrimary key of Item table: ........\n\nPrimary key of Customer table: ........\n\n*[2 marks]*",
+      "corrige_markdown": "- Primary key of the **Item** table: **ItemCode**.\n- Primary key of the **Customer** table: **SN**.\n\nA primary key is a field (or set of fields) whose value is different for every record and is never empty, so it identifies one record exactly. Two articles can have the same name or price, and two customers can have the same name or live in the same town, but each article has its own code and each customer has his or her own serial number SN.",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "State the foreign key(s) of the database. *[1 mark]*",
+      "corrige_markdown": "The foreign keys are in the **Sales** table: **SN** (it refers to **Customer.SN**) and **ItemCode** (it refers to **Item.ItemCode**).\n\nA foreign key is a field that is a primary key in another table and is used to link the two tables. **Sales** records which customer bought which item, so it holds the keys of both parents. Referential integrity then forbids a sale for a customer or an item that does not exist.",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Insert the primary keys in the tables of the database. *[1 mark]*",
+      "corrige_markdown": "Open each table in **Design view** (right-click the table > *Design View*), select the field, and click *Primary Key* on the *Design* tab (a key icon appears in the row selector):\n\n- **Customer**: select the field **SN** > *Primary Key*.\n- **Item**: select the field **ItemCode** > *Primary Key*.\n- **Sales**: select the two fields **SN** and **ItemCode** together (click the first row selector, hold Ctrl and click the second) > *Primary Key*. This gives a *composite key* (SN, ItemCode): one record per customer and article. (If the data allow a customer to buy the same article twice, add an *AutoNumber* field and use it as key instead; this cannot be checked because the data file is not reproduced.)\n\nSave each table with Ctrl+S before closing the design view. The keys must be set BEFORE the relationships of activity 7 are created. The primary key forbids duplicate and empty values: if Access refuses with an error about duplicate values, the data of that field contain a repeated value and must be corrected first.",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "By studying the entities and their attributes, draw the E-R diagram for the database. *[3 marks]*",
+      "corrige_markdown": "Each table is an **entity** (a rectangle) with its attributes, the key being marked; the foreign keys give the **relationships** and their cardinalities:\n\n- one customer can make many sales, and each sale concerns one customer: **Customer 1 - N Sales**;\n- one item can appear in many sales, and each sale concerns one item: **Item 1 - N Sales**.\n\n**Sales** is the associative entity that turns the many-to-many link between customers and items into two one-to-many links.\n\n```\n+------------------+ 1        N +-------------------+ N        1 +------------------+\n| CUSTOMER         |------------| SALES             |------------| ITEM             |\n|------------------|    buys    |-------------------|  concerns  |------------------|\n| SN (PK)          |            | SN (PK, FK)       |            | ItemCode (PK)    |\n| Name             |            | ItemCode (PK, FK) |            | ItemName         |\n| Town             |            | Quantity          |            | UnitPrice        |\n+------------------+            +-------------------+            +------------------+\n```\n\nMarking guide (3 marks): the three entities with their attributes (1), the keys identified (1), the two relationships with correct cardinalities (1).",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Create the relationship of the three tables in your database. *[2 marks]*",
+      "corrige_markdown": "Close all open tables, then in Access: *Database Tools* > *Relationships*. In the *Show Table* window add **Customer**, **Item** and **Sales** and click *Close*. Then:\n\n1. Drag the field **SN** of **Customer** onto the field **SN** of **Sales**. In the *Edit Relationships* window tick **Enforce Referential Integrity** and click *Create*. Access shows a one-to-many link (1 at the Customer end, the infinity sign at the Sales end).\n2. Drag **ItemCode** of **Item** onto **ItemCode** of **Sales**, tick *Enforce Referential Integrity* and click *Create* (one-to-many again).\n3. Save the layout (Ctrl+S) and, if asked, print the *Relationship Report*.\n\nResult: **Customer** (1) - (many) **Sales** (many) - (1) **Item**. The join fields must have the same data type, and the primary keys of activity 5 must exist first, otherwise Access cannot create a one-to-many relationship.",
+      "themes": [
+        "ict database design",
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "Create a query that will display the complete information (of all the fields) in one table and including a calculated field named *TotalPrice*, which is the product of *UnitPrice* and *Quantity*.\n\nThe fields should be in the order: SN, Name, Town, ItemCode, ItemName, UnitPrice, Quantity, TotalPrice. Save the query as **GeneralSheet**.\n\nWrite down the Expression you have used in the *TotalPrice* field in the line below. *[3 marks]*",
+      "corrige_markdown": "In Access: *Create* > *Query Design*, add **Customer**, **Sales** and **Item** (the relationships of activity 7 supply the joins) and place the fields in the grid in the required order:\n\n| Field | SN | Name | Town | ItemCode | ItemName | UnitPrice | Quantity | TotalPrice |\n|---|---|---|---|---|---|---|---|---|\n| Table | Customer | Customer | Customer | Item | Item | Item | Sales | (calculated) |\n\nIn the first empty column, in the *Field* row, type the calculated field:\n\n```\nTotalPrice: [UnitPrice]*[Quantity]\n```\n\nThe expression is `[UnitPrice]*[Quantity]` (the part before the colon is the name given to the new column). Run the query (*Run* button) and save it with Ctrl+S under the name **GeneralSheet**. SN is taken from Customer and ItemCode from Item, because the same field names also exist in Sales.\n\nThe same query in SQL (checked with SQLite on invented sample data):\n\n```sql\nSELECT Customer.SN, Customer.Name, Customer.Town, Item.ItemCode, Item.ItemName,\n       Item.UnitPrice, Sales.Quantity,\n       Item.UnitPrice * Sales.Quantity AS TotalPrice\nFROM Customer\n     INNER JOIN Sales ON Customer.SN = Sales.SN\n     INNER JOIN Item  ON Item.ItemCode = Sales.ItemCode;\n```\n\nTest with invented data: a customer who buys 20 units of an item at 150 gets TotalPrice = 20 x 150 = 3000.",
+      "themes": [
+        "ict database queries"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "Create a query to display items bought by inhabitants of Limbe, Yaounde, and Douala where the number of items is less than 45.\n\nSave the query as **MeanCustomers**.\n\n**Print the following:** *Customer*, *Broadsheet* (corrected by hand to *GeneralSheet* on the paper), *MeanCustomers*. *[3 marks]*",
+      "corrige_markdown": "Create the query *MeanCustomers* in *Query Design* from the query **GeneralSheet** (or from the three tables), place the fields SN, Name, Town, ItemCode, ItemName, UnitPrice, Quantity (and TotalPrice) in the grid, then set the criteria **on the same Criteria row** (same row means AND):\n\n| Field | Town | Quantity |\n|---|---|---|\n| Criteria | In (\"Limbe\",\"Yaounde\",\"Douala\") | <45 |\n\n`In (\"Limbe\",\"Yaounde\",\"Douala\")` is the same as `\"Limbe\" Or \"Yaounde\" Or \"Douala\"`. Do NOT put the town criteria and `<45` on different rows: criteria on different rows are combined with OR and would wrongly show every sale below 45 whatever the town. Run the query, then save it as **MeanCustomers**.\n\nSQL equivalent (checked with SQLite on invented data):\n\n```sql\nSELECT SN, Name, Town, ItemCode, ItemName, UnitPrice, Quantity, TotalPrice\nFROM GeneralSheet\nWHERE Town IN ('Limbe', 'Yaounde', 'Douala') AND Quantity < 45;\n```\n\n\"Less than 45\" is strict: a quantity of exactly 45 is NOT displayed (with invented data, a sale of 45 units in Douala is excluded and one of 44 is kept). The printing instruction asks for three printouts: the table **Customer**, the query **GeneralSheet** (the printed paper says *Broadsheet*, corrected by hand to *GeneralSheet*) and the query **MeanCustomers**; open each object, use *File* > *Print* (check *Print Preview* first) and staple the printouts in the booklet.",
+      "themes": [
+        "ict database queries"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

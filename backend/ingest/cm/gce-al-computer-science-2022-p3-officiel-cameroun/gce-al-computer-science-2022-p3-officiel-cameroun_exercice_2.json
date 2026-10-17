@@ -1,0 +1,145 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 3, ADVANCED LEVEL, June 2022. Subject title: Computer Science. Paper 3 - Practical. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of the drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. You are expected to print out a single copy of relevant fragments of your program at different times. Please notify the instructor of any required printout that was not done! When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C or C11 programming languages may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer. Do not write on the first page of your answer booklet. It is reserved for administrative purpose. Where information is provided as soft copy, notify the instructors if it is not found in your machine or has not been made available to you.\n\nThe paper has two tasks: Task 1 (Database for a Furniture Company, 24 marks) and Task 2 (Programming, 26 marks).",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**Task 2: Programming** *(26 marks)*\n\nYou are to design a program to help pupils in primary school to list all the prime numbers found within a given range of positive integers. A prime number is divisible only by one and itself. However, 1 is not considered prime. Use the following algorithm to get the desired list of prime numbers.\n\n1. Get the maximum value of a range from the user. Call it **N**.\n2. Fill the array with numbers from 1 to **N**. Take your array size to be 100.\n3. Starting from the beginning of the array, eliminate the number 1 from the array by setting it to zero. Then, locate the first prime number.\n4. Set all its multiples to zero, except, of course, the number itself, and then move to the next number.\n5. Repeat step (4) for each new number there, until you get to the square root of **N**. Call this square root **rootN**. Obtain it via the square root function of your programming language (PL), and round it up (or down) to an integer value. [**NOTE:** *Rounding may be either through a round function (or whatever your PL environment might offer) or truncation to an integer value such as through a type cast, integer arithmetic or assignment to integer variables.*]\n6. Display all the numbers in the array that are different from zero. They should all be prime numbers.\n\n**Illustration:**\n\nHere, we illustrate how the algorithm works.\n\n1. You obtain (declare) an array **Tab[100]** of integer.\n2. Suppose the maximum value of the range given is **N** = 10.\n3. Fill array **Tab** with **N** numbers.\n\n| Tab[1] | Tab[2] | Tab[3] | Tab[4] | Tab[5] | Tab[6] | Tab[7] | Tab[8] | Tab[9] | Tab[10] |\n|---|---|---|---|---|---|---|---|---|---|\n| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |\n\n4. Set entry 1 (the first) to zero.\n\n| Tab[1] | Tab[2] | Tab[3] | Tab[4] | Tab[5] | Tab[6] | Tab[7] | Tab[8] | Tab[9] | Tab[10] |\n|---|---|---|---|---|---|---|---|---|---|\n| 0 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |\n\nNow, we identify all the prime numbers from 2 to **rootN** and set to zeros their multiples found in the array as follows:\n\n5. Round up the square root of **N** (i.e., of 10) to get 4.\n6. Identify 2 as a prime number.\n7. Excluding 2 itself, set to zero all multiples of 2, right up to **N**. So, we reset the numbers 4, 6, 8 and 10 to obtain:\n\n| Tab[1] | Tab[2] | Tab[3] | Tab[4] | Tab[5] | Tab[6] | Tab[7] | Tab[8] | Tab[9] | Tab[10] |\n|---|---|---|---|---|---|---|---|---|---|\n| 0 | 2 | 3 | 0 | 5 | 0 | 7 | 0 | 9 | 0 |\n\n8. Identify the next prime number (i.e. 3).\n9. Again, excluding 3, we set all the multiples of 3 (i.e., 3 and 9) to zero to obtain:\n\n| Tab[1] | Tab[2] | Tab[3] | Tab[4] | Tab[5] | Tab[6] | Tab[7] | Tab[8] | Tab[9] | Tab[10] |\n|---|---|---|---|---|---|---|---|---|---|\n| 0 | 2 | 3 | 0 | 5 | 0 | 7 | 0 | 0 | 0 |\n\n10. The next available [non-zero] number, 5, is greater than **rootN** (i.e., 4) so we stop. We now display (or print) all the non-zero numbers of the array as the prime numbers found between 1 and 10, viz: 2, 3, 5 and 7.\n\n**Application:**\n\nHere, we develop the required program by following the steps below.",
+  "groupes": [],
+  "points": "26",
+  "figures": [],
+  "incertitudes": [
+    "Aucun compilateur C ni Pascal n'est disponible : le code C du corrigé (Task 2) n'a PAS été compilé. Sa logique (initialise, verifyprime, setzero, doDisplay, main avec rootN = ceil(sqrt(N))) a été vérifiée par une traduction fidèle en Python, exécutée pour tous les N de 2 à 100 (comparaison avec un test de primalité par force brute), puis sur N = 10, 20, 100, 2, 16 et des saisies invalides ; les sorties recopiées dans le corrigé (N = 100, traces de verifyprime et setzero) sont celles de cette simulation. Le SQL de la Task 1 a été exécuté avec sqlite3, clés étrangères activées (CREATE TABLE, INSERT, requête avec jointures, DELETE refusé puis accepté après suppression des lignes enfants, ALTER TABLE ADD COLUMN DEFAULT, UPDATE) ; CREATE DATABASE / USE, ON DELETE CASCADE et la remarque MySQL sur TEXT DEFAULT ne sont pas testés (SQLite ne les prend pas en charge).",
+    "Le PDF est un scan de 4 pages (page de garde, Task 1, fin de la Task 1 et début de la Task 2, fin de la Task 2) : le sujet ne comporte que deux tâches, sans sections ni choix (regles_choix et groupes vides). Aucune figure n'est recadrée : le tableau des attributs et les tableaux d'illustration de la Task 2 (tableaux de 10 cases) sont transcrits en tableaux Markdown, et le schéma entité-association à produire par le candidat (Task 1 i) est décrit dans le corrigé sous forme de schéma en texte.",
+    "Points imprimés cohérents : Task 1 = 24 (3 + 1 + 4 + 8 + 2 + 2 + 2 + 2), Task 2 = 26 (3 + 4 + 5 + 4 + 3 + 4 + 1 + 2). Aucun point corrigé. Les sous-questions (c) et (d) du sujet suivent les (a) et (b) de (iv) : elles sont codées iv(c) et iv(d), car (d) renvoie à « iv(a) ».",
+    "Défauts d'impression recopiés tels quels : le tableau des attributs écrit « OrderIdD » (pour OrderID) ; les noms d'attributs du tableau (Email, Telephone number) diffèrent de ceux des relations (EmailAddress, TelephoneNumber) ; l'énoncé (c) écrit « Customer Order » (table CustomerOrder) ; l'étape 9 de l'illustration dit « multiples of 3 (i.e., 3 and 9) » alors que 3 est exclu et que les multiples à mettre à zéro sont 6 (déjà à zéro) et 9. Le corrigé emploie les noms des relations (EmailAddress, TelephoneNumber, OrderID) et le signale.",
+    "Le sujet ne donne pas la taille des champs Price, Quantity, OrderID, Date et TelephoneNumber : le corrigé choisit NUMERIC(10,2), INTEGER, INTEGER, DATE et BIGINT et le dit. Les données d'exemple (4 clients, 6 meubles, 5 commandes, 9 lignes) sont inventées ; le sujet n'en fournit pas. La ventilation des 8 points de (iii) et les barèmes partiels des autres questions sont des propositions : le sujet n'imprime que les totaux par sous-question.",
+    "Les actions sur ordinateur demandées (créer la base, saisir les données, imprimer, enregistrer et imprimer la sortie du test N = 100) sont traitées par les instructions et listings attendus, avec une sortie simulée. Le sujet autorise « round up (or down) » pour rootN : le corrigé arrondit par excès (4 pour N = 10, comme dans l'illustration). La page de garde autorise « C or C11 » ; le corrigé est en ANSI C compatible C11. Le tableau C déclaré tab[MAX + 1] (position k = nombre k, case 0 inutilisée) a 101 éléments ; l'équivalent Pascal array[1..100] en a exactement 100."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**(i)** In your answer booklet, state the programming language you will use. Then, give a more detailed version of the algorithm above in pseudo code. In it, let **N** = 20. *[3 marks]*",
+      "corrige_markdown": "**Programming language:** ANSI C (compiled for example with `gcc -std=c11`). Standard ISO Pascal is also allowed by the paper.\n\n**Detailed algorithm in pseudocode** (the array has 100 elements, `Tab[1..100]`, and the position of a number is the number itself; for this question N = 20):\n\n```\nALGORITHM Primes\n  CONSTANT MAX <- 100\n  VARIABLES Tab[1..MAX] : INTEGER\n            N, rootN, p, m, i : INTEGER\n\n  N <- 20                               { READ N : the maximum value of the range }\n  FOR i <- 1 TO N DO\n      Tab[i] <- i                       { fill the array with 1, 2, ..., 20 }\n  END FOR\n  Tab[1] <- 0                           { 1 is not a prime number }\n  rootN <- ROUND UP (SQRT(N))           { SQRT(20) = 4.47..., so rootN = 5 }\n  FOR p <- 2 TO rootN DO\n      IF Tab[p] <> 0 THEN               { p has not been eliminated: it is the next prime }\n          FOR m <- 2 * p TO N STEP p DO\n              Tab[m] <- 0               { set the multiples of p to zero, not p itself }\n          END FOR\n      END IF\n  END FOR\n  FOR i <- 1 TO N DO\n      IF Tab[i] <> 0 THEN\n          DISPLAY Tab[i]                { the non-zero numbers are the primes }\n      END IF\n  END FOR\nEND ALGORITHM\n```\n\n**Trace for N = 20** (rootN = 5). The entry `Tab[1]` is set to zero first; then for each p from 2 to 5:\n\n| p | Is Tab[p] non-zero (p prime)? | Multiples of p set to zero (2p up to 20) | Numbers that become zero for the first time |\n|---|---|---|---|\n| 2 | yes | 4, 6, 8, 10, 12, 14, 16, 18, 20 | 4, 6, 8, 10, 12, 14, 16, 18, 20 |\n| 3 | yes | 6, 9, 12, 15, 18 | 9, 15 |\n| 4 | no (already zero) | none: 4 is skipped | none |\n| 5 | yes | 10, 15, 20 | none (already zero) |\n\nThe next number, 6, is greater than rootN, so the loop stops. The non-zero numbers left in the array are **2, 3, 5, 7, 11, 13, 17 and 19**: these are the 8 prime numbers between 1 and 20.\n\n| Position | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| Tab | 0 | 2 | 3 | 0 | 5 | 0 | 7 | 0 | 0 | 0 | 11 | 0 | 13 | 0 | 0 | 0 | 17 | 0 | 19 | 0 |\n\n*Marking:* language stated (1 mark), declaration, input and filling of the array with 1 to N and 1 set to zero (1 mark), the loop up to rootN that sets the multiples of each prime to zero and the final display (1 mark).",
+      "themes": [
+        "pseudocode algorithms",
+        "algorithm design",
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "**(ii)** Write a subprogram called **initialise(tab, n)** that fills the array **tab** with numbers from 1 to **n**. *[4 marks]*",
+      "corrige_markdown": "The subprogram receives the array and the number n of elements to fill. In C an array parameter is passed by address, so the elements written inside the function are written in the caller's array. The array is declared with `MAX + 1` elements so that position k holds the number k (position 0 is not used); in Pascal the same array is `array[1..100] of integer`.\n\n```c\n#define MAX 100\n\n/* Fills the array tab with the numbers from 1 to n (position k holds k) */\nvoid initialise(int tab[], int n)\n{\n    int i;\n\n    for (i = 1; i <= n; i++)\n        tab[i] = i;\n}\n```\n\n*Example:* for `n = 10`, the call `initialise(tab, 10)` gives `tab[1] = 1, tab[2] = 2, ..., tab[10] = 10`, the state of step 3 of the illustration. The loop runs n times, so the elements beyond position n are left unchanged.\n\n*Marking:* header with the two parameters (1 mark), loop from 1 to n (1 mark), assignment `tab[i] = i` (1 mark), array of at least 100 elements (1 mark).",
+      "themes": [
+        "subprograms",
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "**(iii)** Write a subprogram called **verifyprime(x)** that takes a number **x** and verifies whether it is a prime number or not. For this, **x** is not divisible by any non-zero number less than it in the array **tab**. *[5 marks]*",
+      "corrige_markdown": "**Idea.** A number x is prime when no number between 2 and x - 1 divides it. The paper asks to test only the **non-zero** numbers of the array `tab` that are smaller than x: the zeros are numbers already eliminated (1 and the multiples of smaller primes), and a composite divisor would itself be a multiple of a prime that is also a divisor, so skipping the eliminated numbers loses nothing. The subprogram has only the parameter x, so `tab` is the **global** array of the program. It returns 1 (true) for a prime number and 0 (false) otherwise.\n\n```c\n/* Returns 1 if x is prime, 0 otherwise: x is prime when no NON-ZERO number\n   smaller than x in the array tab divides it (the number 1 is already set to zero) */\nint verifyprime(int x)\n{\n    int k;\n\n    if (x < 2)\n        return 0;\n    for (k = 2; k < x; k++)\n        if (tab[k] != 0 && x % tab[k] == 0)\n            return 0;           /* a non-zero divisor was found */\n    return 1;\n}\n```\n\n**Trace** on the array of step 7 of the illustration (N = 10, after the multiples of 2 were set to zero): `tab = 0 2 3 0 5 0 7 0 9 0`.\n\n- `verifyprime(9)`: k = 2, `tab[2] = 2` and 9 mod 2 = 1; k = 3, `tab[3] = 3` and 9 mod 3 = 0, so the function returns **0**: 9 is not prime.\n- `verifyprime(7)`: k = 2, 3, 5 give the remainders 1, 1, 2 (`tab[4]` and `tab[6]` are zero and are skipped), so the function returns **1**: 7 is prime.\n- `verifyprime(4)` returns 0 (2 divides 4), `verifyprime(2)` returns 1 (the loop does not run) and `verifyprime(1)` returns 0 (1 is not prime, test `x < 2`).\n\n*Marking:* header with the parameter x and a result (1 mark), loop over the numbers less than x (1 mark), test that the array element is non-zero (1 mark), divisibility test with `%` (1 mark), correct return values 1 and 0 (1 mark).",
+      "themes": [
+        "subprograms",
+        "programming in c",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "**(iv)** Write a subprogram called **setzero(tab, n, y)** that takes a number **y** and sets all its multiples in array **tab** to zero, except the number itself, as explained earlier. *[4 marks]*",
+      "corrige_markdown": "The multiples of y are 2y, 3y, 4y, ... up to the last position n of the array. The loop therefore starts at 2y (y itself is excluded) and adds y at each step.\n\n```c\n/* Sets to zero all the multiples of y in tab (up to position n), except y itself */\nvoid setzero(int tab[], int n, int y)\n{\n    int k;\n\n    for (k = 2 * y; k <= n; k += y)\n        tab[k] = 0;\n}\n```\n\n*Examples* (N = 10, steps 7 and 9 of the illustration): `setzero(tab, 10, 2)` sets `tab[4]`, `tab[6]`, `tab[8]` and `tab[10]` to zero and leaves `tab[2] = 2`; then `setzero(tab, 10, 3)` sets `tab[6]` (already zero) and `tab[9]` to zero and leaves `tab[3] = 3`. The array becomes `0 2 3 0 5 0 7 0 0 0`. For y greater than n / 2 the loop does not run (2y is already beyond n), which is correct: such a number has no multiple in the array.\n\n*Marking:* header with the three parameters (1 mark), loop starting at 2y so that y is excluded (1 mark), step y and stop at n (1 mark), assignment of zero (1 mark).",
+      "themes": [
+        "subprograms",
+        "programming in c"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "v",
+      "enonce_markdown": "**(v)** Write a subprogram called **doDisplay(tab, n)** that displays all the non-zero elements of array **tab**, up to those in array position **n**. *[3 marks]*",
+      "corrige_markdown": "The subprogram scans the positions 1 to n and displays only the elements that are different from zero (the numbers that were not eliminated, that is the prime numbers). The version below prints ten numbers per line and the number of elements displayed.\n\n```c\n/* Displays the non-zero elements of tab up to position n, ten per line */\nvoid doDisplay(int tab[], int n)\n{\n    int i, count = 0;\n\n    for (i = 1; i <= n; i++)\n        if (tab[i] != 0)\n        {\n            printf(\"%4d\", tab[i]);\n            count++;\n            if (count % 10 == 0)\n                printf(\"\\n\");\n        }\n    if (count % 10 != 0)\n        printf(\"\\n\");\n    printf(\"Number of primes found: %d\\n\", count);\n}\n```\n\n*Example:* for `n = 10` and `tab = 0 2 3 0 5 0 7 0 0 0`, the call `doDisplay(tab, 10)` prints\n\n```\n   2   3   5   7\nNumber of primes found: 4\n```\n\n*Marking:* loop from 1 to n (1 mark), test `tab[i] != 0` (1 mark), display of the element (1 mark). The count and the layout are extras.",
+      "themes": [
+        "subprograms",
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "vi",
+      "enonce_markdown": "**(vi)** Write a main program that makes use of the above subprograms to identify prime numbers in a positive integer range. Make sure your program works correctly. *[4 marks]*",
+      "corrige_markdown": "The main program follows the six steps of the algorithm: read N (and check it, because the array holds at most 100 numbers and the range must contain at least the number 2), fill the array, set 1 to zero, compute rootN, then for each p from 2 to rootN use `verifyprime(p)` to know whether p is prime and `setzero` to eliminate its multiples, and finally call `doDisplay`.\n\n```c\nint main(void)\n{\n    int n, rootN, p;\n\n    do\n    {\n        printf(\"Enter N (2 to %d): \", MAX);\n        if (scanf(\"%d\", &n) != 1)\n            return 1;           /* not a number: stop */\n    } while (n < 2 || n > MAX);\n\n    initialise(tab, n);         /* step 2: fill the array with 1..N */\n    tab[1] = 0;                 /* step 3: 1 is not prime */\n    rootN = (int) ceil(sqrt((double) n));   /* square root of N, rounded up */\n\n    for (p = 2; p <= rootN; p++)\n        if (verifyprime(p))     /* p is the next prime number */\n            setzero(tab, n, p); /* step 4: set its multiples to zero */\n\n    printf(\"Prime numbers between 1 and %d:\\n\", n);\n    doDisplay(tab, n);          /* step 6 */\n    return 0;\n}\n```\n\n*Remarks.*\n\n- `rootN = (int) ceil(sqrt((double) n))` is the square root of N rounded **up** (4 for N = 10, 5 for N = 20), as in the illustration. Rounding down would also give the correct list, because a composite number not larger than N always has a prime factor not larger than the square root of N.\n- `verifyprime(p)` is true only for a prime p, so the multiples of 4, 6, 9... (numbers already eliminated or composite) are never processed. The test `tab[p] != 0` would give the same result.\n- With `sqrt`, some compilers require the maths library when linking (`gcc ... -lm`).\n- The `do ... while` loop repeats the question until N is between 2 and 100 (it protects the array); a non-numeric input stops the program.\n\n*Marking:* reading and checking N (1 mark), initialisation and 1 set to zero (1 mark), computation of rootN and the loop on p with `verifyprime` and `setzero` (1 mark), display (1 mark).",
+      "themes": [
+        "programming in c",
+        "program control constructs",
+        "subprograms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "vii",
+      "enonce_markdown": "**(vii)** Print your entire program including its subprograms. *[1 mark]*",
+      "corrige_markdown": "The printout is the complete source file, with the global declarations, the four subprograms and the main program (the order matters in C: a function must be defined before it is used, and `verifyprime` uses the global array `tab`). The listing is saved as `primes.c` and printed from the editor.\n\n```c\n#include <stdio.h>\n#include <math.h>\n\n#define MAX 100                 /* size of the array, as required */\n\nint tab[MAX + 1];               /* tab[k] holds the number k; tab[0] is not used */\n\n/* Fills the array tab with the numbers from 1 to n (position k holds k) */\nvoid initialise(int tab[], int n)\n{\n    int i;\n\n    for (i = 1; i <= n; i++)\n        tab[i] = i;\n}\n\n/* Returns 1 if x is prime, 0 otherwise: x is prime when no NON-ZERO number\n   smaller than x in the array tab divides it (the number 1 is already set to zero) */\nint verifyprime(int x)\n{\n    int k;\n\n    if (x < 2)\n        return 0;\n    for (k = 2; k < x; k++)\n        if (tab[k] != 0 && x % tab[k] == 0)\n            return 0;           /* a non-zero divisor was found */\n    return 1;\n}\n\n/* Sets to zero all the multiples of y in tab (up to position n), except y itself */\nvoid setzero(int tab[], int n, int y)\n{\n    int k;\n\n    for (k = 2 * y; k <= n; k += y)\n        tab[k] = 0;\n}\n\n/* Displays the non-zero elements of tab up to position n, ten per line */\nvoid doDisplay(int tab[], int n)\n{\n    int i, count = 0;\n\n    for (i = 1; i <= n; i++)\n        if (tab[i] != 0)\n        {\n            printf(\"%4d\", tab[i]);\n            count++;\n            if (count % 10 == 0)\n                printf(\"\\n\");\n        }\n    if (count % 10 != 0)\n        printf(\"\\n\");\n    printf(\"Number of primes found: %d\\n\", count);\n}\n\nint main(void)\n{\n    int n, rootN, p;\n\n    do\n    {\n        printf(\"Enter N (2 to %d): \", MAX);\n        if (scanf(\"%d\", &n) != 1)\n            return 1;           /* not a number: stop */\n    } while (n < 2 || n > MAX);\n\n    initialise(tab, n);         /* step 2: fill the array with 1..N */\n    tab[1] = 0;                 /* step 3: 1 is not prime */\n    rootN = (int) ceil(sqrt((double) n));   /* square root of N, rounded up */\n\n    for (p = 2; p <= rootN; p++)\n        if (verifyprime(p))     /* p is the next prime number */\n            setzero(tab, n, p); /* step 4: set its multiples to zero */\n\n    printf(\"Prime numbers between 1 and %d:\\n\", n);\n    doDisplay(tab, n);          /* step 6 */\n    return 0;\n}\n```\n\nCompilation and run (with a C compiler such as gcc): `gcc -std=c11 -Wall -o primes primes.c -lm`, then `./primes`.\n\n*Marking:* one mark for a printout that shows the whole program, the main program and every subprogram.",
+      "themes": [
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "viii",
+      "enonce_markdown": "**(viii)** Test your program with **N** = 100. Save its output and then print it. *[2 marks]*",
+      "corrige_markdown": "The program is run and N = 100 is typed. The output is the list of the prime numbers from 1 to 100; there are **25** of them.\n\n```\nEnter N (2 to 100): 100\nPrime numbers between 1 and 100:\n   2   3   5   7  11  13  17  19  23  29\n  31  37  41  43  47  53  59  61  67  71\n  73  79  83  89  97\nNumber of primes found: 25\n```\n\nThe output is saved in a file by redirecting it, for example `echo 100 | ./primes > output.txt` (the prompt then appears at the beginning of the file, without the typed value), or by copying the console window into a text file; the file `output.txt` is then printed.\n\n*Check.* The 25 numbers are the primes below 100: 2, 3, 5, 7 (4 primes below 10), then 11, 13, 17, 19 (4 more), 23, 29 (2), 31, 37 (2), 41, 43, 47 (3), 53, 59 (2), 61, 67 (2), 71, 73, 79 (3), 83, 89 (2) and 97 (1): in total 4 + 4 + 2 + 2 + 3 + 2 + 2 + 3 + 2 + 1 = 25. Here rootN = 10, so only the multiples of 2, 3, 5 and 7 are eliminated (the primes up to 10), and every composite number below 100 has a prime factor not larger than 10. As a test of the limits, N = 2 prints only 2 (1 prime), N = 16 prints 2, 3, 5, 7, 11, 13 (6 primes) and a value outside 2 to 100 is refused and asked again.\n\n*Marking:* correct output for N = 100 (1 mark), output saved and printed (1 mark).",
+      "themes": [
+        "programming in c",
+        "software testing"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

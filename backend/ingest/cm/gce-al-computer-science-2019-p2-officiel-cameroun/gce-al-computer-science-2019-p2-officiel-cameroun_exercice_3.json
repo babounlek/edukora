@@ -1,0 +1,79 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2019. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the appropriate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 : points imprimés i = 2, ii = 2 (une seule mention « (2 marks) » après (b), répartie 1 + 1 dans le corrigé), iii = 3 + 4 + 2 + 4 = 13, soit 17.",
+    "Question 3(iii) : les tableaux TEACHER et SUBJECT du sujet n'ont que leurs en-têtes (clé primaire marquée d'un astérisque) ; ils sont recopiés avec une ligne vide. Le sujet appelle « TEACHERS » la table nommée « TEACHER » sur la figure ; coquille « What in the cardinality » (pour « What is ») conservée.",
+    "Question 3(b) : les données d'exemple (noms, téléphone) sont inventées ; toute ligne cohérente est acceptable. Le SQL a été vérifié avec le module sqlite3 de Python (clés étrangères activées) ; le dialecte (VARCHAR, DATE) est standard."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Why are databases very important today? (2 marks)",
+      "corrige_markdown": "**Importance of databases (2 marks)**\n\n- A database stores a large amount of data **in one organised place** that many users and programs can **share at the same time** (school records, bank accounts, hospital files, online shops, social networks).\n- It **reduces redundancy and inconsistency** of data, and keeps the data **accurate** through integrity rules.\n- Data can be **retrieved quickly and flexibly** with queries (for example SQL), which supports decision making and report production.\n- Access is **controlled** (security, user rights) and the data can be **backed up and recovered**.\n\nAny two well explained points score the 2 marks.",
+      "themes": [
+        "database systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Define the following terms as far as databases is concerned\n\n(a) Foreign Key\n\n(b) Entity (2 marks)",
+      "corrige_markdown": "**(a) Foreign key (1 mark)**\n\nA foreign key is an attribute (or a set of attributes) of a table whose values refer to the **primary key** of another table (or of the same table). It is used to **link** the two tables and to enforce referential integrity. Example: *Subject Code* in the TEACHER table is a foreign key which refers to the primary key *Subject Code* of the SUBJECT table.\n\n**(b) Entity (1 mark)**\n\nAn entity is a real-world object, person, place, thing or event about which data is stored and which can be distinguished from the others (for example a teacher or a subject). In a relational database an entity is represented by a **table**: each row is one occurrence (instance) of the entity and each column is an attribute.",
+      "themes": [
+        "keys and relationships",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "A school database has two tables TEACHERS and SUBJECT, with primary keys Teacher ID and Subject Code respectively. Study the tables below and answer the questions that follow.\n\nTEACHER\n\n| TEACHER_ID* | Teacher Name | DOB | Phone | Subject Code |\n|---|---|---|---|---|\n| | | | | |\n\nSUBJECT: table\n\n| Subject Code* | Title | Hours_per_Week |\n|---|---|---|\n| | | |\n\n(a) Define the term referential integrity as used in databases. How does it affect the records in a database table? Explain your answer using this database. (3 marks)\n\n(b) Present exactly ONE row of sample data for the database entity TEACHER, and exactly TWO rows for the entity SUBJECTS. (4 marks)\n\n(c) The relationship \"Teaches\" exists between the TEACHER table and SUBJECT table. What in the cardinality of this relationship? Explain what this cardinality means. (2 marks)\n\n(d) Draw an entity relationship diagram that shows how these tables are related. Primary key and cardinality should be clearly shown. (4 marks)",
+      "corrige_markdown": "**(a) Referential integrity (3 marks)**\n\nReferential integrity is the rule that every value of a **foreign key** must either be empty (NULL) or match an **existing primary key value** in the table it refers to. It guarantees that a record never refers to a record that does not exist (no \"orphan\" records).\n\n*Effect on the records of this database.* Subject Code in TEACHER is a foreign key referring to SUBJECT:\n\n- a teacher **cannot be added** with a Subject Code which is not in the SUBJECT table;\n- a subject **cannot be deleted** (and its code cannot be changed) while teachers still refer to it, unless the database is set to delete or update the related teachers automatically (cascade) or to set their Subject Code to NULL;\n- when a code is changed under a cascade rule, the same change is made automatically in all the TEACHER records.\n\nCheck with SQLite (foreign keys switched on) on the tables of part (b): inserting a teacher with the unknown subject code `EN720` gives `FOREIGN KEY constraint failed`, and so do deleting subject `CS795` or changing its code while teacher T001 refers to it; deleting the subject `MT765`, which no teacher uses, is accepted.\n\n**(b) Sample data (4 marks)**\n\nAny valid data is accepted, provided the Subject Code of the teacher exists in the SUBJECT table.\n\nTEACHER (one row):\n\n| TEACHER_ID* | Teacher Name | DOB | Phone | Subject Code |\n|---|---|---|---|---|\n| T001 | Ngwa Peter | 1985-04-12 | 677123456 | CS795 |\n\nSUBJECT (two rows):\n\n| Subject Code* | Title | Hours_per_Week |\n|---|---|---|\n| CS795 | Computer Science | 6 |\n| MT765 | Mathematics | 5 |\n\nThe tables can be created and filled in SQL (checked with the sqlite3 module of Python):\n\n```sql\nCREATE TABLE SUBJECT (\n    Subject_Code   VARCHAR(6) PRIMARY KEY,\n    Title          VARCHAR(40),\n    Hours_per_Week INTEGER\n);\nCREATE TABLE TEACHER (\n    Teacher_ID   VARCHAR(6) PRIMARY KEY,\n    Teacher_Name VARCHAR(40),\n    DOB          DATE,\n    Phone        VARCHAR(12),\n    Subject_Code VARCHAR(6) REFERENCES SUBJECT(Subject_Code)\n);\nINSERT INTO SUBJECT VALUES ('CS795', 'Computer Science', 6);\nINSERT INTO SUBJECT VALUES ('MT765', 'Mathematics', 5);\nINSERT INTO TEACHER VALUES ('T001', 'Ngwa Peter', '1985-04-12', '677123456', 'CS795');\n```\n\n**(c) Cardinality of \"Teaches\" (2 marks)**\n\nCardinality states how many occurrences of one entity can be related to occurrences of the other entity. Each teacher has **one** Subject Code (the foreign key in TEACHER), so a teacher teaches one subject, while **one subject can be taught by many teachers**. The relationship is therefore **one-to-many (1:M)** from SUBJECT to TEACHER (many-to-one from TEACHER to SUBJECT): one SUBJECT row is related to zero, one or several TEACHER rows, and each TEACHER row is related to exactly one SUBJECT row.\n\n**(d) Entity relationship diagram (4 marks)**\n\n```text\n+--------------------+                           +----------------------+\n|      SUBJECT       |                           |       TEACHER        |\n+--------------------+   1      teaches      M   +----------------------+\n| PK Subject_Code    |-------------<>------------| PK Teacher_ID        |\n|    Title           |                           |    Teacher_Name      |\n|    Hours_per_Week  |                           |    DOB               |\n+--------------------+                           |    Phone             |\n                                                 | FK Subject_Code      |\n                                                 +----------------------+\n```\n\nThe two entities are drawn as rectangles with their attributes; the primary keys are marked PK (underlined in a formal diagram), the foreign key FK in TEACHER is the link, the relationship is named \"teaches\" and the cardinality is shown as 1 on the SUBJECT side and M (many) on the TEACHER side.",
+      "themes": [
+        "relational databases",
+        "keys and relationships",
+        "entity relationship modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 13
+    }
+  ]
+}

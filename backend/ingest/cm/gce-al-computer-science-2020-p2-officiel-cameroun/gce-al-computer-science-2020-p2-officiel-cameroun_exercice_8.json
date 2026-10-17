@@ -1,0 +1,77 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 8 : points imprimés par sous-partie : (i)(a) 1 + (b) 5 + (c) 1 = 7 ; (ii)(a) 2 + (b) 2 = 4 ; (iii)(a) 1 + (b) 5 = 6 ; total 17. La fonction 3 de (i)(b) est lue n + n^3 + 2^n (exposants peu nets sur le scan) ; son ordre est O(2^n).",
+    "Question 8(iii)(b)a : l'expression imprimée est « -87* ». Lue comme opérateur, le « - » initial est invalide en notation polonaise inverse (pile vide). Lecture retenue : « -8 » est le nombre négatif -8 suivi de 7 et de *, soit -56 ; le corrigé signale aussi l'autre lecture (87* = 56). Les valeurs b = 12 et c = -35 ont été recalculées par script."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "The time complexity of an algorithm gives an indication of the amount of time the algorithm will take to run completely.\n\n(a) Is the time complexity of an algorithm based on the best-case or the worst-case scenario of the Algorithm? (1 mark)\n\n(b) Give the tight upper bound for the algorithms with the following time functions. Use the big O notation for your answers.\n\n1. $n^2 + 3n + 1$\n\n2. $2n + \\log n$\n\n3. $n + n^3 + 2^n$ (5 marks)\n\n(c) Which of the algorithms in (i)(b) is most efficient? (1 mark)",
+      "corrige_markdown": "**(a) (1 mark)** The time complexity is normally based on the **worst case** (the input that makes the algorithm take longest), because it gives a guaranteed upper limit on the running time.\n\n**(b) Tight upper bounds (5 marks)**\n\nIn big O notation only the term that grows fastest matters; constants and lower-order terms are dropped.\n\n1. $n^2 + 3n + 1$: the dominant term is $n^2$, so the bound is $O(n^2)$ (quadratic).\n2. $2n + \\log n$: $n$ grows faster than $\\log n$, and the constant factor 2 is ignored, so the bound is $O(n)$ (linear).\n3. $n + n^3 + 2^n$: an exponential term eventually outgrows any polynomial, so the bound is $O(2^n)$ (exponential).\n\n**(c) Most efficient (1 mark)**\n\nAlgorithm **2**, of order $O(n)$, is the most efficient: its running time grows most slowly as $n$ increases ($O(n) < O(n^2) < O(2^n)$). For example for $n = 100$ the three functions give about 10 301, about 200 and about $1.27 \\times 10^{30}$ steps respectively.",
+      "themes": [
+        "algorithm complexity"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "The travelling salesman problem involves finding the shortest route between cities given that each city is visited once and only once.\n\n(a) The traveling salesman problem is an example of an intractable problem. What is an intractable problem? (2 marks)\n\n(b) What strategy can be used to reduce the time needed to solve an intractable problem? (2 marks)",
+      "corrige_markdown": "**(a) Intractable problem (2 marks)**\n\nAn intractable problem is a problem that **can be solved in theory** by an algorithm, but for which **no algorithm that runs in polynomial time is known**: the best known algorithms need exponential or factorial time, so the time required grows so fast with the size of the input that the problem cannot be solved in a reasonable time except for small inputs. Example: for $n$ cities the travelling salesman problem has $(n-1)!/2$ possible routes: 181 440 routes for 10 cities, but about $4.4 \\times 10^{10}$ for 15 cities.\n\n**(b) Strategy (2 marks)**\n\nUse a **heuristic (approximation) algorithm**: instead of testing every possible route, use a rule of thumb that quickly gives a **good, though not guaranteed optimal, solution**. Example: the nearest-neighbour rule (always travel to the nearest city not yet visited), which takes only about $n^2$ steps. (Other accepted ideas: reduce the size of the problem, use more powerful or parallel processors, or use a special algorithm that is faster for restricted cases.)",
+      "themes": [
+        "computability",
+        "intractable problems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Reverse Polish Notation (RPN) is a way of representing calculations.\n\n(a) Give one major advantage of using RPN rather than infix in computers. (1 mark)\n\n(b) Find the result of each of the following calculations.\n\na. -87*\n\nb. 93+21-/\n\nc. 87463*2/*+- (5 marks)",
+      "corrige_markdown": "**(a) Advantage of RPN (1 mark)**\n\nAn RPN expression needs **no brackets and no precedence rules**: the order of the operators in the expression is exactly the order of evaluation, so a computer can evaluate it in **one left-to-right pass using a stack**, which is simple and fast (compilers convert infix expressions into RPN for this reason).\n\n**(b) Evaluation with a stack (5 marks)**\n\nRule: read the symbols from left to right; push a number on the stack; for an operator, pop the top two values (first the right operand, then the left operand), apply the operator and push the result.\n\n**a. `-87*`**\n\nRead here as the negative number $-8$, then 7, then `*`: stack $[-8, 7]$, then $-8 \\times 7 = -56$.\n\n**Result: $-56$.** (If the leading `-` were taken as a subtraction operator, the stack would be empty and the expression invalid; with `87*` the result would be 56.)\n\n**b. `93+21-/`**\n\n| Symbol | Action | Stack |\n|---|---|---|\n| 9, 3 | push | 9, 3 |\n| + | $9 + 3 = 12$ | 12 |\n| 2, 1 | push | 12, 2, 1 |\n| - | $2 - 1 = 1$ | 12, 1 |\n| / | $12 \\div 1 = 12$ | 12 |\n\n**Result: 12** (infix form $(9+3)/(2-1)$).\n\n**c. `87463*2/*+-`**\n\n| Symbol | Action | Stack |\n|---|---|---|\n| 8, 7, 4, 6, 3 | push | 8, 7, 4, 6, 3 |\n| * | $6 \\times 3 = 18$ | 8, 7, 4, 18 |\n| 2 | push | 8, 7, 4, 18, 2 |\n| / | $18 \\div 2 = 9$ | 8, 7, 4, 9 |\n| * | $4 \\times 9 = 36$ | 8, 7, 36 |\n| + | $7 + 36 = 43$ | 8, 43 |\n| - | $8 - 43 = -35$ | -35 |\n\n**Result: $-35$** (infix form $8 - (7 + 4 \\times (6 \\times 3 / 2))$).",
+      "themes": [
+        "infix prefix and postfix notation",
+        "stacks and queues"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

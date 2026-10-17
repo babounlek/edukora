@@ -1,0 +1,93 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 1 : le numéro « 1. » n'est pas imprimé sur le scan (la page 2 commence directement par « (i) ») ; la numérotation 1 à 8 est déduite des numéros imprimés des questions 2 à 8. Total des points imprimés 4 + 4 + 6 + 3 = 17.",
+    "1(iii) : le sujet imprime (3 marks) pour (a) et (3 marks) pour (b) ; `points` de la sous-question iii vaut leur somme, 6. 1(i) : « b) » est imprimé sans parenthèse ouvrante.",
+    "1(iii)(b) : l'ordre retenu est D, E, F, A, C, B ; l'incrémentation du PC (E) est parfois décrite en parallèle de la lecture mémoire (F), donc l'ordre E/F peut varier selon les manuels (aucun barème officiel disponible)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Using two's complement, show how the following operations on the denary numbers could be performed in a 4-bit register:\n\n(a) $5 - 4$.\n\n(b) $-3 + 6$.\n\n(4 marks)",
+      "corrige_markdown": "**Principle.** In a 4-bit two's complement register the representable range is $-8$ to $+7$. A subtraction $x - y$ is carried out as the addition $x + (-y)$, where $-y$ is obtained by inverting every bit of $y$ and then adding 1. Any carry out of the most significant bit is discarded.\n\n**(a) $5 - 4 = 5 + (-4)$**\n\n- $5 = 0101$ and $4 = 0100$.\n- Invert $0100$ to get $1011$, then add 1: $1011 + 1 = 1100$. So $-4 = 1100$.\n- Add the two registers:\n\n```text\n   0101   (+5)\n + 1100   (-4)\n ------\n  1 0001\n```\n\n- Discard the carry out of the fourth bit: the register holds $0001 = +1$.\n- Check: $5 - 4 = 1$. There is no overflow (the carry into the sign bit and the carry out of it are both 1).\n\n**(b) $-3 + 6$**\n\n- $3 = 0011$. Invert: $1100$. Add 1: $1101$. So $-3 = 1101$.\n- $6 = 0110$.\n- Add the two registers:\n\n```text\n   1101   (-3)\n + 0110   (+6)\n ------\n  1 0011\n```\n\n- Discard the carry out: the register holds $0011 = +3$.\n- Check: $-3 + 6 = 3$. No overflow (carry into the sign bit = carry out of it = 1).\n\n**Answers: (a) $0001_2 = 1$; (b) $0011_2 = 3$.**",
+      "themes": [
+        "number systems",
+        "data representation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Express the AND gate and the OR gate in terms of NAND gates only.\n\n(4 marks)",
+      "corrige_markdown": "A NAND gate gives $\\overline{A \\cdot B}$ (output 0 only when both inputs are 1). It is a *universal gate*: every other gate can be built from NAND gates alone. The building block is the inverter: joining the two inputs of a NAND gate gives $\\overline{A \\cdot A} = \\overline{A}$.\n\n**AND gate (2 NAND gates).** $A \\cdot B = \\overline{\\overline{A \\cdot B}}$. Feed $A$ and $B$ to a first NAND gate, then connect its output to **both** inputs of a second NAND gate (used as an inverter):\n\n```text\nA ---\\\n      NAND ---+--\\\nB ---/        |   NAND --- Q = A.B\n              +--/\n```\n\n**OR gate (3 NAND gates).** By De Morgan's theorem $A + B = \\overline{\\overline{A} \\cdot \\overline{B}}$. Invert $A$ and $B$ with two NAND gates whose inputs are joined, then feed the two inverted signals to a third NAND gate:\n\n```text\nA ---+--\\\n     |   NAND --- A' ---\\\n     +--/                \\\n                          NAND --- Q = A+B\nB ---+--\\                /\n     |   NAND --- B' ---/\n     +--/\n```\n\n**Verification (truth table).**\n\n| A | B | $A \\cdot B$ | NAND-built AND | $A + B$ | NAND-built OR |\n|---|---|---|---|---|---|\n| 0 | 0 | 0 | 0 | 0 | 0 |\n| 0 | 1 | 0 | 0 | 1 | 1 |\n| 1 | 0 | 0 | 0 | 1 | 1 |\n| 1 | 1 | 1 | 1 | 1 | 1 |\n\nThe NAND-built circuits give exactly the AND and OR outputs for all four input combinations (checked by a script).",
+      "themes": [
+        "boolean algebra",
+        "digital logic circuits"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) Explain how the width of the data bus **and** system clock speed affect the performance of a computer system. (3 marks)\n\n(b) The table below shows six stages in the fetch-execute cycle in a Von Neumann computer. Put the stages into the correct sequence by writing the numbers 1 to 6 in the right-hand column. In your answer booklet, reproduce this table, replacing each description on the left with its corresponding letter (A to F). (3 marks)\n\n| Description of Stage | Sequence Number |\n|---|---|\n| A. The instruction is copied from the Memory Data Register (MDR) and placed in the Current Instruction Register (CIR). | |\n| B. The instruction is executed. | |\n| C. The instruction is decoded. | |\n| D. The address contained in the Program Counter (PC) is copied to the Memory Address Register (MAR). | |\n| E. The value in the Program Counter (PC) is incremented so that it points to the next instruction to be fetched. | |\n| F. The instruction in the memory location found in the Memory Address Register (MAR) is copied into the Memory Data Register (MDR). | |",
+      "corrige_markdown": "**(a) Data bus width and clock speed (3 marks)**\n\n- **Width of the data bus.** The data bus carries the data and instructions between the processor, the memory and the input/output devices. Its width is the number of bits transferred in parallel in one bus cycle. A wider bus (for example 64 bits instead of 32 bits) moves more data per transfer, so fewer memory accesses are needed to fetch the same amount of data or the same instruction: the data transfer rate and the overall performance increase, and the processor spends less time waiting for memory. Wider words also allow larger numbers to be processed in a single operation.\n- **System clock speed.** The clock produces regular pulses that synchronise every step of the fetch-execute cycle. The clock speed (in Hz, e.g. 3 GHz) is the number of pulses per second: the higher it is, the more fetch-execute steps (and therefore instructions) can be carried out per second, so the computer runs programs faster. It is limited by the heat produced, by the power consumed, and by the speed of the memory and of the bus.\n- **Together.** The maximum data transfer rate is roughly (bus width) $\\times$ (bus clock frequency). Increasing only one of them gives limited gains if the other becomes the bottleneck: a fast clock with a narrow bus leaves the processor idle waiting for data, and a wide bus with a slow clock transfers data slowly.\n\n**(b) Fetch-execute cycle (3 marks)**\n\n| Sequence number | Letter | Stage |\n|---|---|---|\n| 1 | D | PC copied to MAR |\n| 2 | E | PC incremented |\n| 3 | F | instruction at address MAR copied to MDR |\n| 4 | A | instruction copied from MDR to CIR |\n| 5 | C | instruction decoded |\n| 6 | B | instruction executed |\n\nReproduced table (as required):\n\n| Description of Stage | Sequence Number |\n|---|---|\n| A | 4 |\n| B | 6 |\n| C | 5 |\n| D | 1 |\n| E | 2 |\n| F | 3 |\n\nThe address of the next instruction is first sent to the MAR (D); the PC is incremented immediately so that it already points to the following instruction (E); the contents of the addressed memory location are read into the MDR (F), moved to the CIR (A), decoded by the control unit (C) and finally executed (B). (In many textbooks E takes place at the same time as F, which is why D, E, F, A, C, B is the usual accepted order.)",
+      "themes": [
+        "computer architecture",
+        "fetch-execute cycle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "Perform a 2 place logical right shift on the binary number `11001011`. Convert the binary number obtained to decimal and state the effect of performing a 2 place logical right shift on the binary number. (3 marks)",
+      "corrige_markdown": "**Logical right shift by 2 places.** Every bit moves two positions to the right, the two rightmost bits are lost, and zeros are inserted on the left:\n\n```text\n11001011  ->  00110010      (the two bits 1 1 on the right are discarded)\n```\n\n**Conversion to decimal.** $00110010_2 = 32 + 16 + 2 = 50$.\n\nFor comparison, the original number is $11001011_2 = 128 + 64 + 8 + 2 + 1 = 203$.\n\n**Effect.** A logical right shift by $n$ places divides an unsigned binary number by $2^n$ and keeps only the integer part: here $203 \\div 2^2 = 50.75$, so the result is 50 and the two discarded bits $11_2 = 3$ are the lost remainder. (Because zeros are inserted on the left, this is only valid for unsigned numbers; for a signed two's complement number an arithmetic shift, which keeps the sign bit, must be used.)\n\n**Answer: $00110010_2 = 50_{10}$; the number is divided by 4 (integer division).**",
+      "themes": [
+        "data representation",
+        "number systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

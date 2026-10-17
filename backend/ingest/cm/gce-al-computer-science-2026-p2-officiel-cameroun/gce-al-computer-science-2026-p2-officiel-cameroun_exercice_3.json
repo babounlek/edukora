@@ -1,0 +1,78 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "3",
+ "numero_paper": 2,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h30",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2026. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "PAPER 2",
+   "repondre": 6,
+   "sur": 8
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "PAPER 2"
+ ],
+ "points": "17",
+ "figures": [
+  {
+   "id": "fig-1",
+   "fichier": "gce-al-computer-science-2026-p2-officiel-cameroun_exercice_3_fig_1.png",
+   "page_source": 2,
+   "type": "schema",
+   "legende": "Incomplete resource allocation graph: resource boxes R2 (2 dots) and R3 (2 dots) at the top, resource box R1 (3 dots) at the bottom, and four process circles P3, P1, P2, P4 in a row between them, with no edges drawn.",
+   "indispensable": true,
+   "lisibilite": "bonne",
+   "origine_figure": "enonce"
+  }
+ ],
+ "incertitudes": [
+  "Question 3 : points imprimés par sous-partie : i(a) 5 + i(b) 3 + i(c) 2 + i(d) 1 = 11 ; ii(a) 1 + ii(b) 2 + ii(c) 3 = 6 ; total 17.",
+  "3(i)(a) : le graphe d'allocation est à compléter par le candidat (figure sans arêtes) ; le corrigé décrit les arêtes d'affectation et de requête et les rappelle sous forme de liste. Le nombre d'unités (R1 = 3, R2 = 2, R3 = 2) est celui du texte ; les points dans les cases de la figure le confirment.",
+  "3(i)(b) : l'état d'interblocage a été vérifié par un script (algorithme de détection pour ressources à plusieurs unités) : P4 peut terminer, P1, P2 et P3 sont bloqués. Un cycle seul ne prouvant rien avec plusieurs unités, le corrigé justifie par le décompte des unités."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "A system has four processes P1, P2, P3, and P4. There are three types of dedicated resources R1, R2, and R3 of 3, 2 and 2 units respectively.\n\n- Process P1 holds one unit of R1 and requests one unit of R2.\n- Process P2 holds two units of R2 and requests two units of R1 and one unit of R3.\n- Process P3 holds one unit of R1 and requests one unit of R2.\n- Process P4 holds two units of R3 and requests one unit of R1.\n\n(a) Copy and complete the resource allocation graph below by inserting requests and assignment edges where applicable. (5 marks)\n\n![fig-1](gce-al-computer-science-2026-p2-officiel-cameroun_exercice_3_fig_1.png)\n\n(b) What is a deadlock? State whether the system in (i)(a) above is deadlocked or not. (3 marks)\n\n(c) Describe how deadlocks can be prevented by removing the \"*hold and wait*\" and \"*non-preemption*\" conditions. (2 marks)\n\n(d) Why can't the mutual exclusion condition be eliminated completely when preventing deadlocks? (1 mark)",
+   "corrige_markdown": "**(a) Completed resource allocation graph (5 marks)**\n\nIn a resource allocation graph, an **assignment edge** goes from a resource to the process that holds it ($R \\rightarrow P$) and a **request edge** goes from a process to the resource it is waiting for ($P \\rightarrow R$). Each unit of a resource is one dot in the resource box, so R1 has 3 dots, R2 has 2 dots and R3 has 2 dots. Edges to draw:\n\n*Assignment edges (resource to process):*\n\n- R1 $\\rightarrow$ P1 (one unit) and R1 $\\rightarrow$ P3 (one unit); the third unit of R1 stays free;\n- R2 $\\rightarrow$ P2 (two edges, one from each dot of R2): both units of R2 are used;\n- R3 $\\rightarrow$ P4 (two edges, one from each dot of R3): both units of R3 are used.\n\n*Request edges (process to resource):*\n\n- P1 $\\rightarrow$ R2 (one unit);\n- P2 $\\rightarrow$ R1 (two units, so two edges or one edge marked 2) and P2 $\\rightarrow$ R3 (one unit);\n- P3 $\\rightarrow$ R2 (one unit);\n- P4 $\\rightarrow$ R1 (one unit).\n\nSummary of the graph (the arrow shows the direction of the edge):\n\n```text\nAssignment edges        Request edges\nR1 -> P1                P1 -> R2\nR1 -> P3                P2 -> R1 (x2)\nR2 -> P2 (x2)           P2 -> R3\nR3 -> P4 (x2)           P3 -> R2\n                        P4 -> R1\n```\n\nUnits left free: R1 = 3 - 2 = 1, R2 = 2 - 2 = 0, R3 = 2 - 2 = 0.\n\n**(b) Deadlock, and is the system deadlocked? (3 marks)**\n\nA **deadlock** is a situation in which two or more processes are each waiting for a resource that is held by another process of the same group, so none of them can ever continue (they are blocked permanently) unless the system intervenes.\n\n**The system is deadlocked** (processes P1, P2 and P3 are deadlocked). Reasoning:\n\n- There is a cycle $\\mathrm{P1} \\rightarrow \\mathrm{R2} \\rightarrow \\mathrm{P2} \\rightarrow \\mathrm{R1} \\rightarrow \\mathrm{P1}$: P1 waits for R2, whose two units are held by P2; P2 waits for R1, of which P1 (and P3) hold units. P3 also waits for R2, held by P2.\n- Because the resources have several units, a cycle alone is not enough to prove a deadlock, so the units are checked. Free units: R1 = 1, R2 = 0, R3 = 0. P4 needs one R1: this can be granted, so P4 finishes and releases its 2 units of R3 (free: R1 = 1, R3 = 2).\n- P1 needs one R2 (none free), P3 needs one R2 (none free), and P2 needs two R1 (only one is ever free, because the other two are held by P1 and P3, which can never finish) as well as one R3. No other process can finish, so P1, P2 and P3 wait for each other for ever: the system is deadlocked (P4 is not part of the deadlock). A script applying this detection method confirmed that P4 can finish and that P1, P2, P3 cannot.\n\n**(c) Preventing deadlock by removing two conditions (2 marks, 1 mark each)**\n\n- **Hold and wait:** make a process request **all the resources it needs at once, before it starts** (it runs only when all are granted), or make it **release all the resources it holds before it requests new ones**. A process then never holds a resource while waiting for another.\n- **Non-preemption:** allow the operating system to **take back (pre-empt) resources** from a process: if a process that holds resources requests another one that is not available, the resources it holds are released (taken away) and given back to it later, when it can obtain everything it needs; or a resource is taken from a waiting process and given to the requesting one.\n\n**(d) Why mutual exclusion cannot be removed (1 mark)**\n\nSome resources are **intrinsically non-sharable** (for example a printer, a tape drive or a file open for writing): if two processes used them at the same time, the output or the data would be corrupted, so the resource must be given to one process at a time.",
+   "themes": [
+    "deadlock",
+    "concurrent processes",
+    "operating systems"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 11
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "Context switching is an essential feature of multitasking operating systems.\n\n(a) Explain what the term *multitasking* means. (1 mark)\n\n(b) Why is context switching a necessary feature in multitasking operating systems? (2 marks)\n\n(c) Explain briefly how context switching allows for multitasking. (3 marks)",
+   "corrige_markdown": "**(a) Multitasking (1 mark)**\n\nMultitasking is the ability of an operating system to have **several tasks (processes) in progress at the same time**: the processor is shared among them and switches rapidly from one to another, so that they all seem to run together (for example listening to music while typing a document).\n\n**(b) Why context switching is necessary (2 marks)**\n\n- A processor (core) can execute **only one process at a time**. To share it, the running process must be stopped and another one started.\n- When a process is stopped, its **state** (the contents of the registers, the program counter, the status register, the stack pointer) must be **saved**, so that the process can later **resume exactly where it stopped**, as if it had never been interrupted. Without context switching, a process would have to run to its end before another could begin, and the CPU would stay idle while a process waits for input/output.\n\n**(c) How context switching allows multitasking (3 marks)**\n\n1. The running process is interrupted (its time slice ends, it asks for input/output, or a higher-priority process becomes ready).\n2. The operating system **saves the context** of this process (registers, PC, status) in its process control block (PCB) and sets its state to *ready* or *blocked*.\n3. The scheduler **chooses another ready process**, and the OS **loads its saved context** from its PCB into the processor registers; its state becomes *running* and it continues from where it was stopped.\n\nBecause the switches are repeated many times per second, each process receives the processor in turn and the user has the impression that all the programs run at the same time.",
+   "themes": [
+    "process management",
+    "process scheduling",
+    "operating systems"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 6
+  }
+ ]
+}

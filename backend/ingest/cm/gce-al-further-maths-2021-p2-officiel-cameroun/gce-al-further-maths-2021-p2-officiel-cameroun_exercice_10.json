@@ -1,0 +1,123 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "10",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2021. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "The sequences $(u_n)$, $(v_n)$ and $(w_n)$ are defined by\n\n$$\\begin{cases} u_0 = -6 \\\\ u_{n+1} = \\tfrac13\\,(u_n - 2v_n) \\end{cases} \\quad\\text{and}\\quad \\begin{cases} v_0 = 1 \\\\ v_{n+1} = \\tfrac12\\,(u_n + 3v_n) \\end{cases}$$\n\n$$w_n = u_n + v_n.$$",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 10 : les définitions des suites, imprimées une seule fois, sont placées dans l'introduction commune de l'exercice ; les sous-questions sont notées i à vii. Le sujet imprime (vii) avec la somme de r = 0 à l'infini de (u_r - 14), indice r lu avec difficulté sur le scan ; la lecture retenue est cohérente avec la suite (iv)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Show that $(w_n)$ is a geometric progression and give its $n$th term in terms of $n$.",
+      "corrige_markdown": "Using the definitions of $u_{n+1}$ and $v_{n+1}$:\n\n$$w_{n+1} = u_{n+1} + v_{n+1} = \\tfrac13(u_n - 2v_n) + \\tfrac12(u_n + 3v_n) = \\left(\\tfrac13 + \\tfrac12\\right)u_n + \\left(-\\tfrac23 + \\tfrac32\\right)v_n = \\tfrac56 u_n + \\tfrac56 v_n = \\tfrac56(u_n + v_n) = \\tfrac56 w_n.$$\n\nSo $w_{n+1} = \\tfrac56 w_n$ for every $n \\ge 0$: $(w_n)$ is a geometric progression with common ratio $\\tfrac56$. Its first term is $w_0 = u_0 + v_0 = -6 + 1 = -5$. Hence\n\n$$\\boxed{w_n = -5\\left(\\tfrac56\\right)^n}.$$\n\n(Check: $w_1 = u_1 + v_1 = -\\tfrac83 - \\tfrac32 = -\\tfrac{25}{6} = -5\\cdot\\tfrac56$.)",
+      "themes": [
+        "geometric progressions",
+        "recurrence relations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Find $\\displaystyle\\lim_{n\\to\\infty}(w_n)$.",
+      "corrige_markdown": "Since $\\left|\\tfrac56\\right| < 1$, $\\left(\\tfrac56\\right)^n \\to 0$ as $n \\to \\infty$. Therefore\n\n$$\\boxed{\\lim_{n\\to\\infty} w_n = -5 \\times 0 = 0}.$$",
+      "themes": [
+        "limits of sequences",
+        "geometric progressions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Express $u_{n+1} - u_n$ in terms of $(w_n)$.",
+      "corrige_markdown": "$$u_{n+1} - u_n = \\tfrac13(u_n - 2v_n) - u_n = \\tfrac13(-2u_n - 2v_n) = -\\tfrac23(u_n + v_n).$$\n\n$$\\boxed{u_{n+1} - u_n = -\\tfrac23\\,w_n}\\qquad\\left(= \\tfrac{10}{3}\\left(\\tfrac56\\right)^n \\text{ by part (i)}\\right).$$",
+      "themes": [
+        "recurrence relations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "Hence, or otherwise, show that $u_n = 14 - 20\\left(\\dfrac56\\right)^n$.",
+      "corrige_markdown": "Add the differences from $k = 0$ to $k = n - 1$ (the sum telescopes):\n\n$$u_n - u_0 = \\sum_{k=0}^{n-1}(u_{k+1} - u_k) = \\sum_{k=0}^{n-1}\\tfrac{10}{3}\\left(\\tfrac56\\right)^k = \\tfrac{10}{3}\\cdot\\frac{1 - \\left(\\frac56\\right)^n}{1 - \\frac56} = \\tfrac{10}{3}\\cdot 6\\left(1 - \\left(\\tfrac56\\right)^n\\right) = 20\\left(1 - \\left(\\tfrac56\\right)^n\\right).$$\n\nWith $u_0 = -6$:\n\n$$u_n = -6 + 20 - 20\\left(\\tfrac56\\right)^n = \\boxed{14 - 20\\left(\\tfrac56\\right)^n}. \\qquad\\blacksquare$$\n\n**Check.** $n = 0$: $14 - 20 = -6$. $n = 1$: $14 - \\tfrac{50}{3} = -\\tfrac83$, which equals $u_1 = \\tfrac13(-6 - 2) = -\\tfrac83$.",
+      "themes": [
+        "recurrence relations",
+        "geometric progressions",
+        "series summation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "v",
+      "enonce_markdown": "Study the sense of variation (monotony) of $(u_n)$ and $(v_n)$.",
+      "corrige_markdown": "**Sequence $(u_n)$.** By part (iii), $u_{n+1} - u_n = \\tfrac{10}{3}\\left(\\tfrac56\\right)^n > 0$ for every $n$. So $(u_n)$ is **strictly increasing**.\n\n**Sequence $(v_n)$.** From $w_n = u_n + v_n$ and parts (i) and (iv):\n\n$$v_n = w_n - u_n = -5\\left(\\tfrac56\\right)^n - 14 + 20\\left(\\tfrac56\\right)^n = 15\\left(\\tfrac56\\right)^n - 14.$$\n\nThen\n\n$$v_{n+1} - v_n = 15\\left(\\tfrac56\\right)^n\\left(\\tfrac56 - 1\\right) = -\\tfrac52\\left(\\tfrac56\\right)^n < 0$$\n\nfor every $n$, so $(v_n)$ is **strictly decreasing**.\n\n(Check: $v_0 = 15 - 14 = 1$ and $v_1 = \\tfrac{25}{2} - 14 = -\\tfrac32 = \\tfrac12(u_0 + 3v_0)$.)",
+      "themes": [
+        "recurrence relations",
+        "limits of sequences"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "vi",
+      "enonce_markdown": "Find the limit of $(u_n)$ and deduce the limit of $(v_n)$.",
+      "corrige_markdown": "Since $\\left(\\tfrac56\\right)^n \\to 0$,\n\n$$\\lim_{n\\to\\infty} u_n = 14 - 20\\times 0 = \\boxed{14}.$$\n\nBy part (ii), $w_n \\to 0$, so\n\n$$\\lim_{n\\to\\infty} v_n = \\lim_{n\\to\\infty}(w_n - u_n) = 0 - 14 = \\boxed{-14}.$$\n\n(Consistent with $v_n = 15\\left(\\tfrac56\\right)^n - 14 \\to -14$. The two limits are also consistent with the monotony found in (v): $u_n$ increases towards $14$ from below, $v_n$ decreases towards $-14$.)",
+      "themes": [
+        "limits of sequences"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "vii",
+      "enonce_markdown": "Evaluate $\\displaystyle\\sum_{r=0}^{\\infty}(u_r - 14)$.",
+      "corrige_markdown": "From part (iv), $u_r - 14 = -20\\left(\\tfrac56\\right)^r$. This is a geometric series with first term $-20$ and common ratio $\\tfrac56$, and $\\left|\\tfrac56\\right| < 1$, so it converges:\n\n$$\\sum_{r=0}^{\\infty}(u_r - 14) = -20\\sum_{r=0}^{\\infty}\\left(\\tfrac56\\right)^r = \\frac{-20}{1 - \\frac56} = -20\\times 6 = \\boxed{-120}.$$",
+      "themes": [
+        "series summation",
+        "geometric progressions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

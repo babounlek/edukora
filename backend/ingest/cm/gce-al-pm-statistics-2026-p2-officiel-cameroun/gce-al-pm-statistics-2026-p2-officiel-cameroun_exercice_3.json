@@ -1,0 +1,54 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2026-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2026. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points imprimés par bloc ((i), (ii)...) sont recopiés tels quels (leur somme est 102). Quand un même total couvre plusieurs sous-questions (ex. « (2, 2, 4 marks) »), chaque partie porte son nombre ; quand un seul total couvre un bloc de plusieurs tâches, il est porté par ce bloc. `points` de chaque exercice est laissé vide.",
+    "Scan de 4 pages (page de garde + 3 pages de questions, filigrane gcerevision.com ignoré) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer. Page de garde vérifiée : ADVANCED LEVEL, JUNE 2026, Pure Mathematics With Statistics, Paper 2, code 0770, pied de page GCE26/0770/2/P52."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "The first three terms in the expansion of $(1 + bx)^n$ in ascending powers of $x$ are\n$$\n1 - \\frac{3}{5}x - \\frac{27}{100}x^2.\n$$\nFind the values of the constants $b$ and $n$. (5 marks)",
+      "corrige_markdown": "The binomial expansion gives\n$$\n(1 + bx)^n = 1 + nb\\,x + \\frac{n(n - 1)}{2}\\,b^2x^2 + \\cdots\n$$\nEquate coefficients with $1 - \\dfrac35 x - \\dfrac{27}{100}x^2$:\n$$\nnb = -\\frac35, \\qquad (1)\n$$\n$$\n\\frac{n(n - 1)}{2}\\,b^2 = -\\frac{27}{100}. \\qquad (2)\n$$\nFrom (1), $b = -\\dfrac{3}{5n}$ (note $n \\ne 0$). Substitute in (2):\n$$\n\\frac{n(n - 1)}{2}\\cdot\\frac{9}{25n^2} = -\\frac{27}{100}\n\\;\\Rightarrow\\;\n\\frac{9(n - 1)}{50n} = -\\frac{27}{100}\n\\;\\Rightarrow\\;\n18(n - 1) = -27n\n\\;\\Rightarrow\\;\n45n = 18,\n$$\nso $n = \\dfrac25$. Then $b = -\\dfrac{3}{5 \\cdot \\frac25} = -\\dfrac32$.\n\nCheck: $nb = \\dfrac25\\left(-\\dfrac32\\right) = -\\dfrac35$ and $\\dfrac{n(n - 1)}{2}b^2 = \\dfrac{\\frac25\\left(-\\frac35\\right)}{2}\\cdot\\dfrac94 = -\\dfrac{3}{25}\\cdot\\dfrac94 = -\\dfrac{27}{100}$.\n$$\\boxed{b = -\\tfrac32, \\qquad n = \\tfrac25}$$\n(Since $n$ is not a positive integer, the expansion is an infinite series, valid for $|bx| < 1$, i.e. $|x| < \\tfrac23$.)",
+      "themes": [
+        "binomial expansion"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Consider the relation $\\mathcal{R}$ on a non-empty set $A$. State the conditions that would make $\\mathcal{R}$ a partial order on $A$. Given that $A = \\{1, 2, 3, 4, 6, 12\\}$ and that $\\mathcal{R}$ is the relation defined by:\n$$\na\\mathcal{R}b \\iff a \\text{ divides } b,\n$$\nshow that $\\mathcal{R}$ defines a partial order on $A$. (6 marks)",
+      "corrige_markdown": "**Conditions.** A relation $\\mathcal{R}$ on a non-empty set $A$ is a **partial order** if it is\n1. **reflexive**: $a\\mathcal{R}a$ for every $a \\in A$;\n2. **antisymmetric**: for all $a, b \\in A$, if $a\\mathcal{R}b$ and $b\\mathcal{R}a$ then $a = b$;\n3. **transitive**: for all $a, b, c \\in A$, if $a\\mathcal{R}b$ and $b\\mathcal{R}c$ then $a\\mathcal{R}c$.\n\n**Proof for divisibility on $A = \\{1, 2, 3, 4, 6, 12\\}$.** All elements of $A$ are positive integers; \"$a$ divides $b$\" means $b = ka$ for some positive integer $k$.\n\n*Reflexive.* For every $a \\in A$, $a = 1 \\cdot a$, so $a$ divides $a$ and $a\\mathcal{R}a$.\n\n*Antisymmetric.* Suppose $a\\mathcal{R}b$ and $b\\mathcal{R}a$. Then $b = ka$ and $a = mb$ with $k, m$ positive integers, so $a = mka$. As $a \\ne 0$, $mk = 1$, and since $m, k$ are positive integers, $m = k = 1$. Hence $a = b$. (Equivalently, $a \\mid b$ gives $a \\le b$ and $b \\mid a$ gives $b \\le a$, so $a = b$.)\n\n*Transitive.* Suppose $a\\mathcal{R}b$ and $b\\mathcal{R}c$, so $b = ka$ and $c = lb$ for positive integers $k, l$. Then $c = l(ka) = (lk)a$ with $lk$ a positive integer, so $a$ divides $c$ and $a\\mathcal{R}c$.\n\n$\\mathcal{R}$ is reflexive, antisymmetric and transitive, so it is a partial order on $A$. $\\blacksquare$\n\n(It is not a total order: $2$ and $3$, or $4$ and $6$, are not related in either direction. It is not symmetric either: $2\\mathcal{R}4$ is true but $4\\mathcal{R}2$ is false.)",
+      "themes": [
+        "binary relations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

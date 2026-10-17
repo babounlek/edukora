@@ -1,0 +1,67 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0775",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics 3 (0775), ADVANCED LEVEL, June 2026. Duration: Two and a Half Hours.**\n\nAnswer ALL questions. For your guidance the approximate mark allocation for parts of each question is indicated in brackets. Mathematical formulae and tables, published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 (a) : l'équation imprimée contient le terme $y^2$, mais la formule à démontrer (coefficient 1.96 = 2 - 0.04 sur $y_n$) correspond à l'équation avec le terme $y$ (et non $y^2$). Le corrigé démontre la formule imprimée pour $y'' - xy' + y = 0$ et signale que, avec $y^2$ pris à la lettre, la formule serait différente ; la partie (ii) utilise la formule imprimée, comme le demande le sujet (résultat 1.7152 ; 1.6939 si l'on appliquait la version littérale avec $y^2$).",
+    "Question 2 (a)(i) : les parenthèses manquent dans la formule imprimée (« 1.96y_n - 1 + 0.1x_n y_{n-1} ») ; elle est lue comme (1.96y_n - (1 + 0.1x_n)y_{n-1}) / (1 - 0.1x_n), seule lecture compatible avec les approximations données. Le sujet écrit aussi « deferential » pour « differential »."
+  ],
+  "questions": [
+    {
+      "numero": "a(i)",
+      "enonce_markdown": "Given that $y$ satisfies the differential equation\n\n$$\n\\frac{d^2y}{dx^2} - x\\frac{dy}{dx} + y^2 = 0,\n$$\n\nuse the approximations\n\n$$\nh^2\\left(\\frac{d^2y}{dx^2}\\right)_n \\approx y_{n+1} - 2y_n + y_{n-1} \\quad\\text{and}\\quad 2h\\left(\\frac{dy}{dx}\\right)_n \\approx y_{n+1} - y_{n-1},\n$$\n\nwith a step length of $0.2$ to show that\n\n$$\ny_{n+1} = \\frac{1.96\\,y_n - (1 + 0.1x_n)\\,y_{n-1}}{1 - 0.1x_n}.\n$$\n\n*[4 marks]*",
+      "corrige_markdown": "Evaluate the equation at the point $x = x_n$ and replace each derivative by its central-difference approximation, with $h = 0.2$:\n\n$$\n\\frac{y_{n+1} - 2y_n + y_{n-1}}{h^2} - x_n\\,\\frac{y_{n+1} - y_{n-1}}{2h} + (\\text{last term}) = 0.\n$$\n\nMultiply by $h^2 = 0.04$. Since $\\dfrac{h}{2} = 0.1$,\n\n$$\ny_{n+1} - 2y_n + y_{n-1} - 0.1x_n\\,(y_{n+1} - y_{n-1}) + 0.04\\,(\\text{last term}) = 0.\n$$\n\nCollect the terms in $y_{n+1}$ on the left:\n\n$$\n(1 - 0.1x_n)\\,y_{n+1} = 2y_n - 0.04\\,(\\text{last term}) - (1 + 0.1x_n)\\,y_{n-1}.\n$$\n\nThe formula to be shown has $1.96\\,y_n = (2 - 0.04)\\,y_n$, so the last term of the differential equation, evaluated at $x_n$, must be $y_n$ (the equation $y'' - xy' + y = 0$). Then\n\n$$\n(1 - 0.1x_n)\\,y_{n+1} = 1.96\\,y_n - (1 + 0.1x_n)\\,y_{n-1},\n\\qquad\\text{that is}\\qquad\ny_{n+1} = \\frac{1.96\\,y_n - (1 + 0.1x_n)\\,y_{n-1}}{1 - 0.1x_n}.\n$$\n\n**Remark on the printed equation.** The statement prints the last term as $y^2$. Taken literally, the same steps give $(1 - 0.1x_n)\\,y_{n+1} = 2y_n - 0.04\\,y_n^2 - (1 + 0.1x_n)\\,y_{n-1}$, which is not the expression to be shown; the coefficient $1.96$ of the printed result corresponds to the term $y$, so the exponent $2$ appears to be a misprint.",
+      "themes": [
+        "numerical solution of differential equations",
+        "second order differential equations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "a(ii)",
+      "enonce_markdown": "Given that $y = 1$ when $x = 0$ and $y = 1.378$ when $x = 0.2$, find $y$ when $x = 0.4$, correct to $4$ decimal places. *[3 marks]*",
+      "corrige_markdown": "Use the formula of part (i) with $n = 1$: $x_0 = 0$, $y_0 = 1$, $x_1 = 0.2$, $y_1 = 1.378$ and $x_2 = 0.4$.\n\n$$\ny_2 = \\frac{1.96\\,y_1 - (1 + 0.1x_1)\\,y_0}{1 - 0.1x_1}\n= \\frac{1.96 \\times 1.378 - (1 + 0.02)\\times 1}{1 - 0.02}\n= \\frac{2.70088 - 1.02}{0.98}\n= \\frac{1.68088}{0.98}.\n$$\n\n$$\ny_2 = 1.71518\\ldots \\approx 1.7152 \\quad (4\\ \\text{d.p.}).\n$$\n\nSo $y \\approx 1.7152$ when $x = 0.4$.\n\n(With the term $y^2$ read literally, the corresponding formula would give $1.6939$; the answer expected from the formula printed in (i) is $1.7152$.)",
+      "themes": [
+        "numerical solution of differential equations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Use Simpson's rule with three ordinates to estimate\n\n$$\n\\int_0^1 e^{x^2}\\,dx,\n$$\n\ngiving your answer correct to $3$ decimal places. *[5 marks]*",
+      "corrige_markdown": "Three ordinates mean two strips of width $h = \\dfrac{1 - 0}{2} = 0.5$, at $x = 0,\\ 0.5,\\ 1$. With $f(x) = e^{x^2}$:\n\n| $x$ | $0$ | $0.5$ | $1$ |\n|---|---|---|---|\n| $f(x)$ | $1$ | $e^{0.25} = 1.284025$ | $e = 2.718282$ |\n\nSimpson's rule: $\\displaystyle\\int_a^b f\\,dx \\approx \\frac{h}{3}\\left[f_0 + 4f_1 + f_2\\right]$.\n\n$$\n\\int_0^1 e^{x^2}\\,dx \\approx \\frac{0.5}{3}\\left[1 + 4(1.284025) + 2.718282\\right]\n= \\frac{1}{6}\\,(8.854384) = 1.47573\\ldots\n$$\n\n$$\n\\int_0^1 e^{x^2}\\,dx \\approx 1.476 \\quad (3\\ \\text{d.p.}).\n$$\n\n(The exact value is $1.46265\\ldots$; with only two strips the error is about $0.013$.)",
+      "themes": [
+        "numerical integration"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

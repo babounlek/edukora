@@ -1,0 +1,80 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Information and Communication Technologies 2 (0796), ADVANCED LEVEL, June 2019. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You will be marked on your ability to use good English to organize information clearly and to use specialist vocabulary where appropriate. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 1 : le numéro « 1. » n'est pas imprimé sur le scan (la page 2 commence directement par « (i) ») ; la numérotation 1 à 8 est déduite des numéros imprimés des questions 2 à 8.",
+    "Question 1 : les points imprimés somment 8 (4 + 2 + 2) + 5 (1 + 2 + 2) + 7 (3 + 2 + 2) = 20, alors que l'en-tête du sujet annonce 17 points par question ; les points du sujet n'ont pas été corrigés (points de l'exercice : 17 tel qu'annoncé).",
+    "1(i)(c) : le nom de la table n'est pas imprimé ; `invoice` est retenu, avec des noms de colonnes à underscores. La requête a été exécutée avec le module sqlite3 de Python (résultat : A-102 et A-303).",
+    "1(iii) : « in other to advertise » (pour « in order to ») et « (3marks) » sont imprimés tels quels.",
+    "Page de garde : « snow all the steps » (pour « show ») est imprimé ; la consigne est recopiée avec « show » dans introduction_markdown."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A supermarket uses a computerized stock control system to run its warehouse.\n\n(a) State the device that can be used to automatically record the items bought by customers. Explain how the items are prepared for the data capture and how the device is used in the process during sales. (4 marks)\n\n(b) Explain how customers can make payments using credit cards. (2 marks)\n\n(c) Given that the invoice table for some transactions stored in the system is:\n\n| Product number | Unit price | Product name |\n|---|---|---|\n| A-102 | 400.00 | Oil |\n| A-444 | 625.00 | Mouse |\n| A-303 | 350.00 | Keyboard |\n\nWrite the SQL statement that will enable you display product number and unit price with a unit price less than 500. (2 marks)",
+      "corrige_markdown": "**(a) Device, preparation of the items and use at the point of sale (4 marks)**\n\n- **Device:** a **barcode scanner** (laser barcode reader) built into, or connected to, the point-of-sale (POS) terminal at the checkout.\n- **Preparation of the items for data capture:** every product is given a **barcode** (a pattern of black bars and white spaces, usually printed on the package by the manufacturer or on a label stuck on by the shop). The bars encode the **product number** (for example an EAN or UPC code). The same product number is stored in the shop's **product (stock) file**, next to the product name, the unit price and the quantity in stock.\n- **Use during sales:** the cashier (or the customer) passes the barcode in front of the scanner. The scanner shines a laser beam on the bars; the white spaces reflect the light and the black bars absorb it, so the reflected light is converted into an electrical signal and then into the digital product number. The number is sent to the POS computer, which looks it up in the product file, displays and prints the product name and price on the receipt, and adds the price to the customer's bill. At the end of the sale the quantity in stock of each item sold is **reduced automatically**, and when it falls below the re-order level the system can produce an order for the warehouse.\n\n**(b) Payment by credit card (2 marks)**\n\n1. The customer presents the card at the checkout. The cashier **swipes** it (magnetic stripe), **inserts** it (chip) or the customer **taps** it (contactless) on a card reader, which reads the card number and the expiry date.\n2. The customer enters a **PIN** (or signs) to prove that he or she is the owner of the card.\n3. The reader sends the card details and the amount, through the network, to the **bank (card issuer)**, which checks that the card is valid and that the credit limit is not exceeded, and then **authorises** the payment.\n4. The amount is charged to the customer's credit account and credited to the supermarket's account; a receipt is printed. (Online, the customer types the card number, the expiry date and the security code on a secure website instead of using a reader.)\n\n**(c) SQL statement (2 marks)**\n\nThe name of the table is not printed in the question; it is called `invoice` here and the columns are written with underscores:\n\n```sql\nSELECT product_number, unit_price\nFROM invoice\nWHERE unit_price < 500;\n```\n\n(If the column names keep the spaces of the printed headings, they are written between double quotation marks: `SELECT \"Product number\", \"Unit price\" FROM invoice WHERE \"Unit price\" < 500;`.)\n\nResult (checked with `sqlite3`): the query keeps only the rows whose unit price is below 500.\n\n| product_number | unit_price |\n|---|---|\n| A-102 | 400.00 |\n| A-303 | 350.00 |\n\nThe row A-444 (625.00) is not displayed because 625 is not less than 500.",
+      "themes": [
+        "input devices and data capture",
+        "e-commerce and e-services",
+        "ict database queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) What is online banking? (1 mark)\n\n(b) Give TWO advantages of online banking. (2 marks)\n\n(c) Give TWO drawbacks to the bank for introducing online banking. (2 marks)",
+      "corrige_markdown": "**(a) Online banking (1 mark)**\n\nOnline banking (Internet banking) is the use of the Internet, through the bank's website or mobile application, by customers to carry out banking operations (check the balance, transfer money, pay bills, view statements) without going to a branch.\n\n**(b) Two advantages (2 marks)**\n\n- It is available **24 hours a day, 7 days a week, from anywhere** with an Internet connection, so the customer is not limited to the opening hours of the bank.\n- It **saves time and transport cost**: there are no queues at the branch, and transfers and bill payments are done within seconds.\n- (Other valid answers: the customer can see the account and statements in real time; paper is saved.)\n\n**(c) Two drawbacks to the bank (2 marks)**\n\n- **High set-up and running costs**: the bank must buy and maintain secure servers, software and network links and train staff.\n- **Security risks**: hacking, phishing and fraud can cause financial loss, legal action and loss of the customers' trust, so the bank must invest permanently in security.\n- (Other valid answers: the service stops when the Internet or the power fails; less face-to-face contact means fewer opportunities to sell other products; branch staff may become redundant.)",
+      "themes": [
+        "e-commerce and e-services"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "A company is planning to have a video-conference in other to advertise its products.\n\n(a) State THREE special hardware that can be used during the conference and give a function of each hardware cited. (3 marks)\n\n(b) Give TWO advantages of video conferencing to the company. (2 marks)\n\n(c) Describe TWO communication aspects that affect the speed of communication. (2 marks)",
+      "corrige_markdown": "**(a) Three special hardware items and their functions (3 marks)**\n\n| Hardware | Function |\n|---|---|\n| Webcam (digital video camera) | Captures the video images of the presenters and of the products and sends them to the other participants. |\n| Microphone | Captures the speech of the participants and converts it into a digital signal for transmission. |\n| Loudspeakers (or headphones) | Output the sound received from the other participants. |\n\n(Other valid answers: a large screen or a projector to display the remote participants and the products; a network interface card or a modem/router to connect to the Internet.)\n\n**(b) Two advantages to the company (2 marks)**\n\n- It **saves travel, accommodation and time costs**: the company can present its products to customers in several towns or countries without moving.\n- It reaches **many customers at the same time**, and the products can be demonstrated live; the conference can also be **recorded** and replayed later as an advertisement.\n\n**(c) Two communication aspects that affect the speed of communication (2 marks)**\n\n- **Bandwidth of the connection**: the bandwidth is the quantity of data that the link can carry per second. A high bandwidth (for example optical fibre or broadband) lets the video and sound flow quickly and smoothly; a low bandwidth makes the video slow, jerky or delayed.\n- **Transmission medium** (and the traffic on it): fibre optic cable is faster and suffers less interference than copper cable or a wireless link, and a congested network (many users at the same time) slows the transfer. (The compression of the data and the distance also affect the speed.)",
+      "themes": [
+        "ict communication systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    }
+  ]
+}

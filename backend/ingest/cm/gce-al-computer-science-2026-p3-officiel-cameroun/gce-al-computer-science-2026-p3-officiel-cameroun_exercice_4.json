@@ -1,0 +1,70 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2026. Duration: TWO HOURS.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A: Database (Nina's Shop), 20 marks, Tasks 1 to 3; Section B: Programming (Population Growth Program), 30 marks, Tasks 4 to 7.",
+  "points": "6",
+  "groupes": [
+    "SECTION B"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION B: PROGRAMMING (Population Growth Program)** *(30 marks)*\n\nYou are to write a program that determines how long it takes for a population to reach a particular size.\n\nSuppose we have a population of *n* cows. Each year, *n/3* new cows are born, and *n/4* cows pass away. So, for example, if we have *n* = 1200 cows, then in the first year, 1200/3 = 400 new cows are born and 1200/4 = 300 cows pass away. Therefore, at the end of that year, we have 1200 + 400 - 300 = 1300 cows. Repeat the process with the new population size until the desired target population is reached.\n\nFractional cows in intermediate computations are discarded. So, for example, if there were 1001 cows initially, the number of new cows would be 1001/3 = 333.67 cows rounded down to 333 cows.",
+  "figures": [],
+  "incertitudes": [
+    "Points : Task 4 = 6 imprimé, avec (i)(a) = 1, (i)(b) = 3 et (ii) = 2 ; cohérent, rien corrigé. ",
+    "Points de la Section B : le sujet imprime « 30 marks » pour toute la Section B, mais les tâches imprimées totalisent 6 + 6 + 15 + 4 = 31 (Task 4 = 6, Task 5 = 6, Task 6 = 15, Task 7 = 4) ; écart du sujet, rien corrigé.",
+    "Question (ii) : « How many years will it take for a population of 4 cows to become zero, if no new cows are born? » En appliquant la règle imprimée (fractions écartées), 4 devient 3 puis reste à 3 car 3/4 est arrondi à 0 : la population ne devient jamais nulle. Le corrigé répond « jamais » ; si le jury attend un nombre d'années, ce serait une autre règle d'arrondi que celle du sujet (non déterminable). Réponse à confirmer.",
+    "Les valeurs numériques (1 an ; 4 ans, avec les tailles 27, 30, 33, 36, 39 ; population bloquée à 3) ont été recalculées avec une traduction Python de la règle du sujet."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "**Task 4: Problem Understanding** *(6 marks)*\n\n(i) Determine how long it will take for the population to grow from:\n\n(a) 1200 to 1300 cows. *[1 mark]*",
+      "corrige_markdown": "Apply the rule once: births = 1200/3 = 400, deaths = 1200/4 = 300, so the new size is 1200 + 400 - 300 = **1300**. The target is reached at the end of the first year.\n\n| Year | Size at start (n) | n/3 (born, rounded down) | n/4 (die, rounded down) | Size at end |\n|---|---|---|---|---|\n| 1 | 1200 | 400 | 300 | 1300 |\n\n**Answer: 1 year.**\n\n**Marking:** the correct answer with the births and deaths of the year shown (1).",
+      "themes": [
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "(i)(b) Determine how long it will take for the population to grow from 27 to at least 37 cows. *[3 marks]*",
+      "corrige_markdown": "Repeat the yearly rule, **discarding fractions** at each step (27/3 = 9 exactly, but for example 33/4 = 8.25 gives 8 deaths), until the size is at least 37:\n\n| Year | Size at start (n) | n/3 (born, rounded down) | n/4 (die, rounded down) | Size at end |\n|---|---|---|---|---|\n| 1 | 27 | 9 | 6 | 30 |\n| 2 | 30 | 10 | 7 | 33 |\n| 3 | 33 | 11 | 8 | 36 |\n| 4 | 36 | 12 | 9 | 39 |\n\nAfter 3 years the population is 36, which is still below 37; after the 4th year it is 39, which is at least 37. (Checked with a Python translation of the rule: the sizes are 27, 30, 33, 36, 39.)\n\n**Answer: 4 years.**\n\n**Marking:** the first two years correct (1); the sizes 36 and 39 reached (1); the conclusion of 4 years, noting that 36 does not reach 37 (1).",
+      "themes": [
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) How many years will it take for a population of 4 cows to become zero, if no new cows are born? *[2 marks]*",
+      "corrige_markdown": "With no births, the size at the end of a year is *n* - *n/4*, where *n/4* is rounded down.\n\n| Year | Size at start (n) | n/4 (die, rounded down) | Size at end |\n|---|---|---|---|\n| 1 | 4 | 1 | 3 |\n| 2 | 3 | 0 | 3 |\n| 3 | 3 | 0 | 3 |\n\nFrom 4 cows the population falls to 3 in the first year. Then 3/4 = 0.75 cow, and fractional cows are discarded, so **no cow dies**: the size stays at 3 for ever (the sequence is 4, 3, 3, 3, 3, ... checked with a Python translation). In fact any population of 1, 2 or 3 cows is stable, because *n/4* rounds down to 0 for *n* < 4.\n\n**Answer: it never becomes zero** (it stops decreasing at 3 cows after 1 year). Even if fractions were kept, 4 x (3/4)^t is positive for every *t*, so the population would still never be exactly zero.\n\n**Marking:** the first year computed (3 cows) (1); the observation that 3 cows lose no cow, with the conclusion \"never\" (1).",
+      "themes": [
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

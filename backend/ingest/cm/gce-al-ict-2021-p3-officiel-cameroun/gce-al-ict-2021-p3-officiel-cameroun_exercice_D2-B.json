@@ -1,0 +1,138 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2021-p3-officiel-cameroun.pdf",
+  "numero_exercice": "D2-B",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Advanced Level Examination. Information & Communication Technologies, Subject code 0796, Paper 3 (practical). Examination date: June 2021. Duration: two hours. The paper was set in two versions in the same document: Day 1 (booklet GCE/P/2021/0796/3/C/G1, workbook Trans-Business) and Day 2 (booklet GCE/P/2021/0796/3/C/G2, workbook Car Sales). Each version has the same three tasks.**\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\n**Answer ALL TASKS.**\n\nEach version has three tasks: Task A (Databases, 21 marks), Task B (Spreadsheet, 19 marks) and Task C (Web Authoring Tool, 11 marks; printed as \"Task 3\").",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**DAY 2**\n\n**TASK B: SPREADSHEET (19 marks)**\n\nThis task is based on the workbook named **Car Sales** found in the *Candidate Folder*. The workbook contains two sheets named Broker and Sales.\n\nOpen **Car Sales** workbook.\n\n*[The workbook Car Sales (sheets Broker and Sales) is supplied on the day in the candidate folder; it is not reproduced in the printed paper and is not reproduced here.]*",
+  "groupes": [
+    "DAY 2"
+  ],
+  "points": "19",
+  "figures": [],
+  "incertitudes": [
+    "Le PDF (8 pages, scan) contient DEUX versions du même sujet : « Day 1 » (pages 1 à 4, booklet GCE/P/2021/0796/3/C/G1, classeur Trans-Business) et « Day 2 » (pages 5 à 8, booklet G2, classeur Car Sales). Transcrites en six fichiers : numero_exercice D1-A, D1-B, D1-C et D2-A, D2-B, D2-C ; groupes [\"DAY 1\"] ou [\"DAY 2\"]. Le sujet n'imprime pas que chaque candidat n'en traite qu'une seule ; regles_choix reste donc vide.",
+    "Les fichiers de données du jour de l'examen (classeur Trans-Business ou Car Sales, feuilles Broker et Sales) ne sont pas dans le PDF. Leur structure est DÉDUITE du sujet : Broker (BrokerID, BrokerName, Town), Sales (SaleDate, BrokerID, CarCode, Quantity) ; feuille ESales : colonnes A à D = date, BrokerID, CarCode, quantité ; données en lignes 2 à 23 (plage A1:G23 imprimée), tableau récapitulatif à partir de A25 (en-tête ligne 25, courtiers lignes 26 à 35, total ligne 36). Les corrigés donnent des réponses génériques sur cette structure et invitent à l'adapter ; aucune valeur du classeur n'est inventée (seules des données fictives de contrôle, signalées comme telles).",
+    "Les « marking ideas » des corrigés sont des répartitions indicatives faites d'après les points imprimés ; le barème du jury n'est pas connu.",
+    "Vérifications : requêtes SQL exécutées avec sqlite3 sur données fictives (jointures Broker/Sales/Cars, filtre de dates, regroupement, intégrité référentielle) ; formules de tableur (LOOKUP/VLOOKUP, produit, 5 %, SUMIF) reproduites en Python sur 5 lignes fictives ; recherche approchée de LOOKUP simulée par une recherche dichotomique standard (le comportement exact d'Excel sur un vecteur non trié n'a pas été exécuté) ; HTML contrôlé par un analyseur Python (balises bien imbriquées), non affiché dans un navigateur. La syntaxe propre à Microsoft Access et Excel (assistants, menus, dates #m/j/aaaa#) est donnée de mémoire, non testée. Aucun code C ou Pascal n'est demandé dans ce paper : rien n'a été compilé.",
+    "Les titres des tâches sont imprimés « Task A », « Task B » puis « Task 3 » (faute d'impression) : la troisième tâche est transcrite sous le repère C et le titre imprimé est rappelé dans l'énoncé.",
+    "Barèmes : les points imprimés par question font 21 (tâche A), 19 (tâche B) et 11 (tâche C), conformes aux totaux imprimés, dans les deux versions. Les questions 5 (A) et 6 (B) comportent plusieurs lignes avec leurs propres points ; elles sont gardées en une seule question dont les points sont la somme (5 = 2 + 1 + 2 ; 6 = 2 + 2).",
+    "Day 2, tâche B : cellules demandées E3, F4 et G5. Les formules des deux courtiers nomment « Atabong Colins » et « Joseph Kulu », alors que le Table 2 imprime « Joseph Kalu » (C008) : recopié tel quel, le corrigé utilise l'identifiant C008. Même réserve sur LOOKUP et le vecteur non trié que pour le Day 1."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Make a copy of the **Sales** sheet. Rename the sheet as **ESales**. *[2 marks]*",
+      "corrige_markdown": "Right-click the tab **Sales** at the bottom of the workbook and choose *Move or Copy...* (or *Home* > *Format* > *Move or Copy Sheet*). In the window select **Sales** in *Before sheet*, tick **Create a copy** and click *OK*: a new sheet named *Sales (2)* appears. Right-click its tab > *Rename* (or double-click the tab), type `ESales` and press Enter.\n\n(Holding Ctrl while dragging the tab also makes a copy.) The original sheet **Sales** must stay unchanged; all the following questions are done in **ESales**.\n\nMarking idea (2 marks): a copy was made and the original kept (1); the copy is named ESales (1).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Copy the data in the **Cars** table from the **CarSalesDB** database and paste it in a new sheet in **Car Sales**. Rename this sheet as **Cars**. *[2 marks]*",
+      "corrige_markdown": "1. In Access open **CarSalesDB**, double-click the table **Cars** (*Datasheet View*), click the square at the top left of the datasheet to select all the records and press Ctrl+C.\n2. Switch to Excel with the workbook **Car Sales**, insert a new sheet (the + button after the last tab), click cell **A1** and press Ctrl+V. The field names go in row 1 and the five records in rows 2 to 6:\n\n| | A | B | C |\n|---|---|---|---|\n| 1 | CarCode | CarName | UnitPrice |\n| 2 | AB1 | Toyota Avensis | 2500000 |\n| 3 | AB2 | Mercedes 220 | 1800000 |\n| 4 | CD2 | Toyota Corolla | 2300000 |\n| 5 | M41 | BMW Picnic | 2625000 |\n| 6 | NS3 | Mercedes 300 | 3000000 |\n\n3. Right-click the tab of the new sheet > *Rename*, type `Cars`, press Enter. Do not forget to save the workbook (Ctrl+S).\n\nRemark: when CarCode is the primary key, Access normally shows the records sorted by CarCode, which is why AB2 comes before CD2 in the pasted data. This order is important for question 3.\n\nMarking idea (2 marks): the data of Cars pasted with their field names (1); the sheet renamed Cars (1).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "In the **ESales** sheet create a new field in column E, named *Unit Price*. Use the LOOKUP function to invoke the unit price from the **Cars** sheet. You can do a manual insertion if you do not know how to use the LOOKUP function but it will lead to mark reduction. Write down the formula you have used in cell E3 in the line below. *[3 marks]*",
+      "corrige_markdown": "Type the heading `Unit Price` in **E1**. The sales table has four columns A to D; the column that holds the car code is read here as **C** (column B holds the BrokerID and column D the quantity; check against the sheet supplied on the day). In the cell asked, **E3**, the formula is:\n\n```\n=LOOKUP(C3,Cars!$A$2:$A$6,Cars!$C$2:$C$6)\n```\n\n- `C3` is the car code of that row of the sales table (the value looked for).\n- `Cars!$A$2:$A$6` is the lookup vector: the five car codes of the **Cars** sheet.\n- `Cars!$C$2:$C$6` is the result vector: the unit prices, in the same order.\n- The dollar signs (absolute references) keep the ranges fixed when the formula is copied down the column E (double-click the fill handle).\n\n**Warning.** The vector form of LOOKUP searches approximately: the lookup vector must be sorted in ascending order, otherwise a wrong price may be returned. The Cars sheet is in the order AB1, AB2, CD2, M41, NS3 (sorted) because Access shows the table in the order of its primary key. With the order of Table 1 (AB1, CD2, M41, AB2, NS3), which is not sorted, a standard binary search returns the price of AB1 for the code AB2 and the price of AB2 for the code M41, while with the sorted list all five codes give their own price (checked by a Python simulation of the search). A safe formula that does not depend on the order is the exact-match form:\n\n```\n=VLOOKUP(C3,Cars!$A$2:$C$6,3,FALSE)\n```\n\n(`3` is the third column of the range, UnitPrice, and `FALSE` demands an exact match.) Either formula is acceptable; typing the prices by hand is allowed but loses marks.\n\nMarking idea (3 marks): a lookup function used (1); the correct value looked for (1); the correct ranges of the Cars sheet, with absolute references (1).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Create another field in column F named *Total Amount* to calculate the total amount sold by each broker. This field gives the product of the quantity and the unit price. Write down the formula you have used in cell F4 in the line below. *[3 marks]*",
+      "corrige_markdown": "Type `Total Amount` in **F1**. The quantity is in column D and the unit price in column E (the one created in question 3), so for each row the total amount is the quantity multiplied by the unit price. In the cell asked, **F4**:\n\n```\n=D4*E4\n```\n\nCopy the formula down to the last row of the sales table (row 23) with the fill handle: the references are relative, so each row uses its own quantity and its own unit price. For example a row with quantity 2 and unit price 2 500 000 gives 2 x 2 500 000 = 5 000 000.\n\nMarking idea (3 marks): a multiplication (1); of the correct two cells (quantity and unit price) of the same row (1); formula copied to all the rows (1).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Given that each broker is given 5% of the total amount as bonus, calculate the *Bonus* for each broker in column G. Write down the formula you have used in cell G5 in the line below. *[3 marks]*",
+      "corrige_markdown": "Type `Bonus` in **G1**. The bonus is 5 % of the total amount of column F. In the cell asked, **G5**:\n\n```\n=F5*5%\n```\n\n`=F5*0.05` and `=F5*5/100` are equivalent. Copy the formula down to row 23. Check with invented figures: a total amount of 5 000 000 gives a bonus of 5 000 000 x 0.05 = 250 000, and 3 cars at 2 625 000 (total amount 7 875 000) give 393 750 (both confirmed by a Python calculation).\n\nMarking idea (3 marks): the total amount of the same row used (1); multiplied by 5 % or 0.05 (1); formula copied to all the rows (1).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Create a summary table of the total bonus (given in Table 2 below) to be given to each broker at the bottom of the **ESales** table starting at A25. By ordering the table of sales by the BrokerID, use an appropriate function to calculate the total bonus to be received by each broker. Copy the total bonus from your spreadsheet into the table below. *[2 marks]*\n\n*Table 2: Bonuses*\n\n| BrokerID | BrokerName | Total Bonus |\n|---|---|---|\n| C001 | Atabong Colins | |\n| C002 | Ashu Peter | |\n| C003 | Beatrice Ngwa | |\n| C004 | Benard Ituka | |\n| C005 | Hannah Matike | |\n| C006 | Ngomba Gerald | |\n| C007 | Adamu Hans | |\n| C008 | Joseph Kalu | |\n| C009 | Kale Justine | |\n| C010 | Mbaku Paul | |\n| **Total** | | |\n\nWrite down the formula you have used to calculate the total bonus for the following:\n\nAtabong Colins ........\n\nJoseph Kulu ........ *[2 marks]*",
+      "corrige_markdown": "**1. Order the sales by BrokerID.** Select the sales table (A1:G23), *Data* > *Sort*, sort by the **BrokerID** column (column B here), *A to Z*, with *My data has headers* ticked. The sales of each broker are now side by side. (The formulas of E, F and G only use cells of their own row and absolute references to Cars, so they stay correct after the sort.)\n\n**2. Build the summary table** starting at A25: headings `BrokerID`, `BrokerName`, `Total Bonus` in A25:C25; the ten identifiers C001 to C010 in A26:A35 and the names in B26:B35 (copied from Table 2); the label `Total` in row 36.\n\n**3. Total bonus of each broker.** The appropriate function is **SUMIF**: it adds the bonuses (column G) of the rows whose BrokerID equals the broker of the summary line. In C26:\n\n```\n=SUMIF($B$2:$B$23,A26,$G$2:$G$23)\n```\n\nCopy it down to C35. In **C36** the grand total is `=SUM(C26:C35)` (it equals the sum of column G). Another acceptable method, made possible by the sorting, is *Data* > *Subtotal* (At each change in BrokerID, Use function: Sum, Add subtotal to: Bonus), which inserts `=SUBTOTAL(9,G..:G..)` after each group.\n\n**4. Copy the results** (values) from C26:C35 into the *Total Bonus* column of Table 2 of the booklet. The sales data are not printed in the paper, so the amounts cannot be given here. As an illustration with invented data (not the exam data): if C001 sold 2 cars AB1 (5 000 000) and 1 car AB2 (1 800 000), the total amount is 6 800 000 and the total bonus is 6 800 000 x 5 % = 340 000, which is what SUMIF gives for C001 (checked by a Python calculation).\n\n**Formulas asked in the paper.** The broker is found by his BrokerID in Table 2.\n- **Atabong Colins** is **C001**, line 26 of the summary table: in C26, `=SUMIF($B$2:$B$23,A26,$G$2:$G$23)` (or, with the identifier typed, `=SUMIF($B$2:$B$23,\"C001\",$G$2:$G$23)`).\n- **Joseph Kulu** is **C008** (written \"Joseph Kalu\" in Table 2), line 33: in C33, `=SUMIF($B$2:$B$23,A33,$G$2:$G$23)` (or `=SUMIF($B$2:$B$23,\"C008\",$G$2:$G$23)`).\n\nMarking idea (4 marks; the paper prints 2 marks for the summary table and 2 marks for the two formulas): table sorted by BrokerID and summary table built at A25 (1); total bonuses copied into Table 2 (1); an appropriate function with the correct ranges for each of the two named brokers (2).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Insert All Borders in the range A1:G23. *[1 mark]*",
+      "corrige_markdown": "Select the range **A1:G23** (click A1, then Shift+click G23, or type A1:G23 in the Name Box). On the *Home* tab, in the *Font* group, open the *Borders* drop-down list and choose **All Borders**. Every cell of the table, from the headings to row 23, now has a border on its four sides.\n\nMarking idea (1 mark): All Borders applied to the whole range A1:G23 (not only to the outside of it).",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "Format the range E2:G23 to thousand separator and zero decimal place. *[1 mark]*\n\n**Print the ESales sheet.**",
+      "corrige_markdown": "Select the range **E2:G23**, press Ctrl+1 (or right-click > *Format Cells...*), choose the *Number* tab, category **Number**, set *Decimal places* to **0** and tick **Use 1000 Separator (,)**, then click *OK*. The code of the format is `#,##0`: 2500000 is displayed 2,500,000. (The same result is obtained with the *Comma Style* button, then *Decrease Decimal* twice.) The values themselves do not change, only their display.\n\n**Printing.** Click the tab **ESales**, *File* > *Print*, check in the preview that the whole table A1:G36 (with the summary table) fits on the page (if not, *Page Layout* > *Fit to 1 page wide*), print only the active sheet, and staple the printout in the booklet.\n\nMarking idea (1 mark): thousand separator and zero decimal places on E2:G23.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p3-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2025. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank pages have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A (Database Systems), Task 1, and Section B (Program Development, 30 marks), Tasks 2 and 3.",
+  "points": "20",
+  "groupes": [
+    "SECTION A"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION A: DATABASE SYSTEMS - Database design and implementation**\n\nAn e-commerce company wants to develop a database to manage its data. The database should store information about customers, orders, products and suppliers.\n\n- **Customer** (CustomerID, Name, email, Address)\n- **Product** (ProductID, Product Name, Price)\n- **Supplier** (SupplierID, SupplierName, Address)\n- **Order** (Order Date, Total)\n\n**Task 1**",
+  "figures": [],
+  "incertitudes": [
+    "Section A : le total des points n'est pas imprimé ; points = 20, somme des barèmes imprimés par question (5 + 2 + 2 + 3 + 1 + 2 + 1 + 3 + 1). Les barèmes imprimés sont recopiés tels quels (Section B : « 30 marks », cohérent avec 17 + 13).",
+    "Le SQL du corrigé a été exécuté avec sqlite3 (module Python) sur les données d'exemple : CREATE TABLE, ALTER TABLE ... ADD COLUMN, INSERT, SELECT avec jointures ; les sorties recopiées dans le corrigé sont celles de cette exécution. Les différences de dialecte (ALTER TABLE, types, mot réservé ORDER) sont signalées dans le corrigé. Aucun SGBD MySQL, PostgreSQL ou Access n'a été utilisé.",
+    "Défaut du sujet : l'entité « Order (Order Date, Total) » n'a ni identifiant ni lien avec le client, alors que la table d'exemple Order porte OrderID, CustomerID et Order Date et n'a pas de colonne Total. Recopié tel quel ; le corrigé ajoute OrderID et CustomerID et garde Total comme attribut calculé.",
+    "Défaut du sujet, question 5(b) : aucun fournisseur nommé « Jane » dans la table Supplier (Jane Fuh est un client) ; la requête correcte renvoie zéro ligne. Recopié tel quel ; le corrigé le signale et montre la même requête avec « Ousman ».",
+    "Défaut du sujet, question 5(d) : la table Order d'exemple ne contient aucun produit, donc aucun lien commande-produit n'est imprimé ; le corrigé ajoute une table de lignes de commande (OrderItem) avec des lignes SUPPOSÉES (commande 1 : 2 casquettes et 1 paire de chaussures ; commande 2 : 1 paire de chaussures). Le résultat (John Che) est donc illustratif.",
+    "Données imprimées : identifiants avec zéros initiaux (001) et SupplierID « 01 » dans Product contre « 1 » dans Supplier ; dates jj-mm-aaaa ; doublons Jane Fuh (002 et 003) et Manka'a (2 et 4) ; adresse e-mail « Johnc@gmail.com » du client 001 lue telle qu'imprimée. Le corrigé stocke les identifiants en entiers et les dates en AAAA-MM-JJ. Date de la commande 1 lue « 20-03-2025 ».",
+    "La question 1 demande un schéma à dessiner (diagramme entité-association) : aucune figure imprimée à recadrer ; le schéma attendu est décrit dans le corrigé sous forme d'un diagramme en texte. Questions 3, 4, 5(c) et 5(e) : travaux d'impression à faire sur machine ; le corrigé donne le script et le résultat attendu."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. In your answer booklet, produce an entity relation diagram in 3rd normal form. Underline key fields therein. *[5 marks]*",
+      "corrige_markdown": "**Step 1 - Analyse the statement.** Four entities are named: Customer, Product, Supplier and Order. Reading the relationships:\n\n- a customer places many orders, an order is placed by exactly one customer: **one-to-many**, so the key of Customer goes into Order as a foreign key;\n- a supplier supplies many products, a product has one supplier (the sample Product table carries a SupplierID): **one-to-many**, so the key of Supplier goes into Product as a foreign key;\n- an order contains many products and a product appears in many orders: **many-to-many**. A many-to-many link cannot be stored directly in 3NF, so it is resolved by an associative entity **ORDER_ITEM** whose key is made of the two foreign keys (OrderID, ProductID) and which holds the Quantity ordered.\n\nThe entity \"Order\" of the statement has no key at all, so an identifier OrderID is added. Because ORDER is a reserved word in SQL, the table is called **ORDERS** in the implementation.\n\n**Step 2 - The diagram** (PK = primary key, to be UNDERLINED in the booklet; FK = foreign key; 1 and N are the cardinalities):\n\n```\n+--------------------+              +--------------------+\n| CUSTOMER           |              | SUPPLIER           |\n+--------------------+              +--------------------+\n| CustomerID  (PK)   |              | SupplierID  (PK)   |\n| Name               |              | SupplierName       |\n| email              |              | Address            |\n| Address            |              +--------------------+\n+--------------------+                        | 1\n          | 1                                 |   supplies\n          |   places                          | N\n          | N                       +--------------------+\n+--------------------+              | PRODUCT            |\n| ORDERS             |              +--------------------+\n+--------------------+              | ProductID   (PK)   |\n| OrderID     (PK)   |              | ProductName        |\n| OrderDate          |              | Price              |\n| Total              |              | SupplierID  (FK)   |\n| CustomerID  (FK)   |              +--------------------+\n+--------------------+                        | 1\n          | 1                                 |   appears in\n          |   contains                        | N\n          | N                                 |\n+------------------------------------------------------+\n| ORDER_ITEM                                           |\n+------------------------------------------------------+\n| OrderID   (PK, FK)   ProductID (PK, FK)   Quantity   |\n+------------------------------------------------------+\n```\n\n**Step 3 - Why this is in third normal form.**\n\n- **1NF**: every attribute is atomic (one value per field), and the list of products of an order is not stored as repeating columns but as rows of ORDER_ITEM.\n- **2NF**: every non-key attribute depends on the whole key. In ORDER_ITEM, Quantity depends on the pair (OrderID, ProductID); the name and price of a product depend on ProductID alone, so they stay in PRODUCT.\n- **3NF**: no non-key attribute depends on another non-key attribute (no transitive dependency). The supplier's name and address depend on SupplierID, so they are in SUPPLIER and not repeated in PRODUCT; the customer's details are in CUSTOMER and not repeated in ORDERS.\n\n*Remark.* Total (the sum of Quantity x Price over the lines of the order) can be computed from ORDER_ITEM and PRODUCT. It is kept here because the statement lists it, as the total at the time of the order; a purist 3NF design would omit it and compute it with a query.\n\n**Marking:** the four entities with their attributes (1); keys identified and underlined, OrderID added (1); the relationships with cardinalities (1); foreign keys correctly placed (1); the many-to-many link resolved by ORDER_ITEM and 3NF justified (1).",
+      "themes": [
+        "entity-relationship diagrams",
+        "database normalisation",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Write SQL queries that will enable you to add the column **phoneNumber** to the table **Customer**, and **Description** to table **Product**. *[2 marks]*",
+      "corrige_markdown": "```sql\nALTER TABLE Customer ADD COLUMN phoneNumber VARCHAR(20);\nALTER TABLE Product  ADD COLUMN Description VARCHAR(255);\n```\n\n`ALTER TABLE ... ADD` changes the structure of an existing table: one statement is needed for each table. The new column is empty (NULL) in the rows already stored, so no data is lost.\n\n**Check.** Both statements were executed with SQLite on the tables of question 3. The columns of Customer became CustomerID, Name, Email, Address, phoneNumber and those of Product became ProductID, ProductName, Price, SupplierID, Description.\n\n*Dialects.* The word COLUMN is optional in MySQL and PostgreSQL; SQL Server writes `ALTER TABLE Customer ADD phoneNumber VARCHAR(20);` and Oracle `ALTER TABLE Customer ADD (phoneNumber VARCHAR2(20));`. The statements are run after the tables of question 3 exist.\n\n**Marking:** one mark for each correct statement (table, ADD, column name and a data type).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Use a suitable DBMS of your choice to implement the database design in 1 above; print a copy of your database. *[2 marks]*",
+      "corrige_markdown": "Any relational DBMS is accepted (MySQL, PostgreSQL, SQLite, MS Access...). The design of question 1 is implemented with the tables created in the order that respects the foreign keys (a table must exist before it is referenced).\n\n```sql\nCREATE TABLE Customer (\n    CustomerID INTEGER PRIMARY KEY,\n    Name       VARCHAR(50) NOT NULL,\n    Email      VARCHAR(80),\n    Address    VARCHAR(80)\n);\n\nCREATE TABLE Supplier (\n    SupplierID   INTEGER PRIMARY KEY,\n    SupplierName VARCHAR(50) NOT NULL,\n    Address      VARCHAR(80)\n);\n\nCREATE TABLE Product (\n    ProductID   INTEGER PRIMARY KEY,\n    ProductName VARCHAR(50) NOT NULL,\n    Price       INTEGER NOT NULL,\n    SupplierID  INTEGER NOT NULL,\n    FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)\n);\n\nCREATE TABLE Orders (\n    OrderID    INTEGER PRIMARY KEY,\n    OrderDate  DATE NOT NULL,\n    Total      INTEGER,\n    CustomerID INTEGER NOT NULL,\n    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)\n);\n\nCREATE TABLE OrderItem (\n    OrderID   INTEGER NOT NULL,\n    ProductID INTEGER NOT NULL,\n    Quantity  INTEGER NOT NULL,\n    PRIMARY KEY (OrderID, ProductID),\n    FOREIGN KEY (OrderID)   REFERENCES Orders(OrderID),\n    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)\n);\n```\n\nThe table of the statement is called **Orders** because `Order` is a reserved word of SQL (the statement `CREATE TABLE Order (...)` is rejected with a syntax error; `\"Order\"` between quotation marks would be accepted, but it is a poor habit). The identifiers are integers: stored as text, '01' and '1' would be two different values and the join between Product and Supplier would fail.\n\n**Printed copy of the database** (list of the tables obtained after the script, as displayed by SQLite):\n\n```\nCustomer\nSupplier\nProduct\nOrders\nOrderItem\n```\n\nThe copy printed in the booklet shows the structure of each table (name, columns, primary key, foreign keys), for example the result of `.schema` in SQLite or `DESCRIBE Customer;` in MySQL. The script was run with SQLite (module sqlite3 of Python) and created the five tables without error.\n\n**Marking:** the five tables created with their primary keys (1); foreign keys and suitable data types, and a printed copy (1).",
+      "themes": [
+        "relational databases",
+        "sql queries"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Insert sample data into the tables created and print a copy each of product, customer and order; see the tables below. *[3 marks]*\n\n**Sample data** (printed after question 5 in the booklet):\n\nCustomer\n\n| CustomerID | Customer Name | Email | Address |\n|---|---|---|---|\n| 001 | John Che | Johnc@gmail.com | Bekora |\n| 002 | Jane Fuh | Jane@gmail.com | Bafang |\n| 003 | Jane Fuh | Fuh@yahoo.com | Bafang |\n| 004 | Shutang Ben | Shutang@hotmail.com | Kejum |\n\nProduct\n\n| ProductID | Product Name | SupplierID | Price |\n|---|---|---|---|\n| 001 | Caps | 01 | 2500 |\n| 002 | Shirts | 01 | 1500 |\n| 003 | Shoes | 02 | 2000 |\n\nSupplier\n\n| SupplierID | Supplier Name | Address |\n|---|---|---|\n| 1 | Ousman | Njombe |\n| 2 | Manka'a | Sangmelima |\n| 3 | Ngimfack | Banteng |\n| 4 | Manka'a | Sangmelima |\n\nOrder\n\n| OrderID | CustomerID | Order Date |\n|---|---|---|\n| 1 | 001 | 20-03-2025 |\n| 2 | 002 | 25-03-2025 |",
+      "corrige_markdown": "The rows are inserted in the order that respects the foreign keys: suppliers and customers first, then products and orders.\n\n```sql\nINSERT INTO Customer (CustomerID, Name, Email, Address) VALUES\n  (1, 'John Che',    'Johnc@gmail.com',     'Bekora'),\n  (2, 'Jane Fuh',    'Jane@gmail.com',      'Bafang'),\n  (3, 'Jane Fuh',    'Fuh@yahoo.com',       'Bafang'),\n  (4, 'Shutang Ben', 'Shutang@hotmail.com', 'Kejum');\n\nINSERT INTO Supplier (SupplierID, SupplierName, Address) VALUES\n  (1, 'Ousman',   'Njombe'),\n  (2, 'Manka''a', 'Sangmelima'),\n  (3, 'Ngimfack', 'Banteng'),\n  (4, 'Manka''a', 'Sangmelima');\n\nINSERT INTO Product (ProductID, ProductName, SupplierID, Price) VALUES\n  (1, 'Caps',   1, 2500),\n  (2, 'Shirts', 1, 1500),\n  (3, 'Shoes',  2, 2000);\n\nINSERT INTO Orders (OrderID, CustomerID, OrderDate, Total) VALUES\n  (1, 1, '2025-03-20', 7000),\n  (2, 2, '2025-03-25', 2000);\n\nINSERT INTO OrderItem (OrderID, ProductID, Quantity) VALUES\n  (1, 1, 2),\n  (1, 3, 1),\n  (2, 3, 1);\n```\n\nPoints to notice:\n\n- An apostrophe inside a text value is doubled (`'Manka''a'`).\n- The identifiers 001, 01 are stored as the integers 1: the leading zeros are only a way of displaying them, and SupplierID '01' of Product must equal SupplierID '1' of Supplier.\n- Dates are stored in the standard order year-month-day (2025-03-20), which sorts correctly; the printed 20-03-2025 is a display format.\n- The printed sample data contains **no order lines**: nothing says which products an order contains. The last INSERT adds lines that are **assumed** (order 1: 2 caps and 1 pair of shoes; order 2: 1 pair of shoes), because question 5(d) cannot be answered without them. The totals follow: 2 x 2500 + 1 x 2000 = 7000 and 1 x 2000 = 2000 (checked by a query that sums Quantity x Price).\n- The customers 002 and 003 have the same name and the suppliers 2 and 4 are the same shop: the duplicates are kept as printed, which is why the queries below use DISTINCT.\n\n**Printed copies** (results of `SELECT * FROM ...`, obtained with SQLite):\n\n```\nCustomer\nCustomerID | Name        | Email               | Address | phoneNumber\n1          | John Che    | Johnc@gmail.com     | Bekora  | NULL\n2          | Jane Fuh    | Jane@gmail.com      | Bafang  | NULL\n3          | Jane Fuh    | Fuh@yahoo.com       | Bafang  | NULL\n4          | Shutang Ben | Shutang@hotmail.com | Kejum   | NULL\n\nProduct\nProductID | ProductName | Price | SupplierID | Description\n1         | Caps        | 2500  | 1          | NULL\n2         | Shirts      | 1500  | 1          | NULL\n3         | Shoes       | 2000  | 2          | NULL\n\nOrders\nOrderID | OrderDate  | Total | CustomerID\n1       | 2025-03-20 | 7000  | 1\n2       | 2025-03-25 | 2000  | 2\n```\n\n(The columns phoneNumber and Description are those added in question 2.)\n\n**Marking:** data inserted in all the tables without breaking a foreign key (1); values identical to the printed tables (1); the three required copies printed (1).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "5(a)",
+      "enonce_markdown": "5. Implement SQL queries to perform the following operations, and then copy them into their respective spaces below:\n\n(a) Retrieve the names of all customers who have placed an order. *[1 mark]*",
+      "corrige_markdown": "```sql\nSELECT DISTINCT c.Name\nFROM   Customer c\nJOIN   Orders o ON o.CustomerID = c.CustomerID;\n```\n\nAn equivalent query without a join is `SELECT Name FROM Customer WHERE CustomerID IN (SELECT CustomerID FROM Orders);`. DISTINCT avoids repeating a name when the customer has placed several orders.\n\n**Result** (executed with SQLite on the data of question 4):\n\n```\nName\nJohn Che\nJane Fuh\n```\n\nOnly customers 001 and 002 appear in the table of orders, so Shutang Ben has placed no order and the second Jane Fuh (003) either.\n\n**Marking:** a correct link between Customer and Orders (1).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "5(b)",
+      "enonce_markdown": "(b) Retrieve the names of all the products that Jane supplied. Use the join operator to obtain your answer. *[2 marks]*",
+      "corrige_markdown": "The products are in Product and the supplier's name is in Supplier, so the two tables are joined on the key SupplierID:\n\n```sql\nSELECT DISTINCT p.ProductName\nFROM   Product p\nJOIN   Supplier s ON p.SupplierID = s.SupplierID\nWHERE  s.SupplierName = 'Jane';\n```\n\n**Result with the printed data: no row.** The supplier table contains Ousman, Manka'a, Ngimfack and Manka'a: **no supplier is called Jane** (Jane Fuh is a customer). The query is correct, but the printed sample data gives an empty answer, and a candidate should say so rather than invent a row. The same query for a supplier that exists shows what it returns:\n\n```sql\nSELECT DISTINCT p.ProductName\nFROM   Product p\nJOIN   Supplier s ON p.SupplierID = s.SupplierID\nWHERE  s.SupplierName = 'Ousman';\n```\n\n```\nProductName\nCaps\nShirts\n```\n\n(executed with SQLite; for 'Manka''a' the answer would be Shoes).\n\n**Marking:** use of the JOIN operator with the condition on SupplierID (1); the selection on the supplier's name and the projection of the product names (1).",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "5(c)",
+      "enonce_markdown": "(c) Print a copy of each query. *[1 mark]*",
+      "corrige_markdown": "A copy of each query is printed together with its result, as obtained in questions 5(a) and 5(b):\n\n```\nQuery (a)                                   Result\nSELECT DISTINCT c.Name FROM Customer c      John Che\nJOIN Orders o ON o.CustomerID=c.CustomerID  Jane Fuh\n\nQuery (b)                                   Result\nSELECT DISTINCT p.ProductName FROM Product p\nJOIN Supplier s ON p.SupplierID=s.SupplierID\nWHERE s.SupplierName='Jane'                 (no row selected)\n```\n\nThe printout must show the text of the query and the output of the DBMS (not only the output) so that the examiner can match them.\n\n**Marking:** both queries and their outputs printed and legible (1).",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "5(d)",
+      "enonce_markdown": "(d) Retrieve the names of all customers who have ordered a product supplied by Ousman. *[3 marks]*",
+      "corrige_markdown": "The path from the customer to the supplier crosses five tables: Customer - Orders - OrderItem - Product - Supplier. This is why the 3NF design of question 1 needs ORDER_ITEM: without it nothing links an order to a product.\n\n```sql\nSELECT DISTINCT c.Name\nFROM   Customer  c\nJOIN   Orders    o  ON o.CustomerID = c.CustomerID\nJOIN   OrderItem oi ON oi.OrderID   = o.OrderID\nJOIN   Product   p  ON p.ProductID  = oi.ProductID\nJOIN   Supplier  s  ON s.SupplierID = p.SupplierID\nWHERE  s.SupplierName = 'Ousman';\n```\n\n**Result** with the order lines assumed in question 4 (order 1 = 2 caps + 1 pair of shoes, order 2 = 1 pair of shoes; Ousman supplies the caps and the shirts):\n\n```\nName\nJohn Che\n```\n\nJane Fuh is not returned because her only order contains shoes, which are supplied by Manka'a. **The result depends on the assumed order lines**: the printed data does not give any, so the examiner must mark the structure of the query (the chain of joins), not a particular answer.\n\n**Marking:** joins Customer-Orders (1); joins through the order lines to Product and Supplier (1); condition on 'Ousman' and DISTINCT name (1).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "5(e)",
+      "enonce_markdown": "(e) Print a copy of this query. *[1 mark]*",
+      "corrige_markdown": "The text of the query of 5(d) and its result are printed:\n\n```\nSELECT DISTINCT c.Name\nFROM Customer c\nJOIN Orders o ON o.CustomerID = c.CustomerID\nJOIN OrderItem oi ON oi.OrderID = o.OrderID\nJOIN Product p ON p.ProductID = oi.ProductID\nJOIN Supplier s ON s.SupplierID = p.SupplierID\nWHERE s.SupplierName = 'Ousman';\n\nName\nJohn Che\n```\n\n**Marking:** the query and its output printed (1).",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2020",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2020-p3-officiel-cameroun.pdf",
+ "numero_exercice": "2",
+ "numero_paper": 3,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h",
+ "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), Paper 3 - Practical Work, ADVANCED LEVEL, June 2020. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. You are expected to print out a single copy of relevant fragments of your program at different times. Please notify the instructor of any required printout that was not done! When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C or C11 programming languages may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer. Do not write on the first page of your answer booklet. It is reserved for administrative purposes. Where information is provided as soft copy, notify the instructors if it is not found in your machine or has not been made available to you.\n\nThe paper has two tasks: Task 1 (database design and SQL) and Task 2 (Council data: sorting and searching a list of names).",
+ "points": "",
+ "groupes": [],
+ "regles_choix": [],
+ "enonce_intro_markdown": "**Task 2 - Council data**\n\nThe local council in your area has decided to record information about all its inhabitants. It started this activity by recording the names of all the people in the council area. You have been contracted to propose a computer application to carry out this task.\n\n**Table 1.**\n\n```\n| Bert | Jeff | Gary | Neba | Chang | Olga | Nora | Mary | Vera | Rani | Neil | Jill | Cain | Lara | Bart |\n```\n\n*Instructions: In your answer booklet clearly write down which of the C or Pascal programming language you will use throughout the following programming exercise. The algorithms given in the Figures are in a pseudocode based on C and Pascal and where `←` is for assignment and `//` starts a comment.*\n\n**Figure 1: Selection Sort Algorithm**\n\n```\nprocedure selectionSort (Array)\n    for i ← 1 to sizeOfArray - 1\n        //set current element as minimum\n        integer min ← i\n        //check the element to be minimum\n        for j ← i+1 to sizeOfArray do\n            if Array[j] < Array[min] then\n                min ← j\n            endIf\n\n            // swap the minimum element\n            // with the current element\n            tmp ← a[i]\n            a[i] ← a[min]\n            a[min] ← tmp\n        endFor\n    endFor\nendProcedure\n```\n\n**Figure 2: Recursive Binary Search Algorithm**\n\n```\nBoolean found ← false;          // global variable\ninteger position ← 1;           // global variable\n\nprocedure bin_search_rec (Array, name, min, max)\n    integer bottom ← min;   integer top ← max:\n\n    if (min <= max) then\n        mid ← (min+ max) div 2; // integer division\n        if Array[mid] = name then   // mark item as\n            found ← true            // found and store\n            position ← mid          // its position.\n        else if Array[mid] < name then  // in righ half of range\n            bin_search_rec (Array, name, mid+1, top)\n        else                        // in left half of range.\n            bin_search_rec (Array, name, bottom, mid-1)\n        endif\n    endif\nendProcedure\n\nprocedure bin_search (Array, name, min, max)\n    bin_search_rec (Array, name, min, max)\n    if found = false then print \"Name not found\"\n    else print Array[position]  // print the value found\nendProcedure\n```",
+ "figures": [],
+ "incertitudes": [
+  "Aucun compilateur C ni Pascal n'est disponible : le code C du corrigé (doDisplay, select_sort, bin_search_rec, bin_search, main) n'a PAS été compilé. Sa logique a été vérifiée par une traduction fidèle en Python (mêmes boucles, mêmes comparaisons, indices à base 0, variables globales found et position) exécutée sur la Table 1 et sur les noms Mary, Zack, Bart, Vera, Chang, Aaron, Jack, Zoe et « mary » ; les sorties recopiées dans le corrigé (liste avant et après tri, positions, messages) sont celles de cette simulation. Le Pascal n'est donné que pour la déclaration de la partie (i) (constante typée Turbo / Free Pascal), non compilé non plus.",
+  "Défaut du sujet, Figure 1 (selectionSort) : d'après l'indentation du scan, les trois lignes d'échange (tmp, a[i], a[min]) sont DANS la boucle sur j, avant son « endFor ». Traduite littéralement, cette version ne trie pas la Table 1 (la simulation donne ... Jeff, Lara, Jill, Mary ...). Le corrigé place l'échange après la boucle interne (selection sort classique, conforme aux commentaires de la figure) et le signale. Le sujet mélange aussi « Array » et « a » (a[i], a[min]) et utilise des indices de base 1 (« for i <- 1 to sizeOfArray - 1 ») ; le corrigé passe à la base 0 de C.",
+  "Défauts mineurs du sujet, Figure 2 (bin_search_rec), recopiés tels qu'imprimés : « integer top <- max: » (deux-points au lieu du point-virgule), « righ half », « mid » non déclaré ; « bottom » et « top » ne font que recopier min et max. La variable globale « found » n'est jamais remise à faux entre deux recherches : le corrigé ajoute « found = 0 » au début de bin_search et le dit. Ce n'est pas dans le sujet.",
+  "Les points sont imprimés par partie : (i) 2, (ii) 3, (iii) 4, (iv) 2, (v) 1, (vi) 4, (vii) 4, (viii) 2, (ix) 1, (x) 2 = 25 pour la Task 2 (imprimés « (2 mark) » pour (i) et « (1 mark) » pour (v) et (ix), au singulier, recopiés comme tels) ; aucun total de tâche n'est imprimé, donc « points » de l'exercice est laissé vide. Task 1 = 25 aussi, soit 50 pour le papier (total non imprimé). Aucun point corrigé. Les barèmes « Marking » du corrigé sont des propositions de répartition, pas des barèmes du jury.",
+  "Scan photographié, page 3 gondolée avec filigrane : le pseudocode des Figures 1 et 2 a été lu en image, agrandi ; l'indentation est reconstituée d'après le scan (celle de la Figure 1 conservée telle qu'imprimée). La Table 1 compte 15 noms (Bert, Jeff, Gary, Neba, Chang, Olga, Nora, Mary, Vera, Rani, Neil, Jill, Cain, Lara, Bart) : lecture nette. Les Figures 1 et 2 et la Table 1 sont des listings de texte, transcrits en blocs de code dans l'énoncé de la tâche et non recadrés en PNG ; aucune figure PNG n'a été produite pour ce sujet.",
+  "Les parties (iv), (v), (viii) et (ix) demandent des actions sur ordinateur (capture d'écran, enregistrement sous « task 2a », « task 2b », « printout 2a », « printout 2b », « printout 2c », impression) : le corrigé décrit l'action, fournit le programme complet et la sortie attendue. Le choix du langage (C ou Pascal) est laissé au candidat par le sujet : le corrigé complet est en ANSI C. La partie (x) est une justification rédigée ; ses exemples de noms absents ou présents (Aaron, Jack, Zoe, Bart, Vera, Chang) sont ajoutés par le corrigé, le sujet ne les cite pas."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "(i) In your answer booklet give a declaration, in your chosen programming language (PL), of an array data structure which is immediately initialised to values as given in Table 1. The size of the array is the same as the number of inhabitants in the council. *[2 marks]*",
+   "corrige_markdown": "**Reading the data.** Table 1 holds **15** names; the longest, \"Chang\", has 5 letters. In C a name is a string, that is an array of `char` ended by the character `'\\0'`, so each name needs room for 5 + 1 = **6** characters. The array of names is therefore an array of 15 strings of 6 characters, a two-dimensional array of `char`.\n\n**ANSI C**\n\n```c\n#define N      15   /* number of inhabitants in Table 1 */\n#define MAXLEN 6    /* longest name (Chang) has 5 letters + the terminating '\\0' */\n\nchar names[N][MAXLEN] = { \"Bert\", \"Jeff\", \"Gary\", \"Neba\", \"Chang\",\n                          \"Olga\", \"Nora\", \"Mary\", \"Vera\", \"Rani\",\n                          \"Neil\", \"Jill\", \"Cain\", \"Lara\", \"Bart\" };\n```\n\nThe declaration and the initialisation are done in one statement (\"immediately initialised\"). The size 15 equals the number of names, and the compiler would also accept `char names[][MAXLEN] = {...}`, in which case the number of names is obtained with `sizeof names / sizeof names[0]` (90 bytes / 6 bytes = 15).\n\n**Pascal** (Turbo or Free Pascal typed constant; strict ISO Pascal has no initialised declarations, the 15 values would then be assigned one by one in the program body):\n\n```pascal\nconst\n  N = 15;\n  names: array[1..N] of string[5] = ('Bert', 'Jeff', 'Gary', 'Neba', 'Chang',\n                                      'Olga', 'Nora', 'Mary', 'Vera', 'Rani',\n                                      'Neil', 'Jill', 'Cain', 'Lara', 'Bart');\n```\n\n**Marking:** an array of strings of the right dimension, 15 elements, long enough for the longest name (1); initialised with the 15 values of Table 1 in the given order (1).",
+   "themes": [
+    "data structures",
+    "programming in c"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 2
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "(ii) Using your favourite editor, implement a PL function (or procedure) called **doDisplay** that takes as arguments an array and its size, as defined in (i), and then displays the names of council inhabitants. *[3 marks]*",
+   "corrige_markdown": "**Algorithm.**\n\n```\nprocedure doDisplay (Array, size)\n    for i from 0 to size - 1\n        print Array[i]\n    endFor\nendProcedure\n```\n\n**ANSI C.** An array is passed to a function by its address, so the function cannot find the number of elements by itself: the size is the second argument, as the question says. The second dimension (`MAXLEN`) must be given in the parameter.\n\n```c\nvoid doDisplay(char array[][MAXLEN], int size)\n{\n    int i;\n\n    for (i = 0; i < size; i++) {\n        printf(\"%s\", array[i]);\n        if (i < size - 1)\n            printf(\", \");       /* separator between two names */\n    }\n    printf(\"\\n\");\n}\n```\n\nIt needs `#include <stdio.h>`. For the 15 names of Table 1 in their initial order, `doDisplay(names, N)` prints (checked with a Python translation of the same loop):\n\n```\nBert, Jeff, Gary, Neba, Chang, Olga, Nora, Mary, Vera, Rani, Neil, Jill, Cain, Lara, Bart\n```\n\n**Marking:** header with the array and its size as parameters (1); a loop over the elements from the first to the last, with no out-of-range index (1); each name displayed (1).",
+   "themes": [
+    "subprograms",
+    "programming in c",
+    "data structures"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 3
+  },
+  {
+   "numero": "iii",
+   "enonce_markdown": "(iii) Using the algorithm for selection sort in Figure 1, give a PL procedure or function called **select_sort** that sorts the content of the array in (ii) in alphabetical order. Add a main program unit (if need be) and call the subroutines doDisplay and select_sort from it. *[4 marks]*",
+   "corrige_markdown": "**Principle of selection sort.** For each position `i`, find the smallest element among the positions `i` to the end (`min` keeps its index), then swap it with the element at position `i`. After the pass for `i`, the elements at positions `0 .. i` are in their final place.\n\n**A defect of Figure 1 as printed.** In the figure the three lines of the swap (`tmp <- a[i]`, `a[i] <- a[min]`, `a[min] <- tmp`) are indented *inside* the loop on `j`, before its `endFor`. A literal translation swaps at every step of the inner loop, and this does **not** sort the names of Table 1: a Python translation of that version returns `Bart, Bert, Cain, Chang, Gary, Jeff, Lara, Jill, Mary, ...` (Lara before Jill). The comments of the figure (\"swap the minimum element with the current element\") and the principle above show that the swap must be done **once per value of i, after the loop on j**; this is the version below.\n\n**Algorithm (0-based indices, as in C).**\n\n```\nprocedure select_sort (Array, size)\n    for i from 0 to size - 2\n        min <- i                          // assume Array[i] is the smallest\n        for j from i + 1 to size - 1\n            if Array[j] < Array[min] then\n                min <- j                  // a smaller element is found\n            endIf\n        endFor\n        tmp <- Array[i]                   // swap Array[i] and Array[min]\n        Array[i] <- Array[min]\n        Array[min] <- tmp\n    endFor\nendProcedure\n```\n\nThe pseudocode loops `1 .. sizeOfArray - 1` and `i+1 .. sizeOfArray` become `0 .. size - 2` and `i + 1 .. size - 1` because C arrays start at index 0.\n\n**ANSI C.** Strings cannot be compared with `<` or copied with `=`: the library functions `strcmp` (negative result if the first string comes first in alphabetical order) and `strcpy` (from `<string.h>`) are used.\n\n```c\nvoid select_sort(char array[][MAXLEN], int size)\n{\n    int  i, j, min;\n    char tmp[MAXLEN];\n\n    for (i = 0; i < size - 1; i++) {\n        min = i;                                  /* index of the smallest name so far */\n        for (j = i + 1; j < size; j++)\n            if (strcmp(array[j], array[min]) < 0)\n                min = j;\n        strcpy(tmp, array[i]);                    /* swap array[i] and array[min] */\n        strcpy(array[i], array[min]);\n        strcpy(array[min], tmp);\n    }\n}\n```\n\n**Main program.**\n\n```c\nint main(void)\n{\n    char names[N][MAXLEN] = { \"Bert\", \"Jeff\", \"Gary\", \"Neba\", \"Chang\",\n                              \"Olga\", \"Nora\", \"Mary\", \"Vera\", \"Rani\",\n                              \"Neil\", \"Jill\", \"Cain\", \"Lara\", \"Bart\" };\n\n    printf(\"Names before sorting:\\n\");\n    doDisplay(names, N);\n    select_sort(names, N);\n    printf(\"Names after sorting:\\n\");\n    doDisplay(names, N);\n    return 0;\n}\n```\n\nwith `#include <stdio.h>`, `#include <string.h>`, `#define N 15`, `#define MAXLEN 6` at the top (the complete listing is given in (v)).\n\n**Marking:** header of select_sort with array and size (1); the two nested loops with the search of the index of the minimum (1); the swap through a temporary variable (1); a main program calling doDisplay and select_sort (1).",
+   "themes": [
+    "sorting algorithms",
+    "subprograms",
+    "programming in c"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  },
+  {
+   "numero": "iv",
+   "enonce_markdown": "(iv) Using the data in Table 1, make sure your program in (iii) works. Screen-capture and save a copy of your output as **printout 2a**, then print it. *[2 marks]*",
+   "corrige_markdown": "Compile and run the program of (iii) (or (v)), then capture the console window with the *Print Screen* key (or a screen-capture tool), paste it into a document, save it as `printout 2a` and print it.\n\n**Expected output.** A Python translation of `doDisplay` and `select_sort` (same loops, same comparisons) was run on Table 1; the output the C program must show is:\n\n```\nNames before sorting:\nBert, Jeff, Gary, Neba, Chang, Olga, Nora, Mary, Vera, Rani, Neil, Jill, Cain, Lara, Bart\nNames after sorting:\nBart, Bert, Cain, Chang, Gary, Jeff, Jill, Lara, Mary, Neba, Neil, Nora, Olga, Rani, Vera\n```\n\n**How to check that the program works.** (1) The second line contains the same 15 names as the first, none lost and none repeated (the swap only exchanges names). (2) Each name comes before the next in alphabetical order, comparing letter by letter: Bart before Bert ('a' < 'e'), Cain before Chang ('a' < 'h'), Jeff before Jill ('e' < 'i'), Neba before Neil ('b' < 'i'), Neil before Nora ('e' < 'o'). If the output is not in order, the comparison or the swap is wrong.\n\n**Marking:** program runs and displays the sorted list (1); printout saved, labelled printout 2a and printed (1).",
+   "themes": [
+    "sorting algorithms",
+    "software testing"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 2
+  },
+  {
+   "numero": "v",
+   "enonce_markdown": "(v) Save your program code as **task 2a** and print a copy of it. *[1 mark]*",
+   "corrige_markdown": "Save the source file under the name `task2a.c` (or `task2a.pas`) and print it. The complete listing of `task2a.c`, which assembles the pieces of (i), (ii) and (iii), is:\n\n```c\n/* task2a.c - council inhabitants: display and selection sort (ANSI C) */\n#include <stdio.h>\n#include <string.h>\n\n#define N      15   /* number of inhabitants in Table 1 */\n#define MAXLEN 6    /* longest name has 5 letters + the terminating '\\0' */\n\nvoid doDisplay(char array[][MAXLEN], int size)\n{\n    int i;\n\n    for (i = 0; i < size; i++) {\n        printf(\"%s\", array[i]);\n        if (i < size - 1)\n            printf(\", \");\n    }\n    printf(\"\\n\");\n}\n\nvoid select_sort(char array[][MAXLEN], int size)\n{\n    int  i, j, min;\n    char tmp[MAXLEN];\n\n    for (i = 0; i < size - 1; i++) {\n        min = i;\n        for (j = i + 1; j < size; j++)\n            if (strcmp(array[j], array[min]) < 0)\n                min = j;\n        strcpy(tmp, array[i]);\n        strcpy(array[i], array[min]);\n        strcpy(array[min], tmp);\n    }\n}\n\nint main(void)\n{\n    char names[N][MAXLEN] = { \"Bert\", \"Jeff\", \"Gary\", \"Neba\", \"Chang\",\n                              \"Olga\", \"Nora\", \"Mary\", \"Vera\", \"Rani\",\n                              \"Neil\", \"Jill\", \"Cain\", \"Lara\", \"Bart\" };\n\n    printf(\"Names before sorting:\\n\");\n    doDisplay(names, N);\n    select_sort(names, N);\n    printf(\"Names after sorting:\\n\");\n    doDisplay(names, N);\n    return 0;\n}\n```\n\n**Marking:** the program file saved with the requested name and printed (1).",
+   "themes": [
+    "programming in c",
+    "software development tools"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 1
+  },
+  {
+   "numero": "vi",
+   "enonce_markdown": "(vi) Using the algorithm for a recursive binary search in Figure 2, give a PL procedure called **bin_search** that takes an array, a **name** to search, and the bounds **min** and **max** of the search range within the array. It then calls the recursive procedure **bin_search_rec** with matching arguments. The procedure bin_search then prints the given name if found. Otherwise, the message \"**Name not found**\" is printed. [*Note: In Figure 2, variables found and position are global.*] *[4 marks]*",
+   "corrige_markdown": "**Principle.** Binary search works only on a **sorted** array (this is why the names are sorted first). The procedure looks at the middle element `mid` of the range `min .. max`: if it is the name, the search stops; if the middle element comes before the name, the name can only be in the right half (`mid + 1 .. max`); otherwise it can only be in the left half (`min .. mid - 1`). When the range is empty (`min > max`) the name is not in the array. Each call halves the range, so at most about log2(15), that is 4, names are examined for 15 names.\n\nBecause `bin_search_rec` returns nothing, it reports its result through the **global variables** `found` (was the name found?) and `position` (its index), which `bin_search` reads after the call. The local variables `bottom` and `top` of Figure 2 only copy `min` and `max`.\n\n**Algorithm (0-based indices).**\n\n```\nfound <- false ; position <- 0                  // global variables\n\nprocedure bin_search_rec (Array, name, min, max)\n    bottom <- min ; top <- max\n    if min <= max then\n        mid <- (min + max) div 2\n        if Array[mid] = name then\n            found <- true ; position <- mid\n        else if Array[mid] < name then\n            bin_search_rec (Array, name, mid + 1, top)     // right half\n        else\n            bin_search_rec (Array, name, bottom, mid - 1)  // left half\n        endIf\n    endIf\nendProcedure\n\nprocedure bin_search (Array, name, min, max)\n    found <- false\n    bin_search_rec (Array, name, min, max)\n    if found = false then print \"Name not found\"\n    else print Array[position]\nendProcedure\n```\n\n**ANSI C.** `strcmp(a, b)` returns 0 if the strings are equal, a negative number if `a` comes before `b`, a positive number otherwise. `(min + max) / 2` is an integer division because both operands are `int`.\n\n```c\nint found = 0;      /* global: 1 when the name has been found */\nint position = 0;   /* global: index of the name in the array (0-based) */\n\nvoid bin_search_rec(char array[][MAXLEN], const char *name, int min, int max)\n{\n    int bottom = min;\n    int top    = max;\n    int mid;\n\n    if (min <= max) {\n        mid = (min + max) / 2;\n        if (strcmp(array[mid], name) == 0) {\n            found = 1;\n            position = mid;\n        } else if (strcmp(array[mid], name) < 0)\n            bin_search_rec(array, name, mid + 1, top);      /* right half */\n        else\n            bin_search_rec(array, name, bottom, mid - 1);   /* left half */\n    }\n}\n\nvoid bin_search(char array[][MAXLEN], const char *name, int min, int max)\n{\n    found = 0;                       /* a new search starts: nothing found yet */\n    bin_search_rec(array, name, min, max);\n    if (found == 0)\n        printf(\"Name not found\\n\");\n    else\n        printf(\"%s\\n\", array[position]);\n}\n```\n\nFor the sorted array of (iii), `bin_search(names, \"Mary\", 0, N - 1)` examines in turn index 7 (Lara, before Mary: go right), index 11 (Nora, after Mary: go left), index 9 (Neba, after Mary: go left), index 8 (Mary: found), so `found = 1`, `position = 8` and \"Mary\" is printed. For \"Zack\" the calls examine indexes 7, 11, 13, 14 (all before \"Zack\"), then the range becomes `15 .. 14`, empty: `found` stays 0 and \"Name not found\" is printed. Both traces were confirmed with a Python translation of the two procedures.\n\n*Remark.* The statement `found = 0;` in `bin_search` is not in Figure 2 (the figure sets `found` to false once, at the start of the program); it is harmless for one search and makes the procedure correct if it is called several times.\n\n**Marking:** header of bin_search with array, name, min and max (1); call of bin_search_rec with matching arguments (1); the name printed when found (1); the message \"Name not found\" otherwise, with the global variables used (1).",
+   "themes": [
+    "searching algorithms",
+    "recursion",
+    "subprograms"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  },
+  {
+   "numero": "vii",
+   "enonce_markdown": "(vii) Modify your main program in (iii) so that it calls the **select_sort** procedure, then prompts for a name that it uses to call procedure **bin_search** with. *[4 marks]*",
+   "corrige_markdown": "The main program of (iii) already sorts the array; it now also asks the user for a name and passes it to `bin_search` with the bounds of the whole array (`0` and `N - 1`).\n\n```c\n#define INPUTLEN 20     /* room for a typed name, longer than any name of Table 1 */\n\nint main(void)\n{\n    char names[N][MAXLEN] = { \"Bert\", \"Jeff\", \"Gary\", \"Neba\", \"Chang\",\n                              \"Olga\", \"Nora\", \"Mary\", \"Vera\", \"Rani\",\n                              \"Neil\", \"Jill\", \"Cain\", \"Lara\", \"Bart\" };\n    char name[INPUTLEN];\n\n    printf(\"Names before sorting:\\n\");\n    doDisplay(names, N);\n    select_sort(names, N);            /* binary search needs a sorted array */\n    printf(\"Names after sorting:\\n\");\n    doDisplay(names, N);\n\n    printf(\"Enter the name to search for: \");\n    scanf(\"%19s\", name);              /* at most 19 characters, no overflow */\n    bin_search(names, name, 0, N - 1);\n    return 0;\n}\n```\n\nPoints to note:\n\n- `select_sort` must be called **before** `bin_search`: on an unsorted array the binary search can miss a name that is present.\n- The buffer `name` is larger (`INPUTLEN`) than `MAXLEN`, so that a long typed name is simply \"not found\" instead of overflowing the buffer, and `\"%19s\"` limits the number of characters read.\n- The comparison is **case-sensitive**: \"mary\" is not found, \"Mary\" is (confirmed with the Python translation). A more tolerant program would convert the typed name to the case used in Table 1 before searching.\n\n**Marking:** `select_sort` called before the search (1); a prompt displayed and the name read into a suitable variable (1); `bin_search` called with the array, the name and the bounds 0 and N - 1 (1); program consistent with (iii) (1).",
+   "themes": [
+    "searching algorithms",
+    "programming in c"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  },
+  {
+   "numero": "viii",
+   "enonce_markdown": "(viii) Save your program code as **task 2b**. Print a copy of it. Also screen-capture a copy of your output as **printout 2b**, then print it. *[2 marks]*",
+   "corrige_markdown": "Save the final program as `task2b.c` (or `task2b.pas`) and print it. The complete listing, assembling (i) to (vii), is:\n\n```c\n/* task2b.c - council inhabitants: selection sort then recursive binary search (ANSI C) */\n#include <stdio.h>\n#include <string.h>\n\n#define N        15   /* number of inhabitants in Table 1 */\n#define MAXLEN   6    /* longest name has 5 letters + the terminating '\\0' */\n#define INPUTLEN 20   /* room for a typed name */\n\nint found = 0;        /* global: 1 when the name has been found */\nint position = 0;     /* global: index of the name in the array (0-based) */\n\nvoid doDisplay(char array[][MAXLEN], int size)\n{\n    int i;\n\n    for (i = 0; i < size; i++) {\n        printf(\"%s\", array[i]);\n        if (i < size - 1)\n            printf(\", \");\n    }\n    printf(\"\\n\");\n}\n\nvoid select_sort(char array[][MAXLEN], int size)\n{\n    int  i, j, min;\n    char tmp[MAXLEN];\n\n    for (i = 0; i < size - 1; i++) {\n        min = i;\n        for (j = i + 1; j < size; j++)\n            if (strcmp(array[j], array[min]) < 0)\n                min = j;\n        strcpy(tmp, array[i]);\n        strcpy(array[i], array[min]);\n        strcpy(array[min], tmp);\n    }\n}\n\nvoid bin_search_rec(char array[][MAXLEN], const char *name, int min, int max)\n{\n    int bottom = min;\n    int top    = max;\n    int mid;\n\n    if (min <= max) {\n        mid = (min + max) / 2;\n        if (strcmp(array[mid], name) == 0) {\n            found = 1;\n            position = mid;\n        } else if (strcmp(array[mid], name) < 0)\n            bin_search_rec(array, name, mid + 1, top);\n        else\n            bin_search_rec(array, name, bottom, mid - 1);\n    }\n}\n\nvoid bin_search(char array[][MAXLEN], const char *name, int min, int max)\n{\n    found = 0;\n    bin_search_rec(array, name, min, max);\n    if (found == 0)\n        printf(\"Name not found\\n\");\n    else\n        printf(\"%s\\n\", array[position]);\n}\n\nint main(void)\n{\n    char names[N][MAXLEN] = { \"Bert\", \"Jeff\", \"Gary\", \"Neba\", \"Chang\",\n                              \"Olga\", \"Nora\", \"Mary\", \"Vera\", \"Rani\",\n                              \"Neil\", \"Jill\", \"Cain\", \"Lara\", \"Bart\" };\n    char name[INPUTLEN];\n\n    printf(\"Names before sorting:\\n\");\n    doDisplay(names, N);\n    select_sort(names, N);\n    printf(\"Names after sorting:\\n\");\n    doDisplay(names, N);\n\n    printf(\"Enter the name to search for: \");\n    scanf(\"%19s\", name);\n    bin_search(names, name, 0, N - 1);\n    return 0;\n}\n```\n\n**Expected output for printout 2b** when the user types `Mary` (result of the Python translation of the program):\n\n```\nNames before sorting:\nBert, Jeff, Gary, Neba, Chang, Olga, Nora, Mary, Vera, Rani, Neil, Jill, Cain, Lara, Bart\nNames after sorting:\nBart, Bert, Cain, Chang, Gary, Jeff, Jill, Lara, Mary, Neba, Neil, Nora, Olga, Rani, Vera\nEnter the name to search for: Mary\nMary\n```\n\nCapture the console window, save the capture as `printout 2b`, print it.\n\n**Marking:** program saved as task 2b and printed (1); output captured, labelled printout 2b and printed (1).",
+   "themes": [
+    "software testing",
+    "software development tools"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 2
+  },
+  {
+   "numero": "ix",
+   "enonce_markdown": "(ix) Run your program from (vii) but enter a name that is not found in the array of names. Screen-capture and save your output as **printout 2c**, then print it. *[1 mark]*",
+   "corrige_markdown": "Run `task2b` again and type a name which is not in Table 1, for example `Zack`. The expected output (Python translation of the program) is:\n\n```\nNames before sorting:\nBert, Jeff, Gary, Neba, Chang, Olga, Nora, Mary, Vera, Rani, Neil, Jill, Cain, Lara, Bart\nNames after sorting:\nBart, Bert, Cain, Chang, Gary, Jeff, Jill, Lara, Mary, Neba, Neil, Nora, Olga, Rani, Vera\nEnter the name to search for: Zack\nName not found\n```\n\nCapture the window, save the capture as `printout 2c` and print it.\n\n**Marking:** a name absent from the array entered, the message \"Name not found\" displayed, printout 2c saved and printed (1).",
+   "themes": [
+    "software testing",
+    "searching algorithms"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 1
+  },
+  {
+   "numero": "x",
+   "enonce_markdown": "(x) Use your outputs from (viii) and (ix) to justify whether or not the program implemented is correct. *[2 marks]*",
+   "corrige_markdown": "**Justification.**\n\n- **Printout 2b (name present).** The sorted list shows that `select_sort` works: the 15 names are all there and in alphabetical order (Bart, Bert, Cain, Chang, Gary, Jeff, Jill, Lara, Mary, Neba, Neil, Nora, Olga, Rani, Vera). The search for \"Mary\" displays \"Mary\": `bin_search` found the name, because it examined index 8 of the sorted array, where \"Mary\" is stored.\n- **Printout 2c (name absent).** The search for \"Zack\" displays \"Name not found\", which is the message required by the question, so the program also reports correctly a name that is not in the array.\n- **Conclusion.** The program does what it is asked: it sorts the array, finds a name that is present and reports a name that is absent. It is therefore correct **for the two cases tested**.\n\n**Limits of the test, and further tests that make the conclusion stronger.** `bin_search` prints `Array[position]`, which, when the name is found, is always equal to the name typed: printout 2b alone shows that the search succeeded, not that the right index was used. A convincing test therefore uses several names: the first of the sorted list (Bart: found at index 0), the last (Vera: index 14), a name inside the list (Chang: index 3), and names that are absent because they come before the first (Aaron), between two names of the list (Jack, which falls between Gary and Jeff) or after the last (Zoe). With the Python translation of the program, \"Bart\", \"Vera\" and \"Chang\" are found and \"Aaron\", \"Jack\", \"Zoe\" and \"mary\" (wrong capital letter) give \"Name not found\". The tests at both ends of the array and outside it are the ones where binary-search programs usually fail (a wrong bound gives an index outside the array or an endless recursion), so passing them supports the claim that the program is correct.\n\n**Marking:** use of printout 2b (name found, list sorted) (1); use of printout 2c (message for an absent name) and a conclusion on the correctness (1).",
+   "themes": [
+    "software testing",
+    "searching algorithms"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 2
+  }
+ ]
+}

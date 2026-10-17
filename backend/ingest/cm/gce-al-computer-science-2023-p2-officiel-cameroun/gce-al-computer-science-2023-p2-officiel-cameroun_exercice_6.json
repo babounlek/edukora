@@ -1,0 +1,127 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 2, ADVANCED LEVEL, June 2023. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-computer-science-2023-p2-officiel-cameroun_exercice_6_fig_1.png",
+      "page_source": 4,
+      "type": "schema",
+      "legende": "Flowchart algorithm: Get N; X <- 0, Y <- 1; while N > 0: T <- X, X <- Y, Y <- Y + T, N <- N - 1; then Result <- X, print Result.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Question 6 (ii) : l'organigramme est recadré (figure fig-1, page 4 du sujet) et réutilisé dans (a), (b) et (c) ; pour (b) et (c) l'algorithme est de plus recopié en pseudocode (équivalent de l'organigramme, rédigé pour l'autonomie des sous-questions). Le sujet imprime « (a) Give a trace table... », « (b) From your table in (a)... », « (c) State the time complexity ». Le tableau de trace du corrigé a une colonne T supplémentaire (donnée à titre informatif).",
+    "Question 6 (i)(c) : le sujet renvoie à « i(b) » ; l'énoncé de la sous-question recopie le résultat attendu de (b) (arbre à la racine +). Le corrigé suppose que × et / ont même priorité et s'évaluent de gauche à droite, soit E = A + ((B x C) / D) ; la lecture B x (C / D) donnerait l'arbre différent A B C D / x + (même valeur).",
+    "Question 6 : l'arbre d'expression demandé en (i)(b) est un schéma à produire par le candidat ; il est décrit dans le corrigé par un diagramme en texte. Traces, post-ordre et sorties vérifiés par simulation Python."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "Consider the arithmetic expression $E = A + B \\times C/D$.\n\nWith respect to arithmetic expressions, define the terms infix, prefix and postfix.",
+      "corrige_markdown": "They are three ways of writing an arithmetic expression, according to the position of the operator relative to its operands:\n\n* **Infix**: the operator is written **between** its two operands, e.g. $A + B$. It is the usual notation, and needs precedence rules and brackets to be unambiguous.\n* **Prefix** (Polish notation): the operator is written **before** its operands, e.g. $+\\,A\\,B$.\n* **Postfix** (reverse Polish notation): the operator is written **after** its operands, e.g. $A\\,B\\,+$.\n\nPrefix and postfix need no brackets and no precedence rules; postfix is easily evaluated with a stack.",
+      "themes": [
+        "infix prefix and postfix notation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "Consider the arithmetic expression $E = A + B \\times C/D$.\n\nGive the expression E stored as an expression tree, in the order read.",
+      "corrige_markdown": "In $A + B \\times C / D$, multiplication and division have the same precedence, higher than addition, and are evaluated from left to right: $B \\times C / D = (B \\times C) / D$. So $E = A + ((B \\times C) / D)$. The operator evaluated last (+) is the root; the leaves are the operands.\n\n```text\n        +\n       / \\\n      A   /\n         / \\\n        *   D\n       / \\\n      B   C\n```\n\nReading the tree: root $+$ with left subtree $A$ and right subtree $/$; the $/$ node has left subtree $\\times$ (with leaves $B$ and $C$) and right subtree $D$. An in-order walk (left, node, right) gives back the infix expression $A + B \\times C / D$ (the order of the operands is preserved).",
+      "themes": [
+        "expression trees"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "Consider the arithmetic expression $E = A + B \\times C/D$, stored as an expression tree with $+$ at the root, $A$ as its left child and the subtree for $(B \\times C)/D$ as its right child.\n\nState in words how you would obtain the expression E in postfix form from the expression tree. Give the postfix expression obtained.",
+      "corrige_markdown": "**Method: post-order traversal.** Starting at the root, recursively:\n\n1. traverse the **left subtree** (visit all its nodes in post-order);\n2. traverse the **right subtree**;\n3. then **visit (write) the node itself**.\n\nApplying it: at the root $+$ we first traverse $A$ (write $A$), then the right subtree $/$: its left subtree $\\times$ gives $B\\ C\\ \\times$, its right subtree gives $D$, then write $/$; finally write the root $+$.\n\n$$\\boxed{A\\ B\\ C\\ \\times\\ D\\ /\\ +}$$\n\nCheck by evaluating with a stack (a script gave 4.0 for $A=2$, $B=3$, $C=4$, $D=6$, as does $2 + 3 \\times 4 / 6$): push 2, 3, 4; $\\times$ gives 12; push 6; $/$ gives 2; $+$ gives 4. (For comparison the prefix form is $+\\ A\\ /\\ \\times\\ B\\ C\\ D$.)",
+      "themes": [
+        "expression trees",
+        "infix prefix and postfix notation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "Study the following flowchart algorithm and answer the questions that follow.\n\n![fig-1](gce-al-computer-science-2023-p2-officiel-cameroun_exercice_6_fig_1.png)\n\nGive a trace table of the values for the variables, X, Y and N at the point where N>0 is tested, where N is initially 8. Hence, determine the output of this algorithm for N = 8.",
+      "corrige_markdown": "Each row gives the values at the moment the test $N > 0$ is made (the variable T, shown for information, holds the old value of X from the previous pass).\n\n| Test number | N | X | Y | T (last value) | N > 0 ? |\n|---|---|---|---|---|---|\n| 1 | 8 | 0 | 1 | - | Yes |\n| 2 | 7 | 1 | 1 | 0 | Yes |\n| 3 | 6 | 1 | 2 | 1 | Yes |\n| 4 | 5 | 2 | 3 | 1 | Yes |\n| 5 | 4 | 3 | 5 | 2 | Yes |\n| 6 | 3 | 5 | 8 | 3 | Yes |\n| 7 | 2 | 8 | 13 | 5 | Yes |\n| 8 | 1 | 13 | 21 | 8 | Yes |\n| 9 | 0 | 21 | 34 | 13 | No |\n\nEach pass of the loop does $T \\leftarrow X$, $X \\leftarrow Y$, $Y \\leftarrow Y + T$ and $N \\leftarrow N - 1$; for example from row 1 to row 2: $T = 0$, $X = 1$, $Y = 1 + 0 = 1$, $N = 7$.\n\nWhen $N = 0$ the test fails, so $\\text{Result} \\leftarrow X = 21$ and the algorithm prints:\n\n**Output: 21.**",
+      "themes": [
+        "flowcharts and trace tables"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "The flowchart algorithm below is equivalent to this pseudocode (the flowchart is shown in the figure).\n\n![fig-1](gce-al-computer-science-2023-p2-officiel-cameroun_exercice_6_fig_1.png)\n\n```text\nStart\nGet N\nX <- 0\nY <- 1\nWHILE N > 0\n    T <- X\n    X <- Y\n    Y <- Y + T\n    N <- N - 1\nENDWHILE\nResult <- X\nPrint Result\nStop\n```\n\nFrom your trace table in (a) above, deduce the computation that is performed by the above algorithm. Write a mathematical formula for this computation.",
+      "corrige_markdown": "The successive values of $X$ are $0, 1, 1, 2, 3, 5, 8, 13, 21$: each is the **sum of the two before it**. After $N$ passes of the loop, $X$ holds the $N$-th term of this sequence, and $Y$ holds the next term. So the algorithm computes the **N-th Fibonacci number**.\n\nFormula (with $F_0 = 0$ and $F_1 = 1$):\n\n$$F_N = F_{N-1} + F_{N-2}, \\qquad N \\ge 2.$$\n\nIn the algorithm: $X_{k+1} = Y_k$ and $Y_{k+1} = Y_k + X_k$, i.e. $(X, Y) = (F_k, F_{k+1}) \\to (F_{k+1}, F_{k+2})$. For $N = 8$ the result is $F_8 = 21$. A closed form is Binet's formula $F_N = \\dfrac{\\varphi^N - (1-\\varphi)^N}{\\sqrt5}$ with $\\varphi = \\dfrac{1+\\sqrt5}{2}$ (not required).",
+      "themes": [
+        "flowcharts and trace tables"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "The flowchart algorithm below is equivalent to this pseudocode (the flowchart is shown in the figure). It reads N and loops while N > 0.\n\n![fig-1](gce-al-computer-science-2023-p2-officiel-cameroun_exercice_6_fig_1.png)\n\n```text\nStart\nGet N\nX <- 0\nY <- 1\nWHILE N > 0\n    T <- X\n    X <- Y\n    Y <- Y + T\n    N <- N - 1\nENDWHILE\nResult <- X\nPrint Result\nStop\n```\n\nState the time complexity of the above algorithm.",
+      "corrige_markdown": "The body of the loop (four assignments) takes constant time and is executed exactly $N$ times, since $N$ is decreased by 1 on each pass until it reaches 0. The statements outside the loop are executed once.\n\n$$T(N) = c_1 N + c_2 \\quad\\Rightarrow\\quad \\textbf{O}(N) \\text{ , linear time.}$$",
+      "themes": [
+        "algorithm complexity"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

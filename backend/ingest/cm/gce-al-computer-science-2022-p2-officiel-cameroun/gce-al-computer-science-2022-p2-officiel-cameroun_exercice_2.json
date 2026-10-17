@@ -1,0 +1,68 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigrane gcerevision.com ignoré) lu page par page en image ; 4 pages, 8 questions, aucune figure à recadrer. Points imprimés par sous-partie (total 17 pour chaque question, vérifié). Question 2 : points imprimés i(a) 3, i(b) 3, i(c) 3, ii(a) 3, ii(b) 2, ii(c) 3 ; total 17.",
+    "2(i)(c) : le schéma de portes est à dessiner par le candidat ; il est décrit porte par porte dans le corrigé (pas de figure). Les expressions de L, G et E et la table de vérité ont été vérifiées par un script Python sur les 16 combinaisons.",
+    "2(ii)(a) : le sujet imprime « the 19 - (- 4) » (formulation défectueuse) ; interprété comme le calcul 19 - (-4) = 23.",
+    "2(ii)(b) : en complément à 2 sur 8 bits, la somme (93)16 + (DE)16 = (171)16 déborde (-109 + -34 = -143) ; le corrigé donne (171)16 et signale le débordement. Le sujet ne dit pas si l'on attend la somme hexadécimale seule ou le résultat sur 8 bits.",
+    "Aucun code C/Pascal dans ce paper (théorie) : rien n'a donc été compilé ; les calculs, tableaux et pseudocodes du corrigé ont été vérifiés par un script Python exécuté (et sqlite3 pour la base de données de la question 5)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A logic circuit is designed to have two 2-bit binary numbers AB and CD, with outputs E, L and G.\n\n- L is high when AB is less than CD.\n- G is high when AB is greater than CD.\n- E is high when AB is equal to CD.\n\n(a) Draw a truth table for the above circuit. (3 marks)\n\n(b) Determine the Boolean expression for the logic circuit L, G, and E. (3 marks)\n\n(c) Hence, draw the circuit diagram of L, G, and E. (3 marks)",
+      "corrige_markdown": "This circuit is a **2-bit magnitude comparator**. A is the most significant bit of the first number and C the most significant bit of the second number.\n\n**(a) Truth table (3 marks)**\n\n| A | B | C | D | L (AB < CD) | G (AB > CD) | E (AB = CD) |\n|---|---|---|---|---|---|---|\n| 0 | 0 | 0 | 0 | 0 | 0 | 1 |\n| 0 | 0 | 0 | 1 | 1 | 0 | 0 |\n| 0 | 0 | 1 | 0 | 1 | 0 | 0 |\n| 0 | 0 | 1 | 1 | 1 | 0 | 0 |\n| 0 | 1 | 0 | 0 | 0 | 1 | 0 |\n| 0 | 1 | 0 | 1 | 0 | 0 | 1 |\n| 0 | 1 | 1 | 0 | 1 | 0 | 0 |\n| 0 | 1 | 1 | 1 | 1 | 0 | 0 |\n| 1 | 0 | 0 | 0 | 0 | 1 | 0 |\n| 1 | 0 | 0 | 1 | 0 | 1 | 0 |\n| 1 | 0 | 1 | 0 | 0 | 0 | 1 |\n| 1 | 0 | 1 | 1 | 1 | 0 | 0 |\n| 1 | 1 | 0 | 0 | 0 | 1 | 0 |\n| 1 | 1 | 0 | 1 | 0 | 1 | 0 |\n| 1 | 1 | 1 | 0 | 0 | 1 | 0 |\n| 1 | 1 | 1 | 1 | 0 | 0 | 1 |\n\n(Exactly one of L, G, E is 1 in every row.)\n\n**(b) Boolean expressions (3 marks)**\n\n*E* is 1 only in the rows 0000, 0101, 1010 and 1111, that is when A = C **and** B = D. Using the XNOR operation ($A \\odot C = 1$ when $A = C$):\n\n$$E = (A \\odot C)\\cdot(B \\odot D) = \\overline{A}\\,\\overline{B}\\,\\overline{C}\\,\\overline{D} + \\overline{A}B\\overline{C}D + A\\overline{B}C\\overline{D} + ABCD$$\n\n*G* is 1 in the rows 0100, 1000, 1001, 1100, 1101 and 1110. Grouping them (Karnaugh map or reasoning: AB > CD if A > C, or if A = C and B > D):\n\n$$G = A\\overline{C} + B\\overline{C}\\,\\overline{D} + AB\\overline{D}$$\n\n*L* is 1 in the rows 0001, 0010, 0011, 0110, 0111 and 1011 (AB < CD if A < C, or if A = C and B < D):\n\n$$L = \\overline{A}C + \\overline{A}\\,\\overline{B}D + \\overline{B}CD$$\n\n(Equivalent forms: $G = A\\overline{C} + (A \\odot C)\\,B\\overline{D}$ and $L = \\overline{A}C + (A \\odot C)\\,\\overline{B}D$. All the expressions were checked by a script against the 16 rows of the truth table.)\n\n**(c) Circuit diagram (3 marks)**\n\nInputs A, B, C, D (with NOT gates to produce $\\overline{A}$, $\\overline{B}$, $\\overline{C}$, $\\overline{D}$). The diagram to be drawn is described gate by gate:\n\n- **E**: an XNOR gate X1 with inputs A and C, an XNOR gate X2 with inputs B and D, and an AND gate with inputs X1 and X2; its output is **E**.\n- **G**: AND gate G1 with inputs A and $\\overline{C}$; AND gate G2 with inputs B, $\\overline{C}$ and $\\overline{D}$; AND gate G3 with inputs A, B and $\\overline{D}$; an OR gate with inputs G1, G2 and G3; its output is **G**.\n- **L**: AND gate L1 with inputs $\\overline{A}$ and C; AND gate L2 with inputs $\\overline{A}$, $\\overline{B}$ and D; AND gate L3 with inputs $\\overline{B}$, C and D; an OR gate with inputs L1, L2 and L3; its output is **L**.\n\nEach input line is drawn once and branched to every gate that uses it, the NOT gates are drawn at the inputs, and the three outputs L, G, E are labelled.",
+      "themes": [
+        "digital logic circuits",
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Using an 8-bit 2's complement notation, perform the following computations:\n\n(a) $-35 + (-11)$ and the $19 - (-4)$. (3 marks)\n\n(b) Add $(93)_{16}$ and $(DE)_{16}$. (2 marks)\n\n(c) Using NAND gates **ONLY**, generate the NOT and OR gates. (3 marks)",
+      "corrige_markdown": "**(a) Two's complement computations (3 marks)**\n\n*Computation 1: $-35 + (-11)$.*\n\n- $35 = 00100011$, so $-35$ = invert 11011100, add 1 = $11011101$.\n- $11 = 00001011$, so $-11$ = invert 11110100, add 1 = $11110101$.\n\n```\n  11011101   (-35)\n+ 11110101   (-11)\n-----------\n1 11010010\n```\n\nThe carry out of the 8th bit is discarded, so the result is $11010010$. Its sign bit is 1 (negative); to read it: invert 00101101, add 1 = $00101110 = 46$, so the result is $-46$. Check: $-35 - 11 = -46$. No overflow (both numbers negative, result negative).\n\n*Computation 2: $19 - (-4)$.*\n\nSubtracting a number is the same as adding its two's complement: $19 - (-4) = 19 + 4$.\n\n- $19 = 00010011$.\n- $-4 = 11111100$; the two's complement of $-4$ is invert 00000011, add 1 = $00000100$ (which is $+4$).\n\n```\n  00010011   (19)\n+ 00000100   (+4)\n-----------\n  00010111\n```\n\nThe result is $00010111 = 16 + 4 + 2 + 1 = 23$. Check: $19 + 4 = 23$.\n\n**(b) $(93)_{16} + (DE)_{16}$ (2 marks)**\n\nHexadecimal addition: the least significant digits $3 + E = 3 + 14 = 17 = 11_{16}$, so write 1, carry 1; then $9 + D + 1 = 9 + 13 + 1 = 23 = 17_{16}$, so write 7, carry 1.\n\n$$(93)_{16} + (DE)_{16} = (171)_{16} \\quad (= 147 + 222 = 369)$$\n\nIn binary: $10010011 + 11011110 = 1\\,01110001$. The sum needs 9 bits. In an 8-bit register only $01110001 = (71)_{16}$ is kept and the carry out is lost. In 2's complement, $(93)_{16} = -109$ and $(DE)_{16} = -34$, whose true sum is $-143$, which is outside the range $-128$ to $+127$: an **overflow** occurs (two negative numbers give a result whose sign bit is 0). So the answer is $(171)_{16}$, and it cannot be represented correctly in 8 bits.\n\n**(c) NOT and OR using NAND gates only (3 marks)**\n\nA NAND gate gives $\\overline{X \\cdot Y}$.\n\n- **NOT**: join the two inputs of one NAND gate together: $\\overline{A \\cdot A} = \\overline{A}$. One NAND gate.\n- **OR**: use three NAND gates. Two of them are used as NOT gates, one for A and one for B, to produce $\\overline{A}$ and $\\overline{B}$; their outputs are the two inputs of a third NAND gate:\n\n$$\\overline{\\overline{A}\\cdot\\overline{B}} = A + B \\quad \\text{(De Morgan's law)}$$\n\n| A | B | $\\overline{A}$ | $\\overline{B}$ | $\\overline{\\overline{A}\\cdot\\overline{B}}$ | A OR B |\n|---|---|---|---|---|---|\n| 0 | 0 | 1 | 1 | 0 | 0 |\n| 0 | 1 | 1 | 0 | 1 | 1 |\n| 1 | 0 | 0 | 1 | 1 | 1 |\n| 1 | 1 | 0 | 0 | 1 | 1 |\n\nThe last two columns are identical, so the three-NAND circuit is an OR gate.",
+      "themes": [
+        "binary arithmetic",
+        "digital logic gates",
+        "number systems"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    }
+  ]
+}

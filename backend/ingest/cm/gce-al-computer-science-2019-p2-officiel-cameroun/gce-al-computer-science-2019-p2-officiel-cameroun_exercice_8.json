@@ -1,0 +1,77 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2019. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the appropriate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-computer-science-2019-p2-officiel-cameroun_exercice_8_fig_1.png",
+      "page_source": 4,
+      "type": "schema",
+      "legende": "Figure 3a: flowchart (Start, Get an integer N, F := 1, i := 1, decision i <= N ? ; yes: F := F*i then i := i+1 and back to the test; no: print(F)). Figure 3b: the pseudocode of the algorithm WhatAmIDoing, lines 1 to 13 (var F, N, i : integer; write, read(N); i := 1; F := 1; while (i <= N) do F := F*i; i := i+1; endwhile; write the value of F is, F; stop).",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Question 8 : points imprimés i = 2 + 1 + (2 + 2) + 1 + 5 = 13 ; ii(a) = 2 ; ii(b) sans points imprimés. Le total de 17 est obtenu par différence (ii = 4 dans le champ points, dont 2 non imprimés) : ce chiffre est une déduction et non un point imprimé.",
+    "Question 8 : le sujet appelle « figure 3a » et « figure 3b » les deux parties de la figure de la question 8 (numérotation d'origine). Le diagramme (figure 3a) imprime seulement « print(F) », alors que le pseudocode (figure 3b, ligne 12) écrit « the value of F is », F : la sortie est donc 24 (N = 4) et 720 (N = 6) dans les deux cas. La figure est recadrée sur la page 4 du scan ; un logo de scanner (CamScanner) en bas à gauche de la figure est resté dans l'image.",
+    "Le code C et le code Pascal de 8(i)(e) n'ont pas été compilés (aucun compilateur sur la machine) ; leur logique a été vérifiée par une simulation Python (N = 4, 6, 1, 0 donnent 24, 720, 1, 1 pour la boucle et pour la version récursive). Le tri à bulles a également été vérifié par une simulation Python.",
+    "La question 8(i)(c) imprime « (2 mark) » pour chaque valeur de N (coquille conservée). Dans l'énoncé de 8(i)(d), « your opinion in i(c) » est conservé tel quel."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "figure 3a shows a flow chart of the algorithm in figure 3b.\n\n![fig-1](gce-al-computer-science-2019-p2-officiel-cameroun_exercice_8_fig_1.png)\n\n(a) Distinguish between a pseudocode and a flowchart. (2 marks)\n\n(b) What name is generally given to the code segment from line 8 to line 11? (1 mark)\n\n(c) Write the output of the algorithm when N takes the following values.\n\n(1) 4 (2 mark)\n\n(2) 6 (2 mark)\n\n(d) Bearing in mind your opinion in i(c), state in one sentence what this algorithm does. (1 mark)\n\n(e) Write an equivalent algorithm using recursion (5 marks)",
+      "corrige_markdown": "**(a) Pseudocode and flowchart (2 marks)**\n\n- A **pseudocode** is a *text* description of an algorithm, written in structured, English-like statements (`read`, `write`, `while ... do`, `if ... then`) with indentation. It is compact, close to a programming language, and easy to edit and to convert into a program, but the flow of control is less visible.\n- A **flowchart** is a *graphical* description of an algorithm, made of standard symbols (oval for start and stop, parallelogram for input and output, rectangle for a process, diamond for a decision) joined by arrows which show the flow of control. It shows the logic at a glance, but it takes more space and is harder to modify.\n\n**(b) Lines 8 to 11 (1 mark)**\n\nIt is a **loop** (an iteration or repetition structure): a pre-test **WHILE loop** (`while (i <= N) do ... endwhile`), whose body is lines 9 and 10 and which is repeated as long as the condition $i \\leq N$ is true.\n\n**(c) Output of the algorithm (4 marks)**\n\nTrace table for $N = 4$ ($F$ starts at 1 and $i$ at 1):\n\n| i | $i \\leq N$ ? | F after $F := F \\times i$ | i after $i := i + 1$ |\n|---|---|---|---|\n| 1 | yes | 1 | 2 |\n| 2 | yes | 2 | 3 |\n| 3 | yes | 6 | 4 |\n| 4 | yes | 24 | 5 |\n| 5 | no: the loop stops | | |\n\n**(1) $N = 4$: the value printed is $F = 24$** (the pseudocode prints \"the value of F is 24\").\n\nFor $N = 6$ the loop runs for $i = 1$ to 6: $F = 1, 2, 6, 24, 120, 720$.\n\n**(2) $N = 6$: the value printed is $F = 720$** (the pseudocode prints \"the value of F is 720\").\n\n**(d) What the algorithm does (1 mark)**\n\nIt computes and prints the **factorial** of $N$: $F = N! = 1 \\times 2 \\times 3 \\times \\dots \\times N$ (and $F = 1$ when $N \\leq 1$).\n\n**(e) Equivalent recursive algorithm (5 marks)**\n\nThe factorial is defined by $0! = 1! = 1$ and $n! = n \\times (n-1)!$ for $n > 1$, so the loop is replaced by a function that calls itself:\n\n```text\nAlgorithm WhatAmIDoingRecursive;\nvar N : integer;\n\nfunction Fact(k : integer) : integer;\nstart\n    if k <= 1 then\n        Fact := 1                    { base case }\n    else\n        Fact := k * Fact(k - 1)      { recursive case }\n    endif\nend;\n\nstart\n    write(\"enter an integer\");\n    read(N);\n    write(\"the value of F is\", Fact(N));\nstop.\n```\n\nExecution for $N = 4$: $Fact(4) = 4 \\times Fact(3) = 4 \\times 3 \\times Fact(2) = 4 \\times 3 \\times 2 \\times Fact(1) = 4 \\times 3 \\times 2 \\times 1 = 24$.\n\nThe same algorithm in ANSI C:\n\n```c\n#include <stdio.h>\n\n/* Recursive factorial: fact(n) = n * fact(n - 1), with fact(0) = fact(1) = 1 */\nlong fact(int k)\n{\n    if (k <= 1)\n        return 1L;                  /* base case */\n    return k * fact(k - 1);         /* recursive case */\n}\n\nint main(void)\n{\n    int n;\n\n    printf(\"enter an integer: \");\n    scanf(\"%d\", &n);\n    printf(\"the value of F is %ld\\n\", fact(n));\n    return 0;\n}\n```\n\nand in ISO Pascal:\n\n```pascal\nprogram WhatAmIDoingRecursive;\nvar\n  n : integer;\n\nfunction Fact(k : integer) : longint;\nbegin\n  if k <= 1 then\n    Fact := 1\n  else\n    Fact := k * Fact(k - 1)\nend;\n\nbegin\n  write('enter an integer: ');\n  readln(n);\n  writeln('the value of F is ', Fact(n))\nend.\n```\n\nCheck by a faithful Python simulation of the loop version and of the recursive version (the C and Pascal programs were not compiled; see the notes):\n\n| N | Loop version | Recursive version |\n|---|---|---|\n| 4 | 24 | 24 |\n| 6 | 720 | 720 |\n| 1 | 1 | 1 |\n| 0 | 1 | 1 |",
+      "themes": [
+        "flowcharts and trace tables",
+        "pseudocode algorithms",
+        "recursion"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 13
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) Explain informally how the bubble sort algorithm for elements of an array works. (2 marks)\n\n(b) Show how bubble sort sorts the following array, by writing out its content after each pass (also called scan) of the array.\n\n| 4 | 15 | 1 | 16 | 10 |\n|---|---|---|---|---|",
+      "corrige_markdown": "**(a) How bubble sort works (2 marks)**\n\nBubble sort scans the array from the beginning to the end, comparing each pair of **adjacent** elements and **swapping** them when they are in the wrong order (the first is greater than the second, for an ascending sort). After one pass the largest element has \"bubbled\" up to the end of the array, which is its final place. The passes are repeated on the part of the array that is not yet sorted, until the array is sorted: at most $n - 1$ passes for $n$ elements, or until a pass is made without any swap.\n\n**(b) Sorting 4, 15, 1, 16, 10 (the number of marks is not printed in the question)**\n\n| Pass | Comparisons and swaps | Content of the array after the pass |\n|---|---|---|\n| start | | 4, 15, 1, 16, 10 |\n| 1 | (4,15) no swap; (15,1) swap; (15,16) no swap; (16,10) swap | 4, 1, 15, 10, 16 |\n| 2 | (4,1) swap; (4,15) no swap; (15,10) swap | 1, 4, 10, 15, 16 |\n| 3 | (1,4), (4,10), (10,15) no swap at all | 1, 4, 10, 15, 16 |\n\nPass 3 makes no swap, so the array is sorted and the algorithm stops. The final sorted array is **1, 4, 10, 15, 16**. (An algorithm without a \"no swap\" test makes a fourth pass, which leaves the array unchanged; the sequence was checked with a Python simulation.)",
+      "themes": [
+        "sorting algorithms"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

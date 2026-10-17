@@ -1,0 +1,76 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2019. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the appropriate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 1 : les points imprimés par sous-partie sont i = 4 + 2 = 6 ; ii = 3 + 4 = 7 ; iii = 4 + 1 + 2 = 7, soit 20 au total, alors que la page de garde annonce 17 points par question. Points recopiés tels quels, non corrigés.",
+    "Coquilles du sujet conservées : « briefly describes », « using appropriate computing terms » sans majuscule, « (1 marks) »."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) Briefly explain the following giving one practical application of each: EEPROM, RAM. (4 marks)\n\n(b) With respect to computer organization, explain briefly why address mapping is important. (2 marks)",
+      "corrige_markdown": "**(a) EEPROM and RAM (4 marks)**\n\n- **EEPROM** (Electrically Erasable Programmable Read-Only Memory) is a *non-volatile* memory chip: it keeps its contents when the power is switched off, and its contents can be erased and rewritten electrically, byte by byte, without removing the chip from the circuit (but writing is slow and the number of rewrites is limited). *Practical application:* it stores the BIOS/firmware of a computer or the settings of a device (for example the configuration of a microcontroller, a router or a smart card), so that the firmware can be updated without replacing the chip.\n- **RAM** (Random Access Memory) is the *volatile* read/write main memory of the computer: any location can be read or written in the same short time, whatever its address, but the contents are lost when the power is switched off. *Practical application:* it holds the operating system, the programs that are running and the data they are using, so that the processor can fetch instructions and data quickly (for example, the memory in which a word processor and the document being typed are loaded).\n\n**(b) Importance of address mapping (2 marks)**\n\nAddress mapping (the memory map, implemented by address decoding) defines which range of addresses of the address bus corresponds to which memory chip or input/output device (ROM, RAM, ports...). It is important because:\n\n- the processor can reach every ROM, RAM chip or I/O device through a unique address, without two devices answering to the same address (no conflict);\n- it lets the processor treat all memories and devices in a uniform way, and allows the operating system to map the *logical (virtual)* addresses used by programs onto *physical* addresses, which gives relocation of programs, memory protection and the running of several programs in memory at the same time.",
+      "themes": [
+        "computer memory",
+        "computer architecture"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) State what a cache memory is, and briefly describes how it works. (3 marks)\n\n(b) Briefly justify the needs for caching in memory hierarchies. (4 marks)",
+      "corrige_markdown": "**(a) Cache memory (3 marks)**\n\nA cache memory is a small, very fast memory (static RAM), placed between the processor and the main memory (or built into the processor), which holds copies of the instructions and data that were used recently or are likely to be used soon.\n\n*How it works.* When the processor needs a word, it first looks for it in the cache (the address is compared with the address tags stored in the cache).\n\n- If the word is there (a **cache hit**), it is delivered to the processor at the speed of the cache.\n- If it is not there (a **cache miss**), the whole block of main memory that contains the word is copied into the cache (replacing an old block chosen by a replacement policy such as Least Recently Used) and the word is delivered to the processor.\n\nIt works because programs show *locality of reference*: *temporal* (a word used now will probably be used again soon, e.g. in a loop) and *spatial* (the words next to it will probably be used next).\n\n**(b) Need for caching in a memory hierarchy (4 marks)**\n\n- The processor is much faster than main memory, so without a cache it would spend much of its time waiting for memory (the processor-memory speed gap).\n- Memory that is fast is expensive and small (registers, cache), while memory that is large is cheap but slow (RAM, disk): no single technology gives speed, capacity and low cost together. A *hierarchy* (registers, cache, main memory, secondary storage) combines them.\n- Caching keeps the most used data in the fast levels, so the *average* access time is close to that of the fastest level while the cost per bit stays close to that of the cheapest level. For example, with a hit ratio of 0.95, a cache access time of 2 ns and a main-memory access time of 100 ns, the average access time is about $0.95 \\times 2 + 0.05 \\times 100 = 6.9$ ns instead of 100 ns.\n- It also reduces the traffic on the system bus and the idle time of the processor, so the whole system runs faster.",
+      "themes": [
+        "computer memory"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) Draw a process state diagram and explain the transitions in it. (4 marks)\n\n(b) What causes a new process to be created? (1 marks)\n\n(c) using appropriate computing terms explain what can cause a running process to halt. (2 marks)",
+      "corrige_markdown": "**(a) Process state diagram (4 marks)**\n\n```text\n              admitted            dispatch\n   NEW ----------------> READY ----------------> RUNNING ---- exit ----> TERMINATED\n                          ^  ^                     |  |\n                          |  +---- interrupt ------+  |\n                          |   (time slice ended,      | I/O request or\n                          |    pre-emption)           | wait for an event\n                          |                           v\n                          +--- I/O or event ----- WAITING (BLOCKED)\n                                 completed\n```\n\n- **New to Ready (admitted):** the process has been created and is loaded in memory; the operating system puts it in the ready queue.\n- **Ready to Running (dispatch):** the CPU scheduler chooses the process from the ready queue and the dispatcher gives it the CPU.\n- **Running to Ready (interrupt):** the time slice (quantum) expires, or a process of higher priority arrives, so the running process is pre-empted and goes back to the ready queue.\n- **Running to Waiting (blocked):** the process requests an I/O operation or has to wait for an event or a resource, so it cannot continue.\n- **Waiting to Ready:** the I/O operation or event it was waiting for is completed; the process goes back to the ready queue (not directly to the CPU).\n- **Running to Terminated (exit):** the process finishes its execution, or it is aborted.\n\n**(b) Creation of a new process (1 mark)**\n\nA new process is created by: the initialisation of the system (start-up), a user request (starting a program, for example by typing a command or double-clicking an icon), the start of a batch job, or a system call made by a running (parent) process to create a child process (for example `fork` in UNIX).\n\n**(c) What can make a running process halt (2 marks)**\n\n- It **terminates normally** when it has completed its task (the exit system call).\n- It is **terminated because of an error**: a fatal exception (illegal instruction, division by zero, memory-protection violation), or it is killed by the operating system or by another process.\n- It is **pre-empted by an interrupt**: its time slice expires, or a higher-priority process becomes ready.\n- It becomes **blocked** because it must wait for an I/O operation, or for a resource or an event, that is not yet available.",
+      "themes": [
+        "process management"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2019. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné sans figure imprimée. Les points imprimés sont des totaux approximatifs par partie, entre crochets ; le sujet n'imprime aucun total par question, donc le champ points de l'exercice est vide.",
+    "Question 2 (b) : défaut d'impression. La valeur à démontrer, -(1/12)[13 ln 2 + pi] (environ -1,0127), n'est pas celle de l'intégrale de f sur [0, 1], qui vaut -(11/12) ln 2 - pi/8 (environ -1,0281, vérifié par intégration numérique). Le corrigé calcule la vraie valeur, signale l'écart et ne corrige pas l'énoncé."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Express $f(x)$ in partial fractions where\n\n$$f(x) = \\frac{2x^3 + x + 2}{(x^2 + 1)(x + 1)(x - 2)}, \\quad x \\neq -1, 2$$",
+      "corrige_markdown": "The numerator has degree $3$, less than the degree $4$ of the denominator, and $x^2 + 1$ is irreducible over $\\mathbb{R}$, so\n\n$$f(x) = \\frac{Ax + B}{x^2 + 1} + \\frac{C}{x + 1} + \\frac{D}{x - 2}.$$\n\nMultiply by the denominator:\n\n$$2x^3 + x + 2 = (Ax + B)(x + 1)(x - 2) + C(x^2 + 1)(x - 2) + D(x^2 + 1)(x + 1).$$\n\n* $x = -1$: $-2 - 1 + 2 = -1 = C \\cdot 2 \\cdot (-3)$, so $C = \\tfrac16$.\n* $x = 2$: $16 + 2 + 2 = 20 = D \\cdot 5 \\cdot 3$, so $D = \\tfrac43$.\n* Coefficient of $x^3$: $2 = A + C + D$, so $A = 2 - \\tfrac16 - \\tfrac43 = \\tfrac12$.\n* Constant term: $2 = -2B - 2C + D = -2B - \\tfrac13 + \\tfrac43$, so $B = -\\tfrac12$.\n\n**Check** with the coefficient of $x$: $-2A - B + C + D = -1 + \\tfrac12 + \\tfrac16 + \\tfrac43 = 1$, as required, and with the coefficient of $x^2$: $-A + B - 2C + D = -\\tfrac12 - \\tfrac12 - \\tfrac13 + \\tfrac43 = 0$, as required.\n\n$$\\boxed{f(x) = \\frac{x - 1}{2(x^2 + 1)} + \\frac{1}{6(x + 1)} + \\frac{4}{3(x - 2)}}$$",
+      "themes": [
+        "partial fractions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "With $f(x) = \\dfrac{2x^3 + x + 2}{(x^2 + 1)(x + 1)(x - 2)}$, $x \\neq -1, 2$, show, using your result in (a) or otherwise, that\n\n$$\\int_0^1 f(x)\\,dx = -\\frac{1}{12}\\left[13\\ln 2 + \\pi\\right]$$",
+      "corrige_markdown": "**Printed result not reproduced.** Integrate the partial fractions of part (a) term by term on $[0, 1]$ (the integrand is continuous there, since $x = -1$ and $x = 2$ lie outside):\n\n$$\\int_0^1 \\frac{x - 1}{2(x^2 + 1)}\\,dx = \\frac14\\Big[\\ln(x^2 + 1)\\Big]_0^1 - \\frac12\\Big[\\arctan x\\Big]_0^1 = \\frac14\\ln 2 - \\frac{\\pi}{8},$$\n\n$$\\int_0^1 \\frac{dx}{6(x + 1)} = \\frac16\\Big[\\ln(x + 1)\\Big]_0^1 = \\frac16\\ln 2,$$\n\n$$\\int_0^1 \\frac{4\\,dx}{3(x - 2)} = \\frac43\\Big[\\ln|x - 2|\\Big]_0^1 = \\frac43(\\ln 1 - \\ln 2) = -\\frac43\\ln 2.$$\n\nAdding, the coefficient of $\\ln 2$ is $\\tfrac14 + \\tfrac16 - \\tfrac43 = \\tfrac{3 + 2 - 16}{12} = -\\tfrac{11}{12}$, so\n\n$$\\boxed{\\int_0^1 f(x)\\,dx = -\\frac{11}{12}\\ln 2 - \\frac{\\pi}{8} = -\\frac{1}{24}\\left(22\\ln 2 + 3\\pi\\right) \\approx -1.0281}$$\n\nThis is **not** the value printed in the question, $-\\tfrac{1}{12}\\left(13\\ln 2 + \\pi\\right) \\approx -1.0127$. A direct numerical integration of $f$ on $[0, 1]$ gives $-1.0281$, which confirms the value above and the partial fractions of (a). The printed closed form therefore appears to contain a misprint; the method (integrate each partial fraction, with the logarithmic and arctangent parts) is the one expected.",
+      "themes": [
+        "integration of rational functions",
+        "partial fractions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

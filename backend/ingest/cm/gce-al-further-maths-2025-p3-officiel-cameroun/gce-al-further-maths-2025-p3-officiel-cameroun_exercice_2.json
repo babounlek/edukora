@@ -1,0 +1,55 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2025-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0775",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics 3 (0775), ADVANCED LEVEL, June 2025. Duration: Two and a Half Hours.**\n\nAnswer ALL questions. For your guidance the approximate mark allocation for parts of each question is indicated in brackets. Mathematical formulae and tables, published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "The function $y = f(x)$ satisfies the differential equation\n\n$$\\frac{dy}{dx} = f(x,y)\\quad\\text{where}\\quad f(x,y) = 2 - \\frac{y}{x^2}$$\n\nand the initial condition $y(1) = 1$.",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 : la mise en page imprimée est défectueuse. Les sous-questions portent les repères « a) », « b) » (ce dernier étant isolé, sans texte, au-dessus de la formule d'Euler) puis « c) ». Le texte « Use the formula y_(r+1) ≈ y_r + h f(x_r, y_r) with h = 0.05 to obtain an approximation for y(1.1) » (6 marks) forme une seule sous-question, transcrite sous le repère « a » ; la sous-question de Simpson garde le repère imprimé « c » (4 marks). Il n'y a pas de sous-question « b ».",
+    "Question 2 (c) : le sujet ne dit pas explicitement combien d'intervalles utiliser pour la règle de Simpson ; les ordonnées y(1), y(1.05), y(1.1) obtenues en (a) imposent deux intervalles de pas 0.05 (c'est le seul choix cohérent avec « Hence »). L'estimation vaut 0.1050 que l'on utilise y(1.1) = 1.102381 ou la valeur arrondie 1.102."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Use the formula $y_{r+1} \\approx y_r + h f(x_r, y_r)$ with $h = 0.05$ to obtain an approximation for $y(1.1)$, giving your answer correct to three decimal places. *[6 marks]*",
+      "corrige_markdown": "This is Euler's method with step $h = 0.05$ starting from $x_0 = 1$, $y_0 = 1$. To reach $x = 1.1$ we need two steps ($x_1 = 1.05$, $x_2 = 1.10$).\n\n**Step 1** ($x_0 = 1$, $y_0 = 1$):\n\n$$f(x_0,y_0) = 2 - \\frac{1}{1^2} = 1,\\qquad y_1 = y_0 + h f(x_0,y_0) = 1 + 0.05(1) = 1.05$$\n\n**Step 2** ($x_1 = 1.05$, $y_1 = 1.05$):\n\n$$f(x_1,y_1) = 2 - \\frac{1.05}{1.05^2} = 2 - \\frac{1}{1.05} = 2 - 0.952381 = 1.047619$$\n\n$$y_2 = y_1 + h f(x_1,y_1) = 1.05 + 0.05(1.047619) = 1.05 + 0.052381 = 1.102381$$\n\n| $r$ | $x_r$ | $y_r$ | $f(x_r,y_r)$ |\n|---|---|---|---|\n| 0 | 1.00 | 1.000000 | 1.000000 |\n| 1 | 1.05 | 1.050000 | 1.047619 |\n| 2 | 1.10 | 1.102381 | |\n\nHence $y(1.1) \\approx 1.102$ (3 d.p.).",
+      "themes": [
+        "numerical solution of differential equations",
+        "first order differential equations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "Hence, use Simpson's rule to estimate the value of $\\displaystyle\\int_1^{1.1} y(x)\\,dx$. *[4 marks]*",
+      "corrige_markdown": "Simpson's rule with two strips of width $h = 0.05$ uses the ordinates $y_0$, $y_1$, $y_2$ found in part (a):\n\n$$\\int_1^{1.1} y\\,dx \\approx \\frac{h}{3}\\big[y_0 + 4y_1 + y_2\\big] = \\frac{0.05}{3}\\big[1 + 4(1.05) + 1.102381\\big]$$\n\n$$= \\frac{0.05}{3}(6.302381) = 0.105040\\ldots$$\n\nHence $\\displaystyle\\int_1^{1.1} y\\,dx \\approx 0.1050$ (4 d.p.). Using the rounded value $y_2 = 1.102$ gives $0.10503$, which is the same to 4 decimal places.",
+      "themes": [
+        "numerical integration",
+        "numerical methods"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

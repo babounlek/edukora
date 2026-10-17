@@ -1,0 +1,68 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2021. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner) sans couche texte, lu page par page en image ; filigranes et publicités (gcerevision.com) ignorés. Page de garde vérifiée : GCE Board, June 2021, ADVANCED LEVEL, Computer Science, Paper 2, code 0795, deux heures et demie.",
+    "Pas de corrigé officiel : les corrigés sont rédigés. Ce sujet ne contient aucun code C ou Pascal ; les pseudo-codes et calculs (complément à 2, ordonnancement, tables de vérité, fonction récursive, somme) ont été vérifiés par des traductions Python exécutées, et le code C/Pascal n'étant pas concerné, il n'a pas été compilé. Aucun SQL dans ce sujet.",
+    "Question 1 : points imprimés par sous-partie : (i) = 6 + 1 + 2 = 9 ; (ii) = 4 + 4 = 8 ; total 17.",
+    "1(ii)(b) : le sujet imprime l'expression « X = (A XOR B) AND NOT C », qui ne correspond pas à la règle d'adhésion énoncée juste avant (A ET B ET (C XOR D)) et ne contient pas la variable D. La table de vérité est faite pour l'expression imprimée (3 variables, 8 lignes) ; la règle d'adhésion est donnée en complément dans le corrigé. Écart d'impression, pas corrigé.",
+    "1(ii)(a) : le circuit logique à dessiner n'est pas fourni en figure ; il est décrit dans le corrigé (expression booléenne, portes, schéma texte).",
+    "1(i)(a) : le sujet donne 6 points pour PROM, EEPROM et RAM ; la répartition 2 + 2 + 2 est déduite (définition et application)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) Briefly explain the following, giving one practical application of each: PROM, EEPROM, RAM. (6 marks)\n\n(b) As far as computer organization is concerned, explain briefly what is meant by address mapping. (1 mark)\n\n(c) What is cache memory? (2 marks)",
+      "corrige_markdown": "**(a) PROM, EEPROM and RAM (6 marks)**\n\n- **PROM (Programmable Read-Only Memory).** A non-volatile memory chip that is delivered blank and is programmed **once** with a PROM programmer (fuses are burnt); after that its contents can be read but never changed. *Application:* storing the fixed control program (firmware) of a small embedded product made in small numbers, for example the program of a washing-machine or toy controller.\n- **EEPROM (Electrically Erasable Programmable Read-Only Memory).** A non-volatile memory that can be erased and rewritten **electrically**, byte by byte and without removing the chip from the circuit, but only a limited number of times. *Application:* keeping the BIOS/firmware of a computer so that it can be updated, or storing settings and data on SIM cards, smart cards and car key fobs.\n- **RAM (Random Access Memory).** The main read/write memory of the computer: any location can be reached directly in the same time, it is fast, and it is **volatile** (the contents are lost when the power is switched off). *Application:* holding the operating system, the programs that are running and the data being processed by the CPU; also used as video memory or as a printer buffer.\n\n**(b) Address mapping (1 mark)**\n\nAddress mapping is the correspondence (translation) between the addresses used by the CPU or program (logical or virtual addresses) and the physical locations of the memory: it decides which memory chip, or which cache line, answers to a given address. For example, the address space is divided so that the address decoder sends addresses $0000$ to $3FFF$ to one ROM chip and the following addresses to a RAM chip; in a cache, mapping tells in which cache line a block of main memory may be placed (direct, associative or set-associative mapping).\n\n**(c) Cache memory (2 marks)**\n\nCache memory is a small, very fast memory (static RAM) placed between the CPU and the main memory, on the processor chip or close to it. It keeps copies of the instructions and data that were used recently or are likely to be used soon (locality of reference). The CPU looks in the cache first: if the item is there (a *hit*) it is obtained at once; if not (a *miss*) it is fetched from the slower main memory and copied into the cache. This reduces the average memory access time and makes the CPU wait less.",
+      "themes": [
+        "computer memory",
+        "memory organisation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "A student needs to design a logic circuit to model the requirements for membership of a snooker club. Membership (X) depends on four criteria, as shown in the table:\n\n| Parameter | Description of parameter | Binary value | Condition |\n|---|---|---|---|\n| A | Over 18 | 1 | True |\n| A | Over 18 | 0 | False |\n| B | Recommended | 1 | True |\n| B | Recommended | 0 | False |\n| C | Full-time | 1 | True |\n| C | Full-time | 0 | False |\n| D | Retired | 1 | True |\n| D | Retired | 0 | False |\n\nMembership is approved (X = 1) if the person:\n\n- is over the age of 18 **and** has been recommended by a pre-existing member **and**\n- **Either** is working full-time **or** is retired, but not both.\n\n(a) Draw a logic circuit to represent the membership requirements. (4 marks)\n\n(b) Draw a truth table for the logic expression: X = (A XOR B) AND NOT C (4 marks)",
+      "corrige_markdown": "**(a) Logic circuit (4 marks)**\n\nTranslate each condition into a gate:\n\n- \"over 18 **and** recommended\" is $A \\cdot B$ (AND);\n- \"full-time **or** retired, **but not both**\" is the exclusive OR of the two criteria: $C \\oplus D = C \\cdot \\overline{D} + \\overline{C} \\cdot D$;\n- all the requirements must hold together, so they are joined by an AND.\n\n$$X = A \\cdot B \\cdot (C \\oplus D)$$\n\nCircuit to draw: one XOR gate with inputs C and D, giving an output P; then one three-input AND gate (or two two-input AND gates) with inputs A, B and P, whose output is X.\n\n```text\n        +-----+\nC ------|     |\n        | XOR |---- P ----+\nD ------|     |           |    +-----+\n        +-----+           +----|     |\n                               | AND |---- X\nA -----------------------------|     |\nB -----------------------------|     |\n                               +-----+\n```\n\nCheck: with A = 1, B = 1, C = 1, D = 0 we get $X = 1\\cdot 1\\cdot(1 \\oplus 0) = 1$ (full-time, not retired: accepted); with C = 1 and D = 1, $C \\oplus D = 0$ so $X = 0$ (both: refused); with C = 0 and D = 0, $X = 0$ (neither: refused). The circuit can also be drawn with the XOR replaced by two AND gates, two NOT gates and one OR gate.\n\n**(b) Truth table for $X = (A \\oplus B) \\cdot \\overline{C}$ (4 marks)**\n\nThe expression contains only A, B and C, so the table has $2^3 = 8$ rows. Intermediate columns make the working clear:\n\n| A | B | C | A XOR B | NOT C | X |\n|---|---|---|---|---|---|\n| 0 | 0 | 0 | 0 | 1 | 0 |\n| 0 | 0 | 1 | 0 | 0 | 0 |\n| 0 | 1 | 0 | 1 | 1 | 1 |\n| 0 | 1 | 1 | 1 | 0 | 0 |\n| 1 | 0 | 0 | 1 | 1 | 1 |\n| 1 | 0 | 1 | 1 | 0 | 0 |\n| 1 | 1 | 0 | 0 | 1 | 0 |\n| 1 | 1 | 1 | 0 | 0 | 0 |\n\nX = 1 only for A B C = 010 and 100 (the table was generated by a short Python script that evaluates the expression for all 8 combinations).\n\n*Remark.* The expression printed in (b) is not the membership rule of (a) (it does not use D and it uses A XOR B instead of A AND B). For the rule of (a), $X = A \\cdot B \\cdot (C \\oplus D)$, X = 1 only for A B C D = 1101 and 1110 (over 18, recommended, and exactly one of full-time or retired).",
+      "themes": [
+        "boolean algebra",
+        "digital logic circuits"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    }
+  ]
+}

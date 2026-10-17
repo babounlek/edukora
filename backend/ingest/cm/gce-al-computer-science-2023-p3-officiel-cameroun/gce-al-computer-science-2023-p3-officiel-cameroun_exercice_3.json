@@ -1,0 +1,57 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 3 (Paper 3 - Practical), ADVANCED LEVEL, June 2023. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION A: A Plotting Program (Program Development) (30 marks)**\n\n**Describing the Task.** Many interesting programming problems involving nested loops can be encountered when creating plots using a printer. Your task is to create the plot in Figure 1 (pyramid) in a general manner with the size of the base entered at the beginning of program execution. Arrays are not used to do this. (The grid lines are just to ease working with the figure; the lines are not directly needed to answer any question.) A pyramid has a number of stars at its base (MaxNoOfStars), and is made up of rows of spaces and stars. Each line of the pyramid is made up of an odd number of leading spaces (NoOfSpaces) followed by a number of stars (NoOfStars). There are blanks after the stars, but they are not important for this exercise.\n\n(Figure 1 of the paper shows the pyramid of stars: a base of 11 stars, and above it lines of 9, 7, 5, 3 and 1 stars, each line centred over the one below.)\n\n**Task 3: Executing Your Program (4 marks)**",
+  "groupes": [
+    "SECTION A"
+  ],
+  "points": "4",
+  "figures": [],
+  "incertitudes": [
+    "Le code C n'a pas été compilé (aucun compilateur C ni Pascal sur la machine) ; sa logique a été vérifiée par une traduction fidèle en Python exécutée sur les mêmes entrées, et les sorties recopiées dans le corrigé sont celles de cette simulation.",
+    "Task 3 : épreuve pratique sur machine ; le candidat produit une capture d'écran (fichier task3) et un listing imprimés. Le corrigé décrit la sortie attendue et le contenu du listing ; la capture elle-même ne peut pas être reproduite. La sortie recopiée est celle de la simulation Python du code.",
+    "Le sujet demande une pyramide de base 9, différente de celle de la Figure 1 (base 11) ; ce n'est pas une erreur, les deux valeurs sont des entrées possibles du programme général."
+  ],
+  "questions": [
+    {
+      "numero": "4(i)",
+      "enonce_markdown": "Run your program for a pyramid of base 9, and test it to make sure that it works correctly. Screenshot the output and save it in a file named task3. Print the screenshot.",
+      "corrige_markdown": "**What the screenshot must show.** The program is run, the base 9 is typed at the prompt, and the console shows five lines, each centred over the one below, with 1, 3, 5, 7 and 9 stars and 4, 3, 2, 1 and 0 leading blanks. This is the output of the program of Task 2 (obtained by running a faithful Python translation of the code):\n\n```text\nEnter the size of the base (an odd positive integer): 9\n    *\n   ***\n  *****\n *******\n*********\n```\n\n**Tests to carry out** (\"test it to make sure that it works correctly\"):\n\n| Input | Expected result |\n|---|---|\n| 9 | the pyramid above (5 lines) |\n| 1 | a single line `*` |\n| 3 | 2 lines: one blank then `*`, then `***` |\n| 4 (even) | the message \"The base must be an odd positive integer. Try again:\" and a new prompt |\n\nThe screenshot is saved as a file named `task3` (for example `task3.png`) and a printed copy is attached to the answer booklet. Marking: correct shape (centred, 1 to 9 stars in steps of 2) and the right number of lines; the base requested and printed clearly; the screenshot saved and printed.",
+      "themes": [
+        "programming in c",
+        "nested loops"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "4(ii)",
+      "enonce_markdown": "Print a copy of your PROGRAM SOURCE CODE and attach it in your answer booklet",
+      "corrige_markdown": "The printout must be the **complete source file** of the program of Task 2 and Task 3, the one that produced the screenshot. The reference listing is the program given in the solution of question 3 (Task 2):\n\n```c\n#include <stdio.h>\n\n/* global variables (Task 3) */\nint MaxNoOfStars;\nint NoOfSpaces;\nint NoOfStars;\n\n/* the parameters of the procedures below carry the names of the question; they are pointers so that\n   the procedures can change the global variables (call by reference, like var in Pascal) */\n\nvoid Initialise(int *MaxNoOfStars, int *NoOfSpaces, int *NoOfStars)\n{\n    int base = 0;\n\n    printf(\"Enter the size of the base (an odd positive integer): \");\n    scanf(\"%d\", &base);\n    while (base < 1 || base % 2 == 0)       /* reject even or non-positive values */\n    {\n        printf(\"The base must be an odd positive integer. Try again: \");\n        scanf(\"%d\", &base);\n    }\n    *MaxNoOfStars = base;                   /* stars on the last line (the base) */\n    *NoOfSpaces = (base - 1) / 2;           /* the first line is centred over the base */\n    *NoOfStars = 1;                         /* the first line has a single star */\n}\n\nvoid OutputLeadingSpaces(int nSpaces)\n{\n    int i;\n\n    for (i = 1; i <= nSpaces; i++)\n        putchar(' ');\n}\n\nvoid OutputLineOfStars(int nStars)\n{\n    int i;\n\n    for (i = 1; i <= nStars; i++)\n        putchar('*');\n    putchar('\\n');                          /* end of the line */\n}\n\nvoid Adjust(int *NoOfSpaces, int *NoOfStars)\n{\n    *NoOfSpaces = *NoOfSpaces - 1;          /* one blank less ... */\n    *NoOfStars = *NoOfStars + 2;            /* ... and two more stars */\n}\n\nint main(void)\n{\n    Initialise(&MaxNoOfStars, &NoOfSpaces, &NoOfStars);\n    do\n    {\n        OutputLeadingSpaces(NoOfSpaces);\n        OutputLineOfStars(NoOfStars);\n        Adjust(&NoOfSpaces, &NoOfStars);\n    } while (NoOfStars <= MaxNoOfStars);    /* \"until NoOfStars > MaxNoOfStars\" */\n    return 0;\n}\n```\n\nA good printout shows: the `#include <stdio.h>` line, the three global variables, the four procedures and the main program, meaningful identifiers (those of the question), consistent indentation and comments; it is attached to the answer booklet with the name of the candidate and the file name.",
+      "themes": [
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

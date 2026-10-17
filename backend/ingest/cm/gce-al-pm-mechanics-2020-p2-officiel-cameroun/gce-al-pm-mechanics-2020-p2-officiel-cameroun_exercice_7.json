@@ -1,0 +1,53 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2020",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Pure Mathematics with Mechanics",
+ "epreuve_source": "gce-al-pm-mechanics-2020-p2-officiel-cameroun.pdf",
+ "numero_exercice": "7",
+ "numero_paper": 2,
+ "code_matiere": "0765",
+ "duree_epreuve": "3h",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Mechanics Paper 2 (0765/2), ADVANCED LEVEL, June 2020. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical Formulae Booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+ "regles_choix": [],
+ "enonce_intro_markdown": "",
+ "groupes": [],
+ "points": "",
+ "figures": [],
+ "incertitudes": [
+  "Question 7 (ii) : le premier terme de la troisieme ligne de A est tache sur le scan (« 1· ») ; lu 1, ce que confirme la troisieme equation x + y + z = 4 (meme ligne de coefficients)."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "Find the image of the line $2y = x$ under the transformation with matrix operator $\\begin{pmatrix} 0 & -1 \\\\ -1 & 0 \\end{pmatrix}$. (4 marks)",
+   "corrige_markdown": "Let $(x, y)$ be a point of the line and $(x', y')$ its image:\n\n$$\\begin{pmatrix} x' \\\\ y' \\end{pmatrix} = \\begin{pmatrix} 0 & -1 \\\\ -1 & 0 \\end{pmatrix}\\begin{pmatrix} x \\\\ y \\end{pmatrix} = \\begin{pmatrix} -y \\\\ -x \\end{pmatrix}, \\qquad\\text{so}\\qquad x' = -y,\\quad y' = -x.$$\n\n(This is the reflection in the line $y = -x$.) Invert the relations: $x = -y'$ and $y = -x'$.\n\nThe original point satisfies $2y = x$. Substitute:\n\n$$2(-x') = -y' \\quad\\Longrightarrow\\quad y' = 2x'.$$\n\nThe image of the line $2y = x$ is the line\n\n$$\\boxed{y = 2x}$$\n\n**Check with a point.** $(2, 1)$ lies on $2y = x$ ($2 = 2$). Its image is $(-1, -2)$, which satisfies $y = 2x$ ($-2 = 2 \\times (-1)$). Also the origin is fixed, as it must be for a linear map.",
+   "themes": [
+    "linear transformations"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "Find the inverse of the matrix $\\mathbf{A}$, where $\\mathbf{A} = \\begin{pmatrix} 1 & -1 & 1 \\\\ 2 & 1 & -3 \\\\ 1 & 1 & 1 \\end{pmatrix}$.\n\nHence solve the equations\n\n$$\\begin{aligned} x - y + z &= 7,\\\\ 2x + y - 3z &= -6,\\\\ x + y + z &= 4. \\end{aligned}$$\n\n(8 marks)",
+   "corrige_markdown": "**Determinant.** Expand along the first row:\n\n$$\\det\\mathbf{A} = 1\\begin{vmatrix}1 & -3\\\\ 1 & 1\\end{vmatrix} - (-1)\\begin{vmatrix}2 & -3\\\\ 1 & 1\\end{vmatrix} + 1\\begin{vmatrix}2 & 1\\\\ 1 & 1\\end{vmatrix} = 1(1 + 3) + 1(2 + 3) + 1(2 - 1) = 4 + 5 + 1 = 10.$$\n\nSince $\\det\\mathbf{A} = 10 \\ne 0$, $\\mathbf{A}$ is invertible.\n\n**Cofactors** $C_{ij} = (-1)^{i+j}M_{ij}$:\n\n- $C_{11} = +(1\\cdot1 - (-3)\\cdot1) = 4$, $C_{12} = -(2\\cdot1 - (-3)\\cdot1) = -5$, $C_{13} = +(2\\cdot1 - 1\\cdot1) = 1$;\n- $C_{21} = -((-1)\\cdot1 - 1\\cdot1) = 2$, $C_{22} = +(1\\cdot1 - 1\\cdot1) = 0$, $C_{23} = -(1\\cdot1 - (-1)\\cdot1) = -2$;\n- $C_{31} = +((-1)(-3) - 1\\cdot1) = 2$, $C_{32} = -(1\\cdot(-3) - 1\\cdot2) = 5$, $C_{33} = +(1\\cdot1 - (-1)\\cdot2) = 3$.\n\nThe adjugate is the transpose of the cofactor matrix, and $\\mathbf{A}^{-1} = \\dfrac{1}{\\det\\mathbf{A}}\\operatorname{adj}\\mathbf{A}$:\n\n$$\\boxed{\\mathbf{A}^{-1} = \\frac{1}{10}\\begin{pmatrix} 4 & 2 & 2 \\\\ -5 & 0 & 5 \\\\ 1 & -2 & 3 \\end{pmatrix}}$$\n\n(Check on the first row of $\\mathbf{A}$ times the first column of $\\operatorname{adj}\\mathbf{A}$: $1\\cdot4 + (-1)(-5) + 1\\cdot1 = 10$, and first row of $\\mathbf{A}$ times the second column: $1\\cdot2 + (-1)\\cdot0 + 1\\cdot(-2) = 0$, as required.)\n\n**Solve the system.** In matrix form $\\mathbf{A}\\mathbf{X} = \\mathbf{b}$ with $\\mathbf{X} = \\begin{pmatrix}x\\\\y\\\\z\\end{pmatrix}$ and $\\mathbf{b} = \\begin{pmatrix}7\\\\-6\\\\4\\end{pmatrix}$, so $\\mathbf{X} = \\mathbf{A}^{-1}\\mathbf{b}$:\n\n$$\\mathbf{X} = \\frac{1}{10}\\begin{pmatrix} 4(7) + 2(-6) + 2(4) \\\\ -5(7) + 0(-6) + 5(4) \\\\ 1(7) - 2(-6) + 3(4) \\end{pmatrix} = \\frac{1}{10}\\begin{pmatrix} 28 - 12 + 8 \\\\ -35 + 20 \\\\ 7 + 12 + 12 \\end{pmatrix} = \\frac{1}{10}\\begin{pmatrix} 24 \\\\ -15 \\\\ 31 \\end{pmatrix}.$$\n\n$$\\boxed{x = \\frac{12}{5} = 2.4,\\qquad y = -\\frac32 = -1.5,\\qquad z = \\frac{31}{10} = 3.1}$$\n\n**Check in the equations.** $x - y + z = 2.4 + 1.5 + 3.1 = 7$; $2x + y - 3z = 4.8 - 1.5 - 9.3 = -6$; $x + y + z = 2.4 - 1.5 + 3.1 = 4$. All three hold.",
+   "themes": [
+    "matrix algebra",
+    "determinants and inverses"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 8
+  }
+ ]
+}

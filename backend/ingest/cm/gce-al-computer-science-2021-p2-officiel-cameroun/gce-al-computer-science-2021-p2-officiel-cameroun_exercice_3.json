@@ -1,0 +1,78 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2021. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 : points imprimés : (i) = 3 ; (ii) = 3 ; (iii)(a) = 8 et (iii)(b) = 3 ; total 17.",
+    "3(iii) : l'intitulé de colonne imprimé « EmployeeID » est mal lisible sur le scan (« EmployceID ») ; le prénom « Praises » est recopié tel qu'imprimé. Le tableau est recopié à l'identique."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(i) What is a database? (3 marks)",
+      "corrige_markdown": "A **database** is an organised collection of related data that is stored in a structured way (in a relational database, in tables of rows and columns) so that it can be easily accessed, searched, updated and managed. It is usually shared by several users or application programs and is managed by a database management system (DBMS), which controls access, integrity and security. *Example:* the table of employees of a college, or the student records of a school.",
+      "themes": [
+        "relational databases",
+        "database systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Define the following terms as far as databases are concerned:\n\n(a) primary key\n\n(b) candidate key and\n\n(c) attribute. (3 marks)",
+      "corrige_markdown": "**(a) Primary key (1 mark).** The attribute (or the smallest set of attributes) chosen to identify each record of a table uniquely. Its values must be unique and cannot be empty (NULL); a table has only one primary key. Example: EmployeeID.\n\n**(b) Candidate key (1 mark).** Any attribute, or minimal combination of attributes, whose values identify each record of the table uniquely, so that it *could* be used as the primary key. A table can have several candidate keys; one is chosen as the primary key and the others are the alternate keys. Example: in a table of citizens, both the ID card number and the passport number may be candidate keys.\n\n**(c) Attribute (1 mark).** A property that describes an entity; it is a column (field) of a table and takes its values from a domain (data type). Example: LastName or BirthDate in the table of employees.",
+      "themes": [
+        "relational databases",
+        "keys and relationships"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(iii) The database below is designed to store data about employees of a college.\n\n| EmployeeID | Last Name | First Name | Title | Birth Date | Hire Date |\n|---|---|---|---|---|---|\n| 1 | Bishop | Frank | Sales representative | 08/12/1968 | 1992 |\n| 2 | Fuller | Emma | Vice president | 19/02/1952 | 1992 |\n| 3 | Buchanan | Judith | Sales representative | 30/08/1963 | 1994 |\n| 4 | King | Praises | Sales manager | 09/01/1958 | 1993 |\n| 5 | Peacock | Thelma | Sales representative | 02/07/1969 | 1994 |\n\n(a) Mindful of how relational databases are constructed, give THREE main reasons to explain whether or not the table is in the first normal form (1NF). Justify your answer using examples from the data in the table above. (8 marks)\n\n(b) State THREE advantages of normalization. (3 marks)",
+      "corrige_markdown": "**(a) Is the table in 1NF? (8 marks)**\n\nA table is in First Normal Form (1NF) when (1) every field holds a single, atomic value, (2) there are no repeating groups of fields, and (3) every record can be identified uniquely by a primary key. The table satisfies all three conditions, so **it is in 1NF**.\n\n1. **Atomic values.** Each cell contains only one value. The name is split into two fields (Last Name and First Name), so a cell never contains a list such as \"Bishop, Frank\". The Birth Date field holds one date per employee (for example 08/12/1968 for employee 1) and Hire Date holds one year (1992 for employee 1); the Title field holds one title per employee (\"Vice president\" for employee 2). There are no multivalued fields.\n2. **No repeating groups.** The table has no repeated columns such as Title1, Title2, Title3 to hold several values for one employee. Every record has the same fixed set of fields, and each employee appears in exactly one row (employee 3, Buchanan, is described once, in one row).\n3. **A primary key identifies each record uniquely.** EmployeeID (values 1 to 5) is different in every row, so no two records are identical even though some data are repeated: employees 1, 3 and 5 all have the title \"Sales representative\", and employees 1 and 2 were both hired in 1992, but their EmployeeID values distinguish them. In addition, each column has its own name and holds data of one type (all the Birth Date values are dates, all the Hire Date values are years), and the order of the rows does not matter.\n\nRepetition of a value such as \"Sales representative\" does not break 1NF; it is dealt with only by higher normal forms (and only if a real dependency exists).\n\n**(b) Three advantages of normalization (3 marks)**\n\n1. It **reduces data redundancy**: each fact is stored once, which saves storage space.\n2. It **avoids insertion, update and deletion anomalies** and so keeps the data consistent and accurate (data integrity): a value is changed in one place only.\n3. It gives a clear, flexible structure of small, well-organised tables which are **easier to maintain, modify and extend** and which make updates faster.",
+      "themes": [
+        "database normal forms",
+        "database normalisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 11
+    }
+  ]
+}

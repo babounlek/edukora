@@ -1,0 +1,90 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "A college currently uses two separate *local area* networks (LANs), one for administration and the other for teaching.",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 8 : points imprimés par sous-partie : i = 3 ; ii = 4 ; iii = 6 ; iv = 2 + 2 = 4 ; total 17. Les diagrammes demandés en 8(iii) sont décrits en schémas ASCII dans le corrigé (à tracer par le candidat).",
+    "Fin du sujet : les mentions « STOP » et « GO BACK AND CHECK YOUR WORK » imprimées après la question 8 ne sont pas transcrites. Scan de 6 pages, sans page manquante apparente (couverture, puis questions 1 à 8)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Give three reasons why using a LAN to connect computers is well-advised, and one main reason why separate LANs should be used for administration and teaching. (3 marks)",
+      "corrige_markdown": "**Three reasons for using a LAN (any three, 2 marks)**\n\n1. **Sharing of resources**: printers, scanners, files, software and the Internet connection can be shared, which saves money.\n2. **Sharing and centralisation of data**: files and databases are stored in one place (a file server), so everybody uses the same up-to-date data and backups are easier to make.\n3. **Communication**: users can exchange messages, e-mails and files quickly, and work together on documents.\n4. **Central administration and security**: users, passwords, access rights and software updates are managed from one place.\n5. **Lower cost of licences and hardware** (one licence for several users, shared peripherals).\n\n**One main reason for separate LANs (1 mark)**\n\n**Security and confidentiality of the data**: the administration network holds sensitive information (student records, staff and financial data) that students and teaching staff using the teaching network must not be able to read or change. (Also acceptable: separate networks avoid the traffic of one group slowing the other, and each can be managed to its own needs.)",
+      "themes": [
+        "computer networks"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "The administration network consists of 12 workstations and a dedicated file server. One of the workstations also acts as a print server. Explain why this configuration for workstations and printing could be preferable over connecting the printer directly to the LAN. (4 marks)",
+      "corrige_markdown": "Any four points (1 mark each), for example:\n\n- A printer attached to a workstation (USB or parallel cable) needs **no network interface card**, so a cheaper ordinary printer can be shared by all 12 users instead of a more expensive network printer.\n- The workstation **spools** the print jobs in a queue on its disk, so users can carry on working while the printer prints, and the jobs are printed in an orderly way.\n- The print server allows **control and management of printing**: access rights (who may print), priorities, limits or accounting of the pages printed by each user, and the possibility of cancelling or re-ordering jobs.\n- The **dedicated file server is not slowed down** by the print jobs, because the printing work is done by an ordinary workstation, and printing does not generate extra network traffic from a printer sending status messages.\n- The printer is **protected from unauthorised use** because it is not directly visible on the LAN; the printer can be moved or replaced easily, because only the print-server workstation has to be reconfigured.\n\n(Disadvantage to be aware of: the print-server workstation must stay switched on, and the user of that workstation may be slowed down while printing is in progress.)",
+      "themes": [
+        "computer networks",
+        "print services"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "*Bus*, *Ring* and *Star* are common topologies for LANs. Describe these topologies, using clearly labeled diagrams to illustrate your answer. (6 marks)",
+      "corrige_markdown": "(2 marks for each topology: description 1 mark, labelled diagram 1 mark.)\n\n**Bus topology.** All the computers and the server are connected to a **single shared cable (the backbone or bus)** by drop cables or T-connectors. A terminator at each end of the cable absorbs the signal and avoids reflections. A message sent by one computer travels along the whole bus and is read only by the computer to which it is addressed. It is cheap and easy to extend, but only one computer can transmit at a time, performance falls when traffic increases, and a break in the backbone cuts the network in two.\n\n```text\n  [PC 1]    [PC 2]    [PC 3]    [Server]\n     |         |         |         |\n T ==+=========+=========+=========+== T      T = terminator\n              backbone (bus) cable\n```\n\n**Ring topology.** Each computer is connected to exactly **two neighbours**, so the cable forms a closed loop. Data travels round the ring in **one direction**, passing through each computer, which regenerates the signal and removes the data meant for it (often controlled by a token so that only one computer sends at a time). It gives orderly access with good performance under heavy load, but a failure of one computer or of one cable section can stop the whole ring (unless there is a second ring), and adding a computer interrupts the network.\n\n```text\n          [PC 1]\n         /      \\\n   [PC 4]        [PC 2]        data flows round the ring\n         \\      /              in one direction\n          [PC 3]\n```\n\n**Star topology.** Every computer is connected by its **own cable to a central device, a hub or (better) a switch**, which receives the data and forwards it to the destination. A fault in one cable affects only one computer, new computers are easily added and performance is good with a switch, but the central device is a **single point of failure** (if it fails the whole network stops) and more cable is needed.\n\n```text\n   [PC 1]          [PC 2]\n        \\          /\n         [ HUB / SWITCH ]----[Server]\n        /          \\\n   [PC 3]          [PC 4]\n```",
+      "themes": [
+        "network topologies"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "The college wishes to connect the administration and teaching networks so that teaching staff can have access to student records. A bridge is proposed to make the connection.\n\n(a) Briefly explain why a bridge could be inadequate as a possible solution. (2 marks)\n\n(b) State **two** functions provided by a gateway that would make it preferable over a bridge or are not provided by a bridge. (2 marks)",
+      "corrige_markdown": "**(a) Why a bridge could be inadequate (2 marks)**\n\nA bridge simply joins two LAN segments that use the **same protocols and addressing** and forwards the frames according to their addresses: it connects the two networks completely, with **no control of who may see what**. Once the networks are bridged, every user of the teaching network (including students) could reach everything on the administration network, not only the student records that staff need, which is a security risk; it also does no protocol or data-format conversion, so it would not work if the two networks used different technologies or protocols, and it passes on the traffic (broadcasts) of both networks.\n\n**(b) Two functions of a gateway (any two, 1 mark each)**\n\n1. **Protocol conversion**: a gateway translates between networks that use different protocols, data formats or architectures (a bridge cannot).\n2. **Security and access control**: a gateway can filter traffic and act as a firewall, authenticating users and allowing only the staff to reach only the student-record server, and logging the accesses.\n3. **Routing between networks (and address translation)**: it decides the route of packets between different networks and can connect a LAN to a wide area network or the Internet, hiding the internal addresses (network address translation).",
+      "themes": [
+        "network devices",
+        "computer networks"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "10",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2021. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 10 : la matrice A de la partie (a) est partiellement recouverte par le filigrane ; ses entrées (2, 3, 4 / 1, -1, 2 / 5, 0, k) restent lisibles et coïncident avec celles de B (k = 2) en (b). Les points de (b) (9 marks) couvrent à la fois l'inverse de B et la résolution du système.",
+    "Question 10(c) : le point (-2, 3, 1) est pris comme vecteur colonne et son image est B fois ce vecteur.",
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points par partie sont recopiés tels qu'imprimés (leur somme est 104) et `points` de chaque exercice est laissé vide.",
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Scan de 3 pages (page de garde + 2 pages de questions) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Find the value of the constant $k$ for which the matrix $\\mathbf{A}$ is singular, where $\\mathbf{A} = \\begin{pmatrix} 2 & 3 & 4 \\\\ 1 & -1 & 2 \\\\ 5 & 0 & k \\end{pmatrix}$. (2 marks)",
+      "corrige_markdown": "A square matrix is singular exactly when its determinant is zero. Expand along the first row:\n$$\\det\\mathbf{A} = 2\\begin{vmatrix} -1 & 2 \\\\ 0 & k \\end{vmatrix} - 3\\begin{vmatrix} 1 & 2 \\\\ 5 & k \\end{vmatrix} + 4\\begin{vmatrix} 1 & -1 \\\\ 5 & 0 \\end{vmatrix} = 2(-k) - 3(k - 10) + 4(0 + 5) = -2k - 3k + 30 + 20 = 50 - 5k.$$\n$\\mathbf{A}$ is singular when $50 - 5k = 0$:\n$$\\boxed{k = 10}$$",
+      "themes": [
+        "determinants and inverses"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Find the inverse of the matrix $\\mathbf{B}$, if $\\mathbf{B} = \\begin{pmatrix} 2 & 3 & 4 \\\\ 1 & -1 & 2 \\\\ 5 & 0 & 2 \\end{pmatrix}$.\n\nHence solve the system of equations\n$$2x + 3y + 4z = 1,$$\n$$x - y + 2z = 2,$$\n$$5x + 2z = 5.$$\n(9 marks)",
+      "corrige_markdown": "**Determinant.** $\\mathbf{B}$ is $\\mathbf{A}$ of part (a) with $k = 2$, so $\\det\\mathbf{B} = 50 - 5(2) = 40 \\neq 0$ and $\\mathbf{B}$ is invertible.\n\n**Cofactors** $C_{ij} = (-1)^{i+j}M_{ij}$:\n$$C_{11} = \\begin{vmatrix} -1 & 2 \\\\ 0 & 2 \\end{vmatrix} = -2, \\quad C_{12} = -\\begin{vmatrix} 1 & 2 \\\\ 5 & 2 \\end{vmatrix} = 8, \\quad C_{13} = \\begin{vmatrix} 1 & -1 \\\\ 5 & 0 \\end{vmatrix} = 5,$$\n$$C_{21} = -\\begin{vmatrix} 3 & 4 \\\\ 0 & 2 \\end{vmatrix} = -6, \\quad C_{22} = \\begin{vmatrix} 2 & 4 \\\\ 5 & 2 \\end{vmatrix} = -16, \\quad C_{23} = -\\begin{vmatrix} 2 & 3 \\\\ 5 & 0 \\end{vmatrix} = 15,$$\n$$C_{31} = \\begin{vmatrix} 3 & 4 \\\\ -1 & 2 \\end{vmatrix} = 10, \\quad C_{32} = -\\begin{vmatrix} 2 & 4 \\\\ 1 & 2 \\end{vmatrix} = 0, \\quad C_{33} = \\begin{vmatrix} 2 & 3 \\\\ 1 & -1 \\end{vmatrix} = -5.$$\n(Check: $\\det\\mathbf{B} = 2(-2) + 3(8) + 4(5) = 40$.)\n\n**Adjugate** (transpose of the cofactor matrix) and **inverse**:\n$$\\operatorname{adj}\\mathbf{B} = \\begin{pmatrix} -2 & -6 & 10 \\\\ 8 & -16 & 0 \\\\ 5 & 15 & -5 \\end{pmatrix}, \\qquad \\mathbf{B}^{-1} = \\frac{1}{40}\\begin{pmatrix} -2 & -6 & 10 \\\\ 8 & -16 & 0 \\\\ 5 & 15 & -5 \\end{pmatrix} = \\begin{pmatrix} -\\frac1{20} & -\\frac3{20} & \\frac14 \\\\ \\frac15 & -\\frac25 & 0 \\\\ \\frac18 & \\frac38 & -\\frac18 \\end{pmatrix}.$$\n\n**Solving the system.** In matrix form $\\mathbf{B}\\begin{pmatrix} x \\\\ y \\\\ z \\end{pmatrix} = \\begin{pmatrix} 1 \\\\ 2 \\\\ 5 \\end{pmatrix}$ (the coefficient matrix is exactly $\\mathbf{B}$, the third equation being $5x + 0y + 2z = 5$). Hence\n$$\\begin{pmatrix} x \\\\ y \\\\ z \\end{pmatrix} = \\mathbf{B}^{-1}\\begin{pmatrix} 1 \\\\ 2 \\\\ 5 \\end{pmatrix} = \\frac{1}{40}\\begin{pmatrix} -2 - 12 + 50 \\\\ 8 - 32 + 0 \\\\ 5 + 30 - 25 \\end{pmatrix} = \\frac{1}{40}\\begin{pmatrix} 36 \\\\ -24 \\\\ 10 \\end{pmatrix} = \\begin{pmatrix} \\frac{9}{10} \\\\ -\\frac35 \\\\ \\frac14 \\end{pmatrix}.$$\n$$\\boxed{x = \\frac{9}{10}, \\qquad y = -\\frac{3}{5}, \\qquad z = \\frac{1}{4}}$$\n\n**Check.** $2(0.9) + 3(-0.6) + 4(0.25) = 1.8 - 1.8 + 1 = 1$; $0.9 + 0.6 + 0.5 = 2$; $5(0.9) + 2(0.25) = 4.5 + 0.5 = 5$.",
+      "themes": [
+        "determinants and inverses",
+        "systems of linear equations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "Find the image of the point $\\begin{pmatrix} -2 \\\\ 3 \\\\ 1 \\end{pmatrix}$ under the transformation matrix defined by $\\mathbf{B}$, where $\\mathbf{B} = \\begin{pmatrix} 2 & 3 & 4 \\\\ 1 & -1 & 2 \\\\ 5 & 0 & 2 \\end{pmatrix}$. (2 marks)",
+      "corrige_markdown": "The image of a point with position vector $\\mathbf{v}$ under the transformation with matrix $\\mathbf{B}$ is $\\mathbf{B}\\mathbf{v}$:\n$$\\begin{pmatrix} 2 & 3 & 4 \\\\ 1 & -1 & 2 \\\\ 5 & 0 & 2 \\end{pmatrix}\\begin{pmatrix} -2 \\\\ 3 \\\\ 1 \\end{pmatrix} = \\begin{pmatrix} 2(-2) + 3(3) + 4(1) \\\\ 1(-2) - 1(3) + 2(1) \\\\ 5(-2) + 0(3) + 2(1) \\end{pmatrix} = \\begin{pmatrix} -4 + 9 + 4 \\\\ -2 - 3 + 2 \\\\ -10 + 0 + 2 \\end{pmatrix} = \\begin{pmatrix} 9 \\\\ -3 \\\\ -8 \\end{pmatrix}.$$\n$$\\boxed{\\text{The image is the point } (9, -3, -8)}$$",
+      "themes": [
+        "linear transformations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

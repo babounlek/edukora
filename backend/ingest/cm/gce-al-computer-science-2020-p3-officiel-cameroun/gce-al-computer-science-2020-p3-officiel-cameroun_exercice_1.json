@@ -1,0 +1,118 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2020",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2020-p3-officiel-cameroun.pdf",
+ "numero_exercice": "1",
+ "numero_paper": 3,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h",
+ "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), Paper 3 - Practical Work, ADVANCED LEVEL, June 2020. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. You are expected to print out a single copy of relevant fragments of your program at different times. Please notify the instructor of any required printout that was not done! When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C or C11 programming languages may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer. Do not write on the first page of your answer booklet. It is reserved for administrative purposes. Where information is provided as soft copy, notify the instructors if it is not found in your machine or has not been made available to you.\n\nThe paper has two tasks: Task 1 (database design and SQL) and Task 2 (Council data: sorting and searching a list of names).",
+ "points": "",
+ "groupes": [],
+ "regles_choix": [],
+ "enonce_intro_markdown": "**Task 1**\n\nThe Cameroon Ministry of Transport has an agency that stores information about vehicles and their owners. Each vehicle is registered with this agency and must be insured before it can be driven. Details of the vehicles, owners and insurance policies are stored in a relational database using the following three relations:\n\n- **Vehicle**(RegistrationNumber, OwnerID, Manufacturer, Model, Colour, EngineSize, DateRegistered)\n- **Owner**(OwnerID, Title, Name, Surname, HouseNumber, Street, Town, Postcode)\n- **Insurance**(PolicyNumber, RegistrationNumber, DateStarted, PolicyType, ExcessAmount)\n\nIn this system, the following restrictions apply to some attributes:\n\n- RegistrationNumber: a mixture of exactly 7 letters and numbers, eg; MA11FXB.\n- EngineSize: a whole number representing the capacity of the engine, eg; 1597.\n- PolicyType: The type of insurance policy. It is either 'Comprehensive' or 'Third Party'.\n- ExcessAmount: a monetary value, eg, 100.",
+ "figures": [],
+ "incertitudes": [
+  "Le SQL de cette tâche a été exécuté avec le module sqlite3 de Python (foreign_keys activées) : CREATE TABLE des quatre tables, INSERT de lignes d'exemple, UPDATE, la requête de jointure, la requête du certificat courant (MAX et DATE(..., '+12 months')), et les refus des contraintes CHECK (PolicyType, longueur de RegistrationNumber), PRIMARY KEY et FOREIGN KEY. Les sorties recopiées dans le corrigé sont celles de cette exécution. Dialectes : LENGTH, DATE(... '+12 months') et les types sont ceux de SQLite ; les variantes MySQL et Access sont signalées dans le corrigé mais n'ont pas été testées.",
+  "Le sujet est un scan photographié (page inclinée, filigrane gcerevision.com sur chaque page, publicités ignorées). Lecture douteuse : la fermeture de l'apostrophe de 'Third Party' (imprimée « 'Third Party. »), recopiée avec l'apostrophe fermante ; l'exemple d'immatriculation « MA11FXB » (lu avec deux chiffres 1) ; « eg; » et « eg, » imprimés avec la ponctuation du sujet.",
+  "Les points sont imprimés par partie : Task 1 = 3 + 3 + 3 (i), 2 (ii), 3 (iii), 3 (iv), 4 (v), 4 (vi) = 25 ; aucun total de tâche n'est imprimé, donc « points » de l'exercice est laissé vide et seuls les points des sous-questions sont renseignés (la partie (i) porte 9 points : « 3, 3, 3 marks » pour les trois tables). Aucun point corrigé.",
+  "Aucune donnée n'est fournie par le sujet : les lignes Owner, Vehicle, Insurance et SafetyCertificate du corrigé sont des exemples inventés (noms camerounais), seule la structure des relations est imprimée. Les types de données, les contraintes CHECK, le nom de la table SafetyCertificate et ses colonnes (CertificateNumber, RegistrationNumber, DateIssued, GarageName) sont des choix du corrigé : le sujet ne les impose pas. La date d'expiration (12 mois) n'est pas stockée, elle est calculée.",
+  "Les parties (v) et (vi) (« Implement ... using DBMS of your choice », « Implement the relationship graph ... and print a copy ») demandent un travail sur ordinateur (création de la base, capture et impression) : le corrigé décrit la démarche et le résultat attendu et donne le diagramme en bloc de texte ; aucune figure PNG n'a été produite. La notion de « relationship graph » n'est pas définie par le sujet : interprétée comme le diagramme des relations (fenêtre Relationships d'Access, diagramme entités-associations).",
+  "Introduction du sujet : la page de garde cite « [ANSI] C or C11 » ; la consigne est recopiée telle quelle dans introduction_markdown. Le PDF compte 3 pages (garde, Task 1 et début de Task 2, suite de Task 2) ; ses métadonnées portent le titre « AL 2020 computer science p2 » alors que la page de garde imprime Paper 3 - Practical Work ; le contenu est bien celui du Paper 3 et le sujet paraît complet (rien après la question (x) de la Task 2)."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "(i) In your answer booklet use the Data Definition Language (DDL) of SQL to create the Insurance, Owner and Vehicle relational tables. Identify the primary key for each. *[3, 3, 3 marks]*",
+   "corrige_markdown": "**Step 1 - Choose the data types from the restrictions.**\n\n- `RegistrationNumber`: exactly 7 letters and digits, so a fixed-length text `CHAR(7)` (it is not a number: it mixes letters and digits). A `CHECK` on the length makes the \"exactly 7\" rule explicit.\n- `EngineSize`: a whole number, so `INTEGER`.\n- `PolicyType`: only two values are allowed, so a text column with a `CHECK (PolicyType IN ('Comprehensive', 'Third Party'))`.\n- `ExcessAmount`: a monetary value, so a decimal type, `DECIMAL(8,2)`.\n- `DateRegistered`, `DateStarted`: `DATE`. The other attributes are text (`VARCHAR`) except the identifiers.\n\n**Step 2 - Choose the primary keys.** A primary key must identify one row only and never be empty.\n\n- **Owner**: `OwnerID` (the identifier given to each owner; `Name` and `Surname` are not unique).\n- **Vehicle**: `RegistrationNumber` (two vehicles never share a registration number).\n- **Insurance**: `PolicyNumber`.\n\n**Step 3 - Choose the order of creation.** `Vehicle` refers to `Owner` and `Insurance` refers to `Vehicle`, so the \"parent\" table must exist first: Owner, then Vehicle, then Insurance. `OwnerID` in Vehicle and `RegistrationNumber` in Insurance are **foreign keys**.\n\n```sql\nCREATE TABLE Owner (\n    OwnerID      INTEGER      PRIMARY KEY,\n    Title        VARCHAR(10),\n    Name         VARCHAR(30)  NOT NULL,\n    Surname      VARCHAR(30)  NOT NULL,\n    HouseNumber  VARCHAR(10),\n    Street       VARCHAR(50),\n    Town         VARCHAR(30),\n    Postcode     VARCHAR(10)\n);\n\nCREATE TABLE Vehicle (\n    RegistrationNumber  CHAR(7)      PRIMARY KEY,\n    OwnerID             INTEGER      NOT NULL,\n    Manufacturer        VARCHAR(30),\n    Model               VARCHAR(30),\n    Colour              VARCHAR(20),\n    EngineSize          INTEGER,\n    DateRegistered      DATE,\n    CHECK (LENGTH(RegistrationNumber) = 7),\n    FOREIGN KEY (OwnerID) REFERENCES Owner (OwnerID)\n);\n\nCREATE TABLE Insurance (\n    PolicyNumber        VARCHAR(15)  PRIMARY KEY,\n    RegistrationNumber  CHAR(7)      NOT NULL,\n    DateStarted         DATE         NOT NULL,\n    PolicyType          VARCHAR(13)  NOT NULL\n                        CHECK (PolicyType IN ('Comprehensive', 'Third Party')),\n    ExcessAmount        DECIMAL(8,2),\n    FOREIGN KEY (RegistrationNumber) REFERENCES Vehicle (RegistrationNumber)\n);\n```\n\n**Check by execution.** These three statements, followed by the table of question (iv), were executed with the `sqlite3` module of Python (foreign keys switched on): the four tables were created; a policy of type 'Fire' was refused (CHECK constraint failed on PolicyType), a registration number of 5 characters was refused (CHECK on the length), a duplicate registration number was refused (UNIQUE constraint failed on the primary key). In MySQL `LENGTH` counts bytes (use `CHAR_LENGTH` for characters, and CHECK constraints are enforced from version 8.0.16); in Microsoft Access the \"exactly 7\" and the two-value rules are set with a field size and a validation rule instead of CHECK.\n\n**Marking (3 marks per table):** correct CREATE TABLE with all attributes (1); suitable data types and restrictions (1); primary key declared (and foreign key where there is one) (1).",
+   "themes": [
+    "relational databases",
+    "sql queries",
+    "keys and relationships"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 9
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "(ii) The owner of the vehicle with registration number DF24JUT repainted his car to pink. Write an SQL statement to update the Vehicle table so that it reflects this change. *[2 marks]*",
+   "corrige_markdown": "```sql\nUPDATE Vehicle\nSET    Colour = 'Pink'\nWHERE  RegistrationNumber = 'DF24JUT';\n```\n\n- `UPDATE Vehicle ... SET Colour = 'Pink'` changes the colour column of the Vehicle table.\n- The `WHERE` clause restricts the change to the one vehicle: the registration number is the primary key, so exactly one row is modified. **Without `WHERE`, every vehicle in the table would become pink.**\n- The value is written 'Pink' with a capital to follow the style of the other colours stored ('Blue', 'Silver', ...).\n\n**Check by execution** (sample rows invented for the test): `rows updated: 1`, and the Vehicle table then contains `('AB72XHC', 'Silver')`, `('DF24JUT', 'Pink')`, `('MA11FXB', 'Red')`.\n\n**Marking:** UPDATE ... SET Colour = 'Pink' (1); WHERE on RegistrationNumber = 'DF24JUT' (1).",
+   "themes": [
+    "sql queries",
+    "relational databases"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 2
+  },
+  {
+   "numero": "iii",
+   "enonce_markdown": "(iii) A police officer checks out some details about the car with registration number AB72XHC and its owner. Write an SQL query to obtain the Model and Colour of the car, and the Name and Surname of the car's owner. *[3 marks]*",
+   "corrige_markdown": "The Model and the Colour are in the **Vehicle** table, the Name and the Surname in the **Owner** table. The two tables are linked by `OwnerID` (primary key of Owner, foreign key of Vehicle), so a **join** is needed.\n\n```sql\nSELECT Vehicle.Model, Vehicle.Colour, Owner.Name, Owner.Surname\nFROM   Vehicle\n       INNER JOIN Owner ON Vehicle.OwnerID = Owner.OwnerID\nWHERE  Vehicle.RegistrationNumber = 'AB72XHC';\n```\n\nAn equivalent form uses the old join syntax:\n\n```sql\nSELECT V.Model, V.Colour, O.Name, O.Surname\nFROM   Vehicle V, Owner O\nWHERE  V.OwnerID = O.OwnerID\nAND    V.RegistrationNumber = 'AB72XHC';\n```\n\n**Check by execution** on the sample rows (the vehicle AB72XHC belongs to owner 2): the query returns one row, `('Civic', 'Silver', 'Alice', 'Tchoumi')`.\n\n**Marking:** the four columns selected (1); the join condition Vehicle.OwnerID = Owner.OwnerID (1); the WHERE condition on the registration number (1).",
+   "themes": [
+    "sql queries",
+    "relational databases"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 3
+  },
+  {
+   "numero": "iv",
+   "enonce_markdown": "The database is to be extended to store information about vehicle safety certificates. Vehicles do a yearly roadworthiness test. A vehicle that passes the test is issued a roadworthiness certificate that has a unique certificate number and is valid for 12 months from the date the certificate is issued. The certificate also has the name of the garage that issued it. A database is used to hold the details of certificates as well as the record of all certificates ever issued to each vehicle. For a particular vehicle, the record includes its current certificate together with all certificates issued to it in the past.\n\n(iv) Using the SQL DDL create a table that holds information about safety certificates. *[3 marks]*",
+   "corrige_markdown": "**Analysis.** A certificate has a unique number (so a primary key), a date of issue, the name of the garage, and it belongs to one vehicle. A vehicle receives a new certificate every year and the database must keep **all** of them, so one vehicle has many certificates: a **one-to-many** relationship. The vehicle is identified in the certificate table by a **foreign key** `RegistrationNumber`. The expiry date (12 months after the date of issue) can be calculated from `DateIssued`, so it is not stored (storing it would repeat information). The \"current\" certificate is the one with the latest date of issue.\n\n```sql\nCREATE TABLE SafetyCertificate (\n    CertificateNumber   VARCHAR(15)  PRIMARY KEY,\n    RegistrationNumber  CHAR(7)      NOT NULL,\n    DateIssued          DATE         NOT NULL,\n    GarageName          VARCHAR(50)  NOT NULL,\n    FOREIGN KEY (RegistrationNumber) REFERENCES Vehicle (RegistrationNumber)\n);\n```\n\n**Using the table.** The current certificate of a vehicle and its expiry date (SQLite syntax; in MySQL write `DATE_ADD(DateIssued, INTERVAL 12 MONTH)`):\n\n```sql\nSELECT CertificateNumber, DateIssued, GarageName,\n       DATE(DateIssued, '+12 months') AS ValidUntil\nFROM   SafetyCertificate\nWHERE  RegistrationNumber = 'AB72XHC'\nAND    DateIssued = (SELECT MAX(DateIssued)\n                     FROM   SafetyCertificate\n                     WHERE  RegistrationNumber = 'AB72XHC');\n```\n\nOn the sample rows (three certificates issued to AB72XHC on 2022-07-05, 2023-07-04 and 2024-07-08) this returns `('CERT-1003', '2024-07-08', 'Central Garage', '2025-07-08')`. The history of the vehicle is obtained with the same WHERE on the registration number and `ORDER BY DateIssued DESC`, which returns CERT-1003, CERT-1002 and CERT-1001.\n\n**Marking:** table with a unique certificate number as primary key (1); date of issue and garage name (1); foreign key linking the certificate to the vehicle so that all past certificates are kept (1).",
+   "themes": [
+    "relational databases",
+    "sql queries",
+    "keys and relationships"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 3
+  },
+  {
+   "numero": "v",
+   "enonce_markdown": "(v) Implement a relational database for the tables in (i) and (iv) above using DBMS of your choice. *[4 marks]*",
+   "corrige_markdown": "This is a practical task on the computer. The expected work, with MySQL, Microsoft Access or SQLite as the DBMS:\n\n1. **Create the database**, for example `CREATE DATABASE vehicleregistry;` then select it (`USE vehicleregistry;`). With SQLite, opening a new file such as `vehicleregistry.db` does the same.\n2. **Create the four tables** by running the DDL of (i) and (iv) **in this order**: Owner, Vehicle, Insurance, SafetyCertificate (a table is created only after the tables it refers to).\n3. **Enter sample data** (the paper gives none; the rows below are examples, with Cameroonian names):\n\n```sql\nINSERT INTO Owner VALUES (1, 'Mr',   'Paul',  'Mbarga',  '12', 'Rue Joss',          'Douala',  'BP 1204');\nINSERT INTO Owner VALUES (2, 'Mrs',  'Alice', 'Tchoumi', '5',  'Avenue Kennedy',    'Yaounde', 'BP 877');\nINSERT INTO Owner VALUES (3, 'Miss', 'Grace', 'Nkeng',   '31', 'Commercial Avenue', 'Bamenda', 'BP 45');\n\nINSERT INTO Vehicle VALUES ('DF24JUT', 1, 'Toyota', 'Corolla', 'Blue',   1598, '2019-03-14');\nINSERT INTO Vehicle VALUES ('AB72XHC', 2, 'Honda',  'Civic',   'Silver', 1799, '2021-07-02');\nINSERT INTO Vehicle VALUES ('MA11FXB', 3, 'Ford',   'Focus',   'Red',    1597, '2018-11-20');\n\nINSERT INTO Insurance VALUES ('POL-0001', 'DF24JUT', '2024-01-10', 'Comprehensive', 100);\nINSERT INTO Insurance VALUES ('POL-0002', 'AB72XHC', '2024-02-01', 'Third Party',   50);\n\nINSERT INTO SafetyCertificate VALUES ('CERT-1001', 'AB72XHC', '2022-07-05', 'Auto Plus Garage');\nINSERT INTO SafetyCertificate VALUES ('CERT-1002', 'AB72XHC', '2023-07-04', 'Auto Plus Garage');\nINSERT INTO SafetyCertificate VALUES ('CERT-1003', 'AB72XHC', '2024-07-08', 'Central Garage');\nINSERT INTO SafetyCertificate VALUES ('CERT-1004', 'DF24JUT', '2024-03-20', 'Central Garage');\n```\n\nThe rows are entered parents first (Owner, then Vehicle, then Insurance and SafetyCertificate); a row that refers to a vehicle which does not exist is refused.\n\n4. **Test the database** with the queries of (ii), (iii) and (iv). The test run on these rows (SQLite) gave: `rows updated: 1` for the repainting, `('Civic', 'Silver', 'Alice', 'Tchoumi')` for the police query, and the current certificate `CERT-1003` (valid until 2025-07-08). A certificate for an unknown registration number (`ZZ99ZZZ`) was refused: FOREIGN KEY constraint failed.\n5. **Save** the database (and the SQL script) and print the script if asked.\n\n**Marking:** database created with the four tables (1); keys and restrictions declared (1); sample data entered (1); queries run successfully (1).",
+   "themes": [
+    "relational databases",
+    "sql queries"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  },
+  {
+   "numero": "vi",
+   "enonce_markdown": "(vi) Implement the relationship graph between entities in (v) above and print a copy. *[4 marks]*",
+   "corrige_markdown": "The **relationship graph** (entity-relationship diagram) shows the four tables and the links created by the foreign keys. Reading the keys:\n\n- `Vehicle.OwnerID` refers to `Owner.OwnerID`: one owner owns many vehicles (**1 to N**).\n- `Insurance.RegistrationNumber` refers to `Vehicle.RegistrationNumber`: one vehicle has many insurance policies over time (**1 to N**).\n- `SafetyCertificate.RegistrationNumber` refers to `Vehicle.RegistrationNumber`: one vehicle has many safety certificates over time (**1 to N**).\n\n```\n+--------------------+            +----------------------+            +--------------------+\n| Owner              | 1        N | Vehicle              | 1        N | Insurance          |\n+--------------------+---owns-----+----------------------+--covered---+--------------------+\n| OwnerID (PK)       |            | RegistrationNumber PK|   by       | PolicyNumber (PK)  |\n| Title              |            | OwnerID (FK)         |            | RegistrationNumber |\n| Name               |            | Manufacturer         |            |   (FK)             |\n| Surname            |            | Model                |            | DateStarted        |\n| HouseNumber        |            | Colour               |            | PolicyType         |\n| Street             |            | EngineSize           |            | ExcessAmount       |\n| Town               |            | DateRegistered       |            +--------------------+\n| Postcode           |            +----------+-----------+\n+--------------------+                       | 1\n                                             | has\n                                             | N\n                                  +----------+-----------+\n                                  | SafetyCertificate    |\n                                  +----------------------+\n                                  | CertificateNumber PK |\n                                  | RegistrationNumber   |\n                                  |   (FK)               |\n                                  | DateIssued           |\n                                  | GarageName           |\n                                  +----------------------+\n```\n\n**How to produce it on the computer** (the DBMS draws the graph from the declared foreign keys): in Microsoft Access, *Database Tools > Relationships*, add the four tables, drag `OwnerID` from Owner onto Vehicle.OwnerID and `RegistrationNumber` from Vehicle onto Insurance and onto SafetyCertificate, tick *Enforce Referential Integrity* (the line then shows 1 and the infinity sign); in MySQL Workbench, *Database > Reverse Engineer* gives the EER diagram; in SQLite, a tool such as DB Browser or DBeaver shows the diagram. Then print it (or screen-capture it and print the capture).\n\n**Check by execution.** The foreign keys of the three child tables were listed with `PRAGMA foreign_key_list`: Vehicle refers to Owner(OwnerID), Insurance and SafetyCertificate refer to Vehicle(RegistrationNumber), which is exactly the graph above.\n\n**Marking:** the four entities shown with their keys (1); the three relationships drawn between the right tables (1); the cardinalities 1 to N (1); the diagram printed and labelled (1).",
+   "themes": [
+    "entity relationship modelling",
+    "relational databases",
+    "keys and relationships"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  }
+ ]
+}

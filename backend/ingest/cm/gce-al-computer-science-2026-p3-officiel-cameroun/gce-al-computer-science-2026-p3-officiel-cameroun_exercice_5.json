@@ -1,0 +1,61 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2026. Duration: TWO HOURS.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A: Database (Nina's Shop), 20 marks, Tasks 1 to 3; Section B: Programming (Population Growth Program), 30 marks, Tasks 4 to 7.",
+  "points": "6",
+  "groupes": [
+    "SECTION B"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION B: PROGRAMMING (Population Growth Program)** *(30 marks)*\n\nYou are to write a program that determines how long it takes for a population to reach a particular size.\n\nSuppose we have a population of *n* cows. Each year, *n/3* new cows are born, and *n/4* cows pass away. So, for example, if we have *n* = 1200 cows, then in the first year, 1200/3 = 400 new cows are born and 1200/4 = 300 cows pass away. Therefore, at the end of that year, we have 1200 + 400 - 300 = 1300 cows. Repeat the process with the new population size until the desired target population is reached.\n\nFractional cows in intermediate computations are discarded. So, for example, if there were 1001 cows initially, the number of new cows would be 1001/3 = 333.67 cows rounded down to 333 cows.",
+  "figures": [],
+  "incertitudes": [
+    "Points : Task 5 = 6 imprimé, avec (i) = 3 et (ii) = 3 ; cohérent, rien corrigé. ",
+    "Points de la Section B : le sujet imprime « 30 marks » pour toute la Section B, mais les tâches imprimées totalisent 6 + 6 + 15 + 4 = 31 (Task 4 = 6, Task 5 = 6, Task 6 = 15, Task 7 = 4) ; écart du sujet, rien corrigé.",
+    "Le sujet n'impose aucune convention de pseudocode : le corrigé emploie FUNCTION / ENDFUNCTION, REPEAT ... UNTIL, WHILE ... ENDWHILE, <- et DIV (toute notation claire est acceptée). La logique des deux fonctions a été vérifiée par une traduction Python exécutée (1 an ; 4 ans ; 8 ans ; 0 an pour start_size >= end_size ; croissance d'au moins 1 par an pour toute taille >= 9, vérifiée jusqu'à 200000).",
+    "Les cases de réponse du sujet (espaces blancs) ne sont pas transcrites."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**Task 5: Design** *(6 marks)*\n\n*Write the following algorithms in the spaces provided.*\n\n(i) Write a pseudocode function called `InputStartSize()` that prompts the user for a starting population size and returns the value input. A valid starting population is at least 9. Otherwise, the function repeatedly prompts for a valid input. *[3 marks]*",
+      "corrige_markdown": "The function must keep asking until the input is at least 9, so the test is made **after** each reading: a `REPEAT ... UNTIL` loop (the body runs at least once) is the natural choice.\n\n```\nFUNCTION InputStartSize()\n    REPEAT\n        OUTPUT \"Start size: \"\n        INPUT size\n    UNTIL size >= 9\n    RETURN size\nENDFUNCTION\n```\n\nHow it works: the prompt is displayed and a value is read into `size`; if the value is less than 9 (for example -5 or 3) the condition `size >= 9` is false, so the loop prompts again; as soon as a valid value is typed the loop ends and the function **returns** it to the caller. A `WHILE` version is also correct, provided the prompt and the reading are written once before the loop and again inside it:\n\n```\nFUNCTION InputStartSize()\n    OUTPUT \"Start size: \"\n    INPUT size\n    WHILE size < 9 DO\n        OUTPUT \"Start size: \"\n        INPUT size\n    ENDWHILE\n    RETURN size\nENDFUNCTION\n```\n\nTrace with the typed values 3, 5, 12: three prompts are displayed and the function returns 12.\n\n**Marking:** the prompt and the reading of the value (1); the loop that repeats until the value is at least 9 (the correct condition and direction) (1); the value returned (1).",
+      "themes": [
+        "pseudocode algorithms",
+        "program control constructs",
+        "subprograms"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Write a pseudocode function called `CalculateYears(start_size, end_size)` that calculates and returns an integer number of years required for a population of `start_size` to reach at least `end_size`.\n\n*[Hint: Repeatedly use the newly calculated population size to compute the new population until at least the target population is reached.]* *[3 marks]*",
+      "corrige_markdown": "The size of the population is updated year by year, so a loop with a counter is needed. The number of years is not known in advance, so a `WHILE` loop (test before the body) is used; it does not run at all if `start_size` is already at least `end_size`.\n\n```\nFUNCTION CalculateYears(start_size, end_size)\n    size  <- start_size\n    years <- 0\n    WHILE size < end_size DO\n        births <- size DIV 3\n        deaths <- size DIV 4\n        size   <- size + births - deaths\n        years  <- years + 1\n    ENDWHILE\n    RETURN years\nENDFUNCTION\n```\n\n`DIV` is the integer division (fractions discarded), as the statement requires. **Births and deaths are both computed from the size at the start of the year.** A frequent error is to add the births first and then take 1/4 of the enlarged population: for 1200 cows it would give 1200 + 400 = 1600, then 1600 - 400 = 1200, instead of 1300.\n\n**Trace** (checked with a Python translation of this function): `CalculateYears(1200, 1300)` returns 1; `CalculateYears(27, 37)` returns 4 (sizes 27, 30, 33, 36, 39); `CalculateYears(9, 18)` returns 8 (sizes 9, 10, 11, 12, 13, 14, 15, 17, 18); `CalculateYears(50, 40)` returns 0 because the loop body is never executed.\n\n**Why the loop always stops when `start_size` is at least 9.** For *n* of at least 9, the number of births minus deaths is at least 1: *n* DIV 3 is at least (*n* - 2)/3 and *n* DIV 4 is at most *n*/4, so the difference is more than (*n* - 8)/12, which is positive for *n* > 8; being a whole number, it is at least 1. The size therefore increases by at least 1 every year and eventually reaches `end_size`. (A script confirmed it for every *n* from 9 to 200000.) This is why `InputStartSize` refuses values below 9: with 8 cows, 2 are born and 2 die, so the population never changes and the loop would run for ever (the same happens with 1, 2, 4 and 5 cows).\n\n**Marking:** the loop that updates the size until it is at least `end_size` (1); the births and deaths computed with integer division from the same size and the counter incremented (1); the number of years returned (1).",
+      "themes": [
+        "pseudocode algorithms",
+        "algorithm design",
+        "program control constructs"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

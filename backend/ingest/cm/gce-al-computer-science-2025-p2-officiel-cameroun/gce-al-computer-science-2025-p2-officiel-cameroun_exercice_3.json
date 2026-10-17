@@ -1,0 +1,103 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "3(i)(a) : le sujet n'imprime pas le diagramme d'états ; le diagramme du corrigé est en art ASCII (schéma à produire par le candidat). Le modèle à cinq états (New, Ready, Running, Blocked, Terminated) est retenu ; certains manuels en utilisent sept (avec suspensions)."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "In operating systems, a process is an active entity that changes state.\n\nWith the help of a diagram, describe each state in the process state transition diagram and identify which transitions are valid between these states.\n\n(6 marks)",
+      "corrige_markdown": "A process is a program in execution. During its life it passes through several states.\n\n**The states**\n\n- **New**: the process is being created (the operating system allocates its resources and builds its control block).\n- **Ready**: the process is in main memory and has everything it needs except the processor; it waits in the ready queue for the scheduler.\n- **Running**: the process's instructions are being executed by the CPU (only one process per processor core).\n- **Blocked (waiting)**: the process cannot continue until an event occurs, for example the completion of an input/output operation.\n- **Terminated (exit)**: the process has finished (or has been killed) and its resources are released.\n\n**Diagram**\n\n```text\n          admit              dispatch\n NEW  ------------> READY ----------------> RUNNING ---------> TERMINATED\n                      ^  <----------------    |       exit\n                      |  time-out / interrupt |\n                      |                       | waits for I/O or an event\n                      |  I/O or event ends    v\n                      +--------------------- BLOCKED\n```\n\n**Valid transitions**\n\n| Transition | Cause |\n|---|---|\n| New to Ready | the process is admitted to the ready queue |\n| Ready to Running | dispatch: the scheduler gives the CPU to the process |\n| Running to Ready | time slice expires (time-out) or a higher-priority process pre-empts it |\n| Running to Blocked | the process requests I/O or waits for an event |\n| Blocked to Ready | the I/O operation or event is completed |\n| Running to Terminated | the process finishes or is aborted |\n\n**Invalid transitions** include Ready to Blocked (a process that is not running cannot request I/O), Blocked to Running (it must go through Ready and be dispatched) and New to Running (it must first be admitted).",
+      "themes": [
+        "process management",
+        "process scheduling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "In operating systems, a process is an active entity that changes state.\n\nWhat name is given to the data structure that is used to hold the data for the operational state of a process? State any **four** pieces of information that this data structure holds.\n\n(3 marks)",
+      "corrige_markdown": "The data structure is the **Process Control Block (PCB)**, also called the process descriptor. The operating system keeps one for each process and saves into it the state of the process when it is switched out, so that it can be restored later.\n\nFour pieces of information held in a PCB (any four):\n\n1. the process identifier (PID);\n2. the current process state (new, ready, running, blocked, terminated);\n3. the program counter (address of the next instruction);\n4. the contents of the CPU registers (saved context);\n5. scheduling information such as the priority;\n6. memory-management information (page table, base and limit);\n7. a list of the open files and I/O devices in use;\n8. accounting information (CPU time used).",
+      "themes": [
+        "process management"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "Explain the terms *frame*, *page*, and *segment* as used in memory management.\n\n(3 marks)",
+      "corrige_markdown": "- **Frame**: a fixed-size block of **physical** main memory (RAM) into which a page can be loaded.\n- **Page**: a fixed-size block of the program's **logical (virtual) address space**, of the same size as a frame. In paging a program is cut into pages which can be placed in any free frames.\n- **Segment**: a **variable-size** logical division of a program that has a meaning for the programmer (for example the code, the data or the stack), with its own length; in segmentation each segment is placed in memory with a base address and a limit.",
+      "themes": [
+        "paging and segmentation",
+        "memory management"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "Explain the difference between a placement policy and a replacement policy in memory management.\n\n(2 marks)",
+      "corrige_markdown": "- A **placement policy** decides **where** in main memory an incoming page, segment or process is to be loaded when there are several free areas (for example first fit, best fit, worst fit).\n- A **replacement policy** decides **which** page or segment already in memory is to be removed (swapped out) to make room when memory is full (for example first-in first-out, least recently used).\n\nSo placement chooses a position for new items; replacement chooses a victim to evict.",
+      "themes": [
+        "memory management"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "What is virtual memory? How is virtual memory different from cache memory in terms of purpose?\n\n(3 marks)",
+      "corrige_markdown": "**Virtual memory** is a technique in which part of the secondary storage (the swap space on the hard disk) is used as an extension of main memory. Only the pages needed at a given time are held in RAM and the others are kept on disk and swapped in when required, so programs larger than the physical memory can run and several programs can share memory.\n\n**Difference in purpose.**\n\n- Virtual memory is used to **increase the apparent capacity (size)** of main memory.\n- Cache memory is a small, very fast memory placed between the CPU and main memory that holds frequently used instructions and data; its purpose is to **increase the speed** of access, reducing the average time the CPU waits for data.",
+      "themes": [
+        "virtual memory",
+        "memory management"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

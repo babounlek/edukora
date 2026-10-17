@@ -1,0 +1,55 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0775",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics 3 (0775), ADVANCED LEVEL, June 2023. Time allowed: two and a half hours.**\n\nAnswer ALL questions. For your guidance the approximate mark allocation for parts of each question is indicated in brackets. Mathematical formulae and tables, published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 (a) : le tableau de valeurs est lu tel qu'imprimé (x de 0 à 30 par pas de 5 ; y = 0, 9, 14, 18, 22, 23, 19), le filigrane ne gêne pas la lecture des chiffres.",
+    "Question 2 (b) : le sujet demande « les trois premiers termes non nuls » du développement de Taylor en x = 1 ; le coefficient de (x - 1)^3 est nul, donc les trois termes non nuls sont ceux en (x - 1), (x - 1)^2 et (x - 1)^4."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "The coordinates of points on the curve $y = f(x)$ are $(x, y)$ where $x$ and $y$ are given by the table below:\n\n| $x$ | 0 | 5 | 10 | 15 | 20 | 25 | 30 |\n|---|---|---|---|---|---|---|---|\n| $y$ | 0 | 9 | 14 | 18 | 22 | 23 | 19 |\n\nUse Simpson's rule with 6 strips to estimate the area enclosed by the curve $y = f(x)$, the $x$-axis and the ordinates at $x = 0$ and $x = 30$.",
+      "corrige_markdown": "**Strip width.** Six strips between $x = 0$ and $x = 30$ give $h = \\dfrac{30 - 0}{6} = 5$. The seven ordinates are $y_0 = 0$, $y_1 = 9$, $y_2 = 14$, $y_3 = 18$, $y_4 = 22$, $y_5 = 23$, $y_6 = 19$.\n\n**Simpson's rule** (first and last ordinates once, odd-numbered ordinates times 4, even-numbered inner ordinates times 2):\n\n$$A \\approx \\frac{h}{3}\\Big[y_0 + y_6 + 4(y_1 + y_3 + y_5) + 2(y_2 + y_4)\\Big]$$\n\n$$A \\approx \\frac{5}{3}\\Big[0 + 19 + 4(9 + 18 + 23) + 2(14 + 22)\\Big] = \\frac{5}{3}\\big[19 + 200 + 72\\big] = \\frac{5}{3}\\times 291 = 485$$\n\n**Estimated area $= 485$ square units.**",
+      "themes": [
+        "numerical integration",
+        "numerical methods"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Given that\n\n$$\\frac{dy}{dx} + x^2 - y^2 = 0$$\n\nand that $y = 0$ when $x = 1$, find the first three non-zero terms in the Taylor series expansion of $y$ at $x = 1$.",
+      "corrige_markdown": "**Taylor series about $x = 1$:**\n\n$$y = y(1) + y'(1)(x-1) + \\frac{y''(1)}{2!}(x-1)^2 + \\frac{y'''(1)}{3!}(x-1)^3 + \\frac{y^{(4)}(1)}{4!}(x-1)^4 + \\cdots$$\n\nThe equation is $y' = y^2 - x^2$, with $y(1) = 0$. Differentiate repeatedly and evaluate at $x = 1$, $y = 0$.\n\n- $y'(1) = 0^2 - 1^2 = -1$.\n- $y'' = 2yy' - 2x$, so $y''(1) = 2(0)(-1) - 2 = -2$.\n- $y''' = 2(y')^2 + 2yy'' - 2$, so $y'''(1) = 2(1) + 0 - 2 = 0$.\n- $y^{(4)} = 4y'y'' + 2y'y'' + 2yy''' = 6y'y'' + 2yy'''$, so $y^{(4)}(1) = 6(-1)(-2) + 0 = 12$.\n\nThe term in $(x-1)^3$ is zero, so the third non-zero term is the one in $(x-1)^4$, with coefficient $\\dfrac{12}{24} = \\dfrac{1}{2}$.\n\n$$y = -(x-1) - (x-1)^2 + \\frac{1}{2}(x-1)^4 + \\cdots$$\n\n(Check by the next term: $y^{(5)} = 6\\big((y'')^2 + y'y'''\\big) + 2\\big(y'y''' + yy^{(4)}\\big)$ gives $y^{(5)}(1) = 24$, so the next term would be $\\tfrac{1}{5}(x-1)^5$. A numerical integration of the equation with $x = 1.1$ gives $y \\approx -0.10995$, the series gives $-0.10995$.)",
+      "themes": [
+        "taylor series",
+        "first order differential equations"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

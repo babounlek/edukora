@@ -1,0 +1,52 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2024. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A curve has equation $y = 4\\sqrt{x}$, $x > 0$.\n\nShow that the length of the arc, $S$, of the curve for which $1 \\leq x \\leq 4$ is given by\n\n$$S = \\int_1^4 \\sqrt{\\frac{x+4}{x}}\\,dx.$$",
+      "corrige_markdown": "The arc length of a curve $y = y(x)$ between $x = 1$ and $x = 4$ is\n\n$$S = \\int_1^4 \\sqrt{1 + \\left(\\frac{dy}{dx}\\right)^2}\\,dx.$$\n\nHere $y = 4x^{1/2}$, so $\\dfrac{dy}{dx} = 2x^{-1/2} = \\dfrac{2}{\\sqrt{x}}$ and $\\left(\\dfrac{dy}{dx}\\right)^2 = \\dfrac{4}{x}$. Hence\n\n$$1 + \\left(\\frac{dy}{dx}\\right)^2 = 1 + \\frac{4}{x} = \\frac{x + 4}{x},$$\n\nand\n\n$$S = \\int_1^4 \\sqrt{\\frac{x+4}{x}}\\,dx. \\qquad \\blacksquare$$",
+      "themes": [
+        "arc length"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "A curve has equation $y = 4\\sqrt{x}$, $x > 0$, and the length of its arc for $1 \\leq x \\leq 4$ is $S = \\displaystyle\\int_1^4 \\sqrt{\\frac{x+4}{x}}\\,dx$.\n\nUsing the substitution $x = 4\\sinh^2\\theta$, find $S$ (leaving your answer in logarithmic form).",
+      "corrige_markdown": "**Change of variable.** With $x = 4\\sinh^2\\theta$ (and $\\theta > 0$): $dx = 8\\sinh\\theta\\cosh\\theta\\,d\\theta$, $\\sqrt{x} = 2\\sinh\\theta$, and\n\n$$x + 4 = 4\\sinh^2\\theta + 4 = 4\\cosh^2\\theta, \\qquad \\sqrt{x + 4} = 2\\cosh\\theta.$$\n\nSo $\\sqrt{\\dfrac{x+4}{x}} = \\dfrac{\\cosh\\theta}{\\sinh\\theta}$ and the integrand becomes\n\n$$\\frac{\\cosh\\theta}{\\sinh\\theta} \\times 8\\sinh\\theta\\cosh\\theta\\,d\\theta = 8\\cosh^2\\theta\\,d\\theta = 4(1 + \\cosh 2\\theta)\\,d\\theta.$$\n\n**New limits.**\n* $x = 1$: $\\sinh^2\\theta = \\tfrac14$, $\\sinh\\theta = \\tfrac12$, so $\\theta_1 = \\sinh^{-1}\\tfrac12 = \\ln\\!\\left(\\tfrac12 + \\sqrt{\\tfrac14 + 1}\\right) = \\ln\\dfrac{1 + \\sqrt5}{2}$.\n* $x = 4$: $\\sinh\\theta = 1$, so $\\theta_2 = \\sinh^{-1}1 = \\ln(1 + \\sqrt2)$.\n\n**Integration.**\n\n$$S = \\int_{\\theta_1}^{\\theta_2} 4(1 + \\cosh 2\\theta)\\,d\\theta = \\Big[4\\theta + 2\\sinh 2\\theta\\Big]_{\\theta_1}^{\\theta_2}.$$\n\nUse $\\sinh 2\\theta = 2\\sinh\\theta\\cosh\\theta$:\n* at $\\theta_2$: $\\sinh\\theta_2 = 1$, $\\cosh\\theta_2 = \\sqrt2$, so $2\\sinh 2\\theta_2 = 4\\sqrt2$;\n* at $\\theta_1$: $\\sinh\\theta_1 = \\tfrac12$, $\\cosh\\theta_1 = \\tfrac{\\sqrt5}{2}$, so $\\sinh 2\\theta_1 = \\tfrac{\\sqrt5}{2}$ and $2\\sinh 2\\theta_1 = \\sqrt5$.\n\nTherefore\n\n$$S = 4\\ln(1 + \\sqrt2) + 4\\sqrt2 - 4\\ln\\frac{1 + \\sqrt5}{2} - \\sqrt5.$$\n\n$$\\boxed{S = 4\\ln\\frac{2(1 + \\sqrt2)}{1 + \\sqrt5} + 4\\sqrt2 - \\sqrt5 \\approx 5.02}$$\n\n**Check.** $4\\ln(1+\\sqrt2) = 3.5255$, $4\\sqrt2 = 5.6569$, $4\\ln\\frac{1+\\sqrt5}{2} = 1.9248$, $\\sqrt5 = 2.2361$, giving $S \\approx 5.0214$; numerical integration of $\\int_1^4\\sqrt{(x+4)/x}\\,dx$ gives the same value.",
+      "themes": [
+        "hyperbolic functions",
+        "integration by substitution",
+        "arc length"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

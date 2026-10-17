@@ -1,0 +1,1399 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p1-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 1,
+  "code_matiere": "0795",
+  "duree_epreuve": "1h30",
+  "introduction_markdown": "GENERAL CERTIFICATE OF EDUCATION BOARD, General Certificate of Education Examination. 0795 COMPUTER SCIENCE 1, ADVANCED LEVEL, JUNE 2023. Multiple choice question paper. Time allowed: one and a half hours (1h 30 minutes). Mobile phones are NOT allowed in the examination room. Answer ALL the 50 questions in this examination. All questions carry equal marks. Each question has FOUR suggested answers: A, B, C and D. Decide which answer is correct and mark only one answer for each question on the answer sheet with a soft HB pencil (if more than one answer is marked, the question scores zero). Avoid spending too much time on any one question: if you find a question difficult, move on and come back to it later. Do all rough work in the booklet.",
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "regles_choix": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner) avec filigranes ; aucun corrigé officiel : toutes les clés sont déduites. Calculs et traces d'exécution (hexadécimal, addition en complément à un, passe de tri à bulles, boucle while, passage de paramètres, nombre de puces RAM, tables de vérité de la question 7) recalculés par un script Python.",
+    "Aucun code C ou Pascal n'est écrit dans ce paper (QCM) ; le pseudocode des questions 40 et 48 a été simulé en Python. Rien n'a donc été compilé.",
+    "Question 7 : les barres de négation des options ont été lues sur le scan (A : NON(A+B) ET NON(A.B) ; B : NON A ET NON B OU NON(A.B) ; C : NON(NON A OU NON B OU NON A ET B) ; D : NON(A.B OU NON(A.B))). Avec cette lecture, seule A reproduit la table.",
+    "Question 20 : l'option C est coupée au bord de la page (« Twisted pair (copper wires) and mod ») ; le texte est recopié tel qu'imprimé. La clé B reste certaine (seule option avec deux supports de transmission).",
+    "Clés reposant sur un jugement de cours (non sur un calcul), à relire par un enseignant : Q9 (D, par élimination : une inondation est un risque physique, pas une faille de sécurité), Q14 (A, « hold and wait » : protocole de prévention de l'interblocage où le processus demande toutes ses ressources avant de démarrer), Q18 (B, les cinq composantes matériel, programmes, information, personnes, procédures ; C avec « networks » est défendable), Q22 (C, réduction des coûts), Q31 (A, N:3 selon la convention driver : vehicle type), Q38 (B, la description est celle d'un tri par échange proche du tri par sélection), Q45 (B, documentation).",
+    "Les questions 24 et 50 sont la même question avec 2048 puis 1024 octets : ce n'est pas une erreur de transcription.",
+    "Aucune figure ni aucun schéma dans ce sujet : la table de vérité de la question 7 et les pseudocodes des questions 40 et 48 sont transcrits en Markdown (table et bloc de code).",
+    "Converties en questions ouvertes par le relecteur (clé ou options discutables) : 2, 10, 21, 23, 25, 35, 41. Q10 (défaut d'impression) : l'addition en complément à un de 011 111 101 et 110 110 111 donne 010 110 101 (253 + (-72) = 181), absent des quatre options (310, 54, 116, 117 en décimal) ; D serait juste avec un second opérande 101 110 111 (probable erreur d'impression). Q41 (défaut d'impression) : 16 chiffres hexadécimaux = 64 bits, donc 2^64 adresses, et les options A (2^64) et C (4^32) sont égales. Q21 : le verbe avant « more than one call » est illisible (« unven... ») ; la technique décrite est le multiplexage, absent des options (D, demultiplexing, est l'opération inverse). Q2, Q23, Q25, Q35 : plusieurs options défendables, aucune clé imprimée (Q2 message, signal ou interruption ; Q23 exploratory programming ou prototype refinement ; Q25 options A et B ; Q35 Prolog ou C++) ; la réponse la plus probable figure dans le corrigé."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "What is the equivalent in hexadecimal representation of the decimal number 973?",
+      "corrige_markdown": "Divide by 16 repeatedly. $973 = 3\\times 256 + 205$ and $205 = 12\\times 16 + 13$, so the hexadecimal digits are $3$, $12 = \\mathrm{C}$ and $13 = \\mathrm{D}$.\n\n$973_{10} = 3\\mathrm{CD}_{16}$. Check: $3\\times 256 + 12\\times 16 + 13 = 768 + 192 + 13 = 973$.\n\nOption B (3DC) swaps the last two digits and equals $988$; options A and C start with 4 and are too large ($4\\mathrm{BC}_{16} = 1212$). **Answer: D.**",
+      "themes": [
+        "number systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "4BC"
+        },
+        {
+          "lettre": "b",
+          "texte": "3DC"
+        },
+        {
+          "lettre": "c",
+          "texte": "4CB"
+        },
+        {
+          "lettre": "d",
+          "texte": "3CD"
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Machines A and B execute independently. However, B sometimes asks A to stop and attend to certain concerns once it reaches a convenient execution point. What is the best option for machine B to use on A?\n\n*Options as printed:* A) Send a signal to machine A.   B) Send a message to machine A.   C) Interrupt machine A.   D) Poll machine A.",
+      "corrige_markdown": "The key phrase is \"once it reaches a convenient execution point\": A must not be forced to stop at once, it deals with the request at a moment of its own choosing. The mechanism that fits best is a **message** that A reads when it is ready (most likely intended answer: B, send a message to machine A).\n\n- A signal (A) is an asynchronous notification delivered to the process whatever it is doing at that moment.\n- An interrupt (C) forces the receiving machine to suspend its current work immediately (after the current instruction) and to run a handler.\n- Polling (D) means that B repeatedly examines the state of A; it does not make A stop.\n\nSignals and interrupts can also be defended (an interrupt is only serviced between two instructions, a convenient point), so the printed options are not mutually exclusive and the question is left open for self-assessment.\n\n\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "concurrent processes"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "What is the total addressable lines for a 2M by 16 memory?",
+      "corrige_markdown": "A memory of \"2M by 16\" has $2\\mathrm{M}$ locations (words), each 16 bits wide. With $1\\mathrm{M} = 2^{20}$:\n\n$2\\mathrm{M} = 2\\times 2^{20} = 2^{21}$ locations.\n\nAn address bus with $n$ lines selects $2^n$ locations, so $2^n = 2^{21}$ gives $n = 21$ address lines. The 16 is the width of the data bus (16 data lines), not the number of address lines. Option A (20) forgets the factor 2 in $2\\mathrm{M}$. **Answer: B.**",
+      "themes": [
+        "memory organisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "20."
+        },
+        {
+          "lettre": "b",
+          "texte": "21."
+        },
+        {
+          "lettre": "c",
+          "texte": "22."
+        },
+        {
+          "lettre": "d",
+          "texte": "32."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "The logic gate that obtains a similar operation as the sum in the half adder is?",
+      "corrige_markdown": "A half adder adds two bits $A$ and $B$ and produces a sum bit $S$ and a carry bit $C$:\n\n| $A$ | $B$ | $S$ | $C$ |\n|---|---|---|---|\n| 0 | 0 | 0 | 0 |\n| 0 | 1 | 1 | 0 |\n| 1 | 0 | 1 | 0 |\n| 1 | 1 | 0 | 1 |\n\nThe sum column is 1 exactly when the inputs differ, which is the exclusive-OR function: $S = A \\oplus B$ (the carry is $C = A\\cdot B$, an AND gate). NOR and XNOR give 1 for $(0,0)$, NAND gives 1 for $(0,0)$ and $(0,1)$, so none of them matches the sum. **Answer: B.**",
+      "themes": [
+        "boolean algebra",
+        "digital logic circuits"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "NOR."
+        },
+        {
+          "lettre": "b",
+          "texte": "XOR."
+        },
+        {
+          "lettre": "c",
+          "texte": "XNOR."
+        },
+        {
+          "lettre": "d",
+          "texte": "NAND."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "It is an advantage of using two's complement:",
+      "corrige_markdown": "In two's complement the negative of a number $B$ is obtained by inverting its bits and adding 1. A subtraction is then performed as an addition: $A - B = A + (-B)$. The same binary adder therefore serves for both operations, so no separate subtractor circuit is needed and the hardware is simpler and cheaper.\n\nOption B states exactly this. Options A and C reverse the idea (addition or subtraction through hardware meant for subtraction), and option D does not give any advantage. **Answer: B.**",
+      "themes": [
+        "data representation",
+        "binary arithmetic"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Addition can be done using hardware meant for subtraction operations."
+        },
+        {
+          "lettre": "b",
+          "texte": "Addition and subtraction can be done using hardware meant for addition operations."
+        },
+        {
+          "lettre": "c",
+          "texte": "Addition and subtraction can be done using hardware meant for subtraction operations."
+        },
+        {
+          "lettre": "d",
+          "texte": "Subtraction can be done using hardware meant for subtraction operations."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "A computer's type, processor and operating system define its ...",
+      "corrige_markdown": "The combination of the hardware type (for example a desktop or a laptop), the processor family (for example x86 or ARM) and the operating system defines the **platform** on which software runs. Software is written or compiled for a platform, which is why a program built for one platform may not run on another. Brand, size and speed describe the machine but do not define the environment in which programs execute. **Answer: C.**",
+      "themes": [
+        "computer systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Brand."
+        },
+        {
+          "lettre": "b",
+          "texte": "Size."
+        },
+        {
+          "lettre": "c",
+          "texte": "Platform."
+        },
+        {
+          "lettre": "d",
+          "texte": "Speed."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Which of the following corresponds to the truth table below?\n\n| $A$ | $B$ | $R$ |\n|---|---|---|\n| F | F | T |\n| F | T | F |\n| T | F | F |\n| T | T | F |",
+      "corrige_markdown": "$R$ is true only when both $A$ and $B$ are false, so $R = \\overline{A+B}$ (NOR). Evaluate each option for the four rows $(A,B) = (F,F), (F,T), (T,F), (T,T)$:\n\n| Option | $(F,F)$ | $(F,T)$ | $(T,F)$ | $(T,T)$ |\n|---|---|---|---|---|\n| A: $\\overline{A+B}\\cdot\\overline{A\\cdot B}$ | T | F | F | F |\n| B: $\\overline{A}\\cdot\\overline{B}+\\overline{A\\cdot B}$ | T | T | T | F |\n| C: $\\overline{\\overline{A}+\\overline{B}+\\overline{A}\\cdot B}$ | F | F | F | T |\n| D: $\\overline{A\\cdot B+\\overline{A\\cdot B}}$ | F | F | F | F |\n\nOnly option A reproduces the column $R$ = T, F, F, F (it is NOR AND NAND, and NOR already implies NAND, so it simplifies to $\\overline{A+B}$). Option B is the NAND function in disguise, C reduces to $A\\cdot B$ and D is always false because $X+\\overline{X}=1$. **Answer: A.**",
+      "themes": [
+        "boolean algebra",
+        "digital logic circuits"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "$\\overline{A+B}\\cdot\\overline{A\\cdot B}$"
+        },
+        {
+          "lettre": "b",
+          "texte": "$\\overline{A}\\cdot\\overline{B}+\\overline{A\\cdot B}$"
+        },
+        {
+          "lettre": "c",
+          "texte": "$\\overline{\\overline{A}+\\overline{B}+\\overline{A}\\cdot B}$"
+        },
+        {
+          "lettre": "d",
+          "texte": "$\\overline{A\\cdot B+\\overline{A\\cdot B}}$"
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "Which of the following best describes machines that must wait for all their data before their instructions could be executed?",
+      "corrige_markdown": "In a **data flow** architecture an instruction is executed as soon as all of its operands (data tokens) have arrived: execution is driven by the availability of data, not by a program counter. The machine therefore has to wait for all the data of an instruction before it can fire it.\n\nIn an instruction flow (von Neumann) architecture the order of execution is set by the program counter; parallel architectures run several instructions at once, and \"programmable\" only says that the machine can be programmed. **Answer: D.**",
+      "themes": [
+        "computer architecture"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Programmable machine architectures."
+        },
+        {
+          "lettre": "b",
+          "texte": "Parallel machine architectures."
+        },
+        {
+          "lettre": "c",
+          "texte": "Instruction flow machine architectures."
+        },
+        {
+          "lettre": "d",
+          "texte": "Data flow machine architectures."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "It is NOT a computer threat linked to loss of security.",
+      "corrige_markdown": "Look for the option that is not a failure of security control.\n\n- A: leaving the doors of a computing lab open allows unauthorised physical access to machines and data.\n- B: failing to notice an encrypted message means that hidden or unauthorised communication goes undetected, a lapse in monitoring.\n- C: an inadequate firewall leaves the network open to intrusion.\n- D: damage to data from river floods is a natural, environmental hazard. It destroys data (loss of availability) but it is not a security breach caused by a person or a program exploiting a weakness; it is handled by disaster recovery and off-site backup.\n\nThe odd one out is D. This answer is reached by elimination; a flood is still a physical risk to data. **Answer: D.**",
+      "themes": [
+        "data security"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Leave doors to a Computing Lab open."
+        },
+        {
+          "lettre": "b",
+          "texte": "Fail to notice an encrypted message."
+        },
+        {
+          "lettre": "c",
+          "texte": "Inadequate firewall in a network system."
+        },
+        {
+          "lettre": "d",
+          "texte": "Damage to data from river floods."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "10",
+      "enonce_markdown": "What is the result of the following one's complement binary arithmetic?\n\n011 111 101 + 110 110 111\n\n*Options as printed:* A) 100 110 110.   B) 000 110 110.   C) 001 110 100.   D) 001 110 101.",
+      "corrige_markdown": "In one's complement a negative number is the bit-by-bit inverse of the positive number, and a carry out of the leftmost bit is added back to the rightmost bit (end-around carry). The operands have 9 bits.\n\n$011\\,111\\,101 = 253$, and $110\\,110\\,111$ is negative: its inverse is $001\\,001\\,000 = 72$, so it represents $-72$.\n\nBinary addition: $011111101 + 110110111 = 1\\,010110100$ (10 bits). Add the end-around carry: $010110100 + 1 = 010\\,110\\,101$.\n\nDecimal check: $253 + (-72) = 181 = 010\\,110\\,101$. **The correct result is $010\\,110\\,101$**, which is not among the four printed options (A is 310, B is 54, C is 116 and D is 117 in decimal). Option D, $001\\,110\\,101$ (117), would be the result if the second operand had been $101\\,110\\,111$ ($-136$), which suggests a misprint in the question.\n\n\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "data representation",
+        "binary arithmetic"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "11",
+      "enonce_markdown": "Processes that are in main memory and are ready and waiting to execute are kept on a list called a(n):",
+      "corrige_markdown": "The operating system keeps several queues. The **ready queue** holds the processes that are in main memory, ready to run and waiting for the CPU. The job queue holds all the processes of the system (including those still on disk waiting to be loaded), the execution queue is not a standard queue (only one process per CPU is running), and \"process queue\" is not a standard term. **Answer: B.**",
+      "themes": [
+        "process scheduling",
+        "operating systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Job queue."
+        },
+        {
+          "lettre": "b",
+          "texte": "Ready queue."
+        },
+        {
+          "lettre": "c",
+          "texte": "Execution queue."
+        },
+        {
+          "lettre": "d",
+          "texte": "Process queue."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "12",
+      "enonce_markdown": "Which of the following is/are true of parallel and distributed computing?",
+      "corrige_markdown": "Statement A is true: in parallel processing many processes run at the same time and may share a common main memory, hard disk or processor communication bus (tightly coupled). Statement B is true: in distributed processing many processes also run at the same time, but on separate computers that do not share main memory, disk or bus and communicate through a network (loosely coupled).\n\nBoth statements are correct, so the answer is \"all of the above\". **Answer: C.**",
+      "themes": [
+        "parallel and distributed computing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "In parallel processing, many processes are executed at the same time, they may share a common main memory, hard disk or processor communication bus."
+        },
+        {
+          "lettre": "b",
+          "texte": "In distributed processing, many processes are executed at the same time but they cannot share a common main memory, hard drive and processor communication bus."
+        },
+        {
+          "lettre": "c",
+          "texte": "All of the above."
+        },
+        {
+          "lettre": "d",
+          "texte": "None of the above."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "13",
+      "enonce_markdown": "In the priority scheduling algorithm:",
+      "corrige_markdown": "Priority scheduling gives the CPU to the ready process that has the **highest priority**. Processes of equal priority are served in first-come first-served order, and a low-priority process may wait indefinitely (starvation), a problem that aging solves by raising the priority of waiting processes. Options B, C and D contradict this definition. **Answer: A.**",
+      "themes": [
+        "process scheduling",
+        "operating systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "A CPU is allocated to the process with the highest priority."
+        },
+        {
+          "lettre": "b",
+          "texte": "A CPU is allocated to the process with the lowest priority."
+        },
+        {
+          "lettre": "c",
+          "texte": "A CPU is allocated to processes with equal priorities."
+        },
+        {
+          "lettre": "d",
+          "texte": "A CPU is not allocated to any scheduled processes."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "14",
+      "enonce_markdown": "Before proceeding with its execution, each process must acquire all the resources it needs. This is described as:",
+      "corrige_markdown": "One protocol for preventing deadlock requires each process to request and be allocated all its resources before it begins execution. It is described by the **hold and wait** condition: a process may not hold some resources while waiting for others, so it takes everything at once. The other terms are different notions: non pre-emption means that resources cannot be taken away from a process, circular wait is a cycle of processes each waiting for a resource held by the next, and starvation is an indefinite wait for a resource.\n\nThe wording of option A is the name of the condition that this protocol is designed to prevent, and it is the only option related to the description. **Answer: A.**",
+      "themes": [
+        "deadlock",
+        "operating systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Hold and wait."
+        },
+        {
+          "lettre": "b",
+          "texte": "Non pre-emption."
+        },
+        {
+          "lettre": "c",
+          "texte": "Circular wait."
+        },
+        {
+          "lettre": "d",
+          "texte": "Starvation."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "15",
+      "enonce_markdown": "A technique of temporarily removing in-active programs from the memory of a computer system is:",
+      "corrige_markdown": "**Swapping** moves an inactive process out of main memory to a backing store (disk) and brings it back later when it must run, which frees memory for active programs. Spooling buffers input and output on disk, a semaphore is a synchronisation variable, and the scheduler is the module that chooses the next process to run. **Answer: A.**",
+      "themes": [
+        "memory management",
+        "operating systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Swapping."
+        },
+        {
+          "lettre": "b",
+          "texte": "Spooling."
+        },
+        {
+          "lettre": "c",
+          "texte": "Semaphore."
+        },
+        {
+          "lettre": "d",
+          "texte": "Scheduler."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "16",
+      "enonce_markdown": "A problem encountered in multitasking when the process is perpetually denied necessary resources is:",
+      "corrige_markdown": "A process that is perpetually denied the resources it needs (for example because higher-priority processes always get them first) suffers from **starvation**. Deadlock is a mutual blocking of several processes, each waiting for a resource held by another, and it does not mean that one process is perpetually passed over. Priority inversion is a different scheduling anomaly, and aging is the remedy for starvation, not the problem. **Answer: A.**",
+      "themes": [
+        "process scheduling",
+        "deadlock"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Starvation."
+        },
+        {
+          "lettre": "b",
+          "texte": "Deadlock."
+        },
+        {
+          "lettre": "c",
+          "texte": "Inversion."
+        },
+        {
+          "lettre": "d",
+          "texte": "Aging."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "17",
+      "enonce_markdown": "One of the following is NOT a memory performance parameter.",
+      "corrige_markdown": "The standard measures of memory performance are **access time** (time from a request to the data being available), **cycle time** (minimum time between two successive accesses) and **transfer rate** (amount of data moved per second). \"Time location\" is not a memory performance parameter. **Answer: D.**",
+      "themes": [
+        "memory organisation",
+        "computer architecture"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Access time."
+        },
+        {
+          "lettre": "b",
+          "texte": "Cycle time."
+        },
+        {
+          "lettre": "c",
+          "texte": "Transfer rate."
+        },
+        {
+          "lettre": "d",
+          "texte": "Time location."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "18",
+      "enonce_markdown": "Computer systems are comprised of ____.",
+      "corrige_markdown": "A computer system is made up of five components: the **hardware**, the **programs** (software), the **information** (data) processed, the **people** who use or run it and the **procedures** (rules and instructions) that govern its use. Option B lists exactly these five.\n\nOption A replaces information by processors (a part of hardware), option C replaces procedures by networks, and option D omits the information. **Answer: B.**",
+      "themes": [
+        "computer systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Hardware, programs, processors, procedures and people."
+        },
+        {
+          "lettre": "b",
+          "texte": "Hardware, programs, information, people and procedures."
+        },
+        {
+          "lettre": "c",
+          "texte": "Hardware, programs, information, people and networks."
+        },
+        {
+          "lettre": "d",
+          "texte": "Hardware, software, procedures, networks and people."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "19",
+      "enonce_markdown": "Which of the following layers has main functions as data formats, data encryption/decryption, data compression/decompression?",
+      "corrige_markdown": "In the OSI reference model the **presentation layer** (layer 6) deals with the representation of data: translation between data formats and character codes, encryption and decryption, and compression and decompression. The session layer manages dialogues between applications, and the transport layer provides end-to-end delivery, segmentation and error and flow control. **Answer: C.**",
+      "themes": [
+        "network protocols",
+        "computer networks"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Session Layer."
+        },
+        {
+          "lettre": "b",
+          "texte": "Transport Layer."
+        },
+        {
+          "lettre": "c",
+          "texte": "Presentation Layer."
+        },
+        {
+          "lettre": "d",
+          "texte": "None of the above."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "20",
+      "enonce_markdown": "Which of the following are media used in data communication networks?",
+      "corrige_markdown": "A transmission **medium** is the physical path that carries the signal: twisted pair (copper wires), coaxial cable, optical fibre, and wireless channels such as microwave. Bridges, routers and repeaters (options A and D) are networking devices, not media. Option C is cut off at the edge of the printed page (\"... and mod\", probably modems), and a modem is also a device. Only option B lists two media. **Answer: B.**",
+      "themes": [
+        "data communication",
+        "computer networks"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Bridges and routers."
+        },
+        {
+          "lettre": "b",
+          "texte": "Twisted pair (copper wires) and microwave channels."
+        },
+        {
+          "lettre": "c",
+          "texte": "Twisted pair (copper wires) and mod"
+        },
+        {
+          "lettre": "d",
+          "texte": "Microwave channels and repeaters."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "21",
+      "enonce_markdown": "____ is a technique that is used to unven[illegible] more than one call from a single line.\n\n*Options as printed:* A) Digital transmission.   B) Infrared transmission.   C) Digitizing.   D) Demultiplexing.",
+      "corrige_markdown": "A technique that allows more than one call (signal) to be carried on a single line is **multiplexing** (time-division or frequency-division). The word before \"more than one call\" is unreadable on the scan, and the name of the technique does not appear among the options.\n\n- **Demultiplexing** (D) is the reverse operation: at the receiving end it separates the combined signal back into the individual calls. It is probably what the examiners meant as the closest option, but strictly it is not the technique that puts several calls on one line.\n- Digital transmission (A) and infrared transmission (B) describe a signal type or a medium.\n- Digitizing (C) means converting an analogue signal into a digital one.\n\nBecause the correct term is missing and the stem is damaged, the question is left open for self-assessment.\n\n\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "data communication"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "22",
+      "enonce_markdown": "When a bank offers web self-services to its customers in order to answer their questions, the primary outcome expected is to:",
+      "corrige_markdown": "With web self-service the customers find answers and carry out simple operations themselves, which reduces the number of enquiries handled by bank staff, branch visits and telephone calls. The primary outcome expected is therefore to **reduce costs**. Managing risks and creating a new opportunity are not the aim of a question-answering service, and \"reduce value\" would be harmful. **Answer: C.**",
+      "themes": [
+        "information systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Reduce value."
+        },
+        {
+          "lettre": "b",
+          "texte": "Manage risks."
+        },
+        {
+          "lettre": "c",
+          "texte": "Reduce costs."
+        },
+        {
+          "lettre": "d",
+          "texte": "Create a new opportunity."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "23",
+      "enonce_markdown": "A trial version of a program is first implemented, and the version then modified into the desired target program. This approach to program development is best called:\n\n*Options as printed:* A) Exploratory programming.   B) Top-down design.   C) Stepwise refinement.   D) Prototype refinement.",
+      "corrige_markdown": "The description (a first trial version that is evolved into the final program) corresponds to **prototyping**: option D, \"prototype refinement\", repeats the wording of the description, and option A, exploratory programming, also describes starting with a rough version and evolving it by trial. Top-down design and stepwise refinement (B and C) are different: they break a problem into sub-problems and refine each module of a design, they do not start from a trial version.\n\nBecause options A and D can both be defended and no printed key exists, the question is left open for self-assessment (most likely intended answer: D).\n\n\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "software engineering",
+        "program development"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "24",
+      "enonce_markdown": "How many 128 x 8 RAM chips are needed to provide a memory capacity of 2048 bytes?",
+      "corrige_markdown": "Each chip stores $128\\times 8$ bits $= 128$ bytes. The number of chips is $\\dfrac{2048}{128} = 16$. (Eight bits are already provided by each chip, so the chips are not combined in width.) **Answer: A.**",
+      "themes": [
+        "memory organisation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "16."
+        },
+        {
+          "lettre": "b",
+          "texte": "8."
+        },
+        {
+          "lettre": "c",
+          "texte": "24."
+        },
+        {
+          "lettre": "d",
+          "texte": "32."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "25",
+      "enonce_markdown": "A systems administrator ensures that:\n\n*Options as printed:* A) A system, such as a database or network, is configured and managed for correct use.   B) A computer system, such as those under an operating system, is configured and managed for correct use.   C) End-users have their machines configured and managed for correct use.   D) Technical staff can configure and manage their systems for correct use.",
+      "corrige_markdown": "A systems administrator is responsible for the configuration, upkeep and reliable operation of computer systems. Options A and B both describe this (the first for a system such as a database or a network, the second for a computer system under an operating system), and the options are not clearly separated: a database administrator and a network administrator also ensure that a system is configured and managed correctly. Options C and D describe end-users and technical staff configuring their own machines, which is not the role of the administrator.\n\nBecause A and B can both be defended and no printed key exists, the question is left open for self-assessment (most likely intended answer: B).\n\n\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "operating systems",
+        "system administration"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "26",
+      "enonce_markdown": "The attribute, name, could be structured as an attribute consisting of first name, middle initial and last name. This type of attribute is called a:",
+      "corrige_markdown": "An attribute that can be divided into smaller sub-parts, each with its own meaning (first name, middle initial, last name), is a **composite attribute**. A simple attribute cannot be divided, a multivalued attribute holds several values for one entity (for example several phone numbers), and \"distributed attribute\" is not an ER term. **Answer: B.**",
+      "themes": [
+        "relational databases",
+        "entity relationship modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Simple attribute."
+        },
+        {
+          "lettre": "b",
+          "texte": "Composite attribute."
+        },
+        {
+          "lettre": "c",
+          "texte": "Distributed attribute."
+        },
+        {
+          "lettre": "d",
+          "texte": "Multivalued attribute."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "27",
+      "enonce_markdown": "It describes instructions to build a database, instructions to manipulate data in a database, and rules and guidelines that ensure that the data used is accurate and correctly reflects the organisation. It must be:",
+      "corrige_markdown": "A **data model** is the collection of concepts that describes the structure of a database (instructions to build it: data definition), the operations to retrieve and update data (manipulation) and the integrity constraints (rules that keep the data accurate and consistent with the organisation).\n\nA data dictionary only stores metadata about the data items, an E-R model is one particular conceptual model, and the relational model is one particular data model; the description applies to the general notion. **Answer: A.**",
+      "themes": [
+        "relational databases",
+        "data models"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "A data model."
+        },
+        {
+          "lettre": "b",
+          "texte": "A data dictionary."
+        },
+        {
+          "lettre": "c",
+          "texte": "An E-R model."
+        },
+        {
+          "lettre": "d",
+          "texte": "A relational model."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "28",
+      "enonce_markdown": "Ndive Mbua has to recommend a fourth generation language or software tool to Ngwa Neba who needs to present very detailed company accounting reports to his boss. What should Ndive Mbua suggest?",
+      "corrige_markdown": "Detailed accounting reports (formatted listings with totals and sub-totals taken from a database) are produced with a **database report generator**, a fourth generation tool that lets the user define the layout and calculations of a report without writing a procedural program. A forms generator builds data-entry screens, presentation graphics software builds slides and a word processor does not extract and summarise data. **Answer: A.**",
+      "themes": [
+        "fourth generation languages",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "A database report generator."
+        },
+        {
+          "lettre": "b",
+          "texte": "A database forms generator."
+        },
+        {
+          "lettre": "c",
+          "texte": "A presentation graphics software."
+        },
+        {
+          "lettre": "d",
+          "texte": "A word processing software."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "29",
+      "enonce_markdown": "The attribute AGE is calculated from DATE_OF_BIRTH. The attribute AGE is:",
+      "corrige_markdown": "An attribute whose value can be computed from another stored attribute (here the age from the date of birth and today's date) is a **derived attribute**. It need not be stored. A single-valued attribute has one value per entity, a multivalued attribute has several, and a composite attribute is made of sub-parts. **Answer: C.**",
+      "themes": [
+        "relational databases",
+        "entity relationship modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Single valued."
+        },
+        {
+          "lettre": "b",
+          "texte": "Multivalued."
+        },
+        {
+          "lettre": "c",
+          "texte": "Derived."
+        },
+        {
+          "lettre": "d",
+          "texte": "Composite."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "30",
+      "enonce_markdown": "Relations student (ID, Name, Subject code, Mark) and subject (Subject code, Subject name, Syllabus) hold details of students and subjects. Which attribute could serve as both a primary key and a foreign key?",
+      "corrige_markdown": "A student sits several subjects, so the key of student must include both ID and Subject code (a composite primary key). Subject code is also the primary key of subject, so in student it is at the same time part of the primary key and a foreign key referencing subject. ID is only in student, and Subject name and Name are not keys of any relation. **Answer: B (Subject code).**",
+      "themes": [
+        "relational databases",
+        "keys and relationships"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "ID."
+        },
+        {
+          "lettre": "b",
+          "texte": "Subject code."
+        },
+        {
+          "lettre": "c",
+          "texte": "Subject name."
+        },
+        {
+          "lettre": "d",
+          "texte": "Student name."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "31",
+      "enonce_markdown": "A driver can drive three types of vehicles and a vehicle type can be driven by any qualified driver. The driver-vehicle type relationship is?",
+      "corrige_markdown": "Read the relationship from the driver to the vehicle type. A driver can drive three types, so on the vehicle-type side the cardinality is 3, and a vehicle type can be driven by many (any number $N$) drivers, so on the driver side it is $N$. The relationship is a many-to-many one, written **N:3** (driver : vehicle type). Option B (3:N) would mean three drivers per vehicle type and any number of types per driver, the opposite of the statement. **Answer: A.**",
+      "themes": [
+        "entity relationship modelling",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "N:3."
+        },
+        {
+          "lettre": "b",
+          "texte": "3:N."
+        },
+        {
+          "lettre": "c",
+          "texte": "1:3."
+        },
+        {
+          "lettre": "d",
+          "texte": "3:1."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "32",
+      "enonce_markdown": "Given that the processor is executing a main program that calls a subroutine, after executing the main program up to the CALL instruction, the control will be transferred to the:",
+      "corrige_markdown": "When the CALL instruction is executed, the processor saves the return address (the address of the instruction that follows the CALL) and loads the program counter with the starting address of the subroutine, so control is transferred to the **subroutine address**. After the subroutine ends, a RETURN restores the saved address and the main program continues. **Answer: B.**",
+      "themes": [
+        "computer architecture",
+        "subroutines"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Address of main program."
+        },
+        {
+          "lettre": "b",
+          "texte": "Subroutine address."
+        },
+        {
+          "lettre": "c",
+          "texte": "Address of the CALL instruction."
+        },
+        {
+          "lettre": "d",
+          "texte": "Address of data."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "33",
+      "enonce_markdown": "Using a debugger in order to examine a specific instruction that my program might execute, it is best that I use a:",
+      "corrige_markdown": "A **breakpoint** halts the program when execution reaches a chosen instruction (a line of code), so the programmer can inspect registers and variables at that exact point. A watchpoint halts the program when a chosen variable or memory location changes, which is suited to examining data, not an instruction. Therefore only the breakpoint answers the question. **Answer: A.**",
+      "themes": [
+        "software engineering",
+        "debugging"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Breakpoint."
+        },
+        {
+          "lettre": "b",
+          "texte": "Watchpoint."
+        },
+        {
+          "lettre": "c",
+          "texte": "All of the above."
+        },
+        {
+          "lettre": "d",
+          "texte": "None of the above"
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "34",
+      "enonce_markdown": "Bessem misunderstood the notion of computational complexity as:",
+      "corrige_markdown": "Computational complexity measures the resources that an algorithm needs when the size of its input grows: the **time** a computer needs to execute the program (time complexity, usually counted in basic operations), and the **space** (memory) it needs (space complexity). Options B, C and D are correct descriptions of it. Option A, how much time a human needs to produce the program, is a misunderstanding: it is development effort, not complexity. **Answer: A.**",
+      "themes": [
+        "algorithm complexity"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "How much time a human needs to produce the program."
+        },
+        {
+          "lettre": "b",
+          "texte": "How much time a computer needs to execute the program."
+        },
+        {
+          "lettre": "c",
+          "texte": "How much space a computer needs to execute a program."
+        },
+        {
+          "lettre": "d",
+          "texte": "How many instructions a computer executes for certain types of programs."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "35",
+      "enonce_markdown": "In a programming project, Ngwe designed components called 'widgets' that investigated components called 'wadgets' and drew conclusions about their properties. Which programming language best matches the programming paradigm Ngwe should use?\n\n*Options as printed:* A) Fortran.   B) Prolog.   C) C.   D) C++.",
+      "corrige_markdown": "The question asks which paradigm best fits a program whose parts investigate other parts and draw **conclusions** about their properties. Drawing conclusions from stated facts and rules is the style of **logic (declarative) programming**, for which Prolog is the language (most likely intended answer: B). Fortran and C are procedural (imperative) languages, in which the programmer writes the sequence of steps.\n\nHowever, a program designed as interacting \"components\" can also describe object-oriented design, for which C++ would be the language (D). The stem is too vague to separate the two reliably, so the question is left open for self-assessment.\n\n\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "programming paradigms"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "36",
+      "enonce_markdown": "A mathematical model with a collection of operations defined over its values is called:",
+      "corrige_markdown": "An **abstract data type** (ADT) is a mathematical model of a data structure defined by a set of values and the collection of operations that may be applied to them, without saying how they are implemented (for example a stack with push, pop and peek). A data structure is the concrete implementation, primitive data are the built-in types, and an algorithm is a sequence of steps. **Answer: B.**",
+      "themes": [
+        "data structures",
+        "abstract data types"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Data Structure."
+        },
+        {
+          "lettre": "b",
+          "texte": "Abstract Data Type."
+        },
+        {
+          "lettre": "c",
+          "texte": "Primitive Data"
+        },
+        {
+          "lettre": "d",
+          "texte": "Algorithm."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "37",
+      "enonce_markdown": "Which of the following represents the result of a first pass during bubble sort? Assume passes are from left to right, sorting is in ascending order, and the initial data to sort is: 25, 10, 30, 35, 25, 20.",
+      "corrige_markdown": "In one bubble-sort pass, adjacent pairs are compared from left to right and swapped when the left one is larger:\n\n| Comparison | Action | List after |\n|---|---|---|\n| 25, 10 | swap | 10, 25, 30, 35, 25, 20 |\n| 25, 30 | none | 10, 25, 30, 35, 25, 20 |\n| 30, 35 | none | 10, 25, 30, 35, 25, 20 |\n| 35, 25 | swap | 10, 25, 30, 25, 35, 20 |\n| 35, 20 | swap | 10, 25, 30, 25, 20, 35 |\n\nThe largest value, 35, has bubbled to the end. The result is 10, 25, 30, 25, 20, 35 (a simulation in Python gives the same list). Option A stops after one swap, and options C and D show more sorting than one pass can do. **Answer: B.**",
+      "themes": [
+        "sorting algorithms",
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "10, 25, 30, 35, 25, 20."
+        },
+        {
+          "lettre": "b",
+          "texte": "10, 25, 30, 25, 20, 35."
+        },
+        {
+          "lettre": "c",
+          "texte": "10, 25, 25, 20, 30, 35."
+        },
+        {
+          "lettre": "d",
+          "texte": "10, 20, 25, 25, 30, 35."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "38",
+      "enonce_markdown": "Given a sort which searches through a list to exchange the first element with any element less than it and then repeats with a new first element at subsequent positions is called:",
+      "corrige_markdown": "The method scans the unsorted part of the list for elements smaller than the first one and swaps it with them, then repeats the process from the next position. At each position one smallest element is put in place, which is the principle of **selection sort** (exchange of the first element of the unsorted part with the smallest element found).\n\nInsertion sort inserts each element into a sorted prefix by shifting, bubble sort only compares and swaps adjacent elements, and quick sort partitions the list around a pivot. **Answer: B.**",
+      "themes": [
+        "sorting algorithms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Insertion sort."
+        },
+        {
+          "lettre": "b",
+          "texte": "Selection sort."
+        },
+        {
+          "lettre": "c",
+          "texte": "Bubble sort."
+        },
+        {
+          "lettre": "d",
+          "texte": "Quick sort."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "39",
+      "enonce_markdown": "One of the following is NOT true about high level languages:",
+      "corrige_markdown": "High-level languages are easier to learn and to write (A and D), and they are independent of the machine, so a program can be translated for different platforms (B). They are translated into machine code by a compiler or an interpreter, so the execution of their code is generally **slower** than carefully written low-level (assembly or machine) code, and is not faster. Statement C is false. **Answer: C.**",
+      "themes": [
+        "programming languages",
+        "translators and compilers"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "They are relatively easier to learn."
+        },
+        {
+          "lettre": "b",
+          "texte": "Programs are platform independent."
+        },
+        {
+          "lettre": "c",
+          "texte": "Execution of code is faster."
+        },
+        {
+          "lettre": "d",
+          "texte": "It is easier and faster to write programs."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "40",
+      "enonce_markdown": "What is the value of x at the end of the algorithm in pseudocode?\n\n```\nx <- 6;\ny <- 5;\nwhile x < 16 do\n    x <- x + 2\nendwhile\nx <- x + y;\n```",
+      "corrige_markdown": "Trace the loop. The loop continues while $x < 16$:\n\n| Iteration | $x$ before | Test $x<16$ | $x$ after |\n|---|---|---|---|\n| 1 | 6 | true | 8 |\n| 2 | 8 | true | 10 |\n| 3 | 10 | true | 12 |\n| 4 | 12 | true | 14 |\n| 5 | 14 | true | 16 |\n| test | 16 | false | loop ends |\n\nAfter the loop $x = 16$. Then $x \\leftarrow x + y = 16 + 5 = 21$ (a Python simulation prints 21). Option C (16) forgets the last assignment. **Answer: D.**",
+      "themes": [
+        "algorithm tracing",
+        "pseudocode algorithms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "11."
+        },
+        {
+          "lettre": "b",
+          "texte": "13."
+        },
+        {
+          "lettre": "c",
+          "texte": "16."
+        },
+        {
+          "lettre": "d",
+          "texte": "21."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "41",
+      "enonce_markdown": "A computer word has 16 hexadecimal digits of data. How many distinct memory addresses can its processor access?\n\n*Options as printed:* A) $2^{64}$.   B) $8^{32}$.   C) $4^{32}$.   D) 64.",
+      "corrige_markdown": "A hexadecimal digit is 4 bits, so a word of 16 hexadecimal digits is $16\\times 4 = 64$ bits. If addresses are as wide as the word, the processor can form $2^{64}$ distinct addresses.\n\nNow compare the options: $2^{64}$ is option A, and option C is $4^{32} = (2^2)^{32} = 2^{64}$, which is **the same number**. Option B is $8^{32} = 2^{96}$ and option D is $64$. So two printed options (A and C) have the correct value, and the question cannot be marked with a single letter. The value is $2^{64} = 4^{32} \\approx 1.8\\times 10^{19}$ addresses.\n\n\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "memory organisation",
+        "data representation"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "42",
+      "enonce_markdown": "Structured charts are a product of:",
+      "corrige_markdown": "A structure chart shows the hierarchy of the modules of a program and the data passed between them. It is a product of the **design** phase of the software life cycle (structured design), after requirements gathering and analysis have specified what the system must do, and before coding. **Answer: C.**",
+      "themes": [
+        "software engineering",
+        "software design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Requirements gathering."
+        },
+        {
+          "lettre": "b",
+          "texte": "Requirements analysis."
+        },
+        {
+          "lettre": "c",
+          "texte": "Design."
+        },
+        {
+          "lettre": "d",
+          "texte": "Coding."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "43",
+      "enonce_markdown": "In parallel algorithm design, when two or more processes have sufficient resources to execute but cannot do so because they are waiting for each other to proceed, the situation is known as a:",
+      "corrige_markdown": "Processes that each wait for another one to proceed, so that none of them ever runs, are in **deadlock**. Synchronisation and concurrency are normal and desirable features of parallel programs, and livelock is the situation in which processes keep changing state in response to one another without making progress, which is not the same as waiting. **Answer: C.**",
+      "themes": [
+        "parallel and distributed computing",
+        "deadlock"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "synchronisation."
+        },
+        {
+          "lettre": "b",
+          "texte": "concurrency."
+        },
+        {
+          "lettre": "c",
+          "texte": "deadlock."
+        },
+        {
+          "lettre": "d",
+          "texte": "lovelock."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "44",
+      "enonce_markdown": "Software deteriorates rather than wears out because:",
+      "corrige_markdown": "Hardware wears out through physical ageing, whereas software does not wear out but **deteriorates** over time: every change request (correction, enhancement or adaptation) can introduce new errors in the interaction between components, so the failure rate rises after a series of modifications. Exposure to hostile environments is a hardware cause, using software often does not create defects, and software has no spare parts (the idea in D is the reverse of the real problem). **Answer: C.**",
+      "themes": [
+        "software engineering",
+        "software maintenance"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Software suffers from exposure to hostile environments."
+        },
+        {
+          "lettre": "b",
+          "texte": "Defects are more likely to arise after software has been used often."
+        },
+        {
+          "lettre": "c",
+          "texte": "Multiple change requests introduce errors in component interactions."
+        },
+        {
+          "lettre": "d",
+          "texte": "Software spare parts become harder to order."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "45",
+      "enonce_markdown": "In software development, writing information into a program code intended for humans to better understand how a program works, how it may be used or why it works is known as:",
+      "corrige_markdown": "Information written for human readers (explaining what the program does, how to use it and why it works) is **documentation**; when it is written inside the program code it is the internal documentation (comments). Implementation and programming are the phases in which the program is built, and \"program commentary\" is not an established term, so documentation is the best answer. **Answer: B.**",
+      "themes": [
+        "software engineering",
+        "software documentation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Program commentary."
+        },
+        {
+          "lettre": "b",
+          "texte": "Documentation."
+        },
+        {
+          "lettre": "c",
+          "texte": "Implementation."
+        },
+        {
+          "lettre": "d",
+          "texte": "Programming."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "46",
+      "enonce_markdown": "Which of these object-oriented programming features least supports software reuse?",
+      "corrige_markdown": "Reuse in object-oriented programming relies on **classes** (a class is written once and instantiated many times), **inheritance** (a new class reuses and extends an existing one) and **polymorphism** (the same code works with objects of different classes). **Messages** are the means by which objects communicate (method calls), and they do not in themselves make code reusable. **Answer: D.**",
+      "themes": [
+        "object-oriented programming",
+        "software engineering"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Polymorphism."
+        },
+        {
+          "lettre": "b",
+          "texte": "Inheritance."
+        },
+        {
+          "lettre": "c",
+          "texte": "Classes."
+        },
+        {
+          "lettre": "d",
+          "texte": "Messages."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "47",
+      "enonce_markdown": "A change-over method in which the new system is put in place incrementally is called:",
+      "corrige_markdown": "In **phased** (phase) change-over the new system is introduced in stages, one module or function at a time, until it has replaced the old one. In parallel change-over the old and new systems run together, in direct change-over the old system is replaced at once, and in pilot change-over the new system is first tried in one part of the organisation (one branch). **Answer: C.**",
+      "themes": [
+        "software engineering",
+        "system changeover"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Parallel change over."
+        },
+        {
+          "lettre": "b",
+          "texte": "Direct change over."
+        },
+        {
+          "lettre": "c",
+          "texte": "Phase change over."
+        },
+        {
+          "lettre": "d",
+          "texte": "Pilot change over."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "48",
+      "enonce_markdown": "Parameters x and y of procedure h below are respectively passed by reference and by value. After the call h(a,b), what values do variables a and b hold?\n\n```\nproc h(x,y) =\n    x <- x+y\n    y <- 2*y;\nend\na <- 6;\nb <- 5;\nh(a, b);\n```",
+      "corrige_markdown": "With **pass by reference**, $x$ is another name for the variable $a$, so any change to $x$ changes $a$. With **pass by value**, $y$ is a local copy of $b$ and a change to $y$ does not affect $b$.\n\n| Step | $x$ (is $a$) | $y$ (copy of $b$) | $a$ | $b$ |\n|---|---|---|---|---|\n| call h(a, b) | 6 | 5 | 6 | 5 |\n| $x \\leftarrow x+y$ | 11 | 5 | 11 | 5 |\n| $y \\leftarrow 2y$ | 11 | 10 | 11 | 5 |\n\nAfter the call $a = 11$ and $b = 5$ (a Python simulation of the two passing modes gives the same values). **Answer: B.**",
+      "themes": [
+        "parameter passing",
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "a = 11, b = 10."
+        },
+        {
+          "lettre": "b",
+          "texte": "a = 11, b = 5."
+        },
+        {
+          "lettre": "c",
+          "texte": "a = 6, b = 5."
+        },
+        {
+          "lettre": "d",
+          "texte": "a = 6, b = 10."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "49",
+      "enonce_markdown": "A main technique to make a software package portable is to:",
+      "corrige_markdown": "Portability is the ability to run software on different platforms. The main technique is to **isolate the system-dependent components** (calls to the operating system, hardware access, file formats) in a small, well-defined layer, so that only this layer has to be rewritten for a new platform. Increasing performance does not make software portable, and a platform-independent or dependent platform is not a technique. **Answer: A.**",
+      "themes": [
+        "software engineering",
+        "software portability"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Isolate system dependent components."
+        },
+        {
+          "lettre": "b",
+          "texte": "Increase the overall performance."
+        },
+        {
+          "lettre": "c",
+          "texte": "Have an independent platform for the software."
+        },
+        {
+          "lettre": "d",
+          "texte": "Have a dependent platform for the software."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "50",
+      "enonce_markdown": "How many 128 x 8 RAM chips are needed to provide a memory capacity of 1024 bytes?",
+      "corrige_markdown": "Each chip stores $128\\times 8$ bits $= 128$ bytes, so $\\dfrac{1024}{128} = 8$ chips are needed (the same reasoning as in question 24, with 1024 bytes instead of 2048). **Answer: B.**",
+      "themes": [
+        "memory organisation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "16."
+        },
+        {
+          "lettre": "b",
+          "texte": "8."
+        },
+        {
+          "lettre": "c",
+          "texte": "24."
+        },
+        {
+          "lettre": "d",
+          "texte": "32."
+        }
+      ],
+      "reponse_correcte": "b"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Information and Communication Technologies, Paper 2 (0796), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets.\n\nYou will be marked on your ability to use good English, to organize information clearly and to use specialist vocabulary where appropriate.\n\nIn calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-ict-2020-p2-officiel-cameroun_exercice_5_fig_1.png",
+      "page_source": 3,
+      "type": "schema",
+      "legende": "Fig. 5: digital circuit with inputs A and B, each connected to an OR gate P and to an AND gate; the output of the OR gate is C, the output of the AND gate is D, and C and D are the inputs of a NAND gate R whose output is E.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Question 5 : points imprimés par sous-partie : i = 2 ; ii = 3 ; iii = 4 ; iv = 2 + 4 + 2 = 8 ; total 17 (conforme au sujet).",
+    "Fig. 5 : les sous-questions (i), (ii), (iii) portent sur le circuit et (iv) (projets) est sans rapport avec lui ; le sujet les imprime sous la même question 5. La porte inférieure est étiquetée par une lettre qui ressemble à « O » (probablement « Q ») : la question ne demande que les portes P et R. La porte P est lue comme une porte OR (une seule courbe à l'entrée, pas de double courbe de XOR) et la porte R comme une NAND (bulle de sortie) ; la lecture du schéma scanné est certaine pour R et très probable pour P.",
+    "5(ii)-(iii) : les expressions et la table de vérité ont été recalculées par script Python (E = NOT(A.B), colonne 1, 1, 1, 0).",
+    "Aucun corrigé officiel : les méthodes de contrôle de projet (diagramme de Gantt, chemin critique) sont celles du cours usuel ; d'autres réponses valides existent."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "![fig-1](gce-al-ict-2020-p2-officiel-cameroun_exercice_5_fig_1.png)\n\n(i) From the digital circuit above (Fig. 5), identify the logic gates labeled, P and R. (2 marks)",
+      "corrige_markdown": "Reading the symbols of the circuit (the inputs A and B are each connected both to gate P and to the lower gate):\n\n- **Gate P** has a curved input side and a pointed output side: it is an **OR gate** (output $C$ is 1 when A or B or both are 1).\n- **Gate R** has a flat input side, a rounded output side and a small circle (bubble) at the output: it is a **NAND gate**, i.e. an AND gate followed by a NOT (output $E$ is 0 only when both its inputs $C$ and $D$ are 1).\n\n(The lower gate, labelled with a letter that looks like \"O\" or \"Q\" in the scan, has a flat input side and a rounded output without a bubble: it is an AND gate, giving output $D$.)",
+      "themes": [
+        "ict logic gates and boolean algebra"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Write out the Boolean expression of the outputs C, D and E in terms of inputs A and B. (3 marks)",
+      "corrige_markdown": "Follow the signals from the inputs to each output:\n\n- Gate P (OR): $C = A + B$\n- Lower gate (AND): $D = A \\cdot B$\n- Gate R (NAND) with inputs $C$ and $D$: $E = \\overline{C \\cdot D}$\n\nSubstituting C and D, the output in terms of A and B is\n\n$$\nE = \\overline{(A + B) \\cdot (A \\cdot B)}\n$$\n\nwhich simplifies with the absorption law: $(A + B)\\cdot A \\cdot B = A \\cdot B$ (because whenever $A \\cdot B = 1$, $A + B$ is also 1), so\n\n$$\nE = \\overline{A \\cdot B}\n$$\n\nThe whole circuit therefore behaves like a single NAND gate.",
+      "themes": [
+        "ict logic gates and boolean algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(iii) Construct a truth table for this digital circuit. (4 marks)",
+      "corrige_markdown": "Four combinations of the inputs A and B are possible. We calculate $C = A + B$, $D = A \\cdot B$ and $E = \\overline{C \\cdot D}$ for each of them:\n\n| A | B | C = A + B | D = A . B | C . D | E = NOT (C . D) |\n|---|---|---|---|---|---|\n| 0 | 0 | 0 | 0 | 0 | 1 |\n| 0 | 1 | 1 | 0 | 0 | 1 |\n| 1 | 0 | 1 | 0 | 0 | 1 |\n| 1 | 1 | 1 | 1 | 1 | 0 |\n\nThe column E is 1, 1, 1, 0, which is the truth table of a NAND gate: this confirms the simplification $E = \\overline{A \\cdot B}$.",
+      "themes": [
+        "ict logic gates and boolean algebra"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "(iv) (a) What is a project? (2 marks)\n\n(b) Name and explain TWO methods used in controlling projects. (4 marks)\n\n(c) Explain TWO responsibilities of a project manager. (2 marks)",
+      "corrige_markdown": "**(a) Project (2 marks).** A project is a temporary, planned and organised set of activities, with a definite start and a definite end, undertaken to achieve a specific objective and to produce a unique product, service or result (for example installing a computer network in a school, or developing a new information system), within a given time, budget and level of quality and with limited resources.\n\n**(b) Two methods of controlling projects (4 marks, 2 marks each: name and explanation).**\n\n1. **Gantt chart.** A bar chart in which the tasks of the project are listed down the side and time runs across the top; each task is a bar whose length is its duration and whose position shows its start and finish, and the dependencies between tasks may be shown. The manager compares the planned bars with the work actually done, in order to see which tasks are late and to adjust the schedule and the resources.\n2. **Critical Path Analysis / PERT network (CPM).** The tasks are drawn as a network diagram showing the order in which they must be done and the time of each. The **critical path** is the longest chain of dependent tasks; it fixes the shortest time in which the project can be completed, and any delay on it delays the whole project. The manager concentrates the control on these critical tasks and knows the float (spare time) of the other tasks.\n\n(Other accepted methods: milestones and progress review meetings, budgetary control (comparison of the actual cost with the budget), progress reports and risk management.)\n\n**(c) Two responsibilities of a project manager (2 marks, 1 mark each).** Any two:\n\n- **Planning and scheduling:** defining the objectives and the tasks, estimating the time and cost, and drawing up the schedule of the project.\n- **Managing resources and the budget:** obtaining and allocating the people, equipment and money, and keeping the costs within the budget.\n- **Leading and motivating the team:** assigning tasks, supervising the team members and solving conflicts.\n- **Monitoring progress and reporting:** checking that the work meets the deadlines and the quality standards, and reporting to the client and the management.\n- **Managing risks and changes** and communicating with the stakeholders.",
+      "themes": [
+        "ict project management"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2019-p3-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 3,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics With Statistics, Paper 3 (0770/3), ADVANCED LEVEL, June 2019. Time allowed: THREE HOURS.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae and tables produced by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Electronic calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**(i)** Let $X_1, X_2, \\ldots, X_n$ be a random sample of size $n$ from an infinite population with mean $\\mu$ and variance $\\sigma^2$.",
+  "groupes": [],
+  "points": "13",
+  "figures": [],
+  "incertitudes": [
+    "Question 5 : les points imprimés sont (5, 4, 4) pour 13 au total. Lecture retenue : 5 pour la partie (i) ((a), (b), (c)), puis 4 pour (ii)(a) et 4 pour (ii)(b). Le bloc (i) n'étant pas ventilé par le sujet, 5 est porté par i.a.",
+    "Question 5 (ii)(a) : valeur donnée à 4 décimales (0.9615) ; $\\Phi(5.30)$ est supérieur à 0.9999 (table) et $\\Phi(-1.77) = 0.0384$ ; le calcul exact donne 0.96145. Question 5 (ii)(b) : $n \\ge 43.3$, donc $n = 44$ ($n = 43$ donne 0.9494 < 0.95, $n = 44$ donne 0.9514)."
+  ],
+  "questions": [
+    {
+      "numero": "i.a",
+      "enonce_markdown": "(a) What do you understand by the sample mean $\\bar{X}$?",
+      "corrige_markdown": "The sample mean is the arithmetic mean of the $n$ observations of the sample:\n\n$$\\bar{X} = \\frac{X_1 + X_2 + \\cdots + X_n}{n} = \\frac{1}{n}\\sum_{i=1}^{n} X_i$$\n\nBecause the $X_i$ are random variables (the sample is random), $\\bar{X}$ is itself a random variable: it varies from sample to sample and has its own distribution, the sampling distribution of the mean. It is used as an estimator of the population mean $\\mu$.",
+      "themes": [
+        "sampling and estimation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "i.b",
+      "enonce_markdown": "(b) By calculating $E(\\bar{X})$, show that $\\bar{X}$ is an unbiased estimator of the population mean $\\mu$.",
+      "corrige_markdown": "Each $X_i$ is drawn from the population, so $E(X_i) = \\mu$ for every $i$. Using the linearity of expectation,\n\n$$E(\\bar{X}) = E\\left(\\frac{1}{n}\\sum_{i=1}^{n} X_i\\right) = \\frac{1}{n}\\sum_{i=1}^{n} E(X_i) = \\frac{1}{n} \\times n\\mu = \\mu$$\n\nAn estimator whose expected value equals the parameter it estimates is unbiased. Hence $E(\\bar{X}) = \\mu$, and **$\\bar{X}$ is an unbiased estimator of $\\mu$.**",
+      "themes": [
+        "sampling and estimation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "i.c",
+      "enonce_markdown": "(c) If the population sampled is a normal population, state the distribution of $\\bar{X}$.",
+      "corrige_markdown": "If the population is $N(\\mu, \\sigma^2)$, then $\\bar{X}$, a linear combination of independent normal variables, is exactly normal. Its mean is $E(\\bar{X}) = \\mu$ and its variance is\n\n$$Var(\\bar{X}) = \\frac{1}{n^2}\\sum_{i=1}^{n} Var(X_i) = \\frac{1}{n^2} \\times n\\sigma^2 = \\frac{\\sigma^2}{n}$$\n\n**$\\bar{X} \\sim N\\!\\left(\\mu,\\ \\dfrac{\\sigma^2}{n}\\right)$** (standard deviation $\\dfrac{\\sigma}{\\sqrt{n}}$, called the standard error of the mean).",
+      "themes": [
+        "sampling distribution of the mean statistics",
+        "normal distribution"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "ii.a",
+      "enonce_markdown": "**(ii)** The masses of cows in a certain grazing settlement are normally distributed with mean 500 kg and standard deviation 20 kg. Grazers from this settlement usually sell their cows in the same cattle market.\n\n(a) A trader buys 50 cows from this market. What is the probability that the mean mass of these cows will be between 495 kg and 515 kg?",
+      "corrige_markdown": "**Model:** the mass of one cow is $X \\sim N(500,\\ 20^2)$. For a sample of $n = 50$ cows,\n\n$$\\bar{X} \\sim N\\!\\left(500,\\ \\frac{20^2}{50}\\right) = N(500,\\ 8), \\qquad \\text{standard error } = \\sqrt{8} = 2.828$$\n\nStandardise with $Z = \\dfrac{\\bar{X} - 500}{2.828}$:\n\n$$z_1 = \\frac{495 - 500}{2.828} = -1.768, \\qquad z_2 = \\frac{515 - 500}{2.828} = 5.303$$\n\n$$P(495 < \\bar{X} < 515) = \\Phi(5.303) - \\Phi(-1.768) = 1.0000 - 0.0385 = 0.9615$$\n\n(table: $\\Phi(1.76) = 0.9608$, $\\Phi(1.77) = 0.9616$, so $\\Phi(-1.768) = 1 - 0.9615 = 0.0385$; $\\Phi(5.30) \\approx 1$)\n\n**Probability $\\approx 0.9615$** (about $96.1\\%$).",
+      "themes": [
+        "sampling distribution of the mean statistics",
+        "normal distribution"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii.b",
+      "enonce_markdown": "(b) How many cows must he buy in order to be $95\\%$ sure that the mean mass is at least 495 kg?",
+      "corrige_markdown": "For a sample of $n$ cows, $\\bar{X} \\sim N\\!\\left(500,\\ \\dfrac{400}{n}\\right)$, standard error $\\dfrac{20}{\\sqrt{n}}$. We need $P(\\bar{X} \\ge 495) \\ge 0.95$.\n\n$$P\\left(Z \\ge \\frac{495 - 500}{20/\\sqrt{n}}\\right) = P\\left(Z \\ge -\\frac{\\sqrt{n}}{4}\\right) = \\Phi\\!\\left(\\frac{\\sqrt{n}}{4}\\right) \\ge 0.95$$\n\nFrom the table, $\\Phi(1.645) = 0.95$, so\n\n$$\\frac{\\sqrt{n}}{4} \\ge 1.645 \\;\\Rightarrow\\; \\sqrt{n} \\ge 6.58 \\;\\Rightarrow\\; n \\ge 43.3$$\n\n$n$ must be a whole number, so the smallest value is $n = 44$. (Check: $n = 43$ gives $\\Phi(1.640) = 0.9494 < 0.95$; $n = 44$ gives $\\Phi(1.658) = 0.9514 \\ge 0.95$.)\n\n**He must buy at least 44 cows.**",
+      "themes": [
+        "sampling distribution of the mean statistics",
+        "normal distribution"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

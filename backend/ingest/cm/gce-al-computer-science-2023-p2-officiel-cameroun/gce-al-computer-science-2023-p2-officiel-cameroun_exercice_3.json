@@ -1,0 +1,114 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 2, ADVANCED LEVEL, June 2023. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 : les sous-questions sont (i)(a)-(c) et (ii)(a)-(c), numérotées « i(a) »... ; le tableau des processus est recopié dans chaque sous-question de (ii).",
+    "Question 3 (ii)(a) : le diagramme de Gantt est à produire par le candidat ; il est décrit dans le corrigé par un schéma en texte et un tableau. Le corrigé simule la politique SRTF (préemptive, un process qui arrive préempte seulement si son temps est strictement plus court) par script : P1 0-2, P2 2-4, P3 4-5, P2 5-7, P4 7-11, P1 11-16 ; attente moyenne 3, rotation moyenne 7, débit 0,25."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "With reference to operating systems, distinguish between paging and segmentation.",
+      "corrige_markdown": "Both are memory-management techniques that let a process occupy non-contiguous areas of physical memory, but they differ as follows.\n\n| | Paging | Segmentation |\n|---|---|---|\n| Unit | Memory is divided into **fixed-size** blocks: pages (logical) and frames (physical) | Memory is divided into **variable-size** logical units (segments) such as the code, the data, the stack |\n| Who decides the division | The operating system / hardware; the programmer is not aware of it | Follows the logical structure of the program, so it is visible to the programmer |\n| Address | Page number + offset, translated with a **page table** | Segment number + offset, translated with a **segment table** (base address and limit) |\n| Fragmentation | Internal fragmentation (the last page may be partly empty), no external fragmentation | External fragmentation (free holes of various sizes), no internal fragmentation |\n\nIn short, paging uses equal-sized physical blocks chosen for convenience, whereas segmentation uses unequal blocks that match the meaningful parts of a program.",
+      "themes": [
+        "paging and segmentation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "With reference to operating systems, state one important relationship between the operating system and computer hardware.",
+      "corrige_markdown": "The operating system acts as an **interface (intermediary) between the user or application programs and the computer hardware**: it manages and allocates the hardware resources (processor time, memory, storage and input/output devices) and hides their complexity, communicating with the devices through device drivers. Application programs never use the hardware directly; they request its services from the operating system.",
+      "themes": [
+        "operating system functions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "With reference to operating systems, describe the terms Real Time processing and Batch processing using real life scenarios as examples to demonstrate their application.",
+      "corrige_markdown": "**Real-time processing.** Data is processed **immediately** as it is received, and the result must be produced within a strict time limit (the deadline), because it is used to affect the process that produced the data. There is no waiting for other jobs and the system responds in milliseconds or seconds.\n*Example:* an anti-lock braking system in a car, air traffic control, a hospital patient-monitoring system or the control of a nuclear reactor: sensor readings are processed at once and the system acts before the situation changes. (An airline seat-booking system is a related on-line example: the seat is updated immediately so it cannot be sold twice.)\n\n**Batch processing.** Similar jobs or transactions are **collected over a period of time (a batch)** and then processed together **later**, usually when the computer is not busy (for example at night), **without user interaction** while the job runs. Results are not needed immediately.\n*Example:* a company's monthly payroll (the hours worked are collected during the month, then all payslips are produced in one run), the printing of electricity or water bills for all customers, or the processing of examination answer scripts at the end of an exam session.\n\nIn short: real-time processing gives an immediate response to each input; batch processing trades response time for efficient processing of large volumes of similar data.",
+      "themes": [
+        "operating system types"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "Consider the following process handled in an operating system with the associated units of arrival and service times:\n\n| PROCESS | ARRIVAL TIME | SERVICE TIME |\n|---|---|---|\n| P1 | 0 | 7 |\n| P2 | 2 | 4 |\n| P3 | 4 | 1 |\n| P4 | 5 | 4 |\n\nUsing the Shortest Remaining Time First scheduling policy draw a Gantt chart for these processes.",
+      "corrige_markdown": "**Shortest Remaining Time First (SRTF)** is the pre-emptive version of Shortest Job First: at every instant the CPU runs the ready process with the **least remaining service time**, and a newly arrived process pre-empts the running one if its service time is shorter than the remaining time of the running process.\n\nStep by step (verified with a script that simulates the policy unit by unit):\n\n* $t = 0$: only P1 is ready (remaining 7); P1 runs.\n* $t = 2$: P2 arrives (4); P1 has 5 left, so P2 is shorter and **pre-empts** P1. P1 has 5 left.\n* $t = 4$: P3 arrives (1); P2 has 2 left, P1 has 5 left; P3 is the shortest and pre-empts P2 (2 left).\n* $t = 5$: P3 finishes. P4 has just arrived (4). Ready: P1 (5), P2 (2), P4 (4); P2 is the shortest and runs.\n* $t = 7$: P2 finishes. Ready: P1 (5), P4 (4); P4 runs.\n* $t = 11$: P4 finishes. P1 runs its last 5 units and finishes at $t = 16$.\n\n**Gantt chart:**\n\n```text\n| P1  | P2  | P3 |  P2  |    P4     |       P1        |\n0     2     4    5      7           11                16\n```\n\n| Segment | P1 | P2 | P3 | P2 | P4 | P1 |\n|---|---|---|---|---|---|---|\n| From - to | 0-2 | 2-4 | 4-5 | 5-7 | 7-11 | 11-16 |",
+      "themes": [
+        "process scheduling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "Consider the following process handled in an operating system with the associated units of arrival and service times:\n\n| PROCESS | ARRIVAL TIME | SERVICE TIME |\n|---|---|---|\n| P1 | 0 | 7 |\n| P2 | 2 | 4 |\n| P3 | 4 | 1 |\n| P4 | 5 | 4 |\n\nUsing the Shortest Remaining Time First scheduling policy, calculate the average waiting time and turnaround time for the processes.",
+      "corrige_markdown": "From the Gantt chart for SRTF (P1 0-2, P2 2-4, P3 4-5, P2 5-7, P4 7-11, P1 11-16) the completion times are P1 = 16, P2 = 7, P3 = 5, P4 = 11.\n\n$$\\text{turnaround time} = \\text{completion time} - \\text{arrival time}, \\qquad \\text{waiting time} = \\text{turnaround time} - \\text{service time}.$$\n\n| Process | Arrival | Service | Completion | Turnaround | Waiting |\n|---|---|---|---|---|---|\n| P1 | 0 | 7 | 16 | $16 - 0 = 16$ | $16 - 7 = 9$ |\n| P2 | 2 | 4 | 7 | $7 - 2 = 5$ | $5 - 4 = 1$ |\n| P3 | 4 | 1 | 5 | $5 - 4 = 1$ | $1 - 1 = 0$ |\n| P4 | 5 | 4 | 11 | $11 - 5 = 6$ | $6 - 4 = 2$ |\n| Total | | | | 28 | 12 |\n\n$$\\text{average turnaround time} = \\frac{28}{4} = 7 \\text{ units}, \\qquad \\text{average waiting time} = \\frac{12}{4} = 3 \\text{ units}.$$\n\n(Check on P1 directly: it waits from $t = 2$ to $t = 11$, that is 9 units. P2 waits from $t = 4$ to $t = 5$: 1 unit. P4 waits from $t = 5$ to $t = 7$: 2 units.)",
+      "themes": [
+        "process scheduling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "Consider the following process handled in an operating system with the associated units of arrival and service times:\n\n| PROCESS | ARRIVAL TIME | SERVICE TIME |\n|---|---|---|\n| P1 | 0 | 7 |\n| P2 | 2 | 4 |\n| P3 | 4 | 1 |\n| P4 | 5 | 4 |\n\nUsing the Shortest Remaining Time First scheduling policy, calculate the throughput of the operating system.",
+      "corrige_markdown": "Throughput is the number of processes completed per unit of time. All 4 processes are completed by $t = 16$ (the end of the Gantt chart):\n\n$$\\text{throughput} = \\frac{4 \\text{ processes}}{16 \\text{ time units}} = 0.25 \\text{ process per time unit}$$\n\nthat is, one process every 4 time units on average.",
+      "themes": [
+        "process scheduling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

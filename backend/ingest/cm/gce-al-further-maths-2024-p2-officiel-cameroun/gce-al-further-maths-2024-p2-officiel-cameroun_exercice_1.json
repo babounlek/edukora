@@ -1,0 +1,50 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2024. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "The differential equation\n\n$$\\frac{d^2y}{dx^2} + 6\\frac{dy}{dx} + 9y = 4e^{-3x}$$\n\nhas general solution $Ae^{-3x} + Bxe^{-3x} + p(x)$, where $p(x)$ is its particular integral.\n\nFind $p(x)$.",
+      "corrige_markdown": "**Choice of trial function.** The auxiliary equation is $m^2 + 6m + 9 = (m+3)^2 = 0$, with the repeated root $m = -3$. So $e^{-3x}$ and $xe^{-3x}$ already belong to the complementary function (this is the $Ae^{-3x} + Bxe^{-3x}$ of the question). Trying $ke^{-3x}$ or $kxe^{-3x}$ would give $0$ on the left-hand side, so we must try\n\n$$p(x) = kx^2e^{-3x}.$$\n\n**Derivatives.**\n\n$$p'(x) = k(2x - 3x^2)e^{-3x}, \\qquad p''(x) = k(2 - 6x - 6x + 9x^2)e^{-3x} = k(2 - 12x + 9x^2)e^{-3x}.$$\n\n**Substitution.**\n\n$$p'' + 6p' + 9p = ke^{-3x}\\left[(2 - 12x + 9x^2) + (12x - 18x^2) + 9x^2\\right] = 2ke^{-3x}.$$\n\nThe terms in $x$ and $x^2$ cancel. Equating with $4e^{-3x}$ gives $2k = 4$, so $k = 2$.\n\n$$\\boxed{p(x) = 2x^2e^{-3x}}$$\n\n**Check (second method).** Put $y = ue^{-3x}$. Then $y'' + 6y' + 9y = u''e^{-3x}$, so $u'' = 4$ and $u = 2x^2 + Ax + B$, which reproduces $y = (A + Bx + 2x^2)e^{-3x}$.",
+      "themes": [
+        "second order differential equations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Given that $y = 1$ and $\\dfrac{dy}{dx} = 1$ when $x = 0$, find the values of $A$ and $B$.",
+      "corrige_markdown": "From part (i) the general solution is\n\n$$y = (A + Bx + 2x^2)e^{-3x}.$$\n\n**Condition $y = 1$ at $x = 0$:** $y(0) = A = 1$.\n\n**Condition $\\dfrac{dy}{dx} = 1$ at $x = 0$.** By the product rule\n\n$$\\frac{dy}{dx} = (B + 4x)e^{-3x} - 3(A + Bx + 2x^2)e^{-3x}.$$\n\nAt $x = 0$: $\\dfrac{dy}{dx} = B - 3A = 1$. With $A = 1$ this gives $B = 4$.\n\n$$\\boxed{A = 1,\\quad B = 4}$$\n\nThe solution is $y = (1 + 4x + 2x^2)e^{-3x}$ (check: $y(0) = 1$ and $y'(0) = 4 - 3 = 1$).",
+      "themes": [
+        "second order differential equations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

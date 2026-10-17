@@ -1,0 +1,78 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 1(i)(b) : la notation du sujet est ambiguë (« #X means take the value of X » ; opérandes (R1,R2,#R3) et (R2,#10), ce dernier souligné dans le sujet). Lecture retenue : #R3 = la valeur contenue dans le registre R3 (adressage par registre) et #10 = la valeur littérale 10 (adressage immédiat).",
+    "Question 1 : points imprimés par sous-partie : (i)(a) 2 + (i)(b) 4 = 6 ; (ii)(a) 3 + (ii)(b) 2 = 5 ; (iii)(a) 1 + (b) 4 + (c) 1 = 6 ; total 17. Le « (2 marks) » de 1(ii)(b) est rogné au bord de la page dans le scan."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) In data transmission, what is a parity bit? How does one detect errors during data transmission? (2 marks)\n\n(b) Suppose the notation #X means \"take the value of X\" and R1, R2, R3 are registers. Given ADD as an OPcode and (R1, R2, #R3) and (R2, #10) as operands. State for each set of operands one distinct addressing mode and how it may work with the ADD opcode. (4 marks)",
+      "corrige_markdown": "**(a) Parity bit and error detection (2 marks)**\n\nA **parity bit** is one extra bit added to a group of data bits (for example a 7-bit ASCII code) before transmission so that the total number of 1s in the group, parity bit included, is always **even** (even parity) or always **odd** (odd parity). The sender and the receiver agree on which rule is used.\n\n**Detection:** the receiver counts the 1s in every group it receives. If the count does not obey the agreed rule, at least one bit was corrupted during transmission and the receiver asks for the group to be sent again.\n\nExample with even parity: data `1011001` contains four 1s, so the parity bit is `0` and `10110010` is sent. If noise changes the fourth bit, the receiver gets `10100010`, which contains three 1s (odd), so an error is detected. A parity bit only *detects* a single-bit error (it cannot say which bit is wrong, so it cannot correct it), and an even number of corrupted bits goes unnoticed.\n\n**(b) Addressing modes with ADD (4 marks)**\n\n| Operands | Addressing mode | How it works with ADD |\n|---|---|---|\n| (R1, R2, #R3) | **Register addressing** (all operands are registers) | The control unit reads the values held in the registers named in the instruction: `ADD R1, R2, #R3` takes the value of R2 and the value of R3, adds them in the ALU and stores the sum in register R1 ($R1 \\leftarrow R2 + R3$). No memory access is needed, so it is fast. |\n| (R2, #10) | **Immediate addressing** (the operand is a constant written inside the instruction) | `ADD R2, #10` takes the value of R2, adds the constant 10 supplied by the instruction itself, and stores the result back in R2 ($R2 \\leftarrow R2 + 10$). No register or memory location has to be read to obtain the 10. |",
+      "themes": [
+        "data transmission",
+        "addressing modes"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Computer images are described as Bitmapped or Vector graphics.\n\n(a) Describe how images are represented and manipulated as Bitmapped and Vector graphics images. (3 marks)\n\n(b) State one advantage and one disadvantage of using Vector graphics over a bitmapped graphics. (2 marks)",
+      "corrige_markdown": "**(a) Representation and manipulation (3 marks)**\n\n*Bitmapped (raster) images.* The picture is divided into a grid of tiny squares called **pixels**; the colour of each pixel is stored as a binary number (its colour depth, e.g. 1 bit for black and white, 8 bits for 256 colours, 24 bits for true colour). The file holds the pixels row by row, so its size is about width $\\times$ height $\\times$ colour depth. The image is manipulated **pixel by pixel** (painting programs): editing, erasing, colouring or filtering changes the stored pixel values; enlarging the image makes the pixels visible (pixelation).\n\n*Vector images.* The picture is stored as a list of **mathematical descriptions of objects** (lines, curves, rectangles, circles, polygons) together with their attributes: coordinates, line thickness, line colour, fill colour. Nothing is stored pixel by pixel; the display software recalculates and redraws the objects whenever the image is shown. The image is manipulated **object by object** (drawing programs): an object can be selected, moved, resized, rotated, recoloured or grouped by changing its stored attributes.\n\n**(b) Vector against bitmapped (2 marks)**\n\n- **Advantage:** a vector image can be enlarged or reduced to any size **without loss of quality** (no pixelation), because it is recalculated; it is also usually a smaller file for simple drawings, and each object stays individually editable.\n- **Disadvantage:** vector graphics are not suitable for photographs or images with very fine, continuous colour variations, and a complex image needs a lot of processing time to be redrawn; they also cannot be edited at the level of a single pixel.",
+      "themes": [
+        "data representation",
+        "bitmap and vector graphics"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) State what you understand by the term data compression. (1 mark)\n\n(b) State two types of compression techniques. Explain how each works. (4 marks)\n\n(c) Distinguish between data compression and data encryption. (1 mark)",
+      "corrige_markdown": "**(a) Data compression (1 mark)**\n\nData compression is the process of reducing the number of bits needed to represent data, so that it takes less storage space and less time to transmit.\n\n**(b) Two types of compression technique (4 marks)**\n\n1. **Lossless compression.** Redundancy (repeated patterns) is removed in such a way that the original data can be rebuilt **exactly** when the file is decompressed. Examples: run-length encoding (RLE), Huffman coding, LZW (ZIP). With RLE, a run of identical symbols is replaced by the symbol and its count: `AAAAAABBBCCCCCCCCDD` (19 characters) becomes `6A3B8C2D` (8 characters). It is used for text, program files, databases.\n2. **Lossy compression.** Details that the eye or the ear is unlikely to notice are **permanently discarded** (for instance fine colour differences in an image, sounds outside the range of human hearing), so only an approximation of the original can be restored. Much higher compression ratios are obtained. Examples: JPEG (images), MP3 (audio), MPEG (video).\n\n**(c) Compression against encryption (1 mark)**\n\nCompression **reduces the size** of data and anyone who knows the (public) method can decompress it; it gives no secrecy. Encryption **scrambles** the data with a key so that it cannot be understood by unauthorised people (it protects confidentiality) and it does not reduce, and may even increase, the size of the data.",
+      "themes": [
+        "data compression",
+        "data security"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

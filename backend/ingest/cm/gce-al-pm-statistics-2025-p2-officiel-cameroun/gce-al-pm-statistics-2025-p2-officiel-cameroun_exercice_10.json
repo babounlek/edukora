@@ -1,0 +1,57 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "10",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2025. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Q10(b) : aucune figure imprimée ; le tracé est à faire par le candidat et il est décrit dans le corrigé (intersections, asymptotes, comportement, quelques points). On remarque que la courbe de (b) est exactement la solution trouvée en (a), y = (x - 4)/(x - 1).",
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points imprimés par bloc ((i), (ii)...) sont recopiés tels quels (leur somme est 103). Quand un même total couvre plusieurs sous-questions (ex. « (9 marks) » pour (a) et (b)), il est porté par la dernière sous-question du bloc, les autres ont `points` null, et `points` de chaque exercice est laissé vide.",
+    "Scan de 3 pages (page de garde + 2 pages de questions) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer. L'étiquette en haut à gauche de la page de garde dit « Pure Maths With Stats 2 », en accord avec le cadre (Pure Mathematics With Statistics, Paper 2, code 0770) et le pied de page 00/0770/2."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Solve the differential equation $(x - 1)\\dfrac{dy}{dx} = 1 - y$, given that $y = -2$ when $x = 2$, expressing the result in the form $y = f(x)$. (5 marks)",
+      "corrige_markdown": "The variables separate (for $x \\ne 1$, $y \\ne 1$):\n$$\\frac{1}{1 - y}\\,dy = \\frac{1}{x - 1}\\,dx.$$\nIntegrate both sides:\n$$-\\ln|1 - y| = \\ln|x - 1| + C \\;\\Rightarrow\\; \\ln|1 - y| + \\ln|x - 1| = -C \\;\\Rightarrow\\; (1 - y)(x - 1) = K,$$\nwhere $K$ is a constant ($K = \\pm e^{-C}$).\n\nUse the condition $y = -2$ when $x = 2$: $(1 + 2)(2 - 1) = 3 = K$. So $(1 - y)(x - 1) = 3$, and\n$$1 - y = \\frac{3}{x - 1} \\;\\Rightarrow\\; y = 1 - \\frac{3}{x - 1} = \\frac{x - 1 - 3}{x - 1} = \\frac{x - 4}{x - 1}.$$\n$$\\boxed{y = \\frac{x - 4}{x - 1}}$$\nCheck: $y(2) = \\dfrac{-2}{1} = -2$; and $\\dfrac{dy}{dx} = \\dfrac{3}{(x - 1)^2}$, so $(x - 1)\\dfrac{dy}{dx} = \\dfrac{3}{x - 1} = 1 - y$. The solution is valid for $x > 1$ (the interval containing the initial point $x = 2$).",
+      "themes": [
+        "first order differential equations",
+        "separation of variables"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Sketch the curve $y = \\dfrac{x - 4}{x - 1}$, showing clearly the points where the curve crosses the coordinate axes and the behaviour of the curve near its asymptotes. (4 marks)",
+      "corrige_markdown": "Write $y = \\dfrac{x - 4}{x - 1} = 1 - \\dfrac{3}{x - 1}$ (this is the curve found in part (a)).\n\n**Intercepts.** When $x = 0$: $y = \\dfrac{-4}{-1} = 4$, so the curve crosses the $y$-axis at $(0, 4)$. When $y = 0$: $x - 4 = 0$, so it crosses the $x$-axis at $(4, 0)$.\n\n**Asymptotes.**\n- Vertical: the denominator vanishes at $x = 1$, so the line $x = 1$ is a vertical asymptote. As $x \\to 1^+$, $x - 1 \\to 0^+$ and $y = 1 - \\dfrac{3}{x - 1} \\to -\\infty$; as $x \\to 1^-$, $y \\to +\\infty$.\n- Horizontal: as $x \\to \\pm\\infty$, $\\dfrac{3}{x - 1} \\to 0$, so $y \\to 1$; the line $y = 1$ is a horizontal asymptote. For $x > 1$ the curve lies below it ($y = 1 - \\dfrac{3}{x - 1} < 1$), for $x < 1$ it lies above it ($y > 1$).\n\n**Shape.** $\\dfrac{dy}{dx} = \\dfrac{3}{(x - 1)^2} > 0$ for all $x \\ne 1$, so each branch is increasing and there is no turning point.\n- Right-hand branch ($x > 1$): rises from $-\\infty$ near $x = 1^+$, through $(2, -2)$, $(3, -\\tfrac12)$, crosses the $x$-axis at $(4, 0)$, and then $(5, \\tfrac14)$, $(7, \\tfrac12)$, approaching $y = 1$ from below.\n- Left-hand branch ($x < 1$): comes from the left near $y = 1$ from above (e.g. $(-2, 2)$, $(-1, \\tfrac52)$), rises through the $y$-intercept $(0, 4)$ and goes up to $+\\infty$ as $x \\to 1^-$.\n\nThe sketch shows the two branches of a rectangular hyperbola with centre $(1, 1)$, drawn with the asymptotes $x = 1$ and $y = 1$ as dashed lines and the points $(0, 4)$ and $(4, 0)$ labelled.",
+      "themes": [
+        "asymptotes of rational functions",
+        "curve sketching"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

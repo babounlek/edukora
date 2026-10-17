@@ -1,0 +1,78 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Information and Communication Technologies 2 (0796), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You will be graded on your ability to use good English, organise information clearly and the use of specialist vocabulary where appropriate. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 : points imprimés par sous-partie : i = 2 + 1 + 1 + 3 = 7 ; ii = 2 + 1 + 1 = 4 ; iii = 2 + 2 + 2 = 6 ; total 17.",
+    "2(i)(d) : l'expression est lue « (A.B) barre globale + (A barre).(B barre) » (barre sur A.B tout entier, puis barres séparées sur A et B). Table de vérité et simplification recalculées par script Python : l'expression vaut NAND(A, B).",
+    "2(i)(b) et 2(i)(d) : schémas à produire par le candidat, décrits dans le corrigé (croquis en texte brut) ; aucune figure imprimée dans le sujet.",
+    "2(ii)(b) : l'exemple de loi camerounaise (cybersécurité et cybercriminalité, 2010) est cité de mémoire, à titre d'exemple seulement."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "The computer circuit is composed of logic gates, switches and wires.\n\n(a) What is a logic gate? Give two examples of logic gates. (2 marks)\n\n(b) Draw the symbols for the two gates mentioned above. (1 mark)\n\n(c) State the role of a switch in a circuit. (1 mark)\n\n(d) Represent the logical expression $\\overline{A.B} + \\bar{A}.\\bar{B}$ by a circuit diagram. (3 marks)",
+      "corrige_markdown": "**(a) Logic gate (2 marks).** A logic gate is a basic electronic circuit (built from transistors) with **one or more inputs and one output** that carries out a logical (Boolean) operation: the output is 1 (high voltage) or 0 (low voltage) depending on the combination of the input values. Examples: **AND gate** (output 1 only when all inputs are 1) and **OR gate** (output 1 when at least one input is 1). (NOT, NAND, NOR, XOR are other gates.)\n\n**(b) Symbols (1 mark).** Standard (ANSI) shapes: the AND gate has a flat back and a rounded front; the OR gate has a curved back and a pointed front. Rough sketch:\n\n```text\n   AND gate                  OR gate\n     ____                      ____\n A --|    \\                A --\\    \\\n     |     )-- X               )    )-- X\n B --|____/                B --/____/\n```\n\n| A | B | A AND B | A OR B |\n|---|---|---|---|\n| 0 | 0 | 0 | 0 |\n| 0 | 1 | 0 | 1 |\n| 1 | 0 | 0 | 1 |\n| 1 | 1 | 1 | 1 |\n\n**(c) Role of a switch (1 mark).** A switch **opens or closes a circuit**: when closed it lets the current (signal) flow, and when open it stops the flow. In a digital circuit it acts as the control that sets an input to 1 (on) or 0 (off). (Inside logic gates the switching is done by transistors.)\n\n**(d) Circuit for $\\overline{A.B} + \\bar{A}.\\bar{B}$ (3 marks).** Build the expression from the inside out:\n\n1. $P = \\overline{A.B}$ : an AND gate with inputs A and B, followed by a NOT gate (that is, a NAND gate).\n2. $\\bar{A}$ and $\\bar{B}$ : one NOT gate on each of the inputs A and B.\n3. $Q = \\bar{A}.\\bar{B}$ : an AND gate fed by $\\bar{A}$ and $\\bar{B}$.\n4. $X = P + Q$ : an OR gate fed by P and Q.\n\n```text\nA --> [AND] --> [NOT] ------------------> P --\\\nB -->/                                         \\\n                                                [OR] --> X\nA --> [NOT] --> A' --\\                         /\n                      [AND] ---------------> Q --/\nB --> [NOT] --> B' --/\n```\n\nTruth table (checked by script):\n\n| A | B | $P=\\overline{A.B}$ | $Q=\\bar{A}.\\bar{B}$ | $X=P+Q$ |\n|---|---|---|---|---|\n| 0 | 0 | 1 | 1 | 1 |\n| 0 | 1 | 1 | 0 | 1 |\n| 1 | 0 | 1 | 0 | 1 |\n| 1 | 1 | 0 | 0 | 0 |\n\n*Simplification (bonus).* By De Morgan's law $\\overline{A.B} = \\bar{A} + \\bar{B}$, so $X = \\bar{A} + \\bar{B} + \\bar{A}.\\bar{B} = \\bar{A} + \\bar{B}$ (absorption), which is again $\\overline{A.B}$. The whole circuit is therefore equivalent to a single **NAND gate**: A --> [NAND] <-- B, output X.",
+      "themes": [
+        "ict logic gates and boolean algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Define the following terms as used in ICT.\n\n(a) Computer ethics. (2 marks)\n\n(b) Legislation. (1 mark)\n\n(c) Ergonomics. (1 mark)",
+      "corrige_markdown": "**(a) Computer ethics (2 marks).** Computer ethics is the set of **moral principles and rules of conduct that guide the behaviour of people who use or work with computers and information systems**, for example respecting other people's privacy, not stealing or copying software illegally, not hacking, not spreading viruses and not using a computer to harm or deceive others.\n\n**(b) Legislation (1 mark).** Legislation means **the laws made by a government (parliament) to regulate behaviour**. In ICT, legislation controls the use of computers and data, for example laws on cybercrime, data protection, copyright and electronic transactions (for example the 2010 Cameroon law on cybersecurity and cybercriminality).\n\n**(c) Ergonomics (1 mark).** Ergonomics is the **study and design of equipment, furniture and the working environment so that they fit the user**, giving comfort, efficiency and safety (for example an adjustable chair, a correctly placed monitor and keyboard) and preventing health problems such as back pain and repetitive strain injury.",
+      "themes": [
+        "social and ethical issues",
+        "ict health and safety"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) Describe the term simulation and state one software that can be used to carry out simulation. (2 marks)\n\n(b) Describe two applications or areas where simulation is useful. (2 marks)\n\n(c) State one disadvantage and one advantage of simulation. (2 marks)",
+      "corrige_markdown": "**(a) Simulation (2 marks).** Simulation is the use of a computer program based on a **mathematical model to imitate the behaviour of a real system or process**, so that it can be studied, tested or practised and its results predicted without using the real system. The user changes the input values and observes what happens. Software that can be used (any one): MATLAB/Simulink, Cisco Packet Tracer (networks), Proteus or Crocodile Physics (circuits), a flight simulator, Simul8 or spreadsheet models.\n\n**(b) Two areas where simulation is useful (2 marks)** (any two, each described):\n\n- **Training of pilots and drivers:** a flight simulator reproduces the controls and conditions of an aircraft, so trainees can practise normal flying and emergencies safely and cheaply.\n- **Weather forecasting and scientific research:** models of the atmosphere are run on computers to predict the weather and the effects of climate change.\n- **Design and testing of products and systems:** the crash of a car or the strength of a bridge or a network can be tested on the computer before it is built.\n- **Medicine:** students practise surgery on virtual patients; the spread of a disease can be modelled to plan vaccination.\n\n**(c) Advantage and disadvantage (2 marks).**\n\n- *Advantage (one):* it is **safe, cheaper and faster than the real experiment** (no danger, no damage to equipment), and the test can be repeated as many times as needed with different values.\n- *Disadvantage (one):* the results are **only as good as the model and the data used**; a simplified model may not behave exactly like real life, and good simulation software and trained operators can be expensive.",
+      "themes": [
+        "ict applications in society"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2020. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points par partie sont recopiés tels qu'imprimés (leur somme est 102) et `points` de chaque exercice est laissé vide.",
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Scan de 3 pages (page de garde + 2 pages de questions) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "The function $f$ is given by $f(x) = \\dfrac{x + 1}{(x - 1)(x^2 + 1)}$. Express $f(x)$ in partial fractions. Hence find $\\displaystyle\\int f(x)\\,dx$. (5 marks)",
+      "corrige_markdown": "**Form.** The factor $(x^2 + 1)$ is irreducible over $\\mathbb{R}$, so\n$$\\frac{x + 1}{(x - 1)(x^2 + 1)} = \\frac{A}{x - 1} + \\frac{Bx + C}{x^2 + 1}.$$\n\nMultiply by $(x - 1)(x^2 + 1)$:\n$$x + 1 = A(x^2 + 1) + (Bx + C)(x - 1).$$\n\n- Put $x = 1$: $2 = 2A \\Rightarrow A = 1$.\n- Compare $x^2$: $0 = A + B \\Rightarrow B = -1$.\n- Compare constants: $1 = A - C \\Rightarrow C = 0$.\n- Check on $x$: $1 = -B + C = 1$. (matches)\n\n$$\\boxed{f(x) = \\frac{1}{x - 1} - \\frac{x}{x^2 + 1}}$$\n\n**Integrate.** Use $\\displaystyle\\int \\frac{dx}{x - 1} = \\ln|x - 1|$ and $\\displaystyle\\int \\frac{x}{x^2 + 1}\\,dx = \\tfrac12\\ln(x^2 + 1)$ (the numerator is half the derivative of the denominator):\n$$\\boxed{\\int f(x)\\,dx = \\ln|x - 1| - \\tfrac12\\ln(x^2 + 1) + c}$$\n(equivalently $\\ln\\dfrac{|x - 1|}{\\sqrt{x^2 + 1}} + c$).",
+      "themes": [
+        "partial fractions",
+        "integration of rational functions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "By using the substitution $u = \\sin x$, find $\\displaystyle\\int \\left(\\dfrac{\\cos x}{1 + \\sin^2 x}\\right) dx$. (3 marks)",
+      "corrige_markdown": "Let $u = \\sin x$. Then $\\dfrac{du}{dx} = \\cos x$, so $\\cos x\\,dx = du$, and $1 + \\sin^2 x = 1 + u^2$.\n\n$$\\int \\frac{\\cos x}{1 + \\sin^2 x}\\,dx = \\int \\frac{du}{1 + u^2} = \\tan^{-1} u + c.$$\n\nReturn to $x$:\n$$\\boxed{\\int \\frac{\\cos x}{1 + \\sin^2 x}\\,dx = \\tan^{-1}(\\sin x) + c}$$\n(Check: $\\dfrac{d}{dx}\\tan^{-1}(\\sin x) = \\dfrac{\\cos x}{1 + \\sin^2 x}$.)",
+      "themes": [
+        "integration by substitution"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Find $\\displaystyle\\int (x + 2)e^{3x}\\,dx$. (3 marks)",
+      "corrige_markdown": "Integrate by parts, $\\displaystyle\\int u\\,dv = uv - \\int v\\,du$, with\n$$u = x + 2,\\quad du = dx; \\qquad dv = e^{3x}\\,dx,\\quad v = \\tfrac13 e^{3x}.$$\n\n$$\\int (x + 2)e^{3x}\\,dx = \\frac{(x + 2)e^{3x}}{3} - \\frac13\\int e^{3x}\\,dx = \\frac{(x + 2)e^{3x}}{3} - \\frac{e^{3x}}{9} + c.$$\n\nCombine over $9$:\n$$\\boxed{\\int (x + 2)e^{3x}\\,dx = \\frac{(3x + 5)\\,e^{3x}}{9} + c}$$\n(Check: $\\dfrac{d}{dx}\\left[\\dfrac{(3x + 5)e^{3x}}{9}\\right] = \\dfrac{3e^{3x} + 3(3x + 5)e^{3x}}{9} = \\dfrac{(9x + 18)e^{3x}}{9} = (x + 2)e^{3x}$.)",
+      "themes": [
+        "integration by parts",
+        "integration techniques"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

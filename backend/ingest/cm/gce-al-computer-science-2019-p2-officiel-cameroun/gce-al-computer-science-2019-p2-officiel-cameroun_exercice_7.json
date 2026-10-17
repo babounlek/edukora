@@ -1,0 +1,77 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2019. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the appropriate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 7 : points imprimés i = 1 + 2 + 4 = 7 ; ii = 2 + 2 = 4 ; iii = 3 + 3 = 6, soit 17. Le sujet numérote 7(iii) « (a) » puis « (c) » (il n'y a pas de (b)) et renvoie à « ii(b) » : numérotation d'origine conservée.",
+    "Question 7(iii)(a) : problème au choix du candidat ; l'exemple choisi (fiche de résultats d'un élève) est une proposition, tout problème simple résolu par assemblage de petites tâches est acceptable. Coquilles du sujet conservées : « algorithms designed techniques », « equipment's »."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) State what a subroutine is. (1 mark)\n\n(b) Why is subroutine important in programming? (2 marks)\n\n(c) During compilation, briefly explain what happens when a subroutine is called from a main program. (4 marks)",
+      "corrige_markdown": "**(a) Subroutine (1 mark)**\n\nA subroutine is a named, self-contained block of instructions written to perform one specific task. It can be called (invoked) from other parts of the program, with or without parameters, and when it ends the control returns to the place from where it was called. In Pascal subroutines are procedures and functions; in C they are functions.\n\n**(b) Importance of subroutines (2 marks)**\n\n- **Reuse:** the code is written once and called as many times as needed, which makes the program shorter and avoids repeating code.\n- **Modularity:** a large program is divided into small parts that are easier to design, read, test and debug one by one; several programmers can write different subroutines at the same time.\n- **Easier maintenance:** a change is made in one place only; subroutines can be kept in libraries and used in other programs.\n\n**(c) A subroutine call during compilation (4 marks)**\n\n- The compiler records the name of the subroutine, the types of its parameters and of its returned value in the **symbol table**, and checks that each call matches the declaration (number and types of arguments).\n- At the point of call the compiler **generates code** which evaluates the arguments and passes them (in registers or on the stack), saves the **return address**, and then **jumps** to the first instruction of the subroutine (a call instruction).\n- The body of the subroutine is compiled **once**, into a separate block of object code with its own area for local variables (a stack frame), and ends with a **return** instruction that gives back the result, removes the local data and jumps to the saved return address, so that execution resumes after the call.\n- The address of the subroutine in the call is finally **resolved by the linker** (for a subroutine from a library or from another source file).",
+      "themes": [
+        "subprograms",
+        "translators and compilers"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Describe the following algorithms designed techniques:\n\n(a) Divide-and-conquer. (2 marks)\n\n(b) Bottom-up-design (2 marks)",
+      "corrige_markdown": "**(a) Divide-and-conquer (2 marks)**\n\nA problem is **divided** into smaller sub-problems of the same kind, each of them is **solved** independently (usually by the same method, recursively) until it is simple enough to be solved directly, and the solutions of the sub-problems are then **combined** to give the solution of the whole problem. Examples: merge sort, quick sort and binary search.\n\n**(b) Bottom-up design (2 marks)**\n\nThe design starts from the **most basic, detailed components** (the lowest-level subroutines or modules): they are designed, coded and tested first. They are then combined step by step into larger modules, and finally into the complete system. It is the opposite of top-down design (stepwise refinement), which starts from the whole problem and splits it into smaller parts; bottom-up design is natural when ready-made components (libraries) already exist.",
+      "themes": [
+        "algorithm design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) Many problems can be solved bottom-up, such as the assembly of equipment's. Describe, in words only a simple problem of your choice that could be solved bottom-up. (3 marks)\n\n(c) Briefly outline how your bottom-up design technique in ii(b) could be applied to solve your problem in iii(a). (3 marks)",
+      "corrige_markdown": "**(a) A problem that can be solved bottom-up (3 marks)**\n\n*Problem chosen:* produce the **result sheet of a student**: read the marks of the student in several subjects, compute the total and the average, decide the grade and pass or fail, and display the report. (Any simple problem made of small tasks that can be built first and then assembled is accepted, for example assembling a desktop computer or a bicycle from its parts.)\n\nThe problem is made of small, well-known tasks that can be solved on their own: reading one mark and checking that it is between 0 and 20, adding the marks, dividing by the number of subjects, finding the grade of an average, and printing a line of the report.\n\n**(c) Applying bottom-up design to this problem (3 marks)**\n\n1. **Identify and write the lowest-level subroutines:** `ReadMark` (reads and validates a mark), `ComputeTotal`, `ComputeAverage`, `GradeOf` (gives the grade of an average) and `PrintLine`.\n2. **Test each one separately** with test data (for example, `GradeOf(12)` gives the grade \"Good\" if that is the rule of the school, and a mark of 25 is refused by `ReadMark`).\n3. **Combine them into a higher-level subroutine** `ProcessStudent`, which calls `ReadMark` for each subject, then `ComputeTotal`, `ComputeAverage`, `GradeOf` and `PrintLine`.\n4. **Build the main program** which calls `ProcessStudent` for each student of the class, and **test the whole program** (integration test) before using it.",
+      "themes": [
+        "algorithm design",
+        "subprograms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

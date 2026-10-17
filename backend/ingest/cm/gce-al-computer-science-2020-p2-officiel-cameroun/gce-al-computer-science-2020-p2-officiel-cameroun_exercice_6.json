@@ -1,0 +1,77 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 6 : points imprimés par sous-partie : (i) 4 ; (ii)(a) 6 + (b) 3 = 9 ; (iii) 4 ; total 17.",
+    "Question 6(ii)(a) : le sujet demande un identifiant pour « any three entities » ; le corrigé en donne un pour les quatre entités. 6(iii) : le sujet donne l'exemple STUDENT( StedentMaricule, name, gender, DOB ) (fautes d'impression recopiées telles quelles). Les tables ont été créées et testées avec sqlite3 (clés étrangères comprises)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "An organization intent to store a significant amount of data about its information system.\n\nDescribe four advantages of storing this data in a database rather than in a series of flat files. (4 marks)",
+      "corrige_markdown": "1. **Reduced data redundancy:** each fact (for example a customer's address) is stored once in the database, whereas separate flat files repeat the same data, which wastes storage space.\n2. **Data consistency and integrity:** because data is stored once, an update is made in one place and cannot leave contradictory copies in different files; the DBMS also enforces validation rules and keys.\n3. **Data sharing and independence:** many users and application programs can use the same data at the same time (with concurrency control), and programs do not depend on how the data is physically stored, whereas every flat-file program must know the exact file layout.\n4. **Security and recovery:** the DBMS gives each user access rights to chosen tables or fields, and provides backup and recovery procedures. (Also acceptable: powerful queries and reports with SQL, faster searching with indexes, data standards enforced centrally.)",
+      "themes": [
+        "database systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Four entities of the organization are: Worker, Customer, Product and Department.\n\n(a) Suggest an identifier, with justification, for any three entities. (6 marks)\n\n(b) Describe three relationships that can be inferred from these entities. (3 marks)",
+      "corrige_markdown": "**(a) Identifiers (primary keys) (6 marks)**\n\nAn identifier must be **unique** for every record, never empty and stable (it does not change). Names do not satisfy this: two workers or customers can have the same name and a name can change.\n\n| Entity | Suggested identifier | Justification |\n|---|---|---|\n| Worker | `WorkerID` (e.g. W001) | Allocated by the organization to one worker only, so two workers can never share it. |\n| Customer | `CustomerID` (e.g. C001) | Unique number given when the customer is registered; names and telephone numbers can be shared or changed. |\n| Product | `ProductCode` (e.g. P01) | A code or barcode identifies exactly one product, whereas product names may be similar or repeated. |\n| Department | `DeptCode` (e.g. D01) | A short unique code per department, and it remains the same if the department is renamed. |\n\n(Only three entities are required.)\n\n**(b) Three relationships (3 marks)**\n\n1. **Department - Worker: one-to-many.** A department employs many workers, but each worker belongs to only one department (the Worker table holds the `DeptCode` as a foreign key).\n2. **Department - Product: one-to-many.** A department is responsible for (makes or sells) many products, and each product belongs to one department.\n3. **Customer - Product: many-to-many.** A customer can buy many products and a product can be bought by many customers; it is resolved by a linking table (for example PURCHASE) holding `CustomerID` and `ProductCode`.",
+      "themes": [
+        "keys and relationships",
+        "entity relationship modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Give relational database tables for any two of the entities you used to describe relationships in ii(b). For example STUDENT( StedentMaricule, name, gender, DOB) for the entity student. (4 marks)",
+      "corrige_markdown": "Using the notation of the example (primary key marked with an asterisk `*`, foreign key marked with `#`):\n\n- **DEPARTMENT**( `DeptCode*`, DeptName, Location )\n- **WORKER**( `WorkerID*`, WorkerName, Gender, DOB, `#DeptCode` )\n\nSample records:\n\n| DeptCode | DeptName | Location |\n|---|---|---|\n| D01 | Sales | Douala |\n| D02 | Production | Yaounde |\n\n| WorkerID | WorkerName | Gender | DOB | DeptCode |\n|---|---|---|---|---|\n| W001 | Ngwa | M | 1990-04-12 | D01 |\n| W002 | Tabi | F | 1988-11-02 | D01 |\n| W003 | Fon | M | 1995-07-30 | D02 |\n\n`DeptCode` in WORKER is a **foreign key** referring to the primary key of DEPARTMENT: this is how the one-to-many relationship is implemented.\n\nEquivalent SQL (tested with SQLite):\n\n```sql\nCREATE TABLE DEPARTMENT (\n    DeptCode TEXT PRIMARY KEY,\n    DeptName TEXT NOT NULL,\n    Location TEXT\n);\nCREATE TABLE WORKER (\n    WorkerID   TEXT PRIMARY KEY,\n    WorkerName TEXT NOT NULL,\n    Gender     TEXT,\n    DOB        TEXT,\n    DeptCode   TEXT NOT NULL REFERENCES DEPARTMENT(DeptCode)\n);\n```\n\nAnother acceptable pair is PRODUCT( `ProductCode*`, ProductName, UnitPrice, `#DeptCode` ) with DEPARTMENT.",
+      "themes": [
+        "relational databases",
+        "keys and relationships"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

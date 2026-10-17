@@ -1,0 +1,79 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 7 : points imprimés par sous-partie : (i) 8 (4 termes) ; (ii)(a) 2 + (b) 2 = 4 ; (iii)(a) 3 + (b) 2 = 5 ; total 17. La numérotation du sujet mélange (ii)(a)/(b) pour la recherche linéaire et la première génération de langages, puis (iii)(a)/(b) pour la factorielle : recopiée telle quelle.",
+    "Question 7(iii) : la fonction récursive imprimée (Figure A) a pour seul cas de base n==1 : fact(0) ne se termine pas (récursion infinie). Le corrigé le signale ; la version itérative (Figure B) renvoie 1 pour n = 0. Logique vérifiée par une traduction Python (n de 1 à 14, résultats identiques à math.factorial). Aucun code C/Pascal dans ce sujet : le pseudo-code n'a pas été compilé."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Explain the following terms as used in programming:\n\n(a) Inheritance.\n\n(b) Programming paradigm.\n\n(c) Encapsulation.\n\n(d) Dynamic data structure. (8 marks)",
+      "corrige_markdown": "**(a) Inheritance (2 marks).** In object-oriented programming, inheritance lets a new class (the **subclass** or derived class) automatically acquire the attributes and methods of an existing class (the **superclass** or base class), and then add or redefine some of them. It promotes code reuse. Example: a class `Student` inherits the attributes `name` and `dateOfBirth` from the class `Person` and adds `matricule`.\n\n**(b) Programming paradigm (2 marks).** A programming paradigm is a **style or fundamental approach** to writing programs, that is, the model that determines how a program is organised and how a problem is expressed. Examples: procedural (a sequence of procedures, e.g. C, Pascal), object-oriented (objects and classes, e.g. Java), functional, logic (declarative) and event-driven programming.\n\n**(c) Encapsulation (2 marks).** Encapsulation is the bundling of **data (attributes) and the methods that operate on that data into one unit, the class**, while hiding the internal details: the attributes are made private and can be read or changed only through the public methods of the object. It protects the data from accidental or invalid changes and allows the internal implementation to be changed without affecting the rest of the program.\n\n**(d) Dynamic data structure (2 marks).** A dynamic data structure is one whose **size can grow and shrink while the program is running**, because memory for its elements is allocated (and released) at run time, usually with pointers, rather than being fixed when the program is written. Examples: linked lists, stacks and queues built with pointers, and trees. By contrast an ordinary array has a fixed size.",
+      "themes": [
+        "object-oriented programming",
+        "programming paradigms",
+        "data structures"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) Explain how the linear search algorithm works, given an array of size N. (2 marks)\n\n(b) State two main properties of a first generation programming language. (2 marks)",
+      "corrige_markdown": "**(a) Linear search (2 marks)**\n\nLinear (sequential) search looks for a target value in an array $A[1..N]$ by examining the elements **one after another from the first**: each element is compared with the target; if it is equal, the search stops and the position is returned; if the end of the array is reached without a match, the target is not in the array. The array does not need to be sorted. In the worst case (target last or absent) $N$ comparisons are made, on average about $N/2$ when the target is present, so the time is $O(N)$.\n\n```\nfound <- false ; i <- 1\nWhile i <= N And found = false Do\n    If A[i] = target Then found <- true Else i <- i + 1\nEndWhile\n```\n\n**(b) First generation language (2 marks)**\n\nA first generation language is **machine code**. Two main properties:\n\n1. It is written entirely in **binary** (0s and 1s), so it is executed **directly by the processor with no translation** (no assembler or compiler needed).\n2. It is **machine dependent** (specific to one type of processor, not portable) and very **hard to read, write and debug** for humans, although it runs very fast.",
+      "themes": [
+        "searching algorithms",
+        "programming language generations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Figure A below is a pseudo-code for the function factorial\n\n```\nInteger fact(int n)\nBegin\n    If n==1 Then\n        return 1;\n    Else\n        return (n*fact(n-1));\nEnd\n```\n\nFigure A.\n\n(a) Write an iterative version of the function factorial. Label it figure B. (3 marks)\n\n(b) Justify why programmers prefer the iterative function B over the recursive function A. (2 marks)",
+      "corrige_markdown": "**(a) Figure B: iterative version (3 marks)**\n\n```\nInteger fact(int n)\nBegin\n    Integer result, i\n    result <- 1\n    For i <- 2 To n Do\n        result <- result * i\n    EndFor\n    return result\nEnd\n```\n\nFigure B.\n\nCheck by trace for $n = 5$: result is 1, then $1\\times2 = 2$, $2\\times3 = 6$, $6\\times4 = 24$, $24\\times5 = 120$, so `fact(5)` returns 120, the same value as $5! = 120$ given by Figure A. For $n = 1$ the loop does not run and 1 is returned. (A Python translation of both figures gave identical results for $n = 1$ to $14$.)\n\n**(b) Why the iterative version is preferred (2 marks)**\n\n- **Less memory:** the recursive function A makes $n$ nested calls and each call stores a stack frame (parameter, return address) until the base case is reached, so it needs $O(n)$ stack memory, whereas B uses a fixed number of variables, $O(1)$ extra memory. A large $n$ can cause a **stack overflow** in A.\n- **Faster:** B avoids the overhead of $n$ function calls and returns. B is also safe for $n = 0$ (it returns 1), while A, whose only stopping case is $n = 1$, would call itself forever for $n = 0$.",
+      "themes": [
+        "recursion",
+        "pseudocode algorithms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

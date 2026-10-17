@@ -1,0 +1,160 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 2, ADVANCED LEVEL, June 2023. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 : les sous-questions sont imprimées (i)(a)-(c), (ii)(a)-(d) et (iii)(a)-(b) ; numérotées « i(a) », « ii(a) »... L'amorce de chaque partie est recopiée dans chaque sous-question. Le tableau du nombre binaire est recopié tel quel : 0 1 1 1 1 0 1 0 (lu sur le scan, vérifié par la seconde passe).",
+    "Question 2 (ii)(d) : la question demande « two key characteristics of this processor's instruction set » ; le corrigé liste quatre caractéristiques RISC acceptables, dont deux suffisent.",
+    "Question 2 (iii)(b) : le schéma est à produire par le candidat ; il est décrit dans le corrigé par un diagramme en texte."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "Consider the following 8-bit binary integer which is in two's complement form.\n\n| 0 | 1 | 1 | 1 | 1 | 0 | 1 | 0 |\n|---|---|---|---|---|---|---|---|\n\nGive the denary equivalent of this binary integer.",
+      "corrige_markdown": "The leading (sign) bit is 0, so the number is positive and its value is read directly:\n\n$$01111010_2 = 0\\cdot 128 + 1\\cdot 64 + 1\\cdot 32 + 1\\cdot 16 + 1\\cdot 8 + 0\\cdot 4 + 1\\cdot 2 + 0\\cdot 1 = 64 + 32 + 16 + 8 + 2 = 122.$$\n\n**Denary equivalent: 122.**",
+      "themes": [
+        "number systems",
+        "binary number representation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "Consider the following 8-bit binary integer which is in two's complement form: 0 1 1 1 1 0 1 0.\n\nShow how this binary integer would be represented in hexadecimal.",
+      "corrige_markdown": "Split the 8 bits into two groups of four (nibbles), starting from the right, and convert each nibble:\n\n* $0111_2 = 7$\n* $1010_2 = 10 = \\text{A}$\n\nSo $01111010_2 = \\mathbf{7A}_{16}$.\n\nCheck: $7 \\times 16 + 10 = 122$, the denary value found in (a).",
+      "themes": [
+        "number systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "Consider the following 8-bit binary integer which is in two's complement form: 0 1 1 1 1 0 1 0.\n\nShow the result obtained when this binary integer is added to itself. State its decimal equivalent and explain the result.",
+      "corrige_markdown": "Add $01111010$ to itself, column by column from the right (carries shown):\n\n```text\ncarries:  1 1 1 1 . 1 . .\n          0 1 1 1 1 0 1 0     (122)\n        + 0 1 1 1 1 0 1 0     (122)\n        -----------------\n          1 1 1 1 0 1 0 0\n```\n\nThe result is $11110100_2$ (no carry leaves the 8th bit).\n\n**Decimal equivalent.** In two's complement the leading bit has weight $-128$: $11110100_2 = -128 + 64 + 32 + 16 + 4 = -12$. (Equivalently, the magnitude is obtained by inverting and adding 1: $00001011 + 1 = 00001100 = 12$.) **The result read as a two's complement number is $-12$.**\n\n**Explanation.** The correct sum is $122 + 122 = 244$. An 8-bit two's complement register can only hold values from $-128$ to $+127$, so 244 does not fit. The bits $11110100$ are the pattern of $244$ in 8 bits (unsigned 244, or $244 - 256 = -12$ when the top bit is read as the sign). The sum of two positive numbers has produced a negative result: this is an **arithmetic overflow** (a carry into the sign bit without a carry out of it). The result is wrong and the processor sets its overflow flag.",
+      "themes": [
+        "binary number representation",
+        "binary arithmetic"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "A RISC processor has a 32-bit architecture, with instructions that are 1-word long. The processor has 64 registers each of which is 32 bits long and supports 45 instructions (operations). Besides the operator field which holds the operation code (Opcode), each instruction has an immediate operand and two register operands. The Opcode field uses M bits to address 45 operations, each register operand uses N bits and the remaining bits are used for the immediate operand field.\n\nDetermine the minimum number of bits required for the Opcode field.",
+      "corrige_markdown": "$M$ bits can code $2^M$ different operations, so we need $2^M \\ge 45$.\n\n$2^5 = 32 < 45$ and $2^6 = 64 \\ge 45$, hence $M = \\lceil \\log_2 45 \\rceil = 6$.\n\n**Minimum number of bits for the Opcode field: $M = 6$.**",
+      "themes": [
+        "processor instruction sets",
+        "risc and cisc architectures"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "A RISC processor has a 32-bit architecture, with instructions that are 1-word long. The processor has 64 registers each of which is 32 bits long and supports 45 instructions (operations). Besides the operator field which holds the operation code (Opcode), each instruction has an immediate operand and two register operands. The Opcode field uses M bits to address 45 operations, each register operand uses N bits and the remaining bits are used for the immediate operand field.\n\nDetermine the minimum number of bits required for each register operand field.",
+      "corrige_markdown": "To name one of 64 registers we need $2^N \\ge 64$. Since $2^6 = 64$, $N = \\log_2 64 = 6$.\n\n**Minimum number of bits for each register operand field: $N = 6$.**",
+      "themes": [
+        "processor instruction sets",
+        "risc and cisc architectures"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "A RISC processor has a 32-bit architecture, with instructions that are 1-word long. The processor has 64 registers each of which is 32 bits long and supports 45 instructions (operations). Besides the operator field which holds the operation code (Opcode), each instruction has an immediate operand and two register operands. The Opcode field uses M bits to address 45 operations, each register operand uses N bits and the remaining bits are used for the immediate operand field.\n\nDetermine the maximum number of bits available for the immediate operand field.",
+      "corrige_markdown": "An instruction is 1 word long, that is 32 bits. It contains the Opcode ($M = 6$ bits), two register operands ($2 \\times N = 2 \\times 6 = 12$ bits) and the immediate field:\n\n$$\\text{immediate bits} = 32 - M - 2N = 32 - 6 - 12 = 14.$$\n\n**Maximum number of bits available for the immediate operand field: 14** (so an unsigned immediate can range from 0 to $2^{14} - 1 = 16383$).",
+      "themes": [
+        "processor instruction sets",
+        "risc and cisc architectures"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(d)",
+      "enonce_markdown": "A RISC processor has a 32-bit architecture, with instructions that are 1-word long. The processor has 64 registers each of which is 32 bits long and supports 45 instructions (operations).\n\nState two key characteristics of this processor's instruction set.",
+      "corrige_markdown": "Any two of the following characteristics of a RISC instruction set, which the data of this processor illustrate:\n\n1. **Fixed-length instructions**: every instruction is exactly 1 word (32 bits), which makes fetching and decoding simple and fast and allows efficient pipelining.\n2. **A small set of simple instructions** (only 45 operations here), most of which complete in **one clock cycle**.\n3. **Load/store architecture**: only load and store instructions access memory; all other operations work on the many general-purpose **registers** (64 here), which reduces slow memory accesses.\n4. **Few, simple addressing modes** (here register and immediate operands) and a hardwired control unit.",
+      "themes": [
+        "processor instruction sets",
+        "risc and cisc architectures"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii(a)",
+      "enonce_markdown": "Most conventional computers have a SISD architecture.\n\nWhat does SISD stand for?",
+      "corrige_markdown": "**SISD** stands for **Single Instruction, Single Data** (stream): the computer executes one instruction at a time, and that instruction operates on a single item of data. It is the first category of Flynn's taxonomy and describes the classic sequential von Neumann computer with one processor.",
+      "themes": [
+        "parallel computer architectures"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "iii(b)",
+      "enonce_markdown": "Most conventional computers have a SISD architecture.\n\nDraw a block diagram that illustrates the SISD machine architecture.",
+      "corrige_markdown": "A SISD machine has one control unit, one processing unit and one memory. A single stream of instructions flows from memory to the control unit, which directs the processing unit; a single stream of data flows between memory and the processing unit.\n\n```text\n                 instruction stream (one at a time)\n +--------+ ------------------------------> +--------------+\n |        |                                 | Control Unit |\n | Memory |                                 +--------------+\n |        |                                        | control signals\n |        |        data stream (one item)          v\n |        | <==============================> +-----------------+\n +--------+                                  | Processing Unit |\n                                             |  (ALU + regs)   |\n                                             +-----------------+\n```\n\nMarking scheme for the drawing: the three blocks (memory, control unit, processing unit) correctly labelled, the single instruction stream from memory to the control unit, and the single two-way data stream between memory and the processing unit.",
+      "themes": [
+        "parallel computer architectures"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

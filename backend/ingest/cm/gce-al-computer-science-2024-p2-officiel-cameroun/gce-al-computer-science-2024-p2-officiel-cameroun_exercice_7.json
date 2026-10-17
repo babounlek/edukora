@@ -1,0 +1,64 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 7 : points imprimés par sous-partie : i = 3 + 4 + 3 = 10 ; ii = 4 + 3 = 7 ; total 17. Le sujet écrit tantôt « MusicFile / VideoFile », tantôt « Music_file / Video_file » ; recopié tel quel dans l'énoncé, noms de classes MusicFile et VideoFile dans le corrigé.",
+    "7(i)(a) : le diagramme de classes à dessiner est décrit en schéma ASCII dans le corrigé. 7(ii)(a)-(b) : le sujet ne fixe pas le format des entrées ; hypothèse : le visiteur saisit son type (C ou A) et le type de jour (W ou E). Pseudocode et récursion vérifiés par une simulation Python.",
+    "Ce sujet ne demande ni code C ni code Pascal (pseudocode et assembleur générique seulement) : aucun compilateur n'était disponible, le pseudocode et l'assembleur n'ont donc pas été compilés ni assemblés, leur logique a été vérifiée par des simulations Python ; les requêtes et tables 2NF de la question 4 ont été vérifiées avec sqlite3."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "An object-oriented program is being written to store details of and play media files that are stored on a computer. A class **MediaFile** has been created and two subclasses, **VideoFile** and **MusicFile** are to be developed. The classes VideoFile and MusicFile are types of MediaFile. In object-oriented programing,\n\n(a) Give a diagrammatic representation of these classes. State and justify the object-oriented concept that best relates the classes. (3 marks)\n\n(b) Give in pseudocode, a method (loosely, a procedure or function) to print the artist of a **Music_file** and another method by the same name to print the title of a **Video_file**. What main object-oriented programming language concept permits one to call this method with any media file object and correctly print the right values? Justify your answer. (4 marks)\n\n(c) Briefly explain how one would exploit encapsulation in order to make sure methods in **MusicFile** object do not access or modify those in **VideoFile**. (3 marks)",
+      "corrige_markdown": "**(a) Class diagram and concept (3 marks)**\n\n```text\n              +------------------+\n              |    MediaFile     |\n              |------------------|\n              | title            |\n              | fileSize         |\n              | play()           |\n              | printDetails()   |\n              +------------------+\n                  ^          ^\n                  |          |     (arrows with open heads = \"is a\")\n     +------------------+  +------------------+\n     |    VideoFile     |  |    MusicFile     |\n     |------------------|  |------------------|\n     | resolution       |  | artist           |\n     | printDetails()   |  | printDetails()   |\n     +------------------+  +------------------+\n```\n\nThe concept that relates the classes is **inheritance**. VideoFile and MusicFile are specialised kinds of MediaFile (an \"is-a\" relationship: a video file *is a* media file), so they inherit the attributes and methods common to all media files (title, file size, play) from the superclass MediaFile and add or redefine only what is specific to them. This justifies the choice: it avoids duplicating code and expresses that both subclasses are types of MediaFile.\n\n**(b) Methods and polymorphism (4 marks)**\n\n```text\nCLASS MediaFile\n    PROCEDURE printDetails()          ; general version, overridden below\n        OUTPUT \"Media file: \", self.title\n    END PROCEDURE\nEND CLASS\n\nCLASS MusicFile INHERITS MediaFile\n    PROCEDURE printDetails()          ; prints the artist\n        OUTPUT \"Artist: \", self.artist\n    END PROCEDURE\nEND CLASS\n\nCLASS VideoFile INHERITS MediaFile\n    PROCEDURE printDetails()          ; prints the title\n        OUTPUT \"Title: \", self.title\n    END PROCEDURE\nEND CLASS\n```\n\nCalling the method with any media file object:\n\n```text\nFOR EACH m IN mediaList               ; m may be a MusicFile or a VideoFile\n    m.printDetails()\nNEXT m\n```\n\nThe concept is **polymorphism** (here method overriding with dynamic or late binding). The same method name `printDetails` is defined in several classes, and at run time the version belonging to the real class of the object is the one executed: a MusicFile object prints its artist and a VideoFile object prints its title, although the calling code does not need to know which kind of file it holds.\n\n**(c) Encapsulation (3 marks)**\n\nEncapsulation means bundling the data (attributes) of a class with the methods that work on it and hiding the data from the outside. To make sure the methods of MusicFile cannot access or modify those of VideoFile (and vice versa):\n\n- declare the attributes of each class as **private** (for example `artist` in MusicFile and `resolution` and `title` in VideoFile), so that only the methods of the class that owns them can read or change them directly;\n- give each class a **public interface** (methods such as `getArtist()`, `setArtist()`, `printDetails()`), the only way for outside code to use the object; a MusicFile method can reach a VideoFile object only through the public methods that VideoFile chooses to expose, and the internal implementation can change without affecting the other class;\n- keep the own attributes of each subclass private (never public), and let the shared data of MediaFile be reached only through its public get and set methods, so that MusicFile and VideoFile stay independent of each other.",
+      "themes": [
+        "object-oriented programming"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 10
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) For children, a tourist attraction has a daily charge of 5000 FCFA on weekdays and 7500 FCFA on weekends or bank holidays. Adults are charged 8000 FCFA on weekdays and 12000 FCFA on weekends and bank holidays. Write a pseudocode algorithm that allows the user to calculate the charge for a visitor. (4 marks)\n\n(b) Explain in words how you could modify your program in (ii)a so that it recursively calls itself but also checks that the recursion terminates. (3 marks)",
+      "corrige_markdown": "**(a) Pseudocode (4 marks)**\n\nThe user enters the type of visitor and the type of day; selection (IF) chooses the charge, which is then displayed.\n\n```text\nOUTPUT \"Visitor type (C = child, A = adult): \"\nINPUT visitor\nOUTPUT \"Day (W = weekday, E = weekend or bank holiday): \"\nINPUT day\n\nIF visitor = \"C\" THEN\n    IF day = \"W\" THEN\n        charge <- 5000\n    ELSE\n        charge <- 7500\n    END IF\nELSE\n    IF day = \"W\" THEN\n        charge <- 8000\n    ELSE\n        charge <- 12000\n    END IF\nEND IF\n\nOUTPUT \"The charge is \", charge, \" FCFA\"\n```\n\n**Check by simulation.** A Python translation of this algorithm gives the four possible charges: child on a weekday 5000, child at a weekend or bank holiday 7500, adult on a weekday 8000, adult at a weekend or bank holiday 12000 FCFA.\n\n**(b) Recursive version (3 marks)**\n\nTurn the calculation into a procedure `TotalCharge(n)` that works out the charge for a group of $n$ visitors:\n\n- **Recursive case:** if $n > 0$, read the type of visitor and the day for one visitor, compute that visitor's charge with the same selection structure as in (a), then **call itself** with one visitor fewer, `TotalCharge(n - 1)`, and add the value returned to the visitor's charge.\n- **Base case (termination):** if $n = 0$, there is nobody left, so the procedure stops calling itself and returns 0.\n- **Guaranteeing termination:** every call receives a smaller value ($n - 1$), moving the problem towards the base case; the procedure must also check at the start that $n$ is a whole number and not negative (if $n < 0$ it returns 0 or reports an error), otherwise the value would never reach 0 and the recursion would not stop.\n\nFor example, for a child on a weekday, an adult at a weekend and an adult on a weekday, `TotalCharge(3)` returns $5000 + 12000 + 8000 = 25000$ FCFA (checked with a Python version of the recursion). A similar approach is to call the procedure again when the input is invalid, allowing only a limited number of attempts so that the recursion also terminates.",
+      "themes": [
+        "algorithm design",
+        "recursion"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    }
+  ]
+}

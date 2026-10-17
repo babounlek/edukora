@@ -1,0 +1,79 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2025-p3-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 3,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics With Statistics, Paper 3 (0770/3), ADVANCED LEVEL, June 2025. Time allowed: THREE HOURS.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae and tables produced by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Electronic calculators may be used. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**(i)** It is known that 90% of the seeds planted by a farmer will germinate. If 8 seeds are sown, find, to four decimal places, the probability that",
+  "groupes": [],
+  "points": "13",
+  "figures": [],
+  "incertitudes": [
+    "Question 5 (ii)(d) : le sujet donne un taux moyen de 4 clients par 30 minutes ; pour une période d'une heure le corrigé retient un taux proportionnel (hypothèse de la loi de Poisson : $\\lambda = 8$ par heure).",
+    "Question 5 : les valeurs binomiale et de Poisson sont calculées exactement (pas de lecture de table) ; les points imprimés par partie, 3, 4, 2 et 4, totalisent 13 ; recopiés tels quels."
+  ],
+  "questions": [
+    {
+      "numero": "i.a",
+      "enonce_markdown": "(a) 3 seeds will not germinate.",
+      "corrige_markdown": "Let $Y$ be the number of seeds (out of $n = 8$) that do **not** germinate. Each seed fails independently with probability $0.10$, so $Y \\sim B(8, 0.1)$ (equivalently, $X \\sim B(8, 0.9)$ for the number that germinate, and \"3 do not germinate\" means $X = 5$).\n\n$$P(Y = 3) = \\binom{8}{3}(0.1)^3(0.9)^5 = 56 \\times 0.001 \\times 0.59049 = 0.033067\\ldots$$\n\n**$P(3 \\text{ seeds do not germinate}) \\approx 0.0331$.**",
+      "themes": [
+        "binomial distribution"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i.b",
+      "enonce_markdown": "(b) at least 7 seeds will germinate.",
+      "corrige_markdown": "Let $X \\sim B(8, 0.9)$ be the number of seeds that germinate. \"At least 7\" means $X = 7$ or $X = 8$ (mutually exclusive):\n\n$$P(X = 7) = \\binom{8}{7}(0.9)^7(0.1) = 8 \\times 0.4782969 \\times 0.1 = 0.382638$$\n\n$$P(X = 8) = (0.9)^8 = 0.430467$$\n\n$$P(X \\ge 7) = 0.382638 + 0.430467 = 0.813105$$\n\n**$P(\\text{at least 7 germinate}) \\approx 0.8131$.**",
+      "themes": [
+        "binomial distribution"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii.c",
+      "enonce_markdown": "**(ii)** Averagely, a restaurant receives 4 customers every 30 minutes. Assuming that the number of customers who visit the restaurant follows the Poisson distribution, find, to four decimal places, the probability that\n\n(c) two customers will visit the restaurant in a 30 minutes period.",
+      "corrige_markdown": "For a 30-minute period, the number of customers is $X \\sim \\mathrm{Po}(\\lambda)$ with $\\lambda = 4$, and $P(X = r) = \\dfrac{e^{-\\lambda}\\lambda^r}{r!}$.\n\n$$P(X = 2) = \\frac{e^{-4} \\times 4^2}{2!} = 8e^{-4} = 8 \\times 0.0183156 = 0.146525$$\n\n**$P(\\text{two customers in 30 minutes}) \\approx 0.1465$.**",
+      "themes": [
+        "poisson distribution statistics"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii.d",
+      "enonce_markdown": "(d) at most 3 customers will visit the restaurant in a 1 hour period.",
+      "corrige_markdown": "In 1 hour (two 30-minute periods) the mean doubles, so the number of customers is $W \\sim \\mathrm{Po}(8)$ (the Poisson mean is proportional to the length of the period).\n\n$$P(W \\le 3) = e^{-8}\\left(1 + 8 + \\frac{8^2}{2!} + \\frac{8^3}{3!}\\right) = e^{-8}\\left(1 + 8 + 32 + \\frac{256}{3}\\right) = \\frac{379}{3}\\,e^{-8}$$\n\nEvaluating: $1 + 8 + 32 + 85.3333 = 126.3333$ and $e^{-8} = 0.00033546$, so\n\n$$P(W \\le 3) = 126.3333 \\times 0.00033546 = 0.042380$$\n\n**$P(\\text{at most 3 customers in 1 hour}) \\approx 0.0424$.**",
+      "themes": [
+        "poisson distribution statistics"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

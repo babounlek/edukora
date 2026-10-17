@@ -1,0 +1,143 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p3-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 3, ADVANCED LEVEL, June 2022. Subject title: Computer Science. Paper 3 - Practical. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of the drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. You are expected to print out a single copy of relevant fragments of your program at different times. Please notify the instructor of any required printout that was not done! When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C or C11 programming languages may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer. Do not write on the first page of your answer booklet. It is reserved for administrative purpose. Where information is provided as soft copy, notify the instructors if it is not found in your machine or has not been made available to you.\n\nThe paper has two tasks: Task 1 (Database for a Furniture Company, 24 marks) and Task 2 (Programming, 26 marks).",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**Task 1: Database for a Furniture Company** *(24 marks)*\n\nA company sells furniture to customers of its store. The store does not keep furniture in stock. Instead, a customer places an order at the store and the company then orders the furniture required from its suppliers. When the ordered furniture arrives at the store a member of staff telephones or emails the customer to inform him/her that it is ready for collection. Customers often order more than one type of furniture on the same order, for example a sofa and two chairs.\n\nDetails of the furniture, customer and orders are to be stored in a relational database using the following relations (the primary key of each relation is underlined in the printed paper; it is marked with an asterisk (\\*) here):\n\n`Furniture(FurnitureID*, FurnitureName, Category, Price, SupplierName)`\n\n`CustomerOrder(OrderID*, CustomerID, Date)`\n\n`CustomerOrderLine(OrderID*, FurnitureID*, Quantity)`\n\n`Customer(CustomerID*, CustomerName, EmailAddress, TelephoneNumber)`\n\nThe attributes for these relations and others used eventually, are detailed as follows:\n\n| Description | Data type | Field size | Remark |\n|---|---|---|---|\n| FurnitureID | Number | 6 | Must be present |\n| FurnitureName | Varchar | 15 | |\n| Category | Varchar | 15 | Must be present |\n| Price | Number | | Must be present |\n| SupplierName | Varchar | 10 | |\n| OrderIdD | Number | | Must be present |\n| Date | Date | | |\n| Quantity | Number | | |\n| CustomerID | Varchar | 6 | Must be present |\n| CustomerName | Varchar | 15 | |\n| Email | Varchar | 20 | |\n| Telephone number | Number | | |\n| Validation | Text | | |\n\nYou are to develop a database for the furniture company via the subtasks given below.",
+  "groupes": [],
+  "points": "24",
+  "figures": [],
+  "incertitudes": [
+    "Aucun compilateur C ni Pascal n'est disponible : le code C du corrigé (Task 2) n'a PAS été compilé. Sa logique (initialise, verifyprime, setzero, doDisplay, main avec rootN = ceil(sqrt(N))) a été vérifiée par une traduction fidèle en Python, exécutée pour tous les N de 2 à 100 (comparaison avec un test de primalité par force brute), puis sur N = 10, 20, 100, 2, 16 et des saisies invalides ; les sorties recopiées dans le corrigé (N = 100, traces de verifyprime et setzero) sont celles de cette simulation. Le SQL de la Task 1 a été exécuté avec sqlite3, clés étrangères activées (CREATE TABLE, INSERT, requête avec jointures, DELETE refusé puis accepté après suppression des lignes enfants, ALTER TABLE ADD COLUMN DEFAULT, UPDATE) ; CREATE DATABASE / USE, ON DELETE CASCADE et la remarque MySQL sur TEXT DEFAULT ne sont pas testés (SQLite ne les prend pas en charge).",
+    "Le PDF est un scan de 4 pages (page de garde, Task 1, fin de la Task 1 et début de la Task 2, fin de la Task 2) : le sujet ne comporte que deux tâches, sans sections ni choix (regles_choix et groupes vides). Aucune figure n'est recadrée : le tableau des attributs et les tableaux d'illustration de la Task 2 (tableaux de 10 cases) sont transcrits en tableaux Markdown, et le schéma entité-association à produire par le candidat (Task 1 i) est décrit dans le corrigé sous forme de schéma en texte.",
+    "Points imprimés cohérents : Task 1 = 24 (3 + 1 + 4 + 8 + 2 + 2 + 2 + 2), Task 2 = 26 (3 + 4 + 5 + 4 + 3 + 4 + 1 + 2). Aucun point corrigé. Les sous-questions (c) et (d) du sujet suivent les (a) et (b) de (iv) : elles sont codées iv(c) et iv(d), car (d) renvoie à « iv(a) ».",
+    "Défauts d'impression recopiés tels quels : le tableau des attributs écrit « OrderIdD » (pour OrderID) ; les noms d'attributs du tableau (Email, Telephone number) diffèrent de ceux des relations (EmailAddress, TelephoneNumber) ; l'énoncé (c) écrit « Customer Order » (table CustomerOrder) ; l'étape 9 de l'illustration dit « multiples of 3 (i.e., 3 and 9) » alors que 3 est exclu et que les multiples à mettre à zéro sont 6 (déjà à zéro) et 9. Le corrigé emploie les noms des relations (EmailAddress, TelephoneNumber, OrderID) et le signale.",
+    "Le sujet ne donne pas la taille des champs Price, Quantity, OrderID, Date et TelephoneNumber : le corrigé choisit NUMERIC(10,2), INTEGER, INTEGER, DATE et BIGINT et le dit. Les données d'exemple (4 clients, 6 meubles, 5 commandes, 9 lignes) sont inventées ; le sujet n'en fournit pas. La ventilation des 8 points de (iii) et les barèmes partiels des autres questions sont des propositions : le sujet n'imprime que les totaux par sous-question.",
+    "Les actions sur ordinateur demandées (créer la base, saisir les données, imprimer, enregistrer et imprimer la sortie du test N = 100) sont traitées par les instructions et listings attendus, avec une sortie simulée. Le sujet autorise « round up (or down) » pour rootN : le corrigé arrondit par excès (4 pour N = 10, comme dans l'illustration). La page de garde autorise « C or C11 » ; le corrigé est en ANSI C compatible C11. Le tableau C déclaré tab[MAX + 1] (position k = nombre k, case 0 inutilisée) a 101 éléments ; l'équivalent Pascal array[1..100] en a exactement 100."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**(i)** In your answer booklet, give an Entity-Relationship (E-R) diagram that shows the degree of any three relationships that exist between the above entities. *[3 marks]*",
+      "corrige_markdown": "An E-R diagram shows each relation as an **entity** (a box with its attributes, the primary key marked) and each link between two entities as a **relationship** labelled with its **degree** (cardinality): one-to-one (1:1), one-to-many (1:N) or many-to-many (M:N). The foreign keys of the schema give the relationships. Any three of the following are accepted.\n\n1. **Customer - CustomerOrder, degree 1 : N.** `CustomerOrder.CustomerID` refers to `Customer.CustomerID`. One customer places many orders (over time), but a given order is placed by exactly one customer.\n2. **CustomerOrder - CustomerOrderLine, degree 1 : N.** `CustomerOrderLine.OrderID` refers to `CustomerOrder.OrderID`. An order contains one or more lines (a sofa and two chairs are two lines), and each line belongs to exactly one order.\n3. **Furniture - CustomerOrderLine, degree 1 : N.** `CustomerOrderLine.FurnitureID` refers to `Furniture.FurnitureID`. One item of furniture can appear on many order lines (it can be bought many times), and each line concerns exactly one item.\n\nA fourth relationship follows from the other three: **Customer - Furniture is M : N** (a customer buys many items, an item is bought by many customers). It is not drawn directly: `CustomerOrderLine`, whose primary key is the pair (`OrderID`, `FurnitureID`), is the associative entity that turns the M : N relationship into two 1 : N relationships.\n\nDiagram (PK = primary key, FK = foreign key; the figures 1 and N give the degree at each end of a relationship):\n\n```\n+-----------------+              +-----------------+              +----------------------+\n| Customer        |1------------N| CustomerOrder   |1------------N| CustomerOrderLine    |\n|-----------------|    places    |-----------------|   contains   |----------------------|\n| CustomerID (PK) |              | OrderID (PK)    |              | OrderID (PK, FK)     |\n| CustomerName    |              | CustomerID (FK) |              | FurnitureID (PK, FK) |\n| EmailAddress    |              | Date            |              | Quantity             |\n| TelephoneNumber |              +-----------------+              +----------------------+\n+-----------------+\n                                                                              | N\n                                                                              | concerns\n                                                                              | 1\n                                                                  +------------------+\n                                                                  | Furniture        |\n                                                                  |------------------|\n                                                                  | FurnitureID (PK) |\n                                                                  | FurnitureName    |\n                                                                  | Category         |\n                                                                  | Price            |\n                                                                  | SupplierName     |\n                                                                  +------------------+\n```\n\n*Marking:* the entities correctly named with their attributes (1 mark), three relationships correctly drawn (1 mark), the degree written at both ends of each relationship (1 mark).",
+      "themes": [
+        "entity relationship modelling",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(1)",
+      "enonce_markdown": "**(ii)** Using SQL statements, do the following using your favourite database management system (DBMS)\n\n1. Create a database and call it **SELLS**. *[1 mark]*",
+      "corrige_markdown": "The statement that creates a database is `CREATE DATABASE`; the database is then selected so that the next statements apply to it:\n\n```sql\nCREATE DATABASE SELLS;\nUSE SELLS;\n```\n\n*Remarks.* `USE SELLS;` is the MySQL form (in PostgreSQL the client reconnects with `\\c sells`). SQLite has no `CREATE DATABASE`: the database is the file created when it is opened (`sqlite3 SELLS.db`). In a graphical DBMS such as MS Access, the same step is File - New - Blank database, saved under the name SELLS. The mark is for the database being created with the exact name SELLS.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "ii(2)",
+      "enonce_markdown": "**(ii)** Using SQL statements, do the following using your favourite database management system (DBMS)\n\n2. In **SELLS**, create all the relations given above. *[4 marks]*",
+      "corrige_markdown": "Four `CREATE TABLE` statements are needed, one per relation (1 mark each). Each field receives the data type and size of the attribute table, the remark *Must be present* becomes `NOT NULL`, and the primary key is declared. The foreign keys are declared at the same time: a relation that is referred to must exist before the relation that refers to it, so the tables are created in the order **Customer, Furniture, CustomerOrder, CustomerOrderLine**.\n\n```sql\nCREATE TABLE Customer (\n    CustomerID      VARCHAR(6)     NOT NULL PRIMARY KEY,\n    CustomerName    VARCHAR(15),\n    EmailAddress    VARCHAR(20),\n    TelephoneNumber BIGINT\n);\n\nCREATE TABLE Furniture (\n    FurnitureID     NUMERIC(6)     NOT NULL PRIMARY KEY,\n    FurnitureName   VARCHAR(15),\n    Category        VARCHAR(15)    NOT NULL,\n    Price           NUMERIC(10,2)  NOT NULL,\n    SupplierName    VARCHAR(10)\n);\n\nCREATE TABLE CustomerOrder (\n    OrderID         INTEGER        NOT NULL PRIMARY KEY,\n    CustomerID      VARCHAR(6)     NOT NULL,\n    Date            DATE,\n    FOREIGN KEY (CustomerID) REFERENCES Customer (CustomerID)\n);\n\nCREATE TABLE CustomerOrderLine (\n    OrderID         INTEGER        NOT NULL,\n    FurnitureID     NUMERIC(6)     NOT NULL,\n    Quantity        INTEGER,\n    PRIMARY KEY (OrderID, FurnitureID),\n    FOREIGN KEY (OrderID)     REFERENCES CustomerOrder (OrderID),\n    FOREIGN KEY (FurnitureID) REFERENCES Furniture (FurnitureID)\n);\n```\n\n*Choices and remarks.*\n\n- Mapping used: `Varchar(n)` becomes `VARCHAR(n)`, `Number` of size 6 becomes `NUMERIC(6)`, a `Number` with no size becomes `INTEGER` (`OrderID`, `Quantity`), `BIGINT` (`TelephoneNumber`, a nine-digit number is too large for some small integer types) or `NUMERIC(10,2)` (`Price`, which has decimals), and `Date` becomes `DATE`. The sizes of `Price`, `Quantity`, `OrderID`, `Date` and `TelephoneNumber` are not given in the paper; the values above are choices.\n- The attribute names are those of the relations (`EmailAddress`, `TelephoneNumber`); the table of attributes calls them *Email* and *Telephone number*, and spells `OrderID` as *OrderIdD*.\n- `CustomerOrderLine` has a **composite primary key** (`OrderID`, `FurnitureID`): the same item cannot appear twice on one order (the quantity is used instead).\n- `Date` is the name given in the paper. It works as a column name in MySQL, PostgreSQL and SQLite; in MS Access write `[Date]`.\n- The four statements were run in SQLite with foreign keys enabled (`PRAGMA foreign_keys = ON`) without error. In MySQL the same statements work as written.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "**(iii)** Populate the relations in your database with 5-7 rows of furniture data and 3-4 rows of customer data. The data entered for CustomerOrder and CustomerOrderLine should be consistent with those for relations Furniture and Customer. That is, their data should derive from the furniture purchase transactions that the customers make. *[8 marks]*",
+      "corrige_markdown": "The relations are filled with `INSERT` statements. The paper fixes the numbers of rows (5 to 7 furniture rows, 3 to 4 customer rows) and asks for **consistency**: every `CustomerOrder.CustomerID` must exist in `Customer`, and every `CustomerOrderLine` must have its `OrderID` in `CustomerOrder` and its `FurnitureID` in `Furniture`. For this reason the parent relations (`Customer`, `Furniture`) are filled first, then `CustomerOrder`, then `CustomerOrderLine`. The values respect the field sizes (an ID of at most 6 characters, a name of at most 15, an e-mail address of at most 20) and the item 10765, needed in subtask (iv), is included. The data below are an example; any consistent data are accepted.\n\n```sql\n-- Customers (4 rows)\nINSERT INTO Customer VALUES ('C00001', 'Nkeng Paul',    'paul.nkeng@mail.cm', 677123456);\nINSERT INTO Customer VALUES ('C00002', 'Achu Beatrice', 'achu.b@mail.cm',     699456789);\nINSERT INTO Customer VALUES ('C00003', 'Tabi Samuel',   'tabi.s@mail.cm',     655987654);\nINSERT INTO Customer VALUES ('C00004', 'Mbua Grace',    'mbua.grace@mail.cm', 670321987);\n\n-- Furniture (6 rows)\nINSERT INTO Furniture VALUES (10765, 'Sofa 3 seats', 'Living room', 185000.00, 'Mobilux');\nINSERT INTO Furniture VALUES (10766, 'Armchair',     'Living room',  72500.00, 'Mobilux');\nINSERT INTO Furniture VALUES (20311, 'Dining table', 'Dining room', 120000.00, 'Bois&Co');\nINSERT INTO Furniture VALUES (20312, 'Dining chair', 'Dining room',  18000.00, 'Bois&Co');\nINSERT INTO Furniture VALUES (30458, 'Double bed',   'Bedroom',     210000.00, 'Dormir');\nINSERT INTO Furniture VALUES (40102, 'Writing desk', 'Office',       65000.00, 'Dormir');\n\n-- Orders (5 rows): each order belongs to an existing customer\nINSERT INTO CustomerOrder VALUES (5001, 'C00001', '2022-05-03');\nINSERT INTO CustomerOrder VALUES (5002, 'C00002', '2022-05-10');\nINSERT INTO CustomerOrder VALUES (5003, 'C00003', '2022-05-17');\nINSERT INTO CustomerOrder VALUES (5004, 'C00001', '2022-06-01');\nINSERT INTO CustomerOrder VALUES (5005, 'C00004', '2022-06-08');\n\n-- Order lines (9 rows): each line belongs to an existing order and an existing item\nINSERT INTO CustomerOrderLine VALUES (5001, 10765, 1);\nINSERT INTO CustomerOrderLine VALUES (5001, 10766, 2);\nINSERT INTO CustomerOrderLine VALUES (5002, 20311, 1);\nINSERT INTO CustomerOrderLine VALUES (5002, 20312, 6);\nINSERT INTO CustomerOrderLine VALUES (5003, 10765, 1);\nINSERT INTO CustomerOrderLine VALUES (5004, 10765, 1);\nINSERT INTO CustomerOrderLine VALUES (5004, 40102, 1);\nINSERT INTO CustomerOrderLine VALUES (5005, 30458, 1);\nINSERT INTO CustomerOrderLine VALUES (5005, 10765, 2);\n```\n\nReading the transactions back: customer C00001 (Nkeng Paul) placed two orders (5001 for one sofa 10765 and two armchairs 10766, 5004 for a sofa and a desk), C00002 (Achu Beatrice) one order for a dining table and six chairs, C00003 (Tabi Samuel) one order for a sofa, and C00004 (Mbua Grace) one order for a bed and two sofas. Four customers, six items, five orders and nine order lines are stored. The statements were run in SQLite with foreign keys enforced: no insertion was refused, so the data are consistent.\n\n*Marking (8 marks; the paper gives no split):* 5 to 7 furniture rows and 3 to 4 customer rows entered correctly; orders that refer to existing customers; order lines that refer to existing orders and furniture, with quantities.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "iv(a)",
+      "enonce_markdown": "**(iv)** [**Note:** *For this subtask, first write in your answer booklet the SQL queries (or statements) used to implement its activities in your DBMS.*]\n\nSuppose a fault has been identified with the product whose FurnitureID is 10765. In order to contact all those who purchased this item of furniture, the manager of the company needs a list of their names and telephone numbers only. Also, the list should be in alphabetical order of customer names.\n\n(a) Give an SQL query that produces this list. *[2 marks]*",
+      "corrige_markdown": "The customers are in `Customer`, but the fact that a customer bought the item 10765 is recorded two relations away: `Customer` - `CustomerOrder` (through `CustomerID`) - `CustomerOrderLine` (through `OrderID`, where `FurnitureID` is found). The query therefore joins the three relations, keeps the order lines of the item 10765, shows only the two required columns and sorts them.\n\n```sql\nSELECT DISTINCT Customer.CustomerName, Customer.TelephoneNumber\nFROM Customer\nINNER JOIN CustomerOrder     ON CustomerOrder.CustomerID = Customer.CustomerID\nINNER JOIN CustomerOrderLine ON CustomerOrderLine.OrderID = CustomerOrder.OrderID\nWHERE CustomerOrderLine.FurnitureID = 10765\nORDER BY Customer.CustomerName;\n```\n\n- `SELECT` of **only** `CustomerName` and `TelephoneNumber`, as the manager asks;\n- the two `INNER JOIN` on `CustomerID` then on `OrderID` link each customer to his or her order lines;\n- `WHERE ... FurnitureID = 10765` keeps the lines of the faulty product;\n- `ORDER BY CustomerName` gives the alphabetical order (ascending is the default);\n- `DISTINCT` is there because a customer who bought the item on two orders would otherwise appear twice (Nkeng Paul does in the data of subtask (iii): orders 5001 and 5004).\n\nWith the data of subtask (iii), the query returns:\n\n| CustomerName | TelephoneNumber |\n|---|---|\n| Mbua Grace | 670321987 |\n| Nkeng Paul | 677123456 |\n| Tabi Samuel | 655987654 |\n\nWithout `DISTINCT` the row of Nkeng Paul would appear twice. The query was run in SQLite on these data.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iv(b)",
+      "enonce_markdown": "**(iv)** (continued: the product whose FurnitureID is 10765 is faulty.)\n\n(b) Write an SQL query to delete from the database the faulty product with furnitureID number 10765. *[2 marks]*",
+      "corrige_markdown": "A row is removed with `DELETE FROM`, and the `WHERE` clause selects the faulty product through its primary key:\n\n```sql\nDELETE FROM Furniture\nWHERE FurnitureID = 10765;\n```\n\nWithout `WHERE` **every** row of `Furniture` would be deleted.\n\n*Referential integrity.* In the database of subtask (ii), `CustomerOrderLine.FurnitureID` refers to `Furniture.FurnitureID`. If order lines still contain 10765, the DBMS refuses the statement above (in SQLite: `FOREIGN KEY constraint failed`; this is what happens with the data of subtask (iii)). The lines that refer to the product must be deleted first, then the product:\n\n```sql\nDELETE FROM CustomerOrderLine\nWHERE FurnitureID = 10765;\n\nDELETE FROM Furniture\nWHERE FurnitureID = 10765;\n```\n\nRun in this order on the data of subtask (iii), the two statements remove four order lines and the row 10765, and the five other items remain. Another solution is to declare the foreign key with `ON DELETE CASCADE` when the table is created, so that the lines disappear with the product. In both cases the list of subtask (iv)(a) must be produced **before** the deletion, because the link between the product and its buyers is lost afterwards (see subtask (d)).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iv(c)",
+      "enonce_markdown": "**(iv)** (continued)\n\n(c) Alter the table Customer Order to include a field called **Validation**. The field holds a short explanatory text for faults found in an order, or the word \"NONE\" if there is no fault. *[2 marks]*",
+      "corrige_markdown": "The structure of an existing table is changed with `ALTER TABLE ... ADD`. The new field holds text, so it has the type `TEXT` (the paper lists `Validation` as *Text*), and `NONE` is its default value, so that the orders already stored, and the new orders with no fault, contain \"NONE\":\n\n```sql\nALTER TABLE CustomerOrder\nADD COLUMN Validation TEXT DEFAULT 'NONE';\n```\n\nAfter this statement every existing order has `Validation = 'NONE'`:\n\n| OrderID | CustomerID | Date | Validation |\n|---|---|---|---|\n| 5001 | C00001 | 2022-05-03 | NONE |\n| 5002 | C00002 | 2022-05-10 | NONE |\n| 5003 | C00003 | 2022-05-17 | NONE |\n| 5004 | C00001 | 2022-06-01 | NONE |\n| 5005 | C00004 | 2022-06-08 | NONE |\n\nThe field can then record the fault found in the orders that contain the product 10765:\n\n```sql\nUPDATE CustomerOrder\nSET Validation = 'Faulty product 10765'\nWHERE OrderID IN (SELECT OrderID FROM CustomerOrderLine WHERE FurnitureID = 10765);\n```\n\nwhich changes the orders 5001, 5003, 5004 and 5005 and leaves 5002 at `NONE`.\n\n*Dialect remark.* The statements were run in SQLite. In MySQL (before version 8.0.13) a `TEXT` column cannot have a default value: use `VARCHAR(100) DEFAULT 'NONE'` instead. In PostgreSQL `ADD COLUMN` works as written, and in MS Access the field is added in design view with the type *Short Text*.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iv(d)",
+      "enonce_markdown": "**(iv)** (continued)\n\n(d) In your answer booklet, mindful of how you produced the list of names and telephone numbers in iv(a) above, state in words how one would remove faulty products from your database. *[2 marks]*",
+      "corrige_markdown": "The list of subtask (iv)(a) is built from the order lines that contain the faulty product, and those same lines prevent the deletion of the product, so the order of the operations matters. For each faulty product:\n\n1. **Identify the product** by its `FurnitureID` (here 10765).\n2. **Produce the list of affected customers first** (the query of (iv)(a), with the identifier of the product) and contact them: the link between the product and its buyers exists only as long as the rows of `CustomerOrderLine` that contain the product exist. The fault can also be written in the field `Validation` of the orders concerned.\n3. **Delete the rows of the child relation** `CustomerOrderLine` that refer to the product (`DELETE FROM CustomerOrderLine WHERE FurnitureID = ...`), because a row of `Furniture` that is still referred to cannot be deleted (referential integrity). If the foreign key was declared with `ON DELETE CASCADE`, this step is done automatically.\n4. **Delete the product itself** from the parent relation `Furniture` (`DELETE FROM Furniture WHERE FurnitureID = ...`).\n5. **Check** that no row with this `FurnitureID` remains in the two relations, and repeat the procedure with the identifier of each other faulty product.\n\nIn short: list and warn the customers first, delete the dependent order lines, then delete the product from the `Furniture` relation.",
+      "themes": [
+        "relational databases",
+        "keys and relationships"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

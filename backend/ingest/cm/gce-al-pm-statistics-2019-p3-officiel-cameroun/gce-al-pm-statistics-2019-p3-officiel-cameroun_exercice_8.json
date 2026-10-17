@@ -1,0 +1,66 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2019-p3-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 3,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics With Statistics, Paper 3 (0770/3), ADVANCED LEVEL, June 2019. Time allowed: THREE HOURS.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae and tables produced by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Electronic calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "The scores of 10 candidates in a mock exams and the final exams are presented below:\n\n| Mock exam, $M$ | 22 | 41 | 46 | 53 | 62 | 65 | 72 | 80 | 91 | 92 |\n|---|---|---|---|---|---|---|---|---|---|---|\n| Final exam, $F$ | 27 | 30 | 38 | 35 | 44 | 41 | 50 | 44 | 62 | 68 |\n\nThese marks are summarized as follows:\n\n$$\\sum M = 624, \\quad \\sum M^2 = 43488, \\quad \\sum F = 439, \\quad \\sum F^2 = 20819, \\quad \\sum MF = 29833.$$",
+  "groupes": [],
+  "points": "13",
+  "figures": [],
+  "incertitudes": [
+    "Question 8 : écart d'impression. La somme imprimée $\\sum MF = 29833$ ne correspond pas au tableau : les produits donnent $22 \\times 27 + 41 \\times 30 + \\cdots + 92 \\times 68 = 29838$ (les quatre autres sommes imprimées sont exactes : 624, 43488, 439, 20819). Le corrigé utilise la valeur imprimée 29833, comme le candidat doit le faire ($r = 0.9194$, $F = 10.45 + 0.536M$, prévision 42.6) ; avec 29838 on trouve $r = 0.9213$, $F = 10.38 + 0.537M$, prévision 42.6 : même valeur $r \\approx 0.92$ à 2 décimales et même conclusion en (c).",
+    "Question 8 : les points imprimés sont (8, 2, 3) pour 13 au total, un par partie (a), (b), (c). Question 8 (c) : « missed the final exams » est interprété comme « n'a pas passé l'examen final » (absent) ; on prévoit sa note par la droite de régression de $F$ sur $M$."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) Calculate, to two decimal places, the Pearson product-moment correlation coefficient for this data.",
+      "corrige_markdown": "**Formula:** $r = \\dfrac{S_{MF}}{\\sqrt{S_{MM}\\, S_{FF}}}$ with $n = 10$, where\n\n$$S_{MF} = \\sum MF - \\frac{\\sum M \\sum F}{n}, \\quad S_{MM} = \\sum M^2 - \\frac{(\\sum M)^2}{n}, \\quad S_{FF} = \\sum F^2 - \\frac{(\\sum F)^2}{n}$$\n\n$$S_{MF} = 29833 - \\frac{624 \\times 439}{10} = 29833 - 27393.6 = 2439.4$$\n\n$$S_{MM} = 43488 - \\frac{624^2}{10} = 43488 - 38937.6 = 4550.4$$\n\n$$S_{FF} = 20819 - \\frac{439^2}{10} = 20819 - 19272.1 = 1546.9$$\n\n$$r = \\frac{2439.4}{\\sqrt{4550.4 \\times 1546.9}} = \\frac{2439.4}{\\sqrt{7039013.8}} = \\frac{2439.4}{2653.11} = 0.9194$$\n\n**$r \\approx 0.92$.** This is a strong positive linear correlation between the mock and the final marks.",
+      "themes": [
+        "correlation and regression statistics"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) Find the least squares regression line of the final exam scores on the mock exam scores.",
+      "corrige_markdown": "The regression line of $F$ on $M$ is $F = a + bM$, with\n\n$$b = \\frac{S_{MF}}{S_{MM}} = \\frac{2439.4}{4550.4} = 0.5361, \\qquad a = \\bar{F} - b\\bar{M}$$\n\nwhere $\\bar{M} = \\dfrac{624}{10} = 62.4$ and $\\bar{F} = \\dfrac{439}{10} = 43.9$.\n\n$$a = 43.9 - 0.5361 \\times 62.4 = 43.9 - 33.452 = 10.448$$\n\n**The regression line is $F = 10.45 + 0.536\\,M$** (that is $F - 43.9 = 0.536\\,(M - 62.4)$).",
+      "themes": [
+        "correlation and regression statistics"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "(c) If the pass mark for the final exam is 40, determine whether a candidate who scored 60 in the mock exams but missed the final exams would have passed.",
+      "corrige_markdown": "Estimate the final mark of the candidate from the regression line of $F$ on $M$, with $M = 60$ (inside the range of observed mock marks, 22 to 92, so the estimate is an interpolation):\n\n$$F = 10.448 + 0.5361 \\times 60 = 10.448 + 32.166 = 42.6$$\n\nThe predicted final mark is about $42.6$, which is above the pass mark of $40$. Since the correlation is strong ($r = 0.92$), the prediction is reasonably reliable.\n\n**The candidate would probably have passed** (predicted mark about 43 against the pass mark of 40; the margin is only about 2.6 marks, so this is an estimate and not a certainty).",
+      "themes": [
+        "correlation and regression statistics"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

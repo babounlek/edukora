@@ -1,0 +1,91 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "7(ii)(b) : le sujet demande une boucle « post-test » ; la solution lit le mot de passe puis répète la confirmation jusqu'à égalité (lecture littérale de l'énoncé) et mentionne la variante qui relit les deux saisies. Le pseudocode n'est pas exécutable ; sa logique a été simulée en Python.",
+    "7(iii) : la fonction de hachage est imprimée « h(k) = k modulo m » avec m = 7 ; la table finale a été obtenue par simulation Python."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "With the help of a suitable example in each case, describe the following terms as used in computer programming: *abstraction*, *run-time error*, *language translator*.\n\n(6 marks)",
+      "corrige_markdown": "**Abstraction.** Hiding the unnecessary details of how something works and keeping only what is relevant to the problem. Example: a programmer calls a subprogram `sqrt(x)` or `sort(list)` without knowing how it is coded; or a variable name stands for a memory location without the programmer knowing its address.\n\n**Run-time error.** An error which occurs **while the program is running**, after it has been translated successfully (so it is not a syntax error), and which usually makes the program stop. Example: dividing by a variable whose value is zero (`x = a / b` with `b = 0`), using an array index outside the array bounds, or opening a file that does not exist.\n\n**Language translator.** A program that converts a program written in a high-level language (the source code) or in assembly language into machine code which the processor can execute. Examples: a **compiler** translates the whole source program into object code at once (for example the C compiler translating `program.c` into an executable file); an **interpreter** translates and executes the program one statement at a time (for example Python); an **assembler** translates assembly language to machine code.",
+      "themes": [
+        "programming concepts",
+        "translators and compilers"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "State two differences between a while loop and a repeat loop.\n\n(2 marks)",
+      "corrige_markdown": "1. A **while** loop tests its condition **before** the body (pre-test), so the body may be executed **zero times**; a **repeat** loop tests its condition **after** the body (post-test), so the body is executed **at least once**.\n2. A **while** loop repeats **as long as the condition is true** and stops when it becomes false; a **repeat ... until** loop repeats **until the condition becomes true** and stops when it is true.",
+      "themes": [
+        "program control constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "When creating a new password, the password is entered twice and both entries are compared to make sure that they match. If they do not match, the user is requested to enter the confirmation password again. This process is repeated until both passwords match.\n\nWrite an algorithm in pseudocode that uses a post-test loop that allows a user to create a new password. The algorithm should output the message \"Password created\" when the process is successful.\n\n(4 marks)",
+      "corrige_markdown": "The password is entered once, then the confirmation is read inside a post-test (`REPEAT ... UNTIL`) loop, so the user is asked again until it matches. This follows the wording of the question (the confirmation password is requested again).\n\n```text\nOUTPUT \"Enter new password\"\nINPUT password\nREPEAT\n    OUTPUT \"Confirm password\"\n    INPUT confirmation\n    IF confirmation <> password THEN\n        OUTPUT \"Passwords do not match, try again\"\n    ENDIF\nUNTIL confirmation = password\nOUTPUT \"Password created\"\n```\n\n**Trace (simulated in Python).** With password `abc` and confirmations `abd` then `abc`, the output is: `Passwords do not match, try again`, then `Password created`.\n\nAn equally correct version asks for both entries inside the loop (`REPEAT`, read password, read confirmation, `UNTIL` they are equal).",
+      "themes": [
+        "program control constructs",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "A hash table consists of an array of size $m$ and a hash function $h(k)$ that maps a key $k$ to an index in the array where the key is stored. Consider a hash table of size 7 with hash function $h(k) = k \\bmod m$. Insert the keys 26, 17, 19, 13, and 48 into a hash table in the order given. Collisions are handled by linear probing.\n\n(5 marks)",
+      "corrige_markdown": "Here $m = 7$, with indices $0$ to $6$, and $h(k) = k \\bmod 7$. With linear probing, if the cell is taken, the next cell is tried ($+1$, wrapping from 6 to 0).\n\n| Key | $k \\bmod 7$ | Cells tried | Stored at |\n|---|---|---|---|\n| 26 | $26 = 3\\times 7 + 5 \\to 5$ | 5 (free) | 5 |\n| 17 | $17 = 2\\times 7 + 3 \\to 3$ | 3 (free) | 3 |\n| 19 | $19 = 2\\times 7 + 5 \\to 5$ | 5 (taken by 26), 6 (free) | 6 |\n| 13 | $13 = 1\\times 7 + 6 \\to 6$ | 6 (taken by 19), 0 (free) | 0 |\n| 48 | $48 = 6\\times 7 + 6 \\to 6$ | 6 (taken), 0 (taken by 13), 1 (free) | 1 |\n\n**Final hash table**\n\n| Index | 0 | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|---|\n| Key | 13 | 48 | empty | 17 | empty | 26 | 19 |\n\n(The placements were confirmed by a Python simulation.)",
+      "themes": [
+        "hash tables",
+        "searching algorithms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

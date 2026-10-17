@@ -1,0 +1,76 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2024. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of the drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A (Database), Task 1, and Section B (Programming), Tasks 2 and 3.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION B (Programming): Four-in-a-Line Program**\n\nConnect Four (or Four-in-a-Line) is a two-player strategy game played on a 7-column by 6-row board. Each player has 21 discs of a given colour which he/she drops into one of the columns during his/her turn. The disc is dropped to the lowest empty cell in the column. The first player to align four discs of his/her colour wins. The discs can be aligned vertically, horizontally or diagonally. If the board is filled without any alignment, the game is draw.\n\nWe are to implement a variant of the Connect-Four game which is played on a 5-column by 5-row grid with two players, Player1 and Player2. We use the character 'X' for Player1 discs and the character 'O' for Player2 discs.",
+  "groupes": [
+    "SECTION B"
+  ],
+  "points": "6",
+  "figures": [],
+  "incertitudes": [
+    "Aucun compilateur C ni Pascal n'est disponible : le code C et Pascal du corrigé n'a PAS été compilé. Sa logique a été vérifiée par une traduction fidèle en Python (drop_disc, display_grid, is_aligned, play_game) exécutée sur une partie gagnée par le joueur 1, des colonnes invalides ou pleines et une partie nulle de 25 coups ; les sorties recopiées dans le corrigé sont celles de cette simulation. Le SQL a été exécuté avec sqlite3 (CREATE TABLE, INSERT, requête, CREATE VIEW) ; les ALTER TABLE ... ADD CONSTRAINT cités en remarque ne sont pas testés (non pris en charge par SQLite).",
+    "Task 3, figure 2 (play_game) imprimée : la branche Else du bloc « If aligned = 1 AND disc = 'X' ... Else If aligned AND disc = 'O' ... Else Print(Error: Unknown Player type) » est atteinte à chaque coup SANS alignement, donc une conversion littérale afficherait « Error: Unknown Player type » après tous les coups ordinaires (démontré par la simulation). Le corrigé teste d'abord aligned = 1, puis distingue X et O, ce qui est l'intention évidente ; l'écart est signalé dans le corrigé. Les tests « aligned AND disc = 'O' » (sans « = 1 ») et les Print sans guillemets (Print(Game Over! Player1 wins.)) sont recopiés tels qu'imprimés.",
+    "Task 3, figure 2 : la condition d'arrêt imprimée « Until(stop = 1 OR placed_discs > 25) » ne peut jamais être vraie en cas d'égalité, car la grille 5x5 ne reçoit que 25 disques (placed_discs plafonne à 25) : la boucle redemanderait indéfiniment une colonne (« Chosen column is full! »), ce que la simulation confirme. Le corrigé utilise placed_discs >= ROWS * COLS (25). Le sujet n'est pas corrigé, l'écart est seulement signalé.",
+    "Les fichiers aligned.h et aligned.pas fournis par le jury (empty_grid, is_aligned, éventuellement la définition de TBoard) ne figurent pas dans le PDF : leur contenu exact est inconnu. Le corrigé fournit des versions de remplacement (empty_grid met ' ' dans chaque case, is_aligned renvoie 1 si quatre disques identiques sont alignés) pour que le programme soit complet, en indiquant de les remplacer par les fichiers du jury.",
+    "Les figures 1, 2 et 3 (pseudocode et liste de variables, page 7) sont des listings de texte : elles sont transcrites en blocs de code dans l'énoncé de la tâche 3 et non recadrées en PNG ; la page 7 est un scan penché et quelques indentations de la figure 2 ont été reconstituées d'après l'imbrication des If/EndIf.",
+    "Tâches 1 (questions 3, 4, 6) et 3 (f, g) : le sujet demande des actions sur ordinateur (saisir des lignes, imprimer, enregistrer sous namesofplayers, Printout2a, Printout2b, capture d'écran). Le corrigé décrit le résultat attendu et fournit les instructions SQL, les listings et une sortie d'exécution simulée. Les lignes de données de la question 3 sont des exemples inventés (le sujet n'en fournit pas) ; l'exemple « CHEL001 » du sujet est un CoachID, « BARCA001 » un ClubID.",
+    "Tâche 1, question 2 : le sujet ne donne pas les cardinalités ; le corrigé les déduit des attributs (Player.ClubID référence Club : 1-N ; Club.CoachID et Coach.ClubID se référencent mutuellement : 1-1). Les contraintes de clé étrangère circulaires (Club <-> Coach) imposent de les déclarer après l'insertion des données ; seules les clés primaires sont exigées par le sujet.",
+    "Points imprimés : Task 1 = 20 (6+3+3+1+5+2), Task 2 = 6 (2+2+2), Task 3 = 24 (1+4+9+4+3+1+2) ; les totaux sont cohérents, aucun point corrigé. « the game is draw » et « prompted to play » sont recopiés tels qu'imprimés."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "In the space below, draw a table with five rows and five columns. On the left side of the table, number the rows 1-5 from top to bottom. Below the table, number the columns 1-5, from left to right. Make sure each grid cell is large enough to write any character in. *[2 marks]*",
+      "corrige_markdown": "The grid has 5 rows and 5 columns of cells big enough for one character; the rows are numbered 1 to 5 downwards on the left and the columns 1 to 5 from left to right under the table (1 mark for the 5 x 5 grid, 1 mark for the correct numbering):\n\n```\n     +---+---+---+---+---+\n  1  |   |   |   |   |   |\n     +---+---+---+---+---+\n  2  |   |   |   |   |   |\n     +---+---+---+---+---+\n  3  |   |   |   |   |   |\n     +---+---+---+---+---+\n  4  |   |   |   |   |   |\n     +---+---+---+---+---+\n  5  |   |   |   |   |   |\n     +---+---+---+---+---+\n       1   2   3   4   5\n```\n\nThe numbering is the one used later by the program: a player enters a column number from 1 to 5, and the disc falls to the lowest empty row, row 5 being the bottom row.",
+      "themes": [
+        "two-dimensional arrays",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "In the table in Task 2(a) above, show four different possible win alignments using characters 'X' and 'O'. There should be two alignments for Player1 (X) and two for Player2 (O), with no two characters placed in the same cell. *[2 marks]*",
+      "corrige_markdown": "An alignment is four identical characters in a row, in a column or on a diagonal. Four alignments that use different cells are needed, two of 'X' and two of 'O'. One possible answer (the four alignments cover 16 different cells, 8 'X' and 8 'O'):\n\n```\n     +---+---+---+---+---+\n  1  | O |   |   | O | X |\n     +---+---+---+---+---+\n  2  |   | O | O |   | X |\n     +---+---+---+---+---+\n  3  |   | O | O |   | X |\n     +---+---+---+---+---+\n  4  | O |   |   | O | X |\n     +---+---+---+---+---+\n  5  | X | X | X | X |   |\n     +---+---+---+---+---+\n       1   2   3   4   5\n```\n\n- Player1 (X), horizontal: row 5, columns 1 to 4;\n- Player1 (X), vertical: column 5, rows 1 to 4;\n- Player2 (O), diagonal going down to the right: cells (row, column) = (1,1), (2,2), (3,3), (4,4);\n- Player2 (O), diagonal going down to the left: cells (1,4), (2,3), (3,2), (4,1).\n\nThe two diagonals of the O alignments never meet in a cell because they cross between cells of the 4 x 4 block, so no cell holds two characters. (1 mark per correct pair of alignments; any other combination of four valid, non-overlapping alignments is accepted.)",
+      "themes": [
+        "two-dimensional arrays",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "To play the game, Player1 and Player2 make alternate moves. To implement this, a variable `player` is initialized to 0 and then incremented by 1 after each player's move. If `player` is divisible by 2 (that is, its remainder is zero), it is Player1's turn to play. He/she is then prompted to enter a column number. Otherwise, it is Player2's turn and he/she is similarly prompted to play.\n\nWrite a pseudocode fragment that uses a choice construct to alternate player moves as described above. Use % or mod for the modulo division operator. *[2 marks]*",
+      "corrige_markdown": "`player` starts at 0 and grows by 1 after each move, so it is even (0, 2, 4, ...) on Player1's turns and odd (1, 3, 5, ...) on Player2's turns. The test is therefore `player mod 2 = 0`, and a two-way choice (`If ... Then ... Else ... EndIf`) selects the player:\n\n```\nplayer ← 0\n...\nIf player mod 2 = 0 Then\n    Print(\"Player1, enter a column number\")\n    Read(col)\nElse\n    Print(\"Player2, enter a column number\")\n    Read(col)\nEndIf\n...\nplayer ← player + 1      (after a successful move)\n```\n\nMarking: the test `player mod 2 = 0` (or `player % 2 == 0`) (1 mark); both branches with a prompt for the right player inside an `If ... Else ... EndIf` construct (1 mark).",
+      "themes": [
+        "algorithm design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

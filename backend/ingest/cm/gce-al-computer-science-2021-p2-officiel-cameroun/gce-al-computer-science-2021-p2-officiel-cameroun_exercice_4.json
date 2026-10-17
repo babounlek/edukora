@@ -1,0 +1,78 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2021. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 4 : points imprimés : (i) = 3 ; (ii) = 4 ; (iii)(a) = 4, (b) = 4, (c) = 2 ; total 17.",
+    "4(iii)(a) : le sujet ne dit pas si « shortest job first » compare la durée restante ou la durée totale du travail à chaque fin de quantum. Le corrigé retient la durée restante (SJF préemptif, ordonnanceur qui réexamine le choix toutes les 2 unités) : P1 1-7, P3 7-10, P2 10-14, rotation moyenne 6,67. L'autre lecture (durée totale) est donnée en remarque : P1 1-5, P2 5-7, P3 7-10, P2 10-12, P1 12-14, rotation moyenne 8,33. Les deux ordonnancements ont été calculés par une simulation Python. Aucune des deux n'est confirmée par un corrigé officiel (il n'y en a pas).",
+    "4(iii)(a) : la première unité de temps (0 à 1) est une période d'inactivité du processeur (P1 arrive à l'instant 1) ; tracée comme telle."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A CPU scheduling algorithm determines an order for the execution of its scheduled processes. Given $n$ processes to be scheduled on one processor, how many different schedules are possible? Give your answer as a formula in terms of $n$. (3 marks)",
+      "corrige_markdown": "A schedule is an ordering (permutation) of the $n$ processes. The first process to run can be chosen in $n$ ways, the second in $n-1$ ways (one process has been used), the third in $n-2$ ways, and so on until only one process is left:\n\n$$n \\times (n-1) \\times (n-2) \\times \\cdots \\times 2 \\times 1 = n!$$\n\nThe number of different schedules is therefore $n!$ (for example, 3 processes give $3! = 6$ schedules and 4 processes give $4! = 24$).",
+      "themes": [
+        "process scheduling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Explain the main differences between preemptive and non-preemptive scheduling strategies. (4 marks)",
+      "corrige_markdown": "| | Preemptive scheduling | Non-preemptive scheduling |\n|---|---|---|\n| Interruption | The operating system can take the CPU away from a running process before it has finished (when its time quantum expires, or when a process of higher priority or shorter remaining time arrives); the process goes back to the ready queue. | Once the CPU is given to a process, it keeps it until it ends or blocks itself (for example, waiting for an I/O operation). It is never forced to stop. |\n| Responsiveness | Good response time for short or urgent processes and for interactive users. | Poor response: a long process makes the others wait (convoy effect). |\n| Overhead | More context switches, so more overhead; needs a timer interrupt; shared data may need protection. | Few context switches, low overhead, simple to implement. |\n| Fairness | Fairer sharing of the CPU, but a low-priority process may starve. | A long job can monopolise the CPU. |\n| Examples | Round robin, shortest remaining time first, preemptive priority. | First come first served, non-preemptive shortest job first. |\n\nFour distinct differences (or two differences explained for each strategy) earn the 4 marks.",
+      "themes": [
+        "process scheduling",
+        "operating systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(iii) Jobs P1, P2, P3 need 6, 4 and 3 units of execution time respectively. They arrive at times 1, 4 and 6 respectively.\n\n(a) Draw a Gantt chart for the jobs if each job is allocated a time quantum of 2 time units at a time and a shortest job first scheduling policy is used. (4 marks)\n\n(b) Calculate the average turnaround time for the processes. (4 marks)\n\n(c) Mindful of your results in (b), is the job scheduling in (iii)(a) preemptive? Justify your answer. (2 marks)",
+      "corrige_markdown": "**(a) Gantt chart (4 marks)**\n\nRule used: the CPU is given for at most 2 units; at the start of the chart and after every quantum the scheduler chooses, among the jobs that have already arrived, the one with the **shortest (remaining) execution time**. A job that needs less than 2 units leaves the CPU when it ends.\n\n| Time | Jobs ready (remaining time) | Job chosen | Runs |\n|---|---|---|---|\n| 0 | none (P1 arrives at 1) | CPU idle | 0 - 1 |\n| 1 | P1 (6) | P1 | 1 - 3, P1 has 4 left |\n| 3 | P1 (4) | P1 | 3 - 5, P1 has 2 left (P2 arrived at 4) |\n| 5 | P1 (2), P2 (4) | P1 | 5 - 7, P1 ends at 7 (P3 arrived at 6) |\n| 7 | P2 (4), P3 (3) | P3 | 7 - 9, P3 has 1 left |\n| 9 | P2 (4), P3 (1) | P3 | 9 - 10, P3 ends at 10 |\n| 10 | P2 (4) | P2 | 10 - 12, then 12 - 14, P2 ends at 14 |\n\n```text\n| idle | P1 | P1 | P1 | P3 | P3 | P2 | P2 |\n0      1    3    5    7    9    10   12   14\n```\n\nthat is, P1 from 1 to 7, P3 from 7 to 10 and P2 from 10 to 14.\n\n**(b) Average turnaround time (4 marks)**\n\nTurnaround time = completion time - arrival time.\n\n| Job | Arrival | Completion | Turnaround |\n|---|---|---|---|\n| P1 | 1 | 7 | 7 - 1 = 6 |\n| P2 | 4 | 14 | 14 - 4 = 10 |\n| P3 | 6 | 10 | 10 - 6 = 4 |\n\n$$\\text{average turnaround time} = \\frac{6 + 10 + 4}{3} = \\frac{20}{3} \\approx 6.67 \\text{ time units}$$\n\n(The waiting times are 0, 6 and 1, mean $7/3 \\approx 2.33$.)\n\n**(c) Is the scheduling preemptive? (2 marks)**\n\nYes, the policy is preemptive: because a time quantum of 2 units is used, the CPU is taken back from the running job at the end of every quantum (P1 is stopped at times 3 and 5, P3 at time 9) and the scheduler decides again, so a job can be interrupted before it has finished whenever a shorter job is waiting. On these particular data the shortest job is always the one that was just running (P1 against P2 at time 5, P3 against P2 at times 7 and 9), so no job is actually replaced before completion and the chart is the same as that of non-preemptive shortest job first, with the same average turnaround time of 6.67. A policy is preemptive because it is *allowed* to interrupt, not because it does so in every example.\n\n*Remark (other reading).* If \"shortest job\" is understood as the job with the shortest **total** length (P2 = 4 < P1 = 6), the chart is P1 (1 - 5), P2 (5 - 7), P3 (7 - 10), P2 (10 - 12), P1 (12 - 14): P1 is then really interrupted at time 5 with 2 units left, the turnaround times are 13, 8 and 4 and the average is $25/3 \\approx 8.33$. The scheduling is preemptive in both readings.",
+      "themes": [
+        "process scheduling",
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 10
+    }
+  ]
+}

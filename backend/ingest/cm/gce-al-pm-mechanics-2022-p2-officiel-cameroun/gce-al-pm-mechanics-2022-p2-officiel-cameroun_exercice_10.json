@@ -1,0 +1,82 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Mechanics",
+  "epreuve_source": "gce-al-pm-mechanics-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "10",
+  "numero_paper": 2,
+  "code_matiere": "0765",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Mechanics Paper 2 (0765/2), ADVANCED LEVEL, June 2022. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 10 (ii) : sous (ii), le sujet imprime (a) Show that f is monotonic increasing, (b) Deduce that ... a root, puis un dernier bloc sans etiquette « Taking x = 0.5 as first approximation... Newton-Raphson » avec (3 marks). Ce dernier bloc est transcrit en sous-question ii.c, etiquette ajoutee par la transcription.",
+    "Total des points : les points imprimes des 10 questions s'additionnent a 102 (12 + 12 + 11 + 9 + 10 + 11 + 7 + 11 + 9 + 10) ; aucun total n'est imprime et les points du sujet ne sont pas corriges."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Given that $p$ and $q$ are two statements, show that $p \\Rightarrow q$ is logically equivalent to $\\sim(p \\wedge \\sim q)$. (3 marks)",
+      "corrige_markdown": "**Truth table.**\n\n| $p$ | $q$ | $p \\Rightarrow q$ | $\\sim q$ | $p \\wedge \\sim q$ | $\\sim(p \\wedge \\sim q)$ |\n|---|---|---|---|---|---|\n| T | T | T | F | F | T |\n| T | F | F | T | T | F |\n| F | T | T | F | F | T |\n| F | F | T | T | F | T |\n\nThe columns of $p \\Rightarrow q$ and of $\\sim(p \\wedge \\sim q)$ are identical in every row, so the two statements are logically equivalent. $\\blacksquare$\n\n**Algebraic check.** By De Morgan's law and the double negation law,\n\n$$\\sim(p \\wedge \\sim q) \\equiv \\sim p \\vee \\sim(\\sim q) \\equiv \\sim p \\vee q,$$\n\nand $p \\Rightarrow q \\equiv \\sim p \\vee q$ (a conditional is false only when $p$ is true and $q$ is false).",
+      "themes": [
+        "propositional logic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii.a",
+      "enonce_markdown": "The function $f: \\mathbb{R} \\longrightarrow \\mathbb{R}$ is given by $f(x) = 2x^3 + 3x - 2$. Show that $f$ is monotonic increasing. (2 marks)",
+      "corrige_markdown": "Differentiate:\n\n$$f'(x) = 6x^2 + 3.$$\n\nSince $x^2 \\geq 0$ for every real $x$, we have $f'(x) = 6x^2 + 3 \\geq 3 > 0$ for all $x \\in \\mathbb{R}$. A function whose derivative is positive on all of $\\mathbb{R}$ is (strictly) increasing there: for $x_1 < x_2$, $f(x_1) < f(x_2)$. Hence $f$ is monotonic increasing. $\\blacksquare$",
+      "themes": [
+        "monotonic functions",
+        "differentiation techniques"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii.b",
+      "enonce_markdown": "The function $f: \\mathbb{R} \\longrightarrow \\mathbb{R}$ is given by $f(x) = 2x^3 + 3x - 2$. Deduce that the equation $f(x) = 0$ has a root within the interval $0 < x < 1$. (2 marks)",
+      "corrige_markdown": "$f$ is a polynomial, hence continuous on $[0, 1]$. Evaluate at the ends of the interval:\n\n$$f(0) = -2 < 0, \\qquad f(1) = 2 + 3 - 2 = 3 > 0.$$\n\n$f(0)$ and $f(1)$ have opposite signs, so by the intermediate value theorem there is a value $x$ with $0 < x < 1$ such that $f(x) = 0$.\n\nBecause $f$ is increasing (part (a)), this root is the only real root of the equation. $\\blacksquare$",
+      "themes": [
+        "numerical methods",
+        "monotonic functions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii.c",
+      "enonce_markdown": "Taking $x = 0.5$ as first approximation to the root of the equation $f(x) = 0$, where $f(x) = 2x^3 + 3x - 2$, use Newton-Raphson's method once to obtain, to $2$ decimal places, a second approximation to the root of this equation. (3 marks)",
+      "corrige_markdown": "Newton-Raphson iteration: $x_{n+1} = x_n - \\dfrac{f(x_n)}{f'(x_n)}$, with $f(x) = 2x^3 + 3x - 2$ and $f'(x) = 6x^2 + 3$.\n\nAt $x_0 = 0.5$:\n\n$$f(0.5) = 2(0.125) + 1.5 - 2 = -0.25, \\qquad f'(0.5) = 6(0.25) + 3 = 4.5.$$\n\n$$x_1 = 0.5 - \\frac{-0.25}{4.5} = 0.5 + 0.0556 = 0.5556\\ldots$$\n\n$$\\boxed{x_1 \\approx 0.56 \\text{ (2 d.p.)}}$$\n\nCheck: the root, found by further iteration, is $0.5536$ to 4 d.p., so $0.56$ is a good second approximation.",
+      "themes": [
+        "newton raphson method",
+        "numerical methods"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

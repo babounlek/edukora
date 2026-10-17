@@ -1,0 +1,90 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 2, ADVANCED LEVEL, June 2023. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 5 : sous-questions imprimées (i) et (ii)(a)-(c), numérotées « i », « ii(a) »... ; l'amorce de (ii) est recopiée dans chaque sous-question. Le schéma de (i) n'a pas d'exemple imprimé : le corrigé invente un tableau TRIP_PAYMENT pour illustrer les anomalies.",
+    "Question 5 (ii)(c) : requêtes SQL vérifiées avec sqlite3 (module Python) sur des données d'exemple (3 voyages, 3 élèves, 6 paiements) ; le dialecte SQL standard est utilisé."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Poorly planned, un-normalised databases can suffer from various anomalies when we manipulate the data. Describe two types of anomalies that can occur in a database, giving an example of each.",
+      "corrige_markdown": "In an un-normalised table the same fact is stored many times, and facts about different things are mixed in the same row. Example table used below: `TRIP_PAYMENT(Student_ID, Student_Name, Trip_ID, Destination, Amount)`, where the student name is repeated on every payment row and the destination on every row of the trip.\n\n1. **Insertion anomaly.** A new fact cannot be recorded without recording another one. *Example:* a new trip to Limbe cannot be added to the table until at least one student has paid for it, because the key needs a `Student_ID`; or a new student cannot be stored before he or she has paid for a trip.\n2. **Deletion anomaly.** Deleting a row deletes facts that should be kept. *Example:* if the only payment for the trip to Kribi is deleted (the student cancels), the information that the Kribi trip exists, with its destination, is lost as well.\n3. **Update (modification) anomaly.** A fact stored in several rows must be changed in all of them, and a missed row leaves the data inconsistent. *Example:* if the destination of Trip 10 changes from Limbe to Kribi, every payment row of Trip 10 must be updated; if one is forgotten, the same trip has two destinations.\n\n(Describing any two of the three, each with an example, earns the marks.) Normalisation (1NF, 2NF, 3NF) removes these anomalies by splitting the data into tables such as STUDENT, TRIP and PAYMENT, so that each fact is stored once.",
+      "themes": [
+        "database anomalies",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "Geography teachers at Bright Future High School organize several field trips throughout the year. They may organize more than one trip in a year and students may book and pay for more than one trip. A database has been created to record student payments. The entities and attributes are as follows:\n\nSTUDENT(Student_ID, Name, Gender, Class)\nTRIP(Trip_ID, Trip_Leader, Destination, Date, Cost)\nPAYMENT(Student_ID, Trip_ID, Payment_Date, Amount)\n\nDefine the terms *primary key*, *composite key* and *associative table*, giving an example of each from this database.",
+      "corrige_markdown": "* **Primary key**: an attribute (or set of attributes) whose value **uniquely identifies each record** of a table; it cannot be null or repeated. *Example:* `Student_ID` in STUDENT (no two students share a `Student_ID`), or `Trip_ID` in TRIP.\n* **Composite key**: a primary key made of **two or more attributes** taken together, none of which is unique on its own. *Example:* in PAYMENT, `Student_ID` alone repeats (a student pays for several trips) and `Trip_ID` alone repeats (many students pay for a trip), but the combination (`Student_ID`, `Trip_ID`) identifies a payment; if a student can pay in several instalments for the same trip, `Payment_Date` is added: (`Student_ID`, `Trip_ID`, `Payment_Date`).\n* **Associative table** (link or junction table): a table created to **resolve a many-to-many relationship** between two other tables; it holds the primary keys of both as foreign keys (and often forms its composite key from them), plus any attributes of the relationship. *Example:* PAYMENT links STUDENT and TRIP: `Student_ID` and `Trip_ID` are foreign keys, and `Payment_Date` and `Amount` describe each payment.",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "Geography teachers at Bright Future High School organize several field trips throughout the year. They may organize more than one trip in a year and students may book and pay for more than one trip. A database has been created to record student payments. The entities and attributes are as follows:\n\nSTUDENT(Student_ID, Name, Gender, Class)\nTRIP(Trip_ID, Trip_Leader, Destination, Date, Cost)\nPAYMENT(Student_ID, Trip_ID, Payment_Date, Amount)\n\nState and explain the cardinality ratio of the relationship that exists between STUDENT and TRIP.",
+      "corrige_markdown": "The relationship is **many-to-many (M : N)**.\n\n* One student may book and pay for **many** trips (several trips are organised through the year).\n* One trip is paid for by **many** students.\n\nA many-to-many relationship cannot be stored directly in a relational database, so it is resolved by the associative table PAYMENT: STUDENT 1 : M PAYMENT and TRIP 1 : M PAYMENT (each payment belongs to one student and one trip).",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "Geography teachers at Bright Future High School organize several field trips throughout the year. They may organize more than one trip in a year and students may book and pay for more than one trip. A database has been created to record student payments. The entities and attributes are as follows:\n\nSTUDENT(Student_ID, Name, Gender, Class)\nTRIP(Trip_ID, Trip_Leader, Destination, Date, Cost)\nPAYMENT(Student_ID, Trip_ID, Payment_Date, Amount)\n\nWrite an SQL query that displays for each trip, the number of payments made. The number of payments should be displayed in a column labeled Number_of_Payments.",
+      "corrige_markdown": "Group the payments by trip and count the rows of each group:\n\n```sql\nSELECT Trip_ID, COUNT(*) AS Number_of_Payments\nFROM PAYMENT\nGROUP BY Trip_ID;\n```\n\nTested with `sqlite3` on sample data (6 payments: three for trip 10, three for trip 11): the result is `(10, 3)` and `(11, 3)`, with the second column named `Number_of_Payments`.\n\nIf trips that have received **no payment** must also appear (with 0), join from TRIP:\n\n```sql\nSELECT T.Trip_ID, T.Destination, COUNT(P.Payment_Date) AS Number_of_Payments\nFROM TRIP T\nLEFT JOIN PAYMENT P ON T.Trip_ID = P.Trip_ID\nGROUP BY T.Trip_ID, T.Destination;\n```\n\nOn the same sample data this adds a third row, trip 12, with 0 payments (`COUNT` of a column ignores the NULLs produced by the outer join). `COUNT(*)` would wrongly give 1 for such a trip. Both queries are standard SQL; only the quotation of a column named `Date` (a reserved word in some systems) can differ between dialects, and it is not used here.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

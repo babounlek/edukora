@@ -1,0 +1,56 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2023. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points par partie sont recopiés tels qu'imprimés (leur somme est 103) et `points` de chaque exercice est laissé vide.",
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Scan de 3 pages (page de garde + 2 pages de questions) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Taking $x = -0.8$ as the first approximation to a root of the equation\n$$e^x - \\ln(1 + x^2) = 0,$$\nuse the Newton-Raphson method to find, to three decimal places, a second approximation to the root of the equation. (5 marks)",
+      "corrige_markdown": "Let $f(x) = e^x - \\ln(1 + x^2)$. Then\n$$f'(x) = e^x - \\frac{2x}{1 + x^2}.$$\nThe Newton-Raphson formula is $x_{n+1} = x_n - \\dfrac{f(x_n)}{f'(x_n)}$, with $x_0 = -0.8$.\n\n**Evaluate at $x_0 = -0.8$:**\n$$f(-0.8) = e^{-0.8} - \\ln(1 + 0.64) = 0.449329 - 0.494696 = -0.045367,$$\n$$f'(-0.8) = e^{-0.8} - \\frac{2(-0.8)}{1.64} = 0.449329 + 0.975610 = 1.424939.$$\n\n**Second approximation:**\n$$x_1 = -0.8 - \\frac{-0.045367}{1.424939} = -0.8 + 0.031839 = -0.768161\\ldots$$\n$$\\boxed{x_1 \\approx -0.768 \\ \\text{(3 d.p.)}}$$\nCheck: $f(-0.768) \\approx 1.2 \\times 10^{-4}$ is very close to $0$, and one more iteration gives $-0.7682$, which still rounds to $-0.768$.",
+      "themes": [
+        "numerical methods",
+        "newton raphson method"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Prove, by mathematical induction, that $3^n + 1$ is even for all positive integral values of $n$. (5 marks)",
+      "corrige_markdown": "Let $P(n)$ be the statement: \"$3^n + 1$ is even\".\n\n**Basis step.** For $n = 1$: $3^1 + 1 = 4 = 2 \\times 2$, which is even. So $P(1)$ is true.\n\n**Inductive hypothesis.** Assume $P(k)$ is true for some positive integer $k$: $3^k + 1 = 2m$ for some integer $m$, i.e. $3^k = 2m - 1$.\n\n**Inductive step.** We must show $3^{k+1} + 1$ is even. Using the hypothesis,\n$$3^{k+1} + 1 = 3\\cdot 3^k + 1 = 3(2m - 1) + 1 = 6m - 2 = 2(3m - 1),$$\nand $3m - 1$ is an integer, so $3^{k+1} + 1$ is even. Hence $P(k) \\Rightarrow P(k + 1)$.\n\n**Conclusion.** $P(1)$ is true and $P(k) \\Rightarrow P(k+1)$ for every positive integer $k$. By the principle of mathematical induction, $3^n + 1$ is even for all positive integers $n$. $\\blacksquare$",
+      "themes": [
+        "mathematical induction",
+        "number theory"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

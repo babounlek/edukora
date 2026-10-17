@@ -1,0 +1,117 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "4(i)(b) : le sujet n'impose pas les quatre entités ; Band, Manager, SnackBar et Booking sont retenues (l'entité Booking porte la date, nécessaire à la règle « jamais deux snack-bars à la même date »). Les attributs clés sont soulignés avec \\underline en LaTeX et nommés en toutes lettres.",
+    "4(i)(c) : le diagramme E-R est à produire par le candidat ; il est décrit en art ASCII (notation patte de corbeau) dans le corrigé.",
+    "4(ii)(a) : « database model » est interprété comme le modèle logique d'organisation des données (hiérarchique, réseau, relationnel...)."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "An agency wishes to control the booking of live music bands for a number of snack-bars in a given town. Each band when registered in this agency is given a unique name, specific number of musicians, the type of music it plays and its hiring fee. Each band is managed by a manager and a manager may manage several bands. Each manager records his ID card number, name, address and telephone number. Each snack-bar is assigned an ID number, name, address and telephone number. A band is never booked by more than one snack-bar on any particular date.\n\nExplain the terms *entity* and *attribute* as used in database modelling.\n\n(2 marks)",
+      "corrige_markdown": "- An **entity** is a person, object, place, event or concept about which data is stored, and which can be distinguished from others; it becomes a table in a relational database (for example a band or a manager).\n- An **attribute** is a property or characteristic that describes an entity; it becomes a column (field) of the table (for example the hiring fee of a band, the telephone number of a manager).",
+      "themes": [
+        "entity relationship modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "An agency wishes to control the booking of live music bands for a number of snack-bars in a given town. Each band when registered in this agency is given a unique name, specific number of musicians, the type of music it plays and its hiring fee. Each band is managed by a manager and a manager may manage several bands. Each manager records his ID card number, name, address and telephone number. Each snack-bar is assigned an ID number, name, address and telephone number. A band is never booked by more than one snack-bar on any particular date.\n\nFrom the description above, identify **four** entities for this booking system. Represent each entity using the format:\n\n`entity_name(attribute1, attribute2, attribute3,...)`\n\nwhere the key attribute is underlined.\n\n(4 marks)",
+      "corrige_markdown": "The four entities are Band, Manager, Snack-bar and Booking (the booking date is needed because a band is booked by only one snack-bar on a given date). The key attribute is underlined (and named in words).\n\n1. $\\text{Band}(\\underline{\\text{band\\_name}},\\ \\text{number\\_of\\_musicians},\\ \\text{music\\_type},\\ \\text{hiring\\_fee},\\ \\text{manager\\_id\\_card\\_no})$. Key: the unique band name. The last attribute is a foreign key referring to the manager.\n2. $\\text{Manager}(\\underline{\\text{id\\_card\\_no}},\\ \\text{name},\\ \\text{address},\\ \\text{telephone\\_no})$. Key: the ID card number.\n3. $\\text{SnackBar}(\\underline{\\text{snackbar\\_id}},\\ \\text{name},\\ \\text{address},\\ \\text{telephone\\_no})$. Key: the snack-bar ID number.\n4. $\\text{Booking}(\\underline{\\text{band\\_name}},\\ \\underline{\\text{booking\\_date}},\\ \\text{snackbar\\_id})$. Composite key: band name and date, which enforces the rule that a band is booked by at most one snack-bar on a given date; `snackbar_id` is a foreign key.",
+      "themes": [
+        "entity relationship modelling",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "An agency wishes to control the booking of live music bands for a number of snack-bars in a given town. Each band when registered in this agency is given a unique name, specific number of musicians, the type of music it plays and its hiring fee. Each band is managed by a manager and a manager may manage several bands. Each manager records his ID card number, name, address and telephone number. Each snack-bar is assigned an ID number, name, address and telephone number. A band is never booked by more than one snack-bar on any particular date.\n\nDraw an E-R diagram to show the degree of the relationships that exist between the entities identified above.\n\n(4 marks)",
+      "corrige_markdown": "**Relationships and their degree**\n\n- Manager - Band: **one-to-many (1:M)**. A manager manages several bands; a band has exactly one manager.\n- Band - SnackBar: **many-to-many (M:N)**. A snack-bar can book many bands (on different dates) and a band can be booked by different snack-bars on different dates. A many-to-many relationship is implemented through the **Booking** entity, which splits it into two one-to-many relationships.\n- Band - Booking: one-to-many (1:M); SnackBar - Booking: one-to-many (1:M).\n\n**E-R diagram** (crow's-foot notation: `|` = one, `<` or `>` = many)\n\n```text\n +---------+  manages   +--------+   is booked   +---------+   booked by   +-----------+\n | Manager ||----------<| Band   ||-------------<| Booking |>-------------|| SnackBar  |\n +---------+   1 : M    +--------+     1 : M      +---------+     M : 1     +-----------+\n\n Overall Band to SnackBar: many-to-many (M:N), resolved by Booking\n```",
+      "themes": [
+        "entity-relationship diagrams",
+        "entity relationship modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "In order to implement a database for the agency, an application developer uses a relational database model.\n\nWhat is meant by a database model?\n\n(2 marks)",
+      "corrige_markdown": "A **database model** is the way in which the data in a database is logically organised and structured: it defines how the data is stored, how the items of data are related to one another and how the data can be accessed and manipulated. Examples are the hierarchical, network, object-oriented and **relational** models; the relational model stores the data in tables (relations) of rows and columns linked by keys.",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "In order to implement a database for the agency, an application developer uses a relational database model.\n\nExplain the main difference between a relational database and a flat-file database.\n\n(2 marks)",
+      "corrige_markdown": "A **flat-file database** keeps all the data in a **single table (file)**, so facts such as a manager's name and address are repeated for every band he manages (redundancy, risk of inconsistency). A **relational database** splits the data into **several tables linked by keys** (primary and foreign keys), so that each fact is stored once and tables are joined when needed.",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "In order to implement a database for the agency, an application developer uses a relational database model.\n\nState **three** benefits to the agency of using a relational database.\n\n(3 marks)",
+      "corrige_markdown": "Any three of:\n\n1. **Reduced data redundancy**: each fact (for example a manager's address) is stored only once, which saves storage space.\n2. **Better data integrity and consistency**: updating a value in one place updates it everywhere, and keys and constraints prevent contradictory or orphan records.\n3. **Flexible, fast retrieval**: queries written in SQL can combine data from several tables (for example the bookings of a band with its manager's telephone number).\n4. **Easier maintenance and extension**: tables can be added or changed without rewriting the whole system (data independence).\n5. **Security and multi-user access**: the DBMS controls who may see or change which data.",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "2(ii)(a) : « 4M by 16 » est interprété comme 4M emplacements de 16 bits (2 octets), soit 8 Mo ; adressable par octet, il faut donc 23 bits (22 bits seulement si la mémoire était adressable par mot). Le sujet ne précise pas l'interprétation.",
+    "2(i)(a) : la forme normalisée attendue est celle d'une mantisse en complément à deux dont les deux premiers bits diffèrent (1.0010), exposant 010 ; aucun barème officiel disponible."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "A floating-point representation uses 5 bits for the mantissa and 3 bits for the exponent, both in two's complement.\n\nShow how the decimal number $-3.5$ would be represented in normalised binary form.\n\n(4 marks)",
+      "corrige_markdown": "**Step 1 - write 3.5 in binary.** $3.5 = 11.1_2 = 0.111_2 \\times 2^2$.\n\n**Step 2 - mantissa of $+3.5$.** With the binary point just after the sign bit, 5 bits give $0.1110$ (value $0.875$).\n\n**Step 3 - negate (two's complement).** Invert $0.1110 \\to 1.0001$, add 1 at the last place: $1.0001 + 0.0001 = 1.0010$.\n\n**Step 4 - check normalisation.** A normalised two's complement mantissa has its first two bits different. $1.0010$ starts $10$, so it is normalised. Its value is $-1 + 0.125 = -0.875$.\n\n**Step 5 - exponent.** $2$ in 3-bit two's complement is $010$.\n\n**Step 6 - check.** $-0.875 \\times 2^2 = -3.5$. Correct.\n\n**Answer: mantissa $10010$, exponent $010$, so the number is stored as $10010\\,010$.**",
+      "themes": [
+        "floating-point representation",
+        "data representation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "A floating-point representation uses 5 bits for the mantissa and 3 bits for the exponent, both in two's complement.\n\nConvert the floating-point binary number $01100111$ into decimal.\n\n(3 marks)",
+      "corrige_markdown": "**Split the pattern.** Mantissa = first 5 bits $= 01100$; exponent = last 3 bits $= 111$.\n\n- Mantissa: $0.1100_2 = 0.5 + 0.25 = 0.75$.\n- Exponent: $111$ in 3-bit two's complement is $-1$ (invert to $000$, add 1 to get $001$, so the value is $-1$).\n\n**Value.**\n\n$$0.75 \\times 2^{-1} = 0.375$$\n\n**Answer: $0.375$.**",
+      "themes": [
+        "floating-point representation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "A floating-point representation uses 5 bits for the mantissa and 3 bits for the exponent, both in two's complement.\n\nState the effect of each of the following on the floating-point representation of binary numbers:\n\n- decreasing the number of bits allocated to the mantissa\n- increasing the number of bits allocated to the exponent\n\n(2 marks)",
+      "corrige_markdown": "- **Decreasing the number of mantissa bits** reduces the **precision (accuracy)** of the stored numbers: fewer significant bits are kept, so rounding or truncation errors become larger and the gap between two neighbouring representable numbers increases. The range is not changed.\n- **Increasing the number of exponent bits** increases the **range** of numbers that can be stored: larger magnitudes and smaller fractions can be represented, since the binary point can be moved over a greater distance. The precision is not changed.",
+      "themes": [
+        "floating-point representation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "How many bits are required to address a 4M by 16 main memory if this memory is byte-addressable?\n\n(3 marks)",
+      "corrige_markdown": "**Capacity.** A $4\\mathrm{M} \\times 16$ memory has $4\\mathrm{M} = 2^{22}$ locations of 16 bits (2 bytes) each.\n\n$$\\text{capacity} = 2^{22} \\times 2\\ \\text{bytes} = 2^{23}\\ \\text{bytes} = 8\\ \\mathrm{MB}$$\n\n**Byte-addressable:** every byte has its own address, so $2^{23}$ addresses are needed. The number of address bits $n$ satisfies $2^n = 2^{23}$, so $n = 23$.\n\n**Answer: 23 bits** (addresses $0$ to $2^{23} - 1$). For comparison, if the memory were word-addressable, 22 bits would be enough.",
+      "themes": [
+        "computer memory",
+        "data representation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "Explain the main difference between sequential access and direct access, and for each, give an example of a storage medium that supports it.\n\n(4 marks)",
+      "corrige_markdown": "**Sequential access.** Data can only be read or written by starting at the beginning of the medium and passing through all the data stored before the wanted item, in order. Retrieval time depends on where the item is, so it is slow for finding one record. Example: **magnetic tape**.\n\n**Direct (random) access.** The device can move straight to the wanted location using its address, without reading what comes before, so the access time is nearly the same for any item. Example: **hard disk drive** (also a CD/DVD, a flash drive or an SSD).\n\n**Main difference:** sequential access must go through the data in order, direct access goes straight to the required data.",
+      "themes": [
+        "computer storage devices"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "When is random access memory (RAM) said to be dynamic?\n\n(1 mark)",
+      "corrige_markdown": "RAM is said to be **dynamic** when each bit is stored as an electric charge on a tiny capacitor. The charge leaks away, so the contents must be **refreshed** (read and rewritten) many times per second by refresh circuitry, otherwise the data would be lost (this is DRAM, as opposed to static RAM, SRAM, which needs no refresh).",
+      "themes": [
+        "computer memory"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

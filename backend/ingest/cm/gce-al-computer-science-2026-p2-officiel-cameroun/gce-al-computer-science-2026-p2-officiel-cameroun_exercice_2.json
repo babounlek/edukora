@@ -1,0 +1,78 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "2",
+ "numero_paper": 2,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h30",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2026. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "PAPER 2",
+   "repondre": 6,
+   "sur": 8
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "PAPER 2"
+ ],
+ "points": "17",
+ "figures": [
+  {
+   "id": "fig-1",
+   "fichier": "gce-al-computer-science-2026-p2-officiel-cameroun_exercice_2_fig_1.png",
+   "page_source": 2,
+   "type": "schema",
+   "legende": "Flow diagram of the fetch-execute cycle: step 1 (blank), step 2a PC <- [PC] + 1, step 2b (blank), step 3 CIR <- [MBR], step 4 (blank), step 5 Execute Instruction, then back to step 1.",
+   "indispensable": true,
+   "lisibilite": "bonne",
+   "origine_figure": "enonce"
+  }
+ ],
+ "incertitudes": [
+  "Question 2 : points imprimés par sous-partie : i(a) 2 + i(b) 3 + i(c) 4 = 9 ; ii(a) 3 + ii(b) 3 + ii(c) 2 = 8 ; total 17.",
+  "2(i)(c) : le sujet ne précise pas la convention du nombre flottant ; retenu : mantisse = les 8 premiers bits (1000 1100), exposant = les 4 derniers (0100), virgule placée juste après le bit de signe de la mantisse, complément à deux (valeur -0,90625 x 2^4 = -14,5). Valeurs recalculées par script.",
+  "2(ii) : les cases « Step 1 », « Step 2b » et « Step 4 » du schéma sont laissées en pointillés dans le sujet (à compléter par le candidat) ; la réponse retenue est la séquence classique MAR <- [PC] ; MBR <- [[MAR]] ; décodage de CIR.",
+  "2(ii)(c) : la réponse est ouverte (plusieurs exemples acceptables) ; le corrigé en donne quatre, deux suffisent."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "The binary pattern 1000 1100 0100 could be interpreted in different ways.\n\n(a) Determine its hexadecimal representation. (2 marks)\n\n(b) Determine its value in denary if it represents an unsigned fixed-point number with four bits after the binary point. (3 marks)\n\n(c) Determine its value in denary if it represents a normalized floating-point number with an 8-bit mantissa and a 4-bit exponent, both in two's complement. (4 marks)",
+   "corrige_markdown": "**(a) Hexadecimal representation (2 marks)**\n\nGroup the bits in fours (already done) and convert each group: $1000_2 = 8$, $1100_2 = 12 = \\mathrm{C}$, $0100_2 = 4$.\n\nThe pattern is **8C4** in hexadecimal.\n\n**(b) Unsigned fixed-point, four bits after the binary point (3 marks)**\n\nThe 12 bits are split as 8 bits before the point and 4 bits after it: $1000\\,1100.0100$.\n\n- Integer part: $10001100_2 = 128 + 8 + 4 = 140$.\n- Fractional part: $.0100_2 = 0 \\times \\tfrac{1}{2} + 1 \\times \\tfrac{1}{4} + 0 + 0 = 0.25$.\n\nValue $= 140 + 0.25 =$ **140.25**.\n\n**(c) Normalized two's complement floating-point number (4 marks)**\n\nThe first 8 bits are the mantissa and the last 4 bits are the exponent: mantissa $= 1000\\,1100$, exponent $= 0100$.\n\n- The mantissa is in two's complement with the binary point just after the sign bit: $1.0001100$. The sign bit has weight $-1$, so the value is $-1 + 0.0001100_2 = -1 + \\tfrac{1}{16} + \\tfrac{1}{32} = -1 + 0.09375 = -0.90625$. The mantissa starts with $10$, so it is normalized (a negative number is normalized when its first two bits differ).\n- The exponent $0100_2$ is positive (sign bit 0): $+4$.\n\nValue $= -0.90625 \\times 2^{4} = -0.90625 \\times 16 =$ **-14.5**.\n\nCheck by moving the point 4 places to the right: $1.0001100 \\to 10001.100$; with the sign bit weighing $-16$ this is $-16 + 1 + 0.5 = -14.5$. (The values 8C4, 140.25 and -14.5 were checked by script.)",
+   "themes": [
+    "number systems",
+    "binary number representation",
+    "floating-point representation"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 9
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "The figure below shows various steps in the fetch-execute cycle. PC, CIR and MBR are processor registers.\n\n![fig-1](gce-al-computer-science-2026-p2-officiel-cameroun_exercice_2_fig_1.png)\n\n(a) State the function of each of the registers PC, CIR and MBR. (3 marks)\n\n(b) Describe the missing steps 1, 2b and 4 using either register transfer notation or a written description. Steps 2a and 2b occur at the same time. (3 marks)\n\n(c) State two examples when the status register might have a bit set. (2 marks)",
+   "corrige_markdown": "**(a) Functions of the registers (3 marks, 1 mark each)**\n\n- **PC (program counter):** holds the address of the next instruction to be fetched; it is increased after each fetch so that instructions are executed in sequence (a jump instruction loads a new address into it).\n- **CIR (current instruction register):** holds the instruction that has just been fetched and is being decoded and executed.\n- **MBR (memory buffer register, also called MDR):** holds the data or instruction that has just been read from memory, or that is about to be written to memory; everything that travels between the processor and main memory passes through it.\n\n**(b) Missing steps (3 marks, 1 mark each)**\n\n- **Step 1:** $\\mathrm{MAR} \\leftarrow [\\mathrm{PC}]$. The address of the next instruction, held in the PC, is copied to the memory address register (MAR) so that it can be sent along the address bus.\n- **Step 2b** (at the same time as 2a): $\\mathrm{MBR} \\leftarrow [[\\mathrm{MAR}]]$. A memory read is carried out: the contents of the memory location whose address is in the MAR are copied into the MBR (the instruction is fetched from memory).\n- **Step 4:** decode the instruction in the CIR. The control unit splits the instruction into its opcode and operand, works out the operation to be done and where the operand is (the address part of the instruction is passed to the MAR if an operand has to be fetched).\n\n**(c) Two examples when a status register bit is set (2 marks, 1 mark each)**\n\nAny two of:\n\n- the result of an arithmetic or logic operation is **zero** (zero flag), for example after a comparison of two equal values;\n- an arithmetic operation produces a **carry** out of the most significant bit (carry flag) or an **overflow** (overflow flag), the result being too large for the register;\n- the result of an operation is **negative** (sign or negative flag);\n- an **interrupt** has occurred or has been requested (interrupt flag), or the result has an even number of 1 bits (parity flag).",
+   "themes": [
+    "fetch-execute cycle",
+    "computer architecture"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 8
+  }
+ ]
+}

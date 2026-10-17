@@ -1,0 +1,105 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "8(ii) : le sujet imprime l'algorithme dans un cadre avec des flèches ← ; il est recopié en bloc de texte ; sa logique est simulée en Python (tri par insertion avec sentinelle A[0]). Le contenu de A[0] est donné après chaque passe car le sujet dit que A[0] sert d'espace de travail.",
+    "8(iii)(a) : le diagramme de pile est à produire par le candidat ; il est décrit en art ASCII. 8(iii)(b) : le nom ITOE ajouté se place au sommet, l'ITOE initial reste au fond de la pile (jamais retiré).",
+    "Remarque générale : aucun corrigé officiel n'existe ; les corrigés ont été rédigés. Aucun code C ou Pascal n'est demandé dans ce Paper 2 : le pseudocode et les algorithmes ont été vérifiés par simulation Python (tables de vérité, hachage, tri, âges, conversions en virgule flottante)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A computer system is used to store the data of details of an examination result. State a suitable data type for each item of data:\n\n(a) Total number of subjects passed by a student.\n\n(b) Class average of each class.\n\n(c) A student's name.\n\n(d) Whether a student is under 16 years or not.\n\n(4 marks)",
+      "corrige_markdown": "| Item | Suitable data type | Reason |\n|---|---|---|\n| (a) Total number of subjects passed | **Integer** | a whole number (0, 1, 2, ...) |\n| (b) Class average | **Real (floating point)** | an average usually has a fractional part (for example 12.75) |\n| (c) A student's name | **String (text)** | a sequence of characters |\n| (d) Under 16 or not | **Boolean** | only two possible values: true or false |",
+      "themes": [
+        "data types"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "An array **A** indexed from 0 to **n** is used to store **n** values as the elements A[1] ... A[n]. The following algorithm sorts the values into ascending order, using A[0] as a temporary workspace.\n\n```text\nprocedure Sort()\n  for i ← 2 to n\n    X ← A[i]\n    A[0] ← X\n    j ← i - 1\n    while A[j] > X\n      A[j+1] ← A[j]\n      j ← j - 1\n    endwhile\n    A[j+1] ← X\n  endfor\nendprocedure\n```\n\nInitially A[1] = 4, A[2] = 9, A[3] = 9, A[4] = 6, A[5] = 1 and n = 5.\n\nTrace the operation of the algorithm by stating the contents of the array after each pass.\n\n(6 marks)",
+      "corrige_markdown": "This is an **insertion sort**: each pass takes $X = A[i]$ and inserts it in the correct place among the sorted elements to its left; $A[0]$ holds a copy of $X$ and acts as a sentinel which stops the `while` loop (since $A[0] > X$ is false).\n\nInitially: $A[1..5] = 4, 9, 9, 6, 1$.\n\n| Pass | $i$ | $X$ | Shifts made | $A[1]$ | $A[2]$ | $A[3]$ | $A[4]$ | $A[5]$ | $A[0]$ |\n|---|---|---|---|---|---|---|---|---|---|\n| start | | | | 4 | 9 | 9 | 6 | 1 | |\n| 1 | 2 | 9 | none ($4 > 9$ false) | 4 | 9 | 9 | 6 | 1 | 9 |\n| 2 | 3 | 9 | none ($9 > 9$ false) | 4 | 9 | 9 | 6 | 1 | 9 |\n| 3 | 4 | 6 | 9 and 9 moved right, 6 inserted at $A[2]$ | 4 | 6 | 9 | 9 | 1 | 6 |\n| 4 | 5 | 1 | 9, 9, 6 and 4 moved right, 1 inserted at $A[1]$ | 1 | 4 | 6 | 9 | 9 | 1 |\n\n**Final result:** $A[1..5] = 1, 4, 6, 9, 9$. (The trace was checked with a Python simulation of the procedure; 10 comparisons are made in total.)",
+      "themes": [
+        "sorting algorithms",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "An array **A** indexed from 0 to **n** is used to store **n** values as the elements A[1] ... A[n]. The following algorithm sorts the values into ascending order, using A[0] as a temporary workspace.\n\n```text\nprocedure Sort()\n  for i ← 2 to n\n    X ← A[i]\n    A[0] ← X\n    j ← i - 1\n    while A[j] > X\n      A[j+1] ← A[j]\n      j ← j - 1\n    endwhile\n    A[j+1] ← X\n  endfor\nendprocedure\n```\n\nHow many times is the comparison A[j] > X carried out when all the elements in the array are initially sorted for an array of size n.\n\n(2 marks)",
+      "corrige_markdown": "If the array is already sorted in ascending order, then for each pass ($i = 2, 3, \\dots, n$) the first test $A[i-1] > X$ with $X = A[i]$ is false, so the `while` loop stops at once with no shift. Each pass therefore makes **exactly one** comparison.\n\nThe number of passes is $n - 1$ (from $i = 2$ to $i = n$), so the comparison is carried out\n\n$$n - 1 \\text{ times}$$\n\n(this is the best case, of order $O(n)$; for example 4 comparisons for 5 sorted elements, confirmed by a Python simulation).",
+      "themes": [
+        "sorting algorithms",
+        "algorithm complexity"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii(a)",
+      "enonce_markdown": "With the aid of a clearly labeled diagram which includes a stack pointer, describe how an initially empty stack would hold the following input in the order:\n\nITOE, NGWA, BERI, AGBOR, RIDWAN\n\n(2 marks)",
+      "corrige_markdown": "A stack is a **last-in first-out (LIFO)** structure: items are added (pushed) and removed (popped) only at the top, which is identified by the **stack pointer (SP)**. Each push stores the item above the previous one and moves SP up.\n\n```text\n        STACK (after the five pushes)\n\n          +----------+\n SP --->  | RIDWAN   |  5  (top, last in)\n          +----------+\n          | AGBOR    |  4\n          +----------+\n          | BERI     |  3\n          +----------+\n          | NGWA     |  2\n          +----------+\n          | ITOE     |  1  (bottom, first in)\n          +----------+\n```\n\nITOE is pushed first and is at the bottom; RIDWAN is pushed last, at the top, where SP points.",
+      "themes": [
+        "stacks and queues",
+        "data structures"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii(b)",
+      "enonce_markdown": "An initially empty stack has held the following input in the order: ITOE, NGWA, BERI, AGBOR, RIDWAN.\n\nShow the content of the stack if two of the names are popped (retrieved), and the name ITOE is added.\n\n(3 marks)",
+      "corrige_markdown": "**Two pops.** The top items come out first (LIFO): RIDWAN is popped, then AGBOR. The stack now holds ITOE, NGWA, BERI (bottom to top), with SP pointing at BERI.\n\n**Push ITOE.** ITOE is placed on top of BERI and SP moves up.\n\n```text\n          +----------+\n SP --->  | ITOE     |  4  (top, the name just added)\n          +----------+\n          | BERI     |  3\n          +----------+\n          | NGWA     |  2\n          +----------+\n          | ITOE     |  1  (bottom, the original ITOE)\n          +----------+\n```\n\n**Content (bottom to top): ITOE, NGWA, BERI, ITOE**, with the stack pointer at the top ITOE. The ITOE at the bottom is the original one, which was never popped.",
+      "themes": [
+        "stacks and queues"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

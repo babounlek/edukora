@@ -1,0 +1,83 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2022. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Q2(i)(c) : le domaine de f∘f, R - {-1, 0}, n'est pas symétrique par rapport à 0 (1 y est, -1 n'y est pas) : stricto sensu f∘f n'est donc ni paire ni impaire sur ce domaine. Le corrigé répond « impaire » (la règle -1/x l'est) et signale la subtilité ; c'est très probablement la réponse attendue par le Board.",
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points par partie sont recopiés tels qu'imprimés (leur somme est 105) et `points` de chaque exercice est laissé vide.",
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Scan de 3 pages (page de garde + 2 pages de questions) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer. L'étiquette imprimée en haut à gauche de la page de garde dit « Pure Maths With Mechs 2 » alors que le cadre « Subject Title » dit « Pure Mathematics With Statistics », code 0770, et que le pied de page porte 2022/0770/2 : le cadre et le code 0770 ont été retenus (Statistics)."
+  ],
+  "questions": [
+    {
+      "numero": "i.a",
+      "enonce_markdown": "A function $f : \\mathbb{R} - \\{-1\\} \\longrightarrow \\mathbb{R} - \\{1\\}$ is defined by\n$$f(x) = \\frac{x - 1}{x + 1}.$$\nShow that $f$ is surjective. (3 marks)",
+      "corrige_markdown": "A function is surjective if every element of the codomain has at least one pre-image in the domain: for every $y \\in \\mathbb{R} - \\{1\\}$ there is some $x \\in \\mathbb{R} - \\{-1\\}$ with $f(x) = y$.\n\nLet $y \\in \\mathbb{R} - \\{1\\}$ and solve $y = \\dfrac{x - 1}{x + 1}$ for $x$:\n$$y(x + 1) = x - 1 \\;\\Rightarrow\\; yx + y = x - 1 \\;\\Rightarrow\\; x(y - 1) = -1 - y \\;\\Rightarrow\\; x = \\frac{1 + y}{1 - y}.$$\nThis is defined because $y \\ne 1$, so $x \\in \\mathbb{R}$.\n\nIt lies in the domain: $x = -1$ would need $1 + y = -(1 - y) = y - 1$, i.e. $1 = -1$, impossible. So $x \\ne -1$.\n\nCheck: $f\\!\\left(\\dfrac{1 + y}{1 - y}\\right) = \\dfrac{\\frac{1 + y}{1 - y} - 1}{\\frac{1 + y}{1 - y} + 1} = \\dfrac{2y}{2} = y$.\n\nHence every $y \\in \\mathbb{R} - \\{1\\}$ is the image of $x = \\dfrac{1 + y}{1 - y} \\in \\mathbb{R} - \\{-1\\}$, so $f$ is surjective. (The map is also well defined into $\\mathbb{R} - \\{1\\}$: $\\frac{x-1}{x+1} = 1$ would give $-1 = 1$.)\n$$\\boxed{f \\text{ is surjective}}$$",
+      "themes": [
+        "properties of functions",
+        "surjective functions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i.b",
+      "enonce_markdown": "A function $f : \\mathbb{R} - \\{-1\\} \\longrightarrow \\mathbb{R} - \\{1\\}$ is defined by $f(x) = \\dfrac{x - 1}{x + 1}$. Find the composite function $(f \\circ f)(x)$, stating its domain. (3 marks)",
+      "corrige_markdown": "$$(f \\circ f)(x) = f\\big(f(x)\\big) = \\frac{f(x) - 1}{f(x) + 1}, \\qquad f(x) = \\frac{x - 1}{x + 1}.$$\nNumerator and denominator over the common denominator $x + 1$:\n$$f(x) - 1 = \\frac{(x - 1) - (x + 1)}{x + 1} = \\frac{-2}{x + 1}, \\qquad f(x) + 1 = \\frac{(x - 1) + (x + 1)}{x + 1} = \\frac{2x}{x + 1}.$$\nTherefore\n$$(f \\circ f)(x) = \\frac{-2/(x + 1)}{2x/(x + 1)} = -\\frac{1}{x}.$$\n\n**Domain.** $x$ must be in the domain of $f$, so $x \\ne -1$; and $f(x)$ must be in the domain of $f$, so $f(x) \\ne -1$:\n$$\\frac{x - 1}{x + 1} = -1 \\iff x - 1 = -x - 1 \\iff x = 0.$$\nSo $x = 0$ must also be excluded. (The simplified expression $-\\frac1x$ is undefined at $0$ for the same reason; at $x = -1$ the simplified rule would give $1$, but $-1$ is not in the domain of $f$, so it is excluded.)\n$$\\boxed{(f \\circ f)(x) = -\\frac1x, \\quad \\text{domain } \\mathbb{R} - \\{-1, 0\\}}$$",
+      "themes": [
+        "mappings and composite functions",
+        "domain of a function"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i.c",
+      "enonce_markdown": "A function $f : \\mathbb{R} - \\{-1\\} \\longrightarrow \\mathbb{R} - \\{1\\}$ is defined by $f(x) = \\dfrac{x - 1}{x + 1}$. Determine whether $f \\circ f(x)$ is an even or odd function. (2 marks)",
+      "corrige_markdown": "From part (b), $(f \\circ f)(x) = -\\dfrac1x$. Let $g(x) = (f \\circ f)(x)$. Then\n$$g(-x) = -\\frac{1}{-x} = \\frac1x = -\\left(-\\frac1x\\right) = -g(x).$$\nAn even function satisfies $g(-x) = g(x)$ and an odd function satisfies $g(-x) = -g(x)$. Here $g(-x) = -g(x)$ for every $x$ for which both $x$ and $-x$ are admissible, and $g(-x) \\ne g(x)$ (e.g. $g(2) = -\\frac12$, $g(-2) = \\frac12$). So $f \\circ f$ is **odd** (its graph, the hyperbola $y = -\\frac1x$, is symmetric about the origin).\n\nRemark on the domain: strictly, the domain $\\mathbb{R} - \\{-1, 0\\}$ of $f \\circ f$ is not symmetric about $0$ (it contains $1$ but not $-1$), so on exactly that domain the parity condition cannot be checked at $x = 1$. The expected answer is that the rule $-\\frac1x$ is an odd function.\n$$\\boxed{f \\circ f \\text{ is odd}}$$",
+      "themes": [
+        "properties of functions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Expand $\\dfrac{1 - x}{(1 + 2x)^{\\frac13}}$ as a series in ascending powers of $x$ as far as the term in $x^2$. (4 marks)",
+      "corrige_markdown": "Write the expression as $(1 - x)(1 + 2x)^{-1/3}$ and expand the binomial with $(1 + u)^n = 1 + nu + \\dfrac{n(n - 1)}{2!}u^2 + \\cdots$, $n = -\\frac13$, $u = 2x$:\n$$(1 + 2x)^{-1/3} = 1 + \\left(-\\frac13\\right)(2x) + \\frac{\\left(-\\frac13\\right)\\left(-\\frac43\\right)}{2}(2x)^2 + \\cdots = 1 - \\frac{2x}{3} + \\frac29\\cdot 4x^2 + \\cdots = 1 - \\frac{2}{3}x + \\frac{8}{9}x^2 + \\cdots$$\nMultiply by $(1 - x)$ and keep terms up to $x^2$:\n$$(1 - x)\\left(1 - \\frac23 x + \\frac89 x^2\\right) = 1 - \\frac23 x + \\frac89 x^2 - x + \\frac23 x^2 + \\cdots = 1 - \\frac53 x + \\frac{14}{9}x^2 + \\cdots$$\nThe expansion is valid for $|2x| < 1$, i.e. $|x| < \\frac12$.\n$$\\boxed{\\frac{1 - x}{(1 + 2x)^{1/3}} = 1 - \\frac53 x + \\frac{14}{9}x^2 + \\cdots}$$",
+      "themes": [
+        "binomial expansion"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

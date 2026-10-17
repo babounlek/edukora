@@ -1,0 +1,67 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "6",
+ "numero_paper": 2,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h30",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2026. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "PAPER 2",
+   "repondre": 6,
+   "sur": 8
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "PAPER 2"
+ ],
+ "points": "17",
+ "figures": [],
+ "incertitudes": [
+  "Question 6 : points imprimés par sous-partie : i(a) 1 + i(b) 4 + i(c) 1 + i(d) 4 = 10 ; ii(a) 2 + ii(b) 2 + ii(c) 3 = 7 ; total 17.",
+  "6(i)(b) : la table de trace (number = 10) a été obtenue en exécutant une traduction Python fidèle du pseudocode ; sortie 2 3 5 7. Le pseudocode est recopié dans un bloc de code (flèches ← du sujet conservées).",
+  "6(i)(d) : l'organigramme à dessiner par le candidat est donné sous forme de schéma en texte (les losanges de décision sont représentés par des rectangles étiquetés par une question).",
+  "Le sujet ne contient pas de code C ou Pascal : aucune compilation n'était nécessaire (pseudocode simulé en Python, requêtes vérifiées avec sqlite3 à la question 5)."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "Study the pseudocode below and answer the questions that follow.\n\n```text\nget number\nfor i ← 2 to number do\n  num ← 2\n  check ← \"Yes\"\n  while num * num <= i do\n    if i mod num = 0 then\n      check ← \"No\"\n    endif\n    num ← num + 1\n  endwhile\n  if check = \"Yes\" then\n    print(i)\n  endif\nendfor\n```\n\n(a) What is the data type of the variable `check`? (1 mark)\n\n(b) Give a trace of the above algorithm for `number` = 10. (4 marks)\n\n(c) State what the algorithm above computes. (1 mark)\n\n(d) Give a flowchart representation of the while loop in the algorithm above. (4 marks)",
+   "corrige_markdown": "**(a) Data type of `check` (1 mark)**\n\n`check` is a **string** (text, character data) variable: it holds the text values \"Yes\" or \"No\".\n\n**(b) Trace for `number` = 10 (4 marks)**\n\nThe `for` loop gives `i` the values 2, 3, ..., 10. For each `i`, `num` starts at 2 and `check` at \"Yes\". Each row below is one test of the `while` condition (and, when the condition is true, the body that follows). The \"if\" column shows the value of `i mod num` when the body is executed.\n\n| i | num | num * num <= i ? | i mod num | check (after the row) | Output |\n|---|---|---|---|---|---|\n| 2 | 2 | 4 <= 2: false | - | Yes | **2** |\n| 3 | 2 | 4 <= 3: false | - | Yes | **3** |\n| 4 | 2 | 4 <= 4: true | 0 (= 0, so check ← \"No\") | No | |\n| 4 | 3 | 9 <= 4: false | - | No | (none) |\n| 5 | 2 | 4 <= 5: true | 1 | Yes | |\n| 5 | 3 | 9 <= 5: false | - | Yes | **5** |\n| 6 | 2 | 4 <= 6: true | 0 (check ← \"No\") | No | |\n| 6 | 3 | 9 <= 6: false | - | No | (none) |\n| 7 | 2 | 4 <= 7: true | 1 | Yes | |\n| 7 | 3 | 9 <= 7: false | - | Yes | **7** |\n| 8 | 2 | 4 <= 8: true | 0 (check ← \"No\") | No | |\n| 8 | 3 | 9 <= 8: false | - | No | (none) |\n| 9 | 2 | 4 <= 9: true | 1 | Yes | |\n| 9 | 3 | 9 <= 9: true | 0 (check ← \"No\") | No | |\n| 9 | 4 | 16 <= 9: false | - | No | (none) |\n| 10 | 2 | 4 <= 10: true | 0 (check ← \"No\") | No | |\n| 10 | 3 | 9 <= 10: true | 1 (check stays \"No\") | No | |\n| 10 | 4 | 16 <= 10: false | - | No | (none) |\n\n(In each row `num` is the value tested; it is increased by 1 after the `if`, which gives the `num` of the next row of the same `i`.) Output: **2 3 5 7**. (The trace was produced by running a Python translation of the pseudocode.)\n\n**(c) What the algorithm computes (1 mark)**\n\nIt prints all the **prime numbers** from 2 up to `number` (for `number` = 10: 2, 3, 5, 7). For each `i` it tests whether `i` has a divisor `num` with $num^2 \\le i$; if none is found, `i` is prime.\n\n**(d) Flowchart of the while loop (4 marks)**\n\nThe loop starts after `num ← 2` and `check ← \"Yes\"`. The diamonds are decisions; the boxes are processes:\n\n```text\n        +-----------------------------+\n        | num <- 2 ; check <- \"Yes\"   |\n        +--------------+--------------+\n                       |\n                       v\n          +--------------------------+\n +------->| num * num <= i ?         |-- No --> (leave the loop: go on to\n |        +------------+-------------+          \"if check = Yes\")\n |                     | Yes\n |                     v\n |        +--------------------------+\n |        | i mod num = 0 ?          |-- No --+\n |        +------------+-------------+        |\n |                     | Yes                  |\n |                     v                      |\n |        +--------------------------+        |\n |        | check <- \"No\"            |        |\n |        +------------+-------------+        |\n |                     |                      |\n |                     v                      |\n |        +--------------------------+<-------+\n |        | num <- num + 1           |\n |        +------------+-------------+\n |                     |\n +---------------------+\n```\n\nThe two decisions are drawn as diamonds (decision symbols) in the exam; the arrow from the last box returns to the test `num * num <= i`, which makes the loop.",
+   "themes": [
+    "pseudocode algorithms",
+    "flowcharts and trace tables",
+    "algorithm tracing"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 10
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "Iteration and recursion are different ways to execute a set of instructions repeatedly.\n\n(a) Describe how each of iteration and recursion achieves repetition. (2 marks)\n\n(b) State when each of iteration and recursion does not terminate. (2 marks)\n\n(c) Why is iteration faster than recursion? (3 marks)",
+   "corrige_markdown": "**(a) How each achieves repetition (2 marks)**\n\n- **Iteration** repeats a block of instructions with a **loop** (`for`, `while`, `repeat ... until`): the block is executed again and again inside the same function call, as long as (or until) the loop condition says so.\n- **Recursion** repeats by a **subprogram (function) calling itself**, each time with a simpler or smaller problem, until a simple case (the base case) is reached; the results are then passed back up the chain of calls.\n\n**(b) When each does not terminate (2 marks)**\n\n- An iteration does not terminate when its **loop condition never becomes false** (or the exit condition is never reached), for example when the loop variable is never changed inside the loop, or `while true` with no exit.\n- A recursion does not terminate when there is **no base case**, or when the recursive call does **not move towards the base case** (the argument does not get smaller). The calls then continue until the stack is full (stack overflow).\n\n**(c) Why iteration is faster (3 marks)**\n\n- Each recursive call has an **overhead**: the computer has to create a new stack frame, store the return address, the parameters and the local variables, jump to the function and, at the end, remove the frame and return. A loop only jumps back to the start of the block.\n- A recursive solution therefore uses **more time and much more memory** (stack space) than a loop that uses the same variables again and again.\n- Some recursive solutions also recalculate the same values many times (for example the Fibonacci numbers), which makes them slower.",
+   "themes": [
+    "recursion",
+    "program control constructs"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 7
+  }
+ ]
+}

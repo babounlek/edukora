@@ -1,0 +1,70 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2020",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Pure Mathematics with Mechanics",
+ "epreuve_source": "gce-al-pm-mechanics-2020-p2-officiel-cameroun.pdf",
+ "numero_exercice": "6",
+ "numero_paper": 2,
+ "code_matiere": "0765",
+ "duree_epreuve": "3h",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Mechanics Paper 2 (0765/2), ADVANCED LEVEL, June 2020. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical Formulae Booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+ "regles_choix": [],
+ "enonce_intro_markdown": "",
+ "groupes": [],
+ "points": "",
+ "figures": [],
+ "incertitudes": [
+  "Question 6 (i) : le sujet ecrit $f:\\mathbb{R}\\to\\mathbb{R}$ avec $x \\ne 3$ ; la fonction n'est pas definie en 3, le corrige lit donc le domaine comme $\\mathbb{R}\\setminus\\{3\\}$ et le codomaine comme $\\mathbb{R}$ (c'est ce qui rend la question de surjectivite pertinente).",
+  "Question 6 (ii)(a) : aucune valeur de k ne rend f continue en tout point. La continuite en x = 0 impose k = 4 ; mais la periodicite (periode 4) donnerait f(2) = f(-2), soit 8 = -4 + k, k = 12, ce qui casserait la continuite en 0. Le corrige retient k = 4 (continuite en x = 0, seul point interieur ou la formule change), d'ou f(-5) = f(-1) = 3, et signale le saut aux points x = 2 + 4n.",
+  "Question 6 (ii)(b) : les valeurs en x = 2, 6, 10 sont ambigues (la formule donne f(2) = 8 et f(-2) = 0, que la periodicite identifierait) ; le corrige decrit le trace avec un saut de 8 a 0 en ces points. Trace a faire par l'eleve : aucune figure n'est imprimee dans le sujet."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "Determine whether the function $f: \\mathbb{R} \\longrightarrow \\mathbb{R}$, $f(x) = \\dfrac{x+1}{x-3}$, $x \\ne 3$, is surjective. (4 marks)",
+   "corrige_markdown": "A function $f: A \\to B$ is surjective (onto) if every $y \\in B$ is the image of at least one $x \\in A$, i.e. the range of $f$ equals the codomain $B = \\mathbb{R}$. Here $f$ is defined for $x \\in \\mathbb{R}\\setminus\\{3\\}$.\n\n**Solve $y = f(x)$ for $x$.**\n\n$$y = \\frac{x+1}{x-3} \\iff y(x-3) = x + 1 \\iff yx - 3y = x + 1 \\iff x(y - 1) = 3y + 1.$$\n\n- If $y \\ne 1$: $x = \\dfrac{3y+1}{y-1}$. This value is always an allowed input, because $x = 3$ would need $3y + 1 = 3y - 3$, i.e. $1 = -3$, which is impossible.\n- If $y = 1$: the equation becomes $0 \\cdot x = 4$, which has no solution. Directly: $\\dfrac{x+1}{x-3} = 1 \\iff x + 1 = x - 3 \\iff 1 = -3$, impossible.\n\nSo the real number $y = 1$ has no pre-image: the range of $f$ is $\\mathbb{R}\\setminus\\{1\\}$, which is not the whole codomain $\\mathbb{R}$.\n\n**Conclusion.** $f$ is **not surjective**. (Counter-example: $1 \\in \\mathbb{R}$ is not equal to $f(x)$ for any $x$. Equivalently $y = 1$ is the horizontal asymptote, never reached. $f$ would become surjective on the restricted codomain $\\mathbb{R}\\setminus\\{1\\}$, where it is in fact bijective.)",
+   "themes": [
+    "properties of functions",
+    "range of functions"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  },
+  {
+   "numero": "ii.a",
+   "enonce_markdown": "A periodic function $f: \\mathbb{R} \\longrightarrow \\mathbb{R}$, of period $4$, is defined in the interval $-2 \\le x \\le 2$ by\n\n$$f(x) = \\begin{cases} x^2 + 4, & 0 \\le x \\le 2, \\\\ -x^2 + k, & -2 \\le x < 0. \\end{cases}$$\n\nFind the value of $k$ for which $f$ is continuous and the value of $f(-5)$. (3 marks)",
+   "corrige_markdown": "**Value of $k$.** On each of the intervals $[-2, 0)$ and $[0, 2]$, $f$ is a polynomial, hence continuous. The only point inside $[-2, 2]$ where the formula changes is $x = 0$, so continuity there is what determines $k$. For $f$ to be continuous at $x = 0$ we need\n\n$$\\lim_{x \\to 0^-} f(x) = f(0) = \\lim_{x \\to 0^+} f(x).$$\n\n- $f(0) = 0^2 + 4 = 4$ and $\\lim_{x\\to 0^+}(x^2 + 4) = 4$.\n- $\\lim_{x \\to 0^-}(-x^2 + k) = k$.\n\nHence $k = 4$.\n\n**Value of $f(-5)$.** Since the period is $4$, $f(x + 4) = f(x)$. Add $4$ to $-5$ to reach the defining interval: $f(-5) = f(-5 + 4) = f(-1)$, and $-1 \\in [-2, 0)$, so\n\n$$f(-5) = -(-1)^2 + k = -1 + 4 = 3.$$\n\n$$\\boxed{k = 4, \\qquad f(-5) = 3}$$\n\n(Remark: with $k = 4$ the function has $f(-2) = 0$ and $f(2) = 8$, so it jumps at $x = \\pm 2$ and at every point $2 + 4n$; no value of $k$ removes both this jump, which would need $k = 12$, and the break at $x = 0$, which needs $k = 4$. The question therefore concerns continuity at $x = 0$.)",
+   "themes": [
+    "continuity of functions",
+    "periodic functions"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 3
+  },
+  {
+   "numero": "ii.b",
+   "enonce_markdown": "For the periodic function of part (ii)(a), sketch the curve $y = f(x)$ for $-2 \\le x \\le 10$. (4 marks)",
+   "corrige_markdown": "Use $k = 4$ from part (ii)(a). On one period, $-2 \\le x < 2$:\n\n$$f(x) = \\begin{cases} 4 - x^2, & -2 \\le x < 0 \\quad\\text{(an arc of an inverted parabola, rising)},\\\\ 4 + x^2, & 0 \\le x < 2 \\quad\\text{(an arc of an upright parabola, rising)}. \\end{cases}$$\n\nBecause the period is $4$, the same pattern repeats on $[2, 6)$ and $[6, 10)$: $f(x) = f(x - 4)$ on $[2, 6)$ and $f(x) = f(x - 8)$ on $[6, 10)$.\n\n**Key points (table of values).**\n\n| $x$ | $-2$ | $-1$ | $0$ | $1$ | $2^-$ | $2$ | $3$ | $4$ | $5$ | $6^-$ | $6$ | $7$ | $8$ | $9$ | $10^-$ |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n| $f(x)$ | $0$ | $3$ | $4$ | $5$ | $8$ | $0$ | $3$ | $4$ | $5$ | $8$ | $0$ | $3$ | $4$ | $5$ | $8$ |\n\n(The row $2^-$, $6^-$, $10^-$ gives the limit from the left; at $x = 2, 6$ the next period starts again at $0$.)\n\n**Description of the sketch.**\n\n1. Draw the axes for $-2 \\le x \\le 10$ and $0 \\le y \\le 8$.\n2. On $[-2, 0)$ draw the arc from $(-2, 0)$ (closed dot) through $(-1, 3)$ to $(0, 4)$; it is concave down, with a horizontal tangent at $(0, 4)$.\n3. On $[0, 2)$ draw the arc from $(0, 4)$ through $(1, 5)$ up to $(2, 8)$ (open circle); it is concave up, and joins the first arc smoothly at $(0, 4)$ (the curve is continuous there, with a common horizontal tangent).\n4. At $x = 2$ the curve jumps from $8$ down to $0$: closed dot at $(2, 0)$, then the same two arcs pass through $(3, 3)$, $(4, 4)$, $(5, 5)$ and approach $(6, 8)$ (open circle).\n5. Repeat: jump to $(6, 0)$, arcs through $(7, 3)$, $(8, 4)$, $(9, 5)$, approaching $(10, 8)$ (open circle, end of the given range).\n\nThe graph is a repeating \"S-shaped\" pattern of period $4$, with vertical jumps of size $8$ at $x = 2, 6, 10$. The $y$-values stay in $[0, 8]$.",
+   "themes": [
+    "periodic functions",
+    "curve sketching"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 4
+  }
+ ]
+}

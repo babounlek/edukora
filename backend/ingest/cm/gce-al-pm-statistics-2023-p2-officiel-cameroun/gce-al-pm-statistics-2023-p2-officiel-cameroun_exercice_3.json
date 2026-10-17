@@ -1,0 +1,85 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2023. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 (i) : le sujet dit « defined on R » mais f n'est pas définie en x = 2/5 ; le domaine donné est R privé de {2/5}. « Monotone decreasing » est démontré sur chaque intervalle du domaine (la propriété est fausse sur l'ensemble du domaine à cause de la rupture), ce que le corrigé précise.",
+    "Question 3 (ii) : le dénominateur est lu « 4x - 1 » (le chiffre imprimé est un peu empâté) ; cette lecture est confirmée par la restriction x différent de 1/4 imprimée dans le même énoncé.",
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points par partie sont recopiés tels qu'imprimés (leur somme est 103) et `points` de chaque exercice est laissé vide.",
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Scan de 3 pages (page de garde + 2 pages de questions) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer."
+  ],
+  "questions": [
+    {
+      "numero": "i.a",
+      "enonce_markdown": "A function $f$ is defined on $\\mathbb{R}$ by\n$$f(x) = \\frac{3x}{5x - 2}.$$\nState the domain of $f$. (1 mark)",
+      "corrige_markdown": "The expression is defined except when the denominator is zero: $5x - 2 = 0 \\iff x = \\tfrac25$.\n$$\\boxed{\\text{Domain of } f = \\left\\{x \\in \\mathbb{R} : x \\neq \\tfrac25\\right\\} = \\mathbb{R} \\setminus \\left\\{\\tfrac25\\right\\}}$$\n(The statement \"defined on $\\mathbb{R}$\" must be read with this one exclusion, since $f\\!\\left(\\tfrac25\\right)$ would require division by zero.)",
+      "themes": [
+        "domain of a function"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "i.b",
+      "enonce_markdown": "For the function $f(x) = \\dfrac{3x}{5x - 2}$, show that $f$ is injective. (3 marks)",
+      "corrige_markdown": "$f$ is injective if $f(x_1) = f(x_2)$ implies $x_1 = x_2$, for $x_1, x_2$ in the domain ($x_1, x_2 \\neq \\tfrac25$).\n\nSuppose $f(x_1) = f(x_2)$:\n$$\\frac{3x_1}{5x_1 - 2} = \\frac{3x_2}{5x_2 - 2}.$$\nCross-multiply (both denominators are non-zero):\n$$3x_1(5x_2 - 2) = 3x_2(5x_1 - 2) \\;\\Rightarrow\\; 15x_1x_2 - 6x_1 = 15x_1x_2 - 6x_2 \\;\\Rightarrow\\; -6x_1 = -6x_2 \\;\\Rightarrow\\; x_1 = x_2.$$\nHence distinct inputs always give distinct outputs: $f$ is injective (one-to-one). $\\blacksquare$\n\n(Geometrically, $f(x) = \\dfrac35 + \\dfrac{6}{5(5x-2)}$ is a rectangular hyperbola, and every horizontal line $y = c$ with $c \\ne \\tfrac35$ meets it exactly once.)",
+      "themes": [
+        "properties of functions",
+        "injective functions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "i.c",
+      "enonce_markdown": "For the function $f(x) = \\dfrac{3x}{5x - 2}$, show that $f$ is monotone decreasing. (3 marks)",
+      "corrige_markdown": "Differentiate with the quotient rule for $x \\neq \\tfrac25$:\n$$f'(x) = \\frac{3(5x - 2) - 3x\\cdot 5}{(5x - 2)^2} = \\frac{15x - 6 - 15x}{(5x - 2)^2} = \\frac{-6}{(5x - 2)^2}.$$\nSince $(5x - 2)^2 > 0$ for every $x \\neq \\tfrac25$, we get $f'(x) < 0$ throughout the domain. Therefore $f$ is (strictly) decreasing on each interval of its domain, $\\left(-\\infty, \\tfrac25\\right)$ and $\\left(\\tfrac25, \\infty\\right)$. $\\blacksquare$\n\n(Algebraic check: $f(x) = \\dfrac35 + \\dfrac{6}{5(5x-2)}$; if $x_1 < x_2$ lie in the same interval, then $5x_1 - 2$ and $5x_2 - 2$ have the same sign and $\\dfrac{1}{5x_1 - 2} > \\dfrac{1}{5x_2 - 2}$, so $f(x_1) > f(x_2)$.)\n\nRemark: \"decreasing\" holds on each branch, not across the break at $x = \\tfrac25$ (for instance $f(0) = 0 < f(1) = 1$ although $0 < 1$).",
+      "themes": [
+        "properties of functions",
+        "monotonic functions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Find the range of real values of the function $y = \\dfrac{3x^2}{4x - 1}$, $x \\in \\mathbb{R}$, $x \\neq \\dfrac14$. (3 marks)",
+      "corrige_markdown": "Write $y(4x - 1) = 3x^2$ and rearrange as a quadratic equation in $x$:\n$$3x^2 - 4y\\,x + y = 0.$$\nA real value of $x$ exists for a given $y$ exactly when the discriminant is non-negative:\n$$\\Delta = (4y)^2 - 4(3)(y) = 16y^2 - 12y = 4y(4y - 3) \\ge 0.$$\nThe product $y(4y-3)$ is non-negative when $y \\le 0$ or $y \\ge \\tfrac34$.\n\nThe excluded value $x = \\tfrac14$ is never a root: substituting gives $\\tfrac{3}{16} - y + y = \\tfrac{3}{16} \\neq 0$ for every $y$. So no value of $y$ is lost.\n$$\\boxed{y \\le 0 \\quad\\text{or}\\quad y \\ge \\tfrac34}$$\nthat is, the range is $(-\\infty, 0\\,] \\cup \\left[\\tfrac34, \\infty\\right)$.\n\nCheck by calculus: $\\dfrac{dy}{dx} = \\dfrac{6x(4x-1) - 12x^2}{(4x-1)^2} = \\dfrac{6x(2x - 1)}{(4x-1)^2}$, zero at $x = 0$ (local maximum, $y = 0$) and $x = \\tfrac12$ (local minimum, $y = \\tfrac34$), which are exactly the two boundary values.",
+      "themes": [
+        "range of functions",
+        "quadratic equations and discriminant"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

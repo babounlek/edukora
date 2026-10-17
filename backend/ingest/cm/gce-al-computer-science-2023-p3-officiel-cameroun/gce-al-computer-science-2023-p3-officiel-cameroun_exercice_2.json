@@ -1,0 +1,102 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 3 (Paper 3 - Practical), ADVANCED LEVEL, June 2023. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION A: A Plotting Program (Program Development) (30 marks)**\n\n**Describing the Task.** Many interesting programming problems involving nested loops can be encountered when creating plots using a printer. Your task is to create the plot in Figure 1 (pyramid) in a general manner with the size of the base entered at the beginning of program execution. Arrays are not used to do this. (The grid lines are just to ease working with the figure; the lines are not directly needed to answer any question.) A pyramid has a number of stars at its base (MaxNoOfStars), and is made up of rows of spaces and stars. Each line of the pyramid is made up of an odd number of leading spaces (NoOfSpaces) followed by a number of stars (NoOfStars). There are blanks after the stars, but they are not important for this exercise.\n\n(Figure 1 of the paper shows the pyramid of stars: a base of 11 stars, and above it lines of 9, 7, 5, 3 and 1 stars, each line centred over the one below.)\n\n**Task 2: Program Development (12 marks)**\n\nChoose EITHER the Pascal OR the C programming language (PL) to implement your plot of the pyramid of stars.\n\n2. Using a suitable editor of your choice, write the following functions and/or procedures.",
+  "groupes": [
+    "SECTION A"
+  ],
+  "points": "12",
+  "figures": [],
+  "incertitudes": [
+    "Le code C n'a pas été compilé (aucun compilateur C ni Pascal sur la machine) ; sa logique a été vérifiée par une traduction fidèle en Python exécutée sur les mêmes entrées, et les sorties recopiées dans le corrigé sont celles de cette simulation.",
+    "Task 2 / Task 3 : le sujet dit que NoOfSpaces, NoOfStars et MaxNoOfStars sont des variables globales, mais Initialise et Adjust ont ces noms comme paramètres. Le corrigé résout la tension avec des variables globales passées par adresse (pointeurs) ; une version Pascal utiliserait des paramètres var. Choix de conception, pas une correction du sujet.",
+    "Le sujet ne dit pas où la taille de la base est lue : le corrigé la lit dans Initialise (sa description dit « entered at the beginning of program execution »). Une lecture dans le programme principal serait acceptée. Le corrigé est donné en C uniquement ; le sujet autorise Pascal ou C.",
+    "Page 2, « Describing the Task » : « an odd number of leading spaces » (voir exercice 1) ; le préambule est recopié tel quel dans chaque fichier de la Section A, la figure n'est reproduite que dans l'exercice 1 (une description textuelle la remplace ici)."
+  ],
+  "questions": [
+    {
+      "numero": "2(i)",
+      "enonce_markdown": "The procedure *Initialise (MaxNoOfStars, NoOfSpaces, NoOfStars)* to initialise the variables *MaxNoOfStars*, *NoOfSpaces* and *NoOfStars* for the first line.",
+      "corrige_markdown": "**Algorithm (pseudocode)**\n\n```text\nPROCEDURE Initialise(MaxNoOfStars, NoOfSpaces, NoOfStars)\n    REPEAT\n        INPUT base\n    UNTIL base is odd AND base >= 1\n    MaxNoOfStars <- base\n    NoOfSpaces   <- (base - 1) / 2\n    NoOfStars    <- 1\nEND PROCEDURE\n```\n\nThe three parameters are results of the procedure, so they are passed **by reference** (pointers in C, `var` parameters in Pascal).\n\n**Program (ANSI C)**\n\n```c\nvoid Initialise(int *MaxNoOfStars, int *NoOfSpaces, int *NoOfStars)\n{\n    int base = 0;\n\n    printf(\"Enter the size of the base (an odd positive integer): \");\n    scanf(\"%d\", &base);\n    while (base < 1 || base % 2 == 0)       /* reject even or non-positive values */\n    {\n        printf(\"The base must be an odd positive integer. Try again: \");\n        scanf(\"%d\", &base);\n    }\n    *MaxNoOfStars = base;                   /* stars on the last line (the base) */\n    *NoOfSpaces = (base - 1) / 2;           /* the first line is centred over the base */\n    *NoOfStars = 1;                         /* the first line has a single star */\n}\n```\n\nThe size of the base is read at the start of the execution, as the description requires. The test `base % 2 == 0` rejects even values and `base < 1` rejects zero and negative values; for an accepted value the first line has `(base - 1) / 2` blanks and one star.\n\nExample: with `base = 9` the procedure leaves `MaxNoOfStars = 9`, `NoOfSpaces = 4`, `NoOfStars = 1`.",
+      "themes": [
+        "programming in c",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2(ii)",
+      "enonce_markdown": "The procedure *OutputLeadingSpaces (nSpaces)* which takes the number *nSpaces* and outputs that number of leading spaces for a line on the screen.",
+      "corrige_markdown": "**Algorithm**\n\n```text\nPROCEDURE OutputLeadingSpaces(nSpaces)\n    FOR i <- 1 TO nSpaces DO\n        OUTPUT ' ' (no new line)\nEND PROCEDURE\n```\n\n**Program (ANSI C)**\n\n```c\nvoid OutputLeadingSpaces(int nSpaces)\n{\n    int i;\n\n    for (i = 1; i <= nSpaces; i++)\n        putchar(' ');\n}\n```\n\n`nSpaces` is only read, so it is passed by value. If `nSpaces` is 0 (the base line) the loop body is not executed and nothing is printed. The line is not ended here: the stars follow on the same line.",
+      "themes": [
+        "programming in c",
+        "nested loops"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2(iii)",
+      "enonce_markdown": "The procedure *OutputLineOfStars (nStars)* which takes the number *nStars* and outputs that number of stars for a line on the screen.",
+      "corrige_markdown": "**Algorithm**\n\n```text\nPROCEDURE OutputLineOfStars(nStars)\n    FOR i <- 1 TO nStars DO\n        OUTPUT '*' (no new line)\n    OUTPUT new line\nEND PROCEDURE\n```\n\n**Program (ANSI C)**\n\n```c\nvoid OutputLineOfStars(int nStars)\n{\n    int i;\n\n    for (i = 1; i <= nStars; i++)\n        putchar('*');\n    putchar('\\n');                          /* end of the line */\n}\n```\n\nAfter the stars the procedure outputs a new line, so that the next call of `OutputLeadingSpaces` starts on a new screen line (this is what produces one row of the pyramid per call).",
+      "themes": [
+        "programming in c",
+        "nested loops"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2(iv)",
+      "enonce_markdown": "The procedure *Adjust (NoOfSpaces, NoOfStars)* adjusts the variables *NoOfSpaces* and *NoOfStars* to the values used to print the next row of blanks and stars.",
+      "corrige_markdown": "From Task 1 (iv): printing from the top, each line has one blank fewer and two stars more than the line above.\n\n**Algorithm**\n\n```text\nPROCEDURE Adjust(NoOfSpaces, NoOfStars)\n    NoOfSpaces <- NoOfSpaces - 1\n    NoOfStars  <- NoOfStars + 2\nEND PROCEDURE\n```\n\n**Program (ANSI C)**\n\n```c\nvoid Adjust(int *NoOfSpaces, int *NoOfStars)\n{\n    *NoOfSpaces = *NoOfSpaces - 1;          /* one blank less ... */\n    *NoOfStars = *NoOfStars + 2;            /* ... and two more stars */\n}\n```\n\nBoth parameters are modified, so they are passed by reference (pointers). Example: from `(NoOfSpaces, NoOfStars) = (5, 1)` the call gives `(4, 3)`; from `(0, 11)` it gives `(-1, 13)`, which is what ends the loop of the main program.",
+      "themes": [
+        "programming in c",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Develop the algorithm given as pseudocode in Task 1 (1) as a main program that calls the procedures (or functions) you implemented in Task 2 (2). For it, the NoOfSpaces, NoOfStars and MaxNoOfStars, presented under Task Description are stored in global variables. [*Hint: The condition \"number of stars is the number required\" in the algorithm could be coded as \"NoOfStars > MaxNoOfStars\".*]",
+      "corrige_markdown": "**Algorithm (pseudocode)**\n\n```text\nInitialise(MaxNoOfStars, NoOfSpaces, NoOfStars)\nREPEAT\n    OutputLeadingSpaces(NoOfSpaces)\n    OutputLineOfStars(NoOfStars)\n    Adjust(NoOfSpaces, NoOfStars)\nUNTIL NoOfStars > MaxNoOfStars\n```\n\nThe loop body runs once per line. The test is made after the body (REPEAT ... UNTIL), so the base line, where `NoOfStars = MaxNoOfStars`, is printed; the loop stops only when `Adjust` has produced `NoOfStars = MaxNoOfStars + 2`.\n\n**Complete program (ANSI C)** - the three variables are global, the procedures of Task 2 are called with their addresses:\n\n```c\n#include <stdio.h>\n\n/* global variables (Task 3) */\nint MaxNoOfStars;\nint NoOfSpaces;\nint NoOfStars;\n\n/* the parameters of the procedures below carry the names of the question; they are pointers so that\n   the procedures can change the global variables (call by reference, like var in Pascal) */\n\nvoid Initialise(int *MaxNoOfStars, int *NoOfSpaces, int *NoOfStars)\n{\n    int base = 0;\n\n    printf(\"Enter the size of the base (an odd positive integer): \");\n    scanf(\"%d\", &base);\n    while (base < 1 || base % 2 == 0)       /* reject even or non-positive values */\n    {\n        printf(\"The base must be an odd positive integer. Try again: \");\n        scanf(\"%d\", &base);\n    }\n    *MaxNoOfStars = base;                   /* stars on the last line (the base) */\n    *NoOfSpaces = (base - 1) / 2;           /* the first line is centred over the base */\n    *NoOfStars = 1;                         /* the first line has a single star */\n}\n\nvoid OutputLeadingSpaces(int nSpaces)\n{\n    int i;\n\n    for (i = 1; i <= nSpaces; i++)\n        putchar(' ');\n}\n\nvoid OutputLineOfStars(int nStars)\n{\n    int i;\n\n    for (i = 1; i <= nStars; i++)\n        putchar('*');\n    putchar('\\n');                          /* end of the line */\n}\n\nvoid Adjust(int *NoOfSpaces, int *NoOfStars)\n{\n    *NoOfSpaces = *NoOfSpaces - 1;          /* one blank less ... */\n    *NoOfStars = *NoOfStars + 2;            /* ... and two more stars */\n}\n\nint main(void)\n{\n    Initialise(&MaxNoOfStars, &NoOfSpaces, &NoOfStars);\n    do\n    {\n        OutputLeadingSpaces(NoOfSpaces);\n        OutputLineOfStars(NoOfStars);\n        Adjust(&NoOfSpaces, &NoOfStars);\n    } while (NoOfStars <= MaxNoOfStars);    /* \"until NoOfStars > MaxNoOfStars\" */\n    return 0;\n}\n```\n\nIn C the condition \"until `NoOfStars > MaxNoOfStars`\" becomes `while (NoOfStars <= MaxNoOfStars)` at the bottom of a `do ... while` loop (a `do ... while` repeats WHILE its condition is true, whereas REPEAT ... UNTIL stops WHEN it becomes true).\n\n**Trace for a base of 5**\n\n| Line printed | NoOfSpaces | NoOfStars | After Adjust | Test `NoOfStars <= 5` |\n|---|---|---|---|---|\n| `  *` | 2 | 1 | (1, 3) | true |\n| ` ***` | 1 | 3 | (0, 5) | true |\n| `*****` | 0 | 5 | (-1, 7) | false: stop |\n\n**Sample run** (base 9, output of the program, obtained by running a faithful Python translation of the code):\n\n```text\nEnter the size of the base (an odd positive integer): 9\n    *\n   ***\n  *****\n *******\n*********\n```",
+      "themes": [
+        "programming in c",
+        "algorithm design",
+        "nested loops"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

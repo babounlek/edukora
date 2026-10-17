@@ -1,0 +1,53 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2025. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 5 (a) : DEFAUT DU SUJET. L'ensemble imprimé (a, b réels, a différent de 0) n'est pas fermé pour la multiplication : [[1,-1],[1,1]] au carré donne [[0,-2],[2,0]], dont le coefficient a vaut 0. Il n'est donc pas un groupe tel qu'imprimé. Le corrigé le démontre par ce contre-exemple, puis prouve la structure de groupe pour l'ensemble manifestement voulu (a, b) différent de (0, 0), c'est-à-dire a au carré plus b au carré non nul. Condition imprimée non corrigée."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Show that the set of matrices of the form\n\n$$\\begin{pmatrix} a & -b \\\\ b & a \\end{pmatrix}, \\quad\\text{where } a, b \\in \\mathbb{R},\\ a \\neq 0,$$\n\nforms a group under matrix multiplication. (*Assume associativity*.) *[5 marks]*",
+      "corrige_markdown": "Write $M(a,b) = \\begin{pmatrix} a & -b \\\\ b & a \\end{pmatrix}$. Matrix multiplication gives\n\n$$M(a,b)\\,M(c,d) = \\begin{pmatrix} ac - bd & -(ad + bc) \\\\ ad + bc & ac - bd \\end{pmatrix} = M(ac - bd,\\ ad + bc).$$\n\n**Warning about the condition as printed.** With only $a \\neq 0$ the set is **not closed**. For example $M(1,1)\\,M(1,1) = M(0, 2)$, whose top-left entry is $0$. So, read literally, the set is not a group, and the closure axiom cannot be proved. The condition that makes the statement true (and that the question evidently intends) is that $M(a,b)$ is not the zero matrix, that is $(a, b) \\neq (0, 0)$, equivalently $a^2 + b^2 \\neq 0$ (the determinant is $a^2 + b^2$). We prove the group axioms for\n\n$$S = \\{M(a,b) : a, b \\in \\mathbb{R},\\ (a,b) \\neq (0,0)\\}.$$\n\n**1. Closure.** For $M(a,b), M(c,d) \\in S$ the product is $M(ac-bd,\\ ad+bc)$, a matrix of the required form. It is non-zero because\n\n$$(ac - bd)^2 + (ad + bc)^2 = (a^2 + b^2)(c^2 + d^2) > 0,$$\n\nsince $a^2 + b^2 > 0$ and $c^2 + d^2 > 0$. So the product lies in $S$.\n\n**2. Associativity.** Assumed (matrix multiplication is associative).\n\n**3. Identity.** $M(1, 0) = \\begin{pmatrix}1 & 0\\\\0 & 1\\end{pmatrix} = I$ belongs to $S$ and $M(a,b)\\,I = I\\,M(a,b) = M(a,b)$.\n\n**4. Inverses.** For $M(a,b) \\in S$ put $k = a^2 + b^2 > 0$ and $M' = M\\!\\left(\\dfrac{a}{k}, \\dfrac{-b}{k}\\right) \\in S$. Then\n\n$$M(a,b)\\,M' = M\\!\\left(\\frac{a\\cdot a - b\\cdot(-b)}{k},\\ \\frac{a(-b) + b\\cdot a}{k}\\right) = M\\!\\left(\\frac{a^2+b^2}{k},\\ 0\\right) = M(1,0) = I,$$\n\nand $M' M(a,b) = I$ in the same way. So every element of $S$ has an inverse in $S$.\n\nAll four axioms hold, so $S$ is a group under matrix multiplication. $\\blacksquare$\n\n(The group is also abelian, since $M(ac-bd,\\ ad+bc) = M(ca-db,\\ cb+da)$. It is isomorphic to the multiplicative group $\\mathbb{C}\\setminus\\{0\\}$ through $M(a,b) \\leftrightarrow a + ib$.)",
+      "themes": [
+        "group theory"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Solve the linear congruence\n\n$$2x + 8 \\equiv 5 \\pmod{11},$$\n\ngiving your answer in the form $x = p\\lambda + q$, where $p, q \\in \\mathbb{N}$ and $\\lambda \\in \\mathbb{Z}$. *[5 marks]*",
+      "corrige_markdown": "Subtract $8$ from both sides:\n\n$$2x \\equiv 5 - 8 = -3 \\equiv 8 \\pmod{11}.$$\n\nSince $\\gcd(2, 11) = 1$, $2$ has an inverse modulo $11$: $2 \\times 6 = 12 \\equiv 1 \\pmod{11}$, so the inverse is $6$. Multiply both sides by $6$:\n\n$$x \\equiv 6 \\times 8 = 48 = 4\\times 11 + 4 \\equiv 4 \\pmod{11}.$$\n\n(Equivalently, $2x \\equiv 8$ and $\\gcd(2,11) = 1$ allow dividing by $2$: $x \\equiv 4 \\pmod{11}$.)\n\nHence the solutions are\n\n$$\\boxed{x = 11\\lambda + 4,\\quad \\lambda \\in \\mathbb{Z}}, \\qquad\\text{that is } p = 11,\\ q = 4.$$\n\n*Check.* $x = 4$: $2(4) + 8 = 16 = 11 + 5 \\equiv 5 \\pmod{11}$.",
+      "themes": [
+        "linear congruences",
+        "modular arithmetic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

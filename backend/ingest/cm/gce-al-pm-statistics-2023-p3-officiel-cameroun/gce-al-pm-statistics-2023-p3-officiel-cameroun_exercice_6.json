@@ -1,0 +1,96 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 3,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics With Statistics, Paper 3 (0770/3), ADVANCED LEVEL, June 2023. Time allowed: THREE HOURS.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae and tables produced by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Electronic calculators may be used. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "13",
+  "figures": [],
+  "incertitudes": [
+    "Question 6 (b), (c), (d) : les valeurs sont celles obtenues avec les tables de la loi normale centrée réduite (correction de continuité), arrondies à 4 décimales : 0.1357, 0.0179, 0.7872 (calcul exact de la loi normale : 0.13567, 0.01786, 0.78722). Les probabilités binomiales exactes valent 0.1356, 0.0176 et 0.7875 ; l'approximation normale est celle que le sujet demande.",
+    "Question 6 (i) : le sujet ne précise pas le critère chiffré ; le corrigé donne les conditions usuelles ($n$ grand, $p$ proche de 0.5, ou $np > 5$ et $nq > 5$)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**(i)** State the conditions under which the normal distribution can be used to approximate the binomial distribution.",
+      "corrige_markdown": "The binomial distribution $B(n, p)$ can be approximated by the normal distribution $N(np,\\ npq)$, where $q = 1 - p$, when:\n\n1. $n$ is large (the number of trials is large, for instance $n > 30$); and\n2. $p$ is close to $0.5$, so the binomial distribution is roughly symmetrical. The usual practical test is that both $np > 5$ and $nq > 5$ (some texts use 10).\n\nBecause a discrete variable is replaced by a continuous one, a **continuity correction** of $\\pm 0.5$ is applied.",
+      "themes": [
+        "normal approximation to the binomial distribution"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii.a",
+      "enonce_markdown": "**(ii)** A coin is tossed 100 times. Given that the random variable $X$ is \"the number of heads obtained\",\n\n(a) Find $E(X)$ and $\\operatorname{Var}(X)$.",
+      "corrige_markdown": "A fair coin gives $p = 0.5$, and the 100 tosses are independent, so $X \\sim B(100,\\ 0.5)$.\n\n$$E(X) = np = 100 \\times 0.5 = 50$$\n\n$$\\operatorname{Var}(X) = npq = 100 \\times 0.5 \\times 0.5 = 25$$\n\n**$E(X) = 50$, $\\operatorname{Var}(X) = 25$** (standard deviation $5$).",
+      "themes": [
+        "binomial distribution",
+        "expectation and variance"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii.b",
+      "enonce_markdown": "Use the normal approximation to the binomial distribution to find, to four decimal places,\n\n(b) $P(X < 45)$,",
+      "corrige_markdown": "Here $np = nq = 50 > 5$ and $n = 100$ is large, so $X$ is approximated by $W \\sim N(50,\\ 25)$, that is $\\mu = 50$, $\\sigma = 5$.\n\n$X < 45$ means $X \\le 44$ for an integer variable; the continuity correction puts the boundary at $44.5$:\n\n$$P(X < 45) \\approx P(W < 44.5) = P\\!\\left(Z < \\frac{44.5 - 50}{5}\\right) = P(Z < -1.1) = 1 - \\Phi(1.1)$$\n\nFrom the tables $\\Phi(1.1) = 0.8643$, so\n\n$$P(X < 45) = 1 - 0.8643 = 0.1357$$\n\n**$P(X < 45) \\approx 0.1357$.**",
+      "themes": [
+        "normal approximation to the binomial distribution",
+        "normal distribution"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii.c",
+      "enonce_markdown": "(c) $P(X > 60)$,",
+      "corrige_markdown": "$X > 60$ means $X \\ge 61$, so the boundary is $60.5$:\n\n$$P(X > 60) \\approx P(W > 60.5) = P\\!\\left(Z > \\frac{60.5 - 50}{5}\\right) = P(Z > 2.1) = 1 - \\Phi(2.1) = 1 - 0.9821$$\n\n**$P(X > 60) \\approx 0.0179$.**",
+      "themes": [
+        "normal approximation to the binomial distribution",
+        "normal distribution"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii.d",
+      "enonce_markdown": "(d) $P(45 < X < 60)$.",
+      "corrige_markdown": "$45 < X < 60$ means $46 \\le X \\le 59$, so the boundaries are $45.5$ and $59.5$:\n\n$$P(45 < X < 60) \\approx P(45.5 < W < 59.5) = P\\!\\left(\\frac{45.5 - 50}{5} < Z < \\frac{59.5 - 50}{5}\\right) = P(-0.9 < Z < 1.9)$$\n\n$$= \\Phi(1.9) - \\Phi(-0.9) = \\Phi(1.9) - \\big[1 - \\Phi(0.9)\\big] = 0.9713 - (1 - 0.8159) = 0.9713 - 0.1841$$\n\n**$P(45 < X < 60) \\approx 0.7872$.**",
+      "themes": [
+        "normal approximation to the binomial distribution",
+        "normal distribution"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

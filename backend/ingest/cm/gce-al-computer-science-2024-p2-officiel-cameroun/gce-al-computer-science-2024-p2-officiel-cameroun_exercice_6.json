@@ -1,0 +1,102 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-computer-science-2024-p2-officiel-cameroun_exercice_6_fig_1.png",
+      "page_source": 5,
+      "type": "schema",
+      "legende": "Binary tree with root 6; 6 has left child 4 and right child 9; 4 has children 1 (left) and 5 (right); 9 has the single left child 7.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Question 6 : points imprimés par sous-partie : i = 2 + 4 = 6 ; ii = 2 ; iii = 1 + 3 = 4 ; iv = 3 + 2 = 5 ; total 17.",
+    "6(i)(b)1 : l'exposant de « n^? - 5n + 4 » est mal lisible sur le scan (il ressemble à un 4) ; lu n^4, la borne serait O(n^k) avec k l'exposant lu (même raisonnement : terme dominant) ; à revérifier sur l'original.",
+    "6(iii) : sur la figure, le noeud 7 est l'enfant gauche de 9 (arbre binaire de recherche). 6(iv)(a) : l'arbre à dessiner est décrit en texte (schéma ASCII) dans le corrigé."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) State what the computational complexity of an algorithm is and give an intuitive explanation of how it is evaluated. (2 marks)\n\n(b) Using the big-O notation, give the tight upper bound for the algorithms given as follows. (4 marks)\n\n1. $n^4 - 5n + 4$\n\n2. The following algorithm:\n\n```text\nfor i = 1 to n do\n    for j = 1 to n do\n        write(i, j)\n```",
+      "corrige_markdown": "**(a) Computational complexity (2 marks)**\n\nThe computational complexity of an algorithm measures the resources it needs, mainly the **time** (number of basic operations) and the **memory space**, as a function of the size $n$ of its input. It is evaluated by counting the number of basic operations (comparisons, assignments, outputs...) the algorithm performs for an input of size $n$ (usually in the worst case) and then keeping only the term that grows fastest when $n$ becomes large, ignoring constant factors and lower-order terms. This growth rate is written with the big-O notation.\n\n**(b) Big-O bounds (4 marks)**\n\n1. $n^4 - 5n + 4$: for large $n$ the term $n^4$ dominates; the lower-order term $-5n$ and the constant 4 are dropped. The tight upper bound is $O(n^4)$.\n2. The outer loop runs $n$ times and, for each value of $i$, the inner loop runs $n$ times, so the `write(i, j)` statement is executed $n \\times n = n^2$ times: the tight upper bound is $O(n^2)$.",
+      "themes": [
+        "algorithm complexity"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "What is an intractable problem? Give an example. (2 marks)",
+      "corrige_markdown": "An **intractable problem** is a problem that can be solved in theory, but for which no algorithm that runs in polynomial time is known (the best known algorithms need exponential or factorial time), so that the time needed becomes impossibly long, even for fast computers, as soon as the input is of moderate size.\n\n*Example:* the travelling salesman problem (finding the shortest route that visits $n$ cities once and returns to the start): trying all routes means about $(n-1)!/2$ routes, which is already about $6 \\times 10^{16}$ routes for 20 cities. Other examples: the knapsack problem, the Boolean satisfiability problem, and breaking a good cipher by trying every key.",
+      "themes": [
+        "algorithm complexity"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Consider the tree below and answer the questions that follow.\n\n![fig-1](gce-al-computer-science-2024-p2-officiel-cameroun_exercice_6_fig_1.png)\n\n(a) Taking into account the node contents and their placement, how is this type of tree called? (1 mark)\n\n(b) What type of tree traversal must be used if we must output the tree nodes in an ascending or descending order? Explain how it would be done. (3 marks)",
+      "corrige_markdown": "**(a) Type of tree (1 mark)**\n\nIt is a **binary search tree** (an ordered binary tree): each node has at most two children, and for every node all the values in its left subtree are smaller than the node and all the values in its right subtree are larger (6 is the root; 4, 1 and 5 are on the left; 9 and 7 are on the right, with 7 less than 9 so it is the left child of 9).\n\n**(b) Traversal (3 marks)**\n\nAn **in-order traversal** (left subtree, node, right subtree) outputs the nodes of a binary search tree in **ascending** order. For **descending** order the traversal is reversed (reverse in-order: right subtree, node, left subtree). It is done recursively:\n\n```text\nPROCEDURE InOrder(node)\n    IF node <> NULL THEN\n        InOrder(node.left)      ; visit everything smaller first\n        OUTPUT node.value       ; then the node itself\n        InOrder(node.right)     ; then everything larger\n    END IF\nEND PROCEDURE\n```\n\nApplied to the root 6: the left subtree of 6 (nodes 4, 1, 5) is traversed first, giving 1, 4, 5; then 6 is output; then the right subtree (9 with left child 7), giving 7, 9.\n\n- Ascending output: **1, 4, 5, 6, 7, 9**.\n- Descending output (right, node, left): **9, 7, 6, 5, 4, 1**.\n\n(Both sequences were produced by a Python implementation of the traversals on this tree.)",
+      "themes": [
+        "binary trees",
+        "tree traversal"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "(a) Draw the binary tree that corresponds to the expression $a*b - c/d$. (3 marks)\n\n(b) Write out the tree if it is output breadth-first. (2 marks)",
+      "corrige_markdown": "**(a) Expression tree (3 marks)**\n\nIn an expression tree the operators are the internal nodes and the operands are the leaves. Multiplication and division have higher precedence than subtraction, so the last operation to be carried out, `-`, is the root; its left child is the product `a * b` and its right child is the quotient `c / d`.\n\n```text\n        -\n       / \\\n      /   \\\n     *     /\n    / \\   / \\\n   a   b c   d\n```\n\n(Reading the tree in-order and re-inserting the operators gives back $a * b - c / d$.)\n\n**(b) Breadth-first output (2 marks)**\n\nA breadth-first (level-order) traversal outputs the nodes level by level, from the root downwards and from left to right in each level:\n\n- level 0: `-`\n- level 1: `*`, `/`\n- level 2: `a`, `b`, `c`, `d`\n\n**Output: - * / a b c d** (checked with a Python queue-based traversal).",
+      "themes": [
+        "binary trees",
+        "tree traversal"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

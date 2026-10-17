@@ -1,0 +1,206 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2020-p3-officiel-cameroun.pdf",
+  "numero_exercice": "D2-A",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Advanced Level Examination. Information and Communication Technologies (0796), Paper 3 (practical), June 2020. Duration: two hours. Answer ALL tasks.**\n\nThe booklet reproduced here contains two versions of the same practical paper, headed DAY 1 and DAY 2: they have the same two tasks (Task A: spreadsheet, 19 marks; Task B: database, 21 marks) with different file names, cell references and wording in a few questions.\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\nThe working files (the spreadsheet workbook and the database) are supplied on the day in the Candidate folder; they are not reproduced in the printed paper.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**DAY 2 - TASK A (SPREADSHEET: 19 MARKS)**\n\nOpen the Business workbook in the candidate folder. This workbook contains three worksheets: Sales, OldSales and Summary. *[Workbook supplied on the day, not reproduced here.]*\n\nQuestions 1 to 10 are based on the **Sales** sheet.",
+  "groupes": [
+    "DAY 2"
+  ],
+  "points": "19",
+  "figures": [],
+  "incertitudes": [
+    "Le PDF contient DEUX versions de la même épreuve pratique : « DAY 1 » (pages 1 à 4) et « DAY 2 » (pages 5 à 8). Les deux sont transcrites, en quatre exercices : D1-A et D1-B (Day 1), D2-A et D2-B (Day 2) ; `groupes` vaut [\"DAY 1\"] ou [\"DAY 2\"]. Différences : classeur « MDC » (Day 1) ou « Business » (Day 2) ; base « Sales » (Day 1) ou « Equipment » (Day 2) ; cellules demandées C2 / F8 / F25 / C4 / D2 (Day 1) contre C4 / F12 / C25 / C2 / D2 (Day 2) ; plage de mise en forme D2:G25 (question 9, après réorganisation des colonnes) contre C2:F25 (question 8, avant) ; remplissage bleu des totaux (Day 1) ou des noms de champs (Day 2) ; « spinners » (Day 1) contre « spanners » (Day 2).",
+    "Les fichiers de travail du jour de l'examen (classeur avec les feuilles Sales, OldSales et Summary ; base avec les tables Items et Buyers) ne figurent pas dans le PDF. La disposition des colonnes de la feuille Sales (A SN, B NAME, C 5% Discount, D et E Unit Price et Quantity, F Payable Total, G Item) est DÉDUITE des références de cellules du sujet (C2/C4, F8/F12, plages A1:G25, D2:G25, C2:F25) ; le contenu et la disposition de OldSales et de Summary sont inconnus : les formules des questions 12 et 13 (`=OldSales!B9`, `SUMIF` avec des plages A2:A30 et C2:C30) reposent sur une disposition supposée, dite comme telle dans le corrigé. Les lignes de données 2 à 24 de la feuille Sales sont supposées d'après le cadre A1:G25 et la ligne de totaux 25.",
+    "Aucun tableur ni SGBD graphique n'a été exécuté : les formules de tableur n'ont pas été testées dans un tableur (seul l'exemple 900 x 11 = 9 900, remise 495, à payer 9 405 a été recalculé avec Python). Le SQL (CREATE TABLE avec clés étrangères, 20 INSERT, requête à trois tables avec Line Total calculé, refus d'une clé étrangère inexistante) a été exécuté avec sqlite3 ; les 20 lignes du résultat recopiées dans le corrigé sont celles de cette exécution. La syntaxe `[Unit Price]*[Quantity]` est celle de MS Access (non testée). Ce sujet ne contient aucun code C ou Pascal : rien n'a donc été compilé.",
+    "Tableau « General Sales » imprimé (identique dans les deux versions sauf la ligne 9 et l'orthographe) : les Line - Total des lignes 14 (Padlock 1 300 x 18) et 16 (Padlock 1 300 x 14) sont imprimés 15 300 et 11 900 au lieu de 23 400 et 18 200 (ils correspondent à un prix de 850) ; les 18 autres lignes sont exactes (vérifié par script). Les points et les valeurs du sujet ne sont pas corrigés : le tableau est recopié tel qu'imprimé.",
+    "Orthographe incohérente dans le sujet : « Spinner » (lignes 5 et 9 en Day 1, ligne 5 seule en Day 2) alors que la table Items ne contient que « Spanner » (T4, 900) ; « Makoge Kingsley » (General Sales) contre « Makoke Kingsley » (Buyers) ; « Makia Betoke » en Day 1 contre « MakiaBetoke » en Day 2 ; « Hadison Okie » (recopié tel qu'imprimé). Le corrigé lit Spinner comme Spanner (T4) et Makoge comme Makoke (SN 5) pour remplir la table Sales ; en Day 1, les questions 12 et 13 parlent de « spinners » (recopié, lu comme les spanners de la liste de prix).",
+    "Day 1, Task B : la troisième table est nommée « equipment » à la question 4 puis « Sales » aux questions 6 et 7, dans une base qui s'appelle elle-même « Sales » (en Day 2, la base est « Equipment » et la table « Sales » partout) : l'incohérence est recopiée telle qu'imprimée et signalée dans le corrigé.",
+    "Task B, question 1 (« Does the table contain an entire primary key? ») : la formulation est ambiguë ; le corrigé répond oui (le champ No est unique sur les 20 lignes) et précise qu'aucune clé naturelle n'existe (le couple Names + Items n'est pas unique : Samson Takang - Spanner aux lignes 9 et 20). Une autre réponse attendue par le jury (non) n'est pas exclue. La question 2 est imprimée « Give two explanation » (recopiée).",
+    "Task A, question 3 : la largeur de 138 pixels correspond à 19 caractères sous Excel avec la police par défaut (Calibri 11) ; valeur déduite d'un calcul, non testée. Question 1 : la police ALGERIAN peut être absente d'un poste.",
+    "Points imprimés : Task A = 19 (Day 1 : 1+2+1+2+2+1+1+2+1+1+1+1+3 ; Day 2 : 1+2+1+2+2+1+1+1+2+1+1+1+3), Task B = 21 (2+2+1+3+2+3+3+3+2) ; les totaux sont cohérents, aucun point corrigé. L'ordre des questions diffère entre les deux versions pour la mise en forme et la réorganisation des colonnes (Day 1 : réorganisation question 8, format question 9 ; Day 2 : format question 8, réorganisation question 9).",
+    "Les zones de réponse du livret (lignes à compléter, tableau vide de la question 4, cadre pour le schéma E-R) ne sont pas reproduites en figure : elles sont signalées dans l'énoncé. Aucune figure n'a été recadrée : les tableaux imprimés (General Sales, Items, Buyers) sont recopiés en tableaux Markdown. Les filigranes et publicités de gcerevision.com et les en-têtes de scanner sont ignorés."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Change the font type of the first row (showing SN, NAME, 5% Discount ...) to ALGERIAN. *[1 mark]*",
+      "corrige_markdown": "Select the whole first row (click the row heading **1**, or select the header cells A1:G1), then on the **Home** tab open the *Font* box and choose **Algerian** (or Format Cells > Font > Font). Only the font *type* changes: the size, the text and the other cells stay as they are. If Algerian is not listed, it is not installed on that computer, and the supervisor is told.\n\n*Marking:* 1 mark if every header cell of row 1 (SN, NAME, 5% Discount, ...) is in Algerian.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Insert cell border in the range A1:G25. *[2 marks]*",
+      "corrige_markdown": "Select the range **A1:G25** (click A1, then Shift + click G25; or type A1:G25 in the Name Box). On the **Home** tab open the *Borders* menu and choose **All Borders** (or Format Cells > Border > *Outline* and *Inside*, then OK). The outline AND the inner grid lines must both appear, so that every cell of the range has a border on its four sides.\n\n*Marking:* 1 mark for the outside border, 1 mark for the inside borders.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Adjust the Name field width to 138 pixels. *[1 mark]*",
+      "corrige_markdown": "Right-click the heading of the Name column (column B) and choose **Column Width...** (or Home > Format > Column Width). In Excel with the default font (Calibri 11) one character is 7 pixels wide and each column adds 5 pixels of padding, so 138 pixels = 19 x 7 + 5 corresponds to a width of **19** characters: the dialog box then shows *19.00 (138 pixels)*. The same value appears in the pop-up when the column boundary is dragged with the mouse.\n\n*Marking:* 1 mark for a Name column whose width is 138 pixels.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Insert a formula in the *5% Discount* field to calculate the discount for each item bought.\n\nThis discount is 5% of the product of Unit Price and Quantity. *[2 marks]*\n\nWrite down the formula in cell C4.\n\n*(answer line: write the formula in the line provided)*",
+      "corrige_markdown": "The discount is 5% of (Unit Price x Quantity). In the sheet the 5% Discount field is column **C**, the Payable Total is column **F** (both are named in the question) and the numeric fields Unit Price and Quantity are in columns **D** and **E** (the printed paper does not show the sheet: this layout is deduced from the cell references of questions 4 to 6, from the range of question 8 and from the order requested in question 9). The formula is typed in the first data cell and copied down the column (fill handle), so the row number changes automatically:\n\n```\nC4: =0.05*D4*E4\n```\n\nEquivalent forms are accepted: `=5%*D4*E4`, `=D4*E4*0.05`, `=(D4*E4)*5/100`. The formula must start with `=`, use cell references (not typed numbers such as 495), and the multiplication sign `*` (not x). Check: for a unit price of 900 and a quantity of 11, the product is 9,900 and the discount is 9,900 x 0.05 = 495.\n\n*Marking:* 1 mark for the 5% factor, 1 mark for the product of Unit Price and Quantity with correct references.",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Insert a formula in the *Payable Total* field to calculate the total price for each sale. The total is calculated following the algorithm below\n\n```\nStart\n    Multiply Unit Price by Quantity to get total price\n    Subtract the 5% Discount from the total price above\nStop.\n```\n\nWrite down the formula to calculate the Payable Total in F12 in the line below. *[2 marks]*\n\n*(answer line: write the formula in the line provided)*",
+      "corrige_markdown": "The algorithm has two steps: (1) total price = Unit Price x Quantity, (2) Payable Total = total price - 5% Discount, where the discount has already been calculated in column C (question 4). In row 12:\n\n```\nF12: =D12*E12-C12\n```\n\nThe formula is then copied down the whole column. A formula that recomputes the discount, `=D12*E12-0.05*D12*E12` or `=D12*E12*(1-5%)`, gives the same value and is also accepted, but the first form follows the algorithm exactly (it reuses the 5% Discount cell). Check with the example of question 4: 900 x 11 = 9,900; 9,900 - 495 = **9,405**.\n\n*Marking:* 1 mark for the product Unit Price x Quantity, 1 mark for the subtraction of the discount.",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Calculate the total 5% Discount and total of the *Payable Total* in row 25.\n\nWrite down the formula in cell C25. *[1 mark]*\n\n*(answer line: write the formula in the line provided)*",
+      "corrige_markdown": "The totals are obtained with the `SUM` function over the data rows of each column (header in row 1, data from row 2 to row 24, totals in row 25). The question asks for the cell **C25**, which lies under the 5% Discount column:\n\n```\nC25: =SUM(C2:C24)\n```\n\nThe total of the Payable Total is calculated in the same way under its own column: `F25: =SUM(F2:F24)`. A selection of the two columns followed by the *AutoSum* button (Home > AutoSum, or Alt + =) writes both formulas at once. The data rows 2 to 24 are deduced from the borders of question 2 (range A1:G25 with the totals in row 25); if the data stopped before row 24 the range would be shortened accordingly.\n\n*Marking:* 1 mark for `=SUM(C2:C24)` (or an equivalent range of the same column).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Set the font of row 25 to bold and size 14. *[1 mark]*\n\n*Ensure that you have written down the formulae in the cells in questions 4, 5 and 6 above before attempting the questions that follow.*",
+      "corrige_markdown": "Click the heading of row **25** to select the whole row, then on the **Home** tab press **Bold** (Ctrl + B) and set the font size box to **14**.\n\n*Marking:* 1 mark if row 25 is both bold and in size 14. (The reminder printed under the question asks the candidate to copy the formulae of questions 4 to 6 into the booklet before the columns are rearranged and the formulae move.)",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "Format the numbers in the range C2:F25 to thousand separator without decimal place. *[1 mark]*",
+      "corrige_markdown": "At this stage the columns have not been rearranged yet: the range **C2:F25** holds 5% Discount (C), Unit Price (D), Quantity (E) and Payable Total (F); the Item column (G) is text and is not included. Select the range, open **Format Cells** (Ctrl + 1) > **Number** tab > category *Number*, set *Decimal places* to **0** and tick **Use 1000 Separator (,)**. (The *Comma Style* button followed by two clicks on *Decrease Decimal* gives the same display.) The values 9,900 or 9,405 are then displayed with their separator and without decimals; the stored values are unchanged.\n\n*Marking:* 1 mark for the thousand separator with 0 decimal places on the whole range.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "Rearrange the fields (columns) in this sheet to occur in the order SN, Name, Item, Unit Price, Quantity, 5% Discount and Payable Total. *[2 marks]*",
+      "corrige_markdown": "The columns are in the order SN (A), Name (B), 5% Discount (C), Unit Price (D), Quantity (E), Payable Total (F), Item (G) (order deduced from the cell references of the paper). The requested order is SN, Name, **Item**, Unit Price, Quantity, **5% Discount**, Payable Total. Two moves are enough, using *Cut* and *Insert Cut Cells* (not Copy, so that the formulae keep working and their references are updated):\n\n1. Select column **G** (Item), Cut (Ctrl + X), right-click the heading of column **C** and choose **Insert Cut Cells**: the order becomes SN, Name, Item, 5% Discount, Unit Price, Quantity, Payable Total.\n2. Select column **D** (5% Discount), Cut, right-click the heading of column **G** (Payable Total) and choose **Insert Cut Cells**: the order becomes SN, Name, Item, Unit Price, Quantity, **5% Discount**, Payable Total.\n\nFinal layout: A SN, B Name, C Item, D Unit Price, E Quantity, F 5% Discount, G Payable Total. The formulae follow their cells: the discount is now `=0.05*D2*E2` in F2, the payable total `=D2*E2-F2` in G2, and the totals of row 25 become `=SUM(F2:F24)` in F25 and `=SUM(G2:G24)` in G25. (Dragging a column with the Shift key held down gives the same result.)\n\n*Marking:* 1 mark for the Item column placed third, 1 mark for the remaining columns in the requested order.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "10",
+      "enonce_markdown": "Insert a fill color of light blue to the cells that make up the field names. *[1 mark]*",
+      "corrige_markdown": "The field names are the header cells of row 1: **A1:G1** (SN, Name, Item, Unit Price, Quantity, 5% Discount, Payable Total). Select them and, on the **Home** tab, open the *Fill Color* menu and choose a light blue (for example *Light Blue* in the standard colours, or *Blue, Accent 1, Lighter 60%*).\n\n*Marking:* 1 mark for a light-blue fill on the seven header cells only.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "11",
+      "enonce_markdown": "Sort in ascending order, the table in **OldSales** by items. *[1 mark]*",
+      "corrige_markdown": "Click inside the table of the **OldSales** sheet (or select the whole table, headers included), then **Data > Sort**, tick *My data has headers*, choose the **Items** column in *Sort by* and the order **A to Z** (ascending). The whole table must be sorted, not only the Items column, so that every row keeps its own unit price and quantity. The items then appear in alphabetical order (for the eight items of the price list: Bulb, Cable, Cutlass, Floor rag, Gallon, Hand saw, Padlock, Spanner); if OldSales repeats an item on several rows, those rows are grouped together. The sort comes BEFORE the links of questions 12 and 13, because a link points to a cell address, not to an item.\n\n*Marking:* 1 mark for the table sorted by Items, ascending, with the rows intact.",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "12",
+      "enonce_markdown": "In C2 of the Summary sheet, type a formula to link C2 to a cell in OldSales that contains the unit price of spanners. Do similarly for the cells in the range C3:C9. *[1 mark]*\n\nWrite down the formula in cell C2 in the line below.\n\n*(answer line: write the formula in the line provided)*",
+      "corrige_markdown": "A link is a formula made of an equals sign followed by a reference to a cell of another sheet: `=SheetName!CellAddress`. The cell of the Summary sheet is linked to the cell of the sorted OldSales table that contains the unit price of the item. The OldSales sheet is not printed, so its layout is assumed here: Item in column A, Unit Price in column B, Quantity in column C, the first item on row 2. The simplest way to write the link is to type `=` in the Summary cell, click the sheet tab OldSales, click the cell holding the price, and press Enter. For example, if after the sort of question 11 the unit price of spanners is in cell B9 of OldSales:\n\n```\nC2: =OldSales!B9\n```\n\nThe cells C3:C9 are linked in the same way, each to the unit price of the item listed on its own row of the Summary sheet (the exact addresses depend on the position of each item in the sorted OldSales table). Because the link is a plain reference, the Summary cell shows the price held in OldSales and follows any change made there. A lookup formula such as `=VLOOKUP(B2,OldSales!$A$2:$B$30,2,FALSE)` is an alternative that does not depend on the row position, but the question asks for a direct link to a cell.\n\n*Marking:* 1 mark for a formula of the form `=OldSales!<cell>` pointing to a unit price (and the others filled in the same way in C3:C9).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "13",
+      "enonce_markdown": "In the Summary sheet, type a formula in D2 that will add the total quantity of spanners sold. Do similarly for the cells in the range D3:D9. Write down the formula in cell D2 in the line below. *[3 marks]*\n\n*(answer line: write the formula in the line provided)*",
+      "corrige_markdown": "The quantity sold of an item is the sum of the Quantity values of all the OldSales rows whose Item is that item: this is a conditional sum, `SUMIF(range, criteria, sum_range)`. With the layout assumed in question 12 (OldSales: Item in A, Unit Price in B, Quantity in C, data from row 2 to row 30) and the name of the item written in cell B2 of the Summary sheet:\n\n```\nD2: =SUMIF(OldSales!$A$2:$A$30,B2,OldSales!$C$2:$C$30)\n```\n\nThe ranges are absolute (`$A$2:$A$30`, `$C$2:$C$30`) so that they stay fixed when the formula is copied down to D3:D9, while the criterion `B2` is relative and becomes B3, B4, ... B9, giving one total per item. The version with the name typed inside the formula, `=SUMIF(OldSales!$A$2:$A$30,\"Spanner\",OldSales!$C$2:$C$30)`, gives the total for spanners too but would have to be edited for every row. For instance, if OldSales held three spanner rows of 20, 15 and 10 units, D2 would show 45.\n\n*Marking:* 1 mark for `SUMIF` (or `SUMPRODUCT`), 1 mark for the correct range of items and criterion, 1 mark for the correct sum range, with the ranges anchored so that the formula can be copied down. The three sheets (Sales, OldSales and Summary) are then printed (File > Print > *Print Entire Workbook*, or each sheet in turn).",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2021. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 6 (b)(i) : formulation imprimée « sum (1/4^r) sin 2rθ is a convergent geometric progression » ; la série en sinus n'est pas géométrique en elle-même, c'est la partie imaginaire de la série géométrique de raison 1/z^2. Le corrigé le signale et démontre la convergence de la série géométrique complexe (et la convergence absolue par comparaison).",
+    "Question 6 (b)(ii) : défaut d'impression. La valeur imprimée 4(4 - cos 2θ)/(17 - 16 cos 2θ) est fausse comme somme en sinus (en θ = 0 la somme vaut 0, l'expression imprimée vaut 12). Résultats démontrés : somme en sinus = 4 sin 2θ/(17 - 8 cos 2θ) ; somme en cosinus = 4(4 - cos 2θ)/(17 - 8 cos 2θ) (le numérateur imprimé est celui du cosinus). Vérifié numériquement. L'énoncé n'est pas corrigé.",
+    "Question 6 (b) : l'amorce « A complex number z is defined by ... » (imprimée une seule fois) est recopiée dans b(i) et b(ii). Les sous-questions sont notées b(i), b(ii) ; la partie (a) est notée a."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "By the use of the Chinese Remainder Theorem, or otherwise, solve the system of congruences $x \\equiv 3 \\pmod 7$, $x \\equiv 5 \\pmod 8$.",
+      "corrige_markdown": "The moduli $7$ and $8$ are coprime, so the Chinese Remainder Theorem gives a unique solution modulo $N = 7 \\times 8 = 56$.\n\n**Chinese Remainder Theorem.** Put $M_1 = \\dfrac{56}{7} = 8$ and $M_2 = \\dfrac{56}{8} = 7$.\n\n* Inverse of $M_1 = 8$ modulo $7$: $8 \\equiv 1 \\pmod 7$, so $y_1 = 1$.\n* Inverse of $M_2 = 7$ modulo $8$: $7 \\times 7 = 49 = 6\\cdot8 + 1$, so $y_2 = 7$.\n\n$$x \\equiv 3\\cdot M_1 y_1 + 5\\cdot M_2 y_2 = 3\\cdot 8\\cdot 1 + 5\\cdot 7\\cdot 7 = 24 + 245 = 269 \\equiv 45 \\pmod{56},$$\n\nbecause $269 - 4\\cdot 56 = 45$.\n\n**Alternative (direct substitution).** From the first congruence $x = 3 + 7k$. Then $3 + 7k \\equiv 5 \\pmod 8$ gives $7k \\equiv 2 \\pmod 8$, that is $-k \\equiv 2$, so $k \\equiv 6 \\pmod 8$ and $x = 3 + 7\\cdot 6 = 45$ modulo $56$.\n\n**Check.** $45 = 6\\cdot7 + 3$ and $45 = 5\\cdot8 + 5$.\n\n$$\\boxed{x \\equiv 45 \\pmod{56}, \\text{ that is } x = 45 + 56k,\\ k \\in \\mathbb{Z}}$$",
+      "themes": [
+        "linear congruences",
+        "modular arithmetic"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b(i)",
+      "enonce_markdown": "A complex number $z$ is defined by $z = 2(\\cos\\theta + i\\sin\\theta)$, such that $\\dfrac{1}{z^n} = \\dfrac{1}{2^n}(\\cos n\\theta - i\\sin n\\theta)$.\n\nUsing De Moivre's theorem, or otherwise, show that $\\displaystyle\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta$ is a convergent geometric progression.",
+      "corrige_markdown": "**Printed wording.** The series $\\sum \\frac{1}{4^r}\\sin 2r\\theta$ is not itself geometric (the ratio of consecutive terms is not constant). What is a geometric series is the complex series whose imaginary part it is, and that is what must be used (it is also what part (ii) needs).\n\n**The geometric series.** Put $w = \\dfrac{1}{z^2}$. By the given formula with $n = 2$ (and, for $w^r = z^{-2r}$, with $n = 2r$):\n\n$$w = \\tfrac14(\\cos 2\\theta - i\\sin 2\\theta), \\qquad w^r = \\frac{1}{z^{2r}} = \\frac{1}{4^r}\\left(\\cos 2r\\theta - i\\sin 2r\\theta\\right).$$\n\nTherefore\n\n$$\\sum_{r=0}^{\\infty} w^r = \\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\cos 2r\\theta \\;-\\; i\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta.$$\n\nThe left-hand side is a **geometric progression** with first term $1$ and common ratio $w$. Its modulus is $|w| = \\tfrac14 < 1$, so the series is **convergent**, with sum $\\dfrac{1}{1 - w}$. Taking imaginary parts, $\\displaystyle\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta$ converges. (Directly: $\\left|\\frac{1}{4^r}\\sin 2r\\theta\\right| \\le \\frac{1}{4^r}$ and $\\sum \\frac{1}{4^r}$ converges, so the series converges absolutely.) $\\blacksquare$",
+      "themes": [
+        "de moivre theorem",
+        "series summation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "b(ii)",
+      "enonce_markdown": "A complex number $z$ is defined by $z = 2(\\cos\\theta + i\\sin\\theta)$, such that $\\dfrac{1}{z^n} = \\dfrac{1}{2^n}(\\cos n\\theta - i\\sin n\\theta)$.\n\nUsing De Moivre's theorem, or otherwise, show that $\\displaystyle\\sum_{r=0}^{\\infty}\\frac{1}{4^r}\\sin 2r\\theta = \\frac{4(4 - \\cos 2\\theta)}{17 - 16\\cos 2\\theta}$.",
+      "corrige_markdown": "**Printed result not reproduced.** Let $C = \\displaystyle\\sum_{r=0}^{\\infty}\\frac{\\cos 2r\\theta}{4^r}$ and $S = \\displaystyle\\sum_{r=0}^{\\infty}\\frac{\\sin 2r\\theta}{4^r}$. By part (i), with $w = \\tfrac14(\\cos 2\\theta - i\\sin 2\\theta)$ and $|w| < 1$,\n\n$$C - iS = \\sum_{r=0}^{\\infty} w^r = \\frac{1}{1 - w} = \\frac{4}{4 - \\cos 2\\theta + i\\sin 2\\theta}.$$\n\nMultiply numerator and denominator by the conjugate $4 - \\cos 2\\theta - i\\sin 2\\theta$:\n\n$$C - iS = \\frac{4\\,(4 - \\cos 2\\theta - i\\sin 2\\theta)}{(4 - \\cos 2\\theta)^2 + \\sin^2 2\\theta}.$$\n\nThe denominator is $16 - 8\\cos 2\\theta + \\cos^2 2\\theta + \\sin^2 2\\theta = 17 - 8\\cos 2\\theta$ (never $0$, since it is at least $9$). Hence\n\n$$C - iS = \\frac{4(4 - \\cos 2\\theta)}{17 - 8\\cos 2\\theta} - i\\,\\frac{4\\sin 2\\theta}{17 - 8\\cos 2\\theta}.$$\n\nEquating real and imaginary parts:\n\n$$\\boxed{C = \\frac{4(4 - \\cos 2\\theta)}{17 - 8\\cos 2\\theta}, \\qquad S = \\sum_{r=0}^{\\infty}\\frac{\\sin 2r\\theta}{4^r} = \\frac{4\\sin 2\\theta}{17 - 8\\cos 2\\theta}}.$$\n\n**This is not the printed value.** The printed right-hand side $\\dfrac{4(4 - \\cos 2\\theta)}{17 - 16\\cos 2\\theta}$ cannot equal $S$: at $\\theta = 0$ every term $\\sin 0$ is $0$, so $S = 0$, whereas the printed expression gives $\\dfrac{4\\cdot 3}{17 - 16} = 12$. Its numerator is that of the **cosine** sum $C$, and its denominator seems to carry a misprint ($16$ for $8$): at $\\theta = 0$, $C = \\sum 4^{-r} = \\tfrac43$ and the formula above gives $\\tfrac{4\\cdot 3}{17 - 8} = \\tfrac43$. A numerical check at $\\theta = 0.7$ (80 terms) confirms $S = 0.25203$ and $C = 0.97953$, matching the boxed formulas.",
+      "themes": [
+        "de moivre theorem",
+        "series summation",
+        "complex numbers"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

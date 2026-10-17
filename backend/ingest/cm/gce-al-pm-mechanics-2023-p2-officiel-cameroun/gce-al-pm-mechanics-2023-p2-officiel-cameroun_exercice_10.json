@@ -1,0 +1,67 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Mechanics",
+  "epreuve_source": "gce-al-pm-mechanics-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "10",
+  "numero_paper": 2,
+  "code_matiere": "0765",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Mechanics Paper 2 (0765/2), ADVANCED LEVEL, June 2023. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 10 (ii)(b) : « two or more cards must not come from the same suit » est lu « aucune paire de cartes de la meme couleur » (les trois cartes sont de trois couleurs differentes) : 4 x 13^3 = 8788. Une autre lecture (« les trois cartes ne sont pas toutes de la meme couleur ») donnerait 20956, mais elle ne correspond pas a la formule « two or more ... not ».",
+    "Question 10 (ii)(a) : « consists of » lu comme exactement 2 trefles et 1 carreau."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Show that the expression $x^2 + 2x + 6$ is positive for all real values of $x$.\n\nHence, find the set of values of $x$ for which $\\dfrac{x}{x-2} > \\dfrac{3}{x+5}$. (5 marks)",
+      "corrige_markdown": "**Positivity.** Complete the square:\n\n$$x^2 + 2x + 6 = (x + 1)^2 + 5.$$\n\nSince $(x+1)^2 \\ge 0$ for every real $x$, $(x+1)^2 + 5 \\ge 5 > 0$. So $x^2 + 2x + 6 > 0$ for all real $x$. (Alternatively, the discriminant is $4 - 24 = -20 < 0$ and the leading coefficient is positive, so the parabola never meets the $x$-axis and lies above it.) $\\blacksquare$\n\n**The inequality.** Do not multiply by $(x-2)(x+5)$ directly, because its sign is not known. Bring everything to one side (with $x \\ne 2$ and $x \\ne -5$):\n\n$$\\frac{x}{x-2} - \\frac{3}{x+5} > 0 \\Longleftrightarrow \\frac{x(x+5) - 3(x-2)}{(x-2)(x+5)} > 0 \\Longleftrightarrow \\frac{x^2 + 5x - 3x + 6}{(x-2)(x+5)} > 0 \\Longleftrightarrow \\frac{x^2 + 2x + 6}{(x-2)(x+5)} > 0.$$\n\nBy the first part the numerator is always positive, so the fraction is positive exactly when the denominator is positive:\n\n$$(x - 2)(x + 5) > 0.$$\n\nThe critical values are $x = -5$ and $x = 2$. The product of the two factors is positive when both factors have the same sign: both positive ($x > 2$) or both negative ($x < -5$).\n\n$$\\boxed{\\{x \\in \\mathbb{R} : x < -5 \\ \\text{or}\\ x > 2\\}}$$\n\nCheck: $x = 3$: $\\dfrac{3}{1} = 3 > \\dfrac{3}{8}$ (true); $x = -6$: $\\dfrac{-6}{-8} = 0.75 > \\dfrac{3}{-1} = -3$ (true); $x = 0$: $0 > \\dfrac35$ (false); $x = -3$: $\\dfrac{-3}{-5} = 0.6 > \\dfrac{3}{2} = 1.5$ (false).",
+      "themes": [
+        "quadratic equations and discriminant",
+        "inequalities and modulus"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii.a",
+      "enonce_markdown": "Three cards are to be drawn from a pack of 52 playing cards. In how many ways can this be done if the cards must consist of 2 clubs and 1 diamond? (2 marks)",
+      "corrige_markdown": "A pack contains $13$ cards of each suit. Choose the $2$ clubs from the $13$ clubs and the $1$ diamond from the $13$ diamonds; the choices are independent, so multiply:\n\n$$\\binom{13}{2}\\times\\binom{13}{1} = 78 \\times 13 = 1014.$$\n\n$$\\boxed{1014 \\text{ ways}}$$",
+      "themes": [
+        "permutations and combinations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii.b",
+      "enonce_markdown": "Three cards are to be drawn from a pack of 52 playing cards. In how many ways can this be done if two or more cards must not come from the same suit? (3 marks)",
+      "corrige_markdown": "The condition says that no two of the three cards may come from the same suit, so the three cards must come from three different suits.\n\n**Choose the suits.** Three of the four suits can be chosen in $\\dbinom{4}{3} = 4$ ways.\n\n**Choose one card from each of these suits.** Each suit has $13$ cards, so there are $13 \\times 13 \\times 13 = 2197$ ways.\n\n$$4 \\times 13^3 = 4 \\times 2197 = 8788.$$\n\n$$\\boxed{8788 \\text{ ways}}$$\n\nCheck by complement: the total number of 3-card hands is $\\dbinom{52}{3} = 22100$. Hands with at least two cards from the same suit: all three of one suit, $4\\binom{13}{3} = 1144$, plus exactly two of one suit and the third from another suit, $4\\binom{13}{2}\\times 39 = 12168$; total $13312$. Then $22100 - 13312 = 8788$. Correct.",
+      "themes": [
+        "permutations and combinations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

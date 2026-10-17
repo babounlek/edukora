@@ -1,0 +1,118 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 1 : le numéro « 1. » n'est pas imprimé sur le scan (la page 2 commence directement par « (i) ») ; la numérotation 1 à 8 est déduite des numéros imprimés des questions 2 à 8. Total des points imprimés 2 + 2 + 4 + 2 + 5 + 2 = 17.",
+    "1(ii) : la colonne du tableau de vérité est imprimée « II » ; elle est lue comme l'entrée H (chauffage), la seule cohérente avec l'énoncé (I, W, H). Les lignes avec sortie 1 sont 111, 000, 011, 100 et 010 (ordre I W H).",
+    "1(ii)(b) : le sujet ne dit pas quelle forme simplifiée est attendue ; il existe deux formes minimales équivalentes (WH + W'H' + I'H' ou WH + W'H' + I'W), les deux sont vérifiées par script. Les schémas de circuits sont décrits en art ASCII dans le corrigé (schéma à produire par le candidat)."
+  ],
+  "questions": [
+    {
+      "numero": "i(a)",
+      "enonce_markdown": "A processor with a machine code instruction format of 16 bits uses 6 of these bits for the op-code and the remaining 10 bits for the operand.\n\nWhat is the highest memory address that can be addressed by an instruction?\n\n(2 marks)",
+      "corrige_markdown": "**Idea.** When the operand is used as a memory address, the 10 operand bits can form $2^{10}$ different patterns, so the processor can address $2^{10} = 1024$ distinct locations, numbered from 0 upwards.\n\n- Lowest address: $0000000000_2 = 0$.\n- Highest address: $1111111111_2 = 2^{10} - 1 = 1023$ (that is $3FF$ in hexadecimal).\n\n**Answer: the highest address is 1023 (denary), i.e. $3\\mathrm{FF}_{16}$.**",
+      "themes": [
+        "processor instruction sets",
+        "addressing modes"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "i(b)",
+      "enonce_markdown": "A processor with a machine code instruction format of 16 bits uses 6 of these bits for the op-code and the remaining 10 bits for the operand.\n\nHow many different op-codes can this processor have?\n\n(2 marks)",
+      "corrige_markdown": "**Idea.** The op-code field is 6 bits wide and each bit can be 0 or 1, so the number of distinct op-codes is $2^6$.\n\n$$2^6 = 64$$\n\n**Answer: 64 different op-codes (instructions), numbered $000000_2$ to $111111_2$.**",
+      "themes": [
+        "processor instruction sets"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "i(c)",
+      "enonce_markdown": "Describe the fetch-execute cycle. Explain the use of internal registers in the fetch process.\n\n(4 marks)",
+      "corrige_markdown": "**The fetch-execute cycle** is the repeated sequence of steps by which the processor obtains an instruction from main memory and carries it out.\n\n**Fetch stage (uses the internal registers).**\n\n1. The **Program Counter (PC)** holds the address of the next instruction. This address is copied to the **Memory Address Register (MAR)**.\n2. The PC is incremented so that it points to the following instruction.\n3. The control unit sends a read signal on the control bus; the contents of the addressed memory location travel along the data bus and are stored in the **Memory Data Register (MDR)**.\n4. The instruction is copied from the MDR to the **Current Instruction Register (CIR)**.\n\n**Decode stage.** The control unit decodes the instruction in the CIR: the op-code identifies the operation and the operand gives the data or address to use.\n\n**Execute stage.** The control unit sends the signals needed to carry out the operation (an ALU calculation using the accumulator, a memory read or write, an input or output, or a jump which overwrites the PC). The cycle then starts again with the next instruction.\n\n**Role of the registers in the fetch process.**\n\n- PC: keeps track of which instruction is to be fetched next.\n- MAR: holds the address of the memory location being accessed, so that the address bus can carry it.\n- MDR: temporarily holds the content that has just been read from (or is about to be written to) memory.\n- CIR: holds the instruction currently being decoded and executed, so the PC is free to move on.",
+      "themes": [
+        "fetch-execute cycle",
+        "computer architecture"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "In designing a controller for a greenhouse to monitor the irrigation system (I), the window (W), and the heater (H), the table below shows acceptable system combinations (Truth table of controller circuit).\n\n| I | W | H | Controller |\n|---|---|---|---|\n| 1 | 1 | 1 | 1 |\n| 0 | 0 | 0 | 1 |\n| 0 | 1 | 1 | 1 |\n| 1 | 0 | 0 | 1 |\n| 0 | 1 | 0 | 1 |\n| Any other combination | | | 0 |\n\nUse the sum-of-products method to create a Boolean algebra expression from the truth table.\n\n(2 marks)",
+      "corrige_markdown": "**Method.** In the sum-of-products (minterm) method, write one product term for each row whose output is 1: a variable is written as it is when its value is 1 and complemented when its value is 0. The terms are then ORed together. The column headed II in the printed table is read as the heater input $H$.\n\n| I | W | H | Minterm |\n|---|---|---|---|\n| 1 | 1 | 1 | $I \\cdot W \\cdot H$ |\n| 0 | 0 | 0 | $\\bar I \\cdot \\bar W \\cdot \\bar H$ |\n| 0 | 1 | 1 | $\\bar I \\cdot W \\cdot H$ |\n| 1 | 0 | 0 | $I \\cdot \\bar W \\cdot \\bar H$ |\n| 0 | 1 | 0 | $\\bar I \\cdot W \\cdot \\bar H$ |\n\n**Answer:**\n\n$$F = I\\cdot W\\cdot H + \\bar I\\cdot \\bar W\\cdot \\bar H + \\bar I\\cdot W\\cdot H + I\\cdot \\bar W\\cdot \\bar H + \\bar I\\cdot W\\cdot \\bar H$$",
+      "themes": [
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "In designing a controller for a greenhouse to monitor the irrigation system (I), the window (W), and the heater (H), the table below shows acceptable system combinations (Truth table of controller circuit).\n\n| I | W | H | Controller |\n|---|---|---|---|\n| 1 | 1 | 1 | 1 |\n| 0 | 0 | 0 | 1 |\n| 0 | 1 | 1 | 1 |\n| 1 | 0 | 0 | 1 |\n| 0 | 1 | 0 | 1 |\n| Any other combination | | | 0 |\n\nThe sum-of-products expression from this truth table is\n\n$F = I\\cdot W\\cdot H + \\bar I\\cdot \\bar W\\cdot \\bar H + \\bar I\\cdot W\\cdot H + I\\cdot \\bar W\\cdot \\bar H + \\bar I\\cdot W\\cdot \\bar H$\n\nUse Boolean algebra to simplify this expression.\n\n(5 marks)",
+      "corrige_markdown": "**Step 1 - pair the terms that differ in one variable.**\n\n$I\\cdot W\\cdot H + \\bar I\\cdot W\\cdot H = W\\cdot H\\,(I + \\bar I) = W\\cdot H$\n\n$\\bar I\\cdot \\bar W\\cdot \\bar H + I\\cdot \\bar W\\cdot \\bar H = \\bar W\\cdot \\bar H\\,(\\bar I + I) = \\bar W\\cdot \\bar H$\n\nSo $F = W\\cdot H + \\bar W\\cdot \\bar H + \\bar I\\cdot W\\cdot \\bar H$.\n\n**Step 2 - combine the last two terms.** Factor $\\bar H$ and use the identity $X + \\bar X\\cdot Y = X + Y$ with $X = \\bar W$ (so $\\bar X = W$):\n\n$\\bar W\\cdot \\bar H + \\bar I\\cdot W\\cdot \\bar H = \\bar H\\,(\\bar W + \\bar I\\cdot W) = \\bar H\\,(\\bar W + \\bar I)$\n\n$= \\bar W\\cdot \\bar H + \\bar I\\cdot \\bar H$\n\n**Step 3 - result.**\n\n$$F = W\\cdot H + \\bar W\\cdot \\bar H + \\bar I\\cdot \\bar H$$\n\n**Check with a Karnaugh map.** The ones are the minterms $0, 2, 3, 4, 7$ (order $I\\,W\\,H$). The groups $\\{3,7\\} = WH$, $\\{0,4\\} = \\bar W\\bar H$ and $\\{0,2\\} = \\bar I\\bar H$ cover all five ones. The group $\\{2,3\\} = \\bar I W$ could replace $\\bar I\\bar H$, so $F = WH + \\bar W\\bar H + \\bar I W$ is an equally minimal answer. A script confirmed that both forms reproduce the whole truth table (all 8 rows).",
+      "themes": [
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "In designing a controller for a greenhouse to monitor the irrigation system (I), the window (W), and the heater (H), the table below shows acceptable system combinations (Truth table of controller circuit).\n\n| I | W | H | Controller |\n|---|---|---|---|\n| 1 | 1 | 1 | 1 |\n| 0 | 0 | 0 | 1 |\n| 0 | 1 | 1 | 1 |\n| 1 | 0 | 0 | 1 |\n| 0 | 1 | 0 | 1 |\n| Any other combination | | | 0 |\n\nThe simplified Boolean expression for this truth table is $F = W\\cdot H + \\bar W\\cdot \\bar H + \\bar I\\cdot \\bar H$.\n\nHence, draw a logic circuit for this truth table.\n\n(2 marks)",
+      "corrige_markdown": "**Gates needed** for $F = W\\cdot H + \\bar W\\cdot \\bar H + \\bar I\\cdot \\bar H$:\n\n- 3 NOT gates, producing $\\bar I$, $\\bar W$ and $\\bar H$;\n- 3 two-input AND gates, giving $W\\cdot H$, $\\bar W\\cdot \\bar H$ and $\\bar I\\cdot \\bar H$;\n- 1 three-input OR gate which combines the three AND outputs into $F$.\n\n**Circuit (inputs on the left, output $F$ on the right):**\n\n```text\nW ------------------------\\\n                           AND --- (W.H) -----------\\\nH ------------------------/                          \\\n                                                      \\\nW --- NOT --- (W') -------\\                            \\\n                           AND --- (W'.H') ----------- OR --- F\nH --- NOT --- (H') ---+---/                            /\n                      |                               /\nI --- NOT --- (I') ---|---\\                          /\n                      |    AND --- (I'.H') ---------/\n                      +---/\n```\n\n**Check.** For $I W H = 010$: $WH = 0$, $\\bar W\\bar H = 0$, $\\bar I\\bar H = 1$, so $F = 1$ (as in the table). For $IWH = 101$: $WH = 0$, $\\bar W\\bar H = 0$, $\\bar I\\bar H = 0$, so $F = 0$ (a combination that is not acceptable).",
+      "themes": [
+        "digital logic circuits",
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

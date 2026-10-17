@@ -1,0 +1,63 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 : points imprimés par sous-partie : i = 2 + 4 + 2 = 8 ; ii = 1 + 2 + 4 + 2 = 9 ; total 17. Le sujet précise « Replace column headings with the abbreviations in brackets » : le tableau du corrigé utilise PID, AT, BT, CT, TT, WT.",
+    "3(ii) : les temps d'arrivée et de service (P1 0/7, P2 1/3, P3 3/4) sont lus sur le scan sans ambiguïté ; la simulation Python de SRTF donne CT = 14, 4, 8, TT = 14, 3, 5, WT = 7, 0, 1."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) How is the concept of *virtual memory* used in memory management? (2 marks)\n\n(b) Explain how paging may be used to support virtual memory. (4 marks)\n\n(c) State **two** primary benefits of virtual memory. (2 marks)",
+      "corrige_markdown": "**(a) Virtual memory (2 marks)**\n\nVirtual memory is a memory-management technique in which the operating system uses part of the secondary storage (a swap file or paging area on the hard disk) as an extension of the main memory (RAM). Each process is given its own large, contiguous *logical* (virtual) address space, which can be bigger than the physical RAM; only the parts of the program that are currently needed are kept in RAM and the rest stay on disk. The hardware (memory management unit) translates the virtual addresses into physical addresses at run time.\n\n**(b) Paging (4 marks)**\n\n- The logical address space of a process is divided into blocks of fixed size called **pages**, and the physical memory is divided into blocks of the same size called **frames**; a page can be loaded into any free frame, so the frames used need not be contiguous.\n- The operating system keeps a **page table** for each process, which records for each page the number of the frame that holds it (or that the page is not in RAM, i.e. is on disk). A virtual address is split into a page number and an offset, and the page table gives the frame number.\n- Pages are brought into RAM only when needed (**demand paging**). If the process accesses a page that is not in RAM, a **page fault** occurs: the OS finds a free frame (or, if none is free, chooses a victim page with a page-replacement algorithm such as least recently used and writes it back to disk if it has been modified), loads the required page from disk into the frame, updates the page table and restarts the instruction.\n- In this way the pages not in use stay on disk, and a program larger than the available RAM can still run.\n\n**(c) Two primary benefits (2 marks)**\n\n1. Programs (or data) **larger than the physical RAM** can be run, because only the pages in use need to be in memory.\n2. **More processes can be held in memory at the same time** (higher degree of multiprogramming), which improves CPU utilisation; each process also has its own address space, which gives memory protection and isolation, and makes programming simpler because the programmer does not manage physical memory.\n\n(Other accepted benefits: efficient use of RAM, no need to load the whole program before starting, reduced external fragmentation.)",
+      "themes": [
+        "memory management",
+        "virtual memory"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "The table below shows three processes P1, P2, and P3 with their corresponding arrival times and burst times. These processes are to be scheduled using a pre-emptive scheduling policy.\n\n| Process ID (PID) | Arrival time (AT) | Burst time (BT) | Completion time (CT) | Turnaround time (TT) | Waiting time (WT) |\n|---|---|---|---|---|---|\n| P1 | 0 | 7 | | | |\n| P2 | 1 | 3 | | | |\n| P3 | 3 | 4 | | | |\n\n(a) What is meant by pre-emptive scheduling? (1 mark)\n\n(b) Round-robin (RR) and shortest remaining time first (SRTF) are two pre-emptive scheduling algorithms. Explain when pre-emption takes place in each of RR and SRTF algorithms. (2 marks)\n\n(c) Using SRTF scheduling, copy and complete the table above by filling in the completion time, turnaround time and waiting time for all three processes. *Replace column headings with the abbreviations in brackets.* (4 marks)\n\n(d) Calculate the average turnaround time and average waiting time for these processes. (2 marks)",
+      "corrige_markdown": "**(a) Pre-emptive scheduling (1 mark)**\n\nIn pre-emptive scheduling the operating system can interrupt a running process before it has finished its burst, move it back to the ready queue and give the CPU to another process (for example because its time slice has ended or because a more urgent or shorter process has arrived).\n\n**(b) When pre-emption takes place (2 marks)**\n\n- **Round-robin:** when the running process has used up its **time quantum** (time slice), the timer interrupt pre-empts it and it goes to the back of the ready queue.\n- **SRTF:** when a **new process arrives (or becomes ready) whose burst time is shorter than the remaining time of the process currently running**, the running process is pre-empted and the new process gets the CPU.\n\n**(c) SRTF schedule (4 marks)**\n\nExecution order (Gantt chart), found by choosing at every time unit the ready process with the shortest remaining time:\n\n```text\n|  P1  |      P2      |        P3        |            P1            |\n0      1              4                  8                          14\n```\n\n- $t = 0$: only P1 has arrived (remaining 7), so P1 runs.\n- $t = 1$: P2 arrives with burst 3, shorter than P1's remaining 6: P1 is pre-empted and P2 runs.\n- $t = 3$: P3 arrives (burst 4) but P2 has only 1 unit left, so P2 continues and finishes at $t = 4$.\n- $t = 4$: P3 (remaining 4) is shorter than P1 (remaining 6): P3 runs from 4 to 8.\n- $t = 8$: P1 finishes its remaining 6 units from 8 to 14.\n\nTurnaround time $TT = CT - AT$; waiting time $WT = TT - BT$.\n\n| PID | AT | BT | CT | TT | WT |\n|---|---|---|---|---|---|\n| P1 | 0 | 7 | 14 | 14 | 7 |\n| P2 | 1 | 3 | 4 | 3 | 0 |\n| P3 | 3 | 4 | 8 | 5 | 1 |\n\n**(d) Averages (2 marks)**\n\n$$\\text{Average TT} = \\frac{14 + 3 + 5}{3} = \\frac{22}{3} \\approx 7.33$$\n\n$$\\text{Average WT} = \\frac{7 + 0 + 1}{3} = \\frac{8}{3} \\approx 2.67$$\n\n(All values were checked by a Python simulation of SRTF: completion times P1 = 14, P2 = 4, P3 = 8.)",
+      "themes": [
+        "process scheduling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    }
+  ]
+}

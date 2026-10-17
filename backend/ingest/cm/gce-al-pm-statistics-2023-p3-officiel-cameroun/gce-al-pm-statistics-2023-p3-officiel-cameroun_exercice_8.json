@@ -1,0 +1,66 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 3,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics With Statistics, Paper 3 (0770/3), ADVANCED LEVEL, June 2023. Time allowed: THREE HOURS.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae and tables produced by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Electronic calculators may be used. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "The marks of eight students in English and Mathematics are as shown in the table below.\n\n| English, $x$ | 50 | 58 | 35 | 86 | 76 | 43 | 40 | 60 |\n|---|---|---|---|---|---|---|---|---|\n| Mathematics, $y$ | 65 | 72 | 54 | 82 | 32 | 74 | 40 | 53 |\n\nCalculate, to two decimal places,",
+  "groupes": [],
+  "points": "13",
+  "figures": [],
+  "incertitudes": [
+    "Question 8 : les sommes imprimées $\\sum xy = 26762$, $\\sum x^2 = 27310$, $\\sum y^2 = 29958$ ont été revérifiées sur le tableau (elles sont exactes). Les droites de régression sont données avec les coefficients à 4 décimales puis arrondies à 2 décimales ; la partie (c) ne fixe pas la forme exacte."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) the Pearson product-moment correlation coefficient for these data.",
+      "corrige_markdown": "With $n = 8$: $\\sum x = 448$, $\\sum y = 472$ (so $\\bar{x} = 56$, $\\bar{y} = 59$), $\\sum xy = 26762$, $\\sum x^2 = 27310$, $\\sum y^2 = 29958$.\n\n$$S_{xy} = \\sum xy - \\frac{\\sum x \\sum y}{n} = 26762 - \\frac{448 \\times 472}{8} = 26762 - 26432 = 330$$\n\n$$S_{xx} = \\sum x^2 - \\frac{(\\sum x)^2}{n} = 27310 - \\frac{448^2}{8} = 27310 - 25088 = 2222$$\n\n$$S_{yy} = \\sum y^2 - \\frac{(\\sum y)^2}{n} = 29958 - \\frac{472^2}{8} = 29958 - 27848 = 2110$$\n\n$$r = \\frac{S_{xy}}{\\sqrt{S_{xx}S_{yy}}} = \\frac{330}{\\sqrt{2222 \\times 2110}} = \\frac{330}{\\sqrt{4688420}} = \\frac{330}{2165.2} = 0.1524\\ldots$$\n\n**$r \\approx 0.15$** : a very weak positive linear correlation between the English and Mathematics marks.",
+      "themes": [
+        "correlation and regression statistics"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) the Spearman's rank correlation coefficient for these data.",
+      "corrige_markdown": "Rank each set from the smallest value (rank 1) to the largest (rank 8); there are no ties.\n\n| $x$ | 50 | 58 | 35 | 86 | 76 | 43 | 40 | 60 |\n|---|---|---|---|---|---|---|---|---|\n| $y$ | 65 | 72 | 54 | 82 | 32 | 74 | 40 | 53 |\n| Rank of $x$ | 4 | 5 | 1 | 8 | 7 | 3 | 2 | 6 |\n| Rank of $y$ | 5 | 6 | 4 | 8 | 1 | 7 | 2 | 3 |\n| $d$ | $-1$ | $-1$ | $-3$ | 0 | 6 | $-4$ | 0 | 3 |\n| $d^2$ | 1 | 1 | 9 | 0 | 36 | 16 | 0 | 9 |\n\n$$\\sum d^2 = 1 + 1 + 9 + 0 + 36 + 16 + 0 + 9 = 72$$\n\n$$r_s = 1 - \\frac{6\\sum d^2}{n(n^2 - 1)} = 1 - \\frac{6 \\times 72}{8 \\times 63} = 1 - \\frac{432}{504} = 0.1429\\ldots$$\n\n**$r_s \\approx 0.14$** : again a very weak positive association.",
+      "themes": [
+        "spearman rank correlation statistics",
+        "correlation and regression statistics"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "Find,\n\n(c) the least squares regression lines of $x$ on $y$ and of $y$ on $x$.\nYou may use $\\sum xy = 26762$, $\\sum x^2 = 27310$ and $\\sum y^2 = 29958$.",
+      "corrige_markdown": "Use $S_{xy} = 330$, $S_{xx} = 2222$, $S_{yy} = 2110$, $\\bar{x} = 56$, $\\bar{y} = 59$ from part (a).\n\n**Regression line of $y$ on $x$:** $y - \\bar{y} = b_{yx}(x - \\bar{x})$ with\n\n$$b_{yx} = \\frac{S_{xy}}{S_{xx}} = \\frac{330}{2222} = 0.1485$$\n\n$$y - 59 = 0.1485\\,(x - 56) \\;\\Longrightarrow\\; y = 50.68 + 0.1485\\,x$$\n\n**$y = 0.15x + 50.68$** (to two decimal places).\n\n**Regression line of $x$ on $y$:** $x - \\bar{x} = b_{xy}(y - \\bar{y})$ with\n\n$$b_{xy} = \\frac{S_{xy}}{S_{yy}} = \\frac{330}{2110} = 0.1564$$\n\n$$x - 56 = 0.1564\\,(y - 59) \\;\\Longrightarrow\\; x = 46.77 + 0.1564\\,y$$\n\n**$x = 0.16y + 46.77$** (to two decimal places).\n\n(Check: $b_{yx} \\times b_{xy} = 0.1485 \\times 0.1564 = 0.02323 = r^2$, with $r = 0.1524$; both lines pass through $(\\bar{x}, \\bar{y}) = (56, 59)$.)",
+      "themes": [
+        "correlation and regression statistics"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

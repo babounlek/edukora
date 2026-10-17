@@ -1,0 +1,66 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigrane gcerevision.com ignoré) lu page par page en image ; 4 pages, 8 questions, aucune figure à recadrer. Points imprimés par sous-partie (total 17 pour chaque question, vérifié). Question 3 : points imprimés i(a) 2, i(b) 2, iii(a) 2, iii(b) 2, iii(c) 2, iii(d) 6, iii(e) 1 ; total 17.",
+    "3 : la sous-question (ii) du sujet (tableau des processus) ne contient pas de question ; son tableau est recopié dans l'énoncé de la sous-question « iii » pour que celle-ci soit autonome.",
+    "3(iii) : le sujet n'indique ni les instants d'arrivée ni la convention de priorité ; hypothèses retenues dans le corrigé : arrivées toutes à 0 dans l'ordre P1 à P4, nombre plus petit = priorité plus haute. Avec la convention inverse, la priorité donnerait P3, P4, P2, P1 et une attente moyenne de 16,75 s ; FCFS (12,75 s) resterait le meilleur des trois. Diagrammes de Gantt et temps d'attente recalculés par un script Python.",
+    "3(iii)(c) : le sujet imprime « First come first save » (faute de frappe pour « first served »), recopié tel quel dans l'énoncé.",
+    "Aucun code C/Pascal dans ce paper (théorie) : rien n'a donc été compilé ; les calculs, tableaux et pseudocodes du corrigé ont été vérifiés par un script Python exécuté (et sqlite3 pour la base de données de la question 5)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) What is the importance of the operating system to a user? (2 marks)\n\n(b) Why is process management necessary in operating systems? (2 marks)",
+      "corrige_markdown": "**(a) Importance of the operating system to a user (2 marks)**\n\nThe operating system (OS) is the software that makes the computer usable. For the user it:\n\n- provides a user interface (graphical or command line) so that the user can give commands without knowing how the hardware works;\n- loads and runs application programs, and lets several of them run at the same time (multitasking);\n- manages the hardware resources for the user (processor, memory, disks, keyboard, screen, printers) and the files (create, save, copy, delete, organise in folders);\n- protects the user's data and programs (user accounts, passwords, file permissions) and reports errors.\n\n**(b) Why process management is necessary (2 marks)**\n\nMany processes (programs in execution) exist at the same time, but the computer has only one CPU (or a few cores). The OS must therefore:\n\n- decide which process uses the CPU, when and for how long (scheduling), so that the CPU is never idle and every process gets a fair share and makes progress;\n- create, suspend, resume and terminate processes, and save and restore their state at each context switch;\n- stop processes from interfering with each other, and let them communicate and synchronise (and avoid deadlock) when they share resources.\n\nWithout process management, one process could monopolise the CPU or processes could corrupt each other's work.",
+      "themes": [
+        "operating system functions",
+        "process management"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(ii) The processes P1 to P4 have attributes as shown below.\n\n| PROCESSES | BURST TIME/sec | PRIORITY |\n|---|---|---|\n| P1 | 10 | 1 |\n| P2 | 6 | 2 |\n| P3 | 9 | 4 |\n| P4 | 17 | 3 |\n\n(iii) Draw a Gantt chart for each of the 4 processes using the following scheduling algorithms:\n\n(a) Round-Robin with a time quantum of 4 seconds. (2 marks)\n\n(b) Priority-based scheduling with pre-emption. (2 marks)\n\n(c) First come first save (FCFS). (2 marks)\n\n(d) Calculate the average waiting time of the above scheduling algorithms. (6 marks)\n\n(e) State which of them is best to implement and why. (1 mark)",
+      "corrige_markdown": "**Assumptions** (the question does not state them): the four processes all arrive at time 0 in the order P1, P2, P3, P4, and a *smaller priority number means a higher priority* (P1 has the highest priority, P3 the lowest). Waiting time = completion time $-$ burst time (all arrivals at 0). The total burst time is $10 + 6 + 9 + 17 = 42$ s.\n\n**(a) Round-Robin, quantum 4 s (2 marks)**\n\nThe ready queue is P1, P2, P3, P4; each process runs for at most 4 s and, if unfinished, goes to the back of the queue.\n\n| 0 - 4 | 4 - 8 | 8 - 12 | 12 - 16 | 16 - 20 | 20 - 22 | 22 - 26 | 26 - 30 | 30 - 32 | 32 - 33 | 33 - 37 | 37 - 41 | 41 - 42 |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| P1 | P2 | P3 | P4 | P1 | P2 | P3 | P4 | P1 | P3 | P4 | P4 | P4 |\n\nRemaining burst times after each turn: P1 6, P2 2, P3 5, P4 13; then P1 2, P2 finishes at 22, P3 1, P4 9; then P1 finishes at 32, P3 finishes at 33; P4 runs alone from 33 to 42 and finishes at 42. (When P4 is alone it simply continues; the quantum expires but there is no other process.)\n\n**(b) Priority scheduling with pre-emption (2 marks)**\n\nAll the processes arrive at time 0, so no process arrives later with a higher priority and no pre-emption actually takes place. The CPU is given in the order of priority: P1 (1), P2 (2), P4 (3), P3 (4).\n\n| 0 - 10 | 10 - 16 | 16 - 33 | 33 - 42 |\n|---|---|---|---|\n| P1 | P2 | P4 | P3 |\n\n**(c) First come first served (2 marks)**\n\n| 0 - 10 | 10 - 16 | 16 - 25 | 25 - 42 |\n|---|---|---|---|\n| P1 | P2 | P3 | P4 |\n\n**(d) Average waiting time (6 marks)**\n\n*Round-Robin* (completion times: P1 32, P2 22, P3 33, P4 42):\n\n| Process | Completion | Burst | Waiting = completion $-$ burst |\n|---|---|---|---|\n| P1 | 32 | 10 | 22 |\n| P2 | 22 | 6 | 16 |\n| P3 | 33 | 9 | 24 |\n| P4 | 42 | 17 | 25 |\n\n$$\\text{average} = \\frac{22 + 16 + 24 + 25}{4} = \\frac{87}{4} = 21.75 \\text{ s}$$\n\n*Priority scheduling* (P1 starts at 0, P2 at 10, P4 at 16, P3 at 33):\n\n$$\\text{average} = \\frac{0 + 10 + 33 + 16}{4} = \\frac{59}{4} = 14.75 \\text{ s}$$\n\n(P1 = 0, P2 = 10, P3 = 33, P4 = 16.)\n\n*FCFS* (P1 starts at 0, P2 at 10, P3 at 16, P4 at 25):\n\n$$\\text{average} = \\frac{0 + 10 + 16 + 25}{4} = \\frac{51}{4} = 12.75 \\text{ s}$$\n\n| Algorithm | Average waiting time |\n|---|---|\n| Round-Robin (q = 4) | 21.75 s |\n| Priority (pre-emptive) | 14.75 s |\n| FCFS | 12.75 s |\n\n**(e) Best algorithm (1 mark)**\n\n**FCFS** is the best of the three for this set of processes because it gives the smallest average waiting time (12.75 s, against 14.75 s and 21.75 s) and it is the simplest to implement (a plain queue, no context switching during execution). (Its weakness, the convoy effect, is not serious here since all burst times are known and arrivals are simultaneous.)",
+      "themes": [
+        "process scheduling"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 13
+    }
+  ]
+}

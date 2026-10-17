@@ -1,0 +1,77 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 5 : points imprimés par sous-partie : i = 2 + 2 = 4 ; ii = 6 ; iii = 4 + 3 = 7 ; total 17.",
+    "5(iii)(a) : le sujet ne dit pas si l'on doit s'arrêter quand une passe sans échange est constatée ; le corrigé donne les passes 1 et 2 et explique la variante sans arrêt anticipé. 5(iii)(b) : la numérotation des positions est choisie de 1 à 5 (avec indices de 0 à 4 on obtient les mêmes comparaisons : Red, White, Yellow). Simulation Python du tri à bulles et de la recherche dichotomique effectuée."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A software developer retains the source code for a particular application and provides the application's user with the object code.\n\n(a) Explain the difference between source code and object code. (2 marks)\n\n(b) State **two** reasons why the application's user would be provided only with the object code. (2 marks)",
+      "corrige_markdown": "**(a) Source code and object code (2 marks)**\n\n- **Source code** is the program as written by the programmer in a high-level (or assembly) language such as C or Pascal: it is human-readable text that can be read, understood and modified.\n- **Object code** is the machine-code (binary) translation of the source code produced by a compiler or assembler: it consists of instructions that the processor can execute (after linking, if necessary), and it is practically unreadable for a person.\n\n**(b) Two reasons for supplying only the object code (2 marks)**\n\nAny two of:\n\n1. To **protect the developer's intellectual property and trade secrets**: users and competitors cannot read, copy or reuse the algorithms.\n2. To **prevent users from modifying the program** (accidentally or deliberately), which could introduce errors, remove licence checks or change its behaviour; this also protects the support and licensing terms.\n3. The user does **not need the source code and the translator** to run the program: object code runs directly and is faster to start, without installing a compiler.\n4. To make it **harder to find and exploit security weaknesses** in the program.",
+      "themes": [
+        "translators and compilers"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Describe **three** different types of errors that can occur in a computer program, giving a specific example of each. (6 marks)",
+      "corrige_markdown": "Each type: a description (1 mark) and a specific example (1 mark).\n\n1. **Syntax error.** A statement breaks the grammar rules of the programming language (misspelt keyword, missing punctuation, unmatched bracket). It is detected by the compiler or interpreter when the program is translated, and the program cannot be run until it is corrected. *Example:* in C, `printf(\"Hello\")` without the final semicolon, or writing `whlie` instead of `while`.\n2. **Logic (semantic) error.** The program is syntactically correct and runs without stopping but gives wrong results because the algorithm is wrong. It is not detected by the translator and is found by testing (trace tables, test data). *Example:* computing the average of two numbers as `a + b / 2` instead of `(a + b) / 2`, or using `<` instead of `<=` so that the last item of a list is never processed.\n3. **Run-time (execution) error.** An error that appears while the program is running and usually stops it, because the program tries an operation that cannot be carried out. *Example:* division by zero (`x / y` when the user enters $y = 0$), reading beyond the end of an array (index out of range), opening a file that does not exist, or running out of memory.",
+      "themes": [
+        "program errors",
+        "software engineering"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Consider the following array of colors to sort in alphabetical order.\n\n`[ Green | Blue | Yellow | Red | White ]`\n\n(a) For each pass in a bubble sort algorithm, use arrows to indicate how values in array cells are swapped, then write out the array cell values at the end of each pass. (4 marks)\n\n(b) Show the array ranges during each stage of a binary search to find the color *Yellow* in the sorted array in (iii)(a) above. (Hint: The mid-position is the integer part of its calculation.) (3 marks)",
+      "corrige_markdown": "**(a) Bubble sort (4 marks)**\n\nIn each pass, neighbouring cells are compared from the left and swapped when they are in the wrong alphabetical order (arrows show the swapped values). A script reproduced the following passes.\n\n**Pass 1**\n\n```text\nStart :   Green   Blue   Yellow   Red   White\nCompare Green, Blue      -> swap    Green <-> Blue\n          Blue    Green  Yellow   Red   White\nCompare Green, Yellow    -> no swap\nCompare Yellow, Red      -> swap    Yellow <-> Red\n          Blue    Green  Red      Yellow White\nCompare Yellow, White    -> swap    Yellow <-> White\n          Blue    Green  Red      White Yellow\nEnd of pass 1 :  Blue  Green  Red  White  Yellow\n```\n\n**Pass 2** (comparisons Blue/Green, Green/Red, Red/White, White/Yellow): every pair is already in order, so there is **no swap**.\n\n```text\nEnd of pass 2 :  Blue  Green  Red  White  Yellow\n```\n\nSince no swap occurred in pass 2, the array is sorted and the algorithm stops (a version without this test would perform passes 3 and 4, which leave the array unchanged).\n\n**Sorted array: Blue, Green, Red, White, Yellow.**\n\n**(b) Binary search for Yellow (3 marks)**\n\nPositions are numbered 1 to 5: Blue (1), Green (2), Red (3), White (4), Yellow (5). Mid-position = integer part of (low + high) / 2.\n\n| Stage | Range searched (low to high) | Mid-position | Item at mid | Comparison with Yellow |\n|---|---|---|---|---|\n| 1 | 1 to 5 | int(6 / 2) = 3 | Red | Yellow comes after Red: keep the upper half |\n| 2 | 4 to 5 | int(9 / 2) = 4 | White | Yellow comes after White: keep the upper half |\n| 3 | 5 to 5 | int(10 / 2) = 5 | Yellow | **Found** at position 5 |\n\nThe search ends after 3 comparisons, the range being reduced from 5 items to 2 items and then to 1 item.",
+      "themes": [
+        "sorting algorithms",
+        "searching algorithms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    }
+  ]
+}

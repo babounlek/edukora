@@ -1,0 +1,78 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 : points imprimés par sous-partie : (i)(a) 2 + (b) 4 = 6 ; (ii) 2 + 2 + 2 = 6 ; (iii)(a) 2 + (b) 3 = 5 ; total 17.",
+    "Question 2(iii)(a) : le sujet demande le plus grand nombre d'éléments de données distincts transférables sur un bus de 16 lignes ; lecture retenue : 2^16 = 65 536 valeurs distinctes en un transfert (pas le nombre d'octets transférés en plusieurs cycles).",
+    "Question 2(iii)(b) : 256 MB lu comme 256 x 2^20 octets = 2^28 octets (convention binaire de l'informatique) ; avec 256 x 10^6 octets il faudrait aussi 28 lignes (2^27 = 134 217 728 < 256 x 10^6 <= 2^28)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) Describe the stored program concept in von Neumann Machine architecture. (2 marks)\n\n(b) Illustrate with registers how an instruction is fetched and loaded for execution. (4 marks)",
+      "corrige_markdown": "**(a) Stored program concept (2 marks)**\n\nIn the von Neumann architecture the program (the instructions) and the data it works on are both stored, as binary numbers, in the **same main memory**. The processor does not have the program wired into it: it repeatedly **fetches** an instruction from memory, **decodes** it and **executes** it, normally taking the instructions one after another in the order of their addresses (a register called the program counter keeps track of the next one). Because instructions are just stored data, a different program can be loaded into memory and the same machine does a different job, and instructions can be treated as data (for example by a compiler or a loader).\n\n**(b) Fetching an instruction using registers (4 marks)**\n\nSuppose the next instruction is at address 200 and the Program Counter (PC) holds 200.\n\n1. **PC $\\rightarrow$ MAR**: the address 200 is copied from the Program Counter to the Memory Address Register, which places it on the address bus.\n2. The control unit sends a **memory read** signal on the control bus.\n3. The contents of memory location 200 travel along the data bus into the **MDR** (Memory Data Register): MDR $\\leftarrow$ [MAR].\n4. **MDR $\\rightarrow$ CIR**: the instruction is copied into the Current Instruction Register.\n5. **PC $\\leftarrow$ PC + 1**: the Program Counter is incremented (it now holds 201) so that it points to the next instruction.\n6. The control unit **decodes** the instruction held in the CIR (operation code and operand) and then **executes** it, for example by copying the operand address into the MAR, reading the data into the MDR and then into the accumulator (ACC), and the cycle starts again.",
+      "themes": [
+        "computer architecture",
+        "fetch-execute cycle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Describe the role of each of the following:\n\n(a) The Control Unit. (2 marks)\n\n(b) The Arithmetic and Logical Unit. (2 marks)\n\n(c) The I/O controller. (2 marks)",
+      "corrige_markdown": "**(a) The Control Unit (CU) (2 marks)**\n\nThe CU **directs and coordinates** all the operations of the computer. It fetches each instruction from memory, decodes it, and sends the control signals (synchronised by the clock) that tell the ALU, the registers, the memory and the input/output devices what to do and when to do it, so that data moves along the buses in the right order.\n\n**(b) The Arithmetic and Logical Unit (ALU) (2 marks)**\n\nThe ALU carries out the **calculations and decisions** of the processor: arithmetic operations (addition, subtraction, multiplication, division) and logical operations (AND, OR, NOT, shifts, comparisons such as greater than, equal to). It works with the accumulator and registers, and records the outcome of a comparison in status flags (zero, carry, negative) used by the control unit for conditional jumps.\n\n**(c) The I/O controller (2 marks)**\n\nThe I/O controller (device interface) manages the communication between the processor and a **peripheral device** (keyboard, printer, disk, network card). It converts between the device's format and speed and those of the processor, holds data temporarily in a buffer so that the slow device does not hold up the fast processor, and signals the processor (by an interrupt) when a transfer is complete or a device needs attention.",
+      "themes": [
+        "computer architecture"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "(a) What is the largest number of distinct data items that can be transferred over a data bus with 16 lines? (2 marks)\n\n(b) A particular computer has 256 MB of RAM. How many bus lines are needed to address every byte of this memory? (3 marks)",
+      "corrige_markdown": "**(a) Distinct items on a 16-line data bus (2 marks)**\n\nEach line carries one bit (0 or 1), so 16 lines can carry $2^{16}$ different bit patterns:\n\n$$2^{16} = 65\\,536$$\n\nThe largest number of distinct data items that can be transferred is **65 536** (the values 0 to 65 535 in one transfer).\n\n**(b) Address lines for 256 MB (3 marks)**\n\n$256\\ \\mathrm{MB} = 256 \\times 2^{20}\\ \\text{bytes} = 2^{8} \\times 2^{20} = 2^{28}\\ \\text{bytes} = 268\\,435\\,456\\ \\text{bytes}$.\n\nWith $n$ address lines, $2^n$ different addresses can be formed. We need $2^n \\geq 2^{28}$, so $n = \\log_2 (2^{28}) = 28$.\n\n**28 address bus lines** are needed to address every byte of the memory.",
+      "themes": [
+        "computer memory",
+        "computer architecture"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

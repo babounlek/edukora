@@ -1,0 +1,54 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2026-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Statistics Paper 2 (0770/2), ADVANCED LEVEL, June 2026. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Aucun corrigé officiel n'existe : tous les corrigés sont rédigés et chaque valeur numérique a été recalculée par script (sympy).",
+    "Le sujet n'imprime aucun total par question ni pour l'épreuve ; les points imprimés par bloc ((i), (ii)...) sont recopiés tels quels (leur somme est 102). Quand un même total couvre plusieurs sous-questions (ex. « (2, 2, 4 marks) »), chaque partie porte son nombre ; quand un seul total couvre un bloc de plusieurs tâches, il est porté par ce bloc. `points` de chaque exercice est laissé vide.",
+    "Scan de 4 pages (page de garde + 3 pages de questions, filigrane gcerevision.com ignoré) : les questions 1 à 10 sont complètes et se suivent, aucune page ne semble manquer. Page de garde vérifiée : ADVANCED LEVEL, JUNE 2026, Pure Mathematics With Statistics, Paper 2, code 0770, pied de page GCE26/0770/2/P52."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "The polynomial $f(x)$, where\n$$\nf(x) = 2x^3 + ax^2 + bx - 3,\n$$\nis exactly divisible by $(x - 1)$ and has remainder $9$ when divided by $(x + 2)$. Find the values of the constants $a$ and $b$. Hence solve the equation $f(x) = 0$. (7 marks)",
+      "corrige_markdown": "**Factor theorem.** $f(x)$ is exactly divisible by $(x - 1)$, so $f(1) = 0$:\n$$\n2 + a + b - 3 = 0 \\;\\Rightarrow\\; a + b = 1. \\qquad (1)\n$$\n**Remainder theorem.** The remainder on division by $(x + 2)$ is $f(-2)$, so $f(-2) = 9$:\n$$\n2(-8) + 4a - 2b - 3 = 9 \\;\\Rightarrow\\; 4a - 2b = 28 \\;\\Rightarrow\\; 2a - b = 14. \\qquad (2)\n$$\n**Solve.** Adding (1) and (2): $3a = 15$, so $a = 5$; then from (1), $b = 1 - 5 = -4$.\n\nCheck: $f(x) = 2x^3 + 5x^2 - 4x - 3$ gives $f(1) = 2 + 5 - 4 - 3 = 0$ and $f(-2) = -16 + 20 + 8 - 3 = 9$.\n\n**Solving $f(x) = 0$.** Since $(x - 1)$ is a factor, divide $2x^3 + 5x^2 - 4x - 3$ by $(x - 1)$ (synthetic division with root $1$: coefficients $2, 5, -4, -3$ give $2,\\ 5 + 2 = 7,\\ -4 + 7 = 3,\\ -3 + 3 = 0$):\n$$\nf(x) = (x - 1)(2x^2 + 7x + 3) = (x - 1)(2x + 1)(x + 3).\n$$\nSo $f(x) = 0$ when $x = 1$, $x = -\\dfrac12$ or $x = -3$.\n$$\\boxed{a = 5,\\quad b = -4;\\qquad x = -3,\\ -\\tfrac12,\\ 1}$$",
+      "themes": [
+        "polynomial division and factor theorem"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Find the set of real values of $x$ for which $\\dfrac{2}{x - 2} < \\dfrac{1}{x + 1}$. (4 marks)",
+      "corrige_markdown": "Do **not** multiply both sides by $(x - 2)(x + 1)$, whose sign changes with $x$. Instead move everything to one side and combine into a single fraction (the expression is defined for $x \\ne 2$, $x \\ne -1$):\n$$\n\\frac{2}{x - 2} - \\frac{1}{x + 1} < 0\n\\;\\Longleftrightarrow\\;\n\\frac{2(x + 1) - (x - 2)}{(x - 2)(x + 1)} < 0\n\\;\\Longleftrightarrow\\;\n\\frac{x + 4}{(x - 2)(x + 1)} < 0.\n$$\nThe critical values are $x = -4$ (numerator zero), $x = -1$ and $x = 2$ (denominator zero). Sign table of $\\dfrac{x + 4}{(x - 2)(x + 1)}$:\n\n| Interval | $x + 4$ | $x - 2$ | $x + 1$ | Fraction |\n|---|---|---|---|---|\n| $x < -4$ | $-$ | $-$ | $-$ | $-$ |\n| $-4 < x < -1$ | $+$ | $-$ | $-$ | $+$ |\n| $-1 < x < 2$ | $+$ | $-$ | $+$ | $-$ |\n| $x > 2$ | $+$ | $+$ | $+$ | $+$ |\n\nThe fraction is negative for $x < -4$ and for $-1 < x < 2$. The end values are excluded (strict inequality; $x = -4$ gives $0$, and $x = -1$, $x = 2$ are undefined).\n\nCheck: $x = -5$: $\\frac{2}{-7} \\approx -0.286 < \\frac{1}{-4} = -0.25$ (true); $x = 0$: $-1 < 1$ (true); $x = -2$: $-0.5 < -1$ (false); $x = 3$: $2 < 0.25$ (false).\n$$\\boxed{\\{x \\in \\mathbb{R} : x < -4\\} \\cup \\{x \\in \\mathbb{R} : -1 < x < 2\\}}$$",
+      "themes": [
+        "inequalities and modulus"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

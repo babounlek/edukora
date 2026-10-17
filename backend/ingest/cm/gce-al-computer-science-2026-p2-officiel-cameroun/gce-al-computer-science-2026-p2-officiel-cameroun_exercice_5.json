@@ -1,0 +1,68 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "5",
+ "numero_paper": 2,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h30",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2026. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "PAPER 2",
+   "repondre": 6,
+   "sur": 8
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "PAPER 2"
+ ],
+ "points": "17",
+ "figures": [],
+ "incertitudes": [
+  "Question 5 : points imprimés par sous-partie : i(a) 1 + i(b) 4 = 5 ; ii(a) 2 + ii(b) 3 + ii(c) 3 + ii(d) 4 = 12 ; total 17.",
+  "5(ii) : le schéma SQL imprimé est défectueux et recopié tel quel dans l'énoncé : virgule manquante après « SubjectCode int NOT NULL » et après « PRIMARY KEY(StudentId,SubjectCode) », « FOREIGN KEY StudentId » sans parenthèses, type « date/time » inexistant en SQL, « Grade char » sans longueur. Le corrigé le lit avec ces corrections (dit dans le corrigé).",
+  "5(ii)(d) : requête vérifiée avec le module sqlite3 de Python sur le schéma corrigé et des données d'exemple ; le sujet souligne « Inner Join » (recopié en gras, le rendu ne gérant pas le soulignement).",
+  "5(ii)(c) : le diagramme E-R à dessiner par le candidat est donné sous forme de schéma en texte (1:M, 1:M, donc M:N entre Students et Subjects via Results).",
+  "5(i)(b) : « Use an alternative rule for each data » est compris comme : une règle puis une règle de remplacement pour chacune des quatre données (nom, genre, mot de passe, adresse e-mail)."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "A social networking site uses a database to store the details of the people who have joined the site. When a person joins the site, he/she needs to enter some personal data which are only stored after validation.\n\n(a) What is validation as used in this context? (1 mark)\n\n(b) Describe **one** rule each that can be used to validate a person's *name*, *gender*, *password* and *email address*. Use an alternative rule for each data. (4 marks)",
+   "corrige_markdown": "**(a) Validation (1 mark)**\n\nValidation is the **automatic check made by the program** on the data entered, to make sure that it is **reasonable and acceptable** (it respects given rules such as the right type, length, range or format) **before it is accepted and stored** in the database. Validation does not prove that the data is true or correct (that is verification).\n\n**(b) A rule for each data, with an alternative rule (4 marks)**\n\n| Data | One validation rule | Alternative rule |\n|---|---|---|\n| Name | **Presence check:** the field cannot be left empty. | **Type check:** the name must contain only letters (and a hyphen or space), no digits. (Or a length check: at most 30 characters.) |\n| Gender | **Lookup (list) check:** the value must be one of the allowed values in a list, for example Male or Female, chosen from a drop-down list. | **Presence check** (a choice must be made), or **length check** (exactly one character, M or F). |\n| Password | **Length check:** at least 8 characters. | **Format (character) check:** it must contain at least one capital letter, one digit and one special character; or a presence check. |\n| Email address | **Format check:** it must contain exactly one @ sign, with text before it and a domain with a dot after it (for example name@domain.com), and no spaces. | **Presence check** (cannot be empty) or **length check** (at most 254 characters). |\n\nMarks are given for a correct rule and an alternative rule for each of the four data (any valid rules are accepted).",
+   "themes": [
+    "data validation",
+    "database systems"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 5
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "Consider the following relational database schema where the fields `StudentId` and `SubjectCode` in the table `Results` are derived from the key fields in the tables `Students` and `Subjects` respectively, and referential integrity is enforced.\n\n```sql\nCREATE TABLE Students(\n  StudentId    int NOT NULL,\n  StudentName  varchar(30),\n  DateOfBirth  date/time,\n  PRIMARY KEY(StudentId));\n\nCREATE TABLE Subjects(\n  SubjectCode  int NOT NULL\n  SubjectTitle varchar(20),\n  PRIMARY KEY(SubjectCode));\n\nCREATE TABLE Results(\n  StudentId    int NOT NULL,\n  SubjectCode  int NOT NULL,\n  Grade        char,\n  PRIMARY KEY(StudentId,SubjectCode)\n  FOREIGN KEY StudentId REFERENCES\n    Students(StudentId)\n  FOREIGN KEY SubjectCode REFERENCES\n    Subjects(SubjectCode));\n```\n\n(a) Explain what the term referential integrity means. (2 marks)\n\n(b) Present exactly **one** row of sample data for the `Students` table and **two** rows of sample data for each of the tables `Subjects` and `Results`. (3 marks)\n\n(c) Draw an entity-relationship (E-R) diagram that shows the degrees of the relationships that exist between the three tables above. [*Note: attributes are not required.*] (3 marks)\n\n(d) Write an SQL command which uses the **Inner Join** to retrieve the IDs and names of all the students who have an 'A' grade in the subject \"Computer Science\". (4 marks)",
+   "corrige_markdown": "(The schema is read with the obvious corrections: a comma after `SubjectCode int NOT NULL` and after `PRIMARY KEY(StudentId,SubjectCode)`, brackets around the column in each `FOREIGN KEY`, and `date` for `date/time`.)\n\n**(a) Referential integrity (2 marks)**\n\nReferential integrity is a rule of a relational database which says that **every value of a foreign key in a table must match an existing value of the primary key in the related (parent) table** (or be null). It prevents *orphan* records. Here, a row cannot be added to `Results` with a `StudentId` that is not in `Students` or a `SubjectCode` that is not in `Subjects`, and a student or a subject that still has results cannot be deleted (unless the deletion is cascaded to the results).\n\n**(b) Sample data (3 marks)**\n\n`Students` (one row):\n\n| StudentId | StudentName | DateOfBirth |\n|---|---|---|\n| 1 | Ngwa Peter | 2004-05-12 |\n\n`Subjects` (two rows):\n\n| SubjectCode | SubjectTitle |\n|---|---|\n| 101 | Computer Science |\n| 102 | Mathematics |\n\n`Results` (two rows; because of referential integrity both rows refer to the only student, 1, and to existing subjects):\n\n| StudentId | SubjectCode | Grade |\n|---|---|---|\n| 1 | 101 | A |\n| 1 | 102 | B |\n\n**(c) E-R diagram with the degrees of the relationships (3 marks)**\n\n- `Students` to `Results`: **one-to-many (1:M)**: a student has many results, each result belongs to exactly one student (foreign key `StudentId`).\n- `Subjects` to `Results`: **one-to-many (1:M)**: a subject has many results, each result concerns one subject (foreign key `SubjectCode`).\n- Hence `Students` to `Subjects` is **many-to-many (M:N)**, and `Results` is the linking (associative) table that splits it into two one-to-many relationships.\n\n```text\n +-----------+                +-----------+                +-----------+\n | Students  | 1 ---------- M | Results   | M ---------- 1 | Subjects  |\n +-----------+                +-----------+                +-----------+\n\n (1 = one, M = many; overall, Students to Subjects is many-to-many (M:N) through Results)\n```\n\n**(d) SQL command using INNER JOIN (4 marks)**\n\n```sql\nSELECT Students.StudentId, Students.StudentName\nFROM Students\nINNER JOIN Results ON Students.StudentId = Results.StudentId\nINNER JOIN Subjects ON Results.SubjectCode = Subjects.SubjectCode\nWHERE Subjects.SubjectTitle = 'Computer Science'\n  AND Results.Grade = 'A';\n```\n\nThe first join links each student to his or her results through `StudentId`; the second links each result to its subject through `SubjectCode`; the `WHERE` clause keeps only the rows for \"Computer Science\" with grade 'A'. Checked with `sqlite3` on the schema above with three students, two subjects and five results (students 1 and 3 have an A in Computer Science): the query returned exactly `(1, 'Ngwa Peter')` and `(3, 'Tabi Ruth')`. The same command works in MySQL, PostgreSQL and SQL Server; `DISTINCT` is not needed because the pair (`StudentId`, `SubjectCode`) is unique.",
+   "themes": [
+    "relational databases",
+    "entity-relationship diagrams",
+    "sql queries"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 12
+  }
+ ]
+}

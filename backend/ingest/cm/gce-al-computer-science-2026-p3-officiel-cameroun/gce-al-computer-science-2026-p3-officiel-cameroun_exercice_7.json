@@ -1,0 +1,59 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2026. Duration: TWO HOURS.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank spaces have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A: Database (Nina's Shop), 20 marks, Tasks 1 to 3; Section B: Programming (Population Growth Program), 30 marks, Tasks 4 to 7.",
+  "points": "4",
+  "groupes": [
+    "SECTION B"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION B: PROGRAMMING (Population Growth Program)** *(30 marks)*\n\nYou are to write a program that determines how long it takes for a population to reach a particular size.\n\nSuppose we have a population of *n* cows. Each year, *n/3* new cows are born, and *n/4* cows pass away. So, for example, if we have *n* = 1200 cows, then in the first year, 1200/3 = 400 new cows are born and 1200/4 = 300 cows pass away. Therefore, at the end of that year, we have 1200 + 400 - 300 = 1300 cows. Repeat the process with the new population size until the desired target population is reached.\n\nFractional cows in intermediate computations are discarded. So, for example, if there were 1001 cows initially, the number of new cows would be 1001/3 = 333.67 cows rounded down to 333 cows.",
+  "figures": [],
+  "incertitudes": [
+    "Le sujet demande de lancer le programme, de faire une capture d'écran et de l'imprimer : aucune capture réelle n'est possible ici. Les sorties du corrigé viennent d'une traduction Python du programme (mêmes prompts, mêmes boucles) exécutée sur les deux séquences de saisies ; le code C et Pascal n'a pas été compilé, sa logique a été vérifiée par cette simulation. Les saisies simulées apparaissent à la suite des invites, comme l'écho du terminal.",
+    "Points : Task 7 = 4 imprimé, avec (i) = 2 et (ii) = 2 ; cohérent, rien corrigé. ",
+    "Points de la Section B : le sujet imprime « 30 marks » pour toute la Section B, mais les tâches imprimées totalisent 6 + 6 + 15 + 4 = 31 (Task 4 = 6, Task 5 = 6, Task 6 = 15, Task 7 = 4) ; écart du sujet, rien corrigé.",
+    "Les points finaux des lignes du sujet (« Start size: -5. ») sont lus comme de la ponctuation de liste, pas comme une partie de la valeur saisie. La page 6 est suivie d'une zone « STOP, GO BACK AND CHECK YOUR WORK » et de pages blanches : sans contenu à transcrire."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "**Task 7: Sample Output** *(4 marks)*\n\nRun your program for the following sequence of inputs. Make a screen capture of the output in each case, save it and then copy. *[Note: The outputs of multiple input values can be captured in the same screenshot.]*\n\n(i) Start size: -5. Start size: 3. Start size: 9. End size: 5. End size: 18. *[2 marks]*",
+      "corrige_markdown": "Each prompt line shows what the program displays followed by the value typed by the user (the terminal echoes the typed characters). Output of the program for the sequence (simulation in Python of the program of Task 6):\n\n```\nStart size: -5\nStart size: 3\nStart size: 9\nEnd size: 5\nEnd size: 18\nYears: 8\n```\n\nReading of the run:\n\n- `Start size: -5` and `Start size: 3` are **refused** (less than 9), so the prompt is displayed again; `9` is accepted.\n- With a starting size of 9, `End size: 5` is **refused** (less than the current size 9); `18` is accepted.\n- The program then computes the years: the sizes are 9, 10, 11, 12, 13, 14, 15, 17, 18, so 18 is reached after **8 years**, and displays `Years: 8`.\n\nIn the booklet, the screen capture of this run is saved and printed; the capture must show the repeated prompts and the final labeled result.\n\n**Marking:** the invalid values refused with the prompt repeated, for both the starting and the target sizes (1); the final labeled result `Years: 8` (1).",
+      "themes": [
+        "software testing",
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Start size: 20. End size: 1. End size: 10. End size: 100. *[2 marks]*",
+      "corrige_markdown": "Output of the program for the sequence (simulation in Python of the program of Task 6):\n\n```\nStart size: 20\nEnd size: 1\nEnd size: 10\nEnd size: 100\nYears: 20\n```\n\nReading of the run:\n\n- `Start size: 20` is valid (at least 9).\n- `End size: 1` and `End size: 10` are **refused**, because they are less than the current size 20; `100` is accepted.\n- The sizes year after year are 20, 21, 23, 25, 27, 30, 33, 36, 39, 43, 47, 51, 56, 60, 65, 70, 76, 82, 89, 96, 104; 104 is the first size at least 100, reached after **20 years**, so the program displays `Years: 20`.\n\n**Marking:** the two invalid target sizes (1 and 10) refused and the prompt repeated (1); the final labeled result `Years: 20` (1).",
+      "themes": [
+        "software testing",
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

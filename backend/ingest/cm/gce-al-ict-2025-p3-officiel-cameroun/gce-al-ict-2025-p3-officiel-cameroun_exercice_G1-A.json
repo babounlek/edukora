@@ -1,0 +1,130 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2025-p3-officiel-cameroun.pdf",
+  "numero_exercice": "G1-A",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - Advanced Level Examination. Information and Communication Technologies (0796), Paper 3 (practical), June 2025. Duration: two hours. Answer ALL tasks.**\n\nThe booklet reproduced here contains three versions of the same practical paper, headed Group 1, Group 2 and Group 3 (booklets 00/0796/3/G1, G2 and G3): each version has the same three tasks (Task A: Database, 20 marks; Task B: Spreadsheet, 17 marks; Task C: Presentation, 13 marks) with different data, names and cell references.\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is require to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\nThe working files (the workbooks Trift_Loan, Customer_Loan and Worker_Loan, one per group) are supplied on the day in the Candidate folder; they are not reproduced in the printed paper.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**GROUP 1 - TASK A: DATABASE (20 MARKS)**\n\nA student is presented with the flat-file containing meeting details as displayed below. It contains a summary of the financial situation of mates from a quarter meeting in Bamenda who have moved to different towns in Cameroon.\n\nThe activities of this meeting are shown in *Table 1* below.\n\n*Table 1: Financial Transactions*\n\n| MID | MName | Amount | TType | MAdd | TID | ODate |\n|---|---|---:|---|---|---|---|\n| M10 | Mbong | 5000 | Saving | Buea | 001 | 11/10/2022 |\n| L05 | Lyonga | 10000 | Loan | Bamenda | 003 | 08/09/2022 |\n| M10 | Mbong | 12000 | Loan | Buea | 010 | 15/07/2022 |\n| O20 | Otia | 2500 | Loan | Wum | 013 | 23/10/2022 |\n| O15 | Omar | 6000 | Saving | Garoua | 005 | 30/07/2022 |\n| L05 | Lyonga | 5000 | Loan refund | Bamenda | 004 | 15/07/2022 |\n| S04 | Susan | 7500 | Saving | Douala | 008 | 23/10/2022 |\n| O20 | Otia | 3000 | Saving | Wum | 006 | 31/05/2022 |\n| L12 | Linus | 15000 | Loan refund | Bertoua | 002 | 12/09/2022 |\n| G11 | Getrude | 4500 | Saving | Yaounde | 007 | 08/09/2022 |\n| M10 | Mbong | 2500 | Loan | Buea | 011 | 30/07/20.. |\n| T07 | Tita | 6500 | Saving | Maroua | 012 | 12/09/20.2 |\n\n*(In the printed paper the last characters of the dates of the rows TID 011 and TID 012 are cut off by the edge of the scan.)*\n\nMID = Member ID, MAdd = Member Address, TType = Transaction Type, TID = Transaction ID, ODate = Operation Date.\n\nThe student decided to normalise the flat file into three (3) relations namely:\n\n*Member*(MID, MName, MAdd)\n\n*Transaction*(TID, TType, Amount)\n\n*Operation*(MID, TID, ODate)",
+  "groupes": [
+    "GROUP 1"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Le PDF (12 pages, scan) contient TROIS versions du même sujet pratique : « Group 1 » (pages 1 à 4, booklet 00/0796/3/G1), « Group 2 » (pages 5 à 8, G2) et « Group 3 » (pages 9 à 12, G3). Chacune compte les tâches A (base de données, 20 points), B (tableur, 17 points) et C (présentation, 13 points). Elles sont transcrites en neuf fichiers : numero_exercice G1-A, G1-B, G1-C, G2-A... G3-C ; `groupes` vaut [\"GROUP 1\"], [\"GROUP 2\"] ou [\"GROUP 3\"] (même convention que l'ICT 2022 Paper 3). Le sujet n'imprime aucune règle de choix (un candidat reçoit un seul des trois groupes) : `regles_choix` reste vide.",
+    "Défaut d'impression, tâche A : l'en-tête imprime « 20 marks » alors que les points imprimés des sept questions s'additionnent à 18 (3 + 2 + 2 + 2 + 2 + 3 + 4) ; l'instruction « Implement the relationship in the database created », placée sous la question 6, n'a pas de points propres (les 2 points manquants lui reviennent vraisemblablement). Les points ne sont pas corrigés : 20 est repris tel qu'imprimé dans `points` de l'exercice.",
+    "Group 1, Table 1 : les dates des lignes TID 011 (« 30/07/20.. ») et TID 012 (« 12/09/20.2 ») sont coupées par le bord du scan ; elles sont recopiées telles quelles (les points de suspension signalent les chiffres manquants) et l'année 2022 est supposée dans la base du corrigé, comme les dix autres lignes. L'identifiant « O20 » / « O15 » est lu avec la lettre O (cohérent avec Otia, Omar et le motif « initiale du nom + deux chiffres » des autres identifiants), non avec le zéro.",
+    "Les requêtes et les tables du corrigé de la tâche A ont été vérifiées avec sqlite3 (module Python) : création des trois tables avec clés primaires et étrangères (contraintes actives), insertion des 12 lignes de la Table 1 normalisée, exécution de la requête (résultat recopié, comparé à un calcul indépendant). La syntaxe propre à Microsoft Access (assistants, Design View, relations) est donnée de mémoire, non testée. Les procédures de présentation (PowerPoint) ne sont pas testées. Aucun code C ni Pascal n'est demandé dans ce paper : rien n'a été compilé.",
+    "Schéma E-R (question 6) : le sujet ne donne pas les cardinalités attendues. Le corrigé retient la solution classique d'une table d'association : 1 - N entre l'entité de gauche et la table d'association, N - 1 entre celle-ci et l'entité de droite, et il note que, dans les données de la Table 1, chaque identifiant de transaction n'apparaît qu'une fois. Le barème du jury n'est pas connu.",
+    "Les barèmes détaillés (« Marking ») des corrigés sont des propositions : le sujet n'imprime que les points par question (et, pour la tâche C, les quatre critères d'évaluation). Les zones de réponse du livret (lignes pointillées, tableau des clés, cadre du schéma E-R) ne sont pas reproduites : elles sont signalées dans les énoncés. Les filigranes de gcerevision.com, les cadres d'en-tête et les artefacts de scanner sont ignorés."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "From the table structures above, develop the Member table in the space below. *[3 marks]*\n\n*(answer space: write the table in the lines provided)*",
+      "corrige_markdown": "The *Member* table keeps ONE row per member: take the fields MID, MName and MAdd of Table 1 and remove the repeated rows. Rows that appear several times in Table 1: M10 Mbong (3 rows), L05 Lyonga (2 rows), O20 Otia (2 rows). Table 1 therefore gives 8 distinct members:\n\n| MID | MName | MAdd |\n|---|---|---|\n| M10 | Mbong | Buea |\n| L05 | Lyonga | Bamenda |\n| O20 | Otia | Wum |\n| O15 | Omar | Garoua |\n| S04 | Susan | Douala |\n| L12 | Linus | Bertoua |\n| G11 | Getrude | Yaounde |\n| T07 | Tita | Maroua |\n\nMID is the primary key of the table: each value appears once, so a member's name and address are stored a single time.\n\n*Marking:* 1 mark for the three fields, 1 mark for the rows without repetition, 1 mark for the correct values.",
+      "themes": [
+        "ict database design",
+        "ict database normalisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Give the reason why the table above is not normalised. *[2 marks]*\n\n*(answer line: write the reason in the line provided)*",
+      "corrige_markdown": "Table 1 is not normalised because the same facts are stored again and again (**redundancy**). The member's identifier, name and address are repeated on every row of that member: for example M10 / Mbong / Buea appears on 3 rows. The table also mixes facts about three different things (the member, the type and amount of the transaction, and its date). MName and MAdd depend on MID, which is not the identifier of the row (a row is identified by TID): this dependency between non-key attributes (a transitive dependency) breaks third normal form.\n\nConsequences: *update anomaly* (a change of address has to be made on several rows, otherwise the data become inconsistent), *insertion anomaly* (a new member cannot be recorded before a transaction exists) and *deletion anomaly* (deleting the only transaction of a member erases the member too).\n\n*Marking:* 1 mark for the reason (repeated, redundant data / dependencies between non-key attributes), 1 mark for the explanation or the example (anomalies).",
+      "themes": [
+        "ict database normalisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "State the key for each of the tables *[2 marks]*\n\n| Table | Primary key/Composite key |\n|---|---|\n| Member |  |\n| Transaction |  |\n| Operation |  |",
+      "corrige_markdown": "A **primary key** identifies each row of a table uniquely; a **composite key** is a primary key made of two or more fields.\n\n| Table | Primary key/Composite key |\n|---|---|\n| Member | MID |\n| Transaction | TID |\n| Operation | MID + TID (composite key) |\n\n- Member: each member has a unique MID.\n- Transaction: each record has a unique TID.\n- Operation: it links a member to a transaction record, so its key combines the two identifiers (MID, TID); each of them is also a *foreign key* referring to the table where it is the primary key (MID to Member, TID to Transaction).\n\n*Marking:* 1 mark for the two single keys, 1 mark for the composite key.",
+      "themes": [
+        "ict database design",
+        "ict database concepts"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "State the appropriate data type of MID and ODate. *[2 marks]*\n\n*(answer line: MID: ... ODate: ...)*",
+      "corrige_markdown": "- **MID: Text** (*Short Text* in Microsoft Access, `CHAR(3)` in SQL). The values (M10, L05, O20...) mix letters and digits and are never used in calculations.\n- **ODate: Date/Time** (`DATE` in SQL). A real date type allows correct sorting, comparison and calculation on dates (for instance between two dates) and a display in the format dd/mm/yyyy.\n\n*Marking:* 1 mark per correct data type.",
+      "themes": [
+        "ict database design",
+        "ict database concepts"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Using an appropriate database management system, create a database called **FinanceDB** containing the three tables defined above. Populate all the tables taking data from Table 1 above. *[2 marks]*",
+      "corrige_markdown": "In Microsoft Access: File > New > *Blank database*, file name **FinanceDB**, Create. Then Create > *Table Design* three times, and for each table enter the field names and data types, set the primary key (select the field, *Primary Key* button; for Operation select the two fields MID and TID together, then *Primary Key*), and save the table under its name (Member, Transaction, Operation). Switch to Datasheet View and type the rows below. The same work in SQL (checked with sqlite3; in Access SQL a table named Transaction is written in square brackets because Transaction is a reserved word; the dates are stored in the standard format yyyy-mm-dd and displayed dd/mm/yyyy):\n\n```sql\nCREATE DATABASE FinanceDB;   -- (in Access: the blank database file FinanceDB)\n\nCREATE TABLE Member (\n    MID CHAR(3) PRIMARY KEY,\n    MName VARCHAR(30) NOT NULL,\n    MAdd VARCHAR(30)\n);\n\nCREATE TABLE [Transaction] (\n    TID CHAR(3) PRIMARY KEY,\n    TType VARCHAR(20) NOT NULL,\n    Amount INTEGER NOT NULL\n);\n\nCREATE TABLE Operation (\n    MID CHAR(3) NOT NULL,\n    TID CHAR(3) NOT NULL,\n    ODate DATE NOT NULL,\n    PRIMARY KEY (MID, TID),\n    FOREIGN KEY (MID) REFERENCES Member(MID),\n    FOREIGN KEY (TID) REFERENCES [Transaction](TID)\n);\n\nINSERT INTO Member (MID, MName, MAdd) VALUES\n    ('M10', 'Mbong', 'Buea'),\n    ('L05', 'Lyonga', 'Bamenda'),\n    ('O20', 'Otia', 'Wum'),\n    ('O15', 'Omar', 'Garoua'),\n    ('S04', 'Susan', 'Douala'),\n    ('L12', 'Linus', 'Bertoua'),\n    ('G11', 'Getrude', 'Yaounde'),\n    ('T07', 'Tita', 'Maroua');\n\nINSERT INTO [Transaction] (TID, TType, Amount) VALUES\n    ('001', 'Saving', 5000),\n    ('003', 'Loan', 10000),\n    ('010', 'Loan', 12000),\n    ('013', 'Loan', 2500),\n    ('005', 'Saving', 6000),\n    ('004', 'Loan refund', 5000),\n    ('008', 'Saving', 7500),\n    ('006', 'Saving', 3000),\n    ('002', 'Loan refund', 15000),\n    ('007', 'Saving', 4500),\n    ('011', 'Loan', 2500),\n    ('012', 'Saving', 6500);\n\nINSERT INTO Operation (MID, TID, ODate) VALUES\n    ('M10', '001', '2022-10-11'),\n    ('L05', '003', '2022-09-08'),\n    ('M10', '010', '2022-07-15'),\n    ('O20', '013', '2022-10-23'),\n    ('O15', '005', '2022-07-30'),\n    ('L05', '004', '2022-07-15'),\n    ('S04', '008', '2022-10-23'),\n    ('O20', '006', '2022-05-31'),\n    ('L12', '002', '2022-09-12'),\n    ('G11', '007', '2022-09-08'),\n    ('M10', '011', '2022-07-30'),\n    ('T07', '012', '2022-09-12');\n```\n\nOrder of creation: the tables Member and Transaction first (they are referred to), then Operation, which holds the foreign keys; the same order is used to enter the data, so that every MID and TID of Operation already exists in its parent table.\n\nContent of the three tables (12 rows of Table 1 give 8 + 12 + 12 rows):\n\n**Member**\n\n| MID | MName | MAdd |\n|---|---|---|\n| M10 | Mbong | Buea |\n| L05 | Lyonga | Bamenda |\n| O20 | Otia | Wum |\n| O15 | Omar | Garoua |\n| S04 | Susan | Douala |\n| L12 | Linus | Bertoua |\n| G11 | Getrude | Yaounde |\n| T07 | Tita | Maroua |\n\n**Transaction**\n\n| TID | TType | Amount |\n|---|---|---:|\n| 001 | Saving | 5000 |\n| 003 | Loan | 10000 |\n| 010 | Loan | 12000 |\n| 013 | Loan | 2500 |\n| 005 | Saving | 6000 |\n| 004 | Loan refund | 5000 |\n| 008 | Saving | 7500 |\n| 006 | Saving | 3000 |\n| 002 | Loan refund | 15000 |\n| 007 | Saving | 4500 |\n| 011 | Loan | 2500 |\n| 012 | Saving | 6500 |\n\n**Operation**\n\n| MID | TID | ODate |\n|---|---|---|\n| M10 | 001 | 11/10/2022 |\n| L05 | 003 | 08/09/2022 |\n| M10 | 010 | 15/07/2022 |\n| O20 | 013 | 23/10/2022 |\n| O15 | 005 | 30/07/2022 |\n| L05 | 004 | 15/07/2022 |\n| S04 | 008 | 23/10/2022 |\n| O20 | 006 | 31/05/2022 |\n| L12 | 002 | 12/09/2022 |\n| G11 | 007 | 08/09/2022 |\n| M10 | 011 | 30/07/2022 |\n| T07 | 012 | 12/09/2022 |\n\n(The year of the dates of TID 011 and TID 012 is cut off in the printed paper: 2022 is assumed, like the other rows.)\n\n*Marking:* 1 mark for the database created with the required name and the three tables with the right fields and keys, 1 mark for the data entered correctly in the three tables.",
+      "themes": [
+        "ict relational databases",
+        "ict database design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Draw the E-R Diagram for the database in the space below. Indicate the cardinalities in the diagram. *[3 marks]*\n\n*(drawing space: draw the diagram in the space provided)*\n\nImplement the relationship in the database created.",
+      "corrige_markdown": "The database has three entities (the three tables) and two relationships. *Operation* is the associative table that links the other two (it holds the foreign keys MID and TID):\n\n```text\n+------------------+                 +------------------+                 +------------------+\n| Member           | 1             N | Operation        | N             1 | Transaction      |\n| MID              |-----------<-----| MID (FK)         |----->-----------| TID              |\n| MName            |    makes        | TID (FK)         |    concerns     | TType            |\n| MAdd             |                 | ODate            |                 | Amount           |\n+------------------+                 +------------------+                 +------------------+\n```\n\n- Member (1) to Operation (N): one member can appear in many rows of Operation (for example M10 Mbong appears 3 times), but each row of Operation concerns one single member.\n- Transaction (1) to Operation (N): one transaction record can be referred to by many rows of Operation, and each row of Operation refers to one record of Transaction. (In the data of Table 1 each TID is used exactly once, so in practice this side behaves as 1 - 1; the standard answer is the many-to-many link Member - Transaction split by the associative table.)\n\nEntities are drawn as rectangles with their attributes (primary keys underlined), the relationships as lines labelled with their cardinalities (1, N), in crow's foot or Merise notation.\n\n**Implementing the relationship in Access:** Database Tools > *Relationships*; add the three tables; drag the field MID of Member onto the field MID of Operation, tick **Enforce Referential Integrity** and check that the relationship type is *One-To-Many*; do the same by dragging TID of Transaction onto TID of Operation; Create, then save the layout. In SQL the relationship is the pair of `FOREIGN KEY ... REFERENCES` constraints of question 5: a row of Operation whose MID or TID does not exist in the parent table is then refused (checked with sqlite3 with foreign keys enabled).\n\n*Marking:* 1 mark for the three entities with their attributes, 1 mark for the relationships, 1 mark for the cardinalities (the implementation of the relationship carries the remaining marks of the task).",
+      "themes": [
+        "ict database design",
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Create a query to display members who have taken loans. Your query should include the amount loaned and the date loaned. Save the query as *LoanF*. *[4 marks]*\n\n**Print** the Operation table and the *LoanF* query only.",
+      "corrige_markdown": "A member \"has taken a loan\" when the transaction type is exactly **Loan**. The type **Loan refund** (a repayment) must be excluded: with the criterion `Like \"Loan*\"` the rows of Lyonga (5000) and Linus (15000) would be wrongly added. The query needs the three tables because the name is in Member, the amount and the type in Transaction and the date in Operation, so the joins go through Operation.\n\nCreate > *Query Design*; add Member, Operation and Transaction (the joins MID-MID and TID-TID drawn by the relationships appear automatically); double-click MName, Amount and ODate to put them in the grid; in the *Criteria* row of the field TType (the field is added with the *Show* box unticked, since the type is not asked) type `\"Loan\"`; Run; Save as **LoanF**.\n\nThe equivalent SQL (checked with sqlite3 on the data of Table 1):\n\n```sql\nSELECT Member.MName, [Transaction].Amount, Operation.ODate\nFROM (Member INNER JOIN Operation ON Member.MID = Operation.MID)\n     INNER JOIN [Transaction] ON Operation.TID = [Transaction].TID\nWHERE [Transaction].TType = 'Loan';\n```\n\nResult (checked: the query returns exactly these 4 rows, in any order):\n\n| MName | Amount | ODate |\n|---|---:|---|\n| Lyonga | 10000 | 08/09/2022 |\n| Mbong | 12000 | 15/07/2022 |\n| Otia | 2500 | 23/10/2022 |\n| Mbong | 2500 | 30/07/2022 |\n\nPrint the table Operation (Datasheet View, File > Print) and the result of the query LoanF.\n\n*Marking:* 1 mark for the correct tables joined, 1 mark for the correct fields displayed, 1 mark for the correct criteria, 1 mark for the query saved under the required name.",
+      "themes": [
+        "ict database queries",
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

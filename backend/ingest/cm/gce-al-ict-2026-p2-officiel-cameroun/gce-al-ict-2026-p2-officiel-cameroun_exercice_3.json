@@ -1,0 +1,78 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "ICT",
+ "epreuve_source": "gce-al-ict-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "3",
+ "numero_paper": 2,
+ "code_matiere": "0796",
+ "duree_epreuve": "2h30",
+ "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. 0796 Information and Communication Technologies 2 (Paper 2), ADVANCED LEVEL, June 2026. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You will be scored on your ability to use good English, to organize information clearly and to use specialist vocabulary where appropriate. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "PAPER 2",
+   "repondre": 6,
+   "sur": 8
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "PAPER 2"
+ ],
+ "points": "17",
+ "figures": [],
+ "incertitudes": [
+  "Question 3 : points imprimés i(b) = 2 (aucun point imprimé pour i(a)) ; ii = 1 + 1 + 1 + 2 + 2 = 7 ; iii = 2 + 2 + 2 = 6 ; total imprimé 15 sur 17 : il manque 2 points qui correspondent vraisemblablement à i(a). Les points ne sont pas corrigés ; le bloc i est donc enregistré sans total (null). Aucun corrigé officiel n'existe : réponses rédigées.",
+  "3(ii) : le sujet imprime deux sous-questions « (b) » consécutives (« Name and explain TWO aspects to consider when selecting a network topology » puis « Explain TWO major advantages of using a wireless LAN instead of a cable LAN »), la seconde devant être (c) ; recopié tel quel, et le corrigé les distingue par « first (b) » et « second (b) ». Le sujet écrit aussi « by making a labeled diagrams » : recopié tel quel.",
+  "3(ii)(a) : les schémas sont à dessiner par le candidat ; le corrigé les donne sous forme de schémas en texte (code) et de légendes. Aucune figure n'est imprimée dans le sujet.",
+  "3(i)(a) : « the main function of the ALU and the Internal bus » est repris tel quel (italiques du sujet perdus)."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "(a) What is the main function of the ALU and the Internal bus in a processor?\n\n(b) State and explain TWO stages of the instruction cycle carried out in the control unit of the CPU. (2 marks)",
+   "corrige_markdown": "**(a) ALU and internal bus**\n\n- The **ALU (arithmetic and logic unit)** carries out the **arithmetic operations** (addition, subtraction, multiplication, division) and the **logical operations** (AND, OR, NOT, comparisons) on the data held in the registers; the result is put in the accumulator or another register.\n- The **internal bus** is the set of wires **inside the processor** that **carries data, addresses and control signals** between the registers, the ALU and the control unit.\n\n**(b) Two stages of the instruction cycle (2 marks)**\n\n1. **Fetch.** The control unit copies the address held in the **program counter (PC)** into the **memory address register (MAR)**, the instruction at that address is read from memory into the **memory data register (MDR)** and then into the **instruction register (IR)**, and the PC is **incremented** to point to the next instruction.\n2. **Decode.** The control unit **decodes the instruction in the IR** (it separates the operation code from the operand/address) to know which operation must be done and which circuits to activate.\n\n(The third stage, **execute**, then carries out the operation, using the ALU if needed, and the cycle repeats.)",
+   "themes": [
+    "computer hardware"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": null
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "A school intends to create a LAN of 10 computers.\n\n(a) Describe each of the following network topologies by making a labeled diagrams:\n\n- Star. (1 mark)\n- Ring. (1 mark)\n- Bus. (1 mark)\n\n(b) Name and explain TWO aspects to consider when selecting a network topology. (2 marks)\n\n(b) Explain TWO major advantages of using a wireless LAN instead of a cable LAN. (2 marks)",
+   "corrige_markdown": "**(a) The three topologies (3 marks)**\n\n**Star.** Every computer is connected by its **own cable to a central device (hub or switch)**, which relays the data to the destination. If one cable fails only that computer is cut off, but if the central device fails the whole network stops.\n\n```text\n  PC1   PC2   PC3\n    \\    |    /\n     \\   |   /\n   [ HUB / SWITCH ]  <- central device\n     /   |   \\\n    /    |    \\\n  PC4   PC5   Server   (10 computers in all)\n```\n\n**Ring.** Each computer is connected to **exactly two neighbours**, so the cable forms a **closed loop**; the data travel **in one direction** from node to node (often controlled by a token) until they reach the destination. A break in the ring can stop the network.\n\n```text\n      PC1 ---------> PC2\n     ^                  |\n     |                  v\n    PC10               PC3\n     ^                  |\n     |                  v\n    PC9                PC4      ... (PC5 to PC8 continue the loop)\n```\n\n**Bus.** All the computers are connected to **one main cable (the bus or backbone)** shared by everybody, with a **terminator at each end** to stop signal reflection. The data are sent along the cable and each computer reads the data addressed to it. It is cheap and easy to extend, but a break in the backbone stops the network and collisions increase with the traffic.\n\n```text\n PC1   PC2   PC3   PC4        PC10\n  |     |     |     |    ...    |\n==+=====+=====+=====+===========+==   backbone (bus) cable\n[T]                              [T]   T = terminator\n```\n\n**(b), first - Two aspects to consider when choosing a topology (2 marks)**\n\n- **Cost**: the length of cable and the number of devices (a star needs more cable and a switch; a bus needs the least cable).\n- **Reliability / fault tolerance**: what happens when a cable or a device fails (in a star only one machine is lost; in a bus or a ring a fault can stop everybody).\n- (Also acceptable: **ease of installation, troubleshooting and expansion** when computers are added, **performance** under heavy traffic, the **size** of the building and security.)\n\n**(b), second - Two advantages of a wireless LAN over a cable LAN (2 marks)**\n\n- **Mobility and flexibility**: users can move around the school with laptops, tablets or phones and stay connected; no computer is tied to a socket.\n- **No cabling**: it is **cheaper and quicker to install** (no trenches, ducts or sockets), it is **easy to add new devices** and it can be used in buildings where cabling is difficult. (Another acceptable point: visitors can be given access easily.)",
+   "themes": [
+    "ict network topologies",
+    "ict computer networks"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 7
+  },
+  {
+   "numero": "iii",
+   "enonce_markdown": "Describe the following programming concepts.\n\n(a) Compilers. (2 marks)\n\n(b) Interpreters. (2 marks)\n\n(c) Variables. (2 marks)",
+   "corrige_markdown": "**(a) Compiler (2 marks)**\n\nA compiler is a translator program that **translates the whole source program (high-level language) into machine code (object code) in one go**, before the program is run. It **reports all the syntax errors** found, and when there are none it produces an **executable file** that can be run again and again **without the compiler or the source code**, and that runs **fast**. (Examples: C, Pascal.)\n\n**(b) Interpreter (2 marks)**\n\nAn interpreter **translates and executes the source program one statement at a time**, with **no object code kept**. It **stops at the first error**, which makes **debugging easy**, but the program **runs more slowly** because every statement is translated again each time it is run, and the interpreter and the source code must be present. (Examples: BASIC, Python, JavaScript.)\n\n**(c) Variable (2 marks)**\n\nA variable is a **named storage location in the memory** that **holds a value that can change while the program runs**. It has a **name (identifier)**, a **data type** (integer, real, character, string, Boolean) and a **value**; it is declared at the start of the program or procedure. Example: in Pascal `age : integer;` then `age := 17;`.",
+   "themes": [
+    "ict programming languages"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 6
+  }
+ ]
+}

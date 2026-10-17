@@ -1,0 +1,41 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2023-p3-officiel-cameroun.pdf",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - Advanced Level Examination. Information & Communication Technologies, Subject code 0796, Paper 3 Group 1. Examination date: June 2023. Duration: two hours.**\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\n**Answer ALL TASKS.**\n\nThe paper has three tasks: Task 1 (Presentation, 17 marks), Task 2 (Spreadsheet, 25 marks) and Task 3 (Programming, 7 marks).",
+  "regles_choix": [],
+  "groupes": [],
+  "numero_exercice": "3",
+  "points": "7",
+  "enonce_intro_markdown": "**Task 3 (Programming: 7 marks)**",
+  "figures": [],
+  "incertitudes": [
+    "Task 3 : aucun compilateur C ni Pascal n'est disponible sur la machine : le code Pascal et C du corrigé n'a PAS été compilé. Sa logique a été vérifiée par une traduction fidèle en Python (lecture de A et B, Diff = A - B, affichage) exécutée sur quatre couples (15 et 8, 4 et 9, -3 et -3, 0 et 25) ; les sorties du tableau de trace sont celles de cette exécution.",
+    "Task 3 : le tableau imprimé laisse sept lignes pointillées entre « Begin » et « End. » (Pascal) et entre « int A, B, Diff; » et « return 0; } » (C) ; l'énoncé transcrit les remplace par une mention entre parenthèses. L'algorithme, imprimé dans un cadre « Start ... Stop. », est recopié en bloc de code (imprimé « Diff= A - B », espacé ici).",
+    "Task 3 : le sujet nomme le fichier *Rect_Task* et le programme Pascal *rectAB* ; recopié tel qu'imprimé. Les 7 points imprimés ne sont pas détaillés par ligne de code."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Below is the algorithm to calculate the difference of two integers. You are expected to convert the algorithm into a code in either Pascal or C programming language. Part of the code is given in the table below.\n\n**Algorithm**\n\n```\nStart\n    Type an integer, and name it as A.\n    Type another integer, and name it as B.\n    Calculate: Diff = A - B.\n    Print Diff.\nStop.\n```\n\nAfter a successful compilation, use the lines in the table below to copy the missing instructions. Cancel the corresponding section of code not used.\n\n| Pascal code | C code |\n|---|---|\n| Program rectAB; | #include <stdio.h> |\n| Var A, B, Diff: integer; | int main () { |\n| Begin | int A, B, Diff; |\n| *(seven blank lines for the missing instructions)* | *(seven blank lines for the missing instructions)* |\n| End. | return 0; } |\n\nSave your code using the name *Rect_Task* in your candidate folder and print a copy. *[7 marks]*",
+      "corrige_markdown": "The algorithm has four actions: read A, read B, compute Diff = A - B, print Diff. The declarations are already given in the table, so only the instructions between `Begin` and `End.` (Pascal) or after `int A, B, Diff;` and before `return 0;` (C) are missing. The seven blank lines are enough (two prompts, two reads, the calculation and the output).\n\n**Pascal version (the C section of the table is cancelled):**\n\n```pascal\nProgram rectAB;\nVar A, B, Diff: integer;\nBegin\n  Write('Type an integer A: ');\n  Readln(A);\n  Write('Type another integer B: ');\n  Readln(B);\n  Diff := A - B;\n  Writeln('Diff = ', Diff)\nEnd.\n```\n\n**C version (the Pascal section of the table is cancelled):**\n\n```c\n#include <stdio.h>\nint main () {\n    int A, B, Diff;\n    printf(\"Type an integer A: \");\n    scanf(\"%d\", &A);\n    printf(\"Type another integer B: \");\n    scanf(\"%d\", &B);\n    Diff = A - B;\n    printf(\"Diff = %d\\n\", Diff);\n    return 0;\n}\n```\n\nPoints to respect: the assignment is `:=` in Pascal and `=` in C; `scanf` needs the address `&A`, `&B`; the format `%d` is used for an `int`; every C statement ends with `;`, and in Pascal the last statement before `End.` needs no `;`.\n\n**Trace (the program has been translated line by line into Python and run; the outputs below are those of that run):**\n\n| A typed | B typed | Output |\n|---|---|---|\n| 15 | 8 | Diff = 7 |\n| 4 | 9 | Diff = -5 |\n| -3 | -3 | Diff = 0 |\n| 0 | 25 | Diff = -25 |\n\nThe difference can be negative, which is why `Diff` is declared as a signed `integer` / `int`.\n\n**Save and print.** Save the file with the name `Rect_Task` in the *Candidate folder* (extension `.pas` for Pascal, `.c` for C), compile it (for example with *Free Pascal* or *gcc*), run it once with test values, then print the source code and insert the printout in the booklet. The code has not been compiled by the author of this solution (no Pascal or C compiler available): the logic has been checked by the Python translation above.",
+      "themes": [
+        "ict programming constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    }
+  ]
+}

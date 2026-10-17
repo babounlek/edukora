@@ -1,0 +1,54 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Mechanics",
+  "epreuve_source": "gce-al-pm-mechanics-2019-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0765",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics with Mechanics Paper 2 (0765/2), ADVANCED LEVEL, June 2019. Time allowed: three hours.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae booklets published by the Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 5 (i) : « second approximation » est lu comme x1, le resultat d'une seule iteration a partir de x0 = 4.5 (valeur 4.768...), soit 4.77 a deux decimales."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Given that $f(x) = x^3 - 4x^2 - x - 12$. Verify that $f(x) = 0$ has a root in the interval $4 < x < 5$. Taking $x = 4.5$ as a first approximate root of the equation $f(x) = 0$, use the Newton - Raphson procedure to find a second approximation to the root of the equation, giving the answer to two decimal places. (7 marks)",
+      "corrige_markdown": "**Verification.** $f$ is a polynomial, so it is continuous on $[4, 5]$.\n\n$$f(4) = 64 - 64 - 4 - 12 = -16 < 0, \\qquad f(5) = 125 - 100 - 5 - 12 = 8 > 0.$$\n\n$f(4)$ and $f(5)$ have opposite signs, so by the intermediate value theorem $f(x) = 0$ has a root in $4 < x < 5$.\n\n**Newton - Raphson.** The iteration is $x_{n+1} = x_n - \\dfrac{f(x_n)}{f'(x_n)}$, with $f'(x) = 3x^2 - 8x - 1$.\n\nAt $x_0 = 4.5$:\n\n$$f(4.5) = 4.5^3 - 4(4.5)^2 - 4.5 - 12 = 91.125 - 81 - 4.5 - 12 = -6.375,$$\n\n$$f'(4.5) = 3(20.25) - 36 - 1 = 60.75 - 37 = 23.75.$$\n\n$$x_1 = 4.5 - \\frac{-6.375}{23.75} = 4.5 + 0.26842\\ldots = 4.76842\\ldots$$\n\n$$\\boxed{x_1 \\approx 4.77 \\ \\text{(2 decimal places)}}$$\n\nThis is a second approximation (the first being $4.5$) and it lies inside the interval $4 < x < 5$. (The root itself is about $4.744$; one more iteration from $4.768$ gives $4.744$, so $4.77$ is a sound second approximation.)",
+      "themes": [
+        "newton raphson method",
+        "intermediate value theorem"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "The sum of the first $n$ terms of a sequence is given by $S_n = 2n^2 + n$. Find\n\n(a) the tenth term of the sequence.\n\n(b) the $n^{th}$ term of the sequence. (5 marks)",
+      "corrige_markdown": "The $n$th term is the difference of consecutive sums: $u_n = S_n - S_{n-1}$ for $n \\geq 2$, and $u_1 = S_1$.\n\n**(b)** $n$th term. For $n \\geq 2$:\n\n$$u_n = (2n^2 + n) - \\big[2(n-1)^2 + (n-1)\\big] = 2n^2 + n - (2n^2 - 4n + 2 + n - 1) = 2n^2 + n - 2n^2 + 3n - 1 = 4n - 1.$$\n\nFor $n = 1$: $u_1 = S_1 = 2 + 1 = 3$, and the formula $4n - 1$ gives $3$, so it holds for $n = 1$ as well.\n\n$$\\boxed{u_n = 4n - 1 \\quad (n \\geq 1)}$$\n\n(This is an arithmetic progression with first term $3$ and common difference $4$.)\n\n**(a)** Tenth term:\n\n$$u_{10} = 4(10) - 1 = 39.$$\n\nCheck: $S_{10} = 2(100) + 10 = 210$ and $S_9 = 2(81) + 9 = 171$, so $u_{10} = 210 - 171 = 39$.\n\n$$\\boxed{u_{10} = 39}$$",
+      "themes": [
+        "sequence and series properties",
+        "arithmetic progressions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "9",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2020. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 9 (ii) : défaut d'impression. L'égalité imprimée u_{n+1} - 4u_n = (-1)^{n+1}(u_1 - 4u_0) est fausse d'un signe : pour n = 0 elle donnerait -1 = +1. La relation exacte est u_{n+1} - 4u_n = (-1)^n(u_1 - 4u_0) = (-1)^{n+1}. Le corrigé le démontre, signale la coquille et ne la corrige pas dans l'énoncé.",
+    "Question 9 (iii) : la réponse attendue u_{n+1} = 4u_n + (-1)^{n+1} s'appuie sur la relation exacte de (ii) ; avec le signe imprimé on obtiendrait 4u_n + (-1)^n, incompatible avec u_2 = 13. Le corrigé le note.",
+    "Question 9 (i) : l'indice de « Find u_? » est minuscule sur le scan ; lu « 2 ».",
+    "Question 9 : les parties (vii), (viii) et la dernière phrase (« Hence, or otherwise, express u_n ... », sans lettre dans le sujet, numérotée « ix » par convention) reposent sur l'amorce (v_n) et (w_n) imprimée une seule fois ; elle est recopiée dans chacune."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$.\n\nFind $u_2$.",
+      "corrige_markdown": "$$u_2 = 3u_1 + 4u_0 = 3\\cdot 3 + 4\\cdot 1 = \\boxed{13}.$$\n(For later checks: $u_3 = 3\\cdot 13 + 4\\cdot 3 = 51$ and $u_4 = 3\\cdot 51 + 4\\cdot 13 = 205$.)",
+      "themes": [
+        "recurrence relations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$.\n\nShow that $u_{n+1} - 4u_n = (-1)^{n+1}(u_1 - 4u_0)$.",
+      "corrige_markdown": "**Printed statement.** The identity as printed has a sign misprint: at $n = 0$ it would give $u_1 - 4u_0 = (-1)^1(u_1 - 4u_0)$, that is $-1 = +1$, which is false. The correct identity is\n$$u_{n+1} - 4u_n = (-1)^n\\left(u_1 - 4u_0\\right) \\qquad (n \\geq 0),$$\nand since $u_1 - 4u_0 = 3 - 4 = -1$, this equals $(-1)^{n+1}$. (This is the form the printed right-hand side presumably meant, and the one used in the following parts.)\n\n**Proof.** Let $a_n = u_{n+1} - 4u_n$ for $n \\geq 0$. For $n \\geq 1$, using $u_{n+1} = 3u_n + 4u_{n-1}$:\n$$a_n = 3u_n + 4u_{n-1} - 4u_n = -u_n + 4u_{n-1} = -\\left(u_n - 4u_{n-1}\\right) = -a_{n-1}.$$\nSo $(a_n)$ is geometric with ratio $-1$ and first term $a_0 = u_1 - 4u_0$:\n$$a_n = (-1)^n a_0 = (-1)^n\\left(u_1 - 4u_0\\right) = (-1)^{n+1}.$$\n**Check.** $a_0 = 3 - 4 = -1$, $a_1 = 13 - 12 = 1$, $a_2 = 51 - 52 = -1$, $a_3 = 205 - 204 = 1$: they alternate as $(-1)^{n+1}$.",
+      "themes": [
+        "recurrence relations",
+        "mathematical induction"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$.\n\nHence express $u_{n+1}$ in terms of $u_n$.",
+      "corrige_markdown": "By part (ii) (with its sign corrected), $u_{n+1} - 4u_n = (-1)^{n+1}$, so\n$$\\boxed{u_{n+1} = 4u_n + (-1)^{n+1}}, \\qquad n \\geq 0.$$\n**Check.** $u_1 = 4\\cdot 1 + (-1)^1 = 3$, $u_2 = 4\\cdot 3 + 1 = 13$, $u_3 = 4\\cdot 13 - 1 = 51$.\n(Using the printed sign would give $u_{n+1} = 4u_n + (-1)^n$, which fails already at $n = 1$: $4\\cdot 3 - 1 = 11 \\neq 13 = u_2$.)",
+      "themes": [
+        "recurrence relations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$.\n\nShow that $(u_n)$ is divergent.",
+      "corrige_markdown": "From part (iii), $u_{n+1} = 4u_n + (-1)^{n+1} \\geq 4u_n - 1$. We prove by induction that $u_n \\geq 2n + 1$.\n* $n = 0$: $u_0 = 1 \\geq 1$.\n* If $u_n \\geq 2n + 1$ for some $n$, then $u_{n+1} \\geq 4(2n + 1) - 1 = 8n + 3 \\geq 2n + 3 = 2(n + 1) + 1$.\n\nHence $u_n \\geq 2n + 1 \\to +\\infty$, so $(u_n)$ is unbounded above and tends to $+\\infty$: it has no finite limit, it **diverges**. $\\blacksquare$\n\n(Alternatively, from the closed form of part (ix), $u_n = \\dfrac{4^{n+1} + (-1)^n}{5} \\geq \\dfrac{4^{n+1} - 1}{5} \\to +\\infty$.)",
+      "themes": [
+        "recurrence relations",
+        "limits of sequences"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "v",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$.\n\nShow that $u_n \\geq 1$ for all $n \\in \\mathbb{N}$.",
+      "corrige_markdown": "Induction on $n$, using $u_{n+1} = 4u_n + (-1)^{n+1}$ from part (iii).\n* $u_0 = 1 \\geq 1$ and $u_1 = 3 \\geq 1$.\n* Assume $u_n \\geq 1$. Then $u_{n+1} = 4u_n + (-1)^{n+1} \\geq 4\\cdot 1 - 1 = 3 \\geq 1$.\n\nBy induction, $u_n \\geq 1$ for all $n \\in \\mathbb{N}$. $\\blacksquare$",
+      "themes": [
+        "recurrence relations",
+        "mathematical induction"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "vi",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$.\n\nShow that $(u_n)$ is increasing.",
+      "corrige_markdown": "By part (iii), $u_{n+1} - u_n = 3u_n + (-1)^{n+1}$. By part (v), $u_n \\geq 1$, hence\n$$u_{n+1} - u_n \\geq 3\\cdot 1 - 1 = 2 > 0.$$\nSo $u_{n+1} > u_n$ for all $n$: the sequence is (strictly) increasing. $\\blacksquare$\n\n(Consistent with $1, 3, 13, 51, 205, \\dots$)",
+      "themes": [
+        "recurrence relations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "vii",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$. Two other sequences $(v_n)$ and $(w_n)$ are defined as $v_n = u_n + u_{n-1}$ and $w_n = u_n - 4u_{n-1}$, $n \\geq 1$.\n\nShow that $(v_n)$ and $(w_n)$ are geometric sequences.",
+      "corrige_markdown": "Use $u_{n+1} = 3u_n + 4u_{n-1}$ (for $n \\geq 1$).\n\n**Sequence $(v_n)$.**\n$$v_{n+1} = u_{n+1} + u_n = 3u_n + 4u_{n-1} + u_n = 4u_n + 4u_{n-1} = 4\\left(u_n + u_{n-1}\\right) = 4v_n.$$\n**Sequence $(w_n)$.**\n$$w_{n+1} = u_{n+1} - 4u_n = 3u_n + 4u_{n-1} - 4u_n = -u_n + 4u_{n-1} = -\\left(u_n - 4u_{n-1}\\right) = -w_n.$$\nHence $(v_n)$ is geometric with common ratio $4$, and $(w_n)$ is geometric with common ratio $-1$ (for $n \\geq 1$). $\\blacksquare$",
+      "themes": [
+        "geometric progressions",
+        "recurrence relations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "viii",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$. Two other sequences $(v_n)$ and $(w_n)$ are defined as $v_n = u_n + u_{n-1}$ and $w_n = u_n - 4u_{n-1}$, $n \\geq 1$.\n\nExpress $v_n$ and $w_n$ each in terms of $n$.",
+      "corrige_markdown": "First terms: $v_1 = u_1 + u_0 = 4$ and $w_1 = u_1 - 4u_0 = -1$. By part (vii), for $n \\geq 1$:\n$$v_n = v_1\\cdot 4^{\\,n-1} = 4\\cdot 4^{\\,n-1} = \\boxed{4^n}, \\qquad w_n = w_1\\cdot(-1)^{n-1} = -(-1)^{n-1} = \\boxed{(-1)^n}.$$\n**Check.** $v_2 = u_2 + u_1 = 16 = 4^2$ and $w_2 = u_2 - 4u_1 = 1 = (-1)^2$; $v_3 = 51 + 13 = 64 = 4^3$ and $w_3 = 51 - 52 = -1 = (-1)^3$.",
+      "themes": [
+        "geometric progressions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ix",
+      "enonce_markdown": "A sequence $(u_n)$ is defined recursively by $u_0 = 1$, $u_1 = 3$ and $u_{n+1} = 3u_n + 4u_{n-1}$. Two other sequences $(v_n)$ and $(w_n)$ are defined as $v_n = u_n + u_{n-1}$ and $w_n = u_n - 4u_{n-1}$, $n \\geq 1$.\n\nHence, or otherwise, express $u_n$ in terms of $n$.",
+      "corrige_markdown": "Subtract: $v_n - w_n = \\left(u_n + u_{n-1}\\right) - \\left(u_n - 4u_{n-1}\\right) = 5u_{n-1}$. With part (viii), for $n \\geq 1$:\n$$5u_{n-1} = 4^n - (-1)^n \\quad\\Longrightarrow\\quad u_{n-1} = \\frac{4^n - (-1)^n}{5}.$$\nReplacing $n$ by $n + 1$ (so the formula is valid for $n \\geq 0$):\n$$\\boxed{u_n = \\frac{4^{n+1} - (-1)^{n+1}}{5} = \\frac{4^{n+1} + (-1)^n}{5}}$$\n**Check.** $u_0 = \\dfrac{4 + 1}{5} = 1$, $u_1 = \\dfrac{16 - 1}{5} = 3$, $u_2 = \\dfrac{64 + 1}{5} = 13$, $u_3 = \\dfrac{256 - 1}{5} = 51$.",
+      "themes": [
+        "recurrence relations",
+        "geometric progressions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

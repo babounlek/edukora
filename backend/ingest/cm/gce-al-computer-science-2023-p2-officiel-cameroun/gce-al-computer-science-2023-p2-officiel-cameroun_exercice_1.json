@@ -1,0 +1,106 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 2, ADVANCED LEVEL, June 2023. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet « 0795 Computer Science 2 », ADVANCED LEVEL, JUNE 2023 (page de garde vérifiée), 5 pages dont une page de garde sans question ; scan sans couche texte, lu en image. 8 questions imprimées, 17 marks chacune, « Answer any SIX questions » : regles_choix { parmi 6 sur 8 }, groupes [PAPER 2].",
+    "Aucun code C ou Pascal n'a été compilé (aucun compilateur disponible) : ce sujet ne demande pas de programme ; les fragments de code cités (C ou pseudocode) ont été vérifiés par des traductions Python exécutées (traces, SRTF, SQL avec sqlite3, arbres).",
+    "Les corrigés sont rédigés par nous (aucun corrigé officiel). Le sujet n'imprime pas de feuille de données ; aucune constante physique n'est utilisée.",
+    "Question 1 : la ligne « We have full adders and half adders to use as components » est coupée par le bord de la page imprimée ; texte reconstitué à partir du contexte.",
+    "Question 1 (b)(i) : le sujet donne une capacité de 8,5 GB pour un DVD « double-sided » (valeur imprimée, un DVD double face réel est plus grand) ; le corrigé retient 8,5 GB au total, soit 13 CD, et signale que 8,5 GB par face donnerait 25 CD. 1 GB = 1000 MB ou 1024 MB donnent le même résultat (13).",
+    "Question 1 : les sous-questions du sujet sont (a), (b)(i), (b)(ii)(a), (b)(ii)(b) et (b)(iii) ; elles sont numérotées « a », « b(i) », « b(ii)(a) », « b(ii)(b) » et « b(iii) ». L'amorce de (b)(ii) est recopiée dans (a) et (b). Les schémas demandés (circuit) sont à produire par le candidat : ils sont décrits dans le corrigé par un diagramme en texte."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Which of direct access and sequential access takes a longer time? Explain your answer.",
+      "corrige_markdown": "**Sequential access takes longer** (on average).\n\n* In **sequential access** (for example a magnetic tape) the records can only be read in the order in which they are stored. To reach record number $k$, the $k-1$ records before it must be passed over first, so the access time grows with the position of the record and, on average, half of the whole medium has to be read.\n* In **direct (random) access** (for example a hard disk, a DVD or RAM) the device can move straight to the address of the required record, whatever its position, so the access time is roughly constant and short.\n\nHence direct access is quicker, and sequential access takes the longer time, particularly for a record near the end of a large file.",
+      "themes": [
+        "computer storage devices"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "b(i)",
+      "enonce_markdown": "A double-sided DVD has a capacity of 8.5GB. How many CDs of 700MB storage capacity are required to store information in a full double-sided DVD?",
+      "corrige_markdown": "The capacity to be copied is the printed 8.5 GB, that is $8.5 \\times 1000 = 8500$ MB (taking $1\\ \\text{GB} = 1000\\ \\text{MB}$).\n\n$$\\text{number of CDs} = \\frac{8500}{700} = 12.14\\ldots$$\n\nA fraction of a CD cannot be bought, so the number is rounded **up**: **13 CDs**.\n\nCheck with binary prefixes ($1\\ \\text{GB} = 1024\\ \\text{MB}$): $\\dfrac{8.5 \\times 1024}{700} = \\dfrac{8704}{700} = 12.43\\ldots$, which again gives 13 CDs.\n\n**Answer: 13 CDs** (12 CDs hold only $12 \\times 700 = 8400$ MB, which is not enough).\n\nRemark: if the 8.5 GB were the capacity of each side, the full DVD would hold 17 GB and $\\dfrac{17000}{700} = 24.3\\ldots$ would give 25 CDs; the printed statement gives one capacity of 8.5 GB for the whole double-sided DVD, so 13 is the answer retained.",
+      "themes": [
+        "computer storage devices"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "b(ii)(a)",
+      "enonce_markdown": "We want to build a circuit that can be used to add two 4-bit numbers. We have full adders and half adders to use as components.\n\nExplain the difference between a half-adder and a full-adder.",
+      "corrige_markdown": "* A **half adder** adds **two** single bits, $A$ and $B$, and has two outputs: the sum $S = A \\oplus B$ and the carry $C = A \\cdot B$. It has **no carry input**, so it cannot take into account a carry coming from a lower bit position.\n* A **full adder** adds **three** single bits: $A$, $B$ and a **carry-in** $C_{in}$ from the previous (less significant) position. Its outputs are the sum $S = A \\oplus B \\oplus C_{in}$ and the carry-out $C_{out} = A \\cdot B + C_{in}(A \\oplus B)$.\n\n| A | B | Half adder (S, C) | Full adder with $C_{in} = 1$ (S, $C_{out}$) |\n|---|---|---|---|\n| 0 | 0 | 0, 0 | 1, 0 |\n| 0 | 1 | 1, 0 | 0, 1 |\n| 1 | 0 | 1, 0 | 0, 1 |\n| 1 | 1 | 0, 1 | 1, 1 |\n\nA full adder can be built from two half adders and an OR gate. In a 4-bit adder, a half adder is enough for the least significant bit (there is no carry-in), and a full adder is needed for each of the other three bits.",
+      "themes": [
+        "binary adders"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "b(ii)(b)",
+      "enonce_markdown": "We want to build a circuit that can be used to add two 4-bit numbers. We have full adders and half adders to use as components.\n\nDraw a block diagram of your circuit which shows how the numbers 1011 and 1110 are being added. Show and label all inputs and outputs. Use at least one half-adder and at least one full-adder.",
+      "corrige_markdown": "**Arithmetic first.** $1011_2 = 11$ and $1110_2 = 14$, so the expected sum is $11 + 14 = 25 = 11001_2$ (a 5-bit result: the carry out of the top bit is the fifth bit).\n\nBit by bit (bit 0 is the least significant), simulated with a script:\n\n| Bit | A | B | Carry in | Sum | Carry out | Component |\n|---|---|---|---|---|---|---|\n| 0 | 1 | 0 | none | 1 | 0 | half adder |\n| 1 | 1 | 1 | 0 | 0 | 1 | full adder |\n| 2 | 0 | 1 | 1 | 0 | 1 | full adder |\n| 3 | 1 | 1 | 1 | 1 | 1 | full adder |\n\n**Block diagram** (a half adder HA for bit 0, then a full adder FA for each of bits 1, 2 and 3; the carry-out of each block feeds the carry-in of the next):\n\n```text\n   A0=1  B0=0       A1=1  B1=1       A2=0  B2=1       A3=1  B3=1\n     |    |           |    |           |    |           |    |\n  +--v----v--+     +--v----v--+     +--v----v--+     +--v----v--+\n  |    HA    | c1  |    FA    | c2  |    FA    | c3  |    FA    |\n  |          |---->| Cin      |---->| Cin      |---->| Cin      |----> C4 = 1\n  +----------+ =0  +----------+ =1  +----------+ =1  +----------+\n       |                |                |                |\n       v                v                v                v\n     S0 = 1           S1 = 0           S2 = 0           S3 = 1\n```\n\n**Outputs.** $C_4\\,S_3\\,S_2\\,S_1\\,S_0 = 1\\,1\\,0\\,0\\,1 = 11001_2 = 25$, which agrees with $11 + 14 = 25$. Inputs: $A_3A_2A_1A_0 = 1011$ and $B_3B_2B_1B_0 = 1110$; outputs: the four sum bits and the final carry $C_4$.",
+      "themes": [
+        "binary adders",
+        "number systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b(iii)",
+      "enonce_markdown": "Describe TWO characteristics of a CPU that can affect the overall performance of a computer.",
+      "corrige_markdown": "1. **Clock speed** (in GHz). The clock sets the number of fetch-decode-execute cycles the CPU can perform each second. A higher clock speed means more instructions are completed per second, so programs run faster (provided the other components can keep up and the heat produced is controlled).\n2. **Number of cores.** Each core is an independent processing unit. A multi-core CPU can execute several instructions streams (processes or threads) at the same time, so multitasking and programs written to run in parallel are faster. A program that is not written to use several cores gains little.\n\nOther acceptable characteristics: the size and levels of the **cache memory** (fast memory on the CPU that reduces waiting for the slower RAM), the **word length / bus width** (the amount of data processed and moved at once) and the **instruction set** (RISC or CISC). Two characteristics, each with its effect, give full marks.",
+      "themes": [
+        "processor performance factors"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

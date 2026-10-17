@@ -1,0 +1,53 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2021-p3-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 3,
+  "code_matiere": "0775",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 3 (0775), ADVANCED LEVEL, June 2021. Duration: two and a half hours.**\n\nAnswer ALL questions. For your guidance, the approximate mark allocation for parts of each question is indicated in brackets. Mathematical formulae and tables, published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "The variables $x$ and $y$ satisfy the differential equation\n\n$$x\\frac{dy}{dx} = x + y.$$",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 (ii) : le sujet ne donne que y = 0 pour x = 1 et ne précise pas comment obtenir la deuxième valeur y_1 (x = 1,2) dont la formule à trois niveaux a besoin. Le corrigé la calcule par la méthode d'Euler (y_1 = 0,2) et obtient 0,7333 ; il note que la solution exacte y = x ln x donne 0,7520 et que partir de la valeur exacte y_1 = 0,2188 donnerait 0,7539. La valeur finale dépend donc du choix du départ, qui n'est pas imprimé."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Use the approximation $2h\\left(\\dfrac{dy}{dx}\\right)_n \\cong y_{n+1} - y_{n-1}$ to show that\n\n$$y_{n+1} \\cong y_{n-1} + 2h\\left(1 + \\frac{y_n}{x_n}\\right). \\quad \\textit{[2 marks]}$$",
+      "corrige_markdown": "Dividing the differential equation $x\\dfrac{dy}{dx} = x + y$ by $x$ gives\n\n$$\\frac{dy}{dx} = 1 + \\frac{y}{x}.$$\n\nAt the point $(x_n, y_n)$ this reads $\\left(\\dfrac{dy}{dx}\\right)_n = 1 + \\dfrac{y_n}{x_n}$. Substituting into the given approximation $2h\\left(\\dfrac{dy}{dx}\\right)_n \\cong y_{n+1} - y_{n-1}$:\n\n$$y_{n+1} - y_{n-1} \\cong 2h\\left(1 + \\frac{y_n}{x_n}\\right) \\quad\\Longrightarrow\\quad y_{n+1} \\cong y_{n-1} + 2h\\left(1 + \\frac{y_n}{x_n}\\right). \\qquad \\blacksquare$$",
+      "themes": [
+        "numerical solution of differential equations"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Given that $y = 0$ when $x = 1$, estimate, using a step-length of $0.2$, the value of $y$ when $x = 1.6$, giving your final answer to $4$ significant figures. *[6 marks]*",
+      "corrige_markdown": "Use $h = 0.2$, so $x_0 = 1$, $x_1 = 1.2$, $x_2 = 1.4$, $x_3 = 1.6$, with $y_0 = 0$.\n\n**Starting value.** The three-level formula needs $y_0$ and $y_1$. Only $y_0$ is given, so obtain $y_1$ from the Euler step $y_1 = y_0 + h\\left(1 + \\dfrac{y_0}{x_0}\\right)$:\n\n$$y_1 = 0 + 0.2\\left(1 + \\frac{0}{1}\\right) = 0.2.$$\n\n**Step to $x_2 = 1.4$** (formula with $n = 1$):\n\n$$y_2 = y_0 + 2h\\left(1 + \\frac{y_1}{x_1}\\right) = 0 + 0.4\\left(1 + \\frac{0.2}{1.2}\\right) = 0.4 \\times \\frac{7}{6} = 0.46667.$$\n\n**Step to $x_3 = 1.6$** (formula with $n = 2$):\n\n$$y_3 = y_1 + 2h\\left(1 + \\frac{y_2}{x_2}\\right) = 0.2 + 0.4\\left(1 + \\frac{0.46667}{1.4}\\right) = 0.2 + 0.4 \\times 1.33333 = 0.73333.$$\n\n| $n$ | $x_n$ | $y_n$ |\n|---|---|---|\n| 0 | 1.0 | 0 |\n| 1 | 1.2 | 0.2 (Euler starter) |\n| 2 | 1.4 | 0.4667 |\n| 3 | 1.6 | 0.7333 |\n\n$$\\boxed{y(1.6) \\approx 0.7333}$$\n\n**Check against the exact solution.** The equation $\\dfrac{dy}{dx} - \\dfrac{y}{x} = 1$ has integrating factor $\\dfrac1x$, giving $\\dfrac{d}{dx}\\left(\\dfrac{y}{x}\\right) = \\dfrac1x$, so $y = x\\ln x + Cx$; $y(1) = 0$ gives $C = 0$ and $y = x\\ln x$. Then $y(1.6) = 1.6\\ln 1.6 \\approx 0.7520$. The estimate is slightly low because the starting value $y_1 = 0.2$ is less accurate than the exact $1.2\\ln 1.2 \\approx 0.2188$ (starting from the exact $y_1$ the same formula gives $0.7539$).",
+      "themes": [
+        "numerical solution of differential equations",
+        "first order differential equations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

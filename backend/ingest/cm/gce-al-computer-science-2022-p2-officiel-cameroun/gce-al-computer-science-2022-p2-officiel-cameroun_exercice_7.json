@@ -1,0 +1,66 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigrane gcerevision.com ignoré) lu page par page en image ; 4 pages, 8 questions, aucune figure à recadrer. Points imprimés par sous-partie (total 17 pour chaque question, vérifié). Question 7 : points imprimés i(a) 2, i(b) 2, i(c) 4, ii(a) 2, ii(b) 3, ii(c) 4 ; total 17.",
+    "7(ii) : l'énoncé imprime « gcd (m,n) = n » avec les propriétés numérotées 1, 2, 3 (recopiées). 7(ii)(a) : « recursion » est la réponse attendue (technique), les deux premières propriétés sont les cas de base ; le sujet ne donne pas de barème officiel.",
+    "7(ii)(c) : la fonction en pseudocode n'est pas du C/Pascal, donc rien n'a été compilé ; sa logique a été vérifiée par une traduction Python exécutée (243, 171 donne 9 ; cas limites 0 et 0 inclus).",
+    "Aucun code C/Pascal dans ce paper (théorie) : rien n'a donc été compilé ; les calculs, tableaux et pseudocodes du corrigé ont été vérifiés par un script Python exécuté (et sqlite3 pour la base de données de la question 5)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) What is a data structure? (2 marks)\n\n(b) State **two** main factors that determine the choice of a data structure for a program. (2 marks)\n\n(c) Explain the difference between a linear data structure and a non-linear data structure, giving an example in each case. (4 marks)",
+      "corrige_markdown": "**(a) Data structure (2 marks)**\n\nA data structure is a particular way of organising, storing and relating data items in the memory of a computer so that the data can be accessed, searched, inserted, deleted and modified efficiently. Examples: array, stack, queue, linked list, tree, graph.\n\n**(b) Factors determining the choice (2 marks)** (any two)\n\n- The **operations** that the program will perform most often on the data (searching, inserting, deleting, sorting, traversing) and how fast they must be (time efficiency).\n- The **amount and nature of the data**: its size, whether the size is fixed or changes while the program runs (static or dynamic), and the type of data.\n- The **memory space** available / used by the structure.\n- The ease of implementation and maintenance.\n\n**(c) Linear and non-linear data structures (4 marks)**\n\n- In a **linear data structure** the elements are arranged one after the other in a sequence: every element has one predecessor and one successor (except the first and the last), and the elements can be traversed in a single pass from the first to the last. Examples: array, linked list, stack, queue.\n- In a **non-linear data structure** the elements are not in a single sequence: one element can be linked to several others, in a hierarchy or a network, so the data cannot be traversed in a single pass without choosing a path. Examples: tree (a parent has several children; for example a binary tree), graph.",
+      "themes": [
+        "data structures"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Euclid's algorithm for finding the *greatest common divisor* of two positive integers, $m$ and $n$, is described by the following properties.\n\n1. If $m = 0$, then $gcd(m, n) = n$\n2. If $n = 0$, then $gcd(m, n) = m$\n3. Otherwise, $gcd(m, n) = gcd(n, r)$; where $r$ is the remainder when $m$ is divided by $n$.\n\n(a) What name is given to the algorithm design (problem solving) technique used by Euclid's algorithm? What are the first two properties called? (2 marks)\n\n(b) Find the greatest common divisor of 243 and 171 using Euclid's algorithm. Show all the steps in your solution. (3 marks)\n\n(c) Write in pseudo code, a function named $gcd$ that takes as parameters two positive integers $m$ and $n$, computes and returns their greatest common divisor based on the three properties above. (4 marks)",
+      "corrige_markdown": "**(a) Technique and names (2 marks)**\n\nEuclid's algorithm uses **recursion**: the problem $gcd(m, n)$ is defined in terms of the same problem on smaller values, $gcd(n, r)$, with $r < n$, until a trivial case is reached. The first two properties are the **base cases** (also called the stopping, terminating or boundary conditions) of the recursion; the third property is the recursive case (general case).\n\n**(b) $gcd(243, 171)$ (3 marks)**\n\nUsing property 3 repeatedly ($r$ = remainder of $m$ divided by $n$):\n\n| Step | $m$ | $n$ | $r = m \\bmod n$ | Result used |\n|---|---|---|---|---|\n| 1 | 243 | 171 | $243 = 1 \\times 171 + 72$, so 72 | $gcd(243, 171) = gcd(171, 72)$ |\n| 2 | 171 | 72 | $171 = 2 \\times 72 + 27$, so 27 | $gcd(171, 72) = gcd(72, 27)$ |\n| 3 | 72 | 27 | $72 = 2 \\times 27 + 18$, so 18 | $gcd(72, 27) = gcd(27, 18)$ |\n| 4 | 27 | 18 | $27 = 1 \\times 18 + 9$, so 9 | $gcd(27, 18) = gcd(18, 9)$ |\n| 5 | 18 | 9 | $18 = 2 \\times 9 + 0$, so 0 | $gcd(18, 9) = gcd(9, 0)$ |\n| 6 | 9 | 0 | - | $n = 0$: property 2 gives $gcd = m = 9$ |\n\n$$gcd(243, 171) = 9$$\n\nCheck: $243 = 9 \\times 27$ and $171 = 9 \\times 19$, and 27 and 19 have no common factor.\n\n**(c) Pseudo code (4 marks)**\n\n```\nFunction gcd(m, n)\n    If m = 0 Then\n        Return n\n    Else If n = 0 Then\n        Return m\n    Else\n        r ← m MOD n\n        Return gcd(n, r)\n    EndIf\nEndFunction\n```\n\nThe first two branches are the base cases (properties 1 and 2) that stop the recursion; the last branch is the recursive call (property 3), whose second argument $r < n$ gets smaller at each call, so the recursion always ends. The function was translated into Python and run: gcd(243, 171) gives 9 with the chain of calls (243, 171), (171, 72), (72, 27), (27, 18), (18, 9), (9, 0); gcd(0, 5) gives 5, gcd(7, 0) gives 7, gcd(48, 18) gives 6 and gcd(17, 5) gives 1.",
+      "themes": [
+        "recursion",
+        "algorithm design",
+        "pseudocode algorithms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    }
+  ]
+}

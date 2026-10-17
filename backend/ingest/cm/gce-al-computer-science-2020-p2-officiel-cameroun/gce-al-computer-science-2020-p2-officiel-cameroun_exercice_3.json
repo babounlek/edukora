@@ -1,0 +1,65 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 3(i)(a) : le texte imprimé est mal formé (« the operating machine » au lieu de operating system ; « Justify the relative properties of among interrupts from these classes if any »). Recopie fidèle ; lecture retenue : donner la priorité relative des classes d'interruptions. Les marques imprimées sont « (5 mark) » et « (3 mark) » (sans s).",
+    "Question 3 : points imprimés par sous-partie : (i)(a) 5 + (b) 4 + (c) 3 = 12 ; (ii)(a) 2 + (b) 3 = 5 ; total 17. Les résultats numériques de l'exemple d'ordonnancement (FCFS, round robin) ont été recalculés par un script Python."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) State three main types of interrupts and their role in the operating machine. Justify the relative properties of among interrupts from these classes if any. (5 mark)\n\n(b) Briefly describe two common types of process scheduling policies used in operating systems. (4 marks)\n\n(c) Briefly explain how interrupts are used when Scheduling processes in an operating system. (3 mark)",
+      "corrige_markdown": "**(a) Three types of interrupt, their role and their relative priority (5 marks)**\n\nAn interrupt is a signal that makes the processor suspend the program it is running, save its state, run an **interrupt service routine** of the operating system, and then resume.\n\n1. **Hardware failure (machine check / power failure) interrupts:** raised when the hardware detects a fault (power loss, memory parity error). The operating system saves what it can and shuts down safely or reports the fault.\n2. **Timer (clock) interrupts:** raised by the system clock at regular intervals. They let the operating system regain control, update the time and end the time slice of the running process (basis of time-sharing).\n3. **I/O interrupts:** raised by an I/O controller when a transfer finishes or a device needs attention (key pressed, disk read complete, printer ready). The operating system then wakes up the waiting process or sends the next data.\n4. **Program (software) interrupts, also called traps or exceptions, and supervisor calls:** raised by an instruction of the running program (division by zero, illegal instruction, memory protection violation, page fault) or by a system call requesting an operating system service.\n\n(Any three of these classes are accepted.)\n\n**Relative properties (priority).** The classes are **not equal**: each interrupt is given a **priority** according to how urgent it is and how costly it is to ignore it. For instance, a hardware failure or power-failure interrupt has the highest priority (nothing can wait), followed by the timer, then I/O devices (a slow device can wait a little but its data may be lost if the buffer overflows), and finally program or software interrupts, which concern only the current program. An interrupt of **higher priority can interrupt the service routine of a lower-priority one**, whereas a lower-priority interrupt is **held pending (queued or masked)** until the more urgent routine ends.\n\n**(b) Two scheduling policies (4 marks)**\n\n1. **First-Come First-Served (FCFS):** processes are placed in a queue and run, to completion, in the order in which they arrive. It is simple and fair in order of arrival but a long job makes the short ones behind it wait (long average waiting time). It is non-pre-emptive.\n2. **Round robin:** each process in the ready queue gets the processor for a fixed time slice (quantum). When the quantum ends, the process is pre-empted and sent to the back of the queue and the next one runs. It gives a fast response to every user and suits time-sharing systems, at the cost of some switching overhead.\n\n(Shortest Job First and priority scheduling are also acceptable.)\n\nExample with three processes arriving together, needing 5, 3 and 2 time units (P1, P2, P3): under FCFS the waiting times are 0, 5 and 8 (average 4.33); under round robin with a quantum of 2 the run order is P1, P2, P3, P1, P2, P1, and the waiting times are 5, 6 and 4 (average 5.0), but every process gets the processor after at most 4 time units instead of waiting for the whole burst of the processes ahead of it.\n\n**(c) Interrupts in process scheduling (3 marks)**\n\n- A **timer interrupt** marks the end of the running process's time slice. The CPU jumps to the operating system, which **saves the context** (program counter, registers) of the running process in its process control block, places the process at the back of the ready queue and lets the **scheduler** choose the next process, whose saved context is restored (a context switch).\n- An **I/O interrupt** signals that a process that was blocked waiting for a device can continue: the operating system moves it from the blocked queue to the ready queue, and the scheduler may let it run at once if its priority is higher.\n- A **system call or termination** (supervisor call) by the running process also passes control to the operating system, which then schedules another process.",
+      "themes": [
+        "interrupts",
+        "process scheduling",
+        "operating systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 12
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) Distinguish between paging and segmentation with respect to memory management techniques. (2 marks)\n\n(b) Describe how virtual memory can allow a word processor and a spreadsheet applications to run simultaneously in the memory of a computer, even when both software packages are too large to fit into the computer's RAM. (3 marks)",
+      "corrige_markdown": "**(a) Paging against segmentation (2 marks)**\n\n- **Paging** divides physical memory into fixed-size blocks (**frames**) and each program into **pages** of the same size. The division is made by the system, is invisible to the programmer and has no relation to the logical structure of the program. An address is a page number plus an offset, translated through a page table. It avoids external fragmentation but may waste part of the last page of a program (internal fragmentation).\n- **Segmentation** divides a program into **variable-size logical units** (segments: main program, procedures, data, stack) that match its structure. An address is a segment number plus an offset, translated through a segment table giving the base address and the length (limit) of each segment. It makes sharing and protection of logical units easier but can lead to external fragmentation.\n\n**(b) Virtual memory and two large applications (3 marks)**\n\nVirtual memory uses an area of the **hard disk** (the swap or page file) as an extension of RAM. Each application is divided into pages and only the pages **currently needed** are kept in RAM; the other pages stay on the disk. When the word processor or the spreadsheet needs a page that is not in RAM (a page fault), the operating system **swaps out** a page that has not been used recently (to the disk) and **loads the required page** into the freed frame. In this way the total of the memory used by the two packages can be much larger than the RAM, each package behaves as if it had its own large memory, and both can be open and run in turn at the same time. The price is slower execution when too much swapping occurs (thrashing).",
+      "themes": [
+        "paging and segmentation",
+        "virtual memory"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

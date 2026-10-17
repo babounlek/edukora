@@ -1,0 +1,54 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2023-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2023. Time allowed: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 5 (a) : l'énoncé imprimé impose « x ≠ 0 », ce qui rend l'ensemble non stable par produit (contre-exemple [[1,1],[-1,1]] au carré = [[0,2],[-2,0]]). Le corrigé le signale et démontre la structure de groupe avec la condition correcte (x, y) ≠ (0, 0), c'est-à-dire x² + y² ≠ 0. Défaut d'impression probable du sujet.",
+    "Question 5 (b) : « p, q in N » : q = 1 convient."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Show that the set of matrices of the form\n$$\\begin{pmatrix} x & y \\\\ -y & x \\end{pmatrix}, \\quad\\text{where } x \\neq 0, \\text{ and } x, y \\in \\mathbb{R},$$\nforms a group under matrix multiplication. (*Assume Associativity*). (5 marks)",
+      "corrige_markdown": "Write $S = \\left\\{ \\begin{pmatrix} x & y \\\\ -y & x \\end{pmatrix} : x, y \\in \\mathbb{R} \\right\\}$ and let $G$ be the subset of those matrices that are **invertible**, i.e. with $\\det = x^{2} + y^{2} \\neq 0$, equivalently $(x, y) \\neq (0, 0)$.\n\n**A necessary remark on the condition printed in the question.** With the restriction $x \\neq 0$ alone the set is *not* closed under multiplication. For example $A = \\begin{pmatrix} 1 & 1 \\\\ -1 & 1 \\end{pmatrix}$ has $x = 1 \\neq 0$, but\n$$A^{2} = \\begin{pmatrix} 0 & 2 \\\\ -2 & 0 \\end{pmatrix}$$\nhas top-left entry $0$. So the statement can only be proved with the condition $(x, y) \\neq (0, 0)$, which is the one used below (it contains every matrix with $x \\neq 0$; only the matrices with $x = 0$, $y \\neq 0$ are added).\n\nLet $P = \\begin{pmatrix} x & y \\\\ -y & x \\end{pmatrix}$ and $Q = \\begin{pmatrix} a & b \\\\ -b & a \\end{pmatrix}$ be in $G$.\n\n**Closure.**\n$$PQ = \\begin{pmatrix} xa - yb & xb + ya \\\\ -ya - xb & -yb + xa \\end{pmatrix} = \\begin{pmatrix} X & Y \\\\ -Y & X \\end{pmatrix}, \\quad X = xa - yb,\\; Y = xb + ya,$$\nwhich has the required form with real $X, Y$. Moreover\n$$X^{2} + Y^{2} = (x^{2} + y^{2})(a^{2} + b^{2}) > 0,$$\nso $(X, Y) \\neq (0, 0)$ and $PQ \\in G$.\n\n**Identity.** $I = \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$ is of the required form ($x = 1$, $y = 0$) and $PI = IP = P$ for every $P$.\n\n**Inverse.** $\\det P = x^{2} + y^{2} \\neq 0$, so\n$$P^{-1} = \\frac{1}{x^{2} + y^{2}}\\begin{pmatrix} x & -y \\\\ y & x \\end{pmatrix} = \\begin{pmatrix} x' & y' \\\\ -y' & x' \\end{pmatrix}, \\quad x' = \\frac{x}{x^{2} + y^{2}},\\; y' = \\frac{-y}{x^{2} + y^{2}}.$$\nThis has the required form and $(x', y') \\neq (0, 0)$, so $P^{-1} \\in G$. (If $x \\neq 0$ then $x' \\neq 0$.)\n\n**Associativity** is assumed (matrix multiplication is associative).\n\nClosure, identity, inverses and associativity all hold, so $G$ is a group under matrix multiplication. $\\blacksquare$",
+      "themes": [
+        "group theory",
+        "matrix algebra"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Solve the linear congruence\n$$x - 3 \\equiv 5 \\pmod 7,$$\ngiving your answer in the form $x = p\\mu + q$, where $p, q \\in \\mathbb{N}$ and $\\mu \\in \\mathbb{Z}$. (3 marks)",
+      "corrige_markdown": "Add $3$ to both sides (allowed in modular arithmetic):\n$$x \\equiv 5 + 3 = 8 \\equiv 1 \\pmod 7.$$\nSo $x$ leaves remainder $1$ on division by $7$:\n$$\\boxed{x = 7\\mu + 1, \\quad \\mu \\in \\mathbb{Z}}$$\nthat is $p = 7$ and $q = 1$.\n\nCheck: for $\\mu = 0$, $x = 1$ and $x - 3 = -2 \\equiv 5 \\pmod 7$ since $-2 + 7 = 5$. For $\\mu = 1$, $x = 8$ and $x - 3 = 5$.",
+      "themes": [
+        "linear congruences"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

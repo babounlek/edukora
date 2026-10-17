@@ -1,0 +1,78 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 : le numéro « 2. » est mal imprimé sur le scan (« :. ») ; numéro déduit de la séquence. Points imprimés 6 (2 + 4), 7 (2 + 4 + 1), 4 ; `points` de i et ii valent la somme des sous-parties imprimées ; total 17.",
+    "2(i)(b) : le sujet ne donne aucun jeu d'instructions ; l'assembleur écrit est générique (LOAD, STORE, ADD, adressage indexé [R0 + k]), la notation est expliquée dans le corrigé ; sa logique a été vérifiée par une simulation Python (non assemblé sur une vraie machine).",
+    "2(ii) : le sujet n'indique pas si 0 est « divisible » par 2 et par 3 ; convention retenue : oui (0 est divisible par tout entier), donc X = C barre ; l'alternative (0 exclu : X = C barre (A + B)) est donnée dans le corrigé. Aucun barème officiel pour trancher."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "Consider the following assignment statement written in a high-level language, where A is an array, = the assignment operator and array indexing starts with 0.\n\n$$A[3] = A[2] + A[1]$$\n\n(a) Explain what is meant by an *addressing mode*. What is absolute addressing? (2 marks)\n\n(b) Using register and indexed addressing modes only, show how you would implement the above statement in assembly. Assume that the base address of array A is stored in a register R0, each array element occupies a single byte and other registers are named $R1, R2, \\ldots, Rn$, for some positive integer $n$. Explain any other notation you use in your answer. (4 marks)",
+      "corrige_markdown": "**(a) Addressing mode (2 marks)**\n\nAn addressing mode is the method used by an instruction to specify where its operand is, i.e. how the processor works out the effective address (or value) of the data it must use. Examples: immediate, register, direct (absolute), indirect and indexed addressing.\n\n**Absolute addressing** (also called direct addressing): the address field of the instruction contains the actual memory address of the operand, so the processor goes straight to that location with no calculation (for example `LOAD R1, 2000` loads R1 with the contents of memory location 2000).\n\n**(b) Assembly code (4 marks)**\n\n*Notation used* (a generic assembly language):\n\n- `Rn` is register $n$ (register addressing: the operand is the contents of the register).\n- `[R0 + k]` is **indexed addressing**: the effective address is the contents of the index/base register R0 plus the constant offset $k$. Since each element occupies one byte, the address of `A[k]` is the base address in R0 plus $k$.\n- `LOAD Rd, source` copies the byte at the memory address `source` into register `Rd`; `STORE Rs, destination` copies register `Rs` into memory; `ADD Rd, Rs1, Rs2` puts $Rs1 + Rs2$ in `Rd`; text after `;` is a comment.\n\n```text\nLOAD  R1, [R0 + 2]     ; R1 <- A[2]   (indexed: address = R0 + 2)\nLOAD  R2, [R0 + 1]     ; R2 <- A[1]   (indexed: address = R0 + 1)\nADD   R3, R1, R2       ; R3 <- R1 + R2  (register addressing)\nSTORE R3, [R0 + 3]     ; A[3] <- R3   (indexed: address = R0 + 3)\n```\n\n**Check by simulation.** The four instructions were simulated in Python with R0 = 100 and A = [10, 20, 30, 40]: R1 = 30, R2 = 20, R3 = 50 and the array becomes A = [10, 20, 30, 50], so $A[3] = A[2] + A[1] = 30 + 20 = 50$ as required.",
+      "themes": [
+        "assembly language",
+        "addressing modes"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "A three-bit binary number given as ABC, where A is the most significant bit and C the least significant bit, appears on the input to a combinational logic circuit. The circuit has two outputs X and Y. When the input number, $(ABC)_2$, is divisible by two ($10_2$), output X is 1 and when the input number is divisible by three ($11_2$), output Y is 1. Otherwise, X and Y are 0.\n\n(a) Explain what a combinational logic circuit is. (2 marks)\n\n(b) Draw a truth table for this circuit with inputs A, B, C, and outputs X and Y. (4 marks)\n\n(c) State the most simplified Boolean expression for output X. (1 mark)",
+      "corrige_markdown": "**(a) Combinational logic circuit (2 marks)**\n\nA combinational logic circuit is a digital circuit made of logic gates in which each output depends **only** on the present combination of the inputs. It has no memory, no feedback loop and no clock: the same inputs always give the same outputs. Examples: adders, decoders, multiplexers.\n\n**(b) Truth table (4 marks)**\n\nThe number $(ABC)_2$ is divisible by 2 when it is even and divisible by 3 when it is 0, 3 or 6. Zero is divisible by any number, so row 000 gives $X = 1$ and $Y = 1$ (see the note at the end).\n\n| A | B | C | Decimal value | X (divisible by 2) | Y (divisible by 3) |\n|---|---|---|---|---|---|\n| 0 | 0 | 0 | 0 | 1 | 1 |\n| 0 | 0 | 1 | 1 | 0 | 0 |\n| 0 | 1 | 0 | 2 | 1 | 0 |\n| 0 | 1 | 1 | 3 | 0 | 1 |\n| 1 | 0 | 0 | 4 | 1 | 0 |\n| 1 | 0 | 1 | 5 | 0 | 0 |\n| 1 | 1 | 0 | 6 | 1 | 1 |\n| 1 | 1 | 1 | 7 | 0 | 0 |\n\n**(c) Simplified expression for X (1 mark)**\n\n$X = 1$ for the inputs 000, 010, 100 and 110: these are exactly the rows in which $C = 0$ (a binary number is even when its least significant bit is 0). Therefore\n\n$$X = \\overline{C}$$\n\n(Karnaugh map: the four 1s in the columns where $C = 0$ form one group of four, so $A$ and $B$ disappear.) For comparison, $Y = \\overline{A}\\,\\overline{B}\\,\\overline{C} + \\overline{A}BC + AB\\overline{C}$, which does not simplify.\n\n**Note.** If the number 0 is not regarded as divisible by 2 and 3, the first row becomes $X = 0$, $Y = 0$ and then $X = \\overline{C}\\,(A + B)$. The mathematical convention (0 is divisible by every integer) is used above; the rows and expressions were checked by a script.",
+      "themes": [
+        "digital logic circuits",
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Bezea has taken lots of photos and the memory in her camera is full. She needs to transfer her photos to an external secondary storage device. Ignoring cost, describe **two** characteristics of secondary storage devices that Bezea should consider when choosing a device. (4 marks)",
+      "corrige_markdown": "Any two characteristics, each described and linked to Bezea's need (2 marks each):\n\n1. **Storage capacity.** The device must be large enough to hold all the photos already taken (and those to come): the total size of the photos (number of photos $\\times$ average file size, e.g. thousands of photos of several MB each, so many GB) must be less than the free space. A larger capacity means fewer devices and room to keep adding photos.\n2. **Data transfer (read/write) speed.** The speed at which data is written and read decides how long copying a large number of photos takes and how quickly they can be opened later; a flash drive or solid-state drive is much faster than an optical disc.\n\nOther acceptable characteristics: **portability** (size, weight, ease of carrying a USB flash drive or SD card), **durability and reliability** (resistance to shocks, scratches, magnetic fields, to protect the photos from loss), **compatibility** with the camera and her computer (interface such as USB or SD card slot) and **type of access/technology** (magnetic, optical, solid state).",
+      "themes": [
+        "secondary storage"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

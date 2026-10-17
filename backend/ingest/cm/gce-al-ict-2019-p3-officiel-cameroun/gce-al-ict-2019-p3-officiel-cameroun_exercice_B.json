@@ -1,0 +1,149 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2019-p3-officiel-cameroun.pdf",
+  "numero_exercice": "B",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Advanced Level Examination. Information & Communication Technologies, Subject code 0796, Paper 3. Examination date: June 2019. Duration: two hours (Day 2).**\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\n**Answer ALL TASKS.**\n\nThe paper has two tasks: Task A (Database, 24 marks) and Task B (Spreadsheet, 23 marks).",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**TASK B: (SPREADSHEET: 23 marks)**\n\nThis task is based on the **OnlineSales** workbook found in your *candidate folder*.\n\nOpen the **OnlineSales** workbook found in your *candidate folder*.\n\n*[The workbook OnlineSales (sheets Item, Customer, Sales and the General sheet) is supplied on the day in the candidate folder; it is not reproduced in the printed paper and is not reproduced here.]*",
+  "groupes": [],
+  "points": "23",
+  "figures": [],
+  "incertitudes": [
+    "Le classeur OnlineSales (feuilles Item, Customer, Sales, General) est fourni le jour de l'examen et ne figure pas dans le PDF (3 pages). Le contenu exact des tables et feuilles est donc inconnu. La structure a été DÉDUITE du sujet : requête GeneralSheet = SN, Name, Town (Customer), ItemCode, ItemName, UnitPrice (Item), Quantity (Sales), plus TotalPrice calculé ; tableau de la question 2 = 3 lignes pour la table Item ; formule indicative =IF(C2=\"S1\",D2*Item!C$2,...) qui implique General!C = code article, D = quantité, Item!C = prix unitaire ; ligne 22 = ligne des totaux, donc données en lignes 2 à 21 (20 lignes). Les corrigés sont des réponses génériques sur cette structure déduite, sans valeur numérique inventée (les seuls chiffres utilisés sont des données fictives de contrôle, signalées comme telles).",
+    "Aucune exécution Access ou Excel n'est possible ici : les requêtes ont été vérifiées avec sqlite3 (module Python) sur des données FICTIVES (création des 3 tables avec clés primaires et étrangères, vue GeneralSheet, filtre de MeanCustomers) ; la syntaxe propre à Microsoft Access (TotalPrice: [UnitPrice]*[Quantity], In (\"Limbe\",...), boutons du ruban) est donnée de mémoire, non testée. La formule SI imbriquée de la tâche B a été comparée en Python à un RECHERCHEV équivalent sur les mêmes données fictives (résultats identiques). Aucun code C ou Pascal n'est demandé dans ce paper : rien n'a donc été compilé.",
+    "Task B : le titre imprimé est « TASK B: (SPREADSHEE: 23 marks) » (faute d'impression, recopié « SPREADSHEET »), et la question 3 imprime « font size ecomes 22 » (recopié « becomes 22 »).",
+    "Task B, question 9 : une partie de la première ligne est masquée par le filigrane (« Set the title of chart to Sal... »). Le titre du graphique est lu « Sales » (partiellement lisible) ; les noms d'axes « Item Code » et « Total Price » sont lisibles. Le sujet parle de la feuille « General » (question 1) puis de « GeneralSheet » (impression) : on suppose la même feuille ; c'est aussi le nom de la requête de la tâche A.",
+    "Points de la tâche B : les barèmes imprimés par question font 2 + 2 + 2 + 2 + 1 + 4 + 1 + 2 + 3 = 19, alors que l'en-tête de la tâche annonce « 23 marks » (écart de 4). Non corrigé : `points` de l'exercice vaut \"23\" (total imprimé) et les points des questions sont ceux imprimés.",
+    "Question 3 : « row height becomes 35 pixels » : Excel exprime la hauteur de ligne en points (35 pixels vaut environ 26 points) ; le corrigé dit de saisir 35 comme demandé et signale l'écart d'unité.",
+    "Question 6 : le nombre d'articles de la feuille Item est inconnu (fichier non fourni) ; le corrigé donne la forme générale de l'IF imbriqué, un exemple à 3 articles fictifs et l'équivalent RECHERCHEV (VLOOKUP). Le texte du sujet s'arrête sur « =IF(C2=\"S1\",D2*Item!C$2,.... » (points de suspension imprimés)."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Copy the names in the Customer sheet to the *Name* field in the *General* sheet. *[2 marks]*",
+      "corrige_markdown": "Go to the **Customer** sheet, select the cells of the *Name* column (without the heading), copy them (Ctrl+C), go to the **General** sheet, click the first cell under the heading *Name* (B2) and paste (Ctrl+V). The 20 names (rows 2 to 21) now fill the *Name* column of the General sheet.\n\nCheck that the names are in the same order as the serial numbers SN of the General sheet (both sheets must list the customers in the same order). An alternative that keeps the link is the formula `=Customer!B2` copied down, but a plain copy-paste is what the question asks.",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Merge the two cells B22 and C22; containing the word TOTAL. *[2 marks]*",
+      "corrige_markdown": "Select the cells **B22:C22** (click B22 and drag to C22). On the *Home* tab, in the *Alignment* group, click **Merge & Center**. The word TOTAL, typed in B22, is now in one cell spanning the two columns. (If the word is not yet typed, type TOTAL in B22 before merging, because merging keeps only the upper-left value.)",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Format Row 22 so that row height becomes 35 pixels, font size becomes 22 and bold. *[2 marks]*",
+      "corrige_markdown": "1. Click the row header **22** to select the whole row.\n2. *Home* > *Cells* > *Format* > *Row Height*, type **35** and click *OK*. (Excel's dialog is in points, the paper says pixels: type 35 as asked; 35 pixels is about 26 points.)\n3. With the row still selected, *Home* > *Font*: set the font size to **22** and click **Bold** (Ctrl+B).",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Insert border to all the cells in the range A1:E22. *[2 marks]*",
+      "corrige_markdown": "Select the range **A1:E22** (click A1 and Shift-click E22, or type A1:E22 in the Name box). *Home* > *Font* > *Borders* (the grid icon) > **All Borders**. Every cell of the table, headings and totals row included, gets a border.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Use a light grey colour to fill the field headers, A1:E1. *[1 mark]*",
+      "corrige_markdown": "Select the range **A1:E1** (the field headers). *Home* > *Font* > *Fill Color* (paint-bucket arrow) > choose a light grey, for example *White, Background 1, Darker 15%* in the *Theme Colors*. Do not fill other rows.",
+      "themes": [
+        "spreadsheet formatting"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Insert a formula in cell E2 that computes the total price by multiplying the *Quantity* by the *Unit Price* for each item which is found in the Item sheet. Use the hint below to complete the formula.\n\n```\n=IF(C2=\"S1\",D2*Item!C$2,....\n```\n\n(In the hint, the sign `$` before the row number makes that row number absolute.)\n\nWrite down the formula in cell E2 in the line below. *[4 marks]*",
+      "corrige_markdown": "From the hint: in the General sheet, **C2** holds the item code (S1, S2...), **D2** the quantity, and in the **Item** sheet the unit price of the first item is in **C2** (the column of unit prices is C, one item per row from row 2). The total price of a row is the quantity multiplied by the unit price of the item whose code is in column C, so each item code needs its own test. With n item codes S1, S2, ..., Sn listed in rows 2 to n+1 of the Item sheet, the formula in **E2** is a nested IF:\n\n```\n=IF(C2=\"S1\",D2*Item!C$2,IF(C2=\"S2\",D2*Item!C$3,IF(C2=\"S3\",D2*Item!C$4, ... ,D2*Item!C$(n+1))))\n```\n\nThe last IF has no further test: the final value is the product for the last code Sn. For example, if the Item sheet lists three items S1, S2, S3 in rows 2, 3 and 4:\n\n```\n=IF(C2=\"S1\",D2*Item!C$2,IF(C2=\"S2\",D2*Item!C$3,D2*Item!C$4))\n```\n\nPress Enter, then copy the formula down to **E21** (drag the fill handle or double-click it). The row number is anchored in `Item!C$2` (dollar sign before the row number only), so that the references C2 and D2 move down with each row while the reference to the Item sheet row of each code does not depend on the row where the formula is copied.\n\nAn equivalent shorter formula, valid whatever the number of items, uses a lookup (the Item sheet columns being ItemCode, ItemName, UnitPrice in A, B, C). With the three items above:\n\n```\n=D2*VLOOKUP(C2,Item!$A$2:$C$4,3,FALSE)\n```\n\nCheck with invented data (items S1, S2, S3 at 150, 500 and 4000): the nested IF and VLOOKUP give the same results, for example 20 units of S1 give 20 x 150 = 3000 and 44 units of S3 give 44 x 4000 = 176000. The question asks for the nested IF built from the hint, so write that one.",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Calculate the totals along row 22 in the D and E columns.\nWrite down the formula in cell E22 in the line below. *[1 mark]*",
+      "corrige_markdown": "The data are in rows 2 to 21, so the totals go in row 22:\n\n```\nD22:  =SUM(D2:D21)\nE22:  =SUM(E2:E21)\n```\n\nThe formula in cell **E22** is `=SUM(E2:E21)`. The *AutoSum* button (*Home* > *Editing* > Sigma) generates the same formula; the cell D22 is filled in the same way, or by copying E22 to D22 (the references adjust to D2:D21). Do not include row 22 itself in the range, otherwise Excel reports a circular reference.",
+      "themes": [
+        "spreadsheet modelling"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "Insert a vertical bar chart of *Item Code* against *Total Price*. *[2 marks]*",
+      "corrige_markdown": "Select the *Item Code* column and the *Total Price* column without the totals row: click C1, drag to C21, then hold Ctrl and select E1:E21 (the headings are included so that the series is named). *Insert* > *Charts* > *Column* > **Clustered Column** (a vertical bar chart). One bar is drawn for each row of the table, labelled with its item code on the horizontal axis and with its total price on the vertical axis. Do not include row 22 (the totals): the TOTAL bar would dwarf all the others.",
+      "themes": [
+        "spreadsheet charts"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "Set the title of chart to *Sales*; name the horizontal axis as *Item Code* and vertical axis as *Total Price*. Move the bar chart to the area just below the table so that it prints on the same page as the table.\n\n**Save the workbook and print the *GeneralSheet* sheet only.** *[3 marks]*",
+      "corrige_markdown": "1. **Title.** Select the chart, *Chart Design* > *Add Chart Element* > *Chart Title* > *Above Chart*, and type **Sales**.\n2. **Axis titles.** *Add Chart Element* > *Axis Titles* > *Primary Horizontal*: type **Item Code**; *Primary Vertical*: type **Total Price**.\n3. **Position.** Drag the chart (by its border) to the free area just below the table, with its top-left corner at about cell A24, so that it does not cover the table (rows 1 to 22) and stays within the page width.\n4. **Save** the workbook (Ctrl+S) in the candidate folder, keeping the name OnlineSales.\n5. **Print.** Select the sheet tab of the sheet that holds the table and the chart (the paper writes *GeneralSheet*; the sheet is called *General* in question 1 of this task), then *File* > *Print* > *Print Active Sheets*, and check in *Print Preview* that the table and the chart are on one page (use *Page Layout* > *Fit to 1 page* if the chart is cut off). Staple the printout in the booklet.\n\nMarking guide (3 marks): chart title (1), the two axis titles (1), chart placed below the table and printed on the same page, with only that sheet printed (1).",
+      "themes": [
+        "spreadsheet charts"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

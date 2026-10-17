@@ -1,0 +1,84 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 3 (Paper 3 - Practical), ADVANCED LEVEL, June 2023. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION A: A Plotting Program (Program Development) (30 marks)**\n\n**Describing the Task.** Many interesting programming problems involving nested loops can be encountered when creating plots using a printer. Your task is to create the plot in Figure 1 (pyramid) in a general manner with the size of the base entered at the beginning of program execution. Arrays are not used to do this. (The grid lines are just to ease working with the figure; the lines are not directly needed to answer any question.) A pyramid has a number of stars at its base (MaxNoOfStars), and is made up of rows of spaces and stars. Each line of the pyramid is made up of an odd number of leading spaces (NoOfSpaces) followed by a number of stars (NoOfStars). There are blanks after the stars, but they are not important for this exercise.\n\n(Figure 1 of the paper shows the pyramid of stars: a base of 11 stars, and above it lines of 9, 7, 5, 3 and 1 stars, each line centred over the one below.)\n\n**Task 4: Modifying Your Program (6 marks)**",
+  "groupes": [
+    "SECTION A"
+  ],
+  "points": "6",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-computer-science-2023-p3-officiel-cameroun_exercice_4_fig_1.png",
+      "page_source": 3,
+      "type": "schema",
+      "legende": "Expected output for the value 7: a diamond of stars with 1, 3, 5, 7, 5, 3, 1 stars per line.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Le code C n'a pas été compilé (aucun compilateur C ni Pascal sur la machine) ; sa logique a été vérifiée par une traduction fidèle en Python exécutée sur les mêmes entrées, et les sorties recopiées dans le corrigé sont celles de cette simulation.",
+    "Task 4 : le sujet numérote (i), (i), (ii) (l'exécution est étiquetée (i) une seconde fois) et parle de « pyramid of base 7 » alors que le programme modifié affiche un losange ; le fichier de capture est de nouveau nommé « task3 ». Les sous-questions sont notées 5(i), 5(ii), 5(iii) ; énoncés recopiés tels quels, corrigé interprété comme un losange de valeur 7.",
+    "Task 4 : dans l'exemple imprimé du losange, les étoiles sont séparées par un blanc et chaque ligne est décalée d'une demi-largeur de cellule de 2 caractères (décalages mesurés sur le scan : 6, 4, 2, 0 caractères). Le corrigé produit exactement cette présentation (cellule de 2 caractères) ; la variante sans blanc entre étoiles est indiquée en une phrase.",
+    "La figure du losange (page 3) est recadrée sans la grille ni texte voisin ; elle ne contient que les 7 lignes d'étoiles."
+  ],
+  "questions": [
+    {
+      "numero": "5(i)",
+      "enonce_markdown": "Modify your program so that it asks the user to enter an odd positive integer, and then it displays a diamond of stars based on that number. For example, the value 7 would produce:\n\n![fig-1](gce-al-computer-science-2023-p3-officiel-cameroun_exercice_4_fig_1.png)",
+      "corrige_markdown": "**Analysis.** For the value 7 the diamond has 7 lines with 1, 3, 5, 7, 5, 3, 1 stars: the pyramid of Task 2 (lines 1 to 4, from 1 to 7 stars) followed by the same lines in reverse order below the widest line (5, 3, 1 stars). In the example each star is followed by a blank, so a cell is two characters wide; the blanks in front of a line are counted in cells.\n\n**Algorithm (pseudocode)**\n\n```text\nInitialise(MaxNoOfStars, NoOfSpaces, NoOfStars)       // MaxNoOfStars = the odd number entered\nWHILE NoOfStars <= MaxNoOfStars DO                      // upper half, widest line included\n    OutputLeadingSpaces(NoOfSpaces)\n    OutputLineOfStars(NoOfStars)\n    Adjust(NoOfSpaces, NoOfStars)                      // spaces - 1, stars + 2\nEND WHILE\nAdjustBack twice                                        // leave the overshoot, skip the widest line\nWHILE NoOfStars >= 1 DO                                 // lower half\n    OutputLeadingSpaces(NoOfSpaces)\n    OutputLineOfStars(NoOfStars)\n    AdjustBack(NoOfSpaces, NoOfStars)                  // spaces + 1, stars - 2\nEND WHILE\n```\n\n**Modified program (ANSI C)** - `Initialise` and `Adjust` are unchanged; `OutputLeadingSpaces` and `OutputLineOfStars` now print two characters per cell, and `AdjustBack` is new:\n\n```c\n#include <stdio.h>\n\nint MaxNoOfStars;      /* the odd number entered = stars on the widest line */\nint NoOfSpaces;\nint NoOfStars;\n\nvoid Initialise(int *MaxNoOfStars, int *NoOfSpaces, int *NoOfStars)\n{\n    int base = 0;\n\n    printf(\"Enter the size of the base (an odd positive integer): \");\n    scanf(\"%d\", &base);\n    while (base < 1 || base % 2 == 0)       /* reject even or non-positive values */\n    {\n        printf(\"The base must be an odd positive integer. Try again: \");\n        scanf(\"%d\", &base);\n    }\n    *MaxNoOfStars = base;                   /* stars on the last line (the base) */\n    *NoOfSpaces = (base - 1) / 2;           /* the first line is centred over the base */\n    *NoOfStars = 1;                         /* the first line has a single star */\n}\n\nvoid OutputLeadingSpaces(int nSpaces)  /* one cell = 2 characters (\"* \") */\n{\n    int i;\n\n    for (i = 1; i <= nSpaces; i++)\n        printf(\"  \");\n}\n\nvoid OutputLineOfStars(int nStars)\n{\n    int i;\n\n    for (i = 1; i <= nStars; i++)\n        printf(\"* \");\n    printf(\"\\n\");\n}\n\nvoid Adjust(int *NoOfSpaces, int *NoOfStars)\n{\n    *NoOfSpaces = *NoOfSpaces - 1;          /* one blank less ... */\n    *NoOfStars = *NoOfStars + 2;            /* ... and two more stars */\n}\n\nvoid AdjustBack(int *NoOfSpaces, int *NoOfStars)   /* the opposite of Adjust */\n{\n    *NoOfSpaces = *NoOfSpaces + 1;\n    *NoOfStars = *NoOfStars - 2;\n}\n\nint main(void)\n{\n    Initialise(&MaxNoOfStars, &NoOfSpaces, &NoOfStars);   /* reads the odd number */\n\n    /* upper half, down to and including the widest line */\n    while (NoOfStars <= MaxNoOfStars)\n    {\n        OutputLeadingSpaces(NoOfSpaces);\n        OutputLineOfStars(NoOfStars);\n        Adjust(&NoOfSpaces, &NoOfStars);\n    }\n\n    /* here NoOfSpaces = -1 and NoOfStars = MaxNoOfStars + 2 (one step too far) */\n    AdjustBack(&NoOfSpaces, &NoOfStars);    /* back on the widest line */\n    AdjustBack(&NoOfSpaces, &NoOfStars);    /* the first line below it */\n\n    /* lower half */\n    while (NoOfStars >= 1)\n    {\n        OutputLeadingSpaces(NoOfSpaces);\n        OutputLineOfStars(NoOfStars);\n        AdjustBack(&NoOfSpaces, &NoOfStars);\n    }\n    return 0;\n}\n```\n\n**Why it works.** The first loop is the pyramid loop of Task 2 and stops with `NoOfSpaces = -1`, `NoOfStars = MaxNoOfStars + 2`. One `AdjustBack` returns to the widest line (0 blanks, MaxNoOfStars stars), a second one gives the first line below it (1 blank cell, MaxNoOfStars - 2 stars). The second loop prints the lines down to 1 star: after the line with 1 star (3 blank cells), `AdjustBack` gives 4 blank cells and `NoOfStars = -1`, so the test `NoOfStars >= 1` stops it.\n\n**Trace for the value 7** (blank cells, stars): upper half (3,1) (2,3) (1,5) (0,7), lower half (1,5) (2,3) (3,1). Output of the program for 7 (obtained by running a faithful Python translation of the code; the text below shows the two-character cells):\n\n```text\nEnter the size of the base (an odd positive integer): 7\n      * \n    * * * \n  * * * * * \n* * * * * * * \n  * * * * * \n    * * * \n      * \n```\n\nOther values: 1 gives a single star; 3 gives lines of 1, 3, 1 stars; 5 gives lines of 1, 3, 5, 3, 1 stars. If the stars were printed without the blank between them, the only changes would be to print one blank (instead of two) per cell and `*` (instead of `* `) per star.",
+      "themes": [
+        "programming in c",
+        "algorithm design",
+        "nested loops"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "5(ii)",
+      "enonce_markdown": "Run your program for a pyramid of base 7, and test it to make sure that it works correctly. Screenshot the output of your program and save it in the file named task3. Also print the screenshot.",
+      "corrige_markdown": "(In the paper this sub-question is labelled (i) a second time and says \"pyramid of base 7\"; after the modification the program displays a **diamond**, so the value to enter is 7.)\n\n**What the screenshot must show.** After the prompt, with 7 typed, the diamond of 7 lines (1, 3, 5, 7, 5, 3, 1 stars), symmetrical about the widest line:\n\n```text\nEnter the size of the base (an odd positive integer): 7\n      * \n    * * * \n  * * * * * \n* * * * * * * \n  * * * * * \n    * * * \n      * \n```\n\nTests to carry out: 7 (the example), 1 (one line), 3 (1, 3, 1), 5 (1, 3, 5, 3, 1) and an even value such as 4 (the program asks again). The screenshot is saved in the file named `task3` (the name given by the paper) and printed. Marking: symmetrical diamond of the right size, screenshot saved and printed.",
+      "themes": [
+        "programming in c",
+        "nested loops"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "5(iii)",
+      "enonce_markdown": "Print a copy of your PROGRAM SOURCE CODE and attach it in your answer booklet.",
+      "corrige_markdown": "The printout is the complete source of the **modified** program (the diamond version), the one that produced the screenshot of 5(ii); the reference listing is the one in the solution of 5(i):\n\n```c\n#include <stdio.h>\n\nint MaxNoOfStars;      /* the odd number entered = stars on the widest line */\nint NoOfSpaces;\nint NoOfStars;\n\nvoid Initialise(int *MaxNoOfStars, int *NoOfSpaces, int *NoOfStars)\n{\n    int base = 0;\n\n    printf(\"Enter the size of the base (an odd positive integer): \");\n    scanf(\"%d\", &base);\n    while (base < 1 || base % 2 == 0)       /* reject even or non-positive values */\n    {\n        printf(\"The base must be an odd positive integer. Try again: \");\n        scanf(\"%d\", &base);\n    }\n    *MaxNoOfStars = base;                   /* stars on the last line (the base) */\n    *NoOfSpaces = (base - 1) / 2;           /* the first line is centred over the base */\n    *NoOfStars = 1;                         /* the first line has a single star */\n}\n\nvoid OutputLeadingSpaces(int nSpaces)  /* one cell = 2 characters (\"* \") */\n{\n    int i;\n\n    for (i = 1; i <= nSpaces; i++)\n        printf(\"  \");\n}\n\nvoid OutputLineOfStars(int nStars)\n{\n    int i;\n\n    for (i = 1; i <= nStars; i++)\n        printf(\"* \");\n    printf(\"\\n\");\n}\n\nvoid Adjust(int *NoOfSpaces, int *NoOfStars)\n{\n    *NoOfSpaces = *NoOfSpaces - 1;          /* one blank less ... */\n    *NoOfStars = *NoOfStars + 2;            /* ... and two more stars */\n}\n\nvoid AdjustBack(int *NoOfSpaces, int *NoOfStars)   /* the opposite of Adjust */\n{\n    *NoOfSpaces = *NoOfSpaces + 1;\n    *NoOfStars = *NoOfStars - 2;\n}\n\nint main(void)\n{\n    Initialise(&MaxNoOfStars, &NoOfSpaces, &NoOfStars);   /* reads the odd number */\n\n    /* upper half, down to and including the widest line */\n    while (NoOfStars <= MaxNoOfStars)\n    {\n        OutputLeadingSpaces(NoOfSpaces);\n        OutputLineOfStars(NoOfStars);\n        Adjust(&NoOfSpaces, &NoOfStars);\n    }\n\n    /* here NoOfSpaces = -1 and NoOfStars = MaxNoOfStars + 2 (one step too far) */\n    AdjustBack(&NoOfSpaces, &NoOfStars);    /* back on the widest line */\n    AdjustBack(&NoOfSpaces, &NoOfStars);    /* the first line below it */\n\n    /* lower half */\n    while (NoOfStars >= 1)\n    {\n        OutputLeadingSpaces(NoOfSpaces);\n        OutputLineOfStars(NoOfStars);\n        AdjustBack(&NoOfSpaces, &NoOfStars);\n    }\n    return 0;\n}\n```\n\nIt must show the include line, the global variables, the five procedures (`Initialise`, `OutputLeadingSpaces`, `OutputLineOfStars`, `Adjust`, `AdjustBack`) and the main program, with comments and consistent indentation, attached to the answer booklet.",
+      "themes": [
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    }
+  ]
+}

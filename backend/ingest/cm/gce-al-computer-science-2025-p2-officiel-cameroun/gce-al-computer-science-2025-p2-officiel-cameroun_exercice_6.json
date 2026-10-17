@@ -1,0 +1,87 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2025. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "6(ii) : le sujet ne donne pas la date du système ; les valeurs de test et les âges attendus sont calculés pour la date supposée du 15/06/2025 (vérifiés par script). Le jeu de données est donc un exemple, non un barème officiel."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "The development of a computer based system is commonly broken down into a number of stages collectively called *system development life cycle*. Briefly describe the following stages of the system development life cycle: Analysis; Design; Implementation and Testing.\n\n(8 marks)",
+      "corrige_markdown": "**Analysis.** The existing system and the needs of its users are studied. Information is collected by interviews, questionnaires, observation and examination of documents; the problems are identified and the user requirements are written in a requirements specification, together with a feasibility study (technical, economic, social).\n\n**Design.** The solution is planned on paper, using the requirements: the inputs, outputs and screens, the data structures, files or database tables, the algorithms (flowcharts, pseudocode), the user interface, the hardware and software to be used, and the test plan (with the test data to be used).\n\n**Implementation.** The designed system is built and put into use: the programs are written (coded) in the chosen language, the hardware is installed, existing data is converted and loaded, the users are trained and documentation (user guide, technical guide) is produced; the old system is replaced by the new one using a changeover method (direct, parallel, phased or pilot).\n\n**Testing.** The system is run with test data to find errors and to check that it meets the requirements: normal, boundary (extreme) and erroneous data are used, and actual results are compared with the expected results. Errors found are corrected and the tests repeated. Testing is done at several levels (unit, integration, system and user acceptance testing).",
+      "themes": [
+        "systems development life cycle"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "A programmer has been asked to write a sub program that calculates a person's age in years from the date of birth and the current date which is taken from the system. The date of birth is given as a parameter in the format dd/mm/yyyy and has already been validated. No person is expected to be over 120 years old. Suggest, giving reasons for your choices:\n\n(a) two values of normal test data.\n\n(3 marks)",
+      "corrige_markdown": "**Assumption.** To be able to give the expected results, the system date is taken to be **15/06/2025**.\n\nNormal data are ordinary, valid dates of birth well inside the accepted range (age 0 to 120), for which the result is known.\n\n| Test value (dd/mm/yyyy) | Expected age | Reason |\n|---|---|---|\n| 10/03/2000 | 25 | typical adult; the birthday of this year is already past |\n| 25/11/1985 | 39 | the birthday of this year has not yet occurred, so the age is one less than the difference of the years: this tests the month and day comparison |\n\n(Expected ages were computed by a script.)",
+      "themes": [
+        "software testing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "A programmer has been asked to write a sub program that calculates a person's age in years from the date of birth and the current date which is taken from the system. The date of birth is given as a parameter in the format dd/mm/yyyy and has already been validated. No person is expected to be over 120 years old. Suggest, giving reasons for your choices:\n\n(b) three values to check a boundary.\n\n(4 marks)",
+      "corrige_markdown": "**Assumption.** The system date is taken to be **15/06/2025**. Boundary values are on and just outside the limits of the valid range (age 0 to 120 years).\n\n| Test value (dd/mm/yyyy) | Age | Accepted? | Reason |\n|---|---|---|---|\n| 15/06/2025 | 0 | yes | lowest valid value: born today |\n| 16/06/1904 | 120 | yes | highest valid value: the person is still 120, the 121st birthday being tomorrow |\n| 15/06/1904 | 121 | no | first value just beyond the upper limit: exactly 121 years old, over 120 |\n\nA value just before the lower limit, such as 16/06/2025 (born tomorrow, negative age), could also be used. (All ages were computed by a script.)",
+      "themes": [
+        "software testing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "ii(c)",
+      "enonce_markdown": "A programmer has been asked to write a sub program that calculates a person's age in years from the date of birth and the current date which is taken from the system. The date of birth is given as a parameter in the format dd/mm/yyyy and has already been validated. No person is expected to be over 120 years old. Suggest, giving reasons for your choices:\n\n(c) one value of erroneous test data.\n\n(2 marks)",
+      "corrige_markdown": "**Assumption.** The system date is taken to be 15/06/2025.\n\n**Erroneous test value: 15/06/2031.** It has a correct format but it is a date in the **future**, so it would give a negative age ($-6$), which is impossible: a person cannot be born after today. The sub program should reject it (or report an error) instead of returning an age.",
+      "themes": [
+        "software testing"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

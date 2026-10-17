@@ -1,0 +1,65 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2021. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 8 : points imprimés : (i) = 4 + 1 = 5 ; (ii) = 3 + 3 + 2 + 1 + 3 = 12 ; total 17.",
+    "8(i) : l'en-tête imprimé est « function recur(m,n )≡ » (le signe « ≡ » est recopié tel quel, c'est un défaut d'impression ou de numérisation à la place d'un simple trait). Le corps du programme est recopié à l'identique.",
+    "8(ii) : le sujet qualifie de « recursive code fragment » la fonction sum(n), alors qu'elle est itérative (boucle for) ; l'énoncé est recopié tel quel et le corrigé le fait remarquer. Les réponses (n additions, complexité linéaire, somme des n premiers entiers, n(n+1)/2) ne changent pas. Les valeurs de recur et de sum ont été vérifiées par une traduction Python ; ce sujet ne contient pas de code C ou Pascal."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(i) The function recur below is a recursive function. Study the function and answer the questions that follow.\n\n```text\nfunction recur(m,n )≡\nStart\n   if(n=0)\n      return m\n   else\n      return recur(n,m mod n)\nend.\n```\n\n(a) Evaluate recur(6,3) and recur(4,6). (4 marks)\n\n(b) Deduce what the function does. (1 mark)",
+      "corrige_markdown": "**(a) Evaluation (4 marks)**\n\nThe function stops when $n = 0$ and returns $m$; otherwise it calls itself with the arguments $(n,\\; m \\bmod n)$.\n\n*recur(6, 3):* $n = 3 \\ne 0$, so recur(6,3) = recur(3, 6 mod 3) = recur(3, 0). Now $n = 0$, so the value returned is $m = 3$.\n\n$$\\text{recur}(6,3) = 3$$\n\n*recur(4, 6):* $n = 6 \\ne 0$, so recur(4,6) = recur(6, 4 mod 6) = recur(6, 4); then $n = 4 \\ne 0$, so recur(6,4) = recur(4, 6 mod 4) = recur(4, 2); then recur(4,2) = recur(2, 4 mod 2) = recur(2, 0), and since $n = 0$ the value returned is 2.\n\n$$\\text{recur}(4,6) = 2$$\n\n| Call | m | n | m mod n | Action |\n|---|---|---|---|---|\n| recur(6,3) | 6 | 3 | 0 | recur(3,0) returns 3 |\n| recur(4,6) | 4 | 6 | 4 | recur(6,4) |\n| recur(6,4) | 6 | 4 | 2 | recur(4,2) |\n| recur(4,2) | 4 | 2 | 0 | recur(2,0) returns 2 |\n\n(Both values were checked by a Python translation of the function: it returns 3 and 2.)\n\n**(b) What the function does (1 mark)**\n\nIt computes the **greatest common divisor (GCD, or highest common factor, HCF)** of the two integers $m$ and $n$ using **Euclid's algorithm**: $\\gcd(m, 0) = m$ and $\\gcd(m, n) = \\gcd(n, m \\bmod n)$. This agrees with the results above: $\\gcd(6,3) = 3$ and $\\gcd(4,6) = 2$.",
+      "themes": [
+        "recursion",
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(ii) Given the recursive code fragment below:\n\n```text\nfunction sum (n)\n   sum ← 0\n   for i ← 1 to n do\n      sum ← sum + i\n   endFor\n   return sum\nend\n```\n\n(a) If the main operation is addition (or subtraction), then how many additions can be made for $n = 1, 2, 3, 4$? (3 marks)\n\n(b) Deduce how many will be done for any $n \\ge 1$. (3 marks)\n\n(c) Is this algorithm of linear or polynomial complexity? Justify your answer. (2 marks)\n\n(d) What is the algorithm calculating? (1 mark)\n\n(e) Derive a formula for this quantity being calculated in terms of $n$. (3 marks)",
+      "corrige_markdown": "*Remark:* the fragment is in fact **iterative** (it uses a for loop and no function calls itself), although the question calls it recursive; this does not change the answers.\n\n**(a) Number of additions (3 marks)**\n\nThe statement `sum ← sum + i` is the only addition and it is executed once for each value of $i$ from 1 to $n$.\n\n| $n$ | Values of $i$ | Additions | Value returned |\n|---|---|---|---|\n| 1 | 1 | 1 | 1 |\n| 2 | 1, 2 | 2 | 3 |\n| 3 | 1, 2, 3 | 3 | 6 |\n| 4 | 1, 2, 3, 4 | 4 | 10 |\n\n**(b) General case (3 marks)**\n\nThe loop is executed for $i = 1, 2, \\ldots, n$, that is $n$ times, and one addition is done in each pass, so for any $n \\ge 1$ exactly **$n$ additions** are made.\n\n**(c) Linear or polynomial? (2 marks)**\n\nThe algorithm has **linear complexity**, $O(n)$: the number of operations $T(n) = n$ grows in direct proportion to $n$ (doubling $n$ doubles the work). It is a polynomial of degree 1, not a higher-degree polynomial such as $n^2$.\n\n**(d) What is calculated (1 mark)**\n\nThe algorithm calculates the **sum of the first $n$ positive integers**, $1 + 2 + 3 + \\cdots + n$ (the sum of an arithmetic series).\n\n**(e) Formula (3 marks)**\n\nWrite the sum twice, the second time in reverse order, and add term by term:\n\n$$S = 1 + 2 + 3 + \\cdots + (n-1) + n$$\n\n$$S = n + (n-1) + (n-2) + \\cdots + 2 + 1$$\n\nEach of the $n$ pairs adds up to $n + 1$, so $2S = n(n+1)$ and\n\n$$S = \\frac{n(n+1)}{2}$$\n\nCheck: for $n = 4$, $S = \\dfrac{4 \\times 5}{2} = 10$, which agrees with the value returned in the table of (a) (also confirmed by a Python run for $n = 1$ to $5$).",
+      "themes": [
+        "algorithm complexity",
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 12
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Information and Communication Technologies, Paper 2 (0796), ADVANCED LEVEL, June 2020. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets.\n\nYou will be marked on your ability to use good English, to organize information clearly and to use specialist vocabulary where appropriate.\n\nIn calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Question 4 : points imprimés par sous-partie : i = 1 + 2 + 3 = 6 ; ii = 2 + 3 + 1 = 6 ; iii = 2 ; iv = 1 + 2 = 3 ; total 17 (conforme au sujet).",
+    "4(ii)(a) : le schéma étiqueté demandé est à tracer par le candidat ; il est donné en schéma textuel dans le corrigé, avec la description des phases (aucune figure imprimée dans le sujet).",
+    "4(iv)(b) : le tableau imprimé a deux cases vides (type de la ligne du .PDF et extension de la ligne Video) ; il est recopié en Markdown et complété dans le corrigé.",
+    "Aucun corrigé officiel : l'exemple d'ordonnancement (P1 = 5, P2 = 3, P3 = 2, quantum 2) est inventé pour illustrer ; ses temps d'attente ont été recalculés par script Python."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) What is system software? (1 mark)\n\n(b) Describe the role of any TWO system software. (2 marks)\n\n(c) Explain the *Round Robin* and the *First Come, First Serve* process management strategies used by the operating system in job scheduling. (3 marks)",
+      "corrige_markdown": "**(a) System software (1 mark).** System software is the set of programs that control and manage the hardware of the computer and provide a platform on which application software can run (examples: the operating system, utility programs, language translators and device drivers).\n\n**(b) Roles of two system software (2 marks, 1 mark each).**\n\n- **Operating system** (for example Windows, Linux): manages the processor, the memory, the input/output devices and the files; schedules jobs; provides the user interface; controls security and user accounts.\n- **Utility programs** (for example antivirus, disk defragmenter, back-up and file-compression programs): perform maintenance tasks, such as protecting the system from viruses, organising the disk and copying data.\n- (Also accepted: **language translators**, which convert source code into machine code (compiler, interpreter, assembler); **device drivers**, which let the operating system communicate with a hardware device such as a printer.)\n\n**(c) Round Robin and First Come, First Served (3 marks).**\n\n- **First Come, First Served (FCFS)** is the simplest scheduling strategy: the processes are placed in a queue in their order of arrival, and the processor runs the first process *until it finishes (non pre-emptive)*; then it takes the next process. It is easy to implement and fair in order, but a long job at the front makes all the short jobs wait (convoy effect) and the average waiting time can be long.\n- **Round Robin (RR)** is a pre-emptive time-sharing strategy: each process in the ready queue is given the processor for a fixed short period called a **time slice (quantum)**. When the quantum ends and the process is not finished, it is interrupted and put at the end of the queue, and the next process is run. The processor is thus shared fairly and every user receives a quick response, which suits interactive multi-user systems; but there is an overhead from the frequent switching between processes, and if the quantum is too long it behaves like FCFS.\n\n*Worked example (processes arriving together: P1 needs 5 time units, P2 needs 3, P3 needs 2; quantum = 2 units).* FCFS runs P1 (0-5), P2 (5-8), P3 (8-10): waiting times 0, 5, 8 (average 4.33). Round Robin runs P1 (0-2), P2 (2-4), P3 (4-6), P1 (6-8), P2 (8-9), P1 (9-10): P3 finishes at 6, P2 at 9 and P1 at 10, so the short job P3 does not wait for P1 to finish (waiting times P1 = 5, P2 = 6, P3 = 4; average 5.0).",
+      "themes": [
+        "ict system software",
+        "ict operating systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "(a) Use a label diagram to describe machine instruction cycle of the computer. (2 marks)\n\n(b) Explain the functions of THREE components of the CPU. (3 marks)\n\n(c) Give the main function of the Random Access Memory (RAM) in the computer system. (1 mark)",
+      "corrige_markdown": "**(a) Machine instruction cycle (2 marks).** The machine cycle (fetch-decode-execute cycle) is repeated continuously by the CPU for every instruction of a program stored in main memory. A labelled diagram that the candidate can draw (the numbers give the order of the steps):\n\n```text\n  +------------------------------ CPU -------------------------------+\n  |                                                                  |\n  |   PC --(1) address--> MAR ----- address bus -----+               |\n  |    ^                                             |               |\n  |    | (4) PC + 1                                  v               |\n  |    |                                     +--------------+        |\n  |    |            MDR <---- data bus ------|  MAIN MEMORY |        |\n  |    |             |        (2) read       |    (RAM)     |        |\n  |    |             v                       +--------------+        |\n  |    |            CIR                                              |\n  |    |             | (3) decode                                    |\n  |    |             v                                               |\n  |    +------- CONTROL UNIT ---(5) execute---> ALU <--> ACCUMULATOR |\n  |                                                                  |\n  +------------------------------------------------------------------+\n```\n\n- **Fetch:** the address of the next instruction is copied from the Program Counter (PC) to the Memory Address Register (MAR); the instruction at this address is read from main memory along the data bus into the Memory Data Register (MDR) and is copied into the Current Instruction Register (CIR); the PC is increased by 1 so that it points to the next instruction.\n- **Decode:** the Control Unit (CU) decodes the instruction in the CIR (which operation, and on which operand).\n- **Execute:** the CU sends control signals; the ALU performs the operation (arithmetic or logic) using the accumulator and registers, or data is read from or written to memory or an I/O device; the result is stored. The cycle then starts again with the next instruction.\n\n**(b) Components of the CPU (3 marks, 1 mark each).** Any three:\n\n- **Control Unit (CU):** fetches and decodes the instructions and coordinates and synchronises all the other components by sending control signals (it controls the flow of data and the timing).\n- **Arithmetic and Logic Unit (ALU):** performs the arithmetic operations (addition, subtraction...) and logical operations (AND, OR, NOT, comparisons) on the data.\n- **Registers:** very small, very fast memory locations inside the CPU which hold the data, instructions and addresses being processed (for example the PC, MAR, MDR, CIR and accumulator).\n- **Cache memory:** a small fast memory inside or next to the CPU, which stores frequently used instructions and data to reduce the time wasted in waiting for the slower RAM.\n- **Buses (address, data and control):** the pathways that carry addresses, data and control signals between the CPU and memory and devices.\n\n**(c) Function of RAM (1 mark).** RAM is the main (primary) memory of the computer; it holds temporarily the programs, the operating system and the data that are being used by the CPU, so that the CPU can read and write them very quickly. It is volatile: its content is lost when the power is switched off.",
+      "themes": [
+        "computer hardware"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Differentiate between *Interrupt* and *Polling*. (2 marks)",
+      "corrige_markdown": "- **Interrupt:** a device (or program) that needs attention sends an **interrupt signal** to the processor. The processor finishes the current instruction, saves its state, runs a small program called the interrupt service routine (handler) to serve the device, then returns to the task that it was doing. The processor is therefore busy with useful work until a device really needs it (event-driven); this is efficient and gives a quick reaction to urgent events (for example a key pressed, a printer out of paper).\n- **Polling:** the processor itself **checks (polls) each device at regular intervals**, in a loop, to see whether it needs service. The processor wastes time asking the devices that have nothing to report, and a device may wait until its turn comes; it is simple to implement but less efficient.",
+      "themes": [
+        "ict operating systems",
+        "computer hardware"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iv",
+      "enonce_markdown": "(a) What is a file extension? (1 mark)\n\n(b) Copy and complete the table below in your answer booklet: (2 marks)\n\n| FILE TYPE | FILE EXTENSION |\n|---|---|\n| Bitmapped graphics | .JPEG |\n| | .PDF |\n| Video | |",
+      "corrige_markdown": "**(a) File extension (1 mark).** A file extension is the group of letters, written after the dot at the end of a file name (for example `report.pdf`), which shows the format (type) of the file, and so tells the operating system which program must be used to open it.\n\n**(b) Completed table (2 marks).**\n\n| FILE TYPE | FILE EXTENSION |\n|---|---|\n| Bitmapped graphics | .JPEG |\n| **Document (Portable Document Format file)** | .PDF |\n| Video | **.MP4** (also accepted: .AVI, .MPEG, .MOV, .WMV) |\n\n(Other acceptable extensions: for bitmapped graphics .BMP, .PNG, .GIF; for a video clip .MP4.)",
+      "themes": [
+        "file formats and extensions"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    }
+  ]
+}

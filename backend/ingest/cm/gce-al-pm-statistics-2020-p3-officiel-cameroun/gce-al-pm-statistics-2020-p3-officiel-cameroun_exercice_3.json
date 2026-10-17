@@ -1,0 +1,81 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Pure Mathematics with Statistics",
+  "epreuve_source": "gce-al-pm-statistics-2020-p3-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 3,
+  "code_matiere": "0770",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination. Pure Mathematics With Statistics, Paper 3 (0770/3), ADVANCED LEVEL, June 2020. Time allowed: THREE HOURS.**\n\nFull marks may be obtained for answers to ALL questions. Mathematical formulae and tables produced by the GCE Board are allowed. In calculations, you are advised to show all the steps in your working, giving the answer at each stage. Electronic calculators are allowed. Start each question on a fresh page.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "The mean number of goals scored per match by a certain football team is 1.5.\n\nCalculate, to four decimal places, the probability that the team will score",
+  "groupes": [],
+  "points": "13",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 : le sujet ne nomme pas la loi ; le nombre de buts par match est modélisé par une loi de Poisson de moyenne 1.5 (notion au programme, aucune autre donnée n'est fournie). Les valeurs sont calculées exactement ($e^{-1.5}$, $e^{-3}$), sans lecture de table.",
+    "Question 3 : le sujet imprime (3, 2, 8 marks) pour QUATRE demandes ((a), (b), (c) puis la recherche de $n$) ; la répartition des 13 points n'est pas déterminable. Le total 13 est recopié dans `points` de l'exercice ; les parties n'ont pas de `points`.",
+    "Question 3 (c) : « less than three goals in two matches » est lu comme le nombre TOTAL de buts sur deux matches (loi de Poisson de moyenne 3). Autre lecture possible : moins de trois buts dans CHACUN des deux matches, soit $0.8088^2 = 0.6542$ ; le corrigé la mentionne.",
+    "Question 3 (dernière partie) : la marge est faible ($1 - e^{-3} = 0.95021 > 0.95$ pour $n = 2$ ; $0.7769$ pour $n = 1$) : la réponse $n = 2$ dépend du calcul exact."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) no goal in a match,",
+      "corrige_markdown": "Let $X$ be the number of goals scored in a match. We model $X \\sim \\text{Po}(\\lambda)$ with $\\lambda = 1.5$, for which\n\n$$P(X = r) = \\frac{e^{-\\lambda}\\lambda^r}{r!}, \\qquad r = 0, 1, 2, \\ldots$$\n\n$$P(X = 0) = e^{-1.5} = 0.22313\\ldots$$\n\n**$P(\\text{no goal}) \\approx 0.2231$.**",
+      "themes": [
+        "poisson distribution statistics"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) not more than three goals in a match,",
+      "corrige_markdown": "$$P(X \\le 3) = e^{-1.5}\\left(1 + 1.5 + \\frac{1.5^2}{2!} + \\frac{1.5^3}{3!}\\right) = e^{-1.5}\\left(1 + 1.5 + 1.125 + 0.5625\\right) = 4.1875\\, e^{-1.5}$$\n\n$$P(X \\le 3) = 4.1875 \\times 0.223130 = 0.93436\\ldots$$\n\n**$P(\\text{not more than three goals}) \\approx 0.9344$.**",
+      "themes": [
+        "poisson distribution statistics"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "(c) less than three goals in two matches.",
+      "corrige_markdown": "The goals in two independent matches add: the total number of goals $Y$ in two matches has a Poisson distribution with mean $2 \\times 1.5 = 3$, so $Y \\sim \\text{Po}(3)$.\n\n\"Less than three\" means $Y \\le 2$:\n\n$$P(Y \\le 2) = e^{-3}\\left(1 + 3 + \\frac{3^2}{2!}\\right) = 8.5\\, e^{-3} = 8.5 \\times 0.049787 = 0.42319\\ldots$$\n\n**$P(\\text{less than three goals in two matches}) \\approx 0.4232$.**\n\n*Remark.* If the question is read as \"fewer than three goals in EACH of the two matches\", the answer would be $P(X \\le 2)^2 = 0.80885^2 = 0.6542$; the usual reading, total goals over two matches, gives $0.4232$.",
+      "themes": [
+        "poisson distribution statistics"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "d",
+      "enonce_markdown": "The team is to play $n$ matches. Find the least value of $n$ if the probability that the team is to score at least one goal is to be more than 0.95.",
+      "corrige_markdown": "Over $n$ matches the total number of goals $W$ satisfies $W \\sim \\text{Po}(1.5n)$.\n\n$$P(\\text{at least one goal}) = 1 - P(W = 0) = 1 - e^{-1.5n}$$\n\nWe need\n\n$$1 - e^{-1.5n} > 0.95 \\iff e^{-1.5n} < 0.05$$\n\nTaking natural logarithms (the logarithm is an increasing function, so the inequality keeps its direction), then dividing by $-1.5$ (which reverses it):\n\n$$-1.5n < \\ln 0.05 = -\\ln 20 \\iff n > \\frac{\\ln 20}{1.5} = \\frac{2.9957}{1.5} = 1.997\\ldots$$\n\nSince $n$ is a whole number, $n \\ge 2$.\n\n**Check:** $n = 1$: $1 - e^{-1.5} = 0.7769 < 0.95$ (not enough); $n = 2$: $1 - e^{-3} = 0.95021 > 0.95$ (enough).\n\n**The least value of $n$ is $2$.**",
+      "themes": [
+        "poisson distribution statistics"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    }
+  ]
+}

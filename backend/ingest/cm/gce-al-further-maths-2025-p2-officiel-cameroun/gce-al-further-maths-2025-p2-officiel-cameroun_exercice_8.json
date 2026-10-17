@@ -1,0 +1,55 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2025-p2-officiel-cameroun.pdf",
+  "numero_exercice": "8",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2025. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 8 (a) : le sujet demande « the length of arc of this curve » pour 0 < θ < π/3 sans borner l'arc ; il est calculé sur tout l'intervalle (θ de 0 à π/3), ce qui donne |a| (donc a si a > 0).",
+    "Question 8 (b)(iv) : DEFAUT DU SUJET. La matrice M = [[1,2],[2,5]] n'est pas une rotation (déterminant 1 mais M n'est pas orthogonale ; valeurs propres 3 plus ou moins 2 racine de 2, réelles), donc « the angle of rotation under T » n'a pas de sens strict. Lecture retenue, cohérente avec « Hence » (la question iii) : l'angle dont tourne la droite L pour devenir L', soit arctan(14/17), environ 39,5 degrés (0,689 rad), dans le sens trigonométrique. Le corrigé le signale."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "The parametric equations of a curve are\n\n$$x = a(\\tan\\theta - \\theta) \\quad\\text{and}\\quad y = a\\ln\\sec\\theta, \\qquad 0 < \\theta < \\frac{\\pi}{3},$$\n\nwhere $a$ is a real constant.\n\nFind the length of arc of this curve. *[5 marks]*",
+      "corrige_markdown": "**Derivatives.**\n\n$$\\frac{dx}{d\\theta} = a(\\sec^2\\theta - 1) = a\\tan^2\\theta, \\qquad \\frac{dy}{d\\theta} = a\\,\\frac{\\sec\\theta\\tan\\theta}{\\sec\\theta} = a\\tan\\theta.$$\n\n**Integrand.**\n\n$$\\left(\\frac{dx}{d\\theta}\\right)^2 + \\left(\\frac{dy}{d\\theta}\\right)^2 = a^2\\tan^4\\theta + a^2\\tan^2\\theta = a^2\\tan^2\\theta\\,(\\tan^2\\theta + 1) = a^2\\tan^2\\theta\\sec^2\\theta.$$\n\nFor $0 < \\theta < \\dfrac{\\pi}{3}$, $\\tan\\theta > 0$ and $\\sec\\theta > 0$, so the square root is $|a|\\tan\\theta\\sec\\theta$.\n\n**Arc length** over the whole range $0 \\le \\theta \\le \\dfrac{\\pi}{3}$:\n\n$$s = \\int_0^{\\pi/3} |a|\\tan\\theta\\sec\\theta\\,d\\theta = |a|\\Big[\\sec\\theta\\Big]_0^{\\pi/3} = |a|\\left(\\sec\\frac{\\pi}{3} - \\sec 0\\right) = |a|(2 - 1).$$\n\n$$\\boxed{s = |a|} \\qquad (= a \\text{ when } a > 0).$$\n\n(We used $\\dfrac{d}{d\\theta}\\sec\\theta = \\sec\\theta\\tan\\theta$.)",
+      "themes": [
+        "arc length",
+        "parametric equations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "A transformation $T$ is defined by matrix $\\mathbf{M}$, where\n\n$$\\mathbf{M} = \\begin{pmatrix} 1 & 2 \\\\ 2 & 5 \\end{pmatrix}.$$\n\ni) Find the determinant of $\\mathbf{M}$. *[2 marks]*\n\nii) Find the invariant point under $T$. *[2 marks]*\n\niii) Show that the image of the line $L: x = 2y$ is the line $L': 9x = 4y$. *[2 marks]*\n\niv) Hence or otherwise, find the angle of rotation under $T$. *[1 mark]*",
+      "corrige_markdown": "**i) Determinant.**\n\n$$\\det\\mathbf{M} = (1)(5) - (2)(2) = 5 - 4 = \\boxed{1}.$$\n\n(So $T$ preserves areas and orientation.)\n\n**ii) Invariant point.** A point $\\begin{pmatrix}x\\\\y\\end{pmatrix}$ is invariant when $\\mathbf{M}\\begin{pmatrix}x\\\\y\\end{pmatrix} = \\begin{pmatrix}x\\\\y\\end{pmatrix}$, that is $(\\mathbf{M} - \\mathbf{I})\\begin{pmatrix}x\\\\y\\end{pmatrix} = \\mathbf{0}$ with\n\n$$\\mathbf{M} - \\mathbf{I} = \\begin{pmatrix} 0 & 2 \\\\ 2 & 4 \\end{pmatrix}, \\qquad \\det(\\mathbf{M} - \\mathbf{I}) = 0\\cdot 4 - 2\\cdot 2 = -4 \\neq 0.$$\n\nThe matrix $\\mathbf{M} - \\mathbf{I}$ is invertible, so the only solution is the zero vector: from the first row $2y = 0$, then from the second $2x + 4y = 0$ gives $x = 0$.\n\n$$\\boxed{\\text{The only invariant point is the origin } (0, 0).}$$\n\n**iii) Image of $L$.** The line $L: x = 2y$ consists of the points $(2t, t)$, $t \\in \\mathbb{R}$. Their images are\n\n$$\\begin{pmatrix}1 & 2\\\\2 & 5\\end{pmatrix}\\begin{pmatrix}2t\\\\t\\end{pmatrix} = \\begin{pmatrix}2t + 2t\\\\4t + 5t\\end{pmatrix} = \\begin{pmatrix}4t\\\\9t\\end{pmatrix}.$$\n\nSo the image point $(X, Y) = (4t, 9t)$ satisfies $9X = 36t = 4Y$, that is $9X = 4Y$. As $t$ runs over $\\mathbb{R}$, $(4t, 9t)$ covers every point of $9x = 4y$. Hence the image of $L$ is the line $L'$: $9x = 4y$. $\\blacksquare$\n\n**iv) Angle.** The gradient of $L$ is $\\tfrac12$ (angle $\\alpha = \\arctan\\tfrac12 \\approx 26.57^\\circ$ with the $x$-axis) and the gradient of $L'$ is $\\tfrac94$ (angle $\\beta = \\arctan\\tfrac94 \\approx 66.04^\\circ$). The angle through which $L$ is turned to give $L'$ is\n\n$$\\beta - \\alpha, \\qquad \\tan(\\beta - \\alpha) = \\frac{\\frac94 - \\frac12}{1 + \\frac94\\cdot\\frac12} = \\frac{\\frac74}{\\frac{17}{8}} = \\frac{14}{17}.$$\n\n$$\\boxed{\\theta = \\arctan\\frac{14}{17} \\approx 39.5^\\circ \\ (0.689\\ \\text{rad}), \\text{ anticlockwise}}$$\n\n(Check with the direction vectors: $\\binom{2}{1} \\mapsto \\binom{4}{9}$, $\\cos\\theta = \\dfrac{(2)(4) + (1)(9)}{\\sqrt5\\sqrt{97}} = \\dfrac{17}{\\sqrt{485}}$ and the cross product is $2\\cdot 9 - 1\\cdot 4 = 14 > 0$, so $\\tan\\theta = \\dfrac{14}{17}$.)\n\n*Remark on the wording.* $\\mathbf{M}$ is not a rotation matrix (a rotation has $\\mathbf{M}^T\\mathbf{M} = \\mathbf{I}$ and trace $2\\cos\\theta \\le 2$, while here the trace is $6$), so $T$ does not rotate every vector by one fixed angle. The value above is the angle turned through by the line $L$ under $T$, which is what part (iii) leads to.",
+      "themes": [
+        "matrix algebra",
+        "linear transformations"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    }
+  ]
+}

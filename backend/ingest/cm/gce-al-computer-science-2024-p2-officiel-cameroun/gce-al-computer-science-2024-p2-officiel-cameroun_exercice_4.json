@@ -1,0 +1,89 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2024-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2024. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-computer-science-2024-p2-officiel-cameroun_exercice_4_fig_1.png",
+      "page_source": 4,
+      "type": "schema",
+      "legende": "Formats A and B for representing functional dependencies: Format A draws the table EmpID, Name, DeptName, Salary with a bracket and arrows from EmpID to Name, DeptName and Salary; Format B lists EmpID -> Name and EmpID -> DepName.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Question 4 : points imprimés par sous-partie : i = 4 x 2 = 8 ; ii = 2 + 2 = 4 ; iii = 2 + 3 = 5 ; total 17.",
+    "4(iii) : le Format B du sujet imprime « EmpID -> DepName » alors que la colonne du tableau du Format A s'appelle « DeptName » (écart d'impression, recopié tel quel dans la légende de la figure).",
+    "4(ii)(b) : l'appariement des valeurs multiples (CSC01 - Computer Sc. - A, etc.) est déduit de l'ordre des valeurs dans chaque cellule ; le sujet ne le précise pas. Les tables 2NF ont été vérifiées avec le module sqlite3 de Python (jointure = table 1NF)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "In relation to database design and management, define the following terms:\n\n(a) Database management system (DBMS). (2 marks)\n\n(b) Candidate key. (2 marks)\n\n(c) Multivalued attribute. (2 marks)\n\n(d) Normalisation. (2 marks)",
+      "corrige_markdown": "**(a) Database management system (DBMS) (2 marks).** A DBMS is software (for example MySQL, Oracle, MS Access) that is used to create, store, organise, retrieve, update and control access to the data in a database; it sits between the users or application programs and the stored data, and provides security, integrity checking, concurrency control and backup/recovery.\n\n**(b) Candidate key (2 marks).** A candidate key is an attribute, or the smallest set of attributes, that uniquely identifies each record (row) of a table. A table may have several candidate keys; one of them is chosen as the primary key and the others are called alternate keys.\n\n**(c) Multivalued attribute (2 marks).** A multivalued attribute is an attribute that can hold more than one value for a single record (a single entity instance), for example a student's telephone numbers or the list of courses a student takes, stored in one field. It violates First Normal Form and is removed by creating separate rows or a separate table.\n\n**(d) Normalisation (2 marks).** Normalisation is the process of organising the tables and fields of a relational database, following a series of rules (normal forms: 1NF, 2NF, 3NF...), in order to remove redundancy (repeated data) and avoid insertion, update and deletion anomalies, by splitting large tables into smaller related tables linked by keys.",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Use the database below to answer the questions that follow.\n\n| StudentId | StudentName | CourseId | CourseName | Grade |\n|---|---|---|---|---|\n| 001 | Ngwa | CSC01, ICT01 | Computer Sc., ICT | A, B |\n| 002 | Abubakar | IT01 | Technology | A |\n| 003 | Wankah | NET01, CSC01 | Network basics, Computer Sc. | B, C |\n| 004 | Chifu | CST01 | Computer technology | B |\n\n(a) With a suitable example, explain why the above table is NOT in First Normal Form (1NF). (2 marks)\n\n(b) Convert the table above into one in First Normal Form (1NF). Write out only the fields and records that are changed. (2 marks)",
+      "corrige_markdown": "**(a) Why the table is not in 1NF (2 marks)**\n\nA table is in First Normal Form only if every field holds a single (atomic) value and there are no repeating groups. In this table some fields hold several values in one cell. Example: for student 001 (Ngwa) the field CourseId contains two values, `CSC01, ICT01`, the field CourseName contains `Computer Sc., ICT` and the field Grade contains `A, B`; the same is true for student 003 (Wankah). The table has multivalued fields, so it is not in 1NF.\n\n**(b) Conversion to 1NF (2 marks)**\n\nEach value is put in its own record (one record per student-course pair), the repeated student data is copied, and the values are matched by position (CSC01 - Computer Sc. - A, ICT01 - ICT - B; NET01 - Network basics - B, CSC01 - Computer Sc. - C). The fields CourseId, CourseName and Grade change (they now hold one value each) and only the records of students 001 and 003 change (records of 002 and 004 stay as they are). A suitable primary key is now the pair (StudentId, CourseId).\n\n| StudentId | StudentName | CourseId | CourseName | Grade |\n|---|---|---|---|---|\n| 001 | Ngwa | CSC01 | Computer Sc. | A |\n| 001 | Ngwa | ICT01 | ICT | B |\n| 003 | Wankah | NET01 | Network basics | B |\n| 003 | Wankah | CSC01 | Computer Sc. | C |\n\n(The unchanged records are 002 Abubakar IT01 Technology A and 004 Chifu CST01 Computer technology B.)",
+      "themes": [
+        "database normal forms",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Answer the questions below using either of the formats A or B, to represent functional dependencies.\n\n![fig-1](gce-al-computer-science-2024-p2-officiel-cameroun_exercice_4_fig_1.png)\n\n(a) Identify two functional dependencies from the table in (ii) above. (2 marks)\n\n(b) Convert the table in (ii)(b) above into Second Normal Form (2NF). Represent your 2NF tables using the format: *Table_name(field1, field2, ...)* (3 marks)",
+      "corrige_markdown": "**(a) Two functional dependencies (2 marks)**\n\nA functional dependency $X \\rightarrow Y$ means that the value of $X$ determines a single value of $Y$. In Format B, from the table in (ii):\n\n- StudentId $\\rightarrow$ StudentName (a student number identifies one student name);\n- CourseId $\\rightarrow$ CourseName (a course code identifies one course name);\n- also (StudentId, CourseId) $\\rightarrow$ Grade (a student's grade in a given course).\n\nAny two of these are accepted. In Format A the first would be drawn as a bracket with an arrow from StudentId to StudentName.\n\n**(b) Second Normal Form (3 marks)**\n\nThe 1NF table of (ii)(b) has the composite primary key (StudentId, CourseId). It is not in 2NF because two non-key attributes depend on **only part** of the key (partial dependencies): StudentName depends on StudentId alone, and CourseName depends on CourseId alone. Only Grade depends on the whole key. To reach 2NF each partial dependency is moved to a table of its own (primary keys in bold):\n\n- Student(**StudentId**, StudentName)\n- Course(**CourseId**, CourseName)\n- Enrolment(**StudentId**, **CourseId**, Grade)\n\nStudentId and CourseId in Enrolment are also foreign keys referring to Student and Course. Content of the tables (checked with SQLite, which reproduces the 1NF table when the three tables are joined):\n\n| StudentId | StudentName |\n|---|---|\n| 001 | Ngwa |\n| 002 | Abubakar |\n| 003 | Wankah |\n| 004 | Chifu |\n\n| CourseId | CourseName |\n|---|---|\n| CSC01 | Computer Sc. |\n| ICT01 | ICT |\n| IT01 | Technology |\n| NET01 | Network basics |\n| CST01 | Computer technology |\n\n| StudentId | CourseId | Grade |\n|---|---|---|\n| 001 | CSC01 | A |\n| 001 | ICT01 | B |\n| 002 | IT01 | A |\n| 003 | NET01 | B |\n| 003 | CSC01 | C |\n| 004 | CST01 | B |\n\nThe tables are now in 2NF (and also in 3NF, since no non-key attribute depends on another non-key attribute).",
+      "themes": [
+        "functional dependencies",
+        "database normal forms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

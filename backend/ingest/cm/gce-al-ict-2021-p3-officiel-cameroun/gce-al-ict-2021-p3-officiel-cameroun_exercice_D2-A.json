@@ -1,0 +1,127 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2021-p3-officiel-cameroun.pdf",
+  "numero_exercice": "D2-A",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Advanced Level Examination. Information & Communication Technologies, Subject code 0796, Paper 3 (practical). Examination date: June 2021. Duration: two hours. The paper was set in two versions in the same document: Day 1 (booklet GCE/P/2021/0796/3/C/G1, workbook Trans-Business) and Day 2 (booklet GCE/P/2021/0796/3/C/G2, workbook Car Sales). Each version has the same three tasks.**\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\n**Answer ALL TASKS.**\n\nEach version has three tasks: Task A (Databases, 21 marks), Task B (Spreadsheet, 19 marks) and Task C (Web Authoring Tool, 11 marks; printed as \"Task 3\").",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**DAY 2**\n\n**TASK A: DATABASES (21 marks)**\n\nA car dealer has 10 brokers (middle men who look for buyers) in his car shops in the towns of Douala, Kumba, Buea and Bamenda.\n\nPart of the information about the sales of his cars is found in a workbook named **Car Sales** found in the *Candidate Folder*. This workbook contains two sheets named **Broker** and **Sales**. The personal information of the brokers is stored in the sheet named **Broker** while the transaction carried out by the brokers is recorded in the sheet named **Sales**.\n\nThe table below shows the description of the cars found in the car shops in the four towns.\n\n*Table 1: Cars*\n\n| CarCode | CarName | UnitPrice |\n|---|---|---|\n| AB1 | Toyota Avensis | 2500000 |\n| CD2 | Toyota Corolla | 2300000 |\n| M41 | BMW Picnic | 2625000 |\n| AB2 | Mercedes 220 | 1800000 |\n| NS3 | Mercedes 300 | 3000000 |\n\n*[The workbook Car Sales (sheets Broker and Sales) is supplied on the day in the candidate folder; it is not reproduced in the printed paper and is not reproduced here.]*",
+  "groupes": [
+    "DAY 2"
+  ],
+  "points": "21",
+  "figures": [],
+  "incertitudes": [
+    "Le PDF (8 pages, scan) contient DEUX versions du même sujet : « Day 1 » (pages 1 à 4, booklet GCE/P/2021/0796/3/C/G1, classeur Trans-Business) et « Day 2 » (pages 5 à 8, booklet G2, classeur Car Sales). Transcrites en six fichiers : numero_exercice D1-A, D1-B, D1-C et D2-A, D2-B, D2-C ; groupes [\"DAY 1\"] ou [\"DAY 2\"]. Le sujet n'imprime pas que chaque candidat n'en traite qu'une seule ; regles_choix reste donc vide.",
+    "Les fichiers de données du jour de l'examen (classeur Trans-Business ou Car Sales, feuilles Broker et Sales) ne sont pas dans le PDF. Leur structure est DÉDUITE du sujet : Broker (BrokerID, BrokerName, Town), Sales (SaleDate, BrokerID, CarCode, Quantity) ; feuille ESales : colonnes A à D = date, BrokerID, CarCode, quantité ; données en lignes 2 à 23 (plage A1:G23 imprimée), tableau récapitulatif à partir de A25 (en-tête ligne 25, courtiers lignes 26 à 35, total ligne 36). Les corrigés donnent des réponses génériques sur cette structure et invitent à l'adapter ; aucune valeur du classeur n'est inventée (seules des données fictives de contrôle, signalées comme telles).",
+    "Les « marking ideas » des corrigés sont des répartitions indicatives faites d'après les points imprimés ; le barème du jury n'est pas connu.",
+    "Vérifications : requêtes SQL exécutées avec sqlite3 sur données fictives (jointures Broker/Sales/Cars, filtre de dates, regroupement, intégrité référentielle) ; formules de tableur (LOOKUP/VLOOKUP, produit, 5 %, SUMIF) reproduites en Python sur 5 lignes fictives ; recherche approchée de LOOKUP simulée par une recherche dichotomique standard (le comportement exact d'Excel sur un vecteur non trié n'a pas été exécuté) ; HTML contrôlé par un analyseur Python (balises bien imbriquées), non affiché dans un navigateur. La syntaxe propre à Microsoft Access et Excel (assistants, menus, dates #m/j/aaaa#) est donnée de mémoire, non testée. Aucun code C ou Pascal n'est demandé dans ce paper : rien n'a été compilé.",
+    "Les titres des tâches sont imprimés « Task A », « Task B » puis « Task 3 » (faute d'impression) : la troisième tâche est transcrite sous le repère C et le titre imprimé est rappelé dans l'énoncé.",
+    "Barèmes : les points imprimés par question font 21 (tâche A), 19 (tâche B) et 11 (tâche C), conformes aux totaux imprimés, dans les deux versions. Les questions 5 (A) et 6 (B) comportent plusieurs lignes avec leurs propres points ; elles sont gardées en une seule question dont les points sont la somme (5 = 2 + 1 + 2 ; 6 = 2 + 2).",
+    "Day 2 : le classeur s'appelle « Car Sales » (et non Trans-Business), dates 13/02/2020 et 14/02/2020, requête 13Sales14. Même remarque que pour le Day 1 sur « the three tables » (Broker, Cars, Sales)."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Create a database named **CarSalesDB**. *[1 mark]*",
+      "corrige_markdown": "Start Microsoft Access and choose *Blank database* (*File* > *New* > *Blank database*). In the *File Name* box type `CarSalesDB`, use the folder icon to select the *Candidate folder* (all the work must be saved there) and click *Create*. Access creates the file `CarSalesDB.accdb` and opens it with an empty table named *Table1* (it can be reused for **Cars** in question 2 or closed without saving).\n\nMarking idea (1 mark): the database exists, it is named exactly CarSalesDB and it is saved in the candidate folder.",
+      "themes": [
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Create the table above in the created database and save it as **Cars**. *[2 marks]*",
+      "corrige_markdown": "1. In the database choose *Create* > *Table Design* (or switch *Table1* to *Design View* and save it as **Cars**).\n2. Type the three field names and choose their data types (see question 3): `CarCode` (Short Text), `CarName` (Short Text), `UnitPrice` (Number, Long Integer).\n3. Select the row `CarCode` and click *Primary Key* on the *Design* tab (the key icon): each car code is different and identifies one car.\n4. Save with Ctrl+S under the name **Cars**, then switch to *Datasheet View* and type the five records exactly as in Table 1, without thousand separators:\n\n| CarCode | CarName | UnitPrice |\n|---|---|---|\n| AB1 | Toyota Avensis | 2500000 |\n| CD2 | Toyota Corolla | 2300000 |\n| M41 | BMW Picnic | 2625000 |\n| AB2 | Mercedes 220 | 1800000 |\n| NS3 | Mercedes 300 | 3000000 |\n\nMarking idea (2 marks): table saved under the name Cars with the three fields and suitable data types (1); the five records entered correctly (1).",
+      "themes": [
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Complete the table below by stating the properties of the fields of the Cars table. *[2 marks]*\n\n| Field name | Data type |\n|---|---|\n| CarCode | |\n| CarName | |\n| UnitPrice | |",
+      "corrige_markdown": "| Field name | Data type |\n|---|---|\n| CarCode | Short Text (Text); this field is also the primary key |\n| CarName | Short Text (Text) |\n| UnitPrice | Number (Long Integer); Currency is also acceptable |\n\n- **CarCode** (AB1, CD2, M41...) mixes letters and digits, so it is text; it is not used in calculations.\n- **CarName** (Toyota Avensis...) is text.\n- **UnitPrice** is a quantity that will be multiplied by a number of cars sold, so it must be numeric and not text. The largest price is 3 000 000: this is more than 32 767, the limit of the 16-bit *Integer* type, so the field size must be *Long Integer* (up to 2 147 483 647) or the type *Currency*. A *Single* or *Double* number would also hold the value but is not needed for whole francs.\n\nMarking idea (2 marks): text types for CarCode and CarName (1); a numeric type for UnitPrice (1).",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Import the two tables (one after the other) from the **Car Sales** workbook into the database. The **Car Sales** workbook is found in the candidate folder.\n\n**[Hint:** Right click on a table name in the object pane and select Import > Excel. Using the wizard, browse to the Excel workbook. Use the first row of each table as the field names. Ensure that no extra columns or rows are added to each of the tables, else delete such columns and rows after the import**]**. *[4 marks]*",
+      "corrige_markdown": "Do the import twice, once for the sheet **Broker** and once for the sheet **Sales**.\n\n1. In the navigation pane right-click a table name (for example **Cars**) and choose *Import* > *Excel* (or *External Data* > *New Data Source* > *From File* > *Excel*).\n2. Click *Browse*, open **Car Sales** in the candidate folder, choose *Import the source data into a new table in the current database* and click *OK*.\n3. In *Show Worksheets* select **Broker** and click *Next*.\n4. Tick **First Row Contains Column Headings**, so that the first row of the sheet gives the field names (BrokerID, BrokerName...) and is not imported as a record. Click *Next*.\n5. Leave the field options unchanged (Access guesses Short Text for text columns, Number for numeric columns and Date/Time for dates); click *Next*.\n6. Primary key: choose *Choose my own primary key* and select BrokerID for the Broker table (for the Sales table choose *No primary key*, because no single field identifies a transaction; see question 5). Click *Next*.\n7. Keep the table name (**Broker**, then **Sales**) and click *Finish*; close the import summary window.\n8. Repeat from step 1 for the sheet **Sales**.\n\nAfter the import, open each table in *Datasheet View* and check that there is no extra column (a heading such as *Field5* or an empty column) and no empty row at the bottom. If there is one, delete the extra column (right-click the heading > *Delete Field*) or the empty record (select its row selector > *Delete Record*), and save.\n\nAt the end the database **CarSalesDB** holds three tables: **Cars**, **Broker** and **Sales**.\n\nMarking idea (4 marks): Broker imported with its first row used as field names (2); Sales imported in the same way (2); a deduction when extra columns or rows remain.\n\n(The contents of the two sheets are not printed in the paper, so the field names and values cannot be quoted here.)",
+      "themes": [
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "State the possible keys of the database.\n\nPrimary key(s) ........ *[2 marks]*\n\nForeign key(s) ........ *[1 mark]*\n\nState the composite keys if any ........ *[2 marks]*",
+      "corrige_markdown": "The three tables are **Cars** (CarCode, CarName, UnitPrice), **Broker** (BrokerID, BrokerName and the other details of the broker) and **Sales** (the transaction: date, BrokerID, CarCode, quantity). The fields of Broker and Sales come from the workbook supplied on the day; the key fields BrokerID and CarCode are the ones used by the questions of Task B.\n\n**Primary keys (2 marks).**\n- **Cars**: `CarCode` (each car code is different and never empty).\n- **Broker**: `BrokerID` (C001, C002, ... C010: one value per broker).\n- **Sales**: no single field is different for every transaction (a broker sells many times and the same car is sold many times), so Sales has no simple primary key; it has a composite key (below).\n\n**Foreign keys (1 mark).** In **Sales**: `BrokerID` (it refers to Broker.BrokerID) and `CarCode` (it refers to Cars.CarCode). A foreign key is a field that is the primary key of another table and that links the two tables.\n\n**Composite key (2 marks).** The **Sales** table is identified by a combination of fields, for example (`SaleDate`, `BrokerID`, `CarCode`): the same broker can sell the same car on several days and several cars on the same day, so only the combination of the three is unique. Here BrokerID and CarCode are at the same time parts of the composite key and foreign keys. (If the transactions have no date, the composite key is (BrokerID, CarCode) when a broker records each car once; the key must be adapted to the Sales sheet really supplied.)",
+      "themes": [
+        "ict database design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "By studying the three tables, create the relationship linking the three tables in the database. Draw a labelled diagram of the created relationship in the space below. *[3 marks]*",
+      "corrige_markdown": "**Creating the relationships in Access.** Close all the tables, then *Database Tools* > *Relationships*. In *Show Table* add **Broker**, **Cars** and **Sales** and close the window. Then:\n\n1. Drag `BrokerID` of **Broker** onto `BrokerID` of **Sales**. In *Edit Relationships* tick *Enforce Referential Integrity* and click *Create*: Access draws a one-to-many link (1 at the Broker end, the infinity sign at the Sales end).\n2. Drag `CarCode` of **Cars** onto `CarCode` of **Sales**, tick *Enforce Referential Integrity* and click *Create* (one-to-many again).\n3. Save the layout (Ctrl+S). The two joined fields must have the same data type (Short Text for both pairs) and the primary keys of question 5 must exist first.\n\n**Labelled diagram (to be drawn in the booklet).**\n\n```\n+------------------+  1       N  +------------------+  N       1  +------------------+\n| BROKER           |-------------| SALES            |-------------| CARS             |\n|------------------|   makes     |------------------|   concerns  |------------------|\n| BrokerID (PK)    |             | SaleDate         |             | CarCode (PK)     |\n| BrokerName       |             | BrokerID (FK)    |             | CarName          |\n| ...              |             | CarCode  (FK)    |             | UnitPrice        |\n+------------------+             | Quantity         |             +------------------+\n                                 +------------------+\n```\n\nReading: one broker makes many sales (1 - N) and each sale is made by one broker; one car appears in many sales (1 - N) and each sale concerns one car. **Sales** is the table in the middle that links the two others: it turns the many-to-many link between brokers and cars into two one-to-many links.\n\nMarking idea (3 marks): the three tables with their key fields (1); the two links joining the same-named fields (1); the cardinalities 1 and N (infinity) and labels on the links (1).",
+      "themes": [
+        "ict database design",
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Use query to produce a summary that will show the cars sold by the various brokers in the various towns on the 13/02/2020 and 14/02/2020. Save the query as **13Sales14**.\n\n**From the database, print the Cars and Sales tables and the 13Sales14 query.** *[4 marks]*",
+      "corrige_markdown": "**Design of the query** (*Create* > *Query Design*). Add the tables **Broker**, **Sales** and **Cars** (the relationships of question 6 supply the joins), then place in the grid:\n\n| Field | Town | BrokerName | CarName | SaleDate | Quantity |\n|---|---|---|---|---|---|\n| Table | Broker | Broker | Cars | Sales | Sales |\n| Total | Group By | Group By | Group By | Where | Sum |\n| Criteria | | | | Between #2/13/2020# And #2/14/2020# | |\n\nTo get the *Total* row click the *Totals* button (sigma) on the *Design* tab. A *Where* column is not displayed: it only filters the dates, and `Between ... And ...` includes both days, 13/02/2020 and 14/02/2020. (In Access a date criterion is written between # signs in the order month/day/year, for example #2/13/2020#, whatever the regional settings of the computer.) Run the query (*Run*): it lists, for each town and broker, the cars sold and the total quantity (`SumOfQuantity`). Save it with Ctrl+S under the name **13Sales14**.\n\nThe same query in SQL (Access syntax, from memory):\n\n```sql\nSELECT Broker.Town, Broker.BrokerName, Cars.CarName, Sum(Sales.Quantity) AS TotalSold\nFROM (Broker INNER JOIN Sales ON Broker.BrokerID = Sales.BrokerID)\n     INNER JOIN Cars ON Cars.CarCode = Sales.CarCode\nWHERE Sales.SaleDate Between #2/13/2020# And #2/14/2020#\nGROUP BY Broker.Town, Broker.BrokerName, Cars.CarName;\n```\n\nCheck of the method: the same query with a test range of 14 to 15 February 2020 (ISO dates, run in SQLite on invented data: 3 brokers, 5 cars, 6 sales on 13, 14, 15 and 16 February) kept only the sales of the 14th and 15th, for example Douala / Atabong Colins / Toyota Avensis 1 and Mercedes 220 2, Kumba / Ashu Peter / Toyota Corolla 3, Buea / Beatrice Ngwa / BMW Picnic 1; the sales of the 13th and of the 16th were excluded.\n\nIf a plain list of the sales is wanted instead of totals, remove the *Totals* row: each sale is then shown on its own line with its date.\n\n**Printing.** Open **Cars** in *Datasheet View* and use *File* > *Print* (check *Print Preview*); do the same for **Sales** and for the query **13Sales14**; staple the three printouts in the booklet.\n\nMarking idea (4 marks): the right tables and joins (1); the fields Town, BrokerName, CarName and Quantity (1); the date criterion covering the two days (1); query saved under the right name and the three printouts (1).\n\n(The Broker table is assumed to hold the Town of each broker, as the question speaks of brokers in towns; the real field names come from the workbook supplied on the day.)",
+      "themes": [
+        "ict database queries",
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2022. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 6,
+      "sur": 8
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "17",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigrane gcerevision.com ignoré) lu page par page en image ; 4 pages, 8 questions, aucune figure à recadrer. Points imprimés par sous-partie (total 17 pour chaque question, vérifié). Question 4 : points imprimés i(a) 2, i(b) 4, ii(a) 2, ii(b) 2, ii(c) 3, iii 4 ; total 17.",
+    "4(ii)(c) : le sujet imprime « ... most fault tolerant » sans point d'interrogation final (recopié tel quel).",
+    "4(ii)(b) : « how many separate links » interprété comme le nombre de liaisons physiques du réseau maillé complet, soit 5 x 4 / 2 = 10.",
+    "Aucun code C/Pascal dans ce paper (théorie) : rien n'a donc été compilé ; les calculs, tableaux et pseudocodes du corrigé ont été vérifiés par un script Python exécuté (et sqlite3 pour la base de données de la question 5)."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "(a) What is a medium in data communication? (2 marks)\n\n(b) Explain the difference between bounded and unbounded media. Give an example in each case. (4 marks)",
+      "corrige_markdown": "**(a) Medium (2 marks)**\n\nA transmission medium is the physical path or channel, a cable or the air (free space), through which data signals travel from a sender to a receiver in a data communication system.\n\n**(b) Bounded and unbounded media (4 marks)**\n\n- **Bounded (guided) media** carry the signal along a physical, solid path: the signal is confined (guided) inside the cable. Examples: twisted-pair cable (UTP/STP), coaxial cable, fibre-optic cable. They are generally more secure and less affected by interference, but the cable must be installed between the devices, which limits mobility and can be costly over long distances.\n- **Unbounded (unguided, wireless) media** carry the signal through the air or space as electromagnetic waves, with no physical conductor; the signal spreads out and anyone within range can receive it. Examples: radio waves (Wi-Fi, Bluetooth), microwaves, infrared, satellite links. They allow mobility and avoid cabling, but they are more exposed to interference and eavesdropping, and are usually slower.",
+      "themes": [
+        "data communication",
+        "network cabling media"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "ii",
+      "enonce_markdown": "Five computers are connected together to form a network such that each computer has a direct link with every other computer in the network.\n\n(a) Describe the network topology used in this network? (2 marks)\n\n(b) Given that each link in the network operates in full duplex mode, how many separate links have been used to connect the computers together? (2 marks)\n\n(c) What is fault tolerance? Why is this type of network said to be the most fault tolerant (3 marks)",
+      "corrige_markdown": "**(a) Topology (2 marks)**\n\nThis is a **(full) mesh topology**: every device is connected by a dedicated point-to-point link to every other device, so any two computers communicate directly, without passing through a central device or another computer. Each of the 5 computers has 4 connections.\n\n**(b) Number of links (2 marks)**\n\nFor $n$ computers, the number of links is\n\n$$\\frac{n(n-1)}{2} = \\frac{5 \\times 4}{2} = 10 \\text{ links}$$\n\nBecause each link is full duplex (data can flow in both directions at the same time on the same link), one link is enough for each pair of computers: 10 separate links (a simplex design would need $n(n-1) = 20$ one-way links).\n\n**(c) Fault tolerance (3 marks)**\n\nFault tolerance is the ability of a network or system to keep working (without losing data or stopping) when one of its components, such as a cable, a connector or a node, fails.\n\nA mesh network is the most fault tolerant because every pair of computers is joined directly and there are also alternative paths through the other computers. If one link or one computer fails, the traffic is simply sent by another route and the rest of the network continues to work; there is no single point of failure (unlike a star, whose central hub can bring everything down, or a bus, whose backbone cable can stop the whole network).",
+      "themes": [
+        "network topologies",
+        "computer networks"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "iii",
+      "enonce_markdown": "Explain the difference between verification and validation. Hence, give an example of how each might apply to a website registration form. (4 marks)",
+      "corrige_markdown": "**Difference (2 marks)**\n\n- **Validation** is an automatic check, made by the program using rules, that the data entered is *reasonable and acceptable* (right type, format, range, length, present). It does not prove that the data is correct, only that it is possible.\n- **Verification** is a check that the data entered is *the same as the source data* or what the user really meant, that is that it has been entered accurately (for example by entering it twice or by checking it against the source). It does not check that the data makes sense.\n\n**Examples on a website registration form (2 marks)**\n\n- *Validation*: the form checks that the e-mail address contains an `@` and a domain name, that the date of birth is a real date (the age is within a sensible range, for example 13 to 120), that the telephone number contains only digits and has the right length, and that required fields are not left empty (presence check). An error message is shown otherwise.\n- *Verification*: the user has to type the password (or the e-mail address) a second time in a \"confirm password\" box and the two entries are compared, or a confirmation e-mail or code is sent to the address to confirm that it is correct and belongs to the user.",
+      "themes": [
+        "data validation and verification"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

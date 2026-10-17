@@ -1,0 +1,68 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "8",
+ "numero_paper": 2,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h30",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2026. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "PAPER 2",
+   "repondre": 6,
+   "sur": 8
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "PAPER 2"
+ ],
+ "points": "17",
+ "figures": [],
+ "incertitudes": [
+  "Question 8 : points imprimés par sous-partie : i(a) 3 + i(b) 2 + i(c) 4 = 9 ; ii(a) 4 + ii(b) 2 + ii(c) 2 = 8 ; total 17.",
+  "8(ii)(b) et (c) : sur le scan, le début des énoncés est abîmé (« What d?es each of the functions... », « Which o. he above functions... ») ; lus « What does each of the functions Enigma and Mystery compute? » et « Which of the above functions is recursive? State the reason. ».",
+  "8(ii) : valeurs enigma(4,6) = 2 et mystery(6,4) = 12 recalculées en exécutant une traduction Python des deux fonctions. Aucun code C/Pascal dans ce sujet (pseudocode seulement) : rien à compiler.",
+  "8(i)(b) : le type d'erreur attendu est lu comme une erreur de syntaxe (erreur de compilation) ; dans un langage interprété sans déclaration obligatoire, la même faute peut apparaître à l'exécution."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "(a) Describe how an imperative programming language executes. State **one** example of imperative programming language. (3 marks)\n\n(b) What is variable declaration and what type of programming error arises when one fails to declare a variable. (2 marks)\n\n(c) State **two** advantages and **two** disadvantages of programming using imperative high-level languages as opposed to low-level languages. (4 marks)",
+   "corrige_markdown": "**(a) Execution of an imperative language (3 marks)**\n\nA program in an imperative language is a **sequence of statements (commands)** that tell the computer **how** to do the task, step by step. The statements are executed **one after another, in the order in which they are written**, and each one may change the **state of the program** (the values stored in variables, for example by assignment). The order can be changed by control structures: selection (`if`, `case`), iteration (loops) and calls to subprograms (procedures and functions), after which execution continues with the next statement.\n\n*Example:* C, Pascal, Python, BASIC, Fortran or COBOL (any one).\n\n**(b) Variable declaration and the error (2 marks)**\n\nA **variable declaration** is a statement that **gives the name and the data type of a variable** (so that the translator reserves memory for it) before it is used, for example `int total;` in C or `var total : integer;` in Pascal.\n\nUsing a variable that has not been declared causes a **syntax error** (a compile-time error such as \"undeclared identifier\") that the translator reports before the program runs.\n\n**(c) Advantages and disadvantages of high-level imperative languages (4 marks)**\n\n*Two advantages (2 marks):*\n\n- They are **easier to read, write, test and maintain**: the statements look like English and mathematics, and one statement stands for many machine instructions, so programs are written faster and with fewer errors.\n- They are **portable** (machine independent): the same program can be translated (compiled or interpreted) to run on different types of computers; they also offer ready-made libraries.\n\n*Two disadvantages (2 marks):*\n\n- The program must be **translated** (compiler or interpreter) before it runs, and the machine code produced is often **less efficient** (slower, takes more memory) than code written directly in a low-level language.\n- The programmer has **less control of the hardware** (registers, memory addresses, devices), so they are less suitable for device drivers and for time-critical or memory-limited systems.",
+   "themes": [
+    "programming paradigms",
+    "programming languages",
+    "programming concepts"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 9
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "Consider the functions Enigma and Mystery below, where m, n, x and y are positive integers and mod is an operator that returns the remainder of a division.\n\n```text\nfunction enigma(m, n) ≡\n  if (n = 0) then\n    return m\n  else\n    return enigma(n, m mod n)\n  endif\nendfunction\n```\n\n```text\nfunction mystery(x, y) ≡\n  if (x = 0 or y = 0) then\n    return 0\n  else\n    return (x * y) / enigma(x, y)\n  endif\nendfunction\n```\n\n(a) Determine the values of `enigma(4, 6)` and `mystery(6, 4)`. (4 marks)\n\n(b) What does each of the functions Enigma and Mystery compute? (2 marks)\n\n(c) Which of the above functions is recursive? State the reason. (2 marks)",
+   "corrige_markdown": "**(a) Values of `enigma(4, 6)` and `mystery(6, 4)` (4 marks)**\n\n*`enigma(4, 6)`:* here $m = 4$ and $n = 6$.\n\n- `enigma(4, 6)`: $n \\ne 0$, so it returns `enigma(6, 4 mod 6)` = `enigma(6, 4)`;\n- `enigma(6, 4)`: $n \\ne 0$, so it returns `enigma(4, 6 mod 4)` = `enigma(4, 2)`;\n- `enigma(4, 2)`: $n \\ne 0$, so it returns `enigma(2, 4 mod 2)` = `enigma(2, 0)`;\n- `enigma(2, 0)`: $n = 0$, so it returns $m = 2$.\n\nHence **`enigma(4, 6)` = 2**.\n\n*`mystery(6, 4)`:* $x = 6$ and $y = 4$ are not zero, so it returns $(6 \\times 4) / \\mathrm{enigma}(6, 4)$. From the chain above, `enigma(6, 4)` = 2 (`enigma(6,4)` → `enigma(4,2)` → `enigma(2,0)` = 2). So `mystery(6, 4)` = $24 / 2 =$ **12**.\n\n(Both values were confirmed by running a Python translation of the functions.)\n\n**(b) What the functions compute (2 marks)**\n\n- `enigma(m, n)` computes the **greatest common divisor (GCD, highest common factor)** of $m$ and $n$, by Euclid's algorithm.\n- `mystery(x, y)` computes the **least common multiple (LCM)** of $x$ and $y$, since $\\mathrm{LCM}(x, y) = \\dfrac{x \\times y}{\\mathrm{GCD}(x, y)}$ (and returns 0 if either number is 0).\n\n**(c) Which function is recursive (2 marks)**\n\n**`enigma` is recursive**: it **calls itself** (`enigma(n, m mod n)`) with a smaller second argument until the base case $n = 0$ is reached. `mystery` is not recursive: it calls the function `enigma` but never calls itself.",
+   "themes": [
+    "recursion",
+    "subprograms",
+    "algorithm design"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 8
+  }
+ ]
+}

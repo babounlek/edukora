@@ -1,0 +1,156 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. 0795 Computer Science 3 (Paper 3 - Practical), ADVANCED LEVEL, June 2023. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Write algorithms in the answer booklet provided. Also record in your answer booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION B: School Trip (Databases) (20 marks)**\n\n**Task 5: School Trips (20 marks)**\n\nA school keeps records of school trips, teachers who supervise these trips and pupil who attend trips in a database in a way that will allow information about these details to be extracted. The data requirements are defined as follows:\n\n* Each trip is assigned a trip id (unique), start date, end date and destination.\n* Each teacher has a teacher id (unique), a tittle, first name and surname.\n* Each pupil has an id (unique), first name, and a surname.\n* Each pupil may attend more than one trip.\n* A trip can be attended by more than one pupil.\n* Each trip is supervised by only one teacher at any given time.\n* A teacher can supervise more than one trip.\n\nThe relational database has four tables TEACHER, TRIP, PUPIL, PUPILTRIP whose meaning are obvious, with attributes (primary key is underlined) as follows:\n\n```text\nTEACHER(TeacherID, Title, FirstName, Surname)\nTRIP(TripID, StartDate, EndDate, Destination, TeacherID)\nPUPIL(PupilID, PupilSurname, PupilFirstName)\nPUPILTRIP(PupilID, TripID)\n```\n\n(Primary keys, underlined in the paper: TeacherID; TripID; PupilID; PupilID and TripID together.)\n\n[Note: for the following subtasks, first write in your answer booklet the SQL queries (or statements) used to implement its activities in your DBMS]\n\nNB: You must print to show proof of the work done in (i), (ii), (iii) and (iv) below.",
+  "groupes": [
+    "SECTION B"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Les requêtes SQL ont été exécutées avec sqlite3 (SQLite 3.50.4) sur les données d'exemple du corrigé : création des 4 tables, 3 + 4 + 3 + 7 lignes insérées, résultats de iv(a) (2 lignes) et iv(b) (5 lignes) recopiés ; l'insertion d'un enseignant inexistant est refusée (clés étrangères activées). Différences de dialecte : CREATE DATABASE et USE n'existent pas dans SQLite (syntaxe MySQL / MariaDB donnée, variantes PostgreSQL et SQL Server indiquées) ; les dates sont des textes 'AAAA-MM-JJ' dans SQLite.",
+    "Question i : le diagramme entité-association est décrit et esquissé en texte (3 entités, relations supervises 1:N et attends M:N, avec la table de liaison PUPILTRIP) ; il n'est pas dessiné en image. Les données des lignes TRIP (iii b) et PUPILTRIP (iii d) sont des exemples cohérents choisis par le corrigé (le sujet laisse le choix de 3 à 5 lignes pour TRIP).",
+    "Fautes d'impression conservées dans les énoncés : « tittle » (title), « surpevised » (supervised, iv a et b), « teacher if T1 » (teacher id T1, iv b), « pupil who attend », « whose meaning are obvious ». Les clés primaires soulignées dans le sujet sont indiquées en note (le soulignement n'est pas rendu).",
+    "Le PUPIL du sujet est défini (PupilID, PupilSurname, PupilFirstName) alors que le tableau de données donne le prénom avant le nom : le corrigé nomme les colonnes dans les INSERT. Total des points de la Section B : 3 + 1 + 4 + 2 + 2 + 2 + 2 + 2 + 2 = 20, conforme au total imprimé."
+  ],
+  "questions": [
+    {
+      "numero": "i",
+      "enonce_markdown": "In your answer booklet, draw an Entity-Relationship diagram that shows entities, relationships and the degree of each relationship for the school trip database.",
+      "corrige_markdown": "**Entities** (one per table of the data requirements): TEACHER, TRIP, PUPIL. (PUPILTRIP is not an entity: it is the table that implements the many-to-many relationship between PUPIL and TRIP.)\n\n**Relationships and degrees**\n\n| Relationship | Entities | Degree | Reason |\n|---|---|---|---|\n| supervises | TEACHER - TRIP | one-to-many (1 : N) | each trip is supervised by only one teacher; a teacher can supervise more than one trip |\n| attends | PUPIL - TRIP | many-to-many (M : N) | a pupil may attend more than one trip; a trip can be attended by more than one pupil |\n\n**Entity-Relationship diagram** (to be drawn with rectangles for the entities and a diamond for each relationship; the degree is written on each line):\n\n```text\n+---------+  1                      N +--------+  M                  N +--------+\n| TEACHER |-----<  supervises  >------|  TRIP  |-----<  attends  >-----|  PUPIL |\n+---------+                           +--------+                       +--------+\n```\n\n```text\nTEACHER  [1]-----<supervises>-----[N]  TRIP  [M]-----<attends>-----[N]  PUPIL\n```\n\nAttributes: TEACHER (TeacherID, Title, FirstName, Surname); TRIP (TripID, StartDate, EndDate, Destination); PUPIL (PupilID, PupilSurname, PupilFirstName).\n\n**Link with the tables.** The 1 : N relationship is implemented by the foreign key `TeacherID` placed in TRIP (the \"many\" side). The M : N relationship cannot be stored directly in a relational database: it is split into two one-to-many relationships through the link table PUPILTRIP(PupilID, TripID), whose composite primary key is made of the two foreign keys (PUPIL 1 : N PUPILTRIP and TRIP 1 : N PUPILTRIP).\n\nMarking: three entities; the two relationships named; the correct degrees (1 : N and M : N).",
+      "themes": [
+        "entity relationship modelling",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "ii(a)",
+      "enonce_markdown": "Using SQL statements, do the following using your favourite database management system (DBMS)\n\n(a) Create a database called TripsDB.",
+      "corrige_markdown": "```sql\nCREATE DATABASE TripsDB;\nUSE TripsDB;\n```\n\n`CREATE DATABASE` creates the empty database and `USE TripsDB;` selects it so that the following statements apply to it (MySQL / MariaDB syntax; in Microsoft SQL Server `USE TripsDB;` is also used; in PostgreSQL the database is created with `CREATE DATABASE TripsDB;` and selected by connecting to it, for example `\\c tripsdb`; SQLite has no `CREATE DATABASE`, the database is the file opened).",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "ii(b)",
+      "enonce_markdown": "In TripsDB, create all the relations given above.",
+      "corrige_markdown": "The tables must be created in an order that respects the foreign keys: TEACHER and PUPIL first (they reference nothing), then TRIP (references TEACHER), then PUPILTRIP (references PUPIL and TRIP).\n\n```sql\nCREATE TABLE TEACHER (\n    TeacherID  VARCHAR(5)  PRIMARY KEY,\n    Title      VARCHAR(10) NOT NULL,\n    FirstName  VARCHAR(30) NOT NULL,\n    Surname    VARCHAR(30) NOT NULL\n);\n\nCREATE TABLE TRIP (\n    TripID      VARCHAR(5)  PRIMARY KEY,\n    StartDate   DATE        NOT NULL,\n    EndDate     DATE        NOT NULL,\n    Destination VARCHAR(50) NOT NULL,\n    TeacherID   VARCHAR(5)  NOT NULL,\n    FOREIGN KEY (TeacherID) REFERENCES TEACHER (TeacherID)\n);\n\nCREATE TABLE PUPIL (\n    PupilID        VARCHAR(5)  PRIMARY KEY,\n    PupilSurname   VARCHAR(30) NOT NULL,\n    PupilFirstName VARCHAR(30) NOT NULL\n);\n\nCREATE TABLE PUPILTRIP (\n    PupilID VARCHAR(5) NOT NULL,\n    TripID  VARCHAR(5) NOT NULL,\n    PRIMARY KEY (PupilID, TripID),\n    FOREIGN KEY (PupilID) REFERENCES PUPIL (PupilID),\n    FOREIGN KEY (TripID)  REFERENCES TRIP (TripID)\n);\n```\n\n* Each table has the primary key of the paper (`PRIMARY KEY`; composite key `(PupilID, TripID)` for PUPILTRIP).\n* `TRIP.TeacherID` is a foreign key to TEACHER: a trip cannot be given to a teacher who does not exist (referential integrity).\n* `PUPILTRIP.PupilID` and `PUPILTRIP.TripID` are foreign keys, and together they form the primary key, so a pupil cannot be registered twice for the same trip.\n* The attribute order of the paper is respected (for PUPIL: PupilID, PupilSurname, PupilFirstName).\n\nThe four statements were run successfully with SQLite (module `sqlite3` of Python, version 3.50.4) on the sample data below; `DATE` columns hold text such as '2023-02-10' there, and foreign keys are enforced after `PRAGMA foreign_keys = ON;`. In MySQL / MariaDB / PostgreSQL the statements are valid as written.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "iii(a)",
+      "enonce_markdown": "Using the SQL insert command, populate the TEACHER relation with the following 3 rows of data\n\n| TEACHERID | TITLE | FIRSTNAME | SURNAME |\n|---|---|---|---|\n| T1 | Mr. | John | Book |\n| T2 | Mrs. | Mbong | Ngum |\n| T3 | Mr. | Aminde | Tom |",
+      "corrige_markdown": "```sql\nINSERT INTO TEACHER (TeacherID, Title, FirstName, Surname) VALUES ('T1', 'Mr.',  'John',   'Book');\nINSERT INTO TEACHER (TeacherID, Title, FirstName, Surname) VALUES ('T2', 'Mrs.', 'Mbong',  'Ngum');\nINSERT INTO TEACHER (TeacherID, Title, FirstName, Surname) VALUES ('T3', 'Mr.',  'Aminde', 'Tom');\n```\n\nTEACHER is filled first because TRIP refers to it. Check: `SELECT * FROM TEACHER;` returns the 3 rows above.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii(b)",
+      "enonce_markdown": "Using the SQL insert command, populate the TRIP relation of your database with 3-5 rows of trip data. The data for each trip should be consistent with data for the TEACHER relation.",
+      "corrige_markdown": "Each trip must carry the identifier of a teacher that exists in TEACHER (T1, T2 or T3); otherwise the foreign key is violated. Four sample trips (any 3 to 5 consistent rows are accepted):\n\n```sql\nINSERT INTO TRIP (TripID, StartDate, EndDate, Destination, TeacherID) VALUES ('TR01', '2023-02-10', '2023-02-12', 'Limbe',   'T1');\nINSERT INTO TRIP (TripID, StartDate, EndDate, Destination, TeacherID) VALUES ('TR02', '2023-03-05', '2023-03-06', 'Kribi',   'T2');\nINSERT INTO TRIP (TripID, StartDate, EndDate, Destination, TeacherID) VALUES ('TR03', '2023-04-14', '2023-04-16', 'Buea',    'T1');\nINSERT INTO TRIP (TripID, StartDate, EndDate, Destination, TeacherID) VALUES ('TR04', '2023-05-20', '2023-05-21', 'Bamenda', 'T3');\n```\n\nTeacher T1 supervises two trips (TR01 and TR03), which also gives the queries of (iv) something to find. Dates are in the form 'YYYY-MM-DD' and each EndDate is not before its StartDate. A test insert with a non-existent teacher (for example 'T9') is refused by the DBMS (\"FOREIGN KEY constraint failed\" in SQLite), which shows that the data is kept consistent.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii(c)",
+      "enonce_markdown": "Using the SQL insert command, populate the PUPIL relation with the following data\n\n| PupilID | PupilFIRSTNAME | PupilSURNAME |\n|---|---|---|\n| P001 | Neba | Ngu |\n| P002 | Samira | Bih |\n| P003 | Amina | Abu |",
+      "corrige_markdown": "```sql\nINSERT INTO PUPIL (PupilID, PupilFirstName, PupilSurname) VALUES ('P001', 'Neba',   'Ngu');\nINSERT INTO PUPIL (PupilID, PupilFirstName, PupilSurname) VALUES ('P002', 'Samira', 'Bih');\nINSERT INTO PUPIL (PupilID, PupilFirstName, PupilSurname) VALUES ('P003', 'Amina',  'Abu');\n```\n\nThe table in the question lists the first name before the surname, whereas the relation is defined as PUPIL(PupilID, PupilSurname, PupilFirstName). Naming the columns in the INSERT statement avoids swapping the two values.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iii(d)",
+      "enonce_markdown": "Using the SQL insert command, populate the relation PUPILTRIP such that its data is consistent with the relations PUPIL and TRIP relation.",
+      "corrige_markdown": "Each row of PUPILTRIP uses a PupilID of PUPIL (P001 to P003) and a TripID of TRIP (TR01 to TR04), and no pair appears twice (composite primary key). PUPIL and TRIP must be filled before this table.\n\n```sql\nINSERT INTO PUPILTRIP (PupilID, TripID) VALUES ('P001', 'TR01');\nINSERT INTO PUPILTRIP (PupilID, TripID) VALUES ('P002', 'TR01');\nINSERT INTO PUPILTRIP (PupilID, TripID) VALUES ('P003', 'TR01');\nINSERT INTO PUPILTRIP (PupilID, TripID) VALUES ('P001', 'TR02');\nINSERT INTO PUPILTRIP (PupilID, TripID) VALUES ('P001', 'TR03');\nINSERT INTO PUPILTRIP (PupilID, TripID) VALUES ('P002', 'TR03');\nINSERT INTO PUPILTRIP (PupilID, TripID) VALUES ('P003', 'TR04');\n```\n\nThis gives 7 rows: pupil P001 goes on three trips (TR01, TR02, TR03), P002 on two (TR01, TR03), P003 on two (TR01, TR04), and trip TR01 is attended by three pupils: both \"many\" sides of the many-to-many relationship are illustrated.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iv(a)",
+      "enonce_markdown": "Using SQL commands, write an SQL statement to query the database tables for each of the following:\n\n(a) The TripID, StartDate, EndDate and Destination of all trips surpevised by the teacher with teacher id T1.",
+      "corrige_markdown": "```sql\nSELECT TripID, StartDate, EndDate, Destination\nFROM TRIP\nWHERE TeacherID = 'T1';\n```\n\nA single table is needed: TRIP holds the teacher's identifier. With the sample data above (checked with SQLite) the result is:\n\n| TripID | StartDate | EndDate | Destination |\n|---|---|---|---|\n| TR01 | 2023-02-10 | 2023-02-12 | Limbe |\n| TR03 | 2023-04-14 | 2023-04-16 | Buea |",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "iv(b)",
+      "enonce_markdown": "Using SQL commands, write an SQL statement to query the database tables for each of the following:\n\n(b) The TripID and the name of pupil who attended a trip surpevised by the teacher with teacher if T1.",
+      "corrige_markdown": "The information is spread over three tables: TRIP (who supervises the trip), PUPILTRIP (who attended it) and PUPIL (the names). The tables are joined on their keys:\n\n```sql\nSELECT TRIP.TripID, PUPIL.PupilFirstName, PUPIL.PupilSurname\nFROM TRIP\nJOIN PUPILTRIP ON PUPILTRIP.TripID = TRIP.TripID\nJOIN PUPIL ON PUPIL.PupilID = PUPILTRIP.PupilID\nWHERE TRIP.TeacherID = 'T1'\nORDER BY TRIP.TripID, PUPIL.PupilSurname;\n```\n\n`ORDER BY` only makes the output tidy. An equivalent form uses the old join syntax: `FROM TRIP, PUPILTRIP, PUPIL WHERE TRIP.TripID = PUPILTRIP.TripID AND PUPIL.PupilID = PUPILTRIP.PupilID AND TRIP.TeacherID = 'T1'`. With the sample data (checked with SQLite) the result is:\n\n| TripID | PupilFirstName | PupilSurname |\n|---|---|---|\n| TR01 | Amina | Abu |\n| TR01 | Samira | Bih |\n| TR01 | Neba | Ngu |\n| TR03 | Samira | Bih |\n| TR03 | Neba | Ngu |\n\nTrip TR02 (teacher T2) and trip TR04 (teacher T3) do not appear. The pupil's name is given by the two columns PupilFirstName and PupilSurname (they may be joined with `||` or `CONCAT`, according to the DBMS).\n\nRemember the NB of the paper: print the statements and their results as proof of the work.",
+      "themes": [
+        "sql queries",
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

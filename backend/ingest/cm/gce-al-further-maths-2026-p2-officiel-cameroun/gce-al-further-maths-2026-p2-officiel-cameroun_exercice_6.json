@@ -1,0 +1,53 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2026-p2-officiel-cameroun.pdf",
+  "numero_exercice": "6",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2026. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 6 (b) : le sujet écrit « C, the set of all non-zero complex numbers » en notant l'ensemble C ; il est lu comme l'ensemble des complexes non nuls (C privé de 0), ce que précise la phrase. L'énoncé recopie la notation imprimée."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Use the Chinese Remainder Theorem, or otherwise, to solve the system of congruences below,\n\n$$\\begin{cases} x \\equiv 5 \\pmod 7\\\\ x \\equiv 3 \\pmod{11}\\\\ x \\equiv 8 \\pmod{15}\\end{cases}$$ *[5 marks]*",
+      "corrige_markdown": "The moduli $7$, $11$ and $15$ are pairwise coprime, so the Chinese Remainder Theorem applies and the solution is unique modulo $N = 7\\times 11\\times 15 = 1155$.\n\n**Partial products.** $N_1 = \\dfrac{N}{7} = 165$, $N_2 = \\dfrac{N}{11} = 105$, $N_3 = \\dfrac{N}{15} = 77$.\n\n**Inverses.** Find $y_i$ with $N_i y_i \\equiv 1 \\pmod{m_i}$:\n\n* $165 \\equiv 4 \\pmod 7$ and $4\\times 2 = 8 \\equiv 1$, so $y_1 = 2$.\n* $105 \\equiv 6 \\pmod{11}$ and $6\\times 2 = 12 \\equiv 1$, so $y_2 = 2$.\n* $77 \\equiv 2 \\pmod{15}$ and $2\\times 8 = 16 \\equiv 1$, so $y_3 = 8$.\n\n**Combine.**\n\n$$x \\equiv 5(165)(2) + 3(105)(2) + 8(77)(8) = 1650 + 630 + 4928 = 7208 \\pmod{1155}.$$\n\nSince $7208 = 6\\times 1155 + 278$ ($6\\times 1155 = 6930$), we get $x \\equiv 278 \\pmod{1155}$.\n\n**Check.** $278 = 7\\times 39 + 5$ ✓; $278 = 11\\times 25 + 3$ ✓; $278 = 15\\times 18 + 8$ ✓.\n\n$$\\boxed{x \\equiv 278 \\pmod{1155}}$$\n\nthat is, $x = 278 + 1155k$, $k \\in \\mathbb Z$.",
+      "themes": [
+        "linear congruences",
+        "modular arithmetic"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Show that $\\mathbb C$, the set of all non-zero complex numbers under multiplication is a group. *[5 marks]*",
+      "corrige_markdown": "Let $G = \\mathbb C\\setminus\\{0\\}$ (the set of non-zero complex numbers) with the operation of multiplication. We check the four group axioms.\n\n**1. Closure.** Let $z, w \\in G$. Then $zw$ is a complex number, and $|zw| = |z||w| \\ne 0$ because $|z| \\ne 0$ and $|w| \\ne 0$. So $zw \\ne 0$ and $zw \\in G$.\n\n**2. Associativity.** Multiplication of complex numbers is associative: $(zw)u = z(wu)$ for all $z, w, u \\in \\mathbb C$, in particular for all elements of $G$. (If $z = a + ib$, etc., this follows from the associativity of multiplication of real numbers.)\n\n**3. Identity.** $1 = 1 + 0i$ is non-zero, so $1 \\in G$, and $1\\cdot z = z\\cdot 1 = z$ for all $z \\in G$.\n\n**4. Inverses.** Let $z = a + ib \\in G$, so $a^2 + b^2 = |z|^2 \\ne 0$. Put\n\n$$z^{-1} = \\frac{\\bar z}{|z|^2} = \\frac{a - ib}{a^2 + b^2}.$$\n\nThen $z\\,z^{-1} = \\dfrac{z\\bar z}{|z|^2} = \\dfrac{|z|^2}{|z|^2} = 1$, and $z^{-1} \\ne 0$ since $|z^{-1}| = \\dfrac{1}{|z|} \\ne 0$. So $z^{-1} \\in G$ and is the inverse of $z$ (multiplication is also commutative, so the left and right inverses coincide).\n\nAll four axioms hold, so $(\\mathbb C\\setminus\\{0\\}, \\times)$ is a group (indeed an abelian group). $\\blacksquare$\n\n**Remark.** $0$ must be excluded: it has no multiplicative inverse, so $(\\mathbb C, \\times)$ is not a group.",
+      "themes": [
+        "group theory"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

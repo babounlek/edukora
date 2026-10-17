@@ -1,0 +1,54 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Further Mathematics",
+  "epreuve_source": "gce-al-further-maths-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0775",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Further Mathematics Paper 2 (0775), ADVANCED LEVEL, June 2021. Duration: three hours.**\n\nAnswer ALL 10 questions. For your guidance, the approximate mark allocation for parts of each question is indicated. Mathematical formulae and tables published by the Board, and noiseless non-programmable electronic calculators are allowed. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "Let\n\n$$f(x) = \\frac{2x^3 + x + 2}{(x^2+1)(x^2+x+1)}.$$",
+  "groupes": [],
+  "points": "",
+  "figures": [],
+  "incertitudes": [
+    "Question 2 (b) : défaut d'impression. La valeur imprimée ln 3 - 5π/4 (environ -2,83) est négative alors que f(x) > 0 sur [0, 1] ; la valeur exacte, vérifiée par intégration numérique (Simpson), est ln(9/2) + π(√3/9 - 1/4), environ 1,3233. Le corrigé le démontre et ne corrige pas l'énoncé.",
+    "Question 2 : le sujet imprime « Express f(x) in partial fractions where f(x) = ... » ; la définition de f est placée dans l'introduction commune de l'exercice. Les points des deux parties sont imprimés « (4 marks) » et « (4marks) »."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Express $f(x)$ in partial fractions.",
+      "corrige_markdown": "The degree of the numerator (3) is less than the degree of the denominator (4), and $x^2+1$ and $x^2+x+1$ are irreducible over $\\mathbb{R}$ (discriminants $-4$ and $-3$). So\n\n$$\\frac{2x^3 + x + 2}{(x^2+1)(x^2+x+1)} \\equiv \\frac{Ax + B}{x^2+1} + \\frac{Cx + D}{x^2+x+1}.$$\n\nMultiplying through by the denominator:\n\n$$2x^3 + x + 2 \\equiv (Ax+B)(x^2+x+1) + (Cx+D)(x^2+1).$$\n\nEquating coefficients:\n\n* $x^3$: $A + C = 2$\n* $x^2$: $A + B + D = 0$\n* $x^1$: $A + B + C = 1$\n* $x^0$: $B + D = 2$\n\nFrom the $x^2$ and $x^0$ equations, $A + 2 = 0$, so $A = -2$ and then $C = 4$. The $x^1$ equation gives $-2 + B + 4 = 1$, so $B = -1$, and $D = 2 - B = 3$.\n\n$$\\boxed{f(x) = \\frac{-2x - 1}{x^2+1} + \\frac{4x + 3}{x^2+x+1}}.$$\n\n**Check at $x = 0$:** $f(0) = 2$ and $-1 + 3 = 2$. **Check at $x = 1$:** $f(1) = \\tfrac{5}{6}$ and $\\tfrac{-3}{2} + \\tfrac{7}{3} = \\tfrac{5}{6}$.",
+      "themes": [
+        "partial fractions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Hence, or otherwise, show that $\\displaystyle\\int_0^1 f(x)\\,dx = \\ln 3 - \\tfrac{5}{4}\\pi$.",
+      "corrige_markdown": "**Printed result not reproduced.** Integrate the partial fractions term by term.\n\n$$\\int_0^1 \\frac{-2x}{x^2+1}\\,dx = \\Big[-\\ln(x^2+1)\\Big]_0^1 = -\\ln 2, \\qquad \\int_0^1 \\frac{-1}{x^2+1}\\,dx = \\Big[-\\arctan x\\Big]_0^1 = -\\frac{\\pi}{4}.$$\n\nFor the second fraction write $4x + 3 = 2(2x+1) + 1$ and $x^2 + x + 1 = \\left(x + \\tfrac12\\right)^2 + \\tfrac34$:\n\n$$\\int_0^1 \\frac{4x+3}{x^2+x+1}\\,dx = \\Big[2\\ln(x^2+x+1)\\Big]_0^1 + \\int_0^1 \\frac{dx}{\\left(x+\\frac12\\right)^2 + \\frac34} = 2\\ln 3 + \\frac{2}{\\sqrt3}\\Big[\\arctan\\frac{2x+1}{\\sqrt3}\\Big]_0^1.$$\n\nSince $\\arctan\\sqrt3 = \\tfrac{\\pi}{3}$ and $\\arctan\\tfrac{1}{\\sqrt3} = \\tfrac{\\pi}{6}$, the last bracket is $\\tfrac{\\pi}{6}$ and the term equals $\\dfrac{2}{\\sqrt3}\\cdot\\dfrac{\\pi}{6} = \\dfrac{\\pi}{3\\sqrt3} = \\dfrac{\\pi\\sqrt3}{9}$.\n\nAdding the four pieces:\n\n$$\\int_0^1 f(x)\\,dx = 2\\ln 3 - \\ln 2 - \\frac{\\pi}{4} + \\frac{\\pi\\sqrt3}{9} = \\ln\\frac92 + \\pi\\left(\\frac{\\sqrt3}{9} - \\frac14\\right) \\approx 1.3233.$$\n\n**This is not the printed value.** $\\ln 3 - \\tfrac54\\pi \\approx -2.83$ is negative, which is impossible here: for $0 \\le x \\le 1$ the numerator $2x^3 + x + 2$ and both factors of the denominator are positive, so $f(x) > 0$ (for instance $f(0) = 2$) and the integral must be positive. A numerical integration (Simpson's rule) gives $1.32328$, in agreement with the exact value above. The statement to be shown therefore appears to contain a misprint; the method (partial fractions, then a logarithm and two arctangents) is unaffected.",
+      "themes": [
+        "partial fractions",
+        "integration of rational functions"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

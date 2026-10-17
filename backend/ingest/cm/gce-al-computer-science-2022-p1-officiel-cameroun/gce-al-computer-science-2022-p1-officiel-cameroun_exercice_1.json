@@ -1,0 +1,1382 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2022-p1-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 1,
+  "code_matiere": "0795",
+  "duree_epreuve": "1h30",
+  "introduction_markdown": "GENERAL CERTIFICATE OF EDUCATION BOARD, General Certificate of Education Examination. 0795 COMPUTER SCIENCE 1, ADVANCED LEVEL, JUNE 2022. Multiple choice question paper. Duration: one and a half hours. Mobile phones are NOT allowed in the examination room. Instructions to candidates: use a soft HB pencil throughout the examination and do not open the booklet until told to do so; check that the booklet is headed \"Advanced Level - 0795 Computer Science 1\" and fill in the required information (Candidate Name, Exam Session, Subject Code and Candidate Identification Number) on the answer sheet without creasing or folding it. Answer ALL the 50 questions in this examination. All questions carry equal marks. Each question has FOUR suggested answers: A, B, C and D. Decide on which answer is correct, find the number of the question on the answer sheet and draw a horizontal line across the letter to join the square brackets for the answer you have chosen. Mark only one answer for each question (if you mark more than one answer, you will score a zero for that question). Avoid spending too much time on any one question. Do all rough work in the booklet. At the end of the examination, the invigilator shall collect the answer sheet first and the question booklet.",
+  "enonce_intro_markdown": "",
+  "groupes": [],
+  "regles_choix": [],
+  "points": "",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-al-computer-science-2022-p1-officiel-cameroun_exercice_1_fig_1.png",
+      "page_source": 2,
+      "type": "schema",
+      "legende": "Logic circuit of question 5: a NOR gate (inputs A and B), a NOT gate on A feeding an AND gate with B, and a final NAND gate giving R.",
+      "indispensable": true,
+      "lisibilite": "moyenne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "gce-al-computer-science-2022-p1-officiel-cameroun_exercice_1_fig_2.png",
+      "page_source": 5,
+      "type": "schema",
+      "legende": "Binary search tree of question 34: root 9; children 5 and 13; leaves 3, 7, 11 and 15.",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Sujet scanné (CamScanner, filigranes gcerevision.com), sans corrigé officiel ni clé imprimée : toutes les clés sont déduites et tous les corrigés rédigés. Calculs recalculés par script Python : Q4 (complément à 1), Q5 et Q6 (tables de vérité du circuit et des options), Q21 (les six ordres d'arrivée), Q31 et Q33 (fermetures d'attributs, jointure des décompositions sur les cinq lignes de R avec sqlite3), Q32 (requête exécutée avec sqlite3 sur un exemple), Q38 (traduction Python de l'algorithme : p = 12), Q49 (traduction Python de la fonction récursive : -9).",
+    "Page de garde vérifiée : GENERAL CERTIFICATE OF EDUCATION BOARD, JUNE 2022, ADVANCED LEVEL, 0795 COMPUTER SCIENCE 1, QCM, une heure et demie, 50 questions de même valeur. Seuls les téléphones sont déclarés interdits (les calculatrices ne sont pas mentionnées). Aucun point n'est imprimé. Le sujet ne contient aucun code C ou Pascal : rien n'a donc été compilé, et le seul pseudocode (Q38) a été simulé en Python.",
+    "Marge droite rognée à la numérisation de la page 3 : le dernier mot de certaines lignes est coupé (Q18 « are », Q19 « Jill », Q21 « In », Q22 « by », Q23 « is »). Les énoncés ont été reconstitués sans ambiguïté sur le sens.",
+    "Q5 : le circuit est petit et flou sur le scan. Lecture retenue : la porte du haut est un NON-OU sur A et B ; la verticale qui part de la ligne de A alimente l'inverseur, dont la sortie va à une porte ET avec B (B descend à gauche jusqu'à la seconde entrée) ; la dernière porte est un NON-ET des deux sorties. Les barres des options sont lues ainsi : A = non(Ā.B.non(A+B)), B = non(A.B̄.(A+B)), C = non(Ā+B+Ā.B), D = non(A.B+Ā.B̄). Avec cette lecture, R vaut toujours 1 et seule l'option A est identiquement égale à 1 ; l'option A est aussi la seule dont l'écriture reproduit exactement les trois portes (NON-ET de Ā.B et de non(A+B)), ce qui conforte la lecture.",
+    "Q6 : la lecture des barres des options A et D du scan est incertaine (nombre de barres sur Ā.B et sur A.B), mais le résultat ne change pas : la table donne R = B, seule l'option C (Ā.B + A.B) la réalise.",
+    "Q33 : les soulignements des clés dans les options sont peu lisibles sur le scan (option B : seul studID semble souligné, avec les fautes d'impression « studID » et « cscID ») ; ils ont été recopiés au mieux. Les options A et D sont toutes deux en 3NF et reconstituent R (vérifié avec sqlite3) : la question est convertie en ouverte, réponse visée D (la plus économique, les deux clés candidates stuID et email soulignées dans R1).",
+    "Fautes d'impression du sujet conservées ou corrigées : Q13 « she forget in a taxi » (recopié tel quel), Q33 option B « studID » et « cscID » (recopiés), Q39 « fucntions » (corrigé en « functions »), Q44 option D « Algorithm. » qui n'est pas un algorithme de tri (recopié ; la réponse C Quick sort reste la seule valable), Q38 l'affectation est imprimée avec une flèche (écrite « <- »), Q49 « otherwise » = cas b < 0.",
+    "Clés déduites moins certaines, conservées en QCM : Q1 (MISD retenu à cause de « alternative sets of instructions » sur « a given problem » ; MIMD défendable), Q11 (executive information system, d'après « senior management »), Q15 (ordre batch, multi-tasking, multi-user), Q25 (diagrammes de flux de données ; les organigrammes sont défendables), Q27 (multiplexeur ; codec défendable), Q29 (mémoire tampon ; synchronisation défendable), Q41 (manuel d'installation ; plan de test défendable), Q45 (analyse ; spécification défendable), Q46 (impératif). Les devinettes Q10 et Q12, les questions à deux réponses défendables (Q22, Q23, Q33, Q43), Q26 et Q39 sont converties en ouvertes.",
+    "Converties en questions ouvertes par le relecteur (clé ou options discutables) : 10, 12, 22, 23, 26, 33, 39, 43. Devinettes (Q10, Q12), deux réponses défendables (Q22, Q23, Q33, Q43), énoncé ambigu (Q26, Q39) : la réponse visée est donnée dans le corrigé."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Alternative sets of instructions could be used to solve a given problem. To do so quickly, in which of the following classes of machines should you select your machine?",
+      "corrige_markdown": "Flynn's classification describes a machine by the number of instruction streams and data streams it handles. The question has two clues: \"**alternative sets of instructions**\" means several instruction streams, and \"**a given problem**\" means one data set (the same problem data) that all the alternatives work on at the same time, the first one to finish giving the quick answer. That is **multiple-instruction, single-data (MISD)**.\n\n- SISD is the ordinary sequential computer: one instruction stream, so the alternatives would have to be tried one after the other.\n- SIMD applies the *same* instruction to many data items (vector or array processors): the alternatives are not different instructions.\n- MIMD runs different instructions on different data, which suits independent tasks rather than several methods applied to one problem.\n\n**Answer: C.**",
+      "themes": [
+        "parallel computer architectures"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Single-instruction, single-data."
+        },
+        {
+          "lettre": "b",
+          "texte": "Single-instruction, multiple-data."
+        },
+        {
+          "lettre": "c",
+          "texte": "Multiple-instruction, single-data."
+        },
+        {
+          "lettre": "d",
+          "texte": "Multiple-instruction, multiple-data."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Paul wanted his job to be done on machines when they are available, and to use hardware he could not afford to buy. It was best he works on a:",
+      "corrige_markdown": "Two clues point to a **distributed computer** (a system of many separate computers linked by a network that share the work): the job runs \"when machines are available\" (idle machines of the network are used as they become free) and Paul uses hardware owned by others that he could not afford to buy himself. A workstation and a mini computer are single machines he would have to own, and a parallel computer is one tightly coupled machine with many processors, which is exactly the kind of expensive hardware he could not buy. **Answer: B.**",
+      "themes": [
+        "parallel and distributed computing"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Workstation Computer."
+        },
+        {
+          "lettre": "b",
+          "texte": "Distributed Computer."
+        },
+        {
+          "lettre": "c",
+          "texte": "Mini Computer."
+        },
+        {
+          "lettre": "d",
+          "texte": "Parallel Computer."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "It is used to provisionally hold bulky data to and from an executing program, for immediate use or for other processes. It is a:",
+      "corrige_markdown": "Data that a running program reads and writes must be held in **main memory (RAM)**: it is large enough to hold bulky data, it is fast enough for immediate use by the processor, and its content is only provisional (volatile, lost when the power is switched off). A hard drive and a USB drive are permanent secondary storage, not used directly by the processor, and cache memory is very fast but very small, so it cannot hold bulky data. **Answer: B.**",
+      "themes": [
+        "computer memory"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Hard drive."
+        },
+        {
+          "lettre": "b",
+          "texte": "Main memory."
+        },
+        {
+          "lettre": "c",
+          "texte": "Cache memory."
+        },
+        {
+          "lettre": "d",
+          "texte": "USB drives."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "What is the result of the following in one's complement notation?\n\n01 110 101 - 01 001 100.",
+      "corrige_markdown": "In one's complement, a subtraction is done by adding the one's complement (bitwise inverse) of the subtrahend, then adding the end-around carry.\n\n- subtrahend $01001100$, inverted: $10110011$;\n- $01110101 + 10110011 = 1\\,00101000$ (a carry leaves the 8th bit);\n- end-around carry: $00101000 + 1 = 00101001$.\n\nCheck in decimal: $01110101 = 117$, $01001100 = 76$, and $117 - 76 = 41 = 00101001_2$ (confirmed by a Python script). Option B is the result when the end-around carry is forgotten; C and D are not results of this subtraction. **Answer: A.**",
+      "themes": [
+        "binary arithmetic",
+        "number systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "00 101 001."
+        },
+        {
+          "lettre": "b",
+          "texte": "00 101 000."
+        },
+        {
+          "lettre": "c",
+          "texte": "10 101 001."
+        },
+        {
+          "lettre": "d",
+          "texte": "10 011 000."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "What is R in the following circuit diagram?\n\n![fig-1](gce-al-computer-science-2022-p1-officiel-cameroun_exercice_1_fig_1.png)",
+      "corrige_markdown": "Read the circuit gate by gate:\n\n- the top gate is an OR gate with an output bubble, a **NOR** gate, with inputs $A$ and $B$: its output is $\\overline{A+B}$;\n- the NOT gate inverts $A$, and the AND gate combines this with $B$: its output is $\\bar A\\cdot B$;\n- the last gate is an AND gate with an output bubble, a **NAND** gate, whose inputs are the two outputs above.\n\n$$R=\\overline{\\overline{A+B}\\cdot\\bar A\\cdot B}$$\n\nThis is option A. A truth table computed by script confirms it (values of $R$ for each $(A,B)$):\n\n| expression | (0,0) | (0,1) | (1,0) | (1,1) |\n|---|---|---|---|---|\n| circuit | 1 | 1 | 1 | 1 |\n| option A | 1 | 1 | 1 | 1 |\n| option B | 1 | 1 | 0 | 1 |\n| option C | 0 | 0 | 1 | 0 |\n| option D | 0 | 1 | 1 | 0 |\n\n$R$ is in fact always 1, because $\\bar A\\cdot B=1$ only for $(A,B)=(0,1)$, and then $\\overline{A+B}=0$; so the product inside the NAND is always 0. Only option A is always 1. **Answer: A.**",
+      "themes": [
+        "digital logic circuits",
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "$\\overline{\\bar A\\cdot B\\cdot(\\overline{A+B})}$."
+        },
+        {
+          "lettre": "b",
+          "texte": "$\\overline{A\\cdot\\bar B\\cdot(A+B)}$."
+        },
+        {
+          "lettre": "c",
+          "texte": "$\\overline{\\bar A+B+\\bar A\\cdot B}$."
+        },
+        {
+          "lettre": "d",
+          "texte": "$\\overline{A\\cdot B+\\bar A\\cdot\\bar B}$."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Which of the following corresponds to the truth table adjacent?\n\n| A | B | R |\n|---|---|---|\n| F | F | F |\n| F | T | T |\n| T | F | F |\n| T | T | T |",
+      "corrige_markdown": "The table gives $R=B$ whatever $A$ is (R is true exactly when B is true). Evaluate the options row by row (checked by script, rows in the order FF, FT, TF, TT with F = 0 and T = 1):\n\n- A: $\\bar A\\bar B+\\overline{\\bar A B}$ gives 1, 0, 1, 1: wrong;\n- B: $A\\cdot\\overline{B+\\bar A}\\cdot B = A\\cdot\\bar B\\cdot A\\cdot B = 0$ (it contains $\\bar B\\cdot B$): 0, 0, 0, 0, wrong;\n- C: $\\bar A B+AB = B(\\bar A+A)=B$: 0, 1, 0, 1, correct;\n- D: $\\overline{AB+\\bar A\\bar B}$ is the exclusive OR $A\\oplus B$: 0, 1, 1, 0, wrong.\n\n**Answer: C.**",
+      "themes": [
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "$\\bar A\\cdot\\bar B+\\overline{\\bar A\\cdot B}$."
+        },
+        {
+          "lettre": "b",
+          "texte": "$A\\cdot\\overline{B+\\bar A}\\cdot B$."
+        },
+        {
+          "lettre": "c",
+          "texte": "$\\bar A\\cdot B+A\\cdot B$."
+        },
+        {
+          "lettre": "d",
+          "texte": "$\\overline{A\\cdot B+\\bar A\\cdot\\bar B}$."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Which of the following must be encoded in a machine's instruction code?",
+      "corrige_markdown": "An instruction code (machine instruction) always contains an **operation code (opcode)** that tells the control unit which operation to execute. The other elements are not always encoded: operand values may be in registers or memory (only an immediate operand is inside the instruction), the destination may be implied (for example the accumulator or the top of the stack), and the next operation is normally the next instruction in memory, found through the program counter, unless a jump or branch instruction changes it. **Answer: A.**",
+      "themes": [
+        "processor instruction sets"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "The operation to execute."
+        },
+        {
+          "lettre": "b",
+          "texte": "The values to use in operations."
+        },
+        {
+          "lettre": "c",
+          "texte": "The destination where to keep results."
+        },
+        {
+          "lettre": "d",
+          "texte": "The next operation to carry out."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "8",
+      "enonce_markdown": "A machine's CPU takes arguments for its binary operations from a stack. Surely it is a:",
+      "corrige_markdown": "In a stack machine, an operation such as ADD pops its two operands from the top of the stack and pushes the result back, so the instruction names **no operand address** at all: it is a **zero-address machine**. A three-address instruction names two sources and a destination, a two-address instruction names two operands (one of them is also the destination), and a one-address machine uses an accumulator as the implied second operand. **Answer: D.**",
+      "themes": [
+        "processor instruction sets",
+        "addressing modes"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Three-address machine."
+        },
+        {
+          "lettre": "b",
+          "texte": "Two-address machine."
+        },
+        {
+          "lettre": "c",
+          "texte": "One-address machine."
+        },
+        {
+          "lettre": "d",
+          "texte": "Zero-address machine."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "9",
+      "enonce_markdown": "In immediate mode addressing of machines:",
+      "corrige_markdown": "In **immediate addressing** the operand itself (the constant) is stored in the operand field of the instruction, so no memory access is needed to fetch it (for example `ADD #5`). Option C describes a mode where the field holds an address (direct addressing) and option D is also an address-based mode; option A is a vague wording that every mode could claim, since every operand is eventually used. **Answer: B.**",
+      "themes": [
+        "addressing modes"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "The operand of the instruction is used immediately."
+        },
+        {
+          "lettre": "b",
+          "texte": "The operand value is given as part of the instruction."
+        },
+        {
+          "lettre": "c",
+          "texte": "The operand field holds an address for its immediate use."
+        },
+        {
+          "lettre": "d",
+          "texte": "The operand address is given as part of the instruction."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "10",
+      "enonce_markdown": "It is said to exploit creativity to satisfy expert users to manage scenarios for profitable outcomes, which could also be recreational. It must be:\n\n*Options as printed:* A) Computer Games.   B) Computer Aided Design.   C) Information Systems.   D) Software Systems.",
+      "corrige_markdown": "The description is a riddle about a class of computer application. \"Exploit creativity\", \"manage scenarios\", \"profitable outcomes\" (winning, scoring, earning) and \"recreational\" together point to **computer games**, which are built from creative scenarios that experienced players handle for rewards and which are also used for recreation. Computer aided design supports engineers and designers but is not recreational; \"information systems\" and \"software systems\" are far too general to match \"scenarios\" and \"recreational\".\n\nThe printed wording is vague enough that another reading of the clues is possible.\n\n**Intended answer: A (Computer Games).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "computer applications"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "11",
+      "enonce_markdown": "It is good at repetitive tasks, organises information for senior management to act on, typically using data from routine daily information. It must be:",
+      "corrige_markdown": "The clue \"organises information for senior management to act on\" describes an **executive information system (EIS)**: it summarises the data produced by the daily routine operations of the organisation (transactions) into a form senior executives can use for decisions. A robot is a machine that does physical repetitive work and an intelligent machine is a machine that mimics reasoning; neither produces management information. A \"business information system\" is the general name for the system that processes the daily routine data, but it is not aimed specifically at senior management. **Answer: D.**",
+      "themes": [
+        "information systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "A robot."
+        },
+        {
+          "lettre": "b",
+          "texte": "An intelligent machine."
+        },
+        {
+          "lettre": "c",
+          "texte": "A Business information system."
+        },
+        {
+          "lettre": "d",
+          "texte": "Executive information system."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "12",
+      "enonce_markdown": "We use them to make sure our loved ones are okay, to get information from various parts of the world, and even to track information in organisations.\n\n*Options as printed:* A) Management Information Systems.   B) Information & Communication Systems.   C) Geographic Information Systems.   D) Health Information Systems.",
+      "corrige_markdown": "The three uses are communication (\"make sure our loved ones are okay\", by calls and messages), information gathering (\"information from various parts of the world\", for example from the Internet) and organisational record keeping (\"track information in organisations\"). Only **information and communication systems** cover all three. A management information system serves managers only, a geographic information system handles map and location data, and a health information system is limited to health records.\n\nThe riddle can be read in other ways (for example tracking people with a geographic system).\n\n**Intended answer: B (Information & Communication Systems).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "information systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "13",
+      "enonce_markdown": "In handling data, which of the following is a breach of privacy?",
+      "corrige_markdown": "Privacy means that personal data is revealed only with the consent of the person concerned. In option C the taxi driver publishes the *medical record of another person* (Bih) that he found by chance: the owner did not agree, so privacy is breached. In A the person who entered the data checks it (a normal verification), in B the data owner moves his own data between his own devices, and in D Idi publishes his **own** record, which he is free to do. **Answer: C.**",
+      "themes": [
+        "data protection and privacy"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Let Zia verify data he must have input."
+        },
+        {
+          "lettre": "b",
+          "texte": "Transfer computer data to your phone."
+        },
+        {
+          "lettre": "c",
+          "texte": "The taxi driver makes public Bih's medical record she forget in a taxi."
+        },
+        {
+          "lettre": "d",
+          "texte": "Idi makes public his own medical record."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "14",
+      "enonce_markdown": "Which of the following is a computer threat that affects network availability to authorised users?",
+      "corrige_markdown": "Availability means that authorised users can use the service when they need it. Flooding a website with a huge number of requests is a **denial-of-service (DoS) attack**: the server is overwhelmed and cannot answer genuine users. An illegal password change attacks authentication and confidentiality, a corrupted file system attacks the integrity of the stored data, and spoofing (pretending to be another sender) attacks authenticity. **Answer: A.**",
+      "themes": [
+        "computer security threats"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Flood a website with service requests."
+        },
+        {
+          "lettre": "b",
+          "texte": "Illegal change to someone's password."
+        },
+        {
+          "lettre": "c",
+          "texte": "Corruption of a file system in a network."
+        },
+        {
+          "lettre": "d",
+          "texte": "Spoofing where data is sent in a network."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "15",
+      "enonce_markdown": "In the early days of computing, operating systems evolved in the following order:",
+      "corrige_markdown": "The historical sequence is: **batch systems** first (jobs grouped and run one after another without user interaction), then **multi-tasking** (multiprogramming: several programs kept in memory so the processor is never idle), then **multi-user** (time-sharing: several users working at terminals at the same time). Options A and B start with later kinds of system, and option D puts real-time, a specialised kind of system, in the general line of evolution after multi-user systems. **Answer: C.**",
+      "themes": [
+        "operating system types"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Multi-tasking, multi-user, online."
+        },
+        {
+          "lettre": "b",
+          "texte": "Multi-user, real-time, online."
+        },
+        {
+          "lettre": "c",
+          "texte": "Batch, multi-tasking, multi-user."
+        },
+        {
+          "lettre": "d",
+          "texte": "Batch, multi-user, real-time."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "16",
+      "enonce_markdown": "Spatial databases record:",
+      "corrige_markdown": "A spatial database stores objects together with their **position and spatial relationships** (distance, adjacency, containment, overlap) in a space, the surface of the earth being only the most common example (it can also be a floor plan or a chip layout). Option B wrongly limits the space to fixed positions on the earth surface, and options C and D describe changing values or changing relationships, which is temporal data, not spatial data. **Answer: A.**",
+      "themes": [
+        "database systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Objects and their relationships as they are laid out in some space, like on earth."
+        },
+        {
+          "lettre": "b",
+          "texte": "Objects and their relationships at fixed positions on the surface of the earth."
+        },
+        {
+          "lettre": "c",
+          "texte": "Record changing values and relationships at fixed positions on earth."
+        },
+        {
+          "lettre": "d",
+          "texte": "Record the values of objects as their relationships change on earth."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "17",
+      "enonce_markdown": "Some types of software must be used whenever we use a machine, and so set up the environment in which our machine as well as end-user tasks run. They are:",
+      "corrige_markdown": "**System programs** (the operating system and its related programs) are needed whenever the machine is used: they manage the hardware and provide the environment in which both the machine itself and the end-user programs run. Application programs do the users' tasks, library programs are collections of routines that other programs call, and utility programs perform housekeeping tasks (backup, disk defragmentation) when requested. **Answer: B.**",
+      "themes": [
+        "system software"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Application programs."
+        },
+        {
+          "lettre": "b",
+          "texte": "Systems programs."
+        },
+        {
+          "lettre": "c",
+          "texte": "Library programs."
+        },
+        {
+          "lettre": "d",
+          "texte": "Utility programs."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "18",
+      "enonce_markdown": "Which of the following compiler phases best ensure program instruction components are correctly put together?",
+      "corrige_markdown": "Putting the components of an instruction together correctly is a matter of **form**: lexical analysis groups the characters into valid tokens (keywords, identifiers, operators) and syntax analysis checks that the tokens are assembled according to the grammar of the language (the parse tree). Code generation and optimisation come later and work on a program already known to be well formed, and code execution is not a phase of the compiler. **Answer: A.**",
+      "themes": [
+        "translators and compilers"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Lexical analysis and syntax analysis."
+        },
+        {
+          "lettre": "b",
+          "texte": "Syntax analysis and code generation."
+        },
+        {
+          "lettre": "c",
+          "texte": "Code generation and code optimisation."
+        },
+        {
+          "lettre": "d",
+          "texte": "Code optimisation and code execution."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "19",
+      "enonce_markdown": "Joe, an occasional user of his machine, avoids technical details and works mostly on programs. Jill manages the technical details of servers for many people, and often scripts specialised commands. It is best for Joe and Jill respectively to use:",
+      "corrige_markdown": "A graphical user interface (**GUI**, such as MS Windows) hides technical details behind windows, icons and menus and is the best choice for an occasional user who works with application programs. A command-line interface (**CLI**, such as the Linux shell) gives precise control, remote administration and scripting of commands, which is what a server administrator needs. So Joe uses the Windows GUI and Jill the Linux CLI. **Answer: A.**",
+      "themes": [
+        "operating systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "MS Windows GUI; Linux CLI."
+        },
+        {
+          "lettre": "b",
+          "texte": "MS Windows GUI; MS Windows GUI."
+        },
+        {
+          "lettre": "c",
+          "texte": "Linux CLI; MS Windows GUI."
+        },
+        {
+          "lettre": "d",
+          "texte": "Linux CLI; Linux CLI."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "20",
+      "enonce_markdown": "How does demand-paged memory allocation differ from paged and segmented allocations?",
+      "corrige_markdown": "In plain paging and segmentation the whole program is loaded into main memory before it runs. In **demand paging** a page is loaded only when the program first refers to it: the reference to a page that is not in main memory causes a **page fault**, and the operating system then fetches the missing page from the disk into a free frame. Statements A and C are true of all paged schemes, and B mixes paging and segmentation. **Answer: D.**",
+      "themes": [
+        "virtual memory",
+        "paging and segmentation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Executing pages are in main memory."
+        },
+        {
+          "lettre": "b",
+          "texte": "Page sizes contain program segments."
+        },
+        {
+          "lettre": "c",
+          "texte": "Data is stored in equal-sized pages in main memory."
+        },
+        {
+          "lettre": "d",
+          "texte": "A page fault brings missing pages to main memory."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "21",
+      "enonce_markdown": "Suppose Jobs J1, J2 and J3 require 8, 5 and 2 units of time respectively to execute and a First-Come First-Served scheduling policy is used. In which order should they arrive in order to ensure the smallest total wait time?",
+      "corrige_markdown": "With First-Come First-Served, each job waits for the sum of the execution times of the jobs before it. The total wait is smallest when the shortest jobs come first (J3 = 2, J2 = 5, J1 = 8). For the order J3, J2, J1 the waits are $0$, $2$ and $2+5=7$, so the total is $0+2+7=9$ units. A script computing all six orders gives:\n\n| order | total wait |\n|---|---|\n| J1, J2, J3 | 21 |\n| J1, J3, J2 | 18 |\n| J2, J1, J3 | 18 |\n| J2, J3, J1 | 12 |\n| J3, J1, J2 | 12 |\n| J3, J2, J1 | 9 |\n\nThe minimum is 9, for J3, J2, J1. **Answer: D.**",
+      "themes": [
+        "process scheduling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "J2, J3, J1."
+        },
+        {
+          "lettre": "b",
+          "texte": "J2, J1, J3."
+        },
+        {
+          "lettre": "c",
+          "texte": "J3, J1, J2."
+        },
+        {
+          "lettre": "d",
+          "texte": "J3, J2, J1."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "22",
+      "enonce_markdown": "Which of the following cannot be guaranteed by normalisation?\n\n*Options as printed:* A) Ensure foreign keys are wholly null.   B) Eliminate partially dependent attributes.   C) Deny incomplete data items entered.   D) Avoid multiple updates to an attribute.",
+      "corrige_markdown": "Normalisation restructures the relations to remove redundancy: it removes partial and transitive dependencies (option B) and so avoids the need to update the same fact in several places (option D). It does **not** control the values entered by users: refusing incomplete data (missing values) is the job of integrity constraints such as NOT NULL, validation rules and the application, not of the design of the relations. So \"deny incomplete data items entered\" is the one that normalisation cannot guarantee.\n\nOption A, as printed (\"foreign keys are wholly null\"), is also not something normalisation guarantees (the null status of a foreign key is a referential integrity matter) and its wording looks incomplete, so the question has more than one defensible answer.\n\n**Intended answer: C (Deny incomplete data items entered).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "database normalisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "23",
+      "enonce_markdown": "In relational databases which of the following is NOT true?\n\n*Options as printed:* A) Only candidate keys uniquely identify data items found in a relation.   B) Use partially null foreign keys in normalised databases.   C) Introduce foreign keys in order to normalise a database.   D) Candidate keys can be null in a relation.",
+      "corrige_markdown": "A candidate key must identify each tuple uniquely, so none of its attributes may be null (entity integrity), which makes **\"candidate keys can be null in a relation\" false**. The other statements are acceptable: A is true (a key is what identifies the tuples), and C is true (decomposing a relation into 3NF relations introduces foreign keys to link the parts).\n\nOption B is also questionable: a composite foreign key must be *wholly null or wholly non-null*, so \"partially null foreign keys\" are not allowed either. Two options fail; the clearest false statement is D.\n\n**Intended answer: D (Candidate keys can be null in a relation).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "keys and relationships",
+        "relational databases"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "24",
+      "enonce_markdown": "In relation to database integrity, data consistency means the data:",
+      "corrige_markdown": "Consistency means that the data stored in the database always satisfy the **constraints** defined for it (data types, primary and foreign key rules, ranges, business rules), so that a transaction takes the database from one valid state to another. Correctness of the entered values (A) is accuracy, security (B) is a protection issue, and adherence to standards (D) is a matter of documentation and design conventions, not of integrity. **Answer: C.**",
+      "themes": [
+        "database systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Entered is correct."
+        },
+        {
+          "lettre": "b",
+          "texte": "Entered is secure."
+        },
+        {
+          "lettre": "c",
+          "texte": "Stored adheres to data constraints."
+        },
+        {
+          "lettre": "d",
+          "texte": "Stored adheres to database standards."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "25",
+      "enonce_markdown": "Which of the following is most conveniently used to describe how data will eventually be treated in executing program units?",
+      "corrige_markdown": "The question is about how **data are treated (processed)** by the units that will run. A **dataflow diagram** shows exactly this: the processes, the data flows between them, the data stores and the external sources and destinations. A flow chart shows the sequence of control (the steps and decisions) rather than the data, an E-R diagram describes the structure of the stored data (entities and relationships) and UML charts are a broad family of notations used for requirements and object design. **Answer: C.**",
+      "themes": [
+        "software design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "UML charts."
+        },
+        {
+          "lettre": "b",
+          "texte": "Flow charts."
+        },
+        {
+          "lettre": "c",
+          "texte": "Dataflow diagrams."
+        },
+        {
+          "lettre": "d",
+          "texte": "E-R diagrams."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "26",
+      "enonce_markdown": "Given the use of computers by employees, which least requires human intervention at the workplace?\n\n*Options as printed:* A) Office automation.   B) Job retraining.   C) Decision support systems.   D) Management information systems.",
+      "corrige_markdown": "Compare the four items by the amount of human work they need once they are installed:\n\n- **job retraining** is training of people: it needs trainers and trainees;\n- **decision support systems** only help a person to decide: the decision maker must ask the questions and interpret the results;\n- **office automation** (word processing, e-mail, spreadsheets) still needs employees to operate the tools;\n- a **management information system** collects the routine data of the organisation and produces its summary reports automatically on a schedule, so it needs the least intervention.\n\nOffice automation can also be defended as the answer (its aim is to automate office work), so the clue is ambiguous.\n\n**Intended answer: D (Management information systems).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "computing and society"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "27",
+      "enonce_markdown": "It encodes data from channels to transmit over possibly very long distances, before restoring to respective channels:",
+      "corrige_markdown": "A **multiplexer** combines (encodes) the data of several separate channels into one signal that is sent over a single long-distance link, and the matching demultiplexer at the other end restores the data to their respective channels. A repeater only regenerates a weakened signal, a modem converts between digital data and an analogue line signal for one channel, and a codec converts one signal (for example voice or video) between analogue and digital form for one source. **Answer: A.**",
+      "themes": [
+        "data transmission"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Multiplexer."
+        },
+        {
+          "lettre": "b",
+          "texte": "Repeater."
+        },
+        {
+          "lettre": "c",
+          "texte": "Modem."
+        },
+        {
+          "lettre": "d",
+          "texte": "Codec."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "28",
+      "enonce_markdown": "Ngongsu at Branch Office has to research on a critical project and so must readily get information from organisations she trusts. However, she must confidentially communicate her findings to Zoe at Head Office. Overall, they are better off using:",
+      "corrige_markdown": "An **extranet** is a private network of an organisation that is opened in a controlled way to trusted outside parties (partners, suppliers, other organisations): Ngongsu can reach the information of the organisations she trusts and the traffic stays authenticated and confidential between the branch and head offices. The Internet is public and not confidential, an intranet is limited to the organisation itself (no access to the other organisations), and Ethernet is a LAN technology, not a kind of network service. **Answer: C.**",
+      "themes": [
+        "computer networks"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Internet."
+        },
+        {
+          "lettre": "b",
+          "texte": "Intranet."
+        },
+        {
+          "lettre": "c",
+          "texte": "Extranet."
+        },
+        {
+          "lettre": "d",
+          "texte": "Ethernet."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "29",
+      "enonce_markdown": "Data from one computer was getting too fast for another, and sometimes too slowly. To harness this problem, Nchang thought the data sent must be:",
+      "corrige_markdown": "When a sender and a receiver work at different and changing speeds, the data are placed in a **buffer**, a temporary memory area: the buffer stores the data that arrive too fast until the receiver is ready, and it keeps a reserve to hand over when the sender becomes slow. \"Signalled\" and \"coordinated\" are not standard techniques for this problem. Synchronisation is related (it aligns the timing of sender and receiver) but it does not by itself absorb differences in speed, the buffer does. **Answer: B.**",
+      "themes": [
+        "data transmission"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Signalled."
+        },
+        {
+          "lettre": "b",
+          "texte": "Buffered."
+        },
+        {
+          "lettre": "c",
+          "texte": "Synchronised."
+        },
+        {
+          "lettre": "d",
+          "texte": "Coordinated."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "30",
+      "enonce_markdown": "In relation to database access which of the following is correct?",
+      "corrige_markdown": "**Authorisation** is the granting of access rights (read, insert, update, delete) on the data to identified users. The other statements are wrong: authentication checks *who the user is* (password, token), it does not grant rights nor tell who accessed the database; journaling (logging) records the operations for audit and recovery but does not block accesses; and enforcement of standards concerns the quality of design and documentation, not fair use. **Answer: A.**",
+      "themes": [
+        "database systems",
+        "data security"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Authorisation grants people the right to access data in a database."
+        },
+        {
+          "lettre": "b",
+          "texte": "Authentication grants people the right to know who has accessed a database."
+        },
+        {
+          "lettre": "c",
+          "texte": "Journaling keeps record and blocks illegal accesses to a database."
+        },
+        {
+          "lettre": "d",
+          "texte": "Enforcement of standards ensures fair use of the database by everyone."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "31",
+      "enonce_markdown": "For a certain database, the box adjacent shows for each row attributes in the left column (A) on which those in the right column (B) depend. Which sets of relations are in 3rd Normal Form and use all the dependencies, if key attributes are underlined?\n\n| A | B |\n|---|---|\n| $u$ | $v, w, t$ |\n| $w$ | $x, y$ |\n| $z$ | $x$ |",
+      "corrige_markdown": "The dependencies are $u \\to v,w,t$, $w \\to x,y$ and $z \\to x$ (checked with attribute closures by script: $u^+=\\{u,v,w,t,x,y\\}$, $w^+=\\{w,x,y\\}$, $z^+=\\{z,x\\}$). A set of relations in 3NF that \"uses all the dependencies\" has one relation per determinant, with the determinant as key:\n\n- $D1(\\underline{u}, v, w, t)$ for $u \\to v,w,t$;\n- $D2(\\underline{w}, x, y)$ for $w \\to x,y$ ($w$ is the foreign key linking D1 to D2);\n- $D3(\\underline{z}, x)$ for $z \\to x$.\n\nThis is option B. The other options fail:\n\n- A is one big relation: with key $(u,z)$ it contains partial and transitive dependencies, so it is not in 3NF;\n- C loses the dependency $w \\to x$ (D2 keeps only $y$) and D3 has the key $(w,z)$ although $z$ alone determines $x$, a partial dependency;\n- D also loses $u \\to w$ (D1 has no $w$), so $u$ is no longer linked to $w$, and its D3 has the same partial dependency.\n\n**Answer: B.**",
+      "themes": [
+        "database normalisation",
+        "functional dependencies"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "$D(\\underline{u}, v, t, \\underline{w}, x, y, \\underline{z})$."
+        },
+        {
+          "lettre": "b",
+          "texte": "$D1(\\underline{u}, v, w, t);\\ D2(\\underline{w}, x, y);\\ D3(\\underline{z}, x)$."
+        },
+        {
+          "lettre": "c",
+          "texte": "$D1(\\underline{u}, v, w, t);\\ D2(\\underline{w}, y);\\ D3(\\underline{w}, \\underline{z}, x)$."
+        },
+        {
+          "lettre": "d",
+          "texte": "$D1(\\underline{u}, v, t);\\ D2(\\underline{w}, y);\\ D3(\\underline{w}, \\underline{z}, x)$."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "32",
+      "enonce_markdown": "Assuming identifier names are of obvious meanings, the SQL query: SELECT dish FROM menu WHERE hotelStars >= 3 AND town = 'Moh'.",
+      "corrige_markdown": "`hotelStars >= 3` means *at least* 3 stars (3, 4, 5...), `town = 'Moh'` restricts the rows to the town of Moh, and `SELECT dish` returns only the **dish** column, for **all** the matching rows. Tested with Python's `sqlite3` on a sample table `menu(hotel, hotelStars, town, dish)` with the rows (Alpha, 3, Moh, ndole), (Beta, 4, Moh, eru), (Gamma, 2, Moh, achu), (Delta, 5, Buea, koki), (Beta, 4, Moh, ndole): the query returns `ndole`, `eru`, `ndole`, so the 2-star hotel (Gamma) and the hotel of another town (Delta) are left out. Option B is wrong because only the dish column is selected, not the whole entries. Options C and D say \"3 Star\" hotels (exactly 3 stars), but the 4-star and 5-star hotels are also included (with `hotelStars = 3` only the `ndole` of Alpha would be returned); D also says \"some\" dishes, whereas all the matching dishes are returned. **Answer: A.**",
+      "themes": [
+        "sql queries"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Identifies all dishes found in the menus of at least 3 Star hotels in Moh town."
+        },
+        {
+          "lettre": "b",
+          "texte": "Selects from the file 'menu' all entries having 'Moh' and at least 3 hotelStars."
+        },
+        {
+          "lettre": "c",
+          "texte": "List menu dishes in 3 Star hotels found in Moh town."
+        },
+        {
+          "lettre": "d",
+          "texte": "Identifies some dishes found in 3 Star hotels found in Moh town."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "33",
+      "enonce_markdown": "In the relation R below each student has a unique ID and email address, a non-unique student name, and letter grades for courses (cseID) he/she took. Which set of relations is equivalent to R in third normal form (3NF), if key attributes are underlined?\n\n**R**\n\n| stuID | name | Email | cseID | grade |\n|---|---|---|---|---|\n| 171 | Moki | mly@fx.uk | CSC301 | B |\n| 171 | Moki | mly@fx.uk | CSC401 | C |\n| 260 | Kang | ksi@fx.uk | HIS316 | A |\n| 350 | Liz | ltj@fx.uk | HIS210 | D |\n| 350 | Liz | ltj@fx.uk | HIS260 | B |\n\n*Options as printed:* A) $R1(\\underline{stuID}, name),\\ R2(\\underline{stuID}, email),\\ R3(\\underline{email}, \\underline{cseID}, grade)$.   B) $R1(\\underline{studID}, cscID, name),\\ R2(\\underline{cseID}, email),\\ R3(\\underline{email}, grade)$   C) $R1(\\underline{stuID}, \\underline{cseID}, email),\\ R2(\\underline{cseID}, grade, name)$.   D) $R1(\\underline{stuID}, \\underline{email}, name),\\ R2(\\underline{email}, \\underline{cseID}, grade)$.",
+      "corrige_markdown": "The dependencies of R are: $stuID \\to name, email$ (a student has one name and one email); $email \\to stuID, name$ (the email is unique, so it is also a candidate key); and $(stuID, cseID) \\to grade$, equivalently $(email, cseID) \\to grade$. The candidate keys of R are $(stuID, cseID)$ and $(email, cseID)$ (closures computed by script). In R, $name$ and $email$ depend on $stuID$ only, a part of the key: partial dependencies, so R is not even in 2NF. Splitting the student attributes from the grades gives\n\n- $R1(\\underline{stuID}, \\underline{email}, name)$ with the two candidate keys $stuID$ and $email$;\n- $R2(\\underline{email}, \\underline{cseID}, grade)$, key $(email, cseID)$.\n\nBoth are in 3NF, and the natural join on $email$ gives back R exactly (checked on the five rows with `sqlite3`). This is option D. Option C is wrong: its R2 makes $grade$ and $name$ depend on $cseID$ alone, whereas a grade depends on the student and the course together and a name on the student. Option B is wrong: $name$ is kept with $(studID, cscID)$, a partial dependency, and its R2 makes $email$ depend on $cseID$, which is false. Option A, however, also gives back R exactly (also verified with `sqlite3`) and every relation is in 3NF: it only splits the student relation in two needlessly, because $name$ and $email$ depend on the same key. Two options therefore satisfy the wording, and the most economical one is D.\n\n**Intended answer: D ($R1(\\underline{stuID}, \\underline{email}, name),\\ R2(\\underline{email}, \\underline{cseID}, grade)$).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "database normalisation",
+        "keys and relationships"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "34",
+      "enonce_markdown": "In order to print the nodes of the tree beside in ascending numerical order, how should it be traversed?\n\n![fig-2](gce-al-computer-science-2022-p1-officiel-cameroun_exercice_1_fig_2.png)",
+      "corrige_markdown": "The tree is a binary search tree: every node is greater than the nodes of its left subtree and smaller than those of its right subtree (9 is the root, 5 and 13 are its children, 3 and 7 are the children of 5, 11 and 15 the children of 13). **In-order traversal** (left subtree, node, right subtree) visits the nodes of a binary search tree in ascending order:\n\n$$3,\\ 5,\\ 7,\\ 9,\\ 11,\\ 13,\\ 15$$\n\nPre-order would give 9, 5, 3, 7, 13, 11, 15 and post-order 3, 7, 5, 11, 15, 13, 9, neither of them sorted; \"mixed order\" is not a standard traversal. **Answer: B.**",
+      "themes": [
+        "tree traversal",
+        "binary trees"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Pre order."
+        },
+        {
+          "lettre": "b",
+          "texte": "In order."
+        },
+        {
+          "lettre": "c",
+          "texte": "Post order."
+        },
+        {
+          "lettre": "d",
+          "texte": "Mixed order."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "35",
+      "enonce_markdown": "Which data type always requires an index to access it?",
+      "corrige_markdown": "An **array** is a collection of items of the same type stored in consecutive positions: a single element can only be reached by giving its **index** (subscript), as in `t[3]`. An integer and a real are simple values accessed by their name alone, and the fields of a record are accessed by field name (`student.name`), not by an index. **Answer: C.**",
+      "themes": [
+        "data structures",
+        "data types"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Integer."
+        },
+        {
+          "lettre": "b",
+          "texte": "Real."
+        },
+        {
+          "lettre": "c",
+          "texte": "Array."
+        },
+        {
+          "lettre": "d",
+          "texte": "Record."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "36",
+      "enonce_markdown": "What input device might a multi-choice questionnaire writer use to input completed forms into a computer?",
+      "corrige_markdown": "A completed multiple-choice form is filled by marking (shading or ticking) a box for each chosen answer. **Optical mark recognition (OMR)** detects the presence and the position of the marks and converts them into data at high speed, which is how multiple-choice answer sheets (like the answer sheet of this paper) are read. MICR reads the magnetic-ink characters on bank cheques, OCR converts printed characters into text, and a hand held computer is a general device, not a form reader. **Answer: B.**",
+      "themes": [
+        "input devices"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Magnetic Ink Character Recognition (MICR)."
+        },
+        {
+          "lettre": "b",
+          "texte": "Optical Mark Recognition (OMR)."
+        },
+        {
+          "lettre": "c",
+          "texte": "Optical Character Reader (OCR)."
+        },
+        {
+          "lettre": "d",
+          "texte": "Hand Held Computers."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "37",
+      "enonce_markdown": "Joe develops a software application from identified subtasks that have mostly been implemented. He only needs to work out how best to combine them into a working solution. The best design strategy to use is:",
+      "corrige_markdown": "In **bottom-up design** the low-level components are built (or already exist) first and are then combined, level after level, into larger parts and finally into the complete system: this is Joe's situation, since the subtasks already exist and only their integration remains. Top-down design starts from the whole problem and breaks it into subtasks (the opposite direction), functional design is a general name for design by functions, and \"subtask design\" is not a design strategy. **Answer: D.**",
+      "themes": [
+        "software design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Subtask design."
+        },
+        {
+          "lettre": "b",
+          "texte": "Functional design."
+        },
+        {
+          "lettre": "c",
+          "texte": "Top-down design."
+        },
+        {
+          "lettre": "d",
+          "texte": "Bottom-up design."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "38",
+      "enonce_markdown": "What is the value of p at the end of the algorithm adjacent?\n\n```text\np <- 8;\nq <- 2;\nwhile p>=q do\n    q <- q+2;\n    p <- p-3;\nendwhile\np <- p*q;\n```",
+      "corrige_markdown": "Trace the loop (the arrow is the assignment):\n\n| step | $p$ | $q$ | test $p \\ge q$ |\n|---|---|---|---|\n| start | 8 | 2 | true |\n| after pass 1 | 5 | 4 | true |\n| after pass 2 | 2 | 6 | false |\n\nThe loop ends with $p=2$ and $q=6$, and the last instruction gives $p \\leftarrow p \\times q = 2 \\times 6 = 12$ (a Python translation of the algorithm confirms 12). The other options are the traps of a wrong trace: 16 is $8 \\times 2$ (the loop is not executed) and 20 is $5 \\times 4$ (only one pass is made). **Answer: B.**",
+      "themes": [
+        "algorithm tracing",
+        "program control constructs"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "-8."
+        },
+        {
+          "lettre": "b",
+          "texte": "12."
+        },
+        {
+          "lettre": "c",
+          "texte": "16."
+        },
+        {
+          "lettre": "d",
+          "texte": "20."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "39",
+      "enonce_markdown": "Programming Language (PL) functions are designed to return a value. The values returned by PL functions or procedures are returned:\n\n*Options as printed:* A) As output.   B) As parameter.   C) By value.   D) By reference.",
+      "corrige_markdown": "A function is designed to give a result back to the code that called it: its value is passed back **as output** (the result of the call, for example `x = square(4)`). \"By value\" and \"by reference\" describe how *arguments* are passed to a subprogram, not the role of what is returned, and a result given back through a parameter is the way a *procedure* returns values (an output parameter). Because the stem says \"functions or procedures\", more than one option can be defended (output for functions, parameters or references for procedures), so the question is ambiguous.\n\n**Intended answer: A (As output).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "subprograms",
+        "parameter passing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "40",
+      "enonce_markdown": "Semantics of a language describes how:",
+      "corrige_markdown": "**Semantics** is about *meaning*, and it applies to constructs that are already well formed: it says what a correctly combined sequence of words (a syntactically valid statement) means and what it does when executed. Options A and D describe **syntax** (how words and symbols are put together correctly), and option B says that words alone are given meaning, which skips the combination step that semantics depends on. **Answer: C.**",
+      "themes": [
+        "programming languages"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Its words can be correctly put together."
+        },
+        {
+          "lettre": "b",
+          "texte": "Its words can be correctly given meaning."
+        },
+        {
+          "lettre": "c",
+          "texte": "Its correctly combined words can be given meaning."
+        },
+        {
+          "lettre": "d",
+          "texte": "Its symbols can be correctly combined in a meaningful way."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "41",
+      "enonce_markdown": "Meh is to set up an environment for students to learn on a given software application. He has to make sure the software runs as expected. It is best Meh consults its:",
+      "corrige_markdown": "Setting up an environment means installing and configuring the software on the machines. The document that gives the hardware and software requirements, the installation and configuration steps and the checks to make sure that the installed software runs as expected is the **installation manual**. A tutorial guide and a user manual teach how to *use* the application once it runs, and a test plan belongs to the developers (it describes how the software is tested before delivery). **Answer: C.**",
+      "themes": [
+        "software documentation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Tutorial Guide."
+        },
+        {
+          "lettre": "b",
+          "texte": "User Manual."
+        },
+        {
+          "lettre": "c",
+          "texte": "Installation Manual."
+        },
+        {
+          "lettre": "d",
+          "texte": "Test Plan."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "42",
+      "enonce_markdown": "Which of the following is strictly speaking NOT part of debugging?",
+      "corrige_markdown": "**Debugging** is the process of locating and removing the cause of an error that is already known to exist. Its tools are breakpoints (stop the execution at a chosen line), watchpoints (stop when the value of a variable changes) and tracing (follow the execution step by step). **Testing** is the activity of running a program to *detect* the presence of errors; it comes before debugging and is not part of it. **Answer: D.**",
+      "themes": [
+        "debugging",
+        "software testing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Breakpoints."
+        },
+        {
+          "lettre": "b",
+          "texte": "Watchpoints."
+        },
+        {
+          "lettre": "c",
+          "texte": "Tracing."
+        },
+        {
+          "lettre": "d",
+          "texte": "Testing."
+        }
+      ],
+      "reponse_correcte": "d"
+    },
+    {
+      "numero": "43",
+      "enonce_markdown": "Waterfall model is not suitable for:\n\n*Options as printed:* A) Small projects.   B) Complex projects.   C) Accommodating changes.   D) Maintenance projects.",
+      "corrige_markdown": "The waterfall model runs the phases (requirements, design, implementation, testing, maintenance) once, in strict sequence, and a phase is not reopened. Its main weakness is therefore **accommodating changes**: a change in requirements discovered late forces a return to earlier phases, which the model does not allow without high cost. It suits small projects whose requirements are well understood (A is suitable).\n\nComplex projects (B) and long ongoing maintenance projects (D) are also usually listed as poor fits, so more than one option can be defended and the question is ambiguous; changes of requirements is the weakness most closely tied to the model.\n\n**Intended answer: C (Accommodating changes).**\n\nThe printed question is not reliable enough to be marked automatically so it is left open for self-assessment instead of being auto-marked.",
+      "themes": [
+        "systems development life cycle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "44",
+      "enonce_markdown": "Which of the following sorting algorithms is of divide-and-conquer type?",
+      "corrige_markdown": "A divide-and-conquer algorithm splits the problem into smaller sub-problems, solves them (recursively) and combines the results. **Quick sort** chooses a pivot, partitions the list into the items smaller and larger than the pivot, and sorts the two parts recursively. Bubble sort and insertion sort compare and move items in nested loops over the whole list without splitting it, and \"Algorithm\" is not the name of a sorting method. **Answer: C.**",
+      "themes": [
+        "sorting algorithms"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Bubble sort."
+        },
+        {
+          "lettre": "b",
+          "texte": "Insertion sort."
+        },
+        {
+          "lettre": "c",
+          "texte": "Quick sort"
+        },
+        {
+          "lettre": "d",
+          "texte": "Algorithm."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "45",
+      "enonce_markdown": "It helps the software developers' understanding of what the user wants, some challenges to resolve, and the kind of software delivery to expect. The activity must be:",
+      "corrige_markdown": "**Software (requirements) analysis** is the activity in which the developers study the problem with the users to understand what they want, to discover the difficulties to resolve and to decide the kind of product to deliver. Design and implementation come after it (how to build, then building), and a specification is the written *result* of the analysis rather than the activity that creates the understanding. **Answer: A.**",
+      "themes": [
+        "software engineering"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Software analysis."
+        },
+        {
+          "lettre": "b",
+          "texte": "Software design."
+        },
+        {
+          "lettre": "c",
+          "texte": "Software specification."
+        },
+        {
+          "lettre": "d",
+          "texte": "Software implementation."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "46",
+      "enonce_markdown": "Nde implemented sent messages within a program by storing data in memory and stating the order in which instructions are executed. For this task, he surely used a(n):",
+      "corrige_markdown": "The description (\"storing data in memory and stating the order in which instructions are executed\") is the definition of the **imperative paradigm**: a program is a sequence of commands that change the state (the memory) of the machine. A logic program states facts and rules and lets the system deduce the answer, an object-oriented program organises the data and the code in objects, and \"message programming paradigm\" is not a standard paradigm. \"Surely\" means that only the imperative style is certain from the description. **Answer: A.**",
+      "themes": [
+        "programming paradigms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Imperative programming paradigm."
+        },
+        {
+          "lettre": "b",
+          "texte": "Message programming paradigm."
+        },
+        {
+          "lettre": "c",
+          "texte": "Logic programming paradigm."
+        },
+        {
+          "lettre": "d",
+          "texte": "Object-oriented programming paradigm."
+        }
+      ],
+      "reponse_correcte": "a"
+    },
+    {
+      "numero": "47",
+      "enonce_markdown": "Which of the following is a functional requirement?",
+      "corrige_markdown": "A **functional requirement** states *what the system must do* for the business (the functions, the data to process, the business needs). Maintainability, portability and reliability are quality attributes that say *how well* the system must work: they are non-functional requirements. **Answer: C.**",
+      "themes": [
+        "software engineering"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Maintainability."
+        },
+        {
+          "lettre": "b",
+          "texte": "Portability."
+        },
+        {
+          "lettre": "c",
+          "texte": "Business needs."
+        },
+        {
+          "lettre": "d",
+          "texte": "Reliability."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "48",
+      "enonce_markdown": "Which of the following is true about software Verification?",
+      "corrige_markdown": "Verification answers the question \"are we building the product right?\": it checks that each stage of development conforms to the specifications of the previous stage, so it **ensures that the product being developed follows the design specifications** (statement A) and it **concentrates on the design and system specifications** (statement B), by reviews, walkthroughs and inspections rather than by running the finished product. Both statements are true, so the answer is \"Both A and B\". **Answer: C.**",
+      "themes": [
+        "software testing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Ensures the product being developed is according to design specifications."
+        },
+        {
+          "lettre": "b",
+          "texte": "Concentrates on the design and system specifications."
+        },
+        {
+          "lettre": "c",
+          "texte": "Both A and B."
+        },
+        {
+          "lettre": "d",
+          "texte": "None of the above."
+        }
+      ],
+      "reponse_correcte": "c"
+    },
+    {
+      "numero": "49",
+      "enonce_markdown": "A function f is defined as follows:\n\n$$f(a,b)=\\begin{cases}0 & \\text{if } b=0\\\\ a+f(a,b-1) & \\text{if } b>0\\\\ a+f(a,b+1) & \\text{otherwise}\\end{cases}$$\n\nWhat is the value of f(-3, -3)?",
+      "corrige_markdown": "Here $b=-3<0$, so the third case (\"otherwise\") applies at each call until $b$ reaches 0:\n\n$$f(-3,-3) = -3 + f(-3,-2) = -3 + (-3 + f(-3,-1)) = -3 + (-3 + (-3 + f(-3,0))) = -9 + 0 = -9$$\n\nIn general $f(a,b) = a \\times |b|$. A Python translation of the function returns $-9$, and none of the other options (6, -3, -6) matches. The value $-3$ would be the result of a single call and $-6$ of only two calls before $b$ reaches 0. **Answer: B.**",
+      "themes": [
+        "recursion"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "6."
+        },
+        {
+          "lettre": "b",
+          "texte": "-9."
+        },
+        {
+          "lettre": "c",
+          "texte": "-3."
+        },
+        {
+          "lettre": "d",
+          "texte": "-6."
+        }
+      ],
+      "reponse_correcte": "b"
+    },
+    {
+      "numero": "50",
+      "enonce_markdown": "We examine a program to make sure each of its components obtains the correct behaviour from all the other components. It must be:",
+      "corrige_markdown": "**Integration testing** checks that the components of a program, once combined, work correctly *with each other* (the interfaces and the exchanges of data between them). Unit testing examines one component in isolation, and black box and white box testing describe how test cases are designed (from the specification, or from the code), not what is being checked. **Answer: D.**",
+      "themes": [
+        "software testing"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "qcm",
+      "choix": [
+        {
+          "lettre": "a",
+          "texte": "Black box testing."
+        },
+        {
+          "lettre": "b",
+          "texte": "White box testing."
+        },
+        {
+          "lettre": "c",
+          "texte": "Unit testing."
+        },
+        {
+          "lettre": "d",
+          "texte": "Integration testing."
+        }
+      ],
+      "reponse_correcte": "d"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "ICT",
+  "epreuve_source": "gce-al-ict-2025-p3-officiel-cameroun.pdf",
+  "numero_exercice": "G3-A",
+  "numero_paper": 3,
+  "code_matiere": "0796",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - Advanced Level Examination. Information and Communication Technologies (0796), Paper 3 (practical), June 2025. Duration: two hours. Answer ALL tasks.**\n\nThe booklet reproduced here contains three versions of the same practical paper, headed Group 1, Group 2 and Group 3 (booklets 00/0796/3/G1, G2 and G3): each version has the same three tasks (Task A: Database, 20 marks; Task B: Spreadsheet, 17 marks; Task C: Presentation, 13 marks) with different data, names and cell references.\n\nEnter the information required in the shaded boxes. Do not write in pencil. You are reminded of the necessity for good English and orderly presentation in your answer. Your results must be recorded in the spaces provided in this question booklet. Candidates must allow for themselves enough time to complete and check their work where these are required. The supervisor will guide you on how to save your files but usually you will be expected to save all your work in one folder named *Candidate folder* that will be created in your desktop. When an imperative programming language is require to write program code, either Standard [ISO] Pascal or [ANSI] C programming language may be used. You should ensure all your work is collected and printed before leaving the examination room. All printed work should be inserted in this booklet and well stapled. Carefully handle all equipment put at your disposal to avoid accidents that may lead to a disaster or system failure. Report any case of system or device malfunction to your supervisor.\n\nThe working files (the workbooks Trift_Loan, Customer_Loan and Worker_Loan, one per group) are supplied on the day in the Candidate folder; they are not reproduced in the printed paper.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**GROUP 3 - TASK A: DATABASE (20 MARKS)**\n\nA candidate is presented with the flat-file containing meeting details as displayed below. It contains a summary of the financial situation of workers from a small business in Kumba who have moved to different towns in Cameroon.\n\nThe activities of this business are shown in *Table 1* below.\n\n*Table 1: Financial Transactions*\n\n| WID | WName | Amount | AType | WAdd | AID | TDate |\n|---|---|---:|---|---|---|---|\n| M10 | Nkeng | 15000 | Saving | Edea | 001 | 11/10/2023 |\n| L05 | Agbor | 20000 | Loan | Bamenda | 003 | 08/09/2023 |\n| M10 | Nkeng | 13000 | Loan | Edea | 010 | 15/07/2023 |\n| O20 | Fusi | 5500 | Loan | Nkambe | 013 | 23/10/2023 |\n| O15 | Amina | 8000 | Saving | Garoua | 005 | 30/07/2023 |\n| L05 | Agbor | 7500 | Loan refund | Bamenda | 004 | 15/07/2023 |\n| S04 | Kasi | 79500 | Saving | Ebolowa | 008 | 23/10/2023 |\n| O20 | Fusi | 6000 | Saving | Nkambe | 006 | 31/05/2023 |\n| L12 | Fusi | 25000 | Loan refund | Bertoua | 002 | 12/09/2023 |\n| G11 | Ngong | 8500 | Saving | Yaounde | 007 | 08/09/2023 |\n| M10 | Nkeng | 4500 | Loan | Edea | 011 | 30/07/2023 |\n| T07 | Efang | 9500 | Saving | Maroua | 012 | 12/09/2023 |\n\nWID = Worker ID, WAdd = Worker Address, AType = Accounts Type, AID = Accounts ID, TDate = Transaction Date.\n\nThe student decided to normalise the flat file into three (3) relations namely:\n\n*Worker*(WID, WName, WAdd)\n\n*Accounts*(AID, AType, Amount)\n\n*Transaction*(WID, AID, TDate)",
+  "groupes": [
+    "GROUP 3"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Le PDF (12 pages, scan) contient TROIS versions du même sujet pratique : « Group 1 » (pages 1 à 4, booklet 00/0796/3/G1), « Group 2 » (pages 5 à 8, G2) et « Group 3 » (pages 9 à 12, G3). Chacune compte les tâches A (base de données, 20 points), B (tableur, 17 points) et C (présentation, 13 points). Elles sont transcrites en neuf fichiers : numero_exercice G1-A, G1-B, G1-C, G2-A... G3-C ; `groupes` vaut [\"GROUP 1\"], [\"GROUP 2\"] ou [\"GROUP 3\"] (même convention que l'ICT 2022 Paper 3). Le sujet n'imprime aucune règle de choix (un candidat reçoit un seul des trois groupes) : `regles_choix` reste vide.",
+    "Défaut d'impression, tâche A : l'en-tête imprime « 20 marks » alors que les points imprimés des sept questions s'additionnent à 18 (3 + 2 + 2 + 2 + 2 + 3 + 4) ; l'instruction « Implement the relationship in the database created », placée sous la question 6, n'a pas de points propres (les 2 points manquants lui reviennent vraisemblablement). Les points ne sont pas corrigés : 20 est repris tel qu'imprimé dans `points` de l'exercice.",
+    "Group 3, Table 1 : le nom « Fusi » figure sous deux identifiants (O20, Nkambe, et L12, Bertoua) : le corrigé en fait deux travailleurs distincts (clés différentes). Le montant 79500 de Kasi (ligne AID 008) est imprimé tel quel (il est très supérieur aux autres épargnes) et n'est pas corrigé ; il intervient dans le résultat de la requête SavedF. Le sujet dit « Accounts Type » (AType) pour l'en-tête de la colonne et « Accounts » pour la table.",
+    "Les requêtes et les tables du corrigé de la tâche A ont été vérifiées avec sqlite3 (module Python) : création des trois tables avec clés primaires et étrangères (contraintes actives), insertion des 12 lignes de la Table 1 normalisée, exécution de la requête (résultat recopié, comparé à un calcul indépendant). La syntaxe propre à Microsoft Access (assistants, Design View, relations) est donnée de mémoire, non testée. Les procédures de présentation (PowerPoint) ne sont pas testées. Aucun code C ni Pascal n'est demandé dans ce paper : rien n'a été compilé.",
+    "Schéma E-R (question 6) : le sujet ne donne pas les cardinalités attendues. Le corrigé retient la solution classique d'une table d'association : 1 - N entre l'entité de gauche et la table d'association, N - 1 entre celle-ci et l'entité de droite, et il note que, dans les données de la Table 1, chaque identifiant de transaction n'apparaît qu'une fois. Le barème du jury n'est pas connu.",
+    "Les barèmes détaillés (« Marking ») des corrigés sont des propositions : le sujet n'imprime que les points par question (et, pour la tâche C, les quatre critères d'évaluation). Les zones de réponse du livret (lignes pointillées, tableau des clés, cadre du schéma E-R) ne sont pas reproduites : elles sont signalées dans les énoncés. Les filigranes de gcerevision.com, les cadres d'en-tête et les artefacts de scanner sont ignorés."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "From the table structures above, develop the Worker table in the space below. *[3 marks]*\n\n*(answer space: write the table in the lines provided)*",
+      "corrige_markdown": "The *Worker* table keeps ONE row per worker: take the fields WID, WName and WAdd of Table 1 and remove the repeated rows. Rows that appear several times in Table 1: M10 Nkeng (3 rows), L05 Agbor (2 rows), O20 Fusi (2 rows). Table 1 therefore gives 8 distinct workers:\n\n| WID | WName | WAdd |\n|---|---|---|\n| M10 | Nkeng | Edea |\n| L05 | Agbor | Bamenda |\n| O20 | Fusi | Nkambe |\n| O15 | Amina | Garoua |\n| S04 | Kasi | Ebolowa |\n| L12 | Fusi | Bertoua |\n| G11 | Ngong | Yaounde |\n| T07 | Efang | Maroua |\n\nWID is the primary key of the table: each value appears once, so a worker's name and address are stored a single time.\n\nNote: the name Fusi appears under two different identifiers (O20 and L12). They are two different rows of the Worker table because they have different keys (and different addresses, Nkambe and Bertoua).\n\n*Marking:* 1 mark for the three fields, 1 mark for the rows without repetition, 1 mark for the correct values.",
+      "themes": [
+        "ict database design",
+        "ict database normalisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Give the reason why the table above is not normalised. *[2 marks]*\n\n*(answer line: write the reason in the line provided)*",
+      "corrige_markdown": "Table 1 is not normalised because the same facts are stored again and again (**redundancy**). The worker's identifier, name and address are repeated on every row of that worker: for example M10 / Nkeng / Edea appears on 3 rows. The table also mixes facts about three different things (the worker, the type and amount of the transaction, and its date). WName and WAdd depend on WID, which is not the identifier of the row (a row is identified by AID): this dependency between non-key attributes (a transitive dependency) breaks third normal form.\n\nConsequences: *update anomaly* (a change of address has to be made on several rows, otherwise the data become inconsistent), *insertion anomaly* (a new worker cannot be recorded before a transaction exists) and *deletion anomaly* (deleting the only transaction of a worker erases the worker too).\n\n*Marking:* 1 mark for the reason (repeated, redundant data / dependencies between non-key attributes), 1 mark for the explanation or the example (anomalies).",
+      "themes": [
+        "ict database normalisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "State the key for each of the tables *[2 marks]*\n\n| Table | Primary key/Composite key |\n|---|---|\n| Worker |  |\n| Accounts |  |\n| Transaction |  |",
+      "corrige_markdown": "A **primary key** identifies each row of a table uniquely; a **composite key** is a primary key made of two or more fields.\n\n| Table | Primary key/Composite key |\n|---|---|\n| Worker | WID |\n| Accounts | AID |\n| Transaction | WID + AID (composite key) |\n\n- Worker: each worker has a unique WID.\n- Accounts: each record has a unique AID.\n- Transaction: it links a worker to a accounts record, so its key combines the two identifiers (WID, AID); each of them is also a *foreign key* referring to the table where it is the primary key (WID to Worker, AID to Accounts).\n\n*Marking:* 1 mark for the two single keys, 1 mark for the composite key.",
+      "themes": [
+        "ict database design",
+        "ict database concepts"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "State the appropriate data type of the attributes **Amount** and AID. *[2 marks]*\n\n*(answer lines: Amount: ... AID: ...)*",
+      "corrige_markdown": "- **Amount: Number** (Integer / *Long Integer* in Microsoft Access, `INTEGER` in SQL; *Currency* is also accepted). The values are whole amounts in FCFA that are compared (less than / greater than) and added.\n- **AID: Text** (*Short Text* in Access, `CHAR(3)` in SQL). It is an identifier, not a quantity: it is never added or multiplied, and in a Number field the leading zeros of 001, 002, 003... would be lost.\n\n*Marking:* 1 mark per correct data type.",
+      "themes": [
+        "ict database design",
+        "ict database concepts"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Using an appropriate database management system, create a database called **AccountsDB** containing the three tables defined above. Populate all the tables taking data from Table 1 above. *[2 marks]*",
+      "corrige_markdown": "In Microsoft Access: File > New > *Blank database*, file name **AccountsDB**, Create. Then Create > *Table Design* three times, and for each table enter the field names and data types, set the primary key (select the field, *Primary Key* button; for Transaction select the two fields WID and AID together, then *Primary Key*), and save the table under its name (Worker, Accounts, Transaction). Switch to Datasheet View and type the rows below. The same work in SQL (checked with sqlite3; in Access SQL a table named Transaction is written in square brackets because Transaction is a reserved word; the dates are stored in the standard format yyyy-mm-dd and displayed dd/mm/yyyy):\n\n```sql\nCREATE DATABASE AccountsDB;   -- (in Access: the blank database file AccountsDB)\n\nCREATE TABLE Worker (\n    WID CHAR(3) PRIMARY KEY,\n    WName VARCHAR(30) NOT NULL,\n    WAdd VARCHAR(30)\n);\n\nCREATE TABLE Accounts (\n    AID CHAR(3) PRIMARY KEY,\n    AType VARCHAR(20) NOT NULL,\n    Amount INTEGER NOT NULL\n);\n\nCREATE TABLE [Transaction] (\n    WID CHAR(3) NOT NULL,\n    AID CHAR(3) NOT NULL,\n    TDate DATE NOT NULL,\n    PRIMARY KEY (WID, AID),\n    FOREIGN KEY (WID) REFERENCES Worker(WID),\n    FOREIGN KEY (AID) REFERENCES Accounts(AID)\n);\n\nINSERT INTO Worker (WID, WName, WAdd) VALUES\n    ('M10', 'Nkeng', 'Edea'),\n    ('L05', 'Agbor', 'Bamenda'),\n    ('O20', 'Fusi', 'Nkambe'),\n    ('O15', 'Amina', 'Garoua'),\n    ('S04', 'Kasi', 'Ebolowa'),\n    ('L12', 'Fusi', 'Bertoua'),\n    ('G11', 'Ngong', 'Yaounde'),\n    ('T07', 'Efang', 'Maroua');\n\nINSERT INTO Accounts (AID, AType, Amount) VALUES\n    ('001', 'Saving', 15000),\n    ('003', 'Loan', 20000),\n    ('010', 'Loan', 13000),\n    ('013', 'Loan', 5500),\n    ('005', 'Saving', 8000),\n    ('004', 'Loan refund', 7500),\n    ('008', 'Saving', 79500),\n    ('006', 'Saving', 6000),\n    ('002', 'Loan refund', 25000),\n    ('007', 'Saving', 8500),\n    ('011', 'Loan', 4500),\n    ('012', 'Saving', 9500);\n\nINSERT INTO [Transaction] (WID, AID, TDate) VALUES\n    ('M10', '001', '2023-10-11'),\n    ('L05', '003', '2023-09-08'),\n    ('M10', '010', '2023-07-15'),\n    ('O20', '013', '2023-10-23'),\n    ('O15', '005', '2023-07-30'),\n    ('L05', '004', '2023-07-15'),\n    ('S04', '008', '2023-10-23'),\n    ('O20', '006', '2023-05-31'),\n    ('L12', '002', '2023-09-12'),\n    ('G11', '007', '2023-09-08'),\n    ('M10', '011', '2023-07-30'),\n    ('T07', '012', '2023-09-12');\n```\n\nOrder of creation: the tables Worker and Accounts first (they are referred to), then Transaction, which holds the foreign keys; the same order is used to enter the data, so that every WID and AID of Transaction already exists in its parent table.\n\nContent of the three tables (12 rows of Table 1 give 8 + 12 + 12 rows):\n\n**Worker**\n\n| WID | WName | WAdd |\n|---|---|---|\n| M10 | Nkeng | Edea |\n| L05 | Agbor | Bamenda |\n| O20 | Fusi | Nkambe |\n| O15 | Amina | Garoua |\n| S04 | Kasi | Ebolowa |\n| L12 | Fusi | Bertoua |\n| G11 | Ngong | Yaounde |\n| T07 | Efang | Maroua |\n\n**Accounts**\n\n| AID | AType | Amount |\n|---|---|---:|\n| 001 | Saving | 15000 |\n| 003 | Loan | 20000 |\n| 010 | Loan | 13000 |\n| 013 | Loan | 5500 |\n| 005 | Saving | 8000 |\n| 004 | Loan refund | 7500 |\n| 008 | Saving | 79500 |\n| 006 | Saving | 6000 |\n| 002 | Loan refund | 25000 |\n| 007 | Saving | 8500 |\n| 011 | Loan | 4500 |\n| 012 | Saving | 9500 |\n\n**Transaction**\n\n| WID | AID | TDate |\n|---|---|---|\n| M10 | 001 | 11/10/2023 |\n| L05 | 003 | 08/09/2023 |\n| M10 | 010 | 15/07/2023 |\n| O20 | 013 | 23/10/2023 |\n| O15 | 005 | 30/07/2023 |\n| L05 | 004 | 15/07/2023 |\n| S04 | 008 | 23/10/2023 |\n| O20 | 006 | 31/05/2023 |\n| L12 | 002 | 12/09/2023 |\n| G11 | 007 | 08/09/2023 |\n| M10 | 011 | 30/07/2023 |\n| T07 | 012 | 12/09/2023 |\n\n*Marking:* 1 mark for the database created with the required name and the three tables with the right fields and keys, 1 mark for the data entered correctly in the three tables.",
+      "themes": [
+        "ict relational databases",
+        "ict database design"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Draw the E-R Diagram for the database in the space below. Indicate the cardinalities in the diagram. *[3 marks]*\n\n*(drawing space: draw the diagram in the space provided)*\n\nImplement the relationship in the database created.",
+      "corrige_markdown": "The database has three entities (the three tables) and two relationships. *Transaction* is the associative table that links the other two (it holds the foreign keys WID and AID):\n\n```text\n+------------------+                 +------------------+                 +------------------+\n| Worker           | 1             N | Transaction      | N             1 | Accounts         |\n| WID              |-----------<-----| WID (FK)         |----->-----------| AID              |\n| WName            |    makes        | AID (FK)         |    concerns     | AType            |\n| WAdd             |                 | TDate            |                 | Amount           |\n+------------------+                 +------------------+                 +------------------+\n```\n\n- Worker (1) to Transaction (N): one worker can appear in many rows of Transaction (for example M10 Nkeng appears 3 times), but each row of Transaction concerns one single worker.\n- Accounts (1) to Transaction (N): one accounts record can be referred to by many rows of Transaction, and each row of Transaction refers to one record of Accounts. (In the data of Table 1 each AID is used exactly once, so in practice this side behaves as 1 - 1; the standard answer is the many-to-many link Worker - Accounts split by the associative table.)\n\nEntities are drawn as rectangles with their attributes (primary keys underlined), the relationships as lines labelled with their cardinalities (1, N), in crow's foot or Merise notation.\n\n**Implementing the relationship in Access:** Database Tools > *Relationships*; add the three tables; drag the field WID of Worker onto the field WID of Transaction, tick **Enforce Referential Integrity** and check that the relationship type is *One-To-Many*; do the same by dragging AID of Accounts onto AID of Transaction; Create, then save the layout. In SQL the relationship is the pair of `FOREIGN KEY ... REFERENCES` constraints of question 5: a row of Transaction whose WID or AID does not exist in the parent table is then refused (checked with sqlite3 with foreign keys enabled).\n\n*Marking:* 1 mark for the three entities with their attributes, 1 mark for the relationships, 1 mark for the cardinalities (the implementation of the relationship carries the remaining marks of the task).",
+      "themes": [
+        "ict database design",
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "Create a query to display names of the Workers who have saved an amount that is greater than 8000. Your query should also include the amounts and their addresses. Save the query as *SavedF*. *[4 marks]*\n\n**Print** the Transaction table and the *SavedF* query only.",
+      "corrige_markdown": "\"Saved an amount\" means an account of type **Saving**: the loans and the loan refunds (Agbor 20000, Fusi 25000) are bigger than 8000 but are not savings and must be left out. The condition is **strictly** greater than 8000: Amina (exactly 8000) is excluded. Both criteria are written on the same *Criteria* row (AND).\n\nCreate > *Query Design*; add Worker, Transaction and Accounts; double-click WName, Amount and WAdd; add the field AType (*Show* unticked) with the criterion `\"Saving\"` and, on the same Criteria row, the criterion `>8000` under Amount; Run; Save as **SavedF**.\n\nThe equivalent SQL (checked with sqlite3 on the data of Table 1):\n\n```sql\nSELECT Worker.WName, Accounts.Amount, Worker.WAdd\nFROM (Worker INNER JOIN [Transaction] ON Worker.WID = [Transaction].WID)\n     INNER JOIN Accounts ON [Transaction].AID = Accounts.AID\nWHERE Accounts.AType = 'Saving' AND Accounts.Amount > 8000;\n```\n\nResult (checked: the query returns exactly these 4 rows, in any order):\n\n| WName | Amount | WAdd |\n|---|---:|---|\n| Nkeng | 15000 | Edea |\n| Kasi | 79500 | Ebolowa |\n| Ngong | 8500 | Yaounde |\n| Efang | 9500 | Maroua |\n\nPrint the table Transaction (Datasheet View) and the result of the query SavedF.\n\n*Marking:* 1 mark for the correct tables joined, 1 mark for the correct fields displayed, 1 mark for the correct criteria, 1 mark for the query saved under the required name.",
+      "themes": [
+        "ict database queries",
+        "ict relational databases"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}

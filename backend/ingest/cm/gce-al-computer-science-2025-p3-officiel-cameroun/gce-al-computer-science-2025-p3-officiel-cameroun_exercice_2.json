@@ -1,0 +1,121 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2025",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-al-computer-science-2025-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0795",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 3 (0795), ADVANCED LEVEL, June 2025. Duration: two hours.**\n\nCarry out ALL the tasks given. For your guidance, the approximate mark for each part of a task is indicated in brackets. Great importance is attached to the accuracy, layout and labelling of drawings and computer generated outputs. You are reminded of the necessity for good English and orderly presentation of your answers. Record all your answers in the spaces provided in this question booklet. Also record in your question booklet any information requested or that you believe would make it easier to understand how you carried out tasks or answered questions. Blank pages have been provided at the end of this booklet in case you need additional space for your answers or rough work. Make sure all your answers, including printed works, are submitted with your question booklet. When an imperative programming language is required to write program code, either Standard [ISO] Pascal or the [ANSI] C programming language may be used. If need be, supervisors will assist you in recording details of intermediate work carried out on the computer.\n\nThe paper has two sections: Section A (Database Systems), Task 1, and Section B (Program Development, 30 marks), Tasks 2 and 3.",
+  "points": "17",
+  "groupes": [
+    "SECTION B"
+  ],
+  "regles_choix": [],
+  "enonce_intro_markdown": "**SECTION B: PROGRAM DEVELOPMENT (30 marks)**\n\n*Using your preferred programming language (PL), C or Pascal, and integrated program development environment (IDE), carry out the following programming tasks. Note that comments within questions start from a double slash (//) to the end-of-line, or are between /* and */.*\n\n**Game of Life Task Description**\n\nConways' Game of Life (or just \"Life\") is a \"cellular automaton\" which evolves live and dead cells within a grid (or board) here represented as a 2-D array. Grid cells are either alive or dead and evolve in successive generations as determined by their neighbours. The neighbours of any given cell are horizontally, vertically or diagonally adjacent to it. The following rules are applied to the current (or initial) generation of cells in order to obtain the cell values of the next generation.\n\n1) Any live cell with fewer than two live neighbours dies as if caused by under population.\n2) Any live cell with two or three live neighbours lives on to the next generation.\n3) Any live cell with more than three live neighbours dies, as if by overpopulation.\n4) Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.\n\nFor example, Figure 1(a) is a 4-by-4 grid for the initial stage (or current generation) of a \"Life\" cellular automaton and Figure 1(b) is the next generation obtained by obeying the above rules.\n\n**Figure 1: (a) Initial Stage**\n\n```\nInitial Stage:\n ----- ----- ----- -----\n|  1  |  1  |  0  |  0  |\n ----- ----- ----- -----\n|  1  |  0  |  0  |  0  |\n ----- ----- ----- -----\n|  0  |  0  |  1  |  1  |\n ----- ----- ----- -----\n|  1  |  1  |  1  |  1  |\n ----- ----- ----- -----\n```\n\n**Figure 1: (b) Next Generation**\n\n```\nNext Generation:\n ----- ----- ----- -----\n|  1  |  1  |  0  |  0  |\n ----- ----- ----- -----\n|  1  |  0  |  1  |  0  |\n ----- ----- ----- -----\n|  1  |  0  |  0  |  1  |\n ----- ----- ----- -----\n|  0  |  1  |  0  |  1  |\n ----- ----- ----- -----\n```\n\n**Task 2: Coding Algorithms** *(17 marks)*\n\nWe develop program fragments to display and evolve successive generations of \"Life\" from a 2-D array. Arrays `A[Row][Col]` and `B[Row][Col]` are used to store the current and next generation of the board's state. `Col` and `Row` are global variables used to store the size of the arrays and are both initially set to 4. You are to develop executable code from the algorithms given in each subtask. For each subtask, make sure the coding is correctly done.",
+  "figures": [],
+  "incertitudes": [
+    "Aucun compilateur C ni Pascal n'est disponible : le code C du corrigé n'a PAS été compilé. Sa logique a été vérifiée par une traduction fidèle en Python (row_line, Rand_init, Rand_no, Gen_cells, count_live_neighs, Next_Gen) exécutée sur la grille de la Figure 1(a), sur la suite du générateur pour la graine 7 et sur une grille 4 x 4 tirée avec cette graine ; les valeurs recopiées dans le corrigé sont celles de cette simulation.",
+    "Défaut du sujet, Figure 2 : « return (rand_x mod 12) » est imprimé alors que le commentaire dit « return 0 or 1 » ; le corrigé utilise mod 2 (intention évidente) et le signale. Casse incohérente (Rand_x / rand_x, Rand_init / rand_init, Rand_no / rand_no) et « = » pour une affectation dans Rand_no alors que la figure emploie « <- » : recopiés tels qu'imprimés. Le dernier bit de ce générateur alterne 0, 1, 0, 1 : la grille « aléatoire » est faite de colonnes alternées, remarque ajoutée au corrigé.",
+    "Défaut du sujet, question 4 (count_live_neighs) : « count » n'est jamais initialisé et la cellule centrale (r, c) est comptée parmi ses voisines, donc l'algorithme imprimé ne reproduit pas la Figure 1(b) (démontré par simulation : les deux dernières lignes diffèrent). Le test de validité est écrit en indices de base 0 alors que les boucles de Gen_cells et Next_Gen vont de 1 à Row et Col (base 1). Le corrigé corrige les deux défauts et note l'écart ; l'énoncé est recopié tel quel.",
+    "Défaut du sujet : « subprogam » (question 3), « n_live = ... » sans déclaration (question 5), « Row » et « Col » appelés variables globales alors qu'un tableau C demande une constante (le corrigé emploie #define). Recopiés tels qu'imprimés. Question 1 : « five dashes (- - - - -) » est imprimé avec des espaces ; le corrigé écrit un espace puis cinq tirets par colonne.",
+    "Figure 1 (grilles 4 x 4) : valeurs recopiées exactement ; les largeurs de colonne du dessin (police à chasse fixe, scan) sont reconstituées par le même sous-programme que celui du corrigé, donc l'espacement est approximatif. Aucune figure PNG : les Figures 1 et 2 sont données en blocs de code.",
+    "Barème : Task 2 = 2 + 4 + 2 + 3 + 4 + 2 = 17 points, conforme au « (17 marks) » imprimé ; Section B = 30 points imprimés (17 + 13)."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Subprogram `row_line()` draws a horizontal line of dashes as follows. It outputs a new line then, for each column, outputs five dashes (- - - - -). It then outputs a second new line. *[2 marks]*",
+      "corrige_markdown": "**Algorithm.**\n\n```\nrow_line() ≡\nbegin\n    j : Integer\n    Print(new line)\n    for j from 1 to Col do\n        Print(\" -----\")            // a space and five dashes for each column\n    endfor\n    Print(new line)\nendproc\n```\n\n**ANSI C** (the global size is the constant `COL`, so the subprogram needs no parameter):\n\n```c\nvoid row_line(void)\n{\n    int j;\n\n    printf(\"\\n\");\n    for (j = 0; j < COL; j++)\n        printf(\" -----\");\n    printf(\"\\n\");\n}\n```\n\nIt needs `#include <stdio.h>` and `#define COL 4` at the top of the file.\n\n**Why this form.** The first new line ends the row of values printed just before (in Task 3 a row of values is printed without a final new line), the dashes are written column by column so that the line follows `Col` automatically when the grid is resized (Task 3, question 11), and the second new line brings the cursor to the start of the next line. A space is printed before each group of five dashes so that the dashes sit between two vertical bars of the grid, as in Figure 1.\n\n**Check by simulation.** A Python translation of `row_line` for `COL = 4` produces exactly the characters '\\n ----- ----- ----- -----\\n', that is a new line, the four groups of dashes, and a new line:\n\n```\n ----- ----- ----- -----\n```\n\n**Marking:** correct header, loop over the columns (1); five dashes per column and the two new lines (1).",
+      "themes": [
+        "subprograms",
+        "two-dimensional arrays",
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2) Implement the [LCG] random number generator (RNG) given in Figure 2. Follow the directives given in it, in italics. You will later call function `rand_init(s)` in order to initialise the RNG. Similarly, you will later call function `rand_no()` repeatedly in order to return successive random numbers. *[4 marks]*\n\n**Figure 2. An LCG Random Number Generator.** (The directives \"Define the global constant\", \"Define the global variable with an initial default value\" and \"Define functions rand_init(s) and rand_no()\" are printed in italics.)\n\n```\nDefine the global constant:\nRAND_SEED = 7  //default random number seed.\n\nDefine the global variable with an initial default value:\nRand_x <- RAND_SEED // default initial value.\n\nDefine functions rand_init(s) and rand_no().\n// seed (initialise) the RNG with\n// integer s, where 0 < s < 16.\nfunction Rand_init (s) ≡\n      Rand_x <- s\nendfunc\n\n// return the next random number.\nfunction Rand_no () ≡\n   rand_x = (5 * rand_x + 3) mod 16\n   return (rand_x mod 12) // return 0 or 1\nendfunc\n```",
+      "corrige_markdown": "**ANSI C**\n\n```c\n#define RAND_SEED 7            /* global constant: default random number seed */\n\nint Rand_x = RAND_SEED;        /* global variable with its default initial value */\n\n/* seed (initialise) the RNG with an integer s, where 0 < s < 16 */\nvoid Rand_init(int s)\n{\n    if (s > 0 && s < 16)\n        Rand_x = s;\n}\n\n/* return the next random number: 0 or 1 */\nint Rand_no(void)\n{\n    Rand_x = (5 * Rand_x + 3) % 16;\n    return Rand_x % 2;\n}\n```\n\n**The printed figure contains three defects, handled as follows.**\n\n1. `return (rand_x mod 12)` cannot return 0 or 1 as its own comment says: a number modulo 12 is between 0 and 11. The intended operation is `mod 2`. With the printed `mod 12` the successive values for the seed 7 would be 6, 1, 8, 11, 10, 5, 0, 3, ... (simulation), which are neither 0 nor 1 and would break the display and the counting of live neighbours. The code uses `% 2`.\n2. The names are written with different capitals (`Rand_x` and `rand_x`, `Rand_init` and `rand_init`, `Rand_no` and `rand_no`). C is case-sensitive, so one spelling must be kept everywhere (Pascal ignores the case).\n3. The update of the state uses `=` whereas the figure uses `<-` for an assignment: in C both are `=`, in Pascal `:=`.\n\nThe test `if (s > 0 && s < 16)` applies the comment of the figure (0 < s < 16): a seed outside that range leaves the default seed 7 in place.\n\n**Check by simulation.** A Python translation (`Rand_x = (5 * Rand_x + 3) % 16`, `return Rand_x % 2`) started with `Rand_init(7)` gives the successive states 6, 1, 8, 11, 10, 5, 12, 15, 14, 9, 0, 3, 2, 13, 4, 7 and therefore the successive outputs of `Rand_no`:\n\n```\n0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1\n```\n\nThe 16 states 0 to 15 are all visited before the sequence repeats (full period, because 3 is odd and 5 - 1 is a multiple of 4). However the last bit of such a generator simply alternates 0, 1, 0, 1 (an odd multiplier and an odd increment change the parity at every step), so the \"random\" board of Task 3 will be made of vertical stripes. Using another bit, for example `(Rand_x / 8) % 2`, would look more random, but the statement asks for the remainder modulo the small number.\n\n**Marking:** global constant (1); global variable with its initial value (1); `Rand_init` (1); `Rand_no` with the recurrence and a result of 0 or 1 (1).",
+      "themes": [
+        "random number generation",
+        "programming in c"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3) Subprogram `Gen_cells(A, row, col)` takes as arguments an array `A`, for the grid, and `row` and `col` for its size. It returns a row-by-col board state in which each cell is randomly initialized to either ALIVE (represented by a 1) or DEAD (represented by a 0) via a random number generator. *[2 marks]*\n\n```\nsubprogam Gen_cells(A, row, col) ≡\nbegin\n    for i from 1 to row do\n        for j from 1 to col do\n         A[i][j]= rand_no()     // randomly insert a 0 or 1:\n        endfor\n    endfor\nendsubprogram\n```",
+      "corrige_markdown": "**Algorithm (corrected).** The printed loops run from 1 to `row` and from 1 to `col`, which is right for an array numbered from 1 (Pascal) but not for a C array, whose indices go from 0 to `row - 1`. The same pseudocode, written for C, is:\n\n```\nsubprogram Gen_cells(A, row, col) ≡\nbegin\n    for i from 0 to row - 1 do\n        for j from 0 to col - 1 do\n            A[i][j] <- Rand_no()       // randomly insert a 0 or 1\n        endfor\n    endfor\nendsubprogram\n```\n\n**ANSI C**\n\n```c\nvoid Gen_cells(int A[][COL], int row, int col)\n{\n    int i, j;\n\n    for (i = 0; i < row; i++)\n        for (j = 0; j < col; j++)\n            A[i][j] = Rand_no();       /* randomly insert a 0 or 1 */\n}\n```\n\nWith the printed loops (1 to `row`) in C, the line `A[row][j]` would be written outside the array (undefined behaviour) and line 0 would stay uninitialised. The second dimension of a parameter array must be given in C (`A[][COL]`); the first one may be omitted. The word \"subprogam\" and the final colon of the comment are misprints of the statement.\n\n**Check by simulation.** After `Rand_init(7)`, `Gen_cells(A, 4, 4)` fills the board with 0 1 0 1 / 0 1 0 1 / 0 1 0 1 / 0 1 0 1 (each line is 0 1 0 1 because the generator alternates).\n\n**Marking:** two nested loops over the rows and the columns with the right bounds (1); each cell receives the result of `Rand_no()` (1).",
+      "themes": [
+        "two-dimensional arrays",
+        "nested loops",
+        "subprograms"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4) Subprogram `count_live_neighs (A, r, c)` counts the number of live neighbours in array `A` for the cell at row `r` and column `c`. *[3 marks]*\n\n```\ncount_live_neighs(A, r, c) ≡\nbegin\n   i, j, count : Integer\n   for i from r-1 to r+1 do\n      for j from c-1 to c+1 do\n         if not ((i less than 0 OR j is less than 0) OR\n                 (i greater than or equal to Row) OR\n                 (j greater than or equal to Col)\n                 )              // ensure cell indices are valid\n         then\n            if(A[i][j] EQUAL 1) then\n               increment count\n            endif\n         endif\n      endfor\n   endfor\n   return count\nendproc\n```",
+      "corrige_markdown": "**Idea.** The neighbours of the cell (r, c) are the cells of the 3 x 3 block centred on it, except the cell itself. Cells outside the board (a negative index, or an index equal to or greater than the size) are ignored.\n\n**The printed algorithm has two defects**, which a correct program must remove:\n\n1. `count` is declared but **never set to 0**, so the result starts from an unknown value.\n2. The double loop also visits the cell (r, c) itself, so a live cell is **counted as its own neighbour**.\n\nThe test of validity is written for indices from 0 (`i less than 0`, `i greater than or equal to Row`), which agrees with a C array; the loops of `Next_Gen` and `Gen_cells`, from 1 to `Row`, do not (they are right only for a Pascal array numbered from 1; for such an array the test would be `i < 1 OR i > Row`).\n\n**Corrected algorithm.**\n\n```\ncount_live_neighs(A, r, c) ≡\nbegin\n   i, j, count : Integer\n   count <- 0\n   for i from r-1 to r+1 do\n      for j from c-1 to c+1 do\n         if not (i = r AND j = c) then                      // not the cell itself\n            if not ((i < 0 OR j < 0) OR (i >= Row) OR (j >= Col)) then\n               if A[i][j] = 1 then\n                  count <- count + 1\n               endif\n            endif\n         endif\n      endfor\n   endfor\n   return count\nendproc\n```\n\n**ANSI C**\n\n```c\nint count_live_neighs(int A[][COL], int r, int c)\n{\n    int i, j, count = 0;\n\n    for (i = r - 1; i <= r + 1; i++)\n        for (j = c - 1; j <= c + 1; j++)\n            if (!(i == r && j == c))                              /* not the cell itself */\n                if (!((i < 0 || j < 0) || (i >= ROW) || (j >= COL)))   /* valid indices */\n                    if (A[i][j] == 1)\n                        count++;\n    return count;\n}\n```\n\n**Check by simulation.** Applied to the board of Figure 1(a) (rows 1 1 0 0 / 1 0 0 0 / 0 0 1 1 / 1 1 1 1), the corrected subprogram gives the numbers of live neighbours\n\n```\n2 2 1 0\n2 4 3 2\n3 5 4 3\n1 3 4 3\n```\n\nFor example, the cell in row 0, column 0 has the live neighbours (0,1) and (1,0), so 2; the cell (1,1), dead, has the live neighbours (0,0), (0,1), (1,0) and (2,2), so 4. The printed version, which counts the cell itself, gives instead\n\n```\n3 3 1 0\n3 4 3 2\n3 5 5 4\n2 4 5 4\n```\n\n(every live cell has one more than it should: for instance 3 instead of 2 in the corner (0,0)).\n\n**Marking:** the double loop around (r, c) (1); the cell itself excluded, `count` initialised to 0 (1); the validity test of the indices and the test `A[i][j] = 1`, then `return count` (1).",
+      "themes": [
+        "two-dimensional arrays",
+        "nested loops",
+        "algorithm design"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "5) Subprogram `Next_Gen(A, B)` generates into array `B` the next generation cells from array `A`. *[4 marks]*\n\n```\nNext_Gen(A,B) ≡\nbegin\n   for i from 1 to Row do\n      for j from 1 to Col do\n         n_live = count_live_neighs(A,i,j)\n         if(A[i][j] EQUAL 1 AND\n               (n_live EQUAL 2  OR  n_live EQUAL 3))\n         then\n            Set B[i][j] to 1\n         else if(A[i][j] EQUAL 0 AND n_live EQUAL 3) then\n            Set B[i][j] to 1\n         else\n            Set B[i][j] to 0\n         endif\n      endfor\n   endfor\nendproc\n```",
+      "corrige_markdown": "**Idea.** The two arrays are needed: the new value of a cell is computed from the OLD generation `A` and written into `B`, so that a cell already updated never influences its neighbours. The three cases of the rules are: a live cell with 2 or 3 live neighbours survives, a dead cell with exactly 3 live neighbours is born, and every other cell is dead in the next generation.\n\n**ANSI C** (indices from 0 as in `count_live_neighs`; `n_live` has to be declared and assigned with `=`):\n\n```c\nvoid Next_Gen(int A[][COL], int B[][COL])\n{\n    int i, j, n_live;\n\n    for (i = 0; i < ROW; i++)\n        for (j = 0; j < COL; j++) {\n            n_live = count_live_neighs(A, i, j);\n            if (A[i][j] == 1 && (n_live == 2 || n_live == 3))\n                B[i][j] = 1;\n            else if (A[i][j] == 0 && n_live == 3)\n                B[i][j] = 1;\n            else\n                B[i][j] = 0;\n        }\n}\n```\n\nThe printed algorithm is correct once `count_live_neighs` is corrected (Question 4): the printed `n_live` is not declared, and the loops from 1 to `Row` are for a Pascal array.\n\n**Check by simulation.** On the board of Figure 1(a), the translation of `Next_Gen` with the corrected `count_live_neighs` gives\n\n```\n1 1 0 0\n1 0 1 0\n1 0 0 1\n0 1 0 1\n```\n\nwhich is exactly Figure 1(b). With the printed `count_live_neighs` (cell counted as its own neighbour) the same simulation gives 1 1 0 0 / 1 0 1 0 / 1 0 0 0 / 1 0 0 0, whose last two rows differ from Figure 1(b): the printed pair of algorithms does not reproduce the figure of the statement.\n\n**Marking:** double loop over all the cells (1); call of `count_live_neighs` for each cell (1); survival rule (2 or 3 neighbours) (1); birth rule and `else` branch setting 0 (1).",
+      "themes": [
+        "two-dimensional arrays",
+        "algorithm design",
+        "programming in c"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "6) Make sure the subprograms at least compile. Save your work, then print your source code. *[2 marks]*",
+      "corrige_markdown": "The five subprograms of Task 2 (`row_line`, the two functions of the generator, `Gen_cells`, `count_live_neighs` and `Next_Gen`) are put in one file, for example `life.c`, in this order (a function is defined before the first call to it, so no prototype is needed):\n\n1. `#include <stdio.h>` and the constants `ROW`, `COL`, `RAND_SEED` (an array size in C must be a constant, so the \"global variables\" `Row` and `Col` of the statement are written as `#define`s; to resize the board only these lines change);\n2. `Rand_x`, `Rand_init`, `Rand_no`;\n3. `row_line`;\n4. `Gen_cells`;\n5. `count_live_neighs`, then `Next_Gen`.\n\nThe corrections that make the printed algorithms compile and run are the following: keywords of the pseudocode replaced by C ones (`mod` by `%`, `EQUAL` by `==`, `AND` and `OR` by `&&` and `||`, `<-` by `=`, `endfor`/`endif`/`endproc` by braces); one spelling for each identifier (C is case-sensitive: `Rand_x`, not `rand_x`); types and declarations (`int i, j, count = 0;`, `n_live` declared); array indices from 0 to `ROW - 1`; `/* ... */` comments (ANSI C has no `//` comment).\n\nCompilation command (the file must be saved first): `gcc -ansi -pedantic -Wall life.c -o life`, which must report no error. The complete, assembled source is the program of Task 3, questions 9 and 10 (the subprograms of Task 2 and those of Task 3 are in the same file, with `main`).\n\n**Marking:** the subprograms compile without error (1); the work is saved and the source code is printed (1).",
+      "themes": [
+        "programming in c",
+        "subprograms"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}

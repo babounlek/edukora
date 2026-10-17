@@ -1,0 +1,68 @@
+{
+ "pays": "cm",
+ "examen": "gce_al",
+ "serie": null,
+ "origine": "officiel",
+ "annee": "2026",
+ "nature_epreuve": null,
+ "variante_sujet": null,
+ "matiere": "Computer Science",
+ "epreuve_source": "gce-al-computer-science-2026-p2-officiel-cameroun.pdf",
+ "numero_exercice": "1",
+ "numero_paper": 2,
+ "code_matiere": "0795",
+ "duree_epreuve": "2h30",
+ "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0795), ADVANCED LEVEL, June 2026. Duration: two and a half hours.**\n\nAnswer any SIX questions. All questions carry 17 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage.",
+ "regles_choix": [
+  {
+   "type": "parmi",
+   "portee": "PAPER 2",
+   "repondre": 6,
+   "sur": 8
+  }
+ ],
+ "enonce_intro_markdown": "",
+ "groupes": [
+  "PAPER 2"
+ ],
+ "points": "17",
+ "figures": [],
+ "incertitudes": [
+  "Question 1 : points imprimés par sous-partie : i(a) 3 + i(b) 4 = 7 ; ii(a) 4 + ii(b) 2 + ii(c) 4 = 10 ; total 17.",
+  "1(ii)(c) : le sujet imprime « F = A.B + (A XOR B XOR C) » ; le point médian est lu comme le ET logique (pas de barre de complément sur A).",
+  "1(ii)(c) : le schéma de circuit à dessiner par le candidat est décrit dans le corrigé sous forme d'un schéma en texte (portes ET, XOR, XOR, OU). Les tables de vérité de Q et de F ont été recalculées par un script Python.",
+  "1(i)(b) : la réponse est ouverte (plusieurs facteurs acceptables) ; le corrigé en donne cinq, deux suffisent."
+ ],
+ "questions": [
+  {
+   "numero": "i",
+   "enonce_markdown": "(a) What is cache memory? How is it different from main memory? (3 marks)\n\n(b) Describe **two** other factors that can affect the performance of a CPU. (4 marks)",
+   "corrige_markdown": "**(a) Cache memory and its difference from main memory (3 marks)**\n\nCache memory is a small, very fast memory (built with SRAM) placed on the processor chip or very close to it. It keeps copies of the instructions and data that the CPU has used recently or is likely to need next, so that the CPU does not have to wait for the slower main memory each time it needs them. When the wanted item is found in the cache (a *cache hit*) it is read at once; otherwise (a *cache miss*) it is fetched from main memory and a copy is stored in the cache.\n\nDifferences from main memory (RAM):\n\n- the cache is much **faster** (it works at almost the speed of the CPU) whereas main memory (DRAM) is slower;\n- the cache is much **smaller** (kilobytes to a few megabytes) whereas main memory is larger (gigabytes);\n- the cache is **more expensive per byte**, and it holds only *copies* of the most used items, while main memory holds all the programs and data that are currently running;\n- the cache is managed automatically by the hardware (it is not addressed directly by the programmer), while main memory is addressed by the instructions of the programs.\n\n**(b) Two other factors that affect CPU performance (4 marks, 2 marks each)**\n\nAny two of the following, each with its effect:\n\n1. **Clock speed.** The clock (in GHz) sets how many fetch-execute steps can be performed per second. A higher clock speed lets the CPU execute more instructions per second (but it also produces more heat).\n2. **Number of cores.** A multi-core processor has several processing units, so several instructions or programs (threads) can be executed at the same time. Performance rises when the software can use more than one core.\n3. **Word length and bus width.** A CPU that handles larger words (for example 64 bits instead of 32) and has wider data and address buses transfers and processes more data per cycle and can address more memory.\n4. **Size of the cache** (and of the main memory). A larger cache gives more cache hits, so fewer slow accesses to main memory.\n5. **Instruction set and pipelining.** A well-designed instruction set and the overlapping of the stages of several instructions (pipelining) allow more instructions to be completed per clock cycle.",
+   "themes": [
+    "computer architecture",
+    "computer memory",
+    "processor performance factors"
+   ],
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 7
+  },
+  {
+   "numero": "ii",
+   "enonce_markdown": "Consider the truth table below for a digital circuit with three inputs A, B and C, and one output Q.\n\n| A | B | C | Q |\n|---|---|---|---|\n| 0 | 0 | 0 | 0 |\n| 0 | 0 | 1 | 1 |\n| 0 | 1 | 0 | 1 |\n| 0 | 1 | 1 | 0 |\n| 1 | 0 | 0 | 1 |\n| 1 | 0 | 1 | 0 |\n| 1 | 1 | 0 | 0 |\n| 1 | 1 | 1 | 1 |\n\n(a) From the truth table, determine the sum of products form for output Q. Hence, show that $Q = A \\oplus B \\oplus C$. (4 marks)\n\n(b) Ignoring production cost, state **two** advantages of designing the digital circuit using the expression $Q = A \\oplus B \\oplus C$ rather than the sum of products form obtained in ii(a) above. (2 marks)\n\n(c) Draw a logic circuit diagram for the Boolean expression $F = A \\cdot B + (A \\oplus B \\oplus C)$. (4 marks)",
+   "corrige_markdown": "**(a) Sum of products and proof that $Q = A \\oplus B \\oplus C$ (4 marks)**\n\nQ = 1 in the rows 001, 010, 100 and 111. Each of these rows gives one product term (a variable is complemented when its value is 0):\n\n$$Q = \\overline{A}\\,\\overline{B}\\,C + \\overline{A}\\,B\\,\\overline{C} + A\\,\\overline{B}\\,\\overline{C} + A\\,B\\,C$$\n\n*Proof.* Start from $A \\oplus B \\oplus C = (A \\oplus B) \\oplus C$. Use $X \\oplus C = X\\overline{C} + \\overline{X}\\,C$ with $X = A \\oplus B$, where $A \\oplus B = \\overline{A}B + A\\overline{B}$ and $\\overline{A \\oplus B} = \\overline{A}\\,\\overline{B} + AB$:\n\n$$(A \\oplus B) \\oplus C = (\\overline{A}B + A\\overline{B})\\,\\overline{C} + (\\overline{A}\\,\\overline{B} + AB)\\,C$$\n\nRemoving the brackets:\n\n$$= \\overline{A}\\,B\\,\\overline{C} + A\\,\\overline{B}\\,\\overline{C} + \\overline{A}\\,\\overline{B}\\,C + A\\,B\\,C$$\n\nThese are exactly the four product terms found from the truth table, so $Q = A \\oplus B \\oplus C$. (Check by script: for the eight input combinations $A \\oplus B \\oplus C$ gives 0, 1, 1, 0, 1, 0, 0, 1, which is the column Q.) Q is 1 when an **odd** number of the inputs are 1 (an odd-parity function).\n\n**(b) Two advantages of the XOR expression (2 marks)**\n\nAny two of:\n\n- it needs **fewer gates**: two 2-input XOR gates, instead of three NOT gates, four 3-input AND gates and one 4-input OR gate for the sum of products;\n- the signal passes through **fewer levels of gates**, so there is a shorter propagation delay and the circuit is faster;\n- fewer gates and connections mean **less space on the chip**, less power consumption and less heat;\n- the expression is **shorter and easier to read, build, test and maintain** (fewer wiring errors).\n\n**(c) Logic circuit for $F = A \\cdot B + (A \\oplus B \\oplus C)$ (4 marks)**\n\nGates needed: one AND gate for $A \\cdot B$; two XOR gates in series for $A \\oplus B \\oplus C$ (the first gives $A \\oplus B$, the second combines it with C); one OR gate that adds the two results to give F. Inputs are on the left, the output F on the right:\n\n```text\nA ---+----------------------------------+\n     |                                  |   +-----+\n     |                                  +---|     |\n     |                                      | AND |--- A.B ---------+\nB ---|---+----------------------------------|     |                 |\n     |   |                                  +-----+                 |   +----+\n     |   |                                                          +---|    |\n     |   |   +-----+                           +-----+                  | OR |--- F\n     |   |   |     |                           |     |              +---|    |\n     +---|---| XOR |--- A xor B ---------------| XOR |--------------+   +----+\n         +---|     |                       +---|     |  (A xor B xor C)\n             +-----+                       |   +-----+\nC ------------------------------------------+\n```\n\nReading the diagram: A and B each feed **both** the AND gate and the first XOR gate; the output of the first XOR gate and C feed the second XOR gate; the AND output and the second XOR output feed the OR gate, whose output is F.\n\nFor reference, the values of F for ABC = 000 to 111 are 0, 1, 1, 0, 1, 0, 1, 1 (obtained by script): F equals Q except in the row ABC = 110, where $A \\cdot B = 1$ makes F = 1.",
+   "themes": [
+    "boolean algebra",
+    "digital logic circuits",
+    "digital logic gates"
+   ],
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "points": 10
+  }
+ ]
+}
