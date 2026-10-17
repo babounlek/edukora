@@ -1312,6 +1312,10 @@ export interface TentativeInedite {
   source?: "officielle"
   // Ce que la page note d'un bloc : une question (défaut) ou un exercice entier (annales).
   granularite?: "question" | "exercice"
+  // Règles « traiter n sur m » de l'épreuve (GCE) ; `exercices` : ids concernés par une règle « parmi ».
+  regles_choix?: RegleChoix[]
+  // Exercices écartés du barème par ces règles (connus une fois le corrigé disponible).
+  non_comptes?: number[]
   sujet_pdf_url?: string | null
   submitted_at: string | null
   score_obtenu: number | null
@@ -1401,6 +1405,7 @@ export interface TentativeInediteResult {
   comparaison: ComparaisonCandidats | null
   cursus_id: number | null
   par_exercice: TentativeInediteResultExercice[]
+  regles_choix?: RegleChoix[]
   par_theme: TentativeInediteResultTheme[]
   themes_a_reviser: ThemeARevoir[]
 }
@@ -1446,6 +1451,8 @@ export interface TentativeInediteResultExercice {
   numero_exercice: string
   points_possibles: number | null
   points_obtenus: number | null
+  // false : exercice écarté par une règle « parmi » (GCE), hors barème et hors note.
+  compte?: boolean
 }
 
 export interface TentativeInediteResultTheme {
@@ -1643,3 +1650,7 @@ export interface CompletionRecherche {
   texte: string
   matiere: string
 }
+
+export type RegleChoix =
+  | { type: "parmi"; portee: string; repondre: number; sur: number; exercices?: number[] }
+  | { type: "ou"; portee: string; options: string[][] }

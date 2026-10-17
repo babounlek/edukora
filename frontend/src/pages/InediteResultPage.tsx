@@ -201,7 +201,12 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
               {result.par_exercice.map((exercice) => (
                 <li key={exercice.numero_exercice}>
                   <div className="mb-1.5 flex items-center justify-between text-sm">
-                    <span>{t("ed.exercice_n", { n: exercice.numero_exercice })}</span>
+                    <span>
+                      {t("ed.exercice_n", { n: exercice.numero_exercice })}
+                      {exercice.compte === false && (
+                        <Badge variant="outline" className="ml-2 text-xs font-normal">{t("ct.non_compte")}</Badge>
+                      )}
+                    </span>
                     <span className="tabular-nums text-muted-foreground">
                       {formatPoints(exercice.points_obtenus)} / {formatPoints(exercice.points_possibles)}
                     </span>

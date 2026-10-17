@@ -125,6 +125,27 @@ describe("InediteResultPage", () => {
     expect(screen.queryByText("Terminer ma notation")).not.toBeInTheDocument()
   })
 
+  it("marque « Non compté » un exercice écarté par une règle de choix", async () => {
+    completeTentative.mockResolvedValue(resultat({
+      par_exercice: [
+        { numero_exercice: "1", points_possibles: 8, points_obtenus: 7, compte: true },
+        { numero_exercice: "2", points_possibles: 12, points_obtenus: 2, compte: false },
+      ],
+    }))
+    afficher()
+
+    expect(await screen.findByText("Non compté")).toBeInTheDocument()
+    expect(screen.getAllByText("Non compté")).toHaveLength(1)
+  })
+
+  it("n'affiche pas de note sur 20 quand le serveur n'en donne pas (GCE)", async () => {
+    completeTentative.mockResolvedValue(resultat({ bareme: 30, note: 15, note_sur_20: null, score: 50 }))
+    afficher()
+
+    expect(await screen.findByLabelText("Note : 15 sur 30")).toBeInTheDocument()
+    expect(screen.queryByText(/soit/)).not.toBeInTheDocument()
+  })
+
   it("classe les compétences de la plus fragile à la plus solide", async () => {
     completeTentative.mockResolvedValue(resultat())
     afficher()

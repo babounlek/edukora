@@ -32,6 +32,7 @@ import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { apiPour, cheminResultat, cheminRetour, type SourceEpreuve } from "@/lib/apiEpreuve"
 import { libellesUnite, tu, uniteDe } from "@/lib/vocabulaire"
+import { ReglesChoix } from "@/components/inedit/ReglesChoix"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { traduireLibelleSerie } from "@/lib/cursus"
 
@@ -833,6 +834,10 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           unite={unite}
           resultatPath={cheminResultat(source, tentative.id)}
         />
+      )}
+
+      {tentative.regles_choix && tentative.regles_choix.length > 0 && (
+        <ReglesChoix regles={tentative.regles_choix} traites={new Set(questions.filter((q) => q.traitee).map((q) => q.id))} />
       )}
 
       {tentative.bareme_estime && (

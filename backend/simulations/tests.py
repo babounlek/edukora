@@ -418,3 +418,93 @@ class MarquesTests(SimulationTestCase):
         self.assertEqual(premiere["questions_marquees"], [self.ex1.pk])
         seconde = self.client.post(self.url("marquer", self.ex1)).data
         self.assertEqual(seconde["questions_marquees"], [])
+
+
+class ReglesChoixTests(SimulationTestCase):
+    """Section A : 2 exercices à traiter parmi 3 (6, 14 et 10 points)."""
+
+    def setUp(self):
+        super().setUp()
+        self.theme_c = Tag.objects.create(name="Limites")
+        self.ex3 = self.exercice("3", "10", "Énoncé 3", "Corrigé 3", [self.theme_c])
+        for exercice in (self.ex1, self.ex2, self.ex3):
+            Exercise.objects.filter(pk=exercice.pk).update(groupes=["SECTION A"])
+        Lesson.objects.filter(pk=self.lesson.pk).update(
+            regles_choix=[{"type": "parmi", "portee": "Section  A", "repondre": 2, "sur": 3}],
+        )
+
+    def noter(self, exercice, points):
+        return self.client.post(self.url("noter", exercice), {"points_obtenus": points}, format="json")
+
+    def test_seuls_les_meilleurs_exercices_comptent(self):
+        self.demarrer()
+        self.noter(self.ex1, 6)
+        self.noter(self.ex2, 14)
+        reponse = self.noter(self.ex3, 2)
+
+        self.assertEqual(reponse.data["non_comptes"], [self.ex3.pk])
+        self.assertEqual((reponse.data["notation"]["note"], reponse.data["notation"]["bareme"]), (20.0, 20.0))
+        resultat = self.client.post(self.url("completer")).data
+        self.assertEqual((resultat["note"], resultat["bareme"], resultat["score"]), (20.0, 20.0, 100))
+        self.assertEqual([e["compte"] for e in resultat["par_exercice"]], [True, True, False])
+        self.assertEqual(resultat["total_questions"], 2)
+        self.assertEqual(resultat["regles_choix"][0]["repondre"], 2)
+
+    def test_un_seul_exercice_traite_laisse_la_place_vide_due_au_plus_gros_restant(self):
+        self.demarrer()
+        self.noter(self.ex2, 14)
+        resultat = self.client.post(self.url("completer")).data
+
+        # Exercice 2 (14) + la place vide pèse l'exercice 3 (10), pas l'exercice 1 (6).
+        self.assertEqual((resultat["note"], resultat["bareme"]), (14.0, 24.0))
+        self.assertEqual([e["compte"] for e in resultat["par_exercice"]], [False, True, True])
+
+    def test_rien_traite_pese_les_deux_plus_gros(self):
+        self.demarrer()
+        resultat = self.client.post(self.url("completer")).data
+        self.assertEqual((resultat["note"], resultat["bareme"]), (0.0, 24.0))
+
+    def test_un_exercice_ecarte_ne_fait_pas_revenir_ses_themes(self):
+        self.demarrer()
+        self.noter(self.ex2, 14)
+        self.noter(self.ex3, 10)
+        resultat = self.client.post(self.url("completer")).data
+
+        self.assertEqual(resultat["themes_a_reviser"], [])
+        self.assertEqual(resultat["pertes"]["total_perdu"], 0)
+        # L'exercice 1, laissé de côté mais écarté, ne planifie pas ses thèmes.
+        planifies = set(RevisionSchedule.objects.filter(profil=self.profil).values_list("theme__name", flat=True))
+        self.assertNotIn("Suites", planifies)
+
+    def test_une_regle_ou_est_informative(self):
+        Lesson.objects.filter(pk=self.lesson.pk).update(
+            regles_choix=[{"type": "ou", "portee": "SECTION A", "options": [["a"], ["b"]]}],
+        )
+        self.demarrer()
+        self.noter(self.ex1, 6)
+        resultat = self.client.post(self.url("completer")).data
+        self.assertEqual((resultat["note"], resultat["bareme"]), (6.0, 30.0))
+        self.assertTrue(all(e["compte"] for e in resultat["par_exercice"]))
+
+    def test_une_epreuve_sans_regle_garde_tous_ses_exercices(self):
+        Lesson.objects.filter(pk=self.lesson.pk).update(regles_choix=[])
+        data = self.demarrer()
+        self.assertEqual(data["bareme"], 30.0)
+        self.assertEqual(data["regles_choix"], [])
+
+    def test_le_gce_n_a_pas_de_note_sur_20(self):
+        gce = Cursus.objects.filter(examen=Examen.GCE_AL, series__isnull=True).first()
+        self.lesson.cursus.add(gce)
+        self.demarrer()
+        self.noter(self.ex1, 6)
+        reponse = self.noter(self.ex2, 7)
+        self.assertIsNone(reponse.data["notation"]["note_sur_20"])
+        resultat = self.client.post(self.url("completer")).data
+        self.assertIsNone(resultat["note_sur_20"])
+        self.assertEqual(resultat["note"], 13.0)
+
+    def test_un_examen_francophone_garde_sa_note_sur_20(self):
+        Lesson.objects.filter(pk=self.lesson.pk).update(regles_choix=[])
+        self.demarrer()
+        self.noter(self.ex1, 6)
+        self.assertIsNotNone(self.client.post(self.url("completer")).data["note_sur_20"])

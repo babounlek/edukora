@@ -15,12 +15,13 @@ from rest_framework.response import Response
 
 from access.services import has_access
 from catalog.libelles import libelle_cursus
-from catalog.models import Lesson, LessonType
+from catalog.models import EXAMENS_GCE, Lesson, LessonType
 from inedit import notation, rapport
 from inedit.models import CausePerte
 from quiz.services import enregistrer_resultat_pour_revision
 from users.profils import profil_actif
 
+from . import choix
 from .cadre import charger_exercices, duree_minutes_pour_lesson
 from .models import SimulationEpreuve, SimulationReponse
 
@@ -70,7 +71,20 @@ def _alimenter_revision(simulation, exercice, correcte):
 
 def _bilan(simulation, exercices=None):
     exercices = exercices if exercices is not None else charger_exercices(simulation.lesson)
-    return notation.calculer(simulation, exercices), exercices
+    return choix.calculer(simulation, exercices), exercices
+
+
+def _est_gce(simulation):
+    return any(c.examen in EXAMENS_GCE for c in _cursus(simulation))
+
+
+def _resume(simulation, bilan):
+    """notation.resume, sans note sur 20 pour le GCE : le Board note en grades (A-E, A-F), jamais
+    sur 20 ; un 20 inventé tromperait l'élève. Le pourcentage et les points restent."""
+    resume = notation.resume(simulation, bilan)
+    if _est_gce(simulation):
+        resume["note_sur_20"] = None
+    return resume
 
 
 def _complete(simulation):
@@ -83,6 +97,8 @@ def _complete(simulation):
     # Exercices laissés de côté : leur thème est une faiblesse comme un exercice raté.
     reponses = {r.question_id: r for r in simulation.reponses.all()}
     for exercice in exercices:
+        if exercice.id in bilan["non_comptes"]:
+            continue
         question = exercice.questions.all()[0]
         if not notation.est_traitee(question, reponses.get(question.pk)):
             _alimenter_revision(simulation, exercice, False)
@@ -140,7 +156,7 @@ def _payload(simulation):
     lesson = simulation.lesson
     correction = _correction_disponible(simulation)
     exercices = charger_exercices(lesson)
-    bilan = notation.calculer(simulation, exercices)
+    bilan = choix.calculer(simulation, exercices)
     points_par_question = notation.points_par_question(exercices)
     reponses = {r.question_id: r for r in simulation.reponses.all()}
     cursus = _cursus(simulation)
@@ -169,7 +185,9 @@ def _payload(simulation):
         "bareme_snapshot": notation.en_nombre(simulation.bareme_snapshot),
         "bareme": notation.en_nombre(bilan["bareme"]),
         "bareme_estime": bilan["bareme_estime"],
-        "notation": notation.resume(simulation, bilan) if correction else None,
+        "notation": _resume(simulation, bilan) if correction else None,
+        "regles_choix": choix.regles_exposees(lesson, exercices),
+        "non_comptes": sorted(bilan["non_comptes"]) if correction else [],
         "correction_disponible": correction,
         "questions_marquees": list(simulation.exercices_marques.values_list("pk", flat=True)),
         "exercices": [
@@ -195,13 +213,16 @@ def _question_payload_avec_notation(simulation, exercice_id, reponse):
     inedit.views._question_payload_avec_notation)."""
     exercices = charger_exercices(simulation.lesson)
     correction = _correction_disponible(simulation)
-    bilan = notation.calculer(simulation, exercices)
+    bilan = choix.calculer(simulation, exercices)
     if simulation.submitted_at is not None:
         notation.enregistrer_note(simulation, bilan)
     exercice = next(e for e in exercices if e.id == exercice_id)
     points_info = notation.points_par_question(exercices)[exercice.questions.all()[0].pk]
     payload = _exercice_payload(simulation, exercice, reponse, correction, points_info)
-    payload["notation"] = notation.resume(simulation, bilan) if correction else None
+    payload["notation"] = _resume(simulation, bilan) if correction else None
+    if correction:
+        # Les « parmi » se recalculent à chaque note : l'écran met à jour tous les exercices.
+        payload["non_comptes"] = sorted(bilan["non_comptes"])
     return payload
 
 
@@ -210,6 +231,8 @@ def _themes_a_reviser(simulation, bilan, exercices):
 
     perdus = {}
     for exercice in exercices:
+        if exercice.id in bilan["non_comptes"]:
+            continue
         for theme in exercice.questions.all()[0].themes.all():
             stats = bilan["par_theme"].get(theme.name)
             if stats and stats["points_obtenus"] < stats["points_possibles"]:
@@ -245,7 +268,7 @@ def _comparaison(simulation, resume):
 def _resultat_payload(simulation, bilan=None, exercices=None):
     if bilan is None:
         bilan, exercices = _bilan(simulation)
-    resume = notation.resume(simulation, bilan)
+    resume = _resume(simulation, bilan)
     temps = rapport.temps_par_exercice(bilan["lignes"], simulation.exam_mode_started_at)
     cursus = _cursus(simulation)
     return {
@@ -280,9 +303,11 @@ def _resultat_payload(simulation, bilan=None, exercices=None):
                 "numero_exercice": e["numero_exercice"],
                 "points_possibles": notation.en_nombre(e["points_possibles"]),
                 "points_obtenus": notation.en_nombre(e["points_obtenus"]),
+                "compte": e["compte"],
             }
             for e in bilan["par_exercice"]
         ],
+        "regles_choix": choix.regles_exposees(simulation.lesson, exercices or charger_exercices(simulation.lesson)),
         "themes_a_reviser": _themes_a_reviser(simulation, bilan, exercices or charger_exercices(simulation.lesson)),
         "par_theme": [
             {

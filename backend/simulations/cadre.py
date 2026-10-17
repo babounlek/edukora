@@ -135,6 +135,8 @@ class ExerciceAdapte:
         self.numero_exercice = exercise.numero_exercice
         self.points = points
         self.groupes = contenu.get("groupes", [])
+        # Repères bruts, tels qu'ingérés : c'est à eux que se rattachent les règles de choix.
+        self.groupes_bruts = list(exercise.groupes or [])
         self.enonce_intro_markdown = contenu.get("enonce_intro_markdown", "")
         self.enonce_markdown = contenu.get("enonce_markdown", "")
         self.corrige_markdown = contenu.get("corrige_markdown", "")
