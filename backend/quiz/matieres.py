@@ -3,8 +3,8 @@ Matières que passe un profil - ce qui distingue, pour le coach, une matière «
 matière simplement présente dans le cursus.
 
 Au BEPC, au Probatoire et au BAC, la série fixe les matières : tout le cursus est « à l'élève », et
-`Profil.matieres_passees` reste vide. Le GCE n'a pas de séries : un élève passe 5 à 8 matières
-qu'il choisit, parmi plusieurs dizaines. Le plan du jour, les priorités, la progression et le
+`Profil.matieres_passees` reste vide. Le GCE n'a pas de séries : un élève choisit ses matières
+parmi celles du Board (6 à 11 au O Level, 5 au plus à l'A Level : voir REGLES_INSCRIPTION_GCE). Le plan du jour, les priorités, la progression et le
 diagnostic se limitent alors à ce choix ; la bibliothèque (épreuves, cours, recherche) reste ouverte
 à toutes les matières du cursus.
 
@@ -14,9 +14,24 @@ l'élève devant un plan vide.
 """
 from django.db.models import Exists, OuterRef
 
-from catalog.models import Lesson, StatutContenu, Subject
+from catalog.models import Examen, Lesson, StatutContenu, Subject
 
 from .models import CompetenceItem
+
+# Règles d'inscription du GCE Board, par niveau (camgceb.org, pages « GCE Ordinary Level » et « GCE Advanced Level »,
+# relevées le 2026-10-15). Le O Level exige English Language, French et Mathematics, au moins 6 matières pour un
+# candidat complet et au plus 11, la onzième étant Religious Studies. L'A Level en permet au plus 5, sans minimum
+# ni matière obligatoire publiés. La page du O Level se contredit sur le minimum (elle cite aussi 4, pour qui ajoute
+# des matières à un acquis) : 6 est retenu, « candidat complet ». Ces règles ne bloquent jamais : un élève peut avoir
+# une inscription arrêtée par son établissement, voir avertissements_inscription.
+REGLES_INSCRIPTION_GCE = {
+    Examen.GCE_OL: {
+        "minimum": 6, "maximum": 11,
+        "obligatoires": ("GCE_ENGLISH", "GCE_FRENCH", "GCE_MATHS"),
+        "derniere": "GCE_RELIGION",
+    },
+    Examen.GCE_AL: {"minimum": None, "maximum": 5, "obligatoires": (), "derniere": None},
+}
 
 
 def _choix(profil):
@@ -56,3 +71,54 @@ def matieres_disponibles(cursus):
         CompetenceItem.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE, cursus=cursus),
     )
     return list(Subject.objects.filter(country=cursus.country).filter(avec_epreuve | avec_quiz).order_by("label"))
+
+
+def regles_inscription(cursus):
+    """
+    Les règles d'inscription du Board pour ce cursus (REGLES_INSCRIPTION_GCE), ou None. Seule la branche
+    GÉNÉRALE du GCE en a : la branche technique relève d'un autre examen du Board (le TVE, aux règles propres).
+    """
+    if cursus is None or cursus.series_id is not None:
+        return None
+    regles = REGLES_INSCRIPTION_GCE.get(cursus.examen)
+    return dict(regles) if regles else None
+
+
+def matieres_officielles(cursus):
+    """
+    Les matières que le Board propose à ce niveau (Subject.codes_officiels), AVEC OU SANS contenu chez nous :
+    c'est la liste de l'inscription, pas celle de l'étude. Vide hors branche générale du GCE.
+    """
+    if regles_inscription(cursus) is None:
+        return []
+    return list(
+        Subject.objects.filter(country=cursus.country, codes_officiels__has_key=cursus.examen).order_by("label")
+    )
+
+
+def avertissements_inscription(cursus, subjects):
+    """
+    Ce qui, dans le choix `subjects`, s'écarte des règles du Board - jamais un refus, seulement de quoi prévenir
+    l'élève. Un choix vide veut dire « pas encore déclaré » : aucun avertissement.
+
+    Chaque avertissement : {"code": "minimum" | "maximum" | "obligatoire" | "derniere_matiere", ...}
+    avec `attendu` et `actuel` pour les bornes, `matiere` (code Subject) pour les deux autres.
+    """
+    regles = regles_inscription(cursus)
+    subjects = list(subjects)
+    if regles is None or not subjects:
+        return []
+    codes = {s.code for s in subjects}
+    n = len(codes)
+    avertissements = []
+    if regles["minimum"] is not None and n < regles["minimum"]:
+        avertissements.append({"code": "minimum", "attendu": regles["minimum"], "actuel": n})
+    if regles["maximum"] is not None and n > regles["maximum"]:
+        avertissements.append({"code": "maximum", "attendu": regles["maximum"], "actuel": n})
+    avertissements.extend(
+        {"code": "obligatoire", "matiere": code} for code in regles["obligatoires"] if code not in codes
+    )
+    # Au O Level, la onzième matière doit être Religious Studies.
+    if regles["derniere"] and n >= (regles["maximum"] or 0) and regles["derniere"] not in codes:
+        avertissements.append({"code": "derniere_matiere", "matiere": regles["derniere"]})
+    return avertissements

@@ -19,7 +19,7 @@ from programme.models import Savoir
 from subscriptions.models import Subscription
 from users.profils import profil_actif
 
-from .matieres import matieres_disponibles
+from .matieres import avertissements_inscription, matieres_disponibles, matieres_officielles, regles_inscription
 from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
     StatutFichePdf, StatutSeance,
@@ -1093,21 +1093,43 @@ def matieres_view(request):
     profil = profil_actif(request)
     disponibles = matieres_disponibles(cursus)
     ids_disponibles = {m.id for m in disponibles}
+    # Au GCE (branche générale) : toutes les matières du Board à ce niveau, couvertes ou non (voir quiz.matieres).
+    officielles = matieres_officielles(cursus)
+    # Ce qu'on peut déclarer : une matière du Board, ou une matière qui a du contenu sur ce cursus.
+    ids_autorises = ids_disponibles | {m.id for m in officielles}
 
     if request.method == "PUT":
         ids = request.data.get("matieres")
         if not isinstance(ids, list) or any(isinstance(i, bool) or not isinstance(i, int) for i in ids):
             return Response({"error": "« matieres » doit être une liste d'identifiants."}, status=400)
-        if set(ids) - ids_disponibles:
+        if set(ids) - ids_autorises:
             return Response({"error": "Une de ces matières n'est pas disponible pour ce cursus."}, status=400)
         # Remplace le choix de CE cursus seulement : celui d'un autre examen déjà préparé reste intact.
-        profil.matieres_passees.remove(*ids_disponibles)
+        profil.matieres_passees.remove(*ids_autorises)
         profil.matieres_passees.add(*ids)
 
-    choisies = set(profil.matieres_passees.values_list("id", flat=True)) & ids_disponibles
+    choisies = set(profil.matieres_passees.values_list("id", flat=True)) & ids_autorises
+    regles = regles_inscription(cursus)
+    codes_obligatoires = set(regles["obligatoires"]) if regles else set()
+    sujets_choisis = list({m.id: m for m in (*officielles, *disponibles) if m.id in choisies}.values())
     return Response({
         "choisies": sorted(choisies),
         "disponibles": [{"id": m.id, "code": m.code, "label": m.label} for m in disponibles],
+        # Règles d'inscription du Board (None hors GCE général) et les matières du Board à ce niveau : `couverte`
+        # = EduKora a du contenu dessus ; `obligatoire` = exigée à l'inscription ; `code_officiel` = code du jury.
+        "regles": None if regles is None else {
+            "minimum": regles["minimum"], "maximum": regles["maximum"],
+            "obligatoires": list(regles["obligatoires"]), "derniere": regles["derniere"],
+        },
+        "officielles": [
+            {
+                "id": m.id, "code": m.code, "label": m.label, "code_officiel": m.codes_officiels.get(cursus.examen),
+                "couverte": m.id in ids_disponibles, "obligatoire": m.code in codes_obligatoires,
+            }
+            for m in officielles
+        ],
+        # Écarts du choix enregistré aux règles : jamais un refus, de quoi prévenir l'élève seulement.
+        "avertissements": avertissements_inscription(cursus, sujets_choisis),
     })
 
 
