@@ -7,7 +7,7 @@ import rehypeRaw from "rehype-raw"
 import { toast } from "sonner"
 import { ArrowLeft, Check, CloudOff, Eye, EyeOff, FileDown, FileText, Flag, Info, Timer, X } from "lucide-react"
 
-import { answerTentativeQuestion, downloadSujetPdf } from "@/api/endpoints"
+import { downloadSujetPdf } from "@/api/endpoints"
 import type { NoterTentativeQuestionParams } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { NotationResume, TentativeInedite, TentativeInediteQuestion } from "@/api/types"
@@ -297,7 +297,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         try {
           appliquer(
             corps.type === "qcm"
-              ? await answerTentativeQuestion(tentativeId, questionId, { reponse_choisie: corps.lettre })
+              ? await api.repondre(tentativeId, questionId, corps.lettre)
               : await api.noter(tentativeId, questionId, corps.corps),
           )
         } catch (err) {
@@ -541,7 +541,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
       reponse: { ...(q.reponse ?? REPONSE_VIDE), reponse_choisie: lettre },
     }))
     try {
-      const updated = await answerTentativeQuestion(tentative!.id, question.id, { reponse_choisie: lettre })
+      const updated = await api.repondre(tentative!.id, question.id, lettre)
       if (sequences.current.get(question.id) === numero) appliquer(updated)
     } catch (err) {
       if (sequences.current.get(question.id) !== numero) return

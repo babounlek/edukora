@@ -11,5 +11,6 @@ urlpatterns = [
     path("<int:simulation_id>/mode-examen/", views.start_exam_mode, name="mode-examen"),
     path("<int:simulation_id>/exercices/<int:exercice_id>/noter/", views.noter_exercice, name="noter"),
     path("<int:simulation_id>/exercices/<int:exercice_id>/marquer/", views.toggle_marque, name="marquer"),
+    path("<int:simulation_id>/questions/<int:question_id>/repondre/", views.repondre_question, name="repondre"),
     path("<int:simulation_id>/completer/", views.complete_simulation, name="completer"),
 ]

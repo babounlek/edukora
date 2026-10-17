@@ -28,6 +28,10 @@ class SimulationEpreuve(models.Model):
         "catalog.Exercise", blank=True, related_name="+",
         help_text="Exercices marqués « à revoir » par l'élève.",
     )
+    questions_marquees_qcm = models.ManyToManyField(
+        "catalog.Question", blank=True, related_name="+",
+        help_text="Questions marquées « à revoir » (simulation à la question).",
+    )
     note_obtenue = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     bareme_snapshot = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     score_obtenu = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -52,18 +56,30 @@ class SimulationReponse(models.Model):
     resultat_declare = models.CharField(max_length=10, choices=ResultatDeclare.choices, blank=True)
     cause_perte = models.CharField(max_length=15, choices=CausePerte.choices, blank=True)
     answered_at = models.DateTimeField(auto_now_add=True)
+    # Simulation à la question (Paper 1 du GCE) : la question visée et la lettre choisie. Pour un
+    # QCM, `resultat_declare` est posé par le serveur au moment de la réponse (REUSSI / ECHEC).
+    sous_question = models.ForeignKey(
+        "catalog.Question", null=True, blank=True, on_delete=models.CASCADE, related_name="+",
+    )
+    reponse_choisie = models.CharField(max_length=10, blank=True, default="")
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["simulation", "exercise"], name="unique_reponse_par_exercice_et_simulation"),
+            models.UniqueConstraint(
+                fields=["simulation", "exercise"], condition=models.Q(sous_question__isnull=True),
+                name="unique_reponse_par_exercice_et_simulation",
+            ),
+            models.UniqueConstraint(
+                fields=["simulation", "sous_question"], condition=models.Q(sous_question__isnull=False),
+                name="unique_reponse_par_question_et_simulation",
+            ),
         ]
 
     # Interface attendue par inedit.notation (qui ne connaît que des « questions »).
     @property
     def question_id(self):
-        return self.exercise_id
+        return self.sous_question_id or self.exercise_id
 
-    reponse_choisie = ""
     criteres_valides = ()
 
     @property

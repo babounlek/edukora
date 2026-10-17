@@ -17,6 +17,8 @@ from decimal import Decimal
 
 from inedit import notation
 
+from .cadre import simulation_a_la_question
+
 ZERO = Decimal("0")
 
 
@@ -35,6 +37,8 @@ def _est_note(exercice, reponse):
 def exercices_non_comptes(lesson, exercices, bilan, reponses):
     """{exercice.id} : les exercices écartés par les règles « parmi ». `reponses` :
     {exercise_id: SimulationReponse} (la question d'un exercice a le pk de l'exercice)."""
+    if simulation_a_la_question(lesson):
+        return set()
     ecartes = set()
     for regle in regles_parmi(lesson):
         portee = _repere(regle["portee"])

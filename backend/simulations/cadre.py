@@ -7,6 +7,7 @@ et le rapport de fin d'épreuve des épreuves inédites, sans les dupliquer ni l
 
 import re
 from collections import Counter
+from decimal import Decimal
 
 from catalog import rendering
 from catalog.models import Lesson, LessonType, StatutContenu
@@ -129,8 +130,33 @@ class QuestionExercice:
         self.points = points
 
 
+def simulation_a_la_question(lesson):
+    """Les Paper 1 du GCE (une série de QCM) se simulent question par question et se corrigent
+    seuls ; tout le reste se simule exercice par exercice, comme toujours."""
+    return lesson.numero_paper == 1
+
+
+class QuestionOfficielle:
+    """Une vraie question d'annale, présentée comme inedit.notation l'attend. Un point par
+    question par défaut : c'est le barème d'un Paper 1 (50 questions, 50 points)."""
+
+    criteres_notation = ()
+
+    def __init__(self, question):
+        self.pk = question.pk
+        self.numero = question.numero
+        self.ordre = question.ordre
+        self.type_reponse = question.type_reponse
+        self.choix = question.choix
+        self.reponse_correcte = question.reponse_correcte
+        self.enonce_markdown = question.enonce_markdown
+        self.corrige_markdown = question.corrige_markdown
+        self.points = question.points if question.points is not None else Decimal("1")
+        self.themes = _Liste(list(question.themes.all()))
+
+
 class ExerciceAdapte:
-    def __init__(self, exercise, contenu, points, themes):
+    def __init__(self, exercise, contenu, points, themes, questions=None):
         self.id = exercise.pk
         self.numero_exercice = exercise.numero_exercice
         self.points = points
@@ -140,6 +166,9 @@ class ExerciceAdapte:
         self.enonce_intro_markdown = contenu.get("enonce_intro_markdown", "")
         self.enonce_markdown = contenu.get("enonce_markdown", "")
         self.corrige_markdown = contenu.get("corrige_markdown", "")
+        if questions is not None:
+            self.questions = _Liste(questions)
+            return
         explicite = notation.parse_points(points) if points else None
         self.questions = _Liste([QuestionExercice(exercise, themes, explicite)])
 
@@ -169,6 +198,16 @@ def charger_exercices(lesson):
         for e in lesson.exercises.filter(statut=StatutContenu.VALIDE).prefetch_related("themes", "questions__themes")
     }
     exercises = [par_id[c["id"]] for c in contenus if c["id"] in par_id]
+    if simulation_a_la_question(lesson):
+        contenus_par_id = {c["id"]: c for c in contenus}
+        return [
+            ExerciceAdapte(
+                e, contenus_par_id[e.pk], "", [],
+                questions=[QuestionOfficielle(q) for q in sorted(e.questions.all(), key=lambda q: q.ordre)],
+            )
+            for e in exercises
+            if e.questions.all()
+        ]
     tous_lisibles = bool(exercises) and all(notation.parse_points(e.points) > 0 for e in exercises)
     contenus_par_id = {c["id"]: c for c in contenus}
     return [

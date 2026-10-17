@@ -785,6 +785,14 @@ export function noterSimulationExercice(id: number, exerciceId: number, params: 
   })
 }
 
+/** Réponse à un QCM d'un Paper 1 (simulation à la question) - corrigé automatiquement côté serveur. */
+export function answerSimulationQuestion(id: number, questionId: number, params: AnswerTentativeQuestionParams) {
+  return apiRequest<TentativeInediteQuestion>(`/simulations/${id}/questions/${questionId}/repondre/`, {
+    method: "POST",
+    body: params,
+  })
+}
+
 export function marquerSimulationExercice(id: number, exerciceId: number) {
   return apiRequest<{ questions_marquees: number[] }>(`/simulations/${id}/exercices/${exerciceId}/marquer/`, {
     method: "POST",

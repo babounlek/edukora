@@ -508,3 +508,112 @@ class ReglesChoixTests(SimulationTestCase):
         self.demarrer()
         self.noter(self.ex1, 6)
         self.assertIsNotNone(self.client.post(self.url("completer")).data["note_sur_20"])
+
+
+class PaperQcmTests(SimulationTestCase):
+    """Paper 1 du GCE : 3 QCM d'un point corrigés automatiquement + 1 question ouverte."""
+
+    def setUp(self):
+        super().setUp()
+        Lesson.objects.filter(pk=self.lesson.pk).update(numero_paper=1)
+        Exercise.objects.filter(lesson=self.lesson).delete()
+        self.exo = Exercise.objects.create(
+            lesson=self.lesson, numero_exercice="1", points="", statut=StatutContenu.VALIDE, enonce_markdown="Paper 1",
+        )
+        choix = [{"lettre": "a", "texte": "A"}, {"lettre": "b", "texte": "B"}, {"lettre": "c", "texte": "C"}]
+        self.qcm = []
+        for ordre, juste in enumerate(["a", "b", "c"], start=1):
+            q = Question.objects.create(
+                exercise=self.exo, numero=str(ordre), ordre=ordre, enonce_markdown=f"Q{ordre}",
+                corrige_markdown=f"Corrigé {ordre}", type_reponse="QCM", choix=choix, reponse_correcte=juste,
+            )
+            q.themes.set([self.theme_a])
+            self.qcm.append(q)
+        self.ouverte = Question.objects.create(
+            exercise=self.exo, numero="4", ordre=4, enonce_markdown="Q4", type_reponse="OUVERTE",
+        )
+        self.ouverte.themes.set([self.theme_b])
+
+    def repondre(self, question, lettre):
+        return self.client.post(
+            f"/simulations/{self.simulation.pk}/questions/{question.pk}/repondre/", {"reponse_choisie": lettre}, format="json",
+        )
+
+    def test_la_simulation_se_fait_question_par_question_a_un_point_chacune(self):
+        data = self.demarrer()
+        self.assertEqual(data["granularite"], "question")
+        self.assertEqual((data["bareme"], data["bareme_estime"]), (4.0, False))
+        questions = data["exercices"][0]["questions"]
+        self.assertEqual([q["id"] for q in questions], [q.pk for q in self.qcm] + [self.ouverte.pk])
+        self.assertEqual(questions[0]["choix"][0]["lettre"], "a")
+        # En mode libre le corrigé est ouvert d'emblée (comme pour les autres annales).
+        self.assertEqual(questions[0]["reponse_correcte"], "a")
+        self.client.post(f"/simulations/{data['id']}/mode-examen/")
+        masque = self.client.get(self.url())
+        self.assertNotIn("reponse_correcte", masque.data["exercices"][0]["questions"][0])
+
+    def test_le_qcm_est_corrige_seul_et_le_resultat_reste_cache_en_mode_examen(self):
+        self.demarrer()
+        self.client.post(self.url("mode-examen"))
+        reponse = self.repondre(self.qcm[0], "a")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertTrue(reponse.data["traitee"])
+        self.assertEqual(reponse.data["reponse"], {"reponse_choisie": "a", "resultat_declare": ""})
+        self.assertNotIn("reponse_correcte", reponse.data)
+        self.assertIsNone(reponse.data["notation"])
+
+    def test_la_note_est_celle_des_bonnes_reponses(self):
+        self.demarrer()
+        self.repondre(self.qcm[0], "a")  # juste
+        self.repondre(self.qcm[1], "a")  # faux
+        reponse = self.repondre(self.qcm[2], "c")  # juste
+
+        self.assertEqual(reponse.data["notation"]["note"], 2.0)
+        self.assertEqual(reponse.data["reponse"]["est_correcte"], True)
+        resultat = self.client.post(self.url("completer")).data
+        self.assertEqual((resultat["note"], resultat["bareme"], resultat["granularite"]), (2.0, 4.0, "question"))
+        self.assertEqual(resultat["questions_non_traitees"], 1)
+
+    def test_changer_de_reponse_remplace_la_precedente(self):
+        self.demarrer()
+        self.repondre(self.qcm[0], "b")
+        reponse = self.repondre(self.qcm[0], "a")
+        self.assertEqual(reponse.data["notation"]["note"], 1.0)
+        self.assertEqual(self.simulation.reponses.count(), 1)
+
+    def test_lettre_inconnue_question_inconnue_et_simulation_terminee(self):
+        self.demarrer()
+        self.assertEqual(self.repondre(self.qcm[0], "z").status_code, 400)
+        self.assertEqual(self.repondre(self.ouverte, "a").status_code, 400)
+        self.assertEqual(
+            self.client.post(f"/simulations/{self.simulation.pk}/questions/999999/repondre/", {"reponse_choisie": "a"}, format="json").status_code, 404,
+        )
+        self.client.post(self.url("completer"))
+        self.assertEqual(self.repondre(self.qcm[0], "a").status_code, 409)
+
+    def test_la_question_ouverte_s_auto_note(self):
+        self.demarrer()
+        reponse = self.client.post(self.url("noter", self.ouverte), {"points_obtenus": 0.5}, format="json")
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["notation"]["note"], 0.5)
+        # Un QCM ne se note pas à la main.
+        self.assertEqual(self.client.post(self.url("noter", self.qcm[0]), {"points_obtenus": 1}, format="json").status_code, 400)
+
+    def test_une_mauvaise_reponse_fait_revenir_le_theme_et_une_juste_non(self):
+        self.demarrer()
+        self.repondre(self.qcm[0], "b")  # faux : theme_a
+        self.client.post(self.url("completer"))
+        planifies = set(RevisionSchedule.objects.filter(profil=self.profil).values_list("theme__name", flat=True))
+        self.assertEqual(planifies, {"Suites", "Probabilités"})  # la question ouverte laissée de côté aussi
+
+    def test_marquer_une_question_a_revoir(self):
+        self.demarrer()
+        url = self.url("marquer", self.qcm[0])
+        self.assertEqual(self.client.post(url).data["questions_marquees"], [self.qcm[0].pk])
+        self.assertEqual(self.client.post(url).data["questions_marquees"], [])
+        self.assertEqual(self.client.get(self.url()).data["questions_marquees"], [])
+
+    def test_un_exercice_hors_paper_1_reste_a_l_exercice(self):
+        Lesson.objects.filter(pk=self.lesson.pk).update(numero_paper=2)
+        self.assertEqual(self.demarrer()["granularite"], "exercice")

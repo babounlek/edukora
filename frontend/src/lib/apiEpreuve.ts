@@ -1,4 +1,6 @@
 import {
+  answerSimulationQuestion,
+  answerTentativeQuestion,
   completeSimulation,
   completeTentative,
   getSimulation,
@@ -28,6 +30,7 @@ export function apiPour(source: SourceEpreuve) {
       noter: (id: number, unite: number, params: NoterTentativeQuestionParams) =>
         noterSimulationExercice(id, unite, params),
       marquer: (id: number, unite: number) => marquerSimulationExercice(id, unite),
+      repondre: (id: number, unite: number, lettre: string) => answerSimulationQuestion(id, unite, { reponse_choisie: lettre }),
       terminer: (id: number) => completeSimulation(id),
     }
   }
@@ -37,6 +40,7 @@ export function apiPour(source: SourceEpreuve) {
     noter: (id: number, unite: number, params: NoterTentativeQuestionParams) =>
       noterTentativeQuestion(id, unite, params),
     marquer: (id: number, unite: number) => toggleQuestionMarquee(id, unite),
+    repondre: (id: number, unite: number, lettre: string) => answerTentativeQuestion(id, unite, { reponse_choisie: lettre }),
     terminer: (id: number) => completeTentative(id),
   }
 }

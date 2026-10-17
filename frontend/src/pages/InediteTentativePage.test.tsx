@@ -19,6 +19,7 @@ const api = vi.hoisted(() => ({
   noterSimulationExercice: vi.fn(),
   marquerSimulationExercice: vi.fn(),
   completeSimulation: vi.fn(),
+  answerSimulationQuestion: vi.fn(),
 }))
 // toast est aussi appelable directement (repères de temps, hors connexion), pas seulement toast.error.
 const toast = vi.hoisted(() => Object.assign(vi.fn(), { error: vi.fn(), success: vi.fn() }))
@@ -526,6 +527,35 @@ describe("InediteTentativePage", () => {
     })
   })
 
+
+  describe("Paper 1 du GCE (simulation question par question)", () => {
+    it("répond à un QCM par l'API de la simulation, pas par celle des inédites", async () => {
+      api.getSimulation.mockResolvedValue(
+        tentative({
+          source: "officielle", granularite: "question", epreuve_titre: "Physics GCE 2023 - Paper 1", exam_mode_started_at: "2026-09-26T10:00:00Z",
+          correction_disponible: false, notation: null,
+          exercices: [{
+            id: 1, numero_exercice: "1", points: "", groupes: [], enonce_intro_markdown: "",
+            questions: [
+              question(1, "1", { type_reponse: "QCM", points: 1, choix: [{ lettre: "a", texte: "Un" }, { lettre: "b", texte: "Deux" }] }),
+              question(2, "2", { type_reponse: "QCM", points: 1, choix: [{ lettre: "a", texte: "Trois" }, { lettre: "b", texte: "Quatre" }] }),
+            ],
+          }],
+        }),
+      )
+      api.answerSimulationQuestion.mockResolvedValue({
+        ...question(1, "1", { traitee: true, type_reponse: "QCM" }),
+        reponse: { reponse_choisie: "b", resultat_declare: "" },
+        notation: null,
+      })
+      afficher("officielle")
+
+      await userEvent.click(await screen.findByRole("button", { name: /B\. Deux/ }))
+
+      await waitFor(() => expect(api.answerSimulationQuestion).toHaveBeenCalledWith(7, 1, { reponse_choisie: "b" }))
+      expect(api.answerTentativeQuestion).not.toHaveBeenCalled()
+    })
+  })
   describe("annale officielle (simulation, un exercice = un bloc)", () => {
     const annale = (extra: Partial<TentativeInedite> = {}) =>
       tentative({

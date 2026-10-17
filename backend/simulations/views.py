@@ -15,14 +15,14 @@ from rest_framework.response import Response
 
 from access.services import has_access
 from catalog.libelles import libelle_cursus
-from catalog.models import EXAMENS_GCE, Lesson, LessonType
+from catalog.models import EXAMENS_GCE, Lesson, LessonType, Question, TypeReponse
 from inedit import notation, rapport
-from inedit.models import CausePerte
+from inedit.models import CausePerte, ResultatDeclare
 from quiz.services import enregistrer_resultat_pour_revision
 from users.profils import profil_actif
 
 from . import choix
-from .cadre import charger_exercices, duree_minutes_pour_lesson
+from .cadre import charger_exercices, duree_minutes_pour_lesson, simulation_a_la_question
 from .models import SimulationEpreuve, SimulationReponse
 
 DIFFICULTE_CORRIGE_MASQUE = "Le corrigé n'est pas encore disponible pour cette simulation."
@@ -61,7 +61,10 @@ def _cursus(simulation):
 def _alimenter_revision(simulation, exercice, correcte):
     """Un exercice raté ou laissé de côté fait revenir ses thèmes principaux dans la séance du
     jour - même mécanisme que pour les quiz et les épreuves inédites."""
-    themes = exercice.questions.all()[0].themes.all()
+    _alimenter_revision_themes(simulation, exercice.questions.all()[0].themes.all(), correcte)
+
+
+def _alimenter_revision_themes(simulation, themes, correcte):
     for cursus in _cursus(simulation):
         for theme in themes:
             enregistrer_resultat_pour_revision(
@@ -96,6 +99,12 @@ def _complete(simulation):
     notation.enregistrer_note(simulation, bilan)
     # Exercices laissés de côté : leur thème est une faiblesse comme un exercice raté.
     reponses = {r.question_id: r for r in simulation.reponses.all()}
+    if simulation_a_la_question(simulation.lesson):
+        for exercice in exercices:
+            for question in exercice.questions.all():
+                if not notation.est_traitee(question, reponses.get(question.pk)):
+                    _alimenter_revision_themes(simulation, question.themes.all(), False)
+        return _resultat_payload(simulation, bilan, exercices)
     for exercice in exercices:
         if exercice.id in bilan["non_comptes"]:
             continue
@@ -152,6 +161,50 @@ def _exercice_payload(simulation, exercice, reponse, correction, points_info):
     return payload
 
 
+def _question_payload(question, reponse, correction, points_info):
+    """Une question d'un Paper 1 (simulation à la question) - même forme que
+    inedit.views._question_payload. Le résultat d'un QCM n'est exposé qu'avec le corrigé."""
+    points, estime = points_info
+    ouverte = question.type_reponse != TypeReponse.QCM
+    payload = {
+        "id": question.pk,
+        "numero": question.numero,
+        "ordre": question.ordre,
+        "groupe_local": "",
+        "enonce_markdown": question.enonce_markdown,
+        "type_reponse": question.type_reponse,
+        "choix": question.choix,
+        "traitee": notation.est_traitee(question, reponse),
+        "points": notation.en_nombre(points),
+        "bareme_estime": estime,
+    }
+    if reponse:
+        payload["reponse"] = {
+            "reponse_choisie": reponse.reponse_choisie,
+            "resultat_declare": reponse.resultat_declare if (ouverte or correction) else "",
+        }
+        if correction:
+            notee = notation.est_notee(question, reponse)
+            payload["reponse"].update({
+                "est_correcte": reponse.est_correcte,
+                "notee": notee,
+                "criteres_valides": [],
+                "cause_perte": reponse.cause_perte,
+                "points_obtenus": notation.en_nombre(notation.points_obtenus(question, reponse, points)) if notee else None,
+            })
+    if correction:
+        payload["corrige_markdown"] = question.corrige_markdown
+        payload["reponse_correcte"] = question.reponse_correcte
+        payload["criteres_notation"] = []
+    return payload
+
+
+def _marquees(simulation):
+    if simulation_a_la_question(simulation.lesson):
+        return list(simulation.questions_marquees_qcm.values_list("pk", flat=True))
+    return list(simulation.exercices_marques.values_list("pk", flat=True))
+
+
 def _payload(simulation):
     lesson = simulation.lesson
     correction = _correction_disponible(simulation)
@@ -159,13 +212,14 @@ def _payload(simulation):
     bilan = choix.calculer(simulation, exercices)
     points_par_question = notation.points_par_question(exercices)
     reponses = {r.question_id: r for r in simulation.reponses.all()}
+    par_question = simulation_a_la_question(lesson)
     cursus = _cursus(simulation)
     duree, duree_estimee = _duree_info(simulation)
     return {
         "id": simulation.id,
         "source": "officielle",
-        # Chaque exercice est noté d'un bloc : la page n'affiche pas de « Question N » en plus.
-        "granularite": "exercice",
+        # Chaque exercice est noté d'un bloc, sauf un Paper 1 (QCM) qui se répond question par question.
+        "granularite": "question" if par_question else "exercice",
         "epreuve": lesson.id,
         "epreuve_titre": lesson.title,
         "country": lesson.subject.country.code,
@@ -189,7 +243,7 @@ def _payload(simulation):
         "regles_choix": choix.regles_exposees(lesson, exercices),
         "non_comptes": sorted(bilan["non_comptes"]) if correction else [],
         "correction_disponible": correction,
-        "questions_marquees": list(simulation.exercices_marques.values_list("pk", flat=True)),
+        "questions_marquees": _marquees(simulation),
         "exercices": [
             {
                 "id": e.id,
@@ -198,6 +252,9 @@ def _payload(simulation):
                 "groupes": e.groupes,
                 "enonce_intro_markdown": e.enonce_intro_markdown,
                 "questions": [
+                    _question_payload(q, reponses.get(q.pk), correction, points_par_question[q.pk])
+                    for q in e.questions.all()
+                ] if par_question else [
                     _exercice_payload(
                         simulation, e, reponses.get(e.id), correction, points_par_question[e.questions.all()[0].pk],
                     ),
@@ -209,15 +266,21 @@ def _payload(simulation):
 
 
 def _question_payload_avec_notation(simulation, exercice_id, reponse):
-    """Payload de l'exercice + note provisoire, renvoyé après toute écriture (même contrat que
-    inedit.views._question_payload_avec_notation)."""
+    """Payload de l'exercice (ou de la question, pour un Paper 1) + note provisoire, renvoyé après
+    toute écriture (même contrat que inedit.views._question_payload_avec_notation)."""
     exercices = charger_exercices(simulation.lesson)
     correction = _correction_disponible(simulation)
     bilan = choix.calculer(simulation, exercices)
     if simulation.submitted_at is not None:
         notation.enregistrer_note(simulation, bilan)
+    points = notation.points_par_question(exercices)
+    if simulation_a_la_question(simulation.lesson):
+        question = next(q for e in exercices for q in e.questions.all() if q.pk == exercice_id)
+        payload = _question_payload(question, reponse, correction, points[question.pk])
+        payload["notation"] = _resume(simulation, bilan) if correction else None
+        return payload
     exercice = next(e for e in exercices if e.id == exercice_id)
-    points_info = notation.points_par_question(exercices)[exercice.questions.all()[0].pk]
+    points_info = points[exercice.questions.all()[0].pk]
     payload = _exercice_payload(simulation, exercice, reponse, correction, points_info)
     payload["notation"] = _resume(simulation, bilan) if correction else None
     if correction:
@@ -233,10 +296,11 @@ def _themes_a_reviser(simulation, bilan, exercices):
     for exercice in exercices:
         if exercice.id in bilan["non_comptes"]:
             continue
-        for theme in exercice.questions.all()[0].themes.all():
-            stats = bilan["par_theme"].get(theme.name)
-            if stats and stats["points_obtenus"] < stats["points_possibles"]:
-                perdus[theme.name] = theme.pk
+        for question in exercice.questions.all():
+            for theme in question.themes.all():
+                stats = bilan["par_theme"].get(theme.name)
+                if stats and stats["points_obtenus"] < stats["points_possibles"]:
+                    perdus[theme.name] = theme.pk
     if not perdus:
         return []
     echeances = {}
@@ -266,6 +330,7 @@ def _comparaison(simulation, resume):
 
 
 def _resultat_payload(simulation, bilan=None, exercices=None):
+    par_question = simulation_a_la_question(simulation.lesson)
     if bilan is None:
         bilan, exercices = _bilan(simulation)
     resume = _resume(simulation, bilan)
@@ -292,8 +357,8 @@ def _resultat_payload(simulation, bilan=None, exercices=None):
         "temps_total_secondes": (
             int((simulation.submitted_at - simulation.started_at).total_seconds()) if simulation.submitted_at else None
         ),
-        "pertes": rapport.pertes_par_cause(bilan["lignes"], unite="exercice"),
-        "granularite": "exercice",
+        "pertes": rapport.pertes_par_cause(bilan["lignes"], unite="question" if par_question else "exercice"),
+        "granularite": "question" if par_question else "exercice",
         "temps_par_exercice": temps,
         "exercice_chronophage": rapport.exercice_chronophage(temps),
         "comparaison": _comparaison(simulation, resume),
@@ -405,6 +470,13 @@ def start_exam_mode(request, simulation_id):
 @api_view(["POST"])
 def toggle_marque(request, simulation_id, exercice_id):
     simulation = _simulation_de(request, simulation_id)
+    if simulation_a_la_question(simulation.lesson):
+        question = get_object_or_404(Question, pk=exercice_id, exercise__lesson_id=simulation.lesson_id)
+        if simulation.questions_marquees_qcm.filter(pk=question.pk).exists():
+            simulation.questions_marquees_qcm.remove(question)
+        else:
+            simulation.questions_marquees_qcm.add(question)
+        return Response({"questions_marquees": _marquees(simulation)})
     exercice = get_object_or_404(simulation.lesson.exercises.all(), pk=exercice_id)
     if simulation.exercices_marques.filter(pk=exercice.pk).exists():
         simulation.exercices_marques.remove(exercice)
@@ -421,19 +493,30 @@ def noter_exercice(request, simulation_id, exercice_id):
     simulation = _simulation_de(request, simulation_id)
     _auto_complete_if_expired(simulation)
     exercices = charger_exercices(simulation.lesson)
-    exercice = next((e for e in exercices if e.id == exercice_id), None)
-    if exercice is None:
-        return Response({"error": "Exercice inconnu."}, status=404)
-    question = exercice.questions.all()[0]
+    if simulation_a_la_question(simulation.lesson):
+        # Paper 1 : « exercice_id » désigne ici une QUESTION.
+        cible = next(((e, q) for e in exercices for q in e.questions.all() if q.pk == exercice_id), None)
+        if cible is None:
+            return Response({"error": "Question inconnue."}, status=404)
+        exercice, question = cible
+        if question.type_reponse == TypeReponse.QCM:
+            return Response({"error": "Un QCM se répond, il ne se note pas : utiliser « repondre »."}, status=400)
+        lien = {"exercise_id": exercice.id, "sous_question_id": question.pk}
+    else:
+        exercice = next((e for e in exercices if e.id == exercice_id), None)
+        if exercice is None:
+            return Response({"error": "Exercice inconnu."}, status=404)
+        question = exercice.questions.all()[0]
+        lien = {"exercise_id": exercice_id}
     data = request.data
-    reponse = SimulationReponse.objects.filter(simulation=simulation, exercise_id=exercice_id).first()
+    reponse = SimulationReponse.objects.filter(simulation=simulation, **lien).first()
     a_noter = "points_obtenus" in data
 
     if "traitee" in data and not a_noter:
         if _as_bool(data["traitee"]):
             if reponse is None:
                 reponse = SimulationReponse.objects.create(
-                    simulation=simulation, exercise_id=exercice_id, traitee_at=timezone.now(),
+                    simulation=simulation, **lien, traitee_at=timezone.now(),
                 )
             elif reponse.traitee_at is None:
                 reponse.traitee_at = timezone.now()
@@ -455,7 +538,7 @@ def noter_exercice(request, simulation_id, exercice_id):
         if reponse is None:
             if not cause:
                 return Response(_question_payload_avec_notation(simulation, exercice_id, None))
-            reponse = SimulationReponse(simulation=simulation, exercise_id=exercice_id)
+            reponse = SimulationReponse(simulation=simulation, **lien)
         reponse.cause_perte = cause
         reponse.save()
         return Response(_question_payload_avec_notation(simulation, exercice_id, reponse))
@@ -476,14 +559,48 @@ def noter_exercice(request, simulation_id, exercice_id):
 
     premiere_notation = reponse is None or (reponse.points_obtenus is None and not reponse.resultat_declare)
     if reponse is None:
-        reponse = SimulationReponse(simulation=simulation, exercise_id=exercice_id)
+        reponse = SimulationReponse(simulation=simulation, **lien)
     reponse.traitee_at = reponse.traitee_at or timezone.now()
     reponse.points_obtenus = obtenus
     reponse.resultat_declare = notation.resultat_declare_depuis_points(obtenus, points)
     reponse.save()
     if premiere_notation:
-        _alimenter_revision(simulation, exercice, reponse.est_correcte)
+        _alimenter_revision_themes(simulation, question.themes.all(), reponse.est_correcte)
     return Response(_question_payload_avec_notation(simulation, exercice_id, reponse))
+
+
+@api_view(["POST"])
+def repondre_question(request, simulation_id, question_id):
+    """Réponse à un QCM d'un Paper 1. Le serveur pose lui-même REUSSI / ECHEC : la correction est
+    automatique, mais n'est exposée qu'avec le corrigé (voir _question_payload). Idempotent."""
+    simulation = _simulation_de(request, simulation_id)
+    _auto_complete_if_expired(simulation)
+    if simulation.submitted_at is not None:
+        return Response({"error": "Cette simulation est terminée, impossible de modifier une réponse."}, status=409)
+    if not simulation_a_la_question(simulation.lesson):
+        return Response({"error": "Cette épreuve se répond exercice par exercice."}, status=400)
+    exercices = charger_exercices(simulation.lesson)
+    cible = next(((e, q) for e in exercices for q in e.questions.all() if q.pk == question_id), None)
+    if cible is None:
+        return Response({"error": "Question inconnue."}, status=404)
+    exercice, question = cible
+    if question.type_reponse != TypeReponse.QCM:
+        return Response({"error": "Cette question n'est pas un QCM : utiliser « noter »."}, status=400)
+    lettre = str(request.data.get("reponse_choisie") or "").strip()
+    if lettre not in {c.get("lettre") for c in question.choix or []}:
+        return Response({"error": "reponse_choisie doit être l'une des lettres proposées."}, status=400)
+
+    correcte = lettre == (question.reponse_correcte or "")
+    reponse, _ = SimulationReponse.objects.update_or_create(
+        simulation=simulation, exercise_id=exercice.id, sous_question_id=question.pk,
+        defaults={
+            "reponse_choisie": lettre,
+            "resultat_declare": ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC,
+            "traitee_at": timezone.now(),
+        },
+    )
+    _alimenter_revision_themes(simulation, question.themes.all(), correcte)
+    return Response(_question_payload_avec_notation(simulation, question.pk, reponse))
 
 
 @api_view(["POST"])
