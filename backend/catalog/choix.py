@@ -7,11 +7,17 @@ chaque question de sa Section II. Le texte de la consigne reste dans `introducti
 l'élève ; la forme structurée ci-dessous sert à ce qu'un programme sache de quoi il s'agit (proposer
 de choisir, ne noter que ce qui compte, ne pas pénaliser une question laissée de côté).
 
-Deux formes seulement, volontairement :
+Quatre formes, volontairement peu nombreuses :
   {"type": "parmi", "portee": "SECTION A", "repondre": 4, "sur": 5}
       n exercices à traiter parmi les m du groupe `portee` (un repère de Exercise.groupes) ;
   {"type": "ou", "portee": "SECTION II", "options": [["a", "b", "c"], ["d", "e", "f"]]}
-      dans chaque exercice du groupe, un seul des jeux de sous-questions.
+      dans chaque exercice du groupe, un seul des jeux de sous-questions ;
+  {"type": "section_unique", "portee": "PAPER 3", "repondre": 4}
+      n exercices à traiter, TOUS dans une seule section de l'épreuve (Religious Studies : « Answer
+      FOUR questions chosen from ONE SECTION ONLY »). `portee` n'est qu'un libellé pour l'écran : la
+      règle vaut pour toute l'épreuve ; une section est une pile de groupes (Exercise.groupes) ;
+  {"type": "consigne", "portee": "SECTION I", "texte": "Two questions of different genres."}
+      une consigne qu'aucune forme ci-dessus n'exprime : lue par l'élève, sans effet sur la note.
 """
 
 
@@ -53,6 +59,18 @@ def valider_regles_choix(regles):
             if len(set(repères)) != len(repères):
                 raise ValueError(f"{cadre} : un même repère ne peut pas figurer dans deux options.")
             normalisees.append({"type": "ou", "portee": portee, "options": jeux})
+        elif genre == "section_unique":
+            repondre = regle.get("repondre")
+            if not isinstance(repondre, int) or isinstance(repondre, bool) or repondre < 1:
+                raise ValueError(f"{cadre} : « repondre » doit être un entier >= 1.")
+            normalisees.append({"type": "section_unique", "portee": portee, "repondre": repondre})
+        elif genre == "consigne":
+            texte = " ".join(str(regle.get("texte") or "").split())
+            if not texte:
+                raise ValueError(f"{cadre} : « texte » manquant (la consigne à afficher).")
+            normalisees.append({"type": "consigne", "portee": portee, "texte": texte})
         else:
-            raise ValueError(f"{cadre} : type inconnu {genre!r} (attendu « parmi » ou « ou »).")
+            raise ValueError(
+                f"{cadre} : type inconnu {genre!r} (attendu « parmi », « ou », « section_unique » ou « consigne »)."
+            )
     return normalisees

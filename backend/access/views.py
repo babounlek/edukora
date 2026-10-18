@@ -81,6 +81,9 @@ def read_lesson(request, lesson_slug):
         # particulier, un lecteur qui saute directement à l'exercice 3 ne doit pas la
         # revoir. Le frontend l'affiche une seule fois, avant le sommaire/premier exercice.
         "introduction_markdown": lesson.introduction_markdown,
+        # Les mêmes consignes de choix sous forme structurée (voir catalog.choix) : l'écran en tire une note
+        # lisible au-dessus du sommaire. [] quand toutes les questions sont obligatoires.
+        "regles_choix": lesson.regles_choix or [],
         # Énoncé/corrigé par exercice, séparément - voir Lesson.exercises_breakdown.
         # Liste vide pour une Lesson sans Exercise (FICHE...) : le frontend retombe
         # alors sur content_markdown tel quel plutôt que de replier un énoncé qu'on
@@ -106,6 +109,7 @@ def preview_lesson(request, lesson_slug):
         # Voir la même clé sur read_lesson ci-dessus - le sujet public montre les
         # consignes d'épreuve au même titre que les énoncés, jamais le corrigé.
         "introduction_markdown": lesson.introduction_markdown,
+        "regles_choix": lesson.regles_choix or [],
         # Le même sujet, découpé par exercice, pour que la fiche puisse renvoyer
         # directement vers le corrigé de l'exercice lu (/lire#exercice-3) - voir
         # Lesson.preview_exercises, qui n'expose aucun champ de corrigé. Liste vide

@@ -227,10 +227,27 @@ class ReglesChoixUnitairesTests(SimpleTestCase):
             [{"type": "ou", "portee": "A", "options": [["a"], []]}],
             [{"type": "ou", "portee": "A", "options": [["a", "b"], ["b", "c"]]}],  # repère partagé
             [{"type": "au_choix", "portee": "A"}],
+            [{"type": "section_unique", "portee": "PAPER 3"}],  # repondre manquant
+            [{"type": "section_unique", "portee": "PAPER 3", "repondre": 0}],
+            [{"type": "section_unique", "portee": "PAPER 3", "repondre": "4"}],
+            [{"type": "section_unique", "portee": "PAPER 3", "repondre": True}],
+            [{"type": "section_unique", "repondre": 4}],  # portée manquante
+            [{"type": "consigne", "portee": "SECTION I"}],  # texte manquant
+            [{"type": "consigne", "portee": "SECTION I", "texte": "   "}],
         ]
         for regles in invalides:
             with self.assertRaises(ValueError, msg=repr(regles)):
                 valider_regles_choix(regles)
+
+    def test_section_unique_et_consigne_sont_valides_et_normalisees(self):
+        regles = valider_regles_choix([
+            {"type": "section_unique", "portee": " PAPER 3 ", "repondre": 4},
+            {"type": "consigne", "portee": "SECTION I", "texte": "  Deux sujets   de genres différents. "},
+        ])
+        self.assertEqual(regles[0], {"type": "section_unique", "portee": "PAPER 3", "repondre": 4})
+        self.assertEqual(
+            regles[1], {"type": "consigne", "portee": "SECTION I", "texte": "Deux sujets de genres différents."},
+        )
 
     def test_repondre_egal_sur_est_valide(self):
         self.assertEqual(

@@ -510,6 +510,97 @@ class ReglesChoixTests(SimulationTestCase):
         self.assertIsNotNone(self.client.post(self.url("completer")).data["note_sur_20"])
 
 
+class SectionUniqueTests(SimulationTestCase):
+    """Sujet à sections où l'on ne traite « que n questions d'UNE SEULE section » (Religious Studies).
+
+    Section A : exercices 1 (6 pts), 2 (14 pts) et 3 (10 pts) ; section B : exercices 4 (8 pts) et 5 (12 pts).
+    On répond à 2 questions, toutes dans la même section."""
+
+    def setUp(self):
+        super().setUp()
+        self.ex3 = self.exercice("3", "10", "Énoncé 3", "Corrigé 3", [self.theme_a])
+        self.ex4 = self.exercice("4", "8", "Énoncé 4", "Corrigé 4", [self.theme_b])
+        self.ex5 = self.exercice("5", "12", "Énoncé 5", "Corrigé 5", [self.theme_b])
+        for exercice in (self.ex1, self.ex2, self.ex3):
+            Exercise.objects.filter(pk=exercice.pk).update(groupes=["SECTION A"])
+        for exercice in (self.ex4, self.ex5):
+            Exercise.objects.filter(pk=exercice.pk).update(groupes=["SECTION B"])
+        Lesson.objects.filter(pk=self.lesson.pk).update(
+            regles_choix=[{"type": "section_unique", "portee": "PAPER 3", "repondre": 2}],
+        )
+
+    def noter(self, exercice, points):
+        return self.client.post(self.url("noter", exercice), {"points_obtenus": points}, format="json")
+
+    def comptes(self, resultat):
+        return [e["compte"] for e in resultat["par_exercice"]]
+
+    def test_seule_la_section_travaillee_compte(self):
+        self.demarrer()
+        self.noter(self.ex4, 6)
+        self.noter(self.ex5, 9)
+        resultat = self.client.post(self.url("completer")).data
+
+        # Section B : 6 + 9 sur 8 + 12. La section A, laissée de côté, n'entre ni dans la note ni dans le barème.
+        self.assertEqual((resultat["note"], resultat["bareme"]), (15.0, 20.0))
+        self.assertEqual(self.comptes(resultat), [False, False, False, True, True])
+        self.assertEqual(resultat["total_questions"], 2)
+
+    def test_une_section_plus_travaillee_l_emporte(self):
+        self.demarrer()
+        self.noter(self.ex1, 5)
+        self.noter(self.ex2, 10)
+        self.noter(self.ex5, 12)
+        resultat = self.client.post(self.url("completer")).data
+
+        # Deux exercices traités en A, un seul en B : A compte, et ses deux meilleurs (2 : 10, 1 : 5).
+        self.assertEqual(self.comptes(resultat), [True, True, False, False, False])
+        self.assertEqual((resultat["note"], resultat["bareme"]), (15.0, 20.0))
+
+    def test_dans_la_section_choisie_seuls_les_n_meilleurs_comptent(self):
+        self.demarrer()
+        self.noter(self.ex1, 1)
+        self.noter(self.ex2, 13)
+        self.noter(self.ex3, 9)
+        resultat = self.client.post(self.url("completer")).data
+
+        self.assertEqual(self.comptes(resultat), [False, True, True, False, False])
+        self.assertEqual((resultat["note"], resultat["bareme"]), (22.0, 24.0))
+
+    def test_un_seul_exercice_traite_laisse_la_place_due_au_plus_gros_restant_de_la_section(self):
+        self.demarrer()
+        self.noter(self.ex5, 12)
+        resultat = self.client.post(self.url("completer")).data
+
+        # Section B n'a que deux exercices : les deux comptent, l'exercice 4 non traité pèse 8.
+        self.assertEqual((resultat["note"], resultat["bareme"]), (12.0, 20.0))
+        self.assertEqual(self.comptes(resultat), [False, False, False, True, True])
+
+    def test_rien_traite_compte_la_premiere_section(self):
+        self.demarrer()
+        resultat = self.client.post(self.url("completer")).data
+        # Rien de traité : la première section compte, avec ses deux plus gros exercices (14 + 10).
+        self.assertEqual((resultat["note"], resultat["bareme"]), (0.0, 24.0))
+        self.assertEqual(self.comptes(resultat), [False, True, True, False, False])
+
+    def test_la_regle_est_exposee_avec_tous_les_exercices(self):
+        data = self.demarrer()
+        regle = data["regles_choix"][0]
+        self.assertEqual((regle["type"], regle["repondre"]), ("section_unique", 2))
+        self.assertEqual(
+            sorted(regle["exercices"]), sorted([self.ex1.pk, self.ex2.pk, self.ex3.pk, self.ex4.pk, self.ex5.pk]),
+        )
+
+    def test_une_consigne_est_informative(self):
+        Lesson.objects.filter(pk=self.lesson.pk).update(
+            regles_choix=[{"type": "consigne", "portee": "SECTION A", "texte": "Deux genres différents."}],
+        )
+        self.demarrer()
+        self.noter(self.ex1, 6)
+        resultat = self.client.post(self.url("completer")).data
+        self.assertTrue(all(self.comptes(resultat)))
+
+
 class PaperQcmBase(SimulationTestCase):
     """Paper 1 du GCE : 3 QCM d'un point corrigés automatiquement + 1 question ouverte."""
 

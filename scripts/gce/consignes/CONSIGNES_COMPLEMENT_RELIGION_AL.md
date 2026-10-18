@@ -22,9 +22,11 @@ Lis `CONSIGNES.md` (forme générale, LaTeX, figures), puis `CONSIGNES_COMPLEMEN
 - **Paper 3** : « The New Testament, Religion in Relation to Philosophy, Ethics and Morality, Historical Development of Islam (570CE-661CE) » (3 h), même consigne « FOUR questions chosen from ONE SECTION ONLY ». Sections typiques : 2.1 The Gospel According to Luke,
   2.2 The Fourth Gospel, 2.3 The Early Church as reflected in Acts and 1 Corinthians, 4.1 Philosophy of Religion, 4.2 Ethics and Morality, 6.0 The Historical Development of Islam. Lis la page de garde de CHAQUE année (les papers et sections ont pu être réorganisés).
 - Pour les Papers 2 et 3 : UN fichier PAR QUESTION, `numero_exercice` = le numéro imprimé (`"1"`, `"2"`... continu sur tout le sujet), sous-questions (a), (b)... = `questions`, `groupes` = le repère de la section imprimée
-  (`["SECTION 1.1"]`, `["SECTION 5.3"]`..., 30 caractères MAXIMUM : abrège le titre au besoin, le titre complet reste dans l'énoncé de la première question de la section ou dans `introduction_markdown`).
-  **`regles_choix` : `[]` partout** : « quatre questions d'UNE SEULE section » n'est pas exprimable avec `parmi` (un groupe) ni `ou` (sous-questions) ; ne code PAS « 4 sur N » par section (ce serait lu comme 4 par section). Recopie la consigne
-  complète dans `introduction_markdown` et dis dans `incertitudes` que la règle « une seule section » n'est pas codable. `points` : le total imprimé (« 25 marks ») ; points des sous-questions entre crochets ; ne corrige jamais les points imprimés.
+  (`["SECTION 1.1"]`, `["SECTION 5.3"]`..., 30 caractères MAXIMUM : abrège le titre au besoin).
+  **`enonce_intro_markdown` de CHAQUE exercice d'une section = le titre de la section, identique pour tous ses exercices** (`"**Section 5.3 Islam**"`, `"**Section 1.1 The Patriarchs to David**"`), jamais `"**Exercice N (25 points)**"` :
+  le sommaire de l'épreuve prend ce titre commun comme intitulé de la section et nomme chaque question par son numéro ; un en-tête différent par exercice casse ce regroupement.
+  **`regles_choix`** (identique dans TOUS les fichiers du dossier) : `[{"type":"section_unique","portee":"PAPER <n>","repondre":4}]` (`<n>` = le numéro du paper ; « four questions chosen from ONE SECTION ONLY »).
+  Ne code PAS « 4 sur N » par section avec `parmi` (ce serait lu comme 4 par section). La consigne complète reste dans `introduction_markdown`. `points` : le total imprimé (« 25 marks ») ; points des sous-questions entre crochets ; ne corrige jamais les points imprimés.
 - `introduction_markdown` : la consigne de la page de garde (intitulé du paper compris), identique partout. `duree_epreuve` : `"1h30"` ou `"3h"`.
 
 ## Corrigés (exactitude avant tout)

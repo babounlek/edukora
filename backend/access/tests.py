@@ -360,6 +360,17 @@ class ReadLessonAPITests(TestCase):
             "Le candidat traitera au choix l'un des trois sujets proposés.",
         )
 
+    def test_read_exposes_the_structured_choice_rules(self):
+        regles = [{"type": "parmi", "portee": "SECTION A", "repondre": 2, "sur": 3}]
+        self.lesson.regles_choix = regles
+        self.lesson.save(update_fields=["regles_choix"])
+        Subscription.objects.create(
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+        )
+        self.client.force_authenticate(user=self.user)
+
+        self.assertEqual(self.client.get(f"/access/read/{self.lesson.id}/").data["regles_choix"], regles)
+
 
 class PreviewLessonAPITests(TestCase):
     """Le point d'entrée public : jamais authentifié, jamais le corrigé."""
@@ -407,6 +418,16 @@ class PreviewLessonAPITests(TestCase):
         response = self.client.get(f"/access/preview/{self.lesson.id}/")
 
         self.assertEqual(response.data["introduction_markdown"], "L'épreuve comporte deux parties indépendantes.")
+
+    def test_preview_exposes_the_structured_choice_rules(self):
+        regles = [{"type": "section_unique", "portee": "PAPER 3", "repondre": 4}]
+        self.lesson.regles_choix = regles
+        self.lesson.save(update_fields=["regles_choix"])
+
+        self.assertEqual(self.client.get(f"/access/preview/{self.lesson.id}/").data["regles_choix"], regles)
+
+    def test_preview_exposes_no_rule_when_every_question_is_compulsory(self):
+        self.assertEqual(self.client.get(f"/access/preview/{self.lesson.id}/").data["regles_choix"], [])
 
 
 class ReadCoursAPITests(TestCase):
