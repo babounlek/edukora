@@ -1,0 +1,154 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Philosophy",
+  "epreuve_source": "gce-al-philosophy-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "3",
+  "numero_paper": 3,
+  "code_matiere": "0790",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Philosophy 3 (0790), Paper 3 (Critical Thinking), ADVANCED LEVEL, June 2023. Duration: three hours.**\n\nInstructions to candidates: Candidates are required to answer FOUR questions, choosing TWO questions from each section (Section One: Logic; Section Two: Philosophical Problems). Each essay question shall be marked according to the following criteria: coherence and organization of material; clear presentation of the problematic; identification and development of the Thesis, Antithesis, Synthesis and Conclusion as prescribed. Each question carries 25 marks.\n\nYou are reminded of the necessity for good English and orderly presentation in your answers.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "SECTION ONE",
+      "repondre": 2,
+      "sur": 3
+    },
+    {
+      "type": "parmi",
+      "portee": "SECTION TWO",
+      "repondre": 2,
+      "sur": 3
+    }
+  ],
+  "enonce_intro_markdown": "**SECTION ONE: LOGIC**\n\n*Question 3 is printed with an alternative set of sub-questions after \"OR\": the candidate answers one of the two sets.*",
+  "groupes": [
+    "SECTION ONE"
+  ],
+  "points": "25",
+  "figures": [],
+  "incertitudes": [
+    "Question 3 : le sujet imprime deux jeux de sous-questions séparés par « OR » ((a) à (d), puis (a) à (d) de nouveau). Les deux jeux sont transcrits : le premier en (a) à (d), le second en « a OR » à « d OR » ; le candidat ne traite qu'un des deux jeux. Chaque jeu totalise 25 points : premier jeu (a) 2 x 3 = 6, (b) 3 x 3 = 9, (c) 2 x 2.5 = 5, (d) 2 x 2.5 = 5 ; second jeu (a) 2+3+2 x 2 = 9, (b) 2 x 3 = 6, (c) 2 x 2.5 = 5, (d) 2 x 2.5 = 5. L'impression « (3 x-3 marks) » en 3(b) est lue (3 x 3 marks). Le champ `points` de l'exercice vaut 25 (un seul jeu à traiter).",
+    "Question 3(c)(ii) : l'argument « If anything is a boy... By implication, some lazy persons are not boys » est traduit tel qu'imprimé ; il est invalide (contre-modèle), ce qui est signalé en remarque dans le corrigé ; l'inférence du 3(c)(i) est valide (forme AEE-4).",
+    "Question 3(d)(ii) : « P / ∴ Q v R » est lu comme la seconde prémisse P puis la conclusion Q ∨ R (modus ponens), la première prémisse étant P ⊃ (Q ∨ R).",
+    "Convention existentielle : dans le OR (d), la forme universelle est lue à la manière de la logique moderne (sans import existentiel, A = (x)(Sx ⊃ Px)), comme le suggère la question ; la logique traditionnelle (carré d'opposition) donne un import existentiel aux formes A et E : les deux conventions diffèrent, ce qui est signalé dans le corrigé. Le syllogisme Felapton de 2(b)(i) suppose l'existence de médecins, ce qui est dit.",
+    "Page de garde lue : ADVANCED LEVEL, juin 2023, Philosophy Paper 3 (Critical Thinking), code 0790, durée trois heures. Règle imprimée : « answer FOUR questions, choosing TWO questions from each section. Each question carries 25 marks. » Section One : Logic (questions 1 à 3), Section Two : Philosophical Problems (questions 4 à 6). `regles_choix` : parmi 2 sur 3 pour SECTION ONE et parmi 2 sur 3 pour SECTION TWO, identiques dans les six fichiers ; la consigne complète (quatre questions au total) est dans `introduction_markdown`.",
+    "Sujet scanné de trois pages (couverture puis deux pages de questions) : filigranes gcerevision.com et « Kawlo » ignorés. Aucune figure ni image dans le sujet, aucun PNG produit ; tableaux de vérité et schémas de syllogismes rendus en tableaux Markdown.",
+    "Aucun corrigé officiel : corrigés rédigés au niveau Advanced Level ; toute la logique (tables de vérité, validité, syllogismes catégoriques, dilemme, valeurs de vérité, contre-modèles) a été recalculée avec Python (itertools.product, modèles ensemblistes exhaustifs) puis relue lors de la seconde passe."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Given: *\"If you enter the teaching profession, you will have no money for vacations and if you do not enter the teaching profession, you will have no time for vacations. Since you must either enter or not enter the teaching profession, it follows that you will either have no money or no time for vacations\"*\n\n(i) Paraphrase and symbolise the argument above.\n\n(ii) Determine its validity by means of the short truth table.\n\n(2 x 3 marks)",
+      "corrige_markdown": "Let $E$ = you enter the teaching profession, $M$ = you have no money for vacations, $T$ = you have no time for vacations.\n\n**(i) Paraphrase and symbolisation.**\n\n> If you enter the teaching profession, you will have no money for vacations, and if you do not enter the teaching profession, you will have no time for vacations.\n> Either you enter the teaching profession or you do not enter it.\n> Therefore, either you will have no money for vacations or you will have no time for vacations.\n\n$$\n\\begin{aligned}\n& (E \\supset M)\\cdot(\\sim E \\supset T)\\\\\n& E \\vee \\sim E\\\\\n& \\therefore\\ M \\vee T\n\\end{aligned}\n$$\n\nThis is a complex **constructive dilemma**.\n\n**(ii) Validity by the short truth table (indirect method).**\n\nAn argument is invalid only if there is a row in which **all premises are true and the conclusion false**. Try to build such a row:\n\n1. Make the conclusion false: $M \\vee T$ is false only if **$M$ = F and $T$ = F**.\n2. For the first premise to be true, both conjuncts must be true. $E \\supset M$ with $M$ = F requires **$E$ = F**. Then $\\sim E$ = T and $\\sim E \\supset T$ with $T$ = F is **false**.\n3. So the first premise cannot be true when the conclusion is false: the attempt ends in a contradiction. (The second premise, $E \\vee \\sim E$, is a tautology, always true.)\n\nHence there is **no** row with true premises and a false conclusion, and the argument is **valid**. The full table confirms it (last column: the conclusion):\n\n| $E$ | $M$ | $T$ | $E \\supset M$ | $\\sim E$ | $\\sim E \\supset T$ | $(E \\supset M)\\cdot(\\sim E \\supset T)$ | $E \\vee \\sim E$ | $M \\vee T$ |\n|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|\n| T | T | T | T | F | T | T | T | **T** |\n| T | T | F | T | F | T | T | T | **T** |\n| T | F | T | F | F | T | F | T | **T** |\n| T | F | F | F | F | T | F | T | **F** |\n| F | T | T | T | T | T | T | T | **T** |\n| F | T | F | T | T | F | F | T | **T** |\n| F | F | T | T | T | T | T | T | **T** |\n| F | F | F | T | T | F | F | T | **F** |",
+      "themes": [
+        "dilemmas and disjunctive arguments",
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Given that J, K and L are True statements, and X, Y and Z are False statements, determine the truth values of the following statement forms:\n\n(i) $(J \\vee L) \\supset (Z \\cdot \\sim X)$\n\n(ii) $(K \\supset X) \\equiv (L \\vee \\sim J)$\n\n(iii) $(Y \\vee K) \\supset (L \\cdot Y)$\n\n(3 x 3 marks)",
+      "corrige_markdown": "Substitute J = K = L = T and X = Y = Z = F, then evaluate from the inside outwards.\n\n**(i)** $(J \\vee L) \\supset (Z \\cdot \\sim X)$\n\n- $J \\vee L$ = T $\\vee$ T = **T**\n- $\\sim X$ = $\\sim$F = T, so $Z \\cdot \\sim X$ = F $\\cdot$ T = **F**\n- T $\\supset$ F = **F**\n\n**The statement is false.**\n\n**(ii)** $(K \\supset X) \\equiv (L \\vee \\sim J)$\n\n- $K \\supset X$ = T $\\supset$ F = **F**\n- $\\sim J$ = F, so $L \\vee \\sim J$ = T $\\vee$ F = **T**\n- F $\\equiv$ T = **F**\n\n**The statement is false.**\n\n**(iii)** $(Y \\vee K) \\supset (L \\cdot Y)$\n\n- $Y \\vee K$ = F $\\vee$ T = **T**\n- $L \\cdot Y$ = T $\\cdot$ F = **F**\n- T $\\supset$ F = **F**\n\n**The statement is false.**\n\nAll three statement forms are false.",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "Translate the following arguments into predicate calculus notation using the paraphrase provided\n\n(i) All philosophers are intelligent persons\nNo intelligent persons are lazy persons\nTherefore no lazy persons are philosophers\n(Px: x is a philosopher; Ix: x is an intelligent person; Lx: x is a lazy person)\n\n(ii) If anything is a boy then it is a male.\nSome males are not lazy persons\nBy implication, some lazy persons are not boys\n(Bx: x is a boy; Lx: x is lazy; Mx: x is a male)\n\n(2 x 2.5 marks)",
+      "corrige_markdown": "In predicate logic a universal proposition (\"All $S$ are $P$\", \"No $S$ are $P$\") is written with the universal quantifier and a **conditional**, and a particular proposition with the existential quantifier and a **conjunction**.\n\n**(i)** Paraphrase: for anything, if it is a philosopher then it is intelligent; for anything, if it is intelligent then it is not lazy; therefore, for anything, if it is lazy then it is not a philosopher.\n\n$$\n\\begin{aligned}\n& (x)(Px \\supset Ix)\\\\\n& (x)(Ix \\supset \\sim Lx)\\\\\n& \\therefore\\ (x)(Lx \\supset \\sim Px)\n\\end{aligned}\n$$\n\n(This argument is valid: a philosopher is intelligent, an intelligent person is not lazy, so a lazy person cannot be a philosopher. No counter-model was found by Python.)\n\n**(ii)** Paraphrase: for anything, if it is a boy then it is a male; there is at least one thing that is a male and is not lazy; therefore there is at least one thing that is lazy and is not a boy.\n\n$$\n\\begin{aligned}\n& (x)(Bx \\supset Mx)\\\\\n& (\\exists x)(Mx \\cdot \\sim Lx)\\\\\n& \\therefore\\ (\\exists x)(Lx \\cdot \\sim Bx)\n\\end{aligned}\n$$\n\n(Remark: the translation is the one asked for. As an argument, this one is **invalid**: take a universe with a single individual who is a boy, a male and not lazy; both premises are true and the conclusion is false. Python found counter-models.)",
+      "themes": [
+        "predicate logic and symbolisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "d",
+      "enonce_markdown": "Determine the validity of the following using the truth table technique:\n\n(i) $K \\vee (L \\supset M)$\n$K \\cdot M\\ /\\ \\therefore\\ K \\vee L$\n\n(ii) $P \\supset (Q \\vee R)$\n$P\\ /\\ \\therefore\\ Q \\vee R$\n\n(2 x 2.5 marks)",
+      "corrige_markdown": "**Technique.** Write all combinations of truth values, compute each premise and the conclusion, and look for a row where **all premises are true and the conclusion false**. If there is none, the argument is valid.\n\n**(i)** Premises: $K \\vee (L \\supset M)$ and $K \\cdot M$; conclusion: $K \\vee L$.\n\n| $K$ | $L$ | $M$ | $L \\supset M$ | $K \\vee (L \\supset M)$ | $K \\cdot M$ | $K \\vee L$ |\n|:-:|:-:|:-:|:-:|:-:|:-:|:-:|\n| T | T | T | T | T | T | **T** |\n| T | T | F | F | T | F | **T** |\n| T | F | T | T | T | T | **T** |\n| T | F | F | T | T | F | **T** |\n| F | T | T | T | T | F | **T** |\n| F | T | F | F | F | F | **T** |\n| F | F | T | T | T | F | **F** |\n| F | F | F | T | T | F | **F** |\n\nThe premises are both true only in the rows $K$ = T, $M$ = T (rows 1 and 3); in both rows the conclusion $K \\vee L$ is true. There is no row with true premises and a false conclusion: the argument is **valid**. (Reason: $K \\cdot M$ already makes $K$ true, so $K \\vee L$ is true.)\n\n**(ii)** Premises: $P \\supset (Q \\vee R)$ and $P$; conclusion: $Q \\vee R$.\n\n| $P$ | $Q$ | $R$ | $Q \\vee R$ | $P \\supset (Q \\vee R)$ | $P$ | $Q \\vee R$ |\n|:-:|:-:|:-:|:-:|:-:|:-:|:-:|\n| T | T | T | T | T | T | **T** |\n| T | T | F | T | T | T | **T** |\n| T | F | T | T | T | T | **T** |\n| T | F | F | F | F | T | **F** |\n| F | T | T | T | T | F | **T** |\n| F | T | F | T | T | F | **T** |\n| F | F | T | T | T | F | **T** |\n| F | F | F | F | T | F | **F** |\n\nThe premises are both true only in the rows where $P$ = T and $Q \\vee R$ = T (rows 1 to 3); the conclusion is true in each. No row has true premises and a false conclusion: the argument is **valid**. It is the argument form *modus ponens* with the consequent $Q \\vee R$.",
+      "themes": [
+        "truth tables and propositional logic",
+        "rules of inference and argument forms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "a OR",
+      "enonce_markdown": "**OR** (the question is printed with an alternative set of sub-questions: the candidate answers either (a) to (d) above or the set below)\n\n(a) (i) What is a valid argument form? State an example. (2 marks)\n\n(ii) State the operative principle behind the affirming and denying modes of the hypothetical syllogism. (3 marks)\n\n(iii) Explain how the principle in a (ii) above works in each case. (2 x 2 marks)",
+      "corrige_markdown": "**(i) A valid argument form** is a pattern of reasoning such that **every argument having that form, whatever statements are put in place of the variables, is valid**: it is impossible for the premises to be true and the conclusion false. Validity belongs to the form, not to the truth of the content.\n\n*Example:* *modus ponens*, $p \\supset q,\\ p\\ \\therefore\\ q$.\n\n> If it rains, the road is wet. It rains. Therefore, the road is wet.\n\n**(ii) The operative principle.**\n\nThe hypothetical (conditional) premise \"If $p$ then $q$\" says that the truth of the antecedent $p$ is **sufficient** for the truth of the consequent $q$, and that the truth of the consequent is **necessary** for the truth of the antecedent. Equivalently, a conditional is false in only one case: **the antecedent true and the consequent false**. Hence:\n\n- the **affirming mode** (*modus ponens*) affirms the antecedent and so affirms the consequent;\n- the **denying mode** (*modus tollens*) denies the consequent and so denies the antecedent.\n\n**(iii) How the principle works in each case.**\n\n- *Affirming mode:* if \"If $p$ then $q$\" is true and $p$ is true, then $q$ cannot be false, since the antecedent true with a false consequent is the only case which makes the conditional false. So $q$ is true. Example: \"If he studies, he passes; he studies; so he passes.\"\n- *Denying mode:* if \"If $p$ then $q$\" is true and $q$ is false, then $p$ cannot be true, for the same reason. So $p$ is false. Example: \"If he studies, he passes; he does not pass; so he did not study.\"\n\nThe invalid look-alikes do not use the principle: *affirming the consequent* ($q$, so $p$) and *denying the antecedent* ($\\sim p$, so $\\sim q$), because a true consequent is not required to come from this antecedent only.",
+      "themes": [
+        "rules of inference and argument forms",
+        "conditional arguments and validity forms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    },
+    {
+      "numero": "b OR",
+      "enonce_markdown": "(b) Explain what the following concepts mean\n\n(i) Tautology\n\n(ii) Contingent sentence\n\n(iii) Contradictory sentence\n\n(2 x 3 marks)",
+      "corrige_markdown": "The classification is made from the truth table of a statement form: one looks at the final column.\n\n**(i) Tautology.** A statement (form) that is **true under every assignment of truth values** to its variables: the final column contains only T. It is true by its logical form alone and says nothing about the world. Example: the law of excluded middle.\n\n| $p$ | $p \\vee \\sim p$ |\n|:-:|:-:|\n| T | **T** |\n| F | **T** |\n\n**(ii) Contingent sentence.** A statement (form) that is **true under some assignments and false under others**: the final column contains both T and F. Its truth depends on the facts. Example: $p \\supset q$.\n\n| $p$ | $q$ | $p \\supset q$ |\n|:-:|:-:|:-:|\n| T | T | **T** |\n| T | F | **F** |\n| F | T | **T** |\n| F | F | **T** |\n\n**(iii) Contradictory sentence** (a self-contradiction). A statement (form) that is **false under every assignment**: the final column contains only F. Example: $p \\cdot \\sim p$.\n\n| $p$ | $p \\cdot \\sim p$ |\n|:-:|:-:|\n| T | **F** |\n| F | **F** |\n\nThe negation of a tautology is a contradiction, and the negation of a contradiction is a tautology. (The word \"contradictory\" is also used of two propositions that cannot be true together and cannot be false together; here it describes a single self-contradictory sentence.)",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "c OR",
+      "enonce_markdown": "(c) State the difference between a valid and a sound argument\n\n(i) In your opinion, which argument has convincing power? Justify your answer\n\n(2 x 2.5 marks)",
+      "corrige_markdown": "**The difference.**\n\n- A **valid** argument is one whose **form** is such that, if the premises are true, the conclusion must be true (the premises cannot be true and the conclusion false). Validity says nothing about whether the premises are actually true.\n- A **sound** argument is a valid argument **whose premises are all actually true**. Soundness therefore requires two things (correct form and true premises), and it guarantees a true conclusion.\n\nExample of a valid but unsound argument: \"All birds can swim; a hen is a bird; so a hen can swim.\" Example of a sound argument: \"All humans are mortal; Socrates is a human; so Socrates is mortal.\"\n\n**(i) Which argument has convincing power?**\n\nIn my view the **sound** argument has convincing power. Reason: a rational person accepts a conclusion when the reasoning is correct **and** the starting points are true. A valid argument with a false (or doubtful) premise does not give any reason to believe its conclusion, since the conclusion may be false; an invalid argument gives no support even with true premises. Only soundness ensures both. In practice a sound argument also has to be convincing for the audience: its premises should be known to be true, more evident than the conclusion, and not simply assume the conclusion (no begging the question).",
+      "themes": [
+        "rules of inference and argument forms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "d OR",
+      "enonce_markdown": "(d) (i) In predicate logic symbolisations, why do we consider universal propositions as hypothetical?\n\n(ii) The existential quantifier is used, though not exclusively, for particular propositions. Explain why.\n\n(2 x 2.5 marks)",
+      "corrige_markdown": "**(i) Why universal propositions are hypothetical.**\n\nIn modern predicate logic \"All $S$ are $P$\" is read as \"**for anything whatever, if it is $S$ then it is $P$**\": $(x)(Sx \\supset Px)$. It is a conditional because it states a **relation between properties** and does not assert that anything with the property $S$ exists. The statement is false only if there is some individual that is $S$ and not $P$; if there are no $S$ at all, the conditional is vacuously true. This reading avoids committing the universal proposition to the existence of its subject class, which is the difference from the traditional reading that gives \"All $S$ are $P$\" existential import. \"No $S$ are $P$\" is likewise $(x)(Sx \\supset \\sim Px)$.\n\n**(ii) Why the existential quantifier is used for particular propositions, though not only for them.**\n\nA particular proposition \"Some $S$ are $P$\" says that **at least one thing exists** that is both $S$ and $P$, so it is written with the existential quantifier and a **conjunction**: $(\\exists x)(Sx \\cdot Px)$. The quantifier asserts existence and the conjunction says what exists. The particular negative \"Some $S$ are not $P$\" is $(\\exists x)(Sx \\cdot \\sim Px)$.\n\nThe existential quantifier is **not used exclusively** for particular propositions because it also expresses:\n\n- existence statements and singular statements (\"There are lions\", \"Something is wrong\");\n- the **negation of universal propositions**: \"Not all $S$ are $P$\" is $\\sim(x)(Sx \\supset Px) \\equiv (\\exists x)(Sx \\cdot \\sim Px)$;\n- the universal propositions themselves in another form: $(x)(Sx \\supset Px) \\equiv \\sim(\\exists x)(Sx \\cdot \\sim Px)$ and \"No $S$ are $P$\" is $\\sim(\\exists x)(Sx \\cdot Px)$. So the existential quantifier, combined with negation, can express all four categorical forms.",
+      "themes": [
+        "predicate logic and symbolisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    }
+  ]
+}

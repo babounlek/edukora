@@ -1,0 +1,168 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Philosophy",
+  "epreuve_source": "gce-al-philosophy-2026-p3-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 3,
+  "code_matiere": "0790",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Philosophy 3 (0790), Paper 3 (Critical thinking), ADVANCED LEVEL, June 2026 (reference GCE26/0790/3/P52). Duration: three hours.**\n\nInstructions to candidates: Candidates are expected to answer FOUR (04) questions, choosing TWO (02) questions from each section (Section One: Logic; Section Two: Philosophical Problems). Each question carries 25 marks.\n\nCandidates are reminded of the necessity for good English and orderly presentation of material.\n\nSome parts of Section One are followed by an *ALTERNATIVE FOR THE VISION IMPAIRED (VISUALLY IMPAIRED) CANDIDATES ONLY*: a candidate answers either the printed part or its alternative, never both.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "SECTION ONE",
+      "repondre": 2,
+      "sur": 3
+    },
+    {
+      "type": "parmi",
+      "portee": "SECTION TWO",
+      "repondre": 2,
+      "sur": 3
+    }
+  ],
+  "enonce_intro_markdown": "**SECTION ONE: LOGIC**",
+  "groupes": [
+    "SECTION ONE"
+  ],
+  "points": "25",
+  "figures": [],
+  "incertitudes": [
+    "Page de garde lue : ADVANCED LEVEL, juin 2026, Philosophy Paper 3 (Critical thinking), code 0790, trois heures, référence GCE26/0790/3/P52. Règle imprimée : « Candidates are expected to answer FOUR (04) questions, choosing two (02) questions from each section. Each question carries 25 marks. » Section One : Logic (questions 1 à 3), Section Two : Philosophical Problems (questions 4 à 6, les seules visibles). `regles_choix` : parmi 2 sur 3 pour SECTION ONE et parmi 2 sur 3 pour SECTION TWO, identiques dans les six fichiers ; la consigne complète (quatre questions au total) est dans `introduction_markdown`.",
+    "Question 2 : le sujet imprime des variantes « ALTERNATIVE FOR THE VISION IMPAIRED (VISUALLY IMPAIRED) CANDIDATES ONLY » pour (a)(iii), (c), (d) et (e). Elles sont transcrites en questions séparées a-alt, c-alt, d-alt, e-alt (points null : le candidat ne traite que l'une des deux versions, les points sont ceux de la partie remplacée et le total reste 25).",
+    "Points : (a) 3+2+2 = 7, (b) 3+2 = 5, (c) 6, (d) 6, (e) 1 ; total 25. Les points de (c) et (d) ne sont pas imprimés sur la version principale : ils sont déduits des variantes (2 x 3 marks en c, 3 x 2 marks en d), ce qui donne 25 au total.",
+    "Question 2 (a)(i) : seule la conclusion « No hot-blooded animals are lizards » donne un syllogisme valide (AEE-4, Camenes) ; les deux autres choix donnent EE ou EAE-4 (mineure illicite) : vérifié par énumération de tous les modèles avec Python.",
+    "Question 2 (b)(i)-(ii) : « Modus Ponendo Tollens » est lu comme la forme qui affirme un terme de la disjonction pour nier l'autre ; invalide avec le « ou » inclusif. Si le manuel du programme entend un « ou » exclusif, la forme serait valide ; le corrigé le dit.",
+    "Question 2 (c) : la version principale ne donne pas de lettres d'énoncé ; les lettres J, M, D sont choisies (la lettre P de l'énoncé de Paul est remplacée par D pour éviter la confusion avec les lettres de proposition P, Q).",
+    "Question 2 (d), variante : l'énoncé imprimé est tronqué (« Explain why the following statement are either state are tautology... ») et ne liste pas les formules ; le corrigé reprend les trois formes de (d) et le dit.",
+    "Question 2 (e) : « Few beasts are human beings » est traduit par la conjonction d'une particulière affirmative et d'une particulière négative (convention usuelle des manuels de logique traditionnelle) ; le caractère « petit nombre » n'est pas exprimable en notation du premier ordre. Clé du jury inconnue.",
+    "Aucun corrigé officiel : corrigés rédigés au niveau Advanced Level ; toutes les tables de vérité, la validité des arguments, les contre-exemples et le syllogisme ont été recalculés avec Python (itertools.product et énumération des modèles ensemblistes) puis relus lors de la seconde passe."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(i) Rearrange the following propositions into a valid syllogism:\n\nNo reptiles are hot-blooded animals; No hot-blooded animals are lizards; All lizards are reptiles. (3 marks)\n\n(ii) Give the Mood and Figure of a (i) above. (2 marks)\n\n(iii) Prove the validity of a (i) above by the Venn Diagram Technique. (2 marks)",
+      "corrige_markdown": "**(i) The valid arrangement.**\n\nThe three propositions use three terms: reptiles, hot-blooded animals, lizards. Only one choice of conclusion gives a valid syllogism (this was checked by testing the three possible choices with Python). The conclusion is **\"No hot-blooded animals are lizards\"**. Then:\n\n- the **major term** (predicate of the conclusion) is *lizards*, and the major premise is the one that contains it: *All lizards are reptiles*;\n- the **minor term** (subject of the conclusion) is *hot-blooded animals*, and the minor premise is *No reptiles are hot-blooded animals*;\n- the **middle term** is *reptiles* (it appears in both premises, not in the conclusion).\n\n> All lizards are reptiles. (major premise)\n> No reptiles are hot-blooded animals. (minor premise)\n> Therefore, no hot-blooded animals are lizards. (conclusion)\n\nThe two other choices fail: with \"All lizards are reptiles\" as conclusion both premises would be negative (E, E), and nothing follows from two negative premises; with \"No reptiles are hot-blooded animals\" as conclusion the premises give the form EAE-4, which commits the fallacy of the illicit minor (the minor term \"reptiles\" is undistributed in the premise, as predicate of an A proposition, but distributed in the conclusion).\n\n**(ii) Mood and figure.**\n\n- Major premise: *All $P$ are $M$*, an **A** proposition. Minor premise: *No $M$ are $S$*, an **E** proposition. Conclusion: *No $S$ are $P$*, an **E** proposition. **Mood: AEE.**\n- The middle term is the predicate of the major premise and the subject of the minor premise (pattern $P$-$M$, $M$-$S$): **Figure 4.**\n\nThe syllogism is **AEE-4** (mnemonic name **Camenes**).\n\n**(iii) Proof by the Venn diagram technique.**\n\nDraw three overlapping circles: $R$ (reptiles), $H$ (hot-blooded animals), $L$ (lizards). The overlaps give eight regions (listed below). Represent the **universal premises first** by shading the empty regions.\n\n1. Premise 1, *All lizards are reptiles*: the part of $L$ outside $R$ is empty, so shade it (regions 3 and 6).\n2. Premise 2, *No reptiles are hot-blooded animals*: the overlap of $R$ and $H$ is empty, so shade it (regions 4 and 7).\n\n| Region of the three circles | Reptiles $R$ | Hot-blooded $H$ | Lizards $L$ | Status |\n|:-:|:-:|:-:|:-:|:-:|\n| 1 | yes | no | no | free |\n| 2 | no | yes | no | free |\n| 3 | no | no | yes | **shaded** by premise 1 (a lizard that is not a reptile) |\n| 4 | yes | yes | no | **shaded** by premise 2 (reptile and hot-blooded) |\n| 5 | yes | no | yes | free |\n| 6 | no | yes | yes | **shaded** by premise 1 (a lizard that is not a reptile) |\n| 7 | yes | yes | yes | **shaded** by premise 2 (reptile and hot-blooded) |\n| 8 (outside the circles) | no | no | no | free |\n\nNow read the diagram for the conclusion *No hot-blooded animals are lizards*: the overlap of $H$ and $L$ is made of regions 6 and 7, and **both are already shaded** by the premises. The conclusion is therefore contained in the premises without any further drawing, and the syllogism is **valid**.",
+      "themes": [
+        "categorical syllogisms and their rules"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 7
+    },
+    {
+      "numero": "a-alt",
+      "enonce_markdown": "**ALTERNATIVE FOR THE VISUALLY IMPAIRED CANDIDATES ONLY**\n\n(iii) Prove the validity of a (i) above by the use of General rule. (2 marks)",
+      "corrige_markdown": "The syllogism of a (i) is: *All lizards are reptiles; No reptiles are hot-blooded animals; therefore no hot-blooded animals are lizards* (AEE-4). It is tested against the general rules of the categorical syllogism.\n\n1. **Three terms only, each used in the same sense**: lizards, reptiles, hot-blooded animals. Satisfied.\n2. **The middle term (reptiles) is distributed at least once**: it is the predicate of an A proposition in the major premise (undistributed), but the **subject of an E proposition** in the minor premise (distributed). Satisfied.\n3. **No term is distributed in the conclusion unless it is distributed in its premise**: the conclusion is E, so both its terms are distributed. *Lizards* is the subject of the A major premise (distributed); *hot-blooded animals* is the predicate of the E minor premise (distributed). Satisfied.\n4. **Two negative premises prove nothing**: only the minor premise is negative. Satisfied.\n5. **If one premise is negative the conclusion must be negative, and if the conclusion is negative one premise must be negative**: one premise (E) is negative and the conclusion (E) is negative. Satisfied.\n6. **Particular premises**: both premises are universal, and the conclusion is universal, so no rule about particulars is broken.\n\nEvery general rule is observed, so the syllogism is **valid**.",
+      "themes": [
+        "categorical syllogisms and their rules"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Given the statement: *Either Mary is a teacher or a student*\n\n(i) Construct a *Modus Ponendo Tollens* argument. (3 marks)\n\n(ii) Why is b (i) considered an invalid form of the Disjunctive Argument? (2 marks)",
+      "corrige_markdown": "Let $T$ = Mary is a teacher, $S$ = Mary is a student. The statement is the disjunction $T \\vee S$.\n\n**(i) A Modus Ponendo Tollens argument.**\n\n*Modus ponendo tollens* means \"the mode that, by **affirming** (ponendo), **denies** (tollens)\": one alternative of the disjunction is affirmed in the minor premise and the other is denied in the conclusion.\n\n> Either Mary is a teacher or Mary is a student.\n> Mary is a teacher.\n> Therefore, Mary is not a student.\n\nForm: $T \\vee S,\\ T\\ \\therefore\\ \\sim S$.\n\n**(ii) Why it is an invalid form of the disjunctive argument.**\n\nThe \"or\" of ordinary logic (the *weak* or *inclusive* disjunction, $\\vee$) is true when **at least one**, and possibly **both**, of its alternatives are true. Mary can very well be a teacher **and** a student (a teacher may also be studying part-time). So the premises can be true while the conclusion is false: with $T$ true and $S$ true, \"$T \\vee S$\" and \"$T$\" are true but \"$\\sim S$\" is false. This counter-example (checked with Python) shows that the argument is **invalid**: it commits the **fallacy of affirming a disjunct**.\n\nThe valid form of the disjunctive argument is the **modus tollendo ponens**: by **denying** one alternative, one **affirms** the other ($T \\vee S,\\ \\sim T\\ \\therefore\\ S$). The modus ponendo tollens would be valid only if the disjunction were **exclusive** (strong: \"either ... or ..., but not both\"), which the statement does not say.",
+      "themes": [
+        "dilemmas and disjunctive arguments"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 5
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "Paraphrase and symbolise the following:\n\n(i) If John is a pilot then Mary is a nurse and Paul is a driver. It is true that Mary is a nurse and Paul is a driver. Therefore John is a pilot.\n\n(ii) Either Mary is a nurse or John is a pilot. Mary is not a nurse. Therefore it is true that John is a pilot.\n\n(iii) John is either a pilot or Paul is a driver. Paul is a driver. Therefore John is not a pilot.",
+      "corrige_markdown": "Statement letters: $J$ = John is a pilot, $M$ = Mary is a nurse, $D$ = Paul is a driver.\n\n**(i) Paraphrase:** *If John is a pilot, then (Mary is a nurse and Paul is a driver). Mary is a nurse and Paul is a driver. Therefore, John is a pilot.*\n\nSymbolisation: $J \\supset (M \\cdot D),\\ \\ M \\cdot D\\ \\ \\therefore\\ J$.\n\nThis is a hypothetical (mixed) argument that **affirms the consequent**: an invalid form (fallacy of affirming the consequent). Counter-example: $J$ false, $M$ and $D$ true (both premises true, conclusion false).\n\n**(ii) Paraphrase:** *Either Mary is a nurse or John is a pilot. Mary is not a nurse. Therefore, John is a pilot.*\n\nSymbolisation: $M \\vee J,\\ \\ \\sim M\\ \\ \\therefore\\ J$.\n\nThis is the **disjunctive syllogism** (*modus tollendo ponens*), a **valid** form: no row of the truth table makes both premises true and the conclusion false.\n\n**(iii) Paraphrase:** *Either John is a pilot or Paul is a driver. Paul is a driver. Therefore, John is not a pilot.*\n\nSymbolisation: $J \\vee D,\\ \\ D\\ \\ \\therefore\\ \\sim J$.\n\nThis is the *modus ponendo tollens*, which **affirms a disjunct**. With the ordinary (inclusive) \"or\" it is **invalid** (counter-example: $J$ and $D$ both true). It would be valid only if the disjunction were exclusive.",
+      "themes": [
+        "conditional arguments and validity forms",
+        "dilemmas and disjunctive arguments"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "c-alt",
+      "enonce_markdown": "**ALTERNATIVE FOR THE VISUALLY IMPAIRED CANDIDATES ONLY**\n\n(c) Identify and explain the following arguments:\n\n(i) If John is a pilot then Mary is a nurse and Paul is a driver. It is true that Mary is a nurse and Paul is a driver. Therefore John is a pilot.\n\n(ii) Either Mary is a nurse or John is a pilot. Mary is not a nurse. Therefore it is true that John is a pilot.\n\n(iii) John is either a pilot or Paul is a driver. Paul is a driver. Therefore John is not a pilot. (2 x 3 marks)",
+      "corrige_markdown": "**(i) A hypothetical (mixed hypothetical) argument that affirms the consequent.** The major premise is a conditional ($J \\supset (M \\cdot D)$), the minor premise affirms its **consequent** ($M \\cdot D$), and the conclusion affirms the antecedent ($J$). Affirming the consequent is an **invalid** form (the *fallacy of affirming the consequent*): a conditional says that the antecedent is sufficient for the consequent, not that it is necessary, so the consequent may be true for another reason (Mary can be a nurse and Paul a driver although John is not a pilot).\n\n**(ii) A disjunctive syllogism in the mode *modus tollendo ponens*.** The major premise is a disjunction ($M \\vee J$), the minor premise **denies** one alternative ($\\sim M$) and the conclusion **affirms** the other ($J$). It is **valid**: if at least one alternative is true and one is false, the other must be true.\n\n**(iii) A disjunctive argument in the mode *modus ponendo tollens*.** The major premise is a disjunction ($J \\vee D$), the minor premise **affirms** one alternative ($D$) and the conclusion **denies** the other ($\\sim J$). With the ordinary inclusive \"or\" it is **invalid** (the *fallacy of affirming a disjunct*), because both alternatives can be true together; it is valid only for an exclusive disjunction.",
+      "themes": [
+        "conditional arguments and validity forms",
+        "dilemmas and disjunctive arguments"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "d",
+      "enonce_markdown": "Determine whether the following statement forms are tautology, contradiction and contingent.\n\n(i) $(P \\cdot Q) \\supset (P \\vee Q)$\n\n(ii) $(P \\cdot Q) \\cdot (\\sim Q \\vee \\sim P)$\n\n(iii) $\\sim [R \\vee (Q \\equiv P)]$",
+      "corrige_markdown": "A statement form is a **tautology** if it is true under every assignment of truth values (all T in the final column), a **contradiction** if it is false under every assignment (all F), and **contingent** if it is true under some assignments and false under others.\n\n**(i)** $(P \\cdot Q) \\supset (P \\vee Q)$\n\n| $P$ | $Q$ | $P \\cdot Q$ | $P \\vee Q$ | $(P \\cdot Q) \\supset (P \\vee Q)$ |\n|:-:|:-:|:-:|:-:|:-:|\n| T | T | T | T | T |\n| T | F | F | T | T |\n| F | T | F | T | T |\n| F | F | F | F | T |\n\nAll T: **tautology** (if both are true, then at least one is true).\n\n**(ii)** $(P \\cdot Q) \\cdot (\\sim Q \\vee \\sim P)$\n\n| $P$ | $Q$ | $P \\cdot Q$ | $\\sim Q \\vee \\sim P$ | $(P \\cdot Q) \\cdot (\\sim Q \\vee \\sim P)$ |\n|:-:|:-:|:-:|:-:|:-:|\n| T | T | T | F | F |\n| T | F | F | T | F |\n| F | T | F | T | F |\n| F | F | F | T | F |\n\nAll F: **contradiction** (the form asserts that $P \\cdot Q$ is true and that its negation, $\\sim Q \\vee \\sim P$, is true as well).\n\n**(iii)** $\\sim [R \\vee (Q \\equiv P)]$\n\n| $R$ | $Q$ | $P$ | $Q \\equiv P$ | $R \\vee (Q \\equiv P)$ | $\\sim [R \\vee (Q \\equiv P)]$ |\n|:-:|:-:|:-:|:-:|:-:|:-:|\n| T | T | T | T | T | F |\n| T | T | F | F | T | F |\n| T | F | T | F | T | F |\n| T | F | F | T | T | F |\n| F | T | T | T | T | F |\n| F | T | F | F | F | T |\n| F | F | T | F | F | T |\n| F | F | F | T | T | F |\n\nT in two rows and F in the other six: **contingent** (true only when $R$ is false and $Q$ and $P$ have different truth values).",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "d-alt",
+      "enonce_markdown": "**ALTERNATIVE FOR THE VISUALLY IMPAIRED CANDIDATES ONLY**\n\n(d) Explain why the following statement are either state are tautology, contradiction and contingent. (3 x 2 marks)",
+      "corrige_markdown": "*The statements are not printed in this alternative; the three statement forms of the main part (d) are taken: (i) $(P \\cdot Q) \\supset (P \\vee Q)$, (ii) $(P \\cdot Q) \\cdot (\\sim Q \\vee \\sim P)$, (iii) $\\sim [R \\vee (Q \\equiv P)]$.*\n\nA statement form is classified by the **final column of its truth table**, which gives its truth value under every possible assignment to its statement letters.\n\n- **Tautology**: the column contains **only T**; the form is true by its logical form alone, whatever the facts.\n- **Contradiction**: the column contains **only F**; the form is false by its logical form alone.\n- **Contingent**: the column contains **both T and F**; its truth depends on the facts.\n\n**(i)** $(P \\cdot Q) \\supset (P \\vee Q)$ is a **tautology**: the final column is T in all four rows, because whenever $P \\cdot Q$ is true, $P \\vee Q$ is true too, and a conditional with a false antecedent is true.\n\n**(ii)** $(P \\cdot Q) \\cdot (\\sim Q \\vee \\sim P)$ is a **contradiction**: the final column is F in all four rows, because $\\sim Q \\vee \\sim P$ is the negation of $P \\cdot Q$ and a statement cannot be true together with its own negation.\n\n**(iii)** $\\sim [R \\vee (Q \\equiv P)]$ is **contingent**: the final column is T in two rows ($R$ false and $Q$, $P$ of different truth values) and F in the six others.\n\nThe full tables are those of the main part (d).",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "e",
+      "enonce_markdown": "Translate this statement into logical notations of propositional functions using the suggested annotations:\n\nFew beasts are human beings (Hx : x is human beings ; Bx : x is a beast) (1 mark)",
+      "corrige_markdown": "In traditional and symbolic logic *\"Few $B$ are $H$\"* is read as the **conjunction of a particular affirmative and a particular negative**: some beasts are human beings, and some beasts are not (the \"few\" are those that are, the others are not).\n\n$$(\\exists x)(Bx \\cdot Hx) \\cdot (\\exists x)(Bx \\cdot \\sim Hx)$$\n\nRead: *There is at least one $x$ such that $x$ is a beast and $x$ is a human being, and there is at least one $x$ such that $x$ is a beast and $x$ is not a human being.* (Strictly, \"few\" also suggests that the beasts that are human beings are a small part of the beasts, a quantity that first-order notation does not express.)",
+      "themes": [
+        "predicate logic and symbolisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 1
+    },
+    {
+      "numero": "e-alt",
+      "enonce_markdown": "**ALTERNATIVE FOR THE VISUALLY IMPAIRED CANDIDATES ONLY**\n\n(e) What do you understand by truth-functor as used in symbolic logic? (1 mark)",
+      "corrige_markdown": "A **truth-functor** (truth-functional connective or operator) is a logical symbol that forms a compound statement from one or more statements in such a way that the **truth value of the compound is completely determined by the truth values of its components**. In symbolic logic the truth-functors are negation ($\\sim$), conjunction ($\\cdot$), disjunction ($\\vee$), the conditional ($\\supset$) and the biconditional ($\\equiv$); each is defined by its truth table. Example: $P \\cdot Q$ is true only when $P$ and $Q$ are both true, whatever $P$ and $Q$ mean.",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    }
+  ]
+}

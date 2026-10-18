@@ -1,0 +1,99 @@
+{
+  "pays": "cm",
+  "examen": "gce_al",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Philosophy",
+  "epreuve_source": "gce-al-philosophy-2019-p3-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 3,
+  "code_matiere": "0790",
+  "duree_epreuve": "3h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Philosophy 3 (0790), Paper 3 (Problem-Solving and Analysis), ADVANCED LEVEL, June 2019. Duration: three hours.**\n\nInstructions to candidates: Candidates are required to answer FOUR questions, choosing THREE questions from Section One and ONE question from Section Two. Each question carries 25 marks.\n\nYou are reminded of the necessity for good English and orderly presentation in your answers.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "SECTION ONE",
+      "repondre": 3,
+      "sur": 4
+    },
+    {
+      "type": "parmi",
+      "portee": "SECTION TWO",
+      "repondre": 1,
+      "sur": 2
+    }
+  ],
+  "enonce_intro_markdown": "**SECTION ONE: LOGIC**",
+  "groupes": [
+    "SECTION ONE"
+  ],
+  "points": "25",
+  "figures": [],
+  "incertitudes": [
+    "Question 4(b)(ii) : l'argument imprimé « ~A v B /∴ P ⊃ R » mêle des lettres différentes dans la prémisse (A, B) et la conclusion (P, R) : probable coquille d'impression. Traité tel qu'imprimé (invalide, contre-exemple A faux, P vrai, R faux). Les annotations manuscrites du candidat (tableau A B P R) sont ignorées.",
+    "Question 4(d) : le sujet imprime « Symbolise and determine the validity of the following argument » mais ne donne qu'une phrase, sans conclusion séparée ; un symbole manuscrit « ⊃ » est ajouté en fin de ligne sur la copie scannée (ignoré comme annotation). Deux lectures sont traitées : conjonction de deux conditionnelles (contingente donc non valide) et argument « première proposition donc seconde » (invalide) ; les deux mènent à « non valide ». Les soulignements manuscrits sont ignorés.",
+    "Question 4(a) : les symbolisations utilisent la forme prédicative avec quantificateurs (x) et (∃x) ; (ii) est donnée aussi sous sa forme équivalente existentielle. Les annotations du sujet (G et E) changent de sens entre (i) et (iii) : respectées partie par partie.",
+    "Question 4(c) : valeurs recalculées avec Python (p = q = vrai, r = s = faux) : (i) vrai, (ii) vrai, (iii) faux.",
+    "Page de garde lue : ADVANCED LEVEL, juin 2019, Philosophy Paper 3 (Problem-Solving and Analysis), code 0790, durée trois heures. Règle imprimée : « answer FOUR questions, choosing three questions from Section One and One question from Section Two. Each question carries 25 marks. » `regles_choix` : parmi 3 sur 4 pour SECTION ONE (questions 1 à 4, Logic) et parmi 1 sur 2 pour SECTION TWO (questions 5 et 6, Textual Studies / Analysis) ; la consigne complète est dans `introduction_markdown`. Cette année le Paper 3 s'intitule « Problem-Solving and Analysis » (et non « Critical Thinking ») et la Section Two est une analyse de textes, non des dissertations.",
+    "Sujet scanné de cinq pages (couverture, 4 pages de questions) avec transparence du verso et annotations manuscrites de candidat (réponses partielles, tableaux, symboles) : toutes ignorées comme données non fiables ; filigranes gcerevision.com et bandeau « Kawlo » ignorés. Aucune figure ni image dans le sujet, aucun PNG produit. Les tableaux de vérité et les diagrammes de Venn des corrigés sont rendus en tableaux Markdown.",
+    "Aucun corrigé officiel : corrigés rédigés au niveau Advanced Level ; toute la logique (tables de vérité, validité, syllogismes catégoriques, dilemme) a été recalculée avec Python (itertools.product, modèles d'ensembles) puis relue lors de la seconde passe."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Using the suggested annotations, translate the following arguments into symbols:\n(i) Nothing good comes easy. (Gx: x is good; Ex: x is easy).\n(ii) Not all countrymen painted the picture of the pope (Cx: x is a countryman: Px: x painted the picture of the pope.).\n(iii) If anything is extravagant, then it is gullible. (Ex: x is extravagant; Gx: x is gullible).\n(2 x 3 marks)",
+      "corrige_markdown": "**(i)** \"Nothing good comes easy\" means: for every thing $x$, if $x$ is good then $x$ is not easy.\n\n$$(x)(Gx \\supset \\sim Ex)$$\n\n(equivalent to $\\sim(\\exists x)(Gx \\cdot Ex)$: there is nothing that is both good and easy).\n\n**(ii)** \"Not all countrymen painted the picture of the pope\" denies the universal statement \"all countrymen painted it\".\n\n$$\\sim(x)(Cx \\supset Px)$$\n\nequivalent to $(\\exists x)(Cx \\cdot \\sim Px)$: there is at least one countryman who did not paint the picture of the pope.\n\n**(iii)** \"If anything is extravagant, then it is gullible\" is a universal conditional.\n\n$$(x)(Ex \\supset Gx)$$\n\n(In (iii) the letter $E$ means \"extravagant\" and $G$ means \"gullible\", as annotated for that part; they differ from the meanings of $G$ and $E$ in (i).)",
+      "themes": [
+        "predicate logic and symbolisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Using the short truth table method, determine the validity of the following arguments:\n(i) P ⊃ Q\n    Q ⊃ R  /∴ P ⊃ R\n(ii) ~A v B  /∴ P ⊃ R\n(2 x 3 marks)",
+      "corrige_markdown": "The short truth table method tries to make the conclusion false and all the premises true. If this is impossible the argument is valid; if it can be done, the argument is invalid.\n\n**(i)** $P \\supset Q,\\ Q \\supset R\\ \\therefore\\ P \\supset R$\n\n- Make the conclusion false: $P \\supset R$ is false only if $P = T$ and $R = F$.\n- Make the first premise true: $P \\supset Q$ with $P = T$ requires $Q = T$.\n- Then the second premise is $Q \\supset R = T \\supset F$, which is **false**.\n\nThe premises cannot all be true while the conclusion is false. The argument is **valid** (it is the hypothetical syllogism).\n\n**(ii)** $\\sim A \\vee B\\ \\therefore\\ P \\supset R$ (as printed)\n\n- Make the conclusion false: $P = T$, $R = F$.\n- Make the premise true: $\\sim A \\vee B$ is true when, for example, $A = F$ (then $\\sim A = T$), with $B$ either true or false. The letters $A$ and $B$ do not occur in the conclusion, so nothing prevents this.\n\n| $A$ | $B$ | $P$ | $R$ | $\\sim A \\vee B$ | $P \\supset R$ |\n|:-:|:-:|:-:|:-:|:-:|:-:|\n| F | F | T | F | T | F |\n\nAn assignment makes the premise true and the conclusion false. The argument is **invalid**.",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "Given that p and q are True statements and r and s are False statements, determine the truth value of the following statements:\ni) ~(q v p) v ~(~r . s)\n(ii) [(r ⊃ p) ⊃ r] ⊃ s\n(iii) ~(~p v s) . (r . s)\n(3 x 3 marks)",
+      "corrige_markdown": "Values: $p = T$, $q = T$, $r = F$, $s = F$.\n\n**(i)** $\\sim(q \\vee p) \\vee \\sim(\\sim r \\cdot s)$\n\n- $q \\vee p = T \\vee T = T$, so $\\sim(q \\vee p) = F$.\n- $\\sim r = T$; $\\sim r \\cdot s = T \\cdot F = F$; so $\\sim(\\sim r \\cdot s) = T$.\n- $F \\vee T = T$.\n\n**The statement is true.**\n\n**(ii)** $[(r \\supset p) \\supset r] \\supset s$\n\n- $r \\supset p = F \\supset T = T$.\n- $(r \\supset p) \\supset r = T \\supset F = F$.\n- $F \\supset s = F \\supset F = T$.\n\n**The statement is true.**\n\n**(iii)** $\\sim(\\sim p \\vee s) \\cdot (r \\cdot s)$\n\n- $\\sim p = F$; $\\sim p \\vee s = F \\vee F = F$; so $\\sim(\\sim p \\vee s) = T$.\n- $r \\cdot s = F \\cdot F = F$.\n- $T \\cdot F = F$.\n\n**The statement is false.**\n\n**Answer:** (i) true; (ii) true; (iii) false.",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    },
+    {
+      "numero": "d",
+      "enonce_markdown": "Symbolise and determine the validity of the following argument using a truth table.\nIf farmers work hard, then they shall never suffer hunger, and the human society will not suffer malnutrition problems if the government assists the farmers with farm inputs.\n(4 marks)",
+      "corrige_markdown": "**Symbolisation.** Let $F$ = farmers work hard; $H$ = farmers suffer hunger; $G$ = the government assists the farmers with farm inputs; $M$ = the human society suffers malnutrition problems.\n\nThe two clauses (\"If farmers work hard, then they shall never suffer hunger\" and \"the human society will not suffer malnutrition problems if the government assists the farmers with farm inputs\") are joined by \"and\":\n\n$$(F \\supset \\sim H) \\cdot (G \\supset \\sim M)$$\n\n**Truth table** (16 rows for four letters):\n\n| $F$ | $H$ | $G$ | $M$ | $\\sim H$ | $\\sim M$ | $F \\supset \\sim H$ | $G \\supset \\sim M$ | $(F \\supset \\sim H) \\cdot (G \\supset \\sim M)$ |\n|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|\n| T | T | T | T | F | F | F | F | F |\n| T | T | T | F | F | T | F | T | F |\n| T | T | F | T | F | F | F | T | F |\n| T | T | F | F | F | T | F | T | F |\n| T | F | T | T | T | F | T | F | F |\n| T | F | T | F | T | T | T | T | T |\n| T | F | F | T | T | F | T | T | T |\n| T | F | F | F | T | T | T | T | T |\n| F | T | T | T | F | F | T | F | F |\n| F | T | T | F | F | T | T | T | T |\n| F | T | F | T | F | F | T | T | T |\n| F | T | F | F | F | T | T | T | T |\n| F | F | T | T | T | F | T | F | F |\n| F | F | T | F | T | T | T | T | T |\n| F | F | F | T | T | F | T | T | T |\n| F | F | F | F | T | T | T | T | T |\n\n**Validity.** The final column contains both T and F: the statement is true in 9 rows and false in 7 rows, so it is **contingent**. It is not a tautology and no row can be called a logical necessity: the statement is **not logically valid** (it is true only on condition that the facts, hard work and government assistance, really lead to the stated results).\n\n*If the passage is read as an argument* with the first clause as premise and the second as conclusion, $F \\supset \\sim H\\ \\therefore\\ G \\supset \\sim M$, the same table shows it is **invalid**: the row $F = T$, $H = F$, $G = T$, $M = T$ makes the premise true ($T \\supset T$) and the conclusion false ($T \\supset F$). The two clauses share no letter, so neither can support the other. Under either reading, the answer is that it is not valid.",
+      "themes": [
+        "truth tables and propositional logic"
+      ],
+      "difficulte_estimee": "elevee",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    }
+  ]
+}
