@@ -69,6 +69,9 @@ export const fr = {
   "matieres.compteur_max_other": "{n} matières choisies · {max} au plus",
   "matieres.obligatoire": "obligatoire",
   "matieres.bientot": "bientôt",
+  "matieres.verrouille_titre": "Exigée par le Board : tu ne peux pas la retirer.",
+  "matieres.verrouille_note":
+    "Les matières obligatoires sont pré-cochées : le Board les exige à l'inscription.",
   "matieres.non_couverte_aide":
     "Les matières grisées sont au programme du Board mais pas encore dans EduKora : tu peux les déclarer, elles n'auront simplement pas de séance.",
   "matieres.av_minimum": "Le Board demande au moins {attendu} matières : tu en as {actuel}.",

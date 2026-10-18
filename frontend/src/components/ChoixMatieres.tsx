@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { BookOpen, Check } from "lucide-react"
+import { BookOpen, Check, Lock } from "lucide-react"
 import { toast } from "sonner"
 
 import { definirMatieres, getMatieres } from "@/api/endpoints"
@@ -52,7 +52,13 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
   const { cursusId, data, isError } = useMatieres()
   // null = rien touché : on montre le choix enregistré.
   const [brouillon, setBrouillon] = useState<number[] | null>(null)
-  const choisies = brouillon ?? data?.choisies ?? []
+  const enregistrees = data?.choisies ?? []
+  // Les matières que le Board impose (au O Level : English, French, Mathematics). Tant que rien n'est enregistré ni
+  // touché, on les propose pré-cochées - rien n'est écrit avant « Enregistrer ». Un profil déjà enregistré n'est jamais
+  // modifié d'office : il garde son choix et l'avertissement habituel.
+  const idsObligatoires = (data?.officielles ?? []).filter((m) => m.obligatoire).map((m) => m.id)
+  const aDefaut = brouillon === null && enregistrees.length === 0 && idsObligatoires.length > 0
+  const choisies = brouillon ?? (aDefaut ? idsObligatoires : enregistrees)
 
   const enregistrer = useMutation({
     mutationFn: (ids: number[]) => definirMatieres(ids),
@@ -69,7 +75,10 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
   if (isError) return <p role="alert" className="text-sm text-muted-foreground">{t("matieres.erreur")}</p>
   if (!data) return <p className="text-sm text-muted-foreground">{t("matieres.chargement")}</p>
 
+  // Verrou léger, côté écran seulement : une matière obligatoire cochée ne se décoche pas (« Toutes les matières » reste
+  // possible, c'est « pas encore déclaré »). Le serveur, lui, accepte tout choix et ne fait qu'avertir.
   function basculer(id: number) {
+    if (choisies.includes(id) && idsObligatoires.includes(id)) return
     setBrouillon(choisies.includes(id) ? choisies.filter((i) => i !== id) : [...choisies, id])
   }
 
@@ -82,10 +91,13 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
     : data.disponibles.map((m) => ({ ...m, code_officiel: null, couverte: true, obligatoire: false }))
   const connues = [...liste, ...data.disponibles.filter((d) => !liste.some((m) => m.id === d.id))]
   const regles = modeBoard ? data.regles : null
-  const avertissements = avertissementsInscription(
-    regles,
-    connues.filter((m) => choisies.includes(m.id)).map((m) => m.code),
-  )
+  // Pas d'avertissement tant que l'élève n'a pas touché au choix proposé par défaut : il n'a encore rien décidé.
+  const avertissements = aDefaut
+    ? []
+    : avertissementsInscription(
+        regles,
+        connues.filter((m) => choisies.includes(m.id)).map((m) => m.code),
+      )
   const libelleDe = (code?: string) => connues.find((m) => m.code === code)?.label ?? code ?? ""
   const aDesNonCouvertes = liste.some((m) => !m.couverte)
 
@@ -104,13 +116,17 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
       <div className="flex flex-wrap gap-2" role="group" aria-label={t("matieres.titre")}>
         {liste.map((matiere) => {
           const actif = choisies.includes(matiere.id)
+          const verrouillee = actif && idsObligatoires.includes(matiere.id)
           return (
             <button
               key={matiere.id}
               type="button"
               aria-pressed={actif}
+              aria-disabled={verrouillee || undefined}
+              title={verrouillee ? t("matieres.verrouille_titre") : undefined}
               onClick={() => basculer(matiere.id)}
               className={cn(
+                verrouillee && "cursor-not-allowed",
                 "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm font-medium transition-colors",
                 actif
                   ? "border-primary bg-primary/10 text-primary"
@@ -118,7 +134,7 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
                 !matiere.couverte && !actif && "border-dashed opacity-60",
               )}
             >
-              {actif && <Check className="size-3.5" aria-hidden="true" />}
+              {actif && (verrouillee ? <Lock className="size-3.5" aria-hidden="true" /> : <Check className="size-3.5" aria-hidden="true" />)}
               {matiere.label}
               {matiere.obligatoire && <span className="text-xs font-normal">· {t("matieres.obligatoire")}</span>}
               {!matiere.couverte && <span className="text-xs font-normal italic">· {t("matieres.bientot")}</span>}
@@ -135,6 +151,7 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
       )}
       {modeBoard && (
         <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+          {idsObligatoires.length > 0 && <p>{t("matieres.verrouille_note")}</p>}
           {aDesNonCouvertes && <p>{t("matieres.non_couverte_aide")}</p>}
           <p>{t("matieres.regles_note")}</p>
         </div>
@@ -143,7 +160,7 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
         <Button
           size="sm"
           className="min-h-9 rounded-full"
-          disabled={inchange || enregistrer.isPending}
+          disabled={(inchange && !aDefaut) || enregistrer.isPending}
           onClick={() => enregistrer.mutate(choisies)}
         >
           {t("matieres.enregistrer")}

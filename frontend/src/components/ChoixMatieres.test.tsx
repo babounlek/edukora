@@ -100,6 +100,7 @@ const OFFICIELLES = [
   { id: 2, code: "GCE_PHYSICS", label: "Physics", code_officiel: "0580", couverte: true, obligatoire: false },
   { id: 4, code: "GCE_ENGLISH", label: "English Language", code_officiel: "0530", couverte: false, obligatoire: true },
   { id: 5, code: "GCE_FRENCH", label: "French", code_officiel: "0545", couverte: false, obligatoire: true },
+  { id: 6, code: "GCE_GEOGRAPHY", label: "Geography", code_officiel: "0750", couverte: false, obligatoire: false },
 ]
 const REGLES_OL = { minimum: 6, maximum: 11, obligatoires: ["GCE_ENGLISH", "GCE_FRENCH", "GCE_MATHS"], derniere: "GCE_RELIGION" }
 const REGLES_AL = { minimum: null, maximum: 5, obligatoires: [], derniere: null }
@@ -115,34 +116,99 @@ describe("ChoixMatieres : règles du Board", () => {
   it("liste toutes les matières du Board, marque les obligatoires et grise celles qu'EduKora ne couvre pas encore", async () => {
     afficher(<ChoixMatieres />)
     expect(await screen.findByRole("button", { name: /Mathematics.*obligatoire/ })).toBeInTheDocument()
-    const anglais = screen.getByRole("button", { name: /English Language.*obligatoire.*bientôt/ })
-    expect(anglais.className).toContain("opacity-60")
+    // Une obligatoire sans contenu reste signalée « bientôt » même pré-cochée ; une autre, non cochée, est grisée.
+    expect(screen.getByRole("button", { name: /English Language.*obligatoire.*bientôt/ })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /Geography.*bientôt/ }).className).toContain("opacity-60")
     expect(screen.getByRole("button", { name: /Physics/ }).className).not.toContain("opacity-60")
     expect(screen.getByText(/Les matières grisées sont au programme du Board/)).toBeInTheDocument()
     expect(screen.getByText(/Règles d'inscription du GCE Board/)).toBeInTheDocument()
   })
 
-  it("n'affiche ni compteur ni avertissement tant que rien n'est choisi", async () => {
-    afficher(<ChoixMatieres />)
-    await screen.findByRole("button", { name: /Physics/ })
-    expect(screen.queryByRole("status")).not.toBeInTheDocument()
-    expect(screen.queryByText(/matière choisie|matières choisies/)).not.toBeInTheDocument()
-  })
-
-  it("prévient en direct du minimum et des obligatoires manquantes, sans bloquer l'enregistrement", async () => {
+  it("sans rien d'enregistré, propose les obligatoires pré-cochées sans avertissement, et l'enregistrement reste possible", async () => {
     definirMatieres.mockResolvedValue({
-      choisies: [2], disponibles: DISPONIBLES, officielles: OFFICIELLES, regles: REGLES_OL, avertissements: [],
+      choisies: [1, 4, 5], disponibles: DISPONIBLES, officielles: OFFICIELLES, regles: REGLES_OL, avertissements: [],
     })
     afficher(<ChoixMatieres />)
-    fireEvent.click(await screen.findByRole("button", { name: /Physics/ }))
-    expect(screen.getByText("1 matière choisie · le Board en demande de 6 à 11")).toBeInTheDocument()
-    const avertissements = screen.getByRole("status")
-    expect(avertissements).toHaveTextContent("Le Board demande au moins 6 matières : tu en as 1.")
-    expect(avertissements).toHaveTextContent("Mathematics est obligatoire à l'inscription.")
-    expect(avertissements).toHaveTextContent("English Language est obligatoire à l'inscription.")
-    expect(avertissements).toHaveTextContent("French est obligatoire à l'inscription.")
+    expect(await screen.findByRole("button", { name: /Mathematics/ })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: /English Language/ })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: /French/ })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: /Physics/ })).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByText("3 matières choisies · le Board en demande de 6 à 11")).toBeInTheDocument()
+    expect(screen.queryByRole("status")).not.toBeInTheDocument()
+    expect(screen.getByText(/Les matières obligatoires sont pré-cochées/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }))
-    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([2]))
+    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([1, 4, 5]))
+  })
+
+  it("une matière obligatoire cochée ne se décoche pas ; une autre, si", async () => {
+    afficher(<ChoixMatieres />)
+    const maths = await screen.findByRole("button", { name: /Mathematics/ })
+    expect(maths).toHaveAttribute("aria-disabled", "true")
+    fireEvent.click(maths)
+    expect(maths).toHaveAttribute("aria-pressed", "true")
+    const physique = screen.getByRole("button", { name: /Physics/ })
+    expect(physique).not.toHaveAttribute("aria-disabled")
+    fireEvent.click(physique)
+    expect(physique).toHaveAttribute("aria-pressed", "true")
+    fireEvent.click(physique)
+    expect(physique).toHaveAttribute("aria-pressed", "false")
+  })
+
+  it("« Toutes les matières » lève le choix par défaut : plus rien n'est coché, ni verrouillé", async () => {
+    definirMatieres.mockResolvedValue({
+      choisies: [], disponibles: DISPONIBLES, officielles: OFFICIELLES, regles: REGLES_OL, avertissements: [],
+    })
+    afficher(<ChoixMatieres />)
+    await screen.findByRole("button", { name: /Mathematics/ })
+    fireEvent.click(screen.getByRole("button", { name: "Toutes les matières" }))
+    const maths = screen.getByRole("button", { name: /Mathematics/ })
+    expect(maths).toHaveAttribute("aria-pressed", "false")
+    expect(maths).not.toHaveAttribute("aria-disabled")
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }))
+    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([]))
+  })
+
+  it("un profil déjà enregistré n'est pas modifié d'office : pas de pré-coche, l'avertissement habituel, et une obligatoire cochée se verrouille", async () => {
+    getMatieres.mockResolvedValue({
+      choisies: [2], disponibles: DISPONIBLES, officielles: OFFICIELLES, regles: REGLES_OL, avertissements: [],
+    })
+    definirMatieres.mockResolvedValue({
+      choisies: [2, 1], disponibles: DISPONIBLES, officielles: OFFICIELLES, regles: REGLES_OL, avertissements: [],
+    })
+    afficher(<ChoixMatieres />)
+    const maths = await screen.findByRole("button", { name: /Mathematics/ })
+    expect(maths).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByRole("button", { name: "Enregistrer" })).toBeDisabled()
+    const avant = screen.getByRole("status")
+    expect(avant).toHaveTextContent("Le Board demande au moins 6 matières : tu en as 1.")
+    expect(avant).toHaveTextContent("Mathematics est obligatoire à l'inscription.")
+    fireEvent.click(maths)
+    expect(maths).toHaveAttribute("aria-pressed", "true")
+    expect(maths).toHaveAttribute("aria-disabled", "true")
+    const apres = screen.getByRole("status")
+    expect(apres).toHaveTextContent("Le Board demande au moins 6 matières : tu en as 2.")
+    expect(apres).not.toHaveTextContent("Mathematics est obligatoire")
+    expect(apres).toHaveTextContent("English Language est obligatoire à l'inscription.")
+    expect(apres).toHaveTextContent("French est obligatoire à l'inscription.")
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }))
+    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([2, 1]))
+  })
+
+  it("A Level : aucune matière obligatoire, donc rien de pré-coché ni de verrouillé", async () => {
+    eleve("GCE_AL")
+    const matieres = [
+      { id: 1, code: "GCE_PHYSICS", label: "Physics", code_officiel: "0780", couverte: true, obligatoire: false },
+      { id: 2, code: "GCE_ECONOMICS", label: "Economics", code_officiel: "0725", couverte: true, obligatoire: false },
+    ]
+    getMatieres.mockResolvedValue({
+      choisies: [], disponibles: matieres, officielles: matieres, regles: REGLES_AL, avertissements: [],
+    })
+    afficher(<ChoixMatieres />)
+    const physique = await screen.findByRole("button", { name: /Physics/ })
+    expect(physique).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByRole("button", { name: /Economics/ })).toHaveAttribute("aria-pressed", "false")
+    expect(screen.queryByText(/Les matières obligatoires sont pré-cochées/)).not.toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Enregistrer" })).toBeDisabled()
   })
 
   it("A Level : compteur « au plus » et avertissement au-delà du maximum", async () => {

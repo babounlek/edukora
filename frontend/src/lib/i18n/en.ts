@@ -64,6 +64,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "matieres.compteur_max_other": "{n} subjects chosen · {max} at most",
   "matieres.obligatoire": "compulsory",
   "matieres.bientot": "coming soon",
+  "matieres.verrouille_titre": "Required by the Board: it cannot be removed.",
+  "matieres.verrouille_note":
+    "Compulsory subjects are pre-selected: the Board requires them at registration.",
   "matieres.non_couverte_aide":
     "Greyed-out subjects are on the Board's list but not in EduKora yet: you can declare them, they just will not get a study session.",
   "matieres.av_minimum": "The Board requires at least {attendu} subjects: you have {actuel}.",
