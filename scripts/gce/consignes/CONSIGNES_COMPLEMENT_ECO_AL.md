@@ -20,9 +20,8 @@ fichier. **Ce fichier prime** pour tout ce qui touche à Economics : codes, noms
 - **Paper 2** : 3 h, dissertations. Page de garde : « Answer FIVE questions, choosing AT LEAST TWO from each section ». Lis le sujet pour repérer les sections
   (souvent SECTION A et SECTION B). UN fichier PAR QUESTION du sujet, `numero_exercice` = le numéro imprimé (ou `"B1"`... si une section renumérote), sous-questions
   (a), (b)... = `questions`. `groupes` = le repère de section de la question (`["SECTION A"]`, `["SECTION B"]`), identique dans tous les fichiers d'une section.
-  Le modèle de règles n'a que « n parmi m » et « ou » : écris, pour chaque section, `{"type":"parmi","portee":"SECTION A","repondre":2,"sur":<nombre de questions de la section A>}`
-  (le minimum imposé), et recopie TOUTE la consigne (5 questions en tout, au moins 2 par section) dans `introduction_markdown` ; dis dans `incertitudes` que la règle
-  « 5 en tout » n'est pas exprimable dans `regles_choix`. Tous les fichiers du dossier portent les mêmes `regles_choix`.
+  « 5 questions en tout, au moins 2 par section » se code par UNE règle `{"type":"total","portee":"PAPER 2","repondre":5,"minimum":2,"groupes":["SECTION A","SECTION B"]}`
+  (et non par un `parmi` par section : la simulation ne compterait que 2 questions par section). Recopie TOUTE la consigne dans `introduction_markdown`. Tous les fichiers du dossier portent les mêmes `regles_choix`.
 - **Paper 3** : 1h45, questions quantitatives (« Answer ANY THREE questions », calculatrice permise). Même forme que le Paper 2 : un fichier par question,
   `regles_choix` `[{"type":"parmi","portee":"PAPER 3","repondre":3,"sur":<N imprimé>}]` avec `groupes` `["PAPER 3"]` partout (ou par section si le sujet en a).
 - Les points : « All questions carry equal marks » ; `points` de l'exercice = le total imprimé s'il y en a un, sinon `""`.

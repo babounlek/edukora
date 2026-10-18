@@ -18,9 +18,9 @@ Lis `CONSIGNES.md` (forme générale, figures), puis `CONSIGNES_COMPLEMENT_AL.md
   gradient, densité, pente) se justifie par le calcul ; un QCM factuel ambigu ou une clé imprimée douteuse : convertis en `ouverte` (`convertir_en_ouverte.js`).
   Une carte, un graphique ou un schéma imprimé dont dépend le QCM se recadre en PNG.
 - **Paper 2** : 3 h, « Answer FOUR questions, choosing at least ONE from each Section », 25 points chacune. Repère les sections imprimées (SECTION A, B...). UN fichier PAR QUESTION,
-  `numero_exercice` = le numéro imprimé (ou `"B1"`... si une section renumérote), `groupes` = le repère de section. `regles_choix` : pour chaque section
-  `{"type":"parmi","portee":"SECTION A","repondre":1,"sur":<N de la section>}` (le minimum imposé), identique dans tous les fichiers du dossier ; recopie la consigne complète
-  (4 en tout) dans `introduction_markdown` et signale-la dans `incertitudes` (non exprimable en entier).
+  `numero_exercice` = le numéro imprimé (ou `"B1"`... si une section renumérote), `groupes` = le repère de section. `regles_choix` : UNE règle
+  `{"type":"total","portee":"PAPER 2","repondre":4,"minimum":1,"groupes":["SECTION A","SECTION B","SECTION C"]}` (les sections imprimées), identique dans tous les fichiers du dossier ;
+  recopie la consigne complète dans `introduction_markdown`. Si le sujet dit « ONE from each section » avec autant de sections que de questions à traiter, un `parmi` 1 par section est exact.
 - **Paper 3** : 3h15, « Answer FOUR questions in all » : la question 1 (cartographie / carte topographique, ~31 points) est OBLIGATOIRE ; une question à choisir dans la SECTION B et DEUX dans la
   SECTION C (lis la page de garde, ces nombres varient selon les années). UN fichier PAR QUESTION. `groupes` : `["SECTION A"]` pour la question 1 (ou le repère imprimé), `["SECTION B"]`, `["SECTION C"]` ;
   `regles_choix` : `parmi` par section à choix (`repondre` = le nombre exigé, `sur` = le nombre de questions de la section), rien pour la question obligatoire. Matériel annoncé (« topographic map, graph paper,

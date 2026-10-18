@@ -18,8 +18,8 @@ Lis `CONSIGNES.md` (forme générale), puis `CONSIGNES_COMPLEMENT_AL.md` (niveau
   factuelle : si DEUX options sont défendables ou si la date/le fait imprimé est inexact, convertis en `ouverte` (`convertir_en_ouverte.js`) plutôt que de choisir.
 - **Paper 2 (Cameroon History Since 1800)** : 3 h, « answer FOUR questions, choosing at least ONE from each of the sections ». Repère les sections imprimées
   (SECTION A, SECTION B...). UN fichier PAR QUESTION du sujet, `numero_exercice` = le numéro imprimé (ou `"B1"`... si une section renumérote), `groupes` = le repère de section
-  (`["SECTION A"]`...). `regles_choix` : pour CHAQUE section `{"type":"parmi","portee":"SECTION A","repondre":1,"sur":<nombre de questions de la section>}` (le minimum imposé),
-  identique dans tous les fichiers du dossier ; la règle « 4 en tout » est recopiée dans `introduction_markdown` et signalée dans `incertitudes` (non exprimable).
+  (`["SECTION A"]`...). `regles_choix` : UNE règle `{"type":"total","portee":"PAPER 2","repondre":4,"minimum":1,"groupes":["SECTION A","SECTION B","SECTION C"]}`,
+  identique dans tous les fichiers du dossier ; la consigne complète est recopiée dans `introduction_markdown`.
 - **Paper 3 (Africa and World History)** : 3 h, « answer FOUR questions, choosing ONE from each of the FOUR sections ». Même forme : une règle
   `{"type":"parmi","portee":"SECTION <X>","repondre":1,"sur":<N de la section>}` par section (exactement ce que dit le sujet). `groupes` = repère de section.
 - Sous-questions (a), (b)... = `questions` de l'exercice ; points entre crochets dans `points`. « All questions carry equal marks » : `points` de l'exercice `""` s'il n'est pas imprimé.

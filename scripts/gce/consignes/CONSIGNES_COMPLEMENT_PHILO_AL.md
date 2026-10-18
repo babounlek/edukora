@@ -20,8 +20,9 @@ Lis `CONSIGNES.md` (forme générale, LaTeX, figures), puis `CONSIGNES_COMPLEMEN
   jamais une lettre au hasard.
 - **Paper 2 (Philosophical Writing and Analysis)** : 3 h, « Answer FOUR questions, choosing at least ONE question from each section », 25 points chacune. Sections typiques : SECTION ONE: WESTERN PHILOSOPHY, SECTION TWO: AFRICAN PHILOSOPHY,
   SECTION THREE: TEXTUAL ANALYSIS (lis la page de garde de CHAQUE année : noms et nombre de sections peuvent changer). UN fichier PAR QUESTION, `numero_exercice` = le numéro imprimé, `groupes` = le repère de section
-  (`["SECTION ONE"]`, `["SECTION TWO"]`, `["SECTION THREE"]`), `regles_choix` identiques dans TOUS les fichiers : une règle `parmi` par section avec `repondre` 1 et `sur` le nombre de questions de la section
-  (`{"type":"parmi","portee":"SECTION ONE","repondre":1,"sur":2}`...). La consigne complète (quatre au total, au moins une par section) va dans `introduction_markdown` et `incertitudes` (non exprimable en entier).
+  (`["SECTION ONE"]`, `["SECTION TWO"]`, `["SECTION THREE"]`), `regles_choix` identiques dans TOUS les fichiers : UNE règle
+  `{"type":"total","portee":"PAPER 2","repondre":4,"minimum":1,"groupes":["SECTION ONE","SECTION TWO","SECTION THREE"]}` (quatre au total, au moins une par section).
+  La consigne complète va aussi dans `introduction_markdown`.
   Les critères de notation de la page de garde (cohérence, problématique, thèse-antithèse-synthèse-conclusion) se recopient dans `introduction_markdown`.
 - **Paper 3 (Critical Thinking)** : 3 h, « Answer FOUR questions, choosing TWO from each section », 25 points chacune. Sections typiques : SECTION ONE: LOGIC (questions à sous-parties chiffrées, parfois « OR » entre deux jeux de sous-questions)
   et SECTION TWO: PHILOSOPHICAL PROBLEMS (dissertations). UN fichier PAR QUESTION, `groupes` = `["SECTION ONE"]` / `["SECTION TWO"]`, règle `parmi` par section avec `repondre` 2 et `sur` le nombre de questions de la section.

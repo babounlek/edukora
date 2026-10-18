@@ -17,9 +17,9 @@ codes, noms de dossier, papers, règles de choix, thèmes. Niveau O Level (Form 
 - **Paper 2** : 2h30. Page de garde (à relire CHAQUE année) : « Answer ALL questions in SECTION A and ANY TWO questions from EITHER SECTION B or SECTION C ; in B and C all questions carry equal marks »,
   avec la précision « a combination of Section A and Section B OR Section A and Section C, but NOT a combination of all three ». UN fichier PAR QUESTION du sujet, `numero_exercice` = le numéro imprimé, sous-questions
   (a), (b)... = `questions`, `groupes` = le repère de section (`["SECTION A"]`, `["SECTION B"]`, `["SECTION C"]`), identique dans tous les fichiers d'une section.
-  `regles_choix`, identiques dans TOUS les fichiers du dossier : une règle `{"type":"parmi","portee":"SECTION B","repondre":2,"sur":<N de B>}` et une règle
-  `{"type":"parmi","portee":"SECTION C","repondre":2,"sur":<N de C>}` (la section A n'a pas de règle : tout est obligatoire). L'exclusivité « B OU C, jamais les trois » n'est pas exprimable :
-  recopie la consigne complète dans `introduction_markdown` et dis-le dans `incertitudes`. Points : ceux imprimés (total par question) dans `points` de l'exercice, ceux des sous-questions entre crochets.
+  `regles_choix`, identiques dans TOUS les fichiers du dossier : UNE règle
+  `{"type":"section_unique","portee":"SECTION B / SECTION C","repondre":2,"groupes":["SECTION B","SECTION C"]}` (la section A n'a pas de règle : tout est obligatoire). Elle dit « 2 questions, toutes dans
+  UNE seule de B ou C » : un `parmi` par section ferait peser au barème les deux questions de la section laissée de côté. Recopie aussi la consigne complète dans `introduction_markdown`. Points : ceux imprimés (total par question) dans `points` de l'exercice, ceux des sous-questions entre crochets.
   Le sujet donne souvent « take g as 10 m s^-2 » : recopie-le dans l'introduction.
 - `introduction_markdown` : la consigne de la page de garde, identique partout. `duree_epreuve` : `"1h30"` ou `"2h30"`.
 

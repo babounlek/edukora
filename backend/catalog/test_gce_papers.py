@@ -234,6 +234,16 @@ class ReglesChoixUnitairesTests(SimpleTestCase):
             [{"type": "section_unique", "repondre": 4}],  # portée manquante
             [{"type": "consigne", "portee": "SECTION I"}],  # texte manquant
             [{"type": "consigne", "portee": "SECTION I", "texte": "   "}],
+            [{"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": 1}],  # groupes manquants
+            [{"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": 1, "groupes": []}],
+            [{"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": 0, "groupes": ["A", "B"]}],
+            [{"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": "1", "groupes": ["A", "B"]}],
+            [{"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": 1, "groupes": "A"}],
+            [{"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": 1, "groupes": ["A", " "]}],
+            [{"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": 1, "groupes": ["A", "a"]}],  # doublon
+            [{"type": "total", "portee": "PAPER 2", "repondre": 3, "minimum": 2, "groupes": ["A", "B"]}],  # 2 x 2 > 3
+            [{"type": "section_unique", "portee": "B / C", "repondre": 2, "groupes": ["B"]}],  # une seule section
+            [{"type": "section_unique", "portee": "B / C", "repondre": 2, "groupes": ["B", ""]}],
         ]
         for regles in invalides:
             with self.assertRaises(ValueError, msg=repr(regles)):
@@ -248,6 +258,18 @@ class ReglesChoixUnitairesTests(SimpleTestCase):
         self.assertEqual(
             regles[1], {"type": "consigne", "portee": "SECTION I", "texte": "Deux sujets de genres différents."},
         )
+
+    def test_total_et_section_unique_limitee_sont_valides_et_normalisees(self):
+        regles = valider_regles_choix([
+            {"type": "total", "portee": " PAPER 2 ", "repondre": 4, "minimum": 1, "groupes": [" SECTION  A", "SECTION B", "SECTION C"]},
+            {"type": "section_unique", "portee": "SECTION B / SECTION C", "repondre": 2, "groupes": ["SECTION B", "SECTION C"]},
+        ])
+        self.assertEqual(
+            regles[0],
+            {"type": "total", "portee": "PAPER 2", "repondre": 4, "minimum": 1,
+             "groupes": ["SECTION A", "SECTION B", "SECTION C"]},
+        )
+        self.assertEqual(regles[1]["groupes"], ["SECTION B", "SECTION C"])
 
     def test_repondre_egal_sur_est_valide(self):
         self.assertEqual(
