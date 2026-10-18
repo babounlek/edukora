@@ -1,0 +1,81 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0595), ORDINARY LEVEL, June 2022. Duration: two hours.**\n\nAnswer any FIVE questions. All questions carry 20 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. Calculators or Phones are NOT allowed.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 5,
+      "sur": 7
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Question 4 : points imprimés : a(i) = 6, a(ii) = 4, b = 4 (le « 4 marks » n'est imprimé qu'une fois, en face de (ii) : lu comme 4 points pour (i) et (ii) ensemble, soit 2 chacun), c(i) = 2, c(ii) = 2, c(iii) = 2 ; total 20.",
+    "4(a)(i) : le CD-ROM est classé en accès aléatoire (direct), comme le disque dur et la clé USB ; certains manuels le décrivent comme à accès séquentiel parce que ses données sont sur une piste en spirale : le sujet n'impose pas de réponse différente.",
+    "4(c)(i) : la panne de Mary est ouverte (plusieurs causes valables) ; les bips au démarrage sont typiquement un code d'erreur matériel du test de démarrage, la mise à jour interrompue est la cause suggérée par le texte.",
+    "Soustraction 4(b)(ii) : le détail des retenues a été vérifié par un programme Python qui exécute l'algorithme en colonnes.",
+    "Sujet scanné de 4 pages (page de garde + 3 pages de questions) : 7 questions, « Answer any FIVE questions », 20 points chacune ; règle de choix codée `parmi 5 sur 7` (portée « PAPER 2 »), identique dans les 7 fichiers. Aucun corrigé officiel : corrigés rédigés, la page a un filigrane gcerevision.com ignoré.",
+    "Aucun programme C ou Pascal dans ce sujet : rien à compiler. Les conversions, additions et soustractions binaires, tables de vérité et le chemin critique ont été recalculés avec Python."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) Storage devices could be classified in terms of:\n\n- data storage technologies as **solid state, magnetic or optical storage technologies** and\n- data access mode as **random or serial access**.\n\nGiven the following storage devices: CD-ROM, Hard drive, USB key;\n\n(i) Copy and complete table I. (6 marks)\n\nTable I\n\n| Device | Storage Technology | Data access mode |\n|---|---|---|\n| CD-Rom | | |\n| Hard drive | | |\n| USB | | |\n\n(ii) Briefly describe the data access modes mentioned above. (4 marks)",
+      "corrige_markdown": "**(i) Table I completed (6 marks, 1 mark per cell)**\n\n| Device | Storage Technology | Data access mode |\n|---|---|---|\n| CD-Rom | Optical | Random access |\n| Hard drive | Magnetic | Random access |\n| USB | Solid state | Random access |\n\n**(ii) Data access modes (4 marks)**\n\n- **Random (direct) access (2 marks).** The device can go directly to any location (sector, block or address) and read or write the data there, without reading the data that comes before it. Access is fast and takes about the same time for any piece of data. Example: a hard disk, a CD-ROM or a USB key.\n- **Serial (sequential) access (2 marks).** The data must be read or written one item after another, in the order in which it is stored, starting from the beginning, until the wanted data is reached. Access is slower, particularly for data stored near the end. Example: a magnetic tape.",
+      "themes": [
+        "computer storage devices"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 10
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) Carry out the following using binary Arithmetic.\n\n(i) $1101011_2 + 1101_2$\n\n(ii) $110010_2 - 1011_2$ (4 marks)",
+      "corrige_markdown": "**(i) $1101011_2 + 1101_2$ (2 marks)**\n\nLine up the numbers on the right ($1101_2 = 0001101_2$) and add column by column from the right, with the rules $0+0=0$, $0+1=1$, $1+1=10$ (write 0, carry 1), $1+1+1=11$ (write 1, carry 1):\n\n```text\n  carries:  1 1 1 1 0 0\n            1 1 0 1 0 1 1\n          + 0 0 0 1 1 0 1\n          ---------------\n            1 1 1 1 0 0 0\n```\n\nColumn by column (right to left): $1+1=0$ carry 1; $1+0+1=0$ carry 1; $0+1+1=0$ carry 1; $1+1+1=1$ carry 1; $0+0+1=1$; $1+0=1$; $1+0=1$.\n\n$1101011_2 + 1101_2 = \\mathbf{1111000_2}$.\n\nCheck in decimal: $107 + 13 = 120$ and $1111000_2 = 64 + 32 + 16 + 8 = 120$.\n\n**(ii) $110010_2 - 1011_2$ (2 marks)**\n\nWrite $1011_2$ as $001011_2$ and subtract column by column from the right, borrowing when needed ($0-1$: borrow 1 from the next column to get $10-1=1$):\n\n```text\n  borrows:  0 1 1 1 1 0\n            1 1 0 0 1 0\n          - 0 0 1 0 1 1\n          -------------\n            1 0 0 1 1 1\n```\n\nColumn by column (right to left; when a result is negative, add 2 and borrow 1 from the next column): $0-1=-1$, so write 1 and borrow; $1-1-1=-1$, so write 1 and borrow; $0-0-1=-1$, so write 1 and borrow; $0-1-1=-2$, so write 0 and borrow; $1-0-1=0$, write 0; $1-0=1$, write 1.\n\n$110010_2 - 1011_2 = \\mathbf{100111_2}$.\n\nCheck in decimal: $50 - 11 = 39$ and $100111_2 = 32 + 4 + 2 + 1 = 39$.",
+      "themes": [
+        "binary arithmetic",
+        "number systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "(c) Mary's office computer system is connected to the Internet. At shut down the screen reads \"update and shutdown\" or \"shutdown\". She chooses \"update and shutdown\". The next day the computer is powered on but fails to complete the booting process, rather it sends out beeps.\n\n(i) Identify the possible fault(s) with Mary's computer. (2 marks)\n\n(ii) Propose a preventive measure to the fault(s) identified. (2 marks)\n\n(iii) Briefly explain the meaning of the following as used in the passage\n\n- Update\n- Boot process. (2 marks)",
+      "corrige_markdown": "**(i) Possible faults (2 marks)**\n\n- The operating system update was **interrupted or installed incorrectly** (for example a power cut during the update), so the operating system files are corrupted and the computer cannot finish booting.\n- A **hardware fault** found during the start-up test, which the computer reports by beeps: for example a loose or faulty RAM module, a faulty hard disk or a faulty graphics card.\n\n**(ii) Preventive measures (2 marks)**\n\n- Never switch off or unplug the computer during an update, and use a **UPS (uninterruptible power supply)** or a surge protector so that a power cut does not interrupt the update.\n- Make regular **back-ups** of the system and of the data and create a **system restore point** before updating, so that the system can be restored.\n- Have the hardware checked and cleaned regularly.\n\n**(iii) Meaning of the terms (2 marks, 1 mark each)**\n\n- **Update:** installing a newer version or a patch of the operating system or of a program, in order to correct errors, close security weaknesses and add improvements.\n- **Boot process:** the start-up sequence of the computer when it is powered on: the hardware is tested (power-on self test), the bootstrap program in the BIOS/firmware is run, and it loads the operating system from the hard disk into the main memory (RAM) so that the computer is ready to be used.",
+      "themes": [
+        "computer hardware components",
+        "operating systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

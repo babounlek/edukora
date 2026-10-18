@@ -1,0 +1,88 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2023",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2023-p3-officiel-cameroun.pdf",
+  "numero_exercice": "G3-T3",
+  "numero_paper": 3,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Ordinary Level Examination. Computer Science (0595), Paper 3 (practical), June 2023. Duration: two and a half hours. Do all the tasks (Task I, Task II and Task III) specified in the question paper.**\n\nEnter the information required in the shaded boxes. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. All written answers should be provided in the spaces provided in this question booklet. Calculators are NOT allowed.\n\nThe booklet reproduced here contains four versions of the same practical paper, headed Group One, Group Two, Group Three and Group Four (booklets 23/0595/3/Grp 1 to Grp 4); a candidate sits only ONE group. Each version has three tasks: Task I (word processing), Task II (spreadsheet) and Task III (a short exercise on HTML, on a database or on a C or Pascal program). The working files named in the tasks (the picture UN.jpg, the pictures of the authors) are supplied on the day; they are not reproduced in the printed paper.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**GROUP THREE - TASK III (10 marks)**\n\nThe table below lists information about student participants in a tournament.\n\n| Reg | Student-Name | Date-of-Birth | School | Female | Score |\n|---|---|---|---|---|---|\n| 1 | Ruth | 2005-08-06 | Mataze Comprehensive College | Yes | 25 |\n| 2 | Peter | 2007-06-11 | Kamkop Bilingual College | No | 20 |\n| 3 | John | 2006-11-12 | Makepe Grammar School | No | 22 |\n| 4 | Rita | 2008-11-25 | Roumde-Adjia Comprehensive College | Yes | 23 |\n| 5 | Saraphine | 2009-12-06 | Melen Comprehensive College | Yes | 24 |",
+  "groupes": [
+    "GROUP 3"
+  ],
+  "points": "10",
+  "figures": [],
+  "incertitudes": [
+    "Structure du lot : les quatre PDF fournis sont nommes DAY1 a DAY4, mais les pages de garde imprimees parlent de GROUPES (« Group Two », « Group Three », « Group Four », livrets 23/0595/3/Grp 2, 3 et 4), pas de jours. Un seul dossier, douze fichiers : numero_exercice G1-T1 a G4-T3 (groupe n, tache m), groupes [\"GROUP 1\"] a [\"GROUP 4\"] (et non D<n>-T<m> / [\"DAY n\"]). regles_choix est vide : le candidat ne passe qu'un seul groupe, ce qui n'est pas exprimable.",
+    "Le PDF DAY1 (Group One) n'a que 3 pages et pas de page de garde (il commence a la page 2 du livret, « Do all the tasks... ») : le niveau et la matiere sont verifies par la reference imprimee en pied de page (0000/0595/3/Grp 1, soit le code 0595) et par la structure identique aux trois autres groupes. La duree de 2 h 30 est reprise des pages de garde des groupes 2, 3 et 4 (« Two and a Half hours »).",
+    "Aucun corrige officiel n'existe : les reponses sont redigees. Les « marking ideas » sont des repartitions indicatives faites d'apres les points imprimes ; le bareme du jury n'est pas connu. Les fichiers de donnees du jour (image UN.jpg, photos des auteurs, dossier du candidat) ne sont pas dans le PDF ; aucun logiciel (traitement de texte, tableur, gestionnaire de base de donnees, navigateur, compilateur) n'a ete execute : les menus sont donnes sous leur forme generale (Office / LibreOffice recents), de memoire, sans version de logiciel affirmee.",
+    "Les filigranes (gcerevision.com, Kawlo), les cadres d'en-tete (numero de centre, nom du candidat, « For examiners' use only »), les lignes a completer et les artefacts du scanner (scans sans couche texte, photos de feuilles legerement inclinees) sont ignores. Chaque PDF a ete lu page par page en image.",
+    "Tous les resultats chiffres (colonnes calculees, classements, comptages, totaux) ont ete recalcules avec Python a partir des donnees imprimees, en fractions exactes pour les moyennes ; les formules de tableur ont ete traduites en Python (SUM, AVERAGE, RANK, IF, COUNTIF). Les points imprimes de chaque tache somment bien au total annonce (voir ci-dessous) ; aucun point imprime n'a ete corrige.",
+    "Group Three, Task III : le sujet imprime « (4 marks) » pour la conception de la base stud_table, puis six lignes de « (1 mark) » pour les types de champs : 4 + 6 = 10, comme annonce. Transcrit en a1 (4 points) et a2 (6 points) ; b et c n'ont pas de points imprimes. Les points du bareme exact (ce qui rapporte les 4 points de conception) ne sont pas connus : repartition indicative.",
+    "Le SQL (CREATE TABLE, INSERT) a ete execute avec le module sqlite3 de Python : 5 lignes inserees, 3 participantes (Ruth, Saraphine, Rita), moyenne des scores 22,8. Les noms de champs imprimes (Student-Name, Date-of-Birth) contiennent des tirets, valides dans Access mais pas dans un nom SQL : remplaces par des tirets bas dans le SQL seulement. Les types donnes sont ceux d'Access ; d'autres systemes ont des noms differents (indiques dans le corrige)."
+  ],
+  "questions": [
+    {
+      "numero": "a1",
+      "enonce_markdown": "Use your database management system to design a database called stud_table, to store the data. *[4 marks]*",
+      "corrige_markdown": "Open the database management system (for example *Microsoft Access* or *LibreOffice Base*).\n\n1. Create a new blank database and save it with the name **stud_table**.\n2. Create a table in design view with the six fields of the printed table, with the names as printed: **Reg**, **Student-Name**, **Date-of-Birth**, **School**, **Female**, **Score**.\n3. Choose a data type for each field (see the next question) and set **Reg** as the primary key, because each participant has a different registration number.\n4. Save the table (for example as *Participants*).\n\nMarking idea (4 marks): database named stud_table (1); table with the six fields correctly named (2); primary key on Reg (1).",
+      "themes": [
+        "relational databases"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "a2",
+      "enonce_markdown": "Write in the space below, the data type you used for each of the fields: Reg, Student-Name, Date-of-Birth, School, Female, Score. *[1 mark each, 6 marks]*",
+      "corrige_markdown": "| Field | Data type (Microsoft Access) | Why |\n|---|---|---|\n| Reg | **Number** (integer) or **AutoNumber** | a whole number identifying the participant (1 to 5) |\n| Student-Name | **Short Text** (Text) | a name is made of letters |\n| Date-of-Birth | **Date/Time** | a calendar date such as 2005-08-06 |\n| School | **Short Text** (Text) | the name of a school, letters and spaces |\n| Female | **Yes/No** (Boolean) | only two values: Yes or No |\n| Score | **Number** (integer) | a whole mark such as 25 |\n\nIn another system the same types are called *INTEGER*, *VARCHAR* or *TEXT*, *DATE*, *BOOLEAN*, *INTEGER*. Any equivalent and suitable type earns the mark.\n\nAn equivalent SQL definition, checked with SQLite (the hyphens of the field names are replaced by underscores because a hyphen is not allowed in an SQL name):\n\n```sql\nCREATE TABLE stud_table (\n  Reg INTEGER PRIMARY KEY,\n  Student_Name TEXT NOT NULL,\n  Date_of_Birth DATE,\n  School TEXT,\n  Female BOOLEAN,\n  Score INTEGER\n);\n```\n\nMarking idea (6 marks): one mark for each field with a suitable type.",
+      "themes": [
+        "relational databases",
+        "data types"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Populate the table with the data in the table above. Then make a screen capture of your table with the data. Launch your word processor and paste the table in it. Save as Task 3. *[no mark printed]*",
+      "corrige_markdown": "1. Open the table in *Datasheet view* and key in the five records exactly as printed (Yes/No ticked in the Female column: Ruth, Rita and Saraphine are female; Peter and John are not; dates typed as 2005-08-06 or in the local date format).\n2. Check the five rows against the printed table (an SQL check with SQLite on the same data gives 5 rows and an average score of 22.8).\n3. Take a screen capture of the table (the *PrtScn* key, or the snipping tool), open the word processor, paste (*Ctrl + V*) and save the document as **Task 3**.\n\n```sql\nINSERT INTO stud_table VALUES (1, 'Ruth', '2005-08-06', 'Mataze Comprehensive College', 1, 25);\nINSERT INTO stud_table VALUES (2, 'Peter', '2007-06-11', 'Kamkop Bilingual College', 0, 20);\nINSERT INTO stud_table VALUES (3, 'John', '2006-11-12', 'Makepe Grammar School', 0, 22);\nINSERT INTO stud_table VALUES (4, 'Rita', '2008-11-25', 'Roumde-Adjia Comprehensive College', 1, 23);\nINSERT INTO stud_table VALUES (5, 'Saraphine', '2009-12-06', 'Melen Comprehensive College', 1, 24);\n```",
+      "themes": [
+        "relational databases",
+        "saving and printing work"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "Print Task 3. *[no mark printed]*",
+      "corrige_markdown": "*File* > *Print*: check the preview (the captured table with its five rows), then click *Print*.",
+      "themes": [
+        "saving and printing work"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "1",
+  "numero_paper": 2,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0595), ORDINARY LEVEL, June 2022. Duration: two hours.**\n\nAnswer any FIVE questions. All questions carry 20 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. Calculators or Phones are NOT allowed.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 5,
+      "sur": 7
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné de 4 pages (page de garde + 3 pages de questions) : 7 questions, « Answer any FIVE questions », 20 points chacune ; règle de choix codée `parmi 5 sur 7` (portée « PAPER 2 »), identique dans les 7 fichiers. Aucun corrigé officiel : corrigés rédigés, la page a un filigrane gcerevision.com ignoré.",
+    "Aucun programme C ou Pascal dans ce sujet : rien à compiler. Les conversions, additions et soustractions binaires, tables de vérité et le chemin critique ont été recalculés avec Python."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) (i) Give the full meaning of the following coding schemes:\n\n- BCD\n- EBCDIC\n- ASCII (3 marks)\n\n(ii) State the length of bits used to represent a character in each of these coding schemes. (3 marks)\n\n(iii) With the aid of an example, explain why different lengths of bits are used to represent a character set for different coding schemes. (4 marks)",
+      "corrige_markdown": "**(i) Full meanings (3 marks, 1 mark each)**\n\n- **BCD** - Binary Coded Decimal.\n- **EBCDIC** - Extended Binary Coded Decimal Interchange Code.\n- **ASCII** - American Standard Code for Information Interchange.\n\n**(ii) Number of bits per character (3 marks, 1 mark each)**\n\n| Coding scheme | Bits used for one character |\n|---|---|\n| BCD | 4 bits (one decimal digit is stored in 4 bits) |\n| EBCDIC | 8 bits (1 byte) |\n| ASCII | 7 bits (standard ASCII; extended ASCII uses 8 bits) |\n\n**(iii) Why the lengths are different (4 marks)**\n\nWith $n$ bits a coding scheme can represent only $2^n$ different characters. The designers choose the number of bits according to the size of the character set that must be coded:\n\n- 4 bits give $2^4 = 16$ codes, which is enough for the ten decimal digits $0$ to $9$ only. This is why BCD uses 4 bits (for example the digit 5 is $0101$).\n- 7 bits give $2^7 = 128$ codes, enough for the 26 capital letters, the 26 small letters, the digits, punctuation marks and control codes. This is why standard ASCII uses 7 bits (for example the letter A is $1000001$, decimal 65).\n- 8 bits give $2^8 = 256$ codes, so more characters and symbols can be coded. This is why EBCDIC uses 8 bits (for example the letter A is $11000001$, hexadecimal C1).\n\nA larger character set therefore needs more bits per character, but each character then takes more memory and storage space. A smaller character set uses fewer bits and saves space.",
+      "themes": [
+        "character codes",
+        "data representation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 10
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) A new computerised system that supplies oxygen to a life-supporting system in a hospital has been developed to replace the old system.\n\n(i) Describe four methods of the implementation phase of an information system that can be used to replace the old system with the new system. (8 marks)\n\n(ii) Which of the methods is best suited for this replacement? Justify your answer. (2 marks)",
+      "corrige_markdown": "**(i) Four methods of implementation (changeover) (8 marks, 2 marks each)**\n\n1. **Direct (abrupt) changeover.** The old system is switched off on a chosen date and the new system is used immediately in its place. It is quick and cheap, but risky: if the new system fails there is nothing to fall back on.\n2. **Parallel running.** The old and the new systems are run together for a period of time with the same data. The results of the two systems are compared, and the old system is stopped only when the new one is shown to work correctly. It is very safe, but costly and slow because the work is done twice.\n3. **Phased (gradual) implementation.** The new system is introduced one part (module or function) at a time, while the other parts are still done by the old system. Problems are found early and are limited to one part, but the changeover takes a long time.\n4. **Pilot implementation.** The complete new system is first installed and tested in one place only (one ward, one department or one branch). When it is working well, it is installed in all the other places.\n\n**(ii) Best method (2 marks)**\n\n**Parallel running** is the best method. The oxygen supply keeps a patient alive, so it must never stop: with parallel running the old system keeps supplying oxygen while the new one is tested, and if the new system fails, the old one is still there as a back-up. The two systems can also be compared before the old one is removed. A direct changeover would be too dangerous. The extra cost of running two systems is acceptable because lives are at stake.",
+      "themes": [
+        "system changeover",
+        "information systems"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 10
+    }
+  ]
+}

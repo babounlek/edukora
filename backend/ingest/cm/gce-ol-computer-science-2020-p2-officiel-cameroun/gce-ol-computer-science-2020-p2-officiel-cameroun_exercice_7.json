@@ -1,0 +1,66 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2020",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2020-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - General Certificate of Education Examination / Technical and Vocational Education Examination. Computer Science 2 (0595), ORDINARY / INTERMEDIATE LEVELS, June 2020. Duration: two hours.**\n\nAnswer any FIVE questions. All questions carry 20 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. Calculators and phones are NOT allowed.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 5,
+      "sur": 7
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Sujet scanné (page 1 de garde, pages 2 à 4 de questions) : les 7 questions sont numérotées 1 à 7 sur le sujet ; règle de choix « Answer any FIVE questions », 20 points chacune, repérée par `parmi 5 sur 7` (portée « PAPER 2 »).",
+    "Question 7 : points imprimés par sous-partie : a = 6 + 2 = 8 ; b = 6 + 4 + 2 = 12 ; total 20.",
+    "7(b) : le sujet ne donne pas les dépendances ; elles sont déduites de l'ordre du tableau et de la phrase « activities 2 and 3 can start at the same time, as well as activities 5 and 6 » (une étape ou une paire démarre quand la précédente est finie). Chemin critique 1-2-4-6-7-8 = 80 minutes (arrivée 6h50), marges 5 min (activité 3) et 10 min (activité 5), recalculés avec Python. Si l'activité 3 n'avait à précéder que l'activité 7, sa marge serait plus grande : lecture non retenue.",
+    "Seconde passe faite : chaque page du sujet relue en image et chaque question refaite (conversions, additions et soustractions binaires, table de vérité du circuit, calendrier et chemin critique recalculés par script) ; aucun écart. Coquilles du sujet recopiées sans correction : « gets up a 5:30 AM » (lu « at » dans l'énoncé), « suitable to used » (5(a)(ii)).",
+    "7(b)(i) : le diagramme de Gantt à tracer par l'élève est donné sous forme de tableau Markdown (une colonne = 5 minutes) ; aucune figure n'est jointe.",
+    "7(a) : les spécifications données en exemple (type de processeur, taille de mémoire et de disque) sont indicatives et génériques, sans nom de produit ni version ; aucun barème officiel disponible."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "You are requested by a Principal to make recommendations for types and specifications of computers for the school computer laboratory.\n\n(i) Name three characteristics of the system unit you will recommend and say how these are important for proper functioning of the laboratory. (6 marks)\n\n(ii) Name one characteristic of the monitor you will recommend and say how this is important for the laboratory. (2 marks)",
+      "corrige_markdown": "**(i) Three characteristics of the system unit (6 marks).**\n\n1. **Processor speed and type** (for example a multi-core processor with a high clock speed in GHz). A fast processor lets the programs used in the laboratory run quickly and lets many students work without long waiting times.\n2. **Amount of RAM** (for example 4 GB or more, as large as the budget allows). More memory lets several programs and large files be open at the same time without the computer slowing down or hanging.\n3. **Hard disk capacity** (for example 500 GB or more, or a faster solid-state drive). It must be large enough to store the operating system, all the teaching software and the students' files; a fast drive also makes start-up and loading quicker.\n\n(Other accepted characteristics: number and type of ports such as USB, a network card for connecting to the laboratory network, an optical drive, expandability and a reliable power supply.)\n\n**(ii) One characteristic of the monitor (2 marks).** The **screen size and resolution** (for example a 17-inch or larger flat-panel screen with a high resolution). A larger, sharper screen shows text and pictures clearly, so that students can read easily and work for a long time without eye strain. (Other accepted answers: type of screen (flat panel LED/LCD uses less power and gives off less radiation), or brightness and adjustability.)",
+      "themes": [
+        "computer hardware components"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "A student gets up at 5:30 AM and performs the following activities shown in Table 2 within the indicated duration, in order to get to school.\n\n**Table 2**\n\n| No. | Activity | Duration in Minutes |\n|---|---|---|\n| 1. | Facial clean-up | 10 |\n| 2. | Heat water for shower | 15 |\n| 3. | Prepare breakfast | 10 |\n| 4. | Take a shower | 15 |\n| 5. | Clean shoes | 5 |\n| 6. | Dress up | 15 |\n| 7. | Take breakfast | 10 |\n| 8. | Walk to school | 15 |\n\nAssuming that activities 2 and 3 can start at the same time, as well as activities 5 and 6,\n\n(i) Draw a Gantt chart for the above activities. (6 marks)\n\n(ii) What do you understand by the terms:\n\n- Critical path\n- Slack time\n\n(4 marks)\n\n(iii) Determine the critical path for these activities. (2 marks)",
+      "corrige_markdown": "**Assumptions (from the wording of the question).** The activities follow the order of the table: activity 1 first; activities 2 and 3 start together when 1 is finished; activity 4 starts when 2 and 3 are finished; activities 5 and 6 start together when 4 is finished; activity 7 starts when 5 and 6 are finished; activity 8 comes last.\n\n**Timing (start 5:30).**\n\n| No. | Activity | Duration (min) | Start | Finish |\n|---|---|---|---|---|\n| 1 | Facial clean-up | 10 | 5:30 | 5:40 |\n| 2 | Heat water for shower | 15 | 5:40 | 5:55 |\n| 3 | Prepare breakfast | 10 | 5:40 | 5:50 |\n| 4 | Take a shower | 15 | 5:55 | 6:10 |\n| 5 | Clean shoes | 5 | 6:10 | 6:15 |\n| 6 | Dress up | 15 | 6:10 | 6:25 |\n| 7 | Take breakfast | 10 | 6:25 | 6:35 |\n| 8 | Walk to school | 15 | 6:35 | 6:50 |\n\n**(i) Gantt chart (6 marks).** A Gantt chart is a bar chart with the activities listed down the side and time along the top; each bar starts at the start time and has a length equal to the duration (here each column is 5 minutes, and a filled square shows the activity is running):\n\n| No. and activity | 5:30 | 5:35 | 5:40 | 5:45 | 5:50 | 5:55 | 6:00 | 6:05 | 6:10 | 6:15 | 6:20 | 6:25 | 6:30 | 6:35 | 6:40 | 6:45 |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| 1. Facial clean-up (10 min) | ■ | ■ |  |  |  |  |  |  |  |  |  |  |  |  |  |  |\n| 2. Heat water for shower (15 min) |  |  | ■ | ■ | ■ |  |  |  |  |  |  |  |  |  |  |  |\n| 3. Prepare breakfast (10 min) |  |  | ■ | ■ |  |  |  |  |  |  |  |  |  |  |  |  |\n| 4. Take a shower (15 min) |  |  |  |  |  | ■ | ■ | ■ |  |  |  |  |  |  |  |  |\n| 5. Clean shoes (5 min) |  |  |  |  |  |  |  |  | ■ |  |  |  |  |  |  |  |\n| 6. Dress up (15 min) |  |  |  |  |  |  |  |  | ■ | ■ | ■ |  |  |  |  |  |\n| 7. Take breakfast (10 min) |  |  |  |  |  |  |  |  |  |  |  | ■ | ■ |  |  |  |\n| 8. Walk to school (15 min) |  |  |  |  |  |  |  |  |  |  |  |  |  | ■ | ■ | ■ |\n\nMarks are given for the activity list, a correct time scale starting at 5:30, correct bar positions, correct bar lengths, activities 2 and 3 (and 5 and 6) drawn side by side, and a title and labels. The whole sequence takes 80 minutes (5:30 to 6:50).\n\n**(ii) Definitions (4 marks).**\n\n- **Critical path (2 marks):** the longest chain of dependent activities from the start to the end of the project. It decides the shortest possible time for the whole project; any delay of an activity on it delays the whole project, so these activities must be closely monitored.\n- **Slack time (2 marks):** the length of time by which an activity can be delayed (or take longer) without delaying the end of the project. Activities on the critical path have zero slack time.\n\n**(iii) Critical path (2 marks).** Compare the activities that run at the same time:\n\n- Activities 2 (15 min) and 3 (10 min): 2 is longer, so 2 is critical; activity 3 has a slack time of $15 - 10 = 5$ minutes.\n- Activities 5 (5 min) and 6 (15 min): 6 is longer, so 6 is critical; activity 5 has a slack time of $15 - 5 = 10$ minutes.\n\nThe critical path is therefore\n\n$$1 \\rightarrow 2 \\rightarrow 4 \\rightarrow 6 \\rightarrow 7 \\rightarrow 8$$\n\nwith a total of $10 + 15 + 15 + 15 + 10 + 15 = 80$ minutes: the student leaves for school at 5:30 and arrives at 6:50. (Checked by a script.)",
+      "themes": [
+        "project scheduling"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 12
+    }
+  ]
+}

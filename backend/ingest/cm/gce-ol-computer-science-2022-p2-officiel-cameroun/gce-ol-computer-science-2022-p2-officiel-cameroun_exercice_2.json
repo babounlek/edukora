@@ -1,0 +1,101 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0595), ORDINARY LEVEL, June 2022. Duration: two hours.**\n\nAnswer any FIVE questions. All questions carry 20 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. Calculators or Phones are NOT allowed.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 5,
+      "sur": 7
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "20",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-ol-computer-science-2022-p2-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": 2,
+      "type": "logic circuit",
+      "legende": "Logic circuit for P = (A + B).NOT B: inputs A and B enter an OR gate; input B also goes through a NOT gate; the output of the OR gate and the output of the NOT gate enter an AND gate whose output is P.",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "gce-ol-computer-science-2022-p2-officiel-cameroun_exercice_2_fig_2.png",
+      "page_source": 2,
+      "type": "flowchart",
+      "legende": "Flow chart of the face mask and temperature algorithm: Start, check for face mask, decision 'Face mask absent?' (Yes: display 'put on your face mask'; No: get temperature), decision 'Temperature > 37.5°C?' (Yes: display 'go for Covid-19 test'; No: display 'you are okay, the door is open'), End.",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "incertitudes": [
+    "2(c) : dans le pseudocode imprimé, « If temperature is greater than 37.5°C » est aligné au même niveau que « If absent » et « Else » ; il est lu comme faisant partie de la branche Else du premier test (la température n'est prise que si le masque est porté). Les deux figures de la question 2 (circuit logique, organigramme) sont des figures de corrigé dessinées pour ce lot (le sujet ne contient aucune figure pour cette question).",
+    "Question 2 : points imprimés par sous-partie : a = 3 + 3 = 6 ; b = 3 + 3 = 6 ; c = 8 ; total 20.",
+    "Sujet scanné de 4 pages (page de garde + 3 pages de questions) : 7 questions, « Answer any FIVE questions », 20 points chacune ; règle de choix codée `parmi 5 sur 7` (portée « PAPER 2 »), identique dans les 7 fichiers. Aucun corrigé officiel : corrigés rédigés, la page a un filigrane gcerevision.com ignoré.",
+    "Aucun programme C ou Pascal dans ce sujet : rien à compiler. Les conversions, additions et soustractions binaires, tables de vérité et le chemin critique ont été recalculés avec Python."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) (i) List the main components of the CPU. (3 marks)\n\n(ii) Briefly describe how the components of the CPU carry out the fetch-decode-execute cycle. (3 marks)",
+      "corrige_markdown": "**(i) Main components of the CPU (3 marks, 1 mark each)**\n\n- The **Control Unit (CU)**, which directs and coordinates all the operations of the computer.\n- The **Arithmetic and Logic Unit (ALU)**, which performs arithmetic operations (addition, subtraction...) and logical operations (AND, OR, NOT, comparisons).\n- The **registers** (small, very fast storage locations inside the CPU), for example the program counter (PC), the memory address register (MAR), the memory data register (MDR), the instruction register (IR) and the accumulator.\n\n**(ii) The fetch-decode-execute cycle (3 marks, 1 mark per stage)**\n\n1. **Fetch.** The program counter holds the address of the next instruction. This address is copied to the MAR, the control unit sends a read signal, and the instruction is copied from main memory (RAM) through the data bus into the MDR and then into the instruction register. The program counter is then increased to point to the next instruction.\n2. **Decode.** The control unit decodes the instruction held in the instruction register: it works out the operation to perform and where the data is.\n3. **Execute.** The control unit sends signals to the other components so that the instruction is carried out: the ALU does the calculation or comparison, or data is moved between the registers and memory. The result is kept in the accumulator or a register, or written back to memory.\n\nThe cycle then repeats for the next instruction until the program stops.",
+      "themes": [
+        "computer architecture",
+        "fetch-execute cycle"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) Consider the Boolean expression: $P = (A + B) \\cdot \\overline{B}$\n\n(i) Construct the logic circuit diagram for the expression P. (3 marks)\n\n(ii) Construct the truth table for P. (3 marks)",
+      "corrige_markdown": "**(i) Logic circuit (3 marks)**\n\nIn the expression, $+$ means OR, the dot means AND and the bar means NOT. The expression has three operations:\n\n1. an OR gate with inputs $A$ and $B$, giving $A + B$;\n2. a NOT gate on input $B$, giving $\\overline{B}$;\n3. an AND gate whose inputs are $A + B$ and $\\overline{B}$, giving the output $P$.\n\n![fig-1](gce-ol-computer-science-2022-p2-officiel-cameroun_exercice_2_fig_1.png)\n\n**(ii) Truth table (3 marks)**\n\n| A | B | A + B | $\\overline{B}$ | $P = (A + B) \\cdot \\overline{B}$ |\n|---|---|---|---|---|\n| 0 | 0 | 0 | 1 | 0 |\n| 0 | 1 | 1 | 0 | 0 |\n| 1 | 0 | 1 | 1 | 1 |\n| 1 | 1 | 1 | 0 | 0 |\n\n$P = 1$ only when $A = 1$ and $B = 0$, so the expression is equivalent to $P = A \\cdot \\overline{B}$.",
+      "themes": [
+        "digital logic gates",
+        "boolean algebra"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "(c) Represent the algorithm written in pseudocode using a flow chart.\n\n```text\nStart\n    Check for face mask\nIf absent\n    Display: \"put on your face mask\"\nElse\n    Get temperature\nIf temperature is greater than 37.5°C\n    Display: \"go for Covid-19 test\"\nElse\n    Display: \"you are okay, the door is open\"\nEnd.\n```\n\n(8 marks)",
+      "corrige_markdown": "**Flow chart (8 marks)**\n\nThe standard symbols are used: rounded boxes for Start and End, rectangles for processes (check for face mask, get temperature), diamonds for the two decisions, and parallelograms for the displayed messages. Each decision has two labelled exits, Yes and No. The second decision (temperature) is reached only through the No exit of the first decision, because the temperature is taken only when a face mask is worn.\n\n![fig-2](gce-ol-computer-science-2022-p2-officiel-cameroun_exercice_2_fig_2.png)\n\nMarking points: Start and End symbols (1); \"Check for face mask\" process (1); first decision with Yes/No exits (2); message \"put on your face mask\" on the Yes exit (1); \"Get temperature\" on the No exit (1); second decision on 37.5°C with Yes/No exits (1); the two messages \"go for Covid-19 test\" and \"you are okay, the door is open\" on the correct exits, all paths joined to End and arrows on every line (1).",
+      "themes": [
+        "flowcharts and trace tables",
+        "pseudocode algorithms"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    }
+  ]
+}

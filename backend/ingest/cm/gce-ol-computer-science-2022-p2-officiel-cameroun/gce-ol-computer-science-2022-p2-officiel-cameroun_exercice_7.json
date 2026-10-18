@@ -1,0 +1,77 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2022",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2022-p2-officiel-cameroun.pdf",
+  "numero_exercice": "7",
+  "numero_paper": 2,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0595), ORDINARY LEVEL, June 2022. Duration: two hours.**\n\nAnswer any FIVE questions. All questions carry 20 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. Calculators or Phones are NOT allowed.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 5,
+      "sur": 7
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "20",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-ol-computer-science-2022-p2-officiel-cameroun_exercice_7_fig_1.png",
+      "page_source": 4,
+      "type": "gantt chart",
+      "legende": "Gantt chart of a project with activities A to F and a time axis of 11 days: A shaded on days 1 to 3, B on days 4 to 5, C on days 4 to 7, D on days 6 to 8, E on days 9 to 10 and F on days 8 to 11 (the labels 1 to 11 are printed under the vertical grid lines, at the right edge of each day).",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "incertitudes": [
+    "Question 7 : points imprimés : a(i) = 2, a(ii) = 3, a(iii) = 2, a(iv) = 4 (soit 11), b(i) = 6, b(ii) = 3 (soit 9) ; total 20.",
+    "7(a) : le diagramme de Gantt du scan a des cases grisées à demi-teintes (le filtre anti-filigrane les détruirait) : la figure a été REDESSINÉE d'après la lecture du scan (barres A = jours 1 à 3, B = 4 à 5, C = 4 à 7, D = 6 à 8, E = 9 à 10, F = 8 à 11), les étiquettes 1 à 11 étant placées sous les traits verticaux comme dans le sujet. Les dépendances (B et C après A, D après B, E après D, F après C) sont déduites de la position des barres, le sujet ne les écrit pas. Le sujet imprime « Gannt » (faute d'impression pour Gantt), recopié tel quel.",
+    "7(a)(iv) : « calculate their respective duration in days » est interprété comme la marge (slack) de chaque activité : 1 jour pour B, D et E (11 - 10) ; les durées des activités (B 2 j, D 3 j, E 2 j) sont aussi données dans le corrigé pour couvrir l'autre lecture.",
+    "Sujet scanné de 4 pages (page de garde + 3 pages de questions) : 7 questions, « Answer any FIVE questions », 20 points chacune ; règle de choix codée `parmi 5 sur 7` (portée « PAPER 2 »), identique dans les 7 fichiers. Aucun corrigé officiel : corrigés rédigés, la page a un filigrane gcerevision.com ignoré.",
+    "Aucun programme C ou Pascal dans ce sujet : rien à compiler. Les conversions, additions et soustractions binaires, tables de vérité et le chemin critique ont été recalculés avec Python."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) Study the following Gannt Chart for a project and then answer the questions that follow:\n\n![fig-1](gce-ol-computer-science-2022-p2-officiel-cameroun_exercice_7_fig_1.png)\n\n(i) Define the term 'critical path' in project management. (2 marks)\n\n(ii) Determine the critical path of the above project. (3 marks)\n\n(iii) Define the term 'slack time' of a task. (2 marks)\n\n(iv) Identify activities in the project that have slack time and calculate their respective duration in days? (4 marks)",
+      "corrige_markdown": "**Reading the chart.** Each column is one day and the bar of an activity covers the days it takes:\n\n| Activity | Days (columns) | Duration | Starts after |\n|---|---|---|---|\n| A | 1 to 3 | 3 days | - |\n| B | 4 to 5 | 2 days | A |\n| C | 4 to 7 | 4 days | A |\n| D | 6 to 8 | 3 days | B |\n| E | 9 to 10 | 2 days | D |\n| F | 8 to 11 | 4 days | C |\n\nThe project therefore has two paths from the start to the end: $A \\to B \\to D \\to E$ and $A \\to C \\to F$.\n\n**(i) Critical path (2 marks).** The critical path is the **longest sequence of dependent activities** from the start to the end of the project. It gives the shortest possible time in which the whole project can be completed. Its activities have no slack time: a delay in any of them delays the whole project.\n\n**(ii) Critical path of the project (3 marks).** The duration of each path is:\n\n- $A \\to B \\to D \\to E$: $3 + 2 + 3 + 2 = 10$ days;\n- $A \\to C \\to F$: $3 + 4 + 4 = 11$ days.\n\nThe longest path is $A \\to C \\to F$, so the **critical path is A - C - F**, and the project takes **11 days**.\n\n**(iii) Slack time (2 marks).** The slack time (or float) of a task is the **length of time by which the task can be delayed (or lengthened) without delaying the end of the whole project**. It is the difference between the latest and the earliest start of the task (it is zero for activities of the critical path).\n\n**(iv) Activities with slack time (4 marks).** The activities that are not on the critical path are **B, D and E**, which form the path $A \\to B \\to D \\to E$ of 10 days. Since the project lasts 11 days:\n\n$$\\text{slack} = 11 - 10 = 1 \\text{ day}$$\n\n| Activity | Duration | Earliest start (after day) | Latest start (after day) | Slack |\n|---|---|---|---|---|\n| B | 2 days | 3 | 4 | 1 day |\n| D | 3 days | 5 | 6 | 1 day |\n| E | 2 days | 8 | 9 | 1 day |\n\nEach of B, D and E can be delayed by one day without delaying the project (but this one day is shared by the three activities: if B uses it, D and E can no longer be delayed). The activities A, C and F have a slack of 0 days.\n\n(The durations of the activities with slack are B = 2 days, D = 3 days and E = 2 days.)",
+      "themes": [
+        "project scheduling",
+        "project management"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 11
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) A visit to a computer room of a certain company reveals the following:\n\n- the chair used by the computer operator is not adjustable;\n- some bulbs in the room are not lit;\n- the operator has to press hard on some keys of the keyboard when typing.\n\n(i) Briefly describe three (3) health hazards the operator may be exposed to after working for long hours. (6 marks)\n\n(ii) Explain the advice that the company can be given to prevent the health hazards described in (i) above. (3 marks)",
+      "corrige_markdown": "**(i) Three health hazards (6 marks, 2 marks each)**\n\n1. **Back and neck pain (poor posture).** An operator sitting for long hours on a chair that cannot be adjusted to his or her height cannot keep the back straight and the feet flat, so the back, neck and shoulders become painful and the posture may be damaged.\n2. **Eye strain and headaches.** Poor lighting (some bulbs not lit) makes the operator strain to read the screen and the keyboard, which causes tired, watery eyes, headaches and a loss of sight in the long term.\n3. **Repetitive strain injury (RSI) of the fingers, hands and wrists.** Pressing hard on keys repeatedly for long periods injures the tendons and nerves of the fingers, wrists and arms (pain, numbness, carpal tunnel syndrome).\n\n**(ii) Advice to the company (3 marks, 1 mark each)**\n\n1. Buy **adjustable ergonomic chairs** with back support, and place the screen at eye level, so that the operator sits with a straight back and the feet on the floor.\n2. **Replace the faulty bulbs** and provide enough, even lighting (also use anti-glare screens, avoid light shining on the screen) and have the operators' eyesight checked regularly.\n3. **Repair or replace the stiff keyboard** (use a good keyboard and a wrist rest), teach the operators to type lightly, and let them take **short breaks** regularly to stand up, stretch and rest their eyes and hands.",
+      "themes": [
+        "computer ergonomics"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 9
+    }
+  ]
+}

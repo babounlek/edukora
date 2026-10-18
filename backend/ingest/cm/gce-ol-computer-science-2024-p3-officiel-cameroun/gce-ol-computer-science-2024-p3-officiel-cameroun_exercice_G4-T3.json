@@ -1,0 +1,116 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2024",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2024-p3-officiel-cameroun.pdf",
+  "numero_exercice": "G4-T3",
+  "numero_paper": 3,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Ordinary Level Examination. Computer Science (0595), Paper 3 (practical), June 2024. Duration: two and a half hours. Do all the tasks (Task I, Task II and Task III) specified in this question paper.**\n\nEnter the information required in the shaded boxes. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. All written answers should be provided in the spaces provided in this question booklet. Calculators are NOT allowed.\n\nThe booklet reproduced here contains three versions of the same practical paper, headed Group One (booklet 0000/0595/3/Grp 1), Group Three (Grp 3) and Group Four (Grp 4); a candidate sits only ONE group. Group One: Task I (word processing, 15 marks), Task II (spreadsheet, 20 marks), Task III (HTML, 15 marks). Group Three: Task 1 (word processing, 20 marks), Task 2 (spreadsheet, 15 marks), Task 3 (HTML, 15 marks). Group Four: Task I (word processing, 20 marks), Task II (spreadsheet, 20 marks), Task III (C or Pascal program, 10 marks). Each group is worth 50 marks.\n\nThe working files named in the tasks (pictures, logo, signature) are supplied on the day; they are not reproduced in the printed paper.",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**TASK III (10 marks)**\n\nThe C and Pascal programs below are implementations of an algorithm that puts in place a validation rule to ensure that a valid score between 0 and 20 inclusive is input by the user.\n\n**C Program**\n\n```c\n#include <stdio.h>\nint main(void) {\n    float score;\n    printf(\"Enter your test score please (between 0 and 20): \");\n    scanf(\"%f\", &score);\n    while ((score < 0) || (score > 20)) {\n        printf(\"Enter a valid score\\n\");\n        printf(\"Enter your test score please (between 0 and 20): \");\n        scanf(\"%f\", &score);\n    }\n    printf(\"Validated score entered\\n\");\n    getchar();\n}\n```\n\n**Pascal Program**\n\n```pascal\nProgram ScoreValidation;\nVar\n  score : real;\nBegin\n  write('Enter your test score please (between 0 and 20): ');\n  readln(score);\n  while ((score < 0 ) or (score > 20 )) do\n  begin\n    writeln('Enter a valid score');\n    write('Enter your test score please (between 0 and 20): ');\n    readln(score);\n  end;\n  writeln('Validated score entered');\n  readln;\nEnd.\n```",
+  "groupes": [
+    "GROUP 4"
+  ],
+  "points": "10",
+  "figures": [],
+  "incertitudes": [
+    "Le PDF (14 pages, scan sans couche texte) contient TROIS versions du sujet pratique de juin 2024 (page de garde : ORDINARY LEVEL, 0595 Computer Science, Paper 3, 2 h 30) : « Group One » (pages 1 à 4, livret 0000/0595/3/Grp 1), « Group Three » (pages 5 à 8, Grp 3) et « Group Four » (pages 9 à 14, Grp 4). La version « Group Two » ne figure PAS dans ce PDF. Transcrites en neuf fichiers : numero_exercice G1-T1 à G1-T3, G3-T1 à G3-T3, G4-T1 à G4-T3 ; groupes [\"GROUP 1\"], [\"GROUP 3\"] ou [\"GROUP 4\"] ; regles_choix vide (le candidat ne passe qu'un seul groupe : non exprimable).",
+    "Aucun corrigé officiel n'existe : les réponses sont rédigées. Les « marking ideas » sont des répartitions indicatives faites d'après les points imprimés, le barème du jury est inconnu. Les points imprimés ne sont jamais modifiés. Les menus des logiciels (traitement de texte, tableur, éditeur de texte, navigateur) sont donnés de mémoire, sous une forme générale, sans nom de version ; aucun logiciel n'a été exécuté. Les formules de tableur ont été recalculées avec Python.",
+    "Les filigranes (gcerevision.com, Kawlo), les cadres d'en-tête (numéro de centre, nom du candidat, « For examiners' use only ») et les artefacts du scanner sont ignorés. Les fichiers de données du jour (images, logo, signature) ne figurent pas dans le PDF.",
+    "Group Four, Task III (programme C ou Pascal, 10 points) : 3 + 3 + 2 + 2 = 10 ; la question 2 (compiler) et la question 6 (enregistrer) n'ont pas de points imprimés. Les numéros de ligne imprimés devant le code (1 à 13 en C, 1 à 15 en Pascal) ne sont pas recopiés.",
+    "Le code C et le code Pascal n'ont PAS été compilés (aucun compilateur sur la machine) : leur logique a été vérifiée par une simulation Python fidèle (mêmes entrées -5, 25, 10 ; mêmes messages ; cas limites 0, 20, 20.5, -0.1). La sortie du corrigé est celle de cette simulation, avec les touches saisies affichées après chaque invite ; l'affichage réel de la console dépend du terminal. En C, getchar() peut retourner aussitôt (le retour chariot de la dernière saisie reste dans le tampon) : sans effet sur la sortie demandée."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Launch either C or Pascal program development environment, key in the corresponding program. *[3 marks]*",
+      "corrige_markdown": "Open a C development environment (an IDE with a C compiler, for example *Code::Blocks* or *Dev-C++*) or a Pascal one (for example *Free Pascal / Lazarus*), create a new source file and key in the program of your choice **exactly as printed** (the line numbers of the question are not part of the program).\n\n- C: the line `#include <stdio.h>`, the braces `{ }`, the semicolons at the end of the statements, the `&` before `score` in `scanf`, the format `%f` for a `float`, and `\\n` inside the quotation marks to start a new line.\n- Pascal: `Program ScoreValidation;`, the `Var` part with `score : real;`, the `begin ... end;` block of the loop, the semicolons, and the final **`End.`** with a full stop.\n\nMarking idea (3 marks, indicative): the program typed completely (1); the condition of the loop correct (1); the messages and the input statements correct (1).",
+      "themes": [
+        "program development",
+        "programming in c",
+        "pascal programming"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Compile the program. If any errors, keep correcting and compiling until the errors are all corrected.",
+      "corrige_markdown": "Click the **Compile** (or Build) button. Read the messages of the compiler: each error message gives a line number. Typical errors when copying this program: a missing semicolon, a missing `&` in `scanf`, a bracket not closed in the condition, `End` without the full stop in Pascal, a misspelt keyword. Go to the line indicated, correct it and compile again until the compiler reports **0 errors**; only then can the program be run. (This step has no mark of its own, but a program that does not compile cannot be run in question 3.)",
+      "themes": [
+        "program development",
+        "debugging"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Run the program with inputs of -5, 25 and 10 in that order. Write in the space below, the output you see on the screen. *[3 marks]*",
+      "corrige_markdown": "The program was traced with a faithful translation in Python (same condition, same messages, same order of the inputs); the output obtained is, with the keys typed by the user shown after each prompt:\n\n```\nEnter your test score please (between 0 and 20): -5\nEnter a valid score\nEnter your test score please (between 0 and 20): 25\nEnter a valid score\nEnter your test score please (between 0 and 20): 10\nValidated score entered\n```\n\nExplanation of the trace:\n\n| Input | Test `(score < 0) or (score > 20)` | What happens |\n|---|---|---|\n| -5 | -5 < 0 is true | message *Enter a valid score*, the prompt is displayed again |\n| 25 | 25 > 20 is true | message *Enter a valid score*, the prompt is displayed again |\n| 10 | 10 < 0 false, 10 > 20 false: the test is false | the loop stops; *Validated score entered* is displayed |\n\nThe program then waits for a key (`getchar` in C, `readln` in Pascal) before closing.\n\nMarking idea (3 marks): the first prompt (1); the message \"Enter a valid score\" shown twice, each followed by the prompt (1); the message \"Validated score entered\" at the end (1).",
+      "themes": [
+        "algorithm tracing",
+        "program control constructs"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Explain why the program did not come to an end when the input was -5. *[2 marks]*",
+      "corrige_markdown": "With the input **-5**, the condition of the loop `(score < 0) or (score > 20)` is **true** because -5 is smaller than 0. While the condition is true the body of the `while` loop is executed again: the program displays *Enter a valid score*, asks for a new score and then tests the condition again. It leaves the loop (and ends) only when a score between 0 and 20 is entered, so with -5 the program kept asking and did not end.",
+      "themes": [
+        "program control constructs",
+        "data validation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "5. Explain why the program came to an end when the input was 10. *[2 marks]*",
+      "corrige_markdown": "With the input **10**, both parts of the condition are false: `10 < 0` is false and `10 > 20` is false, so `false or false` is **false**. The `while` loop is therefore not repeated: the program leaves the loop, displays *Validated score entered* and reaches its last instruction, so it ends. The score 10 is valid because it lies between 0 and 20 inclusive (0 and 20 themselves are also accepted: the tests are `< 0` and `> 20`, not `<= 0` or `>= 20`).",
+      "themes": [
+        "program control constructs",
+        "data validation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "6. Save your work as TASK 3",
+      "corrige_markdown": "Click **File > Save As**, type the name **TASK 3** (the compiler adds its own extension, `.c` or `.pas`) and click **Save**.",
+      "themes": [
+        "saving and printing work"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    }
+  ]
+}

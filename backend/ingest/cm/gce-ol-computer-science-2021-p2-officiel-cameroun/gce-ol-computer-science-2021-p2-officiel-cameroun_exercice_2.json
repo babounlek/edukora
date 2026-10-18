@@ -1,0 +1,75 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "2",
+  "numero_paper": 2,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0595), ORDINARY LEVEL, June 2021. Duration: Two hours.**\n\nAnswer any FIVE questions. All questions carry 20 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. Calculators are NOT allowed.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 5,
+      "sur": 7
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "20",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "gce-ol-computer-science-2021-p2-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": 2,
+      "type": "organigramme",
+      "legende": "Model answer to Q2(a)(iii): flowchart of the algorithm with symbols T1, T2 and Avg (start, input, decision T1 < 0 OR T2 < 0, error message and re-entry loop, calculation of Avg, output, stop).",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "incertitudes": [
+    "Question 2(a) : le sujet imprime l'algorithme avec les numeros de ligne 1, 2, 3, 3.1.1 a 3.1.3, END IF, 3.2.1, 3.2.2, 4 ; l'indentation a ete recopiee de la page. Le tableau des sorties attendues est deduit de ce texte (simulation Python de l'algorithme).",
+    "Question 2(a)(iii) : l'organigramme du corrige est redessine (matplotlib) ; le sujet ne fournit aucune figure pour cette sous-question."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) Study the following algorithm about student test marks and answer the questions that follow.\n\n```text\n1.     Start\n2.     Get Test 1 and Test 2 marks\n3.     IF (Test 1 mark < 0 OR Test 2 mark < 0) THEN\n3.1.1    Display 'A mark cannot be negative'\n3.1.2    Get Test 1 and Test 2 marks\n3.1.3    Go back to Line 3\n       END IF\n3.2.1  Average = (Test 1 + Test 2)/2\n3.2.2  Display Test 1, Test 2, Average\n4.     Stop\n```\n\n(i) What is the algorithm expected to compute? (2 marks)\n\n(ii) State the line numbers with statements that constitute a loop. (2 marks)\n\n(iii) Using symbols T1 for Test 1, T2 for Test 2, Avg for Average, represent the algorithm as a flowchart. (6 marks)\n\n(iv) State the expected output for the following pairs of marks inputs. Give a reason for each of your answers. (4 marks)\n\nTest 1 = 15, Test 2 = 9\n\nTest 1 = 8, Test 2 = -4",
+      "corrige_markdown": "**(i) What the algorithm computes (2 marks).** It reads two test marks, refuses negative marks (it displays an error message and asks for the two marks again until both are valid), then computes the **average (mean) of the two test marks** and displays Test 1, Test 2 and the average.\n\n**(ii) The loop (2 marks).** Lines **3, 3.1.1, 3.1.2 and 3.1.3**. Line 3 tests the condition; while a mark is negative, lines 3.1.1 to 3.1.3 display the message, read the marks again and \"Go back to Line 3\", which repeats the test. (The loop ends as soon as both marks are 0 or more.)\n\n**(iii) Flowchart (6 marks).** Start (terminator), input T1 and T2 (parallelogram), a decision \"T1 < 0 OR T2 < 0 ?\" (diamond). If **Yes**: output the message 'A mark cannot be negative', input T1 and T2 again and return to the decision (this is the loop). If **No**: process Avg = (T1 + T2) / 2 (rectangle), output T1, T2, Avg, then Stop (terminator).\n\n![fig-1](gce-ol-computer-science-2021-p2-officiel-cameroun_exercice_2_fig_1.png)\n\n**(iv) Expected outputs (4 marks)**\n\n- **Test 1 = 15, Test 2 = 9.** Neither mark is negative, so the condition at line 3 is false and the loop is skipped. Average = (15 + 9)/2 = 24/2 = 12. Output: Test 1 = 15, Test 2 = 9, Average = 12.\n- **Test 1 = 8, Test 2 = -4.** Test 2 is negative, so the condition at line 3 is true. The algorithm displays **'A mark cannot be negative'**, asks for the two marks again and goes back to line 3; no average is displayed until two valid (non-negative) marks are entered (for example, if 8 and 4 are then entered: Average = (8 + 4)/2 = 6).\n\n(A simulation of the algorithm in Python gave exactly these results: 15 and 9 give 12.0; 8 and -4 give the message and a request for new marks; 8 and -4 followed by 8 and 4 give the message, then 6.0.)",
+      "themes": [
+        "pseudocode algorithms",
+        "flowcharts and trace tables",
+        "algorithm tracing"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 14
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) Name and explain the function of three types of computer system buses. (6 marks)",
+      "corrige_markdown": "**(b) Three system buses (6 marks, 1 mark for the name and 1 mark for the function, three times)**\n\n| Bus | Function |\n|---|---|\n| **Data bus** | Carries the data itself (instructions and values) between the CPU, the main memory and the input/output devices. It is bidirectional (two-way). |\n| **Address bus** | Carries the address of the memory location (or I/O device) that the CPU wants to read from or write to. It is one-way, from the CPU to memory. Its width fixes how much memory can be addressed. |\n| **Control bus** | Carries control and timing signals (for example read, write, clock and interrupt signals) that coordinate the activities of the CPU, memory and other devices. |",
+      "themes": [
+        "computer architecture"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 6
+    }
+  ]
+}

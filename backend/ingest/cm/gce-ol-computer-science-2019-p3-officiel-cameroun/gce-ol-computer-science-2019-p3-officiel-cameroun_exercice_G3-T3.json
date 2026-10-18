@@ -1,0 +1,115 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2019",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2019-p3-officiel-cameroun.pdf",
+  "numero_exercice": "G3-T3",
+  "numero_paper": 3,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "**Cameroon General Certificate of Education Board - Ordinary Level Examination. Computer Science (0595), Paper 3 (practical), Group Three, June 2019. Duration: two and a half hours. Do all the tasks (Task I, Task II and Task III) specified in this question paper.**\n\nEnter the information required in the shaded boxes. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. All written answers should be provided in the spaces provided in this question booklet. Calculators are NOT allowed.\n\nThe booklet reproduced here is the Group Three version (booklet 00/0595/3A/Grp 3); a candidate sits only one group. Task I and Task II are done on a computer (word processor and spreadsheet); Task III is a short programming exercise (C or Pascal).",
+  "regles_choix": [],
+  "enonce_intro_markdown": "**TASK III (10 marks)**\n\nThe C and Pascal programs below perform the same task. Select any one of them and answer the questions that follow.\n\n**C Program**\n\n```c\n#include <stdio.h>\nint main(void) {\ninti;\n  for (i=1;i<=6;i++){\n      if (i<4)\nprintf(\"%d x %d = %d\\n\",i,2,i*2);\n      else\nprintf(\"%d + %d = %d\\n\",i,2,i+2);\n  }\n\n return 0;\n}\n```\n\n**Pascal Program**\n\n```pascal\nprogram Numbers;\nvar i: integer;\nBEGIN\n    for i := 1 to 6 do\n      begin\n       if i< 4 then\nwriteln(i, ' x ', 2, ' = ', i*2)\n       else\nwriteln(i, ' + ', 2, ' = ', i+2);\n      end;\nreadln;\nEND.\n```",
+  "groupes": [
+    "GROUP 3"
+  ],
+  "points": "10",
+  "figures": [],
+  "incertitudes": [
+    "Le PDF (5 pages, scan sans couche texte) est la version « Group Three » du Paper 3 pratique (page de garde : ORDINARY LEVEL, 0595 Computer Science, juin 2019, « 3 Group Three », booklet 00/0595/3A/Grp 3, 2 h 30). Il contient trois tâches : Task I (traitement de texte, 20 points), Task II (tableur, 20 points) et Task III (programme C ou Pascal, 10 points). Transcrites en trois fichiers : numero_exercice G3-T1, G3-T2, G3-T3 ; groupes [\"GROUP 3\"] ; regles_choix vide (le candidat ne passe qu'un seul groupe : non exprimable).",
+    "Aucun corrigé officiel n'existe : les réponses sont rédigées. Les « marking ideas » sont des répartitions indicatives faites d'après les points imprimés ; le barème du jury n'est pas connu. Aucun logiciel (traitement de texte, tableur) n'a été exécuté : les menus sont donnés de mémoire, dans leur forme générale, et ne sont pas testés ; aucune version de logiciel n'est affirmée.",
+    "Les filigranes (gcerevision.com, Kawlo), les cadres d'en-tête (numéro de centre, nom du candidat, cadre « For examiners' use only ») et les artefacts du scanner sont ignorés.",
+    "Task III : les points imprimés (2, 2, 2, 4) font bien 10. Les questions 5 et 6 (enregistrer, imprimer) n'ont pas de points imprimés.",
+    "Le code C et le code Pascal n'ont PAS été compilés (aucun compilateur sur la machine). Leur logique a été vérifiée par une traduction fidèle en Python exécutée (boucle de 1 à 6, test i < 4, deux formats de ligne) ; la sortie copiée dans le corrigé est celle obtenue : 1 x 2 = 2, 2 x 2 = 4, 3 x 2 = 6, 4 + 2 = 6, 5 + 2 = 7, 6 + 2 = 8.",
+    "Le listing C imprimé porte « inti; » (sans espace) : lu comme tel sur le scan et recopié dans l'énoncé ; c'est une erreur de compilation (type inconnu), que le corrigé relève et corrige en « int i; » (la question 1 demande justement de corriger les erreurs). Je ne peux pas savoir si l'erreur est voulue par le jury ou un défaut d'impression ; la logique du programme est dans les deux cas celle décrite. L'indentation des listings est irrégulière dans le scan : elle est recopiée au mieux.",
+    "Sortie Pascal : writeln sans largeur de champ donne « 1 x 2 = 2 » avec les compilateurs usuels (Free Pascal, Turbo Pascal) ; certains compilateurs ISO anciens complètent les entiers par des espaces. La sortie donnée suppose l'absence de remplissage."
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Launch either a C or Pascal program development environment, and key in the corresponding program. Compile the program. If any errors, keep correcting and compiling until all the errors are corrected. Save as Task III. *[2 marks]*",
+      "corrige_markdown": "1. Open a C development environment (an IDE with an ANSI C compiler) **or** a Pascal one, and create a new source file.\n2. Key in the program exactly as printed (C **or** Pascal, not both).\n3. **Compile** it (build / compile command) and read the error list.\n4. Correct the errors one by one, starting with the first one, and compile again until there are no errors.\n5. Save the source file as **Task III**.\n\n**Error to find in the C listing.** In the printed C program the declaration is written `inti;` (no space). The compiler does not know a type named `inti`, so it gives an error such as *unknown type name 'inti'*, and every use of `i` then fails too. The correction is `int i;` (type `int`, then a space, then the variable name `i`). The corrected program is:\n\n```c\n#include <stdio.h>\n\nint main(void) {\n    int i;                                    /* loop counter */\n    for (i = 1; i <= 6; i++) {\n        if (i < 4)\n            printf(\"%d x %d = %d\\n\", i, 2, i * 2);   /* i = 1, 2, 3 */\n        else\n            printf(\"%d + %d = %d\\n\", i, 2, i + 2);   /* i = 4, 5, 6 */\n    }\n    return 0;\n}\n```\n\nThe Pascal listing has no error and compiles as printed (`i` is declared as an integer in the `var` section); a tidy version is:\n\n```pascal\nprogram Numbers;\nvar i: integer;\nbegin\n    for i := 1 to 6 do\n    begin\n        if i < 4 then\n            writeln(i, ' x ', 2, ' = ', i * 2)\n        else\n            writeln(i, ' + ', 2, ' = ', i + 2);\n    end;\n    readln;\nend.\n```\n\nMarking idea (2 marks): program keyed in correctly in one language (1); compiled with all errors corrected and saved as Task III (1).",
+      "themes": [
+        "programming in c",
+        "pascal programming"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Run the program and observe the output. Write the output you observe in the space below. *[2 marks]*",
+      "corrige_markdown": "The loop variable `i` takes the values 1 to 6. For `i` = 1, 2, 3 the condition `i < 4` is true, so the program prints `i x 2 = i*2`; for `i` = 4, 5, 6 the condition is false, so it prints `i + 2 = i+2`. The output is:\n\n```\n1 x 2 = 2\n2 x 2 = 4\n3 x 2 = 6\n4 + 2 = 6\n5 + 2 = 7\n6 + 2 = 8\n```\n\nThis output was checked by a Python simulation of the program (same loop, same condition, same text); the program itself was not compiled. The C and the Pascal programs give the same six lines (the Pascal program then waits for the *Enter* key because of `readln`).\n\nMarking idea (2 marks): the three multiplication lines (1); the three addition lines (1).",
+      "themes": [
+        "algorithm tracing",
+        "program control constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Explain what the program is designed to do. *[2 marks]*",
+      "corrige_markdown": "The program prints six lines of a small table of calculations on the numbers 1 to 6 with the number 2. For the first three numbers (1, 2 and 3, those smaller than 4) it **multiplies** the number by 2 and shows the calculation and its result (for example $3 \\times 2 = 6$). For the last three numbers (4, 5 and 6) it **adds** 2 to the number and shows the calculation and its result (for example $6 + 2 = 8$).\n\nSo it uses a loop to go through the numbers 1 to 6 and a condition to choose between multiplication and addition.\n\nMarking idea (2 marks): it displays results for the numbers 1 to 6 (1); multiplication by 2 for numbers below 4, addition of 2 otherwise (1).",
+      "themes": [
+        "algorithm tracing",
+        "program control constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Which programming constructs used in the program are denoted by the keywords **if** and **for**. Briefly explain how they function. *[4 marks]*\n\nif:\n\nfor:",
+      "corrige_markdown": "**if: the selection (conditional or decision) construct.** It tests a condition, here `i < 4`. If the condition is true, the statement after `if` (the multiplication line) is executed; if it is false, the statement after `else` (the addition line) is executed instead. Only one of the two branches is carried out each time.\n\n**for: the iteration (repetition or loop) construct, a counting loop.** It repeats a statement or a block a fixed number of times. Here the counter `i` starts at 1, the body is executed while `i <= 6` (C) or until `i` reaches 6 (Pascal `for i := 1 to 6`), and `i` is increased by 1 after each pass (`i++` in C; automatic in Pascal). The body is therefore carried out 6 times.\n\nMarking idea (4 marks): `if` named as selection (1) and explained with the condition and the two branches (1); `for` named as iteration (1) and explained with start, end and step (1).",
+      "themes": [
+        "program control constructs"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 4
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "Save Task III.",
+      "corrige_markdown": "Save the source file (*File* > *Save*) under the name **Task III**.",
+      "themes": [
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "Print Task III.",
+      "corrige_markdown": "*File* > *Print*: print the source code (and, if possible, the output window) and insert the printout in the booklet.",
+      "themes": [
+        "programming in c"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": null
+    }
+  ]
+}

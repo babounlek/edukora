@@ -1,0 +1,66 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2021",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Computer Science",
+  "epreuve_source": "gce-ol-computer-science-2021-p2-officiel-cameroun.pdf",
+  "numero_exercice": "4",
+  "numero_paper": 2,
+  "code_matiere": "0595",
+  "duree_epreuve": "2h",
+  "introduction_markdown": "**General Certificate of Education Board - General Certificate of Education Examination. Computer Science 2 (0595), ORDINARY LEVEL, June 2021. Duration: Two hours.**\n\nAnswer any FIVE questions. All questions carry 20 marks each. For your guidance, the approximate mark for each part of a question is indicated in brackets. You are reminded of the necessity for good English and orderly presentation in your answers. In calculations, you are advised to show all the steps in your working, giving your answer at each stage. Calculators are NOT allowed.",
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "PAPER 2",
+      "repondre": 5,
+      "sur": 7
+    }
+  ],
+  "enonce_intro_markdown": "",
+  "groupes": [
+    "PAPER 2"
+  ],
+  "points": "20",
+  "figures": [],
+  "incertitudes": [
+    "Question 4(a) : le tableau des taches imprime « Starts after Hardware Testing » pour la tache E, alors qu'aucune tache ne s'appelle ainsi ; le corrige lit « apres la tache D (achat du materiel de test) ». Avec cette lecture le chemin critique est A-B-C-F, 10 jours. Si E suivait C (personnalisation du logiciel), la duree serait de 11 jours (E aux jours 10-11), ce qui correspondrait aux 11 colonnes du Table 2 imprime ; le sujet ne tranche pas. Le diagramme de Gantt est donne sous forme de tableau Markdown (calcul verifie avec Python).",
+    "Question 4(a)(iii) : « lag time » defini comme le delai entre la fin d'une tache et le debut de la tache dependante ; certains manuels l'emploient pour la marge (float). Point a faire relire par un enseignant du programme 0595.",
+    "Question 4(a)(ii) : dans le Table 2 imprime, la quatrieme ligne est etiquetee « G » au lieu de « D » (faute d'impression) ; recopiee « D » dans l'enonce. Points imprimes : (i) 2, (ii) 6, (iii) 2, (iv) 2, (b) 2 + 2 + 4 = 20 au total."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) A team of system developers has identified six tasks described in the table below:\n\n| Task No. | Task Description | Task Constraints | Duration (in days) |\n|---|---|---|---|\n| A | System specification | None | 3 |\n| B | Try software | Starts after system specification | 2 |\n| C | Customise Test software | Starts after software trial | 4 |\n| D | Purchase of Test hardware | Starts after system specification | 3 |\n| E | Install software | Starts after Hardware Testing | 2 |\n| F | Train staff | Starts after software customisation. | 1 |\n\n(i) What is the use of Gantt charts in projects? (2 marks)\n\n(ii) Copy and complete Table 2 below to produce a Gantt chart. (6 marks)\n\nTable 2 (Days)\n\n| Tasks | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n| A |  |  |  |  |  |  |  |  |  |  |  |\n| B |  |  |  |  |  |  |  |  |  |  |  |\n| C |  |  |  |  |  |  |  |  |  |  |  |\n| D |  |  |  |  |  |  |  |  |  |  |  |\n| E |  |  |  |  |  |  |  |  |  |  |  |\n| F |  |  |  |  |  |  |  |  |  |  |  |\n\n(iii) Define the terms lag time and critical path as used in project development. (2 marks)\n\n(iv) State the critical path of the project above and hence determine the project duration. (2 marks)",
+      "corrige_markdown": "**(i) Use of Gantt charts (2 marks).** A Gantt chart is a bar chart that shows the tasks of a project against time. It is used to plan and schedule a project: it shows when each task starts and finishes, how long it lasts, which tasks overlap or depend on others, and it helps the project manager to monitor progress and to share out resources.\n\n**(ii) Completed Gantt chart (6 marks).** Each task starts on the day after the task it depends on has finished (the earliest start). A is first (days 1 to 3). B (trial of the software) and D (hardware) both start after A, on day 4. B lasts 2 days (days 4 and 5), so C starts on day 6 and lasts 4 days (days 6 to 9). D lasts 3 days (days 4 to 6), so E starts on day 7 and lasts 2 days (days 7 and 8). F starts after C, on day 10, and lasts 1 day.\n\n| Tasks | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n| A | ■ | ■ | ■ |  |  |  |  |  |  |  |  |\n| B |  |  |  | ■ | ■ |  |  |  |  |  |  |\n| C |  |  |  |  |  | ■ | ■ | ■ | ■ |  |  |\n| D |  |  |  | ■ | ■ | ■ |  |  |  |  |  |\n| E |  |  |  |  |  |  | ■ | ■ |  |  |  |\n| F |  |  |  |  |  |  |  |  |  | ■ |  |\n\n(Task E is read as starting after the hardware task D, because the table has no separate \"hardware testing\" task.)\n\n**(iii) Definitions (2 marks, 1 mark each).**\n\n- **Lag time:** the delay (waiting time) between the end of one task and the start of the next task that depends on it.\n- **Critical path:** the longest chain of dependent tasks from the start to the end of the project. It fixes the shortest possible duration of the project, and any delay on a task of this path delays the whole project.\n\n**(iv) Critical path and duration (2 marks).** The paths are A - B - C - F, which takes 3 + 2 + 4 + 1 = 10 days, and A - D - E, which takes 3 + 3 + 2 = 8 days. The longest is the critical path: **A - B - C - F**, and the **project duration is 10 days**. (Tasks D and E are not critical: they have 2 days of slack.)",
+      "themes": [
+        "project scheduling",
+        "project management"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 12
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) A school's computer resource centre has stand-alone computers. The school has now decided to connect the computers into a local network and to the internet.\n\n(i) State what you understand by the network terms ISP and Protocol. (2 marks)\n\n(ii) Give the name of a protocol that\n\n- governs the movement of data across the Internet\n- is used to access pages on a web server\n\n(2 marks)\n\n(iii) Briefly explain the following database concepts:\n\n- Primary key\n- Field\n- File\n- Query\n\n(4 marks)",
+      "corrige_markdown": "**(i) ISP and protocol (2 marks, 1 mark each).**\n\n- **ISP (Internet Service Provider):** a company that provides customers (here the school) with access to the Internet, usually for a fee.\n- **Protocol:** a set of rules and standards that governs how data is formatted, sent and received between devices on a network, so that they can understand one another.\n\n**(ii) Names of protocols (2 marks, 1 mark each).**\n\n- Governs the movement of data across the Internet: **TCP/IP** (Transmission Control Protocol / Internet Protocol).\n- Used to access pages on a web server: **HTTP** (Hypertext Transfer Protocol), or its secure form HTTPS.\n\n**(iii) Database concepts (4 marks, 1 mark each).**\n\n- **Primary key:** a field (or a group of fields) whose value is different for every record of a table, so that it identifies each record uniquely (for example a student number). It cannot be empty.\n- **Field:** one column of a table; it holds one kind of data about each record (for example Surname).\n- **File:** a collection of related records stored together under one name (in a database, a table).\n- **Query:** a request made to the database to search for, select, sort or calculate with the records that meet given conditions (for example \"all students in Form 5\").",
+      "themes": [
+        "network protocols",
+        "internet and intranets",
+        "database systems"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 8
+    }
+  ]
+}

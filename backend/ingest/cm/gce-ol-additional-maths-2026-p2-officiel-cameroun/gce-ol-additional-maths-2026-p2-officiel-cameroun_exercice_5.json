@@ -1,0 +1,81 @@
+{
+  "pays": "cm",
+  "examen": "gce_ol",
+  "serie": null,
+  "origine": "officiel",
+  "annee": "2026",
+  "nature_epreuve": null,
+  "variante_sujet": null,
+  "matiere": "Additional Mathematics",
+  "epreuve_source": "gce-ol-additional-maths-2026-p2-officiel-cameroun.pdf",
+  "numero_exercice": "5",
+  "numero_paper": 2,
+  "code_matiere": "0575",
+  "duree_epreuve": "2h30",
+  "introduction_markdown": "General Certificate of Education (GCE) Board, Ordinary Level, June 2026. Additional Mathematics, Paper 2 (code 0575). Time allowed: two and a half hours. Answer ALL questions in SECTION A (Pure Mathematics, compulsory to all candidates) and ANY TWO questions from EITHER SECTION B (Mechanics) or SECTION C (Statistics and Probability). In Sections B and C, all questions carry equal marks. Candidates are expected to answer a combination of Section A and Section B OR Section A and Section C, but NOT a combination of all three. If Section B is chosen, Section C may not be chosen, and the other way round. All necessary working must be shown. No marks will be awarded for answers without brief statements showing how the answers have been obtained. Electronic calculators and Formulae Booklets are allowed. Where necessary take g as 10 m s^-2.",
+  "enonce_intro_markdown": "The proprietor of a lay private school has a capacity to accommodate 300 students of which $x$ are boarding students and $y$ are non-boarding students in a particular year. Given also that:\n\n- the number of non-boarding students must be at least twice the number of boarding students;\n- the number of non-boarding students must be at least 150.",
+  "groupes": [
+    "SECTION A"
+  ],
+  "regles_choix": [
+    {
+      "type": "parmi",
+      "portee": "SECTION B",
+      "repondre": 2,
+      "sur": 3
+    },
+    {
+      "type": "parmi",
+      "portee": "SECTION C",
+      "repondre": 2,
+      "sur": 3
+    }
+  ],
+  "points": "8",
+  "figures": [],
+  "incertitudes": [
+    "Q5(b) : le graphique est a tracer par le candidat ; le corrige le decrit (echelle, droites, sens des hachures, sommets (0,150), (75,150), (100,200), (0,300)). Le sujet ne cite pas x >= 0 mais le nombre d'eleves ne peut pas etre negatif : la region retenue est bornee a gauche par l'axe des y.",
+    "Q5(c) : benefice maximal 10 000 000 FCFA en (100, 200), verifie par Python sur tous les couples entiers admissibles."
+  ],
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "(a) Write down three inequalities in terms of $x$ and $y$ representing these conditions above. *[3 marks]*",
+      "corrige_markdown": "Translate each sentence into an inequality.\n\n- Capacity $300$ students in all: $x+y\\le300$.\n- Non-boarding students at least twice the boarding students: $y\\ge2x$.\n- Non-boarding students at least $150$: $y\\ge150$.\n\n**The three inequalities are $x+y\\le300$, $\\ y\\ge2x$, $\\ y\\ge150$.**\n\n(Since $x$ and $y$ are numbers of students, also $x\\ge0$ and $y\\ge0$; the condition $x\\ge0$ is the left edge of the region, the $y$-axis.)",
+      "themes": [
+        "linear inequalities and optimisation"
+      ],
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "(b) On a graph paper, using a scale of 2 cm to represent 50 units on both axes, draw these inequalities and shade so as to leave unshaded the region that satisfies the above inequalities. *[3 marks]*",
+      "corrige_markdown": "This question asks for a drawing; here is exactly what to draw.\n\n**Scale.** On both axes $2$ cm $=50$ units, so the axes from $0$ to $300$ are $12$ cm long (mark every $50$ units, i.e. every $2$ cm).\n\n**Boundary lines** (all drawn solid, because the inequalities are \"$\\le$\" or \"$\\ge$\"):\n\n- $x+y=300$: through $(300,0)$ and $(0,300)$. Test $(0,0)$: $0\\le300$ is true, so the wanted side is **below** the line.\n- $y=2x$: through $(0,0)$ and $(100,200)$ (also $(150,300)$). Test $(0,100)$: $100\\ge0$ is true, so the wanted side is **above** the line (to the left).\n- $y=150$: horizontal line through $(0,150)$. The wanted side is **above** it.\n- $x=0$ (the $y$-axis): the wanted side is on the right of it.\n\n**Shade** the unwanted parts (below $y=150$, below $y=2x$, above $x+y=300$) so that the wanted region is left **unshaded**.\n\n**The unshaded region** is the quadrilateral with vertices\n\n- $(0,150)$ (where $y=150$ meets the $y$-axis),\n- $(75,150)$ (where $y=150$ meets $y=2x$: $2x=150$),\n- $(100,200)$ (where $y=2x$ meets $x+y=300$: $3x=300$),\n- $(0,300)$ (where $x+y=300$ meets the $y$-axis).",
+      "themes": [
+        "linear inequalities and optimisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 3
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "(c) The profit made on a boarding student is 50,000 FCFA and on a non-boarding student is 25,000 FCFA. Find the maximum profit realised by the proprietor of the school for that year. *[2 marks]*",
+      "corrige_markdown": "The profit (in FCFA) is $P=50\\,000x+25\\,000y$. A linear expression reaches its maximum at a **vertex** of the region, so evaluate $P$ at the four vertices:\n\n| Vertex $(x,y)$ | $P=50\\,000x+25\\,000y$ |\n|---|---|\n| $(0,150)$ | $3\\,750\\,000$ |\n| $(75,150)$ | $3\\,750\\,000+3\\,750\\,000=7\\,500\\,000$ |\n| $(100,200)$ | $5\\,000\\,000+5\\,000\\,000=10\\,000\\,000$ |\n| $(0,300)$ | $7\\,500\\,000$ |\n\nThe largest value is at $(100,200)$.\n\n**Maximum profit $=10\\,000\\,000$ FCFA** (with $100$ boarding students and $200$ non-boarding students).",
+      "themes": [
+        "linear inequalities and optimisation"
+      ],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "points": 2
+    }
+  ]
+}
