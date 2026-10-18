@@ -1,0 +1,191 @@
+[
+ {
+  "external_id": "cqc-ict-database-queries-faible-0",
+  "theme": "ict database queries",
+  "matiere": "ICT",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "The table **customer(id, name, town)** holds 7 customers. Which statement displays the names of only the customers who live in Bamenda?",
+  "corrige_markdown": "### Method reminder\n\nTo keep only some rows, put a condition in a WHERE clause after FROM. Text values are written between quotation marks and the clauses follow the order SELECT, FROM, WHERE.\n\n### Solution\n\n`SELECT name FROM customer WHERE town = 'Bamenda';` keeps the rows whose town is Bamenda and shows their name (here Ngu and Fon; checked with SQLite). `ORDER BY` only sorts and still returns all 7 customers. Without quotation marks, `Bamenda` is read as a column name and gives an error. Writing WHERE before FROM breaks the syntax.\n\n**Answer: d.**",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "SELECT name FROM customer ORDER BY town = 'Bamenda';"
+   },
+   {
+    "lettre": "b",
+    "texte": "SELECT name FROM customer WHERE town = Bamenda;"
+   },
+   {
+    "lettre": "c",
+    "texte": "SELECT name WHERE town = 'Bamenda' FROM customer;"
+   },
+   {
+    "lettre": "d",
+    "texte": "SELECT name FROM customer WHERE town = 'Bamenda';"
+   }
+  ],
+  "reponse_correcte": "d",
+  "source_exercises": [
+   13437,
+   13445,
+   13457
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-ict-database-queries-faible-1",
+  "theme": "ict database queries",
+  "matiere": "ICT",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A school shop keeps the table **product(code, name, price, stock)**:\n\n| code | name | price | stock |\n|---|---|---|---|\n| P1 | Notebook | 500 | 40 |\n| P2 | Pen | 150 | 0 |\n| P3 | Ruler | 300 | 0 |\n| P4 | Bag | 7500 | 12 |\n\nWrite an SQL statement that displays the name and the price of the products that are out of stock (stock equal to 0), starting with the most expensive.",
+  "corrige_markdown": "### Method reminder\n\nChoose the columns after SELECT, name the table after FROM, filter with WHERE and sort with ORDER BY ... DESC for a descending order.\n\n### Solution\n\n```sql\nSELECT name, price FROM product WHERE stock = 0 ORDER BY price DESC;\n```\n\nThe rows with stock 0 are the pen and the ruler. Sorted by descending price (checked with SQLite):\n\n| name | price |\n|---|---|\n| Ruler | 300 |\n| Pen | 150 |",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   13437,
+   13445,
+   13457
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-ict-database-queries-moyenne-2",
+  "theme": "ict database queries",
+  "matiere": "ICT",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "**customer**\n\n| id | name | town |\n|---|---|---|\n| 1 | Ngu | Bamenda |\n| 2 | Mbarga | Yaounde |\n| 3 | Tchoua | Douala |\n| 4 | Fon | Bamenda |\n| 5 | Essomba | Yaounde |\n| 6 | Nana | Douala |\n| 7 | Kamga | Bafoussam |\n\n**orders**\n\n| id | cust_id | product | qty | unit_price |\n|---|---|---|---|---|\n| 101 | 1 | Rice | 4 | 8500 |\n| 102 | 2 | Oil | 2 | 12000 |\n| 103 | 3 | Sugar | 10 | 1500 |\n| 104 | 1 | Soap | 6 | 2500 |\n| 105 | 4 | Rice | 1 | 8500 |\n| 106 | 5 | Oil | 3 | 12000 |\n| 107 | 2 | Salt | 5 | 500 |\n| 108 | 6 | Sugar | 20 | 1500 |\n\nThe following query is run on these two tables (the total of an order line is qty x unit_price, in FCFA):\n\n```sql\nSELECT c.town, SUM(o.qty * o.unit_price) AS total\nFROM customer c JOIN orders o ON o.cust_id = c.id\nGROUP BY c.town\nHAVING total > 50000;\n```\n\nWhich result does it display?",
+  "corrige_markdown": "### Method reminder\n\nGROUP BY first collects the rows into one group per town and SUM adds the totals of each group. HAVING then filters the groups, whereas WHERE filters individual rows before grouping.\n\n### Solution\n\nTown totals (checked with SQLite): Bamenda 49 000 + 8 500 = 57 500; Yaounde 26 500 + 36 000 = 62 500; Douala 15 000 + 30 000 = 45 000. Kamga (Bafoussam) has no order, so the join leaves Bafoussam out. HAVING keeps the towns whose group total exceeds 50 000: **Bamenda 57 500 and Yaounde 62 500**. Douala is excluded (45 000). The option with no rows treats the condition as a test on single order lines (the largest line is only 36 000). The option with three towns ignores HAVING. The option with one town keeps only the largest total instead of every total above 50 000.\n\n**Answer: a.**",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Bamenda 57500; Yaounde 62500"
+   },
+   {
+    "lettre": "b",
+    "texte": "Bamenda 57500; Douala 45000; Yaounde 62500"
+   },
+   {
+    "lettre": "c",
+    "texte": "No rows are displayed"
+   },
+   {
+    "lettre": "d",
+    "texte": "Yaounde 62500"
+   }
+  ],
+  "reponse_correcte": "a",
+  "source_exercises": [
+   13437,
+   13445,
+   13457
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-ict-database-queries-moyenne-3",
+  "theme": "ict database queries",
+  "matiere": "ICT",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "**customer**\n\n| id | name | town |\n|---|---|---|\n| 1 | Ngu | Bamenda |\n| 2 | Mbarga | Yaounde |\n| 3 | Tchoua | Douala |\n| 4 | Fon | Bamenda |\n| 5 | Essomba | Yaounde |\n| 6 | Nana | Douala |\n| 7 | Kamga | Bafoussam |\n\n**orders**\n\n| id | cust_id | product | qty | unit_price |\n|---|---|---|---|---|\n| 101 | 1 | Rice | 4 | 8500 |\n| 102 | 2 | Oil | 2 | 12000 |\n| 103 | 3 | Sugar | 10 | 1500 |\n| 104 | 1 | Soap | 6 | 2500 |\n| 105 | 4 | Rice | 1 | 8500 |\n| 106 | 5 | Oil | 3 | 12000 |\n| 107 | 2 | Salt | 5 | 500 |\n| 108 | 6 | Sugar | 20 | 1500 |\n\nHow many rows does this query return?\n\n```sql\nSELECT c.name, o.product\nFROM customer c LEFT JOIN orders o ON o.cust_id = c.id;\n```",
+  "corrige_markdown": "### Method reminder\n\nA LEFT JOIN returns every row of the left table, matched with the rows of the right table when they exist and completed with NULL when they do not.\n\n### Solution\n\nEach of the 8 orders belongs to a customer, so 8 rows are matched. The customer Kamga (id 7) has no order: the LEFT JOIN keeps this customer with NULL as product. The result therefore has 8 + 1 = **9 rows** (checked with SQLite). An INNER JOIN would give 8 rows, there are 7 customers, and 56 = 7 x 8 would be a join with no condition.\n\n**Answer: c.**",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "7"
+   },
+   {
+    "lettre": "b",
+    "texte": "8"
+   },
+   {
+    "lettre": "c",
+    "texte": "9"
+   },
+   {
+    "lettre": "d",
+    "texte": "56"
+   }
+  ],
+  "reponse_correcte": "c",
+  "source_exercises": [
+   13437,
+   13445,
+   13457
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-ict-database-queries-moyenne-4",
+  "theme": "ict database queries",
+  "matiere": "ICT",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "**customer**\n\n| id | name | town |\n|---|---|---|\n| 1 | Ngu | Bamenda |\n| 2 | Mbarga | Yaounde |\n| 3 | Tchoua | Douala |\n| 4 | Fon | Bamenda |\n| 5 | Essomba | Yaounde |\n| 6 | Nana | Douala |\n| 7 | Kamga | Bafoussam |\n\n**orders**\n\n| id | cust_id | product | qty | unit_price |\n|---|---|---|---|---|\n| 101 | 1 | Rice | 4 | 8500 |\n| 102 | 2 | Oil | 2 | 12000 |\n| 103 | 3 | Sugar | 10 | 1500 |\n| 104 | 1 | Soap | 6 | 2500 |\n| 105 | 4 | Rice | 1 | 8500 |\n| 106 | 5 | Oil | 3 | 12000 |\n| 107 | 2 | Salt | 5 | 500 |\n| 108 | 6 | Sugar | 20 | 1500 |\n\nWrite one SQL statement that displays, for each order line whose total (qty x unit_price) is greater than 20 000 FCFA, the name of the customer, the product and the total (as a calculated column called total), the largest total first. Then give the rows that it displays.",
+  "corrige_markdown": "### Method reminder\n\nJoin the tables on the matching key (orders.cust_id = customer.id), create the calculated column with an expression and an alias, filter with WHERE and sort with ORDER BY.\n\n### Solution\n\n```sql\nSELECT c.name, o.product, o.qty * o.unit_price AS total FROM orders o INNER JOIN customer c ON c.id = o.cust_id WHERE o.qty * o.unit_price > 20000 ORDER BY total DESC;\n```\n\nResult (checked with SQLite):\n\n| name | product | total |\n|---|---|---|\n| Essomba | Oil | 36000 |\n| Ngu | Rice | 34000 |\n| Nana | Sugar | 30000 |\n| Mbarga | Oil | 24000 |\n\nOnly the lines with a total above 20 000 are kept. The WHERE clause repeats the expression because some systems do not allow the alias `total` in WHERE.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   13437,
+   13445,
+   13457
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-ict-database-queries-elevee-5",
+  "theme": "ict database queries",
+  "matiere": "ICT",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "**orders**\n\n| id | cust_id | product | qty | unit_price |\n|---|---|---|---|---|\n| 101 | 1 | Rice | 4 | 8500 |\n| 102 | 2 | Oil | 2 | 12000 |\n| 103 | 3 | Sugar | 10 | 1500 |\n| 104 | 1 | Soap | 6 | 2500 |\n| 105 | 4 | Rice | 1 | 8500 |\n| 106 | 5 | Oil | 3 | 12000 |\n| 107 | 2 | Salt | 5 | 500 |\n| 108 | 6 | Sugar | 20 | 1500 |\n\n(a) Write one SQL statement that lists, without repetition, the products for which an order line has a unit_price greater than the average unit_price of all the order lines.\n\n(b) Explain why the condition `WHERE unit_price > AVG(unit_price)` cannot be used for this purpose.",
+  "corrige_markdown": "### Method reminder\n\nAn aggregate such as AVG is computed over a set of rows, so it cannot be tested row by row in WHERE. Calculate it in a subquery, and use DISTINCT to remove repeated results.\n\n### Solution\n\n**(a)** The average is computed in a subquery:\n\n```sql\nSELECT DISTINCT product FROM orders WHERE unit_price > (SELECT AVG(unit_price) FROM orders);\n```\n\nThe average of the 8 unit prices is 47 000 / 8 = 5 875 FCFA. The lines above that value are Rice (8 500, twice), and Oil (12 000, twice). With DISTINCT the result is (checked with SQLite):\n\n| product |\n|---|\n| Rice |\n| Oil |\n\n**(b)** WHERE is evaluated on each row before any group is formed, so an aggregate function is not allowed there (the database reports misuse of an aggregate). The aggregate must be calculated first, in a subquery (or in a HAVING clause when groups are used).",
+  "difficulte_estimee": "ELEVEE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   13437,
+   13445,
+   13457
+  ],
+  "figures": []
+ }
+]

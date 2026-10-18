@@ -1,0 +1,217 @@
+[
+ {
+  "external_id": "cqc-entity-relationship-modelling-faible-0",
+  "theme": "entity relationship modelling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In a database for an online shop, a customer may register several e-mail addresses. In an entity-relationship model, the attribute *email* of the entity CUSTOMER is then best described as:",
+  "corrige_markdown": "### Method reminder\n\nClassify an attribute by what it holds: simple (one atomic value), composite (made of sub-parts), multivalued (several values for one entity), derived (calculated from another attribute).\n\n### Solution\n\nSeveral values are stored for one customer, so *email* is a **multivalued attribute**. A composite attribute is divided into sub-parts (such as first name and surname), a derived attribute is calculated from others (such as age from date of birth), and a key attribute identifies each entity uniquely.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13181
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "A composite attribute"
+   },
+   {
+    "lettre": "b",
+    "texte": "A derived attribute"
+   },
+   {
+    "lettre": "c",
+    "texte": "A multivalued attribute"
+   },
+   {
+    "lettre": "d",
+    "texte": "A key attribute"
+   }
+  ],
+  "reponse_correcte": "c"
+ },
+ {
+  "external_id": "cqc-entity-relationship-modelling-faible-1",
+  "theme": "entity relationship modelling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In an entity-relationship diagram drawn with the usual (Chen) notation, a **rectangle** represents:",
+  "corrige_markdown": "### Method reminder\n\nEach symbol of an E-R diagram has a fixed meaning: rectangles are entity types, diamonds are relationships and ellipses are attributes.\n\n### Solution\n\nA rectangle represents an **entity** (for example STUDENT or BOOK). A relationship between entities is drawn as a diamond, and an attribute as an ellipse linked to its entity.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13207,
+   13211
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "An entity"
+   },
+   {
+    "lettre": "b",
+    "texte": "A relationship between two entities"
+   },
+   {
+    "lettre": "c",
+    "texte": "An attribute of an entity"
+   },
+   {
+    "lettre": "d",
+    "texte": "A primary key value"
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "external_id": "cqc-entity-relationship-modelling-moyenne-2",
+  "theme": "entity relationship modelling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A school library records its loans. A member may borrow many different books over time, and a book may be borrowed by many different members over time. How should this relationship be represented in the design of the relational database?",
+  "corrige_markdown": "### Method reminder\n\nA many-to-many relationship cannot be stored directly in a relational database. It is replaced by a link table whose primary key combines the foreign keys of the two entities, and which holds the attributes of the relationship.\n\n### Solution\n\nThe relationship MEMBER - BOOK is many-to-many (M : N). It is split into two one-to-many relationships through a link table such as LOAN(MemberID, BookID, LoanDate), where MemberID and BookID are foreign keys that together form the primary key (a date can be added to the key if the same member may borrow the same book again). Putting a single foreign key in BOOK or MEMBER would allow only one borrower per book or one book per member, and storing a list of identifiers in one field breaks first normal form.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13194,
+   13211
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Add a foreign key MemberID to the BOOK table"
+   },
+   {
+    "lettre": "b",
+    "texte": "Create a link table LOAN containing the foreign keys MemberID and BookID"
+   },
+   {
+    "lettre": "c",
+    "texte": "Store a list of BookIDs in a single field of the MEMBER table"
+   },
+   {
+    "lettre": "d",
+    "texte": "Merge MEMBER and BOOK into one table with repeating groups"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-entity-relationship-modelling-moyenne-3",
+  "theme": "entity relationship modelling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In a hospital database each doctor works in exactly one ward, while a ward employs many doctors. Where should the foreign key be placed when the relationship WARD - DOCTOR is implemented?",
+  "corrige_markdown": "### Method reminder\n\nIn a one-to-many relationship the foreign key is placed in the table on the \"many\" side and refers to the primary key of the \"one\" side.\n\n### Solution\n\nWARD - DOCTOR is one-to-many (1 : N). Each doctor row must record its single ward, so the foreign key **WardID goes in the DOCTOR table**. Placing DoctorID in WARD would allow a ward to hold only one doctor, and a separate link table is only needed for a many-to-many relationship.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13194
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "A foreign key DoctorID in the WARD table"
+   },
+   {
+    "lettre": "b",
+    "texte": "A foreign key in both tables, each referring to the other"
+   },
+   {
+    "lettre": "c",
+    "texte": "A link table is always required, with no foreign key in either table"
+   },
+   {
+    "lettre": "d",
+    "texte": "A foreign key WardID in the DOCTOR table"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-entity-relationship-modelling-moyenne-4",
+  "theme": "entity relationship modelling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A transport company manages buses, drivers and routes. Each bus is allocated to exactly one route, and a route may be served by several buses. Each bus has one regular driver, and each driver is the regular driver of exactly one bus.\n\n(a) Identify the entities and give suitable attributes for each and state its primary key. (6 marks)\n\n(b) State the degree (cardinality) of each relationship and say where the foreign keys are placed. (4 marks)",
+  "corrige_markdown": "### Method reminder\n\nList the nouns that the company stores data about (entities), choose attributes and a unique identifier for each, then read each rule in both directions to find the cardinality; foreign keys go on the \"many\" side of a 1 : N relationship.\n\n### Solution\n\n**(a)** Three entities:\n\n| Entity | Attributes | Primary key |\n|---|---|---|\n| ROUTE | RouteID, Origin, Destination | RouteID |\n| BUS | PlateNumber, Capacity, Model | PlateNumber |\n| DRIVER | DriverID, Name, LicenceNumber | DriverID |\n\n**(b)**\n\n- ROUTE - BUS is **one-to-many (1 : N)**: a bus belongs to exactly one route, a route has several buses. The foreign key `RouteID` is placed in the BUS table.\n- DRIVER - BUS is **one-to-one (1 : 1)**: each bus has one regular driver and each driver drives one bus. The foreign key `DriverID` is placed in BUS (or `PlateNumber` in DRIVER), with a uniqueness constraint so that the same driver cannot appear twice.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13194,
+   13211
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-entity-relationship-modelling-elevee-5",
+  "theme": "entity relationship modelling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In a college database, a STUDENT may enrol in many COURSEs and a COURSE has many students. Each enrolment also records the grade that the student obtained in that course. To which part of the model does the attribute *grade* belong?",
+  "corrige_markdown": "### Method reminder\n\nAn attribute belongs to the element whose identity it depends on. If its value is determined only by a combination of two entities, it is an attribute of the relationship between them, which becomes a link table in the relational schema.\n\n### Solution\n\nA student has a different grade in each course, and a course has a different grade for each student, so the grade depends on **the pair (student, course)**. It is therefore an attribute of the many-to-many relationship ENROLMENT, stored in the link table ENROLMENT(StudentID, CourseID, Grade), whose primary key is (StudentID, CourseID). Placing it in STUDENT would allow one grade per student for all courses, and placing it in COURSE would allow one grade per course for all students.",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13194,
+   13181
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "The STUDENT entity, because each student has a grade"
+   },
+   {
+    "lettre": "b",
+    "texte": "The COURSE entity, because each course awards grades"
+   },
+   {
+    "lettre": "c",
+    "texte": "The ENROLMENT relationship (link table), because it depends on the student and the course together"
+   },
+   {
+    "lettre": "d",
+    "texte": "Either entity indifferently, since the choice does not affect the design"
+   }
+  ],
+  "reponse_correcte": "c"
+ }
+]

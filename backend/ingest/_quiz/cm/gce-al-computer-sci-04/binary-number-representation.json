@@ -1,0 +1,202 @@
+[
+ {
+  "external_id": "cqc-binary-number-representation-faible-0",
+  "theme": "binary number representation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "An 8-bit register contains `10110010`. What is its denary value if it holds an **unsigned** binary integer?",
+  "corrige_markdown": "### Method reminder\n\nIn an unsigned integer every bit has a positive place value: 128, 64, 32, 16, 8, 4, 2, 1 from left to right.\n\n### Solution\n\n10110010 = 128 + 32 + 16 + 2 = **178**. Reading the same pattern as two's complement gives 178 - 256 = -78; as sign and magnitude it gives -(0110010) = -50; and 77 is the value of the bit-inverted pattern 01001101.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "-78"
+   },
+   {
+    "lettre": "b",
+    "texte": "178"
+   },
+   {
+    "lettre": "c",
+    "texte": "-50"
+   },
+   {
+    "lettre": "d",
+    "texte": "77"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-binary-number-representation-faible-1",
+  "theme": "binary number representation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "(a) Convert the denary number 93 to an 8-bit unsigned binary number. (b) Give 93 in hexadecimal. (c) Give 93 in Binary Coded Decimal (BCD).",
+  "corrige_markdown": "### Method reminder\n\nSubtract the largest powers of two for binary; group the binary digits in fours for hexadecimal; encode each denary digit separately on 4 bits for BCD.\n\n### Solution\n\n**(a)** 93 = 64 + 16 + 8 + 4 + 1, so 93 = **01011101** in binary.\n\n**(b)** Groups of four bits: 0101 = 5 and 1101 = D, so 93 = **5D** in hexadecimal.\n\n**(c)** In BCD each digit has its own 4-bit group: 9 = 1001 and 3 = 0011, so 93 = **1001 0011**.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-binary-number-representation-moyenne-2",
+  "theme": "binary number representation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which 8-bit pattern represents the denary number -45 in **two's complement**?",
+  "corrige_markdown": "### Method reminder\n\nTo find the two's complement of a negative number: write the magnitude in binary, invert every bit, then add 1. Check by reading the result with a leading weight of -128.\n\n### Solution\n\n45 = 00101101. Invert all the bits: 11010010. Add 1: **11010011**. Check: -128 + 64 + 16 + 2 + 1 = -45. The pattern 10101101 is sign-and-magnitude, 11010010 is only the one's complement (the final +1 was forgotten) and 00101101 is +45.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "10101101"
+   },
+   {
+    "lettre": "b",
+    "texte": "11010010"
+   },
+   {
+    "lettre": "c",
+    "texte": "00101101"
+   },
+   {
+    "lettre": "d",
+    "texte": "11010011"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-binary-number-representation-moyenne-3",
+  "theme": "binary number representation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Two 8-bit two's complement integers, 01101100 and 00110101, are added by the processor. Which statement is correct?",
+  "corrige_markdown": "### Method reminder\n\nTwo positive numbers must give a positive result. If the sign bit of the sum is 1, the true result is too large for the number of bits: overflow.\n\n### Solution\n\n01101100 is +108 and 00110101 is +53. Their sum is 161, written 10100001, but the largest 8-bit two's complement value is +127. The result starts with 1, so it is read as 161 - 256 = **-95**: overflow occurred. Note that there is no carry out of the leftmost bit here (161 < 256), so checking the carry-out alone does not detect the error; the sign bits of the operands (0 and 0) and of the result (1) do.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Overflow occurs: the result 10100001 is read as -95 although both operands are positive."
+   },
+   {
+    "lettre": "b",
+    "texte": "There is no overflow, because the result 161 is simply stored in the register."
+   },
+   {
+    "lettre": "c",
+    "texte": "There is no overflow, because no carry is produced out of the sign bit."
+   },
+   {
+    "lettre": "d",
+    "texte": "Overflow occurs, but the correct result is obtained as +33 by dropping the leading bit."
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "external_id": "cqc-binary-number-representation-moyenne-4",
+  "theme": "binary number representation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A 12-bit floating-point number has an 8-bit mantissa followed by a 4-bit exponent. The mantissa is a two's complement fraction with the binary point just after the sign bit; the exponent is a two's complement integer. A number is `01011000 0011` (mantissa, then exponent).\n\n(a) Find its denary value. (3 marks)\n\n(b) State whether the mantissa is normalised and give the reason. (1 mark)",
+  "corrige_markdown": "### Method reminder\n\nValue = mantissa x 2^exponent. For a positive mantissa read the bits after the point as 1/2, 1/4, 1/8, ... A normalised number has its first two mantissa bits different.\n\n### Solution\n\n**(a)** Mantissa 0.1011000 = 1/2 + 1/8 + 1/16 = 0.6875. Exponent 0011 = 3, so the binary point moves 3 places right: value = 0.6875 x 2^3 = **5.5**. (Check: moving the point gives 101.1000 = 4 + 1 + 0.5.)\n\n**(b)** Yes, it is normalised: the first two bits of the mantissa are 0 and 1, which differ. A normalised mantissa uses all its bits for precision.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-binary-number-representation-elevee-5",
+  "theme": "binary number representation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In 8-bit two's complement, the programmer negates the value -128 (`10000000`) by inverting all the bits and adding 1. What happens?",
+  "corrige_markdown": "### Method reminder\n\nNegation in two's complement is: invert all the bits, then add 1. It works for every value except the one with no positive counterpart.\n\n### Solution\n\nInverting 10000000 gives 01111111 (+127), and adding 1 gives **10000000** again. The range of 8-bit two's complement is -128 to +127, so +128 cannot be represented and the result is the same pattern, -128. This is why the range is not symmetrical.",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "The result is 01111111, which is +127."
+   },
+   {
+    "lettre": "b",
+    "texte": "The result is 00000000."
+   },
+   {
+    "lettre": "c",
+    "texte": "The result is 10000000 again, because +128 cannot be represented in 8 bits."
+   },
+   {
+    "lettre": "d",
+    "texte": "The result is 010000000, which is +128 on 9 bits kept in the register."
+   }
+  ],
+  "reponse_correcte": "c"
+ }
+]

@@ -1,0 +1,202 @@
+[
+ {
+  "external_id": "cqc-parameter-passing-faible-0",
+  "theme": "parameter passing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which statement correctly describes a parameter that is passed **by value** to a subprogram?",
+  "corrige_markdown": "### Method reminder\n\nPass by value gives the subprogram its own copy of the argument. Pass by reference gives it access to the original variable.\n\n### Solution\n\nWith pass by value the subprogram works on a **copy** of the argument, so any change made to the parameter inside the subprogram is lost when it ends and the caller's variable is unchanged. The option describing access to the address of the variable is pass by reference; the other two describe sharing mechanisms that are not parameter passing by value.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13181,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "The subprogram receives the memory address of the caller's variable, so changing the parameter changes the caller's variable."
+   },
+   {
+    "lettre": "b",
+    "texte": "The subprogram receives the variable's name and every local variable it declares is shared with the caller."
+   },
+   {
+    "lettre": "c",
+    "texte": "The subprogram receives a copy of the argument's value, so changing the parameter does not change the caller's variable."
+   },
+   {
+    "lettre": "d",
+    "texte": "The argument is stored in a global variable that the caller and the subprogram both overwrite."
+   }
+  ],
+  "reponse_correcte": "c"
+ },
+ {
+  "external_id": "cqc-parameter-passing-faible-1",
+  "theme": "parameter passing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A procedure `Swap(x, y)` must exchange the contents of two variables of the calling program. State, with a reason, whether its parameters should be passed by value or by reference. Name one other situation in which pass by reference is useful.",
+  "corrige_markdown": "### Method reminder\n\nA subprogram can only change the caller's variables if it is given access to the originals, that is, if the parameters are passed by reference.\n\n### Solution\n\nThe parameters must be passed **by reference**. With pass by value, `x` and `y` are only copies: they would be exchanged inside the procedure, but the caller's variables would keep their old contents. Passing by reference makes `x` and `y` other names for the caller's variables, so the exchange is visible after the call.\n\nAnother situation: passing a **large data structure** (for example an array of thousands of records) without copying it, which saves time and memory; or a procedure that has to return **more than one result**.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13181,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-parameter-passing-moyenne-2",
+  "theme": "parameter passing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Study this pseudocode. In `adjust`, parameter `a` is passed **by reference** and parameter `b` is passed **by value**.\n\n```\nPROCEDURE adjust(a, b)\n    a <- a * b\n    b <- b + a\n    OUTPUT b\nENDPROCEDURE\n\np <- 4\nq <- 3\nadjust(p, q)\nOUTPUT p, q\n```\n\nWhat is output, in order?",
+  "corrige_markdown": "### Method reminder\n\nTrace the call with one column per name. A by-reference parameter is another name for the caller's variable; a by-value parameter is a separate copy.\n\n### Solution\n\n`a` is the same cell as `p`; `b` is a copy of `q`.\n\n| Step | a (is p) | b (copy of q) | p | q |\n|---|---|---|---|---|\n| call | 4 | 3 | 4 | 3 |\n| a <- a * b | 12 | 3 | 12 | 3 |\n| b <- b + a | 12 | 15 | 12 | 3 |\n\n`OUTPUT b` gives 15. Back in the main program `p` is 12 and `q` is still 3.\n\n**Output: 15, then 12 and 3.**",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "15, then 12 and 3"
+   },
+   {
+    "lettre": "b",
+    "texte": "15, then 4 and 3"
+   },
+   {
+    "lettre": "c",
+    "texte": "15, then 12 and 15"
+   },
+   {
+    "lettre": "d",
+    "texte": "15, then 4 and 15"
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "external_id": "cqc-parameter-passing-moyenne-3",
+  "theme": "parameter passing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "The Python program below is run. Python passes each argument as a reference to an object, and an integer cannot be modified in place.\n\n```python\ndef f(lst, n):\n    lst.append(n)\n    lst = [0, 0]\n    n = n + 1\n    return n\n\ndata = [1, 2]\nk = 5\nr = f(data, k)\nprint(data, k, r)\n```\n\nWhat is printed?",
+  "corrige_markdown": "### Method reminder\n\nA name inside the function starts bound to the same object as the argument. Calling a method that mutates the object (`append`) is seen by the caller; assigning a new object to the name only rebinds the local name.\n\n### Solution\n\n- `lst` and `data` refer to the same list, so `lst.append(n)` makes `data` equal to `[1, 2, 5]`.\n- `lst = [0, 0]` rebinds the **local** name `lst` to a new list; `data` is not affected.\n- `n = n + 1` creates a new integer 6 bound to the local `n`; `k` stays 5. The function returns 6.\n\nRunning the program prints `[1, 2, 5] 5 6`.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "[0, 0] 5 6"
+   },
+   {
+    "lettre": "b",
+    "texte": "[1, 2] 5 6"
+   },
+   {
+    "lettre": "c",
+    "texte": "[1, 2, 5] 6 6"
+   },
+   {
+    "lettre": "d",
+    "texte": "[1, 2, 5] 5 6"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-parameter-passing-moyenne-4",
+  "theme": "parameter passing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A programmer writes the procedure below and calls it with `a <- 7` and `b <- 2`.\n\n```\nPROCEDURE swap(x, y)\n    temp <- x\n    x <- y\n    y <- temp\nENDPROCEDURE\n\nswap(a, b)\n```\n\n(a) Give the values of `a` and `b` after the call if `x` and `y` are passed by value. (2 marks)\n\n(b) Give the values of `a` and `b` after the call if `x` and `y` are passed by reference. (2 marks)\n\n(c) Explain the difference you found. (2 marks)",
+  "corrige_markdown": "### Method reminder\n\nDecide first whether the parameters are copies or aliases of the arguments, then trace the three assignments.\n\n### Solution\n\n**(a) By value.** `x` and `y` are copies (7 and 2). Inside the procedure `temp` becomes 7, `x` becomes 2 and `y` becomes 7, but only the copies change. After the call `a = 7` and `b = 2`: nothing has changed.\n\n**(b) By reference.** `x` is another name for `a` and `y` for `b`. `temp <- x` stores 7, `x <- y` sets `a` to 2, `y <- temp` sets `b` to 7. After the call `a = 2` and `b = 7`.\n\n**(c)** With pass by value the procedure changes only its own copies, so the caller never sees the exchange. With pass by reference the parameters refer to the caller's variables, so the exchange is permanent.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-parameter-passing-elevee-5",
+  "theme": "parameter passing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Both parameters of the procedure below are passed **by reference**.\n\n```\nPROCEDURE combine(x, y)\n    x <- x + 1\n    y <- y * 2\n    x <- x + y\nENDPROCEDURE\n\nn <- 5\ncombine(n, n)\nOUTPUT n\n```\n\nThe same variable `n` is given for both parameters. What is output?",
+  "corrige_markdown": "### Method reminder\n\nWhen the same variable is passed twice by reference, both parameters are aliases of one memory location, so every assignment through `x` is visible through `y` at once.\n\n### Solution\n\n`x` and `y` are both `n`, so there is a single cell, starting at 5.\n\n| Step | n (x and y) |\n|---|---|\n| x <- x + 1 | 6 |\n| y <- y * 2 | 12 |\n| x <- x + y | 12 + 12 = 24 |\n\nThe output is **24**. If `x` and `y` were two different variables both holding 5, the result for `x` would be 6 + 10 = 16, which is the answer of a student who ignores the aliasing. Passing by value would leave `n` at 5, and 12 is the value of `n` after only the second statement.",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13181,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "5"
+   },
+   {
+    "lettre": "b",
+    "texte": "24"
+   },
+   {
+    "lettre": "c",
+    "texte": "12"
+   },
+   {
+    "lettre": "d",
+    "texte": "16"
+   }
+  ],
+  "reponse_correcte": "b"
+ }
+]

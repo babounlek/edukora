@@ -1,0 +1,202 @@
+[
+ {
+  "external_id": "cqc-process-scheduling-faible-0",
+  "theme": "process scheduling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A process scheduler always gives the CPU to the process that arrived in the ready queue first, and that process keeps the CPU until it finishes its CPU burst. Which scheduling algorithm is this?",
+  "corrige_markdown": "### Method reminder\n\nIdentify an algorithm from two features: the criterion used to choose the next process, and whether a running process can be pre-empted.\n\n### Solution\n\nThe criterion is order of arrival, and the running process is not interrupted: that is FCFS (non-pre-emptive). SJF chooses by shortest burst, SRTF chooses by shortest remaining time and can pre-empt, and round robin shares the CPU in time slices.\n\n**Answer: a.**",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "First come first served (FCFS)"
+   },
+   {
+    "lettre": "b",
+    "texte": "Shortest job first (SJF)"
+   },
+   {
+    "lettre": "c",
+    "texte": "Round robin (RR)"
+   },
+   {
+    "lettre": "d",
+    "texte": "Shortest remaining time first (SRTF)"
+   }
+  ],
+  "reponse_correcte": "a",
+  "source_exercises": [
+   13195,
+   13198
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-process-scheduling-faible-1",
+  "theme": "process scheduling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In round-robin scheduling, what happens to a running process whose time quantum expires before it has finished its CPU burst?",
+  "corrige_markdown": "### Method reminder\n\nRound robin is a pre-emptive algorithm: a timer interrupt ends each time slice, and the process goes back to the ready queue behind the others.\n\n### Solution\n\nWhen the timer interrupt signals the end of the quantum, the process is pre-empted (not terminated) and, because it is still ready to run, it goes to the end of the ready queue. The next process in the queue gets the CPU. A blocked queue is for processes waiting for an event, not for a process that merely used up its quantum.\n\n**Answer: d.**",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "It is terminated by the operating system."
+   },
+   {
+    "lettre": "b",
+    "texte": "It is moved to a blocked queue until its input/output is complete."
+   },
+   {
+    "lettre": "c",
+    "texte": "It continues to run until the end of its burst."
+   },
+   {
+    "lettre": "d",
+    "texte": "It is pre-empted and placed at the back of the ready queue."
+   }
+  ],
+  "reponse_correcte": "d",
+  "source_exercises": [
+   13198,
+   13181
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-process-scheduling-moyenne-2",
+  "theme": "process scheduling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Three processes arrive in the ready queue as shown. They are scheduled by FCFS (first come first served). What is the average **waiting time**?\n\n| Process | Arrival time | Burst time |\n|---|---|---|\n| P1 | 0 | 6 |\n| P2 | 1 | 3 |\n| P3 | 2 | 1 |",
+  "corrige_markdown": "### Method reminder\n\nUnder FCFS, processes run in order of arrival. Completion time is found in sequence; turnaround time = completion - arrival; waiting time = turnaround - burst.\n\n### Solution\n\nOrder: P1 (0-6), P2 (6-9), P3 (9-10).\n\n| Process | Completion | Turnaround | Waiting |\n|---|---|---|---|\n| P1 | 6 | 6 | 0 |\n| P2 | 9 | 8 | 5 |\n| P3 | 10 | 8 | 7 |\n\nAverage waiting time = (0 + 5 + 7) / 3 = 12 / 3 = **4**.\n\n- 3.33 is the value for non-pre-emptive SJF, a different algorithm.\n- 7.33 is the average turnaround time, (6 + 8 + 8) / 3, not the waiting time.\n- 10 is the total time to complete all the processes.\n\n**Answer: b.**",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "3.33"
+   },
+   {
+    "lettre": "b",
+    "texte": "4"
+   },
+   {
+    "lettre": "c",
+    "texte": "7.33"
+   },
+   {
+    "lettre": "d",
+    "texte": "10"
+   }
+  ],
+  "reponse_correcte": "b",
+  "source_exercises": [
+   13195,
+   13198
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-process-scheduling-moyenne-3",
+  "theme": "process scheduling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Three processes are all in the ready queue at time 0, in the order P1, P2, P3, with CPU bursts of 5, 3 and 1 time units. The scheduler uses round robin with a time quantum of 2 units, and context-switch time is ignored. At what time does P2 finish?",
+  "corrige_markdown": "### Method reminder\n\nSimulate the ready queue step by step: each process runs for min(quantum, remaining time), then goes to the back of the queue if it is not finished.\n\n### Solution\n\n- 0-2: P1 runs (3 left); queue: P2, P3, P1.\n- 2-4: P2 runs (1 left); queue: P3, P1, P2.\n- 4-5: P3 runs for 1 unit and finishes at 5; queue: P1, P2.\n- 5-7: P1 runs (1 left); queue: P2, P1.\n- 7-8: P2 runs its last unit and finishes at **8**.\n- 8-9: P1 finishes at 9.\n\nP2 finishes at time 8. (5 is the finishing time of P3 and 9 that of P1.)\n\n**Answer: c.**",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "5"
+   },
+   {
+    "lettre": "b",
+    "texte": "7"
+   },
+   {
+    "lettre": "c",
+    "texte": "8"
+   },
+   {
+    "lettre": "d",
+    "texte": "9"
+   }
+  ],
+  "reponse_correcte": "c",
+  "source_exercises": [
+   13198,
+   13184
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-process-scheduling-moyenne-4",
+  "theme": "process scheduling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Four processes arrive as shown and are scheduled by **shortest remaining time first (SRTF)**, which is pre-emptive. Context-switch time is ignored.\n\n| Process | Arrival time | Burst time |\n|---|---|---|\n| P1 | 0 | 8 |\n| P2 | 1 | 4 |\n| P3 | 2 | 2 |\n| P4 | 3 | 1 |\n\n(a) Draw the Gantt chart. (3 marks)\n\n(b) Calculate the completion, turnaround and waiting time of each process. (3 marks)\n\n(c) Calculate the average waiting time, and compare it with the average waiting time obtained with FCFS. (2 marks)",
+  "corrige_markdown": "### Method reminder\n\nSRTF always runs the ready process with the smallest remaining time, and re-decides whenever a process arrives. Turnaround time = completion - arrival; waiting time = turnaround - burst.\n\n### Solution\n\n**(a) Gantt chart** (segments: P1 runs 0-1, P2 runs 1-2, P3 runs 2-4, P4 runs 4-5, P2 runs 5-8, P1 runs 8-15):\n\n```text\n| P1 | P2 | P3 | P4 | P2 | P1 |\n0    1    2    4    5    8    15\n```\n\nReasoning: at t = 1, P2 (4) is shorter than the 7 left for P1, so it pre-empts. At t = 2, P3 (2) is shorter than the 3 left for P2. At t = 3, P4 (1) is equal to the 1 left for P3, so P3 (which arrived first) continues; P4 runs at t = 4, then P2 (3 left) and finally P1 (7 left).\n\n**(b)**\n\n| Process | Completion | Turnaround | Waiting |\n|---|---|---|---|\n| P1 | 15 | 15 | 7 |\n| P2 | 8 | 7 | 3 |\n| P3 | 4 | 2 | 0 |\n| P4 | 5 | 2 | 1 |\n\n**(c)** Average waiting time (SRTF) = (7 + 3 + 0 + 1) / 4 = 11 / 4 = **2.75**.\n\nWith FCFS the order is P1, P2, P3, P4, with completion times 8, 12, 14, 15 and waiting times 0, 7, 10, 11, so the average is 28 / 4 = **7.00**. SRTF gives a much smaller average waiting time because short processes do not wait behind the long process P1. The price is that P1 is delayed and could starve if short jobs kept arriving.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   13184,
+   13198
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-process-scheduling-elevee-5",
+  "theme": "process scheduling",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Four processes are scheduled by **round robin** with a time quantum of 3 units. Context-switch time is ignored. When a process arrives at the same instant as a quantum expires, the new process is placed in the ready queue **before** the process that was pre-empted.\n\n| Process | Arrival time | Burst time |\n|---|---|---|\n| P1 | 0 | 7 |\n| P2 | 1 | 4 |\n| P3 | 2 | 2 |\n| P4 | 3 | 3 |\n\n(a) Draw the Gantt chart. (3 marks)\n\n(b) Calculate the completion time and waiting time of each process, and the average waiting time. (4 marks)\n\n(c) State and justify the effect on the average waiting time and on the number of context switches of using a much larger quantum (for example 20 units). (2 marks)",
+  "corrige_markdown": "### Method reminder\n\nKeep the ready queue in order: each process runs for min(quantum, remaining), arrivals up to the end of the slice join the queue, then the pre-empted process joins behind them. Waiting time = completion - arrival - burst.\n\n### Solution\n\n**(a) Gantt chart** (P1 runs 0-3, P2 runs 3-6, P3 runs 6-8, P4 runs 8-11, P1 runs 11-14, P2 runs 14-15, P1 runs 15-16):\n\n```text\n| P1 | P2 | P3 | P4 | P1 | P2 | P1 |\n0    3    6    8    11   14   15   16\n```\n\n**(b)**\n\n| Process | Completion | Turnaround | Waiting |\n|---|---|---|---|\n| P1 | 16 | 16 | 9 |\n| P2 | 15 | 14 | 10 |\n| P3 | 8 | 6 | 4 |\n| P4 | 11 | 8 | 5 |\n\nAverage waiting time = (9 + 10 + 4 + 5) / 4 = 28 / 4 = **7.00**.\n\n**(c)** With a quantum of 20, every burst (at most 7) would finish within one slice, so round robin would behave like FCFS: no process is pre-empted and there is only one context switch per process (fewer than with a quantum of 3). In FCFS the waiting times are 0, 6, 9, 10, so the average is 25/4 = 6.25, slightly lower than 7.00 here. The real cost is on the response time: short processes such as P3 must wait for the long P1 to finish before they first get the CPU (P3 starts at 11 instead of 6). A very small quantum would instead increase the number of switches and the overhead.",
+  "difficulte_estimee": "ELEVEE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   13198,
+   13184
+  ],
+  "figures": []
+ }
+]

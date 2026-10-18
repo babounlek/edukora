@@ -1,0 +1,202 @@
+[
+ {
+  "external_id": "cqc-propositional-logic-faible-0",
+  "theme": "propositional logic",
+  "matiere": "Pure Mathematics with Mechanics",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Let $p$: Ama passes Mathematics, and $q$: Ama passes Physics. Which sentence expresses $\\sim(p\\vee q)$?",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13828,
+   13896
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Ama fails Mathematics or Ama fails Physics."
+   },
+   {
+    "lettre": "b",
+    "texte": "Ama passes Mathematics and Ama passes Physics."
+   },
+   {
+    "lettre": "c",
+    "texte": "Ama fails Mathematics and Ama fails Physics."
+   },
+   {
+    "lettre": "d",
+    "texte": "Ama passes Mathematics but Ama fails Physics."
+   }
+  ],
+  "reponse_correcte": "c",
+  "corrige_markdown": "### Method reminder\n\nDe Morgan's laws: $\\sim(p\\vee q)\\equiv(\\sim p)\\wedge(\\sim q)$ and $\\sim(p\\wedge q)\\equiv(\\sim p)\\vee(\\sim q)$. The negation of \"or\" is \"and\" of the negations.\n\n### Solution\n\n$p\\vee q$ means \"Ama passes Mathematics or Physics (or both)\". It is false only when she fails both subjects, so $\\sim(p\\vee q)\\equiv\\ \\sim p\\wedge\\sim q$: \"Ama fails Mathematics and Ama fails Physics\".\n\nTruth table check: $p\\vee q$ is false only in the row $p=F,\\ q=F$, which is exactly the row where $\\sim p$ and $\\sim q$ are both true.\n\nThe option \"fails Mathematics or fails Physics\" is $\\sim(p\\wedge q)$, which is a different statement; \"passes both\" is $p\\wedge q$; \"passes Mathematics but fails Physics\" is $p\\wedge\\sim q$.\n\n**Answer: C.**"
+ },
+ {
+  "external_id": "cqc-propositional-logic-faible-1",
+  "theme": "propositional logic",
+  "matiere": "Pure Mathematics with Mechanics",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Consider the statement: *If a whole number is divisible by 6, then it is divisible by 3.* Write down its converse, its inverse and its contrapositive, and state, with a justification, which of the four statements are true.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13859,
+   13896
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "corrige_markdown": "### Method reminder\n\nFor $p\\Rightarrow q$: the converse is $q\\Rightarrow p$, the inverse is $\\sim p\\Rightarrow\\sim q$, and the contrapositive is $\\sim q\\Rightarrow\\sim p$. An implication and its contrapositive are logically equivalent; the converse and the inverse are equivalent to each other but not to the original.\n\n### Solution\n\nLet $p$: \"the number is divisible by 6\" and $q$: \"the number is divisible by 3\".\n\n- **Original** $p\\Rightarrow q$: true, because $6=3\\times2$, so any multiple of 6 is a multiple of 3.\n- **Converse** $q\\Rightarrow p$: \"If a number is divisible by 3, then it is divisible by 6.\" **False**: $9$ is divisible by 3 but not by 6.\n- **Inverse** $\\sim p\\Rightarrow\\sim q$: \"If a number is not divisible by 6, then it is not divisible by 3.\" **False**: $9$ again.\n- **Contrapositive** $\\sim q\\Rightarrow\\sim p$: \"If a number is not divisible by 3, then it is not divisible by 6.\" **True**, and it must be, being equivalent to the original.\n\nOnly the original statement and its contrapositive are true."
+ },
+ {
+  "external_id": "cqc-propositional-logic-moyenne-2",
+  "theme": "propositional logic",
+  "matiere": "Pure Mathematics with Mechanics",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "The truth table of the compound statement $(p\\Rightarrow q)\\Rightarrow r$ has $8$ rows. In how many rows is the statement false?",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13828,
+   13859
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "$1$"
+   },
+   {
+    "lettre": "b",
+    "texte": "$4$"
+   },
+   {
+    "lettre": "c",
+    "texte": "$5$"
+   },
+   {
+    "lettre": "d",
+    "texte": "$3$"
+   }
+  ],
+  "reponse_correcte": "d",
+  "corrige_markdown": "### Method reminder\n\nAn implication $A\\Rightarrow B$ is false only when $A$ is true and $B$ is false. So $(p\\Rightarrow q)\\Rightarrow r$ is false only when $(p\\Rightarrow q)$ is true and $r$ is false.\n\n### Solution\n\n$p\\Rightarrow q$ is false only for $(p,q)=(T,F)$, so it is true for the three combinations $(T,T),(F,T),(F,F)$.\n\nThe whole statement is false exactly when $p\\Rightarrow q$ is true **and** $r$ is false: three choices of $(p,q)$ with $r=F$, that is $3$ rows.\n\n| $p$ | $q$ | $r$ | $p\\Rightarrow q$ | $(p\\Rightarrow q)\\Rightarrow r$ |\n|---|---|---|---|---|\n| T | T | T | T | T |\n| T | T | F | T | **F** |\n| T | F | T | F | T |\n| T | F | F | F | T |\n| F | T | T | T | T |\n| F | T | F | T | **F** |\n| F | F | T | T | T |\n| F | F | F | T | **F** |\n\nThe answer $1$ comes from reading the statement as $(p\\wedge q)\\Rightarrow r$; the answer $4$ counts every row where $r$ is false, forgetting that a false hypothesis makes the implication true.\n\n**Answer: D.**"
+ },
+ {
+  "external_id": "cqc-propositional-logic-moyenne-3",
+  "theme": "propositional logic",
+  "matiere": "Pure Mathematics with Mechanics",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which of the following is logically equivalent to $p\\Rightarrow q$?",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13828,
+   13896
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "$p\\vee\\sim q$"
+   },
+   {
+    "lettre": "b",
+    "texte": "$\\sim p\\vee q$"
+   },
+   {
+    "lettre": "c",
+    "texte": "$\\sim p\\wedge q$"
+   },
+   {
+    "lettre": "d",
+    "texte": "$q\\Rightarrow p$"
+   }
+  ],
+  "reponse_correcte": "b",
+  "corrige_markdown": "### Method reminder\n\n$p\\Rightarrow q$ is false in exactly one case ($p$ true, $q$ false). Two statements are logically equivalent when their truth tables are identical, so compare them row by row.\n\n### Solution\n\n| $p$ | $q$ | $p\\Rightarrow q$ | $\\sim p\\vee q$ | $p\\vee\\sim q$ | $\\sim p\\wedge q$ | $q\\Rightarrow p$ |\n|---|---|---|---|---|---|---|\n| T | T | T | T | T | F | T |\n| T | F | F | F | T | F | T |\n| F | T | T | T | F | T | F |\n| F | F | T | T | T | F | T |\n\nOnly $\\sim p\\vee q$ has the same column as $p\\Rightarrow q$. The option $p\\vee\\sim q$ is equivalent to the converse $q\\Rightarrow p$, and the converse itself differs from $p\\Rightarrow q$ in rows 2 and 3; $\\sim p\\wedge q$ is true in only one row.\n\n**Answer: B.**"
+ },
+ {
+  "external_id": "cqc-propositional-logic-moyenne-4",
+  "theme": "propositional logic",
+  "matiere": "Pure Mathematics with Mechanics",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Construct the truth table of $(p\\vee q)\\wedge\\sim(p\\wedge q)$ and describe in words when this statement is true.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13859,
+   13828
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "corrige_markdown": "### Method reminder\n\nList all $2^2=4$ combinations of $p,q$, then build the compound statement column by column: first $p\\vee q$ and $p\\wedge q$, then $\\sim(p\\wedge q)$, then the final conjunction (true only when both parts are true).\n\n### Solution\n\n| $p$ | $q$ | $p\\vee q$ | $p\\wedge q$ | $\\sim(p\\wedge q)$ | $(p\\vee q)\\wedge\\sim(p\\wedge q)$ |\n|---|---|---|---|---|---|\n| T | T | T | T | F | **F** |\n| T | F | T | F | T | **T** |\n| F | T | T | F | T | **T** |\n| F | F | F | F | T | **F** |\n\nThe statement is true exactly when $p$ and $q$ have different truth values: \"$p$ or $q$, but not both\". This is the exclusive \"or\" ($p$ XOR $q$), and it is the negation of $p\\Leftrightarrow q$."
+ },
+ {
+  "external_id": "cqc-propositional-logic-elevee-5",
+  "theme": "propositional logic",
+  "matiere": "Pure Mathematics with Mechanics",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Let $p$, $q$ and $r$ be statements. Which one of the following arguments is valid (the conclusion follows after the symbol $\\therefore$)?",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13859,
+   13896
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "$p\\Rightarrow q,\\quad q\\Rightarrow r,\\quad \\sim r\\quad\\therefore\\quad\\sim p$"
+   },
+   {
+    "lettre": "b",
+    "texte": "$p\\Rightarrow q,\\quad q\\quad\\therefore\\quad p$"
+   },
+   {
+    "lettre": "c",
+    "texte": "$p\\Rightarrow q,\\quad \\sim p\\quad\\therefore\\quad\\sim q$"
+   },
+   {
+    "lettre": "d",
+    "texte": "$p\\vee q,\\quad p\\quad\\therefore\\quad\\sim q$"
+   }
+  ],
+  "reponse_correcte": "a",
+  "corrige_markdown": "### Method reminder\n\nAn argument is valid if the conclusion is true in every row of the truth table in which all the premises are true. One row with true premises and a false conclusion (a counter-example) makes it invalid.\n\n### Solution\n\n- $p\\Rightarrow q,\\ q\\ \\therefore\\ p$ (affirming the consequent) is invalid: take $p=F,\\ q=T$; both premises are true and $p$ is false.\n- $p\\Rightarrow q,\\ \\sim p\\ \\therefore\\ \\sim q$ (denying the antecedent) is invalid: take $p=F,\\ q=T$; both premises are true and $\\sim q$ is false.\n- $p\\Rightarrow q,\\ q\\Rightarrow r,\\ \\sim r\\ \\therefore\\ \\sim p$ (a chain of implications, then denying the last conclusion) is **valid**. If $\\sim r$ is true then $r=F$; since $q\\Rightarrow r$ is true, $q=F$; since $p\\Rightarrow q$ is true, $p=F$. So $\\sim p$ is true in the only row where all premises hold.\n- $p\\vee q,\\ p\\ \\therefore\\ \\sim q$ is invalid because \"or\" is inclusive: take $p=T,\\ q=T$; both premises are true and $\\sim q$ is false.\n\nOnly the chained-implication argument has no counter-example row.\n\n**Answer: A.**"
+ }
+]

@@ -1,0 +1,215 @@
+[
+ {
+  "external_id": "cqc-parallel-computer-architectures-faible-0",
+  "theme": "parallel computer architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A graphics card brightens an image by applying the same operation to thousands of pixel values at once: one instruction is broadcast to many processing elements, each holding a different pixel. Which category of Flynn's taxonomy does this describe?",
+  "corrige_markdown": "### Method reminder\n\nFlynn's taxonomy classifies a machine by its number of instruction streams and its number of data streams (single or multiple of each).\n\n### Solution\n\nThere is **one** instruction stream (the same operation for every element) and **many** data streams (one per pixel). That is **Single Instruction, Multiple Data (SIMD)**.\n\n- SISD: one instruction stream and one data stream, the classic sequential processor.\n- MISD: several instruction streams working on a single data stream, rare in practice.\n- MIMD: several processors each running their own instructions on their own data.\n\n**Answer: b.**",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "SISD"
+   },
+   {
+    "lettre": "b",
+    "texte": "SIMD"
+   },
+   {
+    "lettre": "c",
+    "texte": "MISD"
+   },
+   {
+    "lettre": "d",
+    "texte": "MIMD"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-parallel-computer-architectures-faible-1",
+  "theme": "parallel computer architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A multicore laptop processor runs a web browser on core 1, a music player on core 2 and a file download on core 3 at the same moment. Each core executes its own program on its own data. Which Flynn category describes this?",
+  "corrige_markdown": "### Method reminder\n\nCount the independent instruction streams and the independent data streams: several of each means MIMD.\n\n### Solution\n\nEach core follows its **own** instruction stream (three different programs) and works on its **own** data. Several instruction streams and several data streams give **Multiple Instruction, Multiple Data (MIMD)**.\n\nSIMD would require every core to execute the same instruction at the same time, which is not the case here.\n\n**Answer: c.**",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "SISD"
+   },
+   {
+    "lettre": "b",
+    "texte": "SIMD"
+   },
+   {
+    "lettre": "c",
+    "texte": "MIMD"
+   },
+   {
+    "lettre": "d",
+    "texte": "MISD"
+   }
+  ],
+  "reponse_correcte": "c"
+ },
+ {
+  "external_id": "cqc-parallel-computer-architectures-moyenne-2",
+  "theme": "parallel computer architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A weather program takes 100 s on one processor. 80 s of this work can be shared perfectly between any number of processors, while the other 20 s is strictly sequential. Ignoring communication costs, what is the speed-up obtained with 4 processors?",
+  "corrige_markdown": "### Method reminder\n\nAmdahl's law: the time on n processors is (sequential part) + (parallel part) / n, and speed-up = time on one processor / time on n processors.\n\n### Solution\n\nTime on 4 processors = 20 + 80 / 4 = 20 + 20 = 40 s.\n\nSpeed-up = 100 / 40 = **2.5**.\n\nThe value 3.2 comes from wrongly multiplying 4 by the parallel fraction 0.8; 4.0 would only be possible if *all* the work were parallel; 1.7 is the speed-up with only 2 processors.\n\n**Answer: b.**",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13251
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "1.7"
+   },
+   {
+    "lettre": "b",
+    "texte": "2.5"
+   },
+   {
+    "lettre": "c",
+    "texte": "3.2"
+   },
+   {
+    "lettre": "d",
+    "texte": "4.0"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-parallel-computer-architectures-moyenne-3",
+  "theme": "parallel computer architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which statement correctly contrasts a shared-memory multiprocessor with a distributed-memory multicomputer such as a cluster of separate computers?",
+  "corrige_markdown": "### Method reminder\n\nAsk where the memory is and how the processors exchange data: through a common address space, or by messages over a network.\n\n### Solution\n\nIn a **shared-memory** machine all processors read and write one common address space, so they communicate through shared variables (and need synchronisation such as locks). In a **distributed-memory** cluster each node has its own private memory, so nodes cooperate by **sending messages** over a network.\n\nThe other statements are false: the roles are reversed in the first one, both architectures can be MIMD, and clusters scale by adding nodes while still needing synchronisation (through messages).\n\n**Answer: d.**",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "In a shared-memory machine each processor has private memory and exchanges messages, whereas all nodes of a cluster access one common address space."
+   },
+   {
+    "lettre": "b",
+    "texte": "Only shared-memory machines can be MIMD; clusters are always SIMD."
+   },
+   {
+    "lettre": "c",
+    "texte": "Clusters never need any synchronisation between nodes because they do not share memory."
+   },
+   {
+    "lettre": "d",
+    "texte": "In a cluster each node has its own private memory and nodes cooperate by sending messages, whereas processors of a shared-memory machine use one common address space."
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-parallel-computer-architectures-moyenne-4",
+  "theme": "parallel computer architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A programmer must add two arrays of 1000 numbers element by element, and also run a loop whose next step depends, through many `if` tests, on the data just read. Explain why a SIMD (vector) processor suits the first task much better than the second.",
+  "corrige_markdown": "### Method reminder\n\nA SIMD unit applies one instruction to many data items in lock-step. It is efficient when every element needs exactly the same operation and the elements are independent.\n\n### Solution\n\n**Array addition.** The same operation (add) is applied to each pair of elements, and element *i* does not depend on element *j*. The vector unit can load many elements into wide registers and perform, say, 8 or 16 additions with one instruction, so the 1000 additions need only a few dozen instructions.\n\n**Data-dependent branching loop.** Each element may need a different path through the `if` tests, so the elements would need *different* instructions at the same time, which a single broadcast instruction cannot provide. Lanes that do not take a branch must be switched off (masked), wasting hardware, and a loop-carried dependence (step *k+1* needs the result of step *k*) prevents the elements from being processed together at all.\n\n**Conclusion.** SIMD gives large speed-ups on regular, independent data-parallel work (array arithmetic, pixels); irregular, branch-heavy work is better handled by a MIMD machine or a conventional core.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13183,
+   13227
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-parallel-computer-architectures-elevee-5",
+  "theme": "parallel computer architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A rendering job takes 100 s on one processor, and 90 s of it parallelises perfectly. A manager buys a 10-processor machine expecting a 10-fold speed-up. Ignoring communication overhead, what speed-up is actually obtained (to 1 decimal place)?",
+  "corrige_markdown": "### Method reminder\n\nAmdahl's law: speed-up = 1 / ((1 - p) + p / n), where p is the parallelisable fraction and n the number of processors. The sequential fraction limits the gain whatever n is.\n\n### Solution\n\np = 0.9 and n = 10, so the time is 10 + 90 / 10 = 19 s and the speed-up is 100 / 19 = **5.3**.\n\nEven with an unlimited number of processors the time cannot fall below the 10 s sequential part, so the speed-up can never exceed 100 / 10 = 10. The 10-fold expectation is therefore impossible. The value 9.0 multiplies 10 by 0.9; 11.1 forgets the sequential 10 s (100 / 9).\n\n**Answer: a.**",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13251
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "5.3"
+   },
+   {
+    "lettre": "b",
+    "texte": "9.0"
+   },
+   {
+    "lettre": "c",
+    "texte": "10.0"
+   },
+   {
+    "lettre": "d",
+    "texte": "11.1"
+   }
+  ],
+  "reponse_correcte": "a"
+ }
+]

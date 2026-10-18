@@ -1,0 +1,218 @@
+[
+ {
+  "external_id": "cqc-infix-prefix-and-postfix-notation-faible-0",
+  "theme": "infix prefix and postfix notation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which of the following is the postfix (reverse Polish) form of the infix expression `(A + B) * C`?",
+  "corrige_markdown": "### Method reminder\n\nIn postfix notation the operator is written after its two operands, and brackets are not needed. Convert the innermost bracket first.\n\n### Solution\n\nThe bracket `(A + B)` becomes `A B +`. The result is then an operand of `*`, with `C` as the other operand, so the operator `*` goes after both: `A B + C *`.\n\nThe other options: `* + A B C` is the **prefix** form of the same expression; `A B C + *` means A * (B + C); `A + B * C` is an infix expression.\n\n**Answer: d.**",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13187
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "`A B C + *`"
+   },
+   {
+    "lettre": "b",
+    "texte": "`A + B * C`"
+   },
+   {
+    "lettre": "c",
+    "texte": "`* + A B C`"
+   },
+   {
+    "lettre": "d",
+    "texte": "`A B + C *`"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-infix-prefix-and-postfix-notation-faible-1",
+  "theme": "infix prefix and postfix notation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A postfix expression is `6 2 3 + *`. What is its value?",
+  "corrige_markdown": "### Method reminder\n\nEvaluate a postfix expression left to right with a stack: push each number; for an operator pop two values, apply it (the first popped is the right-hand operand) and push the result.\n\n### Solution\n\n| Symbol | Action | Stack (bottom to top) |\n|---|---|---|\n| 6, 2, 3 | push | 6, 2, 3 |\n| `+` | 2 + 3 = 5 | 6, 5 |\n| `*` | 6 x 5 = 30 | 30 |\n\nThe value is **30** (infix form `6 * (2 + 3)`). The value 15 would be `6 * 2 + 3`, 11 is `6 + 2 + 3`, and 36 is `6 * 2 * 3`.\n\n**Answer: c.**",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13235,
+   13238
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "11"
+   },
+   {
+    "lettre": "b",
+    "texte": "15"
+   },
+   {
+    "lettre": "c",
+    "texte": "30"
+   },
+   {
+    "lettre": "d",
+    "texte": "36"
+   }
+  ],
+  "reponse_correcte": "c"
+ },
+ {
+  "external_id": "cqc-infix-prefix-and-postfix-notation-moyenne-2",
+  "theme": "infix prefix and postfix notation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "What is the value of the prefix expression `- * 8 3 / 12 4`?",
+  "corrige_markdown": "### Method reminder\n\nIn prefix notation the operator comes before its two operands. Read from the right with a stack, or rebuild the infix form: the first operator after the `-` governs the first operand group.\n\n### Solution\n\nGroup the expression: `-` has two operands, `* 8 3` and `/ 12 4`. So it is `(8 * 3) - (12 / 4)` = 24 - 3 = **21**.\n\nThe value 3 comes from the wrong grouping `(8 * 3 - 12) / 4`; 27 from adding instead of subtracting; 36 from `24 + 12`.\n\n**Answer: b.**",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13187,
+   13235
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "3"
+   },
+   {
+    "lettre": "b",
+    "texte": "21"
+   },
+   {
+    "lettre": "c",
+    "texte": "27"
+   },
+   {
+    "lettre": "d",
+    "texte": "36"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-infix-prefix-and-postfix-notation-moyenne-3",
+  "theme": "infix prefix and postfix notation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A postfix expression `5 1 2 + 4 * + 3 -` is evaluated with a stack. What does the stack contain, from bottom to top, immediately after the `*` has been executed?",
+  "corrige_markdown": "### Method reminder\n\nTrace the stack symbol by symbol: numbers are pushed, an operator replaces the top two values by its result.\n\n### Solution\n\n| Symbol | Action | Stack (bottom to top) |\n|---|---|---|\n| 5 | push | 5 |\n| 1, 2 | push | 5, 1, 2 |\n| `+` | 1 + 2 = 3 | 5, 3 |\n| 4 | push | 5, 3, 4 |\n| `*` | 3 x 4 = 12 | 5, 12 |\n\nAfter `*` the stack holds **5, 12**. (The final result is 5 + 12 - 3 = 14.)\n\nThe option 5, 7 adds 3 and 4 instead of multiplying; 17 is already the result of the following `+`; 5, 3, 4 is the stack just *before* the `*`.\n\n**Answer: a.**",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13235,
+   13238
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "5, 12"
+   },
+   {
+    "lettre": "b",
+    "texte": "5, 3, 4"
+   },
+   {
+    "lettre": "c",
+    "texte": "5, 7"
+   },
+   {
+    "lettre": "d",
+    "texte": "17"
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "external_id": "cqc-infix-prefix-and-postfix-notation-moyenne-4",
+  "theme": "infix prefix and postfix notation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Convert the infix expression `(a + b) * (c - d) / e` to postfix, showing the operator stack, and then evaluate the postfix form for a = 6, b = 2, c = 9, d = 5, e = 4.",
+  "corrige_markdown": "### Method reminder\n\nConvert with an operator stack: operands go straight to the output; an operator first pops operators of higher or equal precedence (left-associative); `(` is pushed and `)` pops back to the matching `(`. `*` and `/` have the same precedence and are taken left to right.\n\n### Solution\n\n| Token | Output | Operator stack |\n|---|---|---|\n| `(` |  | `(` |\n| a | a | `(` |\n| `+` | a | `(` `+` |\n| b | a b | `(` `+` |\n| `)` | a b + | empty |\n| `*` | a b + | `*` |\n| `(` | a b + | `*` `(` |\n| c | a b + c | `*` `(` |\n| `-` | a b + c | `*` `(` `-` |\n| d | a b + c d | `*` `(` `-` |\n| `)` | a b + c d - | `*` |\n| `/` | a b + c d - * | `/` (the `*` is popped first: same precedence, left to right) |\n| e | a b + c d - * e | `/` |\n| end | a b + c d - * e / | empty |\n\nPostfix form: `a b + c d - * e /`.\n\n**Evaluation** (a = 6, b = 2, c = 9, d = 5, e = 4): `6 2 +` gives 8; `9 5 -` gives 4; `*` gives 8 x 4 = 32; then `32 4 /` gives **8**. Directly: (6 + 2) x (9 - 5) / 4 = 8 x 4 / 4 = 8, which agrees.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13187,
+   13235
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-infix-prefix-and-postfix-notation-elevee-5",
+  "theme": "infix prefix and postfix notation",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In the infix expression `A * B ^ C ^ D - E`, the symbol `^` means exponentiation, has higher precedence than `*`, which in turn has higher precedence than `-`, and `^` is right-associative (`B ^ C ^ D` means `B ^ (C ^ D)`). Which is the correct postfix form?",
+  "corrige_markdown": "### Method reminder\n\nWhen converting, an operator is only popped by a later one if the stacked operator has higher precedence, or equal precedence and the new one is left-associative. A right-associative operator is therefore not popped by an equal one.\n\n### Solution\n\nWork out the structure first: `B ^ (C ^ D)` is computed before the multiplication by A, and the subtraction of E is done last: `(A * (B ^ (C ^ D))) - E`.\n\nPostfix of `C ^ D` is `C D ^`; with B it is `B C D ^ ^`; multiplying by A gives `A B C D ^ ^ *`; subtracting E gives **`A B C D ^ ^ * E -`**. (A stack trace gives the same output.)\n\nThe other options: `A B C ^ D ^ * E -` treats `^` as left-associative, `(B ^ C) ^ D`; `A B * C ^ D ^ E -` ignores precedence and works from left to right; `A B C D ^ ^ E - *` subtracts E before multiplying, which is `A * (B ^ C ^ D - E)`.\n\n**Answer: d.**",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13187,
+   13235
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "`A B C ^ D ^ * E -`"
+   },
+   {
+    "lettre": "b",
+    "texte": "`A B * C ^ D ^ E -`"
+   },
+   {
+    "lettre": "c",
+    "texte": "`A B C D ^ ^ E - *`"
+   },
+   {
+    "lettre": "d",
+    "texte": "`A B C D ^ ^ * E -`"
+   }
+  ],
+  "reponse_correcte": "d"
+ }
+]

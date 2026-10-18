@@ -1,0 +1,202 @@
+[
+ {
+  "external_id": "cqc-risc-and-cisc-architectures-faible-0",
+  "theme": "risc and cisc architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which of the following is a characteristic of a **RISC** processor?",
+  "corrige_markdown": "### Method reminder\n\nRISC keeps the instruction set small and regular so that each instruction is simple, quick and easy to pipeline.\n\n### Solution\n\nA RISC processor uses **fixed-length instructions** and most of them complete in one clock cycle. Variable-length instructions with many addressing modes, microcoded control and memory-to-memory operations are features of CISC processors.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13183,
+   13240
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Fixed-length instructions, most of which execute in one clock cycle"
+   },
+   {
+    "lettre": "b",
+    "texte": "Variable-length instructions with many addressing modes"
+   },
+   {
+    "lettre": "c",
+    "texte": "Complex instructions interpreted by microcode that work directly on memory"
+   },
+   {
+    "lettre": "d",
+    "texte": "A large instruction set where one instruction can do a whole task"
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "external_id": "cqc-risc-and-cisc-architectures-faible-1",
+  "theme": "risc and cisc architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "(a) State what the abbreviations RISC and CISC stand for. (b) Give two reasons why the fixed-length, simple instructions of a RISC processor make pipelining easier.",
+  "corrige_markdown": "### Method reminder\n\nPipelining overlaps the stages of several instructions, so it works best when every instruction needs the same, predictable amount of work in each stage.\n\n### Solution\n\n**(a)** RISC: Reduced Instruction Set Computer. CISC: Complex Instruction Set Computer.\n\n**(b)** Any two of:\n- Fixed-length instructions can be fetched and decoded in the same time, so the stages stay in step.\n- Most instructions take one cycle, so the pipeline stages are of equal duration and few instructions stall the others.\n- Only LOAD and STORE access memory, so the memory stage is needed by a few instructions only and conflicts are easier to predict.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13183,
+   13240
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-risc-and-cisc-architectures-moyenne-2",
+  "theme": "risc and cisc architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "The same program is compiled for two processors, both running at 100 MHz. On the CISC processor it takes 200 instructions with an average of 4 clock cycles per instruction. On the RISC processor it takes 500 instructions with an average of 1.2 clock cycles per instruction. Which statement is correct?",
+  "corrige_markdown": "### Method reminder\n\nExecution time = number of instructions x average cycles per instruction x clock period. Compare the products, not only the instruction counts.\n\n### Solution\n\nClock period = 1 / 100 MHz = 10 ns. CISC: 200 x 4 = 800 cycles = 8.0 microseconds. RISC: 500 x 1.2 = 600 cycles = 6.0 microseconds. The RISC processor is faster here although it runs more instructions. The option 2 us against 5 us ignores the cycles per instruction, and 600 ns is a unit error (600 cycles x 10 ns = 6000 ns).",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13183,
+   13240
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "CISC is faster, because 200 instructions take 2 microseconds against 5 microseconds for 500."
+   },
+   {
+    "lettre": "b",
+    "texte": "They take the same time, because both clocks run at 100 MHz."
+   },
+   {
+    "lettre": "c",
+    "texte": "RISC is faster: 6.0 microseconds against 8.0 microseconds."
+   },
+   {
+    "lettre": "d",
+    "texte": "RISC is faster: 600 ns against 800 ns."
+   }
+  ],
+  "reponse_correcte": "c"
+ },
+ {
+  "external_id": "cqc-risc-and-cisc-architectures-moyenne-3",
+  "theme": "risc and cisc architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A program contains 30 statements of the form `X = Y + Z`, where X, Y and Z are variables in memory. On a RISC load/store processor each statement needs `LOAD`, `LOAD`, `ADD` and `STORE` (no register is reused). A CISC processor performs the same statement with one memory-to-memory ADD instruction. How many instructions does each program contain?",
+  "corrige_markdown": "### Method reminder\n\nIn a load/store architecture only LOAD and STORE access memory, so the arithmetic instruction works on registers that must first be filled and later written back.\n\n### Solution\n\nRISC: 4 instructions per statement x 30 = **120** instructions. CISC: 1 x 30 = **30** instructions. The RISC program is four times longer, but each instruction is simple and fast. The values 90 (forgetting the STORE) and 60 (forgetting both loads) come from counting too few instructions, and the swapped answer confuses the two architectures.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13183,
+   13240
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "RISC: 90 instructions, CISC: 30 instructions"
+   },
+   {
+    "lettre": "b",
+    "texte": "RISC: 120 instructions, CISC: 30 instructions"
+   },
+   {
+    "lettre": "c",
+    "texte": "RISC: 30 instructions, CISC: 120 instructions"
+   },
+   {
+    "lettre": "d",
+    "texte": "RISC: 60 instructions, CISC: 30 instructions"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-risc-and-cisc-architectures-moyenne-4",
+  "theme": "risc and cisc architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Most smartphones use RISC-based processors (ARM design) while most desktop computers use CISC-based x86 processors. Explain why a RISC design suits a battery-powered phone, and give one disadvantage of RISC.",
+  "corrige_markdown": "### Method reminder\n\nSimple, regular instructions need less decoding logic and fewer transistors, which saves power. The price is that more instructions are needed for the same task.\n\n### Solution\n\n**Why RISC suits a phone.** Simple fixed-length instructions need a small, simple decoding circuit, so fewer transistors switch and less power and heat are produced; most instructions run in one cycle, which also suits pipelining at a modest clock speed. This gives a long battery life.\n\n**Disadvantage.** The same task needs more instructions (several LOAD/STORE and register operations instead of one complex instruction), so programs are longer, take more memory and the compiler has to do more work. (Modern x86 processors also translate their complex instructions into simpler internal operations, so the two designs have moved closer together.)",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13183,
+   13240
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-risc-and-cisc-architectures-elevee-5",
+  "theme": "risc and cisc architectures",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "An ideal 5-stage pipeline in a RISC processor completes one stage per clock cycle. There are no stalls or branches, and 100 instructions are executed. How many clock cycles are needed to complete all 100 instructions?",
+  "corrige_markdown": "### Method reminder\n\nIn an ideal pipeline the first instruction needs as many cycles as there are stages; after that one instruction finishes at every cycle.\n\n### Solution\n\nFirst instruction: 5 cycles. Each of the remaining 99 instructions finishes one cycle after the previous one: 5 + 99 = **104** cycles. Without a pipeline the 100 instructions would take 5 x 100 = 500 cycles, so the speed-up is 500 / 104, about 4.8, close to the number of stages. The answer 100 ignores the pipeline fill, and 105 counts 100 extra cycles after the first 5.",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13183,
+   13240
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "100"
+   },
+   {
+    "lettre": "b",
+    "texte": "105"
+   },
+   {
+    "lettre": "c",
+    "texte": "500"
+   },
+   {
+    "lettre": "d",
+    "texte": "104"
+   }
+  ],
+  "reponse_correcte": "d"
+ }
+]

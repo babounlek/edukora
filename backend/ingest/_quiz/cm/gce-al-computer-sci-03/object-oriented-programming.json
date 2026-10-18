@@ -1,0 +1,231 @@
+[
+ {
+  "external_id": "cqc-object-oriented-programming-faible-0",
+  "theme": "object-oriented programming",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In a program, a class Car is defined and the statement `myCar = Car()` is executed. What is `myCar`?",
+  "corrige_markdown": "### Method reminder\n\nA class is a template; an object is one instance created from that template, holding its own data.\n\n### Solution\n\n`Car` is the class (the template). The statement creates one concrete **object (an instance of Car)** and stores a reference to it in `myCar`. A method is a procedure defined in a class and an attribute is a data item of the object; `myCar` is neither.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13181,
+   13202,
+   13207,
+   13234
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "A method of the class Car"
+   },
+   {
+    "lettre": "b",
+    "texte": "An object, that is, an instance of the class Car"
+   },
+   {
+    "lettre": "c",
+    "texte": "A class that inherits from Car"
+   },
+   {
+    "lettre": "d",
+    "texte": "An attribute of the class Car"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-object-oriented-programming-faible-1",
+  "theme": "object-oriented programming",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In a BankAccount class, the attribute balance is private and can only be changed through the methods deposit() and withdraw(). Which object-oriented concept is this?",
+  "corrige_markdown": "### Method reminder\n\nEncapsulation bundles data with the methods that act on it and hides the data from direct outside access.\n\n### Solution\n\nMaking the data private and allowing changes only through the class's own methods is **encapsulation**. It lets the class check each change, for example refusing a withdrawal larger than the balance. Inheritance creates a subclass from a class, polymorphism lets one method name act differently on different classes, and overloading gives several versions of a method with different parameters.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13181,
+   13202,
+   13207,
+   13234
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Inheritance"
+   },
+   {
+    "lettre": "b",
+    "texte": "Polymorphism"
+   },
+   {
+    "lettre": "c",
+    "texte": "Encapsulation"
+   },
+   {
+    "lettre": "d",
+    "texte": "Overloading"
+   }
+  ],
+  "reponse_correcte": "c"
+ },
+ {
+  "external_id": "cqc-object-oriented-programming-moyenne-0",
+  "theme": "object-oriented programming",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "What is printed when the following program is run?\n\n```python\nclass Person:\n    def __init__(self, name):\n        self.name = name\n    def role(self):\n        return \"person\"\n    def intro(self):\n        return self.name + \" is a \" + self.role()\n\nclass Teacher(Person):\n    def role(self):\n        return \"teacher\"\n\nclass Student(Person):\n    pass\n\npeople = [Person(\"Ako\"), Teacher(\"Neba\"), Student(\"Fon\")]\nprint(\" | \".join(p.intro() for p in people))\n```",
+  "corrige_markdown": "### Method reminder\n\nA subclass inherits the methods of its superclass. If it redefines (overrides) a method, calls on its objects use the new version, even when the call comes from an inherited method.\n\n### Solution\n\n`Person.intro` calls `self.role()`, and Python chooses the version of `role` that belongs to the real class of the object. For the Person object it is \"person\", for the Teacher object the overriding version gives \"teacher\", and the Student class does not override `role`, so it inherits \"person\". The output (confirmed by running the program) is `Ako is a person | Neba is a teacher | Fon is a person`.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13202,
+   13207,
+   13234
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Ako is a person | Neba is a teacher | Fon is a person"
+   },
+   {
+    "lettre": "b",
+    "texte": "Ako is a person | Neba is a teacher | Fon is a student"
+   },
+   {
+    "lettre": "c",
+    "texte": "Ako is a person | Neba is a person | Fon is a person"
+   },
+   {
+    "lettre": "d",
+    "texte": "Ako is a teacher | Neba is a teacher | Fon is a teacher"
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "external_id": "cqc-object-oriented-programming-moyenne-1",
+  "theme": "object-oriented programming",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In the design of a school system, which of the following relationships should be modelled by inheritance (an \"is-a\" relationship)?",
+  "corrige_markdown": "### Method reminder\n\nInheritance models \"is a\": every object of the subclass is also an object of the superclass. A \"has a\" relationship is modelled by an attribute that refers to another object.\n\n### Solution\n\nA teacher is a person, so Teacher can be a subclass of Person. A car has an engine, a class has students and a library has books are \"has-a\" relationships: they are modelled with attributes (composition), not inheritance. The correct answer is **a Teacher and a Person**.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13202,
+   13207,
+   13234
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "A Car and its Engine"
+   },
+   {
+    "lettre": "b",
+    "texte": "A Library and its Books"
+   },
+   {
+    "lettre": "c",
+    "texte": "A ClassRoom and its Students"
+   },
+   {
+    "lettre": "d",
+    "texte": "A Teacher and a Person"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-object-oriented-programming-moyenne-2",
+  "theme": "object-oriented programming",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "(a) Write, in Python or in clear pseudocode, a class BankAccount with a private attribute balance and methods deposit, withdraw (which must refuse an amount larger than the balance) and get_balance. (5 marks)\n\n(b) Explain how your class illustrates encapsulation. (2 marks)\n\n(c) State what happens, and why, if outside code tries to set the balance directly to a negative number. (1 mark)",
+  "corrige_markdown": "### Method reminder\n\nEncapsulation: declare the data private and expose only public methods that validate every change.\n\n### Solution\n\n**(a)** A possible solution (run to check; the two test lines print `False 7500 / True 4500`):\n\n```python\nclass BankAccount:\n    def __init__(self, owner, balance=0):\n        self.owner = owner\n        self.__balance = balance\n    def deposit(self, amount):\n        if amount > 0:\n            self.__balance += amount\n    def withdraw(self, amount):\n        if 0 < amount <= self.__balance:\n            self.__balance -= amount\n            return True\n        return False\n    def get_balance(self):\n        return self.__balance\n\nacc = BankAccount(\"Mbah\", 5000)\nacc.deposit(2500)\nprint(acc.withdraw(10000), acc.get_balance())\nprint(acc.withdraw(3000), acc.get_balance())\n```\n\n**(b)** The balance is hidden inside the object and can be changed only through deposit and withdraw, which check the amounts (positive deposit, withdrawal not above the balance). The data and the methods that act on it are held together in one class.\n\n**(c)** Because the attribute is private, direct assignment from outside the class is not allowed (in Python the name is mangled, so the attempt does not change the real balance); the only legal way is through the public methods, which would reject a negative amount.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13202,
+   13207,
+   13234
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-object-oriented-programming-elevee-0",
+  "theme": "object-oriented programming",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "What is printed when the following program is run?\n\n```python\nclass Item:\n    count = 0\n    def __init__(self, price):\n        self._price = price\n        Item.count += 1\n    def total(self, qty):\n        return self._price * qty\n\nclass Discounted(Item):\n    def __init__(self, price, rate):\n        super().__init__(price)\n        self.rate = rate\n    def total(self, qty):\n        return super().total(qty) * (1 - self.rate)\n\na = Item(1000)\nb = Discounted(2000, 0.25)\nc = Discounted(500, 0.5)\nprint(Item.count, a.total(3), b.total(2), c.total(4))\n```",
+  "corrige_markdown": "### Method reminder\n\nA class attribute is shared by all objects of the class and by its subclasses. `super()` calls the version of a method defined in the superclass, and an overriding method can extend it.\n\n### Solution\n\n`count` belongs to the class Item, and `Item.__init__` is called for each of the three objects (directly for a, through `super().__init__` for b and c), so `Item.count` is 3. `a.total(3)` = 1000 x 3 = 3000. For b, `super().total(2)` = 4000, then x (1 - 0.25) = 3000.0. For c, `super().total(4)` = 2000, then x 0.5 = 1000.0. The output is **`3 3000 3000.0 1000.0`**. Option a would be right if each object had its own counter; option c ignores the override in Discounted; option d multiplies by the rate instead of by (1 - rate).",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13181,
+   13202,
+   13207,
+   13234
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "1 3000 3000.0 1000.0"
+   },
+   {
+    "lettre": "b",
+    "texte": "3 3000 3000.0 1000.0"
+   },
+   {
+    "lettre": "c",
+    "texte": "3 3000 4000 2000"
+   },
+   {
+    "lettre": "d",
+    "texte": "3 3000 1000.0 1000.0"
+   }
+  ],
+  "reponse_correcte": "b"
+ }
+]

@@ -1,0 +1,217 @@
+[
+ {
+  "external_id": "cqc-memory-management-faible-0",
+  "theme": "memory management",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Under paging, a program is cut into equal-sized pieces called pages. What name is given to the equal-sized slots of **physical** memory that receive these pieces?",
+  "corrige_markdown": "### Method reminder\n\nPaging splits logical memory into pages and physical memory into blocks of the same size, so that any page can be loaded into any free block.\n\n### Solution\n\nThe fixed-size blocks of physical memory are called **frames**. A page of a process is placed in a free frame, and the page table records which frame holds which page. Segments are variable-size logical units and partitions are variable-size areas used in partitioned allocation, so neither is the answer.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13198
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Pages"
+   },
+   {
+    "lettre": "b",
+    "texte": "Segments"
+   },
+   {
+    "lettre": "c",
+    "texte": "Frames"
+   },
+   {
+    "lettre": "d",
+    "texte": "Partitions"
+   }
+  ],
+  "reponse_correcte": "c"
+ },
+ {
+  "external_id": "cqc-memory-management-faible-1",
+  "theme": "memory management",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "In a virtual memory system, a **page fault** occurs when:",
+  "corrige_markdown": "### Method reminder\n\nUnder demand paging a page is loaded only when it is first needed, so the hardware must signal the operating system when a referenced page is not in RAM.\n\n### Solution\n\nA page fault is raised when a running process refers to a page that is not currently in a frame of main memory. The operating system then loads the page from disk into a free frame, updates the page table and restarts the instruction. The other options describe situations (a full disk, concurrent writing, a full table) that are not the definition of a page fault.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13198
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "a running process refers to a page that is not currently held in a frame of RAM"
+   },
+   {
+    "lettre": "b",
+    "texte": "two processes try to write to the same page at the same time"
+   },
+   {
+    "lettre": "c",
+    "texte": "the page table has no free entry left for a new process"
+   },
+   {
+    "lettre": "d",
+    "texte": "the hard disk used for swapping has no free space left"
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "external_id": "cqc-memory-management-moyenne-2",
+  "theme": "memory management",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A system uses paging with a page size of 4096 bytes. A process generates the logical address 10000 (decimal). The page table of the process maps page 2 to frame 7. What is the corresponding physical address?",
+  "corrige_markdown": "### Method reminder\n\nDivide the logical address by the page size: the quotient is the page number and the remainder is the offset. The physical address is (frame number $\\times$ page size) + offset.\n\n### Solution\n\nPage number $= \\lfloor 10000 / 4096 \\rfloor = 2$ and offset $= 10000 - 2 \\times 4096 = 1808$.\n\nThe page table gives frame 7, so physical address $= 7 \\times 4096 + 1808 = 28672 + 1808 = 30480$.\n\nThe value 28672 forgets the offset, 10000 is the unchanged logical address (no translation), and 1815 wrongly adds the frame number to the offset instead of multiplying it by the page size.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13198,
+   13207
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "1815"
+   },
+   {
+    "lettre": "b",
+    "texte": "10000"
+   },
+   {
+    "lettre": "c",
+    "texte": "28672"
+   },
+   {
+    "lettre": "d",
+    "texte": "30480"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-memory-management-moyenne-3",
+  "theme": "memory management",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A computer has a small amount of RAM and runs many large programs at once. The processor spends most of its time moving pages between RAM and the disk, so very little useful work is done and CPU utilisation falls sharply. What is this condition called?",
+  "corrige_markdown": "### Method reminder\n\nWhen the combined working sets of the running processes do not fit in RAM, pages that are needed are constantly replaced, causing a continuous stream of page faults.\n\n### Solution\n\nThis condition is **thrashing**. Each process keeps faulting on pages that were just evicted, so the system is busy with paging instead of executing instructions. It is cured by reducing the number of processes in memory, adding RAM or improving page replacement. Compaction rearranges free blocks in a partitioned memory, internal fragmentation is wasted space inside an allocated block, and spooling buffers input and output on disk; none of them causes this symptom.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13198
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Compaction"
+   },
+   {
+    "lettre": "b",
+    "texte": "Thrashing"
+   },
+   {
+    "lettre": "c",
+    "texte": "Internal fragmentation"
+   },
+   {
+    "lettre": "d",
+    "texte": "Spooling"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-memory-management-moyenne-4",
+  "theme": "memory management",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A process needs 10300 bytes of memory and the system uses paging with a page size of 4096 bytes.\n\n(a) How many frames are allocated to the process and how many bytes are wasted? (3 marks)\n\n(b) Name the type of fragmentation shown by your answer to (a) and explain why paging does not suffer from **external** fragmentation. (3 marks)",
+  "corrige_markdown": "### Method reminder\n\nMemory is allocated in whole frames, so the number of frames is the size divided by the frame size, rounded up. Unused space inside the last frame is internal fragmentation.\n\n### Solution\n\n**(a)** $10300 / 4096 \\approx 2.51$, rounded up gives **3 frames** (12288 bytes). Wasted space $= 12288 - 10300 = \\mathbf{1988}$ bytes, all in the last page.\n\n**(b)** This is **internal fragmentation**: space is lost inside an allocated block. Paging has no external fragmentation because every frame has the same size and a page can be placed in any free frame, so a request can always be satisfied as long as enough frames are free in total, even if they are not contiguous; no unusable holes between variable-size blocks appear.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13195,
+   13198
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-memory-management-elevee-5",
+  "theme": "memory management",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A process with three frames, all initially empty, references the following pages in order:\n\n`7, 0, 1, 2, 0, 3, 0, 4, 2, 3`\n\nThe operating system uses the **least recently used (LRU)** page replacement algorithm. How many page faults occur?",
+  "corrige_markdown": "### Method reminder\n\nLRU keeps a record of when each resident page was last used and, when no frame is free, evicts the page whose last use is the oldest. A reference to a page already in a frame is a hit and refreshes its last-use time.\n\n### Solution\n\n| Reference | Frames after (oldest use first) | Result |\n|---|---|---|\n| 7 | 7 | fault |\n| 0 | 7 0 | fault |\n| 1 | 7 0 1 | fault |\n| 2 | 0 1 2 (7 evicted) | fault |\n| 0 | 1 2 0 | hit |\n| 3 | 2 0 3 (1 evicted) | fault |\n| 0 | 2 3 0 | hit |\n| 4 | 3 0 4 (2 evicted) | fault |\n| 2 | 0 4 2 (3 evicted) | fault |\n| 3 | 4 2 3 (0 evicted) | fault |\n\nThere are 2 hits out of 10 references, so **8 page faults**. The value 9 is what first-in first-out replacement gives, 5 is the number of distinct pages (the minimum possible) and 10 assumes that no reference is ever a hit.",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13198,
+   13207
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "5"
+   },
+   {
+    "lettre": "b",
+    "texte": "8"
+   },
+   {
+    "lettre": "c",
+    "texte": "9"
+   },
+   {
+    "lettre": "d",
+    "texte": "10"
+   }
+  ],
+  "reponse_correcte": "b"
+ }
+]

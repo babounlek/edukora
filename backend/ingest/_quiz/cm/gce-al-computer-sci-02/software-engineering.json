@@ -1,0 +1,216 @@
+[
+ {
+  "external_id": "cqc-software-engineering-faible-0",
+  "theme": "software engineering",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A programmer writes the following statements to display the average of two marks:\n\n```python\na = 10\nb = 20\nprint(a + b / 2)\n```\n\nThe program runs without any message but displays 20.0 instead of 15.0. What type of error is this?",
+  "corrige_markdown": "### Method reminder\n\nA syntax error breaks the grammar of the language, a run-time error stops the program during execution, and a logic error lets the program run but produces wrong results because the algorithm is wrong.\n\n### Solution\n\nBecause division is done before addition, the expression evaluates as $10 + (20/2) = 20.0$. The program is grammatically correct and does not crash, but its result is wrong: this is a **logic error**. The correct expression is `(a + b) / 2`, which gives 15.0 (both outputs were confirmed by running the code). It is found by testing, not by the translator.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13200
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Syntax error"
+   },
+   {
+    "lettre": "b",
+    "texte": "Logic error"
+   },
+   {
+    "lettre": "c",
+    "texte": "Run-time error"
+   },
+   {
+    "lettre": "d",
+    "texte": "Linker error"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-software-engineering-faible-1",
+  "theme": "software engineering",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which of the following lists the stages of the traditional **waterfall** model of software development in the correct order?",
+  "corrige_markdown": "### Method reminder\n\nThe waterfall model is a linear sequence in which each stage is completed before the next one starts, from understanding what is wanted to maintaining the finished product.\n\n### Solution\n\nThe correct order is: requirements analysis, design, implementation (coding), testing, then maintenance. Testing cannot come before the program exists, and design must follow analysis of the requirements, so the other orders are wrong.",
+  "difficulte_estimee": "FAIBLE",
+  "source_exercises": [
+   13181,
+   13195
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Design, requirements analysis, testing, implementation, maintenance"
+   },
+   {
+    "lettre": "b",
+    "texte": "Requirements analysis, implementation, design, maintenance, testing"
+   },
+   {
+    "lettre": "c",
+    "texte": "Implementation, requirements analysis, design, testing, maintenance"
+   },
+   {
+    "lettre": "d",
+    "texte": "Requirements analysis, design, implementation, testing, maintenance"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-software-engineering-moyenne-2",
+  "theme": "software engineering",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A school wants a new timetable application. The head teacher cannot yet describe all her needs precisely and expects them to change as she sees early versions. Which development approach is the most suitable?",
+  "corrige_markdown": "### Method reminder\n\nChoose the lifecycle from the stability of the requirements: stable and fully known requirements suit a plan-driven model, while changing requirements need short iterations with regular feedback from the user.\n\n### Solution\n\nAn **agile / iterative approach with prototypes** delivers a working version early, collects feedback and adapts the requirements in the next cycle. The waterfall model assumes requirements are fixed at the start, a single release after all coding gives feedback too late, and skipping analysis produces software that does not meet any need.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13181,
+   13195
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "The waterfall model, fixing all requirements before any design starts"
+   },
+   {
+    "lettre": "b",
+    "texte": "A single release of the whole product after all coding is finished"
+   },
+   {
+    "lettre": "c",
+    "texte": "Starting to code at once without any analysis or design"
+   },
+   {
+    "lettre": "d",
+    "texte": "An agile approach with short iterations and prototypes shown to the user"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "external_id": "cqc-software-engineering-moyenne-3",
+  "theme": "software engineering",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A function is meant to return `True` for a leap year (a year divisible by 4, except century years, which must also be divisible by 400):\n\n```python\ndef is_leap(y):\n    return y % 4 == 0 and y % 100 != 0\n```\n\nWhich **one** of these test values would reveal that the function is faulty?",
+  "corrige_markdown": "### Method reminder\n\nGood test data targets the boundary conditions and special cases of the specification. A test reveals a fault only if the expected result differs from the result actually produced.\n\n### Solution\n\n| Year | Expected | Function returns |\n|---|---|---|\n| 1900 | False | False |\n| 2000 | True | False |\n| 2023 | False | False |\n| 2024 | True | True |\n\n(The outputs of the function were checked by running it.) Only **2000** gives a different result from the one expected: it is a century year divisible by 400, a case the code does not handle. The other values pass, so they would not reveal the fault.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13200
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "1900"
+   },
+   {
+    "lettre": "b",
+    "texte": "2000"
+   },
+   {
+    "lettre": "c",
+    "texte": "2023"
+   },
+   {
+    "lettre": "d",
+    "texte": "2024"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "external_id": "cqc-software-engineering-moyenne-4",
+  "theme": "software engineering",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Explain the difference between **black-box testing** and **white-box testing**, and say, with a reason, which of the two a tester would use to check that every branch of an `if ... else` statement has been executed at least once. (5 marks)",
+  "corrige_markdown": "### Method reminder\n\nThe two approaches differ in what the tester knows: black-box tests are derived from the specification only, white-box tests are derived from the internal structure of the code.\n\n### Solution\n\n- **Black-box testing:** the tester treats the program as a box with inputs and outputs. Test data are chosen from the specification (typical, boundary and erroneous values) and the actual output is compared with the expected output. The code is not looked at.\n- **White-box testing:** the tester has access to the source code and chooses test data so that the internal paths are exercised, for example every statement, branch or loop is run at least once.\n- **Branch coverage** needs **white-box testing**, because the tester must see the structure of the code (the conditions of the `if ... else`) to know which data make each branch execute.",
+  "difficulte_estimee": "MOYENNE",
+  "source_exercises": [
+   13200
+  ],
+  "figures": [],
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": ""
+ },
+ {
+  "external_id": "cqc-software-engineering-elevee-5",
+  "theme": "software engineering",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A programmer tests the following function.\n\n```python\ndef average(lst):\n    return sum(lst) / len(lst)\n```\n\nThe call `average([4, 6, 8])` returns 6.0 as expected, but the call `average([])` stops the program with a `ZeroDivisionError`. Which statement classifies the problem and the best response correctly?",
+  "corrige_markdown": "### Method reminder\n\nClassify an error by when it appears and why. A run-time error appears during execution when an operation cannot be carried out; here the algorithm is right for normal data but a special case (empty input) was not considered, so the cure is validation plus a test for that case.\n\n### Solution\n\nThe program is grammatically correct (no syntax error) and the formula is right for non-empty lists, so it is not a logic error in the formula. The failure occurs during execution because of division by zero: a **run-time error caused by an unhandled edge case**. The best response is to validate the input (or handle the exception) and to add the empty list to the test plan as an extreme test. Both calls were confirmed by running the code.",
+  "difficulte_estimee": "ELEVEE",
+  "source_exercises": [
+   13200,
+   13207
+  ],
+  "figures": [],
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "A run-time error caused by an unhandled edge case: check for an empty list (or handle the exception) and add an empty-list test"
+   },
+   {
+    "lettre": "b",
+    "texte": "A syntax error: add brackets around `sum(lst) / len(lst)`"
+   },
+   {
+    "lettre": "c",
+    "texte": "A logic error in the formula: replace it with `sum(lst) * len(lst)`"
+   },
+   {
+    "lettre": "d",
+    "texte": "A linker error: the function must be moved to a separate file"
+   }
+  ],
+  "reponse_correcte": "a"
+ }
+]

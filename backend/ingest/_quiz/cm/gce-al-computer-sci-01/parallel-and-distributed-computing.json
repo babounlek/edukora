@@ -1,0 +1,201 @@
+[
+ {
+  "external_id": "cqc-parallel-and-distributed-computing-faible-0",
+  "theme": "parallel and distributed computing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Which statement correctly describes a **distributed** system, as opposed to a tightly coupled parallel computer?",
+  "corrige_markdown": "### Method reminder\n\nDistinguish by how the processing units are coupled: a parallel machine shares memory or a fast bus, while the nodes of a distributed system are independent computers linked by a network.\n\n### Solution\n\nIn a distributed system each computer has its own memory and operating system; they communicate by messages over a network, possibly in different towns. Option a describes a tightly coupled parallel computer, option c a mainframe, and option b is false (many processes run at the same time).\n\n**Answer: d.**",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "Its processors must share one main memory and one system bus."
+   },
+   {
+    "lettre": "b",
+    "texte": "It can only run one process at a time."
+   },
+   {
+    "lettre": "c",
+    "texte": "It consists of a single very powerful central machine used through terminals."
+   },
+   {
+    "lettre": "d",
+    "texte": "It consists of autonomous computers that do not share memory and cooperate by exchanging messages over a network."
+   }
+  ],
+  "reponse_correcte": "d",
+  "source_exercises": [
+   13181,
+   13195
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-parallel-and-distributed-computing-faible-1",
+  "theme": "parallel and distributed computing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A graphics processor applies the **same** instruction to many different data elements (for example the pixels of an image) at the same time. In Flynn's classification, which category is this?",
+  "corrige_markdown": "### Method reminder\n\nFlynn's classification counts instruction streams and data streams: SISD (single, single), SIMD (single instruction, many data), MISD (many instructions, single data), MIMD (many, many).\n\n### Solution\n\nOne instruction stream is applied to many data streams: this is SIMD (vector units and GPUs). SISD is an ordinary single-core processor, MIMD describes independent processors running different instructions on different data (multicore, clusters), and MISD is rarely built.\n\n**Answer: c.**",
+  "difficulte_estimee": "FAIBLE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "MIMD"
+   },
+   {
+    "lettre": "b",
+    "texte": "MISD"
+   },
+   {
+    "lettre": "c",
+    "texte": "SIMD"
+   },
+   {
+    "lettre": "d",
+    "texte": "SISD"
+   }
+  ],
+  "reponse_correcte": "c",
+  "source_exercises": [
+   13207
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-parallel-and-distributed-computing-moyenne-2",
+  "theme": "parallel and distributed computing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "Programme A takes 20% of its running time on a part that must run serially, and the remaining 80% can be perfectly shared among several processors. Using Amdahl's law, speedup = 1 / (s + (1 - s)/N), where s is the serial fraction and N the number of processors, what is the speedup on 4 processors?",
+  "corrige_markdown": "### Method reminder\n\nAmdahl's law: the serial fraction cannot be speeded up, so only the parallel fraction is divided by the number of processors. The speedup is therefore always less than N.\n\n### Solution\n\ns = 0.2 and N = 4: speedup = 1 / (0.2 + 0.8/4) = 1 / (0.2 + 0.2) = 1 / 0.4 = **2.5**.\n\n- 4 is the ideal (linear) speedup, which ignores the serial part.\n- 3.2 is 0.8 × 4, a wrong use of the formula.\n\n**Answer: b.**",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "2"
+   },
+   {
+    "lettre": "b",
+    "texte": "2.5"
+   },
+   {
+    "lettre": "c",
+    "texte": "3.2"
+   },
+   {
+    "lettre": "d",
+    "texte": "4"
+   }
+  ],
+  "reponse_correcte": "b",
+  "source_exercises": [
+   13181,
+   13227
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-parallel-and-distributed-computing-moyenne-3",
+  "theme": "parallel and distributed computing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A task takes 120 s on one processor. On 8 processors the same task takes 60 s. What is the **efficiency** (speedup divided by the number of processors)?",
+  "corrige_markdown": "### Method reminder\n\nSpeedup = time on one processor / time on N processors. Efficiency = speedup / N, which says what fraction of the processors' capacity is really used.\n\n### Solution\n\nSpeedup = 120 / 60 = 2. Efficiency = 2 / 8 = 0.25 = **25%**.\n\n- 50% is the ratio of the two times, 60/120, which is not divided by N.\n- 200% is the speedup written as a percentage.\n\n**Answer: a.**",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "QCM",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "25%"
+   },
+   {
+    "lettre": "b",
+    "texte": "50%"
+   },
+   {
+    "lettre": "c",
+    "texte": "200%"
+   },
+   {
+    "lettre": "d",
+    "texte": "800%"
+   }
+  ],
+  "reponse_correcte": "a",
+  "source_exercises": [
+   13181
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-parallel-and-distributed-computing-moyenne-4",
+  "theme": "parallel and distributed computing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A bank with branches in Douala, Bafoussam and Garoua is considering a **distributed** system, with one computer in each town linked by a network, instead of one large central computer.\n\n(a) State two differences between a distributed system and a parallel computer. (2 marks)\n\n(b) State two advantages of the distributed solution for the bank. (2 marks)\n\n(c) State two problems that the designers of the distributed system must solve. (2 marks)",
+  "corrige_markdown": "### Method reminder\n\nCompare the two architectures by memory sharing and communication, then weigh benefits (resource sharing, fault tolerance, scalability) against costs (network delays, consistency, security, partial failure).\n\n### Solution\n\n**(a)** In a parallel computer the processors are in one machine and share memory or a fast bus (tightly coupled), whereas in a distributed system the nodes are separate computers with their own memory, linked by a network (loosely coupled). Communication is by shared memory in the first case and by messages in the second; a distributed system can also be spread over a large geographical area.\n\n**(b)** Any two of: a failure of one branch computer does not stop the other branches (fault tolerance); each branch serves its customers locally, with fast response; the system can grow by adding computers (scalability); resources such as data and printers are shared across the branches; the cost of several ordinary machines may be lower than one very large one.\n\n**(c)** Any two of: network delays and failures; keeping the copies of the data consistent (for example, an account balance updated in two branches at once); synchronising the processes without a common clock; security of data travelling over the network; partial failure (one node fails while others continue); the complexity of managing many different machines.",
+  "difficulte_estimee": "MOYENNE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   13195,
+   13227,
+   13181
+  ],
+  "figures": []
+ },
+ {
+  "external_id": "cqc-parallel-and-distributed-computing-elevee-5",
+  "theme": "parallel and distributed computing",
+  "matiere": "Computer Science",
+  "cursus": [
+   {
+    "examen": "gce_al",
+    "serie": ""
+   }
+  ],
+  "enonce_markdown": "A program has a serial fraction of 10% (the other 90% can be run in parallel on any number of processors).\n\n(a) Using Amdahl's law, calculate the speedup on 8 processors. (2 marks)\n\n(b) What is the maximum speedup that could be obtained however many processors are used? Explain. (2 marks)\n\n(c) How many processors are needed to reach a speedup of 5? (3 marks)\n\n(d) A manager asks for a speedup of 10. Explain why this cannot be achieved. (1 mark)",
+  "corrige_markdown": "### Method reminder\n\nAmdahl's law: speedup(N) = 1 / (s + (1 - s)/N). As N grows, the term (1 - s)/N tends to 0, so the speedup tends to 1/s. To find N for a given speedup, solve the equation for N.\n\n### Solution\n\n**(a)** s = 0.1: speedup = 1 / (0.1 + 0.9/8) = 1 / (0.1 + 0.1125) = 1 / 0.2125 ≈ **4.71**.\n\n**(b)** When N becomes very large, 0.9/N tends to 0, so the speedup tends to 1/0.1 = **10**. The serial 10% always takes the same time, so it limits the whole program.\n\n**(c)** 1 / (0.1 + 0.9/N) = 5, so 0.1 + 0.9/N = 0.2, so 0.9/N = 0.1, so N = **9** processors. Check: 1 / (0.1 + 0.1) = 5.\n\n**(d)** A speedup of exactly 10 is the limit reached only for an infinite number of processors; for any real number of processors the speedup is strictly below 10, so it cannot be achieved (unless the serial fraction is reduced by changing the program).",
+  "difficulte_estimee": "ELEVEE",
+  "type_reponse": "OUVERTE",
+  "choix": [],
+  "reponse_correcte": "",
+  "source_exercises": [
+   13181,
+   13207
+  ],
+  "figures": []
+ }
+]
