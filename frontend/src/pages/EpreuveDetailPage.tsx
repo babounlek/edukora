@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, Crown, FileDown, Lock, Sparkles, Unlock, Zap } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, ChevronDown, Crown, FileDown, Lock, Sparkles, Unlock, Zap } from "lucide-react"
 
 import { getEpreuve, previewEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
-import { exerciceAnchorId, libelleLong } from "@/components/EpreuveSommaire"
+import { apercuQuestion, exerciceAnchorId, libelleDansSection, libelleLong, sectionsDEpreuve } from "@/components/EpreuveSommaire"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { SITE_NAME } from "@/lib/site"
@@ -25,7 +25,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
-import { t, useI18n } from "@/lib/i18n"
+import { t, tn, useI18n } from "@/lib/i18n"
 import { libelleNature, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
 import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
@@ -146,6 +146,41 @@ export function EpreuveDetailPage() {
   const cursusGroupes = formatCursusGroups(epreuve.cursus).map((g) => g.label).join(" · ")
   const lecteur = epreuveReaderPath(countryCode, epreuve.slug as string)
   const exercices = preview?.exercises ?? []
+  // Longue épreuve groupée (GCE : une question de dissertation par exercice) : sections, voir sectionsDEpreuve.
+  const sections = sectionsDEpreuve(exercices)
+  const debutDeSection = (index: number) => sections?.find((section) => section.items[0].index === index)
+
+  const carteAuProgramme = (exercise: (typeof exercices)[number], index: number) => (
+    <li key={exercise.numero_exercice}>
+      <a
+        href={`#${exerciceAnchorId(exercise.numero_exercice)}`}
+        className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 transition-colors hover:border-primary/40"
+      >
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display text-sm font-semibold text-primary">
+          {index + 1}
+        </span>
+        <span className="min-w-0 flex-1">
+          {sections ? (
+            <>
+              <span className="block truncate text-sm font-medium">{libelleDansSection(exercise)}</span>
+              <span className="line-clamp-2 text-xs text-muted-foreground">
+                {apercuQuestion(exercise.enonce_markdown, exercise.titre)}
+              </span>
+            </>
+          ) : (
+            <span className="block truncate text-sm font-medium" title={exercise.titre || undefined}>
+              {libelleLong(exercise)}
+            </span>
+          )}
+        </span>
+        {exercise.points && (
+          <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+            {exercise.points} pts
+          </span>
+        )}
+      </a>
+    </li>
+  )
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
@@ -291,30 +326,30 @@ export function EpreuveDetailPage() {
             <h2 id="au-programme" className="mb-3 font-display text-xl font-semibold">
               {t("ed.au_programme")}
             </h2>
-            <ol className="grid gap-2.5 sm:grid-cols-2">
-              {exercices.map((exercise, index) => (
-                <li key={exercise.numero_exercice}>
-                  <a
-                    href={`#${exerciceAnchorId(exercise.numero_exercice)}`}
-                    className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 transition-colors hover:border-primary/40"
-                  >
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display text-sm font-semibold text-primary">
-                      {index + 1}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium" title={exercise.titre || undefined}>
-                        {libelleLong(exercise)}
+            {sections ? (
+              <div className="flex flex-col gap-2.5">
+                {sections.map((section) => (
+                  <details key={section.cle} open={sections.length === 1} className="group rounded-2xl border border-border bg-card">
+                    <summary className="flex cursor-pointer list-none items-center gap-3 rounded-2xl px-4 py-3 transition-colors hover:bg-muted/40 [&::-webkit-details-marker]:hidden">
+                      <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" aria-hidden="true" />
+                      <span className="min-w-0 flex-1 truncate font-display text-sm font-semibold uppercase tracking-wide" title={section.intitule}>
+                        {section.intitule}
                       </span>
-                    </span>
-                    {exercise.points && (
-                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
-                        {exercise.points} pts
+                      <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+                        {tn("ed.section_questions", section.items.length)}
                       </span>
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ol>
+                    </summary>
+                    <ol className="grid gap-2 border-t border-border p-3 sm:grid-cols-2">
+                      {section.items.map(({ exercise, index }) => carteAuProgramme(exercise, index))}
+                    </ol>
+                  </details>
+                ))}
+              </div>
+            ) : (
+              <ol className="grid gap-2.5 sm:grid-cols-2">
+                {exercices.map((exercise, index) => carteAuProgramme(exercise, index))}
+              </ol>
+            )}
           </section>
         )}
 
@@ -335,8 +370,16 @@ export function EpreuveDetailPage() {
             {exercices.length > 0 ? (
               <div className="flex min-w-0 flex-col gap-5">
                 {exercices.map((exercise, index) => (
+                  <Fragment key={exercise.numero_exercice}>
+                  {debutDeSection(index) && (
+                    <p className="-mb-2 mt-3 flex items-baseline gap-2 border-b border-border pb-2 font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground first:mt-0">
+                      <span className="min-w-0 flex-1 truncate" title={debutDeSection(index)!.intitule}>{debutDeSection(index)!.intitule}</span>
+                      <span className="shrink-0 text-xs font-normal normal-case tabular-nums">
+                        {tn("ed.section_questions", debutDeSection(index)!.items.length)}
+                      </span>
+                    </p>
+                  )}
                   <div
-                    key={exercise.numero_exercice}
                     id={exerciceAnchorId(exercise.numero_exercice)}
                     className="scroll-mt-24 rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-6"
                   >
@@ -345,7 +388,7 @@ export function EpreuveDetailPage() {
                         {index + 1}
                       </span>
                       <p className="min-w-0 flex-1 truncate font-display text-base font-semibold" title={exercise.titre || undefined}>
-                        {libelleLong(exercise)}
+                        {sections ? libelleDansSection(exercise) : libelleLong(exercise)}
                       </p>
                       {exercise.points && (
                         <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
@@ -370,6 +413,7 @@ export function EpreuveDetailPage() {
                       </Link>
                     )}
                   </div>
+                  </Fragment>
                 ))}
               </div>
             ) : (

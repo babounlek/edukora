@@ -567,6 +567,8 @@ export const fr = {
   "ed.voir_cours": "Voir le cours complet",
   "ed.figure": "Figure de l'exercice",
   "ed.ami": "Ou partage-le avec un ami",
+  "ed.section_questions_one": "{n} question",
+  "ed.section_questions_other": "{n} questions",
   "ed.exercices_aria": "Exercices de l'épreuve",
   "ed.lecture_aria": "Progression de la lecture",
   "ed.restantes_one": "≈ {n} min restante · {p} %",

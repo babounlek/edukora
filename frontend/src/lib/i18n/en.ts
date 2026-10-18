@@ -561,6 +561,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ed.voir_cours": "See the full lesson",
   "ed.figure": "Exercise figure",
   "ed.ami": "Or share it with a friend",
+  "ed.section_questions_one": "{n} question",
+  "ed.section_questions_other": "{n} questions",
   "ed.exercices_aria": "Exercises in the paper",
   "ed.lecture_aria": "Reading progress",
   "ed.restantes_one": "≈ {n} min left · {p}%",

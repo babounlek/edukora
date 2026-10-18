@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
@@ -21,7 +21,7 @@ import { SITE_NAME } from "@/lib/site"
 import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { EnonceToggle } from "@/components/EnonceToggle"
 import { MarquesSection } from "@/components/MarquesSection"
-import { exerciceAnchorId, libelleLong } from "@/components/EpreuveSommaire"
+import { exerciceAnchorId, libelleDansSection, libelleLong, sectionsDEpreuve } from "@/components/EpreuveSommaire"
 import { ExerciceNav } from "@/components/ExerciceNav"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
@@ -32,7 +32,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
-import { t, useI18n } from "@/lib/i18n"
+import { t, tn, useI18n } from "@/lib/i18n"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
@@ -162,22 +162,34 @@ export function EpreuveReaderPage() {
   }
 
   const exercises = content?.exercises ?? []
+  // Longue épreuve groupée : la barre à deux rangées (voir BarreExercices) est plus haute, d'où une
+  // marge de défilement plus grande pour que le titre d'un exercice ne passe pas dessous.
+  const sections = sectionsDEpreuve(exercises)
+  const debutDeSection = (index: number) => sections?.find((section) => section.items[0].index === index)
 
   const article = (
     <article ref={articleRef} className="flex min-w-0 flex-col gap-6">
       {exercises.length > 0 ? (
         exercises.map((exercise, index) => (
+          <Fragment key={exercise.numero_exercice}>
+          {debutDeSection(index) && (
+            <p className="-mb-2 mt-4 flex items-baseline gap-2 border-b border-border pb-2 font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground first:mt-0">
+              <span className="min-w-0 flex-1 truncate" title={debutDeSection(index)!.intitule}>{debutDeSection(index)!.intitule}</span>
+              <span className="shrink-0 text-xs font-normal normal-case tabular-nums">
+                {tn("ed.section_questions", debutDeSection(index)!.items.length)}
+              </span>
+            </p>
+          )}
           <section
-            key={exercise.numero_exercice}
             id={exerciceAnchorId(exercise.numero_exercice)}
-            className="scroll-mt-36 rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-7"
+            className={`${sections ? "scroll-mt-48" : "scroll-mt-36"} rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-7`}
           >
             <div className="mb-4 flex items-center gap-3">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30">
                 {index + 1}
               </span>
               <h2 className="min-w-0 flex-1 truncate font-display text-lg font-semibold" title={exercise.titre || undefined}>
-                {libelleLong(exercise)}
+                {sections ? libelleDansSection(exercise) : libelleLong(exercise)}
               </h2>
               {exercise.points && (
                 <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
@@ -212,6 +224,7 @@ export function EpreuveReaderPage() {
             <MarquesSection etude={etude} cle={exerciceAnchorId(exercise.numero_exercice)} avecCompris={false} />
             {exercises.length > 1 && <ExerciceNav exercises={exercises} index={index} />}
           </section>
+          </Fragment>
         ))
       ) : (
         <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">

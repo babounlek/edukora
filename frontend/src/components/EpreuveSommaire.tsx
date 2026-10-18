@@ -32,6 +32,81 @@ export function exerciceAnchorId(numeroExercice: string) {
   return `exercice-${slug || "sans-numero"}`
 }
 
+/** Au-delà de ce nombre d'exercices, une épreuve groupée se présente par sections (voir sectionsDEpreuve). */
+export const SEUIL_SECTIONS = 8
+
+export interface SectionEpreuve<T extends ExerciceLabelSource> {
+  /** Pile de groupes de la section, jointe : sert de clé et distingue deux sections de même nom. */
+  cle: string
+  /** Libellé court (le repère de groupe : « SECTION 2.1 ») : pastilles de la barre mobile. */
+  label: string
+  /**
+   * Intitulé complet (« Section 2.1 The Gospel According to Luke ») quand tous les exercices de la
+   * section portent le même titre - c'est le cas des sujets à sections, dont l'en-tête d'énoncé est
+   * celui de la section, pas de la question ; le repère court sinon.
+   */
+  intitule: string
+  /** `index` = rang de l'exercice dans l'épreuve entière (la numérotation affichée ne repart pas à 1). */
+  items: { exercise: T; index: number }[]
+}
+
+/**
+ * Découpe une longue épreuve en sections, dans l'ordre du sujet : un exercice par question de
+ * dissertation fait des épreuves du GCE à 18 ou 36 « exercices » (Religious Studies, History...), que
+ * ni une rangée de pastilles ni une grille ne rendent navigables. Renvoie null - et le sommaire plat
+ * historique s'applique - dès que l'épreuve est courte (≤ SEUIL_SECTIONS exercices), qu'un exercice
+ * n'appartient à aucun groupe (les sections ne couvriraient pas tout le sujet) ou qu'il n'y a qu'une
+ * section : une seule section ne fait rien gagner.
+ */
+export function sectionsDEpreuve<T extends ExerciceLabelSource>(exercises: T[]): SectionEpreuve<T>[] | null {
+  if (exercises.length <= SEUIL_SECTIONS) return null
+  if (exercises.some((exercise) => exercise.groupes.length === 0)) return null
+  const sections: SectionEpreuve<T>[] = []
+  exercises.forEach((exercise, index) => {
+    const cle = exercise.groupes.join(" > ")
+    const derniere = sections[sections.length - 1]
+    if (derniere && derniere.cle === cle) derniere.items.push({ exercise, index })
+    else {
+      const label = exercise.groupes.join(" · ")
+      sections.push({ cle, label, intitule: label, items: [{ exercise, index }] })
+    }
+  })
+  for (const section of sections) {
+    const titres = new Set(section.items.map(({ exercise }) => exercise.titre.trim()))
+    // Titre entier, pas libelleLong : celui-ci coupe sur « - » pour les fils d'Ariane de la SVT
+    // et tronquerait « ... Islam (570CE - 661CE) » en « 661CE) ». Le CSS tronque, l'infobulle complète.
+    const [titre] = titres
+    if (titres.size === 1 && titre) section.intitule = titre
+  }
+  return sections.length > 1 ? sections : null
+}
+
+/**
+ * Libellé d'un exercice dans une épreuve présentée par sections : son titre est celui de la section
+ * (voir SectionEpreuve.intitule), il ne distingue donc pas deux questions ; seul le numéro imprimé le fait.
+ */
+export function libelleDansSection(exercise: ExerciceLabelSource) {
+  const numero = exercise.numero_exercice.trim()
+  return NUMERIQUE_RE.test(numero) ? t("ed.exercice_n", { n: numero }) : numero
+}
+
+const APERCU_LONGUEUR_MAX = 90
+
+/**
+ * Début de la question, pour choisir sans ouvrir : les exercices d'une dissertation n'ont pas de titre
+ * propre, la question EST l'exercice. Saute l'en-tête (« **Section 2.1 ...** », identique pour toute la
+ * section), le balisage Markdown et les consignes de points.
+ */
+export function apercuQuestion(enonceMarkdown: string, titre = "") {
+  const entete = titre.trim().toLowerCase()
+  const lignes = enonceMarkdown
+    .split(/\n+/)
+    .map((ligne) => ligne.replace(/[*_`#>$]/g, "").replace(/\s+/g, " ").trim())
+    .filter((ligne) => ligne && ligne.toLowerCase() !== entete && !/^\(\d+\s*marks?\)$/i.test(ligne))
+  const debut = lignes[0] ?? ""
+  return debut.length <= APERCU_LONGUEUR_MAX ? debut : `${debut.slice(0, APERCU_LONGUEUR_MAX - 1).trimEnd()}…`
+}
+
 const NUMERIQUE_RE = /^\d+$/
 
 // Au-delà, le libellé déborde la sidebar (220px) et se fait couper en plein milieu du
