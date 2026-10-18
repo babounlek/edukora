@@ -14,9 +14,9 @@ interface Props {
 }
 
 /**
- * Consignes de choix d'une épreuve du GCE (« 4 questions sur 5 », « toutes dans une seule section »).
- * Seules les règles « parmi » et « section_unique » agissent sur la note d'une simulation ; « ou » et
- * « consigne » sont à lire.
+ * Consignes de choix d'une épreuve du GCE (« 4 questions sur 5 », « toutes dans une seule section »,
+ * « 4 au total, au moins une par section »). Les règles « parmi », « section_unique » et « total » agissent
+ * sur la note d'une simulation ; « ou » et « consigne » sont à lire.
  */
 export function ReglesChoix({ regles, traites }: Props) {
   if (regles.length === 0) return null
@@ -44,9 +44,14 @@ export function ReglesChoix({ regles, traites }: Props) {
         const intitule =
           regle.type === "parmi"
             ? tn(simulation ? "ct.regle_parmi" : "ct.annale_parmi", regle.repondre, { portee: regle.portee, m: regle.sur })
-            : tn(simulation ? "ct.regle_section_unique" : "ct.annale_section_unique", regle.repondre, {
-                portee: regle.portee,
-              })
+            : regle.type === "total"
+              ? tn(simulation ? "ct.regle_total" : "ct.annale_total", regle.repondre, {
+                  portee: regle.portee,
+                  min: regle.minimum,
+                })
+              : tn(simulation ? "ct.regle_section_unique" : "ct.annale_section_unique", regle.repondre, {
+                  portee: regle.portee,
+                })
         if (!simulation) {
           return (
             <li key={i} className="flex items-start gap-2 rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm">

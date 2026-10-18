@@ -49,6 +49,21 @@ describe("ReglesChoix", () => {
     expect(screen.getByText("Traités : 2 / 4")).toBeInTheDocument()
   })
 
+  it("annonce « n au total, au moins m par section »", () => {
+    const regle: RegleChoix = {
+      type: "total", portee: "PAPER 2", repondre: 4, minimum: 1,
+      groupes: ["SECTION A", "SECTION B", "SECTION C"], exercices: [1, 2, 3, 4, 5, 6],
+    }
+    const { unmount } = render(<ReglesChoix regles={[regle]} />)
+    expect(screen.getByText("PAPER 2 : traite 4 exercices au total, au moins 1 par section.")).toBeInTheDocument()
+    unmount()
+
+    render(<ReglesChoix regles={[regle]} traites={new Set([1, 2, 5, 6, 3])} />)
+    expect(screen.getByText(/Seuls les 4 meilleurs comptent/)).toBeInTheDocument()
+    expect(screen.getByText("Traités : 5 / 4")).toBeInTheDocument()
+    expect(screen.getByRole("status")).toHaveTextContent("Au-delà de 4")
+  })
+
   it("accorde « exercice » au singulier", () => {
     render(<ReglesChoix regles={[{ type: "section_unique", portee: "PAPER 2", repondre: 1 }]} />)
     expect(screen.getByText("PAPER 2 : traite 1 exercice, dans une seule section.")).toBeInTheDocument()

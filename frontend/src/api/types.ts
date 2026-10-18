@@ -1657,7 +1657,10 @@ export interface CompletionRecherche {
 export type RegleChoix =
   | { type: "parmi"; portee: string; repondre: number; sur: number; exercices?: number[] }
   | { type: "ou"; portee: string; options: string[][] }
-  // « n questions, TOUTES dans une seule section » : vaut pour toute l'épreuve, `portee` n'est qu'un libellé.
-  | { type: "section_unique"; portee: string; repondre: number; exercices?: number[] }
+  // « n questions, TOUTES dans une seule section » : `portee` n'est qu'un libellé ; sans `groupes`, la règle
+  // vaut pour toute l'épreuve, avec elle seulement pour ces sections (Additional Maths : B OU C, A obligatoire).
+  | { type: "section_unique"; portee: string; repondre: number; groupes?: string[]; exercices?: number[] }
+  // « n questions au total, dont au moins `minimum` dans chacun des `groupes` » (« at least ONE from each section »).
+  | { type: "total"; portee: string; repondre: number; minimum: number; groupes: string[]; exercices?: number[] }
   // Consigne qu'aucune autre forme n'exprime ; texte dans la langue du sujet, sans effet sur la note.
   | { type: "consigne"; portee: string; texte: string }
