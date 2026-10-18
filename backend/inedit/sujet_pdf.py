@@ -30,6 +30,7 @@ from django.template.loader import render_to_string
 from django.utils.text import slugify
 
 from catalog.libelles import libelle_cursus, matiere_dans_titre, public_dans_titre
+from catalog.segments_url import chemin_public
 from catalog.pdf_textes import adapter_markdown, langue_du_contenu, nom_pays, textes_pdf
 from catalog.sujet_pdf import (
     _FLAGS_DIR,
@@ -60,7 +61,9 @@ _cursus_display = libelle_cursus
 def _epreuve_deep_link(epreuve):
     country_code = epreuve.cursus.first().country.code.lower()
     # settings.PDF_SITE_URL, pas FRONTEND_URL - voir catalog.sujet_pdf._lesson_deep_link.
-    return f"{settings.PDF_SITE_URL}/{country_code}/epreuves-inedites/{epreuve.slug}?ref=pdf_sujet_inedit"
+    langue = "en" if epreuve.subject.langue == "en" else "fr"
+    chemin = chemin_public(f"/{country_code}/epreuves-inedites/{epreuve.slug}", langue)
+    return f"{settings.PDF_SITE_URL}{chemin}?ref=pdf_sujet_inedit"
 
 
 def _render_html(epreuve):

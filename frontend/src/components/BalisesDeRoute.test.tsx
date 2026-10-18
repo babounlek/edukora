@@ -49,7 +49,7 @@ describe("BalisesDeRoute", () => {
     )
     expect(alternates()).toEqual({
       fr: `${SITE_URL}/cm/epreuves`,
-      en: `${SITE_URL}/en/cm/epreuves`,
+      en: `${SITE_URL}/en/cm/past-papers`,
       "x-default": `${SITE_URL}/cm/epreuves`,
     })
     expect(document.head.querySelector('meta[property="og:locale"]')?.getAttribute("content")).toBe("fr_FR")
@@ -62,10 +62,10 @@ describe("BalisesDeRoute", () => {
         <BalisesDeRoute />
       </MemoryRouter>,
     )
-    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(`${SITE_URL}/en/cm/epreuves`)
-    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute("content")).toBe(`${SITE_URL}/en/cm/epreuves`)
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(`${SITE_URL}/en/cm/past-papers`)
+    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute("content")).toBe(`${SITE_URL}/en/cm/past-papers`)
     expect(document.head.querySelector('meta[property="og:locale"]')?.getAttribute("content")).toBe("en_GB")
-    expect(alternates().en).toBe(`${SITE_URL}/en/cm/epreuves`)
+    expect(alternates().en).toBe(`${SITE_URL}/en/cm/past-papers`)
     expect(alternates().fr).toBe(`${SITE_URL}/cm/epreuves`)
   })
 

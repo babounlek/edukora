@@ -1,15 +1,20 @@
 /**
  * La langue dans l'URL : le français n'a pas de préfixe (`/cm/epreuves`, les liens déjà en circulation
- * restent valides), l'anglais est sous `/en` (`/en/cm/epreuves`). Une URL dit donc la langue de la
- * page : un lien anglais partagé s'ouvre en anglais chez le destinataire, quelle que soit sa
- * préférence, et les moteurs de recherche voient deux pages distinctes (voir BalisesDeRoute).
+ * restent valides), l'anglais est sous `/en` ET a ses propres segments (`/en/cm/past-papers`, voir
+ * segments.ts). Une URL dit donc la langue de la page : un lien anglais partagé s'ouvre en anglais
+ * chez le destinataire, quelle que soit sa préférence, et les moteurs de recherche voient deux pages
+ * distinctes (voir BalisesDeRoute).
  *
- * Le préfixe est la `basename` du routeur (App.tsx) : tous les `<Link>`, `navigate()` et `<Navigate>`
- * l'ajoutent d'eux-mêmes, aucun lien n'est à réécrire. Il est donc fixé au chargement de la page ;
- * changer de langue recharge la page sur l'URL de l'autre langue (voir changerLangue).
+ * Le routeur anglais (historiqueAnglais.ts) retire le préfixe et traduit les segments à la frontière :
+ * tous les `<Link>`, `navigate()` et `<Navigate>` restent écrits avec le chemin INTERNE français et
+ * aucun lien n'est à réécrire. Le préfixe est fixé au chargement de la page ; changer de langue
+ * recharge la page sur l'URL de l'autre langue (voir ouvrirDansLangue).
  *
- * Ce module ne dépend de rien d'autre dans i18n : il est importable partout, y compris hors React.
+ * Vocabulaire : un chemin « interne » est celui du routeur (français, sans préfixe) ; une URL « publique »
+ * est celle de la barre d'adresse. Pour tout ce qui sort du routeur (liens absolus, partage, canonical),
+ * passer un chemin interne à `cheminDansLangue`.
  */
+import { cheminAnglais, cheminInterne, separerCible } from "./segments"
 
 export type LangueUrl = "fr" | "en"
 
@@ -34,12 +39,24 @@ export function basenameDeLangue(langue: LangueUrl): string {
 }
 
 /**
- * Chemin de l'application (sans préfixe) placé dans une langue : `("/cm/cours", "en")` ->
- * `/en/cm/cours`. Pour tout ce qui sort du routeur : liens absolus, partage, canonical.
- * Idempotent : un chemin déjà préfixé n'est pas préfixé deux fois.
+ * Chemin INTERNE de l'application placé dans une langue : `("/cm/cours", "en")` -> `/en/cm/lessons`.
+ * Pour tout ce qui sort du routeur : liens absolus, partage, canonical. Accepte une query et une ancre.
+ * Idempotent pour le préfixe : un chemin déjà préfixé n'est pas préfixé deux fois (mais il doit rester
+ * INTERNE : un chemin déjà traduit en anglais n'est pas retraduit, voir cheminInterneDepuisUrl).
  */
 export function cheminDansLangue(chemin: string, langue: LangueUrl): string {
   const nu = retirerPrefixeLangue(chemin)
   if (langue !== "en") return nu
-  return nu === "/" ? PREFIXE_EN : `${PREFIXE_EN}${nu}`
+  const { pathname, reste } = separerCible(nu)
+  const traduit = cheminAnglais(pathname)
+  return `${traduit === "/" ? PREFIXE_EN : `${PREFIXE_EN}${traduit}`}${reste}`
+}
+
+/**
+ * Le chemin interne d'un chemin PUBLIC (celui de la barre d'adresse) : `/en/cm/lessons` -> `/cm/cours`.
+ * Un chemin français est déjà interne. À utiliser pour tout ce qui lit `window.location`.
+ */
+export function cheminInterneDepuisUrl(pathname: string): string {
+  const nu = retirerPrefixeLangue(pathname)
+  return langueDuChemin(pathname) === "en" ? cheminInterne(nu) : nu
 }

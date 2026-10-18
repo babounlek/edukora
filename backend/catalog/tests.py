@@ -7618,22 +7618,35 @@ class SitemapAnglaisTests(TestCase):
 
     def test_pages_d_ensemble_dans_les_deux_langues_avec_hreflang(self):
         b = self.base
-        for chemin in ("/cm", "/cm/epreuves", "/cm/cours", "/tarifs", "/cgu"):
+        # chemin français -> sa page anglaise, aux segments traduits (voir catalog.segments_url)
+        pages = {"/cm": "/en/cm", "/cm/epreuves": "/en/cm/past-papers", "/cm/cours": "/en/cm/lessons",
+                 "/tarifs": "/en/pricing", "/cgu": "/en/terms"}
+        for chemin, anglais in pages.items():
             self.assertIn(f"<loc>{b}{chemin}</loc>", self.xml, chemin)
-            self.assertIn(f"<loc>{b}/en{chemin}</loc>", self.xml, chemin)
-            for langue, url in (("fr", f"{b}{chemin}"), ("en", f"{b}/en{chemin}"), ("x-default", f"{b}{chemin}")):
+            self.assertIn(f"<loc>{b}{anglais}</loc>", self.xml, chemin)
+            for langue, url in (("fr", f"{b}{chemin}"), ("en", f"{b}{anglais}"), ("x-default", f"{b}{chemin}")):
                 self.assertIn(f'<xhtml:link rel="alternate" hreflang="{langue}" href="{url}"/>', self.xml)
 
     def test_contenu_gce_dans_les_deux_langues(self):
         b = self.base
         self.assertIn(f"<loc>{b}/cm/epreuves/{self.lesson_en.slug}</loc>", self.xml)
-        self.assertIn(f"<loc>{b}/en/cm/epreuves/{self.lesson_en.slug}</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/en/cm/past-papers/{self.lesson_en.slug}</loc>", self.xml)
         self.assertIn(f"<loc>{b}/cours/{self.cours_en.slug}</loc>", self.xml)
-        self.assertIn(f"<loc>{b}/en/cours/{self.cours_en.slug}</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/en/lessons/{self.cours_en.slug}</loc>", self.xml)
 
     def test_contenu_francais_une_seule_url(self):
         b = self.base
         self.assertIn(f"<loc>{b}/cm/epreuves/{self.lesson_fr.slug}</loc>", self.xml)
-        self.assertNotIn(f"/en/cm/epreuves/{self.lesson_fr.slug}", self.xml)
+        self.assertNotIn(f"/en/cm/past-papers/{self.lesson_fr.slug}", self.xml)
         self.assertIn(f"<loc>{b}/cours/{self.cours_fr.slug}</loc>", self.xml)
-        self.assertNotIn(f"/en/cours/{self.cours_fr.slug}", self.xml)
+        self.assertNotIn(f"/en/lessons/{self.cours_fr.slug}", self.xml)
+
+    def test_aucune_url_anglaise_ne_garde_un_segment_francais(self):
+        # Garde-fou : une page anglaise n'a qu'une adresse, aux segments anglais (ni dans <loc>, ni en hreflang).
+        import re
+
+        for url in re.findall(r"(?:<loc>|href=\")([^<\"]+)", self.xml):
+            if "/en/" in url or url.endswith("/en"):
+                segments = url.split("/en", 1)[1].split("/")
+                for francais in ("epreuves", "cours", "tarifs", "cgu", "confidentialite", "epreuves-inedites"):
+                    self.assertNotIn(francais, segments, url)

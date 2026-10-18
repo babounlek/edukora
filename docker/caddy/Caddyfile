@@ -22,6 +22,85 @@
     @points_d_entree path / /index.html /sw.js /push-sw.js /registerSW.js /manifest.webmanifest
     header @points_d_entree Cache-Control "no-cache"
 
+    # >>> redirections-segments-en (GÉNÉRÉ par scripts/generer_caddy_segments.py : ne pas modifier à la main)
+    # Une URL anglaise portant encore des segments français (/en/cm/epreuves/x) est redirigée en 301 vers sa forme
+    # anglaise (/en/cm/past-papers/x) : une page, une adresse. La query est conservée (sans « ? » orphelin).
+    map {http.request.uri.query} {qs_en} {
+        ""      ""
+        default "?{http.request.uri.query}"
+    }
+    @seg_en_1 path_regexp seg1 ^/en/epreuves/([^/]+)/?$
+    redir @seg_en_1 /en/past-papers/{re.seg1.1}{qs_en} 301
+    @seg_en_2 path_regexp seg2 ^/en/epreuves/([^/]+)/lire/?$
+    redir @seg_en_2 /en/past-papers/{re.seg2.1}/read{qs_en} 301
+    @seg_en_3 path_regexp seg3 ^/en/cours/([^/]+)/?$
+    redir @seg_en_3 /en/lessons/{re.seg3.1}{qs_en} 301
+    @seg_en_4 path_regexp seg4 ^/en/cours/([^/]+)/lire/?$
+    redir @seg_en_4 /en/lessons/{re.seg4.1}/read{qs_en} 301
+    @seg_en_5 path_regexp seg5 ^/en/connexion/?$
+    redir @seg_en_5 /en/login{qs_en} 301
+    @seg_en_6 path_regexp seg6 ^/en/qui-etudie/?$
+    redir @seg_en_6 /en/who-is-studying{qs_en} 301
+    @seg_en_7 path_regexp seg7 ^/en/tarifs/?$
+    redir @seg_en_7 /en/pricing{qs_en} 301
+    @seg_en_8 path_regexp seg8 ^/en/abonnement/?$
+    redir @seg_en_8 /en/subscription{qs_en} 301
+    @seg_en_9 path_regexp seg9 ^/en/compte/?$
+    redir @seg_en_9 /en/account{qs_en} 301
+    @seg_en_10 path_regexp seg10 ^/en/mes-acces/?$
+    redir @seg_en_10 /en/my-access{qs_en} 301
+    @seg_en_11 path_regexp seg11 ^/en/historique/?$
+    redir @seg_en_11 /en/history{qs_en} 301
+    @seg_en_12 path_regexp seg12 ^/en/carnet/?$
+    redir @seg_en_12 /en/notebook{qs_en} 301
+    @seg_en_13 path_regexp seg13 ^/en/mes-paiements/?$
+    redir @seg_en_13 /en/my-payments{qs_en} 301
+    @seg_en_14 path_regexp seg14 ^/en/quiz/essai/?$
+    redir @seg_en_14 /en/quiz/trial{qs_en} 301
+    @seg_en_15 path_regexp seg15 ^/en/quiz/essai/resultat/?$
+    redir @seg_en_15 /en/quiz/trial/result{qs_en} 301
+    @seg_en_16 path_regexp seg16 ^/en/quiz/essai/([^/]+)/([^/]+)/([^/]+)/?$
+    redir @seg_en_16 /en/quiz/trial/{re.seg16.1}/{re.seg16.2}/{re.seg16.3}{qs_en} 301
+    @seg_en_17 path_regexp seg17 ^/en/quiz/session/([^/]+)/resultat/?$
+    redir @seg_en_17 /en/quiz/session/{re.seg17.1}/result{qs_en} 301
+    @seg_en_18 path_regexp seg18 ^/en/parcours/?$
+    redir @seg_en_18 /en/learning-paths{qs_en} 301
+    @seg_en_19 path_regexp seg19 ^/en/parcours/([^/]+)/?$
+    redir @seg_en_19 /en/learning-paths/{re.seg19.1}{qs_en} 301
+    @seg_en_20 path_regexp seg20 ^/en/inedit/tentative/([^/]+)/?$
+    redir @seg_en_20 /en/mock/attempt/{re.seg20.1}{qs_en} 301
+    @seg_en_21 path_regexp seg21 ^/en/inedit/tentative/([^/]+)/resultat/?$
+    redir @seg_en_21 /en/mock/attempt/{re.seg21.1}/result{qs_en} 301
+    @seg_en_22 path_regexp seg22 ^/en/simulation/([^/]+)/resultat/?$
+    redir @seg_en_22 /en/simulation/{re.seg22.1}/result{qs_en} 301
+    @seg_en_23 path_regexp seg23 ^/en/fiches/?$
+    redir @seg_en_23 /en/study-sheets{qs_en} 301
+    @seg_en_24 path_regexp seg24 ^/en/confidentialite/?$
+    redir @seg_en_24 /en/privacy{qs_en} 301
+    @seg_en_25 path_regexp seg25 ^/en/cgu/?$
+    redir @seg_en_25 /en/terms{qs_en} 301
+    @seg_en_26 path_regexp seg26 ^/en/a-propos/?$
+    redir @seg_en_26 /en/about{qs_en} 301
+    @seg_en_27 path_regexp seg27 ^/en/([a-z]{2})/epreuves/?$
+    redir @seg_en_27 /en/{re.seg27.1}/past-papers{qs_en} 301
+    @seg_en_28 path_regexp seg28 ^/en/([a-z]{2})/recherche/?$
+    redir @seg_en_28 /en/{re.seg28.1}/search{qs_en} 301
+    @seg_en_29 path_regexp seg29 ^/en/([a-z]{2})/themes-frequents/?$
+    redir @seg_en_29 /en/{re.seg29.1}/frequent-topics{qs_en} 301
+    @seg_en_30 path_regexp seg30 ^/en/([a-z]{2})/themes-frequents/([^/]+)/exercices/?$
+    redir @seg_en_30 /en/{re.seg30.1}/frequent-topics/{re.seg30.2}/exercises{qs_en} 301
+    @seg_en_31 path_regexp seg31 ^/en/([a-z]{2})/themes-frequents/([^/]+)/exercices/([^/]+)/?$
+    redir @seg_en_31 /en/{re.seg31.1}/frequent-topics/{re.seg31.2}/exercises/{re.seg31.3}{qs_en} 301
+    @seg_en_32 path_regexp seg32 ^/en/([a-z]{2})/cours/?$
+    redir @seg_en_32 /en/{re.seg32.1}/lessons{qs_en} 301
+    @seg_en_33 path_regexp seg33 ^/en/([a-z]{2})/epreuves/([^/]+)/?$
+    redir @seg_en_33 /en/{re.seg33.1}/past-papers/{re.seg33.2}{qs_en} 301
+    @seg_en_34 path_regexp seg34 ^/en/([a-z]{2})/epreuves/([^/]+)/lire/?$
+    redir @seg_en_34 /en/{re.seg34.1}/past-papers/{re.seg34.2}/read{qs_en} 301
+    @seg_en_35 path_regexp seg35 ^/en/([a-z]{2})/epreuves-inedites/([^/]+)/?$
+    redir @seg_en_35 /en/{re.seg35.1}/mock-papers/{re.seg35.2}{qs_en} 301
+    # <<< redirections-segments-en
+
     handle_path /static/* {
         root * /srv/staticfiles
         file_server
@@ -70,9 +149,11 @@
     # JavaScript de la SPA, donc ne voient que les balises génériques d'index.html. Pour les pages
     # d'épreuve, de cours et d'épreuve inédite, ils reçoivent à la place une page de balises <meta>
     # propres au contenu (voir backend/catalog/apercu_partage.py). Les visiteurs n'y passent jamais.
+    # Les deux jeux de segments : français (/cm/epreuves/x) et anglais (/en/cm/past-papers/x, voir
+    # frontend/src/lib/i18n/segments-url.json) ; un test vérifie qu'ils couvrent toutes les routes de détail.
     @robots_apercu {
         header_regexp User-Agent (?i)(whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|skypeuripreview|pinterest)
-        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|cours|epreuves-inedites)/[^/]+(/lire)?/?$
+        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|past-papers|cours|lessons|epreuves-inedites|mock-papers)/[^/]+(/lire|/read)?/?$
     }
     handle @robots_apercu {
         rewrite * /partage-apercu{path}

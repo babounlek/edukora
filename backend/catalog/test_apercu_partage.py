@@ -84,13 +84,21 @@ class ApercuPartageAnglaisTests(TestCase):
         )
 
     def test_la_page_d_epreuve_anglaise_est_en_anglais_et_canonique_sous_en(self):
-        html = self.client.get(f"/partage-apercu/en/cm/epreuves/{self.lesson.slug}").content.decode()
+        html = self.client.get(f"/partage-apercu/en/cm/past-papers/{self.lesson.slug}").content.decode()
         self.assertIn('<html lang="en">', html)
         self.assertIn('og:locale" content="en_GB"', html)
         self.assertIn('og:title" content="Maths O Level 2023 |', html)
         self.assertIn("Past paper with correction - Mathematics (2023)", html)
-        self.assertIn(f'<link rel="canonical" href="http://localhost/en/cm/epreuves/{self.lesson.slug}">'.replace("http://localhost", self._site()), html)
+        self.assertIn(f'<link rel="canonical" href="http://localhost/en/cm/past-papers/{self.lesson.slug}">'.replace("http://localhost", self._site()), html)
         self.assertIn(f"/partage-image/epreuves/{self.lesson.slug}.png?lang=en", html)
+
+    def test_une_ancienne_forme_francaise_sous_en_recoit_le_meme_apercu_avec_le_canonical_anglais(self):
+        # Un lien /en/cm/epreuves/x déjà partagé : Caddy le redirige en 301, mais un robot qui ne suivrait pas
+        # la redirection reçoit quand même l'aperçu, dont le canonical est la forme anglaise.
+        html = self.client.get(f"/partage-apercu/en/cm/epreuves/{self.lesson.slug}").content.decode()
+        self.assertIn('<html lang="en">', html)
+        self.assertIn(f'href="{self._site()}/en/cm/past-papers/{self.lesson.slug}"', html)
+        self.assertNotIn("/en/cm/epreuves/", html)
 
     def test_la_version_francaise_ne_change_pas(self):
         html = self.client.get(f"/partage-apercu/cm/epreuves/{self.lesson.slug}").content.decode()
@@ -101,13 +109,14 @@ class ApercuPartageAnglaisTests(TestCase):
         self.assertNotIn("/en/", html)
 
     def test_cours_anglais_sans_pays_dans_le_chemin(self):
-        html = self.client.get(f"/partage-apercu/en/cours/{self.cours.slug}").content.decode()
+        html = self.client.get(f"/partage-apercu/en/lessons/{self.cours.slug}").content.decode()
         self.assertIn("Mathematics lesson - Algebra: method, worked example", html)
-        self.assertIn(f"/en/cours/{self.cours.slug}", html)
+        self.assertIn(f"/en/lessons/{self.cours.slug}", html)
+        self.assertNotIn("/en/cours/", html)
 
     def test_le_lecteur_anglais_pointe_vers_la_fiche_anglaise(self):
-        infos = infos_page(f"en/cours/{self.cours.slug}/lire")
-        self.assertEqual(infos["chemin"], f"en/cours/{self.cours.slug}")
+        infos = infos_page(f"en/lessons/{self.cours.slug}/read")
+        self.assertEqual(infos["chemin"], f"en/lessons/{self.cours.slug}")
 
     def test_accueil_anglais_donne_l_apercu_generique_anglais(self):
         for chemin in ("en", "en/", "en/cm"):

@@ -32,6 +32,7 @@ from django.template.loader import render_to_string
 
 from catalog.libelles import libelle_cursus
 from catalog.pdf_textes import adapter_markdown, langue_du_contenu, textes_pdf
+from catalog.segments_url import chemin_public
 from catalog.sujet_pdf import (
     _footer_template,
     _italicize_quotes,
@@ -70,10 +71,11 @@ def _textes(session):
 _COURS_LINK_RE = re.compile(r"^\[COURS_LINK:([a-zA-Z0-9_-]+)\]$", re.MULTILINE)
 
 
-def _resolve_cours_links(markdown_text, libelle="Voir le cours complet →"):
+def _resolve_cours_links(markdown_text, libelle="Voir le cours complet →", langue="fr"):
     # settings.PDF_SITE_URL, pas FRONTEND_URL - voir catalog.sujet_pdf._lesson_deep_link.
+    # Dans la langue du PDF : un quiz anglais mène à la page anglaise du cours (`/en/lessons/x`).
     return _COURS_LINK_RE.sub(
-        lambda m: f"[{libelle}]({settings.PDF_SITE_URL}/cours/{m.group(1)})", markdown_text,
+        lambda m: f"[{libelle}]({settings.PDF_SITE_URL}{chemin_public(f'/cours/{m.group(1)}', langue)})", markdown_text,
     )
 
 
@@ -144,7 +146,7 @@ def _combined_markdown(session, *, avec_corrige):
 def _render_html(session, *, avec_corrige, template_name, deep_link):
     tx = _textes(session)
     markdown_text = _resolve_cours_links(
-        _resolve_media_paths(_combined_markdown(session, avec_corrige=avec_corrige)), tx["voir_cours"],
+        _resolve_media_paths(_combined_markdown(session, avec_corrige=avec_corrige)), tx["voir_cours"], tx["langue"],
     )
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)

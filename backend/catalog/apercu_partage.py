@@ -9,8 +9,10 @@ docker/caddy/Caddyfile). Les visiteurs, eux, ne passent jamais par cette vue.
 
 L'image est dessinée à la demande avec Pillow (1200x630, le format attendu par les messageries).
 
-Chaque page existe en français (`/cm/epreuves/x`) et en anglais (`/en/cm/epreuves/x`) : l'aperçu suit le
-préfixe de l'URL - textes, `og:locale`, `<html lang>`, lien canonique et image (`?lang=en`).
+Chaque page existe en français (`/cm/epreuves/x`) et en anglais (`/en/cm/past-papers/x`, segments traduits :
+voir segments_url) : l'aperçu suit le préfixe de l'URL - textes, `og:locale`, `<html lang>`, lien canonique et
+image (`?lang=en`). Une ancienne forme française sous `/en` (`/en/cm/epreuves/x`) reçoit le même aperçu, dont le
+canonical est la forme anglaise.
 """
 import re
 from functools import lru_cache
@@ -24,11 +26,13 @@ from inedit.models import EpreuveInedite
 
 from .libelles import libelle_cursus
 from .models import Cours, Lesson, StatutContenu
+from .segments_url import chemin_anglais, chemin_interne
 
 LARGEUR, HAUTEUR = 1200, 630
 
+# Le chemin INTERNE (français, sans le préfixe /en) : l'URL publique anglaise y est ramenée d'abord (voir infos_page).
 _CHEMIN_RE = re.compile(
-    r"^(?:(?P<langue>en)/)?(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites)/(?P<ident>[^/]+)(?:/lire)?$"
+    r"^(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites)/(?P<ident>[^/]+)(?:/lire)?$"
 )
 
 # Textes de l'aperçu par langue. Les titres viennent du contenu lui-même (déjà dans sa langue) ;
@@ -141,16 +145,18 @@ def infos_page(chemin):
     """Les informations d'aperçu pour un chemin de page du frontend (sans « / » initial), ou None.
 
     Un chemin sous `en/` donne l'aperçu anglais : textes du gabarit, image `?lang=en` et chemin
-    canonique préfixé (`en/cm/epreuves/x`)."""
-    m = _CHEMIN_RE.match(chemin.strip("/"))
+    canonique public (`en/cm/past-papers/x`)."""
+    langue = langue_du_chemin(chemin)
+    brut = chemin.strip("/")
+    interne = chemin_interne("/" + re.sub(r"^en(/|$)", "", brut)).strip("/") if langue == "en" else brut
+    m = _CHEMIN_RE.match(interne)
     if not m:
         return None
-    langue = "en" if m.group("langue") else "fr"
     infos = _RESOLVEURS[m.group("genre")](m.group("ident"), langue)
     if infos and m.group("pays") and m.group("genre") == "epreuves":
         infos["chemin"] = f"{m.group('pays')}/{infos['chemin']}"
     if infos and langue == "en":
-        infos["chemin"] = f"en/{infos['chemin']}"
+        infos["chemin"] = "en" + chemin_anglais("/" + infos["chemin"])
     return infos
 
 

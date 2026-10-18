@@ -1,5 +1,5 @@
-import { Suspense, lazy } from "react"
-import { BrowserRouter, Navigate, Outlet, Route, Routes, useParams } from "react-router-dom"
+import { Suspense, lazy, useState, type ReactNode } from "react"
+import { BrowserRouter, Navigate, Outlet, Route, Routes, unstable_HistoryRouter as HistoryRouter, useParams } from "react-router-dom"
 import { Toaster } from "sonner"
 
 import { AuthProvider, useAuth } from "@/context/AuthContext"
@@ -23,6 +23,7 @@ import { ScrollToTop } from "@/components/ScrollToTop"
 import { BalisesDeRoute } from "@/components/BalisesDeRoute"
 import { COUNTRY_STORAGE_KEY, DEFAULT_COUNTRY_CODE } from "@/lib/countryPath"
 import { t, useI18n } from "@/lib/i18n"
+import { creerHistoriqueAnglais } from "@/lib/i18n/historiqueAnglais"
 
 // Chargées à la demande (une par route) plutôt qu'au démarrage : les pages de
 // lecture (Épreuve/Cours détail + lire) embarquent à elles seules react-markdown +
@@ -108,10 +109,17 @@ function AppToaster() {
 }
 
 /**
- * `basename` : le préfixe de langue de l'URL (`/en`, ou rien pour le français), fixé au chargement
- * par initialiserLangue. Avec lui, toutes les routes ci-dessous valent pour les deux langues et tout
- * lien interne reste dans la langue de la page.
+ * Le routeur de la langue de la page, fixée au chargement par initialiserLangue (`basename` : `/en`, ou rien
+ * pour le français). En français, le routeur habituel. En anglais, le même routeur sur un historique qui
+ * traduit l'adresse à la frontière (`/en/cm/past-papers/x` pour le routeur : `/cm/epreuves/x`) : toutes les
+ * routes ci-dessous valent pour les deux langues et tout lien interne reste dans la langue de la page.
  */
+function RouteurDeLangue({ basename, children }: { basename: string; children: ReactNode }) {
+  const [historique] = useState(() => (basename ? creerHistoriqueAnglais() : null))
+  if (historique) return <HistoryRouter history={historique}>{children}</HistoryRouter>
+  return <BrowserRouter>{children}</BrowserRouter>
+}
+
 function App({ basename = "" }: { basename?: string }) {
   useI18n()
   const enExamen = useModeExamen()
@@ -119,7 +127,7 @@ function App({ basename = "" }: { basename?: string }) {
     <ThemeProvider defaultTheme="light" storageKey="edukamer-theme">
       <AppToaster />
       <AuthProvider>
-        <BrowserRouter basename={basename}>
+        <RouteurDeLangue basename={basename}>
           <ScrollToTop />
           <BalisesDeRoute />
           <CountryProvider>
@@ -212,7 +220,7 @@ function App({ basename = "" }: { basename?: string }) {
             <PinDialogs />
             <VerrouInactivite />
           </CountryProvider>
-        </BrowserRouter>
+        </RouteurDeLangue>
       </AuthProvider>
     </ThemeProvider>
   )

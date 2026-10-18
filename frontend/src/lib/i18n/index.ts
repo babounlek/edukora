@@ -23,9 +23,9 @@
 import { useSyncExternalStore } from "react"
 
 import { fr, type CleAvecPluriel, type CleI18n } from "./fr"
-import { basenameDeLangue, cheminDansLangue, langueDuChemin } from "./prefixe"
+import { basenameDeLangue, cheminDansLangue, cheminInterneDepuisUrl, langueDuChemin } from "./prefixe"
 
-export { basenameDeLangue, cheminDansLangue, langueDuChemin, PREFIXE_EN, retirerPrefixeLangue } from "./prefixe"
+export { basenameDeLangue, cheminDansLangue, cheminInterneDepuisUrl, langueDuChemin, PREFIXE_EN, retirerPrefixeLangue } from "./prefixe"
 
 export type { CleI18n, CleAvecPluriel } from "./fr"
 
@@ -92,12 +92,16 @@ export async function definirLangue(cible: Langue, options: { persister?: boolea
   abonnes.forEach((notifier) => notifier())
 }
 
-/** L'URL de la page courante dans une autre langue (même page, même requête, même ancre). */
+/**
+ * L'URL de la page courante dans une autre langue (même page, même requête, même ancre).
+ * `emplacement` est une URL PUBLIQUE (celle de la barre d'adresse) : ses segments sont d'abord ramenés au
+ * chemin interne, puis traduits dans la langue cible (`/en/cm/past-papers/x` -> `/cm/epreuves/x`).
+ */
 export function urlDansLangue(
   cible: Langue,
   emplacement: Pick<Location, "pathname" | "search" | "hash"> = window.location,
 ): string {
-  return `${cheminDansLangue(emplacement.pathname, cible)}${emplacement.search}${emplacement.hash}`
+  return `${cheminDansLangue(cheminInterneDepuisUrl(emplacement.pathname), cible)}${emplacement.search}${emplacement.hash}`
 }
 
 /** Recharge la page courante dans l'autre langue : le préfixe est la base du routeur, fixée au chargement. */

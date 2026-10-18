@@ -23,6 +23,7 @@ from django.utils.text import slugify
 
 from catalog.libelles import matiere_dans_titre, public_dans_titre
 from catalog.pdf_textes import adapter_markdown, langue_du_contenu, nom_pays, textes_pdf
+from catalog.segments_url import chemin_public
 
 # PLAYWRIGHT_BROWSERS_PATH=0 : installe/résout les navigateurs sous
 # venv/Lib/site-packages/playwright/.../.local-browsers (dans le projet) plutôt que
@@ -130,7 +131,10 @@ def _lesson_deep_link(lesson, header):
     # settings.PDF_SITE_URL, pas FRONTEND_URL : ce lien est imprimé dans un PDF
     # destiné à circuler tel quel après coup (voir settings.py) - il doit rester
     # valide indépendamment de l'environnement qui a généré le fichier.
-    return f"{settings.PDF_SITE_URL}/{country_code}/epreuves/{lesson.slug}?ref=pdf_sujet"
+    # Un sujet rédigé en anglais pointe vers sa page anglaise (`/en/cm/past-papers/x`), pas vers la française.
+    langue = "en" if lesson.subject.langue == "en" else "fr"
+    chemin = chemin_public(f"/{country_code}/epreuves/{lesson.slug}", langue)
+    return f"{settings.PDF_SITE_URL}{chemin}?ref=pdf_sujet"
 
 
 def _qr_code_data_uri(url):

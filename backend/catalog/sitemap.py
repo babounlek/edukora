@@ -4,6 +4,7 @@ from django.http import Http404, HttpResponse
 from inedit.models import EpreuveInedite
 
 from .models import Cours, Country, Langue, Lesson, StatutContenu
+from .segments_url import chemin_public
 
 # django.contrib.sitemaps résout le domaine via request.get_host() ou le framework
 # Sites - les deux donneraient le domaine de CETTE API, pas celui du frontend où les
@@ -49,8 +50,9 @@ def _url_entry(loc, lastmod=None, priority="0.5", changefreq="weekly", alternate
 
 
 def _entries(base, path, bilingue, **kwargs):
-    """Les entrées d'une page : la française (sans préfixe) et, si `bilingue`, l'anglaise (`/en`), chacune
-    déclarant l'autre en hreflang (le français est aussi la version par défaut).
+    """Les entrées d'une page : la française (sans préfixe) et, si `bilingue`, l'anglaise (`/en`, avec ses
+    propres segments : `/en/cm/past-papers/x`, voir segments_url), chacune déclarant l'autre en hreflang
+    (le français est aussi la version par défaut). `path` est le chemin interne, en français.
 
     Toutes les pages ont une version anglaise, mais le sitemap ne propose à l'indexation anglaise que
     celles qui ont de quoi s'y lire : les pages d'ensemble (accueil, listes, tarifs, mentions) et les
@@ -59,7 +61,7 @@ def _entries(base, path, bilingue, **kwargs):
     fr = f"{base}{path}"
     if not bilingue:
         return [_url_entry(fr, **kwargs)]
-    en = f"{base}/en{path}"
+    en = f"{base}{chemin_public(path, 'en')}"
     alternates = {"fr": fr, "en": en, "x-default": fr}
     return [_url_entry(fr, alternates=alternates, **kwargs), _url_entry(en, alternates=alternates, **kwargs)]
 

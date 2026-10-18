@@ -112,7 +112,7 @@ describe("persistance", () => {
     window.history.replaceState(null, "", "/cm/epreuves?cursus=3#haut")
     expect(await initialiserLangue()).toBe("/en")
     expect(langueCourante()).toBe("en")
-    expect(window.location.pathname + window.location.search + window.location.hash).toBe("/en/cm/epreuves?cursus=3#haut")
+    expect(window.location.pathname + window.location.search + window.location.hash).toBe("/en/cm/past-papers?cursus=3#haut")
   })
 
   it("sans choix mémorisé ou avec une valeur invalide, reste en français", async () => {
@@ -153,8 +153,10 @@ describe("langue dans l'URL", () => {
   })
 
   it("place un chemin dans une langue, sans doubler le préfixe", () => {
-    expect(cheminDansLangue("/cm/cours", "en")).toBe("/en/cm/cours")
-    expect(cheminDansLangue("/en/cm/cours", "en")).toBe("/en/cm/cours")
+    expect(cheminDansLangue("/cm/cours", "en")).toBe("/en/cm/lessons")
+    expect(cheminDansLangue("/en/cm/cours", "en")).toBe("/en/cm/lessons")
+    // déjà en anglais (préfixe ET segments) : rien ne change
+    expect(cheminDansLangue("/en/cm/lessons", "en")).toBe("/en/cm/lessons")
     expect(cheminDansLangue("/", "en")).toBe("/en")
     expect(cheminDansLangue("/en/cm/cours", "fr")).toBe("/cm/cours")
     expect(cheminDansLangue("/en", "fr")).toBe("/")
@@ -163,8 +165,9 @@ describe("langue dans l'URL", () => {
 
   it("l'URL de l'autre langue garde la requête et l'ancre", () => {
     const ici = { pathname: "/cm/epreuves/maths", search: "?q=2", hash: "#corrige" }
-    expect(urlDansLangue("en", ici)).toBe("/en/cm/epreuves/maths?q=2#corrige")
-    expect(urlDansLangue("fr", { ...ici, pathname: "/en/cm/epreuves/maths" })).toBe("/cm/epreuves/maths?q=2#corrige")
+    expect(urlDansLangue("en", ici)).toBe("/en/cm/past-papers/maths?q=2#corrige")
+    // l'emplacement est une URL PUBLIQUE : ses segments anglais sont ramenés au chemin interne
+    expect(urlDansLangue("fr", { ...ici, pathname: "/en/cm/past-papers/maths" })).toBe("/cm/epreuves/maths?q=2#corrige")
   })
 })
 
