@@ -478,6 +478,8 @@ export interface EpreuveContent {
   // plupart du temps (rare dans le corpus). Affichée une seule fois, avant le
   // sommaire/premier exercice - jamais dans `exercises`, voir EpreuveExercise.
   introduction_markdown: string
+  // Les mêmes consignes de choix, structurées (voir catalog.choix) - [] quand tout est obligatoire.
+  regles_choix?: RegleChoix[]
   // Vide pour un contenu non sectionné (ex. FICHE) - la page de lecture retombe
   // alors sur content_markdown tel quel plutôt que d'afficher un article vide.
   exercises: EpreuveExercise[]
@@ -507,6 +509,7 @@ export interface EpreuvePreview {
   // Voir EpreuveContent.introduction_markdown - même consigne d'épreuve, exposée
   // aussi côté sujet public (jamais de corrigé dedans, uniquement la consigne).
   introduction_markdown: string
+  regles_choix?: RegleChoix[]
   // Le même sujet découpé par exercice - vide pour une Lesson sans Exercise (FICHE...),
   // la fiche retombe alors sur preview_markdown tel quel.
   exercises: EpreuvePreviewExercise[]
@@ -1654,3 +1657,7 @@ export interface CompletionRecherche {
 export type RegleChoix =
   | { type: "parmi"; portee: string; repondre: number; sur: number; exercices?: number[] }
   | { type: "ou"; portee: string; options: string[][] }
+  // « n questions, TOUTES dans une seule section » : vaut pour toute l'épreuve, `portee` n'est qu'un libellé.
+  | { type: "section_unique"; portee: string; repondre: number; exercices?: number[] }
+  // Consigne qu'aucune autre forme n'exprime ; texte dans la langue du sujet, sans effet sur la note.
+  | { type: "consigne"; portee: string; texte: string }

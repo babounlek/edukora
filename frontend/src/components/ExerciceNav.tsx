@@ -1,6 +1,12 @@
 import { ArrowLeft, ArrowRight, ArrowUp } from "lucide-react"
 
-import { exerciceAnchorId, libelleCourtExercice, type ExerciceLabelSource } from "@/components/EpreuveSommaire"
+import {
+  exerciceAnchorId,
+  libelleCourtExercice,
+  sectionDeLExercice,
+  sectionsDEpreuve,
+  type ExerciceLabelSource,
+} from "@/components/EpreuveSommaire"
 import { t, useI18n } from "@/lib/i18n"
 
 interface ExerciceNavProps {
@@ -16,11 +22,23 @@ interface ExerciceNavProps {
  *
  * Les liens sont de simples ancres vers les blocs voisins, la même cible que le
  * sommaire - donc le même comportement de défilement, et une URL partageable.
+ *
+ * Dans une longue épreuve à sections, le voisin d'une AUTRE section le dit (« Ex. 13 · SECTION 5.5 ») :
+ * passer de la dernière question d'une section à la première de la suivante n'est pas anodin quand
+ * l'élève ne traite que les questions d'une seule section.
  */
 export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
   useI18n()
   const precedent = exercises[index - 1]
   const suivant = exercises[index + 1]
+  const sections = sectionsDEpreuve(exercises)
+  const courante = sectionDeLExercice(sections, index)
+  const etiquette = (voisin: ExerciceLabelSource, rang: number) => {
+    const autre = sectionDeLExercice(sections, rang)
+    return autre && courante && autre.cle !== courante.cle
+      ? `${libelleCourtExercice(voisin)} · ${autre.label}`
+      : libelleCourtExercice(voisin)
+  }
 
   return (
     <div className="not-prose mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4 text-sm text-muted-foreground">
@@ -30,7 +48,7 @@ export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
           className="inline-flex min-h-11 items-center gap-1.5 px-1 transition-colors hover:text-primary"
         >
           <ArrowLeft className="size-4" />
-          {libelleCourtExercice(precedent)}
+          {etiquette(precedent, index - 1)}
         </a>
       ) : (
         // Placeholder : garde "suivant" aligné à droite sur le premier exercice.
@@ -51,7 +69,7 @@ export function ExerciceNav({ exercises, index }: ExerciceNavProps) {
           href={`#${exerciceAnchorId(suivant.numero_exercice)}`}
           className="inline-flex min-h-11 items-center gap-1.5 px-1 font-medium text-primary transition-colors hover:underline"
         >
-          {libelleCourtExercice(suivant)}
+          {etiquette(suivant, index + 1)}
           <ArrowRight className="size-4" />
         </a>
       ) : (

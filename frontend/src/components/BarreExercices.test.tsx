@@ -2,7 +2,15 @@ import { render, screen, within } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { EpreuveExercise } from "@/api/types"
-import { apercuQuestion, libelleDansSection, sectionsDEpreuve } from "@/components/EpreuveSommaire"
+import {
+  apercuQuestion,
+  libelleDansSection,
+  repeteLIntituleDeSection,
+  sansEnteteDeSection,
+  sectionDeLExercice,
+  sectionsDEpreuve,
+  titreDistinctif,
+} from "@/components/EpreuveSommaire"
 
 import { BarreExercices } from "./BarreExercices"
 
@@ -49,7 +57,10 @@ describe("sectionsDEpreuve", () => {
   })
 
   it("laisse une épreuve courte au sommaire plat", () => {
-    expect(sectionsDEpreuve(epreuve(["SECTION A", "SECTION B"], 4))).toBeNull()
+    const exercices = epreuve(["SECTION A", "SECTION B"], 3).slice(0, 5)
+    expect(sectionsDEpreuve(exercices)).toBeNull()
+    // Dès 6 exercices répartis en sections, le regroupement s'applique.
+    expect(sectionsDEpreuve(epreuve(["SECTION A", "SECTION B"], 3))).toHaveLength(2)
   })
 
   it("laisse une épreuve au sommaire plat quand un exercice n'a aucun groupe", () => {
@@ -99,6 +110,67 @@ describe("sections des sujets à en-tête de section", () => {
     expect(sections?.[1].intitule).toBe("Section 6.0 The Historical Development of Islam (570CE - 661CE)")
   })
 
+  it("prend le titre de la majorité quand un exercice isolé en porte un autre", () => {
+    // Religious Studies Paper 2 : le premier exercice porte « 1.0 THE OLD TESTAMENT - Section 1.1 ... ».
+    const exercices = avecTitres({ "SECTION 1.1": "Section 1.1 The Patriarchs to David", "SECTION 5.3": "Section 5.3 Islam" })
+    exercices[0] = { ...exercices[0], titre: "1.0 THE OLD TESTAMENT/JEWISH BIBLE - Section 1.1 The Patriarchs to David" }
+    const sections = sectionsDEpreuve(exercices)
+    expect(sections?.map((s) => s.intitule)).toEqual(["Section 1.1 The Patriarchs to David", "Section 5.3 Islam"])
+    // L'exercice qui porte un autre titre garde son en-tête : seul le titre commun est répété.
+    expect(repeteLIntituleDeSection(exercices[0], sections![0])).toBe(false)
+    expect(repeteLIntituleDeSection(exercices[1], sections![0])).toBe(true)
+  })
+
+  it("ne retient pas un titre porté par moins de la moitié des exercices", () => {
+    const exercices = avecTitres({ "SECTION A": "", "SECTION B": "" })
+    exercices[0] = { ...exercices[0], titre: "Titre A" }
+    exercices[1] = { ...exercices[1], titre: "Titre A" }
+    // 2 exercices sur 5 : pas une majorité, retombée sur le repère de groupe.
+    expect(sectionsDEpreuve(exercices)?.[0].intitule).toBe("SECTION A")
+  })
+
+  it("retrouve la section d'un exercice par son rang", () => {
+    const exercices = avecTitres({ "SECTION A": "Section A", "SECTION B": "Section B" })
+    const sections = sectionsDEpreuve(exercices)
+    expect(sectionDeLExercice(sections, 0)?.label).toBe("SECTION A")
+    expect(sectionDeLExercice(sections, 5)?.label).toBe("SECTION B")
+    expect(sectionDeLExercice(null, 0)).toBeNull()
+  })
+
+  it("ne répète pas l'intitulé quand l'exercice n'a pas de titre ou n'est pas dans une section", () => {
+    expect(repeteLIntituleDeSection(exercice("1", []), null)).toBe(false)
+    expect(repeteLIntituleDeSection(exercice("1", ["A"]), { intitule: "Section A" })).toBe(false)
+  })
+
+  it("garde le titre propre d'un exercice (SVT, maths) : seul un titre qui ne distingue rien est remplacé par le numéro", () => {
+    const section = { intitule: "Section 2.1 The Gospel According to Luke" }
+    const avec = (titre: string) => ({ ...exercice("3", ["SECTION 2.1"]), titre })
+    expect(titreDistinctif(avec("Exercice 1 : Chimie organique"), { intitule: "Partie A" })).toBe(true)
+    // Pas de titre, un simple numéro, ou le titre de la section répété : l'exercice n'a pas de titre propre.
+    expect(titreDistinctif(avec(""), section)).toBe(false)
+    expect(titreDistinctif(avec("Exercice 3"), section)).toBe(false)
+    expect(titreDistinctif(avec("Exercise 3"), section)).toBe(false)
+    expect(titreDistinctif(avec("Section 2.1 The Gospel According to Luke"), section)).toBe(false)
+    expect(titreDistinctif(avec("Exercice 3 : Suites"), section)).toBe(true)
+  })
+
+  it("retire l'en-tête de section collé devant l'énoncé, et lui seul", () => {
+    const enonce = "**Section 5.3 Islam**\n\nExamine the place of women in Islam.\n\n(25 marks)"
+    expect(sansEnteteDeSection(enonce, "Section 5.3 Islam")).toBe("Examine the place of women in Islam.\n\n(25 marks)")
+    // Un en-tête différent, ou aucun titre : rien n'est retiré.
+    expect(sansEnteteDeSection(enonce, "Section 2.1 Luke")).toBe(enonce)
+    expect(sansEnteteDeSection(enonce, "")).toBe(enonce)
+    expect(sansEnteteDeSection("Question seule.", "Section 5.3 Islam")).toBe("Question seule.")
+  })
+
+  it("accepte une longueur d'aperçu plus grande pour la page de lecture", () => {
+    const longue = "Discuss ".repeat(40).trim()
+    expect(apercuQuestion(longue).length).toBeLessThanOrEqual(90)
+    const large = apercuQuestion(longue, "", 180)
+    expect(large.length).toBeGreaterThan(90)
+    expect(large.length).toBeLessThanOrEqual(180)
+  })
+
   it("retombe sur le repère de groupe quand les titres diffèrent ou manquent", () => {
     const exercices = avecTitres({ "SECTION A": "", "SECTION B": "" })
     exercices[1] = { ...exercices[1], titre: "Une question à part" }
@@ -125,9 +197,9 @@ describe("sections des sujets à en-tête de section", () => {
 
 describe("BarreExercices", () => {
   it("garde une seule rangée de pastilles pour une épreuve courte", () => {
-    render(<BarreExercices exercises={epreuve(["SECTION A", "SECTION B"], 3)} />)
+    render(<BarreExercices exercises={epreuve(["SECTION A", "SECTION B"], 3).slice(0, 5)} />)
     expect(screen.getAllByRole("list")).toHaveLength(1)
-    expect(screen.getAllByRole("link")).toHaveLength(6)
+    expect(screen.getAllByRole("link")).toHaveLength(5)
   })
 
   it("sépare sections et questions pour une longue épreuve : seules les questions de la section en cours sont listées", () => {
@@ -150,6 +222,25 @@ describe("BarreExercices", () => {
       "#exercice-5",
       "#exercice-6",
     ])
+  })
+
+  it("donne le début de la question en infobulle des pastilles d'une longue épreuve", () => {
+    const exercices = epreuve(["SECTION A", "SECTION B"], 3).map((e) => ({
+      ...e,
+      titre: "Section A",
+      enonce_markdown: `**Section A**\n\nQuestion ${e.numero_exercice} : examine the topic.`,
+    }))
+    render(<BarreExercices exercises={exercices} />)
+    const [, rangeeQuestions] = screen.getAllByRole("list")
+    expect(within(rangeeQuestions).getByRole("link", { name: "Ex. 2" })).toHaveAttribute(
+      "title",
+      "Question 2 : examine the topic.",
+    )
+  })
+
+  it("n'ajoute pas d'infobulle aux pastilles d'une épreuve courte", () => {
+    render(<BarreExercices exercises={epreuve(["SECTION A", "SECTION B"], 3).slice(0, 4)} />)
+    for (const lien of screen.getAllByRole("link")) expect(lien).not.toHaveAttribute("title")
   })
 
   it("n'affiche rien pour un seul exercice", () => {

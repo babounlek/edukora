@@ -30,6 +30,39 @@ describe("ReglesChoix", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument()
   })
 
+  it("sur un sujet lu en ligne (sans simulation), dit seulement quoi traiter : ni « meilleurs comptent » ni compteur", () => {
+    render(<ReglesChoix regles={[PARMI]} />)
+    expect(screen.getByText("SECTION A : traite 2 exercices parmi 3.")).toBeInTheDocument()
+    expect(screen.queryByText(/Traités/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/meilleurs/)).not.toBeInTheDocument()
+  })
+
+  it("annonce « toutes les questions dans une seule section »", () => {
+    const regle: RegleChoix = { type: "section_unique", portee: "PAPER 3", repondre: 4, exercices: [1, 2, 3, 4, 5] }
+    const { unmount } = render(<ReglesChoix regles={[regle]} />)
+    expect(screen.getByText("PAPER 3 : traite 4 exercices, tous dans une seule section.")).toBeInTheDocument()
+    unmount()
+
+    // En simulation : compteur d'exercices traités, et seuls les meilleurs comptent.
+    render(<ReglesChoix regles={[regle]} traites={new Set([1, 2])} />)
+    expect(screen.getByText(/PAPER 3 : traite 4 exercices, tous dans une seule section. Seuls les 4 meilleurs comptent/)).toBeInTheDocument()
+    expect(screen.getByText("Traités : 2 / 4")).toBeInTheDocument()
+  })
+
+  it("accorde « exercice » au singulier", () => {
+    render(<ReglesChoix regles={[{ type: "section_unique", portee: "PAPER 2", repondre: 1 }]} />)
+    expect(screen.getByText("PAPER 2 : traite 1 exercice, dans une seule section.")).toBeInTheDocument()
+  })
+
+  it("affiche une consigne libre telle quelle, dans la langue du sujet", () => {
+    render(
+      <ReglesChoix regles={[{ type: "consigne", portee: "SECTION I", texte: "Le candidat traitera deux sujets de genres différents." }]} />,
+    )
+    expect(
+      screen.getByText("SECTION I : Le candidat traitera deux sujets de genres différents."),
+    ).toBeInTheDocument()
+  })
+
   it("présente une règle « ou » comme une simple consigne", () => {
     render(<ReglesChoix regles={[{ type: "ou", portee: "SECTION II", options: [["a", "b"], ["c"]] }]} traites={new Set()} />)
     expect(screen.getByText("SECTION II : au choix, a, b ou c.")).toBeInTheDocument()

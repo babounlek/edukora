@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 import type { EpreuveExercise } from "@/api/types"
-import { exerciceAnchorId, libelleCourtExercice, sectionsDEpreuve } from "@/components/EpreuveSommaire"
+import { apercuQuestion, exerciceAnchorId, libelleCourtExercice, sectionsDEpreuve } from "@/components/EpreuveSommaire"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -83,6 +83,8 @@ export function BarreExercices({ exercises }: { exercises: EpreuveExercise[] }) 
           <a
             href={`#${id}`}
             aria-current={estActif ? "location" : undefined}
+            // Longue épreuve à sections : la question EST l'exercice, son début s'affiche au survol.
+            title={sections ? apercuQuestion(exercise.enonce_markdown, exercise.titre) || undefined : undefined}
             className={cn(PASTILLE, estActif ? PASTILLE_ACTIVE : PASTILLE_REPOS)}
           >
             {libelleCourtExercice(exercise)}

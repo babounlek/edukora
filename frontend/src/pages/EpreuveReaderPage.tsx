@@ -21,7 +21,18 @@ import { SITE_NAME } from "@/lib/site"
 import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { EnonceToggle } from "@/components/EnonceToggle"
 import { MarquesSection } from "@/components/MarquesSection"
-import { exerciceAnchorId, libelleDansSection, libelleLong, sectionsDEpreuve } from "@/components/EpreuveSommaire"
+import {
+  apercuQuestion,
+  exerciceAnchorId,
+  libelleDansSection,
+  libelleLong,
+  repeteLIntituleDeSection,
+  sectionDeLExercice,
+  sectionsDEpreuve,
+  titreDistinctif,
+} from "@/components/EpreuveSommaire"
+import { EnTeteSection } from "@/components/EnTeteSection"
+import { ReglesChoix } from "@/components/inedit/ReglesChoix"
 import { ExerciceNav } from "@/components/ExerciceNav"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
@@ -32,7 +43,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
-import { t, tn, useI18n } from "@/lib/i18n"
+import { t, useI18n } from "@/lib/i18n"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
@@ -165,67 +176,72 @@ export function EpreuveReaderPage() {
   // Longue épreuve groupée : la barre à deux rangées (voir BarreExercices) est plus haute, d'où une
   // marge de défilement plus grande pour que le titre d'un exercice ne passe pas dessous.
   const sections = sectionsDEpreuve(exercises)
-  const debutDeSection = (index: number) => sections?.find((section) => section.items[0].index === index)
+  const regles = content?.regles_choix ?? []
 
   const article = (
     <article ref={articleRef} className="flex min-w-0 flex-col gap-6">
       {exercises.length > 0 ? (
-        exercises.map((exercise, index) => (
-          <Fragment key={exercise.numero_exercice}>
-          {debutDeSection(index) && (
-            <p className="-mb-2 mt-4 flex items-baseline gap-2 border-b border-border pb-2 font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground first:mt-0">
-              <span className="min-w-0 flex-1 truncate" title={debutDeSection(index)!.intitule}>{debutDeSection(index)!.intitule}</span>
-              <span className="shrink-0 text-xs font-normal normal-case tabular-nums">
-                {tn("ed.section_questions", debutDeSection(index)!.items.length)}
-              </span>
-            </p>
-          )}
-          <section
-            id={exerciceAnchorId(exercise.numero_exercice)}
-            className={`${sections ? "scroll-mt-48" : "scroll-mt-36"} rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-7`}
-          >
-            <div className="mb-4 flex items-center gap-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30">
-                {index + 1}
-              </span>
-              <h2 className="min-w-0 flex-1 truncate font-display text-lg font-semibold" title={exercise.titre || undefined}>
-                {sections ? libelleDansSection(exercise) : libelleLong(exercise)}
-              </h2>
-              {exercise.points && (
-                <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
-                  {exercise.points} pts
-                </span>
-              )}
-            </div>
-            {exercise.enonce_intro_markdown && (
-              <div className="prose prose-neutral max-w-none text-justify dark:prose-invert">
-                <EpreuveMarkdown markdown={libelleEnteteExercice(exercise.enonce_intro_markdown)} />
-              </div>
-            )}
-            <EnonceToggle>
-              <EpreuveMarkdown markdown={exercise.enonce_markdown} />
-            </EnonceToggle>
-            {/* Le corrigé, nommé : dans une carte qui contient aussi l'énoncé et les outils, la
-                correction doit se reconnaître d'un coup d'œil. */}
-            <div className="mt-5">
-              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-                <CheckCheck className="size-3.5" aria-hidden="true" />
-                {t("ep.type_CORR")}
-              </p>
-              <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
-                <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
-              </div>
-            </div>
-            {/* La validation vit ICI, après le corrigé, et nulle part ailleurs : c'est le seul
-                endroit où l'élève a de quoi juger s'il a vraiment résolu l'exercice. Une case à
-                cocher sur une liste se coche sans rien avoir lu, et un suivi qu'on peut remplir
-                sans travailler ne mesure plus rien. */}
-            <ValiderResolution exercise={exercise} />
-            <MarquesSection etude={etude} cle={exerciceAnchorId(exercise.numero_exercice)} avecCompris={false} />
-            {exercises.length > 1 && <ExerciceNav exercises={exercises} index={index} />}
-          </section>
-          </Fragment>
-        ))
+        exercises.map((exercise, index) => {
+          const section = sectionDeLExercice(sections, index)
+          // Sans titre propre (le titre est celui de la section), l'exercice se reconnaît à son numéro et à sa question.
+          const sansTitrePropre = sections !== null && !titreDistinctif(exercise, section)
+          const apercu = sansTitrePropre ? apercuQuestion(exercise.enonce_markdown, exercise.titre, 180) : ""
+          return (
+            <Fragment key={exercise.numero_exercice}>
+              {section && section.items[0].index === index && <EnTeteSection section={section} />}
+              <section
+                id={exerciceAnchorId(exercise.numero_exercice)}
+                className={`${sections ? "scroll-mt-48" : "scroll-mt-36"} rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-7`}
+              >
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30">
+                    {index + 1}
+                  </span>
+                  <h2
+                    className="min-w-0 flex-1 truncate font-display text-lg font-semibold"
+                    title={exercise.titre || undefined}
+                  >
+                    {sansTitrePropre ? libelleDansSection(exercise) : libelleLong(exercise)}
+                  </h2>
+                  {exercise.points && (
+                    <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+                      {exercise.points} pts
+                    </span>
+                  )}
+                </div>
+                {/* Sujet à sections : la question est l'exercice, et son énoncé est replié sous le corrigé.
+                    Son début reste lisible ici, sans quoi le corrigé s'ouvrirait sur une réponse sans question. */}
+                {apercu && <p className="-mt-1 mb-4 text-sm italic text-muted-foreground">{apercu}</p>}
+                {exercise.enonce_intro_markdown && !repeteLIntituleDeSection(exercise, section) && (
+                  <div className="prose prose-neutral max-w-none text-justify dark:prose-invert">
+                    <EpreuveMarkdown markdown={libelleEnteteExercice(exercise.enonce_intro_markdown)} />
+                  </div>
+                )}
+                <EnonceToggle>
+                  <EpreuveMarkdown markdown={exercise.enonce_markdown} />
+                </EnonceToggle>
+                {/* Le corrigé, nommé : dans une carte qui contient aussi l'énoncé et les outils, la
+                    correction doit se reconnaître d'un coup d'œil. */}
+                <div className="mt-5">
+                  <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                    <CheckCheck className="size-3.5" aria-hidden="true" />
+                    {t("ep.type_CORR")}
+                  </p>
+                  <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                    <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
+                  </div>
+                </div>
+                {/* La validation vit ICI, après le corrigé, et nulle part ailleurs : c'est le seul
+                    endroit où l'élève a de quoi juger s'il a vraiment résolu l'exercice. Une case à
+                    cocher sur une liste se coche sans rien avoir lu, et un suivi qu'on peut remplir
+                    sans travailler ne mesure plus rien. */}
+                <ValiderResolution exercise={exercise} />
+                <MarquesSection etude={etude} cle={exerciceAnchorId(exercise.numero_exercice)} avecCompris={false} />
+                {exercises.length > 1 && <ExerciceNav exercises={exercises} index={index} />}
+              </section>
+            </Fragment>
+          )
+        })
       ) : (
         <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
           <EpreuveMarkdown markdown={content?.content_markdown ?? ""} directCoursLinks />
@@ -322,6 +338,13 @@ export function EpreuveReaderPage() {
             // exercise.enonce_intro_markdown, propre à CHAQUE exercice).
             <div className="prose prose-neutral mt-5 max-w-none rounded-2xl border border-border bg-muted/40 p-4 text-justify dark:prose-invert">
               <EpreuveMarkdown markdown={content.introduction_markdown} />
+            </div>
+          )}
+          {/* La consigne de choix, avant le sommaire : « combien de questions, et dans quelles sections »
+              se lit avant de choisir une question, pas dans le paragraphe d'en-tête. */}
+          {regles.length > 0 && (
+            <div className="mt-5">
+              <ReglesChoix regles={regles} />
             </div>
           )}
           <BarreExercices exercises={exercises} />
