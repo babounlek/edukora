@@ -36,10 +36,29 @@ SELECTION = [
     ("CM", "GCE_AL", "Physics GCE A Level 2023 - Paper 2"),
     ("CM", "GCE_AL", "Pure Mathematics with Mechanics GCE A Level 2023 - Paper 2"),
     ("CM", "GCE_AL", "Pure Mathematics with Statistics GCE A Level 2023 - Paper 2"),
+    # Matières A Level cochées à la main en base locale, ajoutées ici le 2026-10-18 pour exister aussi en
+    # production (English Language est en 2022 et Special Bilingual Education French en 2019 : ce sont les
+    # seuls Paper 2 que ces matières portent en base).
+    ("CM", "GCE_AL", "English Language GCE A Level 2022 - Paper 2"),
+    ("CM", "GCE_AL", "Geology GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Philosophy GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Religious Studies GCE A Level 2023 - Paper 2"),
+    ("CM", "GCE_AL", "Special Bilingual Education French GCE A Level 2019 - Paper 2"),
     # O Level : les quatre échantillons posés à la main en base locale le 2026-10-14, ajoutés ici le
-    # 2026-10-17 pour qu'ils existent aussi en production.
+    # 2026-10-17 pour qu'ils existent aussi en production ; les onze autres matières le 2026-10-18.
+    ("CM", "GCE_OL", "Additional Mathematics GCE O Level 2023 - Paper 2"),
     ("CM", "GCE_OL", "Biology GCE O Level 2019 - Paper 2"),
     ("CM", "GCE_OL", "Chemistry GCE O Level 2020 - Paper 1"),
+    ("CM", "GCE_OL", "Citizenship Education GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "Commerce GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "Computer Science GCE O Level 2022 - Paper 2"),
+    ("CM", "GCE_OL", "Economics GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "English Language GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "Food and Nutrition GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "French GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "Geography GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "History GCE O Level 2023 - Paper 2"),
+    ("CM", "GCE_OL", "Human Biology GCE O Level 2023 - Paper 2"),
     ("CM", "GCE_OL", "Mathematics GCE O Level 2019 - Paper 2"),
     ("CM", "GCE_OL", "Physics GCE O Level 2023 - Paper 1"),
 ]

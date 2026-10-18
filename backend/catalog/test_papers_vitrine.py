@@ -45,14 +45,26 @@ class PapersVitrineTests(TestCase):
         call_command("definir_papers_vitrine", *args, stdout=sortie)
         return sortie.getvalue()
 
-    def test_la_selection_a_un_paper_par_matiere_a_level_et_quatre_en_o_level(self):
+    def test_la_selection_couvre_toutes_les_matieres_du_gce_une_fois(self):
         a_level = [titre for _, examen, titre in SELECTION if examen == "GCE_AL"]
         o_level = [titre for _, examen, titre in SELECTION if examen == "GCE_OL"]
-        self.assertEqual((len(a_level), len(o_level)), (11, 4))
         self.assertEqual(len(SELECTION), len({titre for _, _, titre in SELECTION}))
         matieres_al = [t.split(" GCE")[0] for t in a_level]
+        matieres_ol = [t.split(" GCE")[0] for t in o_level]
+        # Une seule fois par matière et par niveau : le paper gratuit est un échantillon, pas un lot.
         self.assertEqual(len(matieres_al), len(set(matieres_al)))
-        self.assertEqual({t.split(" GCE")[0] for t in o_level}, {"Biology", "Chemistry", "Mathematics", "Physics"})
+        self.assertEqual(len(matieres_ol), len(set(matieres_ol)))
+        # Aucune matière du GCE sans paper gratuit : sinon elle paraît vide au visiteur qui la choisit.
+        self.assertEqual(set(matieres_al), {
+            "Biology", "Chemistry", "Computer Science", "Economics", "English Language", "Further Mathematics",
+            "Geography", "Geology", "History", "ICT", "Philosophy", "Physics", "Pure Mathematics with Mechanics",
+            "Pure Mathematics with Statistics", "Religious Studies", "Special Bilingual Education French",
+        })
+        self.assertEqual(set(matieres_ol), {
+            "Additional Mathematics", "Biology", "Chemistry", "Citizenship Education", "Commerce", "Computer Science",
+            "Economics", "English Language", "Food and Nutrition", "French", "Geography", "History", "Human Biology",
+            "Mathematics", "Physics",
+        })
 
     def test_simulation_n_ecrit_rien(self):
         sortie = self._lancer()
