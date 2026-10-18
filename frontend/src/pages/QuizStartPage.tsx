@@ -20,9 +20,9 @@ import type { ModeQuiz, Subject, Subscription, ThemeFrequent } from "@/api/types
 import { useAuth } from "@/context/AuthContext"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { useCountry } from "@/context/CountryContext"
-import { EtapesPresentation, StatChip } from "@/components/Configurateur"
+import { StatChip } from "@/components/Configurateur"
 import { ErreurChargement } from "@/components/ErreurChargement"
-import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
+import { QuizCompletVisiteur } from "@/components/QuizCompletVisiteur"
 import { EssaisGratuitsQuiz } from "@/components/EssaisGratuitsQuiz"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
@@ -530,80 +530,13 @@ export function QuizStartPage() {
       )}
 
       {!abonne ? (
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
-          {previewSubjects && previewSubjects.length > 0 && cursusPrepareId != null ? (
-            <ApercuMatieresQuiz cursusId={cursusPrepareId} subjects={previewSubjects} />
-          ) : (
-            <Card className="overflow-hidden rounded-2xl border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent shadow-lg shadow-primary/5">
-              <CardContent className="flex flex-col items-start gap-4 pt-6">
-                {/* Le cadenas ne s'affiche que s'il dit vrai : à un abonné sans cursus
-                    actif, il nomme un accès à débloquer. Au visiteur déconnecté, il
-                    annonçait une interdiction avant même d'avoir dit ce qu'est le Quiz. */}
-                <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
-                  {isAuthenticated ? <Lock className="size-5" /> : <Target className="size-5" />}
-                </span>
-                <div>
-                  <p className="font-display text-lg font-semibold">
-                    {isAuthenticated ? t("qd.debloque") : t("qd.comment")}
-                  </p>
-                  {isAuthenticated && (
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {t("qd.reserve_abonnes")}
-                    </p>
-                  )}
-                </div>
-                <EtapesPresentation
-                  etapes={[
-                    t("qd.etape1"),
-                    t("qd.etape2"),
-                    t("qd.etape3"),
-                  ]}
-                />
-                {/* Déconnecté, la connexion passe devant les tarifs : un abonnement déjà
-                    actif sur un autre appareil est le cas le plus fréquent ici. Le w-full
-                    va sur le conteneur des deux liens (voir l'historique : sous un parent
-                    items-start, le bouton se rétractait à 269px à 375px de large). */}
-                {isAuthenticated ? (
-                  <Button asChild size="lg" className="w-full sm:w-auto">
-                    <Link to="/tarifs">
-                      {t("accueil.voir_prix")}
-                      <ArrowRight className="size-4" />
-                    </Link>
-                  </Button>
-                ) : (
-                  <div className="flex w-full flex-col items-start gap-2">
-                    <Button asChild size="lg" className="w-full sm:w-auto">
-                      <Link to="/connexion" state={{ from: "/quiz", intent: t("quiz.connexion_pour_lancer") }}>
-                        {t("qd.se_connecter")}
-                        <ArrowRight className="size-4" />
-                      </Link>
-                    </Button>
-                    <Link to="/tarifs" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-                      {t("qd.pas_dabonnement")}
-                    </Link>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-          {/* Une question de démo factice n'a plus de sens une fois la vraie liste
-              affichée (voir ApercuMatieresQuiz) - seul le cas "aucun cursus connu" la garde. */}
-          {!(previewSubjects && previewSubjects.length > 0) && (
-            <aside className="min-w-0">
-              <DemoQuizQuestion
-                lienConnexion={
-                  <Link
-                    to={isAuthenticated ? "/tarifs" : "/connexion"}
-                    state={isAuthenticated ? undefined : { from: "/quiz", intent: t("quiz.connexion_pour_lancer") }}
-                    className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-                  >
-                    {t("qd.vraie_seance")}
-                  </Link>
-                }
-              />
-            </aside>
-          )}
-        </div>
+        previewSubjects && previewSubjects.length > 0 && cursusPrepareId != null ? (
+          <ApercuMatieresQuiz cursusId={cursusPrepareId} subjects={previewSubjects} />
+        ) : (
+          // Après les essais gratuits : le produit complet, un seul bloc et un seul appel principal
+          // (voir QuizCompletVisiteur). Au visiteur déconnecté, aucun cadenas : le bloc dit ce qu'est le Quiz.
+          <QuizCompletVisiteur connecte={isAuthenticated} />
+        )
       ) : (
         <>
           {/* Configuration : la même carte surélevée et les mêmes pastilles que

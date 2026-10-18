@@ -153,7 +153,9 @@ export function Footer() {
   // Pas d'invitation vers la page où l'on est déjà (les tarifs sur /tarifs, la séance
   // sur l'accueil) : un bouton qui ne mène nulle part affaiblit tous les autres.
   const cible = invitation.lien.split("?")[0]
-  const afficherInvitation = pathname !== cible
+  // /quiz porte déjà son propre appel principal pour qui n'a pas d'abonnement (voir QuizCompletVisiteur) :
+  // le répéter dans le pied de page ferait deux boutons identiques à la suite.
+  const afficherInvitation = pathname !== cible && !(pathname === "/quiz" && !user?.a_un_abonnement_actif)
 
   const examens = (langueStats === "en" ? ORDRE_EXAMENS_EN : ORDRE_EXAMENS).map((examen) => ({
     examen,

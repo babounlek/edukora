@@ -28,7 +28,7 @@ const CHOIX_DEMO = [
  * lien vers l'épreuve - la preuve ne peut plus s'écarter de ce que le site propose. Si le serveur n'en a aucune,
  * ou ne répond pas, la question de démonstration de la langue sert de repli.
  */
-export function DemoQuizQuestion({ lienConnexion }: { lienConnexion: ReactNode }) {
+export function DemoQuizQuestion({ lienConnexion }: { lienConnexion?: ReactNode }) {
   useI18n()
   const { country } = useCountry()
   const langue = langueCourante()
@@ -96,7 +96,12 @@ export function DemoQuizQuestion({ lienConnexion }: { lienConnexion: ReactNode }
                   )}
                 >
                   <span className="font-medium">{c.lettre.toUpperCase()}.</span>
-                  <span>{c.texte}</span>
+                  <span className="min-w-0 flex-1">{c.texte}</span>
+                  {c.lettre === bonneReponse && (
+                    <span className="ml-auto shrink-0 rounded-full bg-success/15 px-2 py-0.5 text-[11px] font-medium text-success">
+                      {t("qd.demo_bonne")}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
