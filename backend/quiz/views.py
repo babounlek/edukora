@@ -29,6 +29,8 @@ from .classement import classement_hebdo
 from .gratuits import themes_gratuits_par_matiere
 from .pdf import queue_quiz_fiche_pdf_generation
 from .serie import serie_de_jours
+from . import textes
+from .services import libelle_etape
 from .services import (
     SEUIL_MAITRISE, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
@@ -763,7 +765,7 @@ def parcours_resume(request):
     return Response(resume_parcours(profil_actif(request), cursus))
 
 
-def _etape_verrouillee(etape):
+def _etape_verrouillee(etape, langue=textes.FR):
     """
     Ce qui reste d'une étape quand l'abonnement n'est pas actif : son type et sa durée,
     jamais ce qui identifie le contenu précis (slug, exercice, année de l'épreuve
@@ -774,8 +776,7 @@ def _etape_verrouillee(etape):
     thème entier.
     """
     type_ = etape.get("type")
-    libelle = "Un exercice tombé à l'examen" if type_ == "exercice" else etape.get("libelle")
-    return {"type": type_, "libelle": libelle, "duree_min": etape.get("duree_min")}
+    return {"type": type_, "libelle": libelle_etape(etape, langue, verrouillee=True), "duree_min": etape.get("duree_min")}
 
 
 def _serialiser_seance(seance, verrouillee):
@@ -788,10 +789,12 @@ def _serialiser_seance(seance, verrouillee):
     valeur se démontre au lieu de s'affirmer, et cacher le thème reviendrait à
     demander à un visiteur de payer pour savoir ce qu'il achète.
     """
+    # Les textes que le serveur écrit suivent la langue du cursus visé (voir quiz.textes) : le GCE est en anglais.
+    langue = textes.langue_de(seance.cursus)
     return {
         "id": seance.id,
         "origine": seance.origine,
-        "origine_display": seance.get_origine_display(),
+        "origine_display": textes.origine(seance.origine, langue),
         "subject": SubjectSerializer(seance.subject).data if seance.subject else None,
         "theme": {"id": seance.theme_id, "name": seance.theme.name} if seance.theme else None,
         "savoir": {"id": seance.savoir_id, "intitule": seance.savoir.intitule} if seance.savoir else None,
@@ -801,8 +804,11 @@ def _serialiser_seance(seance, verrouillee):
         "budget_minutes": seance.budget_minutes,
         "budgets_possibles": list(BUDGETS_SEANCE_MINUTES),
         "nb_etapes": len(seance.etapes),
-        "etapes": [_etape_verrouillee(etape) for etape in seance.etapes] if verrouillee else [
-            {**etape, "cle": cle_etape(etape), "ouverte": etape_ouverte(seance, etape)}
+        "etapes": [_etape_verrouillee(etape, langue) for etape in seance.etapes] if verrouillee else [
+            {
+                **etape, "libelle": libelle_etape(etape, langue),
+                "cle": cle_etape(etape), "ouverte": etape_ouverte(seance, etape),
+            }
             for etape in seance.etapes
         ],
         "frequence": _frequence_du_theme(seance),
@@ -993,7 +999,9 @@ def accueil_view(request):
         "absence_jours": absence,
         "premiers_pas": debutant,
         "nouvelle_visite": nouvelle,
-        "phrase_coach": accueil.phrase_coach(plan, phase, absence, premiers_pas_eleve=debutant),
+        "phrase_coach": accueil.phrase_coach(
+            plan, phase, absence, premiers_pas_eleve=debutant, langue=textes.langue_de(cursus),
+        ),
         "depuis": None if debutant else accueil.delta_depuis(profil, cursus, visite),
         "trajectoire": None if debutant else accueil.trajectoire(profil, cursus, resume, compte),
         "resume": resume,

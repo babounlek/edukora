@@ -234,7 +234,7 @@ PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
 # déjà courts (BAC A, TI : plancher 2).
 PARCOURS_FREQUENCE_THEMES_MAX = 130
 
-from . import xp
+from . import textes, xp
 from .models import (
     CompetenceItem, ModeQuiz, ObjectifMatiere, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare,
     RevisionSchedule,
@@ -2187,12 +2187,11 @@ def raisons_de_la_seance(seance):
     le texte est écrit ici parce qu'il dépend de chiffres que seul le serveur a.
     """
     raisons = []
+    # Les textes suivent la langue du cursus visé par la séance (voir quiz.textes) : le GCE est en anglais.
+    langue = textes.langue_de(seance.cursus)
 
     if seance.origine == OrigineSeance.DIAGNOSTIC:
-        return [{
-            "code": "calibrage",
-            "texte": "On ne sait pas encore où tu en es - ces questions servent à le situer.",
-        }]
+        return [{"code": "calibrage", "texte": textes.texte("raison.calibrage", langue)}]
 
     if seance.subject_id and seance.cursus_id:
         coefficient = _coefficient_par_subject(seance.cursus).get(seance.subject_id)
@@ -2202,7 +2201,7 @@ def raisons_de_la_seance(seance):
             valeur = int(coefficient) if coefficient == int(coefficient) else coefficient
             raisons.append({
                 "code": "coefficient",
-                "texte": f"{seance.subject.label} est coefficient {valeur} à ton examen.",
+                "texte": textes.texte("raison.coefficient", langue, matiere=seance.subject.label, valeur=valeur),
             })
 
     if seance.subject_id and seance.cursus_id:
@@ -2210,7 +2209,9 @@ def raisons_de_la_seance(seance):
         if objectif is not None and objectif.subject_id == seance.subject_id:
             raisons.append({
                 "code": "objectif",
-                "texte": f"Tu as choisi de te concentrer sur {seance.subject.label} jusqu'au {objectif.jusqu_au:%d/%m}.",
+                "texte": textes.texte(
+                    "raison.objectif", langue, matiere=seance.subject.label, date=f"{objectif.jusqu_au:%d/%m}",
+                ),
             })
 
     if seance.origine == OrigineSeance.REVISION_DUE and seance.theme_id:
@@ -2225,23 +2226,25 @@ def raisons_de_la_seance(seance):
         )
         if dernier_echec is not None:
             jours = (timezone.localdate() - timezone.localtime(dernier_echec.answered_at).date()).days
-            quand = "aujourd'hui" if jours == 0 else ("hier" if jours == 1 else f"il y a {jours} jours")
-            raisons.append({"code": "echec", "texte": f"Tu as raté ce thème {quand}."})
+            if jours == 0:
+                quand = textes.texte("raison.echec_aujourdhui", langue)
+            elif jours == 1:
+                quand = textes.texte("raison.echec_hier", langue)
+            else:
+                quand = textes.texte("raison.echec_jours", langue, jours=jours)
+            raisons.append({"code": "echec", "texte": textes.texte("raison.echec", langue, quand=quand)})
         else:
-            raisons.append({"code": "echec", "texte": "Ce thème t'a déjà posé problème."})
+            raisons.append({"code": "echec", "texte": textes.texte("raison.echec_defaut", langue)})
 
     elif seance.origine == OrigineSeance.LECTURE_EN_COURS:
-        raisons.append({"code": "lecture", "texte": "Tu as ouvert ce cours il y a moins de deux jours."})
+        raisons.append({"code": "lecture", "texte": textes.texte("raison.lecture", langue)})
 
     if seance.origine != OrigineSeance.LECTURE_EN_COURS and _theme_deja_maitrise(
         seance.profil, seance.cursus, seance.theme,
     ):
         # Dit pourquoi l'étape "méthode" manque : sans cette ligne, une séance sans
         # cours ressemble à un contenu qui manque plutôt qu'à une reconnaissance.
-        raisons.append({
-            "code": "maitrise",
-            "texte": "Tu réussis déjà ce thème : on passe directement à la pratique.",
-        })
+        raisons.append({"code": "maitrise", "texte": textes.texte("raison.maitrise", langue)})
 
     elif seance.theme_id:
         # Jamais répondu sur ce thème : c'est là qu'il y a le plus à gagner, et c'est
@@ -2251,9 +2254,32 @@ def raisons_de_la_seance(seance):
             quiz_question__competence_item__theme_id=seance.theme_id,
         ).exists()
         if not deja_repondu:
-            raisons.append({"code": "jamais", "texte": "Tu ne l'as encore jamais travaillé."})
+            raisons.append({"code": "jamais", "texte": textes.texte("raison.jamais", langue)})
 
     return raisons
+
+
+def libelle_etape(etape, langue=textes.FR, verrouillee=False):
+    """
+    Le libellé d'une étape de séance dans `langue`, recalculé à l'AFFICHAGE à partir de ce que l'étape porte
+    (type, mode, durée, exercice) : le libellé stocké dans `Seance.etapes` a été écrit en français à la création,
+    et une séance déjà enregistrée doit s'afficher dans la langue du cursus comme une nouvelle. En français le
+    résultat est identique au libellé stocké. Une étape inconnue garde son libellé stocké.
+    """
+    type_ = etape.get("type")
+    if type_ == "cours":
+        return textes.texte("etape.cours", langue)
+    if type_ == "quiz":
+        cle = "etape.diagnostic" if etape.get("mode") == ModeQuiz.DIAGNOSTIC else "etape.quiz"
+        return textes.texte(cle, langue, n=etape.get("n"))
+    if type_ == "exercice":
+        if verrouillee:
+            return textes.texte("etape.exercice_verrouille", langue)
+        numero = etape.get("numero_exercice")
+        titre = etape.get("lesson_title")
+        if numero and titre:
+            return textes.texte("etape.exercice", langue, numero=numero, titre=titre)
+    return etape.get("libelle")
 
 
 def prochaine_revision(seance):

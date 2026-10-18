@@ -19,6 +19,7 @@ Tout ici RÉUTILISE les calculs existants (résumé du parcours, bilan, révisio
 espacée) : aucune nouvelle notion de maîtrise, aucun chiffre qu'un autre écran ne
 pourrait contredire.
 """
+import functools
 from datetime import timedelta
 from math import ceil
 
@@ -27,6 +28,7 @@ from django.utils import timezone
 from access.models import LectureProgress
 from catalog.models import Lesson, LessonType, Origine, StatutContenu
 
+from . import textes
 from .models import OrigineSeance, QuizAnswer, SeanceJournaliere, StatutSeance, VisiteAccueil
 from .services import (
     DERNIERE_LIGNE_DROITE_JOURS, SEUIL_MAITRISE, _coefficient_par_subject, score_de_la_seance,
@@ -462,47 +464,34 @@ def _titre(seance):
 
 
 # Paliers de l'accroche de fréquence, du plus fort au plus faible : (part des épreuves
-# concernées, formulation). En dessous du dernier palier, on ne dit rien de la fréquence -
-# "tombe régulièrement" pour 3 épreuves sur 41 serait une phrase que la pastille juste
-# dessous contredit, et la crédibilité de la recommandation en dépend (voir
-# raisons_de_la_seance).
+# concernées, rang de la formulation dans textes.ACCROCHES_FREQUENCE). En dessous du
+# dernier palier, on ne dit rien de la fréquence - "tombe régulièrement" pour 3 épreuves
+# sur 41 serait une phrase que la pastille juste dessous contredit, et la crédibilité de
+# la recommandation en dépend (voir raisons_de_la_seance).
 PALIERS_FREQUENCE = (
-    (0.75, "tombe presque à chaque examen"),
-    (0.5, "tombe à l'examen plus d'une fois sur deux"),
-    (0.25, "tombe régulièrement à l'examen"),
+    (0.75, 0),
+    (0.5, 1),
+    (0.25, 2),
 )
 
 
-def _accroche_frequence(frequence):
+def _accroche_frequence(frequence, langue=textes.FR):
     """La formulation qui correspond à la part réelle des épreuves, ou None si elle est trop faible."""
     if not frequence or not frequence.get("occurrences") or not frequence.get("epreuves_total"):
         return None
     part = frequence["occurrences"] / frequence["epreuves_total"]
-    return next((texte for seuil, texte in PALIERS_FREQUENCE if part >= seuil), None)
+    rang = next((rang for seuil, rang in PALIERS_FREQUENCE if part >= seuil), None)
+    return None if rang is None else textes.variantes(textes.ACCROCHES_FREQUENCE, langue)[rang]
 
 
 # Fins de phrase qui tournent d'un jour à l'autre : la même ligne chaque matin finit par ne plus
 # être lue. Le choix ne dépend que de la date (voir _variante), donc une page rechargée dix
-# fois dans la journée dit toujours la même chose.
-FINS_FREQUENCE_PROCHE = (
-    "{duree}\u00a0minutes pour ne pas le découvrir le jour J.",
-    "{duree}\u00a0minutes pour l'avoir en main le jour J.",
-    "{duree}\u00a0minutes pour arriver prêt le jour J.",
-)
+# fois dans la journée dit toujours la même chose. Les formulations (français et anglais) vivent
+# dans textes.py : FINS_FREQUENCE_PROCHE, FINS_FREQUENCE_LOIN, FINS_REVISION.
 # À plusieurs mois de l'examen, « le jour J » est une échéance lointaine : on parle d'avance
 # prise, pas d'urgence.
-FINS_FREQUENCE_LOIN = (
-    "{duree}\u00a0minutes pour prendre de l'avance.",
-    "{duree}\u00a0minutes pour qu'il ne te surprenne pas.",
-    "{duree}\u00a0minutes aujourd'hui, c'est autant que tu n'auras pas à rattraper plus tard.",
-)
 # Au-delà de ce nombre de jours avant l'examen, on parle d'avance plutôt que du jour J.
 HORIZON_LOINTAIN_JOURS = 90
-FINS_REVISION = (
-    "{duree}\u00a0minutes pour le fixer avant qu'il ne s'efface.",
-    "{duree}\u00a0minutes pour qu'il reste en mémoire.",
-    "{duree}\u00a0minutes pour le rendre solide.",
-)
 
 
 def _variante(options, jour, **valeurs):
@@ -510,7 +499,7 @@ def _variante(options, jour, **valeurs):
     return options[jour.toordinal() % len(options)].format(**valeurs)
 
 
-def phrase_coach(plan, phase, absence, premiers_pas_eleve=False, jour=None):
+def phrase_coach(plan, phase, absence, premiers_pas_eleve=False, jour=None, langue=textes.FR):
     """
     Une phrase, spécifique, composée de faits déjà dans la charge utile du plan (thème,
     durée, fréquence à l'examen, date du dernier ratage) - jamais un slogan. C'est ce
@@ -524,67 +513,75 @@ def phrase_coach(plan, phase, absence, premiers_pas_eleve=False, jour=None):
     sur tout, puis la séance déjà faite, puis ce que la séance propose.
 
     `jour` : la date qui fixe la variante de formulation (aujourd'hui par défaut).
+    `langue` : « fr » ou « en », celle du cursus visé (voir textes.langue_de) ; les textes
+    sont dans textes.py.
     """
     jour = jour or timezone.localdate()
+    t = functools.partial(textes.texte, langue=langue)
     if phase == "apres":
-        return "L'examen est passé. Tout ce que tu as travaillé reste à toi."
+        return t("coach.apres")
     if phase == "jour_j":
-        return "C'est aujourd'hui. Respire : le travail est fait, il ne reste qu'à le montrer."
+        return t("coach.jour_j")
     if phase == "veille":
-        return "C'est demain. Ce soir, on ne découvre rien : on relit, et on dort tôt."
+        return t("coach.veille")
 
     etat = plan.get("etat")
     seance = plan.get("seance")
     if etat == "deja_fait_aujourdhui" and seance:
         score = seance.get("score")
         if score and score["total"]:
-            return f"Séance faite, {score['reussies']} sur {score['total']} au quiz. Demain, on continue."
-        return "Séance faite. Demain, on continue."
+            return t("coach.fait_score", reussies=score["reussies"], total=score["total"])
+        return t("coach.fait")
     if etat != "plan_pret" or not seance:
-        return "Rien à te proposer aujourd'hui : choisis un thème toi-même, on te suit."
+        return t("coach.rien")
 
     prefixe = ""
     if absence >= ABSENCE_RETOUR_JOURS:
         # « On reprend » suppose qu'il y a eu quelque chose avant : pas pour qui est
         # passé voir l'appli sans jamais terminer une séance.
-        prefixe = "Content de te revoir. " if premiers_pas_eleve else "Content de te revoir. On reprend en douceur. "
+        prefixe = t("coach.retour") if premiers_pas_eleve else t("coach.retour_reprise")
     elif phase == "derniere_ligne_droite":
-        prefixe = "Dernière ligne droite. "
+        prefixe = t("coach.derniere_ligne")
 
     duree = seance.get("duree_estimee_min")
     titre = _titre(seance)
     origine = seance.get("origine")
 
     if origine == "DIAGNOSTIC":
-        return prefixe + "Quinze questions pour situer ton niveau. Ensuite, chaque séance sera taillée pour toi."
+        return prefixe + t("coach.diagnostic")
     if titre is None:
-        return prefixe + f"{duree}\u00a0minutes, et un quiz pour vérifier."
+        return prefixe + t("coach.sans_theme", duree=duree)
 
     if origine == "REVISION_DUE":
         # Le fait vient du serveur (voir raisons_de_la_seance) : « Tu as raté ce thème
-        # hier. » ou « Ce thème t'a déjà posé problème. », repris tel quel.
+        # hier. » ou « Ce thème t'a déjà posé problème. », repris tel quel (déjà dans la
+        # langue du cursus : c'est la même `langue` qui l'a écrit).
         constat = next((r["texte"] for r in seance.get("raisons", []) if r["code"] == "echec"), None)
-        constat = constat or "Ce thème t'a déjà résisté."
-        return prefixe + constat.rstrip(" .") + "\u00a0: " + _variante(FINS_REVISION, jour, duree=duree)
+        constat = constat or t("coach.echec_defaut")
+        return prefixe + constat.rstrip(" .") + t("coach.deux_points") + _variante(
+            textes.variantes(textes.FINS_REVISION, langue), jour, duree=duree,
+        )
 
     if origine == "LECTURE_EN_COURS":
-        return prefixe + f"Tu avais commencé ce cours. On finit ce qu'on a commencé : {duree}\u00a0minutes."
+        return prefixe + t("coach.lecture", duree=duree)
 
     if phase == "derniere_ligne_droite":
-        return prefixe + f"On consolide ce thème : {duree}\u00a0minutes, sans rien de neuf."
+        return prefixe + t("coach.consolider", duree=duree)
 
-    accroche = _accroche_frequence(seance.get("frequence"))
+    accroche = _accroche_frequence(seance.get("frequence"), langue)
     if accroche:
         # Le chiffre exact ("35 sur 41 épreuves") vit dans un badge de la séance, juste
         # sous cette phrase (voir la pastille de fréquence côté frontend) - le redire ici
         # mot pour mot serait la même preuve deux fois. La phrase reste le crochet, mesuré
         # sur la part réelle des épreuves, le badge est la preuve.
         jours = (plan.get("compte_a_rebours") or {}).get("jours_restants")
-        fins = FINS_FREQUENCE_LOIN if jours is not None and jours > HORIZON_LOINTAIN_JOURS else FINS_FREQUENCE_PROCHE
+        table = textes.FINS_FREQUENCE_LOIN if jours is not None and jours > HORIZON_LOINTAIN_JOURS else textes.FINS_FREQUENCE_PROCHE
         # Une seule phrase : la fréquence est la raison, la durée la conséquence. Deux phrases
         # côte à côte laissaient au lecteur le soin de relier « tombe à chaque examen » à
         # « 25 minutes » (espace insécable avant les deux-points, comme pour la durée).
-        return prefixe + f"Ce thème {accroche}\u00a0: " + _variante(fins, jour, duree=duree)
+        return prefixe + t("coach.frequence", accroche=accroche) + _variante(
+            textes.variantes(table, langue), jour, duree=duree,
+        )
     if premiers_pas_eleve:
-        return prefixe + f"On commence par ce thème : {duree}\u00a0minutes, et un quiz pour voir où tu en es."
-    return prefixe + f"{duree}\u00a0minutes sur ce thème, et un quiz pour vérifier."
+        return prefixe + t("coach.premiers_pas", duree=duree)
+    return prefixe + t("coach.defaut", duree=duree)
