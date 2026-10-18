@@ -75,6 +75,17 @@ PLACEHOLDER = re.compile(r"!\[[^\]]*\]\(([^)\s]+)\)")
 TAG_UNE_LIGNE = re.compile("^[$][$][^" + chr(10) + "]*" + re.escape(chr(92)) + "tag[^" + chr(10) + "]*[$][$][ ]*$", re.M)
 
 
+# Référence de tableur dont le « $ » est du TEXTE (A$2, $A$2, $2$A) hors d'un bloc de code : le moteur de rendu la lit comme une formule
+# (« $A$ » devient un A en italique, le signe disparaît). Elle doit s'écrire avec un antislash devant chaque $, ou entre accents graves.
+# Avertissement seulement : un « $R2 ... $ » de maths est légitime. Antislash construit par chr(92), comme TAG_UNE_LIGNE.
+_B = chr(92)
+REF_TABLEUR = re.compile(
+    "(?<![" + _B + _B + _B + "w])(?:[$][A-Z]{1,3}[$]?" + _B + "d+|[A-Z]{1,3}[$]" + _B + "d+|[$]" + _B + "d+[$][A-Z]{1,3}|"
+    + _B + "d+[$][A-Z]{1,3})(?!" + _B + "w)"
+)
+BLOC_CODE = re.compile("```.*?```|`[^`" + chr(10) + "]*`", re.S)
+
+
 def dollars_desequilibres(texte):
     sans_echappes = texte.replace("\\$", "")
     return sans_echappes.count("$") % 2 == 1
@@ -142,6 +153,8 @@ def valider(dossier, attendu_questions, paper, code, examen="gce_ol"):
                 avertissements.append(f"{nom} {etiquette}: tiret cadratin/demi-cadratin (retiré à l'ingestion, préférer « - »)")
             if dollars_desequilibres(texte):
                 erreurs.append(f"{nom} {etiquette}: nombre impair de $ (formule non fermée)")
+            if REF_TABLEUR.search(BLOC_CODE.sub(" ", texte)):
+                avertissements.append(f"{nom} {etiquette}: référence de tableur avec $ hors code (mettre un antislash devant chaque $, ou des accents graves)")
             if TAG_UNE_LIGNE.search(texte):
                 erreurs.append(f"{nom} {etiquette}: équation numérotée (tag) sur une seule ligne : l'écrire sur trois lignes ($$, la formule, $$)")
             for ref in PLACEHOLDER.findall(texte):
