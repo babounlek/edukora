@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-philosophy-truth-tables-and-propositional-logic",
+  "meta": {
+    "titre": "Propositional Logic: building truth tables to classify statement forms and test arguments",
+    "matiere": "Philosophy",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Truth tables, statement forms and validity",
+    "duree_estimee_min": 35,
+    "tags": [
+      "truth tables and propositional logic"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-philosophy-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Philosophy past paper (Cameroon)",
+    "epreuve_source": "gce-al-philosophy-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-philosophy-truth-tables-and-propositional-logic-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Mokolo market tells her customers: \"If the road to Douala is cut, then the price of tomatoes will rise.\" Later the price rises. Can she conclude that the road is cut? Logic gives a precise answer, and it does so by testing every possible combination of true and false. Truth tables are a standard tool of the paper because every step can be checked row by row. This course teaches you to build a table without error, to classify a statement form and to translate everyday sentences into symbols."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A statement (proposition) is a sentence that is either true or false, never both.",
+        "An argument is a set of premises offered in support of a conclusion.",
+        "The connectives not, and, or, if...then and if and only if join simple statements into compound ones."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Symbols, truth rules and the method of truth tables",
+      "contenu_markdown": "### Symbols and their truth rules\n| Symbol | Name | Read as |\n|---|---|---|\n| $\\sim P$ | negation | not P |\n| $P \\cdot Q$ | conjunction | P and Q |\n| $P \\vee Q$ | disjunction (inclusive) | P or Q or both |\n| $P \\supset Q$ | material conditional | if P then Q |\n| $P \\equiv Q$ | biconditional | P if and only if Q |\n\n| $P$ | $Q$ | $\\sim P$ | $P \\cdot Q$ | $P \\vee Q$ | $P \\supset Q$ | $P \\equiv Q$ |\n|---|---|---|---|---|---|---|\n| T | T | F | T | T | T | T |\n| T | F | F | F | T | F | F |\n| F | T | T | F | T | T | F |\n| F | F | T | F | F | T | T |\n\nOnly one row makes a conditional false: a true antecedent with a false consequent. A conjunction is false unless both parts are true, and a disjunction is false only when both parts are false.\n\n### Building a table\n1. List the distinct letters. Two letters need 4 rows and three letters need 8 rows ($2^n$ rows for $n$ letters).\n2. Give each letter T and F in the standard order, then fill one column for each part of the formula, starting with the innermost brackets.\n3. The last column belongs to the main connective. Read it.\n\n### Classifying a statement form\n- **Tautology**: true in every row. **Contradiction**: false in every row. **Contingent**: true in some rows and false in others.\n- Two forms are **equivalent** when their final columns are identical.\n- An argument form is **valid** when no row makes all the premises true and the conclusion false.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Translating English into symbols",
+          "quand_utiliser": "When a question gives a sentence in ordinary English and asks for its logical form.",
+          "contenu_markdown": "| English | Symbolic form |\n|---|---|\n| P if Q | $Q \\supset P$ |\n| P only if Q | $P \\supset Q$ |\n| P unless Q | $\\sim Q \\supset P$ (equivalent to $P \\vee Q$) |\n| P if and only if Q | $P \\equiv Q$ |\n| Neither P nor Q | $\\sim P \\cdot \\sim Q$ |\n| Not both P and Q | $\\sim (P \\cdot Q)$ |\n| P, but Q | $P \\cdot Q$ |\n\nFirst choose one capital letter for each simple statement and write it down as a key. Then decide which word is the main connective. The word **if** introduces the antecedent; the word **only if** introduces the consequent."
+        },
+        {
+          "nom": "Testing an argument with a truth table",
+          "quand_utiliser": "When a question asks whether an argument form is valid or invalid.",
+          "contenu_markdown": "Put the premises and the conclusion in separate columns. Look for a row in which every premise is T and the conclusion is F. If you find one, the form is invalid and that row is your counterexample. If you find none, the form is valid. Validity concerns form, not truth: a valid argument can have a false conclusion if a premise is false."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Use a truth table to decide whether $[(P \\supset Q) \\cdot \\sim Q] \\supset \\sim P$ is a tautology, a contradiction or contingent. Then say what the result shows about the argument: *If the tap is open, water flows. Water does not flow. Therefore the tap is not open.*",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Count the letters and list the rows.",
+          "justification": "There are two letters, P and Q, so there are $2^2 = 4$ rows in the standard order TT, TF, FT, FF.",
+          "resultat_markdown": "Rows: P and Q both true; P true, Q false; P false, Q true; both false."
+        },
+        {
+          "numero": 2,
+          "action": "Fill the innermost parts: the conditional, the negation of Q and their conjunction.",
+          "justification": "$P \\supset Q$ is false only when P is T and Q is F. $\\sim Q$ reverses Q. The dot is true only when both parts are true.",
+          "resultat_markdown": "| $P$ | $Q$ | $P \\supset Q$ | $\\sim Q$ | $(P \\supset Q) \\cdot \\sim Q$ |\n|---|---|---|---|---|\n| T | T | T | F | F |\n| T | F | F | T | F |\n| F | T | T | F | F |\n| F | F | T | T | T |"
+        },
+        {
+          "numero": 3,
+          "action": "Fill the negation of P and then the main connective, the horseshoe.",
+          "justification": "The antecedent is the conjunction already found. A conditional is false only if its antecedent is true and its consequent false.",
+          "resultat_markdown": "| $P$ | $Q$ | $P \\supset Q$ | $\\sim Q$ | $(P \\supset Q) \\cdot \\sim Q$ | $\\sim P$ | $[(P \\supset Q) \\cdot \\sim Q] \\supset \\sim P$ |\n|---|---|---|---|---|---|---|\n| T | T | T | F | F | F | T |\n| T | F | F | T | F | F | T |\n| F | T | T | F | F | T | T |\n| F | F | T | T | T | T | T |"
+        },
+        {
+          "numero": 4,
+          "action": "Read the final column.",
+          "justification": "The last column is T in all four rows.",
+          "resultat_markdown": "The form is a **tautology**."
+        },
+        {
+          "numero": 5,
+          "action": "Apply the result to the argument.",
+          "justification": "Let P stand for the tap is open and Q for water flows. The two premises are $P \\supset Q$ and $\\sim Q$; the conclusion is $\\sim P$. The only row in which both premises are true is the last one, and there $\\sim P$ is true.",
+          "resultat_markdown": "No row has true premises and a false conclusion, so the argument form is **valid**."
+        }
+      ],
+      "conclusion_markdown": "The statement form is a tautology and the argument *If the tap is open, water flows. Water does not flow. Therefore the tap is not open* is valid. A tautology of the form (premises) $\\supset$ (conclusion) always signals a valid argument. Write the key, the table, the classification and the conclusion in that order to earn all the marks."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Reading $P \\vee Q$ as 'one or the other but not both', and so writing F in the row where P and Q are both true.",
+          "pourquoi_faux": "In symbolic logic the wedge is inclusive: it is false only when both disjuncts are false.",
+          "correction_markdown": "Write T in the TT row. An exclusive or needs the longer form $(P \\vee Q) \\cdot \\sim (P \\cdot Q)$."
+        },
+        {
+          "erreur_markdown": "Writing F for $P \\supset Q$ whenever P is false.",
+          "pourquoi_faux": "The conditional is false in exactly one case: P true and Q false. A false antecedent makes the conditional true.",
+          "correction_markdown": "The last two rows (P false) give T in the column for $P \\supset Q$."
+        },
+        {
+          "erreur_markdown": "Translating 'P only if Q' as $Q \\supset P$.",
+          "pourquoi_faux": "'Only if' introduces a necessary condition, so the consequent follows the words only if.",
+          "correction_markdown": "'P only if Q' is $P \\supset Q$, while 'P if Q' is $Q \\supset P$."
+        },
+        {
+          "erreur_markdown": "Saying that an argument is valid because its conclusion is true.",
+          "pourquoi_faux": "Validity is decided by the absence of a row with true premises and a false conclusion, not by the actual truth of the conclusion.",
+          "correction_markdown": "Search the table for a counterexample row. If there is none the form is valid, whatever the real-life truth of the statements."
+        },
+        {
+          "erreur_markdown": "Using only four rows for a formula with three different letters.",
+          "pourquoi_faux": "Three letters give $2^3 = 8$ combinations, and missing rows can hide a counterexample.",
+          "correction_markdown": "List all 8 rows: TTT, TTF, TFT, TFF, FTT, FTF, FFT, FFF."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Build a truth table to decide whether $P \\supset Q$ and $\\sim P \\vee Q$ are equivalent.",
+          "solution_markdown": "| $P$ | $Q$ | $P \\supset Q$ | $\\sim P$ | $\\sim P \\vee Q$ |\n|---|---|---|---|---|\n| T | T | T | F | T |\n| T | F | F | F | F |\n| F | T | T | T | T |\n| F | F | T | T | T |\n\nThe two columns for $P \\supset Q$ and $\\sim P \\vee Q$ are identical in every row, so the forms are **equivalent**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Use truth tables to classify (a) $(P \\vee Q) \\supset (P \\cdot Q)$ and (b) $(P \\supset Q) \\cdot (P \\cdot \\sim Q)$.",
+          "solution_markdown": "(a)\n\n| $P$ | $Q$ | $P \\vee Q$ | $P \\cdot Q$ | $(P \\vee Q) \\supset (P \\cdot Q)$ |\n|---|---|---|---|---|\n| T | T | T | T | T |\n| T | F | T | F | F |\n| F | T | T | F | F |\n| F | F | F | F | T |\n\nThe final column has T in rows 1 and 4 and F in rows 2 and 3, so (a) is **contingent**.\n\n(b)\n\n| $P$ | $Q$ | $P \\supset Q$ | $P \\cdot \\sim Q$ | $(P \\supset Q) \\cdot (P \\cdot \\sim Q)$ |\n|---|---|---|---|---|\n| T | T | T | F | F |\n| T | F | F | T | F |\n| F | T | T | F | F |\n| F | F | T | F | F |\n\nThe final column is F in every row, so (b) is a **contradiction**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Test the form $P \\supset Q$, $Q \\supset R$, therefore $P \\supset R$, for validity. (b) Write a key and a symbolic form for this argument, then test it: If the river floods then the bridge closes. The bridge is closed. So the river has flooded.",
+          "solution_markdown": "(a) Three letters give 8 rows.\n\n| $P$ | $Q$ | $R$ | $P \\supset Q$ | $Q \\supset R$ | $P \\supset R$ |\n|---|---|---|---|---|---|\n| T | T | T | T | T | T |\n| T | T | F | T | F | F |\n| T | F | T | F | T | T |\n| T | F | F | F | T | F |\n| F | T | T | T | T | T |\n| F | T | F | T | F | T |\n| F | F | T | T | T | T |\n| F | F | F | T | T | T |\n\nBoth premises are true in rows 1, 5, 7 and 8, and in each of these rows the conclusion is true. There is no counterexample, so the form is **valid**.\n\n(b)\n\n| $P$ | $Q$ | $P \\supset Q$ | $Q$ | $P$ |\n|---|---|---|---|---|\n| T | T | T | T | T |\n| T | F | F | F | T |\n| F | T | T | T | F |\n| F | F | T | F | F |\n\nIn row 3 (P false, Q true) both premises are true and the conclusion is false. The form is **invalid**. Key: P stands for the river floods, Q for the bridge closes. The argument is $P \\supset Q$, $Q$, therefore $P$: it is an instance of this invalid form, so the argument is **invalid** (it affirms the consequent)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Learn the five truth rules by heart: $\\sim$ reverses; $\\cdot$ is true only if both are true; $\\vee$ is false only if both are false; $\\supset$ is false only for T then F; $\\equiv$ is true when both sides match.",
+        "A table has $2^n$ rows for $n$ letters, and the final column belongs to the main connective.",
+        "Tautology means all T, contradiction means all F, contingent means a mixture; equivalent forms have identical final columns.",
+        "An argument form is valid exactly when no row has all premises true and the conclusion false; one such row proves it invalid.",
+        "Translate with care: P if Q is $Q \\supset P$, P only if Q is $P \\supset Q$, and P unless Q is $\\sim Q \\supset P$."
+      ]
+    }
+  ]
+}
