@@ -39,6 +39,8 @@ Non représentable (relevé le 2026-10-19 dans `inedit/models.py`, `inedit/inges
   (constaté sur le Paper 1 étalon : 7 pages, 50 énoncés, aucune option). Correctif : pour une question `QCM` portant `choix`, une option par ligne
   (`a) texte`) est ajoutée après l'énoncé dans `enonce_markdown` et `corrige_markdown` compilés, comme le fait
   `catalog.rendering._render_question_enonce` ; test `CompileFromExercicesTests.test_qcm_options_are_rebuilt_from_choix_in_both_documents`.
+  **Même défaut dans l'aperçu public de la fiche** (constaté le 2026-10-19 sur les trois Paper 1 publiés : la question 1 s'affichait sans ses options a) à d)) : `catalog.inedit_bridge._apercu_enonce` passe maintenant
+  par `QuestionInedite.enonce_avec_options()`, la même méthode que la compilation ; test dédié ; vérifié dans le navigateur. L'aperçu d'un Paper 2 montre l'intro de l'exercice 1 et sa première sous-question seulement.
   Les 19 épreuves inédites à QCM (64 questions) de la base locale ont été recompilées et leurs PDF régénérés. En production : reconstruire l'image
   `backend`, puis recompiler et régénérer de même. Ne jamais recopier les options dans `enonce_markdown` (affichées deux fois à l'écran).
 - **DÉFAUT 2 : `score_originalite` ne mesure pas l'originalité d'un QCM de syllabus.** C'est le `1 - max(difflib ratio)` entre un énoncé et 500
@@ -54,6 +56,13 @@ Non représentable (relevé le 2026-10-19 dans `inedit/models.py`, `inedit/inges
   (clé `cle_numero_exercice` : « 2 » avant « 10 », les numéros purs avant « B1 ») utilisée par la compilation, le lecteur et la notation (`inedit/models.py`,
   `inedit/views.py`) et par l'aperçu de la fiche (`catalog/inedit_bridge.py`) ; deux tests. Les numéros à deux chiffres du Paper 2 étalon (`01` à `10`) n'étaient
   qu'un contournement : ils restent valides, mais un nouveau paper peut numéroter `1` à `10`. En production : reconstruire l'image `backend`.
+- **DÉFAUT 6 (corrigé le 2026-10-19, non committé) : le PDF et le texte compilé n'imprimaient pas les points de chaque sous-question.** Seul l'en-tête d'exercice portait le total
+  (« Exercice 3 (10 marks) ») alors que les vrais sujets impriment « [3 marks] » après chaque partie ; le champ `points` n'était affiché qu'au lecteur à l'écran. Correctif :
+  `QuestionInedite.mention_points()` (`*[n pts]*`, vide pour une QCM et sans barème) est ajouté à la fin de l'énoncé de chaque question rédigée par `compile_from_exercices`, dans l'énoncé
+  ET le corrigé compilés (jamais dans `enonce_markdown`, que le lecteur affiche avec `points`) ; `adapter_markdown` le traduit en `*[3 marks]*` pour le PDF anglais. Deux tests ; 149 épreuves
+  à parties recompilées et leurs PDF régénérés en base locale (français compris : « [1.25 pts] »). En production : reconstruire l'image `backend`, puis recompiler et régénérer de même.
+  La phrase « the approximate mark for each part of a question is indicated » des Paper 2 de Maths, Biology et Physics est donc VRAIE ; le Chemistry P2 ne la porte pas (retirée avant le
+  correctif), sans conséquence.
 - Pas d'image PNG : figures SVG calculées seulement (`figures_svg.py`). Cartes, schémas anatomiques ou de verrerie, microphotographies restent
   hors de portée.
 - Le barème est **exact** : la somme des `points` des questions d'un exercice vaut `exercices[].points`. Les sujets réels, eux, ne somment pas
@@ -166,6 +175,8 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
 - **A Level** : la première question d'un Paper 1 mélange les formats (meilleure réponse, affirmations numérotées `1, 2, 3` avec « 1 and 2 only »,
   assertion et raison). Un format par bloc de questions, annoncé dans `groupes` seulement si le vrai sujet le fait ; options de combinaison
   rédigées en toutes lettres (`a) 1 and 2 only`).
+- **O Level Chemistry** : 0 à 6 questions par sujet en « completion multiple » (réponses 1 à 4) et « assertion-raison », en blocs consécutifs, consigne imprimée répétée dans chaque
+  question, options à **ordre imposé** (voir l'étalon Chemistry au §5C) ; le contrôle d'originalité retire la consigne imprimée avant de comparer.
 - Une question à figure dont la clé dépend de la lecture d'un détail fin est interdite : la clé doit se retrouver par calcul sur les données
   écrites en texte (`desc` du SVG comprise).
 
@@ -241,6 +252,27 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
     critères (« toute valeur de 1,9 à 2,0 N/cm »).
   - Calcul : toute question chiffrée a une **erreur type par distracteur** (oubli du facteur ½, temps en minutes pris pour des secondes, distance aller-retour non divisée par deux,
     rapport inversé) ; `g = 10 m/s²` écrit dans l'énoncé quand il sert.
+- **Étalon produit le 2026-10-19 : session Chemistry O Level n°1** (`ep-cm-gce-ol-chemistry-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_chemistry_p1.py` et `_p2.py`, questions
+  `questions_chemistry_p1.py` et `_p2.py`, figures `figs_chemistry_p1.py` et `_p2.py`, vérificateurs `verifier_reponses_chemistry_p1.py` et `_p2.py`, cours en `cours_titres_gce_chemistry_ol.json`).
+  Mesuré sur 6 vrais Paper 1 (2019-2022, 2024, 2025 ; ni 2023 ni 2026 n'existent) et 8 Paper 2 (2019-2026) :
+  - **Paper 1** : 50 QCM, ordre mélangé par grappes de 1 à 3 questions d'un même chapitre, 60 % de questions faibles / 39 % moyennes / 1 % élevée, clés a 26 % / b 26 % / c 25 % / d 19 %
+    (+ quelques questions sans clé dans la transcription), 0 à 5 figures, 4 à 8 questions chiffrées (moles, concentration, formule empirique, volumes de gaz). **Chaque sujet réel contient 0 à 6 questions
+    de format spécial, aussi à l'O Level** : « completion multiple » (réponses numérotées 1 à 4, options FIXES « 1, 2 and 3 only / 1 and 3 only / 2 and 4 only / 4 only ») et « assertion-raison » (deux
+    énoncés en tableau, quatre options fixes A à D) ; **la consigne imprimée est répétée dans l'énoncé de chaque question du bloc** (« Instructions (Questions 27-29) »). Inédite : 30 faibles / 19 moyennes / 1 élevée,
+    un bloc de 3 « completion multiple » et un bloc de 2 « assertion-raison », 3 figures de données (courbe de solubilité, volume de gaz en fonction du temps, profil énergétique), **17 questions sur 50 recalculées**
+    (le reste est du rappel de cours, relu à la main). Les options d'un bloc spécial sont à **ordre imposé** : la clé découle du contenu (`ordre=` dans `Q()`), le générateur place les 45 autres
+    autour (12-13 par lettre, jamais 3 de suite) et vérifie que le bloc tombe bien aux numéros annoncés dans la consigne.
+  - **Paper 2** : 10 exercices, Section A 5 × 10 (« answer ALL, the best 4 are graded »), Section B 2 × 20 obligatoires (une manipulation, souvent avec une figure ; une analyse qualitative en tableau
+    « test / observation / inférence »), Section C 3 × 20 (« answer ONLY TWO »), 2 h 30. Inédite : **4 + 2 + 2 exercices = 120 points** (version « answer ALL », règle réelle rappelée en clair dans l'introduction et le
+    blueprint), 33 sous-questions, 16 faibles / 15 moyennes / 2 élevées, 2 figures de données en énoncé (courbe de pH d'un titrage, deux courbes de volume de gaz), 10 sous-questions chiffrées recalculées. Le vérificateur
+    contrôle aussi les **liens entre données et figure** : le saut de pH doit encadrer le titre moyen, la masse de marbre doit valoir le volume final divisé par le volume molaire, les deux courbes finissent au même volume.
+  - **Fuites d'un paper vers l'autre, corrigées avant publication** (le rappel et le corrigé d'un QCM comptent autant que l'énoncé) : un QCM sur « les alcanes ne décolorent pas l'eau de brome » donnait le résultat de
+    l'éthane demandé au Paper 2 ; un rappel du procédé de contact citait « 450 °C », la température du Haber demandée au Paper 2 ; le QCM sur le monoxyde de carbone donnait l'inférence d'une question de combustion ;
+    un rappel définissait le polymère d'addition que le Paper 2 fait expliquer ; un QCM de vitesse de réaction donnait l'explication par les collisions ; l'énoncé du Paper 2 « les tests montrent que Q contient
+    l'ion zinc » donnait la réponse de la sous-question voisine. **Relire les deux papers l'un contre l'autre, énoncé, rappel ET corrigé, avant de les ingérer.**
+  - Données lues sur un graphe : toute valeur qu'une sous-question demande de lire est placée sur une graduation (20 s, 60 cm³), pour qu'aucune lecture à ±1 ne change la réponse.
+  - **Contrôle d'originalité** : la consigne imprimée d'un bloc spécial (« Instructions (Questions ...) » et l'en-tête « First statement / Second statement ») est retirée par `corps()` avant la comparaison ; sans cela
+    deux questions d'assertion-raison étaient refusées pour 3 options identiques, alors que ces options sont la forme imposée du sujet, pas son contenu.
 - **Incident d'originalité (2026-10-19) : un contrôle aveugle laisse passer une question identique à une vraie.** Le premier contrôle comparait l'énoncé de l'inédite à l'énoncé de la
   vraie question **précédé de la consigne de l'exercice** (« Multiple choice questions ... ») : cette consigne diluait la ressemblance et un énoncé court identique mot pour mot
   (« Which of the following electromagnetic waves has the longest wavelength? ») passait. Le score plateforme (`score_originalite` à 0) l'a révélé après publication, et le contrôle
@@ -328,6 +360,9 @@ répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le
 
 ## 8. Reste à faire (hors de cet étalonnage)
 
+- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry (O Level, n°1). Suivantes proposées : English Language (type langue : étalonner d'abord le
+  corpus réel), puis Additional Mathematics. Rejouer en production : pousser, rebuild `backend`, `ingest_inedit_content`, valider les blueprints, publier, `save_sujet_pdf`, `indexer_recherche`.
+- Rejouer en production le correctif DÉFAUT 6 (rebuild backend, recompiler les épreuves à parties, régénérer leurs PDF).
 - Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
 - Décider DÉFAUT 4 : porter `numero_paper`, `code_matiere` et `regles_choix` dans `inedit` (sinon les papers à choix restent en « answer ALL »).
 - Étalonner un paper de chaque type C, D, E, F, G avec les mêmes quatre contrôles ; l'étalon est entièrement chiffré pour A et B (Maths O/L P1 et P2), qualitatif

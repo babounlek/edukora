@@ -170,10 +170,12 @@ def _apercu_enonce(epreuve):
     premiere_question = premier_exercice.questions.order_by("ordre").first()
     if premiere_question is None:
         return None, None
+    # Avec ses options pour une QCM : une question 1 de Paper 1 montrée sans a) à d) ne se lit pas.
+    enonce = premiere_question.enonce_avec_options()
     if intro := premier_exercice.enonce_intro_markdown:
-        markdown = f"{intro}\n\n{premiere_question.enonce_markdown}"
+        markdown = f"{intro}\n\n{enonce}"
     else:
-        markdown = premiere_question.enonce_markdown
+        markdown = enonce
     return markdown, premier_exercice.numero_exercice
 
 

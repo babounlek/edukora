@@ -272,14 +272,11 @@ class EpreuveInedite(models.Model):
                     enonce_parts.append(f"**{question.groupe_local}**")
                     corrige_parts.append(f"**{question.groupe_local}**")
                 dernier_groupe_local = question.groupe_local
-                # Les options d'une QCM vivent dans `choix`, jamais dans enonce_markdown (le lecteur
-                # les affiche depuis ce champ) : sans cette reconstruction, le sujet PDF et le corrigé
-                # autonome poseraient des QCM sans aucune proposition. Même rendu que
-                # catalog.rendering._render_question_enonce : une option par ligne.
-                enonce = question.enonce_markdown
-                if question.type_reponse == TypeReponse.QCM and question.choix:
-                    options = "\n".join(f"{choix['lettre']}) {choix['texte']}" for choix in question.choix)
-                    enonce = f"{enonce.rstrip()}\n\n{options}"
+                # Options d'une QCM : voir QuestionInedite.enonce_avec_options (sujet PDF et corrigé autonome).
+                enonce = question.enonce_avec_options()
+                mention = question.mention_points()
+                if mention:
+                    enonce = f"{enonce.rstrip()}{chr(10) * 2}{mention}"
                 enonce_parts.append(f"**{question.numero}.** {enonce}")
                 corrige_parts.append(f"**{question.numero}.** {enonce}\n\n{question.corrige_markdown}")
 
@@ -408,6 +405,27 @@ class QuestionInedite(models.Model):
 
     def __str__(self):
         return f"{self.exercice} - Q{self.numero}"
+
+    def enonce_avec_options(self):
+        """Énoncé tel qu'on le LIT : pour une QCM, les options de `choix` suivent l'énoncé, une par ligne
+        (« a) texte »), comme le fait catalog.rendering._render_question_enonce côté épreuves classiques.
+        Les options vivent dans `choix`, jamais dans `enonce_markdown` (le lecteur de tentative les affiche
+        depuis ce champ) : tout texte compilé ou montré hors du lecteur (sujet PDF, corrigé autonome, aperçu
+        public de la fiche) doit passer par cette méthode, sinon la QCM est posée sans aucune proposition."""
+        if self.type_reponse == TypeReponse.QCM and self.choix:
+            options = "\n".join(f"{choix['lettre']}) {choix['texte']}" for choix in self.choix)
+            return f"{self.enonce_markdown.rstrip()}\n\n{options}"
+        return self.enonce_markdown
+
+    def mention_points(self):
+        """« *[3 pts]* » : le barème imprimé après une question rédigée, comme les vrais sujets (« [3 marks] »).
+        Vide pour une QCM (1 point chacune, jamais imprimé) et tant que `points` n'est pas renseigné. Le marqueur
+        suit la forme que catalog.pdf_textes.adapter_markdown traduit en « *[3 marks]* » pour le PDF anglais ;
+        il n'est écrit que dans les documents compilés, jamais dans `enonce_markdown` (le lecteur de tentative
+        affiche déjà `points` à côté de la question)."""
+        if self.type_reponse == TypeReponse.QCM or not self.points:
+            return ""
+        return f"*[{format(self.points.normalize(), 'f')} pts]*"
 
 
 class RappelDeMethodeInedite(models.Model):

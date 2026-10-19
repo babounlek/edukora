@@ -51,6 +51,16 @@ def normaliser(t):
     return t.strip()
 
 
+def corps(t):
+    """Enonce sans le paragraphe de consigne imprime de chaque question de completion multiple ou d'assertion-raison
+    (« **Instructions (Questions 8-10):** ... » : le format du vrai sujet, repris tel quel, n'est pas du contenu)."""
+    t = t or ""
+    if t.lstrip().startswith("**Instructions"):
+        reste = t.lstrip().split(chr(10) * 2, 1)
+        t = reste[1] if len(reste) > 1 else t
+    return re.sub(r"\|\s*First statement\s*\|\s*Second statement\s*\|\s*\n\|[-| ]+\|\s*\n?", "", t)
+
+
 def nombres(t):
     return set(re.findall(r"\d+(?:\.\d+)?", sans_svg(t)))
 
@@ -85,9 +95,9 @@ def charger_corpus(dossier, matiere):
             if not isinstance(j, dict) or "questions" not in j:
                 continue
             for q in j["questions"]:
-                enonce = (j.get("enonce_intro_markdown") or "") + " " + (q.get("enonce_markdown") or "")
+                enonce = (j.get("enonce_intro_markdown") or "") + " " + corps(q.get("enonce_markdown") or "")
                 opts = " ".join(c.get("texte", "") for c in q.get("choix") or [])
-                refs.append({"src": f"{os.path.basename(d)}#{q.get('numero')}", "stem": normaliser(enonce), "stem0": normaliser(q.get("enonce_markdown") or ""),
+                refs.append({"src": f"{os.path.basename(d)}#{q.get('numero')}", "stem": normaliser(enonce), "stem0": normaliser(corps(q.get("enonce_markdown") or "")),
                              "texte": enonce + " " + opts, "opts": frozenset(normaliser(c.get("texte", "")) for c in q.get("choix") or [])})
     return refs
 
@@ -98,9 +108,10 @@ def originalite(questions, refs, rap, seuil_err=0.82, seuil_warn=0.66):
     memes options. Le score combine la ressemblance du texte et la part de nombres communs."""
     pires = []
     for q in questions:
-        stem = normaliser(q["enonce_markdown"])
+        enonce_q = corps(q["enonce_markdown"])
+        stem = normaliser(enonce_q)
         opts = " ".join(c["texte"] for c in q.get("choix") or [])
-        nums = nombres(q["enonce_markdown"] + " " + opts)
+        nums = nombres(enonce_q + " " + opts)
         # options « riches » seulement : « 2 », « 13 » reviennent partout et ne prouvent rien
         opts_n = frozenset(o for o in (normaliser(c["texte"]) for c in q.get("choix") or []) if len(o) >= 5)
         meilleur = (0.0, 0.0, None)

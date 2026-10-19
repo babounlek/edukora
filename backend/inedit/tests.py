@@ -1328,9 +1328,45 @@ class EpreuveInediteDetailAPITests(TestCase):
         # _make_published_epreuve crée un seul exercice ("1"), questions "1" (ordre=1,
         # QCM, énoncé "QCM ?") et "2" (ordre=2) - le premier par ordre, jamais le
         # corrigé ni les questions suivantes (voir catalog.inedit_bridge._apercu_enonce).
+        # Une QCM est montrée AVEC ses options (une par ligne) : sans elles l'aperçu poserait une question sans réponses.
         response = self.client.get(f"/inedit/epreuves/{self.epreuve.id}/")
-        self.assertEqual(response.data["apercu_enonce_markdown"], "QCM ?")
+        self.assertEqual(response.data["apercu_enonce_markdown"], "QCM ?\n\na) Un\nb) Deux")
         self.assertEqual(response.data["apercu_numero_exercice"], "1")
+
+    def test_apercu_of_a_qcm_paper_shows_the_instructions_the_question_and_all_four_options(self):
+        """Paper 1 de GCE : l'intro de l'exercice porte les consignes, la question 1 est une QCM à quatre options ;
+        l'aperçu public doit contenir les consignes, l'énoncé ET les quatre options, sans la clé ni le corrigé."""
+        blueprint, _ = ingest_blueprint(_blueprint_payload(external_id="bp-apercu-qcm"), self.country)
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        payload = _epreuve_payload(
+            external_id="ep-apercu-qcm", blueprint_external_id="bp-apercu-qcm",
+            exercices=[{
+                "numero_exercice": "1", "points": "2", "enonce_intro_markdown": "**Paper 1 - Multiple choice.** Answer ALL questions.",
+                "questions": [{
+                    "numero": "1", "ordre": 1, "enonce_markdown": "The value of $2+3$ is", "corrige_markdown": "Corrigé secret.",
+                    "type_reponse": "qcm", "points": 1, "themes": ["Suites numériques"],
+                    "choix": [{"lettre": l, "texte": t} for l, t in zip("abcd", ["$4$", "$5$", "$6$", "$7$"])],
+                    "reponse_correcte": "b",
+                }, {
+                    "numero": "2", "ordre": 2, "enonce_markdown": "Seconde.", "corrige_markdown": "Autre corrigé.",
+                    "type_reponse": "qcm", "points": 1, "themes": ["Suites numériques"],
+                    "choix": [{"lettre": "a", "texte": "Un"}, {"lettre": "b", "texte": "Deux"}], "reponse_correcte": "a",
+                }],
+            }],
+        )
+        epreuve, _ = ingest_epreuve_inedite(payload, self.country)
+        epreuve.statut = StatutContenu.VALIDE
+        epreuve.save(update_fields=["statut"])
+
+        apercu = self.client.get(f"/inedit/epreuves/{epreuve.id}/").data["apercu_enonce_markdown"]
+
+        self.assertEqual(
+            apercu,
+            "**Paper 1 - Multiple choice.** Answer ALL questions.\n\nThe value of $2+3$ is\n\na) $4$\nb) $5$\nc) $6$\nd) $7$",
+        )
+        self.assertNotIn("Corrigé secret", apercu)
+        self.assertNotIn("Seconde.", apercu)
 
     def test_apercu_enonce_markdown_includes_the_exercice_shared_intro(self):
         # Bug corrigé (2026-08-31) : un exercice dont le support partagé (tableau de
@@ -2010,6 +2046,56 @@ class CompileFromExercicesTests(TestCase):
         from .models import cle_numero_exercice
         for suite in (["1", "2", "10"], ["01", "02", "10", "B1", "B2"], ["1", "A1", "A2", "A10"]):
             self.assertEqual(sorted(reversed(suite), key=cle_numero_exercice), suite)
+
+    def _epreuve_avec_parties(self):
+        blueprint, _ = ingest_blueprint(_blueprint_payload(), self.country)
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        epreuve = EpreuveInedite.objects.create(blueprint=blueprint, subject=blueprint.subject, titre="Test points")
+        epreuve.cursus.set(blueprint.cursus.all())
+        exercice = ExerciceInedite.objects.create(epreuve=epreuve, numero_exercice="1", points="10")
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="a", ordre=1, enonce_markdown="Partie A.", corrige_markdown="Réponse A.",
+            points=Decimal("3.00"),
+        )
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="b", ordre=2, enonce_markdown="Partie B.", corrige_markdown="Réponse B.",
+            points=Decimal("1.50"),
+        )
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="c", ordre=3, enonce_markdown="Partie C.", corrige_markdown="Réponse C.",
+        )
+        qcm = ExerciceInedite.objects.create(epreuve=epreuve, numero_exercice="2", points="1")
+        QuestionInedite.objects.create(
+            exercice=qcm, numero="1", ordre=1, enonce_markdown="QCM ?", corrige_markdown="Réponse QCM.",
+            type_reponse=TypeReponse.QCM, choix=[{"lettre": "a", "texte": "Un"}, {"lettre": "b", "texte": "Deux"}],
+            reponse_correcte="a", points=Decimal("1.00"),
+        )
+        return epreuve
+
+    def test_written_questions_print_their_marks_in_both_documents(self):
+        """Les vrais sujets impriment « [3 marks] » après chaque partie : sans cela le PDF ne donne que le total de
+        l'exercice. Une seule mention par question, jamais pour une QCM ni sans barème renseigné."""
+        epreuve = self._epreuve_avec_parties()
+        epreuve.compile_from_exercices()
+        for document in (epreuve.enonce_markdown, epreuve.corrige_markdown):
+            self.assertEqual(document.count("*[3 pts]*"), 1)
+            self.assertEqual(document.count("*[1.5 pts]*"), 1)
+            self.assertEqual(document.count("pts]*"), 2)  # ni la partie sans barème ni la QCM
+            self.assertLess(document.index("Partie A."), document.index("*[3 pts]*"))
+            self.assertLess(document.index("*[3 pts]*"), document.index("Partie B."))
+        self.assertNotIn("pts]*", epreuve.enonce_markdown.split("QCM ?")[1])
+
+    def test_printed_marks_become_marks_in_the_english_pdf_and_stay_in_french_otherwise(self):
+        from catalog.pdf_textes import adapter_markdown
+        epreuve = self._epreuve_avec_parties()
+        epreuve.compile_from_exercices()
+        anglais = adapter_markdown(epreuve.enonce_markdown, "en")
+        self.assertIn("*[3 marks]*", anglais)
+        self.assertIn("*[1.5 marks]*", anglais)
+        self.assertNotIn("pts", anglais)
+        self.assertIn("*[3 pts]*", adapter_markdown(epreuve.enonce_markdown, "fr"))
+        self.assertEqual(QuestionInedite.objects.get(numero="a").enonce_markdown, "Partie A.")  # jamais dans le champ source
 
 
 class ReprendreTentativeAPITests(TestCase):
