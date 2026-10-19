@@ -117,7 +117,9 @@ def originalite(questions, refs, rap, seuil_err=0.82, seuil_warn=0.66):
                 meilleur = (score, ratio, r["src"], communs)
         if meilleur[2] is not None:
             pires.append((meilleur[0], q["numero"], meilleur))
-            if meilleur[1] >= seuil_err and meilleur[3] >= 0.5:
+            # un énoncé qui ne porte que 0 à 2 nombres (« Solve the equation f(x)=0 ») ne prouve rien par ses nombres communs :
+            # ERREUR seulement avec au moins 3 nombres en jeu, sinon AVERTISSEMENT
+            if meilleur[1] >= seuil_err and meilleur[3] >= 0.5 and len(nums) >= 3:
                 rap.err(f"Q{q['numero']}: trop proche de {meilleur[2]} (texte {meilleur[1]:.2f}, nombres communs {meilleur[3]:.2f})")
             elif meilleur[1] >= seuil_warn and meilleur[3] >= 0.5:
                 rap.warn(f"Q{q['numero']}: ressemble a {meilleur[2]} (texte {meilleur[1]:.2f}, nombres communs {meilleur[3]:.2f}) : a relire")
@@ -125,7 +127,7 @@ def originalite(questions, refs, rap, seuil_err=0.82, seuil_warn=0.66):
     return pires[:5]
 
 
-def controler(ep, bp, refs, type_paper, rap):
+def controler(ep, bp, refs, type_paper, rap, sections_attendues=None):
     # --- blueprint
     if bp:
         for k in ("external_id", "titre", "matiere", "cursus", "competences", "sections_plan", "duree_minutes", "bareme_total"):
@@ -176,11 +178,26 @@ def controler(ep, bp, refs, type_paper, rap):
     # --- questions
     toutes = []
     cles = []
+    pour_originalite = []  # une entree par question, avec le support de l'exercice (un paper redige partage son intro)
+    par_groupe = {}
     for ex in exs:
         pts_q = 0
+        groupe = (ex.get("groupes") or ["-"])[0]
+        stat = par_groupe.setdefault(groupe, [0, 0.0])
+        stat[0] += 1
+        stat[1] += float(ex.get("points") or 0)
         for q in ex.get("questions") or []:
             toutes.append(q)
+            pour_originalite.append({
+                "numero": f"{ex.get('numero_exercice')}.{q.get('numero')}", "choix": q.get("choix") or [],
+                "enonce_markdown": (ex.get("enonce_intro_markdown") or "") + " " + (q.get("enonce_markdown") or ""),
+            })
             n = str(q.get("numero"))
+            crit = q.get("criteres_notation") or []
+            if crit and abs(sum(float(c["points"]) for c in crit) - float(q.get("points") or 0)) > 1e-9:
+                rap.err(f"Q{ex.get('numero_exercice')}.{n}: criteres_notation {sum(float(c['points']) for c in crit)} != points {q.get('points')}")
+            if type_paper == "redige" and q.get("type_reponse") == "ouverte" and not crit and float(q.get("points") or 0) > 0.5:
+                rap.err(f"Q{ex.get('numero_exercice')}.{n}: question ouverte de plus d'un demi-point sans criteres_notation")
             for k in ("numero", "enonce_markdown", "corrige_markdown"):
                 if not q.get(k):
                     rap.err(f"Q{n}: champ {k!r} manquant")
@@ -244,8 +261,25 @@ def controler(ep, bp, refs, type_paper, rap):
             rap.warn(f"difficulte : {part_faible:.0%} de questions faibles (corpus reel : 61 %, viser 45-70 %)")
         if diffs.count("elevee") > 4:
             rap.warn(f"difficulte : {diffs.count('elevee')} questions elevees (corpus reel : ~0-1 par sujet)")
+    if type_paper == "redige":
+        if sections_attendues:
+            for groupe, (nb, pts) in sections_attendues.items():
+                reel = par_groupe.get(groupe)
+                if not reel or reel[0] != nb or abs(reel[1] - pts) > 1e-9:
+                    rap.err(f"{groupe}: attendu {nb} exercices et {pts} points, trouve {reel}")
+        total = sum(v[1] for v in par_groupe.values())
+        if bp and bp.get("bareme_total") and abs(float(bp["bareme_total"]) - total) > 1e-9:
+            rap.err(f"bareme_total du blueprint {bp['bareme_total']} != somme des points {total}")
+        if any(q.get("type_reponse") == "qcm" for q in toutes):
+            rap.err("Paper redige : aucune QCM attendue")
+        diffs = [q.get("difficulte_estimee") for q in toutes]
+        part_faible = diffs.count("faible") / max(1, len(diffs))
+        if not 0.45 <= part_faible <= 0.7:
+            rap.warn(f"difficulte : {part_faible:.0%} de sous-questions faibles (corpus reel Maths P2 : 50-62 % sur 2023-2026, viser 45-70 %)")
+        if diffs.count("elevee") > 4:
+            rap.warn(f"difficulte : {diffs.count('elevee')} sous-questions elevees (corpus reel : 0-1 par sujet)")
     # --- originalite
-    pires = originalite(toutes, refs, rap) if refs else []
+    pires = originalite(pour_originalite if type_paper == "redige" else toutes, refs, rap) if refs else []
     return pires
 
 
@@ -256,12 +290,26 @@ def main():
     ap.add_argument("--corpus", default=os.path.join(RACINE, "backend", "ingest", "cm"))
     ap.add_argument("--matiere", default="maths", help="fragment du dossier gce-ol-<matiere>-* du corpus de reference")
     ap.add_argument("--type", default="qcm", choices=["qcm", "redige"])
+    ap.add_argument("--sections", default="", help='paper redige : "SECTION A:10:45,SECTION B:4:60" (groupe:nombre exercices:points)')
+    ap.add_argument("--jumeau", default="", help="JSON de l'epreuve jumelle (autre paper de la session) : compare aussi a elle")
     a = ap.parse_args()
     ep = json.load(open(a.epreuve, encoding="utf8"))
     bp = json.load(open(a.blueprint, encoding="utf8")) if a.blueprint else None
     refs = charger_corpus(a.corpus, a.matiere)
+    if a.jumeau:
+        jum = json.load(open(a.jumeau, encoding="utf8"))
+        for ex in jum["exercices"]:
+            for q in ex["questions"]:
+                enonce = (ex.get("enonce_intro_markdown") or "") + " " + (q.get("enonce_markdown") or "")
+                refs.append({"src": f"JUMEAU {jum['external_id']}#{q.get('numero')}", "stem": normaliser(enonce),
+                             "texte": enonce + " " + " ".join(c.get("texte", "") for c in q.get("choix") or []),
+                             "opts": frozenset(normaliser(c.get("texte", "")) for c in q.get("choix") or [])})
+    sections = {}
+    for part in filter(None, a.sections.split(",")):
+        g, nb, pts = part.rsplit(":", 2)
+        sections[g.strip()] = (int(nb), float(pts))
     rap = Rapport()
-    pires = controler(ep, bp, refs, a.type, rap)
+    pires = controler(ep, bp, refs, a.type, rap, sections)
     print(f"corpus de reference : {len(refs)} questions reelles (gce-ol-{a.matiere}-*)")
     for score, n, m in pires or []:
         print(f"  plus proche, Q{n}: {m[2]} (texte {m[1]:.2f}, nombres communs {m[3]:.2f})")

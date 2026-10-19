@@ -41,8 +41,10 @@ Chaque donnée d'une figure est écrite aussi dans son `<desc>`. Fabrication par
 
 ### Autres papers (règle clé de chacun ; détail dans le guide §5)
 
-- **Structuré, tout obligatoire** (Maths P2 : Section A 10 questions de 4 points, Section B 4 questions de 15 points, total propre de 100) :
-  `groupes ["SECTION A"]`, `numero_exercice` `"1"`-`"10"` puis `"B1"`-`"B4"`, sous-questions `a`, `b`, `c` avec `points` et `criteres_notation` exacts.
+- **Structuré, tout obligatoire** (Maths P2 : Section A 10 questions de 4 à 5 points, total 45, Section B 4 questions de 15 points, total 60, soit 105 comme les
+  sujets réels récents ; étalon `ep-cm-gce-ol-maths-p2-1-2026-s1`) : `groupes ["SECTION A"]`, `numero_exercice` **sur deux chiffres** `"01"`-`"10"` puis
+  `"B1"`-`"B4"` (la plateforme trie ce champ en texte : `"10"` passerait avant `"2"`), sous-questions `a`, `b`, `c` avec `points` et `criteres_notation` exacts, parties
+  `(i)`, `(ii)` dans `groupe_local`, tracé attendu dans le corrigé seulement.
 - **Structuré avec choix** (Biology, Chemistry, History, Geography, Economics, Commerce...) : la plateforme ne code pas les règles de choix des
   inédites. Écrire la version **« answer ALL »** limitée aux questions réellement à traiter, la règle réelle dans le blueprint et l'intro.
 - **Essais** (History, Religious Studies, Philosophy) : jamais un sujet réel reformulé, faits exacts, corrigé = plan et essai modèle, grille par
@@ -55,12 +57,19 @@ Chaque donnée d'une figure est écrite aussi dans son `<desc>`. Fabrication par
 - **Figures** : Maths et Physics complètes (graphes, géométrie, circuits), Biology/Geology sans schémas anatomiques ou de coupe, Geography/History sans
   cartes, langues et Religious Studies sans figure.
 
+### Session de papers
+
+Les papers d'une matière et d'un niveau forment une **session** (« Original Paper No. 1 » pour le Paper 1 ET le Paper 2) : concevoir les blueprints ensemble, avec dans
+chacun un bloc `session` (`papier_jumeau`, `numero_session`, `themes_communs_aux_deux_papers`, `themes_propres_au_paper_N`), sans donnée, contexte ni figure
+partagés ; générer un paper après l'autre (chacun avec ses contrôles, `--jumeau` compare au paper déjà fait) ; valider et publier les papers de la session ensemble.
+
 ### Contrôles obligatoires (dans cet ordre, depuis `D:\edukora`)
 
 1. Générateur du paper (`scripts/gce/inedites/generer_*.py`), qui écrit blueprint et épreuve dans `backend/ingest/_inedit/cm/`.
-2. `venv\Scripts\python.exe scripts\gce\inedites\verifier_reponses_<paper>.py` : recalcul indépendant, la clé est la seule option égale (0 écart).
-3. `venv\Scripts\python.exe scripts\gce\inedites\controle_inedite_gce.py <ep.json> <bp.json> [--matiere maths] [--type qcm]` : contrat, barème, style,
-   `$`, rappels verbatim, originalité contre le corpus réel (0 erreur ; relire chaque avertissement).
+2. `venv\Scripts\python.exe scripts\gce\inedites\verifier_reponses_<paper>.py` : recalcul indépendant (QCM : la clé est la seule option égale ; paper rédigé : chaque ligne
+   `**Answer: ...**` et les valeurs intermédiaires citées) (0 écart).
+3. `venv\Scripts\python.exe scripts\gce\inedites\controle_inedite_gce.py <ep.json> <bp.json> [--matiere maths] [--type qcm|redige] [--sections "SECTION A:10:45,SECTION B:4:60"]
+   [--jumeau <autre paper>]` : contrat, barème, grilles, style, `$`, rappels verbatim, originalité contre le corpus réel et le paper jumeau (0 erreur ; relire chaque avertissement).
 4. `venv\Scripts\python.exe scripts\gce\inedites\outils_figures\verifier_figures.py <ep.json>` puis `rendre_figures.py` et **regarder** chaque figure.
 5. Rendu KaTeX par le vrai moteur (dump des champs, `AUDIT_RENDU_DUMP=... npx vitest run src/lib/audit-rendu.test.ts`) puis **ingestion à
    blanc** dans une transaction annulée (le blueprint passé `VALIDE` seulement à l'intérieur de la transaction : la validation humaine, elle, reste
@@ -69,7 +78,7 @@ Chaque donnée d'une figure est écrite aussi dans son `<desc>`. Fabrication par
 ### Défauts de plateforme connus (ne pas les contourner dans le JSON)
 
 `score_originalite` non discriminant pour un QCM court (13 sur l'étalon sans aucun
-doublon réel) ; « Exercice 1 » non traduit dans le PDF anglais ; ni `numero_paper`, ni `code_matiere`, ni `regles_choix` dans le modèle inédit. Les
+doublon réel) ; « Exercice 1 » non traduit dans le PDF anglais ; exercices triés par numéro en texte (`10` avant `2`, contourné par des numéros à deux chiffres) ; ni `numero_paper`, ni `code_matiere`, ni `regles_choix` dans le modèle inédit. Les
 signaler dans le compte rendu, ne pas les « réparer » en dupliquant du texte. (Les options de QCM absentes du PDF, relevées à l'étalon, sont
 corrigées dans `compile_from_exercices` ; ne jamais les recopier dans `enonce_markdown`.)
 

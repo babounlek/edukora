@@ -49,6 +49,10 @@ Non représentable (relevé le 2026-10-19 dans `inedit/models.py`, `inedit/inges
   `### Exercice`. Pour une épreuve à exercice unique, l'en-tête n'apporte rien.
 - **DÉFAUT 4 : ni `numero_paper`, ni `code_matiere`, ni `regles_choix` dans le modèle inédit.** Les règles de choix (`parmi`, `ou`, `total`,
   `section_unique`) n'existent que pour les épreuves classiques (`catalog/choix.py`, `simulations/choix.py`). Conséquence de conception au §4.
+- **DÉFAUT 5 : les exercices sont triés par `numero_exercice` en texte** (`inedit/views.py` lignes 102 et 281, `EpreuveInedite.compile_from_exercices`) :
+  « 10 » passe avant « 2 ». Sans effet pour un Paper 1 (un seul exercice) ; pour un Paper 2 de 14 exercices, le lecteur, la copie et le PDF
+  mélangent l'ordre. Contournement appliqué dans le générateur du Paper 2 : `numero_exercice` écrit sur deux chiffres (`01` à `10`, puis `B1` à `B4`).
+  Correctif propre : un tri naturel (`re.split(r"(\d+)", numero)`) aux trois endroits. À corriger avant tout paper de plus de 9 exercices.
 - Pas d'image PNG : figures SVG calculées seulement (`figures_svg.py`). Cartes, schémas anatomiques ou de verrerie, microphotographies restent
   hors de portée.
 - Le barème est **exact** : la somme des `points` des questions d'un exercice vaut `exercices[].points`. Les sujets réels, eux, ne somment pas
@@ -114,6 +118,14 @@ questions que le candidat doit traiter** (version « answer ALL »), la règle r
 consigne. Alternative non retenue : offrir les m questions, ce qui fausserait barème et rapport de fin. Chantier de plateforme : reprendre
 `catalog/choix.py` dans `inedit`.
 
+**Session de papers (décidé le 2026-10-19).** Les papers d'une même matière et d'un même niveau forment une **session** : le Paper 1 et le Paper 2
+« Original Paper No. 1 » se conçoivent ensemble, se valident ensemble, se publient ensemble. Concrètement : (1) le blueprint de chaque paper porte un bloc
+`session` : `papier_jumeau`, `numero_session`, `themes_communs_aux_deux_papers`, `themes_propres_au_paper_N` et la règle « aucune donnée, aucun contexte, aucune
+figure partagés » ; (2) le numéro `No. N` est le même pour tous les papers de la session ; (3) `controle_inedite_gce.py --jumeau <autre paper>` compare
+chaque question à l'épreuve jumelle en plus du corpus réel ; (4) les papers de la session passent au statut Validé en même temps. Ce qui n'est PAS groupé :
+la génération (un paper après l'autre, chacun avec ses quatre contrôles) et le calibrage (un type de paper n'est généré en série qu'une fois son étalon fait). La
+session reste une convention tant que le modèle n'a pas de champ de regroupement ni de note globale.
+
 **Statut.** Brouillon à l'ingestion, toujours ; blueprint validé par un humain dans l'admin ; l'épreuve est publiée par un geste humain.
 
 **Après l'ingestion.** `bash scripts/tunnel_validation.sh <since>` (périmètre inédit : voir limites dans le skill), `manage.py indexer_recherche`,
@@ -158,7 +170,8 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
 ### B. Structuré, tout obligatoire (Maths O/L P2 comme étalon)
 
 - Format récent (2023, 2025, 2026) : exercices `"1"` à `"10"` en `SECTION A` (une à trois sous-questions, 4 à 5 points chacune), exercices
-  `"B1"` à `"B4"` en `SECTION B` (15 points chacun, 5 à 8 sous-questions). Total propre de 100 : A 40 (10 × 4), B 60. Les sujets imprimés de 2019-2022
+  `"B1"` à `"B4"` en `SECTION B` (15 points chacun, 5 à 8 sous-questions). Total de **105** (A 45, B 60), comme
+  les sujets complets de 2023 et 2025 (A 45) et celui de 2026 (A 43) : on reprend la somme du dernier sujet, on ne la « nettoie » pas à 100. Les sujets de 2019-2022
   avaient 15 questions en A : ne pas les imiter.
 - Sous-question = une `question` de `numero` `a`, `b`, `c`... ; `points` et `criteres_notation` obligatoires : critères observables sur la copie
   (« Writes the formula », « Substitutes correctly », « Answer with unit »), somme exacte, 2 à 5 critères.
@@ -166,6 +179,18 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
 - Mélange attendu en Section B : un problème de **graphe à tracer** (tableau de valeurs, courbe SVG dans le corrigé seulement), un problème de
   **statistiques** (tableau de fréquences, moyenne, médiane, histogramme ou diagramme), une **construction ou transformation**, un problème
   **vecteurs/matrices**. Poids mesurés dans P2 : statistics 3-6 par sujet, graphs 3-6, set theory 3-5, graph theory 2-4, matrix 2-5, probability 1-4.
+- **Étalon produit le 2026-10-19** : `ep-cm-gce-ol-maths-p2-1-2026-s1` (`generer_maths_p2.py`, `questions_maths_p2_a.py`, `questions_maths_p2_b.py`,
+  `figs_maths_p2.py`). 14 exercices, 62 sous-questions, 105 points, 150 minutes, difficulté 37 faibles / 23 moyennes / 2 élevées (60 / 37 / 3 %, corpus réel
+  2023-2026 : 50-62 % de faibles), 5 figures dont **une seule dans un énoncé** (le réseau de la question 6) : le tracé attendu (droite numérique, Venn, construction,
+  parabole) ne vit que dans le corrigé. Section A : fractions, indices, changement de sujet, ensembles, matrices, réseau, vecteurs, système, inéquation, probabilités.
+  Section B : arithmétique commerciale, statistiques groupées et ensembles, fonctions, suite géométrique et construction, courbe et équation du second degré.
+  19 thèmes communs avec le Paper 1, 1 propre au Paper 2 (`geometric construction`) : les thèmes se recoupent par nature, jamais les données ni les contextes.
+- Barème : chaque sous-question a ses `points` et une grille `criteres_notation` de 1 à 4 critères observables (« You write `$x(x+3)=40$` and expand »), somme exacte.
+  Un tracé ou une construction est noté sur la copie papier : critères « axes gradués avec l'échelle demandée », « points placés avec précision », « courbe lisse ».
+  Une mesure lue sur un dessin admet une tolérance écrite dans le critère et dans le corrigé (« toute valeur de 5,0 à 5,2 cm »).
+- Un paper rédigé est vérifié sous-question par sous-question : `verifier_reponses_maths_p2.py` relit la ligne `**Answer: ...**` de chacune des 62 sous-questions,
+  recalcule la valeur par une autre méthode (force brute, évaluation numérique de formules, comptage) et contrôle les valeurs intermédiaires citées (tableaux
+  de calcul, chiffres des étapes). Contrôle de structure : `controle_inedite_gce.py --type redige --sections "SECTION A:10:45,SECTION B:4:60" --jumeau <P1>`.
 - Le corrigé est le **corrigé d'un candidat qui prend tous les points** : étapes, formules, valeurs, conclusion, `**Answer: ...**` en gras.
 - Figures : celles du `Tracé attendu` vont au corrigé uniquement (le skill) ; les figures de données d'énoncé sont SVG calculés.
 
@@ -263,7 +288,7 @@ répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le
 
 - Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
 - Décider DÉFAUT 4 : porter `numero_paper`, `code_matiere` et `regles_choix` dans `inedit` (sinon les papers à choix restent en « answer ALL »).
-- Étalonner le **Paper 2** de Maths O/L (type B) sur le même modèle : générateur, vérificateur de calculs, grilles `criteres_notation`.
-- Étalonner un paper de chaque type C, D, E, F, G avec les mêmes quatre contrôles ; l'étalon ci-dessus est entièrement chiffré pour A et B, qualitatif
+- Corriger DÉFAUT 5 (tri naturel des exercices) : le Paper 2 étalon contourne par des numéros à deux chiffres.
+- Étalonner un paper de chaque type C, D, E, F, G avec les mêmes quatre contrôles ; l'étalon est entièrement chiffré pour A et B (Maths O/L P1 et P2), qualitatif
   pour les autres (aucun paper inédit de ces types n'a encore été produit).
 - Cours des 2 thèmes sans cours (`change of subject`, `circle`) : leurs rappels portent une compétence sans `Cours` existant.
